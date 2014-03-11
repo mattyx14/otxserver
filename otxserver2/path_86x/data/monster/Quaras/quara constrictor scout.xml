@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Quara Constrictor Scout" nameDescription="a quara constrictor scout" race="undead" experience="200" speed="290" manacost="670">
+	<health now="450" max="450"/>
+	<look type="46" corpse="6065"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag staticattack="90"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="20"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="55" attack="130"/>
+		<attack name="lifedrain" interval="2000" chance="15" radius="3" target="0" max="-80">
+			<attribute key="areaEffect" value="blackspark"/>
+		</attack>
+	</attacks>
+	<defenses armor="15" defense="15"/>
+	<elements>
+		<element energyPercent="-10"/>
+		<element physicalPercent="-5"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity fire="1"/>
+		<immunity paralyze="1"/>
+		<immunity ice="1"/>
+	</immunities>
+	<loot>
+    <item id="2148" countmax="40" chance="50000" /><!-- gold coin -->
+	<item id="12443" chance="6666" /><!-- quara tentacle -->
+    <item id="2397" chance="5555" /><!-- longsword -->
+    <item id="2465" chance="1923" /><!-- brass armor -->
+    <item id="2150" chance="591" /><!-- small amethyst -->
+    <item id="5895" chance="295" /><!-- fish fin -->
+</loot>
+</monster>

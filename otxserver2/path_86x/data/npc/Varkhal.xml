@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Varkhal" script="default.lua" walkinterval="2000" floorchange="0">
+	<health now="100" max="100"/>
+	<look type="134" head="78" body="88" legs="0" feet="88" addons="3"/>
+		<parameters>
+			<parameter key="module_outfit" value="1"/>
+			<parameter key="outfits" value="druid paws,druid bear paws,druid wolf paws"/>
+			<parameter key="outfit1" value="10,1,yes;5897,50,wolf paws;5896,50,bear paws"/>
+		</parameters>
+</npc>

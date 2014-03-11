@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Dimral" script="default.lua" walkinterval="0" skull="green" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="129" head="114" body="119" legs="114" feet="114" corpse="2212"/>
+	<parameters>
+		<parameter key="module_travel" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. If you don't know where to flow, say {travel}."/>
+		<parameter key="travel_destinations" value="varak,331,509,10,50;jorvik,420,256,6,50;"/>
+	</parameters>
+</npc>
