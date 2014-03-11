@@ -243,7 +243,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 				OutputMessagePool::getInstance()->send(output);
 			}
 
-			getConnection()->close();
+			disconnect();
 			return false;
 		}
 
@@ -334,7 +334,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 	}
 
-	getConnection()->close();
+	disconnect();
 	if(player->isRemoved())
 		return true;
 
@@ -387,7 +387,7 @@ void ProtocolGame::disconnectClient(uint8_t error, const char* message)
 	output->putString(message);
 
 	OutputMessagePool::getInstance()->send(output);
-	getConnection()->close();
+	disconnect();
 }
 
 void ProtocolGame::onConnect()
@@ -415,7 +415,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 #endif
 		g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
-		getConnection()->close();
+		disconnect();
 		return;
 	}
 
@@ -423,7 +423,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	uint16_t version = msg.get<uint16_t>();
 	if(!RSA_decrypt(msg))
 	{
-		getConnection()->close();
+		disconnect();
 		return;
 	}
 
@@ -431,6 +431,8 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	enableXTEAEncryption();
 
 	setXTEAKey(key);
+	if(operatingSystem >= CLIENTOS_OTCLIENT_LINUX)
+		sendExtendedOpcode(0x00, std::string());
 
 	bool gamemaster = (msg.get<char>() != (char)0);
 	std::string name = msg.getString(), character = msg.getString(), password = msg.getString();
@@ -584,6 +586,10 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 
 			case 0x1E: // keep alive / ping response
 				parseReceivePing(msg);
+				break;
+
+			case 0x32: // otclient extended opcode
+				parseExtendedOpcode(msg);
 				break;
 
 			case 0x64: // move with steps
@@ -3101,4 +3107,26 @@ void ProtocolGame::AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item)
 	msg->put<uint32_t>(uint32_t(it.weight * 100));
 	msg->put<uint32_t>(item.buyPrice);
 	msg->put<uint32_t>(item.sellPrice);
+}
+
+void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
+{
+	uint8_t opcode = msg.get<char>();
+	std::string buffer = msg.getString();
+	addGameTask(&Game::playerExtendedOpcode, player->getID(), opcode, buffer);
+}
+
+void ProtocolGame::sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
+{
+	if(!player || player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX)
+		return;
+
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0x32);
+	msg->put<char>(opcode);
+	msg->putString(buffer);
 }

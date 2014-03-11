@@ -56,7 +56,8 @@ enum CreatureEventType_t
 	CREATURE_EVENT_CAST,
 	CREATURE_EVENT_KILL,
 	CREATURE_EVENT_DEATH,
-	CREATURE_EVENT_PREPAREDEATH
+	CREATURE_EVENT_PREPAREDEATH,
+	CREATURE_EVENT_EXTENDED_OPCODE // otclient additional network opcodes
 };
 
 enum StatsChange_t
@@ -133,8 +134,8 @@ class CreatureEvent : public Event
 		uint32_t executeTextEdit(Player* player, Item* item, const std::string& newText);
 		uint32_t executeHouseEdit(Player* player, uint32_t houseId, uint32_t listId, const std::string& text);
 		uint32_t executeReportBug(Player* player, const std::string& comment);
-		uint32_t executeReportViolation(Player* player, uint8_t reason, const std::string& name,
-			const std::string& comment, const std::string& translation);
+		uint32_t executeReportViolation(Player* player, ReportType_t type, uint8_t reason, const std::string& name,
+			const std::string& comment, const std::string& translation, uint32_t statementId);
 		uint32_t executeThink(Creature* creature, uint32_t interval);
 		uint32_t executeDirection(Creature* creature, Direction old, Direction current);
 		uint32_t executeOutfit(Creature* creature, const Outfit_t& old, const Outfit_t& current);
@@ -148,6 +149,7 @@ class CreatureEvent : public Event
 		uint32_t executeKill(Creature* creature, Creature* target, const DeathEntry& entry);
 		uint32_t executeDeath(Creature* creature, Item* corpse, DeathList deathList);
 		uint32_t executePrepareDeath(Creature* creature, DeathList deathList);
+		uint32_t executeExtendedOpcode(Creature* creature, uint8_t opcode, const std::string& buffer);
 		//
 
 	protected:

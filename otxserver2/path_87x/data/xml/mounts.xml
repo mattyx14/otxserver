@@ -13,7 +13,7 @@
 	<mount id="11" clientId="378" name="Stampor" speed="20" premium="yes" />
 	<mount id="12" clientId="379" name="Undead Cavebear" speed="20" premium="yes" />
 
-	<!-- Customs Mounts -->
+	<!-- Customs Mounts
 	<mount id="13" clientId="94" name="Hyaena" speed="5" premium="yes"/>
 	<mount id="14" clientId="219" name="Tarantula" speed="5" premium="yes"/>
 	<mount id="15" clientId="222" name="Toad" speed="5" premium="yes"/>
@@ -21,5 +21,5 @@
 	<mount id="17" clientId="245" name="Nightmare" speed="5" premium="yes"/>
 	<mount id="18" clientId="305" name="Mutated Rat" speed="5" premium="yes"/>
 	<mount id="19" clientId="317" name="Young Sea Serpent" speed="5" premium="yes"/>
-	<mount id="20" clientId="348" name="Lancer Beetle" speed="5" premium="yes"/>
+	<mount id="20" clientId="348" name="Lancer Beetle" speed="5" premium="yes"/> -->
 </mounts>

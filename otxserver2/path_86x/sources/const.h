@@ -22,7 +22,11 @@
 enum OperatingSystem_t
 {
 	CLIENTOS_LINUX				= 0x01,
-	CLIENTOS_WINDOWS			= 0x02
+	CLIENTOS_WINDOWS			= 0x02,
+
+	CLIENTOS_OTCLIENT_LINUX		= 0x0A,
+	CLIENTOS_OTCLIENT_WINDOWS	= 0x0B,
+	CLIENTOS_OTCLIENT_MAC		= 0x0C
 };
 
 enum ReportType_t
@@ -559,7 +563,7 @@ enum PlayerFlags
 	PlayerFlag_IgnoreEquipCheck,			//2^35 = 34359738368
 	PlayerFlag_CannotBeMuted,				//2^36 = 68719476736
 	PlayerFlag_IsAlwaysPremium,				//2^37 = 137438953472
-	PlayerFlag_CanAnswerRuleViolations,		//2^38 = 274877906944
+	PlayerFlag_38,							//2^38 = 274877906944 //obsolete, can be re-used
 	PlayerFlag_39,							//2^39 = 549755813888 //not used by us
 	PlayerFlag_ShowGroupNameInsteadOfVocation,	//2^40 = 1099511627776
 	PlayerFlag_HasInfiniteStamina,			//2^41 = 2199023255552

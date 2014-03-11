@@ -85,13 +85,16 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	msg.skip(2); // client platform
 	uint16_t version = msg.get<uint16_t>();
 
+	if(version >= 971)
+		msg.skip(5);
+	else
+		msg.skip(12);
+
 #ifdef CLIENT_VERSION_DATA
 	uint32_t datSignature = msg.get<uint32_t>();
 	uint32_t sprSignature = msg.get<uint32_t>();
 
 	uint32_t picSignature = msg.get<uint32_t>();
-#else
-	msg.skip(12);
 #endif
 	if(!RSA_decrypt(msg))
 	{
@@ -253,6 +256,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 			IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
 			output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+
+			if(version >= 971)
+				output->put<char>(0x00);
 		}
 		else
 			output->put<char>((uint8_t)account.charList.size());
@@ -274,6 +280,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			output->put<uint32_t>(serverIp);
 			IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
 			output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+
+			if(version >= 971)
+				output->put<char>(0x00);
 		}
 		#else
 		for(Characters::iterator it = charList.begin(); it != charList.end(); ++it)
@@ -289,6 +298,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			output->put<uint32_t>(it->second.server->getAddress());
 			IntegerVec games = it->second.server->getPorts();
 			output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+
+			if(version >= 971)
+				output->put<char>(0x00);
 		}
 		#endif
 

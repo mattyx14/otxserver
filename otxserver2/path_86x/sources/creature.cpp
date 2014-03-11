@@ -303,7 +303,7 @@ void Creature::onWalk(Direction& dir)
 	if(drunk < 0)
 		return;
 
-	drunk += 20;
+	drunk += 25;
 	int32_t r = random_range(1, 100);
 	if(r > drunk)
 		return;

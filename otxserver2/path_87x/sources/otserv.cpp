@@ -1479,7 +1479,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 				case ID_MENU_BUG_FEATURE:
 				{
-					ShellExecute(NULL, "open", "http://"FORUM"/t17463-bug-report",
+					ShellExecute(NULL, "open", "http://"FORUM"/f125-otx-server-9x-87x-86x-85x",
 						NULL, NULL, SW_SHOWNORMAL);
 					break;
 				}

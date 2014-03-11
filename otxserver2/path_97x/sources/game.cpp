@@ -6242,7 +6242,7 @@ void Game::shutdown()
 	Raids::getInstance()->clear();
 	std::clog << " server... ";
 	cleanup();
-	std::clog << "done." << std::endl;
+	std::clog << "(done)." << std::endl;
 	if(services)
 		services->stop();
 

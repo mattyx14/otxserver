@@ -147,7 +147,7 @@
 		-- Protocol Server
 		-- The function no work (Fix please for Linux/Windows Users)
 		-- clientVersionMin = "9.70"
-		-- clientVersionMax = "9.70"
+		-- clientVersionMax = "9.71"
 		premiumDaysToAddByGui = 10
 
 		-- Depot and Miscellaneous

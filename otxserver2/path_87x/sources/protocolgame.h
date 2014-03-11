@@ -49,7 +49,7 @@ class ProtocolGame : public Protocol
 			protocolGameCount++;
 #endif
 			player = NULL;
-			m_eventConnect = m_packetCount = m_packetTime = 0;
+			m_eventConnect = 0;
 			m_debugAssertSent = m_acceptPackets = false;
 		}
 		virtual ~ProtocolGame()
@@ -308,6 +308,9 @@ class ProtocolGame : public Protocol
 
 		//shop
 		void AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item);
+
+		void parseExtendedOpcode(NetworkMessage& msg);
+		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);
 
 		#define addGameTask(f, ...) addGameTaskInternal(0, boost::bind(f, &g_game, __VA_ARGS__))
 		#define addGameTaskTimed(delay, f, ...) addGameTaskInternal(delay, boost::bind(f, &g_game, __VA_ARGS__))

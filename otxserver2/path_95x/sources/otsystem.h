@@ -131,7 +131,7 @@ inline uint32_t swap_uint32(uint32_t val)
 	return (val << 16) | (val >> 16);
 }
 
-#if BOOST_VERSION / 100 % 1000 == 4 && BOOST_VERSION % 100 <= 2
+#if BOOST_VERSION < 104400
 #define BOOST_DIR_ITER_FILENAME(iterator) (iterator)->path().filename()
 #else
 #define BOOST_DIR_ITER_FILENAME(iterator) (iterator)->path().filename().string()

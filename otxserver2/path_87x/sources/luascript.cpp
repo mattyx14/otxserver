@@ -1727,7 +1727,7 @@ void LuaInterface::registerFunctions()
 	//doTransformItem(uid, newId[, count/subType])
 	lua_register(m_luaState, "doTransformItem", LuaInterface::luaDoTransformItem);
 
-	//doCreatureSay(uid, text[, type = MSG_SPEAK_SAY[, ghost = false[, cid = 0[, pos]]]])
+	//doCreatureSay(uid, text[, type = SPEAK_SAY[, ghost = false[, cid = 0[, pos]]]])
 	lua_register(m_luaState, "doCreatureSay", LuaInterface::luaDoCreatureSay);
 
 	//doSendCreatureSquare(cid, color[, player])
@@ -2293,6 +2293,12 @@ void LuaInterface::registerFunctions()
 	//getPlayerTradeState(cid)
 	lua_register(m_luaState, "getPlayerTradeState", LuaInterface::luaGetPlayerTradeState);
 
+	//getPlayerOperatingSystem(cid)
+	lua_register(m_luaState, "getPlayerOperatingSystem", LuaInterface::luaGetPlayerOperatingSystem);
+
+	//getPlayerClientVersion(cid)
+	lua_register(m_luaState, "getPlayerClientVersion", LuaInterface::luaGetPlayerClientVersion);
+
 	//getPlayerModes(cid)
 	lua_register(m_luaState, "getPlayerModes", LuaInterface::luaGetPlayerModes);
 
@@ -2478,6 +2484,9 @@ void LuaInterface::registerFunctions()
 
 	//getConfigFile()
 	lua_register(m_luaState, "getConfigFile", LuaInterface::luaGetConfigFile);
+
+	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
+	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoPlayerSendExtendedOpcode);
 
 	//getConfigValue(key)
 	lua_register(m_luaState, "getConfigValue", LuaInterface::luaGetConfigValue);
@@ -2818,6 +2827,12 @@ int32_t LuaInterface::internalGetPlayerInfo(lua_State* L, PlayerInfo_t info)
 		case PlayerInfoTradeState:
 			value = player->tradeState;
 			break;
+		case PlayerInfoOperatingSystem:
+			value = player->getOperatingSystem();
+			break;
+		case PlayerInfoClientVersion:
+			value = player->getClientVersion();
+			break;
 		default:
 			errorEx("Unknown player info #" + info);
 			value = 0;
@@ -3027,6 +3042,16 @@ int32_t LuaInterface::luaGetPlayerAccountManager(lua_State* L)
 int32_t LuaInterface::luaGetPlayerTradeState(lua_State* L)
 {
 	return internalGetPlayerInfo(L, PlayerInfoTradeState);
+}
+
+int32_t LuaInterface::luaGetPlayerOperatingSystem(lua_State* L)
+{
+	return internalGetPlayerInfo(L, PlayerInfoOperatingSystem);
+}
+
+int32_t LuaInterface::luaGetPlayerClientVersion(lua_State* L)
+{
+	return internalGetPlayerInfo(L, PlayerInfoClientVersion);
 }
 //
 
@@ -3626,7 +3651,7 @@ int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 
 int32_t LuaInterface::luaDoCreatureSay(lua_State* L)
 {
-	//doCreatureSay(uid, text[, type = MSG_SPEAK_SAY[, ghost = false[, cid = 0[, pos]]]])
+	//doCreatureSay(uid, text[, type = SPEAK_SAY[, ghost = false[, cid = 0[, pos]]]])
 	uint32_t params = lua_gettop(L), cid = 0, uid = 0;
 	PositionEx pos;
 	if(params > 5)
@@ -9493,6 +9518,23 @@ int32_t LuaInterface::luaGetMountInfo(lua_State* L)
 		pushTable(L);
 	}
 
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSendExtendedOpcode(lua_State* L)
+{
+	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
+	std::string buffer = popString(L);
+	int32_t opcode = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		player->sendExtendedOpcode(opcode, buffer);
+		lua_pushboolean(L, true);
+	}
+
+	lua_pushboolean(L, false);
 	return 1;
 }
 

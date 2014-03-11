@@ -146,7 +146,7 @@ class Chat
 
 		ChannelList getPublicChannels() const;
 		bool isPublicChannel(uint16_t cid) const {return cid != CHANNEL_GUILD && cid
-			!= CHANNEL_PARTY && cid != CHANNEL_RVR && !isPrivateChannel(cid);}
+			!= CHANNEL_PARTY && !isPrivateChannel(cid);}
 
 	private:
 		void clear();

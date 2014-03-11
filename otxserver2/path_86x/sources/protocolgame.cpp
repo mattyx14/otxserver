@@ -442,6 +442,8 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	enableXTEAEncryption();
 
 	setXTEAKey(key);
+	if(operatingSystem >= CLIENTOS_OTCLIENT_LINUX)
+		sendExtendedOpcode(0x00, std::string());
 
 	bool gamemaster = (msg.get<char>() != (char)0);
 	std::string name = msg.getString(), character = msg.getString(), password = msg.getString();
@@ -597,6 +599,10 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 				parseReceivePing(msg);
 				break;
 
+			case 0x32: // otclient extended opcode
+				parseExtendedOpcode(msg);
+				break;
+
 			case 0x64: // move with steps
 				parseAutoWalk(msg);
 				break;
@@ -731,18 +737,6 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 				parseOpenPrivate(msg);
 				break;
 
-			case 0x9B: //process report
-				parseProcessRuleViolation(msg);
-				break;
-
-			case 0x9C: //gm closes report
-				parseCloseRuleViolation(msg);
-				break;
-
-			case 0x9D: //player cancels report
-				parseCancelRuleViolation(msg);
-				break;
-
 			case 0x9E: // close NPC
 				parseCloseNpc(msg);
 				break;
@@ -830,10 +824,6 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 
 			case 0xE6:
 				parseBugReport(msg);
-				break;
-
-			case 0xE7:
-				parseViolationWindow(msg);
 				break;
 
 			case 0xE8:
@@ -1090,23 +1080,6 @@ void ProtocolGame::parseOpenPrivate(NetworkMessage& msg)
 	addGameTask(&Game::playerOpenPrivateChannel, player->getID(), receiver);
 }
 
-void ProtocolGame::parseProcessRuleViolation(NetworkMessage& msg)
-{
-	const std::string reporter = msg.getString();
-	addGameTask(&Game::playerProcessRuleViolation, player->getID(), reporter);
-}
-
-void ProtocolGame::parseCloseRuleViolation(NetworkMessage& msg)
-{
-	const std::string reporter = msg.getString();
-	addGameTask(&Game::playerCloseRuleViolation, player->getID(), reporter);
-}
-
-void ProtocolGame::parseCancelRuleViolation(NetworkMessage&)
-{
-	addGameTask(&Game::playerCancelRuleViolation, player->getID());
-}
-
 void ProtocolGame::parseCloseNpc(NetworkMessage&)
 {
 	addGameTask(&Game::playerCloseNpcChannel, player->getID());
@@ -1315,6 +1288,7 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 			break;
 
 		case MSG_CHANNEL:
+		case MSG_CHANNEL_HIGHLIGHT:
 		case MSG_GAMEMASTER_CHANNEL:
 		case MSG_GAMEMASTER_ANONYMOUS:
 			channelId = msg.get<uint16_t>();
@@ -1486,19 +1460,6 @@ void ProtocolGame::parseDebugAssert(NetworkMessage& msg)
 	Logger::getInstance()->iFile(LOGFILE_ASSERTIONS, s.str(), false);
 }
 
-void ProtocolGame::parseViolationWindow(NetworkMessage& msg)
-{
-	/*std::string target = */msg.getString();
-	/*uint8_t reason = */msg.get<char>();
-	/*ViolationAction_t action = (ViolationAction_t)*/msg.get<char>();
-	/*std::string comment = */msg.getString();
-	/*std::string statement = */msg.getString();
-	/*uint32_t statementId = (uint32_t)*/msg.get<uint16_t>();
-	/*bool ipBanishment = */msg.get<char>();
-	/*addGameTask(&Game::playerViolationWindow, player->getID(), target,
-		reason, action, comment, statement, statementId, ipBanishment);*/
-}
-
 void ProtocolGame::parseBugReport(NetworkMessage& msg)
 {
 	std::string comment = msg.getString();
@@ -1553,10 +1514,18 @@ void ProtocolGame::parseQuestInfo(NetworkMessage& msg)
 
 void ProtocolGame::parseViolationReport(NetworkMessage& msg)
 {
-	std::string name = msg.getString();
+	ReportType_t type = (ReportType_t)msg.get<char>();
 	uint8_t reason = msg.get<char>();
-	std::string comment = msg.getString(), translation = msg.getString();
-	addGameTask(&Game::playerReportViolation, player->getID(), reason, name, comment, translation);
+
+	std::string name = msg.getString(), comment = msg.getString(), translation = "";
+	if(type != REPORT_BOT)
+		translation = msg.getString();
+
+	uint32_t statementId = 0;
+	if(type == REPORT_STATEMENT)
+		statementId = msg.get<uint32_t>();
+
+	addGameTask(&Game::playerReportViolation, player->getID(), type, reason, name, comment, translation, statementId);
 }
 
 //********************** Send methods *******************************//
@@ -1779,55 +1748,6 @@ void ProtocolGame::sendChannel(uint16_t channelId, const std::string& channelNam
 	msg->putString(channelName);
 }
 
-void ProtocolGame::sendRuleViolationsChannel(uint16_t channelId)
-{
-	NetworkMessage_ptr msg = getOutputBuffer();
-	if(msg)
-	{
-		TRACK_MESSAGE(msg);
-		msg->put<char>(0xAE);
-		msg->put<uint16_t>(channelId);
-		for(RuleViolationsMap::const_iterator it = g_game.getRuleViolationsBegin(); it != g_game.getRuleViolationsEnd(); ++it)
-		{
-			RuleViolation& rvr = *it->second;
-			if(rvr.isOpen && rvr.reporter)
-				AddCreatureSpeak(msg, rvr.reporter, MSG_RVR_CHANNEL, rvr.text, channelId, NULL, rvr.statement, rvr.time);
-		}
-	}
-}
-
-void ProtocolGame::sendRemoveReport(const std::string& name)
-{
-	NetworkMessage_ptr msg = getOutputBuffer();
-	if(msg)
-	{
-		TRACK_MESSAGE(msg);
-		msg->put<char>(0xAF);
-		msg->putString(name);
-	}
-}
-
-void ProtocolGame::sendRuleViolationCancel(const std::string& name)
-{
-	NetworkMessage_ptr msg = getOutputBuffer();
-	if(msg)
-	{
-		TRACK_MESSAGE(msg);
-		msg->put<char>(0xB0);
-		msg->putString(name);
-	}
-}
-
-void ProtocolGame::sendLockRuleViolation()
-{
-	NetworkMessage_ptr msg = getOutputBuffer();
-	if(msg)
-	{
-		TRACK_MESSAGE(msg);
-		msg->put<char>(0xB1);
-	}
-}
-
 void ProtocolGame::sendIcons(int32_t icons)
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
@@ -2032,14 +1952,14 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, MessageClasses type
 	AddCreatureSpeak(msg, creature, type, text, 0, pos, statementId);
 }
 
-void ProtocolGame::sendCreatureChannelSay(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId, uint32_t _time/* = 0*/)
+void ProtocolGame::sendCreatureChannelSay(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId)
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	TRACK_MESSAGE(msg);
-	AddCreatureSpeak(msg, creature, type, text, channelId, NULL, statementId, _time);
+	AddCreatureSpeak(msg, creature, type, text, channelId, NULL, statementId);
 }
 
 void ProtocolGame::sendStatsMessage(MessageClasses type, const std::string& message,
@@ -2799,7 +2719,7 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage_ptr msg)
 }
 
 void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* creature, MessageClasses type,
-	std::string text, uint16_t channelId, Position* pos, uint32_t statementId, uint32_t _time/* = 0*/)
+	std::string text, uint16_t channelId, Position* pos, uint32_t statementId)
 {
 	if(type > MSG_SPEAK_MONSTER_LAST)
 		return;
@@ -2816,17 +2736,13 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 			case MSG_GAMEMASTER_ANONYMOUS:
 				msg->putString("");
 				break;
-			case MSG_RVR_ANSWER:
-				msg->putString("Gamemaster");
-				break;
 			default:
 				msg->putString(!creature->getHideName() ? creature->getName() : "");
 				break;
 		}
 
 		const Player* speaker = creature->getPlayer();
-		if(speaker && type != MSG_RVR_ANSWER && !speaker->isAccountManager()
-			&& !speaker->hasCustomFlag(PlayerCustomFlag_HideLevel))
+		if(speaker && !speaker->isAccountManager() && !speaker->hasCustomFlag(PlayerCustomFlag_HideLevel))
 			msg->put<uint16_t>(speaker->getPlayerInfo(PLAYERINFO_LEVEL));
 		else
 			msg->put<uint16_t>(0x00);
@@ -2864,12 +2780,6 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 		case MSG_GAMEMASTER_ANONYMOUS:
 			msg->put<uint16_t>(channelId);
 			break;
-
-		case MSG_RVR_CHANNEL:
-		{
-			msg->put<uint32_t>(uint32_t(OTSYS_TIME() / 1000 & 0xFFFFFFFF) - _time);
-			break;
-		}
 
 		default:
 			break;
@@ -3139,4 +3049,26 @@ void ProtocolGame::AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item)
 	msg->put<uint32_t>(uint32_t(it.weight * 100));
 	msg->put<uint32_t>(item.buyPrice);
 	msg->put<uint32_t>(item.sellPrice);
+}
+
+void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
+{
+	uint8_t opcode = msg.get<char>();
+	std::string buffer = msg.getString();
+	addGameTask(&Game::playerExtendedOpcode, player->getID(), opcode, buffer);
+}
+
+void ProtocolGame::sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
+{
+	if(!player || player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX)
+		return;
+
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0x32);
+	msg->put<char>(opcode);
+	msg->putString(buffer);
 }

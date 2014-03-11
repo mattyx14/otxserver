@@ -251,7 +251,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 				OutputMessagePool::getInstance()->send(output);
 			}
 
-			getConnection()->close();
+			disconnect();
 			return false;
 		}
 
@@ -342,7 +342,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 	}
 
-	getConnection()->close();
+	disconnect();
 	if(player->isRemoved())
 		return true;
 
@@ -395,7 +395,7 @@ void ProtocolGame::disconnectClient(uint8_t error, const char* message)
 	output->putString(message);
 
 	OutputMessagePool::getInstance()->send(output);
-	getConnection()->close();
+	disconnect();
 }
 
 void ProtocolGame::onConnect()
@@ -423,15 +423,19 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 #endif
 		g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
-		getConnection()->close();
+		disconnect();
 		return;
 	}
 
 	OperatingSystem_t operatingSystem = (OperatingSystem_t)msg.get<uint16_t>();
 	uint16_t version = msg.get<uint16_t>();
+
+	if(version >= 971)
+		msg.skip(5);
+
 	if(!RSA_decrypt(msg))
 	{
-		getConnection()->close();
+		disconnect();
 		return;
 	}
 

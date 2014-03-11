@@ -548,8 +548,8 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendCreatureTurn(creature, creature->getTile()->getClientIndexOfThing(this, creature));}
 		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos = NULL, uint32_t statementId = 0)
 			{if(client) client->sendCreatureSay(creature, type, text, pos, statementId);}
-		void sendCreatureChannelSay(Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId = 0, uint32_t _time = 0) const
-			{if(client) client->sendCreatureChannelSay(creature, type, text, channelId, statementId, _time);}
+		void sendCreatureChannelSay(Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId = 0) const
+			{if(client) client->sendCreatureChannelSay(creature, type, text, channelId, statementId);}
 		void sendCreatureSquare(const Creature* creature, uint8_t color)
 			{if(client) client->sendCreatureSquare(creature, color);}
 		void sendCreatureChangeOutfit(const Creature* creature, const Outfit_t& outfit)
@@ -563,6 +563,9 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendCreatureEmblem(creature);}
 		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough)
 			{if(client) client->sendCreatureWalkthrough(creature, walkthrough);}
+
+		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
+			{if(client) client->sendExtendedOpcode(opcode, buffer);}
 
 		//container
 		void sendAddContainerItem(const Container* container, const Item* item);
@@ -677,14 +680,6 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendChannelsDialog(channels);}
 		void sendOpenPrivateChannel(const std::string& receiver)
 			{if(client) client->sendOpenPrivateChannel(receiver);}
-		void sendRuleViolationsChannel(uint16_t channelId)
-			{if(client) client->sendRuleViolationsChannel(channelId);}
-		void sendRemoveReport(const std::string& name)
-			{if(client) client->sendRemoveReport(name);}
-		void sendLockRuleViolation()
-			{if(client) client->sendLockRuleViolation();}
-		void sendRuleViolationCancel(const std::string& name)
-			{if(client) client->sendRuleViolationCancel(name);}
 		void sendOutfitWindow()
 			{if(client) client->sendOutfitWindow();}
 		void sendCloseContainer(uint32_t cid)
@@ -695,6 +690,7 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendTutorial(tutorialId);}
 		void sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc)
 			{if(client) client->sendAddMarker(pos, markType, desc);}
+
 		void sendCritical() const;
 		void sendPlayerIcons(Player* player);
 		void sendStats();

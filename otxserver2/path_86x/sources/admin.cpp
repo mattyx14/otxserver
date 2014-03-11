@@ -46,21 +46,21 @@ void ProtocolAdmin::onRecvFirstMessage(NetworkMessage& msg)
 	if(g_config.getString(ConfigManager::ADMIN_PASSWORD).empty())
 	{
 		addLogLine(LOGTYPE_EVENT, "connection attempt on disabled protocol");
-		disconnect();
+		getConnection()->close();
 		return;
 	}
 
 	if(!Admin::getInstance()->allow(getIP()))
 	{
 		addLogLine(LOGTYPE_EVENT, "ip not allowed");
-		disconnect();
+		getConnection()->close();
 		return;
 	}
 
 	if(!Admin::getInstance()->addConnection())
 	{
 		addLogLine(LOGTYPE_EVENT, "cannot add new connection");
-		disconnect();
+		getConnection()->close();
 		return;
 	}
 
@@ -85,7 +85,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 {
 	if(g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
-		disconnect();
+		getConnection()->close();
 		return;
 	}
 
@@ -103,7 +103,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 			{
 				if((time(NULL) - m_startTime) > 30000)
 				{
-					disconnect();
+					getConnection()->close();
 					addLogLine(LOGTYPE_EVENT, "encryption timeout");
 					return;
 				}
@@ -114,7 +114,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 					output->putString("encryption needed");
 					OutputMessagePool::getInstance()->send(output);
 
-					disconnect();
+					getConnection()->close();
 					addLogLine(LOGTYPE_EVENT, "wrong command while ENCRYPTION_NO_SET");
 					return;
 				}
@@ -132,7 +132,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 				if((time(NULL) - m_startTime) > 30000)
 				{
 					//login timeout
-					disconnect();
+					getConnection()->close();
 					addLogLine(LOGTYPE_EVENT, "login timeout");
 					return;
 				}
@@ -143,7 +143,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 					output->putString("too many login tries");
 					OutputMessagePool::getInstance()->send(output);
 
-					disconnect();
+					getConnection()->close();
 					addLogLine(LOGTYPE_EVENT, "too many login tries");
 					return;
 				}
@@ -154,7 +154,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 					output->putString("you are not logged in");
 					OutputMessagePool::getInstance()->send(output);
 
-					disconnect();
+					getConnection()->close();
 					addLogLine(LOGTYPE_EVENT, "wrong command while NO_LOGGED_IN");
 					return;
 				}
@@ -170,7 +170,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 
 		default:
 		{
-			disconnect();
+			getConnection()->close();
 			addLogLine(LOGTYPE_EVENT, "no valid connection state!!!");
 			return;
 		}

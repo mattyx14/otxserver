@@ -1534,20 +1534,6 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	if(party)
 		party->leave(this);
 
-	g_game.cancelRuleViolation(this);
-	if(hasFlag(PlayerFlag_CanAnswerRuleViolations))
-	{
-		PlayerVector closeReportList;
-		for(RuleViolationsMap::const_iterator it = g_game.getRuleViolationsBegin(); it != g_game.getRuleViolationsEnd(); ++it)
-		{
-			if(it->second->gamemaster == this)
-				closeReportList.push_back(it->second->reporter);
-		}
-
-		for(PlayerVector::iterator it = closeReportList.begin(); it != closeReportList.end(); ++it)
-			g_game.closeRuleViolation(*it);
-	}
-
 	g_chat.removeUserFromChannels(this);
 	if(!isGhost())
 		IOLoginData::getInstance()->updateOnlineStatus(guid, false);

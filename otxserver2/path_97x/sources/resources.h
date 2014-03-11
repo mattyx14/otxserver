@@ -79,18 +79,18 @@
 
 // Compatible with 9.70
 #define CLIENT_VERSION_MIN 970
-#define CLIENT_VERSION_MAX 970
+#define CLIENT_VERSION_MAX 971
 #define CLIENT_VERSION_ITEMS 43
-#define CLIENT_VERSION_STRING "Only clients with protocol 9.70 allowed!"
+#define CLIENT_VERSION_STRING "Only clients with protocol 9.70/71 allowed!"
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "4"
-#define PATCH_VERSION "3"
-#define REVISION_VERSION "1424"
-#define SOFTWARE_CODENAME "Cray Claw"
+#define PATCH_VERSION "4"
+#define REVISION_VERSION "r1440"
+#define SOFTWARE_CODENAME "Chronodia"
 #define SOFTWARE_DEVELOPERS "Kaiser, Emma and Kazbin"
-#define SOFTWARE_PROTOCOL "9.70"
+#define SOFTWARE_PROTOCOL "9.71"
 #define FORUM "www.blacktibia.org"
 
 //#define CLIENT_VERSION_DATA

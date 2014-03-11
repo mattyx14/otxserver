@@ -1555,9 +1555,10 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 				case ACTION_SETSPELL:
 				{
-					npcState->spellName = "";
 					if(g_spells->getInstantSpellByName(it->strValue))
 						npcState->spellName = it->strValue;
+					else
+						npcState->spellName = "";
 
 					break;
 				}
@@ -1628,13 +1629,15 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 					const ItemType& iit = Item::items[npcState->itemId];
 					if(iit.id != 0)
 					{
-						uint32_t moneyCount = it->intValue;
+						uint64_t moneyCount = it->intValue;
 						if(it->strValue == "|PRICE|")
 							moneyCount = npcState->price * npcState->amount;
 
-						int32_t subType = -1;
+						int32_t subType;
 						if(iit.hasSubType())
 							subType = npcState->subType;
+						else
+							subType = -1;
 
 						int32_t itemCount = player->__getItemTypeCount(iit.id, subType);
 						if(itemCount >= npcState->amount)
@@ -1655,11 +1658,13 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 						if(it->strValue == "|PRICE|")
 							moneyCount = npcState->price * npcState->amount;
 
-						int32_t subType = -1;
+						int32_t subType;
 						if(iit.hasSubType())
 							subType = npcState->subType;
+						else
+							subType = -1;
 
-						if(g_game.getMoney(player) >= moneyCount)
+						if(g_game.removeMoney(player, moneyCount))
 						{
 							int32_t amount = npcState->amount;
 							if(iit.stackable)
@@ -1694,8 +1699,6 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 							if(it->strValue == "|PRICE|")
 								moneyCount = npcState->price * amount;
-
-							g_game.removeMoney(player, moneyCount);
 						}
 					}
 					break;
@@ -1710,9 +1713,11 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 					const ItemType& iit = Item::items[npcState->itemId];
 					if(iit.id != 0)
 					{
-						int32_t subType = -1;
+						int32_t subType;
 						if(iit.hasSubType())
 							subType = npcState->subType;
+						else
+							subType = -1;
 
 						int32_t itemCount = player->__getItemTypeCount(itemId, subType);
 						if(itemCount >= npcState->amount)
@@ -1730,9 +1735,11 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 					const ItemType& iit = Item::items[itemId];
 					if(iit.id != 0)
 					{
-						int32_t subType = -1;
+						int32_t subType;
 						if(iit.hasSubType())
 							subType = npcState->subType;
+						else
+							subType = -1;
 
 						for(int32_t i = 0; i < npcState->amount; ++i)
 						{
@@ -1746,7 +1753,7 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 				case ACTION_TAKEMONEY:
 				{
-					uint32_t moneyCount = 0;
+					uint64_t moneyCount;
 					if(it->strValue == "|PRICE|")
 						moneyCount = npcState->price * npcState->amount;
 					else
@@ -1758,7 +1765,7 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 				case ACTION_GIVEMONEY:
 				{
-					uint32_t moneyCount = 0;
+					uint64_t moneyCount;
 					if(it->strValue == "|PRICE|")
 						moneyCount = npcState->price * npcState->amount;
 					else
@@ -2086,7 +2093,7 @@ void Npc::setCreatureFocus(Creature* creature)
 
 	float tan = 10;
 	if(dx != 0)
-		tan = dy / dx;
+		tan = (float)dy / dx;
 
 	Direction dir = SOUTH;
 	if(std::abs(tan) < 1)

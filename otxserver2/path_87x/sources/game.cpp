@@ -3979,10 +3979,8 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return true;
 
 	uint32_t statementId = 0;
-	#ifdef __ENABLE_STATEMENTS__
 	if(g_config.getBool(ConfigManager::SAVE_STATEMENT))
 		IOLoginData::getInstance()->playerStatement(player, channelId, text, statementId);
-	#endif
 
 	switch(type)
 	{
@@ -6215,11 +6213,11 @@ void Game::shutdown()
 	Raids::getInstance()->clear();
 	std::clog << " server... ";
 	cleanup();
-	std::clog << "done." << std::endl;
+	std::clog << "(done)." << std::endl;
 	if(services)
 		services->stop();
 
-#if defined(WINDOWS)
+#if defined(WINDOWS) && !defined(_CONSOLE)
 	exit(1);
 #endif
 }
@@ -6262,4 +6260,15 @@ void Game::showHotkeyUseMessage(Player* player, Item* item)
 		stream << "Using one of " << count << " " << it.pluralName.c_str() << "...";
 
 	player->sendTextMessage(MSG_HOTKEY_USE, stream.str().c_str());
+}
+
+void Game::playerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return;
+
+	CreatureEventList extendedOpcodeEvents = player->getCreatureEvents(CREATURE_EVENT_EXTENDED_OPCODE);
+	for(CreatureEventList::iterator it = extendedOpcodeEvents.begin(); it != extendedOpcodeEvents.end(); ++it)
+		(*it)->executeExtendedOpcode(player, opcode, buffer);
 }

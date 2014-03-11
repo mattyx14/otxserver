@@ -534,6 +534,8 @@ class LuaInterface
 		static int32_t luaGetPlayerGuildNick(lua_State* L);
 		static int32_t luaGetPlayerSex(lua_State* L);
 		static int32_t luaGetPlayerGUID(lua_State* L);
+		static int32_t luaGetPlayerOperatingSystem(lua_State* L);
+		static int32_t luaGetPlayerClientVersion(lua_State* L);
 		static int32_t luaGetPlayerFlagValue(lua_State* L);
 		static int32_t luaGetPlayerCustomFlagValue(lua_State* L);
 		static int32_t luaHasCreatureCondition(lua_State* L);
@@ -691,6 +693,7 @@ class LuaInterface
 		static int32_t luaGetConfigValue(lua_State* L);
 		static int32_t luaGetModList(lua_State* L);
 		static int32_t luaDoPlayerSetWalkthrough(lua_State* L);
+		static int32_t luaDoPlayerSendExtendedOpcode(lua_State* L);
 
 		static int32_t luaL_errors(lua_State* L);
 		static int32_t luaL_loadmodlib(lua_State* L);
@@ -794,7 +797,9 @@ class LuaInterface
 			PlayerInfoLastLoad,
 			PlayerInfoLastLogin,
 			PlayerInfoAccountManager,
-			PlayerInfoTradeState
+			PlayerInfoTradeState,
+			PlayerInfoOperatingSystem,
+			PlayerInfoClientVersion
 		};
 		static int32_t internalGetPlayerInfo(lua_State* L, PlayerInfo_t info);
 

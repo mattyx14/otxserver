@@ -192,9 +192,9 @@ class ConfigManager
 			ROOK_LEVELTO,
 			ROOK_TOLEVEL,
 			SERVICE_THREADS,
+			GUI_PREMIUM_DAYS,
 			FOLLOW_EXHAUST,
 			PACKETS_PER_SECOND,
-			GUI_PREMIUM_DAYS,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 

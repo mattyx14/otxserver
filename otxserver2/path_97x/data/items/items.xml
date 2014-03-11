@@ -25972,26 +25972,26 @@
 		<attribute key="description" value="This sword was forged with the enthusiasm and dreams of the Rookgaardians. Awarded by Rookie.pl."/>
 		<attribute key="weight" value="5000"/>
 	</item>
-	<item id="20001" name="water"/>
-	<item id="20002" name="blood"/>
-	<item id="20003" name="beer"/>
-	<item id="20004" name="slime"/>
-	<item id="20005" name="lemonade"/>
-	<item id="20006" name="milk"/>
-	<item id="20007" name="manafluid"/>
-	<item id="20010" name="lifefluid"/>
-	<item id="20011" name="oil"/>
-	<item id="20013" name="urine"/>
-	<item id="20014" name="coconut milk"/>
-	<item id="20015" name="wine"/>
-	<item id="20019" name="mud"/>
-	<item id="20021" name="fruit juice"/>
-	<item id="20026" name="lava"/>
-	<item id="20027" name="rum"/>
-	<item id="20028" name="swamp"/>
-	<item id="20035" name="tea"/>
-	<item id="20041" name="antidote potion"/>
-	<item id="20042" name="health potion"/>
-	<item id="20043" name="spirit potion"/>
-	<item id="20047" name="mana potion"/>
+	<item id="30001" name="water"/>
+	<item id="30002" name="blood"/>
+	<item id="30003" name="beer"/>
+	<item id="30004" name="slime"/>
+	<item id="30005" name="lemonade"/>
+	<item id="30006" name="milk"/>
+	<item id="30007" name="manafluid"/>
+	<item id="30010" name="lifefluid"/>
+	<item id="30011" name="oil"/>
+	<item id="30013" name="urine"/>
+	<item id="30014" name="coconut milk"/>
+	<item id="30015" name="wine"/>
+	<item id="30019" name="mud"/>
+	<item id="30021" name="fruit juice"/>
+	<item id="30026" name="lava"/>
+	<item id="30027" name="rum"/>
+	<item id="30028" name="swamp"/>
+	<item id="30035" name="tea"/>
+	<item id="30041" name="antidote potion"/>
+	<item id="30042" name="health potion"/>
+	<item id="30043" name="spirit potion"/>
+	<item id="30047" name="mana potion"/>
 </items>

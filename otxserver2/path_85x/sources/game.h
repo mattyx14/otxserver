@@ -116,27 +116,12 @@ enum SaveFlag_t
 	SAVE_STATE = 1 << 3
 };
 
-struct RuleViolation
-{
-	RuleViolation(Player* _reporter, const std::string& _text, uint32_t _time, uint32_t _statement):
-		reporter(_reporter), gamemaster(NULL), text(_text), time(_time), statement(_statement), isOpen(true) {}
-
-	Player *reporter, *gamemaster;
-	std::string text;
-	uint32_t time, statement;
-	bool isOpen;
-
-	private:
-		RuleViolation(const RuleViolation&);
-};
-
 struct RefreshBlock_t
 {
 	TileItemVector list;
 	uint64_t lastRefresh;
 };
 
-typedef std::map<uint32_t, shared_ptr<RuleViolation> > RuleViolationsMap;
 typedef std::map<Tile*, RefreshBlock_t> RefreshTiles;
 typedef std::list<Position> Trash;
 typedef std::map<int32_t, float> StageList;
@@ -464,8 +449,8 @@ class Game
 		//Implementation of player invoked events
 		bool playerBroadcastMessage(Player* player, MessageClasses type, const std::string& text, uint32_t statementId);
 		bool playerReportBug(uint32_t playerId, std::string comment);
-		bool playerReportViolation(uint32_t playerId, uint8_t reason, const std::string& name,
-			const std::string& comment, const std::string& translation);
+		bool playerReportViolation(uint32_t playerId, ReportType_t type, uint8_t reason, const std::string& name,
+			const std::string& comment, const std::string& translation, uint32_t statementId);
 		bool playerMoveThing(uint32_t playerId, const Position& fromPos, uint16_t spriteId,
 			int16_t fromStackpos, const Position& toPos, uint8_t count);
 		bool playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
@@ -481,9 +466,6 @@ class Game
 		bool playerCloseChannel(uint32_t playerId, uint16_t channelId);
 		bool playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
 		bool playerCloseNpcChannel(uint32_t playerId);
-		bool playerProcessRuleViolation(uint32_t playerId, const std::string& name);
-		bool playerCloseRuleViolation(uint32_t playerId, const std::string& name);
-		bool playerCancelRuleViolation(uint32_t playerId);
 		bool playerReceivePing(uint32_t playerId);
 		bool playerAutoWalk(uint32_t playerId, std::list<Direction>& listDir);
 		bool playerStopAutoWalk(uint32_t playerId);
@@ -531,6 +513,7 @@ class Game
 		bool playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId);
 		bool playerLeaveParty(uint32_t playerId, bool forced = false);
 		bool playerSharePartyExperience(uint32_t playerId, bool activate);
+		void playerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 		void kickPlayer(uint32_t playerId, bool displayEffect);
 		bool broadcastMessage(const std::string& text, MessageClasses type);
@@ -621,11 +604,6 @@ class Game
 		void addDistanceEffect(const SpectatorVec& list, const Position& fromPos, const Position& toPos, uint8_t effect);
 		void addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect);
 
-		const RuleViolationsMap::const_iterator getRuleViolationsBegin() const {return ruleViolations.begin();}
-		const RuleViolationsMap::const_iterator getRuleViolationsEnd() const {return ruleViolations.end();}
-		bool cancelRuleViolation(Player* player);
-		bool closeRuleViolation(Player* player);
-
 		void addStatsMessage(const SpectatorVec& list, MessageClasses mClass, const std::string& message,
 			const Position& pos, MessageDetails* details = NULL);
 
@@ -653,8 +631,6 @@ class Game
 		bool playerSpeakTo(Player* player, MessageClasses type, const std::string& receiver, const std::string& text, uint32_t statementId);
 		bool playerSpeakToChannel(Player* player, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId);
 		bool playerSpeakToNpc(Player* player, const std::string& text);
-		bool playerReportRuleViolation(Player* player, const std::string& text, uint32_t statementId);
-		bool playerContinueReport(Player* player, const std::string& text, uint32_t statementId);
 
 		struct GameEvent
 		{
@@ -666,7 +642,6 @@ class Game
 		std::vector<Thing*> releaseThings;
 		std::map<Item*, uint32_t> tradeItems;
 		AutoList<Creature> autoList;
-		RuleViolationsMap ruleViolations;
 
 		size_t checkCreatureLastIndex;
 		std::vector<Creature*> checkCreatureVectors[EVENT_CREATURECOUNT];

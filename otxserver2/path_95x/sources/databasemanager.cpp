@@ -1417,7 +1417,8 @@ uint32_t DatabaseManager::updateDatabase()
 					break;
 				}
 
-				default: break;
+				default:
+					break;
 			}
 
 			registerDatabaseConfig("db_version", 35);
