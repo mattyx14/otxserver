@@ -70,6 +70,8 @@
 	#define ID_MENU_OT_SERVERLIST 234
 	#define ID_MENU_BUG_FEATURE 235
 	#define ID_MENU_SERVER_SOURCE 236
+	#define ID_MENU_OTSERV2 237
+	#define ID_MENU_OTSERV3 238
 
 	#define ID_MENU_SERVER_BROADCAST 240
 	#define ID_MENU_ADD_PREMIUM 241
@@ -84,13 +86,13 @@
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "5"
-#define PATCH_VERSION "2"
-#define REVISION_VERSION "1557"
-#define SOFTWARE_CODENAME "Necron"
-#define SOFTWARE_DEVELOPERS "Kaiser, Emma, Comedinhasss and Kazbin"
+#define MINOR_VERSION "6"
+#define PATCH_VERSION "0"
+#define REVISION_VERSION ""
+#define SOFTWARE_CODENAME "Alissow"
+#define SOFTWARE_DEVELOPERS "Kaiser, Comedinhasss, Emma, Kazbin and The Forgotten Server Developers"
 #define SOFTWARE_PROTOCOL "8.60"
-#define FORUM "www.blacktibia.org"
+#define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0

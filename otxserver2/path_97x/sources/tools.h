@@ -170,4 +170,8 @@ std::string getWeaponName(WeaponType_t weaponType);
 bool fileExists(const char* filename);
 std::string getFilePath(FileType_t type, std::string name = "");
 std::string getFirstLine(const std::string& str);
+
+extern uint8_t serverFluidToClient(uint8_t serverFluid);
+extern uint8_t clientFluidToServer(uint8_t clientFluid);
+
 #endif

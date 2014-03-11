@@ -352,6 +352,12 @@ bool ConfigManager::load()
 	m_confNumber[PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
+	m_confString[ADVERTISING_BLOCK] = getGlobalString("advertisingBlock", "");
+	m_confNumber[ANONYMOUS_CHANNEL] = getGlobalNumber("gmAnonymousInChannel", 0);
+	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);
+	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", 854);
+	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", 857);
+	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "");
 
 	m_loaded = true;
 	return true;

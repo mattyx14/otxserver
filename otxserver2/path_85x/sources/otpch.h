@@ -43,3 +43,4 @@
 //GUI
 #include "gui.h"
 #include "inputbox.h"
+#include "playerbox.h"

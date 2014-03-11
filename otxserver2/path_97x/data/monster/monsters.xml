@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monsters>
-	<!-- Amphibians -->
-	<monster name="Salamander" file="Amphibians/salamander.xml"/>
-
 	<!-- Amazons -->
 	<monster name="Amazon" file="Amazons/amazon.xml"/>
 	<monster name="Valkyrie" file="Amazons/valkyrie.xml"/>
@@ -102,8 +99,10 @@
 	<monster name="Demon Parrot" file="Birds/demon parrot.xml"/>
 	<monster name="Dire Penguin" file="Birds/dire penguin.xml"/>
 	<monster name="Flamingo" file="Birds/flamingo.xml"/>
+	<monster name="Marsh Stalker" file="Birds/marsh stalker.xml"/>
 	<monster name="Parrot" file="Birds/parrot.xml"/>
 	<monster name="Penguin" file="Birds/penguin.xml"/>
+	<monster name="Pigeon" file="Birds/pigeon.xml"/>
 	<monster name="Seagull" file="Birds/seagull.xml"/>
 	<monster name="Terror Bird" file="Birds/terror bird.xml"/>
 
@@ -252,6 +251,12 @@
 	<!-- Cnidarians -->
 	<monster name="Jellyfish" file="Cnidarians/jellyfish.xml"/>
 
+	<!-- Corym -->
+	<monster name="Corym Charlatan" file="Corym/corym charlatan.xml"/>
+	<monster name="Corym Skirmisher" file="Corym/corym skirmisher.xml"/>
+	<monster name="Corym Vanguard" file="Corym/corym vanguard.xml"/>
+	<monster name="Little Corym Charlatan" file="Corym/little corym charlatan.xml"/>
+
 	<!-- Crustaceans -->
 	<monster name="Blood Crab" file="Crustaceans/blood crab.xml"/>
 	<monster name="Blood Crab Underwater" file="Crustaceans/blood crab underwater.xml"/>
@@ -327,8 +332,8 @@
 	<monster name="Dwarf Soldier" file="Dwarves/dwarf soldier.xml"/>
 	<monster name="Dwarf" file="Dwarves/dwarf.xml"/>
 	<monster name="Enslaved Dwarf" file="Dwarves/enslaved dwarf.xml"/>
-	<monster name="Lost Berserker" file="Dwarves/lost berserker.xml"/>
 	<monster name="Lost Basher" file="Dwarves/lost basher.xml"/>
+	<monster name="Lost Berserker" file="Dwarves/lost berserker.xml"/>
 	<monster name="Lost Husher" file="Dwarves/lost husher.xml"/>
 	<monster name="Lost Thrower" file="Dwarves/lost thrower.xml"/>
 
@@ -408,10 +413,6 @@
 	<monster name="Silver Rabbit" file="Glires/silver rabbit.xml"/>
 	<monster name="Squirrel" file="Glires/squirrel.xml"/>
 	<monster name="Killer Rabbit" file="Glires/killer rabbit.xml"/>
-	<monster name="Corym Charlatan" file="Glires/corym charlatan.xml"/>
-	<monster name="Corym Skirmisher" file="Glires/corym skirmisher.xml"/>
-	<monster name="Corym Vanguard" file="Glires/corym vanguard.xml"/>
-	<monster name="Little Corym Charlatan" file="Glires/little corym charlatan.xml"/>
 
 	<!-- Geo-Elementals -->
 	<monster name="Armadile" file="Geo-Elementals/armadile.xml"/>
@@ -469,6 +470,7 @@
 	<monster name="Brimstone Bug" file="Insects/brimstone bug.xml"/>
 	<monster name="Bug" file="Insects/bug.xml"/>
 	<monster name="Cockroach" file="Insects/cockroach.xml"/>
+	<monster name="Emerald Damselfly" file="Insects/emerald damselfly.xml"/>
 	<monster name="Fleshslicer" file="Insects/fleshslicer.xml"/>
 	<monster name="Hive Overseer" file="Insects/hive overseer.xml"/>
 	<monster name="Insect Swarm" file="Insects/insect swarm.xml"/>
@@ -493,7 +495,6 @@
 	<monster name="Wasp" file="Insects/wasp.xml"/>
 	<monster name="Yellow Butterfly" file="Insects/yellow butterfly.xml"/>
 	<monster name="Waspoid" file="Insects/waspoid.xml"/>
-	<monster name="Emerald Damselfly" file="Insects/emerald damselfly.xml"/>
 
 	<!-- Lizards -->
 	<monster name="Battlemaster Zunzu" file="Lizards/battlemaster zunzu.xml"/>  
@@ -527,7 +528,6 @@
 		<monster name="Hyaena" file="Misc/Misc Mammals/hyaena.xml"/>
 		<monster name="Skunk" file="Misc/Misc Mammals/skunk.xml"/>
 		<monster name="Water Buffalo" file="Misc/Misc Mammals/water buffalo.xml"/>
-
 		<!-- Misc Mounts -->
 		<monster name="Donkey" file="Misc/Misc Mounts/donkey.xml"/>
 		<monster name="Incredibly Old Witch" file="Misc/Misc Mounts/Incredibly Old Witch.xml"/>
@@ -539,11 +539,6 @@
 		<monster name="Killer Caiman" file="Misc/Misc Reptiles/killer caiman.xml"/>
 		<monster name="Thornback Tortoise" file="Misc/Misc Reptiles/thornback tortoise.xml"/>
 		<monster name="Tortoise" file="Misc/Misc Reptiles/tortoise.xml"/>
-
-		<!-- Misc Other -->
-		<monster name="Drillworm" file="Misc/Misc Others/drillworm.xml"/>
-		<monster name="Marsh Stalker" file="Misc/Misc Others/marsh stalker.xml"/>
-		<monster name="Pigeon" file="Misc/Misc Others/pigeon.xml"/>
 
 	<!-- Mollusks -->
 	<monster name="Calamary" file="Mollusks/calamary.xml"/>
@@ -580,6 +575,8 @@
 	<monster name="Orc Marauder" file="Orcs/orc marauder.xml"/>
 
 	<!-- Outlaws -->
+	<monster name="Adventurer" file="Outlaws/adventurer.xml"/>
+	<monster name="Angry Adventurer" file="Outlaws/angry adventurer.xml"/>
 	<monster name="Asassin" file="Outlaws/assassin.xml"/>
 	<monster name="Assassin" file="Outlaws/assassin.xml"/>
 	<monster name="Bandit" file="Outlaws/bandit.xml"/>
@@ -596,8 +593,6 @@
 	<monster name="Stalker" file="Outlaws/stalker.xml"/>
 	<monster name="Wild Warrior" file="Outlaws/wild warrior.xml"/>
 	<monster name="Feverish Citizen" file="Outlaws/feverish citizen.xml"/>
-	<monster name="Adventurer" file="Outlaws/adventurer.xml"/>
-	<monster name="Angry Adventurer" file="Outlaws/angry adventurer.xml"/>
 
 	<!-- Pharaohs -->
 	<monster name="Ashmunrah" file="Pharaohs/ashmunrah.xml"/>
@@ -638,6 +633,9 @@
 	<monster name="Quara Pincher Scout" file="Quaras/quara pincher scout.xml"/>
 	<monster name="Quara Predator" file="Quaras/quara predator.xml"/>
 	<monster name="Quara Predator Scout" file="Quaras/quara predator scout.xml"/>
+
+	<!-- Salamanders -->
+	<monster name="Salamander" file="Salamanders/salamander.xml"/>
 
 	<!-- Serpents -->
 	<monster name="Cobra" file="Serpents/cobra.xml"/>

@@ -166,6 +166,16 @@
 
 		-- Others
 		enableLootBagDisplay = false
+		advertisingBlock = "5"
+		gmAnonymousInChanel = 0
+
+		-- Advanced Version
+		-- Note: If you use another protocol than the one we set as you will have functional failures.
+		-- Supported (860) = 8.60
+		manualVersionConfig = false
+		versionMin = 860
+		versionMax = 860
+		versionMsg = "Only clients with protocol 8.6x allowed!"
 
 	-- Connection config
 	loginTries = 20

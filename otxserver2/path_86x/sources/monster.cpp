@@ -967,7 +967,7 @@ void Monster::pushCreatures(Tile* tile)
 
 bool Monster::getNextStep(Direction& dir, uint32_t& flags)
 {
-	if(isIdle || getHealth() <= 0)
+	if(isIdle || getHealth() <= 0 || cannotMove)
 	{
 		//we dont have anyone watching might aswell stop walking
 		eventWalk = 0;
@@ -1121,9 +1121,6 @@ bool Monster::isInSpawnRange(const Position& toPos)
 
 bool Monster::canWalkTo(Position pos, Direction dir)
 {
-	if(cannotMove)
-		return false;
-
 	switch(dir)
 	{
 		case NORTH:

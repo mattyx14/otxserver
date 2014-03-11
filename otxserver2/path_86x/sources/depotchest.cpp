@@ -61,7 +61,7 @@ ReturnValue DepotChest::__queryAdd(int32_t index, const Thing* thing, uint32_t c
 	return Container::__queryAdd(index, thing, count, flags, actor);
 }
 
-void DepotChest::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t /*link = LINK_OWNER*/)
+void DepotChest::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t /*link LINK_OWNER*/)
 {
 	if(getParent())
 		getParent()->postAddNotification(actor, thing, oldParent, index, LINK_PARENT);

@@ -38,6 +38,7 @@
 #include "game.h"
 #include "chat.h"
 #include "textlogger.h"
+#include "outputmessage.h"
 
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"
@@ -1589,10 +1590,13 @@ bool Player::canShopItem(uint16_t itemId, uint8_t subType, ShopEvent_t event)
 			return true;
 
 		const ItemType& it = Item::items[id];
-		if(it.isFluidContainer() || it.isSplash() || it.isRune())
-			return (sit->subType % 8) == subType;
-
-		return true;
+		if(it.isFluidContainer() || it.isSplash())
+		{
+			if(sit->subType == subType)
+				return true;
+		}
+		else
+			return true;
 	}
 
 	return false;

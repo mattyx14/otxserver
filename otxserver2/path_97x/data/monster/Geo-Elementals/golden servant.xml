@@ -15,7 +15,7 @@
 		<flag canpushcreatures="1"/>
 		<flag targetdistance="1"/>
 		<flag staticattack="90"/>
-		<flag runonhealth="0"/>
+		<flag runonhealth="50"/>
 	</flags>
 	<attacks>
       <attack name="melee" interval="2000" min="-20" max="-100"/>
@@ -30,30 +30,32 @@
 		</attack>
 	</attacks>
 	<elements>
-		<element earthPercent="-80"/>
-		<element holyPercent="100"/>
-		<element firePercent="-10"/>
-		<element energyPercent="100"/>
-		<element physicalPercent="100"/>
-		<element icePercent="5"/>
-		<element deathPercent="5"/>
+		<element earthPercent="80"/>
+		<element firePercent="10"/>
+		<element icePercent="-5"/>
+		<element deathPercent="-5"/>
 	</elements>
 	<immunities>
 		<immunity invisible="1"/>
 		<immunity paralyze="1"/>
 	</immunities>
 	<voices interval="2500" chance="10">
-		<voice sentence="Error. LOAD 'PROGRAM"/>
-		<voice sentence="8,1"/>
+		<voice sentence="Error. LOAD 'PROGRAM',8,1"/>
 		<voice sentence="Remain. Obedient."/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="70" chance="34000"/><!-- gold coin -->
-		<item id="2148" countmax="61" chance="34000"/><!-- gold coin -->
-		<item id="9690" countmax="2" chance="500"/><!-- gear wheel -->
-		<item id="9809" chance="4650"/><!-- rusty armor -->
-		<item id="7591" chance="1900"/><!-- great health potion -->
-		<item id="7452" chance="1500"/><!-- spiked squelcher -->
-		<item id="7590" chance="1500"/><!-- great mana potion -->
+		<item id="2148" countmax="100" chance="50000"/><!-- gold coin -->
+		<item id="2148" countmax="40" chance="50000"/><!-- gold coin -->
+		<item id="7618" chance="4761"/><!-- health potion -->
+		<item id="7620" chance="4761"/><!-- mana potion -->
+		<item id="2381" chance="2941"/><!-- halberd -->
+		<item id="2796" chance="1428"/><!-- green mushroom -->
+		<item id="9690" chance="925"/><!-- gear wheel -->
+		<item id="8900" chance="505"/><!-- spellbook of enlightenment -->
+		<item id="2165" chance="448"/><!-- stealth ring -->
+		<item id="13758" chance="338"/><!-- slime mould -->
+		<item id="13938" chance="36"/><!-- golden can of oil -->
+		<item id="2466" chance="15"/><!-- golden armor -->
+		<item id="2179" chance="3"/><!-- gold ring -->
 	</loot>
 </monster>

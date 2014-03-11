@@ -617,7 +617,7 @@ class Player : public Creature, public Cylinder
 		//container
 		void sendAddContainerItem(const Container* container, const Item* item);
 		void sendUpdateContainerItem(const Container* container, uint8_t slot, const Item* oldItem, const Item* newItem);
-		void sendRemoveContainerItem(const Container* container, uint8_t slot, const Item* item);
+		void sendRemoveContainerItem(const Container* container, uint8_t slot, const Item* lastItem);
 		void sendContainer(uint32_t cid, const Container* container, bool hasParent)
 			{if(client) client->sendContainer(cid, container, hasParent);}
 

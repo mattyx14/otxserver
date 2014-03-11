@@ -1769,3 +1769,23 @@ std::string getFirstLine(const std::string& str)
 	}
 	return firstLine;
 }
+
+uint8_t serverFluidToClient(uint8_t serverFluid)
+{
+	uint8_t size = sizeof(clientToServerFluidMap) / sizeof(int8_t);
+	for(uint8_t i = 0; i < size; ++i)
+	{
+		if(clientToServerFluidMap[i] == serverFluid)
+			return i;
+	}
+	return 0;
+}
+
+uint8_t clientFluidToServer(uint8_t clientFluid)
+{
+	uint8_t size = sizeof(clientToServerFluidMap) / sizeof(int8_t);
+	if(clientFluid >= size)
+		return 0;
+
+	return clientToServerFluidMap[clientFluid];
+}

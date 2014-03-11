@@ -166,6 +166,17 @@
 
 		-- Others
 		enableLootBagDisplay = false
+		advertisingBlock = "5"
+		gmAnonymousInChanel = 0
+
+		-- Advanced Version
+		-- Note: If you use another protocol than the one we set as you will have functional failures.
+		-- Supported (854) = 8.54
+		-- Supported (857) = 8.57
+		manualVersionConfig = false
+		versionMin = 854
+		versionMax = 857
+		versionMsg = "Only clients with protocol 8.5x allowed!"
 
 	-- Connection config
 	loginTries = 20

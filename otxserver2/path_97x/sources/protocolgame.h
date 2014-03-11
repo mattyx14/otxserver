@@ -144,6 +144,9 @@ class ProtocolGame : public Protocol
 		void parseLeaveParty(NetworkMessage& msg);
 		void parseSharePartyExperience(NetworkMessage& msg);
 
+		void parseBrowseField(NetworkMessage& msg);
+		void parseSeekInContainer(NetworkMessage& msg);
+
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
 		void parseLookInTrade(NetworkMessage& msg);
@@ -267,7 +270,7 @@ class ProtocolGame : public Protocol
 		//containers
 		void sendAddContainerItem(uint8_t cid, const Item* item);
 		void sendUpdateContainerItem(uint8_t cid, uint8_t slot, const Item* item);
-		void sendRemoveContainerItem(uint8_t cid, uint8_t slot);
+		void sendRemoveContainerItem(uint8_t cid, uint8_t slot, const Item* lastItem);
 
 		void sendContainer(uint32_t cid, const Container* container, bool hasParent);
 		void sendCloseContainer(uint32_t cid);
@@ -320,7 +323,7 @@ class ProtocolGame : public Protocol
 		//container
 		void AddContainerItem(NetworkMessage_ptr msg, uint8_t cid, const Item* item);
 		void UpdateContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot, const Item* item);
-		void RemoveContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot);
+		void RemoveContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot, const Item* lastItem);
 
 		//inventory
 		void AddInventoryItem(NetworkMessage_ptr msg, slots_t slot, const Item* item);

@@ -458,10 +458,19 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	std::string name = msg.getString(), character = msg.getString(), password = msg.getString();
 
 	msg.skip(6);
-	if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
-		disconnectClient(0x14, CLIENT_VERSION_STRING);
-		return;
+		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+		{
+			disconnectClient(0x14, CLIENT_VERSION_STRING);
+			return;
+		}
+	else
+		if(version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX))
+		{
+			disconnectClient(0x14, g_config.getString(ConfigManager::VERSION_MSG).c_str());
+			return;
+		}
 	}
 
 	if(name.empty())
@@ -840,6 +849,14 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 
 			case 0xCA: //client request to resend the container (happens when you store more than container maxsize)
 				parseUpdateContainer(msg);
+				break;
+
+			case 0xCB:
+				parseBrowseField(msg);
+				break;
+
+			case 0xCC:
+				parseSeekInContainer(msg);
 				break;
 
 			case 0xD2: // request outfit
@@ -1535,7 +1552,7 @@ void ProtocolGame::parseEditVip(NetworkMessage& msg)
 
 	if(description.size() > 128)
 		return;
-	if(icon < (uint32_t)VIP_ICON_FIRST || icon > (uint32_t)VIP_ICON_LAST)
+	if(icon >= (uint32_t)VIP_ICON_FIRST && icon <= (uint32_t)VIP_ICON_LAST)
 		return;
 
 	addGameTask(&Game::playerRequestEditVip, player->getID(), guid, description, icon, notify);
@@ -1692,6 +1709,19 @@ void ProtocolGame::sendOpenPrivateChannel(const std::string& receiver)
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0xAD);
 	msg->putString(receiver);
+}
+
+void ProtocolGame::parseBrowseField(NetworkMessage& msg)
+{
+	//const Position& pos = msg->putPosition();
+	// addGameTask(&Game::playerBrowseField, player->getID(), pos);
+}
+
+void ProtocolGame::parseSeekInContainer(NetworkMessage& msg)
+{
+	//uint8_t containerId = msg->put<char>();
+	//uint16_t index = msg.get<uint16_t>();
+	// addGameTask(&Game::playerSeekInContainer, player->getID(), containerId, index);
 }
 
 void ProtocolGame::sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent)
@@ -1974,10 +2004,24 @@ void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool 
 	msg->put<char>(container->capacity());
 
 	msg->put<char>(hasParent ? 0x01 : 0x00);
-	msg->put<char>(std::min(container->size(), 255U));
 
-	ItemList::const_iterator cit = container->getItems();
-	for(uint32_t i = 0; cit != container->getEnd() && i < 255; ++cit, ++i)
+	uint32_t maxItemsToSend;
+	if(player->getClientVersion() > 975)
+	{
+		msg->put<char>(0x01); // Drag and drop
+		msg->put<char>(0x00); // Pagination
+
+		msg->put<uint16_t>(container->size()); // Total Objects
+		msg->put<uint16_t>(0x00); // Index of First Object
+
+		maxItemsToSend = container->capacity();
+	}
+	else
+		maxItemsToSend = 0xFF;
+
+	msg->put<char>(std::min<uint32_t>(maxItemsToSend, container->size()));
+	uint32_t i = 0;
+	for(ItemList::const_iterator cit = container->getItems(), end = container->getEnd(); i < maxItemsToSend && cit != end; ++cit, ++i)
 		msg->putItem(*cit);
 }
 
@@ -2097,6 +2141,7 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 
 	std::map<uint16_t, uint32_t> depotItems;
 	std::list<Container*> containerList;
+
 	containerList.push_back(depotChest);
 	containerList.push_back(player->getInbox());
 	do
@@ -3069,14 +3114,14 @@ void ProtocolGame::sendUpdateContainerItem(uint8_t cid, uint8_t slot, const Item
 	UpdateContainerItem(msg, cid, slot, item);
 }
 
-void ProtocolGame::sendRemoveContainerItem(uint8_t cid, uint8_t slot)
+void ProtocolGame::sendRemoveContainerItem(uint8_t cid, uint8_t slot, const Item* lastItem)
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	TRACK_MESSAGE(msg);
-	RemoveContainerItem(msg, cid, slot);
+	RemoveContainerItem(msg, cid, slot, lastItem);
 }
 
 void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t maxLen, bool canWrite)
@@ -3776,6 +3821,10 @@ void ProtocolGame::AddContainerItem(NetworkMessage_ptr msg, uint8_t cid, const I
 {
 	msg->put<char>(0x70);
 	msg->put<char>(cid);
+
+	if(player->getClientVersion() > 975)
+		msg->put<uint16_t>(0x00); // slot
+
 	msg->putItem(item);
 }
 
@@ -3783,15 +3832,30 @@ void ProtocolGame::UpdateContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint
 {
 	msg->put<char>(0x71);
 	msg->put<char>(cid);
-	msg->put<char>(slot);
+
+	if(player->getClientVersion() > 975)
+		msg->put<uint16_t>(slot);
+	else
+		msg->put<char>(slot);
+
 	msg->putItem(item);
 }
 
-void ProtocolGame::RemoveContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot)
+void ProtocolGame::RemoveContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot, const Item* lastItem)
 {
 	msg->put<char>(0x72);
 	msg->put<char>(cid);
-	msg->put<char>(slot);
+
+	if(player->getClientVersion() > 975)
+	{
+		msg->put<uint16_t>(slot);
+		if(lastItem)
+			msg->putItem(lastItem);
+		else
+			msg->put<uint16_t>(0x00);
+	}
+	else
+		msg->put<char>(slot);
 }
 
 void ProtocolGame::sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel)
@@ -3815,7 +3879,7 @@ void ProtocolGame::AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item)
 	const ItemType& it = Item::items[item.itemId];
 	msg->put<uint16_t>(it.clientId);
 	if(it.isSplash() || it.isFluidContainer())
-		msg->put<char>(fluidMap[item.subType % 8]);
+		msg->put<char>(serverFluidToClient(item.subType));
 	else if(it.stackable || it.charges)
 		msg->put<char>(item.subType);
 	else

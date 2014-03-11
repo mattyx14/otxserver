@@ -3453,11 +3453,11 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	if(!it.id)
 		return false;
 
-	uint8_t subType = count;
-	if(it.isFluidContainer() && count < uint8_t(sizeof(reverseFluidMap) / sizeof(int8_t)))
-		subType = reverseFluidMap[count];
-	else if(!it.hasSubType())
-		subType = 0;
+	uint8_t subType;
+	if(it.isSplash() || it.isFluidContainer())
+		subType = clientFluidToServer(count);
+	else
+		subType = count;
 
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_BUY))
 		return false;
@@ -3481,11 +3481,11 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 	if(!it.id)
 		return false;
 
-	uint8_t subType = count;
-	if(it.isFluidContainer() && count < uint8_t(sizeof(reverseFluidMap) / sizeof(int8_t)))
-		subType = reverseFluidMap[count];
-	else if(!it.hasSubType())
-		subType = 0;
+	uint8_t subType;
+	if(it.isSplash() || it.isFluidContainer())
+		subType = clientFluidToServer(count);
+	else
+		subType = count;
 
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_SELL))
 		return false;
@@ -3514,14 +3514,11 @@ bool Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 	if(!it.id)
 		return false;
 
-	int32_t subType = count;
-	if(it.isSplash() || it.isFluidContainer())
-	{
-		if(subType == 3)
-			subType = 11;
-		else if(count < uint8_t(sizeof(reverseFluidMap) / sizeof(int8_t)))
-			subType = reverseFluidMap[count];
-	}
+	int32_t subType;
+	if(it.isFluidContainer() || it.isSplash())
+		subType = clientFluidToServer(count);
+	else
+		subType = count;
 
 	std::stringstream ss;
 	ss << "You see " << Item::getDescription(it, 1, NULL, subType);
@@ -3988,6 +3985,35 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return false;
 	}
 
+	std::string _text = asLowerCaseString(text);
+	for(uint8_t i = 0; i < _text.length(); i++)
+	{
+		char t = _text[i];
+		if(t != '-' && t != '.' && !(t >= 'a' && t <= 'z'))
+		{
+			_text.erase(i, 1);
+			i--;
+		}
+	}
+
+	StringVec strVector;
+	strVector = explodeString(g_config.getString(ConfigManager::ADVERTISING_BLOCK), ";");
+	for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
+	{
+		std::string words []= {(*it)};
+		int ii, length;
+		length = sizeof(words)/sizeof(words[0]);
+		for(ii=0; ii < int(length); ii++)
+		{
+			if (int(_text.find(words[ii])) > 0 || _text == words[ii])
+			{
+				player->sendTextMessage(MSG_STATUS_SMALL, "You can't send this message, forbidden characters."); 
+				return false;
+				break;
+			}
+		}
+	}
+
 	if(player->isAccountManager())
 	{
 		if(mute)
@@ -4140,24 +4166,45 @@ bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::
 	{
 		case MSG_CHANNEL:
 		{
-			if(channelId == CHANNEL_HELP && player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
-				type = MSG_CHANNEL_HIGHLIGHT;
+			if(channelId == CHANNEL_HELP)
+			{
+				if(player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
+					type = MSG_CHANNEL_HIGHLIGHT;
+
+				if(player->hasFlag(PlayerFlag_CanTalkRedChannel))
+					type = MSG_GAMEMASTER_CHANNEL;
+
+				if(g_config.getNumber(ConfigManager::ANONYMOUS_CHANNEL) == 1)
+				{
+					if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
+					{
+						if(text.length() < 251)
+							return g_chat.talk(player, type, text, channelId, statementId, true);
+					}
+				}
+			}
+
+			if(g_config.getNumber(ConfigManager::ANONYMOUS_CHANNEL) == 2)
+			{
+				if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
+				{
+					if(text.length() < 251)
+						return g_chat.talk(player, type, text, channelId, statementId, true);
+				}
+			}
 
 			break;
 		}
 
 		case MSG_GAMEMASTER_CHANNEL:
 		{
-			if(!player->hasFlag(PlayerFlag_CanTalkRedChannel))
+			if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
+			{
+				if(text.length() < 251)
+					return g_chat.talk(player, type, text, channelId, statementId, true);
+			}
+			else
 				type = MSG_CHANNEL;
-			break;
-		}
-
-		case MSG_GAMEMASTER_ANONYMOUS:
-		{
-			if(!player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-				type = MSG_CHANNEL;
-			break;
 		}
 
 		case MSG_GAMEMASTER_BROADCAST:

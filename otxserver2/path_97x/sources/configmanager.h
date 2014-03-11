@@ -69,6 +69,8 @@ class ConfigManager
 			ADMIN_ENCRYPTION,
 			ADMIN_ENCRYPTION_DATA,
 			GAME_PORT,
+			ADVERTISING_BLOCK,
+			VERSION_MSG,
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
 
@@ -199,6 +201,9 @@ class ConfigManager
 			FOLLOW_EXHAUST,
 			PACKETS_PER_SECOND,
 			LEVEL_TO_OFFLINE,
+			ANONYMOUS_CHANNEL,
+			VERSION_MIN,
+			VERSION_MAX,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 
@@ -330,6 +335,7 @@ class ConfigManager
 			MULTIPLE_NAME,
 			SAVE_STATEMENT,
 			SERVER_PREVIEW,
+			MANUAL_ADVANCED_CONFIG,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

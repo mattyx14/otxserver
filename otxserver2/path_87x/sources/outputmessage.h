@@ -161,6 +161,8 @@ class OutputMessagePool
 		void startExecutionFrame();
 		void autoSend(OutputMessage_ptr msg);
 
+		int64_t getFrameTime() const { return m_frameTime; }
+
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 		size_t getTotalMessageCount() const {return (size_t)outputMessagePoolCount;}
 #else

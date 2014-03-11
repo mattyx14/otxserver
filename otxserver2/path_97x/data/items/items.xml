@@ -7,11 +7,11 @@
 
 		Most needed are the items (including floors, walls)
 		introduced in the most recent tibia updates
-		starting from 8.7 to 9.83
+		starting from 8.7 to 9.86
 
 		If you found something wrong with existing item(s), we're also waiting for you :)
 
-		You can send your work here: http://otland.net/project.php?projectid=2
+		You can send your work here: http://otland.net/, http://www.blacktibia.org/ or http://tibiaking.com/
 	-->
 
 	<item id="100" name="void"/>
@@ -8225,8 +8225,12 @@
 	<item id="4988-4989" article="a" name="cleat"/>
 	<item id="4990" article="a" name="white flag"/>
 	<item id="4991" article="a" name="pirate flag"/>
-	<item id="4992-4994" article="an" name="exotic butterfly">
-		<attribute key="weight" value="100"/>
+	<item id="4992" article="an" name="dead butterfly">
+		<attribute key="decayTo" value="0" />
+		<attribute key="weight" value="20"/>
+	</item>
+	<item id="4993-4994" article="an" name="dead butterfly">
+		<attribute key="weight" value="20"/>
 	</item>
 	<item id="4995" article="an" name="ice stalagmite"/>
 	<item id="4996" article="a" name="big anphora"/>
@@ -27160,6 +27164,1995 @@
 	</item>
 	<item id="20305-20306" article="a" name="counter">
 		<attribute key="type" value="door"/>
+	</item>
+	<item id="20311" article="a" name="dead adept of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20312"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20312" article="a" name="dead adept of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20313"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20313" article="a" name="dead adept of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20314" article="a" name="dead adept of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20311"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20315" article="a" name="dead adventurer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20316"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20316" article="a" name="dead adventurer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20317"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20317" article="a" name="dead adventurer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20318" article="a" name="dead adventurer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20315"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20319" article="a" name="dead acolyte of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20320"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20320" article="a" name="dead acolyte of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20321"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20321" article="a" name="dead acolyte of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20322" article="a" name="dead acolyte of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20319"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20323" article="a" name="dead amazon">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20324"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20324" article="a" name="dead amazon">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20325"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20325" article="a" name="dead amazon">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20326"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20326" article="a" name="dead amazon">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20327" article="a" name="dead assassin">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20328"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20328" article="a" name="dead assassin">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20329"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20329" article="a" name="dead assassin">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20330"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20330" article="a" name="dead assassin">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20331" article="a" name="dead bandit">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20332"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20332" article="a" name="dead bandit">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20333"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20333" article="a" name="dead bandit">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20334"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20334" article="a" name="dead bandit">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20335" article="a" name="dead barbarian bloodwalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20336"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20336" article="a" name="dead barbarian bloodwalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20337"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20337" article="a" name="dead barbarian bloodwalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20338"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20338" article="a" name="dead barbarian bloodwalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20339" article="a" name="dead barbarian brutetamer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20340"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20340" article="a" name="dead barbarian brutetamer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20341"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20341" article="a" name="dead barbarian brutetamer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20342"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20342" article="a" name="dead barbarian brutetamer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20343" article="a" name="dead barbarian headsplitter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20344"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20344" article="a" name="dead barbarian headsplitter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20345"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20345" article="a" name="dead barbarian headsplitter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20346"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20346" article="a" name="dead barbarian headsplitter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20347" article="a" name="dead barbarian skullhunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20348"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20348" article="a" name="dead barbarian skullhunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20349"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20349" article="a" name="dead barbarian skullhunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20350"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20350" article="a" name="dead barbarian skullhunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20351" article="a" name="dead crazed beggar">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20352"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20352" article="a" name="dead crazed beggar">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20353"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20353" article="a" name="dead crazed beggar">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20354"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20354" article="a" name="dead crazed beggar">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20355" article="a" name="dead black knight">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20356"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20356" article="a" name="dead black knight">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20357"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20357" article="a" name="dead black knight">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20358"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20358" article="a" name="dead black knight">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20359" article="a" name="dead crypt defiler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20360"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20360" article="a" name="dead crypt defiler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20361"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20361" article="a" name="dead crypt defiler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20362"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20362" article="a" name="dead crypt defiler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20363" article="a" name="dead dark apprentice">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20364"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20364" article="a" name="dead dark apprentice">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20365"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20365" article="a" name="dead dark apprentice">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20366"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20366" article="a" name="dead dark apprentice">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20367" article="a" name="dead dark magician">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20368"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20368" article="a" name="dead dark magician">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20369"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20369" article="a" name="dead dark magician">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20370"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20370" article="a" name="dead dark magician">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20371" article="a" name="dead dark monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20372"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20372" article="a" name="dead dark monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20373"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20373" article="a" name="dead dark monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20374"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20374" article="a" name="dead dark monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20375" article="a" name="dead deadeye devious">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20376"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20376" article="a" name="dead deadeye devious">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20377"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20377" article="a" name="dead deadeye devious">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20378"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20378" article="a" name="dead deadeye devious">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20379" article="a" name="dead werewolf">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20380"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20380" article="a" name="dead werewolf">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20381"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20381" article="a" name="dead werewolf">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20382"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20382" article="a" name="dead werewolf">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20383" article="a" name="dead doomsday cultist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20384"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20384" article="a" name="dead doomsday cultist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20385"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20385" article="a" name="dead doomsday cultist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20386"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20386" article="a" name="dead doomsday cultist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20387" article="a" name="dead dryad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20388"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20388" article="a" name="dead dryad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20389"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20389" article="a" name="dead dryad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20390"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20390" article="a" name="dead dryad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20391" article="a" name="dead enlightened of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20392"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20392" article="a" name="dead enlightened of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20393"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20393" article="a" name="dead enlightened of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20394"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20394" article="a" name="dead enlightened of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20395" article="a" name="dead feverish citizen">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20396"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20396" article="a" name="dead feverish citizen">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20397"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20397" article="a" name="dead feverish citizen">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20398"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20398" article="a" name="dead feverish citizen">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20399" article="a" name="dead fury">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20400"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20400" article="a" name="dead fury">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20401"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20401" article="a" name="dead fury">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20402"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20402" article="a" name="dead fury">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20403" article="a" name="dead gang member">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20404"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20404" article="a" name="dead gang member">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20405"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20405" article="a" name="dead gang member">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20406"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20406" article="a" name="dead gang member">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20407" article="a" name="dead gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20404"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20408" article="a" name="dead gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20405"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20409" article="a" name="dead gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20406"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20410" article="a" name="dead gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20411" article="a" name="dead grave robber">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20412"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20412" article="a" name="dead grave robber">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20413"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20413" article="a" name="dead grave robber">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20414"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20414" article="a" name="dead grave robber">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20415" article="a" name="dead hero">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20416"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20416" article="a" name="dead hero">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20417"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20417" article="a" name="dead hero">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20418" article="a" name="dead hero">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20415"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20419" article="a" name="dead hunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20420"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20420" article="a" name="dead hunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20421"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20421" article="a" name="dead hunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20422" article="a" name="dead hunter">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20419"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20423" article="a" name="dead ice witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20424"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20424" article="a" name="dead ice witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20425"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20425" article="a" name="dead ice witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20426" article="a" name="dead ice witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20423"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20427" article="a" name="dead infernalist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20428"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20428" article="a" name="dead infernalist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20429"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20429" article="a" name="dead infernalist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20430" article="a" name="dead infernalist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20427"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20431" article="a" name="dead jesse the wicked">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20432"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20432" article="a" name="dead jesse the wicked">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20433"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20433" article="a" name="dead jesse the wicked">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20434" article="a" name="dead jesse the wicked">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20431"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20435" article="a" name="dead lethal lissy">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20436"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20436" article="a" name="dead lethal lissy">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20437"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20437" article="a" name="dead lethal lissy">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20438" article="a" name="dead lethal lissy">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20435"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20439" article="a" name="dead mad scientist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20440"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20440" article="a" name="dead mad scientist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20441"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20441" article="a" name="dead mad scientist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20442" article="a" name="dead mad scientist">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20439"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20443" article="a" name="dead man in the cave">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20444"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20444" article="a" name="dead man in the cave">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20445"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20445" article="a" name="dead man in the cave">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20446" article="a" name="dead man in the cave">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20443"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20447" article="a" name="dead midnight warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20448"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20448" article="a" name="dead midnight warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20449"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20449" article="a" name="dead midnight warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20450" article="a" name="dead midnight warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20447"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20451" article="a" name="dead morik the gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20452"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20452" article="a" name="dead morik the gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20453"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20453" article="a" name="dead morik the gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20454" article="a" name="dead morik the gladiator">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20451"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20455" article="a" name="dead necromancer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20456"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20456" article="a" name="dead necromancer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20457"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20457" article="a" name="dead necromancer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20458" article="a" name="dead necromancer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20455"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20459" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20460"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20460" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20461"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20461" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20462" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20459"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20463" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20464"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20464" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20465"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20465" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20466" article="a" name="dead nomad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20463"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20467" article="a" name="dead novice of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20468"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20468" article="a" name="dead novice of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20469"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20469" article="a" name="dead novice of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20470" article="a" name="dead novice of the cult">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20467"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20471" article="a" name="dead pirate buccaneer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20472"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20472" article="a" name="dead pirate buccaneer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20473"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20473" article="a" name="dead pirate buccaneer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20474" article="a" name="dead pirate buccaneer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20471"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20475" article="a" name="dead pirate corsair">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20476"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20476" article="a" name="dead pirate corsair">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20477"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20477" article="a" name="dead pirate corsair">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20478" article="a" name="dead pirate corsair">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20475"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20479" article="a" name="dead pirate cutthroat">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20480"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20480" article="a" name="dead pirate cutthroat">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20481"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20481" article="a" name="dead pirate cutthroat">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20482" article="a" name="dead pirate cutthroat">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20479"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20483" article="a" name="dead pirate marauder">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20484"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20484" article="a" name="dead pirate marauder">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20485"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20485" article="a" name="dead pirate marauder">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20486" article="a" name="dead pirate marauder">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20483"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20487" article="a" name="dead poacher">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20488"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20488" article="a" name="dead poacher">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20489"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20489" article="a" name="dead poacher">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20490" article="a" name="dead poacher">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20487"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20491" article="a" name="dead priestess">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20492"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20492" article="a" name="dead priestess">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20493"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20493" article="a" name="dead priestess">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20494" article="a" name="dead priestess">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20491"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20495" article="a" name="dead robby the reckless">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20496"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20496" article="a" name="dead robby the reckless">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20497"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20497" article="a" name="dead robby the reckless">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20498" article="a" name="dead robby the reckless">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20495"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20499" article="a" name="dead ron the ripper">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20500"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20500" article="a" name="dead ron the ripper">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20501"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20501" article="a" name="dead ron the ripper">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20502" article="a" name="dead ron the ripper">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20499"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20503" article="a" name="dead smuggler baron silvertoe">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20504"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20504" article="a" name="dead smuggler baron silvertoe">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20505"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20505" article="a" name="dead smuggler baron silvertoe">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20506" article="a" name="dead smuggler baron silvertoe">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20503"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20507" article="a" name="dead smuggler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20508"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20508" article="a" name="dead smuggler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20509"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20509" article="a" name="dead smuggler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20510" article="a" name="dead smuggler">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20507"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20511" article="a" name="dead stalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20512"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20512" article="a" name="dead stalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20513"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20513" article="a" name="dead stalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20514" article="a" name="dead stalker">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20511"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20515" article="a" name="dead thief">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20516"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20516" article="a" name="dead thief">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20517"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20517" article="a" name="dead thief">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20518" article="a" name="dead thief">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20515"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20519" article="a" name="dead undead jester">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20520"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20520" article="a" name="dead undead jester">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20521"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20521" article="a" name="dead undead jester">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20522" article="a" name="dead undead jester">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20519"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20523" article="a" name="dead valkyrie">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20524"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20524" article="a" name="dead valkyrie">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20525"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20525" article="a" name="dead valkyrie">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20526" article="a" name="dead valkyrie">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20523"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20527" article="a" name="dead warlock">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20528"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20528" article="a" name="dead warlock">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20529"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20529" article="a" name="dead warlock">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20530" article="a" name="dead warlock">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20527"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20531" article="a" name="dead wild warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20532"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20532" article="a" name="dead wild warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20533"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20533" article="a" name="dead wild warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20534" article="a" name="dead wild warrior">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20531"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20535" article="a" name="dead witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20536"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20536" article="a" name="dead witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20537"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20537" article="a" name="dead witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20538" article="a" name="dead witch">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20535"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20539" article="a" name="dead xenia">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20540"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20540" article="a" name="dead xenia">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20541"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20541" article="a" name="dead xenia">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20542" article="a" name="dead xenia">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20539"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20543" article="a" name="dead yakchal">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20544"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20544" article="a" name="dead yakchal">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20545"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20545" article="a" name="dead yakchal">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20546" article="a" name="dead yakchal">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20543"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20547" article="a" name="dead yalahari">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20548"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20548" article="a" name="dead yalahari">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20549"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20549" article="a" name="dead yalahari">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20550" article="a" name="dead yalahari">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20547"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20551" article="a" name="dead zarabustor">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20552"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20552" article="a" name="dead zarabustor">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20553"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20553" article="a" name="dead zarabustor">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20554" article="a" name="dead zarabustor">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20551"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20559" article="a" name="dead monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20560"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20560" article="a" name="dead monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20561"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20561" article="a" name="dead monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20562" article="a" name="dead monk">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20559"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20563" article="a" name="dead fernfang">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20564"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20564" article="a" name="dead fernfang">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20565"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20565" article="a" name="dead fernfang">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20566" article="a" name="dead fernfang">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20563"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20567" article="a" name="dead hemming">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20568"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20568" article="a" name="dead hemming">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20569"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20569" article="a" name="dead hemming">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20570" article="a" name="dead hemming">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20567"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20571" article="a" name="dead necropharus">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20572"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20572" article="a" name="dead necropharus">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20573"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20573" article="a" name="dead necropharus">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20574" article="a" name="dead necropharus">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20571"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20575" article="a" name="dead rukor zad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20576"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20576" article="a" name="dead rukor zad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20577"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20577" article="a" name="dead rukor zad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20578" article="a" name="dead rukor zad">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20575"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20579" article="a" name="dead nightslayer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20580"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20580" article="a" name="dead nightslayer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20581"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20581" article="a" name="dead nightslayer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20582" article="a" name="dead nightslayer">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20579"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20583" article="a" name="dead bride of night">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20584"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20584" article="a" name="dead bride of night">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20585"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20585" article="a" name="dead bride of night">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20586" article="a" name="dead bride of night">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20583"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20587" article="a" name="dead yaga the crone">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20588"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20588" article="a" name="dead yaga the crone">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20589"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20589" article="a" name="dead yaga the crone">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20590" article="a" name="dead yaga the crone">
+		<attribute key="containerSize" value="10"/>
+		<attribute key="decayTo" value="20587"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidSource" value="blood"/>
+	</item>
+	<item id="20608" article="a" name="jade Zaoan queen">
+		<attribute key="description" value="A zaoan chess figure made of jade. It depicts the queen."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20609" article="a" name="jade Zaoan king">
+		<attribute key="description" value="A zaoan chess figure made of jade. It depicts the king."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20610" article="a" name="jade Zaoan bishop">
+		<attribute key="description" value="A zaoan chess figure made of jade. It depicts the bishop."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20611" article="a" name="jade Zaoan knight">
+		<attribute key="description" value="A zaoan chess figure made of jade. It depicts the knight."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20612" article="a" name="jade Zaoan rook">
+		<attribute key="description" value="A zaoan chess figure made of jade. It depicts the rook."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20613" article="a" name="jade Zaoan pawn">
+		<attribute key="description" value="A zaoan chess figure made of jade. It depicts the pawn."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20614" article="a" name="obsidian Zaoan queen">
+		<attribute key="description" value="A zaoan chess figure made of obsidian. It depicts the queen."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20615" article="a" name="obsidian Zaoan king">
+		<attribute key="description" value="A zaoan chess figure made of obsidian. It depicts the king."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20616" article="a" name="obsidian Zaoan bishop">
+		<attribute key="description" value="A zaoan chess figure made of obsidian. It depicts the bishop."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20617" article="a" name="obsidian Zaoan knight">
+		<attribute key="description" value="A zaoan chess figure made of obsidian. It depicts the knight."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20618" article="a" name="obsidian Zaoan rook">
+		<attribute key="description" value="A zaoan chess figure made of obsidian. It depicts the rook."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20619" article="a" name="obsidian Zaoan pawn">
+		<attribute key="description" value="A zaoan chess figure made of obsidian. It depicts the pawn."/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="20620" article="a" name="Zaoan chess box">
+		<attribute key="containerSize" value="32"/>
+		<attribute key="description" value="This chess box is made of jade and obsidian. It will hold a full set of 32 Zaoan chess figures."/>
+		<attribute key="weight" value="3800"/>
+	</item>
+	<item id="20624-20625" article="an" name="bookworm doll">
+		<attribute key="description" value="It does not wish to be disturbed. Awarded by TibiaLibrary.org"/>
+		<attribute key="weight" value="1900"/>
 	</item>
 	<item id="20307-20308" name="mountain"/>
 	<item id="30001" name="water"/>

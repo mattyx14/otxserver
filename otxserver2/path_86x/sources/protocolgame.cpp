@@ -456,10 +456,19 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	std::string name = msg.getString(), character = msg.getString(), password = msg.getString();
 
 	msg.skip(6);
-	if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
-		disconnectClient(0x14, CLIENT_VERSION_STRING);
-		return;
+		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+		{
+			disconnectClient(0x14, CLIENT_VERSION_STRING);
+			return;
+		}
+	else
+		if(version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX))
+		{
+			disconnectClient(0x14, g_config.getString(ConfigManager::VERSION_MSG).c_str());
+			return;
+		}
 	}
 
 	if(name.empty())
@@ -3046,7 +3055,7 @@ void ProtocolGame::AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item)
 	const ItemType& it = Item::items[item.itemId];
 	msg->put<uint16_t>(it.clientId);
 	if(it.isSplash() || it.isFluidContainer())
-		msg->put<char>(fluidMap[item.subType % 8]);
+		msg->put<char>(serverFluidToClient(item.subType));
 	else if(it.stackable || it.charges)
 		msg->put<char>(item.subType);
 	else

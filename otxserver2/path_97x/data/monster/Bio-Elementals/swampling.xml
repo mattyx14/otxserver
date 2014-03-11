@@ -35,10 +35,11 @@
 		<voice sentence="Crrrck!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="10" chance="30000"/>
-		<item id="2787" countmax="5" chance="880"/> <!-- White Mushroom -->
-		<item id="20102" chance="450"/> <!-- Piece of Swampling Wood -->
-		<item id="20103" chance="410"/> <!-- Swampling Club -->
-		<item id="20101" chance="300"/> <!-- Swampling Moss -->
+		<item id="2148" countmax="12" chance="50000"/> <!-- gold coin -->
+		<item id="20102" chance="16666"/> <!-- swampling moss -->
+		<item id="20103" chance="12500"/> <!-- piece of swampling wood -->
+		<item id="2787" chance="9090"/> <!-- white mushroom -->
+		<item id="20104" chance="7142"/> <!-- swampling club -->
+		<item id="2120" chance="3030"/> <!-- rope -->
 	</loot>
 </monster>

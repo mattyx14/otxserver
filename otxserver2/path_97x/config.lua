@@ -168,9 +168,21 @@
 		NoShareExpSummonMonster = false
 
 		-- Others
+		-- gmAnonymousInChanel = 0 - normal; 1 - in help channel; 2 - all channels
 		enableLootBagDisplay = false
 		serverPreview = false
 		levelToOfflineTraining = 8
+		advertisingBlock = ""
+		gmAnonymousInChanel = 0
+
+		-- Advanced Version
+		-- Note: If you use another protocol than the one we set as you will have functional failures.
+		-- Supported (972) = 9.80
+		-- Supported (978) = 9.86
+		manualVersionConfig = false
+		versionMin = 972
+		versionMax = 978
+		versionMsg = "Only clients with protocol 9.8x allowed!"
 
 	-- Connection config
 	loginTries = 20

@@ -5,6 +5,7 @@
 
 	<!-- Quests -->
 	<action actionid="2000" event="script" value="quests/system.lua"/>
+	<action itemid="1740;1747-1749" event="script" value="quests/quests.lua"/>
 
 	<!-- Text -->
 	<action itemid="1957;7722;10122" event="script" value="other/text.lua"/>

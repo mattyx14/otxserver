@@ -1337,7 +1337,7 @@ bool IOLoginData::playerMail(Creature* actor, std::string name, Item* item)
 		return false;
 	}
 
-	g_game.transformItem(item, ITEM_PARCEL_STAMPED);
+	g_game.transformItem(item, item->getID() == ITEM_PARCEL ? ITEM_PARCEL_STAMPED : ITEM_LETTER_STAMPED);
 	bool result = true, opened = player->getContainerID(player->getInbox()) != -1;
 
 	Player* tmp = NULL;

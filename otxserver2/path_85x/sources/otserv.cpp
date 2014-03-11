@@ -163,7 +163,8 @@ bool argumentsHandler(StringVec args)
 
 			"\n"
 			"A server developed by: "SOFTWARE_DEVELOPERS".\n"
-			"Visit our forum for updates, support, and resources:  http://"FORUM"\n";
+			"Visit our forums for updates, support, and resources:\n";
+			""FORUMS"\n";
 			return false;
 		}
 
@@ -438,7 +439,8 @@ ServiceManager* services)
 
 		<< std::endl
 		<< "A server developed by: "SOFTWARE_DEVELOPERS"." << std::endl
-		<< "Visit our forum for updates, support, and resources: http://"FORUM"" << std::endl;
+		<< "Visit our forums for updates, support, and resources:" << std::endl
+		<< ""FORUMS"" << std::endl;
 	std::stringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
@@ -1091,7 +1093,8 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 						<< std::endl
 						<< "A server developed by: "SOFTWARE_DEVELOPERS"." << std::endl
-						<< "Visit our forum for updates, support, and resources: http://"FORUM"" << std::endl
+						<< "Visit our forums for updates, support, and resources:" << std::endl
+						<< ""FORUMS"" << std::endl
 						<< std::endl;
 					}
 
@@ -1446,7 +1449,21 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 				case ID_MENU_OTSERV:
 				{
-					ShellExecute(NULL, "open", "http://"FORUM"",
+					ShellExecute(NULL, "open", "http://blacktibia.org/",
+						NULL, NULL, SW_SHOWNORMAL);
+					break;
+				}
+
+				case ID_MENU_OTSERV2:
+				{
+					ShellExecute(NULL, "open", "http://tibiaking.com/",
+						NULL, NULL, SW_SHOWNORMAL);
+					break;
+				}
+
+				case ID_MENU_OTSERV3:
+				{
+					ShellExecute(NULL, "open", "http://otland.net/",
 						NULL, NULL, SW_SHOWNORMAL);
 					break;
 				}
@@ -1460,7 +1477,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 				case ID_MENU_BUG_FEATURE:
 				{
-					ShellExecute(NULL, "open", "http://"FORUM"/f125-otx-server-9x-87x-86x-85x",
+					ShellExecute(NULL, "open", "https://code.google.com/p/otservdata/issues/list",
 						NULL, NULL, SW_SHOWNORMAL);
 					break;
 				}

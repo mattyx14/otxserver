@@ -39,6 +39,7 @@
 #include "game.h"
 #include "chat.h"
 #include "textlogger.h"
+#include "outputmessage.h"
 
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"
@@ -1353,7 +1354,7 @@ void Player::sendUpdateContainerItem(const Container* container, uint8_t slot, c
 	}
 }
 
-void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, const Item*)
+void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, const Item* lastItem)
 {
 	if(!client)
 		return;
@@ -1361,7 +1362,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, c
 	for(ContainerVector::const_iterator cl = containerVec.begin(); cl != containerVec.end(); ++cl)
 	{
 		if(cl->second == container)
-			client->sendRemoveContainerItem(cl->first, slot);
+			client->sendRemoveContainerItem(cl->first, slot, lastItem);
 	}
 }
 
@@ -1712,9 +1713,12 @@ bool Player::canShopItem(uint16_t itemId, uint8_t subType, ShopEvent_t event)
 
 		const ItemType& it = Item::items[id];
 		if(it.isFluidContainer() || it.isSplash())
-			return (sit->subType % 8) == subType;
-
-		return true;
+		{
+			if(sit->subType == subType)
+				return true;
+		}
+		else
+			return true;
 	}
 
 	return false;

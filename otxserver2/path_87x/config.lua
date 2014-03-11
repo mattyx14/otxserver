@@ -169,6 +169,17 @@
 
 		-- Others
 		enableLootBagDisplay = false
+		advertisingBlock = ""
+		gmAnonymousInChanel = 0
+
+		-- Advanced Version
+		-- Note: If you use another protocol than the one we set as you will have functional failures.
+		-- Supported (870) = 8.70
+		-- Supported (871) = 8.71
+		manualVersionConfig = false
+		versionMin = 870
+		versionMax = 871
+		versionMsg = "Only clients with protocol 9.7x allowed!"
 
 	-- Connection config
 	loginTries = 20

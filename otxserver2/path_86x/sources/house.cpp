@@ -826,6 +826,8 @@ bool Houses::payRent(Player* player, House* house, uint32_t bid, time_t _time/* 
 		player->balance -= amount;
 		paid = true;
 	}
+	else if(DepotChest* depotChest = player->getDepotChest(town->getID(), true))
+		paid = g_game.removeMoney(depotChest, amount, FLAG_NOLIMIT);
 
 	if(!paid)
 		return false;
@@ -943,48 +945,44 @@ bool Houses::payHouse(House* house, time_t _time, uint32_t bid)
 		return false;
 	}
 
-	if(DepotChest* depotChest = player->getDepotChest(town->getID(), true))
+	if(Item* letter = Item::CreateItem(ITEM_LETTER_STAMPED))
 	{
-		if(Item* letter = Item::CreateItem(ITEM_LETTER_STAMPED))
+		if(g_game.internalAddItem(NULL, player->getInbox(), letter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RET_NOERROR)
 		{
-			if(g_game.internalAddItem(NULL, player->getInbox(), letter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RET_NOERROR)
+			letter->setWriter(g_config.getString(ConfigManager::SERVER_NAME));
+			letter->setDate(std::time(NULL));
+			std::stringstream s;
+
+			s << "Warning!\nThe ";
+			switch(rentPeriod)
 			{
-				letter->setWriter(g_config.getString(ConfigManager::SERVER_NAME));
-				letter->setDate(std::time(NULL));
-				std::stringstream s;
-
-				s << "Warning!\nThe ";
-				switch(rentPeriod)
-				{
-					case RENTPERIOD_DAILY:
-						s << "daily";
-						break;
-					case RENTPERIOD_WEEKLY:
-						s << "weekly";
-						break;
-					case RENTPERIOD_MONTHLY:
-						s << "monthly";
-						break;
-					case RENTPERIOD_YEARLY:
-						s << "annual";
-						break;
-					default:
-						break;
-				}
-
-				s << " rent of " << house->getRent() << " gold for your "
-					<< (house->isGuild() ? "guild hall" : "house") << " \"" << house->getName()
-					<< "\" has to be paid. Have it within " << (warningsLimit - warnings)
-					<< " days or you will lose your " << (house->isGuild() ? "guild hall" : "house") << ".";
-
-				letter->setText(s.str().c_str());
-				if(player->isVirtual())
-					IOLoginData::getInstance()->savePlayer(player);
+				case RENTPERIOD_DAILY:
+					s << "daily";
+					break;
+				case RENTPERIOD_WEEKLY:
+					s << "weekly";
+					break;
+				case RENTPERIOD_MONTHLY:
+					s << "monthly";
+					break;
+				case RENTPERIOD_YEARLY:
+					s << "annual";
+					break;
+				default:
+					break;
 			}
 
-			else
-				g_game.freeThing(letter);
+			s << " rent of " << house->getRent() << " gold for your "
+				<< (house->isGuild() ? "guild hall" : "house") << " \"" << house->getName()
+				<< "\" has to be paid. Have it within " << (warningsLimit - warnings)
+				<< " days or you will lose your " << (house->isGuild() ? "guild hall" : "house") << ".";
+			
+			letter->setText(s.str().c_str());
+			if(player->isVirtual())
+				IOLoginData::getInstance()->savePlayer(player);
 		}
+		else
+			g_game.freeThing(letter);
 	}
 
 	house->setLastWarning(_time);
