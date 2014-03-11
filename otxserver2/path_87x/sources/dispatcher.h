@@ -72,7 +72,7 @@ class Dispatcher
 		void shutdown();
 		void exit() {m_thread.join();}
 
-		void dispatcherThread();
+		static void dispatcherThread(void* p);
 
 	protected:
 		void flush();

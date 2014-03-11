@@ -345,6 +345,10 @@ function doPlayerBuyItemContainer(cid, containerid, itemid, count, cost, charges
 	return doPlayerRemoveMoney(cid, cost) and doPlayerGiveItemContainer(cid, containerid, itemid, count, charges)
 end
 
+function isPlayerUsingOtclient(cid)
+	return getPlayerOperatingSystem(cid) >= CLIENTOS_OTCLIENT_LINUX
+end
+
 function getPlayerPassword(cid)
 local AccInfo = db.getResult("SELECT `password` FROM `accounts` WHERE `id` = " .. getPlayerAccountId(cid) .. " LIMIT 1")
 	local AccPass = AccInfo:getDataString("password")

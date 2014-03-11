@@ -4374,20 +4374,17 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
 		return SKULL_NONE;
 
-	if(player->getSkull() == SKULL_NONE)
+	if(player && player->getSkull() == SKULL_NONE)
 	{
 		if(canRevenge(player->getGUID()))
 			return SKULL_ORANGE;
 
-		if(player->canRevenge(guid) && player->hasAttacked(this) &&
-			!player->isEnemy(this, false))
+		if((skull != SKULL_NONE || player->canRevenge(guid)) && player->hasAttacked(this))
 			return SKULL_YELLOW;
 
-		if((isPartner(player) || isAlly(player) || isEnemy(player, false)) &&
-			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
+		if(isPartner(player) || isAlly(player) || isEnemy(player, false))
 			return SKULL_GREEN;
 	}
-
 	return Creature::getSkullType(creature);
 }
 
@@ -5472,6 +5469,18 @@ void Player::setMounted(bool mounting)
 	{
 		if(Mount* mount = Mounts::getInstance()->getMountByCid(defaultOutfit.lookMount))
 		{
+			bool deny = false;
+
+			CreatureEventList mountEvents = this->getCreatureEvents(CREATURE_EVENT_MOUNT);
+			for(CreatureEventList::iterator it = mountEvents.begin(); it != mountEvents.end(); ++it)
+			{
+				if(!(*it)->executeMount(this, mount->getId()) && !deny)
+					deny = true;
+			}
+
+			if(deny)
+				return;
+
 			mounted = true;
 			if(mount->getSpeed())
 				g_game.changeSpeed(this, mount->getSpeed());
@@ -5487,12 +5496,24 @@ void Player::dismount(bool update)
 	if(!mounted)
 		return;
 
-	mounted = false;
 	if(!defaultOutfit.lookMount)
 		return;
 
 	if(Mount* mount = Mounts::getInstance()->getMountByCid(defaultOutfit.lookMount))
 	{
+		bool deny = false;
+
+		CreatureEventList dismountEvents = this->getCreatureEvents(CREATURE_EVENT_DISMOUNT);
+		for(CreatureEventList::iterator it = dismountEvents.begin(); it != dismountEvents.end(); ++it)
+		{
+			if(!(*it)->executeDismount(this, mount->getId()) && !deny)
+				deny = true;
+		}
+
+		if(deny)
+			return;
+
+		mounted = false;
 		if(mount->getSpeed() > 0)
 			g_game.changeSpeed(this, -(int32_t)mount->getSpeed());
 

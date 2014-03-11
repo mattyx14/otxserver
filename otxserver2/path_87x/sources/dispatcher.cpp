@@ -31,31 +31,32 @@ Dispatcher::DispatcherState Dispatcher::m_threadState = Dispatcher::STATE_TERMIN
 Dispatcher::Dispatcher()
 {
 	Dispatcher::m_threadState = Dispatcher::STATE_RUNNING;
-	m_thread = boost::thread(boost::bind(&Dispatcher::dispatcherThread, this));
+	m_thread = boost::thread(boost::bind(&Dispatcher::dispatcherThread, (void*)this));
 }
 
-void Dispatcher::dispatcherThread()
+void Dispatcher::dispatcherThread(void* p)
 {
+	Dispatcher* dispatcher = (Dispatcher*)p;
 	#if defined __EXCEPTION_TRACER__
 	ExceptionHandler dispatcherExceptionHandler;
 	dispatcherExceptionHandler.InstallHandler();
 	#endif
 
 	OutputMessagePool* outputPool = NULL;
-	boost::unique_lock<boost::mutex> taskLockUnique(m_taskLock, boost::defer_lock);
+	boost::unique_lock<boost::mutex> taskLockUnique(dispatcher->m_taskLock, boost::defer_lock);
 	while(Dispatcher::m_threadState != Dispatcher::STATE_TERMINATED)
 	{
 		Task* task = NULL;
 		// check if there are tasks waiting
 		taskLockUnique.lock();
-		if(m_taskList.empty()) //if the list is empty wait for signal
-			m_taskSignal.wait(taskLockUnique);
+		if(dispatcher->m_taskList.empty()) //if the list is empty wait for signal
+			dispatcher->m_taskSignal.wait(taskLockUnique);
 
-		if(!m_taskList.empty() && Dispatcher::m_threadState != Dispatcher::STATE_TERMINATED)
+		if(!dispatcher->m_taskList.empty() && Dispatcher::m_threadState != Dispatcher::STATE_TERMINATED)
 		{
 			// take the first task
-			task = m_taskList.front();
-			m_taskList.pop_front();
+			task = dispatcher->m_taskList.front();
+			dispatcher->m_taskList.pop_front();
 		}
 
 		taskLockUnique.unlock();

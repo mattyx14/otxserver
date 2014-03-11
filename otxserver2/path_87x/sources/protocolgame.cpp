@@ -255,15 +255,16 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 
 		player->setClientVersion(version);
 		player->setOperatingSystem(operatingSystem);
+
+		player->lastIP = player->getIP();
+		player->lastLoad = OTSYS_TIME();
+		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
+
 		if(!g_game.placeCreature(player, player->getLoginPosition()) && !g_game.placeCreature(player, player->getMasterPosition(), false, true))
 		{
 			disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
 			return false;
 		}
-
-		player->lastIP = player->getIP();
-		player->lastLoad = OTSYS_TIME();
-		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
 
 		m_acceptPackets = true;
 		return true;
@@ -421,6 +422,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	OperatingSystem_t operatingSystem = (OperatingSystem_t)msg.get<uint16_t>();
 	uint16_t version = msg.get<uint16_t>();
+
 	if(!RSA_decrypt(msg))
 	{
 		disconnect();
@@ -1425,7 +1427,7 @@ void ProtocolGame::parseCloseTrade()
 void ProtocolGame::parseAddVip(NetworkMessage& msg)
 {
 	const std::string name = msg.getString();
-	if(name.size() > 32)
+	if(name.size() > 30)
 		return;
 
 	addGameTask(&Game::playerRequestAddVip, player->getID(), name);
@@ -1818,7 +1820,7 @@ void ProtocolGame::sendGoods(const ShopInfoList& shop)
 
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0x7B);
-	msg->put<uint32_t>((uint32_t)g_game.getMoney(player));
+	msg->put<uint64_t>((uint64_t)g_game.getMoney(player));
 
 	std::map<uint32_t, uint32_t> goodsMap;
 	if(shop.size() >= 5)

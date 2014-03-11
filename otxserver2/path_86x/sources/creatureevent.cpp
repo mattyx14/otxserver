@@ -2029,7 +2029,7 @@ uint32_t CreatureEvent::executeThrow(Player* player, Item* item, const Position&
 	}
 	else
 	{
-		std::clog << "[Error - CreatureEvent::executePush] Call stack overflow." << std::endl;
+		std::clog << "[Error - CreatureEvent::executeThrow] Call stack overflow." << std::endl;
 		return 0;
 	}
 }

@@ -191,6 +191,8 @@ getPosByDir = getPositionByDirection
 isNumber = isNumeric
 doSetItemActionId = doItemSetActionId
 getOnlinePlayers = getPlayersOnlineEx
+addDialog = doPlayerAddDialog
+doSendPlayerExtendedOpcode = doPlayerSendExtendedOpcode
 
 PlayerFlag_CannotUseCombat = 0
 PlayerFlag_CannotAttackPlayer = 1

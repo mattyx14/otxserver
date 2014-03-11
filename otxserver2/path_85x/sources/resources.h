@@ -86,9 +86,9 @@
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "4"
 #define PATCH_VERSION "4"
-#define REVISION_VERSION "r1440"
+#define REVISION_VERSION "SE - 1469"
 #define SOFTWARE_CODENAME "Chronodia"
-#define SOFTWARE_DEVELOPERS "Kaiser, Emma and Kazbin"
+#define SOFTWARE_DEVELOPERS "Kaiser, Emma, Comedinhasss and Kazbin"
 #define SOFTWARE_PROTOCOL "8.57"
 #define FORUM "www.blacktibia.org"
 

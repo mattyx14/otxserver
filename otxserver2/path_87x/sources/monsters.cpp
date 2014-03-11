@@ -1570,9 +1570,9 @@ bool Monsters::loadChildLoot(xmlNodePtr node, LootBlock& parentBlock)
 
 MonsterType* Monsters::getMonsterType(const std::string& name)
 {
-	uint32_t mId = getIdByName(name);
-	if(mId != 0)
-		return getMonsterType(mId);
+	uint32_t mid = getIdByName(name);
+	if(mid != 0)
+		return getMonsterType(mid);
 
 	return NULL;
 }

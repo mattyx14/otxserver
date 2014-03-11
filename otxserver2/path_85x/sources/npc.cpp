@@ -609,7 +609,6 @@ ResponseList Npc::parseInteractionNode(xmlNodePtr node)
 				ItemListMap::iterator it = itemListMap.find(strValue);
 				if(it == itemListMap.end())
 				{
-					std::string listId = strValue;
 					std::list<ListItem>& list = itemListMap[strValue];
 
 					xmlNodePtr tmpNode = node->children;

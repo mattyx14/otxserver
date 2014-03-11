@@ -690,7 +690,6 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendTutorial(tutorialId);}
 		void sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc)
 			{if(client) client->sendAddMarker(pos, markType, desc);}
-
 		void sendCritical() const;
 		void sendPlayerIcons(Player* player);
 		void sendStats();

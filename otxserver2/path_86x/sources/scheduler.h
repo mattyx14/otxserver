@@ -73,7 +73,7 @@ class Scheduler
 		void shutdown();
 		void exit() {m_thread.join();}
 
-		void schedulerThread();
+		static void schedulerThread(void* p);
 
 	protected:
 		Scheduler();

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOTXServer", "TheOTXServer.vcxproj", "{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOTXServer", "TheOTXServer.vcxproj", "{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,22 +15,22 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug GUI|Win32.ActiveCfg = Debug GUI|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug GUI|Win32.Build.0 = Debug GUI|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug GUI|x64.ActiveCfg = Debug GUI|x64
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug GUI|x64.Build.0 = Debug GUI|x64
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug|Win32.Build.0 = Debug|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug|x64.ActiveCfg = Debug|x64
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Debug|x64.Build.0 = Debug|x64
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release GUI|Win32.ActiveCfg = Release GUI|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release GUI|Win32.Build.0 = Release GUI|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release GUI|x64.ActiveCfg = Release GUI|x64
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release GUI|x64.Build.0 = Release GUI|x64
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release|Win32.ActiveCfg = Release|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release|Win32.Build.0 = Release|Win32
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release|x64.ActiveCfg = Release|x64
-		{BC1BC786-3341-E99B-3650-ED9CB3C81ABE}.Release|x64.Build.0 = Release|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug GUI|Win32.ActiveCfg = Debug GUI|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug GUI|Win32.Build.0 = Debug GUI|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug GUI|x64.ActiveCfg = Debug GUI|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug GUI|x64.Build.0 = Debug GUI|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug|Win32.Build.0 = Debug|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug|x64.ActiveCfg = Debug|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Debug|x64.Build.0 = Debug|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release GUI|Win32.ActiveCfg = Release GUI|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release GUI|Win32.Build.0 = Release GUI|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release GUI|x64.ActiveCfg = Release GUI|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release GUI|x64.Build.0 = Release GUI|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release|Win32.ActiveCfg = Release|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release|Win32.Build.0 = Release|Win32
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release|x64.ActiveCfg = Release|x64
+		{BD90DADB-2ECC-DB05-B7ED-6EDF8A35959E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
