@@ -14,6 +14,7 @@ C++ Programmer(s), Committer(s) y Data Directory Manager(s): Mattyx14.
 
 Special Thanks(s): Emma - Comedinhasss - Lincoln - Rodrigo - Pyromaniack - Druckz - Kazbin & The Forgotten Server Team
 
+=========
 BUGS:
 * Shutdown server on GUI cause crash - Esto se soluciona usando Boost Version < 1.48.
 * Fields(fire/energy/earth).
