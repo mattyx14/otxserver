@@ -3,6 +3,7 @@ OTX Server
 Project Name: OTX Server
 
 OTX Server 2 esta basado: The Forgotten Server Version: 0.3.7 - Crying Damson.
+
 Nombre Codigo: Galaxy.
 
 Forum y website: http://www.blacktibia.org/
