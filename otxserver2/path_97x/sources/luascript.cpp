@@ -2201,7 +2201,7 @@ void LuaInterface::registerFunctions()
 	//stopEvent(eventid)
 	lua_register(m_luaState, "stopEvent", LuaInterface::luaStopEvent);
 
-	//doPlayerAddDialog(dialog, dialog_id, cid, callback) callback parameters (cid,button,choice), dialog_id >= 1000
+	//doPlayerAddDialog(dialog, dialogId, cid, callback) - callback parameters (cid, button, choice); dialogId >= 1000
 	lua_register(m_luaState, "doPlayerAddDialog", LuaInterface::luaDoPlayerAddDialog);
 
 	//getPlayersByAccountId(accId)
@@ -2516,8 +2516,11 @@ void LuaInterface::registerFunctions()
 	//getConfigFile()
 	lua_register(m_luaState, "getConfigFile", LuaInterface::luaGetConfigFile);
 
-	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
-	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoPlayerSendExtendedOpcode);
+	//isPlayerUsingOtclient(cid)
+	lua_register(m_luaState, "isPlayerUsingOtclient", LuaInterface::luaIsPlayerUsingOtclient);
+
+	//doSendPlayerExtendedOpcode(cid, opcode, buffer)
+	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoSendPlayerExtendedOpcode);
 
 	//getConfigValue(key)
 	lua_register(m_luaState, "getConfigValue", LuaInterface::luaGetConfigValue);
@@ -7681,8 +7684,8 @@ int32_t LuaInterface::luaGetPlayerDepotItems(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if(const Depot* depot = player->getDepot(depotid, true))
-			lua_pushnumber(L, depot->getItemHoldingCount());
+		if(const DepotChest* depotChest = player->getDepotChest(depotid, true))
+			lua_pushnumber(L, depotChest->getItemHoldingCount());
 		else
 			lua_pushboolean(L, false);
 	}
@@ -8527,17 +8530,13 @@ int32_t LuaInterface::luaDoPlayerSendTutorial(lua_State* L)
 
 int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 {
-	//doPlayerSendMailByName(name, item[, town[, actor]])
+	//doPlayerSendMailByName(name, item[, actor])
 	ScriptEnviroment* env = getEnv();
 	int32_t params = lua_gettop(L);
 
 	Creature* actor = NULL;
-	if(params > 3)
-		actor = env->getCreatureByUID(popNumber(L));
-
-	uint32_t town = 0;
 	if(params > 2)
-		town = popNumber(L);
+		actor = env->getCreatureByUID(popNumber(L));
 
 	Item* item = env->getItemByUID(popNumber(L));
 	if(!item)
@@ -8553,7 +8552,7 @@ int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 		return 1;
 	}
 
-	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), town, item);
+	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), item);
 	if(result)
 		env->removeTempItem(env, item);
 
@@ -8593,24 +8592,7 @@ int32_t LuaInterface::luaDoPlayerAddPremiumDays(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if(player->premiumDays < GRATIS_PREMIUM)
-		{
-			Account account = IOLoginData::getInstance()->loadAccount(player->getAccount());
-			if(days < 0)
-			{
-				account.premiumDays = std::max((uint32_t)0, uint32_t(account.premiumDays + (int32_t)days));
-				player->premiumDays = std::max((uint32_t)0, uint32_t(player->premiumDays + (int32_t)days));
-			}
-			else
-			{
-				account.premiumDays = std::min((uint32_t)65534, uint32_t(account.premiumDays + (uint32_t)days));
-				player->premiumDays = std::min((uint32_t)65534, uint32_t(player->premiumDays + (uint32_t)days));
-			}
-
-			IOLoginData::getInstance()->saveAccount(account);
-			player->sendBasicData();
-		}
-
+		player->addPremiumDays(days);
 		lua_pushboolean(L, true);
 	}
 	else
@@ -9018,7 +9000,6 @@ int32_t LuaInterface::luaDoPlayerAddDialog(lua_State* L)
 	callback.npc = env->getNpc();
 
 	Player* player;
-
 	if(!(player = env->getPlayerByUID(popNumber(L))))
 	{
 		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
@@ -9026,7 +9007,6 @@ int32_t LuaInterface::luaDoPlayerAddDialog(lua_State* L)
 	}
 
 	uint32_t dialogId = popNumber(L);
-
 	if(dialogId < 1000)
 	{
 		errorEx("DialogId parameter should be a greater than 999(0-999 reserved)");
@@ -9034,114 +9014,119 @@ int32_t LuaInterface::luaDoPlayerAddDialog(lua_State* L)
 		return 1;
 	}
 
-	LuaDialogCallbackMap::iterator tmpIt = player->dialogCallbacks.find(dialogId);
-
+	LuaDialogCallbackMap::iterator it = player->dialogCallbacks.find(dialogId);
 	ModalDialog tmp;
-
-	if (tmpIt == player->dialogCallbacks.end())
+	if(it == player->dialogCallbacks.end())
 	{
-
-		std::string _tmp, title, message;
+		std::string str, title, message;
 		uint8_t buttonEnter, buttonEscape;
 		std::vector<ModalChoice> buttons, choices;
 		bool popup;
 
 		lua_pushnil(L);
-		while (lua_next(L, 1) != 0) {
-			const char* key = lua_tostring(L, -2);
-			std::string strkey = key;
+		while(lua_next(L, 1))
+		{
+			const char* tmpChr = lua_tostring(L, -2);
+			std::string key = tmpChr;
 
-			_tmp = "title";
-			if (strkey.compare(_tmp) == 0)
+			str = "title";
+			if(!key.compare(str))
 			{
-				const char* _title = lua_tostring(L, -1);
-				title = _title;
+				tmpChr = lua_tostring(L, -1);
+				title = tmpChr;
 			}
 
-			_tmp = "message";
-			if (strkey.compare(_tmp) == 0)
+			str = "message";
+			if(!key.compare(str))
 			{
-				const char* _message = lua_tostring(L, -1);
-				message = _message;
+				tmpChr = lua_tostring(L, -1);
+				message = tmpChr;
 			}
 
-			_tmp = "buttons";
-			if (strkey.compare(_tmp) == 0)
+			str = "buttons";
+			if(!key.compare(str))
 			{
 				lua_pushnil(L);
-				std::string _str_tmp;
+				std::string tmpStr;
+	
 				ModalChoice _choice;
-				while( lua_next( L, -2) ) {
+				while(lua_next(L, -2))
+				{
 					lua_pushnil(L);
-					while( lua_next( L, -2) ) {
-						const char* _c_tmp = lua_tostring(L, -2);
-						_str_tmp = _c_tmp;
+					while(lua_next(L, -2))
+					{
+						tmpChr = lua_tostring(L, -2);
+						tmpStr = tmpChr;
 
-						_tmp = "id";
-						if (_tmp.compare(_str_tmp) == 0) {
-							_choice.id = lua_tonumber(L,-1);
+						str = "id";
+						if(!str.compare(tmpStr))
+							_choice.id = lua_tonumber(L, -1);
+
+						str = "value";
+						if(!str.compare(tmpStr))
+						{
+							tmpChr = lua_tostring(L, -1);
+							_choice.value = tmpChr;
 						}
-						_tmp = "value";
-						if (_tmp.compare(_str_tmp) == 0) {
-							const char* _value = lua_tostring(L,-1);
-							_choice.value = _value;
-						}
-						lua_pop( L, 1 );
+
+						lua_pop(L, 1);
 					}
-					lua_pop( L, 1 );
+
+					lua_pop(L, 1);
 					buttons.push_back(_choice);
 				}
 			}
 
-			_tmp = "buttonEnter";
-			if (strkey.compare(_tmp) == 0)
-			{
+			str = "buttonEnter";
+			if(!key.compare(str))
 				buttonEnter = lua_tonumber(L, -1);
-			}
-			_tmp = "buttonReset";
-			if (strkey.compare(_tmp) == 0)
-			{
+
+			str = "buttonReset";
+			if(!key.compare(str))
 				buttonEscape = lua_tonumber(L, -1);
-			}
-			_tmp = "choices";
-			if (strkey.compare(_tmp) == 0)
+
+			str = "choices";
+			if(!key.compare(str))
 			{
 				lua_pushnil(L);
-				std::string _str_tmp;
-				ModalChoice _choice;
-				while( lua_next( L, -2) ) {
-					lua_pushnil(L);
-					while( lua_next( L, -2) ) {
-						const char* _c_tmp = lua_tostring(L, -2);
-						_str_tmp = _c_tmp;
+				std::string tmpStr;
 
-						_tmp = "id";
-						if (_tmp.compare(_str_tmp) == 0) {
-							_choice.id = lua_tonumber(L,-1);
+				ModalChoice _choice;
+				while(lua_next(L, -2))
+				{
+					lua_pushnil(L);
+					while(lua_next(L, -2))
+					{
+						tmpChr = lua_tostring(L, -2);
+						tmpStr = tmpChr;
+
+						str = "id";
+						if(!str.compare(tmpStr))
+							_choice.id = lua_tonumber(L, -1);
+
+						str = "value";
+						if(!str.compare(tmpStr))
+						{
+							tmpChr = lua_tostring(L, -1);
+							_choice.value = tmpChr;
 						}
-						_tmp = "value";
-						if (_tmp.compare(_str_tmp) == 0) {
-							const char* _value = lua_tostring(L,-1);
-							_choice.value = _value;
-						}
-						lua_pop( L, 1 );
+
+						lua_pop(L, 1);
 					}
-					lua_pop( L, 1 );
+
+					lua_pop(L, 1);
 					choices.push_back(_choice);
 				}
 			}
-			_tmp = "popup";
-			if (strkey.compare(_tmp) == 0)
-			{
+
+			str = "popup";
+			if(!key.compare(str))
 				popup = !!lua_toboolean(L, -1);
-			}
 
 			lua_pop(L, 1);
 		}
-		lua_pop(L,1);
 
-		player->dialogControl.dialogId = dialogId;
-		player->dialogControl.pos = player->getPosition();
+		lua_pop(L, 1);
 
 		tmp.id = dialogId;
 		tmp.title = title;
@@ -9155,12 +9140,13 @@ int32_t LuaInterface::luaDoPlayerAddDialog(lua_State* L)
 		tmp.buttonEscape = buttonEscape;
 
 		callback.dialog = tmp;
-
 		player->dialogCallbacks.insert(std::pair<uint32_t, LuaDialogCallback>(dialogId, callback));
 	}
-	else {
-		tmp = tmpIt->second.dialog;
-	}
+	else
+		tmp = it->second.dialog;
+
+	player->dialogControl.dialogId = dialogId;
+	player->dialogControl.pos = player->getPosition();
 
 	player->sendModalDialog(tmp);
 	return 1;
@@ -9724,7 +9710,20 @@ int32_t LuaInterface::luaGetMountInfo(lua_State* L)
 	return 1;
 }
 
-int32_t LuaInterface::luaDoPlayerSendExtendedOpcode(lua_State* L)
+int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
+{
+	//isPlayerUsingOtclient(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		lua_pushboolean(L, player->isUsingOtclient());
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
 {
 	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
 	std::string buffer = popString(L);

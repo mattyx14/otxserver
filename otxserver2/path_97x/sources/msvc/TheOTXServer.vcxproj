@@ -58,7 +58,8 @@
     <ClInclude Include="..\databasepgsql.h" />
     <ClInclude Include="..\databasesqlite.h" />
     <ClInclude Include="..\definitions.h" />
-    <ClInclude Include="..\depot.h" />
+    <ClInclude Include="..\depotchest.h" />
+    <ClInclude Include="..\depotlocker.h" />
     <ClInclude Include="..\dispatcher.h" />
     <ClInclude Include="..\enums.h" />
     <ClInclude Include="..\exception.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="..\gui.h" />
     <ClInclude Include="..\house.h" />
     <ClInclude Include="..\housetile.h" />
+    <ClInclude Include="..\inbox.h" />
     <ClInclude Include="..\inputbox.h" />
     <ClInclude Include="..\ioban.h" />
     <ClInclude Include="..\ioguild.h" />
@@ -150,7 +152,8 @@
     <ClCompile Include="..\databasemysqlpp.cpp" />
     <ClCompile Include="..\databasepgsql.cpp" />
     <ClCompile Include="..\databasesqlite.cpp" />
-    <ClCompile Include="..\depot.cpp" />
+    <ClCompile Include="..\depotchest.cpp" />
+    <ClCompile Include="..\depotlocker.cpp" />
     <ClCompile Include="..\dispatcher.cpp" />
     <ClCompile Include="..\exception.cpp" />
     <ClCompile Include="..\fileloader.cpp" />
@@ -161,6 +164,7 @@
     <ClCompile Include="..\gui.cpp" />
     <ClCompile Include="..\house.cpp" />
     <ClCompile Include="..\housetile.cpp" />
+    <ClCompile Include="..\inbox.cpp" />
     <ClCompile Include="..\inputbox.cpp" />
     <ClCompile Include="..\ioban.cpp" />
     <ClCompile Include="..\ioguild.cpp" />

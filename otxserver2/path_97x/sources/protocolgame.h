@@ -32,7 +32,8 @@ class Container;
 class Tile;
 class Connection;
 class Quest;
-class Depot;
+class DepotChest;
+class DepotLocker;
 
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
 typedef boost::shared_ptr<NetworkMessage> NetworkMessage_ptr;
@@ -238,9 +239,11 @@ class ProtocolGame : public Protocol
 		void sendQuests();
 		void sendQuestInfo(Quest* quest);
 
-		void sendVIPLogIn(uint32_t guid);
-		void sendVIPLogOut(uint32_t guid);
-		void sendVIP(uint32_t guid, const std::string& name, const std::string& desc, uint32_t& icon, bool notify, bool online);
+		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
+		void sendVIP(uint32_t guid, const std::string& name, const std::string& desc, uint32_t& icon, bool notify, VipStatus_t status);
+
+		void sendPendingStateEntered();
+		void sendEnterWorld();
 
 		void sendSpellCooldown(Spells_t icon, uint32_t cooldown);
 		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t cooldown);

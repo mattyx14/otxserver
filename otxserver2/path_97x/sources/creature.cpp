@@ -36,6 +36,10 @@ boost::recursive_mutex AutoId::lock;
 uint32_t AutoId::count = 1000;
 AutoId::List AutoId::list;
 
+double Creature::speedA = 857.36;
+double Creature::speedB = 261.29;
+double Creature::speedC = -4795.01;
+
 extern Game g_game;
 extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
@@ -163,18 +167,22 @@ int64_t Creature::getTimeSinceLastMove() const
 
 int32_t Creature::getWalkDelay(Direction dir) const
 {
-	if(lastStep)
-		return getStepDuration(dir) - (OTSYS_TIME() - lastStep);
+	if(lastStep == 0)
+		return 0;
 
-	return 0;
+	int64_t ct = OTSYS_TIME();
+	int64_t stepDuration = getStepDuration(dir);
+	return stepDuration - (ct - lastStep);
 }
 
 int32_t Creature::getWalkDelay() const
 {
-	if(lastStep)
-		return getStepDuration() - (OTSYS_TIME() - lastStep);
+	if(lastStep == 0)
+		return 0;
 
-	return 0;
+	int64_t ct = OTSYS_TIME();
+	int64_t stepDuration = getStepDuration() * lastStepCost;
+	return stepDuration - (ct - lastStep);
 }
 
 void Creature::onThink(uint32_t interval)
@@ -334,6 +342,13 @@ bool Creature::getNextStep(Direction& dir, uint32_t&)
 
 bool Creature::startAutoWalk(std::list<Direction>& listDir)
 {
+	const Player* thisPlayer = getPlayer();
+	if(thisPlayer && thisPlayer->getNoMove())
+	{
+		thisPlayer->sendCancelWalk();
+		return false;
+	}
+
 	listWalkDir = listDir;
 	addEventWalk(listDir.size() == 1);
 	return true;
@@ -342,11 +357,15 @@ bool Creature::startAutoWalk(std::list<Direction>& listDir)
 void Creature::addEventWalk(bool firstStep/* = false*/)
 {
 	cancelNextWalk = false;
-	if(getStepSpeed() < 1 || eventWalk)
+
+	if(getStepSpeed() <= 0)
+		return;
+
+	if(eventWalk != 0)
 		return;
 
 	int64_t ticks = getEventStepTicks(firstStep);
-	if(ticks < 1)
+	if(ticks <= 0)
 		return;
 
 	if(ticks == 1)
@@ -1654,37 +1673,56 @@ std::string Creature::getDescription(int32_t) const
 int32_t Creature::getStepDuration(Direction dir) const
 {
 	if(dir == NORTHWEST || dir == NORTHEAST || dir == SOUTHWEST || dir == SOUTHEAST)
-		return getStepDuration() << 1;
+		return getStepDuration() *3;
 
 	return getStepDuration();
 }
 
 int32_t Creature::getStepDuration() const
 {
-	if(removed)
+	if(isRemoved())
 		return 0;
 
-	uint32_t stepSpeed = getStepSpeed();
-	if(!stepSpeed)
-		return 0;
+	uint32_t calculatedStepSpeed;
+	uint32_t groundSpeed;
+
+	int32_t stepSpeed = getStepSpeed();
+	if(stepSpeed > -Creature::speedB)
+	{
+		calculatedStepSpeed = floor((Creature::speedA * log((stepSpeed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
+		if(calculatedStepSpeed <= 0)
+			calculatedStepSpeed = 1;
+	}
+	else
+		calculatedStepSpeed = 1;
 
 	const Tile* tile = getTile();
-	if(!tile || !tile->ground)
-		return 0;
+	if(tile && tile->ground)
+	{
+		uint32_t groundId = tile->ground->getID();
+		groundSpeed = Item::items[groundId].speed;
+		if(groundSpeed == 0)
+			groundSpeed = 150;
+	}
+	else
+		groundSpeed = 150;
 
-	return ((1000 * Item::items[tile->ground->getID()].speed) / stepSpeed) * lastStepCost;
+	double duration = std::floor(1000 * groundSpeed / (double)calculatedStepSpeed);
+	return std::ceil(duration / 50) * 50;
 }
 
 int64_t Creature::getEventStepTicks(bool onlyDelay/* = false*/) const
 {
 	int64_t ret = getWalkDelay();
-	if(ret > 0)
-		return ret;
-
-	if(!onlyDelay)
-		return getStepDuration();
-
-	return 1;
+	if(ret <= 0)
+	{
+		int32_t stepDuration = getStepDuration();
+		if(onlyDelay && stepDuration > 0)
+			ret = 1;
+		else
+			ret = stepDuration * lastStepCost;
+	}
+	return ret;
 }
 
 void Creature::getCreatureLight(LightInfo& light) const
@@ -1784,9 +1822,13 @@ bool FrozenPathingConditionCall::operator()(const Position& startPos, const Posi
 
 	int32_t testDist = std::max(std::abs(targetPos.x - testPos.x), std::abs(targetPos.y - testPos.y));
 	if(fpp.maxTargetDist == 1)
-		return (testDist >= fpp.minTargetDist && testDist <= fpp.maxTargetDist);
+	{
+		if(testDist < fpp.minTargetDist || testDist > fpp.maxTargetDist)
+			return false;
 
-	if(testDist <= fpp.maxTargetDist)
+		return true;
+	}
+	else if(testDist <= fpp.maxTargetDist)
 	{
 		if(testDist < fpp.minTargetDist)
 			return false;
@@ -1803,6 +1845,5 @@ bool FrozenPathingConditionCall::operator()(const Position& startPos, const Posi
 			return true;
 		}
 	}
-
 	return false;
 }

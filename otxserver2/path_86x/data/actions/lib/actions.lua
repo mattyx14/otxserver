@@ -58,7 +58,7 @@ function destroyItem(cid, itemEx, toPosition)
 		return true
 	end
 
-	if not(isInArray({1770, 2098, 1774, 2064, 2094, 2095, 1619, 2602, 3805, 3806}, itemEx.itemid) or
+	if not(isInArray({1770, 2098, 1774, 1775, 2064, 2094, 2095, 1619, 2602, 3805, 3806}, itemEx.itemid) or
 		(itemEx.itemid >= 1724 and itemEx.itemid <= 1741) or
 		(itemEx.itemid >= 2581 and itemEx.itemid <= 2588) or
 		(itemEx.itemid >= 1747 and itemEx.itemid <= 1753) or

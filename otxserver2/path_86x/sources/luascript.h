@@ -693,7 +693,8 @@ class LuaInterface
 		static int32_t luaGetConfigValue(lua_State* L);
 		static int32_t luaGetModList(lua_State* L);
 		static int32_t luaDoPlayerSetWalkthrough(lua_State* L);
-		static int32_t luaDoPlayerSendExtendedOpcode(lua_State* L);
+		static int32_t luaIsPlayerUsingOtclient(lua_State* L);
+		static int32_t luaDoSendPlayerExtendedOpcode(lua_State* L);
 
 		static int32_t luaL_errors(lua_State* L);
 		static int32_t luaL_loadmodlib(lua_State* L);

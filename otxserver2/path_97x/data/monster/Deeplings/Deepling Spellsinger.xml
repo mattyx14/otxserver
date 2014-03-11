@@ -2,8 +2,8 @@
 <monster name="Deepling Spellsinger" nameDescription="a deepling spellsinger" race="blood" experience="1000" speed="560" manacost="0">
 	<health now="850" max="850"/>
 	<look type="443" corpse="15209"/>
-	<targetchange interval="2000" chance="50"/>
-	<strategy attack="100" defense="0"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="90" defense="10"/>
 	<flags>
 		<flag summonable="0"/>
 		<flag attackable="1"/>
@@ -14,16 +14,24 @@
 		<flag canpushitems="1"/>
 		<flag canpushcreatures="1"/>
 		<flag targetdistance="0"/>
+		<flag staticattack="90"/>
 		<flag runonhealth="60"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="12" attack="143"/>
-		<attack name="ice wave" interval="1000" chance="11" range="5" target="1" min ="-135" max="-300">
-			<attribute key="shootEffect" value="ice"/> <!-- TODO: Add spear deepling speed effect? -->
-        <attribute key="areaEffect" value="bluebubble"/>
+		<attack name="melee" interval="2000" skill="80" attack="120"/>
+		<attack name="speed" interval="1000" chance="17" range="7" radius="4" target="1" speedchange="-600" duration="1500">
+		</attack>
+		<attack name="ice" interval="2000" chance="21" range="6" radius="2" target="1" min="-130" max="-350">
+			<attribute key="shootEffect" value="smallice"/>
+			<attribute key="areaEffect" value="giantice"/>
+		</attack>
+		<attack name="manadrain" interval="2000" chance="15" range="7" min="-60" max="-120"> 
+			<attribute key="shootEffect" value="earth"/>
+			<attribute key="areaeffect" value="carniphila"/>	
 		</attack>
 	</attacks>
-	<defenses armor="12" defense="20"/>
+	<defenses armor="75" defense="75">    
+	</defenses>
 	<immunities>
 		<immunity ice="1" />
 		<immunity drown="1" />

@@ -80,7 +80,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
 	windowTextId = nextExAction = 0;
 
-	purchaseCallback = saleCallback = -1;
+	purchaseCallback = saleCallback = lastDepotId = -1;
 	level = 1;
 	rates[SKILL__MAGLEVEL] = rates[SKILL__LEVEL] = 1.0f;
 	soulMax = 100;
@@ -99,6 +99,11 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 
 	setVocation(0);
 	setParty(NULL);
+
+	inbox = new Inbox(ITEM_INBOX);
+	inbox->addRef();
+
+	depotChange = false;
 
 	transferContainer.setParent(NULL);
 	for(int32_t i = 0; i < 11; ++i)
@@ -152,8 +157,12 @@ Player::~Player()
 	setNextWalkActionTask(NULL);
 
 	transferContainer.setParent(NULL);
-	for(DepotMap::iterator it = depots.begin(); it != depots.end(); ++it)
-		it->second.first->unRef();
+	for(DepotLockerMap::iterator it = depotLockerMap.begin(), end = depotLockerMap.end(); it != end; ++it)
+	{
+		it->second->removeInbox(inbox);
+		it->second->unRef();
+	}
+	inbox->unRef();
 }
 
 void Player::setVocation(uint32_t id)
@@ -923,54 +932,37 @@ void Player::setWalkthrough(const Creature* creature, bool walkthrough)
 		sendCreatureWalkthrough(creature, !walkthrough ? canWalkthrough(creature) : walkthrough);
 }
 
-Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
+DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
 {
-	DepotMap::iterator it = depots.find(depotId);
-	if(it != depots.end())
-		return it->second.first;
+	DepotMap::iterator it = depotChests.find(depotId);
+	if(it != depotChests.end())
+		return it->second;
 
-	//create a new depot?
-	if(autoCreateDepot)
+	if(!autoCreate)
+		return NULL;
+
+	DepotChest* depotChest = new DepotChest(ITEM_DEPOT);
+	depotChest->addRef();
+	depotChest->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
+	depotChests[depotId] = depotChest;
+	return depotChest;
+}
+
+DepotLocker* Player::getDepotLocker(uint32_t depotId)
+{
+	DepotLockerMap::iterator it = depotLockerMap.find(depotId);
+	if(it != depotLockerMap.end())
 	{
-		Item* locker = Item::CreateItem(ITEM_LOCKER);
-		if(Container* container = locker->getContainer())
-		{
-			if(Depot* depot = container->getDepot())
-			{
-				container->__internalAddThing(Item::CreateItem(ITEM_DEPOT));
-				internalAddDepot(depot, depotId);
-				return depot;
-			}
-		}
-
-		g_game.freeThing(locker);
-		std::clog << "Failure: Creating a new depot with id: " << depotId <<
-			", for player: " << getName() << std::endl;
+		inbox->setParent(it->second);
+		return it->second;
 	}
 
-	return NULL;
-}
-
-bool Player::addDepot(Depot* depot, uint32_t depotId)
-{
-	if(getDepot(depotId, false))
-		return false;
-
-	internalAddDepot(depot, depotId);
-	return true;
-}
-
-void Player::internalAddDepot(Depot* depot, uint32_t depotId)
-{
-	depots[depotId] = std::make_pair(depot, false);
-	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
-}
-
-void Player::useDepot(uint32_t depotId, bool value)
-{
-	DepotMap::iterator it = depots.find(depotId);
-	if(it != depots.end())
-		depots[depotId] = std::make_pair(it->second.first, value);
+	DepotLocker* depotLocker = new DepotLocker(ITEM_LOCKER);
+	depotLocker->setDepotId(depotId);
+	depotLocker->__internalAddThing(inbox);
+	depotLocker->__internalAddThing(getDepotChest(depotId, true));
+	depotLockerMap[depotId] = depotLocker;
+	return depotLocker;
 }
 
 void Player::sendCancelMessage(ReturnValue message) const
@@ -1242,9 +1234,7 @@ void Player::sendCancelMessage(ReturnValue message) const
 void Player::sendStats()
 {
 	if(client)
-	{
 		client->sendStats();
-	}
 }
 
 Item* Player::getWriteItem(uint32_t& _windowTextId, uint16_t& _maxWriteLen)
@@ -1541,6 +1531,7 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	#if defined(WINDOWS) && !defined(_CONSOLE)
 	GUI::getInstance()->m_pBox.removePlayer(this);
 	#endif
+
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
 		std::clog << getName() << " has logged out." << std::endl;
 
@@ -3500,16 +3491,16 @@ void Player::postRemoveNotification(Creature*, Thing* thing, const Cylinder* new
 				onSendContainer(container);
 			else if(const Container* topContainer = dynamic_cast<const Container*>(container->getTopParent()))
 			{
-				if(const Depot* depot = dynamic_cast<const Depot*>(topContainer))
+				if(const DepotChest* depotChest = dynamic_cast<const DepotChest*>(topContainer))
 				{
 					bool isOwner = false;
-					for(DepotMap::iterator it = depots.begin(); it != depots.end(); ++it)
+					for(DepotMap::iterator it = depotChests.begin(); it != depotChests.end(); ++it)
 					{
-						if(it->second.first != depot)
-							continue;
-
-						isOwner = true;
-						onSendContainer(container);
+						if(it->second == depotChest)
+						{
+							isOwner = true;
+							onSendContainer(container);
+						}
 					}
 
 					if(!isOwner)

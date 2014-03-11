@@ -1246,7 +1246,7 @@ bool TalkAction::ghost(Creature* creature, const std::string&, const std::string
 		for(AutoList<Player>::iterator pit = Player::autoList.begin(); pit != Player::autoList.end(); ++pit)
 		{
 			if((tmpPlayer = pit->second) && !tmpPlayer->canSeeCreature(player))
-				tmpPlayer->notifyLogIn(player);
+				tmpPlayer->notifyStatusChange(player, VIPSTATUS_ONLINE);
 		}
 
 		for(it = list.begin(); it != list.end(); ++it)
@@ -1271,7 +1271,7 @@ bool TalkAction::ghost(Creature* creature, const std::string&, const std::string
 		for(AutoList<Player>::iterator pit = Player::autoList.begin(); pit != Player::autoList.end(); ++pit)
 		{
 			if((tmpPlayer = pit->second) && !tmpPlayer->canSeeCreature(player))
-				tmpPlayer->notifyLogOut(player);
+				tmpPlayer->notifyStatusChange(player, VIPSTATUS_OFFLINE);
 		}
 
 		IOLoginData::getInstance()->updateOnlineStatus(player->getGUID(), false);

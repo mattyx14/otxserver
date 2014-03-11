@@ -38,6 +38,13 @@ enum Vocation_t
 	VOCATION_ELITEKNIGHT = 8
 };
 
+enum VipStatus_t
+{
+	VIPSTATUS_OFFLINE = 0,
+	VIPSTATUS_ONLINE = 1,
+	VIPSTATUS_PENDING = 2
+};
+
 enum MarketAction_t
 {
 	MARKETACTION_BUY = 0,

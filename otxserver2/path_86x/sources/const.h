@@ -377,7 +377,8 @@ enum Icons_t
 	ICON_BUFF		= 1 << 12,
 	ICON_PZBLOCK	= 1 << 13,
 	ICON_PZ			= 1 << 14,
-	ICON_BLEED		= 1 << 15
+	ICON_BLEED		= 1 << 15,
+	ICON_HUNGRY		= 1 << 16
 };
 
 enum skills_t
@@ -503,6 +504,7 @@ enum item_t
 
 	ITEM_DEPOT				= 2594,
 	ITEM_LOCKER				= 2589,
+	ITEM_INBOX				= ITEM_DEPOT,
 
 	ITEM_MALE_CORPSE		= 3058,
 	ITEM_FEMALE_CORPSE		= 3065,

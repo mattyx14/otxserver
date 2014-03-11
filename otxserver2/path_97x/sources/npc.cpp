@@ -371,7 +371,7 @@ bool Npc::loadFromXml()
 	if(readXMLString(root, "hidehealth", strValue) || readXMLString(root, "hideHealth", strValue))
 		hideHealth = booleanString(strValue);
 
-	baseSpeed = 110;
+	baseSpeed = 100;
 	if(readXMLInteger(root, "speed", intValue))
 		baseSpeed = intValue;
 
@@ -615,7 +615,6 @@ ResponseList Npc::parseInteractionNode(xmlNodePtr node)
 				ItemListMap::iterator it = itemListMap.find(strValue);
 				if(it == itemListMap.end())
 				{
-					std::string listId = strValue;
 					std::list<ListItem>& list = itemListMap[strValue];
 
 					xmlNodePtr tmpNode = node->children;

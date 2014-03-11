@@ -86,8 +86,8 @@
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "5"
-#define PATCH_VERSION "0"
-#define REVISION_VERSION "1485"
+#define PATCH_VERSION "1"
+#define REVISION_VERSION "SE - 1549"
 #define SOFTWARE_CODENAME "Necron"
 #define SOFTWARE_DEVELOPERS "Kaiser, Emma, Comedinhasss and Kazbin"
 #define SOFTWARE_PROTOCOL "8.71"
@@ -98,5 +98,5 @@
 #define CLIENT_VERSION_SPR 0
 #define CLIENT_VERSION_PIC 0
 
-#define VERSION_DATABASE 36
+#define VERSION_DATABASE 37
 #endif

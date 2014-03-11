@@ -2485,8 +2485,11 @@ void LuaInterface::registerFunctions()
 	//getConfigFile()
 	lua_register(m_luaState, "getConfigFile", LuaInterface::luaGetConfigFile);
 
-	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
-	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoPlayerSendExtendedOpcode);
+	//isPlayerUsingOtclient(cid)
+	lua_register(m_luaState, "isPlayerUsingOtclient", LuaInterface::luaIsPlayerUsingOtclient);
+
+	//doSendPlayerExtendedOpcode(cid, opcode, buffer)
+	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoSendPlayerExtendedOpcode);
 
 	//getConfigValue(key)
 	lua_register(m_luaState, "getConfigValue", LuaInterface::luaGetConfigValue);
@@ -7655,8 +7658,8 @@ int32_t LuaInterface::luaGetPlayerDepotItems(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if(const Depot* depot = player->getDepot(depotid, true))
-			lua_pushnumber(L, depot->getItemHoldingCount());
+		if(const DepotChest* depotChest = player->getDepotChest(depotid, true))
+			lua_pushnumber(L, depotChest->getItemHoldingCount());
 		else
 			lua_pushboolean(L, false);
 	}
@@ -8501,17 +8504,13 @@ int32_t LuaInterface::luaDoPlayerSendTutorial(lua_State* L)
 
 int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 {
-	//doPlayerSendMailByName(name, item[, town[, actor]])
+	//doPlayerSendMailByName(name, item[, actor])
 	ScriptEnviroment* env = getEnv();
 	int32_t params = lua_gettop(L);
 
 	Creature* actor = NULL;
-	if(params > 3)
-		actor = env->getCreatureByUID(popNumber(L));
-
-	uint32_t town = 0;
 	if(params > 2)
-		town = popNumber(L);
+		actor = env->getCreatureByUID(popNumber(L));
 
 	Item* item = env->getItemByUID(popNumber(L));
 	if(!item)
@@ -8527,7 +8526,7 @@ int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 		return 1;
 	}
 
-	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), town, item);
+	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), item);
 	if(result)
 		env->removeTempItem(env, item);
 
@@ -9521,7 +9520,20 @@ int32_t LuaInterface::luaGetMountInfo(lua_State* L)
 	return 1;
 }
 
-int32_t LuaInterface::luaDoPlayerSendExtendedOpcode(lua_State* L)
+int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
+{
+	//isPlayerUsingOtclient(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		lua_pushboolean(L, player->isUsingOtclient());
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
 {
 	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
 	std::string buffer = popString(L);

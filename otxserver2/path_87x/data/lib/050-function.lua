@@ -1,5 +1,5 @@
 function isInArray(array, value, caseSensitive)
-	if (caseSensitive == nil or caseSensitive == false) and type(value) == "string" then
+	if(caseSensitive == nil or caseSensitive == false) and type(value) == "string" then
 		local lowerValue = value:lower()
 		for _, _value in ipairs(array) do
 			if type(_value) == "string" and lowerValue == _value:lower() then
@@ -11,6 +11,7 @@ function isInArray(array, value, caseSensitive)
 			if (value == _value) then return true end
 		end
 	end
+
 	return false
 end
 
@@ -436,48 +437,4 @@ function valid(f)
 			return f(p, ...)
 		end
 	end
-end
-
-function addContainerItems(container,items)
-	local items_mod = {}
-	for _, it in ipairs(items) do
-		if( isItemStackable(it.id) and it.count > 100) then
-			local c = it.count
-			while( c > 100 ) do
-				table.insert(items_mod,{id = it.id,count = 100})
-				c = c - 100
-			end
-			if(c > 0) then
-				table.insert(items_mod,{id = it.id,count = c})
-			end
-		else
-			table.insert(items_mod,{id = it.id,count = 1})
-		end
-	end
-
-	local free = getContainerCap(container.uid) - (getContainerSize(container.uid) )
-	local count = math.ceil(#items_mod/ free)
-	local main_bp = container.uid
-	local insert_bp = main_bp
-	local counter = 1
-	for c,it in ipairs(items_mod) do
-		local _c = isItemStackable(it.id) and (it.count > 100 and 100 or it.count) or 1
-		if count > 1 then
-			if (counter < free) then
-				doAddContainerItem(insert_bp, it.id, _c)
-			else
-				insert_bp = doAddContainerItem(insert_bp, container.itemid, 1)
-				count = (#items_mod)-(free-1)
-				free = getContainerCap(insert_bp) 
-				count = math.ceil(count/ free)
-				doAddContainerItem(insert_bp, it.id, _c)
-				counter = 1
-			end
-			counter = counter + 1
-		else
-			doAddContainerItem(insert_bp, it.id, _c)
-		end
-	end
-
-	return main_bp
 end

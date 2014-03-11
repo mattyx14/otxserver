@@ -255,6 +255,11 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		player->setClientVersion(version);
 		player->setOperatingSystem(operatingSystem);
 
+		if(player->isUsingOtclient())
+		{
+			player->registerCreatureEvent("ExtendedOpcode");
+		}
+
 		player->lastIP = player->getIP();
 		player->lastLoad = OTSYS_TIME();
 		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
@@ -3057,12 +3062,15 @@ void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
 {
 	uint8_t opcode = msg.get<char>();
 	std::string buffer = msg.getString();
-	addGameTask(&Game::playerExtendedOpcode, player->getID(), opcode, buffer);
+
+	// process additional opcodes via lua script event
+	addGameTask(&Game::parsePlayerExtendedOpcode, player->getID(), opcode, buffer);
 }
 
 void ProtocolGame::sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
 {
-	if(!player || player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX)
+	// extended opcodes can only be send to players using otclient, cipsoft's tibia can't understand them
+	if(player && !player->isUsingOtclient())
 		return;
 
 	NetworkMessage_ptr msg = getOutputBuffer();

@@ -17,6 +17,7 @@
 #include "otpch.h"
 #include "enums.h"
 #include <iostream>
+#include <stack>
 
 #include "databasemanager.h"
 #include "tools.h"
@@ -1488,6 +1489,153 @@ uint32_t DatabaseManager::updateDatabase()
 			{
 				case DATABASE_ENGINE_MYSQL:
 				{
+					//global inbox viplist
+					db->query("CREATE TABLE `player_inboxitems` (`player_id` int(11) NOT NULL, `sid` int(11) NOT NULL, `pid` int(11) NOT NULL DEFAULT '0', `itemtype` smallint(6) NOT NULL, `count` smallint(5) NOT NULL DEFAULT '0', `attributes` blob NOT NULL, UNIQUE KEY `player_id_2` (`player_id`,`sid`), KEY `player_id` (`player_id`), FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+
+					// Delete "market" item
+					db->query("DELETE FROM `player_depotitems` WHERE `itemtype` = 14405;");
+
+					// Move up items in depot chests
+					DBResult* result = db->storeQuery("SELECT `player_id`, `pid`, (SELECT `dp2`.`sid` FROM `player_depotitems` AS `dp2` WHERE `dp2`.`player_id` = `dp1`.`player_id` AND `dp2`.`pid` = `dp1`.`sid` AND `itemtype` = 2594) AS `sid` FROM `player_depotitems` AS `dp1` WHERE `itemtype` = 2589;");
+					if(result)
+					{
+						do
+						{
+							query.str("");
+							query << "UPDATE `player_depotitems` SET `pid` = " << result->getDataInt("pid") << " WHERE `player_id` = " << result->getDataInt("player_id") << " AND `pid` = " << result->getDataInt("sid") << ";";
+							db->query(query.str());
+						}
+						while(result->next());
+						result->free();
+					}
+
+					// Delete the depot lockers
+					db->query("DELETE FROM `player_depotitems` WHERE `itemtype` = 2589;");
+
+					// Delete the depot chests
+					db->query("DELETE FROM `player_depotitems` WHERE `itemtype` = 2594;");
+
+					std::stringstream ss2;
+
+					result = db->storeQuery("SELECT DISTINCT `player_id` FROM `player_depotitems` WHERE `itemtype` = 14404;");
+					if(result)
+					{
+						do
+						{
+							int32_t runningId = 100;
+
+							DBInsert stmt(db);
+							stmt.setQuery("INSERT INTO `player_inboxitems` (`player_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`) VALUES ");
+
+							std::ostringstream sss;
+							sss << "SELECT `sid` FROM `player_depotitems` WHERE `player_id` = " << result->getDataInt("player_id") << " AND `itemtype` = 14404;";
+							DBResult* result2 = db->storeQuery(sss.str());
+							if(result2)
+							{
+								do
+								{
+									std::stack<int32_t> sids;
+									sids.push(result2->getDataInt("sid"));
+									while(!sids.empty())
+									{
+										int32_t sid = sids.top();
+										sids.pop();
+
+										std::ostringstream ss;
+										ss << "SELECT * FROM `player_depotitems` WHERE `player_id` = " << result->getDataInt("player_id") << " AND `pid` = " << sid << ";";
+										DBResult* result3 = db->storeQuery(ss.str());
+										if(result3)
+										{
+											do
+											{
+												uint64_t attrSize = 0;
+												const char* attr = result3->getDataStream("attributes", attrSize);
+												ss2 << result->getDataInt("player_id") << "," << ++runningId << ",0," << result3->getDataInt("itemtype") << "," << result3->getDataInt("count") << "," << db->escapeBlob(attr, attrSize);
+												if(!stmt.addRow(ss2))
+													std::cout << "Failed to add row!" << std::endl;
+
+												sids.push(result3->getDataInt("sid"));
+
+												std::ostringstream tmpss;
+												tmpss << "DELETE FROM `player_depotitems` WHERE `player_id` = " << result->getDataInt("player_id") << " AND `sid` = " << result3->getDataInt("sid") << ";";
+												db->query(tmpss.str());
+											}
+											while(result3->next());
+											result->free();
+										}
+									}
+								}
+								while(result2->next());
+								result2->free();
+							}
+
+							if (!stmt.execute())
+								std::cout << "Failed to execute statement!" << std::endl;
+						}
+						while(result->next());
+						result->free();
+					}
+
+					// Delete the inboxes
+					db->query("DELETE FROM `player_depotitems` WHERE `itemtype` = 14404;");
+					break;
+				}
+
+				case DATABASE_ENGINE_SQLITE:
+				{
+					db->query("CREATE TABLE 'player_inboxitems' (\
+						'player_id' INTEGER NOT NULL,\
+						'sid' INTEGER NOT NULL,\
+						'pid' INTEGER NOT NULL DEFAULT 0,\
+						'itemtype' INTEGER NOT NULL,\
+						'count' INTEGER NOT NULL DEFAULT 0,\
+						'attributes' BLOB NOT NULL,\
+						FOREIGN KEY ('player_id') REFERENCES 'players' ('id')\
+						);");
+					break;
+				}
+
+				default:
+					break;
+			}
+
+			registerDatabaseConfig("db_version", 39);
+			return 39;
+		}
+
+		case 39:
+		{
+			std::clog << "> Updating database to version 40..." << std::endl;
+			switch(db->getDatabaseEngine())
+			{
+				case DATABASE_ENGINE_MYSQL:
+				{
+					db->query("ALTER TABLE `market_history` ADD `world_id` TINYINT(4) UNSIGNED NOT NULL DEFAULT 0 AFTER `id`;");
+					db->query("ALTER TABLE `market_offers` ADD `world_id` TINYINT(4) UNSIGNED NOT NULL DEFAULT 0 AFTER `id`;");
+					break;
+				}
+
+				case DATABASE_ENGINE_SQLITE:
+				{
+					db->query("ALTER TABLE `market_history` ADD `world_id` TINYINT(4) NOT NULL DEFAULT 0;");
+					db->query("ALTER TABLE `market_offers` ADD `world_id` TINYINT(4) NOT NULL DEFAULT 0;");
+				}
+
+				default:
+					break;
+			}
+
+			registerDatabaseConfig("db_version", 40);
+			return 40;
+		}
+
+		case 40:
+		{
+			std::clog << "> Updating database to version 41..." << std::endl;
+			switch(db->getDatabaseEngine())
+			{
+				case DATABASE_ENGINE_MYSQL:
+				{
 					db->query("CREATE TABLE `login_history` (`account_id` INT(11) NOT NULL DEFAULT 0, `player_id` INT(11) NOT NULL DEFAULT 0, `type` TINYINT(1) NOT NULL DEFAULT 0, `login` TINYINT(1) NOT NULL DEFAULT 0, `ip` INT(11) NOT NULL DEFAULT 0, `date` INT(11) NOT NULL DEFAULT 0, FOREIGN KEY (`player_id`) REFERENCES `players` (`id`));");
 					db->query("ALTER TABLE `players` ADD `ip` varchar(17) NOT NULL DEFAULT '0';");
 					break;
@@ -1495,16 +1643,24 @@ uint32_t DatabaseManager::updateDatabase()
 
 				case DATABASE_ENGINE_SQLITE:
 				{
-					db->query("CREATE TABLE `login_history` (`account_id` INT(11) NOT NULL DEFAULT 0, `player_id` INT(11) NOT NULL DEFAULT 0, `type` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '1 - server, 0 - website', `login` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '1 - login, 0 - logout', `ip` INT(11) NOT NULL DEFAULT 0, `date` INT(11) NOT NULL DEFAULT 0) ENGINE = MyISAM;");
+					db->query("CREATE TABLE 'login_history' (\
+						'account_id' INT(11) NOT NULL DEFAULT 0,\
+						'player_id' INT(11) NOT NULL DEFAULT 0,\
+						'type' TINYINT(1) NOT NULL DEFAULT 0,\
+						'login' TINYINT(1) NOT NULL DEFAULT 0,\
+						'ip' INTEGER(11) NOT NULL DEFAULT 0,\
+						'date' INTEGER(11) NOT NULL DEFAULT 0\
+						);");
 					db->query("ALTER TABLE `players` ADD `ip` varchar(17) NOT NULL DEFAULT '0';");
 					break;
 				}
 
-				default: break;
+				default:
+					break;
 			}
 
-			registerDatabaseConfig("db_version", 39);
-			return 39;
+			registerDatabaseConfig("db_version", 41);
+			return 41;
 		}
 
 		default:

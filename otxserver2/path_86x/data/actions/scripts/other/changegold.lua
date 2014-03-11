@@ -23,11 +23,11 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 	if(coin.to ~= nil and item.type == ITEMCOUNT_MAX) then
 		doChangeTypeItem(item.uid, item.type - item.type)
 		doPlayerAddItem(cid, coin.to, 1)
-		doPlayerSendTextMessage(cid, MESSAGE_EXPERIENCE, "$$$", ITEMCOUNT_MAX, coins[coin.to].effect, getCreaturePosition(cid))
+		doSendAnimatedText(fromPosition, "$$$", coins[coin.to].effect)
 	elseif(coin.from ~= nil) then
 		doChangeTypeItem(item.uid, item.type - 1)
 		doPlayerAddItem(cid, coin.from, ITEMCOUNT_MAX)
-		doPlayerSendTextMessage(cid, MESSAGE_EXPERIENCE, "$$$", ITEMCOUNT_MAX, coins[coin.from].effect, getCreaturePosition(cid))
+		doSendAnimatedText(fromPosition, "$$$", coins[coin.from].effect)
 	end
 
 	return true

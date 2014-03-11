@@ -1,19 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <items>
-	<!-- README:
-		We really appreciate if someone could help us
-		with getting real names and attributes
-		of missing items in this file.
-
-		Most needed are the items (including floors, walls)
-		introduced in the most recent tibia updates
-		starting from 8.7 to 8.60
-
-		If you found something wrong with existing item(s), we're also waiting for you :)
-
-		You can send your work here: http://otland.net/project.php?projectid=2
-	-->
-
 	<item id="100" name="void"/>
 	<item id="101" name="earth"/>
 	<item id="103" name="dirt"/>
@@ -4360,9 +4346,21 @@
 	<item id="2588" article="a" name="ship's telescope">
 		<attribute key="rotateTo" value="2585"/>
 	</item>
-	<item id="2589-2592" article="a" name="locker">
+	<item id="2589" article="a" name="locker">
 		<attribute key="type" value="depot"/>
-		<attribute key="containerSize" value="30"/>
+		<attribute key="containerSize" value="2"/>
+	</item>
+	<item id="2590" article="a" name="locker">
+		<attribute key="type" value="depot"/>
+		<attribute key="containerSize" value="2"/>
+	</item>
+	<item id="2591" article="a" name="locker">
+		<attribute key="type" value="depot"/>
+		<attribute key="containerSize" value="2"/>
+	</item>
+	<item id="2592" article="a" name="locker">
+		<attribute key="type" value="depot"/>
+		<attribute key="containerSize" value="2"/>
 	</item>
 	<item id="2593" article="a" name="mailbox">
 		<attribute key="description" value="Royal Tibia Mail."/>

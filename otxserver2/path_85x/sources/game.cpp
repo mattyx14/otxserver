@@ -6272,7 +6272,7 @@ void Game::showHotkeyUseMessage(Player* player, Item* item)
 	player->sendTextMessage(MSG_HOTKEY_USE, stream.str().c_str());
 }
 
-void Game::playerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
+void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())

@@ -2,7 +2,7 @@
 <monster name="Deepling Guard" nameDescription="a deepling guard" race="blood" experience="2100" speed="560" manacost="0">
 	<health now="1900" max="1900"/>
 	<look type="442" corpse="15188"/>
-	<targetchange interval="2000" chance="50"/>
+	<targetchange interval="5000" chance="8"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -14,19 +14,19 @@
 		<flag canpushitems="1"/>
 		<flag canpushcreatures="1"/>
 		<flag targetdistance="0"/>
+		<flag staticattack="90"/>
 		<flag runonhealth="60"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="10" attack="350"/>
-		<attack name="drown" interval="1000" chance="11" range="5" target="1" min ="-0" max="-200">
-			<attribute key="shootEffect" value="spear"/>
-			<attribute key="areaEffect" value="bluebubble"/>
+		<attack name="melee" interval="2000" skill="100" attack="100"/>
+		<attack name="physical" interval="1000" chance="20" range="7" min="-150" max="-295">
+			<attribute key="shootEffect" value="whirlwindaxe"/>
+		</attack>
+		<attack name="physical" interval="2000" chance="100" range="7" min="-220" max="-350">
+			<attribute key="shootEffect" value="whirlwindsword"/>		
 		</attack>
 	</attacks>
-	<defenses armor="12" defense="20">
-	<defense name="healing" interval="1000" chance="25" min="120" max="210">
-			<attribute key="areaEffect" value="blueshimmer"/>
-		</defense>
+	<defenses armor="85" defense="85">
 	</defenses>
 	<immunities>
 		<immunity ice="1" />

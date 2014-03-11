@@ -1109,7 +1109,8 @@ MagicEffectNames magicEffectNames[] =
 	{"thunder",				MAGIC_EFFECT_THUNDER},
 	{"ferumbras",			MAGIC_EFFECT_FERUMBRAS},
 	{"confettihorizontal",	MAGIC_EFFECT_CONFETTIHORIZONTAL},
-	{"confettivertical",	MAGIC_EFFECT_CONFETTIVERTICAL}
+	{"confettivertical",	MAGIC_EFFECT_CONFETTIVERTICAL},
+	{"blacksmoke",			MAGIC_EFFECT_BLACKSMOKE}
 };
 
 ShootTypeNames shootTypeNames[] =
@@ -1754,4 +1755,17 @@ std::string getFilePath(FileType_t type, std::string name/* = ""*/)
 			break;
 	}
 	return path;
+}
+
+std::string getFirstLine(const std::string& str)
+{
+	std::string firstLine = "";
+	for(uint32_t i = 0, strLength = str.length(); i < strLength; ++i)
+	{
+		if(str[i] == '\n')
+			break;
+
+		firstLine += str[i];
+	}
+	return firstLine;
 }

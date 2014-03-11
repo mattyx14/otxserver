@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Shaburak Demon" nameDescription="a shaburak demon" race="fire" experience="900" speed="280" manacost="0">
-        <health now="1500 " max="1500 "/>
-        <look type="418" corpse="13969"/>
+        <health now="1500" max="1500"/>
+        <look type="417" corpse="13814"/>
         <targetchange interval="2000" chance="9"/>
         <strategy attack="100" defense="0"/>
         <flags>
@@ -47,36 +47,34 @@
                 </defense>
         </defenses>
         <elements>
-                <element physicalPercent="25"/>
-                <element earthPercent="40"/>
-                <element energyPercent="50"/>
-                <element deathPercent="20"/>
-                <element icePercent="-12"/>
-                <element holyPercent="-12"/>
+			<element energyPercent="50"/>
+			<element icePercent="50"/>
+			<element earthPercent="-30"/>
         </elements>
         <immunities>
-                <immunity fire="1"/>
+			<immunity fire="1"/>
+			<immunity invisible="1"/>
         </immunities>
         <voices interval="5000" chance="9">
-                <voice sentence="GREEN IS MEAN !!" yell="1"/>
-                <voice sentence="POWER TO THE SHABURAK!!!" yell="1"/>
-                <voice sentence="DEATH TO THE ASKARAK !" yell="1"/>
-                <voice sentence="WE RULE! "/>
-                <voice sentence="OWE RULE!" yell="0"/>
+                <voice sentence="GREEN IS MEAN!" yell="1"/>
+                <voice sentence="WE RULE!" yell="1"/>
+                <voice sentence="POWER TO THE SHABURAK!" yell="1"/>
+                <voice sentence="DEATH TO THE ASKARAK!"/>
         </voices>
         <loot>
-                <item id="2148" countmax="170" chance="100000" /><!-- gold coin -->
-                <item id="2152" countmax="3" chance="900000" /><!-- platinum coin -->
-                <item id="7589" chance="700" /><!-- Strong Mana Potion  -->
-                <item id="7588" chance="700" /><!-- Strong Health Potion -->
-                <item id="2147" countmax="5" chance="700" /><!-- Small Rubies  -->
-                <item id="2165" chance="6000" /><!-- Stealth Ring  -->
-                <item id="2789" chance="3000" /><!-- Brown Mushroom -->
-                <item id="7443" chance="5000" /><!-- Bullseye Potion -->
-                <item id="7899" chance="4000" /><!-- Magma Coat -->
-                <item id="2187" chance="8000" /><!-- Wand of Inferno  -->
-                <item id="13530" chance="3000" /><!-- Demonic Finge -->
-                <item id="2645" chance="400" /><!-- Steel Boots  -->
-                <item id="7412" chance="200" /><!-- Butcher's Axe  -->
+			<item id="2148" countmax="100" chance="50000" /><!-- gold coin -->
+			<item id="2148" countmax="100" chance="50000" /><!-- gold coin -->
+			<item id="2148" countmax="50" chance="50000" /><!-- gold coin -->
+			<item id="7378" countmax="6" chance="10000" /><!-- royal spear -->
+			<item id="7589" chance="5000" /><!-- strong mana potion -->
+			<item id="7588" chance="4761" /><!-- strong health potion -->
+			<item id="2147" countmax="5" chance="4761" /><!-- small rubies -->
+			<item id="2789" chance="3846" /><!-- brown mushroom -->
+			<item id="2167" chance="1052" /><!-- energy ring -->
+			<item id="2114" chance="1030" /><!-- piggy bank -->
+			<item id="7443" chance="628" /><!-- bullseye potion -->
+			<item id="2187" chance="564" /><!-- wand of inferno -->
+			<item id="7894" chance="155" /><!-- magma legs -->
+			<item id="5904" chance="81" /><!-- magic sulphur -->
         </loot>
 </monster>

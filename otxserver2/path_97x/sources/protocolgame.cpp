@@ -263,15 +263,22 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 
 		player->setClientVersion(version);
 		player->setOperatingSystem(operatingSystem);
-		if(!g_game.placeCreature(player, player->getLoginPosition()) && !g_game.placeCreature(player, player->getMasterPosition(), false, true))
+
+		if(player->isUsingOtclient())
 		{
-			disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
-			return false;
+			player->registerCreatureEvent("ExtendedOpcode");
 		}
 
 		player->lastIP = player->getIP();
 		player->lastLoad = OTSYS_TIME();
 		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
+
+		sendPendingStateEntered();
+		if(!g_game.placeCreature(player, player->getLoginPosition()) && !g_game.placeCreature(player, player->getMasterPosition(), false, true))
+		{
+			disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
+			return false;
+		}
 
 		m_acceptPackets = true;
 		return true;
@@ -365,6 +372,7 @@ bool ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem,
 	player->addRef();
 	player->client = this;
 	player->isConnecting = false;
+	sendPendingStateEntered();
 
 	player->sendCreatureAppear(player);
 	player->setOperatingSystem(operatingSystem);
@@ -537,7 +545,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 void ProtocolGame::parsePacket(NetworkMessage &msg)
 {
-	if(!player || !m_acceptPackets || g_game.getGameState() == GAMESTATE_SHUTDOWN || !msg.size())
+	if(!m_acceptPackets || g_game.getGameState() == GAMESTATE_SHUTDOWN || !msg.size())
 		return;
 
 	uint32_t now = time(NULL);
@@ -552,13 +560,34 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 		return;
 
 	uint8_t recvbyte = msg.get<char>();
-	if(player->isRemoved() && recvbyte != 0x14) //a dead player cannot performs actions
+	if(!player)
+	{
+		if(recvbyte == 0x0F)
+			disconnect();
+
 		return;
+	}
+
+	//a dead player can not performs actions
+	if(player->isRemoved() || player->getHealth() <= 0)
+	{
+		if(recvbyte == 0x0F)
+		{
+			disconnect();
+			return;
+		}
+
+		if(recvbyte != 0x14)
+			return;
+	}
 
 	if(player->isAccountManager())
 	{
 		switch(recvbyte)
 		{
+			case 0x0F:
+				break;
+
 			case 0x14:
 				parseLogout(msg);
 				break;
@@ -596,6 +625,9 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 	{
 		switch(recvbyte)
 		{
+			case 0x0F:
+				break;
+
 			case 0x14: // logout
 				parseLogout(msg);
 				break;
@@ -1503,7 +1535,7 @@ void ProtocolGame::parseEditVip(NetworkMessage& msg)
 
 	if(description.size() > 128)
 		return;
-	if(icon > (uint32_t) VIP_ICON_LAST)
+	if(icon < (uint32_t)VIP_ICON_FIRST || icon > (uint32_t)VIP_ICON_LAST)
 		return;
 
 	addGameTask(&Game::playerRequestEditVip, player->getID(), guid, description, icon, notify);
@@ -1983,7 +2015,7 @@ void ProtocolGame::sendGoods(const ShopInfoList& shop)
 
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0x7B);
-	msg->put<uint32_t>((uint32_t)g_game.getMoney(player));
+	msg->put<uint64_t>((uint64_t)g_game.getMoney(player));
 
 	std::map<uint32_t, uint32_t> goodsMap;
 	if(shop.size() >= 5)
@@ -2053,11 +2085,11 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0xF6);
-	msg->put<uint32_t>(std::min((uint64_t)0xFFFFFFFF, player->balance));
+	msg->put<uint64_t>(player->balance);
 	msg->put<char>(std::min((int32_t)0xFF, IOMarket::getInstance()->getPlayerOfferCount(player->getGUID())));
 
-	Depot* depot = player->getDepot(depotId, false);
-	if(!depot)
+	DepotChest* depotChest = player->getDepotChest(depotId, false);
+	if(!depotChest)
 	{
 		msg->put<uint16_t>(0x00);
 		return;
@@ -2065,8 +2097,8 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 
 	std::map<uint16_t, uint32_t> depotItems;
 	std::list<Container*> containerList;
-
-	containerList.push_back(depot->getLocker());
+	containerList.push_back(depotChest);
+	containerList.push_back(player->getInbox());
 	do
 	{
 		Container* container = containerList.front();
@@ -2627,7 +2659,7 @@ void ProtocolGame::sendChangeSpeed(const Creature* creature, uint32_t speed)
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0x8F);
 	msg->put<uint32_t>(creature->getID());
-	msg->put<uint16_t>(speed);
+	msg->put<uint16_t>(speed / 2);
 }
 
 void ProtocolGame::sendCancelWalk()
@@ -2793,6 +2825,26 @@ void ProtocolGame::sendUpdateTile(const Tile* tile, const Position& pos)
 	}
 }
 
+void ProtocolGame::sendPendingStateEntered()
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0x0A);
+}
+
+void ProtocolGame::sendEnterWorld()
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0x0F);
+}
+
 void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos, uint32_t stackpos)
 {
 	if(!canSee(creature))
@@ -2809,11 +2861,17 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 		return;
 	}
 
-	msg->put<char>(0x0A);
+	msg->put<char>(0x17);
 	msg->put<uint32_t>(player->getID());
 	msg->put<uint16_t>(0x32);
 
+	msg->putDouble(Creature::speedA, 3);
+	msg->putDouble(Creature::speedB, 3);
+	msg->putDouble(Creature::speedC, 3);
+
 	msg->put<char>(player->hasFlag(PlayerFlag_CanReportBugs));
+
+	sendEnterWorld();
 
 	AddMapDescription(msg, pos);
 	for(int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
@@ -2834,8 +2892,13 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 		std::string vipName;
 		if(IOLoginData::getInstance()->getNameByGuid((*it).first, vipName))
 		{
-			Player* tmpPlayer = g_game.getPlayerByName(vipName);
-			sendVIP((*it).first, vipName, (*it).second.description, (*it).second.icon, (*it).second.notify, (tmpPlayer && player->canSeeCreature(tmpPlayer)));
+			VipStatus_t vipStatus;
+			if(Player* tmpPlayer = g_game.getPlayerByName(vipName))
+				vipStatus = player->canSeeCreature(tmpPlayer) ? VIPSTATUS_ONLINE : VIPSTATUS_OFFLINE;
+			else
+				vipStatus = VIPSTATUS_OFFLINE;
+
+			sendVIP((*it).first, vipName, (*it).second.description, (*it).second.icon, (*it).second.notify, vipStatus);
 		}
 	}
 }
@@ -3174,7 +3237,7 @@ void ProtocolGame::sendQuestInfo(Quest* quest)
 	}
 }
 
-void ProtocolGame::sendVIPLogIn(uint32_t guid)
+void ProtocolGame::sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus)
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
 	if(!msg)
@@ -3183,20 +3246,10 @@ void ProtocolGame::sendVIPLogIn(uint32_t guid)
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0xD3);
 	msg->put<uint32_t>(guid);
+	msg->put<char>(newStatus);
 }
 
-void ProtocolGame::sendVIPLogOut(uint32_t guid)
-{
-	NetworkMessage_ptr msg = getOutputBuffer();
-	if(!msg)
-		return;
-
-	TRACK_MESSAGE(msg);
-	msg->put<char>(0xD4);
-	msg->put<uint32_t>(guid);
-}
-
-void ProtocolGame::sendVIP(uint32_t guid, const std::string& name, const std::string& desc, uint32_t& icon, bool notify, bool online)
+void ProtocolGame::sendVIP(uint32_t guid, const std::string& name, const std::string& desc, uint32_t& icon, bool notify, VipStatus_t status)
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
 	if(!msg)
@@ -3209,7 +3262,7 @@ void ProtocolGame::sendVIP(uint32_t guid, const std::string& name, const std::st
 	msg->putString(desc);//desc
 	msg->put<uint32_t>(icon);//icon
 	msg->put<bool>(notify);//notify
-	msg->put<bool>(online); //online
+	msg->put<char>(status);//online or offline
 }
 
 void ProtocolGame::sendSpellCooldown(Spells_t icon, uint32_t cooldown)
@@ -3390,7 +3443,7 @@ void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature,
 	msg->put<char>(lightInfo.level);
 	msg->put<char>(lightInfo.color);
 
-	msg->put<uint16_t>(creature->getStepSpeed());
+	msg->put<uint16_t>(creature->getStepSpeed() / 2);
 	msg->put<char>(player->getSkullType(creature));
 	msg->put<char>(player->getPartyShield(creature));
 	if(!known)
@@ -3425,7 +3478,7 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 
 	msg->put<uint16_t>(player->getStaminaMinutes());
 
-	msg->put<uint16_t>(player->getSpeed());
+	msg->put<uint16_t>(player->getSpeed() / 2);
 
 	Condition* condition = player->getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT);
 	msg->put<uint16_t>(condition ? condition->getTicks() / 1000 : 0x00);
@@ -3817,12 +3870,15 @@ void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
 {
 	uint8_t opcode = msg.get<char>();
 	std::string buffer = msg.getString();
-	addGameTask(&Game::playerExtendedOpcode, player->getID(), opcode, buffer);
+
+	// process additional opcodes via lua script event
+	addGameTask(&Game::parsePlayerExtendedOpcode, player->getID(), opcode, buffer);
 }
 
 void ProtocolGame::sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
 {
-	if(!player || player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX)
+	// extended opcodes can only be send to players using otclient, cipsoft's tibia can't understand them
+	if(player && !player->isUsingOtclient())
 		return;
 
 	NetworkMessage_ptr msg = getOutputBuffer();

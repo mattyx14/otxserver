@@ -50,6 +50,7 @@
 	<talkaction access="0-3" words="!pvp;/pvp" event="script" value="pvp.lua"/>
 	<talkaction access="0-3" words="/software;!software" event="function" value="software"/>
 	<talkaction access="0-3" words="!bugreport;/bugreport" event="script" value="bugreport.lua"/>
+	<talkaction access="0-3" words="!rank;/rank;!ranks;/ranks" event="script" value="rank.lua"/>
 
 	<!-- Houses -->
 	<talkaction access="0-3" words="alana res;/buyhouse" filter="word-spaced" event="function" value="houseBuy"/>

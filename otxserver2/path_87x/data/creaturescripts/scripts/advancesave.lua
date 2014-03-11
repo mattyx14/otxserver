@@ -1,7 +1,6 @@
 local config = {
 	savePlayer = true,
-	healPlayerOnLevel = true,
-	effectType = 30
+	healPlayerOnLevel = true
 }
 
 function onAdvance(cid, skill, oldLevel, newLevel)
@@ -12,7 +11,6 @@ function onAdvance(cid, skill, oldLevel, newLevel)
 	if(skill == SKILL__LEVEL and config.healPlayerOnLevel) then
 		doCreatureAddHealth(cid, getCreatureMaxHealth(cid) - getCreatureHealth(cid))
 		doCreatureAddMana(cid, getCreatureMaxMana(cid) - getCreatureMana(cid))
-		doSendMagicEffect(pos, config.effectType)
 	end
 
 	if(config.savePlayer) then

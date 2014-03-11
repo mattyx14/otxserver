@@ -86,7 +86,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	uint16_t version = msg.get<uint16_t>();
 
 	if(version >= 971)
-		msg.skip(5);
+		msg.skip(17);
 	else
 		msg.skip(12);
 
@@ -256,9 +256,10 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 			IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
 			output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-
-			if(version >= 971)
+			if(!g_config.getBool(ConfigManager::SERVER_PREVIEW))
 				output->put<char>(0x00);
+			else
+				output->put<char>(0x01);
 		}
 		else
 			output->put<char>((uint8_t)account.charList.size());
@@ -280,9 +281,10 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			output->put<uint32_t>(serverIp);
 			IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
 			output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-
-			if(version >= 971)
+			if(!g_config.getBool(ConfigManager::SERVER_PREVIEW))
 				output->put<char>(0x00);
+			else
+				output->put<char>(0x01);
 		}
 		#else
 		for(Characters::iterator it = charList.begin(); it != charList.end(); ++it)
@@ -298,9 +300,10 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			output->put<uint32_t>(it->second.server->getAddress());
 			IntegerVec games = it->second.server->getPorts();
 			output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-
-			if(version >= 971)
+			if(!g_config.getBool(ConfigManager::SERVER_PREVIEW))
 				output->put<char>(0x00);
+			else
+				output->put<char>(0x01);
 		}
 		#endif
 

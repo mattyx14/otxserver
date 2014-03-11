@@ -185,6 +185,12 @@ void NetworkMessage::putString(const char* value, int length, bool addSize/* = t
 	m_size += size;
 }
 
+void NetworkMessage::putDouble(double value, uint8_t precision/* = 2*/)
+{
+	put<char>(precision);
+	put<uint32_t>((value * std::pow((float)10, precision)) + INT_MAX);
+}
+
 void NetworkMessage::putPadding(uint32_t amount)
 {
 	if(!hasSpace(amount))

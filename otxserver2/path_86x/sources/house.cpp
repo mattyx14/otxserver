@@ -294,9 +294,8 @@ bool House::transferToDepot()
 
 	if(player)
 	{
-		Depot* depot = player->getDepot(townId, true);
 		for(ItemList::iterator it = moveList.begin(); it != moveList.end(); ++it)
-			g_game.internalMoveItem(NULL, (*it)->getParent(), depot, INDEX_WHEREEVER, (*it), (*it)->getItemCount(), NULL, FLAG_NOLIMIT);
+			g_game.internalMoveItem(NULL, (*it)->getParent(), player->getInbox(), INDEX_WHEREEVER, (*it), (*it)->getItemCount(), NULL, FLAG_NOLIMIT);
 
 		if(player->isVirtual())
 		{
@@ -827,8 +826,6 @@ bool Houses::payRent(Player* player, House* house, uint32_t bid, time_t _time/* 
 		player->balance -= amount;
 		paid = true;
 	}
-	else if(Depot* depot = player->getDepot(town->getID(), true))
-		paid = g_game.removeMoney(depot, amount, FLAG_NOLIMIT);
 
 	if(!paid)
 		return false;
@@ -946,11 +943,11 @@ bool Houses::payHouse(House* house, time_t _time, uint32_t bid)
 		return false;
 	}
 
-	if(Depot* depot = player->getDepot(town->getID(), true))
+	if(DepotChest* depotChest = player->getDepotChest(town->getID(), true))
 	{
 		if(Item* letter = Item::CreateItem(ITEM_LETTER_STAMPED))
 		{
-			if(g_game.internalAddItem(NULL, depot, letter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RET_NOERROR)
+			if(g_game.internalAddItem(NULL, player->getInbox(), letter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RET_NOERROR)
 			{
 				letter->setWriter(g_config.getString(ConfigManager::SERVER_NAME));
 				letter->setDate(std::time(NULL));

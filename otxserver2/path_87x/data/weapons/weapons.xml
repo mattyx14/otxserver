@@ -218,11 +218,6 @@
 		</melee>
 		<!-- Blade of Corruption -->
 		<melee id="12649" level="82" unproperly="1" event="function" value="default"/>
-		<!-- Shimmer Sword -->
-		<melee id="13871" level="40" unproperly="1" event="function" value="default">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</melee>
 			<!-- Fire -->
 			<melee id="7745" level="50" unproperly="1" event="function" value="default"/>
 			<melee id="7746" level="60" unproperly="1" event="function" value="default"/>

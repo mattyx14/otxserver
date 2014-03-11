@@ -77,20 +77,20 @@
 	#define ID_MENU_KICK_PLAYER 242
 #endif
 
-// Compatible with 9.70
-#define CLIENT_VERSION_MIN 970
-#define CLIENT_VERSION_MAX 971
-#define CLIENT_VERSION_ITEMS 43
-#define CLIENT_VERSION_STRING "Only clients with protocol 9.70/71 allowed!"
+// Compatible with 9.80/81
+#define CLIENT_VERSION_MIN 972
+#define CLIENT_VERSION_MAX 973
+#define CLIENT_VERSION_ITEMS 45
+#define CLIENT_VERSION_STRING "Only clients with protocol 9.81 allowed!"
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "4"
-#define PATCH_VERSION "4"
-#define REVISION_VERSION "r1440"
-#define SOFTWARE_CODENAME "Chronodia"
-#define SOFTWARE_DEVELOPERS "Kaiser, Emma and Kazbin"
-#define SOFTWARE_PROTOCOL "9.71"
+#define MINOR_VERSION "5"
+#define PATCH_VERSION "1"
+#define REVISION_VERSION "SE - 1549"
+#define SOFTWARE_CODENAME "Necron"
+#define SOFTWARE_DEVELOPERS "Kaiser, Emma, Comedinhasss and Kazbin"
+#define SOFTWARE_PROTOCOL "9.81"
 #define FORUM "www.blacktibia.org"
 
 //#define CLIENT_VERSION_DATA
@@ -98,5 +98,5 @@
 #define CLIENT_VERSION_SPR 0
 #define CLIENT_VERSION_PIC 0
 
-#define VERSION_DATABASE 39
+#define VERSION_DATABASE 41
 #endif

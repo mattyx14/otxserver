@@ -371,7 +371,7 @@ bool Npc::loadFromXml()
 	if(readXMLString(root, "hidehealth", strValue) || readXMLString(root, "hideHealth", strValue))
 		hideHealth = booleanString(strValue);
 
-	baseSpeed = 110;
+	baseSpeed = 100;
 	if(readXMLInteger(root, "speed", intValue))
 		baseSpeed = intValue;
 

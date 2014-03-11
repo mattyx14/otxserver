@@ -654,7 +654,7 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 		if(hasBitSet(FLAG_NOLIMIT, flags))
 			return RET_NOERROR;
 
-		if(isFull())
+		if(!item->getMagicField() && isFull())
 			return RET_TILEISFULL;
 
 		bool isHangable = item->isHangable();
@@ -1710,7 +1710,7 @@ void Tile::updateTileFlags(Item* item, bool remove)
 		if(item->getBed())
 			setFlag(TILESTATE_BED);
 
-		if(item->getContainer() && item->getContainer()->getDepot())
+		if(item->getContainer() && item->getContainer()->getDepotLocker())
 			setFlag(TILESTATE_DEPOT);
 
 		if(item->hasProperty(BLOCKSOLID))
@@ -1799,7 +1799,7 @@ void Tile::updateTileFlags(Item* item, bool remove)
 		if(item->getBed())
 			resetFlag(TILESTATE_BED);
 
-		if(item->getContainer() && item->getContainer()->getDepot())
+		if(item->getContainer() && item->getContainer()->getDepotLocker())
 			resetFlag(TILESTATE_DEPOT);
 
 		if(item->hasProperty(BLOCKSOLID) && !hasProperty(item, BLOCKSOLID))

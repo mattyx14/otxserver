@@ -27,7 +27,7 @@ enum OperatingSystem_t
 
 	CLIENTOS_OTCLIENT_LINUX		= 0x0A,
 	CLIENTOS_OTCLIENT_WINDOWS	= 0x0B,
-	CLIENTOS_OTCLIENT_MAC		= 0x0C,
+	CLIENTOS_OTCLIENT_MAC		= 0x0C
 };
 
 enum ChannelEvent_t
@@ -123,7 +123,9 @@ enum MagicEffect_t
 	MAGIC_EFFECT_FERUMBRAS			= 0x49, //73
 	MAGIC_EFFECT_CONFETTIHORIZONTAL	= 0x4A, //74
 	MAGIC_EFFECT_CONFETTIVERTICAL	= 0x4B, //75
-	MAGIC_EFFECT_LAST				= MAGIC_EFFECT_CONFETTIVERTICAL,
+	// 76-156 are empty
+	MAGIC_EFFECT_BLACKSMOKE			= 0x9D, //157
+	MAGIC_EFFECT_LAST				= MAGIC_EFFECT_BLACKSMOKE,
 
 	//for internal use, dont send to client
 	MAGIC_EFFECT_NONE				= 0xFF,
@@ -240,7 +242,7 @@ enum MessageClasses
 	MSG_PARTY					= 0x21, /*Green message in game window and in the console*/
 	MSG_EVENT_ORANGE			= 0x22, /*Orange message in local chat*/
 	MSG_STATUS_CONSOLE_ORANGE	= 0x23, /*Orange message in local chat*/
-	MSG_REPORT 					= 0x24, /*White message in game window and in the console*/
+	MSG_REPORT					= 0x24, /*White message in game window and in the console*/
 	MSG_HOTKEY_USE				= 0x25, /*Green message in game window*/
 	MSG_TUTORIAL_HINT			= 0x26
 };
@@ -847,7 +849,7 @@ struct MessageDetails
 #define NETWORK_RETRY_TIMEOUT 5000
 #define NETWORK_DEFAULT_SIZE 4096
 #define NETWORK_HEADER_SIZE 2
-#define NETWORK_MAX_SIZE 24576
+#define NETWORK_MAX_SIZE 32767
 
 #define LOCALHOST 2130706433
 #define SWIMMING_OUTFIT 267

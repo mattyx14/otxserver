@@ -20,7 +20,8 @@
 
 #include "item.h"
 #include "container.h"
-#include "depot.h"
+#include "depotchest.h"
+#include "depotlocker.h"
 
 #include "teleport.h"
 #include "trashholder.h"
@@ -58,7 +59,7 @@ Item* Item::CreateItem(const uint16_t type, uint16_t amount/* = 0*/)
 
 	Item* newItem = NULL;
 	if(it.isDepot())
-		newItem = new Depot(type);
+		newItem = new DepotLocker(type);
 	else if(it.isContainer())
 		newItem = new Container(type);
 	else if(it.isTeleport())

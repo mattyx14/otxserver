@@ -2,7 +2,7 @@
 <monster name="Deepling Warrior" nameDescription="a deepling warrior" race="blood" experience="1500" speed="560" manacost="0">
 	<health now="1600" max="1600"/>
 	<look type="441" corpse="15175"/>
-	<targetchange interval="2000" chance="50"/>
+	<targetchange interval="5000" chance="8"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -14,15 +14,19 @@
 		<flag canpushitems="1"/>
 		<flag canpushcreatures="1"/>
 		<flag targetdistance="0"/>
+		<flag staticattack="90"/>
 		<flag runonhealth="60"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="34" attack="45"/>
-		<attack name="drown" interval="1000" chance="11" range="5" target="1" min ="-15" max="-100">
-			<attribute key="areaEffect" value="bluebubble"/>
+		<attack name="melee" interval="2000" skill="100" attack="100"/>
+		<attack name="speed" interval="2000" chance="20" range="7" speedchange="-400" duration="2500">
+			<attribute key="shootEffect" value="whirlwindaxe"/>
+		</attack>
+		<attack name="physical" interval="2000" chance="100" range="7" min="-120" max="-250">
+			<attribute key="shootEffect" value="etherealspear"/>	
 		</attack>
 	</attacks>
-	<defenses armor="12" defense="20">
+	<defenses armor="75" defense="75">    
 	</defenses>
 	<immunities>
 		<immunity fire="1" />

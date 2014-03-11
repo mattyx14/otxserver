@@ -500,7 +500,7 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 bool Monster::isTarget(Creature* creature)
 {
 	return (!creature->isRemoved() && creature->isAttackable() && creature->getZone() != ZONE_PROTECTION
-		&& canSeeCreature(creature) && creature->getPosition().z == getPosition().z && (creature->getPlayer() && !creature->getPlayer()->checkLoginDelay()));
+		&& canSeeCreature(creature) && creature->getPosition().z == getPosition().z);
 }
 
 bool Monster::selectTarget(Creature* creature)

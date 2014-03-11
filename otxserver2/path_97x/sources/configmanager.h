@@ -198,6 +198,7 @@ class ConfigManager
 			MAX_MARKET_OFFERS_AT_A_TIME_PER_PLAYER,
 			FOLLOW_EXHAUST,
 			PACKETS_PER_SECOND,
+			LEVEL_TO_OFFLINE,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 
@@ -328,6 +329,7 @@ class ConfigManager
 			ALLOW_BLOCK_SPAWN,
 			MULTIPLE_NAME,
 			SAVE_STATEMENT,
+			SERVER_PREVIEW,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

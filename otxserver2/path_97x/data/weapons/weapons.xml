@@ -262,6 +262,8 @@
 		<melee id="18450" level="62" unproperly="1" event="function" value="default"/>
 		<!-- Shiny Blade -->
 		<melee id="18465" level="120" unproperly="1" event="function" value="default"/>
+		<!-- Ratana -->
+		<melee id="20092" level="15" unproperly="1" event="function" value="default"/>
 			<!-- Fire -->
 			<melee id="7745" level="50" unproperly="1" event="function" value="default"/>
 			<melee id="7746" level="60" unproperly="1" event="function" value="default"/>
@@ -436,6 +438,8 @@
 		<melee id="15492" level="70" unproperly="1" event="function" value="default"/>
 		<!-- Crystalline Axe -->
 		<melee id="18451" level="120" unproperly="1" event="function" value="default"/>
+		<!-- Hive Scythe -->
+		<melee id="20093" level="15" unproperly="1" event="function" value="default"/>
 			<!-- Fire -->
 			<melee id="7749" level="20" event="function" value="default"/>
 			<melee id="7750" level="25" unproperly="1" event="function" value="default"/>

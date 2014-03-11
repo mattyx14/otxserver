@@ -526,7 +526,7 @@ class Game
 		bool playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
 		bool playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
 		bool playerAnswerModalDialog(uint32_t playerId, uint32_t dialog, uint8_t button, uint8_t choice);
-		void playerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
+		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 		void checkExpiredMarketOffers();
 
 		void kickPlayer(uint32_t playerId, bool displayEffect);

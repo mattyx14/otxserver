@@ -146,8 +146,8 @@
 
 		-- Protocol Server
 		-- The function no work (Fix please for Linux/Windows Users)
-		-- clientVersionMin = "9.70"
-		-- clientVersionMax = "9.71"
+		-- clientVersionMin = "9.72"
+		-- clientVersionMax = "9.73"
 		premiumDaysToAddByGui = 10
 
 		-- Depot and Miscellaneous
@@ -172,6 +172,8 @@
 
 		-- Others
 		enableLootBagDisplay = false
+		serverPreview = false
+		levelToOfflineTraining = 8
 
 	-- Connection config
 	loginTries = 20
@@ -287,7 +289,7 @@
 	storePlayerDirection = false
 	savePlayerData = true
 	monsterLootMessage = 3
-	monsterLootMessageType = 19
+	monsterLootMessageType = 20
 	separateViplistPerCharacter = false
 	vipListDefaultLimit = 20
 	vipListDefaultPremiumLimit = 100

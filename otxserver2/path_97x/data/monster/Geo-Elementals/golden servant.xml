@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Golden Servant" nameDescription="a golden servant" race="energy" experience="450" speed="340" manacost="0">
+	<health now="550" max="550"/>
+	<look type="396" corpse="13489"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+      <attack name="melee" interval="2000" min="-20" max="-100"/>
+		<attack name="energy" interval="2000" chance="12" length="6" spread="3" min="-25" max="-85">
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="energy" interval="3000" chance="10" range="1" target="1" min="-15" max="-35">
+			<attribute key="areaEffect" value="purpleenergy"/>
+		</attack>
+		<attack name="energy" interval="3000" chance="10" range="1" target="1" min="-45" max="-90">
+			<attribute key="shootEffect" value="energyball"/>
+		</attack>
+	</attacks>
+	<elements>
+		<element earthPercent="-80"/>
+		<element holyPercent="100"/>
+		<element firePercent="-10"/>
+		<element energyPercent="100"/>
+		<element physicalPercent="100"/>
+		<element icePercent="5"/>
+		<element deathPercent="5"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity paralyze="1"/>
+	</immunities>
+	<voices interval="2500" chance="10">
+		<voice sentence="Error. LOAD 'PROGRAM"/>
+		<voice sentence="8,1"/>
+		<voice sentence="Remain. Obedient."/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="70" chance="34000"/><!-- gold coin -->
+		<item id="2148" countmax="61" chance="34000"/><!-- gold coin -->
+		<item id="9690" countmax="2" chance="500"/><!-- gear wheel -->
+		<item id="9809" chance="4650"/><!-- rusty armor -->
+		<item id="7591" chance="1900"/><!-- great health potion -->
+		<item id="7452" chance="1500"/><!-- spiked squelcher -->
+		<item id="7590" chance="1500"/><!-- great mana potion -->
+	</loot>
+</monster>

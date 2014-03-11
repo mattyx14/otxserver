@@ -45,6 +45,10 @@
 #include "luascript.h"
 #include "resources.h"
 
+#if defined(WINDOWS) && !defined(_CONSOLE)
+#include "gui.h"
+#endif
+
 Actions* g_actions = NULL;
 CreatureEvents* g_creatureEvents = NULL;
 Spells* g_spells = NULL;

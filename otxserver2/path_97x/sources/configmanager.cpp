@@ -359,6 +359,8 @@ bool ConfigManager::load()
 	m_confNumber[PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
+	m_confBool[SERVER_PREVIEW] = getGlobalBool("serverPreview", false);
+	m_confNumber[LEVEL_TO_OFFLINE] = getGlobalNumber("levelToOfflineTraining", 8);
 
 	m_loaded = true;
 	return true;

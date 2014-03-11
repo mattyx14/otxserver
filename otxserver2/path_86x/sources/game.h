@@ -514,7 +514,7 @@ class Game
 		bool playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId);
 		bool playerLeaveParty(uint32_t playerId, bool forced = false);
 		bool playerSharePartyExperience(uint32_t playerId, bool activate);
-		void playerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
+		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 		void kickPlayer(uint32_t playerId, bool displayEffect);
 		bool broadcastMessage(const std::string& text, MessageClasses type);

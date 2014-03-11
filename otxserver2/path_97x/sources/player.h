@@ -24,7 +24,9 @@
 #include "cylinder.h"
 
 #include "container.h"
-#include "depot.h"
+#include "inbox.h"
+#include "depotchest.h"
+#include "depotlocker.h"
 
 #include "outfit.h"
 #include "vocation.h"
@@ -41,6 +43,7 @@ class Npc;
 class Party;
 class SchedulerTask;
 class Quest;
+class BedItem;
 
 enum skillsid_t
 {
@@ -116,7 +119,8 @@ typedef std::map<uint32_t, VIP_t> VIPMap;
 typedef std::pair<uint32_t, VIP_t> VIPPair;
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
 typedef std::vector<std::pair<uint32_t, Container*> > ContainerVector;
-typedef std::map<uint32_t, std::pair<Depot*, bool> > DepotMap;
+typedef std::map<uint32_t, DepotChest*> DepotMap;
+typedef std::map<uint32_t, DepotLocker*> DepotLockerMap;
 typedef std::map<uint32_t, uint32_t> MuteCountMap;
 typedef std::list<std::string> LearnedInstantSpellList;
 typedef std::list<uint32_t> InvitationsList;
@@ -128,7 +132,7 @@ typedef std::map<uint32_t, LuaDialogCallback> LuaDialogCallbackMap;
 #define SPEED_MIN 10
 #define STAMINA_MAX (42 * 60 * 60 * 1000)
 #define STAMINA_MULTIPLIER (60 * 1000)
-#define OFFLINE_TRAINING_DIALOG_ID 1
+#define OFFLINE_TRAINING_DIALOG 1
 
 struct LuaDialogCallback //not right way however there's no way xd
 {
@@ -203,6 +207,9 @@ class Player : public Creature, public Cylinder
 		bool changeOutfit(Outfit_t outfit, bool checkList);
 		void hasRequestedOutfit(bool v) {requestedOutfit = v;}
 
+		Inbox* getInbox() const { return inbox; }
+		const DepotMap& getDepotChests() const { return depotChests; }
+
 		Vocation* getVocation() const {return vocation;}
 		int32_t getPlayerInfo(playerinfo_t playerinfo) const;
 
@@ -248,6 +255,7 @@ class Player : public Creature, public Cylinder
 		bool hasPVPBlessing() const {return pvpBlessing;}
 		uint16_t getBlessings() const;
 
+		bool isUsingOtclient() const { return operatingSystem >= CLIENTOS_OTCLIENT_LINUX; }
 		OperatingSystem_t getOperatingSystem() const {return operatingSystem;}
 		void setOperatingSystem(OperatingSystem_t os) {operatingSystem = os;}
 		uint32_t getClientVersion() const {return clientVersion;}
@@ -304,6 +312,7 @@ class Player : public Creature, public Cylinder
 
 		bool isPremium() const;
 		int32_t getPremiumDays() const {return premiumDays;}
+		void addPremiumDays(int32_t days);
 
 		bool hasEnemy() const {return !warMap.empty();}
 		bool getEnemy(const Player* player, War_t& data) const;
@@ -375,10 +384,8 @@ class Player : public Creature, public Cylinder
 		uint32_t getLossPercent(lossTypes_t lossType) const {return lossPercent[lossType];}
 		void setLossPercent(lossTypes_t lossType, uint32_t newPercent) {lossPercent[lossType] = newPercent;}
 
-		Depot* getDepot(uint32_t depotId, bool autoCreateDepot);
-		bool addDepot(Depot* depot, uint32_t depotId);
-		void updateDepots();
-		void useDepot(uint32_t depotId, bool value);
+		DepotChest* getDepotChest(uint32_t depotId, bool autoCreate);
+		DepotLocker* getDepotLocker(uint32_t depotId);
 
 		virtual bool canSee(const Position& pos) const;
 		virtual bool canSeeCreature(const Creature* creature) const;
@@ -393,8 +400,8 @@ class Player : public Creature, public Cylinder
 		virtual RaceType_t getRace() const {return RACE_BLOOD;}
 
 		//modal dialog
-		void checkOfflineTrainingDialogAnswer(uint8_t button, uint8_t choice);
-		void showOfflineTrainingDialog(Position pos);
+		void executeSleep(uint8_t button, uint8_t choice);
+		void prepareSleep(BedItem* _bed);
 
 		//safe-trade functions
 		void setTradeState(tradestate_t state) {tradeState = state;}
@@ -429,10 +436,9 @@ class Player : public Creature, public Cylinder
 		void onUpdateQuest();
 
 		//V.I.P. functions
-		void notifyLogIn(Player* loginPlayer);
-		void notifyLogOut(Player* logoutPlayer);
+		void notifyStatusChange(Player* player, VipStatus_t status);
 		bool removeVIP(uint32_t guid);
-		bool addVIP(uint32_t _guid, const std::string& name, const std::string& description, const uint32_t& icon, bool notify, bool online, bool loading = false);
+		bool addVIP(uint32_t _guid, const std::string& name, const std::string& description, const uint32_t& icon, bool notify, VipStatus_t status, bool loading = false);
 		bool editVIP(uint32_t _guid, const std::string& description, const uint32_t& icon, bool notify);
 
 		//follow functions
@@ -631,6 +637,10 @@ class Player : public Creature, public Cylinder
 		bool tameMount(uint8_t mountId);
 		bool untameMount(uint8_t mountId);
 
+		void setDepotChange(bool b) {depotChange = b;}
+		void setLastDepotId(int16_t newId) { lastDepotId = newId; }
+		int16_t getLastDepotId() const { return lastDepotId; }
+
 		//event methods
 		virtual void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 			const ItemType& oldType, const Item* newItem, const ItemType& newType);
@@ -690,6 +700,7 @@ class Player : public Creature, public Cylinder
 		void sendOutfitWindow() const {if(client) client->sendOutfitWindow();}
 		void sendQuests() const {if(client) client->sendQuests();}
 		void sendQuestInfo(Quest* quest) const {if(client) client->sendQuestInfo(quest);}
+		void sendEnterWorld() const {if(client) client->sendEnterWorld();}
 		void sendCreatureSkull(const Creature* creature) const
 			{if(client) client->sendCreatureSkull(creature);}
 		void sendFYIBox(std::string message)
@@ -798,8 +809,12 @@ class Player : public Creature, public Cylinder
 		ContainerVector containerVec;
 		InvitationsList invitationsList;
 		ConditionList storedConditionList;
-		DepotMap depots;
 		Container transferContainer;
+
+		//depots
+		DepotMap depotChests; //depots
+		DepotLockerMap depotLockerMap;
+		uint32_t maxDepotLimit;
 
 		// TODO: make it private?
 		uint32_t marriage;
@@ -816,7 +831,6 @@ class Player : public Creature, public Cylinder
 
 	protected:
 		void checkTradeState(const Item* item);
-		void internalAddDepot(Depot* depot, uint32_t depotId);
 
 		bool gainExperience(double& gainExp, Creature* target);
 		bool rateExperience(double& gainExp, Creature* target);
@@ -907,6 +921,7 @@ class Player : public Creature, public Cylinder
 		bool mounted;
 		bool pvpBlessing;
 		bool sentChat;
+		bool depotChange;
 
 		OperatingSystem_t operatingSystem;
 		AccountManager_t accountManager;
@@ -920,6 +935,7 @@ class Player : public Creature, public Cylinder
 
 		int16_t blessings;
 		int16_t marketDepotId;
+		int16_t lastDepotId;
 		uint16_t maxWriteLen;
 		uint16_t sex;
 		uint16_t mailAttempts;
@@ -1006,6 +1022,7 @@ class Player : public Creature, public Cylinder
 		House* editHouse;
 		Npc* shopOwner;
 		Item* weapon;
+		BedItem* bed;
 
 		std::vector<uint32_t> forceWalkthrough;
 		std::vector<uint32_t> revengeList;
@@ -1017,7 +1034,7 @@ class Player : public Creature, public Cylinder
 		OutfitMap outfits;
 		LearnedInstantSpellList learnedInstantSpellList;
 		WarMap warMap;
-		Position bedPos;
+		Inbox* inbox;
 
 		friend class Game;
 		friend class LuaInterface;

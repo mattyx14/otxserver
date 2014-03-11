@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mod name="Custom Commands" version="1.0" author="Kaiser" contact="marranas6@gmail.com" enabled="yes">
-<!-- Smiles event -->
+	<!-- Smiles event -->
 	<config name="animated-smiles-config"><![CDATA[
 		exhaust = 1 -- in seconds
 		storage = 3000 -- storage value used to save exhaustion
@@ -10,7 +10,7 @@
 		domodlib('animated-smiles-config')
 
 		local config = {
-			exhaust = exhaust,
+			exhaustion = exhaust,
 			storage = storage
 		}
 
@@ -27,13 +27,13 @@
 				doSendMagicEffect(getCreaturePosition(cid), CONST_ME_HEARTS)
 			end
 
-			exhaustion.set(cid, config.storage, config.exhaust)
+			exhaustion.set(cid, config.storage, config.exhaustion)
 			doCreatureSay(cid, words, TALKTYPE_ORANGE_1)
 			return true
 		end
 	]]></talkaction>
 
-<!-- CHANGENDER COMMAND -->
+	<!-- ChangeGender Command -->
 	<description>
 		This mod will add new command for players - !changender.
 		Players will be able to change gender, cost can be configured.
@@ -66,7 +66,7 @@
 		doSendMagicEffect(getCreaturePosition(cid), CONST_ME_MAGIC_RED)
 	]]></talkaction>
 
-<!-- BUYPREMIUM COMMAND -->
+	<!-- Buypremium Command -->
 	<config name="buypremium_config"><![CDATA[
 		config = {
 			days = 90,
@@ -74,7 +74,8 @@
 			maxDays = 360
 		}
 	]]></config>
-	<talkaction words="!buypremium;!pacc;/pacc;/buypremium" event="buffer"><![CDATA[
+
+	<talkaction words="/buypremium;!buypremium;/pacc;!pacc" event="buffer"><![CDATA[
 		domodlib('buypremium_config')
 		if(getPlayerPremiumDays(cid) > config.maxDays) then
 			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You can not buy more than " .. config.days + config.maxDays .. " days of Premium Account.")
@@ -92,7 +93,7 @@
 		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have bought " .. config.days .. " days of premium account.")
 	]]></talkaction>
 
-<!-- BLESSING COMMAND -->
+	<!-- Command give all blessings -->
 	<description><![CDATA[
 		This modification adds two new commands: !bless and !blesscheck.
 		Also, action script is included (it uses unique id 32001 - can be used with items).
@@ -139,6 +140,7 @@
 
 			for i = 1, 5 do
 				doPlayerAddBlessing(cid, i)
+				doPlayerSetPVPBlessing(cid, 1)
 			end
 
 			doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "You have been blessed by the gods!")
@@ -150,30 +152,22 @@
 	<talkaction words="!blesscheck;!blesstest" event="script"><![CDATA[
 		domodlib('bless-system-config')
 
-		local blessNames = {"first", "second", "third", "fourth", "fifth"}
+		local BLESSINGS = {"Wisdom of Solitude", "Spark of the Phoenix", "Fire of the Suns", "Spiritual Shielding", "Embrace of Tibia", "Twist of Fate"}
 		function onSay(cid, words, param)
-			local str = ""
-			local b = 0
-			for i = 1, 5 do
-				if(getPlayerBlessing(cid, i)) then
-					if(b ~= 0) then
-						str = str .. ", "
-					end
-					str = str .. blessNames[i]
-					b = b + 1
-				end
+			local result = ""
+			for i = 1, (table.maxn(BLESSINGS) - 1) do
+				result = (getPlayerBlessing(cid, i) and result .. (result:len() > 0 and ", " or "") .. BLESSINGS[i] or result)
 			end
 
-			if(b > 0) then
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have " .. str .. " blessing" .. (b > 0 and "s" or "") .. ". (Total: " .. b .. ")")
-			else
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You don't have any blessings.")
+			if(getPlayerPVPBlessing(cid)) then
+				result = result .. ", " .. BLESSINGS[table.maxn(BLESSINGS)]
 			end
-			return true
+
+			return doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, result:len() > 0 and "Currently you have the following blessings: " .. result .. "." or "You do not have any blessing.")
 		end
 	]]></talkaction>
 
-	<talkaction words="!bless" event="script"><![CDATA[
+	<talkaction words="!bless;/bless" event="script"><![CDATA[
 		domodlib('bless-system-config')
 		domodlib('bless-system-lib')
 
@@ -193,7 +187,7 @@
 		end
 	]]></action>
 
-<!-- REFILL BOOTS COMMAND -->
+	<!-- Refill Boots Command -->
 	<description>
 		This mod adds a new command to the server, that can be used to refill (more precisely: change one id to another id
 			for fixed price). More items can be added by modifying 'items' table.
@@ -293,7 +287,7 @@
 		end
 	]]></talkaction>
 
-<!-- PROMOTION PLAYER -->
+	<!-- Promotion(npc) command -->
 	<config name="command-promotion-config"><![CDATA[
 		-- how much gold coins does it cost
 		cost = 20000
@@ -341,7 +335,7 @@
 		end
 	]]></talkaction>
 
-<!-- PLAYER SAVE COMMAND -->
+	<!-- Me Player Save Command -->
 	<config name="command-save-config"><![CDATA[
 		exhaust = 3 -- in minutes
 		storage = 3003 -- storage value used to save exhaustion
@@ -372,7 +366,7 @@
 		end
 	]]></talkaction>
 
-<!-- GUILD CAST -->
+	<!-- Guild Cast Command -->
 	<config name="guild-cast-config"><![CDATA[
 		exhaust = 10 -- in seconds
 		storage = 3001 -- storage value used to save exhaustion
@@ -447,16 +441,11 @@
 		end
 	]]></talkaction>
 
-<!-- GUILD OUTFIT -->
+	<!-- Guild Outfit Command -->
 	<config name="guild-outfit-config"><![CDATA[
 		exhaust = 30 -- in seconds
 		storage = 3005 -- storage value used to save exhaustion
 	]]></config>
-
-	<!--
-		TODO:
-			- change colors only (configurable)
-	-->
 
 	<talkaction words="!go;/go" event="script"><![CDATA[
 		domodlib('guild-outfit-config')
@@ -509,7 +498,7 @@
 		end
 	]]></talkaction>
 
-<!-- BUY COMMAND -->
+	<!-- Buy Command -->
 	<config name="command-buy-config"><![CDATA[
 		items = {
 			['brown backpack'] = {
@@ -588,15 +577,16 @@
 		end
 	]]></talkaction>
 
-<!-- Send animated text -->
+	<!-- Send animated text -->
 	<talkaction words="!me;/me" event="buffer" value="doCreatureSay(cid, getCreatureName(cid) .. ' ' .. param, TALKTYPE_MONSTER)"/>
 
-<!-- Check Player Spells -->
+	<!-- Check Player Spells -->
 	<talkaction words="!spells;/spells" event="script"><![CDATA[
 		function onSay(cid, words, param)
 			local count = getPlayerInstantSpellCount(cid)
 			local text = ""
 			local t = {}
+
 			for i = 0, count - 1 do
 				local spell = getPlayerInstantSpellInfo(cid, i)
 				if spell.level ~= 0 then
@@ -606,6 +596,7 @@
 					table.insert(t, spell)
 				end
 			end
+
 			table.sort(t, function(a, b) return a.level < b.level end)
 			local prevLevel = -1
 			for i, spell in ipairs(t) do
@@ -619,12 +610,13 @@
 				end
 				text = text .. line .. "  " .. spell.words .. " - " .. spell.name .. " : " .. spell.mana .. "\n"
 			end
+
 			doShowTextDialog(cid, 2175, text)
 			return true
 		end
 	]]></talkaction>
 
-<!-- Check Members Guild inGame -->
+	<!-- Check Members Guild inGame -->
 	<talkaction words="!guildmeb;/guildmeb" event="script"><![CDATA[
 		function onSay(cid, words, param, channel)
 			if param == '' then
@@ -664,7 +656,7 @@
 		end
 	]]></talkaction>
 
-<!-- Full Stamina Command at player -->
+	<!-- Full Stamina Command at player -->
 	<talkaction words="!stamina;/stamina" event="script"><![CDATA[
 		function onSay(cid, words, param)
 			if getPlayerMoney(cid) >= 250000 then
@@ -673,85 +665,12 @@
 			else
 				doPlayerSendCancel(cid, "Nesesitas 25 crystal coins para llenarte la stamina.")
 			end
-		return true
-		end
-	]]></talkaction>
 
-<!-- Player Full Stop -->
-	<talkaction words="/stop" group="4" access="3" event="script"><![CDATA[
-		local condition1 = createConditionObject(CONDITION_INFIGHT)
-		local condition2 = createConditionObject(CONDITION_EXHAUST)
-		local condition3 = createConditionObject(CONDITION_MUTED)
-			setConditionParam(condition1, CONDITION_PARAM_TICKS, -1)
-			setConditionParam(condition2, CONDITION_PARAM_TICKS, -1)
-			setConditionParam(condition3, CONDITION_PARAM_TICKS, -1)
-
-		function onSay(cid, words, param)
-			if(param == "") then
-				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Name required.")
-				return true
-			end
-
-		local player = getPlayerByNameWildcard(param)
-			local pos = getCreaturePosition(player)
-
-		local nha = {x = pos.x, y = pos.y - 3, z = pos.z, stackpos = 255}
-		local sha = {x = pos.x, y = pos.y + 3, z = pos.z, stackpos = 255}
-		local wha = {x = pos.x - 3, y = pos.y, z = pos.z, stackpos = 255}
-		local eha = {x = pos.x + 3, y = pos.y, z = pos.z, stackpos = 255}
-		local nwa = {x = pos.x - 2, y = pos.y - 2, z = pos.z, stackpos = 255}
-		local nea = {x = pos.x + 2, y = pos.y - 2, z = pos.z, stackpos = 255}
-		local sea = {x = pos.x + 2, y = pos.y + 2, z = pos.z, stackpos = 255}
-		local swa = {x = pos.x - 2, y = pos.y + 2, z = pos.z, stackpos = 255}
-
-		if getPlayerGroupId(cid) >= getPlayerGroupId(player) then
-		if getPlayerStorageValue(player, 12346) < 0 then
-		if((doCreatureSetNoMove(player, 1))== LUA_ERROR) then
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Error.")
-		end
-
-		setPlayerStorageValue(player, 12346, 1)
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player can now not move.")
-			doSendAnimatedText(getCreaturePosition(player), "Frozen", 64)
-				doSendDistanceShoot(nha, pos, 28)
-				doSendDistanceShoot(sha, pos, 28)
-				doSendDistanceShoot(wha, pos, 28)
-				doSendDistanceShoot(eha, pos, 28)
-				doSendDistanceShoot(nwa, pos, 28)
-				doSendDistanceShoot(nea, pos, 28)
-				doSendDistanceShoot(sea, pos, 28)
-				doSendDistanceShoot(swa, pos, 28)
-				doSendMagicEffect(pos, 52)
-				doAddCondition(player, condition1)
-				doAddCondition(player, condition2)
-				doAddCondition(player, condition3)
-		elseif getPlayerStorageValue(player, 12346) >= 0 then
-		if((doCreatureSetNoMove(player, 0))== LUA_ERROR) then
-				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Error.")
-		end
-
-		setPlayerStorageValue(player, 12346, -1)
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player can now move again.")
-			doSendAnimatedText(getCreaturePosition(player), "Can Move", 168)
-				doSendDistanceShoot(pos, nha, 37)
-				doSendDistanceShoot(pos, sha, 37)
-				doSendDistanceShoot(pos, wha, 37)
-				doSendDistanceShoot(pos, eha, 37)
-				doSendDistanceShoot(pos, nwa, 37)
-				doSendDistanceShoot(pos, nea, 37)
-				doSendDistanceShoot(pos, sea, 37)
-				doSendDistanceShoot(pos, swa, 37)
-				doSendMagicEffect(pos, 49)
-				doRemoveCondition(cid, CONDITION_INFIGHT)
-				doRemoveCondition(cid, CONDITION_EXHAUST)
-				doRemoveCondition(cid, CONDITION_MUTED)
-			end
-		end
 			return true
 		end
 	]]></talkaction>
 
-<!-- Info mana - exp -->
+	<!-- Info mana - exp -->
 	<talkaction words="!mana" event="script"><![CDATA[
 		 function onSay(cid, words, param, channel)
 			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You need to spent " .. (getPlayerRequiredMana(cid, getPlayerMagLevel(cid, TRUE) + 1) - getPlayerSpentMana(cid))  ..
@@ -763,15 +682,15 @@
 	<talkaction words="!exp" event="script"><![CDATA[
 		function onSay(cid, words, param, channel)
 			local expinfo = getPlayerExperience(cid)
-
 			if (words == "!exp") then
 				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You need ".. expinfo.. " experience points to next level")
 			end
+
 			return true
 		end
 	]]></talkaction>
 
-<!-- GiveReward Item to player -->
+	<!-- GiveReward Item to player -->
 	<talkaction words="/giveitem" group="4" access="3" event="script" log="yes"><![CDATA[
 		function onSay(cid, words, param, channel)
 			if(param == '') then
@@ -798,7 +717,7 @@
 		end
 	]]></talkaction>
 
-<!-- GiveReward Item to player -->
+	<!-- GiveReward Item to player -->
 	<talkaction words="!giveitem" group="4" access="3" event="script" log="yes"><![CDATA[
 		function onSay(cid, words, param, channel)
 		local param = string.explode(param, ",")
@@ -873,57 +792,7 @@
 		end
 	]]></talkaction>
 
-<!-- ANTRI TRAP COMMAND -->
-	<changelog><![CDATA[
-		* [01/08/2009 v1.1] From now, it cannot be used by protected players (config.protectionLevel)
-		* [07/08/2009 v1.2] Added optional param - player name, so it now works in diagonal directions!
-		* [18/05/2010 v1.3] Added !noob alias
-	]]></changelog>
-
-	<talkaction words="/noob;!noob" logged="no" event="script"><![CDATA[
-		local config = {
-			protectionLevel = getConfigValue('protectionLevel')
-		}
-
-		function onSay(cid, words, param, channel)
-			local pos = getCreaturePosition(cid)
-			if(getTileInfo(pos).protection) then
-				return true
-			end
-
-			local target = 0
-			param = param:trim()
-			if(param == '') then
-				pos = getPosByDir(pos, getCreatureLookDirection(cid))
-				target = getTopCreature(pos).uid
-			else
-				target = getPlayerByNameWildcard(param)
-				if(target ~= 0) then
-					pos = getCreaturePosition(target)
-					if(getDistanceBetween(getCreaturePosition(cid), pos) > 1) then
-						return true
-					end
-				end
-			end
-
-			if(target == 0 or getTileInfo(pos).protection or getPlayerCustomFlagValue(target, PlayerCustomFlag_GamemasterPrivileges)) then
-				return true
-			end
-
-			if(getPlayerLevel(cid) < config.protectionLevel or getPlayerLevel(target) >= config.protectionLevel) then
-				return true
-			end
-
-			local tmp = getCreaturePosition(cid)
-			if(doTeleportThing(cid, pos, true) and not isPlayerGhost(cid)) then
-				doSendMagicEffect(tmp, CONST_ME_POFF)
-				doSendMagicEffect(pos, CONST_ME_TELEPORT)
-			end
-			return false
-		end
-	]]></talkaction>
-
-<!-- BANK COMMAND -->
+	<!-- Bank Command -->
 	<config name="command-bank-config"><![CDATA[
 		transferDisabledVocations = {0} -- disable non vocation characters
 	]]></config>
@@ -1023,6 +892,79 @@
 			else
 				doPlayerSendCancel(cid, "Invalid command usage. Use '!bank' to view manual.")
 			end
+
+			return true
+		end
+	]]></talkaction>
+
+	<!-- Rename Command -->
+	<talkaction words="!changename;/changename;!namechange;/namechange" event="script"><![CDATA[
+		local config = {
+			item = {
+				Id = 1111, -- Use custom item
+				count = 0,
+			},
+			maxTextLenght = 15,
+			blacklistParam = {"account manager", "god", "cm", "gm", "tutor", "tester"},
+			minWordLenght = 3,
+			delay = 2
+		}
+
+		function onSay(cid, words, param, channel)
+			local textCancel, t = config.text, string.explode(param, ",")
+			if(param == '') then
+				return doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Command param required.")
+			elseif((getPlayerGUIDByName(t[1]) ~= nil) and (not getBooleanFromString(t[2]))) then
+				textCancel = "That name is already in use."
+			elseif(getPlayerItemCount(cid, config.item.Id) < config.item.count) then
+				textCancel = "You do not fulfill the requirements."
+			elseif(not getTilePzInfo(getCreaturePosition(cid))) then
+				textCancel = "You must be inside a protection zone to use this command."
+			elseif(string.len(tostring(t[1])) >= config.maxTextLenght) then
+				textCancel = "You can only use a maximum of " .. config.maxTextLenght .. " characters."
+			elseif(string.find(t[1]:lower(), "[^%l%s]") ~= nil) then
+				textCancel = "You cannot use symbols."
+			else
+				for blacklist = 1, table.maxn(config.blacklistParam) do
+					if(string.find(t[1]:lower(), config.blacklistParam[blacklist]) ~= nil) then
+						textCancel = "Invalid name entry."
+						break
+					end
+				end
+			end
+
+			if(config.text ~= textCancel) then
+				doPlayerSendCancel(cid, textCancel)
+				return true
+			end
+
+			local paramTemp, space, oldName = '', '', getCreatureName(cid)
+			for word in string.gmatch(t[1], "%a+") do
+				if(string.len(word) < config.minWordLenght) then
+					doPlayerSendCancel(cid, "Each word must have a minimum of " .. config.minWordLenght .. " characters.")
+					return true
+				end
+
+				paramTemp = "" .. paramTemp .. "" .. space .. "" .. word .. ""
+				if(space == '') then
+					space = " "
+				end
+			end
+
+			local guid = getPlayerGUID(cid)
+			t[1] = paramTemp
+			doPlayerRemoveItem(cid, config.item.Id, config.item.count)
+			if(pcall(doPlayerChangeName, guid, oldName, t[1]) == false) then
+				db.executeQuery("INSERT INTO `player_namelocks` (`player_id`, `name`, `new_name`, `date`) VALUES (" .. guid .. ", " .. db.escapeString(oldName) .. ", " .. db.escapeString(t[1]) .. ", " .. os.time() .. ");")
+				db.executeQuery("UPDATE `players` SET `name` = " .. db.escapeString(t[1]) .. " WHERE `id` = " .. guid .. " LIMIT 1;")
+			end
+
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your name has been changed successfully. You will be kicked in " .. config.delay .. " seconds.")
+			addEvent(function(cid, forceLogout)
+				if(isPlayer(cid)) then
+					doRemoveCreature(cid, forceLogout)
+				end
+			end, config.delay * 1000, cid, false)
 
 			return true
 		end

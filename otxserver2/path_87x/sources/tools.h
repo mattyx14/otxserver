@@ -169,4 +169,5 @@ std::string getWeaponName(WeaponType_t weaponType);
 
 bool fileExists(const char* filename);
 std::string getFilePath(FileType_t type, std::string name = "");
+std::string getFirstLine(const std::string& str);
 #endif

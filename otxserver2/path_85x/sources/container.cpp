@@ -297,7 +297,7 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 		}
 	}
 
-	if(index == INDEX_WHEREEVER && !((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT) && full())
+	if(index == INDEX_WHEREEVER && size() >= capacity() && !hasBitSet(FLAG_NOLIMIT, flags))
 		return RET_CONTAINERNOTENOUGHROOM;
 
 	const Cylinder* topParent = getTopParent();

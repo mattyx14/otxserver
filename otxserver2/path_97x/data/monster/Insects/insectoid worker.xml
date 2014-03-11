@@ -18,13 +18,12 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="30" attack="33"/>
-		<attack name="poison" interval="2000" chance="12" range="3" target="1" min="-5" max="-15">
-			<attribute key="shootEffect" value="poison"/>
-			<attribute key="areaEffect" value="poison"/>
+		<attack name="melee" interval="2000" skill="20" attack="30"/>
+		<attack name="physical" interval="1000" chance="10" range="7" min="-5" max="-40">
+			<attribute key="shootEffect" value="throwingknife"/>
 		</attack>
 	</attacks>
-	<defenses armor="16" defense="19"/>
+	<defenses armor="11" defense="11"/>
 	<elements>
 		<element physicalPercent="1"/>
 		<element firePercent="-10"/>

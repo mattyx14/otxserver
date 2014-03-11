@@ -11,7 +11,7 @@
 	<channel id="3" name="World Chat" level="2"/>
 	<channel id="4" name="Staff" access="3"/>
 	<channel id="5" name="Advertising" level="8" muted="120" conditionId="3" conditionMessage="You may only place one offer in two minutes.">
-		<vocation id="1-18"/>
+		<vocation id="1-8"/>
 	</channel>
 	<channel id="6" name="Advertising-Rookgaard" level="2" muted="120" conditionId="4" conditionMessage="You may only place one offer in two minutes.">
 		<vocation id="0"/>

@@ -7,6 +7,15 @@ local statue = {
 }
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if item.actionid == 1000 then
+		return false
+	end
+
+	OfflineLevel = getConfigValue('levelToOfflineTraining')
+	if getPlayerLevel(cid) <= OfflineLevel then
+		return false
+	end
+
 	if getPlayerPremiumDays(cid) > 0 then
 		doPlayerSetOfflineTrainingSkill(cid, statue[item.itemid])
 		doRemoveCreature(cid)
