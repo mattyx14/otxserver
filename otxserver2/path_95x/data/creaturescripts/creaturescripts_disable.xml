@@ -1,0 +1,8 @@
+-- Only Copy to creaturescripts.xml for enable function --
+<event type="login" name="CheckPlayerClient" event="script" value="client.lua"/>
+
+-- VIP System --
+ALTER TABLE `accounts` ADD `vipdays` int(11) NOT NULL DEFAULT 0;
+
+<event type="login" name="VipCheck" event="script" value="vipcheck.lua"/>
+registerCreatureEvent(cid, "VipCheck")

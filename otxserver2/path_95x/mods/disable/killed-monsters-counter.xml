@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mod name="killed-monsters-counter" version="1.0" author="slawkens" contact="slawkens@gmail.com" enabled="no">
+	<!--
+		TODO:
+			- automatically assign storages in TFS 0.4 that supports string as a key
+			- configurable message interval that will prevent spam in the console (i.e. inform player each X kills)
+			- rewards for killing monsters
+	-->
+
+	<event type="kill" name="killed-monsters-counter-event" event="script"><![CDATA[
+		local monsters = {
+			['rat'] = {
+				[2395] = {
+					kills = 3,
+					extraAttack = 1,
+					extraAttackLimit = 3,
+					storage = 34000
+				}
+			},
+			['dragon'] = {
+				[2383] = {
+					kills = 500,
+					extraAttack = 1,
+					extraAttackLimit = 20,
+					storage = 34001
+				}
+			}
+		}
+
+		function onKill(cid, target, damage, flags)
+			if not isMonster(target) or not isInArray({1,2,3},flags) then
+				return true
+			end
+
+			if not monsters[getCreatureName(target):lower()] then
+				return true
+			end
+
+			local playerWeapon = getPlayerWeapon(cid, true)
+			if playerWeapon.itemid == 0 then
+				return true
+			end
+
+			if not monsters[getCreatureName(target):lower()][playerWeapon.itemid] then
+				return true
+			end
+
+			local weapon = monsters[getCreatureName(target):lower()][playerWeapon.itemid]
+			local currentExtraAttack = getItemAttribute(playerWeapon.uid, 'extraattack') == nil and 0 or getItemAttribute(playerWeapon.uid, 'extraattack')
+
+			doCreatureSetStorage(cid, weapon.storage, math.max(1,getCreatureStorage(cid, weapon.storage)+1))
+			if getCreatureStorage(cid, weapon.storage) >= weapon.kills and currentExtraAttack < weapon.extraAttackLimit then
+				doCreatureSetStorage(cid, weapon.storage, 0)
+				doItemSetAttribute(playerWeapon.uid, 'extraattack', currentExtraAttack + weapon.extraAttack)
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'Congratulations! Your weapon received +' .. weapon.extraAttack .. ' attack points and now have total extra damage of +' .. (currentExtraAttack + weapon.extraAttack) .. ' points!')
+			end
+			return true
+		end
+	]]></event>
+
+	<event type="login" name="killed-monsters-counter-login" event="buffer"><![CDATA[
+		registerCreatureEvent(cid, "killed-monsters-counter-event")
+		_result = true
+	]]></event>
+</mod>

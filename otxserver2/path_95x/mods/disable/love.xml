@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mod name="Love" version="1.0" author="Kaiser" enabled="yes">
+	<talkaction words="!love" event="buffer"><![CDATA[
+	if(param ~= '') then
+		local lover = getPlayerByName(param)
+		if(lover == cid) then
+			doPlayerSendCancel(cid, 'Loving yourself is a good thing, but kinda weird...')
+			return true
+		end
+		if(isPlayer(lover)) then
+			if(getDistanceBetween(getCreaturePosition(lover), getCreaturePosition(cid)) > 7) then
+				doPlayerSendCancel(cid, 'Lover out of range, better luck next time!')
+				return true
+			else
+				doSendMagicEffect(getCreaturePosition(lover), CONST_ME_HEARTS)
+				doSendMagicEffect(getCreaturePosition(cid), CONST_ME_HEARTS)
+				doSendAnimatedText(getCreaturePosition(lover), "in love", TEXTCOLOR_RED)
+				doSendAnimatedText(getCreaturePosition(cid), "in love", TEXTCOLOR_RED)
+				doPlayerSendTextMessage(lover, MESSAGE_STATUS_CONSOLE_RED, getPlayerName(cid) .. " loves you very much!")
+				return true
+			end
+		end
+		doPlayerSendCancel(cid, 'Lover needs to be a player')
+		return true
+	end
+	doPlayerSendCancel(cid, 'Need a player to love')
+	return true
+	]]></talkaction> 
+</mod>
