@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+	<!-- Default script, responsible for destroyItem -->
+	<action default="yes" event="script" value="default.lua"/>
+
+	<!-- Quests -->
+	<action actionid="2000" event="script" value="quests/system.lua"/>
+
+	<!-- Text -->
+	<action itemid="1957;7722;10122" event="script" value="other/text.lua"/>
+
+	<!-- Weapons enchanting (Gems) -->
+	<action itemid="2146-2147;2149-2150;7759-7762" event="script" value="other/enchanting.lua"/>
+
+	<!-- Change gold -->
+	<action itemid="2148;2152;2160" event="script" value="other/changegold.lua"/>
+
+	<!-- Tools -->
+	<action itemid="2420;2442" event="script" value="tools/machete.lua"/>
+	<action itemid="2550" event="script" value="tools/scythe.lua"/>
+	<action itemid="2580;10223" event="script" value="tools/fishing.lua" allowfaruse="1"/>
+	<action itemid="2554;5710" event="script" value="tools/shovel.lua"/>
+	<action itemid="2120;7731" event="script" value="tools/rope.lua"/>
+	<action itemid="2553" event="script" value="tools/pick.lua"/>
+	<action itemid="5908;5942" event="script" value="tools/skinning.lua"/>
+	<action itemid="6561;12424" event="script" value="tools/ceremonial ankh.lua"/>
+	<action itemid="9930" event="script" value="tools/rust remover.lua"/>
+	<action itemid="10511;10513;10515" event="script" value="tools/squeeze.lua"/>
+
+	<!-- Liquids -->
+	<action itemid="1775" event="script" value="liquids/containers.lua"/>
+	<action itemid="2005" event="script" value="liquids/containers.lua"/>
+	<action itemid="2006" event="script" value="liquids/containers.lua"/>
+	<action itemid="2007" event="script" value="liquids/containers.lua"/>
+	<action itemid="2008" event="script" value="liquids/containers.lua"/>
+	<action itemid="2009" event="script" value="liquids/containers.lua"/>
+	<action itemid="2011" event="script" value="liquids/containers.lua"/>
+	<action itemid="2012" event="script" value="liquids/containers.lua"/>
+	<action itemid="2013" event="script" value="liquids/containers.lua"/>
+	<action itemid="2014" event="script" value="liquids/containers.lua"/>
+	<action itemid="2015" event="script" value="liquids/containers.lua"/>
+	<action itemid="2023" event="script" value="liquids/containers.lua"/>
+	<action itemid="2031" event="script" value="liquids/containers.lua"/>
+	<action itemid="2032" event="script" value="liquids/containers.lua"/>
+	<action itemid="2033" event="script" value="liquids/containers.lua"/>
+	<action itemid="2034" event="script" value="liquids/containers.lua"/>
+	<action itemid="2562" event="script" value="liquids/containers.lua"/>
+	<action itemid="2574" event="script" value="liquids/containers.lua"/>
+	<action itemid="2575" event="script" value="liquids/containers.lua"/>
+	<action itemid="2576" event="script" value="liquids/containers.lua"/>
+	<action itemid="2577" event="script" value="liquids/containers.lua"/>
+	<action itemid="3941" event="script" value="liquids/containers.lua"/>
+	<action itemid="3942" event="script" value="liquids/containers.lua"/>
+	<action itemid="5553" event="script" value="liquids/containers.lua"/>
+	<action itemid="10150" event="script" value="liquids/containers.lua"/>
+		<!-- Potions -->
+		<action itemid="6558" event="script" value="liquids/demonic_blood.lua"/>
+		<action itemid="7439" event="script" value="liquids/berserk_potion.lua"/>
+		<action itemid="7440" event="script" value="liquids/mastermind_potion.lua"/>
+		<action itemid="7443" event="script" value="liquids/bullseye_potion.lua"/>
+		<action itemid="8474" event="script" value="liquids/antidote_potion.lua"/>
+		<action itemid="7588-7591;8472-8473;7618;7620;8704;7488" event="script" value="liquids/potions.lua"/>
+
+	<!-- Food -->
+	<action itemid="2328;2362-2363;2666-2669;2671-2691;2693;2695-2696;2787-2796;5097;6125;6278;6279" event="script" value="foods/food.lua"/>
+	<action itemid="6394;6501;6541;6545:6569;6574;7158;7159;7372-7377;7909;8838-8845;8847;9005;11246" event="script" value="foods/food.lua"/>
+		<!-- Special Foods -->
+		<action itemid="9992" event="script" value="foods/rotworm_stew.lua"/>
+		<action itemid="9993" event="script" value="foods/hydra_tongue_salad.lua"/>
+		<action itemid="9994" event="script" value="foods/roasted_dragon_wings.lua"/>
+		<action itemid="9995" event="script" value="foods/fried_tropical_terrorbird.lua"/>
+		<action itemid="9996" event="script" value="foods/banana_chocolate_shake.lua"/>
+		<action itemid="9997" event="script" value="foods/veggie_casserole.lua"/>
+		<action itemid="9998" event="script" value="foods/filled_jalapeno_peppers.lua"/>
+		<action itemid="9999" event="script" value="foods/blessed_steak.lua"/>
+		<action itemid="10000" event="script" value="foods/carrot_cake.lua"/>
+		<action itemid="10001" event="script" value="foods/northern_fishburger.lua"/>
+
+	<!-- Spellbooks -->
+	<action itemid="2175;6120;8190;8900-8904;8918" event="script" value="other/spellbook.lua"/>
+
+	<!-- Construction kits -->
+	<action itemid="3901-3938;5086-5088;6114-6115;6372-6373;7503;7700;7960-7962;8692-8693;9974;10295" event="script" value="other/constructionkits.lua"/>
+
+	<!-- Bed construction kits -->
+	<action itemid="7904-7907" event="script" value="other/furniturebeds.lua"/>
+
+	<!-- Music, instruments -->
+	<action itemid="2070-2085;2094-2095;2332;2364;2367-2374;3951-3953;3957;5786;6123;9561;6572" event="script" value="other/music.lua"/>
+
+	<!-- Teleport (stairs, ladders) -->
+	<action itemid="430;1386;1369;3678;5543;8580;8599;10035;13010" event="script" value="other/teleport.lua"/>
+
+	<!-- Bread Creating -->
+	<action itemid="2692;2694" event="script" value="other/createbread.lua"/>
+
+	<!-- Windows -->
+	<action itemid="5303-5305;6436-6473;6788-6791;7025-7032;10264-10267;10488-10491" event="script" value="other/windows.lua"/>
+
+	<!-- Doors -->
+	<action itemid="1209-1214;1219-1262;1539-1542;3535-3552;4913-4918;5082-5085;5098-5145;5278-5295;5515-5518;5732-5737;5745-5749;6192-6209;6249-6266;6795-6802;6891-6908;7033-7050;7054-7057;8541-8558;9165-9184;9267-9284;10268-10285;10468-10486;10775-10777;10780-10786;10789-10792" event="script" value="other/doors.lua"/>
+
+	<!-- Watches -->
+	<action itemid="1728-1731;1877;1881;2036;6091-6092;8187" event="script" value="other/watch.lua"/>
+
+	<!-- Reaction -->
+	<action itemid="5080;5669;5791;6512;6388;6566;8974;8977;8981;8982" event="script" value="other/reaction.lua"/>
+	<action itemid="8985;9002;9004;10018;10063-10064;10107-10108;10318;10718-10719" event="script" value="other/reaction.lua"/>
+
+	<!-- Other -->
+	<action itemid="2096;2566" event="script" value="other/pumpkinhead.lua"/>
+	<action itemid="2114" event="script" value="other/piggybank.lua"/>
+	<action itemid="2600" event="script" value="tools/inkwell.lua"/>
+	<action itemid="2785" event="script" value="other/blueberrybush.lua"/>
+	<action itemid="5792-5797" event="script" value="other/dice.lua"/>
+	<action itemid="6570-6571" event="script" value="other/surprisebag.lua"/>
+	<action itemid="6576" event="script" value="other/fireworksrocket.lua"/>
+	<action itemid="6578" event="script" value="other/partyhat.lua"/>
+	<action itemid="5865" event="script" value="tools/juice_squeezer.lua"/>
+	<action itemid="7537;7585" event="script" value="other/spideregg.lua"/>
+</actions>

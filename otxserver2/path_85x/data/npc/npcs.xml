@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npcs>
+	<!--
+		<npc name="Bankman Billy" file="bankman billy.xml"/>
+		<npc name="Cityguard" file="cityguard.xml"/>
+		<npc name="Helmut" file="helmut.xml"/>
+		<npc name="Lua82Example Merchant" file="Lua82Example.xml"/>
+		<npc name="Mailman Maily" file="mailman maily.xml"/>
+		<npc name="Merchant Glut" file="merchant glut.xml"/>
+		<npc name="The Oracle" file="oracle the second.xml"/>
+		<npc name="Oracle" file="oracle.xml"/>
+		<npc name="Ruby" file="ruby.xml"/>
+	-->
+
+	<npc name="Aldo" file="Aldo.xml"/>
+	<npc name="Alice" file="Alice.xml"/>
+	<npc name="Deruno" file="Deruno.xml"/>
+	<npc name="Dimral" file="Dimral.xml"/>
+	<npc name="Donald" file="Donald.xml"/>
+	<npc name="Eryn" file="Eryn.xml"/>
+	<npc name="Lola" file="Lola.xml"/>
+	<npc name="Nimral" file="Nimral.xml"/>
+	<npc name="Riona" file="Riona.xml"/>
+	<npc name="Soya" file="Soya.xml"/>
+	<npc name="The Forgotten King" file="The Forgotten King.xml"/>
+	<npc name="The Oracle" file="The Oracle.xml"/>
+	<npc name="Timral" file="Timral.xml"/>
+	<npc name="Tyoric" file="Tyoric.xml"/>
+	<npc name="Varkhal" file="Varkhal.xml"/>
+	<npc name="Varkhal_2" file="Varkhal_2.xml"/>
+</npcs>
