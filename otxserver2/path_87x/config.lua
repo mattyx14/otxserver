@@ -144,10 +144,7 @@
 		-- Paralyze delay
 		paralyzeDelay = 1500
 
-		-- Protocol Server
-		-- The function no work (Fix please for Linux/Windows Users)
-		-- clientVersionMin = "8.70"
-		-- clientVersionMax = "8.71"
+		-- GUI
 		premiumDaysToAddByGui = 10
 
 		-- Depot and Miscellaneous

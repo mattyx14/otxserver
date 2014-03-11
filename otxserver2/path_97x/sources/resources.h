@@ -77,20 +77,20 @@
 	#define ID_MENU_KICK_PLAYER 242
 #endif
 
-// Compatible with 9.80/81
-#define CLIENT_VERSION_MIN 972
-#define CLIENT_VERSION_MAX 973
-#define CLIENT_VERSION_ITEMS 45
-#define CLIENT_VERSION_STRING "Only clients with protocol 9.81 allowed!"
+// Compatible with 9.83
+#define CLIENT_VERSION_MIN 975
+#define CLIENT_VERSION_MAX 975
+#define CLIENT_VERSION_ITEMS 47
+#define CLIENT_VERSION_STRING "Only clients with protocol 9.83 allowed!"
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "5"
-#define PATCH_VERSION "1"
-#define REVISION_VERSION "SE - 1549"
+#define PATCH_VERSION "2"
+#define REVISION_VERSION "1557"
 #define SOFTWARE_CODENAME "Necron"
 #define SOFTWARE_DEVELOPERS "Kaiser, Emma, Comedinhasss and Kazbin"
-#define SOFTWARE_PROTOCOL "9.81"
+#define SOFTWARE_PROTOCOL "9.83"
 #define FORUM "www.blacktibia.org"
 
 //#define CLIENT_VERSION_DATA

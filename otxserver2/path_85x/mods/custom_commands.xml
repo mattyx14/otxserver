@@ -1,5 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mod name="Custom Commands" version="1.0" author="Kaiser" contact="marranas6@gmail.com" enabled="yes">
+	<!-- News Command -->
+	<config name="news-config"><![CDATA[
+		added = {"add", "adicionar", "new"}
+		cleaned = {"clean", "limpar"}
+	]]></config>
+
+	<talkaction words="!notice;!news;/notice;/news" event="script"><![CDATA[
+		domodlib('news-config')
+
+		local config = {
+			added = added,
+			cleaned = cleaned
+		}
+
+		function onSay(cid, words, param, channel)
+			local t = string.explode(param, ",")
+			if(table.isStrIn(param, config.add)) then
+				if getPlayerGroupId (cid) > 3 then
+					file = io.open('data/txt/notice.txt','a+')
+					if(param == '') then
+						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Command param required.")
+						return true
+					end
+
+					notice = file:write("\n"..getPlayerName(cid).." at " .. os.date("%d %B %Y - %X ", os.time()) .."\n"..t[2].."\n")
+					file:close()
+
+					return true
+				end
+			elseif(table.isStrIn(param, config.clean)) then
+				if getPlayerGroupId (cid) > 3 then
+					file = io.open('data/txt/notice.txt','w')
+					if(param == '') then
+						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Command param required.")
+						return true
+					end
+
+					notice = file:write("Server News:\n")
+					file:close()
+
+					return true
+				end
+
+				return false
+			end
+
+			file = io.open('data/txt/notice.txt','r')
+			notice = file:read(-1)
+			doShowTextDialog(cid, 7528, notice)
+			file:close()
+
+			return true
+		end
+	]]></talkaction>
+
 	<!-- Smiles event -->
 	<config name="animated-smiles-config"><![CDATA[
 		exhaust = 1 -- in seconds
@@ -40,10 +95,9 @@
 	</description>
 
 	<config name="changender_config"><![CDATA[
-		config = {
-			costPremiumDays = 3
-		}
+		costPremiumDays = 3
 	]]></config>
+
 	<talkaction words="!changender;/changender" event="buffer"><![CDATA[
 		domodlib('changender_config')
 		if(getPlayerSex(cid) >= 2) then
@@ -68,15 +122,20 @@
 
 	<!-- Buypremium Command -->
 	<config name="buypremium_config"><![CDATA[
-		config = {
-			days = 90,
-			cost = 10000,
-			maxDays = 360
-		}
+		days = 90
+		cost = 10000
+		maxDays = 360
 	]]></config>
 
 	<talkaction words="/buypremium;!buypremium;/pacc;!pacc" event="buffer"><![CDATA[
 		domodlib('buypremium_config')
+
+		config = {
+			days = days,
+			cost = cost,
+			maxDays = maxDays
+		}
+
 		if(getPlayerPremiumDays(cid) > config.maxDays) then
 			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You can not buy more than " .. config.days + config.maxDays .. " days of Premium Account.")
 			doSendMagicEffect(getPlayerPosition(cid), CONST_ME_POFF)
@@ -101,14 +160,13 @@
 
 	<config name="bless-system-config"><![CDATA[
 		blessSystem = {}
+		blessSystem.needPremium = getBooleanFromString(getConfigValue('blessingsOnlyPremium'))
 		blessSystem.config = {
 			baseCost = 2000,
 			levelCost = 200,
 			startLevel = 30,
 			endLevel = 120
 		}
-
-		blessSystem.needPremium = getBooleanFromString(getConfigValue('blessingsOnlyPremium'))
 	]]></config>
 
 	<lib name="bless-system-lib"><![CDATA[
@@ -340,19 +398,19 @@
 		domodlib('command-save-config')
 
 		local config = {
-			exhaustion = exhaust,
+			exhaust = exhaust,
 			storage = storage
 		}
 
 		function onSay(cid, words, param, channel)
-			if(exhaustion.check(cid, config.storage)) then
-				doPlayerSendCancel(cid, "You can save yourself only once per " .. config.exhaustion .. " minutes.")
+			if(exhaust.check(cid, config.storage)) then
+				doPlayerSendCancel(cid, "You can save yourself only once per " .. config.exhaust .. " minutes.")
 				return true
 			end
 
 			if(doPlayerSave(cid)) then
 				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your character has been succesfully saved.")
-				exhaustion.set(cid, config.storage, config.exhaustion * 60)
+				exhaust.set(cid, config.storage, config.exhaust * 60)
 			else
 				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Error while saving your character. Please try again later.")
 			end
@@ -446,13 +504,13 @@
 		domodlib('guild-outfit-config')
 
 		local config = {
-			exhaustion = exhaust,
+			exhaust = exhaust,
 			storage = storage
 		}
 
 		function onSay(cid, words, param, channel)
-			if(exhaustion.check(cid, config.storage)) then
-				doPlayerSendCancel(cid, "You can change outfit only 1 time per " .. config.exhaustion .. " seconds.")
+			if(exhaust.check(cid, config.storage)) then
+				doPlayerSendCancel(cid, "You can change outfit only 1 time per " .. config.exhaust .. " seconds.")
 				return true
 			end
 
@@ -487,7 +545,7 @@
 				end
 			end
 
-			exhaustion.set(cid, config.storage, config.exhaustion)
+			exhaust.set(cid, config.storage, config.exhaust)
 			doPlayerSendCancel(cid, "Guild members outfit has been changed. (Total: " .. members .. ")")
 			return true
 		end
@@ -496,45 +554,19 @@
 	<!-- Buy Command -->
 	<config name="command-buy-config"><![CDATA[
 		items = {
-			['brown backpack'] = {
-				cost = 500, id = 1988
-			},
-			['green backpack'] = {
-				cost = 500, id = 1998
-			},
-			['yellow backpack'] = {
-				cost = 500, id = 1999
-			},
-			['red backpack'] = {
-				cost = 500, id = 2000
-			},
-			['purple backpack'] = {
-				cost = 500, id = 2001
-			},
-			['grey backpack'] = {
-				cost = 500, id = 2003
-			},
-			['blue backpack'] = {
-				cost = 500, id = 2002
-			},
-			['gold backpack'] = {
-				cost = 500, id = 2004
-			},
-			['amulet of loss'] = {
-				cost = 300000, id = 2173
-			},
-			['rope'] = {
-				cost = 500, id = 2120
-			},
-			['shovel'] = {
-				cost = 500, id = 2554
-			},
-			['machete'] = {
-				cost = 500, id = 2420
-			},
-			['fishing rod'] = {
-				cost = 500, id = 2580
-			}
+			['brown backpack'] = {cost = 500, id = 1988},
+			['green backpack'] = {cost = 500, id = 1998},
+			['yellow backpack'] = {cost = 500, id = 1999},
+			['red backpack'] = {cost = 500, id = 2000},
+			['purple backpack'] = {cost = 500, id = 2001},
+			['grey backpack'] = {cost = 500, id = 2003},
+			['blue backpack'] = {cost = 500, id = 2002},
+			['gold backpack'] = {cost = 500, id = 2004},
+			['amulet of loss'] = {cost = 300000, id = 2173},
+			['rope'] = {cost = 500, id = 2120},
+			['shovel'] = {cost = 500, id = 2554},
+			['machete'] = {cost = 500, id = 2420},
+			['fishing rod'] = {cost = 500, id = 2580}
 		}
 	]]></config>
 	<talkaction words="!buy;/buy" event="script"><![CDATA[
@@ -893,16 +925,25 @@
 	]]></talkaction>
 
 	<!-- Rename Command -->
+	<config name="rename-config"><![CDATA[
+		blacklistParam = {"account manager", "god", "cm", "gm", "tutor", "tester"}
+		maxTextLenght = 15
+		minWordLenght = 3
+		delay = 2
+		item = {
+			Id = 1111, count = 0
+		}
+	]]></config>
+
 	<talkaction words="!changename;/changename;!namechange;/namechange" event="script"><![CDATA[
+		domodlib('rename-config')
+
 		local config = {
-			item = {
-				Id = 1111, -- Use custom item
-				count = 0,
-			},
-			maxTextLenght = 15,
-			blacklistParam = {"account manager", "god", "cm", "gm", "tutor", "tester"},
-			minWordLenght = 3,
-			delay = 2
+			blacklistParam = blacklistParam,
+			maxTextLenght = maxTextLenght,
+			minWordLenght = minWordLenght,
+			delay = delay,
+			item = item
 		}
 
 		function onSay(cid, words, param, channel)
