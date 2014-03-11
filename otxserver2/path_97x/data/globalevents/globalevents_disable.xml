@@ -1,0 +1,3 @@
+-- VIP Days remover --
+<globalevent name="VipDaysRemover" time="00:01" event="script" value="daysremover.lua"/>
+<globalevent name="vipEffect" interval="2" script="vipEffect.lua"/>

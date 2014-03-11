@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Lua82Example Merchant" script="example82.lua" walkinterval="2000" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="289" head="140" body="64" legs="121" feet="76" addons="3" corpse="2212"/>
+</npc>

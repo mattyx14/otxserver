@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Soya" script="loot.lua" walkinterval="2000" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="139" head="132" body="79" legs="97" feet="132" corpse="2212"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I buy swords, clubs, axes, helmets, boots, legs, shields and armors."/>
+		<parameter key="shop_sellable" value="royal helmet,2498,40000;warrior helmet,2475,6000;crusader helmet,2497,9000;crown helmet,2491,5000;devil helmet,2462,4000;mystic turban,2663,500;chain helmet,2458,35;iron helmet,2459,30;steel boots,2645,400000;boots of haste,2195,40000;golden boots,2646,100000;magic plate armor,2472,100000;dragon scale mail,2492,60000;demon armor,2494,90000;golden armor,2466,30000;crown armor,2487,20000;knight armor,2476,5000;blue robe,2656,15000;lady armor,2500,2500;plate armor,2463,400;brass armor,2465,200;chain armor,2464,100;golden legs,2470,80000;crown legs,2488,15000;knight legs,2477,6000;plate legs,2647,500;brass legs,2487,100;mastermind shield,2514,80000;demon shield,2520,40000;blessed shield,2523,150000;great shield,2522,100000;vampire shield,2534,25000;medusa shield,2536,8000;amazon shield,2537,4000;crown shield,2519,5000;tower shield,2528,4000;guardian shield,2515,200;beholder shield,2518,1500;dwarven shield,2525,100;magic longsword,2390,150000;warlord sword,2408,100000;magic sword,2400,90000;giant sword,2393,10000;bright sword,2407,6000;ice rapier,2396,4000;fire sword,2392,3000;serpent sword,2409,1500;spike sword,2383,800;two handed sword,2377,400;broad sword,2413,70;short sword,2406,30;sword,2376,25;dragon lance,2414,10000;stonecutter axe,2431,90000;guardian halberd,2427,7500;fire axe,2432,10000;knight axe,2430,2000;double axe,2387,200;halberd,2381,200;battle axe,2378,100;hatchet,2388,20;war hammer,2391,6000;thunder hammer,2421,90000;skull staff,2436,1000;dragon hammer,2434,2000;clerical mace,2423,200;battle hammer,2417,60;mace,2398,30;"/>
+	</parameters>
+</npc>
