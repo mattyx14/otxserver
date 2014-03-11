@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mod name="annihilator" version="1.0" author="The Forgotten Server" contact="otland.net" enabled="yes">
+	<config name="annihilator-config"><![CDATA[
+		levers = {
+			-- About array format:
+			--     unique id for the switch => quest info
+			-- also don't forget to add this unique id few lines bottom in "<action" tag when adding new quests
+			[30015] = {
+				-- daily limit (one team only) like in global Tibia?
+				daily = "no",
+
+				minLevel = 100, -- level required
+
+				-- Storage used to determine if player have already done this quest
+				-- use -1 to ignore quest status (peoples will be able to help each other to finish the quest)
+				-- also remember to set same unique id for quest boxes, so it will be determined properly
+				questStorage = 30015,
+
+				-- you can use as many you wish, just be sure that playerPositions size is same as newPositions, otherwise there many be problems when teleporting players
+				playerPositions =
+				{
+					{x = 2858, y = 651, z = 13},
+					{x = 2859, y = 651, z = 13},
+					{x = 2860, y = 651, z = 13},
+					{x = 2861, y = 651, z = 13}
+				},
+
+				newPositions =
+				{
+					{x = 2859, y = 641, z = 13},
+					{x = 2860, y = 641, z = 13},
+					{x = 2861, y = 641, z = 13},
+					{x = 2862, y = 641, z = 13}
+				},
+
+				-- Following options are available only when you have enabled 'daily' option, if you didn't - just ignore them
+
+				-- Position of monsters, used to delete them when new team want do quest
+				-- these positions are used to automatically clean unkilled monsters when new team arrives
+				monsters =
+				{
+					{{x = 2859, y = 639, z = 13}, "Demon"},
+					{{x = 2861, y = 639, z = 13}, "Demon"},
+					{{x = 2863, y = 641, z = 13}, "Demon"},
+					{{x = 2864, y = 641, z = 13}, "Demon"},
+					{{x = 2860, y = 643, z = 13}, "Demon"},
+					{{x = 2862, y = 643, z = 13}, "Demon"}
+				},
+
+				-- Position and ID of doors, which will be auto-closed
+				doorPosition = {x = 2865, y = 641, z = 13},
+				doorId = 1219
+			}
+		}
+	]]></config>
+
+	<action uniqueid="30015" override="yes" event="script"><![CDATA[
+		domodlib('annihilator-config')
+		local _levers = {}
+		for uid, lever in pairs(levers) do
+			_levers[uid] = {}
+			local tmp = _levers[uid]
+			tmp.daily = getBooleanFromString(lever.daily)
+			tmp.minLevel = lever.minLevel
+			tmp.questStorage = lever.questStorage
+			tmp.playerPositions = lever.playerPositions
+			tmp.newPositions = lever.newPositions
+			tmp.monsters = lever.monsters
+			tmp.doorPosition = lever.doorPosition
+			tmp.doorId = lever.doorId
+		end
+
+		function onUse(cid, item, fromPosition, itemEx, toPosition)
+			local config = _levers[item.uid]
+			if(not config) then
+				return false
+			end
+
+			if(item.itemid == 1946) then
+				if(config.daily) then
+					doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+					return true
+				end
+
+				doTransformItem(item.uid, item.itemid - 1)
+				return true
+			end
+
+			local players = {}
+			for i, pos in ipairs(config.playerPositions) do
+				local failed = true
+				players[i] = getTopCreature(pos).uid
+				if(players[i] > 0 and isPlayer(players[i])) then
+					if(getPlayerStorageValue(players[i], config.questStorage) == -1) then
+						if(getPlayerLevel(players[i]) >= config.minLevel) then
+							failed = false
+						end
+					end
+				end
+
+				if(failed) then
+					doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+					return true
+				end
+			end
+
+			for i, pos in pairs(config.newPositions) do
+				local creature = getTopCreature(pos).uid
+				if(creature > 0 and not isPlayer(creature)) then
+					doRemoveCreature(creature)
+				end
+			end
+
+			if(config.monsters) then
+				for _, monster in pairs(config.monsters) do
+					local creature = getTopCreature(monster[1]).uid
+					if(creature > 0 and not isPlayer(creature)) then
+						doRemoveCreature(creature)
+					end
+
+					doCleanTile(monster[1])
+					doCreateMonster(monster[2], monster[1])
+				end
+			end
+
+			doCleanTile(config.doorPosition, true)
+			doCreateItem(config.doorId, config.doorPosition)
+
+			for i, pid in ipairs(players) do
+				doSendMagicEffect(config.playerPositions[i], CONST_ME_POFF)
+				doTeleportThing(pid, config.newPositions[i])
+				doSendMagicEffect(config.newPositions[i], CONST_ME_ENERGYAREA)
+			end
+
+			doTransformItem(item.uid, item.itemid + 1)
+			return true
+		end
+	]]></action>
+</mod>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quests>
+	<quest name="Example Quest I" startstorageid="30031" startstoragevalue="1">
+		<mission name="The head of Kiper" storageid="1001" startvalue="1" endvalue="3">
+			<missionstate id="1" description="Kill Kiper!"/>
+			<missionstate id="2" description="Give his head to Talaturen!"/>
+			<missionstate id="3" description="Take the medal you got from Talaturen to Ruly!"/>
+		</mission>
+		<mission name="Ruly's Revenge" storageid="30031" startvalue="4" endvalue="6">
+			<missionstate id="4" description="You received a document with instructions from Ruly, follow them."/>
+			<missionstate id="5" description="Go back to Ruly and tell him that you followed his instructions to the end."/>
+			<missionstate id="6" description="You got a reward from Ruly, he was very thankful with that you helped him to take his revenge."/>
+		</mission>
+	</quest>
+</quests>

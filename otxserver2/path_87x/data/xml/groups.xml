@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups>
+	<group id="1" name="Player"/>
+	<group id="2" access="1" name="Tutor" flags="137455730688" customFlags="2"/>
+	<group id="3" access="2" name="Senior Tutor" flags="137455730688" customFlags="2"/>
+	<group id="4" access="3" name="God" flags="39304319442938" customFlags="67108863"/>
+</groups>
