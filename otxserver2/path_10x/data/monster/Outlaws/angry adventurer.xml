@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Angry Adventurer" nameDescription="a angry adventurer" race="blood" experience="50" speed="195" manacost="0">
 	<health now="65" max="65"/>
-	<look type="129" head="92" body="15" legs="92" feet="82" corpse="6080"/>
+	<look type="129" head="92" body="15" legs="92" feet="82" corpse="20318"/>
 	<targetchange interval="5000" chance="8"/>
 	<strategy attack="100" defense="0"/>
 	<flags>

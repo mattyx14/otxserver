@@ -48,7 +48,7 @@ enum ConditionType_t
 	CONDITION_DRUNK = 1 << 11,
 	CONDITION_EXHAUST = 1 << 12,
 	CONDITION_REGENERATION = 1 << 13,
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	CONDITION_SOUL = 1 << 14,
 	#endif
 	CONDITION_DROWN = 1 << 15,
@@ -92,7 +92,7 @@ enum ConditionAttr_t
 	CONDITIONATTR_LIGHTLEVEL = 17,
 	CONDITIONATTR_LIGHTTICKS = 18,
 	CONDITIONATTR_LIGHTINTERVAL = 19,
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	CONDITIONATTR_SOULTICKS = 20,
 	CONDITIONATTR_SOULGAIN = 21,
 	#endif
@@ -233,7 +233,7 @@ class ConditionRegeneration : public ConditionGeneric
 		uint32_t internalHealthTicks, internalManaTicks, healthTicks, manaTicks, healthGain, manaGain;
 };
 
-#ifdef _MULTIPLATFORM
+#ifdef _MULTIPLATFORM76
 class ConditionSoul : public ConditionGeneric
 {
 	public:

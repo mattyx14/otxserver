@@ -1411,7 +1411,7 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 	return -1;
 }
 
-uint32_t Tile::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
+uint32_t Tile::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool itemCount /*= true*/) const
 {
 	const TileItemVector* items = getItemList();
 	if(!items)
@@ -1420,8 +1420,18 @@ uint32_t Tile::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) con
 	uint32_t count = 0;
 	for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
 	{
-		if((*it)->getID() == itemId)
-			count += Item::countByType(*it, subType);
+		if((*it)->getID() == itemId) count += Item::countByType(*it, subType, itemCount);
+			continue;
+
+		if(!itemCount)
+		{
+			if((*it)->isRune())
+				count+= (*it)->getCharges();
+			else
+				count+= (*it)->getItemCount();
+		}
+		else
+			count+= (*it)->getItemCount();
 	}
 
 	return count;

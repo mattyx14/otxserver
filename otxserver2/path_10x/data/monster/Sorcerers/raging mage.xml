@@ -55,7 +55,7 @@
   </voices>
   <loot>
     <item id="2148" countmax="100" chance1="100000" chancemax="0"/>
-    <item id="2185" chance="993" /> -- volcanic rod
+    <item id="2185" chance="993" />
     <item id="1986" chance="777"/>
     <item id="2600" chance="10000"/>
     <item id="2124" chance="1000"/>

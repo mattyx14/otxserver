@@ -42,9 +42,7 @@
 		<immunity energy="1"/>
 		<immunity paralyze="1"/>
 		<immunity invisible="1"/>
-		<immunity lifedragin="1"/>
-		<!-- so they won't damage self. also, we cannot test are they really immune
-		in Cipbia, as there are no spells nor weapons to attack with life drain -->
+		<immunity lifedrain="1"/>
 	</immunities>
 	<voices interval="2000" chance="5">
 		<voice sentence="GRRR!"/>

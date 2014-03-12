@@ -28,10 +28,10 @@
 		</defense>
 	</defenses>
 	<elements>
-		<element icePercent="100"/>
-		<element energyPercent="-13"/>
+		<element energyPercent="-20"/>
 	</elements>
 	<immunities>
+		<immunity ice="1"/>
 		<immunity outfit="1"/>
 		<immunity drunk="1"/>
 		<immunity invisible="1"/>

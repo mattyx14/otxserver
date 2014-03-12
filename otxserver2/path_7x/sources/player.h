@@ -59,7 +59,7 @@ enum playerinfo_t
 	PLAYERINFO_MAXMANA,
 	PLAYERINFO_MAGICLEVEL,
 	PLAYERINFO_MAGICLEVELPERCENT,
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	PLAYERINFO_SOUL,
 	#endif
 };
@@ -337,12 +337,12 @@ class Player : public Creature, public Cylinder
 		void setCapacity(double newCapacity) {capacity = newCapacity;}
 		double getFreeCapacity() const;
 
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		virtual int32_t getSoul() const {return getPlayerInfo(PLAYERINFO_SOUL);}
 		#endif
 		virtual int32_t getMaxHealth() const {return getPlayerInfo(PLAYERINFO_MAXHEALTH);}
 		virtual int32_t getMaxMana() const {return getPlayerInfo(PLAYERINFO_MAXMANA);}
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		int32_t getSoulMax() const {return soulMax;}
 		#endif
 
@@ -421,7 +421,7 @@ class Player : public Creature, public Cylinder
 
 		virtual void changeHealth(int32_t healthChange);
 		virtual void changeMana(int32_t manaChange);
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		void changeSoul(int32_t soulChange);
 		#endif
 
@@ -750,9 +750,10 @@ class Player : public Creature, public Cylinder
 		virtual int32_t __getIndexOfThing(const Thing* thing) const;
 		virtual int32_t __getFirstIndex() const;
 		virtual int32_t __getLastIndex() const;
-		virtual uint32_t __getItemTypeCount(uint16_t itemId, int32_t subType = -1) const;
+		virtual uint32_t __getItemTypeCount(uint16_t itemId, int32_t subType = -1,
+			bool itemCount = true) const;
 		virtual std::map<uint32_t, uint32_t>& __getAllItemTypeCount(std::map<uint32_t,
-			uint32_t>& countMap) const;
+			uint32_t>& countMap, bool itemCount = true) const;
 
 		virtual void __internalAddThing(Thing* thing);
 		virtual void __internalAddThing(uint32_t index, Thing* thing);
@@ -811,7 +812,7 @@ class Player : public Creature, public Cylinder
 		uint16_t lastStatsTrainingTime;
 
 		int32_t premiumDays;
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		int32_t soul;
 		int32_t soulMax;
 		#endif

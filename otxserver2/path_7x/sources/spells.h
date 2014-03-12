@@ -121,14 +121,14 @@ class Spell : public BaseSpell
 		const std::string& getName() const {return name;}
 
 		void postSpell(Player* player) const;
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		void postSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const;
 		#else
 		void postSpell(Player* player, uint32_t manaCost) const;
 		#endif
 
 		int32_t getManaCost(const Player* player) const;
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		int32_t getSoulCost() const {return soul;}
 		#endif
 		uint32_t getLevel() const {return level;}
@@ -170,7 +170,7 @@ class Spell : public BaseSpell
 
 		int32_t mana;
 		int32_t manaPercent;
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		int32_t soul;
 		#endif
 		int32_t range;
@@ -298,7 +298,7 @@ class RuneSpell : public Action, public Spell
 
 		static RuneSpellFunction Illusion;
 		static RuneSpellFunction Convince;
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		static RuneSpellFunction Soulfire;
 		#endif
 

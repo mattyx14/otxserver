@@ -9,7 +9,6 @@
 	<monster name="Carrion Worm" file="Annelids/carrion worm.xml"/>
 	<monster name="Rotworm" file="Annelids/rotworm.xml"/>
 	<monster name="Rift Worm" file="Annelids/rift worm.xml"/>
-	<monster name="Slug" file="Annelids/Slug.xml"/>
 
 	<!-- Apes -->
 	<monster name="Kongra" file="Apes/kongra.xml"/>
@@ -75,7 +74,6 @@
 	<monster name="Bear" file="Bears/bear.xml"/>
 	<monster name="Panda" file="Bears/panda.xml"/>
 	<monster name="Polar Bear" file="Bears/polar bear.xml"/>
-	<monster name="Undead Cavebear" file="Bears/undead cavebear.xml"/>
 
 	<!-- Bio-Elementals -->
 	<monster name="Bog Raider" file="Bio-Elementals/bog raider.xml"/>
@@ -221,7 +219,6 @@
 	<monster name="The Plasmother" file="Bosses/the plasmother.xml"/>
 
 	<!-- Canines -->
-	<monster name="Crystal Wolf" file="Canines/crystal wolf.xml"/>
 	<monster name="Dog" file="Canines/dog.xml"/>
 	<monster name="Hellhound" file="Canines/hellhound.xml"/>
 	<monster name="Hot Dog" file="Canines/hot dog.xml"/>
@@ -241,13 +238,9 @@
 	<monster name="Blood Crab" file="Crustaceans/blood crab.xml"/>
 	<monster name="Blood Crab Underwater" file="Crustaceans/blood crab underwater.xml"/>
 	<monster name="Crab" file="Crustaceans/crab.xml"/>
-	<monster name="Crustacea Gigantica" file="Crustaceans/crustacea gigantica.xml"/>
 
 	<!-- Cryo-Elementals -->
 	<monster name="Ice Golem" file="Cryo-Elementals/ice golem.xml"/>
-	
-	<!-- Deeplings -->
-	<monster name="Deepling Scout" file="Deeplings/deepling scout.xml"/>
 	
 	<!-- Demonlord -->
 	<monster name="Orshabaal" file="Demonlord/orshabaal.xml"/>
@@ -286,7 +279,6 @@
 	<monster name="Undead Dragon" file="Dragons/undead dragon.xml"/>
 	<monster name="Wyrm" file="Dragons/wyrm.xml"/>
 	<monster name="Ghastly Dragon" file="Dragons/ghastly dragon.xml"/>
-	<monster name="Draptor" file="Dragons/draptor.xml"/>
 
 	<!-- Dwarves -->
 	<monster name="Dwarf Geomancer" file="Dwarves/dwarf geomancer.xml"/>
@@ -301,7 +293,6 @@
 
 	<!-- Ungulates -->
 	<monster name="Black Sheep" file="Ungulates/black sheep.xml"/>
-	<monster name="Boar" file="Ungulates/boar.xml"/>
 	<monster name="Deer" file="Ungulates/deer.xml"/>
 	<monster name="Doom Deer" file="Ungulates/doom deer.xml"/>
 	<monster name="Elephant" file="Ungulates/elephant.xml"/>
@@ -330,7 +321,6 @@
 	<monster name="Cat" file="Felines/cat.xml"/>
 	<monster name="Lion" file="Felines/lion.xml"/>
 	<monster name="Tiger" file="Felines/tiger.xml"/>
-	<monster name="Midnight Panther" file="Felines/midnight panther.xml"/>
 
 	<!-- Frogs -->
 	<monster name="Azure Frog" file="Frogs/azure frog.xml"/>
@@ -593,7 +583,6 @@
 	<monster name="Vampire Bride" file="Undead Humanoids/vampire bride.xml"/>
 	<monster name="Zombie" file="Undead Humanoids/zombie.xml"/>
 	<monster name="Undead Prospector" file="Undead Humanoids/undead prospector.xml"/>
-	<monster name="Tomb Servant" file="Undead Humanoids/tomb servant.xml"/>
 
 	<!-- Voodoo Cultists -->
 	<monster name="Acolyte of the Cult" file="Voodoo Cultists/acolyte of the cult.xml"/>

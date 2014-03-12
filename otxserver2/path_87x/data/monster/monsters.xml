@@ -9,7 +9,6 @@
 	<monster name="Carrion Worm" file="Annelids/carrion worm.xml"/>
 	<monster name="Rotworm" file="Annelids/rotworm.xml"/>
 	<monster name="Rift Worm" file="Annelids/rift worm.xml"/>
-	<monster name="Slug" file="Annelids/Slug.xml"/>
 
 	<!-- Apes -->
 	<monster name="Kongra" file="Apes/kongra.xml"/>
@@ -221,7 +220,6 @@
 	<monster name="The Plasmother" file="Bosses/the plasmother.xml"/>
 
 	<!-- Canines -->
-	<monster name="Crystal Wolf" file="Canines/crystal wolf.xml"/>
 	<monster name="Dog" file="Canines/dog.xml"/>
 	<monster name="Hellhound" file="Canines/hellhound.xml"/>
 	<monster name="Hot Dog" file="Canines/hot dog.xml"/>
@@ -245,9 +243,6 @@
 
 	<!-- Cryo-Elementals -->
 	<monster name="Ice Golem" file="Cryo-Elementals/ice golem.xml"/>
-	
-	<!-- Deeplings -->
-	<monster name="Deepling Scout" file="Deeplings/deepling scout.xml"/>
 	
 	<!-- Demonlord -->
 	<monster name="Orshabaal" file="Demonlord/orshabaal.xml"/>
@@ -593,7 +588,6 @@
 	<monster name="Vampire Bride" file="Undead Humanoids/vampire bride.xml"/>
 	<monster name="Zombie" file="Undead Humanoids/zombie.xml"/>
 	<monster name="Undead Prospector" file="Undead Humanoids/undead prospector.xml"/>
-	<monster name="Tomb Servant" file="Undead Humanoids/tomb servant.xml"/>
 
 	<!-- Voodoo Cultists -->
 	<monster name="Acolyte of the Cult" file="Voodoo Cultists/acolyte of the cult.xml"/>

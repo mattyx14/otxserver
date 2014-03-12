@@ -57,7 +57,6 @@
 #include "game.h"
 #include "chat.h"
 #include "tools.h"
-#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -1541,7 +1540,7 @@ void LuaInterface::registerFunctions()
 	//getPlayerMoney(cid)
 	lua_register(m_luaState, "getPlayerMoney", LuaInterface::luaGetPlayerMoney);
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	//getPlayerSoul(cid[, ignoreModifiers = false])
 	lua_register(m_luaState, "getPlayerSoul", LuaInterface::luaGetPlayerSoul);
 	#endif
@@ -1762,7 +1761,7 @@ void LuaInterface::registerFunctions()
 	//doPlayerAddSpentMana(cid, amount[, useMultiplier = true])
 	lua_register(m_luaState, "doPlayerAddSpentMana", LuaInterface::luaDoPlayerAddSpentMana);
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	//doPlayerAddSoul(cid, amount)
 	lua_register(m_luaState, "doPlayerAddSoul", LuaInterface::luaDoPlayerAddSoul);
 	#endif
@@ -3568,16 +3567,16 @@ int32_t LuaInterface::luaDoItemSetDestination(lua_State* L)
 
 int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 {
-	//doTransformItem(uid, newId[, count/subType])
-	int32_t count = -1;
-	if(lua_gettop(L) > 2)
-		count = popNumber(L);
+	//doTransformItem(uid, newId[, count/subType = -1])
+	int32_t subType = -1;
+	if(lua_gettop(L) >= 3)
+		subType = popNumber(L);
 
 	uint32_t newId = popNumber(L), uid = popNumber(L);
 	ScriptEnviroment* env = getEnv();
 
 	Item* item = env->getItemByUID(uid);
-	if(!item)
+	if(!item && item->getID() == newId && (subType == -1 || subType == item->getSubType()))
 	{
 		errorEx(getError(LUA_ERROR_ITEM_NOT_FOUND));
 		lua_pushboolean(L, false);
@@ -3585,10 +3584,10 @@ int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 	}
 
 	const ItemType& it = Item::items[newId];
-	if(it.stackable && count > 100)
-		count = 100;
+	if(it.stackable && subType > 100)
+		subType = 100;
 
-	Item* newItem = g_game.transformItem(item, newId, count);
+	Item* newItem = g_game.transformItem(item, newId, subType);
 	if(newItem && newItem != item)
 	{
 		env->removeThing(uid);
@@ -5484,7 +5483,7 @@ int32_t LuaInterface::luaDoPlayerSetSex(lua_State* L)
 	return 1;
 }
 
-#ifdef _MULTIPLATFORM
+#ifdef _MULTIPLATFORM76
 int32_t LuaInterface::luaDoPlayerAddSoul(lua_State* L)
 {
 	//doPlayerAddSoul(cid, amount)
@@ -5769,7 +5768,7 @@ int32_t LuaInterface::luaGetPlayerLight(lua_State* L)
 	}
 }
 
-#ifdef _MULTIPLATFORM
+#ifdef _MULTIPLATFORM76
 int32_t LuaInterface::luaGetPlayerSoul(lua_State* L)
 {
 	//getPlayerSoul(cid[, ignoreModifiers = false])
@@ -8531,6 +8530,13 @@ int32_t LuaInterface::luaGetCreatureTarget(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaIsItemRune(lua_State* L)
+{
+	//isItemRune(itemid)
+	lua_pushboolean(L, Item::items[popNumber(L)].isRune());
+	return 1;
+}
+
 int32_t LuaInterface::luaIsSightClear(lua_State* L)
 {
 	//isSightClear(fromPos, toPos, floorCheck)
@@ -8903,7 +8909,6 @@ int32_t LuaInterface::luaDoPlayerSetStamina(lua_State* L)
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
 		player->setStaminaMinutes(minutes);
-		player->sendStats();
 		lua_pushboolean(L, true);
 	}
 	else
@@ -9184,7 +9189,7 @@ int32_t LuaInterface::luaGetVocationInfo(lua_State* L)
 	setField(L, "baseSpeed", voc->getBaseSpeed());
 	setField(L, "fromVocation", voc->getFromVocation());
 	setField(L, "promotedVocation", Vocations::getInstance()->getPromotedVocation(id));
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	setField(L, "soul", voc->getGain(GAIN_SOUL));
 	setField(L, "soulAmount", voc->getGainAmount(GAIN_SOUL));
 	setField(L, "soulTicks", voc->getGainTicks(GAIN_SOUL));

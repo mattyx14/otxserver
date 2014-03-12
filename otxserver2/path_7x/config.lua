@@ -177,6 +177,7 @@
 		-- ConfigSpells
 		noAttackHealingSimultaneus = true
 		enableCooldowns = true
+		classicDamageOnWeapons = true
 
 	-- Connection config
 	loginTries = 20

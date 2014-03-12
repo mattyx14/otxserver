@@ -199,6 +199,8 @@ class ConfigManager
 			LEVEL_TO_OFFLINE,
 			VERSION_MIN,
 			VERSION_MAX,
+			HIGHSCORES_TOP,
+			HIGHSCORES_UPDATETIME,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 

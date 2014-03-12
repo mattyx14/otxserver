@@ -29,7 +29,6 @@
 #include "monsters.h"
 #include "configmanager.h"
 #include "game.h"
-#include "definitions.h"
 
 extern Game g_game;
 extern Spells* g_spells;
@@ -472,7 +471,7 @@ Spell::Spell()
 	magLevel = 0;
 	mana = 0;
 	manaPercent = 0;
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	soul = 0;
 	#endif
 	range = -1;
@@ -550,7 +549,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(readXMLInteger(p, "manapercent", intValue))
 		manaPercent = intValue;
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	if(readXMLInteger(p, "soul", intValue))
 		soul = intValue;
 	#endif
@@ -756,7 +755,7 @@ bool Spell::checkSpell(Player* player) const
 		return false;
 	}
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	if(player->getSoul() < soul && !player->hasFlag(PlayerFlag_HasInfiniteSoul))
 	{
 		player->sendCancelMessage(RET_NOTENOUGHSOUL);
@@ -992,28 +991,25 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(!targetCreature)
+	if(needTarget && !targetCreature)
 	{
 		player->sendCancelMessage(RET_CANONLYUSETHISRUNEONCREATURES);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
 	}
 
-	Player* targetPlayer = targetCreature->getPlayer();
-	if(!isAggressive || !targetPlayer || Combat::isInPvpZone(player, targetPlayer)
-		|| player->getSkullType(targetPlayer) != SKULL_NONE)
+	if(!targetCreature)
 		return true;
 
-	if(player->getSecureMode() == SECUREMODE_ON)
+	Player* targetPlayer = targetCreature->getPlayer();
+	if(isAggressive && needTarget && !Combat::isInPvpZone(player, targetPlayer) && player->getSecureMode() == SECUREMODE_ON && (targetPlayer && targetPlayer != player && targetPlayer->getSkull() == SKULL_NONE))
 	{
 		player->sendCancelMessage(RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
 	}
 
-	player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
-	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-	return false;
+	return true;
 }
 
 void Spell::postSpell(Player* player) const
@@ -1046,14 +1042,14 @@ void Spell::postSpell(Player* player) const
 	if(isAggressive && !player->hasFlag(PlayerFlag_NotGainInFight))
 		player->addInFightTicks(false);
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	postSpell(player, (uint32_t)getManaCost(player), (uint32_t)getSoulCost());
 	#else
 	postSpell(player, (uint32_t)getManaCost(player));
 	#endif
 }
 
-#ifdef _MULTIPLATFORM
+#ifdef _MULTIPLATFORM76
 void Spell::postSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const
 #else
 void Spell::postSpell(Player* player, uint32_t manaCost) const
@@ -1067,7 +1063,7 @@ void Spell::postSpell(Player* player, uint32_t manaCost) const
 			player->addManaSpent(manaCost);
 	}
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	if(soulCost > 0)
 		player->changeSoul(-(int32_t)soulCost);
 	#endif
@@ -1473,7 +1469,7 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 	ReturnValue ret = g_game.placeSummon(creature, param);
 	if(ret == RET_NOERROR)
 	{
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		spell->postSpell(player, (uint32_t)manaCost, (uint32_t)spell->getSoulCost());
 		#else
 		spell->postSpell(player, (uint32_t)manaCost);
@@ -1789,7 +1785,7 @@ bool RuneSpell::loadFunction(const std::string& functionName)
 		function = Illusion;
 	else if(tmpFunctionName == "convince")
 		function = Convince;
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	else if(tmpFunctionName == "soulfire")
 		function = Soulfire;
 	#endif
@@ -1894,7 +1890,7 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 		return false;
 	}
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	spell->postSpell(player, (uint32_t)manaCost, (uint32_t)spell->getSoulCost());
 	#else
 	spell->postSpell(player, (uint32_t)manaCost);
@@ -1903,7 +1899,7 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 	return true;
 }
 
-#ifdef _MULTIPLATFORM
+#ifdef _MULTIPLATFORM76
 bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, const Position&, const Position& posTo)
 {
 	Player* player = creature->getPlayer();

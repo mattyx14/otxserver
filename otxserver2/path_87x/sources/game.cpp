@@ -196,6 +196,7 @@ void Game::loadGameState()
 	ScriptEnviroment::loadGameState();
 	loadPlayersRecord();
 	loadMotd();
+	checkHighscores();
 }
 
 void Game::setGameState(GameState_t newState)
@@ -5810,6 +5811,88 @@ bool Game::loadExperienceStages()
 	return true;
 }
 
+bool Game::reloadHighscores()
+{
+	lastHighscoreCheck = time(NULL);
+	for(int16_t i = 0; i < 9; ++i)
+		highscoreStorage[i] = getHighscore(i);
+
+	return true;
+}
+
+void Game::checkHighscores()
+{
+	reloadHighscores();
+	uint32_t tmp = g_config.getNumber(ConfigManager::HIGHSCORES_UPDATETIME) * 60 * 1000;
+	if(tmp <= 0)
+		return;
+
+	Scheduler::getInstance().addEvent(createSchedulerTask(tmp, boost::bind(&Game::checkHighscores, this)));
+}
+
+std::string Game::getHighscoreString(uint16_t skill)
+{
+	Highscore hs = highscoreStorage[skill];
+	std::stringstream ss;
+	ss << "Highscore for " << getSkillName(skill) << "\n\nRank Level - Player Name";
+	for(uint32_t i = 0; i < hs.size(); ++i)
+		ss << "\n" << (i + 1) << ".  " << hs[i].second << "  -  " << hs[i].first;
+
+	ss << "\n\nLast updated on:\n" << std::ctime(&lastHighscoreCheck);
+	return ss.str();
+}
+
+Highscore Game::getHighscore(uint16_t skill)
+{
+	Database* db = Database::getInstance();
+	DBResult* result;
+	DBQuery query;
+
+	Highscore hs;
+	if(skill >= SKILL__MAGLEVEL)
+	{
+		if(skill == SKILL__MAGLEVEL)
+			query << "SELECT `maglevel`, `name` FROM `players` ORDER BY `maglevel` DESC, `manaspent` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		else
+			query << "SELECT `level`, `name` FROM `players` ORDER BY `level` DESC, `experience` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			uint32_t level;
+			if(skill == SKILL__MAGLEVEL)
+				level = result->getDataInt("maglevel");
+			else
+				level = result->getDataInt("level");
+
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, level));
+		}
+		while(result->next());
+		result->free();
+	}
+	else
+	{
+		query << "SELECT `player_skills`.`value`, `players`.`name` FROM `player_skills`,`players` WHERE `player_skills`.`skillid`=" << skill << " AND `player_skills`.`player_id`=`players`.`id` ORDER BY `player_skills`.`value` DESC, `player_skills`.`count` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, result->getDataInt("value")));
+		}
+		while(result->next());
+		result->free();
+	}
+
+	return hs;
+}
+
 int32_t Game::getMotdId()
 {
 	if(lastMotd.length() == g_config.getString(ConfigManager::MOTD).length())
@@ -5941,6 +6024,16 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 				done = true;
 			else
 				std::clog << "[Error - Game::reloadInfo] Failed to reload global events." << std::endl;
+
+			break;
+		}
+
+		case RELOAD_HIGHSCORES:
+		{
+			if(reloadHighscores())
+				done = true;
+			else
+				std::clog << "[Error - Game::reloadInfo] Failed to reload highscores." << std::endl;
 
 			break;
 		}

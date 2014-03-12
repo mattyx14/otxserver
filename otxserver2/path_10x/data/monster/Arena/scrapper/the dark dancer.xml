@@ -40,7 +40,7 @@
 	</defenses>
 	<elements>
 		<element firePercent="40"/>
-		<element deathPercent="22"/>
+		<element deathPercent="20"/>
 	</elements>
 	<immunities>
 		<immunity outfit="1"/>

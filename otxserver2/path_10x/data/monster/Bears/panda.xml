@@ -22,9 +22,11 @@
 	</attacks>
 	<defenses armor="8" defense="8"/>
 	<elements>
-		<element earthPercent="100"/>
 		<element firePercent="-4"/>
 	</elements>
+	<immunities>
+		<immunity earth="1"/>
+	</immunities>
 	<voices interval="5000" chance="10">
 		<voice sentence="Grrrr"/>
 		<voice sentence="Groar"/>

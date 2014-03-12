@@ -24,7 +24,6 @@
 
 #include "game.h"
 #include "configmanager.h"
-#include "definitions.h"
 
 extern Game g_game;
 extern ConfigManager g_config;
@@ -194,7 +193,7 @@ void BedItem::regeneratePlayer(Player* player) const
 		player->changeMana(amount);
 	}
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	player->changeSoul((int32_t)std::max((float)0, (float)sleptTime / (60 * 15)));
 	#endif
 }

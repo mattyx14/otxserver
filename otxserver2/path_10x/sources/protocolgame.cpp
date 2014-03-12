@@ -2658,6 +2658,20 @@ void ProtocolGame::sendEnterWorld()
 	msg->put<char>(0x0F);
 }
 
+void ProtocolGame::sendFightModes()
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0xA7);
+	msg->put<char>(player->fightMode);
+	msg->put<char>(player->chaseMode);
+	msg->put<char>(player->secureMode);
+	msg->put<char>(PVP_MODE_DOVE);
+}
+
 void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos, uint32_t stackpos)
 {
 	if(!canSee(creature))
@@ -3339,8 +3353,8 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage_ptr msg)
 	msg->put<char>(0xA1);
 	for(uint8_t i = 0; i <= SKILL_LAST; ++i)
 	{
-		msg->put<char>(player->getSkill((skills_t)i, SKILL_LEVEL));
-		msg->put<char>(player->getBaseSkill((skills_t)i));
+		msg->put<uint16_t>(player->getSkill((skills_t)i, SKILL_LEVEL));
+		msg->put<uint16_t>(player->getBaseSkill((skills_t)i));
 		msg->put<char>(player->getSkill((skills_t)i, SKILL_PERCENT));
 	}
 }

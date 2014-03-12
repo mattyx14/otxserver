@@ -104,8 +104,9 @@ enum ReloadInfo_t
 	RELOAD_VOCATIONS = 21,
 	RELOAD_WEAPONS = 22,
 	RELOAD_MODS = 23,
-	RELOAD_ALL = 24,
-	RELOAD_LAST = RELOAD_WEAPONS
+	RELOAD_HIGHSCORES = 24,
+	RELOAD_ALL = 25,
+	RELOAD_LAST = RELOAD_HIGHSCORES
 };
 
 enum SaveFlag_t
@@ -123,6 +124,7 @@ struct RefreshBlock_t
 };
 
 typedef std::map<Tile*, RefreshBlock_t> RefreshTiles;
+typedef std::vector< std::pair<std::string, uint32_t> > Highscore;
 typedef std::list<Position> Trash;
 typedef std::map<int32_t, float> StageList;
 
@@ -143,6 +145,11 @@ class Game
 		Game();
 		virtual ~Game();
 		void start(ServiceManager* servicer);
+
+		Highscore getHighscore(uint16_t skill);
+		std::string getHighscoreString(uint16_t skill);
+		void checkHighscores();
+		bool reloadHighscores();
 
 		bool isSwimmingPool(Item* item, const Tile* tile, bool checkProtection) const;
 
@@ -693,5 +700,8 @@ class Game
 
 		StageList stages;
 		uint32_t lastStageLevel;
+
+		Highscore highscoreStorage[9];
+		time_t lastHighscoreCheck;
 };
 #endif

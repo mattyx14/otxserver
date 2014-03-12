@@ -395,7 +395,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSetTown(lua_State* L);
 		static int32_t luaDoPlayerSetVocation(lua_State* L);
 		static int32_t luaDoPlayerRemoveItem(lua_State* L);
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		static int32_t luaDoPlayerAddSoul(lua_State* L);
 		#endif
 		static int32_t luaDoPlayerSetStamina(lua_State* L);
@@ -508,7 +508,7 @@ class LuaInterface
 		static int32_t luaGetPlayerTown(lua_State* L);
 		static int32_t luaGetPlayerItemCount(lua_State* L);
 		static int32_t luaGetPlayerMoney(lua_State* L);
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		static int32_t luaGetPlayerSoul(lua_State* L);
 		#endif
 		static int32_t luaGetPlayerStamina(lua_State* L);
@@ -592,6 +592,7 @@ class LuaInterface
 		static int32_t luaIsPlayerProtected(lua_State* L);
 		static int32_t luaIsCreature(lua_State* L);
 		static int32_t luaIsMovable(lua_State* L);
+		static int32_t luaIsItemRune(lua_State* L);
 		static int32_t luaGetContainerSize(lua_State* L);
 		static int32_t luaGetContainerCap(lua_State* L);
 		static int32_t luaGetContainerItem(lua_State* L);
@@ -687,6 +688,7 @@ class LuaInterface
 		static int32_t luaGetConfigFile(lua_State* L);
 		static int32_t luaGetConfigValue(lua_State* L);
 		static int32_t luaGetModList(lua_State* L);
+		static int32_t luaDoPlayerSetWalkthrough(lua_State* L);
 		static int32_t luaIsPlayerUsingOtclient(lua_State* L);
 		static int32_t luaDoSendPlayerExtendedOpcode(lua_State* L);
 

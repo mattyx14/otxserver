@@ -320,8 +320,8 @@ class Item : virtual public Thing, public ItemAttributes
 		CombatType_t getElementType() const {return items[id].hasAbilities() ? items[id].abilities->elementType : COMBAT_NONE;}
 		int32_t getElementDamage() const {return items[id].hasAbilities() ? items[id].abilities->elementDamage : 0;}
 
-		uint8_t getItemCount() const {return count;}
-		void setItemCount(uint8_t n) {count = std::max((uint8_t)1, n);}
+		uint16_t getItemCount() const {return count;}
+		void setItemCount(uint16_t n) {count = std::max((uint16_t)1, n);}
 
 		uint16_t getSubType() const;
 		void setSubType(uint16_t n);
@@ -343,7 +343,7 @@ class Item : virtual public Thing, public ItemAttributes
 		virtual void onRemoved();
 		virtual bool onTradeEvent(TradeEvents_t, Player*, Player*) {return true;}
 
-		static uint32_t countByType(const Item* item, int32_t checkType);
+		static uint32_t countByType(const Item* item, int32_t checkType, bool multiCount);
 
 	protected:
 		uint16_t id;
@@ -611,10 +611,16 @@ inline ItemDecayState_t Item::getDecaying() const
 	return DECAYING_FALSE;
 }
 
-inline uint32_t Item::countByType(const Item* item, int32_t checkType)
+inline uint32_t Item::countByType(const Item* item, int32_t checkType, bool multiCount)
 {
 	if(checkType != -1 && checkType != (int32_t)item->getSubType())
 		return 0;
+
+	if(multiCount)
+		return item->getItemCount();
+
+	if(item->isRune())
+		return item->getCharges();
 
 	return item->getItemCount();
 }

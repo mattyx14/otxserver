@@ -32,7 +32,7 @@
 	</elements>
 	<immunities>
 		<immunity paralyze="1"/>
-		<immunity invisibility="1"/>
+		<immunity invisible="1"/>
 	</immunities>
 	<loot>
 		<item id="2148" countmax="39" chance1="40000" chancemax="954"/> <!-- gp -->

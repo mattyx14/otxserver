@@ -59,6 +59,7 @@
 	#ifdef __LOGIN_SERVER__
 	#define ID_MENU_RELOAD_GAMESERVERS 513
 	#endif
+	#define ID_MENU_RELOAD_HIGHSCORES 514
 
 	#define ID_MENU_OTSERV 600
 	#define ID_MENU_OTSERV2 601
@@ -84,11 +85,11 @@
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "8"
-#define PATCH_VERSION "1"
-#define REVISION_VERSION "4499"
-#define SOFTWARE_CODENAME "Zilart Prince"
-#define SOFTWARE_DEVELOPERS "Kaiser, Comedinhasss, Emma, Kazbin and The Forgotten Server Developers"
+#define MINOR_VERSION "9"
+#define PATCH_VERSION "0"
+#define REVISION_VERSION "4644"
+#define SOFTWARE_CODENAME "Galaxy - SE"
+#define SOFTWARE_DEVELOPERS "MartyX, Comedinhasss, Emma, Kazbin and The Forgotten Server Developers"
 #define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
 
 //#define CLIENT_VERSION_DATA

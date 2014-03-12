@@ -37,7 +37,6 @@
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"
 #endif
-#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -87,7 +86,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	uint16_t version = msg.get<uint16_t>();
 
 	msg.skip(12);
-	#ifdef _PROTOCOL77
+	#ifdef _MULTIPLATFORM77
 	if(!RSA_decrypt(msg))
 	{
 		getConnection()->close();

@@ -22,11 +22,11 @@
 	</attacks>
 	<defenses armor="23" defense="27"/>
 	<elements>
-		<element deathPercent="100"/>
-		<element earthPercent="100"/>
 		<element holyPercent="-15"/>
 	</elements>
 	<immunities>
+		<immunity death="1"/>
+		<immunity earth="1"/>
 		<immunity paralyze="1"/>
 		<immunity invisible="1"/>
 	</immunities>

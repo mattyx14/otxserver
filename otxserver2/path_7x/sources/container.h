@@ -133,9 +133,10 @@ class Container : public Item, public Cylinder
 		virtual int32_t __getFirstIndex() const;
 		virtual int32_t __getLastIndex() const;
 
-		virtual uint32_t __getItemTypeCount(uint16_t itemId, int32_t subType = -1) const;
+		virtual uint32_t __getItemTypeCount(uint16_t itemId, int32_t subType = -1,
+			bool itemCount = true) const;
 		virtual std::map<uint32_t, uint32_t>& __getAllItemTypeCount(std::map<uint32_t,
-			uint32_t>& countMap) const;
+			uint32_t>& countMap, bool itemCount = true) const;
 
 		virtual void postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
 			int32_t index, CylinderLink_t link = LINK_OWNER);

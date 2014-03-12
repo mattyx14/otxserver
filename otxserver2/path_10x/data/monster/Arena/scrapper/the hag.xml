@@ -30,7 +30,7 @@
 	</defenses>
 	<elements>
 		<element firePercent="30"/>
-		<element icePercent="17"/>
+		<element icePercent="20"/>
 		<element energyPercent="10"/>
 	</elements>
 	<immunities>

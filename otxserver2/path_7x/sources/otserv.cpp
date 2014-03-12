@@ -31,7 +31,6 @@
 #else
 #include "resources.h"
 #endif
-#include "definitions.h"
 
 #ifndef WINDOWS
 #include <unistd.h>
@@ -41,7 +40,7 @@
 #endif
 
 #include <boost/config.hpp>
-#ifdef _PROTOCOL77
+#ifdef _MULTIPLATFORM77
 #include <openssl/rsa.h>
 #include <openssl/bn.h>
 #include <openssl/err.h>
@@ -88,7 +87,7 @@ inline void boost::throw_exception(std::exception const & e)
 	std::clog << "Boost exception: " << e.what() << std::endl;
 }
 #endif
-#ifdef _PROTOCOL77
+#ifdef _MULTIPLATFORM77
 RSA* g_RSA;
 #endif
 ConfigManager g_config;
@@ -153,7 +152,7 @@ bool argumentsHandler(StringVec args)
 
 			"\n"
 			"A server developed by: "SOFTWARE_DEVELOPERS".\n"
-			"Visit our forums for updates, support, and resources:\n";
+			"Visit our forums for updates, support, and resources:\n"
 			""FORUMS"\n";
 			return false;
 		}
@@ -592,7 +591,7 @@ ServiceManager* services)
 		boost::this_thread::sleep(boost::posix_time::seconds(15));
 	}
 
-	#ifdef _PROTOCOL77
+	#ifdef _MULTIPLATFORM77
 	std::clog << ">> Loading RSA key" << std::endl;
 	#if defined(WINDOWS) && !defined(_CONSOLE)
 	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Loading RSA Key");

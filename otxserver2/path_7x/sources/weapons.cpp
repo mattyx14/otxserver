@@ -23,7 +23,6 @@
 #include "game.h"
 #include "configmanager.h"
 #include "tools.h"
-#include "definitions.h"
 
 extern Game g_game;
 extern ConfigManager g_config;
@@ -152,14 +151,11 @@ int32_t Weapons::getMaxMeleeDamage(int32_t attackSkill, int32_t attackValue)
 
 int32_t Weapons::getMaxWeaponDamage(int32_t level, int32_t attackSkill, int32_t attackValue, float attackFactor)
 {
-	return (int32_t)std::ceil((2 * (attackValue * (attackSkill + 5.8) / 25 + (level - 1) / 10.)) / attackFactor);
+	if(g_config.getBool(ConfigManager::CLASSIC_DAMAGE_ON_WEAPONS))
+		return ((int32_t)std::ceil(((float)(attackSkill * (attackValue * 0.0425) + (attackValue * 0.2)) / attackFactor)) * 2);
+	else
+		return (int32_t)std::ceil((2 * (attackValue * (attackSkill + 5.8) / 25 + (level - 1) / 10.)) / attackFactor);
 }
-
-// Use it and remove the getMaxWeaponDamage if you require use damages on weapons 7.6
-/*int32_t Weapons::getMaxWeaponDamage(int32_t, int32_t attackSkill, int32_t attackValue, float attackFactor)
-{
-	return ((int32_t)std::ceil(((float)(attackSkill * (attackValue * 0.0425) + (attackValue * 0.2)) / attackFactor)) * 2);
-}*/
 
 Weapon::Weapon(LuaInterface* _interface):
 	Event(_interface)
@@ -169,7 +165,7 @@ Weapon::Weapon(LuaInterface* _interface):
 	magLevel = 0;
 	mana = 0;
 	manaPercent = 0;
-	#ifdef _PROTOCOL76
+	#ifdef _MULTIPLATFORM76
 	soul = 0;
 	#endif
 	exhaustion = 0;
@@ -214,7 +210,7 @@ bool Weapon::configureEvent(xmlNodePtr p)
 	if(readXMLInteger(p, "manapercent", intValue))
 	 	manaPercent = intValue;
 
-	#ifdef _PROTOCOL76
+	#ifdef _MULTIPLATFORM76
 	if(readXMLInteger(p, "soul", intValue))
 	 	soul = intValue;
 	#endif
@@ -314,7 +310,7 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target) const
 	if(player->getMana() < getManaCost(player))
 		return 0;
 
-	#ifdef _PROTOCOL76
+	#ifdef _MULTIPLATFORM76
 	if(player->getSoul() < soul)
 		return 0;
 	#endif
@@ -464,7 +460,7 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile*) const
 			player->addManaSpent(manaCost);
 	}
 
-	#ifdef _PROTOCOL76
+	#ifdef _MULTIPLATFORM76
 	if(!player->hasFlag(PlayerFlag_HasInfiniteSoul) && soul > 0)
 		player->changeSoul(-soul);
 	#endif

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Amazon" nameDescription="a amazon" race="blood" experience="60" speed="210" manacost="390">
 	<health now="110" max="110"/>
-	<look type="137" head="113" body="120" legs="114" feet="132" corpse="6081"/>
+	<look type="137" head="113" body="120" legs="114" feet="132" corpse="20323"/>
 	<targetchange interval="5000" chance="8"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
@@ -19,29 +19,29 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" skill="20" attack="30"/>
-		<attack name="physical" interval="1000" chance="10" range="7" min="-5" max="-40">
+		<attack name="physical" interval="1000" chance="10" range="7" min="0" max="-45">
 			<attribute key="shootEffect" value="throwingknife"/>
 		</attack>
 	</attacks>
 	<defenses armor="11" defense="11"/>
 	<elements>
-		<element physicalPercent="-8"/>
-		<element deathPercent="-7"/>
+		<element physicalPercent="-5"/>
+		<element deathPercent="-5"/>
 	</elements>
 	<voices interval="5000" chance="10">
 		<voice sentence="Yeeee ha!"/>
 		<voice sentence="Your head shall be mine!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="20" chance="50000"/><!-- gold coin -->
-		<item id="2229" countmax="2" chance="100000"/><!-- skull -->
-		<item id="2379" chance="100000"/><!-- dagger -->
-		<item id="2467" chance="50000"/><!-- leather armor -->
-		<item id="2691" chance="33333"/><!-- brown bread -->
+		<item id="2229" countmax="2" chance="50000"/><!-- skull -->
+		<item id="2379" chance="50000"/><!-- dagger -->
+		<item id="2148" countmax="20" chance="33333"/><!-- gold coin -->
+		<item id="2691" chance="25000"/><!-- brown bread -->
 		<item id="2385" chance="20000"/><!-- sabre -->
-		<item id="2526" chance="5000"/><!-- studded shield -->
-		<item id="2050" chance="5263"/><!-- torch -->
-		<item id="2125" chance="287"/><!-- crystal necklace -->
-		<item id="2147" chance="131"/><!-- small ruby -->
+		<item id="12399" chance="10000"/><!-- girlish hair decoration -->
+		<item id="12400" chance="5000"/><!-- protective charm -->
+		<item id="2050" chance="1041"/><!-- torch -->
+		<item id="2125" chance="289"/><!-- crystal necklace -->
+		<item id="2147" chance="165"/><!-- small ruby -->
 	</loot>
 </monster>

@@ -55,7 +55,6 @@
 
 #include <ctime>
 #include <cassert>
-#include <chrono>
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <sys/timeb.h>

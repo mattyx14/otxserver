@@ -168,6 +168,8 @@
 
 		-- Others
 		enableLootBagDisplay = false
+		highscoreDisplayPlayers = 10
+		updateHighscoresAfterMinutes = 60
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
@@ -176,6 +178,10 @@
 		versionMin = 860
 		versionMax = 860
 		versionMsg = "Only clients with protocol 8.60 allowed!"
+
+		-- ConfigSpells
+		noAttackHealingSimultaneus = true
+		enableCooldowns = true
 
 	-- Connection config
 	loginTries = 20
@@ -326,8 +332,11 @@
 	experienceStages = false
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
-	rateSkill = 3.0
-	rateMagic = 3.0
+	levelToOfflineTraining = 8
+	rateSkill = 1.0
+	rateSkillOffline = 0.5
+	rateMagic = 1.0
+	rateMagicOffline = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

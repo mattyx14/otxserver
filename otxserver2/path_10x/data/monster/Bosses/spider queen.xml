@@ -20,14 +20,12 @@
 	<attacks>
 		<attack name="melee" interval="2000" skill="60" attack="40" poison="80"/>
 	</attacks>
-	<elements>
-		<element energyPercent="100"/>
-		<element firePercent="100"/>
-		<element icePercent="100"/>
-		<element physicalPercent="100"/>
-	</elements>
 	<immunities>
-		<immunity down="1"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity ice="1"/>
+		<immunity physical="1"/>
+		<immunity drown="1"/>
 		<immunity death="1"/>
 		<immunity holy="1"/>
 		<immunity outfit="1"/>

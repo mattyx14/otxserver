@@ -40,6 +40,19 @@ IpConnectMap ProtocolStatus::ipConnectMap;
 
 void ProtocolStatus::onRecvFirstMessage(NetworkMessage& msg)
 {
+	uint32_t ip = getIP();
+	if(ip != LOCALHOST)
+	{
+		IpConnectMap::const_iterator it = ipConnectMap.find(ip);
+		if(it != ipConnectMap.end() && OTSYS_TIME() < it->second + g_config.getNumber(ConfigManager::STATUSQUERY_TIMEOUT))
+		{
+			getConnection()->close();
+			return;
+		}
+
+		ipConnectMap[ip] = OTSYS_TIME();
+	}
+
 	uint8_t type = msg.get<char>();
 	switch(type)
 	{

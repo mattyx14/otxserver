@@ -23,7 +23,6 @@
 
 #include "player.h"
 #include "condition.h"
-#include "definitions.h"
 
 #include "game.h"
 extern Game g_game;
@@ -390,7 +389,7 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 				if(readXMLInteger(configNode, "maxMana", intValue))
 					outfit.stats[STAT_MAXMANA] = intValue;
 
-				#ifdef _MULTIPLATFORM
+				#ifdef _MULTIPLATFORM76
 				if(readXMLInteger(configNode, "soul", intValue))
 					outfit.stats[STAT_SOUL] = intValue;
 				#endif
@@ -408,7 +407,7 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 				if(readXMLInteger(configNode, "maxManaPercent", intValue))
 					outfit.statsPercent[STAT_MAXMANA] = intValue;
 
-				#ifdef _MULTIPLATFORM
+				#ifdef _MULTIPLATFORM76
 				if(readXMLInteger(configNode, "soulPercent", intValue))
 					outfit.statsPercent[STAT_SOUL] = intValue;
 				#endif
@@ -464,7 +463,7 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 				if(readXMLString(configNode, "regeneration", strValue) && booleanString(strValue))
 					outfit.conditionSuppressions |= CONDITION_REGENERATION;
 
-				#ifdef _MULTIPLATFORM
+				#ifdef _MULTIPLATFORM76
 				if(readXMLString(configNode, "soul", strValue) && booleanString(strValue))
 					outfit.conditionSuppressions |= CONDITION_SOUL;
 				#endif

@@ -169,8 +169,8 @@
 
 		-- Others
 		enableLootBagDisplay = false
-		advertisingBlock = ""
-		gmAnonymousInChanel = 0
+		highscoreDisplayPlayers = 10
+		updateHighscoresAfterMinutes = 60
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
@@ -179,7 +179,7 @@
 		manualVersionConfig = false
 		versionMin = 870
 		versionMax = 871
-		versionMsg = "Only clients with protocol 9.7x allowed!"
+		versionMsg = "Only clients with protocol 8.7x allowed!"
 
 	-- Connection config
 	loginTries = 20
@@ -330,8 +330,11 @@
 	experienceStages = false
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
-	rateSkill = 3.0
-	rateMagic = 3.0
+	levelToOfflineTraining = 8
+	rateSkill = 1.0
+	rateSkillOffline = 0.5
+	rateMagic = 1.0
+	rateMagicOffline = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

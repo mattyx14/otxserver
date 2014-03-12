@@ -22,13 +22,15 @@
 	</attacks>
 	<defenses armor="10" defense="15"/>
 	<elements>
-		<element icePercent="100"/>
-		<element earthPercent="100"/>
-		<element downPercent="100"/>
 		<element physicalPercent="20"/>
 		<element firePercent="-10"/>
 		<element energyPercent="-5"/>
 	</elements>
+	<immunities>
+		<immunity ice="1"/>
+		<immunity earth="1"/>
+		<immunity drown="1"/>
+	</immunities>
 	<loot>
 		<item id="2148" countmax="20" chance="100000"/><!-- gold coin -->
 		<item id="2667" chance="20000"/><!-- fish -->

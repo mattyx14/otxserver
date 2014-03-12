@@ -698,23 +698,43 @@ int32_t Container::__getLastIndex() const
 	return size();
 }
 
-uint32_t Container::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
+uint32_t Container::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool itemCount /*= true*/) const
 {
 	uint32_t count = 0;
 	for(ItemList::const_iterator it = itemlist.begin(); it != itemlist.end(); ++it)
 	{
 		if((*it) && (*it)->getID() == itemId && (subType == -1 || subType == (*it)->getSubType()))
-			count += (*it)->getItemCount();
+		{
+			if(!itemCount)
+			{
+				if((*it)->isRune())
+					count += (*it)->getCharges();
+				else
+					count += (*it)->getItemCount();
+			}
+			else
+				count += (*it)->getItemCount();
+		}
 	}
 
 	return count;
 }
 
 std::map<uint32_t, uint32_t>& Container::__getAllItemTypeCount(std::map<uint32_t,
-	uint32_t>& countMap) const
+	uint32_t>& countMap, bool itemCount /*= true*/) const
 {
 	for(ItemList::const_iterator it = itemlist.begin(); it != itemlist.end(); ++it)
-		countMap[(*it)->getID()] += (*it)->getItemCount();
+	{
+		if(!itemCount)
+		{
+			if((*it)->isRune())
+				countMap[(*it)->getID()] += (*it)->getCharges();
+			else
+				countMap[(*it)->getID()] += (*it)->getItemCount();
+		}
+		else
+			countMap[(*it)->getID()] += (*it)->getItemCount();
+	}
 
 	return countMap;
 }

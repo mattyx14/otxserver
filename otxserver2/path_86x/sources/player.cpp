@@ -4003,50 +4003,31 @@ void Player::onTarget(Creature* target)
 	if(hasFlag(PlayerFlag_NotGainInFight))
 		return;
 
-	if(target == this)
-	{
-		addInFightTicks(false);
-		return;
-	}
-
-	Player* targetPlayer = target->getPlayer();
-	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
-	{
-		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
-		{
-			pzLocked = true;
-			sendIcons();
-		}
-
-		if(getSkull() == SKULL_NONE && getSkullType(targetPlayer) == SKULL_YELLOW)
-		{
-			addAttacked(targetPlayer);
-			targetPlayer->sendCreatureSkull(this);
-		}
-		else if(!targetPlayer->hasAttacked(this))
-		{
-			if(!pzLocked && g_game.getWorldType() != WORLDTYPE_HARDCORE)
-			{
-				pzLocked = true;
-				sendIcons();
-			}
-
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isAlly(targetPlayer))
-			{
-				addAttacked(targetPlayer);
-				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
-				{
-					setSkull(SKULL_WHITE);
-					g_game.updateCreatureSkull(this);
-				}
-
-				if(getSkull() == SKULL_NONE)
-					targetPlayer->sendCreatureSkull(this);
-			}
-		}
-	}
-
 	addInFightTicks(false);
+	Player* targetPlayer = target->getPlayer();
+	if(!targetPlayer)
+		return;
+
+	if(!pzLocked)
+	{
+		pzLocked = true;
+		sendIcons();
+	}
+
+	if(targetPlayer->hasAttacked(this) || Combat::isInPvpZone(this, targetPlayer) || isPartner(targetPlayer) || isAlly(targetPlayer))
+		return;
+
+	addAttacked(targetPlayer);
+	if(getZone() != target->getZone() || skull != SKULL_NONE || targetPlayer->isEnemy(this, true) || g_game.getWorldType() != WORLDTYPE_OPEN)
+		return;
+
+	if(target->getSkull() != SKULL_NONE)
+		targetPlayer->sendCreatureSkull(this);
+	else if(!hasCustomFlag(PlayerCustomFlag_NotGainSkull))
+	{
+		setSkull(SKULL_WHITE);
+		g_game.updateCreatureSkull(this);
+	}
 }
 
 void Player::onSummonTarget(Creature* summon, Creature* target)

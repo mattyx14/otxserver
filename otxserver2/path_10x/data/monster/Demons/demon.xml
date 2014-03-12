@@ -43,13 +43,13 @@
 		<element physicalPercent="30"/>
 		<element deathPercent="30"/>
 		<element energyPercent="50"/>
-		<element earthpercent="40"/>
+		<element earthPercent="40"/>
 		<element icePercent="-12"/>
 		<element holyPercent="-12"/>
 	</elements>
 	<immunities>
 		<immunity fire="1"/>
-		<immunity down="1"/>
+		<immunity drown="1"/>
 		<immunity lifedrain="1"/>
 		<immunity paralyze="1"/>
 		<immunity invisible="1"/>

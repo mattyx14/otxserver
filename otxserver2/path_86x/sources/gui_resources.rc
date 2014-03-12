@@ -48,6 +48,7 @@ BEGIN
 		#ifdef __LOGIN_SERVER__
 		MENUITEM "&Game Servers", ID_MENU_RELOAD_GAMESERVERS
 		#endif
+		MENUITEM "&Highscores", ID_MENU_RELOAD_HIGHSCORES
 	END
 
 	POPUP "&Support"

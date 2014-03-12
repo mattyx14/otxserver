@@ -41,7 +41,6 @@
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"
 #endif
-#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -75,7 +74,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 
 	promotionLevel = walkTaskEvent = actionTaskEvent = nextStepEvent = bloodHitCount = shieldBlockCount = 0;
 	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = 0;
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	soul = 0;
 	#endif
 	guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
@@ -86,7 +85,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	purchaseCallback = saleCallback = offlineTrainingSkill = -1;
 	level = 1;
 	rates[SKILL__MAGLEVEL] = rates[SKILL__LEVEL] = 1.0f;
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	soulMax = 100;
 	#endif
 	capacity = 400.00;
@@ -170,7 +169,7 @@ void Player::setVocation(uint32_t id)
 	Creature::setDropLoot((vocation->getDropLoot() ? LOOT_DROP_FULL : LOOT_DROP_PREVENT));
 	Creature::setLossSkill(vocation->getLossSkill());
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	soulMax = vocation->getGain(GAIN_SOUL);
 	#endif
 	if(Condition* condition = getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT))
@@ -599,7 +598,7 @@ int32_t Player::getPlayerInfo(playerinfo_t playerinfo) const
 			return mana;
 		case PLAYERINFO_MAXMANA:
 			return std::max((int32_t)0, ((int32_t)manaMax + varStats[STAT_MAXMANA]));
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		case PLAYERINFO_SOUL:
 			return std::max((int32_t)0, ((int32_t)soul + varStats[STAT_SOUL]));
 		#endif
@@ -709,7 +708,7 @@ int32_t Player::getDefaultStats(stats_t stat)
 			return getMaxHealth() - getVarStats(STAT_MAXHEALTH);
 		case STAT_MAXMANA:
 			return getMaxMana() - getVarStats(STAT_MAXMANA);
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		case STAT_SOUL:
 			return getSoul() - getVarStats(STAT_SOUL);
 		#endif
@@ -1030,7 +1029,7 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You do not have enough mana.");
 			break;
 
-		#ifdef _MULTIPLATFORM
+		#ifdef _MULTIPLATFORM76
 		case RET_NOTENOUGHSOUL:
 			sendCancel("You do not have enough soul.");
 			break;
@@ -1352,8 +1351,6 @@ void Player::onCreatureAppear(const Creature* creature)
 
 				useStamina(ticks);
 			}
-
-			sendStats();
 		}
 	}
 
@@ -2395,7 +2392,7 @@ bool Player::onDeath()
 			if(Town* rook = Towns::getInstance()->getTown(g_config.getNumber(ConfigManager::ROOK_TOWN)))
 			{
 				level = 1;
-				#ifdef _MULTIPLATFORM
+				#ifdef _MULTIPLATFORM76
 				soulMax = soul = 100;
 				#endif
 				capacity = 400;
@@ -3356,7 +3353,7 @@ int32_t Player::__getLastIndex() const
 	return SLOT_LAST;
 }
 
-uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
+uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool itemCount /*= true*/) const
 {
 	Item* item = NULL;
 	Container* container = NULL;
@@ -3368,7 +3365,7 @@ uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) c
 			continue;
 
 		if(item->getID() == itemId)
-			count += Item::countByType(item, subType);
+			count += Item::countByType(item, subType, itemCount);
 
 		if(!(container = item->getContainer()))
 			continue;
@@ -3376,7 +3373,7 @@ uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) c
 		for(ContainerIterator it = container->begin(), end = container->end(); it != end; ++it)
 		{
 			if((*it)->getID() == itemId)
-				count += Item::countByType(*it, subType);
+				count += Item::countByType(*it, subType, itemCount);
 		}
 	}
 
@@ -3385,7 +3382,7 @@ uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) c
 }
 
 std::map<uint32_t, uint32_t>& Player::__getAllItemTypeCount(std::map<uint32_t,
-	uint32_t>& countMap) const
+	uint32_t>& countMap, bool itemCount/* = true*/) const
 {
 	Item* item = NULL;
 	Container* container = NULL;
@@ -3394,12 +3391,12 @@ std::map<uint32_t, uint32_t>& Player::__getAllItemTypeCount(std::map<uint32_t,
 		if(!(item = inventory[i]))
 			continue;
 
-		countMap[item->getID()] += Item::countByType(item, -1);
+		countMap[item->getID()] += Item::countByType(item, -1, itemCount);
 		if(!(container = item->getContainer()))
 			continue;
 
 		for(ContainerIterator it = container->begin(), end = container->end(); it != end; ++it)
-			countMap[(*it)->getID()] += Item::countByType(*it, -1);
+			countMap[(*it)->getID()] += Item::countByType(*it, -1, itemCount);
 	}
 
 	return countMap;
@@ -3866,50 +3863,31 @@ void Player::onTarget(Creature* target)
 	if(hasFlag(PlayerFlag_NotGainInFight))
 		return;
 
-	if(target == this)
-	{
-		addInFightTicks(false);
-		return;
-	}
-
-	Player* targetPlayer = target->getPlayer();
-	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
-	{
-		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
-		{
-			pzLocked = true;
-			sendIcons();
-		}
-
-		if(getSkull() == SKULL_NONE && getSkullType(targetPlayer) == SKULL_YELLOW)
-		{
-			addAttacked(targetPlayer);
-			targetPlayer->sendCreatureSkull(this);
-		}
-		else if(!targetPlayer->hasAttacked(this))
-		{
-			if(!pzLocked && g_game.getWorldType() != WORLDTYPE_HARDCORE)
-			{
-				pzLocked = true;
-				sendIcons();
-			}
-
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isAlly(targetPlayer))
-			{
-				addAttacked(targetPlayer);
-				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
-				{
-					setSkull(SKULL_WHITE);
-					g_game.updateCreatureSkull(this);
-				}
-
-				if(getSkull() == SKULL_NONE)
-					targetPlayer->sendCreatureSkull(this);
-			}
-		}
-	}
-
 	addInFightTicks(false);
+	Player* targetPlayer = target->getPlayer();
+	if(!targetPlayer)
+		return;
+
+	if(!pzLocked)
+	{
+		pzLocked = true;
+		sendIcons();
+	}
+
+	if(targetPlayer->hasAttacked(this) || Combat::isInPvpZone(this, targetPlayer) || isPartner(targetPlayer) || isAlly(targetPlayer))
+		return;
+
+	addAttacked(targetPlayer);
+	if(getZone() != target->getZone() || skull != SKULL_NONE || targetPlayer->isEnemy(this) || g_game.getWorldType() != WORLDTYPE_OPEN)
+		return;
+
+	if(target->getSkull() != SKULL_NONE)
+		targetPlayer->sendCreatureSkull(this);
+	else if(!hasCustomFlag(PlayerCustomFlag_NotGainSkull))
+	{
+		setSkull(SKULL_WHITE);
+		g_game.updateCreatureSkull(this);
+	}
 }
 
 void Player::onSummonTarget(Creature* summon, Creature* target)
@@ -4065,7 +4043,7 @@ bool Player::gainExperience(double& gainExp, Creature* target)
 	if(!rateExperience(gainExp, target))
 		return false;
 
-	#ifdef _MULTIPLATFORM
+	#ifdef _MULTIPLATFORM76
 	//soul regeneration
 	if(gainExp >= level)
 	{
@@ -4175,7 +4153,7 @@ void Player::changeMana(int32_t manaChange)
 	sendStats();
 }
 
-#ifdef _MULTIPLATFORM
+#ifdef _MULTIPLATFORM76
 void Player::changeSoul(int32_t soulChange)
 {
 	if(!hasFlag(PlayerFlag_HasInfiniteSoul))

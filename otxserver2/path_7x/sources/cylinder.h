@@ -197,7 +197,7 @@ class Cylinder
 		  * \param itemCount if set to true it will only count items and not other subtypes like charges
 		  * \param returns the amount of items of the asked item type
 		  */
-		virtual uint32_t __getItemTypeCount(uint16_t, int32_t = -1) const {return 0;}
+		virtual uint32_t __getItemTypeCount(uint16_t, int32_t = -1, bool = true) const {return 0;}
 
 		/**
 		  * Get the amount of items of a all types
@@ -206,7 +206,7 @@ class Cylinder
 		  * \param returns a map mapping item id to count (same as first argument)
 		  */
 		virtual std::map<uint32_t, uint32_t>& __getAllItemTypeCount(std::map<uint32_t,
-			uint32_t>& countMap) const {return countMap;}
+			uint32_t>& countMap, bool = true) const {return countMap;}
 
 		/**
 		  * Adds an object to the cylinder without sending to the client(s)

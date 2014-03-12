@@ -2500,6 +2500,9 @@ void LuaInterface::registerFunctions()
 	//getModList()
 	lua_register(m_luaState, "getModList", LuaInterface::luaGetModList);
 
+	//getHighscoreString(skillId)
+	lua_register(m_luaState, "getHighscoreString", LuaInterface::luaGetHighscoreString);
+
 	//getWaypointPosition(name)
 	lua_register(m_luaState, "getWaypointPosition", LuaInterface::luaGetWaypointPosition);
 
@@ -3621,16 +3624,16 @@ int32_t LuaInterface::luaDoItemSetDestination(lua_State* L)
 
 int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 {
-	//doTransformItem(uid, newId[, count/subType])
-	int32_t count = -1;
-	if(lua_gettop(L) > 2)
-		count = popNumber(L);
+	//doTransformItem(uid, newId[, count/subType = -1])
+	int32_t subType = -1;
+	if(lua_gettop(L) >= 3)
+		subType = popNumber(L);
 
 	uint32_t newId = popNumber(L), uid = popNumber(L);
 	ScriptEnviroment* env = getEnv();
 
 	Item* item = env->getItemByUID(uid);
-	if(!item)
+	if(!item && item->getID() == newId && (subType == -1 || subType == item->getSubType()))
 	{
 		errorEx(getError(LUA_ERROR_ITEM_NOT_FOUND));
 		lua_pushboolean(L, false);
@@ -3638,10 +3641,10 @@ int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 	}
 
 	const ItemType& it = Item::items[newId];
-	if(it.stackable && count > 100)
-		count = 100;
+	if(it.stackable && subType > 100)
+		subType = 100;
 
-	Item* newItem = g_game.transformItem(item, newId, count);
+	Item* newItem = g_game.transformItem(item, newId, subType);
 	if(newItem && newItem != item)
 	{
 		env->removeThing(uid);
@@ -10040,6 +10043,18 @@ int32_t LuaInterface::luaGetSpectators(lua_State* L)
 		lua_pushnumber(L, env->addThing(*it));
 		pushTable(L);
 	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaGetHighscoreString(lua_State* L)
+{
+	//getHighscoreString(skillId)
+	uint16_t skillId = popNumber(L);
+	if(skillId <= SKILL__LAST)
+		lua_pushstring(L, g_game.getHighscoreString(skillId).c_str());
+	else
+		lua_pushboolean(L, false);
 
 	return 1;
 }

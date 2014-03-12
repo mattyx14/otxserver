@@ -57,7 +57,6 @@
 #ifdef __EXCEPTION_TRACER__
 #include "exception.h"
 #endif
-#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Actions* g_actions;
@@ -309,9 +308,15 @@ int32_t Game::loadMap(std::string filename)
 	if(!map)
 		map = new Map;
 
+	#ifdef _MULTIPLATFORM76
 	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + filename);
 	if(!fileExists(file.c_str()))
 		file = getFilePath(FILE_TYPE_OTHER, "world/" + filename);
+	#else
+	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + ITEMS_PATH + "/" + filename);
+	if(!fileExists(file.c_str()))
+		file = getFilePath(FILE_TYPE_OTHER, "world/" + ITEMS_PATH + "/" + filename);
+	#endif
 
 	return map->loadMap(file);
 }
@@ -614,7 +619,7 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 			case STACKPOS_USEITEM:
 			{
 				thing = tile->getTopDownItem();
-				#ifdef _MULTIPLATFORM
+				#ifdef _MULTIPLATFORM76
 				Item* item = tile->getItemByTopOrder(2);
 				#else
 				Item* item = tile->getItemByTopOrder(1);

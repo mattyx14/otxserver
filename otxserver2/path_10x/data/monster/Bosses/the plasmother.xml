@@ -37,10 +37,10 @@
 	</defenses>
 	<elements>
 		<element firePercent="-20"/>
-		<element enerPercent="15"/>
+		<element energyPercent="15"/>
 	</elements>
 	<immunities>
-		<immunity poison="1"/>
+		<immunity earth="1"/>
 		<immunity lifedrain="1"/>
 		<immunity paralyze="1"/>
 		<immunity invisible="1"/>

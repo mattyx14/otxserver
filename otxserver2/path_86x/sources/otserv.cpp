@@ -163,7 +163,7 @@ bool argumentsHandler(StringVec args)
 
 			"\n"
 			"A server developed by: "SOFTWARE_DEVELOPERS".\n"
-			"Visit our forums for updates, support, and resources:\n";
+			"Visit our forums for updates, support, and resources:\n"
 			""FORUMS"\n";
 			return false;
 		}
@@ -1400,6 +1400,17 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						if(g_game.reloadInfo(RELOAD_STAGES))
 							std::clog << "Reloaded stages." << std::endl;
+					}
+
+					break;
+				}
+
+				case ID_MENU_RELOAD_HIGHSCORES:
+				{
+					if(g_game.getGameState() != GAMESTATE_STARTUP)
+					{
+						if(g_game.reloadInfo(RELOAD_HIGHSCORES))
+							std::clog << "Reloaded highscores." << std::endl;
 					}
 
 					break;
