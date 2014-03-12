@@ -270,6 +270,7 @@ void Npc::reset()
 	hasBusyReply = false;
 	hasScriptedFocus = false;
 	focusCreature = 0;
+	speechBubble = SPEECHBUBBLE_NONE;
 	isIdle = true;
 	talkRadius = 2;
 	idleTime = 0;
@@ -404,6 +405,9 @@ bool Npc::loadFromXml()
 
 	if(readXMLString(root, "emblem", strValue))
 		setEmblem(getEmblems(strValue));
+
+	if(readXMLString(root, "speechbubble", strValue))
+		setSpeechBubble(getSpeechBubble(strValue));
 
 	for(xmlNodePtr p = root->children; p; p = p->next)
 	{

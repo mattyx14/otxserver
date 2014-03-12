@@ -21,10 +21,10 @@
 // Compatible with 7.40 to 7.72
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "9"
+#define MINOR_VERSION "10"
 #define PATCH_VERSION "0"
-#define REVISION_VERSION "4644"
-#define SOFTWARE_CODENAME "Galaxy - SE"
+#define REVISION_VERSION "DEV"
+#define SOFTWARE_CODENAME "DEV"
 #define SOFTWARE_DEVELOPERS "MartyX, Comedinhasss, Emma, Kazbin and The Forgotten Server Developers"
 #define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
 
