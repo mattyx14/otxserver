@@ -41,14 +41,15 @@
 	<mount id="39" clientid="559" name="The Hellgrip" speed="20" premium="yes" />
 	<mount id="40" clientid="571" name="Lion" speed="20" premium="yes" />
 	<mount id="41" clientid="572" name="Golden Lion" speed="20" premium="yes" />
+	<mount id="42" clientid="580" name="Shock Head" speed="20" premium="yes" />
 
 	<!-- Customs Mounts
-	<mount id="36" clientId="94" name="Hyaena" speed="5" premium="yes"/>
-	<mount id="37" clientId="219" name="Tarantula" speed="5" premium="yes"/>
-	<mount id="38" clientId="222" name="Toad" speed="5" premium="yes"/>
-	<mount id="39" clientId="230" name="Hand of cursed fate" speed="5" premium="yes"/>
-	<mount id="40" clientId="245" name="Nightmare" speed="5" premium="yes"/>
-	<mount id="41" clientId="305" name="Mutated Rat" speed="5" premium="yes"/>
-	<mount id="42" clientId="317" name="Young Sea Serpent" speed="5" premium="yes"/>
-	<mount id="43" clientId="348" name="Lancer Beetle" speed="5" premium="yes"/> -->
+	<mount id="43" clientId="94" name="Hyaena" speed="5" premium="yes"/>
+	<mount id="44" clientId="219" name="Tarantula" speed="5" premium="yes"/>
+	<mount id="45" clientId="222" name="Toad" speed="5" premium="yes"/>
+	<mount id="46" clientId="230" name="Hand of cursed fate" speed="5" premium="yes"/>
+	<mount id="47" clientId="245" name="Nightmare" speed="5" premium="yes"/>
+	<mount id="48" clientId="305" name="Mutated Rat" speed="5" premium="yes"/>
+	<mount id="49" clientId="317" name="Young Sea Serpent" speed="5" premium="yes"/>
+	<mount id="50" clientId="348" name="Lancer Beetle" speed="5" premium="yes"/> -->
 </mounts>

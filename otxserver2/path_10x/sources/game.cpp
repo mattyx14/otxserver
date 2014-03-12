@@ -6790,7 +6790,7 @@ bool Game::playerAnswerModalDialog(uint32_t playerId, uint32_t dialog, uint8_t b
 		return false;
 
 	Position pos = player->getPosition();
-	if (pos.x != player->dialogControl.pos.x || pos.y != player->dialogControl.pos.y || pos.z != player->dialogControl.pos.z || player->dialogControl.dialogId != dialog)
+	if(pos.x != player->dialogControl.pos.x || pos.y != player->dialogControl.pos.y || pos.z != player->dialogControl.pos.z || player->dialogControl.dialogId != dialog)
 		return false;
 
 	switch(dialog)

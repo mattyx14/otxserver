@@ -301,9 +301,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 
 		_player->client->disconnect();
 		_player->isConnecting = true;
-
-		// it for internal use
-		//_player->setClientVersion(version);
+		_player->setClientVersion(version);
 
 		addRef();
 		m_eventConnect = Scheduler::getInstance().addEvent(createSchedulerTask(
@@ -463,15 +461,17 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	msg.skip(6);
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
-		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
-		{
-			disconnectClient(0x14, CLIENT_VERSION_STRING);
-			return;
-		}
-	else
 		if(version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX))
 		{
 			disconnectClient(0x14, g_config.getString(ConfigManager::VERSION_MSG).c_str());
+			return;
+		}
+	}
+	else
+	{
+		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+		{
+			disconnectClient(0x14, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
 			return;
 		}
 	}
@@ -558,17 +558,6 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 void ProtocolGame::parsePacket(NetworkMessage &msg)
 {
 	if(!m_acceptPackets || g_game.getGameState() == GAMESTATE_SHUTDOWN || !msg.size())
-		return;
-
-	uint32_t now = time(NULL);
-	if(m_packetTime != now)
-	{
-		m_packetTime = now;
-		m_packetCount = 0;
-	}
-
-	++m_packetCount;
-	if(m_packetCount > (uint32_t)g_config.getNumber(ConfigManager::PACKETS_PER_SECOND))
 		return;
 
 	uint8_t recvbyte = msg.get<char>();
@@ -1328,7 +1317,7 @@ void ProtocolGame::parseEditVip(NetworkMessage& msg)
 	if(description.size() > 128)
 		return;
 
-	if(icon >= (uint32_t)VIP_ICON_FIRST && icon <= (uint32_t)VIP_ICON_LAST)
+	if(icon > VIP_ICON_LAST)
 		return;
 
 	addGameTask(&Game::playerRequestEditVip, player->getID(), guid, description, icon, notify);
@@ -1774,8 +1763,17 @@ void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool 
 	msg->put<char>(0x6E);
 	msg->put<char>(cid);
 
-	msg->putItem(container);
-	msg->putString(container->getName());
+	if(container->getID() == ITEM_BROWSEFIELD)
+	{
+		msg->putItem(1987, 1);
+		msg->putString("Browse Field");
+	}
+	else
+	{
+		msg->putItem(container);
+		msg->putString(container->getName());
+	}
+
 	msg->put<char>(container->capacity());
 
 	msg->put<char>(hasParent ? 0x01 : 0x00);
@@ -3230,6 +3228,12 @@ void ProtocolGame::AddDistanceShoot(NetworkMessage_ptr msg, const Position& from
 
 void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature, bool known, uint32_t remove)
 {
+	/*
+		TODO: fix the charges bellow.
+		1 - otherPlayer fix me OTX Server use skulls to creatures too.
+		2 - Creature skull, creature shield and guild emblemm need to stay as "creature" instead of "otherPlayer".
+		3 - After moving skulls shield and emblems only to players use otherPlayer to fix charges an avoid crashs.
+	*/
 	CreatureType_t creatureType = creature->getType();
 	const Player* otherPlayer = creature->getPlayer();
 
@@ -3238,7 +3242,7 @@ void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature,
 		msg->put<uint16_t>(0x61);
 		msg->put<uint32_t>(remove);
 		msg->put<uint32_t>(creature->getID());
-		msg->put<char>(creature->getType());
+		msg->put<char>(creatureType);
 		msg->putString(creature->getHideName() ? "" : creature->getName());
 	}
 	else
@@ -3262,8 +3266,10 @@ void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature,
 	msg->put<char>(lightInfo.color);
 
 	msg->put<uint16_t>(creature->getStepSpeed() / 2);
+
 	msg->put<char>(player->getSkullType(creature));
 	msg->put<char>(player->getPartyShield(creature));
+
 	if(!known)
 		msg->put<char>(player->getGuildEmblem(creature));
 
@@ -3286,7 +3292,7 @@ void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature,
 	msg->put<char>(creatureType); // Type (for summons)
 	msg->put<char>(0xFF); // MARK_UNMARKED
 
-	if(creature->getPlayer())
+	if(otherPlayer)
 		msg->put<uint16_t>(0x00); // Helpers
 	else
 		msg->put<uint16_t>(0x00);

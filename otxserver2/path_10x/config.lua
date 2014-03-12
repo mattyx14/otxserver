@@ -174,22 +174,22 @@
 		levelToOfflineTraining = 8
 		advertisingBlock = ""
 		gmAnonymousInChanel = 0
+		useRunesRequirements = true
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
-		-- Supported (10.10) = 10.10
-		-- Supported (10.10) = 10.10
+		-- Supported (10.30) = 10.30
+		-- Supported (10.39) = 10.39
 		manualVersionConfig = false
-		versionMin = 1010
-		versionMax = 1010
-		versionMsg = "Only clients with protocol 10.10 allowed!"
+		versionMin = 1030
+		versionMax = 1039
+		versionMsg = "Only clients with protocol 10.30 allowed!"
 
 	-- Connection config
 	loginTries = 20
 	retryTimeout = 5 * 1000
 	loginTimeout = 60 * 1000
 	maxPlayers = 200
-	displayOnOrOffAtCharlist = false
 	onePlayerOnlinePerAccount = true
 	allowClones = 0
 	statusTimeout = 1000
@@ -342,9 +342,9 @@
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
 	rateSkill = 1.0
-	rateSkillOffLine = 0.5
+	rateSkillOffline = 0.5
 	rateMagic = 1.0
-	rateMagicOffLine = 0.5
+	rateMagicOffline = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

@@ -698,7 +698,7 @@ enum Spells_t
 
 enum item_t
 {
-	ITEM_BROWSEFIELD				= 460, // for internal use
+	ITEM_BROWSEFIELD				= 460, // for internal use and it no are added "Require dev it"
 
 	ITEM_FIREFIELD					= 1492,
 	ITEM_FIREFIELD_SAFE				= 1500,

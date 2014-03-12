@@ -1,5 +1,5 @@
 local function checkType(value)
-	return not(value <= 1 or value == 135 or (value > 160 and value < 192) or value == 411 or value == 415 or value == 424 or (value > 439 and value < 441) or (value > 466 and value < 474) or value > 542)
+	return not(value >= 0 and value ~= 1 and value ~= 135 and value ~= 411 and value ~= 415 and value ~= 424 and (value <= 160 or value >= 192) and value ~= 439 and value ~= 440 and value ~= 468 and value ~= 469 and (value < 474 or value > 485) and value ~= 501 and value ~= 518 and value ~= 519 and value ~= 520 and value ~= 524 and value ~= 525 and value ~= 536 and value ~= 543 and value ~= 549 and value ~= 576 and value ~= 581 and value ~= 582 and value <= 595)
 end
 
 function onSay(cid, words, param, channel)

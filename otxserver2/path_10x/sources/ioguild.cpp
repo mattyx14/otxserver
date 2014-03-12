@@ -521,7 +521,7 @@ void IOGuild::checkWars()
 	{
 		do
 		{
-			if (result->getDataInt("status") == 7)
+			if(result->getDataInt("status") == 7)
 				s << result->getDataString("guild_name") << " has mend fences with " << result->getDataString("enemy_name") << ".";
 			else
 				s << result->getDataString("guild_name") << " has ended up a war with " << result->getDataString("enemy_name") << ".";

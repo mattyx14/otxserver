@@ -111,8 +111,6 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	inbox = new Inbox(ITEM_INBOX);
 	inbox->addRef();
 
-	depotChange = false;
-
 	transferContainer.setParent(NULL);
 	for(int32_t i = 0; i < 11; ++i)
 	{
@@ -4241,7 +4239,8 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 	if(it != revengeList.end())
 		revengeList.erase(it);
 
-	addInFightTicks(true, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
+	if(entry.isLast())
+		addInFightTicks(false, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
 	return true;
 }
 
