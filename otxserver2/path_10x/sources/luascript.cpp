@@ -1861,11 +1861,11 @@ void LuaInterface::registerFunctions()
 	//doCreateNpc(name, pos)
 	lua_register(m_luaState, "doCreateNpc", LuaInterface::luaDoCreateNpc);
 
-	// getSpeechBubble()
-	// lua_register(m_luaState, "getSpeechBubble", LuaInterface::luaNpcGetSpeechBubble);
+	//getSpeechBubble()
+	//lua_register(m_luaState, "getSpeechBubble", LuaInterface::luaNpcGetSpeechBubble);
 
-	// setSpeechBubble(speechBubble)
-	// lua_register(m_luaState, "setSpeechBubble", LuaInterface::luaNpcSetSpeechBubble);	
+	//setSpeechBubble(speechBubble)
+	//lua_register(m_luaState, "setSpeechBubble", LuaInterface::luaNpcSetSpeechBubble);	
 
 	//doSummonMonster(cid, name)
 	lua_register(m_luaState, "doSummonMonster", LuaInterface::luaDoSummonMonster);
@@ -5366,31 +5366,6 @@ int32_t LuaInterface::luaDoCreateMonster(lua_State* L)
 	return 1;
 }
 
-/* int32_t LuaInterface::luaNpcGetSpeechBubble(lua_State* L)
-{
-	//getSpeechBubble()
-	Npc* npc = getUserdata<Npc>(L, 1);
-	if(npc)
-		pushNumber(L, npc->getSpeechBubble());
-	else
-		pushNil(L);
-
-	return 1;
-}
-
-int32_t LuaInterface::luaNpcSetSpeechBubble(lua_State* L)
-{
-	//setSpeechBubble(speechBubble)
-	Npc* npc = getUserdata<Npc>(L, 1);
-	if(npc)
-	{
-		const uint8_t speechBubble = getNumber<uint8_t>(L, 2);
-		npc->setSpeechBubble(speechBubble);
-	}
-
-	return 0;
-} */
-
 int32_t LuaInterface::luaDoCreateNpc(lua_State* L)
 {
 	//doCreateNpc(name, pos)
@@ -5419,6 +5394,16 @@ int32_t LuaInterface::luaDoCreateNpc(lua_State* L)
 	lua_pushnumber(L, env->addThing((Thing*)npc));
 	return 1;
 }
+
+/*int32_t LuaInterface::luaNpcGetSpeechBubble(lua_State* L)
+{
+	//getSpeechBubble()
+}
+
+int32_t LuaInterface::luaNpcSetSpeechBubble(lua_State* L)
+{
+	//setSpeechBubble(speechBubble)
+}*/
 
 int32_t LuaInterface::luaDoRemoveCreature(lua_State* L)
 {
