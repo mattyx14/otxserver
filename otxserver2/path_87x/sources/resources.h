@@ -88,8 +88,8 @@
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "10"
 #define PATCH_VERSION "0"
-#define REVISION_VERSION "DEV"
-#define SOFTWARE_CODENAME "DEV"
+#define REVISION_VERSION "-"
+#define SOFTWARE_CODENAME "FINAL"
 #define SOFTWARE_DEVELOPERS "MartyX, Comedinhasss, Emma, Kazbin and The Forgotten Server Developers"
 #define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
 
