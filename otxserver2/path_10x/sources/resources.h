@@ -78,7 +78,7 @@
 	#define ID_MENU_ABOUT_GUI_EXECUTABLE 802
 #endif
 
-// Compatible with 10.3x
+// Compatible with 10.36
 #define CLIENT_VERSION_MIN 1036
 #define CLIENT_VERSION_MAX 1039
 #define CLIENT_VERSION_ITEMS 55
