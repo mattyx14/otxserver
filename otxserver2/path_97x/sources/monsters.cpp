@@ -55,7 +55,7 @@ void MonsterType::reset()
 	race = RACE_BLOOD;
 	skull = SKULL_NONE;
 	partyShield = SHIELD_NONE;
-	guildEmblem = EMBLEM_NONE;
+	guildEmblem = GUILDEMBLEM_NONE;
 	lootMessage = LOOTMSG_IGNORE;
 
 	for(SpellList::iterator it = spellAttackList.begin(); it != spellAttackList.end(); ++it)

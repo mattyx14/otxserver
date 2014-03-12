@@ -3949,35 +3949,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return false;
 	}
 
-	std::string _text = asLowerCaseString(text);
-	for(uint8_t i = 0; i < _text.length(); i++)
-	{
-		char t = _text[i];
-		if(t != '-' && t != '.' && !(t >= 'a' && t <= 'z'))
-		{
-			_text.erase(i, 1);
-			i--;
-		}
-	}
-
-	StringVec strVector;
-	strVector = explodeString(g_config.getString(ConfigManager::ADVERTISING_BLOCK), ";");
-	for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
-	{
-		std::string words []= {(*it)};
-		int ii, length;
-		length = sizeof(words)/sizeof(words[0]);
-		for(ii=0; ii < int(length); ii++)
-		{
-			if (int(_text.find(words[ii])) > 0 || _text == words[ii])
-			{
-				player->sendTextMessage(MSG_STATUS_SMALL, "You can't send this message, forbidden characters."); 
-				return false;
-				break;
-			}
-		}
-	}
-
 	if(player->isAccountManager())
 	{
 		if(mute)
@@ -4050,9 +4021,9 @@ bool Game::playerWhisper(Player* player, const std::string& text, uint32_t state
 
 bool Game::playerYell(Player* player, const std::string& text, uint32_t statementId)
 {
-	if(player->getLevel() <= 1 && !player->hasFlag(PlayerFlag_CannotBeMuted))
+	if(player->getLevel() < 20 && !player->hasFlag(PlayerFlag_CannotBeMuted) && player->getPremiumDays() < 1)
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You may not yell as long as you are on level 1.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You may not yell unless you heave reached level 20 or your account has premium status.");
 		return true;
 	}
 
@@ -4096,7 +4067,7 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 		return false;
 	}
 
-	if(type == MSG_GAMEMASTER_PRIVATE && !player->hasFlag(PlayerFlag_CanTalkRedPrivate))
+	if(type == MSG_GAMEMASTER_PRIVATE && (player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->hasFlag(PlayerFlag_CannotBeMuted)))
 		type = MSG_PRIVATE;
 
 	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
@@ -4119,45 +4090,17 @@ bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::
 	{
 		case MSG_CHANNEL:
 		{
-			if(channelId == CHANNEL_HELP)
-			{
-				if(player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
-					type = MSG_CHANNEL_HIGHLIGHT;
-
-				if(player->hasFlag(PlayerFlag_CanTalkRedChannel))
-					type = MSG_GAMEMASTER_CHANNEL;
-
-				if(g_config.getNumber(ConfigManager::ANONYMOUS_CHANNEL) == 1)
-				{
-					if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-					{
-						if(text.length() < 251)
-							return g_chat.talk(player, type, text, channelId, statementId, true);
-					}
-				}
-			}
-
-			if(g_config.getNumber(ConfigManager::ANONYMOUS_CHANNEL) == 2)
-			{
-				if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-				{
-					if(text.length() < 251)
-						return g_chat.talk(player, type, text, channelId, statementId, true);
-				}
-			}
+			if(channelId == CHANNEL_HELP && player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
+				type = MSG_CHANNEL_HIGHLIGHT;
 
 			break;
 		}
 
 		case MSG_GAMEMASTER_CHANNEL:
 		{
-			if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-			{
-				if(text.length() < 251)
-					return g_chat.talk(player, type, text, channelId, statementId, true);
-			}
-			else
+			if(!player->hasFlag(PlayerFlag_CanTalkRedChannel))
 				type = MSG_CHANNEL;
+			break;
 		}
 
 		case MSG_GAMEMASTER_BROADCAST:

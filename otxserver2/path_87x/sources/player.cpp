@@ -3904,34 +3904,49 @@ void Player::onTarget(Creature* target)
 	if(hasFlag(PlayerFlag_NotGainInFight))
 		return;
 
-	addInFightTicks(false);
+	if(target == this)
+	{
+		addInFightTicks(false);
+		return;
+	}
+
 	Player* targetPlayer = target->getPlayer();
-	if(!targetPlayer)
-		return;
-
-	addAttacked(targetPlayer);
-	if(Combat::isInPvpZone(this, targetPlayer) || isPartner(targetPlayer) || isAlly(targetPlayer)
-		|| (g_config.getBool(ConfigManager::ALLOW_FIGHTBACK) && targetPlayer->hasAttacked(this)
-		&& !targetPlayer->isEnemy(this, false)))
-		return;
-
-	if(!pzLocked)
+	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
-		pzLocked = true;
-		sendIcons();
-	}
+		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		{
+			pzLocked = true;
+			sendIcons();
+		}
 
-	if(getZone() != target->getZone() || skull != SKULL_NONE || targetPlayer->isEnemy(this, true)
-		|| canRevenge(targetPlayer->getGUID()) || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return;
+		if(getSkull() == SKULL_NONE && getSkullType(targetPlayer) == SKULL_YELLOW)
+		{
+			addAttacked(targetPlayer);
+			targetPlayer->sendCreatureSkull(this);
+		}
+		else if(!targetPlayer->hasAttacked(this) && !targetPlayer->isEnemy(this, false))
+		{
+			if(!pzLocked && g_game.getWorldType() != WORLDTYPE_HARDCORE)
+			{
+				pzLocked = true;
+				sendIcons();
+			}
 
-	if(target->getSkull() != SKULL_NONE || (targetPlayer->canRevenge(guid) && targetPlayer->hasAttacked(this)))
-		targetPlayer->sendCreatureSkull(this);
-	else if(!hasCustomFlag(PlayerCustomFlag_NotGainSkull))
-	{
-		setSkull(SKULL_WHITE);
-		g_game.updateCreatureSkull(this);
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isAlly(targetPlayer))
+			{
+				addAttacked(targetPlayer);
+				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
+				{
+					setSkull(SKULL_WHITE);
+					g_game.updateCreatureSkull(this);
+				}
+
+				if(getSkull() == SKULL_NONE)
+					targetPlayer->sendCreatureSkull(this);
+			}
+		}
 	}
+	addInFightTicks(false);
 }
 
 void Player::onSummonTarget(Creature* summon, Creature* target)
@@ -4099,8 +4114,7 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 	if(it != revengeList.end())
 		revengeList.erase(it);
 
-	if(entry.isLast())
-		addInFightTicks(false, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
+	addInFightTicks(true, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
 	return true;
 }
 
@@ -4367,20 +4381,19 @@ Skulls_t Player::getSkull() const
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
 	const Player* player = creature->getPlayer();
-	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return SKULL_NONE;
-
 	if(player && player->getSkull() == SKULL_NONE)
 	{
-		if(canRevenge(player->getGUID()))
-			return SKULL_ORANGE;
+		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+			return SKULL_NONE;
 
-		if((skull != SKULL_NONE || player->canRevenge(guid)) && player->hasAttacked(this))
+		if(player->canRevenge(guid) && player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
-		if(isPartner(player) || isAlly(player) || isEnemy(player, false))
+		if((isPartner(player) || isAlly(player)) &&
+			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
+
 	return Creature::getSkullType(creature);
 }
 
@@ -4433,14 +4446,14 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(!g_config.getBool(ConfigManager::USE_FRAG_HANDLER) || hasFlag(
 		PlayerFlag_NotGainInFight) || g_game.getWorldType() != WORLDTYPE_OPEN
 		|| hasCustomFlag(PlayerCustomFlag_NotGainUnjustified) || hasCustomFlag(
-		PlayerCustomFlag_NotGainSkull))
+		PlayerCustomFlag_NotGainSkull) || attacked == this)
 		return false;
 
 	if(countNow)
 	{
 		char buffer[90];
 		sprintf(buffer, "Warning! The murder of %s was not justified.", attacked->getName().c_str());
-		sendTextMessage(MSG_EVENT_ADVANCE, buffer);
+		sendTextMessage(MSG_STATUS_WARNING, buffer);
 	}
 
 	time_t now = time(NULL), first = (now - g_config.getNumber(ConfigManager::FRAG_LIMIT)),
@@ -5209,6 +5222,26 @@ bool Player::isPremium() const
 	return (premiumDays != 0);
 }
 
+void Player::addPremiumDays(int32_t days)
+{
+	if(premiumDays < GRATIS_PREMIUM)
+	{
+		Account account = IOLoginData::getInstance()->loadAccount(accountId);
+		if(days < 0)
+		{
+			account.premiumDays = std::max((uint32_t)0, uint32_t(account.premiumDays + (int32_t)days));
+			premiumDays = std::max((uint32_t)0, uint32_t(premiumDays + (int32_t)days));
+		}
+		else
+		{
+			account.premiumDays = std::min((uint32_t)65534, uint32_t(account.premiumDays + (uint32_t)days));
+			premiumDays = std::min((uint32_t)65534, uint32_t(premiumDays + (uint32_t)days));
+		}
+
+		IOLoginData::getInstance()->saveAccount(account);
+	}
+}
+
 bool Player::setGuildLevel(GuildLevel_t newLevel, uint32_t rank/* = 0*/)
 {
 	std::string name;
@@ -5444,7 +5477,7 @@ bool Player::transferMoneyTo(const std::string& name, uint64_t amount)
 void Player::sendCritical() const
 {
 	if(g_config.getBool(ConfigManager::DISPLAY_CRITICAL_HIT))
-		sendTextMessage(MSG_STATUS_CONSOLE_RED, "You strike a critical hit!");
+		g_game.addAnimatedText(getPosition(), COLOR_DARKRED, "CRITICAL!");
 }
 
 void Player::setMounted(bool mounting)

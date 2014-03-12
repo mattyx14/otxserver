@@ -299,7 +299,6 @@ bool ConfigManager::load()
 	m_confBool[USE_FRAG_HANDLER] = getGlobalBool("useFragHandler", true);
 	m_confNumber[LOOT_MESSAGE] = getGlobalNumber("monsterLootMessage", 3);
 	m_confNumber[LOOT_MESSAGE_TYPE] = getGlobalNumber("monsterLootMessageType", 19);
-	m_confBool[ALLOW_FIGHTBACK] = getGlobalBool("allowFightback", true);
 	m_confNumber[HOUSE_CLEAN_OLD] = getGlobalNumber("houseCleanOld", 0);
 	m_confBool[VIPLIST_PER_PLAYER] = getGlobalBool("separateVipListPerCharacter", false);
 	m_confDouble[RATE_MONSTER_HEALTH] = getGlobalDouble("rateMonsterHealth", 1);
@@ -354,12 +353,10 @@ bool ConfigManager::load()
 	m_confNumber[PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
-	m_confString[ADVERTISING_BLOCK] = getGlobalString("advertisingBlock", "");
-	m_confNumber[ANONYMOUS_CHANNEL] = getGlobalNumber("gmAnonymousInChannel", 0);
 	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);
-	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", 960);
-	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", 961);
-	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "");
+	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", 870);
+	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", 871);
+	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "Only clients with protocol 8.70/71 allowed!");
 
 	m_loaded = true;
 	return true;

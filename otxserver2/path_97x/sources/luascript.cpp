@@ -6991,6 +6991,7 @@ int32_t LuaInterface::luaDoConvinceCreature(lua_State* L)
 	}
 
 	target->convinceCreature(creature);
+	g_game.updateCreatureType(target);
 	lua_pushboolean(L, true);
 	return 1;
 }

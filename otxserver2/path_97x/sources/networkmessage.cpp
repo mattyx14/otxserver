@@ -211,6 +211,7 @@ void NetworkMessage::putItem(uint16_t id, uint8_t count)
 {
 	const ItemType &it = Item::items[id];
 	put<uint16_t>(it.clientId);
+	put<char>(0xFF); // MARK_UNMARKED
 	if(it.stackable)
 		put<char>(count);
 	else if(it.isSplash() || it.isFluidContainer())
@@ -224,6 +225,7 @@ void NetworkMessage::putItem(const Item* item)
 {
 	const ItemType& it = Item::items[item->getID()];
 	put<uint16_t>(it.clientId);
+	put<char>(0xFF); // MARK_UNMARKED
 	if(it.stackable)
 		put<char>(item->getSubType());
 	else if(it.isSplash() || it.isFluidContainer())

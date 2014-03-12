@@ -29,6 +29,7 @@
 #include <map>
 #include <limits>
 
+#include <boost/version.hpp>
 #include <boost/utility.hpp>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
@@ -54,6 +55,7 @@
 
 #include <ctime>
 #include <cassert>
+#include <chrono>
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <sys/timeb.h>

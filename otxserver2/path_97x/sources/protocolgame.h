@@ -144,9 +144,6 @@ class ProtocolGame : public Protocol
 		void parseLeaveParty(NetworkMessage& msg);
 		void parseSharePartyExperience(NetworkMessage& msg);
 
-		void parseBrowseField(NetworkMessage& msg);
-		void parseSeekInContainer(NetworkMessage& msg);
-
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
 		void parseLookInTrade(NetworkMessage& msg);
@@ -218,6 +215,7 @@ class ProtocolGame : public Protocol
 
 		void sendCreatureSkull(const Creature* creature);
 		void sendCreatureShield(const Creature* creature);
+		void sendCreatureType(uint32_t creatureId, uint8_t creatureType);
 		void sendCreatureEmblem(const Creature* creature) {reloadCreature(creature);}
 		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough);
 

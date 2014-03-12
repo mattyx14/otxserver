@@ -177,12 +177,12 @@
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
-		-- Supported (972) = 9.80
-		-- Supported (978) = 9.86
+		-- Supported (10.10) = 10.10
+		-- Supported (10.10) = 10.10
 		manualVersionConfig = false
-		versionMin = 972
-		versionMax = 978
-		versionMsg = "Only clients with protocol 9.8x allowed!"
+		versionMin = 1010
+		versionMax = 1010
+		versionMsg = "Only clients with protocol 10.10 allowed!"
 
 	-- Connection config
 	loginTries = 20
@@ -341,8 +341,10 @@
 	experienceStages = false
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
-	rateSkill = 3.0
-	rateMagic = 3.0
+	rateSkill = 1.0
+	rateSkillOffLine = 0.5
+	rateMagic = 1.0
+	rateMagicOffLine = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

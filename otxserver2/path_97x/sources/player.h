@@ -602,6 +602,8 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendCreatureLight(creature);}
 		void sendCreatureShield(const Creature* creature)
 			{if(client) client->sendCreatureShield(creature);}
+		void sendCreatureType(uint32_t creatureId, uint8_t creatureType)
+			{if(client) client->sendCreatureType(creatureId, creatureType);}
 		void sendCreatureEmblem(const Creature* creature)
 			{if(client) client->sendCreatureEmblem(creature);}
 		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough)

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Training Monk" nameDescription="a training monk" race="blood" experience="0" speed="210" manacost="0">
+	<health now="99000" max="99000"/>
+	<look type="57" corpse="3128"/>
+	<targetchange interval="60000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag staticattack="50"/>
+		<flag lightlevel="0"/>
+		<flag lightcolor="0"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="5000" min="0" max="-1"/>
+	</attacks>
+	<defenses armor="0" defense="0">
+		<defense name="healing" interval="10000" chance="100" min="24000" max="24000"/>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="0"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<loot>
+		<item id="2148" countmax="20" chance="100000"/><!-- gold coin -->
+		<item id="1949" chance="10000"/><!-- scroll -->
+		<item id="2467" chance="10000"/><!-- leather armor -->
+		<item id="2642" chance="6666"/><!-- sandals -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2044" chance="6666"/><!-- lamp -->
+				<item id="2689" countmax="3" chance="20000"/><!-- bread -->
+				<item id="2401" chance="3333"/><!-- staff -->
+				<item id="2166" chance="1428"/><!-- power ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

@@ -80,19 +80,19 @@
 #endif
 
 // Compatible with 9.83
-#define CLIENT_VERSION_MIN 972
-#define CLIENT_VERSION_MAX 978
-#define CLIENT_VERSION_ITEMS 49
-#define CLIENT_VERSION_STRING "Only clients with protocol 9.8x allowed!"
+#define CLIENT_VERSION_MIN 1010
+#define CLIENT_VERSION_MAX 1010
+#define CLIENT_VERSION_ITEMS 50
+#define CLIENT_VERSION_STRING "Only clients with protocol 10.10 allowed!"
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "6"
+#define MINOR_VERSION "7"
 #define PATCH_VERSION "0"
-#define REVISION_VERSION ""
-#define SOFTWARE_CODENAME "Alissow"
+#define REVISION_VERSION "4410"
+#define SOFTWARE_CODENAME "Mycological"
 #define SOFTWARE_DEVELOPERS "Kaiser, Comedinhasss, Emma, Kazbin and The Forgotten Server Developers"
-#define SOFTWARE_PROTOCOL "9.86"
+#define SOFTWARE_PROTOCOL "10.10"
 #define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
 
 //#define CLIENT_VERSION_DATA

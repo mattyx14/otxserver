@@ -809,6 +809,9 @@ Skulls_t getSkulls(std::string strValue)
 PartyShields_t getShields(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
+	if(tmpStrValue == "gray" || tmpStrValue == "11")
+		return SHIELD_GRAY;
+
 	if(tmpStrValue == "whitenoshareoff" || tmpStrValue == "10")
 		return SHIELD_YELLOW_NOSHAREDEXP;
 
@@ -845,16 +848,22 @@ PartyShields_t getShields(std::string strValue)
 GuildEmblems_t getEmblems(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "blue" || tmpStrValue == "3")
-		return EMBLEM_BLUE;
+	if(tmpStrValue == "other" || tmpStrValue == "5")
+		return GUILDEMBLEM_OTHER;
 
-	if(tmpStrValue == "red" || tmpStrValue == "2")
-		return EMBLEM_RED;
+	if(tmpStrValue == "member" || tmpStrValue == "4")
+		return GUILDEMBLEM_MEMBER;
 
-	if(tmpStrValue == "green" || tmpStrValue == "1")
-		return EMBLEM_GREEN;
+	if(tmpStrValue == "blue" || tmpStrValue == "neutral" || tmpStrValue == "3")
+		return GUILDEMBLEM_NEUTRAL;
 
-	return EMBLEM_NONE;
+	if(tmpStrValue == "red" || tmpStrValue == "enemy" || tmpStrValue == "2")
+		return GUILDEMBLEM_ENEMY;
+
+	if(tmpStrValue == "green" || tmpStrValue == "ally" || tmpStrValue == "1")
+		return GUILDEMBLEM_ALLY;
+
+	return GUILDEMBLEM_NONE;
 }
 
 Direction getDirection(std::string string)

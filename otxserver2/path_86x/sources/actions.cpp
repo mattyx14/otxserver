@@ -547,6 +547,17 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		return RET_NOERROR;
 	}
 
+	if(item->isPremiumScroll())
+	{
+		std::stringstream ss;
+		ss << " You have recived " << it.premiumDays << " premium days.";
+		player->sendTextMessage(MSG_INFO_DESCR, ss.str());
+
+		player->addPremiumDays(it.premiumDays);
+		g_game.internalRemoveItem(NULL, item, 1);
+		return RET_NOERROR;
+	}
+
 	return RET_CANNOTUSETHISOBJECT;
 }
 

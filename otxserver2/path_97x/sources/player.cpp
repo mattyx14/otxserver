@@ -4031,34 +4031,49 @@ void Player::onTarget(Creature* target)
 	if(hasFlag(PlayerFlag_NotGainInFight))
 		return;
 
-	addInFightTicks(false);
+	if(target == this)
+	{
+		addInFightTicks(false);
+		return;
+	}
+
 	Player* targetPlayer = target->getPlayer();
-	if(!targetPlayer)
-		return;
-
-	addAttacked(targetPlayer);
-	if(Combat::isInPvpZone(this, targetPlayer) || isPartner(targetPlayer) || isAlly(targetPlayer)
-		|| (g_config.getBool(ConfigManager::ALLOW_FIGHTBACK) && targetPlayer->hasAttacked(this)
-		&& !targetPlayer->isEnemy(this, false)))
-		return;
-
-	if(!pzLocked)
+	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
-		pzLocked = true;
-		sendIcons();
-	}
+		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		{
+			pzLocked = true;
+			sendIcons();
+		}
 
-	if(getZone() != target->getZone() || skull != SKULL_NONE || targetPlayer->isEnemy(this, true)
-		|| canRevenge(targetPlayer->getGUID()) || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return;
+		if(getSkull() == SKULL_NONE && getSkullType(targetPlayer) == SKULL_YELLOW)
+		{
+			addAttacked(targetPlayer);
+			targetPlayer->sendCreatureSkull(this);
+		}
+		else if(!targetPlayer->hasAttacked(this) && !targetPlayer->isEnemy(this, false))
+		{
+			if(!pzLocked && g_game.getWorldType() != WORLDTYPE_HARDCORE)
+			{
+				pzLocked = true;
+				sendIcons();
+			}
 
-	if(target->getSkull() != SKULL_NONE || (targetPlayer->canRevenge(guid) && targetPlayer->hasAttacked(this)))
-		targetPlayer->sendCreatureSkull(this);
-	else if(!hasCustomFlag(PlayerCustomFlag_NotGainSkull))
-	{
-		setSkull(SKULL_WHITE);
-		g_game.updateCreatureSkull(this);
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isAlly(targetPlayer))
+			{
+				addAttacked(targetPlayer);
+				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
+				{
+					setSkull(SKULL_WHITE);
+					g_game.updateCreatureSkull(this);
+				}
+
+				if(getSkull() == SKULL_NONE)
+					targetPlayer->sendCreatureSkull(this);
+			}
+		}
 	}
+	addInFightTicks(false);
 }
 
 void Player::onSummonTarget(Creature* summon, Creature* target)
@@ -4143,9 +4158,9 @@ GuildEmblems_t Player::getGuildEmblem(const Creature* creature) const
 		return Creature::getGuildEmblem(creature);
 
 	if(player->isEnemy(this, false))
-		return EMBLEM_RED;
+		return GUILDEMBLEM_ENEMY;
 
-	return player->getGuildId() == guildId ? EMBLEM_GREEN : EMBLEM_BLUE;
+	return player->getGuildId() == guildId ? GUILDEMBLEM_ALLY : GUILDEMBLEM_NEUTRAL;
 }
 
 bool Player::getEnemy(const Player* player, War_t& data) const
@@ -4226,8 +4241,7 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 	if(it != revengeList.end())
 		revengeList.erase(it);
 
-	if(entry.isLast())
-		addInFightTicks(false, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
+	addInFightTicks(true, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
 	return true;
 }
 
@@ -4494,20 +4508,22 @@ Skulls_t Player::getSkull() const
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
 	const Player* player = creature->getPlayer();
-	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return SKULL_NONE;
-
 	if(player && player->getSkull() == SKULL_NONE)
 	{
-		if(canRevenge(player->getGUID()))
-			return SKULL_ORANGE;
+		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+			return SKULL_NONE;
 
-		if((skull != SKULL_NONE || player->canRevenge(guid)) && player->hasAttacked(this))
+		if(player->canRevenge(guid) && player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
-		if(isPartner(player) || isAlly(player) || isEnemy(player, false))
+		if((isPartner(player) || isAlly(player)) &&
+			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
+
+		if(canRevenge(player->getGUID()))
+			return SKULL_ORANGE;
 	}
+
 	return Creature::getSkullType(creature);
 }
 
@@ -4560,14 +4576,14 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(!g_config.getBool(ConfigManager::USE_FRAG_HANDLER) || hasFlag(
 		PlayerFlag_NotGainInFight) || g_game.getWorldType() != WORLDTYPE_OPEN
 		|| hasCustomFlag(PlayerCustomFlag_NotGainUnjustified) || hasCustomFlag(
-		PlayerCustomFlag_NotGainSkull))
+		PlayerCustomFlag_NotGainSkull) || attacked == this)
 		return false;
 
 	if(countNow)
 	{
 		char buffer[90];
 		sprintf(buffer, "Warning! The murder of %s was not justified.", attacked->getName().c_str());
-		sendTextMessage(MSG_EVENT_ADVANCE, buffer);
+		sendTextMessage(MSG_STATUS_WARNING, buffer);
 	}
 
 	time_t now = time(NULL), first = (now - g_config.getNumber(ConfigManager::FRAG_LIMIT)),
@@ -5082,6 +5098,9 @@ void Player::manageAccount(const std::string &text)
 						talkState[12] = true;
 					}
 				}
+
+				if(msg.str().length() == 17)
+					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
 			{
@@ -5733,7 +5752,7 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 		oldSkillValue = magLevel;
 		oldPercentToNextLevel = (long double)(manaSpent * 100) / nextReqMana;
 
-		tries *= g_config.getDouble(ConfigManager::RATE_MAGIC);
+		tries *= g_config.getDouble(ConfigManager::RATE_MAGIC_OFFLINE);
 		while((manaSpent + tries) >= nextReqMana)
 		{
 			tries -= nextReqMana - manaSpent;
@@ -5786,7 +5805,7 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 		oldSkillValue = skills[skill][SKILL_LEVEL];
 		oldPercentToNextLevel = (long double)(skills[skill][SKILL_TRIES] * 100) / nextReqTries;
 
-		tries *= g_config.getDouble(ConfigManager::RATE_SKILL);
+		tries *= g_config.getDouble(ConfigManager::RATE_SKILL_OFFLINE);
 		while((skills[skill][SKILL_TRIES] + tries) >= nextReqTries)
 		{
 			tries -= nextReqTries - skills[skill][SKILL_TRIES];

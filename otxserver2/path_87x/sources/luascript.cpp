@@ -8566,21 +8566,7 @@ int32_t LuaInterface::luaDoPlayerAddPremiumDays(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if(player->premiumDays < GRATIS_PREMIUM)
-		{
-			Account account = IOLoginData::getInstance()->loadAccount(player->getAccount());
-			if(days < 0)
-			{
-				account.premiumDays = std::max((uint32_t)0, uint32_t(account.premiumDays + (int32_t)days));
-				player->premiumDays = std::max((uint32_t)0, uint32_t(player->premiumDays + (int32_t)days));
-			}
-			else
-			{
-				account.premiumDays = std::min((uint32_t)65534, uint32_t(account.premiumDays + (uint32_t)days));
-				player->premiumDays = std::min((uint32_t)65534, uint32_t(player->premiumDays + (uint32_t)days));
-			}
-			IOLoginData::getInstance()->saveAccount(account);
-		}
+		player->addPremiumDays(days);
 		lua_pushboolean(L, true);
 	}
 	else

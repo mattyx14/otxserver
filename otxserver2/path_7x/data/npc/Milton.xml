@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Milton" nameDescription="Milton, the ammunition ventor" script="default.lua" walkinterval="2000" skull="green" floorchange="0">
+<health now="100" max="100"/>
+<look type="134" head="57" body="59" legs="40" feet="76"/>
+	<parameters>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell all kinds of ammunition for distance."/>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_sellable" value="crossbow,2455,150;bow,2456,130"/>
+		<parameter key="shop_buyable" value="crossbow,2455,360;bow,2456,200;spear,2389,5;poison arrow,2545,18;bolt,2543,3;arrow,2544,2;small stone,1294,2;throwing star,2399,40"/>
+	</parameters>
+</npc>

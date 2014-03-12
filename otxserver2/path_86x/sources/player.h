@@ -288,6 +288,7 @@ class Player : public Creature, public Cylinder
 
 		bool isPremium() const;
 		int32_t getPremiumDays() const {return premiumDays;}
+		void addPremiumDays(int32_t days);
 
 		bool hasEnemy() const {return !warMap.empty();}
 		bool getEnemy(const Player* player, War_t& data) const;
@@ -700,6 +701,15 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendTutorial(tutorialId);}
 		void sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc)
 			{if(client) client->sendAddMarker(pos, markType, desc);}
+		void sendRuleViolationsChannel(uint16_t channelId)
+			{if(client) client->sendRuleViolationsChannel(channelId);}
+		void sendRemoveReport(const std::string& name)
+			{if(client) client->sendRemoveReport(name);}
+		void sendLockRuleViolation()
+			{if(client) client->sendLockRuleViolation();}
+		void sendRuleViolationCancel(const std::string& name)
+			{if(client) client->sendRuleViolationCancel(name);}
+
 		void sendCritical() const;
 		void sendPlayerIcons(Player* player);
 		void sendStats();

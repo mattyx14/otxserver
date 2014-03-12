@@ -585,7 +585,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 		else if(tmpStrValue == "creature")
 			blockingCreature = true;
 		else
-			std::clog << "[Warning - Spell::configureSpell] Blocktype \"" <<strValue << "\" does not exist." << std::endl;
+			std::clog << "[Warning - Spell::configureSpell] Blocktype \"" << strValue << "\" does not exist." << std::endl;
 	}
 	else if(readXMLString(p, "blocking", strValue))
 		blockingCreature = blockingSolid = booleanString(strValue);
@@ -593,7 +593,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(readXMLString(p, "aggressive", strValue))
 		isAggressive = booleanString(strValue);
 
-	if(readXMLInteger(p, "icon", intValue)) // TODO: needs a string values parser, like skulls etc.
+	if(readXMLInteger(p, "icon", intValue))
 		icon = (Spells_t)intValue;
 
 	if(readXMLString(p, "groups", strValue))
@@ -627,9 +627,9 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(groupExhaustions.empty())
 	{
 		if(isAggressive)
-			groupExhaustions[SPELLGROUP_ATTACK] = 2000;
+			groupExhaustions[SPELLGROUP_ATTACK] = 0;
 		else
-			groupExhaustions[SPELLGROUP_HEALING] = 1000;
+			groupExhaustions[SPELLGROUP_HEALING] = 0;
 	}
 
 	std::string error;
@@ -1940,7 +1940,7 @@ bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, cons
 	soulfireCondition->setParam(CONDITIONPARAM_SUBID, 1);
 	soulfireCondition->setParam(CONDITIONPARAM_OWNER, player->getID());
 
-	soulfireCondition->addDamage((int32_t)std::ceil((player->getLevel() + player->getMagicLevel()) / 3.), 9000, -10);
+	soulfireCondition->addDamage((int32_t)std::ceil((player->getLevel() + player->getMagicLevel()) / 9.), 9000, -10);
 	if(!target->addCondition(soulfireCondition))
 	{
 		player->sendCancelMessage(RET_NOTPOSSIBLE);

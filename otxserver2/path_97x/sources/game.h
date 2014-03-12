@@ -570,6 +570,7 @@ class Game
 
 		void updateCreatureSkull(Creature* creature);
 		void updateCreatureShield(Creature* creature);
+		void updateCreatureType(Creature* creature);
 		void updateCreatureEmblem(Creature* creature);
 		void updateCreatureWalkthrough(Creature* creature);
 

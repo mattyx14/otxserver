@@ -1451,7 +1451,7 @@ bool MagicField::isBlocking(const Creature* creature) const
 		return false;
 
 	if(Creature* owner = g_game.getCreatureByID(ownerId))
-		return creature->getPlayer()->getGuildEmblem(owner) != EMBLEM_NONE;
+		return creature->getPlayer()->getGuildEmblem(owner) != GUILDEMBLEM_NONE;
 
 	return false;
 }

@@ -143,7 +143,9 @@ bool ConfigManager::load()
 	m_confBool[EXPERIENCE_STAGES] = getGlobalBool("experienceStages", false);
 	m_confDouble[RATE_EXPERIENCE] = getGlobalDouble("rateExperience", 1);
 	m_confDouble[RATE_SKILL] = getGlobalDouble("rateSkill", 1);
+	m_confDouble[RATE_SKILL_OFFLINE] = getGlobalDouble("rateSkillOffLine", 0.5);
 	m_confDouble[RATE_MAGIC] = getGlobalDouble("rateMagic", 1);
+	m_confDouble[RATE_MAGIC_OFFLINE] = getGlobalDouble("rateMagicOffLine", 0.5);
 	m_confDouble[RATE_LOOT] = getGlobalDouble("rateLoot", 1);
 	m_confNumber[RATE_SPAWN_MIN] = getGlobalNumber("rateSpawnMin", 1);
 	m_confNumber[RATE_SPAWN_MAX] = getGlobalNumber("rateSpawnMax", 1);
@@ -300,7 +302,6 @@ bool ConfigManager::load()
 	m_confBool[USE_FRAG_HANDLER] = getGlobalBool("useFragHandler", true);
 	m_confNumber[LOOT_MESSAGE] = getGlobalNumber("monsterLootMessage", 3);
 	m_confNumber[LOOT_MESSAGE_TYPE] = getGlobalNumber("monsterLootMessageType", 19);
-	m_confBool[ALLOW_FIGHTBACK] = getGlobalBool("allowFightback", true);
 	m_confNumber[HOUSE_CLEAN_OLD] = getGlobalNumber("houseCleanOld", 0);
 	m_confBool[VIPLIST_PER_PLAYER] = getGlobalBool("separateVipListPerCharacter", false);
 	m_confDouble[RATE_MONSTER_HEALTH] = getGlobalDouble("rateMonsterHealth", 1);
@@ -361,12 +362,10 @@ bool ConfigManager::load()
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
 	m_confBool[SERVER_PREVIEW] = getGlobalBool("serverPreview", false);
 	m_confNumber[LEVEL_TO_OFFLINE] = getGlobalNumber("levelToOfflineTraining", 8);
-	m_confString[ADVERTISING_BLOCK] = getGlobalString("advertisingBlock", "");
-	m_confNumber[ANONYMOUS_CHANNEL] = getGlobalNumber("gmAnonymousInChannel", 0);
 	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);
-	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", 973);
-	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", 975);
-	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "");
+	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", 1010);
+	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", 1010);
+	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "Only clients with protocol 10.10 allowed!");
 
 	m_loaded = true;
 	return true;

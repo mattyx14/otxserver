@@ -442,16 +442,13 @@ class LuaInterface
 		static int32_t luaDoAddIpBanishment(lua_State* L);
 		static int32_t luaDoAddPlayerBanishment(lua_State* L);
 		static int32_t luaDoAddAccountBanishment(lua_State* L);
-		static int32_t luaDoAddAccountWarnings(lua_State* L);
 		static int32_t luaDoAddNotation(lua_State* L);
 		static int32_t luaDoAddStatement(lua_State* L);
 		static int32_t luaDoRemoveIpBanishment(lua_State* L);
 		static int32_t luaDoRemovePlayerBanishment(lua_State* L);
 		static int32_t luaDoRemoveAccountBanishment(lua_State* L);
-		static int32_t luaDoRemoveAccountWarnings(lua_State* L);
 		static int32_t luaDoRemoveNotations(lua_State* L);
 		static int32_t luaDoRemoveStatements(lua_State* L);
-		static int32_t luaGetAccountWarnings(lua_State* L);
 		static int32_t luaGetNotationsCount(lua_State* L);
 		static int32_t luaGetStatementsCount(lua_State* L);
 		static int32_t luaGetBanData(lua_State* L);

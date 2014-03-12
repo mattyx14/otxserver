@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<outfits>
+	<outfit id="1">
+		<list gender="0" lookType="136" name="Citizen"/>
+		<list gender="1" lookType="128" name="Citizen"/>
+	</outfit>
+
+	<outfit id="2">
+		<list gender="0" lookType="137" name="Hunter"/>
+		<list gender="1" lookType="129" name="Hunter"/>
+	</outfit>
+
+	<outfit id="3">
+		<list gender="0" lookType="138" name="Mage"/>
+		<list gender="1" lookType="130" name="Mage"/>
+	</outfit>
+
+	<outfit id="4">
+		<list gender="0" lookType="139" name="Knight"/>
+		<list gender="1" lookType="131" name="Knight"/>
+	</outfit>
+
+	<outfit id="5">
+		<list gender="0" lookType="140" name="Noblewoman"/>
+		<list gender="1" lookType="132" name="Nobleman"/>
+	</outfit>
+
+	<outfit id="6">
+		<list gender="0" lookType="141" name="Summoner"/>
+		<list gender="1" lookType="133" name="Summoner"/>
+	</outfit>
+
+	<outfit id="7">
+		<list gender="0" lookType="142" name="Warrior"/>
+		<list gender="1" lookType="134" name="Warrior"/>
+	</outfit>
+</outfits>

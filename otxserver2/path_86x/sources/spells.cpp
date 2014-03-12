@@ -584,7 +584,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 		else if(tmpStrValue == "creature")
 			blockingCreature = true;
 		else
-			std::clog << "[Warning - Spell::configureSpell] Blocktype \"" <<strValue << "\" does not exist." << std::endl;
+			std::clog << "[Warning - Spell::configureSpell] Blocktype \"" << strValue << "\" does not exist." << std::endl;
 	}
 	else if(readXMLString(p, "blocking", strValue))
 		blockingCreature = blockingSolid = booleanString(strValue);
@@ -592,41 +592,8 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(readXMLString(p, "aggressive", strValue))
 		isAggressive = booleanString(strValue);
 
-	if(readXMLString(p, "groups", strValue))
-	{
-		std::vector<std::string> strVector = explodeString(strValue, ";"), tmpVector;
-		for(std::vector<std::string>::iterator it = strVector.begin(); it != strVector.end(); ++it)
-		{
-			tmpVector = explodeString((*it), ",");
-			uint32_t id = atoi(tmpVector[0].c_str()), exhaust = isAggressive ? 2000 : 1000;
-			if(tmpVector.size() > 1)
-				exhaust = atoi(tmpVector[1].c_str());
-
-			if(!id)
-			{
-				strValue = asLowerCaseString(tmpVector[0]);
-				if(strValue == "attack" || strValue == "attacking")
-					id = SPELLGROUP_ATTACK;
-				else if(strValue == "heal" || strValue == "healing")
-					id = SPELLGROUP_HEALING;
-				else if(strValue == "support" || strValue == "supporting")
-					id = SPELLGROUP_SUPPORT;
-				else if(strValue == "special" || strValue == "ultimate")
-					id = SPELLGROUP_SPECIAL;
-			}
-
-			if(id && exhaust)
-				groupExhaustions[(SpellGroup_t)id] = exhaust;
-		}
-	}
-
-	if(groupExhaustions.empty())
-	{
-		if(isAggressive)
-			groupExhaustions[SPELLGROUP_ATTACK] = 2000;
-		else
-			groupExhaustions[SPELLGROUP_HEALING] = 1000;
-	}
+	groupExhaustions[SPELLGROUP_ATTACK] = exhaustion;
+	groupExhaustions[SPELLGROUP_HEALING] = exhaustion;
 
 	std::string error;
 	for(xmlNodePtr vocationNode = p->children; vocationNode; vocationNode = vocationNode->next)
@@ -668,23 +635,7 @@ bool Spell::checkSpell(Player* player) const
 	if(!player->hasFlag(PlayerFlag_HasNoExhaustion))
 	{
 		bool exhausted = false;
-		if(g_config.getBool(ConfigManager::ENABLE_COOLDOWNS))
-		{
-			if(!player->hasCondition(CONDITION_SPELLCOOLDOWN, spellId))
-			{
-				for(SpellGroup::const_iterator it = groupExhaustions.begin(); it != groupExhaustions.end(); ++it)
-				{
-					if(!player->hasCondition(CONDITION_EXHAUST, (Exhaust_t)((int32_t)it->first + 1)))
-						continue;
-
-					exhausted = true;
-					break;
-				}
-			}
-			else
-				exhausted = true;
-		}
-		else if(player->hasCondition(CONDITION_EXHAUST, (isAggressive ? EXHAUST_SPELLGROUP_ATTACK : EXHAUST_SPELLGROUP_HEALING)))
+		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_ATTACK) || player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_HEALING))
 			exhausted = true;
 
 		if(exhausted)
@@ -1034,16 +985,11 @@ void Spell::postSpell(Player* player) const
 {
 	if(!player->hasFlag(PlayerFlag_HasNoExhaustion))
 	{
-		if(g_config.getBool(ConfigManager::ENABLE_COOLDOWNS))
+		if(exhaustion > 0)
 		{
-			for(SpellGroup::const_iterator it = groupExhaustions.begin(); it != groupExhaustions.end(); ++it)
-				player->addExhaust(it->second, (Exhaust_t)(it->first + 1));
-
-			if(exhaustion > 0)
-				player->addCooldown(exhaustion, spellId);
+			player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_ATTACK);
+			player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_HEALING);
 		}
-		else if(exhaustion > 0)
-			player->addExhaust(exhaustion, (isAggressive ? EXHAUST_SPELLGROUP_ATTACK : EXHAUST_SPELLGROUP_HEALING));
 	}
 
 	if(isAggressive && !player->hasFlag(PlayerFlag_NotGainInFight))
@@ -1926,7 +1872,7 @@ bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, cons
 	soulfireCondition->setParam(CONDITIONPARAM_SUBID, 1);
 	soulfireCondition->setParam(CONDITIONPARAM_OWNER, player->getID());
 
-	soulfireCondition->addDamage((int32_t)std::ceil((player->getLevel() + player->getMagicLevel()) / 3.), 9000, -10);
+	soulfireCondition->addDamage((int32_t)std::ceil((player->getLevel() + player->getMagicLevel()) / 9.), 9000, -10);
 	if(!target->addCondition(soulfireCondition))
 	{
 		player->sendCancelMessage(RET_NOTPOSSIBLE);

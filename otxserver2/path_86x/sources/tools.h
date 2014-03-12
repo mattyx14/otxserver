@@ -165,6 +165,8 @@ void getCombatDetails(CombatType_t combatType, MagicEffect_t& magicEffect, Color
 
 std::string getCombatName(CombatType_t combatType);
 std::string getSkillName(uint16_t skillId, bool suffix = true);
+std::string getReason(int32_t reasonId);
+std::string getAction(ViolationAction_t actionId, bool ipBanishment);
 std::string getWeaponName(WeaponType_t weaponType);
 
 bool fileExists(const char* filename);

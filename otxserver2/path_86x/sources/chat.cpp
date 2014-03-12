@@ -1221,6 +1221,9 @@ ChatChannel* Chat::getChannel(Player* player, uint16_t channelId)
 			return NULL;
 		}
 
+		if(channelId == CHANNEL_RVR && !player->hasFlag(PlayerFlag_CanAnswerRuleViolations))
+			return NULL;
+
 		#ifdef __DEBUG_CHAT__
 		std::clog << "Chat::getChannel - endpoint return" << std::endl;
 		#endif

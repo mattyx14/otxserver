@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Yasmin" nameDescription="Yasmin, the blesser ventor" script="bless.lua" walkinterval="2000" skull="green" floorchange="0">
+	<health now="100" max="100"/>
+	<look type="140" head="20" body="39" legs="45" feet="7" addons="3"/>
+	<parameters>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell Blessings. Say 'first bless', 'second bless', 'third bless', 'fourth bless', and 'fifth bless'."/>
+		<parameter key="message_decline" value="Is |TOTALCOST| gold coins too much for you? Get out of here!"/>
+	</parameters>
+</npc>

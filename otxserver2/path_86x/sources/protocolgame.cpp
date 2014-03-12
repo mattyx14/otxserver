@@ -131,10 +131,9 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 				IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
 			std::stringstream stream;
-			stream << "Your character has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " << name_.c_str()
-				   << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ? "character won't be undeleted" : "banishment will be lifted at:\n")
-				   << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
-
+			stream << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " << name_.c_str()
+				   << "\nReason:\n" << getReason(ban.reason).c_str() << ".\nComment:\n" << ban.comment.c_str() << ".\nYour " << (deletion ? "account won't be undeleted" : "banishment will be lifted at:\n")
+				   << (deletion ? "" : formatDateEx(ban.expires).c_str());
 			disconnectClient(0x14, stream.str().c_str());
 			return false;
 		}
@@ -757,6 +756,18 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 				parseCloseNpc(msg);
 				break;
 
+			case 0x9B: //process report
+				parseProcessRuleViolation(msg);
+				break;
+
+			case 0x9C: //gm closes report
+				parseCloseRuleViolation(msg);
+				break;
+
+			case 0x9D: //player cancels report
+				parseCancelRuleViolation(msg);
+				break;
+
 			case 0xA0: // set attack and follow mode
 				parseFightModes(msg);
 				break;
@@ -840,6 +851,10 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 
 			case 0xE6:
 				parseBugReport(msg);
+				break;
+
+			case 0xE7:
+				parseViolationWindow(msg);
 				break;
 
 			case 0xE8:
@@ -1099,6 +1114,36 @@ void ProtocolGame::parseOpenPrivate(NetworkMessage& msg)
 void ProtocolGame::parseCloseNpc(NetworkMessage&)
 {
 	addGameTask(&Game::playerCloseNpcChannel, player->getID());
+}
+
+void ProtocolGame::parseProcessRuleViolation(NetworkMessage& msg)
+{
+	const std::string reporter = msg.getString();
+	addGameTask(&Game::playerProcessRuleViolation, player->getID(), reporter);
+}
+
+void ProtocolGame::parseCloseRuleViolation(NetworkMessage& msg)
+{
+	const std::string reporter = msg.getString();
+	addGameTask(&Game::playerCloseRuleViolation, player->getID(), reporter);
+}
+
+void ProtocolGame::parseCancelRuleViolation(NetworkMessage&)
+{
+	addGameTask(&Game::playerCancelRuleViolation, player->getID());
+}
+
+void ProtocolGame::parseViolationWindow(NetworkMessage& msg)
+{
+	std::string target = msg.getString();
+	uint8_t reason = msg.get<char>();
+	ViolationAction_t action = (ViolationAction_t)msg.get<char>();
+	std::string comment = msg.getString();
+	std::string statement = msg.getString();
+	uint32_t statementId = (uint32_t)msg.get<uint16_t>();
+	bool ipBanishment = (msg.get<char>() == 0x01);
+	addGameTask(&Game::playerViolationWindow, player->getID(), target,
+		reason, action, comment, statement, statementId, ipBanishment);
 }
 
 void ProtocolGame::parseCancelMove(NetworkMessage&)
@@ -1892,6 +1937,55 @@ void ProtocolGame::sendGoods(const ShopInfoList& shop)
 	}
 }
 
+void ProtocolGame::sendRuleViolationsChannel(uint16_t channelId)
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(msg)
+	{
+		TRACK_MESSAGE(msg);
+		msg->put<char>(0xAE);
+		msg->put<uint16_t>(channelId);
+		for(RuleViolationsMap::const_iterator it = g_game.getRuleViolations().begin(); it != g_game.getRuleViolations().end(); ++it)
+		{
+			RuleViolation& rvr = *it->second;
+			if(rvr.isOpen && rvr.reporter)
+				AddCreatureSpeak(msg, rvr.reporter, MSG_RVR_CHANNEL, rvr.text, channelId, NULL, rvr.time);
+		}
+	}
+}
+
+void ProtocolGame::sendRemoveReport(const std::string& name)
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(msg)
+	{
+		TRACK_MESSAGE(msg);
+		msg->put<char>(0xAF);
+		msg->putString(name);
+	}
+}
+
+void ProtocolGame::sendRuleViolationCancel(const std::string& name)
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(msg)
+	{
+		TRACK_MESSAGE(msg);
+		msg->put<char>(0xB0);
+		msg->putString(name);
+	}
+}
+
+void ProtocolGame::sendLockRuleViolation()
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(msg)
+	{
+		TRACK_MESSAGE(msg);
+		msg->put<char>(0xB1);
+	}
+}
+
 void ProtocolGame::sendTradeItemRequest(const Player* _player, const Item* item, bool ack)
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
@@ -2211,6 +2305,23 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	msg->put<uint16_t>(0x32);
 
 	msg->put<char>(player->hasFlag(PlayerFlag_CanReportBugs));
+	if(Group* group = player->getGroup())
+	{
+		int32_t reasons = group->getViolationReasons();
+		if(reasons > 1)
+		{
+			msg->put<char>(0x0B);
+			for(int32_t i = 0; i < 20; ++i)
+			{
+				if(i < 4)
+					msg->put<char>(group->getNameViolationFlags());
+				else if(i < reasons)
+					msg->put<char>(group->getStatementViolationFlags());
+				else
+					msg->put<char>(0);
+			}
+		}
+	}
 
 	AddMapDescription(msg, pos);
 	for(int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
@@ -2752,6 +2863,9 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 			case MSG_GAMEMASTER_ANONYMOUS:
 				msg->putString("");
 				break;
+			case MSG_RVR_ANSWER:
+				msg->putString("Gamemaster");
+				break;
 			default:
 				msg->putString(!creature->getHideName() ? creature->getName() : "");
 				break;
@@ -2796,6 +2910,12 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 		case MSG_GAMEMASTER_ANONYMOUS:
 			msg->put<uint16_t>(channelId);
 			break;
+
+		case MSG_RVR_CHANNEL:
+		{
+			msg->put<uint32_t>(uint32_t(OTSYS_TIME() / 1000 & 0xFFFFFFFF) - statementId/*use it as time:)*/);
+			break;
+		}
 
 		default:
 			break;
