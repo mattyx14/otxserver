@@ -1414,12 +1414,17 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 
 	if(const CreatureVector* creatures = getCreatures())
 	{
-		for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
+		if(thing->getCreature())
 		{
-			++n;
-			if((*cit) == thing)
-				return n;
+			for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
+			{
+				++n;
+				if((*cit) == thing)
+					return n;
+			}
 		}
+		else
+			n += creatures->size();
 	}
 
 	if(items)

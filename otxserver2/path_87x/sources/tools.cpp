@@ -845,16 +845,16 @@ PartyShields_t getShields(std::string strValue)
 GuildEmblems_t getEmblems(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "blue" || tmpStrValue == "3")
-		return EMBLEM_BLUE;
+	if(tmpStrValue == "blue" || tmpStrValue == "neutral" || tmpStrValue == "3")
+		return GUILDEMBLEM_NEUTRAL;
 
-	if(tmpStrValue == "red" || tmpStrValue == "2")
-		return EMBLEM_RED;
+	if(tmpStrValue == "red" || tmpStrValue == "enemy" || tmpStrValue == "2")
+		return GUILDEMBLEM_ENEMY;
 
-	if(tmpStrValue == "green" || tmpStrValue == "1")
-		return EMBLEM_GREEN;
+	if(tmpStrValue == "green" || tmpStrValue == "ally" || tmpStrValue == "1")
+		return GUILDEMBLEM_ALLY;
 
-	return EMBLEM_NONE;
+	return GUILDEMBLEM_NONE;
 }
 
 Direction getDirection(std::string string)

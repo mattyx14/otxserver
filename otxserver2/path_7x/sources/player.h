@@ -59,7 +59,9 @@ enum playerinfo_t
 	PLAYERINFO_MAXMANA,
 	PLAYERINFO_MAGICLEVEL,
 	PLAYERINFO_MAGICLEVELPERCENT,
+	#ifdef _MULTIPLATFORM
 	PLAYERINFO_SOUL,
+	#endif
 };
 
 enum freeslot_t
@@ -177,6 +179,15 @@ class Player : public Creature, public Cylinder
 			return exp;
 		}
 
+		bool addOfflineTrainingTries(skills_t skill, int32_t tries);
+
+		void addOfflineTrainingTime(int32_t addTime) {offlineTrainingTime = std::min(12 * 3600 * 1000, offlineTrainingTime + addTime);}
+		void removeOfflineTrainingTime(int32_t removeTime) {offlineTrainingTime = std::max(0, offlineTrainingTime - removeTime);}
+		int32_t getOfflineTrainingTime() {return offlineTrainingTime;}
+
+		int32_t getOfflineTrainingSkill() {return offlineTrainingSkill;}
+		void setOfflineTrainingSkill(int32_t skill) {offlineTrainingSkill = skill;}
+
 		uint32_t getPromotionLevel() const {return promotionLevel;}
 		void setPromotionLevel(uint32_t pLevel);
 
@@ -228,6 +239,7 @@ class Player : public Creature, public Cylinder
 		bool hasPVPBlessing() const {return pvpBlessing;}
 		uint16_t getBlessings() const;
 
+		bool isUsingOtclient() const { return operatingSystem >= CLIENTOS_OTCLIENT_LINUX; }
 		OperatingSystem_t getOperatingSystem() const {return operatingSystem;}
 		void setOperatingSystem(OperatingSystem_t os) {operatingSystem = os;}
 		uint32_t getClientVersion() const {return clientVersion;}
@@ -325,10 +337,14 @@ class Player : public Creature, public Cylinder
 		void setCapacity(double newCapacity) {capacity = newCapacity;}
 		double getFreeCapacity() const;
 
+		#ifdef _MULTIPLATFORM
 		virtual int32_t getSoul() const {return getPlayerInfo(PLAYERINFO_SOUL);}
+		#endif
 		virtual int32_t getMaxHealth() const {return getPlayerInfo(PLAYERINFO_MAXHEALTH);}
 		virtual int32_t getMaxMana() const {return getPlayerInfo(PLAYERINFO_MAXMANA);}
+		#ifdef _MULTIPLATFORM
 		int32_t getSoulMax() const {return soulMax;}
+		#endif
 
 		Item* getInventoryItem(slots_t slot) const;
 		Item* getEquippedItem(slots_t slot) const;
@@ -405,7 +421,9 @@ class Player : public Creature, public Cylinder
 
 		virtual void changeHealth(int32_t healthChange);
 		virtual void changeMana(int32_t manaChange);
+		#ifdef _MULTIPLATFORM
 		void changeSoul(int32_t soulChange);
+		#endif
 
 		bool isPzLocked() const {return pzLocked;}
 		void setPzLocked(bool v) {pzLocked = v;}
@@ -518,6 +536,9 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendCreatureLight(creature);}
 		void sendCreatureShield(const Creature* creature)
 			{if(client) client->sendCreatureShield(creature);}
+
+		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
+			{if(client) client->sendExtendedOpcode(opcode, buffer);}
 
 		//container
 		void sendAddContainerItem(const Container* container, const Item* item);
@@ -787,10 +808,13 @@ class Player : public Creature, public Cylinder
 		uint16_t maxWriteLen;
 		uint16_t sex;
 		uint16_t mailAttempts;
+		uint16_t lastStatsTrainingTime;
 
 		int32_t premiumDays;
+		#ifdef _MULTIPLATFORM
 		int32_t soul;
 		int32_t soulMax;
+		#endif
 		int32_t vocationId;
 		int32_t groupId;
 		int32_t managerNumber, managerNumber2;
@@ -801,6 +825,8 @@ class Player : public Creature, public Cylinder
 		int32_t messageBuffer;
 		int32_t bloodHitCount;
 		int32_t shieldBlockCount;
+		int32_t offlineTrainingSkill;
+		int32_t offlineTrainingTime;
 
 		uint32_t clientVersion;
 		uint32_t messageTicks;

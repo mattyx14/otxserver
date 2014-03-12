@@ -196,6 +196,7 @@ class ConfigManager
 			GUI_PREMIUM_DAYS,
 			FOLLOW_EXHAUST,
 			PACKETS_PER_SECOND,
+			LEVEL_TO_OFFLINE,
 			VERSION_MIN,
 			VERSION_MAX,
 			LAST_NUMBER_CONFIG /* this must be the last one */
@@ -205,7 +206,9 @@ class ConfigManager
 		{
 			RATE_EXPERIENCE,
 			RATE_SKILL,
+			RATE_SKILL_OFFLINE,
 			RATE_MAGIC,
+			RATE_MAGIC_OFFLINE,
 			RATE_LOOT,
 			PARTY_DIFFERENCE,
 			CRITICAL_HIT_MUL,
@@ -326,6 +329,7 @@ class ConfigManager
 			MULTIPLE_NAME,
 			SAVE_STATEMENT,
 			MANUAL_ADVANCED_CONFIG,
+			USE_RUNE_REQUIREMENTS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

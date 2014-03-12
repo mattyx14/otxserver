@@ -37,6 +37,7 @@
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"
 #endif
+#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -82,10 +83,11 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	uint32_t clientIp = getConnection()->getIP();
-	/*uint16_t operatingSystem = */msg.get<uint16_t>();
+	msg.get<uint16_t>();
 	uint16_t version = msg.get<uint16_t>();
 
 	msg.skip(12);
+	#ifdef _PROTOCOL77
 	if(!RSA_decrypt(msg))
 	{
 		getConnection()->close();
@@ -95,6 +97,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	uint32_t key[4] = {msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>()};
 	enableXTEAEncryption();
 	setXTEAKey(key);
+	#endif
 	uint32_t name = msg.get<uint32_t>();
 	std::string password = msg.getString();
 

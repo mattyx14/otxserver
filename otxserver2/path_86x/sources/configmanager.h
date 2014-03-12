@@ -200,6 +200,7 @@ class ConfigManager
 			PACKETS_PER_SECOND,
 			VERSION_MIN,
 			VERSION_MAX,
+			LEVEL_TO_OFFLINE,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 
@@ -207,7 +208,9 @@ class ConfigManager
 		{
 			RATE_EXPERIENCE,
 			RATE_SKILL,
+			RATE_SKILL_OFFLINE,
 			RATE_MAGIC,
+			RATE_MAGIC_OFFLINE,
 			RATE_LOOT,
 			PARTY_DIFFERENCE,
 			CRITICAL_HIT_MUL,
@@ -326,6 +329,9 @@ class ConfigManager
 			MULTIPLE_NAME,
 			SAVE_STATEMENT,
 			MANUAL_ADVANCED_CONFIG,
+			USE_RUNE_REQUIREMENTS,
+			NO_ATTACKHEALING_SIMULTANEUS,
+			ENABLE_COOLDOWNS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

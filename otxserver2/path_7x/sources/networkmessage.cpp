@@ -20,6 +20,7 @@
 #include "networkmessage.h"
 #include "position.h"
 #include "item.h"
+#include "player.h"
 
 std::string NetworkMessage::getString(bool peek/* = false*/, uint16_t size/* = 0*/)
 {

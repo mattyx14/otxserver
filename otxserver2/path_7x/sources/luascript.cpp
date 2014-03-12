@@ -57,6 +57,7 @@
 #include "game.h"
 #include "chat.h"
 #include "tools.h"
+#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -1516,6 +1517,9 @@ void LuaInterface::registerFunctions()
 	//getPlayerSkillTries(cid, skill)
 	lua_register(m_luaState, "getPlayerSkillTries", LuaInterface::luaGetPlayerSkillTries);
 
+	//doPlayerSetOfflineTrainingSkill(cid, skill)
+	lua_register(m_luaState, "doPlayerSetOfflineTrainingSkill", LuaInterface::luaDoPlayerSetOfflineTrainingSkill);
+
 	//getPlayerTown(cid)
 	lua_register(m_luaState, "getPlayerTown", LuaInterface::luaGetPlayerTown);
 
@@ -1537,8 +1541,10 @@ void LuaInterface::registerFunctions()
 	//getPlayerMoney(cid)
 	lua_register(m_luaState, "getPlayerMoney", LuaInterface::luaGetPlayerMoney);
 
+	#ifdef _MULTIPLATFORM
 	//getPlayerSoul(cid[, ignoreModifiers = false])
 	lua_register(m_luaState, "getPlayerSoul", LuaInterface::luaGetPlayerSoul);
+	#endif
 
 	//getPlayerFreeCap(cid)
 	lua_register(m_luaState, "getPlayerFreeCap", LuaInterface::luaGetPlayerFreeCap);
@@ -1756,8 +1762,10 @@ void LuaInterface::registerFunctions()
 	//doPlayerAddSpentMana(cid, amount[, useMultiplier = true])
 	lua_register(m_luaState, "doPlayerAddSpentMana", LuaInterface::luaDoPlayerAddSpentMana);
 
+	#ifdef _MULTIPLATFORM
 	//doPlayerAddSoul(cid, amount)
 	lua_register(m_luaState, "doPlayerAddSoul", LuaInterface::luaDoPlayerAddSoul);
+	#endif
 
 	//doPlayerAddItem(cid, itemid[, count/subtype = 1[, canDropOnMap = true[, slot = 0]]])
 	//doPlayerAddItem(cid, itemid[, count = 1[, canDropOnMap = true[, subtype = 1[, slot = 0]]]])
@@ -2429,6 +2437,12 @@ void LuaInterface::registerFunctions()
 
 	//getConfigFile()
 	lua_register(m_luaState, "getConfigFile", LuaInterface::luaGetConfigFile);
+
+	//isPlayerUsingOtclient(cid)
+	lua_register(m_luaState, "isPlayerUsingOtclient", LuaInterface::luaIsPlayerUsingOtclient);
+
+	//doSendPlayerExtendedOpcode(cid, opcode, buffer)
+	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoSendPlayerExtendedOpcode);
 
 	//getConfigValue(key)
 	lua_register(m_luaState, "getConfigValue", LuaInterface::luaGetConfigValue);
@@ -4477,6 +4491,29 @@ int32_t LuaInterface::luaGetPlayerSkillTries(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaDoPlayerSetOfflineTrainingSkill(lua_State* L)
+{
+	//doPlayerSetOfflineTrainingSkill(cid, skillid)
+	uint32_t skillid = (uint32_t)popNumber(L);
+	uint32_t cid = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+
+	Player* player = env->getPlayerByUID(cid);
+	if(player)
+	{
+		player->setOfflineTrainingSkill(skillid);
+		lua_pushboolean(L, true);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
 int32_t LuaInterface::luaDoCreatureSetDropLoot(lua_State* L)
 {
 	//doCreatureSetDropLoot(cid, doDrop)
@@ -5447,6 +5484,7 @@ int32_t LuaInterface::luaDoPlayerSetSex(lua_State* L)
 	return 1;
 }
 
+#ifdef _MULTIPLATFORM
 int32_t LuaInterface::luaDoPlayerAddSoul(lua_State* L)
 {
 	//doPlayerAddSoul(cid, amount)
@@ -5466,6 +5504,7 @@ int32_t LuaInterface::luaDoPlayerAddSoul(lua_State* L)
 
 	return 1;
 }
+#endif
 
 int32_t LuaInterface::luaGetPlayerItemCount(lua_State* L)
 {
@@ -5730,6 +5769,7 @@ int32_t LuaInterface::luaGetPlayerLight(lua_State* L)
 	}
 }
 
+#ifdef _MULTIPLATFORM
 int32_t LuaInterface::luaGetPlayerSoul(lua_State* L)
 {
 	//getPlayerSoul(cid[, ignoreModifiers = false])
@@ -5748,6 +5788,7 @@ int32_t LuaInterface::luaGetPlayerSoul(lua_State* L)
 
 	return 1;
 }
+#endif
 
 int32_t LuaInterface::luaDoPlayerAddExperience(lua_State* L)
 {
@@ -8863,7 +8904,6 @@ int32_t LuaInterface::luaDoPlayerSetStamina(lua_State* L)
 	{
 		player->setStaminaMinutes(minutes);
 		player->sendStats();
-		// player->sendStats();
 		lua_pushboolean(L, true);
 	}
 	else
@@ -9089,6 +9129,36 @@ int32_t LuaInterface::luaSetPartySharedExperience(lua_State *L)
 	return 1;
 }
 
+int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
+{
+	//isPlayerUsingOtclient(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		lua_pushboolean(L, player->isUsingOtclient());
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
+{
+	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
+	std::string buffer = popString(L);
+	int32_t opcode = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		player->sendExtendedOpcode(opcode, buffer);
+		lua_pushboolean(L, true);
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
 int32_t LuaInterface::luaGetVocationInfo(lua_State* L)
 {
 	//getVocationInfo(id)
@@ -9114,9 +9184,11 @@ int32_t LuaInterface::luaGetVocationInfo(lua_State* L)
 	setField(L, "baseSpeed", voc->getBaseSpeed());
 	setField(L, "fromVocation", voc->getFromVocation());
 	setField(L, "promotedVocation", Vocations::getInstance()->getPromotedVocation(id));
+	#ifdef _MULTIPLATFORM
 	setField(L, "soul", voc->getGain(GAIN_SOUL));
 	setField(L, "soulAmount", voc->getGainAmount(GAIN_SOUL));
 	setField(L, "soulTicks", voc->getGainTicks(GAIN_SOUL));
+	#endif
 	setField(L, "capacity", voc->getGainCap());
 	setFieldBool(L, "attackable", voc->isAttackable());
 	setFieldBool(L, "needPremium", voc->isPremiumNeeded());

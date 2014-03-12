@@ -284,6 +284,10 @@ class ProtocolGame : public Protocol
 		void UpdateInventoryItem(NetworkMessage_ptr msg, slots_t slot, const Item* item);
 		void RemoveInventoryItem(NetworkMessage_ptr msg, slots_t slot);
 
+		// OTClient
+		void parseExtendedOpcode(NetworkMessage& msg);
+		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);
+
 		#define addGameTask(f, ...) addGameTaskInternal(0, boost::bind(f, &g_game, __VA_ARGS__))
 		#define addGameTaskTimed(delay, f, ...) addGameTaskInternal(delay, boost::bind(f, &g_game, __VA_ARGS__))
 		template<class FunctionType>

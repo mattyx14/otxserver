@@ -44,6 +44,7 @@
 #include "game.h"
 
 #include "resources.h"
+#include "definitions.h"
 
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"
@@ -253,6 +254,11 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		player->setClientVersion(version);
 		player->setOperatingSystem(operatingSystem);
 
+		if(player->isUsingOtclient())
+		{
+			player->registerCreatureEvent("ExtendedOpcode");
+		}
+
 		player->lastIP = player->getIP();
 		player->lastLoad = OTSYS_TIME();
 		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
@@ -284,6 +290,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 
 		_player->client->disconnect();
 		_player->isConnecting = true;
+		_player->setClientVersion(version);
 
 		addRef();
 		m_eventConnect = Scheduler::getInstance().addEvent(createSchedulerTask(
@@ -418,6 +425,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	OperatingSystem_t operatingSystem = (OperatingSystem_t)msg.get<uint16_t>();
 	uint16_t version = msg.get<uint16_t>();
+	#ifdef _PROTOCOL77
 	if(!RSA_decrypt(msg))
 	{
 		disconnect();
@@ -427,6 +435,11 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	uint32_t key[4] = {msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>()};
 	enableXTEAEncryption();
 	setXTEAKey(key);
+	#endif
+
+	if(operatingSystem >= CLIENTOS_OTCLIENT_LINUX)
+		sendExtendedOpcode(0x00, std::string());
+
 	bool gamemaster = (msg.get<char>() != (char)0);
 	uint32_t name = msg.get<uint32_t>();
 	std::string character = msg.getString(), password = msg.getString();
@@ -530,17 +543,6 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 	if(!player || !m_acceptPackets || g_game.getGameState() == GAMESTATE_SHUTDOWN || !msg.size())
 		return;
 
-	uint32_t now = time(NULL);
-	if(m_packetTime != now)
-	{
-		m_packetTime = now;
-		m_packetCount = 0;
-	}
-
-	++m_packetCount;
-	if(m_packetCount > (uint32_t)g_config.getNumber(ConfigManager::PACKETS_PER_SECOND))
-		return;
-
 	uint8_t recvbyte = msg.get<char>();
 	if((player->getHealth() == 0 || player->isRemoved()) && recvbyte != 0x14) //a dead player cannot performs actions
 		return;
@@ -549,233 +551,76 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 	{
 		switch(recvbyte)
 		{
-			case 0x14:
-				parseLogout(msg);
-				break;
-
-			case 0x96:
-				parseSay(msg);
-				break;
-
-			case 0x1E:
-				parseReceivePing(msg);
-				break;
-
-			case 0xC9:
-				parseUpdateTile(msg);
-				break;
-
-			case 0xE8:
-				parseDebugAssert(msg);
-				break;
-
-			case 0xA1:
-				parseCancelTarget(msg);
-				break;
+			case 0x14: parseLogout(msg); break;
+			case 0x96: parseSay(msg); break;
+			case 0x1E: parseReceivePing(msg); break;
+			case 0xC9: parseUpdateTile(msg); break;
+			case 0xE8: parseDebugAssert(msg); break;
+			case 0xA1: parseCancelTarget(msg); break;
 
 			default:
 				parseCancelWalk(msg);
-				break;
+			break;
 		}
 	}
 	else
 	{
 		switch(recvbyte)
 		{
-			case 0x14: // logout
-				parseLogout(msg);
-				break;
-
-			case 0x1E: // keep alive / ping response
-				parseReceivePing(msg);
-				break;
-
-			case 0x64: // move with steps
-				parseAutoWalk(msg);
-				break;
-
-			case 0x65: // move north
-			case 0x66: // move east
-			case 0x67: // move south
-			case 0x68: // move west
-				parseMove(msg, (Direction)(recvbyte - 0x65));
-				break;
-
-			case 0x69: // stop-autowalk
-				addGameTask(&Game::playerStopAutoWalk, player->getID());
-				break;
-
-			case 0x6A:
-				parseMove(msg, NORTHEAST);
-				break;
-
-			case 0x6B:
-				parseMove(msg, SOUTHEAST);
-				break;
-
-			case 0x6C:
-				parseMove(msg, SOUTHWEST);
-				break;
-
-			case 0x6D:
-				parseMove(msg, NORTHWEST);
-				break;
-
-			case 0x6F: // turn north
-			case 0x70: // turn east
-			case 0x71: // turn south
-			case 0x72: // turn west
-				parseTurn(msg, (Direction)(recvbyte - 0x6F));
-				break;
-
-			case 0x78: // throw item
-				parseThrow(msg);
-				break;
-
-			case 0x7D: // Request trade
-				parseRequestTrade(msg);
-				break;
-
-			case 0x7E: // Look at an item in trade
-				parseLookInTrade(msg);
-				break;
-
-			case 0x7F: // Accept trade
-				parseAcceptTrade(msg);
-				break;
-
-			case 0x80: // close/cancel trade
-				parseCloseTrade();
-				break;
-
-			case 0x82: // use item
-				parseUseItem(msg);
-				break;
-
-			case 0x83: // use item
-				parseUseItemEx(msg);
-				break;
-
-			case 0x84: // battle window
-				parseBattleWindow(msg);
-				break;
-
-			case 0x85: //rotate item
-				parseRotateItem(msg);
-				break;
-
-			case 0x87: // close container
-				parseCloseContainer(msg);
-				break;
-
-			case 0x88: //"up-arrow" - container
-				parseUpArrowContainer(msg);
-				break;
-
-			case 0x89:
-				parseTextWindow(msg);
-				break;
-
-			case 0x8A:
-				parseHouseWindow(msg);
-				break;
-
-			case 0x8C:
-				parseLookAt(msg);
-				break;
-
-			case 0x8D:
-				parseLookInBattleList(msg);
-				break;
-
-			case 0x96: // say something
-				parseSay(msg);
-				break;
-
-			case 0x97: // request channels
-				parseGetChannels(msg);
-				break;
-
-			case 0x98: // open channel
-				parseOpenChannel(msg);
-				break;
-
-			case 0x99: // close channel
-				parseCloseChannel(msg);
-				break;
-
-			case 0x9A: // open priv
-				parseOpenPrivate(msg);
-				break;
-
-			case 0x9B: //process report
-				parseProcessRuleViolation(msg);
-				break;
-
-			case 0x9C: //gm closes report
-				parseCloseRuleViolation(msg);
-				break;
-
-			case 0x9D: //player cancels report
-				parseCancelRuleViolation(msg);
-				break;
-
-			case 0xA0: // set attack and follow mode
-				parseFightModes(msg);
-				break;
-
-			case 0xA1: // attack
-				parseAttack(msg);
-				break;
-
-			case 0xA2: //follow
-				parseFollow(msg);
-				break;
-
-			case 0xA3: // invite party
-				parseInviteToParty(msg);
-				break;
-
-			case 0xA4: // join party
-				parseJoinParty(msg);
-				break;
-
-			case 0xA5: // revoke party
-				parseRevokePartyInvite(msg);
-				break;
-
-			case 0xA6: // pass leadership
-				parsePassPartyLeadership(msg);
-				break;
-
-			case 0xA7: // leave party
-				parseLeaveParty(msg);
-				break;
-
-			case 0xAA:
-				parseCreatePrivateChannel(msg);
-				break;
-
-			case 0xAB:
-				parseChannelInvite(msg);
-				break;
-
-			case 0xAC:
-				parseChannelExclude(msg);
-				break;
-
-			case 0xBE: // cancel move
-				parseCancelMove(msg);
-				break;
-
-			case 0xC9: //client request to resend the tile
-				parseUpdateTile(msg);
-				break;
-
-			case 0xCA: //client request to resend the container (happens when you store more than container maxsize)
-				parseUpdateContainer(msg);
-				break;
-
+			case 0x14: parseLogout(msg); break;
+			case 0x1E: parseReceivePing(msg); break;
+			case 0x32: parseExtendedOpcode(msg); break;
+			case 0x64: parseAutoWalk(msg); break;
+			case 0x65:
+			case 0x66:
+			case 0x67:
+			case 0x68: parseMove(msg, (Direction)(recvbyte - 0x65)); break;
+			case 0x69: addGameTask(&Game::playerStopAutoWalk, player->getID()); break;
+			case 0x6A: parseMove(msg, NORTHEAST); break;
+			case 0x6B: parseMove(msg, SOUTHEAST); break;
+			case 0x6C: parseMove(msg, SOUTHWEST); break;
+			case 0x6D: parseMove(msg, NORTHWEST); break;
+			case 0x6F:
+			case 0x70:
+			case 0x71:
+			case 0x72: parseTurn(msg, (Direction)(recvbyte - 0x6F)); break;
+			case 0x78: parseThrow(msg); break;
+			case 0x7D: parseRequestTrade(msg); break;
+			case 0x7E: parseLookInTrade(msg); break;
+			case 0x7F: parseAcceptTrade(msg); break;
+			case 0x80: parseCloseTrade(); break;
+			case 0x82: parseUseItem(msg); break;
+			case 0x83: parseUseItemEx(msg); break;
+			case 0x84: parseBattleWindow(msg); break;
+			case 0x85: parseRotateItem(msg); break;
+			case 0x87: parseCloseContainer(msg); break;
+			case 0x88: parseUpArrowContainer(msg); break;
+			case 0x89: parseTextWindow(msg); break;
+			case 0x8A: parseHouseWindow(msg); break;
+			case 0x8C: parseLookAt(msg); break;
+			case 0x8D: parseLookInBattleList(msg); break;
+			case 0x96: parseSay(msg); break;
+			case 0x97: parseGetChannels(msg); break;
+			case 0x98: parseOpenChannel(msg); break;
+			case 0x99: parseCloseChannel(msg); break;
+			case 0x9A: parseOpenPrivate(msg); break;
+			case 0x9B: parseProcessRuleViolation(msg); break;
+			case 0x9C: parseCloseRuleViolation(msg); break;
+			case 0x9D: parseCancelRuleViolation(msg); break;
+			case 0xA0: parseFightModes(msg); break;
+			case 0xA1: parseAttack(msg); break;
+			case 0xA2: parseFollow(msg); break;
+			case 0xA3: parseInviteToParty(msg); break;
+			case 0xA4: parseJoinParty(msg); break;
+			case 0xA5: parseRevokePartyInvite(msg); break;
+			case 0xA6: parsePassPartyLeadership(msg); break;
+			case 0xA7: parseLeaveParty(msg); break;
+			case 0xAA: parseCreatePrivateChannel(msg); break;
+			case 0xAB: parseChannelInvite(msg); break;
+			case 0xAC: parseChannelExclude(msg); break;
+			case 0xBE: parseCancelMove(msg); break;
+			case 0xC9: parseUpdateTile(msg); break;
+			case 0xCA: parseUpdateContainer(msg); break;
 			case 0xD2: // request outfit
 				if((!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || !g_config.getBool(
 					ConfigManager::DISABLE_OUTFITS_PRIVILEGED)) && (g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)
@@ -788,26 +633,11 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 					&& (g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS) || g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)))
 					parseSetOutfit(msg);
 				break;
-
-			case 0xDC:
-				parseAddVip(msg);
-				break;
-
-			case 0xDD:
-				parseRemoveVip(msg);
-				break;
-
-			case 0xE6:
-				parseBugReport(msg);
-				break;
-
-			case 0xE7:
-				parseViolationWindow(msg);
-				break;
-
-			case 0xE8:
-				parseDebugAssert(msg);
-				break;
+			case 0xDC: parseAddVip(msg); break;
+			case 0xDD: parseRemoveVip(msg); break;
+			case 0xE6: parseBugReport(msg); break;
+			case 0xE7: parseViolationWindow(msg); break;
+			case 0xE8: parseDebugAssert(msg); break;
 
 			default:
 			{
@@ -1069,10 +899,15 @@ void ProtocolGame::parseViolationWindow(NetworkMessage& msg)
 	uint16_t statementId = 0;
 	std::string target = msg.getString();
 	uint8_t reason = msg.get<char>();
+	#ifdef _PROTOCOL77
 	ViolationAction_t action = (ViolationAction_t)msg.get<char>();
 	std::string comment = msg.getString();
 	statementId = msg.get<uint16_t>();
 	/*channelId = */msg.get<uint16_t>();
+	#else
+	std::string comment = msg.getString();
+	ViolationAction_t action = (ViolationAction_t)msg.get<char>();
+	#endif
 	bool ipBanishment = (msg.get<char>() == 0x01);
 	addGameTask(&Game::playerViolationWindow, player->getID(), target,
 		reason, action, comment, "", statementId, ipBanishment);
@@ -1161,7 +996,11 @@ void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 {
 	Outfit_t newOutfit = player->defaultOutfit;
 	if(g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT))
+		#ifdef _PROTOCOL77
 		newOutfit.lookType = msg.get<uint16_t>();
+		#else
+		newOutfit.lookType = msg.get<char>();
+		#endif
 	else
 		msg.skip(2);
 
@@ -1184,7 +1023,6 @@ void ProtocolGame::parseUseItem(NetworkMessage& msg)
 	uint16_t spriteId = msg.get<uint16_t>();
 	int16_t stackpos = msg.get<char>();
 	uint8_t index = msg.get<char>();
-	// bool isHotkey = (pos.x == 0xFFFF && !pos.y && !pos.z);
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseItem, player->getID(), pos, stackpos, index, spriteId);
 }
 
@@ -1196,7 +1034,6 @@ void ProtocolGame::parseUseItemEx(NetworkMessage& msg)
 	Position toPos = msg.getPosition();
 	uint16_t toSpriteId = msg.get<uint16_t>();
 	int16_t toStackpos = msg.get<char>();
-	// bool isHotkey = (fromPos.x == 0xFFFF && !fromPos.y && !fromPos.z);
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseItemEx, player->getID(),
 		fromPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId);
 }
@@ -1207,7 +1044,6 @@ void ProtocolGame::parseBattleWindow(NetworkMessage& msg)
 	uint16_t spriteId = msg.get<uint16_t>();
 	int16_t fromStackpos = msg.get<char>();
 	uint32_t creatureId = msg.get<uint32_t>();
-	// bool isHotkey = (fromPos.x == 0xFFFF && !fromPos.y && !fromPos.z);
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseBattleWindow, player->getID(), fromPos, fromStackpos, creatureId, spriteId);
 }
 
@@ -2134,8 +1970,8 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 		if(!msg)
 			return;
 
-		TRACK_MESSAGE(msg);
-		RemoveTileItem(msg, oldPos, oldStackpos);
+			TRACK_MESSAGE(msg);
+			RemoveTileItem(msg, oldPos, oldStackpos);
 	}
 	else if(canSee(newPos) && player->canSeeCreature(creature))
 	{
@@ -2143,8 +1979,8 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 		if(!msg)
 			return;
 
-		TRACK_MESSAGE(msg);
-		AddTileCreature(msg, newPos, newStackpos, creature);
+			TRACK_MESSAGE(msg);
+			AddTileCreature(msg, newPos, newStackpos, creature);
 	}
 }
 
@@ -2231,11 +2067,13 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t ma
 		msg->putString(item->getText());
 	}
 
+	#ifdef _MULTIPLATFORM
 	const std::string& writer = item->getWriter();
 	if(writer.size())
 		msg->putString(writer);
 	else
 		msg->putString("");
+	#endif
 }
 
 void ProtocolGame::sendHouseWindow(uint32_t windowTextId, House*,
@@ -2262,8 +2100,13 @@ void ProtocolGame::sendOutfitWindow()
 	msg->put<char>(0xC8);
 	AddCreatureOutfit(msg, player, player->getDefaultOutfit(), true);
 
+	#ifdef _PROTOCOL77
 	msg->put<uint16_t>(player->sex % 2 ? 128 : 136);
 	msg->put<uint16_t>(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
+	#else
+	msg->put<char>(player->sex % 2 ? 128 : 136);
+	msg->put<char>(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
+	#endif
 
 	player->hasRequestedOutfit(true);
 }
@@ -2359,7 +2202,11 @@ void ProtocolGame::AddMagicEffect(NetworkMessage_ptr msg, const Position& pos, u
 {
 	msg->put<char>(0x83);
 	msg->putPosition(pos);
+	#ifdef _MULTIPLATFORM
 	msg->put<char>(type + 1);
+	#else
+	msg->put<char>(type);
+	#endif
 }
 
 void ProtocolGame::AddDistanceShoot(NetworkMessage_ptr msg, const Position& from, const Position& to,
@@ -2368,7 +2215,11 @@ void ProtocolGame::AddDistanceShoot(NetworkMessage_ptr msg, const Position& from
 	msg->put<char>(0x85);
 	msg->putPosition(from);
 	msg->putPosition(to);
+	#ifdef _MULTIPLATFORM
 	msg->put<char>(type + 1);
+	#else
+	msg->put<char>(type);
+	#endif
 }
 
 void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature, bool known, uint32_t remove)
@@ -2415,13 +2266,19 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	uint32_t experience = player->getExperience();
 	msg->put<uint32_t>(experience);
 
+	#ifdef _MULTIPLATFORM
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_LEVEL));
+	#else
+	msg->put<char>(player->getPlayerInfo(PLAYERINFO_LEVEL));
+	#endif
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_LEVELPERCENT));
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MANA));
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXMANA));
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_MAGICLEVEL));
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_MAGICLEVELPERCENT));
+	#ifdef _MULTIPLATFORM
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_SOUL));
+	#endif
 }
 
 void ProtocolGame::AddPlayerSkills(NetworkMessage_ptr msg)
@@ -2438,7 +2295,9 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 	std::string text, uint16_t channelId, Position* pos, uint32_t statementId)
 {
 	msg->put<char>(0xAA);
+	#ifdef _PROTOCOL77
 	msg->put<uint32_t>(0);
+	#endif
 	if(creature)
 	{
 		if(creature->getSpeakType() != MSG_NONE)
@@ -2514,7 +2373,11 @@ void ProtocolGame::AddCreatureOutfit(NetworkMessage_ptr msg, const Creature* cre
 	if(outfitWindow || (!creature->isInvisible() && (!creature->isGhost()
 		|| !g_config.getBool(ConfigManager::GHOST_INVISIBLE_EFFECT))))
 	{
+		#ifdef _PROTOCOL77
 		msg->put<uint16_t>(outfit.lookType);
+		#else
+		msg->put<char>(outfit.lookType);
+		#endif
 		if(outfit.lookType)
 		{
 			msg->put<char>(outfit.lookHead);
@@ -2529,7 +2392,11 @@ void ProtocolGame::AddCreatureOutfit(NetworkMessage_ptr msg, const Creature* cre
 	}
 	else
 	{
+		#ifdef _PROTOCOL77
 		msg->put<uint16_t>(0x00);
+		#else
+		msg->put<char>(0x00);
+		#endif
 		msg->put<uint16_t>(0x00);
 	}
 }
@@ -2561,7 +2428,6 @@ void ProtocolGame::AddTileItem(NetworkMessage_ptr msg, const Position& pos, uint
 
 	msg->put<char>(0x6A);
 	msg->putPosition(pos);
-	// msg->put<char>(stackpos);
 	msg->putItem(item);
 }
 
@@ -2572,7 +2438,6 @@ void ProtocolGame::AddTileCreature(NetworkMessage_ptr msg, const Position& pos, 
 
 	msg->put<char>(0x6A);
 	msg->putPosition(pos);
-	// msg->put<char>(stackpos);
 
 	bool known;
 	uint32_t removedKnown;
@@ -2738,9 +2603,36 @@ void ProtocolGame::sendChannelMessage(std::string author, std::string text, Mess
 		return;
 
 	msg->put<char>(0xAA);
+	#ifdef _PROTOCOL77
 	msg->put<uint32_t>(0);
+	#endif
 	msg->putString(author);
 	msg->put<char>(type);
 	msg->put<uint16_t>(channel);
 	msg->putString(text);
+}
+
+void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
+{
+	uint8_t opcode = msg.get<char>();
+	std::string buffer = msg.getString();
+
+	// process additional opcodes via lua script event
+	addGameTask(&Game::parsePlayerExtendedOpcode, player->getID(), opcode, buffer);
+}
+
+void ProtocolGame::sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
+{
+	// extended opcodes can only be send to players using otclient, cipsoft's tibia can't understand them
+	if(player && !player->isUsingOtclient())
+		return;
+
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0x32);
+	msg->put<char>(opcode);
+	msg->putString(buffer);
 }

@@ -216,7 +216,7 @@ void NetworkMessage::putItem(uint16_t id, uint8_t count)
 	if(it.stackable)
 		put<char>(count);
 	else if(it.isSplash() || it.isFluidContainer())
-		put<char>(fluidMap[count % 7]);
+		put<char>(fluidMap[count % 8]);
 
 	if(it.isAnimation)
 		put<char>(0xFE);
@@ -228,9 +228,9 @@ void NetworkMessage::putItem(const Item* item)
 	put<uint16_t>(it.clientId);
 	put<char>(0xFF); // MARK_UNMARKED
 	if(it.stackable)
-		put<char>(std::min<uint16_t>(0xFF, item->getItemCount()));
+		put<char>(item->getSubType());
 	else if(it.isSplash() || it.isFluidContainer())
-		put<char>(fluidMap[item->getSubType() % 7]);
+		put<char>(fluidMap[item->getSubType() % 8]);
 
 	if(it.isAnimation)
 		put<char>(0xFE);

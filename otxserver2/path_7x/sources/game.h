@@ -88,23 +88,19 @@ enum ReloadInfo_t
 	RELOAD_GAMESERVERS = 5,
 	RELOAD_GLOBALEVENTS = 6,
 	RELOAD_GROUPS = 7,
-	//RELOAD_UNUSED = 8,
-	//RELOAD_UNUSED = 9,
-	RELOAD_ITEMS = 10,
-	RELOAD_MONSTERS = 11,
-	//RELOAD_UNUSED = 12,
-	RELOAD_MOVEEVENTS = 13,
-	RELOAD_NPCS = 14,
-	RELOAD_OUTFITS = 15,
-	//RELOAD_UNUSED = 16,
-	RELOAD_RAIDS = 17,
-	RELOAD_SPELLS = 18,
-	RELOAD_STAGES = 19,
-	RELOAD_TALKACTIONS = 20,
-	RELOAD_VOCATIONS = 21,
-	RELOAD_WEAPONS = 22,
-	RELOAD_MODS = 23,
-	RELOAD_ALL = 24,
+	RELOAD_ITEMS = 8,
+	RELOAD_MONSTERS = 9,
+	RELOAD_MOVEEVENTS = 10,
+	RELOAD_NPCS = 11,
+	RELOAD_OUTFITS = 12,
+	RELOAD_RAIDS = 13,
+	RELOAD_SPELLS = 14,
+	RELOAD_STAGES = 15,
+	RELOAD_TALKACTIONS = 16,
+	RELOAD_VOCATIONS = 17,
+	RELOAD_WEAPONS = 18,
+	RELOAD_MODS = 19,
+	RELOAD_ALL = 20,
 	RELOAD_LAST = RELOAD_WEAPONS
 };
 
@@ -525,6 +521,7 @@ class Game
 		bool playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId);
 		bool playerLeaveParty(uint32_t playerId, bool forced = false);
 		bool playerSharePartyExperience(uint32_t playerId, bool activate);
+		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 		void kickPlayer(uint32_t playerId, bool displayEffect);
 		bool broadcastMessage(const std::string& text, MessageClasses type);

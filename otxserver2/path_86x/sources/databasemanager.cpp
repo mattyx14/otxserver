@@ -1498,7 +1498,7 @@ uint32_t DatabaseManager::updateDatabase()
 								result2->free();
 							}
 
-							if (!stmt.execute())
+							if(!stmt.execute())
 								std::cout << "Failed to execute statement!" << std::endl;
 						}
 						while(result->next());
@@ -1564,6 +1564,16 @@ uint32_t DatabaseManager::updateDatabase()
 
 			registerDatabaseConfig("db_version", 37);
 			return 37;
+		}
+
+		case 37:
+		{
+			std::clog << "> Updating database to version 38..." << std::endl;
+
+			db->query("ALTER TABLE `players` ADD `offlinetraining_time` SMALLINT UNSIGNED NOT NULL DEFAULT 43200;");
+			db->query("ALTER TABLE `players` ADD `offlinetraining_skill` INT NOT NULL DEFAULT -1;");
+			registerDatabaseConfig("db_version", 38);
+			return 38;
 		}
 
 		default:

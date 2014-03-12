@@ -105,7 +105,10 @@ class Weapon : public Event
 		uint16_t id;
 		uint32_t exhaustion;
 		bool enabled, premium, wieldUnproperly, swing;
-		int32_t level, magLevel, mana, manaPercent, soul;
+		int32_t level, magLevel, mana, manaPercent;
+		#ifdef _PROTOCOL76
+		int32_t soul;
+		#endif
 
 		AmmoAction_t ammoAction;
 		CombatParams params;

@@ -1523,6 +1523,9 @@ void LuaInterface::registerFunctions()
 	//getPlayerSkillTries(cid, skill)
 	lua_register(m_luaState, "getPlayerSkillTries", LuaInterface::luaGetPlayerSkillTries);
 
+	//doPlayerSetOfflineTrainingSkill(cid, skill)
+	lua_register(m_luaState, "doPlayerSetOfflineTrainingSkill", LuaInterface::luaDoPlayerSetOfflineTrainingSkill);
+
 	//getPlayerTown(cid)
 	lua_register(m_luaState, "getPlayerTown", LuaInterface::luaGetPlayerTown);
 
@@ -4552,6 +4555,29 @@ int32_t LuaInterface::luaGetPlayerSkillTries(lua_State* L)
 			lua_pushnumber(L, player->skills[skill][SKILL_TRIES]);
 		else
 			lua_pushboolean(L, false);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSetOfflineTrainingSkill(lua_State* L)
+{
+	//doPlayerSetOfflineTrainingSkill(cid, skillid)
+	uint32_t skillid = (uint32_t)popNumber(L);
+	uint32_t cid = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+
+	Player* player = env->getPlayerByUID(cid);
+	if(player)
+	{
+		player->setOfflineTrainingSkill(skillid);
+		lua_pushboolean(L, true);
 	}
 	else
 	{

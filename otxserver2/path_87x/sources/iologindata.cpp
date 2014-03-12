@@ -425,7 +425,8 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	<< "`lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `lookaddons`, `lookmount`, `posx`, `posy`, "
 	<< "`posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skull`, `skulltime`, `guildnick`, "
 	<< "`rank_id`, `town_id`, `balance`, `stamina`, `direction`, `loss_experience`, `loss_mana`, `loss_skills`, "
-	<< "`loss_containers`, `loss_items`, `marriage`, `promotion`, `description`, `save` FROM `players` WHERE "
+	<< "`loss_containers`, `loss_items`, `marriage`, `promotion`, `description`, `offlinetraining_time`, `offlinetraining_skill`, "
+	<< "`save` FROM `players` WHERE "
 	<< "`name` " << db->getStringComparer() << db->escapeString(name) << " AND `deleted` = 0 LIMIT 1";
 
 	DBResult* result;
@@ -582,6 +583,9 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	player->lastLogout = result->getDataLong("lastlogout");
 	player->lastIP = result->getDataInt("lastip");
 
+	player->offlineTrainingTime = result->getDataInt("offlinetraining_time") * 1000;
+	player->offlineTrainingSkill = result->getDataInt("offlinetraining_skill");
+
 	player->loginPosition = Position(result->getDataInt("posx"), result->getDataInt("posy"), result->getDataInt("posz"));
 	if(!player->loginPosition.x || !player->loginPosition.y)
 		player->loginPosition = player->getMasterPosition();
@@ -606,7 +610,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 			result->free();
 
 			std::string tmpStatus = "AND `status` IN (1,4)";
-			if (g_config.getBool(ConfigManager::EXTERNAL_GUILD_WARS_MANAGEMENT))
+			if(g_config.getBool(ConfigManager::EXTERNAL_GUILD_WARS_MANAGEMENT))
 				tmpStatus = "AND `status` IN (1,4,9)";
 
 			query.str("");
@@ -992,6 +996,9 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 		query << "`blessings` = " << player->blessings << ", ";
 		query << "`pvp_blessing` = " << (player->hasPVPBlessing() ? "1" : "0") << ", ";
 	}
+
+	query << "`offlinetraining_time` = " << player->getOfflineTrainingTime() / 1000 << ", ";
+	query << "`offlinetraining_skill` = " << player->getOfflineTrainingSkill() << ", ";
 
 	query << "`marriage` = " << player->marriage << ", ";
 	if(g_config.getBool(ConfigManager::INGAME_GUILD_MANAGEMENT))

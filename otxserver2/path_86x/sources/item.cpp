@@ -831,19 +831,19 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 				s << " by " << it.vocationString;
 
 			bool begin = true;
-			if(it.runeLevel > 0)
+			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && it.runeLevel > 0)
 			{
 				begin = false;
 				s << " with level " << it.runeLevel;
 			}
 
-			if(it.runeMagLevel > 0)
+			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && it.runeMagLevel > 0)
 			{
 				begin = false;
 				s << " " << (begin ? "with" : "and") << " magic level " << it.runeMagLevel;
 			}
 
-			if(!begin)
+			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && !begin)
 				s << " or higher";
 		}
 	}

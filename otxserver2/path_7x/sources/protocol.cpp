@@ -26,8 +26,11 @@
 #include "connection.h"
 #include "outputmessage.h"
 
+#ifdef _PROTOCOL77
 #include <openssl/rsa.h>
 extern RSA* g_RSA;
+#endif
+#include "definitions.h"
 
 void Protocol::onSendMessage(OutputMessage_ptr msg)
 {
@@ -37,6 +40,7 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 	if(!m_rawMessages)
 	{
 		msg->writeMessageLength();
+		#ifdef _PROTOCOL77
 		if(m_encryptionEnabled)
 		{
 			#ifdef __DEBUG_NET_DETAIL__
@@ -45,6 +49,7 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 			XTEA_encrypt(*msg);
 			msg->addCryptoHeader();
 		}
+		#endif
 	}
 
 	if(msg == m_outputBuffer)
@@ -57,6 +62,7 @@ void Protocol::onRecvMessage(NetworkMessage& msg)
 	std::clog << "Protocol::onRecvMessage" << std::endl;
 	#endif
 
+	#ifdef _PROTOCOL77
 	if(m_encryptionEnabled)
 	{
 		#ifdef __DEBUG_NET_DETAIL__
@@ -65,6 +71,7 @@ void Protocol::onRecvMessage(NetworkMessage& msg)
 		if(!XTEA_decrypt(msg))
 			return;
 	}
+	#endif
 
 	parsePacket(msg);
 }
@@ -97,6 +104,7 @@ void Protocol::deleteProtocolTask()
 	delete this;
 }
 
+#ifdef _PROTOCOL77
 void Protocol::XTEA_encrypt(OutputMessage& msg)
 {
 	//add bytes until reach 8 multiple
@@ -199,6 +207,8 @@ bool Protocol::RSA_decrypt(NetworkMessage& msg)
 	std::clog << std::endl;
 	return false;
 }
+#endif
+
 uint32_t Protocol::getIP() const
 {
 	if(Connection_ptr connection = getConnection())

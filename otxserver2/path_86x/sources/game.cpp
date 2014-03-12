@@ -5436,7 +5436,7 @@ void Game::updateCreatureSkull(Creature* creature)
 	Player* tmpPlayer = NULL;
 	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
 	{
-		 if((tmpPlayer = (*it)->getPlayer()))
+		if((tmpPlayer = (*it)->getPlayer()))
 			tmpPlayer->sendCreatureSkull(creature);
 	}
 }

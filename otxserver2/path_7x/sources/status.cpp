@@ -117,7 +117,7 @@ std::string Status::getStatusString(bool sendPlayers) const
 	xmlSetProp(p, (const xmlChar*)"url", (const xmlChar*)g_config.getString(ConfigManager::URL).c_str());
 	xmlSetProp(p, (const xmlChar*)"server", (const xmlChar*)SOFTWARE_NAME);
 	xmlSetProp(p, (const xmlChar*)"version", (const xmlChar*)SOFTWARE_VERSION);
-	xmlSetProp(p, (const xmlChar*)"client", (const xmlChar*)SOFTWARE_PROTOCOL);
+	xmlSetProp(p, (const xmlChar*)"client", (const xmlChar*)CLIENT_VERSION_STRING);
 	xmlAddChild(root, p);
 
 	p = xmlNewNode(NULL,(const xmlChar*)"owner");
@@ -276,6 +276,6 @@ void Status::getInfo(uint32_t requestedInfo, OutputMessage_ptr output, NetworkMe
 		output->put<char>(0x23);
 		output->putString(SOFTWARE_NAME);
 		output->putString(SOFTWARE_VERSION);
-		output->putString(SOFTWARE_PROTOCOL);
+		output->putString(CLIENT_VERSION_STRING);
 	}
 }

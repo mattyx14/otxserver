@@ -4,7 +4,7 @@
 	<action default="yes" event="script" value="default.lua"/>
 
 	<!-- Quests -->
-	<action actionid="2000" event="script" value="quests/system.lua"/>
+	<action actionid="2000-2001" event="script" value="quests/system.lua"/>
 	<action itemid="1740;1747-1749" event="script" value="quests/quests.lua"/>
 
 	<!-- Text -->

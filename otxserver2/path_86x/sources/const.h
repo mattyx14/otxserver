@@ -21,19 +21,19 @@
 
 enum OperatingSystem_t
 {
-	CLIENTOS_LINUX				= 0x01,
-	CLIENTOS_WINDOWS			= 0x02,
+	CLIENTOS_LINUX					= 0x01,
+	CLIENTOS_WINDOWS				= 0x02,
 
-	CLIENTOS_OTCLIENT_LINUX		= 0x0A,
-	CLIENTOS_OTCLIENT_WINDOWS	= 0x0B,
-	CLIENTOS_OTCLIENT_MAC		= 0x0C
+	CLIENTOS_OTCLIENT_LINUX			= 0x0A,
+	CLIENTOS_OTCLIENT_WINDOWS		= 0x0B,
+	CLIENTOS_OTCLIENT_MAC			= 0x0C
 };
 
 enum ReportType_t
 {
-	REPORT_NAME = 0x00,
-	REPORT_STATEMENT = 0x01,
-	REPORT_BOT = 0x02
+	REPORT_NAME						= 0x00,
+	REPORT_STATEMENT				= 0x01,
+	REPORT_BOT						= 0x02
 };
 
 enum MagicEffect_t
@@ -162,9 +162,9 @@ enum ShootEffect_t
 	SHOOT_EFFECT_LAST				= SHOOT_EFFECT_CAKE,
 
 	//for internal use, dont send to client
-	SHOOT_EFFECT_WEAPONTYPE		= 0xFE, //254
-	SHOOT_EFFECT_NONE			= 0xFF,
-	SHOOT_EFFECT_UNKNOWN		= 0xFFFF
+	SHOOT_EFFECT_WEAPONTYPE			= 0xFE, //254
+	SHOOT_EFFECT_NONE				= 0xFF,
+	SHOOT_EFFECT_UNKNOWN			= 0xFFFF
 };
 
 enum MessageClasses
@@ -229,66 +229,66 @@ enum MessageClasses
 
 enum MapMarks_t
 {
-	MAPMARK_TICK		= 0x00,
-	MAPMARK_QUESTION	= 0x01,
-	MAPMARK_EXCLAMATION	= 0x02,
-	MAPMARK_STAR		= 0x03,
-	MAPMARK_CROSS		= 0x04,
-	MAPMARK_TEMPLE		= 0x05,
-	MAPMARK_KISS		= 0x06,
-	MAPMARK_SHOVEL		= 0x07,
-	MAPMARK_SWORD		= 0x08,
-	MAPMARK_FLAG		= 0x09,
-	MAPMARK_LOCK		= 0x0A,
-	MAPMARK_BAG			= 0x0B,
-	MAPMARK_SKULL		= 0x0C,
-	MAPMARK_DOLLAR		= 0x0D,
-	MAPMARK_REDNORTH	= 0x0E,
-	MAPMARK_REDSOUTH	= 0x0F,
-	MAPMARK_REDEAST		= 0x10,
-	MAPMARK_REDWEST		= 0x11,
-	MAPMARK_GREENNORTH	= 0x12,
-	MAPMARK_GREENSOUTH	= 0x13
+	MAPMARK_TICK					= 0x00,
+	MAPMARK_QUESTION				= 0x01,
+	MAPMARK_EXCLAMATION				= 0x02,
+	MAPMARK_STAR					= 0x03,
+	MAPMARK_CROSS					= 0x04,
+	MAPMARK_TEMPLE					= 0x05,
+	MAPMARK_KISS					= 0x06,
+	MAPMARK_SHOVEL					= 0x07,
+	MAPMARK_SWORD					= 0x08,
+	MAPMARK_FLAG					= 0x09,
+	MAPMARK_LOCK					= 0x0A,
+	MAPMARK_BAG						= 0x0B,
+	MAPMARK_SKULL					= 0x0C,
+	MAPMARK_DOLLAR					= 0x0D,
+	MAPMARK_REDNORTH				= 0x0E,
+	MAPMARK_REDSOUTH				= 0x0F,
+	MAPMARK_REDEAST					= 0x10,
+	MAPMARK_REDWEST					= 0x11,
+	MAPMARK_GREENNORTH				= 0x12,
+	MAPMARK_GREENSOUTH				= 0x13
 };
 
 enum FluidColors_t
 {
-	FLUID_EMPTY		= 0x00,
-	FLUID_BLUE		= 0x01,
-	FLUID_RED		= 0x02,
-	FLUID_BROWN		= 0x03,
-	FLUID_GREEN		= 0x04,
-	FLUID_YELLOW	= 0x05,
-	FLUID_WHITE		= 0x06,
-	FLUID_PURPLE	= 0x07
+	FLUID_EMPTY						= 0x00,
+	FLUID_BLUE						= 0x01,
+	FLUID_RED						= 0x02,
+	FLUID_BROWN						= 0x03,
+	FLUID_GREEN						= 0x04,
+	FLUID_YELLOW					= 0x05,
+	FLUID_WHITE						= 0x06,
+	FLUID_PURPLE					= 0x07
 };
 
 enum FluidTypes_t
 {
-	FLUID_NONE			= FLUID_EMPTY,
-	FLUID_WATER			= FLUID_BLUE,
-	FLUID_BLOOD			= FLUID_RED,
-	FLUID_BEER			= FLUID_BROWN,
-	FLUID_SLIME			= FLUID_GREEN,
-	FLUID_LEMONADE		= FLUID_YELLOW,
-	FLUID_MILK			= FLUID_WHITE,
-	FLUID_MANA			= FLUID_PURPLE,
+	FLUID_NONE						= FLUID_EMPTY,
+	FLUID_WATER						= FLUID_BLUE,
+	FLUID_BLOOD						= FLUID_RED,
+	FLUID_BEER						= FLUID_BROWN,
+	FLUID_SLIME						= FLUID_GREEN,
+	FLUID_LEMONADE					= FLUID_YELLOW,
+	FLUID_MILK						= FLUID_WHITE,
+	FLUID_MANA						= FLUID_PURPLE,
 
-	FLUID_LIFE			= FLUID_RED + 8,
-	FLUID_OIL			= FLUID_BROWN + 8,
-	FLUID_URINE			= FLUID_YELLOW + 8,
-	FLUID_COCONUTMILK	= FLUID_WHITE + 8,
-	FLUID_WINE			= FLUID_PURPLE + 8,
+	FLUID_LIFE						= FLUID_RED + 8,
+	FLUID_OIL						= FLUID_BROWN + 8,
+	FLUID_URINE						= FLUID_YELLOW + 8,
+	FLUID_COCONUTMILK				= FLUID_WHITE + 8,
+	FLUID_WINE						= FLUID_PURPLE + 8,
 
-	FLUID_MUD			= FLUID_BROWN + 16,
-	FLUID_FRUITJUICE	= FLUID_YELLOW + 16,
+	FLUID_MUD						= FLUID_BROWN + 16,
+	FLUID_FRUITJUICE				= FLUID_YELLOW + 16,
 
-	FLUID_LAVA			= FLUID_RED + 24,
-	FLUID_RUM			= FLUID_BROWN + 24,
-	FLUID_SWAMP			= FLUID_GREEN + 24,
+	FLUID_LAVA						= FLUID_RED + 24,
+	FLUID_RUM						= FLUID_BROWN + 24,
+	FLUID_SWAMP						= FLUID_GREEN + 24,
 
-	FLUID_TEA			= FLUID_BROWN + 32,
-	FLUID_MEAD			= FLUID_BROWN + 40
+	FLUID_TEA						= FLUID_BROWN + 32,
+	FLUID_MEAD						= FLUID_BROWN + 40
 };
 
 const uint8_t reverseFluidMap[] =
@@ -329,16 +329,16 @@ const uint8_t clientToServerFluidMap[] =
 
 enum ClientFluidTypes_t
 {
-	CLIENTFLUID_EMPTY	= 0x00,
-	CLIENTFLUID_BLUE	= 0x01,
-	CLIENTFLUID_PURPLE	= 0x02,
-	CLIENTFLUID_BROWN_1	= 0x03,
-	CLIENTFLUID_BROWN_2	= 0x04,
-	CLIENTFLUID_RED		= 0x05,
-	CLIENTFLUID_GREEN	= 0x06,
-	CLIENTFLUID_BROWN	= 0x07,
-	CLIENTFLUID_YELLOW	= 0x08,
-	CLIENTFLUID_WHITE	= 0x09
+	CLIENTFLUID_EMPTY				= 0x00,
+	CLIENTFLUID_BLUE				= 0x01,
+	CLIENTFLUID_PURPLE				= 0x02,
+	CLIENTFLUID_BROWN_1				= 0x03,
+	CLIENTFLUID_BROWN_2				= 0x04,
+	CLIENTFLUID_RED					= 0x05,
+	CLIENTFLUID_GREEN				= 0x06,
+	CLIENTFLUID_BROWN				= 0x07,
+	CLIENTFLUID_YELLOW				= 0x08,
+	CLIENTFLUID_WHITE				= 0x09
 };
 
 const uint8_t fluidMap[] =
@@ -355,52 +355,51 @@ const uint8_t fluidMap[] =
 
 enum Color_t
 {
-	COLOR_BLACK			= 0,
-	COLOR_BLUE			= 5,
-	COLOR_GREEN			= 18,
-	COLOR_LIGHTGREEN	= 66,
-	COLOR_DARKBROWN		= 78,
-	COLOR_LIGHTBLUE		= 89,
-	COLOR_MAYABLUE		= 95,
-	COLOR_DARKRED		= 108,
-	COLOR_DARKPURPLE	= 112,
-	COLOR_BROWN			= 120,
-	COLOR_GREY			= 129,
-	COLOR_TEAL			= 143,
-	COLOR_DARKPINK		= 152,
-	COLOR_PURPLE		= 154,
-	COLOR_DARKORANGE	= 156,
-	COLOR_RED			= 180,
-	COLOR_PINK			= 190,
-	COLOR_ORANGE		= 192,
-	COLOR_DARKYELLOW	= 205,
-	COLOR_YELLOW		= 210,
-	COLOR_WHITE			= 215,
+	COLOR_BLACK						= 0,
+	COLOR_BLUE						= 5,
+	COLOR_GREEN						= 18,
+	COLOR_LIGHTGREEN				= 66,
+	COLOR_DARKBROWN					= 78,
+	COLOR_LIGHTBLUE					= 89,
+	COLOR_MAYABLUE					= 95,
+	COLOR_DARKRED					= 108,
+	COLOR_DARKPURPLE				= 112,
+	COLOR_BROWN						= 120,
+	COLOR_GREY						= 129,
+	COLOR_TEAL						= 143,
+	COLOR_DARKPINK					= 152,
+	COLOR_PURPLE					= 154,
+	COLOR_DARKORANGE				= 156,
+	COLOR_RED						= 180,
+	COLOR_PINK						= 190,
+	COLOR_ORANGE					= 192,
+	COLOR_DARKYELLOW				= 205,
+	COLOR_YELLOW					= 210,
+	COLOR_WHITE						= 215,
 
-	COLOR_NONE			= 255,
-	COLOR_UNKNOWN		= 256
+	COLOR_NONE						= 255,
+	COLOR_UNKNOWN					= 256
 };
 
 enum Icons_t
 {
-	ICON_NONE		= 0,
-	ICON_POISON		= 1 << 0,
-	ICON_BURN		= 1 << 1,
-	ICON_ENERGY		= 1 << 2,
-	ICON_DRUNK		= 1 << 3,
-	ICON_MANASHIELD	= 1 << 4,
-	ICON_PARALYZE	= 1 << 5,
-	ICON_HASTE		= 1 << 6,
-	ICON_SWORDS		= 1 << 7,
-	ICON_DROWNING	= 1 << 8,
-	ICON_FREEZING	= 1 << 9,
-	ICON_DAZZLED	= 1 << 10,
-	ICON_CURSED		= 1 << 11,
-	ICON_BUFF		= 1 << 12,
-	ICON_PZBLOCK	= 1 << 13,
-	ICON_PZ			= 1 << 14,
-	ICON_BLEED		= 1 << 15,
-	ICON_HUNGRY		= 1 << 16
+	ICON_NONE						= 0,
+	ICON_POISON						= 1 << 0,
+	ICON_BURN						= 1 << 1,
+	ICON_ENERGY						= 1 << 2,
+	ICON_DRUNK						= 1 << 3,
+	ICON_MANASHIELD					= 1 << 4,
+	ICON_PARALYZE					= 1 << 5,
+	ICON_HASTE						= 1 << 6,
+	ICON_SWORDS						= 1 << 7,
+	ICON_DROWNING					= 1 << 8,
+	ICON_FREEZING					= 1 << 9,
+	ICON_DAZZLED					= 1 << 10,
+	ICON_CURSED						= 1 << 11,
+	ICON_BUFF						= 1 << 12,
+	ICON_PZBLOCK					= 1 << 13,
+	ICON_PZ							= 1 << 14,
+	ICON_BLEED						= 1 << 15
 };
 
 enum skills_t
@@ -457,10 +456,10 @@ enum AmmoAction_t
 
 enum WieldInfo_t
 {
-	WIELDINFO_LEVEL		= 1,
-	WIELDINFO_MAGLV		= 2,
-	WIELDINFO_VOCREQ	= 4,
-	WIELDINFO_PREMIUM	= 8
+	WIELDINFO_LEVEL = 1,
+	WIELDINFO_MAGLV = 2,
+	WIELDINFO_VOCREQ = 4,
+	WIELDINFO_PREMIUM = 8
 };
 
 enum Skulls_t
@@ -492,112 +491,112 @@ enum PartyShields_t
 
 enum GuildEmblems_t
 {
-	EMBLEM_NONE = 0,
-	EMBLEM_GREEN,
-	EMBLEM_RED,
-	EMBLEM_BLUE
+	GUILDEMBLEM_NONE = 0,
+	GUILDEMBLEM_ALLY = 1,
+	GUILDEMBLEM_ENEMY = 2,
+	GUILDEMBLEM_NEUTRAL = 3
 };
 
 enum SpellGroup_t
 {
-	SPELLGROUP_NONE		= 0,
-	SPELLGROUP_ATTACK	= 1,
-	SPELLGROUP_HEALING	= 2,
-	SPELLGROUP_SUPPORT	= 3,
-	SPELLGROUP_SPECIAL	= 4
+	SPELLGROUP_NONE = 0,
+	SPELLGROUP_ATTACK = 1,
+	SPELLGROUP_HEALING = 2,
+	SPELLGROUP_SUPPORT = 3,
+	SPELLGROUP_SPECIAL = 4
 };
 
 enum item_t
 {
-	ITEM_FIREFIELD			= 1492,
-	ITEM_FIREFIELD_SAFE		= 1500,
+	ITEM_FIREFIELD					= 1492,
+	ITEM_FIREFIELD_SAFE				= 1500,
 
-	ITEM_POISONFIELD		= 1496,
-	ITEM_POISONFIELD_SAFE	= 1503,
+	ITEM_POISONFIELD				= 1496,
+	ITEM_POISONFIELD_SAFE			= 1503,
 
-	ITEM_ENERGYFIELD		= 1495,
-	ITEM_ENERGYFIELD_SAFE	= 1504,
+	ITEM_ENERGYFIELD				= 1495,
+	ITEM_ENERGYFIELD_SAFE			= 1504,
 
-	ITEM_MAGICWALL			= 1497,
-	ITEM_MAGICWALL_SAFE		= 11098,
+	ITEM_MAGICWALL					= 1497,
+	ITEM_MAGICWALL_SAFE				= 11098,
 
-	ITEM_WILDGROWTH			= 1499,
-	ITEM_WILDGROWTH_SAFE	= 11099,
+	ITEM_WILDGROWTH					= 1499,
+	ITEM_WILDGROWTH_SAFE			= 11099,
 
-	ITEM_DEPOT				= 2594,
-	ITEM_LOCKER				= 2589,
-	ITEM_INBOX				= ITEM_DEPOT,
+	ITEM_DEPOT						= 2594,
+	ITEM_LOCKER						= 2589,
+	ITEM_INBOX						= ITEM_DEPOT,
 
-	ITEM_MALE_CORPSE		= 3058,
-	ITEM_FEMALE_CORPSE		= 3065,
+	ITEM_MALE_CORPSE				= 3058,
+	ITEM_FEMALE_CORPSE				= 3065,
 
-	ITEM_FULLSPLASH			= 2016,
-	ITEM_SMALLSPLASH		= 2019,
+	ITEM_FULLSPLASH					= 2016,
+	ITEM_SMALLSPLASH				= 2019,
 
-	ITEM_PARCEL				= 2595,
-	ITEM_PARCEL_STAMPED		= 2596,
-	ITEM_LETTER				= 2597,
-	ITEM_LETTER_STAMPED		= 2598,
-	ITEM_LABEL				= 2599,
+	ITEM_PARCEL						= 2595,
+	ITEM_PARCEL_STAMPED				= 2596,
+	ITEM_LETTER						= 2597,
+	ITEM_LETTER_STAMPED				= 2598,
+	ITEM_LABEL						= 2599,
 
-	ITEM_WATERBALL_SPLASH	= 7711,
-	ITEM_WATERBALL			= 7956,
+	ITEM_WATERBALL_SPLASH			= 7711,
+	ITEM_WATERBALL					= 7956,
 
-	ITEM_STEALTH_RING		= 2202,
-	ITEM_HOUSE_TRANSFER		= 1968 //read-only
+	ITEM_STEALTH_RING				= 2202,
+	ITEM_HOUSE_TRANSFER				= 1968 //read-only
 };
 
 enum PlayerFlags
 {
-	PlayerFlag_CannotUseCombat = 0,			//2^0 = 1
-	PlayerFlag_CannotAttackPlayer,			//2^1 = 2
-	PlayerFlag_CannotAttackMonster,			//2^2 = 4
-	PlayerFlag_CannotBeAttacked,			//2^3 = 8
-	PlayerFlag_CanConvinceAll,				//2^4 = 16
-	PlayerFlag_CanSummonAll,				//2^5 = 32
-	PlayerFlag_CanIllusionAll,				//2^6 = 64
-	PlayerFlag_CanSenseInvisibility,		//2^7 = 128
-	PlayerFlag_IgnoredByMonsters,			//2^8 = 256
-	PlayerFlag_NotGainInFight,				//2^9 = 512
-	PlayerFlag_HasInfiniteMana,				//2^10 = 1024
-	PlayerFlag_HasInfiniteSoul,				//2^11 = 2048
-	PlayerFlag_HasNoExhaustion,				//2^12 = 4096
-	PlayerFlag_CannotUseSpells,				//2^13 = 8192
-	PlayerFlag_CannotPickupItem,			//2^14 = 16384
-	PlayerFlag_CanAlwaysLogin,				//2^15 = 32768
-	PlayerFlag_CanBroadcast,				//2^16 = 65536
-	PlayerFlag_CanEditHouses,				//2^17 = 131072
-	PlayerFlag_CannotBeBanned,				//2^18 = 262144
-	PlayerFlag_CannotBePushed,				//2^19 = 524288
-	PlayerFlag_HasInfiniteCapacity,			//2^20 = 1048576
-	PlayerFlag_CanPushAllCreatures,			//2^21 = 2097152
-	PlayerFlag_CanTalkRedPrivate,			//2^22 = 4194304
-	PlayerFlag_CanTalkRedChannel,			//2^23 = 8388608
-	PlayerFlag_TalkOrangeHelpChannel,		//2^24 = 16777216
-	PlayerFlag_NotGainExperience,			//2^25 = 33554432
-	PlayerFlag_NotGainMana,					//2^26 = 67108864
-	PlayerFlag_NotGainHealth,				//2^27 = 134217728
-	PlayerFlag_NotGainSkill,				//2^28 = 268435456
-	PlayerFlag_SetMaxSpeed,					//2^29 = 536870912
-	PlayerFlag_SpecialVIP,					//2^30 = 1073741824
-	PlayerFlag_NotGenerateLoot,				//2^31 = 2147483648
-	PlayerFlag_CanTalkRedChannelAnonymous,	//2^32 = 4294967296
-	PlayerFlag_IgnoreProtectionZone,		//2^33 = 8589934592
-	PlayerFlag_IgnoreSpellCheck,			//2^34 = 17179869184
-	PlayerFlag_IgnoreEquipCheck,			//2^35 = 34359738368
-	PlayerFlag_CannotBeMuted,				//2^36 = 68719476736
-	PlayerFlag_IsAlwaysPremium,				//2^37 = 137438953472
-	PlayerFlag_CanAnswerRuleViolations,		//2^38 = 274877906944
-	PlayerFlag_39,							//2^39 = 549755813888 //not used by us
+	PlayerFlag_CannotUseCombat = 0,				//2^0 = 1
+	PlayerFlag_CannotAttackPlayer,				//2^1 = 2
+	PlayerFlag_CannotAttackMonster,				//2^2 = 4
+	PlayerFlag_CannotBeAttacked,				//2^3 = 8
+	PlayerFlag_CanConvinceAll,					//2^4 = 16
+	PlayerFlag_CanSummonAll,					//2^5 = 32
+	PlayerFlag_CanIllusionAll,					//2^6 = 64
+	PlayerFlag_CanSenseInvisibility,			//2^7 = 128
+	PlayerFlag_IgnoredByMonsters,				//2^8 = 256
+	PlayerFlag_NotGainInFight,					//2^9 = 512
+	PlayerFlag_HasInfiniteMana,					//2^10 = 1024
+	PlayerFlag_HasInfiniteSoul,					//2^11 = 2048
+	PlayerFlag_HasNoExhaustion,					//2^12 = 4096
+	PlayerFlag_CannotUseSpells,					//2^13 = 8192
+	PlayerFlag_CannotPickupItem,				//2^14 = 16384
+	PlayerFlag_CanAlwaysLogin,					//2^15 = 32768
+	PlayerFlag_CanBroadcast,					//2^16 = 65536
+	PlayerFlag_CanEditHouses,					//2^17 = 131072
+	PlayerFlag_CannotBeBanned,					//2^18 = 262144
+	PlayerFlag_CannotBePushed,					//2^19 = 524288
+	PlayerFlag_HasInfiniteCapacity,				//2^20 = 1048576
+	PlayerFlag_CanPushAllCreatures,				//2^21 = 2097152
+	PlayerFlag_CanTalkRedPrivate,				//2^22 = 4194304
+	PlayerFlag_CanTalkRedChannel,				//2^23 = 8388608
+	PlayerFlag_TalkOrangeHelpChannel,			//2^24 = 16777216
+	PlayerFlag_NotGainExperience,				//2^25 = 33554432
+	PlayerFlag_NotGainMana,						//2^26 = 67108864
+	PlayerFlag_NotGainHealth,					//2^27 = 134217728
+	PlayerFlag_NotGainSkill,					//2^28 = 268435456
+	PlayerFlag_SetMaxSpeed,						//2^29 = 536870912
+	PlayerFlag_SpecialVIP,						//2^30 = 1073741824
+	PlayerFlag_NotGenerateLoot,					//2^31 = 2147483648
+	PlayerFlag_CanTalkRedChannelAnonymous,		//2^32 = 4294967296
+	PlayerFlag_IgnoreProtectionZone,			//2^33 = 8589934592
+	PlayerFlag_IgnoreSpellCheck,				//2^34 = 17179869184
+	PlayerFlag_IgnoreEquipCheck,				//2^35 = 34359738368
+	PlayerFlag_CannotBeMuted,					//2^36 = 68719476736
+	PlayerFlag_IsAlwaysPremium,					//2^37 = 137438953472
+	PlayerFlag_CanAnswerRuleViolations,			//2^38 = 274877906944
+	PlayerFlag_39,								//2^39 = 549755813888 //not used by us
 	PlayerFlag_ShowGroupNameInsteadOfVocation,	//2^40 = 1099511627776
-	PlayerFlag_HasInfiniteStamina,			//2^41 = 2199023255552
-	PlayerFlag_CannotMoveItems,				//2^42 = 4398046511104
-	PlayerFlag_CannotMoveCreatures,			//2^43 = 8796093022208
-	PlayerFlag_CanReportBugs,				//2^44 = 17592186044416
-	PlayerFlag_45,							//2^45 = 35184372088832 //not used by us
-	PlayerFlag_CannotBeSeen,				//2^46 = 70368744177664
-	PlayerFlag_HideHealth,					//2^47 = 140737488355328
-	PlayerFlag_CanPassThroughAllCreatures,	//2^48 = 281474976710656
+	PlayerFlag_HasInfiniteStamina,				//2^41 = 2199023255552
+	PlayerFlag_CannotMoveItems,					//2^42 = 4398046511104
+	PlayerFlag_CannotMoveCreatures,				//2^43 = 8796093022208
+	PlayerFlag_CanReportBugs,					//2^44 = 17592186044416
+	PlayerFlag_45,								//2^45 = 35184372088832 //not used by us
+	PlayerFlag_CannotBeSeen,					//2^46 = 70368744177664
+	PlayerFlag_HideHealth,						//2^47 = 140737488355328
+	PlayerFlag_CanPassThroughAllCreatures,		//2^48 = 281474976710656
 
 	PlayerFlag_LastFlag
 };

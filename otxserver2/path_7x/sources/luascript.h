@@ -395,7 +395,9 @@ class LuaInterface
 		static int32_t luaDoPlayerSetTown(lua_State* L);
 		static int32_t luaDoPlayerSetVocation(lua_State* L);
 		static int32_t luaDoPlayerRemoveItem(lua_State* L);
+		#ifdef _MULTIPLATFORM
 		static int32_t luaDoPlayerAddSoul(lua_State* L);
+		#endif
 		static int32_t luaDoPlayerSetStamina(lua_State* L);
 		static int32_t luaDoPlayerAddExperience(lua_State* L);
 		static int32_t luaDoPlayerSetGuildId(lua_State* L);
@@ -501,11 +503,14 @@ class LuaInterface
 		static int32_t luaGetCreatureLookDirection(lua_State* L);
 		static int32_t luaGetPlayerSkillLevel(lua_State* L);
 		static int32_t luaGetPlayerSkillTries(lua_State* L);
+		static int32_t luaDoPlayerSetOfflineTrainingSkill(lua_State* L);
 		static int32_t luaGetPlayerVocation(lua_State* L);
 		static int32_t luaGetPlayerTown(lua_State* L);
 		static int32_t luaGetPlayerItemCount(lua_State* L);
 		static int32_t luaGetPlayerMoney(lua_State* L);
+		#ifdef _MULTIPLATFORM
 		static int32_t luaGetPlayerSoul(lua_State* L);
+		#endif
 		static int32_t luaGetPlayerStamina(lua_State* L);
 		static int32_t luaGetPlayerFreeCap(lua_State* L);
 		static int32_t luaGetPlayerLight(lua_State* L);
@@ -682,6 +687,8 @@ class LuaInterface
 		static int32_t luaGetConfigFile(lua_State* L);
 		static int32_t luaGetConfigValue(lua_State* L);
 		static int32_t luaGetModList(lua_State* L);
+		static int32_t luaIsPlayerUsingOtclient(lua_State* L);
+		static int32_t luaDoSendPlayerExtendedOpcode(lua_State* L);
 
 		static int32_t luaL_errors(lua_State* L);
 		static int32_t luaL_loadmodlib(lua_State* L);

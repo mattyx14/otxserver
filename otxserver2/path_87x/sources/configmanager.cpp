@@ -20,6 +20,7 @@
 #include "configmanager.h"
 #include "house.h"
 #include "tools.h"
+#include "resources.h"
 
 ConfigManager::ConfigManager()
 {
@@ -142,7 +143,9 @@ bool ConfigManager::load()
 	m_confBool[EXPERIENCE_STAGES] = getGlobalBool("experienceStages", false);
 	m_confDouble[RATE_EXPERIENCE] = getGlobalDouble("rateExperience", 1);
 	m_confDouble[RATE_SKILL] = getGlobalDouble("rateSkill", 1);
+	m_confDouble[RATE_SKILL_OFFLINE] = getGlobalDouble("rateSkillOffline", 0.5);
 	m_confDouble[RATE_MAGIC] = getGlobalDouble("rateMagic", 1);
+	m_confDouble[RATE_MAGIC_OFFLINE] = getGlobalDouble("rateMagicOffline", 0.5);
 	m_confDouble[RATE_LOOT] = getGlobalDouble("rateLoot", 1);
 	m_confNumber[RATE_SPAWN_MIN] = getGlobalNumber("rateSpawnMin", 1);
 	m_confNumber[RATE_SPAWN_MAX] = getGlobalNumber("rateSpawnMax", 1);
@@ -353,10 +356,12 @@ bool ConfigManager::load()
 	m_confNumber[PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
+	m_confNumber[LEVEL_TO_OFFLINE] = getGlobalNumber("levelToOfflineTraining", 8);
 	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);
-	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", 870);
-	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", 871);
-	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "Only clients with protocol 8.70/71 allowed!");
+	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", CLIENT_VERSION_MIN);
+	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", CLIENT_VERSION_MAX);
+	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
+	m_confBool[USE_RUNE_REQUIREMENTS] = getGlobalBool("useRunesRequirements", true);
 
 	m_loaded = true;
 	return true;

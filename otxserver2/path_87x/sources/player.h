@@ -180,6 +180,15 @@ class Player : public Creature, public Cylinder
 			return exp;
 		}
 
+		bool addOfflineTrainingTries(skills_t skill, int32_t tries);
+
+		void addOfflineTrainingTime(int32_t addTime) {offlineTrainingTime = std::min(12 * 3600 * 1000, offlineTrainingTime + addTime);}
+		void removeOfflineTrainingTime(int32_t removeTime) {offlineTrainingTime = std::max(0, offlineTrainingTime - removeTime);}
+		int32_t getOfflineTrainingTime() {return offlineTrainingTime;}
+
+		int32_t getOfflineTrainingSkill() {return offlineTrainingSkill;}
+		void setOfflineTrainingSkill(int32_t skill) {offlineTrainingSkill = skill;}
+
 		uint32_t getPromotionLevel() const {return promotionLevel;}
 		void setPromotionLevel(uint32_t pLevel);
 
@@ -878,6 +887,7 @@ class Player : public Creature, public Cylinder
 		uint16_t maxWriteLen;
 		uint16_t sex;
 		uint16_t mailAttempts;
+		uint16_t lastStatsTrainingTime;
 
 		int32_t premiumDays;
 		int32_t soul;
@@ -892,6 +902,8 @@ class Player : public Creature, public Cylinder
 		int32_t messageBuffer;
 		int32_t bloodHitCount;
 		int32_t shieldBlockCount;
+		int32_t offlineTrainingSkill;
+		int32_t offlineTrainingTime;
 
 		uint32_t clientVersion;
 		uint32_t messageTicks;

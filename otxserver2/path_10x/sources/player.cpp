@@ -4049,7 +4049,7 @@ void Player::onTarget(Creature* target)
 			addAttacked(targetPlayer);
 			targetPlayer->sendCreatureSkull(this);
 		}
-		else if(!targetPlayer->hasAttacked(this) && !targetPlayer->isEnemy(this, false))
+		else if(!targetPlayer->hasAttacked(this))
 		{
 			if(!pzLocked && g_game.getWorldType() != WORLDTYPE_HARDCORE)
 			{
@@ -4071,6 +4071,7 @@ void Player::onTarget(Creature* target)
 			}
 		}
 	}
+
 	addInFightTicks(false);
 }
 

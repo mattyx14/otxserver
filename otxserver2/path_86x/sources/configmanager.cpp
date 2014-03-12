@@ -20,6 +20,7 @@
 #include "configmanager.h"
 #include "house.h"
 #include "tools.h"
+#include "resources.h"
 
 ConfigManager::ConfigManager()
 {
@@ -142,7 +143,9 @@ bool ConfigManager::load()
 	m_confBool[EXPERIENCE_STAGES] = getGlobalBool("experienceStages", false);
 	m_confDouble[RATE_EXPERIENCE] = getGlobalDouble("rateExperience", 1);
 	m_confDouble[RATE_SKILL] = getGlobalDouble("rateSkill", 1);
+	m_confDouble[RATE_SKILL_OFFLINE] = getGlobalDouble("rateSkillOffline", 0.5);
 	m_confDouble[RATE_MAGIC] = getGlobalDouble("rateMagic", 1);
+	m_confDouble[RATE_MAGIC_OFFLINE] = getGlobalDouble("rateMagicOffline", 0.5);
 	m_confDouble[RATE_LOOT] = getGlobalDouble("rateLoot", 1);
 	m_confNumber[RATE_SPAWN_MIN] = getGlobalNumber("rateSpawnMin", 1);
 	m_confNumber[RATE_SPAWN_MAX] = getGlobalNumber("rateSpawnMax", 1);
@@ -357,6 +360,10 @@ bool ConfigManager::load()
 	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", 860);
 	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", 860);
 	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "Only clients with protocol 8.60 allowed!");
+	m_confNumber[LEVEL_TO_OFFLINE] = getGlobalNumber("levelToOfflineTraining", 8);
+	m_confBool[USE_RUNE_REQUIREMENTS] = getGlobalBool("useRunesRequirements", true);
+	m_confBool[NO_ATTACKHEALING_SIMULTANEUS] = getGlobalBool("noAttackHealingSimultaneus", true);
+	m_confBool[ENABLE_COOLDOWNS] = getGlobalBool("enableCooldowns", true);
 
 	m_loaded = true;
 	return true;

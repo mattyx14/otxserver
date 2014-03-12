@@ -167,21 +167,16 @@
 		-- Others
 		enableLootBagDisplay = false
 
-		-- Advanced Version
-		-- Note: If you use another protocol than the one we set as you will have functional failures.
-		-- Supported (770) = 7.70
-		-- Supported (772) = 7.72
-		manualVersionConfig = false
-		versionMin = 770
-		versionMax = 772
-		versionMsg = "Only clients with protocol 7.70/72 allowed!"
-
 		-- Old Configs
 		tileHeightBlock = true
 		useStamina = true
 		autoStack = true
 		runesHitTopCreature = false
 		charlistBasicInfo = false
+
+		-- ConfigSpells
+		noAttackHealingSimultaneus = true
+		enableCooldowns = true
 
 	-- Connection config
 	loginTries = 20
@@ -233,7 +228,6 @@
 	timeBetweenExActions = 1000
 	timeBetweenCustomActions = 500
 	checkCorpseOwner = true
-	hotkeyAimbotEnabled = true
 	maximumDoorLevel = 999
 	tradeLimit = 100
 	canOnlyRopePlayers = false
@@ -327,8 +321,11 @@
 	experienceStages = false
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
-	rateSkill = 3.0
-	rateMagic = 3.0
+	levelToOfflineTraining = 8
+	rateSkill = 1.0
+	rateSkillOffline = 0.5
+	rateMagic = 1.0
+	rateMagicOffline = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

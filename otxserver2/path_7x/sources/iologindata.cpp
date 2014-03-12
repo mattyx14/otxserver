@@ -32,6 +32,7 @@
 
 #include "configmanager.h"
 #include "game.h"
+#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -421,11 +422,15 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	Database* db = Database::getInstance();
 	DBQuery query;
 	query << "SELECT `id`, `account_id`, `group_id`, `world_id`, `sex`, `vocation`, `experience`, `level`, "
-	<< "`maglevel`, `health`, `healthmax`, `blessings`, `pvp_blessing`, `mana`, `manamax`, `manaspent`, `soul`, "
+	<< "`maglevel`, `health`, `healthmax`, `blessings`, `pvp_blessing`, `mana`, `manamax`, `manaspent`, "
+	#ifdef _MULTIPLATFORM
+	<< "`soul`, "
+	#endif
 	<< "`lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `posx`, `posy`, "
 	<< "`posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skull`, `skulltime`, `guildnick`, "
 	<< "`rank_id`, `town_id`, `balance`, `stamina`, `direction`, `loss_experience`, `loss_mana`, `loss_skills`, "
-	<< "`loss_containers`, `loss_items`, `marriage`, `promotion`, `description`, `save` FROM `players` WHERE "
+	<< "`loss_containers`, `loss_items`, `marriage`, `promotion`, `description`, `offlinetraining_time`, `offlinetraining_skill`, "
+	<< "`save` FROM `players` WHERE "
 	<< "`name` " << db->getStringComparer() << db->escapeString(name) << " AND `deleted` = 0 LIMIT 1";
 
 	DBResult* result;
@@ -480,7 +485,9 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	if(currExpCount < nextExpCount)
 		player->levelPercent = Player::getPercentLevel(player->experience - currExpCount, nextExpCount - currExpCount);
 
+	#ifdef _MULTIPLATFORM
 	player->soul = result->getDataInt("soul");
+	#endif
 	player->capacity = result->getDataInt("cap");
 	player->setStamina(result->getDataLong("stamina"));
 	player->marriage = result->getDataInt("marriage");
@@ -557,8 +564,6 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 
 	player->currentOutfit = player->defaultOutfit;
 	Skulls_t skull = SKULL_RED;
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		skull = (Skulls_t)result->getDataInt("skull");
 
 	player->setSkullEnd((time_t)result->getDataInt("skulltime"), true, skull);
 	player->saving = result->getDataInt("save") != 0;
@@ -576,6 +581,9 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	player->lastLogin = result->getDataLong("lastlogin");
 	player->lastLogout = result->getDataLong("lastlogout");
 	player->lastIP = result->getDataInt("lastip");
+
+	player->offlineTrainingTime = result->getDataInt("offlinetraining_time") * 1000;
+	player->offlineTrainingSkill = result->getDataInt("offlinetraining_skill");
 
 	player->loginPosition = Position(result->getDataInt("posx"), result->getDataInt("posy"), result->getDataInt("posz"));
 	if(!player->loginPosition.x || !player->loginPosition.y)
@@ -601,7 +609,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 			result->free();
 
 			std::string tmpStatus = "AND `status` IN (1,4)";
-			if (g_config.getBool(ConfigManager::EXTERNAL_GUILD_WARS_MANAGEMENT))
+			if(g_config.getBool(ConfigManager::EXTERNAL_GUILD_WARS_MANAGEMENT))
 				tmpStatus = "AND `status` IN (1,4,9)";
 
 			query.str("");
@@ -793,7 +801,8 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	{
 		do
 		{
-			if(!deaths[result->getDataInt("player_id")] || deaths[result->getDataInt("player_id")] < (time_t)result->getDataInt("date")) // pick up the latest date
+			if(!deaths[result->getDataInt("player_id")] || deaths[result->getDataInt("player_id")]
+				< (time_t)result->getDataInt("date")) // pick up the latest date
 				deaths[result->getDataInt("player_id")] = (time_t)result->getDataInt("date");
 		}
 		while(result->next());
@@ -839,16 +848,8 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 {
 	if(preSave && player->health <= 0)
 	{
-		if(player->getSkull() == SKULL_BLACK)
-		{
-			player->health = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_HEALTH);
-			player->mana = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_MANA);
-		}
-		else
-		{
-			player->health = player->healthMax;
-			player->mana = player->manaMax;
-		}
+		player->health = player->healthMax;
+		player->mana = player->manaMax;
 	}
 	Database* db = Database::getInstance();
 	DBQuery query;
@@ -883,7 +884,9 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	query << "`mana` = " << player->mana << ", ";
 	query << "`manamax` = " << player->manaMax << ", ";
 	query << "`manaspent` = " << player->manaSpent << ", ";
+	#ifdef _MULTIPLATFORM
 	query << "`soul` = " << player->soul << ", ";
+	#endif
 	query << "`town_id` = " << player->town << ", ";
 	query << "`posx` = " << player->getLoginPosition().x << ", ";
 	query << "`posy` = " << player->getLoginPosition().y << ", ";
@@ -894,8 +897,6 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	query << "`stamina` = " << player->getStamina() << ", ";
 
 	Skulls_t skull = SKULL_RED;
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		skull = player->getSkull();
 
 	query << "`skull` = " << skull << ", ";
 	query << "`skulltime` = " << player->getSkullEnd() << ", ";
@@ -940,6 +941,9 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 		query << "`blessings` = " << player->blessings << ", ";
 		query << "`pvp_blessing` = " << (player->hasPVPBlessing() ? "1" : "0") << ", ";
 	}
+
+	query << "`offlinetraining_time` = " << player->getOfflineTrainingTime() / 1000 << ", ";
+	query << "`offlinetraining_skill` = " << player->getOfflineTrainingSkill() << ", ";
 
 	query << "`marriage` = " << player->marriage << ", ";
 	if(g_config.getBool(ConfigManager::INGAME_GUILD_MANAGEMENT))
@@ -1627,7 +1631,11 @@ bool IOLoginData::createCharacter(uint32_t accountId, std::string characterName,
 	}
 
 	query.str("");
+	#ifdef _MULTIPLATFORM
 	query << "INSERT INTO `players` (`id`, `name`, `world_id`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `soul`, `town_id`, `posx`, `posy`, `posz`, `conditions`, `cap`, `sex`, `lastlogin`, `lastip`, `skull`, `skulltime`, `save`, `rank_id`, `guildnick`, `lastlogout`, `blessings`, `online`) VALUES (NULL, " << db->escapeString(characterName) << ", " << g_config.getNumber(ConfigManager::WORLD_ID) << ", 1, " << accountId << ", " << level << ", " << vocationId << ", " << healthMax << ", " << healthMax << ", " << exp << ", 68, 76, 78, 39, " << lookType << ", " << g_config.getNumber(ConfigManager::START_MAGICLEVEL) << ", " << manaMax << ", " << manaMax << ", 0, 100, " << g_config.getNumber(ConfigManager::SPAWNTOWN_ID) << ", " << g_config.getNumber(ConfigManager::SPAWNPOS_X) << ", " << g_config.getNumber(ConfigManager::SPAWNPOS_Y) << ", " << g_config.getNumber(ConfigManager::SPAWNPOS_Z) << ", 0, " << capMax << ", " << sex << ", 0, 0, 0, 0, 1, 0, '', 0, 0, 0)";
+	#else
+	query << "INSERT INTO `players` (`id`, `name`, `world_id`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `town_id`, `posx`, `posy`, `posz`, `conditions`, `cap`, `sex`, `lastlogin`, `lastip`, `skull`, `skulltime`, `save`, `rank_id`, `guildnick`, `lastlogout`, `blessings`, `online`) VALUES (NULL, " << db->escapeString(characterName) << ", " << g_config.getNumber(ConfigManager::WORLD_ID) << ", 1, " << accountId << ", " << level << ", " << vocationId << ", " << healthMax << ", " << healthMax << ", " << exp << ", 68, 76, 78, 39, " << lookType << ", " << g_config.getNumber(ConfigManager::START_MAGICLEVEL) << ", " << manaMax << ", " << manaMax << ", 0, 100, " << g_config.getNumber(ConfigManager::SPAWNTOWN_ID) << ", " << g_config.getNumber(ConfigManager::SPAWNPOS_X) << ", " << g_config.getNumber(ConfigManager::SPAWNPOS_Y) << ", " << g_config.getNumber(ConfigManager::SPAWNPOS_Z) << ", 0, " << capMax << ", " << sex << ", 0, 0, 0, 0, 1, 0, '', 0, 0, 0)";
+	#endif
 	return db->query(query.str());
 }
 

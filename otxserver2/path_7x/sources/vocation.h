@@ -42,8 +42,12 @@ enum gain_t
 	GAIN_FIRST = 0,
 	GAIN_HEALTH = GAIN_FIRST,
 	GAIN_MANA = 1,
+	#ifdef _PROTOCOL76
 	GAIN_SOUL = 2,
 	GAIN_LAST = GAIN_SOUL
+	#else
+	GAIN_LAST = GAIN_MANA
+	#endif
 };
 
 class Vocation

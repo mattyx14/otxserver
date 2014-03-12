@@ -57,6 +57,7 @@
 #ifdef __EXCEPTION_TRACER__
 #include "exception.h"
 #endif
+#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Actions* g_actions;
@@ -613,7 +614,11 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 			case STACKPOS_USEITEM:
 			{
 				thing = tile->getTopDownItem();
+				#ifdef _MULTIPLATFORM
 				Item* item = tile->getItemByTopOrder(2);
+				#else
+				Item* item = tile->getItemByTopOrder(1);
+				#endif
 				if(item && g_actions->hasAction(item))
 				{
 					const ItemType& it = Item::items[item->getID()];
@@ -5064,7 +5069,7 @@ void Game::updateCreatureSkull(Creature* creature)
 	Player* tmpPlayer = NULL;
 	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
 	{
-		 if((tmpPlayer = (*it)->getPlayer()))
+		if((tmpPlayer = (*it)->getPlayer()))
 			tmpPlayer->sendCreatureSkull(creature);
 	}
 }
@@ -6359,4 +6364,15 @@ void Game::cleanup()
 void Game::freeThing(Thing* thing)
 {
 	releaseThings.push_back(thing);
+}
+
+void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return;
+
+	CreatureEventList extendedOpcodeEvents = player->getCreatureEvents(CREATURE_EVENT_EXTENDED_OPCODE);
+	for(CreatureEventList::iterator it = extendedOpcodeEvents.begin(); it != extendedOpcodeEvents.end(); ++it)
+		(*it)->executeExtendedOpcode(player, opcode, buffer);
 }
