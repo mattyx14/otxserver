@@ -178,12 +178,12 @@
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
-		-- Supported (10.35) = 10.36
+		-- Supported (10.36) = 10.36
 		-- Supported (10.39) = 10.39
 		manualVersionConfig = false
 		versionMin = 1036
 		versionMax = 1039
-		versionMsg = "Only clients with protocol 10.36 allowed!"
+		versionMsg = "Only clients with protocol 10.37 allowed!"
 
 	-- Connection config
 	loginTries = 20
