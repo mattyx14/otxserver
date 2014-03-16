@@ -166,6 +166,7 @@
 
 		-- Others
 		enableLootBagDisplay = false
+		attackImmediatelyAfterLoggingIn = false
 
 		-- Old Configs
 		tileHeightBlock = true

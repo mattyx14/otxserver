@@ -368,8 +368,11 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 			return RET_YOUMAYNOTATTACKTHISPLAYER;
 	}
 
-	if(player->checkLoginDelay())
-		return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
+	if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
+	{
+		if(player->checkLoginDelay())
+			return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
+	}
 
 	return Combat::canDoCombat(player, target, true);
 }

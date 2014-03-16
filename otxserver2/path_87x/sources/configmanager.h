@@ -332,6 +332,7 @@ class ConfigManager
 			SAVE_STATEMENT,
 			MANUAL_ADVANCED_CONFIG,
 			USE_RUNE_REQUIREMENTS,
+			ATTACK_IMMEDIATELY_AFTER_LOGGING_IN,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 
