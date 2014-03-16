@@ -273,7 +273,7 @@ class Player : public Creature, public Cylinder
 		uint32_t getIdleTime() const {return idleTime;}
 		void setIdleTime(uint32_t amount) {idleTime = amount;}
 
-		bool checkLoginDelay() const;
+		bool checkLoginDelay(uint32_t playerId) const;
 		bool isTrading() const {return (tradePartner != NULL);}
 
 		uint32_t getAccount() const {return accountId;}
