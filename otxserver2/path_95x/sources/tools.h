@@ -125,7 +125,10 @@ uint32_t rand24b();
 float box_muller(float m, float s);
 int32_t random_range(int32_t lowestNumber, int32_t highestNumber, DistributionType_t type = DISTRO_UNIFORM);
 
-int32_t round(float v);
+#if !defined(_MSC_VER) || _MSC_VER < 1800
+double round(double v);
+#endif
+
 bool hasBitSet(uint32_t flag, uint32_t flags);
 uint32_t adlerChecksum(uint8_t* data, size_t length);
 
@@ -169,4 +172,9 @@ std::string getWeaponName(WeaponType_t weaponType);
 
 bool fileExists(const char* filename);
 std::string getFilePath(FileType_t type, std::string name = "");
+std::string getFirstLine(const std::string& str);
+
+extern uint8_t serverFluidToClient(uint8_t serverFluid);
+extern uint8_t clientFluidToServer(uint8_t clientFluid);
+
 #endif

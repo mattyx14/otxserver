@@ -288,20 +288,22 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 	if(item == this)
 		return RET_THISISIMPOSSIBLE;
 
+	bool isInbox = false;
+
 	if(const Container* container = item->getContainer())
 	{
 		for(const Cylinder* cylinder = getParent(); cylinder; cylinder = cylinder->getParent())
 		{
 			if(cylinder == container)
 				return RET_THISISIMPOSSIBLE;
+
+			if(!hasBitSet(FLAG_NOLIMIT, flags) && !isInbox && dynamic_cast<const Inbox*>(cylinder))
+				isInbox = true;
 		}
 	}
 
-	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT)
-	{
-		if(id == ITEM_INBOX || (index == INDEX_WHEREEVER && full()))
-			return RET_CONTAINERNOTENOUGHROOM;
-	}
+	if(isInbox || (index == INDEX_WHEREEVER && size() >= capacity() && !hasBitSet(FLAG_NOLIMIT, flags)))
+		return RET_CONTAINERNOTENOUGHROOM;
 
 	const Cylinder* topParent = getTopParent();
 	if(topParent != this)

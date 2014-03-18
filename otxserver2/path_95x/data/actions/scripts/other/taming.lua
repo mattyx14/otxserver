@@ -30,7 +30,7 @@ local config = {
 	[13539] = 	{NAME = 'White Deer', 			ID = 18, 	TYPE = TYPE_MONSTER, 	CHANCE = 40, 	FAIL_MSG = { {2, "The cone broke."}, {3, "The deer has fled in fear."} }, SUCCESS_MSG = "You have tamed the deer."},
 	[13538] = 	{NAME = 'Panda', 				ID = 19, 	TYPE = TYPE_MONSTER, 	CHANCE = 40, 	FAIL_MSG = { {4, "Panda ate the leaves and ran away."} }, SUCCESS_MSG = "You have tamed the panda."},
 	[13535] = 	{NAME = 'Dromedary', 			ID = 20, 	TYPE = TYPE_MONSTER, 	CHANCE = 40, 	FAIL_MSG = { {1, "Dromedary has run away."} }, SUCCESS_MSG = "You have tamed the dromedary."},
-	[13498] = 	{NAME = 'Sandstone Scorpion', 		ID = 21, 	TYPE = TYPE_MONSTER, 	CHANCE = 40, 	FAIL_MSG = { {1, "The scorpion has vanished."}, {2, "Scorpion broken the sceptre."} }, SUCCESS_MSG = "You have tamed the scorpion"},
+	[13498] = 	{NAME = 'Sandstone Scorpion', 	ID = 21, 	TYPE = TYPE_MONSTER, 	CHANCE = 40, 	FAIL_MSG = { {1, "The scorpion has vanished."}, {2, "Scorpion broken the sceptre."} }, SUCCESS_MSG = "You have tamed the scorpion"},
 	[13537] = 	{NAME = 'Donkey', 				ID = 13, 	TYPE = TYPE_MONSTER, 	CHANCE = 40, 	FAIL_MSG = { {1, "The witch has escaped!"} }, SUCCESS_MSG = "You have tamed the mule."},
 	[13938] = 	{NAME = 'Uniwheel', 			ID = 15, 	TYPE = TYPE_NPC, 		CHANCE = 40, 	FAIL_MSG = { {2, "The oil is having no effect."} }, SUCCESS_MSG = "You have found an Uniwheel."},
 	[13508] = 	{NAME = 'Slug', 				ID = 14, 	TYPE = TYPE_MONSTER, 	CHANCE = 40, 	FAIL_MSG = { {1, "The slug has run away."}, {3, "The drug had no effect."} }, SUCCESS_MSG = "You have tamed the slug."},

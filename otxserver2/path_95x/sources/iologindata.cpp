@@ -112,13 +112,7 @@ void IOLoginData::loadCharacters(Account& account)
 		account.charList.push_back(result->getDataString("name"));
 #else
 		std::string name = result->getDataString("name");
-		if(hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges, result->getDataInt("id")))
-		{
-			uint16_t hax = 0;
-			for(GameServersMap::const_iterator it = GameServers::getInstance()->getFirstServer(); it != GameServers::getInstance()->getLastServer(); ++it, ++hax)
-				account.charList[name + asString(hax)] = Character(name, it->second, -1);
-		}
-		else if(GameServer* srv = GameServers::getInstance()->getServerById(result->getDataInt("world_id")))
+		if(GameServer* srv = GameServers::getInstance()->getServerById(result->getDataInt("world_id")))
 			account.charList[name] = Character(name, srv, result->getDataInt("online"));
 		else
 			std::clog << "[Warning - IOLoginData::loadAccount] Invalid server for player '" << name << "'." << std::endl;
@@ -431,7 +425,8 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	<< "`lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `lookaddons`, `lookmount`, `posx`, `posy`, "
 	<< "`posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skull`, `skulltime`, `guildnick`, "
 	<< "`rank_id`, `town_id`, `balance`, `stamina`, `direction`, `loss_experience`, `loss_mana`, `loss_skills`, "
-	<< "`loss_containers`, `loss_items`, `marriage`, `promotion`, `description`, `save` FROM `players` WHERE "
+	<< "`loss_containers`, `loss_items`, `marriage`, `promotion`, `description`, `offlinetraining_time`, `offlinetraining_skill`, "
+	<< "`save` FROM `players` WHERE "
 	<< "`name` " << db->getStringComparer() << db->escapeString(name) << " AND `deleted` = 0 LIMIT 1";
 
 	DBResult* result;
@@ -588,6 +583,9 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	player->lastLogout = result->getDataLong("lastlogout");
 	player->lastIP = result->getDataInt("lastip");
 
+	player->offlineTrainingTime = result->getDataInt("offlinetraining_time") * 1000;
+	player->offlineTrainingSkill = result->getDataInt("offlinetraining_skill");
+
 	player->loginPosition = Position(result->getDataInt("posx"), result->getDataInt("posy"), result->getDataInt("posz"));
 	if(!player->loginPosition.x || !player->loginPosition.y)
 		player->loginPosition = player->getMasterPosition();
@@ -612,7 +610,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 			result->free();
 
 			std::string tmpStatus = "AND `status` IN (1,4)";
-			if (g_config.getBool(ConfigManager::EXTERNAL_GUILD_WARS_MANAGEMENT))
+			if(g_config.getBool(ConfigManager::EXTERNAL_GUILD_WARS_MANAGEMENT))
 				tmpStatus = "AND `status` IN (1,4,9)";
 
 			query.str("");
@@ -736,30 +734,62 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	if((result = db->storeQuery(query.str())))
 	{
 		loadItems(itemMap, result);
-		for(ItemMap::reverse_iterator rit = itemMap.rbegin(); rit != itemMap.rend(); ++rit)
+
+		ItemMap::reverse_iterator it;
+		ItemMap::iterator it2;
+		for(it = itemMap.rbegin(); it != itemMap.rend(); ++it)
 		{
-			Item* item = rit->second.first;
-			int32_t pid = rit->second.second;
+			Item* item = it->second.first;  
+			int32_t pid = it->second.second;
 			if(pid >= 0 && pid < 100)
 			{
-				if(Container* c = item->getContainer())
-				{
-					if(Depot* depot = c->getDepot())
-						player->addDepot(depot, pid);
-					else
-						std::clog << "[Error - IOLoginData::loadPlayer] Cannot load depot " << pid << " for player " << name << std::endl;
-				}
-				else
-					std::clog << "[Error - IOLoginData::loadPlayer] Cannot load depot " << pid << " for player " << name << std::endl;
+				DepotChest* depotChest = player->getDepotChest(pid, true);
+				if(depotChest)
+					depotChest->__internalAddThing(item);
 			}
-			else if((it = itemMap.find(pid)) != itemMap.end())
+			else
 			{
-				if(Container* container = it->second.first->getContainer())
+				it2 = itemMap.find(pid);
+				if(it2 == itemMap.end())
+					continue;
+
+				Container* container = it2->second.first->getContainer();
+				if(container)
 					container->__internalAddThing(item);
 			}
 		}
+		itemMap.clear();
+		result->free();
+	}
 
-		player->updateDepots();
+	//load inbox items
+	query.str("");
+	query << "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID() << " ORDER BY `sid` DESC;";
+	if((result = db->storeQuery(query.str())))
+	{
+		loadItems(itemMap, result);
+
+		ItemMap::reverse_iterator it;
+		ItemMap::iterator it2;
+		for(it = itemMap.rbegin(); it != itemMap.rend(); ++it)
+		{
+			Item* item = it->second.first;
+			int32_t pid = it->second.second;
+			if(pid >= 0 && pid < 100)
+			{
+				player->getInbox()->__internalAddThing(item);
+			}
+			else
+			{
+				it2 = itemMap.find(pid);
+				if(it2 == itemMap.end())
+					continue;
+
+				Container* container = it2->second.first->getContainer();
+				if(container)
+					container->__internalAddThing(item);
+			}
+		}
 		itemMap.clear();
 		result->free();
 	}
@@ -967,6 +997,9 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 		query << "`pvp_blessing` = " << (player->hasPVPBlessing() ? "1" : "0") << ", ";
 	}
 
+	query << "`offlinetraining_time` = " << player->getOfflineTrainingTime() / 1000 << ", ";
+	query << "`offlinetraining_skill` = " << player->getOfflineTrainingSkill() << ", ";
+
 	query << "`marriage` = " << player->marriage << ", ";
 	if(g_config.getBool(ConfigManager::INGAME_GUILD_MANAGEMENT))
 	{
@@ -1033,38 +1066,37 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	if(!saveItems(player, itemList, stmt))
 		return false;
 
-	itemList.clear();
 	//save depot items
-	//std::stringstream ss;
-	for(DepotMap::iterator it = player->depots.begin(); it != player->depots.end(); ++it)
+	query.str("");
+	query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID() << ";";
+	if(!db->query(query.str()))
+		return false;
+
+	stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+	itemList.clear();
+	for(DepotMap::iterator it = player->depotChests.begin(); it != player->depotChests.end() ;++it)
 	{
-		/*if(it->second.second)
-		{
-			it->second.second = false;
-			ss << it->first << ",";*/
-			itemList.push_back(itemBlock(it->first, it->second.first));
-		//}
+		DepotChest* depotChest = it->second;
+		for(ItemList::const_iterator iit = depotChest->getItems(), end = depotChest->getEnd(); iit != end; ++iit)
+			itemList.push_back(itemBlock(it->first, *iit));
 	}
 
-	/*std::string s = ss.str();
-	size_t size = s.length();
-	if(size > 0)
-	{*/
+	if(!saveItems(player, itemList, stmt))
+		return false;
 
-		query.str("");
-		query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();// << " AND `pid` IN (" << s.substr(0, --size) << ")";
-		if(!db->query(query.str()))
-			return false;
+	//save inbox items
+	query.str("");
+	query << "DELETE FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID() << ";";
+	if(!db->query(query.str()))
+		return false;
 
-		if(itemList.size())
-		{
-			stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
-			if(!saveItems(player, itemList, stmt))
-				return false;
+	stmt.setQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+	itemList.clear();
+	for(ItemList::const_iterator it = player->getInbox()->getItems(), end = player->getInbox()->getEnd(); it != end; ++it)
+		itemList.push_back(itemBlock(0, *it));
 
-			itemList.clear();
-		}
-	//}
+	if(!saveItems(player, itemList, stmt))
+		return false;
 
 	query.str("");
 	query << "DELETE FROM `player_storage` WHERE `player_id` = " << player->getGUID();
@@ -1294,21 +1326,13 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 	return trans.commit();
 }
 
-bool IOLoginData::playerMail(Creature* actor, std::string name, uint32_t townId, Item* item)
+bool IOLoginData::playerMail(Creature* actor, std::string name, Item* item)
 {
 	Player* player = g_game.getPlayerByNameEx(name);
 	if(!player)
 		return false;
 
-	if(!townId)
-		townId = player->getTown();
-
-	Depot* depot = player->getDepot(townId, true);
-	Container* inbox = NULL;
-	if(!(inbox = depot->getInbox()))
-		inbox = depot;
-
-	if(!inbox || g_game.internalMoveItem(actor, item->getParent(), inbox, INDEX_WHEREEVER,
+	if(g_game.internalMoveItem(actor, item->getParent(), player->getInbox(), INDEX_WHEREEVER,
 		item, item->getItemCount(), NULL, FLAG_NOLIMIT) != RET_NOERROR)
 	{
 		if(player->isVirtual())
@@ -1317,8 +1341,8 @@ bool IOLoginData::playerMail(Creature* actor, std::string name, uint32_t townId,
 		return false;
 	}
 
-	g_game.transformItem(item, ITEM_PARCEL_STAMPED);
-	bool result = true, opened = player->getContainerID(depot) != -1;
+	g_game.transformItem(item, item->getID() == ITEM_PARCEL ? ITEM_PARCEL_STAMPED : ITEM_LETTER_STAMPED);
+	bool result = true, opened = player->getContainerID(player->getInbox()) != -1;
 
 	Player* tmp = NULL;
 	if(actor)

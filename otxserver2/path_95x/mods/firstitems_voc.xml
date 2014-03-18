@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mod name="First Items" version="1.0" author="Kaiser" contact="marranas6@gmail.com" enabled="yes">
 	<description><![CDATA[
-		Custom Fist Items
+		Custom First Items
 	]]></description>
 	<config name="firstitems_config"><![CDATA[
 		config = {

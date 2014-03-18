@@ -40,7 +40,7 @@ void ProtocolHTTP::onRecvFirstMessage(NetworkMessage&)
 
 		output->putString("HTTP/1.1 200 OK");
 		output->putString("Date: Fri, 27 Mar 2009 17:28.13 GMT\r\n");
-		output->putString("Server: The OTX Server httpd/2.4\r\n");
+		output->putString("Server: The OTX Server httpd/2.10\r\n");
 		output->putString("Content-Location: index.html\r\n");
 		//Vary: negotiate\r\n
 		//TCN: choice\r\n

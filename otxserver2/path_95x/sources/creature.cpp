@@ -52,7 +52,7 @@ Creature::Creature()
 	speakType = MSG_NONE;
 	skull = SKULL_NONE;
 	partyShield = SHIELD_NONE;
-	guildEmblem = EMBLEM_NONE;
+	guildEmblem = GUILDEMBLEM_NONE;
 
 	health = 1000;
 	healthMax = 1000;
@@ -229,7 +229,7 @@ void Creature::onThink(uint32_t interval)
 
 void Creature::onAttacking(uint32_t interval)
 {
-	if(!attackedCreature || attackedCreature->getHealth() < 1)
+	if(!attackedCreature || attackedCreature->getHealth() < 1 || interval < 100)
 		return;
 
 	bool deny = false;

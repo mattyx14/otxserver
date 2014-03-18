@@ -359,8 +359,7 @@ bool IOMapSerialize::loadMapRelational(Map* map)
 					{
 						if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 						{
-							Depot* depot = player->getDepot(house->getTownId(), true);
-							loadItems(itemsResult, depot, true);
+							loadItems(itemsResult, player->getInbox(), true);
 							if(player->isVirtual())
 							{
 								IOLoginData::getInstance()->savePlayer(player);
@@ -403,8 +402,7 @@ bool IOMapSerialize::loadMapRelational(Map* map)
 						{
 							if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 							{
-								Depot* depot = player->getDepot(house->getTownId(), true);
-								loadItems(itemsResult, depot, true);
+								loadItems(itemsResult, player->getInbox(), true);
 								if(player->isVirtual())
 								{
 									IOLoginData::getInstance()->savePlayer(player);
@@ -492,9 +490,8 @@ bool IOMapSerialize::loadMapBinary(Map* map)
 			{
 				if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 				{
-					Depot* depot = player->getDepot(player->getTown(), true);
 					while(itemCount--)
-						loadItem(propStream, depot, true);
+						loadItem(propStream, player->getInbox(), true);
 
 					if(player->isVirtual())
 					{
@@ -585,9 +582,8 @@ bool IOMapSerialize::loadMapBinaryTileBased(Map* map)
 			{
 				if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 				{
-					Depot* depot = player->getDepot(player->getTown(), true);
 					while(itemCount--)
-						loadItem(propStream, depot, true);
+						loadItem(propStream, player->getInbox(), true);
 
 					if(player->isVirtual())
 					{

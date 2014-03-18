@@ -197,6 +197,7 @@ void Game::loadGameState()
 	ScriptEnviroment::loadGameState();
 	loadPlayersRecord();
 	loadMotd();
+	checkHighscores();
 }
 
 void Game::setGameState(GameState_t newState)
@@ -3462,11 +3463,11 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	if(!it.id)
 		return false;
 
-	uint8_t subType = count;
-	if(it.isFluidContainer() && count < uint8_t(sizeof(reverseFluidMap) / sizeof(int8_t)))
-		subType = reverseFluidMap[count];
-	else if(!it.hasSubType())
-		subType = 0;
+	uint8_t subType;
+	if(it.isSplash() || it.isFluidContainer())
+		subType = clientFluidToServer(count);
+	else
+		subType = count;
 
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_BUY))
 		return false;
@@ -3490,11 +3491,11 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 	if(!it.id)
 		return false;
 
-	uint8_t subType = count;
-	if(it.isFluidContainer() && count < uint8_t(sizeof(reverseFluidMap) / sizeof(int8_t)))
-		subType = reverseFluidMap[count];
-	else if(!it.hasSubType())
-		subType = 0;
+	uint8_t subType;
+	if(it.isSplash() || it.isFluidContainer())
+		subType = clientFluidToServer(count);
+	else
+		subType = count;
 
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_SELL))
 		return false;
@@ -3523,14 +3524,11 @@ bool Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 	if(!it.id)
 		return false;
 
-	int32_t subType = count;
-	if(it.isSplash() || it.isFluidContainer())
-	{
-		if(subType == 3)
-			subType = 11;
-		else if(count < uint8_t(sizeof(reverseFluidMap) / sizeof(int8_t)))
-			subType = reverseFluidMap[count];
-	}
+	int32_t subType;
+	if(it.isFluidContainer() || it.isSplash())
+		subType = clientFluidToServer(count);
+	else
+		subType = count;
 
 	std::stringstream ss;
 	ss << "You see " << Item::getDescription(it, 1, NULL, subType);
@@ -3688,7 +3686,7 @@ bool Game::playerLookInBattleList(uint32_t playerId, uint32_t creatureId)
 	if(player->hasCustomFlag(PlayerCustomFlag_CanSeeCreatureDetails))
 	{
 		if(!player->hasFlag(PlayerFlag_HideHealth))
-		{														 
+		{
 			ss << std::endl << "Health: [" << creature->getHealth() << " / " << creature->getMaxHealth() << "]";
 			if(creature->getMaxMana() > 0)
 				ss << ", Mana: [" << creature->getMana() << " / " << creature->getMaxMana() << "]";
@@ -4041,9 +4039,9 @@ bool Game::playerWhisper(Player* player, const std::string& text, uint32_t state
 
 bool Game::playerYell(Player* player, const std::string& text, uint32_t statementId)
 {
-	if(player->getLevel() <= 1 && !player->hasFlag(PlayerFlag_CannotBeMuted))
+	if(player->getLevel() < 20 && !player->hasFlag(PlayerFlag_CannotBeMuted) && player->getPremiumDays() < 1)
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You may not yell as long as you are on level 1.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You may not yell unless you heave reached level 20 or your account has premium status.");
 		return true;
 	}
 
@@ -4087,7 +4085,7 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 		return false;
 	}
 
-	if(type == MSG_GAMEMASTER_PRIVATE_TO && player->hasFlag(PlayerFlag_CanTalkRedPrivate))
+	if(type == MSG_GAMEMASTER_PRIVATE_TO && (player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->hasFlag(PlayerFlag_CannotBeMuted)))
 		type = MSG_GAMEMASTER_PRIVATE_FROM;
 	else
 		type = MSG_PRIVATE_FROM;
@@ -4112,27 +4110,17 @@ bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::
 	{
 		case MSG_CHANNEL:
 		{
-			if(channelId == CHANNEL_HELP)
-			{
-				if(player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
-					type = MSG_CHANNEL_HIGHLIGHT;
-
-				if(player->hasFlag(PlayerFlag_CanTalkRedChannel))
-					type = MSG_GAMEMASTER_CHANNEL;
-			}
+			if(channelId == CHANNEL_HELP && player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
+				type = MSG_CHANNEL_HIGHLIGHT;
 
 			break;
 		}
 
 		case MSG_GAMEMASTER_CHANNEL:
 		{
-			if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-			{
-				if(text.length() < 251)
-					return g_chat.talk(player, type, text, channelId, statementId, true);
-			}
-			else
+			if(!player->hasFlag(PlayerFlag_CanTalkRedChannel))
 				type = MSG_CHANNEL;
+			break;
 		}
 
 		case MSG_GAMEMASTER_BROADCAST:
@@ -5245,7 +5233,7 @@ void Game::updateCreatureSkull(Creature* creature)
 	Player* tmpPlayer = NULL;
 	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
 	{
-		 if((tmpPlayer = (*it)->getPlayer()))
+		if((tmpPlayer = (*it)->getPlayer()))
 			tmpPlayer->sendCreatureSkull(creature);
 	}
 }
@@ -5838,6 +5826,88 @@ bool Game::loadExperienceStages()
 	return true;
 }
 
+bool Game::reloadHighscores()
+{
+	lastHighscoreCheck = time(NULL);
+	for(int16_t i = 0; i < 9; ++i)
+		highscoreStorage[i] = getHighscore(i);
+
+	return true;
+}
+
+void Game::checkHighscores()
+{
+	reloadHighscores();
+	uint32_t tmp = g_config.getNumber(ConfigManager::HIGHSCORES_UPDATETIME) * 60 * 1000;
+	if(tmp <= 0)
+		return;
+
+	Scheduler::getInstance().addEvent(createSchedulerTask(tmp, boost::bind(&Game::checkHighscores, this)));
+}
+
+std::string Game::getHighscoreString(uint16_t skill)
+{
+	Highscore hs = highscoreStorage[skill];
+	std::stringstream ss;
+	ss << "Highscore for " << getSkillName(skill) << "\n\nRank Level - Player Name";
+	for(uint32_t i = 0; i < hs.size(); ++i)
+		ss << "\n" << (i + 1) << ".  " << hs[i].second << "  -  " << hs[i].first;
+
+	ss << "\n\nLast updated on:\n" << std::ctime(&lastHighscoreCheck);
+	return ss.str();
+}
+
+Highscore Game::getHighscore(uint16_t skill)
+{
+	Database* db = Database::getInstance();
+	DBResult* result;
+	DBQuery query;
+
+	Highscore hs;
+	if(skill >= SKILL__MAGLEVEL)
+	{
+		if(skill == SKILL__MAGLEVEL)
+			query << "SELECT `maglevel`, `name` FROM `players` ORDER BY `maglevel` DESC, `manaspent` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		else
+			query << "SELECT `level`, `name` FROM `players` ORDER BY `level` DESC, `experience` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			uint32_t level;
+			if(skill == SKILL__MAGLEVEL)
+				level = result->getDataInt("maglevel");
+			else
+				level = result->getDataInt("level");
+
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, level));
+		}
+		while(result->next());
+		result->free();
+	}
+	else
+	{
+		query << "SELECT `player_skills`.`value`, `players`.`name` FROM `player_skills`,`players` WHERE `player_skills`.`skillid`=" << skill << " AND `player_skills`.`player_id`=`players`.`id` ORDER BY `player_skills`.`value` DESC, `player_skills`.`count` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, result->getDataInt("value")));
+		}
+		while(result->next());
+		result->free();
+	}
+
+	return hs;
+}
+
 int32_t Game::getMotdId()
 {
 	if(lastMotd.length() == g_config.getString(ConfigManager::MOTD).length())
@@ -5975,6 +6045,16 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_GROUPS:
 		{
+			break;
+		}
+
+		case RELOAD_HIGHSCORES:
+		{
+			if(reloadHighscores())
+				done = true;
+			else
+				std::clog << "[Error - Game::reloadInfo] Failed to reload highscores." << std::endl;
+
 			break;
 		}
 
@@ -6380,14 +6460,15 @@ bool Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 		if(fee > player->balance)
 			return false;
 
-		Depot* depot = player->getDepot(player->getMarketDepotId(), false);
-		if(!depot)
+		DepotChest* depotChest = player->getDepotChest(player->getMarketDepotId(), false);
+		if(!depotChest)
 			return false;
 
 		ItemList itemList;
 		uint32_t count = 0;
 		std::list<Container*> containerList;
-		containerList.push_back(depot->getLocker());
+		containerList.push_back(depotChest);
+		containerList.push_back(player->getInbox());
 
 		bool enough = false;
 		do
@@ -6500,7 +6581,6 @@ bool Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		if(!it.id)
 			return false;
 
-		Depot* depot = player->getDepot(player->getMarketDepotId(), true);
 		if(it.stackable)
 		{
 			uint16_t tmpAmount = offer.amount;
@@ -6508,7 +6588,7 @@ bool Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			{
 				int32_t stackCount = std::min((int32_t)100, (int32_t)tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
-				if(internalAddItem(NULL, depot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6526,7 +6606,7 @@ bool Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			for(uint16_t i = 0; i < offer.amount; ++i)
 			{
 				Item* item = Item::CreateItem(it.id, subType);
-				if(internalAddItem(NULL, depot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6570,14 +6650,15 @@ bool Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	uint64_t totalPrice = (uint64_t)offer.price * amount;
 	if(offer.type == MARKETACTION_BUY)
 	{
-		Depot* depot = player->getDepot(player->getMarketDepotId(), false);
-		if(!depot)
+		DepotChest* depotChest = player->getDepotChest(player->getMarketDepotId(), false);
+		if(!depotChest)
 			return false;
 
 		ItemList itemList;
 		uint32_t count = 0;
 		std::list<Container*> containerList;
-		containerList.push_back(depot->getLocker());
+		containerList.push_back(depotChest);
+		containerList.push_back(player->getInbox());
 
 		bool enough = false;
 		do
@@ -6644,7 +6725,6 @@ bool Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		if(!buyerPlayer)
 			return false;
 
-		Depot* buyerDepot = buyerPlayer->getDepot(buyerPlayer->getTown(), true);
 		if(it.stackable)
 		{
 			uint16_t tmpAmount = amount;
@@ -6652,7 +6732,7 @@ bool Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			{
 				uint16_t stackCount = std::min((uint16_t)100, tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
-				if(internalAddItem(NULL, buyerDepot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6670,7 +6750,7 @@ bool Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			for(uint16_t i = 0; i < amount; ++i)
 			{
 				Item* item = Item::CreateItem(it.id, subType);
-				if(internalAddItem(NULL, buyerDepot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6690,7 +6770,6 @@ bool Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			return false;
 
 		player->balance -= totalPrice;
-		Depot* depot = player->getDepot(player->getMarketDepotId(), true);
 		if(it.stackable)
 		{
 			uint16_t tmpAmount = amount;
@@ -6698,7 +6777,7 @@ bool Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			{
 				uint16_t stackCount = std::min((uint16_t)100, tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
-				if(internalAddItem(NULL, depot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6716,7 +6795,7 @@ bool Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			for(uint16_t i = 0; i < amount; ++i)
 			{
 				Item* item = Item::CreateItem(it.id, subType);
-				if(internalAddItem(NULL, depot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6775,7 +6854,6 @@ void Game::checkExpiredMarketOffers()
 		if(!itemType.id)
 			continue;
 
-		Depot* depot = player->getDepot(player->getTown(), true);
 		if(itemType.stackable)
 		{
 			uint16_t tmpAmount = offer.amount;
@@ -6783,7 +6861,7 @@ void Game::checkExpiredMarketOffers()
 			{
 				uint16_t stackCount = std::min((uint16_t)100, tmpAmount);
 				Item* item = Item::CreateItem(itemType.id, stackCount);
-				if(internalAddItem(NULL, depot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6801,7 +6879,7 @@ void Game::checkExpiredMarketOffers()
 			for(uint16_t i = 0; i < offer.amount; ++i)
 			{
 				Item* item = Item::CreateItem(itemType.id, subType);
-				if(internalAddItem(NULL, depot->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if(internalAddItem(NULL, player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
 				{
 					delete item;
 					break;
@@ -6823,7 +6901,7 @@ void Game::checkExpiredMarketOffers()
 		Scheduler::getInstance().addEvent(createSchedulerTask(checkExpiredMarketOffersEachMinutes * 60 * 1000, boost::bind(&Game::checkExpiredMarketOffers, this)));
 }
 
-void Game::playerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
+void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())

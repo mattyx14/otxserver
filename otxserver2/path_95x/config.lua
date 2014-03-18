@@ -144,10 +144,7 @@
 		-- Paralyze delay
 		paralyzeDelay = 1500
 
-		-- Protocol Server
-		-- The function no work (Fix please for Linux/Windows Users)
-		-- clientVersionMin = "9.54"
-		-- clientVersionMax = "9.54"
+		-- GUI
 		premiumDaysToAddByGui = 10
 
 		-- Depot and Miscellaneous
@@ -171,7 +168,22 @@
 		NoShareExpSummonMonster = false
 
 		-- Others
+		-- gmAnonymousInChanel = 0 - normal; 1 - in help channel; 2 - all channels
 		enableLootBagDisplay = false
+		serverPreview = false
+		useRunesRequirements = true
+		highscoreDisplayPlayers = 10
+		updateHighscoresAfterMinutes = 60
+		attackImmediatelyAfterLoggingIn = false
+
+		-- Advanced Version
+		-- Note: If you use another protocol than the one we set as you will have functional failures.
+		-- Supported (953) = 9.53
+		-- Supported (954) = 9.54
+		manualVersionConfig = false
+		versionMin = 953
+		versionMax = 954
+		versionMsg = "Only clients with protocol 9.54 allowed!"
 
 	-- Connection config
 	loginTries = 20
@@ -199,6 +211,10 @@
 	premiumDaysToFormGuild = 0
 	guildNameMinLength = 4
 	guildNameMaxLength = 20
+
+	-- Highscores
+	highscoreDisplayPlayers = 15
+	updateHighscoresAfterMinutes = 60
 
 	-- Houses
 	buyableAndSellableHouses = true
@@ -283,7 +299,7 @@
 	storePlayerDirection = false
 	savePlayerData = true
 	monsterLootMessage = 3
-	monsterLootMessageType = 19
+	monsterLootMessageType = 20
 	separateViplistPerCharacter = false
 	vipListDefaultLimit = 20
 	vipListDefaultPremiumLimit = 100
@@ -326,8 +342,11 @@
 	experienceStages = false
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
-	rateSkill = 3.0
-	rateMagic = 3.0
+	levelToOfflineTraining = 8
+	rateSkill = 1.0
+	rateSkillOffline = 0.5
+	rateMagic = 1.0
+	rateMagicOffline = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

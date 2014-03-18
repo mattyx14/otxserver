@@ -493,17 +493,15 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			return RET_YOUARENOTTHEOWNER;
 
 		Container* tmpContainer = NULL;
-		if(Depot* depot = container->getDepot())
+		if(DepotLocker* depot = container->getDepotLocker())
 		{
 			if(player->hasFlag(PlayerFlag_CannotPickupItem))
 				return RET_CANNOTUSETHISOBJECT;
 
-			if(Depot* playerDepot = player->getDepot(depot->getDepotId(), true))
-			{
-				player->useDepot(depot->getDepotId(), true);
-				playerDepot->setParent(depot->getParent());
-				tmpContainer = playerDepot;
-			}
+			DepotLocker* myDepotLocker = player->getDepotLocker(depot->getDepotId());
+			myDepotLocker->setParent(depot->getParent());
+			tmpContainer = myDepotLocker;
+			player->setLastDepotId(depot->getDepotId());
 		}
 
 		if(!tmpContainer)
@@ -548,20 +546,10 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			return RET_NOERROR;
 		}
 
-		Depot* depot = NULL;
-		if(Cylinder* cylinder = item->getParent())
-		{
-			if(Item* parentItem = cylinder->getItem())
-			{
-				if(Container* parentContainer = parentItem->getContainer())
-					depot = parentContainer->getDepot();
-			}
-		}
+		if(player->getLastDepotId() == -1)
+			return RET_NOERROR;
 
-		if(!depot)
-			return RET_CANNOTUSETHISOBJECT;
-
-		player->sendMarketEnter(depot->getDepotId());
+		player->sendMarketEnter(player->getLastDepotId());
 		return RET_NOERROR;
 	}
 
@@ -570,6 +558,17 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 	{
 		g_game.transformItem(item, it.transformUseTo);
 		g_game.startDecay(item);
+		return RET_NOERROR;
+	}
+
+	if(item->isPremiumScroll())
+	{
+		std::stringstream ss;
+		ss << " You have recived " << it.premiumDays << " premium days.";
+		player->sendTextMessage(MSG_INFO_DESCR, ss.str());
+		
+		player->addPremiumDays(it.premiumDays);
+		g_game.internalRemoveItem(NULL, item, 1);
 		return RET_NOERROR;
 	}
 

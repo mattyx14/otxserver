@@ -116,13 +116,24 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		password = "1";
 	}
 
-	if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
-		disconnectClient(0x0A, CLIENT_VERSION_STRING);
-		return;
+		if(version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX))
+		{
+			disconnectClient(0x14, g_config.getString(ConfigManager::VERSION_MSG).c_str());
+			return;
+		}
 	}
-#ifdef CLIENT_VERSION_DATA
+	else
+	{
+		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+		{
+			disconnectClient(0x14, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
+			return;
+		}
+	}
 
+#ifdef CLIENT_VERSION_DATA
 	if(sprSignature != CLIENT_VERSION_SPR)
 	{
 		disconnectClient(0x0A, CLIENT_VERSION_DATA);

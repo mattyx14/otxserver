@@ -423,14 +423,15 @@ bool hasBitSet(uint32_t flag, uint32_t flags)
 	return ((flags & flag) == flag);
 }
 
-int32_t round(float v)
+#if !defined(_MSC_VER) || _MSC_VER < 1800
+double round(double v)
 {
-	int32_t t = (int32_t)std::floor(v);
-	if((v - t) > 0.5)
-		return t + 1;
-
-	return t;
+	if (v >= 0.0)
+		return std::floor(v + 0.5);
+	else
+		return std::ceil(v - 0.5);
 }
+#endif
 
 uint32_t rand24b()
 {
@@ -845,16 +846,16 @@ PartyShields_t getShields(std::string strValue)
 GuildEmblems_t getEmblems(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "blue" || tmpStrValue == "3")
-		return EMBLEM_BLUE;
+	if(tmpStrValue == "blue" || tmpStrValue == "neutral" || tmpStrValue == "3")
+		return GUILDEMBLEM_NEUTRAL;
 
-	if(tmpStrValue == "red" || tmpStrValue == "2")
-		return EMBLEM_RED;
+	if(tmpStrValue == "red" || tmpStrValue == "enemy" || tmpStrValue == "2")
+		return GUILDEMBLEM_ENEMY;
 
-	if(tmpStrValue == "green" || tmpStrValue == "1")
-		return EMBLEM_GREEN;
+	if(tmpStrValue == "green" || tmpStrValue == "ally" || tmpStrValue == "1")
+		return GUILDEMBLEM_ALLY;
 
-	return EMBLEM_NONE;
+	return GUILDEMBLEM_NONE;
 }
 
 Direction getDirection(std::string string)
@@ -1750,4 +1751,37 @@ std::string getFilePath(FileType_t type, std::string name/* = ""*/)
 			break;
 	}
 	return path;
+}
+
+std::string getFirstLine(const std::string& str)
+{
+	std::string firstLine = "";
+	for(uint32_t i = 0, strLength = str.length(); i < strLength; ++i)
+	{
+		if(str[i] == '\n')
+			break;
+
+		firstLine += str[i];
+	}
+	return firstLine;
+}
+
+uint8_t serverFluidToClient(uint8_t serverFluid)
+{
+	uint8_t size = sizeof(clientToServerFluidMap) / sizeof(int8_t);
+	for(uint8_t i = 0; i < size; ++i)
+	{
+		if(clientToServerFluidMap[i] == serverFluid)
+			return i;
+	}
+	return 0;
+}
+
+uint8_t clientFluidToServer(uint8_t clientFluid)
+{
+	uint8_t size = sizeof(clientToServerFluidMap) / sizeof(int8_t);
+	if(clientFluid >= size)
+		return 0;
+
+	return clientToServerFluidMap[clientFluid];
 }

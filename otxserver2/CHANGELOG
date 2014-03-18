@@ -38,12 +38,13 @@
 	* Fields(fire/energy/earth) not work properly
 ]
 
-[ OTX Server 2.10.0 Version - "FINAL"
+[ OTX Server 2.10 Version - "FINAL"
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
 		- Added Support to 98x
 		- Fixed error on Reload function
 		- Update Support to 10.37
+		- Update protocol 95x to 2.10
 ]
 
 [ OTX Server 2.9 Version - "Galaxy - SE"

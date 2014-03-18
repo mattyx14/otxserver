@@ -1414,12 +1414,17 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 
 	if(const CreatureVector* creatures = getCreatures())
 	{
-		for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
+		if(thing->getCreature())
 		{
-			++n;
-			if((*cit) == thing)
-				return n;
+			for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
+			{
+				++n;
+				if((*cit) == thing)
+					return n;
+			}
 		}
+		else
+			n += creatures->size();
 	}
 
 	if(items)
@@ -1710,7 +1715,7 @@ void Tile::updateTileFlags(Item* item, bool remove)
 		if(item->getBed())
 			setFlag(TILESTATE_BED);
 
-		if(item->getContainer() && item->getContainer()->getDepot())
+		if(item->getContainer() && item->getContainer()->getDepotLocker())
 			setFlag(TILESTATE_DEPOT);
 
 		if(item->hasProperty(BLOCKSOLID))
@@ -1799,7 +1804,7 @@ void Tile::updateTileFlags(Item* item, bool remove)
 		if(item->getBed())
 			resetFlag(TILESTATE_BED);
 
-		if(item->getContainer() && item->getContainer()->getDepot())
+		if(item->getContainer() && item->getContainer()->getDepotLocker())
 			resetFlag(TILESTATE_DEPOT);
 
 		if(item->hasProperty(BLOCKSOLID) && !hasProperty(item, BLOCKSOLID))

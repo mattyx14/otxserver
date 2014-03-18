@@ -504,6 +504,7 @@ class LuaInterface
 		static int32_t luaGetCreatureLookDirection(lua_State* L);
 		static int32_t luaGetPlayerSkillLevel(lua_State* L);
 		static int32_t luaGetPlayerSkillTries(lua_State* L);
+		static int32_t luaDoPlayerSetOfflineTrainingSkill(lua_State* L);
 		static int32_t luaGetPlayerVocation(lua_State* L);
 		static int32_t luaGetPlayerTown(lua_State* L);
 		static int32_t luaGetPlayerItemCount(lua_State* L);
@@ -637,6 +638,7 @@ class LuaInterface
 		static int32_t luaGetCreatureName(lua_State* L);
 		static int32_t luaGetCreatureMaster(lua_State* L);
 		static int32_t luaGetCreatureSummons(lua_State* L);
+		static int32_t luaGetHighscoreString(lua_State* L);
 		static int32_t luaIsSightClear(lua_State* L);
 		static int32_t luaAddEvent(lua_State* L);
 		static int32_t luaStopEvent(lua_State* L);
@@ -697,7 +699,8 @@ class LuaInterface
 		static int32_t luaCanPlayerRideMount(lua_State* L);
 		static int32_t luaDoPlayerSetMounted(lua_State* L);
 		static int32_t luaGetMountInfo(lua_State* L);
-		static int32_t luaDoPlayerSendExtendedOpcode(lua_State* L);
+		static int32_t luaIsPlayerUsingOtclient(lua_State* L);
+		static int32_t luaDoSendPlayerExtendedOpcode(lua_State* L);
 
 		static int32_t luaL_errors(lua_State* L);
 		static int32_t luaL_loadmodlib(lua_State* L);

@@ -1151,7 +1151,10 @@ bool Chat::talk(Player* player, MessageClasses type, const std::string& text, ui
 			player->sendCancel("Only the leader of your guild can clean the guild motd.");
 	}
 	else if(text.substr(1, 8) == "commands")
-		player->sendChannelMessage("", "Guild commands with parameters: disband, invite[name], leave, kick[name], revoke[name], demote[name], promote[name], passleadership[name], nick[name, nick], setrankname[oldName, newName], setmotd[text] and cleanmotd.", MSG_CHANNEL_HIGHLIGHT, CHANNEL_GUILD);
+	{
+		sprintf(buffer, "Guild commands with parameters: disband, invite[name], leave, kick[name], revoke[name], demote[name], promote[name], passleadership[name], nick[name, nick], setrankname[oldName, newName], setmotd[text] and cleanmotd.");
+		channel->talk("", MSG_CHANNEL_HIGHLIGHT, buffer);
+	}
 	else
 		return false;
 

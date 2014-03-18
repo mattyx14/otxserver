@@ -1,5 +1,5 @@
 AC_PREREQ([2.50])
-AC_INIT([OTXServer], [2.4])
+AC_INIT([OTXServer], [2.10])
 AM_INIT_AUTOMAKE([1.10 foreign silent-rules])
 AC_CONFIG_SRCDIR([account.h])
 AM_CONFIG_HEADER([config.h])
@@ -9,8 +9,14 @@ AC_PROG_CXX
 AC_LANG(C++)
 
 OPTIONAL_FLAGS=""
+
+# Config for 32Bits
 DEBUG_FLAGS="-O0 -march=native -fomit-frame-pointer"
 #DEBUG_FLAGS="-O3 -march=native -fomit-frame-pointer"
+
+# Config for 64Bits
+#DEBUG_FLAGS="-O0 -march=core2 -fomit-frame-pointer"
+#DEBUG_FLAGS="-O3 -march=core2 -fomit-frame-pointer"
 
 # check if we want server diag enabled
 serverDiag=no
@@ -297,7 +303,7 @@ AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 
 echo
-#echo The OTX Server 2.4
+#echo The OTX Server 2.10
 echo $PACKAGE $VERSION
 echo
 echo Using LuaJIT................ : $luaJIT

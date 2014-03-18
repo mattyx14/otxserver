@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug GUI|Win32">
       <Configuration>Debug GUI</Configuration>
@@ -58,7 +58,8 @@
     <ClInclude Include="..\databasepgsql.h" />
     <ClInclude Include="..\databasesqlite.h" />
     <ClInclude Include="..\definitions.h" />
-    <ClInclude Include="..\depot.h" />
+    <ClInclude Include="..\depotchest.h" />
+    <ClInclude Include="..\depotlocker.h" />
     <ClInclude Include="..\dispatcher.h" />
     <ClInclude Include="..\enums.h" />
     <ClInclude Include="..\exception.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="..\gui.h" />
     <ClInclude Include="..\house.h" />
     <ClInclude Include="..\housetile.h" />
+    <ClInclude Include="..\inbox.h" />
     <ClInclude Include="..\inputbox.h" />
     <ClInclude Include="..\ioban.h" />
     <ClInclude Include="..\ioguild.h" />
@@ -150,7 +152,8 @@
     <ClCompile Include="..\databasemysqlpp.cpp" />
     <ClCompile Include="..\databasepgsql.cpp" />
     <ClCompile Include="..\databasesqlite.cpp" />
-    <ClCompile Include="..\depot.cpp" />
+    <ClCompile Include="..\depotchest.cpp" />
+    <ClCompile Include="..\depotlocker.cpp" />
     <ClCompile Include="..\dispatcher.cpp" />
     <ClCompile Include="..\exception.cpp" />
     <ClCompile Include="..\fileloader.cpp" />
@@ -161,6 +164,7 @@
     <ClCompile Include="..\gui.cpp" />
     <ClCompile Include="..\house.cpp" />
     <ClCompile Include="..\housetile.cpp" />
+    <ClCompile Include="..\inbox.cpp" />
     <ClCompile Include="..\inputbox.cpp" />
     <ClCompile Include="..\ioban.cpp" />
     <ClCompile Include="..\ioguild.cpp" />
@@ -225,39 +229,48 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{04C27DC4-E458-2239-C38C-89C1B4582FBD}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

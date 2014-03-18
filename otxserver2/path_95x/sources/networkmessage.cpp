@@ -20,6 +20,7 @@
 #include "networkmessage.h"
 #include "position.h"
 #include "item.h"
+#include "player.h"
 
 SocketCode_t NetworkMessage::read(SOCKET socket, bool ignoreLength, int32_t timeout/* = NETWORK_RETRY_TIME*/)
 {

@@ -155,7 +155,8 @@ class ItemType
 		Ammo_t ammoType;
 
 		uint16_t transformBed[PLAYERSEX_MALE + 1], transformUseTo, transformEquipTo, transformDeEquipTo,
-			id, clientId, maxItems, slotPosition, wieldPosition, speed, maxTextLength, writeOnceItemId, wareId;
+			id, clientId, maxItems, slotPosition, wieldPosition, speed, maxTextLength, writeOnceItemId, wareId,
+			premiumDays;
 
 		int32_t attack, extraAttack, defense, extraDefense, armor, breakChance, hitChance, maxHitChance,
 			runeLevel, runeMagLevel, lightLevel, lightColor, decayTo, rotateTo, alwaysOnTopOrder;

@@ -1523,6 +1523,9 @@ void LuaInterface::registerFunctions()
 	//getPlayerSkillTries(cid, skill)
 	lua_register(m_luaState, "getPlayerSkillTries", LuaInterface::luaGetPlayerSkillTries);
 
+	//doPlayerSetOfflineTrainingSkill(cid, skill)
+	lua_register(m_luaState, "doPlayerSetOfflineTrainingSkill", LuaInterface::luaDoPlayerSetOfflineTrainingSkill);
+
 	//getPlayerTown(cid)
 	lua_register(m_luaState, "getPlayerTown", LuaInterface::luaGetPlayerTown);
 
@@ -2482,14 +2485,20 @@ void LuaInterface::registerFunctions()
 	//getConfigFile()
 	lua_register(m_luaState, "getConfigFile", LuaInterface::luaGetConfigFile);
 
-	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
-	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoPlayerSendExtendedOpcode);
+	//isPlayerUsingOtclient(cid)
+	lua_register(m_luaState, "isPlayerUsingOtclient", LuaInterface::luaIsPlayerUsingOtclient);
+
+	//doSendPlayerExtendedOpcode(cid, opcode, buffer)
+	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoSendPlayerExtendedOpcode);
 
 	//getConfigValue(key)
 	lua_register(m_luaState, "getConfigValue", LuaInterface::luaGetConfigValue);
 
 	//getModList()
 	lua_register(m_luaState, "getModList", LuaInterface::luaGetModList);
+
+	//getHighscoreString(skillId)
+	lua_register(m_luaState, "getHighscoreString", LuaInterface::luaGetHighscoreString);
 
 	//getWaypointPosition(name)
 	lua_register(m_luaState, "getWaypointPosition", LuaInterface::luaGetWaypointPosition);
@@ -3612,16 +3621,16 @@ int32_t LuaInterface::luaDoItemSetDestination(lua_State* L)
 
 int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 {
-	//doTransformItem(uid, newId[, count/subType])
-	int32_t count = -1;
-	if(lua_gettop(L) > 2)
-		count = popNumber(L);
+	//doTransformItem(uid, newId[, count/subType = -1])
+	int32_t subType = -1;
+	if(lua_gettop(L) >= 3)
+		subType = popNumber(L);
 
 	uint32_t newId = popNumber(L), uid = popNumber(L);
 	ScriptEnviroment* env = getEnv();
 
 	Item* item = env->getItemByUID(uid);
-	if(!item)
+	if(!item && item->getID() == newId && (subType == -1 || subType == item->getSubType()))
 	{
 		errorEx(getError(LUA_ERROR_ITEM_NOT_FOUND));
 		lua_pushboolean(L, false);
@@ -3629,10 +3638,10 @@ int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 	}
 
 	const ItemType& it = Item::items[newId];
-	if(it.stackable && count > 100)
-		count = 100;
+	if(it.stackable && subType > 100)
+		subType = 100;
 
-	Item* newItem = g_game.transformItem(item, newId, count);
+	Item* newItem = g_game.transformItem(item, newId, subType);
 	if(newItem && newItem != item)
 	{
 		env->removeThing(uid);
@@ -4518,6 +4527,29 @@ int32_t LuaInterface::luaGetPlayerSkillTries(lua_State* L)
 			lua_pushnumber(L, player->skills[skill][SKILL_TRIES]);
 		else
 			lua_pushboolean(L, false);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSetOfflineTrainingSkill(lua_State* L)
+{
+	//doPlayerSetOfflineTrainingSkill(cid, skillid)
+	uint32_t skillid = (uint32_t)popNumber(L);
+	uint32_t cid = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+
+	Player* player = env->getPlayerByUID(cid);
+	if(player)
+	{
+		player->setOfflineTrainingSkill(skillid);
+		lua_pushboolean(L, true);
 	}
 	else
 	{
@@ -7624,8 +7656,8 @@ int32_t LuaInterface::luaGetPlayerDepotItems(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if(const Depot* depot = player->getDepot(depotid, true))
-			lua_pushnumber(L, depot->getItemHoldingCount());
+		if(const DepotChest* depotChest = player->getDepotChest(depotid, true))
+			lua_pushnumber(L, depotChest->getItemHoldingCount());
 		else
 			lua_pushboolean(L, false);
 	}
@@ -8470,17 +8502,13 @@ int32_t LuaInterface::luaDoPlayerSendTutorial(lua_State* L)
 
 int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 {
-	//doPlayerSendMailByName(name, item[, town[, actor]])
+	//doPlayerSendMailByName(name, item[, actor])
 	ScriptEnviroment* env = getEnv();
 	int32_t params = lua_gettop(L);
 
 	Creature* actor = NULL;
-	if(params > 3)
-		actor = env->getCreatureByUID(popNumber(L));
-
-	uint32_t town = 0;
 	if(params > 2)
-		town = popNumber(L);
+		actor = env->getCreatureByUID(popNumber(L));
 
 	Item* item = env->getItemByUID(popNumber(L));
 	if(!item)
@@ -8496,7 +8524,7 @@ int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 		return 1;
 	}
 
-	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), town, item);
+	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), item);
 	if(result)
 		env->removeTempItem(env, item);
 
@@ -8536,24 +8564,7 @@ int32_t LuaInterface::luaDoPlayerAddPremiumDays(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if(player->premiumDays < GRATIS_PREMIUM)
-		{
-			Account account = IOLoginData::getInstance()->loadAccount(player->getAccount());
-			if(days < 0)
-			{
-				account.premiumDays = std::max((uint32_t)0, uint32_t(account.premiumDays + (int32_t)days));
-				player->premiumDays = std::max((uint32_t)0, uint32_t(player->premiumDays + (int32_t)days));
-			}
-			else
-			{
-				account.premiumDays = std::min((uint32_t)65534, uint32_t(account.premiumDays + (uint32_t)days));
-				player->premiumDays = std::min((uint32_t)65534, uint32_t(player->premiumDays + (uint32_t)days));
-			}
-
-			IOLoginData::getInstance()->saveAccount(account);
-			player->sendBasicData();
-		}
-
+		player->addPremiumDays(days);
 		lua_pushboolean(L, true);
 	}
 	else
@@ -9493,7 +9504,20 @@ int32_t LuaInterface::luaGetMountInfo(lua_State* L)
 	return 1;
 }
 
-int32_t LuaInterface::luaDoPlayerSendExtendedOpcode(lua_State* L)
+int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
+{
+	//isPlayerUsingOtclient(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		lua_pushboolean(L, player->isUsingOtclient());
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
 {
 	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
 	std::string buffer = popString(L);
@@ -9988,6 +10012,18 @@ int32_t LuaInterface::luaGetSpectators(lua_State* L)
 		lua_pushnumber(L, env->addThing(*it));
 		pushTable(L);
 	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaGetHighscoreString(lua_State* L)
+{
+	//getHighscoreString(skillId)
+	uint16_t skillId = popNumber(L);
+	if(skillId <= SKILL__LAST)
+		lua_pushstring(L, g_game.getHighscoreString(skillId).c_str());
+	else
+		lua_pushboolean(L, false);
 
 	return 1;
 }

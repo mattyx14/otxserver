@@ -21,13 +21,13 @@
 
 enum OperatingSystem_t
 {
-	CLIENTOS_LINUX				= 0x01,
-	CLIENTOS_WINDOWS			= 0x02,
-	CLIENTOS_FLASH				= 0x03,
+	CLIENTOS_LINUX					= 0x01,
+	CLIENTOS_WINDOWS				= 0x02,
+	CLIENTOS_FLASH					= 0x03,
 
-	CLIENTOS_OTCLIENT_LINUX		= 0x0A,
-	CLIENTOS_OTCLIENT_WINDOWS	= 0x0B,
-	CLIENTOS_OTCLIENT_MAC		= 0x0C,
+	CLIENTOS_OTCLIENT_LINUX			= 0x0A,
+	CLIENTOS_OTCLIENT_WINDOWS		= 0x0B,
+	CLIENTOS_OTCLIENT_MAC			= 0x0C
 };
 
 enum ChannelEvent_t
@@ -40,9 +40,9 @@ enum ChannelEvent_t
 
 enum ReportType_t
 {
-	REPORT_NAME = 0x00,
-	REPORT_STATEMENT = 0x01,
-	REPORT_BOT = 0x02
+	REPORT_NAME						= 0x00,
+	REPORT_STATEMENT				= 0x01,
+	REPORT_BOT						= 0x02
 };
 
 enum MagicEffect_t
@@ -181,127 +181,127 @@ enum ShootEffect_t
 	SHOOT_EFFECT_LAST				= SHOOT_EFFECT_UNK2,
 
 	//for internal use, dont send to client
-	SHOOT_EFFECT_WEAPONTYPE		= 0xFE, //254
-	SHOOT_EFFECT_NONE			= 0xFF,
-	SHOOT_EFFECT_UNKNOWN		= 0xFFFF
+	SHOOT_EFFECT_WEAPONTYPE			= 0xFE, //254
+	SHOOT_EFFECT_NONE				= 0xFF,
+	SHOOT_EFFECT_UNKNOWN			= 0xFFFF
 };
 
 enum MessageClasses
 {
-	MSG_NONE					= 0x00,
+	MSG_NONE						= 0x00,
 
-	MSG_SPEAK_SAY				= 0x01,
-	MSG_SPEAK_WHISPER			= 0x02,
-	MSG_SPEAK_YELL				= 0x03,
-	MSG_PRIVATE_FROM			= 0x04,
-	MSG_PRIVATE_TO				= 0x05,
-	MSG_CHANNEL_MANAGEMENT		= 0x06,
-	MSG_CHANNEL					= 0x07,
-	MSG_CHANNEL_HIGHLIGHT		= 0x08,
-	MSG_SPEAK_SPELL				= 0x09,
-	MSG_NPC_FROM				= 0x0A,
-	MSG_NPC_TO					= 0x0B,
-	MSG_GAMEMASTER_BROADCAST	= 0x0C,
-	MSG_GAMEMASTER_CHANNEL		= 0x0D,
-	MSG_GAMEMASTER_PRIVATE_FROM	= 0x0E,
-	MSG_GAMEMASTER_PRIVATE_TO	= 0x0F,
-	MSG_SPEAK_MONSTER_SAY		= 0x22,
-	MSG_SPEAK_MONSTER_YELL		= 0x23,
+	MSG_SPEAK_SAY					= 0x01,
+	MSG_SPEAK_WHISPER				= 0x02,
+	MSG_SPEAK_YELL					= 0x03,
+	MSG_PRIVATE_FROM				= 0x04,
+	MSG_PRIVATE_TO					= 0x05,
+	MSG_CHANNEL_MANAGEMENT			= 0x06,
+	MSG_CHANNEL						= 0x07,
+	MSG_CHANNEL_HIGHLIGHT			= 0x08,
+	MSG_SPEAK_SPELL					= 0x09,
+	MSG_NPC_FROM					= 0x0A,
+	MSG_NPC_TO						= 0x0B,
+	MSG_GAMEMASTER_BROADCAST		= 0x0C,
+	MSG_GAMEMASTER_CHANNEL			= 0x0D,
+	MSG_GAMEMASTER_PRIVATE_FROM		= 0x0E,
+	MSG_GAMEMASTER_PRIVATE_TO		= 0x0F,
+	MSG_SPEAK_MONSTER_SAY			= 0x22,
+	MSG_SPEAK_MONSTER_YELL			= 0x23,
 
-	MSG_SPEAK_FIRST				= MSG_SPEAK_SAY,
-	MSG_SPEAK_LAST				= MSG_GAMEMASTER_PRIVATE_TO,
-	MSG_SPEAK_MONSTER_FIRST		= MSG_SPEAK_MONSTER_SAY,
-	MSG_SPEAK_MONSTER_LAST		= MSG_SPEAK_MONSTER_YELL,
+	MSG_SPEAK_FIRST					= MSG_SPEAK_SAY,
+	MSG_SPEAK_LAST					= MSG_GAMEMASTER_PRIVATE_TO,
+	MSG_SPEAK_MONSTER_FIRST			= MSG_SPEAK_MONSTER_SAY,
+	MSG_SPEAK_MONSTER_LAST			= MSG_SPEAK_MONSTER_YELL,
 
-	MSG_STATUS_CONSOLE_BLUE		= 0x04, /*Teal message in local chat*/
-	MSG_STATUS_CONSOLE_RED		= 0x0C, /*Red message in console*/
-	MSG_STATUS_DEFAULT			= 0x10, /*White message at the bottom of the game window and in the console*/
-	MSG_STATUS_WARNING			= 0x11, /*Red message in game window and in the console*/
-	MSG_EVENT_ADVANCE			= 0x12, /*White message in game window and in the console*/
-	MSG_STATUS_SMALL			= 0x13, /*White message at the bottom of the game window"*/
-	MSG_INFO_DESCR				= 0x14, /*Green message in game window and in the console*/
-	MSG_DAMAGE_DEALT			= 0x15,
-	MSG_DAMAGE_RECEIVED			= 0x16,
-	MSG_HEALED					= 0x17,
-	MSG_EXPERIENCE				= 0x18,
-	MSG_DAMAGE_OTHERS			= 0x19,
-	MSG_HEALED_OTHERS			= 0x1A,
-	MSG_EXPERIENCE_OTHERS		= 0x1B,
-	MSG_EVENT_DEFAULT			= 0x1C, /*White message at the bottom of the game window and in the console*/
-	MSG_LOOT					= 0x1D, /*Green message in game window and in the console*/
-	MSG_TRADE_NPC				= 0x1E, /*Green message in game window and in the console*/
-	MSG_EVENT_GUILD				= 0x1F, /*Green message in game window and in the console*/
-	MSG_PARTY_MANAGEMENT		= 0x20, /*Green message in game window and in the console*/
-	MSG_PARTY					= 0x21, /*Green message in game window and in the console*/
-	MSG_EVENT_ORANGE			= 0x22, /*Orange message in local chat*/
-	MSG_STATUS_CONSOLE_ORANGE	= 0x23, /*Orange message in local chat*/
-	MSG_REPORT 					= 0x24, /*White message in game window and in the console*/
-	MSG_HOTKEY_USE				= 0x25, /*Green message in game window*/
-	MSG_TUTORIAL_HINT			= 0x26
+	MSG_STATUS_CONSOLE_BLUE			= 0x04, /*Teal message in local chat*/
+	MSG_STATUS_CONSOLE_RED			= 0x0C, /*Red message in console*/
+	MSG_STATUS_DEFAULT				= 0x10, /*White message at the bottom of the game window and in the console*/
+	MSG_STATUS_WARNING				= 0x11, /*Red message in game window and in the console*/
+	MSG_EVENT_ADVANCE				= 0x12, /*White message in game window and in the console*/
+	MSG_STATUS_SMALL				= 0x13, /*White message at the bottom of the game window"*/
+	MSG_INFO_DESCR					= 0x14, /*Green message in game window and in the console*/
+	MSG_DAMAGE_DEALT				= 0x15,
+	MSG_DAMAGE_RECEIVED				= 0x16,
+	MSG_HEALED						= 0x17,
+	MSG_EXPERIENCE					= 0x18,
+	MSG_DAMAGE_OTHERS				= 0x19,
+	MSG_HEALED_OTHERS				= 0x1A,
+	MSG_EXPERIENCE_OTHERS			= 0x1B,
+	MSG_EVENT_DEFAULT				= 0x1C, /*White message at the bottom of the game window and in the console*/
+	MSG_LOOT						= 0x1D, /*Green message in game window and in the console*/
+	MSG_TRADE_NPC					= 0x1E, /*Green message in game window and in the console*/
+	MSG_EVENT_GUILD					= 0x1F, /*Green message in game window and in the console*/
+	MSG_PARTY_MANAGEMENT			= 0x20, /*Green message in game window and in the console*/
+	MSG_PARTY						= 0x21, /*Green message in game window and in the console*/
+	MSG_EVENT_ORANGE				= 0x22, /*Orange message in local chat*/
+	MSG_STATUS_CONSOLE_ORANGE		= 0x23, /*Orange message in local chat*/
+	MSG_REPORT						= 0x24, /*White message in game window and in the console*/
+	MSG_HOTKEY_USE					= 0x25, /*Green message in game window*/
+	MSG_TUTORIAL_HINT				= 0x26
 };
 
 enum MapMarks_t
 {
-	MAPMARK_TICK		= 0x00,
-	MAPMARK_QUESTION	= 0x01,
-	MAPMARK_EXCLAMATION	= 0x02,
-	MAPMARK_STAR		= 0x03,
-	MAPMARK_CROSS		= 0x04,
-	MAPMARK_TEMPLE		= 0x05,
-	MAPMARK_KISS		= 0x06,
-	MAPMARK_SHOVEL		= 0x07,
-	MAPMARK_SWORD		= 0x08,
-	MAPMARK_FLAG		= 0x09,
-	MAPMARK_LOCK		= 0x0A,
-	MAPMARK_BAG			= 0x0B,
-	MAPMARK_SKULL		= 0x0C,
-	MAPMARK_DOLLAR		= 0x0D,
-	MAPMARK_REDNORTH	= 0x0E,
-	MAPMARK_REDSOUTH	= 0x0F,
-	MAPMARK_REDEAST		= 0x10,
-	MAPMARK_REDWEST		= 0x11,
-	MAPMARK_GREENNORTH	= 0x12,
-	MAPMARK_GREENSOUTH	= 0x13
+	MAPMARK_TICK					= 0x00,
+	MAPMARK_QUESTION				= 0x01,
+	MAPMARK_EXCLAMATION				= 0x02,
+	MAPMARK_STAR					= 0x03,
+	MAPMARK_CROSS					= 0x04,
+	MAPMARK_TEMPLE					= 0x05,
+	MAPMARK_KISS					= 0x06,
+	MAPMARK_SHOVEL					= 0x07,
+	MAPMARK_SWORD					= 0x08,
+	MAPMARK_FLAG					= 0x09,
+	MAPMARK_LOCK					= 0x0A,
+	MAPMARK_BAG						= 0x0B,
+	MAPMARK_SKULL					= 0x0C,
+	MAPMARK_DOLLAR					= 0x0D,
+	MAPMARK_REDNORTH				= 0x0E,
+	MAPMARK_REDSOUTH				= 0x0F,
+	MAPMARK_REDEAST					= 0x10,
+	MAPMARK_REDWEST					= 0x11,
+	MAPMARK_GREENNORTH				= 0x12,
+	MAPMARK_GREENSOUTH				= 0x13
 };
 
 enum FluidColors_t
 {
-	FLUID_EMPTY		= 0x00,
-	FLUID_BLUE		= 0x01,
-	FLUID_RED		= 0x02,
-	FLUID_BROWN		= 0x03,
-	FLUID_GREEN		= 0x04,
-	FLUID_YELLOW	= 0x05,
-	FLUID_WHITE		= 0x06,
-	FLUID_PURPLE	= 0x07
+	FLUID_EMPTY						= 0x00,
+	FLUID_BLUE						= 0x01,
+	FLUID_RED						= 0x02,
+	FLUID_BROWN						= 0x03,
+	FLUID_GREEN						= 0x04,
+	FLUID_YELLOW					= 0x05,
+	FLUID_WHITE						= 0x06,
+	FLUID_PURPLE					= 0x07
 };
 
 enum FluidTypes_t
 {
-	FLUID_NONE			= FLUID_EMPTY,
-	FLUID_WATER			= FLUID_BLUE,
-	FLUID_BLOOD			= FLUID_RED,
-	FLUID_BEER			= FLUID_BROWN,
-	FLUID_SLIME			= FLUID_GREEN,
-	FLUID_LEMONADE		= FLUID_YELLOW,
-	FLUID_MILK			= FLUID_WHITE,
-	FLUID_MANA			= FLUID_PURPLE,
+	FLUID_NONE						= FLUID_EMPTY,
+	FLUID_WATER						= FLUID_BLUE,
+	FLUID_BLOOD						= FLUID_RED,
+	FLUID_BEER						= FLUID_BROWN,
+	FLUID_SLIME						= FLUID_GREEN,
+	FLUID_LEMONADE					= FLUID_YELLOW,
+	FLUID_MILK						= FLUID_WHITE,
+	FLUID_MANA						= FLUID_PURPLE,
 
-	FLUID_LIFE			= FLUID_RED + 8,
-	FLUID_OIL			= FLUID_BROWN + 8,
-	FLUID_URINE			= FLUID_YELLOW + 8,
-	FLUID_COCONUTMILK	= FLUID_WHITE + 8,
-	FLUID_WINE			= FLUID_PURPLE + 8,
+	FLUID_LIFE						= FLUID_RED + 8,
+	FLUID_OIL						= FLUID_BROWN + 8,
+	FLUID_URINE						= FLUID_YELLOW + 8,
+	FLUID_COCONUTMILK				= FLUID_WHITE + 8,
+	FLUID_WINE						= FLUID_PURPLE + 8,
 
-	FLUID_MUD			= FLUID_BROWN + 16,
-	FLUID_FRUITJUICE	= FLUID_YELLOW + 16,
+	FLUID_MUD						= FLUID_BROWN + 16,
+	FLUID_FRUITJUICE				= FLUID_YELLOW + 16,
 
-	FLUID_LAVA			= FLUID_RED + 24,
-	FLUID_RUM			= FLUID_BROWN + 24,
-	FLUID_SWAMP			= FLUID_GREEN + 24,
+	FLUID_LAVA						= FLUID_RED + 24,
+	FLUID_RUM						= FLUID_BROWN + 24,
+	FLUID_SWAMP						= FLUID_GREEN + 24,
 
-	FLUID_TEA			= FLUID_BROWN + 32,
-	FLUID_MEAD			= FLUID_BROWN + 40
+	FLUID_TEA						= FLUID_BROWN + 32,
+	FLUID_MEAD						= FLUID_BROWN + 40
 };
 
 const uint8_t reverseFluidMap[] =
@@ -318,18 +318,40 @@ const uint8_t reverseFluidMap[] =
 	FLUID_MILK
 };
 
+const uint8_t clientToServerFluidMap[] =
+{
+	FLUID_EMPTY,
+	FLUID_WATER,
+	FLUID_MANA,
+	FLUID_BEER,
+	FLUID_MUD,
+	FLUID_BLOOD,
+	FLUID_SLIME,
+	FLUID_RUM,
+	FLUID_LEMONADE,
+	FLUID_MILK,
+	FLUID_WINE,
+	FLUID_LIFE,
+	FLUID_URINE,
+	FLUID_OIL,
+	FLUID_FRUITJUICE,
+	FLUID_COCONUTMILK,
+	FLUID_TEA,
+	FLUID_MEAD
+};
+
 enum ClientFluidTypes_t
 {
-	CLIENTFLUID_EMPTY	= 0x00,
-	CLIENTFLUID_BLUE	= 0x01,
-	CLIENTFLUID_PURPLE	= 0x02,
-	CLIENTFLUID_BROWN_1	= 0x03,
-	CLIENTFLUID_BROWN_2	= 0x04,
-	CLIENTFLUID_RED		= 0x05,
-	CLIENTFLUID_GREEN	= 0x06,
-	CLIENTFLUID_BROWN	= 0x07,
-	CLIENTFLUID_YELLOW	= 0x08,
-	CLIENTFLUID_WHITE	= 0x09
+	CLIENTFLUID_EMPTY				= 0x00,
+	CLIENTFLUID_BLUE				= 0x01,
+	CLIENTFLUID_PURPLE				= 0x02,
+	CLIENTFLUID_BROWN_1				= 0x03,
+	CLIENTFLUID_BROWN_2				= 0x04,
+	CLIENTFLUID_RED					= 0x05,
+	CLIENTFLUID_GREEN				= 0x06,
+	CLIENTFLUID_BROWN				= 0x07,
+	CLIENTFLUID_YELLOW				= 0x08,
+	CLIENTFLUID_WHITE				= 0x09
 };
 
 const uint8_t fluidMap[] =
@@ -346,52 +368,52 @@ const uint8_t fluidMap[] =
 
 enum Color_t
 {
-	COLOR_BLACK			= 0,
-	COLOR_BLUE			= 5,
-	COLOR_GREEN			= 18,
-	COLOR_LIGHTGREEN	= 66,
-	COLOR_DARKBROWN		= 78,
-	COLOR_LIGHTBLUE		= 89,
-	COLOR_MAYABLUE		= 95,
-	COLOR_DARKRED		= 108,
-	COLOR_DARKPURPLE	= 112,
-	COLOR_BROWN			= 120,
-	COLOR_GREY			= 129,
-	COLOR_TEAL			= 143,
-	COLOR_DARKPINK		= 152,
-	COLOR_PURPLE		= 154,
-	COLOR_DARKORANGE	= 156,
-	COLOR_RED			= 180,
-	COLOR_PINK			= 190,
-	COLOR_ORANGE		= 192,
-	COLOR_DARKYELLOW	= 205,
-	COLOR_YELLOW		= 210,
-	COLOR_WHITE			= 215,
+	COLOR_BLACK						= 0,
+	COLOR_BLUE						= 5,
+	COLOR_GREEN						= 18,
+	COLOR_LIGHTGREEN				= 66,
+	COLOR_DARKBROWN					= 78,
+	COLOR_LIGHTBLUE					= 89,
+	COLOR_MAYABLUE					= 95,
+	COLOR_DARKRED					= 108,
+	COLOR_DARKPURPLE				= 112,
+	COLOR_BROWN						= 120,
+	COLOR_GREY						= 129,
+	COLOR_TEAL						= 143,
+	COLOR_DARKPINK					= 152,
+	COLOR_PURPLE					= 154,
+	COLOR_DARKORANGE				= 156,
+	COLOR_RED						= 180,
+	COLOR_PINK						= 190,
+	COLOR_ORANGE					= 192,
+	COLOR_DARKYELLOW				= 205,
+	COLOR_YELLOW					= 210,
+	COLOR_WHITE						= 215,
 
-	COLOR_NONE			= 255,
-	COLOR_UNKNOWN		= 256
+	COLOR_NONE						= 255,
+	COLOR_UNKNOWN					= 256
 };
 
 enum Icons_t
 {
-	ICON_NONE		= 0,
-	ICON_POISON		= 1 << 0,
-	ICON_BURN		= 1 << 1,
-	ICON_ENERGY		= 1 << 2,
-	ICON_DRUNK		= 1 << 3,
-	ICON_MANASHIELD	= 1 << 4,
-	ICON_PARALYZE	= 1 << 5,
-	ICON_HASTE		= 1 << 6,
-	ICON_SWORDS		= 1 << 7,
-	ICON_DROWNING	= 1 << 8,
-	ICON_FREEZING	= 1 << 9,
-	ICON_DAZZLED	= 1 << 10,
-	ICON_CURSED		= 1 << 11,
-	ICON_BUFF		= 1 << 12,
-	ICON_PZBLOCK	= 1 << 13,
-	ICON_PZ			= 1 << 14,
-	ICON_BLEED		= 1 << 15,
-	ICON_HUNGRY		= 1 << 16
+	ICON_NONE						= 0,
+	ICON_POISON						= 1 << 0,
+	ICON_BURN						= 1 << 1,
+	ICON_ENERGY						= 1 << 2,
+	ICON_DRUNK						= 1 << 3,
+	ICON_MANASHIELD					= 1 << 4,
+	ICON_PARALYZE					= 1 << 5,
+	ICON_HASTE						= 1 << 6,
+	ICON_SWORDS						= 1 << 7,
+	ICON_DROWNING					= 1 << 8,
+	ICON_FREEZING					= 1 << 9,
+	ICON_DAZZLED					= 1 << 10,
+	ICON_CURSED						= 1 << 11,
+	ICON_BUFF						= 1 << 12,
+	ICON_PZBLOCK					= 1 << 13,
+	ICON_PZ							= 1 << 14,
+	ICON_BLEED						= 1 << 15,
+	ICON_HUNGRY						= 1 << 16 //should be 31 [found in flash client]
 };
 
 enum skills_t
@@ -448,10 +470,10 @@ enum AmmoAction_t
 
 enum WieldInfo_t
 {
-	WIELDINFO_LEVEL		= 1,
-	WIELDINFO_MAGLV		= 2,
-	WIELDINFO_VOCREQ	= 4,
-	WIELDINFO_PREMIUM	= 8
+	WIELDINFO_LEVEL = 1,
+	WIELDINFO_MAGLV = 2,
+	WIELDINFO_VOCREQ = 4,
+	WIELDINFO_PREMIUM = 8
 };
 
 enum Skulls_t
@@ -484,278 +506,278 @@ enum PartyShields_t
 
 enum GuildEmblems_t
 {
-	EMBLEM_NONE = 0,
-	EMBLEM_GREEN,
-	EMBLEM_RED,
-	EMBLEM_BLUE
+	GUILDEMBLEM_NONE = 0,
+	GUILDEMBLEM_ALLY = 1,
+	GUILDEMBLEM_ENEMY = 2,
+	GUILDEMBLEM_NEUTRAL = 3
 };
 
 enum SpellGroup_t
 {
-	SPELLGROUP_NONE		= 0,
-	SPELLGROUP_ATTACK	= 1,
-	SPELLGROUP_HEALING	= 2,
-	SPELLGROUP_SUPPORT	= 3,
-	SPELLGROUP_SPECIAL	= 4
+	SPELLGROUP_NONE = 0,
+	SPELLGROUP_ATTACK = 1,
+	SPELLGROUP_HEALING = 2,
+	SPELLGROUP_SUPPORT = 3,
+	SPELLGROUP_SPECIAL = 4
 };
 
 enum Spells_t
 {
-	SPELL_NONE                    = 0x00,
-	SPELL_LIGHT_HEALING           = 0x01,
-	SPELL_INTENSE_HEALING         = 0x02,
-	SPELL_ULTIMATE_HEALING        = 0x03,
-	SPELL_INTENSE_HEALING_RUNE    = 0x04,
-	SPELL_ULTIMATE_HEALING_RUNE   = 0x05,
-	SPELL_HASTE                   = 0x06,
-	SPELL_LIGHT_MAGIC_MISSILE     = 0x07,
-	SPELL_HEAVY_MAGIC_MISSILE     = 0x08,
-	SPELL_SUMMON_CREATURE         = 0x09,
-	SPELL_LIGHT                   = 0x0A,
-	SPELL_GREAT_LIGHT             = 0x0B,
-	SPELL_CONVINCE_CREATURE       = 0x0C,
-	SPELL_ENERGY_WAVE             = 0x0D,
-	SPELL_CHAMELEON               = 0x0E,
-	SPELL_FIREBALL                = 0x0F,
-	SPELL_GREAT_FIREBALL          = 0x10,
-	SPELL_FIREBOMB                = 0x11,
-	SPELL_EXPLOSION               = 0x12,
-	SPELL_FIRE_WAVE               = 0x13,
-	SPELL_FIND_PERSON             = 0x14,
-	SPELL_SUDDEN_DEATH            = 0x15,
-	SPELL_ENERGY_BEAM             = 0x16,
-	SPELL_GREAT_ENERGY_BEAM       = 0x17,
-	SPELL_HELLS_CORE              = 0x18,
-	SPELL_FIRE_FIELD              = 0x19,
-	SPELL_POISON_FIELD            = 0x1A,
-	SPELL_ENERGY_FIELD            = 0x1B,
-	SPELL_FIRE_WALL               = 0x1C,
-	SPELL_CURE_POISON             = 0x1D,
-	SPELL_DESTROY_FIELD           = 0x1E,
-	SPELL_ANTIDOTE_RUNE           = 0x1F,
-	SPELL_POISON_WALL             = 0x20,
-	SPELL_ENERGY_WALL             = 0x21,
-	SPELL_UNKNOWN_1               = 0x22,
-	SPELL_UNKNOWN_2               = 0x23,
-	SPELL_SALVATION               = 0x24,
-	SPELL_MOVE                    = 0x25,
-	SPELL_CREATURE_ILLUSION       = 0x26,
-	SPELL_STRONG_HASTE            = 0x27,
-	SPELL_UNKNOWN_3               = 0x28,
-	SPELL_UNKNOWN_4               = 0x29,
-	SPELL_FOOD                    = 0x2A,
-	SPELL_STRONG_ICE_WAVE         = 0x2B,
-	SPELL_MAGIC_SHIELD            = 0x2C,
-	SPELL_INVISIBLE               = 0x2D,
-	SPELL_UNKNOWN_5               = 0x2E,
-	SPELL_UNKNOWN_6               = 0x2F,
-	SPELL_POISONED_ARROW          = 0x30,
-	SPELL_EXPLOSIVE_ARROW         = 0x31,
-	SPELL_SOULFIRE                = 0x32,
-	SPELL_CONJURE_ARROW           = 0x33,
-	SPELL_RETRIEVE_FRIEND         = 0x34,
-	SPELL_UNKNOWN_7               = 0x35,
-	SPELL_PARALYZE                = 0x36,
-	SPELL_ENERGYBOMB              = 0x37,
-	SPELL_WRATH_OF_NATURE         = 0x38,
-	SPELL_STRONG_ETHEREAL_SPEAR   = 0x39,
-	SPELL_UNKNOWN_8               = 0x3A,
-	SPELL_FRONT_SWEEP             = 0x3B,
-	SPELL_UNKNOWN_9               = 0x3C,
-	SPELL_BRUTAL_STRIKE           = 0x3D,
-	SPELL_ANNIHILATION            = 0x3E,
-	SPELL_UNKNOWN_10              = 0x3F,
-	SPELL_UNKNOWN_11              = 0x40,
-	SPELL_UNKNOWN_12              = 0x41,
-	SPELL_UNKNOWN_13              = 0x42,
-	SPELL_UNKNOWN_14              = 0x43,
-	SPELL_UNKNOWN_15              = 0x44,
-	SPELL_UNKNOWN_16              = 0x45,
-	SPELL_UNKNOWN_17              = 0x46,
-	SPELL_INVITE_GUESTS           = 0x47,
-	SPELL_INVITE_SUBOWNERS        = 0x48,
-	SPELL_KICK_GUEST              = 0x49,
-	SPELL_EDIT_DOOR               = 0x4A,
-	SPELL_ULTIMATE_LIGHT          = 0x4B,
-	SPELL_MAGIC_ROPE              = 0x4C,
-	SPELL_STALAGMITE              = 0x4D,
-	SPELL_DESINTEGRATE            = 0x4E,
-	SPELL_CONJURE_BOLT            = 0x4F,
-	SPELL_BERSERK                 = 0x50,
-	SPELL_LEVITATE                = 0x51,
-	SPELL_MASS_HEALING            = 0x52,
-	SPELL_ANIMATE_DEAD            = 0x53,
-	SPELL_HEAL_FRIEND             = 0x54,
-	SPELL_UNDEAD_LEGION           = 0x55,
-	SPELL_MAGIC_WALL              = 0x56,
-	SPELL_DEATH_STRIKE            = 0x57,
-	SPELL_ENERGY_STRIKE           = 0x58,
-	SPELL_FLAME_STRIKE            = 0x59,
-	SPELL_CANCEL_INVISIBILITY     = 0x5A,
-	SPELL_POISONBOMB              = 0x5B,
-	SPELL_ENCHANT_STAFF           = 0x5C,
-	SPELL_CHALLENGE               = 0x5D,
-	SPELL_WILD_GROWTH             = 0x5E,
-	SPELL_POWER_BOLT              = 0x5F,
-	SPELL_UNKNOWN_18              = 0x60,
-	SPELL_UNKNOWN_19              = 0x61,
-	SPELL_UNKNOWN_20              = 0x62,
-	SPELL_UNKNOWN_21              = 0x63,
-	SPELL_UNKNOWN_22              = 0x64,
-	SPELL_UNKNOWN_23              = 0x65,
-	SPELL_UNKNOWN_24              = 0x66,
-	SPELL_UNKNOWN_25              = 0x67,
-	SPELL_UNKNOWN_26              = 0x68,
-	SPELL_FIERCE_BERSERK          = 0x69,
-	SPELL_GROUNDSHAKER            = 0x6A,
-	SPELL_WHIRLWIND_THROW         = 0x6B,
-	SPELL_SNIPER_ARROW            = 0x6C,
-	SPELL_PIERCING_BOLT           = 0x6D,
-	SPELL_ENCHANT_SPEAR           = 0x6E,
-	SPELL_ETHEREAL_SPEAR          = 0x6F,
-	SPELL_ICE_STRIKE              = 0x70,
-	SPELL_TERRA_STRIKE            = 0x71,
-	SPELL_ICICLE                  = 0x72,
-	SPELL_AVALANCHE               = 0x73,
-	SPELL_STONE_SHOWER            = 0x74,
-	SPELL_THUNDERSTORM            = 0x75,
-	SPELL_ETERNAL_WINTER          = 0x76,
-	SPELL_RAGE_OF_THE_SKIES       = 0x77,
-	SPELL_TERRA_WAVE              = 0x78,
-	SPELL_ICE_WAVE                = 0x79,
-	SPELL_DIVINE_MISSILE          = 0x7A,
-	SPELL_WOUND_CLEANSING         = 0x7B,
-	SPELL_DIVINE_CALDERA          = 0x7C,
-	SPELL_DIVINE_HEALING          = 0x7D,
-	SPELL_TRAIN_PARTY             = 0x7E,
-	SPELL_PROTECT_PARTY           = 0x7F,
-	SPELL_HEAL_PARTY              = 0x80,
-	SPELL_ENCHANT_PARTY           = 0x81,
-	SPELL_HOLY_MISSILE            = 0x82,
-	SPELL_CHARGE                  = 0x83,
-	SPELL_PROTECTOR               = 0x84,
-	SPELL_BLOOD_RAGE              = 0x85,
-	SPELL_SWIFT_FOOT              = 0x86,
-	SPELL_SHARPSHOOTER            = 0x87,
-	SPELL_UNKNOWN_27              = 0x88,
-	SPELL_UNKNOWN_28              = 0x89,
-	SPELL_IGNITE                  = 0x8A,
-	SPELL_CURSE                   = 0x8B,
-	SPELL_ELECTRIFY               = 0x8C,
-	SPELL_INFLICT_WOUND           = 0x8D,
-	SPELL_ENVENOM                 = 0x8E,
-	SPELL_HOLY_FLASH              = 0x8F,
-	SPELL_CURE_BLEEDING           = 0x90,
-	SPELL_CURE_BURNING            = 0x91,
-	SPELL_CURE_ELECTRIFICATION    = 0x92,
-	SPELL_CURE_CURSE              = 0x93,
-	SPELL_PHYSICAL_STRIKE         = 0x94,
-	SPELL_LIGHTNING               = 0x95,
-	SPELL_STRONG_FLAME_STRIKE     = 0x96,
-	SPELL_STRONG_ENERGY_STRIKE    = 0x97,
-	SPELL_STRONG_ICE_STRIKE       = 0x98,
-	SPELL_STRONG_TERRA_STRIKE     = 0x99,
-	SPELL_ULTIMATE_FLAME_STRIKE   = 0x9A,
-	SPELL_ULTIMATE_ENERGY_STRIKE  = 0x9B,
-	SPELL_ULTIMATE_ICE_STRIKE     = 0x9C,
-	SPELL_ULTIMATE_TERRA_STRIKE   = 0x9D,
-	SPELL_INTENSE_WOUND_CLEANSING = 0x9E,
-	SPELL_RECOVERY                = 0x9F,
-	SPELL_INTENSE_RECOVERY        = 0xA0
+	SPELL_NONE						= 0x00,
+	SPELL_LIGHT_HEALING				= 0x01,
+	SPELL_INTENSE_HEALING			= 0x02,
+	SPELL_ULTIMATE_HEALING			= 0x03,
+	SPELL_INTENSE_HEALING_RUNE		= 0x04,
+	SPELL_ULTIMATE_HEALING_RUNE		= 0x05,
+	SPELL_HASTE						= 0x06,
+	SPELL_LIGHT_MAGIC_MISSILE		= 0x07,
+	SPELL_HEAVY_MAGIC_MISSILE		= 0x08,
+	SPELL_SUMMON_CREATURE			= 0x09,
+	SPELL_LIGHT						= 0x0A,
+	SPELL_GREAT_LIGHT				= 0x0B,
+	SPELL_CONVINCE_CREATURE			= 0x0C,
+	SPELL_ENERGY_WAVE				= 0x0D,
+	SPELL_CHAMELEON					= 0x0E,
+	SPELL_FIREBALL					= 0x0F,
+	SPELL_GREAT_FIREBALL			= 0x10,
+	SPELL_FIREBOMB					= 0x11,
+	SPELL_EXPLOSION					= 0x12,
+	SPELL_FIRE_WAVE					= 0x13,
+	SPELL_FIND_PERSON				= 0x14,
+	SPELL_SUDDEN_DEATH				= 0x15,
+	SPELL_ENERGY_BEAM				= 0x16,
+	SPELL_GREAT_ENERGY_BEAM			= 0x17,
+	SPELL_HELLS_CORE				= 0x18,
+	SPELL_FIRE_FIELD				= 0x19,
+	SPELL_POISON_FIELD				= 0x1A,
+	SPELL_ENERGY_FIELD				= 0x1B,
+	SPELL_FIRE_WALL					= 0x1C,
+	SPELL_CURE_POISON				= 0x1D,
+	SPELL_DESTROY_FIELD				= 0x1E,
+	SPELL_ANTIDOTE_RUNE				= 0x1F,
+	SPELL_POISON_WALL				= 0x20,
+	SPELL_ENERGY_WALL				= 0x21,
+	SPELL_UNKNOWN_1					= 0x22,
+	SPELL_UNKNOWN_2					= 0x23,
+	SPELL_SALVATION					= 0x24,
+	SPELL_MOVE						= 0x25,
+	SPELL_CREATURE_ILLUSION			= 0x26,
+	SPELL_STRONG_HASTE				= 0x27,
+	SPELL_UNKNOWN_3					= 0x28,
+	SPELL_UNKNOWN_4					= 0x29,
+	SPELL_FOOD						= 0x2A,
+	SPELL_STRONG_ICE_WAVE			= 0x2B,
+	SPELL_MAGIC_SHIELD				= 0x2C,
+	SPELL_INVISIBLE					= 0x2D,
+	SPELL_UNKNOWN_5					= 0x2E,
+	SPELL_UNKNOWN_6					= 0x2F,
+	SPELL_POISONED_ARROW			= 0x30,
+	SPELL_EXPLOSIVE_ARROW			= 0x31,
+	SPELL_SOULFIRE					= 0x32,
+	SPELL_CONJURE_ARROW				= 0x33,
+	SPELL_RETRIEVE_FRIEND			= 0x34,
+	SPELL_UNKNOWN_7					= 0x35,
+	SPELL_PARALYZE					= 0x36,
+	SPELL_ENERGYBOMB				= 0x37,
+	SPELL_WRATH_OF_NATURE			= 0x38,
+	SPELL_STRONG_ETHEREAL_SPEAR		= 0x39,
+	SPELL_UNKNOWN_8					= 0x3A,
+	SPELL_FRONT_SWEEP				= 0x3B,
+	SPELL_UNKNOWN_9					= 0x3C,
+	SPELL_BRUTAL_STRIKE				= 0x3D,
+	SPELL_ANNIHILATION				= 0x3E,
+	SPELL_UNKNOWN_10				= 0x3F,
+	SPELL_UNKNOWN_11				= 0x40,
+	SPELL_UNKNOWN_12				= 0x41,
+	SPELL_UNKNOWN_13				= 0x42,
+	SPELL_UNKNOWN_14				= 0x43,
+	SPELL_UNKNOWN_15				= 0x44,
+	SPELL_UNKNOWN_16				= 0x45,
+	SPELL_UNKNOWN_17				= 0x46,
+	SPELL_INVITE_GUESTS				= 0x47,
+	SPELL_INVITE_SUBOWNERS			= 0x48,
+	SPELL_KICK_GUEST				= 0x49,
+	SPELL_EDIT_DOOR					= 0x4A,
+	SPELL_ULTIMATE_LIGHT			= 0x4B,
+	SPELL_MAGIC_ROPE				= 0x4C,
+	SPELL_STALAGMITE				= 0x4D,
+	SPELL_DESINTEGRATE				= 0x4E,
+	SPELL_CONJURE_BOLT				= 0x4F,
+	SPELL_BERSERK					= 0x50,
+	SPELL_LEVITATE					= 0x51,
+	SPELL_MASS_HEALING				= 0x52,
+	SPELL_ANIMATE_DEAD				= 0x53,
+	SPELL_HEAL_FRIEND				= 0x54,
+	SPELL_UNDEAD_LEGION				= 0x55,
+	SPELL_MAGIC_WALL				= 0x56,
+	SPELL_DEATH_STRIKE				= 0x57,
+	SPELL_ENERGY_STRIKE				= 0x58,
+	SPELL_FLAME_STRIKE				= 0x59,
+	SPELL_CANCEL_INVISIBILITY		= 0x5A,
+	SPELL_POISONBOMB				= 0x5B,
+	SPELL_ENCHANT_STAFF				= 0x5C,
+	SPELL_CHALLENGE					= 0x5D,
+	SPELL_WILD_GROWTH				= 0x5E,
+	SPELL_POWER_BOLT				= 0x5F,
+	SPELL_UNKNOWN_18				= 0x60,
+	SPELL_UNKNOWN_19				= 0x61,
+	SPELL_UNKNOWN_20				= 0x62,
+	SPELL_UNKNOWN_21				= 0x63,
+	SPELL_UNKNOWN_22				= 0x64,
+	SPELL_UNKNOWN_23				= 0x65,
+	SPELL_UNKNOWN_24				= 0x66,
+	SPELL_UNKNOWN_25				= 0x67,
+	SPELL_UNKNOWN_26				= 0x68,
+	SPELL_FIERCE_BERSERK			= 0x69,
+	SPELL_GROUNDSHAKER				= 0x6A,
+	SPELL_WHIRLWIND_THROW			= 0x6B,
+	SPELL_SNIPER_ARROW				= 0x6C,
+	SPELL_PIERCING_BOLT				= 0x6D,
+	SPELL_ENCHANT_SPEAR				= 0x6E,
+	SPELL_ETHEREAL_SPEAR			= 0x6F,
+	SPELL_ICE_STRIKE				= 0x70,
+	SPELL_TERRA_STRIKE				= 0x71,
+	SPELL_ICICLE					= 0x72,
+	SPELL_AVALANCHE					= 0x73,
+	SPELL_STONE_SHOWER				= 0x74,
+	SPELL_THUNDERSTORM				= 0x75,
+	SPELL_ETERNAL_WINTER			= 0x76,
+	SPELL_RAGE_OF_THE_SKIES			= 0x77,
+	SPELL_TERRA_WAVE				= 0x78,
+	SPELL_ICE_WAVE					= 0x79,
+	SPELL_DIVINE_MISSILE			= 0x7A,
+	SPELL_WOUND_CLEANSING			= 0x7B,
+	SPELL_DIVINE_CALDERA			= 0x7C,
+	SPELL_DIVINE_HEALING			= 0x7D,
+	SPELL_TRAIN_PARTY				= 0x7E,
+	SPELL_PROTECT_PARTY				= 0x7F,
+	SPELL_HEAL_PARTY				= 0x80,
+	SPELL_ENCHANT_PARTY				= 0x81,
+	SPELL_HOLY_MISSILE				= 0x82,
+	SPELL_CHARGE					= 0x83,
+	SPELL_PROTECTOR					= 0x84,
+	SPELL_BLOOD_RAGE				= 0x85,
+	SPELL_SWIFT_FOOT				= 0x86,
+	SPELL_SHARPSHOOTER				= 0x87,
+	SPELL_UNKNOWN_27				= 0x88,
+	SPELL_UNKNOWN_28				= 0x89,
+	SPELL_IGNITE					= 0x8A,
+	SPELL_CURSE						= 0x8B,
+	SPELL_ELECTRIFY					= 0x8C,
+	SPELL_INFLICT_WOUND				= 0x8D,
+	SPELL_ENVENOM					= 0x8E,
+	SPELL_HOLY_FLASH				= 0x8F,
+	SPELL_CURE_BLEEDING				= 0x90,
+	SPELL_CURE_BURNING				= 0x91,
+	SPELL_CURE_ELECTRIFICATION		= 0x92,
+	SPELL_CURE_CURSE				= 0x93,
+	SPELL_PHYSICAL_STRIKE			= 0x94,
+	SPELL_LIGHTNING					= 0x95,
+	SPELL_STRONG_FLAME_STRIKE		= 0x96,
+	SPELL_STRONG_ENERGY_STRIKE		= 0x97,
+	SPELL_STRONG_ICE_STRIKE			= 0x98,
+	SPELL_STRONG_TERRA_STRIKE		= 0x99,
+	SPELL_ULTIMATE_FLAME_STRIKE		= 0x9A,
+	SPELL_ULTIMATE_ENERGY_STRIKE	= 0x9B,
+	SPELL_ULTIMATE_ICE_STRIKE		= 0x9C,
+	SPELL_ULTIMATE_TERRA_STRIKE		= 0x9D,
+	SPELL_INTENSE_WOUND_CLEANSING	= 0x9E,
+	SPELL_RECOVERY					= 0x9F,
+	SPELL_INTENSE_RECOVERY			= 0xA0
 };
 
 enum item_t
 {
-	ITEM_FIREFIELD			= 1492,
-	ITEM_FIREFIELD_SAFE		= 1500,
+	ITEM_FIREFIELD					= 1487,
+	ITEM_FIREFIELD_SAFE				= 1500,
 
-	ITEM_POISONFIELD		= 1496,
-	ITEM_POISONFIELD_SAFE	= 1503,
+	ITEM_POISONFIELD				= 1490,
+	ITEM_POISONFIELD_SAFE			= 1503,
 
-	ITEM_ENERGYFIELD		= 1495,
-	ITEM_ENERGYFIELD_SAFE	= 1504,
+	ITEM_ENERGYFIELD				= 1491,
+	ITEM_ENERGYFIELD_SAFE			= 1504,
 
-	ITEM_MAGICWALL			= 1497,
-	ITEM_MAGICWALL_SAFE		= 11098,
+	ITEM_MAGICWALL					= 1497,
+	ITEM_MAGICWALL_SAFE				= 11098,
 
-	ITEM_WILDGROWTH			= 1499,
-	ITEM_WILDGROWTH_SAFE	= 11099,
+	ITEM_WILDGROWTH					= 1499,
+	ITEM_WILDGROWTH_SAFE			= 11099,
 
-	ITEM_DEPOT				= 2594,
-	ITEM_LOCKER				= 2589,
-	ITEM_INBOX				= 14404,
-	ITEM_MARKET				= 14405,
+	ITEM_DEPOT						= 2594,
+	ITEM_LOCKER						= 2589,
+	ITEM_INBOX						= 14404,
+	ITEM_MARKET						= 14405,
 
-	ITEM_MALE_CORPSE		= 3058,
-	ITEM_FEMALE_CORPSE		= 3065,
+	ITEM_MALE_CORPSE				= 3058,
+	ITEM_FEMALE_CORPSE				= 3065,
 
-	ITEM_FULLSPLASH			= 2016,
-	ITEM_SMALLSPLASH		= 2019,
+	ITEM_FULLSPLASH					= 2016,
+	ITEM_SMALLSPLASH				= 2019,
 
-	ITEM_PARCEL				= 2595,
-	ITEM_PARCEL_STAMPED		= 2596,
-	ITEM_LETTER				= 2597,
-	ITEM_LETTER_STAMPED		= 2598,
-	ITEM_LABEL				= 2599,
+	ITEM_PARCEL						= 2595,
+	ITEM_PARCEL_STAMPED				= 2596,
+	ITEM_LETTER						= 2597,
+	ITEM_LETTER_STAMPED				= 2598,
+	ITEM_LABEL						= 2599,
 
-	ITEM_WATERBALL_SPLASH	= 7711,
-	ITEM_WATERBALL			= 7956,
+	ITEM_WATERBALL_SPLASH			= 7711,
+	ITEM_WATERBALL					= 7956,
 
-	ITEM_STEALTH_RING		= 2202,
-	ITEM_HOUSE_TRANSFER		= 1968 //read-only
+	ITEM_STEALTH_RING				= 2202,
+	ITEM_HOUSE_TRANSFER				= 1968 //read-only
 };
 
 enum PlayerFlags
 {
-	PlayerFlag_CannotUseCombat = 0,			//2^0 = 1
-	PlayerFlag_CannotAttackPlayer,			//2^1 = 2
-	PlayerFlag_CannotAttackMonster,			//2^2 = 4
-	PlayerFlag_CannotBeAttacked,			//2^3 = 8
-	PlayerFlag_CanConvinceAll,				//2^4 = 16
-	PlayerFlag_CanSummonAll,				//2^5 = 32
-	PlayerFlag_CanIllusionAll,				//2^6 = 64
-	PlayerFlag_CanSenseInvisibility,		//2^7 = 128
-	PlayerFlag_IgnoredByMonsters,			//2^8 = 256
-	PlayerFlag_NotGainInFight,				//2^9 = 512
-	PlayerFlag_HasInfiniteMana,				//2^10 = 1024
-	PlayerFlag_HasInfiniteSoul,				//2^11 = 2048
-	PlayerFlag_HasNoExhaustion,				//2^12 = 4096
-	PlayerFlag_CannotUseSpells,				//2^13 = 8192
-	PlayerFlag_CannotPickupItem,			//2^14 = 16384
-	PlayerFlag_CanAlwaysLogin,				//2^15 = 32768
-	PlayerFlag_CanBroadcast,				//2^16 = 65536
-	PlayerFlag_CanEditHouses,				//2^17 = 131072
-	PlayerFlag_CannotBeBanned,				//2^18 = 262144
-	PlayerFlag_CannotBePushed,				//2^19 = 524288
-	PlayerFlag_HasInfiniteCapacity,			//2^20 = 1048576
-	PlayerFlag_CanPushAllCreatures,			//2^21 = 2097152
-	PlayerFlag_CanTalkRedPrivate,			//2^22 = 4194304
-	PlayerFlag_CanTalkRedChannel,			//2^23 = 8388608
-	PlayerFlag_TalkOrangeHelpChannel,		//2^24 = 16777216
-	PlayerFlag_NotGainExperience,			//2^25 = 33554432
-	PlayerFlag_NotGainMana,					//2^26 = 67108864
-	PlayerFlag_NotGainHealth,				//2^27 = 134217728
-	PlayerFlag_NotGainSkill,				//2^28 = 268435456
-	PlayerFlag_SetMaxSpeed,					//2^29 = 536870912
-	PlayerFlag_SpecialVIP,					//2^30 = 1073741824
-	PlayerFlag_NotGenerateLoot,				//2^31 = 2147483648
-	PlayerFlag_CanTalkRedChannelAnonymous,	//2^32 = 4294967296
-	PlayerFlag_IgnoreProtectionZone,		//2^33 = 8589934592
-	PlayerFlag_IgnoreSpellCheck,			//2^34 = 17179869184
-	PlayerFlag_IgnoreEquipCheck,			//2^35 = 34359738368
-	PlayerFlag_CannotBeMuted,				//2^36 = 68719476736
-	PlayerFlag_IsAlwaysPremium,				//2^37 = 137438953472
-	PlayerFlag_38,							//2^38 = 274877906944 //obsolete, can be re-used
-	PlayerFlag_39,							//2^39 = 549755813888 //not used by us
+	PlayerFlag_CannotUseCombat = 0,				//2^0 = 1
+	PlayerFlag_CannotAttackPlayer,				//2^1 = 2
+	PlayerFlag_CannotAttackMonster,				//2^2 = 4
+	PlayerFlag_CannotBeAttacked,				//2^3 = 8
+	PlayerFlag_CanConvinceAll,					//2^4 = 16
+	PlayerFlag_CanSummonAll,					//2^5 = 32
+	PlayerFlag_CanIllusionAll,					//2^6 = 64
+	PlayerFlag_CanSenseInvisibility,			//2^7 = 128
+	PlayerFlag_IgnoredByMonsters,				//2^8 = 256
+	PlayerFlag_NotGainInFight,					//2^9 = 512
+	PlayerFlag_HasInfiniteMana,					//2^10 = 1024
+	PlayerFlag_HasInfiniteSoul,					//2^11 = 2048
+	PlayerFlag_HasNoExhaustion,					//2^12 = 4096
+	PlayerFlag_CannotUseSpells,					//2^13 = 8192
+	PlayerFlag_CannotPickupItem,				//2^14 = 16384
+	PlayerFlag_CanAlwaysLogin,					//2^15 = 32768
+	PlayerFlag_CanBroadcast,					//2^16 = 65536
+	PlayerFlag_CanEditHouses,					//2^17 = 131072
+	PlayerFlag_CannotBeBanned,					//2^18 = 262144
+	PlayerFlag_CannotBePushed,					//2^19 = 524288
+	PlayerFlag_HasInfiniteCapacity,				//2^20 = 1048576
+	PlayerFlag_CanPushAllCreatures,				//2^21 = 2097152
+	PlayerFlag_CanTalkRedPrivate,				//2^22 = 4194304
+	PlayerFlag_CanTalkRedChannel,				//2^23 = 8388608
+	PlayerFlag_TalkOrangeHelpChannel,			//2^24 = 16777216
+	PlayerFlag_NotGainExperience,				//2^25 = 33554432
+	PlayerFlag_NotGainMana,						//2^26 = 67108864
+	PlayerFlag_NotGainHealth,					//2^27 = 134217728
+	PlayerFlag_NotGainSkill,					//2^28 = 268435456
+	PlayerFlag_SetMaxSpeed,						//2^29 = 536870912
+	PlayerFlag_SpecialVIP,						//2^30 = 1073741824
+	PlayerFlag_NotGenerateLoot,					//2^31 = 2147483648
+	PlayerFlag_CanTalkRedChannelAnonymous,		//2^32 = 4294967296
+	PlayerFlag_IgnoreProtectionZone,			//2^33 = 8589934592
+	PlayerFlag_IgnoreSpellCheck,				//2^34 = 17179869184
+	PlayerFlag_IgnoreEquipCheck,				//2^35 = 34359738368
+	PlayerFlag_CannotBeMuted,					//2^36 = 68719476736
+	PlayerFlag_IsAlwaysPremium,					//2^37 = 137438953472
+	PlayerFlag_38,								//2^38 = 274877906944 //obsolete, can be re-used
+	PlayerFlag_39,								//2^39 = 549755813888 //not used by us
 	PlayerFlag_ShowGroupNameInsteadOfVocation,	//2^40 = 1099511627776
-	PlayerFlag_HasInfiniteStamina,			//2^41 = 2199023255552
-	PlayerFlag_CannotMoveItems,				//2^42 = 4398046511104
-	PlayerFlag_CannotMoveCreatures,			//2^43 = 8796093022208
-	PlayerFlag_CanReportBugs,				//2^44 = 17592186044416
-	PlayerFlag_45,							//2^45 = 35184372088832 //not used by us
-	PlayerFlag_CannotBeSeen,				//2^46 = 70368744177664
-	PlayerFlag_HideHealth,					//2^47 = 140737488355328
-	PlayerFlag_CanPassThroughAllCreatures,	//2^48 = 281474976710656
+	PlayerFlag_HasInfiniteStamina,				//2^41 = 2199023255552
+	PlayerFlag_CannotMoveItems,					//2^42 = 4398046511104
+	PlayerFlag_CannotMoveCreatures,				//2^43 = 8796093022208
+	PlayerFlag_CanReportBugs,					//2^44 = 17592186044416
+	PlayerFlag_45,								//2^45 = 35184372088832 //not used by us
+	PlayerFlag_CannotBeSeen,					//2^46 = 70368744177664
+	PlayerFlag_HideHealth,						//2^47 = 140737488355328
+	PlayerFlag_CanPassThroughAllCreatures,		//2^48 = 281474976710656
 
 	PlayerFlag_LastFlag
 };
@@ -817,15 +839,15 @@ struct MessageDetails
 #define PSTRG_OUTFITSID_RANGE_SIZE	500
 
 //[2000 - 2010]
-#define PSTRG_MOUNTS_RANGE_START	(PSTRG_RESERVED_RANGE_START + 2000)
-#define PSTRG_MOUNTS_RANGE_SIZE		10
-#define PSTRG_MOUNTS_CURRENTMOUNT	(PSTRG_MOUNTS_RANGE_START + PSTRG_MOUNTS_RANGE_SIZE)
+#define PSTRG_MOUNTS_RANGE_START (PSTRG_RESERVED_RANGE_START + 2000)
+#define PSTRG_MOUNTS_RANGE_SIZE 10
+#define PSTRG_MOUNTS_CURRENTMOUNT (PSTRG_MOUNTS_RANGE_START + PSTRG_MOUNTS_RANGE_SIZE)
 
 #define NETWORK_CRYPTOHEADER_SIZE 8
 #define NETWORK_RETRY_TIMEOUT 5000
 #define NETWORK_DEFAULT_SIZE 4096
 #define NETWORK_HEADER_SIZE 2
-#define NETWORK_MAX_SIZE 24576
+#define NETWORK_MAX_SIZE 32767
 
 #define LOCALHOST 2130706433
 #define SWIMMING_OUTFIT 267

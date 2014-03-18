@@ -1,6 +1,33 @@
-function doSendAnimatedText(...)
-	print("doSendAnimatedText is now a deprecated function.")
-	return true
+function doSendAnimatedText(pos, text, color, cid)
+	-- doSendAnimatedText(pos, text, color[, player])
+	if tonumber(text) then
+		text = tonumber(text)
+		if cid and isPlayer(cid) then
+			doPlayerSendTextMessage(cid, MESSAGE_EXPERIENCE_OTHERS, '', text, color, pos)
+		else
+			local t = getSpectators(pos, 7, 5, false)
+			if t then
+				for _, cid in ipairs(t) do
+					if isPlayer(cid) then
+						doPlayerSendTextMessage(cid, MESSAGE_EXPERIENCE_OTHERS, '', text, color, pos)
+					end
+				end
+			end
+		end
+	else
+		if cid and isCreature(cid) then
+			doCreatureSay(cid, text, TALKTYPE_ORANGE_1)
+		else
+			local t = getSpectators(pos, 7, 5, false)
+			if t then
+				for _, cid in ipairs(t) do
+					if isPlayer(cid) then
+						doCreatureSay(cid, text, TALKTYPE_ORANGE_1, false, cid, pos)
+					end
+				end
+			end
+		end
+	end
 end
 
 function doPlayerSendToChannel(cid, target, type, text, channel, time)

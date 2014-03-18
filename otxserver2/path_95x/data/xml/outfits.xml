@@ -105,7 +105,7 @@
 		<list gender="1" lookType="325" name="Yalaharian"/>
 	</outfit>
 
-	<outfit id="22" default="0">
+	<outfit id="22" premium="yes" default="0">
 		<list gender="0" lookType="336" name="Warmaster"/>
 		<list gender="1" lookType="335" name="Warmaster"/>
 	</outfit>
