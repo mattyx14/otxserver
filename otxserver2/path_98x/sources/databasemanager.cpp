@@ -1569,7 +1569,7 @@ uint32_t DatabaseManager::updateDatabase()
 								result2->free();
 							}
 
-							if (!stmt.execute())
+							if(!stmt.execute())
 								std::cout << "Failed to execute statement!" << std::endl;
 						}
 						while(result->next());

@@ -505,7 +505,6 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			DepotLocker* myDepotLocker = player->getDepotLocker(depot->getDepotId());
 			myDepotLocker->setParent(depot->getParent());
 			tmpContainer = myDepotLocker;
-			player->setDepotChange(true);
 			player->setLastDepotId(depot->getDepotId());
 		}
 

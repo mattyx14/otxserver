@@ -637,7 +637,6 @@ class Player : public Creature, public Cylinder
 		bool tameMount(uint8_t mountId);
 		bool untameMount(uint8_t mountId);
 
-		void setDepotChange(bool b) {depotChange = b;}
 		void setLastDepotId(int16_t newId) { lastDepotId = newId; }
 		int16_t getLastDepotId() const { return lastDepotId; }
 
@@ -921,7 +920,6 @@ class Player : public Creature, public Cylinder
 		bool mounted;
 		bool pvpBlessing;
 		bool sentChat;
-		bool depotChange;
 
 		OperatingSystem_t operatingSystem;
 		AccountManager_t accountManager;

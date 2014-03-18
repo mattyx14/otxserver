@@ -305,7 +305,10 @@ void ItemAttribute::serialize(PropWriteStream& stream) const
 	else if(m_data.type() == typeid(float))
 	{
 		stream.addByte((uint8_t)FLOAT);
-		stream.addLong(getFloat(ok));
+		uint32_t tmp = 0;
+		float ret = getFloat(ok);
+		memcpy(&tmp, &ret, sizeof(tmp));
+		stream.addLong(tmp);
 	}
 	else if(m_data.type() == typeid(bool))
 	{

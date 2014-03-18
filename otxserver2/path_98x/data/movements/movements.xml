@@ -210,8 +210,8 @@
 	<movevent type="StepIn" itemid="12205" event="script" value="walkback.lua"/>
 
 	<!-- Snow footprint tiles -->
-	<movevent type="StepIn" itemid="670" event="script" value="snow.lua"/>
-	<movevent type="StepIn" itemid="6580-6594" event="script" value="snow.lua"/>
+	<movevent type="StepOut" itemid="670" event="script" value="snow.lua"/>
+	<movevent type="StepOut" itemid="6580-6593" event="script" value="snow.lua"/>
 
 	<!-- Cooking -->
 	<!-- Create bread movements -->

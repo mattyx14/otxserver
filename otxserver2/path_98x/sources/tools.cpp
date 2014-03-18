@@ -423,14 +423,15 @@ bool hasBitSet(uint32_t flag, uint32_t flags)
 	return ((flags & flag) == flag);
 }
 
-int32_t round(float v)
+#if !defined(_MSC_VER) || _MSC_VER < 1800
+double round(double v)
 {
-	int32_t t = (int32_t)std::floor(v);
-	if((v - t) > 0.5)
-		return t + 1;
-
-	return t;
+	if (v >= 0.0)
+		return std::floor(v + 0.5);
+	else
+		return std::ceil(v - 0.5);
 }
+#endif
 
 uint32_t rand24b()
 {
@@ -845,16 +846,16 @@ PartyShields_t getShields(std::string strValue)
 GuildEmblems_t getEmblems(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "blue" || tmpStrValue == "3")
-		return EMBLEM_BLUE;
+	if(tmpStrValue == "blue" || tmpStrValue == "neutral" || tmpStrValue == "3")
+		return GUILDEMBLEM_NEUTRAL;
 
-	if(tmpStrValue == "red" || tmpStrValue == "2")
-		return EMBLEM_RED;
+	if(tmpStrValue == "red" || tmpStrValue == "enemy" || tmpStrValue == "2")
+		return GUILDEMBLEM_ENEMY;
 
-	if(tmpStrValue == "green" || tmpStrValue == "1")
-		return EMBLEM_GREEN;
+	if(tmpStrValue == "green" || tmpStrValue == "ally" || tmpStrValue == "1")
+		return GUILDEMBLEM_ALLY;
 
-	return EMBLEM_NONE;
+	return GUILDEMBLEM_NONE;
 }
 
 Direction getDirection(std::string string)

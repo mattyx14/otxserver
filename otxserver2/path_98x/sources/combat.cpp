@@ -371,8 +371,11 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 			return RET_YOUMAYNOTATTACKTHISPLAYER;
 	}
 
-	if(player->checkLoginDelay())
-		return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
+	if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
+	{
+		if(player->checkLoginDelay())
+			return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
+	}
 
 	return Combat::canDoCombat(player, target, true);
 }
@@ -1451,7 +1454,7 @@ bool MagicField::isBlocking(const Creature* creature) const
 		return false;
 
 	if(Creature* owner = g_game.getCreatureByID(ownerId))
-		return creature->getPlayer()->getGuildEmblem(owner) != EMBLEM_NONE;
+		return creature->getPlayer()->getGuildEmblem(owner) != GUILDEMBLEM_NONE;
 
 	return false;
 }

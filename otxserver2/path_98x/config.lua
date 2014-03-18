@@ -171,9 +171,10 @@
 		-- gmAnonymousInChanel = 0 - normal; 1 - in help channel; 2 - all channels
 		enableLootBagDisplay = false
 		serverPreview = false
-		levelToOfflineTraining = 8
-		advertisingBlock = ""
-		gmAnonymousInChanel = 0
+		useRunesRequirements = true
+		highscoreDisplayPlayers = 10
+		updateHighscoresAfterMinutes = 60
+		attackImmediatelyAfterLoggingIn = false
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
@@ -341,8 +342,11 @@
 	experienceStages = false
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
-	rateSkill = 3.0
-	rateMagic = 3.0
+	levelToOfflineTraining = 8
+	rateSkill = 1.0
+	rateSkillOffline = 0.5
+	rateMagic = 1.0
+	rateMagicOffline = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

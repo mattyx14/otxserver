@@ -8226,7 +8226,7 @@
 	<item id="4990" article="a" name="white flag"/>
 	<item id="4991" article="a" name="pirate flag"/>
 	<item id="4992" article="an" name="dead butterfly">
-		<attribute key="decayTo" value="0" />
+		<attribute key="decayTo" value="0"/>
 		<attribute key="weight" value="20"/>
 	</item>
 	<item id="4993-4994" article="an" name="dead butterfly">
@@ -11672,18 +11672,77 @@
 	<item id="6594" name="snow">
 		<attribute key="description" value="Someone must have walked here recently."/>
 		<attribute key="decayTo" value="670"/>
-		<attribute key="duration" value="30"/>
+		<attribute key="duration" value="10"/>
 	</item>
-	<item id="6595-6597" name="snow">
+	<item id="6595" name="snow">
 		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6580"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6596" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6581"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6597" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6582"/>
+		<attribute key="duration" value="10"/>
 	</item>
 	<item id="6598" name="snow">
 		<attribute key="description" value="Someone must have walked here recently."/>
-		<attribute key="decayTo" value="6594"/>
+		<attribute key="decayTo" value="6583"/>
 		<attribute key="duration" value="10"/>
 	</item>
-	<item id="6599-6608" name="snow">
+	<item id="6599" name="snow">
 		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6584"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6600" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6585"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6601" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6586"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6602" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6587"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6603" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6588"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6604" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6589"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6605" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6590"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6606" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6591"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6607" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6592"/>
+		<attribute key="duration" value="10"/>
+	</item>
+	<item id="6608" name="snow">
+		<attribute key="description" value="Someone must have walked here recently."/>
+		<attribute key="decayTo" value="6593"/>
+		<attribute key="duration" value="10"/>
 	</item>
 	<item id="6609" name="snow drift"/>
 	<item id="6610-6626" name="snow"/>

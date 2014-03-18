@@ -2193,7 +2193,7 @@ uint32_t CreatureEvent::executeExtendedOpcode(Creature* creature, uint8_t opcode
 		{
 			#ifdef __DEBUG_LUASCRIPTS__
 			char desc[35];
-			sprintf(desc, "%s", player->getName().c_str());
+			sprintf(desc, "%s", creature->getName().c_str());
 			env->setEvent(desc);
 			#endif
 
