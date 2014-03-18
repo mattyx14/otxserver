@@ -41,6 +41,7 @@
 [ OTX Server 2.10.0 Version - "FINAL"
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
+		- Added Support to 9.8x
 		- Update Support to 10.37
 ]
 

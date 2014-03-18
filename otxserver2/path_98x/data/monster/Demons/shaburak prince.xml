@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Shaburak Prince" nameDescription="a shaburak Prince" race="fire" experience="1700" speed="280" manacost="0">
+	<health now="2600" max="2600"/>
+	<look type="418" corpse="13969"/>
+	<targetchange interval="2000" chance="9"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="40" attack="1000"/>
+		<attack name="Paralyze" interval="2000" chance="10" range="7" min="-0" max="-120"/>
+		<attack name="fire" interval="2000" chance="10"  range="7" radius="7" target="1" min="-150" max="-250">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="Great Fireball" interval="1500" chance="10"  range="1" radius="1" target="1" min="-410" max="-650">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="Fire Wave" interval="2000" chance="10"  range="7" radius="1" target="1">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="energy" interval="2000"  chance="10"  length="8" spread="0" min="-400" max="-560">
+			<attribute key="areaEffect" value="purpleenergy"/>
+		</attack>
+		<attack name="speed" interval="2000" chance="10"  range="7" speedchange="-220" duration="5000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+	</attacks>
+	<defenses armor="30" defense="30">
+		<defense name="healing" interval="2000" chance="10"  min="120" max="280">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="2000" chance="10" speedchange="360" duration="20000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element energyPercent="50"/>
+		<element icePercent="50"/>
+		<element earthPercent="-30"/>
+	</elements>
+	<immunities>
+		<immunity fire="1"/>
+	</immunities>
+	<voices interval="5000" chance="9">
+		<voice sentence="GREEN IS MEAN!" yell="1"/>
+		<voice sentence="WE RULE!" yell="1"/>
+		<voice sentence="POWER TO THE SHABURAK!" yell="1"/>
+		<voice sentence="DEATH TO THE ASKARAK!"/>
+		<voice sentence="ONLY WE ARE TRUE DEMONS!" yell="0"/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="50000" /><!-- gold coin -->
+		<item id="2148" countmax="73" chance="50000" /><!-- gold coin -->
+		<item id="2152" countmax="4" chance="33333" /><!-- platinum coin -->
+		<item id="7589" chance="14285" /><!-- Strong Mana Potion  -->
+		<item id="7588" chance="14285" /><!-- Strong Health Potion -->
+		<item id="2147" countmax="5" chance="12500" /><!-- Small Rubies  -->
+		<item id="2165" chance="5000" /><!-- Stealth Ring  -->
+		<item id="2789" chance="4545" /><!-- Brown Mushroom -->
+		<item id="2187" chance="892" /><!-- Wand of Inferno  -->
+		<item id="7443" chance="714" /><!-- Bullseye Potion -->
+		<item id="7899" chance="714" /><!-- Magma Coat -->
+		<item id="5904" chance="534" /><!-- magic sulphur -->
+		<item id="7412" chance="357" /><!-- Butcher's Axe  -->
+		<item id="13530" chance="178" /><!-- Demonic Finge -->
+		<item id="2645" chance="89" /><!-- Steel Boots  -->
+	</loot>
+</monster>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mod name="Quest list command" enabled="no">
+	<talkaction words="!quest;/quest" event="script"><![CDATA[
+		local quest = {
+			[3002] = { start = 1 , eNd = 5, name = "a F.. quest name"},
+			[3003] = { start = 1, eNd = 1, name = "a F.. quest name"},
+			[3004] = { start = 1, eNd = 1, name = "a F.. quest name"}
+		}
+
+		function onSay(cid, words, param)
+			str = "Quests: "
+
+			for i,x in pairs (quest) do 
+				local st = getPlayerStorageValue(cid, i)
+				str = str.."\n ".. x.name .. " ["..(st >= x.start and st <= eNd and "Completed" or "Uncompleted").. "]"
+			end
+
+			doPlayerPopupFYI(cid, str)
+		end
+	]]></talkaction>
+</mod>
