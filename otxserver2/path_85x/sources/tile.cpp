@@ -1447,28 +1447,25 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 
 uint32_t Tile::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool itemCount /*= true*/) const
 {
+	const TileItemVector* items = getItemList();
+	if(!items)
+		return 0;
+
 	uint32_t count = 0;
-	Thing* thing = NULL;
-	for(uint32_t i = 0; i < getThingCount(); ++i)
+	for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
 	{
-		if(!(thing = __getThing(i)))
+		if((*it)->getID() == itemId) count += Item::countByType(*it, subType, itemCount);
 			continue;
 
-		if(const Item* item = thing->getItem())
+		if(!itemCount)
 		{
-			if(item->getID() != itemId || (subType != -1 && subType != item->getSubType()))
-				continue;
-
-			if(!itemCount)
-			{
-				if(item->isRune())
-					count+= item->getCharges();
-				else
-					count+= item->getItemCount();
-			}
+			if((*it)->isRune())
+				count+= (*it)->getCharges();
 			else
-				count+= item->getItemCount();
+				count+= (*it)->getItemCount();
 		}
+		else
+			count+= (*it)->getItemCount();
 	}
 
 	return count;

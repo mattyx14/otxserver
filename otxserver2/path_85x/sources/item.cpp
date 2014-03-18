@@ -93,11 +93,18 @@ Item* Item::CreateItem(const uint16_t type, uint16_t amount/* = 0*/)
 
 Item* Item::CreateItem(PropStream& propStream)
 {
-	uint16_t type;
-	if(!propStream.getShort(type))
+	uint16_t _id;
+	if(!propStream.getShort(_id))
 		return NULL;
 
-	return Item::CreateItem(items.getRandomizedItem(type), 0);
+	const ItemType& iType = Item::items[_id];
+	uint8_t _count = 0;
+
+	if(iType.stackable || iType.isSplash() || iType.isFluidContainer())
+		if(!propStream.getByte(_count))
+			return NULL;
+
+	return Item::CreateItem(_id, _count);
 }
 
 bool Item::loadItem(xmlNodePtr node, Container* parent)
@@ -178,7 +185,7 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	setItemCount(1);
 	setDefaultDuration();
 
-	const ItemType& it = items[type];
+	const ItemType& it = items[id];
 	if(it.isFluidContainer() || it.isSplash())
 		setFluidType(amount);
 	else if(it.stackable)
@@ -821,31 +828,11 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 	bool dot = true;
 	if(it.isRune())
 	{
+		if(it.runeMagLevel > 0)
+			s << " for magic level " << it.runeMagLevel;
+
 		if(!it.runeSpellName.empty())
-			s << "(\"" << it.runeSpellName << "\")";
-
-		if(it.runeLevel > 0 || it.runeMagLevel > 0 || (it.vocationString != "" && it.wieldInfo == 0))
-		{
-			s << "." << std::endl << "It can only be used";
-			if(it.vocationString != "" && it.wieldInfo == 0)
-				s << " by " << it.vocationString;
-
-			bool begin = true;
-			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && it.runeLevel > 0)
-			{
-				begin = false;
-				s << " with level " << it.runeLevel;
-			}
-
-			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && it.runeMagLevel > 0)
-			{
-				begin = false;
-				s << " " << (begin ? "with" : "and") << " magic level " << it.runeMagLevel;
-			}
-
-			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && !begin)
-				s << " or higher";
-		}
+			s << ". It's an \"" << it.runeSpellName << "\" spell (" << subType << "x)";
 	}
 	else if(it.weaponType != WEAPON_NONE)
 	{
@@ -1470,7 +1457,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		<= ((int32_t)it.levelDoor + g_config.getNumber(ConfigManager::MAXIMUM_DOOR_LEVEL)))
 		s << " for level " << item->getActionId() - it.levelDoor;
 
-	if(it.showCharges)
+	if(it.showCharges && !it.isRune())
 		s << " that has " << subType << " charge" << (subType != 1 ? "s" : "") << " left";
 
 	if(it.showDuration)

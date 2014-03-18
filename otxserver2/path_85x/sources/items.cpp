@@ -84,7 +84,7 @@ ItemType::ItemType()
 	lightLevel = lightColor = 0;
 
 	maxTextLength = 0;
-	/*clientCharges = */canReadText = canWriteText = false;
+	clientCharges = canReadText = canWriteText = false;
 	date = 0;
 	writeOnceItemId = wareId = premiumDays = 0;
 
@@ -184,12 +184,12 @@ int32_t Items::loadFromOtb(std::string file)
 
 	if(Items::dwMajorVersion == 0xFFFFFFFF)
 		std::clog << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
-	else if(Items::dwMajorVersion != 3)
+	else if(Items::dwMajorVersion < CLIENT_VERSION_ITEMS)
 	{
 		std::clog << "[Error - Items::loadFromOtb] Incorrect version detected, please use official items.otb." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
-	else if(!g_config.getBool(ConfigManager::SKIP_ITEMS_VERSION) && Items::dwMinorVersion != CLIENT_VERSION_ITEMS)
+	else if(!g_config.getBool(ConfigManager::SKIP_ITEMS_VERSION) && Items::dwMinorVersion < CLIENT_VERSION_ITEMS)
 	{
 		std::clog << "[Error - Items::loadFromOtb] Another client version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
@@ -254,7 +254,7 @@ int32_t Items::loadFromOtb(std::string file)
 		iType->allowDistRead = hasBitSet(FLAG_ALLOWDISTREAD, flags);
 		iType->rotable = hasBitSet(FLAG_ROTABLE, flags);
 		iType->canReadText = hasBitSet(FLAG_READABLE, flags);
-		/*iType->clientCharges = hasBitSet(FLAG_CLIENTCHARGES, flags);*/
+		iType->clientCharges = hasBitSet(FLAG_CLIENTCHARGES, flags);
 		iType->lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
 		iType->isAnimation = hasBitSet(FLAG_ANIMATION, flags);
 		iType->walkStack = !hasBitSet(FLAG_WALKSTACK, flags);
