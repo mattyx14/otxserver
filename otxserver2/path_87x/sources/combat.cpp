@@ -393,10 +393,7 @@ bool Combat::isProtected(Player* attacker, Player* target)
 	if(attacker->getZone() == ZONE_HARDCORE && target->getZone() == ZONE_HARDCORE && g_config.getBool(ConfigManager::PVP_TILE_IGNORE_PROTECTION))
 		return false;
 
-	if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
-		return target->isProtected() || attacker->isProtected() || (attacker->checkLoginDelay() && !attacker->hasBeenAttacked(target->getID()));
-	else
-		return target->isProtected() || attacker->isProtected() || attacker->checkLoginDelay(target->getID());
+	return target->isProtected() || attacker->isProtected() || (attacker->checkLoginDelay() && !attacker->hasBeenAttacked(target->getID()));
 }
 
 void Combat::setPlayerCombatValues(formulaType_t _type, double _mina, double _minb, double _maxa, double _maxb, double _minl, double _maxl, double _minm, double _maxm, int32_t _minc, int32_t _maxc)

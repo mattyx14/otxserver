@@ -3902,18 +3902,10 @@ void Player::onAttacked()
 	addInFightTicks(false);
 }
 
-bool Player::checkLoginDelay(uint32_t playerId) const
+bool Player::checkLoginDelay() const
 {
-	if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
-	{
-		return (!hasCustomFlag(PlayerCustomFlag_IgnoreLoginDelay) && OTSYS_TIME() <= (lastLoad + g_config.getNumber(
-			ConfigManager::LOGIN_PROTECTION)) && !hasBeenAttacked(playerId));
-	}
-	else
-	{
-		return (!hasCustomFlag(PlayerCustomFlag_IgnoreLoginDelay) && OTSYS_TIME() <= (lastLoad + g_config.getNumber(
-			ConfigManager::LOGIN_PROTECTION)));
-	}
+	return (!hasCustomFlag(PlayerCustomFlag_IgnoreLoginDelay) && OTSYS_TIME() <= (lastLoad + g_config.getNumber(
+		ConfigManager::LOGIN_PROTECTION)));
 }
 
 void Player::onIdleStatus()
