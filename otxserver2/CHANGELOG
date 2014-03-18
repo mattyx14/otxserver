@@ -42,6 +42,7 @@
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
 		- Added Support to 9.8x
+		- Fixed error on Reload function
 		- Update Support to 10.37
 ]
 
