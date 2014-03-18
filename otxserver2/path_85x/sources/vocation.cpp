@@ -92,7 +92,7 @@ bool Vocations::parseVocationNode(xmlNodePtr p)
 		if(floatValue >= 1.0f)
 			voc->setMultiplier(MULTIPLIER_MANA, floatValue);
 		else
-			std::clog << "[Error - Vocations::parseVocationNode] Mana multiplier must be greater than 1." << std::endl;
+			std::clog << "[Error - Vocations::parseVocationNode] Mana multiplier must be equal or greater than 1." << std::endl;
 	}
 
 	if(readXMLInteger(p, "attackspeed", intValue))

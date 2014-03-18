@@ -79,9 +79,9 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	soul = guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
 	conditionImmunities = conditionSuppressions = groupId = managerNumber2 = town = skullEnd = 0;
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
-	windowTextId = nextExAction = 0;
+	windowTextId = nextExAction = offlineTrainingTime = lastStatsTrainingTime = 0;
 
-	purchaseCallback = saleCallback = lastDepotId = -1;
+	purchaseCallback = saleCallback = offlineTrainingSkill = lastDepotId = -1;
 	level = 1;
 	rates[SKILL__MAGLEVEL] = rates[SKILL__LEVEL] = 1.0f;
 	soulMax = 100;
@@ -554,7 +554,18 @@ void Player::sendIcons() const
 	if(pzLocked)
 		icons |= ICON_PZBLOCK;
 
-	client->sendIcons(icons);
+	// Tibia client debugs with 10 or more icons
+	// so let's prevent that from happening.
+	std::bitset<20> icon_bitset((uint64_t)icons);
+	for(size_t i = 0, size = icon_bitset.size(); i < size; ++i)
+	{
+		if(icon_bitset.count() < 10)
+			break;
+
+		if(icon_bitset[i])
+			icon_bitset.reset(i);
+	}
+	client->sendIcons(icon_bitset.to_ulong());
 }
 
 void Player::updateInventoryWeight()
@@ -1235,7 +1246,10 @@ void Player::sendCancelMessage(ReturnValue message) const
 void Player::sendStats()
 {
 	if(client)
+	{
 		client->sendStats();
+		lastStatsTrainingTime = getOfflineTrainingTime() / 60 / 1000;
+	}
 }
 
 Item* Player::getWriteItem(uint32_t& _windowTextId, uint16_t& _maxWriteLen)
@@ -1421,6 +1435,97 @@ void Player::onCreatureAppear(const Creature* creature)
 		}
 	}
 
+	int32_t offlineTime;
+	if(getLastLogout())
+		offlineTime = std::min((int32_t)(time(NULL) - getLastLogout()), 86400 * 21);
+	else
+		offlineTime = 0;
+
+	if(offlineTrainingSkill != SKILL_NONE)
+	{
+		int32_t trainingTime = std::max(0, std::min(offlineTime, std::min(43200, getOfflineTrainingTime() / 1000)));
+		if(offlineTime >= 600)
+		{
+			removeOfflineTrainingTime(trainingTime * 1000);
+			int32_t remainder = offlineTime - trainingTime;
+			if(remainder > 0)
+				addOfflineTrainingTime(remainder * 1000);
+
+			if(trainingTime >= 60)
+			{
+				std::ostringstream ss;
+				ss << "During your absence you trained for ";
+
+				int32_t hours = trainingTime / 3600;
+				if(hours > 1)
+					ss << hours << " hours";
+				else if(hours == 1)
+					ss << "1 hour";
+
+				int32_t minutes = (trainingTime % 3600) / 60;
+				if(minutes != 0)
+				{
+					if(hours != 0)
+						ss << " and ";
+
+					if(minutes > 1)
+						ss << minutes << " minutes";
+					else
+						ss << "1 minute";
+				}
+	
+				ss << ".";
+				sendTextMessage(MSG_EVENT_ADVANCE, ss.str());
+
+				Vocation* voc = getVocation();
+				if(!isPromoted(promotionLevel + 1)) // maybe a configurable?...
+				{
+					int32_t vocId = Vocations::getInstance()->getPromotedVocation(voc->getId());
+					if(vocId > 0)
+					{
+						if(Vocation* tmp = Vocations::getInstance()->getVocation(vocId))
+							voc = tmp;
+					}
+				}
+
+				if(offlineTrainingSkill == SKILL_CLUB || offlineTrainingSkill == SKILL_SWORD || offlineTrainingSkill == SKILL_AXE)
+				{
+					float modifier = voc->getAttackSpeed() / 1000.f;
+					addOfflineTrainingTries((skills_t)offlineTrainingSkill, (trainingTime / modifier) / 2);
+				}
+				else if(offlineTrainingSkill == SKILL_DIST)
+				{
+					float modifier = voc->getAttackSpeed() / 1000.f;
+					addOfflineTrainingTries((skills_t)offlineTrainingSkill, (trainingTime / modifier) / 4);
+				}
+				else if(offlineTrainingSkill == SKILL__MAGLEVEL)
+				{
+					int32_t gainTicks = voc->getGainTicks(GAIN_MANA) << 1;
+					if(!gainTicks)
+						gainTicks = 1;
+					addOfflineTrainingTries(SKILL__MAGLEVEL, (int32_t)((float) trainingTime * ((float) voc->getGainAmount(GAIN_MANA) / (float) gainTicks)));
+				}
+
+				if(addOfflineTrainingTries(SKILL_SHIELD, trainingTime / 4))
+					sendSkills();
+			}
+
+			sendStats();
+		}
+		else
+			sendTextMessage(MSG_EVENT_ADVANCE, "You must be logged out for more than 10 minutes to start offline training.");
+		offlineTrainingSkill = SKILL_NONE;
+	}
+	else
+	{
+		uint16_t oldMinutes = getOfflineTrainingTime() / 60 / 1000;
+		addOfflineTrainingTime(offlineTime * 1000);
+
+		uint16_t newMinutes = getOfflineTrainingTime() / 60 / 1000;
+		if(oldMinutes != newMinutes)
+			sendStats();
+	}
+
 	g_game.checkPlayersRecord(this);
 	if(!isGhost())
 	{
@@ -1524,6 +1629,20 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	clearPartyInvitations();
 	if(party)
 		party->leave(this);
+
+	g_game.cancelRuleViolation(this);
+	if(hasFlag(PlayerFlag_CanAnswerRuleViolations))
+	{
+		PlayerVector closeReportList;
+		for(RuleViolationsMap::const_iterator it = g_game.getRuleViolations().begin(); it != g_game.getRuleViolations().end(); ++it)
+		{
+			if(it->second->gamemaster == this)
+				closeReportList.push_back(it->second->reporter);
+		}
+
+		for(PlayerVector::iterator it = closeReportList.begin(); it != closeReportList.end(); ++it)
+			g_game.closeRuleViolation(*it);
+	}
 
 	g_chat.removeUserFromChannels(this);
 	if(!isGhost())
@@ -1630,7 +1749,6 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 		if(ticks > 0)
 		{
 			addExhaust(ticks, EXHAUST_SPELLGROUP_ATTACK);
-			addExhaust(ticks, EXHAUST_MELEE);
 			if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_PACIFIED, ticks))
 				addCondition(condition);
 		}
@@ -1842,6 +1960,10 @@ void Player::onThink(uint32_t interval)
 
 	if(lastMail && lastMail < (uint64_t)(OTSYS_TIME() + g_config.getNumber(ConfigManager::MAIL_ATTEMPTS_FADE)))
 		mailAttempts = lastMail = 0;
+
+	addOfflineTrainingTime(interval);
+	if(lastStatsTrainingTime != getOfflineTrainingTime() / 60 / 1000)
+		sendStats();
 }
 
 bool Player::isMuted(uint16_t channelId, MessageClasses type, int32_t& time)
@@ -3887,23 +4009,20 @@ void Player::onTarget(Creature* target)
 	if(!targetPlayer)
 		return;
 
-	addAttacked(targetPlayer);
-	if(Combat::isInPvpZone(this, targetPlayer) || isPartner(targetPlayer) || isAlly(targetPlayer)
-		|| (g_config.getBool(ConfigManager::ALLOW_FIGHTBACK) && targetPlayer->hasAttacked(this)
-		&& !targetPlayer->isEnemy(this, false)))
-		return;
-
 	if(!pzLocked)
 	{
 		pzLocked = true;
 		sendIcons();
 	}
 
-	if(getZone() != target->getZone() || skull != SKULL_NONE || targetPlayer->isEnemy(this, true)
-		|| g_game.getWorldType() != WORLDTYPE_OPEN)
+	if(targetPlayer->hasAttacked(this) || Combat::isInPvpZone(this, targetPlayer) || isPartner(targetPlayer) || isAlly(targetPlayer))
 		return;
 
-	if(target->getSkull() != SKULL_NONE || targetPlayer->hasAttacked(this))
+	addAttacked(targetPlayer);
+	if(getZone() != target->getZone() || skull != SKULL_NONE || targetPlayer->isEnemy(this, true) || g_game.getWorldType() != WORLDTYPE_OPEN)
+		return;
+
+	if(target->getSkull() != SKULL_NONE)
 		targetPlayer->sendCreatureSkull(this);
 	else if(!hasCustomFlag(PlayerCustomFlag_NotGainSkull))
 	{
@@ -3994,9 +4113,9 @@ GuildEmblems_t Player::getGuildEmblem(const Creature* creature) const
 		return Creature::getGuildEmblem(creature);
 
 	if(player->isEnemy(this, false))
-		return EMBLEM_RED;
+		return GUILDEMBLEM_ENEMY;
 
-	return player->getGuildId() == guildId ? EMBLEM_GREEN : EMBLEM_BLUE;
+	return player->getGuildId() == guildId ? GUILDEMBLEM_ALLY : GUILDEMBLEM_NEUTRAL;
 }
 
 bool Player::getEnemy(const Player* player, War_t& data) const
@@ -4339,7 +4458,7 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 		if(g_game.getWorldType() != WORLDTYPE_OPEN)
 			return SKULL_NONE;
 
-		if(skull != SKULL_NONE && player->hasAttacked(this) && !player->isEnemy(this, false))
+		if(player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
 		if((isPartner(player) || isAlly(player)) &&
@@ -4399,14 +4518,14 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(!g_config.getBool(ConfigManager::USE_FRAG_HANDLER) || hasFlag(
 		PlayerFlag_NotGainInFight) || g_game.getWorldType() != WORLDTYPE_OPEN
 		|| hasCustomFlag(PlayerCustomFlag_NotGainUnjustified) || hasCustomFlag(
-		PlayerCustomFlag_NotGainSkull))
+		PlayerCustomFlag_NotGainSkull) || attacked == this)
 		return false;
 
 	if(countNow)
 	{
 		char buffer[90];
 		sprintf(buffer, "Warning! The murder of %s was not justified.", attacked->getName().c_str());
-		sendTextMessage(MSG_EVENT_ADVANCE, buffer);
+		sendTextMessage(MSG_STATUS_WARNING, buffer);
 	}
 
 	time_t now = time(NULL), first = (now - g_config.getNumber(ConfigManager::FRAG_LIMIT)),
@@ -4441,7 +4560,7 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 			return true;
 
 		if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
-			ConfigManager::KILLS_BAN_LENGTH)), "Unjustified player killing.", 0, guid))
+			ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
 			return true;
 
 		sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
@@ -4910,6 +5029,9 @@ void Player::manageAccount(const std::string &text)
 						talkState[12] = true;
 					}
 				}
+
+				if(msg.str().length() == 17)
+					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
 			{
@@ -5164,6 +5286,26 @@ bool Player::isPremium() const
 	return (premiumDays != 0);
 }
 
+void Player::addPremiumDays(int32_t days)
+{
+	if(premiumDays < GRATIS_PREMIUM)
+	{
+		Account account = IOLoginData::getInstance()->loadAccount(accountId);
+		if(days < 0)
+		{
+			account.premiumDays = std::max((uint32_t)0, uint32_t(account.premiumDays + (int32_t)days));
+			premiumDays = std::max((uint32_t)0, uint32_t(premiumDays + (int32_t)days));
+		}
+		else
+		{
+			account.premiumDays = std::min((uint32_t)65534, uint32_t(account.premiumDays + (uint32_t)days));
+			premiumDays = std::min((uint32_t)65534, uint32_t(premiumDays + (uint32_t)days));
+		}
+
+		IOLoginData::getInstance()->saveAccount(account);
+	}
+}
+
 bool Player::setGuildLevel(GuildLevel_t newLevel, uint32_t rank/* = 0*/)
 {
 	std::string name;
@@ -5399,5 +5541,125 @@ bool Player::transferMoneyTo(const std::string& name, uint64_t amount)
 void Player::sendCritical() const
 {
 	if(g_config.getBool(ConfigManager::DISPLAY_CRITICAL_HIT))
-		sendTextMessage(MSG_STATUS_CONSOLE_RED, "You strike a critical hit!");
+		g_game.addAnimatedText(getPosition(), COLOR_DARKRED, "CRITICAL!");
+}
+
+bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
+{
+	if(tries <= 0 || skill == SKILL__LEVEL || skill == SKILL__EXPERIENCE)
+		return false;
+
+	uint32_t oldSkillValue, newSkillValue;
+	long double oldPercentToNextLevel, newPercentToNextLevel;
+
+	std::ostringstream ss;
+	if(skill == SKILL__MAGLEVEL)
+	{
+		uint64_t currReqMana = vocation->getReqMana(magLevel), nextReqMana = vocation->getReqMana(magLevel + 1);
+		if(currReqMana >= nextReqMana)
+			return false;
+
+		oldSkillValue = magLevel;
+		oldPercentToNextLevel = (long double)(manaSpent * 100) / nextReqMana;
+
+		tries *= g_config.getDouble(ConfigManager::RATE_MAGIC_OFFLINE);
+		while((manaSpent + tries) >= nextReqMana)
+		{
+			tries -= nextReqMana - manaSpent;
+			manaSpent = 0;
+			magLevel++;
+
+			CreatureEventList advanceEvents = getCreatureEvents(CREATURE_EVENT_ADVANCE);
+			for(CreatureEventList::iterator it = advanceEvents.begin(); it != advanceEvents.end(); ++it)
+				(*it)->executeAdvance(this, SKILL__MAGLEVEL, (magLevel - 1), magLevel);
+
+			currReqMana = nextReqMana;
+			nextReqMana = vocation->getReqMana(magLevel + 1);
+			if(currReqMana >= nextReqMana)
+			{
+				tries = 0;
+				break;
+			}
+		}
+
+		if(tries)
+			manaSpent += tries;
+
+		uint32_t newPercent;
+		if(nextReqMana > currReqMana)
+		{
+			newPercent = Player::getPercentLevel(manaSpent, nextReqMana);
+			newPercentToNextLevel = (long double)(manaSpent * 100) / nextReqMana;
+		}
+		else
+			newPercent = newPercentToNextLevel = 0;
+
+		if(newPercent != magLevelPercent)
+		{
+			magLevelPercent = newPercent;
+			sendStats();
+		}
+
+		newSkillValue = magLevel;
+		ss << "You advanced to magic level " << magLevel << ".";
+		sendTextMessage(MSG_EVENT_ADVANCE, ss.str().c_str());
+		ss.str("");
+	}
+	else
+	{
+		uint64_t currReqTries = vocation->getReqSkillTries(skill, skills[skill][SKILL_LEVEL]),
+			nextReqTries = vocation->getReqSkillTries(skill, skills[skill][SKILL_LEVEL] + 1);
+		if(currReqTries >= nextReqTries)
+			return false;
+
+		oldSkillValue = skills[skill][SKILL_LEVEL];
+		oldPercentToNextLevel = (long double)(skills[skill][SKILL_TRIES] * 100) / nextReqTries;
+
+		tries *= g_config.getDouble(ConfigManager::RATE_SKILL_OFFLINE);
+		while((skills[skill][SKILL_TRIES] + tries) >= nextReqTries)
+		{
+			tries -= nextReqTries - skills[skill][SKILL_TRIES];
+			skills[skill][SKILL_LEVEL]++;
+			skills[skill][SKILL_TRIES] = skills[skill][SKILL_PERCENT] = 0;			
+
+			CreatureEventList advanceEvents = getCreatureEvents(CREATURE_EVENT_ADVANCE);
+			for(CreatureEventList::iterator it = advanceEvents.begin(); it != advanceEvents.end(); ++it)
+				(*it)->executeAdvance(this, skill, (skills[skill][SKILL_LEVEL] - 1), skills[skill][SKILL_LEVEL]);
+
+			currReqTries = nextReqTries;
+			nextReqTries = vocation->getReqSkillTries(skill, skills[skill][SKILL_LEVEL] + 1);
+			if(currReqTries >= nextReqTries)
+			{
+				tries = 0;
+				break;
+			}
+		}
+
+		if(tries)
+			skills[skill][SKILL_TRIES] += tries;
+
+		uint32_t newPercent;
+		if(nextReqTries > currReqTries)
+		{
+			newPercent = Player::getPercentLevel(skills[skill][SKILL_TRIES], nextReqTries);
+			newPercentToNextLevel = (long double)(skills[skill][SKILL_TRIES] * 100) / nextReqTries;
+		}
+		else
+			newPercent = newPercentToNextLevel = 0;
+
+		if(skills[skill][SKILL_PERCENT] != newPercent)
+		{
+			skills[skill][SKILL_PERCENT] = newPercent;
+			sendStats();
+		}
+
+		newSkillValue = skills[skill][SKILL_LEVEL];
+		ss << "You advanced to " << getSkillName(skill) << " level " << skills[skill][SKILL_LEVEL] << ".";
+		sendTextMessage(MSG_EVENT_ADVANCE, ss.str().c_str());
+		ss.str("");
+	}
+
+	ss << std::fixed << std::setprecision(2) << "Your " << ucwords(getSkillName(skill)) << " skill changed from level " << oldSkillValue << " (with " << oldPercentToNextLevel << "% progress towards level " << (oldSkillValue + 1) << ") to level " << newSkillValue << " (with " << newPercentToNextLevel << "% progress towards level " << (newSkillValue + 1) << ")";
+	sendTextMessage(MSG_EVENT_ADVANCE, ss.str().c_str());
+	return true;
 }

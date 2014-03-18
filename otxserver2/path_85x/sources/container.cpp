@@ -299,8 +299,6 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 
 			if(!hasBitSet(FLAG_NOLIMIT, flags) && !isInbox && dynamic_cast<const Inbox*>(cylinder))
 				isInbox = true;
-
-			cylinder = cylinder->getParent();
 		}
 	}
 

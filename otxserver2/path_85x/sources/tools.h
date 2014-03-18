@@ -125,7 +125,10 @@ uint32_t rand24b();
 float box_muller(float m, float s);
 int32_t random_range(int32_t lowestNumber, int32_t highestNumber, DistributionType_t type = DISTRO_UNIFORM);
 
-int32_t round(float v);
+#if !defined(_MSC_VER) || _MSC_VER < 1800
+double round(double v);
+#endif
+
 bool hasBitSet(uint32_t flag, uint32_t flags);
 uint32_t adlerChecksum(uint8_t* data, size_t length);
 
@@ -165,6 +168,8 @@ void getCombatDetails(CombatType_t combatType, MagicEffect_t& magicEffect, Color
 
 std::string getCombatName(CombatType_t combatType);
 std::string getSkillName(uint16_t skillId, bool suffix = true);
+std::string getReason(int32_t reasonId);
+std::string getAction(ViolationAction_t actionId, bool ipBanishment);
 std::string getWeaponName(WeaponType_t weaponType);
 
 bool fileExists(const char* filename);

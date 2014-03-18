@@ -88,24 +88,37 @@ enum ReloadInfo_t
 	RELOAD_GAMESERVERS = 5,
 	RELOAD_GLOBALEVENTS = 6,
 	RELOAD_GROUPS = 7,
-	//RELOAD_UNUSED = 8,
-	//RELOAD_UNUSED = 9,
-	RELOAD_ITEMS = 10,
-	RELOAD_MONSTERS = 11,
-	//RELOAD_UNUSED = 12,
-	RELOAD_MOVEEVENTS = 13,
-	RELOAD_NPCS = 14,
-	RELOAD_OUTFITS = 15,
-	RELOAD_QUESTS = 16,
-	RELOAD_RAIDS = 17,
-	RELOAD_SPELLS = 18,
-	RELOAD_STAGES = 19,
-	RELOAD_TALKACTIONS = 20,
-	RELOAD_VOCATIONS = 21,
-	RELOAD_WEAPONS = 22,
-	RELOAD_MODS = 23,
-	RELOAD_ALL = 24,
-	RELOAD_LAST = RELOAD_WEAPONS
+	RELOAD_ITEMS = 8,
+	RELOAD_HIGHSCORES = 9,
+	RELOAD_MONSTERS = 10,
+	RELOAD_MOVEEVENTS = 11,
+	RELOAD_NPCS = 12,
+	RELOAD_OUTFITS = 13,
+	RELOAD_QUESTS = 14,
+	RELOAD_RAIDS = 15,
+	RELOAD_SPELLS = 16,
+	RELOAD_STAGES = 17,
+	RELOAD_TALKACTIONS = 18,
+	RELOAD_VOCATIONS = 19,
+	RELOAD_WEAPONS = 20,
+	RELOAD_MODS = 21,
+	RELOAD_ALL = 22,
+	RELOAD_LAST = RELOAD_MODS
+};
+
+struct RuleViolation
+{
+	RuleViolation(Player* _reporter, const std::string& _text, uint32_t _time):
+		reporter(_reporter), gamemaster(NULL), text(_text), time(_time), isOpen(true) {}
+
+	Player* reporter;
+	Player* gamemaster;
+	std::string text;
+	uint32_t time;
+	bool isOpen;
+
+	private:
+		RuleViolation(const RuleViolation&);
 };
 
 enum SaveFlag_t
@@ -122,7 +135,9 @@ struct RefreshBlock_t
 	uint64_t lastRefresh;
 };
 
+typedef std::map<uint32_t, shared_ptr<RuleViolation> > RuleViolationsMap;
 typedef std::map<Tile*, RefreshBlock_t> RefreshTiles;
+typedef std::vector< std::pair<std::string, uint32_t> > Highscore;
 typedef std::list<Position> Trash;
 typedef std::map<int32_t, float> StageList;
 
@@ -143,6 +158,11 @@ class Game
 		Game();
 		virtual ~Game();
 		void start(ServiceManager* servicer);
+
+		Highscore getHighscore(uint16_t skill);
+		std::string getHighscoreString(uint16_t skill);
+		void checkHighscores();
+		bool reloadHighscores();
 
 		bool isSwimmingPool(Item* item, const Tile* tile, bool checkProtection) const;
 
@@ -451,6 +471,9 @@ class Game
 		bool playerReportBug(uint32_t playerId, std::string comment);
 		bool playerReportViolation(uint32_t playerId, ReportType_t type, uint8_t reason, const std::string& name,
 			const std::string& comment, const std::string& translation, uint32_t statementId);
+		bool playerViolationWindow(uint32_t playerId, std::string name, uint8_t reason,
+			ViolationAction_t action, std::string comment, std::string statement,
+			uint32_t statementId, bool ipBanishment);
 		bool playerMoveThing(uint32_t playerId, const Position& fromPos, uint16_t spriteId,
 			int16_t fromStackpos, const Position& toPos, uint8_t count);
 		bool playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
@@ -466,6 +489,9 @@ class Game
 		bool playerCloseChannel(uint32_t playerId, uint16_t channelId);
 		bool playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
 		bool playerCloseNpcChannel(uint32_t playerId);
+		bool playerProcessRuleViolation(uint32_t playerId, const std::string& name);
+		bool playerCloseRuleViolation(uint32_t playerId, const std::string& name);
+		bool playerCancelRuleViolation(uint32_t playerId);
 		bool playerReceivePing(uint32_t playerId);
 		bool playerAutoWalk(uint32_t playerId, std::list<Direction>& listDir);
 		bool playerStopAutoWalk(uint32_t playerId);
@@ -498,6 +524,7 @@ class Game
 		bool playerCancelAttackAndFollow(uint32_t playerId);
 		bool playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, secureMode_t secureMode);
 		bool playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteId, int16_t stackpos);
+		bool playerLookInBattleList(uint32_t playerId, uint32_t creatureId);
 		bool playerQuests(uint32_t playerId);
 		bool playerQuestInfo(uint32_t playerId, uint16_t questId);
 		bool playerRequestAddVip(uint32_t playerId, const std::string& name);
@@ -607,6 +634,10 @@ class Game
 		void addStatsMessage(const SpectatorVec& list, MessageClasses mClass, const std::string& message,
 			const Position& pos, MessageDetails* details = NULL);
 
+		const RuleViolationsMap& getRuleViolations() const {return ruleViolations;}
+		bool cancelRuleViolation(Player* player);
+		bool closeRuleViolation(Player* player);
+
 		bool loadExperienceStages();
 		double getExperienceStage(uint32_t level, double divider = 1.);
 
@@ -631,6 +662,8 @@ class Game
 		bool playerSpeakTo(Player* player, MessageClasses type, const std::string& receiver, const std::string& text, uint32_t statementId);
 		bool playerSpeakToChannel(Player* player, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId);
 		bool playerSpeakToNpc(Player* player, const std::string& text);
+		bool playerReportRuleViolation(Player* player, const std::string& text);
+		bool playerContinueReport(Player* player, const std::string& text);
 
 		struct GameEvent
 		{
@@ -642,6 +675,7 @@ class Game
 		std::vector<Thing*> releaseThings;
 		std::map<Item*, uint32_t> tradeItems;
 		AutoList<Creature> autoList;
+		RuleViolationsMap ruleViolations;
 
 		size_t checkCreatureLastIndex;
 		std::vector<Creature*> checkCreatureVectors[EVENT_CREATURECOUNT];
@@ -680,5 +714,8 @@ class Game
 
 		StageList stages;
 		uint32_t lastStageLevel;
+
+		Highscore highscoreStorage[9];
+		time_t lastHighscoreCheck;
 };
 #endif

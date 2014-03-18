@@ -113,11 +113,12 @@ class PrivateChatChannel : public ChatChannel
 
 typedef std::list<ChatChannel*> ChannelList;
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
+typedef std::map<uint32_t, std::string> StatementMap;
 
 class Chat
 {
 	public:
-		Chat(): dummyPrivate(NULL), partyName("Party") {}
+		Chat(): statement(0), dummyPrivate(NULL), partyName("Party") {}
 		virtual ~Chat();
 
 		bool reload();
@@ -146,7 +147,10 @@ class Chat
 
 		ChannelList getPublicChannels() const;
 		bool isPublicChannel(uint16_t cid) const {return cid != CHANNEL_GUILD && cid
-			!= CHANNEL_PARTY && !isPrivateChannel(cid);}
+			!= CHANNEL_RVR && cid != CHANNEL_PARTY && !isPrivateChannel(cid);}
+
+		uint32_t statement;
+		StatementMap statementMap;
 
 	private:
 		void clear();

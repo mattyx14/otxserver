@@ -234,8 +234,8 @@ bool Raid::loadFromXml(const std::string& _filename)
 	xmlDocPtr doc = xmlParseFile(_filename.c_str());
 	if(!doc)
 	{
-		std::clog << "[Error - Raid::loadFromXml] Could not load raid file " << _filename
-			<< std::endl << std::clog << getLastXMLError() << std::endl;
+		std::clog << "[Error - Raid::loadFromXml] Could not load raid file " << _filename << std::endl;
+		std::clog << getLastXMLError() << std::endl;
 		return false;
 	}
 

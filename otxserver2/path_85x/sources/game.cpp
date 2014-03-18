@@ -195,6 +195,7 @@ void Game::loadGameState()
 	ScriptEnviroment::loadGameState();
 	loadPlayersRecord();
 	loadMotd();
+	checkHighscores();
 }
 
 void Game::setGameState(GameState_t newState)
@@ -2392,7 +2393,11 @@ bool Game::playerOpenChannel(uint32_t playerId, uint16_t channelId)
 		return false;
 	}
 
-	player->sendChannel(channel->getId(), channel->getName());
+	if(channel->getId() != CHANNEL_RVR)
+		player->sendChannel(channel->getId(), channel->getName());
+	else
+		player->sendRuleViolationsChannel(channel->getId());
+
 	return true;
 }
 
@@ -2404,6 +2409,61 @@ bool Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
 
 	g_chat.removeUserFromChannel(player, channelId);
 	return true;
+}
+
+bool Game::playerProcessRuleViolation(uint32_t playerId, const std::string& name)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	if(!player->hasFlag(PlayerFlag_CanAnswerRuleViolations))
+		return false;
+
+	Player* reporter = getPlayerByName(name);
+	if(!reporter)
+		return false;
+
+	RuleViolationsMap::iterator it = ruleViolations.find(reporter->getID());
+	if(it == ruleViolations.end())
+		return false;
+
+	RuleViolation& rvr = *it->second;
+	if(!rvr.isOpen)
+		return false;
+
+	rvr.isOpen = false;
+	rvr.gamemaster = player;
+	if(ChatChannel* channel = g_chat.getChannelById(CHANNEL_RVR))
+	{
+		UsersMap tmpMap = channel->getUsers();
+		for(UsersMap::iterator tit = tmpMap.begin(); tit != tmpMap.end(); ++tit)
+			tit->second->sendRemoveReport(reporter->getName());
+	}
+
+	return true;
+}
+
+bool Game::playerCloseRuleViolation(uint32_t playerId, const std::string& name)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	Player* reporter = getPlayerByName(name);
+	if(!reporter)
+		return false;
+
+	return closeRuleViolation(reporter);
+}
+
+bool Game::playerCancelRuleViolation(uint32_t playerId)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	return cancelRuleViolation(player);
 }
 
 bool Game::playerOpenPrivateChannel(uint32_t playerId, std::string& receiver)
@@ -3652,6 +3712,70 @@ bool Game::playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteI
 	return true;
 }
 
+bool Game::playerLookInBattleList(uint32_t playerId, uint32_t creatureId)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	Creature* creature = getCreatureByID(creatureId);
+	if(!creature || creature->isRemoved())
+		return false;
+
+	if(!player->canSeeCreature(creature))
+		return false;
+
+	const Position& creaturePos = creature->getPosition();
+	if(!player->canSee(creaturePos))
+		return false;
+
+	int32_t lookDistance;
+	if(creature != player)
+	{
+		const Position& playerPos = player->getPosition();
+		lookDistance = std::max(std::abs(playerPos.x - creaturePos.x), std::abs(playerPos.y - creaturePos.y));
+		if(playerPos.z != creaturePos.z)
+			lookDistance += 15;
+	}
+	else
+		lookDistance = -1;
+
+	std::ostringstream ss;
+	ss << "You see " << creature->getDescription(lookDistance);
+	if(player->hasCustomFlag(PlayerCustomFlag_CanSeeCreatureDetails))
+	{
+		if(!player->hasFlag(PlayerFlag_HideHealth))
+		{
+			ss << std::endl << "Health: [" << creature->getHealth() << " / " << creature->getMaxHealth() << "]";
+			if(creature->getMaxMana() > 0)
+				ss << ", Mana: [" << creature->getMana() << " / " << creature->getMaxMana() << "]";
+
+			ss << ".";
+		}
+
+		if(const Player* target = creature->getPlayer())
+		{
+			ss << std::endl << "IP: " << convertIPAddress(target->getIP());
+#if CLIENT_VERSION_MIN != CLIENT_VERSION_MAX
+			ss << ", Client: " << target->getClientVersion();
+#endif
+			ss << ".";
+		}
+
+		if(creature->isGhost())
+			ss << std::endl << "* Ghost mode *";
+	}
+
+	if(player->hasCustomFlag(PlayerCustomFlag_CanSeePosition))
+	{
+		ss << std::endl << "Position: [X: " << creaturePos.x << "] [Y: " << creaturePos.y << "] [Z: " << creaturePos.z << "]";
+		ss << ".";
+	}
+
+	player->sendTextMessage(MSG_INFO_DESCR, ss.str());
+	return true;
+}
+
 bool Game::playerQuests(uint32_t playerId)
 {
 	Player* player = getPlayerByID(playerId);
@@ -3921,35 +4045,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return false;
 	}
 
-	std::string _text = asLowerCaseString(text);
-	for(uint8_t i = 0; i < _text.length(); i++)
-	{
-		char t = _text[i];
-		if(t != '-' && t != '.' && !(t >= 'a' && t <= 'z'))
-		{
-			_text.erase(i, 1);
-			i--;
-		}
-	}
-
-	StringVec strVector;
-	strVector = explodeString(g_config.getString(ConfigManager::ADVERTISING_BLOCK), ";");
-	for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
-	{
-		std::string words []= {(*it)};
-		int ii, length;
-		length = sizeof(words)/sizeof(words[0]);
-		for(ii=0; ii < int(length); ii++)
-		{
-			if (int(_text.find(words[ii])) > 0 || _text == words[ii])
-			{
-				player->sendTextMessage(MSG_STATUS_SMALL, "You can't send this message, forbidden characters."); 
-				return false;
-				break;
-			}
-		}
-	}
-
 	if(player->isAccountManager())
 	{
 		if(mute)
@@ -4006,6 +4101,12 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 			return playerSpeakToNpc(player, text);
 		case MSG_GAMEMASTER_BROADCAST:
 			return playerBroadcastMessage(player, MSG_GAMEMASTER_BROADCAST, text, statementId);
+		case MSG_RVR_CHANNEL:
+			return playerReportRuleViolation(player, text);
+			break;
+		case MSG_RVR_CONTINUE:
+			return playerContinueReport(player, text);
+			break;
 
 		default:
 			break;
@@ -4024,9 +4125,9 @@ bool Game::playerWhisper(Player* player, const std::string& text, uint32_t state
 
 bool Game::playerYell(Player* player, const std::string& text, uint32_t statementId)
 {
-	if(player->getLevel() <= 1 && !player->hasFlag(PlayerFlag_CannotBeMuted))
+	if(player->getLevel() < 20 && !player->hasFlag(PlayerFlag_CannotBeMuted) && player->getPremiumDays() < 1)
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You may not yell as long as you are on level 1.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You may not yell unless you heave reached level 20 or your account has premium status.");
 		return true;
 	}
 
@@ -4070,7 +4171,7 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 		return false;
 	}
 
-	if(type == MSG_GAMEMASTER_PRIVATE && !player->hasFlag(PlayerFlag_CanTalkRedPrivate))
+	if(type == MSG_GAMEMASTER_PRIVATE && (player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->hasFlag(PlayerFlag_CannotBeMuted)))
 		type = MSG_PRIVATE;
 
 	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
@@ -4102,45 +4203,24 @@ bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::
 	{
 		case MSG_CHANNEL:
 		{
-			if(channelId == CHANNEL_HELP)
-			{
-				if(player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
-					type = MSG_CHANNEL_HIGHLIGHT;
-
-				if(player->hasFlag(PlayerFlag_CanTalkRedChannel))
-					type = MSG_GAMEMASTER_CHANNEL;
-
-				if(g_config.getNumber(ConfigManager::ANONYMOUS_CHANNEL) == 1)
-				{
-					if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-					{
-						if(text.length() < 251)
-							return g_chat.talk(player, type, text, channelId, statementId, true);
-					}
-				}
-			}
-
-			if(g_config.getNumber(ConfigManager::ANONYMOUS_CHANNEL) == 2)
-			{
-				if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-				{
-					if(text.length() < 251)
-						return g_chat.talk(player, type, text, channelId, statementId, true);
-				}
-			}
+			if(channelId == CHANNEL_HELP && player->hasFlag(PlayerFlag_TalkOrangeHelpChannel))
+				type = MSG_CHANNEL_HIGHLIGHT;
 
 			break;
 		}
 
 		case MSG_GAMEMASTER_CHANNEL:
 		{
-			if(player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
-			{
-				if(text.length() < 251)
-					return g_chat.talk(player, type, text, channelId, statementId, true);
-			}
-			else
+			if(!player->hasFlag(PlayerFlag_CanTalkRedChannel))
 				type = MSG_CHANNEL;
+			break;
+		}
+
+		case MSG_GAMEMASTER_ANONYMOUS:
+		{
+			if(!player->hasFlag(PlayerFlag_CanTalkRedChannelAnonymous))
+				type = MSG_CHANNEL;
+			break;
 		}
 
 		case MSG_GAMEMASTER_BROADCAST:
@@ -4190,6 +4270,45 @@ bool Game::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool
 	int32_t rangex/* = Map::maxClientViewportX*/, int32_t rangey/* = Map::maxClientViewportY*/)
 {
 	return map->canThrowObjectTo(fromPos, toPos, checkLineOfSight, rangex, rangey);
+}
+
+bool Game::playerReportRuleViolation(Player* player, const std::string& text)
+{
+	//Do not allow reports on multiclones worlds since reports are name-based
+	if(g_config.getNumber(ConfigManager::ALLOW_CLONES))
+	{
+		player->sendTextMessage(MSG_INFO_DESCR, "Rule violation reports are disabled.");
+		return false;
+	}
+
+	cancelRuleViolation(player);
+	boost::shared_ptr<RuleViolation> rvr(new RuleViolation(player, text, time(NULL)));
+	ruleViolations[player->getID()] = rvr;
+
+	ChatChannel* channel = g_chat.getChannelById(CHANNEL_RVR);
+	if(!channel)
+		return false;
+
+	for(UsersMap::const_iterator it = channel->getUsers().begin(); it != channel->getUsers().end(); ++it)
+		it->second->sendCreatureChannelSay(player, MSG_RVR_CHANNEL, text, CHANNEL_RVR, rvr->time);
+
+	return true;
+}
+
+bool Game::playerContinueReport(Player* player, const std::string& text)
+{
+	RuleViolationsMap::iterator it = ruleViolations.find(player->getID());
+	if(it == ruleViolations.end())
+		return false;
+
+	RuleViolation& rvr = *it->second;
+	Player* toPlayer = rvr.gamemaster;
+	if(!toPlayer)
+		return false;
+
+	toPlayer->sendCreatureSay(player, MSG_RVR_CONTINUE, text);
+	player->sendTextMessage(MSG_STATUS_SMALL, "Message sent to Gamemaster.");
+	return true;
 }
 
 bool Game::isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck)
@@ -5271,6 +5390,45 @@ void Game::getWorldLightInfo(LightInfo& lightInfo)
 	lightInfo.color = 0xD7;
 }
 
+bool Game::cancelRuleViolation(Player* player)
+{
+	RuleViolationsMap::iterator it = ruleViolations.find(player->getID());
+	if(it == ruleViolations.end())
+		return false;
+
+	Player* gamemaster = it->second->gamemaster;
+	if(!it->second->isOpen && gamemaster) //Send to the responser
+		gamemaster->sendRuleViolationCancel(player->getName());
+	else if(ChatChannel* channel = g_chat.getChannelById(CHANNEL_RVR))
+	{
+		UsersMap tmpMap = channel->getUsers();
+		for(UsersMap::iterator tit = tmpMap.begin(); tit != tmpMap.end(); ++tit)
+			tit->second->sendRemoveReport(player->getName());
+	}
+
+	//Now erase it
+	ruleViolations.erase(it);
+	return true;
+}
+
+bool Game::closeRuleViolation(Player* player)
+{
+	RuleViolationsMap::iterator it = ruleViolations.find(player->getID());
+	if(it == ruleViolations.end())
+		return false;
+
+	ruleViolations.erase(it);
+	player->sendLockRuleViolation();
+	if(ChatChannel* channel = g_chat.getChannelById(CHANNEL_RVR))
+	{
+		UsersMap tmpMap = channel->getUsers();
+		for(UsersMap::iterator tit = tmpMap.begin(); tit != tmpMap.end(); ++tit)
+			tit->second->sendRemoveReport(player->getName());
+	}
+
+	return true;
+}
+
 void Game::updateCreatureSkull(Creature* creature)
 {
 	const SpectatorVec& list = getSpectators(creature->getPosition());
@@ -5279,7 +5437,7 @@ void Game::updateCreatureSkull(Creature* creature)
 	Player* tmpPlayer = NULL;
 	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
 	{
-		 if((tmpPlayer = (*it)->getPlayer()))
+		if((tmpPlayer = (*it)->getPlayer()))
 			tmpPlayer->sendCreatureSkull(creature);
 	}
 }
@@ -5468,6 +5626,333 @@ bool Game::playerReportViolation(uint32_t playerId, ReportType_t type, uint8_t r
 	for(CreatureEventList::iterator it = reportViolationEvents.begin(); it != reportViolationEvents.end(); ++it)
 		(*it)->executeReportViolation(player, type, reason, name, comment, translation, statementId);
 
+	return true;
+}
+
+bool Game::playerViolationWindow(uint32_t playerId, std::string name, uint8_t reason, ViolationAction_t action,
+	std::string comment, std::string statement, uint32_t statementId, bool ipBanishment)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	Group* group = player->getGroup();
+	if(!group)
+		return false;
+
+	time_t length[3] = {0, 0, 0};
+	int32_t pos = 0, start = comment.find("{");
+	while((start = comment.find("{")) > 0 && pos < 4)
+	{
+		std::string::size_type end = comment.find("}", start);
+		if(end == std::string::npos)
+			break;
+
+		std::string data = comment.substr(start + 1, end - 1);
+		comment = comment.substr(end + 1);
+
+		++pos;
+		if(data.empty())
+			continue;
+
+		if(data == "delete")
+		{
+			action = ACTION_DELETION;
+			continue;
+		}
+
+		time_t banTime = time(NULL);
+		StringVec vec = explodeString(";", data);
+		for(StringVec::iterator it = vec.begin(); it != vec.end(); ++it)
+		{
+			StringVec tmp = explodeString(",", *it);
+			uint32_t count = 1;
+			if(tmp.size() > 1)
+			{
+				count = atoi(tmp[1].c_str());
+				if(!count)
+					count = 1;
+			}
+
+			if(tmp[0][0] == 's')
+				banTime += count;
+			if(tmp[0][0] == 'm')
+				banTime += count * 60;
+			if(tmp[0][0] == 'h')
+				banTime += count * 3600;
+			if(tmp[0][0] == 'd')
+				banTime += count * 86400;
+			if(tmp[0][0] == 'w')
+				banTime += count * 604800;
+			if(tmp[0][0] == 'm')
+				banTime += count * 2592000;
+			if(tmp[0][0] == 'y')
+				banTime += count * 31536000;
+		}
+
+		if(action == ACTION_DELETION)
+			length[pos - 2] = banTime;
+		else
+			length[pos - 1] = banTime;
+	}
+
+	int16_t nameFlags = group->getNameViolationFlags(), statementFlags = group->getStatementViolationFlags();
+	if((ipBanishment && ((nameFlags & IPBAN_FLAG) != IPBAN_FLAG || (statementFlags & IPBAN_FLAG) != IPBAN_FLAG)) ||
+		!(nameFlags & (1 << action) || statementFlags & (1 << action)) || reason > group->getViolationReasons())
+	{
+		player->sendCancel("You do not have authorization for this action.");
+		return false;
+	}
+
+	uint32_t commentSize = g_config.getNumber(ConfigManager::MAX_VIOLATIONCOMMENT_SIZE);
+	if(comment.size() > commentSize)
+	{
+		char buffer[90];
+		sprintf(buffer, "The comment may not exceed limit of %d characters.", commentSize);
+
+		player->sendCancel(buffer);
+		return false;
+	}
+
+	toLowerCaseString(name);
+	Player* target = getPlayerByNameEx(name);
+	if(!target || name == "account manager")
+	{
+		player->sendCancel("A player with this name does not exist.");
+		return false;
+	}
+
+	if(target->hasFlag(PlayerFlag_CannotBeBanned))
+	{
+		player->sendCancel("You do not have authorization for this action.");
+		return false;
+	}
+
+	Account account = IOLoginData::getInstance()->loadAccount(target->getAccount(), true);
+	enum KickAction {
+		NONE = 1,
+		KICK = 2,
+		FULL_KICK = 3,
+	} kickAction = FULL_KICK;
+
+	pos = 1;
+	switch(action)
+	{
+		case ACTION_STATEMENT:
+		{
+			StatementMap::iterator it = g_chat.statementMap.find(statementId);
+			if(it == g_chat.statementMap.end())
+			{
+				player->sendCancel("Statement has been already reported.");
+				return false;
+			}
+
+			IOBan::getInstance()->addStatement(target->getGUID(), reason, comment,
+				player->getGUID(), -1, statement);
+			g_chat.statementMap.erase(it);
+
+			kickAction = NONE;
+			break;
+		}
+
+		case ACTION_NAMEREPORT:
+		{
+			int64_t banTime = -1;
+			PlayerBan_t tmp = (PlayerBan_t)g_config.getNumber(ConfigManager::NAME_REPORT_TYPE);
+			if(tmp == PLAYERBAN_BANISHMENT)
+			{
+				if(!length[0])
+					banTime = time(NULL) + g_config.getNumber(ConfigManager::BAN_LENGTH);
+				else
+					banTime = length[0];
+			}
+
+			if(!IOBan::getInstance()->addPlayerBanishment(target->getGUID(), banTime, reason, action,
+				comment, player->getGUID(), tmp))
+			{
+				player->sendCancel("Player has been already reported.");
+				return false;
+			}
+			else if(tmp == PLAYERBAN_BANISHMENT)
+				account.warnings++;
+
+			kickAction = (KickAction)tmp;
+			break;
+		}
+
+		case ACTION_NOTATION:
+		{
+			if(!IOBan::getInstance()->addNotation(account.number, reason,
+				comment, player->getGUID(), target->getGUID()))
+			{
+				player->sendCancel("Unable to perform action.");
+				return false;
+			}
+
+			if(IOBan::getInstance()->getNotationsCount(account.number) < (uint32_t)
+				g_config.getNumber(ConfigManager::NOTATIONS_TO_BAN))
+			{
+				kickAction = NONE;
+				break;
+			}
+
+			action = ACTION_BANISHMENT;
+		}
+
+		case ACTION_BANISHMENT:
+		case ACTION_BANREPORT:
+		{
+			bool deny = action != ACTION_BANREPORT;
+			int64_t banTime = -1;
+			pos = 2;
+
+			account.warnings++;
+			if(account.warnings >= g_config.getNumber(ConfigManager::WARNINGS_TO_DELETION))
+				action = ACTION_DELETION;
+			else if(length[0])
+				banTime = length[0];
+			else if(account.warnings >= g_config.getNumber(ConfigManager::WARNINGS_TO_FINALBAN))
+				banTime = time(NULL) + g_config.getNumber(ConfigManager::FINALBAN_LENGTH);
+			else
+				banTime = time(NULL) + g_config.getNumber(ConfigManager::BAN_LENGTH);
+
+			if(!IOBan::getInstance()->addAccountBanishment(account.number, banTime, reason, action,
+				comment, player->getGUID(), target->getGUID()))
+			{
+				account.warnings--;
+				player->sendCancel("Account is already banned.");
+				return false;
+			}
+
+			if(deny)
+				break;
+
+			banTime = -1;
+			PlayerBan_t tmp = (PlayerBan_t)g_config.getNumber(ConfigManager::NAME_REPORT_TYPE);
+			if(tmp == PLAYERBAN_BANISHMENT)
+			{
+				if(!length[1])
+					banTime = time(NULL) + g_config.getNumber(ConfigManager::FINALBAN_LENGTH);
+				else
+					banTime = length[1];
+			}
+
+			IOBan::getInstance()->addPlayerBanishment(target->getGUID(), banTime, reason, action, comment,
+				player->getGUID(), tmp);
+			break;
+		}
+
+		case ACTION_BANFINAL:
+		case ACTION_BANREPORTFINAL:
+		{
+			bool allow = action == ACTION_BANREPORTFINAL;
+			int64_t banTime = -1;
+
+			account.warnings++;
+			if(account.warnings >= g_config.getNumber(ConfigManager::WARNINGS_TO_DELETION))
+				action = ACTION_DELETION;
+			else if(length[0])
+				banTime = length[0];
+			else
+				banTime = time(NULL) + g_config.getNumber(ConfigManager::FINALBAN_LENGTH);
+
+			if(!IOBan::getInstance()->addAccountBanishment(account.number, banTime, reason, action,
+				comment, player->getGUID(), target->getGUID()))
+			{
+				account.warnings--;
+				player->sendCancel("Account is already banned.");
+				return false;
+			}
+
+			if(action != ACTION_DELETION)
+				account.warnings += (g_config.getNumber(ConfigManager::WARNINGS_TO_FINALBAN) - 1);
+
+			if(allow)
+				IOBan::getInstance()->addPlayerBanishment(target->getGUID(), -1, reason, action, comment,
+					player->getGUID(), (PlayerBan_t)g_config.getNumber(
+					ConfigManager::NAME_REPORT_TYPE));
+
+			break;
+		}
+
+		case ACTION_DELETION:
+		{
+			//completely internal
+			account.warnings++;
+			if(!IOBan::getInstance()->addAccountBanishment(account.number, -1, reason, ACTION_DELETION,
+				comment, player->getGUID(), target->getGUID()))
+			{
+				account.warnings--;
+				player->sendCancel("Account is currently banned or already deleted.");
+				return false;
+			}
+
+			break;
+		}
+
+		default:
+			// these just shouldn't occur in rvw
+			return false;
+	}
+
+	if(ipBanishment && target->getIP())
+	{
+		if(!length[pos])
+			length[pos] = time(NULL) + g_config.getNumber(ConfigManager::IPBAN_LENGTH);
+
+		IOBan::getInstance()->addIpBanishment(target->getIP(), length[pos], reason, comment, player->getGUID(), 0xFFFFFFFF);
+	}
+
+	if(kickAction == FULL_KICK)
+		IOBan::getInstance()->removeNotations(account.number);
+
+	std::stringstream ss;
+	if(g_config.getBool(ConfigManager::BROADCAST_BANISHMENTS))
+		ss << player->getName() << " has";
+	else
+		ss << "You have";
+
+	ss << " taken the action \"" << getAction(action, ipBanishment) << "\"";
+	switch(action)
+	{
+		case ACTION_NOTATION:
+		{
+			ss << " (" << (g_config.getNumber(ConfigManager::NOTATIONS_TO_BAN) - IOBan::getInstance()->getNotationsCount(
+				account.number)) << " left to banishment)";
+			break;
+		}
+		case ACTION_STATEMENT:
+		{
+			ss << " for the statement: \"" << statement << "\"";
+			break;
+		}
+		default:
+			break;
+	}
+
+	ss << " against: " << name << " (Warnings: " << account.warnings << "), with reason: \"" << getReason(
+		reason) << "\", and comment: \"" << comment << "\".";
+	if(g_config.getBool(ConfigManager::BROADCAST_BANISHMENTS))
+		broadcastMessage(ss.str(), MSG_STATUS_WARNING);
+	else
+		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, ss.str());
+
+	if(target->isVirtual())
+	{
+		delete target;
+		target = NULL;
+	}
+	else if(kickAction > NONE)
+	{
+		char buffer[30];
+		sprintf(buffer, "You have been %s.", (kickAction > KICK ? "banished" : "namelocked"));
+		target->sendTextMessage(MSG_INFO_DESCR, buffer);
+
+		addMagicEffect(target->getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+		Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(&Game::kickPlayer, this, target->getID(), false)));
+	}
+
+	IOLoginData::getInstance()->saveAccount(account);
 	return true;
 }
 
@@ -5886,6 +6371,88 @@ bool Game::loadExperienceStages()
 	return true;
 }
 
+bool Game::reloadHighscores()
+{
+	lastHighscoreCheck = time(NULL);
+	for(int16_t i = 0; i < 9; ++i)
+		highscoreStorage[i] = getHighscore(i);
+
+	return true;
+}
+
+void Game::checkHighscores()
+{
+	reloadHighscores();
+	uint32_t tmp = g_config.getNumber(ConfigManager::HIGHSCORES_UPDATETIME) * 60 * 1000;
+	if(tmp <= 0)
+		return;
+
+	Scheduler::getInstance().addEvent(createSchedulerTask(tmp, boost::bind(&Game::checkHighscores, this)));
+}
+
+std::string Game::getHighscoreString(uint16_t skill)
+{
+	Highscore hs = highscoreStorage[skill];
+	std::stringstream ss;
+	ss << "Highscore for " << getSkillName(skill) << "\n\nRank Level - Player Name";
+	for(uint32_t i = 0; i < hs.size(); ++i)
+		ss << "\n" << (i + 1) << ".  " << hs[i].second << "  -  " << hs[i].first;
+
+	ss << "\n\nLast updated on:\n" << std::ctime(&lastHighscoreCheck);
+	return ss.str();
+}
+
+Highscore Game::getHighscore(uint16_t skill)
+{
+	Database* db = Database::getInstance();
+	DBResult* result;
+	DBQuery query;
+
+	Highscore hs;
+	if(skill >= SKILL__MAGLEVEL)
+	{
+		if(skill == SKILL__MAGLEVEL)
+			query << "SELECT `maglevel`, `name` FROM `players` ORDER BY `maglevel` DESC, `manaspent` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		else
+			query << "SELECT `level`, `name` FROM `players` ORDER BY `level` DESC, `experience` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			uint32_t level;
+			if(skill == SKILL__MAGLEVEL)
+				level = result->getDataInt("maglevel");
+			else
+				level = result->getDataInt("level");
+
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, level));
+		}
+		while(result->next());
+		result->free();
+	}
+	else
+	{
+		query << "SELECT `player_skills`.`value`, `players`.`name` FROM `player_skills`,`players` WHERE `player_skills`.`skillid`=" << skill << " AND `player_skills`.`player_id`=`players`.`id` ORDER BY `player_skills`.`value` DESC, `player_skills`.`count` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, result->getDataInt("value")));
+		}
+		while(result->next());
+		result->free();
+	}
+
+	return hs;
+}
+
 int32_t Game::getMotdId()
 {
 	if(lastMotd.length() == g_config.getString(ConfigManager::MOTD).length())
@@ -6017,6 +6584,16 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 				done = true;
 			else
 				std::clog << "[Error - Game::reloadInfo] Failed to reload global events." << std::endl;
+
+			break;
+		}
+
+		case RELOAD_HIGHSCORES:
+		{
+			if(reloadHighscores())
+				done = true;
+			else
+				std::clog << "[Error - Game::reloadInfo] Failed to reload highscores." << std::endl;
 
 			break;
 		}

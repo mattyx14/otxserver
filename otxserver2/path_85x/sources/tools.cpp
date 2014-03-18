@@ -423,14 +423,15 @@ bool hasBitSet(uint32_t flag, uint32_t flags)
 	return ((flags & flag) == flag);
 }
 
-int32_t round(float v)
+#if !defined(_MSC_VER) || _MSC_VER < 1800
+double round(double v)
 {
-	int32_t t = (int32_t)std::floor(v);
-	if((v - t) > 0.5)
-		return t + 1;
-
-	return t;
+	if (v >= 0.0)
+		return std::floor(v + 0.5);
+	else
+		return std::ceil(v - 0.5);
 }
+#endif
 
 uint32_t rand24b()
 {
@@ -842,16 +843,16 @@ PartyShields_t getShields(std::string strValue)
 GuildEmblems_t getEmblems(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "blue" || tmpStrValue == "3")
-		return EMBLEM_BLUE;
+	if(tmpStrValue == "blue" || tmpStrValue == "neutral" || tmpStrValue == "3")
+		return GUILDEMBLEM_NEUTRAL;
 
-	if(tmpStrValue == "red" || tmpStrValue == "2")
-		return EMBLEM_RED;
+	if(tmpStrValue == "red" || tmpStrValue == "enemy" || tmpStrValue == "2")
+		return GUILDEMBLEM_ENEMY;
 
-	if(tmpStrValue == "green" || tmpStrValue == "1")
-		return EMBLEM_GREEN;
+	if(tmpStrValue == "green" || tmpStrValue == "ally" || tmpStrValue == "1")
+		return GUILDEMBLEM_ALLY;
 
-	return EMBLEM_NONE;
+	return GUILDEMBLEM_NONE;
 }
 
 Direction getDirection(std::string string)
@@ -1520,6 +1521,108 @@ std::string getSkillName(uint16_t skillId, bool suffix/* = true*/)
 	}
 
 	return "unknown";
+}
+
+std::string getReason(int32_t reasonId)
+{
+	switch(reasonId)
+	{
+		case 0:
+			return "Offensive Name";
+		case 1:
+			return "Invalid Name Format";
+		case 2:
+			return "Unsuitable Name";
+		case 3:
+			return "Name Inciting Rule Violation";
+		case 4:
+			return "Offensive Statement";
+		case 5:
+			return "Spamming";
+		case 6:
+			return "Illegal Advertising";
+		case 7:
+			return "Off-Topic Public Statement";
+		case 8:
+			return "Non-English Public Statement";
+		case 9:
+			return "Inciting Rule Violation";
+		case 10:
+			return "Bug Abuse";
+		case 11:
+			return "Game Weakness Abuse";
+		case 12:
+			return "Using Unofficial Software to Play";
+		case 13:
+			return "Hacking";
+		case 14:
+			return "Multi-Clienting";
+		case 15:
+			return "Account Trading or Sharing";
+		case 16:
+			return "Threatening Gamemaster";
+		case 17:
+			return "Pretending to Have Influence on Rule Enforcement";
+		case 18:
+			return "False Report to Gamemaster";
+		case 19:
+			return "Destructive Behaviour";
+		case 20:
+			return "Excessive Unjustified Player Killing";
+		default:
+			break;
+	}
+
+	return "Unknown Reason";
+}
+
+std::string getAction(ViolationAction_t actionId, bool ipBanishment)
+{
+	std::string action = "Unknown";
+	switch(actionId)
+	{
+		case ACTION_NOTATION:
+			action = "Notation";
+			break;
+		case ACTION_NAMEREPORT:
+			action = "Name Report";
+			break;
+		case ACTION_BANISHMENT:
+			action = "Banishment";
+			break;
+		case ACTION_BANREPORT:
+			action = "Name Report + Banishment";
+			break;
+		case ACTION_BANFINAL:
+			action = "Banishment + Final Warning";
+			break;
+		case ACTION_BANREPORTFINAL:
+			action = "Name Report + Banishment + Final Warning";
+			break;
+		case ACTION_STATEMENT:
+			action = "Statement Report";
+			break;
+		//internal use
+		case ACTION_DELETION:
+			action = "Deletion";
+			break;
+		case ACTION_NAMELOCK:
+			action = "Name Lock";
+			break;
+		case ACTION_BANLOCK:
+			action = "Name Lock + Banishment";
+			break;
+		case ACTION_BANLOCKFINAL:
+			action = "Name Lock + Banishment + Final Warning";
+			break;
+		default:
+			break;
+	}
+
+	if(ipBanishment)
+		action += " + IP Banishment";
+
+	return action;
 }
 
 std::string getWeaponName(WeaponType_t weaponType)

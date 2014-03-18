@@ -789,7 +789,7 @@ bool TalkAction::guildJoin(Creature* creature, const std::string&, const std::st
 
 				char buffer[80];
 				sprintf(buffer, "%s has joined the guild.", player->getName().c_str());
-				if(ChatChannel* guildChannel = g_chat.getChannel(player, 0x00))
+				if(ChatChannel* guildChannel = g_chat.getChannel(player, CHANNEL_GUILD))
 					guildChannel->talk("", MSG_CHANNEL_HIGHLIGHT, buffer);
 			}
 			else

@@ -278,7 +278,7 @@ class Creature : public AutoId, virtual public Thing
 		void stopWalk() {cancelNextWalk = true;}
 		void addEventWalk(bool firstStep = false);
 		void stopEventWalk();
-		void goToFollowCreature();
+		virtual void goToFollowCreature();
 
 		//walk events
 		virtual void onWalk(Direction& dir);

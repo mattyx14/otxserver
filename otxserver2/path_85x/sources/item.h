@@ -313,6 +313,7 @@ class Item : virtual public Thing, public ItemAttributes
 		bool isWeapon() const {return (items[id].weaponType != WEAPON_NONE);}
 		bool isReadable() const {return items[id].canReadText;}
 		bool isWare() const {return items[id].wareId != 0;}
+		bool isPremiumScroll() const {return items[id].premiumDays > 0;}
 
 		bool isLoadedFromMap() const {return loadedFromMap;}
 		void setLoadedFromMap(bool value) {loadedFromMap = value;}

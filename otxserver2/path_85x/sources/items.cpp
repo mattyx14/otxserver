@@ -84,9 +84,9 @@ ItemType::ItemType()
 	lightLevel = lightColor = 0;
 
 	maxTextLength = 0;
-	clientCharges = canReadText = canWriteText = false;
+	/*clientCharges = */canReadText = canWriteText = false;
 	date = 0;
-	writeOnceItemId = wareId = 0;
+	writeOnceItemId = wareId = premiumDays = 0;
 
 	transformEquipTo = transformDeEquipTo = transformUseTo = 0;
 	showDuration = showCharges = showAttributes = dualWield = false;
@@ -254,7 +254,7 @@ int32_t Items::loadFromOtb(std::string file)
 		iType->allowDistRead = hasBitSet(FLAG_ALLOWDISTREAD, flags);
 		iType->rotable = hasBitSet(FLAG_ROTABLE, flags);
 		iType->canReadText = hasBitSet(FLAG_READABLE, flags);
-		iType->clientCharges = hasBitSet(FLAG_CLIENTCHARGES, flags);
+		/*iType->clientCharges = hasBitSet(FLAG_CLIENTCHARGES, flags);*/
 		iType->lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
 		iType->isAnimation = hasBitSet(FLAG_ANIMATION, flags);
 		iType->walkStack = !hasBitSet(FLAG_WALKSTACK, flags);
@@ -1944,6 +1944,11 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.walkStack = (intValue != 0);
+		}
+		else if(tmpStrValue == "premiumdays")
+		{
+			if(readXMLInteger(itemAttributesNode, "value", intValue))
+				it.premiumDays = intValue;
 		}
 		else
 			std::clog << "[Warning - Items::loadFromXml] Unknown key value " << strValue << std::endl;

@@ -180,6 +180,15 @@ class Player : public Creature, public Cylinder
 			return exp;
 		}
 
+		bool addOfflineTrainingTries(skills_t skill, int32_t tries);
+
+		void addOfflineTrainingTime(int32_t addTime) {offlineTrainingTime = std::min(12 * 3600 * 1000, offlineTrainingTime + addTime);}
+		void removeOfflineTrainingTime(int32_t removeTime) {offlineTrainingTime = std::max(0, offlineTrainingTime - removeTime);}
+		int32_t getOfflineTrainingTime() {return offlineTrainingTime;}
+
+		int32_t getOfflineTrainingSkill() {return offlineTrainingSkill;}
+		void setOfflineTrainingSkill(int32_t skill) {offlineTrainingSkill = skill;}
+
 		uint32_t getPromotionLevel() const {return promotionLevel;}
 		void setPromotionLevel(uint32_t pLevel);
 
@@ -288,6 +297,7 @@ class Player : public Creature, public Cylinder
 
 		bool isPremium() const;
 		int32_t getPremiumDays() const {return premiumDays;}
+		void addPremiumDays(int32_t days);
 
 		bool hasEnemy() const {return !warMap.empty();}
 		bool getEnemy(const Player* player, War_t& data) const;
@@ -700,6 +710,15 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendTutorial(tutorialId);}
 		void sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc)
 			{if(client) client->sendAddMarker(pos, markType, desc);}
+		void sendRuleViolationsChannel(uint16_t channelId)
+			{if(client) client->sendRuleViolationsChannel(channelId);}
+		void sendRemoveReport(const std::string& name)
+			{if(client) client->sendRemoveReport(name);}
+		void sendLockRuleViolation()
+			{if(client) client->sendLockRuleViolation();}
+		void sendRuleViolationCancel(const std::string& name)
+			{if(client) client->sendRuleViolationCancel(name);}
+
 		void sendCritical() const;
 		void sendPlayerIcons(Player* player);
 		void sendStats();
@@ -860,6 +879,7 @@ class Player : public Creature, public Cylinder
 		uint16_t maxWriteLen;
 		uint16_t sex;
 		uint16_t mailAttempts;
+		uint16_t lastStatsTrainingTime;
 
 		int32_t premiumDays;
 		int32_t soul;
@@ -874,6 +894,8 @@ class Player : public Creature, public Cylinder
 		int32_t messageBuffer;
 		int32_t bloodHitCount;
 		int32_t shieldBlockCount;
+		int32_t offlineTrainingSkill;
+		int32_t offlineTrainingTime;
 
 		uint32_t clientVersion;
 		uint32_t messageTicks;

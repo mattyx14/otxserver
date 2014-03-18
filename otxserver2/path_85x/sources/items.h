@@ -132,13 +132,13 @@ class ItemType
 		bool isDepot() const {return (type == ITEM_TYPE_DEPOT);}
 		bool isMailbox() const {return (type == ITEM_TYPE_MAILBOX);}
 		bool isTrashHolder() const {return (type == ITEM_TYPE_TRASHHOLDER);}
-		bool isRune() const {return clientCharges;}
+		/*bool isRune() const {return (type == ITEM_TYPE_RUNE);}*/
 		bool isBed() const {return (type == ITEM_TYPE_BED);}
 
 		bool hasSubType() const {return (isFluidContainer() || isSplash() || stackable || charges);}
 		bool hasAbilities() const {return abilities != NULL;}
 
-		bool loaded, stopTime, showCount, clientCharges, stackable, showDuration, showCharges, showAttributes, dualWield,
+		bool loaded, stopTime, showCount, /*clientCharges, */stackable, showDuration, showCharges, showAttributes, dualWield,
 			allowDistRead, canReadText, canWriteText, forceSerialize, isVertical, isHorizontal, isHangable,
 			usable, movable, pickupable, rotable, replacable, lookThrough, walkStack, hasHeight, blockSolid,
 			blockPickupable, blockProjectile, blockPathFind, allowPickupable, alwaysOnTop, floorChange[CHANGE_LAST],
@@ -155,7 +155,8 @@ class ItemType
 		Ammo_t ammoType;
 
 		uint16_t transformBed[PLAYERSEX_MALE + 1], transformUseTo, transformEquipTo, transformDeEquipTo,
-			id, clientId, maxItems, slotPosition, wieldPosition, speed, maxTextLength, writeOnceItemId, wareId;
+			id, clientId, maxItems, slotPosition, wieldPosition, speed, maxTextLength, writeOnceItemId, wareId,
+			premiumDays;
 
 		int32_t attack, extraAttack, defense, extraDefense, armor, breakChance, hitChance, maxHitChance,
 			runeLevel, runeMagLevel, lightLevel, lightColor, decayTo, rotateTo, alwaysOnTopOrder;

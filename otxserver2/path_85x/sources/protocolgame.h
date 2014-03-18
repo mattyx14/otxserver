@@ -107,6 +107,7 @@ class ProtocolGame : public Protocol
 		void parseSetOutfit(NetworkMessage& msg);
 		void parseSay(NetworkMessage& msg);
 		void parseLookAt(NetworkMessage& msg);
+		void parseLookInBattleList(NetworkMessage& msg);
 		void parseFightModes(NetworkMessage& msg);
 		void parseAttack(NetworkMessage& msg);
 		void parseFollow(NetworkMessage& msg);
@@ -164,6 +165,9 @@ class ProtocolGame : public Protocol
 
 		//rule violation
 		void parseViolationReport(NetworkMessage& msg);
+		void parseProcessRuleViolation(NetworkMessage& msg);
+		void parseCloseRuleViolation(NetworkMessage& msg);
+		void parseCancelRuleViolation(NetworkMessage& msg);
 
 		//Send functions
 		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel);
@@ -171,6 +175,10 @@ class ProtocolGame : public Protocol
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
 		void sendChannelsDialog(const ChannelsList& channels);
 		void sendChannel(uint16_t channelId, const std::string& channelName);
+		void sendRuleViolationsChannel(uint16_t channelId);
+		void sendRemoveReport(const std::string& name);
+		void sendLockRuleViolation();
+		void sendRuleViolationCancel(const std::string& name);
 		void sendOpenPrivateChannel(const std::string& receiver);
 		void sendIcons(int32_t icons);
 		void sendFYIBox(const std::string& message);
@@ -249,6 +257,9 @@ class ProtocolGame : public Protocol
 		void sendAddInventoryItem(slots_t slot, const Item* item);
 		void sendUpdateInventoryItem(slots_t slot, const Item* item);
 		void sendRemoveInventoryItem(slots_t slot);
+
+		//rule violation window
+		void parseViolationWindow(NetworkMessage& msg);
 
 		// help functions
 		void reloadCreature(const Creature* creature);
