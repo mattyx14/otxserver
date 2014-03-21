@@ -1,1 +1,81 @@
--- empty file --
+-- different corpses for each vocation --
+vocations.h
+Change:
+
+int32_t lessLoss, capGain;
+
+
+To:
+
+
+int32_t lessLoss, capGain, corpse;
+
+
+
+--------------------------------------
+
+Under:
+
+
+void setAttackable(bool v) {attackable = v;}
+
+
+Add:
+
+
+bool getCorpse() const {return corpse;}
+void setCorpse(int32_t v) {corpse = v;}
+
+--------------------------------------
+
+
+vocations.cpp
+Under:
+
+if(readXMLInteger(p, "attackspeed", intValue))
+    voc->setAttackSpeed(intValue);
+    
+
+Add:
+
+
+if(readXMLInteger(p, "corpse", intValue))
+    voc->setCorpse(intValue);
+    
+
+
+Under:
+
+attackSpeed = 1500;
+
+Add:
+
+corpse = -1;
+
+
+
+---------------------------------------
+
+player.cpp
+Change:
+
+Item* corpse = Creature::createCorpse(deathList);
+
+
+To:
+
+
+Item* corpse;
+if(getVocation()->getCorpse() >= 0)
+    corpse = Item::CreateItem(getVocation()->getCorpse());
+else
+    corpse = Creature::createCorpse(deathList);
+    
+-------------------------------------------------
+
+vocations.xml
+
+Sample:
+<vocation id="1" name="Sorcerer" description="a sorcerer" corpse="xxxx" needpremium="0"...
+When you type zero there, no corpse will be created. Delete whole corpse="" to use default ones.
+    
