@@ -360,7 +360,6 @@ bool ConfigManager::load()
 	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", CLIENT_VERSION_MIN);
 	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", CLIENT_VERSION_MAX);
 	m_confString[VERSION_MSG] = getGlobalString("versionMsg", "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
-	m_confNumber[LEVEL_TO_OFFLINE] = getGlobalNumber("levelToOfflineTraining", 8);
 	m_confBool[USE_RUNE_REQUIREMENTS] = getGlobalBool("useRunesRequirements", true);
 	m_confBool[NO_ATTACKHEALING_SIMULTANEUS] = getGlobalBool("noAttackHealingSimultaneus", true);
 	m_confBool[ENABLE_COOLDOWNS] = getGlobalBool("enableCooldowns", true);

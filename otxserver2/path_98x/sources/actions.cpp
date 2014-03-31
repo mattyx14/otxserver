@@ -483,7 +483,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			return RET_CANNOTUSETHISOBJECT;
 
 		uint32_t levelToOffinBedHouse = g_config.getNumber(ConfigManager::LEVEL_TO_OFFLINE);
-		if(player->getLevel() < levelToOffinBedHouse)
+		if(player->getLevel() <= levelToOffinBedHouse)
 			bed->sleep(player);
 
 		player->prepareSleep(bed);

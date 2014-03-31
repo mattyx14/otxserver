@@ -43,6 +43,7 @@
 		- Added new config: attackImmediatelyAfterLoggingIn
 		- Added Support to 98x
 		- Fixed error on Reload function
+		- Optimization
 		- Update Support to 10.37
 		- Update protocol 85x - 95x to 2.10
 ]
