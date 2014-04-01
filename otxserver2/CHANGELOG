@@ -42,6 +42,7 @@
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
 		- Added Support to 98x
+		- /ban command no require en protocols 8.60 - this protocols have ruleViolation System
 		- Fixed error on Reload function
 		- Optimization
 		- Update Support to 10.37

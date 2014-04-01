@@ -35,7 +35,6 @@
 	<talkaction log="yes" group="4" access="3" words="/ghost;/invisible" event="function" value="ghost"/>
 	<talkaction log="yes" group="4" access="3" words="/mute;/unmute" event="script" value="mute.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/light" event="script" value="gamemaster.lua"/>
-	<talkaction log="yes" group="4" access="3" words="/ban" event="script" value="ban.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/notations" event="script" value="notations.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/goto;!goto" event="script" value="teleportto.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/baninfo" event="function" value="banishmentInfo"/>
