@@ -180,10 +180,6 @@
 		versionMax = 860
 		versionMsg = "Only clients with protocol 8.60 allowed!"
 
-		-- ConfigSpells
-		noAttackHealingSimultaneus = true
-		enableCooldowns = true
-
 	-- Connection config
 	loginTries = 20
 	retryTimeout = 5 * 1000

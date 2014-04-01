@@ -1617,7 +1617,7 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 		int32_t ticks = g_config.getNumber(ConfigManager::STAIRHOP_DELAY);
 		if(ticks > 0)
 		{
-			addExhaust(ticks, EXHAUST_SPELLGROUP_ATTACK);
+			addExhaust(ticks, EXHAUST_MELEE);
 			if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_PACIFIED, ticks))
 				addCondition(condition);
 		}

@@ -86,7 +86,6 @@
 	-- NOTE: showHealth/ManaChangeForMonsters inherites from showHealth/ManaChange.
 	protectionLevel = 1
 	pvpTileIgnoreLevelAndVocationProtection = true
-	allowFightback = true
 	pzLocked = 60 * 1000
 	huntingDuration = 60 * 1000
 	criticalHitMultiplier = 1
@@ -113,6 +112,9 @@
 	addManaSpentInPvPZone = true
 	recoverManaAfterDeathInPvPZone = true
 	squareColor = 0
+	broadcastBanishments = false
+	maxViolationCommentSize = 60
+	violationNameReportActionType = 2
 
 	-- RSA
 	-- NOTE: These should not be changed unless you know what your doing!
@@ -166,8 +168,9 @@
 
 		-- Others
 		enableLootBagDisplay = false
-		advertisingBlock = "5"
-		gmAnonymousInChanel = 0
+		highscoreDisplayPlayers = 10
+		updateHighscoresAfterMinutes = 60
+		attackImmediatelyAfterLoggingIn = false
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
@@ -176,7 +179,7 @@
 		manualVersionConfig = false
 		versionMin = 854
 		versionMax = 857
-		versionMsg = "Only clients with protocol 8.5x allowed!"
+		versionMsg = "Only clients with protocol 8.54/57 allowed!"
 
 	-- Connection config
 	loginTries = 20
@@ -327,8 +330,11 @@
 	experienceStages = false
 	rateExperience = 5.0
 	rateExperienceFromPlayers = 0
-	rateSkill = 3.0
-	rateMagic = 3.0
+	levelToOfflineTraining = 8
+	rateSkill = 1.0
+	rateSkillOffline = 0.5
+	rateMagic = 1.0
+	rateMagicOffline = 0.5
 	rateLoot = 2.0
 	rateSpawnMin = 1
 	rateSpawnMax = 1

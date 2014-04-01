@@ -174,10 +174,6 @@
 		autoStack = true
 		runesHitTopCreature = false
 		charlistBasicInfo = false
-
-		-- ConfigSpells
-		noAttackHealingSimultaneus = true
-		enableCooldowns = true
 		classicDamageOnWeapons = true
 
 	-- Connection config
