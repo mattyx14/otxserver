@@ -43,7 +43,7 @@ extern ConfigManager g_config;
 extern MoveEvents* g_moveEvents;
 
 Items Item::items;
-Item* Item::CreateItem(const uint16_t type, uint16_t amount/* = 0*/)
+Item* Item::CreateItem(const uint16_t type, uint16_t amount/* = 1*/)
 {
 	const ItemType& it = Item::items[type];
 	if(it.group == ITEM_GROUP_DEPRECATED)
@@ -172,6 +172,7 @@ bool Item::loadContainer(xmlNodePtr parentNode, Container* parent)
 Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	ItemAttributes(), id(type)
 {
+	count = 1;
 	raid = NULL;
 	loadedFromMap = false;
 
@@ -184,12 +185,13 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	else if(it.stackable)
 	{
 		if(amount)
-			setItemCount(amount);
+			count = setItemCount(amount);
 		else if(it.charges)
 			setItemCount(it.charges);
 	}
 	else if(it.charges)
 		setCharges(amount ? amount : it.charges);
+
 	if(it.armorRndMin > -1 && it.armorRndMax > it.armorRndMin)
 		setAttribute("armor", it.armorRndMin + rand() % (it.armorRndMax+1 - it.armorRndMin));
 	if(it.defenseRndMin > -1 && it.defenseRndMax > it.defenseRndMin)
