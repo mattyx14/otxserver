@@ -176,21 +176,17 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	raid = NULL;
 	loadedFromMap = false;
 
-	setItemCount(1);
-	setDefaultDuration();
+	const ItemType& it = items[id];
+	if(it.charges)
+		setCharges(it.charges);
 
-	const ItemType& it = items[type];
+	setDefaultDuration();
 	if(it.isFluidContainer() || it.isSplash())
 		setFluidType(amount);
-	else if(it.stackable)
-	{
-		if(amount)
-			count = setItemCount(amount);
-		else if(it.charges)
-			setItemCount(it.charges);
-	}
-	else if(it.charges)
-		setCharges(amount ? amount : it.charges);
+	else if(it.stackable && amount)
+		count = amount;
+	else if(it.charges && amount)
+		setCharges(amount);
 
 	if(it.armorRndMin > -1 && it.armorRndMax > it.armorRndMin)
 		setAttribute("armor", it.armorRndMin + rand() % (it.armorRndMax+1 - it.armorRndMin));

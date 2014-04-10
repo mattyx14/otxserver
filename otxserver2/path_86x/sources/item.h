@@ -281,7 +281,7 @@ class Item : virtual public Thing, public ItemAttributes
 
 		bool hasProperty(enum ITEMPROPERTY prop) const;
 		bool hasSubType() const {return items[id].hasSubType();}
-		bool hasCharges() const {return items[id].charges;}
+		bool hasCharges() const {return hasIntegerAttribute("charges");}
 
 		bool canDecay();
 		virtual bool canRemove() const {return true;}
