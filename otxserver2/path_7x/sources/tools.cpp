@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See thef
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -1243,7 +1243,7 @@ void getCombatDetails(CombatType_t combatType, MagicEffect_t& magicEffect, Color
 
 		case COMBAT_ENERGYDAMAGE:
 		{
-			textColor = COLOR_TEAL;
+			textColor = COLOR_LIGHTBLUE;
 			magicEffect = MAGIC_EFFECT_ENERGY_DAMAGE;
 			break;
 		}
