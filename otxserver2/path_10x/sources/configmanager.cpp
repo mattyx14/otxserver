@@ -182,7 +182,6 @@ bool ConfigManager::load()
 	m_confDouble[EFP_MAX_THRESHOLD] = getGlobalDouble("maxLevelThresholdForKilledPlayer", 1.1f);
 	m_confBool[SHUTDOWN_AT_GLOBALSAVE] = getGlobalBool("shutdownAtGlobalSave", false);
 	m_confBool[CLEAN_MAP_AT_GLOBALSAVE] = getGlobalBool("cleanMapAtGlobalSave", true);
-	m_confBool[CLOSE_INSTANCE_ON_SHUTDOWN] = getGlobalBool("closeInstanceOnShutdown", true);
 	m_confBool[FREE_PREMIUM] = getGlobalBool("freePremium", false);
 	m_confNumber[PROTECTION_LEVEL] = getGlobalNumber("protectionLevel", 1);
 	m_confNumber[STATUSQUERY_TIMEOUT] = getGlobalNumber("statusTimeout", 300000);

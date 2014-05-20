@@ -32,9 +32,6 @@
 ]
 
 [ BUGS
-	* Shutdown server on GUI cause crash
-		Solve it change boost version for one older for example 1.44
-
 	* Fields(fire/energy/earth) not work properly
 ]
 
@@ -46,6 +43,7 @@
 			http://www.blacktibia.org/t34684-como-cambiar-version-otx#217540 this change not like .. this like a botUser
 		- /ban command no require en protocols 8.60 - this protocols have ruleViolation System
 		- Fixed error on Reload function
+		- Fixed shutDown server on GUI cause crash
 		- Moved PACKETS_PER_SECOND to protocolGame this no kick to players this change not like for my .. this like a botUser
 		- Optimization
 		- Update Support to 10.40

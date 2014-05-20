@@ -376,7 +376,6 @@
 	globalSaveMinute = 0
 	shutdownAtGlobalSave = true
 	cleanMapAtGlobalSave = false
-	closeInstanceOnShutdown = true
 
 	-- Spawns
 	minRateSpawn = 1

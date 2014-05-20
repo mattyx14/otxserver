@@ -234,9 +234,7 @@ void Game::setGameState(GameState_t newState)
 
 				Houses::getInstance()->check();
 				saveGameState((uint8_t)SAVE_PLAYERS | (uint8_t)SAVE_MAP | (uint8_t)SAVE_STATE);
-
-				if(g_config.getBool(ConfigManager::CLOSE_INSTANCE_ON_SHUTDOWN))
-					Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::shutdown, this)));
+				Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::shutdown, this)));
 
 				Scheduler::getInstance().stop();
 				Dispatcher::getInstance().stop();
