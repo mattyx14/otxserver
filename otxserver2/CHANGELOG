@@ -48,7 +48,7 @@
 		- Fixed error on Reload function
 		- Moved PACKETS_PER_SECOND to protocolGame this no kick to players this change not like for my .. this like a botUser
 		- Optimization
-		- Update Support to 10.37
+		- Update Support to 10.39
 		- Update protocol 85x - 95x to 2.10
 ]
 

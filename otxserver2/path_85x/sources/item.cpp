@@ -197,23 +197,27 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	}
 	else if(it.charges)
 		setCharges(amount ? amount : it.charges);
-	if(it.armorRndMin > -1 && it.armorRndMax > it.armorRndMin)
+
+	if(it.armorRndMin > 0 && it.armorRndMax > it.armorRndMin)
 		setAttribute("armor", it.armorRndMin + rand() % (it.armorRndMax+1 - it.armorRndMin));
-	if(it.defenseRndMin > -1 && it.defenseRndMax > it.defenseRndMin)
+
+	if(it.defenseRndMin > 0 && it.defenseRndMax > it.defenseRndMin)
 		setAttribute("defense", it.defenseRndMin + rand() % (it.defenseRndMax+1 - it.defenseRndMin));
-	if(it.extraDefenseRndMin > -1 && it.extraDefenseRndMax > it.extraDefenseRndMin)
-	if(it.extraDefenseChance == -1 || (it.extraDefenseChance >= rand() % 101) )
+
+	if(it.extraDefenseRndMin > 0 && it.extraDefenseRndMax > it.extraDefenseRndMin)
+	if(it.extraDefenseChance == 0 || (it.extraDefenseChance >= rand() % 101) )
 		setAttribute("extradefense", it.extraDefenseRndMin + rand() % (it.extraDefenseRndMax+1 - it.extraDefenseRndMin));
-	if(it.attackRndMin > -1 && it.attackRndMax > it.attackRndMin)
+
+	if(it.attackRndMin > 0 && it.attackRndMax > it.attackRndMin)
 		setAttribute("attack", it.attackRndMin + rand() % (it.attackRndMax - it.attackRndMin));
-	if(it.extraAttackRndMin > -1 && it.extraAttackRndMax > it.extraAttackRndMin)
-	if(it.extraAttackChance == -1 || (it.extraAttackChance >= rand() % 101) )
+
+	if(it.extraAttackRndMin > 0 && it.extraAttackRndMax > it.extraAttackRndMin)
+	if(it.extraAttackChance == 0 || (it.extraAttackChance >= rand() % 101) )
 		setAttribute("extraattack", it.extraAttackRndMin + rand() % (it.extraAttackRndMax+1 - it.extraAttackRndMin));
-	if(it.chargesRndMin > -1 && it.chargesRndMax > it.chargesRndMin)
-		setAttribute("charges", it.chargesRndMin + rand() % (it.chargesRndMax+1 - it.chargesRndMin));
-	if(it.attackSpeedRndMin > -1 && it.attackSpeedRndMax > it.attackSpeedRndMin)
-	if(it.attackSpeedChance == -1 || (it.attackSpeedChance >= rand() % 101) )
-		setAttribute("attackSpeed", it.attackSpeedRndMin + rand() % (it.attackSpeedRndMax+1 - it.attackSpeedRndMin) );
+
+	if(it.attackSpeedRndMin > 0 && it.attackSpeedRndMax > it.attackSpeedRndMin)
+	if(it.attackSpeedChance == 0 || (it.attackSpeedChance >= rand() % 101) )
+		setAttribute("attackSpeed", it.attackSpeedRndMin + rand() % (it.attackSpeedRndMax+1 - it.attackSpeedRndMin));
 }
 
 Item* Item::clone() const

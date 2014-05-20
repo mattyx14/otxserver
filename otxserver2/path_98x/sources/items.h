@@ -163,8 +163,8 @@ class ItemType
 
 		int32_t extraAttackChance, extraDefenseChance, attackSpeedChance;
 		int32_t armorRndMin, armorRndMax, defenseRndMin, defenseRndMax, extraDefenseRndMin,
-			extraDefenseRndMax, attackRndMin, attackRndMax, extraAttackRndMin, extraAttackRndMax, chargesRndMin,
-			chargesRndMax, attackSpeedRndMin, attackSpeedRndMax;
+			extraDefenseRndMax, attackRndMin, attackRndMax, extraAttackRndMin, extraAttackRndMax,
+			attackSpeedRndMin, attackSpeedRndMax;
 
 		uint32_t shootRange, charges, decayTime, attackSpeed, wieldInfo, minReqLevel, minReqMagicLevel,
 			worth, levelDoor, date;

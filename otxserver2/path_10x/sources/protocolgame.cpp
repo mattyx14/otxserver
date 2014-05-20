@@ -2431,6 +2431,7 @@ void ProtocolGame::sendBasicData()
 
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0x9F);
+	msg->put<char>(0x9F);
 
 	msg->put<char>(player->isPremium());
 	msg->put<char>(player->getVocation()->getClientId());

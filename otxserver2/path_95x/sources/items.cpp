@@ -74,9 +74,9 @@ ItemType::ItemType()
 	decayTime = 0;
 	stopTime = false;
 	corpseType = RACE_NONE;
-	armorRndMin = armorRndMax = defenseRndMin = defenseRndMax = extraDefenseRndMin = extraDefenseRndMax = -1;
-	attackRndMin = attackRndMax = extraAttackRndMin = extraAttackRndMax = chargesRndMin = chargesRndMax = -1;
-	attackSpeedRndMin = attackSpeedRndMax = attackSpeedChance = extraAttackChance = extraDefenseChance = -1;
+	armorRndMin = armorRndMax = defenseRndMin = defenseRndMax = extraDefenseRndMin = extraDefenseRndMax = 0;
+	attackRndMin = attackRndMax = extraAttackRndMin = extraAttackRndMax = 0;
+	attackSpeedRndMin = attackSpeedRndMax = attackSpeedChance = extraAttackChance = extraDefenseChance = 0;
 	fluidSource = FLUID_NONE;
 	allowDistRead = false;
 
@@ -1097,10 +1097,6 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.charges = intValue;
-			if(readXMLInteger(itemAttributesNode, "random_min", intValue))
-				it.chargesRndMin = intValue;
-			if(readXMLInteger(itemAttributesNode, "random_max", intValue))
-				it.chargesRndMax = intValue;
 		}
 		else if(tmpStrValue == "showcharges")
 		{

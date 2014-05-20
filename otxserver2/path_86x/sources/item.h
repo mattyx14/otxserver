@@ -142,7 +142,7 @@ class Item : virtual public Thing, public ItemAttributes
 		static Items items;
 
 		//Factory member to create item of right type based on type
-		static Item* CreateItem(const uint16_t type, uint16_t amount = 1);
+		static Item* CreateItem(const uint16_t type, uint16_t amount = 0);
 		static Item* CreateItem(PropStream& propStream);
 
 		static bool loadItem(xmlNodePtr node, Container* parent);
@@ -344,7 +344,7 @@ class Item : virtual public Thing, public ItemAttributes
 		virtual void onRemoved();
 		virtual bool onTradeEvent(TradeEvents_t, Player*, Player*) {return true;}
 
-		static uint32_t countByType(const Item* item, int32_t checkType, bool multiCount);
+		static uint32_t countByType(const Item* item, int32_t checkType);
 
 	protected:
 		uint16_t id;
@@ -612,13 +612,10 @@ inline ItemDecayState_t Item::getDecaying() const
 	return DECAYING_FALSE;
 }
 
-inline uint32_t Item::countByType(const Item* item, int32_t checkType, bool multiCount)
+inline uint32_t Item::countByType(const Item* item, int32_t checkType)
 {
 	if(checkType != -1 && checkType != (int32_t)item->getSubType())
 		return 0;
-
-	if(multiCount)
-		return item->getItemCount();
 
 	return item->getItemCount();
 }
