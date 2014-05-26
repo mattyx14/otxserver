@@ -1170,4 +1170,28 @@
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8858" slot="two-handed" event="function" value="onDeEquipItem"/>
+		<!-- Shimmer Bow -->
+	<movevent id="13873" level="40" slot="two-handed"  event="function" value="onEquipItem">
+		<vocation name="Paladin"/>
+		<vocation id="7" showInDescription="0"/>
+	</movevent>
+	<movevent type="DeEquip" itemid="13873" slot="two-handed" event="function" value="onDeEquipItem"/>
+		<!-- Hive Bow -->
+	<movevent id="15643" level="85" slot="two-handed"  event="function" value="onEquipItem">
+		<vocation name="Paladin"/>
+		<vocation id="7" showInDescription="0"/>
+	</movevent>
+	<movevent type="DeEquip" itemid="15643" slot="two-handed" event="function" value="onDeEquipItem"/>
+		<!-- Ornate Crossbow -->
+	<movevent id="15644" level="50" slot="two-handed"  event="function" value="onEquipItem">
+		<vocation name="Paladin"/>
+		<vocation id="7" showInDescription="0"/>
+	</movevent>
+	<movevent type="DeEquip" itemid="15644" slot="two-handed" event="function" value="onDeEquipItem"/>
+		<!-- Thorn Spitter -->
+	<movevent id="16111" level="150" slot="two-handed"  event="function" value="onEquipItem">
+		<vocation name="Paladin"/>
+		<vocation id="7" showInDescription="0"/>
+	</movevent>
+	<movevent type="DeEquip" itemid="16111" slot="two-handed" event="function" value="onDeEquipItem"/>
 </movements>
