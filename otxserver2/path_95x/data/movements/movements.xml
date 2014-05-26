@@ -1068,79 +1068,79 @@
 	</movevent>
 	<movevent type="DeEquip" itemid="8849" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Chain Bolter -->
-	<movevent id="8850" level="60" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8850" level="60" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8850" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Royal Crossbow -->
-	<movevent id="8851" level="130" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8851" level="130" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8851" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Devileye -->
-	<movevent id="8852" level="100" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8852" level="100" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8852" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Ironworker -->
-	<movevent id="8853" level="80" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8853" level="80" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8853" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Warsinger Bow -->
-	<movevent id="8854" level="80" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8854" level="80" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8854" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Composite Hornbow -->
-	<movevent id="8855" level="50" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8855" level="50" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8855" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Yol's Bow -->
-	<movevent id="8856" level="60" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8856" level="60" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8856" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Silkweaver Bow -->
-	<movevent id="8857" level="40" slot="two-handed" event="function" value="onEquipItem"> 
+	<movevent type="Equip" itemid="8857" level="40" slot="two-handed" event="function" value="onEquipItem"> 
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8857" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Elethriel's Elemental Bow -->
-	<movevent id="8858" level="70" slot="two-handed" event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="8858" level="70" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8858" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Shimmer Bow -->
-	<movevent id="13873" level="40" slot="two-handed"  event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="13873" level="40" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="13873" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Hive Bow -->
-	<movevent id="15643" level="85" slot="two-handed"  event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="15643" level="85" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="15643" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Ornate Crossbow -->
-	<movevent id="15644" level="50" slot="two-handed"  event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="15644" level="50" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="15644" slot="two-handed" event="function" value="onDeEquipItem"/>
 		<!-- Thorn Spitter -->
-	<movevent id="16111" level="150" slot="two-handed"  event="function" value="onEquipItem">
+	<movevent type="Equip" itemid="16111" level="150" slot="two-handed" event="function" value="onEquipItem">
 		<vocation name="Paladin"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
