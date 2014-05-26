@@ -47,10 +47,11 @@
 		- /ban command no require en protocols 8.60 - this protocols have ruleViolation System
 		- Fixed error on Reload function
 		- Fixed shutDown server on GUI cause crash
-		- Moved PACKETS_PER_SECOND to protocolGame this no kick to players this change not like for my .. this like a botUser
 		- Fixed it: http://www.blacktibia.org/t33444p360-otx-server-290-se-version-galaxy#222906
+		- Fixed it: http://www.blacktibia.org/t33444p360-otx-server-290-se-version-galaxy#221426
+		- Moved PACKETS_PER_SECOND to protocolGame this no kick to players this change not like for my .. this like a botUser
 		- Optimization
-		- Update Support to 10.40
+		- Update Support to 10.40 (No tested)
 		- Update protocol 85x - 95x to 2.10
 ]
 
