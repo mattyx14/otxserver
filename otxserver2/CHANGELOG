@@ -31,8 +31,11 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS
 ]
 
-[ BUGS
+[ BUGS AND MISSING FEATURES
 	* Fields(fire/energy/earth) not work properly
+	* Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+	* Add browse field support
+	* Add helpers support
 ]
 
 [ OTX Server 2.10 Version - "FINAL"
