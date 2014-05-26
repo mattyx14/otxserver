@@ -269,4 +269,12 @@
 			<vocation id="5;6" showInDescription="0"/>
 		</movevent>
 		<movevent type="DeEquip" itemid="2175" slot="shield" event="function" value="onDeEquipItem"/>
+
+	<!-- Bows and Crossbows -->
+		<!-- Crossbow -->
+	<movevent type="Equip" itemid="2455" slot="two-handed" event="function" value="onEquipItem"/>
+	<movevent type="DeEquip" itemid="2455" slot="two-handed" event="function" value="onDeEquipItem"/>
+		<!-- Bow -->
+	<movevent type="Equip" itemid="2456" slot="two-handed" event="function" value="onEquipItem"/>
+	<movevent type="DeEquip" itemid="2456" slot="two-handed" event="function" value="onDeEquipItem"/>
 </movements>
