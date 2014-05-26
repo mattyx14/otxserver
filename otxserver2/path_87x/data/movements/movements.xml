@@ -920,11 +920,31 @@
 		</movevent>
 		<movevent type="DeEquip" itemid="8904" slot="shield" event="function" value="onDeEquipItem"/>
 		<!-- Rainbow Shield -->
-		<movevent type="Equip" fromid="8905" toid="8909" slot="shield" level="100" event="function" value="onEquipItem">
+		<movevent type="Equip" itemid="8905" slot="shield" level="100" event="function" value="onEquipItem">
 			<vocation name="Knight"/>
 			<vocation id="8" showInDescription="0"/>
 		</movevent>
-		<movevent type="DeEquip" fromid="8905" toid="8909" slot="shield" event="function" value="onDeEquipItem"/>
+		<movevent type="DeEquip" itemid="8905" slot="shield" event="function" value="onDeEquipItem"/>
+		<movevent type="Equip" itemid="8906" slot="shield" level="100" event="function" value="onEquipItem">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</movevent>
+		<movevent type="DeEquip" itemid="8906" slot="shield" event="function" value="onDeEquipItem"/>
+		<movevent type="Equip" itemid="8907" slot="shield" level="100" event="function" value="onEquipItem">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</movevent>
+		<movevent type="DeEquip" itemid="8907" slot="shield" event="function" value="onDeEquipItem"/>
+		<movevent type="Equip" itemid="8908" slot="shield" level="100" event="function" value="onEquipItem">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</movevent>
+		<movevent type="DeEquip" itemid="8908" slot="shield" event="function" value="onDeEquipItem"/>
+		<movevent type="Equip" itemid="8909" slot="shield" level="100" event="function" value="onEquipItem">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</movevent>
+		<movevent type="DeEquip" itemid="8909" slot="shield" event="function" value="onDeEquipItem"/>
 		<!-- Spellbook of Dark Mysteries -->
 		<movevent type="Equip" itemid="8918" slot="shield" level="80" event="function" value="onEquipItem">
 			<vocation name="Sorcerer"/>
