@@ -1,0 +1,23 @@
+Windows:
+	Open up ..\sources\msvc\TheOTXServer.sln, change from "Debug" to "Release or Release GUI" and simply build the project.
+	If you want to switch the protocol version, go to Project Properties -> C/C++ -> Preprocessor and edit _PROTOCOL77 definition with either 74 or 76.
+
+	_MULTIPLATFORM77
+	_MULTIPLATFORM76
+
+
+Linux:
+	Same as every other OTX:
+
+	Libs:
+	apt-get install subversion autoconf build-essential pkg-config libboost-dev libgmp3-dev libxml2-dev liblua5.1-0-dev libmysqlclient-dev ccache libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev screen libssl-dev
+
+	Compile:
+	sh ./autogen.sh && ./configure --enable-server-diag --enable-mysql --enable-groundcache --enable-root-permission && make -j 2
+
+	Protocol version can be changed in the Makefile.am - $(OPTIONAL_FLAGS), just add -D_MULTIPLATFORM77 where X is 6 or 7.
+
+	-D_MULTIPLATFORM77
+	-D_MULTIPLATFORM76
+
+If you no use this flags the compilation for default is 7.40
