@@ -14,14 +14,13 @@
 	DEVELOPERS
 		Project Manager and Founder
 			Kaiser
-			Gwaelin
+			AleMadi
 
 		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Kaiser
 
 		Special Thanks(s)
-			Gwaelin
-			Comedinhasss
+			Comedinha
 			Lincoln
 			Rodrigo
 			Pyromaniack
@@ -32,10 +31,12 @@
 ]
 
 [ BUGS AND MISSING FEATURES
-	* Fields(fire/energy/earth) not work properly
-	* Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 	* Add browse field support
 	* Add helpers support
+	* Add purseSlot support for a premiumScrols
+	* Fix fields(fire/energy/earth) not work properly
+	* Fix shutDown server on GUI cause crash
+	* Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 ]
 
 [ OTX Server 2.10 Version - "FINAL"
@@ -46,7 +47,6 @@
 			http://www.blacktibia.org/t34684-como-cambiar-version-otx#217540 this change not like .. this like a botUser
 		- /ban command no require en protocols 8.60 - this protocols have ruleViolation System
 		- Fixed error on Reload function
-		- Fixed shutDown server on GUI cause crash
 		- Fixed it: http://www.blacktibia.org/t33444p360-otx-server-290-se-version-galaxy#222906
 		- Fixed it: http://www.blacktibia.org/t33444p360-otx-server-290-se-version-galaxy#221426
 		- Moved PACKETS_PER_SECOND to protocolGame this no kick to players this change not like for my .. this like a botUser
