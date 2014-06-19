@@ -78,10 +78,10 @@
 	#define ID_MENU_ABOUT_GUI_EXECUTABLE 802
 #endif
 
-// Compatible with 10.37 to 10.41
-#define CLIENT_VERSION_MIN 1037
+// Compatible with 10.41
+#define CLIENT_VERSION_MIN 1041
 #define CLIENT_VERSION_MAX 1041
-#define CLIENT_VERSION_ITEMS 55
+#define CLIENT_VERSION_ITEMS 60
 #define CLIENT_VERSION_STRING "10.41"
 
 #define SOFTWARE_NAME "OTX Server"

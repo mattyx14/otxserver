@@ -6,7 +6,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		end
 	end
 
-	if item.uid > 1000 and item.uid < 22670 then
+	if item.uid > 1000 and item.uid < 23568 then
 		local itemWeight = getItemWeightById(item.uid, 1)
 		local playerCap = getPlayerFreeCap(cid)
 		if getPlayerStorageValue(cid, item.uid) == -1 then
