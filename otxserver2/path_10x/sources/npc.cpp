@@ -376,6 +376,9 @@ bool Npc::loadFromXml()
 	if(readXMLInteger(root, "speed", intValue))
 		baseSpeed = intValue;
 
+	if(readXMLString(root, "speechbubble", strValue))
+		speechBubble = booleanString(strValue);
+
 	if(readXMLString(root, "attackable", strValue))
 		attackable = booleanString(strValue);
 
@@ -405,9 +408,6 @@ bool Npc::loadFromXml()
 
 	if(readXMLString(root, "emblem", strValue))
 		setEmblem(getEmblems(strValue));
-
-	/*if(readXMLString(root, "speechbubble", strValue))
-		setSpeechBubble(getSpeechBubble(strValue));*/
 
 	for(xmlNodePtr p = root->children; p; p = p->next)
 	{

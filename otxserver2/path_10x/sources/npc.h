@@ -369,8 +369,8 @@ class Npc : public Creature
 		virtual const Npc* getNpc() const {return this;}
 		virtual CreatureType_t getType() const {return CREATURETYPE_NPC;}
 
-		/*uint8_t getSpeechBubble() const {return speechBubble;}
-		void setSpeechBubble(const uint8_t bubble) {speechBubble = bubble;}*/
+		uint8_t getSpeechBubble() const {return speechBubble;}
+		void setSpeechBubble(const uint8_t bubble) {speechBubble = bubble;}
 
 		virtual uint32_t rangeId() {return NPC_ID_RANGE;}
 		static AutoList<Npc> autoList;

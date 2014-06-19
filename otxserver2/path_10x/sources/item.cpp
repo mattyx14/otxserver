@@ -86,6 +86,8 @@ Item* Item::CreateItem(const uint16_t type, uint16_t amount/* = 0*/)
 		newItem = new Item(6300, amount);
 	else if(it.id == 18528)
 		newItem = new Item(18408, amount);
+	else if(it.id == 21453)
+		newItem = new Item(21353, amount);
 	else
 		newItem = new Item(type, amount);
 
