@@ -91,14 +91,6 @@ enum secureMode_t
 	SECUREMODE_OFF
 };
 
-enum pvpMode_t
-{
-	PVP_MODE_DOVE,
-	PVP_MODE_WHITE_HAND,
-	PVP_MODE_YELLOW_HAND,
-	PVP_MODE_RED_FIST
-};
-
 enum tradestate_t
 {
 	TRADE_NONE,
@@ -710,7 +702,6 @@ class Player : public Creature, public Cylinder
 		void sendQuests() const {if(client) client->sendQuests();}
 		void sendQuestInfo(Quest* quest) const {if(client) client->sendQuestInfo(quest);}
 		void sendEnterWorld() const {if(client) client->sendEnterWorld();}
-		void sendFightModes() const {if(client) client->sendFightModes();}
 		void sendCreatureSkull(const Creature* creature) const
 			{if(client) client->sendCreatureSkull(creature);}
 		void sendFYIBox(std::string message)

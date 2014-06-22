@@ -2658,20 +2658,6 @@ void ProtocolGame::sendEnterWorld()
 	msg->put<char>(0x0F);
 }
 
-void ProtocolGame::sendFightModes()
-{
-	NetworkMessage_ptr msg = getOutputBuffer();
-	if(!msg)
-		return;
-
-	TRACK_MESSAGE(msg);
-	msg->put<char>(0xA7);
-	msg->put<char>(player->fightMode);
-	msg->put<char>(player->chaseMode);
-	msg->put<char>(player->secureMode);
-	msg->put<char>(PVP_MODE_DOVE);
-}
-
 void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos, uint32_t stackpos)
 {
 	if(!canSee(creature))
