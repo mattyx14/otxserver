@@ -9,7 +9,6 @@ local reloadInfo = {
 	{RELOAD_HIGHSCORES, "highscores", "scores", "highscore", "score"},
 	{RELOAD_ITEMS, "items", "item"},
 	{RELOAD_MONSTERS, "monsters", "monster"},
-	{RELOAD_MOUNTS, "mounts", "mount"},
 	{RELOAD_MOVEEVENTS, "moveevents", "move events", "movements", "move", "movement"},
 	{RELOAD_NPCS, "npcs", "npc"},
 	{RELOAD_OUTFITS, "outfits", "outfit"},

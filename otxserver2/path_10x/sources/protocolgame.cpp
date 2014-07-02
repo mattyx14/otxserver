@@ -2433,7 +2433,6 @@ void ProtocolGame::sendBasicData()
 	msg->put<char>(0x9F);
 
 	msg->put<char>(player->isPremium());
-	msg->put<uint32_t>(std::numeric_limits<uint32_t>::max());
 	msg->put<char>(player->getVocation()->getClientId());
 
 	msg->put<uint16_t>(0x00); // known spells

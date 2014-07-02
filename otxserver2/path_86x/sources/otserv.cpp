@@ -1339,6 +1339,17 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				}
 
+				case ID_MENU_RELOAD_HIGHSCORES:
+				{
+					if(g_game.getGameState() != GAMESTATE_STARTUP)
+					{
+						if(g_game.reloadInfo(RELOAD_HIGHSCORES))
+							std::clog << "Reloaded highscores." << std::endl;
+					}
+
+					break;
+				}
+
 				case ID_MENU_RELOAD_MONSTERS:
 				{
 					if(g_game.getGameState() != GAMESTATE_STARTUP)
@@ -1400,17 +1411,6 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						if(g_game.reloadInfo(RELOAD_STAGES))
 							std::clog << "Reloaded stages." << std::endl;
-					}
-
-					break;
-				}
-
-				case ID_MENU_RELOAD_HIGHSCORES:
-				{
-					if(g_game.getGameState() != GAMESTATE_STARTUP)
-					{
-						if(g_game.reloadInfo(RELOAD_HIGHSCORES))
-							std::clog << "Reloaded highscores." << std::endl;
 					}
 
 					break;

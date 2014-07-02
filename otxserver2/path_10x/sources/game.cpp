@@ -5880,7 +5880,7 @@ bool Game::loadExperienceStages()
 bool Game::reloadHighscores()
 {
 	lastHighscoreCheck = time(NULL);
-	for(int16_t i = 0; i < 9; ++i)
+	for(int16_t i = 0; i < 8; ++i)
 		highscoreStorage[i] = getHighscore(i);
 
 	return true;
@@ -6072,17 +6072,17 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 			break;
 		}
 
+#ifdef __LOGIN_SERVER__
 		case RELOAD_GAMESERVERS:
 		{
-			#ifdef __LOGIN_SERVER__
 			if(GameServers::getInstance()->reload())
 				done = true;
 			else
 				std::clog << "[Error - Game::reloadInfo] Failed to reload game servers." << std::endl;
 
-			#endif
 			break;
 		}
+#endif
 
 		case RELOAD_GLOBALEVENTS:
 		{

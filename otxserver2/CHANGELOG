@@ -37,6 +37,7 @@
 	* Fix fields(fire/energy/earth) not work properly
 	* Fix shutDown server on GUI cause crash
 	* Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+	* Support to Protocols 10.37 +
 ]
 
 [ OTX Server 2.10 Version - "FINAL"
@@ -51,8 +52,7 @@
 		- Fixed it: http://www.blacktibia.org/t33444p360-otx-server-290-se-version-galaxy#221426
 		- Moved PACKETS_PER_SECOND to protocolGame this no kick to players this change not like for my .. this like a botUser
 		- Optimization
-		- Update Support to 10.41 (No tested missing items.otb)
-		- Update protocol 85x - 95x to 2.10
+		- Update Support to 10.36
 ]
 
 [ OTX Server 2.9 Version - "Galaxy - SE"

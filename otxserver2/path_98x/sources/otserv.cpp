@@ -1347,12 +1347,34 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				}
 
+				case ID_MENU_RELOAD_HIGHSCORES:
+				{
+					if(g_game.getGameState() != GAMESTATE_STARTUP)
+					{
+						if(g_game.reloadInfo(RELOAD_HIGHSCORES))
+							std::clog << "Reloaded highscores." << std::endl;
+					}
+
+					break;
+				}
+
 				case ID_MENU_RELOAD_MONSTERS:
 				{
 					if(g_game.getGameState() != GAMESTATE_STARTUP)
 					{
 						if(g_game.reloadInfo(RELOAD_MONSTERS))
 							std::clog << "Reloaded monsters." << std::endl;
+					}
+
+					break;
+				}
+
+				case ID_MENU_RELOAD_MOUNTS:
+				{
+					if(g_game.getGameState() != GAMESTATE_STARTUP)
+					{
+						if(g_game.reloadInfo(RELOAD_MOUNTS))
+							std::clog << "Reloaded mounts." << std::endl;
 					}
 
 					break;
@@ -1413,17 +1435,6 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				}
 
-				case ID_MENU_RELOAD_HIGHSCORES:
-				{
-					if(g_game.getGameState() != GAMESTATE_STARTUP)
-					{
-						if(g_game.reloadInfo(RELOAD_HIGHSCORES))
-							std::clog << "Reloaded highscores." << std::endl;
-					}
-
-					break;
-				}
-
 				case ID_MENU_RELOAD_TALKACTIONS:
 				{
 					if(g_game.getGameState() != GAMESTATE_STARTUP)
@@ -1441,17 +1452,6 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						if(g_game.reloadInfo(RELOAD_MODS))
 							std::clog << "Reloaded mods." << std::endl;
-					}
-
-					break;
-				}
-
-				case ID_MENU_RELOAD_MOUNTS:
-				{
-					if(g_game.getGameState() != GAMESTATE_STARTUP)
-					{
-						if(g_game.reloadInfo(RELOAD_MOUNTS))
-							std::clog << "Reloaded mounts." << std::endl;
 					}
 
 					break;
