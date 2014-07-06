@@ -91,8 +91,8 @@
 #define PATCH_VERSION "0"
 #define REVISION_VERSION "-"
 #define SOFTWARE_CODENAME "FINAL"
-#define SOFTWARE_DEVELOPERS "MartyX, Comedinhasss, Emma, Kazbin and The Forgotten Server Developers"
-#define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
+#define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
+#define FORUMS "www.tibiaking.com - www.otland.net"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0
