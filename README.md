@@ -9,7 +9,7 @@ Codename: FINAL.
 
 Forum and website:.
 
-Developers: Protect Administrator: [Mattyx14](http://www.blacktibia.org/u3472).
+Developers: Protect Administrator: [Mattyx14](https://github.com/mattyx14).
 
 C++ Programmer(s), Committer(s) and Data Directory Manager(s): [Mattyx14](https://github.com/mattyx14).
 
