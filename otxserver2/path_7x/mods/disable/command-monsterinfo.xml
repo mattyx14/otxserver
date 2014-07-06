@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="command-monsterinfo" version="1.0" author="slawkens" contact="slawkens@gmail.com" enabled="yes">
+<mod name="command-monsterinfo" version="1.0" author="slawkens" contact="https://code.google.com/p/tfs-mods/" enabled="yes">
 	<talkaction words="!m" event="script"><![CDATA[
 		function onSay(cid, words, param, channel)
 			if(errors ~= nil) then errors(false) end

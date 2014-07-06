@@ -12,11 +12,11 @@
 
 	DEVELOPERS
 		Project Manager and Founder
-			Kaiser
+			Mattyx14
 			AleMadi
 
 		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-			Kaiser
+			Mattyx14
 
 		Special Thanks(s)
 			Comedinha
@@ -851,7 +851,7 @@
 ]
 
 [ OTX Server 1.2.1 Version - "Fantasy Edition" - Path 1
-	All data (iMadison, Kaiser)
+	All data (iMadison, Mattyx14)
 	:: Protocol 9.x
 	- Fixed compiler with visual basic no debugs
 	- Added CONDITIONID_COMBAT with createConditionObject
@@ -925,7 +925,7 @@
 			for useCapSystem = true 
 	- Removed feature in config.lua
 		// monsterDamagedByPlayerOnly = false
-	All data (iMadison, Kaiser)
+	All data (iMadison, Mattyx14)
 	::  Addeds:
 	- Tutorial "how add outfits attributes" for BeniS
 	- New items 9.x - 8.7x in protocol 9.x -- Extended
@@ -993,7 +993,7 @@
 ]
 
 [ OTX Server 1.1.3 Version - "Silver Edition" - Path 3
-	All data (iMadison, Kaiser)
+	All data (iMadison, Mattyx14)
 	::  Addeds:
 	- 9.10 Support
 	- Rename Server :D
@@ -1378,9 +1378,9 @@
 		ConfigManager::ACTIONS_DELAY_INTERVAL) - 2000 "game.cpp"
 	- New 3 Commands
 		/ping
-		EX:/ping Kaiser
+		EX:/ping Mattyx14
 		/stop
-		EX:/stop Kaiser
+		EX:/stop Mattyx14
 		/portal
 		EX:/portal x, y, z, amount of people
 		!mana;!exp

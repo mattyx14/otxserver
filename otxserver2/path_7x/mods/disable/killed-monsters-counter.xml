@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="killed-monsters-counter" version="1.0" author="slawkens" contact="slawkens@gmail.com" enabled="no">
+<mod name="killed-monsters-counter" version="1.0" author="slawkens" contact="https://code.google.com/p/tfs-mods/" enabled="no">
 	<!--
 		TODO:
 			- automatically assign storages in TFS 0.4 that supports string as a key

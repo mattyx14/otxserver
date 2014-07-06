@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="advance-reward" version="1.0" author="slawkens" contact="slawkens@gmail.com" enabled="no">
+<mod name="advance-reward" version="1.0" author="slawkens" contact="https://code.google.com/p/tfs-mods/" enabled="no">
 	<config name="advance-reward-config"><![CDATA[
 		rewards = {
 			-- {skill = SKILL__LEVEL, level = 100, storage = 3100, item = 2160, count = 30},

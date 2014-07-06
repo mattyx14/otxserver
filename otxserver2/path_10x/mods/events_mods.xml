@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="events mods" version="1.0" author="Kaiser" contact="marty@otland.net" enabled="yes">
+<mod name="events mods" version="1.0" author="Mattyx14" contact="marty@otland.net" enabled="yes">
 	<changelog><![CDATA[
 		* [01/06/2012 v1.0] Adori blank event
 		* [01/06/2012 v1.0] Display items in bag event

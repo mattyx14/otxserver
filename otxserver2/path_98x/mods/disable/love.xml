@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="Love" version="1.0" author="Kaiser" enabled="yes">
+<mod name="Love" version="1.0" author="Mattyx14" enabled="yes">
 	<talkaction words="!love" event="buffer"><![CDATA[
 	if(param ~= '') then
 		local lover = getPlayerByName(param)

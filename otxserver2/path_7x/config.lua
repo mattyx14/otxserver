@@ -233,7 +233,7 @@
 	-- Map
 	-- NOTE: storeTrash costs more memory, but will perform alot faster cleaning.
 	-- houseDataStorage usage may be found at how-use-internal-functions.log
-	mapAuthor = "Kaiser"
+	mapAuthor = "Mattyx14"
 	randomizeTiles = true
 	houseDataStorage = "binary-tilebased"
 	storeTrash = true
