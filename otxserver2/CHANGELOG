@@ -36,7 +36,7 @@
 	* Fix fields(fire/energy/earth) not work properly
 	* Fix shutDown server on GUI cause crash
 	* Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
-	* Support to Protocols 10.37 +
+	* Support to Protocols 10.37+
 ]
 
 [ OTX Server 2.10 Version - "FINAL"
