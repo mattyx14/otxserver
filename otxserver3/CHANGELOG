@@ -1,0 +1,52 @@
+[ CHANGE LOG
+	Project Name
+		OTX Server 3
+
+	OTX Server is based on:
+		The Forgotten Server Version: 1.0
+
+	Codenamed
+		KAISER
+
+	Forum and website
+		http://www.blacktibia.org/
+
+	DEVELOPERS
+		Project Manager and Founder
+			Devlious
+			K3nm
+			Mattyx14
+
+		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+			Devlious
+			K3nm
+			Mattyx14
+
+		Special Thanks(s)
+			https://github.com/otland/forgottenserver
+			https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS
+			https://github.com/edubart/otclient
+			https://github.com/hjnilsson/rme
+]
+
+[ TODO WITH OPTIONAL (MODAL DIALOGS)
+	COMMANDS:
+		- Animated Smiles
+		- Bank Command
+		- Blessings
+		- Buy Command Item
+		- Guild Cast
+		- Guild Outfit
+		- Player Commands (customs)
+		- Promotion
+		- Refill Boots
+
+	CONFIGS:
+		- Loot bag display
+		- Quest Protection
+
+	OTHERS:
+		- Look Display
+]
+
+[ OTX Server 3.0.0 Version - "KAISER" ]
