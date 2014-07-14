@@ -1,4 +1,4 @@
-[ CHANGE LOG
+[ OTX Server 3 - CHANGE LOG
 	Project Name
 		OTX Server 3
 
@@ -27,6 +27,9 @@
 			https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS
 			https://github.com/edubart/otclient
 			https://github.com/hjnilsson/rme
+
+	COMPLETED DEVELOPMENT
+		ON
 
 	PROTOCOL SUPPORTED
 		Tibia Clients 10.x+
