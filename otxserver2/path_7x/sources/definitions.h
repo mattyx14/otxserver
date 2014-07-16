@@ -23,10 +23,10 @@
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "10"
 #define PATCH_VERSION "0"
-#define REVISION_VERSION "-"
+#define REVISION_VERSION "6000"
 #define SOFTWARE_CODENAME "FINAL"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
-#define FORUMS "www.tibiaking.com - www.otland.net"
+#define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
 
 #if defined(_MULTIPLATFORM77)
 	#define _MULTIPLATFORM76
