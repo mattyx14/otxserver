@@ -765,7 +765,7 @@
 	<item id="1500" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="1501"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="duration" value="10"/>
 		<attribute key="field" value="fire">
 			<attribute key="damage" value="20"/>
 			<attribute key="ticks" value="10000"/>
@@ -776,7 +776,7 @@
 	<item id="1501" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="1502"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="duration" value="10"/>
 		<attribute key="field" value="fire">
 			<attribute key="ticks" value="10000"/>
 			<attribute key="count" value="7"/>
@@ -786,13 +786,13 @@
 	<item id="1502" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="0"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="duration" value="10"/>
 		<attribute key="field" value="fire"/>
 	</item>
 	<item id="1503" article="a" name="poison gas">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="0"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="duration" value="10"/>
 		<attribute key="field" value="poison">
 			<attribute key="ticks" value="5000"/>
 			<attribute key="start" value="5"/>
@@ -802,7 +802,7 @@
 	<item id="1504" article="an" name="energy field">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="0"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="duration" value="10"/>
 		<attribute key="field" value="energy">
 			<attribute key="damage" value="30"/>
 			<attribute key="ticks" value="10000"/>
