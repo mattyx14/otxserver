@@ -1,0 +1,294 @@
+[ SAVING-RELATED
+		houseDataStorage
+		House data storage system. Binary and binary-tilestore performs much faster map saving than relational (up to 60x faster!).
+			binary - uses house_data table to store house data in giant blob for each house.
+			binary-tilebased - uses tile_store table to store house data in blob for each tile (benefit: if blob becomes corrupted, only specific tile will be wiped, not entire house).
+			relational - uses `tiles` and `tile_items` tables, doesn't store data in blob, easier to manage but is up to 60 times slower and uses up more space in database.
+		Default: binary-tilebased
+]
+
+[ OUTFITS
+	List with all the special outfit attributes/stats.
+	These are used in the outfit.xml file:
+
+	e.g.
+		<outfit id="1">
+			<list gender="0" lookType="136" name="Citizen">
+				<stats maxHealth="100"/>
+				<stats maxMana="100"/>
+			</list>
+			<list gender="1" lookType="128" name="Citizen">
+				<stats maxHealth="100"/>
+				<stats maxMana="100"/>
+			</list>
+		</outfit>
+
+	- This will increase the players health/mana by 100 when
+	they have the full citizen outfit.
+
+	The features are self explainitory and will give players
+	the attributes you have set when they have both addons 
+	of the outfit.
+
+	::::::::::::::::::::::::::::::::::::::::::::::::
+	::::::::::::::::::::::::::::::::::::::::::::::::
+
+	:: "list" attributes
+	manaShield
+		<list gender="1" lookType="128" name="Citizen" manaShield="true" />
+
+	invisible
+		<list gender="1" lookType="128" name="Citizen" invisible="true" />
+
+	healthGain
+		<list gender="1" lookType="128" name="Citizen" healthGain="20" />
+
+	healthTicks
+		<list gender="1" lookType="128" name="Citizen" healthTicks="20" />
+
+	manaGain
+		<list gender="1" lookType="128" name="Citizen" manaGain="20" />
+
+	manaTicks
+		<list gender="1" lookType="128" name="Citizen" manaTicks="20" />
+
+	speed
+		<list gender="1" lookType="128" name="Citizen" speed="20" />
+
+	::::::::::::::::::::::::::::::::::::::::::::::::
+	::::::::::::::::::::::::::::::::::::::::::::::::
+
+	:: "reflect" attributes
+	reflect percentAll
+		-e.g.
+			<list ... >
+				<reflect percentAll="100"/> - reflect 100% of all damage types
+			</list>
+	More:
+		reflect percentElements
+		reflect percentMagic
+		reflect percentEnergy
+		reflect percentFire
+		reflect percentPoison
+		reflect percentIce
+		reflect percentHoly
+		reflect percentDeath
+		reflect percentLifeDrain
+		reflect percentManaDrain
+		reflect percentDrown
+		reflect percentPhysical
+		reflect percentHealing
+		reflect percentUndefined
+
+	reflect chanceAll
+		-e.g.
+			<list ... >
+				<reflect chanceAll="100"/> - 100% chance to reflect all damage types
+			</list>
+	More:
+		reflect chanceElements
+		reflect chanceMagic
+		reflect chanceEnergy
+		reflect chanceFire
+		reflect chancePoison
+		reflect chanceIce
+		reflect chanceHoly
+		reflect chanceDeath
+		reflect chanceLifeDrain
+		reflect chanceManaDrain
+		reflect chanceDrown
+		reflect chancePhysical
+		reflect chanceHealing
+		reflect chanceUndefined
+
+	::::::::::::::::::::::::::::::::::::::::::::::::
+	::::::::::::::::::::::::::::::::::::::::::::::::
+
+	:: "absorb" attributes
+	absorb percentAll
+		-e.g.
+			<list ... >
+				<absorb percentAll="100"/> - absorb 100% of all damage types
+			</list>
+	More:
+		absorb percentElements
+		absorb percentMagic
+		absorb percentEnergy
+		absorb percentFire
+		absorb percentPoison
+		absorb percentIce
+		absorb percentHoly
+		absorb percentDeath
+		absorb percentLifeDrain
+		absorb percentManaDrain
+		absorb percentDrown
+		absorb percentPhysical
+		absorb percentHealing
+		absorb percentUndefined
+
+	::::::::::::::::::::::::::::::::::::::::::::::::
+	::::::::::::::::::::::::::::::::::::::::::::::::
+
+	:: "skills" attributes
+	skills fist
+		-e.g.
+			<list ... >
+				<skills fist="10"/> - increase players fist fighting by 10
+			</list>
+	More:
+		skills club
+		skills axe
+		skills sword
+		skills distance
+		skills shielding
+		skills fishing
+		skills melee (fist, club, sword, axe)
+		skills weapon (club, sword, axe, dist)
+		skills fistPercent
+		skills clubPercent
+		skills axePercent
+		skills swordPercent
+		skills distancePercent
+		skills shieldingPercent
+		skills fishingPercent
+		skills meleePercent (fist, club, sword, axe)
+		skills weaponPercent (club, sword, axe, dist)
+
+	::::::::::::::::::::::::::::::::::::::::::::::::
+	::::::::::::::::::::::::::::::::::::::::::::::::
+
+	:: "stats" attributes
+	stats maxHealth
+		-e.g.
+			<list ... >
+				<stats maxHealth="100"/> - increase players max health by 100
+			</list>
+	More:
+		stats maxMana
+		stats soul
+		stats level
+		stats magLevel
+		stats maxHealthPercent
+		stats maxManaPercent
+		stats soulPercent
+		stats levelPercent
+		stats magLevelPercent
+
+	::::::::::::::::::::::::::::::::::::::::::::::::
+	::::::::::::::::::::::::::::::::::::::::::::::::
+
+	:: "supress" attributes
+	supress poison
+		-e.g.
+			<list ... >
+				<supress poison="true"/> - suppress all poison damage
+			</list>
+	More:
+		supress fire
+		supress energy
+		supress physical
+		supress haste
+		supress paralyze
+		supress invisible
+		supress light
+		supress manaShield
+		supress drunk
+		supress drown
+		supress muted
+]
+
+::  DESCRIPTIONS  ::
+	::	ExtraAttributes items
+			Attributes that have Random_min/Random_max suppport:
+				- Armor
+				- Defense
+				- ExtraDefense
+				- Attack
+				- ExtraAttack
+			- AttackSpeed
+			- Charges
+		Attributes that have Chance support:
+			- ExtraDefense
+			- ExtraAttack
+			- AttackSpeed
+				EXAMPLE:
+					<item id="2380" article="a" name="hand axe">
+						<attribute key="weight" value="1800" />
+						<attribute key="defense" value="5" />
+						<attribute key="attack" random_min="5" random_max="8" />
+						<attribute key="extraattack" chance="50" random_min="10" random_max="30" />
+						<attribute key="weaponType" value="axe" />
+					</item>
+
+	::	Description lootSet and skill ::
+		EXAMPLE SKILL: You advanced from sword fighting 10 to sword fighting 11.
+		EXAMPLE LOOT: Loot of a goblin: a bag, a leather armor (Armor: 8), a short sword (Attack: 15, defence: 14), a leather helmet (Armor: 5), a machete (Attack: 15, defence: 11), 8 gold coins, 9 worms, a bone club (Attack: 14, defence: 11), a moldy cheese, a bone, a fish, 2 small stones, a small axe. 
+
+	::	Simple WarSystem ::
+		/mod/guildWarSystem.xml "<mod name="Guild War System" version="0.3.5+" author="Xampy and Nahruto" contact="otland.net" enabled="yes"></mod>" -- yes
+
+	::	fieldAbsorb ::
+		- <"fieldAbsorbPercentFire" value="90" />
+
+	::	Custom Mods ::
+		advance-effect
+			WORK ONLY LEVEL OR SKILL UP
+		animated-smiles
+			EXAMPLES: xd, :d, ;d, =d, xp, :p, ;p, =p, :o, ;o, ;s, :s, :/, ;/, :*, ;*, =*, :>, ;>, :), ;), =), :(, ;(, =(, :[, ;[, :], ;], :@, ;@, ^^, ^.^, -.-
+		adori-blank
+			CUSTOM CONJURE BLANK RUNE
+		anti-trap
+			USE COMMAND /noob only players protecter by level
+		command-save
+			USE COMMAND !save
+		guild-cast
+			USE COMMAND !gc
+		guild-outfit
+			USE COMMAND !go
+		stamina
+			USE COMMAND /stamina
+		bless
+			USE COMMAND /bless
+		guildmeb
+			USE COMMAND /guildmeb
+		spells
+			USE COMMAND /spells
+		me
+			USE COMMAND /me
+			EXAMPLES: /me HI HELLO
+		pointsVip
+			USE COMMAND !points
+		ban
+			USE COMMAND /ban
+		bank
+			USE COMMAND !bank
+		buy 
+			USE COMMAND /buy
+
+
+	:: Rewrite spells.xml/movements.xml ::
+		-- Before:
+		<instant name="Death Strike">
+			<vocation id="1"/>
+			<vocation id="2"/>
+			<vocation id="5"/>
+			<vocation id="6"/>
+		</instant>
+		-- After:
+		<instant name="Death Strike">
+			<vocation id="1;5"/>
+			<vocation id="2;6"/>
+		</instant>
+
+		-- Before:
+		<movevent type="Equip">
+			<vocation id="1"/>
+			<vocation id="5" showInDescription="0"/>
+			<vocation id="2"/>
+			<vocation id="6" showInDescription="0"/>
+		</movevent>
+		-- After:
+		<movevent type="Equip">
+			<vocation id="1;2"/>
+			<vocation id="5;6" showInDescription="0"/>
+		</movevent>

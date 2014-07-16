@@ -1,0 +1,42 @@
+Nombraremos los servidores como "0" & "1"
+
+/data/home/server860/
+En servidor 0:
+1. En resources.h
+	#define CLIENT_VERSION_MIN 860
+	#define CLIENT_VERSION_MAX 971
+	#define CLIENT_VERSION_STRING "Login with 9.60 clients, reproduce crash on the client with world 8.60!"
+	#define SOFTWARE_PROTOCOL "9.71"
+
+2. Agrega la flag --enable-login-server en los parametros de compilacion en caso que usemos Linux
+en caso que se use windows solo acude al archivo "settings" agrega __LOGIN_SERVER__ en <PREPROCESSOR_DEFS> recuerda poner el ; dependiendo
+donde lo posiciones
+
+3. En config.lua
+	serverName = "SERVER"
+	worldId = 0
+	ip = "127.0.0.1" -- TU IP CON NUMERO
+	loginOnlyWithLoginServer = true
+
+4. En servers.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<servers>
+	<server id="0" name="SERVER" versionMin="860" versionMax="960" address="127.0.0.1" port="7172"/> -- TU IP CON NUMERO
+	<server id="1" name="SERVER II" versionMin="971" versionMax="971" address="127.0.0.1" port="7173"/> -- TU IP CON NUMERO
+</servers>
+
+/data/home/server960/
+En servidor 1:
+1. En resources.h no se modifica nada
+2. La compilacion se lleva igual sin ninguna flag extra
+3. En config.lua
+	serverName = "SERVER II"
+	worldId = 1
+	ip = "127.0.0.1" -- TU IP CON NUMERO
+	loginPort = 7171 -- lo cambiaremos a 0
+	gamePort = "7172" -- lo cambiaremos a 7173
+	statusPort = 7171 -- lo cambiaremos a 0
+	managerPort = 7171 -- lo cambiaremos a 0
+	adminPort = 7171 -- lo cambiaremos a 0
+
+Este tipo de servidores en multiWorld causara debug cuando los players intenten entrar a 960 teniendo servidor 860 .. o al contrario

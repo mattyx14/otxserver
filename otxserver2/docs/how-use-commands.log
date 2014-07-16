@@ -1,0 +1,533 @@
+[ LIST
+	/addskill
+		Adds player a specified amount of a skill.
+		Parameters
+			playerName, skillType, <optional>amount
+
+		Values
+			skillType
+				level/magic/fist/club/sword/axe/distance/shielding/fishing
+
+		Examples
+			/addskill Eternal Oblivion, sword (+1 sword skill)
+			/addskill GM Test, level, 30 (+30 levels)
+
+	/attr
+		Changes thing properties.
+		Parameters
+			[command[, type, ]]attribute, value
+
+		Values
+			command
+				* Items only
+					set/add/new
+					erase/remove/delete
+					action/actionid/aid
+					unique/uniqueid/uid
+					destination/position/location/pos/dest/loc
+			type
+				* Items only - set/add/new & erase/remove/delete
+					bool/boolean
+					int/integer/num/number
+					float/double
+					string/text/*
+			attribute
+				* Items - set/add/new & erase/remove/delete
+					duration - number
+					description - string
+					text - string
+					date - number
+					writer - string
+					charges - number
+					fluidtype - number
+					owner - number
+					corpseowner - number
+					decaying - number
+					name - string
+					pluralname - string
+					article - string
+					scriptprotected - bool
+					attack - number
+					extraattack - number
+					defense - number
+					extradefense - number
+					armor - number
+					attackspeed - number
+					hitchance - number
+					shootrange - number
+					dualwield - bool
+					depotid - number
+					sleepstart - number
+				* Creatures
+					health
+					maxhealth
+					mana
+					maxmana
+					basespeed
+					droploot
+					lossskill
+					cannotmove
+					skull
+					shield
+					emblem
+					speaktype
+				* Players
+					fyi
+					tutorial
+					guildlevel
+					guildrank
+					guildnick
+					group
+					vocation
+					sex/gender
+					town/temple
+					marriage/partner
+					balance
+					rates
+					idle
+					stamina
+					capacity/cap
+					execute
+					saving/save
+
+		Examples
+			/attr aid 300
+			/attr set string text "Hello guys"
+			/attr skull 2
+
+	/serverdiag
+		Works only if software is precompiled with __ENABLE_SERVER_DIAGNOSTIC__
+		Displays diagnostic informations.
+
+	/closeserver
+		Closes server.
+		All players without proper access will be kicked.
+
+	/openserver
+		Opens server.
+
+	/shutdown
+		Saves & Shutdowns server.
+		Parameters
+			<optional>time/kill/cancel
+
+		Examples
+			/shutdown 3 (Shutdown after 3 minutes)
+			/shutdown cancel (Cancel shutdown event)
+			/shutdown kill (Exit without save)
+			/shutdown (Immediately)
+
+	/mode
+		Changes world's pvp type.
+		Parameters
+			pvpType
+				optional/open/hardcore
+
+		Example
+			/mode hardcode
+
+	/promote & /demote
+		Promote or demote specified player to higher/lower group.
+		Parameters
+			playerName
+
+		Examples
+			/promote Tester
+			/demote Tester
+
+	/s
+		Summons a monster.
+		Parameters
+			monsterName
+			<optional>playerName
+
+		Examples
+			/s Dragon
+			/s rat, GM Tester (Summon rat at GM Tester position)
+
+	/n
+		Creates a NPC.
+		Parameters
+			npcName
+			<optional>playerName
+
+		Example
+			/n Eryn
+			/n Eryn, GM Tester (Create NPC at GM Tester position)
+
+	/m
+		Creates a monster.
+		Parameters
+			monsterName
+			<optional>playerName
+
+		Examples
+			/m Orshabaal
+			/m Rotworm, GM Tester (Create monster at GM Tester position)
+
+	/reload
+		Reloads selected values/scripts.
+		Parameters:
+			what (What should be reloaded)
+				actions/channels/config/creatureevents/gameservers/globalevents
+				groups/highscores/houseprices/items/monsters/moveevents/npcs
+				outfits/quests/raids/spells/stages/talkactions/vocations/weapons
+				mods, all
+
+		Examples
+			/reload spells
+			/reload houseprices
+			/reload all
+
+	/raid
+		Executes a raid.
+		Parameters
+			raidName
+
+		Examples
+			/raid orshabaal
+
+	/newtype
+		Outfit changer.
+		Parameters
+			lookType/monster/item, <optional>playerName
+
+		Examples
+			/newtype 266
+			/newtype Demon
+			/newtype 2160 (Changes outfit to crystal coin)
+			/newtype 13, Eternal Oblivion
+
+	/r
+		Removes an item or a creature from a tile.
+		NOTE: Player is also a creature. (Monster, npc too!)
+		Parameters
+			<otional>amount/all
+
+		Examples
+			/r all (Removes all items from tile)
+			/r 3 (Removes first 3 items from tile)
+
+	/owner
+		Changes house owner.
+		Parameters
+			newOwnerName
+				Values: player name, or 'none/nobody/0' (Clear owner)
+			<optional>clean (Default: yes)
+
+		Examples
+			/owner Eternal Oblivion,no (Change owner without cleaning house)
+			/owner Eternal Oblivion,yes (Change owner and clean house)
+			/owner Eternal Oblivion (Same as above)
+			/owner none
+
+	/storage
+		Displays or modify player storage.
+
+		Parameters
+			playerName
+			storageKey
+			<optional>newValue
+
+		Examples
+			/storage Eternal Oblivion,30015 (display value of storage 30015)
+			/storage Eternal Oblivion,30015,1 (set value to 1)
+
+	/config
+		Displays config value.
+		Parameters
+			configOption
+
+		Examples
+			/config serverName
+			/config gamePort
+			/config displayCriticalHitNotify
+
+	/i
+		Creates an item.
+		Parameters
+			id/name
+			<optional>count
+			<optional>onGround
+				Should item be created on ground?
+			<optional>lookDir
+				Should item be created on player looking pos?
+
+		Examples
+			/i magic plate armor
+			/i 2160, 50 (50 crystal coins)
+			/i 2160, 50, yes (Will be created under player)
+			/i 2160, 50, yes, yes (Will be created at ground, where player is looking)
+
+	/z
+		Displays magic effect.
+		Parameters
+			effectId
+
+		Example
+			!z 4
+
+	/x
+		Displays animation effect.
+		Parameters
+			animationId
+
+		Example
+			!x 29
+
+	/y
+		Displays animated text.
+		Parameters
+			<optional>colorId (0-255)
+			text
+
+		Examples
+			!y Hello
+			!y 50 Hi! Colored text ;-)
+
+	/bc
+		Broadcast message in color.
+		Parameters
+			<optional>color (Default: red)
+				Values: advance/event/white/orange/info/green/small/blue/red/warning/status
+			message
+
+		Examples:
+			/bc Hiho
+			/bc green Hello! (This one will be green)
+
+	/mkick
+		Mass kick.
+		Parameters
+			rangeX
+			rangeY
+			<optional>multiFloor (Default: no)
+
+		Example
+			/mkick 3,3 (Kick all players on same floor in 3x3 range)
+
+	/ghost
+		Enables/disables ghost mode.
+		You're invisible for other players, if enabled.
+
+	/squelch
+		Enables/disables private messages ignoring.
+		Player aren't be able to message you, if enabled.
+
+	/cliport
+		Enables/disables map click teleportation.
+
+	/t
+		Teleports to a temple.
+		Parameters
+			<optional>playerName
+
+		Examples
+			/t
+			/t Eternal Oblivion
+
+	/c
+		Teleports a creature to you.
+		NOTE: Player is also a creature. (Monster, npc too!)
+
+		Example
+			/c Demon
+
+	/goto
+		Teleports you to creature/place/position
+		Parameters
+			creatureName/waypointName/position
+
+		Examples
+			/goto 123,60,7
+			/goto Eryn
+			/goto Dragon
+			/goto GM Tester
+
+	/a
+		Teleports you n tiles forward (direction same as looking at).
+		Parameters
+			<optional> n (Default: 1)
+			<optional>playerName
+
+		Examples
+			/a 3
+			/a
+			/a 28, GM Tester
+
+	/kick
+		Kicks a creature. If you leave param blank - will try to kick your target creature if selected.
+		Parameters
+			playerName
+
+		Example
+			/kick Taifun Devilry
+
+	/send
+		Send player to specified position/waypoint/creature
+		Parameters
+			playerName
+			position/waypoint/creature
+
+		Examples
+			/send GM Tester; 100, 50, 7
+			/send GM Tester, dragon
+			/send GM Tester, GM Someone
+
+	/unban
+		Unbans by account or player name.
+		Parameters
+			account/playerName
+
+	/town
+		Teleports to a town.
+		Parameters
+			townName, <optional>playerName
+
+		Examples
+			/town main city
+			/town desert city, Test Player Name Here
+
+	/up
+		Teleports up.
+		Parameters
+			<optional>floors
+
+		Examples
+			/up
+			/up 3 (3 floors up)
+
+	/down
+		Teleports down.
+		Parameters
+			<optional>floors
+
+		Examples
+			/down
+			/down 2 (2 floors down)
+
+	/save
+		Saves server.
+		Parameters
+			<optional>playerName
+
+		Examples
+			/save (saves whole server, including map)
+			/save GM Tester (saves only single character)
+
+	/clean
+		Cleans map or tile.
+		Parameters
+			<optional>tile
+			<optional>time
+				Time in minutes to clean.
+
+		Examples
+			/clean 5 (Clean map after 5 minutes)
+			/clean (Clean map immediately)
+			/clean tile (Clean tile you're standing on)
+
+	/reports
+		Displays server reports (these reported by CTRL + Z).
+		Parameters
+			<optional>reportId
+
+		Examples
+			/reports (Display all reports)
+			/reports 52 (Display detailed info about report with id 52)
+
+	/mc
+		Checks for multiclients.
+		Parameters
+			<optional>playerName/ip
+
+		Examples
+			/mc (Check for all MC-players)
+			/mc 127.0.0.1 (Display all players with IP = 127.0.0.1)
+			/mc Tester (Display all players with same IP as Tester)
+
+	/mute
+		Mute player.
+		Parameters
+			playerName
+			<optional>time (in seconds)
+
+		Examples
+			/mute Tester (mute forever)
+			/mute Tester, 30 (mute for 30 seconds)
+
+	/wp
+		Displays map waypoints.
+
+	/notations
+		Display notation informations.
+		Parameters
+			playerName
+
+	/info
+		Displays detailed info about a player
+		Parameters
+			playerName
+
+	/gethouse
+		Display player house.
+		Parameters
+			playerName
+			<optional>teleport
+
+		Examples
+			/gethouse GM Tester (get house name)
+			/gethouse GM Tester, yes (get house name and teleport there)
+
+	/b
+		Broadcast message in red color.
+		Parameters
+			message
+
+	/baninfo
+		Displays detailed banishment info about a player
+		Parameters
+			playerName
+
+	/pos
+		Displays player's current position.
+
+	!createguild
+		Works only in ingameGuildManagement is enabled.
+		Creates a guild.
+		Parameters
+			guildName
+
+	!joinguild
+		Works only in ingameGuildManagement is enabled.
+		Joins you to a guild once you have been invited to it.
+
+	!frags
+		Display a numer of your unjustificated kills (frags) and a time
+		for one to decrease.
+
+	!online
+		Displays a list of online players.
+
+	!uptime
+		Displayes an uptime of a server.
+		It's a time for which server has been online since it's last start-up
+
+	!deathlist
+		Displays a death list of specificated player.
+		Parameters
+			playerName
+
+	!pvp
+		Displays world type.
+
+	!q
+		Checks money value in your inventory.
+		NOTE: It isn't counting the money in depots/houses.
+
+	!serverinfo
+		Displays server information such as experience rate and loot rate.
+
+	/commands
+		Displays all available commands for your access.
+]

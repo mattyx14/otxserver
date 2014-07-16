@@ -1,0 +1,43 @@
+[ COMPILING IN UBUNTU LINUX
+	A detailed and always up-to-date tutorial may be found here:
+	Download required packages
+		Launch a terminal, and paste in the following commands:
+			apt-get install update
+			apt-get install subversion autoconf build-essential pkg-config libboost-dev libgmp3-dev libxml2-dev liblua5.1-0-dev libmysqlclient-dev ccache libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev screen libssl-dev
+
+	Compiling
+		Download sources - Launch a terminal, and paste in this command:
+			svn co http://otservdata.googlecode.com/svn/branches/0.3/
+
+		Launch a terminal, and type this:
+			Into Folder run:
+			sh ./autogen.sh && ./configure --enable-server-diag --enable-mysql --enable-root-permission && make -j 2
+
+	Download required packages
+		Service WEB:
+		Ubuntu 10.04+ (Desktop Version):
+			(Fix 127.0.1.1)		gksudo gedit /etc/hosts
+				BugForm:
+					127.0.0.1	localhost
+					127.0.1.1	<ubuntu-server-name>
+
+				Fixed Form
+					127.0.0.1	localhost
+					127.0.0.1	<ubuntu-user-name>
+
+		(Use Apache)
+		apt-get install apache2
+		apt-get install libapache2-mod-php5
+		apt-get install mysql-server
+		apt-get install phpmyadmin
+
+		* IMPORT WEB PAGE FIRST and run
+			cd /var
+			chmod 777 -R www
+
+	***NOTE***
+	For Linux Users, Rename /data/xml to /data/XML
+
+	Finished - Shutdown Computer - Starting Computer - Run Server
+	./theotxserver
+]
