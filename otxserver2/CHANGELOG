@@ -46,7 +46,6 @@
 [ OTX Server 2.10 Version - "FINAL"
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
-		- Added Support to 98x
 		- Added this: http://otland.net/threads/8-6-tfs-0-3-0-3-7-r5916-v8-60.178246/page-14#post-1878792 this change not like .. this like a botUser
 		- /ban command no require en protocols 8.60 - this protocols have ruleViolation System
 		- Fixed error on Reload function
