@@ -43,6 +43,11 @@
 	* Support to Protocols 10.37+
 ]
 
+[ OTX Server 2.10 Version - "FINAL" (STATUS OFF)
+	General:
+		- Added offLineTraning scripts 8.x Series
+]
+
 [ OTX Server 2.10 Version - "FINAL"
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
