@@ -4000,34 +4000,55 @@ void Player::onTickCondition(ConditionType_t type, int32_t interval, bool& _remo
 void Player::onTarget(Creature* target)
 {
 	Creature::onTarget(target);
+
+	if(target == this)
+	{
+		addInFightTicks(false);
+		return;
+	}
+
 	if(hasFlag(PlayerFlag_NotGainInFight))
 		return;
 
-	addInFightTicks(false);
 	Player* targetPlayer = target->getPlayer();
-	if(!targetPlayer)
-		return;
-
-	if(!pzLocked)
+	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
-		pzLocked = true;
-		sendIcons();
+		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		{
+			pzLocked = true;
+			sendIcons();
+		}
+
+		if(getSkull() == SKULL_NONE && getSkullType(targetPlayer) == SKULL_YELLOW)
+		{
+			addAttacked(targetPlayer);
+			targetPlayer->sendCreatureSkull(this);
+		}
+		else if(!targetPlayer->hasAttacked(this))
+		{
+			if(!pzLocked)
+			{
+				pzLocked = true;
+				sendIcons();
+			}
+
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this, true))
+			{
+				addAttacked(targetPlayer);
+
+				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
+				{
+					setSkull(SKULL_WHITE);
+					g_game.updateCreatureSkull(this);
+				}
+
+				if(getSkull() == SKULL_NONE)
+					targetPlayer->sendCreatureSkull(this);
+			}
+		}
 	}
 
-	if(targetPlayer->hasAttacked(this) || Combat::isInPvpZone(this, targetPlayer) || isPartner(targetPlayer) || isAlly(targetPlayer))
-		return;
-
-	addAttacked(targetPlayer);
-	if(getZone() != target->getZone() || skull != SKULL_NONE || targetPlayer->isEnemy(this, true) || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return;
-
-	if(target->getSkull() != SKULL_NONE)
-		targetPlayer->sendCreatureSkull(this);
-	else if(!hasCustomFlag(PlayerCustomFlag_NotGainSkull))
-	{
-		setSkull(SKULL_WHITE);
-		g_game.updateCreatureSkull(this);
-	}
+	addInFightTicks(false);
 }
 
 void Player::onSummonTarget(Creature* summon, Creature* target)
@@ -4452,10 +4473,11 @@ Skulls_t Player::getSkull() const
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
 	const Player* player = creature->getPlayer();
-	if(player && player->getSkull() == SKULL_NONE)
+	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
+		return SKULL_NONE;
+
+	if(player->getSkull() == SKULL_NONE)
 	{
-		if(g_game.getWorldType() != WORLDTYPE_OPEN)
-			return SKULL_NONE;
 
 		if(player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;

@@ -4007,14 +4007,15 @@ void Player::onTickCondition(ConditionType_t type, int32_t interval, bool& _remo
 void Player::onTarget(Creature* target)
 {
 	Creature::onTarget(target);
-	if(hasFlag(PlayerFlag_NotGainInFight))
-		return;
 
 	if(target == this)
 	{
 		addInFightTicks(false);
 		return;
 	}
+
+	if(hasFlag(PlayerFlag_NotGainInFight))
+		return;
 
 	Player* targetPlayer = target->getPlayer();
 	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
@@ -4030,17 +4031,18 @@ void Player::onTarget(Creature* target)
 			addAttacked(targetPlayer);
 			targetPlayer->sendCreatureSkull(this);
 		}
-		else if(!targetPlayer->hasAttacked(this) && !targetPlayer->isEnemy(this, false))
+		else if(!targetPlayer->hasAttacked(this))
 		{
-			if(!pzLocked && g_game.getWorldType() != WORLDTYPE_HARDCORE)
+			if(!pzLocked)
 			{
 				pzLocked = true;
 				sendIcons();
 			}
 
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isAlly(targetPlayer))
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this, true))
 			{
 				addAttacked(targetPlayer);
+
 				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
 				{
 					setSkull(SKULL_WHITE);
@@ -4052,6 +4054,7 @@ void Player::onTarget(Creature* target)
 			}
 		}
 	}
+
 	addInFightTicks(false);
 }
 
@@ -4488,10 +4491,11 @@ Skulls_t Player::getSkull() const
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
 	const Player* player = creature->getPlayer();
-	if(player && player->getSkull() == SKULL_NONE)
+	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
+		return SKULL_NONE;
+
+	if(player->getSkull() == SKULL_NONE)
 	{
-		if(g_game.getWorldType() != WORLDTYPE_OPEN)
-			return SKULL_NONE;
 
 		if(player->canRevenge(guid) && player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
