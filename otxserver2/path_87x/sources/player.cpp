@@ -4039,7 +4039,7 @@ void Player::onTarget(Creature* target)
 				sendIcons();
 			}
 
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this, true))
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this, false))
 			{
 				addAttacked(targetPlayer);
 
