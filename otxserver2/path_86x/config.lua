@@ -23,7 +23,7 @@
 	sqlKeepAlive = 0
 	mysqlReadTimeout = 10
 	mysqlWriteTimeout = 10
-	mysqlReconnectionAttempts = 3
+	mysqlReconnectionAttempts = 5
 	encryptionType = "sha1" --// encryptionType can be (plain, md5, sha1, sha256 or sha512).
 
 	-- World / Ip / Port
@@ -395,7 +395,7 @@
 	runFile = "server/run.log"
 	outputLog = "server/out.log"
 	truncateLogOnStartup = false
-	logPlayersStatements = true
+	logPlayersStatements = false
 
 	-- Manager
 	-- NOTE: managerPassword left blank disables manager.
