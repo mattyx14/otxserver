@@ -51,6 +51,7 @@
 	General:
 		- Added offLineTraning scripts 8.x Series
 		- Fixed error on luaDoTransformItem
+		- Fixed bug with cloned containers
 		- Lite changes on config/const.h this are important
 		- Prevent spam commands
 		- Rewrite skull system this solve problems on PZ and other functions on battle
