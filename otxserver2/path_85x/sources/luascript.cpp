@@ -3599,16 +3599,16 @@ int32_t LuaInterface::luaDoItemSetDestination(lua_State* L)
 
 int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 {
-	//doTransformItem(uid, newId[, count/subType = -1])
-	int32_t subType = -1;
-	if(lua_gettop(L) >= 3)
-		subType = popNumber(L);
+	//doTransformItem(uid, newId[, count/subType])
+	int32_t count = -1;
+	if(lua_gettop(L) > 2)
+		count = popNumber(L);
 
 	uint32_t newId = popNumber(L), uid = popNumber(L);
 	ScriptEnviroment* env = getEnv();
 
 	Item* item = env->getItemByUID(uid);
-	if(!item && item->getID() == newId && (subType == -1 || subType == item->getSubType()))
+	if(!item)
 	{
 		errorEx(getError(LUA_ERROR_ITEM_NOT_FOUND));
 		lua_pushboolean(L, false);
@@ -3616,10 +3616,10 @@ int32_t LuaInterface::luaDoTransformItem(lua_State* L)
 	}
 
 	const ItemType& it = Item::items[newId];
-	if(it.stackable && subType > 100)
-		subType = 100;
+	if(it.stackable && count > 100)
+		count = 100;
 
-	Item* newItem = g_game.transformItem(item, newId, subType);
+	Item* newItem = g_game.transformItem(item, newId, count);
 	if(newItem && newItem != item)
 	{
 		env->removeThing(uid);
