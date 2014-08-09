@@ -317,7 +317,7 @@ void serverMain(void* param)
 	g_config.startup();
 
 #ifdef __OTSERV_ALLOCATOR_STATS__
-	//boost::thread(boost::bind(&allocatorStatsThread, (void*)NULL));
+	boost::thread(boost::bind(&allocatorStatsThread, (void*)NULL));
 	// TODO: this thread needs a shutdown (timed_lock + interrupt? .interrupt + .unlock)
 #endif
 #ifdef __EXCEPTION_TRACER__

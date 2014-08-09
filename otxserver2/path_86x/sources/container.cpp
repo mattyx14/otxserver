@@ -48,7 +48,7 @@ Item* Container::clone() const
 	for(ItemList::const_iterator it = itemlist.begin(); it != itemlist.end(); ++it)
 		_item->addItem((*it)->clone());
 
-	clone->totalWeight = totalWeight;
+	_item->totalWeight = totalWeight;
 	return _item;
 }
 
