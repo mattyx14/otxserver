@@ -51,6 +51,7 @@
 	General:
 		- Added offLineTraning scripts 8.x Series
 		- Added Monster no hit summon monsters
+		- Added exhaustionNPC to config
 		- Fixed error on luaDoTransformItem
 		- Fixed bug with cloned containers
 		- Fixed Mysql++Connector RAM lack

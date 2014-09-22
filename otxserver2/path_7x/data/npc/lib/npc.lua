@@ -77,15 +77,17 @@ end
 function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
 	local amount, subType, ignoreCap, inBackpacks, backpack  = amount or 1, subType or 0, ignoreCap or false, inBackpacks or false, backpack or 1988
 
-	local exhaustionInSeconds = 1
-	local storage = 45814
-	if(exhaustion.check(cid, storage) == true) then
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You cant buy it so fast.")
-		return 0
+	local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
+	if(exhaustionNPC) then
+		local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC')
+		local storage = 45814
+		if(exhaustion.check(cid, storage) == true) then
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You cant buy it so fast.")
+			return false
+		end
+		exhaustion.set(cid, storage, exhaustionInSeconds)
 	end
-	exhaustion.set(cid, storage, exhaustionInSeconds)
 
-	local ignoreCap = false
 	local item, a = nil, 0
 	if(inBackpacks) then
 		local custom, stackable = 1, isItemStackable(itemid)
