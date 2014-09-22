@@ -89,9 +89,9 @@
 #define MINOR_VERSION "11"
 #define PATCH_VERSION "0"
 #define REVISION_VERSION "6054"
-#define SOFTWARE_CODENAME "Doomed Elderberry""
+#define SOFTWARE_CODENAME "Doomed Elderberry"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
-#define FORUMS "www.blacktibia.org - www.tibiaking.com - www.otland.net"
+#define FORUMS "blacktibia.org - tibiaking.com - otland.net - tibiax.org"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0
