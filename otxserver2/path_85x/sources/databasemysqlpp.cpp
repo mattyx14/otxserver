@@ -223,7 +223,7 @@ const char* MySQLppResult::getDataStream(const std::string& s, uint64_t& size)
 
 	std::istream* result = m_result->getBlob(s);
 	std::string tmp;
-	for(char c = result->get(); c; c = result->get())
+	for(char c = result->get(); c != EOF; c = result->get())
 		tmp += c;
 
 	delete result;

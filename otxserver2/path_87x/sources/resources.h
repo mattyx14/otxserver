@@ -88,7 +88,7 @@
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "10"
-#define PATCH_VERSION "0"
+#define PATCH_VERSION "1"
 #define REVISION_VERSION "6000"
 #define SOFTWARE_CODENAME "FINAL"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"

@@ -292,6 +292,9 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 	}
 	else if(target->getMonster())
 	{
+		if(attacker->getMonster() && !target->getPlayerMaster())
+			return RET_YOUMAYNOTATTACKTHISCREATURE;
+
 		if(!target->isAttackable())
 			return RET_YOUMAYNOTATTACKTHISCREATURE;
 
