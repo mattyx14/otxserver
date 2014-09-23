@@ -3,7 +3,8 @@
 		OTX Server
 
 	OTX Server is based on:
-		The Forgotten Server Version: 0.3.7 - Crying Damson.
+		The Forgotten Server Version: 0.3.7 - Crying Damson
+			and OTX Server 2.1.0 Version - "Simple"
 
 	Codenamed
 		Doomed Elderberry
@@ -61,7 +62,7 @@
 		- Removed ALLOWED_MAX_PACKETS no are defined on code
 ]
 
-[ OTX Server 2.10 Version - "FINAL"
+[ OTX Server 2.10.0 Version - "FINAL"
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
 		- Added this: http://otland.net/threads/8-6-tfs-0-3-0-3-7-r5916-v8-60.178246/page-14#post-1878792 this change not like .. this like a botUser
@@ -73,7 +74,7 @@
 		- Update Support to 10.36
 ]
 
-[ OTX Server 2.9 Version - "Galaxy - SE"
+[ OTX Server 2.9.0 Version - "Galaxy - SE"
 	General:
 		Improvements and optimizations:
 		- Added function Highscore - Protocols 8.6+
@@ -100,7 +101,7 @@
 		- Removed monsters no supported on 8.6/70/71
 ]
 
-[ OTX Server 2.7x - 2.83 Version - "Zilart Prince"
+[ OTX Server 2.7.x - 2.8.3 Version - "Zilart Prince"
 	General:
 		- Added support to protocol 7.72
 		- Added config "useRunesRequirements" protocols 8.x - 10.x
@@ -157,7 +158,7 @@
 		- Tunned code PACKETS_PER_SECOND
 ]
 
-[ OTX Server 2.6 Version - "Alissow"
+[ OTX Server 2.6.0 Version - "Alissow"
 	General:
 		- Added Anonymous Channel and Advertising Block functions.
 			100% configurable.
@@ -178,7 +179,7 @@
 		- Fixed chargesRunes on 854/57
 ]
 
-[ OTX Server 2.52 Version - "Necron"
+[ OTX Server 2.5.2 Version - "Necron"
 	General:
 		- Added news command
 		- Changed to OTX Server 2.52 Version - "Necron"
@@ -186,12 +187,7 @@
 		- Support to 9.83
 		- Tuned MODScripts
 		- Updated items.xml
-]
-
-[ OTX Server 2.51 - SE Version - "Necron"
-	General:
 		- Added Global inbox System
-		- Changed to OTX Server 2.51 - SE Version - "Necron"
 		- Cleanups on data
 		- Fixed lockets is work "repair error on rme editor"
 		- More for extendedopcode
@@ -199,6 +195,12 @@
 		- Rewrite SQL and SQLite DB
 		- Support to 9.80
 		- Updated items.xml
+		- Added new command /changename --- http://otland.net/f81/changename-game-152639/
+		- Changed OTX ICO -- Is possible change (need one nice)
+		- Deleted customCommands /stop - /noob
+		- Fixed a guild /commands bug
+		- Tuned custom commands
+		- Only Protocol 9.81+ supported
 
 	* 9.8x :
 		- Fixed Error on vipList icons
@@ -214,6 +216,10 @@
 		- Solve problems on covertion protocols 8.5x+ to 8.61+ on constant
 			// 8.70 to 9.8x
 			// protocol 8.70/71 no added it is similar to new protocols and is rare server based on protocol 8.70/71
+		- Fixed NPC Trade
+		- Added pvpBless to customCommands /bless
+		- Added monsters 9.8 missing loots http://otland.net/f83/9-8-a-178109/
+		- Fixed diagonal walking bug -- http://www.youtube.com/watch?v=57DXt1wsLXA&feature=youtu.be
 
 	* 8.5x to 8.7x :
 		- Added Script extendedopcode.lua
@@ -223,28 +229,7 @@
 		- Fixed console errors
 ]
 
-[ OTX Server 2.50 Version - "Necron"
-	General:
-		- Added new command /changename --- http://otland.net/f81/changename-game-152639/
-		- Changed to OTX Server 2.50 Version - "Necron"
-		- Changed OTX ICO -- Is possible change (need one nice)
-		- Deleted customCommands /stop - /noob
-		- Fixed a guild /commands bug
-		- Tuned custom commands
-		- Only Protocol 9.81+ supported
-
-	* 9.8x :
-		- Added monsters 9.8 missing loots http://otland.net/f83/9-8-a-178109/
-		- Fixed diagonal walking bug -- http://www.youtube.com/watch?v=57DXt1wsLXA&feature=youtu.be
-
-	* 8.7x to 9.8x :
-		- Added pvpBless to customCommands /bless
-
-	* 8.5x to 9.6x :
-		- Fixed NPC Trade
-]
-
-[ OTX Server 2.44 - SE Version - "Chronodia"
+[ OTX Server 2.4.4 - SE Version - "Chronodia"
 	General:
 		- Boost 1.52 not supported now use 1.51
 		- Changed to OTX Server 2.44 - SE Version - "Chronodia"
@@ -256,6 +241,10 @@
 		- Other changes on monsters an map
 		- Updated items on all protocols
 		- Update Docs
+		- 9.81 Support
+		- More info on docs/README-howcompilelinux-howcompilewindows.log
+		- Update monsters datapack
+		- Important fixes to all protocols
 
 	* 9.8x :
 		- Added a option in config.lua - Your server is a previewer
@@ -275,16 +264,7 @@
 		- Added missing constants
 ]
 
-[ OTX Server 2.44 Version - "Chronodia"
-	General:
-		- Changed to OTX Server 2.44 Version - "Chronodia"
-		- 9.81 Support
-		- More info on docs/README-howcompilelinux-howcompilewindows.log
-		- Update monsters datapack
-		- Important fixes to all protocols
-]
-
-[ OTX Server 2.43 Version - "Cray Claw"
+[ OTX Server 2.4.3 Version - "Cray Claw"
 	General:
 	* General Changes:
 		- Added multiWorldConfig.log (only in Spanish) by Kazbin
@@ -313,7 +293,7 @@
 		- Reduced the Hicks! chance for drunk players
 ]
 
-[ OTX Server 2.42 Version - "Marilith"
+[ OTX Server 2.4.2 Version - "Marilith"
 	General:
 	* General Changes: (Only 9.70)
 		- Added function: http://otland.net/f163/addcontaineritems-container-items-166104/
@@ -358,7 +338,7 @@
 		- Update all /data is more completed
 ]
 
-[ OTX Server 2.4 Version - "Deumion"
+[ OTX Server 2.4.0 Version - "Deumion"
 	General:
 	* General Changes:
 		- Mosters no affected for fields
@@ -371,7 +351,7 @@
 		- Updated code to lasted 9.61
 ]
 
-[ OTX Server 2.33 Version - "To Light"
+[ OTX Server 2.3.3 Version - "To Light"
 	General:
 	* General Changes:
 		- 9.60 Support
@@ -437,7 +417,7 @@
 		- Fixed MessageClasses
 ]
 
-[ OTX Server 2.2 Version - "Deluxe"
+[ OTX Server 2.2.0 Version - "Deluxe"
 	- Added config "packetsPerSecond"
 	- Added support multiCore on (Nix)
 	- Added increaseBankBalance on player
@@ -465,7 +445,8 @@
 	- Updated docs
 ]
 
-[ OTX Server 2.1 Version - "Simple" - Path 1
+[ OTX Server 2.1.0 Version - "Simple"
+	- Changed codeName to (Simple - 2.1.0)
 	- Added file "luaFunctions"
 	- Added missing items on movements
 	- Added config "mysqlReconnectionAttempts"
@@ -530,11 +511,6 @@
 			-- Banishment Config
 	- Update items.otb to lasted versionTibia (9.44 on v4)
 	- Update items.xml more complete file
-]
-
-[ OTX Server - Fantasy Series - Version 1.0 - "Mysidia"
-	- Changed codeName to (Mysidia - 1.0)
-	-- START REV 1000
 	- Optimize RookSystem
 	- Fixed taming mounts
 	- Removed limit AM accountManager
@@ -701,9 +677,9 @@
 			- doesn't show when you're looking at yourself
 
 	Note:
-	Almost all files were changed, so there is no point of listing them in here.
-	You are advised to update all your data files.
-	The server load more fast ...
+	* Almost all files were changed, so there is no point of listing them in here.
+	* You are advised to update all your data files.
+	* The server load more fast ...
 ]
 
 [ OTX Server 1.4.2 Version - "Lightbringer Edition" - Path 2
