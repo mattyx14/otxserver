@@ -48,7 +48,12 @@
 		- Add Support to Protocols 10.37+ (no for my)
 ]
 
-[ OTX Server 2.11.0 Version - "Doomed Elderberry" (STATUS OFF)
+[ OTX Server 2.11.1 Version - "Doomed Elderberry" (STATUS OFF)
+	General:
+		- Fixed critical bug on load items.otb on protocol 8.54/57
+]
+
+[ OTX Server 2.11.0 Version - "Doomed Elderberry"
 	General:
 		- Added offLineTraning scripts 8.x Series
 		- Added Monster no hit summon monsters

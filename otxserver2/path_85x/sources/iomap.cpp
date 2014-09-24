@@ -145,7 +145,7 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 	}
 
 	uint32_t headerMinorItems = rootHeader->minorVersionItems;
-	if(headerMinorItems < CLIENT_VERSION_ITEMS)
+	if(headerMinorItems < CLIENT_VERSION_810)
 	{
 		setLastErrorString("This map needs an updated items.otb.");
 		return false;
