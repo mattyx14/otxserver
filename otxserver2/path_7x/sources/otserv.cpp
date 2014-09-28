@@ -139,8 +139,8 @@ bool argumentsHandler(StringVec args)
 
 		if((*it) == "--version" || (*it) == "-v")
 		{
-			std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")\n"
-			"Compilied with " << BOOST_COMPILER << " for arch "
+			std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")\n"
+			"Compiled with " << BOOST_COMPILER << " for arch "
 			#if defined(__amd64__) || defined(_M_X64)
 			"64 Bits"
 			#elif defined(__i386__) || defined(_M_IX86) || defined(_X86_)
@@ -152,8 +152,7 @@ bool argumentsHandler(StringVec args)
 
 			"\n"
 			"A server developed by: "SOFTWARE_DEVELOPERS".\n"
-			"Visit our forums for updates, support, and resources:\n"
-			""FORUMS"\n";
+			"Visit our forums for updates, support, and resources: "FORUMS"\n";
 			return false;
 		}
 
@@ -411,8 +410,8 @@ ServiceManager* services)
 	}
 #endif
 
-	std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
-		<< "Compilied with " << BOOST_COMPILER << " for arch "
+	std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
+		<< "Compiled with " << BOOST_COMPILER << " for arch "
 		#if defined(__amd64__) || defined(_M_X64)
 		"64 Bits"
 		#elif defined(__i386__) || defined(_M_IX86) || defined(_X86_)
@@ -424,8 +423,7 @@ ServiceManager* services)
 
 		<< std::endl
 		<< "A server developed by: "SOFTWARE_DEVELOPERS"." << std::endl
-		<< "Visit our forums for updates, support, and resources:" << std::endl
-		<< ""FORUMS"" << std::endl;
+		<< "Visit our forums for updates, support, and resources: "FORUMS"" << std::endl;
 	std::stringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
@@ -1047,8 +1045,8 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						GUI::getInstance()->m_logText = "";
 						GUI::getInstance()->m_lineCount = 0;
-						std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
-						<< "Compilied with " << BOOST_COMPILER << " for arch "
+						std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
+						<< "Compiled with " << BOOST_COMPILER << " for arch "
 						#if defined(__amd64__) || defined(_M_X64)
 						"64 Bits"
 						#elif defined(__i386__) || defined(_M_IX86) || defined(_X86_)
@@ -1060,9 +1058,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 						<< std::endl
 						<< "A server developed by: "SOFTWARE_DEVELOPERS"." << std::endl
-						<< "Visit our forums for updates, support, and resources:" << std::endl
-						<< ""FORUMS"" << std::endl
-						<< std::endl;
+						<< "Visit our forums for updates, support, and resources: ""FORUMS" << std::endl;
 					}
 
 					break;

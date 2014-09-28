@@ -1280,7 +1280,7 @@ bool TalkAction::software(Creature* creature, const std::string&, const std::str
 		return false;
 
 	std::stringstream s;
-		s << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << PATCH_VERSION << ")" << std::endl;
+		s << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << ")" << std::endl;
 		s << REVISION_VERSION << std::endl;
 		s << "Codename: (" << SOFTWARE_CODENAME << ")" << std::endl << std::endl;
 		s << "Server Developers: " << SOFTWARE_DEVELOPERS << "." << std::endl;
