@@ -21,9 +21,9 @@
 // Compatible with 7.40 to 7.72
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "11"
-#define PATCH_VERSION "1"
-#define REVISION_VERSION "6055"
+#define MINOR_VERSION "12"
+#define PATCH_VERSION "0"
+#define REVISION_VERSION "-"
 #define SOFTWARE_CODENAME "Doomed Elderberry"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
 #define FORUMS "blacktibia.org - tibiaking.com - otland.net - tibiax.org"

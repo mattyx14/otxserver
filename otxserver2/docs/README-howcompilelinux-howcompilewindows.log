@@ -33,6 +33,8 @@
 		To start compiling, open the Build menu again and click on Build Solution.
 		If it no work for you "do not try to do this" (GOOD LOOK)
 
+		Note: This only work for OTX Server 2.12.0+ - and TFS 1.0+
+
 	COMPILING IN UBUNTU LINUX
 	A detailed and always up-to-date tutorial may be found here:
 	Download required packages
