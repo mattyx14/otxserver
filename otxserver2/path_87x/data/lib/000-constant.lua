@@ -323,7 +323,7 @@ TALKTYPE_TYPES = {
 	["monster"] = TALKTYPE_MONSTER_SAY,
 	["monster-yell"] = TALKTYPE_MONSTER_YELL,
 
-	-- It solve problems on covertion protocols 8.5x+ to 8.61
+	-- It solve problems on conversion protocols 8.5x+ to 8.61+
 	["1"] = TALKTYPE_SAY,
 	["2"] = TALKTYPE_WHISPER,
 	["3"] = TALKTYPE_YELL,
