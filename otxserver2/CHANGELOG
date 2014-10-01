@@ -50,6 +50,7 @@
 
 [ OTX Server 2.12.0 Version - "" (STATUS OFF)
 	General:
+		- Fixed error on speak NPC / GM Cast on protocol 10.36
 		- Update compiler Tutorial
 ]
 
