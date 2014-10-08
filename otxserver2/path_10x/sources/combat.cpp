@@ -298,9 +298,6 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 		if(attacker->getMonster() && !target->getPlayerMaster())
 			return RET_YOUMAYNOTATTACKTHISCREATURE;
 
-		if(!target->isAttackable())
-			return RET_YOUMAYNOTATTACKTHISCREATURE;
-
 		const Player* attackerPlayer = NULL;
 		if((attackerPlayer = attacker->getPlayer()) || (attackerPlayer = attacker->getPlayerMaster()))
 		{

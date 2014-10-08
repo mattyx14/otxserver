@@ -51,6 +51,7 @@
 [ OTX Server 2.12.0 Version - "" (STATUS OFF)
 	General:
 		- Fixed error on speak NPC / GM Cast on protocol 10.36
+		- Revert my previous commit - Monster no hit summon monsters
 		- Update compiler Tutorial
 ]
 
