@@ -32,7 +32,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED AND OFF
+		COMPLETED ON: OTX Server 2.X.SERIES Version - "Doomed Elderberry"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -42,32 +42,33 @@
 		- Fix shutDown server on GUI cause crash
 
 	Protocols 9.x +
-		- Add browse field support
-		- Add helpers support
-		- Add purseSlot support for a premiumScrols
-		- Add Support to Protocols 10.37+ (no for my)
+		- Add browseField
+		- Add helpers Party/Guilds
+		- Add purseSlot
+		- Add Support to Protocols 10.37+
 ]
 
-[ OTX Server 2.12.0 Version - "" (STATUS OFF)
+[ OTX Server 2.X.SERIES Version - "Doomed Elderberry"
 	General:
-		- Fixed error on speak NPC / GM Cast on protocol 10.36
-		- Revert my previous commit - Monster no hit summon monsters
-		- Update compiler Tutorial
-]
-
-[ OTX Server 2.11.1 Version - "Doomed Elderberry"
-	General:
+		- Added antyDupeItems
+		- Added castSystem
 		- Added offLineTraning scripts 8.x Series
-		- Added Monster no hit summon monsters
+		- Added monster no hit summon monsters
 		- Added exhaustionNPC to config
+		- Fixed error on speak NPC / GM Cast on protocol 10.36
 		- Fixed error on luaDoTransformItem
 		- Fixed bug with cloned containers
 		- Fixed Mysql++Connector RAM lack
 		- Fixed critical bug on load items.otb on protocol 8.54/57
+		- Fixed Typos on console/GUI
 		- Lite changes on config/const.h this are important
 		- Prevent spam commands
 		- Rewrite skull system this solve problems on PZ and other functions on battle
 		- Removed ALLOWED_MAX_PACKETS no are defined on code
+		- Update compiler Tutorial
+
+	Note:
+	* From this moment highly recommend using TFS 1.0 or wait for 3.0 OTX Series that was based on TFS 1.0
 ]
 
 [ OTX Server 2.10.0 Version - "FINAL"

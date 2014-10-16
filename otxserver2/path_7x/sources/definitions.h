@@ -21,8 +21,8 @@
 // Compatible with 7.40 to 7.72
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "12"
-#define PATCH_VERSION "0"
+#define MINOR_VERSION "X"
+#define PATCH_VERSION "SERIES"
 #define REVISION_VERSION "-"
 #define SOFTWARE_CODENAME "Doomed Elderberry"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
