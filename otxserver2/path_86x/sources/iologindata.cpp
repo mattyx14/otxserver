@@ -878,10 +878,18 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 {
 	if(preSave && player->health <= 0)
 	{
-		if(player->getSkull() == SKULL_BLACK)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
 		{
-			player->health = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_HEALTH);
-			player->mana = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_MANA);
+			if(player->getSkull() == SKULL_BLACK)
+			{
+				player->health = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_HEALTH);
+				player->mana = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_MANA);
+			}
+			else
+			{
+				player->health = player->healthMax;
+				player->mana = player->manaMax;
+			}
 		}
 		else
 		{

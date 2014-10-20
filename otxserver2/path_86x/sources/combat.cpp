@@ -364,8 +364,11 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 		if(player->getSecureMode() == SECUREMODE_ON)
 			return RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
 
-		if(player->getSkull() == SKULL_BLACK)
-			return RET_YOUMAYNOTATTACKTHISPLAYER;
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		{
+			if(player->getSkull() == SKULL_BLACK)
+				return RET_YOUMAYNOTATTACKTHISPLAYER;
+		}
 	}
 
 	if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
@@ -555,11 +558,23 @@ bool Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 	if(_params.element.damage && _params.element.type != COMBAT_NONE)
 		g_game.combatBlockHit(_params.element.type, caster, target, _params.element.damage, params.blockedByShield, params.blockedByArmor, params.itemId != 0, true);
 
-	if(caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
 	{
-		_params.element.damage /= 2;
-		if(change < 0)
-			change /= 2;
+		if(caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
+		{
+			_params.element.damage /= 2;
+			if(change < 0)
+				change /= 2;
+		}
+	}
+	else
+	{
+		if(caster && caster->getPlayer() && target->getPlayer())
+		{
+			_params.element.damage /= 2;
+			if(change < 0)
+				change /= 2;
+		}
 	}
 
 	if(!g_game.combatChangeHealth(_params, caster, target, change, false))
@@ -583,8 +598,16 @@ bool Combat::CombatManaFunc(Creature* caster, Creature* target, const CombatPara
 	if(g_game.combatBlockHit(COMBAT_MANADRAIN, caster, target, change, false, false, params.itemId != 0))
 		return false;
 
-	if(change < 0 && caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
-		change /= 2;
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	{
+		if(change < 0 && caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
+			change /= 2;
+	}
+	else
+	{
+		if(change < 0 && caster && caster->getPlayer() && target->getPlayer())
+			change /= 2;
+	}
 
 	if(!g_game.combatChangeMana(caster, target, change))
 		return false;
