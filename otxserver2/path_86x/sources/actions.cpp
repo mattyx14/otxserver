@@ -493,16 +493,17 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			return RET_YOUARENOTTHEOWNER;
 
 		Container* tmpContainer = NULL;
-		if(DepotLocker* depot = container->getDepotLocker())
+		if(Depot* depot = container->getDepot())
 		{
 			if(player->hasFlag(PlayerFlag_CannotPickupItem))
 				return RET_CANNOTUSETHISOBJECT;
 
-			DepotLocker* myDepotLocker = player->getDepotLocker(depot->getDepotId());
-			myDepotLocker->setParent(depot->getParent());
-			tmpContainer = myDepotLocker;
-			player->setDepotChange(true);
-			player->setLastDepotId(depot->getDepotId());
+			if(Depot* playerDepot = player->getDepot(depot->getDepotId(), true))
+			{
+				player->useDepot(depot->getDepotId(), true);
+				playerDepot->setParent(depot->getParent());
+				tmpContainer = playerDepot;
+			}
 		}
 
 		if(!tmpContainer)

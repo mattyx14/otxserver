@@ -32,8 +32,7 @@ class Creature;
 class Player;
 
 class Container;
-class DepotChest;
-class DepotLocker;
+class Depot;
 
 class TrashHolder;
 class Mailbox;

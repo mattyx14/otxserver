@@ -4348,19 +4348,19 @@
 	</item>
 	<item id="2589" article="a" name="locker">
 		<attribute key="type" value="depot"/>
-		<attribute key="containerSize" value="2"/>
+		<attribute key="containerSize" value="30"/>
 	</item>
 	<item id="2590" article="a" name="locker">
 		<attribute key="type" value="depot"/>
-		<attribute key="containerSize" value="2"/>
+		<attribute key="containerSize" value="30"/>
 	</item>
 	<item id="2591" article="a" name="locker">
 		<attribute key="type" value="depot"/>
-		<attribute key="containerSize" value="2"/>
+		<attribute key="containerSize" value="30"/>
 	</item>
 	<item id="2592" article="a" name="locker">
 		<attribute key="type" value="depot"/>
-		<attribute key="containerSize" value="2"/>
+		<attribute key="containerSize" value="30"/>
 	</item>
 	<item id="2593" article="a" name="mailbox">
 		<attribute key="description" value="Royal Tibia Mail."/>

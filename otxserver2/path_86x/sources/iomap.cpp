@@ -22,8 +22,7 @@
 #include "tile.h"
 #include "item.h"
 #include "container.h"
-#include "depotchest.h"
-#include "depotlocker.h"
+#include "depot.h"
 
 #include "teleport.h"
 #include "beds.h"

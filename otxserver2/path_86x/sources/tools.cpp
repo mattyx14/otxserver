@@ -1846,19 +1846,6 @@ std::string getFilePath(FileType_t type, std::string name/* = ""*/)
 	return path;
 }
 
-std::string getFirstLine(const std::string& str)
-{
-	std::string firstLine = "";
-	for(uint32_t i = 0, strLength = str.length(); i < strLength; ++i)
-	{
-		if(str[i] == '\n')
-			break;
-
-		firstLine += str[i];
-	}
-	return firstLine;
-}
-
 uint8_t serverFluidToClient(uint8_t serverFluid)
 {
 	uint8_t size = sizeof(clientToServerFluidMap) / sizeof(int8_t);

@@ -15,21 +15,25 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __MAILBOX__
-#define __MAILBOX__
-#include "const.h"
+#ifndef __DEPOT__
+#define __DEPOT__
+#include "container.h"
 
-#include "cylinder.h"
-#include "item.h"
-
-class Mailbox : public Item, public Cylinder
+class Depot : public Container
 {
 	public:
-		Mailbox(uint16_t type): Item(type) {}
-		virtual ~Mailbox() {}
+		Depot(uint16_t type);
+		virtual ~Depot() {}
 
-		virtual Mailbox* getMailbox() {return this;}
-		virtual const Mailbox* getMailbox() const {return this;}
+		virtual Depot* getDepot() {return this;}
+		virtual const Depot* getDepot() const {return this;}
+
+		//serialization
+		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);
+
+		uint32_t getDepotId() const;
+
+		void setMaxDepotLimit(uint32_t count) {depotLimit = count;}
 
 		//cylinder implementations
 		virtual Cylinder* getParent() {return Item::getParent();}
@@ -45,37 +49,29 @@ class Mailbox : public Item, public Cylinder
 
 		virtual ReturnValue __queryAdd(int32_t index, const Thing* thing, uint32_t count,
 			uint32_t flags, Creature* actor = NULL) const;
+
 		virtual ReturnValue __queryMaxCount(int32_t index, const Thing* thing, uint32_t count,
 			uint32_t& maxQueryCount, uint32_t flags) const;
-		virtual ReturnValue __queryRemove(const Thing*, uint32_t, uint32_t, Creature*) const {return RET_NOTPOSSIBLE;}
-		virtual Cylinder* __queryDestination(int32_t&, const Thing*, Item**,
-			uint32_t&) {return this;}
-
-		virtual void __addThing(Creature* actor, Thing* thing) {__addThing(actor, 0, thing);}
-		virtual void __addThing(Creature* actor, int32_t index, Thing* thing);
-
-		virtual void __updateThing(Thing*, uint16_t, uint32_t) {}
-		virtual void __replaceThing(uint32_t, Thing*) {}
-
-		virtual void __removeThing(Thing*, uint32_t) {}
 
 		virtual void postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
-			int32_t index, CylinderLink_t = LINK_OWNER)
-		{
-			if(getParent())
-				getParent()->postAddNotification(actor, thing, oldParent, index, LINK_PARENT);
-		}
+			int32_t index, CylinderLink_t link = LINK_OWNER);
 		virtual void postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent,
-			int32_t index, bool isCompleteRemoval, CylinderLink_t = LINK_OWNER)
-		{
-			if(getParent())
-				getParent()->postRemoveNotification(actor, thing, newParent, index, isCompleteRemoval, LINK_PARENT);
-		}
+			int32_t index, bool isCompleteRemoval, CylinderLink_t link = LINK_OWNER);
 
-		ReturnValue canSend(const Item* item, Creature* actor) const;
-		bool sendItem(Creature* actor, Item* item);
+		//overrides
+		virtual bool canRemove() const {return false;}
 
-		bool getDepotId(const std::string& townString, uint32_t& depotId);
-		bool getRecipient(Item* item, std::string& name, uint32_t& depotId);
+	private:
+		uint32_t depotLimit;
 };
+
+inline uint32_t Depot::getDepotId() const
+{
+	bool ok;
+	int32_t v = getIntegerAttribute("depotid", ok);
+	if(ok)
+		return (uint32_t)v;
+
+	return 0;
+}
 #endif

@@ -32,7 +32,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED ON: OTX Server 2.X.SERIES Version - "Doomed Elderberry"
+		COMPLETED ON: OTX Server 2.X.Series Version - "Doomed Elderberry"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -48,10 +48,9 @@
 		- Add Support to Protocols 10.37+
 ]
 
-[ OTX Server 2.X.SERIES Version - "Doomed Elderberry"
+[ OTX Server 2.X.Series Version - "Doomed Elderberry"
 	General:
-		- Added antyDupeItems
-		- Added castSystem
+		- Added classicDepotSystem to 8.x series
 		- Added offLineTraning scripts 8.x Series
 		- Added monster no hit summon monsters
 		- Added exhaustionNPC to config

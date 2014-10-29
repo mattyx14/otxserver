@@ -33,10 +33,10 @@ theotxserver_SOURCES = account.h actions.cpp actions.h $(MAYBE_OTADMIN) \
 	const.h container.cpp container.h creature.cpp creature.h \
 	creatureevent.cpp creatureevent.h cylinder.cpp cylinder.h database.cpp \
 	database.h databasemanager.cpp databasemanager.h $(MAYBE_MYSQL) \
-	$(MAYBE_MYSQLPP) $(MAYBE_SQLITE) $(MAYBE_PGSQL) depotchest.cpp depotchest.h depotlocker.cpp depotlocker.h dispatcher.cpp \
+	$(MAYBE_MYSQLPP) $(MAYBE_SQLITE) $(MAYBE_PGSQL) depot.cpp depot.h dispatcher.cpp \
 	dispatcher.h exception.cpp exception.h fileloader.cpp fileloader.h \
 	game.cpp game.h $(MAYBE_LOGIN) globalevent.cpp globalevent.h group.cpp \
-	group.h gui.cpp gui.h house.cpp house.h housetile.cpp housetile.h inbox.cpp inbox.h inputbox.cpp inputbox.h ioban.cpp ioban.h \
+	group.h gui.cpp gui.h house.cpp house.h housetile.cpp housetile.h inputbox.cpp inputbox.h ioban.cpp ioban.h \
 	ioguild.cpp ioguild.h iologindata.cpp iologindata.h iomap.cpp iomap.h \
 	iomapserialize.cpp iomapserialize.h item.cpp item.h itemattributes.cpp \
 	itemattributes.h items.cpp items.h luascript.cpp luascript.h \

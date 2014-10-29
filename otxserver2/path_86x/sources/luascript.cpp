@@ -7662,8 +7662,8 @@ int32_t LuaInterface::luaGetPlayerDepotItems(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if(const DepotChest* depotChest = player->getDepotChest(depotid, true))
-			lua_pushnumber(L, depotChest->getItemHoldingCount());
+		if(const Depot* depot = player->getDepot(depotid, true))
+			lua_pushnumber(L, depot->getItemHoldingCount());
 		else
 			lua_pushboolean(L, false);
 	}
@@ -8508,13 +8508,17 @@ int32_t LuaInterface::luaDoPlayerSendTutorial(lua_State* L)
 
 int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 {
-	//doPlayerSendMailByName(name, item[, actor])
+	//doPlayerSendMailByName(name, item[, town[, actor]])
 	ScriptEnviroment* env = getEnv();
 	int32_t params = lua_gettop(L);
 
 	Creature* actor = NULL;
-	if(params > 2)
+	if(params > 3)
 		actor = env->getCreatureByUID(popNumber(L));
+
+	uint32_t town = 0;
+	if(params > 2)
+		town = popNumber(L);
 
 	Item* item = env->getItemByUID(popNumber(L));
 	if(!item)
@@ -8530,7 +8534,7 @@ int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 		return 1;
 	}
 
-	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), item);
+	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), town, item);
 	if(result)
 		env->removeTempItem(env, item);
 
