@@ -1230,7 +1230,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 30:
 		{
-			std::clog << "> Updating database to version 31..." << std::endl;
+			std::clog << "> Updating database to version 31... (PVP Blessing System)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_SQLITE:
@@ -1258,7 +1258,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 31:
 		{
-			std::clog << "> Updating database to version 32..." << std::endl;
+			std::clog << "> Updating database to version 32... (warSystem MySQL)" << std::endl;
 			if(db->getDatabaseEngine() == DATABASE_ENGINE_MYSQL)
 			{
 				query << "CREATE TABLE IF NOT EXISTS `player_statements`\
@@ -1332,7 +1332,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 33:
 		{
-			std::clog << "> Updating database to version 34..." << std::endl;
+			std::clog << "> Updating database to version 34... (Market System this no work on 9.4+)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_MYSQL:
@@ -1361,7 +1361,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 34:
 		{
-			std::clog << "> Updating database to version 35..." << std::endl;
+			std::clog << "> Updating database to version 35... (warSystem SQLite)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_SQLITE:
@@ -1413,7 +1413,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 35:
 		{
-			std::clog << "> Updating database to version 36..." << std::endl;
+			std::clog << "> Updating database to version 36... (modernDepotSystem)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_MYSQL:
@@ -1534,7 +1534,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 36:
 		{
-			std::clog << "> Updating database to version 37..." << std::endl;
+			std::clog << "> Updating database to version 37... (loginHistoryIPSystem)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_MYSQL:
@@ -1568,12 +1568,39 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 37:
 		{
-			std::clog << "> Updating database to version 38..." << std::endl;
+			std::clog << "> Updating database to version 38... (offLineTrainingSystem)" << std::endl;
 
 			db->query("ALTER TABLE `players` ADD `offlinetraining_time` SMALLINT UNSIGNED NOT NULL DEFAULT 43200;");
 			db->query("ALTER TABLE `players` ADD `offlinetraining_skill` INT NOT NULL DEFAULT -1;");
 			registerDatabaseConfig("db_version", 38);
 			return 38;
+		}
+
+		case 38:
+		{
+			std::clog << "> Updating database to version 39... (classicDepotSystem)" << std::endl;
+			switch(db->getDatabaseEngine())
+			{
+				case DATABASE_ENGINE_MYSQL:
+				{
+					db->query("DROP TABLE IF EXISTS `player_depotitems`;");
+					db->query("CREATE TABLE `player_depotitems`(`player_id` INT NOT NULL,`sid` INT NOT NULL COMMENT 'any given range, eg. 0-100 is reserved for depot lockers and all above 100 will be normal items inside depots',`pid` INT NOT NULL DEFAULT 0,`itemtype` INT NOT NULL,`count` INT NOT NULL DEFAULT 0,`attributes` BLOB NOT NULL,KEY (`player_id`), UNIQUE (`player_id`, `sid`),FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE) ENGINE = InnoDB;");
+					break;
+				}
+
+				case DATABASE_ENGINE_SQLITE:
+				{
+					db->query("DROP TABLE IF EXISTS `player_depotitems`;");
+					db->query("CREATE TABLE 'player_depotitems' ('player_id' INTEGER NOT NULL,'sid' INTEGER NOT NULL,'pid' INTEGER NOT NULL DEFAULT 0,'itemtype' INTEGER NOT NULL,'count' INTEGER NOT NULL DEFAULT 0,'attributes' BLOB NOT NULL,UNIQUE ('player_id', 'sid'),FOREIGN KEY ('player_id') REFERENCES 'players' ('id'));");
+					break;
+				}
+
+				default:
+					break;
+			}
+
+			registerDatabaseConfig("db_version", 39);
+			return 39;
 		}
 
 		default:
