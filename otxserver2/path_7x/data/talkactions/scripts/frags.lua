@@ -68,7 +68,7 @@ function onSay(cid, words, param, channel)
 			result = result .. "\nYour " .. (getCreatureSkullType(cid) == SKULL_RED and "red" or "black") .. " skull will expire at " .. os.date("%d %B %Y %X", skullEnd)
 		end
 
-		doPlayerPopupFYI(cid, result)
+		doShowTextDialog(cid, 1950, result)
 	else
 		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You currently have " .. size.day .. " frags today, " .. (size.day + size.week) .. " this week and " .. (size.day + size.week + size.month) .. " this month.")
 		if(size.day > 0) then
