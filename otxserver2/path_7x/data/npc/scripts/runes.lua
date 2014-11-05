@@ -61,29 +61,29 @@ shopModule:addBuyableItem({'ultimate healing'}, 2273, 175, 1, 'ultimate healing 
 
 shopModule:addBuyableItem({'wand of vortex', 'vortex'}, 2190, 500, 'wand of vortex')
 shopModule:addBuyableItem({'wand of dragonbreath', 'dragonbreath'}, 2191, 1000, 'wand of dragonbreath')
-shopModule:addBuyableItem({'wand of plague', 'decay'}, 2188, 5000, 'wand of plague')
+shopModule:addBuyableItem({'wand of plague', 'plague'}, 2188, 5000, 'wand of plague')
 shopModule:addBuyableItem({'wand of cosmic energy', 'cosmic energy'}, 2189, 10000, 'wand of cosmic energy')
 shopModule:addBuyableItem({'wand of inferno', 'inferno'}, 2187, 15000, 'wand of inferno')
 
 shopModule:addBuyableItem({'snakebite rod', 'snakebite'}, 2182, 500, 'snakebite rod')
 shopModule:addBuyableItem({'moonlight rod', 'moonlight'}, 2186, 1000, 'moonlight rod')
-shopModule:addBuyableItem({'volcanic rod', 'necrotic'}, 2185, 1000, 'volcanic rod')
-shopModule:addBuyableItem({'quagmire rod', 'terra'}, 2181, 2000, 'quagmire rod')
-shopModule:addBuyableItem({'tempest rod', 'hailstorm'}, 2183, 3000, 'tempest rod')
+shopModule:addBuyableItem({'volcanic rod', 'volcanic'}, 2185, 1000, 'volcanic rod')
+shopModule:addBuyableItem({'quagmire rod', 'quagmire'}, 2181, 2000, 'quagmire rod')
+shopModule:addBuyableItem({'tempest rod', 'tempest'}, 2183, 3000, 'tempest rod')
 
 shopModule:addSellableItem({'vial', 'flask'}, 2006, 25, 'vial')
 
 shopModule:addSellableItem({'wand of vortex', 'vortex'}, 2190, 100, 'wand of vortex')
 shopModule:addSellableItem({'wand of dragonbreath', 'dragonbreath'}, 2191, 200, 'wand of dragonbreath')
-shopModule:addSellableItem({'wand of plague', 'decay'}, 2188, 1000, 'wand of plague')
+shopModule:addSellableItem({'wand of plague', 'plague'}, 2188, 1000, 'wand of plague')
 shopModule:addSellableItem({'wand of cosmic energy', 'cosmic energy'}, 2189, 2000, 'wand of cosmic energy')
 shopModule:addSellableItem({'wand of inferno', 'inferno'}, 2187, 3000, 'wand of inferno')
 
 shopModule:addSellableItem({'snakebite rod', 'snakebite'}, 2182, 100, 'snakebite rod')
 shopModule:addSellableItem({'moonlight rod', 'moonlight'}, 2186, 200, 'moonlight rod')
-shopModule:addSellableItem({'volcanic rod', 'necrotic'}, 2185, 1000, 'volcanic rod')
-shopModule:addSellableItem({'quagmire rod', 'terra'}, 2181, 2000, 'quagmire rod')
-shopModule:addSellableItem({'tempest rod', 'hailstorm'}, 2183, 3000, 'tempest rod')
+shopModule:addSellableItem({'volcanic rod', 'volcanic'}, 2185, 1000, 'volcanic rod')
+shopModule:addSellableItem({'quagmire rod', 'quagmire}, 2181, 2000, 'quagmire rod')
+shopModule:addSellableItem({'tempest rod', 'tempest'}, 2183, 3000, 'tempest rod')
 
 local items = {[1] = 2190, [2] = 2182, [5] = 2190, [6] = 2182}
 function creatureSayCallback(cid, type, msg)
