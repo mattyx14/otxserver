@@ -9,6 +9,7 @@ setConditionParam(condition, CONDITION_PARAM_MAXVALUE, -250)
 setConditionParam(condition, CONDITION_PARAM_STARTVALUE, -50)
 setConditionParam(condition, CONDITION_PARAM_TICKINTERVAL, 2000)
 setConditionParam(condition, CONDITION_PARAM_FORCEUPDATE, true)
+setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -1.70, -0, -2.5, -0)
 setCombatCondition(combat, condition)
 
 local area = createCombatArea(AREA_CROSS6X6)
