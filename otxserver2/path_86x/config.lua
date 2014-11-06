@@ -195,6 +195,7 @@
 	forceSlowConnectionsToDisconnect = false
 	premiumPlayerSkipWaitList = true
 	packetsPerSecond = 50
+	loginProtectionTime = 10
 
 	-- Deathlist
 	deathListEnabled = true

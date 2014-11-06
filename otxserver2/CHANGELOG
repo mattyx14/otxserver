@@ -39,7 +39,6 @@
 	All Protocols
 		- Fix fields(fire/energy/earth) not work properly
 		- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
-		- Fix shutDown server on GUI cause crash
 
 	Protocols 9.x +
 		- Add browseField

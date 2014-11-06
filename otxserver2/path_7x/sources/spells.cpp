@@ -626,16 +626,6 @@ bool Spell::checkSpell(Player* player) const
 			return false;
 		}
 
-		if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
-		{
-			if(player->checkLoginDelay())
-			{
-				player->sendCancelMessage(RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN);
-				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-				return false;
-			}
-		}
-
 		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_COMBAT))
 			exhausted = true;
 	}
@@ -733,6 +723,10 @@ bool Spell::checkSpell(Player* player) const
 			}
 		}
 	}
+
+	Condition* condition = player->getCondition(CONDITION_LOGINPROTECTION, CONDITIONID_DEFAULT);
+	if(condition)
+		player->removeCondition(condition);
 
 	return true;
 }

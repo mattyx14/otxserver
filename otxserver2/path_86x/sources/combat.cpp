@@ -371,12 +371,6 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 		}
 	}
 
-	if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
-	{
-		if(player->checkLoginDelay())
-			return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
-	}
-
 	return Combat::canDoCombat(player, target, true);
 }
 

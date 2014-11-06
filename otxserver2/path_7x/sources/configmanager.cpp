@@ -344,7 +344,7 @@ bool ConfigManager::load()
 	m_confBool[RUNES_HIT_TOP_CREATURE] = getGlobalBool("runesHitTopCreature", false);
 	m_confBool[CHARLIST_INFO] = getGlobalBool("charlistBasicInfo", false);
 	m_confBool[CLASSIC_DAMAGE_ON_WEAPONS] = getGlobalBool("classicDamageOnWeapons", true);
-	m_confBool[ATTACK_IMMEDIATELY_AFTER_LOGGING_IN] = getGlobalBool("attackImmediatelyAfterLoggingIn", false);
+	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
 
 	m_loaded = true;
 	return true;

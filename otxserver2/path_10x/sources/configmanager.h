@@ -203,6 +203,7 @@ class ConfigManager
 			VERSION_MAX,
 			HIGHSCORES_TOP,
 			HIGHSCORES_UPDATETIME,
+			LOGIN_PROTECTION_TIME,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 
@@ -335,7 +336,6 @@ class ConfigManager
 			SERVER_PREVIEW,
 			MANUAL_ADVANCED_CONFIG,
 			USE_RUNE_REQUIREMENTS,
-			ATTACK_IMMEDIATELY_AFTER_LOGGING_IN,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

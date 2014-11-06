@@ -197,6 +197,7 @@
 	forceSlowConnectionsToDisconnect = false
 	premiumPlayerSkipWaitList = true
 	packetsPerSecond = 50
+	loginProtectionTime = 10
 
 	-- Deathlist
 	deathListEnabled = true
@@ -298,7 +299,7 @@
 	storePlayerDirection = false
 	savePlayerData = true
 	monsterLootMessage = 3
-	monsterLootMessageType = 20
+	monsterLootMessageType = 21
 	separateViplistPerCharacter = false
 	vipListDefaultLimit = 20
 	vipListDefaultPremiumLimit = 100

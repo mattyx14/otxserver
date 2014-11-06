@@ -1050,6 +1050,10 @@ bool Creature::setAttackedCreature(Creature* creature)
 	for(std::list<Creature*>::iterator cit = summons.begin(); cit != summons.end(); ++cit)
 		(*cit)->setAttackedCreature(creature);
 
+	Condition* condition = getCondition(CONDITION_LOGINPROTECTION, CONDITIONID_DEFAULT);
+	if(condition)
+		removeCondition(condition);
+
 	return true;
 }
 

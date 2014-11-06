@@ -191,6 +191,7 @@ class ConfigManager
 			PACKETS_PER_SECOND,
 			VERSION_MIN,
 			VERSION_MAX,
+			LOGIN_PROTECTION_TIME,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 
@@ -316,7 +317,6 @@ class ConfigManager
 			AUTO_STACK,
 			RUNES_HIT_TOP_CREATURE,
 			CLASSIC_DAMAGE_ON_WEAPONS,
-			ATTACK_IMMEDIATELY_AFTER_LOGGING_IN,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 
