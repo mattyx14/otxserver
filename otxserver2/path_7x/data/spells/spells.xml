@@ -56,7 +56,7 @@
 		<vocation id="1;5"/>
 		<vocation id="2;6"/>
 	</instant>
-	<instant name="Berserk" words="exori" maglv="5" levelpercent="400" prem="1" exhaustion="2000" mana="115" needlearn="0" event="script" value="attack/berserk.lua">
+	<instant name="Berserk" words="exori" maglv="5" prem="1" exhaustion="2000" manapercent="90" needlearn="0" event="script" value="attack/berserk.lua">
 		<vocation id="4;8"/>
 	</instant>
 	<instant name="Energy Wave" words="exevo mort hur" maglv="20" mana="250" direction="1" exhaustion="2000" needlearn="0" event="script" value="attack/energy wave.lua">
