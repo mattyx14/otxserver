@@ -249,17 +249,10 @@
 	<config name="command-refill-config"><![CDATA[
 		items = {
 			["soft"] = { -- soft boots
-				id = 10021,
+				id = 2641,
 				new_id = 2640,
 				price = 10000,
 				message = "Soft boots has been refilled."
-			},
-
-			["firewalker"] = { -- firewalker boots
-				id = 10022,
-				new_id = 9932,
-				price = 50000,
-				message = "Firewalker boots has been refilled."
 			}
 		}
 	]]></config>
@@ -309,7 +302,7 @@
 					str = str .. "!" .. name .. "\n"
 				end
 
-				doPlayerPopupFYI(cid, str)
+				doShowTextDialog(cid, 1950, str)
 				return true
 			end
 
@@ -328,14 +321,6 @@
 		domodlib('command-refill-lib')
 		function onSay(cid, words, param, channel)
 			command_refill.buy(cid, "soft")
-			return true
-		end
-	]]></talkaction>
-
- 	<talkaction words="!firewalker" event="script"><![CDATA[
-		domodlib('command-refill-lib')
-		function onSay(cid, words, param, channel)
-			command_refill.buy(cid, "firewalker")
 			return true
 		end
 	]]></talkaction>
@@ -685,14 +670,24 @@
 
 	<!-- Full Stamina Command at player -->
 	<talkaction words="/stamina" event="script"><![CDATA[
-		function onSay(cid, words, param)
-			if getPlayerMoney(cid) >= 250000 then
-				doPlayerRemoveMoney(cid, 250000)
-				doPlayerSetStamina(cid, 2520)
+		local function formatStamina(miliseconds)
+			if(miliseconds < 1000)then
+				return "00:00:00";
 			else
-				doPlayerSendCancel(cid, "Nesesitas 25 crystal coins para llenarte la stamina.")
+				local seconds = string.format("%02.f", math.floor(miliseconds / 1000))
+				local hours = string.format("%02.f", math.floor(seconds / 3600))
+				local mins = string.format("%02.f", math.floor(seconds / 60 - (hours * 60)))
+				local secs = string.format("%02.f", math.floor(seconds - (hours * 3600) - (mins * 60)))
+				return hours..":"..mins..":"..secs
+			end
+		end
+
+		function onSay(cid, words, param)
+			if(not(getConfigValue('useStamina')))then
+				return false
 			end
 
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have "..formatStamina(getPlayerStamina(cid)).." of stamina left.")
 			return true
 		end
 	]]></talkaction>
@@ -849,7 +844,7 @@
 
 		function onSay(cid, words, param, channel)
 			if(param == '') then
-				doPlayerPopupFYI(cid,
+				doShowTextDialog(cid, 1950, 
 					"Bank management manual.\n\n" ..
 					"!bank or /bank balance - show your account balance\n" ..
 					"!bank or /bank deposit 100 - deposit 100 gold\n" ..

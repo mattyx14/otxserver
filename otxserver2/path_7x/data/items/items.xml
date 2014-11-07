@@ -4499,14 +4499,18 @@
 	<item id="2640" article="a" name="pair of soft boots">
 		<attribute key="weight" value="800"/>
 		<attribute key="slotType" value="feet"/>
+		<attribute key="decayTo" value="2641"/>
+		<attribute key="duration" value="14400"/>
 		<attribute key="healthGain" value="1"/>
 		<attribute key="healthTicks" value="2000"/>
 		<attribute key="manaGain" value="2"/>
 		<attribute key="manaTicks" value="1000"/>
+		<attribute key="showduration" value="1"/>
+		<attribute key="showattributes" value="1"/>
 	</item>
-	<item id="2641" name="patched boots">
-		<attribute key="weight" value="1000"/>
-		<attribute key="armor" value="2"/>
+	<item id="2641" name="pair of worn soft boots">
+		<attribute key="description" value="Someone specialised in shoes might be able to repair them for you."/>
+		<attribute key="weight" value="800"/>
 		<attribute key="slotType" value="feet"/>
 	</item>
 	<item id="2642" name="sandals">

@@ -47,7 +47,6 @@
 	<talkaction access="0-4" words="!commands;/commands" event="script" value="commands.lua"/>
 	<talkaction access="0-4" words="!pvp;/pvp" event="script" value="pvp.lua"/>
 	<talkaction access="0-4" words="/software;!software" event="function" value="software"/>
-	<talkaction access="0-4" words="!stamina" event="script" value="stamina.lua"/>
 	<talkaction access="0-4" words="!share;/share" event="script" value="partyshareexp.lua"/>
 
 	<!-- Houses -->
