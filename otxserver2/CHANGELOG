@@ -62,6 +62,7 @@
 		- Fixed critical bug on load items.otb on protocol 8.54/57
 		- Fixed Typos on console/GUI
 		- Fixed Frags / Spells / Weapons on protocols 7.x
+		- Fixed errors on: https://github.com/mattyx14/otxserver/issues/28
 		- Lite changes on config/const.h this are important
 		- Prevent spam commands
 		- Rewrite skull system this solve problems on PZ and other functions on battle
