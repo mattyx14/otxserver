@@ -28,6 +28,7 @@
 			Pyromaniack
 			Druckz
 			Kazbin
+			Brewsterl
 			The Forgotten Server Team
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
@@ -37,14 +38,15 @@
 
 [ BUGS AND MISSING FEATURES
 	All Protocols
+		- Add Support to Protocols 10.37+
 		- Fix fields(fire/energy/earth) not work properly
 		- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+			This error only reproduce on protocols 9.x +
 
 	Protocols 9.x +
 		- Add browseField
 		- Add helpers Party/Guilds
 		- Add purseSlot
-		- Add Support to Protocols 10.37+
 ]
 
 [ OTX Server 2.X.Series Version - "Doomed Elderberry"
@@ -59,6 +61,7 @@
 		- Fixed Mysql++Connector RAM lack
 		- Fixed critical bug on load items.otb on protocol 8.54/57
 		- Fixed Typos on console/GUI
+		- Fixed Frags / Spells / Weapons on protocols 7.x
 		- Lite changes on config/const.h this are important
 		- Prevent spam commands
 		- Rewrite skull system this solve problems on PZ and other functions on battle
