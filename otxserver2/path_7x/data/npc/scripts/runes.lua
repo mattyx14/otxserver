@@ -82,7 +82,7 @@ shopModule:addSellableItem({'wand of inferno', 'inferno'}, 2187, 3000, 'wand of 
 shopModule:addSellableItem({'snakebite rod', 'snakebite'}, 2182, 100, 'snakebite rod')
 shopModule:addSellableItem({'moonlight rod', 'moonlight'}, 2186, 200, 'moonlight rod')
 shopModule:addSellableItem({'volcanic rod', 'volcanic'}, 2185, 1000, 'volcanic rod')
-shopModule:addSellableItem({'quagmire rod', 'quagmire}, 2181, 2000, 'quagmire rod')
+shopModule:addSellableItem({'quagmire rod', 'quagmire'}, 2181, 2000, 'quagmire rod')
 shopModule:addSellableItem({'tempest rod', 'tempest'}, 2183, 3000, 'tempest rod')
 
 local items = {[1] = 2190, [2] = 2182, [5] = 2190, [6] = 2182}
