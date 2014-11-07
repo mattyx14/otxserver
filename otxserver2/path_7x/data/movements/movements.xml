@@ -93,6 +93,9 @@
 		<!-- Pair of Soft Boots (worn) -->
 		<movevent type="Equip" itemid="2641" slot="feet" event="function" value="onEquipItem"/>
 		<movevent type="DeEquip" itemid="2641" slot="feet" event="function" value="onDeEquipItem"/>
+			<!-- Pair of Soft Boots (unequipped) -->
+                <movevent type="Equip" itemid="2358" slot="feet" event="function" value="onEquipItem"/>
+                <movevent type="DeEquip" itemid="2358" slot="feet" event="function" value="onDeEquipItem"/>
 
 	<!-- Amulets -->
 		<!-- Strange Talisman -->
