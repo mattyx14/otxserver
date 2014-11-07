@@ -20,4 +20,4 @@ Linux:
 	-D_MULTIPLATFORM77
 	-D_MULTIPLATFORM76
 
-If you no use this flags the compilation for default is 7.40
+If you no use this flags the compilation for default is 7.4
