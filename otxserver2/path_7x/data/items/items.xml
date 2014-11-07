@@ -3153,9 +3153,12 @@
 		<attribute key="weight" value="50"/>
 		<attribute key="slotType" value="ring"/>
 	</item>
-	<item id="2358" name="boots of waterwalking">
-		<attribute key="description" value="(This item has 5 charges left)."/>
+	<item id="2358" name="pair of soft boots">
+          	<attribute key="transformEquipTo" value="2640"/>
+                <attribute key="stopduration" value="1"/>
+                <attribute key="showduration" value="1"/>
 		<attribute key="weight" value="770"/>
+		
 		<attribute key="slotType" value="feet"/>
 	</item>
 	<item id="2359" article="a" name="djinn's lamp">
@@ -4500,6 +4503,7 @@
 		<attribute key="weight" value="800"/>
 		<attribute key="slotType" value="feet"/>
 		<attribute key="decayTo" value="2641"/>
+		<attribute key="transformDeEquipTo" value="2358"/>
 		<attribute key="duration" value="14400"/>
 		<attribute key="healthGain" value="1"/>
 		<attribute key="healthTicks" value="2000"/>
