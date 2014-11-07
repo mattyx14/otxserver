@@ -9,7 +9,7 @@
 		<vocation name="Druid"/>
 		<vocation id="6" showInDescription="0"/>
 	</wand>
-	<wand id="2185" level="19" mana="5" min="27" max="33" type="death" event="function" value="default">
+	<wand id="2185" level="19" mana="5" min="27" max="33" type="fire" event="function" value="default">
 		<vocation name="Druid"/>
 		<vocation id="6" showInDescription="0"/>
 	</wand>
