@@ -132,7 +132,7 @@
 		<vocation id="2;6"/>
 		<vocation id="3;7"/>
 	</instant>
-	<instant name="Wild Growth" words="adevo grav vita" maglv="13" mana="200" aggressive="0" selftarget="1" needlearn="0" exhaustion="2000" event="script" value="support/wild growth.lua">
+	<instant name="Wild Growth" words="adevo grav vita" direction="1" blockwalls="1" maglv="13" mana="200" needlearn="0" exhaustion="2000" event="script" value="support/wild growth.lua">
 		<vocation id="2;6"/>
 	</instant>
 
