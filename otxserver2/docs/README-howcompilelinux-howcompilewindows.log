@@ -6,8 +6,8 @@
 			Visual Studio Ultimate 2013 (compiler) : http://www.microsoft.com/es-ES/download/details.aspx?id=43727
 			Libs (libraries) : https://mega.co.nz/#!pRB0BRqa!o_w7BUIO10EaKXTspb5EHQWwds8yMJxiN0v-JzPC9Co
 			Boost C++ libraries
-				(32-bit download : http://boost.teeks99.com/bin/1.56.0/boost_1_56_0-msvc-12.0-32.exe)
-				(64-bit download : http://boost.teeks99.com/bin/1.56.0/boost_1_56_0-msvc-12.0-64.exe)
+				(32-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.57.0/boost_1_57_0-msvc-12.0-32.exe/download)
+				(64-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.57.0/boost_1_57_0-msvc-12.0-64.exe/download)
 
 		2. Install the required software
 		Once you have downloaded the software listed in the step above, begin by installing Visual Studio and Boost C++ libraries. Extract "SQK-NOBOOST" anywhere on your computer and run the file "registerenv.bat" to set the PATH environment variable for "SQK-NOBOOST", so that the compiler can find the libraries once we get to compiling the source code. Move the file "register_boost_env.bat" from "SQK-NOBOOST"  to the directory where you installed Boost C++ libraries and run it there (it should be in the directory called for example: C:\local\boost_1_56_0).
