@@ -18,12 +18,14 @@
 
 #include "condition.h"
 #include "tools.h"
+#include "configmanager.h"
 
 #include "game.h"
 #include "creature.h"
 #include "combat.h"
 
 extern Game g_game;
+extern ConfigManager g_config;
 
 Condition::Condition(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId):
 id(_id), subId(_subId), ticks(_ticks), endTime(0), conditionType(_type), buff(_buff)
@@ -1171,7 +1173,7 @@ bool ConditionDamage::doDamage(Creature* creature, int32_t damage)
 		return true;
 
 	Creature* attacker = g_game.getCreatureByID(owner);
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 	{
 		if(damage < 0 && attacker && attacker->getPlayer() && creature->getPlayer() && creature->getPlayer()->getSkull() != SKULL_BLACK)
 			damage = damage / 2;

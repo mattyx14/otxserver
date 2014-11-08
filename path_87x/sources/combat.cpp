@@ -364,7 +364,7 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 		if(player->getSecureMode() == SECUREMODE_ON)
 			return RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
 
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 		{
 			if(player->getSkull() == SKULL_BLACK)
 				return RET_YOUMAYNOTATTACKTHISPLAYER;
@@ -552,7 +552,7 @@ bool Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 	if(_params.element.damage && _params.element.type != COMBAT_NONE)
 		g_game.combatBlockHit(_params.element.type, caster, target, _params.element.damage, params.blockedByShield, params.blockedByArmor, params.itemId != 0, true);
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 	{
 		if(caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
 		{
@@ -592,7 +592,7 @@ bool Combat::CombatManaFunc(Creature* caster, Creature* target, const CombatPara
 	if(g_game.combatBlockHit(COMBAT_MANADRAIN, caster, target, change, false, false, params.itemId != 0))
 		return false;
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 	{
 		if(change < 0 && caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
 			change /= 2;

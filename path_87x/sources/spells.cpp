@@ -837,7 +837,7 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 
 	if(!needTarget)
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 		{
 			if(!isAggressive || player->getSkull() != SKULL_BLACK)
 				return true;
@@ -872,7 +872,7 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 		return false;
 	}
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 	{
 		if(player->getSkull() == SKULL_BLACK)
 		{
@@ -937,7 +937,7 @@ bool Spell::checkInstantSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 	{
 		if(player->getSkull() == SKULL_BLACK && isAggressive && range == -1) // CHECKME: -1 is (usually?) an area spell
 		{
@@ -1013,7 +1013,7 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 
 	if(!needTarget)
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 		{
 			if(!isAggressive || player->getSkull() != SKULL_BLACK)
 				return true;
@@ -1048,7 +1048,7 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 	{
 		if(player->getSkull() != SKULL_BLACK)
 			return true;
@@ -1480,7 +1480,7 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 	int32_t manaCost = (int32_t)(mType->manaCost * g_config.getDouble(ConfigManager::RATE_MONSTER_MANA));
 	if(!player->hasFlag(PlayerFlag_CanSummonAll))
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 		{
 			if(player->getSkull() == SKULL_BLACK)
 			{
@@ -1884,7 +1884,7 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 
 	if(!player->hasFlag(PlayerFlag_CanConvinceAll))
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 		{
 			if(player->getSkull() == SKULL_BLACK)
 			{

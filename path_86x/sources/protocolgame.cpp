@@ -329,7 +329,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 					return false;
 				}
 
-				if(g_config.getBool(ConfigManager::RETRO_PVP)
+				if(g_config.getBool(ConfigManager::RETRO_PVP))
 				{
 					if(player->hasCondition(CONDITION_INFIGHT))
 					{

@@ -536,7 +536,7 @@ void Player::sendIcons() const
 
 	if(getZone() == ZONE_PROTECTION)
 	{
-		if(g_config.getBool(ConfigManager::RETRO_PVP) {
+		if(g_config.getBool(ConfigManager::RETRO_PVP)) {
 			icons |= ICON_PZ;
 		}
 		else {
