@@ -567,7 +567,7 @@
 					str = str .. "\n" .. name
 				end
 
-				doPlayerPopupFYI(cid, "/buy or !buy:\n\n" .. str)
+				doShowTextDialog(cid, 1950, str)
 				return true
 			end
 
