@@ -536,10 +536,14 @@ void Player::sendIcons() const
 
 	if(getZone() == ZONE_PROTECTION)
 	{
-		icons |= ICON_PZ;
-
-		if(hasBitSet(ICON_SWORDS, icons))
-			icons &= ~ICON_SWORDS;
+		if(g_config.getBool(ConfigManager::RETRO_PVP) {
+			icons |= ICON_PZ;
+		}
+		else {
+			icons |= ICON_PZ;
+			if(hasBitSet(ICON_SWORDS, icons))
+				icons &= ~ICON_SWORDS;
+		}
 	}
 
 	if(pzLocked)

@@ -330,6 +330,7 @@ class ConfigManager
 			SAVE_STATEMENT,
 			MANUAL_ADVANCED_CONFIG,
 			USE_RUNE_REQUIREMENTS,
+			RETRO_PVP,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

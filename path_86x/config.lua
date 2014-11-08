@@ -197,12 +197,27 @@
 	packetsPerSecond = 50
 	loginProtectionTime = 10
 
-	-- Deathlist
+	-- Death List and Blessings
+	-- Function retroPVP true change it:
+	-- deathAssistCount to 1
+	-- useFairfightReduction to false
+	-- fairFightTimeRange = 30
 	deathListEnabled = true
 	deathListRequiredTime = 1 * 60 * 1000
-	deathAssistCount = 20
 	maxDeathRecords = 5
 	multipleNames = false
+		-- Retro PVP
+		retroPVP = false
+		deathAssistCount = 20
+		-- Blessings
+		blessings = true
+		blessingOnlyPremium = true
+		blessingReductionBase = 30
+		blessingReductionDecrement = 5
+		eachBlessReduction = 8
+			useFairfightReduction = true
+			fairFightTimeRange = 60
+			pvpBlessingThreshold = 40
 
 	-- Guilds
 	-- NOTE: externalGuildWarsManagement supports Automatic Account Creator(webpage or whatever you want)
@@ -317,16 +332,6 @@
 	freePremium = false
 	premiumForPromotion = true
 	updatePremiumStateAtStartup = true
-
-	-- Blessings
-	blessings = true
-	blessingOnlyPremium = true
-	blessingReductionBase = 30
-	blessingReductionDecrement = 5
-	eachBlessReduction = 8
-	useFairfightReduction = true
-	pvpBlessingThreshold = 40
-	fairFightTimeRange = 60
 
 	-- Rates
 	experienceStages = false

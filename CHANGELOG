@@ -58,6 +58,7 @@
 		- Added full Black Skull Configurable
 		- Added security exhaustion for bot use 8.7x
 		- Added addAnimatedText to heal function 8.7x
+		- Added functions retroPVP (need test)
 		- Fixed error on speak NPC / GM Cast on protocol 10.36
 		- Fixed error on luaDoTransformItem
 		- Fixed bug with cloned containers
