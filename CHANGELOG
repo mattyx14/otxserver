@@ -1,60 +1,1786 @@
-[ OTX Server 3 - CHANGE LOG
+[ OTX Server 2 - CHANGE LOG
 	Project Name
-		OTX Server 3
+		OTX Server
 
 	OTX Server is based on:
-		The Forgotten Server Version: 1.0
+		The Forgotten Server Version: 0.3.7 - Crying Damson
+			and OTX Server 2.1.0 Version - "Simple"
 
 	Codenamed
-		KAISER
+		Doomed Elderberry
 
 	Forum and website
-		http://www.blacktibia.org/f19-otx-server-3
+		http://www.blacktibia.org/f4-otx-server-2-descontinuado
 
 	DEVELOPERS
 		Project Manager and Founder
-			Devlious
-			K3nm
 			Mattyx14
 
 		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-			Devlious
-			K3nm
 			Mattyx14
 
 		Special Thanks(s)
-			https://github.com/otland/forgottenserver
-			https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS
-			https://github.com/edubart/otclient
-			https://github.com/hjnilsson/rme
+			AleMadi
+			Natanael Beckman
+			Comedinha
+			Lincoln
+			Rodrigo
+			Pyromaniack
+			Druckz
+			Kazbin
+			Brewsterl
+			The Forgotten Server Team
+				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		STARTED AND ON
-
-	PROTOCOL SUPPORTED
-		Tibia Clients 10.x+
+		COMPLETED ON: OTX Server 2.X.Series Version - "Doomed Elderberry"
 ]
 
-[ TODO WITH OPTIONAL (MODAL DIALOGS)
-	COMMANDS:
-		- Animated Smiles
-		- Bank Command
-		- Blessings
-		- Buy Command Item
-		- Guild Cast
-		- Guild Outfit
-		- Player Commands (customs)
-		- Promotion
-		- Refill Boots
+[ BUGS AND MISSING FEATURES
+	All Protocols
+		- Add Support to Protocols 10.37+
+		- Fix fields(fire/energy/earth) not work properly
+		- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+			This error only reproduce on protocols 9.x +
 
-	CONFIGS:
-		- Loot bag display
-		- Quest Protection
-
-	OTHERS:
-		- Look Display
+	Protocols 9.x +
+		- Add browseField
+		- Add helpers Party/Guilds
+		- Add purseSlot
 ]
 
-[ OTX Server 3.0.0 Version - "KAISER"
-	- 
+[ OTX Server 2.X.Series Version - "Doomed Elderberry"
+	General:
+		- Added classicDepotSystem to 8.x series
+		- Added offLineTraning scripts 8.x Series
+		- Added monster no hit summon monsters
+		- Added exhaustionNPC to configurable
+		- Added full Black Skull Configurable
+		- Added security exhaustion for bot use 8.7x
+		- Added addAnimatedText to heal function 8.7x
+		- Fixed error on speak NPC / GM Cast on protocol 10.36
+		- Fixed error on luaDoTransformItem
+		- Fixed bug with cloned containers
+		- Fixed Mysql++Connector RAM lack
+		- Fixed critical bug on load items.otb on protocol 8.54/57
+		- Fixed Typos on console/GUI
+		- Fixed Frags / Spells / Weapons on protocols 7.x
+		- Fixed errors on: https://github.com/mattyx14/otxserver/issues/28
+		- Fixed version MANUAL_ADVANCED_CONFIG
+		- Fixed monster no hit summon moster
+		- Lite changes on config/const.h this are important
+		- Moved packets to seconds to protocolgame is more secure in
+		- Prevent spam commands
+		- Rewrite skull system this solve problems on PZ and other functions on battle
+		- Removed ALLOWED_MAX_PACKETS no are defined on code
+		- Update compiler Tutorial
+
+	Note:
+	* From this moment highly recommend using TFS 1.0 or wait for 3.0 OTX Series that was based on TFS 1.0
+]
+
+[ OTX Server 2.10.0 Version - "FINAL"
+	General:
+		- Added new config: attackImmediatelyAfterLoggingIn
+		- Added this: http://otland.net/threads/8-6-tfs-0-3-0-3-7-r5916-v8-60.178246/page-14#post-1878792 this change not like .. this like a botUser
+		- /ban command no require en protocols 8.60 - this protocols have ruleViolation System
+		- Fixed error on Reload function
+		- Fixed error on destroy field rune // monsters fields
+		- Moved PACKETS_PER_SECOND to protocolGame this no kick to players this change not like for my .. this like a botUser
+		- Optimization
+		- Update Support to 10.36
+]
+
+[ OTX Server 2.9.0 Version - "Galaxy - SE"
+	General:
+		Improvements and optimizations:
+		- Added function Highscore - Protocols 8.6+
+		- Change function on onTarget
+		- Extended Support to 7.40/7.60
+		- Fixed fluids
+		- Fixed multiplier_t and gain_t on vocations.xml
+		- Fixed to: luaDoTransformItem
+		- Fixed itemCount on protocol 7.x
+		- Fixed damage on protocol 7.x
+		- Fixed compiler error on linux
+		- Fixed possible errors on localIP
+		- Update to VC 13
+		- Update Monster Pack for protocol 10.3+
+		- Update Support to 10.35
+
+	* OldProtocols 7.x - 8.x - 9.x
+		- Added missing config for offlineTraining
+		- Added new config classicDamageOnWeapons on protocol 7.x
+		- Fixed skull on protocol 7.70/72
+			Run this:
+			UPDATE `players` SET `skull` = 3 WHERE `skull` >= 3;
+		- Fixed ban on protocol 7.70/72
+		- Removed monsters no supported on 8.6/70/71
+]
+
+[ OTX Server 2.7.x - 2.8.3 Version - "Zilart Prince"
+	General:
+		- Added support to protocol 7.72
+		- Added config "useRunesRequirements" protocols 8.x - 10.x
+		- Added protection to accountManager on vocation selection
+		- CleanUp code
+		- Compiled with vc12 - boost 1.54 and mysqlconector 6.1.1
+			// Windows XP support Dropped
+			// Require new DLL-Files
+		- Fixed fight condition on guildWarSystem
+		- Fixed Fluids
+		- Fixed errors on defaultOutfits
+		- Fixed Tibia client debugs with 10 or more icons
+		- Fixed error on yellowSkull
+			// http://otland.net/f16/yellow-skull-problem-193644/
+		- Fixed monsterSkull and skullNPC
+		- Fixed error on playerSpeakTo "private"
+		- Fixed error on loginGM on multiWorld
+		- Fixed error on warSystem linked to vipList enemies
+		- Fixed "stairhopDelay" on melee attack
+		- Fixed depots
+		- Function "playerYell" only is for players 20+ or with premiumACC similar to tibia
+		- Removed "allowFightback" on config.lua
+		- Set "logPlayersStatements" to false on config.lua
+		- Update Support Protocol 10.xx / 10.31
+		- Update items.xml
+
+	* newProtocols
+		- Added outfits, mounts from protocols 9.86+ to protocol 10.31
+		- Fixed error on saveItems on depot
+		- Dropped config "displayOnOrOffAtCharlist"
+
+	* OldProtocols 7.x - 8.x - 9.x
+		- Added new config classicDamageOnWeapons on protocol 7.x
+		- Added missing configs for offlinetraining
+		- Added config "noAttackHealingSimultaneus" protocols 7.70/72 - 8.6
+		- Added offLineTraining All Protocols
+		- Added ExtendedOpcode to protocol 7.72 "Support to OTClient"
+		- Added RuleViolation System - it require delete "bans - table" and reImport from mysql.sql
+		- Added function isPremiumScroll
+		- Fixed compilation error with debugMode
+		- Fixed "load vip" // deaths
+		- Fixed createItem on full tile
+		- Fixed skull on protocol 7.70/72
+			Run this:
+			UPDATE `players` SET `skull` = 3 WHERE `skull` >= 3;
+		- Fixed ban on protocol 7.70/72
+		- Fixed typo errors
+			// monsters on oldProtocols
+		- Dropped protocols 8.54/57 - 9.x
+		- NPC only support function "SHOPMODULE_MODE_TRADE" - Trade window system introduced in Tibia 8.2+
+		- Only Group 4 give banish you need customize your groups flags
+		- Rewrite movements.xml
+		- Removed monsters no supported on 8.6/70/71
+		- Tunned code PACKETS_PER_SECOND
+]
+
+[ OTX Server 2.6.0 Version - "Alissow"
+	General:
+		- Added Anonymous Channel and Advertising Block functions.
+			100% configurable.
+		- Added new version config =D
+			manualVersionConfig true = Change otserv version in config.lua
+		- Added missing script direction "oldQuestSystem"
+		- Added new links on GUI for forums: otland.net and tibiaking.org
+		- Added more monsters on protocol 9.80+
+		- Fixed compiler error on Linux on houses and vipSystem
+		- Fixed inBoxParcel
+		- Fixed fluids on vials
+		- Fixed manamultiplier >= 0
+		- Fixed error on send menssage
+		- Support to 9.86
+		- Update items.xml for protocols 9.84+
+
+	* 8.5x :
+		- Fixed chargesRunes on 854/57
+]
+
+[ OTX Server 2.5.2 Version - "Necron"
+	General:
+		- Added news command
+		- Changed to OTX Server 2.52 Version - "Necron"
+		- Fixed weapon speedAttack
+		- Support to 9.83
+		- Tuned MODScripts
+		- Updated items.xml
+		- Added Global inbox System
+		- Cleanups on data
+		- Fixed lockets is work "repair error on rme editor"
+		- More for extendedopcode
+		- Removed GOD Account
+		- Rewrite SQL and SQLite DB
+		- Support to 9.80
+		- Updated items.xml
+		- Added new command /changename --- http://otland.net/f81/changename-game-152639/
+		- Changed OTX ICO -- Is possible change (need one nice)
+		- Deleted customCommands /stop - /noob
+		- Fixed a guild /commands bug
+		- Tuned custom commands
+		- Only Protocol 9.81+ supported
+
+	* 9.8x :
+		- Fixed Error on vipList icons
+		- Updated libs on missing outfits and mounts
+
+	* 8.7x to 9.8x :
+		- Completed exani tera
+
+	* 8.6x to 9.8x :
+		- Fixed Market error on multiWorld
+		- Fixed gameMaster on multiWorld
+		- Fixed parseItemNode on 9.70/71 // ITEMS_SIZE to 18551
+		- Solve problems on covertion protocols 8.5x+ to 8.61+ on constant
+			// 8.70 to 9.8x
+			// protocol 8.70/71 no added it is similar to new protocols and is rare server based on protocol 8.70/71
+		- Fixed NPC Trade
+		- Added pvpBless to customCommands /bless
+		- Added monsters 9.8 missing loots http://otland.net/f83/9-8-a-178109/
+		- Fixed diagonal walking bug -- http://www.youtube.com/watch?v=57DXt1wsLXA&feature=youtu.be
+
+	* 8.5x to 8.7x :
+		- Added Script extendedopcode.lua
+		- Fixed ChangeGold Script* Tuned actions.xml
+		- Fixed crashBug on book
+		- Fixed Storage command
+		- Fixed console errors
+]
+
+[ OTX Server 2.4.4 - SE Version - "Chronodia"
+	General:
+		- Boost 1.52 not supported now use 1.51
+		- Changed to OTX Server 2.44 - SE Version - "Chronodia"
+		- Clean Code
+		- Deleted projects 8.62 - 9.54 - 9.71: ../docs/FeatureLOG.txt
+		- Fixes on canThrowObjectTo - checkSightLine - getDanceStep
+		- Fixed CPU overload
+		- Now support version 9.60/61
+		- Other changes on monsters an map
+		- Updated items on all protocols
+		- Update Docs
+		- 9.81 Support
+		- More info on docs/README-howcompilelinux-howcompilewindows.log
+		- Update monsters datapack
+		- Important fixes to all protocols
+
+	* 9.8x :
+		- Added a option in config.lua - Your server is a previewer
+		- Added MinLVL to offLineTrain in bed
+		- Fixed newtype command
+		- Fixed packet 0x0F
+		- Fixed Tibia client debugs with 10 or more icons
+
+	* 9.6x and 9.8x :
+		- Added function addPremiumDays on items.xml is for premmium scroll
+		- Rewrite modal functions it is for offline training system
+
+	* 8.7x to 9.8x :
+		- Added Events - onMount(cid, mountId) - onDismount(cid, mountId)
+
+	* 8.5x to 9.8x :
+		- Added missing constants
+]
+
+[ OTX Server 2.4.3 Version - "Cray Claw"
+	General:
+	* General Changes:
+		- Added multiWorldConfig.log (only in Spanish) by Kazbin
+		- Changed to OTX Server 2.43 Version - "Cray Claw"
+		- Clean code
+		- Fixed a lite bug on shutdown server (Linux)
+		- Fixed compiler error with boost 1.44 or less
+		- Fixed errors on marketSystem
+		- Fixed playerLookInBattleList
+		- Fixed magicLevelTries on voc 0
+		- Fixed internalMoveCreature
+		- Fixed onCreatureDisappear
+		- Fixed setPromotionLevel no work on voc 0
+		- New config logPlayersStatements
+		- Rewrite tutorials "How compile this on Windows or Linux"
+
+	* 9.5x :
+		- Patched all chages from trunk - "Marilith"
+		- Deleted project 931
+			Exept: OffLineTrain
+
+	* 8.x :
+		- CreateItem on full tile is now possible
+		- Patched all chages from trunk - "Marilith"
+			Exept: OffLineTrain - MarketSystem
+		- Reduced the Hicks! chance for drunk players
+]
+
+[ OTX Server 2.4.2 Version - "Marilith"
+	General:
+	* General Changes: (Only 9.70)
+		- Added function: http://otland.net/f163/addcontaineritems-container-items-166104/
+		- Added Initial offline training code
+		- Added offLineTrain system and BED System
+		- Changed to OTX Server 2.42 Version - "Marilith"
+		- Compilation with codeblocks not support any more
+		- Fixed errors on offLineTraining
+		- Fixed and tuned MSG on doors, foods and trade system like to CipBia
+		- Fixed Idle kick
+		- Fixed bug on expires to ban
+		- Fixed getItemDescriptions on questSystem
+		- Fixed player idle
+		- Fixed memory leaks
+		- Fixed errors on combat functions :: battle / combat / login / attacks - You may not attack immediately after logging in.
+		- Fixed errors on container items
+		- Fixed errors on player descriptions
+		- Fixed load itemsXML
+		- Fixed errors on connection
+		- Fixed error on ban deletion
+		- Fixed a bug with the market, offers were still there with count 0 which caused problems with the offers limit
+		- Fixed a bug with items that had negative hit chance
+		- Fixed so sendStats wont be called if it is not necessary in Player::addManaSpent
+		- Fixed a possible crashes if players sent bad packets
+		- Fixed a bug with player look in battle list* Fixed a bug with some events (decay and checklight)
+		- Fixes on combat
+		- Fixed VipList
+		- Fixed a bug container
+		- Fixed a bug updateTargetList
+		- New Lua function: doPlayerSetOfflineTrainingSkill(cid, skill)
+		- Possible fix error on chat
+		- Player storage loading will no longer check quest log and send quest log has been updated
+		- Player follow should now use less CPU power
+		- Shorted code
+		- Support to 9.70
+		- Removed __USE_ZLIB__
+		- Removed flag __ENABLE_STATEMENTS__
+		- Removed isInArray from source and moved to libs
+		- Revert changes on mapSystem
+		- Revert changes on marketSystem
+		- Update support Boost 1.51 - 1.42 or less not supported
+		- Update all /data is more completed
+]
+
+[ OTX Server 2.4.0 Version - "Deumion"
+	General:
+	* General Changes:
+		- Mosters no affected for fields
+		- Shovel function
+		- 9.61 Support
+		- Update items and weapons on protocol
+
+	* 8.x :
+		- Fixed speakClass
+		- Updated code to lasted 9.61
+]
+
+[ OTX Server 2.3.3 Version - "To Light"
+	General:
+	* General Changes:
+		- 9.60 Support
+		- 9.54 Support
+		- 9.20/31 Support
+		- 8.54/57 Support
+		- Fixed Channels, MessageClasses and Groups
+		- Deleted custom outfits
+		- Fixed SoulFire condition
+		- Fixed PZ icon
+		- Complete doCreatureCastSpell function
+		- Fix LuaJit problems (50%)
+		- Added getConnectionsSize
+		- Added stuffed dragon to reactions
+		- Added new firewall (Linux)
+		- Update code more simillar to 9.x
+		- Fixed attackSpeed
+		- Fixed on follow
+		- Fixed closingdoor.lua // on tileprotection to 0
+		- Fixed exani hur spell
+		- Fixed sand holes
+		- Mana change = health
+		- Changed accountManager(SQLite and MySQL) to Account: 1 - Password: 1
+		- God Account SQLite to Account: 222222 - Password: tibia
+		- Added new config "enableLootBagDisplay" - "allowBlockSpawn" - "closeInstanceOnShutdown"
+		- Added ghost condition to drown.lua
+		- Fixed errors on shutdown
+		- Fixed buy wands/Rods
+		- Fixed commands usage
+		- Fixed to usage commands
+		- Fixed create dump error
+		- Fixed walkstack
+		- Fixed serverinfo command
+		- Full Support to x64 bits
+		- The server use default system : grouncache + gzip
+		- Update items.xml (Comedinhasss)
+
+	* 9.x :
+		- Added config: playerFollowExhaust
+		- Fixed database
+		- Fixed changeGold
+		- Update monsters/movements/weapons (Comedinhasss)
+		- Fix Quest.lua now support all items for 9.60
+		- Fix sendDistanceShoot funcions now work 100%
+
+	* 8.x :
+		- Added effect on console show damages and restores similar to 9.x
+		- Added new configs similar to 9.x: showHealthChangeForMonsters - showManaChangeForMonsters - showHealthChange - showManaChange
+		- Fixed elements on weapons // monsters // players
+		- Fixed DISPLAY_CRITICAL_HIT
+		- Removed keySystemDoors on protocol 8.54/57
+		- Removed configs: showHealingDamage - showHealingDamageForMonsters - noShareExpSummonMonster
+		- Removed monsters // Not supported
+		- Rewrite MessageClasses similar to 9.x
+		- Update combat functions similar to 9.x - use function addStatsMessage
+		- Fixed sendError parcel
+		- Fixed error on RET_TILEISFULL
+		- Fixed potential error on missing internal function (isPlayerProtected)
+		- Deleted outfits debugs
+		- Lite changes on Depot
+		- Removed ruleViolation code from the source
+		- Removed cureBless on 8.6x
+		- Fixed MessageClasses
+]
+
+[ OTX Server 2.2.0 Version - "Deluxe"
+	- Added config "packetsPerSecond"
+	- Added support multiCore on (Nix)
+	- Added increaseBankBalance on player
+	- Added feature (is possible logout on PZ) can have nonPZ
+	- Fixed not invited player on houses
+	- Fixed getChannelts on (Nix)
+	- Fixed onStepInField on combat
+	- Fixed dropCorpse on creature
+	- Fixed errors on login and shutdown server
+	- Fixed findItemOfType OT
+	- Fixed load server.xml on login server
+	- Fixed errors on doorSystem
+	- Fixed removePremium
+	- Fixed doTeleportThing now create portals
+	- Fixed errors on accountManager
+	- Fixed hideHeal on creature
+	- Fixed errors on questSystem
+	- Fixed soulFire condition
+	- Fixed clientID on vocations
+	- Fixed isWieldedUnproperly on weapons
+	- Fixed compiller errors
+	- Increased NETWORK_MAX_SIZE to 24576
+	- Tuned guildSystem
+	- Tuned items now server reduce memory usage on 60%
+	- Updated docs
+]
+
+[ OTX Server 2.1.0 Version - "Simple"
+	- Changed codeName to (Simple - 2.1.0)
+	- Added file "luaFunctions"
+	- Added missing items on movements
+	- Added config "mysqlReconnectionAttempts"
+	- Added new function "doTeleportChangeDestination"
+	- Fixed bug on config.lua "showManaChange & showHealthChange" now work
+	- Fixed xmlNodePtr loadChannelsGroupsOufitsSpawsVocations
+	- Fixed bug on serverLost connection
+	- Fixed loadingWeapons
+	- Rewrite weapons.xml // more complete to lasted 9.44 items
+	- Rewrite movements.xml // more complete to lasted 9.44 items
+	- Update items.xml // more complete to lasted 9.44 items
+	- Added configs: "showManaChange" "showManaChangeForMonsters" "serviceThreads" "timeBetweenCustomActions"
+	- Added fuction /reload all
+	- Added missings combats parameters
+		COMBAT_PARAM_ELEMENTTYPE = 15
+		COMBAT_PARAM_ELEMENTDAMAGE = 16
+	- Added extraFunction on mounts "attackspeed"
+	- Added option on all scripts mods (enabled="yes")
+	- Changed codename server to: Simple
+	- Changed to string to config "gamePort"
+	- Changed configs: "showHealingDamage" for "showHealthChange" and "showHealingDamageForMonsters" for "showHealthChangeForMonsters"
+		"useCapSystem" for "useCapacity" and "depotItemsFreeLimit" for "defaultDepotSizePremium"
+	- Correct name for Entrepreneur outfits "no red barons"
+	- Fixed configs: "enableCooldowns"
+	- Fixed watch scripts on time events
+	- Fixed /ban command
+	- Fixed guildModt
+	- Fixed tibiaTime
+	- Fixed Channels IDs on compact.lua
+	- Fixed premiumForPromotion on NPC
+	- Fixed talkType on GHOSTMode for Gamemaster
+	- Fixed oracle NPC
+	- Fixed serverInfo command
+	- Fixed changeSex on mageOutfit / male and female
+	- Fixed ACTIONS_DELAY_INTERVAL on use items
+	- Fixed combatErrors "getDamageRatio" "getGainedExperience" "onTargetGain"
+	- Fixed error on containers
+	- Fixed error on Depots
+	- Fixed motd error - Server
+	- Fixed error on houseSystem
+	- Fixed gratisPremium on login players
+	- Fixed LUASystem and LUAJitSystem
+	- Fixed compiler errors on (msvc) (codeblocks) now support compilers datapacks v2.0
+	- Fixed error on config: "tibiaClassicSlots"
+	- Fixed error on spells "checkSpell"
+	- Fixed changeGender command
+	- Fixed questSystem on start mission
+	- Full Support for protocols 9.44 on loginServer - MultiWorld
+	- Removed configs: "mysqlReconnectionAttempts" "healPlayersOnLevelAdvance"
+	- Removed function: "criticalHitChance" on items.xml
+	- Rewrite advanceSave.lua
+	- Rewrite adminProtocol on server
+	- Rewrite storageSystem
+	- Rewrite serverSystem on loginServer - MultiWorld
+	- Rewrite SQLSystem for the new support on loginServer - MultiWorld
+	- Rewrite shutdown command
+	- Rewrite SkullSystem frags and banishments
+		More info:
+			-- Limits on frags / Time
+			-- Red Skull Config
+			-- Black Skull Config
+			-- Banishment Config
+	- Update items.otb to lasted versionTibia (9.44 on v4)
+	- Update items.xml more complete file
+	- Optimize RookSystem
+	- Fixed taming mounts
+	- Removed limit AM accountManager
+	- Use correct items.otb (9.44)
+	- Removed CONDITION_HOUSESAY
+	- Added new module NPC (getShopOwner)
+	- Tuned oracle.lua to rookSystem features
+	- Removed (skill="SKILL_FIRST" skillValue="8") from spell.xml no require like to 8.6x/7x protocols on lasted changes
+	- Fixed to banCommand
+	- Added missing distanceWeapons
+	- Update SQLite File
+	- Removed consoleProject from codeblocks/TheOTXServer.cbp
+	- Fixed on combatBlockHit
+	- Fixed on ShootEffect_t
+	- Fixed debugs on SQLSystem
+	- Added "ghost" to internalCreatureSay on accountManager
+	- Fixed on loadPlayer (new depotSystem)
+	- Fixed on __GROUND_CACHE__
+	- Fixed walkStack
+	- Added new function isPlayerProtected(cid)
+	- Fixed attackspeed on mounts and monster system
+	- Rewrite GUInterface (more cool)
+	-- END REV 1000
+	- Cleanup and updated sourceCode to: The Forgotten Server Version: 0.3.7 - Crying Damson (GOLD).
+	- Cleanup scriptSystem (actions-items-libs-npc-commands)
+	- Cleaned up the code
+	- Cleanups and more accurate walkthrough updating
+	- Fixed crash bug on houseSystem
+	- Fixed MOUNT_COOLDOWN definition
+	- Fixed GRATIS_PREMIUM definition
+	- Fixed newType command
+	- Fixed cityGuard NPC
+	- Fixed dataBase errors (SQL)
+	- Fixed conditions (drunk-fields-outfits)
+	- Fixed (playerMoveCreature-playerMoveItem-playerMove-playerUseItemEx-playerUseItem)
+	- Fixed pvpBlessing and ceremonial ankh
+	- Fixed potionSystem now work on stakable
+	- Fixed enchantingSystem and skinningTools
+	- Fixed mounts names (real names)
+	- Fixed soulFire spell
+	- Fixed client chowing premium days if the account has flags isAwaysPrmeium
+	- Fixed bug when selling items
+	- Fixed Transform bug
+	- Fixed disconnect current client
+	- Fixed to loot system
+	- Fixed Distance weapon
+	- Fixed to potions, now you should get in log "heals himself" instead "is healed"
+	- Fixed for dual-wielded weapons with specified slot position
+	- Fixed vipList
+	- Fixed to depotSystem
+	- Fixed orangeSkull
+	- Fixed loadAttributes
+	- Fixed the message colors
+	- Fixed AOL Drop in redBlackSkullSystem
+	- Fixed one potential memory leak in events
+	- Fixed stairs
+	- Fixed the aggressive param
+	- Fixed displayLogServer
+	- Fixed a bug with doSaveHouse and relational storage
+	- Fixed reloadMovements crash
+	- Fixed a bug when reloading items
+	- Fixed fieldAbsorb causing blockHit -10000 damage bug
+	- Fixed other mailBugDuplication
+	- Fixed compilation error Linux (OTX 1.4.2 Error)
+	- Fixed two old events
+	- Fixed MessageClasses on use F-key`s
+	- Fixed liteBug on NPC modules.lua
+	- Fixed to blessSystem
+	- Fixed account manager bug
+	- Fixed all compilation warnings on Ubuntu
+	- Fixed crashBug using LuaJit
+	- Fixed re-opening chats
+	- Fixed sendChannels
+	- Fixed StaminaConfig Bug (premiums)
+	- Fixed field-bug
+	- Fixed isConnected state
+	- Fixed all CreatureEvents - MoveEvents - GlobalEvents - Actions and the margen all custom in MODS
+	- Preventing people from abusing pvp zones to train mlvl
+	- Added new market System
+	- Added new configs to rookSystem
+	- Added new event- onHouseEdit
+	- Added Support attackSpeed for mounts
+	- Added new function -- hasMonsterRaid(cid)
+	- Added new definition __GROUPED_ATTACKS__
+	- Added outFits and mounts IDs to 000-constant.lua
+	- Added customQuest-voc MOD
+	- Added 2 new items functions (vertical-horizontal)
+	- Added missing increase/decrease items
+	- Added new command /addbless
+	- Added new ( function doPlayerAddExpEx(cid, amount) )
+	- Added new ( condition CONDITION_HOUSESAY prevent crash in houseCommands system )
+	- Added new lua function: doSaveHouse({list}) for saving houses one by one, this will allow to extend saving feature
+	- Added new creature events: onThrow and onSpawn for monsters
+	- Added new mod (command-monsterinfo.xml)
+	- Added new event -> onSpawn as global (spawnall or spawn-global) which is executed always (allows easy to define scripts for all monsters)
+	- Added WarSystem support - No require -D__WAR_SYSTEM__
+	- Added support to Tibia 9.40 - 9.41 - 9.42 - 9.43 - 9.44
+	- Added partial support to sendReport windows
+	- Added /light command for gamemasters
+	- Added new advance event type experience
+	- Added new command bug report
+	- Added optional antiClone Action "check actions.xml"
+	- Added other customConfig "enableProtectionQuestForGM"
+	- Added new bank script // http://otland.net/f82/bank-interest-147434/
+	- Completed support for MySQL++
+	- Buffered creaturescripts should reload now properly
+	- Optimize all modSystem - now load more faster and 0 bugs
+	- Optimize PTR (protocol client player)
+	- Optimize House id in onlook
+	- Optimize Quest system exp announces
+	- Optimize System DoorsItems is more easy configurable
+	- Optimize PVP Blessings
+	- Optimize compilationSystem on Linux
+	- Extended the getTileInfo(pos).house to return houseId instead of bool
+	- Extended getItemParent and wrote a small function getItemTopParent fe. to return holder of an item in backpack which is in another backpack
+	- Extended the onPush creature event with extra pushed params: ground, position
+	- Extended the way how 'ex' position changers work
+	- Revised spell parameters (should be just like Cip now)
+	- Updated code __GROUND_CACHE__ now is more stable
+	- Updated data/npc/scripts/runes.lua is more complete
+	- Updated now house auctions on /close
+	- Updated Database to version 34
+	- Updated items.otb to 9.41
+	- Preventing attacking the npcs until they are not attackable
+	- Loading raids and quests now during load time
+	- Now calling onAdvance when player losses experience too (easy to check in the script if(level > prevLevel)
+	- Now Quest log possibility o make "quests" without start storage
+	- Married player has owner rights in house
+	- New extended possibilities for channels
+	- New configurable - recoverManaAfterDeathInPvPZone
+	- Some scripting additions, cleaned up the code a little bit and removed isProtected flag as cannotbeattacked has basically the same behaviour
+	- Initial support to mysql c++ connector
+	- onRaid gets name
+	- getTalkActionList now also returning groups
+	- Spells working properly with elemental stuff
+	- All the knight spells are now affected by elemental damage
+	- Can add now house members to subowners list
+	- Bow-weapon is now added to the attack when using custom spell formula
+	- Better bless premium handling
+	- Removed HEAL_PLAYER_ON_LEVEL definition
+	- Removed old antiClone System on creatureScripts
+	- Removed decrease.lua/increase.lua functions from actions (now uses transformUseTo in items.xml)
+	- Removed bad codes on data/creaturescripts/scripts/login.lua
+	- Removed houseSay condition
+	- Removed Account manager Extras
+	- Removed monstersPushItemsLimit config
+	- Remove PGSQL
+	- Deleted trashScripts --
+	- Rename 101-war.lua to 102-war.lua
+	- Rewrite Code
+	- Rewrite GUISystem menu -- now is more cool
+	- Rewrite "talkactions and groups" removed gamemasters and god
+		-- The group CM is 4 and access 3
+	- Rewrite npc/scripts/oracle.lua
+	- Rewrite /ban command
+		-- How use:
+		-- /ban PLAYERNAME, NUMBERDAYS(?), actionId(?), reasonId(?), COMMENT
+	- Extras in mods
+		command-marry:
+			- added 2 new configurables: allowHomoWedding and blockedAccess
+		command-points:
+			- refuelStamina.full configurable again (variable used before wasn't accurate)
+		event-peeper:
+			- doesn't show when you're looking at yourself
+
+	Note:
+	* Almost all files were changed, so there is no point of listing them in here.
+	* You are advised to update all your data files.
+	* The server load more fast ...
+]
+
+[ OTX Server 1.4.2 Version - "Lightbringer Edition" - Path 2
+	- Added - 9.20/31 Support
+	- Optimize Code - scriptSystem (Full cleanup) + (Critical Fixes)
+	- Optimize ScriptSystem - (Functions/Weapons/Movements/Items/Actions)
+	- Optimize MailSystem
+	- Optimize SaveSystem
+	- Now possible also with doTileAddItemEx to create new tile (supporting /i command)
+	- Extended the support for npcs.xml file
+	- Implemented loading npcs from mods
+	- Moved destroy.lua code into the destroyItem method
+	- Enable sell parcel on NPC (Deruno)
+	- Correct tabled in LOGS
+	- Correct fuctions luaGetCreatureConditionInfo - Game::broadcastMessage
+	- Change line ending on unix files to unix so they actually runs
+	- Changed name of getTileItemByType to getTileItemsByType
+	- Fixed actionScripts (Tools/Spells/Items)
+	- Fixed bug in leavehouse (now transfer all items at own old house)
+	- Fixed typo (taming.lua)
+	- Fixed bug (http://youtu.be/x-R1Fm4vp1o)
+	- Fixed weird Monsters on Fields
+	- Fixed debug when right clicking item 12632
+	- Fixed mount name (mounts.xml)
+	- Fixed minor light source bug
+	- Fixed doSummonCreature bug
+	- Fixed NPC System + extra features
+	- Fixed - GetTileDescription - protocolgame.cpp
+	- Fixed commands /t - /mute - /cliport - /squelch - /n
+	- Fixed - Issue with hard to stop movement when right clicking - doSetCreatureNoMove() not allow you to move when you follow target
+	- Fixed the loss formula - lostExperience
+	- Fixed issue with runtime-created conditions
+	- Fixed npc system bugs
+	- Fixed potential crash errors
+	- Fixed /ghost stacking debug
+	- Fixed MountSystem in tamed script
+	- Fixed Gamemaster on attackplayers to have vocation 0
+	- Fixes to manager class
+	- Fixed the reload stuff
+	- Update to talkSystem
+	- Updated swimming
+	- Added new firewall for linux (iptables-firewall)
+	- Added delay on commands for houses
+	- Added new field to luaGetTileInfo
+	- Added support GroupSystem to "talkactions"
+	- Added new config (allowedMaxSizedPackets - houseProtection - houseSkipInitialRent)
+	- Added new command
+		// !tpall or /tpall - Command send all players to PrincipalTown (check talkactions/scripts/tpall.lua)
+	- Added some much changes to guild related talks
+	- Added more categorized creatureevents -> onSendMail to onMailSend, onMailReceive, onChannelJoin & onChannelLeave
+	- Added implemented one of requested features
+	- Added spells now go as speak_spell
+	- Fixed missing tables in SQLite and MySQL
+	- Fixed hasCreatureCondition
+	- Fixed help channel mistake
+	- Fixed MailBox mistake
+	- Updated Database Version 33
+		// SQLite DB -- (MySQL require update in starup)
+	- Fixed Compilation under Linux
+		// All Protocols check "otserv.cpp"
+	- Deleted BanBook System
+		// No require system
+	- Added DemonOak Script
+		// More info in the end "actions.xml"
+	:: Addeds:
+	- monstersPushItemsLimit at config.lua
+	- Update - Support at 9.20
+	- Powergammer command
+	- Login History-MOD
+	- Optimize SpellSkill System
+	- Set New codename for 1.4.0 Version - "Lightbringer Edition"
+	- Extra option save player on Receive Mail the option prevent clone items
+	- otpch.cpp make compilation more faster and stable
+	- Tutorial how use "how-use-commands.log"
+	- IPv6 Support (Diego)
+
+	:: Fixes:
+	- Display compiler error in Ubuntu 11.04 (Diego) in 9.x and 8.7x
+	- Correct syntax in databasemysql.cpp
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- monstersPushItemsLimit = 20
+
+	:: Info General:
+	- OnLy Support for 9.x +
+	- Protocols 8.54/7 - 8.60 - 8.62 - 8.70/1
+		// Margen version 1.3.1
+		They are not supported and its status is considered complete and will be corrected only in their critical failures if they have any.
+]
+
+[ OTX Server 1.3.1 Version - "Moon Princess Edition" - Path 1
+	All data
+	- Fixed display errors on GUI - CONSOLE in protocol 9.1
+	- Optimize Code -- protocol 9.1
+	- OnTarget(cid,creature) fix (return false in lua scripts) in protocol 9.1
+	- Fixed icon CONSOLE in protocol 9.1
+	- Fixed DeathLose and Added skillLoss attribute in protocol 9.1
+	- Added new function: (doPlayerCastSpell) in protocol 9.1
+	- Added new lua function getItemStackable(itemid) in protocol 9.1
+	- Added missing files fromWarSystem in protocols 8.7x and 9.x
+	- Added support at event "protectionSummonKill to obsidianKnife" in protocols 8.7x and 9.x -- Like OTX 8.6x and 8.5x
+	- Added DeathEvent on protocols 8.7x and 9.x.
+	- Added PVPBlessing in commands and completed npc/Alice.xml in protocols 9.x - 8.7x - 8.62.
+	- Fixed spellrunes charges in protocols 8.6x & 8.5x
+	- Added projects WarSystem -- Note: require script by Elf or my how MODScript - All protocols have this next change
+	- Added newConfigurable "cleanItemsInMap" more info in config.lua
+	- Added "Annihilator MOD" in all protocols
+	- Added mail block system in all protocols (Like CipBia)
+	- Fixed FirstItems in knight in all protocols and custom steel axe "no use real weight"
+	- Fixed LuaInterface::loadBuffer (mod system) in all protocols
+	- ReForce System is less possible clone items with new feature in all protocols
+	- Fixed "otservlists - WebACCs" all protocols
+	- Fixed Account/Password "111111/tibia" DB in all protocols 
+	- Fixed ServerStart Event now update players onLine all protocols
+	- Deleted query events "warSystem" -- no require -- moved at how mod change in all protocols
+	- Deleted stagesconfig.lua -- no require and obsolete in all protocols
+	- Fixed compilation under Linux all protocols
+	- Fixed SlotWeapons all protocols
+	:: Addeds:
+	- Not possible convince other player summon in protocol 9.x
+	- Add signals.h so it build on distros like archlinux in protocol 8.62
+	- Compilation support (Console) in project 9.x "Code::Blocks"
+	- Added PvP Blessing at protocols 9.x - 8.7x & 8.62
+	- Support Orange Skull in protocol 8.62
+	// All Protocols
+	- New command for ban players
+		// /ban player, days, comment 
+	- Move RSA keys to config.lua, makes it easier to change the key
+		// Like TFS 0.4
+		// WeB for easy make own client with own RSA key
+			// http://vapus.net/customclient
+	- New Icon to server Ty
+		Druckzv "OtServ"
+
+	:: Fixes:
+	- Duplication bug in 9.x
+	- TextLogers in protocols 9.x & 8.7x
+	- UnmountPlayerInPz in protocol 8.7x
+	- 000-constant.lua in protocols 9.x & 8.7x
+	- PVP Blessing in protocol 8.62 + CleanCode OnDeath
+	- GuildCreation on SQLite protcols 8.62 & 8.5x
+		// SKULL_ORANGE
+	// All Protocols
+	- Remove the old RSA system
+		// Implant a new one in OpenSSL
+	- Clean code
+	- Optimize GUI System
+		Removed reload functions buggeds
+		Optimized + new look to GUI
+		Removed BanPlayer
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	// All Protocols
+	- No damage to guildmates and no damage to party members is configurable in config.lua
+		-- OTX Server Extras Features
+		-- Battle
+		noDamageToGuildMates = false -- if true then no damage, if false then damage
+		noDamageToPartyMembers = false -- if true then no damage, if false then damage
+	- Added extras RSA configs for easy make custom client with own RSA Key
+		// http://vapus.net/customclient
+		-- RSA
+		rsaPrime1
+		rsaPrime2
+		rsaPublic
+		rsaModulus
+		rsaPrivate
+]
+
+[ OTX Server 1.2.1 Version - "Fantasy Edition" - Path 1
+	All data (iMadison, Mattyx14)
+	:: Protocol 9.x
+	- Fixed compiler with visual basic no debugs
+	- Added CONDITIONID_COMBAT with createConditionObject
+	- Added shimmer items
+	- Fixed special foods
+	- Optimized actions tools
+	- Breakable bamboo fences, like real tibia
+	- Can now destroy spider webs with weapons, not just a machete
+	- Added missing spell
+	- Fixed Typo in actions
+	- Deleted function mySay(text, type, position)
+	- Other fix to npc system
+	- Now newItem in transformItem should now fully inherit attributes in all cases
+	- Monsters should pass through fields more Cipbia-like
+	- Changing chase mode or weapon will now delay next attack
+	- Equipping two-handed weapon while having two items will now result de-equipment of item from target slot
+	- Added 'eliminable' monster flag allowing monsters to kill marked with this flag
+		monsters when they have at least 5 times less health
+	- Now doPlayerAddItem will return anymore nil value in case of new item being stacked to existing one.
+		Moreover, the function will return now all created/ stacked items.
+	- Added lua function: getCreatureConditionInfo,
+		renamed getCreatureCondition to hasCreatureCondition and added a new,
+		extra parameter which is ConditionId
+
+	:: Protocol 8.7x
+	- Fixed special foods action
+	- Fixed Helmet of the deep
+	- Fixed Construction kits
+	- Fixed Decayto action
+	- Fixed Destroy action
+	- Fixed Tools action
+	- Fixed bug parcel duplication items
+	- Fixed create guild - possible with freepremium enable
+
+	:: Protocol 8.6x & 8.5x
+	- Fixed create guild - possible with freepremium enable
+	- Fixed bug guild duplicacion items
+	- Fixed bug parcel duplication items
+	- Rewrite monster system
+	- Added Fields Condition
+	- Game::playerMoveItem
+		// Similar a 8.7x & 9.x
+	- SQLite DB Updated
+		// In protocol 8.62
+	- Config.lua extra feature
+		// tradeLimit = 100
+
+	:: All Protocols
+	- GUI System Support
+	- Function logs decreased no more supported
+	- Change Tile Server
+	- Rewrite Server (AllData)
+	- Rewrite Mods -- Events and commands
+	- OTX Consol Tile
+	- Completed Fishing rod script
+	- Added Compile script, Supports: Fedora, CentOS, Debian, Ubuntu and many YUM/Apt-get Based Distribution
+	- Added fieldAbsorb in item description
+	- Fixed monster killing own summon if they are blocking the way to main target
+	- Fixed light effect staying after you drop the item giving light
+	- Fixes + Addeds missing items in items.xml
+	- Fixed stair hop exhaustion like real tibia now
+	- Extra info in config.lua
+		// How Load map with .gz
+		// Load Map is faster
+	- Fixed Vocations.xml + Extra feature
+		// droploot="no" - droploot="yes"
+	- Changed config.lua + Extra feaure
+		// healPlayersOnLevelAdvance = true
+			+ Effect bigclouds
+		// enableCapacity = true 
+			for useCapSystem = true 
+	- Removed feature in config.lua
+		// monsterDamagedByPlayerOnly = false
+	All data (iMadison, Mattyx14)
+	::  Addeds:
+	- Tutorial "how add outfits attributes" for BeniS
+	- New items 9.x - 8.7x in protocol 9.x -- Extended
+	- Added a new sand type to the actions lib. in protocol 9.x
+	- Changed CodeName to:: Fantasy Edition
+	- Moved AddSkill to internal function in 9.x and 8.7x - like at 8.6x - (NOTE -- CAUSE CRASH in Windows Client to GM or GOD)
+	- Missing foods in 9.x & 8.7x
+	- Rope Script optimized in 9.x & 8.7x
+	- Finished sweet mangonaise elixir scripts in 9.x & 8.7x
+	- Function isSummon in 9.x & 8.7x
+	- New condition (CONDITION_OTHER) in 9.x & 8.7x
+	- Added 4 new 'special foods': coconut shrimp bake, demonic candy ball, sweet mangonaise elixir, and pot of blackjack in 9.x & 8.7x
+	- Script destroy.lua script for destroying boxes, crates, etc like real tibia in 9.x & 8.7x
+	- New spells 8.7x in protocol 9.x & 8.7x
+		// Full Support + cooldowns
+	- New Monsters 8.6x - 8.7x - 9.x in protocol 9.x
+		- Loot like to // http://tibia.wikia.com
+	- squeeze.lua is supported in 8.7x
+	- Update Pack items in 8.5x & 8.6x
+	// All Protocols
+		- Extenden and correct "ITEMS_SIZE" in all protocols "items.h"
+		- New configs options
+		- Talkaction software
+		- Cleanup Code
+		- Jungle Maw script
+		- Ceremonial ankh script
+
+	:: Fixes:
+	- Fixed walkback.lua in 9.x
+	- Newtype talkaction in 9.x
+	- Buy and Sell in NPC in 9.x
+	- Condition show regeneration in 9.x
+	- Door System in 9.x
+	- Items.otb fixed in 9.x
+	- Items IDs in protocol 9.x
+		- Fixed items corpse and splashes + extras in items.xml
+	- Typo in actions/scripts/tools/squeeze.lua in protocol 9.x
+	- Typo in monsters // Example:"E for e" for conflict in LINUX in protocol 9.x
+	- Trade WindowsShop in NPC - in 9.x & 8.7x
+	- Fixed Report in MagicFields
+	- Script squeeze.lua in 9.x & 8.7x
+	- Spells.xml in 9.x & 8.7x
+	- War System in protocols 8.5x & 8.6x
+	// All Protocols
+		- Fixed RustRemover Script
+		- Fixed and rewrite movements.xml
+		- Spell Formulas in all scripts
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Deleted MOD -- Monster-info-mod
+	- Monster system rewrite -- in 9.x
+	- Configs options in 9.x & 8.7x
+		- unmountPlayerInPz = true
+		- canOnlyRopePlayers = true
+	// All Protocols
+		- Rewrite Outfits.xml
+		- Configs options
+		-	 minPasswordLength = 6
+		-	 minAccountNameLength = 3
+		-	 maxAccountNameLength = 25
+		-	 newCharacterMinNameLength = 3
+		-	 newCharacterMaxNameLength = 25
+		- Talkactions
+			- /software or !software
+]
+
+[ OTX Server 1.1.3 Version - "Silver Edition" - Path 3
+	All data (iMadison, Mattyx14)
+	::  Addeds:
+	- 9.10 Support
+	- Rename Server :D
+	- Compilation Support x64 in Visual Basic C++ 2010 in 9.x
+	- Update pack items.xml - Protocol 8.54/57 NO UPDATED
+	- New in outfits.xml an 000-constant.lua in 9.x
+	- Feature enable cap is supported in 8.7x
+	// Addeds in all protocols
+		- Updated item description for expiration times
+		- Summoning shows "teleport" effect
+		- Support to feature - http://otland.net/f82/system-lose-premiums-privileges-135238/
+		- Feature (skillpoints) to spells.xml
+
+	:: Fixes:
+	- Hotkey message for items without showCount in 9.x
+	- Mounted state is saved in 9.x
+	- Typo in outfit name in 9.x
+	- Healing Damages in 9.x
+	- Healing message will now be precise on how much health the creature was healed up with in 9.x
+	- Dismount when "changing" outfit in 9.x
+	- Litebug in show healing monsters in 9.x
+	- Extended MAX_NUMBER_OF_OUTFITS 25 at 35 in 9.x
+	- Guild Channel Commands in 9.x
+	- Cleanup to weapons system in 9.x
+	- Server Save Bug in 9.x
+	- Bug "TradeNPC" in 9.x
+	- Magic Level 0 "in 9.x - http://opentibia.svn.sourceforge.net/viewvc/opentibia?view=revision&revision=610
+	- Increase-Decrease items in 8.7x
+	- Guilds in 8.5x - 8.6x
+	- Changed the known creatures limit from 250 to 1300, it has been 1300 since 8.62+
+	// Fixes in all protocols
+		- Weapons element damages
+		- RefillMOD - Soft :: Firewalker Boots
+		- 8.5x to 9.x fixes NPC Modules Libs
+		- 9999 account managers crashes server (XD)
+		- Names in config.lua
+		- WarSystem MOD
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Protocol 8.61 not supported
+	- New Outfits and Mounts in 9.x
+	// News-Modifields in all protocols
+		- Rewrite config.lua "more cool"
+		- skipItemsVersionCheck in config.lua - Feature implemented by "Don Danielo"
+			// skipItemsVersionCheck = false
+			// Should be items.otb version check skipped
+			// If set to true, accepts all minor versions of items.otb.
+]
+
+[ OTX Server 1.0 Version - "Corona Edition"
+	All data
+	::  Addeds:
+	- Rename Server :D
+	- Added tutorial "how compile with Microsoft Visual Basic C++ 2010"
+	- Added function doSetItemActionId (by Diego)
+	- Optimize Code in 9.00
+	- 9.00 Support
+	- New actions scripts in actions.xml in 8.7x and 9.00
+	- Tibia Classic Slots is now supported in all protocols (slot system like 8.72-)
+	- Mounts for quest and premium system (more info: .../data/xml/mounts.xml) more easy obtain mount in 9.00
+	- Configurable mysqlReconnectionAttempts - Reconection to MySQL
+	- Support compilation with Microsoft Visual Basic C++ in 9.00
+		// Possible in all protocols
+
+	:: Fixes:
+	- criticalHitChance in config.lua in 9.00
+	- Potion skills (correct vocation use) in all protocols
+	- Items.xml in all protocols
+	- Counter monsters-mod fixed (mod is disabled or optional for use)
+	- Fixed config in frags time in all protocols "report by Ekno"
+	- Chanels.xml in 9.00
+	- Actions.xml in 9.00
+	- Fixed scrips with (animation) changegold.lua - potions.lua etc... in 9.00
+	- Deathlist Command in 9.00
+	- MSG Classes in 9.00
+	- Protocol server login ...data/XML/server.xml
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Removed cryptopp, vahash encripts
+		-- The server DownSize ... 5.7MB to 3.8MB is now more faster
+	- Cleanups code in 9.00
+	- New mod change gold in 8.7x
+	- New config.lua based in DarkKonia Server :D More clean (cool) in 9.00
+	- Reconection to MySQL
+		How many times mysql is allowed to attempt and reconnect to the server in all protocols
+		mysqlReconnectionAttempts = 3
+
+	- Slot system Weapon // shield // arrows
+		-- Slot Client in 8.71- in all protocols
+		tibiaClassicSlots = true
+
+	- Only damage by summon at players (like at Pokemon OT)
+		monsterDamagedByPlayerOnly = false
+]
+
+[ RollUP 3.5 Version - Path 1 - "Glorius Edition"
+	All data
+	::  Addeds:
+	- New compiler with Linux (more sexy)
+	- Function adding magic level +1 by default (by: slawkens)
+	- Extra info in README-howcompilelinux-howcompilewindows
+	- Function optional for autorespawn in all protocols (more info: globalevents.xml)
+	- Reload items supported in all protocols
+
+	:: Fixes:
+	- Increase and decrease function form actions.cpp in protocols 8.6x and 8.5x
+	- Use potions in protocols 8.6x and 8.5x
+	- MSG Potions or items countByType in 8.7x
+	- NPC system in LuaJIT system in 8.7x
+	- Critical Bugs in 8.7x
+	- Error in PlayerAutoWalk all protocols
+	- Guild Debug genere report error (Linux Fixed)
+	- OnLine Command Fixed
+	- Load protocol in all protocols (Linux Fixed)
+	- ...data/xml/groups.xml in 8.7x
+	- DataBase SQLite -- "PvP Blessing" -- At 8.61/62
+	- .../mods/DisplayBAGItems MOD in all proocols
+	- Channels in 8.7x
+	- LiteFix .../mods/commands-points MOD all protocols
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Modified ...data/xml/outfits.xml (more custom) in all protocols
+	- Lite changes in all .../config.lua (RookSystem)
+	- Modified account manager in all configs (all protocols) now chose new vocation and sended to main town
+	- Modifiel Monsters
+		...data/monster/8.54/Wailing Widow.xml
+		...data/monster/8.6/Brimstone Bug.xml
+		...data/monster/8.6/Souleater.xml
+		...data/monster/Demons/demon.xml
+		...data/monster/Demons/demonic minon.xml
+		...data/monster/Lizards/Draken Spellweaver.xml
+		...data/monster/Lizards/Draken Warmaster.xml
+		...data/monster/Lizards/Lancer Beetle.xml
+		...data/monster/Misc/hacker.xml
+		...data/monster/Quaras/quara pincher scout.xml
+		...data/monster/Reptiles/serpent spawn.xml
+		...data/monster/Reptiles/wyvern.xml
+		...data/monster/Sorcerers/ice witch.xml
+		...data/monster/Sorcerers/warlock.xml
+		...data/monster/Undead Humanoids/zombie.xml
+
+	- Added new configurable in .../config.lua in all protocols
+		NoShareExpSummonMonster = false
+		NoDisableBlockRespawn = true
+]
+
+[ RollUP 3.5 Version - "Glorius Edition"
+	All data
+	::  Addeds:
+	- Added a hack to solve compilation bug in otpch.h
+	- New configs optionals in 8.7x
+	- Function (getClientVersion) -- At 8.7x
+	- Action-Shop Mod
+	- Marry Mod
+	- Commands mods
+		-- Monster info
+			use :: !m demon
+		-- Promotion
+			use :: !promotion
+
+	:: Fixes:
+	- LogOut in AccountManager (now wait)
+	- Removed Talkaction (DeathList) cause crash
+	- Channel message type _RA won't cause debugs in 8.7x
+	- Advance-Reward Mod
+	- Peeper Mod
+	- Lite Bug "getItemTypeCount" in 8.7x
+	- Load ID in movements and actions
+	- Fixed compile issues in mounts.cpp in 8.7x
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Removed rule violation reports from the code in 8.7x
+	- useMultiClient = false
+		-- in config.lua in 8.7x -- is now supported in all protocols
+	- Removed increase and decrease functions form actions.cpp
+]
+
+[ RollUP 3.4 Version - "BYE Edition"
+	All data
+	:: EXTRA:
+	- Extras in movements sounds
+	- Rewrite FistLogin Set
+	- Update Documentation
+	- FeatureLOG.txt
+		-- Extras
+
+	:: Addeds:
+	- New teleport item "8632" in 8.7x
+	- Dll Files
+		// Compressed
+	- Rust Remover script "9930"
+
+	:: Fixes:
+	- TalkTypes in 100-compat.lua
+	- level tiles (slawkens)
+		...data/movements/scripts/tiles.lua
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Rename project "cb" to "codeblocks"
+	- Deleted project "DevC++" -- Very old
+	- Rewrite actions.xml in 8.7x (more simple) // no important
+	- Revert protocol version OnLy 8.70/71
+	- Disable mods // no usables - possibles
+	- Deleted no ocupable creatureevents
+	- TODO_LOGS
+	- Complete info in mods (custom commands) - Deleted command /portal
+		...mods/custom_commands.xml
+	- Mods Scripts // no importants
+		...mods/advance-reward.xml
+		...mods/animated-smiles.xml
+
+]
+
+[ RollUP 3.3 Version - Path 3
+	All data
+	:: Addeds:
+	- Is now possible compile with CodeBlocks all Protocols
+	- Killed monsters counter mod
+	- Peeper mod - showing "Someone is looking at you." when somebody looks at your character
+	- Support at 8.74
+	- Extender support at flags in codeblocks
+	- Mod Display items in bag (all) in all protocols
+	- All Scrips use the correct "doPlayerSendTextMessage" & "doCreatureSay" (evite future debugs)
+	- Tutorial compile with Linux (Ubuntu)
+
+	:: Fixes:
+	- SQL System Version 29
+	- DeathList Commands
+	- Cleanup Code
+	- Load correct version items.otb (8.71)
+	- Typo in WarSystemMOD
+	- Compilation with codeblocks
+	- Version Server.xml
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Updated Config 8.7x at lasted support
+	- Monsters random step behavior so they nolonger walks randomly on fields that damage them -- deleted (cause bug in PZ)
+	- Unmount Player in Pz is enabled
+	- config.lua modified in 
+		// deathAssistCount = 19 changed to 3
+]
+
+[ Re-UpLoaded
+	All data
+	// Version 7.3.3 (RollUP 3.3) FINAL - Path 3
+		- Fixed Posibles bugs from Version 7.3.2 (RollUP 3.2) FINAL - Path 3
+		// In Protocol 8.7x
+]
+
+[ RollUP 3.2 Version - Path 2
+	All data
+	:: Addeds:
+	- AntyParalyze Bot Suprime - Optionals (Check)
+		// AddedOnLy 8.7x and is possible add at all protocols
+		// Example in Path 
+			-- <!-- <instant name="Intense Healing" words="exura gran" lvl="11" mana="70" aggressive="0" selftarget="1" exhaustion="1000" groups="2" groupexhaustions="1000" icon="2" needlearn="0" event="script" value="healing/intense healing_anty_bot.lua">
+			-- data/spells/scripts/healing/intense healing_anty_bot.lua
+	- Advande-Reward MOD
+		// More info in mod - /mods/advance-reward.xml
+		// Easy Custom
+		// Is Disable .. enable in xml for more stable OT
+	- Added Support compilation with for 100% more Stable
+		// Zlib_1.2.5
+		// GMP_5.0.1
+		// LuaLib_5.1.4
+		// Iconv 1.9.3
+		// LibSQLLite 3.7.6.2
+		// OpenSSL 0.9.8A
+		// LibXML 2.7.3
+		// LibMySQL 6.0.2
+		// Boost 1.46.1
+		// MinGW 4.4.0
+
+	:: Fixes:
+	- Compiler with (boost v1.46)
+	- NG/Elf Lookbot detection in compilation
+	- WarSystem BUG in 8.7x
+	- Other bugs in mounts
+	- Monsters random step behavior so they nolonger walks randomly on fields that damage them
+	- Trade Bug -- Duplication in 8.7x
+	- Correct id in doors in actions
+	- Correct name id in items.xml
+	- Config now work 100% -- All ProTocols
+		//criticalHitChance = 7 -- <attribute key="criticalhitchance" value="7" />
+
+	:: New Config(s) + Modifield(s) + Deleted(s):
+	- Functions "isNpcName - isMonsterName - getHouseTilesCount - getHouseDoorCount - getHouseBedCount" all protocols
+	- Ping function -- Talkactions (ping.lua)
+	- Feature Critical Hit Chance is supported in 8.7x
+	- Unmount Player in Pz is disable
+	- Set all scripts at correct typos "false" - "true"
+	- Repeat command !bless removed
+	- Config -- Optional
+		// paralyzeDelay = 1500
+]
+
+[ RollUP 3.1 Version - Path 1
+	All data
+	:: Addeds:
+	- Broadcast commands in 8.7x
+	- Feature PIN NPC Bank
+		.../mods/npc/scripts/bank.lua
+	- New Commands
+		.../mods/bless-system.xml
+		.../mods/command-refill.xml
+
+	:: Fixes:
+	- RecordIp in 8.7x SQLite
+	- Chat message is too long in 8.7x (crash fixed)
+	- Protocol server in 8.7x sources
+	- Message in scripts
+		.../data/talkactions/scripts/ping.lua
+		.../mods/arena.xml
+		.../mods/guildWarSystem.xml
+		.../mods/poll_system.xml
+
+	- DataBase
+		.../path_870/schemas/mysql.sql
+
+	::  New Config(s) + Modifield(s) + Deleted(s):
+	- Rename sources at 8.7x
+	- Points Comand
+		.../mods/command-points.xml - added minLevel configurable for points rune
+	- Guilds commands
+		.../mods/guild-cast.xml - correct typos
+		.../mods/guild-outfit.xml - changed storage key (it was used already by guild-cast already)
+]
+
+[ RollUP 3.0 Version
+	All data
+	::  Addeds:
+	- Old quest system for clients 8.54/57 - 8.60  like at 8.0 -- OnlyWork in chest box
+	- doAccountSave(accountId) functions
+	- luascript.h
+		// in 8.54/57 relation (pvp_blessing)
+	- missing commands/scripts with 8.70/71
+	- complete sources
+		// in protocols 8.70/71
+	- tutorial (how compile with linux)
+	- push delay items function default 2000 millisecconds
+	- featute -- Record IP Onlogin
+		// in protocols 8.70/71
+
+	::  Fixes:
+	- QuestScript Support 13000 ids
+		// all protocols
+	- Push DelayItems
+		// in protocols 8.70/71
+	- Internal configs
+		// in protocols 8.70/71
+	- Compiler error 
+		// in 8.54/57 relation (pvp_blessing)
+	- getHouseInfo & setHouseOwner function description
+	- Compiler errors
+		// in 8.70/71 need linker at -D__MOONLIGHT__
+	- configs.lua correct typos
+	- configs depotItemsFreeLimit & depotItemstPremiumLimit
+		// in protocols 8.70/71
+
+	::  New Config(s) + Modifield(s) + Deleted(s):
+	- Old QuestSystem actions.xml
+		// optimized
+	- Update Log old versions
+	- obsidian knife fixes
+		// no work in summon creatures
+]
+
+[ RollUP 2.2 Version
+	All data
+	::  Addeds:
+	- Missing sets in movements.xml
+	- Feature depot config
+	- savePlayersOnEnterGuildChannel = true
+	- Initial Support 8.54/57
+		AutoStack System // No Potions and runes (no stakeable in 8.54/57)
+		Gold Coin and other objets stakables enabled autoStack
+	- New lua functions isNpcName(name) and isMonsterName(name)
+	- New lua functions getHouseBedCount(houseid), getHouseDoorCount(houseid), getHouseTilesCount(houseid)
+	- New lua functions getOtsysTime() + getPlayerPing(cid) + doPlayerSendPing(cid)
+	- New BanSystem (Dalkon)
+	- Rewrite AntiPush System for All-Items
+		ConfigManager::ACTIONS_DELAY_INTERVAL) - 2000 "game.cpp"
+	- New 3 Commands
+		/ping
+		EX:/ping Mattyx14
+		/stop
+		EX:/stop Mattyx14
+		/portal
+		EX:/portal x, y, z, amount of people
+		!mana;!exp
+		/giveitem
+		EX: /giveitem 2160, 2 (2 cc for all players online)
+		!giveitem
+		EX: !giveitem 2160, 2 (2 cc for all players online)
+
+	::  Fixes::
+	- AccountManager in 8.54/57 - 60 at info in v1 at v4
+	- DatabaBase manager in 8.54/57 - 8.60 no requiere (pvp_blessing)
+	- Sources in 8.54/57 compiller errors no more
+	- enableCapacity in 8.60
+	- Load items in 8.54/57
+	- Create items into containers
+	- Create items with charges
+	- Stealing ring function
+	- Rope (Function 8.60/61/62/70/71)
+	- Old Quest System (No suppported in 8.54/57 - 8.60)
+	- Commands /mc , /newtype & /i
+	- Correct IDs in moveevents
+
+	::  New Config(s) + Modifield(s) + Deleted(s):
+	- Modifield all configs
+		Changed defaultPriority in config for "higher"
+	- Optimize command /buy
+	- Cleanup and optimize movements.xml
+	- Cleanup and optimize actions.xml
+	- Food cleanups scripts
+	- Removed Old ban system in mods
+	- Removed Old AntiPush System
+	- Trash Files
+		... data/creaturescripts/scripts/reportbug.lua
+	- New Commands features next:
+		// depotItemsFreeLimit = 500
+		// depotItemstPremiumLimit = 1000
+]
+
+[ RollUP 2.1 Version
+	All data
+	::  Fixes:
+	- utana vid confition
+	- stealing ring
+	- DeathDebug client
+	- sendcondition (paralyze/haste/invisible)
+	- typo client 861/2
+	- Patched very critical bug fix from otserv that caused 100% CPU usage (credits: 3lite and trimera)
+	- Transformed items with count of 0 to be removed
+
+	::  Addeds:
+	- Added commands (/save-/b -/bc) -- // ALL Protocols
+	- Feature BotDetect (Elf&NG) -- //8.60/61/62
+	- PVP damage percent -- //8.61/62
+	- PVP blessing -- //8.61/62
+	- Updated channels.xml with correct channel IDs -- //8.70/71
+	- New custom mounts --//More cool
+	- Support 8.70/71
+	- Missing Sources -- //8.70/71
+	- skills and magic level per stage --  (optional)-- // ALL Protocols
+		// Check -- Creature Events
+
+	::  New Configs + Modifields:
+	- Renamed command save player at /saveme or !saveme
+	- NewFeatures config.lua 
+		-- // ALL Protocols
+		// useMultiClient = false
+		// enableCapacity = true
+		--------------------------
+		-- // 8.61/62
+		// pvpBlessingThreshold = 40
+		// fairFightTimeRange = 60
+]
+
+[ RollUP 2.0 Version
+	All data
+	::  Fixes:
+	- Protocol 8.61/62
+	- Protocol 8.60
+
+	::  Addeds:
+	- Support 8.60
+	- Support 8.61/62
+	- Support 8.70
+
+	::  Removeds:
+	- Commands "/b & /bc" cause crash in 8.70
+]
+
+[ RollUP 1.6 Version
+	All data
+	::  Fixes:
+	- Fixed DeathList command
+	- Fixed PVP Command
+	- Fixed "function getTibiaTime()"
+	- Fixed "function doPlayerAddMagLevel(cid, amount)"
+	- Fixed "function doCopyItem(item, attributes)"
+	- Fixed "function setAttackFormula(combat, type, minl, maxl, minm, maxm, min, max)"
+	- ITEM GLOWING SWITCH
+	- Fixed drowns
+	- Talckations system
+	- Fixed Movements/Weapons "Correct items ids 8.62" + added extras
+	- Fixed constructionskits//createbread/enchanting/firworksroket/furniturebeds/music --
+		teleport/watch/windows/fishing/machete/pick/rope/scythe/shovel.lua
+
+	- Fixed Monsters and optimized
+		-- // Monsters no have bags in loots
+		-- // Monsters fixed and optimized loots and attacks
+
+	::  Addeds:
+	- Old quest system "only set storagevalue"
+	- Green Sckull with NPC System
+	- SpecialFoods -- // 8.50 Feature
+	- Objets with sound -- // Movements.xml
+	- Rewrite Talkactions.xml -- // More Cool
+	- Feature ISWALKABLE player protected
+	- Support load map in format (.otbm or otbm.gz) "Windows and Linux" -- Like TFS 0.4
+	- Online Book -- (Cool for SQLite)
+	- Pz at magic walls and paralyze rune -- Like CipSoft Tibia
+	- Command "!buyinactive" -- for inactive houses in the serv
+	- Flag "HIDEHEALTH" CustomFlag "ISWALKABLE & CANWALKTHROUGH"
+	- Outfits "366 367"
+	- "SWING" feature to weapons
+		-- // No cause exahust to use distance weapons
+		-- // Example ADD:
+			<distance id="2455" unproperly="1" event="function" swing="true" value="default"/> <!-- crossbow -->
+			<distance id="2456" unproperly="1" event="function" swing="true" value="default"/> <!-- bow -->
+			<distance id="5803" unproperly="1" event="function" swing="true" value="default"/> <!-- arbales -->
+			<distance id="5907" unproperly="1" event="function" swing="true" value="default"/> <!-- slingshot -->
+
+	- Added script "MARKS"
+		-- // More info in movements/marks.lua
+		-- // Example Script: {mark = 2, pos = {x = 941, y = 1002, z = 7}, desc = "Town Of Fynn City"}
+
+	- New Configs + Modifields:
+		-- // protocolServer = 8.62 -- your custom ot "Support 8.61/62"
+		-- // fistBaseAttack = 7 -- like TFS 0.4
+		-- // blessings = true -- or false (cool config) -- like TFS 0.4
+		-- // staminaLootLimit = 14 * 60 -- Player no gain loot at 14 hours left of stamina
+		-- // globalSaveMinute = 0
+		-- // blessingReductionDecreament = 5 with -- blessingReductionDecrement = 5
+
+	::  Removeds:
+	- unifiedSpells = true
+	- Greeting and unGreeting keywords (hey & cya)
+	- Spell exevo pan
+	- GUI Protocol -- No compatible with .gz
+	+ Updated, cleanup and optimize all code /sources/
+	+ Updated, cleanup and optimize all scripts /data/
+]
+
+[ RollUP 1.5 Version
+	All data
+	::  Addeds:
+	- Feature critical-hit weapons
+	- Real Tibia spell release [8.62] with 97% correct damage on all levels
+	- Bonus System Full Addons - More info Outfits.xml
+	- Quest Look -- // More info in
+		-- // ..data/creaturescripts/scripts/quest.lua
+	- Rewrite Annihilator script and moved to mods (more cool)
+	- Spell System by Miziak - Optional use -- // optional
+	- NPC Custom Addons (For items) - Optional 
+		-- // ..data/npc/varkhal_2.xml
+		-- // ..data/npc/scrips/addons_2.lua
+
+	Set Configs + Features:
+	- criticalHitChance = 7 -- in items.xml <attribute key="criticalhitchance" value="7" />
+	- monsterLootMessageType = 17 -- // More (cool)
+
+	Fixes:
+	- Corregida talkspeak (war system)
+		-- // channel->talk("", SPEAK_CHANNEL_W, s.str());
+]
+
+[ RollUP 1.0 Version
+	All data
+	Addeds:
+	- Funtion bool isUnstepable() --// Magicwalls for players low levels an protect players is Walkable
+	- Flags IsWalkable(PLAYERPROTECT) - CanWalkthrough - IGNORENOTMOVABLE - CreatureImpassable - reloadCreature
+		- FunctionName == "soulfire"
+
+	- Tile limit (Config)
+		tileLimit = 7 --// recomended
+
+	- Unifield Spells
+		unifiedSpells = true --// CipSoft Tibia
+
+	Fixes:
+	- Spell Conjure System
+	- Reflect System
+
+	Set Configs:
+	- unifiedSpells = true --// (more cool)
+
+	Changes:
+	- PVP to OPEN-PVP
+	- NO-PVP to OPTIONAL-PVP
+	- PVP-ENFORCED to HARCORE-PVP
+]
+
+[ RollUP 0.5 Version
+	All data
+	Addeds:
+	- fieldAbsorb (Firewalker boots) Work 100% = CipSoft Tibia
+	- Gain exp from same IP -- COOL FOR PVP ENFORCED -- (config)
+		gainExpFromSameIP = false --// false/true
+
+	- Go back to spawn monsters (config)
+		monstersGoBackToSpawn = true --// false/true
+
+	Fixeds:
+	- Quest System
+
+	Modifields:
+	- Map TheForgotten update 8.6
+	- Rewrite config.lua (more cool)
+	- TalkActions/CommandMods (more cool) SUPPORTED "!/" Example: !frags and /frags
+	- Rewrite spells.xml (more cool)
+		-- Before:
+		<instant name="Death Strike">
+		<vocation id="1"/>
+		<vocation id="2"/>
+		<vocation id="5"/>
+		<vocation id="6"/>
+		</instant>
+		-- After:
+		<instant name="Death Strike">
+		<vocation id="1;5"/>
+		<vocation id="2;6"/>
+		</instant>
+	- Rewrite movements.xml
+		-- Before:
+		<movevent type="Equip">
+		<vocation id="1"/>
+		<vocation id="5" showInDescription="0"/>
+		<vocation id="2"/>
+		<vocation id="6" showInDescription="0"/>
+		</movevent>
+		-- After:
+		<movevent type="Equip">
+		<vocation id="1;2"/>
+		<vocation id="5;6" showInDescription="0"/>
+		</movevent>
+]
+
+[ RollUP 0.1 at 0.4 Version
+	All data
+	Addeds:
+	- Only 8.62 Support (BASIC)
+	- Stackable items
+	- Double penalty to players and vocations no vocations for weapon
+	- Stackable Runes/Potions
+	- WarMaster Wayfarer
+	- Items vectors & string& text
+	- WARNING TEXT WITH USING PLAIN TEXT (RECOMEND USE SHA1)
+	- PollSystem (CUSTOM MOOD)
+	- npc bank (CUSTOM MOOD)
+	- ArenaBattle System (CUSTOM MOOD)
+	- function getPlayerPassword(cid), function doPlayerAddPremiumPoints(cid, points) & function timeString(timeDiff)
+	- vipListDefaultLimit & vipListDefaultPremiumLimit --// CONFIG
+		vipListDefaultLimit = 20
+		vipListDefaultPremiumLimit = 100
+
+	- RookSystem
+		rookLevelTo = 6 --// LEVEL GO TO ROOK
+		rookTownId = 1 --// TOWN ID TO ROOK
+		rookSystem = true --// false/true
+
+	- Custom Mods (COMMANDS - SPELLS - OTHERS)
+		advance-effect
+			WORK ONLY LEVEL OR SKILL UP
+		animated-smiles
+			EXAMPLES: xd, :d, ;d, =d, xp, :p, ;p, =p, :o, ;o, ;s, :s, :/, ;/, :*, ;*, =*, :>, ;>, :), ;), =), :(, ;(, =(, :[, ;[, :], ;], :@, ;@, ^^, ^.^, -.-
+		adori-blank
+			CUSTOM CONJURE BLANK RUNE
+		anti-trap
+			USE COMMAND /noob only players protecter by level
+		command-save
+			USE COMMAND !save
+		guild-cast
+			USE COMMAND !gc
+		guild-outfit
+			USE COMMAND !go
+		stamina
+			USE COMMAND /stamina
+		bless
+			USE COMMAND /bless
+		guildmeb
+			USE COMMAND /guildmeb
+		spells
+			USE COMMAND /spells
+		me
+			USE COMMAND /me
+			EXAMPLES: /me HI HELLO
+		pointsVip
+			USE COMMAND !points
+		ban
+			USE COMMAND /ban
+		bank
+			USE COMMAND !bank
+		buy 
+			USE COMMAND /buy
+
+	- New Config Feature. Anti-Push Prevention System
+		useAntiPush = true
+		antiPushDelay = 3000 -- (3 seconds)
+		antiPushItems = "2148,2152,2160,3976" --// add as much items as you want separated by comma
+
+	- Simple WarSystem // ONLY MYSQL
+		/mod/guildWarSystem.xml "<mod name="Guild War System" version="0.3.5+" author="Xampy and Nahruto" contact="otland.net" enabled="yes"></mod>" -- yes
+
+	- Description lootSet and skill
+		EXAMPLE SKILL: You advanced from sword fighting 10 to sword fighting 11.
+		EXAMPLE LOOT: Loot of a goblin: a bag, a leather armor (Armor: 8), a short sword (Attack: 15, defence: 14), a leather helmet (Armor: 5), a machete (Attack: 15, defence: 11), 8 gold coins, 9 worms, a bone club (Attack: 14, defence: 11), a moldy cheese, a bone, a fish, 2 small stones, a small axe. 
+
+	- ExtraAttributes items
+		Attributes that have Random_min/Random_max suppport:
+		- Armor
+		- Defense
+		- ExtraDefense
+		- Attack
+		- ExtraAttack
+		- AttackSpeed
+		- Charges
+		Attributes that have Chance support:
+		- ExtraDefense
+		- ExtraAttack
+		- AttackSpeed
+		EXAMPLE:<item id="2380" article="a" name="hand axe">
+				<attribute key="weight" value="1800" />
+				<attribute key="defense" value="5" />
+				<attribute key="attack" random_min="5" random_max="8" />
+				<attribute key="extraattack" chance="50" random_min="10" random_max="30" />
+				<attribute key="weaponType" value="axe" />
+			</item>
+
+	- Items.otbm/xml
+
+	Fixeds:
+	- Annihilator System
+	- NPC Modules
+	- Talkaction ConfigInfo
+	- Trade System
+	- Create Corpse LastDeath
+	- Raid minamount
+	- House Command
+	- Servers.xml
+	- CloneBug Ingame Guild Management
+	- FEMALE_CORPSE & MALE_CORPSE
+	- Rook System
+	- First items no work properly
+	- NPC (if you bought 1 rune you pay for xx runes)
+	- Ctrl + J "Windows Report"
+		FEATURE 8.55
+		NO CUASE AUTO BANISHMENT
+
+	- Count runes and potions charges
+		DISPLAY CORRECT RUNE AND POTIONS CHARGES
+
+	- Channels
+		CHANNELS 8.62 NOW WORK
+
+	- Doors-constant
+		CORRECT IDS
+
+	- Weapons and movements (sets 8.54)
+		CORRECT IDS
+
+	Set Configs:
+	- sqlKeepAlive = 10
+	- mysqlReadTimeout = 0
+	- mysqlWriteTimeout = 1
+	- encryptionType = "sha1"
+	- defaultPriority = "normal"
+	- advancedFragList = true
+	- broadcastBanishments = false
+	- statusTimeout = 1000
+	- premiumPlayerSkipWaitList = true
+	- AccountManager MySQL/SQLite 
+		Account: 111111 - Password: tibia
+
+	Modifields:
+	- ENCRYPTION_PLAIN to ENCRYPTION_SHA1
+
+	Removeds:
+	- Rule violation report -- Removed in 8.62
+	- Channels obsoletes
+	- Parcel NPC/Deruno
 ]
