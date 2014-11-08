@@ -15,7 +15,7 @@ Linux:
 	Compile:
 	sh ./autogen.sh && ./configure --enable-server-diag --enable-mysql --enable-groundcache --enable-root-permission && make -j 2
 
-	Protocol version can be changed in the Makefile.am - $(OPTIONAL_FLAGS), just add -D_MULTIPLATFORM77 where X is 6 or 7.
+	Protocol version can be changed in the Makefile.am - $(OPTIONAL_FLAGS), just add -D_MULTIPLATFORM7X where X is 6 or 7.
 
 	-D_MULTIPLATFORM77
 	-D_MULTIPLATFORM76
