@@ -84,10 +84,7 @@
     <ClInclude Include="..\definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\depotchest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\depotlocker.h">
+    <ClInclude Include="..\depot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\dispatcher.h">
@@ -121,9 +118,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\housetile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\inputbox.h">
@@ -347,10 +341,7 @@
     <ClCompile Include="..\databasesqlite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\depotchest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\depotlocker.cpp">
+    <ClCompile Include="..\depot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\dispatcher.cpp">
@@ -381,9 +372,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\housetile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\inbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\inputbox.cpp">

@@ -514,10 +514,12 @@ void ProtocolAdmin::adminCommandSendMail(const std::string& xmlData)
 		return;
 
 	std::string name;
+	uint32_t depotId;
+
 	TRACK_MESSAGE(output);
-	if(Item* mailItem = Admin::createMail(xmlData, name))
+	if(Item* mailItem = Admin::createMail(xmlData, name, depotId))
 	{
-		if(IOLoginData::getInstance()->playerMail(NULL, name, mailItem))
+		if(IOLoginData::getInstance()->playerMail(NULL, name, depotId, mailItem))
 		{
 			addLogLine(LOGTYPE_EVENT, "sent mailbox to " + name);
 			output->put<char>(AP_MSG_COMMAND_OK);
@@ -607,7 +609,7 @@ uint32_t Admin::getOptions() const
 	return ret;
 }
 
-Item* Admin::createMail(const std::string xmlData, std::string& name)
+Item* Admin::createMail(const std::string xmlData, std::string& name, uint32_t& depotId)
 {
 	xmlDocPtr doc = xmlParseMemory(xmlData.c_str(), xmlData.length());
 	if(!doc)
@@ -623,6 +625,17 @@ Item* Admin::createMail(const std::string xmlData, std::string& name)
 	int32_t itemId = ITEM_PARCEL;
 	if(readXMLString(root, "to", strValue))
 		name = strValue;
+
+	if(readXMLString(root, "town", strValue))
+	{
+		Town* town = Towns::getInstance()->getTown(strValue);
+		if(!town)
+			return false;
+
+		depotId = town->getID();
+	}
+	else if(!IOLoginData::getInstance()->getDefaultTownByName(name, depotId)) //use the players default town
+		return false;
 
 	if(readXMLInteger(root, "id", intValue))
 		itemId = intValue;
