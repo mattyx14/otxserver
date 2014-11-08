@@ -63,6 +63,7 @@
 		- Fixed Typos on console/GUI
 		- Fixed Frags / Spells / Weapons on protocols 7.x
 		- Fixed errors on: https://github.com/mattyx14/otxserver/issues/28
+		- Fixed monster no hit summon moster
 		- Lite changes on config/const.h this are important
 		- Prevent spam commands
 		- Rewrite skull system this solve problems on PZ and other functions on battle

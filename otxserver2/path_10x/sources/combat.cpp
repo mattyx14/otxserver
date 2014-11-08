@@ -295,7 +295,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 	}
 	else if(target->getMonster())
 	{
-		if(attacker->getMonster() && !target->getPlayerMaster())
+		if(attacker->getMonster() && !target->getPlayerMaster() && !attacker->getPlayerMaster())
 			return RET_YOUMAYNOTATTACKTHISCREATURE;
 
 		const Player* attackerPlayer = NULL;
