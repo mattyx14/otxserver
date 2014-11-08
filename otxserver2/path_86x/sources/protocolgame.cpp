@@ -458,15 +458,17 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	msg.skip(6);
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
-		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
-		{
-			disconnectClient(0x14, CLIENT_VERSION_STRING);
-			return;
-		}
-	else
 		if(version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX))
 		{
 			disconnectClient(0x14, g_config.getString(ConfigManager::VERSION_MSG).c_str());
+			return;
+		}
+	}
+	else
+	{
+		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+		{
+			disconnectClient(0x14, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
 			return;
 		}
 	}

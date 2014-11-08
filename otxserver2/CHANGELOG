@@ -54,7 +54,10 @@
 		- Added classicDepotSystem to 8.x series
 		- Added offLineTraning scripts 8.x Series
 		- Added monster no hit summon monsters
-		- Added exhaustionNPC to config
+		- Added exhaustionNPC to configurable
+		- Added full Black Skull Configurable
+		- Added security exhaustion for bot use 8.7x
+		- Added addAnimatedText to heal function 8.7x
 		- Fixed error on speak NPC / GM Cast on protocol 10.36
 		- Fixed error on luaDoTransformItem
 		- Fixed bug with cloned containers
@@ -63,8 +66,10 @@
 		- Fixed Typos on console/GUI
 		- Fixed Frags / Spells / Weapons on protocols 7.x
 		- Fixed errors on: https://github.com/mattyx14/otxserver/issues/28
+		- Fixed version MANUAL_ADVANCED_CONFIG
 		- Fixed monster no hit summon moster
 		- Lite changes on config/const.h this are important
+		- Moved packets to seconds to protocolgame is more secure in
 		- Prevent spam commands
 		- Rewrite skull system this solve problems on PZ and other functions on battle
 		- Removed ALLOWED_MAX_PACKETS no are defined on code

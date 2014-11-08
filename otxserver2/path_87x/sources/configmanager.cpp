@@ -296,7 +296,7 @@ bool ConfigManager::load()
 	m_confNumber[TRADE_LIMIT] = getGlobalNumber("tradeLimit", 100);
 	m_confString[MAILBOX_DISABLED_TOWNS] = getGlobalString("mailboxDisabledTowns", "");
 	m_confNumber[SQUARE_COLOR] = getGlobalNumber("squareColor", 0);
-	m_confBool[USE_BLACK_SKULL] = getGlobalBool("useBlackSkull", false);
+	m_confBool[USE_BLACK_SKULL] = getGlobalBool("useBlackSkull", true);
 	m_confBool[USE_FRAG_HANDLER] = getGlobalBool("useFragHandler", true);
 	m_confNumber[LOOT_MESSAGE] = getGlobalNumber("monsterLootMessage", 3);
 	m_confNumber[LOOT_MESSAGE_TYPE] = getGlobalNumber("monsterLootMessageType", 19);

@@ -2984,6 +2984,15 @@ bool Game::playerRequestTrade(uint32_t playerId, const Position& pos, int16_t st
 	if(!player || player->isRemoved())
 		return false;
 
+	if(player->hasCondition(CONDITION_EXHAUST, 8))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditiontrade = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 8))
+		player->addCondition(conditiontrade);
+
 	Player* tradePartner = getPlayerByID(tradePlayerId);
 	if(!tradePartner || tradePartner == player)
 	{
@@ -3526,6 +3535,15 @@ bool Game::playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteI
 	if(!player || player->isRemoved())
 		return false;
 
+	if(player->hasCondition(CONDITION_EXHAUST, 7))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 7))
+		player->addCondition(conditionlook);
+
 	Thing* thing = internalGetThing(player, pos, stackpos, spriteId, STACKPOS_LOOK);
 	if(!thing)
 	{
@@ -3835,9 +3853,18 @@ bool Game::playerRequestAddVip(uint32_t playerId, const std::string& vipName)
 		return false;
 	}
 
+	if(player->hasCondition(CONDITION_EXHAUST, 1))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "Please wait few seconds before adding new player to your vip list.");
+		return false;
+	}
+
 	bool online = false;
 	if(Player* target = getPlayerByName(name))
 		online = player->canSeeCreature(target);
+
+	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 3000, 0, false, 1))
+		player->addCondition(condition);
 
 	return player->addVIP(guid, name, online);
 }
@@ -3847,6 +3874,15 @@ bool Game::playerRequestRemoveVip(uint32_t playerId, uint32_t guid)
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
 		return false;
+
+	if(player->hasCondition(CONDITION_EXHAUST, 1))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "Please wait few seconds before deleting next player from your vip list.");
+		return false;
+	}
+
+	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 3000, 0, false, 1))
+		player->addCondition(condition);
 
 	player->removeVIP(guid);
 	return true;
@@ -3887,6 +3923,15 @@ bool Game::playerRequestOutfit(uint32_t playerId)
 	if(!player || player->isRemoved())
 		return false;
 
+	if(player->hasCondition(CONDITION_EXHAUST, 4))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionoutfit = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 4))
+		player->addCondition(conditionoutfit);
+
 	player->sendOutfitWindow();
 	return true;
 }
@@ -3896,6 +3941,15 @@ bool Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
 		return false;
+
+	if(player->hasCondition(CONDITION_EXHAUST, 4))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionoutfit = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 4))
+		player->addCondition(conditionoutfit);
 
 	if(!player->changeOutfit(outfit, true))
 		return false;
@@ -4085,6 +4139,15 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 
 bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId)
 {
+	if(player->hasCondition(CONDITION_EXHAUST, 6))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionchannel = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 6))
+		player->addCondition(conditionchannel);
+
 	switch(type)
 	{
 		case MSG_CHANNEL:
@@ -4125,6 +4188,15 @@ bool Game::playerSpeakToNpc(Player* player, const std::string& text)
 	SpectatorVec list;
 	SpectatorVec::iterator it;
 	getSpectators(list, player->getPosition());
+
+	if(player->hasCondition(CONDITION_EXHAUST, 2))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionnpc = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 2))
+		player->addCondition(conditionnpc);
 
 	//send to npcs only
 	Npc* tmpNpc;
@@ -4578,7 +4650,9 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 			std::string plural = (healthChange != 1 ? "s." : ".");
 
 			std::stringstream ss;
-			MessageDetails* details = new MessageDetails(healthChange, COLOR_MAYABLUE);
+			char buffer[20];
+			sprintf(buffer, "+%d", healthChange);
+			addAnimatedText(list, targetPos, COLOR_MAYABLUE, buffer);
 			if(!textList.empty())
 			{
 				if(!attacker)
@@ -4594,7 +4668,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 						ss << "itself for " << healthChange << " hitpoint" << plural;
 				}
 
-				addStatsMessage(textList, MSG_HEALED_OTHERS, ss.str(), targetPos, details);
+				addStatsMessage(textList, MSG_HEALED_OTHERS, ss.str(), targetPos);
 				ss.str("");
 			}
 
@@ -4606,7 +4680,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 				else
 					ss << "You healed yourself for " << healthChange << " hitpoint" << plural;
 
-				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos, details);
+				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos);
 				ss.str("");
 			}
 
@@ -4617,10 +4691,8 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 				else
 					ss << "You are healed for " << healthChange << " hitpoint" << plural;
 
-				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos, details);
+				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos);
 			}
-
-			delete details;
 		}
 	}
 	else
@@ -4832,7 +4904,9 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 			std::string plural = (manaChange != 1 ? "s." : ".");
 
 			std::stringstream ss;
-			MessageDetails* details = new MessageDetails(manaChange, COLOR_DARKPURPLE);
+			char buffer[20];
+			sprintf(buffer, "+%d", manaChange);
+			addAnimatedText(list, targetPos, COLOR_DARKPURPLE, buffer);
 			if(!textList.empty())
 			{
 				if(!attacker)
@@ -4848,7 +4922,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 						ss << "itself with " << manaChange << " mana" << plural;
 				}
 
-				addStatsMessage(textList, MSG_HEALED_OTHERS, ss.str(), targetPos, details);
+				addStatsMessage(textList, MSG_HEALED_OTHERS, ss.str(), targetPos);
 				ss.str("");
 			}
 
@@ -4860,7 +4934,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 				else
 					ss << "You regenerate yourself with " << manaChange << " mana" << plural;
 
-				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos, details);
+				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos);
 				ss.str("");
 			}
 
@@ -4871,10 +4945,8 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 				else
 					ss << "You are regenerated with " << manaChange << " mana" << plural;
 
-				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos, details);
+				player->sendStatsMessage(MSG_HEALED, ss.str(), targetPos);
 			}
-
-			delete details;
 		}
 	}
 	else if(!inherited && Combat::canDoCombat(attacker, target, true) != RET_NOERROR)
@@ -5279,6 +5351,15 @@ bool Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 	if(!player || player->isRemoved())
 		return false;
 
+	if(player->hasCondition(CONDITION_EXHAUST, 5))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 5))
+		player->addCondition(conditionparty);
+
 	Player* invitedPlayer = getPlayerByID(invitedId);
 	if(!invitedPlayer || invitedPlayer->isRemoved() || invitedPlayer->isInviting(player))
 		return false;
@@ -5303,6 +5384,15 @@ bool Game::playerJoinParty(uint32_t playerId, uint32_t leaderId)
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
 		return false;
+
+	if(player->hasCondition(CONDITION_EXHAUST, 5))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 5))
+		player->addCondition(conditionparty);
 
 	Player* leader = getPlayerByID(leaderId);
 	if(!leader || leader->isRemoved() || !leader->isInviting(player))
@@ -5334,6 +5424,15 @@ bool Game::playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId)
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved() || !player->getParty() || player->getParty()->getLeader() != player)
 		return false;
+
+	if(player->hasCondition(CONDITION_EXHAUST, 5))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
+	if(Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 5))
+		player->addCondition(conditionparty);
 
 	Player* newLeader = getPlayerByID(newLeaderId);
 	if(!newLeader || newLeader->isRemoved() || !newLeader->getParty() || newLeader->getParty() != player->getParty())

@@ -32,8 +32,7 @@ class Container;
 class Tile;
 class Connection;
 class Quest;
-class DepotChest;
-class DepotLocker;
+class Depot;
 
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
 typedef boost::shared_ptr<NetworkMessage> NetworkMessage_ptr;
@@ -50,7 +49,7 @@ class ProtocolGame : public Protocol
 			protocolGameCount++;
 #endif
 			player = NULL;
-			m_eventConnect = 0;
+			m_eventConnect = m_packetCount = m_packetTime = 0;
 			m_debugAssertSent = m_acceptPackets = false;
 		}
 		virtual ~ProtocolGame()

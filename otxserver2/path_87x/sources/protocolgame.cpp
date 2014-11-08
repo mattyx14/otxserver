@@ -310,6 +310,12 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 	if(!player)
 		return false;
 
+	if(player->hasCondition(CONDITION_EXHAUST, 1))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
 	if(!player->isRemoved())
 	{
 		if(!forceLogout)
@@ -318,12 +324,18 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 			{
 				if(player->getTile()->hasFlag(TILESTATE_NOLOGOUT))
 				{
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
+						player->addCondition(condition);
+
 					player->sendCancelMessage(RET_YOUCANNOTLOGOUTHERE);
 					return false;
 				}
 
 				if(player->getZone() != ZONE_PROTECTION && player->hasCondition(CONDITION_INFIGHT))
 				{
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
+						player->addCondition(condition);
+
 					player->sendCancelMessage(RET_YOUMAYNOTLOGOUTDURINGAFIGHT);
 					return false;
 				}
@@ -545,6 +557,17 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 void ProtocolGame::parsePacket(NetworkMessage &msg)
 {
 	if(!player || !m_acceptPackets || g_game.getGameState() == GAMESTATE_SHUTDOWN || !msg.size())
+		return;
+
+	uint32_t now = time(NULL);
+	if(m_packetTime != now)
+	{
+		m_packetTime = now;
+		m_packetCount = 0;
+	}
+
+	++m_packetCount;
+	if(m_packetCount > (uint32_t)g_config.getNumber(ConfigManager::PACKETS_PER_SECOND))
 		return;
 
 	uint8_t recvbyte = msg.get<char>();

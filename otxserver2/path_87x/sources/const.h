@@ -190,16 +190,16 @@ enum MessageClasses
 	MSG_SPEAK_MONSTER_FIRST = MSG_SPEAK_MONSTER_SAY,
 	MSG_SPEAK_MONSTER_LAST = MSG_SPEAK_MONSTER_YELL,
 
-	MSG_EVENT_ORANGE = 0x0D, /*Orange message in local chat*/
-	MSG_STATUS_CONSOLE_ORANGE = 0x0E, /*Orange message in local chat*/
-	MSG_STATUS_WARNING = 0x0F, /*Red message in game window and in the console*/
-	MSG_EVENT_ADVANCE = 0x10, /*White message in game window and in the console*/
-	MSG_EVENT_DEFAULT = 0x11, /*White message at the bottom of the game window and in the console*/
-	MSG_STATUS_DEFAULT = 0x12, /*White message at the bottom of the game window and in the console*/
-	MSG_INFO_DESCR = 0x13, /*Green message in game window and in the console*/
-	MSG_STATUS_SMALL = 0x14, /*White message at the bottom of the game window"*/
-	MSG_STATUS_CONSOLE_BLUE = 0x15, /*Teal message in local chat*/
-	MSG_STATUS_CONSOLE_RED = 0x16, /*Red message in local chat*/
+	MSG_EVENT_ORANGE = 13, /*Orange message in local chat*/
+	MSG_STATUS_CONSOLE_ORANGE = 14, /*Orange message in local chat*/
+	MSG_STATUS_WARNING = 15, /*Red message in game window and in the console*/
+	MSG_EVENT_ADVANCE = 16, /*White message in game window and in the console*/
+	MSG_EVENT_DEFAULT = 17, /*White message at the bottom of the game window and in the console*/
+	MSG_STATUS_DEFAULT = 18, /*White message at the bottom of the game window and in the console*/
+	MSG_INFO_DESCR = 19, /*Green message in game window and in the console*/
+	MSG_STATUS_SMALL = 20, /*White message at the bottom of the game window"*/
+	MSG_STATUS_CONSOLE_BLUE = 21, /*Teal message in local chat*/
+	MSG_STATUS_CONSOLE_RED = 22, /*Red message in local chat*/
 
 	//for internal use
 	MSG_LOOT = MSG_INFO_DESCR, /*Green message in game window and in the console*/
@@ -212,7 +212,7 @@ enum MessageClasses
 	MSG_DAMAGE_DEALT = MSG_STATUS_DEFAULT,
 	MSG_DAMAGE_RECEIVED = MSG_STATUS_DEFAULT,
 	MSG_HEALED = MSG_STATUS_DEFAULT,
-	MSG_EXPERIENCE 	= MSG_STATUS_DEFAULT,
+	MSG_EXPERIENCE = MSG_STATUS_DEFAULT,
 
 	MSG_HIDDEN = 0xFF,
 	MSG_DAMAGE_OTHERS = MSG_HIDDEN,
@@ -391,7 +391,8 @@ enum Icons_t
 	ICON_BUFF = 1 << 12,
 	ICON_PZBLOCK = 1 << 13,
 	ICON_PZ = 1 << 14,
-	ICON_BLEED = 1 << 15
+	ICON_BLEED = 1 << 15,
+	ICON_HUNGRY = 1 << 16
 };
 
 enum skills_t
@@ -678,7 +679,6 @@ enum item_t
 	ITEM_WILDGROWTH_SAFE = 11099,
 	ITEM_DEPOT = 2594,
 	ITEM_LOCKER = 2589,
-	ITEM_INBOX = ITEM_DEPOT,
 	ITEM_MALE_CORPSE = 3058,
 	ITEM_FEMALE_CORPSE = 3065,
 	ITEM_FULLSPLASH = 2016,

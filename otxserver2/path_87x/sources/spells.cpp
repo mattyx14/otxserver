@@ -837,8 +837,16 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 
 	if(!needTarget)
 	{
-		if(!isAggressive || player->getSkull() != SKULL_BLACK)
-			return true;
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		{
+			if(!isAggressive || player->getSkull() != SKULL_BLACK)
+				return true;
+		}
+		else
+		{
+			if(!isAggressive)
+				return true;
+		}
 
 		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -864,11 +872,14 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 		return false;
 	}
 
-	if(player->getSkull() == SKULL_BLACK)
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
 	{
-		player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
-		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-		return false;
+		if(player->getSkull() == SKULL_BLACK)
+		{
+			player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
+			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
+		}
 	}
 
 	return true;
@@ -926,11 +937,14 @@ bool Spell::checkInstantSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(player->getSkull() == SKULL_BLACK && isAggressive && range == -1) // CHECKME: -1 is (usually?) an area spell
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
 	{
-		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
-		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-		return false;
+		if(player->getSkull() == SKULL_BLACK && isAggressive && range == -1) // CHECKME: -1 is (usually?) an area spell
+		{
+			player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
+			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
+		}
 	}
 
 	return true;
@@ -999,8 +1013,16 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 
 	if(!needTarget)
 	{
-		if(!isAggressive || player->getSkull() != SKULL_BLACK)
-			return true;
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		{
+			if(!isAggressive || player->getSkull() != SKULL_BLACK)
+				return true;
+		}
+		else
+		{
+			if(!isAggressive)
+				return true;
+		}
 
 		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1026,8 +1048,11 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(player->getSkull() != SKULL_BLACK)
-		return true;
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+	{
+		if(player->getSkull() != SKULL_BLACK)
+			return true;
+	}
 
 	player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1455,11 +1480,14 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 	int32_t manaCost = (int32_t)(mType->manaCost * g_config.getDouble(ConfigManager::RATE_MONSTER_MANA));
 	if(!player->hasFlag(PlayerFlag_CanSummonAll))
 	{
-		if(player->getSkull() == SKULL_BLACK)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
 		{
-			player->sendCancelMessage(RET_NOTPOSSIBLE);
-			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-			return false;
+			if(player->getSkull() == SKULL_BLACK)
+			{
+				player->sendCancelMessage(RET_NOTPOSSIBLE);
+				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+				return false;
+			}
 		}
 
 		if(!mType->isSummonable)
@@ -1856,11 +1884,14 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 
 	if(!player->hasFlag(PlayerFlag_CanConvinceAll))
 	{
-		if(player->getSkull() == SKULL_BLACK)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
 		{
-			player->sendCancelMessage(RET_NOTPOSSIBLE);
-			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-			return false;
+			if(player->getSkull() == SKULL_BLACK)
+			{
+				player->sendCancelMessage(RET_NOTPOSSIBLE);
+				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+				return false;
+			}
 		}
 
 		if((int32_t)player->getSummonCount() >= g_config.getNumber(ConfigManager::MAX_PLAYER_SUMMONS))

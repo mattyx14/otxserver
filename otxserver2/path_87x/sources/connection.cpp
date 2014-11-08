@@ -396,21 +396,6 @@ void Connection::parsePacket(const boost::system::error_code& error)
 		return;
 	}
 
-	uint32_t timePassed = std::max<uint32_t>(1, (time(NULL) - m_timeConnected) + 1);
-	if((++m_packetsSent / timePassed) > (uint32_t)g_config.getNumber(ConfigManager::PACKETS_PER_SECOND))
-	{
-		std::cout << convertIPAddress(getIP()) << " disconnected for exceeding packet per second limit." << std::endl;
-		close();;
-		m_connectionLock.unlock();
-		return;
-	}
-
-	if(timePassed > 2)
-	{
-		m_timeConnected = time(NULL);
-		m_packetsSent = 0;
-	}
-
 	--m_pendingRead;
 	uint32_t length = m_msg.size() - m_msg.position() - 4, checksumReceived = m_msg.get<uint32_t>(true), checksum = 0;
 	if(length > 0)
