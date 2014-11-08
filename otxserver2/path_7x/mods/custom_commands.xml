@@ -567,7 +567,7 @@
 					str = str .. "\n" .. name
 				end
 
-				doShowTextDialog(cid, 1950, str)
+				doShowTextDialog(cid, 1950, "/buy or !buy:\n" .. str)
 				return true
 			end
 
