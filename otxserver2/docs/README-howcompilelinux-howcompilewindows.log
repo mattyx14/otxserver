@@ -40,11 +40,11 @@
 	Download required packages
 		Launch a terminal, and paste in the following commands:
 			apt-get install update
-			apt-get install subversion autoconf build-essential pkg-config libboost-dev libgmp3-dev libxml2-dev liblua5.1-0-dev libmysqlclient-dev ccache libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev screen libssl-dev
+			apt-get install git subversion autoconf build-essential pkg-config libboost-dev libgmp3-dev libxml2-dev liblua5.1-0-dev libmysqlclient-dev ccache libboost-filesystem-dev libboost-regex-dev libboost-system-dev libboost-thread-dev screen libssl-dev
 
 	Compiling
 		Download sources - Launch a terminal, and paste in this command:
-			svn co http://otservdata.googlecode.com/svn/branches/0.3/
+			git clone https://github.com/mattyx14/otxserver.git
 
 		Launch a terminal, and type this:
 			Into Folder run:
