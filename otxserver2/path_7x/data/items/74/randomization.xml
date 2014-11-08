@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<randomization>
-	<config defaultChance="50"/>
-	<palette fromid="351" toid="353" randomize="352;354"/>
-	<palette fromid="708" toid="711" randomize="709;711"/>
-</randomization>
