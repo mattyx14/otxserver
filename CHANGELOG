@@ -3,36 +3,33 @@
 		OTX Server 3
 
 	OTX Server is based on:
-		The Forgotten Server Version: 1.0
+		The Forgotten Server Version: 1.1
 
 	Codenamed
-		KAISER
+		DarkKonia
 
 	Forum and website
 		http://www.blacktibia.org/f19-otx-server-3
 
 	DEVELOPERS
 		Project Manager and Founder
-			Devlious
-			K3nm
 			Mattyx14
 
 		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-			Devlious
-			K3nm
 			Mattyx14
 
 		Special Thanks(s)
-			https://github.com/otland/forgottenserver
-			https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS
-			https://github.com/edubart/otclient
-			https://github.com/hjnilsson/rme
+			OpenTibia C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
+
+			OTX Server C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin, Brewsterl
 
 	DEVELOPMENT STATUS
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients 10.x+
+		Tibia Clients 10.41
 ]
 
 [ TODO WITH OPTIONAL (MODAL DIALOGS)
@@ -55,6 +52,6 @@
 		- Look Display
 ]
 
-[ OTX Server 3.0.0 Version - "KAISER"
+[ OTX Server 3.0 Version - "DarkKonia"
 	- 
 ]
