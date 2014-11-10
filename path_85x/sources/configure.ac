@@ -8,17 +8,17 @@ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_PROG_CXX
 AC_LANG(C++)
 
-OPTIONAL_FLAGS=""
+# Config for 32Bits
+OPTIONAL_FLAGS="-Ofast -march=native"
+
+# Config for 64Bits
+#OPTIONAL_FLAGS="-Ofast -march=core2"
 
 # Config for 32Bits
 #DEBUG_FLAGS="-O0 -march=native -fomit-frame-pointer"
-#DEBUG_FLAGS="-O3 -march=native -fomit-frame-pointer"
-DEBUG_FLAGS="-Ofast -march=native -fomit-frame-pointer"
 
 # Config for 64Bits
 #DEBUG_FLAGS="-O0 -march=core2 -fomit-frame-pointer"
-#DEBUG_FLAGS="-O3 -march=core2 -fomit-frame-pointer"
-#DEBUG_FLAGS="-Ofast -march=core2 -fomit-frame-pointer"
 
 # check if we want server diag enabled
 serverDiag=no
