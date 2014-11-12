@@ -250,7 +250,7 @@
 		items = {
 			["soft"] = { -- soft boots
 				id = 2641,
-				new_id = 2640,
+				new_id = 2358,
 				price = 10000,
 				message = "Soft boots has been refilled."
 			}
