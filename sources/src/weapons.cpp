@@ -128,7 +128,7 @@ Event* Weapons::getEvent(const std::string& nodeName)
 
 bool Weapons::registerEvent(Event* event, const pugi::xml_node&)
 {
-	Weapon* weapon = static_cast<Weapon*>(event);
+	Weapon* weapon = reinterpret_cast<Weapon*>(event);
 	if (weapons.find(weapon->getID()) != weapons.end()) {
 		std::cout << "[Warning - Weapons::registerEvent] Duplicate registered item with id: " << weapon->getID() << std::endl;
 		return false;
@@ -452,7 +452,7 @@ void Weapon::onUsedWeapon(Player* player, Item* item) const
 
 	uint32_t manaCost = getManaCost(player);
 	if (manaCost != 0) {
-		player->addManaSpent(manaCost * g_config.getNumber(ConfigManager::RATE_MAGIC));
+		player->addManaSpent(manaCost);
 		player->changeMana(-static_cast<int32_t>(manaCost));
 	}
 

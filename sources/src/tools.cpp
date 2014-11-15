@@ -27,7 +27,7 @@
 
 extern ConfigManager g_config;
 
-static inline uint32_t circularShift(int bits, uint32_t value)
+inline static uint32_t circularShift(int bits, uint32_t value)
 {
 	return (value << bits) | (value >> (32 - bits));
 }
@@ -842,31 +842,26 @@ CombatType_t indexToCombatType(uint32_t v)
 	if (v == 0) {
 		return COMBAT_FIRST;
 	}
-
-	return (CombatType_t)(1 << (v - 1));
+	return static_cast<CombatType_t>(1 << (v - 1));
 }
 
 uint8_t serverFluidToClient(uint8_t serverFluid)
 {
 	uint8_t size = sizeof(clientToServerFluidMap) / sizeof(uint8_t);
-
 	for (uint8_t i = 0; i < size; ++i) {
 		if (clientToServerFluidMap[i] == serverFluid) {
 			return i;
 		}
 	}
-
 	return 0;
 }
 
 uint8_t clientFluidToServer(uint8_t clientFluid)
 {
 	uint8_t size = sizeof(clientToServerFluidMap) / sizeof(uint8_t);
-
 	if (clientFluid >= size) {
 		return 0;
 	}
-
 	return clientToServerFluidMap[clientFluid];
 }
 
@@ -884,6 +879,26 @@ itemAttrTypes stringToItemAttribute(const std::string& str)
 		return ITEM_ATTRIBUTE_DATE;
 	} else if (str == "writer") {
 		return ITEM_ATTRIBUTE_WRITER;
+	} else if (str == "name") {
+		return ITEM_ATTRIBUTE_NAME;
+	} else if (str == "article") {
+		return ITEM_ATTRIBUTE_ARTICLE;
+	} else if (str == "pluralname") {
+		return ITEM_ATTRIBUTE_PLURALNAME;
+	} else if (str == "weight") {
+		return ITEM_ATTRIBUTE_WEIGHT;
+	} else if (str == "attack") {
+		return ITEM_ATTRIBUTE_ATTACK;
+	} else if (str == "defense") {
+		return ITEM_ATTRIBUTE_DEFENSE;
+	} else if (str == "extradefense") {
+		return ITEM_ATTRIBUTE_EXTRADEFENSE;
+	} else if (str == "armor") {
+		return ITEM_ATTRIBUTE_ARMOR;
+	} else if (str == "hitchance") {
+		return ITEM_ATTRIBUTE_HITCHANCE;
+	} else if (str == "shootrange") {
+		return ITEM_ATTRIBUTE_SHOOTRANGE;
 	} else if (str == "owner") {
 		return ITEM_ATTRIBUTE_OWNER;
 	} else if (str == "duration") {

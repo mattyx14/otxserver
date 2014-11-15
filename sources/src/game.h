@@ -455,8 +455,7 @@ class Game
 		void checkCreatures(size_t index);
 		void checkLight();
 
-		bool combatBlockHit(CombatType_t combatType, Creature* attacker, Creature* target,
-		                    int32_t& healthChange, bool checkDefense, bool checkArmor, bool field);
+		bool combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* target, bool checkDefense, bool checkArmor, bool field);
 
 		void combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColor_t& color, uint8_t& effect);
 
@@ -563,12 +562,6 @@ class Game
 		ModalWindow offlineTrainingWindow;
 		Commands commands;
 		Groups groups;
-
-		struct GameEvent {
-			int64_t tick;
-			int type;
-			void* data;
-		};
 
 		static const int32_t LIGHT_LEVEL_DAY = 250;
 		static const int32_t LIGHT_LEVEL_NIGHT = 40;

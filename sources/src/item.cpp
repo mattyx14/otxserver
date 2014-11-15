@@ -91,7 +91,7 @@ Item* Item::CreateItem(const uint16_t _type, uint16_t _count /*= 0*/)
 Item* Item::CreateItem(PropStream& propStream)
 {
 	uint16_t _id;
-	if (!propStream.GET_USHORT(_id)) {
+	if (!propStream.read<uint16_t>(_id)) {
 		return nullptr;
 	}
 
@@ -380,9 +380,10 @@ void Item::setSubType(uint16_t n)
 Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
 	switch (attr) {
-		case ATTR_COUNT: {
+		case ATTR_COUNT:
+		case ATTR_RUNE_CHARGES: {
 			uint8_t _count;
-			if (!propStream.GET_UCHAR(_count)) {
+			if (!propStream.read<uint8_t>(_count)) {
 				return ATTR_READ_ERROR;
 			}
 
@@ -391,88 +392,78 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 		}
 
 		case ATTR_ACTION_ID: {
-			uint16_t _actionid;
-			if (!propStream.GET_USHORT(_actionid)) {
+			uint16_t actionId;
+			if (!propStream.read<uint16_t>(actionId)) {
 				return ATTR_READ_ERROR;
 			}
 
-			setActionId(_actionid);
+			setActionId(actionId);
 			break;
 		}
 
 		case ATTR_UNIQUE_ID: {
-			uint16_t _uniqueid;
-			if (!propStream.GET_USHORT(_uniqueid)) {
+			uint16_t uniqueId;
+			if (!propStream.read<uint16_t>(uniqueId)) {
 				return ATTR_READ_ERROR;
 			}
 
-			setUniqueId(_uniqueid);
+			setUniqueId(uniqueId);
 			break;
 		}
 
 		case ATTR_TEXT: {
-			std::string _text;
-			if (!propStream.GET_STRING(_text)) {
+			std::string text;
+			if (!propStream.readString(text)) {
 				return ATTR_READ_ERROR;
 			}
 
-			setText(_text);
+			setText(text);
 			break;
 		}
 
 		case ATTR_WRITTENDATE: {
-			uint32_t _writtenDate;
-			if (!propStream.GET_ULONG(_writtenDate)) {
+			uint32_t writtenDate;
+			if (!propStream.read<uint32_t>(writtenDate)) {
 				return ATTR_READ_ERROR;
 			}
 
-			setDate(_writtenDate);
+			setDate(writtenDate);
 			break;
 		}
 
 		case ATTR_WRITTENBY: {
-			std::string _writer;
-			if (!propStream.GET_STRING(_writer)) {
+			std::string writer;
+			if (!propStream.readString(writer)) {
 				return ATTR_READ_ERROR;
 			}
 
-			setWriter(_writer);
+			setWriter(writer);
 			break;
 		}
 
 		case ATTR_DESC: {
-			std::string _text;
-			if (!propStream.GET_STRING(_text)) {
+			std::string text;
+			if (!propStream.readString(text)) {
 				return ATTR_READ_ERROR;
 			}
 
-			setSpecialDescription(_text);
-			break;
-		}
-
-		case ATTR_RUNE_CHARGES: {
-			uint8_t _charges;
-			if (!propStream.GET_UCHAR(_charges)) {
-				return ATTR_READ_ERROR;
-			}
-
-			setSubType(_charges);
+			setSpecialDescription(text);
 			break;
 		}
 
 		case ATTR_CHARGES: {
-			uint16_t _charges;
-			if (!propStream.GET_USHORT(_charges)) {
+			uint16_t charges;
+			if (!propStream.read<uint16_t>(charges)) {
 				return ATTR_READ_ERROR;
 			}
 
-			setSubType(_charges);
+			setSubType(charges);
 			break;
 		}
 
 		case ATTR_DURATION: {
 			int32_t duration;
-			if (!propStream.GET_VALUE(duration)) {
+			if (!propStream.read<int32_t>(duration)) {
 				return ATTR_READ_ERROR;
 			}
 
@@ -482,7 +473,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 
 		case ATTR_DECAYING_STATE: {
 			uint8_t state;
-			if (!propStream.GET_UCHAR(state)) {
+			if (!propStream.read<uint8_t>(state)) {
 				return ATTR_READ_ERROR;
 			}
 
@@ -492,66 +483,151 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		case ATTR_NAME: {
+			std::string name;
+			if (!propStream.readString(name)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setStrAttr(ITEM_ATTRIBUTE_NAME, name);
+			break;
+		}
+
+		case ATTR_ARTICLE: {
+			std::string article;
+			if (!propStream.readString(article)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setStrAttr(ITEM_ATTRIBUTE_ARTICLE, article);
+			break;
+		}
+
+		case ATTR_PLURALNAME: {
+			std::string pluralName;
+			if (!propStream.readString(pluralName)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setStrAttr(ITEM_ATTRIBUTE_PLURALNAME, pluralName);
+			break;
+		}
+
+		case ATTR_WEIGHT: {
+			uint32_t weight;
+			if (!propStream.read<uint32_t>(weight)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_WEIGHT, weight);
+			break;
+		}
+
+		case ATTR_ATTACK: {
+			int32_t attack;
+			if (!propStream.read<int32_t>(attack)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_ATTACK, attack);
+			break;
+		}
+
+		case ATTR_DEFENSE: {
+			int32_t defense;
+			if (!propStream.read<int32_t>(defense)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_DEFENSE, defense);
+			break;
+		}
+
+		case ATTR_EXTRADEFENSE: {
+			int32_t extraDefense;
+			if (!propStream.read<int32_t>(extraDefense)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_EXTRADEFENSE, extraDefense);
+			break;
+		}
+
+		case ATTR_ARMOR: {
+			int32_t armor;
+			if (!propStream.read<int32_t>(armor)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_ARMOR, armor);
+			break;
+		}
+
+		case ATTR_HITCHANCE: {
+			int8_t hitChance;
+			if (!propStream.read<int8_t>(hitChance)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_HITCHANCE, hitChance);
+			break;
+		}
+
+		case ATTR_SHOOTRANGE: {
+			uint8_t shootRange;
+			if (!propStream.read<uint8_t>(shootRange)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE, shootRange);
+			break;
+		}
+
 		//these should be handled through derived classes
 		//If these are called then something has changed in the items.xml since the map was saved
 		//just read the values
 
 		//Depot class
 		case ATTR_DEPOT_ID: {
-			uint16_t _depotId;
-			if (!propStream.GET_USHORT(_depotId)) {
+			if (!propStream.skip(2)) {
 				return ATTR_READ_ERROR;
 			}
-
-			return ATTR_READ_CONTINUE;
+			break;
 		}
 
 		//Door class
 		case ATTR_HOUSEDOORID: {
-			uint8_t _doorId;
-			if (!propStream.GET_UCHAR(_doorId)) {
+			if (!propStream.skip(1)) {
 				return ATTR_READ_ERROR;
 			}
-
-			return ATTR_READ_CONTINUE;
+			break;
 		}
 
 		//Bed class
 		case ATTR_SLEEPERGUID: {
-			uint32_t _guid;
-			if (!propStream.GET_ULONG(_guid)) {
+			if (!propStream.skip(4)) {
 				return ATTR_READ_ERROR;
 			}
-
-			return ATTR_READ_CONTINUE;
+			break;
 		}
 
 		case ATTR_SLEEPSTART: {
-			uint32_t sleep_start;
-			if (!propStream.GET_ULONG(sleep_start)) {
+			if (!propStream.skip(4)) {
 				return ATTR_READ_ERROR;
 			}
-
-			return ATTR_READ_CONTINUE;
+			break;
 		}
 
 		//Teleport class
 		case ATTR_TELE_DEST: {
-			Position* tele_dest;
-			if (!propStream.GET_STRUCT(tele_dest)) {
+			if (!propStream.skip(5)) {
 				return ATTR_READ_ERROR;
 			}
-
-			return ATTR_READ_CONTINUE;
+			break;
 		}
 
 		//Container class
 		case ATTR_CONTAINER_ITEMS: {
-			uint32_t count;
-			if (!propStream.GET_ULONG(count)) {
-				return ATTR_READ_ERROR;
-			}
-
 			return ATTR_READ_ERROR;
 		}
 
@@ -565,8 +641,8 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 bool Item::unserializeAttr(PropStream& propStream)
 {
 	uint8_t attr_type;
-	while (propStream.GET_UCHAR(attr_type) && attr_type != 0) {
-		Attr_ReadValue ret = readAttr((AttrTypes_t)attr_type, propStream);
+	while (propStream.read<uint8_t>(attr_type) && attr_type != 0) {
+		Attr_ReadValue ret = readAttr(static_cast<AttrTypes_t>(attr_type), propStream);
 		if (ret == ATTR_READ_ERROR) {
 			return false;
 		} else if (ret == ATTR_READ_END) {
@@ -584,60 +660,108 @@ bool Item::unserializeItemNode(FileLoader&, NODE, PropStream& propStream)
 bool Item::serializeAttr(PropWriteStream& propWriteStream) const
 {
 	if (isStackable() || isFluidContainer() || isSplash()) {
-		propWriteStream.ADD_UCHAR(ATTR_COUNT);
-		propWriteStream.ADD_UCHAR(getSubType());
+		propWriteStream.write<uint8_t>(ATTR_COUNT);
+		propWriteStream.write<uint8_t>(getSubType());
 	}
 
 	uint16_t charges = getCharges();
 	if (charges != 0) {
-		propWriteStream.ADD_UCHAR(ATTR_CHARGES);
-		propWriteStream.ADD_USHORT(charges);
+		propWriteStream.write<uint8_t>(ATTR_CHARGES);
+		propWriteStream.write<uint16_t>(charges);
 	}
 
 	if (isMoveable()) {
 		uint16_t _actionId = getActionId();
 		if (_actionId != 0) {
-			propWriteStream.ADD_UCHAR(ATTR_ACTION_ID);
-			propWriteStream.ADD_USHORT(_actionId);
+			propWriteStream.write<uint8_t>(ATTR_ACTION_ID);
+			propWriteStream.write<uint16_t>(_actionId);
 		}
 	}
 
 	const std::string& _text = getText();
 	if (!_text.empty()) {
-		propWriteStream.ADD_UCHAR(ATTR_TEXT);
-		propWriteStream.ADD_STRING(_text);
+		propWriteStream.write<uint8_t>(ATTR_TEXT);
+		propWriteStream.writeString(_text);
 	}
 
 	const time_t _writtenDate = getDate();
 	if (_writtenDate > 0) {
-		propWriteStream.ADD_UCHAR(ATTR_WRITTENDATE);
-		propWriteStream.ADD_ULONG(_writtenDate);
+		propWriteStream.write<uint8_t>(ATTR_WRITTENDATE);
+		propWriteStream.write<uint32_t>(_writtenDate);
 	}
 
 	const std::string& _writer = getWriter();
 	if (!_writer.empty()) {
-		propWriteStream.ADD_UCHAR(ATTR_WRITTENBY);
-		propWriteStream.ADD_STRING(_writer);
+		propWriteStream.write<uint8_t>(ATTR_WRITTENBY);
+		propWriteStream.writeString(_writer);
 	}
 
 	const std::string& _specialDesc = getSpecialDescription();
 	if (!_specialDesc.empty()) {
-		propWriteStream.ADD_UCHAR(ATTR_DESC);
-		propWriteStream.ADD_STRING(_specialDesc);
+		propWriteStream.write<uint8_t>(ATTR_DESC);
+		propWriteStream.writeString(_specialDesc);
 	}
 
 	if (hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
-		uint32_t duration = getDuration();
-		propWriteStream.ADD_UCHAR(ATTR_DURATION);
-		propWriteStream.ADD_ULONG(duration);
+		propWriteStream.write<uint8_t>(ATTR_DURATION);
+		propWriteStream.write<uint32_t>(getIntAttr(ITEM_ATTRIBUTE_DURATION));
 	}
 
 	ItemDecayState_t decayState = getDecaying();
 	if (decayState == DECAYING_TRUE || decayState == DECAYING_PENDING) {
-		propWriteStream.ADD_UCHAR(ATTR_DECAYING_STATE);
-		propWriteStream.ADD_UCHAR(decayState);
+		propWriteStream.write<uint8_t>(ATTR_DECAYING_STATE);
+		propWriteStream.write<uint8_t>(decayState);
 	}
 
+	if (hasAttribute(ITEM_ATTRIBUTE_NAME)) {
+		propWriteStream.write<uint8_t>(ATTR_NAME);
+		propWriteStream.writeString(getStrAttr(ITEM_ATTRIBUTE_NAME));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_ARTICLE)) {
+		propWriteStream.write<uint8_t>(ATTR_ARTICLE);
+		propWriteStream.writeString(getStrAttr(ITEM_ATTRIBUTE_ARTICLE));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_PLURALNAME)) {
+		propWriteStream.write<uint8_t>(ATTR_PLURALNAME);
+		propWriteStream.writeString(getStrAttr(ITEM_ATTRIBUTE_PLURALNAME));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_WEIGHT)) {
+		propWriteStream.write<uint8_t>(ATTR_WEIGHT);
+		propWriteStream.write<uint32_t>(getIntAttr(ITEM_ATTRIBUTE_WEIGHT));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_ATTACK)) {
+		propWriteStream.write<uint8_t>(ATTR_ATTACK);
+		propWriteStream.write<int32_t>(getIntAttr(ITEM_ATTRIBUTE_ATTACK));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_DEFENSE)) {
+		propWriteStream.write<uint8_t>(ATTR_DEFENSE);
+		propWriteStream.write<int32_t>(getIntAttr(ITEM_ATTRIBUTE_DEFENSE));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE)) {
+		propWriteStream.write<uint8_t>(ATTR_EXTRADEFENSE);
+		propWriteStream.write<int32_t>(getIntAttr(ITEM_ATTRIBUTE_EXTRADEFENSE));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_ARMOR)) {
+		propWriteStream.write<uint8_t>(ATTR_ARMOR);
+		propWriteStream.write<int32_t>(getIntAttr(ITEM_ATTRIBUTE_ARMOR));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_HITCHANCE)) {
+		propWriteStream.write<uint8_t>(ATTR_HITCHANCE);
+		propWriteStream.write<int8_t>(getIntAttr(ITEM_ATTRIBUTE_HITCHANCE));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_SHOOTRANGE)) {
+		propWriteStream.write<uint8_t>(ATTR_SHOOTRANGE);
+		propWriteStream.write<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE));
+	}
 	return true;
 }
 
@@ -663,10 +787,11 @@ bool Item::hasProperty(ITEMPROPERTY prop) const
 
 uint32_t Item::getWeight() const
 {
+	uint32_t weight = getBaseWeight();
 	if (isStackable()) {
-		return items[id].weight * std::max<uint32_t>(1, getItemCount());
+		return weight * std::max<uint32_t>(1, getItemCount());
 	}
-	return items[id].weight;
+	return weight;
 }
 
 std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
@@ -711,30 +836,51 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	} else if (it.weaponType != WEAPON_NONE) {
 		if (it.weaponType == WEAPON_DISTANCE && it.ammoType != AMMO_NONE) {
-			s << " (Range:" << static_cast<uint16_t>(it.shootRange);
+			s << " (Range:" << static_cast<uint16_t>(item ? item->getShootRange() : it.shootRange);
 
-			if (it.attack != 0) {
-				s << ", Atk" << std::showpos << it.attack << std::noshowpos;
+			int32_t attack;
+			int8_t hitChance;
+			if (item) {
+				attack = item->getAttack();
+				hitChance = item->getHitChance();
+			} else {
+				attack = it.attack;
+				hitChance = it.hitChance;
 			}
 
-			if (it.hitChance != 0) {
-				s << ", Hit%" << std::showpos << it.hitChance << std::noshowpos;
+			if (attack != 0) {
+				s << ", Atk" << std::showpos << attack << std::noshowpos;
+			}
+
+			if (hitChance != 0) {
+				s << ", Hit%" << std::showpos << static_cast<int16_t>(hitChance) << std::noshowpos;
 			}
 
 			s << ')';
 		} else if (it.weaponType != WEAPON_AMMO) {
 			bool begin = true;
 
-			if (it.attack != 0) {
+			int32_t attack, defense, extraDefense;
+			if (item) {
+				attack = item->getAttack();
+				defense = item->getDefense();
+				extraDefense = item->getExtraDefense();
+			} else {
+				attack = it.attack;
+				defense = it.defense;
+				extraDefense = it.extraDefense;
+			}
+
+			if (attack != 0) {
 				begin = false;
-				s << " (Atk:" << it.attack;
+				s << " (Atk:" << attack;
 
 				if (it.abilities && it.abilities->elementType != COMBAT_NONE && it.abilities->elementDamage != 0) {
 					s << " physical + " << it.abilities->elementDamage << ' ' << getCombatName(it.abilities->elementType);
 				}
 			}
 
-			if (it.defense != 0 || it.extraDefense != 0) {
+			if (defense != 0 || extraDefense != 0) {
 				if (begin) {
 					begin = false;
 					s << " (";
@@ -742,10 +888,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 					s << ", ";
 				}
 
-				s << "Def:" << it.defense;
-
-				if (it.extraDefense != 0 || (item && item->getExtraDefense() != 0)) {
-					s << ' ' << std::showpos << it.extraDefense << std::noshowpos;
+				s << "Def:" << defense;
+				if (extraDefense != 0) {
+					s << ' ' << std::showpos << extraDefense << std::noshowpos;
 				}
 			}
 
@@ -886,17 +1031,12 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				s << ')';
 			}
 		}
-	} else if (it.armor || (item && item->getArmor()) || it.showAttributes) {
-		int32_t tmp = it.armor;
-
-		if (item) {
-			tmp = item->getArmor();
-		}
-
+	} else if (it.armor != 0 || (item && item->getArmor() != 0) || it.showAttributes) {
 		bool begin = true;
 
-		if (tmp != 0) {
-			s << " (Arm:" << tmp;
+		int32_t armor = (item ? item->getArmor() : it.armor);
+		if (armor != 0) {
+			s << " (Arm:" << armor;
 			begin = false;
 		}
 
@@ -1197,10 +1337,14 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 	}
 
 	if (lookDistance <= 1) {
-		uint32_t weight = (item == nullptr ? it.weight : item->getWeight());
-		if (weight != 0 && it.pickupable) {
-			int32_t amount = weight / it.weight;
-			s << std::endl << getWeightDescription(it, weight, amount);
+		if (item) {
+			uint32_t weight = item->getWeight();
+			if (weight != 0 && it.pickupable) {
+				uint32_t amount = weight / item->getBaseWeight();
+				s << std::endl << getWeightDescription(it, weight, amount);
+			}
+		} else if (it.weight != 0 && it.pickupable) {
+			s << std::endl << getWeightDescription(it, it.weight, 1);
 		}
 	}
 
@@ -1241,24 +1385,27 @@ std::string Item::getNameDescription(const ItemType& it, const Item* item /*= nu
 
 	std::ostringstream s;
 
-	if (!it.name.empty()) {
+	const std::string& name = (item ? item->getName() : it.name);
+	if (!name.empty()) {
 		if (it.stackable && subType > 1) {
 			if (it.showCount) {
 				s << subType << ' ';
 			}
 
-			s << it.getPluralName();
+			s << (item ? item->getPluralName() : it.getPluralName());
 		} else {
-			if (addArticle && !it.article.empty()) {
-				s << it.article << ' ';
+			if (addArticle) {
+				const std::string& article = (item ? item->getArticle() : it.article);
+				if (!article.empty()) {
+					s << article << ' ';
+				}
 			}
 
-			s << it.name;
+			s << name;
 		}
 	} else {
 		s << "an item of type " << it.id;
 	}
-
 	return s.str();
 }
 
@@ -1362,13 +1509,13 @@ std::string ItemAttributes::emptyString;
 
 const std::string& ItemAttributes::getStrAttr(itemAttrTypes type) const
 {
-	if (!validateStrAttrType(type)) {
+	if (!isStrAttrType(type)) {
 		return emptyString;
 	}
 
 	const Attribute* attr = getExistingAttr(type);
 	if (attr) {
-		return *(std::string*)attr->value;
+		return *attr->value;
 	} else {
 		return emptyString;
 	}
@@ -1376,7 +1523,7 @@ const std::string& ItemAttributes::getStrAttr(itemAttrTypes type) const
 
 void ItemAttributes::setStrAttr(itemAttrTypes type, const std::string& value)
 {
-	if (!validateStrAttrType(type)) {
+	if (!isStrAttrType(type)) {
 		return;
 	}
 
@@ -1385,10 +1532,8 @@ void ItemAttributes::setStrAttr(itemAttrTypes type, const std::string& value)
 	}
 
 	Attribute& attr = getAttr(type);
-	if (attr.value) {
-		delete (std::string*)attr.value;
-	}
-	attr.value = (uint8_t*)new std::string(value);
+	delete attr.value;
+	attr.value = new std::string(value);
 }
 
 void ItemAttributes::removeAttribute(itemAttrTypes type)
@@ -1415,7 +1560,7 @@ void ItemAttributes::removeAttribute(itemAttrTypes type)
 
 int32_t ItemAttributes::getIntAttr(itemAttrTypes type) const
 {
-	if (!validateIntAttrType(type)) {
+	if (!isIntAttrType(type)) {
 		return 0;
 	}
 
@@ -1429,55 +1574,20 @@ int32_t ItemAttributes::getIntAttr(itemAttrTypes type) const
 
 void ItemAttributes::setIntAttr(itemAttrTypes type, int32_t value)
 {
-	if (!validateIntAttrType(type)) {
+	if (!isIntAttrType(type)) {
 		return;
 	}
 
-	getAttr(type).value = reinterpret_cast<uint8_t*>(value);
+	getAttr(type).value = reinterpret_cast<std::string*>(value);
 }
 
 void ItemAttributes::increaseIntAttr(itemAttrTypes type, int32_t value)
 {
-	if (!validateIntAttrType(type)) {
+	if (!isIntAttrType(type)) {
 		return;
 	}
 
 	getAttr(type).value += value;
-}
-
-bool ItemAttributes::validateIntAttrType(itemAttrTypes type)
-{
-	switch (type) {
-		case ITEM_ATTRIBUTE_ACTIONID:
-		case ITEM_ATTRIBUTE_UNIQUEID:
-		case ITEM_ATTRIBUTE_OWNER:
-		case ITEM_ATTRIBUTE_DURATION:
-		case ITEM_ATTRIBUTE_DECAYSTATE:
-		case ITEM_ATTRIBUTE_DATE:
-		case ITEM_ATTRIBUTE_CORPSEOWNER:
-		case ITEM_ATTRIBUTE_CHARGES:
-		case ITEM_ATTRIBUTE_FLUIDTYPE:
-		case ITEM_ATTRIBUTE_DOORID:
-			return true;
-
-		default:
-			break;
-	}
-	return false;
-}
-
-bool ItemAttributes::validateStrAttrType(itemAttrTypes type)
-{
-	switch (type) {
-		case ITEM_ATTRIBUTE_DESCRIPTION:
-		case ITEM_ATTRIBUTE_TEXT:
-		case ITEM_ATTRIBUTE_WRITER:
-			return true;
-
-		default:
-			break;
-	}
-	return false;
 }
 
 const ItemAttributes::Attribute* ItemAttributes::getExistingAttr(itemAttrTypes type) const
