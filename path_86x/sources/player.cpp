@@ -536,14 +536,9 @@ void Player::sendIcons() const
 
 	if(getZone() == ZONE_PROTECTION)
 	{
-		if(g_config.getBool(ConfigManager::RETRO_PVP)) {
-			icons |= ICON_PZ;
-		}
-		else {
-			icons |= ICON_PZ;
-			if(hasBitSet(ICON_SWORDS, icons))
-				icons &= ~ICON_SWORDS;
-		}
+		icons |= ICON_PZ;
+		if(hasBitSet(ICON_SWORDS, icons))
+			icons &= ~ICON_SWORDS;
 	}
 
 	if(pzLocked)
@@ -909,20 +904,11 @@ bool Player::canWalkthrough(const Creature* creature) const
 	if(!player)
 		return false;
 
-	if(g_config.getBool(ConfigManager::RETRO_PVP))
-	{
-		if(player->getTile()->ground && Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
-			|| player->getAccess() <= getAccess()))
-			return true;
-	}
-	else
-	{
-		if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) &&
+	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) &&
 			!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
 			&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
 			|| player->getAccess() <= getAccess()))
 			return true;
-	}
 
 	return (player->isGhost() && getGhostAccess() < player->getGhostAccess())
 		|| (isGhost() && getGhostAccess() > player->getGhostAccess());
