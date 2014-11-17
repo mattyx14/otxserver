@@ -74,6 +74,7 @@
 		- Prevent spam commands
 		- Rewrite skull system this solve problems on PZ and other functions on battle
 		- Removed ALLOWED_MAX_PACKETS no are defined on code
+		- Temporal fix to: http://www.blacktibia.org/t37433p30-otx-server-2xs-doomed-elderberry#231929
 		- Update compiler Tutorial
 
 	Note:
