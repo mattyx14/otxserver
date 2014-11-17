@@ -334,7 +334,6 @@ bool ConfigManager::load()
 	m_confNumber[DEFAULT_DEPOT_SIZE] = getGlobalNumber("defaultDepotSize", 2000);
 	m_confBool[USE_CAPACITY] = getGlobalBool("useCapacity", true);
 	m_confBool[DAEMONIZE] = getGlobalBool("daemonize", false);
-	m_confBool[TIBIA_SLOTS] = getGlobalBool("tibiaClassicSlots", true);
 	m_confBool[SKIP_ITEMS_VERSION] = getGlobalBool("skipItemsVersionCheck", false);
 	m_confBool[SILENT_LUA] = getGlobalBool("disableLuaErrors", false);
 	m_confNumber[MAIL_ATTEMPTS] = getGlobalNumber("mailMaxAttempts", 20);

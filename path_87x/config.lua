@@ -160,7 +160,6 @@
 		useMounts = true
 		enableCooldowns = true
 		unmountPlayerInPz = true
-		tibiaClassicSlots = true
 		monsterSpawnWalkback = true
 		allowBlockSpawn = true
 

@@ -157,7 +157,6 @@
 		playerFollowExhaust = 2000
 
 		-- 8.7x + config
-		tibiaClassicSlots = true
 		monsterSpawnWalkback = true
 		allowBlockSpawn = true
 
