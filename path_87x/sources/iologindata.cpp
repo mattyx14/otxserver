@@ -860,7 +860,7 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 {
 	if(preSave && player->health <= 0)
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL)
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
 		{
 			if(player->getSkull() == SKULL_BLACK)
 			{
