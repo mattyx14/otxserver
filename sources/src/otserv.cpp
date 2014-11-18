@@ -139,7 +139,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 #ifdef _WIN32
 	SetConsoleTitle(STATUS_SERVER_NAME);
 #endif
-	std::cout << STATUS_SERVER_NAME << " - Version " << STATUS_SERVER_VERSION << std::endl;
+	std::cout << "The " << STATUS_SERVER_NAME << " Version: (" << STATUS_SERVER_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl;
 	std::cout << "Compiled with: " << BOOST_COMPILER << std::endl;
 	std::cout << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for arch ";
 
@@ -156,8 +156,8 @@ void mainLoader(int, char*[], ServiceManager* services)
 #endif
 	std::cout << std::endl;
 
-	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << std::endl;
-	std::cout << "Visit our forum for updates, support, and resources: http://otland.net/." << std::endl;
+	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
+	std::cout << "Visit our forum for updates, support, and resources: " << MAIN_FORUM <<"." << std::endl;
 	std::cout << std::endl;
 
 	// read global config

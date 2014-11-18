@@ -24,9 +24,10 @@
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "0"
 #define PATCH_VERSION "0"
-#define REVISION_VERSION "-"
+#define REVISION_VERSION "github"
 #define SOFTWARE_CODENAME "DarkKonia"
-#define STATUS_SERVER_DEVELOPERS "Mattyx14"
+#define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
+#define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
 
 #define CLIENT_VERSION_MIN 1041
 #define CLIENT_VERSION_MAX 1041
