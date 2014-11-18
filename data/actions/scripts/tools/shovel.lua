@@ -1,4 +1,4 @@
-local holes = {468, 481, 483}
+local holes = {468, 481, 483, 7932}
 function onUse(cid, item, fromPosition, itemEx, toPosition, isHotkey)
 	if isInArray(holes, itemEx.itemid) then
 		local iEx = Item(itemEx.uid)
