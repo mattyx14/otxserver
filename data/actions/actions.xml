@@ -19,7 +19,6 @@
 	<action itemid="2120" script="tools/rope.lua"/>
 	<action itemid="7731" script="tools/rope.lua"/>
 	<action itemid="2420" script="tools/machete.lua"/>
-	<action itemid="2442" script="tools/machete.lua"/>
 	<action itemid="2550" script="tools/scythe.lua"/>
 	<action itemid="2553" script="tools/pick.lua"/>
 	<action itemid="2580" script="tools/fishing.lua" allowfaruse="1"/>
@@ -145,7 +144,6 @@
 	<action itemid="5786" script="other/music.lua"/>
 	<action itemid="6123" script="other/music.lua"/>
 	<action itemid="9561" script="other/music.lua"/>
-	<action itemid="6572" script="other/music.lua"/>
 
 	<!-- Teleport (stairs, ladders) -->
 	<action itemid="430" script="other/teleport.lua"/>
@@ -250,10 +248,8 @@
 	<action itemid="13508" script="other/taming.lua"/>
 	<action fromid="13535" toid="13539" script="other/taming.lua"/>
 	<action fromid="13938" toid="13939" script="other/taming.lua"/>
-	<action itemid="13941" script="other/cup of molten gold.lua"/>
 	<action fromid="15545" toid="15546" script="other/taming.lua"/>
 	<action fromid="18447" toid="18448" script="other/taming.lua"/>
-	<action itemid="18511" script="other/musicbox.lua"/>
 	<action itemid="18516" script="other/taming.lua"/>
 	<action itemid="20138" script="other/taming.lua"/>
 	<action itemid="22608" script="other/taming.lua"/>
