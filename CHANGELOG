@@ -53,5 +53,5 @@
 ]
 
 [ OTX Server 3.0 Version - "DarkKonia"
-	- 
+	- Move compat to /data/lib/ and added more custom fuctions for to retro compatibility
 ]
