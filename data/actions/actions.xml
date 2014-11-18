@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
 	<!-- Quests -->
+	<action actionid="2000" script="quests/system.lua"/>
 	<action itemid="1740" script="quests/quests.lua"/>
 	<action fromid="1747" toid="1749" script="quests/quests.lua"/>
 	<action uniqueid="30015" script="quests/annihilator.lua"/>

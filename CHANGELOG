@@ -53,5 +53,6 @@
 ]
 
 [ OTX Server 3.0 Version - "DarkKonia"
-	- Move compat to /data/lib/ and added more custom fuctions for to retro compatibility
+	- Added questSystem like to tfs 0.3.7 and otx server 2
+	- Move compat to /data/lib/ and added more custom functions for to retro compatibility
 ]
