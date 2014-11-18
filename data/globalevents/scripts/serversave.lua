@@ -5,7 +5,7 @@ local function serverSave()
 	if shutdownAtServerSave then
 		Game.setGameState(GAME_STATE_SHUTDOWN)
 	else
-		Game.setGameState(GAME_STATE_NORMAL)
+		Game.setGameState(GAME_STATE_CLOSED)
 
 		if cleanMapAtServerSave then
 			cleanMap()
@@ -21,7 +21,7 @@ local function firstServerSaveWarning()
 end
 
 function onThink(interval)
-	broadcastMessage("Server is saving game in 5 minutes. Please go to a safe place.", MESSAGE_STATUS_WARNING)
+	broadcastMessage("Server is saving game in 3 minutes. Please go to a safe place.", MESSAGE_STATUS_WARNING)
 	Game.setGameState(GAME_STATE_STARTUP)
 	addEvent(firstServerSaveWarning, 120000)
 	return not shutdownAtServerSave
