@@ -56,6 +56,7 @@
 	- Added questSystem like to tfs 0.3.7 and otx server 2
 	- Added first items
 	- Added Advance Save
+	- Added Auto Server Save 15 minutes
 	- Change format map to 10.35
 	- More order on /data/actions
 	- Move compat to /data/lib/ and added more custom functions for to retro compatibility
