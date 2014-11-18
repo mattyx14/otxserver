@@ -13,5 +13,6 @@ function onLogin(player)
 	player:sendTextMessage(MESSAGE_STATUS_DEFAULT, loginStr)
 
 	player:registerEvent("PlayerDeath")
+	player:registerEvent("AdvanceSave")
 	return true
 end
