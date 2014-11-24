@@ -680,43 +680,43 @@ bool Spell::playerSpellCheck(Player* player) const
 	}
 
 	if (player->getSkill(SKILL_FIST, SKILLVALUE_LEVEL) < fist) {
-		player->sendCancelMessage(RET_NOTENOUGHFISTLEVEL);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHFISTLEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
 	if (player->getSkill(SKILL_CLUB, SKILLVALUE_LEVEL) < club) {
-		player->sendCancelMessage(RET_NOTENOUGHCLUBLEVEL);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHCLUBLEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
 	if (player->getSkill(SKILL_SWORD, SKILLVALUE_LEVEL) < sword) {
-		player->sendCancelMessage(RET_NOTENOUGHSWORDLEVEL);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHSWORDLEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
 	if (player->getSkill(SKILL_AXE, SKILLVALUE_LEVEL) < axe) {
-		player->sendCancelMessage(RET_NOTENOUGHAXELEVEL);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHAXELEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
 	if (player->getSkill(SKILL_DISTANCE, SKILLVALUE_LEVEL) < distance) {
-		player->sendCancelMessage(RET_NOTENOUGHDISTANCELEVEL);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHDISTANCELEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
 	if (player->getSkill(SKILL_SHIELD, SKILLVALUE_LEVEL) < shield) {
-		player->sendCancelMessage(RET_NOTENOUGHSHIELDLEVEL);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHSHIELDLEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
 	if (player->getSkill(SKILL_FISHING, SKILLVALUE_LEVEL) < fish) {
-		player->sendCancelMessage(RET_NOTENOUGHFISHLEVEL);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHFISHLEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}

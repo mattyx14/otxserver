@@ -237,7 +237,7 @@ std::list<Item*> MonsterType::createLootItem(const LootBlock& lootBlock)
 		}
 
 		if (lootBlock.extraDefense != -1) {
-			tmpItem->setIntAttr(ITEM_ATTRIBUTE_EXTRA_DEFENSE, lootBlock.extraDefense);
+			tmpItem->setIntAttr(ITEM_ATTRIBUTE_EXTRADEFENSE, lootBlock.extraDefense);
 		}
 
 		if (lootBlock.armor != -1) {
