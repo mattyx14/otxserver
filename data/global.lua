@@ -4,6 +4,10 @@ dofile('data/lib/002-tables.lua')
 dofile('data/lib/003-functions.lua')
 dofile('data/lib/compat.lua')
 
+ddos = {};
+ddos.enabled = false;
+ddos.broadcasted = false
+
 TRUE = true
 FALSE = false
 

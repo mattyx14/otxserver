@@ -59,6 +59,7 @@ void Events::clear()
 	playerOnGainExperience = -1;
 	playerOnLoseExperience = -1;
 	playerOnGainSkillTries = -1;
+	playerOnSave = -1;
 }
 
 bool Events::load()
@@ -134,6 +135,8 @@ bool Events::load()
 					playerOnLoseExperience = event;
 				} else if (methodName == "onGainSkillTries") {
 					playerOnGainSkillTries = event;
+				} else if (methodName == "onSave") {
+					playerOnSave = event;
 				} else {
 					std::cout << "[Warning - Events::load] Unknown player method: " << methodName << std::endl;
 				}
@@ -169,6 +172,32 @@ bool Events::eventCreatureOnChangeOutfit(Creature* creature, const Outfit_t& out
 	LuaScriptInterface::setCreatureMetatable(L, -1, creature);
 
 	LuaScriptInterface::pushOutfit(L, outfit);
+
+	return scriptInterface.callFunction(2);
+}
+
+bool Events::eventPlayerOnSave(Player* player)
+{
+	// Player:OnSave(guid)
+	if (playerOnSave == -1) {
+		return true;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		std::cout << "[Error - Events::eventPlayerOnSave] Call stack overflow" << std::endl;
+		return false;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(playerOnSave, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(playerOnSave);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	lua_pushnumber(L, player->getGUID());
 
 	return scriptInterface.callFunction(2);
 }

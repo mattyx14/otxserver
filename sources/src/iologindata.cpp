@@ -26,9 +26,11 @@
 #include "game.h"
 #include "vocation.h"
 #include "house.h"
+#include "events.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
+extern Events* g_events;
 
 Account IOLoginData::loadAccount(uint32_t accno)
 {
@@ -604,6 +606,8 @@ bool IOLoginData::savePlayer(Player* player)
 		query << "UPDATE `players` SET `lastlogin` = " << player->lastLoginSaved << ", `lastip` = " << player->lastIP << " WHERE `id` = " << player->getGUID();
 		return db->executeQuery(query.str());
 	}
+
+	g_events->eventPlayerOnSave(player);
 
 	//serialize conditions
 	PropWriteStream propWriteStream;
