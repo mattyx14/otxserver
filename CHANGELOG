@@ -63,6 +63,7 @@
 	- Added Advance Save
 	- Added Auto Server Save 15 minutes
 	- Added muckremover (ORTS)
+	- Added compatibility with TFS 0.3 scripts // no full and no tested
 	- Change format map to 10.35
 	- More order on /data/actions
 	- Move compat to /data/lib/ and added more custom functions for to retro compatibility

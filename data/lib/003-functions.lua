@@ -1,3 +1,22 @@
+-- Compatibility with TFS 0.3 scripts
+getPlayerByNameWildcard = getPlayerByName
+doCreatureSetStorage = setPlayerStorageValue
+doPlayerSetStorageValue = setPlayerStorageValue
+getCreatureStorage = getPlayerStorageValue
+getCreatureSkullType = getPlayerSkullType
+getCreatureSkull = getPlayerSkullType
+getNpcId = isNpc
+doBroadcastMessage = broadcastMessage
+db.executeQuery = db.storeQuery
+db.query = db.storeQuery
+getStorage = getGlobalStorageValue
+doSetStorage = setGlobalStorageValue
+getItemNameById = getItemName
+getItemWeightById = getItemWeight
+getItemDescriptionsById = getItemDescriptions
+getItemInfo = getItemDescriptions
+getThingPosition = getThingPos
+
 -- Basic --
 function playerExists(name)
 	local resultId = db.storeQuery('SELECT `name` FROM `players` WHERE `name` = ' .. db.escapeString(name))
