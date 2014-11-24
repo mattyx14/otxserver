@@ -33,7 +33,7 @@
 	<action itemid="5942" script="tools/skinning.lua"/>
 	<action itemid="9930" script="tools/rustremover.lua"/>
 	<action itemid="10309" script="tools/noxiousclaw.lua"/>
-	<action itemid="18395" script="other/muckremover.lua"/>
+	<action itemid="18395" script="tools/muckremover.lua"/>
 		<!-- Ceremonial ankh & Ornamented brooch -->
 		<action itemid="6561" script="tools/checkbless.lua"/>
 		<action itemid="12424" script="tools/checkbless.lua"/>
