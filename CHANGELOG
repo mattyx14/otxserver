@@ -49,6 +49,10 @@
 		- Add purseSlot
 ]
 
+[ EXTRAS
+	- Fixed this: http://www.blacktibia.org/t37433p30-otx-server-2xs-doomed-elderberry#231929
+]
+
 [ OTX Server 2.X.Series Version - "Doomed Elderberry"
 	General:
 		- Added classicDepotSystem to 8.x series

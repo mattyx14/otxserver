@@ -162,6 +162,7 @@
 		unmountPlayerInPz = true
 		monsterSpawnWalkback = true
 		allowBlockSpawn = true
+		classicEquipmentSlots = false
 
 		-- Summons and monsters
 		NoShareExpSummonMonster = false

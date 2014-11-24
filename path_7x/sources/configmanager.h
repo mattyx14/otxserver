@@ -316,6 +316,7 @@ class ConfigManager
 			AUTO_STACK,
 			RUNES_HIT_TOP_CREATURE,
 			CLASSIC_DAMAGE_ON_WEAPONS,
+			CLASSIC_EQUIPMENT_SLOTS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

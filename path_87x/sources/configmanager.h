@@ -329,6 +329,7 @@ class ConfigManager
 			SAVE_STATEMENT,
 			MANUAL_ADVANCED_CONFIG,
 			USE_RUNE_REQUIREMENTS,
+			CLASSIC_EQUIPMENT_SLOTS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

@@ -159,6 +159,7 @@
 		-- 8.7x + config
 		monsterSpawnWalkback = true
 		allowBlockSpawn = true
+		classicEquipmentSlots = true
 
 		-- Summons and monsters
 		NoShareExpSummonMonster = false

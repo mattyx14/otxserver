@@ -344,6 +344,7 @@ bool ConfigManager::load()
 	m_confBool[CHARLIST_INFO] = getGlobalBool("charlistBasicInfo", false);
 	m_confBool[CLASSIC_DAMAGE_ON_WEAPONS] = getGlobalBool("classicDamageOnWeapons", true);
 	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
+	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
 
 	m_loaded = true;
 	return true;
