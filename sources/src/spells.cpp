@@ -385,6 +385,13 @@ Spell::Spell()
 	manaPercent = 0;
 	soul = 0;
 	range = -1;
+	fist = 0;
+	club = 0;
+	sword = 0;
+	axe = 0;
+	distance = 0;
+	shield = 0;
+	fish = 0;
 	cooldown = 1000;
 	needTarget = false;
 	needWeapon = false;
@@ -517,6 +524,34 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		range = pugi::cast<int32_t>(attr.value());
 	}
 
+	if ((attr = node.attribute("fist"))) {
+		fist = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("club"))) {
+		club = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("sword"))) {
+		sword = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("axe"))) {
+		axe = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("dist")) || (attr = node.attribute("distance"))) {
+		distance = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("shield"))) {
+		shield = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("fish"))) {
+		fish = pugi::cast<uint32_t>(attr.value());
+	}
+
 	if ((attr = node.attribute("exhaustion")) || (attr = node.attribute("cooldown"))) {
 		cooldown = pugi::cast<uint32_t>(attr.value());
 	}
@@ -640,6 +675,48 @@ bool Spell::playerSpellCheck(Player* player) const
 
 	if (player->getSoul() < soul && !player->hasFlag(PlayerFlag_HasInfiniteSoul)) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHSOUL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkill(SKILL_FIST, SKILLVALUE_LEVEL) < fist) {
+		player->sendCancelMessage(RET_NOTENOUGHFISTLEVEL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkill(SKILL_CLUB, SKILLVALUE_LEVEL) < club) {
+		player->sendCancelMessage(RET_NOTENOUGHCLUBLEVEL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkill(SKILL_SWORD, SKILLVALUE_LEVEL) < sword) {
+		player->sendCancelMessage(RET_NOTENOUGHSWORDLEVEL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkill(SKILL_AXE, SKILLVALUE_LEVEL) < axe) {
+		player->sendCancelMessage(RET_NOTENOUGHAXELEVEL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkill(SKILL_DISTANCE, SKILLVALUE_LEVEL) < distance) {
+		player->sendCancelMessage(RET_NOTENOUGHDISTANCELEVEL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkill(SKILL_SHIELD, SKILLVALUE_LEVEL) < shield) {
+		player->sendCancelMessage(RET_NOTENOUGHSHIELDLEVEL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkill(SKILL_FISHING, SKILLVALUE_LEVEL) < fish) {
+		player->sendCancelMessage(RET_NOTENOUGHFISHLEVEL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}

@@ -220,6 +220,38 @@ std::list<Item*> MonsterType::createLootItem(const LootBlock& lootBlock)
 			tmpItem->setText(lootBlock.text);
 		}
 
+		if (!lootBlock.name.empty()) {
+			tmpItem->setStrAttr(ITEM_ATTRIBUTE_NAME, lootBlock.name);
+		}
+
+		if (!lootBlock.article.empty()) {
+			tmpItem->setStrAttr(ITEM_ATTRIBUTE_ARTICLE, lootBlock.article);
+		}
+
+		if (lootBlock.attack != -1) {
+			tmpItem->setIntAttr(ITEM_ATTRIBUTE_ATTACK, lootBlock.attack);
+		}
+
+		if (lootBlock.defense != -1) {
+			tmpItem->setIntAttr(ITEM_ATTRIBUTE_DEFENSE, lootBlock.defense);
+		}
+
+		if (lootBlock.extraDefense != -1) {
+			tmpItem->setIntAttr(ITEM_ATTRIBUTE_EXTRA_DEFENSE, lootBlock.extraDefense);
+		}
+
+		if (lootBlock.armor != -1) {
+			tmpItem->setIntAttr(ITEM_ATTRIBUTE_ARMOR, lootBlock.armor);
+		}
+
+		if (lootBlock.shootRange != -1) {
+			tmpItem->setIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE, lootBlock.shootRange);
+		}
+
+		if (lootBlock.hitChance != -1) {
+			tmpItem->setIntAttr(ITEM_ATTRIBUTE_HITCHANCE, lootBlock.hitChance);
+		}
+
 		itemList.push_back(tmpItem);
 	}
 	return itemList;
@@ -1258,6 +1290,38 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 
 	if ((attr = node.attribute("text"))) {
 		lootBlock.text = attr.as_string();
+	}
+
+	if ((attr = node.attribute("name"))) {
+		lootBlock.name = attr.as_string();
+	}
+
+	if ((attr = node.attribute("article"))) {
+		lootBlock.article = attr.as_string();
+	}
+
+	if ((attr = node.attribute("attack"))) {
+		lootBlock.attack = pugi::cast<int32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("defense"))) {
+		lootBlock.defense = pugi::cast<int32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("extradefense"))) {
+		lootBlock.extraDefense = pugi::cast<int32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("armor"))) {
+		lootBlock.armor = pugi::cast<int32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("shootrange"))) {
+		lootBlock.shootRange = pugi::cast<int32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("hitchance"))) {
+		lootBlock.hitChance = pugi::cast<int32_t>(attr.value());
 	}
 	return true;
 }

@@ -53,6 +53,8 @@
 ]
 
 [ OTX Server 3.0 Version - "DarkKonia"
+	- Added itemAttribute to monsters
+	- Added skill require for use spells this for Evul
 	- Added onSave event
 	- Added DDoS protection
 	- Added missing description to rope

@@ -173,6 +173,13 @@ class Spell : public BaseSpell
 		uint32_t level;
 		uint32_t magLevel;
 		int32_t range;
+		int32_t fist;
+		int32_t club;
+		int32_t sword;
+		int32_t axe;
+		int32_t distance;
+		int32_t shield;
+		int32_t fish;
 
 		bool needTarget;
 		bool needWeapon;
