@@ -53,6 +53,7 @@
 ]
 
 [ OTX Server 3.0 Version - "DarkKonia"
+	- Added OTX-icon to console
 	- Added itemAttribute to monsters
 	- Added skill require for use spells this for Evul
 	- Added onSave event
