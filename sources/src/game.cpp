@@ -50,6 +50,7 @@
 #include "spawn.h"
 #include "connection.h"
 #include "events.h"
+#include "databasetasks.h"
 
 extern ConfigManager g_config;
 extern Actions* g_actions;
@@ -174,6 +175,7 @@ void Game::setGameState(GameState_t newState)
 				createTask(std::bind(&Game::shutdown, this)));
 
 			g_scheduler.stop();
+			g_databaseTasks.stop();
 			g_dispatcher.stop();
 			break;
 		}
@@ -1749,8 +1751,12 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 		return item;
 	}
 
-	const ItemType& curType = Item::items[item->getID()];
 	const ItemType& newType = Item::items[newId];
+	if (newType.id == 0) {
+		return item;
+	}
+
+	const ItemType& curType = Item::items[item->getID()];
 	if (curType.alwaysOnTop != newType.alwaysOnTop) {
 		//This only occurs when you transform items on tiles from a downItem to a topItem (or vice versa)
 		//Remove the old, and add the new
@@ -4587,6 +4593,7 @@ void Game::shutdown()
 	std::cout << "Shutting down server..." << std::flush;
 
 	g_scheduler.shutdown();
+	g_databaseTasks.shutdown();
 	g_dispatcher.shutdown();
 	Spawns::getInstance()->clear();
 	Raids::getInstance()->clear();
@@ -5604,83 +5611,6 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	player->sendMarketEnter(player->getLastDepotId());
 	offer.timestamp += marketOfferDuration;
 	player->sendMarketAcceptOffer(offer);
-}
-
-void Game::checkExpiredMarketOffers()
-{
-	const ExpiredMarketOfferList& expiredBuyOffers = IOMarket::getExpiredOffers(MARKETACTION_BUY);
-	for (const ExpiredMarketOffer& offer : expiredBuyOffers) {
-		uint64_t totalPrice = static_cast<uint64_t>(offer.price) * offer.amount;
-
-		Player* player = getPlayerByGUID(offer.playerId);
-		if (player) {
-			player->bankBalance += totalPrice;
-		} else {
-			IOLoginData::increaseBankBalance(offer.playerId, totalPrice);
-		}
-
-		IOMarket::moveOfferToHistory(offer.id, OFFERSTATE_EXPIRED);
-	}
-
-	const ExpiredMarketOfferList& expiredSellOffers = IOMarket::getExpiredOffers(MARKETACTION_SELL);
-	for (const ExpiredMarketOffer& offer : expiredSellOffers) {
-		Player* player = getPlayerByGUID(offer.playerId);
-		if (!player) {
-			player = new Player(nullptr);
-			if (!IOLoginData::loadPlayerById(player, offer.playerId)) {
-				delete player;
-				continue;
-			}
-		}
-
-		const ItemType& itemType = Item::items[offer.itemId];
-		if (itemType.id == 0) {
-			continue;
-		}
-
-		if (itemType.stackable) {
-			uint16_t tmpAmount = offer.amount;
-			while (tmpAmount > 0) {
-				uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
-				Item* item = Item::CreateItem(itemType.id, stackCount);
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
-				}
-
-				tmpAmount -= stackCount;
-			}
-		} else {
-			int32_t subType;
-			if (itemType.charges != 0) {
-				subType = itemType.charges;
-			} else {
-				subType = -1;
-			}
-
-			for (uint16_t i = 0; i < offer.amount; ++i) {
-				Item* item = Item::CreateItem(itemType.id, subType);
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
-				}
-			}
-		}
-
-		if (player->isOffline()) {
-			IOLoginData::savePlayer(player);
-			delete player;
-		}
-
-		IOMarket::moveOfferToHistory(offer.id, OFFERSTATE_EXPIRED);
-	}
-
-	int32_t checkExpiredMarketOffersEachMinutes = g_config.getNumber(ConfigManager::CHECK_EXPIRED_MARKET_OFFERS_EACH_MINUTES);
-	if (checkExpiredMarketOffersEachMinutes <= 0) {
-		return;
-	}
-
-	g_scheduler.addEvent(createSchedulerTask(checkExpiredMarketOffersEachMinutes * 60 * 1000, std::bind(&Game::checkExpiredMarketOffers, this)));
 }
 
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)

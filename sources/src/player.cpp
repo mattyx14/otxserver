@@ -1585,19 +1585,21 @@ void Player::onRemoveInventoryItem(Item* item)
 
 void Player::checkTradeState(const Item* item)
 {
-	if (tradeItem && tradeState != TRADE_TRANSFER) {
-		if (tradeItem == item) {
-			g_game.internalCloseTrade(this);
-		} else {
-			const Container* container = dynamic_cast<const Container*>(item->getParent());
-			while (container) {
-				if (container == tradeItem) {
-					g_game.internalCloseTrade(this);
-					break;
-				}
+	if (!tradeItem || tradeState == TRADE_TRANSFER) {
+		return;
+	}
 
-				container = dynamic_cast<const Container*>(container->getParent());
+	if (tradeItem == item) {
+		g_game.internalCloseTrade(this);
+	} else {
+		const Container* container = dynamic_cast<const Container*>(item->getParent());
+		while (container) {
+			if (container == tradeItem) {
+				g_game.internalCloseTrade(this);
+				break;
 			}
+
+			container = dynamic_cast<const Container*>(container->getParent());
 		}
 	}
 }
@@ -2502,7 +2504,7 @@ bool Player::hasCapacity(const Item* item, uint32_t count) const
 		return true;
 	}
 
-	uint32_t itemWeight = item->getBaseWeight();
+	uint32_t itemWeight = item->getContainer() != nullptr ? item->getWeight() : item->getBaseWeight();
 	if (item->isStackable()) {
 		itemWeight *= count;
 	}

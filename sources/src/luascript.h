@@ -258,7 +258,7 @@ class LuaScriptInterface
 		void callVoidFunction(int32_t params);
 
 		//push/pop common structures
-		static void pushThing(lua_State* L, Thing* thing, uint32_t uid);
+		static void pushThing(lua_State* L, Thing* thing);
 		static void pushVariant(lua_State* L, const LuaVariant& var);
 		static void pushString(lua_State* L, const std::string& value);
 		static void pushCallback(lua_State* L, int32_t callback);
@@ -402,7 +402,7 @@ class LuaScriptInterface
 		static const luaL_Reg luaBitReg[7];
 #endif
 		static const luaL_Reg luaConfigManagerTable[4];
-		static const luaL_Reg luaDatabaseTable[7];
+		static const luaL_Reg luaDatabaseTable[9];
 		static const luaL_Reg luaResultTable[7];
 
 		static int32_t protectedCall(lua_State* L, int32_t nargs, int32_t nresults);
@@ -526,7 +526,9 @@ class LuaScriptInterface
 		static int32_t luaConfigManagerGetBoolean(lua_State* L);
 
 		static int32_t luaDatabaseExecute(lua_State* L);
+		static int32_t luaDatabaseAsyncExecute(lua_State* L);
 		static int32_t luaDatabaseStoreQuery(lua_State* L);
+		static int32_t luaDatabaseAsyncStoreQuery(lua_State* L);
 		static int32_t luaDatabaseEscapeString(lua_State* L);
 		static int32_t luaDatabaseEscapeBlob(lua_State* L);
 		static int32_t luaDatabaseLastInsertId(lua_State* L);
@@ -694,6 +696,7 @@ class LuaScriptInterface
 
 		// Item
 		static int32_t luaItemCreate(lua_State* L);
+		static int32_t luaItemIndex(lua_State* L);
 
 		static int32_t luaItemIsCreature(lua_State* L);
 		static int32_t luaItemIsItem(lua_State* L);
@@ -717,6 +720,7 @@ class LuaScriptInterface
 		static int32_t luaItemGetCount(lua_State* L);
 		static int32_t luaItemGetCharges(lua_State* L);
 		static int32_t luaItemGetFluidType(lua_State* L);
+		static int32_t luaItemGetWeight(lua_State* L);
 
 		static int32_t luaItemGetSubType(lua_State* L);
 
@@ -767,6 +771,7 @@ class LuaScriptInterface
 
 		// Creature
 		static int32_t luaCreatureCreate(lua_State* L);
+		static int32_t luaCreatureIndex(lua_State* L);
 
 		static int32_t luaCreatureRegisterEvent(lua_State* L);
 		static int32_t luaCreatureUnregisterEvent(lua_State* L);

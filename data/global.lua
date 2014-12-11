@@ -78,16 +78,6 @@ function getPvpBlessingCost(level)
 	end
 end
 
-function Player.getBlessings(self)
-	local blessings = 0
-	for i = 1, 5 do
-		if self:hasBlessing(i) then
-			blessings = blessings + 1
-		end
-	end
-	return blessings
-end
-
 function isInRange(pos, fromPos, toPos)
 	return pos.x >= fromPos.x and pos.y >= fromPos.y and pos.z >= fromPos.z and pos.x <= toPos.x and pos.y <= toPos.y and pos.z <= toPos.z
 end
@@ -142,14 +132,6 @@ function isKnight(cid)
 	return isInArray({4, 8}, player:getVocation():getId())
 end
 
-function Player.isMage(self)
-	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
-end
-
-function Player.isWarrior(self)
-	return isInArray({3, 4, 7, 8}, self:getVocation():getId())
-end
-
 function getTibianTime()
 	local worldTime = getWorldTime()
 	local hours = math.floor(worldTime / 60)
@@ -160,33 +142,6 @@ function getTibianTime()
 	end
 	return hours .. ':' .. minutes
 end
-
-function getRealTime()
-	local hours = tonumber(os.date("%H", os.time()))
-	local minutes = tonumber(os.date("%M", os.time()))
-
-	if hours < 10 then
-		hours = '0' .. hours
-	end
-	if minutes < 10 then
-		minutes = '0' .. minutes
-	end
-	return hours .. ':' .. minutes
-end
-
-function getRealDate()
-	local month = tonumber(os.date("%m", os.time()))
-	local day = tonumber(os.date("%d", os.time()))
-
-	if month < 10 then
-		month = '0' .. month
-	end
-	if day < 10 then
-		day = '0' .. day
-	end
-	return day .. '/' .. month
-end
-
 function doForceSummonCreature(name, pos)
 	local creature = doSummonCreature(name, pos)
 	if creature == false then
@@ -425,4 +380,48 @@ function Game.broadcastMessage(message, messageType)
 	for _, player in ipairs(Game.getPlayers()) do
 		player:sendTextMessage(messageType, message)
 	end
+end
+
+function Player.getBlessings(self)
+	local blessings = 0
+	for i = 1, 5 do
+		if self:hasBlessing(i) then
+			blessings = blessings + 1
+		end
+	end
+	return blessings
+end
+
+function Player.isMage(self)
+	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
+end
+
+function Player.isWarrior(self)
+	return isInArray({3, 4, 7, 8}, self:getVocation():getId())
+end
+
+function getRealTime()
+	local hours = tonumber(os.date("%H", os.time()))
+	local minutes = tonumber(os.date("%M", os.time()))
+
+	if hours < 10 then
+		hours = '0' .. hours
+	end
+	if minutes < 10 then
+		minutes = '0' .. minutes
+	end
+	return hours .. ':' .. minutes
+end
+
+function getRealDate()
+	local month = tonumber(os.date("%m", os.time()))
+	local day = tonumber(os.date("%d", os.time()))
+
+	if month < 10 then
+		month = '0' .. month
+	end
+	if day < 10 then
+		day = '0' .. day
+	end
+	return day .. '/' .. month
 end

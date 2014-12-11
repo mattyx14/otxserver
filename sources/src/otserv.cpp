@@ -44,7 +44,9 @@
 #include "house.h"
 #include "databasemanager.h"
 #include "scheduler.h"
+#include "databasetasks.h"
 
+DatabaseTasks g_databaseTasks;
 Dispatcher g_dispatcher;
 Scheduler g_scheduler;
 
@@ -106,6 +108,7 @@ int main(int argc, char* argv[])
 					std::bind(&Game::shutdown, &g_game)
 				));
 				g_scheduler.stop();
+				g_databaseTasks.stop();
 				g_dispatcher.stop();
 			}));
 			ExitThread(0);
@@ -113,18 +116,22 @@ int main(int argc, char* argv[])
 #endif
 		servicer.run();
 		g_scheduler.join();
+		g_databaseTasks.join();
 		g_dispatcher.join();
 	} else {
 		std::cout << ">> No services running. The server is NOT online." << std::endl;
 		g_dispatcher.addTask(createTask([]() {
 			g_dispatcher.addTask(createTask([]() {
 				g_scheduler.shutdown();
+				g_databaseTasks.shutdown();
 				g_dispatcher.shutdown();
 			}));
 			g_scheduler.stop();
+			g_databaseTasks.stop();
 			g_dispatcher.stop();
 		}));
 		g_scheduler.join();
+		g_databaseTasks.join();
 		g_dispatcher.join();
 	}
 	return 0;
@@ -200,6 +207,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 		startupErrorMessage("The database you have specified in config.lua is empty, please import the schema.sql to your database.");
 		return;
 	}
+	g_databaseTasks.start();
 
 	DatabaseManager::updateDatabase();
 
@@ -283,7 +291,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	services->add<ProtocolOld>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 
 	Houses::getInstance().payHouses();
-	g_game.checkExpiredMarketOffers();
+	IOMarket::checkExpiredOffers();
 	IOMarket::getInstance()->updateStatistics();
 
 	std::cout << ">> Loaded all modules, server starting up..." << std::endl;
