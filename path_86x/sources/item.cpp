@@ -182,18 +182,13 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 		setFluidType(amount);
 	else if(it.stackable)
 	{
-		if(amount != 0)
+		if(amount)
 			setItemCount(amount);
-		else if(it.charges != 0)
+		else if(it.charges)
 			setItemCount(it.charges);
 	}
 	else if(it.charges)
-	{
-		if(amount != 0)
-			setCharges(amount);
-		else
-			setCharges(it.charges);
-	}
+		setCharges(amount ? amount : it.charges);
 
 	if(it.armorRndMin > 0 && it.armorRndMax > it.armorRndMin)
 		setAttribute("armor", it.armorRndMin + rand() % (it.armorRndMax+1 - it.armorRndMin));

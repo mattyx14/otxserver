@@ -3047,6 +3047,24 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 	if((ret == RET_NOERROR || ret == RET_NOTENOUGHROOM) && !hasCapacity(item, count)) //check if enough capacity
 		return RET_NOTENOUGHCAPACITY;
 
+	if(index == SLOT_LEFT || index == SLOT_RIGHT)
+	{
+		if(ret == RET_NOERROR && item->getWeaponType() != WEAPON_NONE)
+			self->setLastAttack(OTSYS_TIME());
+
+		Item* tmpItem = inventory[(slots_t)index];
+		if(ret == RET_BOTHHANDSNEEDTOBEFREE && g_game.internalAddItem(NULL, self, tmpItem, INDEX_WHEREEVER) == RET_NOERROR)
+		{
+			self->sendRemoveInventoryItem((slots_t)index, tmpItem);
+			self->onRemoveInventoryItem((slots_t)index, tmpItem);
+
+			self->inventory[(slots_t)index] = NULL;
+			self->updateWeapon();
+			self->inventoryWeight -= tmpItem->getWeight();
+			self->sendStats();
+		}
+	}
+
 	return ret;
 }
 
