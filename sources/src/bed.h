@@ -29,7 +29,6 @@ class BedItem final : public Item
 {
 	public:
 		BedItem(uint16_t id);
-		~BedItem() {}
 
 		BedItem* getBed() final {
 			return this;
@@ -48,15 +47,9 @@ class BedItem final : public Item
 		uint32_t getSleeper() const {
 			return sleeperGUID;
 		}
-		void setSleeper(uint32_t guid) {
-			sleeperGUID = guid;
-		}
 
 		uint64_t getSleepStart() const {
 			return sleepStart;
-		}
-		void setSleepStart(uint64_t now) {
-			sleepStart = now;
 		}
 
 		House* getHouse() const {

@@ -33,10 +33,10 @@ class Player;
 class AccessList
 {
 	public:
-		bool parseList(const std::string& _list);
-		bool addPlayer(const std::string& name);
-		bool addGuild(const std::string& guildName);
-		bool addExpression(const std::string& expression);
+		void parseList(const std::string& _list);
+		void addPlayer(const std::string& name);
+		void addGuild(const std::string& name);
+		void addExpression(const std::string& expression);
 
 		bool isInList(const Player* player);
 
@@ -55,6 +55,10 @@ class Door final : public Item
 	public:
 		Door(uint16_t _type);
 		~Door();
+
+		// non-copyable
+		Door(const Door&) = delete;
+		Door& operator=(const Door&) = delete;
 
 		Door* getDoor() final {
 			return this;
@@ -118,7 +122,6 @@ class HouseTransferItem final : public Item
 		HouseTransferItem(House* _house) : Item(0) {
 			house = _house;
 		}
-		~HouseTransferItem() {}
 
 		void onTradeEvent(TradeEvents_t event, Player* owner) final;
 		bool canTransform() const final {
@@ -133,7 +136,6 @@ class House
 {
 	public:
 		House(uint32_t _houseid);
-		~House() {}
 
 		void addTile(HouseTile* tile);
 		void updateDoorDescription() const;
@@ -275,6 +277,10 @@ class Houses
 				delete it.second;
 			}
 		}
+
+		// non-copyable
+		Houses(const Houses&) = delete;
+		Houses& operator=(const Houses&) = delete;
 
 	public:
 		static Houses& getInstance() {

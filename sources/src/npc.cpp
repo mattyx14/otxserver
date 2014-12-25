@@ -56,12 +56,11 @@ void Npcs::reload()
 
 Npc* Npc::createNpc(const std::string& name)
 {
-	Npc* npc = new Npc(name);
+	std::unique_ptr<Npc> npc(new Npc(name));
 	if (!npc->load()) {
-		delete npc;
 		return nullptr;
 	}
-	return npc;
+	return npc.release();
 }
 
 Npc::Npc(const std::string& _name) :
@@ -416,7 +415,7 @@ bool Npc::canWalkTo(const Position& fromPos, Direction dir) const
 		return false;
 	}
 
-	Tile* tile = g_game.getTile(toPos.x, toPos.y, toPos.z);
+	Tile* tile = g_game.getTile(toPos);
 	if (!tile || tile->__queryAdd(0, this, 1, 0) != RETURNVALUE_NOERROR) {
 		return false;
 	}
@@ -540,11 +539,6 @@ NpcScriptInterface::NpcScriptInterface() :
 {
 	m_libLoaded = false;
 	initState();
-}
-
-NpcScriptInterface::~NpcScriptInterface()
-{
-	//
 }
 
 bool NpcScriptInterface::initState()
@@ -1135,11 +1129,6 @@ NpcEventsHandler::NpcEventsHandler(const std::string& file, Npc* npc)
 		m_onPlayerEndTrade = m_scriptInterface->getEvent("onPlayerEndTrade");
 		m_onThink = m_scriptInterface->getEvent("onThink");
 	}
-}
-
-NpcEventsHandler::~NpcEventsHandler()
-{
-	//
 }
 
 bool NpcEventsHandler::isLoaded() const

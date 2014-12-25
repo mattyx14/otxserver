@@ -47,7 +47,6 @@ class ValueCallback final : public CallBack
 class TileCallback final : public CallBack
 {
 	public:
-		TileCallback() {}
 		void onTileCombat(Creature* creature, Tile* tile) const;
 
 	protected:
@@ -57,7 +56,6 @@ class TileCallback final : public CallBack
 class TargetCallback final : public CallBack
 {
 	public:
-		TargetCallback() {}
 		void onTargetCombat(Creature* creature, Creature* target) const;
 
 	protected:
@@ -155,6 +153,9 @@ class MatrixArea
 			delete[] data_;
 		}
 
+		// non-assignable
+		MatrixArea& operator=(const MatrixArea&) = delete;
+
 		void setValue(uint32_t row, uint32_t col, bool value) const {
 			data_[row][col] = value;
 		}
@@ -200,11 +201,13 @@ class AreaCombat
 		AreaCombat() {
 			hasExtArea = false;
 		}
+		AreaCombat(const AreaCombat& rhs);
 		~AreaCombat() {
 			clear();
 		}
 
-		AreaCombat(const AreaCombat& rhs);
+		// non-assignable
+		AreaCombat& operator=(const AreaCombat&) = delete;
 
 		ReturnValue doCombat(Creature* attacker, const Position& pos, const Combat& combat) const;
 		void getList(const Position& centerPos, const Position& targetPos, std::list<Tile*>& list) const;
@@ -271,6 +274,10 @@ class Combat
 	public:
 		Combat();
 		~Combat();
+
+		// non-copyable
+		Combat(const Combat&) = delete;
+		Combat& operator=(const Combat&) = delete;
 
 		static void doCombatHealth(Creature* caster, Creature* target, CombatDamage& damage, const CombatParams& params);
 		static void doCombatHealth(Creature* caster, const Position& position, const AreaCombat* area, CombatDamage& damage, const CombatParams& params);
@@ -358,7 +365,6 @@ class MagicField final : public Item
 		MagicField(uint16_t _type) : Item(_type) {
 			createTime = OTSYS_TIME();
 		}
-		~MagicField() {}
 
 		MagicField* getMagicField() final {
 			return this;

@@ -39,16 +39,17 @@ enum TargetSearchType_t {
 
 class Monster final : public Creature
 {
-	private:
-		Monster(MonsterType* mtype);
-
 	public:
-		static Monster* createMonster(MonsterType* mType);
 		static Monster* createMonster(const std::string& name);
 		static int32_t despawnRange;
 		static int32_t despawnRadius;
 
+		Monster(MonsterType* mtype);
 		~Monster();
+
+		// non-copyable
+		Monster(const Monster&) = delete;
+		Monster& operator=(const Monster&) = delete;
 
 		Monster* getMonster() final {
 			return this;

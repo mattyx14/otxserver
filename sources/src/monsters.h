@@ -90,6 +90,10 @@ class MonsterType
 		MonsterType();
 		~MonsterType();
 
+		// non-copyable
+		MonsterType(const MonsterType&) = delete;
+		MonsterType& operator=(const MonsterType&) = delete;
+
 		void reset();
 
 		std::map<CombatType_t, int32_t> elementMap;
@@ -162,6 +166,10 @@ class Monsters
 	public:
 		Monsters();
 		~Monsters();
+
+		// non-copyable
+		Monsters(const Monsters&) = delete;
+		Monsters& operator=(const Monsters&) = delete;
 
 		bool loadFromXml(bool reloading = false);
 		bool isLoaded() const {

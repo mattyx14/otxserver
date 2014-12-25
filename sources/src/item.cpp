@@ -169,7 +169,6 @@ Item::Item(const Item& i) :
 	parent = nullptr;
 	useCount = 0;
 
-	//std::cout << "Item copy constructor " << this << std::endl;
 	id = i.id;
 	count = i.count;
 	loadedFromMap = i.loadedFromMap;
@@ -203,7 +202,6 @@ void Item::moveAttributes(Item* item)
 
 Item::~Item()
 {
-	//std::cout << "Item destructor " << this << std::endl;
 	delete attributes;
 }
 
@@ -1183,7 +1181,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		if (it.abilities) {
 			if (it.abilities->speed > 0) {
 				s << " (speed " << std::showpos << (it.abilities->speed / 2) << std::noshowpos << ')';
-			} else if (it.abilities && hasBitSet(CONDITION_DRUNK, it.abilities->conditionSuppressions)) {
+			} else if (hasBitSet(CONDITION_DRUNK, it.abilities->conditionSuppressions)) {
 				s << " (hard drinking)";
 			} else if (it.abilities->invisible) {
 				s << " (invisibility)";
@@ -1338,13 +1336,12 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 	if (lookDistance <= 1) {
 		if (item) {
-			uint32_t weight = item->getWeight();
+			const uint32_t weight = item->getWeight();
 			if (weight != 0 && it.pickupable) {
-				uint32_t amount = weight / item->getBaseWeight();
-				s << std::endl << getWeightDescription(it, weight, amount);
+				s << std::endl << getWeightDescription(it, weight, item->getItemCount());
 			}
 		} else if (it.weight != 0 && it.pickupable) {
-			s << std::endl << getWeightDescription(it, it.weight, 1);
+			s << std::endl << getWeightDescription(it, it.weight);
 		}
 	}
 

@@ -39,8 +39,6 @@ class Spawns
 
 		static bool isInZone(const Position& centerPos, int32_t radius, const Position& pos);
 
-		~Spawns();
-
 		bool loadFromXml(const std::string& _filename);
 		void startup();
 		void clear();
@@ -51,7 +49,7 @@ class Spawns
 
 	private:
 		std::list<Npc*> npcList;
-		std::list<Spawn*> spawnList;
+		std::forward_list<Spawn> spawnList;
 		std::string filename;
 		bool loaded, started;
 };
@@ -69,6 +67,10 @@ class Spawn
 	public:
 		Spawn(const Position& pos, int32_t radius) : centerPos(pos), radius(radius), interval(60000), checkSpawnEvent() {}
 		~Spawn();
+
+		// non-copyable
+		Spawn(const Spawn&) = delete;
+		Spawn& operator=(const Spawn&) = delete;
 
 		bool addMonster(const std::string& _name, const Position& _pos, Direction _dir, uint32_t _interval);
 		void removeMonster(Monster* monster);

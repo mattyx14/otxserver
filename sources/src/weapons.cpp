@@ -167,11 +167,6 @@ Weapon::Weapon(LuaScriptInterface* _interface) :
 	ammoAction = AMMOACTION_NONE;
 }
 
-Weapon::~Weapon()
-{
-	//
-}
-
 bool Weapon::configureEvent(const pugi::xml_node& node)
 {
 	pugi::xml_attribute attr;
@@ -182,23 +177,23 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 	id = pugi::cast<uint16_t>(attr.value());
 
 	if ((attr = node.attribute("level"))) {
-		level = pugi::cast<int32_t>(attr.value());
+		level = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("maglv")) || (attr = node.attribute("maglevel"))) {
-		magLevel = pugi::cast<int32_t>(attr.value());
+		magLevel = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("mana"))) {
-		mana = pugi::cast<int32_t>(attr.value());
+		mana = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("manapercent"))) {
-		manaPercent = pugi::cast<int32_t>(attr.value());
+		manaPercent = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("soul"))) {
-		soul = pugi::cast<int32_t>(attr.value());
+		soul = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("prem"))) {
@@ -373,7 +368,7 @@ bool Weapon::useFist(Player* player, Creature* target)
 	}
 
 	float attackFactor = player->getAttackFactor();
-	int32_t attackSkill = player->getSkill(SKILL_FIST, SKILLVALUE_LEVEL);
+	int32_t attackSkill = player->getSkillLevel(SKILL_FIST);
 	int32_t attackValue = 7;
 
 	int32_t maxDamage = Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor);
@@ -527,15 +522,6 @@ WeaponMelee::WeaponMelee(LuaScriptInterface* _interface) :
 	params.blockedByArmor = true;
 	params.blockedByShield = true;
 	params.combatType = COMBAT_PHYSICALDAMAGE;
-}
-
-bool WeaponMelee::configureEvent(const pugi::xml_node& node)
-{
-	if (!Weapon::configureEvent(node)) {
-		return false;
-	}
-
-	return true;
 }
 
 bool WeaponMelee::configureWeapon(const ItemType& it)
@@ -735,7 +721,7 @@ bool WeaponDistance::useWeapon(Player* player, Item* item, Creature* target) con
 
 	if (hitChance == 0) {
 		//hit chance is based on distance to target and distance skill
-		uint32_t skill = player->getSkill(SKILL_DISTANCE, SKILLVALUE_LEVEL);
+		uint32_t skill = player->getSkillLevel(SKILL_DISTANCE);
 		const Position& playerPos = player->getPosition();
 		const Position& targetPos = target->getPosition();
 		uint32_t distance = std::max<uint32_t>(Position::getDistanceX(playerPos, targetPos), Position::getDistanceY(playerPos, targetPos));
@@ -889,7 +875,7 @@ int32_t WeaponDistance::getElementDamage(const Player* player, const Creature* t
 		}
 	}
 
-	int32_t attackSkill = player->getSkill(SKILL_DISTANCE, SKILLVALUE_LEVEL);
+	int32_t attackSkill = player->getSkillLevel(SKILL_DISTANCE);
 	float attackFactor = player->getAttackFactor();
 
 	int32_t minValue = 0;
@@ -916,7 +902,7 @@ int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* ta
 		}
 	}
 
-	int32_t attackSkill = player->getSkill(SKILL_DISTANCE, SKILLVALUE_LEVEL);
+	int32_t attackSkill = player->getSkillLevel(SKILL_DISTANCE);
 	float attackFactor = player->getAttackFactor();
 
 	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->distDamageMultiplier);

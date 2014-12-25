@@ -69,8 +69,9 @@ struct IntervalInfo {
 class Condition
 {
 	public:
+		Condition() = default;
 		Condition(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		virtual ~Condition() {}
+		virtual ~Condition() = default;
 
 		virtual bool startCondition(Creature* creature);
 		virtual bool executeCondition(Creature* creature, int32_t interval);
@@ -124,7 +125,6 @@ class ConditionGeneric : public Condition
 {
 	public:
 		ConditionGeneric(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionGeneric() {}
 
 		bool startCondition(Creature* creature) override;
 		bool executeCondition(Creature* creature, int32_t interval) override;
@@ -141,7 +141,6 @@ class ConditionAttributes final : public ConditionGeneric
 {
 	public:
 		ConditionAttributes(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionAttributes() {}
 
 		bool startCondition(Creature* creature) final;
 		bool executeCondition(Creature* creature, int32_t interval) final;
@@ -176,7 +175,6 @@ class ConditionRegeneration final : public ConditionGeneric
 {
 	public:
 		ConditionRegeneration(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionRegeneration() {}
 
 		void addCondition(Creature* creature, const Condition* addCondition) final;
 		bool executeCondition(Creature* creature, int32_t interval) final;
@@ -205,7 +203,6 @@ class ConditionSoul final : public ConditionGeneric
 {
 	public:
 		ConditionSoul(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionSoul() {}
 
 		void addCondition(Creature* creature, const Condition* addCondition) final;
 		bool executeCondition(Creature* creature, int32_t interval) final;
@@ -230,7 +227,6 @@ class ConditionInvisible final : public ConditionGeneric
 {
 	public:
 		ConditionInvisible(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionInvisible() {}
 
 		bool startCondition(Creature* creature) final;
 		void endCondition(Creature* creature) final;
@@ -243,8 +239,8 @@ class ConditionInvisible final : public ConditionGeneric
 class ConditionDamage final : public Condition
 {
 	public:
+		ConditionDamage() = default;
 		ConditionDamage(ConditionId_t _id, ConditionType_t _type, bool _buff = false, uint32_t _subId = 0);
-		~ConditionDamage() {}
 
 		static void generateDamageList(int32_t amount, int32_t start, std::list<int32_t>& list);
 
@@ -297,7 +293,6 @@ class ConditionSpeed final : public Condition
 {
 	public:
 		ConditionSpeed(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId, int32_t changeSpeed);
-		~ConditionSpeed() {}
 
 		bool startCondition(Creature* creature) final;
 		bool executeCondition(Creature* creature, int32_t interval) final;
@@ -333,7 +328,6 @@ class ConditionOutfit final : public Condition
 {
 	public:
 		ConditionOutfit(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionOutfit() {}
 
 		bool startCondition(Creature* creature) final;
 		bool executeCondition(Creature* creature, int32_t interval) final;
@@ -360,7 +354,6 @@ class ConditionLight final : public Condition
 {
 	public:
 		ConditionLight(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId, uint8_t _lightlevel, uint8_t _lightcolor);
-		~ConditionLight() {}
 
 		bool startCondition(Creature* creature) final;
 		bool executeCondition(Creature* creature, int32_t interval) final;
@@ -387,7 +380,6 @@ class ConditionSpellCooldown final : public ConditionGeneric
 {
 	public:
 		ConditionSpellCooldown(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionSpellCooldown() {}
 
 		bool startCondition(Creature* creature) final;
 		void addCondition(Creature* creature, const Condition* condition) final;
@@ -401,7 +393,6 @@ class ConditionSpellGroupCooldown final : public ConditionGeneric
 {
 	public:
 		ConditionSpellGroupCooldown(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff = false, uint32_t _subId = 0);
-		~ConditionSpellGroupCooldown() {}
 
 		bool startCondition(Creature* creature) final;
 		void addCondition(Creature* creature, const Condition* condition) final;

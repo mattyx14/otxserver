@@ -28,11 +28,6 @@ Teleport::Teleport(uint16_t _type) : Item(_type)
 {
 }
 
-Teleport::~Teleport()
-{
-	//
-}
-
 Attr_ReadValue Teleport::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
 	if (attr == ATTR_TELE_DEST) {
@@ -81,7 +76,7 @@ void Teleport::__addThing(Thing* thing)
 
 void Teleport::__addThing(int32_t, Thing* thing)
 {
-	Tile* destTile = g_game.getTile(destPos.x, destPos.y, destPos.z);
+	Tile* destTile = g_game.getTile(destPos);
 	if (!destTile) {
 		return;
 	}

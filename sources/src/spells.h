@@ -39,6 +39,10 @@ class Spells final : public BaseEvents
 		Spells();
 		~Spells();
 
+		// non-copyable
+		Spells(const Spells&) = delete;
+		Spells& operator=(const Spells&) = delete;
+
 		Spell* getSpellByName(const std::string& name);
 		RuneSpell* getRuneSpell(uint32_t id);
 		RuneSpell* getRuneSpellByName(const std::string& name);
@@ -73,8 +77,8 @@ typedef bool (RuneSpellFunction)(const RuneSpell* spell, Creature* creature, Ite
 class BaseSpell
 {
 	public:
-		BaseSpell() {}
-		virtual ~BaseSpell() {}
+		BaseSpell() = default;
+		virtual ~BaseSpell() = default;
 
 		virtual bool castSpell(Creature* creature) = 0;
 		virtual bool castSpell(Creature* creature, Creature* target) = 0;
@@ -85,6 +89,10 @@ class CombatSpell final : public Event, public BaseSpell
 	public:
 		CombatSpell(Combat* _combat, bool _needTarget, bool _needDirection);
 		~CombatSpell();
+
+		// non-copyable
+		CombatSpell(const CombatSpell&) = delete;
+		CombatSpell& operator=(const CombatSpell&) = delete;
 
 		bool castSpell(Creature* creature) final;
 		bool castSpell(Creature* creature, Creature* target) final;
@@ -115,7 +123,6 @@ class Spell : public BaseSpell
 {
 	public:
 		Spell();
-		~Spell() {}
 
 		bool configureSpell(const pugi::xml_node& node);
 		const std::string& getName() const {
@@ -201,7 +208,6 @@ class InstantSpell : public TalkAction, public Spell
 {
 	public:
 		InstantSpell(LuaScriptInterface* _interface);
-		~InstantSpell();
 
 		bool configureEvent(const pugi::xml_node& node) override;
 		bool loadFunction(const std::string& functionName) override;
@@ -255,7 +261,6 @@ class ConjureSpell final : public InstantSpell
 {
 	public:
 		ConjureSpell(LuaScriptInterface* _interface);
-		~ConjureSpell();
 
 		bool configureEvent(const pugi::xml_node& node) final;
 		bool loadFunction(const std::string& functionName) final;
@@ -297,7 +302,6 @@ class RuneSpell final : public Action, public Spell
 {
 	public:
 		RuneSpell(LuaScriptInterface* _interface);
-		~RuneSpell();
 
 		bool configureEvent(const pugi::xml_node& node) final;
 		bool loadFunction(const std::string& functionName) final;

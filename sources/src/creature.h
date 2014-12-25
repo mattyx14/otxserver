@@ -84,7 +84,6 @@ class FrozenPathingConditionCall
 {
 	public:
 		FrozenPathingConditionCall(const Position& targetPos) : targetPos(targetPos) {}
-		~FrozenPathingConditionCall() {}
 
 		bool operator()(const Position& startPos, const Position& testPos,
 		                const FindPathParams& fpp, int32_t& bestMatchDist) const;
@@ -108,7 +107,11 @@ class Creature : virtual public Thing
 	public:
 		static double speedA, speedB, speedC;
 
-		~Creature();
+		virtual ~Creature();
+
+		// non-copyable
+		Creature(const Creature&) = delete;
+		Creature& operator=(const Creature&) = delete;
 
 		Creature* getCreature() final {
 			return this;

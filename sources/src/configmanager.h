@@ -26,7 +26,6 @@ class ConfigManager
 {
 	public:
 		ConfigManager();
-		~ConfigManager();
 
 		enum boolean_config_t {
 			ALLOW_CHANGEOUTFIT = 0,
@@ -115,7 +114,7 @@ class ConfigManager
 		bool getBoolean(boolean_config_t _what) const;
 
 	private:
-		static std::string getGlobalString(lua_State* _L, const std::string& _identifier, const std::string& _default = "");
+		static std::string getGlobalString(lua_State* _L, const std::string& _identifier, const char* _default);
 		static int32_t getGlobalNumber(lua_State* _L, const std::string& _identifier, const int32_t _default = 0);
 
 		bool m_isLoaded;

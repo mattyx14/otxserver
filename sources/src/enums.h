@@ -234,7 +234,7 @@ enum BlockType_t : uint8_t {
 	BLOCK_IMMUNITY
 };
 
-enum skills_t {
+enum skills_t : uint8_t {
 	SKILL_FIRST = 0,
 	SKILL_FIST = SKILL_FIRST,
 	SKILL_CLUB = 1,
@@ -490,7 +490,7 @@ struct MarketOffer {
 };
 
 struct MarketOfferEx {
-	MarketOfferEx() {}
+	MarketOfferEx() = default;
 	MarketOfferEx(MarketOfferEx&& other) :
 		id(other.id), playerId(other.playerId), timestamp(other.timestamp), price(other.price),
 		amount(other.amount), counter(other.counter), itemId(other.itemId), type(other.type),

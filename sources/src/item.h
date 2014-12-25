@@ -314,7 +314,10 @@ class Item : virtual public Thing
 		virtual Item* clone() const;
 		virtual void moveAttributes(Item* item);
 
-		~Item();
+		virtual ~Item();
+
+		// non-assignable
+		Item& operator=(const Item&) = delete;
 
 		bool equals(const Item* otherItem) const;
 

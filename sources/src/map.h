@@ -54,7 +54,6 @@ class AStarNodes
 {
 	public:
 		AStarNodes(uint32_t x, uint32_t y);
-		~AStarNodes() {}
 
 		AStarNode* createOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f);
 		AStarNode* getBestNode();
@@ -85,6 +84,10 @@ struct Floor {
 	Floor() : tiles() {}
 	~Floor();
 
+	// non-copyable
+	Floor(const Floor&) = delete;
+	Floor& operator=(const Floor&) = delete;
+
 	Tile* tiles[FLOOR_SIZE][FLOOR_SIZE];
 };
 
@@ -96,6 +99,10 @@ class QTreeNode
 	public:
 		QTreeNode();
 		virtual ~QTreeNode();
+
+		// non-copyable
+		QTreeNode(const QTreeNode&) = delete;
+		QTreeNode& operator=(const QTreeNode&) = delete;
 
 		bool isLeaf() const {
 			return m_isLeaf;
@@ -118,6 +125,10 @@ class QTreeLeafNode final : public QTreeNode
 	public:
 		QTreeLeafNode();
 		~QTreeLeafNode();
+
+		// non-copyable
+		QTreeLeafNode(const QTreeLeafNode&) = delete;
+		QTreeLeafNode& operator=(const QTreeLeafNode&) = delete;
 
 		Floor* createFloor(uint32_t z);
 		Floor* getFloor(uint16_t z) const {
@@ -148,7 +159,6 @@ class Map
 {
 	public:
 		Map();
-		~Map();
 
 		static const int32_t maxViewportX = 11; //min value: maxClientViewportX + 1
 		static const int32_t maxViewportY = 11; //min value: maxClientViewportY + 1
@@ -171,14 +181,14 @@ class Map
 		  * Get a single tile.
 		  * \returns A pointer to that tile.
 		  */
-		Tile* getTile(int32_t x, int32_t y, int32_t z) const;
+		Tile* getTile(uint16_t x, uint16_t y, uint8_t z) const;
 
 		uint32_t clean() const;
 
 		/**
 		  * Set a single tile.
 		  */
-		void setTile(int32_t _x, int32_t _y, int32_t _z, Tile* newTile);
+		void setTile(uint16_t x, uint16_t y, uint8_t z, Tile* newTile);
 		void setTile(const Position& pos, Tile* newTile) {
 			setTile(pos.x, pos.y, pos.z, newTile);
 		}
