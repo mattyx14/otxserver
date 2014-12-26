@@ -13,7 +13,7 @@ function onPlayerCloseChannel(cid)			npcHandler:onPlayerCloseChannel(cid)		end
 local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
 
-shopModule:addBuyableItem({'spellbook'}, 2175, 150,'spellbook')
+shopModule:addBuyableItem({'spellbook'}, 2175, 150, 'spellbook')
 shopModule:addBuyableItem({'magic lightwand'}, 2163, 400, 'magic lightwand')
 
 shopModule:addBuyableItem({'mana fluid', 'manafluid'}, 2006, 40, 7, 'mana fluid')

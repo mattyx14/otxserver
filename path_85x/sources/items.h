@@ -132,7 +132,7 @@ class ItemType
 		bool isDepot() const {return (type == ITEM_TYPE_DEPOT);}
 		bool isMailbox() const {return (type == ITEM_TYPE_MAILBOX);}
 		bool isTrashHolder() const {return (type == ITEM_TYPE_TRASHHOLDER);}
-		bool isRune() const {return (type == ITEM_TYPE_RUNE);}
+		bool isRune() const {return clientCharges;}
 		bool isBed() const {return (type == ITEM_TYPE_BED);}
 
 		bool hasSubType() const {return (isFluidContainer() || isSplash() || stackable || charges);}
