@@ -20,8 +20,6 @@
 
 #include "protocol.h"
 #include "protocolgame.h"
-#include "protocolold.h"
-#include "admin.h"
 #include "status.h"
 
 #include "outputmessage.h"
@@ -397,17 +395,6 @@ void Connection::parsePacket(const boost::system::error_code& error)
 	}
 
 	--m_pendingRead;
-	uint32_t length = m_msg.size() - m_msg.position() - 4, checksumReceived = m_msg.get<uint32_t>(true), checksum = 0;
-	if(length > 0)
-		checksum = adlerChecksum((uint8_t*)(m_msg.buffer() + m_msg.position() + 4), length);
-
-	bool checksumEnabled = false;
-	if(checksumReceived == checksum)
-	{
-		m_msg.skip(4);
-		checksumEnabled = true;
-	}
-
 	if(!m_receivedFirst)
 	{
 		// First message received
@@ -415,7 +402,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 		if(!m_protocol)
 		{
 			// Game protocol has already been created at this point
-			m_protocol = m_servicePort->makeProtocol(checksumEnabled, m_msg);
+			m_protocol = m_servicePort->makeProtocol(m_msg);
 			if(!m_protocol)
 			{
 				close();

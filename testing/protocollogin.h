@@ -30,7 +30,6 @@ class ProtocolLogin : public Protocol
 
 		ProtocolLogin(Connection_ptr connection) : Protocol(connection)
 		{
-			enableChecksum();
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 			protocolLoginCount++;
 #endif
@@ -44,7 +43,6 @@ class ProtocolLogin : public Protocol
 
 		enum {protocolId = 0x01};
 		enum {isSingleSocket = false};
-		enum {hasChecksum = true};
 
 		static const char* protocolName() {return "login protocol";}
 

@@ -99,7 +99,7 @@ enum Channels_t
 	CHANNEL_GUILD = 0x00,
 	CHANNEL_PARTY = 0x01,
 	CHANNEL_RVR = 0x03,
-	CHANNEL_HELP = 0x09,
+	CHANNEL_HELP = 0x07,
 	CHANNEL_DEFAULT = 0xFFFE, //internal usage only, there is no such channel
 	CHANNEL_PRIVATE = 0xFFFF
 };
@@ -406,24 +406,4 @@ struct LightInfo
 	LightInfo(uint32_t _level, uint32_t _color):
 		level(_level), color(_color) {}
 };
-
-struct ShopInfo
-{
-	uint32_t itemId;
-	int32_t subType, buyPrice, sellPrice;
-	std::string itemName;
-
-	ShopInfo()
-	{
-		itemId = 0;
-		subType = 1;
-		buyPrice = sellPrice = -1;
-		itemName = "";
-	}
-	ShopInfo(uint32_t _itemId, int32_t _subType = 1, int32_t _buyPrice = -1, int32_t _sellPrice = -1,
-		const std::string& _itemName = ""): itemId(_itemId), subType(_subType), buyPrice(_buyPrice),
-		sellPrice(_sellPrice), itemName(_itemName) {}
-};
-
-typedef std::list<ShopInfo> ShopInfoList;
 #endif

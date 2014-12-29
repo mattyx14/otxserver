@@ -17,7 +17,6 @@
 #include "otpch.h"
 #include "textlogger.h"
 
-#include "manager.h"
 #include "dispatcher.h"
 
 #include "configmanager.h"

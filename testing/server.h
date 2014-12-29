@@ -39,7 +39,6 @@ class ServiceBase : boost::noncopyable
 
 		virtual uint8_t getProtocolId() const = 0;
 		virtual bool isSingleSocket() const = 0;
-		virtual bool hasChecksum() const = 0;
 		virtual const char* getProtocolName() const = 0;
 };
 
@@ -51,7 +50,6 @@ class Service : public ServiceBase
 
 		uint8_t getProtocolId() const {return ProtocolType::protocolId;}
 		bool isSingleSocket() const {return ProtocolType::isSingleSocket;}
-		bool hasChecksum() const {return ProtocolType::hasChecksum;}
 		const char* getProtocolName() const {return ProtocolType::protocolName();}
 };
 
@@ -59,8 +57,7 @@ typedef boost::shared_ptr<boost::asio::ip::tcp::acceptor> Acceptor_ptr;
 class ServicePort : boost::noncopyable, public boost::enable_shared_from_this<ServicePort>
 {
 	public:
-		ServicePort(boost::asio::io_service& io_service): m_io_service(io_service),
-			m_serverPort(0), m_pendingStart(false) {}
+		ServicePort(boost::asio::io_service& io_service): m_io_service(io_service), m_serverPort(0), m_pendingStart(false) {}
 		virtual ~ServicePort() {close();}
 
 		static void services(boost::weak_ptr<ServicePort> weakService, IPAddressList ips, uint16_t port);
@@ -75,7 +72,7 @@ class ServicePort : boost::noncopyable, public boost::enable_shared_from_this<Se
 		bool isSingleSocket() const {return m_services.size() && m_services.front()->isSingleSocket();}
 		std::string getProtocolNames() const;
 
-		Protocol* makeProtocol(bool checksum, NetworkMessage& msg) const;
+		Protocol* makeProtocol(NetworkMessage& msg) const;
 
 	protected:
 		void accept(Acceptor_ptr acceptor);

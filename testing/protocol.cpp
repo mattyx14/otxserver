@@ -28,6 +28,7 @@
 
 #include <openssl/rsa.h>
 extern RSA* g_RSA;
+#include "definitions.h"
 
 void Protocol::onSendMessage(OutputMessage_ptr msg)
 {
@@ -43,14 +44,7 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 			std::clog << "Protocol::onSendMessage - encrypt" << std::endl;
 			#endif
 			XTEA_encrypt(*msg);
-		}
-
-		if(m_checksumEnabled)
-		{
-			#ifdef __DEBUG_NET_DETAIL__
-			std::clog << "Protocol::onSendMessage - crypto header" << std::endl;
-			#endif
-			msg->addCryptoHeader(m_checksumEnabled);
+			msg->addCryptoHeader();
 		}
 	}
 
@@ -133,7 +127,7 @@ void Protocol::XTEA_encrypt(OutputMessage& msg)
 
 bool Protocol::XTEA_decrypt(NetworkMessage& msg)
 {
-	if((msg.size() - 6) % 8)
+	if((msg.size() - 2) % 8)
 	{
 		std::clog << "[Failure - Protocol::XTEA_decrypt] Not valid encrypted message size";
 		int32_t ip = getIP();
@@ -144,7 +138,7 @@ bool Protocol::XTEA_decrypt(NetworkMessage& msg)
 		return false;
 	}
 
-	int32_t messageLength = msg.size() - 6, readPos = -1;
+	int32_t messageLength = msg.size() - 2, readPos = -1;
 	uint32_t *buffer = (uint32_t*)(msg.buffer() + msg.position()), delta = 0x61C88647;
 	while(++readPos < messageLength >> 2)
 	{
@@ -161,7 +155,7 @@ bool Protocol::XTEA_decrypt(NetworkMessage& msg)
 	}
 
 	int32_t tmp = msg.get<uint16_t>();
-	if(tmp > msg.size() - 8)
+	if(tmp > msg.size() - 4)
 	{
 		std::clog << "[Failure - Protocol::XTEA_decrypt] Not valid unencrypted message size";
 		uint32_t ip = getIP();

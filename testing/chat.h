@@ -66,7 +66,7 @@ class ChatChannel
 				vocationId) != m_vocationMap->end();}
 
 		bool addUser(Player* player);
-		bool removeUser(Player* player, bool exclude = false);
+		bool removeUser(Player* player);
 		bool hasUser(Player* player) const {return player && m_users.find(player->getID()) != m_users.end();}
 
 		bool talk(Player* player, MessageClasses type, const std::string& text, uint32_t statementId);

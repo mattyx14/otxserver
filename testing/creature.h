@@ -433,10 +433,6 @@ class Creature : public AutoId, virtual public Thing
 		virtual PartyShields_t getShield() const {return partyShield;}
 		virtual PartyShields_t getPartyShield(const Creature* creature) const {return creature->getShield();}
 
-		virtual void setEmblem(GuildEmblems_t newGuildEmblem) {guildEmblem = newGuildEmblem;}
-		virtual GuildEmblems_t getEmblem() const {return guildEmblem;}
-		virtual GuildEmblems_t getGuildEmblem(const Creature* creature) const {return creature->getEmblem();}
-
 		virtual void setDropLoot(lootDrop_t _lootDrop) {lootDrop = _lootDrop;}
 		virtual void setLossSkill(bool _skillLoss) {skillLoss = _skillLoss;}
 
@@ -506,7 +502,6 @@ class Creature : public AutoId, virtual public Thing
 		lootDrop_t lootDrop;
 		Skulls_t skull;
 		PartyShields_t partyShield;
-		GuildEmblems_t guildEmblem;
 		Direction direction;
 		ConditionList conditions;
 		LightInfo internalLight;

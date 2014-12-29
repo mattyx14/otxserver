@@ -101,10 +101,10 @@ bool isValidAccountName(std::string text);
 bool isValidPassword(std::string text);
 bool isValidName(std::string text, bool forceUppercaseOnFirstLetter = true);
 
-std::string transformToMD5(std::string plainText, bool upperCase);
-std::string transformToSHA1(std::string plainText, bool upperCase);
-std::string transformToSHA256(std::string plainText, bool upperCase);
-std::string transformToSHA512(std::string plainText, bool upperCase);
+std::string transformToMD5(const std::string &plainText, bool upperCase);
+std::string transformToSHA1(const std::string &plainText, bool upperCase);
+std::string transformToSHA256(const std::string &plainText, bool upperCase);
+std::string transformToSHA512(const std::string &plainText, bool upperCase);
 
 void _encrypt(std::string& str, bool upperCase);
 bool encryptTest(std::string plain, std::string& hash);
@@ -130,7 +130,6 @@ double round(double v);
 #endif
 
 bool hasBitSet(uint32_t flag, uint32_t flags);
-uint32_t adlerChecksum(uint8_t* data, size_t length);
 
 bool utf8ToLatin1(char* inText, std::string& outText);
 bool latin1ToUtf8(char* inText, std::string& outText);
@@ -149,7 +148,6 @@ bool parseIntegerVec(std::string str, IntegerVec& intVector);
 
 Skulls_t getSkulls(std::string strValue);
 PartyShields_t getShields(std::string strValue);
-GuildEmblems_t getEmblems(std::string strValue);
 
 Direction getDirection(std::string string);
 Direction getDirectionTo(Position pos1, Position pos2, bool extended = true);

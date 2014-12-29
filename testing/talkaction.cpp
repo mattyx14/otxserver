@@ -34,10 +34,7 @@
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 #include "outputmessage.h"
 #include "connection.h"
-#include "admin.h"
-#include "manager.h"
 #include "protocollogin.h"
-#include "protocolold.h"
 #endif
 
 #include "configmanager.h"
@@ -690,7 +687,7 @@ bool TalkAction::houseKick(Creature* creature, const std::string&, const std::st
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
 	}
 	else
-		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
+		g_game.addMagicEffect(targetPlayer->getPosition(), MAGIC_EFFECT_TELEPORT);
 
 	return false;
 }
@@ -982,11 +979,6 @@ bool TalkAction::thingProporties(Creature* creature, const std::string&, const s
 				_creature->setShield(getShields(parseParams(it, tokens.end())));
 				g_game.updateCreatureShield(_creature);
 			}
-			else if(action == "emblem")
-			{
-				_creature->setEmblem(getEmblems(parseParams(it, tokens.end())));
-				g_game.updateCreatureEmblem(_creature);
-			}
 			else if(action == "speaktype")
 				_creature->setSpeakType((MessageClasses)atoi(parseParams(it, tokens.end()).c_str()));
 			else if(Player* _player = _creature->getPlayer())
@@ -994,8 +986,6 @@ bool TalkAction::thingProporties(Creature* creature, const std::string&, const s
 				if(action == "fyi")
 					_player->sendFYIBox(parseParams(it, tokens.end()).c_str());
 				else if(action == "tutorial")
-					_player->sendTutorial(atoi(parseParams(it, tokens.end()).c_str()));
-				else if(action == "guildlevel")
 					_player->setGuildLevel((GuildLevel_t)atoi(parseParams(it, tokens.end()).c_str()));
 				else if(action == "guildrank")
 					_player->setRankId(atoi(parseParams(it, tokens.end()).c_str()));
@@ -1125,7 +1115,8 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 			ban.value = atoi(params[1].c_str());
 			if(!ban.value)
 			{
-				IOLoginData::getInstance()->getAccountId(params[1], ban.value);
+				uint32_t number = atoi(params[1].c_str());
+				IOLoginData::getInstance()->getAccountId(number, ban.value);
 				if(!ban.value)
 					ban.value = IOLoginData::getInstance()->getAccountIdByName(params[1]);
 			}
@@ -1136,7 +1127,8 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 		ban.value = atoi(params[0].c_str());
 		if(!ban.value)
 		{
-			IOLoginData::getInstance()->getAccountId(params[0], ban.value);
+			uint32_t number = atoi(params[0].c_str());
+				IOLoginData::getInstance()->getAccountId(number, ban.value);
 			if(!ban.value)
 				ban.value = IOLoginData::getInstance()->getAccountIdByName(params[0]);
 		}
@@ -1170,7 +1162,7 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 	ss << what.c_str() << " has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " <<
 		admin.c_str() << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\n" << end.c_str() << (deletion ? "." : formatDateEx(ban.expires).c_str()) << ".";
 
-	player->sendFYIBox(ss.str().c_str());
+	player->sendTextMessage(MSG_INFO_DESCR, ss.str());
 	return true;
 }
 
@@ -1198,12 +1190,7 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 		<< "--------------------" << std::endl
 		<< "ProtocolGame: " << ProtocolGame::protocolGameCount << std::endl
 		<< "ProtocolLogin: " << ProtocolLogin::protocolLoginCount << std::endl
-#ifdef __OTADMIN__
-		<< "ProtocolAdmin: " << ProtocolAdmin::protocolAdminCount << std::endl
-#endif
-		<< "ProtocolManager: " << ProtocolManager::protocolManagerCount << std::endl
-		<< "ProtocolStatus: " << ProtocolStatus::protocolStatusCount << std::endl
-		<< "ProtocolOld: " << ProtocolOld::protocolOldCount << std::endl << std::endl;
+		<< "ProtocolStatus: " << ProtocolStatus::protocolStatusCount << std::endl;
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
 
 	s.str("");

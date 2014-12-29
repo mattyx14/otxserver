@@ -479,7 +479,7 @@ void IOGuild::checkWars()
 				}
 
 				if(update)
-					g_game.updateCreatureEmblem(it->second);
+					g_game.updateCreatureSkull(it->second);
 			}
 		}
 		while(result->next());
@@ -548,7 +548,7 @@ void IOGuild::checkWars()
 				}
 
 				if(update)
-					g_game.updateCreatureEmblem(it->second);
+					g_game.updateCreatureSkull(it->second);
 			}
 
 			g_game.broadcastMessage(s.str().c_str(), MSG_EVENT_ADVANCE);
@@ -665,7 +665,7 @@ void IOGuild::finishWar(War_t war, bool finished)
 		}
 
 		if(update)
-			g_game.updateCreatureEmblem(it->second);
+			g_game.updateCreatureSkull(it->second);
 	}
 
 	if(finished)

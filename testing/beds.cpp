@@ -127,7 +127,7 @@ void BedItem::sleep(Player* player)
 			nextBedItem->updateAppearance(player);
 
 		player->getTile()->moveCreature(NULL, player, getTile());
-		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_SLEEP);
+		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		Scheduler::getInstance().addEvent(createSchedulerTask(SCHEDULER_MINTICKS, boost::bind(&Game::kickPlayer, &g_game, player->getID(), false)));
 	}
 	else if(Item::items[getID()].transformUseTo)

@@ -219,12 +219,12 @@ std::string ServicePort::getProtocolNames() const
 	return str;
 }
 
-Protocol* ServicePort::makeProtocol(bool checksum, NetworkMessage& msg) const
+Protocol* ServicePort::makeProtocol(NetworkMessage& msg) const
 {
 	uint8_t protocolId = msg.get<char>();
 	for(ServiceVec::const_iterator it = m_services.begin(); it != m_services.end(); ++it)
 	{
-		if((*it)->getProtocolId() == protocolId && ((checksum && (*it)->hasChecksum()) || !(*it)->hasChecksum()))
+		if((*it)->getProtocolId() == protocolId)
 			return (*it)->makeProtocol(Connection_ptr());
 	}
 

@@ -19,7 +19,6 @@
 #include <iomanip>
 
 #include "player.h"
-#include "manager.h"
 
 #include "iologindata.h"
 #include "ioban.h"
@@ -92,11 +91,11 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	writeItem = NULL;
 	group = NULL;
 	editHouse = NULL;
-	shopOwner = NULL;
 	tradeItem = NULL;
 	tradePartner = NULL;
 	walkTask = NULL;
 	weapon = NULL;
+	bed = NULL;
 
 	setVocation(0);
 	setParty(NULL);
@@ -536,14 +535,14 @@ void Player::sendIcons() const
 
 	if(getZone() == ZONE_PROTECTION)
 	{
-		icons |= ICON_PZ;
+		icons |= ICON_NONE;
 
 		if(hasBitSet(ICON_SWORDS, icons))
 			icons &= ~ICON_SWORDS;
 	}
 
 	if(pzLocked)
-		icons |= ICON_PZBLOCK;
+		icons |= ICON_NONE;
 
 	// Tibia client debugs with 10 or more icons
 	// so let's prevent that from happening.
@@ -570,24 +569,6 @@ void Player::updateInventoryWeight()
 	{
 		if(Item* item = getInventoryItem((slots_t)i))
 			inventoryWeight += item->getWeight();
-	}
-}
-
-void Player::updateInventoryGoods(uint32_t itemId)
-{
-	if(Item::items[itemId].worth)
-	{
-		sendGoods();
-		return;
-	}
-
-	for(ShopInfoList::iterator it = shopOffer.begin(); it != shopOffer.end(); ++it)
-	{
-		if(it->itemId != itemId)
-			continue;
-
-		sendGoods();
-		break;
 	}
 }
 
@@ -801,16 +782,6 @@ void Player::dropLoot(Container* corpse)
 	if(!corpse || lootDrop != LOOT_DROP_FULL)
 		return;
 
-	uint32_t loss = lossPercent[LOSS_CONTAINERS], start = g_config.getNumber(
-		ConfigManager::BLESS_REDUCTION_BASE), bless = getBlessings();
-	while(bless > 0 && loss > 0)
-	{
-		loss -= start;
-		start -= g_config.getNumber(ConfigManager::BLESS_REDUCTION_DECREMENT);
-		--bless;
-	}
-
-	uint32_t itemLoss = (uint32_t)std::floor((5. + loss) * lossPercent[LOSS_ITEMS] / 1000.);
 	for(int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
 	{
 		Item* item = inventory[i];
@@ -818,7 +789,7 @@ void Player::dropLoot(Container* corpse)
 			continue;
 
 		uint32_t tmp = random_range(1, 100);
-		if(skull > SKULL_WHITE || (item->getContainer() && tmp < loss) || (!item->getContainer() && tmp < itemLoss))
+		if(skull > SKULL_WHITE || (item->getContainer() && tmp < (lossPercent[LOSS_CONTAINERS])) || (!item->getContainer() && tmp < (lossPercent[LOSS_ITEMS])))
 		{
 			g_game.internalMoveItem(NULL, this, corpse, INDEX_WHEREEVER, item, item->getItemCount(), 0);
 			sendRemoveInventoryItem((slots_t)i, inventory[(slots_t)i]);
@@ -897,15 +868,14 @@ bool Player::canSeeCreature(const Creature* creature) const
 bool Player::canWalkthrough(const Creature* creature) const
 {
 	if(creature == this || hasFlag(PlayerFlag_CanPassThroughAllCreatures) || creature->isWalkable() ||
-		std::find(forceWalkthrough.begin(), forceWalkthrough.end(), creature->getID()) != forceWalkthrough.end()
-		|| (creature->getMaster() && creature->getMaster() != this && canWalkthrough(creature->getMaster())))
+		(creature->getMaster() && creature->getMaster() != this && canWalkthrough(creature->getMaster())))
 		return true;
 
 	const Player* player = creature->getPlayer();
 	if(!player)
 		return false;
 
-	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) &&
+	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL &&
 		!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
 		&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
 		|| player->getAccess() <= getAccess()))
@@ -913,26 +883,6 @@ bool Player::canWalkthrough(const Creature* creature) const
 
 	return (player->isGhost() && getGhostAccess() < player->getGhostAccess())
 		|| (isGhost() && getGhostAccess() > player->getGhostAccess());
-}
-
-void Player::setWalkthrough(const Creature* creature, bool walkthrough)
-{
-	std::vector<uint32_t>::iterator it = std::find(forceWalkthrough.begin(),
-		forceWalkthrough.end(), creature->getID());
-	bool update = false;
-	if(walkthrough && it == forceWalkthrough.end())
-	{
-		forceWalkthrough.push_back(creature->getID());
-		update = true;
-	}
-	else if(!walkthrough && it != forceWalkthrough.end())
-	{
-		forceWalkthrough.erase(it);
-		update = true;
-	}
-
-	if(update)
-		sendCreatureWalkthrough(creature, !walkthrough ? canWalkthrough(creature) : walkthrough);
 }
 
 Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
@@ -950,14 +900,13 @@ Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
 			if(Depot* depot = container->getDepot())
 			{
 				container->__internalAddThing(Item::CreateItem(ITEM_DEPOT));
-				internalAddDepot(depot, depotId);
+				addDepot(depot, depotId);
 				return depot;
 			}
 		}
 
 		g_game.freeThing(locker);
-		std::clog << "Failure: Creating a new depot with id: " << depotId <<
-			", for player: " << getName() << std::endl;
+		std::clog << "Failure: Creating a new depot with id: " << depotId << ", for player: " << getName() << std::endl;
 	}
 
 	return NULL;
@@ -975,6 +924,7 @@ bool Player::addDepot(Depot* depot, uint32_t depotId)
 void Player::internalAddDepot(Depot* depot, uint32_t depotId)
 {
 	depots[depotId] = std::make_pair(depot, false);
+	depot->setDepotId(depotId);
 	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
 }
 
@@ -1404,8 +1354,8 @@ void Player::onCreatureAppear(const Creature* creature)
 	}
 
 	updateWeapon();
-	if(BedItem* bed = Beds::getInstance()->getBedBySleeper(guid))
-		bed->wakeUp();
+	if(BedItem* _bed = Beds::getInstance()->getBedBySleeper(guid))
+		_bed->wakeUp();
 
 	Outfit outfit;
 	if(Outfits::getInstance()->getOutfit(defaultOutfit.lookType, outfit))
@@ -1583,7 +1533,6 @@ void Player::onChangeZone(ZoneType_t zone)
 		}
 	}
 
-	g_game.updateCreatureWalkthrough(this);
 	sendIcons();
 }
 
@@ -1599,8 +1548,7 @@ void Player::onTargetChangeZone(ZoneType_t zone)
 		setAttackedCreature(NULL);
 		onTargetDisappear(false);
 	}
-	else if(zone == ZONE_OPEN && g_game.getWorldType() == WORLDTYPE_OPTIONAL && attackedCreature->getPlayer()
-		&& !attackedCreature->getPlayer()->isEnemy(this, true))
+	else if(zone == ZONE_OPEN && g_game.getWorldType() == WORLDTYPE_OPTIONAL && attackedCreature->getPlayer())
 	{
 		//attackedCreature can leave a pvp zone if not pzlocked
 		setAttackedCreature(NULL);
@@ -1630,7 +1578,6 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	if(eventWalk)
 		setFollowCreature(NULL);
 
-	closeShopWindow();
 	if(tradePartner)
 		g_game.internalCloseTrade(this);
 
@@ -1682,53 +1629,6 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 #endif
 }
 
-void Player::openShopWindow(Npc* npc)
-{
-	sendShop(npc);
-	sendGoods();
-}
-
-void Player::closeShopWindow(bool send/* = true*/)
-{
-	int32_t onBuy = -1, onSell = -1;
-	if(Npc* npc = getShopOwner(onBuy, onSell))
-		npc->onPlayerEndTrade(this, onBuy, onSell);
-
-	if(shopOwner)
-	{
-		shopOwner = NULL;
-		if(send)
-			sendCloseShop();
-	}
-
-	purchaseCallback = saleCallback = -1;
-	shopOffer.clear();
-}
-
-bool Player::canShopItem(uint16_t itemId, uint8_t subType, ShopEvent_t event)
-{
-	for(ShopInfoList::iterator sit = shopOffer.begin(); sit != shopOffer.end(); ++sit)
-	{
-		if(sit->itemId != itemId || ((event != SHOPEVENT_BUY || sit->buyPrice < 0)
-			&& (event != SHOPEVENT_SELL || sit->sellPrice < 0)))
-			continue;
-
-		if(event == SHOPEVENT_SELL)
-			return true;
-
-		const ItemType& it = Item::items[id];
-		if(it.isFluidContainer() || it.isSplash())
-		{
-			if(sit->subType == subType)
-				return true;
-		}
-		else
-			return true;
-	}
-
-	return false;
-}
-
 void Player::onWalk(Direction& dir)
 {
 	Creature::onWalk(dir);
@@ -1761,10 +1661,6 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 				addCondition(condition);
 		}
 	}
-
-	if(getZone() == ZONE_PROTECTION && newTile->ground && oldTile->ground &&
-		Item::items[newTile->ground->getID()].walkStack != Item::items[oldTile->ground->getID()].walkStack)
-		g_game.updateCreatureWalkthrough(this);
 }
 
 void Player::onAddContainerItem(const Container* container, const Item* item)
@@ -1999,7 +1895,7 @@ bool Player::isMuted(uint16_t channelId, MessageClasses type, int32_t& time)
 	if(muteTicks)
 		time = (uint32_t)muteTicks / 1000;
 
-	return type != MSG_NPC_TO && (type != MSG_CHANNEL || (channelId != CHANNEL_GUILD && !g_chat.isPrivateChannel(channelId)));
+	return (type != MSG_CHANNEL || (channelId != CHANNEL_GUILD && !g_chat.isPrivateChannel(channelId)));
 }
 
 void Player::addMessageBuffer()
@@ -2050,7 +1946,14 @@ void Player::drainHealth(Creature* attacker, CombatType_t combatType, int32_t da
 void Player::drainMana(Creature* attacker, CombatType_t combatType, int32_t damage)
 {
 	Creature::drainMana(attacker, combatType, damage);
+	char buffer[150];
+	if(attacker)
+		sprintf(buffer, "You lose %d mana blocking an attack by %s.", damage, attacker->getNameDescription().c_str());
+	else
+		sprintf(buffer, "You lose %d mana.", damage);
+
 	sendStats();
+	sendTextMessage(MSG_EVENT_DEFAULT, buffer);
 }
 
 void Player::addManaSpent(uint64_t amount, bool useMultiplier/* = true*/)
@@ -2103,7 +2006,6 @@ void Player::addManaSpent(uint64_t amount, bool useMultiplier/* = true*/)
 
 void Player::addExperience(uint64_t exp)
 {
-	bool attackable = isProtected();
 	uint32_t prevLevel = level;
 
 	uint64_t nextLevelExp = Player::getExpForLevel(level + 1);
@@ -2153,8 +2055,6 @@ void Player::addExperience(uint64_t exp)
 		s << "You advanced from Level " << prevLevel << " to Level " << level << ".";
 
 		sendTextMessage(MSG_EVENT_ADVANCE, s.str());
-		if(isProtected() != attackable)
-			g_game.updateCreatureWalkthrough(this);
 	}
 
 	uint64_t currLevelExp = Player::getExpForLevel(level);
@@ -2169,7 +2069,6 @@ void Player::addExperience(uint64_t exp)
 void Player::removeExperience(uint64_t exp, bool updateStats/* = true*/)
 {
 	uint32_t prevLevel = level;
-	bool attackable = isProtected();
 
 	experience -= std::min(exp, experience);
 	while(level > 1 && experience < Player::getExpForLevel(level))
@@ -2184,6 +2083,7 @@ void Player::removeExperience(uint64_t exp, bool updateStats/* = true*/)
 		}
 
 		healthMax = std::max((int32_t)0, (healthMax - (int32_t)voc->getGain(GAIN_HEALTH)));
+		mana = std::max((int32_t)0, (mana - (int32_t)voc->getGain(GAIN_MANA)));
 		manaMax = std::max((int32_t)0, (manaMax - (int32_t)voc->getGain(GAIN_MANA)));
 		capacity = std::max((double)0, (capacity - (double)voc->getGainCap()));
 	}
@@ -2205,8 +2105,6 @@ void Player::removeExperience(uint64_t exp, bool updateStats/* = true*/)
 		s << "You were downgraded from Level " << prevLevel << " to Level " << level << ".";
 
 		sendTextMessage(MSG_EVENT_ADVANCE, s.str());
-		if(!isProtected() != attackable)
-			g_game.updateCreatureWalkthrough(this);
 	}
 
 	uint64_t currLevelExp = Player::getExpForLevel(level),
@@ -2468,6 +2366,8 @@ bool Player::onDeath()
 		g_game.transformItem(preventDrop, preventDrop->getID(), std::max(0, (int32_t)preventDrop->getCharges() - 1));
 
 	removeConditions(CONDITIONEND_DEATH);
+	sendTextMessage(MSG_EVENT_ADVANCE, "You are dead.");
+
 	if(skillLoss)
 	{
 		double reduction = 1.;
@@ -2557,8 +2457,6 @@ bool Player::onDeath()
 				}
 			}
 		}
-		else if(!inventory[SLOT_BACKPACK]) // FIXME: you should receive the bag after you login back...
-			__internalAddThing(SLOT_BACKPACK, Item::CreateItem(g_config.getNumber(ConfigManager::DEATH_CONTAINER)));
 
 		sendIcons();
 		sendStats();
@@ -2566,7 +2464,6 @@ bool Player::onDeath()
 
 		g_creatureEvents->playerLogout(this, true);
 		g_game.removeCreature(this, false);
-		sendReLoginWindow();
 	}
 	else
 	{
@@ -2577,7 +2474,6 @@ bool Player::onDeath()
 			g_creatureEvents->playerLogout(this, true);
 
 			g_game.removeCreature(this, false);
-			sendReLoginWindow();
 		}
 	}
 
@@ -2709,7 +2605,6 @@ void Player::addDefaultRegeneration(uint32_t addTicks)
 
 void Player::removeList()
 {
-	Manager::getInstance()->removeUser(id);
 	autoList.erase(id);
 	if(!isGhost())
 	{
@@ -2729,7 +2624,6 @@ void Player::removeList()
 void Player::addList()
 {
 	autoList[id] = this;
-	Manager::getInstance()->addUser(this);
 }
 
 void Player::kick(bool displayEffect, bool forceLogout)
@@ -3585,9 +3479,6 @@ void Player::postAddNotification(Creature*, Thing* thing, const Cylinder* oldPar
 	{
 		if(const Container* container = item->getContainer())
 			onSendContainer(container);
-
-		if(shopOwner && requireListUpdate)
-			updateInventoryGoods(item->getID());
 	}
 	else if(const Creature* creature = thing->getCreature())
 	{
@@ -3660,9 +3551,6 @@ void Player::postRemoveNotification(Creature*, Thing* thing, const Cylinder* new
 			else
 				autoCloseContainers(container);
 		}
-
-		if(shopOwner && requireListUpdate)
-			updateInventoryGoods(item->getID());
 	}
 }
 
@@ -4054,7 +3942,7 @@ void Player::onTarget(Creature* target)
 				sendIcons();
 			}
 
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this, false))
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this))
 			{
 				addAttacked(targetPlayer);
 
@@ -4148,18 +4036,6 @@ void Player::onUpdateQuest()
 	sendTextMessage(MSG_EVENT_ADVANCE, "Your quest log has been updated.");
 }
 
-GuildEmblems_t Player::getGuildEmblem(const Creature* creature) const
-{
-	const Player* player = creature->getPlayer();
-	if(!player || !player->hasEnemy())
-		return Creature::getGuildEmblem(creature);
-
-	if(player->isEnemy(this, false))
-		return GUILDEMBLEM_ENEMY;
-
-	return player->getGuildId() == guildId ? GUILDEMBLEM_ALLY : GUILDEMBLEM_NEUTRAL;
-}
-
 bool Player::getEnemy(const Player* player, War_t& data) const
 {
 	if(!guildId || !player || player->isRemoved())
@@ -4177,7 +4053,7 @@ bool Player::getEnemy(const Player* player, War_t& data) const
 	return true;
 }
 
-bool Player::isEnemy(const Player* player, bool allies) const
+bool Player::isEnemy(const Player* player) const
 {
 	if(!guildId || !player || player->isRemoved())
 		return false;
@@ -4186,8 +4062,7 @@ bool Player::isEnemy(const Player* player, bool allies) const
 	if(!guild)
 		return false;
 
-	return !warMap.empty() && (((g_game.getWorldType() != WORLDTYPE_OPTIONAL || g_config.getBool(
-		ConfigManager::OPTIONAL_WAR_ATTACK_ALLY)) && allies && guildId == guild) ||
+	return !warMap.empty() && (
 		warMap.find(guild) != warMap.end());
 }
 
@@ -4501,7 +4376,7 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 	if(player->getSkull() == SKULL_NONE)
 	{
 
-		if(player->hasAttacked(this) && !player->isEnemy(this, false))
+		if(player->hasAttacked(this))
 			return SKULL_YELLOW;
 
 		if((isPartner(player) || isAlly(player)) &&
@@ -4594,36 +4469,20 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(skull < SKULL_RED && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
 		setSkullEnd(now + g_config.getNumber(ConfigManager::RED_SKULL_LENGTH), false, SKULL_RED);
 
-	if(!g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-	{
-		f += g_config.getNumber(ConfigManager::BAN_LIMIT);
-		s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
-		t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
-		if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
-			return true;
+	f += g_config.getNumber(ConfigManager::BAN_LIMIT);
+	s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
+	t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+	if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
+		return true;
 
-		if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
-			ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
-			return true;
+	if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
+		ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
+		return true;
 
-		sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
-		g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
-		Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
-			&Game::kickPlayer, &g_game, getID(), false)));
-	}
-	else
-	{
-		f += g_config.getNumber(ConfigManager::BLACK_LIMIT);
-		s += g_config.getNumber(ConfigManager::BLACK_SECOND_LIMIT);
-		t += g_config.getNumber(ConfigManager::BLACK_THIRD_LIMIT);
-		if(skull < SKULL_BLACK && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
-		{
-			setSkullEnd(now + g_config.getNumber(ConfigManager::BLACK_SKULL_LENGTH), false, SKULL_BLACK);
-			setAttackedCreature(NULL);
-			destroySummons();
-		}
-	}
-
+	sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
+	g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+	Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
+		&Game::kickPlayer, &g_game, getID(), false)));
 	return true;
 }
 
@@ -4792,7 +4651,7 @@ void Player::manageAccount(const std::string &text)
 					if(tmp.substr(0, 4) != "god " && tmp.substr(0, 3) != "cm " && tmp.substr(0, 3) != "gm ")
 					{
 						talkState[1] = talkState[2] = true;
-						msg << "{" << managerString << "}, are you sure? {yes} or {no}?";
+						msg << "'" << managerString << "', are you sure? 'yes' or 'no'?";
 					}
 					else
 						msg << "Your character is not a staff member, please choose another name.";
@@ -4812,7 +4671,7 @@ void Player::manageAccount(const std::string &text)
 						IOLoginData::getInstance()->changeName(tmp, managerString, managerString2) &&
 						IOBan::getInstance()->removePlayerBanishment(tmp, PLAYERBAN_LOCK))
 					{
-						msg << "Your character {" << managerString << "} has been successfully renamed to {" << managerString2 << "}, you should be able to login now.";
+						msg << "Your character '" << managerString << "' has been successfully renamed to '" << managerString2 << "', you should be able to login now.";
 						if(House* house = Houses::getInstance()->getHouseByPlayerId(tmp))
 							house->updateDoorDescription(managerString);
 
@@ -4845,7 +4704,7 @@ void Player::manageAccount(const std::string &text)
 				for(int8_t i = 2; i <= 12; ++i)
 					talkState[i] = false;
 
-				msg << "Do you want to change your {password}, generate a {recovery key}, create a {character}, or {delete} an existing character?";
+				msg << "Do you want to change your 'password', generate a 'recovery key', create a 'character', or 'delete' an existing character?";
 			}
 			else if(checkText(text, "delete") && talkState[1])
 			{
@@ -4864,7 +4723,7 @@ void Player::manageAccount(const std::string &text)
 					talkState[2] = false;
 					talkState[3] = true;
 					managerString = tmp;
-					msg << "Do you really want to delete the character {" << managerString << "}? {yes} or {no}";
+					msg << "Do you really want to delete the character '" << managerString << "'? 'yes' or 'no'";
 				}
 			}
 			else if(checkText(text, "yes") && talkState[3])
@@ -4921,7 +4780,7 @@ void Player::manageAccount(const std::string &text)
 					talkState[4] = false;
 					talkState[5] = true;
 					managerString = tmp;
-					msg << "{" << managerString << "} is it? {yes} or {no}?";
+					msg << "'" << managerString << "' is it? 'yes' or 'no'?";
 				}
 			}
 			else if(checkText(text, "yes") && talkState[5])
@@ -4955,7 +4814,7 @@ void Player::manageAccount(const std::string &text)
 					for(int8_t i = 2; i <= 12; ++i)
 						talkState[i] = false;
 
-					msg << "Your account has reached the limit of 15 characters, you should {delete} a character if you want to create a new one.";
+					msg << "Your account has reached the limit of 15 characters, you should 'delete' a character if you want to create a new one.";
 				}
 			}
 			else if(talkState[6])
@@ -4977,7 +4836,7 @@ void Player::manageAccount(const std::string &text)
 					{
 						talkState[6] = false;
 						talkState[7] = true;
-						msg << "{" << managerString << "}, are you sure? {yes} or {no}";
+						msg << "'" << managerString << "', are you sure? 'yes' or 'no'";
 					}
 					else
 						msg << "Your character is not a staff member, please choose another name.";
@@ -4993,7 +4852,7 @@ void Player::manageAccount(const std::string &text)
 			{
 				talkState[7] = false;
 				talkState[8] = true;
-				msg << "Would you like to be a {male} or a {female}.";
+				msg << "Would you like to be a 'male' or a 'female'.";
 			}
 			else if(talkState[8] && (checkText(text, "female") || checkText(text, "male")))
 			{
@@ -5001,12 +4860,12 @@ void Player::manageAccount(const std::string &text)
 				talkState[9] = true;
 				if(checkText(text, "female"))
 				{
-					msg << "A female, are you sure? {yes} or {no}";
+					msg << "A female, are you sure? 'yes' or 'no'";
 					managerSex = PLAYERSEX_FEMALE;
 				}
 				else
 				{
-					msg << "A male, are you sure? {yes} or {no}";
+					msg << "A male, are you sure? 'yes' or 'no'";
 					managerSex = PLAYERSEX_MALE;
 				}
 			}
@@ -5014,7 +4873,7 @@ void Player::manageAccount(const std::string &text)
 			{
 				talkState[8] = true;
 				talkState[9] = false;
-				msg << "Tell me then, would you like to be a {male} or a {female}?";
+				msg << "Tell me then, would you like to be a 'male' or a 'female'?";
 			}
 			else if(checkText(text, "yes") && talkState[9])
 			{
@@ -5034,11 +4893,11 @@ void Player::manageAccount(const std::string &text)
 					for(std::vector<std::string>::const_iterator it = vocations.begin(); it != vocations.end(); ++it)
 					{
 						if(it == vocations.begin())
-							msg << "{" << *it << "}";
+							msg << "'" << *it << "'";
 						else if(*it == *(vocations.rbegin()))
-							msg << " or {" << *it << "}.";
+							msg << " or '" << *it << "'.";
 						else
-							msg << ", {" << *it << "}";
+							msg << ", '" << *it << "'";
 					}
 				}
 				else if(!IOLoginData::getInstance()->playerExists(managerString, true))
@@ -5048,7 +4907,7 @@ void Player::manageAccount(const std::string &text)
 						talkState[i] = false;
 
 					if(IOLoginData::getInstance()->createCharacter(managerNumber, managerString, managerNumber2, (uint16_t)managerSex))
-						msg << "Your character {" << managerString << "} has been created.";
+						msg << "Your character " << managerString << " has been created.";
 					else
 						msg << "Your character couldn't be created, please contact with staff.";
 				}
@@ -5066,7 +4925,7 @@ void Player::manageAccount(const std::string &text)
 					if(checkText(text, asLowerCaseString(it->second->getName())) &&
 						it->first == it->second->getFromVocation() && it->first != 0)
 					{
-						msg << "So you would like to be " << it->second->getDescription() << ", {yes} or {no}?";
+						msg << "So you would like to be " << it->second->getDescription() << ", yes or no?";
 						managerNumber2 = it->first;
 						talkState[11] = false;
 						talkState[12] = true;
@@ -5085,7 +4944,7 @@ void Player::manageAccount(const std::string &text)
 						talkState[i] = false;
 
 					if(IOLoginData::getInstance()->createCharacter(managerNumber, managerString, managerNumber2, (uint16_t)managerSex))
-						msg << "Your character {" << managerString << "} has been created.";
+						msg << "Your character " << managerString << " has been created.";
 					else
 						msg << "Your character couldn't be created, please contact with staff.";
 				}
@@ -5106,7 +4965,7 @@ void Player::manageAccount(const std::string &text)
 			{
 				talkState[1] = false;
 				talkState[10] = true;
-				msg << "Would you like to generate a recovery key? {yes} or {no}";
+				msg << "Would you like to generate a recovery key? yes or no";
 			}
 			else if(checkText(text, "yes") && talkState[10])
 			{
@@ -5116,7 +4975,7 @@ void Player::manageAccount(const std::string &text)
 				{
 					managerString = generateRecoveryKey(4, 4);
 					IOLoginData::getInstance()->setRecoveryKey(managerNumber, managerString);
-					msg << "Your recovery key is {" << managerString << "}.";
+					msg << "Your recovery key is " << managerString << ".";
 				}
 
 				talkState[1] = true;
@@ -5156,7 +5015,7 @@ void Player::manageAccount(const std::string &text)
 					talkState[3] = true;
 					talkState[2] = false;
 					managerString = tmp;
-					msg << "{" << managerString << "} is it? {yes} or {no}?";
+					msg << managerString << " is it? yes or no?";
 				}
 			}
 			else if(checkText(text, "yes") && talkState[3])
@@ -5174,8 +5033,8 @@ void Player::manageAccount(const std::string &text)
 						managerNumber = id;
 
 						noSwap = talkState[1] = false;
-						msg << "Your account has been created, you may manage it now, but please remember your account name {"
-							<< managerChar << "} and password {" << managerString << "}!";
+						msg << "Your account has been created, you may manage it now, but please remember your account id "
+							<< managerChar << " and password " << managerString << "!";
 					}
 					else
 						msg << "Your account could not be created, please contact with staff.";
@@ -5185,7 +5044,7 @@ void Player::manageAccount(const std::string &text)
 				}
 				else
 				{
-					msg << "What would you like your account name to be?";
+					msg << "What would you like your account id to be?";
 					talkState[3] = false;
 					talkState[4] = true;
 				}
@@ -5201,17 +5060,17 @@ void Player::manageAccount(const std::string &text)
 				std::string tmp = text;
 				trimString(tmp);
 				if(tmp.length() < 3)
-					msg << "That account name is too short, please select a longer one.";
+					msg << "That account id is too short, please select a longer one.";
 				else if(tmp.length() > 32)
-					msg << "That account name is too long, please select a shorter one.";
-				else if(!isValidAccountName(tmp))
-					msg << "Your account name seems to contain invalid symbols, please choose another one.";
+					msg << "That account id is too long, please select a shorter one.";
+				else if(!isNumbers(tmp))
+					msg << "Your account id seems to contain invalid symbols, please choose another one.";
 				else if(asLowerCaseString(tmp) == asLowerCaseString(managerString))
-					msg << "Your account name cannot be same as password, please choose another one.";
+					msg << "Your account id cannot be same as password, please choose another one.";
 				else
 				{
 					sprintf(managerChar, "%s", tmp.c_str());
-					msg << "{" << managerChar << "}, is it? {yes} or {no}?";
+					msg << managerChar << ", is it? yes or no?";
 					talkState[4] = false;
 					talkState[5] = true;
 				}
@@ -5227,8 +5086,8 @@ void Player::manageAccount(const std::string &text)
 						managerNumber = id;
 
 						noSwap = talkState[1] = false;
-						msg << "Your account has been created, you may manage it now, but please remember your account name {"
-							<< managerChar << "} and password {" << managerString << "}!";
+						msg << "Your account has been created, you may manage it now, but please remember your account id "
+							<< managerChar << " and password " << managerString << "!";
 					}
 					else
 						msg << "Your account could not be created, please contact with staff.";
@@ -5238,7 +5097,7 @@ void Player::manageAccount(const std::string &text)
 				}
 				else
 				{
-					msg << "Account with that name already exists, please choose another one.";
+					msg << "Account with that id already exists, please choose another one.";
 					talkState[4] = true;
 					talkState[5] = false;
 				}
@@ -5247,18 +5106,19 @@ void Player::manageAccount(const std::string &text)
 			{
 				talkState[5] = false;
 				talkState[4] = true;
-				msg << "What would you like your account name to be then?";
+				msg << "What would you like your account id to be then?";
 			}
 			else if(checkText(text, "recover") && !talkState[6])
 			{
 				talkState[6] = true;
 				talkState[7] = true;
-				msg << "What was your account name?";
+				msg << "What was your account id?";
 			}
 			else if(talkState[7])
 			{
 				managerString = text;
-				if(IOLoginData::getInstance()->getAccountId(managerString, (uint32_t&)managerNumber))
+				uint32_t number = atoi(managerString.c_str());
+				if(IOLoginData::getInstance()->getAccountId(number, (uint32_t&)managerNumber))
 				{
 					talkState[7] = false;
 					talkState[8] = true;
@@ -5266,7 +5126,7 @@ void Player::manageAccount(const std::string &text)
 				}
 				else
 				{
-					msg << "Sorry, but account with name {" << managerString << "} does not exists.";
+					msg << "Sorry, but account with id " << managerString << " does not exists.";
 					talkState[6] = talkState[7] = false;
 				}
 			}
@@ -5277,7 +5137,7 @@ void Player::manageAccount(const std::string &text)
 				{
 					sprintf(managerChar, "%s%d", g_config.getString(ConfigManager::SERVER_NAME).c_str(), random_range(100, 999));
 					IOLoginData::getInstance()->setPassword(managerNumber, managerChar);
-					msg << "Correct! Your new password is {" << managerChar << "}.";
+					msg << "Correct! Your new password is '" << managerChar << "'.";
 				}
 				else
 					msg << "Sorry, but this key does not match to specified account.";
@@ -5294,9 +5154,9 @@ void Player::manageAccount(const std::string &text)
 			break;
 	}
 
-	sendCreatureSay(this, MSG_NPC_FROM, msg.str());
+	sendTextMessage(MSG_STATUS_CONSOLE_BLUE, msg.str().c_str());
 	if(!noSwap)
-		sendCreatureSay(this, MSG_NPC_FROM, "Hint: Type {account} to manage your account and if you want to start over then type {cancel}.");
+		sendTextMessage(MSG_STATUS_CONSOLE_ORANGE, "Hint: Type 'account' to manage your account and if you want to start over then type 'cancel'.");
 }
 
 bool Player::isGuildInvited(uint32_t guildId) const
@@ -5312,8 +5172,6 @@ bool Player::isGuildInvited(uint32_t guildId) const
 
 void Player::leaveGuild()
 {
-	warMap.clear();
-	g_game.updateCreatureEmblem(this);
 	sendClosePrivate(CHANNEL_GUILD);
 
 	guildLevel = GUILDLEVEL_NONE;
@@ -5388,32 +5246,10 @@ PartyShields_t Player::getPartyShield(const Creature* creature) const
 	if(party)
 	{
 		if(party->getLeader() == player)
-		{
-			if(!party->isSharedExperienceActive())
-				return SHIELD_YELLOW;
-
-			if(party->isSharedExperienceEnabled())
-				return SHIELD_YELLOW_SHAREDEXP;
-
-			if(party->canUseSharedExperience(player))
-				return SHIELD_YELLOW_NOSHAREDEXP;
-
-			return SHIELD_YELLOW_NOSHAREDEXP_BLINK;
-		}
+			return SHIELD_YELLOW;
 
 		if(party->isPlayerMember(player))
-		{
-			if(!party->isSharedExperienceActive())
-				return SHIELD_BLUE;
-
-			if(party->isSharedExperienceEnabled())
-				return SHIELD_BLUE_SHAREDEXP;
-
-			if(party->canUseSharedExperience(player))
-				return SHIELD_BLUE_NOSHAREDEXP;
-
-			return SHIELD_BLUE_NOSHAREDEXP_BLINK;
-		}
+			return SHIELD_BLUE;
 
 		if(isInviting(player))
 			return SHIELD_WHITEBLUE;

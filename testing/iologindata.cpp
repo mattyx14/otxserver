@@ -133,14 +133,14 @@ bool IOLoginData::saveAccount(Account account)
 	return db->query(query.str());
 }
 
-bool IOLoginData::getAccountId(const std::string& name, uint32_t& number)
+bool IOLoginData::getAccountId(uint32_t& name, uint32_t& number)
 {
-	if(!name.length())
+	if(!name)
 		return false;
 
 	Database* db = Database::getInstance();
 	DBQuery query;
-	query << "SELECT `id` FROM `accounts` WHERE `name` " << db->getStringComparer() << db->escapeString(name) << " LIMIT 1";
+	query << "SELECT `id` FROM `accounts` WHERE `name` " << db->getStringComparer() << name << " LIMIT 1";
 
 	DBResult* result;
 	if(!(result = db->storeQuery(query.str())))
@@ -558,11 +558,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	player->defaultOutfit.lookAddons = result->getDataInt("lookaddons");
 
 	player->currentOutfit = player->defaultOutfit;
-	Skulls_t skull = SKULL_RED;
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		skull = (Skulls_t)result->getDataInt("skull");
-
-	player->setSkullEnd((time_t)result->getDataInt("skulltime"), true, skull);
+	player->setSkullEnd((time_t)result->getDataInt("skulltime"), true, SKULL_RED);
 	player->saving = result->getDataInt("save") != 0;
 
 	player->town = result->getDataInt("town_id");
@@ -791,7 +787,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	query << "SELECT `pk`.`player_id`, `pd`.`date` FROM `player_killers` pk LEFT JOIN `killers` k"
 		<< " ON `pk`.`kill_id` = `k`.`id` LEFT JOIN `player_deaths` pd ON `k`.`death_id` = `pd`.`id`"
 		<< " WHERE `pd`.`player_id` = " << player->getGUID() << " AND `k`.`unjustified` = 1 AND "
-		<< "`pd`.`date` >= " << (time(NULL) - (7 * 86400)) << " AND `k`.`war` = 0"; // TODO: configurable
+		<< "`pd`.`date` >= " << (time(NULL) - (7 * 86400)) << " AND `k`.`war` = 0";
 
 	std::map<uint32_t, time_t> deaths;
 	if((result = db->storeQuery(query.str())))
@@ -845,24 +841,8 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 {
 	if(preSave && player->health <= 0)
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		{
-			if(player->getSkull() == SKULL_BLACK)
-			{
-				player->health = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_HEALTH);
-				player->mana = g_config.getNumber(ConfigManager::BLACK_SKULL_DEATH_MANA);
-			}
-			else
-			{
-				player->health = player->healthMax;
-				player->mana = player->manaMax;
-			}
-		}
-		else
-		{
-			player->health = player->healthMax;
-			player->mana = player->manaMax;
-		}
+		player->health = player->healthMax;
+		player->mana = player->manaMax;
 	}
 	Database* db = Database::getInstance();
 	DBQuery query;
@@ -907,12 +887,7 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	query << "`sex` = " << player->sex << ", ";
 	query << "`balance` = " << player->balance << ", ";
 	query << "`stamina` = " << player->getStamina() << ", ";
-
-	Skulls_t skull = SKULL_RED;
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		skull = player->getSkull();
-
-	query << "`skull` = " << skull << ", ";
+	query << "`skull` = " << SKULL_RED << ", ";
 	query << "`skulltime` = " << player->getSkullEnd() << ", ";
 	query << "`promotion` = " << player->promotionLevel << ", ";
 	if(g_config.getBool(ConfigManager::STORE_DIRECTION))
@@ -1044,7 +1019,7 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	{*/
 
 		query.str("");
-		query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();// << " AND `pid` IN (" << s.substr(0, --size) << ")";
+		query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID(); // << " AND `pid` IN (" << s.substr(0, --size) << ")";
 		if(!db->query(query.str()))
 			return false;
 
@@ -1255,7 +1230,7 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 
 			if(player)
 			{
-				if(_player->isEnemy(player, false))
+				if(_player->isEnemy(player))
 					wl.push_back(*it);
 
 				query.str("");
@@ -1296,8 +1271,7 @@ bool IOLoginData::playerMail(Creature* actor, std::string name, uint32_t townId,
 		townId = player->getTown();
 
 	Depot* depot = player->getDepot(townId, true);
-	if(g_game.internalMoveItem(actor, item->getParent(), depot, INDEX_WHEREEVER,
-		item, item->getItemCount(), NULL, FLAG_NOLIMIT) != RET_NOERROR)
+	if(!depot || g_game.internalMoveItem(actor, item->getParent(), depot, INDEX_WHEREEVER, item, item->getItemCount(), NULL, FLAG_NOLIMIT) != RET_NOERROR)
 	{
 		if(player->isVirtual())
 			delete player;

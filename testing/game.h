@@ -490,7 +490,6 @@ class Game
 		bool playerOpenChannel(uint32_t playerId, uint16_t channelId);
 		bool playerCloseChannel(uint32_t playerId, uint16_t channelId);
 		bool playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
-		bool playerCloseNpcChannel(uint32_t playerId);
 		bool playerProcessRuleViolation(uint32_t playerId, const std::string& name);
 		bool playerCloseRuleViolation(uint32_t playerId, const std::string& name);
 		bool playerCancelRuleViolation(uint32_t playerId);
@@ -514,12 +513,6 @@ class Game
 			uint32_t tradePlayerId, uint16_t spriteId);
 		bool playerAcceptTrade(uint32_t playerId);
 		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
-		bool playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
-			bool ignoreCap = false, bool inBackpacks = false);
-		bool playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
-			bool ignoreEquipped = false);
-		bool playerCloseShop(uint32_t playerId);
-		bool playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count);
 		bool playerCloseTrade(uint32_t playerId);
 		bool playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);
 		bool playerFollowCreature(uint32_t playerId, uint32_t creatureId);
@@ -585,8 +578,6 @@ class Game
 
 		void updateCreatureSkull(Creature* creature);
 		void updateCreatureShield(Creature* creature);
-		void updateCreatureEmblem(Creature* creature);
-		void updateCreatureWalkthrough(Creature* creature);
 
 		GameState_t getGameState() const {return gameState;}
 		void setGameState(GameState_t newState);
@@ -633,9 +624,6 @@ class Game
 		void addDistanceEffect(const SpectatorVec& list, const Position& fromPos, const Position& toPos, uint8_t effect);
 		void addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect);
 
-		void addStatsMessage(const SpectatorVec& list, MessageClasses mClass, const std::string& message,
-			const Position& pos, MessageDetails* details = NULL);
-
 		const RuleViolationsMap& getRuleViolations() const {return ruleViolations;}
 		bool cancelRuleViolation(Player* player);
 		bool closeRuleViolation(Player* player);
@@ -663,7 +651,6 @@ class Game
 		bool playerYell(Player* player, const std::string& text, uint32_t statementId);
 		bool playerSpeakTo(Player* player, MessageClasses type, const std::string& receiver, const std::string& text, uint32_t statementId);
 		bool playerSpeakToChannel(Player* player, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId);
-		bool playerSpeakToNpc(Player* player, const std::string& text);
 		bool playerReportRuleViolation(Player* player, const std::string& text);
 		bool playerContinueReport(Player* player, const std::string& text);
 

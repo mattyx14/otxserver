@@ -46,12 +46,11 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 		uint64_t getFrame() const {return m_frame;}
 
 		void writeMessageLength() {addHeader((uint16_t)(m_size));}
-		void addCryptoHeader(bool addChecksum)
+		void addCryptoHeader()
 		{
-			if(addChecksum)
-				addHeader((adlerChecksum((uint8_t*)(m_buffer + m_outputBufferStart), m_size)));
-
-			addHeader((uint16_t)(m_size));
+			*(uint16_t*)(m_buffer) = m_size;
+			m_size += 2;
+			m_outputBufferStart = 0;
 		}
 
 #ifdef __TRACK_NETWORK__
@@ -62,6 +61,7 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 
 			std::ostringstream os;
 			os << /*file << ":" */"line " << line << " " << func;
+			std::clog << file << ":" << line << " " << func << std::endl;
 			lastUses.push_back(os.str());
 		}
 
@@ -106,12 +106,7 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 			setConnection(Connection_ptr());
 			setProtocol(NULL);
 			m_frame = 0;
-
-			//allocate enough size for headers:
-			// 2 bytes for unencrypted message
-			// 4 bytes for checksum
-			// 2 bytes for encrypted message
-			m_outputBufferStart = 8;
+			m_outputBufferStart = 4;
 			setState(OutputMessage::STATE_FREE);
 		}
 

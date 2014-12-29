@@ -61,7 +61,6 @@ class ProtocolGame : public Protocol
 
 		enum {protocolId = 0x0A};
 		enum {isSingleSocket = true};
-		enum {hasChecksum = true};
 		static const char* protocolName() {return "game protocol";}
 
 		bool login(const std::string& name, uint32_t id, const std::string& password,
@@ -125,11 +124,6 @@ class ProtocolGame : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 
-		void parseLookInShop(NetworkMessage& msg);
-		void parsePlayerPurchase(NetworkMessage& msg);
-		void parsePlayerSale(NetworkMessage& msg);
-		void parseCloseShop(NetworkMessage& msg);
-
 		void parseQuests(NetworkMessage& msg);
 		void parseQuestInfo(NetworkMessage& msg);
 
@@ -138,7 +132,6 @@ class ProtocolGame : public Protocol
 		void parseRevokePartyInvite(NetworkMessage& msg);
 		void parsePassPartyLeadership(NetworkMessage& msg);
 		void parseLeaveParty(NetworkMessage& msg);
-		void parseSharePartyExperience(NetworkMessage& msg);
 
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
@@ -160,7 +153,6 @@ class ProtocolGame : public Protocol
 		void parseOpenChannel(NetworkMessage& msg);
 		void parseOpenPrivate(NetworkMessage& msg);
 		void parseCloseChannel(NetworkMessage& msg);
-		void parseCloseNpc(NetworkMessage& msg);
 
 		//rule violation
 		void parseViolationReport(NetworkMessage& msg);
@@ -199,21 +191,13 @@ class ProtocolGame : public Protocol
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
 		void sendTextMessage(MessageClasses mclass, const std::string& message);
-		void sendStatsMessage(MessageClasses mclass, const std::string& message,
-			Position pos, MessageDetails* details = NULL);
-		void sendReLoginWindow();
 
 		void sendTutorial(uint8_t tutorialId);
 		void sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc);
 
 		void sendCreatureSkull(const Creature* creature);
 		void sendCreatureShield(const Creature* creature);
-		void sendCreatureEmblem(const Creature* creature) {reloadCreature(creature);}
-		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough);
 
-		void sendShop(Npc* npc, const ShopInfoList& shop);
-		void sendCloseShop();
-		void sendGoods(const ShopInfoList& shop);
 		void sendTradeItemRequest(const Player* _player, const Item* item, bool ack);
 		void sendCloseTrade();
 
@@ -275,8 +259,7 @@ class ProtocolGame : public Protocol
 			int32_t width, int32_t height, NetworkMessage_ptr msg);
 
 		void AddMapDescription(NetworkMessage_ptr msg, const Position& pos);
-		void AddTextMessage(NetworkMessage_ptr msg, MessageClasses mclass, const std::string& message,
-			Position* pos = NULL, MessageDetails* details = NULL);
+		void AddTextMessage(NetworkMessage_ptr msg, MessageClasses mclass, const std::string& message);
 		void AddAnimatedText(NetworkMessage_ptr msg, const Position& pos,
 			uint8_t color, const std::string& text);
 		void AddMagicEffect(NetworkMessage_ptr msg, const Position& pos, uint8_t type);
@@ -312,9 +295,7 @@ class ProtocolGame : public Protocol
 		void UpdateInventoryItem(NetworkMessage_ptr msg, slots_t slot, const Item* item);
 		void RemoveInventoryItem(NetworkMessage_ptr msg, slots_t slot);
 
-		//shop
-		void AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item);
-
+		// OTClient
 		void parseExtendedOpcode(NetworkMessage& msg);
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);
 

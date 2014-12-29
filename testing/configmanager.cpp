@@ -31,7 +31,7 @@ ConfigManager::ConfigManager()
 	m_confNumber[ENCRYPTION] = ENCRYPTION_SHA1;
 	m_confString[CONFIG_FILE] = getFilePath(FILE_TYPE_CONFIG, "config.lua");
 
-	m_confNumber[LOGIN_PORT] = m_confNumber[ADMIN_PORT] = m_confNumber[MANAGER_PORT] = m_confNumber[STATUS_PORT] = 0;
+	m_confNumber[LOGIN_PORT] = m_confNumber[STATUS_PORT] = m_confNumber[GAME_PORT] = 0;
 	m_confString[DATA_DIRECTORY] = m_confString[LOGS_DIRECTORY] = m_confString[IP] = m_confString[RUNFILE] = m_confString[OUTPUT_LOG] = "";
 	m_confBool[LOGIN_ONLY_LOGINSERVER] = m_confBool[START_CLOSED] = m_confBool[DAEMONIZE] = false;
 	m_confBool[SCRIPT_SYSTEM] = true;
@@ -68,14 +68,8 @@ bool ConfigManager::load()
 		if(m_confNumber[LOGIN_PORT] == 0)
 			m_confNumber[LOGIN_PORT] = getGlobalNumber("loginPort", 7171);
 
-		if(m_confString[GAME_PORT] == "")
-			m_confString[GAME_PORT] = getGlobalString("gamePort", "7172");
-
-		if(m_confNumber[ADMIN_PORT] == 0)
-			m_confNumber[ADMIN_PORT] = getGlobalNumber("adminPort", 7171);
-
-		if(m_confNumber[MANAGER_PORT] == 0)
-			m_confNumber[MANAGER_PORT] = getGlobalNumber("managerPort", 7171);
+		if(m_confNumber[GAME_PORT] == 0)
+			m_confNumber[GAME_PORT] = getGlobalNumber("gamePort", 7172);
 
 		if(m_confNumber[STATUS_PORT] == 0)
 			m_confNumber[STATUS_PORT] = getGlobalNumber("statusPort", 7171);
@@ -255,8 +249,6 @@ bool ConfigManager::load()
 	m_confNumber[BLESS_REDUCTION_DECREMENT] = getGlobalNumber("blessingReductionDecrement", 5);
 	m_confBool[ALLOW_CHANGEADDONS] = getGlobalBool("allowChangeAddons", true);
 	m_confNumber[BLESS_REDUCTION] = getGlobalNumber("eachBlessReduction", 8);
-	m_confDouble[FORMULA_LEVEL] = getGlobalDouble("formulaLevel", 5.0);
-	m_confDouble[FORMULA_MAGIC] = getGlobalDouble("formulaMagic", 1.0);
 	m_confString[PREFIX_CHANNEL_LOGS] = getGlobalString("prefixChannelLogs", "");
 	m_confBool[GHOST_INVISIBLE_EFFECT] = getGlobalBool("ghostModeInvisibleEffect", false);
 	m_confString[CORES_USED] = getGlobalString("coresUsed", "-1");
@@ -298,10 +290,9 @@ bool ConfigManager::load()
 	m_confNumber[TRADE_LIMIT] = getGlobalNumber("tradeLimit", 100);
 	m_confString[MAILBOX_DISABLED_TOWNS] = getGlobalString("mailboxDisabledTowns", "");
 	m_confNumber[SQUARE_COLOR] = getGlobalNumber("squareColor", 0);
-	m_confBool[USE_BLACK_SKULL] = getGlobalBool("useBlackSkull", true);
 	m_confBool[USE_FRAG_HANDLER] = getGlobalBool("useFragHandler", true);
 	m_confNumber[LOOT_MESSAGE] = getGlobalNumber("monsterLootMessage", 3);
-	m_confNumber[LOOT_MESSAGE_TYPE] = getGlobalNumber("monsterLootMessageType", 19);
+	m_confNumber[LOOT_MESSAGE_TYPE] = getGlobalNumber("monsterLootMessageType", 22);
 	m_confNumber[NAME_REPORT_TYPE] = getGlobalNumber("violationNameReportActionType", 2);
 	m_confNumber[HOUSE_CLEAN_OLD] = getGlobalNumber("houseCleanOld", 0);
 	m_confBool[VIPLIST_PER_PLAYER] = getGlobalBool("separateVipListPerCharacter", false);
@@ -309,17 +300,6 @@ bool ConfigManager::load()
 	m_confDouble[RATE_MONSTER_MANA] = getGlobalDouble("rateMonsterMana", 1);
 	m_confDouble[RATE_MONSTER_ATTACK] = getGlobalDouble("rateMonsterAttack", 1);
 	m_confDouble[RATE_MONSTER_DEFENSE] = getGlobalDouble("rateMonsterDefense", 1);
-	m_confBool[MANAGER_LOCALHOST_ONLY] = getGlobalBool("managerLocalhostOnly", true);
-	m_confNumber[MANAGER_CONNECTIONS_LIMIT] = getGlobalNumber("managerConnectionsLimit", 1);
-	m_confString[MANAGER_PASSWORD] = getGlobalString("managerPassword", "");
-	m_confBool[MANAGER_LOGS] = getGlobalBool("managerLogs", false);
-	m_confBool[ADMIN_LOGS] = getGlobalBool("adminLogs", false);
-	m_confString[ADMIN_PASSWORD] = getGlobalString("adminPassword", "");
-	m_confNumber[ADMIN_CONNECTIONS_LIMIT] = getGlobalNumber("adminConnectionsLimit", 1);
-	m_confBool[ADMIN_LOCALHOST_ONLY] = getGlobalBool("adminLocalhostOnly", true);
-	m_confBool[ADMIN_REQUIRE_LOGIN] = getGlobalBool("adminRequireLogin", true);
-	m_confString[ADMIN_ENCRYPTION] = getGlobalString("adminEncryption", "");
-	m_confString[ADMIN_ENCRYPTION_DATA] = getGlobalString("adminEncryptionData", "");
 	m_confBool[ADDONS_PREMIUM] = getGlobalBool("addonsOnlyPremium", true);
 	m_confBool[UNIFIED_SPELLS] = getGlobalBool("unifiedSpells", true);
 	m_confBool[OPTIONAL_WAR_ATTACK_ALLY] = getGlobalBool("optionalWarAttackableAlly", false);
@@ -360,6 +340,9 @@ bool ConfigManager::load()
 	m_confBool[USE_RUNE_REQUIREMENTS] = getGlobalBool("useRunesRequirements", true);
 	m_confNumber[HIGHSCORES_TOP] = getGlobalNumber("highscoreDisplayPlayers", 10);
 	m_confNumber[HIGHSCORES_UPDATETIME] = getGlobalNumber("updateHighscoresAfterMinutes", 60);
+	m_confBool[AUTO_STACK] = getGlobalBool("autoStack", true);
+	m_confBool[CHARLIST_INFO] = getGlobalBool("charlistBasicInfo", false);
+	m_confBool[CLASSIC_DAMAGE_ON_WEAPONS] = getGlobalBool("classicDamageOnWeapons", true);
 	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
 	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
 

@@ -51,7 +51,7 @@ class IOLoginData
 		bool loadAccount(Account& account, const std::string& name);
 		bool saveAccount(Account account);
 
-		bool getAccountId(const std::string& name, uint32_t& number);
+		bool getAccountId(uint32_t& name, uint32_t& number);
 		bool getAccountName(uint32_t number, std::string& name);
 
 		bool hasFlag(uint32_t accountId, PlayerFlags value);

@@ -39,7 +39,7 @@ Combat::Combat()
 	area = NULL;
 
 	formulaType = FORMULA_UNDEFINED;
-	mina = minb = maxa = maxb = minl = maxl = minm = maxm = minc = maxc = 0;
+	mina = minb = maxa = maxb = 0;
 }
 
 Combat::~Combat()
@@ -75,13 +75,8 @@ bool Combat::getMinMaxValues(Creature* creature, Creature* target, CombatParams&
 			{
 				case FORMULA_LEVELMAGIC:
 				{
-					min = (int32_t)((player->getLevel() / minl + player->getMagicLevel() * minm) * 1. * mina + minb);
-					max = (int32_t)((player->getLevel() / maxl + player->getMagicLevel() * maxm) * 1. * maxa + maxb);
-					if(minc && std::abs(min) < std::abs(minc))
-						min = minc;
-
-					if(maxc && std::abs(max) < std::abs(maxc))
-						max = maxc;
+					max = (int32_t)((player->getLevel() * 2 + player->getMagicLevel() * 3) * 1. * mina + minb);
+					min = (int32_t)((player->getLevel() * 2 + player->getMagicLevel() * 3) * 1. * maxa + maxb);
 
 					player->increaseCombatValues(min, max, params.useCharges, true);
 					return true;
@@ -106,21 +101,18 @@ bool Combat::getMinMaxValues(Creature* creature, Creature* target, CombatParams&
 					else
 						max = (int32_t)maxb;
 
-					min = (int32_t)minb;
-					if(maxc && std::abs(max) < std::abs(maxc))
-						max = maxc;
-
 					return true;
 				}
 
 				case FORMULA_VALUE:
 				{
-					min = (int32_t)minb;
-					max = (int32_t)maxb;
+					min = (int32_t)mina;
+					max = (int32_t)maxa;
 					return true;
 				}
 
 				default:
+					min = max = 0;
 					break;
 			}
 
@@ -283,7 +275,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 		{
 			checkZones = true;
 			if((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !Combat::isInPvpZone(attacker, target)
-				&& !attackerPlayer->isEnemy(targetPlayer, true)) || isProtected(const_cast<Player*>(attackerPlayer),
+				&& !attackerPlayer->isEnemy(targetPlayer)) || isProtected(const_cast<Player*>(attackerPlayer),
 				const_cast<Player*>(targetPlayer)) || (g_config.getBool(ConfigManager::CANNOT_ATTACK_SAME_LOOKFEET)
 				&& attackerPlayer->getDefaultOutfit().lookFeet == targetPlayer->getDefaultOutfit().lookFeet)
 				|| !attackerPlayer->canSeeCreature(targetPlayer))
@@ -305,7 +297,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 			{
 				checkZones = true;
 				if(g_game.getWorldType() == WORLDTYPE_OPTIONAL && !Combat::isInPvpZone(attacker, target)
-					&& !attackerPlayer->isEnemy(target->getPlayerMaster(), true))
+					&& !attackerPlayer->isEnemy(target->getPlayerMaster()))
 					return RET_YOUMAYNOTATTACKTHISCREATURE;
 			}
 		}
@@ -363,12 +355,6 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 	{
 		if(player->getSecureMode() == SECUREMODE_ON)
 			return RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
-
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		{
-			if(player->getSkull() == SKULL_BLACK)
-				return RET_YOUMAYNOTATTACKTHISPLAYER;
-		}
 	}
 
 	return Combat::canDoCombat(player, target, true);
@@ -393,10 +379,9 @@ bool Combat::isProtected(Player* attacker, Player* target)
 	return target->isProtected() || attacker->isProtected() || (attacker->checkLoginDelay() && !attacker->hasBeenAttacked(target->getID()));
 }
 
-void Combat::setPlayerCombatValues(formulaType_t _type, double _mina, double _minb, double _maxa, double _maxb, double _minl, double _maxl, double _minm, double _maxm, int32_t _minc, int32_t _maxc)
+void Combat::setPlayerCombatValues(formulaType_t _type, double _mina, double _minb, double _maxa, double _maxb)
 {
 	formulaType = _type; mina = _mina; minb = _minb; maxa = _maxa; maxb = _maxb;
-	minl = _minl; maxl = _maxl; minm = _minm; maxm = _maxm; minc = _minc; maxc = _maxc;
 }
 
 bool Combat::setParam(CombatParam_t param, uint32_t value)
@@ -552,23 +537,11 @@ bool Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 	if(_params.element.damage && _params.element.type != COMBAT_NONE)
 		g_game.combatBlockHit(_params.element.type, caster, target, _params.element.damage, params.blockedByShield, params.blockedByArmor, params.itemId != 0, true);
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	if(caster && caster->getPlayer() && target->getPlayer())
 	{
-		if(caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
-		{
-			_params.element.damage /= 2;
-			if(change < 0)
-				change /= 2;
-		}
-	}
-	else
-	{
-		if(caster && caster->getPlayer() && target->getPlayer())
-		{
-			_params.element.damage /= 2;
-			if(change < 0)
-				change /= 2;
-		}
+		_params.element.damage /= 2;
+		if(change < 0)
+			change /= 2;
 	}
 
 	if(!g_game.combatChangeHealth(_params, caster, target, change, false))
@@ -592,16 +565,8 @@ bool Combat::CombatManaFunc(Creature* caster, Creature* target, const CombatPara
 	if(g_game.combatBlockHit(COMBAT_MANADRAIN, caster, target, change, false, false, params.itemId != 0))
 		return false;
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-	{
-		if(change < 0 && caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
-			change /= 2;
-	}
-	else
-	{
-		if(change < 0 && caster && caster->getPlayer() && target->getPlayer())
-			change /= 2;
-	}
+	if(change < 0 && caster && caster->getPlayer() && target->getPlayer())
+		change /= 2;
 
 	if(!g_game.combatChangeMana(caster, target, change))
 		return false;
@@ -1466,9 +1431,6 @@ bool MagicField::isBlocking(const Creature* creature) const
 	uint32_t ownerId = getOwner();
 	if(!ownerId)
 		return false;
-
-	if(Creature* owner = g_game.getCreatureByID(ownerId))
-		return creature->getPlayer()->getGuildEmblem(owner) != GUILDEMBLEM_NONE;
 
 	return false;
 }

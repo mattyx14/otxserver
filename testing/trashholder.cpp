@@ -30,18 +30,6 @@ void TrashHolder::__addThing(Creature* actor, int32_t, Thing* thing)
 		if(item == this || !item->isMovable())
 			return;
 
-		if(g_game.isSwimmingPool(this, getTile(), true))
-		{
-			if(item->getID() == ITEM_WATERBALL_SPLASH)
-				return;
-
-			if(item->getID() == ITEM_WATERBALL)
-			{
-				g_game.transformItem(item, ITEM_WATERBALL_SPLASH);
-				return;
-			}
-		}
-
 		g_game.internalRemoveItem(actor, item);
 		if(effect != MAGIC_EFFECT_NONE)
 			g_game.addMagicEffect(getPosition(), effect);

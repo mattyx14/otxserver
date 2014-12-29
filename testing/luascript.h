@@ -430,7 +430,6 @@ class LuaInterface
 		static int32_t luaGetPlayersByAccountId(lua_State* L);
 		static int32_t luaGetAccountIdByName(lua_State* L);
 		static int32_t luaGetAccountByName(lua_State* L);
-		static int32_t luaGetAccountIdByAccount(lua_State* L);
 		static int32_t luaGetAccountByAccountId(lua_State* L);
 		static int32_t luaGetAccountFlagValue(lua_State* L);
 		static int32_t luaGetAccountCustomFlagValue(lua_State* L);
@@ -561,6 +560,9 @@ class LuaInterface
 		static int32_t luaDoPlayerJoinParty(lua_State* L);
 		static int32_t luaDoPlayerLeaveParty(lua_State* L);
 		static int32_t luaGetPartyMembers(lua_State* L);
+		static int32_t luaIsPartyLeader(lua_State* L);
+		static int32_t luaIsPartySharedExperienceActive(lua_State* L);
+		static int32_t luaSetPartySharedExperience(lua_State* L);
 		static int32_t luaGetCreatureStorageList(lua_State* L);
 		static int32_t luaGetCreatureStorage(lua_State* L);
 		static int32_t luaDoCreatureSetStorage(lua_State* L);
@@ -592,6 +594,7 @@ class LuaInterface
 		static int32_t luaIsPlayerProtected(lua_State* L);
 		static int32_t luaIsCreature(lua_State* L);
 		static int32_t luaIsMovable(lua_State* L);
+		static int32_t luaIsItemRune(lua_State* L);
 		static int32_t luaGetContainerSize(lua_State* L);
 		static int32_t luaGetContainerCap(lua_State* L);
 		static int32_t luaGetContainerItem(lua_State* L);

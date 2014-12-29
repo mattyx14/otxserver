@@ -28,7 +28,7 @@
 
 extern ConfigManager g_config;
 
-std::string transformToMD5(std::string plainText, bool upperCase)
+std::string transformToMD5(const std::string &plainText, bool upperCase)
 {
 	MD5_CTX c;
 	MD5_Init(&c);
@@ -47,7 +47,7 @@ std::string transformToMD5(std::string plainText, bool upperCase)
 	return asLowerCaseString(std::string(output));
 }
 
-std::string transformToSHA1(std::string plainText, bool upperCase)
+std::string transformToSHA1(const std::string &plainText, bool upperCase)
 {
 	SHA_CTX c;
 	SHA1_Init(&c);
@@ -66,7 +66,7 @@ std::string transformToSHA1(std::string plainText, bool upperCase)
 	return asLowerCaseString(std::string(output));
 }
 
-std::string transformToSHA256(std::string plainText, bool upperCase)
+std::string transformToSHA256(const std::string &plainText, bool upperCase)
 {
 	SHA256_CTX c;
 	SHA256_Init(&c);
@@ -85,7 +85,7 @@ std::string transformToSHA256(std::string plainText, bool upperCase)
 	return asLowerCaseString(std::string(output));
 }
 
-std::string transformToSHA512(std::string plainText, bool upperCase)
+std::string transformToSHA512(const std::string &plainText, bool upperCase)
 {
 	SHA512_CTX c;
 	SHA512_Init(&c);
@@ -786,9 +786,6 @@ std::string convertIPAddress(uint32_t ip)
 Skulls_t getSkulls(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "black" || tmpStrValue == "5")
-		return SKULL_BLACK;
-
 	if(tmpStrValue == "red" || tmpStrValue == "4")
 		return SKULL_RED;
 
@@ -807,24 +804,6 @@ Skulls_t getSkulls(std::string strValue)
 PartyShields_t getShields(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "whitenoshareoff" || tmpStrValue == "10")
-		return SHIELD_YELLOW_NOSHAREDEXP;
-
-	if(tmpStrValue == "blueshareoff" || tmpStrValue == "9")
-		return SHIELD_BLUE_NOSHAREDEXP;
-
-	if(tmpStrValue == "yellowshareblink" || tmpStrValue == "8")
-		return SHIELD_YELLOW_NOSHAREDEXP_BLINK;
-
-	if(tmpStrValue == "blueshareblink" || tmpStrValue == "7")
-		return SHIELD_BLUE_NOSHAREDEXP_BLINK;
-
-	if(tmpStrValue == "yellowshareon" || tmpStrValue == "6")
-		return SHIELD_YELLOW_SHAREDEXP;
-
-	if(tmpStrValue == "blueshareon" || tmpStrValue == "5")
-		return SHIELD_BLUE_SHAREDEXP;
-
 	if(tmpStrValue == "yellow" || tmpStrValue == "4")
 		return SHIELD_YELLOW;
 
@@ -838,21 +817,6 @@ PartyShields_t getShields(std::string strValue)
 		return SHIELD_WHITEBLUE;
 
 	return SHIELD_NONE;
-}
-
-GuildEmblems_t getEmblems(std::string strValue)
-{
-	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "blue" || tmpStrValue == "neutral" || tmpStrValue == "3")
-		return GUILDEMBLEM_NEUTRAL;
-
-	if(tmpStrValue == "red" || tmpStrValue == "enemy" || tmpStrValue == "2")
-		return GUILDEMBLEM_ENEMY;
-
-	if(tmpStrValue == "green" || tmpStrValue == "ally" || tmpStrValue == "1")
-		return GUILDEMBLEM_ALLY;
-
-	return GUILDEMBLEM_NONE;
 }
 
 Direction getDirection(std::string string)
@@ -1066,41 +1030,7 @@ MagicEffectNames magicEffectNames[] =
 	{"stun", MAGIC_EFFECT_STUN},
 	{"sleep", MAGIC_EFFECT_SLEEP},
 	{"watercreature", MAGIC_EFFECT_WATERCREATURE},
-	{"groundshaker", MAGIC_EFFECT_GROUNDSHAKER},
-	{"hearts", MAGIC_EFFECT_HEARTS},
-	{"fireattack", MAGIC_EFFECT_FIREATTACK},
-	{"energyarea", MAGIC_EFFECT_ENERGY_AREA},
-	{"smallclouds", MAGIC_EFFECT_SMALLCLOUDS},
-	{"holydamage", MAGIC_EFFECT_HOLYDAMAGE},
-	{"bigclouds", MAGIC_EFFECT_BIGCLOUDS},
-	{"icearea", MAGIC_EFFECT_ICEAREA},
-	{"icetornado", MAGIC_EFFECT_ICETORNADO},
-	{"iceattack", MAGIC_EFFECT_ICEATTACK},
-	{"stones", MAGIC_EFFECT_STONES},
-	{"smallplants", MAGIC_EFFECT_SMALLPLANTS},
-	{"carniphila", MAGIC_EFFECT_CARNIPHILA},
-	{"purpleenergy", MAGIC_EFFECT_PURPLEENERGY},
-	{"yellowenergy", MAGIC_EFFECT_YELLOWENERGY},
-	{"holyarea", MAGIC_EFFECT_HOLYAREA},
-	{"bigplants", MAGIC_EFFECT_BIGPLANTS},
-	{"cake", MAGIC_EFFECT_CAKE},
-	{"giantice", MAGIC_EFFECT_GIANTICE},
-	{"watersplash", MAGIC_EFFECT_WATERSPLASH},
-	{"plantattack", MAGIC_EFFECT_PLANTATTACK},
-	{"tutorialarrow", MAGIC_EFFECT_TUTORIALARROW},
-	{"tutorialsquare", MAGIC_EFFECT_TUTORIALSQUARE},
-	{"mirrorhorizontal", MAGIC_EFFECT_MIRRORHORIZONTAL},
-	{"mirrorvertical", MAGIC_EFFECT_MIRRORVERTICAL},
-	{"skullhorizontal", MAGIC_EFFECT_SKULLHORIZONTAL},
-	{"skullvertical", MAGIC_EFFECT_SKULLVERTICAL},
-	{"assassin", MAGIC_EFFECT_ASSASSIN},
-	{"stepshorizontal", MAGIC_EFFECT_STEPSHORIZONTAL},
-	{"bloodysteps", MAGIC_EFFECT_BLOODYSTEPS},
-	{"stepsvertical", MAGIC_EFFECT_STEPSVERTICAL},
-	{"yalaharighost", MAGIC_EFFECT_YALAHARIGHOST},
-	{"bats", MAGIC_EFFECT_BATS},
-	{"smoke", MAGIC_EFFECT_SMOKE},
-	{"insects", MAGIC_EFFECT_INSECTS}
+	{"groundshaker", MAGIC_EFFECT_GROUNDSHAKER}
 };
 
 ShootTypeNames shootTypeNames[] =
@@ -1132,22 +1062,7 @@ ShootTypeNames shootTypeNames[] =
 	{"whirlwindsword", SHOOT_EFFECT_WHIRLWINDSWORD},
 	{"whirlwindaxe", SHOOT_EFFECT_WHIRLWINDAXE},
 	{"whirlwindclub", SHOOT_EFFECT_WHIRLWINDCLUB},
-	{"etherealspear", SHOOT_EFFECT_ETHEREALSPEAR},
-	{"ice", SHOOT_EFFECT_ICE},
-	{"earth", SHOOT_EFFECT_EARTH},
-	{"holy", SHOOT_EFFECT_HOLY},
-	{"suddendeath", SHOOT_EFFECT_SUDDENDEATH},
-	{"flasharrow", SHOOT_EFFECT_FLASHARROW},
-	{"flammingarrow", SHOOT_EFFECT_FLAMMINGARROW},
-	{"flamingarrow", SHOOT_EFFECT_FLAMMINGARROW},
-	{"shiverarrow", SHOOT_EFFECT_SHIVERARROW},
-	{"energyball", SHOOT_EFFECT_ENERGYBALL},
-	{"smallice", SHOOT_EFFECT_SMALLICE},
-	{"smallholy", SHOOT_EFFECT_SMALLHOLY},
-	{"smallearth", SHOOT_EFFECT_SMALLEARTH},
-	{"eartharrow", SHOOT_EFFECT_EARTHARROW},
-	{"explosion", SHOOT_EFFECT_EXPLOSION},
-	{"cake", SHOOT_EFFECT_CAKE}
+	{"etherealspear", SHOOT_EFFECT_ETHEREALSPEAR}
 };
 
 CombatTypeNames combatTypeNames[] =
@@ -1364,7 +1279,7 @@ void getCombatDetails(CombatType_t combatType, MagicEffect_t& magicEffect, Color
 
 		case COMBAT_ENERGYDAMAGE:
 		{
-			textColor = COLOR_PURPLE;
+			textColor = COLOR_LIGHTBLUE;
 			magicEffect = MAGIC_EFFECT_ENERGY_DAMAGE;
 			break;
 		}
@@ -1390,24 +1305,10 @@ void getCombatDetails(CombatType_t combatType, MagicEffect_t& magicEffect, Color
 			break;
 		}
 
-		case COMBAT_ICEDAMAGE:
-		{
-			textColor = COLOR_TEAL;
-			magicEffect = MAGIC_EFFECT_ICEATTACK;
-			break;
-		}
-
-		case COMBAT_HOLYDAMAGE:
-		{
-			textColor = COLOR_YELLOW;
-			magicEffect = MAGIC_EFFECT_HOLYDAMAGE;
-			break;
-		}
-
 		case COMBAT_DEATHDAMAGE:
 		{
 			textColor = COLOR_DARKRED;
-			magicEffect = MAGIC_EFFECT_SMALLCLOUDS;
+			magicEffect = MAGIC_EFFECT_DRAW_BLOOD;
 			break;
 		}
 
@@ -1767,30 +1668,6 @@ bool fileExists(const char* filename)
 
 	fclose(f);
 	return true;
-}
-
-uint32_t adlerChecksum(uint8_t* data, size_t length)
-{
-	if(length > NETWORK_MAX_SIZE || !length)
-		return 0;
-
-	const uint16_t adler = 65521;
-	uint32_t a = 1, b = 0;
-	while(length > 0)
-	{
-		size_t tmp = length > 5552 ? 5552 : length;
-		length -= tmp;
-		do
-		{
-			a += *data++;
-			b += a;
-		}
-		while(--tmp);
-		a %= adler;
-		b %= adler;
-	}
-
-	return (b << 16) | a;
 }
 
 std::string getFilePath(FileType_t type, std::string name/* = ""*/)

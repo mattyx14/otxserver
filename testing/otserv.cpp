@@ -57,14 +57,8 @@
 
 #include "protocollogin.h"
 #include "protocolgame.h"
-#include "protocolold.h"
-#include "protocolhttp.h"
 
 #include "status.h"
-#include "manager.h"
-#ifdef __OTADMIN__
-#include "admin.h"
-#endif
 
 #include "configmanager.h"
 #include "scriptmanager.h"
@@ -81,15 +75,10 @@
 #include "raids.h"
 
 #include "monsters.h"
-#ifdef __OTSERV_ALLOCATOR__
-#include "allocator.h"
-#endif
 #ifdef __EXCEPTION_TRACER__
 #include "exception.h"
 #endif
-#ifndef __OTADMIN__
 #include "textlogger.h"
-#endif
 
 #ifdef __NO_BOOST_EXCEPTIONS__
 #include <exception>
@@ -180,10 +169,6 @@ bool argumentsHandler(StringVec args)
 			g_config.setNumber(ConfigManager::LOGIN_PORT, atoi(tmp[1].c_str()));
 		else if(tmp[0] == "--game-port")
 			g_config.setNumber(ConfigManager::GAME_PORT, atoi(tmp[1].c_str()));
-		else if(tmp[0] == "--admin-port")
-			g_config.setNumber(ConfigManager::ADMIN_PORT, atoi(tmp[1].c_str()));
-		else if(tmp[0] == "--manager-port")
-			g_config.setNumber(ConfigManager::MANAGER_PORT, atoi(tmp[1].c_str()));
 		else if(tmp[0] == "--status-port")
 			g_config.setNumber(ConfigManager::STATUS_PORT, atoi(tmp[1].c_str()));
 #ifndef WINDOWS
@@ -921,12 +906,7 @@ ServiceManager* services)
 		startupErrorMessage("Unable to bind any IP address! You may want to disable \"bindOnlyGlobalAddress\" setting in config.lua");
 
 	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT), ipList);
-	services->add<ProtocolManager>(g_config.getNumber(ConfigManager::MANAGER_PORT), ipList);
-	#ifdef __OTADMIN__
-	services->add<ProtocolAdmin>(g_config.getNumber(ConfigManager::ADMIN_PORT), ipList);
-	#endif
 
-	//services->add<ProtocolHTTP>(8080, ipList);
 	if(
 #ifdef __LOGIN_SERVER__
 	true
@@ -936,17 +916,9 @@ ServiceManager* services)
 	)
 	{
 		services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT), ipList);
-		services->add<ProtocolOldLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT), ipList);
 	}
 
-	services->add<ProtocolOldGame>(g_config.getNumber(ConfigManager::LOGIN_PORT), ipList);
-	IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-	for(IntegerVec::const_iterator it = games.begin(); it != games.end(); ++it)
-	{
-		services->add<ProtocolGame>(*it, ipList);
-		break; // CRITICAL: more ports are causing crashes- either find the issue or drop the "feature"
-	}
-
+	services->add<ProtocolGame>(g_config.getNumber(ConfigManager::GAME_PORT), ipList);
 	std::clog << "> Bound ports: ";
 	#if defined(WINDOWS) && !defined(_CONSOLE)
 	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Bound ports: ");

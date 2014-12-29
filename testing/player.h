@@ -41,6 +41,7 @@ class Npc;
 class Party;
 class SchedulerTask;
 class Quest;
+class BedItem;
 
 enum skillsid_t
 {
@@ -296,7 +297,7 @@ class Player : public Creature, public Cylinder
 		bool hasEnemy() const {return !warMap.empty();}
 		bool getEnemy(const Player* player, War_t& data) const;
 
-		bool isEnemy(const Player* player, bool allies) const;
+		bool isEnemy(const Player* player) const;
 		bool isAlly(const Player* player) const;
 
 		void addEnemy(uint32_t guild, War_t war)
@@ -370,7 +371,6 @@ class Player : public Creature, public Cylinder
 		virtual bool canSee(const Position& pos) const;
 		virtual bool canSeeCreature(const Creature* creature) const;
 		virtual bool canWalkthrough(const Creature* creature) const;
-		void setWalkthrough(const Creature* creature, bool walkthrough);
 
 		virtual bool canSeeInvisibility() const {return hasFlag(PlayerFlag_CanSenseInvisibility);}
 
@@ -383,30 +383,6 @@ class Player : public Creature, public Cylinder
 		void setTradeState(tradestate_t state) {tradeState = state;}
 		tradestate_t getTradeState() {return tradeState;}
 		Item* getTradeItem() {return tradeItem;}
-
-		//shop functions
-		void setShopOwner(Npc* owner, int32_t onBuy, int32_t onSell, ShopInfoList offer)
-		{
-			shopOwner = owner;
-			purchaseCallback = onBuy;
-			saleCallback = onSell;
-			shopOffer = offer;
-		}
-
-		Npc* getShopOwner() const {return shopOwner;}
-		Npc* getShopOwner(int32_t& onBuy, int32_t& onSell)
-		{
-			onBuy = purchaseCallback;
-			onSell = saleCallback;
-			return shopOwner;
-		}
-
-		const Npc* getShopOwner(int32_t& onBuy, int32_t& onSell) const
-		{
-			onBuy = purchaseCallback;
-			onSell = saleCallback;
-			return shopOwner;
-		}
 
 		//Quest functions
 		void onUpdateQuest();
@@ -428,10 +404,6 @@ class Player : public Creature, public Cylinder
 		virtual void onWalk(Direction& dir);
 		virtual void onWalkAborted();
 		virtual void onWalkComplete();
-
-		void openShopWindow(Npc* npc);
-		void closeShopWindow(bool send = true);
-		bool canShopItem(uint16_t itemId, uint8_t subType, ShopEvent_t event);
 
 		chaseMode_t getChaseMode() const {return chaseMode;}
 		void setChaseMode(chaseMode_t mode);
@@ -506,7 +478,7 @@ class Player : public Creature, public Cylinder
 		virtual void onSummonTargetDrain(Creature* summon, Creature* target, int32_t points);
 		virtual void onTargetGain(Creature* target, int32_t points);
 		virtual bool onKilledCreature(Creature* target, DeathEntry& entry);
-		virtual void onGainExperience(double& gainExp, Creature* target, bool multiplied);
+		virtual void onGainExperience(double& gainExp, Creature* target, bool);
 		virtual void onGainSharedExperience(double& gainExp, Creature* taraget, bool multiplied);
 		virtual void onTargetBlockHit(Creature* target, BlockType_t blockType);
 		virtual void onBlockHit(BlockType_t blockType);
@@ -520,7 +492,6 @@ class Player : public Creature, public Cylinder
 
 		Skulls_t getSkullType(const Creature* creature) const;
 		PartyShields_t getPartyShield(const Creature* creature) const;
-		GuildEmblems_t getGuildEmblem(const Creature* creature) const;
 
 		bool hasAttacked(const Player* attacked) const;
 		void addAttacked(const Player* attacked);
@@ -548,7 +519,7 @@ class Player : public Creature, public Cylinder
 		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel)
 			{if(client) client->sendChannelMessage(author, text, type, channel);}
 		void sendCreatureAppear(const Creature* creature)
-			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
+			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->__getIndexOfThing(creature));}
 		void sendCreatureDisappear(const Creature* creature, uint32_t stackpos)
 			{if(client) client->sendRemoveCreature(creature, creature->getPosition(), stackpos);}
 		void sendCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
@@ -570,10 +541,6 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendCreatureLight(creature);}
 		void sendCreatureShield(const Creature* creature)
 			{if(client) client->sendCreatureShield(creature);}
-		void sendCreatureEmblem(const Creature* creature)
-			{if(client) client->sendCreatureEmblem(creature);}
-		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough)
-			{if(client) client->sendCreatureWalkthrough(creature, walkthrough);}
 
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
 			{if(client) client->sendExtendedOpcode(opcode, buffer);}
@@ -669,18 +636,8 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendSkills();}
 		void sendTextMessage(MessageClasses type, const std::string& message) const
 			{if(client) client->sendTextMessage(type, message);}
-		void sendStatsMessage(MessageClasses type, const std::string& message, Position pos, MessageDetails* details = NULL) const
-			{if(client) client->sendStatsMessage(type, message, pos, details);}
-		void sendReLoginWindow() const
-			{if(client) client->sendReLoginWindow();}
 		void sendTextWindow(Item* item, uint16_t maxLen, bool canWrite) const
 			{if(client) client->sendTextWindow(windowTextId, item, maxLen, canWrite);}
-		void sendShop(Npc* npc) const
-			{if(client) client->sendShop(npc, shopOffer);}
-		void sendGoods() const
-			{if(client) client->sendGoods(shopOffer);}
-		void sendCloseShop() const
-			{if(client) client->sendCloseShop();}
 		void sendTradeItemRequest(const Player* player, const Item* item, bool ack) const
 			{if(client) client->sendTradeItemRequest(player, item, ack);}
 		void sendTradeClose() const
@@ -946,14 +903,11 @@ class Player : public Creature, public Cylinder
 		Item* tradeItem;
 		Item* writeItem;
 		House* editHouse;
-		Npc* shopOwner;
 		Item* weapon;
-
-		std::vector<uint32_t> forceWalkthrough;
+		BedItem* bed;
 
 		typedef std::set<uint32_t> AttackedSet;
 		AttackedSet attackedSet;
-		ShopInfoList shopOffer;
 		PartyList invitePartyList;
 		OutfitMap outfits;
 		LearnedInstantSpellList learnedInstantSpellList;

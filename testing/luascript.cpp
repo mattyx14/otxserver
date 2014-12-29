@@ -1773,7 +1773,7 @@ void LuaInterface::registerFunctions()
 	//doPlayerAddItemEx(cid, uid[, canDropOnMap = false[, slot = 0]])
 	lua_register(m_luaState, "doPlayerAddItemEx", LuaInterface::luaDoPlayerAddItemEx);
 
-	//doPlayerSendTextMessage(cid, MessageClasses, message[, value[, color[, position]]])
+	//doPlayerSendTextMessage(cid, MessageClasses, message)
 	lua_register(m_luaState, "doPlayerSendTextMessage", LuaInterface::luaDoPlayerSendTextMessage);
 
 	//doPlayerSendChannelMessage(cid, author, message, MessageClasses, channel)
@@ -2070,7 +2070,7 @@ void LuaInterface::registerFunctions()
 	//setCombatCallBack(combat, key, function_name)
 	lua_register(m_luaState, "setCombatCallback", LuaInterface::luaSetCombatCallBack);
 
-	//setCombatFormula(combat, type, mina, minb, maxa, maxb[, minl, maxl[, minm, maxm[, minc[, maxc]]]])
+	//setCombatFormula(combat, type, mina, minb, maxa, maxb)
 	lua_register(m_luaState, "setCombatFormula", LuaInterface::luaSetCombatFormula);
 
 	//setConditionFormula(combat, mina, minb, maxa, maxb)
@@ -2181,9 +2181,6 @@ void LuaInterface::registerFunctions()
 	//getAccountByName(name)
 	lua_register(m_luaState, "getAccountByName", LuaInterface::luaGetAccountByName);
 
-	//getAccountIdByAccount(accName)
-	lua_register(m_luaState, "getAccountIdByAccount", LuaInterface::luaGetAccountIdByAccount);
-
 	//getAccountByAccountId(accId)
 	lua_register(m_luaState, "getAccountByAccountId", LuaInterface::luaGetAccountByAccountId);
 
@@ -2219,12 +2216,6 @@ void LuaInterface::registerFunctions()
 
 	//doCreatureSetLookDirection(cid, dir)
 	lua_register(m_luaState, "doCreatureSetLookDirection", LuaInterface::luaDoCreatureSetLookDir);
-
-	//getCreatureGuildEmblem(cid[, target])
-	lua_register(m_luaState, "getCreatureGuildEmblem", LuaInterface::luaGetCreatureGuildEmblem);
-
-	//doCreatureSetGuildEmblem(cid, emblem)
-	lua_register(m_luaState, "doCreatureSetGuildEmblem", LuaInterface::luaDoCreatureSetGuildEmblem);
 
 	//getCreaturePartyShield(cid[, target])
 	lua_register(m_luaState, "getCreaturePartyShield", LuaInterface::luaGetCreaturePartyShield);
@@ -2327,6 +2318,15 @@ void LuaInterface::registerFunctions()
 
 	//getPartyMembers(lid)
 	lua_register(m_luaState, "getPartyMembers", LuaInterface::luaGetPartyMembers);
+
+	//isPartyLeader(cid)
+	lua_register(m_luaState, "isPartyLeader", LuaInterface::luaIsPartyLeader);
+
+	//isPartySharedExperienceActive(cid)
+	lua_register(m_luaState, "isPartySharedExperienceActive", LuaInterface::luaIsPartySharedExperienceActive);
+
+	//setPartySharedExperience(cid, active)
+	lua_register(m_luaState, "setPartySharedExperience", LuaInterface::luaSetPartySharedExperience);
 
 	//getCreatureMaster(cid)
 	lua_register(m_luaState, "getCreatureMaster", LuaInterface::luaGetCreatureMaster);
@@ -2513,9 +2513,6 @@ void LuaInterface::registerFunctions()
 
 	//doRefreshMap()
 	lua_register(m_luaState, "doRefreshMap", LuaInterface::luaDoRefreshMap);
-
-	//doPlayerSetWalkthrough(cid, uid, walkthrough)
-	lua_register(m_luaState, "doPlayerSetWalkthrough", LuaInterface::luaDoPlayerSetWalkthrough);
 
 	//doGuildAddEnemy(guild, enemy, war, type)
 	lua_register(m_luaState, "doGuildAddEnemy", LuaInterface::luaDoGuildAddEnemy);
@@ -4316,18 +4313,7 @@ int32_t LuaInterface::luaDoCleanTile(lua_State* L)
 
 int32_t LuaInterface::luaDoPlayerSendTextMessage(lua_State* L)
 {
-	//doPlayerSendTextMessage(cid, MessageClasses, message[, value[, color[, position]]])
-	int32_t args = lua_gettop(L), value = 0, color = COLOR_WHITE;
-	PositionEx position;
-	if(args > 5)
-		popPosition(L, position);
-
-	if(args > 4)
-		color = popNumber(L);
-
-	if(args > 3)
-		value = popNumber(L);
-
+	//doPlayerSendTextMessage(cid, MessageClasses, message)
 	std::string text = popString(L);
 	uint32_t messageClass = popNumber(L);
 
@@ -4340,17 +4326,7 @@ int32_t LuaInterface::luaDoPlayerSendTextMessage(lua_State* L)
 		return 1;
 	}
 
-	if(args > 3)
-	{
-		if(!position.x || !position.y)
-			position = player->getPosition();
-
-		MessageDetails* details = new MessageDetails(value, (Color_t)color);
-		player->sendStatsMessage((MessageClasses)messageClass, text, position, details);
-		delete details;
-	}
-	else
-		player->sendTextMessage((MessageClasses)messageClass, text);
+	player->sendTextMessage((MessageClasses)messageClass, text);
 
 	lua_pushboolean(L, true);
 	return 1;
@@ -6371,7 +6347,7 @@ int32_t LuaInterface::luaSetCombatCallBack(lua_State* L)
 
 int32_t LuaInterface::luaSetCombatFormula(lua_State* L)
 {
-	//setCombatFormula(combat, type, mina, minb, maxa, maxb[, minl, maxl[, minm, maxm[, minc[, maxc]]]])
+	//setCombatFormula(combat, type, mina, minb, maxa, maxb)
 	ScriptEnviroment* env = getEnv();
 	if(env->getScriptId() != EVENT_ID_LOADING)
 	{
@@ -6380,33 +6356,11 @@ int32_t LuaInterface::luaSetCombatFormula(lua_State* L)
 		return 1;
 	}
 
-	int32_t params = lua_gettop(L), minc = 0, maxc = 0;
-	if(params > 11)
-		maxc = popNumber(L);
-
-	if(params > 10)
-		minc = popNumber(L);
-
-	double minm = g_config.getDouble(ConfigManager::FORMULA_MAGIC), maxm = minm,
-		minl = g_config.getDouble(ConfigManager::FORMULA_LEVEL), maxl = minl;
-	if(params > 8)
-	{
-		maxm = popFloatNumber(L);
-		minm = popFloatNumber(L);
-	}
-
-	if(params > 6)
-	{
-		maxl = popFloatNumber(L);
-		minl = popFloatNumber(L);
-	}
-
-	double maxb = popFloatNumber(L), maxa = popFloatNumber(L),
-		minb = popFloatNumber(L), mina = popFloatNumber(L);
+	double maxb = popFloatNumber(L), maxa = popFloatNumber(L), minb = popFloatNumber(L), mina = popFloatNumber(L);
 	formulaType_t type = (formulaType_t)popNumber(L);
 	if(Combat* combat = env->getCombatObject(popNumber(L)))
 	{
-		combat->setPlayerCombatValues(type, mina, minb, maxa, maxb, minl, maxl, minm, maxm, minc, maxc);
+		combat->setPlayerCombatValues(type, mina, minb, maxa, maxb);
 		lua_pushboolean(L, true);
 	}
 	else
@@ -7142,7 +7096,6 @@ int32_t LuaInterface::luaGetMonsterInfo(lua_State* L)
 	setField(L, "race", mType->race);
 	setField(L, "skull", mType->skull);
 	setField(L, "partyShield", mType->partyShield);
-	setField(L, "guildEmblem", mType->guildEmblem);
 	setFieldBool(L, "summonable", mType->isSummonable);
 	setFieldBool(L, "illusionable", mType->isIllusionable);
 	setFieldBool(L, "convinceable", mType->isConvinceable);
@@ -8029,15 +7982,6 @@ int32_t LuaInterface::luaGetAccountByName(lua_State* L)
 	return 1;
 }
 
-int32_t LuaInterface::luaGetAccountIdByAccount(lua_State* L)
-{
-	//getAccountIdByAccount(accName)
-	uint32_t value = 0;
-	IOLoginData::getInstance()->getAccountId(popString(L), value);
-	lua_pushnumber(L, value);
-	return 1;
-}
-
 int32_t LuaInterface::luaGetAccountByAccountId(lua_State* L)
 {
 	//getAccountByAccountId(accId)
@@ -8631,55 +8575,6 @@ int32_t LuaInterface::luaGetCreatureNoMove(lua_State* L)
 	return 1;
 }
 
-int32_t LuaInterface::luaGetCreatureGuildEmblem(lua_State* L)
-{
-	//getCreatureGuildEmblem(cid[, target])
-	uint32_t tid = 0;
-	if(lua_gettop(L) > 1)
-		tid = popNumber(L);
-
-	ScriptEnviroment* env = getEnv();
-	if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-	{
-		if(!tid)
-			lua_pushnumber(L, creature->getEmblem());
-		else if(Creature* target = env->getCreatureByUID(tid))
-			lua_pushnumber(L, creature->getGuildEmblem(target));
-		else
-		{
-			errorEx(getError(LUA_ERROR_CREATURE_NOT_FOUND));
-			lua_pushboolean(L, false);
-		}
-	}
-	else
-	{
-		errorEx(getError(LUA_ERROR_CREATURE_NOT_FOUND));
-		lua_pushboolean(L, false);
-	}
-
-	return 1;
-}
-
-int32_t LuaInterface::luaDoCreatureSetGuildEmblem(lua_State* L)
-{
-	//doCreatureSetGuildEmblem(cid, emblem)
-	GuildEmblems_t emblem = (GuildEmblems_t)popNumber(L);
-	ScriptEnviroment* env = getEnv();
-	if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-	{
-		creature->setEmblem(emblem);
-		g_game.updateCreatureEmblem(creature);
-		lua_pushboolean(L, true);
-	}
-	else
-	{
-		errorEx(getError(LUA_ERROR_CREATURE_NOT_FOUND));
-		lua_pushboolean(L, false);
-	}
-
-	return 1;
-}
-
 int32_t LuaInterface::luaGetCreaturePartyShield(lua_State* L)
 {
 	//getCreaturePartyShield(cid[, target])
@@ -8869,6 +8764,13 @@ int32_t LuaInterface::luaGetCreatureTarget(lua_State* L)
 		lua_pushboolean(L, false);
 	}
 
+	return 1;
+}
+
+int32_t LuaInterface::luaIsItemRune(lua_State* L)
+{
+	//isItemRune(itemid)
+	lua_pushboolean(L, Item::items[popNumber(L)].isRune());
 	return 1;
 }
 
@@ -9388,6 +9290,89 @@ int32_t LuaInterface::luaDoPlayerLeaveParty(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaGetPartyMembers(lua_State* L)
+{
+	//getPartyMembers(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		if(Party* party = player->getParty())
+		{
+			PlayerVector list = party->getMembers();
+			list.push_back(party->getLeader());
+
+			PlayerVector::const_iterator it = list.begin();
+			lua_newtable(L);
+			for(uint32_t i = 1; it != list.end(); ++it, ++i)
+			{
+				lua_pushnumber(L, i);
+				lua_pushnumber(L, (*it)->getID());
+				pushTable(L);
+			}
+
+			return 1;
+		}
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaIsPartyLeader(lua_State *L)
+{
+	//isPlayerPartyLeader(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		if(Party* party = player->getParty())
+		{
+			if(player == party->getLeader())
+			{
+				lua_pushboolean(L, true);
+				return 1;
+			}
+		}
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaIsPartySharedExperienceActive(lua_State *L)
+{
+	//isPartySharedExperienceActive(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		if(Party* party = player->getParty())
+		{
+			lua_pushboolean(L, party->isSharedExperienceActive());
+			return 1;
+		}
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaSetPartySharedExperience(lua_State *L)
+{
+	//setPartySharedExperience(cid, active)
+	bool active = popBoolean(L);
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		if(Party* party = player->getParty())
+		{
+			lua_pushboolean(L, party->setSharedExperience(party->getLeader(), active));
+			return 1;
+		}
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
 int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
 {
 	//isPlayerUsingOtclient(cid)
@@ -9412,34 +9397,6 @@ int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
 	{
 		player->sendExtendedOpcode(opcode, buffer);
 		lua_pushboolean(L, true);
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaGetPartyMembers(lua_State* L)
-{
-	//getPartyMembers(cid)
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		if(Party* party = player->getParty())
-		{
-			PlayerVector list = party->getMembers();
-			list.push_back(party->getLeader());
-
-			PlayerVector::const_iterator it = list.begin();
-			lua_newtable(L);
-			for(uint32_t i = 1; it != list.end(); ++it, ++i)
-			{
-				lua_pushnumber(L, i);
-				lua_pushnumber(L, (*it)->getID());
-				pushTable(L);
-			}
-
-			return 1;
-		}
 	}
 
 	lua_pushboolean(L, false);
@@ -10253,7 +10210,6 @@ int32_t LuaInterface::luaGetItemInfo(lua_State* L)
 	lua_newtable(L);
 	setFieldBool(L, "stopTime", item->stopTime);
 	setFieldBool(L, "showCount", item->showCount);
-	setFieldBool(L, "clientCharges", item->clientCharges);
 	setFieldBool(L, "stackable", item->stackable);
 	setFieldBool(L, "showDuration", item->showDuration);
 	setFieldBool(L, "showCharges", item->showCharges);
@@ -10954,40 +10910,6 @@ int32_t LuaInterface::luaGetConfigFile(lua_State* L)
 	return 1;
 }
 
-int32_t LuaInterface::luaDoPlayerSetWalkthrough(lua_State* L)
-{
-	//doPlayerSetWalkthrough(cid, uid, walkthrough)
-	bool walkthrough = popBoolean(L);
-	uint32_t uid = popNumber(L);
-
-	ScriptEnviroment* env = getEnv();
-	Player* player = env->getPlayerByUID(popNumber(L));
-	if(!player)
-	{
-		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
-		lua_pushboolean(L, false);
-		return 1;
-	}
-
-	Creature* creature = env->getCreatureByUID(uid);
-	if(!creature)
-	{
-		errorEx(getError(LUA_ERROR_CREATURE_NOT_FOUND));
-		lua_pushboolean(L, false);
-		return 1;
-	}
-
-	if(player != creature)
-	{
-		player->setWalkthrough(creature, walkthrough);
-		lua_pushboolean(L, true);
-	}
-	else
-		lua_pushboolean(L, false);
-
-	return 1;
-}
-
 int32_t LuaInterface::luaDoGuildAddEnemy(lua_State* L)
 {
 	//doGuildAddEnemy(guild, enemy, war, type)
@@ -11003,7 +10925,7 @@ int32_t LuaInterface::luaDoGuildAddEnemy(lua_State* L)
 
 		++count;
 		it->second->addEnemy(enemy, war);
-		g_game.updateCreatureEmblem(it->second);
+		g_game.updateCreatureSkull(it->second);
 	}
 
 	lua_pushnumber(L, count);
@@ -11021,7 +10943,7 @@ int32_t LuaInterface::luaDoGuildRemoveEnemy(lua_State* L)
 
 		++count;
 		it->second->removeEnemy(enemy);
-		g_game.updateCreatureEmblem(it->second);
+		g_game.updateCreatureSkull(it->second);
 	}
 
 	lua_pushnumber(L, count);

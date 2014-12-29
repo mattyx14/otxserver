@@ -55,7 +55,6 @@ void MonsterType::reset()
 	race = RACE_BLOOD;
 	skull = SKULL_NONE;
 	partyShield = SHIELD_NONE;
-	guildEmblem = GUILDEMBLEM_NONE;
 	lootMessage = LOOTMSG_IGNORE;
 
 	for(SpellList::iterator it = spellAttackList.begin(); it != spellAttackList.end(); ++it)
@@ -343,7 +342,7 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 
 		}
 
-		combatSpell->getCombat()->setPlayerCombatValues(FORMULA_VALUE, sb.minCombatValue, 0, sb.maxCombatValue, 0, 0, 0, 0, 0, 0, 0);
+		combatSpell->getCombat()->setPlayerCombatValues(FORMULA_VALUE, sb.minCombatValue, 0, sb.maxCombatValue, 0);
 	}
 	else
 	{
@@ -845,7 +844,7 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 			return false;
 		}
 
-		combat->setPlayerCombatValues(FORMULA_VALUE, sb.minCombatValue, 0, sb.maxCombatValue, 0, 0, 0, 0, 0, 0, 0);
+		combat->setPlayerCombatValues(FORMULA_VALUE, sb.minCombatValue, 0, sb.maxCombatValue, 0);
 		combatSpell = new CombatSpell(combat, needTarget, needDirection);
 
 		for(xmlNodePtr attributeNode = node->children; attributeNode; attributeNode = attributeNode->next)
@@ -991,9 +990,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 	if(readXMLString(root, "shield", strValue))
 		mType->partyShield = getShields(strValue);
 
-	if(readXMLString(root, "emblem", strValue))
-		mType->guildEmblem = getEmblems(strValue);
-
 	for(xmlNodePtr p = root->children; p; p = p->next)
 	{
 		if(p->type != XML_ELEMENT_NODE)
@@ -1095,9 +1091,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 
 					if(readXMLString(tmpNode, "shield", strValue))
 						mType->partyShield = getShields(strValue);
-
-					if(readXMLString(tmpNode, "emblem", strValue))
-						mType->guildEmblem = getEmblems(strValue);
 
 					if(readXMLString(tmpNode, "eliminable", strValue))
 						mType->eliminable = booleanString(strValue);
