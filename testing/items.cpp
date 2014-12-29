@@ -84,7 +84,7 @@ ItemType::ItemType()
 	lightLevel = lightColor = 0;
 
 	maxTextLength = 0;
-	canReadText = canWriteText = false;
+	clientCharges = canReadText = canWriteText = false;
 	date = 0;
 	writeOnceItemId = wareId = premiumDays = 0;
 
@@ -254,7 +254,10 @@ int32_t Items::loadFromOtb(std::string file)
 		iType->allowDistRead = hasBitSet(FLAG_ALLOWDISTREAD, flags);
 		iType->rotable = hasBitSet(FLAG_ROTABLE, flags);
 		iType->canReadText = hasBitSet(FLAG_READABLE, flags);
+		iType->clientCharges = hasBitSet(FLAG_CLIENTCHARGES, flags);
 		iType->lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
+		iType->isAnimation = hasBitSet(FLAG_ANIMATION, flags);
+		iType->walkStack = !hasBitSet(FLAG_WALKSTACK, flags);
 
 		attribute_t attr;
 		while(props.getType(attr))

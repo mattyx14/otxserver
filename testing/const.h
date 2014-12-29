@@ -142,8 +142,8 @@ enum MessageClasses
 	MSG_SPEAK_MONSTER_FIRST = MSG_SPEAK_MONSTER_SAY,
 	MSG_SPEAK_MONSTER_LAST = MSG_SPEAK_MONSTER_YELL,
 
-	MSG_EVENT_ORANGE = 16, /*Orange message in the console*/
 	MSG_STATUS_CONSOLE_ORANGE = 17, /*Orange message in the console*/
+	MSG_EVENT_ORANGE = MSG_STATUS_CONSOLE_ORANGE, /*Orange message in the console*/
 	MSG_STATUS_WARNING = 18, /*Red message in game window and in the console*/
 	MSG_EVENT_ADVANCE = 19, /*White message in game window and in the console*/
 	MSG_EVENT_DEFAULT = 20, /*White message at the bottom of the game window and in the console*/
@@ -154,10 +154,22 @@ enum MessageClasses
 	MSG_STATUS_CONSOLE_RED = 25, /*Red message in the console*/
 
 	//for internal use
+	MSG_LOOT = MSG_INFO_DESCR, /*Green message in game window and in the console*/
+	MSG_TRADE_NPC = MSG_INFO_DESCR, /*Green message in game window and in the console*/
 	MSG_EVENT_GUILD = MSG_INFO_DESCR, /*Green message in game window and in the console*/
 	MSG_PARTY_MANAGEMENT = MSG_INFO_DESCR, /*Green message in game window and in the console*/
 	MSG_PARTY = MSG_INFO_DESCR, /*Green message in game window and in the console*/
-	MSG_HOTKEY_USE = MSG_INFO_DESCR /*Green message in game window*/
+	MSG_REPORT = MSG_EVENT_ADVANCE, /*White message in game window and in the console*/
+	MSG_HOTKEY_USE = MSG_INFO_DESCR, /*Green message in game window*/
+	MSG_DAMAGE_DEALT = MSG_STATUS_DEFAULT,
+	MSG_DAMAGE_RECEIVED = MSG_STATUS_DEFAULT,
+	MSG_HEALED = MSG_STATUS_DEFAULT,
+	MSG_EXPERIENCE = MSG_STATUS_DEFAULT,
+
+	MSG_HIDDEN = 0xFF,
+	MSG_DAMAGE_OTHERS = MSG_HIDDEN,
+	MSG_HEALED_OTHERS = MSG_HIDDEN,
+	MSG_EXPERIENCE_OTHERS = MSG_HIDDEN
 };
 
 enum MapMarks_t
@@ -393,7 +405,8 @@ enum Skulls_t
 	SKULL_GREEN,
 	SKULL_WHITE,
 	SKULL_RED,
-	SKULL_LAST = SKULL_RED
+	SKULL_BLACK = SKULL_RED,
+	SKULL_LAST = SKULL_BLACK
 };
 
 enum PartyShields_t

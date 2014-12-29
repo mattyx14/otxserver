@@ -2434,6 +2434,12 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 				msg->putString(!creature->getHideName() ? creature->getName() : "");
 				break;
 		}
+
+		const Player* speaker = creature->getPlayer();
+		if(speaker && !speaker->isAccountManager() && !speaker->hasCustomFlag(PlayerCustomFlag_HideLevel))
+			msg->put<uint16_t>(speaker->getPlayerInfo(PLAYERINFO_LEVEL));
+		else
+			msg->put<uint16_t>(0x00);
 	}
 	else
 		msg->putString("");

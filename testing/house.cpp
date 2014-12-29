@@ -106,6 +106,17 @@ bool House::setOwnerEx(uint32_t guid, bool transfer)
 	if(owner == guid)
 		return true;
 
+	if(isGuild() && guid)
+	{
+		Player* player = g_game.getPlayerByGuidEx(guid);
+		if(!player)
+			return false;
+
+		guid = player->getGuildId();
+		if(player->isVirtual())
+			delete player;
+	}
+
 	if(owner)
 	{
 		rentWarnings = paidUntil = 0;
@@ -151,14 +162,22 @@ bool House::isBidded() const
 
 void House::updateDoorDescription(std::string _name/* = ""*/, Door* door/* = NULL*/)
 {
+	std::string tmp = "house";
+	if(isGuild())
+		tmp = "hall";
+
 	char houseDescription[200];
 	if(owner)
 	{
-		IOLoginData::getInstance()->getNameByGuid(owner, _name);
-		sprintf(houseDescription, "It belongs to house '%s'. %s owns this house.", name.c_str(), _name.c_str());
+		if(isGuild())
+			IOGuild::getInstance()->getGuildById(_name, owner);
+		else if(_name.empty())
+			IOLoginData::getInstance()->getNameByGuid(owner, _name);
+
+		sprintf(houseDescription, "It belongs to %s '%s'. %s owns this %s.", tmp.c_str(), name.c_str(), _name.c_str(), tmp.c_str());
 	}
 	else
-		sprintf(houseDescription, "It belongs to house '%s'. Nobody owns this house. It costs %d gold coins.", name.c_str(), price);
+		sprintf(houseDescription, "It belongs to %s '%s'. Nobody owns this %s. It costs %d gold coins.", tmp.c_str(), name.c_str(), tmp.c_str(), price);
 
 	if(!door)
 	{

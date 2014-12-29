@@ -778,6 +778,24 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 		return false;
 	}
 
+	if(!needTarget)
+	{
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+		{
+			if(!isAggressive || player->getSkull() != SKULL_BLACK)
+				return true;
+		}
+		else
+		{
+			if(!isAggressive)
+				return true;
+		}
+
+		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
+		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+		return false;
+	}
+
 	if(!creature)
 	{
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
@@ -795,6 +813,16 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 		player->sendCancelMessage(RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
+	}
+
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	{
+		if(player->getSkull() == SKULL_BLACK)
+		{
+			player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
+			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
+		}
 	}
 
 	return true;
@@ -850,6 +878,16 @@ bool Spell::checkInstantSpell(Player* player, const Position& toPos)
 		player->sendCancelMessage(RET_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
+	}
+
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	{
+		if(player->getSkull() == SKULL_BLACK && isAggressive && range == -1) // CHECKME: -1 is (usually?) an area spell
+		{
+			player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
+			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
+		}
 	}
 
 	return true;
@@ -916,25 +954,52 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(needTarget && !targetCreature)
+	if(!needTarget)
+	{
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+		{
+			if(!isAggressive || player->getSkull() != SKULL_BLACK)
+				return true;
+		}
+		else
+		{
+			if(!isAggressive)
+				return true;
+		}
+
+		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
+		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+		return false;
+	}
+
+	if(!targetCreature)
 	{
 		player->sendCancelMessage(RET_CANONLYUSETHISRUNEONCREATURES);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
 	}
 
-	if(!targetCreature)
+	Player* targetPlayer = targetCreature->getPlayer();
+	if(!isAggressive || !targetPlayer || Combat::isInPvpZone(player, targetPlayer)
+		|| player->getSkullType(targetPlayer) != SKULL_NONE)
 		return true;
 
-	Player* targetPlayer = targetCreature->getPlayer();
-	if(isAggressive && needTarget && !Combat::isInPvpZone(player, targetPlayer) && player->getSecureMode() == SECUREMODE_ON && (targetPlayer && targetPlayer != player && targetPlayer->getSkull() == SKULL_NONE))
+	if(player->getSecureMode() == SECUREMODE_ON)
 	{
 		player->sendCancelMessage(RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
 	}
 
-	return true;
+	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	{
+		if(player->getSkull() != SKULL_BLACK)
+			return true;
+	}
+
+	player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
+	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+	return false;
 }
 
 void Spell::postSpell(Player* player) const
@@ -1337,6 +1402,16 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 	int32_t manaCost = (int32_t)(mType->manaCost * g_config.getDouble(ConfigManager::RATE_MONSTER_MANA));
 	if(!player->hasFlag(PlayerFlag_CanSummonAll))
 	{
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+		{
+			if(player->getSkull() == SKULL_BLACK)
+			{
+				player->sendCancelMessage(RET_NOTPOSSIBLE);
+				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+				return false;
+			}
+		}
+
 		if(!mType->isSummonable)
 		{
 			player->sendCancelMessage(RET_NOTPOSSIBLE);
@@ -1731,6 +1806,16 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 
 	if(!player->hasFlag(PlayerFlag_CanConvinceAll))
 	{
+		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+		{
+			if(player->getSkull() == SKULL_BLACK)
+			{
+				player->sendCancelMessage(RET_NOTPOSSIBLE);
+				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+				return false;
+			}
+		}
+
 		if((int32_t)player->getSummonCount() >= g_config.getNumber(ConfigManager::MAX_PLAYER_SUMMONS))
 		{
 			player->sendCancelMessage(RET_NOTPOSSIBLE);

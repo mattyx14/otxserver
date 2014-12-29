@@ -900,13 +900,14 @@ Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
 			if(Depot* depot = container->getDepot())
 			{
 				container->__internalAddThing(Item::CreateItem(ITEM_DEPOT));
-				addDepot(depot, depotId);
+				internalAddDepot(depot, depotId);
 				return depot;
 			}
 		}
 
 		g_game.freeThing(locker);
-		std::clog << "Failure: Creating a new depot with id: " << depotId << ", for player: " << getName() << std::endl;
+		std::clog << "Failure: Creating a new depot with id: " << depotId <<
+			", for player: " << getName() << std::endl;
 	}
 
 	return NULL;
@@ -924,7 +925,6 @@ bool Player::addDepot(Depot* depot, uint32_t depotId)
 void Player::internalAddDepot(Depot* depot, uint32_t depotId)
 {
 	depots[depotId] = std::make_pair(depot, false);
-	depot->setDepotId(depotId);
 	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
 }
 
@@ -2457,6 +2457,8 @@ bool Player::onDeath()
 				}
 			}
 		}
+		else if(!inventory[SLOT_BACKPACK]) // FIXME: you should receive the bag after you login back...
+			__internalAddThing(SLOT_BACKPACK, Item::CreateItem(g_config.getNumber(ConfigManager::DEATH_CONTAINER)));
 
 		sendIcons();
 		sendStats();
@@ -4469,20 +4471,36 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(skull < SKULL_RED && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
 		setSkullEnd(now + g_config.getNumber(ConfigManager::RED_SKULL_LENGTH), false, SKULL_RED);
 
-	f += g_config.getNumber(ConfigManager::BAN_LIMIT);
-	s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
-	t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
-	if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
-		return true;
+	if(!g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	{
+		f += g_config.getNumber(ConfigManager::BAN_LIMIT);
+		s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
+		t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+		if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
+			return true;
 
-	if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
-		ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
-		return true;
+		if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
+			ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
+			return true;
 
-	sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
-	g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
-	Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
-		&Game::kickPlayer, &g_game, getID(), false)));
+		sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
+		g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+		Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
+			&Game::kickPlayer, &g_game, getID(), false)));
+	}
+	else
+	{
+		f += g_config.getNumber(ConfigManager::BLACK_LIMIT);
+		s += g_config.getNumber(ConfigManager::BLACK_SECOND_LIMIT);
+		t += g_config.getNumber(ConfigManager::BLACK_THIRD_LIMIT);
+		if(skull < SKULL_BLACK && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
+		{
+			setSkullEnd(now + g_config.getNumber(ConfigManager::BLACK_SKULL_LENGTH), false, SKULL_BLACK);
+			setAttackedCreature(NULL);
+			destroySummons();
+		}
+	}
+
 	return true;
 }
 
