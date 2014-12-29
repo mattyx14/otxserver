@@ -1158,6 +1158,12 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 			return false;
 		}
 
+		if(toTile->getHeight() > 1)
+		{
+			player->sendCancelMessage(RET_NOTPOSSIBLE);
+			return false;
+		}
+
 		if(toTile->hasProperty(BLOCKPATH))
 		{
 			player->sendCancelMessage(RET_NOTENOUGHROOM);
@@ -1285,7 +1291,16 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 
 	ReturnValue ret = RET_NOTPOSSIBLE;
 	if((toTile = map->getTile(destPos)))
-		ret = internalMoveCreature(NULL, creature, fromTile, toTile, flags);
+	{
+		if(g_config.getBool(ConfigManager::TILE_HEIGHT_BLOCK))
+		{
+			if(currentPos.z > destPos.z && toTile->getTile()->getHeight() > 1);
+			else if((((int32_t)(toTile->getTile()->getHeight() - fromTile->getTile()->getHeight()) < 2)) || (fromTile->getTile()->hasHeight(3) && (currentPos.z == destPos.z)) || ((currentPos.z < destPos.z) && (toTile->getTile()->hasHeight(3) && (fromTile->getTile()->getHeight() < 2))))
+				ret = internalMoveCreature(NULL, creature, fromTile, toTile, flags);
+		}
+		else
+			ret = internalMoveCreature(NULL, creature, fromTile, toTile, flags);
+	}
 
 	if(ret == RET_NOERROR)
 		return RET_NOERROR;
@@ -1499,12 +1514,12 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 			player->sendCancelMessage(RET_DESTINATIONOUTOFREACH);
 			return false;
 		}
-	}
 
-	if(!canThrowObjectTo(mapFromPos, mapToPos) && !player->hasCustomFlag(PlayerCustomFlag_CanThrowAnywhere))
-	{
-		player->sendCancelMessage(RET_CANNOTTHROW);
-		return false;
+		if(!canThrowObjectTo(mapFromPos, mapToPos))
+		{
+			player->sendCancelMessage(RET_CANNOTTHROW);
+			return false;
+		}
 	}
 
 	bool deny = false;
@@ -5242,20 +5257,6 @@ bool Game::playerReportBug(uint32_t playerId, std::string comment)
 	CreatureEventList reportBugEvents = player->getCreatureEvents(CREATURE_EVENT_REPORTBUG);
 	for(CreatureEventList::iterator it = reportBugEvents.begin(); it != reportBugEvents.end(); ++it)
 		(*it)->executeReportBug(player, comment);
-
-	return true;
-}
-
-bool Game::playerReportViolation(uint32_t playerId, ReportType_t type, uint8_t reason, const std::string& name,
-	const std::string& comment, const std::string& translation, uint32_t statementId)
-{
-	Player* player = getPlayerByID(playerId);
-	if(!player || player->isRemoved())
-		return false;
-
-	CreatureEventList reportViolationEvents = player->getCreatureEvents(CREATURE_EVENT_REPORTVIOLATION);
-	for(CreatureEventList::iterator it = reportViolationEvents.begin(); it != reportViolationEvents.end(); ++it)
-		(*it)->executeReportViolation(player, type, reason, name, comment, translation, statementId);
 
 	return true;
 }

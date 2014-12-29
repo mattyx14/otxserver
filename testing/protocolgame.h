@@ -155,7 +155,6 @@ class ProtocolGame : public Protocol
 		void parseCloseChannel(NetworkMessage& msg);
 
 		//rule violation
-		void parseViolationReport(NetworkMessage& msg);
 		void parseProcessRuleViolation(NetworkMessage& msg);
 		void parseCloseRuleViolation(NetworkMessage& msg);
 		void parseCancelRuleViolation(NetworkMessage& msg);

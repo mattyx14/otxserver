@@ -651,7 +651,6 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 			case 0xE8: parseDebugAssert(msg); break;
 			case 0xF0: parseQuests(msg); break;
 			case 0xF1: parseQuestInfo(msg); break;
-			case 0xF2: parseViolationReport(msg); break;
 
 			default:
 			{
@@ -1312,22 +1311,6 @@ void ProtocolGame::parseQuestInfo(NetworkMessage& msg)
 	addGameTask(&Game::playerQuestInfo, player->getID(), questId);
 }
 
-void ProtocolGame::parseViolationReport(NetworkMessage& msg)
-{
-	ReportType_t type = (ReportType_t)msg.get<char>();
-	uint8_t reason = msg.get<char>();
-
-	std::string name = msg.getString(), comment = msg.getString(), translation = "";
-	if(type != REPORT_BOT)
-		translation = msg.getString();
-
-	uint32_t statementId = 0;
-	if(type == REPORT_STATEMENT)
-		statementId = msg.get<uint32_t>();
-
-	addGameTask(&Game::playerReportViolation, player->getID(), type, reason, name, comment, translation, statementId);
-}
-
 //********************** Send methods *******************************//
 void ProtocolGame::sendOpenPrivateChannel(const std::string& receiver)
 {
@@ -1530,7 +1513,7 @@ void ProtocolGame::sendIcons(int32_t icons)
 
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0xA2);
-	msg->put<char>(icons); // dude
+	msg->put<uint16_t>(icons);
 }
 
 void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool hasParent)
@@ -1543,7 +1526,7 @@ void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool 
 	msg->put<char>(0x6E);
 	msg->put<char>(cid);
 
-	msg->putItemId(container); // dude
+	msg->putItem(container);
 	msg->putString(container->getName());
 	msg->put<char>(container->capacity());
 
@@ -2135,7 +2118,7 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t ma
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0x96);
 	msg->put<uint32_t>(windowTextId);
-	msg->putItemId(item); // dude
+	msg->putItem(item);
 	if(canWrite)
 	{
 		msg->put<uint16_t>(maxLen);

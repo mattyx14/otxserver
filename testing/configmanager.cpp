@@ -340,7 +340,9 @@ bool ConfigManager::load()
 	m_confBool[USE_RUNE_REQUIREMENTS] = getGlobalBool("useRunesRequirements", true);
 	m_confNumber[HIGHSCORES_TOP] = getGlobalNumber("highscoreDisplayPlayers", 10);
 	m_confNumber[HIGHSCORES_UPDATETIME] = getGlobalNumber("updateHighscoresAfterMinutes", 60);
+	m_confBool[TILE_HEIGHT_BLOCK] = getGlobalBool("tileHeightBlock", false);
 	m_confBool[AUTO_STACK] = getGlobalBool("autoStack", true);
+	m_confBool[RUNES_HIT_TOP_CREATURE] = getGlobalBool("runesHitTopCreature", false);
 	m_confBool[CHARLIST_INFO] = getGlobalBool("charlistBasicInfo", false);
 	m_confBool[CLASSIC_DAMAGE_ON_WEAPONS] = getGlobalBool("classicDamageOnWeapons", true);
 	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);

@@ -78,11 +78,11 @@
 	#define ID_MENU_ABOUT_GUI_EXECUTABLE 802
 #endif
 
-// Compatible with 8.0 to 8.10
+// Compatible with 8.0 to 8.11
 #define CLIENT_VERSION_MIN 800
-#define CLIENT_VERSION_MAX 810
+#define CLIENT_VERSION_MAX 811
 #define CLIENT_VERSION_ITEMS 8
-#define CLIENT_VERSION_STRING "8.10"
+#define CLIENT_VERSION_STRING "8.11"
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"

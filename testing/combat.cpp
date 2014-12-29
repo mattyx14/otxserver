@@ -783,7 +783,7 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const CombatArea*
 
 				if(params.targetCasterOrTopMost)
 				{
-					if(caster && caster->getTile() == tile)
+					if(!g_config.getBool(ConfigManager::RUNES_HIT_TOP_CREATURE) && (caster && caster->getTile() == tile))
 					{
 						if((*cit) == caster)
 							skip = false;

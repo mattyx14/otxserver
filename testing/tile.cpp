@@ -1329,59 +1329,28 @@ void Tile::__removeThing(Thing* thing, uint32_t count)
 #endif
 }
 
-int32_t Tile::getClientIndexOfThing(const Player* player, const Thing* thing) const
+uint32_t Tile::getHeight() const
 {
-	if(ground && ground == thing)
-		return 0;
+	uint32_t height = 0;
+	if(ground)
+		if(ground->hasProperty(HASHEIGHT))
+			++height;
 
-	int32_t n = 0;
-	if(!ground)
-		n--;
-
-	const TileItemVector* items = getItemList();
-	if(items)
+	if(const TileItemVector* items = getItemList())
 	{
-		if(thing && thing->getItem())
+		for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
 		{
-			for(ItemVector::const_iterator it = items->getBeginTopItem(); it != items->getEndTopItem(); ++it)
-			{
-				++n;
-				if((*it) == thing)
-					return n;
-			}
-		}
-		else
-			n += items->getTopItemCount();
-	}
-
-	if(const CreatureVector* creatures = getCreatures())
-	{
-		for(CreatureVector::const_reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
-		{
-			if((*cit) == thing)
-				return ++n;
-
-			if(player->canSeeCreature(*cit))
-				++n;
+			if((*it)->hasProperty(HASHEIGHT))
+				++height;
 		}
 	}
 
-	if(items)
-	{
-		if(thing && thing->getItem())
-		{
-			for(ItemVector::const_iterator it = items->getBeginDownItem(); it != items->getEndDownItem(); ++it)
-			{
-				++n;
-				if((*it) == thing)
-					return n;
-			}
-		}
-		else
-			n += items->getDownItemCount();
-	}
+	return height;
+}
 
-	return -1;
+int32_t Tile::getClientIndexOfThing(const Player*, const Thing* thing) const
+{
+	return __getIndexOfThing(thing);
 }
 
 int32_t Tile::__getIndexOfThing(const Thing* thing) const
