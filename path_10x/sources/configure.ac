@@ -9,13 +9,13 @@ AC_PROG_CXX
 AC_LANG(C++)
 
 # Config for 32Bits
-OPTIONAL_FLAGS="-Ofast -march=native"
+#OPTIONAL_FLAGS="-Ofast -march=native"
 
 # Config for 64Bits
 #OPTIONAL_FLAGS="-Ofast -march=core2"
 
 # Config for 32Bits
-#DEBUG_FLAGS="-O0 -march=native -fomit-frame-pointer"
+DEBUG_FLAGS="-O0 -march=native -fomit-frame-pointer"
 
 # Config for 64Bits
 #DEBUG_FLAGS="-O0 -march=core2 -fomit-frame-pointer"
@@ -325,3 +325,4 @@ echo Build with PostgreSQL....... : $usePostgreSQL
 echo
 
 echo Configure complete, now you may type \'./build.sh\'.
+
