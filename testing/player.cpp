@@ -313,7 +313,7 @@ Item* Player::getWeapon(bool ignoreAmmo)
 		if(!ignoreAmmo && item->getAmmoType() != AMMO_NONE)
 		{
 			Item* ammoItem = getInventoryItem(SLOT_AMMO);
-			if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType())
+			if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType() && ammoItem->getWeaponType() != WEAPON_DIST)
 			{
 				if(g_weapons->getWeapon(ammoItem))
 					return ammoItem;
@@ -345,7 +345,7 @@ ItemVector Player::getWeapons() const
 				if(item->getAmmoType() != AMMO_NONE)
 				{
 					Item* ammoItem = getInventoryItem(SLOT_AMMO);
-					if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType())
+					if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType() && ammoItem->getWeaponType() != WEAPON_DIST)
 						item = ammoItem;
 					else
 						break;
