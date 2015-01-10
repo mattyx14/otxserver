@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED ON: OTX Server 2.X.Series Version - "Doomed Elderberry"
+		COMPLETED ON: OTX Server 2.X.S.1 Version - "Doomed Elderberry"
 
 	FEATURES
 		Special Support:
@@ -41,19 +41,14 @@
 
 		Protocol supported:
 			- 7.40/60/72
+			- 8.00/11
+			- 8.4x
 			- 8.54/57
 			- 8.60
+			- 8.6x
 			- 8.70/71
+			- 9.1x
 			- 10.36
-
-			* 8.10/41/42
-				:: Support - ??.00 USD
-
-			* 8.61/62
-				:: Support - ??.00 USD
-
-			* 9.10/31/44/54/60/61/70/71/80/81/82
-				:: Support - ??.00 USD
 
 			* 10.37+
 				:: Support - ??.00 USD
