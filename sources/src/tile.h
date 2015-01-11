@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -230,7 +230,7 @@ class Tile : public Cylinder
 		uint32_t getDownItemCount() const;
 
 		bool hasProperty(enum ITEMPROPERTY prop) const;
-		bool hasProperty(Item* exclude, enum ITEMPROPERTY prop) const;
+		bool hasProperty(const Item* exclude, enum ITEMPROPERTY prop) const;
 
 		bool hasFlag(tileflags_t flag) const {
 			return hasBitSet(flag, m_flags);
@@ -292,39 +292,37 @@ class Tile : public Cylinder
 
 		std::string getDescription(int32_t lookDistance) const final;
 
-		void moveCreature(Creature* creature, Cylinder* toCylinder, bool forceTeleport = false);
 		int32_t getClientIndexOfCreature(const Player* player, const Creature* creature) const;
 		int32_t getStackposOfCreature(const Player* player, const Creature* creature) const;
 		int32_t getStackposOfThing(const Player* player, const Thing* thing) const;
 
 		//cylinder implementations
-		ReturnValue __queryAdd(int32_t index, const Thing* thing, uint32_t count,
-			uint32_t flags, Creature* actor = nullptr) const override;
-		ReturnValue __queryMaxCount(int32_t index, const Thing* thing, uint32_t count,
-			uint32_t& maxQueryCount, uint32_t flags) const final;
-		ReturnValue __queryRemove(const Thing* thing, uint32_t count, uint32_t flags) const final;
-		Cylinder* __queryDestination(int32_t& index, const Thing* thing, Item** destItem,
-			uint32_t& flags) override;
+		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
+				uint32_t flags, Creature* actor = nullptr) const override;
+		ReturnValue queryMaxCount(int32_t index, const Thing& thing, uint32_t count,
+				uint32_t& maxQueryCount, uint32_t flags) const final;
+		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t flags) const final;
+		Tile* queryDestination(int32_t& index, const Thing& thing, Item** destItem, uint32_t& flags) override;
 
-		void __addThing(Thing* thing) final;
-		void __addThing(int32_t index, Thing* thing) override;
+		void addThing(Thing* thing) final;
+		void addThing(int32_t index, Thing* thing) override;
 
-		void __updateThing(Thing* thing, uint16_t itemId, uint32_t count) final;
-		void __replaceThing(uint32_t index, Thing* thing) final;
+		void updateThing(Thing* thing, uint16_t itemId, uint32_t count) final;
+		void replaceThing(uint32_t index, Thing* thing) final;
 
-		void __removeThing(Thing* thing, uint32_t count) final;
+		void removeThing(Thing* thing, uint32_t count) final;
 
-		int32_t __getIndexOfThing(const Thing* thing) const final;
-		int32_t __getFirstIndex() const final;
-		int32_t __getLastIndex() const final;
-		uint32_t __getItemTypeCount(uint16_t itemId, int32_t subType = -1) const final;
-		Thing* __getThing(size_t index) const final;
+		int32_t getThingIndex(const Thing* thing) const final;
+		int32_t getFirstIndex() const final;
+		int32_t getLastIndex() const final;
+		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const final;
+		Thing* getThing(size_t index) const final;
 
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, bool isCompleteRemoval, cylinderlink_t link = LINK_OWNER) final;
 
-		void __internalAddThing(Thing* thing) final;
-		void __internalAddThing(uint32_t index, Thing* thing) override;
+		void internalAddThing(Thing* thing) final;
+		void internalAddThing(uint32_t index, Thing* thing) override;
 
 		const Position& getPosition() const {
 			return tilePos;
@@ -340,7 +338,8 @@ class Tile : public Cylinder
 		void onRemoveTileItem(const SpectatorVec& list, const std::vector<int32_t>& oldStackPosVector, Item* item);
 		void onUpdateTile(const SpectatorVec& list);
 
-		void updateTileFlags(Item* item, bool removing);
+		void setTileFlags(const Item* item);
+		void resetTileFlags(const Item* item);
 
 	protected:
 		// Put this first for cache-coherency

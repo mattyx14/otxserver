@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,18 +106,17 @@ void ScriptEnvironment::resetEnv()
 
 bool ScriptEnvironment::setCallbackId(int32_t callbackId, LuaScriptInterface* scriptInterface)
 {
-	if (m_callbackId == 0) {
-		m_callbackId = callbackId;
-		m_interface = scriptInterface;
-		return true;
-	} else {
+	if (m_callbackId != 0) {
 		//nested callbacks are not allowed
 		if (m_interface) {
 			m_interface->reportErrorFunc("Nested callbacks!");
 		}
-
 		return false;
 	}
+
+	m_callbackId = callbackId;
+	m_interface = scriptInterface;
+	return true;
 }
 
 void ScriptEnvironment::getEventInfo(int32_t& scriptId, std::string& desc, LuaScriptInterface*& scriptInterface, int32_t& callbackId, bool& timerEvent) const
@@ -1831,7 +1830,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CANNOT_ATTACK_SAME_LOOKFEET)
 	registerEnumIn("configKeys", ConfigManager::ONE_PLAYER_ON_ACCOUNT)
 	registerEnumIn("configKeys", ConfigManager::AIMBOT_HOTKEY_ENABLED)
-	registerEnumIn("configKeys", ConfigManager::REMOVE_AMMO)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_RUNE_CHARGES)
 	registerEnumIn("configKeys", ConfigManager::EXPERIENCE_FROM_PLAYERS)
 	registerEnumIn("configKeys", ConfigManager::FREE_PREMIUM)
@@ -2187,6 +2185,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "addMana", LuaScriptInterface::luaCreatureAddMana);
 	registerMethod("Creature", "getMaxMana", LuaScriptInterface::luaCreatureGetMaxMana);
 
+	registerMethod("Creature", "getSkull", LuaScriptInterface::luaCreatureGetSkull);
+	registerMethod("Creature", "setSkull", LuaScriptInterface::luaCreatureSetSkull);
+
 	registerMethod("Creature", "getOutfit", LuaScriptInterface::luaCreatureGetOutfit);
 	registerMethod("Creature", "setOutfit", LuaScriptInterface::luaCreatureSetOutfit);
 
@@ -2229,8 +2230,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
 	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
 
-	registerMethod("Player", "getSkull", LuaScriptInterface::luaPlayerGetSkull);
-	registerMethod("Player", "setSkull", LuaScriptInterface::luaPlayerSetSkull);
 	registerMethod("Player", "getSkullTime", LuaScriptInterface::luaPlayerGetSkullTime);
 	registerMethod("Player", "setSkullTime", LuaScriptInterface::luaPlayerSetSkullTime);
 	registerMethod("Player", "getDeathPenalty", LuaScriptInterface::luaPlayerGetDeathPenalty);
@@ -2990,7 +2989,7 @@ int32_t LuaScriptInterface::luaGetThingfromPos(lua_State* L)
 		}
 
 		default: {
-			thing = tile->__getThing(stackpos);
+			thing = tile->getThing(stackpos);
 			break;
 		}
 	}
@@ -4321,7 +4320,7 @@ int32_t LuaScriptInterface::luaSaveServer(lua_State* L)
 
 int32_t LuaScriptInterface::luaCleanMap(lua_State* L)
 {
-	lua_pushnumber(L, g_game.getMap()->clean());
+	lua_pushnumber(L, g_game.map.clean());
 	return 1;
 }
 
@@ -4364,7 +4363,8 @@ int32_t LuaScriptInterface::luaDoPlayerSetOfflineTrainingSkill(lua_State* L)
 int32_t LuaScriptInterface::luaGetWaypointPositionByName(lua_State* L)
 {
 	//getWaypointPositionByName(name)
-	auto& waypoints = g_game.getMap()->waypoints;
+	auto& waypoints = g_game.map.waypoints;
+
 	auto it = waypoints.find(getString(L, -1));
 	if (it != waypoints.end()) {
 		pushPosition(L, it->second);
@@ -5267,7 +5267,7 @@ int32_t LuaScriptInterface::luaTileGetThing(lua_State* L)
 	int32_t index = getNumber<int32_t>(L, 2);
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if (tile) {
-		Thing* thing = tile->__getThing(index);
+		Thing* thing = tile->getThing(index);
 		if (thing) {
 			if (Creature* creature = thing->getCreature()) {
 				pushUserdata<Creature>(L, creature);
@@ -5516,7 +5516,7 @@ int32_t LuaScriptInterface::luaTileGetItemCountById(lua_State* L)
 		}
 	}
 
-	lua_pushnumber(L, tile->__getItemTypeCount(itemId, subType));
+	lua_pushnumber(L, tile->getItemTypeCount(itemId, subType));
 	return 1;
 }
 
@@ -5745,7 +5745,7 @@ int32_t LuaScriptInterface::luaTileGetThingIndex(lua_State* L)
 	if (tile) {
 		Thing* thing = getThing(L, 2);
 		if (thing) {
-			lua_pushnumber(L, tile->__getIndexOfThing(thing));
+			lua_pushnumber(L, tile->getThingIndex(thing));
 		} else {
 			lua_pushnil(L);
 		}
@@ -5780,7 +5780,7 @@ int32_t LuaScriptInterface::luaTileQueryAdd(lua_State* L)
 	Thing* thing = getThing(L, 2);
 	if (thing) {
 		uint32_t flags = getNumber<uint32_t>(L, 3, 0);
-		lua_pushnumber(L, tile->__queryAdd(0, thing, 1, flags));
+		lua_pushnumber(L, tile->queryAdd(0, *thing, 1, flags));
 	} else {
 		lua_pushnil(L);
 	}
@@ -7192,7 +7192,7 @@ int32_t LuaScriptInterface::luaContainerGetItemCountById(lua_State* L)
 	}
 
 	int32_t subType = getNumber<int32_t>(L, 3, -1);
-	lua_pushnumber(L, container->__getItemTypeCount(itemId, subType));
+	lua_pushnumber(L, container->getItemTypeCount(itemId, subType));
 	return 1;
 }
 
@@ -7858,6 +7858,31 @@ int32_t LuaScriptInterface::luaCreatureGetMaxMana(lua_State* L)
 	return 1;
 }
 
+int32_t LuaScriptInterface::luaCreatureGetSkull(lua_State* L)
+{
+	// creature:getSkull()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (creature) {
+		lua_pushnumber(L, creature->getSkull());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int32_t LuaScriptInterface::luaCreatureSetSkull(lua_State* L)
+{
+	// creature:setSkull(skull)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (creature) {
+		creature->setSkull(getNumber<Skulls_t>(L, 2));
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int32_t LuaScriptInterface::luaCreatureGetOutfit(lua_State* L)
 {
 	// creature:getOutfit()
@@ -8333,32 +8358,6 @@ int32_t LuaScriptInterface::luaPlayerGetInbox(lua_State* L)
 	return 1;
 }
 
-int32_t LuaScriptInterface::luaPlayerGetSkull(lua_State* L)
-{
-	// player:getSkull()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->getSkull());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerSetSkull(lua_State* L)
-{
-	// player:setSkull(skull)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->setSkull(getNumber<Skulls_t>(L, 2));
-		g_game.updatePlayerSkull(player);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
 int32_t LuaScriptInterface::luaPlayerGetSkullTime(lua_State* L)
 {
 	// player:getSkullTime()
@@ -8602,7 +8601,7 @@ int32_t LuaScriptInterface::luaPlayerGetItemCount(lua_State* L)
 	}
 
 	int32_t subType = getNumber<int32_t>(L, 3, -1);
-	lua_pushnumber(L, player->__getItemTypeCount(itemId, subType));
+	lua_pushnumber(L, player->getItemTypeCount(itemId, subType));
 	return 1;
 }
 
@@ -9340,7 +9339,7 @@ int32_t LuaScriptInterface::luaPlayerGetSlotItem(lua_State* L)
 	}
 
 	uint32_t slot = getNumber<uint32_t>(L, 2);
-	Thing* thing = player->__getThing(slot);
+	Thing* thing = player->getThing(slot);
 	if (!thing) {
 		lua_pushnil(L);
 		return 1;
@@ -12178,7 +12177,7 @@ int32_t LuaScriptInterface::luaMonsterTypeGetAttackList(lua_State* L)
 		setField(L, "maxCombatValue", spellBlock.maxCombatValue);
 		setField(L, "range", spellBlock.range);
 		setField(L, "speed", spellBlock.speed);
-		pushUserdata<CombatSpell>(L, reinterpret_cast<CombatSpell*>(spellBlock.spell));
+		pushUserdata<CombatSpell>(L, static_cast<CombatSpell*>(spellBlock.spell));
 		lua_setfield(L, -2, "spell");
 
 		lua_rawseti(L, -2, ++index);
@@ -12208,7 +12207,7 @@ int32_t LuaScriptInterface::luaMonsterTypeGetDefenseList(lua_State* L)
 		setField(L, "maxCombatValue", spellBlock.maxCombatValue);
 		setField(L, "range", spellBlock.range);
 		setField(L, "speed", spellBlock.speed);
-		pushUserdata<CombatSpell>(L, reinterpret_cast<CombatSpell*>(spellBlock.spell));
+		pushUserdata<CombatSpell>(L, static_cast<CombatSpell*>(spellBlock.spell));
 		lua_setfield(L, -2, "spell");
 
 		lua_rawseti(L, -2, ++index);

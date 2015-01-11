@@ -6,8 +6,8 @@ cursed:setParameter(CONDITION_PARAM_STARTVALUE, -1) -- The damage the condition 
 cursed:setParameter(CONDITION_PARAM_TICKINTERVAL, 40000) -- Delay between damages
 cursed:setParameter(CONDITION_PARAM_FORCEUPDATE, true) -- Re-update condition when adding it(ie. min/max value)
 
-function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
-	local player, useItem, depleteChance = player, Item(item.uid), 5
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	local player, useItem, depleteChance = player, item, 5
 	if math.random(100) <= depleteChance then
 		player:addCondition(cursed)
 		useItem:transform(10312)

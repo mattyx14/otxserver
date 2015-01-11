@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +30,14 @@ Inbox::Inbox(uint16_t _type) :
 	pagination = true;
 }
 
-ReturnValue Inbox::__queryAdd(int32_t, const Thing* thing, uint32_t,
-                              uint32_t flags, Creature*) const
+ReturnValue Inbox::queryAdd(int32_t, const Thing& thing, uint32_t,
+		uint32_t flags, Creature*) const
 {
 	if (!hasBitSet(FLAG_NOLIMIT, flags)) {
 		return RETURNVALUE_CONTAINERNOTENOUGHROOM;
 	}
 
-	const Item* item = thing->getItem();
+	const Item* item = thing.getItem();
 	if (!item) {
 		return RETURNVALUE_NOTPOSSIBLE;
 	}

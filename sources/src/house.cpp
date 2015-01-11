@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -353,7 +353,7 @@ HouseTransferItem* House::getTransferItem()
 
 	transfer_container.setParent(nullptr);
 	transferItem = HouseTransferItem::createHouseTransferItem(this);
-	transfer_container.__addThing(transferItem);
+	transfer_container.addThing(transferItem);
 	return transferItem;
 }
 
@@ -364,7 +364,7 @@ void House::resetTransferItem()
 		transferItem = nullptr;
 		transfer_container.setParent(nullptr);
 
-		transfer_container.__removeThing(tmpItem, tmpItem->getItemCount());
+		transfer_container.removeThing(tmpItem, tmpItem->getItemCount());
 		g_game.ReleaseItem(tmpItem);
 	}
 }
@@ -551,11 +551,6 @@ Attr_ReadValue Door::readAttr(AttrTypes_t attr, PropStream& propStream)
 	return Item::readAttr(attr, propStream);
 }
 
-bool Door::serializeAttr(PropWriteStream&) const
-{
-	return true;
-}
-
 void Door::setHouse(House* _house)
 {
 	if (house != nullptr) {
@@ -693,10 +688,10 @@ bool Houses::loadHousesXML(const std::string& filename)
 	return true;
 }
 
-bool Houses::payHouses() const
+void Houses::payHouses() const
 {
 	if (rentPeriod == RENTPERIOD_NEVER) {
-		return true;
+		return;
 	}
 
 	time_t currentTime = time(nullptr);
@@ -786,5 +781,4 @@ bool Houses::payHouses() const
 
 		IOLoginData::savePlayer(&player);
 	}
-	return true;
 }

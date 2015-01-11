@@ -21,12 +21,11 @@ local windows = {
 	[20182] = 19974, [20183] = 19445, [20184] = 19446, [20185] = 19975
 }
 
-function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local window = windows[item.itemid]
 	if window == nil then
 		return false
 	end
-
 	local tile = fromPosition:getTile()
 	local house = tile and tile:getHouse()
 	if not house then
@@ -40,11 +39,12 @@ function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
 			house = tile and tile:getHouse()
 		end
 	end
-
-	if house and player:getPosition():getTile():getHouse() ~= house and player:getAccountType() < ACCOUNT_TYPE_GAMEMASTER then
-		return false
+	if house then
+		if player:getPosition():getTile():getHouse() ~= house and player:getAccountType() < ACCOUNT_TYPE_GAMEMASTER then
+			return false
+		end
 	end
 
-	Item(item.uid):transform(window) 
+	item:transform(window)
 	return true
 end

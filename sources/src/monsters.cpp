@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,7 +135,7 @@ uint32_t Monsters::getLootRandom()
 void MonsterType::createLoot(Container* corpse)
 {
 	if (g_config.getNumber(ConfigManager::RATE_LOOT) == 0) {
-		corpse->__startDecaying();
+		corpse->startDecaying();
 		return;
 	}
 
@@ -153,10 +153,10 @@ void MonsterType::createLoot(Container* corpse)
 					if (!createLootContainer(container, *it)) {
 						delete container;
 					} else if (g_game.internalAddItem(corpse, item) != RETURNVALUE_NOERROR) {
-						corpse->__internalAddThing(item);
+						corpse->internalAddThing(item);
 					}
 				} else if (g_game.internalAddItem(corpse, item) != RETURNVALUE_NOERROR) {
-					corpse->__internalAddThing(item);
+					corpse->internalAddThing(item);
 				}
 			}
 		}
@@ -182,7 +182,7 @@ void MonsterType::createLoot(Container* corpse)
 		}
 	}
 
-	corpse->__startDecaying();
+	corpse->startDecaying();
 }
 
 std::list<Item*> MonsterType::createLootItem(const LootBlock& lootBlock)
@@ -271,10 +271,10 @@ bool MonsterType::createLootContainer(Container* parent, const LootBlock& lootbl
 				if (!createLootContainer(container, *it)) {
 					delete container;
 				} else {
-					parent->__internalAddThing(container);
+					parent->internalAddThing(container);
 				}
 			} else {
-				parent->__internalAddThing(tmpItem);
+				parent->internalAddThing(tmpItem);
 			}
 		}
 	}
@@ -733,8 +733,8 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 
 		for (pugi::xml_node attributeNode = node.first_child(); attributeNode; attributeNode = attributeNode.next_sibling()) {
 			if ((attr = attributeNode.attribute("key"))) {
-				std::string tmpStrValue = asLowerCaseString(attr.as_string());
-				if (tmpStrValue == "shooteffect") {
+				const char* value = attr.value();
+				if (strcasecmp(value, "shooteffect") == 0) {
 					if ((attr = attributeNode.attribute("value"))) {
 						ShootType_t shoot = getShootType(attr.as_string());
 						if (shoot != CONST_ANI_NONE) {
@@ -743,7 +743,7 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 							std::cout << "[Warning - Monsters::deserializeSpell] " << description << " - Unknown shootEffect: " << attr.as_string() << std::endl;
 						}
 					}
-				} else if (tmpStrValue == "areaeffect") {
+				} else if (strcasecmp(value, "areaeffect") == 0) {
 					if ((attr = attributeNode.attribute("value"))) {
 						MagicEffectClasses effect = getMagicEffect(attr.as_string());
 						if (effect != CONST_ME_NONE) {

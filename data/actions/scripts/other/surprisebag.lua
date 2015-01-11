@@ -10,21 +10,21 @@ local config = {
 	}
 }
 
-function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local present = config[item.itemid]
 	if not present then
 		return false
 	end
 
 	local count = 1
-	local gift = present[math.random(1, #present)]
+	local gift = present[math.random(#present)]
 	if type(gift) == "table" then
 		count = gift[2]
 		gift = gift[1]
 	end
 
 	player:addItem(gift, count)
-	Item(item.uid):remove(1)
+	item:remove(1)
 	fromPosition:sendMagicEffect(CONST_ME_GIFT_WRAPS)
 	return true
 end

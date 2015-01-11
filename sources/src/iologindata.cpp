@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -425,7 +425,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			Item* item = pair.first;
 			int32_t pid = pair.second;
 			if (pid >= 1 && pid <= 10) {
-				player->__internalAddThing(pid, item);
+				player->internalAddThing(pid, item);
 			} else {
 				ItemMap::const_iterator it2 = itemMap.find(pid);
 				if (it2 == itemMap.end()) {
@@ -434,7 +434,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 				Container* container = it2->second.first->getContainer();
 				if (container) {
-					container->__internalAddThing(item);
+					container->internalAddThing(item);
 				}
 			}
 		}
@@ -456,7 +456,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			if (pid >= 0 && pid < 100) {
 				DepotChest* depotChest = player->getDepotChest(pid, true);
 				if (depotChest) {
-					depotChest->__internalAddThing(item);
+					depotChest->internalAddThing(item);
 				}
 			} else {
 				ItemMap::const_iterator it2 = itemMap.find(pid);
@@ -466,7 +466,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 				Container* container = it2->second.first->getContainer();
 				if (container) {
-					container->__internalAddThing(item);
+					container->internalAddThing(item);
 				}
 			}
 		}
@@ -486,7 +486,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			int32_t pid = pair.second;
 
 			if (pid >= 0 && pid < 100) {
-				player->getInbox()->__internalAddThing(item);
+				player->getInbox()->internalAddThing(item);
 			} else {
 				ItemMap::const_iterator it2 = itemMap.find(pid);
 
@@ -496,7 +496,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 				Container* container = it2->second.first->getContainer();
 				if (container) {
-					container->__internalAddThing(item);
+					container->internalAddThing(item);
 				}
 			}
 		}
@@ -614,10 +614,7 @@ bool IOLoginData::savePlayer(Player* player)
 	PropWriteStream propWriteStream;
 	for (Condition* condition : player->conditions) {
 		if (condition->isPersistent()) {
-			if (!condition->serialize(propWriteStream)) {
-				return false;
-			}
-
+			condition->serialize(propWriteStream);
 			propWriteStream.write<uint8_t>(CONDITIONATTR_END);
 		}
 	}

@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,10 +57,10 @@ std::string TalkActions::getScriptBaseName() const
 
 Event* TalkActions::getEvent(const std::string& nodeName)
 {
-	if (asLowerCaseString(nodeName) == "talkaction") {
-		return new TalkAction(&m_scriptInterface);
+	if (strcasecmp(nodeName.c_str(), "talkaction") != 0) {
+		return nullptr;
 	}
-	return nullptr;
+	return new TalkAction(&m_scriptInterface);
 }
 
 bool TalkActions::registerEvent(Event* event, const pugi::xml_node&)

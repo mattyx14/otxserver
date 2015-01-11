@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -655,7 +655,7 @@ bool Item::unserializeItemNode(FileLoader&, NODE, PropStream& propStream)
 	return unserializeAttr(propStream);
 }
 
-bool Item::serializeAttr(PropWriteStream& propWriteStream) const
+void Item::serializeAttr(PropWriteStream& propWriteStream) const
 {
 	if (isStackable() || isFluidContainer() || isSplash()) {
 		propWriteStream.write<uint8_t>(ATTR_COUNT);
@@ -760,7 +760,6 @@ bool Item::serializeAttr(PropWriteStream& propWriteStream) const
 		propWriteStream.write<uint8_t>(ATTR_SHOOTRANGE);
 		propWriteStream.write<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE));
 	}
-	return true;
 }
 
 bool Item::hasProperty(ITEMPROPERTY prop) const
@@ -1612,7 +1611,7 @@ ItemAttributes::Attribute& ItemAttributes::getAttr(itemAttrTypes type)
 	return attributes.front();
 }
 
-void Item::__startDecaying()
+void Item::startDecaying()
 {
 	g_game.startDecay(this);
 }

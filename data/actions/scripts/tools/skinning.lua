@@ -55,18 +55,18 @@ local config = {
 	}
 }
 
-function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
-	local skin = config[item.itemid][itemEx.itemid]
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	local skin = config[item.itemid][target.itemid]
 
 	-- Wrath of the emperor quest
-	if item.itemid == 5908 and itemEx.itemid == 12295 then
-		Item(itemEx.uid):transform(12287)
+	if item.itemid == 5908 and target.itemid == 12295 then
+		target:transform(12287)
 		player:say("You carve a solid bowl of the chunk of wood.", TALKTYPE_MONSTER_SAY)
 	-- An Interest In Botany Quest
-	elseif item.itemid == 5908 and itemEx.itemid == 11691 and player:getItemCount(12655) > 0 and player:getStorageValue(Storage.TibiaTales.AnInterestInBotany) == 1 then
+	elseif item.itemid == 5908 and target.itemid == 11691 and player:getItemCount(12655) > 0 and player:getStorageValue(Storage.TibiaTales.AnInterestInBotany) == 1 then
 		player:say("The plant feels cold but dry and very soft. You streak the plant gently with your knife and put a fragment in the almanach.", TALKTYPE_MONSTER_SAY)
 		player:setStorageValue(Storage.TibiaTales.AnInterestInBotany, 2)
-	elseif item.itemid == 5908 and itemEx.itemid == 11653 and player:getItemCount(12655) > 0 and player:getStorageValue(Storage.TibiaTales.AnInterestInBotany) == 2 then
+	elseif item.itemid == 5908 and target.itemid == 11653 and player:getItemCount(12655) > 0 and player:getStorageValue(Storage.TibiaTales.AnInterestInBotany) == 2 then
 		player:say("You cut a leaf from a branch and put it in the almanach. It smells strangely sweet and awfully bitter at the same time.", TALKTYPE_MONSTER_SAY)
 		player:setStorageValue(Storage.TibiaTales.AnInterestInBotany, 3)
 	end
@@ -81,14 +81,14 @@ function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
 		local added = false
 		for _, _skin in ipairs(skin) do
 			if random <= _skin.value then
-				if itemEx.itemid == 11343 then
+				if target.itemid == 11343 then
 					effect = CONST_ME_ICEAREA
 					local gobletItem = player:addItem(_skin.newItem, _skin.amount or 1)
 					if gobletItem then
 						gobletItem:setDescription(_skin.desc:gsub('|PLAYERNAME|', player:getName()))
 					end
 					added = true
-				elseif isInArray({7441, 7442, 7444, 7445}, itemEx.itemid) then
+				elseif isInArray({7441, 7442, 7444, 7445}, target.itemid) then
 					player:addItem(_skin.newItem, _skin.amount or 1)
 					effect = CONST_ME_HITAREA
 					added = true
@@ -100,18 +100,18 @@ function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
 			end
 		end
 
-		if not added and itemEx.itemid == 8961 then
+		if not added and target.itemid == 8961 then
 			effect = CONST_ME_POFF
 			transform = false
 		end
 	elseif random <= skin.value then
-		if itemEx.itemid == 11343 then
+		if target.itemid == 11343 then
 			effect = CONST_ME_ICEAREA
 			local gobletItem = player:addItem(skin.newItem, skin.amount or 1)
 			if gobletItem then
 				gobletItem:setDescription(skin.desc:gsub('|PLAYERNAME|', player:getName()))
 			end
-		elseif isInArray({7441, 7442, 7444, 7445}, itemEx.itemid) then
+		elseif isInArray({7441, 7442, 7444, 7445}, target.itemid) then
 			if skin.newItem == 7446 then
 				player:addAchievement('Ice Sculptor')
 			end
@@ -121,7 +121,7 @@ function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
 			player:addItem(skin.newItem, skin.amount or 1)
 		end
 	else
-		if isInArray({7441, 7442, 7444, 7445}, itemEx.itemid) then
+		if isInArray({7441, 7442, 7444, 7445}, target.itemid) then
 			player:say('The attempt of sculpting failed miserably.', TALKTYPE_MONSTER_SAY)
 			effect = CONST_ME_HITAREA
 		else
@@ -131,7 +131,7 @@ function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
 
 	toPosition:sendMagicEffect(effect)
 	if transform then
-		Item(itemEx.uid):transform(skin.after or itemEx.itemid + 1)
+		target:transform(skin.after or target.itemid + 1)
 	end
 
 	return true

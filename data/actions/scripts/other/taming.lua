@@ -1,148 +1,365 @@
-local ACTION_RUN, ACTION_BREAK, ACTION_NONE, ACTION_ALL = 1, 2, 3, 4
-local TYPE_MONSTER, TYPE_NPC, TYPE_ITEM, TYPE_ACTION, TYPE_UNIQUE = 1, 2, 3, 4, 5
+local TYPE_ITEM, TYPE_MONSTER, TYPE_NPC = 0, 2, 3
 
 local config = {
-	[5907]	=	{NAME = 'Bear',						ID = 3,		TYPE = TYPE_MONSTER,	CHANCE = 20,	FAIL_MSG = { {1, 'The bear ran away.'}, {2, 'Oh no! The slingshot broke.'}, {3, 'The bear is trying to hit you with its claws.'} },SUCCESS_MSG = 'You have tamed the bear.'},
-	[13295]	=	{NAME = 'Black Sheep',				ID = 4,		TYPE = TYPE_MONSTER,	CHANCE = 25,	FAIL_MSG = { {1, 'The black sheep ran away.'}, {2, 'Oh no! The reins were torn.'}, {3, 'The black sheep is trying to run away.'} },SUCCESS_MSG = 'You have tamed the sheep.'},
-	[13293]	=	{NAME = 'Midnight Panther',			ID = 5,		TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The panther has escaped.'}, {2, 'The whip broke.'} },SUCCESS_MSG = 'You have tamed the panther.'},
-	[13298]	=	{NAME = 'Terror Bird',				ID = 2,		TYPE = TYPE_MONSTER,	CHANCE = 15,	FAIL_MSG = { {1, 'The bird ran away.'}, {3, 'The terror bird is pecking you.'} }, SUCCESS_MSG = 'You have tamed the bird.'},
-	[13247]	=	{NAME = 'Boar',						ID = 10,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The boar has run away'}, {3, 'The boar attacks you.'} }, SUCCESS_MSG = 'You have tamed the boar.'},
-	[13305]	=	{NAME = 'Crustacea Gigantica',		ID = 7,		TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The crustacea has run away.'}, {2, 'The crustacea ate the shrimp.'} }, SUCCESS_MSG = 'You have tamed the crustacea.'},
-	[13291]	=	{NAME = 'Undead Cavebear',			ID = 12,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The undead bear has run away.'} }, SUCCESS_MSG = 'You have tamed the skeleton.'},
-	[13307]	=	{NAME = 'Wailing Widow',			ID = 1,		TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The widow has run away.'}, {2, 'The widow has eaten the sweet bait.'} }, SUCCESS_MSG = 'You have tamed the widow.'},
-	[13292]	=	{NAME = 'inoperative tin lizzard',	ID = 8,		TYPE = TYPE_ITEM,		CHANCE = 40,	FAIL_MSG = { {2, 'The key broke inside.'} }, SUCCESS_MSG = 'You wind up the tin lizzard.'},
-	[13294]	=	{NAME = 'Draptor',					ID = 6,		TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The draptor has run away.'}, {3, 'The draptor has fled.'} }, SUCCESS_MSG = 'You have tamed the draptor.'},
-	[13536]	=	{NAME = 'Crystal Wolf',				ID = 16,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The wolf has run away.'} }, SUCCESS_MSG = 'You have tamed the wolf.'},
-	[13539]	=	{NAME = 'Enraged White Deer',		ID = 18,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {2, 'The cone broke.'}, {3, 'The deer has fled in fear.'} }, SUCCESS_MSG = 'You have tamed the deer.'},
-	[13538]	=	{NAME = 'Panda',					ID = 19,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {4, 'Panda ate the leaves and ran away.'} }, SUCCESS_MSG = 'You have tamed the panda.'},
-	[13535]	=	{NAME = 'Dromedary',				ID = 20,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'Dromedary has run away.'} }, SUCCESS_MSG = 'You have tamed the dromedary.'},
-	[13498]	=	{NAME = 'Sandstone Scorpion',		ID = 21,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The scorpion has vanished.'}, {2, 'Scorpion broken the sceptre.'} }, SUCCESS_MSG = 'You have tamed the scorpion'},
-	[13537]	=	{NAME = 'Donkey',					ID = 13,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The witch has escaped!'} }, SUCCESS_MSG = 'You have tamed the mule.'},
-	[13938]	=	{NAME = 'inoperative uniwheel',		ID = 15,	TYPE = TYPE_ITEM,		CHANCE = 40,	FAIL_MSG = { {2, 'Splosh!'} }, SUCCESS_MSG = 'The strange wheel seems to vibrate and slowly starts turning continuously.'},
-	[13508]	=	{NAME = 'Slug',						ID = 14,	TYPE = TYPE_MONSTER,	CHANCE = 40,	FAIL_MSG = { {1, 'The slug has run away.'}, {3, 'The drug had no effect.'} }, SUCCESS_MSG = 'You have tamed the slug.'},
-	[13939]	=	{NAME = 'Wild Horse',				ID = 17,	TYPE = TYPE_MONSTER,	CHANCE = 15,	FAIL_MSG = { {1, 'The horse runs away.'}, {2, 'The horse ate the oats.'} }, SUCCESS_MSG = 'You have tamed the horse.'},
-	[15545]	=	{NAME = 'Manta Ray',				ID = 28,	TYPE = TYPE_MONSTER,	CHANCE = 30,	FAIL_MSG = { {1, 'The manta ray fled.'}, {3, 'The manta ray is trying to escape.'} }, SUCCESS_MSG = 'You have tamed the manta ray.'},
-	[15546]	=	{NAME = 'Lady Bug',					ID = 27,	TYPE = TYPE_MONSTER,	CHANCE = 30,	FAIL_MSG = { {1, 'The ladybug got scared and ran away.'}, {3, 'The ladybug is trying to nibble.'} }, SUCCESS_MSG = 'You tame a ladybug.'},
-	[18447]	=	{NAME = 'Ironblight',				ID = 29,	TYPE = TYPE_MONSTER,	CHANCE = 30,	FAIL_MSG = { {1, 'The ironblight managed to run away.'}, {2, 'Oh no! The magnet lost its power!'}, {3, 'The ironblight is fighting against the magnetic force.'} }, SUCCESS_MSG = 'You tamed the ironblight.'},
-	[18448]	=	{NAME = 'Magma Crawler',			ID = 30,	TYPE = TYPE_MONSTER,	CHANCE = 30,	FAIL_MSG = { {1, 'The magma crawler refused to drink wine and vanishes into thin air.'}, {2, 'Argh! The magma crawler pushed you and you spilled the glow wine!'}, {3, 'The magma crawler is smelling the glow wine suspiciously.'} }, SUCCESS_MSG = 'The magma crawler will accompany you as a friend from now on.'},
-	[18516]	=	{NAME = 'Modified Gnarlhound', 		ID = 32,	TYPE = TYPE_MONSTER,	CHANCE = 100,	FAIL_MSG = { }, SUCCESS_MSG = 'You now own a modified gnarlhound.'},
-	[20138]	=	{NAME = 'Water Buffalo',			ID = 35,	TYPE = TYPE_MONSTER,	CHANCE = 30,	FAIL_MSG = { {1, 'The water buffalo got scared and ran away.'}, {3, 'The water buffalo is trying to nibble.'} }, SUCCESS_MSG = 'You tamed a water buffalo.'},
-	[22608]	=	{NAME = 'Shock Head', 				ID = 42,	TYPE = TYPE_MONSTER,	CHANCE = 30,	FAIL_MSG = { {1, 'The shock head ran away.'}, {3, 'The shock head is growling at you.'} }, SUCCESS_MSG = 'You tamed the shock head.'}
+	[5907] = {
+		name = 'bear',
+		id = 3,
+		type = TYPE_MONSTER,
+		chance = 20,
+		fail = {
+			{run = true, text = 'The bear ran away.'},
+			{broke = true, text = 'Oh no! The slingshot broke.'},
+			{sound = 'GRRRRRRRRRRRR', text = 'The bear is trying to hit you with its claws.'}
+		},
+		success = {sound = 'Grrrrrrr', text = 'You tamed the wild bear.'}
+	},
+	[13247]	= {
+		name = 'boar',
+		id = 10,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, text = 'The boar ran away'},
+			{broke = true, text = 'Oh no! The hunting horn broke!'},
+			{sound = 'Grunt! Grunt!', text = 'The boar is refusing to obey the hunting horn.'}
+		},
+		success = {sound = 'Oink', text = 'You tamed the wild boar.'}
+	},
+	[13291]	= {
+		name = 'undead cavebear',
+		id = 12,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, text = 'The undead cavebear ran away.'},
+			{sound = 'GRRRRRRRRRR', text = 'The undead cavebear is growling at you.'}
+		},
+		success = {sound = 'Grrrrrrr', text = 'You tamed the undead cavebear.'}
+	},
+	[13292]	= {
+		name = 'inoperative tin lizzard',
+		mountName = 'tin lizzard',
+		id = 8,
+		type = TYPE_ITEM,
+		chance = 40,
+		fail = {
+			{destroyObject = true, sound = 'Krr... kch.', text = 'The tin lizzard broke apart.'}
+		},
+		success = {sound = 'Krkrkrkrk', text = 'You wind up the tin lizzard.'}
+	},
+	[13293]	= {
+		name = 'midnight panther',
+		id = 5,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, text = 'The midnight panther ran away.'},
+			{sound = 'Groarrrrrrrr', text = 'The midnight panther is growling at you.'}
+		},
+		success = {sound = 'Purrrrrrr', text = 'You tamed the wild panther.'}
+	},
+	[13294]	= {
+		name = 'draptor',
+		id = 6,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, text = 'The wild draptor ran away.'},
+			{sound = 'Screeeeeeeeech', text = 'The wild draptor is struggling.'}
+		},
+		success = {sound = 'Screeeeeeeeech', text = 'You tamed the wild draptor.'}
+	},
+	[13295]	= {
+		name = 'black sheep',
+		id = 4,
+		type = TYPE_MONSTER,
+		chance = 25,
+		fail = { 
+			{run = true, sound = 'Baaaah', text = 'The black sheep ran away.'},
+			{broke = true, text = 'Oh no! The reins were torn.'},
+			{sound = 'Baaaah', text = 'The black sheep is trying to run away.'}
+		},
+		success = {sound = 'Baaaaaah', text = 'You tamed the black sheep.'}
+	},
+	[13298]	= {
+		name = 'terror bird',
+		id = 2,
+		type = TYPE_MONSTER,
+		chance = 15,
+		fail = {
+			{run = true, text = 'The terror bird ran away.'},
+			{broke = true, text = 'Oh no, the bird ate the carrot.'},
+			{sound = 'CARRRRAAAH!', text = 'The terror bird is pecking you.'}
+		},
+		success = {sound = 'Guruuuuh', text = 'You tamed the bird.'}
+	},
+	[13305]	= {
+		name = 'crustacea gigantica',
+		id = 7,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, text = 'The gigantic creature ran away.'},
+			{sound = 'CHRRRR', text = 'The gigantic creature is trying to pinch you.'}
+		},
+		success = {sound = 'Chrrrrr', text = 'You tamed the gigantic creature.'}
+	},
+	[13307]	= {
+		name = 'wailing widow',
+		id = 1,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, sound = 'SSSSSSSSSSSSS', text = 'The wailing widow ran away.'},
+			{broke = true, text = 'Oh no! The wailing widow ate the bait.'},
+			{sound = 'SSSSSSSSSSSSS', text = 'The wailing widow is hissing at you.'}
+		},
+		success = {sound = 'Sssssssss', text = 'You tamed the wailing widow.'}
+	},
+	[13498]	= {
+		name = 'sandstone scorpion',
+		id = 21,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, sound = '*rattle-rattle*', text = 'The sandstone scorpion flees.'},
+			{broke = true, text = 'Using the sceptre on the stone surface of the scorpion, it breaks in two halves.'},
+			{sound = '*tak tak tak*', text = 'The sandstone scorpion eludes the influence of the scepter.'}
+		},
+		success = {sound = '*rattle*', text = 'You tamed the sandstone scorpion'}
+	},
+	[13508]	= {
+		name = 'slug',
+		id = 14,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, sound = 'Slurp!', text = 'The slug flees.'},
+			{broke = true, text = 'This slug drug didn\'t seem to have any effect.'},
+			{sound = '*shlorp*', text = 'The slug slips through your grasp.'}
+		},
+		success = {sound = 'Sluuuuurp!', text = 'You drugged the slug.'}
+	},
+	[13535]	= {
+		name = 'dromedary',
+		id = 20,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, sound = 'Gruuuuunt!', text = 'The dromedary flees.'},
+			{sound = 'Grunt!', text = 'The dromedary remains stubborn.'}
+		},
+		success = {sound = '*blaaammm*', text = 'You tamed the dromedary.'}
+	},
+	[13536]	= {
+		name = 'crystal wolf',
+		id = 16,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, sound = '*zwiiiish*', text = 'The crystal wolf vanished into thin air.'},
+			{sound = '*klaaaaaang* Rrrrooooaaaarrrgh!', text = 'The crystal wolf is startled by the wrong sound of the diapason.'}
+		},
+		success = {sound = '*kliiiiiiiiiiing* Aooooouuuuu!!', text = 'The smooth sound of the diapason tamed the crystal wolf.'}
+	},
+	[13537]	= {
+		mountName = 'donkey',
+		lookType = 399,
+		id = 13,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{removeTransformation = true, text = 'The donkey transformation suddenly wears off.'},
+			{broke = true, sound = 'Heeee-haaa-haaa-haaw!', text = 'You did not manage to feed the donkey enough apple slices.'}
+		},
+		success = {sound = 'Heeee-haaaaw!', text = 'Munching a large pile of apple slices tamed the donkey.'}
+	},
+	[13538]	= {
+		name = 'panda',
+		id = 19,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, sound = 'Grrrrr!', text = 'The panda flees.'},
+			{broke = true, text = 'While you were trying to soothe the panda, it ate all the remaining bamboo behind your back.'},
+			{sound = 'Grrrroaaar!!', text = 'The panda refuses to follow any of your orders.'}
+		},
+		success = {sound = 'Rrrrr...', text = 'You tamed the panda.'}
+	},
+	[13539]	= {
+		name = 'enraged white deer',
+		mountName = 'white deer',
+		id = 18,
+		type = TYPE_MONSTER,
+		chance = 40,
+		fail = {
+			{run = true, sound = '*sniff*', text = 'The white deer flees.'},
+			{broke = true, sound = 'ROOOAAARR!!', text = 'Oh no... the enraged deer angrily ripped the fir cone from your hands!'},
+			{sound = '*wheeze*', text = 'The white deer sniffs and wheezes trying to withstand the taming.'}
+		},
+		success = {sound = '*bell*', text = 'You tamed the white deer.'}
+	},
+	[13938]	= {
+		name = 'inoperative uniwheel',
+		mountName = 'uniwheel',
+		id = 15,
+		type = TYPE_ITEM,
+		chance = 40,
+		fail = {
+			{broke = true, sound = 'Splosh!', text = 'It looks like most of the special oil this can was holding was spilt without any effect.'}
+		},
+		success = {sound = 'Vroooomratatatatatatat.', text = 'The strange wheel seems to vibrate and slowly starts turning continuously.'}
+	},
+	[13939]	= {
+		name = 'wild horse',
+		id = 17,
+		type = TYPE_MONSTER,
+		chance = 5,
+		fail = {
+			{run = true, text = 'With its last strength the horse the horse runs to safety.'},
+			{broke = true, sound = 'Weeeheeeehee', text = 'The wild horse happily munches the sugar oat and runs on.'},
+			{sound = 'Weeheheheehaaa!!', text = 'Weeeheeeehee.'}
+		},
+		success = {sound = '*snort*', text = 'The horse eats the sugar oat and accepts you as its new master.'}
+	},
+	[15545]	= {
+		name = 'manta ray',
+		id = 28,
+		type = TYPE_MONSTER,
+		chance = 30,
+		fail = {
+			{run = true, sound = 'Swooooosh', text = 'The manta ray fled.'},
+			{sound = 'Shhhhhh', text = 'The manta ray is trying to escape.'}
+		},
+		success = {sound = '~~~', text = 'You tamed the manta ray.'}
+	},
+	[15546]	= {
+		name = 'ladybug',
+		id = 27,
+		type = TYPE_MONSTER,
+		chance = 30,
+		fail = {
+			{run = true, text = 'The bug got scared and ran away.'},
+			{sound = 'Chrk chrk!', text = 'The ladybug is trying to nibble you.'}
+		},
+		success = {sound = 'Chhrk...', text = 'You tamed the lady bug.'}
+	},
+	[18447]	= {
+		name = 'ironblight',
+		id = 29,
+		type = TYPE_MONSTER,
+		chance = 30,
+		fail = {
+			{run = true, sound = 'Pling', text = 'The ironblight managed to run away.'},
+			{broke = true, text = 'Oh no! The magnet lost its power!'},
+			{sound = 'Plinngggg', text = 'The ironblight is fighting against the magnetic force.'}
+		},
+		success = {sound = 'Plinnnggggggg', text = 'You tamed the ironblight.'}
+	},
+	[18448]	= {
+		name = 'magma crawler',
+		id = 30,
+		type = TYPE_MONSTER,
+		chance = 30,
+		fail = {
+			{run = true, sound = 'Charrrrrr', text = 'The magma crawler refused to drink wine and vanishes into thin air.'},
+			{broke = true, text = 'Argh! The magma crawler pushed you and you spilled the glow wine!'},
+			{sound = '<sniff> <sniff>', text = 'The magma crawler is smelling the glow wine suspiciously.'}
+		},
+		success = {sound = 'ZzzZzzZzzzZz', text = 'The magma crawler will accompany you as a friend from now on.'}
+	},
+	[18449] = {
+		name = 'dragonling',
+		id = 31,
+		type = TYPE_MONSTER,
+		chance = 30,
+		fail = {
+			{sound = 'FCHHHHHHHHHHHHHHHH', text = 'The dragonling doesn\'t seem to impressed with your ribbon.'}
+		},
+		success = {sound = 'FI?', text = 'The wild dragonling has accepted you as its master.'}
+	},
+	[18516]	= {
+		name = 'modified gnarlhound',
+		id = 32,
+		type = TYPE_MONSTER,
+		chance = 100,
+		success = {sound = 'Gnarl!', text = 'You now own a modified gnarlhound.'}
+	},
+	[20138]	= {
+		name = 'water buffalo',
+		id = 35,
+		type = TYPE_MONSTER,
+		chance = 30,
+		fail = {
+			{run = true, sound = 'Baaaah', text = 'The water buffalo flees.'},
+			{broke = true, text = 'The leech slipped through your fingers and is now following the call of nature.'},
+			{sound = 'Bellow!', text = 'The water buffalo ignores you.'}
+		},
+		success = {sound = 'Looooow!', text = 'The leech appeased the water buffalo and your taming was successful.'}
+	},
+	[22608]	= {
+		name = 'shock head',
+		id = 42,
+		type = TYPE_MONSTER,
+		chance = 30,
+		fail = {
+			{run = true, text = 'The shock head ran away.'},
+			{sound = 'GRRRRRRRRRRR', text = 'The shock head is growling at you.'}
+		},
+		success = {sound = 'Grrrrrrr', text = 'You tamed the shock head.'}
+	}
 }
 
-local function doFailAction(player, mount, pos, item, itemEx)
-	local action, effect = mount.FAIL_MSG[math.random(#mount.FAIL_MSG)], CONST_ME_POFF
-	if(action[1] == ACTION_RUN) then
-		Creature(itemEx.uid):remove()
-	elseif(action[1] == ACTION_BREAK) then
-		effect = CONST_ME_BLOCKHIT
-		Item(item.uid):remove(1)
-	elseif(action[1] == ACTION_ALL) then
-		Creature(itemEx.uid):remove()
-		Item(item.uid):remove(1)
-	end
-
-	pos:sendMagicEffect(effect)
-	player:say(action[2], TALKTYPE_MONSTER_SAY)
-	return action
-end
-
-function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
-	local targetMonster = Monster(itemEx.uid)
-	local targetNpc = Npc(itemEx.uid)
-	local targetItem = Item(itemEx.uid)
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local mount = config[item.itemid]
-	if mount == nil or player:hasMount(mount.ID) then
+	if not mount then
 		return false
 	end
 
-	local rand = math.random(100)
-	--Monster Mount
-	if targetMonster ~= nil and mount.TYPE == TYPE_MONSTER then
-		if Creature(itemEx.uid):getMaster() then
-			player:say('You can\'t tame a summon!', TALKTYPE_MONSTER_SAY)
-			return true
-		end
+	local targetName = target:getName():lower()
+	if mount.type ~= target.type
+			or (mount.lookType and mount.lookType ~= target:getOutfit().lookType)
+			or (mount.name and mount.name ~= targetName) then
+		return false
+	end
 
-		if mount.NAME == targetMonster:getName() then
-			if rand > mount.CHANCE then
-				doFailAction(player, mount, toPosition, item, itemEx)
-				return true
-			end
+	if player:hasMount(mount.id) then
+		player:say('You already tamed a ' .. (mount.mountName or targetName) .. '.', TALKTYPE_MONSTER_SAY)
+		return true
+	end
 
-			player:addAchievement('Natural Born Cowboy')
-			player:addMount(mount.ID)
-			player:say(mount.SUCCESS_MSG, TALKTYPE_MONSTER_SAY)
-			targetMonster:remove()
-
-			toPosition:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-			Item(item.uid):remove(1)
-			return true
-		end
-	--NPC Mount
-	elseif targetNpc ~= nil and mount.TYPE == TYPE_NPC then
-		if mount.NAME == targetNpc:getName() then
-			if rand > mount.CHANCE then
-				doFailAction(player, mount, toPosition, item, itemEx)
-				return true
-			end
-
-			player:addAchievement('Natural Born Cowboy')
-			player:addMount(mount.ID)
-			player:say(mount.SUCCESS_MSG, TALKTYPE_MONSTER_SAY)
-
-			toPosition:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-			Item(item.uid):remove(1)
-			return true
-		end
-	--Item Mount
-	elseif targetItem ~= nil and mount.TYPE == TYPE_ITEM then
-		if mount.NAME == targetItem:getName() then
-			if rand > mount.CHANCE then
-				doFailAction(player, mount, toPosition, item, itemEx)
-				return true
-			end
-
-			player:addAchievement('Natural Born Cowboy')
-			player:addMount(mount.ID)
-			player:say(mount.SUCCESS_MSG, TALKTYPE_MONSTER_SAY)
-
-			toPosition:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-			Item(item.uid):remove(1)
-			return true
-		end
-	--Action Mount
-	elseif itemEx.actionid > 0 and mount.TYPE == TYPE_ACTION then
-		if(mount.NAME == itemEx.actionid) then
-			if rand > mount.CHANCE then
-				doFailAction(player, mount, toPosition, item, itemEx)
-				return true
-			end
-
-			player:addAchievement('Natural Born Cowboy')
-			player:addMount(mount.ID)
-			player:say(mount.SUCCESS_MSG, TALKTYPE_MONSTER_SAY)
-
-			toPosition:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-			Item(item.uid):remove(1)
-			return true
-		end
-	--Unique Mount
-	elseif itemEx.uid <= 65535 and mount.TYPE == TYPE_UNIQUE then
-		if mount.NAME == itemEx.uid then
-			if rand > mount.CHANCE then
-				doFailAction(player, mount, toPosition, item, itemEx)
-				return true
-			end
-
-			player:addAchievement('Natural Born Cowboy')
-			player:addMount(mount.ID)
-			player:say(mount.SUCCESS_MSG, TALKTYPE_MONSTER_SAY)
-
-			toPosition:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-			Item(item.uid):remove(1)
-			return true
+	if target.type == TYPE_MONSTER then
+		if target:getMaster() then
+			return false
 		end
 	end
-	return false
+
+	if math.random(100) > mount.chance then
+		local action = mount.fail[math.random(#mount.fail)]
+		if action.run then
+			target:remove()
+		elseif action.broke then
+			item:remove(1)
+		elseif action.destroyObject then
+			addEvent(Game.createItem, 60 * 60 * 1000, target.itemid, 1, toPosition)
+			target:remove()
+		elseif action.removeTransformation then
+			target:removeCondition(CONDITION_OUTFIT)
+		end
+
+		doCreatureSayWithRadius(player, action.text, TALKTYPE_MONSTER_SAY, 2, 2)
+		if action.sound then
+			player:say(action.sound, TALKTYPE_MONSTER_SAY, false, 0, toPosition)
+		end
+		return true
+	end
+
+	player:addAchievement('Natural Born Cowboy')
+	player:addMount(mount.id)
+	doCreatureSayWithRadius(player, mount.success.text, TALKTYPE_MONSTER_SAY, 2, 2)
+	player:say(mount.success.sound, TALKTYPE_MONSTER_SAY, false, 0, toPosition)
+
+	target:remove()
+	item:remove(1)
+	return true
 end

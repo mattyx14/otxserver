@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -533,7 +533,7 @@ class Item : virtual public Thing
 		bool unserializeAttr(PropStream& propStream);
 		virtual bool unserializeItemNode(FileLoader& f, NODE node, PropStream& propStream);
 
-		virtual bool serializeAttr(PropWriteStream& propWriteStream) const;
+		virtual void serializeAttr(PropWriteStream& propWriteStream) const;
 
 		bool isPushable() const final {
 			return isMoveable();
@@ -754,7 +754,7 @@ class Item : virtual public Thing
 		virtual void onRemoved();
 		virtual void onTradeEvent(TradeEvents_t, Player*) {}
 
-		virtual void __startDecaying();
+		virtual void startDecaying();
 
 		bool isLoadedFromMap() const {
 			return loadedFromMap;

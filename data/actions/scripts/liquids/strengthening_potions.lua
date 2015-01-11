@@ -19,7 +19,7 @@ local config = {
 	[7443] = bullseye
 }
 
-function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local useItem = config[item.itemid]
 	if not useItem then
 		return true
@@ -34,6 +34,6 @@ function onUse(player, item, fromPosition, itemEx, toPosition, isHotkey)
 
 	player:addCondition(useItem)
 	player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
-	Item(item.uid):remove(1)
+	item:remove(1)
 	return true
 end

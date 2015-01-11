@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ class Door final : public Item
 
 		//serialization
 		Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) final;
-		bool serializeAttr(PropWriteStream& propWriteStream) const final;
+		void serializeAttr(PropWriteStream&) const final {}
 
 		void setDoorId(uint32_t _doorId) {
 			setIntAttr(ITEM_ATTRIBUTE_DOORID, _doorId);
@@ -311,7 +311,7 @@ class Houses
 
 		bool loadHousesXML(const std::string& filename);
 
-		bool payHouses() const;
+		void payHouses() const;
 
 		const HouseMap& getHouses() const {
 			return houseMap;

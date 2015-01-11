@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -364,12 +364,11 @@ enum Ammo_t : uint8_t {
 	AMMO_SNOWBALL = 7
 };
 
-enum AmmoAction_t {
-	AMMOACTION_NONE,
-	AMMOACTION_REMOVECOUNT,
-	AMMOACTION_REMOVECHARGE,
-	AMMOACTION_MOVE,
-	AMMOACTION_MOVEBACK
+enum WeaponAction_t : uint8_t {
+	WEAPONACTION_NONE,
+	WEAPONACTION_REMOVECOUNT,
+	WEAPONACTION_REMOVECHARGE,
+	WEAPONACTION_MOVE
 };
 
 enum WieldInfo_t {

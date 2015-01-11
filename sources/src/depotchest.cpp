@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@ DepotChest::DepotChest(uint16_t _type) :
 	maxDepotItems = 1500;
 }
 
-ReturnValue DepotChest::__queryAdd(int32_t index, const Thing* thing, uint32_t count,
-                                   uint32_t flags, Creature* actor/* = nullptr*/) const
+ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t count,
+		uint32_t flags, Creature* actor/* = nullptr*/) const
 {
-	const Item* item = thing->getItem();
+	const Item* item = thing.getItem();
 	if (item == nullptr) {
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
@@ -57,7 +57,7 @@ ReturnValue DepotChest::__queryAdd(int32_t index, const Thing* thing, uint32_t c
 		}
 	}
 
-	return Container::__queryAdd(index, thing, count, flags, actor);
+	return Container::queryAdd(index, thing, count, flags, actor);
 }
 
 void DepotChest::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t)

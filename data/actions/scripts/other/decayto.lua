@@ -4,15 +4,14 @@ local decayItems = {
 	[2054] = 2055, [2054] = 2055
 }
 
-function onUse(cid, item, fromPosition, itemEx, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local decayItemId = decayItems[item.itemid]
 	if not decayItemId then
 		return false
 	end
 
-	local decayItem = Item(item.uid)
-	decayItem:transform(decayItemId)
-	decayItem:decay()
+	item:transform(decayItemId)
+	item:decay()
 
 	return true
 end

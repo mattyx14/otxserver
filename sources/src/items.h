@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2014  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -206,7 +206,6 @@ class ItemType
 		uint32_t minReqLevel;
 		uint32_t minReqMagicLevel;
 		uint32_t charges;
-		int32_t breakChance;
 		int32_t maxHitChance;
 		int32_t decayTo;
 		int32_t attack;
@@ -236,7 +235,6 @@ class ItemType
 		Ammo_t ammoType;
 		ShootType_t shootType;
 		RaceType_t corpseType;
-		AmmoAction_t ammoAction;
 		FluidTypes_t fluidSource;
 
 		uint8_t alwaysOnTopOrder;
