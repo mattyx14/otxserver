@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vocations>
-	<vocation id="0" clientId="0" name="None" description="none" needpremium="0" gaincap="10" gainhp="5" gainmana="5" gainhpticks="6" gainhpamount="1" gainmanaticks="6" gainmanaamount="2" manamultiplier="4.0" attackspeed="2000" soulmax="100" gainsoulticks="120" fromvoc="0" attackable="no" droploot="no">
+	<vocation id="0" clientId="0" name="None" description="none" needpremium="0" gaincap="5" gainhp="5" gainmana="5" gainhpticks="6" gainhpamount="1" gainmanaticks="6" gainmanaamount="2" manamultiplier="4.0" attackspeed="2000" soulmax="100" gainsoulticks="120" fromvoc="0" attackable="no" droploot="no">
 		<formula meleeDamage="1.0" distDamage="1.0" wandDamage="1.0" magDamage="1.0" magHealingDamage="1.0" defense="1.0" magDefense="1.0" armor="1.0"/>
 		<skill fist="1.5" club="2.0" sword="2.0" axe="2.0" distance="2.0" shielding="1.5" fishing="1.1" experience="1.0"/>
 	</vocation>

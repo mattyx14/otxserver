@@ -40,9 +40,9 @@
 	accountManager = true
 	namelockManager = true
 	newPlayerChooseVoc = true
-	newPlayerSpawnPosX = 160
-	newPlayerSpawnPosY = 54
-	newPlayerSpawnPosZ = 7
+	newPlayerSpawnPosX = 159
+	newPlayerSpawnPosY = 387
+	newPlayerSpawnPosZ = 6
 	newPlayerTownId = 2
 	newPlayerLevel = 8
 	newPlayerMagicLevel = 0
@@ -86,7 +86,6 @@
 	-- NOTE: showHealth/ManaChangeForMonsters inherites from showHealth/ManaChange.
 	protectionLevel = 1
 	pvpTileIgnoreLevelAndVocationProtection = true
-	allowFightback = true
 	pzLocked = 60 * 1000
 	huntingDuration = 60 * 1000
 	criticalHitMultiplier = 1
@@ -113,6 +112,9 @@
 	addManaSpentInPvPZone = true
 	recoverManaAfterDeathInPvPZone = true
 	squareColor = 0
+	broadcastBanishments = false
+	maxViolationCommentSize = 60
+	violationNameReportActionType = 2
 
 	-- RSA
 	-- NOTE: These should not be changed unless you know what your doing!
@@ -166,17 +168,20 @@
 
 		-- Others
 		enableLootBagDisplay = false
+		highscoreDisplayPlayers = 10
+		updateHighscoresAfterMinutes = 60
 		attackImmediatelyAfterLoggingIn = false
 		exhaustionNPC = true
 		exhaustionInSecondsNPC = 0.5
 
-		-- Old Configs
-		tileHeightBlock = true
-		useStamina = true
-		autoStack = true
-		runesHitTopCreature = false
-		charlistBasicInfo = false
-		classicDamageOnWeapons = true
+		-- Advanced Version
+		-- Note: If you use another protocol than the one we set as you will have functional failures.
+		-- Supported (800) = 8.00
+		-- Supported (811) = 8.11
+		manualVersionConfig = true
+		versionMin = 800
+		versionMax = 811
+		versionMsg = "Only clients with protocol 8.00/11 allowed!"
 
 	-- Connection config
 	loginTries = 20
@@ -229,6 +234,7 @@
 	timeBetweenExActions = 1000
 	timeBetweenCustomActions = 500
 	checkCorpseOwner = true
+	hotkeyAimbotEnabled = true
 	maximumDoorLevel = 999
 	tradeLimit = 100
 	canOnlyRopePlayers = false
@@ -236,12 +242,17 @@
 	-- Map
 	-- NOTE: storeTrash costs more memory, but will perform alot faster cleaning.
 	-- houseDataStorage usage may be found at how-use-internal-functions.log
-	mapAuthor = "Mattyx14"
+	mapAuthor = "Komic"
 	randomizeTiles = true
 	houseDataStorage = "binary-tilebased"
 	storeTrash = true
 	cleanProtectedZones = true
-	mapName = "map.otbm"
+	mapName = "forgotten.otbm"
+		-- For Windows(compiled with MSVC) and Linux use:
+		-- OTX Server use default GroundCache
+		-- GroundCache mode save memory: __GROUND_CACHE__
+			-- forgotten map on normal mode use memory: 361,512 KB
+			-- forgotten map with groundCache mode use memory: 334,124 KB
 
 	-- Mailbox
 	mailMaxAttempts = 5
@@ -262,7 +273,7 @@
 	startupDatabaseOptimization = true
 	removePremiumOnInit = true
 	confirmOutdatedVersion = false
-	skipItemsVersionCheck = false
+	skipItemsVersionCheck = true
 
 	-- Muted buffer
 	maxMessageBuffer = 4
@@ -279,7 +290,7 @@
 	storePlayerDirection = false
 	savePlayerData = true
 	monsterLootMessage = 3
-	monsterLootMessageType = 22
+	monsterLootMessageType = 25
 	separateViplistPerCharacter = false
 	vipListDefaultLimit = 20
 	vipListDefaultPremiumLimit = 100

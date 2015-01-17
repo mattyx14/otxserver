@@ -16,7 +16,9 @@ POOL = 2016
 
 
 DOORS = {
-	[1209] = 1211, [1212] = 1214, [1231] = 1233, [1234] = 1236, [1249] = 1251, [1252] = 1254, [3535] = 3537, [3544] = 3546, [4913] = 4915, [4916] = 4918
+	[1209] = 1211, [1212] = 1214, [1231] = 1233, [1234] = 1236, [1249] = 1251, [1252] = 1254, [3535] = 3537, [3544] = 3546, [4913] = 4915, [4916] = 4918,
+	[5098] = 5100, [5107] = 5109, [5116] = 5118, [5125] = 5127, [5134] = 5136, [5137] = 5139, [5140] = 5142, [5143] = 5145, [5278] = 5280, [5281] = 5283,
+	[5732] = 5734, [5735] = 5737, [6192] = 6194, [6195] = 6197, [6249] = 6251, [6252] = 6254, [6891] = 6893, [6900] = 6902, [7033] = 7035, [7042] = 7044
 }
 
 function destroyItem(cid, itemEx, toPosition)
@@ -143,6 +145,12 @@ TOOLS.PICK = function(cid, item, fromPosition, itemEx, toPosition)
 		doDecayItem(itemEx.uid)
 
 		doSendMagicEffect(toPosition, CONST_ME_POFF)
+		return true
+	end
+
+	if(itemEx.itemid == 7200) then
+		doTransformItem(itemEx.uid, 7236)
+		doSendMagicEffect(toPosition, CONST_ME_BLOCKHIT)
 		return true
 	end
 

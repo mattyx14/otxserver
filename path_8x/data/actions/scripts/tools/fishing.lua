@@ -1,17 +1,20 @@
 local config = {
 	waters = {4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 4665, 4666, 4820, 4821, 4822, 4823, 4824, 4825},
-	fishable = {4608, 4609, 4610, 4611, 4612, 4613},
+	fishable = {4608, 4609, 4610, 4611, 4612, 4613, 7236},
 	spawning = {4614, 4615, 4616, 4617, 4618, 4619},
 	holes = {7236},
 
 	corpses = {
 		-- [corpse] = {[aid] = { {itemid, countmax, chance} }}
 	},
+	checkCorpseOwner = getConfigValue("checkCorpseOwner"),
 	rateLoot = getConfigValue("rateLoot"),
+
 	summons = {
 		-- {skill, name, chance, bossName, bossChance}
 	},
 	rateSpawn = getConfigValue("rateSpawn"),
+
 	baitFailRemoveChance = 10,
 	allowFromPz = false,
 	useBait = true,
@@ -19,6 +22,7 @@ local config = {
 	fishes = 1
 }
 
+config.checkCorpseOwner = getBooleanFromString(config.checkCorpseOwner)
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
 	if(isInArray(config.waters, itemEx.itemid)) then
@@ -34,6 +38,14 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 	if(corpse ~= nil and corpse ~= 0) then
 		corpse = corpse[itemEx.actionid]
 		if(corpse ~= nil and corpse ~= 0) then
+			if(config.checkCorpseOwner and not getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES)) then
+				local owner = getItemAttribute(itemEx.uid, "corpseowner")
+				if(owner ~= 0 and owner ~= nil and owner ~= getPlayerGUID(cid)) then
+					doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUARENOTTHEOWNER)
+					return true
+				end
+			end
+
 			local chance, items, default, max = math.random(0, 100000) / config.rateLoot, {}, {}, 0
 			for _, data in ipairs(corpse) do
 				if(data[3] >= chance) then

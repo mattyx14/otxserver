@@ -4,6 +4,14 @@
 	<movevent type="StepIn" itemid="293" event="script" value="decay.lua"/>
 	<movevent type="StepIn" itemid="461" event="script" value="decay.lua"/>
 
+	<!-- Swimming -->
+	<movevent type="StepIn" itemid="4828-4831" event="script" value="swimming.lua"/>
+	<movevent type="StepOut" itemid="4828-4831" event="script" value="swimming.lua"/>
+
+	<!-- Underwater drown -->
+	<movevent type="StepIn" itemid="5405-5410" event="script" value="drown.lua"/>
+	<movevent type="StepOut" itemid="5405-5410" event="script" value="drown.lua"/>
+
 	<!-- (Depot & Level) tiles -->
 	<movevent type="StepIn" itemid="416" event="script" value="tiles.lua"/>
 	<movevent type="StepOut" itemid="417" event="script" value="tiles.lua"/>
@@ -49,6 +57,36 @@
 	<movevent type="StepOut" itemid="3550" event="script" value="closingdoor.lua"/>
 	<movevent type="StepOut" itemid="3543" event="script" value="closingdoor.lua"/>
 	<movevent type="StepOut" itemid="3552" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5104" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5106" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5113" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5115" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5122" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5124" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5131" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5133" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5289" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5291" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5293" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5295" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5746" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="5749" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6203" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6205" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6207" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6209" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6260" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6262" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6264" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6266" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6897" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6899" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6906" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="6908" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="7039" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="7041" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="7048" event="script" value="closingdoor.lua"/>
+	<movevent type="StepOut" itemid="7050" event="script" value="closingdoor.lua"/>
 	<movevent type="StepIn" itemid="1228" event="script" value="walkback.lua"/>
 	<movevent type="StepIn" itemid="1230" event="script" value="walkback.lua"/>
 	<movevent type="StepIn" itemid="1242" event="script" value="walkback.lua"/>
@@ -63,6 +101,40 @@
 	<movevent type="StepIn" itemid="3543" event="script" value="walkback.lua"/>
 	<movevent type="StepIn" itemid="3550" event="script" value="walkback.lua"/>
 	<movevent type="StepIn" itemid="3552" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5104" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5106" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5113" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5115" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5122" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5124" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5131" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5133" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5289" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5291" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5293" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5295" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5746" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="5749" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6203" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6205" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6207" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6209" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6260" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6262" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6264" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6266" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6897" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6899" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6906" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="6908" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="7039" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="7041" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="7048" event="script" value="walkback.lua"/>
+	<movevent type="StepIn" itemid="7050" event="script" value="walkback.lua"/>
+
+	<!-- Snow footprint tiles -->
+	<movevent type="StepIn" itemid="670" event="script" value="snow.lua"/>
+	<movevent type="StepIn" itemid="6580-6594" event="script" value="snow.lua"/>
 
 	<!-- Cooking -->
 	<!-- Create bread movements -->
@@ -82,6 +154,10 @@
 	<!-- Fields -->
 	<movevent type="StepIn" itemid="1487-1508" event="function" value="onStepInField"/>
 	<movevent type="AddItem" itemid="1487-1508" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="7359-7360" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="7359-7360" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="7465-7473" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="7465-7473" event="function" value="onAddField"/>
 
 	<!-- Boots -->
 		<!-- Boots of Haste -->
@@ -94,8 +170,11 @@
 		<movevent type="Equip" itemid="2641" slot="feet" event="function" value="onEquipItem"/>
 		<movevent type="DeEquip" itemid="2641" slot="feet" event="function" value="onDeEquipItem"/>
 			<!-- Pair of Soft Boots (unequipped) -->
-                <movevent type="Equip" itemid="2358" slot="feet" event="function" value="onEquipItem"/>
-                <movevent type="DeEquip" itemid="2358" slot="feet" event="function" value="onDeEquipItem"/>
+				<movevent type="Equip" itemid="2358" slot="feet" event="function" value="onEquipItem"/>
+				<movevent type="DeEquip" itemid="2358" slot="feet" event="function" value="onDeEquipItem"/>
+		<!-- Fur Boots -->
+		<movevent type="Equip" itemid="7457" slot="feet" event="function" value="onEquipItem"/>
+		<movevent type="DeEquip" itemid="7457" slot="feet" event="function" value="onDeEquipItem"/>
 
 	<!-- Amulets -->
 		<!-- Strange Talisman -->
@@ -170,6 +249,10 @@
 		<movevent type="Equip" itemid="2214" slot="ring" event="function" value="onEquipItem"/>
 		<movevent type="Equip" itemid="2216" slot="ring" event="function" value="onEquipItem"/>
 		<movevent type="DeEquip" itemid="2216" slot="ring" event="function" value="onDeEquipItem"/>
+		<!-- Death Ring -->
+		<movevent type="Equip" itemid="6300" slot="ring" event="function" value="onEquipItem"/>
+		<movevent type="Equip" itemid="6301" slot="ring" event="function" value="onEquipItem"/>
+		<movevent type="DeEquip" itemid="6301" slot="ring" event="function" value="onDeEquipItem"/>
 
 	<!-- Helmets -->
 		<!-- Hat of the Mad -->
@@ -188,7 +271,9 @@
 		<!-- Dwarven Helmet -->
 		<movevent type="Equip" itemid="2502" slot="head" event="function" value="onEquipItem"/>
 		<movevent type="DeEquip" itemid="2502" slot="head" event="function" value="onDeEquipItem"/>
-
+			<!-- Earmuffs -->
+		<movevent type="Equip" itemid="7459" slot="head" event="function" value="onEquipItem"/>
+		<movevent type="DeEquip" itemid="7459" slot="head" event="function" value="onDeEquipItem"/>
 	<!-- Armors -->
 		<!-- Golden Armor -->
 		<movevent type="Equip" itemid="2466" slot="armor" event="function" value="onEquipItem">
@@ -283,4 +368,13 @@
 		<!-- Bow -->
 	<movevent type="Equip" itemid="2456" slot="two-handed" event="function" value="onEquipItem"/>
 	<movevent type="DeEquip" itemid="2456" slot="two-handed" event="function" value="onDeEquipItem"/>
+		<!-- Arbalest -->
+	<movevent type="Equip" itemid="5803" slot="two-handed" level="75" event="function" value="onEquipItem">
+		<vocation name="Paladin"/>
+		<vocation id="7" showInDescription="0"/>
+	</movevent>
+	<movevent type="DeEquip" itemid="5803" slot="two-handed" event="function" value="onDeEquipItem"/>
+		<!-- Elvish Bow -->
+	<movevent type="Equip" itemid="7438" slot="two-handed" event="function" value="onEquipItem"/>
+	<movevent type="DeEquip" itemid="7438" slot="two-handed" event="function" value="onDeEquipItem"/>
 </movements>

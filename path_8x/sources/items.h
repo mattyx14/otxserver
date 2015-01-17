@@ -26,7 +26,7 @@
 #include "position.h"
 #include <libxml/parser.h>
 
-#define ITEMS_SIZE 11395
+#define ITEMS_SIZE 7554
 #define ITEMS_INCREMENT 500
 #define ITEMS_RANDOMIZATION 50
 

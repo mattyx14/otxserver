@@ -82,6 +82,74 @@
 		<melee id="2446" level="45" unproperly="1" event="function" value="default"/>
 		<!-- Djinn Blade -->
 		<melee id="2451" level="35" unproperly="1" event="function" value="default"/>
+		<!-- Avenger -->
+		<melee id="6528" level="75" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Demonrage Sword -->
+		<melee id="7382" level="60" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Relic Sword -->
+		<melee id="7383" level="50" unproperly="1" event="function" value="default"/>
+		<!-- Mystic Blade -->
+		<melee id="7384" level="60" unproperly="1" event="function" value="default"/>
+		<!-- Crimson Sword -->
+		<melee id="7385" level="20" unproperly="1" event="function" value="default"/>
+		<!-- Mercenary Sword -->
+		<melee id="7386" level="40" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Justice Seeker -->
+		<melee id="7390" level="75" unproperly="1" event="function" value="default"/>
+		<!-- Thaian Sword -->
+		<melee id="7391" level="50" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Dragon Slayer -->
+		<melee id="7402" level="45" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Berserker -->
+		<melee id="7403" level="65" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Assassin Dagger -->
+		<melee id="7404" level="40" unproperly="1" event="function" value="default"/>
+		<!-- Havoc Blade -->
+		<melee id="7405" level="70" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Blacksteel Sword -->
+		<melee id="7406" level="35" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Haunted Blade -->
+		<melee id="7407" level="30" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Wyvern Fang -->
+		<melee id="7408" level="25" unproperly="1" event="function" value="default"/>
+		<!-- Bloody Edge -->
+		<melee id="7416" level="55" unproperly="1" event="function" value="default"/>
+		<!-- Runed Sword -->
+		<melee id="7417" level="65" unproperly="1" event="function" value="default"/>
+		<!-- Nightmare Blade -->
+		<melee id="7418" level="70" unproperly="1" event="function" value="default"/>
+		<!-- Crystal Sword -->
+		<melee id="7449" level="25" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
 
 	<!-- Axes -->
 		<!-- Barbarian Axe -->
@@ -135,6 +203,58 @@
 		</melee>
 		<!-- Beastslayer Axe -->
 		<melee id="3962" level="30" unproperly="1" event="function" value="default"/>
+		<!-- Ruthless Axe -->
+		<melee id="6553" level="75" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Headchopper -->
+		<melee id="7380" level="35" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Vile Axe -->
+		<melee id="7388" level="55" unproperly="1" event="function" value="default"/>
+		<!-- Heroic Axe -->
+		<melee id="7389" level="60" unproperly="1" event="function" value="default"/>
+		<!-- Ornamented Axe -->
+		<melee id="7411" level="50" unproperly="1" event="function" value="default"/>
+		<!-- Butcher's Axe -->
+		<melee id="7412" level="45" unproperly="1" event="function" value="default"/>
+		<!-- Titan Axe -->
+		<melee id="7413" level="40" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Dreaded Cleaver -->
+		<melee id="7419" level="40" unproperly="1" event="function" value="default"/>
+		<!-- Reaper's Axe -->
+		<melee id="7420" level="70" unproperly="1" event="function" value="default"/>
+		<!-- Ravenwing -->
+		<melee id="7433" level="65" unproperly="1" event="function" value="default"/>
+		<!-- Royal Axe -->
+		<melee id="7434" level="75" unproperly="1" event="function" value="default"/>
+		<!-- Impaler -->
+		<melee id="7435" level="85" unproperly="1" event="function" value="default"/>
+		<!-- Angelic Axe -->
+		<melee id="7436" level="45" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Executioner -->
+		<melee id="7453" level="85" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Glorious Axe -->
+		<melee id="7454" level="30" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Mythril Axe -->
+		<melee id="7455" level="80" unproperly="1" event="function" value="default"/>
+		<!-- Noble Axe -->
+		<melee id="7456" level="35" unproperly="1" event="function" value="default"/>
 
 	<!-- Clubs -->
 		<!-- War Hammer -->
@@ -170,12 +290,85 @@
 		<melee id="2453" level="75" unproperly="1" event="function" value="default"/>
 		<!-- Lich Staff -->
 		<melee id="3961" level="35" unproperly="1" event="function" value="default"/>
+		<!-- Mammoth Whopper -->
+		<melee id="7381" level="20" unproperly="1" event="function" value="default"/>
+		<!-- Brutetamer's Staff -->
+		<melee id="7379" level="25" unproperly="1" event="function" value="default"/>
+		<!-- Diamond Sceptre -->
+		<melee id="7387" level="25" unproperly="1" event="function" value="default"/>
+		<!-- Orcish Maul -->
+		<melee id="7392" level="35" unproperly="1" event="function" value="default"/>
+		<!-- Northern Star -->
+		<melee id="7409" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Queen's Sceptre -->
+		<melee id="7410" level="55" unproperly="1" event="function" value="default"/>
+		<!-- Abyss Hammer -->
+		<melee id="7414" level="60" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Cranial Basher -->
+		<melee id="7415" level="60" unproperly="1" event="function" value="default"/>
+		<!-- Onyx Flail -->
+		<melee id="7421" level="65" unproperly="1" event="function" value="default"/>
+		<!-- Jade Hammer -->
+		<melee id="7422" level="70" unproperly="1" event="function" value="default"/>
+		<!-- Skullcrusher -->
+		<melee id="7423" level="85" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Lunar Staff -->
+		<melee id="7424" level="30" unproperly="1" event="function" value="default"/>
+		<!-- Taurus Mace -->
+		<melee id="7425" level="20" unproperly="1" event="function" value="default"/>
+		<!-- Amber Staff -->
+		<melee id="7426" level="40" unproperly="1" event="function" value="default"/>
+		<!-- Chaos Mace -->
+		<melee id="7427" level="45" unproperly="1" event="function" value="default"/>
+		<!-- Bonebreaker -->
+		<melee id="7428" level="55" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Blessed Sceptre -->
+		<melee id="7429" level="75" unproperly="1" event="function" value="default"/>
+		<!-- Dragonbone Staff -->
+		<melee id="7430" level="30" unproperly="1" event="function" value="default"/>
+		<!-- Demonbone -->
+		<melee id="7431" level="80" unproperly="1" event="function" value="default"/>
+		<!-- Furry Club -->
+		<melee id="7432" level="20" unproperly="1" event="function" value="default"/>
+		<!-- Sapphire Hammer -->
+		<melee id="7437" level="30" unproperly="1" event="function" value="default"/>
+		<!-- Hammer of Prophecy -->
+		<melee id="7450" level="120" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
+		<!-- Shadow Sceptre -->
+		<melee id="7451" level="35" unproperly="1" event="function" value="default"/>
+		<!-- Spiked Squelcher -->
+		<melee id="7452" level="30" unproperly="1" event="function" value="default">
+			<vocation name="Knight"/>
+			<vocation id="8" showInDescription="0"/>
+		</melee>
 
 	<!-- Bows and Crossbows -->
 		<!-- Crossbow -->
 		<distance id="2455" event="function" value="default"/>
 		<!-- Bow -->
 		<distance id="2456" event="function" value="default"/>
+		<!-- Arbalest -->
+		<distance id="5803" level="75" event="function" value="default">
+			<vocation name="Paladin"/>
+			<vocation id="7" showInDescription="0"/>
+		</distance>
+		<!-- Elvish Bow -->
+		<distance id="7438" event="function" value="default"/>
 
 	<!-- Ammunition -->
 		<!-- Small Stone -->
@@ -200,4 +393,20 @@
 		<distance id="2547" level="55" event="function" value="default"/>
 		<!-- Hunting Spear -->
 		<distance id="3965" level="20" event="function" value="default"/>
+		<!-- Infernal Bolt -->
+		<distance id="6529" level="110" event="function" value="default"/>
+		<!-- Piercing Bolt -->
+		<distance id="7363" level="30" event="function" value="default"/>
+		<!-- Sniper Arrow -->
+		<distance id="7364" level="20" event="function" value="default"/>
+		<!-- Onyx Arrow -->
+		<distance id="7365" level="40" event="function" value="default"/>
+		<!-- Viper Star -->
+		<distance id="7366" event="script" value="viper_star.lua"/>
+		<!-- Enchanted Spear -->
+		<distance id="7367" level="42" event="function" value="default"/>
+		<!-- Assassin Star -->
+		<distance id="7368" level="80" event="function" value="default"/>
+		<!-- Royal Spear -->
+		<distance id="7378" level="25" event="function" value="default"/>
 </weapons>

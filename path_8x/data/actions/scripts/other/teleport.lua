@@ -1,4 +1,4 @@
-local UP_FLOORS = {1386, 3678}
+local UP_FLOORS = {1386, 3678, 5543}
 local FIELDS = {1497, 1499}
 local DRAW_WELL = 1369
 

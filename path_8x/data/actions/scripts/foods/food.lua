@@ -9,10 +9,28 @@ local FOODS, MAX_FOOD = {
 	[2695] = {72, "Gulp."}, [2696] = {108, "Smack."}, [8112] = {108, "Urgh."}, [2787] = {108, "Crunch."},
 	[2788] = {48, "Munch."}, [2789] = {264, "Munch."}, [2790] = {360, "Crunch."}, [2791] = {108, "Crunch."},
 	[2792] = {72, "Crunch."}, [2793] = {144, "Crunch."}, [2794] = {36, "Crunch."}, [2795] = {432, "Crunch."},
-	[2796] = {300, "Crunch."}
+	[2796] = {300, "Crunch."}, [5097] = {48, "Yum."}, [5678] = {96, "Gulp."}, [6125] = {96, "Gulp."},
+	[6278] = {120, "Mmmm."}, [6279] = {180, "Mmmm."}, [6393] = {144, "Mmmm."}, [6394] = {180, "Mmmm."},
+	[6501] = {240, "Mmmm."}, [6541] = {72, "Gulp."}, [6542] = {72, "Gulp."}, [6543] = {72, "Gulp."},
+	[6544] = {72, "Gulp."}, [6545] = {72, "Gulp."}, [6569] = {12, "Mmmm."}, [6574] = {60, "Mmmm."},
+	[7158] = {300, "Munch."}, [7159] = {180, "Munch."}, [7245] = {84, "Munch."}, [7372] = {0, "Slurp."},
+	[7373] = {0, "Slurp."}, [7374] = {0, "Slurp."},  [7375] = {0, "Slurp."}, [7376] = {0, "Slurp."},
+	[7377] = {0, "Slurp."}, [7909] = {48, "Crunch."}, [7963] = {720, "Munch."},  [8838] = {120, "Gulp."}, [8839] = {60, "Yum."}
 }, 1200
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(item.itemid == 6280) then
+		if(fromPosition.x == CONTAINER_POSITION) then
+			fromPosition = getThingPosition(cid)
+		end
+
+		doCreatureSay(cid, getPlayerName(cid) .. " blew out the candle.", TALKTYPE_MONSTER)
+		doTransformItem(item.uid, item.itemid - 1)
+
+		doSendMagicEffect(fromPosition, CONST_ME_POFF)
+		return true
+	end
+
 	local food = FOODS[item.itemid]
 	if(food == nil) then
 		return false

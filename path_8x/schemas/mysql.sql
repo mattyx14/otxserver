@@ -70,7 +70,7 @@ CREATE TABLE `players`
 	`looklegs` INT NOT NULL DEFAULT 0,
 	`looktype` INT NOT NULL DEFAULT 136,
 	`lookaddons` INT NOT NULL DEFAULT 0,
-	`lookmount` INT NOT NULL DEFAULT 0,
+	`lookmount` INT NOT NULL DEFAULT 0, 
 	`maglevel` INT NOT NULL DEFAULT 0,
 	`mana` INT NOT NULL DEFAULT 0,
 	`manamax` INT NOT NULL DEFAULT 0,
@@ -100,7 +100,7 @@ CREATE TABLE `players`
 	`loss_mana` INT NOT NULL DEFAULT 100,
 	`loss_skills` INT NOT NULL DEFAULT 100,
 	`loss_containers` INT NOT NULL DEFAULT 100,
-	`loss_items` INT NOT NULL DEFAULT 10,
+	`loss_items` INT NOT NULL DEFAULT 100,
 	`premend` INT NOT NULL DEFAULT 0 COMMENT 'NOT IN USE BY THE SERVER',
 	`online` TINYINT(1) NOT NULL DEFAULT 0,
 	`marriage` INT UNSIGNED NOT NULL DEFAULT 0,
@@ -394,7 +394,7 @@ CREATE TABLE `server_config`
 	UNIQUE (`config`)
 ) ENGINE = InnoDB;
 
-INSERT INTO `server_config` VALUES ('db_version', 0);
+INSERT INTO `server_config` VALUES ('db_version', 31);
 
 CREATE TABLE `server_motd`
 (

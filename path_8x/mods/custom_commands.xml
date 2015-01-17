@@ -15,6 +15,10 @@
 		}
 
 		function onSay(cid, words, param, channel)
+			if(not checkExhausted(cid, 666, 10)) then
+				return false
+			end
+
 			local t = string.explode(param, ",")
 			if(table.isStrIn(param, config.add)) then
 				if getPlayerGroupId (cid) > 3 then
@@ -302,7 +306,7 @@
 					str = str .. "!" .. name .. "\n"
 				end
 
-				doShowTextDialog(cid, 1950, str)
+				doPlayerPopupFYI(cid, str)
 				return true
 			end
 
@@ -567,7 +571,7 @@
 					str = str .. "\n" .. name
 				end
 
-				doShowTextDialog(cid, 1950, "/buy or !buy:\n" .. str)
+				doPlayerPopupFYI(cid, "/buy or !buy:\n\n" .. str)
 				return true
 			end
 
@@ -669,13 +673,13 @@
 	]]></talkaction>
 
 	<!-- Full Stamina Command at player -->
-	<talkaction words="/stamina" event="script"><![CDATA[
+	<talkaction words="!stamina;/stamina" event="script"><![CDATA[
 		function onSay(cid, words, param)
 			if getPlayerMoney(cid) >= 250000 then
 				doPlayerRemoveMoney(cid, 250000)
 				doPlayerSetStamina(cid, 2520)
 			else
-				doPlayerSendCancel(cid, "You need 25 cristal coints for a regenerate full stamina.")
+				doPlayerSendCancel(cid, "Nesesitas 25 crystal coins para llenarte la stamina.")
 			end
 
 			return true
@@ -834,7 +838,7 @@
 
 		function onSay(cid, words, param, channel)
 			if(param == '') then
-				doShowTextDialog(cid, 1950, 
+				doPlayerPopupFYI(cid,
 					"Bank management manual.\n\n" ..
 					"!bank or /bank balance - show your account balance\n" ..
 					"!bank or /bank deposit 100 - deposit 100 gold\n" ..
