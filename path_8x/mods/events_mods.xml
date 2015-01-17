@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mod name="events mods" version="1.0" author="Mattyx14" contact="marty@otland.net" enabled="yes">
+	<changelog><![CDATA[
+		* [01/06/2012 v1.0] Adori blank event
+		* [01/06/2012 v1.0] Display items in bag event
+		* [01/06/2012 v1.0] Highscorebook event
+		* [01/06/2012 v1.0] Peeper event
+		* [01/06/2012 v1.0] Spell Reward for level
+	]]></changelog>
+
+<!-- Adori blank event -->
+	<description><![CDATA[
+		This modification creates a new spell - "adori blank", which will conjure a blank rune when used.
+	]]></description>
+
+	<conjure name="Blank Runes" words="adori blank" mana="50" soul="1" conjureId="2260" conjureCount="1" exhaustion="1000" groups="3,1000,1000" icon="23" needlearn="0" event="function" value="conjureRune">
+		<vocation id="1;2;3;5;6;7"/>
+	</conjure>
+
+<!-- Display items in bag event -->
+	<action itemid="1987-1988;1991-2004;2365;3939;3960;5926-5927;5949-5950;7342;9774-9775;10518-10522;11119;11241-11242;11243;11244;11263" event="script" override="yes"><![CDATA[
+		function onUse(cid, item, fromPosition, itemEx, toPosition)
+			local enableLootBagDisplay = getBooleanFromString(getConfigValue('enableLootBagDisplay'))
+			if(enableLootBagDisplay) then
+				local a, b, counter = getContainerSize(item.uid) or nil, "", 0
+				if a ~= nil then
+					for i = 0, a do
+					local c = getContainerItem(item.uid, i)
+					if c.itemid ~= 0 then
+						if c.type > 1 then
+							if b == "" then
+								b = c.type .." ".. getItemPluralNameById(c.itemid)
+							else
+								b = b ..", ".. c.type .." ".. getItemPluralNameById(c.itemid)
+						end
+						counter = 1
+						else
+							if b ~= "" then
+								b = b ..", ".. getItemNameById(c.itemid)
+							else
+								b = getItemNameById(c.itemid)
+							end
+							counter = 1
+						end
+					end
+					end
+					if b ~= "" then
+						if counter > 0 then
+							doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_RED, 'You have these items : '.. b ..'.')
+						else
+							doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_RED, 'You have this item : '.. b ..'.')
+						end
+					end
+				end
+			end
+		end
+	]]></action>
+
+<!-- Highscorebook event -->
+	<action itemid="1981" event="buffer"><![CDATA[
+		if(item.actionid >= 150 and item.actionid <= 158) then
+			doShowTextDialog(cid, item.itemid, getHighscoreString((item.actionid - 150)))
+		else
+			_result = false
+		end
+	]]></action>
+	<item id="1981" article="a" name="highscore book" override="yes"/>
+
+<!-- Peeper event -->
+	<config name="peeper-config"><![CDATA[
+		-- anonymously or display peeper name?
+		anonymous = "no"
+
+		-- ignore players with access (will not show message when they look on someone)
+		hiddenAccess = 3
+
+		-- message color (type)
+		messageType = MESSAGE_STATUS_DEFAULT
+	]]></config>
+
+	<event type="look" name="peeper-event" event="script"><![CDATA[
+		domodlib('peeper-config')
+
+		local config = {
+			anonymous = getBooleanFromString(anonymous),
+			hiddenAccess = hiddenAccess,
+			messageType = messageType
+		}
+
+		function onLook(cid, thing, position, lookDistance)
+			if(isPlayer(thing.uid) and cid ~= thing and getPlayerAccess(cid) < config.hiddenAccess) then
+				doPlayerSendTextMessage(thing.uid, config.messageType, (config.anonymous and "Someone" or getPlayerName(cid)) .. " is looking at you.")
+			end
+
+			return true
+		end
+	]]></event>
+
+	<event type="login" name="peeper-login" event="buffer"><![CDATA[
+		registerCreatureEvent(cid, "peeper-event")
+		_result = true
+	]]></event>
+
+<!-- Spell Reward for level -->
+	<event type="advance" name="spell-up-event" event="script"><![CDATA[
+		local s = {
+			repeatAfterDeath = true, -- true -> player will always get the msg at lvlup | false -> player will only get the 1st time the gets the new level
+			detailedInfo = true, -- true -> player will get name, words, mana & mana% info of spells | false -> player will only get the name and the words of the spells
+			Storage = 10000, -- storage below is where the newlevel will be stored ONLY IF YOU USE repeatAfterDeath
+			messageType = 'channel', -- options: 'popUp' or 'channel'
+			channelClass = MESSAGE_EVENT_ORANGE -- this one below only used if messageType = channel
+		}
+
+		function onAdvance(cid, skill, oldlevel, newlevel)
+			if skill ~= SKILL__LEVEL or not s.repeatAfterDeath and getCreatureStorage(cid, s.Storage) >= newlevel then
+				return true 
+			end
+
+			local t = {}
+			for i = 0, getPlayerInstantSpellCount(cid) - 1 do
+			local spell = getPlayerInstantSpellInfo(cid, i)
+				if(spell.level ~= 0) and spell.level == newlevel then
+					if(spell.manapercent > 0) then
+						spell.mana = spell.manapercent .. '%'
+					end
+					table.insert(t, spell)
+				end
+			end
+
+			table.sort(t, function(a, b) return a.level < b.level end)
+			local text, prevLevel = '', -1
+			for i, spell in ipairs(t) do
+			local line = ''
+				if(prevLevel ~= spell.level) then
+					if(i ~= 1) then
+						line = '\n'
+					end
+					line = line .. 'You have just advanced to level '..newlevel..' and learned new spells!\n'
+					prevLevel = spell.level
+				end
+				text = text ..line..' ['..spell.name..'] "'..spell.words..'" '..(s.detailedInfo and 'Mana['..spell.mana..']'..(spell.mlevel > 0 and ' ML['..spell.mlevel..']' or '') or '')..'\n'
+			end
+
+			if text == '' then
+				return true
+			end
+
+			doCreatureSetStorage(cid, s.Storage, newlevel)
+			if s.messageType == 'popUp' then
+				doShowTextDialog(cid, 2175, text)
+			elseif s.messageType == 'channel' then
+				doPlayerSendTextMessage(cid, s.channelClass, text)
+			end
+			return true
+		end
+	]]></event>
+
+	<event type="login" name="spell-up-login" event="buffer"><![CDATA[
+		registerCreatureEvent(cid, "spell-up-event")
+		_result = true
+	]]></event>
+</mod>

@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual C++ Express 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOTXServer", "TheOTXServer.vcxproj", "{04C27DC4-E458-2239-C38C-89C1B4582FBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug GUI|Win32 = Debug GUI|Win32
+		Debug GUI|x64 = Debug GUI|x64
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release GUI|Win32 = Release GUI|Win32
+		Release GUI|x64 = Release GUI|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug GUI|Win32.ActiveCfg = Debug GUI|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug GUI|Win32.Build.0 = Debug GUI|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug GUI|x64.ActiveCfg = Debug GUI|x64
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug GUI|x64.Build.0 = Debug GUI|x64
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug|Win32.Build.0 = Debug|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug|x64.ActiveCfg = Debug|x64
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Debug|x64.Build.0 = Debug|x64
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release GUI|Win32.ActiveCfg = Release GUI|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release GUI|Win32.Build.0 = Release GUI|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release GUI|x64.ActiveCfg = Release GUI|x64
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release GUI|x64.Build.0 = Release GUI|x64
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release|Win32.ActiveCfg = Release|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release|Win32.Build.0 = Release|Win32
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release|x64.ActiveCfg = Release|x64
+		{04C27DC4-E458-2239-C38C-89C1B4582FBD}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

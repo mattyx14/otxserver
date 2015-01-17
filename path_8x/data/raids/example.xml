@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<raid>
+	<singlespawn delay="10100" name="Rat" x="95" y="117" z="7"/>
+	<singlespawn delay="10200" name="Rat" x="95" y="117" z="7"/>
+	<singlespawn delay="10300" name="Rat" x="95" y="117" z="7"/>
+	<singlespawn delay="20100" name="Cave Rat" ref="yes" x="95" y="117" z="7"/>
+	<effect delay="24000" name="bigclouds" x="95" y="117" z="7"/>
+	<itemspawn delay="25000" id="2464" x="95" y="117" z="7"/>
+</raid>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servers>
+	<server id="0" name="Example" versionMin="770" versionMax="772" address="127.0.0.1" port="7171"/>
+</servers>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Britany" nameDescription="Britany, the arms buyer" script="lot.lua" walkinterval="2000" skull="green" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="139" head="114" body="94" legs="19" feet="0" corpse="2212"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I buy swords, clubs, axes, helmets, boots, legs, shields and armors."/>
+		<parameter key="shop_sellable" value="boots of haste,2195,28000;ancient shield,2532,900;beholder shield,2518,300;bone shield,2541,80;black shield,2529,800;crown shield,2519,8000;dark shield,2521,400;demon shield,2520,15000;dragon shield,2516,4000;dwarven shield,2525,170;mastermind shield,2514,25000;medusa shield,2536,3500;scarab shield,2540,2000;steel shield,2509,90;tower shield,2528,8000;vampire shield,2534,5000;"/>
+	</parameters>
+	<voices>
+		<voice text="Come and sell your items very expensive price..." interval2="60" margin="1" type="16" yell="no"/>
+		<voice text="There are some geniuses who valued your items to a much higher price..." interval2="120" margin="1" type="16" yell="no"/>
+	</voices>
+</npc>

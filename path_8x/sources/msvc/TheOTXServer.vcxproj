@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug GUI|Win32">
+      <Configuration>Debug GUI</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug GUI|x64">
+      <Configuration>Debug GUI</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release GUI|Win32">
+      <Configuration>Release GUI</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release GUI|x64">
+      <Configuration>Release GUI</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\account.h" />
+    <ClInclude Include="..\actions.h" />
+    <ClInclude Include="..\baseevents.h" />
+    <ClInclude Include="..\beds.h" />
+    <ClInclude Include="..\chat.h" />
+    <ClInclude Include="..\combat.h" />
+    <ClInclude Include="..\condition.h" />
+    <ClInclude Include="..\configmanager.h" />
+    <ClInclude Include="..\connection.h" />
+    <ClInclude Include="..\const.h" />
+    <ClInclude Include="..\container.h" />
+    <ClInclude Include="..\creature.h" />
+    <ClInclude Include="..\creatureevent.h" />
+    <ClInclude Include="..\cylinder.h" />
+    <ClInclude Include="..\database.h" />
+    <ClInclude Include="..\databasemanager.h" />
+    <ClInclude Include="..\databasemysql.h" />
+    <ClInclude Include="..\databasemysqlpp.h" />
+    <ClInclude Include="..\databasepgsql.h" />
+    <ClInclude Include="..\databasesqlite.h" />
+    <ClInclude Include="..\definitions.h" />
+    <ClInclude Include="..\depot.h" />
+    <ClInclude Include="..\dispatcher.h" />
+    <ClInclude Include="..\enums.h" />
+    <ClInclude Include="..\exception.h" />
+    <ClInclude Include="..\fileloader.h" />
+    <ClInclude Include="..\game.h" />
+    <ClInclude Include="..\gameservers.h" />
+    <ClInclude Include="..\globalevent.h" />
+    <ClInclude Include="..\group.h" />
+    <ClInclude Include="..\gui.h" />
+    <ClInclude Include="..\house.h" />
+    <ClInclude Include="..\housetile.h" />
+    <ClInclude Include="..\inputbox.h" />
+    <ClInclude Include="..\ioban.h" />
+    <ClInclude Include="..\ioguild.h" />
+    <ClInclude Include="..\iologindata.h" />
+    <ClInclude Include="..\iomap.h" />
+    <ClInclude Include="..\iomapserialize.h" />
+    <ClInclude Include="..\item.h" />
+    <ClInclude Include="..\itemattributes.h" />
+    <ClInclude Include="..\itemloader.h" />
+    <ClInclude Include="..\items.h" />
+    <ClInclude Include="..\luascript.h" />
+    <ClInclude Include="..\mailbox.h" />
+    <ClInclude Include="..\map.h" />
+    <ClInclude Include="..\monster.h" />
+    <ClInclude Include="..\monsters.h" />
+    <ClInclude Include="..\movement.h" />
+    <ClInclude Include="..\networkmessage.h" />
+    <ClInclude Include="..\npc.h" />
+    <ClInclude Include="..\otpch.h" />
+    <ClInclude Include="..\otsystem.h" />
+    <ClInclude Include="..\outfit.h" />
+    <ClInclude Include="..\outputmessage.h" />
+    <ClInclude Include="..\party.h" />
+    <ClInclude Include="..\player.h" />
+    <ClInclude Include="..\playerbox.h" />
+    <ClInclude Include="..\position.h" />
+    <ClInclude Include="..\protocol.h" />
+    <ClInclude Include="..\protocolgame.h" />
+    <ClInclude Include="..\protocollogin.h" />
+    <ClInclude Include="..\raids.h" />
+    <ClInclude Include="..\resources.h" />
+    <ClInclude Include="..\scheduler.h" />
+    <ClInclude Include="..\scriptmanager.h" />
+    <ClInclude Include="..\server.h" />
+    <ClInclude Include="..\spawn.h" />
+    <ClInclude Include="..\spells.h" />
+    <ClInclude Include="..\status.h" />
+    <ClInclude Include="..\talkaction.h" />
+    <ClInclude Include="..\teleport.h" />
+    <ClInclude Include="..\templates.h" />
+    <ClInclude Include="..\textlogger.h" />
+    <ClInclude Include="..\thing.h" />
+    <ClInclude Include="..\tile.h" />
+    <ClInclude Include="..\tools.h" />
+    <ClInclude Include="..\town.h" />
+    <ClInclude Include="..\trashholder.h" />
+    <ClInclude Include="..\vocation.h" />
+    <ClInclude Include="..\waitlist.h" />
+    <ClInclude Include="..\waypoints.h" />
+    <ClInclude Include="..\weapons.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\gui_resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\actions.cpp" />
+    <ClCompile Include="..\baseevents.cpp" />
+    <ClCompile Include="..\beds.cpp" />
+    <ClCompile Include="..\chat.cpp" />
+    <ClCompile Include="..\combat.cpp" />
+    <ClCompile Include="..\condition.cpp" />
+    <ClCompile Include="..\configmanager.cpp" />
+    <ClCompile Include="..\connection.cpp" />
+    <ClCompile Include="..\container.cpp" />
+    <ClCompile Include="..\creature.cpp" />
+    <ClCompile Include="..\creatureevent.cpp" />
+    <ClCompile Include="..\cylinder.cpp" />
+    <ClCompile Include="..\database.cpp" />
+    <ClCompile Include="..\databasemanager.cpp" />
+    <ClCompile Include="..\databasemysql.cpp" />
+    <ClCompile Include="..\databasemysqlpp.cpp" />
+    <ClCompile Include="..\databasepgsql.cpp" />
+    <ClCompile Include="..\databasesqlite.cpp" />
+    <ClCompile Include="..\depot.cpp" />
+    <ClCompile Include="..\dispatcher.cpp" />
+    <ClCompile Include="..\exception.cpp" />
+    <ClCompile Include="..\fileloader.cpp" />
+    <ClCompile Include="..\game.cpp" />
+    <ClCompile Include="..\gameservers.cpp" />
+    <ClCompile Include="..\globalevent.cpp" />
+    <ClCompile Include="..\group.cpp" />
+    <ClCompile Include="..\gui.cpp" />
+    <ClCompile Include="..\house.cpp" />
+    <ClCompile Include="..\housetile.cpp" />
+    <ClCompile Include="..\inputbox.cpp" />
+    <ClCompile Include="..\ioban.cpp" />
+    <ClCompile Include="..\ioguild.cpp" />
+    <ClCompile Include="..\iologindata.cpp" />
+    <ClCompile Include="..\iomap.cpp" />
+    <ClCompile Include="..\iomapserialize.cpp" />
+    <ClCompile Include="..\item.cpp" />
+    <ClCompile Include="..\itemattributes.cpp" />
+    <ClCompile Include="..\items.cpp" />
+    <ClCompile Include="..\luascript.cpp" />
+    <ClCompile Include="..\mailbox.cpp" />
+    <ClCompile Include="..\map.cpp" />
+    <ClCompile Include="..\monster.cpp" />
+    <ClCompile Include="..\monsters.cpp" />
+    <ClCompile Include="..\movement.cpp" />
+    <ClCompile Include="..\networkmessage.cpp" />
+    <ClCompile Include="..\npc.cpp" />
+    <ClCompile Include="..\otpch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug GUI|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release GUI|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug GUI|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release GUI|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>otpch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\otserv.cpp" />
+    <ClCompile Include="..\outfit.cpp" />
+    <ClCompile Include="..\outputmessage.cpp" />
+    <ClCompile Include="..\party.cpp" />
+    <ClCompile Include="..\player.cpp" />
+    <ClCompile Include="..\playerbox.cpp" />
+    <ClCompile Include="..\position.cpp" />
+    <ClCompile Include="..\protocol.cpp" />
+    <ClCompile Include="..\protocolgame.cpp" />
+    <ClCompile Include="..\protocollogin.cpp" />
+    <ClCompile Include="..\raids.cpp" />
+    <ClCompile Include="..\scheduler.cpp" />
+    <ClCompile Include="..\scriptmanager.cpp" />
+    <ClCompile Include="..\server.cpp" />
+    <ClCompile Include="..\spawn.cpp" />
+    <ClCompile Include="..\spells.cpp" />
+    <ClCompile Include="..\status.cpp" />
+    <ClCompile Include="..\talkaction.cpp" />
+    <ClCompile Include="..\teleport.cpp" />
+    <ClCompile Include="..\textlogger.cpp" />
+    <ClCompile Include="..\thing.cpp" />
+    <ClCompile Include="..\tile.cpp" />
+    <ClCompile Include="..\tools.cpp" />
+    <ClCompile Include="..\trashholder.cpp" />
+    <ClCompile Include="..\vocation.cpp" />
+    <ClCompile Include="..\waitlist.cpp" />
+    <ClCompile Include="..\weapons.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{04C27DC4-E458-2239-C38C-89C1B4582FBD}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="arch32.props" />
+    <Import Project="debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="debug.props" />
+    <Import Project="arch64.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug GUI|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="arch32.props" />
+    <Import Project="debug.props" />
+    <Import Project="gui.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="debug.props" />
+    <Import Project="arch64.props" />
+    <Import Project="gui.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="arch32.props" />
+    <Import Project="release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="arch64.props" />
+    <Import Project="release.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release GUI|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="arch32.props" />
+    <Import Project="release.props" />
+    <Import Project="gui.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="settings.props" />
+    <Import Project="arch64.props" />
+    <Import Project="release.props" />
+    <Import Project="gui.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|x64'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;_DEBUG;_CONSOLE;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug GUI|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;_DEBUG;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;NDEBUG;_CONSOLE;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;$(PREPROCESSOR_DEFS);_MULTIPLATFORM77;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;NDEBUG;$(PREPROCESSOR_DEFS);_MULTIPLATFORM77;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
