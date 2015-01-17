@@ -66,14 +66,6 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	local cStorage = player:getStorageValue(Storage.Achievements.PotionAddict)
-	if cStorage < 100000 then
-		player:setStorageValue(Storage.Achievements.PotionAddict, math.max(1, cStorage) + 1)
-	elseif cStorage == 100000 then
-		player:addAchievement('Potion Addict')
-		player:setStorageValue(Storage.Achievements.PotionAddict, 100001)
-	end
-
 	player:addCondition(exhaust)
 	doCreatureSayWithRadius(target, 'Aaaah...', TALKTYPE_MONSTER_SAY, 2, 2, toPosition)
 	item:remove(1)
