@@ -92,7 +92,7 @@
 #define REVISION_VERSION "1"
 #define SOFTWARE_CODENAME "Doomed Elderberry"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
-#define FORUMS "blacktibia.org - tibiaking.com - otland.net - tibiax.org"
+#define FORUMS "blacktibia.org - tibiaking.com - otland.net - otfans.net"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0

@@ -26,7 +26,7 @@
 #define REVISION_VERSION "1"
 #define SOFTWARE_CODENAME "Doomed Elderberry"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
-#define FORUMS "blacktibia.org - tibiaking.com - otland.net - tibiax.org"
+#define FORUMS "blacktibia.org - tibiaking.com - otland.net - otfans.net"
 
 #if defined(_MULTIPLATFORM77)
 	#define _MULTIPLATFORM76
