@@ -40,11 +40,11 @@
 #endif
 
 #include <boost/config.hpp>
-#ifdef _MULTIPLATFORM77
+
 #include <openssl/rsa.h>
 #include <openssl/bn.h>
 #include <openssl/err.h>
-#endif
+
 #include "server.h"
 #ifdef __LOGIN_SERVER__
 #include "gameservers.h"
@@ -71,6 +71,7 @@
 #include "vocation.h"
 #include "group.h"
 
+#include "quests.h"
 #include "raids.h"
 
 #include "monsters.h"
@@ -87,9 +88,8 @@ inline void boost::throw_exception(std::exception const & e)
 	std::clog << "Boost exception: " << e.what() << std::endl;
 }
 #endif
-#ifdef _MULTIPLATFORM77
+
 RSA* g_RSA;
-#endif
 ConfigManager g_config;
 Game g_game;
 Chat g_chat;
@@ -589,7 +589,6 @@ ServiceManager* services)
 		boost::this_thread::sleep(boost::posix_time::seconds(15));
 	}
 
-	#ifdef _MULTIPLATFORM77
 	std::clog << ">> Loading RSA key" << std::endl;
 	#if defined(WINDOWS) && !defined(_CONSOLE)
 	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Loading RSA Key");
@@ -623,7 +622,6 @@ ServiceManager* services)
 		s << std::endl << "> OpenSSL failed - " << ERR_error_string(ERR_get_error(), NULL);
 		startupErrorMessage(s.str());
 	}
-	#endif
 
 	std::clog << ">> Starting SQL connection" << std::endl;
 	#if defined(WINDOWS) && !defined(_CONSOLE)
@@ -671,7 +669,7 @@ ServiceManager* services)
 	#if defined(WINDOWS) && !defined(_CONSOLE)
 	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Loading items (OTB)");
 	#endif
-	if(Item::items.loadFromOtb(getFilePath(FILE_TYPE_OTHER, "items/" + ITEMS_PATH + "/items.otb")))
+	if(Item::items.loadFromOtb(getFilePath(FILE_TYPE_OTHER, "items/items.otb")))
 		startupErrorMessage("Unable to load items (OTB)!");
 
 	std::clog << ">> Loading items (XML)" << std::endl;
@@ -696,6 +694,13 @@ ServiceManager* services)
 	#endif
 	if(!Outfits::getInstance()->loadFromXml())
 		startupErrorMessage("Unable to load outfits!");
+
+	std::clog << ">> Loading quests" << std::endl;
+	#if defined(WINDOWS) && !defined(_CONSOLE)
+	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Loading quests");
+	#endif
+	if(!Quests::getInstance()->loadFromXml())
+		startupErrorMessage("Unable to load quests!");
 
 	std::clog << ">> Loading raids" << std::endl;
 	#if defined(WINDOWS) && !defined(_CONSOLE)
@@ -1302,6 +1307,17 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				}
 
+				case ID_MENU_RELOAD_HIGHSCORES:
+				{
+					if(g_game.getGameState() != GAMESTATE_STARTUP)
+					{
+						if(g_game.reloadInfo(RELOAD_HIGHSCORES))
+							std::clog << "Reloaded highscores." << std::endl;
+					}
+
+					break;
+				}
+
 				case ID_MENU_RELOAD_MONSTERS:
 				{
 					if(g_game.getGameState() != GAMESTATE_STARTUP)
@@ -1319,6 +1335,17 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						if(g_game.reloadInfo(RELOAD_MOVEEVENTS))
 							std::clog << "Reloaded movements." << std::endl;
+					}
+
+					break;
+				}
+
+				case ID_MENU_RELOAD_QUESTS:
+				{
+					if(g_game.getGameState() != GAMESTATE_STARTUP)
+					{
+						if(g_game.reloadInfo(RELOAD_QUESTS))
+							std::clog << "Reloaded quests." << std::endl;
 					}
 
 					break;

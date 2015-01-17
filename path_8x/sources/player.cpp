@@ -26,6 +26,7 @@
 #include "town.h"
 #include "house.h"
 #include "beds.h"
+#include "quests.h"
 
 #include "combat.h"
 #include "movement.h"
@@ -74,10 +75,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 
 	promotionLevel = walkTaskEvent = actionTaskEvent = nextStepEvent = bloodHitCount = shieldBlockCount = 0;
 	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = 0;
-	#ifdef _MULTIPLATFORM76
-	soul = 0;
-	#endif
-	guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
+	soul = guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
 	conditionImmunities = conditionSuppressions = groupId = managerNumber2 = town = skullEnd = 0;
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
 	windowTextId = nextExAction = offlineTrainingTime = lastStatsTrainingTime = 0;
@@ -85,9 +83,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	purchaseCallback = saleCallback = offlineTrainingSkill = -1;
 	level = 1;
 	rates[SKILL__MAGLEVEL] = rates[SKILL__LEVEL] = 1.0f;
-	#ifdef _MULTIPLATFORM76
 	soulMax = 100;
-	#endif
 	capacity = 400.00;
 	stamina = STAMINA_MAX;
 	lastLoad = lastPing = lastPong = lastAttack = lastMail = OTSYS_TIME();
@@ -169,9 +165,7 @@ void Player::setVocation(uint32_t id)
 	Creature::setDropLoot((vocation->getDropLoot() ? LOOT_DROP_FULL : LOOT_DROP_PREVENT));
 	Creature::setLossSkill(vocation->getLossSkill());
 
-	#ifdef _MULTIPLATFORM76
 	soulMax = vocation->getGain(GAIN_SOUL);
-	#endif
 	if(Condition* condition = getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT))
 	{
 		condition->setParam(CONDITIONPARAM_HEALTHGAIN, vocation->getGainAmount(GAIN_HEALTH));
@@ -598,10 +592,8 @@ int32_t Player::getPlayerInfo(playerinfo_t playerinfo) const
 			return mana;
 		case PLAYERINFO_MAXMANA:
 			return std::max((int32_t)0, ((int32_t)manaMax + varStats[STAT_MAXMANA]));
-		#ifdef _MULTIPLATFORM76
 		case PLAYERINFO_SOUL:
 			return std::max((int32_t)0, ((int32_t)soul + varStats[STAT_SOUL]));
-		#endif
 		default:
 			break;
 	}
@@ -708,10 +700,8 @@ int32_t Player::getDefaultStats(stats_t stat)
 			return getMaxHealth() - getVarStats(STAT_MAXHEALTH);
 		case STAT_MAXMANA:
 			return getMaxMana() - getVarStats(STAT_MAXMANA);
-		#ifdef _MULTIPLATFORM76
 		case STAT_SOUL:
 			return getSoul() - getVarStats(STAT_SOUL);
-		#endif
 		default:
 			break;
 	}
@@ -807,6 +797,55 @@ void Player::dropLoot(Container* corpse)
 	}
 }
 
+bool Player::setStorage(const std::string& key, const std::string& value)
+{
+	uint32_t numericKey = atol(key.c_str());
+	if(!IS_IN_KEYRANGE(numericKey, RESERVED_RANGE))
+	{
+		if(!Creature::setStorage(key, value))
+			return false;
+
+		if(Quests::getInstance()->isQuestStorage(key, value, true))
+			onUpdateQuest();
+
+		return true;
+	}
+
+	if(IS_IN_KEYRANGE(numericKey, OUTFITS_RANGE))
+	{
+		uint32_t lookType = atoi(value.c_str()) >> 16, addons = atoi(value.c_str()) & 0xFF;
+		if(addons < 4)
+		{
+			Outfit outfit;
+			if(Outfits::getInstance()->getOutfit(lookType, outfit))
+				return addOutfit(outfit.outfitId, addons);
+		}
+		else
+			std::clog << "[Warning - Player::setStorage] Invalid addons value key: " << key
+				<< ", value: " << value << " for player: " << getName() << std::endl;
+	}
+	else if(IS_IN_KEYRANGE(numericKey, OUTFITSID_RANGE))
+	{
+		uint32_t outfitId = atoi(value.c_str()) >> 16, addons = atoi(value.c_str()) & 0xFF;
+		if(addons < 4)
+			return addOutfit(outfitId, addons);
+		else
+			std::clog << "[Warning - Player::setStorage] Invalid addons value key: " << key
+				<< ", value: " << value << " for player: " << getName() << std::endl;
+	}
+	else
+		std::clog << "[Warning - Player::setStorage] Unknown reserved key: " << key << " for player: " << getName() << std::endl;
+
+	return false;
+}
+
+void Player::eraseStorage(const std::string& key)
+{
+	Creature::eraseStorage(key);
+	if(IS_IN_KEYRANGE(atol(key.c_str()), RESERVED_RANGE))
+		std::clog << "[Warning - Player::eraseStorage] Unknown reserved key: " << key << " for player: " << name << std::endl;
+}
+
 bool Player::canSee(const Position& pos) const
 {
 	if(client)
@@ -861,13 +900,14 @@ Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
 			if(Depot* depot = container->getDepot())
 			{
 				container->__internalAddThing(Item::CreateItem(ITEM_DEPOT));
-				addDepot(depot, depotId);
+				internalAddDepot(depot, depotId);
 				return depot;
 			}
 		}
 
 		g_game.freeThing(locker);
-		std::clog << "Failure: Creating a new depot with id: " << depotId << ", for player: " << getName() << std::endl;
+		std::clog << "Failure: Creating a new depot with id: " << depotId <<
+			", for player: " << getName() << std::endl;
 	}
 
 	return NULL;
@@ -885,7 +925,6 @@ bool Player::addDepot(Depot* depot, uint32_t depotId)
 void Player::internalAddDepot(Depot* depot, uint32_t depotId)
 {
 	depots[depotId] = std::make_pair(depot, false);
-	depot->setDepotId(depotId);
 	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
 }
 
@@ -1029,11 +1068,9 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You do not have enough mana.");
 			break;
 
-		#ifdef _MULTIPLATFORM76
 		case RET_NOTENOUGHSOUL:
 			sendCancel("You do not have enough soul.");
 			break;
-		#endif
 
 		case RET_YOUAREEXHAUSTED:
 			sendCancel("You are exhausted.");
@@ -1322,9 +1359,9 @@ void Player::onCreatureAppear(const Creature* creature)
 
 	Outfit outfit;
 	if(Outfits::getInstance()->getOutfit(defaultOutfit.lookType, outfit))
-		outfitAttributes = Outfits::getInstance()->addAttributes(getID(), outfit.outfitId, sex);
+		outfitAttributes = Outfits::getInstance()->addAttributes(getID(), outfit.outfitId, sex, defaultOutfit.lookAddons);
 
-	if(g_config.getBool(ConfigManager::USE_STAMINA) && lastLogout && stamina < STAMINA_MAX)
+	if(lastLogout && stamina < STAMINA_MAX)
 	{
 		int64_t ticks = (int64_t)time(NULL) - lastLogout - 600;
 		if(ticks > 0)
@@ -1351,6 +1388,8 @@ void Player::onCreatureAppear(const Creature* creature)
 
 				useStamina(ticks);
 			}
+
+			sendStats();
 		}
 	}
 
@@ -2392,15 +2431,13 @@ bool Player::onDeath()
 			if(Town* rook = Towns::getInstance()->getTown(g_config.getNumber(ConfigManager::ROOK_TOWN)))
 			{
 				level = 1;
-				#ifdef _MULTIPLATFORM76
 				soulMax = soul = 100;
-				#endif
 				capacity = 400;
 				stamina = STAMINA_MAX;
 				health = healthMax = 150;
 				loginPosition = masterPosition = rook->getPosition();
 				experience = magLevel = manaSpent = mana = manaMax = balance = marriage = 0;
-				promotionLevel = 0;
+				promotionLevel = defaultOutfit.lookAddons = 0;
 
 				setTown(rook->getID());
 				setVocation(0);
@@ -2420,6 +2457,8 @@ bool Player::onDeath()
 				}
 			}
 		}
+		else if(!inventory[SLOT_BACKPACK]) // FIXME: you should receive the bag after you login back...
+			__internalAddThing(SLOT_BACKPACK, Item::CreateItem(g_config.getNumber(ConfigManager::DEATH_CONTAINER)));
 
 		sendIcons();
 		sendStats();
@@ -2882,7 +2921,8 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 		if((tmpItem = getInventoryItem((slots_t)index)) && (!tmpItem->isStackable() || tmpItem->getID() != item->getID()))
 			return RET_NEEDEXCHANGE;
 
-		if(!hasCapacity(item, count)) //check if enough capacity
+		//check if enough capacity
+		if(!hasCapacity(item, count))
 			return RET_NOTENOUGHCAPACITY;
 
 		if(!g_moveEvents->onPlayerEquip(self, const_cast<Item*>(item), (slots_t)index, true))
@@ -3022,7 +3062,7 @@ Cylinder* Player::__queryDestination(int32_t& index, const Thing* thing, Item** 
 		if(!item)
 			return this;
 
-		bool autoStack = (g_config.getBool(ConfigManager::AUTO_STACK) && (flags & FLAG_IGNOREAUTOSTACK) != FLAG_IGNOREAUTOSTACK);
+		bool autoStack = (flags & FLAG_IGNOREAUTOSTACK) != FLAG_IGNOREAUTOSTACK;
 		if((!autoStack || !item->isStackable()) && backpack.first &&
 			backpack.first->__queryAdd(backpack.second, item, item->getItemCount(), flags))
 		{
@@ -3866,7 +3906,7 @@ void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
 void Player::onTickCondition(ConditionType_t type, int32_t interval, bool& _remove)
 {
 	Creature::onTickCondition(type, interval, _remove);
-	if(g_config.getBool(ConfigManager::USE_STAMINA) && type == CONDITION_HUNTING)
+	if(type == CONDITION_HUNTING)
 		useStamina(-(interval * g_config.getNumber(ConfigManager::RATE_STAMINA_LOSS)));
 }
 
@@ -3994,6 +4034,11 @@ void Player::onTargetGain(Creature* target, int32_t points)
 		party->addPlayerHealedMember(this, points);
 }
 
+void Player::onUpdateQuest()
+{
+	sendTextMessage(MSG_EVENT_ADVANCE, "Your quest log has been updated.");
+}
+
 bool Player::getEnemy(const Player* player, War_t& data) const
 {
 	if(!guildId || !player || player->isRemoved())
@@ -4077,7 +4122,6 @@ bool Player::gainExperience(double& gainExp, Creature* target)
 	if(!rateExperience(gainExp, target))
 		return false;
 
-	#ifdef _MULTIPLATFORM76
 	//soul regeneration
 	if(gainExp >= level)
 	{
@@ -4091,7 +4135,6 @@ bool Player::gainExperience(double& gainExp, Creature* target)
 			addCondition(condition);
 		}
 	}
-	#endif
 
 	addExperience((uint64_t)gainExp);
 	return true;
@@ -4107,24 +4150,21 @@ bool Player::rateExperience(double& gainExp, Creature* target)
 
 	gainExp *= rates[SKILL__LEVEL] * g_game.getExperienceStage(level,
 		vocation->getExperienceMultiplier());
-	if(g_config.getBool(ConfigManager::USE_STAMINA))
+	if(!hasFlag(PlayerFlag_HasInfiniteStamina))
 	{
-		if(!hasFlag(PlayerFlag_HasInfiniteStamina))
+		int32_t minutes = getStaminaMinutes();
+		if(minutes >= g_config.getNumber(ConfigManager::STAMINA_LIMIT_TOP))
 		{
-			int32_t minutes = getStaminaMinutes();
-			if(minutes >= g_config.getNumber(ConfigManager::STAMINA_LIMIT_TOP))
-			{
-				if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
-					gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
-			}
-			else if(minutes < (g_config.getNumber(ConfigManager::STAMINA_LIMIT_BOTTOM)) && minutes > 0)
-				gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_UNDER);
-			else if(minutes <= 0)
-				gainExp = 0;
+			if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
+				gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
 		}
-		else if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
-			gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
+		else if(minutes < (g_config.getNumber(ConfigManager::STAMINA_LIMIT_BOTTOM)) && minutes > 0)
+			gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_UNDER);
+		else if(minutes <= 0)
+			gainExp = 0;
 	}
+	else if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
+		gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
 
 	return true;
 }
@@ -4187,7 +4227,6 @@ void Player::changeMana(int32_t manaChange)
 	sendStats();
 }
 
-#ifdef _MULTIPLATFORM76
 void Player::changeSoul(int32_t soulChange)
 {
 	if(!hasFlag(PlayerFlag_HasInfiniteSoul))
@@ -4195,12 +4234,11 @@ void Player::changeSoul(int32_t soulChange)
 
 	sendStats();
 }
-#endif
 
 bool Player::changeOutfit(Outfit_t outfit, bool checkList)
 {
 	uint32_t outfitId = Outfits::getInstance()->getOutfitId(outfit.lookType);
-	if(checkList && !requestedOutfit)
+	if(checkList && (!canWearOutfit(outfitId, outfit.lookAddons) || !requestedOutfit))
 		return false;
 
 	requestedOutfit = false;
@@ -4211,14 +4249,117 @@ bool Player::changeOutfit(Outfit_t outfit, bool checkList)
 	}
 
 	defaultOutfit = outfit;
-	outfitAttributes = Outfits::getInstance()->addAttributes(getID(), outfitId, sex);
+	outfitAttributes = Outfits::getInstance()->addAttributes(getID(), outfitId, sex, defaultOutfit.lookAddons);
 	return true;
+}
+
+bool Player::canWearOutfit(uint32_t outfitId, uint32_t addons)
+{
+	OutfitMap::iterator it = outfits.find(outfitId);
+	if(it == outfits.end() || (it->second.isPremium && !isPremium()) || getAccess() < it->second.accessLevel
+		|| (!it->second.groups.empty() && std::find(it->second.groups.begin(), it->second.groups.end(), groupId)
+		== it->second.groups.end()) || ((it->second.addons & addons) != addons && !hasCustomFlag(PlayerCustomFlag_CanWearAllAddons)))
+		return false;
+
+	if(it->second.storageId.empty())
+		return true;
+
+	std::string value;
+	getStorage(it->second.storageId, value);
+	if(value == it->second.storageValue)
+		return true;
+
+	int32_t intValue = atoi(value.c_str());
+	if(!intValue && value != "0")
+		return false;
+
+	int32_t tmp = atoi(it->second.storageValue.c_str());
+	if(!tmp && it->second.storageValue != "0")
+		return false;
+
+	return intValue >= tmp;
+}
+
+bool Player::addOutfit(uint32_t outfitId, uint32_t addons)
+{
+	Outfit outfit;
+	if(!Outfits::getInstance()->getOutfit(outfitId, sex, outfit))
+		return false;
+
+	OutfitMap::iterator it = outfits.find(outfitId);
+	if(it != outfits.end())
+		outfit.addons |= it->second.addons;
+
+	outfit.addons |= addons;
+	outfits[outfitId] = outfit;
+	return true;
+}
+
+bool Player::removeOutfit(uint32_t outfitId, uint32_t addons)
+{
+	OutfitMap::iterator it = outfits.find(outfitId);
+	if(it == outfits.end())
+		return false;
+
+	bool update = false;
+	if(addons == 0xFF) //remove outfit
+	{
+		if(it->second.lookType == defaultOutfit.lookType)
+		{
+			outfits.erase(it);
+			if((it = outfits.begin()) != outfits.end())
+				defaultOutfit.lookType = it->second.lookType;
+
+			update = true;
+		}
+		else
+			outfits.erase(it);
+	}
+	else //remove addons
+	{
+		update = it->second.lookType == defaultOutfit.lookType;
+		it->second.addons &= ~addons;
+	}
+
+	if(update)
+		g_game.internalCreatureChangeOutfit(this, defaultOutfit, true);
+
+	return true;
+}
+
+void Player::generateReservedStorage()
+{
+	uint32_t key = PSTRG_OUTFITSID_RANGE_START + 1;
+	const OutfitMap& defaultOutfits = Outfits::getInstance()->getOutfits(sex);
+	for(OutfitMap::const_iterator it = outfits.begin(); it != outfits.end(); ++it)
+	{
+		OutfitMap::const_iterator dit = defaultOutfits.find(it->first);
+		if(dit == defaultOutfits.end() || (dit->second.isDefault && (dit->second.addons
+			& it->second.addons) == it->second.addons))
+			continue;
+
+		std::stringstream k, v;
+		k << key++; // this may not work as intended, revalidate it
+		v << ((it->first << 16) | (it->second.addons & 0xFF));
+
+		storageMap[k.str()] = v.str();
+		if(key <= PSTRG_OUTFITSID_RANGE_START + PSTRG_OUTFITSID_RANGE_SIZE)
+			continue;
+
+		std::clog << "[Warning - Player::genReservedStorageRange] Player " << getName() << " with more than 500 outfits!" << std::endl;
+		break;
+	}
 }
 
 void Player::setSex(uint16_t newSex)
 {
 	sex = newSex;
-	changeOutfit(Outfit_t(uint16_t (newSex == 0 ? 136 : 128)), false);
+	const OutfitMap& defaultOutfits = Outfits::getInstance()->getOutfits(sex);
+	for(OutfitMap::const_iterator it = defaultOutfits.begin(); it != defaultOutfits.end(); ++it)
+	{
+		if(it->second.isDefault)
+			addOutfit(it->first, it->second.addons);
+	}
 }
 
 Skulls_t Player::getSkull() const
@@ -4331,20 +4472,36 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(skull < SKULL_RED && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
 		setSkullEnd(now + g_config.getNumber(ConfigManager::RED_SKULL_LENGTH), false, SKULL_RED);
 
-	f += g_config.getNumber(ConfigManager::BAN_LIMIT);
-	s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
-	t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
-	if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
-		return true;
+	if(!g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	{
+		f += g_config.getNumber(ConfigManager::BAN_LIMIT);
+		s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
+		t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+		if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
+			return true;
 
-	if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
-		ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
-		return true;
+		if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
+			ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
+			return true;
 
-	sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
-	g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
-	Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
-		&Game::kickPlayer, &g_game, getID(), false)));
+		sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
+		g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+		Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
+			&Game::kickPlayer, &g_game, getID(), false)));
+	}
+	else
+	{
+		f += g_config.getNumber(ConfigManager::BLACK_LIMIT);
+		s += g_config.getNumber(ConfigManager::BLACK_SECOND_LIMIT);
+		t += g_config.getNumber(ConfigManager::BLACK_THIRD_LIMIT);
+		if(skull < SKULL_BLACK && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
+		{
+			setSkullEnd(now + g_config.getNumber(ConfigManager::BLACK_SKULL_LENGTH), false, SKULL_BLACK);
+			setAttackedCreature(NULL);
+			destroySummons();
+		}
+	}
+
 	return true;
 }
 

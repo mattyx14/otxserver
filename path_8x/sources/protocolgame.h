@@ -31,6 +31,7 @@ class House;
 class Container;
 class Tile;
 class Connection;
+class Quest;
 class Depot;
 
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
@@ -123,6 +124,9 @@ class ProtocolGame : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 
+		void parseQuests(NetworkMessage& msg);
+		void parseQuestInfo(NetworkMessage& msg);
+
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
 		void parseRevokePartyInvite(NetworkMessage& msg);
@@ -167,6 +171,7 @@ class ProtocolGame : public Protocol
 		void sendRuleViolationCancel(const std::string& name);
 		void sendOpenPrivateChannel(const std::string& receiver);
 		void sendIcons(int32_t icons);
+		void sendFYIBox(const std::string& message);
 
 		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type);
 		void sendMagicEffect(const Position& pos, uint8_t type);
@@ -186,6 +191,9 @@ class ProtocolGame : public Protocol
 		void sendStats();
 		void sendTextMessage(MessageClasses mclass, const std::string& message);
 
+		void sendTutorial(uint8_t tutorialId);
+		void sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc);
+
 		void sendCreatureSkull(const Creature* creature);
 		void sendCreatureShield(const Creature* creature);
 
@@ -196,6 +204,8 @@ class ProtocolGame : public Protocol
 		void sendHouseWindow(uint32_t windowTextId, House* house, uint32_t listId, const std::string& text);
 
 		void sendOutfitWindow();
+		void sendQuests();
+		void sendQuestInfo(Quest* quest);
 
 		void sendVIPLogIn(uint32_t guid);
 		void sendVIPLogOut(uint32_t guid);

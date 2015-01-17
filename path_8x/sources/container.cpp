@@ -17,13 +17,11 @@
 #include "otpch.h"
 
 #include "container.h"
-#include "configmanager.h"
 #include "game.h"
 
 #include "iomap.h"
 #include "player.h"
 
-extern ConfigManager g_config;
 extern Game g_game;
 
 Container::Container(uint16_t type) : Item(type)
@@ -300,11 +298,8 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 		}
 	}
 
-	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT)
-	{
-		if((index == INDEX_WHEREEVER && full()))
-			return RET_CONTAINERNOTENOUGHROOM;
-	}
+	if(index == INDEX_WHEREEVER && !((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT) && full())
+		return RET_CONTAINERNOTENOUGHROOM;
 
 	const Cylinder* topParent = getTopParent();
 	if(topParent != this)
@@ -433,7 +428,7 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 	if(!item)
 		return this;
 
-	if(g_config.getBool(ConfigManager::AUTO_STACK) && !((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK)
+	if(!((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK)
 		&& item->isStackable() && item->getParent() != this)
 	{
 		//try to find a suitable item to stack with

@@ -38,6 +38,7 @@
 
 #include "actions.h"
 #include "creatureevent.h"
+#include "quests.h"
 
 #include "chat.h"
 #include "configmanager.h"
@@ -424,7 +425,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	OperatingSystem_t operatingSystem = (OperatingSystem_t)msg.get<uint16_t>();
 	uint16_t version = msg.get<uint16_t>();
-	#ifdef _MULTIPLATFORM77
+
 	if(!RSA_decrypt(msg))
 	{
 		disconnect();
@@ -433,9 +434,8 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	uint32_t key[4] = {msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>()};
 	enableXTEAEncryption();
-	setXTEAKey(key);
-	#endif
 
+	setXTEAKey(key);
 	if(operatingSystem >= CLIENTOS_OTCLIENT_LINUX)
 		sendExtendedOpcode(0x00, std::string());
 
@@ -633,14 +633,13 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 			case 0xBE: parseCancelMove(msg); break;
 			case 0xC9: parseUpdateTile(msg); break;
 			case 0xCA: parseUpdateContainer(msg); break;
-			case 0xD2: // request outfit
+			case 0xD2:
 				if((!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || !g_config.getBool(
 					ConfigManager::DISABLE_OUTFITS_PRIVILEGED)) && (g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)
-					|| g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS)))
+					|| g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS) || g_config.getBool(ConfigManager::ALLOW_CHANGEADDONS)))
 					parseRequestOutfit(msg);
 				break;
-
-			case 0xD3: // set outfit
+			case 0xD3:
 				if((!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || !g_config.getBool(ConfigManager::DISABLE_OUTFITS_PRIVILEGED))
 					&& (g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS) || g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)))
 					parseSetOutfit(msg);
@@ -650,6 +649,8 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 			case 0xE6: parseBugReport(msg); break;
 			case 0xE7: parseViolationWindow(msg); break;
 			case 0xE8: parseDebugAssert(msg); break;
+			case 0xF0: parseQuests(msg); break;
+			case 0xF1: parseQuestInfo(msg); break;
 
 			default:
 			{
@@ -782,11 +783,11 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& remo
 	// ... but not in future
 	knownCreatureList.push_back(id);
 	// too many known creatures?
-	if(knownCreatureList.size() > 150)
+	if(knownCreatureList.size() > 250)
 	{
 		// lets try to remove one from the end of the list
 		Creature* c = NULL;
-		for(int16_t n = 0; n < 150; ++n)
+		for(int16_t n = 0; n < 250; ++n)
 		{
 			removedKnown = knownCreatureList.front();
 			if(!(c = g_game.getCreatureByID(removedKnown)) || !canSee(c))
@@ -797,7 +798,7 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& remo
 			knownCreatureList.push_back(removedKnown);
 		}
 
-		// hopefully we found someone to remove :S, we got only 150 tries
+		// hopefully we found someone to remove :S, we got only 250 tries
 		// if not... lets kick some players with debug errors :)
 		knownCreatureList.pop_front();
 	}
@@ -911,15 +912,10 @@ void ProtocolGame::parseViolationWindow(NetworkMessage& msg)
 	uint16_t statementId = 0;
 	std::string target = msg.getString();
 	uint8_t reason = msg.get<char>();
-	#ifdef _MULTIPLATFORM77
 	ViolationAction_t action = (ViolationAction_t)msg.get<char>();
 	std::string comment = msg.getString();
 	statementId = msg.get<uint16_t>();
 	/*channelId = */msg.get<uint16_t>();
-	#else
-	std::string comment = msg.getString();
-	ViolationAction_t action = (ViolationAction_t)msg.get<char>();
-	#endif
 	bool ipBanishment = (msg.get<char>() == 0x01);
 	addGameTask(&Game::playerViolationWindow, player->getID(), target,
 		reason, action, comment, "", statementId, ipBanishment);
@@ -1008,11 +1004,7 @@ void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 {
 	Outfit_t newOutfit = player->defaultOutfit;
 	if(g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT))
-		#ifdef _MULTIPLATFORM77
 		newOutfit.lookType = msg.get<uint16_t>();
-		#else
-		newOutfit.lookType = msg.get<char>();
-		#endif
 	else
 		msg.skip(2);
 
@@ -1026,6 +1018,11 @@ void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 	else
 		msg.skip(4);
 
+	if(g_config.getBool(ConfigManager::ALLOW_CHANGEADDONS))
+		newOutfit.lookAddons = msg.get<char>();
+	else
+		msg.skip(1);
+
 	addGameTask(&Game::playerChangeOutfit, player->getID(), newOutfit);
 }
 
@@ -1035,7 +1032,8 @@ void ProtocolGame::parseUseItem(NetworkMessage& msg)
 	uint16_t spriteId = msg.get<uint16_t>();
 	int16_t stackpos = msg.get<char>();
 	uint8_t index = msg.get<char>();
-	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseItem, player->getID(), pos, stackpos, index, spriteId);
+	bool isHotkey = (pos.x == 0xFFFF && !pos.y && !pos.z);
+	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseItem, player->getID(), pos, stackpos, index, spriteId, isHotkey);
 }
 
 void ProtocolGame::parseUseItemEx(NetworkMessage& msg)
@@ -1046,8 +1044,9 @@ void ProtocolGame::parseUseItemEx(NetworkMessage& msg)
 	Position toPos = msg.getPosition();
 	uint16_t toSpriteId = msg.get<uint16_t>();
 	int16_t toStackpos = msg.get<char>();
+	bool isHotkey = (fromPos.x == 0xFFFF && !fromPos.y && !fromPos.z);
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseItemEx, player->getID(),
-		fromPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId);
+		fromPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId, isHotkey);
 }
 
 void ProtocolGame::parseBattleWindow(NetworkMessage& msg)
@@ -1056,7 +1055,8 @@ void ProtocolGame::parseBattleWindow(NetworkMessage& msg)
 	uint16_t spriteId = msg.get<uint16_t>();
 	int16_t fromStackpos = msg.get<char>();
 	uint32_t creatureId = msg.get<uint32_t>();
-	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseBattleWindow, player->getID(), fromPos, fromStackpos, creatureId, spriteId);
+	bool isHotkey = (fromPos.x == 0xFFFF && !fromPos.y && !fromPos.z);
+	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerUseBattleWindow, player->getID(), fromPos, fromStackpos, creatureId, spriteId, isHotkey);
 }
 
 void ProtocolGame::parseCloseContainer(NetworkMessage& msg)
@@ -1227,7 +1227,7 @@ void ProtocolGame::parseCloseTrade()
 void ProtocolGame::parseAddVip(NetworkMessage& msg)
 {
 	const std::string name = msg.getString();
-	if(name.size() > 32)
+	if(name.size() > 30)
 		return;
 
 	addGameTask(&Game::playerRequestAddVip, player->getID(), name);
@@ -1298,6 +1298,17 @@ void ProtocolGame::parsePassPartyLeadership(NetworkMessage& msg)
 void ProtocolGame::parseLeaveParty(NetworkMessage&)
 {
 	addGameTask(&Game::playerLeaveParty, player->getID(), false);
+}
+
+void ProtocolGame::parseQuests(NetworkMessage&)
+{
+	addGameTask(&Game::playerQuests, player->getID());
+}
+
+void ProtocolGame::parseQuestInfo(NetworkMessage& msg)
+{
+	uint16_t questId = msg.get<uint16_t>();
+	addGameTask(&Game::playerQuestInfo, player->getID(), questId);
 }
 
 //********************** Send methods *******************************//
@@ -1395,6 +1406,29 @@ void ProtocolGame::sendCreatureSquare(const Creature* creature, uint8_t color)
 	msg->put<char>(color);
 }
 
+void ProtocolGame::sendTutorial(uint8_t tutorialId)
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0xDC);
+	msg->put<char>(tutorialId);
+}
+
+void ProtocolGame::sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc)
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0xDD);
+	msg->putPosition(pos);
+	msg->put<char>(markType);
+	msg->putString(desc);
+}
 void ProtocolGame::sendStats()
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
@@ -1479,7 +1513,7 @@ void ProtocolGame::sendIcons(int32_t icons)
 
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0xA2);
-	msg->put<char>(icons);
+	msg->put<uint16_t>(icons);
 }
 
 void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool hasParent)
@@ -1492,7 +1526,7 @@ void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool 
 	msg->put<char>(0x6E);
 	msg->put<char>(cid);
 
-	msg->putItemId(container);
+	msg->putItem(container);
 	msg->putString(container->getName());
 	msg->put<char>(container->capacity());
 
@@ -1755,6 +1789,23 @@ void ProtocolGame::sendCreatureHealth(const Creature* creature)
 
 	TRACK_MESSAGE(msg);
 	AddCreatureHealth(msg, creature);
+}
+
+void ProtocolGame::sendFYIBox(const std::string& message)
+{
+	if(message.empty() || message.length() > 1018) //Prevent client debug when message is empty or length is > 1018 (not confirmed)
+	{
+		std::clog << "[Warning - ProtocolGame::sendFYIBox] Trying to send an empty or too huge message." << std::endl;
+		return;
+	}
+
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0x15);
+	msg->putString(message);
 }
 
 //tile
@@ -2067,7 +2118,7 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t ma
 	TRACK_MESSAGE(msg);
 	msg->put<char>(0x96);
 	msg->put<uint32_t>(windowTextId);
-	msg->putItemId(item);
+	msg->putItem(item);
 	if(canWrite)
 	{
 		msg->put<uint16_t>(maxLen);
@@ -2079,13 +2130,17 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t ma
 		msg->putString(item->getText());
 	}
 
-	#ifdef _MULTIPLATFORM76
 	const std::string& writer = item->getWriter();
 	if(writer.size())
 		msg->putString(writer);
 	else
 		msg->putString("");
-	#endif
+
+	time_t writtenDate = item->getDate();
+	if(writtenDate > 0)
+		msg->putString(formatDate(writtenDate));
+	else
+		msg->putString("");
 }
 
 void ProtocolGame::sendHouseWindow(uint32_t windowTextId, House*,
@@ -2112,15 +2167,80 @@ void ProtocolGame::sendOutfitWindow()
 	msg->put<char>(0xC8);
 	AddCreatureOutfit(msg, player, player->getDefaultOutfit(), true);
 
-	#ifdef _MULTIPLATFORM77
-	msg->put<uint16_t>(player->sex % 2 ? 128 : 136);
-	msg->put<uint16_t>(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
-	#else
-	msg->put<char>(player->sex % 2 ? 128 : 136);
-	msg->put<char>(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
-	#endif
+	std::list<Outfit> outfitList;
+	for(OutfitMap::iterator it = player->outfits.begin(); it != player->outfits.end(); ++it)
+	{
+		if(player->canWearOutfit(it->first, it->second.addons))
+			outfitList.push_back(it->second);
+	}
+
+	if(outfitList.size())
+	{
+		msg->put<char>((size_t)std::min((size_t)OUTFITS_MAX_NUMBER, outfitList.size()));
+		std::list<Outfit>::iterator it = outfitList.begin();
+		for(int32_t i = 0; it != outfitList.end() && i < OUTFITS_MAX_NUMBER; ++it, ++i)
+		{
+			msg->put<uint16_t>(it->lookType);
+			msg->putString(it->name);
+			if(player->hasCustomFlag(PlayerCustomFlag_CanWearAllAddons))
+				msg->put<char>(0x03);
+			else if(!g_config.getBool(ConfigManager::ADDONS_PREMIUM) || player->isPremium())
+				msg->put<char>(it->addons);
+			else
+				msg->put<char>(0x00);
+		}
+	}
+	else
+	{
+		msg->put<char>(1);
+		msg->put<uint16_t>(player->getDefaultOutfit().lookType);
+		msg->putString("Your outfit");
+		msg->put<char>(player->getDefaultOutfit().lookAddons);
+	}
 
 	player->hasRequestedOutfit(true);
+}
+
+void ProtocolGame::sendQuests()
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0xF0);
+
+	msg->put<uint16_t>(Quests::getInstance()->getQuestCount(player));
+	for(QuestList::const_iterator it = Quests::getInstance()->getFirstQuest(); it != Quests::getInstance()->getLastQuest(); ++it)
+	{
+		if(!(*it)->isStarted(player))
+			continue;
+
+		msg->put<uint16_t>((*it)->getId());
+		msg->putString((*it)->getName());
+		msg->put<char>((*it)->isCompleted(player));
+	}
+}
+
+void ProtocolGame::sendQuestInfo(Quest* quest)
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(!msg)
+		return;
+
+	TRACK_MESSAGE(msg);
+	msg->put<char>(0xF1);
+	msg->put<uint16_t>(quest->getId());
+
+	msg->put<char>(quest->getMissionCount(player));
+	for(MissionList::const_iterator it = quest->getFirstMission(); it != quest->getLastMission(); ++it)
+	{
+		if(!(*it)->isStarted(player))
+			continue;
+
+		msg->putString((*it)->getName(player));
+		msg->putString((*it)->getDescription(player));
+	}
 }
 
 void ProtocolGame::sendVIPLogIn(uint32_t guid)
@@ -2214,11 +2334,7 @@ void ProtocolGame::AddMagicEffect(NetworkMessage_ptr msg, const Position& pos, u
 {
 	msg->put<char>(0x83);
 	msg->putPosition(pos);
-	#ifdef _MULTIPLATFORM76
 	msg->put<char>(type + 1);
-	#else
-	msg->put<char>(type);
-	#endif
 }
 
 void ProtocolGame::AddDistanceShoot(NetworkMessage_ptr msg, const Position& from, const Position& to,
@@ -2227,11 +2343,7 @@ void ProtocolGame::AddDistanceShoot(NetworkMessage_ptr msg, const Position& from
 	msg->put<char>(0x85);
 	msg->putPosition(from);
 	msg->putPosition(to);
-	#ifdef _MULTIPLATFORM76
 	msg->put<char>(type + 1);
-	#else
-	msg->put<char>(type);
-	#endif
 }
 
 void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature, bool known, uint32_t remove)
@@ -2274,23 +2386,20 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	msg->put<uint16_t>(player->getHealth());
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
 	msg->put<uint16_t>(int32_t(player->getFreeCapacity()));
+	uint64_t experience = player->getExperience();
+	if(experience > 0x7FFFFFFF)
+		msg->put<uint32_t>(0x7FFFFFFF);
+	else
+		msg->put<uint32_t>(experience);
 
-	uint32_t experience = player->getExperience();
-	msg->put<uint32_t>(experience);
-
-	#ifdef _MULTIPLATFORM76
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_LEVEL));
-	#else
-	msg->put<char>(player->getPlayerInfo(PLAYERINFO_LEVEL));
-	#endif
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_LEVELPERCENT));
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MANA));
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXMANA));
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_MAGICLEVEL));
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_MAGICLEVELPERCENT));
-	#ifdef _MULTIPLATFORM76
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_SOUL));
-	#endif
+	msg->put<uint16_t>(player->getStaminaMinutes());
 }
 
 void ProtocolGame::AddPlayerSkills(NetworkMessage_ptr msg)
@@ -2307,9 +2416,7 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 	std::string text, uint16_t channelId, Position* pos, uint32_t statementId)
 {
 	msg->put<char>(0xAA);
-	#ifdef _MULTIPLATFORM77
 	msg->put<uint32_t>(0);
-	#endif
 	if(creature)
 	{
 		if(creature->getSpeakType() != MSG_NONE)
@@ -2327,6 +2434,12 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 				msg->putString(!creature->getHideName() ? creature->getName() : "");
 				break;
 		}
+
+		const Player* speaker = creature->getPlayer();
+		if(speaker && !speaker->isAccountManager() && !speaker->hasCustomFlag(PlayerCustomFlag_HideLevel))
+			msg->put<uint16_t>(speaker->getPlayerInfo(PLAYERINFO_LEVEL));
+		else
+			msg->put<uint16_t>(0x00);
 	}
 	else
 		msg->putString("");
@@ -2385,17 +2498,14 @@ void ProtocolGame::AddCreatureOutfit(NetworkMessage_ptr msg, const Creature* cre
 	if(outfitWindow || (!creature->isInvisible() && (!creature->isGhost()
 		|| !g_config.getBool(ConfigManager::GHOST_INVISIBLE_EFFECT))))
 	{
-		#ifdef _MULTIPLATFORM77
 		msg->put<uint16_t>(outfit.lookType);
-		#else
-		msg->put<char>(outfit.lookType);
-		#endif
 		if(outfit.lookType)
 		{
 			msg->put<char>(outfit.lookHead);
 			msg->put<char>(outfit.lookBody);
 			msg->put<char>(outfit.lookLegs);
 			msg->put<char>(outfit.lookFeet);
+			msg->put<char>(outfit.lookAddons);
 		}
 		else if(outfit.lookTypeEx)
 			msg->putItemId(outfit.lookTypeEx);
@@ -2403,14 +2513,7 @@ void ProtocolGame::AddCreatureOutfit(NetworkMessage_ptr msg, const Creature* cre
 			msg->put<uint16_t>(outfit.lookTypeEx);
 	}
 	else
-	{
-		#ifdef _MULTIPLATFORM77
-		msg->put<uint16_t>(0x00);
-		#else
-		msg->put<char>(0x00);
-		#endif
-		msg->put<uint16_t>(0x00);
-	}
+		msg->put<uint32_t>(0x00);
 }
 
 void ProtocolGame::AddWorldLight(NetworkMessage_ptr msg, const LightInfo& lightInfo)
@@ -2615,9 +2718,7 @@ void ProtocolGame::sendChannelMessage(std::string author, std::string text, Mess
 		return;
 
 	msg->put<char>(0xAA);
-	#ifdef _MULTIPLATFORM77
 	msg->put<uint32_t>(0);
-	#endif
 	msg->putString(author);
 	msg->put<char>(type);
 	msg->put<uint16_t>(channel);

@@ -580,14 +580,14 @@ bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* 
 }
 
 bool Actions::executeUseEx(Action* action, Player* player, Item* item, const PositionEx& fromPosEx,
-	const PositionEx& toPosEx, uint32_t creatureId)
+	const PositionEx& toPosEx, bool isHotkey, uint32_t creatureId)
 {
-	return (action->executeUse(player, item, fromPosEx, toPosEx, false,
+	return (action->executeUse(player, item, fromPosEx, toPosEx, isHotkey,
 		creatureId) || action->hasOwnErrorHandler());
 }
 
 ReturnValue Actions::internalUseItemEx(Player* player, const PositionEx& fromPosEx, const PositionEx& toPosEx,
-	Item* item, uint32_t creatureId)
+	Item* item, bool isHotkey, uint32_t creatureId)
 {
 	Action* action = NULL;
 	if((action = getAction(item, ACTION_UNIQUEID)))
@@ -597,7 +597,7 @@ ReturnValue Actions::internalUseItemEx(Player* player, const PositionEx& fromPos
 			return ret;
 
 		//only continue with next action in the list if the previous returns false
-		if(executeUseEx(action, player, item, fromPosEx, toPosEx, creatureId))
+		if(executeUseEx(action, player, item, fromPosEx, toPosEx, isHotkey, creatureId))
 			return RET_NOERROR;
 	}
 
@@ -608,7 +608,7 @@ ReturnValue Actions::internalUseItemEx(Player* player, const PositionEx& fromPos
 			return ret;
 
 		//only continue with next action in the list if the previous returns false
-		if(executeUseEx(action, player, item, fromPosEx, toPosEx, creatureId))
+		if(executeUseEx(action, player, item, fromPosEx, toPosEx, isHotkey, creatureId))
 			return RET_NOERROR;
 
 	}
@@ -620,7 +620,7 @@ ReturnValue Actions::internalUseItemEx(Player* player, const PositionEx& fromPos
 			return ret;
 
 		//only continue with next action in the list if the previous returns false
-		if(executeUseEx(action, player, item, fromPosEx, toPosEx, creatureId))
+		if(executeUseEx(action, player, item, fromPosEx, toPosEx, isHotkey, creatureId))
 			return RET_NOERROR;
 	}
 
@@ -631,7 +631,7 @@ ReturnValue Actions::internalUseItemEx(Player* player, const PositionEx& fromPos
 			return ret;
 
 		//only continue with next action in the list if the previous returns false
-		if(executeUseEx(action, player, item, fromPosEx, toPosEx, creatureId))
+		if(executeUseEx(action, player, item, fromPosEx, toPosEx, isHotkey, creatureId))
 			return RET_NOERROR;
 	}
 
@@ -642,7 +642,7 @@ ReturnValue Actions::internalUseItemEx(Player* player, const PositionEx& fromPos
 			return ret;
 
 		//only continue with next action in the list if the previous returns false
-		if(executeUseEx(defaultAction, player, item, fromPosEx, toPosEx, creatureId))
+		if(executeUseEx(defaultAction, player, item, fromPosEx, toPosEx, isHotkey, creatureId))
 			return RET_NOERROR;
 	}
 
@@ -650,7 +650,7 @@ ReturnValue Actions::internalUseItemEx(Player* player, const PositionEx& fromPos
 }
 
 bool Actions::useItemEx(Player* player, const Position& fromPos, const Position& toPos,
-	uint8_t toStackPos, Item* item, uint32_t creatureId/* = 0*/)
+	uint8_t toStackPos, Item* item, bool isHotkey, uint32_t creatureId/* = 0*/)
 {
 	if(!player->canDoAction())
 		return false;
@@ -666,7 +666,7 @@ bool Actions::useItemEx(Player* player, const Position& fromPos, const Position&
 	PositionEx fromPosEx(fromPos, fromStackPos);
 	PositionEx toPosEx(toPos, toStackPos);
 
-	ReturnValue ret = internalUseItemEx(player, fromPosEx, toPosEx, item, creatureId);
+	ReturnValue ret = internalUseItemEx(player, fromPosEx, toPosEx, item, isHotkey, creatureId);
 	if(ret == RET_NOERROR)
 		return true;
 

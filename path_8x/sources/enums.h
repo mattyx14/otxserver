@@ -58,12 +58,8 @@ enum gain_t
 	GAIN_FIRST = 0,
 	GAIN_HEALTH = GAIN_FIRST,
 	GAIN_MANA = 1,
-	#ifdef _MULTIPLATFORM76
 	GAIN_SOUL = 2,
 	GAIN_LAST = GAIN_SOUL
-	#else
-	GAIN_LAST = GAIN_MANA
-	#endif
 };
 
 enum CreatureType_t
@@ -200,10 +196,8 @@ enum ConditionParam_t
 	CONDITIONPARAM_SPEED,
 	CONDITIONPARAM_LIGHT_LEVEL,
 	CONDITIONPARAM_LIGHT_COLOR,
-	#ifdef _MULTIPLATFORM76
 	CONDITIONPARAM_SOULGAIN,
 	CONDITIONPARAM_SOULTICKS,
-	#endif
 	CONDITIONPARAM_MINVALUE,
 	CONDITIONPARAM_MAXVALUE,
 	CONDITIONPARAM_STARTVALUE,
@@ -219,15 +213,11 @@ enum ConditionParam_t
 	CONDITIONPARAM_SKILL_FISHING,
 	CONDITIONPARAM_STAT_MAXHEALTH,
 	CONDITIONPARAM_STAT_MAXMANA,
-	#ifdef _MULTIPLATFORM76
 	CONDITIONPARAM_STAT_SOUL,
-	#endif
 	CONDITIONPARAM_STAT_MAGICLEVEL,
 	CONDITIONPARAM_STAT_MAXHEALTHPERCENT,
 	CONDITIONPARAM_STAT_MAXMANAPERCENT,
-	#ifdef _MULTIPLATFORM76
 	CONDITIONPARAM_STAT_SOULPERCENT,
-	#endif
 	CONDITIONPARAM_STAT_MAGICLEVELPERCENT,
 	CONDITIONPARAM_SKILL_MELEEPERCENT,
 	CONDITIONPARAM_SKILL_FISTPERCENT,
@@ -294,9 +284,7 @@ enum stats_t
 	STAT_FIRST = 0,
 	STAT_MAXHEALTH = STAT_FIRST,
 	STAT_MAXMANA,
-	#ifdef _MULTIPLATFORM76
 	STAT_SOUL,
-	#endif
 	STAT_LEVEL,
 	STAT_MAGICLEVEL,
 	STAT_LAST = STAT_MAGICLEVEL
@@ -384,21 +372,22 @@ struct Outfit_t
 	Outfit_t()
 	{
 		lookType = lookTypeEx = 0;
-		lookHead = lookBody = lookLegs = lookFeet = 0;
+		lookHead = lookBody = lookLegs = lookFeet = lookAddons = 0;
 	}
 	Outfit_t(uint16_t _lookType)
 	{
 		lookType = _lookType;
 		lookTypeEx = 0;
-		lookHead = lookBody = lookLegs = lookFeet = 0;
+		lookHead = lookBody = lookLegs = lookFeet = lookAddons = 0;
 	}
 
 	uint16_t lookType, lookTypeEx;
-	uint8_t lookHead, lookBody, lookLegs, lookFeet;
+	uint8_t lookHead, lookBody, lookLegs, lookFeet, lookAddons;
 
 	bool operator==(const Outfit_t& o) const
 	{
-		return (o.lookType == lookType && o.lookTypeEx == lookTypeEx
+		return (o.lookAddons == lookAddons
+			&& o.lookType == lookType && o.lookTypeEx == lookTypeEx
 			&& o.lookHead == lookHead && o.lookBody == lookBody
 			&& o.lookLegs == lookLegs && o.lookFeet == lookFeet);
 	}

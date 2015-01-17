@@ -85,23 +85,27 @@ enum ReloadInfo_t
 	RELOAD_CHAT = 2,
 	RELOAD_CONFIG = 3,
 	RELOAD_CREATUREEVENTS = 4,
+#ifdef __LOGIN_SERVER__
 	RELOAD_GAMESERVERS = 5,
+#endif
 	RELOAD_GLOBALEVENTS = 6,
 	RELOAD_GROUPS = 7,
-	RELOAD_ITEMS = 8,
-	RELOAD_MONSTERS = 9,
-	RELOAD_MOVEEVENTS = 10,
-	RELOAD_NPCS = 11,
-	RELOAD_OUTFITS = 12,
-	RELOAD_RAIDS = 13,
-	RELOAD_SPELLS = 14,
-	RELOAD_STAGES = 15,
-	RELOAD_TALKACTIONS = 16,
-	RELOAD_VOCATIONS = 17,
-	RELOAD_WEAPONS = 18,
-	RELOAD_MODS = 19,
-	RELOAD_ALL = 20,
-	RELOAD_LAST = RELOAD_WEAPONS
+	RELOAD_HIGHSCORES = 8,
+	RELOAD_ITEMS = 9,
+	RELOAD_MONSTERS = 10,
+	RELOAD_MOVEEVENTS = 11,
+	RELOAD_NPCS = 12,
+	RELOAD_OUTFITS = 13,
+	RELOAD_QUESTS = 14,
+	RELOAD_RAIDS = 15,
+	RELOAD_SPELLS = 16,
+	RELOAD_STAGES = 17,
+	RELOAD_TALKACTIONS = 18,
+	RELOAD_VOCATIONS = 19,
+	RELOAD_WEAPONS = 20,
+	RELOAD_MODS = 21,
+	RELOAD_ALL = 22,
+	RELOAD_LAST = RELOAD_MODS
 };
 
 struct RuleViolation
@@ -135,6 +139,7 @@ struct RefreshBlock_t
 
 typedef std::map<uint32_t, shared_ptr<RuleViolation> > RuleViolationsMap;
 typedef std::map<Tile*, RefreshBlock_t> RefreshTiles;
+typedef std::vector< std::pair<std::string, uint32_t> > Highscore;
 typedef std::list<Position> Trash;
 typedef std::map<int32_t, float> StageList;
 
@@ -155,6 +160,11 @@ class Game
 		Game();
 		virtual ~Game();
 		void start(ServiceManager* servicer);
+
+		Highscore getHighscore(uint16_t skill);
+		std::string getHighscoreString(uint16_t skill);
+		void checkHighscores();
+		bool reloadHighscores();
 
 		bool isSwimmingPool(Item* item, const Tile* tile, bool checkProtection) const;
 
@@ -485,11 +495,11 @@ class Game
 		bool playerAutoWalk(uint32_t playerId, std::list<Direction>& listDir);
 		bool playerStopAutoWalk(uint32_t playerId);
 		bool playerUseItemEx(uint32_t playerId, const Position& fromPos, int16_t fromStackpos,
-			uint16_t fromSpriteId, const Position& toPos, int16_t toStackpos, uint16_t toSpriteId);
+			uint16_t fromSpriteId, const Position& toPos, int16_t toStackpos, uint16_t toSpriteId, bool isHotkey);
 		bool playerUseItem(uint32_t playerId, const Position& pos, int16_t stackpos,
-			uint8_t index, uint16_t spriteId);
+			uint8_t index, uint16_t spriteId, bool isHotkey);
 		bool playerUseBattleWindow(uint32_t playerId, const Position& fromPos,
-			int16_t fromStackpos, uint32_t creatureId, uint16_t spriteId);
+			int16_t fromStackpos, uint32_t creatureId, uint16_t spriteId, bool isHotkey);
 		bool playerCloseContainer(uint32_t playerId, uint8_t cid);
 		bool playerMoveUpContainer(uint32_t playerId, uint8_t cid);
 		bool playerUpdateContainer(uint32_t playerId, uint8_t cid);
@@ -508,6 +518,8 @@ class Game
 		bool playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, secureMode_t secureMode);
 		bool playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteId, int16_t stackpos);
 		bool playerLookInBattleList(uint32_t playerId, uint32_t creatureId);
+		bool playerQuests(uint32_t playerId);
+		bool playerQuestInfo(uint32_t playerId, uint16_t questId);
 		bool playerRequestAddVip(uint32_t playerId, const std::string& name);
 		bool playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
 		bool playerTurn(uint32_t playerId, Direction dir);
@@ -525,6 +537,7 @@ class Game
 
 		void kickPlayer(uint32_t playerId, bool displayEffect);
 		bool broadcastMessage(const std::string& text, MessageClasses type);
+		void showHotkeyUseMessage(Player* player, Item* item);
 
 		int32_t getMotdId();
 		void loadMotd();
@@ -688,5 +701,8 @@ class Game
 
 		StageList stages;
 		uint32_t lastStageLevel;
+
+		Highscore highscoreStorage[8];
+		time_t lastHighscoreCheck;
 };
 #endif

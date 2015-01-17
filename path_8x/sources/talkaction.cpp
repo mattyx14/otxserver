@@ -687,7 +687,7 @@ bool TalkAction::houseKick(Creature* creature, const std::string&, const std::st
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
 	}
 	else
-		g_game.addMagicEffect(targetPlayer->getPosition(), MAGIC_EFFECT_TELEPORT);
+		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
 
 	return false;
 }
@@ -983,7 +983,9 @@ bool TalkAction::thingProporties(Creature* creature, const std::string&, const s
 				_creature->setSpeakType((MessageClasses)atoi(parseParams(it, tokens.end()).c_str()));
 			else if(Player* _player = _creature->getPlayer())
 			{
-				if(action == "guildlevel")
+				if(action == "fyi")
+					_player->sendFYIBox(parseParams(it, tokens.end()).c_str());
+				else if(action == "guildlevel")
 					_player->setGuildLevel((GuildLevel_t)atoi(parseParams(it, tokens.end()).c_str()));
 				else if(action == "guildrank")
 					_player->setRankId(atoi(parseParams(it, tokens.end()).c_str()));
@@ -1160,7 +1162,7 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 	ss << what.c_str() << " has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " <<
 		admin.c_str() << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\n" << end.c_str() << (deletion ? "." : formatDateEx(ban.expires).c_str()) << ".";
 
-	player->sendTextMessage(MSG_INFO_DESCR, ss.str());
+	player->sendFYIBox(ss.str().c_str());
 	return true;
 }
 

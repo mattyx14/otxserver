@@ -711,6 +711,18 @@ void Combat::addDistanceEffect(Creature* caster, const Position& fromPos, const 
 	{
 		switch(caster->getWeaponType())
 		{
+			case WEAPON_AXE:
+				effect = SHOOT_EFFECT_WHIRLWINDAXE;
+				break;
+
+			case WEAPON_SWORD:
+				effect = SHOOT_EFFECT_WHIRLWINDSWORD;
+				break;
+
+			case WEAPON_CLUB:
+				effect = SHOOT_EFFECT_WHIRLWINDCLUB;
+				break;
+
 			case WEAPON_FIST:
 				effect = SHOOT_EFFECT_LARGEROCK;
 				break;

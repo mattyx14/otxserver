@@ -40,6 +40,7 @@
 #include "monsters.h"
 
 #include "house.h"
+#include "quests.h"
 
 #include "actions.h"
 #include "globalevent.h"
@@ -194,6 +195,7 @@ void Game::loadGameState()
 	ScriptEnviroment::loadGameState();
 	loadPlayersRecord();
 	loadMotd();
+	checkHighscores();
 }
 
 void Game::setGameState(GameState_t newState)
@@ -306,15 +308,9 @@ int32_t Game::loadMap(std::string filename)
 	if(!map)
 		map = new Map;
 
-	#ifdef _MULTIPLATFORM76
 	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + filename);
 	if(!fileExists(file.c_str()))
 		file = getFilePath(FILE_TYPE_OTHER, "world/" + filename);
-	#else
-	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + ITEMS_PATH + "/" + filename);
-	if(!fileExists(file.c_str()))
-		file = getFilePath(FILE_TYPE_OTHER, "world/" + ITEMS_PATH + "/" + filename);
-	#endif
 
 	return map->loadMap(file);
 }
@@ -617,11 +613,7 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 			case STACKPOS_USEITEM:
 			{
 				thing = tile->getTopDownItem();
-				#ifdef _MULTIPLATFORM76
 				Item* item = tile->getItemByTopOrder(2);
-				#else
-				Item* item = tile->getItemByTopOrder(1);
-				#endif
 				if(item && g_actions->hasAction(item))
 				{
 					const ItemType& it = Item::items[item->getID()];
@@ -2561,10 +2553,13 @@ bool Game::playerStopAutoWalk(uint32_t playerId)
 }
 
 bool Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, int16_t fromStackpos, uint16_t fromSpriteId,
-	const Position& toPos, int16_t toStackpos, uint16_t toSpriteId)
+	const Position& toPos, int16_t toStackpos, uint16_t toSpriteId, bool isHotkey)
 {
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
+		return false;
+
+	if(isHotkey && !g_config.getBool(ConfigManager::AIMBOT_HOTKEY_ENABLED))
 		return false;
 
 	Thing* thing = internalGetThing(player, fromPos, fromStackpos, fromSpriteId, STACKPOS_USEITEM);
@@ -2629,7 +2624,7 @@ bool Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, int16_t f
 					this, player->getID(), listDir)));
 
 				SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
-					boost::bind(&Game::playerUseItemEx, this, playerId, itemPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId));
+					boost::bind(&Game::playerUseItemEx, this, playerId, itemPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId, isHotkey));
 
 				player->setNextWalkActionTask(task);
 				return true;
@@ -2642,24 +2637,30 @@ bool Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, int16_t f
 		return false;
 	}
 
+	if(isHotkey)
+		showHotkeyUseMessage(player, item);
+
 	if(!player->canDoAction())
 	{
 		SchedulerTask* task = createSchedulerTask(player->getNextActionTime(),
-			boost::bind(&Game::playerUseItemEx, this, playerId, fromPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId));
+			boost::bind(&Game::playerUseItemEx, this, playerId, fromPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId, isHotkey));
 		player->setNextActionTask(task);
 		return false;
 	}
 
 	player->setIdleTime(0);
 	player->setNextActionTask(NULL);
-	return g_actions->useItemEx(player, fromPos, toPos, toStackpos, item);
+	return g_actions->useItemEx(player, fromPos, toPos, toStackpos, item, isHotkey);
 }
 
 bool Game::playerUseItem(uint32_t playerId, const Position& pos, int16_t stackpos,
-	uint8_t index, uint16_t spriteId)
+	uint8_t index, uint16_t spriteId, bool isHotkey)
 {
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
+		return false;
+
+	if(isHotkey && !g_config.getBool(ConfigManager::AIMBOT_HOTKEY_ENABLED))
 		return false;
 
 	Thing* thing = internalGetThing(player, pos, stackpos, spriteId, STACKPOS_USEITEM);
@@ -2697,7 +2698,7 @@ bool Game::playerUseItem(uint32_t playerId, const Position& pos, int16_t stackpo
 					this, player->getID(), listDir)));
 
 				SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
-					boost::bind(&Game::playerUseItem, this, playerId, pos, stackpos, index, spriteId));
+					boost::bind(&Game::playerUseItem, this, playerId, pos, stackpos, index, spriteId, isHotkey));
 
 				player->setNextWalkActionTask(task);
 				return true;
@@ -2710,10 +2711,13 @@ bool Game::playerUseItem(uint32_t playerId, const Position& pos, int16_t stackpo
 		return false;
 	}
 
+	if(isHotkey)
+		showHotkeyUseMessage(player, item);
+
 	if(!player->canDoAction())
 	{
 		SchedulerTask* task = createSchedulerTask(player->getNextActionTime(),
-			boost::bind(&Game::playerUseItem, this, playerId, pos, stackpos, index, spriteId));
+			boost::bind(&Game::playerUseItem, this, playerId, pos, stackpos, index, spriteId, isHotkey));
 		player->setNextActionTask(task);
 		return false;
 	}
@@ -2724,7 +2728,7 @@ bool Game::playerUseItem(uint32_t playerId, const Position& pos, int16_t stackpo
 }
 
 bool Game::playerUseBattleWindow(uint32_t playerId, const Position& pos, int16_t stackpos,
-	uint32_t creatureId, uint16_t spriteId)
+	uint32_t creatureId, uint16_t spriteId, bool isHotkey)
 {
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
@@ -2736,6 +2740,12 @@ bool Game::playerUseBattleWindow(uint32_t playerId, const Position& pos, int16_t
 
 	if(!Position::areInRange<7,5,0>(creature->getPosition(), player->getPosition()))
 		return false;
+
+	if(!g_config.getBool(ConfigManager::AIMBOT_HOTKEY_ENABLED) && (creature->getPlayer() || isHotkey))
+	{
+		player->sendCancelMessage(RET_DIRECTPLAYERSHOOT);
+		return false;
+	}
 
 	Thing* thing = internalGetThing(player, pos, stackpos, spriteId, STACKPOS_USE);
 	if(!thing)
@@ -2769,7 +2779,7 @@ bool Game::playerUseBattleWindow(uint32_t playerId, const Position& pos, int16_t
 					this, player->getID(), listDir)));
 
 				SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
-					boost::bind(&Game::playerUseBattleWindow, this, playerId, pos, stackpos, creatureId, spriteId));
+					boost::bind(&Game::playerUseBattleWindow, this, playerId, pos, stackpos, creatureId, spriteId, isHotkey));
 
 				player->setNextWalkActionTask(task);
 				return true;
@@ -2782,10 +2792,13 @@ bool Game::playerUseBattleWindow(uint32_t playerId, const Position& pos, int16_t
 		return false;
 	}
 
+	if(isHotkey)
+		showHotkeyUseMessage(player, item);
+
 	if(!player->canDoAction())
 	{
 		SchedulerTask* task = createSchedulerTask(player->getNextActionTime(),
-			boost::bind(&Game::playerUseBattleWindow, this, playerId, pos, stackpos, creatureId, spriteId));
+			boost::bind(&Game::playerUseBattleWindow, this, playerId, pos, stackpos, creatureId, spriteId, isHotkey));
 		player->setNextActionTask(task);
 		return false;
 	}
@@ -2793,7 +2806,7 @@ bool Game::playerUseBattleWindow(uint32_t playerId, const Position& pos, int16_t
 	player->setIdleTime(0);
 	player->setNextActionTask(NULL);
 	return g_actions->useItemEx(player, pos, creature->getPosition(),
-		creature->getParent()->__getIndexOfThing(creature), item, creatureId);
+		creature->getParent()->__getIndexOfThing(creature), item, isHotkey, creatureId);
 }
 
 bool Game::playerCloseContainer(uint32_t playerId, uint8_t cid)
@@ -3653,6 +3666,30 @@ bool Game::playerLookInBattleList(uint32_t playerId, uint32_t creatureId)
 	}
 
 	player->sendTextMessage(MSG_INFO_DESCR, ss.str());
+	return true;
+}
+
+bool Game::playerQuests(uint32_t playerId)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	player->sendQuests();
+	return true;
+}
+
+bool Game::playerQuestInfo(uint32_t playerId, uint16_t questId)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	Quest* quest = Quests::getInstance()->getQuestById(questId);
+	if(!quest)
+		return false;
+
+	player->sendQuestInfo(quest);
 	return true;
 }
 
@@ -5966,6 +6003,88 @@ bool Game::loadExperienceStages()
 	return true;
 }
 
+bool Game::reloadHighscores()
+{
+	lastHighscoreCheck = time(NULL);
+	for(int16_t i = 0; i < 8; ++i)
+		highscoreStorage[i] = getHighscore(i);
+
+	return true;
+}
+
+void Game::checkHighscores()
+{
+	reloadHighscores();
+	uint32_t tmp = g_config.getNumber(ConfigManager::HIGHSCORES_UPDATETIME) * 60 * 1000;
+	if(tmp <= 0)
+		return;
+
+	Scheduler::getInstance().addEvent(createSchedulerTask(tmp, boost::bind(&Game::checkHighscores, this)));
+}
+
+std::string Game::getHighscoreString(uint16_t skill)
+{
+	Highscore hs = highscoreStorage[skill];
+	std::stringstream ss;
+	ss << "Highscore for " << getSkillName(skill) << "\n\nRank Level - Player Name";
+	for(uint32_t i = 0; i < hs.size(); ++i)
+		ss << "\n" << (i + 1) << ".  " << hs[i].second << "  -  " << hs[i].first;
+
+	ss << "\n\nLast updated on:\n" << std::ctime(&lastHighscoreCheck);
+	return ss.str();
+}
+
+Highscore Game::getHighscore(uint16_t skill)
+{
+	Database* db = Database::getInstance();
+	DBResult* result;
+	DBQuery query;
+
+	Highscore hs;
+	if(skill >= SKILL__MAGLEVEL)
+	{
+		if(skill == SKILL__MAGLEVEL)
+			query << "SELECT `maglevel`, `name` FROM `players` ORDER BY `maglevel` DESC, `manaspent` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		else
+			query << "SELECT `level`, `name` FROM `players` ORDER BY `level` DESC, `experience` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			uint32_t level;
+			if(skill == SKILL__MAGLEVEL)
+				level = result->getDataInt("maglevel");
+			else
+				level = result->getDataInt("level");
+
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, level));
+		}
+		while(result->next());
+		result->free();
+	}
+	else
+	{
+		query << "SELECT `player_skills`.`value`, `players`.`name` FROM `player_skills`,`players` WHERE `player_skills`.`skillid`=" << skill << " AND `player_skills`.`player_id`=`players`.`id` ORDER BY `player_skills`.`value` DESC, `player_skills`.`count` DESC LIMIT " << g_config.getNumber(ConfigManager::HIGHSCORES_TOP);
+		if(!(result = db->storeQuery(query.str())))
+			return hs;
+
+		do
+		{
+			std::string name = result->getDataString("name");
+			if(name.length() > 0)
+				hs.push_back(std::make_pair(name, result->getDataInt("value")));
+		}
+		while(result->next());
+		result->free();
+	}
+
+	return hs;
+}
+
 int32_t Game::getMotdId()
 {
 	if(lastMotd.length() == g_config.getString(ConfigManager::MOTD).length())
@@ -6079,17 +6198,17 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 			break;
 		}
 
+#ifdef __LOGIN_SERVER__
 		case RELOAD_GAMESERVERS:
 		{
-			#ifdef __LOGIN_SERVER__
 			if(GameServers::getInstance()->reload())
 				done = true;
 			else
 				std::clog << "[Error - Game::reloadInfo] Failed to reload game servers." << std::endl;
 
-			#endif
 			break;
 		}
+#endif
 
 		case RELOAD_GLOBALEVENTS:
 		{
@@ -6097,6 +6216,16 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 				done = true;
 			else
 				std::clog << "[Error - Game::reloadInfo] Failed to reload global events." << std::endl;
+
+			break;
+		}
+
+		case RELOAD_HIGHSCORES:
+		{
+			if(reloadHighscores())
+				done = true;
+			else
+				std::clog << "[Error - Game::reloadInfo] Failed to reload highscores." << std::endl;
 
 			break;
 		}
@@ -6154,6 +6283,16 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 		{
 			std::clog << "[Notice - Game::reloadInfo] Reload type does not work." << std::endl;
 			done = true;
+			break;
+		}
+
+		case RELOAD_QUESTS:
+		{
+			if(Quests::getInstance()->reload())
+				done = true;
+			else
+				std::clog << "[Error - Game::reloadInfo] Failed to reload quests." << std::endl;
+
 			break;
 		}
 
@@ -6367,6 +6506,26 @@ void Game::cleanup()
 void Game::freeThing(Thing* thing)
 {
 	releaseThings.push_back(thing);
+}
+
+void Game::showHotkeyUseMessage(Player* player, Item* item)
+{
+	int32_t subType = -1;
+	if(item->hasSubType() && !item->hasCharges())
+		subType = item->getSubType();
+
+	const ItemType& it = Item::items[item->getID()];
+	uint32_t count = player->__getItemTypeCount(item->getID(), subType, false);
+
+	std::stringstream stream;
+	if(!it.showCount)
+		stream << "Using one of " << it.name << "...";
+	else if(count == 1)
+		stream << "Using the last " << it.name.c_str() << "...";
+	else
+		stream << "Using one of " << count << " " << it.pluralName.c_str() << "...";
+
+	player->sendTextMessage(MSG_HOTKEY_USE, stream.str().c_str());
 }
 
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)

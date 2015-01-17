@@ -97,7 +97,6 @@ bool Mailbox::sendItem(Creature* actor, Item* item)
 
 bool Mailbox::getDepotId(const std::string& townString, uint32_t& depotId)
 {
-
 	Town* town = Towns::getInstance()->getTown(townString);
 	if(!town)
 		return false;

@@ -97,6 +97,7 @@
     <ClInclude Include="..\protocol.h" />
     <ClInclude Include="..\protocolgame.h" />
     <ClInclude Include="..\protocollogin.h" />
+    <ClInclude Include="..\quests.h" />
     <ClInclude Include="..\raids.h" />
     <ClInclude Include="..\resources.h" />
     <ClInclude Include="..\scheduler.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="..\protocol.cpp" />
     <ClCompile Include="..\protocolgame.cpp" />
     <ClCompile Include="..\protocollogin.cpp" />
+    <ClCompile Include="..\quests.cpp" />
     <ClCompile Include="..\raids.cpp" />
     <ClCompile Include="..\scheduler.cpp" />
     <ClCompile Include="..\scriptmanager.cpp" />
@@ -398,7 +400,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;NDEBUG;$(PREPROCESSOR_DEFS);_MULTIPLATFORM77;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -411,7 +413,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release GUI|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN64;NDEBUG;$(PREPROCESSOR_DEFS);_MULTIPLATFORM77;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN64;NDEBUG;$(PREPROCESSOR_DEFS);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>

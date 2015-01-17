@@ -84,7 +84,7 @@ ItemType::ItemType()
 	lightLevel = lightColor = 0;
 
 	maxTextLength = 0;
-	canReadText = canWriteText = false;
+	clientCharges = canReadText = canWriteText = false;
 	date = 0;
 	writeOnceItemId = wareId = premiumDays = 0;
 
@@ -131,7 +131,7 @@ bool Items::reload()
 		return false;
 
 	items.reload();
-	loadFromOtb(getFilePath(FILE_TYPE_OTHER, "items/" + ITEMS_PATH + "/items.otb"));
+	loadFromOtb(getFilePath(FILE_TYPE_OTHER, "items/items.otb"));
 	if(!loadFromXml())
 		return false;
 
@@ -184,12 +184,12 @@ int32_t Items::loadFromOtb(std::string file)
 
 	if(Items::dwMajorVersion == 0xFFFFFFFF)
 		std::clog << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
-	else if(Items::dwMajorVersion < CLIENT_VERSION_ITEMS)
+	else if(Items::dwMajorVersion != 3)
 	{
 		std::clog << "[Error - Items::loadFromOtb] Incorrect version detected, please use official items.otb." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
-	else if(!g_config.getBool(ConfigManager::SKIP_ITEMS_VERSION) && Items::dwMinorVersion < CLIENT_VERSION_ITEMS)
+	else if(!g_config.getBool(ConfigManager::SKIP_ITEMS_VERSION) && Items::dwMinorVersion != CLIENT_VERSION_ITEMS)
 	{
 		std::clog << "[Error - Items::loadFromOtb] Another client version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
@@ -254,7 +254,10 @@ int32_t Items::loadFromOtb(std::string file)
 		iType->allowDistRead = hasBitSet(FLAG_ALLOWDISTREAD, flags);
 		iType->rotable = hasBitSet(FLAG_ROTABLE, flags);
 		iType->canReadText = hasBitSet(FLAG_READABLE, flags);
+		iType->clientCharges = hasBitSet(FLAG_CLIENTCHARGES, flags);
 		iType->lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
+		iType->isAnimation = hasBitSet(FLAG_ANIMATION, flags);
+		iType->walkStack = !hasBitSet(FLAG_WALKSTACK, flags);
 
 		attribute_t attr;
 		while(props.getType(attr))
@@ -386,7 +389,7 @@ int32_t Items::loadFromOtb(std::string file)
 
 bool Items::loadFromXml()
 {
-	xmlDocPtr doc = xmlParseFile(getFilePath(FILE_TYPE_OTHER, "items/" + ITEMS_PATH + "/items.xml").c_str());
+	xmlDocPtr doc = xmlParseFile(getFilePath(FILE_TYPE_OTHER, "items/items.xml").c_str());
 	if(!doc)
 	{
 		std::clog << "[Warning - Items::loadFromXml] Cannot load items file."
@@ -460,7 +463,7 @@ bool Items::loadFromXml()
 	}
 
 	xmlFreeDoc(doc);
-	if(!(doc = xmlParseFile(getFilePath(FILE_TYPE_OTHER, "items/" + ITEMS_PATH + "/randomization.xml").c_str())))
+	if(!(doc = xmlParseFile(getFilePath(FILE_TYPE_OTHER, "items/randomization.xml").c_str())))
 	{
 		std::clog << "[Warning - Items::loadFromXml] Cannot load randomization file."
 			<< std::endl << getLastXMLError() << std::endl;
@@ -1249,7 +1252,6 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.getAbilities()->statsPercent[STAT_MAXMANA] = intValue;
 		}
-		#ifdef _MULTIPLATFORM76
 		else if(tmpStrValue == "soulpoints")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
@@ -1260,7 +1262,6 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.getAbilities()->statsPercent[STAT_SOUL] = intValue;
 		}
-		#endif
 		else if(tmpStrValue == "magiclevelpoints" || tmpStrValue == "magicpoints")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
@@ -1646,13 +1647,11 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 			if(readXMLInteger(itemAttributesNode, "value", intValue) && intValue != 0)
 				it.getAbilities()->conditionSuppressions |= CONDITION_REGENERATION;
 		}
-		#ifdef _MULTIPLATFORM76
 		else if(tmpStrValue == "suppresssoul")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue) && intValue != 0)
 				it.getAbilities()->conditionSuppressions |= CONDITION_SOUL;
 		}
-		#endif
 		else if(tmpStrValue == "suppressoutfit")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue) && intValue != 0)

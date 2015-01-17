@@ -42,7 +42,7 @@ void MonsterType::reset()
 	canPushItems = canPushCreatures = isSummonable = isIllusionable = isConvinceable = isLureable = isWalkable = hideName = hideHealth = eliminable = false;
 	pushable = isAttackable = isHostile = true;
 
-	outfit.lookHead = outfit.lookBody = outfit.lookLegs = outfit.lookFeet = outfit.lookType = outfit.lookTypeEx = 0;
+	outfit.lookHead = outfit.lookBody = outfit.lookLegs = outfit.lookFeet = outfit.lookType = outfit.lookTypeEx = outfit.lookAddons = 0;
 	runAwayHealth = healthMin = manaCost = lightLevel = lightColor = yellSpeedTicks = yellChance = changeTargetSpeed = changeTargetChance = 0;
 	experience = defense = armor = lookCorpse = corpseUnique = corpseAction = conditionImmunities = damageImmunities = 0;
 
@@ -524,6 +524,9 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 					if(readXMLInteger(tmpNode, "feet", intValue))
 						outfit.lookFeet = intValue;
 
+					if(readXMLInteger(tmpNode, "addons", intValue))
+						outfit.lookAddons = intValue;
+
 					outfits.push_back(outfit);
 				}
 
@@ -586,6 +589,9 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 					if(readXMLInteger(tmpNode, "feet", intValue))
 						outfit.lookFeet = intValue;
 
+					if(readXMLInteger(tmpNode, "addons", intValue))
+						outfit.lookAddons = intValue;
+
 					outfits.push_back(outfit);
 				}
 
@@ -620,6 +626,9 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 
 					if(readXMLInteger(node, "feet", intValue))
 						outfit.lookFeet = intValue;
+
+					if(readXMLInteger(node, "addons", intValue))
+						outfit.lookAddons = intValue;
 
 					outfits.push_back(outfit);
 				}
@@ -732,20 +741,16 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 				param = CONDITIONPARAM_STAT_MAXHEALTHPERCENT;
 			else if(readXMLInteger(node, "maxmana", intValue))
 				param = CONDITIONPARAM_STAT_MAXMANAPERCENT;
-			#ifdef _MULTIPLATFORM76
 			else if(readXMLInteger(node, "soul", intValue))
 				param = CONDITIONPARAM_STAT_SOULPERCENT;
-			#endif
 			else if(readXMLInteger(node, "magiclevel", intValue) || readXMLInteger(node, "maglevel", intValue))
 				param = CONDITIONPARAM_STAT_MAGICLEVELPERCENT;
 			else if(readXMLInteger(node, "maxhealthPercent", intValue))
 				param = CONDITIONPARAM_STAT_MAXHEALTHPERCENT;
 			else if(readXMLInteger(node, "maxmanaPercent", intValue))
 				param = CONDITIONPARAM_STAT_MAXMANAPERCENT;
-			#ifdef _MULTIPLATFORM76
 			else if(readXMLInteger(node, "soulPercent", intValue))
 				param = CONDITIONPARAM_STAT_SOULPERCENT;
-			#endif
 			else if(readXMLInteger(node, "magiclevelPercent", intValue) || readXMLInteger(node, "maglevelPercent", intValue))
 				param = CONDITIONPARAM_STAT_MAGICLEVELPERCENT;
 
@@ -1132,6 +1137,9 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 
 				if(readXMLInteger(p, "feet", intValue))
 					mType->outfit.lookFeet = intValue;
+
+				if(readXMLInteger(p, "addons", intValue))
+					mType->outfit.lookAddons = intValue;
 			}
 			else if(readXMLInteger(p, "typeex", intValue))
 				mType->outfit.lookTypeEx = intValue;

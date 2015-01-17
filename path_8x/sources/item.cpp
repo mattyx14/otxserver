@@ -79,6 +79,10 @@ Item* Item::CreateItem(const uint16_t type, uint16_t amount/* = 0*/)
 		newItem = new Item(type - 2, amount);
 	else if(it.id >= 2202 && it.id <= 2206)
 		newItem = new Item(type - 37, amount);
+	else if(it.id == 2640)
+		newItem = new Item(6132, amount);
+	else if(it.id == 6301)
+		newItem = new Item(6300, amount);
 	else
 		newItem = new Item(type, amount);
 
@@ -88,18 +92,11 @@ Item* Item::CreateItem(const uint16_t type, uint16_t amount/* = 0*/)
 
 Item* Item::CreateItem(PropStream& propStream)
 {
-	uint16_t _id;
-	if(!propStream.getShort(_id))
+	uint16_t type;
+	if(!propStream.getShort(type))
 		return NULL;
 
-	const ItemType& iType = Item::items[_id];
-	uint8_t _count = 0;
-
-	if(iType.stackable || iType.isSplash() || iType.isFluidContainer())
-		if(!propStream.getByte(_count))
-			return NULL;
-
-	return Item::CreateItem(_id, _count);
+	return Item::CreateItem(items.getRandomizedItem(type), 0);
 }
 
 bool Item::loadItem(xmlNodePtr node, Container* parent)
@@ -180,7 +177,7 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	setItemCount(1);
 	setDefaultDuration();
 
-	const ItemType& it = items[id];
+	const ItemType& it = items[type];
 	if(it.isFluidContainer() || it.isSplash())
 		setFluidType(amount);
 	else if(it.stackable)
@@ -827,11 +824,31 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 	bool dot = true;
 	if(it.isRune())
 	{
-		if(it.runeMagLevel > 0)
-			s << " for magic level " << it.runeMagLevel;
-
 		if(!it.runeSpellName.empty())
-			s << ". It's an \"" << it.runeSpellName << "\" spell (" << subType << "x)";
+			s << "(\"" << it.runeSpellName << "\")";
+
+		if(it.runeLevel > 0 || it.runeMagLevel > 0 || (it.vocationString != "" && it.wieldInfo == 0))
+		{
+			s << "." << std::endl << "It can only be used";
+			if(it.vocationString != "" && it.wieldInfo == 0)
+				s << " by " << it.vocationString;
+
+			bool begin = true;
+			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && it.runeLevel > 0)
+			{
+				begin = false;
+				s << " with level " << it.runeLevel;
+			}
+
+			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && it.runeMagLevel > 0)
+			{
+				begin = false;
+				s << " " << (begin ? "with" : "and") << " magic level " << it.runeMagLevel;
+			}
+
+			if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS) && !begin)
+				s << " or higher";
+		}
 	}
 	else if(it.weaponType != WEAPON_NONE)
 	{

@@ -761,7 +761,7 @@ bool Creature::onDeath()
 
 void Creature::dropCorpse(DeathList deathList)
 {
-	if(master && !g_config.getBool(ConfigManager::SUMMONS_DROP_CORPSE))
+	if(master)
 	{
 		g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_POFF);
 		return;
@@ -918,9 +918,10 @@ bool Creature::getStorage(const std::string& key, std::string& value) const
 	return false;
 }
 
-void Creature::setStorage(const std::string& key, const std::string& value)
+bool Creature::setStorage(const std::string& key, const std::string& value)
 {
 	storageMap[key] = value;
+	return true;
 }
 
 void Creature::gainHealth(Creature* caster, int32_t healthGain)

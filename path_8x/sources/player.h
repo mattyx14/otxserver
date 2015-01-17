@@ -40,6 +40,7 @@ class Weapon;
 class Npc;
 class Party;
 class SchedulerTask;
+class Quest;
 class BedItem;
 
 enum skillsid_t
@@ -59,9 +60,7 @@ enum playerinfo_t
 	PLAYERINFO_MAXMANA,
 	PLAYERINFO_MAGICLEVEL,
 	PLAYERINFO_MAGICLEVELPERCENT,
-	#ifdef _MULTIPLATFORM76
 	PLAYERINFO_SOUL,
-	#endif
 };
 
 enum freeslot_t
@@ -256,6 +255,10 @@ class Player : public Creature, public Cylinder
 		void addContainer(uint32_t cid, Container* container);
 		void closeContainer(uint32_t cid);
 
+		virtual bool setStorage(const std::string& key, const std::string& value);
+		virtual void eraseStorage(const std::string& key);
+
+		void generateReservedStorage();
 		bool transferMoneyTo(const std::string& name, uint64_t amount);
 		void increaseCombatValues(int32_t& min, int32_t& max, bool useCharges, bool countWeapon);
 
@@ -337,14 +340,10 @@ class Player : public Creature, public Cylinder
 		void setCapacity(double newCapacity) {capacity = newCapacity;}
 		double getFreeCapacity() const;
 
-		#ifdef _MULTIPLATFORM76
 		virtual int32_t getSoul() const {return getPlayerInfo(PLAYERINFO_SOUL);}
-		#endif
 		virtual int32_t getMaxHealth() const {return getPlayerInfo(PLAYERINFO_MAXHEALTH);}
 		virtual int32_t getMaxMana() const {return getPlayerInfo(PLAYERINFO_MAXMANA);}
-		#ifdef _MULTIPLATFORM76
 		int32_t getSoulMax() const {return soulMax;}
-		#endif
 
 		Item* getInventoryItem(slots_t slot) const;
 		Item* getEquippedItem(slots_t slot) const;
@@ -385,6 +384,9 @@ class Player : public Creature, public Cylinder
 		tradestate_t getTradeState() {return tradeState;}
 		Item* getTradeItem() {return tradeItem;}
 
+		//Quest functions
+		void onUpdateQuest();
+
 		//V.I.P. functions
 		void notifyLogIn(Player* loginPlayer);
 		void notifyLogOut(Player* logoutPlayer);
@@ -421,9 +423,7 @@ class Player : public Creature, public Cylinder
 
 		virtual void changeHealth(int32_t healthChange);
 		virtual void changeMana(int32_t manaChange);
-		#ifdef _MULTIPLATFORM76
 		void changeSoul(int32_t soulChange);
-		#endif
 
 		bool isPzLocked() const {return pzLocked;}
 		void setPzLocked(bool v) {pzLocked = v;}
@@ -499,6 +499,11 @@ class Player : public Creature, public Cylinder
 
 		time_t getSkullEnd() const {return skullEnd;}
 		void setSkullEnd(time_t _time, bool login, Skulls_t _skull);
+
+		bool addOutfit(uint32_t outfitId, uint32_t addons);
+		bool removeOutfit(uint32_t outfitId, uint32_t addons);
+
+		bool canWearOutfit(uint32_t outfitId, uint32_t addons);
 
 		//tile
 		//send methods
@@ -612,8 +617,12 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendDistanceShoot(from, to, type);}
 		void sendHouseWindow(House* house, uint32_t listId) const;
 		void sendOutfitWindow() const {if(client) client->sendOutfitWindow();}
+		void sendQuests() const {if(client) client->sendQuests();}
+		void sendQuestInfo(Quest* quest) const {if(client) client->sendQuestInfo(quest);}
 		void sendCreatureSkull(const Creature* creature) const
 			{if(client) client->sendCreatureSkull(creature);}
+		void sendFYIBox(std::string message)
+			{if(client) client->sendFYIBox(message);}
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName)
 			{if(client) client->sendCreatePrivateChannel(channelId, channelName);}
 		void sendClosePrivate(uint16_t channelId) const
@@ -645,6 +654,10 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendCloseContainer(cid);}
 		void sendChannel(uint16_t channelId, const std::string& channelName)
 			{if(client) client->sendChannel(channelId, channelName);}
+		void sendTutorial(uint8_t tutorialId)
+			{if(client) client->sendTutorial(tutorialId);}
+		void sendAddMarker(const Position& pos, MapMarks_t markType, const std::string& desc)
+			{if(client) client->sendAddMarker(pos, markType, desc);}
 		void sendRuleViolationsChannel(uint16_t channelId)
 			{if(client) client->sendRuleViolationsChannel(channelId);}
 		void sendRemoveReport(const std::string& name)
@@ -812,10 +825,8 @@ class Player : public Creature, public Cylinder
 		uint16_t lastStatsTrainingTime;
 
 		int32_t premiumDays;
-		#ifdef _MULTIPLATFORM76
 		int32_t soul;
 		int32_t soulMax;
-		#endif
 		int32_t vocationId;
 		int32_t groupId;
 		int32_t managerNumber, managerNumber2;

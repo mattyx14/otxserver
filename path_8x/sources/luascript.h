@@ -395,9 +395,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSetTown(lua_State* L);
 		static int32_t luaDoPlayerSetVocation(lua_State* L);
 		static int32_t luaDoPlayerRemoveItem(lua_State* L);
-		#ifdef _MULTIPLATFORM76
 		static int32_t luaDoPlayerAddSoul(lua_State* L);
-		#endif
 		static int32_t luaDoPlayerSetStamina(lua_State* L);
 		static int32_t luaDoPlayerAddExperience(lua_State* L);
 		static int32_t luaDoPlayerSetGuildId(lua_State* L);
@@ -508,9 +506,7 @@ class LuaInterface
 		static int32_t luaGetPlayerTown(lua_State* L);
 		static int32_t luaGetPlayerItemCount(lua_State* L);
 		static int32_t luaGetPlayerMoney(lua_State* L);
-		#ifdef _MULTIPLATFORM76
 		static int32_t luaGetPlayerSoul(lua_State* L);
-		#endif
 		static int32_t luaGetPlayerStamina(lua_State* L);
 		static int32_t luaGetPlayerFreeCap(lua_State* L);
 		static int32_t luaGetPlayerLight(lua_State* L);
@@ -579,6 +575,12 @@ class LuaInterface
 		static int32_t luaGetStorageList(lua_State* L);
 		static int32_t luaGetStorage(lua_State* L);
 		static int32_t luaDoSetStorage(lua_State* L);
+		static int32_t luaDoPlayerAddOutfit(lua_State* L);
+		static int32_t luaDoPlayerRemoveOutfit(lua_State* L);
+		static int32_t luaDoPlayerAddOutfitId(lua_State* L);
+		static int32_t luaDoPlayerRemoveOutfitId(lua_State* L);
+		static int32_t luaCanPlayerWearOutfit(lua_State* L);
+		static int32_t luaCanPlayerWearOutfitId(lua_State* L);
 		static int32_t luaGetWorldType(lua_State* L);
 		static int32_t luaSetWorldType(lua_State* L);
 		static int32_t luaGetWorldTime(lua_State* L);
@@ -637,6 +639,7 @@ class LuaInterface
 		static int32_t luaGetCreatureName(lua_State* L);
 		static int32_t luaGetCreatureMaster(lua_State* L);
 		static int32_t luaGetCreatureSummons(lua_State* L);
+		static int32_t luaGetHighscoreString(lua_State* L);
 		static int32_t luaIsSightClear(lua_State* L);
 		static int32_t luaAddEvent(lua_State* L);
 		static int32_t luaStopEvent(lua_State* L);
@@ -645,7 +648,10 @@ class LuaInterface
 		static int32_t luaUnregisterCreatureEventType(lua_State* L);
 		static int32_t luaGetPlayerBalance(lua_State* L);
 		static int32_t luaDoPlayerSetBalance(lua_State* L);
+		static int32_t luaDoPlayerPopupFYI(lua_State* L);
+		static int32_t luaDoPlayerSendTutorial(lua_State* L);
 		static int32_t luaDoPlayerSendMailByName(lua_State* L);
+		static int32_t luaDoPlayerAddMapMark(lua_State* L);
 		static int32_t luaGetPlayerPremiumDays(lua_State* L);
 		static int32_t luaDoPlayerAddPremiumDays(lua_State* L);
 		static int32_t luaGetCreatureNoMove(lua_State* L);

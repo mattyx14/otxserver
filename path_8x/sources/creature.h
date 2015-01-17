@@ -342,7 +342,7 @@ class Creature : public AutoId, virtual public Thing
 		void changeMaxMana(uint32_t manaChange) {manaMax = manaChange;}
 
 		virtual bool getStorage(const std::string& key, std::string& value) const;
-		virtual void setStorage(const std::string& key, const std::string& value);
+		virtual bool setStorage(const std::string& key, const std::string& value);
 		virtual void eraseStorage(const std::string& key) {storageMap.erase(key);}
 
 		inline StorageMap::const_iterator getStorageBegin() const {return storageMap.begin();}

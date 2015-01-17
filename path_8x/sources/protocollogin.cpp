@@ -86,7 +86,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	uint16_t version = msg.get<uint16_t>();
 
 	msg.skip(12);
-	#ifdef _MULTIPLATFORM77
 	if(!RSA_decrypt(msg))
 	{
 		getConnection()->close();
@@ -96,7 +95,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	uint32_t key[4] = {msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>()};
 	enableXTEAEncryption();
 	setXTEAKey(key);
-	#endif
 	uint32_t name = msg.get<uint32_t>();
 	std::string password = msg.getString();
 
@@ -114,15 +112,17 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
-		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
-		{
-			disconnectClient(0x0A, CLIENT_VERSION_STRING);
-			return;
-		}
-	else
 		if(version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX))
 		{
-			disconnectClient(0x0A, g_config.getString(ConfigManager::VERSION_MSG).c_str());
+			disconnectClient(0x14, g_config.getString(ConfigManager::VERSION_MSG).c_str());
+			return;
+		}
+	}
+	else
+	{
+		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
+		{
+			disconnectClient(0x14, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
 			return;
 		}
 	}

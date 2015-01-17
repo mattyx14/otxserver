@@ -42,7 +42,7 @@ class Actions : public BaseEvents
 
 		bool useItem(Player* player, const Position& pos, uint8_t index, Item* item);
 		bool useItemEx(Player* player, const Position& fromPos, const Position& toPos,
-			uint8_t toStackPos, Item* item, uint32_t creatureId = 0);
+			uint8_t toStackPos, Item* item, bool isHotkey, uint32_t creatureId = 0);
 
 		ReturnValue canUse(const Player* player, const Position& pos);
 		ReturnValue canUseEx(const Player* player, const Position& pos, const Item* item);
@@ -74,9 +74,9 @@ class Actions : public BaseEvents
 		ReturnValue internalUseItem(Player* player, const Position& pos,
 			uint8_t index, Item* item, uint32_t creatureId);
 		bool executeUseEx(Action* action, Player* player, Item* item, const PositionEx& fromPosEx,
-			const PositionEx& toPosEx, uint32_t creatureId);
+			const PositionEx& toPosEx, bool isHotkey, uint32_t creatureId);
 		ReturnValue internalUseItemEx(Player* player, const PositionEx& fromPosEx, const PositionEx& toPosEx,
-			Item* item, uint32_t creatureId);
+			Item* item, bool isHotkey, uint32_t creatureId);
 
 		Action* getAction(const Item* item, ActionType_t type) const;
 		void clearMap(ActionUseMap& map);

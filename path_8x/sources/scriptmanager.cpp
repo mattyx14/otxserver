@@ -36,6 +36,7 @@
 #include "group.h"
 #include "vocation.h"
 #include "outfit.h"
+#include "quests.h"
 #include "items.h"
 #include "chat.h"
 
@@ -275,7 +276,9 @@ bool ScriptManager::loadFromXml(const std::string& file, bool& enabled)
 		std::string scriptsPath = getFilePath(FILE_TYPE_MOD, "scripts/");
 		for(p = root->children; p; p = p->next)
 		{
-			if(!xmlStrcmp(p->name, (const xmlChar*)"outfit"))
+			if(!xmlStrcmp(p->name, (const xmlChar*)"quest"))
+				Quests::getInstance()->parseQuestNode(p, modsLoaded);
+			else if(!xmlStrcmp(p->name, (const xmlChar*)"outfit"))
 				Outfits::getInstance()->parseOutfitNode(p);
 			else if(!xmlStrcmp(p->name, (const xmlChar*)"vocation"))
 				Vocations::getInstance()->parseVocationNode(p); //duplicates checking is dangerous, shouldn't be performed until we find some good solution

@@ -43,6 +43,9 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 	newOutfit.outfitId = intValue;
 
 	std::string strValue;
+	if(readXMLString(p, "default", strValue))
+		newOutfit.isDefault = booleanString(strValue);
+
 	if(!readXMLString(p, "name", strValue))
 	{
 		std::stringstream ss;
@@ -51,6 +54,37 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 	}
 	else
 		newOutfit.name = strValue;
+
+	bool override = false;
+	if(readXMLString(p, "override", strValue) && booleanString(strValue))
+		override = true;
+
+	if(readXMLInteger(p, "access", intValue))
+		newOutfit.accessLevel = intValue;
+
+	if(readXMLString(p, "group", strValue) || readXMLString(p, "groups", strValue))
+	{
+		newOutfit.groups.clear();
+		if(!parseIntegerVec(strValue, newOutfit.groups))
+			std::clog << "[Warning - Outfits::parseOutfitNode] Invalid group(s) for an outfit with id " << newOutfit.outfitId << std::endl;
+	}
+
+	if(readXMLString(p, "quest", strValue))
+	{
+		newOutfit.storageId = strValue;
+		newOutfit.storageValue = "1";
+	}
+	else
+	{
+		if(readXMLString(p, "storageId", strValue))
+			newOutfit.storageId = strValue;
+
+		if(readXMLString(p, "storageValue", strValue))
+			newOutfit.storageValue = strValue;
+	}
+
+	if(readXMLString(p, "premium", strValue))
+		newOutfit.isPremium = booleanString(strValue);
 
 	for(xmlNodePtr listNode = p->children; listNode != NULL; listNode = listNode->next)
 	{
@@ -80,8 +114,29 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 			continue;
 		}
 
+		if(readXMLInteger(listNode, "addons", intValue))
+			outfit.addons = intValue;
+
 		if(readXMLString(listNode, "name", strValue))
 			outfit.name = strValue;
+
+		if(readXMLString(listNode, "premium", strValue))
+			outfit.isPremium = booleanString(strValue);
+
+		if(readXMLString(listNode, "requirement", strValue))
+		{
+			std::string tmpStrValue = asLowerCaseString(strValue);
+			if(tmpStrValue == "none")
+				outfit.requirement = REQUIREMENT_NONE;
+			else if(tmpStrValue == "first")
+				outfit.requirement = REQUIREMENT_FIRST;
+			else if(tmpStrValue == "second")
+				outfit.requirement = REQUIREMENT_SECOND;
+			else if(tmpStrValue == "any")
+				outfit.requirement = REQUIREMENT_ANY;
+			else if(tmpStrValue != "both")
+				std::clog << "[Warning - Outfits::loadFromXml] Unknown requirement tag value, using default (both)" << std::endl;
+		}
 
 		if(readXMLString(listNode, "manaShield", strValue))
 			outfit.manaShield = booleanString(strValue);
@@ -389,10 +444,8 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 				if(readXMLInteger(configNode, "maxMana", intValue))
 					outfit.stats[STAT_MAXMANA] = intValue;
 
-				#ifdef _MULTIPLATFORM76
 				if(readXMLInteger(configNode, "soul", intValue))
 					outfit.stats[STAT_SOUL] = intValue;
-				#endif
 
 				if(readXMLInteger(configNode, "level", intValue))
 					outfit.stats[STAT_LEVEL] = intValue;
@@ -407,10 +460,8 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 				if(readXMLInteger(configNode, "maxManaPercent", intValue))
 					outfit.statsPercent[STAT_MAXMANA] = intValue;
 
-				#ifdef _MULTIPLATFORM76
 				if(readXMLInteger(configNode, "soulPercent", intValue))
 					outfit.statsPercent[STAT_SOUL] = intValue;
-				#endif
 
 				if(readXMLInteger(configNode, "levelPercent", intValue))
 					outfit.statsPercent[STAT_LEVEL] = intValue;
@@ -463,10 +514,8 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 				if(readXMLString(configNode, "regeneration", strValue) && booleanString(strValue))
 					outfit.conditionSuppressions |= CONDITION_REGENERATION;
 
-				#ifdef _MULTIPLATFORM76
 				if(readXMLString(configNode, "soul", strValue) && booleanString(strValue))
 					outfit.conditionSuppressions |= CONDITION_SOUL;
-				#endif
 
 				if(readXMLString(configNode, "drown", strValue) && booleanString(strValue))
 					outfit.conditionSuppressions |= CONDITION_DROWN;
@@ -500,7 +549,16 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 		{
 			fit = outfitsMap[(*it)].find(outfit.outfitId);
 			if(fit != outfitsMap[(*it)].end())
-				std::clog << "[Warning - Outfits::parseOutfitNode] Duplicated outfit for gender " << (*it) << " with lookType " << outfit.outfitId << std::endl;
+			{
+				if(override)
+				{
+					fit->second = outfit;
+					if(!add)
+						add = true;
+				}
+				else
+					std::clog << "[Warning - Outfits::parseOutfitNode] Duplicated outfit for gender " << (*it) << " with lookType " << outfit.outfitId << std::endl;
+			}
 			else
 			{
 				outfitsMap[(*it)][outfit.outfitId] = outfit;
@@ -577,7 +635,7 @@ bool Outfits::getOutfit(uint32_t outfitId, uint16_t sex, Outfit& outfit)
 	return true;
 }
 
-bool Outfits::addAttributes(uint32_t playerId, uint32_t outfitId, uint16_t sex)
+bool Outfits::addAttributes(uint32_t playerId, uint32_t outfitId, uint16_t sex, uint16_t addons)
 {
 	Player* player = g_game.getPlayerByID(playerId);
 	if(!player || player->isRemoved())
@@ -589,6 +647,8 @@ bool Outfits::addAttributes(uint32_t playerId, uint32_t outfitId, uint16_t sex)
 		return false;
 
 	Outfit outfit = it->second;
+	if(outfit.requirement != (AddonRequirement_t)addons && (outfit.requirement != REQUIREMENT_ANY || !addons))
+		return false;
 
 	if(outfit.invisible)
 	{
