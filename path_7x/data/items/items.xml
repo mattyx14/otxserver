@@ -3154,11 +3154,10 @@
 		<attribute key="slotType" value="ring"/>
 	</item>
 	<item id="2358" name="pair of soft boots">
-          	<attribute key="transformEquipTo" value="2640"/>
-                <attribute key="stopduration" value="1"/>
-                <attribute key="showduration" value="1"/>
+		<attribute key="transformEquipTo" value="2640"/>
+		<attribute key="stopduration" value="1"/>
+		<attribute key="showduration" value="1"/>
 		<attribute key="weight" value="770"/>
-		
 		<attribute key="slotType" value="feet"/>
 	</item>
 	<item id="2359" article="a" name="djinn's lamp">
