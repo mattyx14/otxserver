@@ -119,7 +119,7 @@ class IOMap
 				map->spawnfile += "-spawn.xml";
 			}
 
-			return Spawns::getInstance()->loadFromXml(map->spawnfile);
+			return map->spawns.loadFromXml(map->spawnfile);
 		}
 
 		/* Load the houses (not house tile-data)
@@ -134,7 +134,7 @@ class IOMap
 				map->housefile += "-house.xml";
 			}
 
-			return Houses::getInstance().loadHousesXML(map->housefile);
+			return map->houses.loadHousesXML(map->housefile);
 		}
 
 		const std::string& getLastErrorString() const {

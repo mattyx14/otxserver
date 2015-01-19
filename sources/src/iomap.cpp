@@ -247,18 +247,18 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 				uint32_t tileflags = TILESTATE_NONE;
 
 				if (type == OTBM_HOUSETILE) {
-					uint32_t _houseid;
-					if (!propStream.read<uint32_t>(_houseid)) {
+					uint32_t houseId;
+					if (!propStream.read<uint32_t>(houseId)) {
 						std::ostringstream ss;
 						ss << "[x:" << px << ", y:" << py << ", z:" << pz << "] Could not read house id.";
 						setLastErrorString(ss.str());
 						return false;
 					}
 
-					house = Houses::getInstance().addHouse(_houseid);
+					house = map->houses.addHouse(houseId);
 					if (!house) {
 						std::ostringstream ss;
-						ss << "[x:" << px << ", y:" << py << ", z:" << pz << "] Could not create house id: " << _houseid;
+						ss << "[x:" << px << ", y:" << py << ", z:" << pz << "] Could not create house id: " << houseId;
 						setLastErrorString(ss.str());
 						return false;
 					}
@@ -418,16 +418,16 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 					return false;
 				}
 
-				uint32_t townid;
-				if (!propStream.read<uint32_t>(townid)) {
+				uint32_t townId;
+				if (!propStream.read<uint32_t>(townId)) {
 					setLastErrorString("Could not read town id.");
 					return false;
 				}
 
-				Town* town = Towns::getInstance().getTown(townid);
+				Town* town = map->towns.getTown(townId);
 				if (!town) {
-					town = new Town(townid);
-					Towns::getInstance().addTown(townid, town);
+					town = new Town(townId);
+					map->towns.addTown(townId, town);
 				}
 
 				std::string townName;

@@ -29,8 +29,10 @@
 #include "item.h"
 #include "container.h"
 #include "player.h"
+#include "raids.h"
 #include "npc.h"
 #include "wildcardtree.h"
+#include "quests.h"
 
 class ServiceManager;
 class Creature;
@@ -88,7 +90,7 @@ class Game
 		Game(const Game&) = delete;
 		Game& operator=(const Game&) = delete;
 
-		void start(ServiceManager* servicer);
+		void start(ServiceManager* manager);
 
 		void forceAddCondition(uint32_t creatureId, Condition* condition);
 		void forceRemoveCondition(uint32_t creatureId, ConditionType_t type);
@@ -117,22 +119,6 @@ class Game
 		static void internalGetPosition(Item* item, Position& pos, uint8_t& stackpos);
 
 		static std::string getTradeErrorDescription(ReturnValue ret, Item* item);
-
-		/**
-		  * Get a single tile of the map.
-		  * \returns A pointer to the tile
-		*/
-		inline Tile* getTile(uint16_t x, uint16_t y, uint8_t z) const {
-			return map.getTile(x, y, z);
-		}
-		inline Tile* getTile(const Position& pos) const {
-			return map.getTile(pos.x, pos.y, pos.z);
-		}
-
-		/**
-		  * Set a single tile of the map, position is read from this tile
-		*/
-		void setTile(Tile* newTile);
 
 		/**
 		  * Returns a creature based on the unique creature identifier
@@ -515,15 +501,17 @@ class Game
 
 		std::unordered_map<Tile*, Container*> browseFields;
 
-		Group* getGroup(uint32_t id);
-
 		void internalRemoveItems(std::vector<Item*> itemList, uint32_t amount, bool stackable);
 
 		BedItem* getBedBySleeper(uint32_t guid) const;
 		void setBedSleeper(BedItem* bed, uint32_t guid);
 		void removeBedSleeper(uint32_t guid);
 
+		Groups groups;
 		Map map;
+		Mounts mounts;
+		Raids raids;
+		Quests quests;
 	protected:
 		bool playerSayCommand(Player* player, const std::string& text);
 		bool playerSaySpell(Player* player, SpeakClasses type, const std::string& text);
@@ -563,7 +551,6 @@ class Game
 
 		ModalWindow offlineTrainingWindow;
 		Commands commands;
-		Groups groups;
 
 		static const int32_t LIGHT_LEVEL_DAY = 250;
 		static const int32_t LIGHT_LEVEL_NIGHT = 40;
@@ -578,7 +565,7 @@ class Game
 		int32_t lightHour;
 		int32_t lightHourDelta;
 
-		ServiceManager* services;
+		ServiceManager* serviceManager;
 
 		void updatePlayersRecord() const;
 		uint32_t playersRecord;

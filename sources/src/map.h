@@ -28,6 +28,9 @@
 
 #include "tools.h"
 #include "tile.h"
+#include "town.h"
+#include "house.h"
+#include "spawn.h"
 
 class Creature;
 class Player;
@@ -165,6 +168,8 @@ class Map
 		static const int32_t maxClientViewportX = 8;
 		static const int32_t maxClientViewportY = 6;
 
+		uint32_t clean() const;
+
 		/**
 		  * Load a map.
 		  * \returns true if the map was loaded successfully
@@ -182,8 +187,9 @@ class Map
 		  * \returns A pointer to that tile.
 		  */
 		Tile* getTile(uint16_t x, uint16_t y, uint8_t z) const;
-
-		uint32_t clean() const;
+		inline Tile* getTile(const Position& pos) const {
+			return getTile(pos.x, pos.y, pos.z);
+		}
 
 		/**
 		  * Set a single tile.
@@ -240,6 +246,9 @@ class Map
 
 		std::map<std::string, Position> waypoints;
 
+		Spawns spawns;
+		Towns towns;
+		Houses houses;
 	protected:
 		SpectatorCache spectatorCache;
 		SpectatorCache playersSpectatorCache;

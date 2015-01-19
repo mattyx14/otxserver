@@ -68,7 +68,7 @@ Game::Game() :
 	gameState = GAME_STATE_NORMAL;
 	worldType = WORLD_TYPE_PVP;
 
-	services = nullptr;
+	serviceManager = nullptr;
 	lastStageLevel = 0;
 	playersRecord = 0;
 	motdNum = 0;
@@ -103,9 +103,9 @@ Game::~Game()
 	}
 }
 
-void Game::start(ServiceManager* servicer)
+void Game::start(ServiceManager* manager)
 {
-	services = servicer;
+	serviceManager = manager;
 
 	g_scheduler.addEvent(createSchedulerTask(EVENT_LIGHTINTERVAL, std::bind(&Game::checkLight, this)));
 	g_scheduler.addEvent(createSchedulerTask(EVENT_CREATURE_THINK_INTERVAL, std::bind(&Game::checkCreatures, this, 0)));
@@ -142,14 +142,13 @@ void Game::setGameState(GameState_t newState)
 			groups.load();
 			g_chat->load();
 
-			Spawns::getInstance()->startup();
+			map.spawns.startup();
 
-			Raids::getInstance()->loadFromXml();
-			Raids::getInstance()->startup();
+			raids.loadFromXml();
+			raids.startup();
 
-			Quests::getInstance()->loadFromXml();
-
-			Mounts::getInstance()->loadFromXml();
+			quests.loadFromXml();
+			mounts.loadFromXml();
 
 			loadMotdNum();
 			loadPlayersRecord();
@@ -236,7 +235,7 @@ void Game::loadMap(const std::string& path)
 Cylinder* Game::internalGetCylinder(Player* player, const Position& pos) const
 {
 	if (pos.x != 0xFFFF) {
-		return getTile(pos.x, pos.y, pos.z);
+		return map.getTile(pos);
 	}
 
 	//container
@@ -252,7 +251,7 @@ Cylinder* Game::internalGetCylinder(Player* player, const Position& pos) const
 Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index, uint32_t spriteId /*= 0*/, stackPosType_t type /*= STACKPOS_NORMAL*/) const
 {
 	if (pos.x != 0xFFFF) {
-		Tile* tile = getTile(pos.x, pos.y, pos.z);
+		Tile* tile = map.getTile(pos);
 		if (tile) {
 			/*look at*/
 			if (type == STACKPOS_LOOK) {
@@ -380,11 +379,6 @@ void Game::internalGetPosition(Item* item, Position& pos, uint8_t& stackpos)
 			stackpos = tile->getThingIndex(item);
 		}
 	}
-}
-
-void Game::setTile(Tile* newTile)
-{
-	return map.setTile(newTile->getPosition(), newTile);
 }
 
 Creature* Game::getCreatureByID(uint32_t id)
@@ -866,7 +860,7 @@ void Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 		return;
 	}
 
-	Tile* toTile = getTile(toPos);
+	Tile* toTile = map.getTile(toPos);
 	if (!toTile) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
@@ -933,7 +927,7 @@ void Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 			}
 
 			Npc* movingNpc = movingCreature->getNpc();
-			if (movingNpc && !Spawns::getInstance()->isInZone(movingNpc->getMasterPos(), movingNpc->getMasterRadius(), toPos)) {
+			if (movingNpc && !Spawns::isInZone(movingNpc->getMasterPos(), movingNpc->getMasterRadius(), toPos)) {
 				player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 				return;
 			}
@@ -977,9 +971,9 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 	if (creature->getPlayer() && !diagonalMovement) {
 		//try go up
 		if (currentPos.z != 8 && creature->getTile()->hasHeight(3)) {
-			Tile* tmpTile = getTile(currentPos.x, currentPos.y, currentPos.getZ() - 1);
+			Tile* tmpTile = map.getTile(currentPos.x, currentPos.y, currentPos.getZ() - 1);
 			if (tmpTile == nullptr || (tmpTile->ground == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID))) {
-				tmpTile = getTile(destPos.x, destPos.y, destPos.getZ() - 1);
+				tmpTile = map.getTile(destPos.x, destPos.y, destPos.getZ() - 1);
 				if (tmpTile && tmpTile->ground && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID)) {
 					flags = flags | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
 
@@ -990,9 +984,9 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 			}
 		} else {
 			//try go down
-			Tile* tmpTile = getTile(destPos);
+			Tile* tmpTile = map.getTile(destPos.x, destPos.y, destPos.z);
 			if (currentPos.z != 7 && (tmpTile == nullptr || (tmpTile->ground == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID)))) {
-				tmpTile = getTile(destPos.x, destPos.y, destPos.z + 1);
+				tmpTile = map.getTile(destPos.x, destPos.y, destPos.z + 1);
 				if (tmpTile && tmpTile->hasHeight(3)) {
 					flags |= FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
 					destPos.z++;
@@ -1001,7 +995,7 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 		}
 	}
 
-	toTile = getTile(destPos);
+	toTile = map.getTile(destPos.x, destPos.y, destPos.z);
 	ReturnValue ret = RETURNVALUE_NOTPOSSIBLE;
 
 	if (toTile != nullptr) {
@@ -1857,7 +1851,7 @@ ReturnValue Game::internalTeleport(Thing* thing, const Position& newPos, bool pu
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
 
-	Tile* toTile = getTile(newPos.x, newPos.y, newPos.z);
+	Tile* toTile = map.getTile(newPos);
 	if (toTile) {
 		if (Creature* creature = thing->getCreature()) {
 			ReturnValue ret = toTile->queryAdd(0, *creature, 1, FLAG_NOLIMIT);
@@ -2505,7 +2499,7 @@ void Game::playerBrowseField(uint32_t playerId, const Position& pos)
 		return;
 	}
 
-	Tile* tile = getTile(pos);
+	Tile* tile = map.getTile(pos);
 	if (!tile) {
 		return;
 	}
@@ -3326,7 +3320,7 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	player->hasRequestedOutfit(false);
 
 	if (outfit.lookMount != 0) {
-		Mount* mount = Mounts::getInstance()->getMountByClientID(outfit.lookMount);
+		Mount* mount = mounts.getMountByClientID(outfit.lookMount);
 		if (!mount) {
 			return;
 		}
@@ -3336,7 +3330,7 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 		}
 
 		if (player->isMounted()) {
-			Mount* prevMount = Mounts::getInstance()->getMountByID(player->getCurrentMount());
+			Mount* prevMount = mounts.getMountByID(player->getCurrentMount());
 			if (prevMount) {
 				changeSpeed(player, mount->speed - prevMount->speed);
 			}
@@ -3378,7 +3372,7 @@ void Game::playerShowQuestLine(uint32_t playerId, uint16_t questId)
 		return;
 	}
 
-	Quest* quest = Quests::getInstance()->getQuestByID(questId);
+	Quest* quest = quests.getQuestByID(questId);
 	if (!quest) {
 		return;
 	}
@@ -4575,13 +4569,13 @@ void Game::shutdown()
 	g_scheduler.shutdown();
 	g_databaseTasks.shutdown();
 	g_dispatcher.shutdown();
-	Spawns::getInstance()->clear();
-	Raids::getInstance()->clear();
+	map.spawns.clear();
+	raids.clear();
 
 	cleanup();
 
-	if (services) {
-		services->stop();
+	if (serviceManager) {
+		serviceManager->stop();
 	}
 
 	ConnectionManager::getInstance()->closeAll();
@@ -5724,7 +5718,7 @@ void Game::addGuild(Guild* guild)
 
 void Game::decreaseBrowseFieldRef(const Position& pos)
 {
-	Tile* tile = getTile(pos);
+	Tile* tile = map.getTile(pos.x, pos.y, pos.z);
 	if (!tile) {
 		return;
 	}
@@ -5733,11 +5727,6 @@ void Game::decreaseBrowseFieldRef(const Position& pos)
 	if (it != browseFields.end()) {
 		it->second->releaseThing2();
 	}
-}
-
-Group* Game::getGroup(uint32_t id)
-{
-	return groups.getGroup(id);
 }
 
 void Game::internalRemoveItems(std::vector<Item*> itemList, uint32_t amount, bool stackable)

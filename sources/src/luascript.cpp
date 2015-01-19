@@ -2919,7 +2919,7 @@ int32_t LuaScriptInterface::luaDoTileAddItemEx(lua_State* L)
 	//doTileAddItemEx(pos, uid)
 	const Position& pos = getPosition(L, 1);
 
-	Tile* tile = g_game.getTile(pos);
+	Tile* tile = g_game.map.getTile(pos);
 	if (!tile) {
 		std::ostringstream ss;
 		ss << pos << ' ' << getErrorDesc(LUA_ERROR_TILE_NOT_FOUND);
@@ -2959,7 +2959,7 @@ int32_t LuaScriptInterface::luaGetThingfromPos(lua_State* L)
 	int32_t stackpos;
 	const Position& pos = getPosition(L, 1, stackpos);
 
-	Tile* tile = g_game.getTile(pos);
+	Tile* tile = g_game.map.getTile(pos);
 	if (!tile) {
 		pushThing(L, nullptr);
 		return 1;
@@ -3008,7 +3008,7 @@ int32_t LuaScriptInterface::luaDoCreateItem(lua_State* L)
 	//doCreateItem(itemid, <optional> type/count, pos)
 	//Returns uid of the created item, only works on tiles.
 	const Position& pos = getPosition(L, 3);
-	Tile* tile = g_game.getTile(pos);
+	Tile* tile = g_game.map.getTile(pos);
 	if (!tile) {
 		std::ostringstream ss;
 		ss << pos << ' ' << getErrorDesc(LUA_ERROR_TILE_NOT_FOUND);
@@ -4817,7 +4817,7 @@ int32_t LuaScriptInterface::luaGameGetNpcCount(lua_State* L)
 int32_t LuaScriptInterface::luaGameGetTowns(lua_State* L)
 {
 	// Game.getTowns()
-	const auto& towns = Towns::getInstance().getTowns();
+	const auto& towns = g_game.map.towns.getTowns();
 	lua_createtable(L, towns.size(), 0);
 
 	int32_t index = 0;
@@ -4832,7 +4832,7 @@ int32_t LuaScriptInterface::luaGameGetTowns(lua_State* L)
 int32_t LuaScriptInterface::luaGameGetHouses(lua_State* L)
 {
 	// Game.getHouses()
-	const auto& houses = Houses::getInstance().getHouses();
+	const auto& houses = g_game.map.houses.getHouses();
 	lua_createtable(L, houses.size(), 0);
 
 	int32_t index = 0;
@@ -4903,7 +4903,7 @@ int32_t LuaScriptInterface::luaGameCreateItem(lua_State* L)
 
 	if (lua_gettop(L) >= 3) {
 		const Position& position = getPosition(L, 3);
-		Tile* tile = g_game.getTile(position);
+		Tile* tile = g_game.map.getTile(position);
 		if (!tile) {
 			delete item;
 			lua_pushnil(L);
@@ -4982,14 +4982,15 @@ int32_t LuaScriptInterface::luaGameCreateTile(lua_State* L)
 		isDynamic = getBoolean(L, 4, false);
 	}
 
-	Tile* tile = g_game.getTile(position);
+	Tile* tile = g_game.map.getTile(position);
 	if (!tile) {
 		if (isDynamic) {
 			tile = new DynamicTile(position.x, position.y, position.z);
 		} else {
 			tile = new StaticTile(position.x, position.y, position.z);
 		}
-		g_game.setTile(tile);
+
+		g_game.map.setTile(position, tile);
 	}
 
 	pushUserdata(L, tile);
@@ -5002,7 +5003,7 @@ int32_t LuaScriptInterface::luaGameStartRaid(lua_State* L)
 	// Game.startRaid(raidName)
 	const std::string& raidName = getString(L, 1);
 
-	Raid* raid = Raids::getInstance()->getRaidByName(raidName);
+	Raid* raid = g_game.raids.getRaidByName(raidName);
 	if (raid) {
 		raid->startRaid();
 		pushBoolean(L, true);
@@ -5219,12 +5220,12 @@ int32_t LuaScriptInterface::luaTileCreate(lua_State* L)
 	// Tile(position)
 	Tile* tile;
 	if (isTable(L, 2)) {
-		tile = g_game.getTile(getPosition(L, 2));
+		tile = g_game.map.getTile(getPosition(L, 2));
 	} else {
 		uint8_t z = getNumber<uint8_t>(L, 4);
 		uint16_t y = getNumber<uint16_t>(L, 3);
 		uint16_t x = getNumber<uint16_t>(L, 2);
-		tile = g_game.getTile(x, y, z);
+		tile = g_game.map.getTile(x, y, z);
 	}
 
 	if (tile) {
@@ -5915,7 +5916,7 @@ int32_t LuaScriptInterface::luaNetworkMessageAddU16(lua_State* L)
 	uint16_t number = getNumber<uint16_t>(L, 2);
 	NetworkMessage* message = getUserdata<NetworkMessage>(L, 1);
 	if (message) {
-		message->add<uint16_t>(number);
+		message->Add<uint16_t>(number);
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -5929,7 +5930,7 @@ int32_t LuaScriptInterface::luaNetworkMessageAddU32(lua_State* L)
 	uint32_t number = getNumber<uint32_t>(L, 2);
 	NetworkMessage* message = getUserdata<NetworkMessage>(L, 1);
 	if (message) {
-		message->add<uint32_t>(number);
+		message->Add<uint32_t>(number);
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -5943,7 +5944,7 @@ int32_t LuaScriptInterface::luaNetworkMessageAddU64(lua_State* L)
 	uint64_t number = getNumber<uint64_t>(L, 2);
 	NetworkMessage* message = getUserdata<NetworkMessage>(L, 1);
 	if (message) {
-		message->add<uint64_t>(number);
+		message->Add<uint64_t>(number);
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -6867,7 +6868,7 @@ int32_t LuaScriptInterface::luaItemMoveTo(lua_State* L)
 	}
 
 	const Position& position = getPosition(L, 2);
-	Tile* tile = g_game.getTile(position);
+	Tile* tile = g_game.map.getTile(position);
 	if (!tile) {
 		lua_pushnil(L);
 		return 1;
@@ -9492,7 +9493,7 @@ int32_t LuaScriptInterface::luaPlayerHasMount(lua_State* L)
 	}
 
 	uint8_t mountId = getNumber<uint8_t>(L, 2);
-	Mount* mount = Mounts::getInstance()->getMountByID(mountId);
+	Mount* mount = g_game.mounts.getMountByID(mountId);
 	if (mount) {
 		pushBoolean(L, player->hasMount(mount));
 	} else {
@@ -9776,7 +9777,7 @@ int32_t LuaScriptInterface::luaPlayerGetHouse(lua_State* L)
 		return 1;
 	}
 
-	House* house = Houses::getInstance().getHouseByPlayerId(player->getGUID());
+	House* house = g_game.map.houses.getHouseByPlayerId(player->getGUID());
 	if (house) {
 		pushUserdata<House>(L, house);
 		setMetatable(L, -1, "House");
@@ -10444,7 +10445,7 @@ int32_t LuaScriptInterface::luaGroupCreate(lua_State* L)
 	// Group(id)
 	uint32_t id = getNumber<uint32_t>(L, 2);
 
-	Group* group = g_game.getGroup(id);
+	Group* group = g_game.groups.getGroup(id);
 	if (group) {
 		pushUserdata<Group>(L, group);
 		setMetatable(L, -1, "Group");
@@ -10798,9 +10799,9 @@ int32_t LuaScriptInterface::luaTownCreate(lua_State* L)
 	// Town(id or name)
 	Town* town;
 	if (isNumber(L, 2)) {
-		town = Towns::getInstance().getTown(getNumber<uint32_t>(L, 2));
+		town = g_game.map.towns.getTown(getNumber<uint32_t>(L, 2));
 	} else if (isString(L, 2)) {
-		town = Towns::getInstance().getTown(getString(L, 2));
+		town = g_game.map.towns.getTown(getString(L, 2));
 	} else {
 		town = nullptr;
 	}
@@ -10854,7 +10855,7 @@ int32_t LuaScriptInterface::luaTownGetTemplePosition(lua_State* L)
 int32_t LuaScriptInterface::luaHouseCreate(lua_State* L)
 {
 	// House(id)
-	House* house = Houses::getInstance().getHouse(getNumber<uint32_t>(L, 2));
+	House* house = g_game.map.houses.getHouse(getNumber<uint32_t>(L, 2));
 	if (house) {
 		pushUserdata<House>(L, house);
 		setMetatable(L, -1, "House");
@@ -10897,7 +10898,7 @@ int32_t LuaScriptInterface::luaHouseGetTown(lua_State* L)
 		return 1;
 	}
 
-	Town* town = Towns::getInstance().getTown(house->getTownId());
+	Town* town = g_game.map.towns.getTown(house->getTownId());
 	if (town) {
 		pushUserdata<Town>(L, town);
 		setMetatable(L, -1, "Town");
