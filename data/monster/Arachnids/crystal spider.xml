@@ -2,8 +2,7 @@
 <monster name="Crystal Spider" nameDescription="a crystal spider" race="undead" experience="900" speed="220" manacost="0">
 	<health now="1250" max="1250"/>
 	<look type="263" corpse="7344"/>
-	<targetchange interval="4000" chance="15"/>
-	<flags>
+	<targetchange interval="4000" chance="15"/>	<flags>
 		<flag summonable="0"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
@@ -43,11 +42,9 @@
 		<immunity fire="1"/>
 		<immunity ice="1"/>
 		<immunity paralyze="1"/>
-		<immunity outfit="1"/>
-		<immunity drunk="1"/>
 		<immunity invisible="1"/>
 	</immunities>
-	<voices interval="5000" chance="10">
+	<voices interval="2000" chance="7">
 		<voice sentence="Screeech!"/>
 	</voices>
 	<loot>

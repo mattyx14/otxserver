@@ -142,6 +142,7 @@ function getTibianTime()
 	end
 	return hours .. ':' .. minutes
 end
+
 function doForceSummonCreature(name, pos)
 	local creature = doSummonCreature(name, pos)
 	if creature == false then
@@ -258,14 +259,14 @@ function Creature.getClosestFreePosition(self, position, extended)
 	local usePosition = Position(position)
 	local tiles = { usePosition:getTile() }
 	local length = extended and 2 or 1
-	
+
 	local tile
 	for y = -length, length do
 		for x = -length, length do
 			if x ~= 0 or y ~= 0 then
 				usePosition.x = position.x + x
 				usePosition.y = position.y + y
-				
+
 				tile = usePosition:getTile()
 				if tile then
 					tiles[#tiles + 1] = tile
@@ -273,7 +274,7 @@ function Creature.getClosestFreePosition(self, position, extended)
 			end
 		end
 	end
-	
+
 	for i = 1, #tiles do
 		tile = tiles[i]
 		if tile:getCreatureCount() == 0 and not tile:hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) then
@@ -321,6 +322,25 @@ function Player.getDepotItems(self, depotId)
 	return self:getDepotChest(depotId, true):getItemHoldingCount()
 end
 
+function Player.getLossPercent(self)
+	local blessings = 0
+	local lossPercent = {
+		[0] = 100,
+		[1] = 70,
+		[2] = 45,
+		[3] = 25,
+		[4] = 10,
+		[5] = 0
+	}
+
+	for i = 1, 5 do
+		if self:hasBlessing(i) then
+			blessings = blessings + 1
+		end
+	end
+	return lossPercent[blessings]
+end
+
 function Player.isUsingOtClient(self)
 	return self:getClient().os >= CLIENTOS_OTCLIENT_LINUX
 end
@@ -329,7 +349,7 @@ function Player.sendExtendedOpcode(self, opcode, buffer)
 	if not self:isUsingOtClient() then
 		return false
 	end
-	
+
 	local networkMessage = NetworkMessage()
 	networkMessage:addByte(0x32)
 	networkMessage:addByte(opcode)
@@ -382,46 +402,6 @@ function Game.broadcastMessage(message, messageType)
 	end
 end
 
-function Player.getBlessings(self)
-	local blessings = 0
-	for i = 1, 5 do
-		if self:hasBlessing(i) then
-			blessings = blessings + 1
-		end
-	end
-	return blessings
-end
-
-function Player.isMage(self)
-	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
-end
-
-function Player.isWarrior(self)
-	return isInArray({3, 4, 7, 8}, self:getVocation():getId())
-end
-
-function getRealTime()
-	local hours = tonumber(os.date("%H", os.time()))
-	local minutes = tonumber(os.date("%M", os.time()))
-
-	if hours < 10 then
-		hours = '0' .. hours
-	end
-	if minutes < 10 then
-		minutes = '0' .. minutes
-	end
-	return hours .. ':' .. minutes
-end
-
-function getRealDate()
-	local month = tonumber(os.date("%m", os.time()))
-	local day = tonumber(os.date("%d", os.time()))
-
-	if month < 10 then
-		month = '0' .. month
-	end
-	if day < 10 then
-		day = '0' .. day
-	end
-	return day .. '/' .. month
+if nextUseStaminaTime == nil then
+	nextUseStaminaTime = {}
 end

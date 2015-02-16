@@ -5,8 +5,7 @@ hotkeyAimbotEnabled = "yes"
 protectionLevel = 1
 killsToRedSkull = 3
 killsToBlackSkull = 6
-pzLocked = 60 * 1000
-removeAmmoWhenUsingDistanceWeapon = "yes"
+pzLocked = 60000
 removeChargesFromRunes = "yes"
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
 whiteSkullTime = 15 * 60 * 1000
@@ -40,7 +39,7 @@ deathLosePercent = -1
 -- Houses
 -- NOTE: set housePriceEachSQM to -1 to disable the ingame buy house functionality
 housePriceEachSQM = 1000
-houseRentPeriod = "weekly"
+houseRentPeriod = "never"
 
 -- Item Usage
 timeBetweenActions = 200
@@ -59,9 +58,9 @@ maxMarketOffersAtATimePerPlayer = 100
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = ""
-mysqlPass = ""
-mysqlDatabase = ""
+mysqlUser = "root"
+mysqlPass = "master1"
+mysqlDatabase = "forgotten"
 mysqlPort = 3306
 mysqlSock = ""
 
@@ -89,8 +88,8 @@ deSpawnRadius = 50
 staminaSystem = "yes"
 
 -- Scripts
-warnUnsafeScripts = "no"
-convertUnsafeScripts = "no"
+warnUnsafeScripts = "yes"
+convertUnsafeScripts = "yes"
 
 -- Startup
 -- NOTE: defaultPriority only works on Windows and sets process priority.

@@ -59,26 +59,89 @@ function removeBoss(fromArea, bossName)
 	end
 end
 
---[[Arena Quest
-function clearArena(fromPos, toPos)
-	-- local exitPosition = Position(33049, 31017, 2)
-	for x = fromPos.x, toPos.x do
-		for y = fromPos.y, toPos.y do
-			for z = fromPos.z, toPos.z do
-				local creature = Tile(x, y, z):getTopCreature()
-				if creature then
-					if creature:isPlayer() then
-						creature:teleportTo(exitPosition)
-						exitPosition:sendMagicEffect(CONST_ME_TELEPORT)
-					else
-						creature:remove()
-					end
-				end
+function getRealTime()
+	local hours = tonumber(os.date("%H", os.time()))
+	local minutes = tonumber(os.date("%M", os.time()))
+
+	if hours < 10 then
+		hours = '0' .. hours
+	end
+	if minutes < 10 then
+		minutes = '0' .. minutes
+	end
+	return hours .. ':' .. minutes
+end
+
+function getRealDate()
+	local month = tonumber(os.date("%m", os.time()))
+	local day = tonumber(os.date("%d", os.time()))
+
+	if month < 10 then
+		month = '0' .. month
+	end
+	if day < 10 then
+		day = '0' .. day
+	end
+	return day .. '/' .. month
+end
+
+function getAccountNumberByPlayerName(name)
+	local player = Player(name)
+	if player ~= nil then
+		return player:getAccountId()
+	end
+
+	local resultId = db.storeQuery("SELECT `account_id` FROM `players` WHERE `name` = " .. db.escapeString(name))
+	if resultId ~= false then
+		local accountId = result.getDataInt(resultId, "account_id")
+		result.free(resultId)
+		return accountId
+	end
+	return 0
+end
+
+function iterateArea(func, from, to)
+	for z = from.z, to.z do
+		for y = from.y, to.y do
+			for x = from.x, to.x do
+				func(Position(x, y, z))
 			end
 		end
 	end
 end
-]]
+
+-- Game --
+function Game.getPlayersByIPAddress(ip, mask)
+	if not mask then mask = 0xFFFFFFFF end
+	local masked = bit.band(ip, mask)
+	local result = {}
+	for _, player in ipairs(Game.getPlayers()) do
+		if bit.band(player:getIp(), mask) == masked then
+			result[#result + 1] = player
+		end
+	end
+	return result
+end
+
+function Game.getPlayersByAccountNumber(accountNumber)
+	local result = {}
+	for _, player in ipairs(Game.getPlayers()) do
+		if player:getAccountId() == accountNumber then
+			result[#result + 1] = player
+		end
+	end
+	return result
+end
+
+function Game.getHouseByPlayerGUID(playerGUID)
+	for _, house in ipairs(Game.getHouses()) do
+		if house:getOwnerGuid() == playerGUID then
+			return house
+		end
+	end
+	return nil
+end
+
 
 -- Item --
 function Item.setText(self, text)
@@ -95,6 +158,14 @@ function Item.setDescription(self, description)
 	else
 		self:removeAttribute(ITEM_ATTRIBUTE_DESCRIPTION)
 	end
+end
+
+function Item.setUniqueId(self, uniqueId)
+	if type(uniqueId) ~= 'number' or uniqueId < 0 or uniqueId > 65535 then
+		return false
+	end
+
+	self:setAttribute(ITEM_ATTRIBUTE_UNIQUEID, uniqueId)
 end
 
 -- Party --
@@ -165,9 +236,24 @@ function Player.transferMoneyTo(self, target, amount)
 	return true
 end
 
+function Player.getBlessings(self)
+	local blessings = 0
+	for i = 1, 5 do
+		if self:hasBlessing(i) then
+			blessings = blessings + 1
+		end
+	end
+	return blessings
+end
+
+function Player.isMage(self)
+	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
+end
+
 function Player.isPromoted(self)
 	local vocation = self:getVocation()
-	if vocation:getId() == 0 or vocation:getPromotion():getId() == 0 then
+	if vocation:getId() == 0
+			or vocation:getPromotion():getId() == 0 then
 		return true
 	end
 
@@ -175,7 +261,7 @@ function Player.isPromoted(self)
 end
 
 -- Tile --
-function Tile.relocateTo(self, toPosition)
+function Tile.relocateTo(self, toPosition, pushMove, monsterPosition)
 	if self:getPosition() == toPosition then
 		return false
 	end
@@ -188,11 +274,15 @@ function Tile.relocateTo(self, toPosition)
 		local thing = self:getThing(i)
 		if thing then
 			if thing:isItem() then
-				if ItemType(thing:getId()):isMovable() then
+				if ItemType(thing.itemid):isMovable() then
 					thing:moveTo(toPosition)
 				end
 			elseif thing:isCreature() then
-				thing:teleportTo(toPosition)
+				if monsterPosition and thing:isMonster() then
+					thing:teleportTo(monsterPosition, pushMove)
+				else
+					thing:teleportTo(toPosition, pushMove)
+				end
 			end
 		end
 	end

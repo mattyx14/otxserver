@@ -1,5 +1,6 @@
 local MusicEffect = {
 	[2070] = CONST_ME_SOUND_GREEN, 	--Wooden Flute
+	[2071] = CONST_ME_SOUND_GREEN, 	--Lyre
 	[2072] = CONST_ME_SOUND_GREEN, 	--Lute
 	[2073] = CONST_ME_SOUND_GREEN, 	--Drum
 	[2074] = CONST_ME_SOUND_BLUE, 	--Panpipes

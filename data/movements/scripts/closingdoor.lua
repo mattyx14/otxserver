@@ -12,20 +12,20 @@ function onStepOut(creature, item, position, fromPosition)
 		query = Tile(newPosition):queryAdd(creature)
 	end
 
-	if query == RETURNVALUE_NOERROR and query ~= RETURNVALUE_NOTENOUGHROOM then
-		tile:relocateTo(newPosition)
+	if query == RETURNVALUE_NOERROR or query ~= RETURNVALUE_NOTENOUGHROOM then
+		doRelocate(position, newPosition)
 	end
 
 	local i, tileItem, tileCount = 1, true, tile:getThingCount()
 	while tileItem and i < tileCount do
 		tileItem = tile:getThing(i)
-		if tileItem and tileItem.uid ~= item.uid and tileItem:getType():isMovable() then
+		if tileItem and tileItem:getUniqueId() ~= item.uid and tileItem:getType():isMovable() then
 			tileItem:remove()
 		else
 			i = i + 1
 		end
 	end
 
-	item:transform(item.itemid - 1)
+	Item(item.uid):transform(item.itemid - 1)
 	return true
 end

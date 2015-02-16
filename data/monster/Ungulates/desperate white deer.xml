@@ -21,7 +21,7 @@
 			<attribute key="areaEffect" value="redshimmer"/>
 		</defense>
 	</defenses>
-	<voices interval="5000" chance="10">
+	<voices interval="2000" chance="7">
 		<voice sentence="*bell*"/>
 		<voice sentence="ROOOAAARR!!"/>
 		<voice sentence="*sniff*"/>

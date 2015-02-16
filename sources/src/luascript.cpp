@@ -1181,14 +1181,14 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(COMBAT_FORMULA_SKILL)
 	registerEnum(COMBAT_FORMULA_DAMAGE)
 
-	registerEnum(NORTH)
-	registerEnum(EAST)
-	registerEnum(SOUTH)
-	registerEnum(WEST)
-	registerEnum(SOUTHWEST)
-	registerEnum(SOUTHEAST)
-	registerEnum(NORTHWEST)
-	registerEnum(NORTHEAST)
+	registerEnum(DIRECTION_NORTH)
+	registerEnum(DIRECTION_EAST)
+	registerEnum(DIRECTION_SOUTH)
+	registerEnum(DIRECTION_WEST)
+	registerEnum(DIRECTION_SOUTHWEST)
+	registerEnum(DIRECTION_SOUTHEAST)
+	registerEnum(DIRECTION_NORTHWEST)
+	registerEnum(DIRECTION_NORTHEAST)
 
 	registerEnum(COMBAT_NONE)
 	registerEnum(COMBAT_PHYSICALDAMAGE)
@@ -1527,9 +1527,11 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_TYPE_KEY)
 	registerEnum(ITEM_TYPE_RUNE)
 
+	registerEnum(ITEM_BAG)
 	registerEnum(ITEM_GOLD_COIN)
 	registerEnum(ITEM_PLATINUM_COIN)
 	registerEnum(ITEM_CRYSTAL_COIN)
+	registerEnum(ITEM_AMULETOFLOSS)
 	registerEnum(ITEM_PARCEL)
 	registerEnum(ITEM_LABEL)
 	registerEnum(ITEM_FIREFIELD_PVP_FULL)
@@ -1593,6 +1595,8 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnum(PLAYERSEX_FEMALE)
 	registerEnum(PLAYERSEX_MALE)
+
+	registerEnum(VOCATION_NONE)
 
 	registerEnum(SKILL_FIST)
 	registerEnum(SKILL_CLUB)
@@ -1718,7 +1722,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ORIGIN_SPELL)
 	registerEnum(ORIGIN_MELEE)
 	registerEnum(ORIGIN_RANGED)
-	
+
 	// Use with house:getAccessList, house:setAccessList
 	registerEnum(GUEST_LIST)
 	registerEnum(SUBOWNER_LIST)
@@ -1932,7 +1936,7 @@ void LuaScriptInterface::registerFunctions()
 
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
-	
+
 	registerMethod("Variant", "getNumber", LuaScriptInterface::luaVariantGetNumber);
 	registerMethod("Variant", "getString", LuaScriptInterface::luaVariantGetString);
 	registerMethod("Variant", "getPosition", LuaScriptInterface::luaVariantGetPosition);
@@ -2121,7 +2125,7 @@ void LuaScriptInterface::registerFunctions()
 	registerClass("Teleport", "Item", LuaScriptInterface::luaTeleportCreate);
 	registerMetaMethod("Teleport", "__eq", LuaScriptInterface::luaUserdataCompare);
 	registerMetaMethod("Teleport", "__index", LuaScriptInterface::luaItemIndex);
-	
+
 	registerMethod("Teleport", "isTeleport", LuaScriptInterface::luaTeleportIsTeleport);
 
 	registerMethod("Teleport", "getDestination", LuaScriptInterface::luaTeleportGetDestination);
@@ -2218,6 +2222,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getIp", LuaScriptInterface::luaPlayerGetIp);
 	registerMethod("Player", "getAccountId", LuaScriptInterface::luaPlayerGetAccountId);
 	registerMethod("Player", "getLastLoginSaved", LuaScriptInterface::luaPlayerGetLastLoginSaved);
+	registerMethod("Player", "getLastLogout", LuaScriptInterface::luaPlayerGetLastLogout);
 
 	registerMethod("Player", "getAccountType", LuaScriptInterface::luaPlayerGetAccountType);
 	registerMethod("Player", "setAccountType", LuaScriptInterface::luaPlayerSetAccountType);
@@ -2715,6 +2720,8 @@ void LuaScriptInterface::registerClass(const std::string& className, const std::
 		lua_pushnumber(m_luaState, LuaData_Monster);
 	} else if (className == "Npc") {
 		lua_pushnumber(m_luaState, LuaData_Npc);
+	} else if (className == "Tile") {
+		lua_pushnumber(m_luaState, LuaData_Tile);
 	} else {
 		lua_pushnumber(m_luaState, LuaData_Unknown);
 	}
@@ -3954,20 +3961,10 @@ int32_t LuaScriptInterface::luaDoMoveCreature(lua_State* L)
 	}
 
 	Direction direction = getNumber<Direction>(L, 2);
-	switch (direction) {
-		case NORTH:
-		case SOUTH:
-		case WEST:
-		case EAST:
-		case SOUTHWEST:
-		case NORTHWEST:
-		case NORTHEAST:
-		case SOUTHEAST:
-			break;
-		default:
-			reportErrorFunc("No valid direction");
-			pushBoolean(L, false);
-			return 1;
+	if (direction > DIRECTION_LAST) {
+		reportErrorFunc("No valid direction");
+		pushBoolean(L, false);
+		return 1;
 	}
 
 	ReturnValue ret = g_game.internalMoveCreature(creature, direction, FLAG_NOLIMIT);
@@ -4177,7 +4174,7 @@ int32_t LuaScriptInterface::luaAddEvent(lua_State* L)
 			lua_rawgeti(L, -1, 't');
 
 			LuaDataType type = getNumber<LuaDataType>(L, -1);
-			if (type != LuaData_Unknown) {
+			if (type != LuaData_Unknown && type != LuaData_Tile) {
 				indexes.push_back({i, type});
 			}
 			lua_pop(globalState, 2);
@@ -4186,7 +4183,7 @@ int32_t LuaScriptInterface::luaAddEvent(lua_State* L)
 		if (!indexes.empty()) {
 			if (g_config.getBoolean(ConfigManager::WARN_UNSAFE_SCRIPTS)) {
 				bool plural = indexes.size() > 1;
-				
+
 				std::string warningString = "Argument";
 				if (plural) {
 					warningString += 's';
@@ -4521,7 +4518,7 @@ int32_t LuaScriptInterface::luaDatabaseAsyncExecute(lua_State* L)
 			if (!luaState) {
 				return;
 			}
-			
+
 			if (!LuaScriptInterface::reserveScriptEnv()) {
 				luaL_unref(luaState, LUA_REGISTRYINDEX, ref);
 				return;
@@ -4558,7 +4555,7 @@ int32_t LuaScriptInterface::luaDatabaseAsyncStoreQuery(lua_State* L)
 			if (!luaState) {
 				return;
 			}
-			
+
 			if (!LuaScriptInterface::reserveScriptEnv()) {
 				luaL_unref(luaState, LUA_REGISTRYINDEX, ref);
 				return;
@@ -6854,7 +6851,7 @@ int32_t LuaScriptInterface::luaItemRemoveAttribute(lua_State* L)
 
 int32_t LuaScriptInterface::luaItemMoveTo(lua_State* L)
 {
-	// item:moveTo(position)
+	// item:moveTo(position or cylinder)
 	Item** itemPtr = getRawUserdata<Item>(L, 1);
 	if (!itemPtr) {
 		lua_pushnil(L);
@@ -6867,23 +6864,42 @@ int32_t LuaScriptInterface::luaItemMoveTo(lua_State* L)
 		return 1;
 	}
 
-	const Position& position = getPosition(L, 2);
-	Tile* tile = g_game.map.getTile(position);
-	if (!tile) {
+	Cylinder* toCylinder;
+	if (isUserdata(L, 2)) {
+		const LuaDataType type = getUserdataType(L, 2);
+		switch (type) {
+			case LuaData_Container:
+				toCylinder = getUserdata<Container>(L, 2);
+				break;
+			case LuaData_Player:
+				toCylinder = getUserdata<Player>(L, 2);
+				break;
+			case LuaData_Tile:
+				toCylinder = getUserdata<Tile>(L, 2);
+				break;
+			default:
+				toCylinder = nullptr;
+				break;
+		}
+	} else {
+		toCylinder = g_game.map.getTile(getPosition(L, 2));
+	}
+
+	if (!toCylinder) {
 		lua_pushnil(L);
 		return 1;
 	}
 
-	if (item->getParent() == tile) {
+	if (item->getParent() == toCylinder) {
 		pushBoolean(L, true);
 		return 1;
 	}
 
 	if (item->getParent() == VirtualCylinder::virtualCylinder) {
-		pushBoolean(L, g_game.internalAddItem(tile, item) == RETURNVALUE_NOERROR);
+		pushBoolean(L, g_game.internalAddItem(toCylinder, item) == RETURNVALUE_NOERROR);
 	} else {
 		Item* moveItem = nullptr;
-		ReturnValue ret = g_game.internalMoveItem(item->getParent(), tile, INDEX_WHEREEVER, item, item->getItemCount(), &moveItem, FLAG_NOLIMIT | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE | FLAG_IGNORENOTMOVEABLE);
+		ReturnValue ret = g_game.internalMoveItem(item->getParent(), toCylinder, INDEX_WHEREEVER, item, item->getItemCount(), &moveItem, FLAG_NOLIMIT | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE | FLAG_IGNORENOTMOVEABLE);
 		if (moveItem) {
 			*itemPtr = moveItem;
 		}
@@ -8024,14 +8040,14 @@ int32_t LuaScriptInterface::luaCreatureTeleportTo(lua_State* L)
 	if (!pushMovement) {
 		if (oldPosition.x == position.x) {
 			if (oldPosition.y < position.y) {
-				g_game.internalCreatureTurn(creature, SOUTH);
+				g_game.internalCreatureTurn(creature, DIRECTION_SOUTH);
 			} else {
-				g_game.internalCreatureTurn(creature, NORTH);
+				g_game.internalCreatureTurn(creature, DIRECTION_NORTH);
 			}
 		} else if (oldPosition.x > position.x) {
-			g_game.internalCreatureTurn(creature, WEST);
+			g_game.internalCreatureTurn(creature, DIRECTION_WEST);
 		} else if (oldPosition.x < position.x) {
-			g_game.internalCreatureTurn(creature, EAST);
+			g_game.internalCreatureTurn(creature, DIRECTION_EAST);
 		}
 	}
 	pushBoolean(L, true);
@@ -8249,6 +8265,18 @@ int32_t LuaScriptInterface::luaPlayerGetLastLoginSaved(lua_State* L)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		lua_pushnumber(L, player->getLastLoginSaved());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int32_t LuaScriptInterface::luaPlayerGetLastLogout(lua_State* L)
+{
+	// player:getLastLogout()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getLastLogout());
 	} else {
 		lua_pushnil(L);
 	}
@@ -12889,18 +12917,18 @@ void LuaEnvironment::executeTimerEvent(uint32_t eventIndex)
 	if (it == m_timerEvents.end()) {
 		return;
 	}
-	
+
 	LuaTimerEventDesc timerEventDesc = std::move(it->second);
 	m_timerEvents.erase(it);
-	
+
 	//push function
 	lua_rawgeti(m_luaState, LUA_REGISTRYINDEX, timerEventDesc.function);
-	
+
 	//push parameters
 	for (auto parameter : boost::adaptors::reverse(timerEventDesc.parameters)) {
 		lua_rawgeti(m_luaState, LUA_REGISTRYINDEX, parameter);
 	}
-	
+
 	//call the function
 	if (reserveScriptEnv()) {
 		ScriptEnvironment* env = getScriptEnv();
@@ -12910,7 +12938,7 @@ void LuaEnvironment::executeTimerEvent(uint32_t eventIndex)
 	} else {
 		std::cout << "[Error - LuaScriptInterface::executeTimerEvent] Call stack overflow" << std::endl;
 	}
-	
+
 	//free resources
 	luaL_unref(m_luaState, LUA_REGISTRYINDEX, timerEventDesc.function);
 	for (auto parameter : timerEventDesc.parameters) {

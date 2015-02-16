@@ -3,6 +3,15 @@ CONDITION_EXHAUST = CONDITION_EXHAUST_WEAPON
 TALKTYPE_ORANGE_1 = TALKTYPE_MONSTER_SAY
 TALKTYPE_ORANGE_2 = TALKTYPE_MONSTER_YELL
 
+NORTH = DIRECTION_NORTH
+EAST = DIRECTION_EAST
+SOUTH = DIRECTION_SOUTH
+WEST = DIRECTION_WEST
+SOUTHWEST = DIRECTION_SOUTHWEST
+SOUTHEAST = DIRECTION_SOUTHEAST
+NORTHWEST = DIRECTION_NORTHWEST
+NORTHEAST = DIRECTION_NORTHEAST
+
 function pushThing(thing)
 	local t = {uid = 0, itemid = 0, type = 0, actionid = 0}
 	if thing ~= nil then
@@ -756,7 +765,7 @@ end
 function doRelocate(fromPos, toPos)
 	if fromPos == toPos then
 		return false
-	end	
+	end
 
 	local fromTile = Tile(fromPos)
 	if fromTile == nil then
@@ -778,7 +787,7 @@ function doRelocate(fromPos, toPos)
 				thing:teleportTo(toPos)
 			end
 		end
-	end		
+	end
 	return true
 end
 

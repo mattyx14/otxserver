@@ -148,7 +148,6 @@
 
 	<!-- Teleport (stairs, ladders) -->
 	<action itemid="430" script="other/teleport.lua"/>
-	<action itemid="1369" script="other/teleport.lua"/>
 	<action itemid="1386" script="other/teleport.lua"/>
 	<action itemid="3678" script="other/teleport.lua"/>
 	<action itemid="5543" script="other/teleport.lua"/>
@@ -212,6 +211,8 @@
 	<action fromid="17235" toid="17238" script="other/doors.lua"/>
 	<action fromid="18208" toid="18209" script="other/doors.lua"/>
 	<action fromid="13020" toid="13023" script="other/doors.lua"/>
+	<action fromid="14755" toid="14760" script="other/hive_doors1.lua"/>
+	<action fromid="14767" toid="14771" script="other/hive_doors2.lua"/>
 		<!-- Keys -->
 		<action fromid="2086" toid="2092" script="other/doors.lua"/>
 		<action itemid="10032" script="other/doors.lua"/>
@@ -350,9 +351,27 @@
 	<action itemid="2785" script="other/blueberrybush.lua"/>
 	<action itemid="2579" script="other/trap.lua"/>
 	<action fromid="5792" toid="5797" script="other/dice.lua"/>
-	<!-- Offline Training -->
+	<action itemid="6277" script="other/baking.lua"/>
+	<action itemid="8846" script="other/baking.lua"/>
+	<action itemid="9999" script="other/blessedsteak.lua"/>
+	<action fromid="11258" toid="11262" script="other/blessingCharms.lua"/>
+	<action itemid="5928" script="other/catchFish.lua"/>
+	<action itemid="6558" script="other/concentrated_demonic_blood.lua"/>
+	<action itemid="13941" script="other/cup of molten gold.lua"/>
+	<action itemid="3955" script="other/voodoo_doll.lua"/>
+	<action itemid="5468" script="other/firebug.lua"/>
+	<action itemid="5957" script="other/lotteryticket.lua"/>
+	<action itemid="18511" script="other/musicbox.lua"/>
+	<action itemid="16101" script="other/premiumscroll.lua"/>
+	<action itemid="1369" script="other/teleportdrawwell.lua"/>
 
-	<action fromid="18488" toid="18492" script="other/skilltrainer.lua"/>
+	<!-- Belongings of a Deceased, Gooey Mass and Gnomish Supply Package -->
+	<action itemid="13670" script="other/randomItemBags.lua"/>
+	<action itemid="15572" script="other/randomItemBags.lua"/>
+	<action itemid="18215" script="other/randomItemBags.lua"/>
+
+	<!-- Offline Training -->
+	<action fromid="18488" toid="18492" script="other/offlinetraining.lua"/>
 	<action itemid="12397" script="other/trainingbook.lua"/>
 
 	<!-- Market Action -->

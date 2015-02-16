@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <movements>
+	<!-- allowMovement -->
+	<movevent event="StepIn" actionid="60000" script="allowMovement.lua" />
+	<movevent event="StepOut" actionid="60000" script="allowMovement.lua" />
+
 	<!-- Decaying tiles -->
 	<movevent event="StepIn" itemid="293" script="decay.lua"/>
 	<movevent event="StepIn" itemid="461" script="decay.lua"/>
@@ -134,6 +138,9 @@
 	<movevent event="AddItem" tileitem="1" itemid="1788" script="dough.lua"/>
 	<movevent event="AddItem" tileitem="1" itemid="1790" script="dough.lua"/>
 	<movevent event="AddItem" tileitem="1" itemid="1792" script="dough.lua"/>
+
+	<!-- Create party cake -->
+	<movevent event="AddItem" tileitem="1" itemid="6279" script="cake.lua"/>
 
 	<!-- Campfires -->
 	<movevent event="StepIn" itemid="1423" function="onStepInField"/>

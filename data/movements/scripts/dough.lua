@@ -1,15 +1,10 @@
-local pastries = {
-	[2693] = 2689,
-	[6277] = 6278
-}
-
 function onAddItem(moveitem, tileitem, position)
-	local pastryId = pastries[moveitem.itemid]
-	if not pastryId then
-		return true
+	if moveitem.itemid == 2693 then
+		Item(moveitem.uid):transform(2689)
+		position:sendMagicEffect(CONST_ME_HITBYFIRE)
+	elseif moveitem.itemid == 6277 then
+		Item(moveitem.uid):transform(2687, 12)
+		position:sendMagicEffect(CONST_ME_HITBYFIRE)
 	end
-
-	moveitem:transform(pastryId)
-	position:sendMagicEffect(CONST_ME_HITBYFIRE)
 	return true
 end

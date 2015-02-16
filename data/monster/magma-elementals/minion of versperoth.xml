@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Minion Of Versperoth" nameDescription="a minion of Versperoth" race="blood" experience="2900" speed="290" manacost="0">
+	<health now="3800" max="3800"/>
+	<look type="491" corpse="0"/>
+	<targetchange interval="5000" chance="8"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="90" attack="90"/>
+		<attack name="manadrain" interval="2800" chance="100" range="7" min="-340" max="-540">
+	</attack>
+	</attacks>
+	<defenses armor="55" defense="55"/>
+	<elements>
+		<element energyPercent="-10"/>
+		<element icePercent="-10"/>
+		<element firePercent="+30"/>
+	</elements>
+	<immunities>
+		<immunity earth="100"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="100"/>
+		<immunity invisible="100"/>
+	</immunities>
+	<voices interval="2500" chance="10">
+		<voice sentence="Creak!"/>
+		<voice sentence="Crunch!"/>
+	</voices>
+</monster>

@@ -12,7 +12,10 @@ function onLogin(player)
 	end
 	player:sendTextMessage(MESSAGE_STATUS_DEFAULT, loginStr)
 
+	nextUseStaminaTime[player:getId()] = 0
+
 	player:registerEvent("PlayerDeath")
+	player:registerEvent("DropLoot")
 
 	-- Custom
 	player:registerEvent("AdvanceSave")

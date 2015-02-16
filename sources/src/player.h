@@ -210,8 +210,6 @@ class Player final : public Creature, public Cylinder
 		uint16_t getStaminaMinutes() const {
 			return staminaMinutes;
 		}
-		void regenerateStamina(int32_t offlineTime);
-		void useStamina();
 
 		bool addOfflineTrainingTries(skills_t skill, uint64_t tries);
 
@@ -249,7 +247,9 @@ class Player final : public Creature, public Cylinder
 		uint8_t getGuildLevel() const {
 			return guildLevel;
 		}
-		void setGuildLevel(uint8_t newGuildLevel);
+		void setGuildLevel(uint8_t newGuildLevel) {
+			guildLevel = newGuildLevel;
+		}
 
 		bool isGuildMate(const Player* player) const;
 
@@ -378,7 +378,9 @@ class Player final : public Creature, public Cylinder
 		bool getStorageValue(const uint32_t key, int32_t& value) const;
 		void genReservedStorageRange();
 
-		void setGroup(Group* newGroup);
+		void setGroup(Group* newGroup) {
+			group = newGroup;
+		}
 		Group* getGroup() const {
 			return group;
 		}
@@ -708,6 +710,9 @@ class Player final : public Creature, public Cylinder
 		bool getOutfitAddons(const Outfit& outfit, uint8_t& addons) const;
 
 		bool canLogout();
+
+		size_t getMaxVIPEntries() const;
+		size_t getMaxDepotItems() const;
 
 		//tile
 		//send methods
@@ -1174,7 +1179,7 @@ class Player final : public Creature, public Cylinder
 		bool hasCapacity(const Item* item, uint32_t count) const;
 
 		void gainExperience(uint64_t exp, Creature* source);
-		void addExperience(Creature* source, uint64_t exp, bool sendText = false, bool applyStaminaChange = false, bool applyMultiplier = false);
+		void addExperience(Creature* source, uint64_t exp, bool sendText = false);
 		void removeExperience(uint64_t exp, bool sendText = false);
 
 		void updateInventoryWeight();
@@ -1243,7 +1248,6 @@ class Player final : public Creature, public Cylinder
 
 		time_t lastLoginSaved;
 		time_t lastLogout;
-		time_t nextUseStaminaTime;
 
 		uint64_t experience;
 		uint64_t manaSpent;
@@ -1290,10 +1294,7 @@ class Player final : public Creature, public Cylinder
 		uint32_t guid;
 		uint32_t windowTextId;
 		uint32_t editListId;
-		uint32_t maxDepotItems;
-		uint32_t maxVipEntries;
 		uint32_t soul;
-		uint32_t soulMax;
 		uint32_t manaMax;
 		int32_t varSkills[SKILL_LAST + 1];
 		int32_t varStats[STAT_LAST + 1];
@@ -1355,14 +1356,11 @@ class Player final : public Creature, public Cylinder
 			return vocation->getAttackSpeed();
 		}
 
-		uint16_t getDropPercent() const;
-
 		static uint8_t getPercentLevel(uint64_t count, uint64_t nextLevelCount);
 		double getLostPercent() const;
 		uint64_t getLostExperience() const final {
 			return skillLoss ? static_cast<uint64_t>(experience * getLostPercent()) : 0;
 		}
-		void dropLoot(Container* corpse, Creature* _lastHitCreature) final;
 		uint32_t getDamageImmunities() const final {
 			return damageImmunities;
 		}

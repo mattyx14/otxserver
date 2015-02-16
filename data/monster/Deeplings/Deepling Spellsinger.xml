@@ -26,7 +26,7 @@
 		</attack>
 		<attack name="lifedrain" interval="2000" chance="15" range="7" min="-60" max="-140">
 			<attribute key="areaEffect" value="smallplants"/>
-		</attack>		
+		</attack>
 		<attack name="manadrain" interval="2000" chance="10" range="7" min="-60" max="-140">
 			<attribute key="areaEffect" value="smallplants"/>
 		</attack>
@@ -39,7 +39,7 @@
 		<immunity drown="1" />
 		<immunity fire="1" />
 	</immunities>
-	<voices interval="5000" chance="10">
+	<voices interval="2000" chance="7">
 		<voice sentence="Jey Obu giotja!!"/>
 		<voice sentence="Mmmmmoooaaaaaahaaa!!"/>
 	</voices>

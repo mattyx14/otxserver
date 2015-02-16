@@ -62,7 +62,8 @@ enum LuaDataType {
 	LuaData_Teleport,
 	LuaData_Player,
 	LuaData_Monster,
-	LuaData_Npc
+	LuaData_Npc,
+	LuaData_Tile
 };
 
 struct LuaVariant {
@@ -403,7 +404,7 @@ class LuaScriptInterface
 			pushString(L, value);
 			lua_setfield(L, -2, index);
 		}
-	
+
 		static std::string escapeString(const std::string& string);
 
 #ifndef LUAJIT_VERSION
@@ -773,7 +774,7 @@ class LuaScriptInterface
 		static int32_t luaTeleportCreate(lua_State* L);
 
 		static int32_t luaTeleportIsTeleport(lua_State* L);
-		
+
 		static int32_t luaTeleportGetDestination(lua_State* L);
 		static int32_t luaTeleportSetDestination(lua_State* L);
 
@@ -865,6 +866,7 @@ class LuaScriptInterface
 		static int32_t luaPlayerGetIp(lua_State* L);
 		static int32_t luaPlayerGetAccountId(lua_State* L);
 		static int32_t luaPlayerGetLastLoginSaved(lua_State* L);
+		static int32_t luaPlayerGetLastLogout(lua_State* L);
 
 		static int32_t luaPlayerGetAccountType(lua_State* L);
 		static int32_t luaPlayerSetAccountType(lua_State* L);
@@ -1260,7 +1262,7 @@ class LuaScriptInterface
 
 		static int32_t luaPartyGetLeader(lua_State* L);
 		static int32_t luaPartySetLeader(lua_State* L);
-	
+
 		static int32_t luaPartyGetMembers(lua_State* L);
 		static int32_t luaPartyGetMemberCount(lua_State* L);
 

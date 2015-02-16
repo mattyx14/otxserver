@@ -20,10 +20,8 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	end
 
-	local items = {}
-	local reward
-
-	local size = item:isContainer() and Container(item.uid):getSize() or 0
+	local items, reward = {}
+	local size = item:isContainer() and item:getSize() or 0
 	if size == 0 then
 		reward = item:clone()
 	else

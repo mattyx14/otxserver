@@ -6,7 +6,7 @@
 		The Forgotten Server Version: 1.1
 
 	Codenamed
-		DarkKonia
+		ALPHA
 
 	Forum and website
 		http://www.blacktibia.org/f19-otx-server-3
@@ -15,14 +15,22 @@
 		Project Manager and Founder
 			Mattyx14
 
-		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+		OTX Server C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Mattyx14
 
 		Special Thanks(s)
+			The Forgotten C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/otland/forgottenserver/graphs/contributors
+
+			FORGOTTENSERVER-ORTS C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors
+
 			OpenTibia C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/opentibia/server/graphs/contributors
 				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
 
-			OTX Server C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+			Old OTX Server C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/mattyx14/otxserver/graphs/contributors
 				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin, Brewsterl
 
 	DEVELOPMENT STATUS
@@ -52,7 +60,20 @@
 		- Look Display
 ]
 
-[ OTX Server 3.1 Version - "ALPHA"
+[ OTX Server 3.0.ALPHA Version - "2"
+	- Added new tools
+	- Added missing mounts/outfits
+	- Optimize creatureEvents and moveEvents
+	- Move stamina and loot to LUA
+	- Rewrite Spells // Walkthrough
+	- Update Datapack Monsters
+	- Optimize Code and CleanUP
+
+	This edition alpha show lite changeLog
+		and this have much changes.
+]
+
+[ OTX Server 3.0.ALPHA Version - "1"
 	- Added OTX-icon to console
 	- Added itemAttribute to monsters
 	- Added skill require for use spells this for Evul
