@@ -1,9 +1,9 @@
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local slot = player:getSlotItem(CONST_SLOT_HEAD)
-	if slot and item.uid == slot.uid then
-		player:getPosition():sendMagicEffect(CONST_ME_GIFT_WRAPS)
-		return true
+	local headSlotItem = player:getSlotItem(CONST_SLOT_HEAD)
+	if headSlotItem == nil or item.uid ~= headSlotItem:getUniqueId() then
+		return false
 	end
 
-	return false
+	player:getPosition():sendMagicEffect(CONST_ME_GIFT_WRAPS)
+	return true
 end

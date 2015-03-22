@@ -1,19 +1,19 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ENERGYAREA)
-combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ENERGYAREA)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
 
 local area = createCombatArea(AREA_SQUAREWAVE5, AREADIAGONAL_SQUAREWAVE5)
-combat:setArea(area)
+setCombatArea(combat, area)
 
-function onGetFormulaValues(player, level, maglevel)
+function onGetFormulaValues(cid, level, maglevel)
 	min = -((level / 5) + (maglevel * 4.5) + 20)
 	max = -((level / 5) + (maglevel * 7.6) + 48)
 	return min, max
 end
 
-combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
 
-function onCastSpell(creature, var)
-	return combat:execute(creature, var)
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
 end

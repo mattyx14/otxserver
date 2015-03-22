@@ -1,12 +1,12 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_HITBYFIRE)
-combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_FIRE)
-combat:setParameter(COMBAT_PARAM_CREATEITEM, ITEM_FIREFIELD_PVP_FULL)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_HITBYFIRE)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_FIRE)
+setCombatParam(combat, COMBAT_PARAM_CREATEITEM, ITEM_FIREFIELD_PVP_FULL)
 
 local area = createCombatArea(AREA_SQUARE1X1)
-combat:setArea(area)
+setCombatArea(combat, area)
 
-function onCastSpell(creature, var, isHotkey)
-	return combat:execute(creature, var)
+function onCastSpell(cid, var, isHotkey)
+	return doCombat(cid, combat, var)
 end

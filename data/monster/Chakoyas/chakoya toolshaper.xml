@@ -33,7 +33,7 @@
 	<immunities>
 		<immunity ice="1"/>
 	</immunities>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="Chikuva!!"/>
 		<voice sentence="Jinuma jamjam!"/>
 		<voice sentence="Suvituka siq chuqua!"/>

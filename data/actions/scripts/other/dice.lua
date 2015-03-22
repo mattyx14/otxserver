@@ -1,6 +1,7 @@
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local dicePosition = item:getPosition()
-	local value = math.random(6)
+	local dice = Item(item.uid)
+	local dicePosition = dice:getPosition()
+	local value = math.random(1, 6)
 	local isInGhostMode = player:isInGhostMode()
 
 	dicePosition:sendMagicEffect(CONST_ME_CRAPS, isInGhostMode and player)
@@ -10,6 +11,6 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		player:say(player:getName() .. " rolled a " .. value .. ".", TALKTYPE_MONSTER_SAY, isInGhostMode, pid, dicePosition)
 	end
 
-	item:transform(5791 + value)
+	dice:transform(5791 + value)
 	return true
 end

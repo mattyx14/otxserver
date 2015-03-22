@@ -17,14 +17,14 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	local count = 1
-	local gift = present[math.random(#present)]
+	local gift = present[math.random(1, #present)]
 	if type(gift) == "table" then
 		count = gift[2]
 		gift = gift[1]
 	end
 
 	player:addItem(gift, count)
-	item:remove(1)
+	Item(item.uid):remove(1)
 	fromPosition:sendMagicEffect(CONST_ME_GIFT_WRAPS)
 	return true
 end

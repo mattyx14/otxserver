@@ -1,18 +1,10 @@
-local JUNGLE_GRASS = { 2782, 3985, 19433 }
-local WILD_GROWTH = { 1499, 11099 }
-
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if isInArray(JUNGLE_GRASS, target.itemid) then
-		target:transform(target.itemid == 19433 and 19431 or target.itemid - 1)
-		target:decay()
+function onUse(cid, item, fromPosition, target, toPosition, isHotkey)
+	if target.itemid == 2782 then
+		local iEx = Item(target.uid)
+		iEx:transform(2781)
+		iEx:decay()
 		return true
 	end
 
-	if isInArray(WILD_GROWTH, target.itemid) then
-		toPosition:sendMagicEffect(CONST_ME_POFF)
-		target:remove()
-		return true
-	end
-
-	return destroyItem(player, target, toPosition)
+	return destroyItem(cid, target, toPosition)
 end

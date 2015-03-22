@@ -39,12 +39,14 @@
 	<immunities>
 		<immunity lifedrain="1"/>
 		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
 		<immunity invisible="1"/>
+		<immunity drunk="1"/>
 	</immunities>
 	<summons maxSummons="2">
 		<summon name="War Wolf" interval="2000" chance="10"/>
 	</summons>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="To me, creatures of the wild!"/>
 		<voice sentence="My instincts tell me about your cowardice."/>
 	</voices>

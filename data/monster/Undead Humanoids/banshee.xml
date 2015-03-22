@@ -21,8 +21,7 @@
 		<attack name="lifedrain" interval="2000" chance="15" radius="4" target="0" min="-100" max="-200">
 			<attribute key="areaEffect" value="rednote"/>
 		</attack>
-		<attack name="death" interval="2000" chance="5" range="1" target="1" min="-55" max="-350">
-			<attribute key="shootEffect" value="death"/>
+		<attack name="death" interval="2000" chance="5" range="1" target="1" radius="1" min="-55" max="-350">
 			<attribute key="areaEffect" value="smallclouds"/>
 		</attack>
 		<attack name="speed" interval="2000" chance="10" range="7" speedchange="-300" duration="15000">
@@ -46,7 +45,7 @@
 		<immunity paralyze="1"/>
 		<immunity invisible="1"/>
 	</immunities>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="Dance for me your dance of death!"/>
 		<voice sentence="Let the music play!"/>
 		<voice sentence="I will mourn your death!"/>

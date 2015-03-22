@@ -41,7 +41,7 @@
 		<immunity earth="1"/>
 		<immunity invisible="1"/>
 	</immunities>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="Creak!"/>
 		<voice sentence="Crunch!"/>
 	</voices>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Doomhowl" nameDescription="Doomhowl" experience="3750" speed="320" race="blood" manacost="0">
 	<health now="8500" max="8500"/>
-	<look type="308" corpse="20607"/>	<flags>
+	<targetchange speed="0" chance="8"/>
+	<look type="308" corpse="6080"/>
+	<flags>
 		<flag summonable="0"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
@@ -12,15 +14,15 @@
 		<flag canpushcreatures="1"/>
 		<flag targetdistance="1"/>
 		<flag staticattack="90"/>
-		<flag runonhealth="0"/>
+		<flag runonhealth="100"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-150"/>
+		<attack name="melee" interval="2000" chance="100" skill="70" attack="100"/>
 		<attack name="physical" interval="2000" chance="50" radius="3" target="0" min="0" max="-645">
 			<attribute key="areaEffect" value="redspark"/>
 		</attack>
 		<attack name="physical" interval="4000" chance="20" radius="0">
-			<attribute key="areaEffect" value="greennote"/>
+			<attribute key="areaEffect" value="rednote"/>
 		</attack>
 	</attacks>
 	<defenses armor="50" defense="55">

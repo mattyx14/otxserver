@@ -48,7 +48,7 @@
 		<immunity earth="1"/>
 		<immunity invisible="1"/>
 	</immunities>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="For ze emperor!"/>
 		<voice sentence="You will die zhouzandz deazhz!"/>
 	</voices>

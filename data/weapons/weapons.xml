@@ -462,7 +462,6 @@
 	</melee>
 	<melee id="7422" level="75" unproperly="1" />
 	<melee id="7429" level="75" unproperly="1" />
-	<melee id="2437" level="80" unproperly="1" />
 	<melee id="2453" level="75" unproperly="1" />
 	<melee id="7431" level="80" unproperly="1" />
 	<melee id="7409" level="50" unproperly="1" />
@@ -651,7 +650,7 @@
 		<vocation name="Royal Paladin" showInDescription="0" />
 	</distance>
 
-	<!-- Ammunition -->
+ 	<!-- Ammunition -->
 	<distance id="1294" breakchance="3" /> <!-- small stone -->
 	<distance id="2111" action="removecount" /> <!-- snowball -->
 	<distance id="2389" breakchance="3" /> <!-- spear -->

@@ -16,8 +16,5 @@ function onLogin(player)
 
 	player:registerEvent("PlayerDeath")
 	player:registerEvent("DropLoot")
-
-	-- Custom
-	player:registerEvent("AdvanceSave")
 	return true
 end

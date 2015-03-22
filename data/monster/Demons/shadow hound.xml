@@ -2,7 +2,8 @@
 <monster name="Shadow Hound" nameDescription="a shadow hound" experience="600" speed="360" race="blood" manacost="0">
 	<health now="555" max="555"/>
 	<targetchange speed="0" chance="8"/>
-	<look type="322" corpse="9923"/>	<flags>
+	<look type="322" corpse="9923"/>
+	<flags>
 		<flag summonable="0"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
@@ -38,7 +39,7 @@
 		<immunity paralyze="1"/>
 		<immunity invisible="1"/>
 	</immunities>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="Grrrr!" yell="1"/>
 	</voices>
 	<loot>

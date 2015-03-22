@@ -20,6 +20,7 @@
 		<attack name="melee" interval="2000" skill="50" attack="50"/>
 		<attack name="death" interval="2000" chance="10" range="7" radius="1" target="1" min="-120" max="-170">
 			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="mortarea"/>
 			<attribute key="areaEffect" value="smallclouds"/>
 		</attack>
 		<attack name="earth" interval="2000" chance="20" range="7" radius="4" target="1" min="-150" max="-350">
@@ -47,7 +48,7 @@
 		<immunity earth="1"/>
 		<immunity lifedrain="1"/>
 	</immunities>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="Close your eyes... I want to show you something."/>
 		<voice sentence="I will haunt you forever!"/>
 		<voice sentence="Pffffrrrrrrrrrrrr."/>

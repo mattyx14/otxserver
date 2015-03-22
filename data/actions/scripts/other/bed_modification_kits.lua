@@ -7,13 +7,14 @@ local BEDS = {
 }
 
 local function internalBedTransform(item, target, toPosition, ids)
-	target:transform(ids[1])
-	target:getPosition():sendMagicEffect(CONST_ME_POFF)
+	local targetItem = Item(target.uid)
+	targetItem:transform(ids[1])
+	targetItem:getPosition():sendMagicEffect(CONST_ME_POFF)
 
 	toPosition:getTile():getItemByType(ITEM_TYPE_BED):transform(ids[2])
 	toPosition:sendMagicEffect(CONST_ME_POFF)
 
-	item:remove()
+	Item(item.uid):remove()
 end
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -45,6 +46,5 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			break
 		end
 	end
-
 	return true
 end

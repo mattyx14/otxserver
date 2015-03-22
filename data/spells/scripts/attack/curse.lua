@@ -1,30 +1,30 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_SMALLCLOUDS)
-combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_DEATH)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_SMALLCLOUDS)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_DEATH)
 
-local condition = Condition(CONDITION_CURSED)
-condition:setParameter(CONDITION_PARAM_DELAYED, 1)
+local condition = createConditionObject(CONDITION_CURSED)
+setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
 
-local damageTable = {
-	{id = 1, -45, -40, -35, -34},
-	{id = 2, -33, -32, -31, -30},
-	{id = 3, -29, -25, -24},
-	{id = 4, -23, -20},
-	{id = 5, -19, -15},
-	{id = 6, -10},
-	{id = 10, -5}
-}
+addDamageCondition(condition, 1, 3000, -45)
+addDamageCondition(condition, 1, 3000, -40)
+addDamageCondition(condition, 1, 3000, -35)
+addDamageCondition(condition, 1, 3000, -34)
+addDamageCondition(condition, 2, 3000, -33)
+addDamageCondition(condition, 2, 3000, -32)
+addDamageCondition(condition, 2, 3000, -31)
+addDamageCondition(condition, 2, 3000, -30)
+addDamageCondition(condition, 3, 3000, -29)
+addDamageCondition(condition, 3, 3000, -25)
+addDamageCondition(condition, 3, 3000, -24)
+addDamageCondition(condition, 4, 3000, -23)
+addDamageCondition(condition, 4, 3000, -20)
+addDamageCondition(condition, 5, 3000, -19)
+addDamageCondition(condition, 5, 3000, -15)
+addDamageCondition(condition, 6, 3000, -10)
+addDamageCondition(condition, 10, 3000, -5)
+setCombatCondition(combat, condition)
 
-for i = 1, #damageTable do
-	local t = damageTable[i]
-	for j = 1, #t do
-		condition:addDamage(t.id, 3000, t[j])
-	end
-end
-
-combat:setCondition(condition)
-
-function onCastSpell(creature, var)
-	return combat:execute(creature, var)
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
 end

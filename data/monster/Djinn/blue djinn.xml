@@ -23,6 +23,7 @@
 		</attack>
 		<attack name="death" interval="2000" chance="10" radius="1" target="1" range="7" min="-60" max="-105">
 			<attribute key="shootEffect" value="suddendeath"/>
+			<attribute key="areaEffect" value="mortarea"/>
 			<attribute key="areaEffect" value="smallclouds"/>
 		</attack>
 		<attack name="drunk" interval="2000" chance="10" range="7" duration="5000">
@@ -46,7 +47,7 @@
 		<immunity paralyze="1"/>
 		<immunity invisible="1"/>
 	</immunities>
-	<voices interval="2000" chance="7">
+	<voices interval="5000" chance="10">
 		<voice sentence="Simsalabim"/>
 		<voice sentence="Feel the power of my magic, tiny mortal!"/>
 		<voice sentence="Be careful what you wish for."/>
