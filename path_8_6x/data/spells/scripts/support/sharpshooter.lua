@@ -8,7 +8,7 @@ setConditionParam(condition, CONDITION_PARAM_SKILL_DISTANCEPERCENT, 150)
 setConditionParam(condition, CONDITION_PARAM_BUFF, true)
 setCombatCondition(combat, condition)
 
-local speed = createConditionObject(CONDITION_PARALYZE)
+local speed = createConditionObject(CONDITION_HASTE)
 setConditionParam(speed, CONDITION_PARAM_TICKS, 10000)
 setConditionFormula(speed, -0.7, 56, -0.7, 56)
 setCombatCondition(combat, speed)
