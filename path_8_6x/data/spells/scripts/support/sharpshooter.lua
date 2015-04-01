@@ -13,6 +13,11 @@ setConditionParam(speed, CONDITION_PARAM_TICKS, 10000)
 setConditionFormula(speed, -0.7, 56, -0.7, 56)
 setCombatCondition(combat, speed)
 
+local heal = Condition(EXHAUST_HEALING)
+setConditionParam(CONDITION_PARAM_SUBID, 2)
+setConditionParam(CONDITION_PARAM_TICKS, 10000)
+setCombatCondition(combat, heal)
+
 function onCastSpell(cid, var)
 	return doCombat(cid, combat, var)
 end
