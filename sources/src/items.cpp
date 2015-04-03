@@ -140,7 +140,7 @@ bool Items::reload()
 	return true;
 }
 
-int32_t Items::loadFromOtb(const std::string& file)
+FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 {
 	FileLoader f;
 	if (!f.openFile(file.c_str(), "OTBI")) {
@@ -191,7 +191,7 @@ int32_t Items::loadFromOtb(const std::string& file)
 	} else if (Items::dwMajorVersion != 3) {
 		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
-	} else if (Items::dwMinorVersion < CLIENT_VERSION_1035) {
+	} else if (Items::dwMinorVersion < CLIENT_VERSION_1076) {
 		std::cout << "A newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
@@ -365,6 +365,7 @@ int32_t Items::loadFromOtb(const std::string& file)
 		iType.lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
 		iType.isAnimation = hasBitSet(FLAG_ANIMATION, flags);
 		// iType.walkStack = !hasBitSet(FLAG_FULLTILE, flags);
+		iType.forceUse = hasBitSet(FLAG_FORCEUSE, flags);
 
 		iType.id = serverId;
 		iType.clientId = clientId;
@@ -386,7 +387,7 @@ bool Items::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/items/items.xml");
 	if (!result) {
-		std::cout << "[Error - Items::loadFromXml] Failed to load data/items/items.xml: " << result.description() << std::endl;
+		printXMLError("Error - Items::loadFromXml", "data/items/items.xml", result);
 		return false;
 	}
 
@@ -729,10 +730,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().stats[STAT_MAXMANAPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "maxmanapointspercent") {
 			it.getAbilities().statsPercent[STAT_MAXMANAPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "soulpoints") {
-			it.getAbilities().stats[STAT_SOULPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "soulpointspercent") {
-			it.getAbilities().statsPercent[STAT_SOULPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "magicpoints" || tmpStrValue == "magiclevelpoints") {
 			it.getAbilities().stats[STAT_MAGICPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "magicpointspercent") {
@@ -746,7 +743,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 		} else if (tmpStrValue == "absorbpercentall" || tmpStrValue == "absorbpercentallelements") {
 			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
 			Abilities& abilities = it.getAbilities();
-			for (uint32_t i = COMBAT_FIRST; i <= COMBAT_COUNT; i++) {
+			for (size_t i = 0; i < COMBAT_COUNT; ++i) {
 				abilities.absorbPercent[i] += value;
 			}
 		} else if (tmpStrValue == "absorbpercentelements") {
@@ -934,26 +931,22 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.transformToFree = pugi::cast<uint16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "elementice") {
 			Abilities& abilities = it.getAbilities();
-			abilities.elementDamage = pugi::cast<int16_t>(valueAttribute.value());
+			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
 			abilities.elementType = COMBAT_ICEDAMAGE;
 		} else if (tmpStrValue == "elementearth") {
 			Abilities& abilities = it.getAbilities();
-			abilities.elementDamage = pugi::cast<int16_t>(valueAttribute.value());
+			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
 			abilities.elementType = COMBAT_EARTHDAMAGE;
 		} else if (tmpStrValue == "elementfire") {
 			Abilities& abilities = it.getAbilities();
-			abilities.elementDamage = pugi::cast<int16_t>(valueAttribute.value());
+			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
 			abilities.elementType = COMBAT_FIREDAMAGE;
 		} else if (tmpStrValue == "elementenergy") {
 			Abilities& abilities = it.getAbilities();
-			abilities.elementDamage = pugi::cast<int16_t>(valueAttribute.value());
+			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
 			abilities.elementType = COMBAT_ENERGYDAMAGE;
 		} else if (tmpStrValue == "walkstack") {
 			it.walkStack = valueAttribute.as_bool();
-		} else if (tmpStrValue == "alwaysontop") {
-			it.alwaysOnTop = booleanString(valueAttribute.as_string());
-		} else if (tmpStrValue == "toporder") {
-			it.alwaysOnTopOrder = pugi::cast<uint16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "blocking") {
 			it.blockSolid = valueAttribute.as_bool();
 		} else if (tmpStrValue == "allowdistread") {

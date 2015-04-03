@@ -41,17 +41,17 @@ class Npc;
 class CombatInfo;
 
 enum stackPosType_t {
-	STACKPOS_NORMAL,
 	STACKPOS_MOVE,
 	STACKPOS_LOOK,
-	STACKPOS_USE,
-	STACKPOS_USEITEM
+	STACKPOS_TOPDOWN_ITEM,
+	STACKPOS_USEITEM,
+	STACKPOS_USETARGET,
 };
 
 enum WorldType_t {
 	WORLD_TYPE_NO_PVP = 1,
 	WORLD_TYPE_PVP = 2,
-	WORLD_TYPE_PVP_ENFORCED = 3
+	WORLD_TYPE_PVP_ENFORCED = 3,
 };
 
 enum GameState_t {
@@ -61,14 +61,14 @@ enum GameState_t {
 	GAME_STATE_CLOSED,
 	GAME_STATE_SHUTDOWN,
 	GAME_STATE_CLOSING,
-	GAME_STATE_MAINTAIN
+	GAME_STATE_MAINTAIN,
 };
 
 enum LightState_t {
 	LIGHT_STATE_DAY,
 	LIGHT_STATE_NIGHT,
 	LIGHT_STATE_SUNSET,
-	LIGHT_STATE_SUNRISE
+	LIGHT_STATE_SUNRISE,
 };
 
 #define EVENT_LIGHTINTERVAL 10000
@@ -104,8 +104,8 @@ class Game
 		  * \param height height of the map
 		  */
 		void getMapDimensions(uint32_t& width, uint32_t& height) const {
-			width = map.mapWidth;
-			height = map.mapHeight;
+			width = map.width;
+			height = map.height;
 		}
 
 		void setWorldType(WorldType_t type);
@@ -115,7 +115,7 @@ class Game
 
 		Cylinder* internalGetCylinder(Player* player, const Position& pos) const;
 		Thing* internalGetThing(Player* player, const Position& pos, int32_t index,
-		                        uint32_t spriteId = 0, stackPosType_t type = STACKPOS_NORMAL) const;
+		                        uint32_t spriteId, stackPosType_t type) const;
 		static void internalGetPosition(Item* item, Position& pos, uint8_t& stackpos);
 
 		static std::string getTradeErrorDescription(ReturnValue ret, Item* item);
@@ -232,20 +232,6 @@ class Game
 
 		void getWorldLightInfo(LightInfo& lightInfo) const;
 
-		void getSpectators(SpectatorVec& list, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
-		                   int32_t minRangeX = 0, int32_t maxRangeX = 0,
-		                   int32_t minRangeY = 0, int32_t maxRangeY = 0) {
-			map.getSpectators(list, centerPos, multifloor, onlyPlayers, minRangeX, maxRangeX, minRangeY, maxRangeY);
-		}
-
-		const SpectatorVec& getSpectators(const Position& centerPos) {
-			return map.getSpectators(centerPos);
-		}
-
-		void clearSpectatorCache() {
-			map.clearSpectatorCache();
-		}
-
 		ReturnValue internalMoveCreature(Creature* creature, Direction direction, uint32_t flags = 0);
 		ReturnValue internalMoveCreature(Creature& creature, Tile& toTile, uint32_t flags = 0);
 
@@ -341,10 +327,11 @@ class Game
 		//Implementation of player invoked events
 		void playerMoveThing(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos,
 		                     const Position& toPos, uint8_t count);
-		void playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
-		                        const Position& movingCreatureOrigPos, const Position& toPos);
-		void playerMoveItem(uint32_t playerId, const Position& fromPos,
-		                    uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count);
+		void playerMoveCreatureByID(uint32_t playerId, uint32_t movingCreatureId, const Position& movingCreatureOrigPos, const Position& toPos);
+		void playerMoveCreature(Player* playerId, Creature* movingCreature, const Position& movingCreatureOrigPos, Tile* toTile);
+		void playerMoveItemByPlayerID(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count);
+		void playerMoveItem(Player* player, const Position& fromPos,
+		                    uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count, Item* item, Cylinder* toCylinder);
 		void playerMove(uint32_t playerId, Direction direction);
 		void playerCreatePrivateChannel(uint32_t playerId);
 		void playerChannelInvite(uint32_t playerId, const std::string& name);
@@ -356,14 +343,12 @@ class Game
 		void playerCloseNpcChannel(uint32_t playerId);
 		void playerReceivePing(uint32_t playerId);
 		void playerReceivePingBack(uint32_t playerId);
-		void playerAutoWalk(uint32_t playerId, const std::list<Direction>& listDir);
+		void playerAutoWalk(uint32_t playerId, const std::forward_list<Direction>& listDir);
 		void playerStopAutoWalk(uint32_t playerId);
 		void playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t fromStackPos,
-		                     uint16_t fromSpriteId, const Position& toPos, uint8_t toStackPos, uint16_t toSpriteId, bool isHotkey);
-		void playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPos,
-		                   uint8_t index, uint16_t spriteId, bool isHotkey);
-		void playerUseWithCreature(uint32_t playerId, const Position& fromPos,
-		                           uint8_t fromStackPos, uint32_t creatureId, uint16_t spriteId, bool isHotkey);
+		                     uint16_t fromSpriteId, const Position& toPos, uint8_t toStackPos, uint16_t toSpriteId);
+		void playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPos, uint8_t index, uint16_t spriteId);
+		void playerUseWithCreature(uint32_t playerId, const Position& fromPos, uint8_t fromStackPos, uint32_t creatureId, uint16_t spriteId);
 		void playerCloseContainer(uint32_t playerId, uint8_t cid);
 		void playerMoveUpContainer(uint32_t playerId, uint8_t cid);
 		void playerUpdateContainer(uint32_t playerId, uint8_t cid);
@@ -386,8 +371,8 @@ class Game
 		void playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);
 		void playerFollowCreature(uint32_t playerId, uint32_t creatureId);
 		void playerCancelAttackAndFollow(uint32_t playerId);
-		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, secureMode_t secureMode);
-		void playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteId, uint8_t stackPos);
+		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, bool secureMode);
+		void playerLookAt(uint32_t playerId, const Position& pos, uint8_t stackPos);
 		void playerLookInBattleList(uint32_t playerId, uint32_t creatureId);
 		void playerRequestAddVip(uint32_t playerId, const std::string& name);
 		void playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
@@ -415,6 +400,8 @@ class Game
 		void playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
 
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
+
+		std::forward_list<Item*> getMarketItemList(uint16_t wareId, uint16_t sufficientCount, DepotChest* depotChest, Inbox* inbox);
 
 		static void updatePremium(Account& account);
 
@@ -477,7 +464,7 @@ class Game
 		void loadMotdNum();
 		void saveMotdNum() const;
 		const std::string& getMotdHash() const { return motdHash; }
-		int32_t getMotdNum() const { return motdNum; }
+		uint32_t getMotdNum() const { return motdNum; }
 		void incrementMotdNum() { motdNum++; }
 
 		void sendOfflineTrainingDialog(Player* player);
@@ -571,7 +558,7 @@ class Game
 		uint32_t playersRecord;
 
 		std::string motdHash;
-		int32_t motdNum;
+		uint32_t motdNum;
 
 		uint32_t lastStageLevel;
 		bool stagesEnabled;

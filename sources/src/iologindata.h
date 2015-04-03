@@ -37,7 +37,7 @@ class IOLoginData
 
 		static AccountType_t getAccountType(uint32_t accountId);
 		static void setAccountType(uint32_t accountId, AccountType_t accountType);
-		static bool updateOnlineStatus(uint32_t guid, bool login);
+		static void updateOnlineStatus(uint32_t guid, bool login);
 		static bool preloadPlayer(Player* player, const std::string& name);
 
 		static bool loadPlayerById(Player* player, uint32_t id);
@@ -61,7 +61,7 @@ class IOLoginData
 		static void removePremiumDays(uint32_t accountId, int32_t removeDays);
 
 	protected:
-		typedef std::map<int32_t , std::pair<Item*, int32_t> > ItemMap;
+		typedef std::map<uint32_t, std::pair<Item*, uint32_t>> ItemMap;
 
 		static void loadItems(ItemMap& itemMap, DBResult_ptr result);
 		static bool saveItems(const Player* player, const ItemBlockList& itemList, DBInsert& query_insert, PropWriteStream& stream);

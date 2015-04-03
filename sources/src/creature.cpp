@@ -41,7 +41,7 @@ extern CreatureEvents* g_creatureEvents;
 Creature::Creature() :
 	localMapCache(), isInternalRemoved(false)
 {
-	useCount = 0;
+	referenceCounter = 0;
 
 	id = 0;
 	_tile = nullptr;
@@ -89,7 +89,7 @@ Creature::~Creature()
 	for (Creature* summon : summons) {
 		summon->setAttackedCreature(nullptr);
 		summon->setMaster(nullptr);
-		summon->releaseThing2();
+		summon->decrementReferenceCounter();
 	}
 
 	for (Condition* condition : conditions) {
@@ -294,10 +294,15 @@ bool Creature::getNextStep(Direction& dir, uint32_t&)
 	return true;
 }
 
-void Creature::startAutoWalk(const std::list<Direction>& listDir)
+void Creature::startAutoWalk(const std::forward_list<Direction>& listDir)
 {
 	listWalkDir = listDir;
-	addEventWalk(listDir.size() == 1);
+
+	size_t size = 0;
+	for (auto it = listDir.begin(); it != listDir.end() && size <= 1; ++it) {
+		size++;
+	}
+	addEventWalk(size == 1);
 }
 
 void Creature::addEventWalk(bool firstStep)
@@ -445,7 +450,7 @@ void Creature::onCreatureAppear(Creature* creature, bool)
 	}
 }
 
-void Creature::onCreatureDisappear(Creature* creature, uint32_t, bool)
+void Creature::onRemoveCreature(Creature* creature, bool)
 {
 	onCreatureDisappear(creature, true);
 	if (creature == this) {
@@ -507,11 +512,11 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 
 		if (!summons.empty()) {
 			//check if any of our summons is out of range (+/- 2 floors or 30 tiles away)
-			std::list<Creature*> despawnList;
+			std::forward_list<Creature*> despawnList;
 			for (Creature* summon : summons) {
 				const Position pos = summon->getPosition();
 				if (Position::getDistanceZ(newPos, pos) > 2 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > 30)) {
-					despawnList.push_back(summon);
+					despawnList.push_front(summon);
 				}
 			}
 
@@ -936,7 +941,7 @@ void Creature::goToFollowCreature()
 
 			if (dir != DIRECTION_NONE) {
 				listWalkDir.clear();
-				listWalkDir.push_back(dir);
+				listWalkDir.push_front(dir);
 
 				hasFollowPath = true;
 				startAutoWalk(listWalkDir);
@@ -1102,17 +1107,6 @@ void Creature::onAttacked()
 void Creature::onAttackedCreatureDrainHealth(Creature* target, int32_t points)
 {
 	target->addDamagePoints(this, points);
-
-	if (!master) {
-		return;
-	}
-
-	Player* masterPlayer = master->getPlayer();
-	if (masterPlayer) {
-		std::ostringstream ss;
-		ss << "Your " << asLowerCaseString(getName()) << " deals " << points << " to " << target->getNameDescription() << '.';
-		masterPlayer->sendTextMessage(MESSAGE_EVENT_DEFAULT, ss.str());
-	}
 }
 
 void Creature::onAttackedCreatureKilled(Creature* target)
@@ -1139,22 +1133,26 @@ bool Creature::onKilledCreature(Creature* target, bool)
 
 void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 {
-	if (gainExp != 0 && master) {
-		gainExp = gainExp / 2;
-		master->onGainExperience(gainExp, target);
+	if (gainExp == 0 || !master) {
+		return;
+	}
 
-		const Position& targetPos = getPosition();
+	gainExp /= 2;
+	master->onGainExperience(gainExp, target);
 
-		std::ostringstream ssExp;
-		ssExp << ucfirst(getNameDescription()) << " gained " << gainExp << " experience points.";
-		std::string strExp = ssExp.str();
+	SpectatorVec list;
+	g_game.map.getSpectators(list, _position, false, true);
+	if (list.empty()) {
+		return;
+	}
 
-		SpectatorVec list;
-		g_game.getSpectators(list, targetPos, false, true);
+	TextMessage message(MESSAGE_EXPERIENCE_OTHERS, ucfirst(getNameDescription()) + " gained " + std::to_string(gainExp) + (gainExp != 1 ? " experience points." : " experience point."));
+	message.position = _position;
+	message.primary.color = TEXTCOLOR_WHITE_EXP;
+	message.primary.value = gainExp;
 
-		for (Creature* spectator : list) {
-			spectator->getPlayer()->sendExperienceMessage(MESSAGE_EXPERIENCE_OTHERS, strExp, targetPos, gainExp, TEXTCOLOR_WHITE_EXP);
-		}
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendTextMessage(message);
 	}
 }
 
@@ -1163,7 +1161,7 @@ void Creature::addSummon(Creature* creature)
 	creature->setDropLoot(false);
 	creature->setLossSkill(false);
 	creature->setMaster(this);
-	creature->useThing2();
+	creature->incrementReferenceCounter();
 	summons.push_back(creature);
 }
 
@@ -1174,7 +1172,7 @@ void Creature::removeSummon(Creature* creature)
 		creature->setDropLoot(false);
 		creature->setLossSkill(true);
 		creature->setMaster(nullptr);
-		creature->releaseThing2();
+		creature->decrementReferenceCounter();
 		summons.erase(cit);
 	}
 }
@@ -1619,12 +1617,12 @@ bool Creature::isInvisible() const
 	}) != conditions.end();
 }
 
-bool Creature::getPathTo(const Position& targetPos, std::list<Direction>& dirList, const FindPathParams& fpp) const
+bool Creature::getPathTo(const Position& targetPos, std::forward_list<Direction>& dirList, const FindPathParams& fpp) const
 {
 	return g_game.map.getPathMatching(*this, dirList, FrozenPathingConditionCall(targetPos), fpp);
 }
 
-bool Creature::getPathTo(const Position& targetPos, std::list<Direction>& dirList, int32_t minTargetDist, int32_t maxTargetDist, bool fullPathSearch /*= true*/, bool clearSight /*= true*/, int32_t maxSearchDist /*= 0*/) const
+bool Creature::getPathTo(const Position& targetPos, std::forward_list<Direction>& dirList, int32_t minTargetDist, int32_t maxTargetDist, bool fullPathSearch /*= true*/, bool clearSight /*= true*/, int32_t maxSearchDist /*= 0*/) const
 {
 	FindPathParams fpp;
 	fpp.fullPathSearch = fullPathSearch;

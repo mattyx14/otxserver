@@ -1,33 +1,32 @@
 -- Combat settings
 -- NOTE: valid values for worldType are: "pvp", "no-pvp" and "pvp-enforced"
 worldType = "pvp"
-hotkeyAimbotEnabled = "yes"
+hotkeyAimbotEnabled = true
 protectionLevel = 1
 killsToRedSkull = 3
 killsToBlackSkull = 6
 pzLocked = 60000
-removeChargesFromRunes = "yes"
+removeChargesFromRunes = true
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
 whiteSkullTime = 15 * 60 * 1000
 stairJumpExhaustion = 2 * 1000
-experienceByKillingPlayers = "no"
+experienceByKillingPlayers = false
 expFromPlayersLevelRange = 75
-noDamageToSameLookfeet = "no"
 
 -- Connection Config
 -- NOTE: maxPlayers set to 0 means no limit
 ip = "127.0.0.1"
-bindOnlyGlobalAddress = "no"
+bindOnlyGlobalAddress = false
 loginProtocolPort = 7171
 gameProtocolPort = 7172
 statusProtocolPort = 7171
 maxPlayers = 0
-motd = "Welcome to DarkKonia"
-onePlayerOnlinePerAccount = "yes"
-allowClones = "no"
-serverName = "DarkKonia"
+motd = "Welcome to The OTX Server!"
+onePlayerOnlinePerAccount = true
+allowClones = false
+serverName = "OTXSERVER"
 statusTimeout = 1 * 1000
-replaceKickOnLogin = "yes"
+replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
 -- Deaths
@@ -52,25 +51,25 @@ mapAuthor = "Komic"
 
 -- Market
 marketOfferDuration = 30 * 24 * 60 * 60
-premiumToCreateMarketOffer = "yes"
+premiumToCreateMarketOffer = true
 checkExpiredMarketOffersEachMinutes = 60
 maxMarketOffersAtATimePerPlayer = 100
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = "root"
-mysqlPass = "master1"
-mysqlDatabase = "forgotten"
+mysqlUser = "forgottenserver"
+mysqlPass = ""
+mysqlDatabase = "forgottenserver"
 mysqlPort = 3306
 mysqlSock = ""
 
 -- Misc.
-allowChangeOutfit = "yes"
-freePremium = "no"
+allowChangeOutfit = true
+freePremium = false
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
-emoteSpells = "no"
-classicEquipmentSlots = "no"
+emoteSpells = false
+classicEquipmentSlots = false
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
@@ -85,14 +84,15 @@ deSpawnRange = 2
 deSpawnRadius = 50
 
 -- Stamina
-staminaSystem = "yes"
+staminaSystem = true
 
 -- Scripts
-warnUnsafeScripts = "yes"
-convertUnsafeScripts = "yes"
+warnUnsafeScripts = true
+convertUnsafeScripts = true
 
 -- Startup
--- NOTE: defaultPriority only works on Windows and sets process priority.
+-- NOTE: defaultPriority only works on Windows and sets process
+-- priority, valid values are: "normal", "above-normal", "high"
 defaultPriority = "high"
 startupDatabaseOptimization = "yes"
 

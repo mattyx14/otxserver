@@ -44,28 +44,25 @@ class NpcScriptInterface final : public LuaScriptInterface
 	protected:
 		void registerFunctions();
 
-		static int32_t luaActionSay(lua_State* L);
-		static int32_t luaActionMove(lua_State* L);
-		static int32_t luaActionMoveTo(lua_State* L);
-		static int32_t luaActionTurn(lua_State* L);
-		static int32_t luaActionFollow(lua_State* L);
-		static int32_t luaSelfGetPos(lua_State* L);
-		static int32_t luagetDistanceTo(lua_State* L);
-		static int32_t luaSetNpcFocus(lua_State* L);
-		static int32_t luaGetNpcCid(lua_State* L);
-		static int32_t luaGetNpcPos(lua_State* L);
-		static int32_t luaGetNpcName(lua_State* L);
-		static int32_t luaGetNpcParameter(lua_State* L);
-		static int32_t luaOpenShopWindow(lua_State* L);
-		static int32_t luaCloseShopWindow(lua_State* L);
-		static int32_t luaDoSellItem(lua_State* L);
+		static int luaActionSay(lua_State* L);
+		static int luaActionMove(lua_State* L);
+		static int luaActionMoveTo(lua_State* L);
+		static int luaActionTurn(lua_State* L);
+		static int luaActionFollow(lua_State* L);
+		static int luagetDistanceTo(lua_State* L);
+		static int luaSetNpcFocus(lua_State* L);
+		static int luaGetNpcCid(lua_State* L);
+		static int luaGetNpcParameter(lua_State* L);
+		static int luaOpenShopWindow(lua_State* L);
+		static int luaCloseShopWindow(lua_State* L);
+		static int luaDoSellItem(lua_State* L);
 
 		// metatable
-		static int32_t luaNpcGetParameter(lua_State* L);
-		static int32_t luaNpcSetFocus(lua_State* L);
+		static int luaNpcGetParameter(lua_State* L);
+		static int luaNpcSetFocus(lua_State* L);
 
-		static int32_t luaNpcOpenShopWindow(lua_State* L);
-		static int32_t luaNpcCloseShopWindow(lua_State* L);
+		static int luaNpcOpenShopWindow(lua_State* L);
+		static int luaNpcCloseShopWindow(lua_State* L);
 
 	private:
 		bool initState() final;
@@ -161,8 +158,6 @@ class Npc final : public Creature
 		void doSay(const std::string& text);
 		void doSayToPlayer(Player* player, const std::string& text);
 
-		void doMove(Direction dir);
-		void doTurn(Direction dir);
 		void doMoveTo(const Position& pos);
 
 		int32_t getMasterRadius() const {
@@ -171,7 +166,7 @@ class Npc final : public Creature
 		const Position& getMasterPos() const {
 			return masterPos;
 		}
-		void setMasterPos(const Position& pos, int32_t radius = 1) {
+		void setMasterPos(Position pos, int32_t radius = 1) {
 			masterPos = pos;
 			if (masterRadius == -1) {
 				masterRadius = radius;
@@ -191,10 +186,10 @@ class Npc final : public Creature
 		static uint32_t npcAutoID;
 
 	protected:
-		Npc(const std::string& _name);
+		explicit Npc(const std::string& _name);
 
 		void onCreatureAppear(Creature* creature, bool isLogin) final;
-		void onCreatureDisappear(Creature* creature, uint32_t stackpos, bool isLogout) final;
+		void onRemoveCreature(Creature* creature, bool isLogout) final;
 		void onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
 		                            const Tile* oldTile, const Position& oldPos, bool teleport) final;
 

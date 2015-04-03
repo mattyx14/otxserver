@@ -35,42 +35,43 @@ class QTreeLeafNode;
 class BedItem;
 
 typedef std::vector<Creature*> CreatureVector;
-typedef std::unordered_set<Creature*> SpectatorVec;
 typedef std::vector<Item*> ItemVector;
+typedef std::unordered_set<Creature*> SpectatorVec;
 
 enum tileflags_t {
-	TILESTATE_NONE = 0,
-	TILESTATE_PROTECTIONZONE = 1,
-	TILESTATE_DEPRECATED_HOUSE = 2,
-	TILESTATE_NOPVPZONE = 4,
-	TILESTATE_NOLOGOUT = 8,
-	TILESTATE_PVPZONE = 16,
-	TILESTATE_REFRESH = 32, // unused
+	TILESTATE_NONE,
+
+	TILESTATE_PROTECTIONZONE = 1 << 0,
+	TILESTATE_DEPRECATED_HOUSE = 1 << 1,
+	TILESTATE_NOPVPZONE = 1 << 2,
+	TILESTATE_NOLOGOUT = 1 << 3,
+	TILESTATE_PVPZONE = 1 << 4,
+	TILESTATE_REFRESH = 1 << 5, // unused
 
 	//internal usage
-	TILESTATE_HOUSE = 64,
-	TILESTATE_FLOORCHANGE = 128,
-	TILESTATE_FLOORCHANGE_DOWN = 256,
-	TILESTATE_FLOORCHANGE_NORTH = 512,
-	TILESTATE_FLOORCHANGE_SOUTH = 1024,
-	TILESTATE_FLOORCHANGE_EAST = 2048,
-	TILESTATE_FLOORCHANGE_WEST = 4096,
-	TILESTATE_TELEPORT = 8192,
-	TILESTATE_MAGICFIELD = 16384,
-	TILESTATE_MAILBOX = 32768,
-	TILESTATE_TRASHHOLDER = 65536,
-	TILESTATE_BED = 131072,
-	TILESTATE_DEPOT = 262144,
-	TILESTATE_BLOCKSOLID = 524288,
-	TILESTATE_BLOCKPATH = 1048576,
-	TILESTATE_IMMOVABLEBLOCKSOLID = 2097152,
-	TILESTATE_IMMOVABLEBLOCKPATH = 4194304,
-	TILESTATE_IMMOVABLENOFIELDBLOCKPATH = 8388608,
-	TILESTATE_NOFIELDBLOCKPATH = 16777216,
-	TILESTATE_DYNAMIC_TILE = 33554432,
-	TILESTATE_FLOORCHANGE_SOUTH_ALT = 67108864,
-	TILESTATE_FLOORCHANGE_EAST_ALT = 134217728,
-	TILESTATE_SUPPORTS_HANGABLE = 268435456
+	TILESTATE_HOUSE = 1 << 6,
+	TILESTATE_FLOORCHANGE = 1 << 7,
+	TILESTATE_FLOORCHANGE_DOWN = 1 << 8,
+	TILESTATE_FLOORCHANGE_NORTH = 1 << 9,
+	TILESTATE_FLOORCHANGE_SOUTH = 1 << 10,
+	TILESTATE_FLOORCHANGE_EAST = 1 << 11,
+	TILESTATE_FLOORCHANGE_WEST = 1 << 12,
+	TILESTATE_TELEPORT = 1 << 13,
+	TILESTATE_MAGICFIELD = 1 << 14,
+	TILESTATE_MAILBOX = 1 << 15,
+	TILESTATE_TRASHHOLDER = 1 << 16,
+	TILESTATE_BED = 1 << 17,
+	TILESTATE_DEPOT = 1 << 18,
+	TILESTATE_BLOCKSOLID = 1 << 19,
+	TILESTATE_BLOCKPATH = 1 << 20,
+	TILESTATE_IMMOVABLEBLOCKSOLID = 1 << 21,
+	TILESTATE_IMMOVABLEBLOCKPATH = 1 << 22,
+	TILESTATE_IMMOVABLENOFIELDBLOCKPATH = 1 << 23,
+	TILESTATE_NOFIELDBLOCKPATH = 1 << 24,
+	TILESTATE_DYNAMIC_TILE = 1 << 25,
+	TILESTATE_FLOORCHANGE_SOUTH_ALT = 1 << 26,
+	TILESTATE_FLOORCHANGE_EAST_ALT = 1 << 27,
+	TILESTATE_SUPPORTS_HANGABLE = 1 << 28,
 };
 
 enum ZoneType_t {
@@ -78,7 +79,7 @@ enum ZoneType_t {
 	ZONE_NOPVP,
 	ZONE_PVP,
 	ZONE_NOLOGOUT,
-	ZONE_NORMAL
+	ZONE_NORMAL,
 };
 
 class TileItemVector
@@ -164,8 +165,18 @@ class TileItemVector
 		uint32_t getDownItemCount() const {
 			return std::distance(getBeginDownItem(), getEndDownItem());
 		}
-		Item* getTopTopItem();
-		Item* getTopDownItem();
+		inline Item* getTopTopItem() const {
+			if (getTopItemCount() == 0) {
+				return nullptr;
+			}
+			return *(getEndTopItem() - 1);
+		}
+		inline Item* getTopDownItem() const {
+			if (getDownItemCount() == 0) {
+				return nullptr;
+			}
+			return *getBeginDownItem();
+		}
 
 	private:
 		ItemVector items;
@@ -210,8 +221,8 @@ class Tile : public Cylinder
 		const Creature* getBottomCreature() const;
 		Creature* getTopVisibleCreature(const Creature* creature) const;
 		const Creature* getBottomVisibleCreature(const Creature* creature) const;
-		Item* getTopTopItem();
-		Item* getTopDownItem();
+		Item* getTopTopItem() const;
+		Item* getTopDownItem() const;
 		bool isMoveableBlocking() const;
 		Thing* getTopVisibleThing(const Creature* creature);
 		Item* getItemByTopOrder(int32_t topOrder);
@@ -229,8 +240,8 @@ class Tile : public Cylinder
 		uint32_t getTopItemCount() const;
 		uint32_t getDownItemCount() const;
 
-		bool hasProperty(enum ITEMPROPERTY prop) const;
-		bool hasProperty(const Item* exclude, enum ITEMPROPERTY prop) const;
+		bool hasProperty(ITEMPROPERTY prop) const;
+		bool hasProperty(const Item* exclude, ITEMPROPERTY prop) const;
 
 		bool hasFlag(tileflags_t flag) const {
 			return hasBitSet(flag, m_flags);
@@ -294,7 +305,7 @@ class Tile : public Cylinder
 
 		int32_t getClientIndexOfCreature(const Player* player, const Creature* creature) const;
 		int32_t getStackposOfCreature(const Player* player, const Creature* creature) const;
-		int32_t getStackposOfThing(const Player* player, const Thing* thing) const;
+		int32_t getStackposOfItem(const Player* player, const Item* item) const;
 
 		//cylinder implementations
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
@@ -312,6 +323,8 @@ class Tile : public Cylinder
 
 		void removeThing(Thing* thing, uint32_t count) final;
 
+		void removeCreature(Creature* creature);
+
 		int32_t getThingIndex(const Thing* thing) const final;
 		int32_t getFirstIndex() const final;
 		int32_t getLastIndex() const final;
@@ -319,7 +332,7 @@ class Tile : public Cylinder
 		Thing* getThing(size_t index) const final;
 
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, bool isCompleteRemoval, cylinderlink_t link = LINK_OWNER) final;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 
 		void internalAddThing(Thing* thing) final;
 		void internalAddThing(uint32_t index, Thing* thing) override;
@@ -332,6 +345,8 @@ class Tile : public Cylinder
 			return false;
 		}
 
+		Item* getUseItem() const;
+
 	private:
 		void onAddTileItem(Item* item);
 		void onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newItem, const ItemType& newType);
@@ -343,7 +358,7 @@ class Tile : public Cylinder
 
 	protected:
 		// Put this first for cache-coherency
-		bool is_dynamic() const {
+		bool isDynamic() const {
 			return (m_flags & TILESTATE_DYNAMIC_TILE) != 0;
 		}
 
@@ -447,7 +462,7 @@ inline Tile::~Tile()
 
 inline CreatureVector* Tile::getCreatures()
 {
-	if (is_dynamic()) {
+	if (isDynamic()) {
 		return reinterpret_cast<DynamicTile*>(this)->DynamicTile::getCreatures();
 	}
 	return reinterpret_cast<StaticTile*>(this)->StaticTile::getCreatures();
@@ -455,7 +470,7 @@ inline CreatureVector* Tile::getCreatures()
 
 inline const CreatureVector* Tile::getCreatures() const
 {
-	if (is_dynamic()) {
+	if (isDynamic()) {
 		return reinterpret_cast<const DynamicTile*>(this)->DynamicTile::getCreatures();
 	}
 	return reinterpret_cast<const StaticTile*>(this)->StaticTile::getCreatures();
@@ -463,7 +478,7 @@ inline const CreatureVector* Tile::getCreatures() const
 
 inline TileItemVector* Tile::getItemList()
 {
-	if (is_dynamic()) {
+	if (isDynamic()) {
 		return reinterpret_cast<DynamicTile*>(this)->DynamicTile::getItemList();
 	}
 	return reinterpret_cast<StaticTile*>(this)->StaticTile::getItemList();
@@ -471,7 +486,7 @@ inline TileItemVector* Tile::getItemList()
 
 inline const TileItemVector* Tile::getItemList() const
 {
-	if (is_dynamic()) {
+	if (isDynamic()) {
 		return reinterpret_cast<const DynamicTile*>(this)->DynamicTile::getItemList();
 	}
 	return reinterpret_cast<const StaticTile*>(this)->StaticTile::getItemList();
@@ -479,7 +494,7 @@ inline const TileItemVector* Tile::getItemList() const
 
 inline CreatureVector* Tile::makeCreatures()
 {
-	if (is_dynamic()) {
+	if (isDynamic()) {
 		return reinterpret_cast<DynamicTile*>(this)->DynamicTile::makeCreatures();
 	}
 	return reinterpret_cast<StaticTile*>(this)->StaticTile::makeCreatures();
@@ -487,7 +502,7 @@ inline CreatureVector* Tile::makeCreatures()
 
 inline TileItemVector* Tile::makeItemList()
 {
-	if (is_dynamic()) {
+	if (isDynamic()) {
 		return reinterpret_cast<DynamicTile*>(this)->DynamicTile::makeItemList();
 	}
 	return reinterpret_cast<StaticTile*>(this)->StaticTile::makeItemList();
@@ -504,7 +519,7 @@ inline StaticTile::~StaticTile()
 {
 	if (items) {
 		for (Item* item : *items) {
-			item->releaseThing2();
+			item->decrementReferenceCounter();
 		}
 		delete items;
 	}
@@ -521,7 +536,7 @@ inline DynamicTile::DynamicTile(uint16_t x, uint16_t y, uint16_t z) :
 inline DynamicTile::~DynamicTile()
 {
 	for (Item* item : items) {
-		item->releaseThing2();
+		item->decrementReferenceCounter();
 	}
 }
 

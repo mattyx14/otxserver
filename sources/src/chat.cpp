@@ -28,34 +28,17 @@
 extern Chat* g_chat;
 extern Game g_game;
 
-PrivateChatChannel::PrivateChatChannel(uint16_t channelId, const std::string& channelName) :
-	ChatChannel(channelId, channelName)
+bool PrivateChatChannel::isInvited(uint32_t guid) const
 {
-	m_owner = 0;
-}
-
-bool PrivateChatChannel::isInvited(const Player& player) const
-{
-	if (player.getGUID() == getOwner()) {
+	if (guid == getOwner()) {
 		return true;
 	}
-	return m_invites.find(player.getGUID()) != m_invites.end();
+	return m_invites.find(guid) != m_invites.end();
 }
 
-bool PrivateChatChannel::addInvited(Player& player)
+bool PrivateChatChannel::removeInvite(uint32_t guid)
 {
-	auto it = m_invites.find(player.getGUID());
-	if (it != m_invites.end()) {
-		return false;
-	}
-
-	m_invites[player.getGUID()] = &player;
-	return true;
-}
-
-bool PrivateChatChannel::removeInvited(const Player& player)
-{
-	auto it = m_invites.find(player.getGUID());
+	auto it = m_invites.find(guid);
 	if (it == m_invites.end()) {
 		return false;
 	}
@@ -66,42 +49,49 @@ bool PrivateChatChannel::removeInvited(const Player& player)
 
 void PrivateChatChannel::invitePlayer(const Player& player, Player& invitePlayer)
 {
-	if (addInvited(invitePlayer)) {
-		std::ostringstream ss;
-		ss << player.getName() << " invites you to " << (player.getSex() == PLAYERSEX_FEMALE ? "her" : "his") << " private chat channel.";
-		invitePlayer.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+	auto it = m_invites.find(player.getGUID());
+	if (it != m_invites.end()) {
+		return;
+	}
 
-		ss.str("");
-		ss << invitePlayer.getName() << " has been invited.";
-		player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+	m_invites[player.getGUID()] = &player;
 
-		for (const auto& it : users) {
-			it.second->sendChannelEvent(id, invitePlayer.getName(), CHANNELEVENT_INVITE);
-		}
+	std::ostringstream ss;
+	ss << player.getName() << " invites you to " << (player.getSex() == PLAYERSEX_FEMALE ? "her" : "his") << " private chat channel.";
+	invitePlayer.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+
+	ss.str(std::string());
+	ss << invitePlayer.getName() << " has been invited.";
+	player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+
+	for (const auto& it : users) {
+		it.second->sendChannelEvent(id, invitePlayer.getName(), CHANNELEVENT_INVITE);
 	}
 }
 
 void PrivateChatChannel::excludePlayer(const Player& player, Player& excludePlayer)
 {
-	if (removeInvited(excludePlayer)) {
-		removeUser(excludePlayer);
+	if (!removeInvite(excludePlayer.getGUID())) {
+		return;
+	}
 
-		std::ostringstream ss;
-		ss << excludePlayer.getName() << " has been excluded.";
-		player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+	removeUser(excludePlayer);
 
-		excludePlayer.sendClosePrivate(getId());
+	std::ostringstream ss;
+	ss << excludePlayer.getName() << " has been excluded.";
+	player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
 
-		for (const auto& it : users) {
-			it.second->sendChannelEvent(id, excludePlayer.getName(), CHANNELEVENT_EXCLUDE);
-		}
+	excludePlayer.sendClosePrivate(id);
+
+	for (const auto& it : users) {
+		it.second->sendChannelEvent(id, excludePlayer.getName(), CHANNELEVENT_EXCLUDE);
 	}
 }
 
-void PrivateChatChannel::closeChannel()
+void PrivateChatChannel::closeChannel() const
 {
 	for (const auto& it : users) {
-		it.second->sendClosePrivate(getId());
+		it.second->sendClosePrivate(id);
 	}
 }
 
@@ -152,7 +142,7 @@ bool ChatChannel::removeUser(const Player& player)
 	return true;
 }
 
-void ChatChannel::sendToAll(const std::string& message, SpeakClasses type)
+void ChatChannel::sendToAll(const std::string& message, SpeakClasses type) const
 {
 	for (const auto& it : users) {
 		it.second->sendChannelMessage("", message, type, id);
@@ -166,7 +156,7 @@ bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, const std::s
 	}
 
 	for (const auto& it : users) {
-		it.second->sendToChannel(&fromPlayer, type, text, getId());
+		it.second->sendToChannel(&fromPlayer, type, text, id);
 	}
 	return true;
 }
@@ -272,8 +262,8 @@ bool ChatChannel::executeOnSpeakEvent(const Player& player, SpeakClasses& type, 
 	LuaScriptInterface::pushString(L, message);
 
 	bool result = false;
-	int32_t size0 = lua_gettop(L);
-	int32_t ret = m_scriptInterface->protectedCall(L, 3, 1);
+	int size0 = lua_gettop(L);
+	int ret = m_scriptInterface->protectedCall(L, 3, 1);
 	if (ret != 0) {
 		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
 	} else if (lua_gettop(L) > 0) {
@@ -322,7 +312,7 @@ bool Chat::load()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/chatchannels/chatchannels.xml");
 	if (!result) {
-		std::cout << "[Error - Chat::load] Failed to load data/chatchannels/chatchannels.xml: " << result.description() << std::endl;
+		printXMLError("Error - Chat::load", "data/chatchannels/chatchannels.xml", result);
 		return false;
 	}
 
@@ -502,10 +492,10 @@ void Chat::removeUserFromAllChannels(const Player& player)
 
 	for (const auto& it : privateChannels) {
 		PrivateChatChannel* channel = it.second;
-		channel->removeInvited(player);
+		channel->removeInvite(player.getGUID());
 		channel->removeUser(player);
 		if (channel->getOwner() == player.getGUID()) {
-			deleteChannel(player, channel->getId());
+			deleteChannel(player, channel->id);
 		}
 	}
 }
@@ -571,11 +561,12 @@ ChannelList Chat::getChannelList(const Player& player)
 	bool hasPrivate = false;
 	for (const auto& it : privateChannels) {
 		if (PrivateChatChannel* channel = it.second) {
-			if (channel->isInvited(player)) {
+			uint32_t guid = player.getGUID();
+			if (channel->isInvited(guid)) {
 				list.push_back(channel);
 			}
 
-			if (channel->getOwner() == player.getGUID()) {
+			if (channel->getOwner() == guid) {
 				hasPrivate = true;
 			}
 		}
@@ -622,7 +613,7 @@ ChatChannel* Chat::getChannel(const Player& player, uint16_t channelId)
 				return &channel;
 			} else {
 				auto it2 = privateChannels.find(channelId);
-				if (it2 != privateChannels.end() && it2->second->isInvited(player)) {
+				if (it2 != privateChannels.end() && it2->second->isInvited(player.getGUID())) {
 					return it2->second;
 				}
 			}

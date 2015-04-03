@@ -20,7 +20,9 @@
 #include "otpch.h"
 
 #include "baseevents.h"
+
 #include "pugicast.h"
+#include "tools.h"
 
 extern LuaEnvironment g_luaEnvironment;
 
@@ -47,7 +49,7 @@ bool BaseEvents::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
 	if (!result) {
-		std::cout << "[Error - BaseEvents::loadFromXml] Failed to load " << filename << ": " << result.description() << std::endl;
+		printXMLError("Error - BaseEvents::loadFromXml", filename, result);
 		return false;
 	}
 
@@ -103,7 +105,7 @@ Event::Event(const Event* copy)
 	m_scripted = copy->m_scripted;
 }
 
-bool Event::checkScript(const std::string& basePath, const std::string& scriptsName, const std::string& scriptFile)
+bool Event::checkScript(const std::string& basePath, const std::string& scriptsName, const std::string& scriptFile) const
 {
 	LuaScriptInterface* testInterface = g_luaEnvironment.getTestInterface();
 	testInterface->reInitState();

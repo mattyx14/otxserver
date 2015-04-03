@@ -25,7 +25,7 @@
 class Teleport final : public Item, public Cylinder
 {
 	public:
-		Teleport(uint16_t _type);
+		explicit Teleport(uint16_t _type);
 
 		Teleport* getTeleport() final {
 			return this;
@@ -41,7 +41,7 @@ class Teleport final : public Item, public Cylinder
 		const Position& getDestPos() const {
 			return destPos;
 		}
-		void setDestPos(const Position& pos) {
+		void setDestPos(Position pos) {
 			destPos = pos;
 		}
 
@@ -63,7 +63,7 @@ class Teleport final : public Item, public Cylinder
 		void removeThing(Thing* thing, uint32_t count) final;
 
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, bool isCompleteRemoval, cylinderlink_t link = LINK_OWNER) final;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 
 	private:
 		Position destPos;

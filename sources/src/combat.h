@@ -35,7 +35,7 @@ struct Position;
 class ValueCallback final : public CallBack
 {
 	public:
-		ValueCallback(formulaType_t _type) {
+		explicit ValueCallback(formulaType_t _type) {
 			type = _type;
 		}
 		void getMinMaxValues(Player* player, CombatDamage& damage, bool useCharges) const;
@@ -210,7 +210,7 @@ class AreaCombat
 		AreaCombat& operator=(const AreaCombat&) = delete;
 
 		ReturnValue doCombat(Creature* attacker, const Position& pos, const Combat& combat) const;
-		void getList(const Position& centerPos, const Position& targetPos, std::list<Tile*>& list) const;
+		void getList(const Position& centerPos, const Position& targetPos, std::forward_list<Tile*>& list) const;
 
 		void setupArea(const std::list<uint32_t>& list, uint32_t rows);
 		void setupArea(int32_t length, int32_t spread);
@@ -291,7 +291,7 @@ class Combat
 		static void doCombatDispel(Creature* caster, Creature* target, const CombatParams& params);
 		static void doCombatDispel(Creature* caster, const Position& position, const AreaCombat* area, const CombatParams& params);
 
-		static void getCombatArea(const Position& centerPos, const Position& targetPos, const AreaCombat* area, std::list<Tile*>& list);
+		static void getCombatArea(const Position& centerPos, const Position& targetPos, const AreaCombat* area, std::forward_list<Tile*>& list);
 
 		static bool isInPvpZone(const Creature* attacker, const Creature* target);
 		static bool isProtected(const Player* attacker, const Player* target);
@@ -362,7 +362,7 @@ class Combat
 class MagicField final : public Item
 {
 	public:
-		MagicField(uint16_t _type) : Item(_type) {
+		explicit MagicField(uint16_t _type) : Item(_type) {
 			createTime = OTSYS_TIME();
 		}
 

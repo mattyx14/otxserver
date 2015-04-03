@@ -300,7 +300,7 @@ bool Monsters::loadFromXml(bool reloading /*= false*/)
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/monster/monsters.xml");
 	if (!result) {
-		std::cout << "[Error - Monsters::loadFromXml] Failed to load data/monster/monsters.xml: " << result.description() << std::endl;
+		printXMLError("Error - Monsters::loadFromXml", "data/monster/monsters.xml", result);
 		return false;
 	}
 
@@ -368,7 +368,7 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 
 	std::string name;
 	std::string scriptName;
-	bool isScripted = false;
+	bool isScripted;
 
 	pugi::xml_attribute attr;
 	if ((attr = node.attribute("script"))) {
@@ -376,6 +376,7 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 		isScripted = true;
 	} else if ((attr = node.attribute("name"))) {
 		name = attr.as_string();
+		isScripted = false;
 	} else {
 		return false;
 	}
@@ -782,7 +783,7 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monster_n
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(file.c_str());
 	if (!result) {
-		std::cout << "[Error - Monsters::loadMonster] Failed to load " << file << ": " << result.description() << std::endl;
+		printXMLError("Error - Monsters::loadMonster", file, result);
 		return false;
 	}
 

@@ -45,10 +45,10 @@ class ContainerIterator
 		Item* operator->();
 
 	protected:
-		ContainerIterator(Container* super);
+		explicit ContainerIterator(Container* super);
 
 		Container* super;
-		std::queue<Container*> over;
+		std::list<Container*> over;
 		ItemDeque::iterator cur;
 
 		friend class Container;
@@ -57,8 +57,9 @@ class ContainerIterator
 class Container : public Item, public Cylinder
 {
 	public:
-		Container(uint16_t _type);
-		Container(Tile* tile);
+		explicit Container(uint16_t _type);
+		Container(uint16_t _type, uint16_t _size);
+		explicit Container(Tile* tile);
 		~Container();
 
 		// non-copyable
@@ -137,7 +138,7 @@ class Container : public Item, public Cylinder
 
 		void addThing(Thing* thing) final;
 		void addThing(int32_t index, Thing* thing) final;
-		void addThingBack(Thing* thing);
+		void addItemBack(Item* item);
 
 		void updateThing(Thing* thing, uint16_t itemId, uint32_t count) final;
 		void replaceThing(uint32_t index, Thing* thing) final;
@@ -152,7 +153,7 @@ class Container : public Item, public Cylinder
 		Thing*getThing(size_t index) const final;
 
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, bool isCompleteRemoval, cylinderlink_t link = LINK_OWNER) override;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
 
 		void internalAddThing(Thing* thing) final;
 		void internalAddThing(uint32_t index, Thing* thing) final;

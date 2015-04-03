@@ -67,8 +67,6 @@ Monster::Monster(MonsterType* _mtype) :
 	minCombatValue = 0;
 	maxCombatValue = 0;
 
-	masterRadius = -1;
-
 	targetTicks = 0;
 	targetChangeTicks = 0;
 	targetChangeCooldown = 0;
@@ -161,9 +159,9 @@ void Monster::onCreatureAppear(Creature* creature, bool isLogin)
 	}
 }
 
-void Monster::onCreatureDisappear(Creature* creature, uint32_t stackpos, bool isLogout)
+void Monster::onRemoveCreature(Creature* creature, bool isLogout)
 {
-	Creature::onCreatureDisappear(creature, stackpos, isLogout);
+	Creature::onRemoveCreature(creature, isLogout);
 
 	if (mType->creatureDisappearEvent != -1) {
 		// onCreatureDisappear(self, creature)
@@ -320,7 +318,7 @@ void Monster::addFriend(Creature* creature)
 	assert(creature != this);
 	auto result = friendList.insert(creature);
 	if (result.second) {
-		creature->useThing2();
+		creature->incrementReferenceCounter();
 	}
 }
 
@@ -328,7 +326,7 @@ void Monster::removeFriend(Creature* creature)
 {
 	auto it = friendList.find(creature);
 	if (it != friendList.end()) {
-		creature->releaseThing2();
+		creature->decrementReferenceCounter();
 		friendList.erase(it);
 	}
 }
@@ -337,7 +335,7 @@ void Monster::addTarget(Creature* creature, bool pushFront/* = false*/)
 {
 	assert(creature != this);
 	if (std::find(targetList.begin(), targetList.end(), creature) == targetList.end()) {
-		creature->useThing2();
+		creature->incrementReferenceCounter();
 		if (pushFront) {
 			targetList.push_front(creature);
 		} else {
@@ -350,7 +348,7 @@ void Monster::removeTarget(Creature* creature)
 {
 	auto it = std::find(targetList.begin(), targetList.end(), creature);
 	if (it != targetList.end()) {
-		creature->releaseThing2();
+		creature->decrementReferenceCounter();
 		targetList.erase(it);
 	}
 }
@@ -361,7 +359,7 @@ void Monster::updateTargetList()
 	while (friendIterator != friendList.end()) {
 		Creature* creature = *friendIterator;
 		if (creature->getHealth() <= 0 || !canSee(creature->getPosition())) {
-			creature->releaseThing2();
+			creature->decrementReferenceCounter();
 			friendIterator = friendList.erase(friendIterator);
 		} else {
 			++friendIterator;
@@ -372,15 +370,18 @@ void Monster::updateTargetList()
 	while (targetIterator != targetList.end()) {
 		Creature* creature = *targetIterator;
 		if (creature->getHealth() <= 0 || !canSee(creature->getPosition())) {
-			creature->releaseThing2();
+			creature->decrementReferenceCounter();
 			targetIterator = targetList.erase(targetIterator);
 		} else {
 			++targetIterator;
 		}
 	}
 
-	for (Creature* spectator : g_game.getSpectators(getPosition())) {
-		if (spectator != this && canSee(spectator->getPosition())) {
+	SpectatorVec list;
+	g_game.map.getSpectators(list, _position, true);
+	list.erase(this);
+	for (Creature* spectator : list) {
+		if (canSee(spectator->getPosition())) {
 			onCreatureFound(spectator);
 		}
 	}
@@ -389,7 +390,7 @@ void Monster::updateTargetList()
 void Monster::clearTargetList()
 {
 	for (Creature* creature : targetList) {
-		creature->releaseThing2();
+		creature->decrementReferenceCounter();
 	}
 	targetList.clear();
 }
@@ -397,7 +398,7 @@ void Monster::clearTargetList()
 void Monster::clearFriendList()
 {
 	for (Creature* creature : friendList) {
-		creature->releaseThing2();
+		creature->decrementReferenceCounter();
 	}
 	friendList.clear();
 }
@@ -508,18 +509,18 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 	}
 
 	switch (searchType) {
-		case TARGETSEARCH_NEAREAST: {
+		case TARGETSEARCH_NEAREST: {
 			if (!resultList.empty()) {
 				auto it = resultList.begin();
 				Creature* target = *it;
 
 				if (++it != resultList.end()) {
 					const Position& targetPosition = target->getPosition();
-					int32_t minRange = std::max<int32_t>(Position::getDistanceX(myPos, targetPosition), Position::getDistanceY(myPos, targetPosition));
+					int32_t minRange = Position::getDistanceX(myPos, targetPosition) + Position::getDistanceY(myPos, targetPosition);
 					do {
 						const Position& pos = (*it)->getPosition();
 
-						int32_t distance = std::max<int32_t>(Position::getDistanceX(myPos, pos), Position::getDistanceY(myPos, pos));
+						int32_t distance = Position::getDistanceX(myPos, pos) + Position::getDistanceY(myPos, pos);
 						if (distance < minRange) {
 							target = *it;
 							minRange = distance;
@@ -574,7 +575,7 @@ void Monster::onFollowCreatureComplete(const Creature* creature)
 			} else if (!isSummon()) {
 				targetList.push_back(target);
 			} else {
-				target->releaseThing2();
+				target->decrementReferenceCounter();
 			}
 		}
 	}
@@ -719,7 +720,7 @@ void Monster::onThink(uint32_t interval)
 		}
 	}
 
-	if (despawn()) {
+	if (!isInSpawnRange(_position)) {
 		g_game.internalTeleport(this, masterPos);
 		setIdle(true);
 	} else {
@@ -888,7 +889,7 @@ void Monster::onThinkTarget(uint32_t interval)
 						if (mType->targetDistance <= 1) {
 							searchTarget(TARGETSEARCH_RANDOM);
 						} else {
-							searchTarget(TARGETSEARCH_NEAREAST);
+							searchTarget(TARGETSEARCH_NEAREST);
 						}
 					}
 				}
@@ -1027,7 +1028,7 @@ void Monster::pushItems(Tile* tile)
 			Item* item = items->at(i);
 			if (item && item->hasProperty(CONST_PROP_MOVEABLE) && (item->hasProperty(CONST_PROP_BLOCKPATH)
 			        || item->hasProperty(CONST_PROP_BLOCKSOLID))) {
-				if (moveCount < 20 && pushItem(item)) {
+				if (moveCount < 20 && Monster::pushItem(item)) {
 					++moveCount;
 				} else if (g_game.internalRemoveItem(item) == RETURNVALUE_NOERROR) {
 					++removeCount;
@@ -1073,7 +1074,7 @@ void Monster::pushCreatures(Tile* tile)
 		for (size_t i = 0; i < creatures->size();) {
 			Monster* monster = creatures->at(i)->getMonster();
 			if (monster && monster->isPushable()) {
-				if (monster != lastPushedMonster && pushCreature(monster)) {
+				if (monster != lastPushedMonster && Monster::pushCreature(monster)) {
 					lastPushedMonster = monster;
 					continue;
 				}
@@ -1127,11 +1128,11 @@ bool Monster::getNextStep(Direction& dir, uint32_t& flags)
 		Tile* tile = g_game.map.getTile(pos);
 		if (tile) {
 			if (canPushItems()) {
-				pushItems(tile);
+				Monster::pushItems(tile);
 			}
 
 			if (canPushCreatures()) {
-				pushCreatures(tile);
+				Monster::pushCreatures(tile);
 			}
 		}
 	}
@@ -1738,15 +1739,6 @@ bool Monster::getDistanceStep(const Position& targetPos, Direction& dir, bool fl
 	return true;
 }
 
-bool Monster::isInSpawnRange(const Position& toPos) const
-{
-	if (masterRadius == -1) {
-		return true;
-	}
-
-	return !inDespawnRange(toPos);
-}
-
 bool Monster::canWalkTo(Position pos, Direction dir) const
 {
 	pos = getNextPosition(dir, pos);
@@ -1770,7 +1762,7 @@ void Monster::death(Creature*)
 	for (Creature* summon : summons) {
 		summon->changeHealth(-summon->getHealth());
 		summon->setMaster(nullptr);
-		summon->releaseThing2();
+		summon->decrementReferenceCounter();
 	}
 	summons.clear();
 
@@ -1797,34 +1789,29 @@ Item* Monster::getCorpse(Creature* _lastHitCreature, Creature* mostDamageCreatur
 	return corpse;
 }
 
-bool Monster::inDespawnRange(const Position& pos) const
+bool Monster::isInSpawnRange(const Position& pos) const
 {
 	if (!spawn) {
-		return false;
+		return true;
 	}
 
 	if (Monster::despawnRadius == 0) {
-		return false;
+		return true;
 	}
 
 	if (!Spawns::isInZone(masterPos, Monster::despawnRadius, pos)) {
-		return true;
-	}
-
-	if (Monster::despawnRange == 0) {
 		return false;
 	}
 
-	if (Position::getDistanceZ(pos, masterPos) > Monster::despawnRange) {
+	if (Monster::despawnRange == 0) {
 		return true;
 	}
 
-	return false;
-}
+	if (Position::getDistanceZ(pos, masterPos) > Monster::despawnRange) {
+		return false;
+	}
 
-bool Monster::despawn()
-{
-	return inDespawnRange(getPosition());
+	return true;
 }
 
 bool Monster::getCombatValues(int32_t& min, int32_t& max)
@@ -1951,76 +1938,44 @@ bool Monster::convinceCreature(Creature* creature)
 	if (isSummon()) {
 		if (getMaster()->getPlayer()) {
 			return false;
-		} else if (getMaster() != creature) {
-			Creature* oldMaster = getMaster();
-			oldMaster->removeSummon(this);
-			creature->addSummon(this);
-
-			setFollowCreature(nullptr);
-			setAttackedCreature(nullptr);
-
-			//destroy summons
-			for (Creature* summon : summons) {
-				summon->changeHealth(-summon->getHealth());
-				summon->setMaster(nullptr);
-				summon->releaseThing2();
-			}
-			summons.clear();
-
-			isMasterInRange = true;
-			updateTargetList();
-			updateIdleStatus();
-
-			//Notify surrounding about the change
-			SpectatorVec list;
-			g_game.getSpectators(list, getPosition(), true);
-			g_game.getSpectators(list, creature->getPosition(), true);
-			for (Creature* spectator : list) {
-				spectator->onCreatureConvinced(creature, this);
-			}
-
-			if (spawn) {
-				spawn->removeMonster(this);
-				spawn = nullptr;
-				masterRadius = -1;
-			}
-
-			return true;
-		}
-	} else {
-		creature->addSummon(this);
-		setFollowCreature(nullptr);
-		setAttackedCreature(nullptr);
-
-		for (Creature* summon : summons) {
-			summon->changeHealth(-summon->getHealth());
-			summon->setMaster(nullptr);
-			summon->releaseThing2();
-		}
-		summons.clear();
-
-		isMasterInRange = true;
-		updateTargetList();
-		updateIdleStatus();
-
-		//Notify surrounding about the change
-		SpectatorVec list;
-		g_game.getSpectators(list, getPosition(), true);
-		g_game.getSpectators(list, creature->getPosition(), true);
-		for (Creature* spectator : list) {
-			spectator->onCreatureConvinced(creature, this);
+		} else if (getMaster() == creature) {
+			return false;
 		}
 
-		if (spawn) {
-			spawn->removeMonster(this);
-			spawn = nullptr;
-			masterRadius = -1;
-		}
-
-		return true;
+		Creature* oldMaster = getMaster();
+		oldMaster->removeSummon(this);
 	}
 
-	return false;
+	creature->addSummon(this);
+
+	setFollowCreature(nullptr);
+	setAttackedCreature(nullptr);
+
+	//destroy summons
+	for (Creature* summon : summons) {
+		summon->changeHealth(-summon->getHealth());
+		summon->setMaster(nullptr);
+		summon->decrementReferenceCounter();
+	}
+	summons.clear();
+
+	isMasterInRange = true;
+	updateTargetList();
+	updateIdleStatus();
+
+	//Notify surrounding about the change
+	SpectatorVec list;
+	g_game.map.getSpectators(list, getPosition(), true);
+	g_game.map.getSpectators(list, creature->getPosition(), true);
+	for (Creature* spectator : list) {
+		spectator->onCreatureConvinced(creature, this);
+	}
+
+	if (spawn) {
+		spawn->removeMonster(this);
+		spawn = nullptr;
+	}
+	return true;
 }
 
 void Monster::onCreatureConvinced(const Creature* convincer, const Creature* creature)

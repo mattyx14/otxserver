@@ -159,7 +159,7 @@ AccessHouseLevel_t House::getHouseAccessLevel(const Player* player)
 		return HOUSE_GUEST;
 	}
 
-	return HOUSE_NO_INVITED;
+	return HOUSE_NOT_INVITED;
 }
 
 bool House::kickPlayer(Player* player, Player* target)
@@ -285,12 +285,12 @@ bool House::getAccessList(uint32_t listId, std::string& list) const
 
 bool House::isInvited(const Player* player)
 {
-	return getHouseAccessLevel(player) != HOUSE_NO_INVITED;
+	return getHouseAccessLevel(player) != HOUSE_NOT_INVITED;
 }
 
 void House::addDoor(Door* door)
 {
-	door->useThing2();
+	door->incrementReferenceCounter();
 	doorList.push_back(door);
 	door->setHouse(this);
 	updateDoorDescription();
@@ -300,7 +300,7 @@ void House::removeDoor(Door* door)
 {
 	auto it = std::find(doorList.begin(), doorList.end(), door);
 	if (it != doorList.end()) {
-		door->releaseThing2();
+		door->decrementReferenceCounter();
 		doorList.erase(it);
 	}
 }
@@ -372,7 +372,7 @@ void House::resetTransferItem()
 HouseTransferItem* HouseTransferItem::createHouseTransferItem(House* house)
 {
 	HouseTransferItem* transferItem = new HouseTransferItem(house);
-	transferItem->useThing2();
+	transferItem->incrementReferenceCounter();
 	transferItem->setID(ITEM_DOCUMENT_RO);
 	transferItem->setSubType(1);
 	std::ostringstream ss;
@@ -596,18 +596,6 @@ bool Door::getAccessList(std::string& list) const
 	return true;
 }
 
-void Door::moveAttributes(Item* item)
-{
-	Item::moveAttributes(item);
-
-	if (Door* door = item->getDoor()) {
-		std::string list;
-		if (door->getAccessList(list)) {
-			setAccessList(list);
-		}
-	}
-}
-
 void Door::onRemoved()
 {
 	Item::onRemoved();
@@ -632,7 +620,7 @@ bool Houses::loadHousesXML(const std::string& filename)
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
 	if (!result) {
-		std::cout << "[Error - Houses::loadHousesXML] Failed to load " << filename << ": " << result.description() << std::endl;
+		printXMLError("Error - Houses::loadHousesXML", filename, result);
 		return false;
 	}
 

@@ -39,10 +39,10 @@ bool DatabaseManager::optimizeTables()
 	}
 
 	do {
-		std::string tableName = result->getDataString("TABLE_NAME");
+		std::string tableName = result->getString("TABLE_NAME");
 		std::cout << "> Optimizing table " << tableName << "..." << std::flush;
 
-		query.str("");
+		query.str(std::string());
 		query << "OPTIMIZE TABLE `" << tableName << '`';
 
 		if (db->executeQuery(query.str())) {
@@ -59,7 +59,7 @@ bool DatabaseManager::tableExists(const std::string& tableName)
 	Database* db = Database::getInstance();
 
 	std::ostringstream query;
-	query << "SELECT `TABLE_NAME` FROM `information_schema`.`tables` WHERE `TABLE_SCHEMA` = " << db->escapeString(g_config.getString(ConfigManager::MYSQL_DB)) << " AND `TABLE_NAME` = " << db->escapeString(tableName);
+	query << "SELECT `TABLE_NAME` FROM `information_schema`.`tables` WHERE `TABLE_SCHEMA` = " << db->escapeString(g_config.getString(ConfigManager::MYSQL_DB)) << " AND `TABLE_NAME` = " << db->escapeString(tableName) << " LIMIT 1";
 	return db->storeQuery(query.str()).get() != nullptr;
 }
 
@@ -153,7 +153,7 @@ bool DatabaseManager::getDatabaseConfig(const std::string& config, int32_t& valu
 		return false;
 	}
 
-	value = result->getDataInt("value");
+	value = result->getNumber<int32_t>("value");
 	return true;
 }
 

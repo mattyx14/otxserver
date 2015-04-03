@@ -34,7 +34,7 @@ enum TargetSearchType_t {
 	TARGETSEARCH_DEFAULT,
 	TARGETSEARCH_RANDOM,
 	TARGETSEARCH_ATTACKRANGE,
-	TARGETSEARCH_NEAREAST
+	TARGETSEARCH_NEAREST,
 };
 
 class Monster final : public Creature
@@ -44,7 +44,7 @@ class Monster final : public Creature
 		static int32_t despawnRange;
 		static int32_t despawnRadius;
 
-		Monster(MonsterType* mtype);
+		explicit Monster(MonsterType* mtype);
 		~Monster();
 
 		// non-copyable
@@ -84,9 +84,8 @@ class Monster final : public Creature
 		const Position& getMasterPos() const {
 			return masterPos;
 		}
-		void setMasterPos(const Position& pos, int32_t radius = 1) {
+		void setMasterPos(Position pos) {
 			masterPos = pos;
-			masterRadius = radius;
 		}
 
 		RaceType_t getRace() const final {
@@ -128,7 +127,7 @@ class Monster final : public Creature
 		void onAttackedCreatureDisappear(bool isLogout) final;
 
 		void onCreatureAppear(Creature* creature, bool isLogin) final;
-		void onCreatureDisappear(Creature* creature, uint32_t stackpos, bool isLogout) final;
+		void onRemoveCreature(Creature* creature, bool isLogout) final;
 		void onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos, const Tile* oldTile, const Position& oldPos, bool teleport) final;
 		void onCreatureSay(Creature* creature, SpeakClasses type, const std::string& text) final;
 
@@ -196,7 +195,6 @@ class Monster final : public Creature
 		int32_t maxCombatValue;
 		int32_t targetChangeCooldown;
 		int32_t stepDuration;
-		int32_t masterRadius;
 
 		Position masterPos;
 
@@ -221,8 +219,6 @@ class Monster final : public Creature
 
 		void death(Creature* _lastHitCreature) final;
 		Item* getCorpse(Creature* _lastHitCreature, Creature* mostDamageCreature) final;
-		bool despawn();
-		bool inDespawnRange(const Position& pos) const;
 
 		void setIdle(bool _idle);
 		void updateIdleStatus();
@@ -240,13 +236,13 @@ class Monster final : public Creature
 		bool getRandomStep(const Position& creaturePos, Direction& dir) const;
 		bool getDanceStep(const Position& creaturePos, Direction& dir,
 		                  bool keepAttack = true, bool keepDistance = true);
-		bool isInSpawnRange(const Position& toPos) const;
+		bool isInSpawnRange(const Position& pos) const;
 		bool canWalkTo(Position pos, Direction dir) const;
 
 		static bool pushItem(Item* item);
-		void pushItems(Tile* tile);
+		static void pushItems(Tile* tile);
 		static bool pushCreature(Creature* creature);
-		void pushCreatures(Tile* tile);
+		static void pushCreatures(Tile* tile);
 
 		void onThinkTarget(uint32_t interval);
 		void onThinkYell(uint32_t interval);

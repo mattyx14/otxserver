@@ -452,10 +452,6 @@ void ConditionAttributes::updatePercentStats(Player* player)
 				stats[i] = static_cast<int32_t>(player->getMaxMana() * ((statsPercent[i] - 100) / 100.f));
 				break;
 
-			case STAT_SOULPOINTS:
-				stats[i] = static_cast<int32_t>(player->getPlayerInfo(PLAYERINFO_SOUL) * ((statsPercent[i] - 100) / 100.f));
-				break;
-
 			case STAT_MAGICPOINTS:
 				stats[i] = static_cast<int32_t>(player->getMagicLevel() * ((statsPercent[i] - 100) / 100.f));
 				break;
@@ -643,11 +639,6 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			return true;
 		}
 
-		case CONDITION_PARAM_STAT_SOULPOINTS: {
-			stats[STAT_SOULPOINTS] = value;
-			return true;
-		}
-
 		case CONDITION_PARAM_STAT_MAGICPOINTS: {
 			stats[STAT_MAGICPOINTS] = value;
 			return true;
@@ -660,11 +651,6 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 
 		case CONDITION_PARAM_STAT_MAXMANAPOINTSPERCENT: {
 			statsPercent[STAT_MAXMANAPOINTS] = std::max<int32_t>(0, value);
-			return true;
-		}
-
-		case CONDITION_PARAM_STAT_SOULPOINTSPERCENT: {
-			statsPercent[STAT_SOULPOINTS] = std::max<int32_t>(0, value);
 			return true;
 		}
 
@@ -753,19 +739,22 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 			if (isBuff && realHealthGain > 0) {
 				Player* player = creature->getPlayer();
 				if (player) {
-					std::ostringstream ss;
-					ss << ucfirst(player->getNameDescription()) << " was healed for " << realHealthGain << " hitpoint" << (realHealthGain != 1 ? "s." : ".");
-					std::string message = ss.str();
+					std::string healString = std::to_string(realHealthGain) + (realHealthGain != 1 ? " hitpoints." : " hitpoint.");
 
-					std::ostringstream tmpSs;
-					tmpSs << "You were healed for " << realHealthGain << " hitpoint" << (realHealthGain != 1 ? "s." : ".");
-					player->sendHealMessage(MESSAGE_HEALED, tmpSs.str(), player->getPosition(), realHealthGain, TEXTCOLOR_MAYABLUE);
+					TextMessage message(MESSAGE_HEALED, "You were healed for " + healString);
+					message.position = player->getPosition();
+					message.primary.value = realHealthGain;
+					message.primary.color = TEXTCOLOR_MAYABLUE;
+					player->sendTextMessage(message);
 
 					SpectatorVec list;
-					g_game.getSpectators(list, player->getPosition(), false, true);
-					for (Creature* spectator : list) {
-						if (spectator != player) {
-							spectator->getPlayer()->sendHealMessage(MESSAGE_HEALED_OTHERS, message, player->getPosition(), realHealthGain, TEXTCOLOR_MAYABLUE);
+					g_game.map.getSpectators(list, player->getPosition(), false, true);
+					list.erase(player);
+					if (!list.empty()) {
+						message.type = MESSAGE_HEALED_OTHERS;
+						message.text = player->getName() + " was healed for " + healString;
+						for (Creature* spectator : list) {
+							spectator->getPlayer()->sendTextMessage(message);
 						}
 					}
 				}
@@ -1005,6 +994,7 @@ bool ConditionDamage::updateCondition(const Condition* addCondition)
 
 bool ConditionDamage::addDamage(int32_t rounds, int32_t time, int32_t value)
 {
+	time = std::max<int32_t>(time, EVENT_CREATURE_THINK_INTERVAL);
 	if (rounds == -1) {
 		//periodic damage
 		periodDamage = value;
@@ -1272,12 +1262,11 @@ void ConditionDamage::generateDamageList(int32_t amount, int32_t start, std::lis
 {
 	amount = std::abs(amount);
 	int32_t sum = 0;
-	int32_t med = 0;
 	double x1, x2;
 
 	for (int32_t i = start; i > 0; --i) {
 		int32_t n = start + 1 - i;
-		med = (n * amount) / start;
+		int32_t med = (n * amount) / start;
 
 		do {
 			sum += i;

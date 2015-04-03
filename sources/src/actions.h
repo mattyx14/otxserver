@@ -24,20 +24,20 @@
 #include "enums.h"
 #include "luascript.h"
 
-typedef bool (ActionFunction)(Player* player, Item* item, const PositionEx& posFrom, const PositionEx& posTo, bool extendedUse, bool isHotkey);
+typedef bool (ActionFunction)(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey);
 
 class Action : public Event
 {
 	public:
-		Action(const Action* copy);
-		Action(LuaScriptInterface* _interface);
+		explicit Action(const Action* copy);
+		explicit Action(LuaScriptInterface* _interface);
 
 		bool configureEvent(const pugi::xml_node& node) override;
 		bool loadFunction(const pugi::xml_attribute& attr) override;
 
 		//scripting
-		virtual bool executeUse(Player* player, Item* item, const PositionEx& posFrom,
-			const PositionEx& posTo, bool extendedUse, uint32_t creatureId, bool isHotkey);
+		virtual bool executeUse(Player* player, Item* item, const Position& fromPosition,
+			Thing* target, const Position& toPosition, bool isHotkey);
 		//
 
 		bool getAllowFarUse() const {
@@ -65,6 +65,7 @@ class Action : public Event
 		virtual bool hasOwnErrorHandler() {
 			return false;
 		}
+		virtual Thing* getTarget(Player* player, Creature* targetCreature, const Position& toPosition, uint8_t toStackPos) const;
 
 		ActionFunction* function;
 
@@ -91,13 +92,11 @@ class Actions final : public BaseEvents
 		Actions& operator=(const Actions&) = delete;
 
 		bool useItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey);
-		bool useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item, bool isHotkey, uint32_t creatureId = 0);
+		bool useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item, bool isHotkey, Creature* creature = nullptr);
 
 		ReturnValue canUse(const Player* player, const Position& pos);
 		ReturnValue canUse(const Player* player, const Position& pos, const Item* item);
 		ReturnValue canUseFar(const Creature* creature, const Position& toPos, bool checkLineOfSight, bool checkFloor);
-
-		bool hasAction(const Item* item);
 
 	protected:
 		ReturnValue internalUseItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey);

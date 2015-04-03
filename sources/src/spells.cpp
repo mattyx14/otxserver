@@ -859,7 +859,7 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if (aggressive && needTarget && topVisibleCreature && player->getSecureMode() == SECUREMODE_ON) {
+	if (aggressive && needTarget && topVisibleCreature && player->hasSecureMode()) {
 		const Player* targetPlayer = topVisibleCreature->getPlayer();
 		if (targetPlayer && targetPlayer != player && player->getSkullClient(targetPlayer) == SKULL_NONE && !Combat::isInPvpZone(player, targetPlayer)) {
 			player->sendCancelMessage(RETURNVALUE_TURNSECUREMODETOATTACKUNMARKEDPLAYERS);
@@ -896,11 +896,11 @@ void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool pay
 	}
 
 	if (payCost) {
-		postCastSpell(player, getManaCost(player), getSoulCost());
+		Spell::postCastSpell(player, getManaCost(player), getSoulCost());
 	}
 }
 
-void Spell::postCastSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const
+void Spell::postCastSpell(Player* player, uint32_t manaCost, uint32_t soulCost)
 {
 	if (manaCost > 0) {
 		player->addManaSpent(manaCost);
@@ -1179,7 +1179,7 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 
 	bool result = internalCastSpell(player, var);
 	if (result) {
-		Spell::postCastSpell(player);
+		postCastSpell(player);
 	}
 
 	return result;
@@ -1394,18 +1394,18 @@ bool InstantSpell::SearchPlayer(const InstantSpell*, Creature* creature, const s
 		DISTANCE_BESIDE,
 		DISTANCE_CLOSE,
 		DISTANCE_FAR,
-		DISTANCE_VERYFAR
+		DISTANCE_VERYFAR,
 	};
 
 	enum direction_t {
 		DIR_N, DIR_S, DIR_E, DIR_W,
-		DIR_NE, DIR_NW, DIR_SE, DIR_SW
+		DIR_NE, DIR_NW, DIR_SE, DIR_SW,
 	};
 
 	enum level_t {
 		LEVEL_HIGHER,
 		LEVEL_LOWER,
-		LEVEL_SAME
+		LEVEL_SAME,
 	};
 
 	Player* playerExiva = g_game.getPlayerByName(param);
@@ -1583,7 +1583,7 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 		}
 
 		if (player->getSummonCount() >= 2) {
-			player->sendCancel("You cannot summon more creatures.");
+			player->sendCancelMessage("You cannot summon more creatures.");
 			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 			return false;
 		}
@@ -1606,7 +1606,7 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 		return false;
 	}
 
-	spell->postCastSpell(player, mType->manaCost, spell->getSoulCost());
+	Spell::postCastSpell(player, mType->manaCost, spell->getSoulCost());
 	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_BLUE);
 	g_game.addMagicEffect(monster->getPosition(), CONST_ME_TELEPORT);
 	return true;
@@ -1760,21 +1760,21 @@ ReturnValue ConjureSpell::internalConjureItem(Player* player, uint32_t conjureId
 	return result;
 }
 
-bool ConjureSpell::conjureItem(const ConjureSpell* spell, Creature* creature)
+bool ConjureSpell::conjureItem(Creature* creature) const
 {
 	Player* player = creature->getPlayer();
 	if (!player) {
 		return false;
 	}
 
-	if (spell->getReagentId() != 0) {
-		if (!player->removeItemOfType(spell->getReagentId(), 1, -1)) {
+	if (getReagentId() != 0) {
+		if (!player->removeItemOfType(getReagentId(), 1, -1)) {
 			player->sendCancelMessage(RETURNVALUE_YOUNEEDAMAGICITEMTOCASTSPELL);
 			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 			return false;
 		}
 
-		Item* newItem = Item::CreateItem(spell->getConjureId(), spell->getConjureCount());
+		Item* newItem = Item::CreateItem(getConjureId(), getConjureCount());
 		if (!newItem) {
 			return false;
 		}
@@ -1784,12 +1784,12 @@ bool ConjureSpell::conjureItem(const ConjureSpell* spell, Creature* creature)
 			delete newItem;
 			return false;
 		}
-	} else if (internalConjureItem(player, spell->getConjureId(), spell->getConjureCount()) != RETURNVALUE_NOERROR) {
+	} else if (internalConjureItem(player, getConjureId(), getConjureCount()) != RETURNVALUE_NOERROR) {
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
-	spell->postCastSpell(player);
+	postCastSpell(player);
 	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
 	return true;
 }
@@ -1806,7 +1806,7 @@ bool ConjureSpell::playerCastInstant(Player* player, std::string& param)
 		var.text = param;
 		return executeCastSpell(player, var);
 	}
-	return conjureItem(this, player);
+	return conjureItem(player);
 }
 
 RuneSpell::RuneSpell(LuaScriptInterface* _interface) :
@@ -1814,7 +1814,7 @@ RuneSpell::RuneSpell(LuaScriptInterface* _interface) :
 {
 	hasCharges = true;
 	runeId = 0;
-	function = nullptr;
+	runeFunction = nullptr;
 
 	allowFarUse = true;
 }
@@ -1864,9 +1864,9 @@ bool RuneSpell::loadFunction(const pugi::xml_attribute& attr)
 {
 	const char* functionName = attr.as_string();
 	if (strcasecmp(functionName, "chameleon") == 0) {
-		function = Illusion;
+		runeFunction = Illusion;
 	} else if (strcasecmp(functionName, "convince") == 0) {
-		function = Convince;
+		runeFunction = Convince;
 	} else {
 		std::cout << "[Warning - RuneSpell::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
 		return false;
@@ -1876,13 +1876,8 @@ bool RuneSpell::loadFunction(const pugi::xml_attribute& attr)
 	return true;
 }
 
-bool RuneSpell::Illusion(const RuneSpell*, Creature* creature, Item*, const Position&, const Position& posTo, bool)
+bool RuneSpell::Illusion(const RuneSpell*, Player* player, const Position& posTo)
 {
-	Player* player = creature->getPlayer();
-	if (!player) {
-		return false;
-	}
-
 	Thing* thing = g_game.internalGetThing(player, posTo, 0, 0, STACKPOS_MOVE);
 	if (!thing) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
@@ -1897,7 +1892,7 @@ bool RuneSpell::Illusion(const RuneSpell*, Creature* creature, Item*, const Posi
 		return false;
 	}
 
-	ReturnValue ret = CreateIllusion(creature, illusionItem->getID(), 200000);
+	ReturnValue ret = CreateIllusion(player, illusionItem->getID(), 200000);
 	if (ret != RETURNVALUE_NOERROR) {
 		player->sendCancelMessage(ret);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
@@ -1908,13 +1903,8 @@ bool RuneSpell::Illusion(const RuneSpell*, Creature* creature, Item*, const Posi
 	return true;
 }
 
-bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, const Position&, const Position& posTo, bool)
+bool RuneSpell::Convince(const RuneSpell* spell, Player* player, const Position& posTo)
 {
-	Player* player = creature->getPlayer();
-	if (!player) {
-		return false;
-	}
-
 	if (!player->hasFlag(PlayerFlag_CanConvinceAll)) {
 		if (player->getSummonCount() >= 2) {
 			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
@@ -1948,13 +1938,13 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 		return false;
 	}
 
-	if (!convinceCreature->convinceCreature(creature)) {
+	if (!convinceCreature->convinceCreature(player)) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
 
-	spell->postCastSpell(player, manaCost, spell->getSoulCost());
+	Spell::postCastSpell(player, manaCost, spell->getSoulCost());
 	g_game.updateCreatureType(convinceCreature);
 	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
 	return true;
@@ -1982,50 +1972,50 @@ ReturnValue RuneSpell::canExecuteAction(const Player* player, const Position& to
 	return RETURNVALUE_NOERROR;
 }
 
-bool RuneSpell::executeUse(Player* player, Item* item, const PositionEx& posFrom, const PositionEx& posTo, bool, uint32_t creatureId, bool isHotkey)
+bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition, bool isHotkey)
 {
-	if (!playerRuneSpellCheck(player, posTo)) {
+	if (!playerRuneSpellCheck(player, toPosition)) {
 		return false;
 	}
 
 	bool result = false;
-
 	if (m_scripted) {
 		LuaVariant var;
 
 		if (needTarget) {
-			if (creatureId == 0) {
-				Tile* toTile = g_game.map.getTile(posTo);
+			var.type = VARIANT_NUMBER;
+
+			if (target == nullptr) {
+				Tile* toTile = g_game.map.getTile(toPosition);
 				if (toTile) {
-					const Creature* creature = toTile->getBottomVisibleCreature(player);
-					if (creature) {
-						creatureId = creature->getID();
+					const Creature* visibleCreature = toTile->getBottomVisibleCreature(player);
+					if (visibleCreature) {
+						var.number = visibleCreature->getID();
 					}
 				}
+			} else {
+				var.number = target->getCreature()->getID();
 			}
-
-			var.type = VARIANT_NUMBER;
-			var.number = creatureId;
 		} else {
 			var.type = VARIANT_POSITION;
-			var.pos = posTo;
+			var.pos = toPosition;
 		}
 
 		result = internalCastSpell(player, var, isHotkey);
-	} else if (function) {
-		result = function(this, player, item, posFrom, posTo, isHotkey);
+	} else if (runeFunction) {
+		result = runeFunction(this, player, toPosition);
 	}
 
-	if (result) {
-		Spell::postCastSpell(player);
-
-		if (hasCharges && item && g_config.getBoolean(ConfigManager::REMOVE_RUNE_CHARGES)) {
-			int32_t newCount = std::max<int32_t>(0, item->getItemCount() - 1);
-			g_game.transformItem(item, item->getID(), newCount);
-		}
+	if (!result) {
+		return false;
 	}
 
-	return result;
+	postCastSpell(player);
+	if (hasCharges && item && g_config.getBoolean(ConfigManager::REMOVE_RUNE_CHARGES)) {
+		int32_t newCount = std::max<int32_t>(0, item->getItemCount() - 1);
+		g_game.transformItem(item, item->getID(), newCount);
+	}
+	return true;
 }
 
 bool RuneSpell::castSpell(Creature* creature)

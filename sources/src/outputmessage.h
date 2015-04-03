@@ -58,7 +58,7 @@ class OutputMessage : public NetworkMessage
 			STATE_FREE,
 			STATE_ALLOCATED,
 			STATE_ALLOCATED_NO_AUTOSEND,
-			STATE_WAITING
+			STATE_WAITING,
 		};
 
 		Protocol* getProtocol() const {
@@ -144,8 +144,6 @@ class OutputMessage : public NetworkMessage
 		OutputMessageState state;
 };
 
-typedef std::shared_ptr<OutputMessage> OutputMessage_ptr;
-
 class OutputMessagePool
 {
 	private:
@@ -175,15 +173,6 @@ class OutputMessagePool
 			return frameTime;
 		}
 
-		size_t getTotalMessageCount() const {
-			return allOutputMessages.size();
-		}
-		size_t getAvailableMessageCount() const {
-			return outputMessages.size();
-		}
-		size_t getAutoMessageCount() const {
-			return autoSendOutputMessages.size();
-		}
 		void addToAutoSend(OutputMessage_ptr msg);
 
 	protected:

@@ -37,7 +37,7 @@ enum CreatureEventType_t {
 	CREATURE_EVENT_TEXTEDIT,
 	CREATURE_EVENT_HEALTHCHANGE,
 	CREATURE_EVENT_MANACHANGE,
-	CREATURE_EVENT_EXTENDED_OPCODE // otclient additional network opcodes
+	CREATURE_EVENT_EXTENDED_OPCODE, // otclient additional network opcodes
 };
 
 class CreatureEvent;
@@ -76,7 +76,7 @@ class CreatureEvents final : public BaseEvents
 class CreatureEvent final : public Event
 {
 	public:
-		CreatureEvent(LuaScriptInterface* _interface);
+		explicit CreatureEvent(LuaScriptInterface* _interface);
 
 		bool configureEvent(const pugi::xml_node& node) final;
 

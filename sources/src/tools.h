@@ -26,6 +26,8 @@
 #include "const.h"
 #include "enums.h"
 
+void printXMLError(const std::string& where, const std::string& fileName, const pugi::xml_parse_result& result);
+
 std::string transformToSHA1(const std::string& input);
 
 void replaceString(std::string& str, const std::string& sought, const std::string& replacement);
@@ -77,8 +79,8 @@ bool booleanString(const std::string& str);
 
 std::string getWeaponName(WeaponType_t weaponType);
 
-uint32_t combatTypeToIndex(CombatType_t combatType);
-CombatType_t indexToCombatType(uint32_t v);
+size_t combatTypeToIndex(CombatType_t combatType);
+CombatType_t indexToCombatType(size_t v);
 
 uint8_t serverFluidToClient(uint8_t serverFluid);
 uint8_t clientFluidToServer(uint8_t clientFluid);

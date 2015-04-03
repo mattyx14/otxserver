@@ -48,7 +48,7 @@ bool Spawns::loadFromXml(const std::string& _filename)
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(_filename.c_str());
 	if (!result) {
-		std::cout << "[Error - Spawns::loadFromXml] Failed to load " << _filename << ": " << result.description() << std::endl;
+		printXMLError("Error - Spawns::loadFromXml", _filename, result);
 		return false;
 	}
 
@@ -121,7 +121,7 @@ bool Spawns::loadFromXml(const std::string& _filename)
 					centerPos.y + pugi::cast<uint16_t>(childNode.attribute("y").value()),
 					centerPos.z
 				), radius);
-				npcList.push_back(npc);
+				npcList.push_front(npc);
 			}
 		}
 	}
@@ -180,14 +180,14 @@ Spawn::~Spawn()
 	for (const auto& it : spawnedMap) {
 		Monster* monster = it.second;
 		monster->setSpawn(nullptr);
-		monster->releaseThing2();
+		monster->decrementReferenceCounter();
 	}
 }
 
 bool Spawn::findPlayer(const Position& pos)
 {
 	SpectatorVec list;
-	g_game.getSpectators(list, pos, false, true);
+	g_game.map.getSpectators(list, pos, false, true);
 	for (Creature* spectator : list) {
 		if (!spectator->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) {
 			return true;
@@ -218,8 +218,8 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 	Monster* monster = monster_ptr.release();
 	monster->setDirection(dir);
 	monster->setSpawn(this);
-	monster->setMasterPos(pos, radius);
-	monster->useThing2();
+	monster->setMasterPos(pos);
+	monster->incrementReferenceCounter();
 
 	spawnedMap.insert(spawned_pair(spawnId, monster));
 	spawnMap[spawnId].lastSpawn = OTSYS_TIME();
@@ -278,11 +278,11 @@ void Spawn::cleanup()
 				spawnMap[spawnId].lastSpawn = OTSYS_TIME();
 			}
 
-			monster->releaseThing2();
-			spawnedMap.erase(it++);
+			monster->decrementReferenceCounter();
+			it = spawnedMap.erase(it);
 		} else if (!isInSpawnZone(monster->getPosition()) && spawnId != 0) {
 			spawnedMap.insert(spawned_pair(0, monster));
-			spawnedMap.erase(it++);
+			it = spawnedMap.erase(it);
 		} else {
 			++it;
 		}
@@ -317,7 +317,7 @@ void Spawn::removeMonster(Monster* monster)
 {
 	for (auto it = spawnedMap.begin(); it != spawnedMap.end(); ++it) {
 		if (it->second == monster) {
-			monster->releaseThing2();
+			monster->decrementReferenceCounter();
 			spawnedMap.erase(it);
 			break;
 		}

@@ -65,13 +65,12 @@ class Connection : public std::enable_shared_from_this<Connection>
 		enum { read_timeout = 30 };
 
 		enum ConnectionState_t {
-			CONNECTION_STATE_OPEN = 0,
-			CONNECTION_STATE_REQUEST_CLOSE = 1,
-			CONNECTION_STATE_CLOSING = 2,
-			CONNECTION_STATE_CLOSED = 3
+			CONNECTION_STATE_OPEN,
+			CONNECTION_STATE_REQUEST_CLOSE,
+			CONNECTION_STATE_CLOSING,
+			CONNECTION_STATE_CLOSED,
 		};
 
-	private:
 		Connection(boost::asio::ip::tcp::socket* socket,
 		           boost::asio::io_service& io_service,
 		           ServicePort_ptr service_port) :
@@ -98,10 +97,10 @@ class Connection : public std::enable_shared_from_this<Connection>
 			return *m_socket;
 		}
 
-		void closeConnection();
+		void close();
 		// Used by protocols that require server to send first
-		void acceptConnection(Protocol* protocol);
-		void acceptConnection();
+		void accept(Protocol* protocol);
+		void accept();
 
 		bool send(OutputMessage_ptr msg);
 

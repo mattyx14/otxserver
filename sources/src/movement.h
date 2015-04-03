@@ -25,7 +25,7 @@
 #include "luascript.h"
 
 enum MoveEvent_t {
-	MOVE_EVENT_STEP_IN = 0,
+	MOVE_EVENT_STEP_IN,
 	MOVE_EVENT_STEP_OUT,
 	MOVE_EVENT_EQUIP,
 	MOVE_EVENT_DEEQUIP,
@@ -33,6 +33,7 @@ enum MoveEvent_t {
 	MOVE_EVENT_REMOVE_ITEM,
 	MOVE_EVENT_ADD_ITEM_ITEMTILE,
 	MOVE_EVENT_REMOVE_ITEM_ITEMTILE,
+
 	MOVE_EVENT_LAST,
 	MOVE_EVENT_NONE
 };
@@ -57,7 +58,7 @@ class MoveEvents final : public BaseEvents
 
 		uint32_t onCreatureMove(Creature* creature, const Tile* tile, const Position& fromPos, MoveEvent_t eventType);
 		uint32_t onPlayerEquip(Player* player, Item* item, slots_t slot, bool isCheck);
-		uint32_t onPlayerDeEquip(Player* player, Item* item, slots_t slot, bool isRemoval);
+		uint32_t onPlayerDeEquip(Player* player, Item* item, slots_t slot);
 		uint32_t onItemMove(Item* item, Tile* tile, bool isAdd);
 
 		MoveEvent* getEvent(Item* item, MoveEvent_t eventType);
@@ -99,8 +100,8 @@ typedef uint32_t (EquipFunction)(MoveEvent* moveEvent, Player* player, Item* ite
 class MoveEvent final : public Event
 {
 	public:
-		MoveEvent(LuaScriptInterface* _interface);
-		MoveEvent(const MoveEvent* copy);
+		explicit MoveEvent(LuaScriptInterface* _interface);
+		explicit MoveEvent(const MoveEvent* copy);
 
 		MoveEvent_t getEventType() const;
 		void setEventType(MoveEvent_t type);

@@ -62,7 +62,7 @@ class Weapons final : public BaseEvents
 class Weapon : public Event
 {
 	public:
-		Weapon(LuaScriptInterface* _interface);
+		explicit Weapon(LuaScriptInterface* _interface);
 
 		bool configureEvent(const pugi::xml_node& node) override;
 		bool loadFunction(const pugi::xml_attribute&) final {
@@ -73,7 +73,7 @@ class Weapon : public Event
 			return false;
 		}
 
-		virtual int32_t playerWeaponCheck(Player* player, Creature* target) const;
+		int32_t playerWeaponCheck(Player* player, Creature* target, uint8_t shootRange) const;
 		static bool useFist(Player* player, Creature* target);
 		virtual bool useWeapon(Player* player, Item* item, Creature* target) const;
 
@@ -121,7 +121,6 @@ class Weapon : public Event
 		uint32_t soul;
 		uint16_t id;
 		WeaponAction_t action;
-		uint8_t range;
 		uint8_t breakChance;
 		bool enabled;
 		bool premium;
@@ -137,7 +136,7 @@ class Weapon : public Event
 class WeaponMelee final : public Weapon
 {
 	public:
-		WeaponMelee(LuaScriptInterface* _interface);
+		explicit WeaponMelee(LuaScriptInterface* _interface);
 
 		void configureWeapon(const ItemType& it) final;
 
@@ -151,21 +150,19 @@ class WeaponMelee final : public Weapon
 		bool getSkillType(const Player* player, const Item* item, skills_t& skill, uint32_t& skillpoint) const final;
 
 		CombatType_t elementType;
-		int16_t elementDamage;
+		uint16_t elementDamage;
 };
 
 class WeaponDistance final : public Weapon
 {
 	public:
-		WeaponDistance(LuaScriptInterface* _interface);
+		explicit WeaponDistance(LuaScriptInterface* _interface);
 
-		bool configureEvent(const pugi::xml_node& node) final;
 		void configureWeapon(const ItemType& it) final;
 		bool interruptSwing() const final {
 			return true;
 		}
 
-		int32_t playerWeaponCheck(Player* player, Creature* target) const final;
 		bool useWeapon(Player* player, Item* item, Creature* target) const final;
 
 		int32_t getWeaponDamage(const Player* player, const Creature* target, const Item* item, bool maxDamage = false) const final;
@@ -175,18 +172,14 @@ class WeaponDistance final : public Weapon
 	protected:
 		bool getSkillType(const Player* player, const Item* item, skills_t& skill, uint32_t& skillpoint) const final;
 
-		int32_t hitChance;
-		int32_t maxHitChance;
-		int32_t ammuAttackValue;
-
 		CombatType_t elementType;
-		int16_t elementDamage;
+		uint16_t elementDamage;
 };
 
 class WeaponWand final : public Weapon
 {
 	public:
-		WeaponWand(LuaScriptInterface* _interface);
+		explicit WeaponWand(LuaScriptInterface* _interface);
 
 		bool configureEvent(const pugi::xml_node& node) final;
 		void configureWeapon(const ItemType& it) final;

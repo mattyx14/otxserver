@@ -27,7 +27,7 @@
 enum TalkActionResult_t {
 	TALKACTION_CONTINUE,
 	TALKACTION_BREAK,
-	TALKACTION_FAILED
+	TALKACTION_FAILED,
 };
 
 class TalkAction;
@@ -52,7 +52,7 @@ class TalkActions : public BaseEvents
 		void clear() final;
 
 		// TODO: Store TalkAction objects directly in the list instead of using pointers
-		std::list<TalkAction*> talkActions;
+		std::forward_list<TalkAction*> talkActions;
 
 		LuaScriptInterface m_scriptInterface;
 };
@@ -60,7 +60,7 @@ class TalkActions : public BaseEvents
 class TalkAction : public Event
 {
 	public:
-		TalkAction(LuaScriptInterface* _interface);
+		explicit TalkAction(LuaScriptInterface* _interface);
 
 		bool configureEvent(const pugi::xml_node& node) override;
 

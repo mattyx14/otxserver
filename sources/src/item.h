@@ -49,7 +49,7 @@ enum ITEMPROPERTY {
 	CONST_PROP_IMMOVABLEBLOCKPATH,
 	CONST_PROP_IMMOVABLENOFIELDBLOCKPATH,
 	CONST_PROP_NOFIELDBLOCKPATH,
-	CONST_PROP_SUPPORTHANGABLE
+	CONST_PROP_SUPPORTHANGABLE,
 };
 
 enum TradeEvents_t {
@@ -60,7 +60,7 @@ enum TradeEvents_t {
 enum ItemDecayState_t {
 	DECAYING_FALSE = 0,
 	DECAYING_TRUE,
-	DECAYING_PENDING
+	DECAYING_PENDING,
 };
 
 enum AttrTypes_t {
@@ -96,13 +96,13 @@ enum AttrTypes_t {
 	ATTR_EXTRADEFENSE = 30,
 	ATTR_ARMOR = 31,
 	ATTR_HITCHANCE = 32,
-	ATTR_SHOOTRANGE = 33
+	ATTR_SHOOTRANGE = 33,
 };
 
 enum Attr_ReadValue {
 	ATTR_READ_CONTINUE,
 	ATTR_READ_ERROR,
-	ATTR_READ_END
+	ATTR_READ_END,
 };
 
 class ItemAttributes
@@ -224,48 +224,54 @@ class ItemAttributes
 
 		struct Attribute
 		{
-			uint8_t* value;
+			union {
+				int64_t integer;
+				std::string* string;
+			} value;
 			itemAttrTypes type;
 
-			Attribute(itemAttrTypes type) : value(nullptr), type(type) {}
+			explicit Attribute(itemAttrTypes type) : type(type) {
+				memset(&value, 0, sizeof(value));
+			}
 			Attribute(const Attribute& i) {
 				type = i.type;
 				if (ItemAttributes::isIntAttrType(type)) {
-					value = i.value;
+					value.integer = i.value.integer;
 				} else if (ItemAttributes::isStrAttrType(type)) {
-					value = reinterpret_cast<uint8_t*>(new std::string(*reinterpret_cast<std::string*>(i.value)));
+					value.string = new std::string(*i.value.string);
 				} else {
-					value = nullptr;
+					memset(&value, 0, sizeof(value));
 				}
 			}
 			Attribute(Attribute&& attribute) : value(attribute.value), type(attribute.type) {
-				attribute.value = nullptr;
+				memset(&attribute.value, 0, sizeof(value));
 				attribute.type = ITEM_ATTRIBUTE_NONE;
 			}
 			~Attribute() {
 				if (ItemAttributes::isStrAttrType(type)) {
-					delete value;
+					delete value.string;
 				}
 			}
 			Attribute& operator=(Attribute other) {
-				swap(*this, other);
+				Attribute::swap(*this, other);
 				return *this;
 			}
 			Attribute& operator=(Attribute&& other) {
 				if (this != &other) {
 					if (ItemAttributes::isStrAttrType(type)) {
-						delete value;
+						delete value.string;
 					}
 
 					value = other.value;
 					type = other.type;
-					other.value = nullptr;
+
+					memset(&other.value, 0, sizeof(value));
 					other.type = ITEM_ATTRIBUTE_NONE;
 				}
 				return *this;
 			}
 
-			void swap(Attribute& first, Attribute &second) {
+			static void swap(Attribute& first, Attribute& second) {
 				std::swap(first.value, second.value);
 				std::swap(first.type, second.type);
 			}
@@ -277,9 +283,9 @@ class ItemAttributes
 		const std::string& getStrAttr(itemAttrTypes type) const;
 		void setStrAttr(itemAttrTypes type, const std::string& value);
 
-		int32_t getIntAttr(itemAttrTypes type) const;
-		void setIntAttr(itemAttrTypes type, int32_t value);
-		void increaseIntAttr(itemAttrTypes type, int32_t value);
+		int64_t getIntAttr(itemAttrTypes type) const;
+		void setIntAttr(itemAttrTypes type, int64_t value);
+		void increaseIntAttr(itemAttrTypes type, int64_t value);
 
 		void addAttr(Attribute* attr);
 		const Attribute* getExistingAttr(itemAttrTypes type) const;
@@ -305,6 +311,7 @@ class Item : virtual public Thing
 	public:
 		//Factory member to create item of right type based on type
 		static Item* CreateItem(const uint16_t _type, uint16_t _count = 0);
+		static Container* CreateItemAsContainer(const uint16_t _type, uint16_t size);
 		static Item* CreateItem(PropStream& propStream);
 		static Items items;
 
@@ -312,7 +319,6 @@ class Item : virtual public Thing
 		Item(const uint16_t _type, uint16_t _count = 0);
 		Item(const Item& i);
 		virtual Item* clone() const;
-		virtual void moveAttributes(Item* item);
 
 		virtual ~Item();
 
@@ -766,9 +772,7 @@ class Item : virtual public Thing
 			return !loadedFromMap && canRemove() && isPickupable() && !hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) && !hasAttribute(ITEM_ATTRIBUTE_ACTIONID);
 		}
 
-		bool hasAttributes() const {
-			return attributes != nullptr;
-		}
+		bool hasMarketAttributes() const;
 
 		ItemAttributes* getAttributes() {
 			if (!attributes) {
@@ -777,11 +781,11 @@ class Item : virtual public Thing
 			return attributes;
 		}
 
-		void useThing2() {
-			++useCount;
+		void incrementReferenceCounter() {
+			++referenceCounter;
 		}
-		void releaseThing2() {
-			if (--useCount == 0) {
+		void decrementReferenceCounter() {
+			if (--referenceCounter == 0) {
 				delete this;
 			}
 		}
@@ -806,7 +810,7 @@ class Item : virtual public Thing
 		Cylinder* parent;
 		ItemAttributes* attributes;
 
-		uint32_t useCount;
+		uint32_t referenceCounter;
 
 		uint16_t id;  // the same id as in ItemType
 		uint8_t count; // number of stacked items

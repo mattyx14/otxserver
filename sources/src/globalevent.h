@@ -29,7 +29,7 @@ enum GlobalEvent_t {
 
 	GLOBALEVENT_STARTUP,
 	GLOBALEVENT_SHUTDOWN,
-	GLOBALEVENT_RECORD
+	GLOBALEVENT_RECORD,
 };
 
 class GlobalEvent;
@@ -75,7 +75,7 @@ class GlobalEvents final : public BaseEvents
 class GlobalEvent final : public Event
 {
 	public:
-		GlobalEvent(LuaScriptInterface* _interface);
+		explicit GlobalEvent(LuaScriptInterface* _interface);
 
 		bool configureEvent(const pugi::xml_node& node) final;
 

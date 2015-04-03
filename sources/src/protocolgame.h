@@ -21,15 +21,8 @@
 #define FS_PROTOCOLGAME_H_FACA2A2D1A9348B78E8FD7E8003EBB87
 
 #include "protocol.h"
-#include "enums.h"
+#include "chat.h"
 #include "creature.h"
-
-enum connectResult_t {
-	CONNECT_SUCCESS = 1,
-	CONNECT_TOMANYPLAYERS = 2,
-	CONNECT_MASTERPOSERROR = 3,
-	CONNECT_INTERNALERROR = 4
-};
 
 class NetworkMessage;
 class Player;
@@ -39,9 +32,6 @@ class Container;
 class Tile;
 class Connection;
 class Quest;
-
-typedef std::map<uint32_t, Player*> UsersMap;
-typedef std::map<uint32_t, Player*> InvitedMap;
 
 struct TextMessage
 {
@@ -53,8 +43,11 @@ struct TextMessage
 		TextColor_t color;
 	} primary, secondary;
 
-	TextMessage()
-	{
+	TextMessage() {
+		primary.value = 0;
+		secondary.value = 0;
+	}
+	TextMessage(MessageClasses type, std::string text) : type(type), text(text) {
 		primary.value = 0;
 		secondary.value = 0;
 	}
@@ -71,7 +64,7 @@ class ProtocolGame final : public Protocol
 			return "gameworld protocol";
 		}
 
-		ProtocolGame(Connection_ptr connection);
+		explicit ProtocolGame(Connection_ptr connection);
 
 		void login(const std::string& name, uint32_t accnumber, OperatingSystem_t operatingSystem);
 		void logout(bool displayEffect, bool forced);
@@ -86,7 +79,7 @@ class ProtocolGame final : public Protocol
 		std::unordered_set<uint32_t> knownCreatureSet;
 
 		void connect(uint32_t playerId, OperatingSystem_t operatingSystem);
-		void disconnect();
+		void disconnect() const;
 		void disconnectClient(const std::string& message);
 		void writeToOutputBuffer(const NetworkMessage& msg);
 
@@ -203,7 +196,6 @@ class ProtocolGame final : public Protocol
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
 		void sendBasicData();
-		void sendTextMessage(MessageClasses mclass, const std::string& message, Position* pos = nullptr, uint32_t exp = 0, TextColor_t color = TEXTCOLOR_NONE);
 		void sendTextMessage(const TextMessage& message);
 		void sendReLoginWindow(uint8_t unfairFightReduction);
 
@@ -275,11 +267,6 @@ class ProtocolGame final : public Protocol
 		void sendInventoryItem(slots_t slot, const Item* item);
 
 		//messages
-		void sendDamageMessage(MessageClasses mclass, const std::string& message, const Position& pos,
-		                       uint32_t primaryDamage = 0, TextColor_t primaryColor = TEXTCOLOR_NONE,
-		                       uint32_t secondaryDamage = 0, TextColor_t secondaryColor = TEXTCOLOR_NONE);
-		void sendHealMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t heal, TextColor_t color);
-		void sendExperienceMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t exp, TextColor_t color);
 		void sendModalWindow(const ModalWindow& modalWindow);
 
 		//Help functions

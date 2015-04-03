@@ -76,7 +76,6 @@ class AStarNodes
 		int_fast32_t closedNodes;
 };
 
-typedef std::unordered_set<Creature*> SpectatorVec;
 typedef std::map<Position, std::shared_ptr<SpectatorVec>> SpectatorCache;
 
 #define FLOOR_BITS 3
@@ -112,7 +111,22 @@ class QTreeNode
 		}
 
 		QTreeLeafNode* getLeaf(uint32_t x, uint32_t y);
-		inline static const QTreeLeafNode* getLeafStatic(const QTreeNode* root, uint32_t x, uint32_t y);
+
+		template<typename Leaf, typename Node>
+		inline static Leaf getLeafStatic(Node node, uint32_t x, uint32_t y)
+		{
+			do {
+				node = node->m_child[((x & 0x8000) >> 15) | ((y & 0x8000) >> 14)];
+				if (!node) {
+					return nullptr;
+				}
+
+				x <<= 1;
+				y <<= 1;
+			} while (!node->m_isLeaf);
+			return reinterpret_cast<Leaf>(node);
+		}
+
 		QTreeLeafNode* createLeaf(uint32_t x, uint32_t y, uint32_t level);
 
 	protected:
@@ -161,7 +175,7 @@ class QTreeLeafNode final : public QTreeNode
 class Map
 {
 	public:
-		Map();
+		Map() : width(0), height(0) {}
 
 		static const int32_t maxViewportX = 11; //min value: maxClientViewportX + 1
 		static const int32_t maxViewportY = 11; //min value: maxClientViewportY + 1
@@ -180,7 +194,7 @@ class Map
 		  * Save a map.
 		  * \returns true if the map was saved successfully
 		  */
-		bool saveMap();
+		static bool save();
 
 		/**
 		  * Get a single tile.
@@ -206,7 +220,7 @@ class Map
 		  * \param extendedPos If true, the creature will in first-hand be placed 2 tiles away
 		  * \param forceLogin If true, placing the creature will not fail becase of obstacles (creatures/chests)
 		  */
-		bool placeCreature(const Position& centerPos, Creature* creature, bool extendedPos = false, bool forceLogin = false);
+		bool placeCreature(const Position& centerPos, Creature* creature, bool extendedPos = false, bool forceLogin = false) const;
 
 		void moveCreature(Creature& creature, Tile& newTile, bool forceTeleport = false);
 
@@ -216,6 +230,12 @@ class Map
 		  */
 		bool removeCreature(Creature* c);
 
+		void getSpectators(SpectatorVec& list, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
+		                   int32_t minRangeX = 0, int32_t maxRangeX = 0,
+		                   int32_t minRangeY = 0, int32_t maxRangeY = 0);
+
+		void clearSpectatorCache();
+		
 		/**
 		  * Checks if you can throw an object to that position
 		  *	\param fromPos from Source point
@@ -241,7 +261,7 @@ class Map
 
 		const Tile* canWalkTo(const Creature& creature, const Position& pos) const;
 
-		bool getPathMatching(const Creature& creature, std::list<Direction>& dirList,
+		bool getPathMatching(const Creature& creature, std::forward_list<Direction>& dirList,
 		                     const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const;
 
 		std::map<std::string, Position> waypoints;
@@ -258,25 +278,13 @@ class Map
 		std::string spawnfile;
 		std::string housefile;
 
-		uint32_t mapWidth, mapHeight;
+		uint32_t width, height;
 
 		// Actually scans the map for spectators
 		void getSpectatorsInternal(SpectatorVec& list, const Position& centerPos,
 		                           int32_t minRangeX, int32_t maxRangeX,
 		                           int32_t minRangeY, int32_t maxRangeY,
 		                           int32_t minRangeZ, int32_t maxRangeZ, bool onlyPlayers) const;
-
-		// Use this when a custom spectator vector is needed, this support many
-		// more parameters than the heavily cached version below.
-		void getSpectators(SpectatorVec& list, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
-		                   int32_t minRangeX = 0, int32_t maxRangeX = 0,
-		                   int32_t minRangeY = 0, int32_t maxRangeY = 0);
-		// The returned SpectatorVec is a temporary and should not be kept around
-		// Take special heed in that the vector will be destroyed if any function
-		// that calls clearSpectatorCache is called.
-		const SpectatorVec& getSpectators(const Position& centerPos);
-
-		void clearSpectatorCache();
 
 		friend class Game;
 		friend class IOMap;

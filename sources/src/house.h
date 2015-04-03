@@ -53,7 +53,7 @@ class AccessList
 class Door final : public Item
 {
 	public:
-		Door(uint16_t _type);
+		explicit Door(uint16_t _type);
 		~Door();
 
 		// non-copyable
@@ -88,7 +88,6 @@ class Door final : public Item
 		bool getAccessList(std::string& list) const;
 
 		void onRemoved() final;
-		void moveAttributes(Item* item) final;
 
 	protected:
 		void setHouse(House* _house);
@@ -101,14 +100,14 @@ class Door final : public Item
 
 enum AccessList_t {
 	GUEST_LIST = 0x100,
-	SUBOWNER_LIST = 0x101
+	SUBOWNER_LIST = 0x101,
 };
 
 enum AccessHouseLevel_t {
-	HOUSE_NO_INVITED = 0,
+	HOUSE_NOT_INVITED = 0,
 	HOUSE_GUEST = 1,
 	HOUSE_SUBOWNER = 2,
-	HOUSE_OWNER = 3
+	HOUSE_OWNER = 3,
 };
 
 typedef std::list<HouseTile*> HouseTileList;
@@ -119,7 +118,7 @@ class HouseTransferItem final : public Item
 	public:
 		static HouseTransferItem* createHouseTransferItem(House* house);
 
-		HouseTransferItem(House* _house) : Item(0) {
+		explicit HouseTransferItem(House* _house) : Item(0) {
 			house = _house;
 		}
 
@@ -135,7 +134,7 @@ class HouseTransferItem final : public Item
 class House
 {
 	public:
-		House(uint32_t _houseid);
+		explicit House(uint32_t _houseid);
 
 		void addTile(HouseTile* tile);
 		void updateDoorDescription() const;
@@ -152,15 +151,15 @@ class House
 		AccessHouseLevel_t getHouseAccessLevel(const Player* player);
 		bool kickPlayer(Player* player, Player* target);
 
-		void setEntryPos(const Position& pos) {
+		void setEntryPos(Position pos) {
 			posEntry = pos;
 		}
 		const Position& getEntryPosition() const {
 			return posEntry;
 		}
 
-		void setName(const std::string& _houseName) {
-			houseName = _houseName;
+		void setName(std::string houseName) {
+			this->houseName = houseName;
 		}
 		const std::string& getName() const {
 			return houseName;
@@ -266,22 +265,22 @@ enum RentPeriod_t {
 	RENTPERIOD_WEEKLY,
 	RENTPERIOD_MONTHLY,
 	RENTPERIOD_YEARLY,
-	RENTPERIOD_NEVER
+	RENTPERIOD_NEVER,
 };
 
 class Houses
 {
-	public:
-		Houses() = default;
-		~Houses() {
-			for (const auto& it : houseMap) {
-				delete it.second;
-			}
-		}
+    public:
+        Houses() = default;
+        ~Houses() {
+            for (const auto& it : houseMap) {
+                delete it.second;
+            }
+        }
 
-		// non-copyable
-		Houses(const Houses&) = delete;
-		Houses& operator=(const Houses&) = delete;
+        // non-copyable
+        Houses(const Houses&) = delete;
+        Houses& operator=(const Houses&) = delete;
 
 		House* addHouse(uint32_t id) {
 			auto it = houseMap.find(id);

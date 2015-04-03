@@ -30,12 +30,6 @@
 
 extern Game g_game;
 
-Map::Map()
-{
-	mapWidth = 0;
-	mapHeight = 0;
-}
-
 bool Map::loadMap(const std::string& identifier, bool loadHouses)
 {
 	IOMap loader;
@@ -59,7 +53,7 @@ bool Map::loadMap(const std::string& identifier, bool loadHouses)
 	return true;
 }
 
-bool Map::saveMap()
+bool Map::save()
 {
 	bool saved = false;
 	for (uint32_t tries = 0; tries < 3; tries++) {
@@ -89,7 +83,7 @@ Tile* Map::getTile(uint16_t x, uint16_t y, uint8_t z) const
 		return nullptr;
 	}
 
-	const QTreeLeafNode* leaf = QTreeNode::getLeafStatic(&root, x, y);
+	const QTreeLeafNode* leaf = QTreeNode::getLeafStatic<const QTreeLeafNode*, const QTreeNode*>(&root, x, y);
 	if (!leaf) {
 		return nullptr;
 	}
@@ -147,7 +141,7 @@ void Map::setTile(uint16_t x, uint16_t y, uint8_t z, Tile* newTile)
 	newTile->qt_node = leaf;
 }
 
-bool Map::placeCreature(const Position& centerPos, Creature* creature, bool extendedPos /*=false*/, bool forceLogin /*=false*/)
+bool Map::placeCreature(const Position& centerPos, Creature* creature, bool extendedPos/* = false*/, bool forceLogin/* = false*/) const
 {
 	bool foundTile;
 	bool placeInPZ;
@@ -222,7 +216,6 @@ bool Map::placeCreature(const Position& centerPos, Creature* creature, bool exte
 void Map::moveCreature(Creature& creature, Tile& newTile, bool forceTeleport/* = false*/)
 {
 	Tile& oldTile = *creature.getTile();
-	int32_t oldStackPos = oldTile.getThingIndex(&creature);
 
 	Position oldPos = oldTile.getPosition();
 	Position newPos = newTile.getPosition();
@@ -247,8 +240,8 @@ void Map::moveCreature(Creature& creature, Tile& newTile, bool forceTeleport/* =
 	//remove the creature
 	oldTile.removeThing(&creature, 0);
 
-	auto leaf = const_cast<QTreeLeafNode*>(QTreeNode::getLeafStatic(&root, oldPos.x, oldPos.y));
-	auto new_leaf = const_cast<QTreeLeafNode*>(QTreeLeafNode::getLeafStatic(&root, newPos.x, newPos.y));
+	QTreeLeafNode* leaf = QTreeNode::getLeafStatic<QTreeLeafNode*, QTreeNode*>(&root, oldPos.x, oldPos.y);
+	QTreeLeafNode* new_leaf = QTreeNode::getLeafStatic<QTreeLeafNode*, QTreeNode*>(&root, newPos.x, newPos.y);
 
 	// Switch the node ownership
 	if (leaf != new_leaf) {
@@ -258,7 +251,6 @@ void Map::moveCreature(Creature& creature, Tile& newTile, bool forceTeleport/* =
 
 	//add the creature
 	newTile.addThing(&creature);
-	int32_t newStackPos = newTile.getThingIndex(&creature);
 
 	if (!teleport) {
 		if (oldPos.y > newPos.y) {
@@ -291,20 +283,8 @@ void Map::moveCreature(Creature& creature, Tile& newTile, bool forceTeleport/* =
 		spectator->onCreatureMove(&creature, &newTile, newPos, &oldTile, oldPos, teleport);
 	}
 
-	oldTile.postRemoveNotification(&creature, &newTile, oldStackPos, true);
-	newTile.postAddNotification(&creature, &oldTile, newStackPos);
-}
-
-bool Map::removeCreature(Creature* creature)
-{
-	Tile* tile = creature->getTile();
-	if (!tile) {
-		return false;
-	}
-
-	tile->qt_node->removeCreature(creature);
-	tile->removeThing(creature, 0);
-	return true;
+	oldTile.postRemoveNotification(&creature, &newTile, 0);
+	newTile.postAddNotification(&creature, &oldTile, 0);
 }
 
 void Map::getSpectatorsInternal(SpectatorVec& list, const Position& centerPos, int32_t minRangeX, int32_t maxRangeX, int32_t minRangeY, int32_t maxRangeY, int32_t minRangeZ, int32_t maxRangeZ, bool onlyPlayers) const
@@ -327,7 +307,7 @@ void Map::getSpectatorsInternal(SpectatorVec& list, const Position& centerPos, i
 	int32_t endx2 = x2 - (x2 % FLOOR_SIZE);
 	int32_t endy2 = y2 - (y2 % FLOOR_SIZE);
 
-	const QTreeLeafNode* startLeaf = QTreeNode::getLeafStatic(&root, startx1, starty1);
+	const QTreeLeafNode* startLeaf = QTreeNode::getLeafStatic<const QTreeLeafNode*, const QTreeNode*>(&root, startx1, starty1);
 	const QTreeLeafNode* leafS = startLeaf;
 	const QTreeLeafNode* leafE;
 
@@ -361,14 +341,14 @@ void Map::getSpectatorsInternal(SpectatorVec& list, const Position& centerPos, i
 				}
 				leafE = leafE->m_leafE;
 			} else {
-				leafE = QTreeNode::getLeafStatic(&root, nx + FLOOR_SIZE, ny);
+				leafE = QTreeNode::getLeafStatic<const QTreeLeafNode*, const QTreeNode*>(&root, nx + FLOOR_SIZE, ny);
 			}
 		}
 
 		if (leafS) {
 			leafS = leafS->m_leafS;
 		} else {
-			leafS = QTreeNode::getLeafStatic(&root, startx1, ny + FLOOR_SIZE);
+			leafS = QTreeNode::getLeafStatic<const QTreeLeafNode*, const QTreeNode*>(&root, startx1, ny + FLOOR_SIZE);
 		}
 	}
 }
@@ -439,9 +419,7 @@ void Map::getSpectators(SpectatorVec& list, const Position& centerPos, bool mult
 				//8->15
 				minRangeZ = std::max<int32_t>(centerPos.getZ() - 2, 0);
 				maxRangeZ = std::min<int32_t>(centerPos.getZ() + 2, MAP_MAX_LAYERS - 1);
-			}
-			//above ground
-			else if (centerPos.z == 6) {
+			} else if (centerPos.z == 6) {
 				minRangeZ = 0;
 				maxRangeZ = 8;
 			} else if (centerPos.z == 7) {
@@ -466,52 +444,6 @@ void Map::getSpectators(SpectatorVec& list, const Position& centerPos, bool mult
 			}
 		}
 	}
-}
-
-const SpectatorVec& Map::getSpectators(const Position& centerPos)
-{
-	if (centerPos.z >= MAP_MAX_LAYERS) {
-		std::shared_ptr<SpectatorVec> p(new SpectatorVec());
-		SpectatorVec& list = *p;
-		return list;
-	}
-
-	auto it = spectatorCache.find(centerPos);
-	if (it != spectatorCache.end()) {
-		return *it->second;
-	}
-
-	std::shared_ptr<SpectatorVec> p(new SpectatorVec());
-	spectatorCache[centerPos] = p;
-	SpectatorVec& list = *p;
-
-	int32_t minRangeX = -maxViewportX;
-	int32_t maxRangeX = maxViewportX;
-	int32_t minRangeY = -maxViewportY;
-	int32_t maxRangeY = maxViewportY;
-	int32_t minRangeZ, maxRangeZ;
-
-	if (centerPos.z > 7) {
-		//underground
-
-		//8->15
-		minRangeZ = std::max<int32_t>(centerPos.z - 2, 0);
-		maxRangeZ = std::min<int32_t>(centerPos.z + 2, MAP_MAX_LAYERS - 1);
-	}
-	//above ground
-	else if (centerPos.z == 6) {
-		minRangeZ = 0;
-		maxRangeZ = 8;
-	} else if (centerPos.z == 7) {
-		minRangeZ = 0;
-		maxRangeZ = 9;
-	} else {
-		minRangeZ = 0;
-		maxRangeZ = 7;
-	}
-
-	getSpectatorsInternal(list, centerPos, minRangeX, maxRangeX, minRangeY, maxRangeY, minRangeZ, maxRangeZ, false);
-	return list;
 }
 
 void Map::clearSpectatorCache()
@@ -627,7 +559,7 @@ const Tile* Map::canWalkTo(const Creature& creature, const Position& pos) const
 	return tile;
 }
 
-bool Map::getPathMatching(const Creature& creature, std::list<Direction>& dirList, const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const
+bool Map::getPathMatching(const Creature& creature, std::forward_list<Direction>& dirList, const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const
 {
 	Position pos = creature.getPosition();
 	Position endPos;
@@ -767,15 +699,14 @@ bool Map::getPathMatching(const Creature& creature, std::list<Direction>& dirLis
 
 	int_fast32_t prevx = endPos.x;
 	int_fast32_t prevy = endPos.y;
-	int_fast32_t dx, dy;
 
 	found = found->parent;
 	while (found) {
 		pos.x = found->x;
 		pos.y = found->y;
 
-		dx = pos.getX() - prevx;
-		dy = pos.getY() - prevy;
+		int_fast32_t dx = pos.getX() - prevx;
+		int_fast32_t dy = pos.getY() - prevy;
 
 		prevx = pos.x;
 		prevy = pos.y;
@@ -964,20 +895,6 @@ QTreeLeafNode* QTreeNode::getLeaf(uint32_t x, uint32_t y)
 		return nullptr;
 	}
 	return node->getLeaf(x << 1, y << 1);
-}
-
-const QTreeLeafNode* QTreeNode::getLeafStatic(const QTreeNode* node, uint32_t x, uint32_t y)
-{
-	do {
-		node = node->m_child[((x & 0x8000) >> 15) | ((y & 0x8000) >> 14)];
-		if (!node) {
-			return nullptr;
-		}
-
-		x <<= 1;
-		y <<= 1;
-	} while (!node->m_isLeaf);
-	return reinterpret_cast<const QTreeLeafNode*>(node);
 }
 
 QTreeLeafNode* QTreeNode::createLeaf(uint32_t x, uint32_t y, uint32_t level)

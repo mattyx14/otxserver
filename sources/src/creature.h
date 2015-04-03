@@ -33,8 +33,7 @@ typedef std::list<CreatureEvent*> CreatureEventList;
 
 enum slots_t : uint8_t {
 	CONST_SLOT_WHEREEVER = 0,
-	CONST_SLOT_FIRST = 1,
-	CONST_SLOT_HEAD = CONST_SLOT_FIRST,
+	CONST_SLOT_HEAD = 1,
 	CONST_SLOT_NECKLACE = 2,
 	CONST_SLOT_BACKPACK = 3,
 	CONST_SLOT_ARMOR = 4,
@@ -44,7 +43,9 @@ enum slots_t : uint8_t {
 	CONST_SLOT_FEET = 8,
 	CONST_SLOT_RING = 9,
 	CONST_SLOT_AMMO = 10,
-	CONST_SLOT_LAST = CONST_SLOT_AMMO
+
+	CONST_SLOT_FIRST = CONST_SLOT_HEAD,
+	CONST_SLOT_LAST = CONST_SLOT_AMMO,
 };
 
 struct FindPathParams {
@@ -83,7 +84,7 @@ class Tile;
 class FrozenPathingConditionCall
 {
 	public:
-		FrozenPathingConditionCall(const Position& targetPos) : targetPos(targetPos) {}
+		explicit FrozenPathingConditionCall(Position targetPos) : targetPos(targetPos) {}
 
 		bool operator()(const Position& startPos, const Position& testPos,
 		                const FindPathParams& fpp, int32_t& bestMatchDist) const;
@@ -245,7 +246,7 @@ class Creature : virtual public Thing
 		const Outfit_t getCurrentOutfit() const {
 			return currentOutfit;
 		}
-		void setCurrentOutfit(const Outfit_t& outfit) {
+		void setCurrentOutfit(Outfit_t outfit) {
 			currentOutfit = outfit;
 		}
 		const Outfit_t getDefaultOutfit() const {
@@ -257,7 +258,7 @@ class Creature : virtual public Thing
 		}
 
 		//walk functions
-		void startAutoWalk(const std::list<Direction>& listDir);
+		void startAutoWalk(const std::forward_list<Direction>& listDir);
 		void addEventWalk(bool firstStep = false);
 		void stopEventWalk();
 		virtual void goToFollowCreature();
@@ -384,7 +385,7 @@ class Creature : virtual public Thing
 
 		virtual void getCreatureLight(LightInfo& light) const;
 		virtual void setNormalCreatureLight();
-		void setCreatureLight(const LightInfo& light) {
+		void setCreatureLight(LightInfo light) {
 			internalLight = light;
 		}
 
@@ -400,7 +401,7 @@ class Creature : virtual public Thing
 		                              const Item* item);
 
 		virtual void onCreatureAppear(Creature* creature, bool);
-		virtual void onCreatureDisappear(Creature* creature, uint32_t stackpos, bool isLogout);
+		virtual void onRemoveCreature(Creature* creature, bool isLogout);
 		virtual void onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
 		                            const Tile* oldTile, const Position& oldPos, bool teleport);
 
@@ -411,11 +412,7 @@ class Creature : virtual public Thing
 
 		virtual void onCreatureConvinced(const Creature*, const Creature*) {}
 		virtual void onPlacedCreature() {}
-		virtual void onRemovedCreature() {}
 
-		virtual WeaponType_t getWeaponType() {
-			return WEAPON_NONE;
-		}
 		virtual bool getCombatValues(int32_t&, int32_t&) {
 			return false;
 		}
@@ -459,14 +456,14 @@ class Creature : virtual public Thing
 
 		double getDamageRatio(Creature* attacker) const;
 
-		bool getPathTo(const Position& targetPos, std::list<Direction>& dirList, const FindPathParams& fpp) const;
-		bool getPathTo(const Position& targetPos, std::list<Direction>& dirList, int32_t minTargetDist, int32_t maxTargetDist, bool fullPathSearch = true, bool clearSight = true, int32_t maxSearchDist = 0) const;
+		bool getPathTo(const Position& targetPos, std::forward_list<Direction>& dirList, const FindPathParams& fpp) const;
+		bool getPathTo(const Position& targetPos, std::forward_list<Direction>& dirList, int32_t minTargetDist, int32_t maxTargetDist, bool fullPathSearch = true, bool clearSight = true, int32_t maxSearchDist = 0) const;
 
-		void useThing2() {
-			++useCount;
+		void incrementReferenceCounter() {
+			++referenceCounter;
 		}
-		void releaseThing2() {
-			if (--useCount == 0) {
+		void decrementReferenceCounter() {
+			if (--referenceCounter == 0) {
 				delete this;
 			}
 		}
@@ -491,10 +488,11 @@ class Creature : virtual public Thing
 		typedef std::map<uint32_t, CountBlock_t> CountMap;
 		CountMap damageMap;
 
-		std::list<Direction> listWalkDir;
 		std::list<Creature*> summons;
 		CreatureEventList eventsList;
 		ConditionList conditions;
+
+		std::forward_list<Direction> listWalkDir;
 
 		Tile* _tile;
 		Creature* attackedCreature;
@@ -502,7 +500,7 @@ class Creature : virtual public Thing
 		Creature* followCreature;
 
 		uint64_t lastStep;
-		uint32_t useCount;
+		uint32_t referenceCounter;
 		uint32_t id;
 		uint32_t scriptEventsBitField;
 		uint32_t eventWalk;
