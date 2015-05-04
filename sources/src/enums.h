@@ -26,7 +26,7 @@ enum ThreadState {
 	THREAD_STATE_TERMINATED,
 };
 
-enum itemAttrTypes {
+enum itemAttrTypes : uint32_t {
 	ITEM_ATTRIBUTE_NONE,
 
 	ITEM_ATTRIBUTE_ACTIONID = 1 << 0,
@@ -92,11 +92,6 @@ enum CreatureType_t : uint8_t {
 	CREATURETYPE_NPC = 2,
 	CREATURETYPE_SUMMON_OWN = 3,
 	CREATURETYPE_SUMMON_OTHERS = 4,
-};
-
-// TODO: Move this to reserved range
-enum StorageValues_t {
-	STORAGEVALUE_PROMOTION = 30018,
 };
 
 enum OperatingSystem_t : uint8_t {
@@ -422,6 +417,10 @@ enum MapMark_t
 
 struct Outfit_t {
 	Outfit_t() {
+		reset();
+	}
+
+	void reset() {
 		lookType = 0;
 		lookTypeEx = 0;
 		lookMount = 0;
@@ -456,7 +455,7 @@ struct LightInfo {
 };
 
 struct ShopInfo {
-	uint32_t itemId;
+	uint16_t itemId;
 	int32_t subType;
 	uint32_t buyPrice;
 	uint32_t sellPrice;
@@ -469,7 +468,7 @@ struct ShopInfo {
 		sellPrice = 0;
 	}
 
-	ShopInfo(uint32_t itemId, int32_t subType = 0, uint32_t buyPrice = 0, uint32_t sellPrice = 0, std::string realName = "")
+	ShopInfo(uint16_t itemId, int32_t subType = 0, uint32_t buyPrice = 0, uint32_t sellPrice = 0, std::string realName = "")
 		: itemId(itemId), subType(subType), buyPrice(buyPrice), sellPrice(sellPrice), realName(realName) {}
 };
 

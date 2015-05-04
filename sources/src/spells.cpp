@@ -144,26 +144,22 @@ bool Spells::registerEvent(Event* event, const pugi::xml_node&)
 {
 	InstantSpell* instant = dynamic_cast<InstantSpell*>(event);
 	if (instant) {
-		if (instants.find(instant->getWords()) != instants.end()) {
+		auto result = instants.emplace(instant->getWords(), instant);
+		if (!result.second) {
 			std::cout << "[Warning - Spells::registerEvent] Duplicate registered instant spell with words: " << instant->getWords() << std::endl;
-			return false;
 		}
-
-		instants[instant->getWords()] = instant;
-		return true;
+		return result.second;
 	}
 
 	RuneSpell* rune = dynamic_cast<RuneSpell*>(event);
 	if (rune) {
-		uint16_t runeId = rune->getRuneItemId();
-		if (runes.find(runeId) != runes.end()) {
-			std::cout << "[Warning - Spells::registerEvent] Duplicate registered rune with id: " << runeId << std::endl;
-			return false;
+		auto result = runes.emplace(rune->getRuneItemId(), rune);
+		if (!result.second) {
+			std::cout << "[Warning - Spells::registerEvent] Duplicate registered rune with id: " << rune->getRuneItemId() << std::endl;
 		}
-
-		runes[runeId] = rune;
-		return true;
+		return result.second;
 	}
+
 	return false;
 }
 
@@ -606,7 +602,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		group = (aggressive ? SPELLGROUP_ATTACK : SPELLGROUP_HEALING);
 	}
 
-	for (pugi::xml_node vocationNode = node.first_child(); vocationNode; vocationNode = vocationNode.next_sibling()) {
+	for (auto vocationNode : node.children()) {
 		if (!(attr = vocationNode.attribute("name"))) {
 			continue;
 		}
@@ -615,7 +611,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		if (vocationId != -1) {
 			vocSpellMap[vocationId] = true;
 			int32_t promotedVocation = g_vocations.getPromotedVocation(vocationId);
-			if (promotedVocation != 0) {
+			if (promotedVocation != VOCATION_NONE) {
 				vocSpellMap[promotedVocation] = true;
 			}
 		} else {
@@ -939,12 +935,7 @@ ReturnValue Spell::CreateIllusion(Creature* creature, const Outfit_t& outfit, in
 
 ReturnValue Spell::CreateIllusion(Creature* creature, const std::string& name, int32_t time)
 {
-	uint32_t mId = g_monsters.getIdByName(name);
-	if (mId == 0) {
-		return RETURNVALUE_CREATUREDOESNOTEXIST;
-	}
-
-	const MonsterType* mType = g_monsters.getMonsterType(mId);
+	const auto mType = g_monsters.getMonsterType(name);
 	if (mType == nullptr) {
 		return RETURNVALUE_CREATUREDOESNOTEXIST;
 	}
@@ -1627,9 +1618,9 @@ bool InstantSpell::Levitate(const InstantSpell*, Creature* creature, const std::
 	if (strcasecmp(param.c_str(), "up") == 0) {
 		if (currentPos.z != 8) {
 			Tile* tmpTile = g_game.map.getTile(currentPos.x, currentPos.y, currentPos.getZ() - 1);
-			if (tmpTile == nullptr || (tmpTile->ground == nullptr && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID))) {
+			if (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID))) {
 				tmpTile = g_game.map.getTile(destPos.x, destPos.y, destPos.getZ() - 1);
-				if (tmpTile && tmpTile->ground && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) && !tmpTile->floorChange()) {
+				if (tmpTile && tmpTile->getGround() && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) && !tmpTile->floorChange()) {
 					ret = g_game.internalMoveCreature(*player, *tmpTile, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE);
 				}
 			}
@@ -1637,9 +1628,9 @@ bool InstantSpell::Levitate(const InstantSpell*, Creature* creature, const std::
 	} else if (strcasecmp(param.c_str(), "down") == 0) {
 		if (currentPos.z != 7) {
 			Tile* tmpTile = g_game.map.getTile(destPos);
-			if (tmpTile == nullptr || (tmpTile->ground == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID))) {
+			if (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID))) {
 				tmpTile = g_game.map.getTile(destPos.x, destPos.y, destPos.z + 1);
-				if (tmpTile && tmpTile->ground && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) && !tmpTile->floorChange()) {
+				if (tmpTile && tmpTile->getGround() && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) && !tmpTile->floorChange()) {
 					ret = g_game.internalMoveCreature(*player, *tmpTile, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE);
 				}
 			}

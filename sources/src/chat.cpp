@@ -38,23 +38,15 @@ bool PrivateChatChannel::isInvited(uint32_t guid) const
 
 bool PrivateChatChannel::removeInvite(uint32_t guid)
 {
-	auto it = m_invites.find(guid);
-	if (it == m_invites.end()) {
-		return false;
-	}
-
-	m_invites.erase(it);
-	return true;
+	return m_invites.erase(guid) != 0;
 }
 
 void PrivateChatChannel::invitePlayer(const Player& player, Player& invitePlayer)
 {
-	auto it = m_invites.find(player.getGUID());
-	if (it != m_invites.end()) {
+	auto result = m_invites.emplace(invitePlayer.getGUID(), &invitePlayer);
+	if (!result.second) {
 		return;
 	}
-
-	m_invites[player.getGUID()] = &player;
 
 	std::ostringstream ss;
 	ss << player.getName() << " invites you to " << (player.getSex() == PLAYERSEX_FEMALE ? "her" : "his") << " private chat channel.";
@@ -326,7 +318,7 @@ bool Chat::load()
 		removedChannels.push_front(channelEntry.first);
 	}
 
-	for (pugi::xml_node channelNode = doc.child("channels").first_child(); channelNode; channelNode = channelNode.next_sibling()) {
+	for (auto channelNode : doc.child("channels").children()) {
 		ChatChannel channel(pugi::cast<uint16_t>(channelNode.attribute("id").value()), channelNode.attribute("name").as_string());
 		channel.publicChannel = channelNode.attribute("public").as_bool();
 

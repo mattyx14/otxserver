@@ -19,6 +19,10 @@ STACKPOS_TOP_CREATURE = 253
 STACKPOS_TOP_FIELD = 254
 STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE = 255
 
+THING_TYPE_PLAYER = CREATURETYPE_PLAYER + 1
+THING_TYPE_MONSTER = CREATURETYPE_MONSTER + 1
+THING_TYPE_NPC = CREATURETYPE_NPC + 1
+
 COMBAT_POISONDAMAGE = COMBAT_EARTHDAMAGE
 CONDITION_EXHAUST = CONDITION_EXHAUST_WEAPON
 TALKTYPE_ORANGE_1 = TALKTYPE_MONSTER_SAY
@@ -32,6 +36,52 @@ SOUTHWEST = DIRECTION_SOUTHWEST
 SOUTHEAST = DIRECTION_SOUTHEAST
 NORTHWEST = DIRECTION_NORTHWEST
 NORTHEAST = DIRECTION_NORTHEAST
+
+do
+	local function CreatureIndex(self, key)
+		local methods = getmetatable(self)
+		if key == "uid" then
+			return methods.getId(self)
+		elseif key == "type" then
+			local creatureType = 0
+			if methods.isPlayer(self) then
+				creatureType = THING_TYPE_PLAYER
+			elseif methods.isMonster(self) then
+				creatureType = THING_TYPE_MONSTER
+			elseif methods.isNpc(self) then
+				creatureType = THING_TYPE_NPC
+			end
+			return creatureType
+		elseif key == "itemid" then
+			return 1
+		elseif key == "actionid" then
+			return 0
+		end
+		return methods[key]
+	end
+	rawgetmetatable("Player").__index = CreatureIndex
+	rawgetmetatable("Monster").__index = CreatureIndex
+	rawgetmetatable("Npc").__index = CreatureIndex
+end
+
+do
+	local function ItemIndex(self, key)
+		local methods = getmetatable(self)
+		if key == "itemid" then
+			return methods.getId(self)
+		elseif key == "actionid" then
+			return methods.getActionId(self)
+		elseif key == "uid" then
+			return methods.getUniqueId(self)
+		elseif key == "type" then
+			return methods.getSubType(self)
+		end
+		return methods[key]
+	end
+	rawgetmetatable("Item").__index = ItemIndex
+	rawgetmetatable("Container").__index = ItemIndex
+	rawgetmetatable("Teleport").__index = ItemIndex
+end
 
 function pushThing(thing)
 	local t = {uid = 0, itemid = 0, type = 0, actionid = 0}
@@ -47,11 +97,11 @@ function pushThing(thing)
 			t.uid = thing:getId()
 			t.itemid = 1
 			if thing:isPlayer() then
-				t.type = 1
+				t.type = THING_TYPE_PLAYER
 			elseif thing:isMonster() then
-				t.type = 2
+				t.type = THING_TYPE_MONSTER
 			else
-				t.type = 3
+				t.type = THING_TYPE_NPC
 			end
 		end
 	end
@@ -114,6 +164,8 @@ function doCreatureSay(cid, text, type, ...) local c = Creature(cid) return c ~=
 function doCreatureChangeOutfit(cid, outfit) local c = Creature(cid) return c ~= nil and c:setOutfit(outfit) or false end
 function doSetCreatureDropLoot(cid, doDrop) local c = Creature(cid) return c ~= nil and c:setDropLoot(doDrop) or false end
 function doChangeSpeed(cid, delta) local c = Creature(cid) return c ~= nil and c:changeSpeed(delta) or false end
+function doAddCondition(cid, conditionId) local c = Creature(cid) return c ~= nil and c:addCondition(conditionId) or false end
+function doRemoveCondition(cid, conditionType, subId) local c = Creature(cid) return c ~= nil and (c:removeCondition(conditionType, CONDITIONID_COMBAT, subId) or c:removeCondition(conditionType, CONDITIONID_DEFAULT, subId) or true) end
 
 doSetCreatureDirection = doCreatureSetLookDir
 
@@ -605,6 +657,19 @@ function getItemRWInfo(uid)
 end
 function getContainerCapById(itemId) return ItemType(itemId):getCapacity() end
 function getFluidSourceType(itemId) local it = ItemType(itemId) return it.id ~= 0 and it:getFluidSource() or false end
+function hasProperty(uid, prop)
+	local item = Item(uid)
+	if item == nil then
+		return false
+	end
+
+	local parent = item:getParent()
+	if parent:isTile() and item == parent:getGround() then
+		return parent:hasProperty(prop)
+	else
+		return item:hasProperty(prop)
+	end
+end
 
 function doSetItemText(uid, text)
 	local item = Item(uid)
@@ -781,6 +846,31 @@ function getThingPos(uid)
 	local position = thing:getPosition()
 	position.stackpos = stackpos
 	return position
+end
+
+function getThingfromPos(pos)
+	local tile = Tile(pos)
+	if tile == nil then
+		return pushThing(nil)
+	end
+
+	local thing
+	if stackpos == STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE then
+		thing = tile:getTopCreature()
+		if thing == nil then
+			local item = tile:getTopDownItem()
+			if item ~= nil and item:getType():isMovable() then
+				thing = item
+			end
+		end
+	elseif stackpos == STACKPOS_TOP_FIELD then
+		thing = tile:getFieldItem()
+	elseif stackpos == STACKPOS_TOP_CREATURE then
+		thing = tile:getTopCreature()
+	else
+		thing = tile:getThing(pos.stackpos)
+	end
+	return pushThing(thing)
 end
 
 function doRelocate(fromPos, toPos)

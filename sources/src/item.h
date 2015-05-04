@@ -57,7 +57,7 @@ enum TradeEvents_t {
 	ON_TRADE_CANCEL,
 };
 
-enum ItemDecayState_t {
+enum ItemDecayState_t : uint8_t {
 	DECAYING_FALSE = 0,
 	DECAYING_TRUE,
 	DECAYING_PENDING,
@@ -148,10 +148,6 @@ class ItemAttributes
 		}
 
 		void setActionId(uint16_t n) {
-			if (n < 100) {
-				n = 100;
-			}
-
 			setIntAttr(ITEM_ATTRIBUTE_ACTIONID, n);
 		}
 		uint16_t getActionId() const {
@@ -159,10 +155,6 @@ class ItemAttributes
 		}
 
 		void setUniqueId(uint16_t n) {
-			if (n < 1000) {
-				n = 1000;
-			}
-
 			setIntAttr(ITEM_ATTRIBUTE_UNIQUEID, n);
 		}
 		uint16_t getUniqueId() const {
@@ -554,8 +546,8 @@ class Item : virtual public Thing
 		uint16_t getClientID() const {
 			return items[id].clientId;
 		}
-		uint16_t getWareID() const {
-			return items[id].wareId;
+		uint16_t getDestroyId() const {
+			return items[id].destroyTo;
 		}
 		void setID(uint16_t newid);
 
@@ -565,7 +557,7 @@ class Item : virtual public Thing
 		WeaponType_t getWeaponType() const {
 			return items[id].weaponType;
 		}
-		Ammo_t	getAmmoType() const {
+		Ammo_t getAmmoType() const {
 			return items[id].ammoType;
 		}
 		uint8_t getShootRange() const {
@@ -616,16 +608,6 @@ class Item : virtual public Thing
 			return items[id].hitChance;
 		}
 
-		bool isReadable() const {
-			return items[id].canReadText;
-		}
-		bool canWriteText() const {
-			return items[id].canWriteText;
-		}
-		uint16_t getMaxWriteLength() const {
-			return items[id].maxTextLen;
-		}
-
 		int32_t getWorth() const;
 		void getLight(LightInfo& lightInfo) const;
 
@@ -636,20 +618,11 @@ class Item : virtual public Thing
 		bool isStackable() const {
 			return items[id].stackable;
 		}
-		bool isRune() const {
-			return items[id].isRune();
-		}
-		bool isFluidContainer() const {
-			return (items[id].isFluidContainer());
-		}
 		bool isAlwaysOnTop() const {
 			return items[id].alwaysOnTop;
 		}
 		bool isGroundTile() const {
 			return items[id].isGroundTile();
-		}
-		bool isSplash() const {
-			return items[id].isSplash();
 		}
 		bool isMagicField() const {
 			return items[id].isMagicField();
@@ -660,49 +633,18 @@ class Item : virtual public Thing
 		bool isPickupable() const {
 			return items[id].pickupable;
 		}
-		bool isWeapon() const {
-			return (items[id].weaponType != WEAPON_NONE);
-		}
 		bool isUseable() const {
 			return items[id].useable;
 		}
 		bool isHangable() const {
 			return items[id].isHangable;
 		}
-		bool isRoteable() const {
+		bool isRotatable() const {
 			const ItemType& it = items[id];
-			return it.rotable && it.rotateTo;
-		}
-		bool isDoor() const {
-			return items[id].isDoor();
-		}
-		bool isBed() const {
-			return items[id].isBed();
+			return it.rotatable && it.rotateTo;
 		}
 		bool hasWalkStack() const {
 			return items[id].walkStack;
-		}
-
-		bool floorChangeDown() const {
-			return items[id].floorChangeDown;
-		}
-		bool floorChangeNorth() const {
-			return items[id].floorChangeNorth;
-		}
-		bool floorChangeSouth() const {
-			return items[id].floorChangeSouth;
-		}
-		bool floorChangeSouthAlt() const {
-			return items[id].floorChangeSouthAlt;
-		}
-		bool floorChangeEast() const {
-			return items[id].floorChangeEast;
-		}
-		bool floorChangeEastAlt() const {
-			return items[id].floorChangeEastAlt;
-		}
-		bool floorChangeWest() const {
-			return items[id].floorChangeWest;
 		}
 
 		const std::string& getName() const {

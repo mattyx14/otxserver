@@ -221,6 +221,7 @@ class ItemType
 
 		uint16_t transformToOnUse[2];
 		uint16_t transformToFree;
+		uint16_t destroyTo;
 		uint16_t maxTextLen;
 		uint16_t writeOnceItemId;
 		uint16_t transformEquipTo;
@@ -264,7 +265,7 @@ class ItemType
 		bool showAttributes;
 		bool replaceable;
 		bool pickupable;
-		bool rotable;
+		bool rotatable;
 		bool useable;
 		bool moveable;
 		bool alwaysOnTop;

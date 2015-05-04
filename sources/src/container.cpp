@@ -181,10 +181,8 @@ std::string Container::getContentDescription() const
 std::ostringstream& Container::getContentDescription(std::ostringstream& os) const
 {
 	bool firstitem = true;
-	Container* evil = const_cast<Container*>(this);
-
-	for (ContainerIterator cit = evil->begin(); cit != evil->end(); ++cit) {
-		Item* item = (*cit);
+	for (ContainerIterator it = iterator(); it.hasNext(); it.advance()) {
+		Item* item = *it;
 
 		Container* container = item->getContainer();
 		if (container && !container->empty()) {
@@ -206,7 +204,7 @@ std::ostringstream& Container::getContentDescription(std::ostringstream& os) con
 	return os;
 }
 
-Item* Container::getItemByIndex(uint32_t index) const
+Item* Container::getItemByIndex(size_t index) const
 {
 	if (index >= size()) {
 		return nullptr;
@@ -217,7 +215,7 @@ Item* Container::getItemByIndex(uint32_t index) const
 uint32_t Container::getItemHoldingCount() const
 {
 	uint32_t counter = 0;
-	for (ContainerIterator iter = begin(); iter != end(); ++iter) {
+	for (ContainerIterator it = iterator(); it.hasNext(); it.advance()) {
 		++counter;
 	}
 	return counter;
@@ -225,8 +223,8 @@ uint32_t Container::getItemHoldingCount() const
 
 bool Container::isHoldingItem(const Item* item) const
 {
-	for (ContainerIterator cit = begin(); cit != end(); ++cit) {
-		if (*cit == item) {
+	for (ContainerIterator it = iterator(); it.hasNext(); it.advance()) {
+		if (*it == item) {
 			return true;
 		}
 	}
@@ -618,17 +616,17 @@ int32_t Container::getThingIndex(const Thing* thing) const
 	return -1;
 }
 
-int32_t Container::getFirstIndex() const
+size_t Container::getFirstIndex() const
 {
 	return 0;
 }
 
-int32_t Container::getLastIndex() const
+size_t Container::getLastIndex() const
 {
 	return size();
 }
 
-uint32_t Container::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
+uint32_t Container::getItemTypeCount(uint16_t itemId, int32_t subType/* = -1*/) const
 {
 	uint32_t count = 0;
 	for (Item* item : itemlist) {
@@ -706,103 +704,23 @@ void Container::startDecaying()
 	}
 }
 
-ContainerIterator Container::begin()
+ContainerIterator Container::iterator() const
 {
-	ContainerIterator cit(this);
-
+	ContainerIterator cit;
 	if (!itemlist.empty()) {
 		cit.over.push_back(this);
 		cit.cur = itemlist.begin();
 	}
-
 	return cit;
-}
-
-ContainerIterator Container::end()
-{
-	ContainerIterator cit(this);
-	return cit;
-}
-
-// Very evil constructors, look away if you are sensitive!
-ContainerIterator Container::begin() const
-{
-	Container* evil = const_cast<Container*>(this);
-	return evil->begin();
-}
-
-ContainerIterator Container::end() const
-{
-	Container* evil = const_cast<Container*>(this);
-	return evil->end();
-}
-
-ContainerIterator::ContainerIterator():
-	super(nullptr) {}
-
-ContainerIterator::ContainerIterator(Container* super):
-	super(super) {}
-
-ContainerIterator::~ContainerIterator() {}
-
-ContainerIterator::ContainerIterator(const ContainerIterator& rhs):
-	super(rhs.super), over(rhs.over), cur(rhs.cur) {}
-
-bool ContainerIterator::operator==(const ContainerIterator& rhs) const
-{
-	return !(*this != rhs);
-}
-
-bool ContainerIterator::operator!=(const ContainerIterator& rhs) const
-{
-	assert(super);
-
-	if (super != rhs.super) {
-		return true;
-	}
-
-	if (over.empty() && rhs.over.empty()) {
-		return false;
-	}
-
-	if (over.empty()) {
-		return true;
-	}
-
-	if (rhs.over.empty()) {
-		return true;
-	}
-
-	if (over.front() != rhs.over.front()) {
-		return true;
-	}
-
-	return cur != rhs.cur;
-}
-
-ContainerIterator& ContainerIterator::operator=(const ContainerIterator& rhs)
-{
-	this->super = rhs.super;
-	this->cur = rhs.cur;
-	this->over = rhs.over;
-	return *this;
 }
 
 Item* ContainerIterator::operator*()
 {
-	assert(super);
 	return *cur;
 }
 
-Item* ContainerIterator::operator->()
+void ContainerIterator::advance()
 {
-	return *(*this);
-}
-
-ContainerIterator& ContainerIterator::operator++()
-{
-	assert(super);
-
 	if (Item* i = *cur) {
 		if (Container* c = i->getContainer()) {
 			if (!c->empty()) {
@@ -815,19 +733,8 @@ ContainerIterator& ContainerIterator::operator++()
 
 	if (cur == over.front()->itemlist.end()) {
 		over.pop_front();
-		if (over.empty()) {
-			return *this;
+		if (!over.empty()) {
+			cur = over.front()->itemlist.begin();
 		}
-
-		cur = over.front()->itemlist.begin();
 	}
-
-	return *this;
-}
-
-ContainerIterator ContainerIterator::operator++(int)
-{
-	ContainerIterator tmp(*this);
-	++*this;
-	return tmp;
 }

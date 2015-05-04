@@ -242,9 +242,8 @@ MoveEvent* MoveEvents::getEvent(Item* item, MoveEvent_t eventType)
 {
 	MoveListMap::iterator it;
 
-	uint16_t uniqueId = item->getUniqueId();
-	if (uniqueId != 0) {
-		it = m_uniqueIdMap.find(uniqueId);
+	if (item->hasAttribute(ITEM_ATTRIBUTE_UNIQUEID)) {
+		it = m_uniqueIdMap.find(item->getUniqueId());
 		if (it != m_uniqueIdMap.end()) {
 			std::list<MoveEvent*>& moveEventList = it->second.moveEvent[eventType];
 			if (!moveEventList.empty()) {
@@ -253,9 +252,8 @@ MoveEvent* MoveEvents::getEvent(Item* item, MoveEvent_t eventType)
 		}
 	}
 
-	uint16_t actionId = item->getActionId();
-	if (actionId != 0) {
-		it = m_actionIdMap.find(actionId);
+	if (item->hasAttribute(ITEM_ATTRIBUTE_ACTIONID)) {
+		it = m_actionIdMap.find(item->getActionId());
 		if (it != m_actionIdMap.end()) {
 			std::list<MoveEvent*>& moveEventList = it->second.moveEvent[eventType];
 			if (!moveEventList.empty()) {
@@ -314,19 +312,22 @@ uint32_t MoveEvents::onCreatureMove(Creature* creature, const Tile* tile, const 
 		ret &= moveEvent->fireStepEvent(creature, nullptr, pos, fromPos);
 	}
 
-	for (int32_t i = tile->getFirstIndex(), j = tile->getLastIndex(); i < j; ++i) {
+	for (size_t i = tile->getFirstIndex(), j = tile->getLastIndex(); i < j; ++i) {
 		Thing* thing = tile->getThing(i);
-		if (thing) {
-			Item* tileItem = thing->getItem();
-			if (tileItem) {
-				moveEvent = getEvent(tileItem, eventType);
-				if (moveEvent) {
-					ret &= moveEvent->fireStepEvent(creature, tileItem, pos, fromPos);
-				}
-			}
+		if (!thing) {
+			continue;
+		}
+
+		Item* tileItem = thing->getItem();
+		if (!tileItem) {
+			continue;
+		}
+
+		moveEvent = getEvent(tileItem, eventType);
+		if (moveEvent) {
+			ret &= moveEvent->fireStepEvent(creature, tileItem, pos, fromPos);
 		}
 	}
-
 	return ret;
 }
 
@@ -370,16 +371,20 @@ uint32_t MoveEvents::onItemMove(Item* item, Tile* tile, bool isAdd)
 		ret &= moveEvent->fireAddRemItem(item, nullptr, tile->getPosition());
 	}
 
-	for (int32_t i = tile->getFirstIndex(), j = tile->getLastIndex(); i < j; ++i) {
+	for (size_t i = tile->getFirstIndex(), j = tile->getLastIndex(); i < j; ++i) {
 		Thing* thing = tile->getThing(i);
-		if (thing) {
-			Item* tileItem = thing->getItem();
-			if (tileItem && tileItem != item) {
-				moveEvent = getEvent(tileItem, eventType2);
-				if (moveEvent) {
-					ret &= moveEvent->fireAddRemItem(item, tileItem, tile->getPosition());
-				}
-			}
+		if (!thing) {
+			continue;
+		}
+
+		Item* tileItem = thing->getItem();
+		if (!tileItem || tileItem == item) {
+			continue;
+		}
+
+		moveEvent = getEvent(tileItem, eventType2);
+		if (moveEvent) {
+			ret &= moveEvent->fireAddRemItem(item, tileItem, tile->getPosition());
 		}
 	}
 	return ret;
@@ -518,7 +523,7 @@ bool MoveEvent::configureEvent(const pugi::xml_node& node)
 
 		//Gather vocation information
 		std::list<std::string> vocStringList;
-		for (pugi::xml_node vocationNode = node.first_child(); vocationNode; vocationNode = vocationNode.next_sibling()) {
+		for (auto vocationNode : node.children()) {
 			pugi::xml_attribute vocationNameAttribute = vocationNode.attribute("name");
 			if (!vocationNameAttribute) {
 				continue;

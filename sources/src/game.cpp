@@ -794,9 +794,9 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 		//try go up
 		if (currentPos.z != 8 && creature->getTile()->hasHeight(3)) {
 			Tile* tmpTile = map.getTile(currentPos.x, currentPos.y, currentPos.getZ() - 1);
-			if (tmpTile == nullptr || (tmpTile->ground == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID))) {
+			if (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID))) {
 				tmpTile = map.getTile(destPos.x, destPos.y, destPos.getZ() - 1);
-				if (tmpTile && tmpTile->ground && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID)) {
+				if (tmpTile && tmpTile->getGround() && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID)) {
 					flags = flags | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
 
 					if (!tmpTile->floorChange()) {
@@ -807,7 +807,7 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 		} else {
 			//try go down
 			Tile* tmpTile = map.getTile(destPos.x, destPos.y, destPos.z);
-			if (currentPos.z != 7 && (tmpTile == nullptr || (tmpTile->ground == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID)))) {
+			if (currentPos.z != 7 && (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasProperty(CONST_PROP_BLOCKSOLID)))) {
 				tmpTile = map.getTile(destPos.x, destPos.y, destPos.z + 1);
 				if (tmpTile && tmpTile->hasHeight(3)) {
 					flags |= FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
@@ -841,22 +841,33 @@ ReturnValue Game::internalMoveCreature(Creature& creature, Tile& toTile, uint32_
 	Item* toItem = nullptr;
 	Tile* subCylinder = nullptr;
 	Tile* toCylinder = &toTile;
+	Tile* fromCylinder = nullptr;
 	uint32_t n = 0;
 
-	while ((subCylinder = toTile.queryDestination(index, creature, &toItem, flags)) != toCylinder) {
+	while ((subCylinder = toCylinder->queryDestination(index, creature, &toItem, flags)) != toCylinder) {
 		map.moveCreature(creature, *subCylinder);
 
 		if (creature.getParent() != subCylinder) {
 			//could happen if a script move the creature
+			fromCylinder = nullptr;
 			break;
 		}
 
+		fromCylinder = toCylinder;
 		toCylinder = subCylinder;
 		flags = 0;
 
 		//to prevent infinite loop
 		if (++n >= MAP_MAX_LAYERS) {
 			break;
+		}
+	}
+
+	if (fromCylinder) {
+		const Position& fromPosition = fromCylinder->getPosition();
+		const Position& toPosition = toCylinder->getPosition();
+		if (fromPosition.z != toPosition.z && (fromPosition.x != toPosition.x || fromPosition.y != toPosition.y)) {
+			internalCreatureTurn(&creature, getDirectionTo(fromPosition, toPosition));
 		}
 	}
 
@@ -1229,8 +1240,6 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t index,
                                   uint32_t flags, bool test, uint32_t& remainderCount)
 {
-	remainderCount = 0;
-
 	if (toCylinder == nullptr || item == nullptr) {
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
@@ -1355,7 +1364,7 @@ ReturnValue Game::internalPlayerAddItem(Player* player, Item* item, bool dropOnM
 {
 	uint32_t remainderCount = 0;
 	ReturnValue ret = internalAddItem(player, item, static_cast<int32_t>(slot), 0, false, remainderCount);
-	if (remainderCount > 0) {
+	if (remainderCount != 0) {
 		Item* remainderItem = Item::CreateItem(item->getID(), remainderCount);
 		ReturnValue remaindRet = internalAddItem(player->getTile(), remainderItem, INDEX_WHEREEVER, FLAG_NOLIMIT);
 		if (remaindRet != RETURNVALUE_NOERROR) {
@@ -1378,7 +1387,7 @@ Item* Game::findItemOfType(Cylinder* cylinder, uint16_t itemId,
 	}
 
 	std::vector<Container*> containers;
-	for (int32_t i = cylinder->getFirstIndex(), j = cylinder->getLastIndex(); i < j; ++i) {
+	for (size_t i = cylinder->getFirstIndex(), j = cylinder->getLastIndex(); i < j; ++i) {
 		Thing* thing = cylinder->getThing(i);
 		if (!thing) {
 			continue;
@@ -1430,12 +1439,10 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 
 	std::vector<Container*> containers;
 
-	typedef std::multimap<uint64_t, Item*, std::less<uint64_t>> MoneyMap;
-	typedef MoneyMap::value_type moneymap_pair;
-	MoneyMap moneyMap;
+	std::multimap<uint64_t, Item*> moneyMap;
 	uint64_t moneyCount = 0;
 
-	for (int32_t i = cylinder->getFirstIndex(), j = cylinder->getLastIndex(); i < j; ++i) {
+	for (size_t i = cylinder->getFirstIndex(), j = cylinder->getLastIndex(); i < j; ++i) {
 		Thing* thing = cylinder->getThing(i);
 		if (!thing) {
 			continue;
@@ -1449,9 +1456,12 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 		Container* container = item->getContainer();
 		if (container) {
 			containers.push_back(container);
-		} else if (item->getWorth() != 0) {
-			moneyCount += item->getWorth();
-			moneyMap.insert(moneymap_pair(item->getWorth(), item));
+		} else {
+			int32_t worth = item->getWorth();
+			if (worth != 0) {
+				moneyCount += worth;
+				moneyMap.emplace(worth, item);
+			}
 		}
 	}
 
@@ -1462,33 +1472,39 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 			Container* tmpContainer = item->getContainer();
 			if (tmpContainer) {
 				containers.push_back(tmpContainer);
-			} else if (item->getWorth() != 0) {
-				moneyCount += item->getWorth();
-				moneyMap.insert(moneymap_pair(item->getWorth(), item));
+			} else {
+				int32_t worth = item->getWorth();
+				if (worth != 0) {
+					moneyCount += worth;
+					moneyMap.emplace(worth, item);
+				}
 			}
 		}
 	}
 
-	/*not enough money*/
 	if (moneyCount < money) {
 		return false;
 	}
 
-	for (MoneyMap::const_iterator mit = moneyMap.begin(), mend = moneyMap.end(); mit != mend && money > 0; ++mit) {
-		Item* item = mit->second;
-		internalRemoveItem(item);
+	for (const auto& moneyEntry : moneyMap) {
+		Item* item = moneyEntry.second;
+		if (moneyEntry.first > money) {
+			uint32_t worth = moneyEntry.first / item->getItemCount();
+			uint32_t removeCount = (money / worth) + 1;
 
-		if (mit->first > money) {
-			/* Remove a monetary value from an item*/
-			uint64_t remaind = item->getWorth() - money;
-			addMoney(cylinder, remaind, flags);
+			addMoney(cylinder, (worth * removeCount) - money, flags);
+			internalRemoveItem(item, removeCount);
 			money = 0;
 		} else {
-			money -= mit->first;
+			internalRemoveItem(item);
+			money -= moneyEntry.first;
+		}
+
+		if (money == 0) {
+			return true;
 		}
 	}
-
-	return money == 0;
+	return false;
 }
 
 void Game::addMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*/)
@@ -2210,7 +2226,7 @@ void Game::playerRotateItem(uint32_t playerId, const Position& pos, uint8_t stac
 	}
 
 	Item* item = thing->getItem();
-	if (!item || item->getClientID() != spriteId || !item->isRoteable() || item->hasAttribute(ITEM_ATTRIBUTE_UNIQUEID)) {
+	if (!item || item->getClientID() != spriteId || !item->isRotatable() || item->hasAttribute(ITEM_ATTRIBUTE_UNIQUEID)) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
@@ -3525,8 +3541,10 @@ void Game::removeCreatureCheck(Creature* creature)
 void Game::checkCreatures(size_t index)
 {
 	g_scheduler.addEvent(createSchedulerTask(EVENT_CHECK_CREATURE_INTERVAL, std::bind(&Game::checkCreatures, this, (index + 1) % EVENT_CREATURECOUNT)));
+
 	auto& checkCreatureList = checkCreatureLists[index];
-	for (auto it = checkCreatureList.begin(), end = checkCreatureList.end(); it != end;) {
+	auto it = checkCreatureList.begin(), end = checkCreatureList.end();
+	while (it != end) {
 		Creature* creature = *it;
 		if (creature->creatureCheck) {
 			if (creature->getHealth() > 0) {
@@ -4249,7 +4267,8 @@ void Game::checkDecay()
 
 	size_t bucket = (lastBucket + 1) % EVENT_DECAY_BUCKETS;
 
-	for (auto it = decayItems[bucket].begin(); it != decayItems[bucket].end();) {
+	auto it = decayItems[bucket].begin(), end = decayItems[bucket].end();
+	while (it != end) {
 		Item* item = *it;
 		if (!item->canDecay()) {
 			item->setDecaying(DECAYING_FALSE);
@@ -4258,11 +4277,8 @@ void Game::checkDecay()
 			continue;
 		}
 
-		int32_t decreaseTime = EVENT_DECAYINTERVAL * EVENT_DECAY_BUCKETS;
 		int32_t duration = item->getDuration();
-		if (duration - decreaseTime < 0) {
-			decreaseTime = duration;
-		}
+		int32_t decreaseTime = std::min<int32_t>(EVENT_DECAYINTERVAL * EVENT_DECAY_BUCKETS, duration);
 
 		duration -= decreaseTime;
 		item->decreaseDuration(decreaseTime);
@@ -4366,7 +4382,7 @@ void Game::resetCommandTag()
 
 void Game::shutdown()
 {
-	std::cout << "Shutting down server..." << std::flush;
+	std::cout << "Shutting down..." << std::flush;
 
 	g_scheduler.shutdown();
 	g_databaseTasks.shutdown();
@@ -4525,7 +4541,7 @@ void Game::updatePremium(Account& account)
 					account.lastDay = 0;
 				} else {
 					account.premiumDays -= days;
-					uint32_t remainder = (timeNow - account.lastDay) % 86400;
+					time_t remainder = (timeNow - account.lastDay) % 86400;
 					account.lastDay = timeNow - remainder;
 				}
 
@@ -4634,7 +4650,7 @@ bool Game::loadExperienceStages()
 		return false;
 	}
 
-	for (pugi::xml_node stageNode = doc.child("stages").first_child(); stageNode; stageNode = stageNode.next_sibling()) {
+	for (auto stageNode : doc.child("stages").children()) {
 		if (strcasecmp(stageNode.name(), "config") == 0) {
 			stagesEnabled = stageNode.attribute("enabled").as_bool();
 		} else {
@@ -5485,5 +5501,31 @@ void Game::removeBedSleeper(uint32_t guid)
 	auto it = bedSleepersMap.find(guid);
 	if (it != bedSleepersMap.end()) {
 		bedSleepersMap.erase(it);
+	}
+}
+
+Item* Game::getUniqueItem(uint16_t uniqueId)
+{
+	auto it = uniqueItems.find(uniqueId);
+	if (it == uniqueItems.end()) {
+		return nullptr;
+	}
+	return it->second;
+}
+
+bool Game::addUniqueItem(uint16_t uniqueId, Item* item)
+{
+	auto result = uniqueItems.emplace(uniqueId, item);
+	if (!result.second) {
+		std::cout << "Duplicate unique id: " << uniqueId << std::endl;
+	}
+	return result.second;
+}
+
+void Game::removeUniqueItem(uint16_t uniqueId)
+{
+	auto it = uniqueItems.find(uniqueId);
+	if (it != uniqueItems.end()) {
+		uniqueItems.erase(it);
 	}
 }

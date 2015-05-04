@@ -24,9 +24,7 @@
 #include "house.h"
 #include "iologindata.h"
 #include "game.h"
-#include "town.h"
 #include "configmanager.h"
-#include "tools.h"
 #include "bed.h"
 
 extern ConfigManager g_config;
@@ -624,7 +622,7 @@ bool Houses::loadHousesXML(const std::string& filename)
 		return false;
 	}
 
-	for (pugi::xml_node houseNode = doc.child("houses").first_child(); houseNode; houseNode = houseNode.next_sibling()) {
+	for (auto houseNode : doc.child("houses").children()) {
 		pugi::xml_attribute houseIdAttribute = houseNode.attribute("houseid");
 		if (!houseIdAttribute) {
 			return false;

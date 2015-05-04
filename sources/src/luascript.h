@@ -141,12 +141,10 @@ class ScriptEnvironment
 
 		void getEventInfo(int32_t& scriptId, std::string& desc, LuaScriptInterface*& scriptInterface, int32_t& callbackId, bool& timerEvent) const;
 
-		static void addTempItem(ScriptEnvironment* env, Item* item);
+		void addTempItem(Item* item);
 		static void removeTempItem(Item* item);
-		static void addUniqueThing(Thing* thing);
-		static void removeUniqueThing(Thing* thing);
 		uint32_t addThing(Thing* thing);
-		void insertThing(uint32_t uid, Thing* thing);
+		void insertItem(uint32_t uid, Item* item);
 
 		static DBResult_ptr getResultByID(uint32_t id);
 		static uint32_t addResult(DBResult_ptr res);
@@ -165,7 +163,6 @@ class ScriptEnvironment
 		void removeItemByUID(uint32_t uid);
 
 	private:
-		typedef std::unordered_map<uint32_t, Thing*> ThingMap;
 		typedef std::vector<const LuaVariant*> VariantVector;
 		typedef std::map<uint32_t, int32_t> StorageMap;
 		typedef std::map<uint32_t, DBResult_ptr> DBResultMap;
@@ -178,16 +175,12 @@ class ScriptEnvironment
 		//script event desc
 		std::string m_eventdesc;
 
-		//unique id map
-		static ThingMap m_globalMap;
-
-		//item/creature map
+		//local item map
 		uint32_t m_lastUID;
-		ThingMap m_localMap;
+		std::unordered_map<uint32_t, Item*> localMap;
 
 		//temporary item list
-		typedef std::map<ScriptEnvironment*, std::list<Item*>> TempItemListMap;
-		static TempItemListMap m_tempItems;
+		static std::multimap<ScriptEnvironment*, Item*> tempItems;
 
 		//result map
 		static uint32_t m_lastResultId;
@@ -439,8 +432,6 @@ class LuaScriptInterface
 		//lua functions
 		static int luaDoCreateItem(lua_State* L);
 		static int luaDoCreateItemEx(lua_State* L);
-		static int luaDoAddCondition(lua_State* L);
-		static int luaDoRemoveCondition(lua_State* L);
 		static int luaDoMoveCreature(lua_State* L);
 
 		static int luaDoPlayerAddItem(lua_State* L);
@@ -448,8 +439,6 @@ class LuaScriptInterface
 		static int luaDoSetCreatureLight(lua_State* L);
 
 		//get item info
-		static int luaGetThingfromPos(lua_State* L);
-		static int luaHasProperty(lua_State* L);
 		static int luaGetDepotId(lua_State* L);
 
 		//get creature info functions
@@ -556,6 +545,7 @@ class LuaScriptInterface
 
 		// _G
 		static int luaIsType(lua_State* L);
+		static int luaRawGetMetatable(lua_State* L);
 
 		// os
 		static int luaSystemTime(lua_State* L);
@@ -706,18 +696,13 @@ class LuaScriptInterface
 
 		// Item
 		static int luaItemCreate(lua_State* L);
-		static int luaItemIndex(lua_State* L);
 
-		static int luaItemIsCreature(lua_State* L);
 		static int luaItemIsItem(lua_State* L);
-		static int luaItemIsContainer(lua_State* L);
-		static int luaItemIsTeleport(lua_State* L);
 
 		static int luaItemGetParent(lua_State* L);
 		static int luaItemGetTopParent(lua_State* L);
 
 		static int luaItemGetId(lua_State* L);
-		static int luaItemGetType(lua_State* L);
 
 		static int luaItemClone(lua_State* L);
 		static int luaItemSplit(lua_State* L);
@@ -757,8 +742,6 @@ class LuaScriptInterface
 		// Container
 		static int luaContainerCreate(lua_State* L);
 
-		static int luaContainerIsContainer(lua_State* L);
-
 		static int luaContainerGetSize(lua_State* L);
 		static int luaContainerGetCapacity(lua_State* L);
 		static int luaContainerGetEmptySlots(lua_State* L);
@@ -774,24 +757,17 @@ class LuaScriptInterface
 		// Teleport
 		static int luaTeleportCreate(lua_State* L);
 
-		static int luaTeleportIsTeleport(lua_State* L);
-
 		static int luaTeleportGetDestination(lua_State* L);
 		static int luaTeleportSetDestination(lua_State* L);
 
 		// Creature
 		static int luaCreatureCreate(lua_State* L);
-		static int luaCreatureIndex(lua_State* L);
 
 		static int luaCreatureRegisterEvent(lua_State* L);
 		static int luaCreatureUnregisterEvent(lua_State* L);
 
 		static int luaCreatureIsRemoved(lua_State* L);
 		static int luaCreatureIsCreature(lua_State* L);
-		static int luaCreatureIsPlayer(lua_State* L);
-		static int luaCreatureIsMonster(lua_State* L);
-		static int luaCreatureIsNpc(lua_State* L);
-		static int luaCreatureIsItem(lua_State* L);
 		static int luaCreatureIsInGhostMode(lua_State* L);
 		static int luaCreatureIsHealthHidden(lua_State* L);
 
@@ -1168,6 +1144,7 @@ class LuaScriptInterface
 
 		static int luaItemTypeGetTransformEquipId(lua_State* L);
 		static int luaItemTypeGetTransformDeEquipId(lua_State* L);
+		static int luaItemTypeGetDestroyId(lua_State* L);
 		static int luaItemTypeGetDecayId(lua_State* L);
 		static int luaItemTypeGetRequiredLevel(lua_State* L);
 

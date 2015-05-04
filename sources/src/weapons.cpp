@@ -126,13 +126,12 @@ Event* Weapons::getEvent(const std::string& nodeName)
 bool Weapons::registerEvent(Event* event, const pugi::xml_node&)
 {
 	Weapon* weapon = reinterpret_cast<Weapon*>(event);
-	if (weapons.find(weapon->getID()) != weapons.end()) {
-		std::cout << "[Warning - Weapons::registerEvent] Duplicate registered item with id: " << weapon->getID() << std::endl;
-		return false;
-	}
 
-	weapons[weapon->getID()] = weapon;
-	return true;
+	auto result = weapons.emplace(weapon->getID(), weapon);
+	if (!result.second) {
+		std::cout << "[Warning - Weapons::registerEvent] Duplicate registered item with id: " << weapon->getID() << std::endl;
+	}
+	return result.second;
 }
 
 //monsters
@@ -217,7 +216,7 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 	}
 
 	std::list<std::string> vocStringList;
-	for (pugi::xml_node vocationNode = node.first_child(); vocationNode; vocationNode = vocationNode.next_sibling()) {
+	for (auto vocationNode : node.children()) {
 		if (!(attr = vocationNode.attribute("name"))) {
 			continue;
 		}
@@ -226,7 +225,7 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		if (vocationId != -1) {
 			vocWeaponMap[vocationId] = true;
 			int32_t promotedVocation = g_vocations.getPromotedVocation(vocationId);
-			if (promotedVocation != 0) {
+			if (promotedVocation != VOCATION_NONE) {
 				vocWeaponMap[promotedVocation] = true;
 			}
 
@@ -452,10 +451,8 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile* destTile) const
 
 		case WEAPONACTION_REMOVECHARGE: {
 			uint16_t charges = item->getCharges();
-			if (charges > 1) {
+			if (charges != 0) {
 				g_game.transformItem(item, item->getID(), charges - 1);
-			} else {
-				g_game.internalRemoveItem(item);
 			}
 			break;
 		}
@@ -777,7 +774,7 @@ bool WeaponDistance::useWeapon(Player* player, Item* item, Creature* target) con
 			for (const auto& dir : destList) {
 				// Blocking tiles or tiles without ground ain't valid targets for spears
 				Tile* tmpTile = g_game.map.getTile(destPos.x + dir.first, destPos.y + dir.second, destPos.z);
-				if (tmpTile && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) && tmpTile->ground != nullptr) {
+				if (tmpTile && !tmpTile->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) && tmpTile->getGround() != nullptr) {
 					destTile = tmpTile;
 					break;
 				}

@@ -105,6 +105,8 @@ ItemType::ItemType()
 	transformToOnUse[PLAYERSEX_FEMALE] = 0;
 	transformToFree = 0;
 
+	destroyTo = 0;
+
 	levelDoor = 0;
 
 	wareId = 0;
@@ -308,9 +310,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 			}
 		}
 
-		if (reverseItemMap.find(clientId) == reverseItemMap.end()) {
-			reverseItemMap[clientId] = serverId;
-		}
+		reverseItemMap.emplace(clientId, serverId);
 
 		// store the found item
 		if (serverId >= items.size()) {
@@ -360,7 +360,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 		iType.isHorizontal = hasBitSet(FLAG_HORIZONTAL, flags);
 		iType.isHangable = hasBitSet(FLAG_HANGABLE, flags);
 		iType.allowDistRead = hasBitSet(FLAG_ALLOWDISTREAD, flags);
-		iType.rotable = hasBitSet(FLAG_ROTABLE, flags);
+		iType.rotatable = hasBitSet(FLAG_ROTABLE, flags);
 		iType.canReadText = hasBitSet(FLAG_READABLE, flags);
 		iType.lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
 		iType.isAnimation = hasBitSet(FLAG_ANIMATION, flags);
@@ -391,26 +391,29 @@ bool Items::loadFromXml()
 		return false;
 	}
 
-	for (pugi::xml_node itemNode = doc.child("items").first_child(); itemNode; itemNode = itemNode.next_sibling()) {
+	for (auto itemNode : doc.child("items").children()) {
 		pugi::xml_attribute idAttribute = itemNode.attribute("id");
 		if (idAttribute) {
 			parseItemNode(itemNode, pugi::cast<uint16_t>(idAttribute.value()));
-		} else {
-			pugi::xml_attribute fromIdAttribute = itemNode.attribute("fromid");
-			if (fromIdAttribute) {
-				pugi::xml_attribute toIdAttribute = itemNode.attribute("toid");
-				if (toIdAttribute) {
-					uint16_t id = pugi::cast<uint16_t>(fromIdAttribute.value());
-					uint16_t toId = pugi::cast<uint16_t>(toIdAttribute.value());
-					while (id <= toId) {
-						parseItemNode(itemNode, id++);
-					}
-				} else {
-					std::cout << "[Warning - Items::loadFromXml] fromid (" << fromIdAttribute.value() << ") without toid" << std::endl;
-				}
-			} else {
-				std::cout << "[Warning - Items::loadFromXml] No itemid found" << std::endl;
-			}
+			continue;
+		}
+
+		pugi::xml_attribute fromIdAttribute = itemNode.attribute("fromid");
+		if (!fromIdAttribute) {
+			std::cout << "[Warning - Items::loadFromXml] No item id found" << std::endl;
+			continue;
+		}
+
+		pugi::xml_attribute toIdAttribute = itemNode.attribute("toid");
+		if (!toIdAttribute) {
+			std::cout << "[Warning - Items::loadFromXml] fromid (" << fromIdAttribute.value() << ") without toid" << std::endl;
+			continue;
+		}
+
+		uint16_t id = pugi::cast<uint16_t>(fromIdAttribute.value());
+		uint16_t toId = pugi::cast<uint16_t>(toIdAttribute.value());
+		while (id <= toId) {
+			parseItemNode(itemNode, id++);
 		}
 	}
 	return true;
@@ -445,7 +448,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 		it.pluralName = pluralAttribute.as_string();
 	}
 
-	for (pugi::xml_node attributeNode = itemNode.first_child(); attributeNode; attributeNode = attributeNode.next_sibling()) {
+	for (auto attributeNode : itemNode.children()) {
 		pugi::xml_attribute keyAttribute = attributeNode.attribute("key");
 		if (!keyAttribute) {
 			continue;
@@ -857,7 +860,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				int32_t start = 0;
 				int32_t count = 1;
 
-				for (pugi::xml_node subAttributeNode = attributeNode.first_child(); subAttributeNode; subAttributeNode = subAttributeNode.next_sibling()) {
+				for (auto subAttributeNode : attributeNode.children()) {
 					pugi::xml_attribute subKeyAttribute = subAttributeNode.attribute("key");
 					if (!subKeyAttribute) {
 						continue;
@@ -929,6 +932,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			}
 		} else if (tmpStrValue == "transformto") {
 			it.transformToFree = pugi::cast<uint16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "destroyto") {
+			it.destroyTo = pugi::cast<uint16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "elementice") {
 			Abilities& abilities = it.getAbilities();
 			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());

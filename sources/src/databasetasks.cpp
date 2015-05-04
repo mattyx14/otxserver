@@ -20,7 +20,6 @@
 #include "otpch.h"
 
 #include "databasetasks.h"
-#include "database.h"
 #include "tasks.h"
 
 extern Dispatcher g_dispatcher;
@@ -46,14 +45,14 @@ void DatabaseTasks::run()
 			taskSignal.wait(taskLockUnique);
 		}
 
-		if (!tasks.empty() && threadState != THREAD_STATE_TERMINATED) {
-			const DatabaseTask& task = tasks.front();
+		if (!tasks.empty()) {
+			DatabaseTask task = std::move(tasks.front());
+			tasks.pop_front();
 			taskLockUnique.unlock();
 			runTask(task);
-			taskLockUnique.lock();
-			tasks.pop_front();
+		} else {
+			taskLockUnique.unlock();
 		}
-		taskLockUnique.unlock();
 	}
 }
 

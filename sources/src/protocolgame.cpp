@@ -565,8 +565,9 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 	msg.add<uint16_t>(0x00); //environmental effects
 
 	int32_t count;
-	if (tile->ground) {
-		msg.addItem(tile->ground);
+	Item* ground = tile->getGround();
+	if (ground) {
+		msg.addItem(ground);
 		count = 1;
 	} else {
 		count = 0;
@@ -574,7 +575,7 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 
 	const TileItemVector* items = tile->getItemList();
 	if (items) {
-		for (auto it = items->getBeginTopItem(); it != items->getEndTopItem(); ++it) {
+		for (auto it = items->getBeginTopItem(), end = items->getEndTopItem(); it != end; ++it) {
 			msg.addItem(*it);
 
 			if (++count == 10) {
@@ -602,7 +603,7 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 	}
 
 	if (items) {
-		for (auto it = items->getBeginDownItem(); it != items->getEndDownItem(); ++it) {
+		for (auto it = items->getBeginDownItem(), end = items->getEndDownItem(); it != end; ++it) {
 			msg.addItem(*it);
 
 			if (++count == 10) {
@@ -673,7 +674,7 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& remo
 
 	if (knownCreatureSet.size() > 1300) {
 		// Look for a creature to remove
-		for (std::unordered_set<uint32_t>::iterator it = knownCreatureSet.begin(); it != knownCreatureSet.end(); ++it) {
+		for (std::unordered_set<uint32_t>::iterator it = knownCreatureSet.begin(), end = knownCreatureSet.end(); it != end; ++it) {
 			Creature* creature = g_game.getCreatureByID(*it);
 			if (!canSee(creature)) {
 				removedKnown = *it;
@@ -1490,12 +1491,7 @@ void ProtocolGame::sendContainer(uint8_t cid, const Container* container, bool h
 	msg.add<uint16_t>(containerSize);
 	msg.add<uint16_t>(firstIndex);
 	if (firstIndex < containerSize) {
-		uint8_t itemsToSend;
-		if (container->hasPagination() && firstIndex > 0) {
-			itemsToSend = std::min<uint32_t>(std::min<uint32_t>(std::min<uint32_t>(container->capacity(), containerSize - firstIndex), containerSize), std::numeric_limits<uint8_t>::max());
-		} else {
-			itemsToSend = std::min<uint32_t>(std::min<uint32_t>(container->capacity(), containerSize), std::numeric_limits<uint8_t>::max());
-		}
+		uint8_t itemsToSend = std::min<uint32_t>(std::min<uint32_t>(container->capacity(), containerSize - firstIndex), std::numeric_limits<uint8_t>::max());
 
 		msg.addByte(itemsToSend);
 		for (ItemDeque::const_iterator it = container->getItemList().begin() + firstIndex, end = it + itemsToSend; it != end; ++it) {
@@ -1537,23 +1533,25 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 	msg.addByte(0x7B);
 	msg.add<uint64_t>(player->getMoney());
 
-	std::map<uint32_t, uint32_t> saleMap;
+	std::map<uint16_t, uint32_t> saleMap;
 
 	if (shop.size() <= 5) {
 		// For very small shops it's not worth it to create the complete map
 		for (const ShopInfo& shopInfo : shop) {
-			if (shopInfo.sellPrice > 0) {
-				int8_t subtype = -1;
+			if (shopInfo.sellPrice == 0) {
+				continue;
+			}
 
-				const ItemType& itemType = Item::items[shopInfo.itemId];
-				if (itemType.hasSubType() && !itemType.stackable) {
-					subtype = (shopInfo.subType == 0 ? -1 : shopInfo.subType);
-				}
+			int8_t subtype = -1;
 
-				uint32_t count = player->getItemTypeCount(shopInfo.itemId, subtype);
-				if (count > 0) {
-					saleMap[shopInfo.itemId] = count;
-				}
+			const ItemType& itemType = Item::items[shopInfo.itemId];
+			if (itemType.hasSubType() && !itemType.stackable) {
+				subtype = (shopInfo.subType == 0 ? -1 : shopInfo.subType);
+			}
+
+			uint32_t count = player->getItemTypeCount(shopInfo.itemId, subtype);
+			if (count > 0) {
+				saleMap[shopInfo.itemId] = count;
 			}
 		}
 	} else {
@@ -1567,30 +1565,32 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 		// (That is, fluids such as potions etc., actually these items are very few since
 		// health potions now use their own ID)
 		for (const ShopInfo& shopInfo : shop) {
-			if (shopInfo.sellPrice > 0) {
-				int8_t subtype = -1;
+			if (shopInfo.sellPrice == 0) {
+				continue;
+			}
 
-				const ItemType& itemType = Item::items[shopInfo.itemId];
-				if (itemType.hasSubType() && !itemType.stackable) {
-					subtype = (shopInfo.subType == 0 ? -1 : shopInfo.subType);
+			int8_t subtype = -1;
+
+			const ItemType& itemType = Item::items[shopInfo.itemId];
+			if (itemType.hasSubType() && !itemType.stackable) {
+				subtype = (shopInfo.subType == 0 ? -1 : shopInfo.subType);
+			}
+
+			if (subtype != -1) {
+				uint32_t count;
+				if (!itemType.isFluidContainer() && !itemType.isSplash()) {
+					count = player->getItemTypeCount(shopInfo.itemId, subtype);    // This shop item requires extra checks
+				} else {
+					count = subtype;
 				}
 
-				if (subtype != -1) {
-					uint32_t count;
-					if (!itemType.isFluidContainer() && !itemType.isSplash()) {
-						count = player->getItemTypeCount(shopInfo.itemId, subtype);    // This shop item requires extra checks
-					} else {
-						count = subtype;
-					}
-
-					if (count > 0) {
-						saleMap[shopInfo.itemId] = count;
-					}
-				} else {
-					std::map<uint32_t, uint32_t>::const_iterator findIt = tempSaleMap.find(shopInfo.itemId);
-					if (findIt != tempSaleMap.end() && findIt->second > 0) {
-						saleMap[shopInfo.itemId] = findIt->second;
-					}
+				if (count > 0) {
+					saleMap[shopInfo.itemId] = count;
+				}
+			} else {
+				std::map<uint32_t, uint32_t>::const_iterator findIt = tempSaleMap.find(shopInfo.itemId);
+				if (findIt != tempSaleMap.end() && findIt->second > 0) {
+					saleMap[shopInfo.itemId] = findIt->second;
 				}
 			}
 		}
@@ -1600,7 +1600,7 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 	msg.addByte(itemsToSend);
 
 	uint8_t i = 0;
-	for (std::map<uint32_t, uint32_t>::const_iterator it = saleMap.begin(); i < itemsToSend; ++it, ++i) {
+	for (std::map<uint16_t, uint32_t>::const_iterator it = saleMap.begin(); i < itemsToSend; ++it, ++i) {
 		msg.addItemId(it->first);
 		msg.addByte(std::min<uint32_t>(it->second, std::numeric_limits<uint8_t>::max()));
 	}
@@ -2283,7 +2283,7 @@ void ProtocolGame::sendCreatureHealth(const Creature* creature)
 	if (creature->isHealthHidden()) {
 		msg.addByte(0x00);
 	} else {
-		msg.addByte(static_cast<int32_t>(std::ceil(static_cast<float>(creature->getHealth() * 100) / std::max<int32_t>(creature->getMaxHealth(), 1))));
+		msg.addByte(std::ceil((static_cast<double>(creature->getHealth()) / std::max<int32_t>(creature->getMaxHealth(), 1)) * 100));
 	}
 	writeToOutputBuffer(msg);
 }
@@ -2824,7 +2824,7 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	if (creature->isHealthHidden()) {
 		msg.addByte(0x00);
 	} else {
-		msg.addByte(static_cast<int32_t>(std::ceil(static_cast<float>(creature->getHealth() * 100) / std::max<int32_t>(creature->getMaxHealth(), 1))));
+		msg.addByte(std::ceil((static_cast<double>(creature->getHealth()) / std::max<int32_t>(creature->getMaxHealth(), 1)) * 100));
 	}
 
 	msg.addByte(creature->getDirection());

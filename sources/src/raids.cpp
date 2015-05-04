@@ -24,7 +24,6 @@
 #include "pugicast.h"
 
 #include "game.h"
-#include "player.h"
 #include "configmanager.h"
 #include "scheduler.h"
 #include "monster.h"
@@ -64,7 +63,7 @@ bool Raids::loadFromXml()
 		return false;
 	}
 
-	for (pugi::xml_node raidNode = doc.child("raids").first_child(); raidNode; raidNode = raidNode.next_sibling()) {
+	for (auto raidNode : doc.child("raids").children()) {
 		std::string name, file;
 		uint32_t interval, margin;
 
@@ -139,10 +138,10 @@ void Raids::checkRaids()
 	if (!getRunning()) {
 		uint64_t now = OTSYS_TIME();
 
-		for (auto it = raidList.begin(); it != raidList.end(); ++it) {
+		for (auto it = raidList.begin(), end = raidList.end(); it != end; ++it) {
 			Raid* raid = *it;
 			if (now >= (getLastRaidEnd() + raid->getMargin())) {
-				if (MAX_RAND_RANGE * CHECK_RAIDS_INTERVAL / raid->getInterval() >= static_cast<uint32_t>(uniform_random(0, MAX_RAND_RANGE))) {
+				if (((MAX_RAND_RANGE * CHECK_RAIDS_INTERVAL) / raid->getInterval()) >= static_cast<uint32_t>(uniform_random(0, MAX_RAND_RANGE))) {
 					setRunning(raid);
 					raid->startRaid();
 
@@ -213,7 +212,7 @@ bool Raid::loadFromXml(const std::string& _filename)
 		return false;
 	}
 
-	for (pugi::xml_node eventNode = doc.child("raid").first_child(); eventNode; eventNode = eventNode.next_sibling()) {
+	for (auto eventNode : doc.child("raid").children()) {
 		RaidEvent* event;
 		if (strcasecmp(eventNode.name(), "announce") == 0) {
 			event = new AnnounceEvent();
@@ -487,7 +486,7 @@ bool AreaSpawnEvent::configureRaidEvent(const pugi::xml_node& eventNode)
 		}
 	}
 
-	for (pugi::xml_node monsterNode = eventNode.first_child(); monsterNode; monsterNode = monsterNode.next_sibling()) {
+	for (auto monsterNode : eventNode.children()) {
 		const char* name;
 
 		if ((attr = monsterNode.attribute("name"))) {

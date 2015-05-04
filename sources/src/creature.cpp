@@ -1223,8 +1223,8 @@ bool Creature::addCombatCondition(Condition* condition)
 
 void Creature::removeCondition(ConditionType_t type, bool force/* = false*/)
 {
-	auto it = conditions.begin();
-	while (it != conditions.end()) {
+	auto it = conditions.begin(), end = conditions.end();
+	while (it != end) {
 		Condition* condition = *it;
 		if (condition->getType() != type) {
 			++it;
@@ -1250,8 +1250,8 @@ void Creature::removeCondition(ConditionType_t type, bool force/* = false*/)
 
 void Creature::removeCondition(ConditionType_t type, ConditionId_t id, bool force/* = false*/)
 {
-	auto it = conditions.begin();
-	while (it != conditions.end()) {
+	auto it = conditions.begin(), end = conditions.end();
+	while (it != end) {
 		Condition* condition = *it;
 		if (condition->getType() != type || condition->getId() != id) {
 			++it;
@@ -1333,10 +1333,10 @@ Condition* Creature::getCondition(ConditionType_t type, ConditionId_t id, uint32
 
 void Creature::executeConditions(uint32_t interval)
 {
-	for (ConditionList::iterator it = conditions.begin(); it != conditions.end();) {
-		if (!(*it)->executeCondition(this, interval)) {
-			Condition* condition = *it;
-
+	auto it = conditions.begin(), end = conditions.end();
+	while (it != end) {
+		Condition* condition = *it;
+		if (!condition->executeCondition(this, interval)) {
 			ConditionType_t type = condition->getType();
 
 			it = conditions.erase(it);
@@ -1413,10 +1413,9 @@ int64_t Creature::getStepDuration() const
 		calculatedStepSpeed = 1;
 	}
 
-	const Tile* tile = getTile();
-	if (tile && tile->ground) {
-		uint32_t groundId = tile->ground->getID();
-		groundSpeed = Item::items[groundId].speed;
+	Item* ground = _tile->getGround();
+	if (ground) {
+		groundSpeed = Item::items[ground->getID()].speed;
 		if (groundSpeed == 0) {
 			groundSpeed = 150;
 		}
@@ -1495,19 +1494,24 @@ bool Creature::unregisterCreatureEvent(const std::string& name)
 	}
 
 	bool resetTypeBit = true;
-	for (auto it = eventsList.begin(); it != eventsList.end(); ++it) {
+
+	auto it = eventsList.begin(), end = eventsList.end();
+	while (it != end) {
 		CreatureEvent* curEvent = *it;
 		if (curEvent == event) {
 			it = eventsList.erase(it);
-		} else if (curEvent->getEventType() == type) {
+			continue;
+		}
+
+		if (curEvent->getEventType() == type) {
 			resetTypeBit = false;
 		}
+		++it;
 	}
 
 	if (resetTypeBit) {
 		scriptEventsBitField &= ~(static_cast<uint32_t>(1) << type);
 	}
-
 	return true;
 }
 

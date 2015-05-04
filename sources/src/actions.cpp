@@ -96,113 +96,108 @@ bool Actions::registerEvent(Event* event, const pugi::xml_node& node)
 	pugi::xml_attribute attr;
 	if ((attr = node.attribute("itemid"))) {
 		uint16_t id = pugi::cast<uint16_t>(attr.value());
-		if (useItemMap.find(id) != useItemMap.end()) {
+
+		auto result = useItemMap.emplace(id, action);
+		if (!result.second) {
 			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with id: " << id << std::endl;
-			return false;
 		}
-		useItemMap[id] = action;
+		return result.second;
 	} else if ((attr = node.attribute("fromid"))) {
 		pugi::xml_attribute toIdAttribute = node.attribute("toid");
-		if (toIdAttribute) {
-			uint16_t fromId = pugi::cast<uint16_t>(attr.value());
-			uint16_t iterId = fromId;
-			uint16_t toId = pugi::cast<uint16_t>(toIdAttribute.value());
-
-			bool success = false;
-			if (useItemMap.find(iterId) != useItemMap.end()) {
-				std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with id: " << iterId << " in fromid: " << fromId << ", toid: " << toId << std::endl;
-			} else {
-				useItemMap[iterId] = action;
-				success = true;
-			}
-
-			while (++iterId <= toId) {
-				if (useItemMap.find(iterId) != useItemMap.end()) {
-					std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with id: " << iterId << " in fromid: " << fromId << ", toid: " << toId << std::endl;
-					continue;
-				}
-				useItemMap[iterId] = action;
-				success = true;
-			}
-			return success;
-		} else {
+		if (!toIdAttribute) {
 			std::cout << "[Warning - Actions::registerEvent] Missing toid in fromid: " << attr.as_string() << std::endl;
 			return false;
 		}
+
+		uint16_t fromId = pugi::cast<uint16_t>(attr.value());
+		uint16_t iterId = fromId;
+		uint16_t toId = pugi::cast<uint16_t>(toIdAttribute.value());
+
+		auto result = useItemMap.emplace(iterId, action);
+		if (!result.second) {
+			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with id: " << iterId << " in fromid: " << fromId << ", toid: " << toId << std::endl;
+		}
+
+		bool success = result.second;
+		while (++iterId <= toId) {
+			result = useItemMap.emplace(iterId, action);
+			if (!result.second) {
+				std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with id: " << iterId << " in fromid: " << fromId << ", toid: " << toId << std::endl;
+				continue;
+			}
+			success = true;
+		}
+		return success;
 	} else if ((attr = node.attribute("uniqueid"))) {
 		uint16_t uid = pugi::cast<uint16_t>(attr.value());
-		if (uniqueItemMap.find(uid) != uniqueItemMap.end()) {
+
+		auto result = uniqueItemMap.emplace(uid, action);
+		if (!result.second) {
 			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with uniqueid: " << uid << std::endl;
-			return false;
 		}
-		uniqueItemMap[uid] = action;
+		return result.second;
 	} else if ((attr = node.attribute("fromuid"))) {
 		pugi::xml_attribute toUidAttribute = node.attribute("touid");
-		if (toUidAttribute) {
-			uint16_t fromUid = pugi::cast<uint16_t>(attr.value());
-			uint16_t iterUid = fromUid;
-			uint16_t toUid = pugi::cast<uint16_t>(toUidAttribute.value());
-
-			bool success = false;
-			if (uniqueItemMap.find(iterUid) != uniqueItemMap.end()) {
-				std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with unique id: " << iterUid << " in fromuid: " << fromUid << ", touid: " << toUid << std::endl;
-			} else {
-				uniqueItemMap[iterUid] = action;
-				success = true;
-			}
-
-			while (++iterUid <= toUid) {
-				if (uniqueItemMap.find(iterUid) != uniqueItemMap.end()) {
-					std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with unique id: " << iterUid << " in fromuid: " << fromUid << ", touid: " << toUid << std::endl;
-					continue;
-				}
-				uniqueItemMap[iterUid] = action;
-				success = true;
-			}
-			return success;
-		} else {
+		if (!toUidAttribute) {
 			std::cout << "[Warning - Actions::registerEvent] Missing touid in fromuid: " << attr.as_string() << std::endl;
 			return false;
 		}
+
+		uint16_t fromUid = pugi::cast<uint16_t>(attr.value());
+		uint16_t iterUid = fromUid;
+		uint16_t toUid = pugi::cast<uint16_t>(toUidAttribute.value());
+
+		auto result = uniqueItemMap.emplace(iterUid, action);
+		if (!result.second) {
+			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with unique id: " << iterUid << " in fromuid: " << fromUid << ", touid: " << toUid << std::endl;
+		}
+
+		bool success = result.second;
+		while (++iterUid <= toUid) {
+			result = uniqueItemMap.emplace(iterUid, action);
+			if (!result.second) {
+				std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with unique id: " << iterUid << " in fromuid: " << fromUid << ", touid: " << toUid << std::endl;
+				continue;
+			}
+			success = true;
+		}
+		return success;
 	} else if ((attr = node.attribute("actionid"))) {
 		uint16_t aid = pugi::cast<uint16_t>(attr.value());
-		if (actionItemMap.find(aid) != actionItemMap.end()) {
+
+		auto result = actionItemMap.emplace(aid, action);
+		if (!result.second) {
 			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with actionid: " << aid << std::endl;
-			return false;
 		}
-		actionItemMap[aid] = action;
+		return result.second;
 	} else if ((attr = node.attribute("fromaid"))) {
 		pugi::xml_attribute toAidAttribute = node.attribute("toaid");
-		if (toAidAttribute) {
-			uint16_t fromAid = pugi::cast<uint16_t>(attr.value());
-			uint16_t iterAid = fromAid;
-			uint16_t toAid = pugi::cast<uint16_t>(toAidAttribute.value());
-
-			bool success = false;
-			if (actionItemMap.find(iterAid) != actionItemMap.end()) {
-				std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with action id: " << iterAid << " in fromaid: " << fromAid << ", toaid: " << toAid << std::endl;
-			} else {
-				actionItemMap[iterAid] = action;
-				success = true;
-			}
-
-			while (++iterAid <= toAid) {
-				if (actionItemMap.find(iterAid) != actionItemMap.end()) {
-					std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with action id: " << iterAid << " in fromaid: " << fromAid << ", toaid: " << toAid << std::endl;
-					continue;
-				}
-				actionItemMap[iterAid] = action;
-				success = true;
-			}
-			return success;
-		} else {
+		if (!toAidAttribute) {
 			std::cout << "[Warning - Actions::registerEvent] Missing toaid in fromaid: " << attr.as_string() << std::endl;
 			return false;
 		}
-	} else {
-		return false;
+
+		uint16_t fromAid = pugi::cast<uint16_t>(attr.value());
+		uint16_t iterAid = fromAid;
+		uint16_t toAid = pugi::cast<uint16_t>(toAidAttribute.value());
+
+		auto result = actionItemMap.emplace(iterAid, action);
+		if (!result.second) {
+			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with action id: " << iterAid << " in fromaid: " << fromAid << ", toaid: " << toAid << std::endl;
+		}
+
+		bool success = result.second;
+		while (++iterAid <= toAid) {
+			result = actionItemMap.emplace(iterAid, action);
+			if (!result.second) {
+				std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with action id: " << iterAid << " in fromaid: " << fromAid << ", toaid: " << toAid << std::endl;
+				continue;
+			}
+			success = true;
+		}
+		return success;
 	}
-	return true;
+	return false;
 }
 
 ReturnValue Actions::canUse(const Player* player, const Position& pos)
@@ -253,17 +248,15 @@ ReturnValue Actions::canUseFar(const Creature* creature, const Position& toPos, 
 
 Action* Actions::getAction(const Item* item)
 {
-	uint16_t uniqueId = item->getUniqueId();
-	if (uniqueId != 0) {
-		auto it = uniqueItemMap.find(uniqueId);
+	if (item->hasAttribute(ITEM_ATTRIBUTE_UNIQUEID)) {
+		auto it = uniqueItemMap.find(item->getUniqueId());
 		if (it != uniqueItemMap.end()) {
 			return it->second;
 		}
 	}
 
-	uint16_t actionId = item->getActionId();
-	if (actionId != 0) {
-		auto it = actionItemMap.find(actionId);
+	if (item->hasAttribute(ITEM_ATTRIBUTE_ACTIONID)) {
+		auto it = actionItemMap.find(item->getActionId());
 		if (it != actionItemMap.end()) {
 			return it->second;
 		}
@@ -347,10 +340,11 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		return RETURNVALUE_NOERROR;
 	}
 
-	if (item->isReadable()) {
-		if (item->canWriteText()) {
-			player->setWriteItem(item, item->getMaxWriteLength());
-			player->sendTextWindow(item, item->getMaxWriteLength(), true);
+	const ItemType& it = Item::items[item->getID()];
+	if (it.canReadText) {
+		if (it.canWriteText) {
+			player->setWriteItem(item, it.maxTextLen);
+			player->sendTextWindow(item, it.maxTextLen, true);
 		} else {
 			player->setWriteItem(nullptr);
 			player->sendTextWindow(item, 0, false);

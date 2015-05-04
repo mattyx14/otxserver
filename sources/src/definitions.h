@@ -29,8 +29,8 @@
 #define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
 
 #define CLIENT_VERSION_MIN 1076
-#define CLIENT_VERSION_MAX 1076
-#define CLIENT_VERSION_STR "10.76"
+#define CLIENT_VERSION_MAX 1077
+#define CLIENT_VERSION_STR "10.77"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

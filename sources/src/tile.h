@@ -38,7 +38,7 @@ typedef std::vector<Creature*> CreatureVector;
 typedef std::vector<Item*> ItemVector;
 typedef std::unordered_set<Creature*> SpectatorVec;
 
-enum tileflags_t {
+enum tileflags_t : uint32_t {
 	TILESTATE_NONE,
 
 	TILESTATE_PROTECTIONZONE = 1 << 0,
@@ -87,30 +87,22 @@ class TileItemVector
 	public:
 		TileItemVector() : downItemCount(0) {}
 
-		ItemVector::iterator begin() {
-			return items.begin();
-		}
 		ItemVector::const_iterator begin() const {
 			return items.begin();
-		}
-		ItemVector::reverse_iterator rbegin() {
-			return items.rbegin();
 		}
 		ItemVector::const_reverse_iterator rbegin() const {
 			return items.rbegin();
 		}
 
-		ItemVector::iterator end() {
-			return items.end();
-		}
 		ItemVector::const_iterator end() const {
 			return items.end();
 		}
-		ItemVector::reverse_iterator rend() {
-			return items.rend();
-		}
 		ItemVector::const_reverse_iterator rend() const {
 			return items.rend();
+		}
+
+		void clear() {
+			items.clear();
 		}
 
 		size_t size() const {
@@ -137,7 +129,7 @@ class TileItemVector
 			return items.begin();
 		}
 		ItemVector::const_iterator getBeginDownItem() const {
-			return items.begin();
+			return begin();
 		}
 		ItemVector::iterator getEndDownItem() {
 			return items.begin() + downItemCount;
@@ -145,25 +137,24 @@ class TileItemVector
 		ItemVector::const_iterator getEndDownItem() const {
 			return items.begin() + downItemCount;
 		}
-
 		ItemVector::iterator getBeginTopItem() {
-			return items.begin() + downItemCount;
+			return getEndDownItem();
 		}
 		ItemVector::const_iterator getBeginTopItem() const {
-			return items.begin() + downItemCount;
+			return getEndDownItem();
 		}
 		ItemVector::iterator getEndTopItem() {
 			return items.end();
 		}
 		ItemVector::const_iterator getEndTopItem() const {
-			return items.end();
+			return end();
 		}
 
 		uint32_t getTopItemCount() const {
-			return std::distance(getBeginTopItem(), getEndTopItem());
+			return size() - downItemCount;
 		}
 		uint32_t getDownItemCount() const {
-			return std::distance(getBeginDownItem(), getEndDownItem());
+			return downItemCount;
 		}
 		inline Item* getTopTopItem() const {
 			if (getTopItemCount() == 0) {
@@ -172,7 +163,7 @@ class TileItemVector
 			return *(getEndTopItem() - 1);
 		}
 		inline Item* getTopDownItem() const {
-			if (getDownItemCount() == 0) {
+			if (downItemCount == 0) {
 				return nullptr;
 			}
 			return *getBeginDownItem();
@@ -189,7 +180,7 @@ class Tile : public Cylinder
 {
 	public:
 		static Tile& nullptr_tile;
-		Tile(uint16_t x, uint16_t y, uint16_t z);
+		Tile(uint16_t x, uint16_t y, uint8_t z);
 		virtual ~Tile();
 
 		// non-copyable
@@ -326,8 +317,8 @@ class Tile : public Cylinder
 		void removeCreature(Creature* creature);
 
 		int32_t getThingIndex(const Thing* thing) const final;
-		int32_t getFirstIndex() const final;
-		int32_t getLastIndex() const final;
+		size_t getFirstIndex() const final;
+		size_t getLastIndex() const final;
 		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const final;
 		Thing* getThing(size_t index) const final;
 
@@ -347,6 +338,13 @@ class Tile : public Cylinder
 
 		Item* getUseItem() const;
 
+		Item* getGround() const {
+			return ground;
+		}
+		void setGround(Item* item) {
+			ground = item;
+		}
+
 	private:
 		void onAddTileItem(Item* item);
 		void onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newItem, const ItemType& newType);
@@ -362,11 +360,7 @@ class Tile : public Cylinder
 			return (m_flags & TILESTATE_DYNAMIC_TILE) != 0;
 		}
 
-	public:
-		QTreeLeafNode* qt_node;
 		Item* ground;
-
-	protected:
 		Position tilePos;
 		uint32_t m_flags;
 };
@@ -380,7 +374,7 @@ class DynamicTile : public Tile
 		CreatureVector creatures;
 
 	public:
-		DynamicTile(uint16_t x, uint16_t y, uint16_t z);
+		DynamicTile(uint16_t x, uint16_t y, uint8_t z);
 		~DynamicTile();
 
 		// non-copyable
@@ -416,7 +410,7 @@ class StaticTile final : public Tile
 	CreatureVector* creatures;
 
 	public:
-		StaticTile(uint16_t x, uint16_t y, uint16_t z);
+		StaticTile(uint16_t x, uint16_t y, uint8_t z);
 		~StaticTile();
 
 		// non-copyable
@@ -443,12 +437,14 @@ class StaticTile final : public Tile
 			return creatures;
 		}
 		CreatureVector* makeCreatures() {
-			return (creatures) ? (creatures) : (creatures = new CreatureVector);
+			if (!creatures) {
+				creatures = new CreatureVector;
+			}
+			return creatures;
 		}
 };
 
-inline Tile::Tile(uint16_t x, uint16_t y, uint16_t z) :
-	qt_node(nullptr),
+inline Tile::Tile(uint16_t x, uint16_t y, uint8_t z) :
 	ground(nullptr),
 	tilePos(x, y, z),
 	m_flags(0)
@@ -508,7 +504,7 @@ inline TileItemVector* Tile::makeItemList()
 	return reinterpret_cast<StaticTile*>(this)->StaticTile::makeItemList();
 }
 
-inline StaticTile::StaticTile(uint16_t x, uint16_t y, uint16_t z) :
+inline StaticTile::StaticTile(uint16_t x, uint16_t y, uint8_t z) :
 	Tile(x, y, z),
 	items(nullptr),
 	creatures(nullptr)
@@ -527,7 +523,7 @@ inline StaticTile::~StaticTile()
 	delete creatures;
 }
 
-inline DynamicTile::DynamicTile(uint16_t x, uint16_t y, uint16_t z) :
+inline DynamicTile::DynamicTile(uint16_t x, uint16_t y, uint8_t z) :
 	Tile(x, y, z)
 {
 	m_flags |= TILESTATE_DYNAMIC_TILE;
