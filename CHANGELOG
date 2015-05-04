@@ -3,7 +3,7 @@
 		OTX Server 3
 
 	OTX Server is based on:
-		The Forgotten Server Version: 1.1
+		The Forgotten Server Version: 1.2
 
 	Codenamed
 		ALPHA
@@ -37,7 +37,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients 10.41
+		Tibia Clients 10.77
 ]
 
 [ TODO WITH OPTIONAL (MODAL DIALOGS)
@@ -58,6 +58,93 @@
 
 	OTHERS:
 		- Look Display
+]
+
+[ OTX Server 3.0.ALPHA Version - "3"
+	- Game protocol 10.77 support
+	- Fixed : premiumForPromotion = false
+	- TileItemVector optimizations
+	- Fixed : Bug in the Ladder System
+	- Fix bug in unregisterCreatureEvent
+	- Iterator optimizations
+	- Rename ContainerIterator functions
+	- Allow ids and names for Player.setVocation
+	- Fixed : new promotion bug
+	- Fixed : Searchtype name typo?
+	- Code improvements
+	- Minor optimization
+	- Fixed : Weapons Issue
+	- Fixed : Training Offline
+	- Remove unused include
+	- Fixed : Health bar question
+	- Fixed : Game.loadMap problems with crashes
+	- uint16_t is enough for item ids
+	- Optimize updateSaleShopList
+	- Fixed : Browse field client crash
+	- Multiple windows of the same container can be open
+	- Fix weapon charges
+	- Fixed : [BUG] Stairs
+	- Fixed : Players can't "double fall" into holes
+	- Fix bug in Player::getItemTypeCount
+	- Minor optimizations and Item class cleanup
+	- Move getThingfromPos to compat.lua
+	- Move doAddCondition to compat.lua
+	- Move doRemoveCondition to compat.lua
+	- Move hasProperty to compat.lua
+	- Move Item.getType to Lua core lib
+	- Move Item methods (getId, getActionId, getUniqueId, getSubType) and Creature.getId to Lua
+	- Move unique items to Game class
+	- Fixed : It should update weight properly now.
+	- Fixed : Shop NPC Issue
+	- Fixed : Attack Value: Distance Weapons
+	- Allow unique id and action id 0
+	- Fixed issue that kept players seem not invited to private channels!
+	- Fixed : direction is not adjusted when player uses stairs/ladder
+	- Fixed : Debug on trapdoor
+	- Improve compile times using pipe
+	- Improve server performance using native optimizations
+	- Move __index functions to lua
+	- Moved some things
+	- Fix race condition (runTask() would race with task flushing on shutdown. Remove unnecessary thread state check
+	- Remove unused imports
+	- Decrease memory footprint of Tile
+	- Set underlying enum types
+	- Remove unused data member in ContainerIterator
+	- Fix integer overflow in ItemType.getWeight
+	- Update destroyItem to use new destroyTo item property
+	- Fixed : Small Issue in Items.xml
+	- otland/forgottenserver#1251
+	- Use range-based for loop for XML children iterators
+	- Make monsterScriptList temporary
+	- Update pugixml to version 1.6
+	- Code improvements and optimizations
+	- Use std::any_of() to make code more concise in Player::hasShopItemForSale() and Player::updateSaleShopList(). Remove unnecessary check in Player::internalAddThing().
+	- Fixed code formatting.
+	- Use precompiled headers with cmake.
+	- Optimize damage/heal messages. The amount of string concatenations has been reduced.
+	- Fixed wrong summon damage message.
+	- Fix mana loss messages.
+	- Update onLook formatting.
+	- Avoid unnecessary string concatenations.
+	- Remove use of trademarked word. We don't want to infringe on a registered trademark.
+	- Fix typo in npchandler comment.
+	- Fix bug with ignoreCap in doNpcSellItem.
+	- Remove fansites from items.xml.
+	- Fixed Buying items with charge(like protection amulet) from the npc shop(eremo) bug.
+	- Fixed doors.lua.
+	- Update Lua scripts.
+	- Fix bug in bed modification kits.
+	- Rename variables in Player::onCreatureAppear.
+	- Fix bug when connecting with very old client versions.
+	- Fixed Blueberry Bush Bug.
+	- Added New outfits & mounts.
+	- Fixed Vocations.xml Skill Multiplier.
+	- Fixed addDamageCondition(condition, turns, delay, damage) - turns/damage gets bugged when delay is below 1s.
+	- Add new magic and distance effect constants.
+	- Fixed MySQL issue with 'players_online' table when allowing clones.
+	- Update outfit names.
+	- Add missing byte to sendReLoginWindow.
+	- Fix bug in ProtocolGame::sendContainer.
 ]
 
 [ OTX Server 3.0.ALPHA Version - "2"
