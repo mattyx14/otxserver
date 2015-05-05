@@ -270,7 +270,6 @@ void Npc::reset()
 	hasBusyReply = false;
 	hasScriptedFocus = false;
 	focusCreature = 0;
-	speechBubble = SPEECHBUBBLE_NONE;
 	isIdle = true;
 	talkRadius = 2;
 	idleTime = 0;
@@ -375,9 +374,6 @@ bool Npc::loadFromXml()
 	baseSpeed = 100;
 	if(readXMLInteger(root, "speed", intValue))
 		baseSpeed = intValue;
-
-	if(readXMLString(root, "speechbubble", strValue))
-		speechBubble = booleanString(strValue);
 
 	if(readXMLString(root, "attackable", strValue))
 		attackable = booleanString(strValue);

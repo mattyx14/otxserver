@@ -323,9 +323,6 @@ class LuaInterface
 		static int64_t getGlobalNumber(lua_State* L, const std::string& _identifier, const int64_t _default = 0);
 		static double getGlobalDouble(lua_State* L, const std::string& _identifier, const double _default = 0);
 
-		static int32_t luaNpcGetSpeechBubble(lua_State* L);
-		static int32_t luaNpcSetSpeechBubble(lua_State* L);
-
 		static void getValue(const std::string& key, lua_State* L, lua_State* _L);
 		static void moveValue(lua_State* from, lua_State* to);
 

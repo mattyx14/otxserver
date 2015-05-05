@@ -369,9 +369,6 @@ class Npc : public Creature
 		virtual const Npc* getNpc() const {return this;}
 		virtual CreatureType_t getType() const {return CREATURETYPE_NPC;}
 
-		uint8_t getSpeechBubble() const {return speechBubble;}
-		void setSpeechBubble(const uint8_t bubble) {speechBubble = bubble;}
-
 		virtual uint32_t rangeId() {return NPC_ID_RANGE;}
 		static AutoList<Npc> autoList;
 
@@ -457,7 +454,7 @@ class Npc : public Creature
 		Direction baseDirection;
 
 		int32_t talkRadius, idleTime, idleInterval, focusCreature;
-		uint32_t walkTicks, speechBubble;
+		uint32_t walkTicks;
 		int64_t lastVoice;
 
 		typedef std::map<std::string, std::list<ListItem> > ItemListMap;

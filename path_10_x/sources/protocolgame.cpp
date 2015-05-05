@@ -3289,7 +3289,6 @@ void ProtocolGame::AddCreature(NetworkMessage_ptr msg, const Creature* creature,
 	}
 
 	msg->put<char>(creatureType); // Type (for summons)
-	msg->put<char>(creature->getSpeechBubble());
 	msg->put<char>(0xFF); // MARK_UNMARKED
 
 	if(otherPlayer)

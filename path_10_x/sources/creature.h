@@ -319,8 +319,6 @@ class Creature : public AutoId, virtual public Thing
 		virtual float getAttackFactor() const {return 1.0f;}
 		virtual float getDefenseFactor() const {return 1.0f;}
 
-		virtual uint8_t getSpeechBubble() const {return SPEECHBUBBLE_NONE;}
-
 		bool addCondition(Condition* condition);
 		bool addCombatCondition(Condition* condition);
 		void removeCondition(ConditionType_t type);
