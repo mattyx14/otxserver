@@ -24,7 +24,7 @@
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "0"
 #define REVISION_VERSION "ALPHA"
-#define SOFTWARE_CODENAME "3"
+#define SOFTWARE_CODENAME "4"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
 
