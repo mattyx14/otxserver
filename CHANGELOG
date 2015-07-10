@@ -38,31 +38,59 @@
 
 	PROTOCOL SUPPORTED
 		Tibia Clients 9.86 to 10.77
-]
 
-[ TODO WITH OPTIONAL (MODAL DIALOGS)
-	COMMANDS:
-		- Animated Smiles
-		- Bank Command
-		- Blessings
-		- Buy Command Item
-		- Guild Cast
-		- Guild Outfit
-		- Player Commands (customs)
-		- Promotion
-		- Refill Boots
+	TODO WITH OPTIONAL (MODAL DIALOGS)
+		COMMANDS:
+			- Animated Smiles
+			- Bank Command
+			- Blessings
+			- Buy Command Item
+			- Guild Cast
+			- Guild Outfit
+			- Player Commands (customs)
+			- Promotion
+			- Refill Boots
 
-	CONFIGS:
-		- Loot bag display
-		- Quest Protection
+		CONFIGS:
+			- Loot bag display
+			- Quest Protection
 
-	OTHERS:
-		- Look Display
+		OTHERS:
+			- Look Display
 ]
 
 [ OTX Server 3.0.ALPHA Version - "4"
 	- DualWield Support
 	- Make player walkthrough optional
+	- Use std::make_shared<> to avoid an unnecessary, additional heap alloction
+	- Fix bug in Lua function MonsterType.getDefenseList
+	- Fix potential deadlock on dispatcher shutdown (it could potentially deadlock with itself if there was a task pending that added a new task during flushing). Use an atomic (with relaxed ordering) for the thread state flag, this fixes a race condition on that flag in the main dispatcher loop. Remove unncessary thread state check.
+	- Fixed: Enchanted Staff does not start decaying
+	- The item vector will no longer be created if the item being added is a ground tile
+	- Fixed: Prismatic ring
+	- Create empty fluid containers by default
+	- Fix race condition on the threadState flag in the scheduler thread. Remove unnecessary comparator, use the default container for the priority_queue adapter template (which is more efficient than a vector in that role). Remove unnecessary flag check in scheduler loop.
+	- Fixed: Ground Error
+	- Fix direction bug in internalMoveCreature
+	- Fixed: Actions::useItem and Actions::useItemEx
+	- Automatic reMount(if wasMounted) leaving protection zone
+	- Avoid variable shadowing
+	- Fixed: 1194826 introduces problem
+	- Remove unnecessary includes
+	- Fix compiling error with Visual Studio
+	- Fixed: Client crash when GM outfit use mount
+	- Variable Rename … According avoid variable shadowing
+	- Micro optimizations
+	- Remove trailing spaces
+	- Fix speed for new mounts
+	- Fixed: Not deleting player instance iomarket
+	- Add EditorConfig files
+	- Remove trailing spaces
+	- Fix rainbow shield duration
+	- Fixed: Assign null value to variables after being deleted
+	- Missing items from Spike Tasks Quest
+	- Fix a bug in droploot.lua
+	- Update luascript.cpp
 ]
 
 [ OTX Server 3.0.ALPHA Version - "3"
