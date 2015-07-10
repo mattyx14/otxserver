@@ -108,6 +108,7 @@ Player::Player(ProtocolGame* p) :
 	lastAttackBlockType = BLOCK_NONE;
 	addAttackSkillPoint = false;
 	lastAttack = 0;
+	lastAttackHand = HAND_LEFT;
 
 	blessings = 0;
 
@@ -342,6 +343,11 @@ Item* Player::getWeapon(slots_t slot, bool ignoreAmmo) const
 
 Item* Player::getWeapon(bool ignoreAmmo/* = false*/) const
 {
+	/* If player is dual wielding, we already assured he has weapons in both hands. */
+	if (isDualWielding()) {
+		return getWeapon(getAttackHand(), ignoreAmmo);
+	}
+
 	Item* item = getWeapon(CONST_SLOT_LEFT, ignoreAmmo);
 	if (item) {
 		return item;
@@ -420,29 +426,48 @@ void Player::getShieldAndWeapon(const Item*& shield, const Item*& weapon) const
 	shield = nullptr;
 	weapon = nullptr;
 
-	for (uint32_t slot = CONST_SLOT_RIGHT; slot <= CONST_SLOT_LEFT; slot++) {
-		Item* item = inventory[slot];
-		if (!item) {
-			continue;
+	if (isDualWielding()) {
+		if (lastAttackHand == HAND_LEFT) {
+			shield = inventory[CONST_SLOT_RIGHT];
+			weapon = inventory[CONST_SLOT_LEFT];
+		} else {
+			shield = inventory[CONST_SLOT_LEFT];
+			weapon = inventory[CONST_SLOT_RIGHT];
 		}
-
-		switch (item->getWeaponType()) {
-			case WEAPON_NONE:
-				break;
-
-			case WEAPON_SHIELD: {
-				if (!shield || (shield && item->getDefense() > shield->getDefense())) {
-					shield = item;
-				}
-				break;
+	} else {
+		for (uint32_t slot = CONST_SLOT_RIGHT; slot <= CONST_SLOT_LEFT; slot++) {
+			Item* item = inventory[slot];
+			if (!item) {
+				continue;
 			}
 
-			default: { // weapons that are not shields
-				weapon = item;
-				break;
+			switch (item->getWeaponType()) {
+				case WEAPON_NONE:
+					break;
+
+				case WEAPON_SHIELD: {
+					if (!shield || (shield && item->getDefense() > shield->getDefense())) {
+						shield = item;
+					}
+					break;
+				}
+
+				default: { // weapons that are not shields
+					weapon = item;
+					break;
+				}
 			}
 		}
 	}
+}
+
+bool Player::isDualWielding() const
+{
+	/* Not checking dual wield because the player can't wear two weapons worn without it */
+	if (this->getWeapon(CONST_SLOT_LEFT, true) && this->getWeapon(CONST_SLOT_RIGHT, true)) {
+		return true;
+	}
+	return false;
 }
 
 int32_t Player::getDefense() const
@@ -829,7 +854,7 @@ bool Player::canWalkthrough(const Creature* creature) const
 	}
 
 	const Player* player = creature->getPlayer();
-	if (!player) {
+	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
 		return false;
 	}
 
@@ -865,7 +890,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	}
 
 	const Player* player = creature->getPlayer();
-	if (!player) {
+	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
 		return false;
 	}
 
@@ -1951,6 +1976,18 @@ void Player::removeExperience(uint64_t exp, bool sendText/* = false*/)
 	sendStats();
 }
 
+uint32_t Player::getAttackSpeed() const
+{
+	uint32_t ret = vocation->getAttackSpeed();
+
+	if (isDualWielding()) {
+		double multiplier = 100.0 / static_cast<double>(g_config.getNumber(ConfigManager::DUAL_WIELDING_SPEED_RATE));
+		ret = static_cast<uint32_t>(std::ceil(static_cast<double>(ret) * multiplier));
+	}
+
+	return ret;
+}
+
 uint8_t Player::getPercentLevel(uint64_t count, uint64_t nextLevelCount)
 {
 	if (nextLevelCount == 0) {
@@ -2583,6 +2620,8 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					           leftType == WEAPON_SHIELD || leftType == WEAPON_AMMO
 					           || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
 						ret = RETURNVALUE_NOERROR;
+					} else if (g_config.getBoolean(ConfigManager::ALLOW_DUAL_WIELDING)) {
+						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;
 					}
@@ -2623,6 +2662,8 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					} else if (rightType == WEAPON_NONE || type == WEAPON_NONE ||
 					           rightType == WEAPON_SHIELD || rightType == WEAPON_AMMO
 					           || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+						ret = RETURNVALUE_NOERROR;
+					} else if (g_config.getBoolean(ConfigManager::ALLOW_DUAL_WIELDING)) {
 						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;

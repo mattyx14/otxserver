@@ -24,6 +24,7 @@ maxPlayers = 0
 motd = "Welcome to The OTX Server!"
 onePlayerOnlinePerAccount = true
 allowClones = false
+allowWalkthrough = true
 serverName = "OTXSERVER"
 statusTimeout = 1 * 1000
 replaceKickOnLogin = true
@@ -70,6 +71,14 @@ kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
 emoteSpells = false
 classicEquipmentSlots = false
+
+-- Dual wielding
+-- NOTE: the rate are the percentage of the single-wielding values, for
+-- example, if dualWieldingSpeedFactor is 200 then dual wielding attack will
+-- be twice as fast. It makes no sense to set dualWieldingSpeedRate under 100.
+allowDualWielding = false
+dualWieldingSpeedRate = 200
+dualWieldingDamageRate = 60
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
