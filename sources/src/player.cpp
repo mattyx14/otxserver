@@ -19,6 +19,8 @@
 
 #include "otpch.h"
 
+#include <bitset>
+
 #include "bed.h"
 #include "chat.h"
 #include "combat.h"
@@ -129,6 +131,8 @@ Player::Player(ProtocolGame* p) :
 	lastFailedFollow = 0;
 	lastWalkthroughAttempt = 0;
 	lastToggleMount = 0;
+
+	wasMounted = false;
 
 	sex = PLAYERSEX_FEMALE;
 
@@ -1304,6 +1308,12 @@ void Player::onChangeZone(ZoneType_t zone)
 		if (!group->access && isMounted()) {
 			dismount();
 			g_game.internalCreatureChangeOutfit(this, defaultOutfit);
+			wasMounted = true;
+		}
+	} else {
+		if (wasMounted) {
+			toggleMount(true);
+			wasMounted = false;
 		}
 	}
 
@@ -2368,19 +2378,19 @@ void Player::notifyStatusChange(Player* loginPlayer, VipStatus_t status)
 	}
 }
 
-bool Player::removeVIP(uint32_t _guid)
+bool Player::removeVIP(uint32_t vipGuid)
 {
-	if (VIPList.erase(_guid) == 0) {
+	if (VIPList.erase(vipGuid) == 0) {
 		return false;
 	}
 
-	IOLoginData::removeVIPEntry(accountNumber, _guid);
+	IOLoginData::removeVIPEntry(accountNumber, vipGuid);
 	return true;
 }
 
-bool Player::addVIP(uint32_t _guid, const std::string& name, VipStatus_t status)
+bool Player::addVIP(uint32_t vipGuid, const std::string& vipName, VipStatus_t status)
 {
-	if (guid == _guid) {
+	if (guid == vipGuid) {
 		sendTextMessage(MESSAGE_STATUS_SMALL, "You cannot add yourself.");
 		return false;
 	}
@@ -2390,24 +2400,22 @@ bool Player::addVIP(uint32_t _guid, const std::string& name, VipStatus_t status)
 		return false;
 	}
 
-	auto result = VIPList.insert(_guid);
+	auto result = VIPList.insert(vipGuid);
 	if (!result.second) {
 		sendTextMessage(MESSAGE_STATUS_SMALL, "This player is already in your list.");
 		return false;
 	}
 
-	IOLoginData::addVIPEntry(accountNumber, _guid, "", 0, false);
-
+	IOLoginData::addVIPEntry(accountNumber, vipGuid, "", 0, false);
 	if (client) {
-		client->sendVIP(_guid, name, "", 0, false, status);
+		client->sendVIP(vipGuid, vipName, "", 0, false, status);
 	}
-
 	return true;
 }
 
-bool Player::addVIPInternal(uint32_t _guid)
+bool Player::addVIPInternal(uint32_t vipGuid)
 {
-	if (guid == _guid) {
+	if (guid == vipGuid) {
 		return false;
 	}
 
@@ -2415,17 +2423,17 @@ bool Player::addVIPInternal(uint32_t _guid)
 		return false;
 	}
 
-	return VIPList.insert(_guid).second;
+	return VIPList.insert(vipGuid).second;
 }
 
-bool Player::editVIP(uint32_t _guid, const std::string& description, uint32_t icon, bool notify)
+bool Player::editVIP(uint32_t vipGuid, const std::string& description, uint32_t icon, bool notify)
 {
-	auto it = VIPList.find(_guid);
+	auto it = VIPList.find(vipGuid);
 	if (it == VIPList.end()) {
 		return false;    // player is not in VIP
 	}
 
-	IOLoginData::editVIPEntry(accountNumber, _guid, description, icon, notify);
+	IOLoginData::editVIPEntry(accountNumber, vipGuid, description, icon, notify);
 	return true;
 }
 
@@ -4023,49 +4031,46 @@ bool Player::isPromoted() const
 
 double Player::getLostPercent() const
 {
-	std::bitset<5> bitset(blessings);
+	int32_t blessingCount = std::bitset<5>(blessings).count();
 
-	const int32_t deathLosePercent = g_config.getNumber(ConfigManager::DEATH_LOSE_PERCENT);
+	int32_t deathLosePercent = g_config.getNumber(ConfigManager::DEATH_LOSE_PERCENT);
 	if (deathLosePercent != -1) {
-		int32_t lossPercent = deathLosePercent;
-
 		if (isPromoted()) {
-			lossPercent -= 3;
+			deathLosePercent -= 3;
 		}
 
-		lossPercent -= static_cast<int32_t>(bitset.count());
-		return std::max<int32_t>(0, lossPercent) / 100.;
+		deathLosePercent -= blessingCount;
+		return std::max<int32_t>(0, deathLosePercent) / 100.;
+	}
+
+	double lossPercent;
+	if (level >= 25) {
+		double tmpLevel = level + (levelPercent / 100.);
+		lossPercent = static_cast<double>((tmpLevel + 50) * 50 * ((tmpLevel * tmpLevel) - (5 * tmpLevel) + 8)) / experience;
 	} else {
-		double lossPercent;
+		lossPercent = 10;
+	}
 
-		if (level >= 25) {
-			double tmpLevel = level + (levelPercent / 100.);
-			lossPercent = static_cast<double>((tmpLevel + 50) * 50 * ((tmpLevel * tmpLevel) - (5 * tmpLevel) + 8)) / experience;
-		} else {
-			lossPercent = 10;
-		}
+	if (isPromoted()) {
+		lossPercent *= 0.7;
+	}
 
-		if (isPromoted()) {
-			lossPercent *= 0.7;
-		}
+	return lossPercent * pow(0.92, blessingCount) / 100;
+}
 
-		return lossPercent * pow(0.92, static_cast<int32_t>(bitset.count())) / 100;
+void Player::learnInstantSpell(const std::string& spellName)
+{
+	if (!hasLearnedInstantSpell(spellName)) {
+		learnedInstantSpellList.push_front(spellName);
 	}
 }
 
-void Player::learnInstantSpell(const std::string& name)
+void Player::forgetInstantSpell(const std::string& spellName)
 {
-	if (!hasLearnedInstantSpell(name)) {
-		learnedInstantSpellList.push_front(name);
-	}
+	learnedInstantSpellList.remove(spellName);
 }
 
-void Player::forgetInstantSpell(const std::string& name)
-{
-	learnedInstantSpellList.remove(name);
-}
-
-bool Player::hasLearnedInstantSpell(const std::string& name) const
+bool Player::hasLearnedInstantSpell(const std::string& spellName) const
 {
 	if (hasFlag(PlayerFlag_CannotUseSpells)) {
 		return false;
@@ -4076,7 +4081,7 @@ bool Player::hasLearnedInstantSpell(const std::string& name) const
 	}
 
 	for (const auto& learnedSpellName : learnedInstantSpellList) {
-		if (strcasecmp(learnedSpellName.c_str(), name.c_str()) == 0) {
+		if (strcasecmp(learnedSpellName.c_str(), spellName.c_str()) == 0) {
 			return true;
 		}
 	}
@@ -4204,10 +4209,6 @@ void Player::sendPlayerPartyIcons(Player* player)
 
 bool Player::addPartyInvitation(Party* party)
 {
-	if (!party) {
-		return false;
-	}
-
 	auto it = std::find(invitePartyList.begin(), invitePartyList.end(), party);
 	if (it != invitePartyList.end()) {
 		return false;
@@ -4272,7 +4273,7 @@ void Player::setCurrentMount(uint8_t mount)
 
 bool Player::toggleMount(bool mount)
 {
-	if ((OTSYS_TIME() - lastToggleMount) < 3000) {
+	if ((OTSYS_TIME() - lastToggleMount) < 3000 && !wasMounted) {
 		sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 		return false;
 	}
@@ -4284,6 +4285,11 @@ bool Player::toggleMount(bool mount)
 
 		if (!group->access && _tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 			sendCancelMessage(RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE);
+			return false;
+		}
+
+		const Outfit* playerOutfit = Outfits::getInstance()->getOutfitByLookType(getSex(), defaultOutfit.lookType);
+		if (!playerOutfit) {
 			return false;
 		}
 

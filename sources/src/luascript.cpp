@@ -2007,7 +2007,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "getCharges", LuaScriptInterface::luaItemGetCharges);
 	registerMethod("Item", "getFluidType", LuaScriptInterface::luaItemGetFluidType);
 	registerMethod("Item", "getWeight", LuaScriptInterface::luaItemGetWeight);
-	
+
 	registerMethod("Item", "getSubType", LuaScriptInterface::luaItemGetSubType);
 
 	registerMethod("Item", "getName", LuaScriptInterface::luaItemGetName);
@@ -5908,12 +5908,15 @@ int LuaScriptInterface::luaNetworkMessageSkipBytes(lua_State* L)
 int LuaScriptInterface::luaNetworkMessageSendToPlayer(lua_State* L)
 {
 	// networkMessage:sendToPlayer(player)
-	Player* player = getPlayer(L, 2);
 	NetworkMessage* message = getUserdata<NetworkMessage>(L, 1);
+	if (!message) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Player* player = getPlayer(L, 2);
 	if (player) {
-		if (message) {
-			player->sendNetworkMessage(*message);
-		}
+		player->sendNetworkMessage(*message);
 		pushBoolean(L, true);
 	} else {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));

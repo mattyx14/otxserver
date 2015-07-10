@@ -867,7 +867,10 @@ ReturnValue Game::internalMoveCreature(Creature& creature, Tile& toTile, uint32_
 		const Position& fromPosition = fromCylinder->getPosition();
 		const Position& toPosition = toCylinder->getPosition();
 		if (fromPosition.z != toPosition.z && (fromPosition.x != toPosition.x || fromPosition.y != toPosition.y)) {
-			internalCreatureTurn(&creature, getDirectionTo(fromPosition, toPosition));
+			Direction dir = getDirectionTo(fromPosition, toPosition);
+			if ((dir & DIRECTION_DIAGONAL_MASK) == 0) {
+				internalCreatureTurn(&creature, dir);
+			}
 		}
 	}
 
@@ -2534,7 +2537,7 @@ bool Game::internalStartTrade(Player* player, Player* tradePartner, Item* tradeI
 	tradeItem->incrementReferenceCounter();
 	tradeItems[tradeItem] = player->getID();
 
-	player->sendTradeItemRequest(player, tradeItem, true);
+	player->sendTradeItemRequest(player->getName(), tradeItem, true);
 
 	if (tradePartner->tradeState == TRADE_NONE) {
 		std::ostringstream ss;
@@ -2544,8 +2547,8 @@ bool Game::internalStartTrade(Player* player, Player* tradePartner, Item* tradeI
 		tradePartner->tradePartner = player;
 	} else {
 		Item* counterOfferItem = tradePartner->tradeItem;
-		player->sendTradeItemRequest(tradePartner, counterOfferItem, false);
-		tradePartner->sendTradeItemRequest(player, tradeItem, false);
+		player->sendTradeItemRequest(tradePartner->getName(), counterOfferItem, false);
+		tradePartner->sendTradeItemRequest(player->getName(), tradeItem, false);
 	}
 
 	return true;
