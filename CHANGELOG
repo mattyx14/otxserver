@@ -3,8 +3,8 @@
 		OTX Server
 
 	OTX Server is based on:
-		The Forgotten Server Version: 0.3.7 - Crying Damson
-			and OTX Server 2.1.0 Version - "Simple"
+		The Forgotten Server :: Version: 0.3.7 - Crying Damson
+			and OTX Server 2.1.0 :: Version - "Simple"
 
 	Codenamed
 		Doomed Elderberry
@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED ON: OTX Server 2.X.Series Version - "Doomed Elderberry"
+		COMPLETED ON: OTX Server 2.X.Series :: Version - "Doomed Elderberry"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -49,13 +49,14 @@
 		- Add purseSlot
 ]
 
-[ OTX Server 2.X.S.1 Version - "Doomed Elderberry"
+[ OTX Server 2.XS - 1 :: Version - "Doomed Elderberry"
+	- Added support to protocol 8.xx
 	- Fixed this: http://www.blacktibia.org/t37433p30-otx-server-2xs-doomed-elderberry#231929
 	- Fixed this: http://www.blacktibia.org/t37433p105-otx-server-2-x-s-doomed-elderberry#232762
 	- Fixed this: https://www.youtube.com/watch?v=stsqUhtMqDY
 ]
 
-[ OTX Server 2.X.Series Version - "Doomed Elderberry"
+[ OTX Server 2.X.Series :: Version - "Doomed Elderberry"
 	General:
 		- Added classicDepotSystem to 8.x series
 		- Added offLineTraning scripts 8.x Series
@@ -86,7 +87,7 @@
 	* From this moment highly recommend using TFS 1.1 or wait for 3.0 OTX Series that was based on TFS 1.1
 ]
 
-[ OTX Server 2.10.0 Version - "FINAL"
+[ OTX Server 2.10.0 :: Version - "FINAL"
 	General:
 		- Added new config: attackImmediatelyAfterLoggingIn
 		- Added this: http://otland.net/threads/8-6-tfs-0-3-0-3-7-r5916-v8-60.178246/page-14#post-1878792 this change not like .. this like a botUser
@@ -98,7 +99,7 @@
 		- Update Support to 10.36
 ]
 
-[ OTX Server 2.9.0 Version - "Galaxy - SE"
+[ OTX Server 2.9.0 :: Version - "Galaxy - SE"
 	General:
 		Improvements and optimizations:
 		- Added function Highscore - Protocols 8.6+
@@ -125,7 +126,7 @@
 		- Removed monsters no supported on 8.6/70/71
 ]
 
-[ OTX Server 2.7.x - 2.8.3 Version - "Zilart Prince"
+[ OTX Server 2.7.x - 2.8.3 :: Version - "Zilart Prince"
 	General:
 		- Added support to protocol 7.72
 		- Added config "useRunesRequirements" protocols 8.x - 10.x
@@ -182,7 +183,7 @@
 		- Tunned code PACKETS_PER_SECOND
 ]
 
-[ OTX Server 2.6.0 Version - "Alissow"
+[ OTX Server 2.6.0 :: Version - "Alissow"
 	General:
 		- Added Anonymous Channel and Advertising Block functions.
 			100% configurable.
@@ -203,10 +204,10 @@
 		- Fixed chargesRunes on 854/57
 ]
 
-[ OTX Server 2.5.2 Version - "Necron"
+[ OTX Server 2.5.2 :: Version - "Necron"
 	General:
 		- Added news command
-		- Changed to OTX Server 2.52 Version - "Necron"
+		- Changed to OTX Server 2.52 :: Version - "Necron"
 		- Fixed weapon speedAttack
 		- Support to 9.83
 		- Tuned MODScripts
@@ -253,10 +254,10 @@
 		- Fixed console errors
 ]
 
-[ OTX Server 2.4.4 - SE Version - "Chronodia"
+[ OTX Server 2.4.4 - SE :: Version - "Chronodia"
 	General:
 		- Boost 1.52 not supported now use 1.51
-		- Changed to OTX Server 2.44 - SE Version - "Chronodia"
+		- Changed to OTX Server 2.44 - SE :: Version - "Chronodia"
 		- Clean Code
 		- Deleted projects 8.62 - 9.54 - 9.71: ../docs/FeatureLOG.txt
 		- Fixes on canThrowObjectTo - checkSightLine - getDanceStep
@@ -288,11 +289,11 @@
 		- Added missing constants
 ]
 
-[ OTX Server 2.4.3 Version - "Cray Claw"
+[ OTX Server 2.4.3 :: Version - "Cray Claw"
 	General:
 	* General Changes:
 		- Added multiWorldConfig.log (only in Spanish) by Kazbin
-		- Changed to OTX Server 2.43 Version - "Cray Claw"
+		- Changed to OTX Server 2.43 :: Version - "Cray Claw"
 		- Clean code
 		- Fixed a lite bug on shutdown server (Linux)
 		- Fixed compiler error with boost 1.44 or less
@@ -317,13 +318,13 @@
 		- Reduced the Hicks! chance for drunk players
 ]
 
-[ OTX Server 2.4.2 Version - "Marilith"
+[ OTX Server 2.4.2 :: Version - "Marilith"
 	General:
 	* General Changes: (Only 9.70)
 		- Added function: http://otland.net/f163/addcontaineritems-container-items-166104/
 		- Added Initial offline training code
 		- Added offLineTrain system and BED System
-		- Changed to OTX Server 2.42 Version - "Marilith"
+		- Changed to OTX Server 2.42 :: Version - "Marilith"
 		- Compilation with codeblocks not support any more
 		- Fixed errors on offLineTraining
 		- Fixed and tuned MSG on doors, foods and trade system like to CipBia
@@ -362,7 +363,7 @@
 		- Update all /data is more completed
 ]
 
-[ OTX Server 2.4.0 Version - "Deumion"
+[ OTX Server 2.4.0 :: Version - "Deumion"
 	General:
 	* General Changes:
 		- Mosters no affected for fields
@@ -375,7 +376,7 @@
 		- Updated code to lasted 9.61
 ]
 
-[ OTX Server 2.3.3 Version - "To Light"
+[ OTX Server 2.3.3 :: Version - "To Light"
 	General:
 	* General Changes:
 		- 9.60 Support
@@ -441,7 +442,7 @@
 		- Fixed MessageClasses
 ]
 
-[ OTX Server 2.2.0 Version - "Deluxe"
+[ OTX Server 2.2.0 :: Version - "Deluxe"
 	- Added config "packetsPerSecond"
 	- Added support multiCore on (Nix)
 	- Added increaseBankBalance on player
@@ -469,7 +470,7 @@
 	- Updated docs
 ]
 
-[ OTX Server 2.1.0 Version - "Simple"
+[ OTX Server 2.1.0 :: Version - "Simple"
 	- Changed codeName to (Simple - 2.1.0)
 	- Added file "luaFunctions"
 	- Added missing items on movements
@@ -558,7 +559,7 @@
 	- Fixed attackspeed on mounts and monster system
 	- Rewrite GUInterface (more cool)
 	-- END REV 1000
-	- Cleanup and updated sourceCode to: The Forgotten Server Version: 0.3.7 - Crying Damson (GOLD).
+	- Cleanup and updated sourceCode to: The Forgotten Server :: Version: 0.3.7 - Crying Damson (GOLD).
 	- Cleanup scriptSystem (actions-items-libs-npc-commands)
 	- Cleaned up the code
 	- Cleanups and more accurate walkthrough updating
@@ -706,7 +707,7 @@
 	* The server load more fast ...
 ]
 
-[ OTX Server 1.4.2 Version - "Lightbringer Edition" - Path 2
+[ OTX Server 1.4.2 :: Version - "Lightbringer Edition" - Path 2
 	- Added - 9.20/31 Support
 	- Optimize Code - scriptSystem (Full cleanup) + (Critical Fixes)
 	- Optimize ScriptSystem - (Functions/Weapons/Movements/Items/Actions)
@@ -774,7 +775,7 @@
 	- Powergammer command
 	- Login History-MOD
 	- Optimize SpellSkill System
-	- Set New codename for 1.4.0 Version - "Lightbringer Edition"
+	- Set New codename for 1.4.0 :: Version - "Lightbringer Edition"
 	- Extra option save player on Receive Mail the option prevent clone items
 	- otpch.cpp make compilation more faster and stable
 	- Tutorial how use "how-use-commands.log"
@@ -794,7 +795,7 @@
 		They are not supported and its status is considered complete and will be corrected only in their critical failures if they have any.
 ]
 
-[ OTX Server 1.3.1 Version - "Moon Princess Edition" - Path 1
+[ OTX Server 1.3.1 :: Version - "Moon Princess Edition" - Path 1
 	All data
 	- Fixed display errors on GUI - CONSOLE in protocol 9.1
 	- Optimize Code -- protocol 9.1
@@ -872,7 +873,7 @@
 		rsaPrivate
 ]
 
-[ OTX Server 1.2.1 Version - "Fantasy Edition" - Path 1
+[ OTX Server 1.2.1 :: Version - "Fantasy Edition" - Path 1
 	All data (iMadison, Mattyx14)
 	:: Protocol 9.x
 	- Fixed compiler with visual basic no debugs
@@ -1014,7 +1015,7 @@
 			- /software or !software
 ]
 
-[ OTX Server 1.1.3 Version - "Silver Edition" - Path 3
+[ OTX Server 1.1.3 :: Version - "Silver Edition" - Path 3
 	All data (iMadison, Mattyx14)
 	::  Addeds:
 	- 9.10 Support
@@ -1065,7 +1066,7 @@
 			// If set to true, accepts all minor versions of items.otb.
 ]
 
-[ OTX Server 1.0 Version - "Corona Edition"
+[ OTX Server 1.0 :: Version - "Corona Edition"
 	All data
 	::  Addeds:
 	- Rename Server :D
@@ -1111,7 +1112,7 @@
 		monsterDamagedByPlayerOnly = false
 ]
 
-[ RollUP 3.5 Version - Path 1 - "Glorius Edition"
+[ RollUP 3.5 :: Version - Path 1 - "Glorius Edition"
 	All data
 	::  Addeds:
 	- New compiler with Linux (more sexy)
@@ -1162,7 +1163,7 @@
 		NoDisableBlockRespawn = true
 ]
 
-[ RollUP 3.5 Version - "Glorius Edition"
+[ RollUP 3.5 :: Version - "Glorius Edition"
 	All data
 	::  Addeds:
 	- Added a hack to solve compilation bug in otpch.h
@@ -1193,7 +1194,7 @@
 	- Removed increase and decrease functions form actions.cpp
 ]
 
-[ RollUP 3.4 Version - "BYE Edition"
+[ RollUP 3.4 :: Version - "BYE Edition"
 	All data
 	:: EXTRA:
 	- Extras in movements sounds
@@ -1229,7 +1230,7 @@
 
 ]
 
-[ RollUP 3.3 Version - Path 3
+[ RollUP 3.3 :: Version - Path 3
 	All data
 	:: Addeds:
 	- Is now possible compile with CodeBlocks all Protocols
@@ -1261,11 +1262,11 @@
 [ Re-UpLoaded
 	All data
 	// Version 7.3.3 (RollUP 3.3) FINAL - Path 3
-		- Fixed Posibles bugs from Version 7.3.2 (RollUP 3.2) FINAL - Path 3
+		- Fixed Posibles bugs from :: Version 7.3.2 (RollUP 3.2) FINAL - Path 3
 		// In Protocol 8.7x
 ]
 
-[ RollUP 3.2 Version - Path 2
+[ RollUP 3.2 :: Version - Path 2
 	All data
 	:: Addeds:
 	- AntyParalyze Bot Suprime - Optionals (Check)
@@ -1312,7 +1313,7 @@
 		// paralyzeDelay = 1500
 ]
 
-[ RollUP 3.1 Version - Path 1
+[ RollUP 3.1 :: Version - Path 1
 	All data
 	:: Addeds:
 	- Broadcast commands in 8.7x
@@ -1344,7 +1345,7 @@
 		.../mods/guild-outfit.xml - changed storage key (it was used already by guild-cast already)
 ]
 
-[ RollUP 3.0 Version
+[ RollUP 3.0 :: Version
 	All data
 	::  Addeds:
 	- Old quest system for clients 8.54/57 - 8.60  like at 8.0 -- OnlyWork in chest box
@@ -1383,7 +1384,7 @@
 		// no work in summon creatures
 ]
 
-[ RollUP 2.2 Version
+[ RollUP 2.2 :: Version
 	All data
 	::  Addeds:
 	- Missing sets in movements.xml
@@ -1441,7 +1442,7 @@
 		// depotItemstPremiumLimit = 1000
 ]
 
-[ RollUP 2.1 Version
+[ RollUP 2.1 :: Version
 	All data
 	::  Fixes:
 	- utana vid confition
@@ -1476,7 +1477,7 @@
 		// fairFightTimeRange = 60
 ]
 
-[ RollUP 2.0 Version
+[ RollUP 2.0 :: Version
 	All data
 	::  Fixes:
 	- Protocol 8.61/62
@@ -1491,7 +1492,7 @@
 	- Commands "/b & /bc" cause crash in 8.70
 ]
 
-[ RollUP 1.6 Version
+[ RollUP 1.6 :: Version
 	All data
 	::  Fixes:
 	- Fixed DeathList command
@@ -1553,7 +1554,7 @@
 	+ Updated, cleanup and optimize all scripts /data/
 ]
 
-[ RollUP 1.5 Version
+[ RollUP 1.5 :: Version
 	All data
 	::  Addeds:
 	- Feature critical-hit weapons
@@ -1576,7 +1577,7 @@
 		-- // channel->talk("", SPEAK_CHANNEL_W, s.str());
 ]
 
-[ RollUP 1.0 Version
+[ RollUP 1.0 :: Version
 	All data
 	Addeds:
 	- Funtion bool isUnstepable() --// Magicwalls for players low levels an protect players is Walkable
@@ -1602,7 +1603,7 @@
 	- PVP-ENFORCED to HARCORE-PVP
 ]
 
-[ RollUP 0.5 Version
+[ RollUP 0.5 :: Version
 	All data
 	Addeds:
 	- fieldAbsorb (Firewalker boots) Work 100% = CipSoft Tibia
@@ -1647,7 +1648,7 @@
 		</movevent>
 ]
 
-[ RollUP 0.1 at 0.4 Version
+[ RollUP 0.1 at 0.4 :: Version
 	All data
 	Addeds:
 	- Only 8.62 Support (BASIC)

@@ -3,8 +3,8 @@
 		OTX Server
 
 	OTX Server is based on:
-		The Forgotten Server Version: 0.3.7 - Crying Damson
-			and OTX Server 2.1.0 Version - "Simple"
+		The Forgotten Server :: Version: 0.3.7 - Crying Damson
+			and OTX Server 2.1.0 :: Version - "Simple"
 
 	Codenamed
 		Doomed Elderberry
