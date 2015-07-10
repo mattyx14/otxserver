@@ -24,17 +24,19 @@
 #define MINOR_VERSION "X"
 #define PATCH_VERSION "S"
 #define REVISION_VERSION "1"
-#define SOFTWARE_CODENAME "Doomed Elderberry"
+#define SOFTWARE_CODENAME "Crying Damson"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
 #define FORUMS "blacktibia.org - tibiaking.com - otland.net - otfans.net"
 
 #if defined(_MULTIPLATFORM77)
 	#define _MULTIPLATFORM76
+	#define ITEMS_PATH std::string("77")
 	#define CLIENT_VERSION_ITEMS 3
 	#define CLIENT_VERSION_MIN 770
 	#define CLIENT_VERSION_MAX 772
 	#define CLIENT_VERSION_STRING "7.70/72"
 #elif defined(_MULTIPLATFORM76)
+	#define ITEMS_PATH std::string("76")
 	#define CLIENT_VERSION_ITEMS 3
 	#define CLIENT_VERSION_MIN 760
 	#define CLIENT_VERSION_MAX 761

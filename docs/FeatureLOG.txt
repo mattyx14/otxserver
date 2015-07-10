@@ -4,7 +4,7 @@
 
 	OTX Server is based on:
 		The Forgotten Server :: Version: 0.3.7 - Crying Damson
-			and OTX Server 2.1.0 :: Version - "Simple"
+			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
 		Doomed Elderberry
@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED ON: OTX Server 2.X.S.1 Version - "Doomed Elderberry"
+		COMPLETED : OTX Server 2.X.S - 1 :: Version - "Crying Damson"
 
 	FEATURES
 		Special Support:
@@ -41,17 +41,17 @@
 
 		Protocol supported:
 			- 7.40/60/72
-			- 7.80/82 ??
+			- 7.80/82
 			- 8.00/11
 			- 8.54/57
 			- 8.60
 			- 8.6x
 			- 8.70/71
-			- 9.x ??
-			- 10.36
+			- 9.x
+			- 10.35
 
-			* 10.37+
-				:: Support - ??.00 USD
+			* 10.36+
+				:: Support - 500.00 USD
 
 		All Functions added from (9.x+)
 		Mounts system with mounts.xml (8.7+)

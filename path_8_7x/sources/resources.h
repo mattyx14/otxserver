@@ -90,7 +90,7 @@
 #define MINOR_VERSION "X"
 #define PATCH_VERSION "S"
 #define REVISION_VERSION "1"
-#define SOFTWARE_CODENAME "Doomed Elderberry"
+#define SOFTWARE_CODENAME "Crying Damson"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
 #define FORUMS "blacktibia.org - tibiaking.com - otland.net - otfans.net"
 
