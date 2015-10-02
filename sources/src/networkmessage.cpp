@@ -74,19 +74,6 @@ void NetworkMessage::addString(const std::string& value)
 	length += stringLen;
 }
 
-void NetworkMessage::addString(const char* value)
-{
-	size_t stringLen = strlen(value);
-	if (!canAdd(stringLen + 2) || stringLen > 8192) {
-		return;
-	}
-
-	add<uint16_t>(stringLen);
-	memcpy(buffer + position, value, stringLen);
-	position += stringLen;
-	length += stringLen;
-}
-
 void NetworkMessage::addDouble(double value, uint8_t precision/* = 2*/)
 {
 	addByte(precision);
@@ -127,7 +114,7 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 
 	add<uint16_t>(it.clientId);
 
-	addByte(0xFF);    // MARK_UNMARKED
+	addByte(0xFF); // MARK_UNMARKED
 
 	if (it.stackable) {
 		addByte(count);
@@ -136,7 +123,7 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 	}
 
 	if (it.isAnimation) {
-		addByte(0xFE);    // random phase (0xFF for async)
+		addByte(0xFE); // random phase (0xFF for async)
 	}
 }
 
@@ -145,7 +132,7 @@ void NetworkMessage::addItem(const Item* item)
 	const ItemType& it = Item::items[item->getID()];
 
 	add<uint16_t>(it.clientId);
-	addByte(0xFF);    // MARK_UNMARKED
+	addByte(0xFF); // MARK_UNMARKED
 
 	if (it.stackable) {
 		addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
@@ -154,7 +141,7 @@ void NetworkMessage::addItem(const Item* item)
 	}
 
 	if (it.isAnimation) {
-		addByte(0xFE);    // random phase (0xFF for async)
+		addByte(0xFE); // random phase (0xFF for async)
 	}
 }
 

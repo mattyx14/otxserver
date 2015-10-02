@@ -24,28 +24,16 @@
 #include "luascript.h"
 #include "chat.h"
 #include "player.h"
-#include "item.h"
 #include "game.h"
-#include "house.h"
-#include "housetile.h"
 #include "protocolstatus.h"
-#include "combat.h"
 #include "spells.h"
-#include "condition.h"
-#include "monsters.h"
-#include "baseevents.h"
 #include "iologindata.h"
 #include "configmanager.h"
-#include "town.h"
-#include "vocation.h"
 #include "teleport.h"
-#include "ban.h"
-#include "mounts.h"
 #include "databasemanager.h"
 #include "bed.h"
 #include "monster.h"
 #include "scheduler.h"
-#include "raids.h"
 #include "databasetasks.h"
 
 extern Chat* g_chat;
@@ -524,7 +512,9 @@ bool LuaScriptInterface::closeState()
 int LuaScriptInterface::luaErrorHandler(lua_State* L)
 {
 	const std::string& errorMessage = popString(L);
-	pushString(L, getScriptEnv()->getScriptInterface()->getStackTrace(errorMessage));
+	auto interface = getScriptEnv()->getScriptInterface();
+	assert(interface); //This fires if the ScriptEnvironment hasn't been setup
+	pushString(L, interface->getStackTrace(errorMessage));
 	return 1;
 }
 
@@ -955,42 +945,6 @@ void LuaScriptInterface::registerFunctions()
 	//createCombatArea( {area}, <optional> {extArea} )
 	lua_register(m_luaState, "createCombatArea", LuaScriptInterface::luaCreateCombatArea);
 
-	//createConditionObject(type)
-	lua_register(m_luaState, "createConditionObject", LuaScriptInterface::luaCreateConditionObject);
-
-	//setCombatArea(combat, area)
-	lua_register(m_luaState, "setCombatArea", LuaScriptInterface::luaSetCombatArea);
-
-	//setCombatCondition(combat, condition)
-	lua_register(m_luaState, "setCombatCondition", LuaScriptInterface::luaSetCombatCondition);
-
-	//setCombatParam(combat, key, value)
-	lua_register(m_luaState, "setCombatParam", LuaScriptInterface::luaSetCombatParam);
-
-	//setConditionParam(condition, key, value)
-	lua_register(m_luaState, "setConditionParam", LuaScriptInterface::luaSetConditionParam);
-
-	//addDamageCondition(condition, rounds, time, value)
-	lua_register(m_luaState, "addDamageCondition", LuaScriptInterface::luaAddDamageCondition);
-
-	//addOutfitCondition(condition, lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet)
-	lua_register(m_luaState, "addOutfitCondition", LuaScriptInterface::luaAddOutfitCondition);
-
-	//setCombatCallBack(combat, key, function_name)
-	lua_register(m_luaState, "setCombatCallback", LuaScriptInterface::luaSetCombatCallBack);
-
-	//setCombatFormula(combat, type, mina, minb, maxa, maxb)
-	lua_register(m_luaState, "setCombatFormula", LuaScriptInterface::luaSetCombatFormula);
-
-	//setConditionFormula(combat, mina, minb, maxa, maxb)
-	lua_register(m_luaState, "setConditionFormula", LuaScriptInterface::luaSetConditionFormula);
-
-	//doCombat(cid, combat, param)
-	lua_register(m_luaState, "doCombat", LuaScriptInterface::luaDoCombat);
-
-	//createCombatObject()
-	lua_register(m_luaState, "createCombatObject", LuaScriptInterface::luaCreateCombatObject);
-
 	//doAreaCombatHealth(cid, type, pos, area, min, max, effect)
 	lua_register(m_luaState, "doAreaCombatHealth", LuaScriptInterface::luaDoAreaCombatHealth);
 
@@ -1047,9 +1001,6 @@ void LuaScriptInterface::registerFunctions()
 
 	//isInWar(cid, target)
 	lua_register(m_luaState, "isInWar", LuaScriptInterface::luaIsInWar);
-
-	//doPlayerSetOfflineTrainingSkill(cid, skill)
-	lua_register(m_luaState, "doPlayerSetOfflineTrainingSkill", LuaScriptInterface::luaDoPlayerSetOfflineTrainingSkill);
 
 	//getWaypointPosition(name)
 	lua_register(m_luaState, "getWaypointPositionByName", LuaScriptInterface::luaGetWaypointPositionByName);
@@ -1780,11 +1731,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CONVERT_UNSAFE_SCRIPTS)
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_EQUIPMENT_SLOTS)
 
-	registerEnumIn("configKeys", ConfigManager::ALLOW_WALKTHROUGH)
-	registerEnumIn("configKeys", ConfigManager::ALLOW_DUAL_WIELDING)
-	registerEnumIn("configKeys", ConfigManager::DUAL_WIELDING_SPEED_RATE)
-	registerEnumIn("configKeys", ConfigManager::DUAL_WIELDING_DAMAGE_RATE)
-
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
 	registerEnumIn("configKeys", ConfigManager::SERVER_NAME)
@@ -2177,6 +2123,15 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getSkillTries", LuaScriptInterface::luaPlayerGetSkillTries);
 	registerMethod("Player", "addSkillTries", LuaScriptInterface::luaPlayerAddSkillTries);
 
+	registerMethod("Player", "addOfflineTrainingTime", LuaScriptInterface::luaPlayerAddOfflineTrainingTime);
+	registerMethod("Player", "getOfflineTrainingTime", LuaScriptInterface::luaPlayerGetOfflineTrainingTime);
+	registerMethod("Player", "removeOfflineTrainingTime", LuaScriptInterface::luaPlayerRemoveOfflineTrainingTime);
+
+	registerMethod("Player", "addOfflineTrainingTries", LuaScriptInterface::luaPlayerAddOfflineTrainingTries);
+
+	registerMethod("Player", "getOfflineTrainingSkill", LuaScriptInterface::luaPlayerGetOfflineTrainingSkill);
+	registerMethod("Player", "setOfflineTrainingSkill", LuaScriptInterface::luaPlayerSetOfflineTrainingSkill);
+
 	registerMethod("Player", "getItemCount", LuaScriptInterface::luaPlayerGetItemCount);
 	registerMethod("Player", "getItemById", LuaScriptInterface::luaPlayerGetItemById);
 
@@ -2324,9 +2279,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Guild", "getId", LuaScriptInterface::luaGuildGetId);
 	registerMethod("Guild", "getName", LuaScriptInterface::luaGuildGetName);
 	registerMethod("Guild", "getMembersOnline", LuaScriptInterface::luaGuildGetMembersOnline);
-
-	registerMethod("Guild", "addMember", LuaScriptInterface::luaGuildAddMember);
-	registerMethod("Guild", "removeMember", LuaScriptInterface::luaGuildRemoveMember);
 
 	registerMethod("Guild", "addRank", LuaScriptInterface::luaGuildAddRank);
 	registerMethod("Guild", "getRankById", LuaScriptInterface::luaGuildGetRankById);
@@ -3007,20 +2959,6 @@ int LuaScriptInterface::luaGetWorldUpTime(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaCreateCombatObject(lua_State* L)
-{
-	//createCombatObject()
-	ScriptEnvironment* env = getScriptEnv();
-	if (env->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	lua_pushnumber(L, g_luaEnvironment.createCombatObject(env->getScriptInterface()));
-	return 1;
-}
-
 bool LuaScriptInterface::getArea(lua_State* L, std::list<uint32_t>& list, uint32_t& rows)
 {
 	lua_pushnil(L);
@@ -3080,374 +3018,6 @@ int LuaScriptInterface::luaCreateCombatArea(lua_State* L)
 
 	area->setupArea(listArea, rowsArea);
 	lua_pushnumber(L, areaId);
-	return 1;
-}
-
-int LuaScriptInterface::luaCreateConditionObject(lua_State* L)
-{
-	//createConditionObject(type)
-	ScriptEnvironment* env = getScriptEnv();
-	if (env->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	ConditionType_t type = getNumber<ConditionType_t>(L, -1);
-
-	uint32_t id;
-	if (g_luaEnvironment.createConditionObject(type, CONDITIONID_COMBAT, id)) {
-		lua_pushnumber(L, id);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSetCombatArea(lua_State* L)
-{
-	//setCombatArea(combat, area)
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t combatId = getNumber<uint32_t>(L, 1);
-
-	Combat* combat = g_luaEnvironment.getCombatObject(combatId);
-	if (!combat) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_COMBAT_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t areaId = getNumber<uint32_t>(L, 2);
-
-	const AreaCombat* area = g_luaEnvironment.getAreaObject(areaId);
-	if (!area) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_AREA_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	combat->setArea(new AreaCombat(*area));
-	pushBoolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaSetCombatCondition(lua_State* L)
-{
-	//setCombatCondition(combat, condition)
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t combatId = getNumber<uint32_t>(L, 1);
-	Combat* combat = g_luaEnvironment.getCombatObject(combatId);
-	if (!combat) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_COMBAT_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t conditionId = getNumber<uint32_t>(L, 2);
-	const Condition* condition = g_luaEnvironment.getConditionObject(conditionId);
-	if (!condition) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	combat->setCondition(condition->clone());
-	pushBoolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaSetCombatParam(lua_State* L)
-{
-	//setCombatParam(combat, key, value)
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t combatId = getNumber<uint32_t>(L, 1);
-	Combat* combat = g_luaEnvironment.getCombatObject(combatId);
-	if (combat) {
-		CombatParam_t key = getNumber<CombatParam_t>(L, 2);
-		uint32_t value = getNumber<uint32_t>(L, 3);
-		combat->setParam(key, value);
-		pushBoolean(L, true);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_COMBAT_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSetConditionParam(lua_State* L)
-{
-	//setConditionParam(condition, key, value)
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t conditionId = getNumber<uint32_t>(L, 1);
-	Condition* condition = g_luaEnvironment.getConditionObject(conditionId);
-	if (!condition) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	ConditionParam_t key = getNumber<ConditionParam_t>(L, 2);
-
-	int32_t value;
-	if (isBoolean(L, 3)) {
-		value = getBoolean(L, 3) ? 1 : 0;
-	} else {
-		value = getNumber<int32_t>(L, 3);
-	}
-
-	condition->setParam(key, value);
-	pushBoolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaAddDamageCondition(lua_State* L)
-{
-	//addDamageCondition(condition, rounds, time, value)
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t conditionId = getNumber<uint32_t>(L, 1);
-	ConditionDamage* condition = dynamic_cast<ConditionDamage*>(g_luaEnvironment.getConditionObject(conditionId));
-	if (condition) {
-		int32_t rounds = getNumber<int32_t>(L, 2);
-		int32_t time = getNumber<int32_t>(L, 3);
-		int32_t value = getNumber<int32_t>(L, 4);
-		condition->addDamage(rounds, time, value);
-		pushBoolean(L, true);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaAddOutfitCondition(lua_State* L)
-{
-	//addOutfitCondition(condition, lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet[, lookAddons, lookMount])
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t conditionId = getNumber<uint32_t>(L, 1);
-	ConditionOutfit* condition = dynamic_cast<ConditionOutfit*>(g_luaEnvironment.getConditionObject(conditionId));
-	if (condition) {
-		Outfit_t outfit;
-		outfit.lookTypeEx = getNumber<uint32_t>(L, 2);
-		outfit.lookType = getNumber<uint32_t>(L, 3);
-		outfit.lookHead = getNumber<uint32_t>(L, 4);
-		outfit.lookBody = getNumber<uint32_t>(L, 5);
-		outfit.lookLegs = getNumber<uint32_t>(L, 6);
-		outfit.lookFeet = getNumber<uint32_t>(L, 7);
-		outfit.lookAddons = getNumber<uint32_t>(L, 8, outfit.lookAddons);
-		outfit.lookMount = getNumber<uint32_t>(L, 9, outfit.lookMount);
-		condition->setOutfit(outfit);
-		pushBoolean(L, true);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSetCombatCallBack(lua_State* L)
-{
-	//setCombatCallBack(combat, key, function_name)
-	ScriptEnvironment* env = getScriptEnv();
-	if (env->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t combatId = getNumber<uint32_t>(L, 1);
-
-	Combat* combat = g_luaEnvironment.getCombatObject(combatId);
-	if (!combat) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_COMBAT_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	CallBackParam_t key = getNumber<CallBackParam_t>(L, 2);
-	combat->setCallback(key);
-
-	CallBack* callback = combat->getCallback(key);
-	if (!callback) {
-		std::ostringstream ss;
-		ss << key << " is not a valid callback key.";
-		reportErrorFunc(ss.str());
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	std::string function = getString(L, 3);
-	if (!callback->loadCallBack(env->getScriptInterface(), function)) {
-		reportErrorFunc("Can not load callback");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	pushBoolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaSetCombatFormula(lua_State* L)
-{
-	//setCombatFormula(combat, type, mina, minb, maxa, maxb)
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t combatId = getNumber<uint32_t>(L, 1);
-
-	Combat* combat = g_luaEnvironment.getCombatObject(combatId);
-	if (combat) {
-		combat->setPlayerCombatValues(
-			getNumber<formulaType_t>(L, 2),
-			getNumber<float>(L, 3),
-			getNumber<float>(L, 4),
-			getNumber<float>(L, 5),
-			getNumber<float>(L, 6)
-		);
-		pushBoolean(L, true);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_COMBAT_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSetConditionFormula(lua_State* L)
-{
-	//setConditionFormula(condition, mina, minb, maxa, maxb)
-	if (getScriptEnv()->getScriptId() != EVENT_ID_LOADING) {
-		reportErrorFunc("This function can only be used while loading the script.");
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t conditionId = getNumber<uint32_t>(L, 1);
-
-	ConditionSpeed* condition = dynamic_cast<ConditionSpeed*>(g_luaEnvironment.getConditionObject(conditionId));
-	if (condition) {
-		condition->setFormulaVars(
-			getNumber<double>(L, 2),
-			getNumber<double>(L, 3),
-			getNumber<double>(L, 4),
-			getNumber<double>(L, 5)
-		);
-		pushBoolean(L, true);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaDoCombat(lua_State* L)
-{
-	//doCombat(cid, combat, param)
-	Creature* creature = getCreature(L, 1);
-	if (!creature && (!isNumber(L, 1) || getNumber<uint32_t>(L, 1) != 0)) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CREATURE_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	uint32_t combatId = getNumber<uint32_t>(L, 2);
-	const Combat* combat = g_luaEnvironment.getCombatObject(combatId);
-	if (!combat) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_COMBAT_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	const LuaVariant& var = getVariant(L, 3);
-	switch (var.type) {
-		case VARIANT_NUMBER: {
-			Creature* target = g_game.getCreatureByID(var.number);
-			if (!target) {
-				pushBoolean(L, false);
-				return 1;
-			}
-
-			if (combat->hasArea()) {
-				combat->doCombat(creature, target->getPosition());
-				//std::cout << "Combat->hasArea()" << std::endl;
-			} else {
-				combat->doCombat(creature, target);
-			}
-			break;
-		}
-
-		case VARIANT_POSITION: {
-			combat->doCombat(creature, var.pos);
-			break;
-		}
-
-		case VARIANT_TARGETPOSITION: {
-			if (combat->hasArea()) {
-				combat->doCombat(creature, var.pos);
-			} else {
-				combat->postCombatEffects(creature, var.pos);
-				g_game.addMagicEffect(var.pos, CONST_ME_POFF);
-			}
-			break;
-		}
-
-		case VARIANT_STRING: {
-			Player* target = g_game.getPlayerByName(var.text);
-			if (!target) {
-				pushBoolean(L, false);
-				return 1;
-			}
-
-			combat->doCombat(creature, target);
-			break;
-		}
-
-		case VARIANT_NONE: {
-			reportErrorFunc(getErrorDesc(LUA_ERROR_VARIANT_NOT_FOUND));
-			pushBoolean(L, false);
-			return 1;
-		}
-
-		default: {
-			reportErrorFunc(getErrorDesc(LUA_ERROR_VARIANT_UNKNOWN));
-			pushBoolean(L, false);
-			return 1;
-		}
-	}
-
-	pushBoolean(L, true);
 	return 1;
 }
 
@@ -3588,8 +3158,7 @@ int LuaScriptInterface::luaDoAreaCombatCondition(lua_State* L)
 		return 1;
 	}
 
-	uint32_t conditionId = getNumber<uint32_t>(L, 4);
-	const Condition* condition = g_luaEnvironment.getConditionObject(conditionId);
+	const Condition* condition = getUserdata<Condition>(L, 4);
 	if (!condition) {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
 		pushBoolean(L, false);
@@ -3601,7 +3170,7 @@ int LuaScriptInterface::luaDoAreaCombatCondition(lua_State* L)
 	if (area || areaId == 0) {
 		CombatParams params;
 		params.impactEffect = getNumber<uint8_t>(L, 5);
-		params.conditionList.push_front(condition);
+		params.conditionList.emplace_front(condition);
 		Combat::doCombatCondition(creature, getPosition(L, 2), area, params);
 		pushBoolean(L, true);
 	} else {
@@ -3628,8 +3197,7 @@ int LuaScriptInterface::luaDoTargetCombatCondition(lua_State* L)
 		return 1;
 	}
 
-	uint32_t conditionId = getNumber<uint32_t>(L, 3);
-	const Condition* condition = g_luaEnvironment.getConditionObject(conditionId);
+	const Condition* condition = getUserdata<Condition>(L, 3);
 	if (!condition) {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_CONDITION_NOT_FOUND));
 		pushBoolean(L, false);
@@ -3638,7 +3206,7 @@ int LuaScriptInterface::luaDoTargetCombatCondition(lua_State* L)
 
 	CombatParams params;
 	params.impactEffect = getNumber<uint8_t>(L, 4);
-	params.conditionList.push_front(condition);
+	params.conditionList.emplace_front(condition);
 	Combat::doCombatCondition(creature, target, params);
 	pushBoolean(L, true);
 	return 1;
@@ -4135,21 +3703,6 @@ int LuaScriptInterface::luaIsInWar(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaDoPlayerSetOfflineTrainingSkill(lua_State* L)
-{
-	//doPlayerSetOfflineTrainingSkill(cid, skillid)
-	Player* player = getPlayer(L, 1);
-	if (player) {
-		uint32_t skillid = getNumber<uint32_t>(L, 2);
-		player->setOfflineTrainingSkill(skillid);
-		pushBoolean(L, true);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
 int LuaScriptInterface::luaGetWaypointPositionByName(lua_State* L)
 {
 	//getWaypointPositionByName(name)
@@ -4306,7 +3859,8 @@ int LuaScriptInterface::luaDatabaseAsyncExecute(lua_State* L)
 	std::function<void(DBResult_ptr, bool)> callback;
 	if (lua_gettop(L) > 1) {
 		int32_t ref = luaL_ref(L, LUA_REGISTRYINDEX);
-		callback = [ref](DBResult_ptr, bool success) {
+		auto scriptId = getScriptEnv()->getScriptId();
+		callback = [ref, scriptId](DBResult_ptr, bool success) {
 			lua_State* luaState = g_luaEnvironment.getLuaState();
 			if (!luaState) {
 				return;
@@ -4319,6 +3873,8 @@ int LuaScriptInterface::luaDatabaseAsyncExecute(lua_State* L)
 
 			lua_rawgeti(luaState, LUA_REGISTRYINDEX, ref);
 			pushBoolean(luaState, success);
+			auto env = getScriptEnv();
+			env->setScriptId(scriptId, &g_luaEnvironment);
 			g_luaEnvironment.callFunction(1);
 
 			luaL_unref(luaState, LUA_REGISTRYINDEX, ref);
@@ -4343,7 +3899,8 @@ int LuaScriptInterface::luaDatabaseAsyncStoreQuery(lua_State* L)
 	std::function<void(DBResult_ptr, bool)> callback;
 	if (lua_gettop(L) > 1) {
 		int32_t ref = luaL_ref(L, LUA_REGISTRYINDEX);
-		callback = [ref](DBResult_ptr result, bool) {
+		auto scriptId = getScriptEnv()->getScriptId();
+		callback = [ref, scriptId](DBResult_ptr result, bool) {
 			lua_State* luaState = g_luaEnvironment.getLuaState();
 			if (!luaState) {
 				return;
@@ -4360,6 +3917,8 @@ int LuaScriptInterface::luaDatabaseAsyncStoreQuery(lua_State* L)
 			} else {
 				pushBoolean(luaState, false);
 			}
+			auto env = getScriptEnv();
+			env->setScriptId(scriptId, &g_luaEnvironment);
 			g_luaEnvironment.callFunction(1);
 
 			luaL_unref(luaState, LUA_REGISTRYINDEX, ref);
@@ -6208,9 +5767,9 @@ int LuaScriptInterface::luaItemGetParent(lua_State* L)
 	if (Creature* creature = parent->getCreature()) {
 		pushUserdata<Creature>(L, creature);
 		setCreatureMetatable(L, -1, creature);
-	} else if (Item* item = parent->getItem()) {
-		pushUserdata<Item>(L, item);
-		setItemMetatable(L, -1, item);
+	} else if (Item* parentItem = parent->getItem()) {
+		pushUserdata<Item>(L, parentItem);
+		setItemMetatable(L, -1, parentItem);
 	} else if (Tile* tile = parent->getTile()) {
 		pushUserdata<Tile>(L, tile);
 		setMetatable(L, -1, "Tile");
@@ -6240,9 +5799,9 @@ int LuaScriptInterface::luaItemGetTopParent(lua_State* L)
 	if (Creature* creature = topParent->getCreature()) {
 		pushUserdata<Creature>(L, creature);
 		setCreatureMetatable(L, -1, creature);
-	} else if (Item* item = topParent->getItem()) {
-		pushUserdata<Item>(L, item);
-		setItemMetatable(L, -1, item);
+	} else if (Item* topParentItem = topParent->getItem()) {
+		pushUserdata<Item>(L, topParentItem);
+		setItemMetatable(L, -1, topParentItem);
 	} else if (Tile* tile = topParent->getTile()) {
 		pushUserdata<Tile>(L, tile);
 		setMetatable(L, -1, "Tile");
@@ -7168,9 +6727,9 @@ int LuaScriptInterface::luaCreatureGetParent(lua_State* L)
 		return 1;
 	}
 
-	if (Creature* creature = parent->getCreature()) {
-		pushUserdata<Creature>(L, creature);
-		setCreatureMetatable(L, -1, creature);
+	if (Creature* parentCreature = parent->getCreature()) {
+		pushUserdata<Creature>(L, parentCreature);
+		setCreatureMetatable(L, -1, parentCreature);
 	} else if (Item* item = parent->getItem()) {
 		pushUserdata<Item>(L, item);
 		setItemMetatable(L, -1, item);
@@ -7658,14 +7217,8 @@ int LuaScriptInterface::luaCreatureGetCondition(lua_State* L)
 int LuaScriptInterface::luaCreatureAddCondition(lua_State* L)
 {
 	// creature:addCondition(condition[, force = false])
-	Condition* condition;
-	if (isNumber(L, 2)) {
-		condition = g_luaEnvironment.getConditionObject(getNumber<uint32_t>(L, 2));
-	} else {
-		condition = getUserdata<Condition>(L, 2);
-	}
-
 	Creature* creature = getUserdata<Creature>(L, 1);
+	Condition* condition = getUserdata<Condition>(L, 2);
 	if (creature && condition) {
 		bool force = getBoolean(L, 3, false);
 		pushBoolean(L, creature->addCondition(condition->clone(), force));
@@ -8314,6 +7867,89 @@ int LuaScriptInterface::luaPlayerAddSkillTries(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerAddOfflineTrainingTime(lua_State* L)
+{
+	// player:addOfflineTrainingTime(time)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		int32_t time = getNumber<int32_t>(L, 2);
+		player->addOfflineTrainingTime(time);
+		player->sendStats();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+
+int LuaScriptInterface::luaPlayerGetOfflineTrainingTime(lua_State* L)
+{
+	// player:getOfflineTrainingTime()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getOfflineTrainingTime());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerRemoveOfflineTrainingTime(lua_State* L)
+{
+	// player:removeOfflineTrainingTime(time)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		int32_t time = getNumber<int32_t>(L, 2);
+		player->removeOfflineTrainingTime(time);
+		player->sendStats();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerAddOfflineTrainingTries(lua_State* L)
+{
+	// player:addOfflineTrainingTries(skillType, tries)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		skills_t skillType = getNumber<skills_t>(L, 2);
+		uint64_t tries = getNumber<uint64_t>(L, 3);
+		pushBoolean(L, player->addOfflineTrainingTries(skillType, tries));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetOfflineTrainingSkill(lua_State* L)
+{
+	// player:getOfflineTrainingSkill()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getOfflineTrainingSkill());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetOfflineTrainingSkill(lua_State* L)
+{
+	// player:setOfflineTrainingSkill(skillId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint32_t skillId = getNumber<uint32_t>(L, 2);
+		player->setOfflineTrainingSkill(skillId);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerGetItemCount(lua_State* L)
 {
 	// player:getItemCount(itemId[, subType = -1])
@@ -8495,19 +8131,14 @@ int LuaScriptInterface::luaPlayerGetGuild(lua_State* L)
 int LuaScriptInterface::luaPlayerSetGuild(lua_State* L)
 {
 	// player:setGuild(guild)
-	Guild* guild = getUserdata<Guild>(L, 2);
-	if (!guild) {
-		pushBoolean(L, false);
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
 		return 1;
 	}
 
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->setGuild(guild);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
+	player->setGuild(getUserdata<Guild>(L, 2));
+	pushBoolean(L, true);
 	return 1;
 }
 
@@ -10047,44 +9678,6 @@ int LuaScriptInterface::luaGuildGetMembersOnline(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaGuildAddMember(lua_State* L)
-{
-	// guild:addMember(player)
-	Guild* guild = getUserdata<Guild>(L, 1);
-	if (!guild) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	Player* player = getPlayer(L, 2);
-	if (player) {
-		guild->addMember(player);
-		pushBoolean(L, true);
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaGuildRemoveMember(lua_State* L)
-{
-	// guild:removeMember(player)
-	Guild* guild = getUserdata<Guild>(L, 1);
-	if (!guild) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	Player* player = getPlayer(L, 2);
-	if (player) {
-		guild->removeMember(player);
-		pushBoolean(L, true);
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
 int LuaScriptInterface::luaGuildAddRank(lua_State* L)
 {
 	// guild:addRank(id, name, level)
@@ -11306,8 +10899,7 @@ int LuaScriptInterface::luaItemTypeHasSubType(lua_State* L)
 int LuaScriptInterface::luaCombatCreate(lua_State* L)
 {
 	// Combat()
-	uint32_t id = g_luaEnvironment.createCombatObject(getScriptEnv()->getScriptInterface());
-	pushUserdata<Combat>(L, g_luaEnvironment.getCombatObject(id));
+	pushUserdata<Combat>(L, g_luaEnvironment.createCombatObject(getScriptEnv()->getScriptInterface()));
 	setMetatable(L, -1, "Combat");
 	return 1;
 }
@@ -11499,9 +11091,10 @@ int LuaScriptInterface::luaConditionCreate(lua_State* L)
 	// Condition(conditionType[, conditionId = CONDITIONID_COMBAT])
 	ConditionType_t conditionType = getNumber<ConditionType_t>(L, 2);
 	ConditionId_t conditionId = getNumber<ConditionId_t>(L, 3, CONDITIONID_COMBAT);
-	uint32_t id;
-	if (g_luaEnvironment.createConditionObject(conditionType, conditionId, id)) {
-		pushUserdata<Condition>(L, g_luaEnvironment.getConditionObject(id));
+
+	Condition* condition = Condition::createCondition(conditionId, conditionType, 0, 0);
+	if (condition) {
+		pushUserdata<Condition>(L, condition);
 		setMetatable(L, -1, "Condition");
 	} else {
 		lua_pushnil(L);
@@ -12486,7 +12079,7 @@ int LuaScriptInterface::luaPartySetSharedExperience(lua_State* L)
 //
 LuaEnvironment::LuaEnvironment() :
 	LuaScriptInterface("Main Interface"), m_testInterface(nullptr),
-	m_lastEventTimerId(1), m_lastCombatId(0), m_lastConditionId(0), m_lastAreaId(0)
+	m_lastEventTimerId(1), m_lastCombatId(0), m_lastAreaId(0)
 {
 	//
 }
@@ -12568,11 +12161,12 @@ Combat* LuaEnvironment::getCombatObject(uint32_t id) const
 	return it->second;
 }
 
-uint32_t LuaEnvironment::createCombatObject(LuaScriptInterface* interface)
+Combat* LuaEnvironment::createCombatObject(LuaScriptInterface* interface)
 {
-	m_combatMap[++m_lastCombatId] = new Combat;
+	Combat* combat = new Combat;
+	m_combatMap[++m_lastCombatId] = combat;
 	m_combatIdMap[interface].push_back(m_lastCombatId);
-	return m_lastCombatId;
+	return combat;
 }
 
 void LuaEnvironment::clearCombatObjects(LuaScriptInterface* interface)
@@ -12590,27 +12184,6 @@ void LuaEnvironment::clearCombatObjects(LuaScriptInterface* interface)
 		}
 	}
 	it->second.clear();
-}
-
-Condition* LuaEnvironment::getConditionObject(uint32_t id) const
-{
-	auto it = m_conditionMap.find(id);
-	if (it == m_conditionMap.end()) {
-		return nullptr;
-	}
-	return it->second;
-}
-
-bool LuaEnvironment::createConditionObject(ConditionType_t conditionType, ConditionId_t conditionId, uint32_t& id)
-{
-	Condition* condition = Condition::createCondition(conditionId, conditionType, 0, 0);
-	if (!condition) {
-		return false;
-	}
-
-	id = ++m_lastConditionId;
-	m_conditionMap[m_lastConditionId] = condition;
-	return true;
 }
 
 AreaCombat* LuaEnvironment::getAreaObject(uint32_t id) const

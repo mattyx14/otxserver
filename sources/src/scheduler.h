@@ -24,7 +24,9 @@
 #include <unordered_set>
 #include <queue>
 
-#include <condition_variable>
+
+#include "thread_holder_base.h"
+
 
 #define SCHEDULER_MINTICKS 50
 
@@ -54,7 +56,7 @@ class SchedulerTask : public Task
 
 inline SchedulerTask* createSchedulerTask(uint32_t delay, const std::function<void (void)>& f)
 {
-	return new SchedulerTask(std::max<uint32_t>(delay, SCHEDULER_MINTICKS), f);
+	return new SchedulerTask(delay, f);
 }
 
 struct TaskComparator {
@@ -63,37 +65,23 @@ struct TaskComparator {
 	}
 };
 
-class Scheduler
+class Scheduler : public ThreadHolder<Scheduler>
 {
 	public:
-		Scheduler();
-
 		uint32_t addEvent(SchedulerTask* task);
 		bool stopEvent(uint32_t eventId);
 
-		void start();
-		void stop();
 		void shutdown();
-		void join();
 
+		void threadMain();
 	protected:
-		void schedulerThread();
-		void setState(ThreadState newState) {
-			threadState.store(newState, std::memory_order_relaxed);
-		}
-
-		ThreadState getState() const {
-			return threadState.load(std::memory_order_relaxed);
-		}
-
 		std::thread thread;
 		std::mutex eventLock;
 		std::condition_variable eventSignal;
 
-		uint32_t lastEventId;
+		uint32_t lastEventId {0};
 		std::priority_queue<SchedulerTask*, std::deque<SchedulerTask*>, TaskComparator> eventList;
 		std::unordered_set<uint32_t> eventIds;
-		std::atomic<ThreadState> threadState {THREAD_STATE_TERMINATED};
 };
 
 extern Scheduler g_scheduler;

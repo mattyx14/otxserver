@@ -20,21 +20,12 @@
 #include "otpch.h"
 
 #include "tasks.h"
-#include "outputmessage.h"
 #include "game.h"
 
 extern Game g_game;
 
-void Dispatcher::start()
+void Dispatcher::threadMain()
 {
-	setState(THREAD_STATE_RUNNING);
-	thread = std::thread(&Dispatcher::dispatcherThread, this);
-}
-
-void Dispatcher::dispatcherThread()
-{
-	OutputMessagePool* outputPool = OutputMessagePool::getInstance();
-
 	// NOTE: second argument defer_lock is to prevent from immediate locking
 	std::unique_lock<std::mutex> taskLockUnique(taskLock, std::defer_lock);
 
@@ -54,10 +45,9 @@ void Dispatcher::dispatcherThread()
 			taskLockUnique.unlock();
 
 			if (!task->hasExpired()) {
+				++dispatcherCycle;
 				// execute it
-				outputPool->startExecutionFrame();
 				(*task)();
-				outputPool->sendAll();
 
 				g_game.map.clearSpectatorCache();
 			}
@@ -94,11 +84,6 @@ void Dispatcher::addTask(Task* task, bool push_front /*= false*/)
 	}
 }
 
-void Dispatcher::stop()
-{
-	setState(THREAD_STATE_CLOSING);
-}
-
 void Dispatcher::shutdown()
 {
 	Task* task = createTask([this]() {
@@ -110,11 +95,4 @@ void Dispatcher::shutdown()
 	taskList.push_back(task);
 
 	taskSignal.notify_one();
-}
-
-void Dispatcher::join()
-{
-	if (thread.joinable()) {
-		thread.join();
-	}
 }

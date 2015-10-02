@@ -315,7 +315,7 @@ class Game
 
 		void sendGuildMotd(uint32_t playerId);
 		void kickPlayer(uint32_t playerId, bool displayEffect);
-		void playerReportBug(uint32_t playerId, const std::string& bug);
+		void playerReportBug(uint32_t playerId, const std::string& message, const Position& position, uint8_t category);
 		void playerDebugAssert(uint32_t playerId, const std::string& assertLine, const std::string& date, const std::string& description, const std::string& comment);
 		void playerAnswerModalWindow(uint32_t playerId, uint32_t modalWindowId, uint8_t button, uint8_t choice);
 
@@ -484,6 +484,7 @@ class Game
 
 		Guild* getGuild(uint32_t id) const;
 		void addGuild(Guild* guild);
+		void removeGuild(uint32_t guildId);
 		void decreaseBrowseFieldRef(const Position& pos);
 
 		std::unordered_map<Tile*, Container*> browseFields;

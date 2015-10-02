@@ -20,14 +20,6 @@
 #include "otpch.h"
 
 #include "iomap.h"
-#include "map.h"
-
-#include "tile.h"
-#include "item.h"
-#include "container.h"
-#include "teleport.h"
-#include "fileloader.h"
-#include "town.h"
 
 #include "bed.h"
 
@@ -262,7 +254,7 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 					}
 
 					tile = new HouseTile(px, py, pz, house);
-					house->addTile(reinterpret_cast<HouseTile*>(tile));
+					house->addTile(static_cast<HouseTile*>(tile));
 					isHouseTile = true;
 				}
 

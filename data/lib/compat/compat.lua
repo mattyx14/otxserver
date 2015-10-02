@@ -108,6 +108,21 @@ function pushThing(thing)
 	return t
 end
 
+createCombatObject = Combat
+setCombatArea = Combat.setArea
+setCombatCallback = Combat.setCallback
+setCombatCondition = Combat.setCondition
+setCombatFormula = Combat.setFormula
+setCombatParam = Combat.setParameter
+
+createConditionObject = Condition
+setConditionParam = Condition.setParameter
+setConditionFormula = Condition.setFormula
+addDamageCondition = Condition.addDamage
+addOutfitCondition = Condition.setOutfit
+
+function doCombat(cid, combat, var) return combat:execute(cid, var) end
+
 function isCreature(cid) return Creature(cid) ~= nil end
 function isPlayer(cid) return Player(cid) ~= nil end
 function isMonster(cid) return Monster(cid) ~= nil end
@@ -359,6 +374,7 @@ function setPlayerGroupId(cid, groupId) local p = Player(cid) return p ~= nil an
 function doPlayerSetSex(cid, sex) local p = Player(cid) return p ~= nil and p:setSex(sex) or false end
 function doPlayerSetGuildLevel(cid, level) local p = Player(cid) return p ~= nil and p:setGuildLevel(level) or false end
 function doPlayerSetGuildNick(cid, nick) local p = Player(cid) return p ~= nil and p:setGuildNick(nick) or false end
+function doPlayerSetOfflineTrainingSkill(cid, skillId) local p = Player(cid) return p ~= nil and p:setOfflineTrainingSkill(skillId) or false end
 function doShowTextDialog(cid, itemId, text) local p = Player(cid) return p ~= nil and p:showTextDialog(itemId, text) or false end
 function doPlayerAddItemEx(cid, uid, ...) local p = Player(cid) return p ~= nil and p:addItemEx(Item(uid), ...) or false end
 function doPlayerRemoveItem(cid, itemid, count, ...) local p = Player(cid) return p ~= nil and p:removeItem(itemid, count, ...) or false end
@@ -827,10 +843,14 @@ end
 
 function getThingPos(uid)
 	local thing
-	if uid >= 0x10000000 then
-		thing = Creature(uid)
+	if type(uid) ~= "userdata" then
+		if uid >= 0x10000000 then
+			thing = Creature(uid)
+		else
+			thing = Item(uid)
+		end
 	else
-		thing = Item(uid)
+		thing = uid
 	end
 
 	if thing == nil then
@@ -977,4 +997,11 @@ end
 function broadcastMessage(message, messageType)
 	Game.broadcastMessage(message, messageType)
 	print("> Broadcasted message: \"" .. message .. "\".")
+end
+
+function Guild.addMember(self, player)
+	return player:setGuild(guild)
+end
+function Guild.removeMember(self, player)
+	return player:getGuild() == self and player:setGuild(nil)
 end

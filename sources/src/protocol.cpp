@@ -20,14 +20,12 @@
 #include "otpch.h"
 
 #include "protocol.h"
-#include "scheduler.h"
-#include "connection.h"
 #include "outputmessage.h"
 #include "rsa.h"
 
 extern RSA g_RSA;
 
-void Protocol::onSendMessage(OutputMessage_ptr msg)
+void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 {
 	if (!m_rawMessages) {
 		msg->writeMessageLength();
@@ -36,10 +34,6 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 			XTEA_encrypt(*msg);
 			msg->addCryptoHeader(m_checksumEnabled);
 		}
-	}
-
-	if (msg == m_outputBuffer) {
-		m_outputBuffer.reset();
 	}
 }
 
@@ -54,32 +48,13 @@ void Protocol::onRecvMessage(NetworkMessage& msg)
 
 OutputMessage_ptr Protocol::getOutputBuffer(int32_t size)
 {
-	if (m_outputBuffer && NetworkMessage::max_protocol_body_length >= m_outputBuffer->getLength() + size) {
+	//dispatcher thread
+	if (m_outputBuffer && NetworkMessage::MAX_PROTOCOL_BODY_LENGTH >= m_outputBuffer->getLength() + size) {
 		return m_outputBuffer;
-	} else if (m_connection) {
-		m_outputBuffer = OutputMessagePool::getInstance()->getOutputMessage(this);
-		return m_outputBuffer;
-	}
-	return OutputMessage_ptr();
-}
-
-void Protocol::releaseProtocol()
-{
-	if (m_refCount > 0) {
-		//Reschedule it and try again.
-		g_scheduler.addEvent(createSchedulerTask(SCHEDULER_MINTICKS, std::bind(&Protocol::releaseProtocol, this)));
 	} else {
-		deleteProtocolTask();
+		m_outputBuffer = OutputMessagePool::getOutputMessage();
+		return m_outputBuffer;
 	}
-}
-
-void Protocol::deleteProtocolTask()
-{
-	//dispather thread
-	assert(m_refCount == 0);
-	setConnection(Connection_ptr());
-
-	delete this;
 }
 
 void Protocol::XTEA_encrypt(OutputMessage& msg) const
@@ -158,8 +133,8 @@ bool Protocol::RSA_decrypt(NetworkMessage& msg)
 
 uint32_t Protocol::getIP() const
 {
-	if (getConnection()) {
-		return getConnection()->getIP();
+	if (auto connection = getConnection()) {
+		return connection->getIP();
 	}
 
 	return 0;

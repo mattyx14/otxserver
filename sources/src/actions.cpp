@@ -22,15 +22,10 @@
 #include "actions.h"
 #include "bed.h"
 #include "configmanager.h"
-#include "const.h"
 #include "container.h"
 #include "game.h"
-#include "house.h"
-#include "item.h"
-#include "player.h"
 #include "pugicast.h"
 #include "spells.h"
-#include "tasks.h"
 
 extern Game g_game;
 extern Spells* g_spells;
@@ -91,7 +86,7 @@ Event* Actions::getEvent(const std::string& nodeName)
 
 bool Actions::registerEvent(Event* event, const pugi::xml_node& node)
 {
-	Action* action = reinterpret_cast<Action*>(event);
+	Action* action = static_cast<Action*>(event); //event is guaranteed to be an Action
 
 	pugi::xml_attribute attr;
 	if ((attr = node.attribute("itemid"))) {

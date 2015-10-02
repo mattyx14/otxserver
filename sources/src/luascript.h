@@ -461,20 +461,7 @@ class LuaScriptInterface
 		static int luaDoAddContainerItem(lua_State* L);
 
 		//
-		static int luaCreateCombatObject(lua_State* L);
 		static int luaCreateCombatArea(lua_State* L);
-		static int luaSetCombatArea(lua_State* L);
-		static int luaSetCombatCondition(lua_State* L);
-		static int luaSetCombatParam(lua_State* L);
-		static int luaCreateConditionObject(lua_State* L);
-		static int luaSetConditionParam(lua_State* L);
-		static int luaAddDamageCondition(lua_State* L);
-		static int luaAddOutfitCondition(lua_State* L);
-
-		static int luaSetCombatCallBack(lua_State* L);
-		static int luaSetCombatFormula(lua_State* L);
-		static int luaSetConditionFormula(lua_State* L);
-		static int luaDoCombat(lua_State* L);
 
 		static int luaDoAreaCombatHealth(lua_State* L);
 		static int luaDoTargetCombatHealth(lua_State* L);
@@ -504,7 +491,6 @@ class LuaScriptInterface
 		static int luaCleanMap(lua_State* L);
 
 		static int luaIsInWar(lua_State* L);
-		static int luaDoPlayerSetOfflineTrainingSkill(lua_State* L);
 
 		static int luaGetWaypointPositionByName(lua_State* L);
 
@@ -877,6 +863,15 @@ class LuaScriptInterface
 		static int luaPlayerGetSkillTries(lua_State* L);
 		static int luaPlayerAddSkillTries(lua_State* L);
 
+		static int luaPlayerAddOfflineTrainingTime(lua_State* L);
+		static int luaPlayerGetOfflineTrainingTime(lua_State* L);
+		static int luaPlayerRemoveOfflineTrainingTime(lua_State* L);
+
+		static int luaPlayerAddOfflineTrainingTries(lua_State* L);
+
+		static int luaPlayerGetOfflineTrainingSkill(lua_State* L);
+		static int luaPlayerSetOfflineTrainingSkill(lua_State* L);
+
 		static int luaPlayerGetItemCount(lua_State* L);
 		static int luaPlayerGetItemById(lua_State* L);
 
@@ -1022,9 +1017,6 @@ class LuaScriptInterface
 		static int luaGuildGetId(lua_State* L);
 		static int luaGuildGetName(lua_State* L);
 		static int luaGuildGetMembersOnline(lua_State* L);
-
-		static int luaGuildAddMember(lua_State* L);
-		static int luaGuildRemoveMember(lua_State* L);
 
 		static int luaGuildAddRank(lua_State* L);
 		static int luaGuildGetRankById(lua_State* L);
@@ -1293,11 +1285,8 @@ class LuaEnvironment : public LuaScriptInterface
 		LuaScriptInterface* getTestInterface();
 
 		Combat* getCombatObject(uint32_t id) const;
-		uint32_t createCombatObject(LuaScriptInterface* interface);
+		Combat* createCombatObject(LuaScriptInterface* interface);
 		void clearCombatObjects(LuaScriptInterface* interface);
-
-		Condition* getConditionObject(uint32_t id) const;
-		bool createConditionObject(ConditionType_t conditionType, ConditionId_t conditionId, uint32_t& id);
 
 		AreaCombat* getAreaObject(uint32_t id) const;
 		uint32_t createAreaObject(LuaScriptInterface* interface);
@@ -1309,7 +1298,6 @@ class LuaEnvironment : public LuaScriptInterface
 		//
 		std::unordered_map<uint32_t, LuaTimerEventDesc> m_timerEvents;
 		std::unordered_map<uint32_t, Combat*> m_combatMap;
-		std::unordered_map<uint32_t, Condition*> m_conditionMap;
 		std::unordered_map<uint32_t, AreaCombat*> m_areaMap;
 
 		std::unordered_map<LuaScriptInterface*, std::vector<uint32_t>> m_combatIdMap;
@@ -1319,7 +1307,6 @@ class LuaEnvironment : public LuaScriptInterface
 
 		uint32_t m_lastEventTimerId;
 		uint32_t m_lastCombatId;
-		uint32_t m_lastConditionId;
 		uint32_t m_lastAreaId;
 
 		//

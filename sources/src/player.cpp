@@ -28,15 +28,11 @@
 #include "creatureevent.h"
 #include "events.h"
 #include "game.h"
-#include "house.h"
 #include "iologindata.h"
 #include "monster.h"
 #include "movement.h"
 #include "outputmessage.h"
-#include "player.h"
-#include "quests.h"
 #include "scheduler.h"
-#include "town.h"
 #include "weapons.h"
 
 extern ConfigManager g_config;
@@ -52,15 +48,11 @@ MuteCountMap Player::muteCountMap;
 
 uint32_t Player::playerAutoID = 0x10000000;
 
-Player::Player(ProtocolGame* p) :
+Player::Player(ProtocolGame_ptr p) :
 	Creature(), inventory(), varSkills(), varStats(), inventoryAbilities()
 {
 	client = p;
 	isConnecting = false;
-
-	if (client) {
-		client->setPlayer(this);
-	}
 
 	accountNumber = 0;
 	setVocation(0);
@@ -800,7 +792,7 @@ void Player::addStorageValue(const uint32_t key, const int32_t value, const bool
 		storageMap[key] = value;
 
 		if (!isLogin) {
-			int64_t currentFrameTime = OutputMessagePool::getInstance()->getFrameTime();
+			auto currentFrameTime = g_dispatcher.getDispatcherCycle();
 			if (lastQuestlogUpdate != currentFrameTime && g_game.quests.isQuestStorage(key, value, oldValue)) {
 				lastQuestlogUpdate = currentFrameTime;
 				sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your questlog has been updated.");
@@ -1204,99 +1196,6 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 			if (condition->getTicks() <= 0) {
 				removeCondition(condition);
 			}
-		}
-
-		bool sentStats = false;
-
-		int16_t oldStaminaMinutes = getStaminaMinutes();
-
-		if (offlineTrainingSkill != -1) {
-			if (offlineTime >= 600) {
-				uint32_t trainingTime = std::max<int32_t>(0, std::min<int32_t>(offlineTime, std::min<int32_t>(43200, offlineTrainingTime / 1000)));
-
-				removeOfflineTrainingTime(trainingTime * 1000);
-
-				int32_t remainder = offlineTime - trainingTime;
-				if (remainder > 0) {
-					addOfflineTrainingTime(remainder * 1000);
-				}
-
-				if (trainingTime >= 60) {
-					std::ostringstream ss;
-					ss << "During your absence you trained for ";
-					int32_t hours = trainingTime / 3600;
-					if (hours > 1) {
-						ss << hours << " hours";
-					} else if (hours == 1) {
-						ss << "1 hour";
-					}
-
-					int32_t minutes = (trainingTime % 3600) / 60;
-					if (minutes != 0) {
-						if (hours != 0) {
-							ss << " and ";
-						}
-
-						if (minutes > 1) {
-							ss << minutes << " minutes";
-						} else {
-							ss << "1 minute";
-						}
-					}
-
-					ss << '.';
-					sendTextMessage(MESSAGE_EVENT_ADVANCE, ss.str());
-
-					Vocation* topVocation;
-					if (isPromoted()) {
-						topVocation = getVocation();
-					} else {
-						int32_t promotedVocationId = g_vocations.getPromotedVocation(getVocationId());
-						topVocation = g_vocations.getVocation(promotedVocationId);
-						if (!topVocation) {
-							topVocation = getVocation();
-						}
-					}
-
-					bool sendUpdateSkills = false;
-					if (offlineTrainingSkill == SKILL_CLUB || offlineTrainingSkill == SKILL_SWORD || offlineTrainingSkill == SKILL_AXE) {
-						float modifier = topVocation->getAttackSpeed() / 1000.f;
-						sendUpdateSkills = addOfflineTrainingTries(static_cast<skills_t>(offlineTrainingSkill), (trainingTime / modifier) / 2);
-					} else if (offlineTrainingSkill == SKILL_DISTANCE) {
-						float modifier = topVocation->getAttackSpeed() / 1000.f;
-						sendUpdateSkills = addOfflineTrainingTries(static_cast<skills_t>(offlineTrainingSkill), (trainingTime / modifier) / 4);
-					} else if (offlineTrainingSkill == SKILL_MAGLEVEL) {
-						int32_t gainTicks = topVocation->getManaGainTicks() * 2;
-						if (gainTicks == 0) {
-							gainTicks = 1;
-						}
-
-						addOfflineTrainingTries(SKILL_MAGLEVEL, trainingTime * (static_cast<double>(vocation->getManaGainAmount()) / gainTicks));
-					}
-
-					if (addOfflineTrainingTries(SKILL_SHIELD, trainingTime / 4) || sendUpdateSkills) {
-						sendSkills();
-					}
-				}
-
-				sendStats();
-				sentStats = true;
-			} else {
-				sendTextMessage(MESSAGE_EVENT_ADVANCE, "You must be logged out for more than 10 minutes to start offline training.");
-			}
-			setOfflineTrainingSkill(-1);
-		} else {
-			uint16_t oldMinutes = getOfflineTrainingTime() / 60 / 1000;
-			addOfflineTrainingTime(offlineTime * 1000);
-			uint16_t newMinutes = getOfflineTrainingTime() / 60 / 1000;
-			if (oldMinutes != newMinutes) {
-				sendStats();
-				sentStats = true;
-			}
-		}
-
-		if (!sentStats && getStaminaMinutes() != oldStaminaMinutes) {
-			sendStats();
 		}
 
 		g_game.checkPlayersRecord();
@@ -2467,7 +2366,7 @@ bool Player::editVIP(uint32_t vipGuid, const std::string& description, uint32_t 
 {
 	auto it = VIPList.find(vipGuid);
 	if (it == VIPList.end()) {
-		return false;    // player is not in VIP
+		return false; // player is not in VIP
 	}
 
 	IOLoginData::editVIPEntry(accountNumber, vipGuid, description, icon, notify);
@@ -3331,7 +3230,7 @@ bool Player::updateSaleShopList(const Item* item)
 bool Player::hasShopItemForSale(uint32_t itemId, uint8_t subType) const
 {
 	const ItemType& itemType = Item::items[itemId];
-	return std::any_of(shopItemList.begin(), shopItemList.end(), [=](const ShopInfo& shopInfo) {
+	return std::any_of(shopItemList.begin(), shopItemList.end(), [&](const ShopInfo& shopInfo) {
 		return shopInfo.itemId == itemId && shopInfo.buyPrice != 0 && (!itemType.isFluidContainer() || shopInfo.subType == subType);
 	});
 }
@@ -4580,6 +4479,10 @@ bool Player::addOfflineTrainingTries(skills_t skill, uint64_t tries)
 		newSkillValue = skills[skill].level;
 	}
 
+	if (sendUpdate) {
+		sendSkills();
+	}
+
 	std::ostringstream ss;
 	ss << std::fixed << std::setprecision(2) << "Your " << ucwords(getSkillName(skill)) << " skill changed from level " << oldSkillValue << " (with " << oldPercentToNextLevel << "% progress towards level " << (oldSkillValue + 1) << ") to level " << newSkillValue << " (with " << newPercentToNextLevel << "% progress towards level " << (newSkillValue + 1) << ')';
 	sendTextMessage(MESSAGE_EVENT_ADVANCE, ss.str());
@@ -4722,4 +4625,32 @@ std::forward_list<Condition*> Player::getMuteConditions() const
 		muteConditions.push_front(condition);
 	}
 	return muteConditions;
+}
+
+void Player::setGuild(Guild* guild)
+{
+	if (guild == this->guild) {
+		return;
+	}
+
+	Guild* oldGuild = this->guild;
+
+	this->guildNick.clear();
+	this->guild = nullptr;
+	this->guildLevel = 0;
+
+	if (guild) {
+		const GuildRank* rank = guild->getRankByLevel(1);
+		if (!rank) {
+			return;
+		}
+
+		this->guild = guild;
+		this->guildLevel = 1;
+		guild->addMember(this);
+	}
+
+	if (oldGuild) {
+		oldGuild->removeMember(this);
+	}
 }

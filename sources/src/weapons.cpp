@@ -23,7 +23,6 @@
 #include "configmanager.h"
 #include "game.h"
 #include "pugicast.h"
-#include "tools.h"
 #include "weapons.h"
 
 extern Game g_game;
@@ -125,7 +124,7 @@ Event* Weapons::getEvent(const std::string& nodeName)
 
 bool Weapons::registerEvent(Event* event, const pugi::xml_node&)
 {
-	Weapon* weapon = reinterpret_cast<Weapon*>(event);
+	Weapon* weapon = static_cast<Weapon*>(event); //event is guaranteed to be a Weapon
 
 	auto result = weapons.emplace(weapon->getID(), weapon);
 	if (!result.second) {

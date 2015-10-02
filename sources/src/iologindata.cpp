@@ -20,12 +20,8 @@
 #include "otpch.h"
 
 #include "iologindata.h"
-#include "item.h"
 #include "configmanager.h"
-#include "town.h"
 #include "game.h"
-#include "vocation.h"
-#include "house.h"
 #include "events.h"
 
 extern ConfigManager g_config;

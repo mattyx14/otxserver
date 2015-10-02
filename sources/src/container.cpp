@@ -22,7 +22,6 @@
 #include "container.h"
 #include "iomap.h"
 #include "game.h"
-#include "player.h"
 
 extern Game g_game;
 
@@ -82,7 +81,7 @@ Container::~Container()
 
 Item* Container::clone() const
 {
-	Container* clone = reinterpret_cast<Container*>(Item::clone());
+	Container* clone = static_cast<Container*>(Item::clone());
 	for (Item* item : itemlist) {
 		clone->addItem(item->clone());
 	}

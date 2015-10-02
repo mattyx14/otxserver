@@ -76,18 +76,14 @@ struct CombatParams {
 		distanceEffect = CONST_ANI_NONE;
 		useCharges = false;
 
-		valueCallback = nullptr;
-		tileCallback = nullptr;
-		targetCallback = nullptr;
-
 		origin = ORIGIN_SPELL;
 	}
 
-	std::forward_list<const Condition*> conditionList;
+	std::forward_list<std::unique_ptr<const Condition>> conditionList;
 
-	ValueCallback* valueCallback;
-	TileCallback* tileCallback;
-	TargetCallback* targetCallback;
+	std::unique_ptr<ValueCallback> valueCallback;
+	std::unique_ptr<TileCallback> tileCallback;
+	std::unique_ptr<TargetCallback> targetCallback;
 
 	uint16_t itemId;
 
@@ -273,7 +269,6 @@ class Combat
 {
 	public:
 		Combat();
-		~Combat();
 
 		// non-copyable
 		Combat(const Combat&) = delete;
@@ -312,15 +307,14 @@ class Combat
 		CallBack* getCallback(CallBackParam_t key);
 
 		bool setParam(CombatParam_t param, uint32_t value);
-		void setArea(AreaCombat* _area) {
-			delete area;
-			area = _area;
+		void setArea(AreaCombat* area) {
+			this->area.reset(area);
 		}
 		bool hasArea() const {
 			return area != nullptr;
 		}
-		void setCondition(const Condition* _condition) {
-			params.conditionList.push_front(_condition);
+		void setCondition(const Condition* condition) {
+			params.conditionList.emplace_front(condition);
 		}
 		void setPlayerCombatValues(formulaType_t _type, double _mina, double _minb, double _maxa, double _maxb);
 		void postCombatEffects(Creature* caster, const Position& pos) const {
@@ -356,7 +350,7 @@ class Combat
 		double maxa;
 		double maxb;
 
-		AreaCombat* area;
+		std::unique_ptr<AreaCombat> area;
 };
 
 class MagicField final : public Item

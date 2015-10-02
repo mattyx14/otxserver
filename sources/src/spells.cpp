@@ -21,15 +21,10 @@
 
 #include "combat.h"
 #include "configmanager.h"
-#include "const.h"
 #include "game.h"
-#include "house.h"
-#include "housetile.h"
 #include "monster.h"
-#include "monsters.h"
 #include "pugicast.h"
 #include "spells.h"
-#include "tools.h"
 
 extern Game g_game;
 extern Spells* g_spells;
@@ -203,6 +198,9 @@ InstantSpell* Spells::getInstantSpell(const std::string& words)
 		if (strncasecmp(instantSpellWords.c_str(), words.c_str(), spellLen) == 0) {
 			if (!result || spellLen > result->getWords().length()) {
 				result = instantSpell;
+				if (words.length() == spellLen) {
+					break;
+				}
 			}
 		}
 	}
