@@ -28,6 +28,7 @@ extern Game g_game;
 void Guild::addMember(Player* player)
 {
 	membersOnline.push_back(player);
+	// Need Check it
 	for (Player* member : membersOnline) {
 		g_game.updatePlayerHelpers(*member);
 	}
@@ -36,10 +37,12 @@ void Guild::addMember(Player* player)
 void Guild::removeMember(Player* player)
 {
 	membersOnline.remove(player);
+	// Need Check it
 	for (Player* member : membersOnline) {
 		g_game.updatePlayerHelpers(*member);
 	}
 	g_game.updatePlayerHelpers(*player);
+	// Need Check it
 
 	if (membersOnline.empty()) {
 		g_game.removeGuild(id);

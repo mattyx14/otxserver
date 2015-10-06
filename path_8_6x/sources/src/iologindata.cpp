@@ -486,7 +486,10 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			int32_t pid = pair.second;
 
 			if (pid >= 0 && pid < 100) {
-				player->getInbox()->internalAddThing(item);
+				DepotLocker* depotLocker = player->getDepotLocker(pid);
+				if (depotLocker) {
+					depotLocker->internalAddThing(item);
+				}
 			} else {
 				ItemMap::const_iterator it2 = itemMap.find(pid);
 
@@ -778,24 +781,30 @@ bool IOLoginData::savePlayer(Player* player)
 		if (!saveItems(player, itemList, depotQuery, propWriteStream)) {
 			return false;
 		}
-	}
 
-	//save inbox items
-	query.str(std::string());
-	query << "DELETE FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID();
-	if (!db->executeQuery(query.str())) {
-		return false;
-	}
+		//save inbox items
+		query.str(std::string());
+		query << "DELETE FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID();
 
-	DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
-	itemList.clear();
+		if (!db->executeQuery(query.str())) {
+			return false;
+		}
 
-	for (Item* item : player->getInbox()->getItemList()) {
-		itemList.emplace_back(0, item);
-	}
+		DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+		itemList.clear();
 
-	if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
-		return false;
+		for (const auto& it : player->depotLockerMap) {
+			DepotLocker* depotLocker = it.second;
+			for (Item* item : depotLocker->getItemList()) {
+				if (item->getID() != ITEM_DEPOT) {
+					itemList.emplace_back(it.first, item);
+				}
+			}
+		}
+
+		if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
+			return false;
+		}
 	}
 
 	query.str(std::string());

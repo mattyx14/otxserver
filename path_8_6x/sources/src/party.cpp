@@ -51,7 +51,7 @@ void Party::disband()
 	currentLeader->setParty(nullptr);
 	currentLeader->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(currentLeader);
-	g_game.updatePlayerHelpers(*currentLeader);
+	g_game.updatePlayerHelpers(*currentLeader); // Need check it
 	currentLeader->sendCreatureSkull(currentLeader);
 	currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
 
@@ -76,7 +76,7 @@ void Party::disband()
 
 		member->sendCreatureSkull(currentLeader);
 		currentLeader->sendCreatureSkull(member);
-		g_game.updatePlayerHelpers(*member);
+		g_game.updatePlayerHelpers(*member); // Need check it
 	}
 	memberList.clear();
 	delete this;
@@ -118,12 +118,12 @@ bool Party::leaveParty(Player* player)
 	player->setParty(nullptr);
 	player->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(player);
-	g_game.updatePlayerHelpers(*player);
+	g_game.updatePlayerHelpers(*player); // Need check it
 
 	for (Player* member : memberList) {
 		member->sendCreatureSkull(player);
 		player->sendPlayerPartyIcons(member);
-		g_game.updatePlayerHelpers(*member);
+		g_game.updatePlayerHelpers(*member); // Need check it
 	}
 
 	leader->sendCreatureSkull(player);
@@ -220,6 +220,7 @@ bool Party::joinParty(Player& player)
 
 	memberList.push_back(&player);
 
+	// Need check it
 	g_game.updatePlayerHelpers(player);
 
 	player.removePartyInvitation(this);
@@ -252,12 +253,14 @@ bool Party::removeInvite(Player& player, bool removeFromPlayer/* = true*/)
 
 	if (empty()) {
 		disband();
+	// Need check it
 	} else {
 		for (Player* member : memberList) {
 			g_game.updatePlayerHelpers(*member);
 		}
 
 		g_game.updatePlayerHelpers(*leader);
+	// Need check it
 	}
 
 	return true;
@@ -295,10 +298,12 @@ bool Party::invitePlayer(Player& player)
 
 	inviteList.push_back(&player);
 
+	// Need Check it
 	for (Player* member : memberList) {
 		g_game.updatePlayerHelpers(*member);
 	}
 	g_game.updatePlayerHelpers(*leader);
+	// Need Check it
 
 	leader->sendCreatureShield(&player);
 	player.sendCreatureShield(leader);

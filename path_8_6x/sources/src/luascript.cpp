@@ -731,7 +731,6 @@ Position LuaScriptInterface::getPosition(lua_State* L, int32_t arg)
 Outfit_t LuaScriptInterface::getOutfit(lua_State* L, int32_t arg)
 {
 	Outfit_t outfit;
-	outfit.lookMount = getField<uint16_t>(L, arg, "lookMount");
 	outfit.lookAddons = getField<uint8_t>(L, arg, "lookAddons");
 
 	outfit.lookFeet = getField<uint8_t>(L, arg, "lookFeet");
@@ -742,7 +741,7 @@ Outfit_t LuaScriptInterface::getOutfit(lua_State* L, int32_t arg)
 	outfit.lookTypeEx = getField<uint16_t>(L, arg, "lookTypeEx");
 	outfit.lookType = getField<uint16_t>(L, arg, "lookType");
 
-	lua_pop(L, 8);
+	lua_pop(L, 7);
 	return outfit;
 }
 
@@ -869,7 +868,7 @@ void LuaScriptInterface::pushPosition(lua_State* L, const Position& position, in
 
 void LuaScriptInterface::pushOutfit(lua_State* L, const Outfit_t& outfit)
 {
-	lua_createtable(L, 0, 8);
+	lua_createtable(L, 0, 7);
 	setField(L, "lookType", outfit.lookType);
 	setField(L, "lookTypeEx", outfit.lookTypeEx);
 	setField(L, "lookHead", outfit.lookHead);
@@ -877,7 +876,6 @@ void LuaScriptInterface::pushOutfit(lua_State* L, const Outfit_t& outfit)
 	setField(L, "lookLegs", outfit.lookLegs);
 	setField(L, "lookFeet", outfit.lookFeet);
 	setField(L, "lookAddons", outfit.lookAddons);
-	setField(L, "lookMount", outfit.lookMount);
 }
 
 #define registerEnum(value) { std::string enumName = #value; registerGlobalVariable(enumName.substr(enumName.find_last_of(':') + 1), value); }
@@ -1115,8 +1113,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_EXHAUST_COMBAT)
 	registerEnum(CONDITION_EXHAUST_HEAL)
 	registerEnum(CONDITION_PACIFIED)
-	registerEnum(CONDITION_SPELLCOOLDOWN)
-	registerEnum(CONDITION_SPELLGROUPCOOLDOWN)
 
 	registerEnum(CONDITIONID_DEFAULT)
 	registerEnum(CONDITIONID_COMBAT)
@@ -1246,17 +1242,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ME_SMOKE)
 	registerEnum(CONST_ME_INSECTS)
 	registerEnum(CONST_ME_DRAGONHEAD)
-	registerEnum(CONST_ME_ORCSHAMAN)
-	registerEnum(CONST_ME_ORCSHAMAN_FIRE)
-	registerEnum(CONST_ME_THUNDER)
-	registerEnum(CONST_ME_FERUMBRAS)
-	registerEnum(CONST_ME_CONFETTI_HORIZONTAL)
-	registerEnum(CONST_ME_CONFETTI_VERTICAL)
-	registerEnum(CONST_ME_BLACKSMOKE)
-	registerEnum(CONST_ME_REDSMOKE)
-	registerEnum(CONST_ME_YELLOWSMOKE)
-	registerEnum(CONST_ME_GREENSMOKE)
-	registerEnum(CONST_ME_PURPLESMOKE)
 
 	registerEnum(CONST_ANI_NONE)
 	registerEnum(CONST_ANI_SPEAR)
@@ -1301,14 +1286,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ANI_EARTHARROW)
 	registerEnum(CONST_ANI_EXPLOSION)
 	registerEnum(CONST_ANI_CAKE)
-	registerEnum(CONST_ANI_TARSALARROW)
-	registerEnum(CONST_ANI_VORTEXBOLT)
-	registerEnum(CONST_ANI_PRISMATICBOLT)
-	registerEnum(CONST_ANI_CRYSTALLINEARROW)
-	registerEnum(CONST_ANI_DRILLBOLT)
-	registerEnum(CONST_ANI_ENVENOMEDARROW)
-	registerEnum(CONST_ANI_GLOOTHSPEAR)
-	registerEnum(CONST_ANI_SIMPLEARROW)
 	registerEnum(CONST_ANI_WEAPONTYPE)
 
 	registerEnum(CONST_PROP_BLOCKSOLID)
@@ -1350,13 +1327,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(MESSAGE_EVENT_ADVANCE)
 	registerEnum(MESSAGE_STATUS_SMALL)
 	registerEnum(MESSAGE_INFO_DESCR)
-	registerEnum(MESSAGE_DAMAGE_DEALT)
-	registerEnum(MESSAGE_DAMAGE_RECEIVED)
-	registerEnum(MESSAGE_HEALED)
-	registerEnum(MESSAGE_EXPERIENCE)
-	registerEnum(MESSAGE_DAMAGE_OTHERS)
-	registerEnum(MESSAGE_HEALED_OTHERS)
-	registerEnum(MESSAGE_EXPERIENCE_OTHERS)
 	registerEnum(MESSAGE_EVENT_DEFAULT)
 	registerEnum(MESSAGE_EVENT_ORANGE)
 	registerEnum(MESSAGE_STATUS_CONSOLE_ORANGE)
@@ -1364,8 +1334,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CREATURETYPE_PLAYER)
 	registerEnum(CREATURETYPE_MONSTER)
 	registerEnum(CREATURETYPE_NPC)
-	registerEnum(CREATURETYPE_SUMMON_OWN)
-	registerEnum(CREATURETYPE_SUMMON_OTHERS)
 
 	registerEnum(CLIENTOS_LINUX)
 	registerEnum(CLIENTOS_WINDOWS)
@@ -1497,21 +1465,19 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(SKULL_WHITE)
 	registerEnum(SKULL_RED)
 	registerEnum(SKULL_BLACK)
-	registerEnum(SKULL_ORANGE)
 
 	registerEnum(TALKTYPE_SAY)
 	registerEnum(TALKTYPE_WHISPER)
 	registerEnum(TALKTYPE_YELL)
-	registerEnum(TALKTYPE_PRIVATE_FROM)
-	registerEnum(TALKTYPE_PRIVATE_TO)
+	registerEnum(TALKTYPE_PRIVATE_PN) // TALKTYPE_PRIVATE_FROM
+	registerEnum(TALKTYPE_PRIVATE_NP)// TALKTYPE_PRIVATE_TO
+	registerEnum(TALKTYPE_PRIVATE)
 	registerEnum(TALKTYPE_CHANNEL_Y)
-	registerEnum(TALKTYPE_CHANNEL_O)
-	registerEnum(TALKTYPE_PRIVATE_NP)
-	registerEnum(TALKTYPE_PRIVATE_PN)
+	registerEnum(TALKTYPE_CHANNEL_W)
 	registerEnum(TALKTYPE_BROADCAST)
 	registerEnum(TALKTYPE_CHANNEL_R1)
-	registerEnum(TALKTYPE_PRIVATE_RED_FROM)
-	registerEnum(TALKTYPE_PRIVATE_RED_TO)
+	registerEnum(TALKTYPE_PRIVATE_RED) // TALKTYPE_PRIVATE_RED_FROM
+	registerEnum(TALKTYPE_CHANNEL_O) // TALKTYPE_PRIVATE_RED_TO
 	registerEnum(TALKTYPE_MONSTER_SAY)
 	registerEnum(TALKTYPE_MONSTER_YELL)
 	registerEnum(TALKTYPE_CHANNEL_R2)
@@ -1609,13 +1575,6 @@ void LuaScriptInterface::registerFunctions()
 	// Use with house:getAccessList, house:setAccessList
 	registerEnum(GUEST_LIST)
 	registerEnum(SUBOWNER_LIST)
-
-	// Use with npc:setSpeechBubble
-	registerEnum(SPEECHBUBBLE_NONE)
-	registerEnum(SPEECHBUBBLE_NORMAL)
-	registerEnum(SPEECHBUBBLE_TRADE)
-	registerEnum(SPEECHBUBBLE_QUEST)
-	registerEnum(SPEECHBUBBLE_QUESTTRADER)
 
 	// Use with player:addMapMark
 	registerEnum(MAPMARK_TICK)
@@ -1724,12 +1683,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::ALLOW_CLONES)
 	registerEnumIn("configKeys", ConfigManager::BIND_ONLY_GLOBAL_ADDRESS)
 	registerEnumIn("configKeys", ConfigManager::OPTIMIZE_DATABASE)
-	registerEnumIn("configKeys", ConfigManager::MARKET_PREMIUM)
 	registerEnumIn("configKeys", ConfigManager::EMOTE_SPELLS)
 	registerEnumIn("configKeys", ConfigManager::STAMINA_SYSTEM)
 	registerEnumIn("configKeys", ConfigManager::WARN_UNSAFE_SCRIPTS)
 	registerEnumIn("configKeys", ConfigManager::CONVERT_UNSAFE_SCRIPTS)
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_EQUIPMENT_SLOTS)
+	registerEnumIn("configKeys", ConfigManager::ALLOW_WALKTHROUGH)
+	registerEnumIn("configKeys", ConfigManager::ALLOW_DUAL_WIELDING)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
@@ -1775,11 +1735,10 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::LOGIN_PORT)
 	registerEnumIn("configKeys", ConfigManager::STATUS_PORT)
 	registerEnumIn("configKeys", ConfigManager::STAIRHOP_DELAY)
-	registerEnumIn("configKeys", ConfigManager::MARKET_OFFER_DURATION)
-	registerEnumIn("configKeys", ConfigManager::CHECK_EXPIRED_MARKET_OFFERS_EACH_MINUTES)
-	registerEnumIn("configKeys", ConfigManager::MAX_MARKET_OFFERS_AT_A_TIME_PER_PLAYER)
 	registerEnumIn("configKeys", ConfigManager::EXP_FROM_PLAYERS_LEVEL_RANGE)
 	registerEnumIn("configKeys", ConfigManager::MAX_PACKETS_PER_SECOND)
+	registerEnumIn("configKeys", ConfigManager::DUAL_WIELDING_SPEED_RATE)
+	registerEnumIn("configKeys", ConfigManager::DUAL_WIELDING_DAMAGE_RATE)
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);
@@ -1817,6 +1776,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "createTile", LuaScriptInterface::luaGameCreateTile);
 
 	registerMethod("Game", "startRaid", LuaScriptInterface::luaGameStartRaid);
+
+	registerMethod("Game", "sendAnimatedText", LuaScriptInterface::luaGameSendAnimatedText);
 
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
@@ -1904,36 +1865,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("NetworkMessage", "reset", LuaScriptInterface::luaNetworkMessageReset);
 	registerMethod("NetworkMessage", "skipBytes", LuaScriptInterface::luaNetworkMessageSkipBytes);
 	registerMethod("NetworkMessage", "sendToPlayer", LuaScriptInterface::luaNetworkMessageSendToPlayer);
-
-	// ModalWindow
-	registerClass("ModalWindow", "", LuaScriptInterface::luaModalWindowCreate);
-	registerMetaMethod("ModalWindow", "__eq", LuaScriptInterface::luaUserdataCompare);
-	registerMetaMethod("ModalWindow", "__gc", LuaScriptInterface::luaModalWindowDelete);
-	registerMethod("ModalWindow", "delete", LuaScriptInterface::luaModalWindowDelete);
-
-	registerMethod("ModalWindow", "getId", LuaScriptInterface::luaModalWindowGetId);
-	registerMethod("ModalWindow", "getTitle", LuaScriptInterface::luaModalWindowGetTitle);
-	registerMethod("ModalWindow", "getMessage", LuaScriptInterface::luaModalWindowGetMessage);
-
-	registerMethod("ModalWindow", "setTitle", LuaScriptInterface::luaModalWindowSetTitle);
-	registerMethod("ModalWindow", "setMessage", LuaScriptInterface::luaModalWindowSetMessage);
-
-	registerMethod("ModalWindow", "getButtonCount", LuaScriptInterface::luaModalWindowGetButtonCount);
-	registerMethod("ModalWindow", "getChoiceCount", LuaScriptInterface::luaModalWindowGetChoiceCount);
-
-	registerMethod("ModalWindow", "addButton", LuaScriptInterface::luaModalWindowAddButton);
-	registerMethod("ModalWindow", "addChoice", LuaScriptInterface::luaModalWindowAddChoice);
-
-	registerMethod("ModalWindow", "getDefaultEnterButton", LuaScriptInterface::luaModalWindowGetDefaultEnterButton);
-	registerMethod("ModalWindow", "setDefaultEnterButton", LuaScriptInterface::luaModalWindowSetDefaultEnterButton);
-
-	registerMethod("ModalWindow", "getDefaultEscapeButton", LuaScriptInterface::luaModalWindowGetDefaultEscapeButton);
-	registerMethod("ModalWindow", "setDefaultEscapeButton", LuaScriptInterface::luaModalWindowSetDefaultEscapeButton);
-
-	registerMethod("ModalWindow", "hasPriority", LuaScriptInterface::luaModalWindowHasPriority);
-	registerMethod("ModalWindow", "setPriority", LuaScriptInterface::luaModalWindowSetPriority);
-
-	registerMethod("ModalWindow", "sendToPlayer", LuaScriptInterface::luaModalWindowSendToPlayer);
 
 	// Item
 	registerClass("Item", "", LuaScriptInterface::luaItemCreate);
@@ -2100,7 +2031,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
 
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
-	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
 
 	registerMethod("Player", "getSkullTime", LuaScriptInterface::luaPlayerGetSkullTime);
 	registerMethod("Player", "setSkullTime", LuaScriptInterface::luaPlayerSetSkullTime);
@@ -2196,10 +2126,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "hasOutfit", LuaScriptInterface::luaPlayerHasOutfit);
 	registerMethod("Player", "sendOutfitWindow", LuaScriptInterface::luaPlayerSendOutfitWindow);
 
-	registerMethod("Player", "addMount", LuaScriptInterface::luaPlayerAddMount);
-	registerMethod("Player", "removeMount", LuaScriptInterface::luaPlayerRemoveMount);
-	registerMethod("Player", "hasMount", LuaScriptInterface::luaPlayerHasMount);
-
 	registerMethod("Player", "getPremiumDays", LuaScriptInterface::luaPlayerGetPremiumDays);
 	registerMethod("Player", "addPremiumDays", LuaScriptInterface::luaPlayerAddPremiumDays);
 	registerMethod("Player", "removePremiumDays", LuaScriptInterface::luaPlayerRemovePremiumDays);
@@ -2268,9 +2194,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Npc", "isNpc", LuaScriptInterface::luaNpcIsNpc);
 
 	registerMethod("Npc", "setMasterPos", LuaScriptInterface::luaNpcSetMasterPos);
-
-	registerMethod("Npc", "getSpeechBubble", LuaScriptInterface::luaNpcGetSpeechBubble);
-	registerMethod("Npc", "setSpeechBubble", LuaScriptInterface::luaNpcSetSpeechBubble);
 
 	// Guild
 	registerClass("Guild", "", LuaScriptInterface::luaGuildCreate);
@@ -4404,6 +4327,29 @@ int LuaScriptInterface::luaGameStartRaid(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaGameSendAnimatedText(lua_State* L)
+{
+	// Game.sendAnimatedText(message, position, color)
+	int parameters = lua_gettop(L);
+	if (parameters < 3) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	TextColor_t color = getNumber<TextColor_t>(L, 3);
+	const Position& position = getPosition(L, 2);
+	const std::string& message = getString(L, 1);
+
+	if (!position.x || !position.y) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	g_game.addAnimatedText(message, position, color);
+	pushBoolean(L, true);
+	return 1;
+}
+
 // Variant
 int LuaScriptInterface::luaVariantCreate(lua_State* L)
 {
@@ -5484,243 +5430,6 @@ int LuaScriptInterface::luaNetworkMessageSendToPlayer(lua_State* L)
 		pushBoolean(L, true);
 	} else {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-// ModalWindow
-int LuaScriptInterface::luaModalWindowCreate(lua_State* L)
-{
-	// ModalWindow(id, title, message)
-	const std::string& message = getString(L, 4);
-	const std::string& title = getString(L, 3);
-	uint32_t id = getNumber<uint32_t>(L, 2);
-
-	pushUserdata<ModalWindow>(L, new ModalWindow(id, title, message));
-	setMetatable(L, -1, "ModalWindow");
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowDelete(lua_State* L)
-{
-	ModalWindow** windowPtr = getRawUserdata<ModalWindow>(L, 1);
-	if (windowPtr && *windowPtr) {
-		delete *windowPtr;
-		*windowPtr = nullptr;
-	}
-	return 0;
-}
-
-int LuaScriptInterface::luaModalWindowGetId(lua_State* L)
-{
-	// modalWindow:getId()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		lua_pushnumber(L, window->id);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowGetTitle(lua_State* L)
-{
-	// modalWindow:getTitle()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushString(L, window->title);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowGetMessage(lua_State* L)
-{
-	// modalWindow:getMessage()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushString(L, window->message);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowSetTitle(lua_State* L)
-{
-	// modalWindow:setTitle(text)
-	const std::string& text = getString(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->title = text;
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowSetMessage(lua_State* L)
-{
-	// modalWindow:setMessage(text)
-	const std::string& text = getString(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->message = text;
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowGetButtonCount(lua_State* L)
-{
-	// modalWindow:getButtonCount()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		lua_pushnumber(L, window->buttons.size());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowGetChoiceCount(lua_State* L)
-{
-	// modalWindow:getChoiceCount()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		lua_pushnumber(L, window->choices.size());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowAddButton(lua_State* L)
-{
-	// modalWindow:addButton(id, text)
-	const std::string& text = getString(L, 3);
-	uint8_t id = getNumber<uint8_t>(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->buttons.emplace_back(text, id);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowAddChoice(lua_State* L)
-{
-	// modalWindow:addChoice(id, text)
-	const std::string& text = getString(L, 3);
-	uint8_t id = getNumber<uint8_t>(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->choices.emplace_back(text, id);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowGetDefaultEnterButton(lua_State* L)
-{
-	// modalWindow:getDefaultEnterButton()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		lua_pushnumber(L, window->defaultEnterButton);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowSetDefaultEnterButton(lua_State* L)
-{
-	// modalWindow:setDefaultEnterButton(buttonId)
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->defaultEnterButton = getNumber<uint8_t>(L, 2);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowGetDefaultEscapeButton(lua_State* L)
-{
-	// modalWindow:getDefaultEscapeButton()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		lua_pushnumber(L, window->defaultEscapeButton);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowSetDefaultEscapeButton(lua_State* L)
-{
-	// modalWindow:setDefaultEscapeButton(buttonId)
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->defaultEscapeButton = getNumber<uint8_t>(L, 2);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowHasPriority(lua_State* L)
-{
-	// modalWindow:hasPriority()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushBoolean(L, window->priority);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowSetPriority(lua_State* L)
-{
-	// modalWindow:setPriority(priority)
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->priority = getBoolean(L, 2);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaModalWindowSendToPlayer(lua_State* L)
-{
-	// modalWindow:sendToPlayer(player)
-	Player* player = getPlayer(L, 2);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		if (!player->hasModalWindowOpen(window->id)) {
-			player->sendModalWindow(*window);
-		}
-		pushBoolean(L, true);
-	} else {
 		lua_pushnil(L);
 	}
 	return 1;
@@ -6871,7 +6580,6 @@ int LuaScriptInterface::luaCreatureSetMaster(lua_State* L)
 		}
 		pushBoolean(L, true);
 	}
-	g_game.updateCreatureType(creature);
 	return 1;
 }
 
@@ -7620,25 +7328,6 @@ int LuaScriptInterface::luaPlayerGetDepotChest(lua_State* L)
 	if (depotChest) {
 		pushUserdata<Item>(L, depotChest);
 		setItemMetatable(L, -1, depotChest);
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetInbox(lua_State* L)
-{
-	// player:getInbox()
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	Inbox* inbox = player->getInbox();
-	if (inbox) {
-		pushUserdata<Item>(L, inbox);
-		setItemMetatable(L, -1, inbox);
 	} else {
 		pushBoolean(L, false);
 	}
@@ -8526,7 +8215,7 @@ int LuaScriptInterface::luaPlayerGetMoney(lua_State* L)
 int LuaScriptInterface::luaPlayerAddMoney(lua_State* L)
 {
 	// player:addMoney(money)
-	uint64_t money = getNumber<uint64_t>(L, 2);
+	uint32_t money = getNumber<uint32_t>(L, 2);
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		g_game.addMoney(player, money);
@@ -8542,7 +8231,7 @@ int LuaScriptInterface::luaPlayerRemoveMoney(lua_State* L)
 	// player:removeMoney(money)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
-		uint64_t money = getNumber<uint64_t>(L, 2);
+		uint32_t money = getNumber<uint32_t>(L, 2);
 		pushBoolean(L, g_game.removeMoney(player, money));
 	} else {
 		lua_pushnil(L);
@@ -8604,21 +8293,8 @@ int LuaScriptInterface::luaPlayerShowTextDialog(lua_State* L)
 
 int LuaScriptInterface::luaPlayerSendTextMessage(lua_State* L)
 {
-	// player:sendTextMessage(type, text[, position, primaryValue = 0, primaryColor = TEXTCOLOR_NONE[, secondaryValue = 0, secondaryColor = TEXTCOLOR_NONE]])
-	int parameters = lua_gettop(L);
-
+	// player:sendTextMessage(type, text)
 	TextMessage message(getNumber<MessageClasses>(L, 2), getString(L, 3));
-	if (parameters >= 6) {
-		message.position = getPosition(L, 4);
-		message.primary.value = getNumber<int32_t>(L, 5);
-		message.primary.color = getNumber<TextColor_t>(L, 6);
-	}
-
-	if (parameters >= 8) {
-		message.secondary.value = getNumber<int32_t>(L, 7);
-		message.secondary.color = getNumber<TextColor_t>(L, 8);
-	}
-
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		player->sendTextMessage(message);
@@ -8657,7 +8333,7 @@ int LuaScriptInterface::luaPlayerSendPrivateMessage(lua_State* L)
 
 	const Player* speaker = getUserdata<const Player>(L, 2);
 	const std::string& text = getString(L, 3);
-	SpeakClasses type = getNumber<SpeakClasses>(L, 4, TALKTYPE_PRIVATE_FROM);
+	SpeakClasses type = getNumber<SpeakClasses>(L, 4, TALKTYPE_PRIVATE);
 	player->sendPrivateMessage(speaker, type, text);
 	pushBoolean(L, true);
 	return 1;
@@ -8816,51 +8492,6 @@ int LuaScriptInterface::luaPlayerSendOutfitWindow(lua_State* L)
 	if (player) {
 		player->sendOutfitWindow();
 		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerAddMount(lua_State* L)
-{
-	// player:addMount(mountId)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		uint8_t mountId = getNumber<uint8_t>(L, 2);
-		pushBoolean(L, player->tameMount(mountId));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerRemoveMount(lua_State* L)
-{
-	// player:removeMount(mountId)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		uint8_t mountId = getNumber<uint8_t>(L, 2);
-		pushBoolean(L, player->untameMount(mountId));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerHasMount(lua_State* L)
-{
-	// player:hasMount(mountId)
-	const Player* player = getUserdata<const Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint8_t mountId = getNumber<uint8_t>(L, 2);
-	Mount* mount = g_game.mounts.getMountByID(mountId);
-	if (mount) {
-		pushBoolean(L, player->hasMount(mount));
 	} else {
 		lua_pushnil(L);
 	}
@@ -9190,14 +8821,14 @@ int LuaScriptInterface::luaPlayerSetGhostMode(lua_State* L)
 	if (player->isInGhostMode()) {
 		for (const auto& it : g_game.getPlayers()) {
 			if (!it.second->isAccessPlayer()) {
-				it.second->notifyStatusChange(player, VIPSTATUS_OFFLINE);
+				it.second->notifyStatusChange(player, false);
 			}
 		}
 		IOLoginData::updateOnlineStatus(player->getGUID(), false);
 	} else {
 		for (const auto& it : g_game.getPlayers()) {
 			if (!it.second->isAccessPlayer()) {
-				it.second->notifyStatusChange(player, VIPSTATUS_ONLINE);
+				it.second->notifyStatusChange(player, true);
 			}
 		}
 		IOLoginData::updateOnlineStatus(player->getGUID(), true);
@@ -9593,28 +9224,6 @@ int LuaScriptInterface::luaNpcSetMasterPos(lua_State* L)
 	npc->setMasterPos(pos, radius);
 	pushBoolean(L, true);
 	return 1;
-}
-
-int LuaScriptInterface::luaNpcGetSpeechBubble(lua_State* L)
-{
-	// npc:getSpeechBubble()
-	Npc* npc = getUserdata<Npc>(L, 1);
-	if (npc) {
-		lua_pushnumber(L, npc->getSpeechBubble());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaNpcSetSpeechBubble(lua_State* L)
-{
-	// npc:setSpeechBubble(speechBubble)
-	Npc* npc = getUserdata<Npc>(L, 1);
-	if (npc) {
-		npc->setSpeechBubble(getNumber<uint8_t>(L, 2));
-	}
-	return 0;
 }
 
 // Guild
@@ -11253,12 +10862,11 @@ int LuaScriptInterface::luaConditionSetFormula(lua_State* L)
 int LuaScriptInterface::luaConditionSetOutfit(lua_State* L)
 {
 	// condition:setOutfit(outfit)
-	// condition:setOutfit(lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet[, lookAddons[, lookMount]])
+	// condition:setOutfit(lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet[, lookAddons])
 	Outfit_t outfit;
 	if (isTable(L, 2)) {
 		outfit = getOutfit(L, 2);
 	} else {
-		outfit.lookMount = getNumber<uint16_t>(L, 9, outfit.lookMount);
 		outfit.lookAddons = getNumber<uint8_t>(L, 8, outfit.lookAddons);
 		outfit.lookFeet = getNumber<uint8_t>(L, 7);
 		outfit.lookLegs = getNumber<uint8_t>(L, 6);

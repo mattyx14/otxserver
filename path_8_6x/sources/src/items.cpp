@@ -113,7 +113,7 @@ ItemType::ItemType()
 
 Items::Items()
 {
-	items.reserve(30000);
+	items.reserve(20000);
 }
 
 Items::~Items()
@@ -192,7 +192,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 	} else if (Items::dwMajorVersion != 3) {
 		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
-	} else if (Items::dwMinorVersion < CLIENT_VERSION_1076) {
+	} else if (Items::dwMinorVersion < CLIENT_VERSION_860) {
 		std::cout << "A newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
@@ -234,8 +234,8 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 						return ERROR_INVALID_FORMAT;
 					}
 
-					if (serverId > 30000 && serverId < 30100) {
-						serverId -= 30000;
+					if (serverId > 20000 && serverId < 20100) {
+						serverId -= 20000;
 					}
 					break;
 				}
@@ -362,7 +362,6 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 		iType.rotatable = hasBitSet(FLAG_ROTABLE, flags);
 		iType.canReadText = hasBitSet(FLAG_READABLE, flags);
 		iType.lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
-		iType.isAnimation = hasBitSet(FLAG_ANIMATION, flags);
 		// iType.walkStack = !hasBitSet(FLAG_FULLTILE, flags);
 		iType.forceUse = hasBitSet(FLAG_FORCEUSE, flags);
 
@@ -420,8 +419,8 @@ bool Items::loadFromXml()
 
 void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 {
-	if (id > 30000 && id < 30100) {
-		id -= 30000;
+	if (id > 20000 && id < 20100) {
+		id -= 20000;
 
 		if (id >= items.size()) {
 			items.resize(id + 1);
