@@ -796,7 +796,7 @@ int NpcScriptInterface::luaOpenShopWindow(lua_State* L)
 
 	npc->addShopPlayer(player);
 	player->setShopOwner(npc, buyCallback, sellCallback);
-	player->openShopWindow(items);
+	player->openShopWindow(npc, items);
 
 	pushBoolean(L, true);
 	return 1;
@@ -1001,7 +1001,7 @@ int NpcScriptInterface::luaNpcOpenShopWindow(lua_State* L)
 	npc->addShopPlayer(player);
 
 	player->setShopOwner(npc, buyCallback, sellCallback);
-	player->openShopWindow(items);
+	player->openShopWindow(npc, items);
 
 	pushBoolean(L, true);
 	return 1;
