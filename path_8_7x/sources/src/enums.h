@@ -60,6 +60,14 @@ enum VipStatus_t : uint8_t {
 	VIPSTATUS_PENDING = 2
 };
 
+
+enum ChannelEvent_t : uint8_t {
+	CHANNELEVENT_JOIN = 0,
+	CHANNELEVENT_LEAVE = 1,
+	CHANNELEVENT_INVITE = 2,
+	CHANNELEVENT_EXCLUDE = 3,
+};
+
 enum CreatureType_t : uint8_t {
 	CREATURETYPE_PLAYER = 0,
 	CREATURETYPE_MONSTER = 1,
@@ -74,6 +82,14 @@ enum OperatingSystem_t : uint8_t {
 	CLIENTOS_OTCLIENT_LINUX = 10,
 	CLIENTOS_OTCLIENT_WINDOWS = 11,
 	CLIENTOS_OTCLIENT_MAC = 12,
+};
+
+enum SpellGroup_t : uint8_t {
+	SPELLGROUP_NONE = 0,
+	SPELLGROUP_ATTACK = 1,
+	SPELLGROUP_HEALING = 2,
+	SPELLGROUP_SUPPORT = 3,
+	SPELLGROUP_SPECIAL = 4,
 };
 
 enum AccountType_t : uint8_t {
@@ -250,6 +266,8 @@ enum ConditionType_t {
 	CONDITION_EXHAUST_COMBAT = 1 << 23, // unused
 	CONDITION_EXHAUST_HEAL = 1 << 24, // unused
 	CONDITION_PACIFIED = 1 << 25,
+	CONDITION_SPELLCOOLDOWN = 1 << 26,
+	CONDITION_SPELLGROUPCOOLDOWN = 1 << 27,
 };
 
 enum ConditionId_t : int8_t {
@@ -383,6 +401,7 @@ struct Outfit_t {
 	void reset() {
 		lookType = 0;
 		lookTypeEx = 0;
+		lookMount = 0;
 		lookHead = 0;
 		lookBody = 0;
 		lookLegs = 0;
@@ -392,6 +411,7 @@ struct Outfit_t {
 
 	uint16_t lookType;
 	uint16_t lookTypeEx;
+	uint16_t lookMount;
 	uint8_t lookHead;
 	uint8_t lookBody;
 	uint8_t lookLegs;

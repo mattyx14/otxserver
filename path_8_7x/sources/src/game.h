@@ -385,6 +385,7 @@ class Game
 		void playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId);
 		void playerLeaveParty(uint32_t playerId);
 		void playerEnableSharedPartyExperience(uint32_t playerId, bool sharedExpActive);
+		void playerToggleMount(uint32_t playerId, bool mount);
 
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
@@ -481,6 +482,7 @@ class Game
 
 		Groups groups;
 		Map map;
+		Mounts mounts;
 		Raids raids;
 		Quests quests;
 

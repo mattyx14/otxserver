@@ -34,6 +34,7 @@
 #include "guild.h"
 #include "groups.h"
 #include "town.h"
+#include "mounts.h"
 
 class House;
 class NetworkMessage;
@@ -154,6 +155,17 @@ class Player final : public Creature, public Cylinder
 		CreatureType_t getType() const final {
 			return CREATURETYPE_PLAYER;
 		}
+
+		uint8_t getCurrentMount() const;
+		void setCurrentMount(uint8_t mountId);
+		bool isMounted() const {
+			return defaultOutfit.lookMount != 0;
+		}
+		bool toggleMount(bool mount);
+		bool tameMount(uint8_t mountId);
+		bool untameMount(uint8_t mountId);
+		bool hasMount(const Mount* mount) const;
+		void dismount();
 
 		void sendFYIBox(const std::string& message) {
 			if (client) {
@@ -608,8 +620,6 @@ class Player final : public Creature, public Cylinder
 		float getAttackFactor() const final;
 		float getDefenseFactor() const final;
 
-		void addCombatExhaust(uint32_t ticks);
-		void addHealExhaust(uint32_t ticks);
 		void addInFightTicks(bool pzlock = false);
 
 		uint64_t getGainedExperience(Creature* attacker) const final;
@@ -781,6 +791,16 @@ class Player final : public Creature, public Cylinder
 				client->sendAnimatedText(message, pos, color);
 			}
 		}
+		void sendSpellCooldown(uint8_t spellId, uint32_t time) {
+			if (client) {
+				client->sendSpellCooldown(spellId, time);
+			}
+		}
+		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time) {
+			if (client) {
+				client->sendSpellGroupCooldown(groupId, time);
+			}
+		}
 
 		//container
 		void sendAddContainerItem(const Container* container, const Item* item);
@@ -875,6 +895,11 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 		void sendPing();
+		void sendPingBack() const {
+			if (client) {
+				client->sendPingBack();
+			}
+		}
 		void sendStats();
 		void sendSkills() const {
 			if (client) {
@@ -891,9 +916,9 @@ class Player final : public Creature, public Cylinder
 				client->sendTextMessage(message);
 			}
 		}
-		void sendReLoginWindow() const {
+		void sendReLoginWindow(uint8_t unfairFightReduction) const {
 			if (client) {
-				client->sendReLoginWindow();
+				client->sendReLoginWindow(unfairFightReduction);
 			}
 		}
 		void sendTextWindow(Item* item, uint16_t maxlen, bool canWrite) const {
@@ -962,9 +987,9 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		void sendChannel(uint16_t channelId, const std::string& channelName) {
+		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers) {
 			if (client) {
-				client->sendChannel(channelId, channelName);
+				client->sendChannel(channelId, channelName, channelUsers, invitedUsers);
 			}
 		}
 		void sendTutorial(uint8_t tutorialId) {
@@ -1179,6 +1204,7 @@ class Player final : public Creature, public Cylinder
 		AccountType_t accountType;
 
 		bool secureMode;
+		bool wasMounted;
 		bool ghostMode;
 		bool pzLocked;
 		bool isConnecting;

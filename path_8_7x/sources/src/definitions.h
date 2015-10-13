@@ -28,9 +28,9 @@
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
 
-#define CLIENT_VERSION_MIN 860
-#define CLIENT_VERSION_MAX 860
-#define CLIENT_VERSION_STR "8.6"
+#define CLIENT_VERSION_MIN 870
+#define CLIENT_VERSION_MAX 871
+#define CLIENT_VERSION_STR "8.71"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

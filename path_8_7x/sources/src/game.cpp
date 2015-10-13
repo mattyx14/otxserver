@@ -42,6 +42,7 @@
 #include "ioguild.h"
 #include "quests.h"
 #include "globalevent.h"
+#include "mounts.h"
 #include "bed.h"
 #include "scheduler.h"
 #include "monster.h"
@@ -134,6 +135,7 @@ void Game::setGameState(GameState_t newState)
 			raids.startup();
 
 			quests.loadFromXml();
+			mounts.loadFromXml();
 
 			loadMotdNum();
 			loadPlayersRecord();
@@ -1769,6 +1771,7 @@ void Game::playerOpenChannel(uint32_t playerId, uint16_t channelId)
 		return;
 	}
 
+	const InvitedMap* invitedUsers = channel->getInvitedUsersPtr();
 	const UsersMap* users;
 	if (!channel->isPublicChannel()) {
 		users = &channel->getUsers();
@@ -1776,7 +1779,7 @@ void Game::playerOpenChannel(uint32_t playerId, uint16_t channelId)
 		users = nullptr;
 	}
 
-	player->sendChannel(channel->getId(), channel->getName());
+	player->sendChannel(channel->getId(), channel->getName(), users, invitedUsers);
 }
 
 void Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
@@ -2980,6 +2983,16 @@ void Game::playerRequestOutfit(uint32_t playerId)
 	player->sendOutfitWindow();
 }
 
+void Game::playerToggleMount(uint32_t playerId, bool mount)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	player->toggleMount(mount);
+}
+
 void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 {
 	if (!g_config.getBoolean(ConfigManager::ALLOW_CHANGEOUTFIT)) {
@@ -2989,6 +3002,31 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
 		return;
+	}
+
+	if (outfit.lookMount != 0) {
+		Mount* mount = mounts.getMountByClientID(outfit.lookMount);
+		if (!mount) {
+			return;
+		}
+
+		if (!player->hasMount(mount)) {
+			return;
+		}
+
+		if (player->isMounted()) {
+			Mount* prevMount = mounts.getMountByID(player->getCurrentMount());
+			if (prevMount) {
+				changeSpeed(player, mount->speed - prevMount->speed);
+			}
+
+			player->setCurrentMount(mount->id);
+		} else {
+			player->setCurrentMount(mount->id);
+			outfit.lookMount = 0;
+		}
+	} else if (player->isMounted()) {
+		player->dismount();
 	}
 
 	if (player->canWear(outfit.lookType, outfit.lookAddons)) {

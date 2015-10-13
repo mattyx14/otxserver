@@ -168,11 +168,15 @@ class Spell : public BaseSpell
 		bool playerRuneSpellCheck(Player* player, const Position& toPos);
 
 		uint8_t spellId;
+		SpellGroup_t group;
+		uint32_t groupCooldown;
+		SpellGroup_t secondaryGroup;
+		uint32_t secondaryGroupCooldown;
 
 		uint32_t mana;
 		uint32_t manaPercent;
 		uint32_t soul;
-		uint32_t exhaustion;
+		uint32_t cooldown;
 		uint32_t level;
 		uint32_t magLevel;
 		int32_t range;

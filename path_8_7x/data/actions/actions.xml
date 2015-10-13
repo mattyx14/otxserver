@@ -117,6 +117,7 @@
 	<action itemid="11429" script="other/food.lua" />
 	<action fromid="12415" toid="12418" script="other/food.lua" />
 	<action fromid="12637" toid="12639" script="other/food.lua" />
+	<action itemid="13297" script="other/food.lua" />
 
 	<!-- Spellbooks -->
 	<action itemid="2175" script="other/spellbook.lua" />
@@ -226,5 +227,6 @@
 	<action fromid="12188" toid="12190" script="other/doors.lua" />
 	<action fromid="12193" toid="12199" script="other/doors.lua" />
 	<action fromid="12202" toid="12205" script="other/doors.lua" />
+	<action fromid="13020" toid="13023" script="other/doors.lua" />
 	<!--  <action fromaid="1" toaid="4" script="other/skilltrainer.lua" /> -->
 </actions>

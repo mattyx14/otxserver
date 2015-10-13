@@ -121,6 +121,9 @@ Player::Player(ProtocolGame_ptr p) :
 
 	lastFailedFollow = 0;
 	lastWalkthroughAttempt = 0;
+	lastToggleMount = 0;
+
+	wasMounted = false;
 
 	sex = PLAYERSEX_FEMALE;
 
@@ -727,6 +730,8 @@ void Player::addStorageValue(const uint32_t key, const int32_t value, const bool
 				value & 0xFF
 			);
 			return;
+		} else if (IS_IN_KEYRANGE(key, MOUNTS_RANGE)) {
+			// do nothing
 		} else {
 			std::cout << "Warning: unknown reserved key: " << key << " player: " << getName() << std::endl;
 			return;
@@ -1162,6 +1167,17 @@ void Player::onChangeZone(ZoneType_t zone)
 		if (attackedCreature && !hasFlag(PlayerFlag_IgnoreProtectionZone)) {
 			setAttackedCreature(nullptr);
 			onAttackedCreatureDisappear(false);
+		}
+
+		if (!group->access && isMounted()) {
+			dismount();
+			g_game.internalCreatureChangeOutfit(this, defaultOutfit);
+			wasMounted = true;
+		}
+	} else {
+		if (wasMounted) {
+			toggleMount(true);
+			wasMounted = false;
 		}
 	}
 
@@ -1925,6 +1941,37 @@ void Player::death(Creature* _lastHitCreature)
 	loginPosition = town->getTemplePosition();
 
 	if (skillLoss) {
+		uint8_t unfairFightReduction = 100;
+
+		if (_lastHitCreature) {
+			Player* lastHitPlayer = _lastHitCreature->getPlayer();
+			if (!lastHitPlayer) {
+				Creature* lastHitMaster = _lastHitCreature->getMaster();
+				if (lastHitMaster) {
+					lastHitPlayer = lastHitMaster->getPlayer();
+				}
+			}
+
+			if (lastHitPlayer) {
+				uint32_t sumLevels = 0;
+				uint32_t inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
+				for (const auto& it : damageMap) {
+					CountBlock_t cb = it.second;
+					if ((OTSYS_TIME() - cb.ticks) <= inFightTicks) {
+						Player* damageDealer = g_game.getPlayerByID(it.first);
+						if (damageDealer) {
+							sumLevels += damageDealer->getLevel();
+						}
+					}
+				}
+
+				if (sumLevels > level) {
+					double reduce = level / static_cast<double>(sumLevels);
+					unfairFightReduction = std::max<uint8_t>(20, std::floor((reduce * 100) + 0.5));
+				}
+			}
+		}
+
 		//Magic level loss
 		uint64_t sumMana = 0;
 		uint64_t lostMana = 0;
@@ -1936,7 +1983,7 @@ void Player::death(Creature* _lastHitCreature)
 
 		sumMana += manaSpent;
 
-		double deathLossPercent = getLostPercent();
+		double deathLossPercent = getLostPercent() * (unfairFightReduction / 100.);
 
 		lostMana = static_cast<uint64_t>(sumMana * deathLossPercent);
 
@@ -2044,7 +2091,7 @@ void Player::death(Creature* _lastHitCreature)
 
 		sendStats();
 		sendSkills();
-		sendReLoginWindow();
+		sendReLoginWindow(unfairFightReduction);
 
 		if (getSkull() == SKULL_BLACK) {
 			health = 40;
@@ -2116,18 +2163,6 @@ Item* Player::getCorpse(Creature* _lastHitCreature, Creature* mostDamageCreature
 		corpse->setSpecialDescription(ss.str());
 	}
 	return corpse;
-}
-
-void Player::addCombatExhaust(uint32_t ticks)
-{
-	Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST_COMBAT, ticks, 0);
-	addCondition(condition);
-}
-
-void Player::addHealExhaust(uint32_t ticks)
-{
-	Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST_HEAL, ticks, 0);
-	addCondition(condition);
 }
 
 void Player::addInFightTicks(bool pzlock /*= false*/)
@@ -3311,6 +3346,11 @@ void Player::updateItemsLight(bool internal /*=false*/)
 void Player::onAddCondition(ConditionType_t type)
 {
 	Creature::onAddCondition(type);
+
+	if (type == CONDITION_OUTFIT && isMounted()) {
+		dismount();
+	}
+
 	sendIcons();
 }
 
@@ -3922,6 +3962,7 @@ bool Player::isPremium() const
 void Player::setPremiumDays(int32_t v)
 {
 	premiumDays = v;
+	// sendBasicData();
 }
 
 PartyShields_t Player::getPartyShield(const Player* player) const
@@ -4047,6 +4088,166 @@ GuildEmblems_t Player::getGuildEmblem(const Player* player) const
 	}
 
 	return GUILDEMBLEM_NEUTRAL;
+}
+
+uint8_t Player::getCurrentMount() const
+{
+	int32_t value;
+	if (getStorageValue(PSTRG_MOUNTS_CURRENTMOUNT, value)) {
+		return value;
+	}
+	return 0;
+}
+
+void Player::setCurrentMount(uint8_t mount)
+{
+	addStorageValue(PSTRG_MOUNTS_CURRENTMOUNT, mount);
+}
+
+bool Player::toggleMount(bool mount)
+{
+	if ((OTSYS_TIME() - lastToggleMount) < 3000 && !wasMounted) {
+		sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		return false;
+	}
+
+	if (mount) {
+		if (isMounted()) {
+			return false;
+		}
+
+		if (!group->access && _tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+			sendCancelMessage(RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE);
+			return false;
+		}
+
+		const Outfit* playerOutfit = Outfits::getInstance()->getOutfitByLookType(getSex(), defaultOutfit.lookType);
+		if (!playerOutfit) {
+			return false;
+		}
+
+		uint8_t currentMountId = getCurrentMount();
+		if (currentMountId == 0) {
+			sendOutfitWindow();
+			return false;
+		}
+
+		Mount* currentMount = g_game.mounts.getMountByID(currentMountId);
+		if (!currentMount) {
+			return false;
+		}
+
+		if (!hasMount(currentMount)) {
+			setCurrentMount(0);
+			sendOutfitWindow();
+			return false;
+		}
+
+		if (currentMount->premium && !isPremium()) {
+			sendCancelMessage(RETURNVALUE_YOUNEEDPREMIUMACCOUNT);
+			return false;
+		}
+
+		if (hasCondition(CONDITION_OUTFIT)) {
+			sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+			return false;
+		}
+
+		defaultOutfit.lookMount = currentMount->clientId;
+
+		if (currentMount->speed != 0) {
+			g_game.changeSpeed(this, currentMount->speed);
+		}
+	} else {
+		if (!isMounted()) {
+			return false;
+		}
+
+		dismount();
+	}
+
+	g_game.internalCreatureChangeOutfit(this, defaultOutfit);
+	lastToggleMount = OTSYS_TIME();
+	return true;
+}
+
+bool Player::tameMount(uint8_t mountId)
+{
+	if (!g_game.mounts.getMountByID(mountId)) {
+		return false;
+	}
+
+	const uint8_t tmpMountId = mountId - 1;
+	const uint32_t key = PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31);
+
+	int32_t value;
+	if (getStorageValue(key, value)) {
+		value |= (1 << (tmpMountId % 31));
+	} else {
+		value = (1 << (tmpMountId % 31));
+	}
+
+	addStorageValue(key, value);
+	return true;
+}
+
+bool Player::untameMount(uint8_t mountId)
+{
+	if (!g_game.mounts.getMountByID(mountId)) {
+		return false;
+	}
+
+	const uint8_t tmpMountId = mountId - 1;
+	const uint32_t key = PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31);
+
+	int32_t value;
+	if (!getStorageValue(key, value)) {
+		return true;
+	}
+
+	value &= ~(1 << (tmpMountId % 31));
+	addStorageValue(key, value);
+
+	if (getCurrentMount() == mountId) {
+		if (isMounted()) {
+			dismount();
+			g_game.internalCreatureChangeOutfit(this, defaultOutfit);
+		}
+
+		setCurrentMount(0);
+	}
+
+	return true;
+}
+
+bool Player::hasMount(const Mount* mount) const
+{
+	if (isAccessPlayer()) {
+		return true;
+	}
+
+	if (mount->premium && !isPremium()) {
+		return false;
+	}
+
+	const uint8_t tmpMountId = mount->id - 1;
+
+	int32_t value;
+	if (!getStorageValue(PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31), value)) {
+		return false;
+	}
+
+	return ((1 << (tmpMountId % 31)) & value) != 0;
+}
+
+void Player::dismount()
+{
+	Mount* mount = g_game.mounts.getMountByID(getCurrentMount());
+	if (mount && mount->speed > 0) {
+		g_game.changeSpeed(this, -mount->speed);
+	}
+
+	defaultOutfit.lookMount = 0;
 }
 
 bool Player::addOfflineTrainingTries(skills_t skill, uint64_t tries)

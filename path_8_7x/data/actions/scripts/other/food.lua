@@ -87,6 +87,7 @@ local foods = {
 	[12637] = {55, "Gulp."}, -- ectoplasmic sushi
 	[12638] = {18, "Yum."}, -- dragonfruit
 	[12639] = {2, "Munch."}, -- peas
+	[13297] = {20, "Crunch."}, -- haunch of boar
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)

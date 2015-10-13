@@ -192,6 +192,12 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_ATTRIBUTES:
 			return new ConditionAttributes(_id, _type, _ticks, _buff, _subId);
 
+		case CONDITION_SPELLCOOLDOWN:
+			return new ConditionSpellCooldown(_id, _type, _ticks, _buff, _subId);
+
+		case CONDITION_SPELLGROUPCOOLDOWN:
+			return new ConditionSpellGroupCooldown(_id, _type, _ticks, _buff, _subId);
+
 		case CONDITION_INFIGHT:
 		case CONDITION_DRUNK:
 		case CONDITION_EXHAUST_WEAPON:
@@ -1240,6 +1246,10 @@ uint32_t ConditionDamage::getIcons() const
 			icons |= ICON_CURSED;
 			break;
 
+		case CONDITION_BLEEDING:
+			icons |= ICON_BLEEDING;
+			break;
+
 		default:
 			break;
 	}
@@ -1629,4 +1639,74 @@ void ConditionLight::serialize(PropWriteStream& propWriteStream)
 
 	propWriteStream.write<uint8_t>(CONDITIONATTR_LIGHTINTERVAL);
 	propWriteStream.write<uint32_t>(lightChangeInterval);
+}
+
+ConditionSpellCooldown::ConditionSpellCooldown(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId) :
+	ConditionGeneric(_id, _type, _ticks, _buff, _subId)
+{
+	//
+}
+
+void ConditionSpellCooldown::addCondition(Creature* creature, const Condition* addCondition)
+{
+	if (updateCondition(addCondition)) {
+		setTicks(addCondition->getTicks());
+
+		if (subId != 0 && ticks > 0) {
+			Player* player = creature->getPlayer();
+			if (player) {
+				player->sendSpellCooldown(subId, ticks);
+			}
+		}
+	}
+}
+
+bool ConditionSpellCooldown::startCondition(Creature* creature)
+{
+	if (!Condition::startCondition(creature)) {
+		return false;
+	}
+
+	if (subId != 0 && ticks > 0) {
+		Player* player = creature->getPlayer();
+		if (player) {
+			player->sendSpellCooldown(subId, ticks);
+		}
+	}
+	return true;
+}
+
+ConditionSpellGroupCooldown::ConditionSpellGroupCooldown(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId) :
+	ConditionGeneric(_id, _type, _ticks, _buff, _subId)
+{
+	//
+}
+
+void ConditionSpellGroupCooldown::addCondition(Creature* creature, const Condition* addCondition)
+{
+	if (updateCondition(addCondition)) {
+		setTicks(addCondition->getTicks());
+
+		if (subId != 0 && ticks > 0) {
+			Player* player = creature->getPlayer();
+			if (player) {
+				player->sendSpellGroupCooldown(static_cast<SpellGroup_t>(subId), ticks);
+			}
+		}
+	}
+}
+
+bool ConditionSpellGroupCooldown::startCondition(Creature* creature)
+{
+	if (!Condition::startCondition(creature)) {
+		return false;
+	}
+
+	if (subId != 0 && ticks > 0) {
+		Player* player = creature->getPlayer();
+		if (player) {
+			player->sendSpellGroupCooldown(static_cast<SpellGroup_t>(subId), ticks);
+		}
+	}
+	return true;
 }

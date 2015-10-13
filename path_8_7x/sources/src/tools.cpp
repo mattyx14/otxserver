@@ -650,6 +650,7 @@ SkullNames skullNames[] = {
 	{"white",	SKULL_WHITE},
 	{"red",		SKULL_RED},
 	{"black",	SKULL_BLACK},
+	{"orange",	SKULL_ORANGE},
 };
 
 MagicEffectClasses getMagicEffect(const std::string& strValue)
