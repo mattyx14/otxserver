@@ -407,9 +407,6 @@ class Game
 		void updatePlayerShield(Player* player);
 		void updateCreatureWalkthrough(const Creature* creature);
 
-		// Need check it
-		void updatePlayerHelpers(const Player& player);
-
 		GameState_t getGameState() const;
 		void setGameState(GameState_t newState);
 		void saveGameState();

@@ -4311,19 +4311,6 @@ void Game::updatePlayerShield(Player* player)
 	}
 }
 
-// Need Check it
-void Game::updatePlayerHelpers(const Player& player)
-{
-	uint32_t creatureId = player.getID();
-	uint16_t helpers = player.getHelpers();
-
-	SpectatorVec list;
-	map.getSpectators(list, player.getPosition(), true, true);
-	for (Creature* spectator : list) {
-		spectator->getPlayer()->sendCreatureHelpers(creatureId, helpers);
-	}
-}
-
 void Game::updatePremium(Account& account)
 {
 	bool save = false;
