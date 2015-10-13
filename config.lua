@@ -58,9 +58,9 @@ maxMarketOffersAtATimePerPlayer = 100
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = "forgottenserver"
+mysqlUser = "otxserver"
 mysqlPass = ""
-mysqlDatabase = "forgottenserver"
+mysqlDatabase = "otxserver"
 mysqlPort = 3306
 mysqlSock = ""
 
@@ -69,16 +69,8 @@ allowChangeOutfit = true
 freePremium = false
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
-emoteSpells = false
+emoteSpells = true
 classicEquipmentSlots = false
-
--- Dual wielding
--- NOTE: the rate are the percentage of the single-wielding values, for
--- example, if dualWieldingSpeedFactor is 200 then dual wielding attack will
--- be twice as fast. It makes no sense to set dualWieldingSpeedRate under 100.
-allowDualWielding = false
-dualWieldingSpeedRate = 200
-dualWieldingDamageRate = 60
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
