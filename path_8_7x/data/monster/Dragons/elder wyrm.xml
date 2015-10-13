@@ -29,7 +29,7 @@
 			<attribute key="areaEffect" value="yellowspark" />
 		</attack>
 		<attack name="death" interval="2000" chance="10" length="5" spread="2" target="1" min="-200" max="-300">
-			<attribute key="areaEffect" value="blacksmoke" />
+			<attribute key="areaEffect" value="mortarea" />
 		</attack>
 	</attacks>
 	<defenses armor="45" defense="45">

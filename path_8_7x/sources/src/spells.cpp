@@ -386,7 +386,6 @@ Spell::Spell()
 	distance = 0;
 	shield = 0;
 	fish = 0;
-	cooldown = 1000;
 	needTarget = false;
 	needWeapon = false;
 	selfTarget = false;
@@ -472,7 +471,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		range = pugi::cast<int32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("exhaustion"))) {
+	if ((attr = node.attribute("exhaustion")) || (attr = node.attribute("cooldown"))) {
 		exhaustion = pugi::cast<uint32_t>(attr.value());
 	}
 
@@ -502,10 +501,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("fish"))) {
 		fish = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("exhaustion")) || (attr = node.attribute("cooldown"))) {
-		cooldown = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("prem"))) {

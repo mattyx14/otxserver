@@ -80,11 +80,6 @@ enum tradestate_t : uint8_t {
 	TRADE_TRANSFER,
 };
 
-enum attackHand_t : uint8_t {
-	HAND_LEFT,
-	HAND_RIGHT,
-};
-
 struct VIPEntry {
 	VIPEntry(uint32_t guid, std::string name, const std::string& description, uint32_t icon, bool notify)
 		: guid(guid), name(name), description(description), icon(icon), notify(notify) {}
@@ -392,9 +387,6 @@ class Player final : public Creature, public Cylinder
 		bool isPremium() const;
 		void setPremiumDays(int32_t v);
 
-		// Need check it
-		uint16_t getHelpers() const;
-
 		bool setVocation(uint16_t vocId);
 		uint16_t getVocationId() const {
 			return vocation->getId();
@@ -600,20 +592,6 @@ class Player final : public Creature, public Cylinder
 			return lastAttackBlockType;
 		}
 
-		void switchAttackHand() {
-			lastAttackHand = lastAttackHand == HAND_LEFT ? HAND_RIGHT : HAND_LEFT;
-		}
-		slots_t getAttackHand() const {
-			return lastAttackHand == HAND_LEFT ? CONST_SLOT_LEFT : CONST_SLOT_RIGHT;
-		}
-		void switchBlockSkillAdvance() {
-			blockSkillAdvance = !blockSkillAdvance;
-		}
-		bool getBlockSkillAdvance() {
-			return blockSkillAdvance;
-		}
-		bool isDualWielding() const;
-
 		Item* getWeapon(slots_t slot, bool ignoreAmmo) const;
 		Item* getWeapon(bool ignoreAmmo = false) const;
 		WeaponType_t getWeaponType() const;
@@ -803,12 +781,6 @@ class Player final : public Creature, public Cylinder
 				client->sendAnimatedText(message, pos, color);
 			}
 		}
-		// Need check it
-		void sendCreatureHelpers(uint32_t creatureId, uint16_t helpers) {
-			if (client) {
-				client->sendCreatureHelpers(creatureId, helpers);
-			}
-		}
 
 		//container
 		void sendAddContainerItem(const Container* container, const Item* item);
@@ -990,9 +962,9 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers) {
+		void sendChannel(uint16_t channelId, const std::string& channelName) {
 			if (client) {
-				client->sendChannel(channelId, channelName, channelUsers, invitedUsers);
+				client->sendChannel(channelId, channelName);
 			}
 		}
 		void sendTutorial(uint8_t tutorialId) {
@@ -1205,9 +1177,7 @@ class Player final : public Creature, public Cylinder
 		chaseMode_t chaseMode;
 		fightMode_t fightMode;
 		AccountType_t accountType;
-		attackHand_t lastAttackHand;
 
-		bool blockSkillAdvance;
 		bool secureMode;
 		bool ghostMode;
 		bool pzLocked;
@@ -1231,7 +1201,9 @@ class Player final : public Creature, public Cylinder
 
 		bool isPromoted() const;
 
-		uint32_t getAttackSpeed() const;
+		uint32_t getAttackSpeed() const {
+			return vocation->getAttackSpeed();
+		}
 
 		static uint8_t getPercentLevel(uint64_t count, uint64_t nextLevelCount);
 		double getLostPercent() const;
