@@ -971,9 +971,9 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers) {
+		void sendChannel(uint16_t channelId, const std::string& channelName) {
 			if (client) {
-				client->sendChannel(channelId, channelName, channelUsers, invitedUsers);
+				client->sendChannel(channelId, channelName);
 			}
 		}
 		void sendTutorial(uint8_t tutorialId) {
