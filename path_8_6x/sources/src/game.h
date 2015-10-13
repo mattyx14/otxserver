@@ -405,8 +405,10 @@ class Game
 		void changeLight(const Creature* creature);
 		void updateCreatureSkull(const Creature* player);
 		void updatePlayerShield(Player* player);
-		void updatePlayerHelpers(const Player& player); // Need check it
 		void updateCreatureWalkthrough(const Creature* creature);
+
+		// Need check it
+		void updatePlayerHelpers(const Player& player);
 
 		GameState_t getGameState() const;
 		void setGameState(GameState_t newState);

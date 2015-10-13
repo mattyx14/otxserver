@@ -51,7 +51,10 @@ void Party::disband()
 	currentLeader->setParty(nullptr);
 	currentLeader->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(currentLeader);
-	g_game.updatePlayerHelpers(*currentLeader); // Need check it
+
+	// Need check it
+	g_game.updatePlayerHelpers(*currentLeader);
+
 	currentLeader->sendCreatureSkull(currentLeader);
 	currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
 
@@ -76,7 +79,9 @@ void Party::disband()
 
 		member->sendCreatureSkull(currentLeader);
 		currentLeader->sendCreatureSkull(member);
-		g_game.updatePlayerHelpers(*member); // Need check it
+
+		// Need check it
+		g_game.updatePlayerHelpers(*member);
 	}
 	memberList.clear();
 	delete this;
@@ -118,12 +123,16 @@ bool Party::leaveParty(Player* player)
 	player->setParty(nullptr);
 	player->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(player);
-	g_game.updatePlayerHelpers(*player); // Need check it
+
+	// Need check it
+	g_game.updatePlayerHelpers(*player);
 
 	for (Player* member : memberList) {
 		member->sendCreatureSkull(player);
 		player->sendPlayerPartyIcons(member);
-		g_game.updatePlayerHelpers(*member); // Need check it
+
+		// Need check it
+		g_game.updatePlayerHelpers(*member);
 	}
 
 	leader->sendCreatureSkull(player);

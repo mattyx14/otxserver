@@ -44,7 +44,6 @@ class ConfigManager
 			CONVERT_UNSAFE_SCRIPTS,
 			CLASSIC_EQUIPMENT_SLOTS,
 			ALLOW_WALKTHROUGH,
-			ALLOW_DUAL_WIELDING,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
@@ -101,8 +100,6 @@ class ConfigManager
 			STAIRHOP_DELAY,
 			EXP_FROM_PLAYERS_LEVEL_RANGE,
 			MAX_PACKETS_PER_SECOND,
-			DUAL_WIELDING_SPEED_RATE,
-			DUAL_WIELDING_DAMAGE_RATE,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
