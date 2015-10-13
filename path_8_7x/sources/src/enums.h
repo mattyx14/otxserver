@@ -60,14 +60,6 @@ enum VipStatus_t : uint8_t {
 	VIPSTATUS_PENDING = 2
 };
 
-
-enum ChannelEvent_t : uint8_t {
-	CHANNELEVENT_JOIN = 0,
-	CHANNELEVENT_LEAVE = 1,
-	CHANNELEVENT_INVITE = 2,
-	CHANNELEVENT_EXCLUDE = 3,
-};
-
 enum CreatureType_t : uint8_t {
 	CREATURETYPE_PLAYER = 0,
 	CREATURETYPE_MONSTER = 1,
