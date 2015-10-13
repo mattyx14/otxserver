@@ -3120,7 +3120,6 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 		case TALKTYPE_CHANNEL_O: // TALKTYPE_PRIVATE_RED_TO
 		case TALKTYPE_CHANNEL_Y:
 		case TALKTYPE_CHANNEL_R1:
-		case TALKTYPE_CHANNEL_R2:
 		case TALKTYPE_CHANNEL_W:
 			g_chat->talkToChannel(*player, type, text, channelId);
 			break;
