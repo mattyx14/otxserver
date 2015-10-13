@@ -387,9 +387,6 @@ class Player final : public Creature, public Cylinder
 		bool isPremium() const;
 		void setPremiumDays(int32_t v);
 
-		// Need check it
-		uint16_t getHelpers() const;
-
 		bool setVocation(uint16_t vocId);
 		uint16_t getVocationId() const {
 			return vocation->getId();
@@ -782,12 +779,6 @@ class Player final : public Creature, public Cylinder
 		void sendAnimatedText(const std::string& message, const Position& pos, TextColor_t color) {
 			if (client) {
 				client->sendAnimatedText(message, pos, color);
-			}
-		}
-		// Need check it
-		void sendCreatureHelpers(uint32_t creatureId, uint16_t helpers) {
-			if (client) {
-				client->sendCreatureHelpers(creatureId, helpers);
 			}
 		}
 

@@ -190,9 +190,6 @@ class ProtocolGame final : public Protocol
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
 
-		// Need check it
-		void sendCreatureHelpers(uint32_t creatureId, uint16_t helpers);
-
 		void sendShop(const ShopInfoList& itemList);
 		void sendCloseShop();
 		void sendSaleItemList(const std::list<ShopInfo>& shop);
