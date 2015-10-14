@@ -23,7 +23,7 @@
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "1"
-#define REVISION_VERSION "0"
+#define REVISION_VERSION "253"
 #define SOFTWARE_CODENAME "BOOM"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
