@@ -58,9 +58,9 @@ maxMarketOffersAtATimePerPlayer = 100
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = "otxserver"
-mysqlPass = ""
-mysqlDatabase = "otxserver"
+mysqlUser = "root"
+mysqlPass = "master"
+mysqlDatabase = "darkkonia"
 mysqlPort = 3306
 mysqlSock = ""
 
