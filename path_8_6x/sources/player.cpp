@@ -4496,15 +4496,13 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
 		return SKULL_NONE;
 
-	if(player->getSkull() == SKULL_NONE)
+	if (player->getSkull() == SKULL_NONE)
 	{
-		if(!player->isEnemy(this, false))
-			return SKULL_GREEN;
 
-		if(player->hasAttacked(this))
+		if (player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
-		if((isPartner(player) || isAlly(player)) && g_game.getWorldType() != WORLDTYPE_OPTIONAL)
+		if ((isPartner(player) || isAlly(player)) && g_game.getWorldType() != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
 
