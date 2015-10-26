@@ -37,7 +37,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients 7.4 to 10.82
+		Tibia Clients (7.4 - WIP) 8.6 to 10.82
 
 	TODO WITH OPTIONAL (MODAL DIALOGS)
 		COMMANDS:
@@ -57,6 +57,10 @@
 
 		OTHERS:
 			- Look Display
+]
+
+[ OTX Server 3.2 Version - ""
+	- Enable monster passive behavior
 ]
 
 [ OTX Server 3.1 Version - "BOOM"

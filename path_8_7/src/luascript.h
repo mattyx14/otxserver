@@ -1153,6 +1153,7 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsSummonable(lua_State* L);
 		static int luaMonsterTypeIsIllusionable(lua_State* L);
 		static int luaMonsterTypeIsHostile(lua_State* L);
+		static int luaMonsterTypeIsPassive(lua_State* L);
 		static int luaMonsterTypeIsPushable(lua_State* L);
 		static int luaMonsterTypeIsHealthShown(lua_State* L);
 
