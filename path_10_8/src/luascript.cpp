@@ -1794,7 +1794,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getPlayers", LuaScriptInterface::luaGameGetPlayers);
 	registerMethod("Game", "loadMap", LuaScriptInterface::luaGameLoadMap);
 
-	registerMethod("Game", "getExperienceStage", LuaScriptInterface::luaGameGetExperienceStage);
 	registerMethod("Game", "getMonsterCount", LuaScriptInterface::luaGameGetMonsterCount);
 	registerMethod("Game", "getPlayerCount", LuaScriptInterface::luaGameGetPlayerCount);
 	registerMethod("Game", "getNpcCount", LuaScriptInterface::luaGameGetNpcCount);
@@ -4126,14 +4125,6 @@ int LuaScriptInterface::luaGameLoadMap(lua_State* L)
 	const std::string& path = getString(L, 1);
 	g_dispatcher.addTask(createTask(std::bind(&Game::loadMap, &g_game, path)));
 	return 0;
-}
-
-int LuaScriptInterface::luaGameGetExperienceStage(lua_State* L)
-{
-	// Game.getExperienceStage(level)
-	uint32_t level = getNumber<uint32_t>(L, 1);
-	lua_pushnumber(L, g_game.getExperienceStage(level));
-	return 1;
 }
 
 int LuaScriptInterface::luaGameGetMonsterCount(lua_State* L)
