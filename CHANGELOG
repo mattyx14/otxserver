@@ -61,6 +61,8 @@
 
 [ OTX Server 3.2 Version - ""
 	- Added Monster Spawn event
+	- Added DDoS protection -- no complete
+	- Added Advance Save
 	- Enable monster passive behavior
 	- Fix editing house
 	- Fix effect debug
