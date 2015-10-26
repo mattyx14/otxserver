@@ -95,6 +95,8 @@ enum MagicEffectClasses : uint8_t {
 	CONST_ME_SMOKE = 68,
 	CONST_ME_INSECTS = 69,
 	CONST_ME_DRAGONHEAD = 70,
+
+	CONST_ME_LAST = CONST_ME_DRAGONHEAD,
 };
 
 enum ShootType_t : uint8_t {
@@ -142,6 +144,8 @@ enum ShootType_t : uint8_t {
 	CONST_ANI_EARTHARROW = 40,
 	CONST_ANI_EXPLOSION = 41,
 	CONST_ANI_CAKE = 42,
+
+	CONST_ANI_LAST = CONST_ANI_CAKE,
 
 	// for internal use, don't send to client
 	CONST_ANI_WEAPONTYPE = 0xFE, // 254

@@ -65,6 +65,8 @@
 		Move experience stages to Lua events. 
 		Enable stages for skills and magic level
 		Apply bonus experience for low level players
+	- Fix editing house
+	- Fix effect debug
 ]
 
 [ OTX Server 3.1 Version - "BOOM"
