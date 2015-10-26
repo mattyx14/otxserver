@@ -1794,7 +1794,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getPlayers", LuaScriptInterface::luaGameGetPlayers);
 	registerMethod("Game", "loadMap", LuaScriptInterface::luaGameLoadMap);
 
-	registerMethod("Game", "getExperienceStage", LuaScriptInterface::luaGameGetExperienceStage);
 	registerMethod("Game", "getMonsterCount", LuaScriptInterface::luaGameGetMonsterCount);
 	registerMethod("Game", "getPlayerCount", LuaScriptInterface::luaGameGetPlayerCount);
 	registerMethod("Game", "getNpcCount", LuaScriptInterface::luaGameGetNpcCount);
@@ -1817,6 +1816,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "createTile", LuaScriptInterface::luaGameCreateTile);
 
 	registerMethod("Game", "startRaid", LuaScriptInterface::luaGameStartRaid);
+
+	registerMethod("Game", "hasDistanceEffect", LuaScriptInterface::luaGameHasDistanceEffect);
+	registerMethod("Game", "hasEffect", LuaScriptInterface::luaGameHasEffect);
 
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
@@ -2456,6 +2458,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("MonsterType", "isSummonable", LuaScriptInterface::luaMonsterTypeIsSummonable);
 	registerMethod("MonsterType", "isIllusionable", LuaScriptInterface::luaMonsterTypeIsIllusionable);
 	registerMethod("MonsterType", "isHostile", LuaScriptInterface::luaMonsterTypeIsHostile);
+	registerMethod("MonsterType", "isPassive", LuaScriptInterface::luaMonsterTypeIsHostile);
 	registerMethod("MonsterType", "isPushable", LuaScriptInterface::luaMonsterTypeIsPushable);
 	registerMethod("MonsterType", "isHealthShown", LuaScriptInterface::luaMonsterTypeIsHealthShown);
 
@@ -4127,14 +4130,6 @@ int LuaScriptInterface::luaGameLoadMap(lua_State* L)
 	return 0;
 }
 
-int LuaScriptInterface::luaGameGetExperienceStage(lua_State* L)
-{
-	// Game.getExperienceStage(level)
-	uint32_t level = getNumber<uint32_t>(L, 1);
-	lua_pushnumber(L, g_game.getExperienceStage(level));
-	return 1;
-}
-
 int LuaScriptInterface::luaGameGetMonsterCount(lua_State* L)
 {
 	// Game.getMonsterCount()
@@ -4401,6 +4396,22 @@ int LuaScriptInterface::luaGameStartRaid(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaGameHasEffect(lua_State* L)
+{
+	// Game.hasEffect(effectId)
+	uint8_t effectId = getNumber<uint8_t>(L, 1);
+	pushBoolean(L, g_game.hasEffect(effectId));
+	return 1;
+}
+
+int LuaScriptInterface::luaGameHasDistanceEffect(lua_State* L)
+{
+	// Game.hasDistanceEffect(effectId)
+	uint8_t effectId = getNumber<uint8_t>(L, 1);
+	pushBoolean(L, g_game.hasDistanceEffect(effectId));
 	return 1;
 }
 
@@ -11361,6 +11372,18 @@ int LuaScriptInterface::luaMonsterTypeIsHostile(lua_State* L)
 	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
 	if (monsterType) {
 		pushBoolean(L, monsterType->isHostile);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterTypeIsPassive(lua_State* L)
+{
+	// monsterType:isPassive()
+	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
+	if (monsterType) {
+		pushBoolean(L, monsterType->isPassive);
 	} else {
 		lua_pushnil(L);
 	}

@@ -458,9 +458,6 @@ class Game
 			return lightHour;
 		}
 
-		bool loadExperienceStages();
-		uint64_t getExperienceStage(uint32_t level);
-
 		void loadMotdNum();
 		void saveMotdNum() const;
 		const std::string& getMotdHash() const { return motdHash; }
@@ -498,6 +495,9 @@ class Game
 		Item* getUniqueItem(uint16_t uniqueId);
 		bool addUniqueItem(uint16_t uniqueId, Item* item);
 		void removeUniqueItem(uint16_t uniqueId);
+
+		bool hasEffect(uint8_t effectId);
+		bool hasDistanceEffect(uint8_t effectId);
 
 		Groups groups;
 		Map map;

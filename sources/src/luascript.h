@@ -544,7 +544,6 @@ class LuaScriptInterface
 		static int luaGameGetPlayers(lua_State* L);
 		static int luaGameLoadMap(lua_State* L);
 
-		static int luaGameGetExperienceStage(lua_State* L);
 		static int luaGameGetMonsterCount(lua_State* L);
 		static int luaGameGetPlayerCount(lua_State* L);
 		static int luaGameGetNpcCount(lua_State* L);
@@ -567,6 +566,9 @@ class LuaScriptInterface
 		static int luaGameCreateTile(lua_State* L);
 
 		static int luaGameStartRaid(lua_State* L);
+
+		static int luaGameHasEffect(lua_State* L);
+		static int luaGameHasDistanceEffect(lua_State* L);
 
 		// Variant
 		static int luaVariantCreate(lua_State* L);
@@ -1184,6 +1186,7 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsSummonable(lua_State* L);
 		static int luaMonsterTypeIsIllusionable(lua_State* L);
 		static int luaMonsterTypeIsHostile(lua_State* L);
+		static int luaMonsterTypeIsPassive(lua_State* L);
 		static int luaMonsterTypeIsPushable(lua_State* L);
 		static int luaMonsterTypeIsHealthShown(lua_State* L);
 

@@ -58,9 +58,9 @@ maxMarketOffersAtATimePerPlayer = 100
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = "otxserver"
-mysqlPass = ""
-mysqlDatabase = "otxserver"
+mysqlUser = "root"
+mysqlPass = "master"
+mysqlDatabase = "darkkonia"
 mysqlPort = 3306
 mysqlSock = ""
 
@@ -73,7 +73,8 @@ emoteSpells = true
 classicEquipmentSlots = false
 
 -- Rates
--- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
+-- NOTE: rates are used as a fallback only. To configure rates, see
+-- data/events/scripts/player.lua
 rateExp = 5
 rateSkill = 3
 rateLoot = 2

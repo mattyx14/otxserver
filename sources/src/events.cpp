@@ -59,7 +59,10 @@ void Events::clear()
 	playerOnGainExperience = -1;
 	playerOnLoseExperience = -1;
 	playerOnGainSkillTries = -1;
+
+	// Custom
 	playerOnSave = -1;
+	monsterOnSpawn = -1;
 }
 
 bool Events::load()
@@ -143,6 +146,12 @@ bool Events::load()
 			} else {
 				std::cout << "[Warning - Events::load] Unknown player method: " << methodName << std::endl;
 			}
+		} else if (className == "Monster") {
+			if (methodName == "onSpawn") {
+				monsterOnSpawn = event;
+			} else {
+				std::cout << "[Warning - Events::load] Unknown monster method: " << methodName << std::endl;
+			}
 		} else {
 			std::cout << "[Warning - Events::load] Unknown class: " << className << std::endl;
 		}
@@ -173,32 +182,6 @@ bool Events::eventCreatureOnChangeOutfit(Creature* creature, const Outfit_t& out
 	LuaScriptInterface::setCreatureMetatable(L, -1, creature);
 
 	LuaScriptInterface::pushOutfit(L, outfit);
-
-	return scriptInterface.callFunction(2);
-}
-
-bool Events::eventPlayerOnSave(Player* player)
-{
-	// Player:OnSave(guid)
-	if (playerOnSave == -1) {
-		return true;
-	}
-
-	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnSave] Call stack overflow" << std::endl;
-		return false;
-	}
-
-	ScriptEnvironment* env = scriptInterface.getScriptEnv();
-	env->setScriptId(playerOnSave, &scriptInterface);
-
-	lua_State* L = scriptInterface.getLuaState();
-	scriptInterface.pushFunction(playerOnSave);
-
-	LuaScriptInterface::pushUserdata<Player>(L, player);
-	LuaScriptInterface::setMetatable(L, -1, "Player");
-
-	lua_pushnumber(L, player->getGUID());
 
 	return scriptInterface.callFunction(2);
 }
@@ -777,4 +760,60 @@ void Events::eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_
 	}
 
 	scriptInterface.resetScriptEnv();
+}
+
+// Player Save
+bool Events::eventPlayerOnSave(Player* player)
+{
+	// Player:OnSave(guid)
+	if (playerOnSave == -1) {
+		return true;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		std::cout << "[Error - Events::eventPlayerOnSave] Call stack overflow" << std::endl;
+		return false;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(playerOnSave, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(playerOnSave);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	lua_pushnumber(L, player->getGUID());
+
+	return scriptInterface.callFunction(2);
+}
+
+// Monster
+bool Events::eventMonsterOnSpawn(Monster* monster, const Position& position, bool isStartup)
+{
+	// Monster:onSpawn(position, isStartup) or Monster.onSpawn(self, position, isStartup)
+	if (monsterOnSpawn == -1) {
+		return true;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		std::cout << "[Error - Events::eventMonsterOnSpawn] Call stack overflow" << std::endl;
+		return false;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(monsterOnSpawn, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(monsterOnSpawn);
+
+	LuaScriptInterface::pushUserdata<Monster>(L, monster);
+	LuaScriptInterface::setMetatable(L, -1, "Monster");
+
+	LuaScriptInterface::pushPosition(L, position);
+
+	LuaScriptInterface::pushBoolean(L, isStartup);
+
+	return scriptInterface.callFunction(3);
 }
