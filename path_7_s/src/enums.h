@@ -104,12 +104,8 @@ enum CombatType_t {
 	COMBAT_LIFEDRAIN = 1 << 5,
 	COMBAT_MANADRAIN = 1 << 6,
 	COMBAT_HEALING = 1 << 7,
-	COMBAT_DROWNDAMAGE = 1 << 8,
-	COMBAT_ICEDAMAGE = 1 << 9,
-	COMBAT_HOLYDAMAGE = 1 << 10,
-	COMBAT_DEATHDAMAGE = 1 << 11,
 
-	COMBAT_COUNT = 12
+	COMBAT_COUNT = 8
 };
 
 enum CombatParam_t {
@@ -135,7 +131,6 @@ enum CallBackParam_t {
 enum ConditionParam_t {
 	CONDITION_PARAM_OWNER = 1,
 	CONDITION_PARAM_TICKS = 2,
-	//CONDITION_PARAM_OUTFIT = 3,
 	CONDITION_PARAM_HEALTHGAIN = 4,
 	CONDITION_PARAM_HEALTHTICKS = 5,
 	CONDITION_PARAM_MANAGAIN = 6,
@@ -161,11 +156,9 @@ enum ConditionParam_t {
 	CONDITION_PARAM_SKILL_FISHING = 26,
 	CONDITION_PARAM_STAT_MAXHITPOINTS = 27,
 	CONDITION_PARAM_STAT_MAXMANAPOINTS = 28,
-	// CONDITION_PARAM_STAT_SOULPOINTS = 29,
 	CONDITION_PARAM_STAT_MAGICPOINTS = 30,
 	CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT = 31,
 	CONDITION_PARAM_STAT_MAXMANAPOINTSPERCENT = 32,
-	// CONDITION_PARAM_STAT_SOULPOINTSPERCENT = 33,
 	CONDITION_PARAM_STAT_MAGICPOINTSPERCENT = 34,
 	CONDITION_PARAM_PERIODICDAMAGE = 35,
 	CONDITION_PARAM_SKILL_MELEEPERCENT = 36,
@@ -239,14 +232,10 @@ enum ConditionType_t {
 	CONDITION_EXHAUST_WEAPON = 1 << 12, // unused
 	CONDITION_REGENERATION = 1 << 13,
 	CONDITION_SOUL = 1 << 14,
-	CONDITION_DROWN = 1 << 15,
 	CONDITION_MUTED = 1 << 16,
 	CONDITION_CHANNELMUTEDTICKS = 1 << 17,
 	CONDITION_YELLTICKS = 1 << 18,
 	CONDITION_ATTRIBUTES = 1 << 19,
-	CONDITION_FREEZING = 1 << 20,
-	CONDITION_DAZZLED = 1 << 21,
-	CONDITION_CURSED = 1 << 22,
 	CONDITION_EXHAUST_COMBAT = 1 << 23, // unused
 	CONDITION_EXHAUST_HEAL = 1 << 24, // unused
 	CONDITION_PACIFIED = 1 << 25,
@@ -351,30 +340,6 @@ enum ReturnValue {
 	RETURNVALUE_NOTENOUGHFISHLEVEL
 };
 
-enum MapMark_t
-{
-	MAPMARK_TICK = 0,
-	MAPMARK_QUESTION = 1,
-	MAPMARK_EXCLAMATION = 2,
-	MAPMARK_STAR = 3,
-	MAPMARK_CROSS = 4,
-	MAPMARK_TEMPLE = 5,
-	MAPMARK_KISS = 6,
-	MAPMARK_SHOVEL = 7,
-	MAPMARK_SWORD = 8,
-	MAPMARK_FLAG = 9,
-	MAPMARK_LOCK = 10,
-	MAPMARK_BAG = 11,
-	MAPMARK_SKULL = 12,
-	MAPMARK_DOLLAR = 13,
-	MAPMARK_REDNORTH = 14,
-	MAPMARK_REDSOUTH = 15,
-	MAPMARK_REDEAST = 16,
-	MAPMARK_REDWEST = 17,
-	MAPMARK_GREENNORTH = 18,
-	MAPMARK_GREENSOUTH = 19,
-};
-
 struct Outfit_t {
 	Outfit_t() {
 		reset();
@@ -387,7 +352,6 @@ struct Outfit_t {
 		lookBody = 0;
 		lookLegs = 0;
 		lookFeet = 0;
-		lookAddons = 0;
 	}
 
 	uint16_t lookType;
@@ -396,7 +360,6 @@ struct Outfit_t {
 	uint8_t lookBody;
 	uint8_t lookLegs;
 	uint8_t lookFeet;
-	uint8_t lookAddons;
 };
 
 struct LightInfo {
@@ -410,24 +373,6 @@ struct LightInfo {
 		level = _level;
 		color = _color;
 	}
-};
-
-struct ShopInfo {
-	uint16_t itemId;
-	int32_t subType;
-	uint32_t buyPrice;
-	uint32_t sellPrice;
-	std::string realName;
-
-	ShopInfo() {
-		itemId = 0;
-		subType = 1;
-		buyPrice = 0;
-		sellPrice = 0;
-	}
-
-	ShopInfo(uint16_t itemId, int32_t subType = 0, uint32_t buyPrice = 0, uint32_t sellPrice = 0, std::string realName = "")
-		: itemId(itemId), subType(subType), buyPrice(buyPrice), sellPrice(sellPrice), realName(realName) {}
 };
 
 enum CombatOrigin
@@ -454,7 +399,5 @@ struct CombatDamage
 		primary.value = secondary.value = 0;
 	}
 };
-
-typedef std::list<ShopInfo> ShopInfoList;
 
 #endif

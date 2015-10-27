@@ -29,11 +29,11 @@ typedef std::list<std::pair<int32_t, Item*>> ItemBlockList;
 class IOLoginData
 {
 	public:
-		static Account loadAccount(uint32_t accno);
+		static Account loadAccount(uint32_t accountId);
 		static bool saveAccount(const Account& acc);
 
-		static bool loginserverAuthentication(const std::string& name, const std::string& password, Account& account);
-		static uint32_t gameworldAuthentication(const std::string& accountName, const std::string& password, std::string& characterName);
+		static bool loginserverAuthentication(const uint32_t number, const std::string& password, Account& account);
+		static uint32_t gameworldAuthentication(const uint32_t accountNumber, const std::string& password, std::string& characterName);
 
 		static AccountType_t getAccountType(uint32_t accountId);
 		static void setAccountType(uint32_t accountId, AccountType_t accountType);

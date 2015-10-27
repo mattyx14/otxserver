@@ -413,7 +413,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"poison",
 		"fire",
 		"energy",
-		"drown",
 		"lifedrain",
 		"manadrain",
 		"healing",
@@ -427,10 +426,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"firecondition",
 		"poisoncondition",
 		"energycondition",
-		"drowncondition",
-		"freezecondition",
-		"cursecondition",
-		"dazzlecondition"
 	};
 
 	//static size_t size = sizeof(reservedList) / sizeof(const char*);
@@ -463,9 +458,11 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		manaPercent = pugi::cast<uint32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("soul"))) {
-		soul = pugi::cast<uint32_t>(attr.value());
-	}
+	#ifdef _PROTOCOL_76
+		if ((attr = node.attribute("soul"))) {
+			soul = pugi::cast<uint32_t>(attr.value());
+		}
+	#endif
 
 	if ((attr = node.attribute("range"))) {
 		range = pugi::cast<int32_t>(attr.value());
@@ -473,34 +470,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("exhaustion")) || (attr = node.attribute("cooldown"))) {
 		exhaustion = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("fist"))) {
-		fist = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("club"))) {
-		club = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("sword"))) {
-		sword = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("axe"))) {
-		axe = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("dist")) || (attr = node.attribute("distance"))) {
-		distance = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("shield"))) {
-		shield = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("fish"))) {
-		fish = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("prem"))) {
@@ -1859,7 +1828,7 @@ ReturnValue RuneSpell::canExecuteAction(const Player* player, const Position& to
 	return RETURNVALUE_NOERROR;
 }
 
-bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition, bool isHotkey)
+bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition)
 {
 	if (!playerRuneSpellCheck(player, toPosition)) {
 		return false;
@@ -1888,7 +1857,7 @@ bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* t
 			var.pos = toPosition;
 		}
 
-		result = internalCastSpell(player, var, isHotkey);
+		result = internalCastSpell(player, var);
 	} else if (runeFunction) {
 		result = runeFunction(this, player, toPosition);
 	}
@@ -1910,7 +1879,7 @@ bool RuneSpell::castSpell(Creature* creature)
 	LuaVariant var;
 	var.type = VARIANT_NUMBER;
 	var.number = creature->getID();
-	return internalCastSpell(creature, var, false);
+	return internalCastSpell(creature, var);
 }
 
 bool RuneSpell::castSpell(Creature* creature, Creature* target)
@@ -1918,23 +1887,23 @@ bool RuneSpell::castSpell(Creature* creature, Creature* target)
 	LuaVariant var;
 	var.type = VARIANT_NUMBER;
 	var.number = target->getID();
-	return internalCastSpell(creature, var, false);
+	return internalCastSpell(creature, var);
 }
 
-bool RuneSpell::internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey)
+bool RuneSpell::internalCastSpell(Creature* creature, const LuaVariant& var)
 {
 	bool result;
 	if (m_scripted) {
-		result = executeCastSpell(creature, var, isHotkey);
+		result = executeCastSpell(creature, var);
 	} else {
 		result = false;
 	}
 	return result;
 }
 
-bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey)
+bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 {
-	//onCastSpell(creature, var, isHotkey)
+	//onCastSpell(creature, var)
 	if (!m_scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - RuneSpell::executeCastSpell] Call stack overflow" << std::endl;
 		return false;
@@ -1952,7 +1921,5 @@ bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var, bool
 
 	LuaScriptInterface::pushVariant(L, var);
 
-	LuaScriptInterface::pushBoolean(L, isHotkey);
-
-	return m_scriptInterface->callFunction(3);
+	return m_scriptInterface->callFunction(2);
 }

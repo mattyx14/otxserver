@@ -281,6 +281,7 @@ class ItemType
 		bool isHangable;
 		bool allowDistRead;
 		bool lookThrough;
+		// bool isAnimation;
 		bool stopTime;
 		bool showCount;
 };

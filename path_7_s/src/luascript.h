@@ -868,9 +868,6 @@ class LuaScriptInterface
 		static int luaPlayerGetGroup(lua_State* L);
 		static int luaPlayerSetGroup(lua_State* L);
 
-		static int luaPlayerGetStamina(lua_State* L);
-		static int luaPlayerSetStamina(lua_State* L);
-
 		static int luaPlayerGetSoul(lua_State* L);
 		static int luaPlayerAddSoul(lua_State* L);
 		static int luaPlayerGetMaxSoul(lua_State* L);
@@ -902,11 +899,6 @@ class LuaScriptInterface
 
 		static int luaPlayerGetParty(lua_State* L);
 
-		static int luaPlayerAddOutfit(lua_State* L);
-		static int luaPlayerAddOutfitAddon(lua_State* L);
-		static int luaPlayerRemoveOutfit(lua_State* L);
-		static int luaPlayerRemoveOutfitAddon(lua_State* L);
-		static int luaPlayerHasOutfit(lua_State* L);
 		static int luaPlayerSendOutfitWindow(lua_State* L);
 
 		static int luaPlayerGetPremiumDays(lua_State* L);
@@ -921,9 +913,6 @@ class LuaScriptInterface
 		static int luaPlayerLearnSpell(lua_State* L);
 		static int luaPlayerForgetSpell(lua_State* L);
 		static int luaPlayerHasLearnedSpell(lua_State* L);
-
-		static int luaPlayerSendTutorial(lua_State* L);
-		static int luaPlayerAddMapMark(lua_State* L);
 
 		static int luaPlayerSave(lua_State* L);
 		static int luaPlayerPopupFYI(lua_State* L);

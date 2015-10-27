@@ -328,8 +328,7 @@ class Combat
 	protected:
 		static void doCombatDefault(Creature* caster, Creature* target, const CombatParams& params);
 
-		static void CombatFunc(Creature* caster, const Position& pos,
-		                       const AreaCombat* area, const CombatParams& params, COMBATFUNC func, CombatDamage* data);
+		static void CombatFunc(Creature* caster, const Position& pos, const AreaCombat* area, const CombatParams& params, COMBATFUNC func, CombatDamage* data);
 
 		static void CombatHealthFunc(Creature* caster, Creature* target, const CombatParams& params, CombatDamage* data);
 		static void CombatManaFunc(Creature* caster, Creature* target, const CombatParams& params, CombatDamage* damage);

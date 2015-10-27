@@ -28,9 +28,26 @@
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
 
-#define CLIENT_VERSION_MIN 860
-#define CLIENT_VERSION_MAX 860
-#define CLIENT_VERSION_STR "8.6"
+#if defined(_PROTOCOL_77)
+	#define _PROTOCOL_76
+	#define CLIENT_VERSION_MIN 770
+	#define CLIENT_VERSION_MAX 772
+	#define CLIENT_VERSION_STR "7.72"
+	#define ITEMS_PATH "772"
+	#define OTB_VERSION 2
+#elif defined(_PROTOCOL_76)
+	#define CLIENT_VERSION_MIN 760
+	#define CLIENT_VERSION_MAX 760
+	#define CLIENT_VERSION_STR "7.60"
+	#define ITEMS_PATH "760"
+	#define OTB_VERSION 2
+#else
+	#define CLIENT_VERSION_MIN 740
+	#define CLIENT_VERSION_MAX 740
+	#define CLIENT_VERSION_STR "7.40"
+	#define ITEMS_PATH "740"
+	#define OTB_VERSION 1
+#endif
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

@@ -129,7 +129,7 @@ void Items::clear()
 bool Items::reload()
 {
 	clear();
-	loadFromOtb("data/items/items.otb");
+	loadFromOtb("data/items/" ITEMS_PATH "/items.otb");
 
 	if (!loadFromXml()) {
 		return false;
@@ -189,11 +189,11 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 
 	if (Items::dwMajorVersion == 0xFFFFFFFF) {
 		std::cout << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
-	} else if (Items::dwMajorVersion != 3) {
+	} else if (Items::dwMajorVersion < OTB_VERSION) {
 		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
-	} else if (Items::dwMinorVersion < CLIENT_VERSION_860) {
-		std::cout << "A newer version of items.otb is required." << std::endl;
+	} else if (Items::dwMajorVersion > OTB_VERSION) {
+		std::cout << "New version detected, an older version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
 
@@ -362,6 +362,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 		iType.rotatable = hasBitSet(FLAG_ROTABLE, flags);
 		iType.canReadText = hasBitSet(FLAG_READABLE, flags);
 		iType.lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
+		// iType.isAnimation = hasBitSet(FLAG_ANIMATION, flags);
 		// iType.walkStack = !hasBitSet(FLAG_FULLTILE, flags);
 		iType.forceUse = hasBitSet(FLAG_FORCEUSE, flags);
 
@@ -383,9 +384,9 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 bool Items::loadFromXml()
 {
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file("data/items/items.xml");
+	pugi::xml_parse_result result = doc.load_file("data/items/" ITEMS_PATH "/items.xml");
 	if (!result) {
-		printXMLError("Error - Items::loadFromXml", "data/items/items.xml", result);
+		printXMLError("Error - Items::loadFromXml", "data/items/" ITEMS_PATH "/items.xml", result);
 		return false;
 	}
 
@@ -753,34 +754,22 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			abilities.absorbPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
 			abilities.absorbPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
 			abilities.absorbPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
-			abilities.absorbPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
 		} else if (tmpStrValue == "absorbpercentmagic") {
 			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
 			Abilities& abilities = it.getAbilities();
 			abilities.absorbPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
 			abilities.absorbPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
 			abilities.absorbPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
-			abilities.absorbPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
-			abilities.absorbPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += value;
-			abilities.absorbPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += value;
 		} else if (tmpStrValue == "absorbpercentenergy") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercentfire") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercentpoison" ||	tmpStrValue == "absorbpercentearth") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "absorbpercentice") {
-			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "absorbpercentholy") {
-			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "absorbpercentdeath") {
-			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercentlifedrain") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_LIFEDRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercentmanadrain") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_MANADRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "absorbpercentdrown") {
-			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_DROWNDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercentphysical") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercenthealing") {
@@ -803,25 +792,9 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			if (valueAttribute.as_bool()) {
 				it.getAbilities().conditionSuppressions |= CONDITION_POISON;
 			}
-		} else if (tmpStrValue == "suppressdrown") {
-			if (valueAttribute.as_bool()) {
-				it.getAbilities().conditionSuppressions |= CONDITION_DROWN;
-			}
 		} else if (tmpStrValue == "suppressphysical") {
 			if (valueAttribute.as_bool()) {
 				it.getAbilities().conditionSuppressions |= CONDITION_BLEEDING;
-			}
-		} else if (tmpStrValue == "suppressfreeze") {
-			if (valueAttribute.as_bool()) {
-				it.getAbilities().conditionSuppressions |= CONDITION_FREEZING;
-			}
-		} else if (tmpStrValue == "suppressdazzle") {
-			if (valueAttribute.as_bool()) {
-				it.getAbilities().conditionSuppressions |= CONDITION_DAZZLED;
-			}
-		} else if (tmpStrValue == "suppresscurse") {
-			if (valueAttribute.as_bool()) {
-				it.getAbilities().conditionSuppressions |= CONDITION_CURSED;
 			}
 		} else if (tmpStrValue == "field") {
 			it.group = ITEM_GROUP_MAGICFIELD;
@@ -840,9 +813,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			} else if (tmpStrValue == "poison") {
 				conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_POISON);
 				combatType = COMBAT_EARTHDAMAGE;
-			} else if (tmpStrValue == "drown") {
-				conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_DROWN);
-				combatType = COMBAT_DROWNDAMAGE;
 			} else if (tmpStrValue == "physical") {
 				conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_BLEEDING);
 				combatType = COMBAT_PHYSICALDAMAGE;
@@ -932,10 +902,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.transformToFree = pugi::cast<uint16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "destroyto") {
 			it.destroyTo = pugi::cast<uint16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "elementice") {
-			Abilities& abilities = it.getAbilities();
-			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
-			abilities.elementType = COMBAT_ICEDAMAGE;
 		} else if (tmpStrValue == "elementearth") {
 			Abilities& abilities = it.getAbilities();
 			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
