@@ -158,9 +158,12 @@ Weapon::Weapon(LuaScriptInterface* _interface) :
 	premium = false;
 	enabled = true;
 	wieldUnproperly = false;
-	swing = true;
+	swing = false;
 	breakChance = 0;
 	action = WEAPONACTION_NONE;
+	params.blockedByArmor = true;
+	params.blockedByShield = true;
+	params.combatType = COMBAT_PHYSICALDAMAGE;
 }
 
 bool Weapon::configureEvent(const pugi::xml_node& node)

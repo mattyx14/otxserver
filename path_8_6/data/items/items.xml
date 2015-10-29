@@ -15695,7 +15695,7 @@
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="ammoType" value="bolt" />
-		<attribute key="range" value="6" />
+		<attribute key="range" value="10" />
 		<attribute key="hitChance" value="3" />
 		<attribute key="attack" value="5" />
 	</item>

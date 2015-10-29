@@ -2,71 +2,6 @@ function Player:onBrowseField(position)
 	return true
 end
 
--- low level experience bonus
--- bonus is a floating percentage, use 1 for 100% bonus
-local expBonusDelta = expBonus.maxlevel - expBonus.minlevel -- don't touch
-local expBonus = {
-	minlevel = 2,
-	maxlevel = 50,
-	bonus = 1
-}
-
--- minlevel and multiplier are MANDATORY
--- maxlevel is OPTIONAL, but is considered infinite by default
--- create a stage with minlevel 1 and no maxlevel to disable stages
-local experienceStages = {
-	{
-		minlevel = 1,
-		maxlevel = 8,
-		multiplier = 7
-	}, {
-		minlevel = 9,
-		maxlevel = 20,
-		multiplier = 6
-	}, {
-		minlevel = 21,
-		maxlevel = 50,
-		multiplier = 5
-	}, {
-		minlevel = 51,
-		maxlevel = 100,
-		multiplier = 4
-	}, {
-		minlevel = 101,
-		multiplier = 3
-	}
-}
-
-local skillStages = {
-	{
-		minlevel = 10,
-		maxlevel = 50,
-		multiplier = 3
-	}, {
-		minlevel = 51,
-		maxlevel = 100,
-		multiplier = 2
-	}, {
-		minlevel = 101,
-		multiplier = 1
-	}
-}
-
-local magicLevelStages = {
-	{
-		minlevel = 10,
-		maxlevel = 50,
-		multiplier = 3
-	}, {
-		minlevel = 51,
-		maxlevel = 100,
-		multiplier = 2
-	}, {
-		minlevel = 101,
-		multiplier = 1
-	}
-}
-
 function Player:onLook(thing, position, distance)
 	local description = "You see " .. thing:getDescription(distance)
 	if self:getGroup():getAccess() then
@@ -201,34 +136,20 @@ local function useStamina(player)
 	player:setStamina(staminaMinutes)
 end
 
-local function getRateFromTable(t, level, default)
-	for _, rate in ipairs(t) do
-		if level >= rate.minlevel then
-			if rate.maxlevel == nil or level <= rate.maxlevel then
-				return rate.multiplier
-			end
-		end
-	end
-
-	return default
-end
-
 function Player:onGainExperience(source, exp, rawExp)
 	if not source or source:isPlayer() then
 		return exp
 	end
 
-	local level = self:getLevel()
-
 	-- Soul regeneration
 	local vocation = self:getVocation()
-	if self:getSoul() < vocation:getMaxSoul() and exp >= level then
+	if self:getSoul() < vocation:getMaxSoul() and exp >= self:getLevel() then
 		soulCondition:setParameter(CONDITION_PARAM_SOULTICKS, vocation:getSoulGainTicks() * 1000)
 		self:addCondition(soulCondition)
 	end
 
 	-- Apply experience stage multiplier
-	exp = exp * getRateFromTable(experienceStages, level, configManager.getNumber(configKeys.RATE_EXPERIENCE))
+	exp = exp * Game.getExperienceStage(self:getLevel())
 
 	-- Stamina modifier
 	if configManager.getBoolean(configKeys.STAMINA_SYSTEM) then
@@ -241,10 +162,6 @@ function Player:onGainExperience(source, exp, rawExp)
 			exp = exp * 0.5
 		end
 	end
-
-	-- Apply low level bonus
-	local multiplier = expBonus.bonus * math.min(1, math.max(0, (expBonus.maxlevel - level) / (expBonusDelta))) + 1
-		exp = exp * multiplier
 
 	return exp
 end
@@ -259,9 +176,9 @@ function Player:onGainSkillTries(skill, tries)
 	end
 
 	if skill == SKILL_MAGLEVEL then
-		return tries * getRateFromTable(magicStages, self:getSkillLevel(skill), configManager.getNumber(configKeys.RATE_MAGIC))
+		return tries * configManager.getNumber(configKeys.RATE_MAGIC)
 	end
-	return tries * getRateFromTable(skillStages, self:getSkillLevel(skill), configManager.getNumber(configKeys.RATE_SKILL))
+	return tries * configManager.getNumber(configKeys.RATE_SKILL)
 end
 
 function Player:onSave(GUID)

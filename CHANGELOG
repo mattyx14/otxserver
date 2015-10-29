@@ -63,13 +63,10 @@
 	- Added Monster Spawn event
 	- Added DDoS protection -- no complete
 	- Added Advance Save
+	- Added swing distance weapons
 	- Enable monster passive behavior
 	- Fix editing house
 	- Fix effect debug
-	- Remove experience stages.xml - Check "data\events\scripts\player.lua"
-		Move experience stages to Lua events. 
-		Enable stages for skills and magic level
-		Apply bonus experience for low level players
 ]
 
 [ OTX Server 3.1 Version - "BOOM"
