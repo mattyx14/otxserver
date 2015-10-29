@@ -207,6 +207,7 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 {
 	std::unique_ptr<Monster> monster_ptr(new Monster(mType));
 
+	Monster* monster = monster_ptr.release();
 	if (!g_events->eventMonsterOnSpawn(monster, pos, startup)) {
 		delete monster;
 		return false;
@@ -223,7 +224,6 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 		}
 	}
 
-	Monster* monster = monster_ptr.release();
 	monster->setDirection(dir);
 	monster->setSpawn(this);
 	monster->setMasterPos(pos);

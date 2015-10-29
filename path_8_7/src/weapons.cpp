@@ -158,6 +158,7 @@ Weapon::Weapon(LuaScriptInterface* _interface) :
 	premium = false;
 	enabled = true;
 	wieldUnproperly = false;
+	swing = true;
 	breakChance = 0;
 	action = WEAPONACTION_NONE;
 }
@@ -212,6 +213,10 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("unproperly"))) {
 		wieldUnproperly = attr.as_bool();
+	}
+
+	if ((attr = node.attribute("swing"))) {
+		swing = attr.as_bool();
 	}
 
 	std::list<std::string> vocStringList;
@@ -607,6 +612,7 @@ WeaponDistance::WeaponDistance(LuaScriptInterface* _interface) :
 {
 	params.blockedByArmor = true;
 	params.combatType = COMBAT_PHYSICALDAMAGE;
+	swing = params.blockedByShield = false;
 }
 
 void WeaponDistance::configureWeapon(const ItemType& it)

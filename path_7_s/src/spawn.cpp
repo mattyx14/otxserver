@@ -24,9 +24,11 @@
 #include "monster.h"
 #include "configmanager.h"
 #include "scheduler.h"
+#include "events.h"
 
 #include "pugicast.h"
 
+extern Events* g_events;
 extern ConfigManager g_config;
 extern Monsters g_monsters;
 extern Game g_game;
@@ -204,6 +206,13 @@ bool Spawn::isInSpawnZone(const Position& pos)
 bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& pos, Direction dir, bool startup /*= false*/)
 {
 	std::unique_ptr<Monster> monster_ptr(new Monster(mType));
+
+	Monster* monster = monster_ptr.release();
+	if (!g_events->eventMonsterOnSpawn(monster, pos, startup)) {
+		delete monster;
+		return false;
+	}
+
 	if (startup) {
 		//No need to send out events to the surrounding since there is no one out there to listen!
 		if (!g_game.internalPlaceCreature(monster_ptr.get(), pos, true)) {
@@ -215,7 +224,6 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 		}
 	}
 
-	Monster* monster = monster_ptr.release();
 	monster->setDirection(dir);
 	monster->setSpawn(this);
 	monster->setMasterPos(pos);
