@@ -26,7 +26,7 @@
 #define REVISION_VERSION ""
 #define SOFTWARE_CODENAME ""
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
-#define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
 #define CLIENT_VERSION_MIN 860
 #define CLIENT_VERSION_MAX 860

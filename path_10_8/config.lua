@@ -102,5 +102,5 @@
 	-- Status server information
 	ownerName = "Mattyx14"
 	ownerEmail = "darkylive@live.com.mx"
-	url = "https://github.com/mattyx14"
+	url = "https://github.com/mattyx14/"
 	location = "Mexico"

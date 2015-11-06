@@ -146,7 +146,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	std::cout << std::endl;
 
 	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
-	std::cout << "Visit our forum for updates, support, and resources: " << MAIN_FORUM <<"." << std::endl;
+	std::cout << "Visit our forum for updates, support, and resources: " << GIT_REPO <<"." << std::endl;
 	std::cout << std::endl;
 
 	// read global config
