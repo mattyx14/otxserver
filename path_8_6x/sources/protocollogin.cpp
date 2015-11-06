@@ -254,7 +254,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 		//Add char list
 		output->put<char>(0x64);
-		if(account.name == "10" and account.name != "0")
+		if(account.name == "10" & account.name != "0")
 		{
 			PlayerVector players;
 			for(AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
