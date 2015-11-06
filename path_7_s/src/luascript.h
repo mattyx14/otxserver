@@ -872,9 +872,11 @@ class LuaScriptInterface
 		static int luaPlayerGetGroup(lua_State* L);
 		static int luaPlayerSetGroup(lua_State* L);
 
+		#ifdef _PROTOCOL76
 		static int luaPlayerGetSoul(lua_State* L);
 		static int luaPlayerAddSoul(lua_State* L);
 		static int luaPlayerGetMaxSoul(lua_State* L);
+		#endif
 
 		static int luaPlayerGetBankBalance(lua_State* L);
 		static int luaPlayerSetBankBalance(lua_State* L);
@@ -919,7 +921,6 @@ class LuaScriptInterface
 		static int luaPlayerHasLearnedSpell(lua_State* L);
 
 		static int luaPlayerSave(lua_State* L);
-		static int luaPlayerPopupFYI(lua_State* L);
 
 		static int luaPlayerIsPzLocked(lua_State* L);
 
@@ -1014,8 +1015,10 @@ class LuaScriptInterface
 		static int luaVocationGetManaGainTicks(lua_State* L);
 		static int luaVocationGetManaGainAmount(lua_State* L);
 
+		#ifdef _PROTOCOL76
 		static int luaVocationGetMaxSoul(lua_State* L);
 		static int luaVocationGetSoulGainTicks(lua_State* L);
+		#endif
 
 		static int luaVocationGetAttackSpeed(lua_State* L);
 		static int luaVocationGetBaseSpeed(lua_State* L);

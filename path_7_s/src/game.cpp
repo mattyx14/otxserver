@@ -48,6 +48,7 @@
 #include "connection.h"
 #include "events.h"
 #include "databasetasks.h"
+#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Actions* g_actions;
@@ -206,7 +207,7 @@ bool Game::loadMainMap(const std::string& filename)
 {
 	Monster::despawnRange = g_config.getNumber(ConfigManager::DEFAULT_DESPAWNRANGE);
 	Monster::despawnRadius = g_config.getNumber(ConfigManager::DEFAULT_DESPAWNRADIUS);
-	return map.loadMap("data/world/" + ITEMS_PATH + filename + ".otbm", true);
+	return map.loadMap("data/world/" + ITEMS_PATH + "/" + filename + ".otbm", true);
 }
 
 void Game::loadMap(const std::string& path)

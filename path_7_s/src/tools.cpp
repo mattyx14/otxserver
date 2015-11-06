@@ -490,7 +490,7 @@ MagicEffectNames magicEffectNames[] = {
 	{"greenbubble",		CONST_ME_GREEN_RINGS},
 	{"blackspark",		CONST_ME_HITAREA},
 	{"teleport",		CONST_ME_TELEPORT},
-	{"energyarea",		NM_ME_TELEPORT},
+	{"energyarea",		CONST_ME_TELEPORT},
 	{"energy",		CONST_ME_ENERGYHIT},
 	{"blueshimmer",		CONST_ME_MAGIC_BLUE},
 	{"redshimmer",		CONST_ME_MAGIC_RED},
@@ -948,8 +948,10 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_NOTENOUGHMANA:
 			return "You do not have enough mana.";
 
+		#ifdef _PROTOCOL76
 		case RETURNVALUE_NOTENOUGHSOUL:
 			return "You do not have enough soul.";
+		#endif
 
 		case RETURNVALUE_YOUAREEXHAUSTED:
 			return "You are exhausted.";

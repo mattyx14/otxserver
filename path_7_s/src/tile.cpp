@@ -1309,6 +1309,7 @@ Thing* Tile::getThing(size_t index) const
 	return nullptr;
 }
 
+/*
 uint32_t Tile::getHeight() const
 {
 	uint32_t height = 0;
@@ -1327,6 +1328,7 @@ uint32_t Tile::getHeight() const
 
 	return height;
 }
+*/
 
 void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link /*= LINK_OWNER*/)
 {

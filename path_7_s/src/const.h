@@ -50,6 +50,8 @@ enum MagicEffectClasses : uint8_t {
 	CONST_ME_SOUND_PURPLE = 23,
 	CONST_ME_SOUND_BLUE = 24,
 	CONST_ME_SOUND_WHITE = 25,
+
+	CONST_ME_LAST = CONST_ME_SOUND_WHITE,
 };
 
 enum ShootType_t : uint8_t {
@@ -70,6 +72,8 @@ enum ShootType_t : uint8_t {
 	CONST_ANI_SNOWBALL = 13,
 	CONST_ANI_POWERBOLT = 14,
 	CONST_ANI_POISON = 15,
+
+	CONST_ANI_LAST = CONST_ANI_POISON,
 
 	// for internal use, don't send to client
 	CONST_ANI_WEAPONTYPE = 0xFE, // 254

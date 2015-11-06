@@ -626,11 +626,13 @@ bool Spell::playerSpellCheck(Player* player) const
 		return false;
 	}
 
+	#ifdef _PROTOCOL76
 	if (player->getSoul() < soul && !player->hasFlag(PlayerFlag_HasInfiniteSoul)) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHSOUL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
+	#endif
 
 	if (player->getSkillLevel(SKILL_FIST) < fist) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHFISTLEVEL);

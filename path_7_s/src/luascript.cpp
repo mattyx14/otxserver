@@ -1094,7 +1094,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_DRUNK)
 	registerEnum(CONDITION_EXHAUST_WEAPON)
 	registerEnum(CONDITION_REGENERATION)
+	#ifdef _PROTOCOL76
 	registerEnum(CONDITION_SOUL)
+	#endif
 	registerEnum(CONDITION_MUTED)
 	registerEnum(CONDITION_CHANNELMUTEDTICKS)
 	registerEnum(CONDITION_YELLTICKS)
@@ -1126,8 +1128,10 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_SPEED)
 	registerEnum(CONDITION_PARAM_LIGHT_LEVEL)
 	registerEnum(CONDITION_PARAM_LIGHT_COLOR)
+	#ifdef _PROTOCOL76
 	registerEnum(CONDITION_PARAM_SOULGAIN)
 	registerEnum(CONDITION_PARAM_SOULTICKS)
+	#endif
 	registerEnum(CONDITION_PARAM_MINVALUE)
 	registerEnum(CONDITION_PARAM_MAXVALUE)
 	registerEnum(CONDITION_PARAM_STARTVALUE)
@@ -1524,7 +1528,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RETURNVALUE_NOTENOUGHLEVEL)
 	registerEnum(RETURNVALUE_NOTENOUGHMAGICLEVEL)
 	registerEnum(RETURNVALUE_NOTENOUGHMANA)
+	#ifdef _PROTOCOL76
 	registerEnum(RETURNVALUE_NOTENOUGHSOUL)
+	#endif
 	registerEnum(RETURNVALUE_YOUAREEXHAUSTED)
 	registerEnum(RETURNVALUE_PLAYERISNOTREACHABLE)
 	registerEnum(RETURNVALUE_CANONLYUSETHISRUNEONCREATURES)
@@ -1971,9 +1977,11 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getGroup", LuaScriptInterface::luaPlayerGetGroup);
 	registerMethod("Player", "setGroup", LuaScriptInterface::luaPlayerSetGroup);
 
+	#ifdef _PROTOCOL76
 	registerMethod("Player", "getSoul", LuaScriptInterface::luaPlayerGetSoul);
 	registerMethod("Player", "addSoul", LuaScriptInterface::luaPlayerAddSoul);
 	registerMethod("Player", "getMaxSoul", LuaScriptInterface::luaPlayerGetMaxSoul);
+	#endif
 
 	registerMethod("Player", "getBankBalance", LuaScriptInterface::luaPlayerGetBankBalance);
 	registerMethod("Player", "setBankBalance", LuaScriptInterface::luaPlayerSetBankBalance);
@@ -2117,8 +2125,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Vocation", "getManaGainTicks", LuaScriptInterface::luaVocationGetManaGainTicks);
 	registerMethod("Vocation", "getManaGainAmount", LuaScriptInterface::luaVocationGetManaGainAmount);
 
+	#ifdef _PROTOCOL76
 	registerMethod("Vocation", "getMaxSoul", LuaScriptInterface::luaVocationGetMaxSoul);
 	registerMethod("Vocation", "getSoulGainTicks", LuaScriptInterface::luaVocationGetSoulGainTicks);
+	#endif
 
 	registerMethod("Vocation", "getAttackSpeed", LuaScriptInterface::luaVocationGetAttackSpeed);
 	registerMethod("Vocation", "getBaseSpeed", LuaScriptInterface::luaVocationGetBaseSpeed);
@@ -7806,6 +7816,7 @@ int LuaScriptInterface::luaPlayerSetGroup(lua_State* L)
 	return 1;
 }
 
+#ifdef _PROTOCOL76
 int LuaScriptInterface::luaPlayerGetSoul(lua_State* L)
 {
 	// player:getSoul()
@@ -7843,6 +7854,7 @@ int LuaScriptInterface::luaPlayerGetMaxSoul(lua_State* L)
 	}
 	return 1;
 }
+#endif
 
 int LuaScriptInterface::luaPlayerGetBankBalance(lua_State* L)
 {
@@ -8484,20 +8496,6 @@ int LuaScriptInterface::luaPlayerSave(lua_State* L)
 	if (player) {
 		player->loginPosition = player->getPosition();
 		pushBoolean(L, IOLoginData::savePlayer(player));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerPopupFYI(lua_State* L)
-{
-	// player:popupFYI(message)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		const std::string& message = getString(L, 2);
-		player->sendFYIBox(message);
-		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
 	}
@@ -9407,6 +9405,7 @@ int LuaScriptInterface::luaVocationGetManaGainAmount(lua_State* L)
 	return 1;
 }
 
+#ifdef _PROTOCOL76
 int LuaScriptInterface::luaVocationGetMaxSoul(lua_State* L)
 {
 	// vocation:getMaxSoul()
@@ -9430,6 +9429,7 @@ int LuaScriptInterface::luaVocationGetSoulGainTicks(lua_State* L)
 	}
 	return 1;
 }
+#endif
 
 int LuaScriptInterface::luaVocationGetAttackSpeed(lua_State* L)
 {
