@@ -48,6 +48,7 @@ struct TextMessage
 	} primary, secondary;
 
 	TextMessage() {
+		type = MESSAGE_STATUS_DEFAULT;
 		primary.value = 0;
 		secondary.value = 0;
 	}

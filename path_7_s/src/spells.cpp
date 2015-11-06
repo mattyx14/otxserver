@@ -472,6 +472,34 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		exhaustion = pugi::cast<uint32_t>(attr.value());
 	}
 
+	if ((attr = node.attribute("fist"))) {
+		fist = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("club"))) {
+		club = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("sword"))) {
+		sword = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("axe"))) {
+		axe = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("dist")) || (attr = node.attribute("distance"))) {
+		distance = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("shield"))) {
+		shield = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("fish"))) {
+		fish = pugi::cast<uint32_t>(attr.value());
+	}
+
 	if ((attr = node.attribute("prem"))) {
 		premium = attr.as_bool();
 	}

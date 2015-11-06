@@ -44,7 +44,7 @@ ProtocolGame::ProtocolGame(Connection_ptr connection) :
 	Protocol(connection),
 	player(nullptr),
 	eventConnect(0),
-	// version(CLIENT_VERSION_MIN),
+	version(CLIENT_VERSION_MIN),
 	m_debugAssertSent(false),
 	m_acceptPackets(false)
 {

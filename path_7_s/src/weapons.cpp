@@ -158,8 +158,12 @@ Weapon::Weapon(LuaScriptInterface* _interface) :
 	premium = false;
 	enabled = true;
 	wieldUnproperly = false;
+	swing = false;
 	breakChance = 0;
 	action = WEAPONACTION_NONE;
+	params.blockedByArmor = true;
+	params.blockedByShield = true;
+	params.combatType = COMBAT_PHYSICALDAMAGE;
 }
 
 bool Weapon::configureEvent(const pugi::xml_node& node)
@@ -212,6 +216,10 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("unproperly"))) {
 		wieldUnproperly = attr.as_bool();
+	}
+
+	if ((attr = node.attribute("swing"))) {
+		swing = attr.as_bool();
 	}
 
 	std::list<std::string> vocStringList;
@@ -510,7 +518,7 @@ void Weapon::decrementItemCount(Item* item) const
 }
 
 WeaponMelee::WeaponMelee(LuaScriptInterface* _interface) :
-	Weapon(_interface)
+	Weapon(_interface), elementType(COMBAT_NONE), elementDamage(0)
 {
 	params.blockedByArmor = true;
 	params.blockedByShield = true;
@@ -603,10 +611,11 @@ int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, cons
 }
 
 WeaponDistance::WeaponDistance(LuaScriptInterface* _interface) :
-	Weapon(_interface)
+	Weapon(_interface), elementType(COMBAT_NONE), elementDamage(0)
 {
 	params.blockedByArmor = true;
 	params.combatType = COMBAT_PHYSICALDAMAGE;
+	swing = params.blockedByShield = false;
 }
 
 void WeaponDistance::configureWeapon(const ItemType& it)

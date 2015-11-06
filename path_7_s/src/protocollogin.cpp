@@ -119,6 +119,11 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 * 1 byte: 0
 	 */
 
+	if (version <= 740) {
+		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+		return;
+	}
+
 	#ifdef _PROTOCOL_77
 		if (!Protocol::RSA_decrypt(msg)) {
 			disconnect();

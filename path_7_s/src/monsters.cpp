@@ -79,6 +79,7 @@ void MonsterType::reset()
 	isConvinceable = false;
 	isAttackable = true;
 	isHostile = true;
+	isPassive = false;
 
 	lightLevel = 0;
 	lightColor = 0;
@@ -790,6 +791,8 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				mType->isAttackable = attr.as_bool();
 			} else if (strcasecmp(attrName, "hostile") == 0) {
 				mType->isHostile = attr.as_bool();
+			} else if (strcasecmp(attrName, "passive") == 0) {
+				mType->isPassive = attr.as_bool();
 			} else if (strcasecmp(attrName, "illusionable") == 0) {
 				mType->isIllusionable = attr.as_bool();
 			} else if (strcasecmp(attrName, "convinceable") == 0) {
