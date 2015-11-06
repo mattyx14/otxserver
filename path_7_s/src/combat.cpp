@@ -617,6 +617,23 @@ void Combat::postCombatEffects(Creature* caster, const Position& pos, const Comb
 
 void Combat::addDistanceEffect(Creature* caster, const Position& fromPos, const Position& toPos, uint8_t effect)
 {
+	if (effect == CONST_ANI_WEAPONTYPE) {
+		if (!caster) {
+			return;
+		}
+
+		Player* player = caster->getPlayer();
+		if (!player) {
+			return;
+		}
+
+		switch (player->getWeaponType()) {
+		default:
+			effect = CONST_ANI_NONE;
+			break;
+		}
+	}
+
 	if (effect != CONST_ANI_NONE) {
 		g_game.addDistanceEffect(fromPos, toPos, effect);
 	}

@@ -144,7 +144,7 @@ Item* Item::CreateItem(PropStream& propStream)
 	uint8_t _count = 0;
 
 	if (iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
-		if (!propStream.GET_UCHAR(_count)) {
+		if (!propStream.read<uint8_t>(_count)) {
 			return nullptr;
 		}
 	}
