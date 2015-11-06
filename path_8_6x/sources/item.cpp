@@ -1730,3 +1730,36 @@ void Item::__startDecaying()
 {
 	g_game.startDecay(this);
 }
+
+void Item::generateSerial()
+{
+	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	std::string serial = "";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+	serial += "-";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+	serial += "-";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+	serial += "-";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+
+	std::string key = "serial";
+	this->setAttribute(key.c_str(), serial);
+	serial = "";
+}

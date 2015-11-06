@@ -88,7 +88,7 @@
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "X"
 #define PATCH_VERSION "S"
-#define REVISION_VERSION "1"
+#define REVISION_VERSION "2"
 #define SOFTWARE_CODENAME "Crying Damson"
 #define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
 #define FORUMS "blacktibia.org - tibiaking.com - otland.net - otfans.net"
@@ -98,5 +98,5 @@
 #define CLIENT_VERSION_SPR 0
 #define CLIENT_VERSION_PIC 0
 
-#define VERSION_DATABASE 40
+#define VERSION_DATABASE 42
 #endif

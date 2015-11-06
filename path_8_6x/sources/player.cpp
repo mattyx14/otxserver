@@ -58,9 +58,9 @@ uint32_t Player::playerCount = 0;
 MuteCountMap Player::muteCountMap;
 
 Player::Player(const std::string& _name, ProtocolGame* p):
-	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(p)
+	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(new Spectators(p))
 {
-	if(client)
+	if(client->getOwner())
 		p->setPlayer(this);
 
 	pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = outfitAttributes = sentChat = false;
@@ -137,6 +137,7 @@ Player::~Player()
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 	playerCount--;
 #endif
+	delete client;
 	for(int32_t i = 0; i < 11; ++i)
 	{
 		if(!inventory[i])
@@ -537,6 +538,7 @@ void Player::sendIcons() const
 	if(getZone() == ZONE_PROTECTION)
 	{
 		icons |= ICON_PZ;
+
 		if(hasBitSet(ICON_SWORDS, icons))
 			icons &= ~ICON_SWORDS;
 	}
@@ -1360,6 +1362,15 @@ void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, c
 	}
 }
 
+void Player::sendContainers(ProtocolGame* target)
+{
+	if(!target)
+		return;
+
+	for(ContainerVector::const_iterator cl = containerVec.begin(); cl != containerVec.end(); ++cl)
+		target->sendContainer(cl->first, cl->second, dynamic_cast<const Container*>(cl->second->getParent()) != NULL);
+}
+
 void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 	const ItemType& oldType, const Item* newItem, const ItemType& newType)
 {
@@ -1613,6 +1624,7 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	if(creature != this)
 		return;
 
+	client->clear(true);
 	if(isLogout)
 		loginPosition = getPosition();
 

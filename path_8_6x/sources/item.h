@@ -187,6 +187,7 @@ class Item : virtual public Thing, public ItemAttributes
 		static std::string getDescription(const ItemType& it, int32_t lookDistance, const Item* item = NULL, int32_t subType = -1, bool addArticle = true);
 		static std::string getNameDescription(const ItemType& it, const Item* item = NULL, int32_t subType = -1, bool addArticle = true);
 		static std::string getWeightDescription(double weight, bool stackable, uint32_t count = 1);
+		void generateSerial();
 
 		virtual std::string getDescription(int32_t lookDistance) const {return getDescription(items[id], lookDistance, this);}
 		std::string getNameDescription() const {return getNameDescription(items[id], this);}

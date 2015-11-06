@@ -1462,6 +1462,71 @@ uint32_t DatabaseManager::updateDatabase()
 			return 38;
 		}
 
+		case 38:
+		{
+			std::clog << "> Updating database to version 39... (FIX)" << std::endl;
+			registerDatabaseConfig("db_version", 39);
+			return 39;
+		}
+
+		case 39:
+		{
+			std::clog << "> Updating database to version 40... (FIX)" << std::endl;
+			registerDatabaseConfig("db_version", 40);
+			return 40;
+		}
+
+		case 40:
+		{
+			std::clog << "> Updating database to version 41... (FIX)" << std::endl;
+			registerDatabaseConfig("db_version", 41);
+			return 41;
+		}
+
+		case 41:
+		{
+			std::clog << "> Updating database to version 42... (FIX)" << std::endl;
+			registerDatabaseConfig("db_version", 42);
+			return 42;
+		}
+
+		case 42:
+		{
+			std::clog << "> Updating database to version 43... (Cast & AntiDupe System)" << std::endl;
+			switch(db->getDatabaseEngine())
+			{
+				case DATABASE_ENGINE_MYSQL:
+				{
+					db->query("ALTER TABLE player_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE player_depotitems ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE tile_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE tile_store ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE house_data ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE `players` ADD `broadcasting` tinyint(4) DEFAULT '0'");
+					db->query("ALTER TABLE `players` ADD `viewers` INT(1) DEFAULT '0'");
+					break;
+				}
+
+				case DATABASE_ENGINE_SQLITE:
+				{
+					db->query("ALTER TABLE player_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE player_depotitems ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE tile_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE tile_store ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE house_data ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE `players` ADD `broadcasting` tinyint(4) NOT NULL DEFAULT 0;");
+					db->query("ALTER TABLE `players` ADD `viewers` BOOLEAN(1) NOT NULL DEFAULT 0;");
+					break;
+				}
+
+				default:
+					break;
+			}
+
+			registerDatabaseConfig("db_version", 43);
+			return 43;
+		}
+
 		default:
 			break;
 	}

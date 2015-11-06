@@ -30,7 +30,7 @@
 #include "vocation.h"
 #include "group.h"
 
-#include "protocolgame.h"
+#include "spectators.h"
 #include "ioguild.h"
 #include "party.h"
 #include "npc.h"
@@ -41,6 +41,7 @@ class Npc;
 class Party;
 class SchedulerTask;
 class Quest;
+class ProtocolGame;
 
 enum skillsid_t
 {
@@ -243,7 +244,7 @@ class Player : public Creature, public Cylinder
 		uint32_t getClientVersion() const {return clientVersion;}
 		void setClientVersion(uint32_t version) {clientVersion = version;}
 
-		bool hasClient() const {return (client != NULL);}
+		bool hasClient() const {return (client->getOwner() != NULL);}
 		bool isVirtual() const {return (getID() == 0);}
 		uint32_t getIP() const;
 		bool canOpenCorpse(uint32_t ownerId);
@@ -549,6 +550,8 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendChannelMessage(author, text, type, channel);}
 		void sendCreatureAppear(const Creature* creature)
 			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
+		void sendCreatureAppear(const Creature* creature, ProtocolGame* target)
+			{if(target) target->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
 		void sendCreatureDisappear(const Creature* creature, uint32_t stackpos)
 			{if(client) client->sendRemoveCreature(creature, creature->getPosition(), stackpos);}
 		void sendCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
@@ -584,6 +587,7 @@ class Player : public Creature, public Cylinder
 		void sendRemoveContainerItem(const Container* container, uint8_t slot, const Item* item);
 		void sendContainer(uint32_t cid, const Container* container, bool hasParent)
 			{if(client) client->sendContainer(cid, container, hasParent);}
+		void sendContainers(ProtocolGame* target);
 
 		//inventory
 		void sendAddInventoryItem(slots_t slot, const Item* item)
@@ -935,7 +939,7 @@ class Player : public Creature, public Cylinder
 		std::pair<Container*, int32_t> backpack;
 
 		Vocation* vocation;
-		ProtocolGame* client;
+		Spectators* client;
 		SchedulerTask* walkTask;
 		Party* party;
 		Group* group;
@@ -963,5 +967,7 @@ class Player : public Creature, public Cylinder
 		friend class Actions;
 		friend class IOLoginData;
 		friend class ProtocolGame;
+		friend class ProtocolLogin;
+		friend class Spectators;
 };
 #endif

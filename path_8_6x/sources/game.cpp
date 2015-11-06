@@ -2406,6 +2406,7 @@ bool Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
 		return false;
 
 	g_chat.removeUserFromChannel(player, channelId);
+	player->client->chat(channelId);
 	return true;
 }
 
