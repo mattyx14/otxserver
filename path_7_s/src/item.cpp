@@ -140,7 +140,15 @@ Item* Item::CreateItem(PropStream& propStream)
 			break;
 	}
 
-	return Item::CreateItem(_id, 0);
+	const ItemType& iType = Item::items[_id];
+	uint8_t _count = 0;
+
+	if (iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
+		if (!propStream.GET_UCHAR(_count)) {
+			return nullptr;
+		}
+	}
+	return Item::CreateItem(_id, _count);
 }
 
 Item::Item(const uint16_t _type, uint16_t _count /*= 0*/)
@@ -1230,7 +1238,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				} else {
 					s << "unknown";
 				}
-			} else if (it.allowDistRead && (it.id < 7369 || it.id > 7371)) {
+			} else if (it.allowDistRead) {
 				s << '.' << std::endl;
 
 				if (lookDistance <= 4) {
@@ -1308,7 +1316,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	}
 
-	if (!it.allowDistRead || (it.id >= 7369 && it.id <= 7371)) {
+	if (!it.allowDistRead) {
 		s << '.';
 	} else {
 		if (!text && item) {
@@ -1372,7 +1380,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		s << std::endl << it.description;
 	}
 
-	if (it.allowDistRead && it.id >= 7369 && it.id <= 7371) {
+	if (it.allowDistRead) {
 		if (!text && item) {
 			text = &item->getText();
 		}

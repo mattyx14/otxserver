@@ -47,8 +47,10 @@ enum ConditionAttr_t {
 	CONDITIONATTR_LIGHTLEVEL,
 	CONDITIONATTR_LIGHTTICKS,
 	CONDITIONATTR_LIGHTINTERVAL,
+	#ifdef _PROTOCOL76
 	CONDITIONATTR_SOULTICKS,
 	CONDITIONATTR_SOULGAIN,
+	#endif
 	CONDITIONATTR_SKILLS,
 	CONDITIONATTR_STATS,
 	CONDITIONATTR_OUTFIT,
@@ -199,6 +201,7 @@ class ConditionRegeneration final : public ConditionGeneric
 		uint32_t manaGain;
 };
 
+#ifdef _PROTOCOL76
 class ConditionSoul final : public ConditionGeneric
 {
 	public:
@@ -222,6 +225,7 @@ class ConditionSoul final : public ConditionGeneric
 		uint32_t soulTicks;
 		uint32_t soulGain;
 };
+#endif
 
 class ConditionInvisible final : public ConditionGeneric
 {

@@ -124,7 +124,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	#ifdef _PROTOCOL_77
+	#ifdef _PROTOCOL77
 		if (!Protocol::RSA_decrypt(msg)) {
 			disconnect();
 			return;

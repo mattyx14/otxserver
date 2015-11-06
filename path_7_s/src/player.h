@@ -147,12 +147,6 @@ class Player final : public Creature, public Cylinder
 			return CREATURETYPE_PLAYER;
 		}
 
-		void sendFYIBox(const std::string& message) {
-			if (client) {
-				client->sendFYIBox(message);
-			}
-		}
-
 		void setGUID(uint32_t _guid) {
 			guid = _guid;
 		}

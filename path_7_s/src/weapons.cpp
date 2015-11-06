@@ -907,7 +907,7 @@ bool WeaponWand::configureEvent(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("type"))) {
 		std::string tmpStrValue = asLowerCaseString(attr.as_string());
-		if (tmpStrValue == "earth") {
+		if (tmpStrValue == "earth" || tmpStrValue == "poison") {
 			params.combatType = COMBAT_EARTHDAMAGE;
 		} else if (tmpStrValue == "energy") {
 			params.combatType = COMBAT_ENERGYDAMAGE;

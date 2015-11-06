@@ -28,14 +28,14 @@
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
-#if defined(_PROTOCOL_77)
-	#define _PROTOCOL_76
+#if defined(_PROTOCOL77)
+	#define _PROTOCOL76
 	#define CLIENT_VERSION_MIN 770
 	#define CLIENT_VERSION_MAX 772
 	#define CLIENT_VERSION_STR "7.72"
 	#define ITEMS_PATH "772"
 	#define OTB_VERSION 2
-#elif defined(_PROTOCOL_76)
+#elif defined(_PROTOCOL76)
 	#define CLIENT_VERSION_MIN 760
 	#define CLIENT_VERSION_MAX 760
 	#define CLIENT_VERSION_STR "7.60"

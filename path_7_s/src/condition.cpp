@@ -182,8 +182,10 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_REGENERATION:
 			return new ConditionRegeneration(_id, _type, _ticks, _buff, _subId);
 
+	#ifdef _PROTOCOL76
 		case CONDITION_SOUL:
 			return new ConditionSoul(_id, _type, _ticks, _buff, _subId);
+	#endif
 
 		case CONDITION_ATTRIBUTES:
 			return new ConditionAttributes(_id, _type, _ticks, _buff, _subId);
@@ -784,6 +786,7 @@ bool ConditionRegeneration::setParam(ConditionParam_t param, int32_t value)
 	}
 }
 
+#ifdef _PROTOCOL76
 ConditionSoul::ConditionSoul(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId) :
 	ConditionGeneric(_id, _type, _ticks, _buff, _subId)
 {
@@ -857,6 +860,7 @@ bool ConditionSoul::setParam(ConditionParam_t param, int32_t value)
 			return ret;
 	}
 }
+#endif
 
 ConditionDamage::ConditionDamage(ConditionId_t _id, ConditionType_t _type, bool _buff, uint32_t _subId) :
 	Condition(_id, _type, 0, _buff, _subId)

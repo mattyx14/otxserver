@@ -239,8 +239,10 @@ void BedItem::regeneratePlayer(Player* player) const
 		player->changeMana(regen);
 	}
 
+	#ifdef _PROTOCOL76
 	const int32_t soulRegen = sleptTime / (60 * 15);
 	player->changeSoul(soulRegen);
+	#endif
 }
 
 void BedItem::updateAppearance(const Player* player)

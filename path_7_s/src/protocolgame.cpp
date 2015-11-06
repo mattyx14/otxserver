@@ -253,7 +253,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	OperatingSystem_t operatingSystem = static_cast<OperatingSystem_t>(msg.get<uint16_t>());
 	version = msg.get<uint16_t>();
 
-	#ifdef _PROTOCOL_77
+	#ifdef _PROTOCOL77
 		if (!Protocol::RSA_decrypt(msg)) {
 			disconnect();
 			return;
@@ -463,15 +463,15 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 
 	const CreatureVector* creatures = tile->getCreatures();
 	if (creatures) {
-		for (const Creature* creature : boost::adaptors::reverse(*creatures)) {
-			if (!player->canSeeCreature(creature)) {
+		for (auto it = creatures->begin(); it != creatures->end(); ++it) {
+			if (!player->canSeeCreature(*it)) {
 				continue;
 			}
 
 			bool known;
 			uint32_t removedKnown;
-			checkCreatureAsKnown(creature->getID(), known, removedKnown);
-			AddCreature(msg, creature, known, removedKnown);
+			checkCreatureAsKnown((*it)->getID(), known, removedKnown);
+			AddCreature(msg, *it, known, removedKnown);
 
 			if (++count == 10) {
 				return;
@@ -687,7 +687,7 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 {
 	Outfit_t newOutfit;
-	#ifdef _PROTOCOL_77
+	#ifdef _PROTOCOL77
 		newOutfit.lookType = msg.get<uint16_t>();
 	#else
 		newOutfit.lookType = msg.getByte();
@@ -1086,11 +1086,9 @@ void ProtocolGame::sendChannelMessage(const std::string& author, const std::stri
 {
 	NetworkMessage msg;
 	msg.addByte(0xAA);
-
-	#ifdef _PROTOCOL_77
-		msg.add<uint32_t>(0x00);
+	#ifdef _PROTOCOL77
+	msg.add<uint32_t>(0x00);
 	#endif
-
 	msg.addString(author);
 	msg.add<uint16_t>(0x00);
 	msg.addByte(type);
@@ -1210,7 +1208,7 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 	NetworkMessage msg;
 	msg.addByte(0xAA);
 
-	#ifdef _PROTOCOL_77
+	#ifdef _PROTOCOL77
 		static uint32_t statementId = 0;
 		msg.add<uint32_t>(++statementId);
 	#endif
@@ -1321,13 +1319,11 @@ void ProtocolGame::sendDistanceShoot(const Position& from, const Position& to, u
 	msg.addByte(0x85);
 	msg.addPosition(from);
 	msg.addPosition(to);
-
-	#ifdef _PROTOCOL_76
-		msg.addByte(type);
+	#ifdef _PROTOCOL76
+	msg.addByte(type);
 	#else
-		msg.addByte(type - 1);
+	msg.addByte(type - 1);
 	#endif
-
 	writeToOutputBuffer(msg);
 }
 
@@ -1340,13 +1336,11 @@ void ProtocolGame::sendMagicEffect(const Position& pos, uint8_t type)
 	NetworkMessage msg;
 	msg.addByte(0x83);
 	msg.addPosition(pos);
-
-	#ifdef _PROTOCOL_76
-		msg.addByte(type);
+	#ifdef _PROTOCOL76
+	msg.addByte(type);
 	#else
-		msg.addByte(type - 1);
+	msg.addByte(type - 1);
 	#endif
-
 	writeToOutputBuffer(msg);
 }
 
@@ -1361,14 +1355,6 @@ void ProtocolGame::sendCreatureHealth(const Creature* creature)
 	} else {
 		msg.addByte(std::ceil((static_cast<double>(creature->getHealth()) / std::max<int32_t>(creature->getMaxHealth(), 1)) * 100));
 	}
-	writeToOutputBuffer(msg);
-}
-
-void ProtocolGame::sendFYIBox(const std::string& message)
-{
-	NetworkMessage msg;
-	msg.addByte(0x15);
-	msg.addString(message);
 	writeToOutputBuffer(msg);
 }
 
@@ -1657,13 +1643,13 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t ma
 		msg.addString(text);
 	}
 
-	#ifdef _PROTOCOL_76
-		const std::string& writer = item->getWriter();
-		if (!writer.empty()) {
-			msg.addString(writer);
-		} else {
-			msg.addString("");
-		}
+	#ifdef _PROTOCOL76
+	const std::string& writer = item->getWriter();
+	if (!writer.empty()) {
+		msg.addString(writer);
+	} else {
+		msg.addString("");
+	}
 	#endif
 
 	writeToOutputBuffer(msg);
@@ -1699,7 +1685,7 @@ void ProtocolGame::sendOutfitWindow()
 	Outfit_t currentOutfit = player->getDefaultOutfit();
 	AddOutfit(msg, currentOutfit);
 
-	#ifdef _PROTOCOL_77
+	#ifdef _PROTOCOL77
 		msg.add<uint16_t>(player->getSex() % 2 ? 128 : 136);
 		msg.add<uint16_t>(player->isPremium() ? (player->getSex() % 2 ? 134 : 142) : (player->getSex() % 2 ? 131 : 139));
 	#else
@@ -1793,10 +1779,10 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 
 	msg.add<uint32_t>(std::min<uint32_t>(player->getExperience(), 0x7FFFFFFF));
 
-	#ifdef _PROTOCOL_76
-		msg.add<uint16_t>(player->getLevel());
+	#ifdef _PROTOCOL76
+	msg.add<uint16_t>(player->getLevel());
 	#else
-		msg.addByte(player->getLevel());
+	msg.addByte(player->getLevel());
 	#endif
 
 	msg.addByte(player->getPlayerInfo(PLAYERINFO_LEVELPERCENT));
@@ -1807,8 +1793,8 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.addByte(std::min<uint32_t>(player->getMagicLevel(), std::numeric_limits<uint8_t>::max()));
 	msg.addByte(player->getPlayerInfo(PLAYERINFO_MAGICLEVELPERCENT));
 
-	#ifdef _PROTOCOL_76
-		msg.addByte(player->getSoul());
+	#ifdef _PROTOCOL76
+	msg.addByte(player->getSoul());
 	#endif
 }
 
@@ -1824,10 +1810,10 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 
 void ProtocolGame::AddOutfit(NetworkMessage& msg, const Outfit_t& outfit)
 {
-	#ifdef _PROTOCOL_77
-		msg.add<uint16_t>(outfit.lookType);
+	#ifdef _PROTOCOL77
+	msg.add<uint16_t>(outfit.lookType);
 	#else
-		msg.addByte(outfit.lookType);
+	msg.addByte(outfit.lookType);
 	#endif
 
 	if (outfit.lookType != 0) {

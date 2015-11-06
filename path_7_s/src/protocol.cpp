@@ -30,7 +30,7 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 	if (!m_rawMessages) {
 		msg->writeMessageLength();
 
-		#ifdef _PROTOCOL_77
+		#ifdef _PROTOCOL77
 			if (m_encryptionEnabled) {
 				XTEA_encrypt(*msg);
 				msg->addCryptoHeader();
@@ -41,7 +41,7 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
-	#ifdef _PROTOCOL_77
+	#ifdef _PROTOCOL77
 		if (m_encryptionEnabled && !XTEA_decrypt(msg)) {
 			return;
 		}

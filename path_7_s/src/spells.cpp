@@ -371,9 +371,9 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 
 Spell::Spell()
 {
-	spellId = 0;
 	level = 0;
 	magLevel = 0;
+	levelPercent = 0;
 	mana = 0;
 	manaPercent = 0;
 	soul = 0;
@@ -438,16 +438,16 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 	}
 
 	pugi::xml_attribute attr;
-	if ((attr = node.attribute("spellid"))) {
-		spellId = pugi::cast<uint16_t>(attr.value());
-	}
-
 	if ((attr = node.attribute("lvl"))) {
 		level = pugi::cast<uint32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("maglv"))) {
+	if ((attr = node.attribute("maglv")) || (attr = node.attribute("magiclevel"))) {
 		magLevel = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("levelpercent")) || (attr = node.attribute("lvlpercent"))) {
+		levelPercent = pugi::cast<int32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("mana"))) {
@@ -458,7 +458,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		manaPercent = pugi::cast<uint32_t>(attr.value());
 	}
 
-	#ifdef _PROTOCOL_76
+	#ifdef _PROTOCOL76
 		if ((attr = node.attribute("soul"))) {
 			soul = pugi::cast<uint32_t>(attr.value());
 		}
@@ -872,6 +872,10 @@ uint32_t Spell::getManaCost(const Player* player) const
 	if (manaPercent != 0) {
 		uint32_t maxMana = player->getMaxMana();
 		uint32_t manaCost = (maxMana * manaPercent) / 100;
+		return manaCost;
+	}
+	else if(levelPercent != 0) {;
+		int32_t manaCost = (player->getLevel() * levelPercent) / 100;
 		return manaCost;
 	}
 

@@ -1309,6 +1309,25 @@ Thing* Tile::getThing(size_t index) const
 	return nullptr;
 }
 
+uint32_t Tile::getHeight() const
+{
+	uint32_t height = 0;
+	if(ground)
+		if(ground->hasProperty(HASHEIGHT))
+			++height;
+
+	if(const TileItemVector* items = getItemList())
+	{
+		for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
+		{
+			if((*it)->hasProperty(HASHEIGHT))
+				++height;
+		}
+	}
+
+	return height;
+}
+
 void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link /*= LINK_OWNER*/)
 {
 	SpectatorVec list;
