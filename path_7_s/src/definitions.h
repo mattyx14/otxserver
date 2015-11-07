@@ -34,19 +34,19 @@
 	#define CLIENT_VERSION_MAX 772
 	#define CLIENT_VERSION_STR "7.72"
 	#define ITEMS_PATH "772"
-	#define OTB_VERSION 2
+	#define CLIENT_VERSION_ITEMS 3
 #elif defined(_PROTOCOL76)
 	#define CLIENT_VERSION_MIN 760
 	#define CLIENT_VERSION_MAX 760
 	#define CLIENT_VERSION_STR "7.60"
 	#define ITEMS_PATH "760"
-	#define OTB_VERSION 2
+	#define CLIENT_VERSION_ITEMS 3
 #else
 	#define CLIENT_VERSION_MIN 740
 	#define CLIENT_VERSION_MAX 740
 	#define CLIENT_VERSION_STR "7.40"
 	#define ITEMS_PATH "740"
-	#define OTB_VERSION 1
+	#define CLIENT_VERSION_ITEMS 1
 #endif
 
 #ifndef __FUNCTION__
