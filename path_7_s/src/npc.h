@@ -139,7 +139,6 @@ class Npc final : public Creature
 		}
 
 		void doSay(const std::string& text);
-		void doSayToPlayer(Player* player, const std::string& text);
 
 		void doMoveTo(const Position& pos);
 

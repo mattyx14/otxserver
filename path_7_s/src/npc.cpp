@@ -317,14 +317,6 @@ void Npc::doSay(const std::string& text)
 	g_game.internalCreatureSay(this, TALKTYPE_SAY, text, false);
 }
 
-void Npc::doSayToPlayer(Player* player, const std::string& text)
-{
-	if (player) {
-		//player->sendCreatureSay(this, TALKTYPE_PRIVATE, text);
-		//player->onCreatureSay(this, TALKTYPE_PRIVATE, text);
-	}
-}
-
 bool Npc::getNextStep(Direction& dir, uint32_t& flags)
 {
 	if (Creature::getNextStep(dir, flags)) {
@@ -528,14 +520,6 @@ int NpcScriptInterface::luaActionSay(lua_State* L)
 	}
 
 	const std::string& text = getString(L, 1);
-	if (lua_gettop(L) >= 2) {
-		Player* target = getPlayer(L, 2);
-		if (target) {
-			npc->doSayToPlayer(target, text);
-			return 0;
-		}
-	}
-
 	npc->doSay(text);
 	return 0;
 }

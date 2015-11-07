@@ -708,6 +708,9 @@ void Player::addStorageValue(const uint32_t key, const int32_t value, const bool
 
 		storageMap[key] = value;
 
+		if (!isLogin) {
+			// sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your questlog has been updated.");
+		}
 	} else {
 		storageMap.erase(key);
 	}

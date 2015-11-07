@@ -48,7 +48,6 @@
 #include "connection.h"
 #include "events.h"
 #include "databasetasks.h"
-#include "definitions.h"
 
 extern ConfigManager g_config;
 extern Actions* g_actions;

@@ -291,7 +291,7 @@ class Tile : public Cylinder
 		}
 
 		bool hasHeight(uint32_t n) const;
-		uint32_t getHeight() const;
+		// uint32_t getHeight() const;
 
 		std::string getDescription(int32_t lookDistance) const final;
 

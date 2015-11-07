@@ -463,15 +463,15 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 
 	const CreatureVector* creatures = tile->getCreatures();
 	if (creatures) {
-		for (auto it = creatures->begin(); it != creatures->end(); ++it) {
-			if (!player->canSeeCreature(*it)) {
+		for (const Creature* creature : boost::adaptors::reverse(*creatures)) {
+			if (!player->canSeeCreature(creature)) {
 				continue;
 			}
 
 			bool known;
 			uint32_t removedKnown;
-			checkCreatureAsKnown((*it)->getID(), known, removedKnown);
-			AddCreature(msg, *it, known, removedKnown);
+			checkCreatureAsKnown(creature->getID(), known, removedKnown);
+			AddCreature(msg, creature, known, removedKnown);
 
 			if (++count == 10) {
 				return;
@@ -1377,6 +1377,7 @@ void ProtocolGame::sendAddTileItem(const Position& pos, uint32_t stackpos, const
 	NetworkMessage msg;
 	msg.addByte(0x6A);
 	msg.addPosition(pos);
+	msg.addByte(stackpos);
 	msg.addItem(item);
 	writeToOutputBuffer(msg);
 }
@@ -1448,6 +1449,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 		NetworkMessage msg;
 		msg.addByte(0x6A);
 		msg.addPosition(pos);
+		msg.addByte(stackpos);
 
 		bool known;
 		uint32_t removedKnown;
