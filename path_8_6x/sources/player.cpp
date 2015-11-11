@@ -5036,7 +5036,7 @@ void Player::manageAccount(const std::string &text)
 					for(VocationsMap::iterator it = Vocations::getInstance()->getFirstVocation(); it != Vocations::getInstance()->getLastVocation(); ++it)
 					{
 						if(it->first == it->second->getFromVocation() && it->first != 0)
-							vocations.push_back(it->second->getName());
+							vocations.push_back(asLowerCaseString(it->second->getName());
 					}
 
 					msg << "What would you like to be... ";
@@ -5082,7 +5082,7 @@ void Player::manageAccount(const std::string &text)
 					}
 				}
 
-				if(msg.str().length() == 17)
+				if(msg.str().length() == NULL)
 					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
