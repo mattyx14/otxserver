@@ -106,14 +106,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	std::string name = msg.getString(), password = msg.getString();
 	if(name.empty())
 	{
-		if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER))
-		{
-			disconnectClient(0x0A, "Invalid account name.");
-			return;
-		}
-
-		name = "1";
-		password = "1";
+		name = "10";
 	}
 
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
@@ -254,7 +247,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 		//Add char list
 		output->put<char>(0x64);
-		if(account.name == "10" & account.name != "0")
+		if(account.name == "10" && account.name != "0")
 		{
 			PlayerVector players;
 			for(AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
