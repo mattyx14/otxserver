@@ -1142,30 +1142,34 @@ int32_t Tile::getThingIndex(const Thing* thing) const
 	return -1;
 }
 
-int32_t Tile::getClientIndexOfCreature(const Player* player, const Creature* creature) const
+uint32_t Tile::getHeight() const
 {
-	int32_t n;
-	if (ground) {
-		n = 1;
-	} else {
-		n = 0;
+	uint32_t height = 0;
+	if (ground)
+	{
+		if (ground->hasProperty(HASHEIGHT))
+		{
+			++height;
+		}
 	}
 
-	const TileItemVector* items = getItemList();
-	if (items) {
-		n += items->getTopItemCount();
-	}
-
-	if (const CreatureVector* creatures = getCreatures()) {
-		for (const Creature* c : boost::adaptors::reverse(*creatures)) {
-			if (c == creature) {
-				return n;
-			} else if (player->canSeeCreature(c)) {
-				++n;
+	if (const TileItemVector* items = getItemList())
+	{
+		for (ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
+		{
+			if ((*it)->hasProperty(HASHEIGHT))
+			{
+				++height;
 			}
 		}
 	}
-	return -1;
+
+	return height;
+}
+
+int32_t Tile::getClientIndexOfCreature(const Player* player, const Creature* creature) const
+{
+	return getThingIndex(thing);
 }
 
 int32_t Tile::getStackposOfCreature(const Player* player, const Creature* creature) const
@@ -1308,27 +1312,6 @@ Thing* Tile::getThing(size_t index) const
 	}
 	return nullptr;
 }
-
-/*
-uint32_t Tile::getHeight() const
-{
-	uint32_t height = 0;
-	if(ground)
-		if(ground->hasProperty(HASHEIGHT))
-			++height;
-
-	if(const TileItemVector* items = getItemList())
-	{
-		for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
-		{
-			if((*it)->hasProperty(HASHEIGHT))
-				++height;
-		}
-	}
-
-	return height;
-}
-*/
 
 void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link /*= LINK_OWNER*/)
 {

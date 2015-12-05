@@ -1335,7 +1335,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(PlayerFlag_IgnoredByMonsters)
 	registerEnum(PlayerFlag_NotGainInFight)
 	registerEnum(PlayerFlag_HasInfiniteMana)
+	#ifdef _PROTOCOL76
 	registerEnum(PlayerFlag_HasInfiniteSoul)
+	#endif
 	registerEnum(PlayerFlag_HasNoExhaustion)
 	registerEnum(PlayerFlag_CannotUseSpells)
 	registerEnum(PlayerFlag_CannotPickupItem)

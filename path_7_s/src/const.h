@@ -349,7 +349,9 @@ enum PlayerFlags : uint64_t {
 	PlayerFlag_IgnoredByMonsters = 1 << 8,
 	PlayerFlag_NotGainInFight = 1 << 9,
 	PlayerFlag_HasInfiniteMana = 1 << 10,
+	#ifdef _PROTOCOL76
 	PlayerFlag_HasInfiniteSoul = 1 << 11,
+	#endif
 	PlayerFlag_HasNoExhaustion = 1 << 12,
 	PlayerFlag_CannotUseSpells = 1 << 13,
 	PlayerFlag_CannotPickupItem = 1 << 14,
