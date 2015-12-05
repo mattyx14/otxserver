@@ -2,9 +2,9 @@
 <globalevents>
 	<globalevent type="startup" name="ServerStartup" script="startup.lua" />
 	<globalevent type="record" name="PlayerRecord" script="record.lua" />
-
-	<!-- Custom -->
-	<!-- <globalevent name="timer_example" time="12:00:00" script="my_script.lua" /> -->
-	<globalevent name="Server Save" interval="900000" script="serversave.lua"/>
+	<globalevent name="Server Save" time="09:55:00" script="serversave.lua" />
+	<!--
+	<globalevent name="timer_example" time="12:00:00" script="my_script.lua" />
 	<globalevent name="ddos" interval="10000" script="ddos.lua"/>
+	-->
 </globalevents>
