@@ -26,6 +26,7 @@
 #include "game.h"
 #include "pugicast.h"
 #include "spells.h"
+#include "rewardchest.h"
 
 extern Game g_game;
 extern Spells* g_spells;
@@ -317,8 +318,21 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			openContainer = container;
 		}
 
+		//reward chest
+		if (container->getRewardChest()) {
+			RewardChest* myRewardChest = player->getRewardChest();
+			myRewardChest->setParent(container->getParent()->getTile());
+			for (auto& it : player->rewardMap) {
+				it.second->setParent(myRewardChest);
+			}
+
+			openContainer = myRewardChest;
+		}
+
 		uint32_t corpseOwner = container->getCorpseOwner();
-		if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
+		if (container->isRewardCorpse()) {
+			openContainer = player->getRewardCorpse(container);
+		} else if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
 			return RETURNVALUE_YOUARENOTTHEOWNER;
 		}
 

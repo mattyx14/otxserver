@@ -170,6 +170,14 @@ Player::~Player()
 		it.second->decrementReferenceCounter();
 	}
 
+	for (const auto& it : rewardMap) {
+		it.second->decrementReferenceCounter();
+	}
+
+	for (auto& it : rewardCorpses) {
+		it.second->decrementReferenceCounter();
+	}
+
 	inbox->decrementReferenceCounter();
 
 	setWriteItem(nullptr);
@@ -923,6 +931,71 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	depotLocker->internalAddThing(getDepotChest(depotId, true));
 	depotLockerMap[depotId] = depotLocker;
 	return depotLocker;
+}
+
+RewardChest* Player::getRewardChest()
+{
+	if (rewardChest != nullptr) {
+		return rewardChest;
+	}
+
+	rewardChest = new RewardChest(ITEM_REWARD_CHEST);
+	return rewardChest;
+}
+
+Container* Player::getRewardCorpse(Container* _corpse) 
+{
+	Container* corpse;
+	int32_t id = _corpse->getIntAttr(ITEM_ATTRIBUTE_DATE);
+	auto it = rewardCorpses.find(id);
+	if (it == rewardCorpses.end()) {
+		corpse = new Container(_corpse->getID(), _corpse->capacity());
+		corpse->setParent(_corpse->getParent()->getTile());
+		corpse->incrementReferenceCounter();
+		if (Reward* reward = getReward(id, false)) {
+			corpse->internalAddThing(reward);
+			reward->setParent(corpse);
+		}
+
+		rewardCorpses[id] = corpse;
+	}
+	else {
+		corpse = it->second;
+	}
+	return corpse;
+}
+
+Reward* Player::getReward(uint32_t rewardId, bool autoCreate)
+{
+	auto it = rewardMap.find(rewardId);
+	if (it != rewardMap.end()) {
+		return it->second;
+	}
+
+	if (!autoCreate) {
+		return nullptr;
+	}
+
+	Reward* reward = new Reward();
+	reward->incrementReferenceCounter();
+	reward->setIntAttr(ITEM_ATTRIBUTE_DATE, rewardId);
+	rewardMap[rewardId] = reward;
+
+	getRewardChest()->internalAddThing(reward);
+
+	return reward;
+}
+
+void Player::removeReward(uint32_t rewardId) {
+	rewardMap.erase(rewardId);
+}
+
+std::vector<uint32_t> Player::getRewardList() {
+	std::vector<uint32_t> list;
+	for (auto& it : rewardMap) {
+		list.push_back(it.first);
+	}
+	return list;
 }
 
 void Player::sendCancelMessage(ReturnValue message) const
