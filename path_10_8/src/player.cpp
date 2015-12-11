@@ -154,6 +154,8 @@ Player::Player(ProtocolGame_ptr p) :
 	lastQuestlogUpdate = 0;
 
 	inventoryWeight = 0;
+
+	rewardChest = nullptr;
 }
 
 Player::~Player()
@@ -171,10 +173,6 @@ Player::~Player()
 	}
 
 	for (const auto& it : rewardMap) {
-		it.second->decrementReferenceCounter();
-	}
-
-	for (auto& it : rewardCorpses) {
 		it.second->decrementReferenceCounter();
 	}
 
@@ -943,28 +941,6 @@ RewardChest* Player::getRewardChest()
 	return rewardChest;
 }
 
-Container* Player::getRewardCorpse(Container* _corpse) 
-{
-	Container* corpse;
-	int32_t id = _corpse->getIntAttr(ITEM_ATTRIBUTE_DATE);
-	auto it = rewardCorpses.find(id);
-	if (it == rewardCorpses.end()) {
-		corpse = new Container(_corpse->getID(), _corpse->capacity());
-		corpse->setParent(_corpse->getParent()->getTile());
-		corpse->incrementReferenceCounter();
-		if (Reward* reward = getReward(id, false)) {
-			corpse->internalAddThing(reward);
-			reward->setParent(corpse);
-		}
-
-		rewardCorpses[id] = corpse;
-	}
-	else {
-		corpse = it->second;
-	}
-	return corpse;
-}
-
 Reward* Player::getReward(uint32_t rewardId, bool autoCreate)
 {
 	auto it = rewardMap.find(rewardId);
@@ -981,7 +957,7 @@ Reward* Player::getReward(uint32_t rewardId, bool autoCreate)
 	reward->setIntAttr(ITEM_ATTRIBUTE_DATE, rewardId);
 	rewardMap[rewardId] = reward;
 
-	getRewardChest()->internalAddThing(reward);
+	g_game.internalAddItem(getRewardChest(), reward, INDEX_WHEREEVER, FLAG_NOLIMIT);
 
 	return reward;
 }

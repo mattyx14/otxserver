@@ -186,7 +186,7 @@ function Player:onMoveItem(item, count, fromPosition, toPosition)
 		end
 		local itemId = container:getId()
 		-- Do not let the player insert items into either the Reward Container or the Reward Chest
-		if itemId == 21518 or itemId == 21584 then
+		if itemId == ITEM_REWARD_CONTAINER or itemId == ITEM_REWARD_CHEST then
 			self:sendCancelMessage('Sorry, not possible.')
 			return false
 		end
@@ -198,6 +198,12 @@ function Player:onMoveItem(item, count, fromPosition, toPosition)
 				return false
 			end
 		end
+	end
+
+	-- Do not let the player move the boss corpse.
+	if item:getAttribute(ITEM_ATTRIBUTE_CORPSEOWNER) == 2^31 - 1 then
+		self:sendCancelMessage('Sorry, not possible.')
+		return false
 	end
 
 	return true
