@@ -3449,6 +3449,11 @@ void Player::onAttackedCreature(Creature* target)
 {
 	Creature::onAttackedCreature(target);
 
+	// Fix avoid pz in pvp zones
+	if (target && target->getZone() == ZONE_PVP) {
+		return;
+	}
+
 	if (target == this) {
 		addInFightTicks();
 		return;
