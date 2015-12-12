@@ -75,6 +75,7 @@
 	- Fix correct calculation method for skill spells
 	- Fix mounts and outfits names - atributes
 	- Fix bug with pvp zone
+	- Fix groups.xml
 	- Update items.xml
 	- Support 10.82 - 10.90
 ]
