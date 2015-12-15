@@ -279,22 +279,6 @@ void Spectators::sendCreatureChannelSay(const Creature* creature, MessageClasses
 	if(!owner)
 		return;
 
-	int32_t muted = 0;
-	bool mute = player->isMuted(channelId, type, muted);
-	if(muted && mute)
-	{
-		if(muted > 0)
-		{
-			char buffer[75];
-			sprintf(buffer, "You are still muted for %d seconds.", muted);
-			player->sendTextMessage(MSG_STATUS_SMALL, buffer);
-		}
-		else
-			player->sendTextMessage(MSG_STATUS_SMALL, "You are muted permanently.");
-
-		return false;
-	}
-
 	owner->sendCreatureChannelSay(creature, type, text, channelId, statementId);
 	PrivateChatChannel* tmp = g_chat.getPrivateChannel(owner->getPlayer());
 	if(!tmp || tmp->getId() != channelId)
