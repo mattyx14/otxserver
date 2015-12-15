@@ -2391,6 +2391,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	msg.addByte(0x00); // expert mode button enabled
 
 	msg.addString("http://static.tibia.com/images/store/");
+	msg.addByte(0x19);
 	msg.addByte(g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND));
 
 	writeToOutputBuffer(msg);
@@ -2662,7 +2663,7 @@ void ProtocolGame::sendOutfitWindow()
 			outfit.lookType,
 			addons
 		);
-		if (protocolOutfits.size() == 50) { // Game client doesn't allow more than 50 outfits
+		if (protocolOutfits.size() == 100) { // Game client doesn't allow more than 100 outfits
 			break;
 		}
 	}
