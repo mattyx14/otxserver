@@ -37,7 +37,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients (7.4 - WIP) 8.6 to 10.82
+		Tibia Clients - 8.6 to 10.90 - (7.4 - WIP)
 
 	TODO WITH OPTIONAL (MODAL DIALOGS)
 		COMMANDS:
@@ -59,17 +59,26 @@
 			- Look Display
 ]
 
-[ OTX Server 3.2 Version - ""
+[ OTX Server 3.2 Version - "The Second"
 	- Added Monster Spawn event
-	- Added DDoS protection -- no complete
+	- Added DDoS protection (no complete)
 	- Added Advance Save
+	- Added swing distance weapons
+	- Added boss Reward (no complete)
 	- Enable monster passive behavior
 	- Fix editing house
 	- Fix effect debug
-	- Remove experience stages.xml - Check "data\events\scripts\player.lua"
-		Move experience stages to Lua events. 
-		Enable stages for skills and magic level
-		Apply bonus experience for low level players
+	- Fix spells on 8.x
+	- Fix use correct block type for ethereal spells
+	- Fix ladder dont work with fresh corpse
+	- Fix math.random on startup
+	- Fix correct calculation method for skill spells
+	- Fix mounts and outfits names - atributes
+	- Fix bug with pvp zone
+	- Fix groups.xml
+	- Fix limit outfits
+	- Update items.xml
+	- Support 10.82 - 10.90
 ]
 
 [ OTX Server 3.1 Version - "BOOM"

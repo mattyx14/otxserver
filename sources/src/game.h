@@ -458,6 +458,9 @@ class Game
 			return lightHour;
 		}
 
+		bool loadExperienceStages();
+		uint64_t getExperienceStage(uint32_t level);
+
 		void loadMotdNum();
 		void saveMotdNum() const;
 		const std::string& getMotdHash() const { return motdHash; }

@@ -125,6 +125,7 @@ class Weapon : public Event
 		bool enabled;
 		bool premium;
 		bool wieldUnproperly;
+		bool swing;
 
 	private:
 		void decrementItemCount(Item* item) const;

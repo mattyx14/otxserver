@@ -23,14 +23,14 @@
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "2"
-#define REVISION_VERSION ""
-#define SOFTWARE_CODENAME ""
+#define REVISION_VERSION "-"
+#define SOFTWARE_CODENAME "The Second"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
-#define MAIN_FORUM "http://www.blacktibia.org/f19-otx-server-3"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
-#define CLIENT_VERSION_MIN 1080
-#define CLIENT_VERSION_MAX 1082
-#define CLIENT_VERSION_STR "10.82"
+#define CLIENT_VERSION_MIN 1090
+#define CLIENT_VERSION_MAX 1090
+#define CLIENT_VERSION_STR "10.90"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

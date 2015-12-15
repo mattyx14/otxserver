@@ -265,7 +265,7 @@ ScriptEnvironment LuaScriptInterface::m_scriptEnv[16];
 int32_t LuaScriptInterface::m_scriptEnvIndex = -1;
 
 LuaScriptInterface::LuaScriptInterface(std::string interfaceName)
-	: m_luaState(nullptr), m_interfaceName(interfaceName), m_eventTableRef(-1)
+	: m_luaState(nullptr), m_interfaceName(interfaceName), m_eventTableRef(-1), m_runningEventId(EVENT_ID_USER)
 {
 	if (!g_luaEnvironment.getLuaState()) {
 		g_luaEnvironment.initState();
@@ -1400,6 +1400,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_ATTRIBUTE_DOORID)
 
 	registerEnum(ITEM_TYPE_DEPOT)
+	registerEnum(ITEM_TYPE_REWARDCHEST)
 	registerEnum(ITEM_TYPE_MAILBOX)
 	registerEnum(ITEM_TYPE_TRASHHOLDER)
 	registerEnum(ITEM_TYPE_CONTAINER)
@@ -1412,6 +1413,8 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnum(ITEM_BAG)
 	registerEnum(ITEM_GOLD_COIN)
+	registerEnum(ITEM_REWARD_CHEST)
+	registerEnum(ITEM_REWARD_CONTAINER)
 	registerEnum(ITEM_PLATINUM_COIN)
 	registerEnum(ITEM_CRYSTAL_COIN)
 	registerEnum(ITEM_AMULETOFLOSS)
@@ -1794,6 +1797,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getPlayers", LuaScriptInterface::luaGameGetPlayers);
 	registerMethod("Game", "loadMap", LuaScriptInterface::luaGameLoadMap);
 
+	registerMethod("Game", "getExperienceStage", LuaScriptInterface::luaGameGetExperienceStage);
 	registerMethod("Game", "getMonsterCount", LuaScriptInterface::luaGameGetMonsterCount);
 	registerMethod("Game", "getPlayerCount", LuaScriptInterface::luaGameGetPlayerCount);
 	registerMethod("Game", "getNpcCount", LuaScriptInterface::luaGameGetNpcCount);
@@ -1974,6 +1978,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "getAttribute", LuaScriptInterface::luaItemGetAttribute);
 	registerMethod("Item", "setAttribute", LuaScriptInterface::luaItemSetAttribute);
 	registerMethod("Item", "removeAttribute", LuaScriptInterface::luaItemRemoveAttribute);
+	registerMethod("Item", "serializeAttributes", LuaScriptInterface::luaItemSerializeAttributes);
 
 	registerMethod("Item", "moveTo", LuaScriptInterface::luaItemMoveTo);
 	registerMethod("Item", "transform", LuaScriptInterface::luaItemTransform);
@@ -2100,6 +2105,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "setCapacity", LuaScriptInterface::luaPlayerSetCapacity);
 
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
+
+	registerMethod("Player", "getReward", LuaScriptInterface::luaPlayerGetReward);
+	registerMethod("Player", "removeReward", LuaScriptInterface::luaPlayerRemoveReward);
+	registerMethod("Player", "getRewardList", LuaScriptInterface::luaPlayerGetRewardList);
 
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
 	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
@@ -2461,6 +2470,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("MonsterType", "isPassive", LuaScriptInterface::luaMonsterTypeIsHostile);
 	registerMethod("MonsterType", "isPushable", LuaScriptInterface::luaMonsterTypeIsPushable);
 	registerMethod("MonsterType", "isHealthShown", LuaScriptInterface::luaMonsterTypeIsHealthShown);
+	registerMethod("MonsterType", "isRewardBoss", LuaScriptInterface::luaMonsterTypeIsRewardBoss);
 
 	registerMethod("MonsterType", "canPushItems", LuaScriptInterface::luaMonsterTypeCanPushItems);
 	registerMethod("MonsterType", "canPushCreatures", LuaScriptInterface::luaMonsterTypeCanPushCreatures);
@@ -4128,6 +4138,14 @@ int LuaScriptInterface::luaGameLoadMap(lua_State* L)
 	const std::string& path = getString(L, 1);
 	g_dispatcher.addTask(createTask(std::bind(&Game::loadMap, &g_game, path)));
 	return 0;
+}
+
+int LuaScriptInterface::luaGameGetExperienceStage(lua_State* L)
+{
+	// Game.getExperienceStage(level)
+	uint32_t level = getNumber<uint32_t>(L, 1);
+	lua_pushnumber(L, g_game.getExperienceStage(level));
+	return 1;
 }
 
 int LuaScriptInterface::luaGameGetMonsterCount(lua_State* L)
@@ -6201,6 +6219,24 @@ int LuaScriptInterface::luaItemRemoveAttribute(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaItemSerializeAttributes(lua_State* L)
+{
+	// item:serializeAttributes()
+	Item* item = getUserdata<Item>(L, 1);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	PropWriteStream propWriteStream;
+	item->serializeAttr(propWriteStream);
+
+	size_t attributesSize;
+	const char* attributes = propWriteStream.getStream(attributesSize);
+	lua_pushlstring(L, attributes, attributesSize);
+	return 1;
+}
+
 int LuaScriptInterface::luaItemMoveTo(lua_State* L)
 {
 	// item:moveTo(position or cylinder)
@@ -7612,6 +7648,62 @@ int LuaScriptInterface::luaPlayerGetFreeCapacity(lua_State* L)
 		lua_pushnumber(L, player->getFreeCapacity());
 	} else {
 		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetReward(lua_State* L)
+{
+	// player:getReward(rewardId[, autoCreate = false])
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t rewardId = getNumber<uint32_t>(L, 2);
+	bool autoCreate = getBoolean(L, 3, false);	
+	if (Reward* reward = player->getReward(rewardId, autoCreate)) {
+		pushUserdata<Item>(L, reward);
+		setItemMetatable(L, -1, reward);
+	}
+	else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerRemoveReward(lua_State* L)
+{
+	// player:removeReward(rewardId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t rewardId = getNumber<uint32_t>(L, 2);
+	player->removeReward(rewardId);
+	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetRewardList(lua_State* L)
+{
+	// player:getRewardList(rewardId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	auto rewardVec = player->getRewardList();
+	lua_createtable(L, rewardVec.size(), 0);
+
+	int index = 0;
+	for (const auto& rewardId : rewardVec) {
+		lua_pushnumber(L, rewardId);
+		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
 }
@@ -11414,6 +11506,19 @@ int LuaScriptInterface::luaMonsterTypeIsHealthShown(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaMonsterTypeIsRewardBoss(lua_State* L)
+{
+	// monsterType:isRewardBoss()
+	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
+	if (monsterType) {
+		pushBoolean(L, monsterType->isRewardBoss);
+	}
+	else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaScriptInterface::luaMonsterTypeCanPushItems(lua_State* L)
 {
 	// monsterType:canPushItems()
@@ -11646,7 +11751,7 @@ int LuaScriptInterface::luaMonsterTypeGetLoot(lua_State* L)
 
 		int index = 0;
 		for (const auto& lootBlock : lootList) {
-			lua_createtable(L, 0, 7);
+			lua_createtable(L, 0, 8);
 
 			setField(L, "itemId", lootBlock.id);
 			setField(L, "chance", lootBlock.chance);
@@ -11654,6 +11759,8 @@ int LuaScriptInterface::luaMonsterTypeGetLoot(lua_State* L)
 			setField(L, "maxCount", lootBlock.countmax);
 			setField(L, "actionId", lootBlock.actionId);
 			setField(L, "text", lootBlock.text);
+			pushBoolean(L, lootBlock.unique);
+			lua_setfield(L, -2, "unique");
 
 			parseLoot(lootBlock.childLoot);
 			lua_setfield(L, -2, "childLoot");
