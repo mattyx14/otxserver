@@ -28,7 +28,6 @@
 class Container;
 class DepotChest;
 class DepotLocker;
-class RewardChest;
 class Reward;
 
 class ContainerIterator
@@ -73,19 +72,6 @@ class Container : public Item, public Cylinder
 			return nullptr;
 		}
 		virtual const DepotLocker* getDepotLocker() const {
-			return nullptr;
-		}
-
-		virtual RewardChest* getRewardChest() {
-			return nullptr;
-		}
-		virtual const RewardChest* getRewardChest() const {
-			return nullptr;
-		}
-		virtual Reward* getReward() {
-			return nullptr;
-		}
-		virtual const Reward* getReward() const {
 			return nullptr;
 		}
 

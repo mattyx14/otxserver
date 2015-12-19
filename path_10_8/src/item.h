@@ -495,13 +495,6 @@ class Item : virtual public Thing
 			return getIntAttr(ITEM_ATTRIBUTE_CORPSEOWNER);
 		}
 
-		void setRewardCorpse() {
-			setCorpseOwner(static_cast<uint32_t>(std::numeric_limits<int32_t>::max()));
-		}
-		bool isRewardCorpse() {
-			return getCorpseOwner() == static_cast<uint32_t>(std::numeric_limits<int32_t>::max());
-		}
-
 		void setDuration(int32_t time) {
 			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
 		}
