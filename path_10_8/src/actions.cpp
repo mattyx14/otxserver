@@ -317,16 +317,6 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			openContainer = container;
 		}
 
-		//reward container proxy created when the boss dies
-		if (container->getID() == ITEM_REWARD_CONTAINER && !container->getReward()) {
-			if (Reward* reward = player->getReward(container->getIntAttr(ITEM_ATTRIBUTE_DATE), false)) {
-				reward->setParent(container->getRealParent());
-				openContainer = reward;
-			} else {
-				return RETURNVALUE_THISISIMPOSSIBLE; 
-			}
-		}
-
 		uint32_t corpseOwner = container->getCorpseOwner();
 		if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
 			return RETURNVALUE_YOUARENOTTHEOWNER;

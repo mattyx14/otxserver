@@ -154,8 +154,6 @@ Player::Player(ProtocolGame_ptr p) :
 	lastQuestlogUpdate = 0;
 
 	inventoryWeight = 0;
-
-	rewardChest = nullptr;
 }
 
 Player::~Player()

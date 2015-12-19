@@ -28,7 +28,6 @@
 class Container;
 class DepotChest;
 class DepotLocker;
-class Reward;
 
 class ContainerIterator
 {
