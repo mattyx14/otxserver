@@ -8038,6 +8038,9 @@
 	</item>
 	<item id="4840" article="a" name="witches' cap spot">
 		<attribute key="weight" value="100" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="duration" value="86400" />
+		<attribute key="showduration" value="1" />
 	</item>
 	<item id="4842" article="an" name="old parchment">
 		<attribute key="description" value="It is covered with foreign symbols." />
@@ -8646,6 +8649,7 @@
 		<attribute key="description" value="Enables underwater exploration." />
 		<attribute key="armor" value="2" />
 		<attribute key="slotType" value="head" />
+		<attribute key="suppressdrown" value="1" />
 		<attribute key="absorbPercentDrown" value="100" />
 	</item>
 	<item id="5462" name="pirate boots">
@@ -9073,6 +9077,8 @@
 	</item>
 	<item id="5730" name="" />
 	<item id="5731" article="a" name="hole">
+		<attribute key="decayTo" value="22674" />
+		<attribute key="duration" value="20" />
 		<attribute key="floorchange" value="down" />
 	</item>
 	<item id="5732" article="a" name="closed door">
@@ -12000,11 +12006,15 @@
 	</item>
 	<item id="7184" article="a" name="baby seal doll">
 		<attribute key="weight" value="850" />
+		<attribute key="decayTo" value="7183" />
+		<attribute key="duration" value="5" />
 	</item>
 	<item id="7185" article="a" name="small crack in the ice">
 		<attribute key="description" value="This would be a good place to destroy the ice." />
 	</item>
-	<item id="7186" article="a" name="big crack in the ice" />
+	<item id="7186" article="a" name="big crack in the ice">
+		<attribute key="description" value="Now the ice passage is destroyed." />
+	</item>
 	<item fromid="7187" toid="7188" article="a" name="raft" />
 	<item id="7189" article="a" name="stone shelf">
 		<attribute key="containerSize" value="6" />
@@ -13212,7 +13222,10 @@
 	</item>
 	<item id="7584" article="a" name="ship cabin wall" />
 	<item id="7585" article="a" name="spider egg" />
-	<item id="7586" name="the remains of a spider egg" />
+	<item id="7586" name="the remains of a spider egg">
+		<attribute key="decayTo" value="7585" />
+		<attribute key="duration" value="180" />
+	</item>
 	<item id="7587" article="a" name="bag">
 		<attribute key="weight" value="40000" />
 		<attribute key="description" value="It contains Ahmet's stolen property." />
@@ -14899,7 +14912,7 @@
 	<item fromid="8060" toid="8061" name="" />
 	<item id="8062" article="a" name="poison gas" editorsuffix=" (Slime Corpse)">
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="2" />
+		<attribute key="duration" value="3" />
 	</item>
 	<item fromid="8063" toid="8071" name="" />
 	<item id="8072" article="a" name="yellow pillow">
@@ -15355,6 +15368,8 @@
 	<item id="8582" article="a" name="branch">
 		<attribute key="description" value="Push it back to Zirella by holding the left mousebutton down on it and pushing it over the grass." />
 		<attribute key="weight" value="100000" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="duration" value="120" />
 	</item>
 	<item id="8583" article="a" name="dead tree">
 		<attribute key="description" value="It is one of those Zirella mentioned. Rightclick it and select 'Use' to break a branch from it." />
@@ -15426,7 +15441,10 @@
 	<item fromid="8625" toid="8626" article="a" name="dwarven statue" />
 	<item fromid="8627" toid="8630" article="a" name="bone" />
 	<item id="8631" article="a" name="burning wall" />
-	<item id="8632" article="a" name="water vortex" />
+	<item id="8632" article="a" name="water vortex">
+		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="watersplash" />
+	</item>
 	<item fromid="8633" toid="8636" article="a" name="large crystal" />
 	<item fromid="8637" toid="8640" article="a" name="crystal" />
 	<item fromid="8641" toid="8642" article="a" name="crucible" />
@@ -16445,7 +16463,9 @@
 		<attribute key="weight" value="1000" />
 	</item>
 	<item id="8983" article="a" name="heavily bound book">
-		<attribute key="description" value="It contains the scribings of many knowledgeable." />
+		<attribute key="description" value="It contains the scribings of many knowledgeable Tibians." />
+		<attribute key="writeable" value="1" />
+		<attribute key="maxTextLen" value="199" />
 		<attribute key="weight" value="7800" />
 	</item>
 	<item id="8984" article="an" name="abacus">
@@ -17699,7 +17719,7 @@
 		<attribute key="description" value="This one would be quite healthy if it wasn't for all the melted cheese on top." />
 		<attribute key="weight" value="1100" />
 	</item>
-	<item id="9998" article="a" name="filled jalapeño peppers">
+	<item id="9998" article="a" name="filled jalape?o peppers">
 		<attribute key="description" value="The creamy cheese makes a great combination with the spicy peppers." />
 		<attribute key="weight" value="650" />
 	</item>
@@ -17780,6 +17800,7 @@
 	<item id="10018" article="a" name="voodoo doll">
 		<attribute key="weight" value="650" />
 	</item>
+	<item id="10019" name="ocean floor" />
 	<item id="10020" article="a" name="dragon claw">
 		<attribute key="weight" value="1250" />
 	</item>
@@ -17881,6 +17902,7 @@
 		<attribute key="description" value="He talks, moves and sings just like a real person." />
 		<attribute key="weight" value="777" />
 	</item>
+	<item id="10065" name="iron floor" />
 	<item id="10066" article="a" name="dark essence">
 		<attribute key="weight" value="260" />
 	</item>
@@ -17939,7 +17961,7 @@
 		<attribute key="description" value="It contains the formula for the memory potion Eclesius invented." />
 		<attribute key="weight" value="110" />
 	</item>
-	<item fromid="10107" toid="10108" name="hand puppets">
+	<item fromid="10107" toid="10108" article="an" name="hand puppets">
 		<attribute key="description" value="They were awarded by the gods." />
 		<attribute key="weight" value="5" />
 	</item>
@@ -18986,6 +19008,11 @@
 	<item id="10611" article="a" name="snake skin">
 		<attribute key="weight" value="100" />
 	</item>
+	<item id="10612" article="a" name="slain ice golem">
+		<attribute key="decayTo" value="7283" />
+		<attribute key="duration" value="10" />
+		<attribute key="corpseType" value="undead" />
+	</item>
 	<item id="10613" name="plans for a strange device">
 		<attribute key="description" value="You should bring them to Spectulus in Edron." />
 		<attribute key="weight" value="250" />
@@ -19123,7 +19150,7 @@
 	<item id="10914" article="a" name="high grass" />
 	<item id="10915" article="a" name="high grass" />
 	<item id="10916" article="a" name="high grass" />
-	<item id="10917" article="a" name="solstice tree" />
+	<item id="10917" article="a" name="screaming cherry tree" />
 	<item fromid="10918" toid="10925" name="zaoan decoration" />
 	<item id="10926" article="a" name="flask of crown polisher">
 		<attribute key="description" value="Ideal to polish crowns." />
@@ -20162,8 +20189,8 @@
 	</item>
 	<item id="11395" article="a" name="crimson sword">
 		<attribute key="weight" value="3600" />
-		<attribute key="defense" value="20" />
-		<attribute key="attack" value="28" />
+		<attribute key="defense" value="10" />
+		<attribute key="attack" value="18" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="extradef" value="1" />
 	</item>
@@ -20266,10 +20293,24 @@
 	<item fromid="11549" toid="11560" name="acid" />
 	<item id="11561" name="mud" />
 	<item fromid="11562" toid="11570" name="dead bamboo" />
+	<item fromid="11571" toid="11604" article="a" name="giant verminous" />
 	<item fromid="11631" toid="11637" article="a" name="small mudpit" />
 	<item fromid="11647" toid="11649" article="a" name="sulphur puddle" />
+	<item fromid="11650" toid="11661" article="a" name="giant verminous" />
 	<item fromid="11662" toid="11666" article="a" name="sulphur puddle" />
+	<item fromid="11667" toid="11668" article="a" name="bitter calyx" />
+	<item fromid="11669" toid="11670" article="a" name="doomato" />
+	<item id="11671" article="a" name="witherstem" />
+	<item id="11672" article="a" name="carnivortex" />
+	<item id="11673" article="a" name="toxic tulip" />
+	<item id="11674" article="a" name="sprocketwhip" />
+	<item id="11676" article="a" name="wraithtongue" />
+	<item fromid="11677" toid="11678" article="a" name="acid foxglove" />
+	<item id="11679" article="a" name="dark delight" />
 	<item id="11683" article="a" name="dreadcoil" />
+	<item fromid="11691" toid="11693" article="a" name="giant dreadcoil" />
+	<item fromid="11694" toid="11695" article="a" name="giant verminous" />
+	<item id="11696" article="a" name="giant dreadcoil" />
 	<item id="11700" article="a" name="stone wall" />
 	<item id="11702" article="a" name="stone wall" />
 	<item fromid="11729" toid="11752" name="ground" />
@@ -20294,7 +20335,7 @@
 		<attribute key="decayTo" value="11756" />
 		<attribute key="duration" value="2" />
 	</item>
-	<item id="11759" name="branch" />
+	<item fromid="11759" toid="11760" article="a" name="branch" />
 	<item id="11773" article="a" name="bag of oriental spices">
 		<attribute key="description" value="Those spices were gathered all around the world." />
 		<attribute key="weight" value="1508" />
@@ -20305,6 +20346,9 @@
 		<attribute key="decayTo" value="11773" />
 		<attribute key="duration" value="2" />
 	</item>
+	<item fromid="11763" toid="11765" article="a" name="putrid growth" />
+	<item id="11766" article="" name="acid" />
+	<item fromid="11767" toid="11772" article="a" name="putrid growth" />
 	<item fromid="11775" toid="11778" name="ground" />
 	<item fromid="11785" toid="11792" name="muddy floor" />
 	<item fromid="11793" toid="11795" article="a" name="skull pillar" />
@@ -20355,6 +20399,8 @@
 	<item id="12013" article="a" name="pillar" />
 	<item fromid="12014" toid="12017" article="a" name="mystic floor lamp" />
 	<item id="12024" name="timbers" />
+	<item id="12030" name="jade ornaments" />
+	<item id="12032" name="jade ornaments" />
 	<item fromid="12039" toid="12040" article="a" name="well" />
 	<item fromid="12042" toid="12043" article="a" name="dragon fountain" />
 	<item fromid="12044" toid="12045" article="a" name="weapon's rack" />
@@ -20489,12 +20535,15 @@
 	</item>
 	<item fromid="12206" toid="12207" article="a" name="mirror" />
 	<item fromid="12208" toid="12211" article="a" name="wall lamp" />
+	<item id="12212" name="jade ornaments" />
 	<!-- Missing 12212 to 12214 -->
 	<item fromid="12215" toid="12218" article="a" name="banner" />
 	<item fromid="12219" toid="12220" article="a" name="tapestry" />
 	<item fromid="12221" toid="12227" article="a" name="dragon statue" />
 	<item fromid="12228" toid="12233" article="a" name="corrupted wall" />
+	<item fromid="12234" toid="12237" name="rutted stone" />
 	<item fromid="12266" toid="12271" article="a" name="sign" />
+	<item id="12272" name="dirt floor" />
 	<item id="12274" article="a" name="sign" />
 	<item id="12284" article="a" name="marked crate">
 		<attribute key="description" value="This crate has been marked with lizard symbols. It is large enough for a grown person to fit in." />
@@ -20525,6 +20574,7 @@
 		<attribute key="description" value="This chunk was cut from sacred wood in the temple complex and looks ideal for carving." />
 		<attribute key="weight" value="1000" />
 	</item>
+	<item id="12296" article="a" name="table" />
 	<item id="12297" name="sacred earth">
 		<attribute key="description" value="This clay has been dug from sacred ground." />
 		<attribute key="weight" value="1000" />
@@ -20534,6 +20584,7 @@
 		<attribute key="description" value="This clay has been mixed with sacred earth." />
 		<attribute key="weight" value="1000" />
 	</item>
+	<item id="12301" article="a" name="fire basin" />
 	<item id="12302" article="a" name="timber wall" />
 	<item id="12303" article="a" name="sacred bowl of purification">
 		<attribute key="description" value="This bowl was coated with sacred clay and can be used to purify small amounts of corrupted water." />
@@ -20558,7 +20609,8 @@
 	<item id="12321" article="a" name="ramp">
 		<attribute key="floorchange" value="north" />
 	</item>
-	<item id="12323" name="the tail of the Keeper">
+	<item id="12322" name="clay ground" />
+	<item id="12323" article="the" name="tail of the Keeper">
 		<attribute key="weight" value="450" />
 	</item>
 	<item id="12324" article="a" name="sceptre part">
@@ -20894,6 +20946,22 @@
 	<item id="12544" article="a" name="sweet mangonaise elixir">
 		<attribute key="description" value="It's said to have incredible effects if you drink it while wearing a magical ring with time limit." />
 		<attribute key="weight" value="300" />
+	</item>
+	<item id="12545" name="the dead glitterscale">
+		<attribute key="decayTo" value="3105" />
+		<attribute key="duration" value="60" />
+		<attribute key="corpseType" value="blood" />
+		<attribute key="fluidSource" value="blood" />
+	</item>
+	<item id="12546" name="the dead heoni">
+		<attribute key="decayTo" value="6304" />
+		<attribute key="duration" value="60" />
+		<attribute key="corpseType" value="blood" />
+		<attribute key="fluidSource" value="blood" />
+	</item>
+	<item id="12547" article="a" name="spider victim">
+		<attribute key="description" value="This poor guy has been wrapped up in spider silk." />
+		<attribute key="containerSize" value="10" />
 	</item>
 	<item id="12559" article="a" name="silver rune emblem">
 		<attribute key="description" value="It's an adorned ultimate healing rune." />
@@ -21550,6 +21618,7 @@
 	</item>
 	<item fromid="13134" toid="13142" article="a" name="giant cake" />
 	<item fromid="13143" toid="13144" article="a" name="tomb wall" />
+	<item id="13145" article="a" name="mountain" />
 	<item id="13158" name="handcrafted ribbon">
 		<attribute key="description" value="This ribbon was handcrafted by Rottin Wood and the Married Men of the forest." />
 		<attribute key="weight" value="50" />
