@@ -82,6 +82,12 @@
 	rateMagic = 3
 	rateSpawn = 1
 
+	-- Critical hits
+	-- NOTE: criticalChance and extraPercent are percentages, not absolute values.
+	-- extraPercent is the extra percentage of the damage to be added.
+	criticalChance = 1
+	criticalExtra = 100
+
 	-- Monsters
 	deSpawnRange = 2
 	deSpawnRadius = 50

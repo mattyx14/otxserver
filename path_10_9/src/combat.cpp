@@ -44,6 +44,18 @@ CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 	CombatDamage damage;
 	damage.origin = params.origin;
 	damage.primary.type = params.combatType;
+
+	double damageModifier = 1.0;
+	if (auto chance = g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE)) {
+		if (boolean_random(static_cast<double>(chance) / 100.0)) {
+			damageModifier += static_cast<double>(g_config.getNumber(ConfigManager::CRITICAL_HIT_EXTRA)) / 100.0;
+			std::cout << "Critical hit!" << std::endl;
+		}
+	}
+
+	auto mina = this->mina * damageModifier;
+	auto maxa = this->maxa * damageModifier;
+
 	if (formulaType == COMBAT_FORMULA_DAMAGE) {
 		damage.primary.value = normal_random(
 			static_cast<int32_t>(mina),

@@ -332,6 +332,13 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target, uint8_t shoo
 		}
 
 		int32_t damageModifier = 100;
+		if (auto chance = g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE)) {
+			if (boolean_random(static_cast<double>(chance) / 100.0)) {
+				damageModifier += g_config.getNumber(ConfigManager::CRITICAL_HIT_EXTRA);
+				std::cout << "Critical hit!" << std::endl;
+			}
+		}
+
 		if (player->getLevel() < getReqLevel()) {
 			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
 		}

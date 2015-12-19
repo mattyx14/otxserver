@@ -118,6 +118,8 @@ bool ConfigManager::load()
 	integer[STAIRHOP_DELAY] = getGlobalNumber(L, "stairJumpExhaustion", 2000);
 	integer[EXP_FROM_PLAYERS_LEVEL_RANGE] = getGlobalNumber(L, "expFromPlayersLevelRange", 75);
 	integer[MAX_PACKETS_PER_SECOND] = getGlobalNumber(L, "maxPacketsPerSecond", 25);
+	integer[CRITICAL_HIT_CHANCE] = getGlobalNumber(L, "criticalChance", 0);
+	integer[CRITICAL_HIT_EXTRA] = getGlobalNumber(L, "criticalExtra", 0);
 
 	loaded = true;
 	lua_close(L);
