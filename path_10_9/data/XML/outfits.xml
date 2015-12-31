@@ -52,6 +52,7 @@
 	<outfit type="0" looktype="749" name="Sea Dog" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="759" name="Royal Pumpkin" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="845" name="Rift Warrior" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="852" name="Winter Warden" premium="yes" unlocked="no" enabled="yes" />
 
 	<!-- Male outfits -->
 	<outfit type="1" looktype="128" name="Citizen" premium="no" unlocked="yes" enabled="yes" />
@@ -105,4 +106,5 @@
 	<outfit type="1" looktype="750" name="Sea Dog" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="760" name="Royal Pumpkin" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="846" name="Rift Warrior" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="853" name="Winter Warden" premium="yes" unlocked="yes" enabled="yes" />
 </outfits>

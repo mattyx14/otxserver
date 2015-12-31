@@ -155,6 +155,13 @@ class Creature : virtual public Thing
 		virtual void removeList() = 0;
 		virtual void addList() = 0;
 
+		const Position& getLastPosition() const {
+			return lastPosition;
+		}
+		void setLastPosition(const Position& newLastPos) {
+			lastPosition = newLastPos;
+		}
+
 		virtual bool canSee(const Position& pos) const;
 		virtual bool canSeeCreature(const Creature* creature) const;
 
@@ -399,7 +406,7 @@ class Creature : virtual public Thing
 		virtual void onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
 		                              const Item* item);
 
-		virtual void onCreatureAppear(Creature* creature, bool);
+		virtual void onCreatureAppear(Creature* creature, bool isLogin);
 		virtual void onRemoveCreature(Creature* creature, bool isLogout);
 		virtual void onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
 		                            const Tile* oldTile, const Position& oldPos, bool teleport);
@@ -517,6 +524,7 @@ class Creature : virtual public Thing
 		Outfit_t currentOutfit;
 		Outfit_t defaultOutfit;
 
+		Position lastPosition;
 		LightInfo internalLight;
 
 		Direction direction;

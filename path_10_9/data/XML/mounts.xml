@@ -86,5 +86,8 @@
 	<mount id="84" clientid="761" name="Slagsnare" speed="10" premium="yes" />
 	<mount id="85" clientid="762" name="Nightstinger" speed="10" premium="yes" />
 	<mount id="86" clientid="763" name="Razorcreep" speed="10" premium="yes" />
-	<mount id="87" clientid="848" name="Rift Runner" speed="20" premium="no" />
+	<mount id="87" clientid="848" name="Rift Runner" speed="20" premium="yes" />
+	<mount id="88" clientid="849" name="Nightdweller" speed="20" premium="yes" />
+	<mount id="89" clientid="850" name="Frostflare" speed="20" premium="yes" />
+	<mount id="90" clientid="851" name="Cinderhoof" speed="20" premium="yes" />
 </mounts>

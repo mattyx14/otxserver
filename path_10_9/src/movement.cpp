@@ -839,7 +839,7 @@ bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos,
 	LuaScriptInterface::setCreatureMetatable(L, -1, creature);
 	LuaScriptInterface::pushThing(L, item);
 	LuaScriptInterface::pushPosition(L, pos);
-	LuaScriptInterface::pushPosition(L, fromPos);
+	LuaScriptInterface::pushPosition(L, creature->getLastPosition());
 
 	return m_scriptInterface->callFunction(4);
 }
