@@ -180,13 +180,3 @@ function Player:onGainSkillTries(skill, tries)
 	end
 	return tries * configManager.getNumber(configKeys.RATE_SKILL)
 end
-
-function Player:onSave(GUID)
-	-- Do not let the player move the boss corpse.
-	if item:getAttribute(ITEM_ATTRIBUTE_CORPSEOWNER) == 2^31 - 1 then
-		self:sendCancelMessage('Sorry, not possible.')
-		return false
-	end
-
-	return true
-end
