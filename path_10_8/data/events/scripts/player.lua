@@ -180,3 +180,7 @@ function Player:onGainSkillTries(skill, tries)
 	end
 	return tries * configManager.getNumber(configKeys.RATE_SKILL)
 end
+
+function Player:onSave(GUID)
+	return true
+end
