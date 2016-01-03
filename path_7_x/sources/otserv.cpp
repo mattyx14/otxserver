@@ -422,8 +422,8 @@ ServiceManager* services)
 		" at " << __DATE__ << " " << __TIME__ << std::endl
 
 		<< std::endl
-		<< "A server developed by: "SOFTWARE_DEVELOPERS"." << std::endl
-		<< "Visit our forums for updates, support, and resources: "FORUMS"" << std::endl;
+		<< "A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl
+		<< "Visit our forums for updates, support, and resources: " FORUMS "" << std::endl;
 	std::stringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
@@ -1057,7 +1057,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 						" at " << __DATE__ << " " << __TIME__ << std::endl
 
 						<< std::endl
-						<< "A server developed by: "SOFTWARE_DEVELOPERS"." << std::endl
+						<< "A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl
 						<< "Visit our forums for updates, support, and resources: ""FORUMS" << std::endl;
 					}
 
@@ -1381,14 +1381,14 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 				case ID_MENU_ABOUT_SERVER:
 				{
-					MessageBox(NULL, "The "SOFTWARE_NAME" is a custom OpenTibia Server.\n"
-					"The current server version is "SOFTWARE_VERSION"."MINOR_VERSION"."PATCH_VERSION" - "REVISION_VERSION, "The "SOFTWARE_NAME, MB_OK);
+					MessageBox(NULL, "The " SOFTWARE_NAME " is a custom OpenTibia Server.\n"
+					"The current server version is " SOFTWARE_VERSION "." MINOR_VERSION "." PATCH_VERSION " - " REVISION_VERSION , "The "SOFTWARE_NAME, MB_OK);
 					break;
 				}
 
 				case ID_MENU_ABOUT_DEVELOPERS:
 				{
-					MessageBox(NULL, "The developers of The "SOFTWARE_NAME" are:\n"
+					MessageBox(NULL, "The developers of The " SOFTWARE_NAME " are:\n"
 					SOFTWARE_DEVELOPERS".", "Developers", MB_OK);
 					break;
 				}
