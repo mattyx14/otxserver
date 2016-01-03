@@ -4,10 +4,10 @@
 		To compile The OTX Server on Windows, you will need:
 
 			Visual Studio 2015 Enterprise : https://go.microsoft.com/fwlink/?LinkId=691979&clcid=0x409
-			Libs (libraries) : https://mega.nz/#!xUpTzLiS!iLE52ZH5eKoz0C3UBwqHCBQPtkS5H3HUkJ040S-e6dw
+			Libs (libraries) : https://mega.nz/#!VBgFAAqC!y2zI6EcRYbCKiyvhqKIbC9LjAvdGWWxU9dKrLqtCysQ
 			Boost C++ libraries
-				(32-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-32.exe/download )
-				(64-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-64.exe/download )
+				32-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-32.exe/download
+				64-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-64.exe/download
 
 		2. Install the required software
 		Once you have downloaded the software listed in the step above, begin by installing Visual Studio and Boost C++ libraries. Extract "otx-sdk-1.0(NO-BOOST)" anywhere on your computer and run the file "registerenv.bat" to set the PATH environment variable for "SQK-NOBOOST", so that the compiler can find the libraries once we get to compiling the source code. Move the file "register_boost_env.bat" from "SQK-NOBOOST"  to the directory where you installed Boost C++ libraries and run it there (it should be in the directory called for example: C:\local\boost_1_60_0).
