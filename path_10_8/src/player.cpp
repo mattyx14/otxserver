@@ -1976,7 +1976,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 
 		if (damage <= 0) {
 			damage = 0;
-			blockType = BLOCK_DEFENSE;
+			blockType = BLOCK_ARMOR;
 		}
 	}
 	return blockType;

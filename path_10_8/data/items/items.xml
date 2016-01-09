@@ -29326,11 +29326,6 @@
 	<item fromid="21514" toid="21515" article="a" name="strange shrine" />
 	<item id="21516" article="a" name="lift" />
 	<item id="21517" article="an" name="ornate door with a keyhole" />
-	<item id="21518" article="a" name="reward container">
-		<attribute key="containersize" value="32" />
-		<attribute key="pickupable" value="0" />
-		<attribute key="moveable" value="0" />
-	</item>
 	<item id="21536" article="a" name="hole">
 		<attribute key="floorchange" value="down" />
 	</item>
@@ -29385,13 +29380,6 @@
 	<item id="21569" name="gnomish supplies">
 		<attribute key="description" value="It contains the clothes of a dwarf." />
 		<attribute key="weight" value="800" />
-	</item>
-	<item id="21584" article="a" name="reward chest">
-		<attribute key="type" value="rewardchest" />
-		<attribute key="description" value="This chest contains your rewards earned in battles." />
-		<attribute key="containersize" value="32" />
-		<attribute key="pickupable" value="0" />
-		<attribute key="moveable" value="0" />
 	</item>
 	<item id="21690" article="a" name="triple bolt crossbow">
 		<attribute key="weight" value="6200" />
@@ -30232,6 +30220,27 @@
 	</item>
 	<item id="22699" article="a" name="cake tapestry">
 		<attribute key="weight" value="1000" />
+	</item>
+	<item id="23722" article="a" name="light stone shower rune">
+		<attribute key="type" value="rune" />
+		<attribute key="runeSpellName" value="adori infir mas tera" />
+		<attribute key="weight" value="210" />
+		<attribute key="charges" value="4" />
+	</item>
+	<item id="23723" article="a" name="lightest missile rune">
+		<attribute key="type" value="rune" />
+		<attribute key="runeSpellName" value="adori infir vis" />
+		<attribute key="weight" value="210" />
+		<attribute key="charges" value="4" />
+	</item>
+	<item id="23839" article="a" name="simple arrow">
+		<attribute key="weight" value="60" />
+		<attribute key="slotType" value="ammo" />
+		<attribute key="attack" value="20" />
+		<attribute key="weaponType" value="ammunition" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="shootType" value="simplearrow" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="30001" name="water" />
 	<item id="30002" name="blood" />
