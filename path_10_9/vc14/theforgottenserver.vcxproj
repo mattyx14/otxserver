@@ -209,6 +209,9 @@
     <ClCompile Include="..\src\wildcardtree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="TheForgottenServer.rc" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="..\src\account.h" />
     <ClInclude Include="..\src\actions.h" />
     <ClInclude Include="..\src\ban.h" />
