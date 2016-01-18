@@ -4,7 +4,7 @@
 		To compile The OTX Server on Windows, you will need:
 
 			Visual Studio 2015 Enterprise : https://go.microsoft.com/fwlink/?LinkId=691979&clcid=0x409
-			Libs (libraries) : https://mega.nz/#!VBgFAAqC!y2zI6EcRYbCKiyvhqKIbC9LjAvdGWWxU9dKrLqtCysQ
+			Libs (libraries) : https://mega.nz/#!0ZBSzQaK!-Mjcqb9qNZuZyYLVtGynlk6lb4sAIIi-YEPbGAuCUb8
 			Boost C++ libraries
 				32-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-32.exe/download
 				64-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-64.exe/download
