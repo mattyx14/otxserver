@@ -2,8 +2,4 @@
 <npc name="Alice" script="bless.lua" walkinterval="2000" floorchange="0">
 	<health now="100" max="100" />
 	<look type="139" head="20" body="39" legs="45" feet="7" addons="0" />
-	<parameters>
-		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell Blessings. Say {first bless}, {second bless}, {third bless}, {fourth bless}, {fifth bless} and {pvp bless}."/>
-		<parameter key="message_decline" value="Is |TOTALCOST| gold coins too much for you? Get out of here!"/>
-	</parameters>
 </npc>

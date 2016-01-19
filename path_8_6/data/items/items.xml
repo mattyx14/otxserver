@@ -220,15 +220,19 @@
 	</item>
 	<item fromid="1196" toid="1204" article="a" name="lava wall" />
 	<item fromid="1205" toid="1208" article="an" name="archway" />
-	<item fromid="1209" toid="1210" article="a" name="closed door">
+	<item id="1209" article="an" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
 	</item>
+	<item id="1210" article="a" name="closed door">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
+	</item>
 	<item id="1211" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="1212" article="a" name="closed door">
+	<item id="1212" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -285,7 +289,7 @@
 	<item id="1230" article="a" name="gate of expertise">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="1231" article="a" name="closed door">
+	<item id="1231" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -297,7 +301,7 @@
 	<item id="1233" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="1234" article="a" name="closed door">
+	<item id="1234" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -353,7 +357,7 @@
 	<item id="1248" article="a" name="gate of expertise">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="1249" article="a" name="closed door">
+	<item id="1249" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -365,7 +369,7 @@
 	<item id="1251" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="1252" article="a" name="closed door">
+	<item id="1252" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -6788,7 +6792,7 @@
 	<item fromid="3506" toid="3507" article="a" name="liane" />
 	<item fromid="3508" toid="3532" article="a" name="palisade" />
 	<item fromid="3533" toid="3534" article="a" name="stone wall" />
-	<item id="3535" article="a" name="closed door">
+	<item id="3535" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -6822,7 +6826,7 @@
 	<item id="3543" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="3544" article="a" name="closed door">
+	<item id="3544" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -7950,7 +7954,7 @@
 	<item fromid="4608" toid="4616" name="shallow water">
 		<attribute key="description" value="You see the silvery movement of fish." />
 		<attribute key="type" value="trashholder" />
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
@@ -7958,7 +7962,7 @@
 		<attribute key="decayTo" value="4608" />
 		<attribute key="duration" value="1200" />
 		<attribute key="type" value="trashholder" />
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
@@ -7966,7 +7970,7 @@
 		<attribute key="decayTo" value="4609" />
 		<attribute key="duration" value="1200" />
 		<attribute key="type" value="trashholder" />
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
@@ -7974,13 +7978,13 @@
 		<attribute key="decayTo" value="4610" />
 		<attribute key="duration" value="1200" />
 		<attribute key="type" value="trashholder" />
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
 	<item fromid="4620" toid="4625" name="shallow water">
 		<attribute key="type" value="trashholder" />
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
@@ -7993,7 +7997,7 @@
 	</item>
 	<item fromid="4664" toid="4666" name="shallow water">
 		<attribute key="type" value="trashholder" />
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
@@ -8014,14 +8018,15 @@
 	<item fromid="4784" toid="4795" name="grass" />
 	<item fromid="4796" toid="4819" name="dirt" />
 	<item fromid="4820" toid="4825" name="shallow water">
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="type" value="trashholder" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
 	<item fromid="4826" toid="4827" article="a" name="mountain" />
 	<item fromid="4828" toid="4831" name="shallow water">
 		<attribute key="type" value="trashholder" />
-		<attribute key="effect" value="bluebubble" />
+		<attribute key="effect" value="watersplash" />
 		<attribute key="allowpickupable" value="1" />
 		<attribute key="fluidSource" value="water" />
 	</item>
@@ -8038,9 +8043,6 @@
 	</item>
 	<item id="4840" article="a" name="witches' cap spot">
 		<attribute key="weight" value="100" />
-		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="86400" />
-		<attribute key="showduration" value="1" />
 	</item>
 	<item id="4842" article="an" name="old parchment">
 		<attribute key="description" value="It is covered with foreign symbols." />
@@ -8170,7 +8172,7 @@
 	<item fromid="4906" toid="4910" article="a" name="ship cabin wall" />
 	<item id="4911" article="a" name="ship rail" />
 	<item id="4912" article="a" name="ship cabin wall" />
-	<item id="4913" article="a" name="closed door">
+	<item id="4913" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8182,7 +8184,7 @@
 	<item id="4915" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="4916" article="a" name="closed door">
+	<item id="4916" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8328,7 +8330,7 @@
 	<item id="5097" article="a" name="mango">
 		<attribute key="weight" value="180" />
 	</item>
-	<item id="5098" article="a" name="closed door">
+	<item id="5098" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8362,7 +8364,7 @@
 	<item id="5106" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5107" article="a" name="closed door">
+	<item id="5107" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8396,7 +8398,7 @@
 	<item id="5115" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5116" article="a" name="closed door">
+	<item id="5116" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8430,7 +8432,7 @@
 	<item id="5124" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5125" article="a" name="closed door">
+	<item id="5125" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8464,7 +8466,7 @@
 	<item id="5133" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5134" article="a" name="closed door">
+	<item id="5134" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8476,7 +8478,7 @@
 	<item id="5136" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5137" article="a" name="closed door">
+	<item id="5137" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8488,7 +8490,7 @@
 	<item id="5139" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5140" article="a" name="closed door">
+	<item id="5140" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8500,7 +8502,7 @@
 	<item id="5142" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5143" article="a" name="closed door">
+	<item id="5143" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8529,7 +8531,7 @@
 	</item>
 	<item fromid="5261" toid="5275" article="a" name="wooden wall" />
 	<item fromid="5276" toid="5277" article="a" name="wooden window" />
-	<item id="5278" article="a" name="closed door">
+	<item id="5278" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8541,7 +8543,7 @@
 	<item id="5280" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5281" article="a" name="closed door">
+	<item id="5281" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -8649,7 +8651,6 @@
 		<attribute key="description" value="Enables underwater exploration." />
 		<attribute key="armor" value="2" />
 		<attribute key="slotType" value="head" />
-		<attribute key="suppressdrown" value="1" />
 		<attribute key="absorbPercentDrown" value="100" />
 	</item>
 	<item id="5462" name="pirate boots">
@@ -9077,11 +9078,9 @@
 	</item>
 	<item id="5730" name="" />
 	<item id="5731" article="a" name="hole">
-		<attribute key="decayTo" value="22674" />
-		<attribute key="duration" value="20" />
 		<attribute key="floorchange" value="down" />
 	</item>
-	<item id="5732" article="a" name="closed door">
+	<item id="5732" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="description" value="It is locked." />
 		<attribute key="blockprojectile" value="1" />
@@ -9092,7 +9091,7 @@
 	<item id="5734" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="5735" article="a" name="closed door">
+	<item id="5735" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="description" value="It is locked." />
 	</item>
@@ -10592,7 +10591,7 @@
 	<item fromid="6180" toid="6181" article="a" name="tree" />
 	<item fromid="6182" toid="6189" article="a" name="large branch" />
 	<item fromid="6190" toid="6191" article="a" name="branch" />
-	<item id="6192" article="a" name="closed door">
+	<item id="6192" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -10604,7 +10603,7 @@
 	<item id="6194" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="6195" article="a" name="closed door">
+	<item id="6195" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -10667,7 +10666,7 @@
 	<item fromid="6232" toid="6233" article="a" name="tree archway" />
 	<item fromid="6234" toid="6237" article="an" name="archway" />
 	<item fromid="6238" toid="6248" article="a" name="tendril wall" />
-	<item id="6249" article="a" name="closed door">
+	<item id="6249" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -10679,7 +10678,7 @@
 	<item id="6251" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="6252" article="a" name="closed door">
+	<item id="6252" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -11710,7 +11709,7 @@
 	<item fromid="6882" toid="6885" article="an" name="archway" />
 	<item fromid="6886" toid="6888" article="a" name="strut" />
 	<item fromid="6889" toid="6890" name="tusks" />
-	<item id="6891" article="a" name="closed door">
+	<item id="6891" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -11744,7 +11743,7 @@
 	<item id="6899" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="6900" article="a" name="closed door">
+	<item id="6900" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -11834,7 +11833,7 @@
 	<item fromid="7031" toid="7032" article="an" name="ice wall window">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="7033" article="a" name="closed door">
+	<item id="7033" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -11868,7 +11867,7 @@
 	<item id="7041" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="7042" article="a" name="closed door">
+	<item id="7042" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -12006,15 +12005,11 @@
 	</item>
 	<item id="7184" article="a" name="baby seal doll">
 		<attribute key="weight" value="850" />
-		<attribute key="decayTo" value="7183" />
-		<attribute key="duration" value="5" />
 	</item>
 	<item id="7185" article="a" name="small crack in the ice">
 		<attribute key="description" value="This would be a good place to destroy the ice." />
 	</item>
-	<item id="7186" article="a" name="big crack in the ice">
-		<attribute key="description" value="Now the ice passage is destroyed." />
-	</item>
+	<item id="7186" article="a" name="big crack in the ice" />
 	<item fromid="7187" toid="7188" article="a" name="raft" />
 	<item id="7189" article="a" name="stone shelf">
 		<attribute key="containerSize" value="6" />
@@ -13222,10 +13217,7 @@
 	</item>
 	<item id="7584" article="a" name="ship cabin wall" />
 	<item id="7585" article="a" name="spider egg" />
-	<item id="7586" name="the remains of a spider egg">
-		<attribute key="decayTo" value="7585" />
-		<attribute key="duration" value="180" />
-	</item>
+	<item id="7586" name="the remains of a spider egg" />
 	<item id="7587" article="a" name="bag">
 		<attribute key="weight" value="40000" />
 		<attribute key="description" value="It contains Ahmet's stolen property." />
@@ -14912,7 +14904,7 @@
 	<item fromid="8060" toid="8061" name="" />
 	<item id="8062" article="a" name="poison gas" editorsuffix=" (Slime Corpse)">
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="3" />
+		<attribute key="duration" value="2" />
 	</item>
 	<item fromid="8063" toid="8071" name="" />
 	<item id="8072" article="a" name="yellow pillow">
@@ -15237,7 +15229,10 @@
 		<attribute key="floorchange" value="north" />
 	</item>
 	<item id="8379" article="a" name="ramp" />
-	<item fromid="8380" toid="8385" article="a" name="tunnel entrance" />
+	<item id="8380" article="a" name="tunnel entrance">
+		<attribute key="floorchange" value="down" />
+	</item>
+	<item fromid="8381" toid="8385" article="a" name="tunnel entrance" />
 	<item fromid="8386" toid="8387" article="a" name="bone" />
 	<item id="8388" article="a" name="skull" />
 	<item fromid="8389" toid="8392" article="a" name="bone" />
@@ -15368,8 +15363,6 @@
 	<item id="8582" article="a" name="branch">
 		<attribute key="description" value="Push it back to Zirella by holding the left mousebutton down on it and pushing it over the grass." />
 		<attribute key="weight" value="100000" />
-		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
 	</item>
 	<item id="8583" article="a" name="dead tree">
 		<attribute key="description" value="It is one of those Zirella mentioned. Rightclick it and select 'Use' to break a branch from it." />
@@ -15441,10 +15434,7 @@
 	<item fromid="8625" toid="8626" article="a" name="dwarven statue" />
 	<item fromid="8627" toid="8630" article="a" name="bone" />
 	<item id="8631" article="a" name="burning wall" />
-	<item id="8632" article="a" name="water vortex">
-		<attribute key="type" value="teleport" />
-		<attribute key="effect" value="watersplash" />
-	</item>
+	<item id="8632" article="a" name="water vortex" />
 	<item fromid="8633" toid="8636" article="a" name="large crystal" />
 	<item fromid="8637" toid="8640" article="a" name="crystal" />
 	<item fromid="8641" toid="8642" article="a" name="crucible" />
@@ -16463,9 +16453,7 @@
 		<attribute key="weight" value="1000" />
 	</item>
 	<item id="8983" article="a" name="heavily bound book">
-		<attribute key="description" value="It contains the scribings of many knowledgeable Tibians." />
-		<attribute key="writeable" value="1" />
-		<attribute key="maxTextLen" value="199" />
+		<attribute key="description" value="It contains the scribings of many knowledgeable." />
 		<attribute key="weight" value="7800" />
 	</item>
 	<item id="8984" article="an" name="abacus">
@@ -16670,7 +16658,7 @@
 	<item id="9170" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="9171" article="a" name="closed door">
+	<item id="9171" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -16678,7 +16666,7 @@
 	<item id="9172" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="9173" article="a" name="closed door">
+	<item id="9173" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -16747,7 +16735,7 @@
 	<item id="9272" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="9273" article="a" name="closed door">
+	<item id="9273" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -16755,7 +16743,7 @@
 	<item id="9274" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="9275" article="a" name="closed door">
+	<item id="9275" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -17719,7 +17707,7 @@
 		<attribute key="description" value="This one would be quite healthy if it wasn't for all the melted cheese on top." />
 		<attribute key="weight" value="1100" />
 	</item>
-	<item id="9998" article="a" name="filled jalape?o peppers">
+	<item id="9998" article="a" name="filled jalapeño peppers">
 		<attribute key="description" value="The creamy cheese makes a great combination with the spicy peppers." />
 		<attribute key="weight" value="650" />
 	</item>
@@ -17800,7 +17788,6 @@
 	<item id="10018" article="a" name="voodoo doll">
 		<attribute key="weight" value="650" />
 	</item>
-	<item id="10019" name="ocean floor" />
 	<item id="10020" article="a" name="dragon claw">
 		<attribute key="weight" value="1250" />
 	</item>
@@ -17902,7 +17889,6 @@
 		<attribute key="description" value="He talks, moves and sings just like a real person." />
 		<attribute key="weight" value="777" />
 	</item>
-	<item id="10065" name="iron floor" />
 	<item id="10066" article="a" name="dark essence">
 		<attribute key="weight" value="260" />
 	</item>
@@ -17961,7 +17947,7 @@
 		<attribute key="description" value="It contains the formula for the memory potion Eclesius invented." />
 		<attribute key="weight" value="110" />
 	</item>
-	<item fromid="10107" toid="10108" article="an" name="hand puppets">
+	<item fromid="10107" toid="10108" name="hand puppets">
 		<attribute key="description" value="They were awarded by the gods." />
 		<attribute key="weight" value="5" />
 	</item>
@@ -18263,7 +18249,7 @@
 	<item fromid="10266" toid="10267" article="a" name="framework window">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="10268" article="a" name="closed door">
+	<item id="10268" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -18275,7 +18261,7 @@
 	<item id="10270" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="10271" article="a" name="closed door">
+	<item id="10271" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -18614,7 +18600,7 @@
 		<attribute key="maxTextLen" value="128" />
 	</item>
 	<item fromid="10456" toid="10467" name="dark sand" />
-	<item id="10468" article="a" name="closed door">
+	<item id="10468" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -18648,7 +18634,7 @@
 	<item id="10476" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="10477" article="a" name="closed door">
+	<item id="10477" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -19008,11 +18994,6 @@
 	<item id="10611" article="a" name="snake skin">
 		<attribute key="weight" value="100" />
 	</item>
-	<item id="10612" article="a" name="slain ice golem">
-		<attribute key="decayTo" value="7283" />
-		<attribute key="duration" value="10" />
-		<attribute key="corpseType" value="undead" />
-	</item>
 	<item id="10613" name="plans for a strange device">
 		<attribute key="description" value="You should bring them to Spectulus in Edron." />
 		<attribute key="weight" value="250" />
@@ -19063,7 +19044,7 @@
 	<item fromid="10761" toid="10762" name="wild wine" />
 	<item fromid="10763" toid="10764" article="a" name="pepper root grass" />
 	<item fromid="10765" toid="10774" name="stone floor" />
-	<item id="10775" article="a" name="closed door">
+	<item id="10775" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -19091,7 +19072,7 @@
 	<item id="10783" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="10784" article="a" name="closed door">
+	<item id="10784" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -19150,7 +19131,7 @@
 	<item id="10914" article="a" name="high grass" />
 	<item id="10915" article="a" name="high grass" />
 	<item id="10916" article="a" name="high grass" />
-	<item id="10917" article="a" name="screaming cherry tree" />
+	<item id="10917" article="a" name="solstice tree" />
 	<item fromid="10918" toid="10925" name="zaoan decoration" />
 	<item id="10926" article="a" name="flask of crown polisher">
 		<attribute key="description" value="Ideal to polish crowns." />
@@ -20189,8 +20170,8 @@
 	</item>
 	<item id="11395" article="a" name="crimson sword">
 		<attribute key="weight" value="3600" />
-		<attribute key="defense" value="10" />
-		<attribute key="attack" value="18" />
+		<attribute key="defense" value="20" />
+		<attribute key="attack" value="28" />
 		<attribute key="weaponType" value="sword" />
 		<attribute key="extradef" value="1" />
 	</item>
@@ -20412,7 +20393,7 @@
 	<item id="12056" name="iron case" />
 	<item fromid="12070" toid="12072" article="a" name="crystal ball" />
 	<item fromid="12073" toid="12079" article="a" name="corrupted wall" />
-	<item id="12092" article="a" name="closed door">
+	<item id="12092" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -20439,7 +20420,7 @@
 	<item id="12098" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="12099" article="a" name="closed door">
+	<item id="12099" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -20481,7 +20462,7 @@
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
-	<item id="12189" article="a" name="closed door">
+	<item id="12189" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -20509,7 +20490,7 @@
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
-	<item id="12198" article="a" name="closed door">
+	<item id="12198" article="a" name="closed door locked">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -20610,7 +20591,7 @@
 		<attribute key="floorchange" value="north" />
 	</item>
 	<item id="12322" name="clay ground" />
-	<item id="12323" article="the" name="tail of the Keeper">
+	<item id="12323" name="the tail of the Keeper">
 		<attribute key="weight" value="450" />
 	</item>
 	<item id="12324" article="a" name="sceptre part">

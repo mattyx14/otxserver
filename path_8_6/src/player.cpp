@@ -31,7 +31,6 @@
 #include "iologindata.h"
 #include "monster.h"
 #include "movement.h"
-#include "outputmessage.h"
 #include "scheduler.h"
 #include "weapons.h"
 
@@ -1910,7 +1909,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 
 		if (damage <= 0) {
 			damage = 0;
-			blockType = BLOCK_DEFENSE;
+			blockType = BLOCK_ARMOR;
 		}
 	}
 	return blockType;

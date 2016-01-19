@@ -26,13 +26,14 @@
 #include "mailbox.h"
 #include "house.h"
 #include "game.h"
-#include "luascript.h"
 #include "bed.h"
 
 #include "actions.h"
-#include "combat.h"
+#include "spells.h"
 
 extern Game g_game;
+extern Spells* g_spells;
+extern Vocations g_vocations;
 
 Items Item::items;
 
@@ -814,32 +815,57 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 	}
 
 	if (it.isRune()) {
-		if (!it.runeSpellName.empty()) {
-			s << " (\"" << it.runeSpellName << "\")";
-		}
-
 		if (it.runeLevel > 0 || it.runeMagLevel > 0) {
-			int32_t tmpSubType = subType;
+			if (RuneSpell* rune = g_spells->getRuneSpell(it.id)) {
+				int32_t tmpSubType = subType;
+				if (item) {
+					tmpSubType = item->getSubType();
+				}
+				s << ". " << (it.stackable && tmpSubType > 1 ? "They" : "It") << " can only be used by ";
 
-			if (item) {
-				tmpSubType = item->getSubType();
-			}
+				const VocSpellMap& vocMap = rune->getVocMap();
+				std::vector<Vocation*> showVocMap;
 
-			s << ". " << (it.stackable && tmpSubType > 1 ? "They" : "It") << " can only be used with";
-
-			if (it.runeLevel > 0) {
-				s << " level " << it.runeLevel;
-			}
-
-			if (it.runeMagLevel > 0) {
-				if (it.runeLevel > 0) {
-					s << " and";
+				// vocations are usually listed with the unpromoted and promoted version, the latter being
+				// hidden from description, so `total / 2` is most likely the amount of vocations to be shown.
+				showVocMap.reserve(vocMap.size() / 2);
+				for (const auto& voc : vocMap) {
+					if (voc.second) {
+						showVocMap.push_back(g_vocations.getVocation(voc.first));
+					}
 				}
 
-				s << " magic level " << it.runeMagLevel;
-			}
+				if (!showVocMap.empty()) {
+					auto vocIt = showVocMap.begin(), vocLast = (showVocMap.end() - 1);
+					while (vocIt != vocLast) {
+						s << asLowerCaseString((*vocIt)->getVocName()) << "s";
+						if (++vocIt == vocLast) {
+							s << " and ";
+						} else {
+							s << ", ";
+						}
+					}
+					s << asLowerCaseString((*vocLast)->getVocName()) << "s";
+				} else {
+					s << "players";
+				}
 
-			s << " or higher";
+				s << " with";
+
+				if (it.runeLevel > 0) {
+					s << " level " << it.runeLevel;
+				}
+
+				if (it.runeMagLevel > 0) {
+					if (it.runeLevel > 0) {
+						s << " and";
+					}
+
+					s << " magic level " << it.runeMagLevel;
+				}
+
+				s << " or higher";
+			}
 		}
 	} else if (it.weaponType != WEAPON_NONE) {
 		if (it.weaponType == WEAPON_DISTANCE && it.ammoType != AMMO_NONE) {
@@ -1327,7 +1353,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 			s << "premium ";
 		}
 
-		if (it.wieldInfo & WIELDINFO_VOCREQ) {
+		if (!it.vocationString.empty()) {
 			s << it.vocationString;
 		} else {
 			s << "players";

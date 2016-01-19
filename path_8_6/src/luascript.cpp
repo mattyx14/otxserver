@@ -1905,6 +1905,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "getAttribute", LuaScriptInterface::luaItemGetAttribute);
 	registerMethod("Item", "setAttribute", LuaScriptInterface::luaItemSetAttribute);
 	registerMethod("Item", "removeAttribute", LuaScriptInterface::luaItemRemoveAttribute);
+	registerMethod("Item", "serializeAttributes", LuaScriptInterface::luaItemSerializeAttributes);
 
 	registerMethod("Item", "moveTo", LuaScriptInterface::luaItemMoveTo);
 	registerMethod("Item", "transform", LuaScriptInterface::luaItemTransform);
@@ -5915,6 +5916,24 @@ int LuaScriptInterface::luaItemRemoveAttribute(lua_State* L)
 		reportErrorFunc("Attempt to erase protected key \"uid\"");
 	}
 	pushBoolean(L, ret);
+	return 1;
+}
+
+int LuaScriptInterface::luaItemSerializeAttributes(lua_State* L)
+{
+	// item:serializeAttributes()
+	Item* item = getUserdata<Item>(L, 1);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	PropWriteStream propWriteStream;
+	item->serializeAttr(propWriteStream);
+
+	size_t attributesSize;
+	const char* attributes = propWriteStream.getStream(attributesSize);
+	lua_pushlstring(L, attributes, attributesSize);
 	return 1;
 }
 
@@ -10535,14 +10554,21 @@ int LuaScriptInterface::luaCombatCreate(lua_State* L)
 int LuaScriptInterface::luaCombatSetParameter(lua_State* L)
 {
 	// combat:setParameter(key, value)
-	uint32_t value = getNumber<uint32_t>(L, 3);
-	CombatParam_t key = getNumber<CombatParam_t>(L, 2);
 	Combat* combat = getUserdata<Combat>(L, 1);
-	if (combat) {
-		pushBoolean(L, combat->setParam(key, value));
-	} else {
+	if (!combat) {
 		lua_pushnil(L);
+		return 1;
 	}
+
+	CombatParam_t key = getNumber<CombatParam_t>(L, 2);
+	uint32_t value;
+	if (isBoolean(L, 3)) {
+		value = getBoolean(L, 3) ? 1 : 0;
+	} else {
+		value = getNumber<uint32_t>(L, 3);
+	}
+	combat->setParam(key, value);
+	pushBoolean(L, true);
 	return 1;
 }
 
