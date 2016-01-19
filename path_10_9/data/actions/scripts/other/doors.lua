@@ -16,6 +16,9 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			player:sendTextMessage(MESSAGE_INFO_DESCR, "Only the worthy may pass.")
 		end
 		return true
+	elseif isInArray(blockDoors, itemId) then
+		player:sendTextMessage(MESSAGE_STATUS_SMALL, "It is locked.")
+		return true
 	elseif isInArray(keys, itemId) then
 		if target.actionid > 0 then
 			if item.actionid == target.actionid and doors[target.itemid] then

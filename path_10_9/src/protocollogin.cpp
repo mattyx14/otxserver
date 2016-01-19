@@ -17,12 +17,12 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <chrono>
 #include "otpch.h"
 
 #include "protocollogin.h"
 
 #include "outputmessage.h"
-#include "rsa.h"
 #include "tasks.h"
 
 #include "configmanager.h"
@@ -92,7 +92,9 @@ void ProtocolLogin::getCharacterList(const std::string& accountName, const std::
 	output->addByte(0);
 
 	output->addByte(g_config.getBoolean(ConfigManager::FREE_PREMIUM) || account.premiumDays > 0);
-	output->add<uint32_t>(g_config.getBoolean(ConfigManager::FREE_PREMIUM) ? 0 : (time(nullptr) + (account.premiumDays * 86400)));
+	auto time = std::chrono::system_clock::now() + std::chrono::hours(account.premiumDays * 24);
+	std::chrono::seconds timestamp = std::chrono::duration_cast<std::chrono::seconds>(time.time_since_epoch());
+	output->add<uint32_t>(g_config.getBoolean(ConfigManager::FREE_PREMIUM) ? 0 : timestamp.count());
 
 	send(output);
 

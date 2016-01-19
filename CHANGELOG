@@ -65,7 +65,16 @@
 	- Added Advance Save
 	- Added swing distance weapons
 	- Added support to Critical hits
+	- Added System Quest 
+	- Added function blockDoors this is for cumstom servs
+	- Added Script AdvanceSave for save and regenerate on increase level
+	- Added new options automatic for save/clean map on globalevents
+	- Added custom commands /save /addons /mounts /gotopos
+	- Added missing elementdeath elementholy on weapons
+	- Changes on config
+	- Check two-handed weapons on equip
 	- Enable monster passive behavior
+	- Fix shovel
 	- Fix editing house
 	- Fix effect debug
 	- Fix spells on 8.x
@@ -75,12 +84,19 @@
 	- Fix correct calculation method for skill spells
 	- Fix mounts and outfits names - atributes
 	- Fix bug with pvp zone
-	- Fix groups.xml
 	- Fix limit outfits
 	- Fix Shovel
+	- Fix swimming and citizen portal now show descrition
+	- Fix and tunes on spells
+	- Fix spell and item descriptions
+	- Fixed loginWindows for 10.9x
 	- Fix https://www.youtube.com/watch?v=ube4b-q4Ncg
-	- Update items.xml
-	- Support 10.82 - 10.90
+	- Update items.xml / items.otb
+	- Update firstitems scripts // missing vocation
+	- Update monsters is more complete
+	- Update outfits and mounts to lasted Tibia
+	- Removed unnused variables
+	- Support 10.90
 ]
 
 [ OTX Server 3.1 Version - "BOOM"

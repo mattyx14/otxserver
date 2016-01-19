@@ -33,18 +33,27 @@
 	<talkaction words="/clean" script="clean.lua" />
 	<talkaction words="/hide" script="hide.lua" />
 
+	<!-- Customs -->
+	<talkaction words="/save" script="save.lua" />
+	<talkaction words="/addons" separator=" " script="alladdons.lua" />
+	<talkaction words="/mounts" separator=" " script="allmounts.lua" />
+	<talkaction words="/gotopos" separator=" " script="teleport_to_pos.lua" />
+
 	<!-- player talkactions -->
-	<talkaction words="!buypremium" script="buyprem.lua" />
 	<talkaction words="!buyhouse" script="buyhouse.lua" />
 	<talkaction words="!leavehouse" script="leavehouse.lua" />
-	<talkaction words="!changesex" script="changesex.lua" />
 	<talkaction words="!uptime" script="uptime.lua" />
 	<talkaction words="!deathlist" script="deathlist.lua" />
 	<talkaction words="!kills" script="kills.lua" />
 	<talkaction words="!online" script="online.lua" />
 	<talkaction words="!serverinfo" script="serverinfo.lua" />
 
-	<!-- test talkactions -->
-	<talkaction words="!z" separator=" " script="magiceffect.lua" />
-	<talkaction words="!x" separator=" " script="animationeffect.lua" />
+	<!-- No workd
+		<talkaction words="!buypremium" script="buyprem.lua" />
+		<talkaction words="!changesex" script="changesex.lua" />
+		<talkaction words="!addon" script="addon.lua" />
+
+		<talkaction words="!z" separator=" " script="magiceffect.lua" />
+		<talkaction words="!x" separator=" " script="animationeffect.lua" />
+	-->
 </talkactions>

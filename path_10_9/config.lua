@@ -5,11 +5,11 @@ hotkeyAimbotEnabled = true
 protectionLevel = 1
 killsToRedSkull = 3
 killsToBlackSkull = 6
-pzLocked = 60000
+pzLocked = 60 * 1000
 removeChargesFromRunes = true
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
 whiteSkullTime = 15 * 60 * 1000
-stairJumpExhaustion = 2000
+stairJumpExhaustion = 2 * 1000
 experienceByKillingPlayers = false
 expFromPlayersLevelRange = 75
 
@@ -25,7 +25,7 @@ motd = "Welcome to The Forgotten Server!"
 onePlayerOnlinePerAccount = true
 allowClones = false
 serverName = "Forgotten"
-statusTimeout = 5000
+statusTimeout = 5 * 1000
 replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
@@ -38,7 +38,7 @@ deathLosePercent = -1
 -- Houses
 -- NOTE: set housePriceEachSQM to -1 to disable the ingame buy house functionality
 housePriceEachSQM = 1000
-houseRentPeriod = "never"
+houseRentPeriod = "weekly"
 
 -- Item Usage
 timeBetweenActions = 200
@@ -68,7 +68,7 @@ allowChangeOutfit = true
 freePremium = false
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
-emoteSpells = false
+emoteSpells = true
 classicEquipmentSlots = false
 
 -- Rates
@@ -94,10 +94,10 @@ convertUnsafeScripts = true
 -- NOTE: defaultPriority only works on Windows and sets process
 -- priority, valid values are: "normal", "above-normal", "high"
 defaultPriority = "high"
-startupDatabaseOptimization = false
+startupDatabaseOptimization = true
 
 -- Status server information
-ownerName = ""
-ownerEmail = ""
-url = "https://otland.net/"
-location = "Sweden"
+ownerName = "Mattyx14"
+ownerEmail = "darkylive@live.com.mx"
+url = "http://darkkonia.sytes.net/"
+location = "Mexico"

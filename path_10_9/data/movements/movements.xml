@@ -27,6 +27,7 @@
 
 	<!-- Citizen teleport -->
 	<movevent event="StepIn" itemid="1387" script="citizen.lua" />
+	<movevent event="StepIn" itemid="1397" script="citizen.lua" />
 
 	<!-- Walkback when walking on quest chest -->
 	<movevent event="StepIn" itemid="1738" script="walkback.lua" />
@@ -192,6 +193,8 @@
 	<!-- Swimming -->
 	<movevent event="StepIn" fromid="4620" toid="4625" script="swimming.lua" />
 	<movevent event="StepOut" fromid="4620" toid="4625" script="swimming.lua" />
+	<movevent event="StepIn" fromid="4820" toid="4825" script="swimming.lua" />
+	<movevent event="StepOut" fromid="4820" toid="4825" script="swimming.lua" />
 	<movevent event="StepIn" itemid="5405" script="drowning.lua" />
 	<movevent event="StepOut" itemid="5405" script="drowning.lua" />
 

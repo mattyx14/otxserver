@@ -949,6 +949,14 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			Abilities& abilities = it.getAbilities();
 			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
 			abilities.elementType = COMBAT_ENERGYDAMAGE;
+		} else if (tmpStrValue == "elementdeath") {
+			Abilities& abilities = it.getAbilities();
+			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
+			abilities.elementType = COMBAT_DEATHDAMAGE;
+		} else if (tmpStrValue == "elementholy") {
+			Abilities& abilities = it.getAbilities();
+			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
+			abilities.elementType = COMBAT_HOLYDAMAGE;
 		} else if (tmpStrValue == "walkstack") {
 			it.walkStack = valueAttribute.as_bool();
 		} else if (tmpStrValue == "blocking") {
