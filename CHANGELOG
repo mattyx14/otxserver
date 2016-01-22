@@ -6,7 +6,7 @@
 		The Forgotten Server Version: 1.2
 
 	Codenamed
-		PHANTOM
+		- 
 
 	Forum and website
 		http://www.blacktibia.org/f19-otx-server-3
@@ -15,21 +15,25 @@
 		Project Manager and Founder
 			Mattyx14
 
-		OTX Server C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+		OTX Server 3 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Mattyx14
 
 		Special Thanks(s)
-			The Forgotten C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/otland/forgottenserver/graphs/contributors
 
-			FORGOTTENSERVER-ORTS C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors
+			The OTClient - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/edubart/otclient/graphs/contributors
 
-			OpenTibia C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+			FORGOTTENSERVER-ORTS - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				Old: https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors
+				New: https://github.com/orts/server/graphs/contributors
+
+			OpenTibia - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/opentibia/server/graphs/contributors
 				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
 
-			Old OTX Server C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/mattyx14/otxserver/graphs/contributors
 				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin, Brewsterl
 
@@ -37,7 +41,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 8.6 to 10.90 - (7.4 - WIP)
+		Tibia Clients - 8.6 to 10.90 - (7x to 8.5x - WIP)
 
 	TODO WITH OPTIONAL (MODAL DIALOGS)
 		COMMANDS:
@@ -57,6 +61,10 @@
 
 		OTHERS:
 			- Look Display
+]
+
+[ OTX Server 3.3 Version - " - "
+	- 
 ]
 
 [ OTX Server 3.2 Version - "PHANTOM"
@@ -106,7 +114,7 @@
 	- Removed DualWield Support added on Alpha 4 (Require fix critical bugs)
 ]
 
-[ OTX Server 3.0.ALPHA Version - "4"
+[ OTX Server 3.0 Version - "ALPHA"
 	- DualWield Support
 	- Make player walkthrough optional
 	- Use std::make_shared<> to avoid an unnecessary, additional heap alloction

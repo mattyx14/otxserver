@@ -22,9 +22,9 @@
 
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
-#define MINOR_VERSION "2"
-#define REVISION_VERSION "408"
-#define SOFTWARE_CODENAME "PHANTOM"
+#define MINOR_VERSION "3"
+#define REVISION_VERSION " - "
+#define SOFTWARE_CODENAME " - "
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
