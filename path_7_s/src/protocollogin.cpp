@@ -46,7 +46,7 @@ void ProtocolLogin::disconnectClient(const std::string& message)
 	disconnect();
 }
 
-void ProtocolLogin::getCharacterList(const uint32_t accountNumber, const std::string& password)
+void ProtocolLogin::getCharacterList(const std::string& accountName, const std::string& password)
 {
 	uint32_t serverIp = serverIPs[0].first;
 	for (uint32_t i = 0; i < serverIPs.size(); i++) {
@@ -57,8 +57,8 @@ void ProtocolLogin::getCharacterList(const uint32_t accountNumber, const std::st
 	}
 
 	Account account;
-	if (!IOLoginData::loginserverAuthentication(accountNumber, password, account)) {
-		disconnectClient("Account number or password is not correct.");
+	if (!IOLoginData::loginserverAuthentication(accountName, password, account)) {
+		disconnectClient("Account name or password is not correct.");
 		return;
 	}
 
@@ -119,27 +119,25 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 * 1 byte: 0
 	 */
 
-	if (version <= 740) {
+	if (version <= 760) {
 		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
 		return;
 	}
 
-	#ifdef _PROTOCOL77
-		if (!Protocol::RSA_decrypt(msg)) {
-			disconnect();
-			return;
-		}
+	if (!Protocol::RSA_decrypt(msg)) {
+		disconnect();
+		return;
+	}
 
-		uint32_t key[4];
-		key[0] = msg.get<uint32_t>();
-		key[1] = msg.get<uint32_t>();
-		key[2] = msg.get<uint32_t>();
-		key[3] = msg.get<uint32_t>();
-		enableXTEAEncryption();
-		setXTEAKey(key);
-	#endif
+	uint32_t key[4];
+	key[0] = msg.get<uint32_t>();
+	key[1] = msg.get<uint32_t>();
+	key[2] = msg.get<uint32_t>();
+	key[3] = msg.get<uint32_t>();
+	enableXTEAEncryption();
+	setXTEAKey(key);
 
-	uint32_t accountNumber = msg.get<uint32_t>();
+	std::string accountName = msg.getString();
 	std::string password = msg.getString();
 
 	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
@@ -174,11 +172,11 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if (accountNumber == 0) {
-		disconnectClient("Invalid account number.");
+	if (accountName.empty()) {
+		disconnectClient("Invalid account name.");
 		return;
 	}
 
 	auto thisPtr = std::dynamic_pointer_cast<ProtocolLogin>(shared_from_this());
-	g_dispatcher.addTask(createTask(std::bind(&ProtocolLogin::getCharacterList, thisPtr, accountNumber, password)));
+	g_dispatcher.addTask(createTask(std::bind(&ProtocolLogin::getCharacterList, thisPtr, accountName, password)));
 }

@@ -332,6 +332,13 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target, uint8_t shoo
 		}
 
 		int32_t damageModifier = 100;
+		if (auto chance = g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE)) {
+			if (boolean_random(static_cast<double>(chance) / 100.0)) {
+				damageModifier += g_config.getNumber(ConfigManager::CRITICAL_HIT_EXTRA);
+				std::cout << "Critical hit!" << std::endl;
+			}
+		}
+
 		if (player->getLevel() < getReqLevel()) {
 			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
 		}
@@ -907,12 +914,18 @@ bool WeaponWand::configureEvent(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("type"))) {
 		std::string tmpStrValue = asLowerCaseString(attr.as_string());
-		if (tmpStrValue == "earth" || tmpStrValue == "poison") {
+		if (tmpStrValue == "earth") {
 			params.combatType = COMBAT_EARTHDAMAGE;
+		} else if (tmpStrValue == "ice") {
+			params.combatType = COMBAT_ICEDAMAGE;
 		} else if (tmpStrValue == "energy") {
 			params.combatType = COMBAT_ENERGYDAMAGE;
 		} else if (tmpStrValue == "fire") {
 			params.combatType = COMBAT_FIREDAMAGE;
+		} else if (tmpStrValue == "death") {
+			params.combatType = COMBAT_DEATHDAMAGE;
+		} else if (tmpStrValue == "holy") {
+			params.combatType = COMBAT_HOLYDAMAGE;
 		} else {
 			std::cout << "[Warning - WeaponWand::configureEvent] Type \"" << attr.as_string() << "\" does not exist." << std::endl;
 		}

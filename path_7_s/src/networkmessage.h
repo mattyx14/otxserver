@@ -34,11 +34,15 @@ class NetworkMessage
 		typedef uint16_t MsgSize_t;
 		// Headers:
 		// 2 bytes for unencrypted message size
+		// 4 bytes for checksum
 		// 2 bytes for encrypted message size
-		static const MsgSize_t INITIAL_BUFFER_POSITION = 4;
+		static const MsgSize_t INITIAL_BUFFER_POSITION = 8;
 		enum { HEADER_LENGTH = 2 };
-		enum { MAX_BODY_LENGTH = NETWORKMESSAGE_MAXSIZE - HEADER_LENGTH };
-		enum { MAX_PROTOCOL_BODY_LENGTH = MAX_BODY_LENGTH };
+		enum { CHECKSUM_LENGTH = 4 };
+		enum { XTEA_MULTIPLE = 8 };
+		enum { MAX_BODY_LENGTH = NETWORKMESSAGE_MAXSIZE - HEADER_LENGTH - CHECKSUM_LENGTH - XTEA_MULTIPLE };
+		enum { MAX_PROTOCOL_BODY_LENGTH = MAX_BODY_LENGTH - 10 };
+
 		NetworkMessage() {
 			reset();
 		}
@@ -114,7 +118,6 @@ class NetworkMessage
 		void addPosition(const Position& pos);
 		void addItem(uint16_t id, uint8_t count);
 		void addItem(const Item* item);
-		void addItemId(const Item* item);
 		void addItemId(uint16_t itemId);
 
 		MsgSize_t getLength() const {
@@ -158,7 +161,7 @@ class NetworkMessage
 		}
 
 		inline bool canRead(int32_t size) {
-			if ((position + size) > (length + 4) || size >= (NETWORKMESSAGE_MAXSIZE - position)) {
+			if ((position + size) > (length + 8) || size >= (NETWORKMESSAGE_MAXSIZE - position)) {
 				overrun = true;
 				return false;
 			}

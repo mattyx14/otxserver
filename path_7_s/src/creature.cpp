@@ -431,12 +431,16 @@ void Creature::onRemoveTileItem(const Tile* tile, const Position& pos, const Ite
 	}
 }
 
-void Creature::onCreatureAppear(Creature* creature, bool)
+void Creature::onCreatureAppear(Creature* creature, bool isLogin)
 {
 	if (creature == this) {
 		if (useCacheMap()) {
 			isMapLoaded = true;
 			updateMapCache();
+		}
+
+		if (isLogin) {
+			setLastPosition(getPosition());
 		}
 	} else if (isMapLoaded) {
 		if (creature->getPosition().z == getPosition().z) {
@@ -1089,6 +1093,18 @@ void Creature::onTickCondition(ConditionType_t type, bool& bRemove)
 			break;
 		case CONDITION_POISON:
 			bRemove = (field->getCombatType() != COMBAT_EARTHDAMAGE);
+			break;
+		case CONDITION_FREEZING:
+			bRemove = (field->getCombatType() != COMBAT_ICEDAMAGE);
+			break;
+		case CONDITION_DAZZLED:
+			bRemove = (field->getCombatType() != COMBAT_HOLYDAMAGE);
+			break;
+		case CONDITION_CURSED:
+			bRemove = (field->getCombatType() != COMBAT_DEATHDAMAGE);
+			break;
+		case CONDITION_DROWN:
+			bRemove = (field->getCombatType() != COMBAT_DROWNDAMAGE);
 			break;
 		case CONDITION_BLEEDING:
 			bRemove = (field->getCombatType() != COMBAT_PHYSICALDAMAGE);

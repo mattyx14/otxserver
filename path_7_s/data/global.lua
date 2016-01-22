@@ -1,5 +1,9 @@
 dofile('data/lib/lib.lua')
 
+ddos = {};
+ddos.enabled = false;
+ddos.broadcasted = false
+
 STORAGEVALUE_PROMOTION = 30018
 
 ropeSpots = {384, 418, 8278, 8592}

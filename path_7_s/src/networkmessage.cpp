@@ -23,10 +23,6 @@
 
 #include "container.h"
 #include "creature.h"
-#include "player.h"
-
-#include "position.h"
-#include "rsa.h"
 
 int32_t NetworkMessage::decodeHeader()
 {
@@ -117,7 +113,7 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 	if (it.stackable) {
 		addByte(count);
 	} else if (it.isSplash() || it.isFluidContainer()) {
-		addByte(fluidMap[count % 8]);
+		addByte(fluidMap[count & 7]);
 	}
 }
 
@@ -130,13 +126,8 @@ void NetworkMessage::addItem(const Item* item)
 	if (it.stackable) {
 		addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
 	} else if (it.isSplash() || it.isFluidContainer()) {
-		addByte(fluidMap[item->getFluidType() % 8]);
+		addByte(fluidMap[item->getFluidType() & 7]);
 	}
-}
-
-void NetworkMessage::addItemId(const Item* item)
-{
-	add<uint16_t>(Item::items[item->getID()].clientId);
 }
 
 void NetworkMessage::addItemId(uint16_t itemId)

@@ -163,6 +163,10 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_POISON:
 		case CONDITION_FIRE:
 		case CONDITION_ENERGY:
+		case CONDITION_DROWN:
+		case CONDITION_FREEZING:
+		case CONDITION_DAZZLED:
+		case CONDITION_CURSED:
 		case CONDITION_BLEEDING:
 			return new ConditionDamage(_id, _type, _buff, _subId);
 
@@ -182,10 +186,8 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_REGENERATION:
 			return new ConditionRegeneration(_id, _type, _ticks, _buff, _subId);
 
-	#ifdef _PROTOCOL76
 		case CONDITION_SOUL:
 			return new ConditionSoul(_id, _type, _ticks, _buff, _subId);
-	#endif
 
 		case CONDITION_ATTRIBUTES:
 			return new ConditionAttributes(_id, _type, _ticks, _buff, _subId);
@@ -281,7 +283,7 @@ bool Condition::isPersistent() const
 
 uint32_t Condition::getIcons() const
 {
-	return 0;
+	return isBuff ? ICON_PARTY_BUFF : 0;
 }
 
 bool Condition::updateCondition(const Condition* addCondition)
@@ -471,8 +473,8 @@ void ConditionAttributes::updatePercentSkills(Player* player)
 			continue;
 		}
 
-		int32_t currSkill = player->getSkillLevel(i);
-		skills[i] = static_cast<int32_t>(currSkill * ((skillsPercent[i] - 100) / 100.f));
+		int32_t unmodifiedSkill = player->getBaseSkill(i);
+		skills[i] = static_cast<int32_t>(unmodifiedSkill * ((skillsPercent[i] - 100) / 100.f));
 	}
 }
 
@@ -786,7 +788,6 @@ bool ConditionRegeneration::setParam(ConditionParam_t param, int32_t value)
 	}
 }
 
-#ifdef _PROTOCOL76
 ConditionSoul::ConditionSoul(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId) :
 	ConditionGeneric(_id, _type, _ticks, _buff, _subId)
 {
@@ -860,7 +861,6 @@ bool ConditionSoul::setParam(ConditionParam_t param, int32_t value)
 			return ret;
 	}
 }
-#endif
 
 ConditionDamage::ConditionDamage(ConditionId_t _id, ConditionType_t _type, bool _buff, uint32_t _subId) :
 	Condition(_id, _type, 0, _buff, _subId)
@@ -1220,8 +1220,24 @@ uint32_t ConditionDamage::getIcons() const
 			icons |= ICON_ENERGY;
 			break;
 
+		case CONDITION_DROWN:
+			icons |= ICON_DROWNING;
+			break;
+
 		case CONDITION_POISON:
 			icons |= ICON_POISON;
+			break;
+
+		case CONDITION_FREEZING:
+			icons |= ICON_FREEZING;
+			break;
+
+		case CONDITION_DAZZLED:
+			icons |= ICON_DAZZLED;
+			break;
+
+		case CONDITION_CURSED:
+			icons |= ICON_CURSED;
 			break;
 
 		default:

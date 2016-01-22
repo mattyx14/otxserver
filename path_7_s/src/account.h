@@ -24,7 +24,7 @@
 
 struct Account {
 	std::vector<std::string> characters;
-	uint32_t number;
+	std::string name;
 	time_t lastDay;
 	uint32_t id;
 	uint16_t premiumDays;

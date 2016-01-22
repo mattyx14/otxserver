@@ -44,6 +44,18 @@ CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 	CombatDamage damage;
 	damage.origin = params.origin;
 	damage.primary.type = params.combatType;
+
+	double damageModifier = 1.0;
+	if (auto chance = g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE)) {
+		if (boolean_random(static_cast<double>(chance) / 100.0)) {
+			damageModifier += static_cast<double>(g_config.getNumber(ConfigManager::CRITICAL_HIT_EXTRA)) / 100.0;
+			std::cout << "Critical hit!" << std::endl;
+		}
+	}
+
+	auto mina = this->mina * damageModifier;
+	auto maxa = this->maxa * damageModifier;
+
 	if (formulaType == COMBAT_FORMULA_DAMAGE) {
 		damage.primary.value = normal_random(
 			static_cast<int32_t>(mina),
@@ -121,8 +133,20 @@ CombatType_t Combat::ConditionToDamageType(ConditionType_t type)
 		case CONDITION_BLEEDING:
 			return COMBAT_PHYSICALDAMAGE;
 
+		case CONDITION_DROWN:
+			return COMBAT_DROWNDAMAGE;
+
 		case CONDITION_POISON:
 			return COMBAT_EARTHDAMAGE;
+
+		case CONDITION_FREEZING:
+			return COMBAT_ICEDAMAGE;
+
+		case CONDITION_DAZZLED:
+			return COMBAT_HOLYDAMAGE;
+
+		case CONDITION_CURSED:
+			return COMBAT_DEATHDAMAGE;
 
 		default:
 			break;
@@ -140,8 +164,20 @@ ConditionType_t Combat::DamageToConditionType(CombatType_t type)
 		case COMBAT_ENERGYDAMAGE:
 			return CONDITION_ENERGY;
 
+		case COMBAT_DROWNDAMAGE:
+			return CONDITION_DROWN;
+
 		case COMBAT_EARTHDAMAGE:
 			return CONDITION_POISON;
+
+		case COMBAT_ICEDAMAGE:
+			return CONDITION_FREEZING;
+
+		case COMBAT_HOLYDAMAGE:
+			return CONDITION_DAZZLED;
+
+		case COMBAT_DEATHDAMAGE:
+			return CONDITION_CURSED;
 
 		case COMBAT_PHYSICALDAMAGE:
 			return CONDITION_BLEEDING;
@@ -264,6 +300,10 @@ bool Combat::isProtected(const Player* attacker, const Player* target)
 	}
 
 	if (attacker->getVocationId() == VOCATION_NONE || target->getVocationId() == VOCATION_NONE) {
+		return true;
+	}
+
+	if (attacker->getSkull() == SKULL_BLACK && attacker->getSkullClient(target) == SKULL_NONE) {
 		return true;
 	}
 
@@ -472,7 +512,7 @@ void Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 
 	if ((damage.primary.value < 0 || damage.secondary.value < 0) && caster) {
 		Player* targetPlayer = target->getPlayer();
-		if (targetPlayer && caster->getPlayer()) {
+		if (targetPlayer && caster->getPlayer() && targetPlayer->getSkull() != SKULL_BLACK) {
 			damage.primary.value /= 2;
 			damage.secondary.value /= 2;
 		}
@@ -628,9 +668,18 @@ void Combat::addDistanceEffect(Creature* caster, const Position& fromPos, const 
 		}
 
 		switch (player->getWeaponType()) {
-		default:
-			effect = CONST_ANI_NONE;
-			break;
+			case WEAPON_AXE:
+				effect = CONST_ANI_WHIRLWINDAXE;
+				break;
+			case WEAPON_SWORD:
+				effect = CONST_ANI_WHIRLWINDSWORD;
+				break;
+			case WEAPON_CLUB:
+				effect = CONST_ANI_WHIRLWINDCLUB;
+				break;
+			default:
+				effect = CONST_ANI_NONE;
+				break;
 		}
 	}
 
@@ -1319,7 +1368,7 @@ void AreaCombat::setupExtArea(const std::list<uint32_t>& list, uint32_t rows)
 void MagicField::onStepInField(Creature* creature)
 {
 	//remove magic walls/wild growth
-	if (id == ITEM_MAGICWALL || id == ITEM_WILDGROWTH || isBlocking()) {
+	if (id == ITEM_MAGICWALL || id == ITEM_WILDGROWTH || id == ITEM_MAGICWALL_SAFE || id == ITEM_WILDGROWTH_SAFE || isBlocking()) {
 		if (!creature->isInGhostMode()) {
 			g_game.internalRemoveItem(this, 1);
 		}

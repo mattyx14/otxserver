@@ -19,7 +19,6 @@
 
 #include "otpch.h"
 
-#include "configmanager.h"
 #include "container.h"
 #include "iomap.h"
 #include "game.h"
@@ -416,7 +415,7 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 		return this;
 	}
 
-	bool autoStack = (g_config.getBoolean(ConfigManager::AUTO_STACK_ITEMS) && !hasBitSet(FLAG_IGNOREAUTOSTACK, flags));
+	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
 	if (autoStack && item->isStackable() && item->getParent() != this) {
 		//try find a suitable item to stack with
 		uint32_t n = 0;

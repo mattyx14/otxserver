@@ -23,31 +23,14 @@
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "2"
-#define REVISION_VERSION ""
-#define SOFTWARE_CODENAME ""
+#define REVISION_VERSION "408"
+#define SOFTWARE_CODENAME "PHANTOM"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
-#if defined(_PROTOCOL77)
-	#define _PROTOCOL76
-	#define CLIENT_VERSION_MIN 770
-	#define CLIENT_VERSION_MAX 772
-	#define CLIENT_VERSION_STR "7.72"
-	#define ITEMS_PATH "772"
-	#define CLIENT_VERSION_ITEMS 3
-#elif defined(_PROTOCOL76)
-	#define CLIENT_VERSION_MIN 760
-	#define CLIENT_VERSION_MAX 760
-	#define CLIENT_VERSION_STR "7.60"
-	#define ITEMS_PATH "760"
-	#define CLIENT_VERSION_ITEMS 3
-#else
-	#define CLIENT_VERSION_MIN 740
-	#define CLIENT_VERSION_MAX 740
-	#define CLIENT_VERSION_STR "7.40"
-	#define ITEMS_PATH "740"
-	#define CLIENT_VERSION_ITEMS 1
-#endif
+#define CLIENT_VERSION_MIN 860
+#define CLIENT_VERSION_MAX 860
+#define CLIENT_VERSION_STR "8.6"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

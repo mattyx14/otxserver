@@ -30,6 +30,7 @@
 #include "configmanager.h"
 #include "scriptmanager.h"
 #include "rsa.h"
+#include "protocolold.h"
 #include "protocollogin.h"
 #include "protocolstatus.h"
 #include "databasemanager.h"
@@ -164,12 +165,10 @@ void mainLoader(int, char*[], ServiceManager* services)
 	}
 #endif
 
-	#ifdef _PROTOCOL77
-		//set RSA key
-		const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
-		const char* q("7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101");
-		g_RSA.setKey(p, q);
-	#endif
+	//set RSA key
+	const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
+	const char* q("7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101");
+	g_RSA.setKey(p, q);
 
 	std::cout << ">> Establishing database connection..." << std::flush;
 
@@ -205,7 +204,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	// load item data
 	std::cout << ">> Loading items" << std::endl;
-	if (Item::items.loadFromOtb("data/items/" ITEMS_PATH "/items.otb") != ERROR_NONE) {
+	if (Item::items.loadFromOtb("data/items/items.otb") != ERROR_NONE) {
 		startupErrorMessage("Unable to load items (OTB)!");
 		return;
 	}
@@ -224,6 +223,13 @@ void mainLoader(int, char*[], ServiceManager* services)
 	std::cout << ">> Loading monsters" << std::endl;
 	if (!g_monsters.loadFromXml()) {
 		startupErrorMessage("Unable to load monsters!");
+		return;
+	}
+
+	std::cout << ">> Loading outfits" << std::endl;
+	Outfits* outfits = Outfits::getInstance();
+	if (!outfits->loadFromXml()) {
+		startupErrorMessage("Unable to load outfits!");
 		return;
 	}
 
@@ -260,6 +266,9 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	// OT protocols
 	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT));
+
+	// Legacy login protocol
+	services->add<ProtocolOld>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 
 	RentPeriod_t rentPeriod;
 	std::string strRentPeriod = asLowerCaseString(g_config.getString(ConfigManager::HOUSE_RENT_PERIOD));

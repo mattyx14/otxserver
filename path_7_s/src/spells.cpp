@@ -371,9 +371,9 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 
 Spell::Spell()
 {
+	spellId = 0;
 	level = 0;
 	magLevel = 0;
-	levelPercent = 0;
 	mana = 0;
 	manaPercent = 0;
 	soul = 0;
@@ -413,6 +413,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"poison",
 		"fire",
 		"energy",
+		"drown",
 		"lifedrain",
 		"manadrain",
 		"healing",
@@ -426,6 +427,10 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"firecondition",
 		"poisoncondition",
 		"energycondition",
+		"drowncondition",
+		"freezecondition",
+		"cursecondition",
+		"dazzlecondition"
 	};
 
 	//static size_t size = sizeof(reservedList) / sizeof(const char*);
@@ -438,16 +443,16 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 	}
 
 	pugi::xml_attribute attr;
+	if ((attr = node.attribute("spellid"))) {
+		spellId = pugi::cast<uint16_t>(attr.value());
+	}
+
 	if ((attr = node.attribute("lvl"))) {
 		level = pugi::cast<uint32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("maglv")) || (attr = node.attribute("magiclevel"))) {
+	if ((attr = node.attribute("maglv"))) {
 		magLevel = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("levelpercent")) || (attr = node.attribute("lvlpercent"))) {
-		levelPercent = pugi::cast<int32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("mana"))) {
@@ -458,18 +463,16 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		manaPercent = pugi::cast<uint32_t>(attr.value());
 	}
 
-	#ifdef _PROTOCOL76
-		if ((attr = node.attribute("soul"))) {
-			soul = pugi::cast<uint32_t>(attr.value());
-		}
-	#endif
-
-	if ((attr = node.attribute("range"))) {
-		range = pugi::cast<int32_t>(attr.value());
+	if ((attr = node.attribute("soul"))) {
+		soul = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("exhaustion")) || (attr = node.attribute("cooldown"))) {
 		exhaustion = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("range"))) {
+		range = pugi::cast<int32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("fist"))) {
@@ -554,11 +557,8 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 
 		int32_t vocationId = g_vocations.getVocationId(attr.as_string());
 		if (vocationId != -1) {
-			vocSpellMap[vocationId] = true;
-			int32_t promotedVocation = g_vocations.getPromotedVocation(vocationId);
-			if (promotedVocation != VOCATION_NONE) {
-				vocSpellMap[promotedVocation] = true;
-			}
+			attr = vocationNode.attribute("showInDescription");
+			vocSpellMap[vocationId] = !attr || attr.as_bool();
 		} else {
 			std::cout << "[Warning - Spell::configureSpell] Wrong vocation name: " << attr.as_string() << std::endl;
 		}
@@ -626,13 +626,11 @@ bool Spell::playerSpellCheck(Player* player) const
 		return false;
 	}
 
-	#ifdef _PROTOCOL76
 	if (player->getSoul() < soul && !player->hasFlag(PlayerFlag_HasInfiniteSoul)) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHSOUL);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
-	#endif
 
 	if (player->getSkillLevel(SKILL_FIST) < fist) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHFISTLEVEL);
@@ -876,10 +874,6 @@ uint32_t Spell::getManaCost(const Player* player) const
 		uint32_t manaCost = (maxMana * manaPercent) / 100;
 		return manaCost;
 	}
-	else if(levelPercent != 0) {;
-		int32_t manaCost = (player->getLevel() * levelPercent) / 100;
-		return manaCost;
-	}
 
 	return 0;
 }
@@ -1014,6 +1008,7 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 
 		if (hasParam) {
 			Player* playerTarget = nullptr;
+			ReturnValue ret = g_game.getPlayerByNameWildcard(param, playerTarget);
 
 			if (playerTarget && playerTarget->isAccessPlayer() && !player->isAccessPlayer()) {
 				playerTarget = nullptr;
@@ -1021,6 +1016,20 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 
 			target = playerTarget;
 			if (!target || target->getHealth() <= 0) {
+				if (!casterTargetOrDirection) {
+					if (exhaustion > 0) {
+						if (aggressive) {
+							player->addCombatExhaust(exhaustion);
+						} else {
+							player->addHealExhaust(exhaustion);
+						}
+					}
+
+					player->sendCancelMessage(ret);
+					g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+					return false;
+				}
+
 				useDirection = true;
 			}
 
@@ -1062,6 +1071,21 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 
 		if (getHasPlayerNameParam()) {
 			Player* playerTarget = nullptr;
+			ReturnValue ret = g_game.getPlayerByNameWildcard(param, playerTarget);
+
+			if (ret != RETURNVALUE_NOERROR) {
+				if (exhaustion > 0) {
+					if (aggressive) {
+						player->addCombatExhaust(exhaustion);
+					} else {
+						player->addHealExhaust(exhaustion);
+					}
+				}
+
+				player->sendCancelMessage(ret);
+				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+				return false;
+			}
 
 			if (playerTarget && (!playerTarget->isAccessPlayer() || player->isAccessPlayer())) {
 				param = playerTarget->getName();
@@ -1862,7 +1886,7 @@ ReturnValue RuneSpell::canExecuteAction(const Player* player, const Position& to
 	return RETURNVALUE_NOERROR;
 }
 
-bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition)
+bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition, bool isHotkey)
 {
 	if (!playerRuneSpellCheck(player, toPosition)) {
 		return false;
@@ -1891,7 +1915,7 @@ bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* t
 			var.pos = toPosition;
 		}
 
-		result = internalCastSpell(player, var);
+		result = internalCastSpell(player, var, isHotkey);
 	} else if (runeFunction) {
 		result = runeFunction(this, player, toPosition);
 	}
@@ -1913,7 +1937,7 @@ bool RuneSpell::castSpell(Creature* creature)
 	LuaVariant var;
 	var.type = VARIANT_NUMBER;
 	var.number = creature->getID();
-	return internalCastSpell(creature, var);
+	return internalCastSpell(creature, var, false);
 }
 
 bool RuneSpell::castSpell(Creature* creature, Creature* target)
@@ -1921,23 +1945,23 @@ bool RuneSpell::castSpell(Creature* creature, Creature* target)
 	LuaVariant var;
 	var.type = VARIANT_NUMBER;
 	var.number = target->getID();
-	return internalCastSpell(creature, var);
+	return internalCastSpell(creature, var, false);
 }
 
-bool RuneSpell::internalCastSpell(Creature* creature, const LuaVariant& var)
+bool RuneSpell::internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey)
 {
 	bool result;
 	if (m_scripted) {
-		result = executeCastSpell(creature, var);
+		result = executeCastSpell(creature, var, isHotkey);
 	} else {
 		result = false;
 	}
 	return result;
 }
 
-bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
+bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey)
 {
-	//onCastSpell(creature, var)
+	//onCastSpell(creature, var, isHotkey)
 	if (!m_scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - RuneSpell::executeCastSpell] Call stack overflow" << std::endl;
 		return false;
@@ -1955,5 +1979,7 @@ bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 
 	LuaScriptInterface::pushVariant(L, var);
 
-	return m_scriptInterface->callFunction(2);
+	LuaScriptInterface::pushBoolean(L, isHotkey);
+
+	return m_scriptInterface->callFunction(3);
 }

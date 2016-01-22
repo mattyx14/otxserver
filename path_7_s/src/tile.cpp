@@ -29,7 +29,6 @@
 #include "mailbox.h"
 #include "monster.h"
 #include "movement.h"
-#include "player.h"
 #include "teleport.h"
 #include "trashholder.h"
 
@@ -532,7 +531,11 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 		const CreatureVector* creatures = getCreatures();
 		if (const Player* player = creature->getPlayer()) {
 			if (creatures && !creatures->empty() && !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags) && !player->isAccessPlayer()) {
-				return RETURNVALUE_NOTPOSSIBLE;
+				for (const Creature* tileCreature : *creatures) {
+					if (!player->canWalkthrough(tileCreature)) {
+						return RETURNVALUE_NOTPOSSIBLE;
+					}
+				}
 			}
 
 			if (player->getParent() == nullptr && hasFlag(TILESTATE_NOLOGOUT)) {
@@ -896,7 +899,7 @@ void Tile::addThing(int32_t, Thing* thing)
 
 			items = makeItemList();
 			items->insert(items->getBeginDownItem(), item);
-			++items->downItemCount;
+			items->addDownItemCount(1);
 			onAddTileItem(item);
 		}
 	}
@@ -1078,7 +1081,7 @@ void Tile::removeThing(Thing* thing, uint32_t count)
 
 			item->setParent(nullptr);
 			items->erase(it);
-			--items->downItemCount;
+			items->addDownItemCount(-1);
 			onRemoveTileItem(list, oldStackPosVector, item);
 		}
 	}
@@ -1142,34 +1145,30 @@ int32_t Tile::getThingIndex(const Thing* thing) const
 	return -1;
 }
 
-uint32_t Tile::getHeight() const
+int32_t Tile::getClientIndexOfCreature(const Player* player, const Creature* creature) const
 {
-	uint32_t height = 0;
-	if (ground)
-	{
-		if (ground->hasProperty(HASHEIGHT))
-		{
-			++height;
-		}
+	int32_t n;
+	if (ground) {
+		n = 1;
+	} else {
+		n = 0;
 	}
 
-	if (const TileItemVector* items = getItemList())
-	{
-		for (ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
-		{
-			if ((*it)->hasProperty(HASHEIGHT))
-			{
-				++height;
+	const TileItemVector* items = getItemList();
+	if (items) {
+		n += items->getTopItemCount();
+	}
+
+	if (const CreatureVector* creatures = getCreatures()) {
+		for (const Creature* c : boost::adaptors::reverse(*creatures)) {
+			if (c == creature) {
+				return n;
+			} else if (player->canSeeCreature(c)) {
+				++n;
 			}
 		}
 	}
-
-	return height;
-}
-
-int32_t Tile::getClientIndexOfCreature(const Player* player, const Creature* creature) const
-{
-	return getThingIndex(thing);
+	return -1;
 }
 
 int32_t Tile::getStackposOfCreature(const Player* player, const Creature* creature) const
@@ -1295,7 +1294,7 @@ Thing* Tile::getThing(size_t index) const
 	if (items) {
 		uint32_t topItemSize = items->getTopItemCount();
 		if (index < topItemSize) {
-			return items->at(items->downItemCount + index);
+			return items->at(items->getDownItemCount() + index);
 		}
 		index -= topItemSize;
 	}
@@ -1442,7 +1441,7 @@ void Tile::internalAddThing(uint32_t, Thing* thing)
 			}
 		} else {
 			items->insert(items->getBeginDownItem(), item);
-			++items->downItemCount;
+			items->addDownItemCount(1);
 		}
 
 		setTileFlags(item);
@@ -1643,7 +1642,7 @@ Item* Tile::getUseItem() const
 		return ground;
 	}
 
-	for (Item* item : *items) {
+	for (Item* item : boost::adaptors::reverse(*items)) {
 		if (Item::items[item->getID()].forceUse) {
 			return item;
 		}

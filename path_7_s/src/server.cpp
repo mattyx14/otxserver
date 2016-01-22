@@ -28,7 +28,7 @@
 extern ConfigManager g_config;
 Ban g_bans;
 
-ServiceManager::ServiceManager():
+ServiceManager::ServiceManager(): 
 	death_timer(io_service),
 	running(false)
 {
@@ -147,11 +147,15 @@ void ServicePort::onAccept(Connection_ptr connection, const boost::system::error
 	}
 }
 
-Protocol_ptr ServicePort::make_protocol(NetworkMessage& msg, const Connection_ptr& connection) const
+Protocol_ptr ServicePort::make_protocol(bool checksummed, NetworkMessage& msg, const Connection_ptr& connection) const
 {
 	uint8_t protocolID = msg.getByte();
 	for (auto& service : services) {
-		if (protocolID == service->get_protocol_identifier()) {
+		if (protocolID != service->get_protocol_identifier()) {
+			continue;
+		}
+
+		if ((checksummed && service->is_checksummed()) || !service->is_checksummed()) {
 			return service->make_protocol(connection);
 		}
 	}

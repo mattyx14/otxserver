@@ -161,7 +161,7 @@ bool BedItem::sleep(Player* player)
 	g_game.map.moveCreature(*player, *getTile());
 
 	// display 'Zzzz'/sleep effect
-	g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+	g_game.addMagicEffect(player->getPosition(), CONST_ME_SLEEP);
 
 	// kick player after he sees himself walk onto the bed and it change id
 	uint32_t playerId = player->getID();
@@ -239,10 +239,8 @@ void BedItem::regeneratePlayer(Player* player) const
 		player->changeMana(regen);
 	}
 
-	#ifdef _PROTOCOL76
 	const int32_t soulRegen = sleptTime / (60 * 15);
 	player->changeSoul(soulRegen);
-	#endif
 }
 
 void BedItem::updateAppearance(const Player* player)

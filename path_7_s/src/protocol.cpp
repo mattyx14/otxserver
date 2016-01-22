@@ -30,22 +30,18 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 	if (!m_rawMessages) {
 		msg->writeMessageLength();
 
-		#ifdef _PROTOCOL77
-			if (m_encryptionEnabled) {
-				XTEA_encrypt(*msg);
-				msg->addCryptoHeader();
-			}
-		#endif
+		if (m_encryptionEnabled) {
+			XTEA_encrypt(*msg);
+			msg->addCryptoHeader(m_checksumEnabled);
+		}
 	}
 }
 
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
-	#ifdef _PROTOCOL77
-		if (m_encryptionEnabled && !XTEA_decrypt(msg)) {
-			return;
-		}
-	#endif
+	if (m_encryptionEnabled && !XTEA_decrypt(msg)) {
+		return;
+	}
 
 	parsePacket(msg);
 }
@@ -98,7 +94,7 @@ void Protocol::XTEA_encrypt(OutputMessage& msg) const
 
 bool Protocol::XTEA_decrypt(NetworkMessage& msg) const
 {
-	if (((msg.getLength() - 2) % 8) != 0) {
+	if (((msg.getLength() - 6) & 7) != 0) {
 		return false;
 	}
 
@@ -129,7 +125,7 @@ bool Protocol::XTEA_decrypt(NetworkMessage& msg) const
 	}
 
 	int innerLength = msg.get<uint16_t>();
-	if (innerLength > msg.getLength() - 4) {
+	if (innerLength > msg.getLength() - 8) {
 		return false;
 	}
 

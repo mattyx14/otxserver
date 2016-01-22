@@ -25,7 +25,7 @@
 class Protocol : public std::enable_shared_from_this<Protocol>
 {
 	public:
-		explicit Protocol(Connection_ptr connection) : m_connection(connection), m_key(), m_encryptionEnabled(false), m_rawMessages(false) {}
+		explicit Protocol(Connection_ptr connection) : m_connection(connection), m_key(), m_encryptionEnabled(false), m_checksumEnabled(true), m_rawMessages(false) {}
 		virtual ~Protocol() = default;
 
 		// non-copyable
@@ -77,6 +77,12 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		void setXTEAKey(const uint32_t* key) {
 			memcpy(m_key, key, sizeof(*key) * 4);
 		}
+		void enableChecksum() {
+			m_checksumEnabled = true;
+		}
+		void disableChecksum() {
+			m_checksumEnabled = false;
+		}
 
 		void XTEA_encrypt(OutputMessage& msg) const;
 		bool XTEA_decrypt(NetworkMessage& msg) const;
@@ -94,6 +100,7 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		const ConnectionWeak_ptr m_connection;
 		uint32_t m_key[4];
 		bool m_encryptionEnabled;
+		bool m_checksumEnabled;
 		bool m_rawMessages;
 };
 

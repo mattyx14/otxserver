@@ -145,9 +145,6 @@ class Spell : public BaseSpell
 		uint32_t getManaPercent() const {
 			return manaPercent;
 		}
-		uint32_t getLevelPercent() const {
-			return levelPercent;
-		}
 		bool isPremium() const {
 			return premium;
 		}
@@ -170,9 +167,10 @@ class Spell : public BaseSpell
 		bool playerInstantSpellCheck(Player* player, const Position& toPos);
 		bool playerRuneSpellCheck(Player* player, const Position& toPos);
 
+		uint8_t spellId;
+
 		uint32_t mana;
 		uint32_t manaPercent;
-		uint32_t levelPercent;
 		uint32_t soul;
 		uint32_t exhaustion;
 		uint32_t level;
@@ -300,13 +298,13 @@ class RuneSpell final : public Action, public Spell
 			return targetCreature;
 		}
 
-		bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition) final;
+		bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey) final;
 
 		bool castSpell(Creature* creature) final;
 		bool castSpell(Creature* creature, Creature* target) final;
 
 		//scripting
-		bool executeCastSpell(Creature* creature, const LuaVariant& var);
+		bool executeCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
 
 		bool isInstant() const final {
 			return false;
@@ -321,7 +319,7 @@ class RuneSpell final : public Action, public Spell
 		static RuneSpellFunction Illusion;
 		static RuneSpellFunction Convince;
 
-		bool internalCastSpell(Creature* creature, const LuaVariant& var);
+		bool internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
 
 		RuneSpellFunction* runeFunction;
 		uint16_t runeId;

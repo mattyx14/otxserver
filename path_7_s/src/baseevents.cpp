@@ -44,7 +44,7 @@ bool BaseEvents::loadFromXml()
 		std::cout << "[Warning - BaseEvents::loadFromXml] Can not load " << scriptsName << " lib/" << scriptsName << ".lua" << std::endl;
 	}
 
-	std::string filename = basePath + ITEMS_PATH + "/" + scriptsName + ".xml";
+	std::string filename = basePath + scriptsName + ".xml";
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
