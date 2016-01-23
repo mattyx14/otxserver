@@ -23,10 +23,10 @@
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "X"
 #define PATCH_VERSION "S"
-#define REVISION_VERSION "1"
+#define REVISION_VERSION "2"
 #define SOFTWARE_CODENAME "Crying Damson"
-#define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
-#define FORUMS "blacktibia.org - tibiaking.com - otland.net - otfans.net"
+#define SOFTWARE_DEVELOPERS "Mattyx14 and TFS Developers"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
 #if defined(_MULTIPLATFORM77)
 	#define _MULTIPLATFORM76

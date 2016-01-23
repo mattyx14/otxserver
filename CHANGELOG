@@ -7,7 +7,7 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		Doomed Elderberry
+		Crying Damson
 
 	Forum and website
 		http://www.blacktibia.org/f4-otx-server-2-descontinuado
@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED : OTX Server 2.X.S - 1 :: Version "Crying Damson"
+		COMPLETED : OTX Server 2.X.S - 2 :: Version "Crying Damson"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -49,13 +49,21 @@
 		- Add purseSlot
 ]
 
+[ OTX Server 2.X.S - 2 :: Version "Crying Damson"
+	- Added CastSystem/AntiDupeItems to 8.60
+		This sytem no are added to other protocols for than 8.6 is the most popular distribution for OTX Server 2
+	- Update to VC 2015
+	- Fix error on account manger "create player"
+	- New DllFiles
+]
+
 [ OTX Server 2.X.S - 1 :: Version "Crying Damson"
 	- Added support to protocol 8.xx
 	- Fixed this: http://www.blacktibia.org/t37433p30-otx-server-2xs-doomed-elderberry#231929
 	- Fixed this: http://www.blacktibia.org/t37433p105-otx-server-2-x-s-doomed-elderberry#232762
 	- Fixed this: https://www.youtube.com/watch?v=stsqUhtMqDY
 	- Fixes and tunes
-	- Update to VC16
+	- Update to VC 2014
 ]
 
 [ OTX Server 2.X.Series :: Version "Doomed Elderberry"
