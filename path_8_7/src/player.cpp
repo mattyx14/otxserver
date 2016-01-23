@@ -149,6 +149,9 @@ Player::Player(ProtocolGame_ptr p) :
 	lastQuestlogUpdate = 0;
 
 	inventoryWeight = 0;
+	operatingSystem = CLIENTOS_NONE;
+	secureMode = false;
+	guid = 0;
 }
 
 Player::~Player()
@@ -1333,11 +1336,6 @@ void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Posit
 				addCondition(condition);
 			}
 		}
-	}
-
-	// unset editing house
-	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE)) {
-		editHouse = nullptr;
 	}
 }
 
@@ -3906,6 +3904,8 @@ double Player::getLostPercent() const
 	if (isPromoted()) {
 		lossPercent *= 0.7;
 	}
+
+	lossPercent *= vocation->getLessLoss();
 
 	return lossPercent * pow(0.92, blessingCount) / 100;
 }

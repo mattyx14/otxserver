@@ -30283,10 +30283,10 @@
 		<attribute key="floorchange" value="west" />
 	</item>
 	<item id="22589" article="a" name="stair">
-		<attribute key="floorchange" value="eastex" />
+		<attribute key="floorchange" value="eastalt" />
 	</item>
 	<item id="22590" article="a" name="stair">
-		<attribute key="floorchange" value="southex" />
+		<attribute key="floorchange" value="eastalt" />
 	</item>
 	<item fromid="22593" toid="22597" article="a" name="stair">
 		<attribute key="floorchange" value="down" />

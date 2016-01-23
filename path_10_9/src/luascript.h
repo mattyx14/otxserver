@@ -95,6 +95,7 @@ struct LuaTimerEventDesc {
 };
 
 class LuaScriptInterface;
+class Cylinder;
 class Game;
 class Npc;
 
@@ -265,6 +266,7 @@ class LuaScriptInterface
 		static void pushVariant(lua_State* L, const LuaVariant& var);
 		static void pushString(lua_State* L, const std::string& value);
 		static void pushCallback(lua_State* L, int32_t callback);
+		static void pushCylinder(lua_State* L, Cylinder* cylinder);
 
 		static std::string popString(lua_State* L);
 		static int32_t popCallback(lua_State* L);
@@ -798,6 +800,9 @@ class LuaScriptInterface
 		static int luaCreatureSetMaxHealth(lua_State* L);
 		static int luaCreatureSetHiddenHealth(lua_State* L);
 
+		static int luaCreatureIsMoveLocked(lua_State* L);
+		static int luaCreatureSetMoveLocked(lua_State* L);
+
 		static int luaCreatureGetMana(lua_State* L);
 		static int luaCreatureAddMana(lua_State* L);
 		static int luaCreatureGetMaxMana(lua_State* L);
@@ -837,6 +842,8 @@ class LuaScriptInterface
 
 		static int luaPlayerGetAccountType(lua_State* L);
 		static int luaPlayerSetAccountType(lua_State* L);
+
+		static int luaPlayerHasFlag(lua_State* L);
 
 		static int luaPlayerGetCapacity(lua_State* L);
 		static int luaPlayerSetCapacity(lua_State* L);
@@ -1143,6 +1150,10 @@ class LuaScriptInterface
 		static int luaItemTypeGetDestroyId(lua_State* L);
 		static int luaItemTypeGetDecayId(lua_State* L);
 		static int luaItemTypeGetRequiredLevel(lua_State* L);
+		static int luaItemTypeGetSpeed(lua_State* L);
+		static int luaItemTypeGetBaseSpeed(lua_State* L);
+		static int luaItemTypeGetDecayTime(lua_State* L);
+		static int luaItemTypeGetShowDuration(lua_State* L);
 
 		static int luaItemTypeHasSubType(lua_State* L);
 
