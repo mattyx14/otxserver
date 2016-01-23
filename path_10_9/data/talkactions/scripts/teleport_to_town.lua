@@ -4,7 +4,8 @@ function onSay(player, words, param)
 	end
 
 	local town = Town(param)
-		town = Town(tonumber(param)
+	if town == nil then
+		town = Town(tonumber(param))
 	end
 
 	if town == nil then
