@@ -72,6 +72,12 @@ emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
 
+-- Critical hits
+-- NOTE: criticalChance and extraPercent are percentages, not absolute values.
+-- extraPercent is the extra percentage of the damage to be added.
+criticalChance = 1
+criticalExtra = 100
+
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
 rateExp = 5

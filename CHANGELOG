@@ -70,6 +70,7 @@
 	- Added definitions.h to cmake source definitions
 	- Added Ctrl + Arrow key teleport as GM/God (helpful feature)
 	- Added missing config option allowWalkthrough this on true
+	- Added missing config options criticalhits
 	- Always reload global.lua libraries
 	- Fix bug with /town command
 	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403
