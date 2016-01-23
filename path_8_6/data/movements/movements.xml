@@ -245,10 +245,6 @@
 		<vocation name="Royal Paladin" showInDescription="0" />
 	</movevent>
 	<movevent event="DeEquip" itemid="12646" slot="feet" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="15410" slot="feet" level="150" function="onEquipItem">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</movevent>
 
 	<!-- Amulets -->
 	<movevent event="Equip" itemid="2161" slot="necklace" function="onEquipItem" />
