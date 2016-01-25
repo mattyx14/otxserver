@@ -255,7 +255,7 @@ ReturnValue Combat::canDoCombat(Creature* caster, Tile* tile, bool aggressive)
 		return RETURNVALUE_NOTENOUGHROOM;
 	}
 
-	if (tile->floorChange()) {
+	if (tile->hasFlag(TILESTATE_FLOORCHANGE)) {
 		return RETURNVALUE_NOTENOUGHROOM;
 	}
 
@@ -331,7 +331,7 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 				const Tile* targetPlayerTile = targetPlayer->getTile();
 				if (targetPlayerTile->hasFlag(TILESTATE_NOPVPZONE)) {
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
-				} else if (attackerPlayer->getTile()->hasFlag(TILESTATE_NOPVPZONE) && !targetPlayerTile->hasFlag(TILESTATE_NOPVPZONE) && !targetPlayerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+				} else if (attackerPlayer->getTile()->hasFlag(TILESTATE_NOPVPZONE) && !targetPlayerTile->hasFlag(TILESTATE_NOPVPZONE | TILESTATE_PROTECTIONZONE)) {
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
 				}
 			}

@@ -73,6 +73,7 @@ Creature::Creature() :
 	scriptEventsBitField = 0;
 
 	hiddenHealth = false;
+	moveLocked = false;
 
 	skull = SKULL_NONE;
 
@@ -954,7 +955,6 @@ void Creature::goToFollowCreature()
 					} else {
 						hasFollowPath = false;
 					}
-
 					return;
 				}
 			}

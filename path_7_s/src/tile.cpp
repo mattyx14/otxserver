@@ -450,22 +450,16 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			return RETURNVALUE_NOERROR;
 		}
 
-		if (hasBitSet(FLAG_PATHFINDING, flags)) {
-			if (floorChange() || positionChange()) {
-				return RETURNVALUE_NOTPOSSIBLE;
-			}
+		if (hasBitSet(FLAG_PATHFINDING, flags) && hasFlag(TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT)) {
+			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
-		if (ground == nullptr) {
+		if (creature->isMoveLocked() || ground == nullptr) {
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
 		if (const Monster* monster = creature->getMonster()) {
-			if (hasFlag(TILESTATE_PROTECTIONZONE)) {
-				return RETURNVALUE_NOTPOSSIBLE;
-			}
-
-			if (floorChange() || positionChange()) {
+			if (hasFlag(TILESTATE_PROTECTIONZONE | TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT)) {
 				return RETURNVALUE_NOTPOSSIBLE;
 			}
 
@@ -699,44 +693,44 @@ Tile* Tile::queryDestination(int32_t&, const Thing&, Item** destItem, uint32_t& 
 	Tile* destTile = nullptr;
 	*destItem = nullptr;
 
-	if (floorChangeDown()) {
+	if (hasFlag(TILESTATE_FLOORCHANGE_DOWN)) {
 		uint16_t dx = tilePos.x;
 		uint16_t dy = tilePos.y;
 		uint8_t dz = tilePos.z + 1;
 
 		Tile* southDownTile = g_game.map.getTile(dx, dy - 1, dz);
-		if (southDownTile && southDownTile->floorChange(DIRECTION_SOUTH_ALT)) {
+		if (southDownTile && southDownTile->hasFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT)) {
 			dy -= 2;
 			destTile = g_game.map.getTile(dx, dy, dz);
 		} else {
 			Tile* eastDownTile = g_game.map.getTile(dx - 1, dy, dz);
-			if (eastDownTile && eastDownTile->floorChange(DIRECTION_EAST_ALT)) {
+			if (eastDownTile && eastDownTile->hasFlag(TILESTATE_FLOORCHANGE_EAST_ALT)) {
 				dx -= 2;
 				destTile = g_game.map.getTile(dx, dy, dz);
 			} else {
 				Tile* downTile = g_game.map.getTile(dx, dy, dz);
 				if (downTile) {
-					if (downTile->floorChange(DIRECTION_NORTH)) {
+					if (downTile->hasFlag(TILESTATE_FLOORCHANGE_NORTH)) {
 						++dy;
 					}
 
-					if (downTile->floorChange(DIRECTION_SOUTH)) {
+					if (downTile->hasFlag(TILESTATE_FLOORCHANGE_SOUTH)) {
 						--dy;
 					}
 
-					if (downTile->floorChange(DIRECTION_SOUTH_ALT)) {
+					if (downTile->hasFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT)) {
 						dy -= 2;
 					}
 
-					if (downTile->floorChange(DIRECTION_EAST)) {
+					if (downTile->hasFlag(TILESTATE_FLOORCHANGE_EAST)) {
 						--dx;
 					}
 
-					if (downTile->floorChange(DIRECTION_EAST_ALT)) {
+					if (downTile->hasFlag(TILESTATE_FLOORCHANGE_EAST_ALT)) {
 						dx -= 2;
 					}
 
-					if (downTile->floorChange(DIRECTION_WEST)) {
+					if (downTile->hasFlag(TILESTATE_FLOORCHANGE_WEST)) {
 						++dx;
 					}
 
@@ -744,32 +738,32 @@ Tile* Tile::queryDestination(int32_t&, const Thing&, Item** destItem, uint32_t& 
 				}
 			}
 		}
-	} else if (floorChange()) {
+	} else if (hasFlag(TILESTATE_FLOORCHANGE)) {
 		uint16_t dx = tilePos.x;
 		uint16_t dy = tilePos.y;
 		uint8_t dz = tilePos.z - 1;
 
-		if (floorChange(DIRECTION_NORTH)) {
+		if (hasFlag(TILESTATE_FLOORCHANGE_NORTH)) {
 			--dy;
 		}
 
-		if (floorChange(DIRECTION_SOUTH)) {
+		if (hasFlag(TILESTATE_FLOORCHANGE_SOUTH)) {
 			++dy;
 		}
 
-		if (floorChange(DIRECTION_EAST)) {
+		if (hasFlag(TILESTATE_FLOORCHANGE_EAST)) {
 			++dx;
 		}
 
-		if (floorChange(DIRECTION_WEST)) {
+		if (hasFlag(TILESTATE_FLOORCHANGE_WEST)) {
 			--dx;
 		}
 
-		if (floorChange(DIRECTION_SOUTH_ALT)) {
+		if (hasFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT)) {
 			dy += 2;
 		}
 
-		if (floorChange(DIRECTION_EAST_ALT)) {
+		if (hasFlag(TILESTATE_FLOORCHANGE_EAST_ALT)) {
 			dx += 2;
 		}
 
@@ -788,7 +782,6 @@ Tile* Tile::queryDestination(int32_t&, const Thing&, Item** destItem, uint32_t& 
 			*destItem = destThing->getItem();
 		}
 	}
-
 	return destTile;
 }
 
@@ -1452,39 +1445,8 @@ void Tile::setTileFlags(const Item* item)
 {
 	if (!hasFlag(TILESTATE_FLOORCHANGE)) {
 		const ItemType& it = Item::items[item->getID()];
-		if (it.floorChangeDown) {
-			setFlag(TILESTATE_FLOORCHANGE);
-			setFlag(TILESTATE_FLOORCHANGE_DOWN);
-		}
-
-		if (it.floorChangeNorth) {
-			setFlag(TILESTATE_FLOORCHANGE);
-			setFlag(TILESTATE_FLOORCHANGE_NORTH);
-		}
-
-		if (it.floorChangeSouth) {
-			setFlag(TILESTATE_FLOORCHANGE);
-			setFlag(TILESTATE_FLOORCHANGE_SOUTH);
-		}
-
-		if (it.floorChangeEast) {
-			setFlag(TILESTATE_FLOORCHANGE);
-			setFlag(TILESTATE_FLOORCHANGE_EAST);
-		}
-
-		if (it.floorChangeWest) {
-			setFlag(TILESTATE_FLOORCHANGE);
-			setFlag(TILESTATE_FLOORCHANGE_WEST);
-		}
-
-		if (it.floorChangeSouthAlt) {
-			setFlag(TILESTATE_FLOORCHANGE);
-			setFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT);
-		}
-
-		if (it.floorChangeEastAlt) {
-			setFlag(TILESTATE_FLOORCHANGE);
-			setFlag(TILESTATE_FLOORCHANGE_EAST_ALT);
+		if (it.floorChange != 0) {
+			setFlag(it.floorChange);
 		}
 	}
 
@@ -1541,39 +1503,8 @@ void Tile::setTileFlags(const Item* item)
 void Tile::resetTileFlags(const Item* item)
 {
 	const ItemType& it = Item::items[item->getID()];
-	if (it.floorChangeDown) {
+	if (it.floorChange != 0) {
 		resetFlag(TILESTATE_FLOORCHANGE);
-		resetFlag(TILESTATE_FLOORCHANGE_DOWN);
-	}
-
-	if (it.floorChangeNorth) {
-		resetFlag(TILESTATE_FLOORCHANGE);
-		resetFlag(TILESTATE_FLOORCHANGE_NORTH);
-	}
-
-	if (it.floorChangeSouth) {
-		resetFlag(TILESTATE_FLOORCHANGE);
-		resetFlag(TILESTATE_FLOORCHANGE_SOUTH);
-	}
-
-	if (it.floorChangeEast) {
-		resetFlag(TILESTATE_FLOORCHANGE);
-		resetFlag(TILESTATE_FLOORCHANGE_EAST);
-	}
-
-	if (it.floorChangeWest) {
-		resetFlag(TILESTATE_FLOORCHANGE);
-		resetFlag(TILESTATE_FLOORCHANGE_WEST);
-	}
-
-	if (it.floorChangeSouthAlt) {
-		resetFlag(TILESTATE_FLOORCHANGE);
-		resetFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT);
-	}
-
-	if (it.floorChangeEastAlt) {
-		resetFlag(TILESTATE_FLOORCHANGE);
-		resetFlag(TILESTATE_FLOORCHANGE_EAST_ALT);
 	}
 
 	if (item->hasProperty(CONST_PROP_BLOCKSOLID) && !hasProperty(item, CONST_PROP_BLOCKSOLID)) {

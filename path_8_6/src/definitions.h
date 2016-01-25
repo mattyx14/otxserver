@@ -23,14 +23,14 @@
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "3"
-#define REVISION_VERSION " - "
-#define SOFTWARE_CODENAME " - "
+#define REVISION_VERSION "-"
+#define SOFTWARE_CODENAME "-"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
 #define CLIENT_VERSION_MIN 860
 #define CLIENT_VERSION_MAX 860
-#define CLIENT_VERSION_STR "8.6"
+#define CLIENT_VERSION_STR "8.60"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__
