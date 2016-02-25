@@ -1,5 +1,6 @@
 ### What is OTX Server 3 Series
 We are trying to create the perfect custom open tibia server.
+
 ===========
 
 ### Open Tibia Repos
@@ -30,7 +31,7 @@ https://bitbucket.org/vapus/pyot/ <br />
 
 ##Clients
 
-**OTClient** by Edubart <br />
+**OTClient** by Eduardo Bart <br />
 *written in C++* <br />
 https://github.com/edubart/otclient
 
