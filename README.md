@@ -5,13 +5,13 @@ https://github.com/mattyx14/otxserver/tree/otxserv3/
 
 ===========
 
-Open Tibia Repos - Listing best and useful OpenTibia repos.
+Open Tibia Repos - Listing best and useful
 ===========
 
 ##Servers
 
 **Forgotten Server** by OTLand <br />
-*Written in C++, based on open tibia server* <br />
+*Written in C++, based on OpenTibia server* <br />
 https://github.com/otland/forgottenserver/
 
 **Open Tibia Server** by OpenTibia <br />
