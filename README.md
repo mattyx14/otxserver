@@ -5,8 +5,7 @@ https://github.com/mattyx14/otxserver/tree/otxserv3/
 
 ===========
 
-### Open Tibia Repos
-Listing best and useful OpenTibia repos.
+Open Tibia Repos - Listing best and useful OpenTibia repos.
 ===========
 
 ##Servers
