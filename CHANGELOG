@@ -80,7 +80,8 @@
 	- Fix name on items.xml
 	- Fix error on items.otb "Apply forceUse to ladders" on (8.6)
 	- Fix money functions
-	- Fix random values back to 0 on
+	- Fix random values back to 0
+	- Monsters update on old protocols
 	- Optimizations and cleanups
 	- Remove pugixml from code
 	- Remove market config no supported and removed unused functions(8.6)

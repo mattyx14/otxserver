@@ -49,12 +49,6 @@ timeBetweenExActions = 1000
 mapName = "forgotten"
 mapAuthor = "Komic"
 
--- Market
-marketOfferDuration = 30 * 24 * 60 * 60
-premiumToCreateMarketOffer = true
-checkExpiredMarketOffersEachMinutes = 60
-maxMarketOffersAtATimePerPlayer = 100
-
 -- MySQL
 mysqlHost = "127.0.0.1"
 mysqlUser = "forgottenserver"
@@ -72,6 +66,12 @@ emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
 
+-- Critical hits
+-- NOTE: criticalChance and extraPercent are percentages, not absolute values.
+-- extraPercent is the extra percentage of the damage to be added.
+criticalChance = 1
+criticalExtra = 100
+
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
 rateExp = 5
@@ -79,12 +79,6 @@ rateSkill = 3
 rateLoot = 2
 rateMagic = 3
 rateSpawn = 1
-
--- Critical hits
--- NOTE: criticalChance and extraPercent are percentages, not absolute values.
--- extraPercent is the extra percentage of the damage to be added.
-criticalChance = 1
-criticalExtra = 100
 
 -- Monsters
 deSpawnRange = 2
