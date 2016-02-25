@@ -1,6 +1,6 @@
 ### What is OTX Server 3 Series by Mattyx14
-Written in C++, based on Forgotten Server 1.Series.
-We are trying to create the perfect custom open tibia server.
+Written in C++, based on Forgotten Server 1.Series. <br />
+We are trying to create the perfect custom open tibia server. <br />
 https://github.com/mattyx14/otxserver/tree/otxserv3/
 
 ===========
