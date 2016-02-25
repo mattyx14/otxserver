@@ -64,6 +64,7 @@
 ]
 
 [ OTX Server 3.3 Version - " - "
+	- Added support to Tibia Protocol 8.00 (WIP)
 	- Added some missing lua methods
 	- Added creature move locking (setMoveLocked/isMoveLocked)
 	- Added less loss attribute to vocations to customize death loss per vocation
