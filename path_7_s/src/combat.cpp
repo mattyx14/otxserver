@@ -912,20 +912,20 @@ void Combat::doCombatDefault(Creature* caster, Creature* target, const CombatPar
 void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage, bool useCharges) const
 {
 	//onGetPlayerMinMaxValues(...)
-	if (!m_scriptInterface->reserveScriptEnv()) {
+	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - ValueCallback::getMinMaxValues] Call stack overflow" << std::endl;
 		return;
 	}
 
-	ScriptEnvironment* env = m_scriptInterface->getScriptEnv();
-	if (!env->setCallbackId(m_scriptId, m_scriptInterface)) {
-		m_scriptInterface->resetScriptEnv();
+	ScriptEnvironment* env = scriptInterface->getScriptEnv();
+	if (!env->setCallbackId(scriptId, scriptInterface)) {
+		scriptInterface->resetScriptEnv();
 		return;
 	}
 
-	lua_State* L = m_scriptInterface->getLuaState();
+	lua_State* L = scriptInterface->getLuaState();
 
-	m_scriptInterface->pushFunction(m_scriptId);
+	scriptInterface->pushFunction(scriptId);
 
 	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
@@ -974,7 +974,7 @@ void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage, bool u
 
 		default: {
 			std::cout << "ValueCallback::getMinMaxValues - unknown callback type" << std::endl;
-			m_scriptInterface->resetScriptEnv();
+			scriptInterface->resetScriptEnv();
 			return;
 		}
 	}
@@ -994,7 +994,7 @@ void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage, bool u
 		LuaScriptInterface::reportError(nullptr, "Stack size changed!");
 	}
 
-	m_scriptInterface->resetScriptEnv();
+	scriptInterface->resetScriptEnv();
 }
 
 //**********************************************************//
@@ -1002,20 +1002,20 @@ void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage, bool u
 void TileCallback::onTileCombat(Creature* creature, Tile* tile) const
 {
 	//onTileCombat(creature, pos)
-	if (!m_scriptInterface->reserveScriptEnv()) {
+	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - TileCallback::onTileCombat] Call stack overflow" << std::endl;
 		return;
 	}
 
-	ScriptEnvironment* env = m_scriptInterface->getScriptEnv();
-	if (!env->setCallbackId(m_scriptId, m_scriptInterface)) {
-		m_scriptInterface->resetScriptEnv();
+	ScriptEnvironment* env = scriptInterface->getScriptEnv();
+	if (!env->setCallbackId(scriptId, scriptInterface)) {
+		scriptInterface->resetScriptEnv();
 		return;
 	}
 
-	lua_State* L = m_scriptInterface->getLuaState();
+	lua_State* L = scriptInterface->getLuaState();
 
-	m_scriptInterface->pushFunction(m_scriptId);
+	scriptInterface->pushFunction(scriptId);
 	if (creature) {
 		LuaScriptInterface::pushUserdata<Creature>(L, creature);
 		LuaScriptInterface::setCreatureMetatable(L, -1, creature);
@@ -1024,7 +1024,7 @@ void TileCallback::onTileCombat(Creature* creature, Tile* tile) const
 	}
 	LuaScriptInterface::pushPosition(L, tile->getPosition());
 
-	m_scriptInterface->callFunction(2);
+	scriptInterface->callFunction(2);
 }
 
 //**********************************************************//
@@ -1032,20 +1032,20 @@ void TileCallback::onTileCombat(Creature* creature, Tile* tile) const
 void TargetCallback::onTargetCombat(Creature* creature, Creature* target) const
 {
 	//onTargetCombat(creature, target)
-	if (!m_scriptInterface->reserveScriptEnv()) {
+	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - TargetCallback::onTargetCombat] Call stack overflow" << std::endl;
 		return;
 	}
 
-	ScriptEnvironment* env = m_scriptInterface->getScriptEnv();
-	if (!env->setCallbackId(m_scriptId, m_scriptInterface)) {
-		m_scriptInterface->resetScriptEnv();
+	ScriptEnvironment* env = scriptInterface->getScriptEnv();
+	if (!env->setCallbackId(scriptId, scriptInterface)) {
+		scriptInterface->resetScriptEnv();
 		return;
 	}
 
-	lua_State* L = m_scriptInterface->getLuaState();
+	lua_State* L = scriptInterface->getLuaState();
 
-	m_scriptInterface->pushFunction(m_scriptId);
+	scriptInterface->pushFunction(scriptId);
 
 	if (creature) {
 		LuaScriptInterface::pushUserdata<Creature>(L, creature);
@@ -1071,7 +1071,7 @@ void TargetCallback::onTargetCombat(Creature* creature, Creature* target) const
 		LuaScriptInterface::reportError(nullptr, "Stack size changed!");
 	}
 
-	m_scriptInterface->resetScriptEnv();
+	scriptInterface->resetScriptEnv();
 }
 
 //**********************************************************//

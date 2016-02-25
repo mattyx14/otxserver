@@ -48,13 +48,12 @@ MuteCountMap Player::muteCountMap;
 uint32_t Player::playerAutoID = 0x10000000;
 
 Player::Player(ProtocolGame_ptr p) :
-	Creature(), inventory(), varSkills(), varStats(), inventoryAbilities()
+	Creature(), inventory(), client(p), varSkills(), varStats(), inventoryAbilities()
 {
-	client = p;
 	isConnecting = false;
 
 	accountNumber = 0;
-	setVocation(0);
+	vocation = nullptr;
 	capacity = 40000;
 	mana = 0;
 	manaMax = 0;
@@ -131,7 +130,7 @@ Player::Player(ProtocolGame_ptr p) :
 	idleTime = 0;
 
 	skullTicks = 0;
-	setParty(nullptr);
+	party = nullptr;
 
 	bankBalance = 0;
 
@@ -415,7 +414,7 @@ void Player::getShieldAndWeapon(const Item*& shield, const Item*& weapon) const
 				break;
 
 			case WEAPON_SHIELD: {
-				if (!shield || (shield && item->getDefense() > shield->getDefense())) {
+				if (!shield || item->getDefense() > shield->getDefense()) {
 					shield = item;
 				}
 				break;
@@ -840,7 +839,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
 }
 
-void Player::onReceiveMail()
+void Player::onReceiveMail() const
 {
 	if (isNearDepotBox()) {
 		sendTextMessage(MESSAGE_EVENT_ADVANCE, "New mail has arrived.");
@@ -1320,11 +1319,6 @@ void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Posit
 				addCondition(condition);
 			}
 		}
-	}
-
-	// unset editing house
-	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE)) {
-		editHouse = nullptr;
 	}
 }
 
@@ -1932,6 +1926,7 @@ void Player::death(Creature* _lastHitCreature)
 	loginPosition = town->getTemplePosition();
 
 	if (skillLoss) {
+
 		//Magic level loss
 		uint64_t sumMana = 0;
 		uint64_t lostMana = 0;
@@ -2318,9 +2313,9 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 
 	const int32_t& slotPosition = item->getSlotPosition();
 	if ((slotPosition & SLOTP_HEAD) || (slotPosition & SLOTP_NECKLACE) ||
-	        (slotPosition & SLOTP_BACKPACK) || (slotPosition & SLOTP_ARMOR) ||
-	        (slotPosition & SLOTP_LEGS) || (slotPosition & SLOTP_FEET) ||
-	        (slotPosition & SLOTP_RING)) {
+			(slotPosition & SLOTP_BACKPACK) || (slotPosition & SLOTP_ARMOR) ||
+			(slotPosition & SLOTP_LEGS) || (slotPosition & SLOTP_FEET) ||
+			(slotPosition & SLOTP_RING)) {
 		ret = RETURNVALUE_CANNOTBEDRESSED;
 	} else if (slotPosition & SLOTP_TWO_HAND) {
 		ret = RETURNVALUE_PUTTHISOBJECTINBOTHHANDS;
@@ -2395,8 +2390,8 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					} else if (leftType == WEAPON_SHIELD && type == WEAPON_SHIELD) {
 						ret = RETURNVALUE_CANONLYUSEONESHIELD;
 					} else if (leftType == WEAPON_NONE || type == WEAPON_NONE ||
-					           leftType == WEAPON_SHIELD || leftType == WEAPON_AMMO
-					           || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+							   leftType == WEAPON_SHIELD || leftType == WEAPON_AMMO
+							   || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
 						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;
@@ -2436,8 +2431,8 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					} else if (rightType == WEAPON_SHIELD && type == WEAPON_SHIELD) {
 						ret = RETURNVALUE_CANONLYUSEONESHIELD;
 					} else if (rightType == WEAPON_NONE || type == WEAPON_NONE ||
-					           rightType == WEAPON_SHIELD || rightType == WEAPON_AMMO
-					           || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+							   rightType == WEAPON_SHIELD || rightType == WEAPON_AMMO
+							   || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
 						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;
@@ -3211,7 +3206,7 @@ void Player::doAttacking(uint32_t)
 			} else if (!canDoAction()) {
 				uint32_t delay = getNextActionTime();
 				SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::checkCreatureAttack,
-				                      &g_game, getID()));
+									  &g_game, getID()));
 				setNextActionTask(task);
 			} else {
 				result = weapon->useWeapon(this, tool, attackedCreature);
@@ -3411,7 +3406,6 @@ void Player::onAttackedCreature(Creature* target)
 {
 	Creature::onAttackedCreature(target);
 
-	// Fix avoid pz in pvp zones
 	if (target && target->getZone() == ZONE_PVP) {
 		return;
 	}
@@ -4206,10 +4200,10 @@ void Player::sendClosePrivate(uint16_t channelId)
 	}
 }
 
-uint32_t Player::getMoney() const
+uint64_t Player::getMoney() const
 {
 	std::vector<const Container*> containers;
-	uint32_t moneyCount = 0;
+	uint64_t moneyCount = 0;
 
 	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
 		Item* item = inventory[i];

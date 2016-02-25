@@ -48,7 +48,6 @@ enum tileflags_t : uint32_t {
 	TILESTATE_FLOORCHANGE_WEST = 1 << 4,
 	TILESTATE_FLOORCHANGE_SOUTH_ALT = 1 << 5,
 	TILESTATE_FLOORCHANGE_EAST_ALT = 1 << 6,
-
 	TILESTATE_PROTECTIONZONE = 1 << 7,
 	TILESTATE_NOPVPZONE = 1 << 8,
 	TILESTATE_NOLOGOUT = 1 << 9,
@@ -143,6 +142,7 @@ class TileItemVector : private ItemVector
 		void addDownItemCount(int32_t increment) {
 			downItemCount += increment;
 		}
+
 	private:
 		uint16_t downItemCount {0};
 };
@@ -387,7 +387,6 @@ inline Tile::~Tile()
 {
 	delete ground;
 }
-
 
 inline StaticTile::StaticTile(uint16_t x, uint16_t y, uint8_t z) :
 	Tile(x, y, z),

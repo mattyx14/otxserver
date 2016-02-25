@@ -139,22 +139,22 @@ bool ChatChannel::executeCanJoinEvent(const Player& player)
 	}
 
 	//canJoin(player)
-	LuaScriptInterface* m_scriptInterface = g_chat->getScriptInterface();
-	if (!m_scriptInterface->reserveScriptEnv()) {
+	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
+	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - CanJoinChannelEvent::execute] Call stack overflow" << std::endl;
 		return false;
 	}
 
-	ScriptEnvironment* env = m_scriptInterface->getScriptEnv();
-	env->setScriptId(canJoinEvent, m_scriptInterface);
+	ScriptEnvironment* env = scriptInterface->getScriptEnv();
+	env->setScriptId(canJoinEvent, scriptInterface);
 
-	lua_State* L = m_scriptInterface->getLuaState();
+	lua_State* L = scriptInterface->getLuaState();
 
-	m_scriptInterface->pushFunction(canJoinEvent);
+	scriptInterface->pushFunction(canJoinEvent);
 	LuaScriptInterface::pushUserdata(L, &player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
-	return m_scriptInterface->callFunction(1);
+	return scriptInterface->callFunction(1);
 }
 
 bool ChatChannel::executeOnJoinEvent(const Player& player)
@@ -164,22 +164,22 @@ bool ChatChannel::executeOnJoinEvent(const Player& player)
 	}
 
 	//onJoin(player)
-	LuaScriptInterface* m_scriptInterface = g_chat->getScriptInterface();
-	if (!m_scriptInterface->reserveScriptEnv()) {
+	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
+	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - OnJoinChannelEvent::execute] Call stack overflow" << std::endl;
 		return false;
 	}
 
-	ScriptEnvironment* env = m_scriptInterface->getScriptEnv();
-	env->setScriptId(onJoinEvent, m_scriptInterface);
+	ScriptEnvironment* env = scriptInterface->getScriptEnv();
+	env->setScriptId(onJoinEvent, scriptInterface);
 
-	lua_State* L = m_scriptInterface->getLuaState();
+	lua_State* L = scriptInterface->getLuaState();
 
-	m_scriptInterface->pushFunction(onJoinEvent);
+	scriptInterface->pushFunction(onJoinEvent);
 	LuaScriptInterface::pushUserdata(L, &player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
-	return m_scriptInterface->callFunction(1);
+	return scriptInterface->callFunction(1);
 }
 
 bool ChatChannel::executeOnLeaveEvent(const Player& player)
@@ -189,22 +189,22 @@ bool ChatChannel::executeOnLeaveEvent(const Player& player)
 	}
 
 	//onLeave(player)
-	LuaScriptInterface* m_scriptInterface = g_chat->getScriptInterface();
-	if (!m_scriptInterface->reserveScriptEnv()) {
+	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
+	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - OnLeaveChannelEvent::execute] Call stack overflow" << std::endl;
 		return false;
 	}
 
-	ScriptEnvironment* env = m_scriptInterface->getScriptEnv();
-	env->setScriptId(onLeaveEvent, m_scriptInterface);
+	ScriptEnvironment* env = scriptInterface->getScriptEnv();
+	env->setScriptId(onLeaveEvent, scriptInterface);
 
-	lua_State* L = m_scriptInterface->getLuaState();
+	lua_State* L = scriptInterface->getLuaState();
 
-	m_scriptInterface->pushFunction(onLeaveEvent);
+	scriptInterface->pushFunction(onLeaveEvent);
 	LuaScriptInterface::pushUserdata(L, &player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
-	return m_scriptInterface->callFunction(1);
+	return scriptInterface->callFunction(1);
 }
 
 bool ChatChannel::executeOnSpeakEvent(const Player& player, SpeakClasses& type, const std::string& message)
@@ -214,18 +214,18 @@ bool ChatChannel::executeOnSpeakEvent(const Player& player, SpeakClasses& type, 
 	}
 
 	//onSpeak(player, type, message)
-	LuaScriptInterface* m_scriptInterface = g_chat->getScriptInterface();
-	if (!m_scriptInterface->reserveScriptEnv()) {
+	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
+	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - OnSpeakChannelEvent::execute] Call stack overflow" << std::endl;
 		return false;
 	}
 
-	ScriptEnvironment* env = m_scriptInterface->getScriptEnv();
-	env->setScriptId(onSpeakEvent, m_scriptInterface);
+	ScriptEnvironment* env = scriptInterface->getScriptEnv();
+	env->setScriptId(onSpeakEvent, scriptInterface);
 
-	lua_State* L = m_scriptInterface->getLuaState();
+	lua_State* L = scriptInterface->getLuaState();
 
-	m_scriptInterface->pushFunction(onSpeakEvent);
+	scriptInterface->pushFunction(onSpeakEvent);
 	LuaScriptInterface::pushUserdata(L, &player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
@@ -234,7 +234,7 @@ bool ChatChannel::executeOnSpeakEvent(const Player& player, SpeakClasses& type, 
 
 	bool result = false;
 	int size0 = lua_gettop(L);
-	int ret = m_scriptInterface->protectedCall(L, 3, 1);
+	int ret = scriptInterface->protectedCall(L, 3, 1);
 	if (ret != 0) {
 		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
 	} else if (lua_gettop(L) > 0) {
@@ -250,7 +250,7 @@ bool ChatChannel::executeOnSpeakEvent(const Player& player, SpeakClasses& type, 
 	if ((lua_gettop(L) + 4) != size0) {
 		LuaScriptInterface::reportError(nullptr, "Stack size changed!");
 	}
-	m_scriptInterface->resetScriptEnv();
+	scriptInterface->resetScriptEnv();
 	return result;
 }
 

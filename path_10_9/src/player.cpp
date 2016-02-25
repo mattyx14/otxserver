@@ -48,13 +48,12 @@ MuteCountMap Player::muteCountMap;
 uint32_t Player::playerAutoID = 0x10000000;
 
 Player::Player(ProtocolGame_ptr p) :
-	Creature(), inventory(), varSkills(), varStats(), inventoryAbilities()
+	Creature(), inventory(), client(p), varSkills(), varStats(), inventoryAbilities()
 {
-	client = p;
 	isConnecting = false;
 
 	accountNumber = 0;
-	setVocation(0);
+	vocation = nullptr;
 	capacity = 40000;
 	mana = 0;
 	manaMax = 0;
@@ -135,7 +134,7 @@ Player::Player(ProtocolGame_ptr p) :
 	idleTime = 0;
 
 	skullTicks = 0;
-	setParty(nullptr);
+	party = nullptr;
 
 	bankBalance = 0;
 
@@ -425,7 +424,7 @@ void Player::getShieldAndWeapon(const Item*& shield, const Item*& weapon) const
 				break;
 
 			case WEAPON_SHIELD: {
-				if (!shield || (shield && item->getDefense() > shield->getDefense())) {
+				if (!shield || item->getDefense() > shield->getDefense()) {
 					shield = item;
 				}
 				break;
@@ -867,7 +866,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
 }
 
-void Player::onReceiveMail()
+void Player::onReceiveMail() const
 {
 	if (isNearDepotBox()) {
 		sendTextMessage(MESSAGE_EVENT_ADVANCE, "New mail has arrived.");
@@ -3502,11 +3501,10 @@ void Player::onAttackedCreature(Creature* target)
 {
 	Creature::onAttackedCreature(target);
 
-	// Fix avoid pz in pvp zones
 	if (target && target->getZone() == ZONE_PVP) {
 		return;
 	}
-
+	
 	if (target == this) {
 		addInFightTicks();
 		return;

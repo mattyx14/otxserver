@@ -23,12 +23,14 @@
 #include "game.h"
 
 #if LUA_VERSION_NUM >= 502
+#undef lua_strlen
 #define lua_strlen lua_rawlen
 #endif
 
 extern Game g_game;
 
 ConfigManager::ConfigManager()
+	: integer(), boolean()
 {
 	loaded = false;
 }

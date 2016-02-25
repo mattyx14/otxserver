@@ -265,7 +265,7 @@ class Game
 		  * \param flags optional flags to modifiy the default behaviour
 		  * \returns true if the removal was successful
 		  */
-		bool removeMoney(Cylinder* cylinder, uint32_t money, uint32_t flags = 0);
+		bool removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags = 0);
 
 		/**
 		  * Add item(s) with monetary value
@@ -273,7 +273,7 @@ class Game
 		  * \param money the amount to give
 		  * \param flags optional flags to modify default behavior
 		  */
-		void addMoney(Cylinder* cylinder, uint32_t money, uint32_t flags = 0);
+		void addMoney(Cylinder* cylinder, uint64_t money, uint32_t flags = 0);
 
 		/**
 		  * Transform one item to another type/count
@@ -454,7 +454,6 @@ class Game
 
 		const std::unordered_map<uint32_t, Player*>& getPlayers() const { return players; }
 		const std::map<uint32_t, Npc*>& getNpcs() const { return npcs; }
-		const std::map<uint32_t, Monster*>& getMonsters() const { return monsters; }
 
 		void addPlayer(Player* player);
 		void removePlayer(Player* player);

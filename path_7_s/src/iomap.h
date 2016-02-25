@@ -100,17 +100,12 @@ struct OTBM_Tile_coords {
 	uint8_t y;
 };
 
-struct OTBM_HouseTile_coords {
-	uint8_t x;
-	uint8_t y;
-	uint32_t houseId;
-};
-
 #pragma pack()
 
 class IOMap
 {
 	static Tile* createTile(Item*& ground, Item* item, uint16_t x, uint16_t y, uint8_t z);
+
 	public:
 		bool loadMap(Map* map, const std::string& identifier);
 

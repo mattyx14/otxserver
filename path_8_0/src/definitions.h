@@ -30,7 +30,7 @@
 
 #define CLIENT_VERSION_MIN 860
 #define CLIENT_VERSION_MAX 860
-#define CLIENT_VERSION_STR "8.60"
+#define CLIENT_VERSION_STR "8.6"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

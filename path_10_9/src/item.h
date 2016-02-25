@@ -546,9 +546,6 @@ class Item : virtual public Thing
 		uint16_t getClientID() const {
 			return items[id].clientId;
 		}
-		uint16_t getDestroyId() const {
-			return items[id].destroyTo;
-		}
 		void setID(uint16_t newid);
 
 		// Returns the player that is holding this item in his inventory
@@ -608,7 +605,7 @@ class Item : virtual public Thing
 			return items[id].hitChance;
 		}
 
-		int32_t getWorth() const;
+		uint32_t getWorth() const;
 		void getLight(LightInfo& lightInfo) const;
 
 		bool hasProperty(ITEMPROPERTY prop) const;
@@ -704,9 +701,6 @@ class Item : virtual public Thing
 
 		virtual void startDecaying();
 
-		bool isLoadedFromMap() const {
-			return loadedFromMap;
-		}
 		void setLoadedFromMap(bool value) {
 			loadedFromMap = value;
 		}

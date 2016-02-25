@@ -56,7 +56,7 @@ class Weapons final : public BaseEvents
 
 		std::map<uint32_t, Weapon*> weapons;
 
-		LuaScriptInterface m_scriptInterface;
+		LuaScriptInterface scriptInterface;
 };
 
 class Weapon : public Event
@@ -128,7 +128,7 @@ class Weapon : public Event
 		bool swing;
 
 	private:
-		void decrementItemCount(Item* item) const;
+		static void decrementItemCount(Item* item);
 
 		std::map<uint16_t, bool> vocWeaponMap;
 		friend class Combat;

@@ -1430,7 +1430,7 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 
 	std::vector<Container*> containers;
 
-	std::multimap<uint64_t, Item*> moneyMap;
+	std::multimap<uint32_t, Item*> moneyMap;
 	uint64_t moneyCount = 0;
 
 	for (size_t i = cylinder->getFirstIndex(), j = cylinder->getLastIndex(); i < j; ++i) {
@@ -1448,7 +1448,7 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 		if (container) {
 			containers.push_back(container);
 		} else {
-			int32_t worth = item->getWorth();
+			const uint32_t worth = item->getWorth();
 			if (worth != 0) {
 				moneyCount += worth;
 				moneyMap.emplace(worth, item);
@@ -1464,7 +1464,7 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 			if (tmpContainer) {
 				containers.push_back(tmpContainer);
 			} else {
-				int32_t worth = item->getWorth();
+				const uint32_t worth = item->getWorth();
 				if (worth != 0) {
 					moneyCount += worth;
 					moneyMap.emplace(worth, item);
@@ -1479,19 +1479,22 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 
 	for (const auto& moneyEntry : moneyMap) {
 		Item* item = moneyEntry.second;
-		if (moneyEntry.first >= money) {
-			uint32_t worth = moneyEntry.first / item->getItemCount();
-			uint32_t removeCount = (money / worth) + 1;
+		if (moneyEntry.first < money) {
+			internalRemoveItem(item);
+			money -= moneyEntry.first;
+		} else if (moneyEntry.first > money) {
+			const uint32_t worth = moneyEntry.first / item->getItemCount();
+			const uint32_t removeCount = (money / worth) + 1;
 
 			addMoney(cylinder, (worth * removeCount) - money, flags);
 			internalRemoveItem(item, removeCount);
-			return true;
+			break;
+		} else {
+			internalRemoveItem(item);
+			break;
 		}
-
-		internalRemoveItem(item);
-		money -= moneyEntry.first;
 	}
-	return false;
+	return true;
 }
 
 void Game::addMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*/)
@@ -1601,7 +1604,6 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 				return nullptr;
 			} else {
 				int32_t newItemId = newId;
-
 				if (curType.id == newType.id) {
 					newItemId = curType.decayTo;
 				}
@@ -1813,7 +1815,7 @@ void Game::playerOpenChannel(uint32_t playerId, uint16_t channelId)
 		return;
 	}
 
-	const InvitedMap* invitedUsers = channel->getInvitedUsersPtr();
+	const InvitedMap* invitedUsers = channel->getInvitedUsers();
 	const UsersMap* users;
 	if (!channel->isPublicChannel()) {
 		users = &channel->getUsers();
