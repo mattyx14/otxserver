@@ -303,7 +303,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 		iType.isHorizontal = hasBitSet(FLAG_HORIZONTAL, flags);
 		iType.isHangable = hasBitSet(FLAG_HANGABLE, flags);
 		iType.allowDistRead = hasBitSet(FLAG_ALLOWDISTREAD, flags);
-		iType.rotatable = hasBitSet(FLAG_ROTABLE, flags);
+		iType.rotatable = hasBitSet(FLAG_ROTATABLE, flags);
 		iType.canReadText = hasBitSet(FLAG_READABLE, flags);
 		iType.lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
 		iType.walkStack = !hasBitSet(FLAG_FULLTILE, flags);

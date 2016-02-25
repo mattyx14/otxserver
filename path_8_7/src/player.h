@@ -258,9 +258,6 @@ class Player final : public Creature, public Cylinder
 		const GuildWarList& getGuildWarList() const {
 			return guildWarList;
 		}
-		void setGuildWarList(GuildWarList guildWarList) {
-			this->guildWarList = guildWarList;
-		}
 
 		Vocation* getVocation() const {
 			return vocation;
@@ -488,7 +485,7 @@ class Player final : public Creature, public Cylinder
 
 		DepotChest* getDepotChest(uint32_t depotId, bool autoCreate);
 		DepotLocker* getDepotLocker(uint32_t depotId);
-		void onReceiveMail();
+		void onReceiveMail() const;
 		bool isNearDepotBox() const;
 
 		bool canSee(const Position& pos) const final;
@@ -501,7 +498,7 @@ class Player final : public Creature, public Cylinder
 			return RACE_BLOOD;
 		}
 
-		uint32_t getMoney() const;
+		uint64_t getMoney() const;
 
 		//safe-trade functions
 		void setTradeState(tradestate_t state) {

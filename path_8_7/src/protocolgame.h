@@ -193,7 +193,7 @@ class ProtocolGame final : public Protocol
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
 
-		void sendShop(Npc*, const ShopInfoList& itemList);
+		void sendShop(Npc* npc, const ShopInfoList& itemList);
 		void sendCloseShop();
 		void sendSaleItemList(const std::list<ShopInfo>& shop);
 		void sendTradeItemRequest(const std::string& traderName, const Item* item, bool ack);
@@ -300,13 +300,13 @@ class ProtocolGame final : public Protocol
 		Player* player;
 
 		uint32_t eventConnect;
-		uint32_t m_challengeTimestamp;
+		uint32_t challengeTimestamp;
 		uint16_t version;
 
-		uint8_t m_challengeRandom;
+		uint8_t challengeRandom;
 
-		bool m_debugAssertSent;
-		bool m_acceptPackets;
+		bool debugAssertSent;
+		bool acceptPackets;
 };
 
 #endif
