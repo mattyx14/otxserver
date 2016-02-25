@@ -1,0 +1,287 @@
+[ OTX Server 3 - CHANGE LOG
+	Project Name
+		OTX Server 3
+
+	OTX Server is based on:
+		The Forgotten Server Version: 1.2
+
+	Codenamed
+		- 
+
+	Forum and website
+		http://www.blacktibia.org/f19-otx-server-3
+
+	DEVELOPERS
+		Project Manager and Founder
+			Mattyx14
+
+		OTX Server 3 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+			Mattyx14
+
+		Special Thanks(s)
+			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/otland/forgottenserver/graphs/contributors
+
+			The OTClient - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/edubart/otclient/graphs/contributors
+
+			FORGOTTENSERVER-ORTS - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				Old: https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors
+				New: https://github.com/orts/server/graphs/contributors
+
+			OpenTibia - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/opentibia/server/graphs/contributors
+				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
+
+			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/mattyx14/otxserver/graphs/contributors
+				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin, Brewsterl
+
+	DEVELOPMENT STATUS
+		STARTED AND ON
+
+	PROTOCOL SUPPORTED
+		Tibia Clients - 8.6 to 10.90 - (7x to 8.5x - WIP)
+
+	TODO WITH OPTIONAL (MODAL DIALOGS)
+		COMMANDS:
+			- Animated Smiles
+			- Bank Command
+			- Blessings
+			- Buy Command Item
+			- Guild Cast
+			- Guild Outfit
+			- Player Commands (customs)
+			- Promotion
+			- Refill Boots
+
+		CONFIGS:
+			- Loot bag display
+			- Quest Protection
+
+		OTHERS:
+			- Look Display
+			- Fix spells on (8.6) - WIP
+			- Added support to Tibia Protocol 8.00 - WIP
+]
+
+[ OTX Server 3.3 Version - " - "
+	- Added some missing lua methods
+	- Added creature move locking (setMoveLocked/isMoveLocked)
+	- Added less loss attribute to vocations to customize death loss per vocation
+	- Added definitions.h to cmake source definitions
+	- Added Ctrl + Arrow key teleport as GM/God (helpful feature)
+	- Added missing config option allowWalkthrough this on true
+	- Added missing config options criticalhits
+	- Always reload global.lua libraries
+	- Fix bug with /town command
+	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403
+	- Fix quest id limit
+	- Fix name on items.xml
+	- Fix error on items.otb "Apply forceUse to ladders" on (8.6)
+	- Fix money functions
+	- Fix random values back to 0
+	- Monsters update on old protocols
+	- Optimizations and cleanups
+	- Remove pugixml from code
+	- Remove market config no supported and removed unused functions(8.6)
+]
+
+[ OTX Server 3.2 Version - "PHANTOM"
+	- Added Monster Spawn event
+	- Added DDoS protection (no complete)
+	- Added Advance Save
+	- Added swing distance weapons
+	- Added support to Critical hits
+	- Added System Quest 
+	- Added function blockDoors this is for cumstom servs
+	- Added Script AdvanceSave for save and regenerate on increase level
+	- Added new options automatic for save/clean map on globalevents
+	- Added custom commands /save /addons /mounts /gotopos
+	- Added missing elementdeath elementholy on weapons
+	- Changes on config
+	- Check two-handed weapons on equip
+	- Enable monster passive behavior
+	- Fix shovel
+	- Fix editing house
+	- Fix effect debug
+	- Fix spells on 8.x
+	- Fix use correct block type for ethereal spells
+	- Fix ladder dont work with fresh corpse
+	- Fix math.random on startup
+	- Fix correct calculation method for skill spells
+	- Fix mounts and outfits names - atributes
+	- Fix bug with pvp zone
+	- Fix limit outfits
+	- Fix Shovel
+	- Fix swimming and citizen portal now show descrition
+	- Fix and tunes on spells
+	- Fix spell and item descriptions
+	- Fixed loginWindows for 10.9x
+	- Fix https://www.youtube.com/watch?v=ube4b-q4Ncg
+	- Update items.xml / items.otb
+	- Update firstitems scripts // missing vocation
+	- Update monsters is more complete
+	- Update outfits and mounts to lasted Tibia
+	- Removed unnused variables
+	- Support 10.90
+]
+
+[ OTX Server 3.1 Version - "BOOM"
+	- 10.80/82 Support
+	- 8.70/71 Support
+	- 8.60 Support
+	- Removed DualWield Support added on Alpha 4 (Require fix critical bugs)
+]
+
+[ OTX Server 3.0 Version - "ALPHA"
+	- DualWield Support
+	- Make player walkthrough optional
+	- Use std::make_shared<> to avoid an unnecessary, additional heap alloction
+	- Fix bug in Lua function MonsterType.getDefenseList
+	- Fix potential deadlock on dispatcher shutdown (it could potentially deadlock with itself if there was a task pending that added a new task during flushing). Use an atomic (with relaxed ordering) for the thread state flag, this fixes a race condition on that flag in the main dispatcher loop. Remove unncessary thread state check.
+	- Fixed: Enchanted Staff does not start decaying
+	- The item vector will no longer be created if the item being added is a ground tile
+	- Fixed: Prismatic ring
+	- Create empty fluid containers by default
+	- Fix race condition on the threadState flag in the scheduler thread. Remove unnecessary comparator, use the default container for the priority_queue adapter template (which is more efficient than a vector in that role). Remove unnecessary flag check in scheduler loop.
+	- Fixed: Ground Error
+	- Fix direction bug in internalMoveCreature
+	- Fixed: Actions::useItem and Actions::useItemEx
+	- Automatic reMount(if wasMounted) leaving protection zone
+	- Avoid variable shadowing
+	- Fixed: 1194826 introduces problem
+	- Remove unnecessary includes
+	- Fix compiling error with Visual Studio
+	- Fixed: Client crash when GM outfit use mount
+	- Variable Rename … According avoid variable shadowing
+	- Micro optimizations
+	- Remove trailing spaces
+	- Fix speed for new mounts
+	- Fixed: Not deleting player instance iomarket
+	- Add EditorConfig files
+	- Remove trailing spaces
+	- Fix rainbow shield duration
+	- Fixed: Assign null value to variables after being deleted
+	- Missing items from Spike Tasks Quest
+	- Fix a bug in droploot.lua
+	- Update luascript.cpp
+]
+
+[ OTX Server 3.0.ALPHA Version - "3"
+	- Game protocol 10.77 support
+	- Optimize and fixes on code
+	- Fixed : premiumForPromotion = false
+	- TileItemVector optimizations
+	- Fixed : Bug in the Ladder System
+	- Fix bug in unregisterCreatureEvent
+	- Iterator optimizations
+	- Rename ContainerIterator functions
+	- Allow ids and names for Player.setVocation
+	- Fixed : new promotion bug
+	- Fixed : Searchtype name typo?
+	- Code improvements
+	- Minor optimization
+	- Fixed : Weapons Issue
+	- Fixed : Training Offline
+	- Remove unused include
+	- Fixed : Health bar question
+	- Fixed : Game.loadMap problems with crashes
+	- uint16_t is enough for item ids
+	- Optimize updateSaleShopList
+	- Fixed : Browse field client crash
+	- Multiple windows of the same container can be open
+	- Fix weapon charges
+	- Fixed : [BUG] Stairs
+	- Fixed : Players can't "double fall" into holes
+	- Fix bug in Player::getItemTypeCount
+	- Minor optimizations and Item class cleanup
+	- Move getThingfromPos to compat.lua
+	- Move doAddCondition to compat.lua
+	- Move doRemoveCondition to compat.lua
+	- Move hasProperty to compat.lua
+	- Move Item.getType to Lua core lib
+	- Move Item methods (getId, getActionId, getUniqueId, getSubType) and Creature.getId to Lua
+	- Move unique items to Game class
+	- Fixed : It should update weight properly now.
+	- Fixed : Shop NPC Issue
+	- Fixed : Attack Value: Distance Weapons
+	- Allow unique id and action id 0
+	- Fixed issue that kept players seem not invited to private channels!
+	- Fixed : direction is not adjusted when player uses stairs/ladder
+	- Fixed : Debug on trapdoor
+	- Improve compile times using pipe
+	- Improve server performance using native optimizations
+	- Move __index functions to lua
+	- Moved some things
+	- Fix race condition (runTask() would race with task flushing on shutdown. Remove unnecessary thread state check
+	- Remove unused imports
+	- Decrease memory footprint of Tile
+	- Set underlying enum types
+	- Remove unused data member in ContainerIterator
+	- Fix integer overflow in ItemType.getWeight
+	- Update destroyItem to use new destroyTo item property
+	- Fixed : Small Issue in Items.xml
+	- otland/forgottenserver#1251
+	- Use range-based for loop for XML children iterators
+	- Make monsterScriptList temporary
+	- Update pugixml to version 1.6
+	- Code improvements and optimizations
+	- Use std::any_of() to make code more concise in Player::hasShopItemForSale() and Player::updateSaleShopList(). Remove unnecessary check in Player::internalAddThing().
+	- Fixed code formatting.
+	- Use precompiled headers with cmake.
+	- Optimize damage/heal messages. The amount of string concatenations has been reduced.
+	- Fixed wrong summon damage message.
+	- Fix mana loss messages.
+	- Update onLook formatting.
+	- Avoid unnecessary string concatenations.
+	- Remove use of trademarked word. We don't want to infringe on a registered trademark.
+	- Fix typo in npchandler comment.
+	- Fix bug with ignoreCap in doNpcSellItem.
+	- Remove fansites from items.xml.
+	- Fixed Buying items with charge(like protection amulet) from the npc shop(eremo) bug.
+	- Fixed doors.lua.
+	- Update Lua scripts.
+	- Fix bug in bed modification kits.
+	- Rename variables in Player::onCreatureAppear.
+	- Fix bug when connecting with very old client versions.
+	- Fixed Blueberry Bush Bug.
+	- Added New outfits & mounts.
+	- Fixed Vocations.xml Skill Multiplier.
+	- Fixed addDamageCondition(condition, turns, delay, damage) - turns/damage gets bugged when delay is below 1s.
+	- Add new magic and distance effect constants.
+	- Fixed MySQL issue with 'players_online' table when allowing clones.
+	- Update outfit names.
+	- Add missing byte to sendReLoginWindow.
+	- Fix bug in ProtocolGame::sendContainer.
+]
+
+[ OTX Server 3.0.ALPHA Version - "2"
+	- Added new tools
+	- Added missing mounts/outfits
+	- Optimize creatureEvents and moveEvents
+	- Move stamina and loot to LUA
+	- Rewrite Spells // Walkthrough
+	- Update Datapack Monsters
+	- Optimize Code and CleanUP
+
+	This edition alpha show lite changeLog
+		and this have much changes.
+]
+
+[ OTX Server 3.0.ALPHA Version - "1"
+	- Added OTX-icon to console
+	- Added itemAttribute to monsters
+	- Added skill require for use spells this for Evul
+	- Added onSave event
+	- Added DDoS protection
+	- Added missing description to rope
+	- Added questSystem like to tfs 0.3.7 and otx server 2
+	- Added first items
+	- Added Advance Save
+	- Added Auto Server Save 15 minutes
+	- Added muckremover (ORTS)
+	- Change format map to 10.35
+	- More order on /data/actions
+	- Move compat to /data/lib/ and added more custom functions for to retro compatibility
+]
