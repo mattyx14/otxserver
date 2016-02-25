@@ -64,7 +64,7 @@
 ]
 
 [ OTX Server 3.3 Version - " - "
-	- Added support to Tibia Protocol 8.00 (WIP)
+	- Added support to Tibia Protocol 8.00 - WIP
 	- Added some missing lua methods
 	- Added creature move locking (setMoveLocked/isMoveLocked)
 	- Added less loss attribute to vocations to customize death loss per vocation
@@ -75,6 +75,10 @@
 	- Always reload global.lua libraries
 	- Fix bug with /town command
 	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403
+	- Fix quest id limit (8.6)
+	- Fix name on items.xml (8.6)
+	- Fix spells on (8.6) - WIP
+	- Fix error on items.otb "Apply forceUse to ladders" on (8.6)
 	- Optimizations and cleanups
 ]
 
