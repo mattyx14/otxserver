@@ -164,9 +164,6 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_FIRE:
 		case CONDITION_ENERGY:
 		case CONDITION_DROWN:
-		case CONDITION_FREEZING:
-		case CONDITION_DAZZLED:
-		case CONDITION_CURSED:
 		case CONDITION_BLEEDING:
 			return new ConditionDamage(_id, _type, _buff, _subId);
 
@@ -283,7 +280,7 @@ bool Condition::isPersistent() const
 
 uint32_t Condition::getIcons() const
 {
-	return isBuff ? ICON_PARTY_BUFF : 0;
+	return 0;
 }
 
 bool Condition::updateCondition(const Condition* addCondition)
@@ -1226,18 +1223,6 @@ uint32_t ConditionDamage::getIcons() const
 
 		case CONDITION_POISON:
 			icons |= ICON_POISON;
-			break;
-
-		case CONDITION_FREEZING:
-			icons |= ICON_FREEZING;
-			break;
-
-		case CONDITION_DAZZLED:
-			icons |= ICON_DAZZLED;
-			break;
-
-		case CONDITION_CURSED:
-			icons |= ICON_CURSED;
 			break;
 
 		default:

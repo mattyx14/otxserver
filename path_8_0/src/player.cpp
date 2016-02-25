@@ -118,7 +118,6 @@ Player::Player(ProtocolGame_ptr p) :
 	nextStepEvent = 0;
 
 	lastFailedFollow = 0;
-	lastWalkthroughAttempt = 0;
 
 	sex = PLAYERSEX_FEMALE;
 
@@ -494,12 +493,10 @@ uint16_t Player::getClientIcons() const
 	}
 
 	if (pzLocked) {
-		icons |= ICON_REDSWORDS;
+		icons |= ICON_SWORDS;
 	}
 
 	if (_tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-		icons |= ICON_PIGEON;
-
 		// Don't show ICON_SWORDS if player is in protection zone.
 		if (hasBitSet(ICON_SWORDS, icons)) {
 			icons &= ~ICON_SWORDS;
@@ -788,57 +785,6 @@ bool Player::canSeeCreature(const Creature* creature) const
 	return true;
 }
 
-bool Player::canWalkthrough(const Creature* creature) const
-{
-	if (group->access || creature->isInGhostMode()) {
-		return true;
-	}
-
-	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
-		return false;
-	}
-
-	const Tile* playerTile = player->getTile();
-	if (!playerTile || !playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-		return false;
-	}
-
-	const Item* playerTileGround = playerTile->getGround();
-	if (!playerTileGround || !playerTileGround->hasWalkStack()) {
-		return false;
-	}
-
-	Player* thisPlayer = const_cast<Player*>(this);
-	if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
-		thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
-		return false;
-	}
-
-	if (creature->getPosition() != lastWalkthroughPosition) {
-		thisPlayer->setLastWalkthroughPosition(creature->getPosition());
-		return false;
-	}
-
-	thisPlayer->setLastWalkthroughPosition(creature->getPosition());
-	return true;
-}
-
-bool Player::canWalkthroughEx(const Creature* creature) const
-{
-	if (group->access) {
-		return true;
-	}
-
-	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
-		return false;
-	}
-
-	const Tile* playerTile = player->getTile();
-	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
-}
-
 void Player::onReceiveMail() const
 {
 	if (isNearDepotBox()) {
@@ -1058,7 +1004,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 }
 
 void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
-                              const ItemType& oldType, const Item* newItem, const ItemType& newType)
+							  const ItemType& oldType, const Item* newItem, const ItemType& newType)
 {
 	Creature::onUpdateTileItem(tile, pos, oldItem, oldType, newItem, newType);
 
@@ -1074,7 +1020,7 @@ void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item*
 }
 
 void Player::onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
-                              const Item* item)
+							  const Item* item)
 {
 	Creature::onRemoveTileItem(tile, pos, iType, item);
 
@@ -1166,7 +1112,6 @@ void Player::onChangeZone(ZoneType_t zone)
 		}
 	}
 
-	g_game.updateCreatureWalkthrough(this);
 	sendIcons();
 }
 
@@ -1214,8 +1159,6 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout)
 			g_game.internalCloseTrade(this);
 		}
 
-		closeShopWindow();
-
 		clearPartyInvitations();
 
 		if (party) {
@@ -1246,36 +1189,6 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout)
 	}
 }
 
-void Player::openShopWindow(Npc* npc, const std::list<ShopInfo>& shop)
-{
-	shopItemList = shop;
-	sendShop(npc);
-	sendSaleItemList();
-}
-
-bool Player::closeShopWindow(bool sendCloseShopWindow /*= true*/)
-{
-	//unreference callbacks
-	int32_t onBuy;
-	int32_t onSell;
-
-	Npc* npc = getShopOwner(onBuy, onSell);
-	if (!npc) {
-		shopItemList.clear();
-		return false;
-	}
-
-	setShopOwner(nullptr, -1, -1);
-	npc->onPlayerEndTrade(this, onBuy, onSell);
-
-	if (sendCloseShopWindow) {
-		sendCloseShop();
-	}
-
-	shopItemList.clear();
-	return true;
-}
-
 void Player::onWalk(Direction& dir)
 {
 	Creature::onWalk(dir);
@@ -1284,7 +1197,7 @@ void Player::onWalk(Direction& dir)
 }
 
 void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-                            const Tile* oldTile, const Position& oldPos, bool teleport)
+							const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
 
@@ -1855,7 +1768,7 @@ bool Player::hasShield() const
 }
 
 BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-                             bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/)
+							 bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/)
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor, field);
 
@@ -2046,15 +1959,9 @@ void Player::death(Creature* _lastHitCreature)
 
 		sendStats();
 		sendSkills();
-		sendReLoginWindow();
 
-		if (getSkull() == SKULL_BLACK) {
-			health = 40;
-			mana = 0;
-		} else {
-			health = healthMax;
-			mana = manaMax;
-		}
+		health = healthMax;
+		mana = manaMax;
 
 		auto it = conditions.begin(), end = conditions.end();
 		while (it != end) {
@@ -2989,10 +2896,6 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 		if (const Container* container = item->getContainer()) {
 			onSendContainer(container);
 		}
-
-		if (shopOwner && requireListUpdate) {
-			updateSaleShopList(item);
-		}
 	} else if (const Creature* creature = thing->getCreature()) {
 		if (creature == this) {
 			//check containers
@@ -3066,43 +2969,7 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 				autoCloseContainers(container);
 			}
 		}
-
-		if (shopOwner && requireListUpdate) {
-			updateSaleShopList(item);
-		}
 	}
-}
-
-bool Player::updateSaleShopList(const Item* item)
-{
-	uint16_t itemId = item->getID();
-	if (itemId != ITEM_GOLD_COIN && itemId != ITEM_PLATINUM_COIN && itemId != ITEM_CRYSTAL_COIN) {
-		auto it = std::find_if(shopItemList.begin(), shopItemList.end(), [itemId](const ShopInfo& shopInfo) { return shopInfo.itemId == itemId && shopInfo.sellPrice != 0; });
-		if (it == shopItemList.end()) {
-			const Container* container = item->getContainer();
-			if (!container) {
-				return false;
-			}
-
-			const auto& items = container->getItemList();
-			return std::any_of(items.begin(), items.end(), [this](const Item* containerItem) {
-				return updateSaleShopList(containerItem);
-			});
-		}
-	}
-
-	if (client) {
-		client->sendSaleItemList(shopItemList);
-	}
-	return true;
-}
-
-bool Player::hasShopItemForSale(uint32_t itemId, uint8_t subType) const
-{
-	const ItemType& itemType = Item::items[itemId];
-	return std::any_of(shopItemList.begin(), shopItemList.end(), [&](const ShopInfo& shopInfo) {
-		return shopInfo.itemId == itemId && shopInfo.buyPrice != 0 && (!itemType.isFluidContainer() || shopInfo.subType == subType);
-	});
 }
 
 void Player::internalAddThing(Thing* thing)
@@ -3335,18 +3202,6 @@ void Player::onAddCombatCondition(ConditionType_t type)
 			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are drunk.");
 			break;
 
-		case CONDITION_CURSED:
-			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are cursed.");
-			break;
-
-		case CONDITION_FREEZING:
-			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are freezing.");
-			break;
-
-		case CONDITION_DAZZLED:
-			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are dazzled.");
-			break;
-
 		case CONDITION_BLEEDING:
 			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are bleeding.");
 			break;
@@ -3365,7 +3220,7 @@ void Player::onEndCondition(ConditionType_t type)
 		pzLocked = false;
 		clearAttacked();
 
-		if (getSkull() != SKULL_RED && getSkull() != SKULL_BLACK) {
+		if (getSkull() != SKULL_RED) {
 			setSkull(SKULL_NONE);
 		}
 	}
@@ -3809,12 +3664,8 @@ void Player::addUnjustifiedDead(const Player* attacked)
 
 	skullTicks += g_config.getNumber(ConfigManager::FRAG_TIME);
 
-	if (getSkull() != SKULL_BLACK) {
-		if (g_config.getNumber(ConfigManager::KILLS_TO_BLACK) != 0 && skullTicks > (g_config.getNumber(ConfigManager::KILLS_TO_BLACK) - 1) * static_cast<int64_t>(g_config.getNumber(ConfigManager::FRAG_TIME))) {
-			setSkull(SKULL_BLACK);
-		} else if (getSkull() != SKULL_RED && g_config.getNumber(ConfigManager::KILLS_TO_RED) != 0 && skullTicks > (g_config.getNumber(ConfigManager::KILLS_TO_RED) - 1) * static_cast<int64_t>(g_config.getNumber(ConfigManager::FRAG_TIME))) {
-			setSkull(SKULL_RED);
-		}
+	if (getSkull() != SKULL_RED && g_config.getNumber(ConfigManager::KILLS_TO_RED) != 0 && skullTicks > (g_config.getNumber(ConfigManager::KILLS_TO_RED) - 1) * static_cast<int64_t>(g_config.getNumber(ConfigManager::FRAG_TIME))) {
+		setSkull(SKULL_RED);
 	}
 }
 
@@ -3827,7 +3678,7 @@ void Player::checkSkullTicks(int32_t ticks)
 		skullTicks = newTicks;
 	}
 
-	if ((skull == SKULL_RED || skull == SKULL_BLACK) && skullTicks < 1000 && !hasCondition(CONDITION_INFIGHT)) {
+	if (skull == SKULL_RED && skullTicks < 1000 && !hasCondition(CONDITION_INFIGHT)) {
 		setSkull(SKULL_NONE);
 	}
 }
@@ -3940,34 +3791,10 @@ PartyShields_t Player::getPartyShield(const Player* player) const
 
 	if (party) {
 		if (party->getLeader() == player) {
-			if (party->isSharedExperienceActive()) {
-				if (party->isSharedExperienceEnabled()) {
-					return SHIELD_YELLOW_SHAREDEXP;
-				}
-
-				if (party->canUseSharedExperience(player)) {
-					return SHIELD_YELLOW_NOSHAREDEXP;
-				}
-
-				return SHIELD_YELLOW_NOSHAREDEXP_BLINK;
-			}
-
 			return SHIELD_YELLOW;
 		}
 
 		if (player->party == party) {
-			if (party->isSharedExperienceActive()) {
-				if (party->isSharedExperienceEnabled()) {
-					return SHIELD_BLUE_SHAREDEXP;
-				}
-
-				if (party->canUseSharedExperience(player)) {
-					return SHIELD_BLUE_NOSHAREDEXP;
-				}
-
-				return SHIELD_BLUE_NOSHAREDEXP_BLINK;
-			}
-
 			return SHIELD_BLUE;
 		}
 
@@ -4035,26 +3862,6 @@ void Player::clearPartyInvitations()
 		invitingParty->removeInvite(*this, false);
 	}
 	invitePartyList.clear();
-}
-
-GuildEmblems_t Player::getGuildEmblem(const Player* player) const
-{
-	if (!player) {
-		return GUILDEMBLEM_NONE;
-	}
-
-	const Guild* playerGuild = player->getGuild();
-	if (!playerGuild || player->getGuildWarList().empty()) {
-		return GUILDEMBLEM_NONE;
-	}
-
-	if (guild == playerGuild) {
-		return GUILDEMBLEM_ALLY;
-	} else if (isInWar(player)) {
-		return GUILDEMBLEM_ENEMY;
-	}
-
-	return GUILDEMBLEM_NEUTRAL;
 }
 
 bool Player::addOfflineTrainingTries(skills_t skill, uint64_t tries)

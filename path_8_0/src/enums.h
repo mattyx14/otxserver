@@ -107,11 +107,8 @@ enum CombatType_t {
 	COMBAT_MANADRAIN = 1 << 6,
 	COMBAT_HEALING = 1 << 7,
 	COMBAT_DROWNDAMAGE = 1 << 8,
-	COMBAT_ICEDAMAGE = 1 << 9,
-	COMBAT_HOLYDAMAGE = 1 << 10,
-	COMBAT_DEATHDAMAGE = 1 << 11,
 
-	COMBAT_COUNT = 12
+	COMBAT_COUNT = 9
 };
 
 enum CombatParam_t {
@@ -246,12 +243,9 @@ enum ConditionType_t {
 	CONDITION_CHANNELMUTEDTICKS = 1 << 17,
 	CONDITION_YELLTICKS = 1 << 18,
 	CONDITION_ATTRIBUTES = 1 << 19,
-	CONDITION_FREEZING = 1 << 20,
-	CONDITION_DAZZLED = 1 << 21,
-	CONDITION_CURSED = 1 << 22,
-	CONDITION_EXHAUST_COMBAT = 1 << 23, // unused
-	CONDITION_EXHAUST_HEAL = 1 << 24, // unused
-	CONDITION_PACIFIED = 1 << 25,
+	CONDITION_EXHAUST_COMBAT = 1 << 20, // unused
+	CONDITION_EXHAUST_HEAL = 1 << 21, // unused
+	CONDITION_PACIFIED = 1 << 22,
 };
 
 enum ConditionId_t : int8_t {
@@ -414,24 +408,6 @@ struct LightInfo {
 	}
 };
 
-struct ShopInfo {
-	uint16_t itemId;
-	int32_t subType;
-	uint32_t buyPrice;
-	uint32_t sellPrice;
-	std::string realName;
-
-	ShopInfo() {
-		itemId = 0;
-		subType = 1;
-		buyPrice = 0;
-		sellPrice = 0;
-	}
-
-	ShopInfo(uint16_t itemId, int32_t subType = 0, uint32_t buyPrice = 0, uint32_t sellPrice = 0, std::string realName = "")
-		: itemId(itemId), subType(subType), buyPrice(buyPrice), sellPrice(sellPrice), realName(realName) {}
-};
-
 enum CombatOrigin
 {
 	ORIGIN_NONE,
@@ -456,7 +432,5 @@ struct CombatDamage
 		primary.value = secondary.value = 0;
 	}
 };
-
-typedef std::list<ShopInfo> ShopInfoList;
 
 #endif
