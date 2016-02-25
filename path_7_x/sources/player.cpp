@@ -4237,11 +4237,10 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 	if(player->getSkull() == SKULL_NONE)
 	{
-
-		if(player->hasAttacked(this))
+		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this))
 			return SKULL_YELLOW;
 
-		if((isPartner(player) || isAlly(player)) &&
+		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
 			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
@@ -4251,8 +4250,10 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
-	return !hasFlag(PlayerFlag_NotGainInFight) && attacked &&
-		attackedSet.find(attacked->getID()) != attackedSet.end();
+	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked)
+		return false;
+
+	return attackedSet.find(attacked->guid) != attackedSet.end();
 }
 
 void Player::addAttacked(const Player* attacked)
