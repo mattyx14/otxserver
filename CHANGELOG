@@ -9,7 +9,7 @@
 		- 
 
 	Forum and website
-		http://www.blacktibia.org/f19-otx-server-3
+		http://www.blacktibia.org/f19-otx-server-3/
 
 	DEVELOPERS
 		Project Manager and Founder
@@ -20,21 +20,21 @@
 
 		Special Thanks(s)
 			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/otland/forgottenserver/graphs/contributors
+				https://github.com/otland/forgottenserver/graphs/contributors/
 
 			The OTClient - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/edubart/otclient/graphs/contributors
+				https://github.com/edubart/otclient/graphs/contributors/
 
 			FORGOTTENSERVER-ORTS - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				Old: https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors
-				New: https://github.com/orts/server/graphs/contributors
+				Old: https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors/
+				New: https://github.com/orts/server/graphs/contributors/
 
 			OpenTibia - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/opentibia/server/graphs/contributors
+				https://github.com/opentibia/server/graphs/contributors/
 				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
 
 			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/mattyx14/otxserver/graphs/contributors
+				https://github.com/mattyx14/otxserver/graphs/contributors/
 				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin, Brewsterl
 
 	DEVELOPMENT STATUS
@@ -75,12 +75,13 @@
 	- Added missing config options criticalhits
 	- Always reload global.lua libraries
 	- Fix bug with /town command
-	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403
+	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403/
 	- Fix quest id limit
 	- Fix name on items.xml
 	- Fix error on items.otb "Apply forceUse to ladders" on (8.6)
 	- Fix money functions
 	- Fix random values back to 0
+	- Fix groups flags - http://comedinha.github.io/flags-calculator/
 	- Monsters update on old protocols
 	- Optimizations and cleanups
 	- Remove pugixml from code
@@ -118,7 +119,7 @@
 	- Fix and tunes on spells
 	- Fix spell and item descriptions
 	- Fixed loginWindows for 10.9x
-	- Fix https://www.youtube.com/watch?v=ube4b-q4Ncg
+	- Fix https://www.youtube.com/watch?v=ube4b-q4Ncg/
 	- Update items.xml / items.otb
 	- Update firstitems scripts // missing vocation
 	- Update monsters is more complete

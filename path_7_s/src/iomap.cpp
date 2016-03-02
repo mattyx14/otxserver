@@ -102,17 +102,17 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 		return false;
 	}
 
-	if (headerVersion > 2) {
+	if (headerVersion > 3) {
 		setLastErrorString("Unknown OTBM version detected.");
 		return false;
 	}
 
-	if (root_header.majorVersionItems > Items::dwMajorVersion) {
+	if (root_header.majorVersionItems < Items::dwMajorVersion) {
 		setLastErrorString("The map was saved with a different items.otb version, an upgraded items.otb is required.");
 		return false;
 	}
 
-	if (root_header.minorVersionItems < CLIENT_VERSION_800) {
+	if (root_header.minorVersionItems < CLIENT_VERSION_810) {
 		setLastErrorString("This map needs to be updated.");
 		return false;
 	}
