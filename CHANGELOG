@@ -6,7 +6,7 @@
 		The Forgotten Server Version: 1.2
 
 	Codenamed
-		- 
+		PHANTOM 
 
 	Forum and website
 		http://www.blacktibia.org/f19-otx-server-3/
@@ -62,10 +62,11 @@
 		OTHERS:
 			- Look Display
 			- Fix spells on (8.6) - WIP
-			- Added support to Tibia Protocol 7.72 - 8.11 - WIP
+			- Added support to Tibia Protocol 7.72 - WIP
 ]
 
 [ OTX Server 3.3 Version - " - "
+	- 8.11 TibiaClient Support
 	- Added some missing lua methods
 	- Added creature move locking (setMoveLocked/isMoveLocked)
 	- Added less loss attribute to vocations to customize death loss per vocation
@@ -88,7 +89,7 @@
 	- Remove market config no supported and removed unused functions(8.6)
 ]
 
-[ OTX Server 3.2 Version - "PHANTOM"
+[ OTX Server 3.2 Version - " PHANTOM "
 	- Added Monster Spawn event
 	- Added DDoS protection (no complete)
 	- Added Advance Save
@@ -128,14 +129,14 @@
 	- Support 10.90
 ]
 
-[ OTX Server 3.1 Version - "BOOM"
+[ OTX Server 3.1 Version - " BOOM "
 	- 10.80/82 Support
 	- 8.70/71 Support
 	- 8.60 Support
 	- Removed DualWield Support added on Alpha 4 (Require fix critical bugs)
 ]
 
-[ OTX Server 3.0 Version - "ALPHA"
+[ OTX Server 3.0 Version - " ALPHA "
 	- DualWield Support
 	- Make player walkthrough optional
 	- Use std::make_shared<> to avoid an unnecessary, additional heap alloction
@@ -169,7 +170,7 @@
 	- Update luascript.cpp
 ]
 
-[ OTX Server 3.0.ALPHA Version - "3"
+[ OTX Server 3.0.ALPHA Version - " 3 "
 	- Game protocol 10.77 support
 	- Optimize and fixes on code
 	- Fixed : premiumForPromotion = false
@@ -257,7 +258,7 @@
 	- Fix bug in ProtocolGame::sendContainer.
 ]
 
-[ OTX Server 3.0.ALPHA Version - "2"
+[ OTX Server 3.0.ALPHA Version - " 2 "
 	- Added new tools
 	- Added missing mounts/outfits
 	- Optimize creatureEvents and moveEvents
@@ -270,7 +271,7 @@
 		and this have much changes.
 ]
 
-[ OTX Server 3.0.ALPHA Version - "1"
+[ OTX Server 3.0.ALPHA Version - " 1 "
 	- Added OTX-icon to console
 	- Added itemAttribute to monsters
 	- Added skill require for use spells this for Evul
