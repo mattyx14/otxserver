@@ -3,6 +3,7 @@
 	<health now="2000" max="2000" />
 	<look type="99" head="95" body="116" legs="119" feet="115" corpse="6028" />
 	<targetchange interval="5000" chance="8" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -24,10 +25,9 @@
 		<attack name="lifedrain" interval="1000" chance="11" radius="3" target="0" min="-70" max="-135">
 			<attribute key="areaEffect" value="redshimmer" />
 		</attack>
-		<attack name="death" interval="2000" chance="9" length="8" spread="0" min="-50" max="-140">
+		<attack name="physical" interval="2000" chance="9" length="8" spread="0" min="-50" max="-140">
 			<attribute key="areaEffect" value="mortarea" />
 		</attack>
-		<attack name="cursecondition" interval="3000" chance="15" range="1" min="-54" max="-54" />
 		<attack name="speed" interval="2000" chance="15" range="7" speedchange="-900" duration="30000">
 			<attribute key="areaEffect" value="redshimmer" />
 		</attack>
@@ -39,11 +39,9 @@
 	</defenses>
 	<elements>
 		<element energyPercent="80" />
-		<element holyPercent="-15" />
 		<element firePercent="-10" />
 	</elements>
 	<immunities>
-		<immunity death="1" />
 		<immunity earth="1" />
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
@@ -65,12 +63,14 @@
 		<item id="2171" chance="1666" />
 		<item id="2656" chance="709" />
 		<item id="7893" chance="688" />
-		<item id="2535" chance="588" />
-		<item id="2165" chance="888" />
-		<item id="2237" chance="10000" />
-		<item id="2148" countmax="12" chance1="80000" chancemax="0" />
-		<item id="2175" chance="10000" />
-		<item id="2179" chance="900" />
-		<item id="3961" chance="1000" />
+		<item id="1987" chance="100000">
+			<item id="2535" chance="588" />
+			<item id="2165" chance="888" />
+			<item id="2237" chance="10000" />
+			<item id="2148" countmax="12" chance1="80000" chancemax="0" />
+			<item id="2175" chance="10000" />
+			<item id="2179" chance="900" />
+			<item id="3961" chance="1000" />
+		</item>
 	</loot>
 </monster>

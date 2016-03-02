@@ -29,8 +29,8 @@
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
 #define CLIENT_VERSION_MIN 800
-#define CLIENT_VERSION_MAX 800
-#define CLIENT_VERSION_STR "8.00"
+#define CLIENT_VERSION_MAX 811
+#define CLIENT_VERSION_STR "8.11"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

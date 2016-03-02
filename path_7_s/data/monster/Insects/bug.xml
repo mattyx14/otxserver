@@ -20,11 +20,9 @@
 		<attack name="melee" interval="2000" skill="20" attack="15" />
 	</attacks>
 	<defenses armor="5" defense="5" />
-	<elements>
-		<element firePercent="-10" />
-	</elements>
+
 	<loot>
-		<item id="2148" countmax="6" chance="51170" /><!-- gold coin -->
-		<item id="2679" countmax="3" chance="2590" /><!-- cherry -->
+		<item id="2148" countmax="6" chance="51170" /> <!-- gold coin -->
+		<item id="2679" countmax="3" chance="2590" /> <!-- cherry -->
 	</loot>
 </monster>

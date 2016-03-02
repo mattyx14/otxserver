@@ -1011,7 +1011,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		}
 	}
 
-	ReturnValue ret = internalMoveItem(fromCylinder, toCylinder, toIndex, item, count, nullptr, 0, player);
+	ReturnValue ret = internalMoveItem(fromCylinder, toCylinder, toIndex, item, item->isRune() ? item->getItemCount() : count, nullptr, 0, player);
 	if (ret != RETURNVALUE_NOERROR) {
 		player->sendCancelMessage(ret);
 	}
@@ -1087,7 +1087,11 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 
 	uint32_t m;
 	if (item->isStackable()) {
-		m = std::min<uint32_t>(count, maxQueryCount);
+		if (item->isRune()) {
+			m = std::min<uint32_t>(item->getItemCount(), maxQueryCount);
+		} else {
+			m = std::min<uint32_t>(count, maxQueryCount);
+		}
 	} else {
 		m = maxQueryCount;
 	}
@@ -1124,7 +1128,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 	if (item->isStackable()) {
 		uint32_t n;
 
-		if (item->equals(toItem)) {
+		if (!item->isRune() && item->equals(toItem)) {
 			n = std::min<uint32_t>(100 - toItem->getItemCount(), m);
 			toCylinder->updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
 			updateItem = toItem;
@@ -1223,7 +1227,7 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 		return RETURNVALUE_NOERROR;
 	}
 
-	if (item->isStackable() && item->equals(toItem)) {
+	if (item->isStackable() && !item->isRune() && item->equals(toItem)) {
 		uint32_t m = std::min<uint32_t>(item->getItemCount(), maxQueryCount);
 		uint32_t n = std::min<uint32_t>(100 - toItem->getItemCount(), m);
 
@@ -2086,15 +2090,11 @@ void Game::playerMoveUpContainer(uint32_t playerId, uint8_t cid)
 
 	Container* parentContainer = dynamic_cast<Container*>(container->getRealParent());
 	if (!parentContainer) {
-		Tile* tile = container->getTile();
-		if (!tile) {
-			return;
-		}
+		return;
 	}
 
-	bool hasParent = (dynamic_cast<const Container*>(parentContainer->getParent()) != nullptr);
 	player->addContainer(cid, parentContainer);
-	player->sendContainer(cid, parentContainer, hasParent, player->getContainerIndex(cid));
+	player->sendContainer(cid, parentContainer, parentContainer->hasParent(), player->getContainerIndex(cid));
 }
 
 void Game::playerUpdateContainer(uint32_t playerId, uint8_t cid)
@@ -2109,8 +2109,7 @@ void Game::playerUpdateContainer(uint32_t playerId, uint8_t cid)
 		return;
 	}
 
-	bool hasParent = (dynamic_cast<const Container*>(container->getParent()) != nullptr);
-	player->sendContainer(cid, container, hasParent, player->getContainerIndex(cid));
+	player->sendContainer(cid, container, container->hasParent(), player->getContainerIndex(cid));
 }
 
 void Game::playerRotateItem(uint32_t playerId, const Position& pos, uint8_t stackPos, const uint16_t spriteId)
@@ -2776,7 +2775,7 @@ void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
 			return;
 		}
 
-		player->addVIP(guid, formattedName, false);
+		player->addVIP(guid, formattedName, VIPSTATUS_OFFLINE);
 	} else {
 		if (vipPlayer->hasFlag(PlayerFlag_SpecialVIP) && !player->hasFlag(PlayerFlag_SpecialVIP)) {
 			player->sendTextMessage(MESSAGE_STATUS_SMALL, "You can not add this player.");
@@ -2784,9 +2783,9 @@ void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
 		}
 
 		if (!vipPlayer->isInGhostMode() || player->isAccessPlayer()) {
-			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), true);
+			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_ONLINE);
 		} else {
-			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), false);
+			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_OFFLINE);
 		}
 	}
 }
@@ -3464,10 +3463,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			for (Creature* spectator : list) {
 				Player* tmpPlayer = spectator->getPlayer();
 				if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
-					message.type = MESSAGE_STATUS_DEFAULT;
+					message.type = MESSAGE_STATUS_SMALL;
 					message.text = "You heal " + target->getNameDescription() + " for " + damageString;
 				} else if (tmpPlayer == targetPlayer) {
-					message.type = MESSAGE_STATUS_DEFAULT;
+					message.type = MESSAGE_STATUS_SMALL;
 					if (!attacker) {
 						message.text = "You were healed for " + damageString;
 					} else if (targetPlayer == attackerPlayer) {
@@ -3476,7 +3475,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 						message.text = "You were healed by " + attacker->getNameDescription() + " for " + damageString;
 					}
 				} else {
-					message.type = MESSAGE_STATUS_DEFAULT;
+					message.type = MESSAGE_STATUS_SMALL;
 					message.text = spectatorMessage;
 				}
 				tmpPlayer->sendTextMessage(message);
@@ -3551,10 +3550,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 					}
 
 					if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
-						message.type = MESSAGE_STATUS_DEFAULT;
+						message.type = MESSAGE_STATUS_SMALL;
 						message.text = ucfirst(target->getNameDescription()) + " loses " + damageString + " mana due to your attack.";
 					} else if (tmpPlayer == targetPlayer) {
-						message.type = MESSAGE_STATUS_DEFAULT;
+						message.type = MESSAGE_STATUS_SMALL;
 						if (!attacker) {
 							message.text = "You lose " + damageString + " mana.";
 						} else if (targetPlayer == attackerPlayer) {
@@ -3563,7 +3562,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 							message.text = "You lose " + damageString + " mana due to an attack by " + attacker->getNameDescription() + '.';
 						}
 					} else {
-						message.type = MESSAGE_STATUS_DEFAULT;
+						message.type = MESSAGE_STATUS_SMALL;
 						message.text = spectatorMessage;
 					}
 					tmpPlayer->sendTextMessage(message);
@@ -3668,10 +3667,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				}
 
 				if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
-					message.type = MESSAGE_STATUS_DEFAULT;
+					message.type = MESSAGE_STATUS_SMALL;
 					message.text = ucfirst(target->getNameDescription()) + " loses " + damageString + " due to your attack.";
 				} else if (tmpPlayer == targetPlayer) {
-					message.type = MESSAGE_STATUS_DEFAULT;
+					message.type = MESSAGE_STATUS_SMALL;
 					if (!attacker) {
 						message.text = "You lose " + damageString + '.';
 					} else if (targetPlayer == attackerPlayer) {
@@ -3680,7 +3679,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 						message.text = "You lose " + damageString + " due to an attack by " + attacker->getNameDescription() + '.';
 					}
 				} else {
-					message.type = MESSAGE_STATUS_DEFAULT;
+					message.type = MESSAGE_STATUS_SMALL;
 					// TODO: Avoid copying spectatorMessage everytime we send to a spectator
 					message.text = spectatorMessage;
 				}
@@ -3768,10 +3767,10 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 		for (Creature* spectator : list) {
 			Player* tmpPlayer = spectator->getPlayer();
 			if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
-				message.type = MESSAGE_STATUS_DEFAULT;
+				message.type = MESSAGE_STATUS_SMALL;
 				message.text = ucfirst(target->getNameDescription()) + " loses " + damageString + " mana due to your attack.";
 			} else if (tmpPlayer == targetPlayer) {
-				message.type = MESSAGE_STATUS_DEFAULT;
+				message.type = MESSAGE_STATUS_SMALL;
 				if (!attacker) {
 					message.text = "You lose " + damageString + " mana.";
 				} else if (targetPlayer == attackerPlayer) {
@@ -3780,7 +3779,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 					message.text = "You lose " + damageString + " mana due to an attack by " + attacker->getNameDescription() + '.';
 				}
 			} else {
-				message.type = MESSAGE_STATUS_DEFAULT;
+				message.type = MESSAGE_STATUS_SMALL;
 				message.text = spectatorMessage;
 			}
 			tmpPlayer->sendTextMessage(message);

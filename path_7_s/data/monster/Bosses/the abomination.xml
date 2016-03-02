@@ -3,6 +3,7 @@
 	<health now="38050" max="38050" />
 	<look type="238" corpse="6532" />
 	<targetchange interval="5000" chance="8" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -38,7 +39,12 @@
 		</defense>
 	</defenses>
 	<immunities>
+		<immunity physical="0" />
+		<immunity energy="0" />
+		<immunity fire="0" />
 		<immunity poison="1" />
+		<immunity lifedrain="0" />
+		<immunity paralyze="0" />
 		<immunity outfit="1" />
 		<immunity drunk="1" />
 		<immunity invisible="1" />
@@ -47,9 +53,9 @@
 		<voice sentence="Blubb" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="100" chance="100000" /><!-- gold coin -->
-		<item id="2152" countmax="3" chance="10000" /><!-- platinum coin -->
-		<item id="6500" countmax="1" chance="2857" /><!-- demonic essence -->
-		<item id="5944" chance="2500" /><!-- soul orb -->
+		<item id="2148" countmax="100" chance="100000" /> <!-- gold coin -->
+		<item id="2152" countmax="3" chance="10000" /> <!-- platinum coin -->
+		<item id="6500" countmax="1" chance="2857" /> <!-- demonic essence -->
+		<item id="5944" chance="2500" /> <!-- soul orb -->
 	</loot>
 </monster>

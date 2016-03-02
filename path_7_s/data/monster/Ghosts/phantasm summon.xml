@@ -18,10 +18,9 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" skill="30" attack="25" />
-		<attack name="death" interval="2000" chance="15" range="7" min="-50" max="-80">
-			<attribute key="shootEffect" value="suddendeath" />
+		<attack name="physical" interval="2000" chance="15" range="7" min="-50" max="-80">
+			<attribute key="shootEffect" value="death" />
 			<attribute key="areaEffect" value="mortarea" />
-			<attribute key="areaEffect" value="smallclouds" />
 		</attack>
 		<attack name="manadrain" interval="2000" chance="10" target="0" radius="3" min="-5" max="-80">
 			<attribute key="areaEffect" value="yellowbubble" />
@@ -42,17 +41,11 @@
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
 	</defenses>
-	<elements>
-		<element earthPercent="20" />
-		<element icePercent="20" />
-		<element holyPercent="-10" />
-		<element firePercent="-10" />
-		<element energyPercent="-10" />
-	</elements>
+
 	<immunities>
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
-		<immunity death="1" />
+
 		<immunity lifedrain="1" />
 		<immunity physical="1" />
 	</immunities>

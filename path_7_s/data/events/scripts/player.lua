@@ -83,7 +83,7 @@ end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition)
 	if toPosition.x ~= CONTAINER_POSITION then
-		return true
+	return true
 	end
 
 	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then	

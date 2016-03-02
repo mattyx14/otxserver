@@ -18,8 +18,8 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-70" />
-		<attack name="lifedrain" interval="2000" chance="10" radius="1" target="1" range="1" min="-15" max="-27">
-			<attribute key="areaEffect" value="smallclouds" />
+		<attack name="lifedrain" interval="2000" chance="10" range="1" min="-15" max="-27">
+			<attribute key="areaEffect" value="redshimmer" />
 		</attack>
 	</attacks>
 	<defenses armor="15" defense="15">
@@ -27,14 +27,7 @@
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
 	</defenses>
-	<elements>
-		<element energyPercent="30" />
-		<element earthPercent="20" />
-		<element icePercent="10" />
-		<element holyPercent="-25" />
-	</elements>
 	<immunities>
-		<immunity death="1" />
 		<immunity drown="1" />
 		<immunity lifedrain="1" />
 		<immunity drunk="1" />
@@ -43,14 +36,11 @@
 	</immunities>
 	<loot>
 		<item id="2148" countmax="30" chance="68000" />	<!-- gold coin -->
-		<item id="11208" chance="14470" />				<!-- rotten piece of cloth -->
 		<item id="3976" countmax="2" chance="9600" />	<!-- worm -->
-		<item id="12423" chance="5130" />				<!-- ghoul snack -->
 		<item id="2050" chance="5000" />					<!-- torch -->
 		<item id="2483" chance="1000" />					<!-- scale armor -->
 		<item id="5913" chance="1000" />					<!-- brown piece of cloth -->
 		<item id="2473" chance="990" />					<!-- viking helmet -->
-		<item id="12440" chance="950" />					<!-- pile of grave earth -->
 		<item id="2229" chance="240" />					<!-- skull -->
 		<item id="2168" chance="180" />					<!-- life ring -->
 	</loot>

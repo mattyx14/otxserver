@@ -17,7 +17,7 @@
 		<flag runonhealth="0" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-300" poison="160" />
+		<attack name="melee" interval="2000" min="-0" max="-300" poison="160" />
 		<attack name="poisonfield" interval="2000" chance="10" range="7" radius="1" target="1">
 			<attribute key="shootEffect" value="poison" />
 		</attack>
@@ -30,11 +30,6 @@
 			<attribute key="areaEffect" value="redshimmer" />
 		</defense>
 	</defenses>
-	<elements>
-		<element energyPercent="20" />
-		<element icePercent="20" />
-		<element firePercent="-10" />
-	</elements>
 	<immunities>
 		<immunity outfit="1" />
 		<immunity drunk="1" />
@@ -45,19 +40,17 @@
 		<summon name="Poison Spider" interval="2000" chance="10" max="2" />
 	</summons>
 	<loot>
-		<item id="2148" countmax="100" chance="50000" /><!-- gold coin -->
-		<item id="2148" countmax="95" chance="50000" /><!-- gold coin -->
-		<item id="2545" countmax="12" chance="12500" /><!-- poison arrow -->
-		<item id="2647" chance="8333" /><!-- plate legs -->
-		<item id="2463" chance="8333" /><!-- plate armor -->
-		<item id="2377" chance="5000" /><!-- two handed sword -->
-		<item id="2457" chance="4545" /><!-- steel helmet -->
-		<item id="7588" chance="3571" /><!-- strong health potion -->
-		<item id="5879" chance="2140" /><!-- spider silk -->
-		<item id="2477" chance="870" /><!-- knight legs -->
-		<item id="2169" chance="710" /><!-- time ring -->
-		<item id="2171" chance="280" /><!-- platinum amulet -->
-		<item id="2476" chance="530" /><!-- knight armor -->
-		<item id="7901" chance="220" /><!-- lightning headband -->
+		<item id="2148" countmax="100" chance="50000" /> <!-- gold coin -->
+		<item id="2148" countmax="95" chance="50000" /> <!-- gold coin -->
+		<item id="2545" countmax="12" chance="12500" /> <!-- poison arrow -->
+		<item id="2647" chance="8333" /> <!-- plate legs -->
+		<item id="2463" chance="8333" /> <!-- plate armor -->
+		<item id="2377" chance="5000" /> <!-- two handed sword -->
+		<item id="2457" chance="4545" /> <!-- steel helmet -->
+		<item id="5879" chance="2140" /> <!-- spider silk -->
+		<item id="2477" chance="870" /> <!-- knight legs -->
+		<item id="2169" chance="710" /> <!-- time ring -->
+		<item id="2171" chance="280" /> <!-- platinum amulet -->
+		<item id="2476" chance="530" /> <!-- knight armor -->
 	</loot>
 </monster>

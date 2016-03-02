@@ -3,6 +3,7 @@
 	<health now="40000" max="40000" />
 	<look type="12" head="19" body="96" legs="21" feet="81" corpse="6068" />
 	<targetchange interval="5000" chance="8" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -18,9 +19,6 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" skill="130" attack="130" />
-		<attack name="energy" interval="1000" chance="11" length="8" spread="0" min="-250" max="-819">
-			<attribute key="areaEffect" value="purpleenergy" />
-		</attack>
 		<attack name="manadrain" interval="2000" chance="14" radius="5" target="0" min="-90" max="-500">
 			<attribute key="areaEffect" value="stun" />
 		</attack>
@@ -37,11 +35,8 @@
 		</defense>
 	</defenses>
 	<elements>
-		<element icePercent="99" />
 		<element energyPercent="99" />
 		<element earthPercent="99" />
-		<element holyPercent="99" />
-		<element deathPercent="99" />
 		<element firePercent="99" />
 		<element drownPercent="-50" />
 	</elements>
@@ -59,14 +54,14 @@
 		<voice sentence="Delicious!" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="100" chance="80000" /><!-- gold coin -->
-		<item id="2148" countmax="100" chance="70000" /><!-- gold coin -->
-		<item id="2160" countmax="3" chance="100000" /><!-- crystal coin -->
-		<item id="2143" countmax="7" chance="3000" /><!-- white pearl -->
-		<item id="2514" chance="1650" /><!-- mastermind shield -->
-		<item id="7590" chance="7000" /><!-- great mana potion -->
-		<item id="7591" chance="7000" /><!-- great health potion -->
-		<item id="2148" countmax="83" chance="60000" /><!-- gold coin -->
-		<item id="7368" countmax="25" chance="100000" /><!-- assassin star -->
+		<item id="2148" countmax="100" chance="80000" /> <!-- gold coin -->
+		<item id="2148" countmax="100" chance="70000" /> <!-- gold coin -->
+		<item id="2160" countmax="3" chance="100000" /> <!-- crystal coin -->
+		<item id="2143" countmax="7" chance="3000" /> <!-- white pearl -->
+		<item id="2514" chance="1650" /> <!-- mastermind shield -->
+		<item id="1987" chance="100000"> <!-- bag -->
+			<item id="2148" countmax="83" chance="60000" /> <!-- gold coin -->
+			<item id="7368" countmax="25" chance="100000" /> <!-- assassin star -->
+		</item>
 	</loot>
 </monster>

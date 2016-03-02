@@ -3,6 +3,7 @@
 	<health now="35000" max="35000" />
 	<look type="229" corpse="6078" />
 	<targetchange interval="5000" chance="8" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -73,17 +74,19 @@
 		<voice sentence="THE POWER IS MINE!" yell="1" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="100" chance="100000" /><!-- gold coin -->
-		<item id="2148" countmax="25" chance="100000" /><!-- gold coin -->
-		<item id="2393" chance="16060" /><!-- giant sword -->
-		<item id="2514" chance="12050" /><!-- mastermind shield -->
-		<item id="2472" chance="7000" /><!-- magic plate armor -->
-		<item id="2678" countmax="3" chance="20000" /><!-- coconut -->
-		<item id="2148" countmax="100" chance="100000" /><!-- gold coin -->
-		<item id="2151" countmax="4" chance="12000" /><!-- talon -->
-		<item id="5903" chance="100000" /><!-- ferumbras' hat -->
-		<item id="2149" countmax="3" chance="15000" /><!-- small emerald -->
-		<item id="2171" chance="30000" /><!-- platinum amulet -->
-		<item id="2415" chance="6000" /><!-- great axe -->
+		<item id="2148" countmax="100" chance="100000" /> <!-- gold coin -->
+		<item id="2148" countmax="25" chance="100000" /> <!-- gold coin -->
+		<item id="2393" chance="16060" /> <!-- giant sword -->
+		<item id="2514" chance="12050" /> <!-- mastermind shield -->
+		<item id="2472" chance="7000" /> <!-- magic plate armor -->
+		<item id="1987" chance="100000"> <!-- bag -->
+			<item id="2678" countmax="3" chance="20000" /> <!-- coconut -->
+			<item id="2148" countmax="100" chance="100000" /> <!-- gold coin -->
+			<item id="2151" countmax="4" chance="12000" /> <!-- talon -->
+			<item id="5903" chance="100000" /> <!-- ferumbras' hat -->
+			<item id="2149" countmax="3" chance="15000" /> <!-- small emerald -->
+			<item id="2171" chance="30000" /> <!-- platinum amulet -->
+			<item id="2415" chance="6000" /> <!-- great axe -->
+		</item>
 	</loot>
 </monster>

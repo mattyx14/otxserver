@@ -29,10 +29,7 @@
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
 	</defenses>
-	<elements>
-		<element icePercent="20" />
-		<element firePercent="-10" />
-	</elements>
+
 	<immunities>
 		<immunity energy="1" />
 		<immunity earth="1" />
@@ -40,12 +37,10 @@
 		<immunity invisible="1" />
 	</immunities>
 	<loot>
-		<item id="2804" chance="10650" /><!-- shadow herb -->
-		<item id="12432" chance="10000" /><!-- nettle spit -->
-		<item id="2148" countmax="5" chance="10600" /><!-- gold coin -->
-		<item id="2802" countmax="2" chance="5263" /><!-- sling herb -->
-		<item id="2802" chance="1010" /><!-- grave flower -->
-		<item id="11231" chance="833" /><!-- nettle blossom -->
-		<item id="2802" chance="362" /><!-- seeds-->
+		<item id="2804" chance="10650" /> <!-- shadow herb -->
+		<item id="2148" countmax="5" chance="10600" /> <!-- gold coin -->
+		<item id="2802" countmax="2" chance="5263" /> <!-- sling herb -->
+		<item id="2802" chance="1010" /> <!-- grave flower -->
+		<item id="2802" chance="362" /> <!-- seeds-->
 	</loot>
 </monster>

@@ -139,15 +139,6 @@ CombatType_t Combat::ConditionToDamageType(ConditionType_t type)
 		case CONDITION_POISON:
 			return COMBAT_EARTHDAMAGE;
 
-		case CONDITION_FREEZING:
-			return COMBAT_ICEDAMAGE;
-
-		case CONDITION_DAZZLED:
-			return COMBAT_HOLYDAMAGE;
-
-		case CONDITION_CURSED:
-			return COMBAT_DEATHDAMAGE;
-
 		default:
 			break;
 	}
@@ -169,15 +160,6 @@ ConditionType_t Combat::DamageToConditionType(CombatType_t type)
 
 		case COMBAT_EARTHDAMAGE:
 			return CONDITION_POISON;
-
-		case COMBAT_ICEDAMAGE:
-			return CONDITION_FREEZING;
-
-		case COMBAT_HOLYDAMAGE:
-			return CONDITION_DAZZLED;
-
-		case COMBAT_DEATHDAMAGE:
-			return CONDITION_CURSED;
 
 		case COMBAT_PHYSICALDAMAGE:
 			return CONDITION_BLEEDING;
@@ -300,10 +282,6 @@ bool Combat::isProtected(const Player* attacker, const Player* target)
 	}
 
 	if (attacker->getVocationId() == VOCATION_NONE || target->getVocationId() == VOCATION_NONE) {
-		return true;
-	}
-
-	if (attacker->getSkull() == SKULL_BLACK && attacker->getSkullClient(target) == SKULL_NONE) {
 		return true;
 	}
 
@@ -512,7 +490,7 @@ void Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 
 	if ((damage.primary.value < 0 || damage.secondary.value < 0) && caster) {
 		Player* targetPlayer = target->getPlayer();
-		if (targetPlayer && caster->getPlayer() && targetPlayer->getSkull() != SKULL_BLACK) {
+		if (targetPlayer && caster->getPlayer()) {
 			damage.primary.value /= 2;
 			damage.secondary.value /= 2;
 		}

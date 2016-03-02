@@ -20,12 +20,7 @@
 		<attack name="melee" interval="2000" skill="40" attack="20" />
 	</attacks>
 	<defenses armor="15" defense="15" />
-	<elements>
-		<element earthPercent="20" />
-		<element holyPercent="10" />
-		<element icePercent="-10" />
-		<element deathPercent="-5" />
-	</elements>
+
 	<immunities>
 		<immunity outfit="1" />
 	</immunities>
@@ -34,9 +29,8 @@
 		<voice sentence="Yoooohhuuuu!" yell="1" />
 	</voices>
 	<loot>
-		<item id="2671" countmax="2" chance="35000" /><!-- ham -->
-		<item id="5897" chance="710" /><!-- wolf paw -->
-		<item id="3976" chance="40" /><!-- wolf trophy -->
-		<item id="11235" chance="5230" /><!-- warwolf fur -->
+		<item id="2671" countmax="2" chance="35000" /> <!-- ham -->
+		<item id="5897" chance="710" /> <!-- wolf paw -->
+		<item id="3976" chance="40" /> <!-- wolf trophy -->
 	</loot>
 </monster>

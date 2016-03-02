@@ -20,9 +20,7 @@
 		<attack name="melee" interval="2000" skill="10" attack="20" />
 	</attacks>
 	<defenses armor="10" defense="10" />
-	<elements>
-		<element firePercent="-10" />
-	</elements>
+
 	<immunities>
 		<immunity earth="1" />
 	</immunities>
@@ -31,8 +29,7 @@
 		<voice sentence="Groar" />
 	</voices>
 	<loot>
-		<item id="2666" countmax="4" chance="70500" /><!-- meat -->
-		<item id="2671" countmax="2" chance="39000" /><!-- ham -->
-		<item id="12401" chance="10000" /><!-- bamboo stick -->
+		<item id="2666" countmax="4" chance="70500" /> <!-- meat -->
+		<item id="2671" countmax="2" chance="39000" /> <!-- ham -->
 	</loot>
 </monster>

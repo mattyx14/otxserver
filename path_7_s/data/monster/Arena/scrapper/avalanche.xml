@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Avalanche" nameDescription="avalanche" race="undead" experience="305" speed="195" manacost="0">
+<monster name="Avalanche" nameDescription="Avalanche" race="undead" experience="305" speed="195" manacost="0">
 	<health now="550" max="550" />
 	<look type="261" corpse="7349" />
 	<flags>
@@ -15,7 +15,7 @@
 	<attacks>
 		<attack name="melee" interval="2000" skill="50" attack="60" />
 		<attack name="drown" interval="1000" chance="100" length="5" spread="6" min="-10" max="-50">
-			<attribute key="areaEffect" value="energyarea" />
+			<attribute key="areaEffect" value="energy" />
 		</attack>
 		<attack name="speed" interval="4000" chance="100" radius="3" duration="10000" speedchange="-400">
 			<attribute key="areaEffect" value="poff" />
@@ -25,12 +25,9 @@
 		</attack>
 	</attacks>
 	<defenses armor="26" defense="27" />
-	<elements>
-		<element firePercent="30" />
-		<element energyPercent="-10" />
-	</elements>
+
 	<immunities>
-		<immunity ice="1" />
+
 		<immunity earth="1" />
 		<immunity outfit="1" />
 		<immunity drunk="1" />

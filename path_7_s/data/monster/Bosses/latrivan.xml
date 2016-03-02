@@ -3,6 +3,7 @@
 	<health now="40000" max="40000" />
 	<look type="12" head="120" body="128" legs="121" feet="111" corpse="6068" />
 	<targetchange interval="5000" chance="8" />
+	<strategy attack="80" defense="20" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -24,9 +25,7 @@
 	</attacks>
 	<defenses armor="35" defense="45" />
 	<elements>
-		<element icePercent="-10" />
 		<element energyPercent="35" />
-		<element deathPercent="-12" />
 	</elements>
 	<immunities>
 		<immunity fire="1" />
@@ -35,15 +34,17 @@
 		<voice sentence="I might reward you for killing my brother ~ with a swift dead!" yell="1" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="100" chance="100000" /><!-- gold coin -->
-		<item id="2148" countmax="50" chance="100000" /><!-- gold coin -->
-		<item id="2152" countmax="6" chance="80000" /><!-- platinum coin -->
-		<item id="2144" countmax="28" chance="7777" /><!-- black pearl -->
-		<item id="7440" chance="17000" /><!-- mastermind potion -->
-		<item id="2514" chance="4500" /><!-- mastermind shield -->
-		<item id="2171" chance="12222" /><!-- platinum amulet -->
-		<item id="2151" countmax="13" chance="6500" /><!-- talon -->
-		<item id="2470" chance="6555" /><!-- golden legs -->
-		<item id="2432" chance="8200" /><!-- fire axe -->
+		<item id="2148" countmax="100" chance="100000" /> <!-- gold coin -->
+		<item id="2148" countmax="50" chance="100000" /> <!-- gold coin -->
+		<item id="2152" countmax="6" chance="80000" /> <!-- platinum coin -->
+		<item id="2144" countmax="28" chance="7777" /> <!-- black pearl -->
+		<item id="7440" chance="17000" /> <!-- mastermind potion -->
+		<item id="2514" chance="4500" /> <!-- mastermind shield -->
+		<item id="2171" chance="12222" /> <!-- platinum amulet -->
+		<item id="1987" chance="100000"> <!-- bag -->
+			<item id="2151" countmax="13" chance="6500" /> <!-- talon -->
+			<item id="2470" chance="6555" /> <!-- golden legs -->
+			<item id="2432" chance="8200" /> <!-- fire axe -->
+		</item>
 	</loot>
 </monster>

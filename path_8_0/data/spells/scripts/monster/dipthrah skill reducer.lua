@@ -1,5 +1,5 @@
 local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_HOLYAREA)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
 
 local area = createCombatArea(AREA_CIRCLE3X3)
 combat:setArea(area)
@@ -11,6 +11,6 @@ condition:setParameter(CONDITION_PARAM_SKILL_DISTANCEPERCENT, 50)
 condition:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, 50)
 combat:setCondition(condition)
 
-function onCastSpell(creature, variant)
-	return combat:execute(creature, variant)
+function onCastSpell(creature, var)
+	return combat:execute(creature, var)
 end

@@ -164,9 +164,6 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_FIRE:
 		case CONDITION_ENERGY:
 		case CONDITION_DROWN:
-		case CONDITION_FREEZING:
-		case CONDITION_DAZZLED:
-		case CONDITION_CURSED:
 		case CONDITION_BLEEDING:
 			return new ConditionDamage(_id, _type, _buff, _subId);
 
@@ -283,7 +280,7 @@ bool Condition::isPersistent() const
 
 uint32_t Condition::getIcons() const
 {
-	return isBuff ? ICON_PARTY_BUFF : 0;
+	return 0;
 }
 
 bool Condition::updateCondition(const Condition* addCondition)
@@ -732,7 +729,7 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 				if (player) {
 					std::string healString = std::to_string(realHealthGain) + (realHealthGain != 1 ? " hitpoints." : " hitpoint.");
 
-					TextMessage message(MESSAGE_STATUS_DEFAULT, "You were healed for " + healString);
+					TextMessage message(MESSAGE_STATUS_SMALL, "You were healed for " + healString);
 					player->sendTextMessage(message);
 
 					std::ostringstream strHealthGain;
@@ -743,7 +740,7 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 					g_game.map.getSpectators(list, player->getPosition(), false, true);
 					list.erase(player);
 					if (!list.empty()) {
-						message.type = MESSAGE_STATUS_DEFAULT;
+						message.type = MESSAGE_STATUS_SMALL;
 						message.text = player->getName() + " was healed for " + healString;
 						for (Creature* spectator : list) {
 							spectator->getPlayer()->sendTextMessage(message);
@@ -1226,18 +1223,6 @@ uint32_t ConditionDamage::getIcons() const
 
 		case CONDITION_POISON:
 			icons |= ICON_POISON;
-			break;
-
-		case CONDITION_FREEZING:
-			icons |= ICON_FREEZING;
-			break;
-
-		case CONDITION_DAZZLED:
-			icons |= ICON_DAZZLED;
-			break;
-
-		case CONDITION_CURSED:
-			icons |= ICON_CURSED;
 			break;
 
 		default:

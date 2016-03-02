@@ -1,14 +1,5 @@
 local holes = {468, 481, 483}
-local others = {7932}
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local targetId = target.itemid, target.actionid
-	if isInArray(others, targetId) then
-		target:transform(targetId + 1)
-		target:decay()
-
-		return true
-	end
-
 	if toPosition.x == CONTAINER_POSITION then
 		return false
 	end

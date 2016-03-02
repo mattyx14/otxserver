@@ -3,6 +3,7 @@
 	<health now="15850" max="15850" />
 	<look type="231" corpse="6307" />
 	<targetchange interval="2000" chance="5" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -16,13 +17,13 @@
 		<flag runonhealth="0" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="85" attack="85" />
+	<attack name="melee" interval="2000" skill="85" attack="85" />
 		<attack name="melee" interval="2000" chance="20" range="7" radius="4" target="1" min="-300" max="-395">
 			<attribute key="shootEffect" value="fire" />
 			<attribute key="areaEffect" value="redspark" />
 		</attack>
-		<attack name="physical" interval="3000" chance="10" range="7" min="0" max="-800">
-			<attribute key="shootEffect" value="suddendeath" />
+		<attack name="physical" interval="3000" chance="10" range="7" min="-0" max="-800">
+			<attribute key="shootEffect" value="death" />
 			<attribute key="areaEffect" value="mortarea" />
 		</attack>
 		<attack name="poison" interval="2000" chance="20" range="7" radius="4" target="1" min="-120" max="-390">
@@ -47,8 +48,10 @@
 		</attack>
 	</attacks>
 	<defenses armor="40" defense="39" />
+	<elements>
+		<element earthPercent="100" />
+	</elements>
 	<immunities>
-		<immunity earth="1" />
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
 	</immunities>
@@ -56,8 +59,8 @@
 		<voice sentence="DEATH CAN'T STOP MY HUNGER!" yell="1" />
 	</voices>
 	<loot>
-		<item id="2152" countmax="8" chance="20000" /><!-- platinum coin -->
-		<item id="6500" countmax="4" chance="1000" /><!-- demonic essence -->
-		<item id="6546" chance="100000" /><!-- dracola's eye -->
+		<item id="2152" countmax="8" chance="20000" /> <!-- platinum coin -->
+		<item id="6500" countmax="4" chance="1000" /> <!-- demonic essence -->
+		<item id="6546" chance="100000" /> <!-- dracola's eye -->
 	</loot>
 </monster>

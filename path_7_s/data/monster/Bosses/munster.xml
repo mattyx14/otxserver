@@ -3,6 +3,7 @@
 	<health now="58" max="58" />
 	<look type="56" corpse="2813" />
 	<targetchange interval="60000" chance="0" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="1" />
 		<flag attackable="1" />
@@ -28,10 +29,12 @@
 		<summon name="Rat" interval="2000" chance="20" max="2" />
 	</summons>
 	<loot>
-		<item id="2148" countmax="16" chance="100000" /><!-- gold coin -->
-		<item id="2696" chance="50000" /><!-- cheese -->
-		<item id="2687" countmax="1" chance="5000" /><!-- cookie -->
-		<item id="2650" chance="50000" /><!-- jacket -->
-		<item id="2449" chance="5000" /><!-- bone club -->
+		<item id="2148" countmax="16" chance="100000" /> <!-- gold coin -->
+		<item id="2696" chance="50000" /> <!-- cheese -->
+		<item id="1987" chance="100000"> <!-- bag -->
+			<item id="2687" countmax="1" chance="5000" /> <!-- cookie -->
+			<item id="2650" chance="50000" /> <!-- jacket -->
+			<item id="2449" chance="5000" /> <!-- bone club -->
+		</item>
 	</loot>
 </monster>

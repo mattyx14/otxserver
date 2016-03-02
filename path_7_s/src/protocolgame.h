@@ -65,7 +65,6 @@ class ProtocolGame final : public Protocol
 		// static protocol information
 		enum {server_sends_first = true};
 		enum {protocol_identifier = 0}; // Not required as we send first
-		enum {use_checksum = true};
 		static const char* protocol_name() {
 			return "gameworld protocol";
 		}
@@ -123,17 +122,12 @@ class ProtocolGame final : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 
-		void parseLookInShop(NetworkMessage& msg);
-		void parsePlayerPurchase(NetworkMessage& msg);
-		void parsePlayerSale(NetworkMessage& msg);
-
 		void parseQuestLine(NetworkMessage& msg);
 
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
 		void parseRevokePartyInvite(NetworkMessage& msg);
 		void parsePassPartyLeadership(NetworkMessage& msg);
-		void parseEnableSharedPartyExperience(NetworkMessage& msg);
 
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
@@ -181,19 +175,15 @@ class ProtocolGame final : public Protocol
 		void sendCreatureVisible(const Creature* creature, bool visible);
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
+		void sendTextMessage(MessageClasses mclass, const std::string& message);
 		void sendTextMessage(const TextMessage& message);
 		void sendReLoginWindow();
 
-		void sendTutorial(uint8_t tutorialId);
 		void sendAddMarker(const Position& pos, uint8_t markType, const std::string& desc);
 
-		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough);
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
 
-		void sendShop(Npc*, const ShopInfoList& itemList);
-		void sendCloseShop();
-		void sendSaleItemList(const std::list<ShopInfo>& shop);
 		void sendTradeItemRequest(const std::string& traderName, const Item* item, bool ack);
 		void sendCloseTrade();
 
@@ -202,8 +192,8 @@ class ProtocolGame final : public Protocol
 		void sendHouseWindow(uint32_t windowTextId, const std::string& text);
 		void sendOutfitWindow();
 
-		void sendUpdatedVIPStatus(uint32_t guid, bool online);
-		void sendVIP(uint32_t guid, const std::string& name, bool isOnline);
+		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
+		void sendVIP(uint32_t guid, const std::string& name, VipStatus_t status);
 
 		void sendFightModes();
 
@@ -272,9 +262,6 @@ class ProtocolGame final : public Protocol
 		//inventory
 		void SetInventoryItem(NetworkMessage& msg, slots_t slot, const Item* item);
 
-		//shop
-		void AddShopItem(NetworkMessage& msg, const ShopInfo& item);
-
 		//otclient
 		void parseExtendedOpcode(NetworkMessage& msg);
 
@@ -295,10 +282,7 @@ class ProtocolGame final : public Protocol
 		Player* player;
 
 		uint32_t eventConnect;
-		uint32_t challengeTimestamp;
 		uint16_t version;
-
-		uint8_t challengeRandom;
 
 		bool debugAssertSent;
 		bool acceptPackets;

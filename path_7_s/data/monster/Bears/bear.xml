@@ -20,19 +20,15 @@
 		<attack name="melee" interval="2000" skill="40" attack="10" />
 	</attacks>
 	<defenses armor="10" defense="10" />
-	<elements>
-		<element holyPercent="10" />
-		<element icePercent="-10" />
-		<element deathPercent="-5" />
-	</elements>
+
 	<voices interval="5000" chance="10">
 		<voice sentence="Grrrr" />
 		<voice sentence="Groar" />
 	</voices>
 	<loot>
-		<item id="5896" chance="2000" /><!-- bear paw -->
-		<item id="2671" countmax="3" chance="20000" /><!-- ham -->
-		<item id="2666" countmax="4" chance="39750" /><!-- meat -->
-		<item id="5902" chance="460" /><!-- honeycomb -->
+		<item id="5896" chance="2000" /> <!-- bear paw -->
+		<item id="2671" countmax="3" chance="20000" /> <!-- ham -->
+		<item id="2666" countmax="4" chance="39750" /> <!-- meat -->
+		<item id="5902" chance="460" /> <!-- honeycomb -->
 	</loot>
 </monster>

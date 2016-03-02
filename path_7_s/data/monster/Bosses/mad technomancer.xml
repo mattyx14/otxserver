@@ -3,6 +3,7 @@
 	<health now="1000" max="1000" />
 	<look type="66" corpse="6015" />
 	<targetchange interval="500" chance="25" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -36,9 +37,6 @@
 		<element earthPercent="80" />
 		<element firePercent="60" />
 		<element energyPercent="10" />
-		<element holyPercent="10" />
-		<element icePercent="-10" />
-		<element deathPercent="-5" />
 	</elements>
 	<immunities>
 		<immunity invisible="1" />
@@ -48,7 +46,4 @@
 		<voice sentence="My masterplan cannot fail!" />
 		<voice sentence="Gentlemen, you can't fight here! This is the War Room!" />
 	</voices>
-	<loot>
-		<item id="7699" chance="1000000" /><!-- beard -->
-	</loot>
 </monster>

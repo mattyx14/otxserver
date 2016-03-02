@@ -3,6 +3,7 @@
 	<health now="16050" max="16050" />
 	<look type="238" corpse="6532" />
 	<targetchange interval="5500" chance="10" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -39,7 +40,7 @@
 		<element energyPercent="15" />
 	</elements>
 	<immunities>
-		<immunity earth="1" />
+		<immunity poison="1" />
 		<immunity lifedrain="1" />
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
@@ -48,14 +49,14 @@
 		<voice sentence="Blubb" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="70" chance1="20000" chancemax="0" /><!-- gold coins -->
-		<item id="2148" countmax="60" chance1="20000" chancemax="0" /><!-- gold coins -->
-		<item id="2148" countmax="45" chance1="20000" chancemax="0" /><!-- gold coins -->
-		<item id="2152" countmax="13" chance1="25000" chancemax="0" /><!-- platinum coin -->
-		<item id="6500" chance1="45000" chancemax="0" /><!-- demonic essence -->
-		<item id="2144" countmax="3" chance1="5000" chancemax="0" /><!-- black pearl -->
-		<item id="2146" countmax="3" chance1="5000" chancemax="0" /><!-- small sapphire -->
-		<item id="5944" chance="35000" /><!-- soul orb -->
-		<item id="6535" chance="100000" /><!-- the plasmother's remains -->
+		<item id="2148" countmax="70" chance1="20000" chancemax="0" /> <!-- gold coins -->
+		<item id="2148" countmax="60" chance1="20000" chancemax="0" /> <!-- gold coins -->
+		<item id="2148" countmax="45" chance1="20000" chancemax="0" /> <!-- gold coins -->
+		<item id="2152" countmax="13" chance1="25000" chancemax="0" /> <!-- platinum coin -->
+		<item id="6500" chance1="45000" chancemax="0" /> <!-- demonic essence -->
+		<item id="2144" countmax="3" chance1="5000" chancemax="0" /> <!-- black pearl -->
+		<item id="2146" countmax="3" chance1="5000" chancemax="0" /> <!-- small sapphire -->
+		<item id="5944" chance="35000" /> <!-- soul orb -->
+		<item id="6535" chance="100000" /> <!-- the plasmother's remains -->
 	</loot>
 </monster>

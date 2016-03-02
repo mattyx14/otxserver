@@ -3,6 +3,7 @@
 	<health now="40000" max="40000" />
 	<look type="12" head="108" body="100" legs="105" feet="114" corpse="6068" />
 	<targetchange interval="7000" chance="10" />
+	<strategy attack="90" defense="10" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -18,7 +19,7 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" skill="105" attack="100" />
-		<attack name="death" interval="3000" chance="15" length="8" spread="0" min="-250" max="-850">
+		<attack name="physical" interval="3000" chance="15" length="8" spread="0" min="-250" max="-850">
 			<attribute key="areaEffect" value="mortarea" />
 		</attack>
 		<attack name="poisoncondition" interval="1000" chance="11" length="5" spread="2" min="-300" max="-350">
@@ -33,14 +34,9 @@
 	</attacks>
 	<defenses armor="48" defense="54" />
 	<elements>
-		<element icePercent="-10" />
-		<element holyPercent="15" />
 		<element physicalPercent="20" />
 		<element firePercent="-5" />
 	</elements>
-	<immunities>
-		<immunity death="1" />
-	</immunities>
 	<voices interval="5000" chance="10">
 		<voice sentence="Latrivan your fool" yell="1" />
 	</voices>

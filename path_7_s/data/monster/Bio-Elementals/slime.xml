@@ -20,11 +20,7 @@
 		<attack name="melee" interval="2000" skill="45" attack="40" />
 	</attacks>
 	<defenses armor="15" defense="15" />
-	<elements>
-		<element icePercent="20" />
-		<element firePercent="-10" />
-		<element energyPercent="-10" />
-	</elements>
+
 	<immunities>
 		<immunity earth="1" />
 	</immunities>

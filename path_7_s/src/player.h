@@ -72,6 +72,11 @@ enum fightMode_t : uint8_t {
 	FIGHTMODE_DEFENSE = 3,
 };
 
+enum secureMode_t : uint8_t {
+	SECUREMODE_OFF = 0,
+	SECUREMODE_ON = 1,
+};
+
 enum tradestate_t : uint8_t {
 	TRADE_NONE,
 	TRADE_INITIATED,
@@ -81,14 +86,11 @@ enum tradestate_t : uint8_t {
 };
 
 struct VIPEntry {
-	VIPEntry(uint32_t guid, std::string name, const std::string& description, uint32_t icon, bool notify)
-		: guid(guid), name(name), description(description), icon(icon), notify(notify) {}
+	VIPEntry(uint32_t guid, const std::string& name)
+		: guid(guid), name(name) {}
 
 	uint32_t guid;
 	std::string name;
-	std::string description;
-	uint32_t icon;
-	bool notify;
 };
 
 struct OpenContainer {
@@ -234,13 +236,6 @@ class Player final : public Creature, public Cylinder
 		bool isInWar(const Player* player) const;
 		bool isInWarList(uint32_t guild_id) const;
 
-		void setLastWalkthroughAttempt(int64_t walkthroughAttempt) {
-			lastWalkthroughAttempt = walkthroughAttempt;
-		}
-		void setLastWalkthroughPosition(Position walkthroughPosition) {
-			lastWalkthroughPosition = walkthroughPosition;
-		}
-
 		uint16_t getClientIcons() const;
 
 		const GuildWarList& getGuildWarList() const {
@@ -283,8 +278,6 @@ class Player final : public Creature, public Cylinder
 		bool addPartyInvitation(Party* party);
 		void removePartyInvitation(Party* party);
 		void clearPartyInvitations();
-
-		GuildEmblems_t getGuildEmblem(const Player* player) const;
 
 		uint64_t getSpentMana() const {
 			return manaSpent;
@@ -479,9 +472,6 @@ class Player final : public Creature, public Cylinder
 		bool canSee(const Position& pos) const final;
 		bool canSeeCreature(const Creature* creature) const final;
 
-		bool canWalkthrough(const Creature* creature) const;
-		bool canWalkthroughEx(const Creature* creature) const;
-
 		RaceType_t getRace() const final {
 			return RACE_BLOOD;
 		}
@@ -499,31 +489,11 @@ class Player final : public Creature, public Cylinder
 			return tradeItem;
 		}
 
-		//shop functions
-		void setShopOwner(Npc* owner, int32_t onBuy, int32_t onSell) {
-			shopOwner = owner;
-			purchaseCallback = onBuy;
-			saleCallback = onSell;
-		}
-
-		Npc* getShopOwner(int32_t& onBuy, int32_t& onSell) {
-			onBuy = purchaseCallback;
-			onSell = saleCallback;
-			return shopOwner;
-		}
-
-		const Npc* getShopOwner(int32_t& onBuy, int32_t& onSell) const {
-			onBuy = purchaseCallback;
-			onSell = saleCallback;
-			return shopOwner;
-		}
-
 		//V.I.P. functions
-		void notifyStatusChange(Player* player, bool online);
+		void notifyStatusChange(Player* player, VipStatus_t status);
 		bool removeVIP(uint32_t vipGuid);
-		bool addVIP(uint32_t vipGuid, const std::string& vipName, bool online);
+		bool addVIP(uint32_t vipGuid, const std::string& vipName, VipStatus_t status);
 		bool addVIPInternal(uint32_t vipGuid);
-		bool editVIP(uint32_t vipGuid, const std::string& description, uint32_t icon, bool notify);
 
 		//follow functions
 		bool setFollowCreature(Creature* creature) final;
@@ -538,11 +508,6 @@ class Player final : public Creature, public Cylinder
 		void onWalkComplete() final;
 
 		void stopWalk();
-		void openShopWindow(Npc* npc, const std::list<ShopInfo>& shop);
-		bool closeShopWindow(bool sendCloseShopWindow = true);
-		bool updateSaleShopList(const Item* item);
-		bool hasShopItemForSale(uint32_t itemId, uint8_t subType) const;
-
 		void setChaseMode(chaseMode_t mode);
 		void setFightMode(fightMode_t mode) {
 			fightMode = mode;
@@ -566,7 +531,7 @@ class Player final : public Creature, public Cylinder
 			return pzLocked;
 		}
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-		                             bool checkDefense = false, bool checkArmor = false, bool field = false) final;
+									 bool checkDefense = false, bool checkArmor = false, bool field = false) final;
 		void doAttacking(uint32_t interval) final;
 		bool hasExtraSwing() final {
 			return lastAttack > 0 && ((OTSYS_TIME() - lastAttack) >= getAttackSpeed());
@@ -763,11 +728,6 @@ class Player final : public Creature, public Cylinder
 				client->sendCreatureLight(creature);
 			}
 		}
-		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough) {
-			if (client) {
-				client->sendCreatureWalkthrough(creature, walkthrough);
-			}
-		}
 		void sendCreatureShield(const Creature* creature) {
 			if (client) {
 				client->sendCreatureShield(creature);
@@ -798,14 +758,14 @@ class Player final : public Creature, public Cylinder
 
 		//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
-		                              const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
+									  const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
 		void onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
-		                              const Item* item) final;
+									  const Item* item) final;
 
 		void onCreatureAppear(Creature* creature, bool isLogin) final;
 		void onRemoveCreature(Creature* creature, bool isLogout) final;
 		void onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-		                            const Tile* oldTile, const Position& oldPos, bool teleport) final;
+									const Tile* oldTile, const Position& oldPos, bool teleport) final;
 
 		void onAttackedCreatureDisappear(bool isLogout) final;
 		void onFollowCreatureDisappear(bool isLogout) final;
@@ -908,21 +868,6 @@ class Player final : public Creature, public Cylinder
 				client->sendToChannel(creature, type, text, channelId);
 			}
 		}
-		void sendShop(Npc* npc) const {
-			if (client) {
-				client->sendShop(npc, shopItemList);
-			}
-		}
-		void sendSaleItemList() const {
-			if (client) {
-				client->sendSaleItemList(shopItemList);
-			}
-		}
-		void sendCloseShop() const {
-			if (client) {
-				client->sendCloseShop();
-			}
-		}
 		void sendTradeItemRequest(const std::string& traderName, const Item* item, bool ack) const {
 			if (client) {
 				client->sendTradeItemRequest(traderName, item, ack);
@@ -962,11 +907,6 @@ class Player final : public Creature, public Cylinder
 		void sendChannel(uint16_t channelId, const std::string& channelName) {
 			if (client) {
 				client->sendChannel(channelId, channelName);
-			}
-		}
-		void sendTutorial(uint8_t tutorialId) {
-			if (client) {
-				client->sendTutorial(tutorialId);
 			}
 		}
 		void sendAddMarker(const Position& pos, uint8_t markType, const std::string& desc) {
@@ -1082,8 +1022,6 @@ class Player final : public Creature, public Cylinder
 		std::vector<OutfitEntry> outfits;
 		GuildWarList guildWarList;
 
-		std::list<ShopInfo> shopItemList;
-
 		std::forward_list<Party*> invitePartyList;
 		std::forward_list<std::string> learnedInstantSpellList;
 		std::forward_list<Condition*> storedConditionList; // TODO: This variable is only temporarily used when logging in, get rid of it somehow
@@ -1094,7 +1032,6 @@ class Player final : public Creature, public Cylinder
 		Skill skills[SKILL_LAST + 1];
 		LightInfo itemsLight;
 		Position loginPosition;
-		Position lastWalkthroughPosition;
 
 		time_t lastLoginSaved;
 		time_t lastLogout;
@@ -1106,8 +1043,6 @@ class Player final : public Creature, public Cylinder
 		uint64_t lastQuestlogUpdate;
 		int64_t lastFailedFollow;
 		int64_t skullTicks;
-		int64_t lastWalkthroughAttempt;
-		int64_t lastToggleMount;
 		int64_t lastPing;
 		int64_t lastPong;
 		int64_t nextAction;

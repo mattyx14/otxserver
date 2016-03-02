@@ -32,8 +32,8 @@ class IOLoginData
 		static Account loadAccount(uint32_t accno);
 		static bool saveAccount(const Account& acc);
 
-		static bool loginserverAuthentication(const std::string& name, const std::string& password, Account& account);
-		static uint32_t gameworldAuthentication(const std::string& accountName, const std::string& password, std::string& characterName);
+		static bool loginserverAuthentication(uint32_t accountName, const std::string& password, Account& account);
+		static uint32_t gameworldAuthentication(uint32_t accountName, const std::string& password, std::string& characterName);
 
 		static AccountType_t getAccountType(uint32_t accountId);
 		static void setAccountType(uint32_t accountId, AccountType_t accountType);
@@ -53,8 +53,7 @@ class IOLoginData
 		static bool hasBiddedOnHouse(uint32_t guid);
 
 		static std::forward_list<VIPEntry> getVIPEntries(uint32_t accountId);
-		static void addVIPEntry(uint32_t accountId, uint32_t guid, const std::string& description, uint32_t icon, bool notify);
-		static void editVIPEntry(uint32_t accountId, uint32_t guid, const std::string& description, uint32_t icon, bool notify);
+		static void addVIPEntry(uint32_t accountId, uint32_t guid);
 		static void removeVIPEntry(uint32_t accountId, uint32_t guid);
 
 		static void addPremiumDays(uint32_t accountId, int32_t addDays);

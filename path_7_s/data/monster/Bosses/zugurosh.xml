@@ -3,6 +3,7 @@
 	<health now="95000" max="95000" />
 	<look type="12" head="2" body="35" legs="57" feet="91" corpse="6068" />
 	<targetchange interval="5000" chance="15" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -21,13 +22,10 @@
 		<attack name="fire" interval="3000" chance="20" target="1" radius="4" min="-250" max="-850">
 			<attribute key="areaEffect" value="explosion" />
 		</attack>
-		<attack name="death" interval="2000" chance="15" target="0" radius="4" min="-100" max="-350">
-			<attribute key="areaEffect" value="smallclouds" />
-		</attack>
 		<attack name="manadrain" interval="1000" chance="13" radius="5" target="0" min="-60" max="-230">
-			<attribute key="areaEffect" value="watersplash" />
+			<attribute key="areaEffect" value="bluebubble" />
 		</attack>
-		<attack name="death" interval="2000" chance="15" length="7" spread="0" min="0" max="-500">
+		<attack name="physical" interval="2000" chance="15" length="7" spread="0" min="0" max="-500">
 			<attribute key="areaEffect" value="mortarea" />
 		</attack>
 	</attacks>
@@ -40,13 +38,11 @@
 		</defense>
 	</defenses>
 	<elements>
-		<element icePercent="-15" />
 		<element energyPercent="-5" />
 		<element earthPercent="-8" />
 		<element firePercent="25" />
 	</elements>
 	<immunities>
-		<immunity death="1" />
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
 	</immunities>
@@ -56,20 +52,22 @@
 		<voice sentence="I sense your strength fading!" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="100" chance="100000" /><!-- gold coin -->
-		<item id="2148" countmax="50" chance="100000" /><!-- gold coin -->
-		<item id="6300" chance="7777" /><!-- death ring -->
-		<item id="2195" chance="4444" /><!-- boots of haste -->
-		<item id="2393" chance="3000" /><!-- giant sword -->
-		<item id="2432" chance="5555" /><!-- fire axe -->
-		<item id="2402" chance="10000" /><!-- silver dagger -->
-		<item id="2477" chance="6666" /><!-- knight legs -->
-		<item id="2151" countmax="11" chance="6000" /><!-- talon -->
-		<item id="2462" chance="9700" /><!-- devil helmet -->
-		<item id="2149" countmax="3" chance="1428" /><!-- small emerald -->
-		<item id="2171" chance="2333" /><!-- platinum amulet -->
-		<item id="2158" chance="4444" /><!-- blue gem -->
-		<item id="2470" chance="6500" /><!-- golden legs -->
-		<item id="2520" chance="9999" /><!-- demon shield -->
+		<item id="2148" countmax="100" chance="100000" /> <!-- gold coin -->
+		<item id="2148" countmax="50" chance="100000" /> <!-- gold coin -->
+		<item id="6300" chance="7777" /> <!-- death ring -->
+		<item id="2195" chance="4444" /> <!-- boots of haste -->
+		<item id="2393" chance="3000" /> <!-- giant sword -->
+		<item id="2432" chance="5555" /> <!-- fire axe -->
+		<item id="2402" chance="10000" /> <!-- silver dagger -->
+		<item id="2477" chance="6666" /> <!-- knight legs -->
+		<item id="1987" chance="100000"> <!-- bag -->
+			<item id="2151" countmax="11" chance="6000" /> <!-- talon -->
+			<item id="2462" chance="9700" /> <!-- devil helmet -->
+			<item id="2149" countmax="3" chance="1428" /> <!-- small emerald -->
+			<item id="2171" chance="2333" /> <!-- platinum amulet -->
+			<item id="2158" chance="4444" /> <!-- blue gem -->
+			<item id="2470" chance="6500" /> <!-- golden legs -->
+			<item id="2520" chance="9999" /> <!-- demon shield -->
+		</item>
 	</loot>
 </monster>

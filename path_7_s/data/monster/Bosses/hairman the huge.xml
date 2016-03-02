@@ -3,6 +3,7 @@
 	<health now="600" max="600" />
 	<look type="116" head="20" body="30" legs="40" feet="50" corpse="6043" />
 	<targetchange interval="5000" chance="14" />
+	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -29,8 +30,6 @@
 		<element firePercent="20" />
 		<element earthPercent="20" />
 		<element energyPercent="5" />
-		<element icePercent="-10" />
-		<element deathPercent="-10" />
 	</elements>
 	<immunities>
 		<immunity invisible="1" />
@@ -41,11 +40,13 @@
 		<voice sentence="Huaauaauaauaa!" />
 	</voices>
 	<loot>
-		<item id="2148" chance="50000" countmax="60" /><!-- gold coin -->
-		<item id="5883" chance="2500" /><!-- ape fur -->
-		<item id="2676" chance="7500" countmax="2" /><!-- banana -->
-		<item id="2200" chance="3000" /><!-- protection amulet -->
-		<item id="2166" chance="7500" /><!-- power ring -->
-		<item id="2463" chance="5000" /><!-- plate armor -->
+		<item id="2148" chance="50000" countmax="60" /> <!-- gold coin -->
+		<item id="5883" chance="2500" /> <!-- ape fur -->
+		<item id="1987" chance="100000"> <!-- bag -->
+			<item id="2676" chance="7500" countmax="2" /> <!-- banana -->
+			<item id="2200" chance="3000" /> <!-- protection amulet -->
+			<item id="2166" chance="7500" /> <!-- power ring -->
+			<item id="2463" chance="5000" /> <!-- plate armor -->
+		</item>
 	</loot>
 </monster>

@@ -28,9 +28,9 @@
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
-#define CLIENT_VERSION_MIN 860
-#define CLIENT_VERSION_MAX 860
-#define CLIENT_VERSION_STR "8.6"
+#define CLIENT_VERSION_MIN 800
+#define CLIENT_VERSION_MAX 811
+#define CLIENT_VERSION_STR "8.11"
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__
