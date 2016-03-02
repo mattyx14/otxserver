@@ -51,6 +51,7 @@
 
 [ OTX Server 2.X.S - 3 :: Version "Crying Damson"
 	- Fix yellow skull
+	- Fix compiler errors
 ]
 
 [ OTX Server 2.X.S - 2 :: Version "Crying Damson"

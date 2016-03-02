@@ -162,8 +162,8 @@ bool argumentsHandler(StringVec args)
 			" at " << __DATE__ << " " << __TIME__ << "\n"
 
 			"\n"
-			"A server developed by: "SOFTWARE_DEVELOPERS".\n"
-			"Visit our forums for updates, support, and resources: "FORUMS"\n";
+			"A server developed by: " SOFTWARE_DEVELOPERS ".\n"
+			"Visit for updates, support, and resources: " GIT_REPO "\n";
 			return false;
 		}
 
@@ -438,7 +438,7 @@ ServiceManager* services)
 
 		<< std::endl
 		<< "A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl
-		<< "Visit our forums for updates, support, and resources: " FORUMS "" << std::endl;
+		<< "Visit for updates, support, and resources: " GIT_REPO "" << std::endl;
 	std::stringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
@@ -1193,7 +1193,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 						<< std::endl
 						<< "A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl
-						<< "Visit our forums for updates, support, and resources: ""FORUMS" << std::endl;
+						<< "Visit for updates, support, and resources: " GIT_REPO "" << std::endl;
 					}
 
 					break;
