@@ -112,7 +112,7 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 		return false;
 	}
 
-	if (root_header.minorVersionItems < CLIENT_VERSION_810) {
+	if (root_header.minorVersionItems < CLIENT_VERSION_811) {
 		setLastErrorString("This map needs to be updated.");
 		return false;
 	}

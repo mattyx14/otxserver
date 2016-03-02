@@ -28,7 +28,7 @@
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
 
-#define CLIENT_VERSION_MIN 800
+#define CLIENT_VERSION_MIN 811
 #define CLIENT_VERSION_MAX 811
 #define CLIENT_VERSION_STR "8.11"
 

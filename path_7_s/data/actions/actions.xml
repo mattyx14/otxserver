@@ -133,6 +133,16 @@
 	<action fromid="2031" toid="2034" script="other/fluids.lua" />
 	<action fromid="2574" toid="2577" script="other/fluids.lua" />
 	<action fromid="5792" toid="5797" script="other/dice.lua" />
+	<action itemid="7588" script="other/potions.lua" />
+	<action itemid="7589" script="other/potions.lua" />
+	<action itemid="7590" script="other/potions.lua" />
+	<action itemid="7591" script="other/potions.lua" />
+	<action itemid="7618" script="other/potions.lua" />
+	<action itemid="7620" script="other/potions.lua" />
+	<action itemid="8472" script="other/potions.lua" />
+	<action itemid="8473" script="other/potions.lua" />
+	<action itemid="8474" script="other/potions.lua" />
+	<action itemid="8704" script="other/potions.lua" />
 	<action itemid="2692" script="other/createbread.lua" />
 	<action itemid="2694" script="other/createbread.lua" />
 	<action fromid="6436" toid="6447" script="other/windows.lua" />
