@@ -1000,7 +1000,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 }
 
 void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
-							  const ItemType& oldType, const Item* newItem, const ItemType& newType)
+                              const ItemType& oldType, const Item* newItem, const ItemType& newType)
 {
 	Creature::onUpdateTileItem(tile, pos, oldItem, oldType, newItem, newType);
 
@@ -1016,7 +1016,7 @@ void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item*
 }
 
 void Player::onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
-							  const Item* item)
+                              const Item* item)
 {
 	Creature::onRemoveTileItem(tile, pos, iType, item);
 
@@ -1193,7 +1193,7 @@ void Player::onWalk(Direction& dir)
 }
 
 void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-							const Tile* oldTile, const Position& oldPos, bool teleport)
+                            const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
 
@@ -1764,7 +1764,7 @@ bool Player::hasShield() const
 }
 
 BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-							 bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/)
+                             bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/)
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor, field);
 
@@ -3158,6 +3158,18 @@ void Player::onAddCombatCondition(ConditionType_t type)
 
 		case CONDITION_DRUNK:
 			sendTextMessage(MESSAGE_STATUS_SMALL, "You are drunk.");
+			break;
+
+		case CONDITION_CURSED:
+			sendTextMessage(MESSAGE_STATUS_SMALL, "You are cursed.");
+			break;
+
+		case CONDITION_FREEZING:
+			sendTextMessage(MESSAGE_STATUS_SMALL, "You are freezing.");
+			break;
+
+		case CONDITION_DAZZLED:
+			sendTextMessage(MESSAGE_STATUS_SMALL, "You are dazzled.");
 			break;
 
 		case CONDITION_BLEEDING:
