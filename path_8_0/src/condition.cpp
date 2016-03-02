@@ -283,7 +283,7 @@ bool Condition::isPersistent() const
 
 uint32_t Condition::getIcons() const
 {
-	return 0;
+	return isBuff ? ICON_PARTY_BUFF : 0;
 }
 
 bool Condition::updateCondition(const Condition* addCondition)

@@ -3761,10 +3761,34 @@ PartyShields_t Player::getPartyShield(const Player* player) const
 
 	if (party) {
 		if (party->getLeader() == player) {
+			if (party->isSharedExperienceActive()) {
+				if (party->isSharedExperienceEnabled()) {
+					return SHIELD_YELLOW_SHAREDEXP;
+				}
+
+				if (party->canUseSharedExperience(player)) {
+					return SHIELD_YELLOW_NOSHAREDEXP;
+				}
+
+				return SHIELD_YELLOW_NOSHAREDEXP_BLINK;
+			}
+
 			return SHIELD_YELLOW;
 		}
 
 		if (player->party == party) {
+			if (party->isSharedExperienceActive()) {
+				if (party->isSharedExperienceEnabled()) {
+					return SHIELD_BLUE_SHAREDEXP;
+				}
+
+				if (party->canUseSharedExperience(player)) {
+					return SHIELD_BLUE_NOSHAREDEXP;
+				}
+
+				return SHIELD_BLUE_NOSHAREDEXP_BLINK;
+			}
+
 			return SHIELD_BLUE;
 		}
 
