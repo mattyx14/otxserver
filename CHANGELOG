@@ -71,7 +71,7 @@
 	- Added creature move locking (setMoveLocked/isMoveLocked)
 	- Added less loss attribute to vocations to customize death loss per vocation
 	- Added definitions.h to cmake source definitions
-	- Added Ctrl + Arrow key teleport as GM/God (helpful feature)
+	- Added (Ctrl + Arrow key) teleport as GM/God (helpful feature)
 	- Added missing config option allowWalkthrough this on true
 	- Added missing config options criticalhits
 	- Always reload global.lua libraries
@@ -85,8 +85,8 @@
 	- Fix groups flags - http://comedinha.github.io/flags-calculator/
 	- Monsters update on old protocols
 	- Optimizations and cleanups
-	- Remove pugixml from code
-	- Remove market config no supported and removed unused functions(8.6)
+	- Remove pugixml from code - https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/
+	- Remove market config no supported on old protocols only work on 10.x
 ]
 
 [ OTX Server 3.2 Version - " PHANTOM "
