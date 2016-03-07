@@ -1,22 +1,22 @@
 [ HOW BUILD
-	COMPILING IN WINDOWS
+	COMPILING IN WINDOWS OTX SERVER 2.X.S.2(3) AND OTX SERVER 3.2+
 		1. Download the required software
 		To compile The OTX Server on Windows, you will need:
 
-			Visual Studio 2015 Enterprise : https://go.microsoft.com/fwlink/?LinkId=691979&clcid=0x409
-			Libs (libraries) : https://mega.nz/#!0ZBSzQaK!-Mjcqb9qNZuZyYLVtGynlk6lb4sAIIi-YEPbGAuCUb8
+			Visual Studio 2015 Enterprise : https://go.microsoft.com/fwlink/?LinkId=691979&clcid=0x409/
+			Libs (libraries) 2.1 : https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/
 			Boost C++ libraries
-				32-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-32.exe/download
-				64-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-64.exe/download
+				32-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-32.exe/download/
+				64-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-64.exe/download/
 
 		2. Install the required software
 		Once you have downloaded the software listed in the step above, begin by installing Visual Studio and Boost C++ libraries. Extract "otx-sdk-1.0(NO-BOOST)" anywhere on your computer and run the file "registerenv.bat" to set the PATH environment variable for "SQK-NOBOOST", so that the compiler can find the libraries once we get to compiling the source code. Move the file "register_boost_env.bat" from "SQK-NOBOOST"  to the directory where you installed Boost C++ libraries and run it there (it should be in the directory called for example: C:\local\boost_1_60_0).
 
 		Image Tutorial:
 
-			Pic 1: http://2.ii.gl/IvRiM8Ab.png
-			Pic 2: http://2.ii.gl/CO6eIaCF.png
-			Pic 3: http://2.ii.gl/jQIwLqEn.png
+			Pic 1: http://2.ii.gl/IvRiM8Ab.png/
+			Pic 2: http://2.ii.gl/CO6eIaCF.png/
+			Pic 3: http://2.ii.gl/jQIwLqEn.png/
 
 		3. Download the source code
 		If you have a Git client installed, you can clone the latest copy with this command:
@@ -24,8 +24,11 @@
 			CodeGit:
 			$ git clone https://github.com/mattyx14/otxserver.git
 
-			Source:
-			https://github.com/mattyx14/otxserver/archive/master.zip
+			Source OTX Server 2:
+			https://github.com/mattyx14/otxserver/archive/otxserv2.zip
+
+			Source OTX Server 3:
+			https://github.com/mattyx14/otxserver/archive/otxserv3.zip
 
 		4. Build
 		Find the directory msvc in the copy of The OTX Server that you downloaded, and open TheOTXServer.sln. This should launch Visual Studio, and you should be good to go.
@@ -33,9 +36,9 @@
 		To start compiling, open the Build menu again and click on Build Solution.
 		If it no work for you "do not try to do this" (GOOD LOOK)
 
-		Note: This only work for OTX Server 2.XS.1+ - and TFS 1.2+
+		Note: This only work for OTX Server 2.XS.2+ - and OTX Server 3.1+ or TFS 1.2+
 
-	COMPILING IN UBUNTU LINUX
+	COMPILING IN UBUNTU LINUX FOR OTX SERVER 2.X.S.2(3)
 	A detailed and always up-to-date tutorial may be found here:
 	Download required packages
 		Launch a terminal, and paste in the following commands:
@@ -50,31 +53,44 @@
 			Into Folder run:
 			sh ./autogen.sh && ./configure --enable-server-diag --enable-mysql --enable-root-permission && make -j 2
 
+	COMPILING IN UBUNTU LINUX FOR OTX SERVER 3.2+
+	A detailed and always up-to-date tutorial may be found here:
 	Download required packages
-		Service WEB:
-		Ubuntu 10.04+ (Desktop Version):
-			(Fix 127.0.1.1)		gksudo gedit /etc/hosts
-				BugForm:
-					127.0.0.1	localhost
-					127.0.1.1	<ubuntu-server-name>
+		Launch a terminal, and paste in the following commands:
+			apt-get install git cmake build-essential liblua5.2-dev libgmp3-dev libmysqlclient-dev libboost-system-dev libpugixml-dev
 
-				Fixed Form
-					127.0.0.1	localhost
-					127.0.0.1	<ubuntu-user-name>
+	Compiling
+		Download sources - Launch a terminal, and paste in this command:
+			git clone https://github.com/mattyx14/otxserver.git
 
-		(Use Apache)
-		apt-get install apache2
-		apt-get install libapache2-mod-php5
-		apt-get install mysql-server
-		apt-get install phpmyadmin
+		Launch a terminal, and type this:
+			Into Folder run:
+			mkdir build && cd build cmake .. make
 
-		* IMPORT WEB PAGE FIRST and run
-			cd /var
-			chmod 777 -R www
+	Finished - Shutdown Computer - Starting Computer - Run Server
+		./theotxserver
 
 	***NOTE***
 	For Linux Users, Rename /data/xml to /data/XML
 
-	Finished - Shutdown Computer - Starting Computer - Run Server
-	./theotxserver
+	Service WEB:
+	Ubuntu 10.04+ (Desktop Version):
+		(Fix 127.0.1.1)		gksudo gedit /etc/hosts
+			BugForm:
+				127.0.0.1	localhost
+				127.0.1.1	<ubuntu-server-name>
+
+			Fixed Form
+				127.0.0.1	localhost
+				127.0.0.1	<ubuntu-user-name>
+
+	(Use Apache)
+	apt-get install apache2
+	apt-get install libapache2-mod-php5
+	apt-get install mysql-server
+	apt-get install phpmyadmin
+
+	* IMPORT WEB PAGE FIRST and run
+		cd /var
+		chmod 777 -R www
 ]
