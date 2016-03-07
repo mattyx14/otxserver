@@ -10,13 +10,7 @@
 				64-bit download : http://sourceforge.net/projects/boost/files/boost-binaries/1.60.0/boost_1_60_0-msvc-14.0-64.exe/download/
 
 		2. Install the required software
-		Once you have downloaded the software listed in the step above, begin by installing Visual Studio and Boost C++ libraries. Extract "otx-sdk-1.0(NO-BOOST)" anywhere on your computer and run the file "registerenv.bat" to set the PATH environment variable for "SQK-NOBOOST", so that the compiler can find the libraries once we get to compiling the source code. Move the file "register_boost_env.bat" from "SQK-NOBOOST"  to the directory where you installed Boost C++ libraries and run it there (it should be in the directory called for example: C:\local\boost_1_60_0).
-
-		Image Tutorial:
-
-			Pic 1: http://2.ii.gl/IvRiM8Ab.png/
-			Pic 2: http://2.ii.gl/CO6eIaCF.png/
-			Pic 3: http://2.ii.gl/jQIwLqEn.png/
+		Once you have downloaded the software listed in the step above, begin by installing Visual Studio and Boost C++ libraries. Extract "tfs-sdk-2.1" anywhere on your computer and run the file "registerenv.bat" to set the PATH environment variable for "SQK-NOBOOST", so that the compiler can find the libraries once we get to compiling the source code. Move the file "register_boost_env.bat" from "SQK-NOBOOST"  to the directory where you installed Boost C++ libraries and run it there (it should be in the directory called for example: C:\local\boost_1_60_0).
 
 		3. Download the source code
 		If you have a Git client installed, you can clone the latest copy with this command:
