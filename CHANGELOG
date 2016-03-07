@@ -52,6 +52,7 @@
 [ OTX Server 2.X.S - 3 :: Version "Crying Damson"
 	- Fix yellow skull
 	- Fix compiler errors
+	- Death container for 7.x
 ]
 
 [ OTX Server 2.X.S - 2 :: Version "Crying Damson"
@@ -71,7 +72,7 @@
 	- Update to VC 2014
 ]
 
-[ OTX Server 2.X.Series :: Version "Doomed Elderberry"
+[ OTX Server 2.X.S :: Version "Crying Damson"
 	General:
 		- Added classicDepotSystem to 8.x series
 		- Added full Black Skull Configurable
