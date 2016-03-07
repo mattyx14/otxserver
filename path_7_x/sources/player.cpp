@@ -2420,6 +2420,8 @@ bool Player::onDeath()
 				}
 			}
 		}
+		else if(!inventory[SLOT_BACKPACK])
+			__internalAddThing(SLOT_BACKPACK, Item::CreateItem(g_config.getNumber(ConfigManager::DEATH_CONTAINER)));
 
 		sendIcons();
 		sendStats();
