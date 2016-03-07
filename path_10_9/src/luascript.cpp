@@ -1757,6 +1757,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MYSQL_SOCK)
 	registerEnumIn("configKeys", ConfigManager::DEFAULT_PRIORITY)
 	registerEnumIn("configKeys", ConfigManager::MAP_AUTHOR)
+	registerEnumIn("configKeys", ConfigManager::COIN_IMAGES_URL)
 
 	registerEnumIn("configKeys", ConfigManager::SQL_PORT)
 	registerEnumIn("configKeys", ConfigManager::MAX_PLAYERS)
@@ -1791,6 +1792,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MAX_PACKETS_PER_SECOND)
 	registerEnumIn("configKeys", ConfigManager::CRITICAL_HIT_CHANCE)
 	registerEnumIn("configKeys", ConfigManager::CRITICAL_HIT_EXTRA)
+	registerEnumIn("configKeys", ConfigManager::COIN_PACKET_SIZE)
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);

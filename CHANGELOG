@@ -41,7 +41,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 8.6 to 10.90 - (7x to 8.5x - WIP)
+		Tibia Clients - 8.6 to 10.91 - (7x to 8.5x - WIP)
 
 	TODO WITH OPTIONAL (MODAL DIALOGS)
 		COMMANDS:
@@ -65,7 +65,7 @@
 			- Added support to Tibia Protocol 7.72 - WIP
 ]
 
-[ OTX Server 3.3 Version - " - "
+[ OTX Server 3.3 :: Version " - "
 	- 8.11 TibiaClient Support
 	- Added some missing lua methods
 	- Added creature move locking (setMoveLocked/isMoveLocked)
@@ -87,9 +87,10 @@
 	- Optimizations and cleanups
 	- Remove pugixml from code - https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/
 	- Remove market config no supported on old protocols only work on 10.x
+	- Support 10.91
 ]
 
-[ OTX Server 3.2 Version - " PHANTOM "
+[ OTX Server 3.2 :: Version " PHANTOM "
 	- Added Monster Spawn event
 	- Added DDoS protection (no complete)
 	- Added Advance Save
@@ -129,14 +130,14 @@
 	- Support 10.90
 ]
 
-[ OTX Server 3.1 Version - " BOOM "
+[ OTX Server 3.1 :: Version " BOOM "
 	- 10.80/82 Support
 	- 8.70/71 Support
 	- 8.60 Support
 	- Removed DualWield Support added on Alpha 4 (Require fix critical bugs)
 ]
 
-[ OTX Server 3.0 Version - " ALPHA "
+[ OTX Server 3.0 - 4 :: Version " ALPHA "
 	- DualWield Support
 	- Make player walkthrough optional
 	- Use std::make_shared<> to avoid an unnecessary, additional heap alloction
@@ -170,7 +171,7 @@
 	- Update luascript.cpp
 ]
 
-[ OTX Server 3.0.ALPHA Version - " 3 "
+[ OTX Server 3.0 - 3 :: Version " ALPHA "
 	- Game protocol 10.77 support
 	- Optimize and fixes on code
 	- Fixed : premiumForPromotion = false
@@ -258,7 +259,7 @@
 	- Fix bug in ProtocolGame::sendContainer.
 ]
 
-[ OTX Server 3.0.ALPHA Version - " 2 "
+[ OTX Server 3.0 - 2 :: Version " ALPHA "
 	- Added new tools
 	- Added missing mounts/outfits
 	- Optimize creatureEvents and moveEvents
@@ -271,7 +272,7 @@
 		and this have much changes.
 ]
 
-[ OTX Server 3.0.ALPHA Version - " 1 "
+[ OTX Server 3.0 - 1 :: Version " ALPHA "
 	- Added OTX-icon to console
 	- Added itemAttribute to monsters
 	- Added skill require for use spells this for Evul
