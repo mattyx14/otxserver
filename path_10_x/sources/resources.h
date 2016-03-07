@@ -89,7 +89,7 @@
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "X"
 #define PATCH_VERSION "S"
-#define REVISION_VERSION "2"
+#define REVISION_VERSION "3"
 #define SOFTWARE_CODENAME "Crying Damson"
 #define SOFTWARE_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
