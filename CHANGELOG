@@ -52,6 +52,7 @@
 [ OTX Server 2.X.S - 3 :: Version "Crying Damson"
 	- Fix yellow skull
 	- Fix compiler errors
+	- Fix maximum value experiencie for 7.x - 2,147,483,647
 	- Death container for 7.x
 ]
 
