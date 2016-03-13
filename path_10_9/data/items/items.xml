@@ -31431,6 +31431,23 @@
 		<attribute key="duration" value="3" />
 		<attribute key="description" value="Only the real killers can touch me! This item was awarded by TibiaBrasileiros.com." />
 	</item>
+	<item id="25453" article="a" name="depot box I" />
+	<item id="25454" article="a" name="depot box II" />
+	<item id="25455" article="a" name="depot box III" />
+	<item id="25456" article="a" name="depot box IV" />
+	<item id="25457" article="a" name="depot box V" />
+	<item id="25458" article="a" name="depot box VI" />
+	<item id="25459" article="a" name="depot box VII" />
+	<item id="25460" article="a" name="depot box VIII" />
+	<item id="25461" article="a" name="depot box IX" />
+	<item id="25462" article="a" name="depot box X" />
+	<item id="25463" article="a" name="depot box XI" />
+	<item id="25464" article="a" name="depot box XII" />
+	<item id="25465" article="a" name="depot box XIII" />
+	<item id="25466" article="a" name="depot box XIV" />
+	<item id="25467" article="a" name="depot box XV" />
+	<item id="25468" article="a" name="depot box XVI" />
+	<item id="25469" article="a" name="depot box XVII" />
 	<item id="30001" name="water" />
 	<item id="30002" name="blood" />
 	<item id="30003" name="beer" />
