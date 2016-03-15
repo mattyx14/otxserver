@@ -43,8 +43,8 @@
 	PROTOCOL SUPPORTED
 		Tibia Clients - 8.6 to 10.91 - (7x to 8.5x - WIP)
 
-	TODO WITH OPTIONAL (MODAL DIALOGS)
-		COMMANDS:
+	TODO WITH OPTIONAL
+		MISC:
 			- Animated Smiles
 			- Bank Command
 			- Blessings
@@ -54,19 +54,16 @@
 			- Player Commands (customs)
 			- Promotion
 			- Refill Boots
-
-		CONFIGS:
 			- Loot bag display
 			- Quest Protection
+			- Look Display
 
 		OTHERS:
-			- Look Display
-			- Fix spells on (8.6) - WIP
-			- Added support to Tibia Protocol 7.72 - WIP
+			- Added support to Tibia Protocol 7.72 8.00/11 - WIP
+			- CastSystem for Protols 8.x
 ]
 
 [ OTX Server 3.3 :: Version " - "
-	- 8.11 TibiaClient Support
 	- Added some missing lua methods
 	- Added creature move locking (setMoveLocked/isMoveLocked)
 	- Added less loss attribute to vocations to customize death loss per vocation
@@ -75,6 +72,7 @@
 	- Added missing config option allowWalkthrough this on true
 	- Added missing config options criticalhits
 	- Added new DepotSystem - Ty Comedin
+	- Added castingSystem - For the moment for client 10.91
 	- Always reload global.lua libraries
 	- Fix bug with /town command
 	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403/
@@ -84,6 +82,7 @@
 	- Fix money functions
 	- Fix random values back to 0
 	- Fix groups flags - http://comedinha.github.io/flags-calculator/
+	- Fix spells on (8.6)
 	- Monsters update on old protocols
 	- Optimizations and cleanups
 	- Remove pugixml from code - https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/

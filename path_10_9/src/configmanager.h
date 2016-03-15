@@ -45,6 +45,7 @@ class ConfigManager
 			CONVERT_UNSAFE_SCRIPTS,
 			CLASSIC_EQUIPMENT_SLOTS,
 			ALLOW_WALKTHROUGH,
+			ENABLE_LIVE_CASTING,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
@@ -108,6 +109,7 @@ class ConfigManager
 			CRITICAL_HIT_CHANCE,
 			CRITICAL_HIT_EXTRA,
 			COIN_PACKET_SIZE,
+			LIVE_CAST_PORT,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};

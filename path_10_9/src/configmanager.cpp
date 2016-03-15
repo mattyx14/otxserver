@@ -88,6 +88,7 @@ bool ConfigManager::load()
 	boolean[CONVERT_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "convertUnsafeScripts", true);
 	boolean[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBoolean(L, "classicEquipmentSlots", false);
 	boolean[ALLOW_WALKTHROUGH] = getGlobalBoolean(L, "allowWalkthrough", true);
+	boolean[ENABLE_LIVE_CASTING] = getGlobalBoolean(L, "enableLiveCasting", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -128,6 +129,7 @@ bool ConfigManager::load()
 	integer[CRITICAL_HIT_CHANCE] = getGlobalNumber(L, "criticalChance", 0);
 	integer[CRITICAL_HIT_EXTRA] = getGlobalNumber(L, "criticalExtra", 0);
 	integer[COIN_PACKET_SIZE] = getGlobalNumber(L, "coinPacketSize", 25);
+	integer[LIVE_CAST_PORT] = getGlobalNumber(L, "liveCastPort", 7173);
 
 	loaded = true;
 	lua_close(L);
