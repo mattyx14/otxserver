@@ -30444,7 +30444,7 @@
 	</item>
 	<item fromid="22745" toid="22762" name="stone floor" />
 	<item fromid="22812" toid="22813" article="an" name="open window" />
-	<item fromid="22814" toid="22815" article="a" name="closed door">
+	<item fromid="22814" toid="22815" article="a" name="closed door" />
 	<item id="22814" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
