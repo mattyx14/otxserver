@@ -46,7 +46,6 @@
 	TODO WITH OPTIONAL
 		MISC:
 			- Animated Smiles
-			- Bank Command
 			- Player Commands (customs)
 			- Loot bag display
 			- Quest Protection
@@ -71,6 +70,9 @@
 	- Added GuildLeaders Channel script - Ty zbizu
 	- Added minimum skill level to wield weapons properly - Ty ranisalt
 	- Added missing tools actions and other actions on 10.x - Only here are supported in the moment
+	- Added advance reward system this are disable only on 10.x - Only here are supported in the moment
+	- Added attributes functions from 0.3.7 only on 10.x - Only here are supported in the moment
+	- Added exhausted block on talkactions .. this option worn on onsay and onuse this cool only on 10.x - Only here are supported in the moment
 	- Always reload global.lua libraries
 	- Fix bug with /town command
 	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403/
