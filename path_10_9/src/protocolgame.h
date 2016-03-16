@@ -176,7 +176,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		static uint8_t getMaxLiveCastCount() {
 			return std::numeric_limits<int8_t>::max();
-			}
+		}
 
 	private:
 		ProtocolGame_ptr getThis() {
