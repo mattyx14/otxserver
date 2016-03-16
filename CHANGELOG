@@ -79,6 +79,7 @@
 	- Fix random values back to 0
 	- Fix groups flags - http://comedinha.github.io/flags-calculator/
 	- Fix spells on (8.6)
+	- Fix actionid 10 unmoveable function
 	- Monsters update on old protocols
 	- Optimizations and cleanups
 	- Remove pugixml from code new SDK: https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/
