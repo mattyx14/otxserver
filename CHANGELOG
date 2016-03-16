@@ -6,7 +6,7 @@
 		The Forgotten Server Version: 1.2
 
 	Codenamed
-		PHANTOM 
+		DARK SPECTER
 
 	Forum and website
 		http://www.blacktibia.org/f19-otx-server-3/
@@ -56,7 +56,7 @@
 			- CastSystem for Protols 8.x
 ]
 
-[ OTX Server 3.3 :: Version " - "
+[ OTX Server 3.3 :: Version " DARK SPECTER "
 	- Added some missing lua methods
 	- Added creature move locking (setMoveLocked/isMoveLocked)
 	- Added less loss attribute to vocations to customize death loss per vocation
