@@ -81,16 +81,16 @@ function getItemAttribute(uid, key)
 	local attr = Item(uid):getAttribute(key)
 	if tonumber(attr) then
 		if numeric_attributes[key] then
-		  return attr ~= 0 and attr or numeric_attributes[key]
+			return attr ~= 0 and attr or numeric_attributes[key]
 		end
 	else
 		if string_attributes[key] then
-		  if attr == "" then
-			 return string_attributes[key]
-		  end
+			if attr == "" then
+				return string_attributes[key]
+			end
 		end
 	end
-return attr
+	return attr
 end
 
 function doItemSetAttribute(uid, key, value)
