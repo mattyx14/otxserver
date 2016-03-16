@@ -18,6 +18,10 @@ function Position:getNextPosition(direction, steps)
 	end
 end
 
+function Position.getTile(self)
+	return Tile(self)
+end
+
 function Position:moveUpstairs()
 	local isWalkable = function (position)
 		local tile = Tile(position)
