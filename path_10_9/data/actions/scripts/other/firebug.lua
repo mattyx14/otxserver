@@ -1,12 +1,4 @@
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	--Dreamer Challenge Quest
-	if target.uid == 2243 then
-		target:transform(1387)
-		toPosition:sendMagicEffect(CONST_ME_FIREAREA)
-		item:remove()
-		return true
-	end
-
 	local random = math.random(10)
 	if random >= 4 then --success 6% chance
 		if target.itemid == 7538 then --Destroy spider webs/North - South
