@@ -69,6 +69,7 @@
 	- Added castingSystem - For the moment for client 10.91 - Ty Djarek
 	- Added function EquipHotkey only 10.x+ - Ty Ninjalulz
 	- Added GuildLeaders Channel script - Ty zbizu
+	- Added minimum skill level to wield weapons properly - Ty ranisalt
 	- Always reload global.lua libraries
 	- Fix bug with /town command
 	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403/
