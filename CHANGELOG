@@ -41,7 +41,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 8.6 to 10.91 - (7x to 8.5x - WIP)
+		Tibia Clients - 8.6 to 10.91
 
 	TODO WITH OPTIONAL
 		MISC:
@@ -53,7 +53,7 @@
 			- Look Display
 
 		OTHERS:
-			- Added support to Tibia Protocol 7.72 8.00/11 - WIP
+			- Added support to Tibia Protocol 7.40 to 8.00/11 are on WIP
 			- CastSystem for Protols 8.x
 ]
 
