@@ -70,6 +70,7 @@
 	- Added function EquipHotkey only 10.x+ - Ty Ninjalulz
 	- Added GuildLeaders Channel script - Ty zbizu
 	- Added minimum skill level to wield weapons properly - Ty ranisalt
+	- Added missing tools actions and other actions on 10.x - Only here are supported in the moment
 	- Always reload global.lua libraries
 	- Fix bug with /town command
 	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403/
@@ -82,6 +83,7 @@
 	- Fix spells on (8.6)
 	- Fix actionid 10 unmoveable function
 	- Fix levelDoor require level to walkthrough
+	- Formated Actions
 	- Monsters update on old protocols
 	- Optimizations and cleanups
 	- Remove pugixml from code new SDK: https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/
