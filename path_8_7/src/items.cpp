@@ -35,7 +35,7 @@ extern Weapons* g_weapons;
 
 ItemType::ItemType() :
 	group(ITEM_GROUP_NONE), type(ITEM_TYPE_NONE), id(0), clientId(0),
-	stackable(false), isAnimation(false), weight(0), levelDoor(0), decayTime(0),
+	stackable(false), weight(0), levelDoor(0), decayTime(0),
 	wieldInfo(0), minReqLevel(0), minReqMagicLevel(0), charges(0), maxHitChance(-1),
 	decayTo(-1), attack(0), defense(0), extraDefense(0), armor(0), rotateTo(0),
 	runeMagLevel(0), runeLevel(0), combatType(COMBAT_NONE), transformToOnUse(),

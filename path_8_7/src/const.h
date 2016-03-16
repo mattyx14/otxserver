@@ -96,7 +96,7 @@ enum MagicEffectClasses : uint8_t {
 	CONST_ME_INSECTS = 69,
 	CONST_ME_DRAGONHEAD = 70,
 
-	CONST_ME_LAST = CONST_ME_PURPLESMOKE,
+	CONST_ME_LAST = CONST_ME_DRAGONHEAD,
 };
 
 enum ShootType_t : uint8_t {

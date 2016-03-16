@@ -1916,7 +1916,6 @@ bool RuneSpell::Convince(const RuneSpell* spell, Player* player, const Position&
 	}
 
 	Spell::postCastSpell(player, manaCost, spell->getSoulCost());
-	g_game.updateCreatureType(convinceCreature);
 	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
 	return true;
 }

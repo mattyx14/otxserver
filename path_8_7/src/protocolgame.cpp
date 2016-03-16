@@ -284,10 +284,6 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	uint32_t timeStamp = msg.get<uint32_t>();
 	uint8_t randNumber = msg.getByte();
-	if (m_challengeTimestamp != timeStamp || m_challengeRandom != randNumber) {
-		disconnect();
-		return;
-	}
 
 	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
 		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
