@@ -72,7 +72,9 @@
 	- Added missing config option allowWalkthrough this on true
 	- Added missing config options criticalhits
 	- Added new DepotSystem - Ty Comedin
-	- Added castingSystem - For the moment for client 10.91
+	- Added castingSystem - For the moment for client 10.91 - Ty Djarek
+	- Added function EquipHotkey only 10.x+ - Ty Ninjalulz
+	- Added GuildLeaders Channel script - Ty zbizu
 	- Always reload global.lua libraries
 	- Fix bug with /town command
 	- Fix to: http://www.blacktibia.org/t40273-otx-server-3-2-phantom-8-6-8-70-72-10-90#245403/
@@ -85,8 +87,8 @@
 	- Fix spells on (8.6)
 	- Monsters update on old protocols
 	- Optimizations and cleanups
-	- Remove pugixml from code - https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/
-	- Remove market config no supported on old protocols only work on 10.x
+	- Remove pugixml from code new SDK: https://mega.nz/#!ocIyHZxI!jMVyKCpsofbuuNbdsLhblHhJRbsZrz4u5_JHPGXKJuE/
+	- Remove market config no supported on old protocols only work on 10.x+
 	- Support 10.91
 ]
 

@@ -176,7 +176,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		static uint8_t getMaxLiveCastCount() {
 			return std::numeric_limits<int8_t>::max();
-		}
+			}
 
 	private:
 		ProtocolGame_ptr getThis() {
@@ -207,6 +207,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void parseBugReport(NetworkMessage& msg);
 		void parseDebugAssert(NetworkMessage& msg);
 
+		void parseEquipHotkey(NetworkMessage& msg);
 		void parseThrow(NetworkMessage& msg);
 		void parseUseItemEx(NetworkMessage& msg);
 		void parseUseWithCreature(NetworkMessage& msg);
@@ -388,6 +389,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		/// Password used to access the live cast
 		std::string liveCastPassword;
+		void sendInventory();
 };
 
 #endif

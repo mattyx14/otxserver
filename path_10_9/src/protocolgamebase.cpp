@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2016  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -633,6 +633,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	}
 
 	sendBasicData();
+	sendInventory();
 	player->sendIcons();
 }
 
@@ -651,6 +652,44 @@ void ProtocolGameBase::sendBasicData()
 	msg.add<uint32_t>(std::numeric_limits<uint32_t>::max());
 	msg.addByte(player->getVocation()->getClientId());
 	msg.add<uint16_t>(0x00);
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGameBase::sendInventory()
+{
+	std::map<uint16_t, uint16_t> items = player->getAllItemsClientId();
+	NetworkMessage msg;
+	msg.addByte(0xF5);
+	msg.add<uint16_t>(items.size() + 11);
+	for (uint16_t i = 1; i <= 11; i++) {
+		msg.add<uint16_t>(i);
+		msg.addByte(0);
+		msg.add<uint16_t>(1);
+	}
+	for (const auto& it : items) {
+		msg.add<uint16_t>(it.first);
+		msg.addByte(0);
+		msg.add<uint16_t>(it.second);
+	}
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendInventory()
+{
+	std::map<uint16_t, uint16_t> items = player->getAllItemsClientId();
+	NetworkMessage msg;
+	msg.addByte(0xF5);
+	msg.add<uint16_t>(items.size() + 11);
+	for (uint16_t i = 1; i <= 11; i++) {
+		msg.add<uint16_t>(i);
+		msg.addByte(0);
+		msg.add<uint16_t>(1);
+	}
+	for (const auto& it : items) {
+		msg.add<uint16_t>(it.first);
+		msg.addByte(0);
+		msg.add<uint16_t>(it.second);
+	}
 	writeToOutputBuffer(msg);
 }
 

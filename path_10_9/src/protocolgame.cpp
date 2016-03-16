@@ -119,7 +119,7 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 			std::ostringstream ss;
 
 			ss << "Too many players online.\nYou are at place "
-			   << currentSlot << " on the waiting list.";
+				<< currentSlot << " on the waiting list.";
 
 			auto output = OutputMessagePool::getOutputMessage();
 			output->addByte(0x16);
@@ -292,11 +292,11 @@ void ProtocolGame::clearLiveCastInfo()
 {
 	static std::once_flag flag;
 	std::call_once(flag, []() {
-			assert(g_game.getGameState() == GAME_STATE_INIT);
-			std::ostringstream query;
-			query << "TRUNCATE TABLE `live_casts`;";
-			g_databaseTasks.addTask(query.str());
-		});
+		assert(g_game.getGameState() == GAME_STATE_INIT);
+		std::ostringstream query;
+		query << "TRUNCATE TABLE `live_casts`;";
+		g_databaseTasks.addTask(query.str());
+	});
 }
 
 void ProtocolGame::registerLiveCast()
@@ -488,90 +488,91 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 	}
 
 	switch (recvbyte) {
-		case 0x14: g_dispatcher.addTask(createTask(std::bind(&ProtocolGame::logout, getThis(), true, false))); break;
-		case 0x1D: addGameTask(&Game::playerReceivePingBack, player->getID()); break;
-		case 0x1E: addGameTask(&Game::playerReceivePing, player->getID()); break;
-		case 0x32: parseExtendedOpcode(msg); break; //otclient extended opcode
-		case 0x64: parseAutoWalk(msg); break;
-		case 0x65: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTH); break;
-		case 0x66: addGameTask(&Game::playerMove, player->getID(), DIRECTION_EAST); break;
-		case 0x67: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTH); break;
-		case 0x68: addGameTask(&Game::playerMove, player->getID(), DIRECTION_WEST); break;
-		case 0x69: addGameTask(&Game::playerStopAutoWalk, player->getID()); break;
-		case 0x6A: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTHEAST); break;
-		case 0x6B: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTHEAST); break;
-		case 0x6C: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTHWEST); break;
-		case 0x6D: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTHWEST); break;
-		case 0x6F: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_NORTH); break;
-		case 0x70: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_EAST); break;
-		case 0x71: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_SOUTH); break;
-		case 0x72: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_WEST); break;
-		case 0x78: parseThrow(msg); break;
-		case 0x79: parseLookInShop(msg); break;
-		case 0x7A: parsePlayerPurchase(msg); break;
-		case 0x7B: parsePlayerSale(msg); break;
-		case 0x7C: addGameTask(&Game::playerCloseShop, player->getID()); break;
-		case 0x7D: parseRequestTrade(msg); break;
-		case 0x7E: parseLookInTrade(msg); break;
-		case 0x7F: addGameTask(&Game::playerAcceptTrade, player->getID()); break;
-		case 0x80: addGameTask(&Game::playerCloseTrade, player->getID()); break;
-		case 0x82: parseUseItem(msg); break;
-		case 0x83: parseUseItemEx(msg); break;
-		case 0x84: parseUseWithCreature(msg); break;
-		case 0x85: parseRotateItem(msg); break;
-		case 0x87: parseCloseContainer(msg); break;
-		case 0x88: parseUpArrowContainer(msg); break;
-		case 0x89: parseTextWindow(msg); break;
-		case 0x8A: parseHouseWindow(msg); break;
-		case 0x8C: parseLookAt(msg); break;
-		case 0x8D: parseLookInBattleList(msg); break;
-		case 0x8E: /* join aggression */ break;
-		case 0x96: parseSay(msg); break;
-		case 0x97: addGameTask(&Game::playerRequestChannels, player->getID()); break;
-		case 0x98: parseOpenChannel(msg); break;
-		case 0x99: parseCloseChannel(msg); break;
-		case 0x9A: parseOpenPrivateChannel(msg); break;
-		case 0x9E: addGameTask(&Game::playerCloseNpcChannel, player->getID()); break;
-		case 0xA0: parseFightModes(msg); break;
-		case 0xA1: parseAttack(msg); break;
-		case 0xA2: parseFollow(msg); break;
-		case 0xA3: parseInviteToParty(msg); break;
-		case 0xA4: parseJoinParty(msg); break;
-		case 0xA5: parseRevokePartyInvite(msg); break;
-		case 0xA6: parsePassPartyLeadership(msg); break;
-		case 0xA7: addGameTask(&Game::playerLeaveParty, player->getID()); break;
-		case 0xA8: parseEnableSharedPartyExperience(msg); break;
-		case 0xAA: addGameTask(&Game::playerCreatePrivateChannel, player->getID()); break;
-		case 0xAB: parseChannelInvite(msg); break;
-		case 0xAC: parseChannelExclude(msg); break;
-		case 0xBE: addGameTask(&Game::playerCancelAttackAndFollow, player->getID()); break;
-		case 0xC9: /* update tile */ break;
-		case 0xCA: parseUpdateContainer(msg); break;
-		case 0xCB: parseBrowseField(msg); break;
-		case 0xCC: parseSeekInContainer(msg); break;
-		case 0xD2: addGameTask(&Game::playerRequestOutfit, player->getID()); break;
-		case 0xD3: parseSetOutfit(msg); break;
-		case 0xD4: parseToggleMount(msg); break;
-		case 0xDC: parseAddVip(msg); break;
-		case 0xDD: parseRemoveVip(msg); break;
-		case 0xDE: parseEditVip(msg); break;
-		case 0xE6: parseBugReport(msg); break;
-		case 0xE7: /* thank you */ break;
-		case 0xE8: parseDebugAssert(msg); break;
-		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerShowQuestLog, player->getID()); break;
-		case 0xF1: parseQuestLine(msg); break;
-		case 0xF2: /* rule violation report */ break;
-		case 0xF3: /* get object info */ break;
-		case 0xF4: parseMarketLeave(); break;
-		case 0xF5: parseMarketBrowse(msg); break;
-		case 0xF6: parseMarketCreateOffer(msg); break;
-		case 0xF7: parseMarketCancelOffer(msg); break;
-		case 0xF8: parseMarketAcceptOffer(msg); break;
-		case 0xF9: parseModalWindowAnswer(msg); break;
+	case 0x14: g_dispatcher.addTask(createTask(std::bind(&ProtocolGame::logout, getThis(), true, false))); break;
+	case 0x1D: addGameTask(&Game::playerReceivePingBack, player->getID()); break;
+	case 0x1E: addGameTask(&Game::playerReceivePing, player->getID()); break;
+	case 0x32: parseExtendedOpcode(msg); break; //otclient extended opcode
+	case 0x64: parseAutoWalk(msg); break;
+	case 0x65: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTH); break;
+	case 0x66: addGameTask(&Game::playerMove, player->getID(), DIRECTION_EAST); break;
+	case 0x67: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTH); break;
+	case 0x68: addGameTask(&Game::playerMove, player->getID(), DIRECTION_WEST); break;
+	case 0x69: addGameTask(&Game::playerStopAutoWalk, player->getID()); break;
+	case 0x6A: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTHEAST); break;
+	case 0x6B: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTHEAST); break;
+	case 0x6C: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTHWEST); break;
+	case 0x6D: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTHWEST); break;
+	case 0x6F: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_NORTH); break;
+	case 0x70: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_EAST); break;
+	case 0x71: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_SOUTH); break;
+	case 0x72: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_WEST); break;
+	case 0x77: parseEquipHotkey(msg); break;
+	case 0x78: parseThrow(msg); break;
+	case 0x79: parseLookInShop(msg); break;
+	case 0x7A: parsePlayerPurchase(msg); break;
+	case 0x7B: parsePlayerSale(msg); break;
+	case 0x7C: addGameTask(&Game::playerCloseShop, player->getID()); break;
+	case 0x7D: parseRequestTrade(msg); break;
+	case 0x7E: parseLookInTrade(msg); break;
+	case 0x7F: addGameTask(&Game::playerAcceptTrade, player->getID()); break;
+	case 0x80: addGameTask(&Game::playerCloseTrade, player->getID()); break;
+	case 0x82: parseUseItem(msg); break;
+	case 0x83: parseUseItemEx(msg); break;
+	case 0x84: parseUseWithCreature(msg); break;
+	case 0x85: parseRotateItem(msg); break;
+	case 0x87: parseCloseContainer(msg); break;
+	case 0x88: parseUpArrowContainer(msg); break;
+	case 0x89: parseTextWindow(msg); break;
+	case 0x8A: parseHouseWindow(msg); break;
+	case 0x8C: parseLookAt(msg); break;
+	case 0x8D: parseLookInBattleList(msg); break;
+	case 0x8E: /* join aggression */ break;
+	case 0x96: parseSay(msg); break;
+	case 0x97: addGameTask(&Game::playerRequestChannels, player->getID()); break;
+	case 0x98: parseOpenChannel(msg); break;
+	case 0x99: parseCloseChannel(msg); break;
+	case 0x9A: parseOpenPrivateChannel(msg); break;
+	case 0x9E: addGameTask(&Game::playerCloseNpcChannel, player->getID()); break;
+	case 0xA0: parseFightModes(msg); break;
+	case 0xA1: parseAttack(msg); break;
+	case 0xA2: parseFollow(msg); break;
+	case 0xA3: parseInviteToParty(msg); break;
+	case 0xA4: parseJoinParty(msg); break;
+	case 0xA5: parseRevokePartyInvite(msg); break;
+	case 0xA6: parsePassPartyLeadership(msg); break;
+	case 0xA7: addGameTask(&Game::playerLeaveParty, player->getID()); break;
+	case 0xA8: parseEnableSharedPartyExperience(msg); break;
+	case 0xAA: addGameTask(&Game::playerCreatePrivateChannel, player->getID()); break;
+	case 0xAB: parseChannelInvite(msg); break;
+	case 0xAC: parseChannelExclude(msg); break;
+	case 0xBE: addGameTask(&Game::playerCancelAttackAndFollow, player->getID()); break;
+	case 0xC9: /* update tile */ break;
+	case 0xCA: parseUpdateContainer(msg); break;
+	case 0xCB: parseBrowseField(msg); break;
+	case 0xCC: parseSeekInContainer(msg); break;
+	case 0xD2: addGameTask(&Game::playerRequestOutfit, player->getID()); break;
+	case 0xD3: parseSetOutfit(msg); break;
+	case 0xD4: parseToggleMount(msg); break;
+	case 0xDC: parseAddVip(msg); break;
+	case 0xDD: parseRemoveVip(msg); break;
+	case 0xDE: parseEditVip(msg); break;
+	case 0xE6: parseBugReport(msg); break;
+	case 0xE7: /* thank you */ break;
+	case 0xE8: parseDebugAssert(msg); break;
+	case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerShowQuestLog, player->getID()); break;
+	case 0xF1: parseQuestLine(msg); break;
+	case 0xF2: /* rule violation report */ break;
+	case 0xF3: /* get object info */ break;
+	case 0xF4: parseMarketLeave(); break;
+	case 0xF5: parseMarketBrowse(msg); break;
+	case 0xF6: parseMarketCreateOffer(msg); break;
+	case 0xF7: parseMarketCancelOffer(msg); break;
+	case 0xF8: parseMarketAcceptOffer(msg); break;
+	case 0xF9: parseModalWindowAnswer(msg); break;
 
-		default:
-			// std::cout << "Player: " << player->getName() << " sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
-			break;
+	default:
+		// std::cout << "Player: " << player->getName() << " sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
+		break;
 	}
 
 	if (msg.isOverrun()) {
@@ -623,15 +624,15 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 	for (uint8_t i = 0; i < numdirs; ++i) {
 		uint8_t rawdir = msg.getPreviousByte();
 		switch (rawdir) {
-			case 1: path.push_front(DIRECTION_EAST); break;
-			case 2: path.push_front(DIRECTION_NORTHEAST); break;
-			case 3: path.push_front(DIRECTION_NORTH); break;
-			case 4: path.push_front(DIRECTION_NORTHWEST); break;
-			case 5: path.push_front(DIRECTION_WEST); break;
-			case 6: path.push_front(DIRECTION_SOUTHWEST); break;
-			case 7: path.push_front(DIRECTION_SOUTH); break;
-			case 8: path.push_front(DIRECTION_SOUTHEAST); break;
-			default: break;
+		case 1: path.push_front(DIRECTION_EAST); break;
+		case 2: path.push_front(DIRECTION_NORTHEAST); break;
+		case 3: path.push_front(DIRECTION_NORTH); break;
+		case 4: path.push_front(DIRECTION_NORTHWEST); break;
+		case 5: path.push_front(DIRECTION_WEST); break;
+		case 6: path.push_front(DIRECTION_SOUTHWEST); break;
+		case 7: path.push_front(DIRECTION_SOUTH); break;
+		case 8: path.push_front(DIRECTION_SOUTHEAST); break;
+		default: break;
 		}
 	}
 
@@ -708,6 +709,30 @@ void ProtocolGame::parseUpdateContainer(NetworkMessage& msg)
 	addGameTask(&Game::playerUpdateContainer, player->getID(), cid);
 }
 
+void ProtocolGame::parseEquipHotkey(NetworkMessage& msg) {
+	uint16_t objectId = msg.get<uint16_t>();
+	//uint8_t data = msg.get<uint8_t>();
+	Item* item = player->getItemByClientId(objectId);
+	if (!item) {
+		return;
+	}
+	uint16_t slot = CONST_SLOT_WHEREEVER;
+	switch (item->getSlotPosition()) {
+		case CLIENT_SLOT_HEAD: slot = CONST_SLOT_HEAD; break;
+		case CLIENT_SLOT_NECKLACE: slot = CONST_SLOT_NECKLACE; break;
+		case CLIENT_SLOT_ARMOR: slot = CONST_SLOT_ARMOR; break;
+		case CLIENT_SLOT_HAND: slot = item->getWeaponType() != WEAPON_SHIELD ? CONST_SLOT_LEFT : CONST_SLOT_RIGHT; break;
+		case CLIENT_SLOT_RING: slot = CONST_SLOT_RING; break;
+		case CLIENT_SLOT_LEGS: slot = CONST_SLOT_LEGS; break;
+		case CLIENT_SLOT_FEET: slot = CONST_SLOT_FEET; break;
+		case CLIENT_SLOT_AMMO: slot = CONST_SLOT_AMMO; break;
+		default:
+			break;
+	}
+	Item* slotItem = player->getInventoryItem(static_cast<slots_t>(slot));
+	g_game.internalMoveItem(item->getParent(), player, (slotItem && slotItem == item ? CONST_SLOT_WHEREEVER : slot), item, item->getItemCount(), nullptr);
+}
+
 void ProtocolGame::parseThrow(NetworkMessage& msg)
 {
 	Position fromPos = msg.getPosition();
@@ -742,20 +767,20 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 
 	SpeakClasses type = static_cast<SpeakClasses>(msg.getByte());
 	switch (type) {
-		case TALKTYPE_PRIVATE_TO:
-		case TALKTYPE_PRIVATE_RED_TO:
-			receiver = msg.getString();
-			channelId = 0;
-			break;
+	case TALKTYPE_PRIVATE_TO:
+	case TALKTYPE_PRIVATE_RED_TO:
+		receiver = msg.getString();
+		channelId = 0;
+		break;
 
-		case TALKTYPE_CHANNEL_Y:
-		case TALKTYPE_CHANNEL_R1:
-			channelId = msg.get<uint16_t>();
-			break;
+	case TALKTYPE_CHANNEL_Y:
+	case TALKTYPE_CHANNEL_R1:
+		channelId = msg.get<uint16_t>();
+		break;
 
-		default:
-			channelId = 0;
-			break;
+	default:
+		channelId = 0;
+		break;
 	}
 
 	const std::string text = msg.getString();
@@ -771,7 +796,7 @@ void ProtocolGame::parseFightModes(NetworkMessage& msg)
 	uint8_t rawFightMode = msg.getByte(); // 1 - offensive, 2 - balanced, 3 - defensive
 	uint8_t rawChaseMode = msg.getByte(); // 0 - stand while fightning, 1 - chase opponent
 	uint8_t rawSecureMode = msg.getByte(); // 0 - can't attack unmarked, 1 - can attack unmarked
-	// uint8_t rawPvpMode = msg.getByte(); // pvp mode introduced in 10.0
+										   // uint8_t rawPvpMode = msg.getByte(); // pvp mode introduced in 10.0
 
 	chaseMode_t chaseMode;
 	if (rawChaseMode == 1) {
@@ -1161,28 +1186,28 @@ void ProtocolGame::sendTextMessage(const TextMessage& message)
 	msg.addByte(0xB4);
 	msg.addByte(message.type);
 	switch (message.type) {
-		case MESSAGE_DAMAGE_DEALT:
-		case MESSAGE_DAMAGE_RECEIVED:
-		case MESSAGE_DAMAGE_OTHERS: {
-			msg.addPosition(message.position);
-			msg.add<uint32_t>(message.primary.value);
-			msg.addByte(message.primary.color);
-			msg.add<uint32_t>(message.secondary.value);
-			msg.addByte(message.secondary.color);
-			break;
-		}
-		case MESSAGE_HEALED:
-		case MESSAGE_HEALED_OTHERS:
-		case MESSAGE_EXPERIENCE:
-		case MESSAGE_EXPERIENCE_OTHERS: {
-			msg.addPosition(message.position);
-			msg.add<uint32_t>(message.primary.value);
-			msg.addByte(message.primary.color);
-			break;
-		}
-		default: {
-			break;
-		}
+	case MESSAGE_DAMAGE_DEALT:
+	case MESSAGE_DAMAGE_RECEIVED:
+	case MESSAGE_DAMAGE_OTHERS: {
+		msg.addPosition(message.position);
+		msg.add<uint32_t>(message.primary.value);
+		msg.addByte(message.primary.color);
+		msg.add<uint32_t>(message.secondary.value);
+		msg.addByte(message.secondary.color);
+		break;
+	}
+	case MESSAGE_HEALED:
+	case MESSAGE_HEALED_OTHERS:
+	case MESSAGE_EXPERIENCE:
+	case MESSAGE_EXPERIENCE_OTHERS: {
+		msg.addPosition(message.position);
+		msg.add<uint32_t>(message.primary.value);
+		msg.addByte(message.primary.color);
+		break;
+	}
+	default: {
+		break;
+	}
 	}
 	msg.addString(message.text);
 	writeToOutputBuffer(msg);
@@ -2220,7 +2245,7 @@ void ProtocolGame::sendOutfitWindow()
 			&gamemasterOutfitName,
 			75,
 			0
-		);
+			);
 	}
 
 	const auto& outfits = Outfits::getInstance()->getOutfits(player->getSex());
@@ -2235,7 +2260,7 @@ void ProtocolGame::sendOutfitWindow()
 			&outfit.name,
 			outfit.lookType,
 			addons
-		);
+			);
 		if (protocolOutfits.size() == 100) { // Game client doesn't allow more than 100 outfits
 			break;
 		}
