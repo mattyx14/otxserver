@@ -2,8 +2,17 @@ function Tile.isCreature(self)
 	return false
 end
 
+function Tile.isHouse(self)
+	local house = self:getHouse()
+	return not not house
+end
+
 function Tile.isItem(self)
 	return false
+end
+
+function Tile.isPz(self)
+	return self:hasFlag(TILESTATE_PROTECTIONZONE)
 end
 
 function Tile.isTile(self)

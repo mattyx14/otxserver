@@ -21,6 +21,16 @@ function Player.feed(self, food)
 	return true
 end
 
+function Player.getBlessings(self)
+	local blessings = 0
+	for i = 1, 5 do
+		if self:hasBlessing(i) then
+			blessings = blessings + 1
+		end
+	end
+	return blessings
+end
+
 function Player.getClosestFreePosition(self, position, extended)
 	if self:getAccountType() >= ACCOUNT_TYPE_GOD then
 		return position
@@ -32,27 +42,49 @@ function Player.getDepotItems(self, depotId)
 	return self:getDepotChest(depotId, true):getItemHoldingCount()
 end
 
-local lossPercent = {
-	[0] = 100,
-	[1] = 70,
-	[2] = 45,
-	[3] = 25,
-	[4] = 10,
-	[5] = 0
-}
-
 function Player.getLossPercent(self)
-	local blessings = 0
-	for i = 1, 5 do
-		if self:hasBlessing(i) then
-			blessings = blessings + 1
-		end
-	end
-	return lossPercent[blessings]
+	local lossPercent = {
+		[0] = 100,
+		[1] = 70,
+		[2] = 45,
+		[3] = 25,
+		[4] = 10,
+		[5] = 0
+	}
+
+	return lossPercent[self:getBlessings()]
+end
+
+function Player.isDruid(self)
+	return isInArray({2, 6}, self:getVocation():getId())
+end
+
+function Player.isKnight(self)
+	return isInArray({4, 8}, self:getVocation():getId())
+end
+
+function Player.isPaladin(self)
+	return isInArray({3, 7}, self:getVocation():getId())
+end
+
+function Player.isMage(self)
+	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
+end
+
+function Player.isSorcerer(self)
+	return isInArray({1, 5}, self:getVocation():getId())
 end
 
 function Player.isPremium(self)
 	return self:getPremiumDays() > 0 or configManager.getBoolean(configKeys.FREE_PREMIUM)
+end
+
+function Player.isPromoted(self)
+	local vocation = self:getVocation()
+	local promotedVocation = vocation:getPromotion()
+	promotedVocation = promotedVocation and promotedVocation:getId() or 0
+
+	return promotedVocation == 0 and vocation:getId() ~= promotedVocation
 end
 
 function Player.sendCancelMessage(self, message)
@@ -75,7 +107,7 @@ function Player.sendExtendedOpcode(self, opcode, buffer)
 	networkMessage:addByte(0x32)
 	networkMessage:addByte(opcode)
 	networkMessage:addString(buffer)
-	networkMessage:sendToPlayer(self)
+	networkMessage:sendToPlayer(self, false)
 	networkMessage:delete()
 	return true
 end
@@ -95,4 +127,43 @@ function Player.addManaSpent(...)
 	local ret = addManaSpentFunc(...)
 	APPLY_SKILL_MULTIPLIER = true
 	return ret
+end
+
+function Player.depositMoney(self, amount)
+	if not self:removeMoney(amount) then
+		return false
+	end
+
+	self:setBankBalance(self:getBankBalance() + amount)
+	return true
+end
+
+function Player.transferMoneyTo(self, target, amount)
+	local balance = self:getBankBalance()
+	if amount > balance then
+		return false
+	end
+
+	local targetPlayer = Player(target)
+	if targetPlayer then
+		targetPlayer:setBankBalance(targetPlayer:getBankBalance() + amount)
+	else
+		if not playerExists(target) then
+			return false
+		end
+		db.query("UPDATE `players` SET `balance` = `balance` + '" .. amount .. "' WHERE `name` = " .. db.escapeString(target))
+	end
+
+	self:setBankBalance(self:getBankBalance() - amount)
+	return true
+end
+
+function Player.withdrawMoney(self, amount)
+	local balance = self:getBankBalance()
+	if amount > balance or not self:addMoney(amount) then
+		return false
+	end
+
+	self:setBankBalance(balance - amount)
+	return true
 end
