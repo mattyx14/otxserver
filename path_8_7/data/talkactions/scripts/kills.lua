@@ -1,4 +1,10 @@
 function onSay(player, words, param)
+	if player:getExhaustion(1000) <= 0 then
+		player:setExhaustion(1000, 10)
+	else
+		print('You\'re exhausted for: '..player:getExhaustion(1000)..' seconds.')
+	end
+
 	local fragTime = configManager.getNumber(configKeys.FRAG_TIME)
 	if fragTime <= 0 then
 		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "You do not have any unjustified kill.")

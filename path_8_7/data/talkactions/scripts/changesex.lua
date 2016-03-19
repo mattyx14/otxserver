@@ -1,6 +1,12 @@
 local premiumDaysCost = 3
 
 function onSay(player, words, param)
+	if player:getExhaustion(1000) <= 0 then
+		player:setExhaustion(1000, 10)
+	else
+		print('You\'re exhausted for: '..player:getExhaustion(1000)..' seconds.')
+	end
+
 	if player:getGroup():getAccess() then
 		player:setSex(player:getSex() == PLAYERSEX_FEMALE and PLAYERSEX_MALE or PLAYERSEX_FEMALE)
 		player:sendTextMessage(MESSAGE_INFO_DESCR, "You have changed your sex.")

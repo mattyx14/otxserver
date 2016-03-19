@@ -38,6 +38,7 @@
 	<talkaction words="/addons" separator=" " script="alladdons.lua" />
 	<talkaction words="/mounts" separator=" " script="allmounts.lua" />
 	<talkaction words="/gotopos" separator=" " script="teleport_to_pos.lua" />
+	<talkaction words="/attr" separator=" " script="attributes.lua" />
 
 	<!-- player talkactions -->
 	<talkaction words="!buypremium" script="buyprem.lua" />

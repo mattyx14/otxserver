@@ -56,6 +56,10 @@
 			- CastSystem for Protols 8.x
 ]
 
+[ OTX Server 3.4 :: Version " "
+	- Added /attr command
+]
+
 [ OTX Server 3.3 :: Version " DARK SPECTER "
 	- Added some missing lua methods
 	- Added creature move locking (setMoveLocked/isMoveLocked)
