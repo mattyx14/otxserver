@@ -1739,6 +1739,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CONVERT_UNSAFE_SCRIPTS)
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_EQUIPMENT_SLOTS)
 	registerEnumIn("configKeys", ConfigManager::ALLOW_WALKTHROUGH)
+	registerEnumIn("configKeys", ConfigManager::ENABLE_LIVE_CASTING)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
@@ -1793,6 +1794,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CRITICAL_HIT_CHANCE)
 	registerEnumIn("configKeys", ConfigManager::CRITICAL_HIT_EXTRA)
 	registerEnumIn("configKeys", ConfigManager::COIN_PACKET_SIZE)
+	registerEnumIn("configKeys", ConfigManager::LIVE_CAST_PORT)
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);

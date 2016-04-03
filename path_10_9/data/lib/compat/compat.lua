@@ -1005,14 +1005,3 @@ end
 function Guild.removeMember(self, player)
 	return player:getGuild() == self and player:setGuild(nil)
 end
-function Player.setExhaustion(self, value, time)
-	return self:setStorageValue(value, time + os.time())
-end
-function Player.getExhaustion(self, value)
-	local storage = self:getStorageValue(value)
-	if storage <= 0 then
-		return 0
-	end
-
-	return storage - os.time()
-end

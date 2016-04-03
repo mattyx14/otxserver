@@ -37,7 +37,7 @@
 	<talkaction words="/save" script="save.lua" />
 	<talkaction words="/addons" separator=" " script="alladdons.lua" />
 	<talkaction words="/mounts" separator=" " script="allmounts.lua" />
-	<talkaction words="/gotopos" separator=" " script="teleport_to_pos.lua" />
+	<talkaction words="/pos" separator=" " script="teleport_to_pos.lua" />
 	<talkaction words="/attr" separator=" " script="attributes.lua" />
 
 	<!-- player talkactions -->
@@ -50,11 +50,14 @@
 	<talkaction words="!kills" script="kills.lua" />
 	<talkaction words="!online" script="online.lua" />
 	<talkaction words="!serverinfo" script="serverinfo.lua" />
-	<talkaction words="!cast" separator=" " script="start_cast.lua" />
-	<talkaction words="!stopcast" script="stop_cast.lua" />
+	<talkaction words="!cast on" separator=" " script="start_cast.lua" />
+	<talkaction words="!cast off" script="stop_cast.lua" />
+	<talkaction words="!saveme" script="saveme.lua" />
+	<talkaction words="!spells" script="spells.lua" />
+	<talkaction words="!commands" script="commands.lua" />
 
 	<!-- No workd
-		<talkaction words="!addon" script="addon.lua" />
+		<talkaction words="!addon" script="addons.lua" />
 
 		<talkaction words="!z" separator=" " script="magiceffect.lua" />
 		<talkaction words="!x" separator=" " script="animationeffect.lua" />

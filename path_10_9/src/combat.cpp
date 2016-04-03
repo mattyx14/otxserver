@@ -49,7 +49,6 @@ CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 	if (auto chance = g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE)) {
 		if (boolean_random(static_cast<double>(chance) / 100.0)) {
 			damageModifier += static_cast<double>(g_config.getNumber(ConfigManager::CRITICAL_HIT_EXTRA)) / 100.0;
-			std::cout << "Critical hit!" << std::endl;
 		}
 	}
 

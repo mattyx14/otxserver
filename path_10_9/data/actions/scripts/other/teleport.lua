@@ -1,4 +1,4 @@
-local upFloorIds = {1386, 3678, 5543}
+local upFloorIds = {1386, 3678, 5543, 8599}
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if isInArray(upFloorIds, item.itemid) then
 		fromPosition:moveUpstairs()

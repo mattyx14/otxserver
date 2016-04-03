@@ -106,5 +106,5 @@
 	<outfit type="1" looktype="750" name="Sea Dog" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="760" name="Royal Pumpkin" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="846" name="Rift Warrior" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="1" looktype="853" name="Winter Warden" premium="yes" unlocked="yes" enabled="yes" />
+	<outfit type="1" looktype="853" name="Winter Warden" premium="yes" unlocked="no" enabled="yes" />
 </outfits>

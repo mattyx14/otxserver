@@ -58,6 +58,25 @@
 
 [ OTX Server 3.4 :: Version " "
 	- Added /attr command
+	- Added custom script for bless on low level this are optional and disable
+	- Added new commands :: "!saveme - !commands - !spells"
+	- Added new function onAttackedCreatureKilled
+	- Fixed leader error
+	- Fixed death error on war
+	- Fixed bless error
+	- Fixed and rewrite door system
+	- Fixed special tiles bug
+	- Fixed wallback for quest chest
+	- Fixed promotion only for premium
+	- Fixed and rewrite commands
+	- Fixed error on outfits for free
+	- Fixed error on criticalhit display
+	- Fixed configkeys for liveCasting
+	- Fixed protection attack for low levels
+	- Fixed gain and recover for vocations
+	- Move all custom libs fuctions to custom file on libs custom.lua
+	- Remove onSave no required
+	- Removed lessLoss no required
 ]
 
 [ OTX Server 3.3 :: Version " DARK SPECTER "

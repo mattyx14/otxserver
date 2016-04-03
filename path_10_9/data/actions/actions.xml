@@ -325,6 +325,7 @@
 	<action itemid="1386" script="other/teleport.lua" />
 	<action itemid="3678" script="other/teleport.lua" />
 	<action itemid="5543" script="other/teleport.lua" />
+	<action itemid="8599" script="other/teleport.lua" />
 
 	<!-- Dolls -->
 	<action itemid="5080" script="other/dolls.lua" />

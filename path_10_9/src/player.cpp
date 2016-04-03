@@ -822,8 +822,12 @@ bool Player::canWalkthrough(const Creature* creature) const
 	}
 
 	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
+	if (!player) {
 		return false;
+	}
+
+	if ((player->isAttackable() && (player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)))) {
+		return true;
 	}
 
 	const Tile* playerTile = player->getTile();
@@ -858,7 +862,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	}
 
 	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
+	if (!player) {
 		return false;
 	}
 
@@ -4008,8 +4012,6 @@ double Player::getLostPercent() const
 	if (isPromoted()) {
 		lossPercent *= 0.7;
 	}
-
-	lossPercent *= vocation->getLessLoss();
 
 	return lossPercent * pow(0.92, blessingCount) / 100;
 }

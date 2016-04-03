@@ -108,7 +108,7 @@ function creatureSayCallback(cid, type, msg)
 	if msgcontains(msg, 'first rod') or msgcontains(msg, 'first wand') then
 		local vocationId = player:getVocation():getId()
 		if isInArray({1, 2, 5, 6}, vocationId) then
-			if player:getStorageValue(30002) == -1 then
+			if player:getStorageValue(3050) == -1 then
 				selfSay('So you ask me for a {' .. ItemType(items[vocationId]):getName() .. '} to begin your advanture?', cid)
 				npcHandler.topic[cid] = 1
 			else
@@ -121,7 +121,7 @@ function creatureSayCallback(cid, type, msg)
 		if npcHandler.topic[cid] == 1 then
 			player:addItem(items[vocationId], 1)
 			selfSay('Here you are young adept, take care yourself.', cid)
-			player:setStorageValue(30002, 1)
+			player:setStorageValue(3050, 1)
 		end
 		npcHandler.topic[cid] = 0
 	elseif msgcontains(msg, 'no') and npcHandler.topic[cid] == 1 then
