@@ -11,8 +11,9 @@
 	<!-- Customs -->
 	<event type="login" name="FirstItems" script="firstitems.lua" />
 	<event type="advance" name="AdvanceSave" script="advance_save.lua" />
-			<event type="advance" name="onadvance_reward" script="onadvance_reward.lua"/>
-			<event type="login" name="onadv_register" script="onadvance_reward.lua"/>
-			<event type="login" name="freebless" script="freeblesslowlevel.lua"/>
-		-->
+	<!-- 
+		<event type="advance" name="onadvance_reward" script="onadvance_reward.lua"/>
+		<event type="login" name="onadv_register" script="onadvance_reward.lua"/>
+		<event type="login" name="freebless" script="freeblesslowlevel.lua"/>
+	-->
 </creaturescripts>
