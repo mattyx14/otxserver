@@ -241,13 +241,13 @@ void ProtocolSpectator::syncOpenContainers()
 void ProtocolSpectator::login(const std::string& liveCastName, const std::string& password)
 {
 	//dispatcher thread
-	auto _player = g_game.getPlayerByName(liveCastName);
-	if (!_player || _player->isRemoved()) {
+	auto foundPlayer = g_game.getPlayerByName(liveCastName);
+	if (!foundPlayer || foundPlayer->isRemoved()) {
 		disconnectSpectator("Live cast no longer exists. Please relogin to refresh the list.");
 		return;
 	}
 
-	const auto liveCasterProtocol = ProtocolGame::getLiveCast(_player);
+	const auto liveCasterProtocol = ProtocolGame::getLiveCast(foundPlayer);
 	if (!liveCasterProtocol) {
 		disconnectSpectator("Live cast no longer exists. Please relogin to refresh the list.");
 		return;
@@ -260,7 +260,7 @@ void ProtocolSpectator::login(const std::string& liveCastName, const std::string
 			return;
 		}
 
-		player = _player;
+		player = foundPlayer;
 		player->incrementReferenceCounter();
 		eventConnect = 0;
 		client = liveCasterProtocol;

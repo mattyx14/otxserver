@@ -27,4 +27,8 @@ local node5 = keywordHandler:addKeyword({'fifth bless'}, StdModule.say, {npcHand
 	node5:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 5, premium = true, cost = 10000})
 	node5:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
 
+local node6 = keywordHandler:addKeyword({'sixth bless'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the twist of fate blessing for 10000 gold?'})
+	node6:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 6, premium = true, cost = 10000})
+	node6:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+
 npcHandler:addModule(FocusModule:new())

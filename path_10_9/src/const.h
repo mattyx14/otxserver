@@ -526,7 +526,7 @@ enum PlayerFlags : uint64_t {
 #define CHANNEL_GUILD 0x00
 #define CHANNEL_PARTY 0x01
 
-#define CHANNEL_CAST 0xFFFE
+#define CHANNEL_CAST 40
 
 #define CHANNEL_PRIVATE 0xFFFF
 

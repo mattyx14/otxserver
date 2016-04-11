@@ -222,7 +222,8 @@
 		<action itemid="7620" script="liquids/potions.lua" />
 		<action fromid="8472" toid="8474" script="liquids/potions.lua" />
 		<action itemid="8704" script="liquids/potions.lua" />
-			<action fromid="7439" toid="7440" script="liquids/strengthening_potions.lua" />
+			<action itemid="7439" script="liquids/strengthening_potions.lua" />
+			<action itemid="7440" script="liquids/strengthening_potions.lua" />
 			<action itemid="7443" script="liquids/strengthening_potions.lua" />
 
 	<!-- Doors -->

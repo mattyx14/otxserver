@@ -22,14 +22,11 @@
 #include "depotchest.h"
 #include "tools.h"
 
-DepotChest::DepotChest(uint16_t _type) :
-	Container(_type)
-{
-	maxDepotItems = 2000;
-}
+DepotChest::DepotChest(uint16_t type) :
+	Container(type), maxDepotItems(2000) {}
 
-DepotChest::DepotChest(uint16_t _type, bool _pagination) :
-	Container(_type)
+DepotChest::DepotChest(uint16_t type, bool _pagination) :
+	Container(type)
 {
 	maxDepotItems = 2000;
 	maxSize = 32;

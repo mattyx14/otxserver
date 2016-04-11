@@ -354,7 +354,6 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	end
 
-	player:addAchievement('Natural Born Cowboy')
 	player:addMount(mount.id)
 	doCreatureSayWithRadius(player, mount.success.text, TALKTYPE_MONSTER_SAY, 2, 2)
 	player:say(mount.success.sound, TALKTYPE_MONSTER_SAY, false, 0, toPosition)

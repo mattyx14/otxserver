@@ -59,8 +59,11 @@
 [ OTX Server 3.4 :: Version " "
 	- Added /attr command
 	- Added custom script for bless on low level this are optional and disable
-	- Added new commands :: "!saveme - !commands - !spells"
+	- Added new commands :: "!saveme - !commands - !spells - !stamina"
 	- Added new function onAttackedCreatureKilled
+	- Added new script potion more simple to use
+	- Added new custom functions: getDistanceBetween - getFormattedWorldTime - doCreatureSayWithRadius - getBlessingsCost - getPvpBlessingCost - isWarrior
+	- Added function item_name to attr command
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error
@@ -74,9 +77,12 @@
 	- Fixed configkeys for liveCasting
 	- Fixed protection attack for low levels
 	- Fixed gain and recover for vocations
-	- Move all custom libs fuctions to custom file on libs custom.lua
+	- Fixed strengthening_potions
+	- Fixed console errors on use tools
+	- Move all custom libs fuctions to custom file on libs .../data/lib/custom/custom.lua
 	- Remove onSave no required
-	- Removed lessLoss no required
+	- Remove lessLoss no required
+	- Support to PVPBless
 ]
 
 [ OTX Server 3.3 :: Version " DARK SPECTER "

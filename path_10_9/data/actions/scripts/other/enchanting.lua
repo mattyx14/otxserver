@@ -42,7 +42,7 @@ local enchantedItems = {
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if item.itemid == 2147 and target.itemid == 2342 then
+	if item.itemid == 7760 and target.itemid == 2342 then
 		target:transform(2343)
 		target:decay()
 		item:remove(1)
@@ -108,6 +108,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		end
 
 		local subtype = target.type
+		-- Skip items gave 1000 charges
 		if not isInArray({2544, 8905}, target.itemid) then
 			subtype = 1000
 		end

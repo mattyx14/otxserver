@@ -5,6 +5,59 @@ DEMON_OAK_KICK_POSITION = Position(479, 1414, 7)
 DEMON_OAK_ENTER_POSITION = Position(478, 1423, 7)
 DEMON_OAK_REWARDROOM_POSITION = Position(466, 1424, 8)
 
+function getDistanceBetween(firstPosition, secondPosition)
+	local xDif = math.abs(firstPosition.x - secondPosition.x)
+	local yDif = math.abs(firstPosition.y - secondPosition.y)
+	local posDif = math.max(xDif, yDif)
+	if firstPosition.z ~= secondPosition.z then
+		posDif = posDif + 15
+	end
+	return posDif
+end
+
+function getFormattedWorldTime()
+	local worldTime = getWorldTime()
+	local hours = math.floor(worldTime / 60)
+
+	local minutes = worldTime % 60
+	if minutes < 10 then
+		minutes = '0' .. minutes
+	end
+	return hours .. ':' .. minutes
+end
+
+function doCreatureSayWithRadius(cid, text, type, radiusx, radiusy, position)
+	if not position then
+		position = Creature(cid):getPosition()
+	end
+
+	local spectators, spectator = Game.getSpectators(position, false, true, radiusx, radiusx, radiusy, radiusy)
+	for i = 1, #spectators do
+		spectator = spectators[i]
+		spectator:say(text, type, false, spectator, position)
+	end
+end
+
+function getBlessingsCost(level)
+	if level <= 30 then
+		return 2000
+	elseif level >= 120 then
+		return 20000
+	else
+		return (level - 20) * 200
+	end
+end
+
+function getPvpBlessingCost(level)
+	if level <= 30 then
+		return 2000
+	elseif level >= 270 then
+		return 50000
+	else
+		return (level - 20) * 200
+	end
+end
+
 function getItemAttribute(uid, key)
 	local i = ItemType(Item(uid):getId())
 	local string_attributes = {
@@ -173,6 +226,10 @@ end
 
 function Player.isMage(self)
 	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
+end
+
+function Player.isWarrior(self)
+	return isInArray({3, 7, 4, 8}, self:getVocation():getId())
 end
 
 function Player.isSorcerer(self)
