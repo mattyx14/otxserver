@@ -11,8 +11,8 @@ local others = {7932}
 local JUNGLE_GRASS = { 2782, 3985, 19433 }
 local WILD_GROWTH = { 1499, 11099 }
 
-function destroyItem(player, target, toPosition)
-	if target == nil or not target:isItem() then
+function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
+	if not target or not target:isItem() then
 		return false
 	end
 
@@ -25,7 +25,8 @@ function destroyItem(player, target, toPosition)
 		return true
 	end
 
-	local destroyId = ItemType(target.itemid):getDestroyId()
+	local targetId = target.itemid
+	local destroyId = ItemType(targetId):getDestroyId()
 	if destroyId == 0 then
 		return false
 	end
@@ -69,11 +70,15 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 			local thing = tile:getTopVisibleThing()
 			if thing:isItem() and thing:getType():isMovable() then
 				return thing:moveTo(toPosition:moveUpstairs())
+			elseif thing:isCreature() and thing:isPlayer() then
+				return thing:teleportTo(toPosition:moveUpstairs())
 			end
 		end
+
 		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return true
 	end
+
 	return false
 end
 

@@ -31431,6 +31431,18 @@
 		<attribute key="duration" value="3" />
 		<attribute key="description" value="Only the real killers can touch me! This item was awarded by TibiaBrasileiros.com." />
 	</item>
+	<item id="26029" article="a" name="ultimate mana potion">
+		<attribute key="weight" value="310" />
+		<attribute key="description" value="This potion can only be consumed by sorcerers and druids of level 130 or higher." />
+	</item>
+	<item id="26030" article="a" name="ultimate spirit potion">
+		<attribute key="weight" value="310" />
+		<attribute key="description" value="This potion can only be consumed by paladins of level 130 or higher." />
+	</item>
+	<item id="26031" article="an" name="supreme health potion">
+		<attribute key="weight" value="310" />
+		<attribute key="description" value="This potion can only be consumed by knights of level 200 or higher." />
+	</item>
 	<item id="25453" article="a" name="depot box I" />
 	<item id="25454" article="a" name="depot box II" />
 	<item id="25455" article="a" name="depot box III" />

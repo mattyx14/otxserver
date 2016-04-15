@@ -18,7 +18,13 @@ local config = {
 	-- antidote potion
 	[8474] = {antidote = true, emptyId = 7636},
 	-- small health potion
-	[8704] = {health = {min = 60, max = 85}, emptyId = 7636}
+	[8704] = {health = {min = 60, max = 85}, emptyId = 7636},
+	-- ultimate mana potion
+	[26029] = {mana = {min = 425, max = 575}, vocations = {1, 2}, text = 'sorcerers and druids', level = 130, emptyId = 7635},
+	-- ultimate spirit potion
+	[26030] = {health = {min = 450, max = 500}, mana = {min = 250, max = 300}, vocations = {3}, text = 'paladins', level = 130, emptyId = 7635},
+	-- supreme health potion
+	[26031] = {health = {min = 850, max = 1150}, vocations = {4}, text = 'knights', level = 200, emptyId = 7635}
 }
 
 local antidote = Combat()
