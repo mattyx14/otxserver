@@ -1279,6 +1279,7 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 				&& tmpTile->ground && !tmpTile->hasProperty(BLOCKSOLID) && !tmpTile->hasProperty(FLOORCHANGEDOWN))
 			{
 				flags = flags | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
+				if(!tmpTile->floorChange())
 				destPos.z--;
 			}
 		}
@@ -1514,6 +1515,9 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 		player->sendCancelMessage(RET_CANNOTTHROW);
 		return false;
 	}
+
+	if(!g_creatureEvents->executeMoveItems(player, item, mapFromPos, mapToPos))
+		return false;
 
 	bool deny = false;
 	CreatureEventList throwEvents = player->getCreatureEvents(CREATURE_EVENT_THROW);
@@ -2181,7 +2185,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount/* = -1*/)
 	if(curType.type == newType.type)
 	{
 		//Both items has the same type so we can safely change id/subtype
-		if(!newCount && (item->isStackable() || item->hasCharges()))
+		if(!newCount && (item->isStackable() || (curType.charges > 0)))
 		{
 			if(!item->isStackable() && (!item->getDefaultDuration() || item->getDuration() <= 0))
 			{
@@ -3299,6 +3303,8 @@ bool Game::playerAcceptTrade(uint32_t playerId)
 
 	player->sendTradeClose();
 	tradePartner->sendTradeClose();
+	IOLoginData::getInstance()->savePlayer(player);
+	IOLoginData::getInstance()->savePlayer(tradePartner);
 	return success;
 }
 

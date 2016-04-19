@@ -1475,9 +1475,6 @@ bool MagicField::isBlocking(const Creature* creature) const
 
 void MagicField::onStepInField(Creature* creature, bool purposeful/* = true*/)
 {
-	if(!creature)
-		return;
-
 	if(isUnstepable() || isBlocking(creature))
 	{
 		if(!creature->isGhost())

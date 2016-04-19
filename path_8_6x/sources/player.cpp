@@ -1239,6 +1239,10 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You may not attack immediately after logging in.");
 			break;
 
+		case RET_YOUHAVETOWAIT:
+			sendCancel("Sorry, you have to wait.");
+			break;
+
 		case RET_YOUCANONLYTRADEUPTOX:
 		{
 			std::stringstream s;
@@ -1772,6 +1776,10 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 				addCondition(condition);
 		}
 	}
+
+	// unset editing house
+	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+		editHouse = NULL;
 
 	if(getZone() == ZONE_PROTECTION && newTile->ground && oldTile->ground &&
 		Item::items[newTile->ground->getID()].walkStack != Item::items[oldTile->ground->getID()].walkStack)
@@ -4245,7 +4253,7 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		entry.setUnjustified();
 
 	if(entry.isLast())
-		addInFightTicks(false, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
+		addInFightTicks(true, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
 	return true;
 }
 
@@ -4504,12 +4512,11 @@ Skulls_t Player::getSkull() const
 
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
-	const Player* player = creature->getPlayer();
-	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return SKULL_NONE;
-
-	if(player->getSkull() == SKULL_NONE)
+	if(const Player* player = creature->getPlayer())
 	{
+		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+			return SKULL_NONE;
+
 		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 

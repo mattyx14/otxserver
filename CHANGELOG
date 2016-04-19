@@ -39,7 +39,6 @@
 [ BUGS AND MISSING FEATURES
 	All Protocols
 		- Add Support to Protocols 10.37+
-		- Fix fields(fire/energy/earth) not work properly
 		- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 			This error only reproduce on protocols 9.x +
 
@@ -50,8 +49,16 @@
 ]
 
 [ OTX Server 2.X.S - 3 :: Version "Crying Damson"
-	- Fix yellow skull
+	- Added new function house protect
+	- Added new creature event "moveitem"
+	- Fix attack to player / monsters
 	- Fix compiler errors
+	- Fix error on blessings
+	- Fix closingdoor script
+	- Fix error on transformItem
+	- Fix error on playerAcceptTrade
+	- Fix yellow skull
+	- Fix onPlayerTrade NPC - if(amount <= 0) amount = 1; this prevent sell on infinite items for example enchanted items
 	- Fix maximum value experiencie for 7.x - 2,147,483,647
 	- Death container for 7.x
 ]

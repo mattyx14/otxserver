@@ -20,7 +20,7 @@ function onStepOut(cid, item, position, lastPosition)
 	while(tileItem.uid ~= 0 and i < tileCount) do
 		position.stackpos = i
 		tileItem = getTileThingByPos(position)
-		if(tileItem.uid ~= 0 and tileItem.uid ~= item.uid and isMovable(tileItem.uid)) then
+		if(tileItem.uid ~= 0 and tileItem.uid ~= item.uid and not isMovable(tileItem.uid)) then
 			doRemoveItem(tileItem.uid)
 		else
 			i = i + 1
