@@ -48,11 +48,6 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	if player:getCondition(CONDITION_EXHAUST_HEAL) then
-		player:sendTextMessage(MESSAGE_STATUS_SMALL, Game.getReturnMessage(RETURNVALUE_YOUAREEXHAUSTED))
-		return true
-	end
-
 	if potion.antidote and not antidote:execute(target, Variant(target.uid)) then
 		return false
 	end
@@ -71,8 +66,6 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if type(potion.mana) == 'table' and not doTargetCombatMana(0, target, potion.mana.min, potion.mana.max, CONST_ME_MAGIC_BLUE) then
 		return false
 	end
-
-	player:addAchievementProgress('Potion Addict', 100000)
 
 	player:addCondition(exhaust)
 	doCreatureSayWithRadius(target, 'Aaaah...', TALKTYPE_MONSTER_SAY, 2, 2)

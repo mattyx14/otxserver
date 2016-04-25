@@ -235,11 +235,11 @@ class Player final : public Creature, public Cylinder
 		}
 		void setGuild(Guild* guild);
 
-		uint8_t getGuildLevel() const {
-			return guildLevel;
+		const GuildRank* getGuildRank() const {
+			return guildRank;
 		}
-		void setGuildLevel(uint8_t newGuildLevel) {
-			guildLevel = newGuildLevel;
+		void setGuildRank(const GuildRank* newGuildRank) {
+			guildRank = newGuildRank;
 		}
 
 		bool isGuildMate(const Player* player) const;
@@ -1246,6 +1246,7 @@ class Player final : public Creature, public Cylinder
 
 		BedItem* bedItem;
 		Guild* guild;
+		const GuildRank* guildRank;
 		Group* group;
 		Inbox* inbox;
 		Item* tradeItem;
@@ -1296,7 +1297,6 @@ class Player final : public Creature, public Cylinder
 
 		uint8_t soul;
 		uint8_t blessings;
-		uint8_t guildLevel;
 		uint8_t levelPercent;
 		uint8_t magLevelPercent;
 

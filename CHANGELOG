@@ -64,6 +64,7 @@
 	- Added new script potion more simple to use
 	- Added new custom functions: getDistanceBetween - getFormattedWorldTime - doCreatureSayWithRadius - getBlessingsCost - getPvpBlessingCost - isWarrior
 	- Added function item_name to attr command
+	- Added Authenticator Token support
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error
@@ -79,6 +80,7 @@
 	- Fixed gain and recover for vocations
 	- Fixed strengthening_potions
 	- Fixed console errors on use tools
+	- Fixed Guild Ranks
 	- Move all custom libs fuctions to custom file on libs .../data/lib/custom/custom.lua
 	- Remove onSave no required
 	- Remove lessLoss no required

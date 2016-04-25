@@ -32,6 +32,9 @@
 #define CLIENT_VERSION_MAX 1092
 #define CLIENT_VERSION_STR "10.92"
 
+#define AUTHENTICATOR_DIGITS 6U
+#define AUTHENTICATOR_PERIOD 30U
+
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__
 #endif
