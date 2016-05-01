@@ -1980,6 +1980,9 @@ void Npc::onPlayerTrade(Player* player, ShopEvent_t type, int32_t callback, uint
 	{
 		if(NpcState* npcState = getState(player, true))
 		{
+			if(amount <= 0)
+				amount = 1;
+
 			npcState->amount = amount;
 			npcState->subType = count;
 			npcState->itemId = itemId;
