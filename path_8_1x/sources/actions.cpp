@@ -343,13 +343,6 @@ ReturnValue Actions::canUse(const Player* player, const Position& pos)
 	if(!Position::areInRange<1,1,0>(playerPos, pos))
 		return RET_TOOFARAWAY;
 
-	Tile* tile = g_game.getTile(pos);
-	if(tile)
-	{
-		HouseTile* houseTile = tile->getHouseTile();
-		if(houseTile && houseTile->getHouse() && !houseTile->getHouse()->isInvited(player))
-			return RET_PLAYERISNOTINVITED;
-	}
 	return RET_NOERROR;
 }
 

@@ -4070,7 +4070,7 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		entry.setUnjustified();
 
 	if(entry.isLast())
-		addInFightTicks(false, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
+		addInFightTicks(true, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
 	return true;
 }
 
@@ -4111,21 +4111,21 @@ bool Player::rateExperience(double& gainExp, Creature* target)
 		vocation->getExperienceMultiplier());
 	if(g_config.getBool(ConfigManager::USE_STAMINA))
 	{
-		if(!hasFlag(PlayerFlag_HasInfiniteStamina))
+	if(!hasFlag(PlayerFlag_HasInfiniteStamina))
+	{
+		int32_t minutes = getStaminaMinutes();
+		if(minutes >= g_config.getNumber(ConfigManager::STAMINA_LIMIT_TOP))
 		{
-			int32_t minutes = getStaminaMinutes();
-			if(minutes >= g_config.getNumber(ConfigManager::STAMINA_LIMIT_TOP))
-			{
-				if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
-					gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
-			}
-			else if(minutes < (g_config.getNumber(ConfigManager::STAMINA_LIMIT_BOTTOM)) && minutes > 0)
-				gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_UNDER);
-			else if(minutes <= 0)
-				gainExp = 0;
+			if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
+				gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
 		}
-		else if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
-			gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
+		else if(minutes < (g_config.getNumber(ConfigManager::STAMINA_LIMIT_BOTTOM)) && minutes > 0)
+			gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_UNDER);
+		else if(minutes <= 0)
+			gainExp = 0;
+	}
+	else if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
+		gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
 	}
 
 	return true;
@@ -4233,12 +4233,11 @@ Skulls_t Player::getSkull() const
 
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
-	const Player* player = creature->getPlayer();
-	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return SKULL_NONE;
-
-	if(player->getSkull() == SKULL_NONE)
+	if(const Player* player = creature->getPlayer())
 	{
+		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+			return SKULL_NONE;
+
 		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this))
 			return SKULL_YELLOW;
 
@@ -4252,6 +4251,9 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
+	return !hasFlag(PlayerFlag_NotGainInFight) && attacked &&
+		attackedSet.find(attacked->getID()) != attackedSet.end();
+
 	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked)
 		return false;
 
@@ -4334,20 +4336,20 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(skull < SKULL_RED && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
 		setSkullEnd(now + g_config.getNumber(ConfigManager::RED_SKULL_LENGTH), false, SKULL_RED);
 
-	f += g_config.getNumber(ConfigManager::BAN_LIMIT);
-	s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
-	t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
-	if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
-		return true;
+		f += g_config.getNumber(ConfigManager::BAN_LIMIT);
+		s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
+		t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+		if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
+			return true;
 
-	if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
-		ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
-		return true;
+		if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
+			ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
+			return true;
 
-	sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
-	g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
-	Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
-		&Game::kickPlayer, &g_game, getID(), false)));
+		sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
+		g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+		Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
+			&Game::kickPlayer, &g_game, getID(), false)));
 	return true;
 }
 

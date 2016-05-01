@@ -21,4 +21,5 @@
 	<event type="kill" name="SummonKill" event="script" value="obsidianknife.lua"/>
 	<event type="login" name="obs_login" event="script" value="obsidianknife.lua"/>
 	<event type="extendedopcode" name="ExtendedOpcode" event="script" value="extendedopcode.lua"/>
+	<event type="moveitem" name="MoveItem" event="script" value="houseprotect.lua"/>
 </creaturescripts>

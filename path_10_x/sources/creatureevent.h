@@ -60,7 +60,8 @@ enum CreatureEventType_t
 	CREATURE_EVENT_PREPAREDEATH,
 	CREATURE_EVENT_MOUNT,
 	CREATURE_EVENT_DISMOUNT,
-	CREATURE_EVENT_EXTENDED_OPCODE // otclient additional network opcodes
+	CREATURE_EVENT_EXTENDED_OPCODE, // otclient additional network opcodes
+	CREATURE_EVENT_MOVEITEM
 };
 
 enum StatsChange_t
@@ -84,6 +85,7 @@ class CreatureEvents : public BaseEvents
 		bool playerLogin(Player* player);
 		bool playerLogout(Player* player, bool forceLogout);
 		bool monsterSpawn(Monster* monster);
+		uint32_t executeMoveItems(Creature* actor, Item* item, const Position& frompos, const Position& pos);
 
 		CreatureEvent* getEventByName(const std::string& name);
 		CreatureEventType_t getType(const std::string& type);
@@ -156,6 +158,7 @@ class CreatureEvent : public Event
 		uint32_t executeExtendedOpcode(Creature* creature, uint8_t opcode, const std::string& buffer);
 		uint32_t executeMount(Player* player, uint8_t mountId);
 		uint32_t executeDismount(Player* player, uint8_t mountId);
+		uint32_t executeMoveItem(Creature* actor, Item* item, const Position& frompos, const Position& pos);
 		//
 
 	protected:

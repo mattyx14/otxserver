@@ -11,8 +11,16 @@ function onLogin(cid)
 	end
 
 	local loss = getConfigValue('deathLostPercent')
-	if(loss ~= nil) then
+	if(loss ~= nil and getPlayerStorageValue(cid, "bless") ~= 5) then
 		doPlayerSetLossPercent(cid, PLAYERLOSS_EXPERIENCE, loss * 10)
+	end
+
+	if(getPlayerStorageValue(cid, "death_bless") == 1) then
+		local t = {PLAYERLOSS_EXPERIENCE, PLAYERLOSS_SKILLS, PLAYERLOSS_ITEMS, PLAYERLOSS_CONTAINERS}
+		for i = 1, #t do
+			doPlayerSetLossPercent(cid, t[i], 100)
+		end
+		setPlayerStorageValue(cid, "death_bless", 0)
 	end
 
 	local accountManager = getPlayerAccountManager(cid)

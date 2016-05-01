@@ -646,6 +646,9 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 	}
 	else if(const Item* item = thing->getItem())
 	{
+		if(isFull())
+			return RET_TILEISFULL;
+
 #ifdef __DEBUG__
 		if(thing->getParent() == NULL && !hasBitSet(FLAG_NOLIMIT, flags))
 			std::clog << "[Notice - Tile::__queryAdd] thing->getParent() == NULL" << std::endl;
@@ -653,9 +656,6 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 #endif
 		if(hasBitSet(FLAG_NOLIMIT, flags))
 			return RET_NOERROR;
-
-		if(!item->getMagicField() && isFull())
-			return RET_TILEISFULL;
 
 		bool isHangable = item->isHangable();
 		if(!ground && !isHangable)

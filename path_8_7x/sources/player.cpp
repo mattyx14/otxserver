@@ -4245,7 +4245,7 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		revengeList.erase(it);
 
 	if(entry.isLast())
-		addInFightTicks(false, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
+		addInFightTicks(true, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
 	return true;
 }
 
@@ -4511,12 +4511,11 @@ Skulls_t Player::getSkull() const
 
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
-	const Player* player = creature->getPlayer();
-	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
-		return SKULL_NONE;
-
-	if(player->getSkull() == SKULL_NONE)
+	if(const Player* player = creature->getPlayer())
 	{
+		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+			return SKULL_NONE;
+
 		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
@@ -4533,6 +4532,9 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
+	return !hasFlag(PlayerFlag_NotGainInFight) && attacked &&
+		attackedSet.find(attacked->getID()) != attackedSet.end();
+
 	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked)
 		return false;
 

@@ -220,7 +220,7 @@ ConditionType_t Combat::DamageToConditionType(CombatType_t type)
 	return CONDITION_NONE;
 }
 
-ReturnValue Combat::canDoCombat(const Creature* caster, const Tile* tile, bool isAggressive, bool createItem)
+ReturnValue Combat::canDoCombat(const Creature* caster, const Tile* tile, bool isAggressive, bool/* createItem*/)
 {
 	if(tile->hasProperty(BLOCKPROJECTILE) || tile->floorChange() || tile->getTeleportItem())
 		return RET_NOTENOUGHROOM;
@@ -243,9 +243,6 @@ ReturnValue Combat::canDoCombat(const Creature* caster, const Tile* tile, bool i
 
 		if(caster->getPosition().z > tile->getPosition().z)
 			return RET_FIRSTGOUPSTAIRS;
-
-		if(createItem && tile->isFull())
-			return RET_TILEISFULL;
 
 		if(!isAggressive)
 			return RET_NOERROR;
@@ -1455,9 +1452,6 @@ bool MagicField::isBlocking(const Creature* creature) const
 
 void MagicField::onStepInField(Creature* creature, bool purposeful/* = true*/)
 {
-	if(!creature)
-		return;
-
 	if(isUnstepable() || isBlocking(creature))
 	{
 		if(!creature->isGhost())

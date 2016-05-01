@@ -1279,7 +1279,8 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 				&& tmpTile->ground && !tmpTile->hasProperty(BLOCKSOLID) && !tmpTile->hasProperty(FLOORCHANGEDOWN))
 			{
 				flags = flags | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
-				destPos.z--;
+				if(!tmpTile->floorChange())
+					destPos.z--;
 			}
 		}
 		else if(currentPos.z != 7 && (!(tmpTile = map->getTile(destPos)) || (!tmpTile->ground &&
@@ -2181,7 +2182,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount/* = -1*/)
 	if(curType.type == newType.type)
 	{
 		//Both items has the same type so we can safely change id/subtype
-		if(!newCount && (item->isStackable() || item->hasCharges()))
+		if(!newCount && (item->isStackable() || (curType.charges > 0)))
 		{
 			if(!item->isStackable() && (!item->getDefaultDuration() || item->getDuration() <= 0))
 			{
