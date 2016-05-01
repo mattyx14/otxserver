@@ -4530,6 +4530,9 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
+	return !hasFlag(PlayerFlag_NotGainInFight) && attacked &&
+		attackedSet.find(attacked->getID()) != attackedSet.end();
+
 	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked)
 		return false;
 
