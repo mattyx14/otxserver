@@ -51,7 +51,7 @@ CREATE TABLE "accounts" (
 	UNIQUE ("name")
 );
 
-INSERT INTO "accounts" VALUES (1, '1', '1', '', 65535, 0, '', '0', 0, 0, 1);
+INSERT INTO "accounts" VALUES (1, '1', '356a192b7913b04c54574d18c28d46e6395428ab', '', 65535, 0, '', '0', 0, 0, 1);
 
 CREATE TABLE "players" (
 	"id" INTEGER PRIMARY KEY NOT NULL,
