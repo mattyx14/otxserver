@@ -64,6 +64,7 @@
 	- Fix Ghost error o protocols 8.1x and 7.x
 	- Fix error on tile limits on all protocols
 	- Fix error on fields
+	- Fix and rewrite databaseSQLite on protocols 8.5+
 	- Death container for 7.x
 ]
 

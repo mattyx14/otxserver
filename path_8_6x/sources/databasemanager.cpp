@@ -1509,13 +1509,13 @@ uint32_t DatabaseManager::updateDatabase()
 
 				case DATABASE_ENGINE_SQLITE:
 				{
-					db->query("ALTER TABLE player_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE player_depotitems ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE tile_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE tile_store ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE house_data ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE `players` ADD `broadcasting` tinyint(4) NOT NULL DEFAULT 0;");
-					db->query("ALTER TABLE `players` ADD `viewers` BOOLEAN(1) NOT NULL DEFAULT 0;");
+					db->query("ALTER TABLE `player_items` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE `player_depotitems` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE `tile_items` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE `tile_store` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE `house_data` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
+					db->query("ALTER TABLE `players` ADD `broadcasting` BOOLEAN(4) NOT NULL DEFAULT 0;");
+					db->query("ALTER TABLE `players` ADD `viewers` INTEGER(1) NOT NULL DEFAULT 0;");
 					break;
 				}
 
