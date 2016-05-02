@@ -13,6 +13,11 @@ setConditionParam(speed, CONDITION_PARAM_TICKS, 10000)
 setConditionFormula(speed, -0.7, 56, -0.7, 56)
 setCombatCondition(combat, speed)
 
+local exhaust = createConditionObject(CONDITION_EXHAUST)
+setConditionParam(exhaust, CONDITION_PARAM_SUBID, 2)
+setConditionParam(exhaust, CONDITION_PARAM_TICKS, 10000)
+setCombatCondition(combat, exhaust)
+
 function onCastSpell(cid, var)
 	return doCombat(cid, combat, var)
 end

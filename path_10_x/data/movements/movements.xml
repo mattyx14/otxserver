@@ -210,8 +210,8 @@
 	<movevent type="StepIn" itemid="12205" event="script" value="walkback.lua"/>
 
 	<!-- Snow footprint tiles -->
-	<movevent type="StepOut" itemid="670" event="script" value="snow.lua"/>
-	<movevent type="StepOut" itemid="6580-6593" event="script" value="snow.lua"/>
+	<movevent type="StepIn" itemid="670" event="script" value="snow.lua"/>
+	<movevent type="StepIn" itemid="6580-6594" event="script" value="snow.lua"/>
 
 	<!-- Cooking -->
 	<!-- Create bread movements -->
@@ -230,14 +230,54 @@
 	<movevent type="StepIn" itemid="8072" event="script" value="yellowpillow.lua"/>
 
 	<!-- Fields -->
-	<movevent type="StepIn" itemid="1487-1508" event="function" value="onStepInField"/>
-	<movevent type="AddItem" itemid="1487-1508" event="function" value="onAddField"/>
-	<movevent type="StepIn" itemid="7359-7360" event="function" value="onStepInField"/>
-	<movevent type="AddItem" itemid="7359-7360" event="function" value="onAddField"/>
-	<movevent type="StepIn" itemid="7465-7473" event="function" value="onStepInField"/>
-	<movevent type="AddItem" itemid="7465-7473" event="function" value="onAddField"/>
-	<movevent type="StepIn" itemid="11098-11099" event="function" value="onStepInField"/>
-	<movevent type="AddItem" itemid="11098-11099" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1487" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1487" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1488" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1488" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1489" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1489" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1490" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1490" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1491" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1491" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1492" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1492" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1493" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1493" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1494" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1494" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1495" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1495" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1496" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1496" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1497" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1497" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1498" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1498" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1499" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1499" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1500" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1500" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1501" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1501" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1502" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1502" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1503" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1503" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1504" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1504" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1505" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1505" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1506" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1506" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="1507" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="1507" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="7359" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="7360" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="11098" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="11098" event="function" value="onAddField"/>
+	<movevent type="StepIn" itemid="11099" event="function" value="onStepInField"/>
+	<movevent type="AddItem" itemid="11099" event="function" value="onAddField"/>
 
 	<!-- Boots -->
 		<!-- Boots of Haste -->

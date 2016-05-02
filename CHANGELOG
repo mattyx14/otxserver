@@ -41,7 +41,6 @@
 		- Add Support to Protocols 10.37+
 		- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 			This error only reproduce on protocols 9.x +
-		- Fix error on fields
 
 	Protocols 9.x +
 		- Add browseField
@@ -64,6 +63,7 @@
 	- Fix error on account manager on 8.7
 	- Fix Ghost error o protocols 8.1x and 8.x
 	- Fix error on houses tile limit on all protocols
+	- Fix error on fields
 	- Death container for 7.x
 ]
 

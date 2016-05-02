@@ -625,7 +625,7 @@ bool Spell::checkSpell(Player* player) const
 		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_COMBAT))
 			exhausted = true;
 	}
-	else if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_HEALING))
+	if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_HEALING))
 		exhausted = true;
 
 	if(exhausted && !player->hasFlag(PlayerFlag_HasNoExhaustion))

@@ -1423,9 +1423,10 @@ bool MagicField::isBlocking(const Creature* creature) const
 	return false;
 }
 
-void MagicField::onStepInField(Creature* creature, bool purposeful/* = true*/)
+void MagicField::onStepInField(Creature* creature)
 {
-	if(isUnstepable() || isBlocking(creature))
+	//remove magic walls/wild growth
+	if(id == ITEM_MAGICWALL || id == ITEM_WILDGROWTH || id == ITEM_MAGICWALL_SAFE || id == ITEM_WILDGROWTH_SAFE || isBlocking(creature))
 	{
 		if(!creature->isGhost())
 			g_game.internalRemoveItem(creature, this, 1);
@@ -1433,39 +1434,39 @@ void MagicField::onStepInField(Creature* creature, bool purposeful/* = true*/)
 		return;
 	}
 
-	if(!purposeful || !creature->isAttackable())
-		return;
-
 	const ItemType& it = items[id];
-	if(!it.condition)
-		return;
-
-	uint32_t ownerId = getOwner();
-	Tile* tile = getTile();
-
-	Condition* condition = it.condition->clone();
-	if(ownerId && !tile->hasFlag(TILESTATE_HARDCOREZONE))
+	if(it.condition)
 	{
-		if(Creature* owner = g_game.getCreatureByID(ownerId))
+		Condition* condition = it.condition->clone();
+		uint32_t ownerId = getOwner();
+		if(ownerId)
 		{
-			Player* ownerPlayer = owner->getPlayer();
-			if(!ownerPlayer && owner->isPlayerSummon())
-				ownerPlayer = owner->getPlayerMaster();
-
 			bool harmful = true;
-			if((g_game.getWorldType() == WORLDTYPE_OPTIONAL || tile->hasFlag(TILESTATE_OPTIONALZONE)) && ownerPlayer)
-				harmful = false;
-			else if(Player* player = creature->getPlayer())
+			if(g_game.getWorldType() == WORLDTYPE_OPTIONAL || getTile()->hasFlag(TILESTATE_OPTIONALZONE))
 			{
-				if(ownerPlayer && Combat::isProtected(ownerPlayer, player))
-					harmful = false;
+				Creature* owner = g_game.getCreatureByID(ownerId);
+				if(owner)
+				{
+					if(owner->getPlayer() || (owner->isPlayerSummon() && owner->getPlayerMaster()->getPlayer()))
+						harmful = false;
+				}
 			}
 
-			if(!harmful || (OTSYS_TIME() - createTime) <= (uint32_t)g_config.getNumber(
-				ConfigManager::FIELD_OWNERSHIP) || creature->hasBeenAttacked(ownerId))
+			Player* player = creature->getPlayer();
+			if(player)
+			{
+				Player* ownerPlayer = g_game.getPlayerByID(ownerId);
+				if(ownerPlayer)
+				{
+					if(Combat::isProtected(ownerPlayer, player))
+						harmful = false;
+				}
+			}
+
+			if(!harmful || (OTSYS_TIME() - createTime <= 5000) || creature->hasBeenAttacked(ownerId))
 				condition->setParam(CONDITIONPARAM_OWNER, ownerId);
 		}
-	}
 
-	creature->addCondition(condition);
+		creature->addCondition(condition);
+	}
 }

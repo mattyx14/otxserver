@@ -4390,22 +4390,27 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
-	return !hasFlag(PlayerFlag_NotGainInFight) && attacked &&
-		attackedSet.find(attacked->getID()) != attackedSet.end();
-
-	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked)
+	if(hasFlag(PlayerFlag_NotGainInFight) || !attacked)
 		return false;
 
-	return attackedSet.find(attacked->guid) != attackedSet.end();
+	AttackedSet::const_iterator it;
+	uint32_t attackedId = attacked->getID();
+	it = attackedSet.find(attackedId);
+	if(it != attackedSet.end())
+		return true;
+
+	return false;
 }
 
 void Player::addAttacked(const Player* attacked)
 {
-	if(hasFlag(PlayerFlag_NotGainInFight) || !attacked)
+	if(hasFlag(PlayerFlag_NotGainInFight) || !attacked || attacked == this)
 		return;
 
+	AttackedSet::iterator it;
 	uint32_t attackedId = attacked->getID();
-	if(attackedSet.find(attackedId) == attackedSet.end())
+	it = attackedSet.find(attackedId);
+	if(it == attackedSet.end())
 		attackedSet.insert(attackedId);
 }
 

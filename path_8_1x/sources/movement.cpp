@@ -945,9 +945,10 @@ void MoveEvent::setEventType(MoveEvent_t type)
 
 uint32_t MoveEvent::StepInField(Creature* creature, Item* item)
 {
-	if(MagicField* field = item->getMagicField())
+	MagicField* field = item->getMagicField();
+	if(field)
 	{
-		field->onStepInField(creature, creature->getPlayer() != NULL);
+		field->onStepInField(creature);
 		return 1;
 	}
 
@@ -958,15 +959,12 @@ uint32_t MoveEvent::AddItemField(Item* item)
 {
 	if(MagicField* field = item->getMagicField())
 	{
-		if(Tile* tile = item->getTile())
+		Tile* tile = item->getTile();
+		if(CreatureVector* creatures = tile->getCreatures())
 		{
-			if(CreatureVector* creatures = tile->getCreatures())
-			{
-				for(CreatureVector::iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
-					field->onStepInField(*cit);
-			}
+			for(Creature* creature : *creatures)
+				field->onStepInField(creature);
 		}
-
 		return 1;
 	}
 
