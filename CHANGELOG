@@ -37,12 +37,12 @@
 ]
 
 [ BUGS AND MISSING FEATURES
-	All Protocols
-		- Add Support to Protocols 10.37+
+	Errors Protocols
 		- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 			This error only reproduce on protocols 9.x +
 
-	Protocols 9.x +
+	Protocols
+		- Add Support to Protocols 10.37+
 		- Add browseField
 		- Add helpers Party/Guilds
 		- Add purseSlot
@@ -61,8 +61,8 @@
 	- Fix onPlayerTrade NPC - if(amount <= 0) amount = 1; this prevent sell on infinite items for example enchanted items
 	- Fix maximum value experiencie for 7.x - 2,147,483,647
 	- Fix error on account manager on 8.7
-	- Fix Ghost error o protocols 8.1x and 8.x
-	- Fix error on houses tile limit on all protocols
+	- Fix Ghost error o protocols 8.1x and 7.x
+	- Fix error on tile limits on all protocols
 	- Fix error on fields
 	- Death container for 7.x
 ]
