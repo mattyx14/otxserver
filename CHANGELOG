@@ -1,12 +1,12 @@
 [ OTX Server 3 - CHANGE LOG
 	Project Name
-		OTX Server 3
+		OTX Server
 
 	OTX Server is based on:
 		The Forgotten Server Version: 1.2
 
 	Codenamed
-		DARK SPECTER
+		LORD ZEDD
 
 	Forum and website
 		http://www.blacktibia.org/f19-otx-server-3/
@@ -56,22 +56,23 @@
 			- CastSystem for Protols 8.x
 ]
 
-[ OTX Server 3.4 :: Version " "
+[ OTX Server 3.4 :: Version " LORD ZEDD "
 	- Added /attr command
 	- Added custom script for bless on low level this are optional and disable
 	- Added new commands :: "!saveme - !commands - !spells - !stamina"
 	- Added new function onAttackedCreatureKilled
 	- Added new script potion more simple to use
-	- Added new custom functions: getDistanceBetween - getFormattedWorldTime - doCreatureSayWithRadius - getBlessingsCost - getPvpBlessingCost - isWarrior
-	- Added function item_name to attr command
+	- Added new custom functions: getDistanceBetween - getFormattedWorldTime -
+		doCreatureSayWithRadius - getBlessingsCost - getPvpBlessingCost - isWarrior
 	- Added Authenticator Token support
+	- Added PVPBless support
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error
 	- Fixed and rewrite door system
 	- Fixed special tiles bug
 	- Fixed wallback for quest chest
-	- Fixed promotion only for premium
+	- Fixed promote error
 	- Fixed and rewrite commands
 	- Fixed error on outfits for free
 	- Fixed error on criticalhit display
@@ -81,10 +82,11 @@
 	- Fixed strengthening_potions
 	- Fixed console errors on use tools
 	- Fixed Guild Ranks
-	- Move all custom libs fuctions to custom file on libs .../data/lib/custom/custom.lua
+	- Move all custom libs fuctions to custom file on libs
+		.../data/lib/custom/custom.lua
 	- Remove onSave no required
 	- Remove lessLoss no required
-	- Support to PVPBless
+	- Remove castingSystem "temporal"
 	- Support to 10.92
 ]
 
