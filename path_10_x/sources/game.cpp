@@ -3200,8 +3200,8 @@ bool Game::playerAcceptTrade(uint32_t playerId)
 		tradeItems.erase(it);
 	}
 
-	ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, FLAG_IGNOREAUTOSTACK, true);
-	ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, FLAG_IGNOREAUTOSTACK, true);
+	ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, 0, true);
+	ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, 0, true);
 
 	bool success = false;
 	if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
@@ -3242,13 +3242,14 @@ bool Game::playerAcceptTrade(uint32_t playerId)
 	player->setTradeState(TRADE_NONE);
 	player->tradeItem = NULL;
 	player->tradePartner = NULL;
+	player->sendTradeClose();
+	IOLoginData::getInstance()->savePlayer(player);
 
 	tradePartner->setTradeState(TRADE_NONE);
 	tradePartner->tradeItem = NULL;
 	tradePartner->tradePartner = NULL;
-
-	player->sendTradeClose();
 	tradePartner->sendTradeClose();
+	IOLoginData::getInstance()->savePlayer(tradePartner);
 	return success;
 }
 
