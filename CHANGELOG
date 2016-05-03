@@ -7,7 +7,7 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		Crying Damson
+		LORD ZEDD
 
 	Forum and website
 		http://www.blacktibia.org/f4-otx-server-2-descontinuado
@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED : OTX Server 2.X.S - 3 :: Version "Crying Damson"
+		COMPLETED : OTX Server 2.X.S - 3 :: Version "LORD ZEDD"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -48,7 +48,7 @@
 		- Add purseSlot
 ]
 
-[ OTX Server 2.X.S - 3 :: Version "Crying Damson"
+[ OTX Server 2.X.S - 3 :: Version "LORD ZEDD"
 	- Added new function house protect
 	- Added new creature event "moveitem"
 	- Fix attack to player / monsters
