@@ -1198,7 +1198,7 @@ void Creature::onAddCondition(ConditionType_t type, bool hadCondition)
 
 		case CONDITION_PARALYZE:
 		{
-			if(hasCondition(CONDITION_HASTE, -1, false))
+			if(hasCondition(CONDITION_HASTE, -1))
 				removeCondition(CONDITION_HASTE);
 
 			break;
@@ -1206,7 +1206,7 @@ void Creature::onAddCondition(ConditionType_t type, bool hadCondition)
 
 		case CONDITION_HASTE:
 		{
-			if(hasCondition(CONDITION_PARALYZE, -1, false))
+			if(hasCondition(CONDITION_PARALYZE, -1))
 				removeCondition(CONDITION_PARALYZE);
 
 			break;
@@ -1219,7 +1219,7 @@ void Creature::onAddCondition(ConditionType_t type, bool hadCondition)
 
 void Creature::onEndCondition(ConditionType_t type)
 {
-	if(type == CONDITION_INVISIBLE && !hasCondition(CONDITION_INVISIBLE, -1, false))
+	if(type == CONDITION_INVISIBLE && !hasCondition(CONDITION_INVISIBLE, -1))
 		g_game.internalCreatureChangeVisible(this, VISIBLE_APPEAR);
 }
 
@@ -1474,7 +1474,7 @@ bool Creature::addCondition(Condition* condition)
 	if(!condition)
 		return false;
 
-	bool hadCondition = hasCondition(condition->getType(), -1, false);
+	bool hadCondition = hasCondition(condition->getType(), -1);
 	if(Condition* previous = getCondition(condition->getType(), condition->getId(), condition->getSubId()))
 	{
 		previous->addCondition(this, condition);
@@ -1495,7 +1495,7 @@ bool Creature::addCondition(Condition* condition)
 
 bool Creature::addCombatCondition(Condition* condition)
 {
-	bool hadCondition = hasCondition(condition->getType(), -1, false);
+	bool hadCondition = hasCondition(condition->getType(), -1);
 	//Caution: condition variable could be deleted after the call to addCondition
 	ConditionType_t type = condition->getType();
 	if(!addCondition(condition))
@@ -1616,19 +1616,18 @@ void Creature::executeConditions(uint32_t interval)
 	}
 }
 
-bool Creature::hasCondition(ConditionType_t type, int32_t subId/* = 0*/, bool checkTime/* = true*/) const
+bool Creature::hasCondition(ConditionType_t type, uint32_t subId/* = 0*/) const
 {
 	if(isSuppress(type))
 		return false;
 
-	Condition* condition = NULL;
-	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
+	int64_t timeNow = OTSYS_TIME();
+	for(Condition* condition : conditions)
 	{
-		if(!(condition = *it) || condition->getType() != type ||
-			(subId != -1 && condition->getSubId() != (uint32_t)subId))
+		if(condition->getType() != type || condition->getSubId() != subId)
 			continue;
 
-		if(!checkTime || !condition->getEndTime() || condition->getEndTime() >= OTSYS_TIME())
+		if(condition->getEndTime() >= timeNow)
 			return true;
 	}
 

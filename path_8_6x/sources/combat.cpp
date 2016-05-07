@@ -642,7 +642,7 @@ bool Combat::CombatConditionFunc(Creature* caster, Creature* target, const Comba
 
 bool Combat::CombatDispelFunc(Creature* caster, Creature* target, const CombatParams& params, void*)
 {
-	if(!target->hasCondition(params.dispelType, -1, false))
+	if(!target->hasCondition(params.dispelType, -1))
 		return false;
 
 	if(params.dispelType == CONDITION_INVISIBLE)
