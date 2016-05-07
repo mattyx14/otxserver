@@ -1588,10 +1588,10 @@ void Creature::removeConditions(ConditionEnd_t reason, bool onlyPersistent/* = t
 
 Condition* Creature::getCondition(ConditionType_t type, ConditionId_t id, uint32_t subId/* = 0*/) const
 {
-	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
+	for(Condition* condition : conditions)
 	{
-		if((*it)->getType() == type && (*it)->getId() == id && (*it)->getSubId() == subId)
-			return *it;
+		if(condition->getType() == type && condition->getId() == id && condition->getSubId() == subId)
+			return condition;
 	}
 
 	return NULL;
@@ -1599,20 +1599,23 @@ Condition* Creature::getCondition(ConditionType_t type, ConditionId_t id, uint32
 
 void Creature::executeConditions(uint32_t interval)
 {
-	for(ConditionList::iterator it = conditions.begin(); it != conditions.end(); )
+	auto it = conditions.begin(), end = conditions.end();
+	while(it != end)
 	{
-		if((*it)->executeCondition(this, interval))
-		{
-			++it;
-			continue;
-		}
-
 		Condition* condition = *it;
-		it = conditions.erase(it);
+		if(!condition->executeCondition(this, interval))
+		{
+			ConditionType_t type = condition->getType();
 
-		condition->endCondition(this, CONDITIONEND_TICKS);
-		onEndCondition(condition->getType());
-		delete condition;
+			it = conditions.erase(it);
+
+			condition->endCondition(this, CONDITIONEND_TICKS);
+			delete condition;
+
+			onEndCondition(type);
+		}
+		else
+			++it;
 	}
 }
 
