@@ -36,7 +36,6 @@ enum TargetSearchType_t
 };
 
 typedef std::list<Creature*> CreatureList;
-typedef std::list<std::string> NameList;
 class Monster : public Creature
 {
 	private:
@@ -125,9 +124,6 @@ class Monster : public Creature
 		virtual BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 			bool checkDefense = false, bool checkArmor = false, bool reflect = true, bool field = false, bool element = false);
 
-		void addAttackList(std::string name);
-		void setAttackPlayer(bool state);
-
 	private:
 		CreatureList targetList;
 		CreatureList friendList;
@@ -150,9 +146,6 @@ class Monster : public Creature
 
 		Spawn* spawn;
 		Raid* raid;
-
-		bool targetPlayers;
-		NameList namelist;
 
 		bool isMasterInRange;
 		bool teleportToMaster;

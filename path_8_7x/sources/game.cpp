@@ -1280,8 +1280,7 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 				&& tmpTile->ground && !tmpTile->hasProperty(BLOCKSOLID) && !tmpTile->hasProperty(FLOORCHANGEDOWN))
 			{
 				flags = flags | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
-				if(!tmpTile->floorChange())
-					destPos.z--;
+				destPos.z--;
 			}
 		}
 		else if(currentPos.z != 7 && (!(tmpTile = map->getTile(destPos)) || (!tmpTile->ground &&

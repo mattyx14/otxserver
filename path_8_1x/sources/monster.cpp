@@ -94,7 +94,6 @@ Monster::Monster(MonsterType* _mType):
 	defenseTicks = 0;
 	yellTicks = 0;
 	extraMeleeAttack = false;
-	targetPlayers = true;
 
 	// register creature events
 	for(StringVec::iterator it = mType->scriptList.begin(); it != mType->scriptList.end(); ++it)
@@ -108,7 +107,6 @@ Monster::~Monster()
 {
 	clearTargetList();
 	clearFriendList();
-	namelist.clear();
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 
 	monsterCount--;
@@ -118,25 +116,6 @@ Monster::~Monster()
 		raid->unRef();
 		raid = NULL;
 	}
-}
-
-void Monster::setAttackPlayer(bool state)
-{
-	targetPlayers = state;
-	if(attackedCreature && attackedCreature->getPlayer() && !targetPlayers)
-	{
-		setFollowCreature(NULL);
-		setAttackedCreature(NULL);
-		onTargetDisappear(true);
-	}
-
-	updateTargetList();
-}
-
-void Monster::addAttackList(std::string name)
-{
-	namelist.push_back(name);
-	updateTargetList(); 
 }
 
 void Monster::onTarget(Creature* target)
@@ -233,7 +212,7 @@ void Monster::updateTargetList()
 	CreatureList::iterator it;
 	for(it = friendList.begin(); it != friendList.end();)
 	{
-		if((*it)->getHealth() <= 0 || !isFriend(*it) || !canSee((*it)->getPosition()))
+		if((*it)->getHealth() <= 0 || !canSee((*it)->getPosition()))
 		{
 			(*it)->unRef();
 			it = friendList.erase(it);
@@ -244,7 +223,7 @@ void Monster::updateTargetList()
 
 	for(it = targetList.begin(); it != targetList.end();)
 	{
-		if((*it)->getHealth() <= 0 || !isOpponent(*it) || !canSee((*it)->getPosition()))
+		if((*it)->getHealth() <= 0 || !canSee((*it)->getPosition()))
 		{
 			(*it)->unRef();
 			it = targetList.erase(it);
@@ -318,16 +297,6 @@ void Monster::onCreatureEnter(Creature* creature)
 
 bool Monster::isFriend(const Creature* creature)
 {
-	if(creature->getMonster() == this)
-		return true;
-
-	NameList::iterator it = std::find(namelist.begin(), namelist.end(), creature->getName());
-	if(it != namelist.end())
-		return false;
-
-	if(creature->getPlayer() && !targetPlayers)
-		return true;
-
 	if(!isSummon() || !master->getPlayer())
 		return creature->getMonster() && !creature->isSummon();
 
@@ -343,16 +312,6 @@ bool Monster::isFriend(const Creature* creature)
 
 bool Monster::isOpponent(const Creature* creature)
 {
-	if(creature->getMonster() == this)
-		return false;
-
-	NameList::iterator it = std::find(namelist.begin(), namelist.end(), creature->getName());
-	if(it != namelist.end())
-		return true;
-
-	if(creature->getPlayer() && !targetPlayers)
-		return false;
-
 	return (isSummon() && master->getPlayer() && creature != master) || ((creature->getPlayer()
 		&& !creature->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) || creature->getPlayerMaster());
 }
@@ -592,7 +551,7 @@ void Monster::updateIdleStatus()
 			if((!isMasterInRange && !teleportToMaster) || (master->getMonster() && master->getMonster()->getIdleStatus()))
 				idle = true;
 		}
-		else if(targetList.empty() && targetPlayers)
+		else if(targetList.empty())
 			idle = true;
 	}
 
