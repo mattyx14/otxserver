@@ -52,7 +52,6 @@
 [ OTX Server 2.X.S - 3 :: Version "LORD ZEDD"
 	- Added new function house protect
 	- Added new creature event "moveitem"
-	- Fix attack to player / monsters
 	- Fix compiler errors
 	- Fix error on blessings
 	- Fix closingdoor script
