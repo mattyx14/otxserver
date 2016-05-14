@@ -1522,6 +1522,9 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 		}
 	}
 
+	if(!g_creatureEvents->executeMoveItems(player, item, mapFromPos, mapToPos))
+		return false;
+
 	bool deny = false;
 	CreatureEventList throwEvents = player->getCreatureEvents(CREATURE_EVENT_THROW);
 	for(CreatureEventList::iterator it = throwEvents.begin(); it != throwEvents.end(); ++it)
@@ -5258,6 +5261,20 @@ bool Game::playerReportBug(uint32_t playerId, std::string comment)
 	CreatureEventList reportBugEvents = player->getCreatureEvents(CREATURE_EVENT_REPORTBUG);
 	for(CreatureEventList::iterator it = reportBugEvents.begin(); it != reportBugEvents.end(); ++it)
 		(*it)->executeReportBug(player, comment);
+
+	return true;
+}
+
+bool Game::playerReportViolation(uint32_t playerId, ReportType_t type, uint8_t reason, const std::string& name,
+	const std::string& comment, const std::string& translation, uint32_t statementId)
+{
+	Player* player = getPlayerByID(playerId);
+	if(!player || player->isRemoved())
+		return false;
+
+	CreatureEventList reportViolationEvents = player->getCreatureEvents(CREATURE_EVENT_REPORTVIOLATION);
+	for(CreatureEventList::iterator it = reportViolationEvents.begin(); it != reportViolationEvents.end(); ++it)
+		(*it)->executeReportViolation(player, type, reason, name, comment, translation, statementId);
 
 	return true;
 }

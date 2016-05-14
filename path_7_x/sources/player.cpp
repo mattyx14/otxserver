@@ -1151,6 +1151,10 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You may not attack immediately after logging in.");
 			break;
 
+		case RET_YOUHAVETOWAIT:
+			sendCancel("Sorry, you have to wait.");
+			break;
+
 		case RET_YOUCANONLYTRADEUPTOX:
 		{
 			std::stringstream s;
@@ -1622,6 +1626,10 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 				addCondition(condition);
 		}
 	}
+
+	// unset editing house
+	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+		editHouse = NULL;
 }
 
 void Player::onAddContainerItem(const Container* container, const Item* item)

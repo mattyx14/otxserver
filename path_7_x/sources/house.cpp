@@ -965,6 +965,7 @@ bool Houses::payHouse(House* house, time_t _time, uint32_t bid)
 				if(player->isVirtual())
 					IOLoginData::getInstance()->savePlayer(player);
 			}
+
 			else
 				g_game.freeThing(letter);
 		}

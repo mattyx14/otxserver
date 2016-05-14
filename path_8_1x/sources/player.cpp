@@ -1188,6 +1188,10 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You may not attack immediately after logging in.");
 			break;
 
+		case RET_YOUHAVETOWAIT:
+			sendCancel("Sorry, you have to wait.");
+			break;
+
 		case RET_YOUCANONLYTRADEUPTOX:
 		{
 			std::stringstream s;
@@ -1661,6 +1665,10 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 				addCondition(condition);
 		}
 	}
+
+	// unset editing house
+	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+		editHouse = NULL;
 }
 
 void Player::onAddContainerItem(const Container* container, const Item* item)
@@ -2921,8 +2929,7 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 		if((tmpItem = getInventoryItem((slots_t)index)) && (!tmpItem->isStackable() || tmpItem->getID() != item->getID()))
 			return RET_NEEDEXCHANGE;
 
-		//check if enough capacity
-		if(!hasCapacity(item, count))
+		if(!hasCapacity(item, count)) //check if enough capacity
 			return RET_NOTENOUGHCAPACITY;
 
 		if(!g_moveEvents->onPlayerEquip(self, const_cast<Item*>(item), (slots_t)index, true))
