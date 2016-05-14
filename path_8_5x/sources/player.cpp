@@ -1238,6 +1238,10 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You may not attack immediately after logging in.");
 			break;
 
+		case RET_YOUHAVETOWAIT:
+			sendCancel("Sorry, you have to wait.");
+			break;
+
 		case RET_YOUCANONLYTRADEUPTOX:
 		{
 			std::stringstream s;
@@ -1761,6 +1765,10 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 				addCondition(condition);
 		}
 	}
+
+	// unset editing house
+	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+		editHouse = NULL;
 
 	if(getZone() == ZONE_PROTECTION && newTile->ground && oldTile->ground &&
 		Item::items[newTile->ground->getID()].walkStack != Item::items[oldTile->ground->getID()].walkStack)
@@ -5081,7 +5089,7 @@ void Player::manageAccount(const std::string &text)
 					}
 				}
 
-				if(msg.str().length() == 17)
+				if(msg.str().length() == NULL)
 					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
