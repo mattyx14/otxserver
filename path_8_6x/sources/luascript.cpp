@@ -4917,7 +4917,7 @@ int32_t LuaInterface::luaGetTileThingByPos(lua_State* L)
 	popPosition(L, pos);
 	ScriptEnviroment* env = getEnv();
 
-	Tile* tile = g_game.getTile(pos.x, pos.y, pos.z);
+	Tile* tile = g_game.getTile(pos);
 	if(!tile)
 	{
 		if(pos.stackpos == -1)
