@@ -1218,7 +1218,7 @@ void Creature::onAddCondition(ConditionType_t type, bool hadCondition)
 
 void Creature::onEndCondition(ConditionType_t type)
 {
-	if(type == CONDITION_INVISIBLE && !hasCondition(CONDITION_INVISIBLE))
+	if(type == CONDITION_INVISIBLE && !hasCondition(CONDITION_INVISIBLE, -1, false))
 		g_game.internalCreatureChangeVisible(this, VISIBLE_APPEAR);
 }
 
@@ -1565,19 +1565,17 @@ void Creature::executeConditions(uint32_t interval)
 	}
 }
 
-bool Creature::hasCondition(ConditionType_t type, uint32_t subId/* = 0*/, bool checkTime/* = true*/) const
+bool Creature::hasCondition(ConditionType_t type, int32_t subId/* = 0*/, bool checkTime/* = true*/) const
 {
 	if(isSuppress(type))
 		return false;
 
-	Condition* condition = NULL;
 	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
 	{
-		if(!(condition = *it) || condition->getType() != type ||
-			condition->getSubId() != subId)
+		if((*it)->getType() != type || (subId != -1 && (*it)->getSubId() != (uint32_t)subId))
 			continue;
 
-		if(!checkTime || !condition->getEndTime() || condition->getEndTime() >= OTSYS_TIME())
+		if(!checkTime || !(*it)->getEndTime() || (*it)->getEndTime() >= OTSYS_TIME())
 			return true;
 	}
 

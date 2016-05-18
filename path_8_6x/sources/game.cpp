@@ -1515,6 +1515,9 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 		return false;
 	}
 
+	if(!g_creatureEvents->executeMoveItems(player, item, mapFromPos, mapToPos))
+		return false;
+
 	bool deny = false;
 	CreatureEventList throwEvents = player->getCreatureEvents(CREATURE_EVENT_THROW);
 	for(CreatureEventList::iterator it = throwEvents.begin(); it != throwEvents.end(); ++it)

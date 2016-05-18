@@ -1777,6 +1777,10 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 		}
 	}
 
+	// unset editing house
+	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+		editHouse = NULL;
+
 	if(getZone() == ZONE_PROTECTION && newTile->ground && oldTile->ground &&
 		Item::items[newTile->ground->getID()].walkStack != Item::items[oldTile->ground->getID()].walkStack)
 		g_game.updateCreatureWalkthrough(this);
