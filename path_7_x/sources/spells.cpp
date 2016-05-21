@@ -673,7 +673,6 @@ bool Spell::checkSpell(Player* player) const
 
 	if(!player->hasFlag(PlayerFlag_HasNoExhaustion))
  	{
- 	{
 		bool exhausted = false;
 		if(!g_config.getBool(ConfigManager::NO_ATTACKHEALING_SIMULTANEUS))
 		{
