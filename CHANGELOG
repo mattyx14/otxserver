@@ -66,6 +66,8 @@
 	- Fix error on fields
 	- Fix and rewrite databaseSQLite on protocols 8.5+
 	- Death container for 7.x
+	- Fix dont los eCONDITION_INFIGHT on PROTECTION_ZONE only 7x
+	- Fix Exhaust on protocol 7x
 ]
 
 [ OTX Server 2.X.S - 2 :: Version "Crying Damson"
