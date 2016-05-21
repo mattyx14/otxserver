@@ -177,6 +177,10 @@
 		runesHitTopCreature = false
 		charlistBasicInfo = false
 		classicDamageOnWeapons = true
+		
+		-- ConfigSpells
+		noAttackHealingSimultaneus = true
+		enableCooldowns = true
 
 	-- Connection config
 	loginTries = 20
