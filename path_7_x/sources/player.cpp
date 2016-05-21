@@ -542,9 +542,6 @@ void Player::sendIcons() const
 	if(getZone() == ZONE_PROTECTION)
 	{
 		icons |= ICON_NONE;
-
-		if(hasBitSet(ICON_SWORDS, icons))
-			icons &= ~ICON_SWORDS;
 	}
 
 	if(pzLocked)
