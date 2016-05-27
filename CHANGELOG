@@ -66,6 +66,8 @@
 		doCreatureSayWithRadius - getBlessingsCost - getPvpBlessingCost - isWarrior
 	- Added Authenticator Token support
 	- Added PVPBless support
+	- Added reflect items functions attributes
+	- Added expertPVPMode (WIP)
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error
@@ -79,9 +81,13 @@
 	- Fixed configkeys for liveCasting
 	- Fixed protection attack for low levels
 	- Fixed gain and recover for vocations
+	- Fixed crashServer on decay/traps items
+	- Fixed errors on NPC (missing info)
+	- Fixed runes.lua it solve problem on reward wand/rod on new players sorc/druid
 	- Fixed strengthening_potions
 	- Fixed console errors on use tools
 	- Fixed Guild Ranks
+	- Fixed skinning script
 	- Move all custom libs fuctions to custom file on libs
 		.../data/lib/custom/custom.lua
 	- Remove onSave no required

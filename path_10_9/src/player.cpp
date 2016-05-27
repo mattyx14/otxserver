@@ -106,6 +106,7 @@ Player::Player(ProtocolGame_ptr p) :
 
 	chaseMode = CHASEMODE_STANDSTILL;
 	fightMode = FIGHTMODE_ATTACK;
+	pvpmode = PVP_MODE_DOVE;
 
 	bedItem = nullptr;
 
@@ -823,8 +824,16 @@ bool Player::canWalkthrough(const Creature* creature) const
 		return false;
 	}
 
+	if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && hasPvpActivityWith(player)) {
+		return false;
+	}
+
 	const Tile* playerTile = player->getTile();
-	if (!playerTile || !playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+	if (!playerTile) {
+		return false;
+	}
+
+	if (!g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && !playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 		return false;
 	}
 
@@ -860,7 +869,20 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	}
 
 	const Tile* playerTile = player->getTile();
-	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
+	if (!playerTile) {
+		return false;
+	}
+
+	if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
+		// in non-protection-zone and has activity with him, then you can't walkthrough!
+		if (hasPvpActivityWith(player) && !playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+			return false;
+		}
+	} else if (!playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+		return false;
+	}
+
+	return true;
 }
 
 void Player::onReceiveMail() const
@@ -1974,6 +1996,21 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 						}
 					}
 				}
+				if (attacker) {
+					const int16_t& reflectPercent = it.abilities->reflectPercent[combatTypeToIndex(combatType)];
+					if (reflectPercent != 0) {
+						CombatParams params;
+						params.combatType = combatType;
+						params.impactEffect = CONST_ME_MAGIC_BLUE;
+
+						CombatDamage reflectDamage;
+						reflectDamage.origin = ORIGIN_SPELL;
+						reflectDamage.primary.type = combatType;
+						reflectDamage.primary.value = std::ceil(-damage * (reflectPercent / 100.));
+						
+						Combat::doCombatHealth(this, attacker, reflectDamage, params);
+					}
+				}
 			}
 		}
 
@@ -2235,6 +2272,128 @@ void Player::addInFightTicks(bool pzlock /*= false*/)
 
 	Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_INFIGHT, g_config.getNumber(ConfigManager::PZ_LOCKED), 0);
 	addCondition(condition);
+}
+
+void Player::sendPvpActionStart(Player* player)
+{
+
+	if (!player || const_cast<Player*>(this) == player) {
+		return;
+	}
+
+	if (hasPvpActivityWith(player)) {
+		sendCreatureSquare(player, SQ_COLOR_YELLOW);
+		sendCreatureSquare(this, SQ_COLOR_YELLOW); // As well showing square on self!
+
+		g_scheduler.addEvent(createSchedulerTask(500, std::bind(&Game::sendPvpSquare, &g_game, this->getID(), player->getID())));
+	}
+}
+
+ItemPvpStat Player::getItemPvpStat(Item* item) const
+{
+	// If safe, then this mwall doesn't matter to him~
+	if (!item) {
+		return ITEM_IS_SAFE;
+	}
+
+	uint32_t ownerId = item->getOwner();
+	if (!ownerId) {
+		return ITEM_IS_SAFE;
+	}
+
+	Player* owner = g_game.getPlayerByID(ownerId);
+	if (!owner) {
+		return ITEM_IS_SAFE;
+	}
+
+	if ((owner == this && (isPzLocked() || attackedSet.size() > 0)) || hasPvpActivityWith(owner)) {
+		return ITEM_IS_PVP;
+	}
+
+	return ITEM_IS_SAFE;
+}
+
+bool Player::canAttackPlayer(const Player* player) const
+{
+	if (g_game.getWorldType() == WORLD_TYPE_NO_PVP) {
+		return false;
+	}
+
+	if (!player) {
+		return false;
+	}
+
+	Player* targetPlayer = const_cast<Player*>(player);
+	if (!targetPlayer) {
+		return false;
+	}
+
+	if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
+		// Secure mode can attack everyone!
+		if (!hasSecureMode()) {
+			return true;
+		}
+
+		if (pvpmode == PVP_MODE_DOVE) {
+			if (!targetPlayer->hasAttacked(this)) {
+				return false;
+			}
+		} else if (pvpmode == PVP_MODE_WHITE_HAND) {
+			if (!targetPlayer->hasPvpActivityWith(this, true)) {
+				return false;
+			}
+		} else if (pvpmode == PVP_MODE_YELLOW_HAND) {
+			if (targetPlayer->getSkull() == SKULL_NONE) {
+				return false;
+			}
+		}
+		
+		// You can't attack anyone of your party/guild without non-secure mode.
+		if (getGuild() && targetPlayer->getGuild() && getGuild() == targetPlayer->getGuild()) {
+			return false;
+		}
+		if (getParty() && targetPlayer->getParty() && getParty() == targetPlayer->getParty()) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Player::hasPvpActivityWith(const Player* player, bool all/* = false*/) const {
+
+	if (!player) {
+		return false;
+	}
+	bool self = player->hasAttacked(this) || this->hasAttacked(player),
+		guildOrParty = false;
+
+	if (all) {
+		if (Guild* guild = getGuild()) {
+			for (auto it : guild->getMembersOnline()) {
+				if (player->hasAttacked(it)) {
+					guildOrParty = true;
+					break;
+				}
+			}
+		}
+
+		if (!guildOrParty) {
+			if (Party* party = getParty()) {
+				for (auto it : party->getMembers()) {
+					if (player->hasAttacked(it)) {
+						guildOrParty = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	if (self || guildOrParty) {
+		return true;
+	}
+
+	return false;
 }
 
 void Player::removeList()
@@ -3589,6 +3748,12 @@ void Player::onAttackedCreature(Creature* target)
 				}
 			}
 		}
+		sendPvpActionStart(targetPlayer);
+		targetPlayer->sendPvpActionStart(this);
+
+		// Since players can walk through ( if no pvp-action between them ) we need to update the walk-through!
+		g_game.updateCreatureWalkthrough(this);
+		g_game.updateCreatureWalkthrough(targetPlayer);
 	}
 
 	addInFightTicks();

@@ -49,9 +49,9 @@ enum stackPosType_t {
 };
 
 enum WorldType_t {
-	WORLD_TYPE_NO_PVP = 1,
-	WORLD_TYPE_PVP = 2,
-	WORLD_TYPE_PVP_ENFORCED = 3,
+	WORLD_TYPE_NO_PVP = 1, // optional pvp
+	WORLD_TYPE_PVP = 2, // open pvp
+	WORLD_TYPE_PVP_ENFORCED = 3, // hardcore pvp
 };
 
 enum GameState_t {
@@ -246,6 +246,8 @@ class Game
 
 		ReturnValue internalPlayerAddItem(Player* player, Item* item, bool dropOnMap = true, slots_t slot = CONST_SLOT_WHEREEVER);
 
+		void updateSpectatorPvpStatus(Item* item, bool loop = false);
+
 		/**
 		  * Find an item of a certain type
 		  * \param cylinder to search the item
@@ -371,7 +373,7 @@ class Game
 		void playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);
 		void playerFollowCreature(uint32_t playerId, uint32_t creatureId);
 		void playerCancelAttackAndFollow(uint32_t playerId);
-		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, bool secureMode);
+		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, pvpMode_t pvpMode, bool secureMode);
 		void playerLookAt(uint32_t playerId, const Position& pos, uint8_t stackPos);
 		void playerLookInBattleList(uint32_t playerId, uint32_t creatureId);
 		void playerRequestAddVip(uint32_t playerId, const std::string& name);
@@ -497,6 +499,8 @@ class Game
 		Item* getUniqueItem(uint16_t uniqueId);
 		bool addUniqueItem(uint16_t uniqueId, Item* item);
 		void removeUniqueItem(uint16_t uniqueId);
+
+		void sendPvpSquare(uint32_t playerid, uint32_t targetid);
 
 		bool hasEffect(uint8_t effectId);
 		bool hasDistanceEffect(uint8_t effectId);

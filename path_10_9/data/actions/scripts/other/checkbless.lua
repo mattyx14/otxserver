@@ -1,9 +1,9 @@
 local blessings = {
-	{id = 5, name = 'Wisdom of Solitude'},
-	{id = 4, name = 'Spark of the Phoenix'},
-	{id = 3, name = 'Fire of the Suns'},
-	{id = 1, name = 'Spiritual Shielding'},
+	{id = 1, name = 'Spark of the Phoenix'},
 	{id = 2, name = 'Embrace of Tibia'},
+	{id = 3, name = 'Spiritual Shielding'},
+	{id = 4, name = 'Fire of the Suns'},
+	{id = 5, name = 'Wisdom of Solitude'},
 	{id = 6, name = 'Twist of Fate'}
 }
 

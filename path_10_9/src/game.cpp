@@ -1233,6 +1233,70 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 	return internalAddItem(toCylinder, item, index, flags, test, remainderCount);
 }
 
+void Game::updateSpectatorPvpStatus(Item* item, bool loop) {
+	if (item == nullptr || !item) {
+		return;
+	}
+
+	uint32_t duration = item->getDuration();
+	if (duration < 600) {
+		return;
+	}
+
+	if (!item->isMagicField()) {
+		return;
+	}
+
+	uint32_t ownerId = item->getOwner();
+	if (!ownerId) {
+		return;
+	}
+
+	Creature* owner = getCreatureByID(ownerId);
+	if (!owner) {
+		return;
+	}
+
+	Player* ownerPlayer = owner->getPlayer();
+	if (!ownerPlayer) {
+		if (owner->isSummon() && owner->getMaster()->getPlayer()) {
+			ownerPlayer = owner->getMaster()->getPlayer();
+		} else {
+			return;
+		}
+	}
+
+	Tile* tile = item->getTile();
+	if (!tile) {
+		return;
+	}
+
+	SpectatorVec list;
+	map.getSpectators(list, tile->getPosition(), true, true);
+	for (auto it : list) {
+		if (Player* tmpPlayer = it->getPlayer()) {
+
+			uint32_t requiredId = item->getID();
+			if (tmpPlayer->getItemPvpStat(item) == ITEM_IS_PVP) {
+					requiredId = nonPvpFieldToPvpField(item->getID());
+			} else {
+					requiredId = pvpFieldToNonPvpField(item->getID());;
+			}
+
+			if (requiredId == ITEM_PVP_SAFE_NULL) {
+				return; // it means item is not added to the function, no need to repeat
+			}
+			item->setID(requiredId);
+			item->setDuration(duration);
+			tmpPlayer->sendUpdateTileItem(tile, tile->getPosition(), item);
+		}
+	}
+
+	if (loop && duration > 1400) {
+		g_scheduler.addEvent(createSchedulerTask(1000, std::bind(&Game::updateSpectatorPvpStatus, this, item, true)));
+	}
+}
+
 ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t index,
                                   uint32_t flags, bool test, uint32_t& remainderCount)
 {
@@ -3038,16 +3102,38 @@ void Game::playerFollowCreature(uint32_t playerId, uint32_t creatureId)
 	player->setFollowCreature(getCreatureByID(creatureId));
 }
 
-void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, bool secureMode)
+void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, pvpMode_t pvpMode, bool secureMode)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
 		return;
 	}
 
+	bool needUpdate = false;
 	player->setFightMode(fightMode);
 	player->setChaseMode(chaseMode);
-	player->setSecureMode(secureMode);
+
+	if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && worldType != WORLD_TYPE_PVP) {
+		if (worldType == WORLD_TYPE_NO_PVP && !secureMode) {
+			player->setSecureMode(true);
+			needUpdate = true;
+		} else if (worldType == WORLD_TYPE_PVP_ENFORCED && secureMode) {
+			player->setSecureMode(false);
+			needUpdate = true;
+		}
+	} else {
+		player->setSecureMode(secureMode);
+	}
+
+	if ((pvpMode == PVP_MODE_RED_FIST && getWorldType() != WORLD_TYPE_PVP_ENFORCED) || player->getSkull() == SKULL_BLACK) {
+		needUpdate = true;
+	} else {
+		player->setPvpMode(pvpMode);
+	}
+
+	if (needUpdate) {
+		g_scheduler.addEvent(createSchedulerTask(400, std::bind(&Player::sendFightModes, player)));
+	}
 }
 
 void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
@@ -5544,6 +5630,21 @@ void Game::removeUniqueItem(uint16_t uniqueId)
 	if (it != uniqueItems.end()) {
 		uniqueItems.erase(it);
 	}
+}
+
+void Game::sendPvpSquare(uint32_t playerId, uint32_t targetId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	Player* target = getPlayerByID(targetId);
+	if (!target) {
+		return;
+	}
+
+	player->sendPvpActionStart(target);
 }
 
 bool Game::hasEffect(uint8_t effectId) {

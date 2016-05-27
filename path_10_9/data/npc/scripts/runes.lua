@@ -109,6 +109,7 @@ function creatureSayCallback(cid, type, msg)
 	end
 
 	local player = Player(cid)
+	local vocationId = player:getVocation():getId()
 	local items = {
 		[1] = 2190,
 		[2] = 2182,
@@ -117,7 +118,6 @@ function creatureSayCallback(cid, type, msg)
 	}
 
 	if msgcontains(msg, 'first rod') or msgcontains(msg, 'first wand') then
-		local vocationId = player:getVocation():getId()
 		if isInArray({1, 2, 5, 6}, vocationId) then
 			if player:getStorageValue(3050) == -1 then
 				selfSay('So you ask me for a {' .. ItemType(items[vocationId]):getName() .. '} to begin your advanture?', cid)
@@ -131,13 +131,22 @@ function creatureSayCallback(cid, type, msg)
 	elseif msgcontains(msg, 'yes') then
 		if npcHandler.topic[cid] == 1 then
 			player:addItem(items[vocationId], 1)
-			selfSay('Here you are young adept, take care yourself.', cid)
 			player:setStorageValue(3050, 1)
+			selfSay('Here you are young adept, take care yourself.', cid)
 		end
 		npcHandler.topic[cid] = 0
 	elseif msgcontains(msg, 'no') and npcHandler.topic[cid] == 1 then
 		selfSay('Ok then.', cid)
 		npcHandler.topic[cid] = 0
+	elseif isInArray({"vial", "ticket", "bonus"}, msg) then
+		if player:removeItem(7634, 100) or player:removeItem(7635, 100) or player:removeItem(7636, 100) then
+			player:addItem(5957, 1)
+			npcHandler:say("Alright, thank you very much! Here is your lottery ticket, good luck. Would you like to deposit more vials that way?", cid)
+			npcHandler.topic[cid] = 0
+		else
+			npcHandler:say("Sorry, but you don't have 100 empty flasks or vials of the SAME kind and thus don't qualify for the lottery. Would you like to deposit the vials you have as usual and receive 5 gold per vial?", cid)
+			npcHandler.topic[cid] = 0
+		end
 	end
 
 	return true

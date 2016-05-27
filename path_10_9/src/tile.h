@@ -282,6 +282,10 @@ class Tile : public Cylinder
 			ground = item;
 		}
 
+		bool hasSafePvpItem() const {
+			return getItemTypeCount(ITEM_MAGICWALL_NOPVP) > 0 || getItemTypeCount(ITEM_WILDGROWTH_NOPVP) > 0;
+		}
+
 	private:
 		void onAddTileItem(Item* item);
 		void onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newItem, const ItemType& newType);

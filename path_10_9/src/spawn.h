@@ -56,6 +56,7 @@ class Spawn
 		void startSpawnCheck();
 		void stopEvent();
 
+		bool findPlayer(const Position& pos);
 		bool isInSpawnZone(const Position& pos);
 		void cleanup();
 
@@ -74,9 +75,9 @@ class Spawn
 		uint32_t interval;
 		uint32_t checkSpawnEvent;
 
-		static bool findPlayer(const Position& pos);
 		bool spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& pos, Direction dir, bool startup = false);
 		void checkSpawn();
+		void scheduleSpawn(uint32_t spawnId, spawnBlock_t& sb, uint16_t interval);
 };
 
 class Spawns
@@ -100,5 +101,7 @@ class Spawns
 		std::string filename;
 		bool loaded, started;
 };
+
+#define NONBLOCKABLE_SPAWN_INTERVAL 1400
 
 #endif

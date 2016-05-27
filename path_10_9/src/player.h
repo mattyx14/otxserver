@@ -79,6 +79,7 @@ enum pvpMode_t : uint8_t {
 	PVP_MODE_WHITE_HAND = 1,
 	PVP_MODE_YELLOW_HAND = 2,
 	PVP_MODE_RED_FIST = 3,
+	PVP_MODE_NONE = 4,
 };
 
 enum tradestate_t : uint8_t {
@@ -588,6 +589,15 @@ class Player final : public Creature, public Cylinder
 		void setSecureMode(bool mode) {
 			secureMode = mode;
 		}
+		void setPvpMode(pvpMode_t mode) {
+			pvpmode = mode;
+		}
+		pvpMode_t getPvpMode() {
+			return pvpmode;
+		}
+		pvpMode_t getPvpMode() const {
+			return pvpmode;
+		}
 
 		//combat functions
 		bool setAttackedCreature(Creature* creature) final;
@@ -644,6 +654,10 @@ class Player final : public Creature, public Cylinder
 		float getDefenseFactor() const final;
 
 		void addInFightTicks(bool pzlock = false);
+		void sendPvpActionStart(Player* player);
+		ItemPvpStat getItemPvpStat(Item* item) const;
+		bool canAttackPlayer(const Player* player) const;
+		bool hasPvpActivityWith(const Player* player, bool all = false) const;
 
 		uint64_t getGainedExperience(Creature* attacker) const final;
 
@@ -1306,6 +1320,7 @@ class Player final : public Creature, public Cylinder
 		tradestate_t tradeState;
 		chaseMode_t chaseMode;
 		fightMode_t fightMode;
+		pvpMode_t pvpmode;
 		AccountType_t accountType;
 
 		bool secureMode;

@@ -26,6 +26,7 @@
 #include "creature.h"
 #include "combat.h"
 #include "game.h"
+#include "configmanager.h"
 #include "mailbox.h"
 #include "monster.h"
 #include "movement.h"
@@ -33,6 +34,7 @@
 #include "trashholder.h"
 
 extern Game g_game;
+extern ConfigManager g_config;
 extern MoveEvents* g_moveEvents;
 
 StaticTile real_nullptr_tile(0xFFFF, 0xFFFF, 0xFF);
@@ -492,7 +494,8 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 		}
 
 		if (const Monster* monster = creature->getMonster()) {
-			if (hasFlag(TILESTATE_PROTECTIONZONE | TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT)) {
+			if (hasFlag(TILESTATE_PROTECTIONZONE | TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT) || hasSafePvpItem()) {
+				// TODO: update creatures map ( understanding he can't enter this tile if he already tried to! )
 				return RETURNVALUE_NOTPOSSIBLE;
 			}
 
@@ -586,6 +589,78 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 					(!playerTile->hasFlag(TILESTATE_PROTECTIONZONE) && hasFlag(TILESTATE_PROTECTIONZONE))) {
 					// player is trying to enter a non-pvp/protection zone while being pz-locked
 					return RETURNVALUE_PLAYERISPZLOCKED;
+				}
+			}
+
+			// player is entering other players with pvp-mode while ExpertPvp is allowed in config!
+			if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && !hasFlag(TILESTATE_PROTECTIONZONE) && creatures && !creatures->empty() && !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags) && !player->isAccessPlayer()) {
+				for (const Creature* tileCreature : *creatures) {
+					const Player* tilePlayer = tileCreature->getPlayer();
+					if (!tileCreature->getPlayer()) {
+						continue;
+					}
+
+					if ((g_game.getWorldType() == WORLD_TYPE_PVP && (player->getPvpMode() == PVP_MODE_YELLOW_HAND || tilePlayer->getPvpMode() == PVP_MODE_YELLOW_HAND)) ||
+							(g_game.getWorldType() == WORLD_TYPE_PVP_ENFORCED && (player->getPvpMode() == PVP_MODE_RED_FIST || tilePlayer->getPvpMode() == PVP_MODE_RED_FIST))) {
+						Player* attacker;
+						Player* attacked;
+						if (player->getPvpMode() == PVP_MODE_YELLOW_HAND || player->getPvpMode() == PVP_MODE_RED_FIST) {
+							attacker = const_cast<Player*>(player);
+							attacked = const_cast<Player*>(tilePlayer);
+						} else {
+							attacker = const_cast<Player*>(tilePlayer);
+							attacked = const_cast<Player*>(player);
+						}
+
+						uint32_t protectionLevel = g_config.getNumber(ConfigManager::PROTECTION_LEVEL);
+						if (attacker->getLevel() < protectionLevel || attacked->getLevel() < protectionLevel) {
+							continue;
+						}
+
+						if (attacker->getVocationId() == VOCATION_NONE || attacked->getVocationId() == VOCATION_NONE) {
+							continue;
+						}
+
+						Skulls_t skull = SKULL_NONE;
+						if (attacked->getSkull() == SKULL_NONE) {
+							skull = SKULL_WHITE;
+						}
+
+						if (skull != SKULL_NONE) {
+							// Skull is safe to add ( only open-pvp will be applied )
+							attacker->setSkull(skull);
+						}
+
+						attacker->addInFightTicks(true);
+						attacker->addAttacked(attacked);
+
+						attacker->sendPvpActionStart(attacked);
+						attacked->sendPvpActionStart(attacker);
+
+						// Since players can walk through ( if no pvp-action between them ) we need to update the walk-through!
+						g_game.updateCreatureWalkthrough(attacker);
+						g_game.updateCreatureWalkthrough(attacked);
+					}
+				}
+			}
+			
+			// Player is trying to enter a magicwall.
+			if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && g_game.getWorldType() != WORLD_TYPE_NO_PVP && hasSafePvpItem()) {
+				const TileItemVector* itemVector = getItemList();
+				if (itemVector) {
+					for (auto it : *itemVector) {
+						uint16_t itemId = it->getID();
+						// We don't care it it's real magic wall, magic wall is already prevented by FLAG (default)
+						if (itemId != ITEM_MAGICWALL_NOPVP && itemId != ITEM_WILDGROWTH_NOPVP) {
+							continue;
+						}
+
+						if (player->getItemPvpStat(it) != ITEM_IS_SAFE) {
+							g_game.updateSpectatorPvpStatus(it);
+							return RETURNVALUE_NOTPOSSIBLE;
+						}
+						
+					}
 				}
 			}
 		} else if (creatures && !creatures->empty() && !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags)) {

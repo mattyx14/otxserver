@@ -80,6 +80,7 @@ void MonsterType::reset()
 	isAttackable = true;
 	isHostile = true;
 	isPassive = false;
+	isBlockable = false;
 
 	lightLevel = 0;
 	lightColor = 0;
@@ -869,6 +870,8 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				mType->runAwayHealth = pugi::cast<int32_t>(attr.value());
 			} else if (strcasecmp(attrName, "hidehealth") == 0) {
 				mType->hiddenHealth = attr.as_bool();
+			} else if (strcasecmp(attrName, "isblockable") == 0) {
+				mType->isBlockable = attr.as_bool();
 			} else {
 				std::cout << "[Warning - Monsters::loadMonster] Unknown flag attribute: " << attrName << ". " << file << std::endl;
 			}

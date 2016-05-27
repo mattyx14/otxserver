@@ -36,16 +36,16 @@ local config = {
 		male = 133, female = 138, addon = 2, items = {{5894, 70}, {5911, 20}, {5883, 10}, {5922, 50}, {5886, 10}, {5881, 50}, {5882, 50}, {5904, 3}, {5905, 20}}
 	},
 	["first warrior addon"] = {
-		male = 134, female = 142, addon = 1, items = {{5925, 100}, {5899, 100}, {5884, 5}, {5919, 5}}
+		male = 134, female = 142, addon = 1, items = {{5925, 100}, {5899, 100}, {5884, 5}, {10020, 5}}
 	},
 	["second warrior addon"] = {
 		male = 134, female = 142, addon = 2, items = {{5880, 100}, {5887, 10}, {2475, 10}}
 	},
 	["first barbarian addon"] = {
-		male = 143, female = 147, addon = 1, items = {{5884, 1}, {5885, 1}, {5910, 50}, {5911, 50}, {5886, 10}}
+		male = 143, female = 147, addon = 1, items = {{5880, 100}, {5892, 1}, {5893, 50}, {5876, 50}}
 	},
 	["second barbarian addon"] = {
-		male = 143, female = 147, addon = 2, items = {{5880, 100}, {5892, 1}, {5893, 50}, {5876, 50}}
+		male = 143, female = 147, addon = 2, items = {{5884, 1}, {5885, 1}, {5910, 50}, {5911, 50}, {5886, 10}}
 	},
 	["first druid addon"] = {
 		male = 144, female = 148, addon = 1, items = {{5896, 50}, {5897, 50}, {10567, 15}}
@@ -103,7 +103,7 @@ function onSay(player, words, param)
 	end
 	player:addOutfitAddon(v["female"], v["addon"])
 	player:addOutfitAddon(v["male"], v["addon"])
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Enjoy your new addons to your " .. param .. " outfit!")
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Enjoy your new addon to your " .. param .. " outfit!")
 	player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
 	return false
 end

@@ -240,8 +240,11 @@ ReturnValue Combat::canTargetCreature(Player* player, Creature* target)
 			return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 		}
 
-		if (player->hasSecureMode() && !Combat::isInPvpZone(player, target) && player->getSkullClient(target->getPlayer()) == SKULL_NONE) {
-			return RETURNVALUE_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
+		// Everything works normaly while expert-mode is not enabled via config
+		if (!g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
+			if (player->hasSecureMode() && !Combat::isInPvpZone(player, target) && player->getSkullClient(target->getPlayer()) == SKULL_NONE) {
+				return RETURNVALUE_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
+			}
 		}
 	}
 
@@ -332,6 +335,10 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
 				} else if (attackerPlayer->getTile()->hasFlag(TILESTATE_NOPVPZONE) && !targetPlayerTile->hasFlag(TILESTATE_NOPVPZONE | TILESTATE_PROTECTIONZONE)) {
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
+				}
+
+				if (!attackerPlayer->canAttackPlayer(targetPlayer)) {
+					return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 				}
 			}
 
@@ -568,39 +575,8 @@ void Combat::CombatNullFunc(Creature* caster, Creature* target, const CombatPara
 void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile* tile, const CombatParams& params)
 {
 	if (params.itemId != 0) {
-		uint16_t itemId = params.itemId;
-		switch (itemId) {
-			case ITEM_FIREFIELD_PERSISTENT_FULL:
-				itemId = ITEM_FIREFIELD_PVP_FULL;
-				break;
-
-			case ITEM_FIREFIELD_PERSISTENT_MEDIUM:
-				itemId = ITEM_FIREFIELD_PVP_MEDIUM;
-				break;
-
-			case ITEM_FIREFIELD_PERSISTENT_SMALL:
-				itemId = ITEM_FIREFIELD_PVP_SMALL;
-				break;
-
-			case ITEM_ENERGYFIELD_PERSISTENT:
-				itemId = ITEM_ENERGYFIELD_PVP;
-				break;
-
-			case ITEM_POISONFIELD_PERSISTENT:
-				itemId = ITEM_POISONFIELD_PVP;
-				break;
-
-			case ITEM_MAGICWALL_PERSISTENT:
-				itemId = ITEM_MAGICWALL;
-				break;
-
-			case ITEM_WILDGROWTH_PERSISTENT:
-				itemId = ITEM_WILDGROWTH;
-				break;
-
-			default:
-				break;
-		}
+		uint16_t itemId = persistentItemToPvp(params.itemId);
+		bool isSafePvpItem = false;
 
 		if (caster) {
 			Player* casterPlayer;
@@ -613,14 +589,24 @@ void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile*
 			if (casterPlayer) {
 				if (g_game.getWorldType() == WORLD_TYPE_NO_PVP || tile->hasFlag(TILESTATE_NOPVPZONE)) {
 					if (itemId == ITEM_FIREFIELD_PVP_FULL) {
-						itemId = ITEM_FIREFIELD_NOPVP;
+						itemId = ITEM_FIREFIELD_NOPVP_FULL;
 					} else if (itemId == ITEM_POISONFIELD_PVP) {
 						itemId = ITEM_POISONFIELD_NOPVP;
 					} else if (itemId == ITEM_ENERGYFIELD_PVP) {
 						itemId = ITEM_ENERGYFIELD_NOPVP;
 					}
-				} else if (itemId == ITEM_FIREFIELD_PVP_FULL || itemId == ITEM_POISONFIELD_PVP || itemId == ITEM_ENERGYFIELD_PVP) {
-					casterPlayer->addInFightTicks();
+				} else {
+					if (itemId == ITEM_FIREFIELD_PVP_FULL || itemId == ITEM_POISONFIELD_PVP || itemId == ITEM_ENERGYFIELD_PVP) {
+						casterPlayer->addInFightTicks();
+					}
+
+					if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
+						if (pvpFieldToNonPvpField(itemId) != ITEM_PVP_SAFE_NULL) {
+							isSafePvpItem = true;
+							// We create an item 
+							itemId = pvpFieldToNonPvpField(itemId);
+						}
+					}
 				}
 			}
 		}
@@ -633,6 +619,9 @@ void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile*
 		ReturnValue ret = g_game.internalAddItem(tile, item);
 		if (ret == RETURNVALUE_NOERROR) {
 			g_game.startDecay(item);
+			if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
+				g_game.updateSpectatorPvpStatus(item, true);
+			}
 		} else {
 			delete item;
 		}
@@ -1368,7 +1357,16 @@ void MagicField::onStepInField(Creature* creature)
 {
 	//remove magic walls/wild growth
 	if (id == ITEM_MAGICWALL || id == ITEM_WILDGROWTH || id == ITEM_MAGICWALL_SAFE || id == ITEM_WILDGROWTH_SAFE || isBlocking()) {
-		if (!creature->isInGhostMode()) {
+		if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
+			uint32_t ownerId = getOwner();
+			if (ownerId) {
+				Player* owner = g_game.getPlayerByID(ownerId);
+				Player* player = creature->getPlayer();
+				if (owner && player && player->getItemPvpStat(this) == ITEM_IS_PVP) {
+					g_game.internalRemoveItem(this, 1);
+				}
+			}
+		} else if (!creature->isInGhostMode()) {
 			g_game.internalRemoveItem(this, 1);
 		}
 
@@ -1395,7 +1393,7 @@ void MagicField::onStepInField(Creature* creature)
 			if (targetPlayer) {
 				Player* attackerPlayer = g_game.getPlayerByID(ownerId);
 				if (attackerPlayer) {
-					if (Combat::isProtected(attackerPlayer, targetPlayer)) {
+					if (Combat::isProtected(attackerPlayer, targetPlayer) || !attackerPlayer->hasPvpActivityWith(targetPlayer)) {
 						harmfulField = false;
 					}
 				}
