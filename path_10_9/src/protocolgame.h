@@ -207,7 +207,6 @@ class ProtocolGame final : public ProtocolGameBase
 		void parseBugReport(NetworkMessage& msg);
 		void parseDebugAssert(NetworkMessage& msg);
 
-		void parseEquipHotkey(NetworkMessage& msg);
 		void parseThrow(NetworkMessage& msg);
 		void parseUseItemEx(NetworkMessage& msg);
 		void parseUseWithCreature(NetworkMessage& msg);

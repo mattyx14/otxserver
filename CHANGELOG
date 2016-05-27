@@ -89,6 +89,7 @@
 	- Fixed Guild Ranks
 	- Fixed skinning script
 	- Fixed crash when removing container in action onUse event
+	- Fixed compiler error with vc15 sp+
 	- Move all custom libs fuctions to custom file on libs
 		.../data/lib/custom/custom.lua
 	- Remove onSave no required
