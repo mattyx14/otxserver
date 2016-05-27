@@ -36,12 +36,14 @@
 #include "ban.h"
 #include "scheduler.h"
 #include "databasetasks.h"
+#include "modules.h"
 
 extern Game g_game;
 extern ConfigManager g_config;
 extern Actions actions;
 extern CreatureEvents* g_creatureEvents;
 extern Chat* g_chat;
+extern Modules* g_modules;
 
 ProtocolGame::LiveCastsMap ProtocolGame::liveCasts;
 
@@ -486,6 +488,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 			return;
 		}
 	}
+
+	g_modules->executeOnRecvbyte(player, msg, recvbyte);
 
 	switch (recvbyte) {
 		case 0x14: g_dispatcher.addTask(createTask(std::bind(&ProtocolGame::logout, getThis(), true, false))); break;

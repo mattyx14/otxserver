@@ -68,6 +68,7 @@
 	- Added PVPBless support
 	- Added reflect items functions attributes
 	- Added expertPVPMode (WIP)
+	- Added Module System (WIP)
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error

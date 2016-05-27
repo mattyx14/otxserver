@@ -1139,6 +1139,18 @@ class Player final : public Creature, public Cylinder
 		bool canDoAction() const {
 			return nextAction <= OTSYS_TIME();
 		}
+
+		void setModuleDelay(uint8_t byteortype, int16_t delay) {
+			moduleDelayMap[byteortype] = OTSYS_TIME() + delay;
+		}
+
+		bool canRunModule(uint8_t byteortype) {
+			if (!moduleDelayMap[byteortype]) {
+				return true;
+			}
+			return moduleDelayMap[byteortype] <= OTSYS_TIME();
+		}
+
 		uint32_t getNextActionTime() const;
 
 		Item* getWriteItem(uint32_t& windowTextId, uint16_t& maxWriteLen);
@@ -1221,6 +1233,7 @@ class Player final : public Creature, public Cylinder
 		std::map<uint32_t, DepotLocker*> depotLockerMap;
 		std::map<uint32_t, DepotChest*> depotChests;
 		std::map<uint32_t, int32_t> storageMap;
+		std::map<uint8_t, int64_t> moduleDelayMap;
 
 		std::vector<OutfitEntry> outfits;
 		GuildWarList guildWarList;
