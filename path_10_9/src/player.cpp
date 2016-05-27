@@ -910,15 +910,15 @@ bool Player::isNearDepotBox() const
 	return false;
 }
 
-DepotChest* Player::createDepots()
+DepotChest* Player::getDepotBox()
 {
-	DepotChest* depotChests = new DepotChest(ITEM_DEPOT);
-	depotChests->incrementReferenceCounter();
-	depotChests->setMaxDepotItems(getMaxDepotItems());
+	DepotChest* depotBoxs = new DepotChest(ITEM_DEPOT);
+	depotBoxs->incrementReferenceCounter();
+	depotBoxs->setMaxDepotItems(getMaxDepotItems());
 	for (uint32_t index = 1; index <= 17; ++index) {
-		depotChests->internalAddThing(getDepotChest(18 - index, true));
+		depotBoxs->internalAddThing(getDepotChest(18 - index, true));
 	}
-	return depotChests;
+	return depotBoxs;
 }
 
 DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
@@ -932,7 +932,7 @@ DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
 		return nullptr;
 	}
 
-	DepotChest* depotChest = new DepotChest(DEPOT_CHEST_NULL + depotId, true);
+	DepotChest* depotChest = new DepotChest(ITEM_DEPOT_NULL + depotId, true);
 	depotChest->incrementReferenceCounter();
 	depotChests[depotId] = depotChest;
 	return depotChest;
@@ -943,6 +943,7 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	auto it = depotLockerMap.find(depotId);
 	if (it != depotLockerMap.end()) {
 		inbox->setParent(it->second);
+		getDepotBox()->setParent(it->second);
 		return it->second;
 	}
 
@@ -950,7 +951,7 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	depotLocker->setDepotId(depotId);
 	depotLocker->internalAddThing(Item::CreateItem(ITEM_MARKET));
 	depotLocker->internalAddThing(inbox);
-	depotLocker->internalAddThing(createDepots());
+	depotLocker->internalAddThing(getDepotBox());
 	depotLockerMap[depotId] = depotLocker;
 	return depotLocker;
 }
@@ -4740,7 +4741,7 @@ size_t Player::getMaxDepotItems() const
 	if (group->maxDepotItems != 0) {
 		return group->maxDepotItems;
 	} else if (isPremium()) {
-		return 10000;
+		return 8000;
 	}
 	return 2000;
 }
