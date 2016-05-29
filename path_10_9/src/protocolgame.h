@@ -356,6 +356,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		//inventory
 		void SetInventoryItem(NetworkMessage& msg, slots_t slot, const Item* item);
+		void sendInventoryClientIds();
 
 		//shop
 		void AddShopItem(NetworkMessage& msg, const ShopInfo& item);

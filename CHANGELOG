@@ -70,6 +70,7 @@
 	- Added expertPVPMode "WIP"
 	- Added Module System "WIP"
 	- Added GameStore module ( version without market ) "WIP"
+	- Added Equip Object module
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error

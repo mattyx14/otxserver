@@ -639,6 +639,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 
 	sendBasicData();
 	sendInventory();
+	sendInventoryClientIds();
 	player->sendIcons();
 }
 

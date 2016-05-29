@@ -1838,6 +1838,8 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Game", "startRaid", LuaScriptInterface::luaGameStartRaid);
 
+	registerMethod("Game", "getItemIdByClientId", LuaScriptInterface::luaGameGetItemByClientId)
+
 	registerMethod("Game", "hasDistanceEffect", LuaScriptInterface::luaGameHasDistanceEffect);
 	registerMethod("Game", "hasEffect", LuaScriptInterface::luaGameHasEffect);
 
@@ -2000,6 +2002,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "moveTo", LuaScriptInterface::luaItemMoveTo);
 	registerMethod("Item", "transform", LuaScriptInterface::luaItemTransform);
 	registerMethod("Item", "decay", LuaScriptInterface::luaItemDecay);
+	registerMethod("Item", "moveToSlot", LuaScriptInterface::luaItemMoveToSlot);
 
 	registerMethod("Item", "getDescription", LuaScriptInterface::luaItemGetDescription);
 
@@ -2164,6 +2167,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Player", "getItemCount", LuaScriptInterface::luaPlayerGetItemCount);
 	registerMethod("Player", "getItemById", LuaScriptInterface::luaPlayerGetItemById);
+	registerMethod("Player", "getItemByClietnId", LuaScriptInterface::luaPlayerGetItemByClientId);
 
 	registerMethod("Player", "getVocation", LuaScriptInterface::luaPlayerGetVocation);
 	registerMethod("Player", "setVocation", LuaScriptInterface::luaPlayerSetVocation);
@@ -4459,6 +4463,17 @@ int LuaScriptInterface::luaGameHasDistanceEffect(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaGameGetItemByClientId(lua_State* L)
+ {
+ 	// Game.getItemIdByClientId(itemClientId)
+ 	int16_t clientId = getNumber<uint16_t>(L, 1);
+ 
+ 	const ItemType& itemType = Item::items.getItemIdByClientId(clientId);
+ 	pushUserdata<const ItemType>(L, &itemType);
+	setMetatable(L, -1, "ItemType");
+	return 1;
+ }
+ 
 // Variant
 int LuaScriptInterface::luaVariantCreate(lua_State* L)
 {
@@ -6364,6 +6379,33 @@ int LuaScriptInterface::luaItemDecay(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaItemMoveToSlot(lua_State* L)
+{
+	// item:moveToSlot(player, slot)
+	Item* item = getUserdata<Item>(L, 1);
+	if (!item || item->isRemoved()) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Player* player = getUserdata<Player>(L, 2);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	slots_t slot = getNumber<slots_t>(L, 3, CONST_SLOT_WHEREEVER);
+
+	Item* moveItem = nullptr;
+	ReturnValue ret = g_game.internalMoveItem(item->getParent(), player, slot, item, item->getItemCount(), nullptr);
+	if (moveItem) {
+		item = moveItem;
+	}
+
+	pushBoolean(L, ret == RETURNVALUE_NOERROR);
+	return 1;
+}
+ 
 int LuaScriptInterface::luaItemGetDescription(lua_State* L)
 {
 	// item:getDescription(distance)
@@ -8080,6 +8122,32 @@ int LuaScriptInterface::luaPlayerGetItemById(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetItemByClientId(lua_State* L)
+{
+	// player:getItemByClientId(itemId[, subType = -1])
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint16_t itemId = getNumber<uint16_t>(L, 2);
+	if (!itemId) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Item* item = player->getItemByClientId(itemId);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	pushUserdata<Item>(L, item);
+	setItemMetatable(L, -1, item);
 	return 1;
 }
 

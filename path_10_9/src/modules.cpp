@@ -170,10 +170,10 @@ void Module::executeOnRecvbyte(Player* player, NetworkMessage& msg)
 	lua_State* L = scriptInterface->getLuaState();
 
 	scriptInterface->pushFunction(scriptId);
-	LuaScriptInterface::pushUserdata(L, player);
+	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 	
-	LuaScriptInterface::pushUserdata(L, &msg);
+	LuaScriptInterface::pushUserdata<NetworkMessage>(L, const_cast<NetworkMessage*>(&msg));
 	LuaScriptInterface::setWeakMetatable(L, -1, "NetworkMessage");
 
 	lua_pushnumber(L, recvbyte);

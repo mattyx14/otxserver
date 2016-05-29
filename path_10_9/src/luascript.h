@@ -556,6 +556,8 @@ class LuaScriptInterface
 
 		static int luaGameStartRaid(lua_State* L);
 
+		static int luaGameGetItemByClientId(lua_State* L);
+
 		static int luaGameHasEffect(lua_State* L);
 		static int luaGameHasDistanceEffect(lua_State* L);
 
@@ -712,6 +714,7 @@ class LuaScriptInterface
 		static int luaItemMoveTo(lua_State* L);
 		static int luaItemTransform(lua_State* L);
 		static int luaItemDecay(lua_State* L);
+		static int luaItemMoveToSlot(lua_State* L);
 
 		static int luaItemGetDescription(lua_State* L);
 
@@ -871,6 +874,7 @@ class LuaScriptInterface
 
 		static int luaPlayerGetItemCount(lua_State* L);
 		static int luaPlayerGetItemById(lua_State* L);
+		static int luaPlayerGetItemByClientId(lua_State* L);
 
 		static int luaPlayerGetVocation(lua_State* L);
 		static int luaPlayerSetVocation(lua_State* L);

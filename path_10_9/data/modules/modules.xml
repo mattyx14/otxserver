@@ -8,4 +8,7 @@
 	<module type="recvbyte" byte="252" script="gamestore/gamestore.lua"/>
 	<module type="recvbyte" byte="253" script="gamestore/gamestore.lua"/>
 	<module type="recvbyte" byte="254" script="gamestore/gamestore.lua"/>
+
+	<!-- Equip Object By Hotkey -->
+	<module type="recvbyte" byte="119" delay="1000" script="equiphotkey/equiphotkey.lua"/>
 </modules>

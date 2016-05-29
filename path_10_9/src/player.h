@@ -866,6 +866,11 @@ class Player final : public Creature, public Cylinder
 				client->sendInventoryItem(slot, item);
 			}
 		}
+		void sendInventoryClientIds() {
+			if (client) {
+				client->sendInventoryClientIds();
+			}
+		}
 
 		//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
@@ -1221,6 +1226,8 @@ class Player final : public Creature, public Cylinder
 		size_t getLastIndex() const final;
 		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const final;
 		std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t> &countMap) const final;
+		Item* getItemByClientId(uint16_t clientId) const;
+		std::map<uint16_t, uint16_t> getInventoryClientIds() const;
 		Thing*getThing(size_t index) const final;
 
 		void internalAddThing(Thing* thing) final;
