@@ -44,7 +44,7 @@ theotxserver_SOURCES = account.h actions.cpp actions.h  baseevents.cpp baseevent
 	protocol.cpp protocol.h protocolgame.cpp protocolgame.h \
 	protocollogin.cpp protocollogin.h raids.cpp raids.h \
 	resources.h scheduler.cpp scheduler.h scriptmanager.cpp \
-	scriptmanager.h server.cpp server.h spawn.cpp spawn.h \
+	scriptmanager.h server.cpp server.h spawn.cpp spawn.h spectators.cpp spectators.h \
 	spells.cpp spells.h status.cpp status.h talkaction.cpp talkaction.h teleport.cpp \
 	teleport.h templates.h textlogger.cpp textlogger.h thing.cpp thing.h \
 	tile.cpp tile.h tools.cpp tools.h town.h trashholder.cpp trashholder.h \

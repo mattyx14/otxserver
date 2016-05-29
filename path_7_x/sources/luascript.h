@@ -448,6 +448,8 @@ class LuaInterface
 		static int32_t luaDoRemoveIpBanishment(lua_State* L);
 		static int32_t luaDoRemovePlayerBanishment(lua_State* L);
 		static int32_t luaDoRemoveAccountBanishment(lua_State* L);
+		static int32_t luaDoAddAccountWarnings(lua_State* L);
+		static int32_t luaGetAccountWarnings(lua_State* L);
 		static int32_t luaDoRemoveNotations(lua_State* L);
 		static int32_t luaDoRemoveStatements(lua_State* L);
 		static int32_t luaGetNotationsCount(lua_State* L);
@@ -570,6 +572,8 @@ class LuaInterface
 		static int32_t luaGetCreatureStorageList(lua_State* L);
 		static int32_t luaGetCreatureStorage(lua_State* L);
 		static int32_t luaDoCreatureSetStorage(lua_State* L);
+		static int32_t luaGetPlayerSpectators(lua_State* L);
+		static int32_t luaDoPlayerSetSpectators(lua_State* L);
 		static int32_t luaDoPlayerAddBlessing(lua_State* L);
 		static int32_t luaGetPlayerBlessing(lua_State* L);
 		static int32_t luaDoPlayerSetPVPBlessing(lua_State* L);

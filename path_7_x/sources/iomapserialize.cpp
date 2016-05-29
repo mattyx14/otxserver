@@ -821,7 +821,7 @@ bool IOMapSerialize::saveItems(Database* db, uint32_t& tileId, uint32_t houseId,
 
 	bool stored = false;
 	DBInsert stmt(db);
-	stmt.setQuery("INSERT INTO `tile_items` (`tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`) VALUES ");
+	stmt.setQuery("INSERT INTO `tile_items` (`tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
 
 	DBQuery query;
 	for(int32_t i = 0; i < thingCount; ++i)
@@ -845,11 +845,21 @@ bool IOMapSerialize::saveItems(Database* db, uint32_t& tileId, uint32_t houseId,
 		PropWriteStream propWriteStream;
 		item->serializeAttr(propWriteStream);
 
+		std::string key = "serial";
+		boost::any value = item->getAttribute(key.c_str());
+		if (value.empty())
+		{
+			item->generateSerial();
+			value = item->getAttribute(key.c_str());
+		}
+
+		item->eraseAttribute(key.c_str());
+
 		uint32_t attributesSize = 0;
 		const char* attributes = propWriteStream.getStream(attributesSize);
 
 		query << tileId << ", " << g_config.getNumber(ConfigManager::WORLD_ID) << ", " << ++runningId << ", " << parentId << ", "
-			<< item->getID() << ", " << (int32_t)item->getSubType() << ", " << db->escapeBlob(attributes, attributesSize);
+			<< item->getID() << ", " << (int32_t)item->getSubType() << ", " << db->escapeBlob(attributes, attributesSize) << ", " << db->escapeString(boost::any_cast<std::string>(value).c_str());
 		if(!stmt.addRow(query.str()))
 			return false;
 

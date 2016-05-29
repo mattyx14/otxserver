@@ -264,6 +264,9 @@
     <ClInclude Include="..\resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\spectators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\actions.cpp">
@@ -486,6 +489,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\weapons.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\spectators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -660,6 +660,104 @@ ServiceManager* services)
 	else
 		startupErrorMessage("Couldn't estabilish connection to SQL database!");
 
+	std::clog << ">> Checking for duplicated items" << std::endl;
+#if defined(WINDOWS) && !defined(_CONSOLE)
+	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Checking for duplicated items");
+#endif
+	DBQuery query;
+	query << "SELECT unitedItems.serial, COUNT(1) AS duplicatesCount FROM (SELECT serial FROM `player_items` UNION ALL SELECT serial FROM `player_depotitems` UNION ALL SELECT serial FROM `tile_items`) unitedItems GROUP BY unitedItems.serial HAVING COUNT(1) > 1;";
+	std::string logText = "";
+
+	DBResult* result;
+	bool duplicated = false;
+
+	if (result = db->storeQuery(query.str()))
+	{
+		do
+		{
+			std::string serial = result->getDataString("serial");
+			if (serial != "" && serial.length() > 1)
+			{
+				DBResult* result_;
+				DBQuery query_playeritems;
+				query_playeritems << "SELECT `player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_items` WHERE `serial` = " << db->escapeString(serial) << ";";
+				if (result_ = db->storeQuery(query_playeritems.str()))
+				{
+					duplicated = true;
+					do
+					{
+						std::string name;
+						IOLoginData::getInstance()->getNameByGuid((uint32_t)result_->getDataInt("player_id"), name, false);
+						std::clog << ">> Deleted item from 'player_items' with SERIAL: [" << serial.c_str() << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name.c_str() << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]" << std::endl;
+						std::stringstream logText;
+						logText << "Deleted item from 'player_items' with SERIAL: [" << serial << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]";
+						Logger::getInstance()->eFile("anti_dupe.log", logText.str(), true);
+					} while (result_->next());
+					result_->free();
+				}
+
+				query_playeritems.clear();
+				DBQuery query_playerdepotitems;
+				query_playerdepotitems << "SELECT `player_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_depotitems` WHERE `serial` = " << db->escapeString(serial) << ";";
+				if (result_ = db->storeQuery(query_playerdepotitems.str()))
+				{
+					duplicated = true;
+					do
+					{
+						std::string name;
+						IOLoginData::getInstance()->getNameByGuid((uint32_t)result_->getDataInt("player_id"), name, false);
+						std::clog << ">> Deleted item from 'player_depotitems' with SERIAL: [" << serial.c_str() << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name.c_str() << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]" << std::endl;
+						std::stringstream logText;
+						logText << "Deleted item from 'player_depotitems' with SERIAL: [" << serial << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]";
+						Logger::getInstance()->eFile("anti_dupe.log", logText.str(), true);
+					} while (result_->next());
+					result_->free();
+				}
+
+				query_playerdepotitems.clear();
+				DBQuery query_tileitems;
+				query_tileitems << "SELECT `tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `tile_items` WHERE `serial` = " << db->escapeString(serial) << ";";
+				if (result_ = db->storeQuery(query_tileitems.str()))
+				{
+					duplicated = true;
+					do
+					{
+						std::clog << ">> Deleted item from 'tile_items' with SERIAL: [" << serial.c_str() << "] TILE ID: [" << result_->getDataInt("tile_id") << "] WORLD ID: [" << result_->getDataInt("world_id") << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]" << std::endl;
+						std::stringstream logText;
+						logText << "Deleted item from 'tile_items' with SERIAL: [" << serial << "] TILE ID: [" << result_->getDataInt("tile_id") << "] WORLD ID: [" << result_->getDataInt("world_id") << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]";
+						Logger::getInstance()->eFile("anti_dupe.log", logText.str(), true);
+					} while (result_->next());
+					result_->free();
+				}
+
+				query_tileitems.clear();
+				DBQuery query_deletepi;
+				query_deletepi << "DELETE FROM `player_items` WHERE `serial` = " << db->escapeString(serial) << ";";
+				if (!db->query(query_deletepi.str()))
+					std::clog << ">> Cannot delete duplicated items from 'player_items'!" << std::endl;
+
+				query_deletepi.clear();
+				DBQuery query_deletedi;
+				query_deletedi << "DELETE FROM `player_depotitems` WHERE `serial` = " << db->escapeString(serial) << ";";
+				if (!db->query(query_deletedi.str()))
+					std::clog << ">> Cannot delete duplicated items from 'player_depotitems'!" << std::endl;
+
+				query_deletedi.clear();
+				DBQuery query_deleteti;
+				query_deleteti << "DELETE FROM `tile_items` WHERE `serial` = " << db->escapeString(serial) << ";";
+				if (!db->query(query_deleteti.str()))
+					std::clog << ">> Cannot delete duplicated items from 'tile_items'!" << std::endl;
+
+				query_deleteti.clear();
+			}
+		} while (result->next());
+		result->free();
+		if (duplicated)
+			std::clog << ">> Duplicated items successfully removed." << std::endl;
+	}
+	else
+		std::clog << ">> There wasn't duplicated items in the server." << std::endl;
+
 	std::clog << ">> Loading groups" << std::endl;
 	#if defined(WINDOWS) && !defined(_CONSOLE)
 	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Loading groups");
