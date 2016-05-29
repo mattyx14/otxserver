@@ -1197,11 +1197,6 @@ class Player final : public Creature, public Cylinder
 			return lastWalkthroughAttempt;
 		}
 
-		int16_t getPvpItemId(Item* item) {
-		}
-
-		void setPvpItemId(Item* item, int16_t itemId) {
-		}
 	protected:
 		std::forward_list<Condition*> getMuteConditions() const;
 

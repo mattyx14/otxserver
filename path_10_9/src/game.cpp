@@ -2430,7 +2430,7 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 		return;
 	}
 
-	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition()), true, 8, 6, tradePartner) {
+	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition(), true, 8, 6, tradePartner)) {
 		player->sendCancelMessage(RETURNVALUE_CREATUREISNOTREACHABLE);
 		return;
 	}
@@ -2567,7 +2567,7 @@ void Game::playerAcceptTrade(uint32_t playerId)
 		return;
 	}
 
-	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition()), true, 8, 6, tradePartner) {
+	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition(), true, 8, 6, tradePartner)) {
 		player->sendCancelMessage(RETURNVALUE_CREATUREISNOTREACHABLE);
 		return;
 	}
@@ -4713,11 +4713,24 @@ void Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 		return;
 	}
 
+	std::ostringstream ss;
 	if (invitedPlayer->getParty()) {
-		std::ostringstream ss;
 		ss << invitedPlayer->getName() << " is already in a party.";
 		player->sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
 		return;
+	}
+
+	if (g_game.isExpertPvpEnabled()) {
+		if (invitedPlayer->isInPvpSituation()) {
+			ss << "You can't invite " << invitedPlayer->getName() << " while he is in an agression.";
+			player->sendCancelMessage(ss.str());
+			return;
+		} else if (player->isInPvpSituation()) {
+			ss << "You can't invite players while you are in an agression.";
+			player->sendCancelMessage(ss.str());
+			return;
+		}
+		
 	}
 
 	Party* party = player->getParty();
@@ -4749,6 +4762,11 @@ void Game::playerJoinParty(uint32_t playerId, uint32_t leaderId)
 
 	if (player->getParty()) {
 		player->sendTextMessage(MESSAGE_INFO_DESCR, "You are already in a party.");
+		return;
+	}
+
+	if (g_game.isExpertPvpEnabled() && (player->isInPvpSituation() || leader->isInPvpSituation())) {
+		player->sendCancelMessage("You can't join while you are in an aggression");
 		return;
 	}
 
@@ -5559,19 +5577,14 @@ bool Game::isExpertPvpEnabled()
 
 void Game::updateSpectatorsPvp(Thing* thing, uint32_t delay)
 {
-	if (!thing) {
+	if (!g_game.isExpertPvpEnabled() || !thing || thing->isRemoved()) {
 		return;
 	}
 
 	bool canSchedule = false;
-
 	if (Creature* creature = thing->getCreature()) {
-		if (!creature || creature->isRemoved()) {
-			return;
-		}
-
 		Player* player = creature->getPlayer();
-		if (!player || player->isRemoved()) {
+		if (!player) {
 			return;
 		}
 
@@ -5597,47 +5610,44 @@ void Game::updateSpectatorsPvp(Thing* thing, uint32_t delay)
 			}
 
 			if (sqColor != SQ_COLOR_NONE) {
-				g_dispatcher.addTask(createTask(std::bind(&Player::sendPvpSquare, player, itPlayer, sqColor)));
+				player->sendPvpSquare(itPlayer, sqColor);
 			}
 		}
-
 		canSchedule = true;
-	} else if (const Item* thingItem = thing->getItem()) {
-		Item* item = const_cast<Item*>(thingItem);
-		if (item->isRemoved()) {
+	} else if (Item* item = thing->getItem()) {
+		if (!item || item->isRemoved()) {
 			return;
 		}
 
-		Tile* tile = item->getTile();
+		MagicField* field = item->getMagicField();
+		if (!field) {
+			return;
+		}
+
+		Tile* tile = field->getTile();
 		if (!tile) {
 			return;
 		}
 
-		Player* owner = getPlayerByID(item->getOwner());
+		Player* owner = g_game.getPlayerByID(field->getOwner());
 		if (!owner || owner->isRemoved()) {
-			if (Monster* monster = getMonsterByID(item->getOwner())) {
-				if (monster->isSummon()) {
-					owner = monster->getMaster()->getPlayer();
-				}
-			}
-		}
-
-		if (!owner || owner->isRemoved()) {
-			if (MagicField* field = item->getMagicField()) {
-				if (field->isCasterPlayer) {
-					SpectatorVec list;
-					map.getSpectators(list, field->getPosition(), false, true);
-					for (auto it : list) {
-						if (Player* itPlayer = it->getPlayer()) {
-							Item* newItem = item->clone();
-							newItem->setID(getPvpItem(item->getID(), true));
-							newItem->setDuration(item->getDuration());
-							g_game.startDecay(newItem);
-							itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newItem, tile->getStackposOfItem(itPlayer, item));
-						}
+			if (field->isCasterPlayer) {
+				SpectatorVec list;
+				map.getSpectators(list, field->getPosition(), false, true);
+				for (auto it : list) {
+					Player* itPlayer = it->getPlayer();
+					if (!itPlayer || itPlayer->isRemoved()) {
+						continue;
 					}
+
+					Item* newField = field->clone();
+					newField->setID(getPvpItem(field->getID(), true));
+					newField->setDuration(field->getDuration());
+					g_game.startDecay(newField);
+					itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newField, tile->getStackposOfItem(itPlayer, field));
 				}
 			}
+			g_scheduler.addEvent(createSchedulerTask(delay, std::bind(&Game::updateSpectatorsPvp, this, thing, delay)));
 			return;
 		}
 
@@ -5650,25 +5660,18 @@ void Game::updateSpectatorsPvp(Thing* thing, uint32_t delay)
 			}
 
 			uint16_t newId;
-
-			if (itPlayer == owner) {
-				newId = getPvpItem(item->getID(), true);
-			} else if (item->isMagicField() && !owner->hasPvpActivity(itPlayer)) {
-				newId = getPvpItem(item->getID(), item->getMagicField()->pvpMode == PVP_MODE_RED_FIST);
-			} else if (owner->hasPvpActivity(itPlayer)) {
-				newId = getPvpItem(item->getID(), true);
-			} else if (owner->hasPvpActivity(itPlayer, true) && owner->getPvpMode() == PVP_MODE_RED_FIST) {
-				newId = getPvpItem(item->getID(), true);
+			if (itPlayer == owner || owner->hasPvpActivity(itPlayer) || owner->getPvpMode() == PVP_MODE_RED_FIST) {
+				newId = getPvpItem(field->getID(), true);
 			} else {
 				newId = getPvpItem(item->getID(), false);
 			}
 
-			Item* newItem = item->clone();
-			newItem->setID(newId);
-			newItem->setDuration(item->getDuration());
-			g_game.startDecay(newItem);
-			itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newItem, tile->getStackposOfItem(itPlayer, item));
-			
+			Item* newField = item->clone();
+			newField->setID(newId);
+			newField->setDuration(item->getDuration());
+			g_game.startDecay(newField);
+			itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newField, tile->getStackposOfItem(itPlayer, field));
+
 		}
 		canSchedule = true;
 	}

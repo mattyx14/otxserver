@@ -229,11 +229,15 @@ bool Npc::loadFromXml()
 
 bool Npc::canWalkThroughTileItems(Tile* tile) const
 {
-	if (!g_game.isExpertPvpEnabled()) {
+	if (!g_game.isExpertPvpEnabled() || !tile) {
 		return true;
 	}
 
 	TileItemVector* itemList = tile->getItemList();
+	if (!itemList) {
+		return true;
+	}
+
 	for (auto it : *itemList) {
 		if (it->getID() == ITEM_WILDGROWTH_NOPVP || it->getID() == ITEM_MAGICWALL_NOPVP) {
 			return false;
