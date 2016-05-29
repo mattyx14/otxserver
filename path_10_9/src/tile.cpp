@@ -40,7 +40,7 @@ extern MoveEvents* g_moveEvents;
 StaticTile real_nullptr_tile(0xFFFF, 0xFFFF, 0xFF);
 Tile& Tile::nullptr_tile = real_nullptr_tile;
 
-bool Tile::hasProperty(ITEMPROPERTY prop) const
+bool Tile::hasProperty(ITEMPROPERTY prop, Creature* caster) const
 {
 	if (ground && ground->hasProperty(prop)) {
 		return true;
@@ -50,6 +50,17 @@ bool Tile::hasProperty(ITEMPROPERTY prop) const
 		for (const Item* item : *items) {
 			if (item->hasProperty(prop)) {
 				return true;
+			} else if (g_game.isExpertPvpEnabled() && prop == CONST_PROP_BLOCKPROJECTILE && caster && !caster->isRemoved() && item->getID() == ITEM_MAGICWALL_NOPVP) {
+				if (Player* owner = g_game.getPlayerByID(item->getOwner())) {
+					Player* casterPlayer = caster->getPlayer();
+					if (!casterPlayer && caster->isSummon()) {
+						casterPlayer = caster->getMaster()->getPlayer();
+					}
+
+					if (!casterPlayer || (casterPlayer == owner || casterPlayer->hasPvpActivity(owner))) {
+						return true;
+					}
+				}
 			}
 		}
 	}
@@ -493,9 +504,12 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
+		if (!creature->canWalkThroughTileItems(const_cast<Tile*>(this))) {
+			return RETURNVALUE_NOTENOUGHROOM;
+		}
+
 		if (const Monster* monster = creature->getMonster()) {
-			if (hasFlag(TILESTATE_PROTECTIONZONE | TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT) || hasSafePvpItem()) {
-				// TODO: update creatures map ( understanding he can't enter this tile if he already tried to! )
+			if (hasFlag(TILESTATE_PROTECTIONZONE | TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT)) {
 				return RETURNVALUE_NOTPOSSIBLE;
 			}
 
@@ -563,7 +577,38 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			if (creatures && !creatures->empty() && !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags) && !player->isAccessPlayer()) {
 				for (const Creature* tileCreature : *creatures) {
 					if (!player->canWalkthrough(tileCreature)) {
-						return RETURNVALUE_NOTPOSSIBLE;
+						if (!g_game.isExpertPvpEnabled()) {
+							return RETURNVALUE_NOTPOSSIBLE;
+						}
+
+						g_game.updateCreatureWalkthrough(tileCreature);
+						if (Player* tilePlayer = const_cast<Creature*>(tileCreature)->getPlayer()) {
+							if (tilePlayer->getPvpMode() == PVP_MODE_RED_FIST) {
+								tilePlayer->addAttacked(player);
+								tilePlayer->addInFightTicks(true);
+								if (tilePlayer->getSkull() == SKULL_NONE) {
+									tilePlayer->setSkull(SKULL_WHITE);
+								}
+							}
+							return RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVEPLAYERS;
+						} else if (Monster* tileMonster = const_cast<Creature*>(tileCreature)->getMonster()) {
+							if (!tileMonster->isSummon() || !tileMonster->getMaster()->getPlayer()) {
+								return RETURNVALUE_NOTPOSSIBLE;
+							}
+							Player* master = tileMonster->getMaster()->getPlayer();
+							if (master->getPvpMode() == PVP_MODE_RED_FIST) {
+								master->addAttacked(player);
+								master->addInFightTicks(true);
+								if (master->getSkull() == SKULL_NONE) {
+									master->setSkull(SKULL_WHITE);
+								}
+							}
+						}
+						if ((OTSYS_TIME() - player->getLastWalkThroughAttempt()) > 2000) {
+							return RETURNVALUE_NOTPOSSIBLE;
+						} else {
+							return RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVECREATURES;
+						}
 					}
 				}
 			}
@@ -589,78 +634,6 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 					(!playerTile->hasFlag(TILESTATE_PROTECTIONZONE) && hasFlag(TILESTATE_PROTECTIONZONE))) {
 					// player is trying to enter a non-pvp/protection zone while being pz-locked
 					return RETURNVALUE_PLAYERISPZLOCKED;
-				}
-			}
-
-			// player is entering other players with pvp-mode while ExpertPvp is allowed in config!
-			if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && !hasFlag(TILESTATE_PROTECTIONZONE) && creatures && !creatures->empty() && !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags) && !player->isAccessPlayer()) {
-				for (const Creature* tileCreature : *creatures) {
-					const Player* tilePlayer = tileCreature->getPlayer();
-					if (!tileCreature->getPlayer()) {
-						continue;
-					}
-
-					if ((g_game.getWorldType() == WORLD_TYPE_PVP && (player->getPvpMode() == PVP_MODE_YELLOW_HAND || tilePlayer->getPvpMode() == PVP_MODE_YELLOW_HAND)) ||
-							(g_game.getWorldType() == WORLD_TYPE_PVP_ENFORCED && (player->getPvpMode() == PVP_MODE_RED_FIST || tilePlayer->getPvpMode() == PVP_MODE_RED_FIST))) {
-						Player* attacker;
-						Player* attacked;
-						if (player->getPvpMode() == PVP_MODE_YELLOW_HAND || player->getPvpMode() == PVP_MODE_RED_FIST) {
-							attacker = const_cast<Player*>(player);
-							attacked = const_cast<Player*>(tilePlayer);
-						} else {
-							attacker = const_cast<Player*>(tilePlayer);
-							attacked = const_cast<Player*>(player);
-						}
-
-						uint32_t protectionLevel = g_config.getNumber(ConfigManager::PROTECTION_LEVEL);
-						if (attacker->getLevel() < protectionLevel || attacked->getLevel() < protectionLevel) {
-							continue;
-						}
-
-						if (attacker->getVocationId() == VOCATION_NONE || attacked->getVocationId() == VOCATION_NONE) {
-							continue;
-						}
-
-						Skulls_t skull = SKULL_NONE;
-						if (attacked->getSkull() == SKULL_NONE) {
-							skull = SKULL_WHITE;
-						}
-
-						if (skull != SKULL_NONE) {
-							// Skull is safe to add ( only open-pvp will be applied )
-							attacker->setSkull(skull);
-						}
-
-						attacker->addInFightTicks(true);
-						attacker->addAttacked(attacked);
-
-						attacker->sendPvpActionStart(attacked);
-						attacked->sendPvpActionStart(attacker);
-
-						// Since players can walk through ( if no pvp-action between them ) we need to update the walk-through!
-						g_game.updateCreatureWalkthrough(attacker);
-						g_game.updateCreatureWalkthrough(attacked);
-					}
-				}
-			}
-			
-			// Player is trying to enter a magicwall.
-			if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && g_game.getWorldType() != WORLD_TYPE_NO_PVP && hasSafePvpItem()) {
-				const TileItemVector* itemVector = getItemList();
-				if (itemVector) {
-					for (auto it : *itemVector) {
-						uint16_t itemId = it->getID();
-						// We don't care it it's real magic wall, magic wall is already prevented by FLAG (default)
-						if (itemId != ITEM_MAGICWALL_NOPVP && itemId != ITEM_WILDGROWTH_NOPVP) {
-							continue;
-						}
-
-						if (player->getItemPvpStat(it) != ITEM_IS_SAFE) {
-							g_game.updateSpectatorPvpStatus(it);
-							return RETURNVALUE_NOTPOSSIBLE;
-						}
-						
-					}
 				}
 			}
 		} else if (creatures && !creatures->empty() && !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags)) {
@@ -745,6 +718,10 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			if (items) {
 				for (const Item* tileItem : *items) {
 					const ItemType& iiType = Item::items[tileItem->getID()];
+					if (g_game.isExpertPvpEnabled() && (iiType.id == ITEM_MAGICWALL_NOPVP || iiType.id == ITEM_WILDGROWTH_NOPVP)) {
+						return RETURNVALUE_NOTENOUGHROOM;
+					}
+
 					if (!iiType.blockSolid) {
 						continue;
 					}

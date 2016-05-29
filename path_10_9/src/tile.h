@@ -202,7 +202,7 @@ class Tile : public Cylinder
 		uint32_t getTopItemCount() const;
 		uint32_t getDownItemCount() const;
 
-		bool hasProperty(ITEMPROPERTY prop) const;
+		bool hasProperty(ITEMPROPERTY prop, Creature* caster = nullptr) const;
 		bool hasProperty(const Item* exclude, ITEMPROPERTY prop) const;
 
 		inline bool hasFlag(uint32_t flag) const {
@@ -280,10 +280,6 @@ class Tile : public Cylinder
 		}
 		void setGround(Item* item) {
 			ground = item;
-		}
-
-		bool hasSafePvpItem() const {
-			return getItemTypeCount(ITEM_MAGICWALL_NOPVP) > 0 || getItemTypeCount(ITEM_WILDGROWTH_NOPVP) > 0;
 		}
 
 	private:

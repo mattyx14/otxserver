@@ -1027,7 +1027,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		return;
 	}
 
-	if (!canThrowObjectTo(mapFromPos, mapToPos)) {
+	if (!canThrowObjectTo(mapFromPos, mapToPos, true, 8, 6, player)) {
 		player->sendCancelMessage(RETURNVALUE_CANNOTTHROW);
 		return;
 	}
@@ -1231,70 +1231,6 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 {
 	uint32_t remainderCount = 0;
 	return internalAddItem(toCylinder, item, index, flags, test, remainderCount);
-}
-
-void Game::updateSpectatorPvpStatus(Item* item, bool loop) {
-	if (item == nullptr || !item) {
-		return;
-	}
-
-	uint32_t duration = item->getDuration();
-	if (duration < 600) {
-		return;
-	}
-
-	if (!item->isMagicField()) {
-		return;
-	}
-
-	uint32_t ownerId = item->getOwner();
-	if (!ownerId) {
-		return;
-	}
-
-	Creature* owner = getCreatureByID(ownerId);
-	if (!owner) {
-		return;
-	}
-
-	Player* ownerPlayer = owner->getPlayer();
-	if (!ownerPlayer) {
-		if (owner->isSummon() && owner->getMaster()->getPlayer()) {
-			ownerPlayer = owner->getMaster()->getPlayer();
-		} else {
-			return;
-		}
-	}
-
-	Tile* tile = item->getTile();
-	if (!tile) {
-		return;
-	}
-
-	SpectatorVec list;
-	map.getSpectators(list, tile->getPosition(), true, true);
-	for (auto it : list) {
-		if (Player* tmpPlayer = it->getPlayer()) {
-
-			uint32_t requiredId = item->getID();
-			if (tmpPlayer->getItemPvpStat(item) == ITEM_IS_PVP) {
-					requiredId = nonPvpFieldToPvpField(item->getID());
-			} else {
-					requiredId = pvpFieldToNonPvpField(item->getID());;
-			}
-
-			if (requiredId == ITEM_PVP_SAFE_NULL) {
-				return; // it means item is not added to the function, no need to repeat
-			}
-			item->setID(requiredId);
-			item->setDuration(duration);
-			tmpPlayer->sendUpdateTileItem(tile, tile->getPosition(), item);
-		}
-	}
-
-	if (loop && duration > 1400) {
-		g_scheduler.addEvent(createSchedulerTask(1000, std::bind(&Game::updateSpectatorPvpStatus, this, item, true)));
-	}
 }
 
 ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t index,
@@ -2494,7 +2430,7 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 		return;
 	}
 
-	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())) {
+	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition()), true, 8, 6, tradePartner) {
 		player->sendCancelMessage(RETURNVALUE_CREATUREISNOTREACHABLE);
 		return;
 	}
@@ -2631,7 +2567,7 @@ void Game::playerAcceptTrade(uint32_t playerId)
 		return;
 	}
 
-	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())) {
+	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition()), true, 8, 6, tradePartner) {
 		player->sendCancelMessage(RETURNVALUE_CREATUREISNOTREACHABLE);
 		return;
 	}
@@ -3102,38 +3038,16 @@ void Game::playerFollowCreature(uint32_t playerId, uint32_t creatureId)
 	player->setFollowCreature(getCreatureByID(creatureId));
 }
 
-void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, pvpMode_t pvpMode, bool secureMode)
+void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, bool secureMode)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
 		return;
 	}
 
-	bool needUpdate = false;
 	player->setFightMode(fightMode);
 	player->setChaseMode(chaseMode);
-
-	if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE) && worldType != WORLD_TYPE_PVP) {
-		if (worldType == WORLD_TYPE_NO_PVP && !secureMode) {
-			player->setSecureMode(true);
-			needUpdate = true;
-		} else if (worldType == WORLD_TYPE_PVP_ENFORCED && secureMode) {
-			player->setSecureMode(false);
-			needUpdate = true;
-		}
-	} else {
-		player->setSecureMode(secureMode);
-	}
-
-	if ((pvpMode == PVP_MODE_RED_FIST && getWorldType() != WORLD_TYPE_PVP_ENFORCED) || player->getSkull() == SKULL_BLACK) {
-		needUpdate = true;
-	} else {
-		player->setPvpMode(pvpMode);
-	}
-
-	if (needUpdate) {
-		g_scheduler.addEvent(createSchedulerTask(400, std::bind(&Player::sendFightModes, player)));
-	}
+	player->setSecureMode(secureMode);
 }
 
 void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
@@ -3510,14 +3424,14 @@ void Game::playerSpeakToNpc(Player* player, const std::string& text)
 
 //--
 bool Game::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight /*= true*/,
-                            int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/) const
+                            int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/, Creature* creature /*= false*/) const
 {
-	return map.canThrowObjectTo(fromPos, toPos, checkLineOfSight, rangex, rangey);
+	return map.canThrowObjectTo(fromPos, toPos, checkLineOfSight, rangex, rangey, creature);
 }
 
-bool Game::isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck) const
+bool Game::isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck, Creature* caster) const
 {
-	return map.isSightClear(fromPos, toPos, floorCheck);
+	return map.isSightClear(fromPos, toPos, floorCheck, caster);
 }
 
 bool Game::internalCreatureTurn(Creature* creature, Direction dir)
@@ -3966,6 +3880,9 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 
 		Player* attackerPlayer;
 		if (attacker) {
+			if (!attacker->canAttack(target)) {
+				return false;
+			}
 			attackerPlayer = attacker->getPlayer();
 		} else {
 			attackerPlayer = nullptr;
@@ -4191,6 +4108,9 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 
 		Player* attackerPlayer;
 		if (attacker) {
+			if (!attacker->canAttack(target)) {
+				return false;
+			}
 			attackerPlayer = attacker->getPlayer();
 		} else {
 			attackerPlayer = nullptr;
@@ -5632,19 +5552,130 @@ void Game::removeUniqueItem(uint16_t uniqueId)
 	}
 }
 
-void Game::sendPvpSquare(uint32_t playerId, uint32_t targetId)
+bool Game::isExpertPvpEnabled()
 {
-	Player* player = getPlayerByID(playerId);
-	if (!player) {
+	return g_config.getBoolean(ConfigManager::EXPERT_PVP);
+}
+
+void Game::updateSpectatorsPvp(Thing* thing, uint32_t delay)
+{
+	if (!thing) {
 		return;
 	}
 
-	Player* target = getPlayerByID(targetId);
-	if (!target) {
-		return;
+	bool canSchedule = false;
+
+	if (Creature* creature = thing->getCreature()) {
+		if (!creature || creature->isRemoved()) {
+			return;
+		}
+
+		Player* player = creature->getPlayer();
+		if (!player || player->isRemoved()) {
+			return;
+		}
+
+		SpectatorVec list;
+		map.getSpectators(list, player->getPosition(), true, true);
+		for (auto it : list) {
+			Player* itPlayer = it->getPlayer();
+			if (!itPlayer || itPlayer->isRemoved()) {
+				continue;
+			}
+
+			SquareColor_t sqColor = SQ_COLOR_NONE;
+			if (player->hasPvpActivity(itPlayer)) {
+				sqColor = SQ_COLOR_YELLOW;
+			} else if (itPlayer->isInPvpSituation()) {
+				if (itPlayer == player) {
+					sqColor = SQ_COLOR_YELLOW;
+				} else if (player->hasPvpActivity(itPlayer, true)) { // if this player attacked anyone of players's guild/party
+					sqColor = SQ_COLOR_ORANGE;
+				} else {
+					sqColor = SQ_COLOR_BROWN;
+				}
+			}
+
+			if (sqColor != SQ_COLOR_NONE) {
+				g_dispatcher.addTask(createTask(std::bind(&Player::sendPvpSquare, player, itPlayer, sqColor)));
+			}
+		}
+
+		canSchedule = true;
+	} else if (const Item* thingItem = thing->getItem()) {
+		Item* item = const_cast<Item*>(thingItem);
+		if (item->isRemoved()) {
+			return;
+		}
+
+		Tile* tile = item->getTile();
+		if (!tile) {
+			return;
+		}
+
+		Player* owner = getPlayerByID(item->getOwner());
+		if (!owner || owner->isRemoved()) {
+			if (Monster* monster = getMonsterByID(item->getOwner())) {
+				if (monster->isSummon()) {
+					owner = monster->getMaster()->getPlayer();
+				}
+			}
+		}
+
+		if (!owner || owner->isRemoved()) {
+			if (MagicField* field = item->getMagicField()) {
+				if (field->isCasterPlayer) {
+					SpectatorVec list;
+					map.getSpectators(list, field->getPosition(), false, true);
+					for (auto it : list) {
+						if (Player* itPlayer = it->getPlayer()) {
+							Item* newItem = item->clone();
+							newItem->setID(getPvpItem(item->getID(), true));
+							newItem->setDuration(item->getDuration());
+							g_game.startDecay(newItem);
+							itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newItem, tile->getStackposOfItem(itPlayer, item));
+						}
+					}
+				}
+			}
+			return;
+		}
+
+		SpectatorVec list;
+		map.getSpectators(list, owner->getPosition(), true, true);
+		for (auto it : list) {
+			Player* itPlayer = it->getPlayer();
+			if (!itPlayer || itPlayer->isRemoved()) {
+				continue;
+			}
+
+			uint16_t newId;
+
+			if (itPlayer == owner) {
+				newId = getPvpItem(item->getID(), true);
+			} else if (item->isMagicField() && !owner->hasPvpActivity(itPlayer)) {
+				newId = getPvpItem(item->getID(), item->getMagicField()->pvpMode == PVP_MODE_RED_FIST);
+			} else if (owner->hasPvpActivity(itPlayer)) {
+				newId = getPvpItem(item->getID(), true);
+			} else if (owner->hasPvpActivity(itPlayer, true) && owner->getPvpMode() == PVP_MODE_RED_FIST) {
+				newId = getPvpItem(item->getID(), true);
+			} else {
+				newId = getPvpItem(item->getID(), false);
+			}
+
+			Item* newItem = item->clone();
+			newItem->setID(newId);
+			newItem->setDuration(item->getDuration());
+			g_game.startDecay(newItem);
+			itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newItem, tile->getStackposOfItem(itPlayer, item));
+			
+		}
+		canSchedule = true;
 	}
 
-	player->sendPvpActionStart(target);
+	if (canSchedule) {
+		g_scheduler.addEvent(createSchedulerTask(delay, std::bind(&Game::updateSpectatorsPvp, this, thing, delay)));
+	}
 }
 
 bool Game::hasEffect(uint8_t effectId) {

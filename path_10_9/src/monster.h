@@ -173,6 +173,9 @@ class Monster final : public Creature
 			return stepDuration >= 1;
 		}
 
+		bool canAttack(Creature* creature) const final;
+		bool canWalkThroughTileItems(Tile* tile) const final;
+
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 		                     bool checkDefense = false, bool checkArmor = false, bool field = false);
 
@@ -242,10 +245,10 @@ class Monster final : public Creature
 		bool isInSpawnRange(const Position& pos) const;
 		bool canWalkTo(Position pos, Direction direction) const;
 
-		static bool pushItem(Item* item);
-		static void pushItems(Tile* tile);
-		static bool pushCreature(Creature* creature);
-		static void pushCreatures(Tile* tile);
+		bool pushItem(Item* item);
+		void pushItems(Tile* tile);
+		bool pushCreature(Creature* creature);
+		void pushCreatures(Tile* tile);
 
 		void onThinkTarget(uint32_t interval);
 		void onThinkYell(uint32_t interval);

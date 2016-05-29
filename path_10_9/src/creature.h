@@ -355,7 +355,12 @@ class Creature : virtual public Thing
 		virtual uint32_t getConditionSuppressions() const {
 			return 0;
 		}
-		virtual bool isAttackable() const {
+
+		// both functions are not related to expert pvp disabled.
+		virtual bool canAttack(Creature*) const {
+			return true;
+		}
+		virtual bool canWalkThroughTileItems(Tile*) const {
 			return true;
 		}
 

@@ -79,7 +79,6 @@ enum pvpMode_t : uint8_t {
 	PVP_MODE_WHITE_HAND = 1,
 	PVP_MODE_YELLOW_HAND = 2,
 	PVP_MODE_RED_FIST = 3,
-	PVP_MODE_NONE = 4,
 };
 
 enum tradestate_t : uint8_t {
@@ -586,17 +585,11 @@ class Player final : public Creature, public Cylinder
 		void setFightMode(fightMode_t mode) {
 			fightMode = mode;
 		}
+		void setPvpMode(pvpMode_t mode) {
+			pvpMode = mode;
+		}
 		void setSecureMode(bool mode) {
 			secureMode = mode;
-		}
-		void setPvpMode(pvpMode_t mode) {
-			pvpmode = mode;
-		}
-		pvpMode_t getPvpMode() {
-			return pvpmode;
-		}
-		pvpMode_t getPvpMode() const {
-			return pvpmode;
 		}
 
 		//combat functions
@@ -654,10 +647,6 @@ class Player final : public Creature, public Cylinder
 		float getDefenseFactor() const final;
 
 		void addInFightTicks(bool pzlock = false);
-		void sendPvpActionStart(Player* player);
-		ItemPvpStat getItemPvpStat(Item* item) const;
-		bool canAttackPlayer(const Player* player) const;
-		bool hasPvpActivityWith(const Player* player, bool all = false) const;
 
 		uint64_t getGainedExperience(Creature* attacker) const final;
 
@@ -727,6 +716,15 @@ class Player final : public Creature, public Cylinder
 				}
 			}
 		}
+
+		void sendUpdateTileItem(const Tile*, const Position& pos, const Item* item, int32_t stackpos) {
+			if (client) {
+				if (stackpos != -1) {
+					client->sendUpdateTileItem(pos, stackpos, item);
+				}
+			}
+		}
+
 		void sendRemoveTileThing(const Position& pos, int32_t stackpos) {
 			if (stackpos != -1 && client) {
 				client->sendRemoveTileThing(pos, stackpos);
@@ -1184,6 +1182,26 @@ class Player final : public Creature, public Cylinder
 			return openContainers;
 		}
 
+		bool hasPvpActivity(Player* player, bool guildAndParty = false) const;
+
+		bool canAttack(Creature* creature)const final;
+		bool canWalkThroughTileItems(Tile* creature)const final;
+		bool isInPvpSituation();
+
+		void sendPvpSquare(Creature* creature, SquareColor_t squareColor);
+		pvpMode_t getPvpMode() const {
+			return pvpMode;
+		}
+
+		int64_t getLastWalkThroughAttempt() const {
+			return lastWalkthroughAttempt;
+		}
+
+		int16_t getPvpItemId(Item* item) {
+		}
+
+		void setPvpItemId(Item* item, int16_t itemId) {
+		}
 	protected:
 		std::forward_list<Condition*> getMuteConditions() const;
 
@@ -1338,7 +1356,7 @@ class Player final : public Creature, public Cylinder
 		tradestate_t tradeState;
 		chaseMode_t chaseMode;
 		fightMode_t fightMode;
-		pvpMode_t pvpmode;
+		pvpMode_t pvpMode;
 		AccountType_t accountType;
 
 		bool secureMode;

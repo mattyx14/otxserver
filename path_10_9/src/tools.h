@@ -85,10 +85,6 @@ std::string getWeaponName(WeaponType_t weaponType);
 size_t combatTypeToIndex(CombatType_t combatType);
 CombatType_t indexToCombatType(size_t v);
 
-uint16_t pvpFieldToNonPvpField(uint16_t itemId);
-uint16_t nonPvpFieldToPvpField(uint16_t itemId);
-uint16_t persistentItemToPvp(uint16_t itemId);
-
 uint8_t serverFluidToClient(uint8_t serverFluid);
 uint8_t clientFluidToServer(uint8_t clientFluid);
 
@@ -101,4 +97,5 @@ inline int64_t OTSYS_TIME()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
+uint16_t getPvpItem(uint16_t itemId, bool isPvp);
 #endif

@@ -246,8 +246,6 @@ class Game
 
 		ReturnValue internalPlayerAddItem(Player* player, Item* item, bool dropOnMap = true, slots_t slot = CONST_SLOT_WHEREEVER);
 
-		void updateSpectatorPvpStatus(Item* item, bool loop = false);
-
 		/**
 		  * Find an item of a certain type
 		  * \param cylinder to search the item
@@ -373,7 +371,7 @@ class Game
 		void playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);
 		void playerFollowCreature(uint32_t playerId, uint32_t creatureId);
 		void playerCancelAttackAndFollow(uint32_t playerId);
-		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, pvpMode_t pvpMode, bool secureMode);
+		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, bool secureMode);
 		void playerLookAt(uint32_t playerId, const Position& pos, uint8_t stackPos);
 		void playerLookInBattleList(uint32_t playerId, uint32_t creatureId);
 		void playerRequestAddVip(uint32_t playerId, const std::string& name);
@@ -413,8 +411,8 @@ class Game
 		void ReleaseItem(Item* item);
 
 		bool canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight = true,
-		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY) const;
-		bool isSightClear(const Position& fromPos, const Position& toPos, bool sameFloor) const;
+		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY, Creature* creature = nullptr) const;
+		bool isSightClear(const Position& fromPos, const Position& toPos, bool sameFloor, Creature* caster = nullptr) const;
 
 		void changeSpeed(Creature* creature, int32_t varSpeedDelta);
 		void internalCreatureChangeOutfit(Creature* creature, const Outfit_t& oufit);
@@ -500,7 +498,8 @@ class Game
 		bool addUniqueItem(uint16_t uniqueId, Item* item);
 		void removeUniqueItem(uint16_t uniqueId);
 
-		void sendPvpSquare(uint32_t playerid, uint32_t targetid);
+		bool isExpertPvpEnabled();
+		void updateSpectatorsPvp(Thing* thing, uint32_t delay);
 
 		bool hasEffect(uint8_t effectId);
 		bool hasDistanceEffect(uint8_t effectId);

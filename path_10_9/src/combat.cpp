@@ -102,14 +102,14 @@ CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 	return damage;
 }
 
-void Combat::getCombatArea(const Position& centerPos, const Position& targetPos, const AreaCombat* area, std::forward_list<Tile*>& list)
+void Combat::getCombatArea(const Position& centerPos, const Position& targetPos, const AreaCombat* area, std::forward_list<Tile*>& list, Creature* caster)
 {
 	if (targetPos.z >= MAP_MAX_LAYERS) {
 		return;
 	}
 
 	if (area) {
-		area->getList(centerPos, targetPos, list);
+		area->getList(centerPos, targetPos, list, caster);
 	} else {
 		Tile* tile = g_game.map.getTile(targetPos);
 		if (!tile) {
@@ -240,11 +240,16 @@ ReturnValue Combat::canTargetCreature(Player* player, Creature* target)
 			return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 		}
 
-		// Everything works normaly while expert-mode is not enabled via config
-		if (!g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
-			if (player->hasSecureMode() && !Combat::isInPvpZone(player, target) && player->getSkullClient(target->getPlayer()) == SKULL_NONE) {
-				return RETURNVALUE_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
-			}
+		if (!g_game.isExpertPvpEnabled() && player->hasSecureMode() && !Combat::isInPvpZone(player, target) && player->getSkullClient(target->getPlayer()) == SKULL_NONE) {
+			return RETURNVALUE_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
+		}
+	}
+
+	if (!player->canAttack(target)) {
+		if (target->getPlayer()) {
+			return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER; // trying to attack non-aggressive player
+		} else {
+			return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE; // trying to attack non-aggressive summon.
 		}
 	}
 
@@ -253,7 +258,7 @@ ReturnValue Combat::canTargetCreature(Player* player, Creature* target)
 
 ReturnValue Combat::canDoCombat(Creature* caster, Tile* tile, bool aggressive)
 {
-	if (tile->hasProperty(CONST_PROP_BLOCKPROJECTILE)) {
+	if (tile->hasProperty(CONST_PROP_BLOCKPROJECTILE, caster)) {
 		return RETURNVALUE_NOTENOUGHROOM;
 	}
 
@@ -335,10 +340,6 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
 				} else if (attackerPlayer->getTile()->hasFlag(TILESTATE_NOPVPZONE) && !targetPlayerTile->hasFlag(TILESTATE_NOPVPZONE | TILESTATE_PROTECTIONZONE)) {
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
-				}
-
-				if (!attackerPlayer->canAttackPlayer(targetPlayer)) {
-					return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 				}
 			}
 
@@ -575,11 +576,41 @@ void Combat::CombatNullFunc(Creature* caster, Creature* target, const CombatPara
 void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile* tile, const CombatParams& params)
 {
 	if (params.itemId != 0) {
-		uint16_t itemId = persistentItemToPvp(params.itemId);
-		bool isSafePvpItem = false;
+		uint16_t itemId = params.itemId;
+		switch (itemId) {
+			case ITEM_FIREFIELD_PERSISTENT_FULL:
+				itemId = ITEM_FIREFIELD_PVP_FULL;
+				break;
 
+			case ITEM_FIREFIELD_PERSISTENT_MEDIUM:
+				itemId = ITEM_FIREFIELD_PVP_MEDIUM;
+				break;
+
+			case ITEM_FIREFIELD_PERSISTENT_SMALL:
+				itemId = ITEM_FIREFIELD_PVP_SMALL;
+				break;
+
+			case ITEM_ENERGYFIELD_PERSISTENT:
+				itemId = ITEM_ENERGYFIELD_PVP;
+				break;
+
+			case ITEM_POISONFIELD_PERSISTENT:
+				itemId = ITEM_POISONFIELD_PVP;
+				break;
+
+			case ITEM_MAGICWALL_PERSISTENT:
+				itemId = ITEM_MAGICWALL;
+				break;
+
+			case ITEM_WILDGROWTH_PERSISTENT:
+				itemId = ITEM_WILDGROWTH;
+				break;
+
+			default:
+				break;
+		}
+		Player* casterPlayer = nullptr;
 		if (caster) {
-			Player* casterPlayer;
 			if (caster->isSummon()) {
 				casterPlayer = caster->getMaster()->getPlayer();
 			} else {
@@ -595,20 +626,18 @@ void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile*
 					} else if (itemId == ITEM_ENERGYFIELD_PVP) {
 						itemId = ITEM_ENERGYFIELD_NOPVP;
 					}
-				} else {
-					if (itemId == ITEM_FIREFIELD_PVP_FULL || itemId == ITEM_POISONFIELD_PVP || itemId == ITEM_ENERGYFIELD_PVP) {
-						casterPlayer->addInFightTicks();
-					}
-
-					if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
-						if (pvpFieldToNonPvpField(itemId) != ITEM_PVP_SAFE_NULL) {
-							isSafePvpItem = true;
-							// We create an item 
-							itemId = pvpFieldToNonPvpField(itemId);
-						}
-					}
+				} else if (itemId == ITEM_FIREFIELD_PVP_FULL || itemId == ITEM_POISONFIELD_PVP || itemId == ITEM_ENERGYFIELD_PVP) {
+					casterPlayer->addInFightTicks();
 				}
 			}
+		}
+
+		if (caster && !casterPlayer && caster->isSummon()) {
+			casterPlayer = caster->getMaster()->getPlayer();
+		}
+
+		if (casterPlayer && g_game.isExpertPvpEnabled()) {
+			itemId = getPvpItem(itemId, false);
 		}
 
 		Item* item = Item::CreateItem(itemId);
@@ -619,8 +648,15 @@ void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile*
 		ReturnValue ret = g_game.internalAddItem(tile, item);
 		if (ret == RETURNVALUE_NOERROR) {
 			g_game.startDecay(item);
-			if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
-				g_game.updateSpectatorPvpStatus(item, true);
+			if (casterPlayer) {
+				if (MagicField* field = item->getMagicField()) {
+					field->pvpMode = casterPlayer->getPvpMode(); // storeing pvp mode player casted the fire in;
+					field->isCasterPlayer = true;
+				}
+
+				if (g_game.isExpertPvpEnabled() && g_game.getWorldType() != WORLD_TYPE_NO_PVP) {
+					g_game.updateSpectatorsPvp(item, 520);
+				}
 			}
 		} else {
 			delete item;
@@ -681,7 +717,7 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const AreaCombat*
 	std::forward_list<Tile*> tileList;
 
 	if (caster) {
-		getCombatArea(caster->getPosition(), pos, area, tileList);
+		getCombatArea(caster->getPosition(), pos, area, tileList, caster);
 	} else {
 		getCombatArea(pos, pos, area, tileList);
 	}
@@ -717,6 +753,11 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const AreaCombat*
 		if (CreatureVector* creatures = tile->getCreatures()) {
 			const Creature* topCreature = tile->getTopCreature();
 			for (Creature* creature : *creatures) {
+				if (Player* casterPlayer = caster->getPlayer()) {
+					if (!casterPlayer->canAttack(creature)) {
+						continue;
+					}
+				}
 				if (params.targetCasterOrTopMost) {
 					if (caster && caster->getTile() == tile) {
 						if (creature != caster) {
@@ -744,8 +785,19 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const AreaCombat*
 	postCombatEffects(caster, pos, params);
 }
 
-void Combat::doCombat(Creature* caster, Creature* target) const
+bool Combat::doCombat(Creature* caster, Creature* target) const
 {
+	if (Tile* tile = g_game.map.getTile(target->getPosition())) {
+		for (auto it : *tile->getItemList()) {
+			if (it->getID() == ITEM_MAGICWALL_NOPVP || it->getID() == ITEM_WILDGROWTH_NOPVP) {
+				if (Player* player = caster->getPlayer()) {
+					g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+					player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
+				}
+				return false;
+			}
+		}
+	}
 	//target combat callback function
 	if (params.combatType != COMBAT_NONE) {
 		CombatDamage damage = getCombatDamage(caster, target);
@@ -757,10 +809,23 @@ void Combat::doCombat(Creature* caster, Creature* target) const
 	} else {
 		doCombatDefault(caster, target, params);
 	}
+
+	return true;
 }
 
-void Combat::doCombat(Creature* caster, const Position& position) const
+bool Combat::doCombat(Creature* caster, const Position& position) const
 {
+	if (Tile* tile = g_game.map.getTile(position)) {
+		for (auto it : *tile->getItemList()) {
+			if (it->getID() == ITEM_MAGICWALL_NOPVP || it->getID() == ITEM_WILDGROWTH_NOPVP) {
+				if (Player* player = caster->getPlayer()) {
+					g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+					player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
+				}
+				return false;
+			}
+		}
+	}
 	//area combat callback function
 	if (params.combatType != COMBAT_NONE) {
 		CombatDamage damage = getCombatDamage(caster, nullptr);
@@ -772,6 +837,8 @@ void Combat::doCombat(Creature* caster, const Position& position) const
 	} else {
 		CombatFunc(caster, position, area.get(), params, CombatNullFunc, nullptr);
 	}
+
+	return true;
 }
 
 void Combat::doCombatHealth(Creature* caster, Creature* target, CombatDamage& damage, const CombatParams& params)
@@ -1080,7 +1147,7 @@ AreaCombat::AreaCombat(const AreaCombat& rhs)
 	}
 }
 
-void AreaCombat::getList(const Position& centerPos, const Position& targetPos, std::forward_list<Tile*>& list) const
+void AreaCombat::getList(const Position& centerPos, const Position& targetPos, std::forward_list<Tile*>& list, Creature* caster) const
 {
 	const MatrixArea* area = getArea(centerPos, targetPos);
 	if (!area) {
@@ -1095,7 +1162,7 @@ void AreaCombat::getList(const Position& centerPos, const Position& targetPos, s
 	for (uint32_t y = 0, rows = area->getRows(); y < rows; ++y) {
 		for (uint32_t x = 0; x < cols; ++x) {
 			if (area->getValue(y, x) != 0) {
-				if (g_game.isSightClear(targetPos, tmpPos, true)) {
+				if (g_game.isSightClear(targetPos, tmpPos, true, caster)) {
 					Tile* tile = g_game.map.getTile(tmpPos);
 					if (!tile) {
 						tile = new StaticTile(tmpPos.x, tmpPos.y, tmpPos.z);
@@ -1357,31 +1424,45 @@ void MagicField::onStepInField(Creature* creature)
 {
 	//remove magic walls/wild growth
 	if (id == ITEM_MAGICWALL || id == ITEM_WILDGROWTH || id == ITEM_MAGICWALL_SAFE || id == ITEM_WILDGROWTH_SAFE || isBlocking()) {
-		if (g_config.getBoolean(ConfigManager::EXPERT_PVP_MODE)) {
-			uint32_t ownerId = getOwner();
-			if (ownerId) {
-				Player* owner = g_game.getPlayerByID(ownerId);
-				Player* player = creature->getPlayer();
-				if (owner && player && player->getItemPvpStat(this) == ITEM_IS_PVP) {
-					g_game.internalRemoveItem(this, 1);
-				}
-			}
-		} else if (!creature->isInGhostMode()) {
+		if (!creature->isInGhostMode()) {
 			g_game.internalRemoveItem(this, 1);
 		}
 
 		return;
 	}
 
+	if (g_game.isExpertPvpEnabled() && (id == ITEM_MAGICWALL_NOPVP || id == ITEM_WILDGROWTH_NOPVP)) {
+		Player* targetPlayer = creature->getPlayer();
+		if (!targetPlayer) {
+			g_game.internalRemoveItem(this, 1);
+			return;
+		}
+		if (Player* owner = g_game.getPlayerByID(getOwner())) {
+			if (owner == targetPlayer) {
+				g_game.internalRemoveItem(this, 1);
+				return;
+			}
+
+			if (owner->isRemoved() || owner->hasPvpActivity(targetPlayer) || owner->getPvpMode() == PVP_MODE_RED_FIST) {
+				g_game.internalRemoveItem(this, 1);
+				return;
+			}
+		}
+	}
+
 	const ItemType& it = items[getID()];
 	if (it.conditionDamage) {
 		Condition* conditionCopy = it.conditionDamage->clone();
 		uint32_t ownerId = getOwner();
-		if (ownerId) {
+		if (getOwner()) {
+			Creature* owner = g_game.getCreatureByID(ownerId);
+			if (!owner && g_game.isExpertPvpEnabled() && isCasterPlayer) {
+				return;
+			}
+
 			bool harmfulField = true;
 
 			if (g_game.getWorldType() == WORLD_TYPE_NO_PVP || getTile()->hasFlag(TILESTATE_NOPVPZONE)) {
-				Creature* owner = g_game.getCreatureByID(ownerId);
 				if (owner) {
 					if (owner->getPlayer() || (owner->isSummon() && owner->getMaster()->getPlayer())) {
 						harmfulField = false;
@@ -1391,10 +1472,41 @@ void MagicField::onStepInField(Creature* creature)
 
 			Player* targetPlayer = creature->getPlayer();
 			if (targetPlayer) {
-				Player* attackerPlayer = g_game.getPlayerByID(ownerId);
+				Player* attackerPlayer = owner->getPlayer();
+				bool isSummonField = false;
+				if (!attackerPlayer) {
+					if (Monster* monster = g_game.getMonsterByID(ownerId)) {
+						if (monster->isSummon() && monster->getMaster()->getPlayer()) {
+							isSummonField = true;
+							attackerPlayer = monster->getMaster()->getPlayer();
+						}
+					}
+				}
+
 				if (attackerPlayer) {
-					if (Combat::isProtected(attackerPlayer, targetPlayer) || !attackerPlayer->hasPvpActivityWith(targetPlayer)) {
+					if (!isSummonField && Combat::isProtected(attackerPlayer, targetPlayer)) {
 						harmfulField = false;
+					}
+
+					// in expert pvp, we don't care about mosnter, we can't about it's owner!
+					if (g_game.isExpertPvpEnabled() && targetPlayer != attackerPlayer) {
+						// if player casted while he is red fist, we stored that!
+						if (pvpMode != PVP_MODE_RED_FIST && !attackerPlayer->hasPvpActivity(targetPlayer)) {
+							return;
+						}
+						else if (pvpMode == PVP_MODE_RED_FIST) {
+							if (!attackerPlayer->hasPvpActivity(targetPlayer)) {
+								attackerPlayer->addAttacked(targetPlayer);
+								attackerPlayer->addInFightTicks(true);
+								if (attackerPlayer->getSkull() == SKULL_NONE) {
+									attackerPlayer->setSkull(SKULL_WHITE);
+								}
+							}
+						}
+
+						if (isSummonField && !attackerPlayer->hasPvpActivity(targetPlayer)) {
+							return; // ppl aren't get affected by fields of other ppl summons!
+						}
 					}
 				}
 			}

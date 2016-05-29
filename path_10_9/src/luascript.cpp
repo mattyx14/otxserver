@@ -1586,6 +1586,18 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(WORLD_TYPE_PVP)
 	registerEnum(WORLD_TYPE_PVP_ENFORCED)
 
+	registerEnum(CHASEMODE_STANDSTILL)
+	registerEnum(CHASEMODE_FOLLOW)
+
+	registerEnum(FIGHTMODE_ATTACK)
+	registerEnum(FIGHTMODE_BALANCED)
+	registerEnum(FIGHTMODE_DEFENSE)
+
+	registerEnum(PVP_MODE_DOVE)
+	registerEnum(PVP_MODE_WHITE_HAND)
+	registerEnum(PVP_MODE_YELLOW_HAND)
+	registerEnum(PVP_MODE_RED_FIST)
+
 	// Use with container:addItem, container:addItemEx and possibly other functions.
 	registerEnum(FLAG_NOLIMIT)
 	registerEnum(FLAG_IGNOREBLOCKITEM)
@@ -1745,6 +1757,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::ALLOW_WALKTHROUGH)
 	registerEnumIn("configKeys", ConfigManager::ENABLE_LIVE_CASTING)
 	registerEnumIn("configKeys", ConfigManager::ALLOW_BLOCK_SPAWN)
+	registerEnumIn("configKeys", ConfigManager::EXPERT_PVP)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
@@ -1838,7 +1851,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Game", "startRaid", LuaScriptInterface::luaGameStartRaid);
 
-	registerMethod("Game", "getItemIdByClientId", LuaScriptInterface::luaGameGetItemByClientId)
+	registerMethod("Game", "getItemIdByClientId", LuaScriptInterface::luaGameGetItemByClientId);
 
 	registerMethod("Game", "hasDistanceEffect", LuaScriptInterface::luaGameHasDistanceEffect);
 	registerMethod("Game", "hasEffect", LuaScriptInterface::luaGameHasEffect);
@@ -2167,7 +2180,6 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Player", "getItemCount", LuaScriptInterface::luaPlayerGetItemCount);
 	registerMethod("Player", "getItemById", LuaScriptInterface::luaPlayerGetItemById);
-	registerMethod("Player", "getItemByClietnId", LuaScriptInterface::luaPlayerGetItemByClientId);
 
 	registerMethod("Player", "getVocation", LuaScriptInterface::luaPlayerGetVocation);
 	registerMethod("Player", "setVocation", LuaScriptInterface::luaPlayerSetVocation);
@@ -2267,6 +2279,16 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "startLiveCast", LuaScriptInterface::luaPlayerStartLiveCast);
 	registerMethod("Player", "stopLiveCast", LuaScriptInterface::luaPlayerStopLiveCast);
 	registerMethod("Player", "isLiveCaster", LuaScriptInterface::luaPlayerIsLiveCaster);
+
+	registerMethod("Player", "getChaseMode", LuaScriptInterface::luaPlayerGetChaseMode);
+	registerMethod("Player", "getFightMode", LuaScriptInterface::luaPlayerGetFightMode);
+	registerMethod("Player", "getSecureMode", LuaScriptInterface::luaPlayerGetSecureMode);
+	registerMethod("Player", "getPvpMode", LuaScriptInterface::luaPlayerGetPvpMode);
+
+	registerMethod("Player", "setChaseMode", LuaScriptInterface::luaPlayerSetChaseMode);
+	registerMethod("Player", "setFightMode", LuaScriptInterface::luaPlayerSetFightMode);
+	registerMethod("Player", "setSecureMode", LuaScriptInterface::luaPlayerSetSecureMode);
+	registerMethod("Player", "setPvpMode", LuaScriptInterface::luaPlayerSetPvpMode);
 
 	// Monster
 	registerClass("Monster", "Creature", LuaScriptInterface::luaMonsterCreate);
@@ -4464,16 +4486,16 @@ int LuaScriptInterface::luaGameHasDistanceEffect(lua_State* L)
 }
 
 int LuaScriptInterface::luaGameGetItemByClientId(lua_State* L)
- {
- 	// Game.getItemIdByClientId(itemClientId)
- 	int16_t clientId = getNumber<uint16_t>(L, 1);
- 
- 	const ItemType& itemType = Item::items.getItemIdByClientId(clientId);
- 	pushUserdata<const ItemType>(L, &itemType);
+{
+	// Game.getItemIdByClientId(itemClientId)
+	int16_t clientId = getNumber<uint16_t>(L, 1);
+
+	const ItemType& itemType = Item::items.getItemIdByClientId(clientId);
+	pushUserdata<const ItemType>(L, &itemType);
 	setMetatable(L, -1, "ItemType");
 	return 1;
- }
- 
+}
+
 // Variant
 int LuaScriptInterface::luaVariantCreate(lua_State* L)
 {
@@ -6405,7 +6427,7 @@ int LuaScriptInterface::luaItemMoveToSlot(lua_State* L)
 	pushBoolean(L, ret == RETURNVALUE_NOERROR);
 	return 1;
 }
- 
+
 int LuaScriptInterface::luaItemGetDescription(lua_State* L)
 {
 	// item:getDescription(distance)
@@ -8125,32 +8147,6 @@ int LuaScriptInterface::luaPlayerGetItemById(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaPlayerGetItemByClientId(lua_State* L)
-{
-	// player:getItemByClientId(itemId[, subType = -1])
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint16_t itemId = getNumber<uint16_t>(L, 2);
-	if (!itemId) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	Item* item = player->getItemByClientId(itemId);
-	if (!item) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	pushUserdata<Item>(L, item);
-	setItemMetatable(L, -1, item);
-	return 1;
-}
-
 int LuaScriptInterface::luaPlayerGetVocation(lua_State* L)
 {
 	// player:getVocation()
@@ -9444,6 +9440,106 @@ int32_t LuaScriptInterface::luaPlayerIsLiveCaster(lua_State* L)
 	}
 
 	lua_pushboolean(L, player->isLiveCaster());
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetChaseMode(lua_State* L)
+{
+	// player:getChaseMode()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->chaseMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetFightMode(lua_State* L)
+{
+	// player:getFightMode()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->fightMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetSecureMode(lua_State* L)
+{
+	// player:getSecureMode()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->secureMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetPvpMode(lua_State* L)
+{
+	// player:getPvpMode()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getPvpMode());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetChaseMode(lua_State* L)
+{
+	// player:setChaseMode(mode)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->setChaseMode(getNumber<chaseMode_t>(L, 2));
+		lua_pushboolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetFightMode(lua_State* L)
+{
+	// player:setFightMode(mode)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->setFightMode(getNumber<fightMode_t>(L, 2));
+		lua_pushboolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetSecureMode(lua_State* L)
+{
+	// player:setSecureMode(mode)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->setSecureMode(getBoolean(L, 2));
+		lua_pushboolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetPvpMode(lua_State* L)
+{
+	// player:setPvpMode(mode)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->setPvpMode(getNumber<pvpMode_t>(L, 2));
+		lua_pushboolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
 	return 1;
 }
 
@@ -11290,21 +11386,25 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 			}
 
 			if (combat->hasArea()) {
-				combat->doCombat(creature, target->getPosition());
+				pushBoolean(L, combat->doCombat(creature, target->getPosition()));
+				return 1;
 			} else {
-				combat->doCombat(creature, target);
+				pushBoolean(L, combat->doCombat(creature, target));
+				return 1;
 			}
 			break;
 		}
 
 		case VARIANT_POSITION: {
-			combat->doCombat(creature, variant.pos);
+			pushBoolean(L, combat->doCombat(creature, variant.pos));
+			return 1;
 			break;
 		}
 
 		case VARIANT_TARGETPOSITION: {
 			if (combat->hasArea()) {
-				combat->doCombat(creature, variant.pos);
+				pushBoolean(L, combat->doCombat(creature, variant.pos));
+				return 1;
 			} else {
 				combat->postCombatEffects(creature, variant.pos);
 				g_game.addMagicEffect(variant.pos, CONST_ME_POFF);
@@ -11319,7 +11419,7 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 				return 1;
 			}
 
-			combat->doCombat(creature, target);
+			pushBoolean(L, combat->doCombat(creature, target));
 			break;
 		}
 

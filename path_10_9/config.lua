@@ -78,6 +78,9 @@ allowWalkthrough = true
 coinPacketSize = 25
 coinImagesURL = "http://some.url/images/store"
 
+-- Expert Pvp Config
+expertPvp = true
+
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
 rateExp = 5

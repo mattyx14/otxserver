@@ -28764,6 +28764,16 @@
 		<attribute key="weight" value="1500" />
 	</item>
 	<item id="20668" article="a" name="shadowy statue" />
+	<item id="20669" article="a" name="magic wall">
+		<attribute key="type" value="magicfield" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="duration" value="20" />
+	</item>
+	<item id="20670" article="a" name="rush wood">
+		<attribute key="type" value="magicfield" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="duration" value="45" />
+	</item>
 	<item fromid="20671" toid="20691" article="a" name="basalt crystal wall" />
 	<item id="20692" name="the spike of a crystal drill" />
 	<item fromid="20693" toid="20700" article="a" name="large crystal" />
