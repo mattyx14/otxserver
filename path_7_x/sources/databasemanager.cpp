@@ -241,6 +241,43 @@ uint32_t DatabaseManager::updateDatabase()
 			return 2;
 		}
 
+		case 2:
+		{
+			std::clog << "> Updating database to version 3... (Cast & AntiDupe System)" << std::endl;
+			switch (db->getDatabaseEngine())
+			{
+			case DATABASE_ENGINE_MYSQL:
+			{
+				db->query("ALTER TABLE player_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE player_depotitems ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE tile_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE tile_store ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE house_data ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE `players` ADD `broadcasting` tinyint(4) DEFAULT '0'");
+				db->query("ALTER TABLE `players` ADD `viewers` INT(1) DEFAULT '0'");
+				break;
+			}
+
+			case DATABASE_ENGINE_SQLITE:
+			{
+				db->query("ALTER TABLE player_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE player_depotitems ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE tile_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE tile_store ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE house_data ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
+				db->query("ALTER TABLE `players` ADD `broadcasting` tinyint(4) NOT NULL DEFAULT 0;");
+				db->query("ALTER TABLE `players` ADD `viewers` BOOLEAN(1) NOT NULL DEFAULT 0;");
+				break;
+			}
+
+			default:
+				break;
+			}
+
+			registerDatabaseConfig("db_version", 3);
+			return 3;
+		}
+
 		default:
 			break;
 	}

@@ -103,6 +103,7 @@
     <ClInclude Include="..\scriptmanager.h" />
     <ClInclude Include="..\server.h" />
     <ClInclude Include="..\spawn.h" />
+    <ClInclude Include="..\spectators.h" />
     <ClInclude Include="..\spells.h" />
     <ClInclude Include="..\status.h" />
     <ClInclude Include="..\talkaction.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="..\scriptmanager.cpp" />
     <ClCompile Include="..\server.cpp" />
     <ClCompile Include="..\spawn.cpp" />
+    <ClCompile Include="..\spectators.cpp" />
     <ClCompile Include="..\spells.cpp" />
     <ClCompile Include="..\status.cpp" />
     <ClCompile Include="..\talkaction.cpp" />

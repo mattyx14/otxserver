@@ -68,6 +68,7 @@
 	- Death container for 7.x
 	- Fix dont lose CONDITION_INFIGHT on PROTECTION_ZONE only 7x
 	- Fix Exhaust on protocol 7x
+	- Added CastSystem and AntiDupeSystem for 7x
 ]
 
 [ OTX Server 2.X.S - 2 :: Version "Crying Damson"

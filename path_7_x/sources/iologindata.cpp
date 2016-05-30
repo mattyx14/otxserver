@@ -701,7 +701,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 
 	//load inventory items
 	query.str("");
-	query << "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_items` WHERE `player_id` = " << player->getGUID() << " ORDER BY `sid` DESC";
+	query << "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_items` WHERE `player_id` = " << player->getGUID() << " ORDER BY `sid` DESC";
 	if((result = db->storeQuery(query.str())))
 	{
 		loadItems(itemMap, result);
@@ -728,7 +728,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 
 	//load depot items
 	query.str("");
-	query << "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = " << player->getGUID() << " ORDER BY `sid` DESC";
+	query << "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_depotitems` WHERE `player_id` = " << player->getGUID() << " ORDER BY `sid` DESC";
 	if((result = db->storeQuery(query.str())))
 	{
 		loadItems(itemMap, result);
@@ -837,10 +837,16 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult* result)
 			if(!item->unserializeAttr(propStream))
 				std::clog << "[Warning - IOLoginData::loadItems] Unserialize error for item with id " << item->getID() << std::endl;
 
+			std::string serial = result->getDataString("serial");
+			if (serial != "")
+			{
+				std::string key = "serial";
+				item->setAttribute(key.c_str(), serial);
+			}
+
 			itemMap[result->getDataInt("sid")] = std::make_pair(item, result->getDataInt("pid"));
 		}
-	}
-	while(result->next());
+	} while (result->next());
 }
 
 bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shallow/* = false*/)
@@ -1003,7 +1009,7 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 			itemList.push_back(itemBlock(slotId, item));
 	}
 
-	stmt.setQuery("INSERT INTO `player_items` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+	stmt.setQuery("INSERT INTO `player_items` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
 	if(!saveItems(player, itemList, stmt))
 		return false;
 
@@ -1032,7 +1038,7 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 
 		if(itemList.size())
 		{
-			stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+			stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
 			if(!saveItems(player, itemList, stmt))
 				return false;
 
@@ -1135,12 +1141,22 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 		PropWriteStream propWriteStream;
 		item->serializeAttr(propWriteStream);
 
+		std::string key = "serial";
+		boost::any value = item->getAttribute(key.c_str());
+		if (value.empty())
+		{
+			item->generateSerial();
+			value = item->getAttribute(key.c_str());
+		}
+
+		item->eraseAttribute(key.c_str());
+
 		uint32_t attributesSize = 0;
 		const char* attributes = propWriteStream.getStream(attributesSize);
 
 		std::stringstream buffer;
 		buffer << player->getGUID() << "," << it->first << "," << runningId << "," << item->getID() << ","
-			<< (int32_t)item->getSubType() << "," << db->escapeBlob(attributes, attributesSize);
+			<< (int32_t)item->getSubType() << "," << db->escapeBlob(attributes, attributesSize) << "," << db->escapeString(boost::any_cast<std::string>(value).c_str());
 		if(!stmt.addRow(buffer))
 			return false;
 
@@ -1163,12 +1179,22 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 			PropWriteStream propWriteStream;
 			item->serializeAttr(propWriteStream);
 
+			std::string key = "serial";
+			boost::any value = item->getAttribute(key.c_str());
+			if (value.empty())
+			{
+				item->generateSerial();
+				value = item->getAttribute(key.c_str());
+			}
+
+			item->eraseAttribute(key.c_str());
+
 			uint32_t attributesSize = 0;
 			const char* attributes = propWriteStream.getStream(attributesSize);
 
 			std::stringstream buffer;
 			buffer << player->getGUID() << "," << stack.second << "," << runningId << "," << item->getID() << ","
-				<< (int32_t)item->getSubType() << "," << db->escapeBlob(attributes, attributesSize);
+				<< (int32_t)item->getSubType() << "," << db->escapeBlob(attributes, attributesSize) << "," << db->escapeString(boost::any_cast<std::string>(value).c_str());
 			if(!stmt.addRow(buffer))
 				return false;
 		}
