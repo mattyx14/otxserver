@@ -25,28 +25,8 @@ GameStore.Categories = {
 	},
 }
 
---[[ This explanation is not so full
-TODO: add full explanation!
-]]
--- Explanaion
--- * means required
---[[ Category ------------
-	name : category name (string)*
-	description : a summary about the category (string)
-	icons : table of strings, contains icon names (table->[string])*
-	offers : table contains offers (table->[offer])
-	state : none|new|sale|timed (GameStore.States)
-]]
---[[ Offer ---------------
-	name : Offer name (string)*
-	type : item|outfit|mount|namechange|promotion (GameStore.OfferTypes)*
-	thingId : itemid|mountid|{male=*,female=*}(outfit)|nil(if namechange|sex_change)|promotion_number || depend on type (number)*
-	price : price of coins (number)*
-	state : none|new|sale|timed (GameStore.States)
-	disabled : offer is diabled or not (bool)
-	icons : table of strings, contains icon names (table->[string])*
-	purchaseFunction : function which is applied when player purchase (player[, offer])
-]]
+-- For Explanation and information
+-- view the readme.md file in github or via markdown viewer.
 
 -- Non-Editable
 local runningId = 1

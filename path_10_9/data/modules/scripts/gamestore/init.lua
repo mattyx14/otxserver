@@ -1,9 +1,9 @@
 -- Please don't edit those information!
 GameStore = {
 	ModuleName = "GameStore",
-	Developer = "Slavi Dodo",
+	Developer = "Mattyx14",
 	Version = "0.3",
-	LastUpdated = "[CEST] 15-05-2016 01:42AM"
+	LastUpdated = "[CEST] 29-05-2016 07:15PM"
 }
 --== Enums ==--
 GameStore.OfferTypes = {
@@ -122,7 +122,7 @@ function parseTransferCoins(player, msg)
 	
 	db.asyncQuery("UPDATE `accounts` SET `coins` = `coins` + " .. amount .. " WHERE `id` = " .. accountId)
 	player:removeCoinsBalance(amount)
-	addPlayerEvent(sendStorePurchaseSuccessful, 350, player, "You have transfered " .. amount .. " coins to " .. reciver .. " successfully")
+	addPlayerEvent(sendStorePurchaseSuccessful, 550, player, "You have transfered " .. amount .. " coins to " .. reciver .. " successfully")
 	
 	-- Adding history for both reciver/sender
 	GameStore.insertHistory(accountId, GameStore.HistoryTypes.HISTORY_TYPE_NONE, player:getName() .. " transfered you this amount.", amount)
@@ -166,17 +166,17 @@ function parseBuyStoreOffer(player, msg)
 	
 		-- If we don't add type, or offer type is fake
 		if not offer.type or offer.type == GameStore.OfferTypes.OFFER_TYPE_NONE then
-			return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "The offer is either fake or corrupt.")
+			return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "The offer is either fake or corrupt.")
 		end
 		
 		-- If no thing id,
 		if offer.type ~= GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE and offer.type ~= GameStore.OfferTypes.OFFER_TYPE_SEXCHANGE and not offer.thingId then
-			return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "The offer is either fake or corrupt.")
+			return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "The offer is either fake or corrupt.")
 		end
 		
 		-- We remove coins before doing everything, if it fails, we add coins back!
-		if not player:removeCoinsBalance(offer.price) then
-			return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "We couldn't remove coins from your account, try again later.")
+		if not player:canRemoveCoins(offer.price) then
+			return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "We couldn't remove coins from your account, try again later.")
 		end
 		
 		-- count is used in type(item), so we need to show (i.e 10x crystal coins)
@@ -191,8 +191,7 @@ function parseBuyStoreOffer(player, msg)
 				player:addItem(offer.thingId, offer.count or 1)
 			else
 				-- ToDo: send items to player's inbox.
-				player:addCoinsBalance(offer.price)
-				return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in main backpack.")
+				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in main backpack.")
 			end
 		-- If offer is outfit/addon
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT or offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON then
@@ -203,8 +202,7 @@ function parseBuyStoreOffer(player, msg)
 				outfitLookType = offer.thingId.female
 			end
 			if not outfitLookType then
-				player:addCoinsBalance(offer.price)
-				return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "This outfit seems not to suit your sex, we are sorry for that!")
+				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "This outfit seems not to suit your sex, we are sorry for that!")
 			end
 			
 			player:addOutfitAddon(outfitLookType, offer.addon or 0)
@@ -219,33 +217,40 @@ function parseBuyStoreOffer(player, msg)
 				
 				local resultId = db.storeQuery("SELECT * FROM `players` WHERE `name` = " .. db.escapeString(newName) .. "")
 				if resultId ~= false then
-					player:addCoinsBalance(offer.price, true)
-					return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "This name is already used, please try again!")
+					return addPlayerEvent(sendStoreError, 650, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "This name is already used, please try again!")
 				end
 				
+				local result = GameStore.canChangeToName(newName)
+				if not result.ability then
+					return addPlayerEvent(sendStoreError, 650, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, result.reason)
+				end
+				
+				newName = newName:lower():gsub("(%l)(%w*)", function(a, b) return string.upper(a) .. b end)
 				db.asyncQuery("UPDATE `players` SET `name` = " .. db.escapeString(newName) .. " WHERE `id` = " .. player:getGuid())
-				return addPlayerEvent(sendStorePurchaseSuccessful, 350, player, "You have successfully changed you name, you must relog to see changes.")
+				message =  "You have successfully changed you name, you must relog to see changes."
 			-- If not, we ask him to do!
 			else
-				player:addCoinsBalance(offer.price)
-				return addPlayerEvent(sendRequestPurchaseData, 100, player, offer.id, GameStore.ClientOfferTypes.CLIENT_STORE_OFFER_NAMECHANGE)
+				return addPlayerEvent(sendRequestPurchaseData, 250, player, offer.id, GameStore.ClientOfferTypes.CLIENT_STORE_OFFER_NAMECHANGE)
 			end
 		-- If offer is sex change
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_SEXCHANGE then
 			player:toggleSex()
+		-- If offer is promotion
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_PROMOTION then
 			if not GameStore.addPromotionToPlayer(player, offer.thingId) then
-				player:addCoinsBalance(offer.price, true)
 				return false
 			end
+		-- You can add whatever offer types to suit your needs!
 		else
-			player:addCoinsBalance(offer.price, true)
-			return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "This offer is fake, please contact admin.")
+			-- ToDo :: implement purchase function
+			return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "This offer is fake, please contact admin.")
 		end
+		-- Removing coins
+		player:removeCoinsBalance(offer.price)
 		-- We add this purchase to history!
 		GameStore.insertHistory(player:getAccountId(), GameStore.HistoryTypes.HISTORY_TYPE_NONE, offerCountStr .. offer.name, offer.price * -1)
 		-- Send to client that purchase is successful!
-		return addPlayerEvent(sendStorePurchaseSuccessful, 350, player, message)
+		return addPlayerEvent(sendStorePurchaseSuccessful, 650, player, message)
 	end
 	
 	-- If we didn't found the offer or error happened
@@ -521,6 +526,49 @@ GameStore.getDefaultDescription = function(offerType)
 	
 	return descList[math.floor(math.random(1, #descList))] or ""
 end
+GameStore.canChangeToName = function(name)
+	local result = {
+		ability = false
+	}
+	if name:len() < 3 or name:len() > 14 then
+		result.reason = "Your new name's length should be lower than 3 or higher than 14."
+		return result
+	end
+	
+	-- just copied from znote aac.
+	local words = {"owner", "gamemaster", "hoster", "admin", "staff", "tibia", "account", "god", "anal", "ass", "fuck", "sex", "hitler", "pussy", "dick", "rape", "cm", "gm", "tutor", "counsellor"}
+	local split = name:split(" ")
+	for k, word in ipairs(words) do
+		for k, nameWord in ipairs(split) do
+			if nameWord:lower() == word then
+				result.reason = "You can't use word \"" .. word .. "\" in your new name."
+				return result
+			end
+		end
+	end
+	
+	if MonsterType(name) then
+		result.reason = "Your new name \"" .. name .. "\" can't be a monster's name."
+		return result
+	elseif Npc(name) then
+		result.reason = "Your new name \"" .. name .. "\" can't be a npc's name."
+		return result
+	end
+	
+	local letters = "{}|_*+-=<>0123456789@#%^&()/*\\.,:;~!\"$"
+	for i = 1, letters:len() do
+		local c = letters:sub(i, i)
+		for i = 1, name:len() do
+			local m = name:sub(i, i)
+			if m == c then
+				result.reason = "You can't use this letter \"" .. c .. "\" in your new name."
+				return result
+			end
+		end
+	end
+	result.ability = true
+	return result
+end
 GameStore.canAddPromotionToPlayer = function(player, promotion, send)
 	local result = {
 		ability = true
@@ -597,11 +645,18 @@ function Player.setCoinsBalance(self, coins)
 	db.asyncQuery("UPDATE `accounts` SET `coins` = " .. coins .. " WHERE `id` = " .. self:getAccountId())
 	return true
 end
-function Player.removeCoinsBalance(self, coins)
+function Player.canRemoveCoins(self, coins)
 	if self:getCoinsBalance() < coins then
 		return false
 	end
-	return self:setCoinsBalance(self:getCoinsBalance() - coins)
+	return true
+end
+function Player.removeCoinsBalance(self, coins)
+	if self:canRemoveCoins(coins) then
+		return self:setCoinsBalance(self:getCoinsBalance() - coins)
+	end
+	
+	return false
 end
 function Player.addCoinsBalance(self, coins, update)
 	self:setCoinsBalance(self:getCoinsBalance() + coins)

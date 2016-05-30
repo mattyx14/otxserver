@@ -67,10 +67,10 @@
 	- Added Authenticator Token support
 	- Added PVPBless support
 	- Added reflect items functions attributes
-	- Added expertPVPMode "WIP"
-	- Added Module System "WIP"
-	- Added GameStore module ( version without market ) "WIP"
-	- Added Equip Object module "WIP"
+	- Added expertPVPMode
+	- Added Module System
+	- Added GameStore module ( version without market )
+	- Added Equip Object module
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error
