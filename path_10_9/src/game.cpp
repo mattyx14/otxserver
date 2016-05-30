@@ -4255,6 +4255,10 @@ void Game::startDecay(Item* item)
 	} else {
 		internalDecayItem(item);
 	}
+
+	if (isExpertPvpEnabled()) {
+		updateSpectatorsPvp(item);
+	}
 }
 
 void Game::internalDecayItem(Item* item)
@@ -4285,6 +4289,10 @@ void Game::checkDecay()
 			ReleaseItem(item);
 			it = decayItems[bucket].erase(it);
 			continue;
+		}
+
+		if (g_game.isExpertPvpEnabled()) {
+			g_game.updateSpectatorsPvp(item);
 		}
 
 		int32_t duration = item->getDuration();
@@ -5575,13 +5583,12 @@ bool Game::isExpertPvpEnabled()
 	return g_config.getBoolean(ConfigManager::EXPERT_PVP);
 }
 
-void Game::updateSpectatorsPvp(Thing* thing, uint32_t delay)
+void Game::updateSpectatorsPvp(Thing* thing)
 {
-	if (!g_game.isExpertPvpEnabled() || !thing || thing->isRemoved()) {
+	if (!thing || thing->isRemoved()) {
 		return;
 	}
 
-	bool canSchedule = false;
 	if (Creature* creature = thing->getCreature()) {
 		Player* player = creature->getPlayer();
 		if (!player) {
@@ -5613,7 +5620,6 @@ void Game::updateSpectatorsPvp(Thing* thing, uint32_t delay)
 				player->sendPvpSquare(itPlayer, sqColor);
 			}
 		}
-		canSchedule = true;
 	} else if (Item* item = thing->getItem()) {
 		if (!item || item->isRemoved()) {
 			return;
@@ -5630,54 +5636,29 @@ void Game::updateSpectatorsPvp(Thing* thing, uint32_t delay)
 		}
 
 		Player* owner = g_game.getPlayerByID(field->getOwner());
-		if (!owner || owner->isRemoved()) {
-			if (field->isCasterPlayer) {
-				SpectatorVec list;
-				map.getSpectators(list, field->getPosition(), false, true);
-				for (auto it : list) {
-					Player* itPlayer = it->getPlayer();
-					if (!itPlayer || itPlayer->isRemoved()) {
-						continue;
-					}
-
-					Item* newField = field->clone();
-					newField->setID(getPvpItem(field->getID(), true));
-					newField->setDuration(field->getDuration());
-					g_game.startDecay(newField);
-					itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newField, tile->getStackposOfItem(itPlayer, field));
-				}
-			}
-			g_scheduler.addEvent(createSchedulerTask(delay, std::bind(&Game::updateSpectatorsPvp, this, thing, delay)));
-			return;
-		}
 
 		SpectatorVec list;
-		map.getSpectators(list, owner->getPosition(), true, true);
+		map.getSpectators(list, field->getPosition(), true, true);
 		for (auto it : list) {
 			Player* itPlayer = it->getPlayer();
 			if (!itPlayer || itPlayer->isRemoved()) {
 				continue;
 			}
 
-			uint16_t newId;
-			if (itPlayer == owner || owner->hasPvpActivity(itPlayer) || owner->getPvpMode() == PVP_MODE_RED_FIST) {
-				newId = getPvpItem(field->getID(), true);
+			Item* newField = field->clone();
+			if (owner && !owner->isRemoved()) {
+				if (itPlayer == owner || owner->hasPvpActivity(itPlayer) || owner->getPvpMode() == PVP_MODE_RED_FIST) {
+					newField->setID(getPvpItem(field->getID(), true));
+				} else {
+					newField->setID(getPvpItem(field->getID(), false));
+				}
 			} else {
-				newId = getPvpItem(item->getID(), false);
+				newField->setID(getPvpItem(field->getID(), false)); // If no owner for this field then it's not agressive!
 			}
 
-			Item* newField = item->clone();
-			newField->setID(newId);
-			newField->setDuration(item->getDuration());
-			g_game.startDecay(newField);
+			newField->setDuration(field->getDuration());
 			itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newField, tile->getStackposOfItem(itPlayer, field));
-
 		}
-		canSchedule = true;
-	}
-
-	if (canSchedule) {
-		g_scheduler.addEvent(createSchedulerTask(delay, std::bind(&Game::updateSpectatorsPvp, this, thing, delay)));
 	}
 }
 

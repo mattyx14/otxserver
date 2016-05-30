@@ -874,7 +874,6 @@ class LuaScriptInterface
 
 		static int luaPlayerGetItemCount(lua_State* L);
 		static int luaPlayerGetItemById(lua_State* L);
-		static int luaPlayerGetItemByClientId(lua_State* L);
 
 		static int luaPlayerGetVocation(lua_State* L);
 		static int luaPlayerSetVocation(lua_State* L);
