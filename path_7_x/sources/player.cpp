@@ -105,7 +105,6 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	setParty(NULL);
 
 	transferContainer.setParent(NULL);
-	delete client;
 	for(int32_t i = 0; i < 11; ++i)
 	{
 		inventory[i] = NULL;
@@ -141,6 +140,7 @@ Player::~Player()
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 	playerCount--;
 #endif
+	delete client;
 	for(int32_t i = 0; i < 11; ++i)
 	{
 		if(!inventory[i])
