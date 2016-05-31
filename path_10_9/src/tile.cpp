@@ -582,33 +582,31 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 						}
 
 						g_game.updateCreatureWalkthrough(tileCreature);
+
 						if (Player* tilePlayer = const_cast<Creature*>(tileCreature)->getPlayer()) {
-							if (tilePlayer->getPvpMode() == PVP_MODE_RED_FIST) {
+							if (player->hasPvpActivity(tilePlayer) || tilePlayer->getPvpMode() == PVP_MODE_RED_FIST) {
 								tilePlayer->addAttacked(player);
 								tilePlayer->addInFightTicks(true);
-								if (tilePlayer->getSkull() == SKULL_NONE) {
+								if (tilePlayer->getSkull() == SKULL_NONE && player->getSkull() == SKULL_NONE) {
 									tilePlayer->setSkull(SKULL_WHITE);
 								}
+								return RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVEPLAYERS;
 							}
-							return RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVEPLAYERS;
 						} else if (Monster* tileMonster = const_cast<Creature*>(tileCreature)->getMonster()) {
 							if (!tileMonster->isSummon() || !tileMonster->getMaster()->getPlayer()) {
 								return RETURNVALUE_NOTPOSSIBLE;
 							}
 							Player* master = tileMonster->getMaster()->getPlayer();
-							if (master->getPvpMode() == PVP_MODE_RED_FIST) {
+							if (player->hasPvpActivity(master) || master->getPvpMode() == PVP_MODE_RED_FIST) {
 								master->addAttacked(player);
 								master->addInFightTicks(true);
-								if (master->getSkull() == SKULL_NONE) {
+								if (master->getSkull() == SKULL_NONE && player->getSkull() == SKULL_NONE) {
 									master->setSkull(SKULL_WHITE);
 								}
+								return RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVECREATURES;
 							}
 						}
-						if ((OTSYS_TIME() - player->getLastWalkThroughAttempt()) > 2000) {
-							return RETURNVALUE_NOTPOSSIBLE;
-						} else {
-							return RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVECREATURES;
-						}
+						return RETURNVALUE_NOTPOSSIBLE;
 					}
 				}
 			}

@@ -395,7 +395,7 @@ end
 function sendStoreTransactionHistory(player, page, entriesPerPage)
 	local entries = GameStore.retrieveHistoryEntries(player:getAccountId()) -- this makes everything easy!
 	if #entries == 0 then
-		return sendStoreError(player, GameStore.StoreErrors.STORE_ERROR_HISTORY, "You don't have any entries yet.")
+		return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_HISTORY, "You don't have any entries yet.")
 	end
 	
 	local toSkip = (page - 1) * entriesPerPage

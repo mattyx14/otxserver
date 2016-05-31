@@ -2,13 +2,14 @@ EquipObject = {}
 EquipObject.Slots = {
 	[48] = CONST_SLOT_LEFT,
 	[49] = CONST_SLOT_HEAD,
+	[50] = CONST_SLOT_NECKLACE,
 	[52] = CONST_SLOT_BACKPACK,
 	[56] = CONST_SLOT_ARMOR,
 	[112] = CONST_SLOT_LEGS,
 	[176] = CONST_SLOT_FEET,
 	[304] = CONST_SLOT_RING,
 	[560] = CONST_SLOT_AMMO,
-	[2096] = SLOTP_TWO_HAND -- We only use slot pos in this!
+	[2096] = SLOTP_TWO_HAND -- We only use slot position in this!
 }
 function onRecvbyte(player, msg, byte)
 	local itemType = Game.getItemIdByClientId(msg:getU16())
@@ -98,9 +99,8 @@ function onRecvbyte(player, msg, byte)
 end
 
 EquipObject.StackAdd = function(player, item, slotP, isStackable)
-	local stackAdd, itemId, count = false, item:getId(), 0
 	if isStackable and item:getCount() < 100 and item:getCount() < player:getItemCount(item:getId()) then
-		stackAdd = true
+		local itemId, count = item:getId(), 0
 		while player:getItemCount(itemId) do
 			if count == 100 then break end
 			local _item = player:getItemById(itemId, true)
@@ -113,9 +113,7 @@ EquipObject.StackAdd = function(player, item, slotP, isStackable)
 				_item:remove()
 			end
 		end
-	end
-	
-	if stackAdd then
+
 		player:addItem(itemId, count, true, 1, slotP)
 	else
 		item:moveToSlot(player, slotP)

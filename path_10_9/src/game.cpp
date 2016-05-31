@@ -5614,6 +5614,8 @@ void Game::updateSpectatorsPvp(Thing* thing)
 				} else {
 					sqColor = SQ_COLOR_BROWN;
 				}
+			} else { // player isn't enganged at any pvp situation! ( even if self)
+				player->sendCreatureSquare(itPlayer, SQ_COLOR_NONE, 0);
 			}
 
 			if (sqColor != SQ_COLOR_NONE) {
@@ -5636,6 +5638,11 @@ void Game::updateSpectatorsPvp(Thing* thing)
 		}
 
 		Player* owner = g_game.getPlayerByID(field->getOwner());
+		if (Monster* monster = getMonsterByID(field->getOwner())) {
+			if (monster->isSummon()) {
+				owner = monster->getMaster()->getPlayer();
+			}
+		}
 
 		SpectatorVec list;
 		map.getSpectators(list, field->getPosition(), true, true);
@@ -5653,7 +5660,12 @@ void Game::updateSpectatorsPvp(Thing* thing)
 					newField->setID(getPvpItem(field->getID(), false));
 				}
 			} else {
-				newField->setID(getPvpItem(field->getID(), false)); // If no owner for this field then it's not agressive!
+				// else means monster/player is removed/ monster is not summon
+				if (field->isCasterPlayer) {
+					newField->setID(getPvpItem(field->getID(), false)); // If no owner(player) for this field then it's not agressive!
+				} else {
+					newField->setID(getPvpItem(field->getID(), true));
+				}
 			}
 
 			newField->setDuration(field->getDuration());

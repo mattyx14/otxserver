@@ -774,9 +774,9 @@ class Player final : public Creature, public Cylinder
 				client->sendPrivateMessage(speaker, type, text);
 			}
 		}
-		void sendCreatureSquare(const Creature* creature, SquareColor_t color) {
+		void sendCreatureSquare(const Creature* creature, SquareColor_t color, uint8_t length = 1) {
 			if (client) {
-				client->sendCreatureSquare(creature, color);
+				client->sendCreatureSquare(creature, color, length);
 			}
 		}
 		void sendCreatureChangeOutfit(const Creature* creature, const Outfit_t& outfit) {
@@ -1197,6 +1197,9 @@ class Player final : public Creature, public Cylinder
 			return lastWalkthroughAttempt;
 		}
 
+		void setPvpSituation(bool situation) {
+			isPvpSituation = situation;
+		}
 	protected:
 		std::forward_list<Condition*> getMuteConditions() const;
 
@@ -1354,6 +1357,7 @@ class Player final : public Creature, public Cylinder
 		pvpMode_t pvpMode;
 		AccountType_t accountType;
 
+		bool isPvpSituation;
 		bool secureMode;
 		bool inMarket;
 		bool wasMounted;
