@@ -1,5 +1,5 @@
 [ HOW BUILD
-	COMPILING IN WINDOWS OTX SERVER 2.X.S.2(3) AND OTX SERVER 3.2+
+	COMPILING IN WINDOWS OTX SERVER 2.X.S.4(2-3) AND OTX SERVER 3.2+
 		1. Download the required software
 		To compile The OTX Server on Windows, you will need:
 
@@ -32,7 +32,7 @@
 
 		Note: This only work for OTX Server 2.XS.2+ - and OTX Server 3.1+ or TFS 1.2+
 
-	COMPILING IN UBUNTU LINUX FOR OTX SERVER 2.X.S.2(3)
+	COMPILING IN UBUNTU LINUX FOR OTX SERVER 2.X.S.4(2-3)
 	A detailed and always up-to-date tutorial may be found here:
 	Download required packages
 		Launch a terminal, and paste in the following commands:
