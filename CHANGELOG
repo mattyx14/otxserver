@@ -59,7 +59,6 @@
 	- Fix error on playerAcceptTrade
 	- Fix yellow skull
 	- Fix onPlayerTrade NPC - if(amount <= 0) amount = 1; this prevent sell on infinite items for example enchanted items
-	- Fix maximum value experiencie for 7.x - 2,147,483,647
 	- Fix error on account manager on 8.7
 	- Fix Ghost error o protocols 8.1x and 7.x
 	- Fix error on tile limits on all protocols
