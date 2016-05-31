@@ -100,7 +100,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	uint32_t name = msg.get<uint32_t>();
 	std::string password = msg.getString();
 
-	if (!name)
+	if(!name)
 	{
 		name = 10;
 	}
@@ -205,7 +205,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	// remove premium days
 	#ifndef __LOGIN_SERVER__
 	IOLoginData::getInstance()->removePremium(account);
-	if (account.name != "10" && !g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !account.charList.size())
+	if(account.name != "10" && !g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !account.charList.size())
 	{
 		disconnectClient(0x0A, std::string("This account does not contain any character yet.\nCreate a new character on the "
 			+ g_config.getString(ConfigManager::SERVER_NAME) + " website at " + g_config.getString(ConfigManager::URL) + ".").c_str());
@@ -220,7 +220,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	IOLoginData::getInstance()->removePremium(account);
-	if (account.name != "10" && !g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !charList.size())
+	if(account.name != "10" && !g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !charList.size())
 	{
 		disconnectClient(0x0A, std::string("This account does not contain any character on this client yet.\nCreate a new character on the "
 			+ g_config.getString(ConfigManager::SERVER_NAME) + " website at " + g_config.getString(ConfigManager::URL) + ".").c_str());
@@ -249,12 +249,12 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 		//Add char list
 		output->put<char>(0x64);
-		if (account.name == "10" && account.name != "0")
+		if(account.name == "10" && account.name != "0")
 		{
 			PlayerVector players;
 			for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
 			{
-				if (!it->second->isRemoved() && it->second->client->isBroadcasting())
+				if(!it->second->isRemoved() && it->second->client->isBroadcasting())
 					players.push_back(it->second);
 			}
 
@@ -264,7 +264,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			{
 				std::stringstream s;
 				s << (*it)->getLevel();
-				if (!(*it)->client->check(password))
+				if(!(*it)->client->check(password))
 					s << "*";
 
 				output->putString((*it)->getName());
@@ -276,7 +276,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		}
 		else
 		{
-			if (g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && account.number != 1)
+			if(g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && account.number != 1)
 			{
 				output->put<char>(account.charList.size() + 1);
 				output->putString("Account Manager");
@@ -293,22 +293,22 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			for (Characters::iterator it = account.charList.begin(); it != account.charList.end(); ++it)
 			{
 				output->putString((*it));
-				if (g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST)
+				if(g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST)
 					&& !g_config.getBool(ConfigManager::CHARLIST_INFO))
 				{
-					if (g_game.getPlayerByName((*it)))
+					if(g_game.getPlayerByName((*it)))
 						output->putString("Online");
 					else
 						output->putString("Offline");
 				}
-				else if (g_config.getBool(ConfigManager::CHARLIST_INFO))
+				else if(g_config.getBool(ConfigManager::CHARLIST_INFO))
 				{
 					std::stringstream str;
 					Player *player = g_game.getPlayerByName((*it));
 					bool v = false;
-					if (g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST))
+					if(g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST))
 					{
-						if (player)
+						if(player)
 							str << "On";
 						else
 							str << "Off";
@@ -316,7 +316,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 						str << "/";
 					}
 
-					if (!player)
+					if(!player)
 					{
 						v = true;
 						player = g_game.getPlayerByNameEx((*it));
@@ -326,7 +326,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 					str << "/";
 					str << player->getVocation()->getName();
 					output->putString(str.str());
-					if (v)
+					if(v)
 						delete player;
 					}
 				else
@@ -339,9 +339,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			for (Characters::iterator it = charList.begin(); it != charList.end(); ++it)
 			{
 				output->putString(it->second.name);
-				if (!g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST) || it->second.status < 0)
+				if(!g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST) || it->second.status < 0)
 					output->putString(it->second.server->getName());
-				else if (it->second.status)
+				else if(it->second.status)
 					output->putString("Online");
 				else
 					output->putString("Offline");
