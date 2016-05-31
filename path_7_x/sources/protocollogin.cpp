@@ -252,7 +252,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		if(account.name == "10" && account.name != "0")
 		{
 			PlayerVector players;
-			for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+			for(AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
 			{
 				if(!it->second->isRemoved() && it->second->client->isBroadcasting())
 					players.push_back(it->second);
@@ -260,7 +260,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 			std::sort(players.begin(), players.end(), Player::sort);
 			output->put<char>(players.size());
-			for (PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
+			for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
 			{
 				std::stringstream s;
 				s << (*it)->getLevel();
@@ -290,7 +290,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				output->put<char>((uint8_t)account.charList.size());
 
 #ifndef __LOGIN_SERVER__
-			for (Characters::iterator it = account.charList.begin(); it != account.charList.end(); ++it)
+			for(Characters::iterator it = account.charList.begin(); it != account.charList.end(); ++it)
 			{
 				output->putString((*it));
 				if(g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST)
@@ -336,7 +336,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				output->put<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT));
 				}
 #else
-			for (Characters::iterator it = charList.begin(); it != charList.end(); ++it)
+			for(Characters::iterator it = charList.begin(); it != charList.end(); ++it)
 			{
 				output->putString(it->second.name);
 				if(!g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST) || it->second.status < 0)

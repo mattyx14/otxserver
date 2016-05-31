@@ -241,7 +241,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		{
 			bool found = false;
 			PlayerVector tmp = g_game.getPlayersByAccount(id);
-			for (PlayerVector::iterator it = tmp.begin(); it != tmp.end(); ++it)
+			for(PlayerVector::iterator it = tmp.begin(); it != tmp.end(); ++it)
 			{
 				if((*it)->getName() != name)
 					continue;
@@ -627,120 +627,117 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 	{
 		switch (recvbyte)
 		{
-		case 0x14: parseLogout(msg); break;
-		case 0x96: parseSay(msg); break;
-		case 0x1E: parseReceivePing(msg); break;
-		case 0x97: parseGetChannels(msg); break;
-		case 0x98: parseOpenChannel(msg); break;
-		case 0xC9: parseUpdateTile(msg); break;
-		case 0xCA: parseUpdateContainer(msg); break;
-		case 0xE8: parseDebugAssert(msg); break;
-		case 0xA1: parseCancelTarget(msg); break;
+			case 0x14: parseLogout(msg); break;
+			case 0x96: parseSay(msg); break;
+			case 0x1E: parseReceivePing(msg); break;
+			case 0x97: parseGetChannels(msg); break;
+			case 0x98: parseOpenChannel(msg); break;
+			case 0xC9: parseUpdateTile(msg); break;
+			case 0xCA: parseUpdateContainer(msg); break;
+			case 0xE8: parseDebugAssert(msg); break;
+			case 0xA1: parseCancelTarget(msg); break;
 
-		default:
-			parseCancelWalk(msg);
-			break;
+			default:
+				parseCancelWalk(msg); break;
 		}
 	}
 	else if(player->isAccountManager())
 	{
 		switch (recvbyte)
 		{
-		case 0x14: parseLogout(msg); break;
-		case 0x96: parseSay(msg); break;
-		case 0x1E: parseReceivePing(msg); break;
-		case 0xC9: parseUpdateTile(msg); break;
-		case 0xE8: parseDebugAssert(msg); break;
-		case 0xA1: parseCancelTarget(msg); break;
+			case 0x14: parseLogout(msg); break;
+			case 0x96: parseSay(msg); break;
+			case 0x1E: parseReceivePing(msg); break;
+			case 0xC9: parseUpdateTile(msg); break;
+			case 0xE8: parseDebugAssert(msg); break;
+			case 0xA1: parseCancelTarget(msg); break;
 
-		default:
-			parseCancelWalk(msg);
-			break;
+			default:
+				parseCancelWalk(msg); break;
 		}
 	}
 	else
 	{
 		switch (recvbyte)
 		{
-		case 0x14: parseLogout(msg); break;
-		case 0x1E: parseReceivePing(msg); break;
-		case 0x32: parseExtendedOpcode(msg); break;
-		case 0x64: parseAutoWalk(msg); break;
-		case 0x65:
-		case 0x66:
-		case 0x67:
-		case 0x68: parseMove(msg, (Direction)(recvbyte - 0x65)); break;
-		case 0x69: addGameTask(&Game::playerStopAutoWalk, player->getID()); break;
-		case 0x6A: parseMove(msg, NORTHEAST); break;
-		case 0x6B: parseMove(msg, SOUTHEAST); break;
-		case 0x6C: parseMove(msg, SOUTHWEST); break;
-		case 0x6D: parseMove(msg, NORTHWEST); break;
-		case 0x6F:
-		case 0x70:
-		case 0x71:
-		case 0x72: parseTurn(msg, (Direction)(recvbyte - 0x6F)); break;
-		case 0x78: parseThrow(msg); break;
-		case 0x7D: parseRequestTrade(msg); break;
-		case 0x7E: parseLookInTrade(msg); break;
-		case 0x7F: parseAcceptTrade(msg); break;
-		case 0x80: parseCloseTrade(); break;
-		case 0x82: parseUseItem(msg); break;
-		case 0x83: parseUseItemEx(msg); break;
-		case 0x84: parseBattleWindow(msg); break;
-		case 0x85: parseRotateItem(msg); break;
-		case 0x87: parseCloseContainer(msg); break;
-		case 0x88: parseUpArrowContainer(msg); break;
-		case 0x89: parseTextWindow(msg); break;
-		case 0x8A: parseHouseWindow(msg); break;
-		case 0x8C: parseLookAt(msg); break;
-		case 0x8D: parseLookInBattleList(msg); break;
-		case 0x96: parseSay(msg); break;
-		case 0x97: parseGetChannels(msg); break;
-		case 0x98: parseOpenChannel(msg); break;
-		case 0x99: parseCloseChannel(msg); break;
-		case 0x9A: parseOpenPrivate(msg); break;
-		case 0x9B: parseProcessRuleViolation(msg); break;
-		case 0x9C: parseCloseRuleViolation(msg); break;
-		case 0x9D: parseCancelRuleViolation(msg); break;
-		case 0xA0: parseFightModes(msg); break;
-		case 0xA1: parseAttack(msg); break;
-		case 0xA2: parseFollow(msg); break;
-		case 0xA3: parseInviteToParty(msg); break;
-		case 0xA4: parseJoinParty(msg); break;
-		case 0xA5: parseRevokePartyInvite(msg); break;
-		case 0xA6: parsePassPartyLeadership(msg); break;
-		case 0xA7: parseLeaveParty(msg); break;
-		case 0xAA: parseCreatePrivateChannel(msg); break;
-		case 0xAB: parseChannelInvite(msg); break;
-		case 0xAC: parseChannelExclude(msg); break;
-		case 0xBE: parseCancelMove(msg); break;
-		case 0xC9: parseUpdateTile(msg); break;
-		case 0xCA: parseUpdateContainer(msg); break;
-		case 0xD2: // request outfit
-			if((!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || !g_config.getBool(
-				ConfigManager::DISABLE_OUTFITS_PRIVILEGED)) && (g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)
-					|| g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS)))
-				parseRequestOutfit(msg);
-			break;
+			case 0x14: parseLogout(msg); break;
+			case 0x1E: parseReceivePing(msg); break;
+			case 0x32: parseExtendedOpcode(msg); break;
+			case 0x64: parseAutoWalk(msg); break;
+			case 0x65:
+			case 0x66:
+			case 0x67:
+			case 0x68: parseMove(msg, (Direction)(recvbyte - 0x65)); break;
+			case 0x69: addGameTask(&Game::playerStopAutoWalk, player->getID()); break;
+			case 0x6A: parseMove(msg, NORTHEAST); break;
+			case 0x6B: parseMove(msg, SOUTHEAST); break;
+			case 0x6C: parseMove(msg, SOUTHWEST); break;
+			case 0x6D: parseMove(msg, NORTHWEST); break;
+			case 0x6F:
+			case 0x70:
+			case 0x71:
+			case 0x72: parseTurn(msg, (Direction)(recvbyte - 0x6F)); break;
+			case 0x78: parseThrow(msg); break;
+			case 0x7D: parseRequestTrade(msg); break;
+			case 0x7E: parseLookInTrade(msg); break;
+			case 0x7F: parseAcceptTrade(msg); break;
+			case 0x80: parseCloseTrade(); break;
+			case 0x82: parseUseItem(msg); break;
+			case 0x83: parseUseItemEx(msg); break;
+			case 0x84: parseBattleWindow(msg); break;
+			case 0x85: parseRotateItem(msg); break;
+			case 0x87: parseCloseContainer(msg); break;
+			case 0x88: parseUpArrowContainer(msg); break;
+			case 0x89: parseTextWindow(msg); break;
+			case 0x8A: parseHouseWindow(msg); break;
+			case 0x8C: parseLookAt(msg); break;
+			case 0x8D: parseLookInBattleList(msg); break;
+			case 0x96: parseSay(msg); break;
+			case 0x97: parseGetChannels(msg); break;
+			case 0x98: parseOpenChannel(msg); break;
+			case 0x99: parseCloseChannel(msg); break;
+			case 0x9A: parseOpenPrivate(msg); break;
+			case 0x9B: parseProcessRuleViolation(msg); break;
+			case 0x9C: parseCloseRuleViolation(msg); break;
+			case 0x9D: parseCancelRuleViolation(msg); break;
+			case 0xA0: parseFightModes(msg); break;
+			case 0xA1: parseAttack(msg); break;
+			case 0xA2: parseFollow(msg); break;
+			case 0xA3: parseInviteToParty(msg); break;
+			case 0xA4: parseJoinParty(msg); break;
+			case 0xA5: parseRevokePartyInvite(msg); break;
+			case 0xA6: parsePassPartyLeadership(msg); break;
+			case 0xA7: parseLeaveParty(msg); break;
+			case 0xAA: parseCreatePrivateChannel(msg); break;
+			case 0xAB: parseChannelInvite(msg); break;
+			case 0xAC: parseChannelExclude(msg); break;
+			case 0xBE: parseCancelMove(msg); break;
+			case 0xC9: parseUpdateTile(msg); break;
+			case 0xCA: parseUpdateContainer(msg); break;
+			case 0xD2: // request outfit
+				if((!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || !g_config.getBool(
+					ConfigManager::DISABLE_OUTFITS_PRIVILEGED)) && (g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)
+						|| g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS)))
+						parseRequestOutfit(msg);
+					break;
+			case 0xD3: // set outfit
+				if((!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || !g_config.getBool(ConfigManager::DISABLE_OUTFITS_PRIVILEGED))
+					&& (g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS) || g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)))
+					parseSetOutfit(msg);
+				break;
+			case 0xDC: parseAddVip(msg); break;
+			case 0xDD: parseRemoveVip(msg); break;
+			case 0xE6: parseBugReport(msg); break;
+			case 0xE7: parseViolationWindow(msg); break;
+			case 0xE8: parseDebugAssert(msg); break;
 
-		case 0xD3: // set outfit
-			if((!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || !g_config.getBool(ConfigManager::DISABLE_OUTFITS_PRIVILEGED))
-				&& (g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS) || g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)))
-				parseSetOutfit(msg);
-			break;
-		case 0xDC: parseAddVip(msg); break;
-		case 0xDD: parseRemoveVip(msg); break;
-		case 0xE6: parseBugReport(msg); break;
-		case 0xE7: parseViolationWindow(msg); break;
-		case 0xE8: parseDebugAssert(msg); break;
-
-		default:
-		{
-			std::stringstream s;
-			s << "Sent unknown byte: 0x" << std::hex << (int16_t)recvbyte << std::dec;
-			Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
-			break;
-		}
+			default:
+			{
+				std::stringstream s;
+				s << "Sent unknown byte: 0x" << std::hex << (int16_t)recvbyte << std::dec;
+				Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
+				break;
+			}
 		}
 	}
 }
@@ -760,13 +757,13 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage_ptr msg)
 	ItemVector::const_iterator it;
 	if(items)
 	{
-		for (it = items->getBeginTopItem(); (it != items->getEndTopItem() && count < 10); ++it, ++count)
+		for(it = items->getBeginTopItem(); (it != items->getEndTopItem() && count < 10); ++it, ++count)
 			msg->putItem(*it);
 	}
 
 	if(creatures)
 	{
-		for (CreatureVector::const_iterator cit = creatures->begin(); (cit != creatures->end() && count < 10); ++cit)
+		for(CreatureVector::const_iterator cit = creatures->begin(); (cit != creatures->end() && count < 10); ++cit)
 		{
 			if(!player->canSeeCreature(*cit))
 				continue;
@@ -782,7 +779,7 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage_ptr msg)
 
 	if(items)
 	{
-		for (it = items->getBeginDownItem(); (it != items->getEndDownItem() && count < 10); ++it, ++count)
+		for(it = items->getBeginDownItem(); (it != items->getEndDownItem() && count < 10); ++it, ++count)
 			msg->putItem(*it);
 	}
 }
@@ -804,7 +801,7 @@ void ProtocolGame::GetMapDescription(int32_t x, int32_t y, int32_t z,
 		zstep = -1;
 	}
 
-	for (int32_t nz = startz; nz != endz + zstep; nz += zstep)
+	for(int32_t nz = startz; nz != endz + zstep; nz += zstep)
 		GetFloorDescription(msg, x, y, nz, width, height, z - nz, skip);
 
 	if(skip >= 0)
@@ -819,9 +816,9 @@ void ProtocolGame::GetFloorDescription(NetworkMessage_ptr msg, int32_t x, int32_
 	int32_t width, int32_t height, int32_t offset, int32_t& skip)
 {
 	Tile* tile = NULL;
-	for (int32_t nx = 0; nx < width; ++nx)
+	for(int32_t nx = 0; nx < width; ++nx)
 	{
-		for (int32_t ny = 0; ny < height; ++ny)
+		for(int32_t ny = 0; ny < height; ++ny)
 		{
 			if((tile = g_game.getTile(Position(x + nx + offset, y + ny + offset, z))))
 			{
@@ -847,7 +844,7 @@ void ProtocolGame::GetFloorDescription(NetworkMessage_ptr msg, int32_t x, int32_
 void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown)
 {
 	// loop through the known creature list and check if the given creature is in
-	for (std::list<uint32_t>::iterator it = knownCreatureList.begin(); it != knownCreatureList.end(); ++it)
+	for(std::list<uint32_t>::iterator it = knownCreatureList.begin(); it != knownCreatureList.end(); ++it)
 	{
 		if((*it) != id)
 			continue;
@@ -869,7 +866,7 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& remo
 	{
 		// lets try to remove one from the end of the list
 		Creature* c = NULL;
-		for (int16_t n = 0; n < 150; ++n)
+		for(int16_t n = 0; n < 150; ++n)
 		{
 			removedKnown = knownCreatureList.front();
 			if(!(c = g_game.getCreatureByID(removedKnown)) || !canSee(c))
@@ -1032,7 +1029,7 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 	uint8_t dirCount = msg.get<char>();
 	if(dirCount > 128) //client limit
 	{
-		for (uint8_t i = 0; i < dirCount; ++i)
+		for(uint8_t i = 0; i < dirCount; ++i)
 			msg.get<char>();
 
 		std::stringstream s;
@@ -1042,37 +1039,37 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 	}
 
 	std::list<Direction> path;
-	for (uint8_t i = 0; i < dirCount; ++i)
+	for(uint8_t i = 0; i < dirCount; ++i)
 	{
 		Direction dir = SOUTH;
 		switch (msg.get<char>())
 		{
-		case 1:
-			dir = EAST;
-			break;
-		case 2:
-			dir = NORTHEAST;
-			break;
-		case 3:
-			dir = NORTH;
-			break;
-		case 4:
-			dir = NORTHWEST;
-			break;
-		case 5:
-			dir = WEST;
-			break;
-		case 6:
-			dir = SOUTHWEST;
-			break;
-		case 7:
-			dir = SOUTH;
-			break;
-		case 8:
-			dir = SOUTHEAST;
-			break;
-		default:
-			continue;
+			case 1:
+				dir = EAST;
+				break;
+			case 2:
+				dir = NORTHEAST;
+				break;
+			case 3:
+				dir = NORTH;
+				break;
+			case 4:
+				dir = NORTHWEST;
+				break;
+			case 5:
+				dir = WEST;
+				break;
+			case 6:
+				dir = SOUTHWEST;
+				break;
+			case 7:
+				dir = SOUTH;
+				break;
+			case 8:
+				dir = SOUTHEAST;
+				break;
+			default:
+				continue;
 		}
 
 		path.push_back(dir);
@@ -1549,7 +1546,7 @@ void ProtocolGame::sendChannelsDialog(const ChannelsList& channels)
 	msg->put<char>(0xAB);
 
 	msg->put<char>(channels.size());
-	for (ChannelsList::const_iterator it = channels.begin(); it != channels.end(); ++it)
+	for(ChannelsList::const_iterator it = channels.begin(); it != channels.end(); ++it)
 	{
 		msg->put<uint16_t>(it->first);
 		msg->putString(it->second);
@@ -1598,7 +1595,7 @@ void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool 
 	msg->put<char>(std::min(container->size(), 255U));
 
 	ItemList::const_iterator cit = container->getItems();
-	for (uint32_t i = 0; cit != container->getEnd() && i < 255; ++cit, ++i)
+	for(uint32_t i = 0; cit != container->getEnd() && i < 255; ++cit, ++i)
 		msg->putItem(*cit);
 }
 
@@ -1610,7 +1607,7 @@ void ProtocolGame::sendRuleViolationsChannel(uint16_t channelId)
 		TRACK_MESSAGE(msg);
 		msg->put<char>(0xAE);
 		msg->put<uint16_t>(channelId);
-		for (RuleViolationsMap::const_iterator it = g_game.getRuleViolations().begin(); it != g_game.getRuleViolations().end(); ++it)
+		for(RuleViolationsMap::const_iterator it = g_game.getRuleViolations().begin(); it != g_game.getRuleViolations().end(); ++it)
 		{
 			RuleViolation& rvr = *it->second;
 			if(rvr.isOpen && rvr.reporter)
@@ -1668,7 +1665,7 @@ void ProtocolGame::sendTradeItemRequest(const Player* _player, const Item* item,
 	{
 		msg->put<char>(container->getItemHoldingCount() + 1);
 		msg->putItem(item);
-		for (ContainerIterator it = container->begin(); it != container->end(); ++it)
+		for(ContainerIterator it = container->begin(); it != container->end(); ++it)
 			msg->putItem(*it);
 	}
 	else
@@ -1948,7 +1945,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 		if(reasons > 1)
 		{
 			msg->put<char>(0x0B);
-			for (int32_t i = 0; i < 32; ++i)
+			for(int32_t i = 0; i < 32; ++i)
 			{
 				msg->put<char>(0xFF);
 			}
@@ -1956,7 +1953,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	}
 
 	AddMapDescription(msg, pos);
-	for (int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
+	for(int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
 		AddInventoryItem(msg, (slots_t)i, player->getInventoryItem((slots_t)i));
 
 	AddPlayerStats(msg);
@@ -1970,8 +1967,10 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 
 	if(m_spectator)
 		return;
+
 	player->sendIcons();
-	for (VIPSet::iterator it = player->VIPList.begin(); it != player->VIPList.end(); ++it)
+
+	for(VIPSet::iterator it = player->VIPList.begin(); it != player->VIPList.end(); ++it)
 	{
 		std::string vipName;
 		if(IOLoginData::getInstance()->getNameByGuid((*it), vipName))
@@ -2082,8 +2081,8 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 		if(!msg)
 			return;
 
-		TRACK_MESSAGE(msg);
-		RemoveTileItem(msg, oldPos, oldStackpos);
+			TRACK_MESSAGE(msg);
+			RemoveTileItem(msg, oldPos, oldStackpos);
 	}
 	else if(canSee(newPos) && player->canSeeCreature(creature))
 	{
@@ -2091,8 +2090,8 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 		if(!msg)
 			return;
 
-		TRACK_MESSAGE(msg);
-		AddTileCreature(msg, newPos, newStackpos, creature);
+			TRACK_MESSAGE(msg);
+			AddTileCreature(msg, newPos, newStackpos, creature);
 	}
 }
 
@@ -2376,6 +2375,12 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	msg->put<uint16_t>(int32_t(player->getFreeCapacity()));
 
 	uint32_t experience = player->getExperience();
+/*
+	if(experience > 0x7FFFFFFF) // client debugs after 2,147,483,647 exp
+		msg->put<uint32_t>(0x7FFFFFFF);
+	else
+		msg->put<uint32_t>(0x00);
+*/
 	msg->put<uint32_t>(experience);
 
 #ifdef _MULTIPLATFORM76
@@ -2396,7 +2401,7 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 void ProtocolGame::AddPlayerSkills(NetworkMessage_ptr msg)
 {
 	msg->put<char>(0xA1);
-	for (uint8_t i = 0; i <= SKILL_LAST; ++i)
+	for(uint8_t i = 0; i <= SKILL_LAST; ++i)
 	{
 		msg->put<char>(player->getSkill((skills_t)i, SKILL_LEVEL));
 		msg->put<char>(player->getSkill((skills_t)i, SKILL_PERCENT));
@@ -2417,15 +2422,15 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 
 		switch (type)
 		{
-		case MSG_GAMEMASTER_ANONYMOUS:
-			msg->putString("");
-			break;
-		case MSG_RVR_ANSWER:
-			msg->putString("Gamemaster");
-			break;
-		default:
-			msg->putString(!creature->getHideName() ? creature->getName() : "");
-			break;
+			case MSG_GAMEMASTER_ANONYMOUS:
+				msg->putString("");
+				break;
+			case MSG_RVR_ANSWER:
+				msg->putString("Gamemaster");
+				break;
+			default:
+				msg->putString(!creature->getHideName() ? creature->getName() : "");
+				break;
 		}
 	}
 	else
@@ -2434,37 +2439,37 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 	msg->put<char>(type);
 	switch (type)
 	{
-	case MSG_SPEAK_SAY:
-	case MSG_SPEAK_WHISPER:
-	case MSG_SPEAK_YELL:
-	case MSG_SPEAK_MONSTER_SAY:
-	case MSG_SPEAK_MONSTER_YELL:
-	{
-		if(pos)
-			msg->putPosition(*pos);
-		else if(creature)
-			msg->putPosition(creature->getPosition());
-		else
-			msg->putPosition(Position(0, 0, 7));
+		case MSG_SPEAK_SAY:
+		case MSG_SPEAK_WHISPER:
+		case MSG_SPEAK_YELL:
+		case MSG_SPEAK_MONSTER_SAY:
+		case MSG_SPEAK_MONSTER_YELL:
+		{
+			if(pos)
+				msg->putPosition(*pos);
+			else if(creature)
+				msg->putPosition(creature->getPosition());
+			else
+				msg->putPosition(Position(0, 0, 7));
 
-		break;
-	}
+			break;
+		}
 
-	case MSG_CHANNEL:
-	case MSG_CHANNEL_HIGHLIGHT:
-	case MSG_GAMEMASTER_CHANNEL:
-	case MSG_GAMEMASTER_ANONYMOUS:
-		msg->put<uint16_t>(channelId);
-		break;
+		case MSG_CHANNEL:
+		case MSG_CHANNEL_HIGHLIGHT:
+		case MSG_GAMEMASTER_CHANNEL:
+		case MSG_GAMEMASTER_ANONYMOUS:
+			msg->put<uint16_t>(channelId);
+			break;
 
-	case MSG_RVR_CHANNEL:
-	{
-		msg->put<uint32_t>(uint32_t(OTSYS_TIME() / 1000 & 0xFFFFFFFF) - statementId/*use it as time:)*/);
-		break;
-	}
+		case MSG_RVR_CHANNEL:
+		{
+			msg->put<uint32_t>(uint32_t(OTSYS_TIME() / 1000 & 0xFFFFFFFF) - statementId/*use it as time:)*/);
+			break;
+		}
 
-	default:
-		break;
+		default:
+			break;
 	}
 
 	msg->putString(text);

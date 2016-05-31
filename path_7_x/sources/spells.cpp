@@ -111,11 +111,11 @@ ReturnValue Spells::onPlayerSay(Player* player, const std::string& words)
 
 void Spells::clear()
 {
-	for (RunesMap::iterator rit = runes.begin(); rit != runes.end(); ++rit)
+	for(RunesMap::iterator rit = runes.begin(); rit != runes.end(); ++rit)
 		delete rit->second;
 
 	runes.clear();
-	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
+	for(InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
 		delete it->second;
 
 	instants.clear();
@@ -205,7 +205,7 @@ RuneSpell* Spells::getRuneSpell(uint32_t id)
 
 RuneSpell* Spells::getRuneSpellByName(const std::string& name)
 {
-	for (RunesMap::iterator it = runes.begin(); it != runes.end(); ++it)
+	for(RunesMap::iterator it = runes.begin(); it != runes.end(); ++it)
 	{
 		if(boost::algorithm::iequals(it->second->getName(), name))
 			return it->second;
@@ -217,7 +217,7 @@ RuneSpell* Spells::getRuneSpellByName(const std::string& name)
 InstantSpell* Spells::getInstantSpell(const std::string& words)
 {
 	InstantSpell* result = NULL;
-	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
+	for(InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
 	{
 		InstantSpell* instantSpell = it->second;
 		if(!asLowerCaseString(words).compare(0, instantSpell->getWords().length(),
@@ -241,7 +241,7 @@ InstantSpell* Spells::getInstantSpell(const std::string& words)
 uint32_t Spells::getInstantSpellCount(const Player* player)
 {
 	uint32_t count = 0;
-	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
+	for(InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
 	{
 		if(it->second->canCast(player))
 			++count;
@@ -253,7 +253,7 @@ uint32_t Spells::getInstantSpellCount(const Player* player)
 InstantSpell* Spells::getInstantSpellByIndex(const Player* player, uint32_t index)
 {
 	uint32_t count = 0;
-	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
+	for(InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
 	{
 		InstantSpell* instantSpell = it->second;
 		if(!instantSpell->canCast(player))
@@ -271,7 +271,7 @@ InstantSpell* Spells::getInstantSpellByIndex(const Player* player, uint32_t inde
 InstantSpell* Spells::getInstantSpellByName(const std::string& name)
 {
 	std::string tmpName = asLowerCaseString(name);
-	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
+	for(InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
 	{
 		if(tmpName == asLowerCaseString(it->second->getName()))
 			return it->second;
@@ -292,7 +292,7 @@ bool BaseSpell::castSpell(Creature* creature)
 
 	bool success = true;
 	CreatureEventList castEvents = creature->getCreatureEvents(CREATURE_EVENT_CAST);
-	for (CreatureEventList::iterator it = castEvents.begin(); it != castEvents.end(); ++it)
+	for(CreatureEventList::iterator it = castEvents.begin(); it != castEvents.end(); ++it)
 	{
 		if(!(*it)->executeCast(creature) && success)
 			success = false;
@@ -308,7 +308,7 @@ bool BaseSpell::castSpell(Creature* creature, Creature* target)
 
 	bool success = true;
 	CreatureEventList castEvents = creature->getCreatureEvents(CREATURE_EVENT_CAST);
-	for (CreatureEventList::iterator it = castEvents.begin(); it != castEvents.end(); ++it)
+	for(CreatureEventList::iterator it = castEvents.begin(); it != castEvents.end(); ++it)
 	{
 		if(!(*it)->executeCast(creature, target) && success)
 			success = false;
@@ -486,7 +486,7 @@ Spell::Spell()
 	isAggressive = true;
 	learnable = false;
 
-	for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i)
+	for(int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i)
 		skills[i] = 10;
 }
 
@@ -505,7 +505,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 			"cursecondition"
 		};
 
-		for (uint32_t i = 0; i < sizeof(reservedList) / sizeof(const char*); ++i)
+		for(uint32_t i = 0; i < sizeof(reservedList) / sizeof(const char*); ++i)
 		{
 			if(boost::algorithm::iequals(reservedList[i], name.c_str()))
 			{
@@ -529,7 +529,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(readXMLString(p, "skill", strValue) || readXMLString(p, "skills", strValue) || readXMLInteger(p, "skillpoints", intValue))
 	{
 		std::vector<std::string> strVector = explodeString(strValue, ";"), tmpVector;
-		for (std::vector<std::string>::iterator it = strVector.begin(); it != strVector.end(); ++it)
+		for(std::vector<std::string>::iterator it = strVector.begin(); it != strVector.end(); ++it)
 		{
 			tmpVector = explodeString(*it, ",");
 			if(tmpVector.size() > 1)
@@ -606,7 +606,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 		if(readXMLString(p, "groups", strValue))
 		{
 			std::vector<std::string> strVector = explodeString(strValue, ";"), tmpVector;
-			for (std::vector<std::string>::iterator it = strVector.begin(); it != strVector.end(); ++it)
+			for(std::vector<std::string>::iterator it = strVector.begin(); it != strVector.end(); ++it)
 			{
 				tmpVector = explodeString((*it), ",");
 				uint32_t id = atoi(tmpVector[0].c_str()), exhaust = isAggressive ? 2000 : 1000;
@@ -641,7 +641,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 	}
 
 	std::string error;
-	for (xmlNodePtr vocationNode = p->children; vocationNode; vocationNode = vocationNode->next)
+	for(xmlNodePtr vocationNode = p->children; vocationNode; vocationNode = vocationNode->next)
 	{
 		if(!parseVocationNode(vocationNode, vocSpellMap, vocStringVec, error))
 			std::clog << "[Warning - Spell::configureSpell] Spell: " << name << ", " << error << std::endl;
@@ -691,7 +691,7 @@ bool Spell::checkSpell(Player* player) const
 			{
 				if(!player->hasCondition(CONDITION_SPELLCOOLDOWN, spellId))
 				{
-					for (SpellGroup::const_iterator it = groupExhaustions.begin(); it != groupExhaustions.end(); ++it)
+					for(SpellGroup::const_iterator it = groupExhaustions.begin(); it != groupExhaustions.end(); ++it)
 					{
 						if(!player->hasCondition(CONDITION_EXHAUST, (Exhaust_t)((int32_t)it->first + 1)))
 							continue;
@@ -739,7 +739,7 @@ bool Spell::checkSpell(Player* player) const
 		return false;
 	}
 
-	for (int16_t i = SKILL_FIRST; i <= SKILL_LAST; ++i)
+	for(int16_t i = SKILL_FIRST; i <= SKILL_LAST; ++i)
 	{
 		if((int32_t)player->getSkill((skills_t)i, SKILL_LEVEL) < skills[i])
 		{
@@ -1029,7 +1029,7 @@ void Spell::postSpell(Player* player) const
 		{
 			if(g_config.getBool(ConfigManager::ENABLE_COOLDOWNS))
 			{
-				for (SpellGroup::const_iterator it = groupExhaustions.begin(); it != groupExhaustions.end(); ++it)
+				for(SpellGroup::const_iterator it = groupExhaustions.begin(); it != groupExhaustions.end(); ++it)
 					player->addExhaust(it->second, (Exhaust_t)(it->first + 1));
 
 				if(exhaustion > 0)
@@ -1642,7 +1642,7 @@ ReturnValue ConjureSpell::internalConjureItem(Player* player, uint32_t conjureId
 
 	std::list<Container*> containers;
 	Item *item = NULL, *fromItem = NULL;
-	for (int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
+	for(int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
 	{
 		if(!(item = player->getInventoryItem((slots_t)i)))
 			continue;
@@ -1655,9 +1655,9 @@ ReturnValue ConjureSpell::internalConjureItem(Player* player, uint32_t conjureId
 
 	if(!fromItem)
 	{
-		for (std::list<Container*>::iterator cit = containers.begin(); cit != containers.end(); ++cit)
+		for(std::list<Container*>::iterator cit = containers.begin(); cit != containers.end(); ++cit)
 		{
-			for (ItemList::const_reverse_iterator it = (*cit)->getReversedItems(); it != (*cit)->getReversedEnd(); ++it)
+			for(ItemList::const_reverse_iterator it = (*cit)->getReversedItems(); it != (*cit)->getReversedEnd(); ++it)
 			{
 				if((*it)->getID() == reagentId)
 				{
