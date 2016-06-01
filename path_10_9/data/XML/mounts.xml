@@ -90,4 +90,7 @@
 	<mount id="88" clientid="849" name="Nightdweller" speed="20" premium="yes" />
 	<mount id="89" clientid="850" name="Frostflare" speed="20" premium="yes" />
 	<mount id="90" clientid="851" name="Cinderhoof" speed="20" premium="yes" />
+	<mount id="91" clientid="868" name="Moldpincer" speed="20" premium="yes" />
+	<mount id="92" clientid="869" name="Bloodcurl" speed="20" premium="yes" />
+	<mount id="93" clientid="870" name="Leafscuttler" speed="20" premium="yes" />
 </mounts>
