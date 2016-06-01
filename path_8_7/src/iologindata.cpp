@@ -22,11 +22,9 @@
 #include "iologindata.h"
 #include "configmanager.h"
 #include "game.h"
-#include "events.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
-extern Events* g_events;
 
 Account IOLoginData::loadAccount(uint32_t accno)
 {
@@ -375,7 +373,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 				g_game.addGuild(guild);
 
 				query.str(std::string());
-				query << "SELECT `id`, `name`, `level` FROM `guild_ranks` WHERE `guild_id` = " << guildId << " LIMIT 3";
+				query << "SELECT `id`, `name`, `level` FROM `guild_ranks` WHERE `guild_id` = " << guildId;
 
 				if ((result = db->storeQuery(query.str()))) {
 					do {
@@ -387,12 +385,22 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 		if (guild) {
 			player->guild = guild;
-			GuildRank* rank = guild->getRankById(playerRankId);
-			if (rank) {
-				player->guildLevel = rank->level;
-			} else {
-				player->guildLevel = 1;
+			const GuildRank* rank = guild->getRankById(playerRankId);
+			if (!rank) {
+				query.str(std::string());
+				query << "SELECT `id`, `name`, `level` FROM `guild_ranks` WHERE `id` = " << playerRankId;
+
+				if ((result = db->storeQuery(query.str()))) {
+					guild->addRank(result->getNumber<uint32_t>("id"), result->getString("name"), result->getNumber<uint16_t>("level"));
+				}
+
+				rank = guild->getRankById(playerRankId);
+				if (!rank) {
+					player->guild = nullptr;
+				}
 			}
+
+			player->guildRank = rank;
 
 			IOGuild::getWarList(guildId, player->guildWarList);
 
@@ -609,8 +617,6 @@ bool IOLoginData::savePlayer(Player* player)
 		query << "UPDATE `players` SET `lastlogin` = " << player->lastLoginSaved << ", `lastip` = " << player->lastIP << " WHERE `id` = " << player->getGUID();
 		return db->executeQuery(query.str());
 	}
-
-	g_events->eventPlayerOnSave(player);
 
 	//serialize conditions
 	PropWriteStream propWriteStream;

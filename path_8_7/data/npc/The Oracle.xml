@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <npc name="The Oracle" script="The Oracle.lua" walkinterval="0" speechbubble="3">
 	<look typeex="1448" />
 	<parameters>

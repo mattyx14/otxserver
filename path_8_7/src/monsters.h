@@ -172,6 +172,7 @@ class MonsterType
 		bool isHostile;
 		bool isPassive;
 		bool hiddenHealth;
+		bool isBlockable;
 
 		void createLoot(Container* corpse);
 		bool createLootContainer(Container* parent, const LootBlock& lootblock);

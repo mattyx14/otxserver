@@ -4,6 +4,7 @@ local itemFunctions = {
 	["aid"] = { isActive = true, targetFunction = function (item, target) return item:setActionId(target) end },
 	["description"] = { isActive = true, targetFunction = function (item, target) return item:setAttribute(ITEM_ATTRIBUTE_DESCRIPTION, target) end },
 	["desc"] = { isActive = true, targetFunction = function (item, target) return item:setAttribute(ITEM_ATTRIBUTE_DESCRIPTION, target) end },
+	["name"] = { isActive = true, targetFunction = function (item, target) return item:setAttribute(ITEM_ATTRIBUTE_NAME, target) end },
 	["remove"] = { isActive = true, targetFunction = function (item, target) return item:remove() end },
 	["decay"] = { isActive = true, targetFunction = function (item, target) return item:decay() end },
 	["transform"] = { isActive = true, targetFunction = function (item, target) return item:transform(target) end },

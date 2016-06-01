@@ -1,42 +1,41 @@
 function onSay(player, words, param)
 	if player:getExhaustion(1000) <= 0 then
-		player:setExhaustion(1000, 10)
-	else
-		print('You\'re exhausted for: '..player:getExhaustion(1000)..' seconds.')
-	end
+		player:setExhaustion(1000, 2)
+		local hasAccess = player:getGroup():getAccess()
+		local players = Game.getPlayers()
+		local playerCount = Game.getPlayerCount()
 
-	local hasAccess = player:getGroup():getAccess()
-	local players = Game.getPlayers()
-	local playerCount = Game.getPlayerCount()
+		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, playerCount .. " players online.")
 
-	player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, playerCount .. " players online.")
-
-	local i = 0
-	local msg = ""
-	for k, targetPlayer in ipairs(players) do
-		if hasAccess or not targetPlayer:isInGhostMode() then
-			if i > 0 then
-				msg = msg .. ", "
+		local i = 0
+		local msg = ""
+		for k, targetPlayer in ipairs(players) do
+			if hasAccess or not targetPlayer:isInGhostMode() then
+				if i > 0 then
+					msg = msg .. ", "
+				end
+				msg = msg .. targetPlayer:getName() .. " [" .. targetPlayer:getLevel() .. "]"
+				i = i + 1
 			end
-			msg = msg .. targetPlayer:getName() .. " [" .. targetPlayer:getLevel() .. "]"
-			i = i + 1
+
+			if i == 10 then
+				if k == playerCount then
+					msg = msg .. "."
+				else
+					msg = msg .. ","
+				end
+				player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, msg)
+				msg = ""
+				i = 0
+			end
 		end
 
-		if i == 10 then
-			if k == playerCount then
-				msg = msg .. "."
-			else
-				msg = msg .. ","
-			end
+		if i > 0 then
+			msg = msg .. "."
 			player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, msg)
-			msg = ""
-			i = 0
 		end
+		return false
+	else
+		player:sendTextMessage(MESSAGE_STATUS_SMALL, 'You\'re exhausted for: '..player:getExhaustion(1000)..' seconds.')
 	end
-
-	if i > 0 then
-		msg = msg .. "."
-		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, msg)
-	end
-	return false
 end

@@ -42,7 +42,8 @@ bool Vocations::loadFromXml()
 
 		uint16_t id = pugi::cast<uint16_t>(attr.value());
 
-		auto res = vocationsMap.emplace(id, id);
+		auto res = vocationsMap.emplace(std::piecewise_construct,
+				std::forward_as_tuple(id), std::forward_as_tuple(id));
 		Vocation& voc = res.first->second;
 
 		if ((attr = vocationNode.attribute("name"))) {
@@ -107,10 +108,6 @@ bool Vocations::loadFromXml()
 
 		if ((attr = vocationNode.attribute("fromvoc"))) {
 			voc.fromVocation = pugi::cast<uint32_t>(attr.value());
-		}
-
-		if ((attr = vocationNode.attribute("lessloss"))) {
-			voc.lessLoss = pugi::cast<float>(attr.value());
 		}
 
 		for (auto childNode : vocationNode.children()) {
@@ -187,12 +184,12 @@ uint32_t Vocation::skillBase[SKILL_LAST + 1] = {50, 50, 50, 50, 30, 100, 20};
 Vocation::Vocation(uint16_t id)
 	: name("none"), id(id)
 {
-	gainHealthTicks = 6;
-	gainHealthAmount = 1;
-	gainManaTicks = 6;
-	gainManaAmount = 1;
-	gainSoulTicks = 120;
-	soulMax = 100;
+	gainHealthTicks = gainHealthTicks;
+	gainHealthAmount = gainHealthAmount;
+	gainManaTicks = gainManaTicks;
+	gainManaAmount = gainManaAmount;
+	gainSoulTicks = gainSoulTicks;
+	soulMax = soulMax;
 
 	clientId = 0;
 	fromVocation = VOCATION_NONE;

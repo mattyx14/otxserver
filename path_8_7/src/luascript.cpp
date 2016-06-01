@@ -1702,6 +1702,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CONVERT_UNSAFE_SCRIPTS)
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_EQUIPMENT_SLOTS)
 	registerEnumIn("configKeys", ConfigManager::ALLOW_WALKTHROUGH)
+	registerEnumIn("configKeys", ConfigManager::ALLOW_BLOCK_SPAWN)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
@@ -7902,8 +7903,8 @@ int LuaScriptInterface::luaPlayerGetGuildLevel(lua_State* L)
 {
 	// player:getGuildLevel()
 	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->getGuildLevel());
+	if (player && player->getGuild()) {
+		lua_pushnumber(L, player->getGuildRank()->level);
 	} else {
 		lua_pushnil(L);
 	}
@@ -7915,12 +7916,19 @@ int LuaScriptInterface::luaPlayerSetGuildLevel(lua_State* L)
 	// player:setGuildLevel(level)
 	uint8_t level = getNumber<uint8_t>(L, 2);
 	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->setGuildLevel(level);
-		pushBoolean(L, true);
-	} else {
+	if (!player || !player->getGuild()) {
 		lua_pushnil(L);
+		return 1;
 	}
+
+	const GuildRank* rank = player->getGuild()->getRankByLevel(level);
+	if (!rank) {
+		pushBoolean(L, false);
+	} else {
+		player->setGuildRank(rank);
+		pushBoolean(L, true);
+	}
+
 	return 1;
 }
 
@@ -10819,21 +10827,25 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 			}
 
 			if (combat->hasArea()) {
-				combat->doCombat(creature, target->getPosition());
+				pushBoolean(L, combat->doCombat(creature, target->getPosition()));
+				return 1;
 			} else {
-				combat->doCombat(creature, target);
+				pushBoolean(L, combat->doCombat(creature, target));
+				return 1;
 			}
 			break;
 		}
 
 		case VARIANT_POSITION: {
-			combat->doCombat(creature, variant.pos);
+			pushBoolean(L, combat->doCombat(creature, variant.pos));
+			return 1;
 			break;
 		}
 
 		case VARIANT_TARGETPOSITION: {
 			if (combat->hasArea()) {
-				combat->doCombat(creature, variant.pos);
+				pushBoolean(L, combat->doCombat(creature, variant.pos));
+				return 1;
 			} else {
 				combat->postCombatEffects(creature, variant.pos);
 				g_game.addMagicEffect(variant.pos, CONST_ME_POFF);
@@ -10848,7 +10860,7 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 				return 1;
 			}
 
-			combat->doCombat(creature, target);
+			pushBoolean(L, combat->doCombat(creature, target));
 			break;
 		}
 

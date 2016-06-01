@@ -59,7 +59,6 @@ class Events
 		void eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_t& tries);
 
 		// Custom
-		bool eventPlayerOnSave(Player* player);
 		bool eventMonsterOnSpawn(Monster* monster, const Position& position, bool isStartup);
 
 	private:
@@ -90,7 +89,6 @@ class Events
 		int32_t playerOnGainSkillTries;
 
 		// Custom
-		int32_t playerOnSave;
 		int32_t monsterOnSpawn;
 };
 

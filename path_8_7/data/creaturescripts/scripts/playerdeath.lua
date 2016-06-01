@@ -1,6 +1,36 @@
 local deathListEnabled = true
 local maxDeathRecords = 5
 
+local function sendWarStatus(guildId, enemyGuildId, warId, playerName, killerName)
+	local guild, enemyGuild = Guild(guildId), Guild(enemyGuildId)
+	if not guild or not enemyGuild then
+		return
+	end
+
+	local resultId = db.storeQuery("SELECT `guild_wars`.`id`, (SELECT `limit` FROM `znote_guild_wars` WHERE `znote_guild_wars`.`id` = `guild_wars`.`id`) AS `limit`, (SELECT COUNT(1) FROM `guildwar_kills` WHERE `guildwar_kills`.`warid` = `guild_wars`.`id` AND `guildwar_kills`.`killerguild` = `guild_wars`.`guild1`) guild1_kills, (SELECT COUNT(1) FROM `guildwar_kills` WHERE `guildwar_kills`.`warid` = `guild_wars`.`id` AND `guildwar_kills`.`killerguild` = `guild_wars`.`guild2`) guild2_kills FROM `guild_wars` WHERE (`guild1` = " .. guildId .. " OR `guild2` = " .. guildId .. ") AND `status` = 1 AND `id` = " .. warId)
+	if resultId then
+		local guild1_kills = result.getDataInt(resultId, "guild1_kills")
+		local guild2_kills = result.getDataInt(resultId, "guild2_kills")
+		local limit = result.getDataInt(resultId, "limit")
+		result.free(resultId)
+
+		local members = guild:getMembersOnline()
+		for i = 1, #members do
+			members[i]:sendChannelMessage("", string.format("%s was killed by %s. The new score is %d:%d frags (limit: %d)", playerName, killerName, guild1_kills, guild2_kills, limit), TALKTYPE_CHANNEL_R1, CHANNEL_GUILD)
+		end
+
+		local enemyMembers = enemyGuild:getMembersOnline()
+		for i = 1, #enemyMembers do
+			enemyMembers[i]:sendChannelMessage("", string.format("%s was killed by %s. The new score is %d:%d frags (limit: %d)", playerName, killerName, guild1_kills, guild2_kills, limit), TALKTYPE_CHANNEL_R1, CHANNEL_GUILD)
+		end
+
+		if guild1_kills >= limit or guild2_kills >= limit then
+			db.query("UPDATE `guild_wars` SET `status` = 4, `ended` = " .. os.time() .. " WHERE `status` = 1 AND `id` = " .. warId)
+			Game.broadcastMessage(string.format("%s has just won the war against %s.", guild:getName(), enemyGuild:getName()), MESSAGE_EVENT_ADVANCE)
+		end
+	end
+end
+
 function onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDamageUnjustified)
 	local playerId = player:getId()
 	if nextUseStaminaTime[playerId] ~= nil then
@@ -82,6 +112,7 @@ function onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDama
 
 				if warId ~= false then
 					db.asyncQuery("INSERT INTO `guildwar_kills` (`killer`, `target`, `killerguild`, `targetguild`, `time`, `warid`) VALUES (" .. db.escapeString(killerName) .. ", " .. db.escapeString(player:getName()) .. ", " .. killerGuild .. ", " .. targetGuild .. ", " .. os.time() .. ", " .. warId .. ")")
+					addEvent(sendWarStatus, 1000, killerGuild, targetGuild, warId, player:getName(), killerName)
 				end
 			end
 		end

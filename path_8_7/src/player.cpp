@@ -59,8 +59,8 @@ Player::Player(ProtocolGame_ptr p) :
 	manaMax = 0;
 	manaSpent = 0;
 	soul = 0;
-	guildLevel = 0;
 	guild = nullptr;
+	guildRank = nullptr;
 
 	level = 1;
 	levelPercent = 0;
@@ -256,28 +256,25 @@ std::string Player::getDescription(int32_t lookDistance) const
 		}
 	}
 
-	if (guild) {
-		const GuildRank* rank = guild->getRankByLevel(guildLevel);
-		if (rank) {
-			if (lookDistance == -1) {
-				s << " You are ";
-			} else if (sex == PLAYERSEX_FEMALE) {
-				s << " She is ";
-			} else {
-				s << " He is ";
-			}
+	if (guild && guildRank) {
+		if (lookDistance == -1) {
+			s << " You are ";
+		} else if (sex == PLAYERSEX_FEMALE) {
+			s << " She is ";
+		} else {
+			s << " He is ";
+		}
 
-			s << rank->name << " of the " << guild->getName();
-			if (!guildNick.empty()) {
-				s << " (" << guildNick << ')';
-			}
+		s << guildRank->name << " of the " << guild->getName();
+		if (!guildNick.empty()) {
+			s << " (" << guildNick << ')';
+		}
 
-			size_t memberCount = guild->getMemberCount();
-			if (memberCount == 1) {
-				s << ", which has 1 member, " << guild->getMembersOnline().size() << " of them online.";
-			} else {
-				s << ", which has " << memberCount << " members, " << guild->getMembersOnline().size() << " of them online.";
-			}
+		size_t memberCount = guild->getMemberCount();
+		if (memberCount == 1) {
+			s << ", which has 1 member, " << guild->getMembersOnline().size() << " of them online.";
+		} else {
+			s << ", which has " << memberCount << " members, " << guild->getMembersOnline().size() << " of them online.";
 		}
 	}
 	return s.str();
@@ -417,7 +414,7 @@ void Player::getShieldAndWeapon(const Item*& shield, const Item*& weapon) const
 				break;
 
 			case WEAPON_SHIELD: {
-				if (!shield || item->getDefense() > shield->getDefense()) {
+				if (!shield || (shield && item->getDefense() > shield->getDefense())) {
 					shield = item;
 				}
 				break;
@@ -500,7 +497,7 @@ uint16_t Player::getClientIcons() const
 		icons |= ICON_REDSWORDS;
 	}
 
-	if (_tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+	if (tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 		icons |= ICON_PIGEON;
 
 		// Don't show ICON_SWORDS if player is in protection zone.
@@ -944,14 +941,14 @@ void Player::sendPing()
 	}
 }
 
-Item* Player::getWriteItem(uint32_t& _windowTextId, uint16_t& _maxWriteLen)
+Item* Player::getWriteItem(uint32_t& windowTextId, uint16_t& maxWriteLen)
 {
-	_windowTextId = windowTextId;
-	_maxWriteLen = maxWriteLen;
+	windowTextId = this->windowTextId;
+	maxWriteLen = this->maxWriteLen;
 	return writeItem;
 }
 
-void Player::setWriteItem(Item* item, uint16_t _maxWriteLen /*= 0*/)
+void Player::setWriteItem(Item* item, uint16_t maxWriteLen /*= 0*/)
 {
 	windowTextId++;
 
@@ -961,18 +958,18 @@ void Player::setWriteItem(Item* item, uint16_t _maxWriteLen /*= 0*/)
 
 	if (item) {
 		writeItem = item;
-		maxWriteLen = _maxWriteLen;
+		this->maxWriteLen = maxWriteLen;
 		writeItem->incrementReferenceCounter();
 	} else {
 		writeItem = nullptr;
-		maxWriteLen = 0;
+		this->maxWriteLen = 0;
 	}
 }
 
-House* Player::getEditHouse(uint32_t& _windowTextId, uint32_t& _listId)
+House* Player::getEditHouse(uint32_t& windowTextId, uint32_t& listId)
 {
-	_windowTextId = windowTextId;
-	_listId = editListId;
+	windowTextId = this->windowTextId;
+	listId = this->editListId;
 	return editHouse;
 }
 
@@ -1937,17 +1934,17 @@ uint32_t Player::getIP() const
 	return 0;
 }
 
-void Player::death(Creature* _lastHitCreature)
+void Player::death(Creature* lastHitCreature)
 {
 	loginPosition = town->getTemplePosition();
 
 	if (skillLoss) {
 		uint8_t unfairFightReduction = 100;
 
-		if (_lastHitCreature) {
-			Player* lastHitPlayer = _lastHitCreature->getPlayer();
+		if (lastHitCreature) {
+			Player* lastHitPlayer = lastHitCreature->getPlayer();
 			if (!lastHitPlayer) {
-				Creature* lastHitMaster = _lastHitCreature->getMaster();
+				Creature* lastHitMaster = lastHitCreature->getMaster();
 				if (lastHitMaster) {
 					lastHitPlayer = lastHitMaster->getPlayer();
 				}
@@ -2068,10 +2065,10 @@ void Player::death(Creature* _lastHitCreature)
 		if (bitset[5]) {
 			Player* lastHitPlayer;
 
-			if (_lastHitCreature) {
-				lastHitPlayer = _lastHitCreature->getPlayer();
+			if (lastHitCreature) {
+				lastHitPlayer = lastHitCreature->getPlayer();
 				if (!lastHitPlayer) {
-					Creature* lastHitMaster = _lastHitCreature->getMaster();
+					Creature* lastHitMaster = lastHitCreature->getMaster();
 					if (lastHitMaster) {
 						lastHitPlayer = lastHitMaster->getPlayer();
 					}
@@ -2141,22 +2138,22 @@ void Player::death(Creature* _lastHitCreature)
 	}
 }
 
-bool Player::dropCorpse(Creature* _lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified)
+bool Player::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified)
 {
 	if (getZone() == ZONE_PVP) {
 		setDropLoot(true);
 		return false;
 	}
-	return Creature::dropCorpse(_lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
+	return Creature::dropCorpse(lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
 }
 
-Item* Player::getCorpse(Creature* _lastHitCreature, Creature* mostDamageCreature)
+Item* Player::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)
 {
-	Item* corpse = Creature::getCorpse(_lastHitCreature, mostDamageCreature);
+	Item* corpse = Creature::getCorpse(lastHitCreature, mostDamageCreature);
 	if (corpse && corpse->getContainer()) {
 		std::ostringstream ss;
-		if (_lastHitCreature) {
-			ss << "You recognize " << getNameDescription() << ". " << (getSex() == PLAYERSEX_FEMALE ? "She" : "He") << " was killed by " << _lastHitCreature->getNameDescription() << '.';
+		if (lastHitCreature) {
+			ss << "You recognize " << getNameDescription() << ". " << (getSex() == PLAYERSEX_FEMALE ? "She" : "He") << " was killed by " << lastHitCreature->getNameDescription() << '.';
 		} else {
 			ss << "You recognize " << getNameDescription() << '.';
 		}
@@ -3903,8 +3900,6 @@ double Player::getLostPercent() const
 		lossPercent *= 0.7;
 	}
 
-	lossPercent *= vocation->getLessLoss();
-
 	return lossPercent * pow(0.92, blessingCount) / 100;
 }
 
@@ -4083,11 +4078,17 @@ GuildEmblems_t Player::getGuildEmblem(const Player* player) const
 	}
 
 	const Guild* playerGuild = player->getGuild();
-	if (!playerGuild || player->getGuildWarList().empty()) {
+	if (!playerGuild) {
 		return GUILDEMBLEM_NONE;
 	}
 
-	if (guild == playerGuild) {
+	if (player->getGuildWarList().empty()) {
+		if (guild == playerGuild) {
+			return GUILDEMBLEM_MEMBER;
+		} else {
+			return GUILDEMBLEM_OTHER;
+		}
+	} else if (guild == playerGuild) {
 		return GUILDEMBLEM_ALLY;
 	} else if (isInWar(player)) {
 		return GUILDEMBLEM_ENEMY;
@@ -4122,7 +4123,7 @@ bool Player::toggleMount(bool mount)
 			return false;
 		}
 
-		if (!group->access && _tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+		if (!group->access && tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 			sendCancelMessage(RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE);
 			return false;
 		}
@@ -4481,7 +4482,7 @@ void Player::setGuild(Guild* guild)
 
 	this->guildNick.clear();
 	this->guild = nullptr;
-	this->guildLevel = 0;
+	this->guildRank = nullptr;
 
 	if (guild) {
 		const GuildRank* rank = guild->getRankByLevel(1);
@@ -4490,7 +4491,7 @@ void Player::setGuild(Guild* guild)
 		}
 
 		this->guild = guild;
-		this->guildLevel = 1;
+		this->guildRank = rank;
 		guild->addMember(this);
 	}
 
