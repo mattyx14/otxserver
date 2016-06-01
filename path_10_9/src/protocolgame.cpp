@@ -2079,28 +2079,6 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& ne
 	}
 }
 
-void ProtocolGame::sendInventoryClientIds()
-{
-	std::map<uint16_t, uint16_t> items = player->getInventoryClientIds();
-
-	NetworkMessage msg;
-	msg.addByte(0xF5);
-	msg.add<uint16_t>(items.size() + 11);
-
-	for (uint16_t i = 1; i <= 11; i++) {
-		msg.add<uint16_t>(i);
-		msg.addByte(0x00);
-		msg.add<uint16_t>(0x01);
-	}
-
-	for (const auto& it : items) {
-		msg.add<uint16_t>(it.first);
-		msg.addByte(0x00);
-		msg.add<uint16_t>(it.second);
-	}
-	writeToOutputBuffer(msg);
-}
-
 void ProtocolGame::sendAddContainerItem(uint8_t cid, uint16_t slot, const Item* item)
 {
 	NetworkMessage msg;

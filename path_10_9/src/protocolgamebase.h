@@ -88,6 +88,7 @@ class ProtocolGameBase : public Protocol {
 		void sendEnterWorld();
 		//inventory
 		void sendInventoryItem(slots_t slot, const Item* item);
+		void sendInventoryClientIds();
 
 		void sendSkills();
 
