@@ -655,25 +655,6 @@ void ProtocolGameBase::sendBasicData()
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGameBase::sendInventory()
-{
-	std::map<uint16_t, uint16_t> items = player->getAllItemsClientId();
-	NetworkMessage msg;
-	msg.addByte(0xF5);
-	msg.add<uint16_t>(items.size() + 11);
-	for (uint16_t i = 1; i <= 11; i++) {
-		msg.add<uint16_t>(i);
-		msg.addByte(0);
-		msg.add<uint16_t>(1);
-	}
-	for (const auto& it : items) {
-		msg.add<uint16_t>(it.first);
-		msg.addByte(0);
-		msg.add<uint16_t>(it.second);
-	}
-	writeToOutputBuffer(msg);
-}
-
 void ProtocolGameBase::sendPendingStateEntered()
 {
 	NetworkMessage msg;

@@ -83,7 +83,6 @@ class ProtocolGameBase : public Protocol {
 		void sendMagicEffect(const Position& pos, uint8_t type);
 		void sendStats();
 		void sendBasicData();
-		void sendInventory();
 		void sendPendingStateEntered();
 		void sendEnterWorld();
 		//inventory

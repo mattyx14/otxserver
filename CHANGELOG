@@ -71,6 +71,7 @@
 	- Added Module System
 	- Added GameStore module ( version without market )
 	- Added Equip Object module
+	- Added fromCylinder and toCylinder to onMoveItem Lua event callback
 	- Fixed leader error
 	- Fixed death error on war
 	- Fixed bless error
@@ -93,6 +94,8 @@
 	- Fixed skinning script
 	- Fixed crash when removing container in action onUse event
 	- Fixed compiler error with vc15 sp+
+	- Fixed Segmentation fault on Item::getTile()
+	- Fixed Bug house invite
 	- Move all custom libs fuctions to custom file on libs
 		.../data/lib/custom/custom.lua
 	- Remove onSave no required
