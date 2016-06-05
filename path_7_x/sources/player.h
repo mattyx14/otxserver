@@ -502,46 +502,79 @@ class Player : public Creature, public Cylinder
 		void setSkullEnd(time_t _time, bool login, Skulls_t _skull);
 
 		//tile
-		//send methods
-		void sendAddTileItem(const Tile* tile, const Position& pos, const Item* item)
-			{if(client) client->sendAddTileItem(tile, pos, tile->getClientIndexOfThing(this, item), item);}
-		void sendUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem, const Item* newItem)
-			{if(client) client->sendUpdateTileItem(tile, pos, tile->getClientIndexOfThing(this, oldItem), newItem);}
-		void sendRemoveTileItem(const Tile* tile, const Position& pos, uint32_t stackpos, const Item*)
-			{if(client) client->sendRemoveTileItem(tile, pos, stackpos);}
-		void sendUpdateTile(const Tile* tile, const Position& pos)
-			{if(client) client->sendUpdateTile(tile, pos);}
+	//send methods
+	void sendAddTileItem(const Tile* tile, const Position& pos, const Item* item)
+	{
+		if (client) client->sendAddTileItem(tile, pos, tile->getClientIndexOfThing(this, item), item);
+	}
+	void sendUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem, const Item* newItem)
+	{
+		if (client) client->sendUpdateTileItem(tile, pos, tile->getClientIndexOfThing(this, oldItem), newItem);
+	}
+	void sendRemoveTileItem(const Tile* tile, const Position& pos, uint32_t stackpos, const Item*)
+	{
+		if (client) client->sendRemoveTileItem(tile, pos, stackpos);
+	}
+	void sendUpdateTile(const Tile* tile, const Position& pos)
+	{
+		if (client) client->sendUpdateTile(tile, pos);
+	}
 
-		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel)
-			{if(client) client->sendChannelMessage(author, text, type, channel);}
-		void sendCreatureAppear(const Creature* creature)
-			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->__getIndexOfThing(creature));}
-		void sendCreatureAppear(const Creature* creature, ProtocolGame* target)
-		    {if (target) target->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature)); }
-		void sendCreatureDisappear(const Creature* creature, uint32_t stackpos)
-			{if(client) client->sendRemoveCreature(creature, creature->getPosition(), stackpos);}
-		void sendCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
-			const Tile* oldTile, const Position& oldPos, uint32_t oldStackpos, bool teleport)
-			{if(client) client->sendMoveCreature(creature, newTile, newPos, newTile->getClientIndexOfThing(this, creature), oldTile, oldPos, oldStackpos, teleport);}
+	void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel)
+	{
+		if (client) client->sendChannelMessage(author, text, type, channel);
+	}
+	void sendCreatureAppear(const Creature* creature)
+	{
+		if (client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));
+	}
+	void sendCreatureAppear(const Creature* creature, ProtocolGame* target)
+	{
+		if (target) target->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));
+	}
+	void sendCreatureDisappear(const Creature* creature, uint32_t stackpos)
+	{
+		if (client) client->sendRemoveCreature(creature, creature->getPosition(), stackpos);
+	}
+	void sendCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
+		const Tile* oldTile, const Position& oldPos, uint32_t oldStackpos, bool teleport)
+	{
+		if (client) client->sendMoveCreature(creature, newTile, newPos, newTile->getClientIndexOfThing(this, creature), oldTile, oldPos, oldStackpos, teleport);
+	}
 
-		void sendCreatureTurn(const Creature* creature)
-			{if(client) client->sendCreatureTurn(creature, creature->getTile()->getClientIndexOfThing(this, creature));}
-		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos = NULL, uint32_t statementId = 0)
-			{if(client) client->sendCreatureSay(creature, type, text, pos, statementId);}
-		void sendCreatureChannelSay(Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId = 0) const
-			{if(client) client->sendCreatureChannelSay(creature, type, text, channelId, statementId);}
-		void sendCreatureSquare(const Creature* creature, uint8_t color)
-			{if(client) client->sendCreatureSquare(creature, color);}
-		void sendCreatureChangeOutfit(const Creature* creature, const Outfit_t& outfit)
-			{if(client) client->sendCreatureOutfit(creature, outfit);}
-		void sendCreatureChangeVisible(const Creature* creature, Visible_t visible);
-		void sendCreatureLight(const Creature* creature)
-			{if(client) client->sendCreatureLight(creature);}
-		void sendCreatureShield(const Creature* creature)
-			{if(client) client->sendCreatureShield(creature);}
-
-		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
-			{if(client) client->sendExtendedOpcode(opcode, buffer);}
+	void sendCreatureTurn(const Creature* creature)
+	{
+		if (client) client->sendCreatureTurn(creature, creature->getTile()->getClientIndexOfThing(this, creature));
+	}
+	void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos = NULL, uint32_t statementId = 0)
+	{
+		if (client) client->sendCreatureSay(creature, type, text, pos, statementId);
+	}
+	void sendCreatureChannelSay(Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId = 0) const
+	{
+		if (client) client->sendCreatureChannelSay(creature, type, text, channelId, statementId);
+	}
+	void sendCreatureSquare(const Creature* creature, uint8_t color)
+	{
+		if (client) client->sendCreatureSquare(creature, color);
+	}
+	void sendCreatureChangeOutfit(const Creature* creature, const Outfit_t& outfit)
+	{
+		if (client) client->sendCreatureOutfit(creature, outfit);
+	}
+	void sendCreatureChangeVisible(const Creature* creature, Visible_t visible);
+	void sendCreatureLight(const Creature* creature)
+	{
+		if (client) client->sendCreatureLight(creature);
+	}
+	void sendCreatureShield(const Creature* creature)
+	{
+		if (client) client->sendCreatureShield(creature);
+	}
+	void sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
+	{
+		if (client) client->sendExtendedOpcode(opcode, buffer);
+	}
 
 		//container
 		void sendAddContainerItem(const Container* container, const Item* item);
