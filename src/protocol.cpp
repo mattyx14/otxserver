@@ -145,8 +145,8 @@ bool Protocol::RSA_decrypt(NetworkMessage& msg)
 
 uint32_t Protocol::getIP() const
 {
-	if (auto connection = getConnection()) {
-		return connection->getIP();
+	if (getConnection()) {
+		return getConnection()->getIP();
 	}
 
 	return 0;
