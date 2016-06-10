@@ -60,15 +60,6 @@
 	fragsThirdToRedSkull = 10
 	redSkullLength = 3 * 24 * 60 * 60
 
-	-- Black Skull Config
-	fragsToBlackSkull = 6
-	fragsSecondToBlackSkull = 10
-	fragsThirdToBlackSkull = 20
-	blackSkulledDeathHealth = 40
-	blackSkulledDeathMana = 0
-	blackSkullLength = 6 * 24 * 60 * 60
-	useBlackSkull = true
-
 	-- Banishment Config
 	-- killsBanLength works only if useBlackSkull option is disabled.
 	notationsToBan = 3
@@ -291,8 +282,6 @@
 	-- Outfits
 	allowChangeOutfit = true
 	allowChangeColors = true
-	allowChangeAddons = true
-	addonsOnlyPremium = true
 
 	-- Ghost mode
 	ghostModeInvisibleEffect = false
