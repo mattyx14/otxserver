@@ -344,7 +344,7 @@ ReturnValue Container::__queryMaxCount(int32_t index, const Thing* thing, uint32
 		}
 		else
 		{
-			const Thing* destThing = __getThing(index-1);
+			const Thing* destThing = __getThing(index);
 			const Item* destItem = NULL;
 			if(destThing)
 				destItem = destThing->getItem();
