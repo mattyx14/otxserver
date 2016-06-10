@@ -198,7 +198,6 @@ bool ConfigManager::load()
 	m_confString[HOUSE_STORAGE] = getGlobalString("houseDataStorage", "binary");
 	m_confNumber[RED_SKULL_LENGTH] = getGlobalNumber("redSkullLength", 2592000);
 	m_confNumber[MAX_VIOLATIONCOMMENT_SIZE] = getGlobalNumber("maxViolationCommentSize", 60);
-	m_confNumber[BLACK_SKULL_LENGTH] = getGlobalNumber("blackSkullLength", 3888000);
 	m_confNumber[NOTATIONS_TO_BAN] = getGlobalNumber("notationsToBan", 3);
 	m_confNumber[WARNINGS_TO_FINALBAN] = getGlobalNumber("warningsToFinalBan", 4);
 	m_confNumber[WARNINGS_TO_DELETION] = getGlobalNumber("warningsToDeletion", 5);
@@ -271,14 +270,9 @@ bool ConfigManager::load()
 	m_confNumber[RED_LIMIT] = getGlobalNumber("fragsToRedSkull", 3);
 	m_confNumber[RED_SECOND_LIMIT] = getGlobalNumber("fragsSecondToRedSkull", 5);
 	m_confNumber[RED_THIRD_LIMIT] = getGlobalNumber("fragsThirdToRedSkull", 10);
-	m_confNumber[BLACK_LIMIT] = getGlobalNumber("fragsToBlackSkull", m_confNumber[RED_LIMIT]);
-	m_confNumber[BLACK_SECOND_LIMIT] = getGlobalNumber("fragsSecondToBlackSkull", m_confNumber[RED_SECOND_LIMIT]);
-	m_confNumber[BLACK_THIRD_LIMIT] = getGlobalNumber("fragsThirdToBlackSkull", m_confNumber[RED_THIRD_LIMIT]);
 	m_confNumber[BAN_LIMIT] = getGlobalNumber("fragsToBanishment", m_confNumber[RED_LIMIT]);
 	m_confNumber[BAN_SECOND_LIMIT] = getGlobalNumber("fragsSecondToBanishment", m_confNumber[RED_SECOND_LIMIT]);
 	m_confNumber[BAN_THIRD_LIMIT] = getGlobalNumber("fragsThirdToBanishment", m_confNumber[RED_THIRD_LIMIT]);
-	m_confNumber[BLACK_SKULL_DEATH_HEALTH] = getGlobalNumber("blackSkulledDeathHealth", 40);
-	m_confNumber[BLACK_SKULL_DEATH_MANA] = getGlobalNumber("blackSkulledDeathMana", 0);
 	m_confNumber[DEATHLIST_REQUIRED_TIME] = getGlobalNumber("deathListRequiredTime", 60000);
 	m_confNumber[EXPERIENCE_SHARE_ACTIVITY] = getGlobalNumber("experienceShareActivity", 120000);
 	m_confBool[GHOST_SPELL_EFFECTS] = getGlobalBool("ghostModeSpellEffects", true);
