@@ -282,8 +282,6 @@
 	-- Outfits
 	allowChangeOutfit = true
 	allowChangeColors = true
-	allowChangeAddons = true
-	addonsOnlyPremium = true
 
 	-- Ghost mode
 	ghostModeInvisibleEffect = false
