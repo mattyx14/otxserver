@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="ghost" nameDescription="a ghost" race="undead" experience="120" speed="160" manacost="0">
+	<health now="150" max="150"/>
+	<look type="48" corpse="2913"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="45" attack="28"/>
+		<attack name="lifedrain" interval="1000" chance="15" range="1" min="-25" max="-45"/>
+	</attacks>
+	<defenses armor="10" defense="20">
+	</defenses>
+	<elements>
+		<element physicalPercent="100"/><element deathPercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Huh!"/>
+		<voice sentence="Shhhhhh"/>
+		<voice sentence="Buuuuuh"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2165" chance="300"/><!-- 0.2% stealth ring -->
+				<item id="2404" chance="14000"/><!-- 14% combat knife -->
+				<item id="2394" chance="22000"/><!-- 22% morning star -->
+				<item id="2532" chance="1600"/><!-- 1.6% ancient shield -->
+			</inside>
+		</item>
+		<item id="2804" chance="30000"/><!-- 30% shadow herb -->
+		<item id="1962" chance="3000"/><!-- 3% orange book -->
+		<item id="2642" chance="40000"/><!-- 40% sandals -->
+		<item id="2654" chance="18000"/><!-- 18% cape -->
+	</loot>
+</monster>

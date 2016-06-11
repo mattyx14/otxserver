@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="smuggler" nameDescription="a smuggler" race="blood" experience="48" speed="176" manacost="390">
+	<health now="130" max="130"/>
+	<look type="134" head="95" body="0" legs="113" feet="115" corpse="3128"/>
+	<targetchange interval="1000" chance="50"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="18"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="23" attack="19"/>
+	</attacks>
+	<defenses armor="10" defense="13">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="I will silence you forever!"/>
+		<voice sentence="You saw something you shouldn't!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2403" chance="20000"/><!-- 20% knife -->
+				<item id="2406" chance="20000"/><!-- 20% short sword -->
+				<item id="2376" chance="5000"/><!-- 10% sword -->
+				<item id="2404" chance="8000"/><!-- 8% combat knife -->
+				<item id="2050" chance="60000"/><!-- 60% torch -->
+			</inside>
+		</item>
+		<item id="2649" chance="30000"/><!-- 30% leather legs -->
+		<item id="2461" chance="20000"/><!-- 20% leather helmet -->
+		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
+		<item id="2666" chance="50000"/><!-- 50% meat -->
+		<item id="2671" chance="20000"/><!-- 20% ham -->
+	</loot>
+</monster>

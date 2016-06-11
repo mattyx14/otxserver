@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="scarab" nameDescription="a scarab" race="venom" experience="120" speed="160" manacost="395">
+	<health now="320" max="320"/>
+	<look type="83" corpse="3013"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="80"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="42" attack="25"/>
+		<attack name="poison" interval="1000" chance="17" range="1" min="-15" max="-25">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+		<attack name="poisonfield" interval="1000" chance="20" radius="1" target="0">
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+	</attacks>
+	<defenses armor="21" defense="26">
+		<defense name="speed" interval="1000" chance="5" speedchange="560" duration="4000">
+		<!--<defense name="speed" interval="1000" chance="5" speedchange="90" duration="4000">-->
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity paralyze="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2439" chance="600"/><!-- 0.6% daramanian mace -->
+				<item id="2442" chance="1000"/><!-- 1% heavy machete -->
+			</inside>
+		</item>
+		<item id="2159" chance="2000" countmax="1"/><!-- 2% scarab coin -->
+		<item id="2159" chance="300" countmax="1"/><!-- 0.1% scarab coin -->
+		<item id="2150" chance="1000" countmax="1"/><!-- 1% small amethyst -->
+		<item id="2149" chance="600" countmax="1"/><!-- 0.6% small emerald -->
+		<item id="2544" chance="10000" countmax="3"/><!-- 3 10% arrow -->
+		<item id="2666" chance="54000" countmax="2"/><!-- 2 54% meat -->
+		<item id="2148" chance="70500" countmax="12"/><!-- 12 70.5% gold coin -->
+		<item id="2148" chance="89000" countmax="40"/><!-- 40 89% gold coin -->
+	</loot>
+</monster>

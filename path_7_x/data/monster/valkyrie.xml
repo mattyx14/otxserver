@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="valkyrie" nameDescription="a valkyrie" race="blood" experience="85" speed="176" manacost="450">
+	<health now="190" max="190"/>
+	<look type="139" head="113" body="38" legs="76" feet="96" corpse="3065"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="35" attack="20"/>
+		<attack name="physical" interval="1000" chance="15" range="7" min="-28" max="-42">
+			<attribute key="shootEffect" value="spear"/>
+		</attack>
+	</attacks>
+	<defenses armor="12" defense="14">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Stand still!"/>
+		<voice sentence="One more head for me!"/>
+		<voice sentence="Head off!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2389" chance="60000" countmax="3"/><!-- 3 60% spear -->
+				<item id="2379" chance="50000"/><!-- 50% dagger -->
+				<item id="2387" chance="800"/><!-- 0.8% double axe -->
+				<item id="2200" chance="2200"/><!-- 2.2% protection amulet -->	
+			</inside>
+		</item>
+		<item id="2463" chance="1600"/><!-- 1.6% plate armor -->
+		<item id="2458" chance="8000"/><!-- 8% chain helmet -->
+		<item id="2464" chance="20000"/><!-- 20% chain armor -->
+		<item id="2145" chance="300"/><!-- 0.1% small diamond -->
+		<item id="2229" chance="80000" countmax="2"/><!-- 2 80% skull -->
+		<item id="2148" chance="64000" countmax="12"/><!-- 12 64% gold coin -->
+		<item id="2666" chance="60000" countmax="3"/><!-- 3 60% meat -->
+		<item id="2674" chance="15000" countmax="2"/><!-- 2 15% red apple -->
+	</loot>
+</monster>

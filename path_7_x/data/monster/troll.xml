@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="troll" nameDescription="a troll" race="blood" experience="20" speed="126" manacost="290">
+	<health now="50" max="50"/>
+	<look type="15" corpse="2806"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="15"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="15" attack="10"/>
+	</attacks>
+	<defenses armor="6" defense="8">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Grrrr"/>
+		<voice sentence="Groar"/>
+		<voice sentence="Gruntz!"/>
+		<voice sentence="Hmmm, bugs."/>
+		<voice sentence="Hmmm, dogs."/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2512" chance="30000"/><!-- 30% wooden shield -->
+				<item id="2389" chance="40000"/><!-- 40% spear -->
+				<item id="2380" chance="36000"/><!-- 36% hand axe -->
+				<item id="2448" chance="10000"/><!-- 10% studded club -->
+				<item id="2170" chance="300"/><!-- 0.1% silver amulet -->
+			</inside>
+		</item>
+		<item id="2461" chance="20000"/><!-- 20% leather helmet -->
+		<item id="2643" chance="20000"/><!-- 20% leather boots -->
+		<item id="2120" chance="16000"/><!-- 16% rope -->
+		<item id="2148" chance="60000" countmax="10"/><!-- 10 60% gold coin -->
+		<item id="2666" chance="30000"/><!-- 30% meat -->
+	</loot>
+</monster>

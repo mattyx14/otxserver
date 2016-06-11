@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="orc rider" nameDescription="an orc rider" race="blood" experience="110" speed="260" manacost="490">
+	<health now="180" max="180"/>
+	<look type="4" corpse="2972"/>
+	<targetchange interval="1000" chance="5"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="1"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="48" attack="41"/>
+	</attacks>
+	<defenses armor="9" defense="20">
+		<defense name="speed" interval="1000" chance="7" speedchange="340" duration="6000">
+		<!--<defense name="speed" interval="1000" chance="7" speedchange="90" duration="6000">-->
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Grrrrrrr"/>
+		<voice sentence="Orc arga Huummmak!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2428" chance="30000"/><!-- 30% orcish axe -->
+				<item id="2425" chance="2000"/><!-- 2% obsidian lance -->
+				<item id="2513" chance="2000"/><!-- 2% battle shield -->
+				<item id="2050" chance="16000"/><!-- 16% torch -->
+			</inside>
+		</item>
+		<item id="2129" chance="20000"/><!-- 20% wolf tooth chain -->
+		<item id="2482" chance="30000"/><!-- 30% studded helmet -->
+		<item id="2483" chance="1200"/><!-- 1.2% scale armor -->
+		<item id="1988" chance="60000"/><!-- 60% backpack -->
+		<item id="2148" chance="50000" countmax="10"/><!-- 10 50% gold coin -->
+		<item id="2148" chance="300" countmax="80"/><!-- 80 0.1% gold coin -->
+		<item id="2666" chance="60000" countmax="3"/><!-- 3 60% meat -->
+	</loot>
+</monster>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="ghoul" nameDescription="a ghoul" race="blood" experience="85" speed="144" manacost="450">
+	<health now="100" max="100"/>
+	<look type="18" corpse="3113"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="37" attack="26"/>
+		<attack name="lifedrain" interval="1000" chance="12" range="1" min="-15" max="-25"/>
+	</attacks>
+	<defenses armor="8" defense="17">
+		<defense name="healing" interval="1000" chance="13" min="9" max="15">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2050" chance="60000"/><!-- 60% torch -->
+				<item id="2403" chance="30000"/><!-- 30% knife -->
+				<item id="2168" chance="300"/><!-- 0.2% life ring -->
+			</inside>
+		</item>
+		<item id="2460" chance="40000"/><!-- 40% brass helmet -->
+		<item id="2473" chance="10000"/><!-- 10% viking helmet -->
+		<item id="2483" chance="8000"/><!-- 8% scale armor -->
+		<item id="2229" chance="6000"/><!-- 6% skull -->
+		<item id="3976" chance="80000" countmax="6"/><!-- 6 80% worm -->
+		<item id="2148" chance="75000" countmax="30"/><!-- 30 75% gold coin -->
+	</loot>
+</monster>

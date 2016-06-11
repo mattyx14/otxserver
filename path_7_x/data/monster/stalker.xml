@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="stalker" nameDescription="a stalker" race="blood" experience="90" speed="240" manacost="0">
+	<health now="120" max="120"/>
+	<look type="128" head="97" body="116" legs="95" feet="95" corpse="3128"/>
+	<targetchange interval="1000" chance="10"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="40" attack="30"/>
+		<attack name="lifedrain" interval="1000" chance="17" range="1" min="-20" max="-30"/>
+	</attacks>
+	<defenses armor="14" defense="20">
+		<defense name="invisible" interval="1000" chance="25" duration="30000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2511" chance="11000"/><!-- 11% brass shield -->
+				<item id="2425" chance="2400"/><!-- 2.4% obsidian lance -->
+				<item id="2412" chance="12000"/><!-- 12% katana -->
+			</inside>
+		</item>
+		<item id="2649" chance="20000"/><!-- 20% leather legs -->
+		<item id="2478" chance="7000"/><!-- 7% brass legs -->
+		<item id="2260" chance="18000"/><!-- 18% blank rune -->
+		<item id="1998" chance="9000"/><!-- 9% backpack -->
+		<item id="2410" chance="22000" countmax="2"/><!-- 2 22% throwing knife -->
+		<item id="2148" chance="26000" countmax="8"/><!-- 8 26% gold coin -->
+	</loot>
+</monster>
