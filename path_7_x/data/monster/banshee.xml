@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="banshee" nameDescription="a banshee" race="undead" experience="900" speed="220" manacost="0">
+	<health now="1000" max="1000"/>
+	<look type="78" corpse="2998"/>
+	<targetchange interval="1000" chance="3"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="500"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="45" attack="30" poison="65"/>
+		<attack name="lifedrain" interval="1000" chance="4" range="1" min="-50" max="-350"/>
+		<attack name="speed" interval="1000" chance="10" range="7" speedchange="-600" duration="20000">
+		<!--<attack name="speed" interval="1000" chance="10" range="7" speedchange="-180" duration="20000">-->
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="34" radius="4" target="0" min="-120" max="-200">
+			<attribute key="areaEffect" value="rednote"/>
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="65">
+	    <defense name="healing" interval="1000" chance="25" min="113" max="187">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		    <voice sentence="Are you ready to rock?"/>
+		    <voice sentence="That's what I call easy listening!"/>
+		    <voice sentence="Let the music play!"/>
+		    <voice sentence="I will mourn your death!"/>
+		    <voice sentence="IIIIEEEeeeeeehhhHHHHH!" yell="1"/>
+		    <voice sentence="Dance for me your dance of death!"/>
+		    <voice sentence="Feel my gentle kiss of death."/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2047" chance="70000"/><!-- 70% candlestick -->
+				<item id="2411" chance="3000"/><!-- 3% poison dagger -->
+				<item id="2175" chance="1000"/><!-- 1% spellbook -->
+				<item id="2197" chance="1600"/><!-- 1.6% stone skin amulet -->
+				<item id="2170" chance="18000"/><!-- 18% silver amulet -->
+				<item id="2214" chance="1600"/><!-- 1.6% ring of healing -->
+			</inside>
+		</item>
+		<item id="2656" chance="1200"/><!-- 1.2% blue robe -->
+		<item id="2655" chance="300"/><!-- 0.1% red robe -->
+		<item id="2177" chance="300"/><!-- 0.1% life crystal -->
+		<item id="2124" chance="300"/><!-- 0.1% crystal ring -->
+		<item id="2121" chance="1000"/><!-- 1% wedding ring -->
+		<item id="2372" chance="2000"/><!-- 2% lyre -->
+		<item id="2560" chance="14000"/><!-- 14% mirror -->
+		<item id="2134" chance="3000"/><!-- 3% silver brooch -->
+		<item id="2657" chance="60000"/><!-- 60% simple dress -->
+		<item id="2237" chance="39800"/><!-- 39.8% dirty cape -->
+		<item id="2143" chance="2000"/><!-- 2% white pearl -->
+		<item id="2144" chance="4000"/><!-- 4% black pearl -->
+		<item id="2148" chance="60000" countmax="80"/><!-- 80 60% gold coin -->
+	</loot>
+</monster>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="kongra" nameDescription="a kongra" race="blood" experience="110" speed="184" manacost="0">
+	<health now="340" max="340"/>
+	<look type="116" corpse="4268"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="40" attack="30"/>
+	</attacks>
+	<defenses armor="18" defense="14">
+		<defense name="speed" interval="1000" chance="7" speedchange="540" duration="3000">
+		<!--<defense name="speed" interval="1000" chance="7" speedchange="100" duration="3000">-->
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Hugah!"/>
+		<voice sentence="Ungh! Ungh!"/>
+		<voice sentence="Huaauaauaauaa!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2200" chance="2000"/><!-- 2% protection amulet -->
+				<item id="2166" chance="1000"/><!-- 1% power ring -->
+				<item id="2209" chance="300"/><!-- 0.2% club ring -->
+			</inside>
+		</item>
+		<item id="2463" chance="2000"/><!-- 2% plate armor -->
+		<item id="2148" chance="20000" countmax="30"/><!-- 30 20% gold coin -->
+		<item id="2148" chance="80000" countmax="25"/><!-- 25 80% gold coin -->
+		<item id="2676" chance="30000" countmax="2"/><!-- 2 60% banana -->
+		<item id="2676" chance="10000" countmax="10"/><!-- 10 10% banana -->
+	</loot>
+</monster>

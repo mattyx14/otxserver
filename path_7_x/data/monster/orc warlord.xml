@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="orc warlord" nameDescription="an orc warlord" race="blood" experience="670" speed="234" manacost="0">
+	<health now="950" max="950"/>
+	<look type="2" corpse="2967"/>
+	<targetchange interval="1000" chance="5"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="72" attack="68"/>
+		<attack name="physical" interval="1000" chance="25" range="7" min="-100" max="-120">
+			<attribute key="shootEffect" value="throwingstar"/>
+		</attack>
+	</attacks>
+	<defenses armor="28" defense="55">
+		<defense name="invisible" interval="1000" chance="4" duration="2000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Ranat Ulderek!"/>
+		<voice sentence="Orc buta bana!"/>
+		<voice sentence="Ikem rambo zambo!"/>
+		<voice sentence="Futchi maruk buta!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2428" chance="30000"/><!-- 30% orcish axe -->
+				<item id="2434" chance="300"/><!-- 0.2% dragon hammer -->
+				<item id="2377" chance="4000"/><!-- 4% two handed sword -->
+				<item id="2419" chance="24000"/><!-- 24% scimitar -->
+				<item id="2200" chance="4000"/><!-- 4% protection amulet -->
+				<item id="2165" chance="300"/><!-- 0.1% stealth ring -->
+			</inside>
+		</item>
+		<item id="2647" chance="8000"/><!-- 8% plate legs -->
+		<item id="2478" chance="20000"/><!-- 20% brass legs -->
+		<item id="2463" chance="12000"/><!-- 12% plate armor -->
+		<item id="2465" chance="2000"/><!-- 2% brass armor -->
+		<item id="2490" chance="3000"/><!-- 3% dark helmet -->
+		<item id="2497" chance="300"/><!-- 0.2% crusader helmet -->
+		<item id="2399" chance="60000" countmax="40"/><!-- 40 60% throwing star -->
+		<item id="2148" chance="38000" countmax="45"/><!-- 45% 38% gold coin -->
+		<item id="2667" chance="20000" countmax="2"/><!-- 2 20% fish -->
+		<item id="2666" chance="40000" countmax="2"/><!-- 2 40% meat -->
+	</loot>
+</monster>

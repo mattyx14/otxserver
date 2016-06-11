@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="orc spearman" nameDescription="an orc spearman" race="blood" experience="38" speed="176" manacost="310">
+	<health now="105" max="105"/>
+	<look type="50" corpse="2920"/>
+	<targetchange interval="1000" chance="50"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="19" attack="17"/>
+		<attack name="physical" interval="1000" chance="7" range="7" min="-16" max="-40">
+			<attribute key="shootEffect" value="spear"/>
+		</attack>
+	</attacks>
+	<defenses armor="6" defense="12">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Ugaar!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2389" chance="46000"/><!-- 46% spear -->
+				<item id="2420" chance="20000"/><!-- 20% machete -->
+			</inside>
+		</item>
+		<item id="2220" chance="15400"/><!-- 15.4% dirty fur -->
+		<item id="2468" chance="20000"/><!-- 20% studded legs -->
+		<item id="2482" chance="18000"/><!-- 18% studded helmet -->
+		<item id="2148" chance="44000" countmax="7"/><!-- 7 44% gold coin -->
+		<item id="2666" chance="60000"/><!-- 60% meat -->
+	</loot>
+</monster>

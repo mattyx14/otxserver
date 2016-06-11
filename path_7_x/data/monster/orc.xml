@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="orc" nameDescription="an orc" race="blood" experience="25" speed="150" manacost="300">
+	<health now="70" max="70"/>
+	<look type="5" corpse="2820"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="15"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="22" attack="13"/>
+	</attacks>
+	<defenses armor="4" defense="8">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Grak brrretz!"/>
+		<voice sentence="Grow truk grrrrr."/>
+		<voice sentence="Prek tars, dekklep zurk."/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2526" chance="20000"/><!-- 20% studded shield -->
+				<item id="2386" chance="16000"/><!-- 16% axe -->
+				<item id="2385" chance="12000"/><!-- 12% sabre -->
+			</inside>
+		</item>
+		<item id="2484" chance="24000"/><!-- 24% studded armor -->
+		<item id="2482" chance="18000"/><!-- 18% studded helmet -->
+		<item id="2148" chance="85000" countmax="8"/><!-- 8 85% gold coin -->
+		<item id="2666" chance="40000"/><!-- 40% meat -->
+	</loot>
+</monster>

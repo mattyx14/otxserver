@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="rotworm" nameDescription="a rotworm" race="blood" experience="40" speed="116" manacost="305">
+	<health now="65" max="65"/>
+	<look type="26" head="0" body="0" legs="0" feet="0" corpse="2824"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="1"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="26" attack="18"/>
+	</attacks>
+	<defenses armor="8" defense="11">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2530" chance="2000"/><!-- 2% copper shield -->
+				<item id="2376" chance="6000"/><!-- 6% sword -->
+				<item id="2398" chance="9000"/><!-- 9% mace -->
+				<item id="2412" chance="600"/><!-- 0.6% katana -->
+			</inside>
+		</item>
+		<item id="2480" chance="3000"/><!-- 3% legion helmet -->
+		<item id="3976" chance="50000" countmax="5"/><!-- 5 50% worm -->
+		<item id="2148" chance="60000" countmax="8"/><!-- 8 60% gold coin -->
+		<item id="2148" chance="60000" countmax="12"/><!-- 12 60% gold coin -->
+		<item id="2666" chance="40000"/><!-- 40% meat -->
+		<item id="2671" chance="40000"/><!-- 40% ham -->
+	</loot>
+</monster>
