@@ -18,6 +18,7 @@
 
 		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Mattyx14
+			Brewsterl
 
 		Special Thanks(s)
 			AleMadi
@@ -28,7 +29,6 @@
 			Pyromaniack
 			Druckz
 			Kazbin
-			Brewsterl
 			The Forgotten Server Team
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
@@ -49,7 +49,8 @@
 ]
 
 [ OTX Server 2.X.S - 4 :: Version "LORD ZEDD"
-	- 
+	- Fix container error :: https://www.youtube.com/watch?v=mJ1mydn6TjA
+	- Fix : https://github.com/mattyx14/otxserver/pull/ #79 to #88
 ]
 
 [ OTX Server 2.X.S - 3 :: Version "LORD ZEDD"
