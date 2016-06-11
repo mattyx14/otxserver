@@ -1638,9 +1638,6 @@
 		<monster name="Blue Butterfly" x="-3" y="-1" z="7" spawntime="120" />
 		<monster name="Parrot" x="-1" y="-1" z="7" spawntime="120" />
 	</spawn>
-	<spawn centerx="215" centery="211" centerz="7" radius="5">
-		<monster name="Blue Butterfly" x="2" y="-1" z="7" spawntime="120" />
-	</spawn>
 	<spawn centerx="232" centery="226" centerz="7" radius="5">
 		<monster name="Blue Butterfly" x="-1" y="-2" z="7" spawntime="120" />
 		<monster name="Blue Butterfly" x="0" y="5" z="7" spawntime="120" />
