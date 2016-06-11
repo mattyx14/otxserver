@@ -225,6 +225,10 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 		msg.add<uint16_t>(player->getBaseSkill(i));
 		msg.addByte(player->getSkillPercent(i));
 	}
+
+	for (uint8_t i = SKILL_STATS_FIRST; i <= SKILL_STATS_LAST; ++i) {
+		msg.add<uint16_t>(i);
+	}
 }
 
 void ProtocolGameBase::AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo)

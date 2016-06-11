@@ -41,7 +41,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 8.6 to 10.93
+		Tibia Clients - 8.6 to 10.94
 
 	TODO WITH OPTIONAL
 		MISC:
@@ -101,8 +101,8 @@
 	- Remove onSave no required
 	- Remove lessLoss no required
 	- Remove castingSystem "temporal"
-	- Support to 10.93
-	- Update outfits/mounts
+	- Support to 10.94
+	- Update outfits/mounts to 10.94
 ]
 
 [ OTX Server 3.3 :: Version " DARK SPECTER "
