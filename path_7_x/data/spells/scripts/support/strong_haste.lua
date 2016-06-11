@@ -3,8 +3,8 @@ setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_GREEN)
 setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, FALSE)
 
 local condition = createConditionObject(CONDITION_HASTE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 40000)
-setConditionFormula(condition, 0.3, -24, 0.3, -24)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 20000)
+setConditionFormula(condition, 0.7, -56, 0.7, -56)
 setCombatCondition(combat, condition)
 
 function onCastSpell(cid, var)
