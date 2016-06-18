@@ -31,7 +31,7 @@ extern ConfigManager g_config;
 extern Game g_game;
 
 House::House(uint32_t houseId) :
-	transfer_container(ITEM_LOCKER1),
+	transfer_container(ITEM_LOCKER),
 	transferItem(nullptr),
 	paidUntil(0),
 	id(houseId),
@@ -254,7 +254,7 @@ bool House::transferToDepot(Player* player) const
 		}
 	}
 
-	DepotLocker* depotLocker = player->getDepotLocker(townid);
+	DepotLocker* depotLocker = player->getDepotLocker(townId);
 	if (depotLocker) {
 		for (Item* item : moveItemList) {
 			g_game.internalMoveItem(item->getParent(), depotLocker, INDEX_WHEREEVER, item, item->getItemCount(), nullptr, FLAG_NOLIMIT);

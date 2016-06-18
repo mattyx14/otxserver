@@ -1162,7 +1162,7 @@ void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 
 	std::ostringstream strExp;
 	strExp << gainExp;
-	g_game.addAnimatedText(strExp.str(), _position, TEXTCOLOR_WHITE_EXP);
+	g_game.addAnimatedText(strExp.str(), position, TEXTCOLOR_WHITE_EXP);
 }
 
 void Creature::addSummon(Creature* creature)

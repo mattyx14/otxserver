@@ -28,7 +28,7 @@ extern Game g_game;
 Container::Container(uint16_t type) :
 	Container(type, items[type].maxItems) {}
 
-Container::Container(uint16_t type, uint16_t size, bool unlocked /*= true*/, bool pagination /*= false*/) :
+Container::Container(uint16_t type, uint16_t size, bool unlocked /*= true*/) :
 	Item(type),
 	maxSize(size),
 	totalWeight(0),

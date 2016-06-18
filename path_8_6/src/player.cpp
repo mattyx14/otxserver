@@ -1645,10 +1645,10 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 
 		std::ostringstream strExp;
 		strExp << exp;
-		g_game.addAnimatedText(strExp.str(), _position, TEXTCOLOR_WHITE_EXP);
+		g_game.addAnimatedText(strExp.str(), position, TEXTCOLOR_WHITE_EXP);
 
 		SpectatorVec list;
-		g_game.map.getSpectators(list, _position, false, true);
+		g_game.map.getSpectators(list, position, false, true);
 		list.erase(this);
 		if (!list.empty()) {
 			message.type = MESSAGE_STATUS_DEFAULT;
@@ -1729,10 +1729,10 @@ void Player::removeExperience(uint64_t exp, bool sendText/* = false*/)
 
 		std::ostringstream strExp;
 		strExp << lostExp;
-		g_game.addAnimatedText(strExp.str(), _position, TEXTCOLOR_RED);
+		g_game.addAnimatedText(strExp.str(), position, TEXTCOLOR_RED);
 
 		SpectatorVec list;
-		g_game.map.getSpectators(list, _position, false, true);
+		g_game.map.getSpectators(list, position, false, true);
 		list.erase(this);
 		if (!list.empty()) {
 			message.type = MESSAGE_STATUS_DEFAULT;
