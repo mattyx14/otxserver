@@ -10827,25 +10827,21 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 			}
 
 			if (combat->hasArea()) {
-				pushBoolean(L, combat->doCombat(creature, target->getPosition()));
-				return 1;
+				combat->doCombat(creature, target->getPosition());
 			} else {
-				pushBoolean(L, combat->doCombat(creature, target));
-				return 1;
+				combat->doCombat(creature, target);
 			}
 			break;
 		}
 
 		case VARIANT_POSITION: {
-			pushBoolean(L, combat->doCombat(creature, variant.pos));
-			return 1;
+			combat->doCombat(creature, variant.pos);
 			break;
 		}
 
 		case VARIANT_TARGETPOSITION: {
 			if (combat->hasArea()) {
-				pushBoolean(L, combat->doCombat(creature, variant.pos));
-				return 1;
+				combat->doCombat(creature, variant.pos);
 			} else {
 				combat->postCombatEffects(creature, variant.pos);
 				g_game.addMagicEffect(variant.pos, CONST_ME_POFF);
@@ -10860,7 +10856,7 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 				return 1;
 			}
 
-			pushBoolean(L, combat->doCombat(creature, target));
+			combat->doCombat(creature, target);
 			break;
 		}
 

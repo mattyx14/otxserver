@@ -327,7 +327,7 @@ Tile* Item::getTile()
 {
 	Cylinder* cylinder = getTopParent();
 	//get root cylinder
-	if (cylinder->getParent()) {
+	if (cylinder && cylinder->getParent()) {
 		cylinder = cylinder->getParent();
 	}
 	return dynamic_cast<Tile*>(cylinder);
@@ -337,7 +337,7 @@ const Tile* Item::getTile() const
 {
 	const Cylinder* cylinder = getTopParent();
 	//get root cylinder
-	if (cylinder->getParent()) {
+	if (cylinder && cylinder->getParent()) {
 		cylinder = cylinder->getParent();
 	}
 	return dynamic_cast<const Tile*>(cylinder);

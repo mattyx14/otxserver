@@ -687,6 +687,15 @@ class Player final : public Creature, public Cylinder
 				}
 			}
 		}
+
+		void sendUpdateTileItem(const Tile*, const Position& pos, const Item* item, int32_t stackpos) {
+			if (client) {
+				if (stackpos != -1) {
+					client->sendUpdateTileItem(pos, stackpos, item);
+				}
+			}
+		}
+
 		void sendRemoveTileThing(const Position& pos, int32_t stackpos) {
 			if (stackpos != -1 && client) {
 				client->sendRemoveTileThing(pos, stackpos);

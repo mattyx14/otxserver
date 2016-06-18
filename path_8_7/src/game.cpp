@@ -1004,7 +1004,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		return;
 	}
 
-	if (!g_events->eventPlayerOnMoveItem(player, item, count, fromPos, toPos)) {
+	if (!g_events->eventPlayerOnMoveItem(player, item, count, fromPos, toPos, fromCylinder, toCylinder)) {
 		return;
 	}
 
@@ -2245,10 +2245,13 @@ void Game::playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t w
 	uint32_t internalListId;
 
 	House* house = player->getEditHouse(internalWindowTextId, internalListId);
-	if (house && internalWindowTextId == windowTextId && listId == 0) {
+	if (house && house->canEditAccessList(internalListId, player) && internalWindowTextId == windowTextId && listId == 0) {
 		house->setAccessList(internalListId, text);
 		player->setEditHouse(nullptr);
+		return;
 	}
+
+	player->setEditHouse(nullptr);
 }
 
 void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
@@ -4516,8 +4519,8 @@ void Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 		return;
 	}
 
+	std::ostringstream ss;
 	if (invitedPlayer->getParty()) {
-		std::ostringstream ss;
 		ss << invitedPlayer->getName() << " is already in a party.";
 		player->sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
 		return;

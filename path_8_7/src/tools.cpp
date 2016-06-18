@@ -1165,6 +1165,12 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_NOTENOUGHFISHLEVEL:
 			return "You do not have enough fishing level";
 
+		case RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVEPLAYERS:
+			return "You cannot pass players that are aggressive against.";
+
+		case RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVECREATURES:
+			return "You cannot pass creatures that are aggressive against.";
+
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
 	}
