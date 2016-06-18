@@ -25,21 +25,16 @@
 
 extern Game g_game;
 
-Container::Container(uint16_t _type) : Item(_type)
-{
-	maxSize = items[_type].maxItems;
-	totalWeight = 0;
-	serializationCount = 0;
-	unlocked = true;
-}
+Container::Container(uint16_t type) :
+	Container(type, items[type].maxItems) {}
 
-Container::Container(uint16_t _type, uint16_t _size) : Item(_type)
-{
-	maxSize = _size;
-	totalWeight = 0;
-	serializationCount = 0;
-	unlocked = true;
-}
+Container::Container(uint16_t type, uint16_t size, bool unlocked /*= true*/, bool pagination /*= false*/) :
+	Item(type),
+	maxSize(size),
+	totalWeight(0),
+	serializationCount(0),
+	unlocked(unlocked)
+{}
 
 Container::~Container()
 {

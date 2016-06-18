@@ -81,7 +81,7 @@ function Player:onLookInShop(itemType, count)
 	return true
 end
 
-function Player:onMoveItem(item, count, fromPosition, toPosition)
+function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
 	if toPosition.x ~= CONTAINER_POSITION then
 		return true
 	end
@@ -208,8 +208,4 @@ function Player:onGainSkillTries(skill, tries)
 		return tries * configManager.getNumber(configKeys.RATE_MAGIC)
 	end
 	return tries * configManager.getNumber(configKeys.RATE_SKILL)
-end
-
-function Player:onSave(GUID)
-	return true
 end

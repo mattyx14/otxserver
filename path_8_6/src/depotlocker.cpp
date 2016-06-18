@@ -21,8 +21,8 @@
 
 #include "depotlocker.h"
 
-DepotLocker::DepotLocker(uint16_t _type) :
-	Container(_type)
+DepotLocker::DepotLocker(uint16_t type) :
+	Container(type)
 {
 	depotId = 0;
 	maxSize = 30;

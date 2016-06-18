@@ -555,6 +555,7 @@ class LuaScriptInterface
 		static int luaGameCreateTile(lua_State* L);
 
 		static int luaGameStartRaid(lua_State* L);
+
 		static int luaGameSendAnimatedText(lua_State* L);
 
 		static int luaGameHasEffect(lua_State* L);

@@ -22,8 +22,8 @@
 #include "depotchest.h"
 #include "tools.h"
 
-DepotChest::DepotChest(uint16_t _type) :
-	Container(_type)
+DepotChest::DepotChest(uint16_t type) :
+	Container(type)
 {
 	maxDepotItems = 1500;
 }

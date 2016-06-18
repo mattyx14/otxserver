@@ -65,6 +65,7 @@ struct summonBlock_t {
 	std::string name;
 	uint32_t chance;
 	uint32_t speed;
+	bool force = false;
 };
 
 class BaseSpell;
@@ -172,6 +173,7 @@ class MonsterType
 		bool isHostile;
 		bool isPassive;
 		bool hiddenHealth;
+		bool isBlockable;
 
 		void createLoot(Container* corpse);
 		bool createLootContainer(Container* parent, const LootBlock& lootblock);

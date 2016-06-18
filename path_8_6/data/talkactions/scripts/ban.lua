@@ -1,4 +1,4 @@
-local banDays = 7
+local banDays = 3
 
 function onSay(player, words, param)
 	if not player:getGroup():getAccess() then

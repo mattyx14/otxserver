@@ -265,13 +265,12 @@ Position Spells::getCasterPosition(Creature* creature, Direction dir)
 	return getNextPosition(dir, creature->getPosition());
 }
 
-CombatSpell::CombatSpell(Combat* _combat, bool _needTarget, bool _needDirection) :
-	Event(&g_spells->getScriptInterface())
-{
-	combat = _combat;
-	needTarget = _needTarget;
-	needDirection = _needDirection;
-}
+CombatSpell::CombatSpell(Combat* combat, bool needTarget, bool needDirection) :
+	Event(&g_spells->getScriptInterface()),
+	combat(combat),
+	needDirection(needDirection),
+	needTarget(needTarget)
+{}
 
 CombatSpell::~CombatSpell()
 {
@@ -378,7 +377,6 @@ Spell::Spell()
 	manaPercent = 0;
 	soul = 0;
 	range = -1;
-	cooldown = 1000;
 	fist = 0;
 	club = 0;
 	sword = 0;
@@ -386,6 +384,7 @@ Spell::Spell()
 	distance = 0;
 	shield = 0;
 	fish = 0;
+	cooldown = 1000;
 	needTarget = false;
 	needWeapon = false;
 	selfTarget = false;
@@ -503,6 +502,10 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		fish = pugi::cast<uint32_t>(attr.value());
 	}
 
+	if ((attr = node.attribute("exhaustion")) || (attr = node.attribute("cooldown"))) {
+		cooldown = pugi::cast<uint32_t>(attr.value());
+	}
+
 	if ((attr = node.attribute("prem"))) {
 		premium = attr.as_bool();
 	}
@@ -598,14 +601,14 @@ bool Spell::playerSpellCheck(Player* player) const
 		}
 
 		if (exhaust) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 
-			if (isInstant()) {
-				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			}
-
-			return false;
+		if (isInstant()) {
+			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		}
+
+		return false;
+	}
 	}
 
 	if (player->getLevel() < level) {
@@ -916,16 +919,15 @@ ReturnValue Spell::CreateIllusion(Creature* creature, uint32_t itemId, int32_t t
 	return CreateIllusion(creature, outfit, time);
 }
 
-InstantSpell::InstantSpell(LuaScriptInterface* _interface) :
-	TalkAction(_interface)
-{
-	needDirection = false;
-	hasParam = false;
-	hasPlayerNameParam = false;
-	checkLineOfSight = true;
-	casterTargetOrDirection = false;
-	function = nullptr;
-}
+InstantSpell::InstantSpell(LuaScriptInterface* interface) :
+	TalkAction(interface),
+	function(nullptr),
+	needDirection(false),
+	hasParam(false),
+	hasPlayerNameParam(false),
+	checkLineOfSight(true),
+	casterTargetOrDirection(false)
+{}
 
 std::string InstantSpell::getScriptEventName() const
 {
@@ -1628,14 +1630,12 @@ bool InstantSpell::canCast(const Player* player) const
 }
 
 
-ConjureSpell::ConjureSpell(LuaScriptInterface* _interface) :
-	InstantSpell(_interface)
-{
-	aggressive = false;
-	conjureId = 0;
-	conjureCount = 1;
-	reagentId = 0;
-}
+ConjureSpell::ConjureSpell(LuaScriptInterface* interface) :
+	InstantSpell(interface),
+	conjureId(0),
+	conjureCount(1),
+	reagentId(0)
+{}
 
 std::string ConjureSpell::getScriptEventName() const
 {
@@ -1724,15 +1724,12 @@ bool ConjureSpell::playerCastInstant(Player* player, std::string& param)
 	return conjureItem(player);
 }
 
-RuneSpell::RuneSpell(LuaScriptInterface* _interface) :
-	Action(_interface)
-{
-	hasCharges = true;
-	runeId = 0;
-	runeFunction = nullptr;
-
-	allowFarUse = true;
-}
+RuneSpell::RuneSpell(LuaScriptInterface* interface) :
+	Action(interface),
+	runeFunction(nullptr),
+	runeId(0),
+	hasCharges(true)
+{}
 
 std::string RuneSpell::getScriptEventName() const
 {

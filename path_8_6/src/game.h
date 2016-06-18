@@ -49,9 +49,9 @@ enum stackPosType_t {
 };
 
 enum WorldType_t {
-	WORLD_TYPE_NO_PVP = 1,
-	WORLD_TYPE_PVP = 2,
-	WORLD_TYPE_PVP_ENFORCED = 3,
+	WORLD_TYPE_NO_PVP = 1, // optional pvp
+	WORLD_TYPE_PVP = 2, // open pvp
+	WORLD_TYPE_PVP_ENFORCED = 3, // hardcore pvp
 };
 
 enum GameState_t {
