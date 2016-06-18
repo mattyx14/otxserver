@@ -23,7 +23,7 @@
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "4"
-#define REVISION_VERSION "-"
+#define REVISION_VERSION "612"
 #define SOFTWARE_CODENAME "LORD ZEDD"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/"
