@@ -4106,17 +4106,11 @@ GuildEmblems_t Player::getGuildEmblem(const Player* player) const
 	}
 
 	const Guild* playerGuild = player->getGuild();
-	if (!playerGuild) {
+	if (!playerGuild || player->getGuildWarList().empty()) {
 		return GUILDEMBLEM_NONE;
 	}
 
-	if (player->getGuildWarList().empty()) {
-		if (guild == playerGuild) {
-			return GUILDEMBLEM_MEMBER;
-		} else {
-			return GUILDEMBLEM_OTHER;
-		}
-	} else if (guild == playerGuild) {
+	if (guild == playerGuild) {
 		return GUILDEMBLEM_ALLY;
 	} else if (isInWar(player)) {
 		return GUILDEMBLEM_ENEMY;
