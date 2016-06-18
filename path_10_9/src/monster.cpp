@@ -246,7 +246,7 @@ void Monster::onCreatureMove(Creature* creature, const Tile* newTile, const Posi
 		}
 
 		if (canSeeNewPos && isSummon() && getMaster() == creature) {
-			isMasterInRange = true;    //Turn the summon on again
+			isMasterInRange = true;    //Follow master again
 		}
 
 		updateIdleStatus();
@@ -417,9 +417,8 @@ void Monster::onCreatureEnter(Creature* creature)
 	// std::cout << "onCreatureEnter - " << creature->getName() << std::endl;
 
 	if (getMaster() == creature) {
-		//Turn the summon on again
+		//Follow master again
 		isMasterInRange = true;
-		updateIdleStatus();
 	}
 
 	onCreatureFound(creature, true);
@@ -472,9 +471,8 @@ void Monster::onCreatureLeave(Creature* creature)
 	// std::cout << "onCreatureLeave - " << creature->getName() << std::endl;
 
 	if (getMaster() == creature) {
-		//Turn the monster off until its master comes back
+		//Take random steps and only use defense abilities (e.g. heal) until its master comes back
 		isMasterInRange = false;
-		updateIdleStatus();
 	}
 
 	//update friendList
@@ -677,11 +675,7 @@ void Monster::updateIdleStatus()
 	bool idle = false;
 
 	if (conditions.empty()) {
-		if (isSummon()) {
-			if (!isMasterInRange || (getMaster()->getMonster() && getMaster()->getMonster()->getIdleStatus())) {
-				idle = true;
-			}
-		} else if (targetList.empty()) {
+		if (!isSummon() && targetList.empty()) {
 			idle = true;
 		}
 	}
@@ -834,7 +828,7 @@ bool Monster::canUseAttack(const Position& pos, const Creature* target) const
 		uint32_t distance = std::max<uint32_t>(Position::getDistanceX(pos, targetPos), Position::getDistanceY(pos, targetPos));
 		for (const spellBlock_t& spellBlock : mType->attackSpells) {
 			if (spellBlock.range != 0 && distance <= spellBlock.range) {
-				return g_game.isSightClear(pos, targetPos, true, const_cast<Creature*>(getCreature()));
+				return g_game.isSightClear(pos, targetPos, true);
 			}
 		}
 		return false;
@@ -936,7 +930,7 @@ void Monster::onThinkDefense(uint32_t interval)
 		}
 	}
 
-	if (!isSummon() && summons.size() < mType->maxSummons) {
+	if (!isSummon() && summons.size() < mType->maxSummons && hasFollowPath) {
 		for (const summonBlock_t& summonBlock : mType->summons) {
 			if (summonBlock.speed > defenseTicks) {
 				resetTicks = false;
@@ -962,7 +956,7 @@ void Monster::onThinkDefense(uint32_t interval)
 
 				addSummon(summon);
 
-				if (!g_game.placeCreature(summon, summonPos)) {
+				if (!g_game.placeCreature(summon, summonPos, false, summonBlock.force)) {
 					removeSummon(summon);
 				} else {
 					g_game.addMagicEffect(getPosition(), CONST_ME_MAGIC_BLUE);
@@ -1020,7 +1014,7 @@ bool Monster::pushItem(Item* item)
 	for (const auto& it : relList) {
 		Position tryPos(centerPos.x + it.first, centerPos.y + it.second, centerPos.z);
 		Tile* tile = g_game.map.getTile(tryPos);
-		if (tile && g_game.canThrowObjectTo(centerPos, tryPos, true, 8, 6)) {
+		if (tile && g_game.canThrowObjectTo(centerPos, tryPos)) {
 			if (g_game.internalMoveItem(item->getParent(), tile, INDEX_WHEREEVER, item, item->getItemCount(), nullptr) == RETURNVALUE_NOERROR) {
 				return true;
 			}
@@ -1043,7 +1037,7 @@ void Monster::pushItems(Tile* tile)
 			Item* item = items->at(i);
 			if (item && item->hasProperty(CONST_PROP_MOVEABLE) && (item->hasProperty(CONST_PROP_BLOCKPATH)
 			        || item->hasProperty(CONST_PROP_BLOCKSOLID))) {
-				if (moveCount < 20 && pushItem(item)) {
+				if (moveCount < 20 && Monster::pushItem(item)) {
 					++moveCount;
 				} else if (g_game.internalRemoveItem(item) == RETURNVALUE_NOERROR) {
 					++removeCount;
@@ -1089,7 +1083,7 @@ void Monster::pushCreatures(Tile* tile)
 		for (size_t i = 0; i < creatures->size();) {
 			Monster* monster = creatures->at(i)->getMonster();
 			if (monster && monster->isPushable()) {
-				if (monster != lastPushedMonster && pushCreature(monster)) {
+				if (monster != lastPushedMonster && Monster::pushCreature(monster)) {
 					lastPushedMonster = monster;
 					continue;
 				}
@@ -1117,12 +1111,12 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 	}
 
 	bool result = false;
-	if ((!followCreature || !hasFollowPath) && !isSummon()) {
+	if (((!followCreature || !hasFollowPath) && (isSummon() && !isMasterInRange))) {
 		if (followCreature || getTimeSinceLastMove() > 1000) {
 			//choose a random direction
 			result = getRandomStep(getPosition(), direction);
 		}
-	} else if (isSummon() || followCreature) {
+	} else if ((isSummon() && isMasterInRange) || followCreature) {
 		result = Creature::getNextStep(direction, flags);
 		if (result) {
 			flags |= FLAG_PATHFINDING;
@@ -1136,6 +1130,9 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 				}
 			}
 		}
+	} else if (getTimeSinceLastMove() > 1000) {
+		//choose a random direction
+		result = getRandomStep(getPosition(), direction);
 	}
 
 	if (result && (canPushItems() || canPushCreatures())) {
@@ -1143,11 +1140,11 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 		Tile* tile = g_game.map.getTile(pos);
 		if (tile) {
 			if (canPushItems()) {
-				pushItems(tile);
+				Monster::pushItems(tile);
 			}
 
 			if (canPushCreatures()) {
-				pushCreatures(tile);
+				Monster::pushCreatures(tile);
 			}
 		}
 	}
@@ -1268,7 +1265,7 @@ bool Monster::getDistanceStep(const Position& targetPos, Direction& direction, b
 
 	int32_t distance = std::max<int32_t>(dx, dy);
 
-	if (!flee && (distance > mType->targetDistance || !g_game.isSightClear(creaturePos, targetPos, true, getCreature()))) {
+	if (!flee && (distance > mType->targetDistance || !g_game.isSightClear(creaturePos, targetPos, true))) {
 		return false; // let the A* calculate it
 	} else if (!flee && distance == mType->targetDistance) {
 		return true; // we don't really care here, since it's what we wanted to reach (a dancestep will take of dancing in that position)
@@ -2028,42 +2025,4 @@ void Monster::getPathSearchParams(const Creature* creature, FindPathParams& fpp)
 	} else {
 		fpp.fullPathSearch = !canUseAttack(getPosition(), creature);
 	}
-}
-
-bool Monster::canAttack(Creature* creature) const
-{
-	if (!g_game.isExpertPvpEnabled() || !isSummon()) {
-		return true;
-	}
-
-	Player* owner = getMaster()->getPlayer();
-	if (!owner) {
-		return true;
-	}
-
-	return owner->canAttack(creature); // passing to owner's attack ability.
-}
-
-bool Monster::canWalkThroughTileItems(Tile* tile) const
-{
-	if (!g_game.isExpertPvpEnabled() || !tile) {
-		return true;
-	}
-
-	if (!isSummon() || !getMaster()->getPlayer()) {
-		TileItemVector* itemList = tile->getItemList();
-		if (!itemList) {
-			return true;
-		}
-
-		for (auto it : *itemList) {
-			if (it->getID() == ITEM_WILDGROWTH_NOPVP || it->getID() == ITEM_MAGICWALL_NOPVP) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	Player* owner = getMaster()->getPlayer();
-	return owner->canWalkThroughTileItems(tile);
 }

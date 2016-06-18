@@ -536,7 +536,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x99: parseCloseChannel(msg); break;
 		case 0x9A: parseOpenPrivateChannel(msg); break;
 		case 0x9E: addGameTask(&Game::playerCloseNpcChannel, player->getID()); break;
-		case 0xA0: /* FightModes to ->(lua_modules)*/ break;
+		case 0xA0: parseFightModes(msg); break;
 		case 0xA1: parseAttack(msg); break;
 		case 0xA2: parseFollow(msg); break;
 		case 0xA3: parseInviteToParty(msg); break;
@@ -771,6 +771,32 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 	}
 
 	addGameTask(&Game::playerSay, player->getID(), channelId, type, receiver, text);
+}
+
+void ProtocolGame::parseFightModes(NetworkMessage& msg)
+{
+	uint8_t rawFightMode = msg.getByte(); // 1 - offensive, 2 - balanced, 3 - defensive
+	uint8_t rawChaseMode = msg.getByte(); // 0 - stand while fightning, 1 - chase opponent
+	uint8_t rawSecureMode = msg.getByte(); // 0 - can't attack unmarked, 1 - can attack unmarked
+	// uint8_t rawPvpMode = msg.getByte(); // pvp mode introduced in 10.0
+
+	chaseMode_t chaseMode;
+	if (rawChaseMode == 1) {
+		chaseMode = CHASEMODE_FOLLOW;
+	} else {
+		chaseMode = CHASEMODE_STANDSTILL;
+	}
+
+	fightMode_t fightMode;
+	if (rawFightMode == 1) {
+		fightMode = FIGHTMODE_ATTACK;
+	} else if (rawFightMode == 2) {
+		fightMode = FIGHTMODE_BALANCED;
+	} else {
+		fightMode = FIGHTMODE_DEFENSE;
+	}
+
+	addGameTask(&Game::playerSetFightModes, player->getID(), fightMode, chaseMode, rawSecureMode != 0);
 }
 
 void ProtocolGame::parseAttack(NetworkMessage& msg)
@@ -1094,7 +1120,7 @@ void ProtocolGame::sendCreatureHelpers(uint32_t creatureId, uint16_t helpers)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendCreatureSquare(const Creature* creature, SquareColor_t color, uint8_t length)
+void ProtocolGame::sendCreatureSquare(const Creature* creature, SquareColor_t color)
 {
 	if (!canSee(creature)) {
 		return;
@@ -1103,7 +1129,7 @@ void ProtocolGame::sendCreatureSquare(const Creature* creature, SquareColor_t co
 	NetworkMessage msg;
 	msg.addByte(0x93);
 	msg.add<uint32_t>(creature->getID());
-	msg.addByte(length);
+	msg.addByte(0x01);
 	msg.addByte(color);
 	writeToOutputBuffer(msg);
 }
@@ -2016,6 +2042,16 @@ void ProtocolGame::sendRemoveTileThing(const Position& pos, uint32_t stackpos)
 	writeToOutputBuffer(msg);
 }
 
+void ProtocolGame::sendFightModes()
+{
+	NetworkMessage msg;
+	msg.addByte(0xA7);
+	msg.addByte(player->fightMode);
+	msg.addByte(player->chaseMode);
+	msg.addByte(player->secureMode);
+	msg.addByte(PVP_MODE_DOVE);
+	writeToOutputBuffer(msg);
+}
 void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos, const Position& oldPos, int32_t oldStackPos, bool teleport)
 {
 	if (creature == player) {
@@ -2205,7 +2241,7 @@ void ProtocolGame::sendOutfitWindow()
 			outfit.lookType,
 			addons
 		);
-		if (protocolOutfits.size() == 100) { // Game client doesn't allow more than 100 outfits
+		if (protocolOutfits.size() == 150) { // Game client doesn't allow more than 100 outfits
 			break;
 		}
 	}

@@ -254,10 +254,10 @@ class Player final : public Creature, public Cylinder
 		bool isInWar(const Player* player) const;
 		bool isInWarList(uint32_t guild_id) const;
 
-		void setLastWalkthroughAttempt(int64_t walkthroughAttempt) const {
+		void setLastWalkthroughAttempt(int64_t walkthroughAttempt) {
 			lastWalkthroughAttempt = walkthroughAttempt;
 		}
-		void setLastWalkthroughPosition(Position walkthroughPosition) const {
+		void setLastWalkthroughPosition(Position walkthroughPosition) {
 			lastWalkthroughPosition = walkthroughPosition;
 		}
 
@@ -585,9 +585,6 @@ class Player final : public Creature, public Cylinder
 		void setFightMode(fightMode_t mode) {
 			fightMode = mode;
 		}
-		void setPvpMode(pvpMode_t mode) {
-			pvpMode = mode;
-		}
 		void setSecureMode(bool mode) {
 			secureMode = mode;
 		}
@@ -774,9 +771,9 @@ class Player final : public Creature, public Cylinder
 				client->sendPrivateMessage(speaker, type, text);
 			}
 		}
-		void sendCreatureSquare(const Creature* creature, SquareColor_t color, uint8_t length = 1) {
+		void sendCreatureSquare(const Creature* creature, SquareColor_t color) {
 			if (client) {
-				client->sendCreatureSquare(creature, color, length);
+				client->sendCreatureSquare(creature, color);
 			}
 		}
 		void sendCreatureChangeOutfit(const Creature* creature, const Outfit_t& outfit) {
@@ -1182,24 +1179,6 @@ class Player final : public Creature, public Cylinder
 			return openContainers;
 		}
 
-		bool hasPvpActivity(Player* player, bool guildAndParty = false) const;
-
-		bool canAttack(Creature* creature)const final;
-		bool canWalkThroughTileItems(Tile* creature)const final;
-		bool isInPvpSituation();
-
-		void sendPvpSquare(Creature* creature, SquareColor_t squareColor);
-		pvpMode_t getPvpMode() const {
-			return pvpMode;
-		}
-
-		int64_t getLastWalkThroughAttempt() const {
-			return lastWalkthroughAttempt;
-		}
-
-		void setPvpSituation(bool situation) {
-			isPvpSituation = situation;
-		}
 	protected:
 		std::forward_list<Condition*> getMuteConditions() const;
 
@@ -1274,7 +1253,7 @@ class Player final : public Creature, public Cylinder
 		Skill skills[SKILL_LAST + 1];
 		LightInfo itemsLight;
 		Position loginPosition;
-		mutable Position lastWalkthroughPosition;
+		Position lastWalkthroughPosition;
 
 		time_t lastLoginSaved;
 		time_t lastLogout;
@@ -1286,7 +1265,7 @@ class Player final : public Creature, public Cylinder
 		uint64_t lastQuestlogUpdate;
 		int64_t lastFailedFollow;
 		int64_t skullTicks;
-		mutable int64_t lastWalkthroughAttempt;
+		int64_t lastWalkthroughAttempt;
 		int64_t lastToggleMount;
 		int64_t lastPing;
 		int64_t lastPong;
@@ -1354,10 +1333,8 @@ class Player final : public Creature, public Cylinder
 		tradestate_t tradeState;
 		chaseMode_t chaseMode;
 		fightMode_t fightMode;
-		pvpMode_t pvpMode;
 		AccountType_t accountType;
 
-		bool isPvpSituation;
 		bool secureMode;
 		bool inMarket;
 		bool wasMounted;

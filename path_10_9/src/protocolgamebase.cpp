@@ -226,8 +226,8 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 		msg.addByte(player->getSkillPercent(i));
 	}
 
-	for (uint8_t i = SKILL_STATS_FIRST; i <= SKILL_STATS_LAST; ++i) {
-		msg.add<uint16_t>(i);
+	for (int i = 0; i < 24; i++) {
+		msg.addByte(0x00);
 	}
 }
 
@@ -568,8 +568,8 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 		msg.addByte(0x00);
 	}
 
-	msg.addByte(g_game.isExpertPvpEnabled()); // can change pvp framing option
-	msg.addByte(g_game.isExpertPvpEnabled()); // expert mode button enabled
+	msg.addByte(0x00); // can change pvp framing option
+	msg.addByte(0x00); // expert mode button enabled
 
 	msg.addString(g_config.getString(ConfigManager::STORE_IMAGES_URL));
 	msg.add<uint16_t>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STORE_COIN_PACKET)));

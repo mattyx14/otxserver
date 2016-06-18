@@ -411,8 +411,8 @@ class Game
 		void ReleaseItem(Item* item);
 
 		bool canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight = true,
-		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY, Creature* creature = nullptr) const;
-		bool isSightClear(const Position& fromPos, const Position& toPos, bool sameFloor, Creature* caster = nullptr) const;
+		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY) const;
+		bool isSightClear(const Position& fromPos, const Position& toPos, bool sameFloor) const;
 
 		void changeSpeed(Creature* creature, int32_t varSpeedDelta);
 		void internalCreatureChangeOutfit(Creature* creature, const Outfit_t& oufit);
@@ -497,9 +497,6 @@ class Game
 		Item* getUniqueItem(uint16_t uniqueId);
 		bool addUniqueItem(uint16_t uniqueId, Item* item);
 		void removeUniqueItem(uint16_t uniqueId);
-
-		bool isExpertPvpEnabled();
-		void updateSpectatorsPvp(Thing* thing);
 
 		bool hasEffect(uint8_t effectId);
 		bool hasDistanceEffect(uint8_t effectId);

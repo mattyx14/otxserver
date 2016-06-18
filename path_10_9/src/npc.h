@@ -181,8 +181,6 @@ class Npc final : public Creature
 		void turnToCreature(Creature* creature);
 		void setCreatureFocus(Creature* creature);
 
-		bool canWalkThroughTileItems(Tile* tile) const final;
-
 		NpcScriptInterface* getScriptInterface();
 
 		static uint32_t npcAutoID;
