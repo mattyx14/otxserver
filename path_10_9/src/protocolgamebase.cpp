@@ -226,8 +226,12 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 		msg.addByte(player->getSkillPercent(i));
 	}
 
-	for (int i = 0; i < 24; i++) {
-		msg.addByte(0x00);
+	for (int i = 10; i < 16; i++) {
+		msg.add<uint16_t>(i); // this is value to display
+		msg.add<uint16_t>(15); // this is 'base' value,
+		// if lower then skill then text color is green
+		// if equal to skill then text color is gray [default for skills]
+		// if higher then skill then text color is red
 	}
 }
 
@@ -572,7 +576,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	msg.addByte(0x00); // expert mode button enabled
 
 	msg.addString(g_config.getString(ConfigManager::STORE_IMAGES_URL));
-	msg.add<uint16_t>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STORE_COIN_PACKET)));
+	msg.addByte(g_config.getNumber(ConfigManager::STORE_COIN_PACKET));
 
 	writeToOutputBuffer(msg);
 

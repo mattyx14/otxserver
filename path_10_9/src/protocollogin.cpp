@@ -23,6 +23,7 @@
 #include "protocollogin.h"
 
 #include "outputmessage.h"
+#include "rsa.h"
 #include "tasks.h"
 
 #include "configmanager.h"
@@ -98,7 +99,7 @@ void ProtocolLogin::getCastingStreamsList(const std::string& password, uint16_t 
 	disconnect();
 }
 
-void ProtocolLogin::getCharacterList(const std::string& accountName, const std::string& password, const std::string& token, uint16_t version)
+void ProtocolLogin::getCharacterList(const std::string& accountName, const std::string& password, uint16_t version)
 {
 	//dispatcher thread
 	Account account;
@@ -109,19 +110,6 @@ void ProtocolLogin::getCharacterList(const std::string& accountName, const std::
 
 	auto output = OutputMessagePool::getOutputMessage();
 	//Update premium days
-	if (!account.key.empty()) {
-		int32_t ticks = static_cast<int32_t>(time(nullptr) / AUTHENTICATOR_PERIOD);
-		if (token.empty() || !(token == generateToken(account.key, ticks) || token == generateToken(account.key, ticks - 1) || token == generateToken(account.key, ticks + 1))) {
-			output->addByte(0x0D);
-			output->addByte(0);
-			send(output);
-			disconnect();
-			return;
-		}
-		output->addByte(0x0C);
-		output->addByte(0);
-	}
-
 	Game::updatePremium(account);
 
 	addWorldInfo(output, accountName, password, version);
@@ -224,19 +212,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 	std::string accountName = msg.getString();
 	std::string password = msg.getString();
-	if (password.empty()) {
-		disconnectClient("Invalid password.", version);
-		return;
-	}
-
-	// read authenticator token and stay logged in flag from last 128 bytes
-	msg.skipBytes((msg.getLength() - 128) - msg.getBufferPosition());
-	if (!Protocol::RSA_decrypt(msg)) {
-		disconnectClient("Invalid authentification token.", version);
-		return;
-	}
-
-	std::string authToken = msg.getString();
 	auto thisPtr = std::static_pointer_cast<ProtocolLogin>(shared_from_this());
 	if (accountName.empty()) {
 		if (g_config.getBoolean(ConfigManager::ENABLE_LIVE_CASTING)) {
@@ -247,5 +222,5 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	g_dispatcher.addTask(createTask(std::bind(&ProtocolLogin::getCharacterList, thisPtr, accountName, password, authToken, version)));
+	g_dispatcher.addTask(createTask(std::bind(&ProtocolLogin::getCharacterList, thisPtr, accountName, password, version)));
 }

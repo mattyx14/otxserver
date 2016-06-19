@@ -6,7 +6,7 @@
 		The Forgotten Server Version: 1.2
 
 	Codenamed
-		LORD ZEDD
+		FORGOTTEN
 
 	Forum and website
 		http://www.blacktibia.org/f19-otx-server-3/
@@ -53,6 +53,19 @@
 		OTHERS:
 			- Added support to Tibia Protocol 7.40 to 8.00/11 are on WIP
 			- CastSystem for Protols 8.x
+]
+
+[ OTX Server 3.5 :: Version " FORGOTTEN "
+	- Added Reward System
+		Requite it on monster
+		<flags>
+			<flag rewardboss="1" />
+		</flags>
+		<loot>
+			<item id="5903" chance="100000" uniquedrop="1" /> <!-- ferumbras' hat -->
+		</loot>
+	- Fixed skill bytes for 10.94/95
+	- Fixed cast system error
 ]
 
 [ OTX Server 3.4 :: Version " LORD ZEDD "

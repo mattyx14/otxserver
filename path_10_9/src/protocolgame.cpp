@@ -529,7 +529,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x8A: parseHouseWindow(msg); break;
 		case 0x8C: parseLookAt(msg); break;
 		case 0x8D: parseLookInBattleList(msg); break;
-		case 0x8E: /* join aggression to ->(lua_modules) */ break;
+		case 0x8E: /* join aggression */ break;
 		case 0x96: parseSay(msg); break;
 		case 0x97: addGameTask(&Game::playerRequestChannels, player->getID()); break;
 		case 0x98: parseOpenChannel(msg); break;

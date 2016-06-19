@@ -429,8 +429,8 @@ enum GuildEmblems_t : uint8_t {
 
 enum item_t : uint16_t {
 	ITEM_BROWSEFIELD = 460, // for internal use
-
 	ITEM_DEPOT_NULL = 25452, // for internal use
+
 	ITEM_DEPOT_I = 25453,
 	ITEM_DEPOT_II = 25454,
 	ITEM_DEPOT_III = 25455,
@@ -478,6 +478,9 @@ enum item_t : uint16_t {
 	ITEM_GOLD_COIN = 2148,
 	ITEM_PLATINUM_COIN = 2152,
 	ITEM_CRYSTAL_COIN = 2160,
+
+	ITEM_REWARD_CONTAINER = 21518,
+	ITEM_REWARD_CHEST = 21584,
 
 	ITEM_DEPOT = 2594,
 	ITEM_LOCKER1 = 2589,

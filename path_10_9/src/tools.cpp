@@ -1030,6 +1030,9 @@ std::string getFirstLine(const std::string& str)
 const char* getReturnMessage(ReturnValue value)
 {
 	switch (value) {
+		case RETURNVALUE_REWARDCHESTISEMPTY:
+			return "The chest is currently empty. You did not take part in any battles in the last seven days or already claimed your reward.";
+
 		case RETURNVALUE_DESTINATIONOUTOFREACH:
 			return "Destination is out of reach.";
 
@@ -1228,12 +1231,6 @@ const char* getReturnMessage(ReturnValue value)
 
 		case RETURNVALUE_NOTENOUGHFISHLEVEL:
 			return "You do not have enough fishing level";
-
-		case RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVEPLAYERS:
-			return "You cannot pass players that are aggressive against.";
-
-		case RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVECREATURES:
-			return "You cannot pass creatures that are aggressive against.";
 
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
