@@ -10,7 +10,7 @@ function onAdvance(player, skill, oldLevel, newLevel)
 	end
 
 	if config.effect then
-		player:getPosition():sendMagicEffect(math.random(CONST_ME_FIREWORK_YELLOW, CONST_ME_FIREWORK_BLUE))
+		player:getPosition():sendMagicEffect(math.random(CONST_ME_FIREWORK_YELLOW, CONST_ME_SOUND_GREEN))
 		player:say('LEVEL UP!', TALKTYPE_MONSTER_SAY)
 	end
 
