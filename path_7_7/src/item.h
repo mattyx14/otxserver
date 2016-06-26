@@ -643,9 +643,6 @@ class Item : virtual public Thing
 			const ItemType& it = items[id];
 			return it.rotatable && it.rotateTo;
 		}
-		bool hasWalkStack() const {
-			return items[id].walkStack;
-		}
 
 		const std::string& getName() const {
 			if (hasAttribute(ITEM_ATTRIBUTE_NAME)) {

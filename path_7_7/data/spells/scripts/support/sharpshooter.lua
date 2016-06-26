@@ -1,23 +1,25 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_GREEN)
-combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+local conditionAttrib = createConditionObject(CONDITION_ATTRIBUTES)
+local conditionSlow = createConditionObject(CONDITION_HASTE)
+local conditionExhaustHeal = createConditionObject(CONDITION_EXHAUST_HEAL)
 
-local skill = Condition(CONDITION_ATTRIBUTES)
-skill:setParameter(CONDITION_PARAM_TICKS, 10000)
-skill:setParameter(CONDITION_PARAM_SKILL_DISTANCEPERCENT, 150)
-skill:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, -100)
-skill:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
-combat:setCondition(skill)
+setConditionParam(conditionAttrib, CONDITION_PARAM_TICKS, 10000)
+setConditionParam(conditionAttrib, CONDITION_PARAM_SKILL_DISTANCEPERCENT, 150)
 
-local speed = Condition(CONDITION_PARALYZE)
-speed:setParameter(CONDITION_PARAM_TICKS, 10000)
-speed:setFormula(-0.7, 56, -0.7, 56)
-combat:setCondition(speed)
+setConditionParam(conditionSlow, CONDITION_PARAM_TICKS, 10000)
+setConditionFormula(conditionSlow, -0.7, 0, -0.7, 0)
 
-local pacified = Condition(CONDITION_PACIFIED)
-pacified:setParameter(CONDITION_PARAM_TICKS, 10000)
-combat:setCondition(pacified)
+setConditionParam(conditionExhaustHeal, CONDITION_PARAM_TICKS, 10000)
 
-function onCastSpell(creature, variant)
-	return combat:execute(creature, variant)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+setCombatCondition(combat, conditionAttrib)
+setCombatCondition(combat, conditionSlow)
+setCombatCondition(combat, conditionExhaustHeal)
+
+function onCastSpell(cid, var)
+	if(doCombat(cid, combat, var) == LUA_NO_ERROR) then
+		return LUA_NO_ERROR
+	end
+	return LUA_ERROR
 end

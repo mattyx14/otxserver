@@ -257,7 +257,6 @@ class ItemType
 
 		bool forceUse;
 		bool hasHeight;
-		bool walkStack;
 		bool blockSolid;
 		bool blockPickupable;
 		bool blockProjectile;

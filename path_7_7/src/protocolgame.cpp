@@ -1206,16 +1206,11 @@ void ProtocolGame::sendCreatureTurn(const Creature* creature, uint32_t stackPos)
 
 void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos/* = nullptr*/)
 {
-	if (!creature) {
-		return;
-	}
-
 	NetworkMessage msg;
 	msg.addByte(0xAA);
 
 #ifdef _MULTIPLATFORM77
-	static uint32_t statementId = 0;
-	msg.add<uint32_t>(++statementId);
+	msg.add<uint32_t>(0);
 #endif
 
 	if (type != TALKTYPE_CHANNEL_R2) {
@@ -1241,15 +1236,12 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 
 void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId)
 {
-	if (!creature) {
-		return;
-	}
-
 	NetworkMessage msg;
 	msg.addByte(0xAA);
 
-	static uint32_t statementId = 0;
-	msg.add<uint32_t>(++statementId);
+#ifdef _MULTIPLATFORM77
+	msg.add<uint32_t>(0);
+#endif
 
 	if (type == TALKTYPE_CHANNEL_R2) {
 		msg.addString("");
@@ -1374,7 +1366,6 @@ void ProtocolGame::sendAddTileItem(const Position& pos, uint32_t stackpos, const
 	NetworkMessage msg;
 	msg.addByte(0x6A);
 	msg.addPosition(pos);
-	msg.addByte(stackpos);
 	msg.addItem(item);
 	writeToOutputBuffer(msg);
 }
@@ -1446,7 +1437,6 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 		NetworkMessage msg;
 		msg.addByte(0x6A);
 		msg.addPosition(pos);
-		msg.addByte(stackpos);
 
 		bool known;
 		uint32_t removedKnown;

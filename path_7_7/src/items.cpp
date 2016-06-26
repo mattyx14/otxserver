@@ -45,7 +45,7 @@ ItemType::ItemType() :
 	weaponType(WEAPON_NONE), ammoType(AMMO_NONE), shootType(CONST_ANI_NONE),
 	corpseType(RACE_NONE), fluidSource(FLUID_NONE), floorChange(0),
 	alwaysOnTopOrder(0), lightLevel(0), lightColor(0), shootRange(1), hitChance(0),
-	forceUse(false), hasHeight(false), walkStack(true), blockSolid(false),
+	forceUse(false), hasHeight(false), blockSolid(false),
 	blockPickupable(false), blockProjectile(false), blockPathFind(false),
 	allowPickupable(false), showDuration(false), showCharges(false),
 	showAttributes(false), replaceable(true), pickupable(false), rotatable(false),
@@ -888,8 +888,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			Abilities& abilities = it.getAbilities();
 			abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
 			abilities.elementType = COMBAT_ENERGYDAMAGE;
-		} else if (tmpStrValue == "walkstack") {
-			it.walkStack = valueAttribute.as_bool();
 		} else if (tmpStrValue == "blocking") {
 			it.blockSolid = valueAttribute.as_bool();
 		} else if (tmpStrValue == "allowdistread") {

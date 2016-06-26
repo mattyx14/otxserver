@@ -1,16 +1,17 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, true)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
 
-local condition = Condition(CONDITION_PARALYZE)
-condition:setParameter(CONDITION_PARAM_TICKS, 20000)
-condition:setFormula(-0.9, 0, -0.9, 0)
-combat:setCondition(condition)
+local condition = createConditionObject(CONDITION_PARALYZE)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 20000)
+setConditionFormula(condition, -0.9, 0, -0.9, 0)
+setCombatCondition(combat, condition)
 
-function onCastSpell(creature, variant, isHotkey)
-	if not combat:execute(creature, variant) then
+function onCastSpell(cid, var)
+	if(not doCombat(cid, combat, var)) then
 		return false
 	end
 
-	creature:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
+	doSendMagicEffect(getThingPosition(cid), CONST_ME_MAGIC_GREEN)
 	return true
 end

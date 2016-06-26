@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Crocodile" nameDescription="a crocodile" race="blood" experience="40" speed="240" manacost="350">
+	<health now="105" max="105"/>
+	<look type="119" corpse="4277"/>
+	<targetchange interval="5000" chance="5"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="21" attack="32"/>
+	</attacks>
+	<defenses armor="13" defense="5"/>
+	<loot>
+		<item id="2148" countmax="10" chance="50000"/><!-- gold coin -->
+		<item id="2671" countmax="2" chance="80000"/><!-- ham -->
+		<item id="2461" chance="16000"/><!-- leather helmet -->
+		<item id="2649" chance="16000"/><!-- leather legs -->
+		<item id="2666" countmax="4" chance="70000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="3982" chance="100"/><!-- crocodile boots -->
+		</item>
+	</loot>
+</monster>

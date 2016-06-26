@@ -1,14 +1,17 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_GREEN)
-combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+local conditionAttrib = createConditionObject(CONDITION_ATTRIBUTES)
 
-local condition = Condition(CONDITION_ATTRIBUTES)
-condition:setParameter(CONDITION_PARAM_TICKS, 10000)
-condition:setParameter(CONDITION_PARAM_SKILL_MELEEPERCENT, 135)
-condition:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, -100)
-condition:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
-combat:setCondition(condition)
+setConditionParam(conditionAttrib, CONDITION_PARAM_TICKS, 10000)
+setConditionParam(conditionAttrib, CONDITION_PARAM_SKILL_SHIELDPERCENT, 0)
+setConditionParam(conditionAttrib, CONDITION_PARAM_SKILL_MELEEPERCENT, 135)
 
-function onCastSpell(creature, variant)
-	return combat:execute(creature, variant)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+setCombatCondition(combat, conditionAttrib)
+
+function onCastSpell(cid, var)
+	if(doCombat(cid, combat, var) == LUA_NO_ERROR) then
+		return LUA_NO_ERROR
+	end
+	return LUA_ERROR
 end

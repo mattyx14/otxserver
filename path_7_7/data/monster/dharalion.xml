@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dharalion" nameDescription="Dharalion" race="blood" experience="380" speed="240" manacost="0">
+	<health now="390" max="390"/>
+	<look type="203" corpse="2979"/>
+	<targetchange interval="5000" chance="7"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="30" attack="28"/>
+		<attack name="manadrain" interval="1000" chance="15" range="7" min="-30" max="-60"/>
+		<attack name="energy" interval="1000" chance="13" range="7" min="-70" max="-90">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="physical" interval="1000" chance="10" range="7" min="-80" max="-151">
+			<attribute key="shootEffect" value="suddendeath"/>
+		</attack>
+		<attack name="effect" interval="1000" chance="13" range="7">
+			<attribute key="shootEffect" value="poison"/>
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="15" defense="39">
+		<defense name="healing" interval="1000" chance="20" min="90" max="120">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="7" speedchange="300" duration="10000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<summons maxSummons="2">
+		<summon name="demon skeleton" interval="1000" chance="6" max="2"/>
+	</summons>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="You desecrated this temple!"/>
+		<voice sentence="Noone will stop my ascension!"/>
+		<voice sentence="My powers are divine!"/>
+		<voice sentence="Muahahaha!"/>
+	</voices>
+	<loot>
+		<item id="2260" chance="36000"/><!-- blank rune -->
+		<item id="2689" chance="28000"/><!-- bread -->
+		<item id="2047" chance="18000"/><!-- candlestick -->
+		<item id="2747" chance="18000"/><!-- grave flower -->
+		<item id="2652" chance="18000"/><!-- green tunic -->
+		<item id="2600" chance="18000"/><!-- inkwell -->
+		<item id="2682" chance="40000"/><!-- melon -->
+		<item id="2642" chance="18000"/><!-- sandals -->
+		<item id="1949" chance="60000"/><!-- scroll -->
+		<item id="2401" chance="22000"/><!-- staff -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2032" chance="13000"/><!-- bowl -->
+			<item id="2198" chance="4000"/><!-- elven amulet -->
+			<item id="2177" chance="3000"/><!-- life crystal -->
+			<item id="2802" chance="14000"/><!-- sling herb -->
+			<item id="2154" chance="800"/><!-- yellow gem -->
+		</item>
+	</loot>
+</monster>

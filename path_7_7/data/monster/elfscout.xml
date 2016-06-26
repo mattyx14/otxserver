@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Elf Scout" nameDescription="an elf scout" race="blood" experience="75" speed="225" manacost="360">
+	<health now="160" max="160"/>
+	<look type="64" corpse="2981"/>
+	<targetchange interval="5000" chance="50"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="25" attack="18"/>
+		<attack name="physical" interval="1000" chance="25" range="7" min="-30" max="-60">
+			<attribute key="shootEffect" value="arrow"/>
+		</attack>
+	</attacks>
+	<defenses armor="7" defense="18"/>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Tha'shi Ab'Dendriel!"/>
+		<voice sentence="Feel the sting of my arrows!"/>
+		<voice sentence="Thy blood will quench the soil's thirst!"/>
+		<voice sentence="Evicor guide my arrow."/>
+		<voice sentence="Your existence will end here!"/>
+	</voices>
+	<loot>
+		<item id="2544" countmax="12" chance="60000"/><!-- arrow -->
+		<item id="2148" countmax="5" chance="60000"/><!-- gold coin -->
+		<item id="2681" chance="36000"/><!-- grapes -->
+		<item id="2545" countmax="3" chance="30000"/><!-- poison arrow -->
+		<item id="2642" chance="20000"/><!-- sandals -->
+		<item id="2484" chance="24000"/><!-- studded armor -->
+		<item id="2482" chance="16000"/><!-- studded helmet -->
+		<item id="2031" chance="28000"/><!-- waterskin -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2456" chance="8000"/><!-- bow -->
+			<item id="2397" chance="12000"/><!-- longsword -->
+		</item>
+	</loot>
+</monster>

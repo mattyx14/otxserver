@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Bandit" nameDescription="a bandit" race="blood" experience="65" speed="180" manacost="450">
+	<health now="245" max="245"/>
+	<look type="129" head="58" body="40" legs="24" feet="95" corpse="3058"/>
+	<targetchange interval="5000" chance="50"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="25"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="37" attack="20"/>
+	</attacks>
+	<defenses armor="11" defense="17"/>
+	<voices interval="5000" chance="10">
+		<voice sentence="Your money or your life!"/>
+		<voice sentence="Hand me your purse!"/>
+	</voices>
+	<loot>
+		<item id="2386" chance="60000"/><!-- axe -->
+		<item id="2511" chance="34000"/><!-- brass shield -->
+		<item id="2148" countmax="20" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="10" chance="30000"/><!-- gold coin -->
+		<item id="2649" chance="30000"/><!-- leather legs -->
+		<item id="2398" chance="20000"/><!-- mace -->
+		<item id="2666" chance="20000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2465" chance="5000"/><!-- brass armor -->
+			<item id="2458" chance="10000"/><!-- chain helmet -->
+			<item id="2459" chance="1000"/><!-- iron helmet -->
+			<item id="2391" chance="100"/><!-- war hammer -->
+		</item>
+	</loot>
+</monster>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Cyclops" nameDescription="a cyclops" race="blood" experience="150" speed="200" manacost="490">
+	<health now="260" max="260"/>
+	<look type="22" corpse="2808"/>
+	<targetchange interval="5000" chance="5"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="30"/>
+	</attacks>
+	<defenses armor="17" defense="24"/>
+	<voices interval="5000" chance="10">
+		<voice sentence="Il lorstok human!"/>
+		<voice sentence="Toks utat."/>
+		<voice sentence="Human, uh whil dyh!"/>
+		<voice sentence="Youh ah trak!"/>
+		<voice sentence="Let da mashing begin!"/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="10" chance="70000"/><!-- gold coin -->
+		<item id="2148" countmax="20" chance="80000"/><!-- gold coin -->
+		<item id="2671" countmax="2" chance="40000"/><!-- ham -->
+		<item id="2666" chance="50000"/><!-- meat -->
+		<item id="2406" chance="16000"/><!-- short sword -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2513" chance="3000"/><!-- battle shield -->
+			<item id="2209" chance="100"/><!-- club ring -->
+			<item id="2490" chance="200"/><!-- dark helmet -->
+			<item id="2381" chance="1400"/><!-- halberd -->
+			<item id="2510" chance="4000"/><!-- plate shield -->
+			<item id="2129" chance="200"/><!-- wolf tooth chain -->
+		</item>
+	</loot>
+</monster>

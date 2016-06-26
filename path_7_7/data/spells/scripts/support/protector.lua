@@ -1,17 +1,25 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_GREEN)
-combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+local conditionAttrib = createConditionObject(CONDITION_ATTRIBUTES)
+local conditionExhaustCombat = createConditionObject(CONDITION_EXHAUST_COMBAT)
+local conditionExhaustHeal = createConditionObject(CONDITION_EXHAUST_HEAL)
+local conditionPacified = createConditionObject(CONDITION_PACIFIED)
 
-local skill = Condition(CONDITION_ATTRIBUTES)
-skill:setParameter(CONDITION_PARAM_TICKS, 13000)
-skill:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, 220)
-skill:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
-combat:setCondition(skill)
+setConditionParam(conditionAttrib, CONDITION_PARAM_TICKS, 10000)
+setConditionParam(conditionAttrib, CONDITION_PARAM_SKILL_SHIELDPERCENT, 220)
+setConditionParam(conditionExhaustCombat, CONDITION_PARAM_TICKS, 10000)
+setConditionParam(conditionExhaustHeal, CONDITION_PARAM_TICKS, 10000)
+setConditionParam(conditionPacified, CONDITION_PARAM_TICKS, 10000)
 
-local pacified = Condition(CONDITION_PACIFIED)
-pacified:setParameter(CONDITION_PARAM_TICKS, 10000)
-combat:setCondition(pacified)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+setCombatCondition(combat, conditionAttrib)
+setCombatCondition(combat, conditionExhaustCombat)
+setCombatCondition(combat, conditionExhaustHeal)
+setCombatCondition(combat, conditionPacified)
 
-function onCastSpell(creature, variant)
-	return combat:execute(creature, variant)
+function onCastSpell(cid, var)
+	if(doCombat(cid, combat, var) == LUA_NO_ERROR) then
+		return LUA_NO_ERROR
+	end
+	return LUA_ERROR
 end

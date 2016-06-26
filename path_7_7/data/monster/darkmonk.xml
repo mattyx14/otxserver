@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dark Monk" nameDescription="a dark monk" race="blood" experience="145" speed="210" manacost="480">
+	<health now="190" max="190"/>
+	<look type="225" corpse="3058"/>
+	<targetchange interval="5000" chance="5"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="37"/>
+		<attack name="lifedrain" interval="1000" chance="12" range="1" min="-55" max="-100">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+	</attacks>
+	<defenses armor="22" defense="43">
+		<defense name="healing" interval="1000" chance="12" min="25" max="49">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="10" speedchange="300" duration="6000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="This is where your path will end!"/>
+		<voice sentence="Your end has come."/>
+		<voice sentence="You are no match for us!"/>
+	</voices>
+	<loot>
+		<item id="2689" chance="40000"/><!-- bread -->
+		<item id="2015" chance="18000"/><!-- brown flask -->
+		<item id="1987" chance="26000"/><!-- bag -->
+		<item id="2148" countmax="18" chance="30000"/><!-- gold coin -->
+		<item id="2044" chance="20000"/><!-- lamp -->
+		<item id="2642" chance="16000"/><!-- sandals -->
+		<item id="1949" chance="40000"/><!-- scroll -->
+		<item id="2401" chance="22000"/><!-- staff -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2193" chance="100"/><!-- ankh -->
+			<item id="2467" chance="11000"/><!-- leather armor -->
+			<item id="2177" chance="2000"/><!-- life crystal -->
+			<item id="2166" chance="100"/><!-- power ring -->
+		</item>
+	</loot>
+</monster>

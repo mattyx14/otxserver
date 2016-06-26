@@ -66,7 +66,6 @@
 	<item id="415" name="stone floor" />
 	<item fromid="416" toid="417" article="a" name="stone tile">
 		<attribute key="description" value="It seems to be a switch." />
-		<attribute key="walkStack" value="0" />
 	</item>
 	<item id="418" article="a" name="stone tile">
 		<attribute key="description" value="There is a hole in the ceiling." />
@@ -80,7 +79,6 @@
 	<item id="424" article="a" name="stone tile" />
 	<item fromid="425" toid="426" article="a" name="stone tile">
 		<attribute key="description" value="It seems to be a switch." />
-		<attribute key="walkStack" value="0" />
 	</item>
 	<item id="427" article="a" name="trapdoor">
 		<attribute key="floorchange" value="down" />
@@ -99,7 +97,6 @@
 	<item fromid="434" toid="445" name="wooden floor" />
 	<item fromid="446" toid="447" name="wooden floor">
 		<attribute key="description" value="It seems to be a switch." />
-		<attribute key="walkStack" value="0" />
 	</item>
 	<item fromid="448" toid="456" name="wooden floor" />
 	<item id="457" article="a" name="white stone tile" />
@@ -6730,7 +6727,6 @@
 	<item id="3215" name="stone floor" />
 	<item fromid="3216" toid="3217" article="a" name="wooden floor">
 		<attribute key="description" value="It seems to be a switch." />
-		<attribute key="walkStack" value="0" />
 	</item>
 	<item id="3218" article="a" name="stone floor" />
 	<item fromid="3219" toid="3220" name="stairs">

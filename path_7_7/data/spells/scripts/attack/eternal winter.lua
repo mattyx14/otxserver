@@ -1,16 +1,11 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ICETORNADO)
-combat:setArea(createCombatArea(AREA_CROSS5X5))
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ICETORNADO)
+setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -1.0, 0, -1.6, 0)
 
-function onGetFormulaValues(player, level, maglevel)
-	local min = (level / 5) + (maglevel * 5.5) + 25
-	local max = (level / 5) + (maglevel * 11) + 50
-	return -min, -max
-end
+local area = createCombatArea(AREA_CROSS5X5)
+setCombatArea(combat, area)
 
-combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
-
-function onCastSpell(creature, variant)
-	return combat:execute(creature, variant)
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
 end

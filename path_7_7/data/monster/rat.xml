@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Rat" nameDescription="a rat" race="blood" experience="5" speed="134" manacost="200">
+	<health now="20" max="20"/>
+	<look type="21" corpse="2813"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="5"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="15" attack="7"/>
+	</attacks>
+	<defenses armor="1" defense="3"/>
+	<loot>
+		<item id="2696" chance="80000"/><!-- cheese -->
+		<item id="2148" countmax="4" chance="70000"/><!-- gold coin -->
+		<item id="3976" countmax="3" chance="50000"/><!-- worm -->
+	</loot>
+</monster>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Behemoth" nameDescription="a behemoth" race="blood" experience="2500" speed="280" manacost="0">
+	<health now="4000" max="4000"/>
+	<look type="55" corpse="2931"/>
+	<targetchange interval="5000" chance="5"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="110" attack="75"/>
+		<attack name="physical" interval="2000" chance="15" range="7" min="-100" max="-185">
+			<attribute key="shootEffect" value="largerock"/>
+		</attack>
+	</attacks>
+	<defenses armor="50" defense="65">
+		<defense name="speed" interval="1000" chance="7" speedchange="290" duration="4000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity energy="1"/>
+		<immunity paralyze="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="You're so little!"/>
+		<voice sentence="Human flesh - delicious!"/>
+		<voice sentence="Crush the intruders!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="2023" chance="22000"/><!-- amphora -->
+		<item id="2416" chance="30000"/><!-- crowbar -->
+		<item id="2387" chance="20000"/><!-- double axe -->
+		<item id="2148" countmax="60" chance="70000"/><!-- gold coin -->
+		<item id="2148" countmax="80" chance="50000"/><!-- gold coin -->
+		<item id="2666" countmax="6" chance="80000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2231" chance="14000"/><!-- big bone -->
+			<item id="2125" chance="600"/><!-- crystal necklace -->
+			<item id="2489" chance="6000"/><!-- dark armor -->
+			<item id="2393" chance="2000"/><!-- giant sword -->
+			<item id="2553" chance="12000"/><!-- pick -->
+			<item id="2463" chance="4000"/><!-- plate armor -->
+			<item id="2150" countmax="2" chance="8000"/><!-- small amethyst -->
+			<item id="2645" chance="800"/><!-- steel boots -->
+			<item id="2174" chance="1600"/><!-- strange symbol -->
+			<item id="2377" chance="8000"/><!-- two handed sword -->
+		</item>
+	</loot>
+</monster>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<monster name="Crab" namedescription="a crab" race="blood" experience="30" speed="180" manacost="305">
+	<health now="55" max="55"/>
+	<look type="112" corpse="4253"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="25" attack="15"/>
+	</attacks>
+	<defenses armor="28" defense="30"/>
+	<immunities>
+		<immunity poison="1"/>
+	</immunities>
+	<loot>
+		<item id="2667" chance="40000"/><!-- fish -->
+		<item id="2148" countmax="10" chance="80000"/><!-- gold coin -->
+	</loot>
+</monster>

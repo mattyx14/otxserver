@@ -1,66 +1,62 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
-combat:setArea(createCombatArea(AREA_CROSS5X5))
+local combat = createCombatObject()
+local area = createCombatArea(AREA_CROSS5X5)
+setCombatArea(combat, area)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
 
-local condition = Condition(CONDITION_REGENERATION)
-condition:setParameter(CONDITION_PARAM_SUBID, 1)
-condition:setParameter(CONDITION_PARAM_TICKS, 2 * 60 * 1000)
-condition:setParameter(CONDITION_PARAM_HEALTHGAIN, 20)
-condition:setParameter(CONDITION_PARAM_HEALTHTICKS, 2000)
-condition:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
+local condition = createConditionObject(CONDITION_REGENERATION)
+setConditionParam(condition, CONDITION_PARAM_SUBID, 2)
+setConditionParam(condition, CONDITION_PARAM_BUFF, true)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 2 * 60 * 1000)
+setConditionParam(condition, CONDITION_PARAM_HEALTHGAIN, 20)
+setConditionParam(condition, CONDITION_PARAM_HEALTHTICKS, 2000)
 
-local baseMana = 120
-function onCastSpell(creature, variant, isHotkey)
-	local position = creature:getPosition()
+local config = {
+	baseMana = 120
+}
 
-	local party = creature:getParty()
-	if not party then
-		creature:sendCancelMessage("No party members in range.")
-		position:sendMagicEffect(CONST_ME_POFF)
-		return false
-	end
-
-	local membersList = party:getMembers()
-	membersList[#membersList + 1] = party:getLeader()
-	if membersList == nil or type(membersList) ~= 'table' or #membersList <= 1 then
-		creature:sendCancelMessage("No party members in range.")
-		position:sendMagicEffect(CONST_ME_POFF)
+function onCastSpell(cid, var)
+	local pos, membersList = getCreaturePosition(cid), getPartyMembers(cid)
+	if(membersList == nil or type(membersList) ~= 'table' or table.maxn(membersList) <= 1) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOPARTYMEMBERSINRANGE)
+		doSendMagicEffect(pos, CONST_ME_POFF)
 		return false
 	end
 
 	local affectedList = {}
-	for _, targetPlayer in ipairs(membersList) do
-		if targetPlayer:getPosition():getDistance(position) <= 36 then
-			affectedList[#affectedList + 1] = targetPlayer
+	for _, pid in ipairs(membersList) do
+		if(getDistanceBetween(getCreaturePosition(pid), pos) <= 36) then
+			table.insert(affectedList, pid)
 		end
 	end
 
-	local tmp = #affectedList
-	if tmp <= 1 then
-		creature:sendCancelMessage("No party members in range.")
-		position:sendMagicEffect(CONST_ME_POFF)
+	local tmp = table.maxn(affectedList)
+	if(tmp <= 1) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOPARTYMEMBERSINRANGE)
+		doSendMagicEffect(pos, CONST_ME_POFF)
 		return false
 	end
 
-	local mana = math.ceil((0.9 ^ (tmp - 1) * baseMana) * tmp)
-	if creature:getMana() < mana then
-		creature:sendCancelMessage(RETURNVALUE_NOTENOUGHMANA)
-		position:sendMagicEffect(CONST_ME_POFF)
+	local mana = math.ceil((0.9 ^ (tmp - 1) * config.baseMana) * tmp)
+	if(getCreatureMana(cid) < mana) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTENOUGHMANA)
+		doSendMagicEffect(pos, CONST_ME_POFF)
 		return false
 	end
 
-	if not combat:execute(creature, variant) then
-		creature:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-		position:sendMagicEffect(CONST_ME_POFF)
+	if(not doCombat(cid, combat, var)) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+		doSendMagicEffect(pos, CONST_ME_POFF)
 		return false
 	end
 
-	creature:addMana(-(mana - baseMana), false)
-	creature:addManaSpent((mana - baseMana))
+	doCreatureAddMana(cid, -(mana - config.baseMana), false)
+	if(not getPlayerFlagValue(cid, PlayerFlag_NotGainMana) and not getTileInfo(getThingPosition(cid)).hardcore) then
+		doPlayerAddSpentMana(cid, (mana - config.baseMana))
+	end
 
-	for _, targetPlayer in ipairs(affectedList) do
-		targetPlayer:addCondition(condition)
+	for _, pid in ipairs(affectedList) do
+		doAddCondition(pid, condition)
 	end
 
 	return true

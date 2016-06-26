@@ -1,18 +1,21 @@
-function onCastSpell(creature, variant)
-	local position = creature:getPosition()
-	position:sendMagicEffect(CONST_ME_POFF)
+local SPOTS = {384, 418, 8278, 8592}
 
-	local tile = Tile(position)
-	if isInArray(ropeSpots, tile:getGround():getId()) or tile:getItemById(14435) then
-		tile = Tile(position:moveUpstairs())
-		if tile then
-			creature:teleportTo(position, false)
-			position:sendMagicEffect(CONST_ME_TELEPORT)
-		else
-			creature:sendCancelMessage(RETURNVALUE_NOTENOUGHROOM)
-		end
+function onCastSpell(cid, var)
+	local position = getThingPosition(cid)
+	position.stackpos = 0
+
+	local ground = getThingFromPos(position)
+	if(isInArray(SPOTS, ground.itemid)) then
+		local newPosition = position
+		newPosition.y = newPosition.y + 1
+		newPosition.z = newPosition.z - 1
+
+		doTeleportThing(cid, newPosition, false)
+		doSendMagicEffect(position, CONST_ME_TELEPORT)
+		return true
 	else
-		creature:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+		doSendMagicEffect(position, CONST_ME_POFF)
+		return false
 	end
-	return true
 end
