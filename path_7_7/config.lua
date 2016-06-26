@@ -51,9 +51,9 @@ mapAuthor = "Mattyx14"
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = "dkktest"
-mysqlPass = "JKSUBYLM9zvxtZWt"
-mysqlDatabase = "dkktest"
+mysqlUser = ""
+mysqlPass = ""
+mysqlDatabase = ""
 mysqlPort = 3306
 mysqlSock = ""
 
