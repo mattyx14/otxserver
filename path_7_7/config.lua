@@ -4,7 +4,6 @@ worldType = "pvp"
 hotkeyAimbotEnabled = false
 protectionLevel = 1
 killsToRedSkull = 3
-killsToBlackSkull = 6
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
@@ -64,7 +63,6 @@ kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
 emoteSpells = true
 classicEquipmentSlots = false
-allowWalkthrough = true
 
 -- Critical hits
 -- NOTE: criticalChance and extraPercent are percentages, not absolute values.
