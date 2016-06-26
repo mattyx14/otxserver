@@ -1206,6 +1206,10 @@ void ProtocolGame::sendCreatureTurn(const Creature* creature, uint32_t stackPos)
 
 void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos/* = nullptr*/)
 {
+	if (!creature) {
+		return;
+	}
+
 	NetworkMessage msg;
 	msg.addByte(0xAA);
 
@@ -1214,13 +1218,14 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 	msg.add<uint32_t>(++statementId);
 #endif
 
-	msg.addString(creature->getName());
-
-	//Add level only for players
-	if (const Player* speaker = creature->getPlayer()) {
-		msg.add<uint16_t>(speaker->getLevel());
+	if (type != TALKTYPE_CHANNEL_R2) {
+		if (type != TALKTYPE_RVR_ANSWER) {
+			msg.addString(creature->getName());
+		} else {
+			msg.addString("Gamemaster");
+		}
 	} else {
-		msg.add<uint16_t>(0x00);
+		msg.addString("");
 	}
 
 	msg.addByte(type);
@@ -1236,24 +1241,21 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 
 void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId)
 {
+	if (!creature) {
+		return;
+	}
+
 	NetworkMessage msg;
 	msg.addByte(0xAA);
 
 	static uint32_t statementId = 0;
 	msg.add<uint32_t>(++statementId);
-	if (!creature) {
-		msg.add<uint32_t>(0x00);
-	} else if (type == TALKTYPE_CHANNEL_R2) {
-		msg.add<uint32_t>(0x00);
+
+	if (type == TALKTYPE_CHANNEL_R2) {
+		msg.addString("");
 		type = TALKTYPE_CHANNEL_R1;
 	} else {
 		msg.addString(creature->getName());
-		//Add level only for players
-		if (const Player* speaker = creature->getPlayer()) {
-			msg.add<uint16_t>(speaker->getLevel());
-		} else {
-			msg.add<uint16_t>(0x00);
-		}
 	}
 
 	msg.addByte(type);
