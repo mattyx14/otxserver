@@ -1117,7 +1117,7 @@ void ProtocolGame::sendContainer(uint8_t cid, const Container* container, bool h
 
 	msg.addByte(cid);
 
-	msg.addItem(container);
+	msg.addItemId(container);
 	msg.addString(container->getName());
 
 	msg.addByte(container->capacity());
@@ -1624,7 +1624,7 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t ma
 	NetworkMessage msg;
 	msg.addByte(0x96);
 	msg.add<uint32_t>(windowTextId);
-	msg.addItem(item);
+	msg.addItemId(item);
 
 	if (canWrite) {
 		msg.add<uint16_t>(maxlen);
