@@ -35,8 +35,6 @@
 
 	<!-- Customs -->
 	<talkaction words="/save" script="save.lua" />
-	<talkaction words="/addons" separator=" " script="alladdons.lua" />
-	<talkaction words="/mounts" separator=" " script="allmounts.lua" />
 	<talkaction words="/pos" separator=" " script="teleport_to_pos.lua" />
 	<talkaction words="/attr" separator=" " script="attributes.lua" />
 
