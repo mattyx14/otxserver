@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Vashresamun" nameDescription="Vashresamun" race="undead" experience="2950" speed="340" manacost="0">
+	<health now="4000" max="4000" />
+	<look type="90" corpse="6025" />
+	<targetchange interval="5000" chance="8" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-200" />
+		<attack name="physical" interval="2000" chance="30" radius="5" target="0" min="-200" max="-600">
+			<attribute key="areaEffect" value="purplenote" />
+		</attack>
+		<attack name="lifedrain" interval="4000" chance="20" range="1" min="0" max="-800" />
+		<attack name="poisoncondition" interval="2000" chance="30" radius="5" target="0" min="-50" max="-50" />
+		<attack name="speed" interval="1000" chance="6" range="7" speedchange="-400" duration="20000">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="35">
+		<defense name="healing" interval="2000" chance="20" min="60" max="450">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity lifedrain="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="Banshee" interval="2000" chance="20" />
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="If music is the food of death, drop dead." />
+		<voice sentence="Are you enjoying my music?" />
+		<voice sentence="Come my maidens, we have visitors!" />
+		<voice sentence="Chakka Chakka!" />
+		<voice sentence="Heheheheee!" />
+	</voices>
+	<loot>
+		<item id="2349" chance="100000" />				<!-- blue note -->
+		<item id="2148" countmax="213" chance="91000" />	<!-- gold coin -->
+		<item id="2143" chance="12000" />				<!-- white pearl -->
+		<item id="2072" chance="10000" />				<!-- lute -->
+		<item id="2445" chance="1300" />					<!-- crystal mace -->
+		<item id="2656" chance="650" />					<!-- blue robe -->
+		<item id="2139" chance="330" />					<!-- ancient tiara -->
+		<item id="2074" chance="330" />					<!-- panpipes -->
+		<item id="2124" chance="300" />					<!-- crystal ring -->
+	</loot>
+</monster>

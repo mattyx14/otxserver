@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<houses>
+	<house name="Unnamed House #1" houseid="1" entryx="148" entryy="58" entryz="7" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #2" houseid="2" entryx="153" entryy="58" entryz="7" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #3" houseid="3" entryx="158" entryy="58" entryz="7" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #4" houseid="4" entryx="176" entryy="57" entryz="7" rent="0" townid="1" size="45" />
+	<house name="Unnamed House #5" houseid="5" entryx="178" entryy="36" entryz="7" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #6" houseid="6" entryx="180" entryy="33" entryz="7" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #7" houseid="7" entryx="176" entryy="33" entryz="7" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #8" houseid="8" entryx="163" entryy="37" entryz="7" rent="0" townid="1" size="30" />
+	<house name="Unnamed House #9" houseid="9" entryx="157" entryy="34" entryz="7" rent="0" townid="1" size="20" />
+	<house name="Unnamed House #10" houseid="10" entryx="165" entryy="31" entryz="6" rent="0" townid="1" size="39" />
+	<house name="Unnamed House #11" houseid="11" entryx="165" entryy="33" entryz="6" rent="0" townid="1" size="12" />
+	<house name="Unnamed House #12" houseid="12" entryx="165" entryy="35" entryz="6" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #13" houseid="13" entryx="148" entryy="33" entryz="7" rent="0" townid="1" size="21" />
+	<house name="Unnamed House #14" houseid="14" entryx="140" entryy="33" entryz="7" rent="0" townid="1" size="42" />
+	<house name="Unnamed House #15" houseid="15" entryx="205" entryy="75" entryz="6" rent="0" townid="1" size="21" />
+	<house name="Unnamed House #16" houseid="16" entryx="205" entryy="75" entryz="6" rent="0" townid="1" size="22" />
+	<house name="Unnamed House #17" houseid="17" entryx="212" entryy="74" entryz="6" rent="0" townid="1" size="30" />
+	<house name="Unnamed House #18" houseid="18" entryx="212" entryy="73" entryz="6" rent="0" townid="1" size="15" />
+	<house name="Unnamed House #19" houseid="19" entryx="218" entryy="100" entryz="7" rent="0" townid="1" size="134" />
+	<house name="Unnamed House #20" houseid="20" entryx="216" entryy="225" entryz="6" rent="0" townid="2" size="24" />
+	<house name="Unnamed House #21" houseid="21" entryx="219" entryy="216" entryz="6" rent="0" townid="2" size="140" />
+	<house name="Unnamed House #22" houseid="22" entryx="234" entryy="206" entryz="6" rent="0" townid="2" size="9" />
+	<house name="Unnamed House #23" houseid="23" entryx="238" entryy="206" entryz="6" rent="0" townid="2" size="9" />
+	<house name="Unnamed House #24" houseid="24" entryx="245" entryy="209" entryz="6" rent="0" townid="2" size="24" />
+	<house name="Unnamed House #25" houseid="25" entryx="240" entryy="212" entryz="6" rent="0" townid="2" size="6" />
+	<house name="Unnamed House #26" houseid="26" entryx="242" entryy="212" entryz="6" rent="0" townid="2" size="15" />
+	<house name="Unnamed House #27" houseid="27" entryx="250" entryy="208" entryz="7" rent="0" townid="2" size="24" />
+	<house name="Unnamed House #28" houseid="28" entryx="242" entryy="212" entryz="7" rent="0" townid="2" size="15" />
+	<house name="Unnamed House #29" houseid="29" entryx="240" entryy="212" entryz="7" rent="0" townid="2" size="6" />
+	<house name="Unnamed House #30" houseid="30" entryx="245" entryy="209" entryz="7" rent="0" townid="2" size="24" />
+	<house name="Unnamed House #31" houseid="31" entryx="238" entryy="206" entryz="7" rent="0" townid="2" size="9" />
+	<house name="Unnamed House #32" houseid="32" entryx="234" entryy="206" entryz="7" rent="0" townid="2" size="9" />
+	<house name="Unnamed House #33" houseid="33" entryx="134" entryy="60" entryz="7" rent="0" townid="1" size="12" />
+	<house name="Unnamed House #34" houseid="34" entryx="129" entryy="60" entryz="7" rent="0" townid="1" size="12" />
+	<house name="Unnamed House #35" houseid="35" entryx="234" entryy="233" entryz="7" rent="0" townid="2" size="16" />
+</houses>
