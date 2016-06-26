@@ -820,7 +820,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 	if (it.isRune()) {
 		if (!it.runeSpellName.empty()) {
-			s << " (\"" << it.runeSpellName << "\")";
+			s << " (\"" << it.runeSpellName << "\") " << subType << "x";
 		}
 
 		if (it.runeLevel > 0 || it.runeMagLevel > 0) {
