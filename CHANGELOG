@@ -41,7 +41,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 8.6 to 10.95
+		Tibia Clients - 7.6 to 10.95
 
 	TODO WITH OPTIONAL
 		MISC:
@@ -51,11 +51,12 @@
 			- Look Display
 
 		OTHERS:
-			- Added support to Tibia Protocol 7.40 to 8.00/11 are on WIP
+			- Added support to Tibia Protocol 8.00/11 are on WIP
 			- CastSystem for Protols 8.x
 ]
 
 [ OTX Server 3.5 :: Version " FORGOTTEN "
+	- Added support to 7.6 - 7.70/72
 	- Added Reward System
 		Requite it on monster
 		<flags>
@@ -66,6 +67,7 @@
 		</loot>
 	- Fixed skill bytes for 10.94/95
 	- Fixed cast system error
+	- Fixed monsters
 ]
 
 [ OTX Server 3.4 :: Version " LORD ZEDD "
