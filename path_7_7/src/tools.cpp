@@ -496,6 +496,7 @@ MagicEffectNames magicEffectNames[] = {
 	{"greenbubble",		CONST_ME_GREEN_RINGS},
 	{"blackspark",		CONST_ME_HITAREA},
 	{"teleport",		CONST_ME_TELEPORT},
+	{"energyarea",		CONST_ME_TELEPORT},
 	{"energy",		CONST_ME_ENERGYHIT},
 	{"blueshimmer",		CONST_ME_MAGIC_BLUE},
 	{"redshimmer",		CONST_ME_MAGIC_RED},
@@ -510,16 +511,6 @@ MagicEffectNames magicEffectNames[] = {
 	{"purplenote",		CONST_ME_SOUND_PURPLE},
 	{"bluenote",		CONST_ME_SOUND_BLUE},
 	{"whitenote",		CONST_ME_SOUND_WHITE},
-	{"bubbles",		CONST_ME_BUBBLES},
-	{"dice",		CONST_ME_CRAPS},
-	{"giftwraps",		CONST_ME_GIFT_WRAPS},
-	{"yellowfirework",	CONST_ME_FIREWORK_YELLOW},
-	{"redfirework",		CONST_ME_FIREWORK_RED},
-	{"bluefirework",	CONST_ME_FIREWORK_BLUE},
-	{"stun",		CONST_ME_STUN},
-	{"sleep",		CONST_ME_SLEEP},
-	{"watercreature",	CONST_ME_WATERCREATURE},
-	{"groundshaker",	CONST_ME_GROUNDSHAKER},
 };
 
 ShootTypeNames shootTypeNames[] = {
@@ -534,35 +525,23 @@ ShootTypeNames shootTypeNames[] = {
 	{"throwingknife",	CONST_ANI_THROWINGKNIFE},
 	{"smallstone",		CONST_ANI_SMALLSTONE},
 	{"death",		CONST_ANI_DEATH},
+	{"suddendeath",		CONST_ANI_DEATH},
 	{"largerock",		CONST_ANI_LARGEROCK},
 	{"snowball",		CONST_ANI_SNOWBALL},
 	{"powerbolt",		CONST_ANI_POWERBOLT},
 	{"poison",		CONST_ANI_POISON},
-	{"infernalbolt",	CONST_ANI_INFERNALBOLT},
-	{"huntingspear",	CONST_ANI_HUNTINGSPEAR},
-	{"enchantedspear",	CONST_ANI_ENCHANTEDSPEAR},
-	{"redstar",		CONST_ANI_REDSTAR},
-	{"greenstar",		CONST_ANI_GREENSTAR},
-	{"royalspear",		CONST_ANI_ROYALSPEAR},
-	{"sniperarrow",		CONST_ANI_SNIPERARROW},
-	{"onyxarrow",		CONST_ANI_ONYXARROW},
-	{"piercingbolt",	CONST_ANI_PIERCINGBOLT},
-	{"whirlwindsword",	CONST_ANI_WHIRLWINDSWORD},
-	{"whirlwindaxe",	CONST_ANI_WHIRLWINDAXE},
-	{"whirlwindclub",	CONST_ANI_WHIRLWINDCLUB},
-	{"etherealspear",	CONST_ANI_ETHEREALSPEAR},
 };
 
 CombatTypeNames combatTypeNames[] = {
 	{"physical",		COMBAT_PHYSICALDAMAGE},
 	{"energy",		COMBAT_ENERGYDAMAGE},
 	{"earth",		COMBAT_EARTHDAMAGE},
+	{"poison",		COMBAT_EARTHDAMAGE},
 	{"fire",		COMBAT_FIREDAMAGE},
 	{"undefined",		COMBAT_UNDEFINEDDAMAGE},
 	{"lifedrain",		COMBAT_LIFEDRAIN},
 	{"manadrain",		COMBAT_MANADRAIN},
 	{"healing",		COMBAT_HEALING},
-	{"drown",		COMBAT_DROWNDAMAGE},
 };
 
 AmmoTypeNames ammoTypeNames[] = {
@@ -780,8 +759,6 @@ size_t combatTypeToIndex(CombatType_t combatType)
 			return 6;
 		case COMBAT_HEALING:
 			return 7;
-		case COMBAT_DROWNDAMAGE:
-			return 8;
 		default:
 			return 0;
 	}

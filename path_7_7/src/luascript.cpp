@@ -1080,7 +1080,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(COMBAT_LIFEDRAIN)
 	registerEnum(COMBAT_MANADRAIN)
 	registerEnum(COMBAT_HEALING)
-	registerEnum(COMBAT_DROWNDAMAGE)
 
 	registerEnum(COMBAT_PARAM_TYPE)
 	registerEnum(COMBAT_PARAM_EFFECT)
@@ -1109,7 +1108,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_EXHAUST_WEAPON)
 	registerEnum(CONDITION_REGENERATION)
 	registerEnum(CONDITION_SOUL)
-	registerEnum(CONDITION_DROWN)
 	registerEnum(CONDITION_MUTED)
 	registerEnum(CONDITION_CHANNELMUTEDTICKS)
 	registerEnum(CONDITION_YELLTICKS)
@@ -1201,16 +1199,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ME_SOUND_PURPLE)
 	registerEnum(CONST_ME_SOUND_BLUE)
 	registerEnum(CONST_ME_SOUND_WHITE)
-	registerEnum(CONST_ME_BUBBLES)
-	registerEnum(CONST_ME_CRAPS)
-	registerEnum(CONST_ME_GIFT_WRAPS)
-	registerEnum(CONST_ME_FIREWORK_YELLOW)
-	registerEnum(CONST_ME_FIREWORK_RED)
-	registerEnum(CONST_ME_FIREWORK_BLUE)
-	registerEnum(CONST_ME_STUN)
-	registerEnum(CONST_ME_SLEEP)
-	registerEnum(CONST_ME_WATERCREATURE)
-	registerEnum(CONST_ME_GROUNDSHAKER)
 
 	registerEnum(CONST_ANI_NONE)
 	registerEnum(CONST_ANI_SPEAR)
@@ -1228,20 +1216,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ANI_SNOWBALL)
 	registerEnum(CONST_ANI_POWERBOLT)
 	registerEnum(CONST_ANI_POISON)
-	registerEnum(CONST_ANI_INFERNALBOLT)
-	registerEnum(CONST_ANI_HUNTINGSPEAR)
-	registerEnum(CONST_ANI_ENCHANTEDSPEAR)
-	registerEnum(CONST_ANI_REDSTAR)
-	registerEnum(CONST_ANI_GREENSTAR)
-	registerEnum(CONST_ANI_ROYALSPEAR)
-	registerEnum(CONST_ANI_SNIPERARROW)
-	registerEnum(CONST_ANI_ONYXARROW)
-	registerEnum(CONST_ANI_PIERCINGBOLT)
-	registerEnum(CONST_ANI_WHIRLWINDSWORD)
-	registerEnum(CONST_ANI_WHIRLWINDAXE)
-	registerEnum(CONST_ANI_WHIRLWINDCLUB)
-	registerEnum(CONST_ANI_ETHEREALSPEAR)
-	registerEnum(CONST_ANI_WEAPONTYPE)
 
 	registerEnum(CONST_PROP_BLOCKSOLID)
 	registerEnum(CONST_PROP_HASHEIGHT)
@@ -1610,7 +1584,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::BIND_ONLY_GLOBAL_ADDRESS)
 	registerEnumIn("configKeys", ConfigManager::OPTIMIZE_DATABASE)
 	registerEnumIn("configKeys", ConfigManager::EMOTE_SPELLS)
-	registerEnumIn("configKeys", ConfigManager::STAMINA_SYSTEM)
 	registerEnumIn("configKeys", ConfigManager::WARN_UNSAFE_SCRIPTS)
 	registerEnumIn("configKeys", ConfigManager::CONVERT_UNSAFE_SCRIPTS)
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_EQUIPMENT_SLOTS)
@@ -2019,9 +1992,6 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Player", "getGroup", LuaScriptInterface::luaPlayerGetGroup);
 	registerMethod("Player", "setGroup", LuaScriptInterface::luaPlayerSetGroup);
-
-	registerMethod("Player", "getStamina", LuaScriptInterface::luaPlayerGetStamina);
-	registerMethod("Player", "setStamina", LuaScriptInterface::luaPlayerSetStamina);
 
 	registerMethod("Player", "getSoul", LuaScriptInterface::luaPlayerGetSoul);
 	registerMethod("Player", "addSoul", LuaScriptInterface::luaPlayerAddSoul);
@@ -7882,32 +7852,6 @@ int LuaScriptInterface::luaPlayerSetGroup(lua_State* L)
 	if (player) {
 		player->setGroup(group);
 		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetStamina(lua_State* L)
-{
-	// player:getStamina()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->getStaminaMinutes());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerSetStamina(lua_State* L)
-{
-	// player:setStamina(stamina)
-	uint16_t stamina = getNumber<uint16_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->staminaMinutes = std::min<uint16_t>(3360, stamina);
-		player->sendStats();
 	} else {
 		lua_pushnil(L);
 	}

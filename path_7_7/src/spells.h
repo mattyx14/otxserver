@@ -145,6 +145,9 @@ class Spell : public BaseSpell
 		uint32_t getManaPercent() const {
 			return manaPercent;
 		}
+		uint32_t getLevelPercent() const {
+			return levelPercent;
+		}
 		bool isPremium() const {
 			return premium;
 		}
@@ -167,10 +170,9 @@ class Spell : public BaseSpell
 		bool playerInstantSpellCheck(Player* player, const Position& toPos);
 		bool playerRuneSpellCheck(Player* player, const Position& toPos);
 
-		uint8_t spellId;
-
 		uint32_t mana;
 		uint32_t manaPercent;
+		uint32_t levelPercent;
 		uint32_t soul;
 		uint32_t cooldown;
 		uint32_t level;

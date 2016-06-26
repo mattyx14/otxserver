@@ -95,13 +95,6 @@ struct OpenContainer {
 	uint16_t index;
 };
 
-struct OutfitEntry {
-	OutfitEntry(uint16_t lookType, uint8_t addons) : lookType(lookType), addons(addons) {}
-
-	uint16_t lookType;
-	uint8_t addons;
-};
-
 struct Skill {
 	Skill() : tries(0), level(10), percent(0) {}
 	uint64_t tries;
@@ -171,10 +164,6 @@ class Player final : public Creature, public Cylinder
 		static uint64_t getExpForLevel(int32_t lv) {
 			lv--;
 			return ((50ULL * lv * lv * lv) - (150ULL * lv * lv) + (400ULL * lv)) / 3ULL;
-		}
-
-		uint16_t getStaminaMinutes() const {
-			return staminaMinutes;
 		}
 
 		bool addOfflineTrainingTries(skills_t skill, uint64_t tries);
@@ -324,7 +313,6 @@ class Player final : public Creature, public Cylinder
 
 		void addStorageValue(const uint32_t key, const int32_t value, const bool isLogin = false);
 		bool getStorageValue(const uint32_t key, int32_t& value) const;
-		void genReservedStorageRange();
 
 		void setGroup(Group* newGroup) {
 			group = newGroup;
@@ -530,7 +518,7 @@ class Player final : public Creature, public Cylinder
 			return pzLocked;
 		}
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-									 bool checkDefense = false, bool checkArmor = false, bool field = false) final;
+		                             bool checkDefense = false, bool checkArmor = false, bool field = false) final;
 		void doAttacking(uint32_t interval) final;
 		bool hasExtraSwing() final {
 			return lastAttack > 0 && ((OTSYS_TIME() - lastAttack) >= getAttackSpeed());
@@ -760,14 +748,14 @@ class Player final : public Creature, public Cylinder
 
 		//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
-									  const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
+		                              const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
 		void onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
-									  const Item* item) final;
+		                              const Item* item) final;
 
 		void onCreatureAppear(Creature* creature, bool isLogin) final;
 		void onRemoveCreature(Creature* creature, bool isLogout) final;
 		void onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-									const Tile* oldTile, const Position& oldPos, bool teleport) final;
+		                            const Tile* oldTile, const Position& oldPos, bool teleport) final;
 
 		void onAttackedCreatureDisappear(bool isLogout) final;
 		void onFollowCreatureDisappear(bool isLogout) final;
@@ -850,11 +838,6 @@ class Player final : public Creature, public Cylinder
 				client->sendTextMessage(message);
 			}
 		}
-		void sendReLoginWindow() const {
-			if (client) {
-				client->sendReLoginWindow();
-			}
-		}
 		void sendTextWindow(Item* item, uint16_t maxlen, bool canWrite) const {
 			if (client) {
 				client->sendTextWindow(windowTextId, item, maxlen, canWrite);
@@ -909,16 +892,6 @@ class Player final : public Creature, public Cylinder
 		void sendChannel(uint16_t channelId, const std::string& channelName) {
 			if (client) {
 				client->sendChannel(channelId, channelName);
-			}
-		}
-		void sendQuestLog() {
-			if (client) {
-				client->sendQuestLog();
-			}
-		}
-		void sendQuestLine(const Quest* quest) {
-			if (client) {
-				client->sendQuestLine(quest);
 			}
 		}
 		void sendFightModes() {
@@ -1016,7 +989,6 @@ class Player final : public Creature, public Cylinder
 		std::map<uint32_t, DepotChest*> depotChests;
 		std::map<uint32_t, int32_t> storageMap;
 
-		std::vector<OutfitEntry> outfits;
 		GuildWarList guildWarList;
 
 		std::forward_list<Party*> invitePartyList;
@@ -1037,7 +1009,6 @@ class Player final : public Creature, public Cylinder
 		uint64_t manaSpent;
 		uint64_t lastAttack;
 		uint64_t bankBalance;
-		uint64_t lastQuestlogUpdate;
 		int64_t lastFailedFollow;
 		int64_t skullTicks;
 		int64_t lastPing;
@@ -1079,8 +1050,6 @@ class Player final : public Creature, public Cylinder
 		uint32_t manaMax;
 		int32_t varSkills[SKILL_LAST + 1];
 		int32_t varStats[STAT_LAST + 1];
-		int32_t purchaseCallback;
-		int32_t saleCallback;
 		int32_t MessageBufferCount;
 		int32_t premiumDays;
 		int32_t bloodHitCount;
@@ -1090,7 +1059,6 @@ class Player final : public Creature, public Cylinder
 		int32_t idleTime;
 
 		uint16_t lastStatsTrainingTime;
-		uint16_t staminaMinutes;
 		uint16_t maxWriteLen;
 		int16_t lastDepotId;
 

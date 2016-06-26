@@ -7340,7 +7340,6 @@
 		<attribute key="weight" value="2200" />
 		<attribute key="attack" value="32" />
 		<attribute key="weaponType" value="distance" />
-		<attribute key="shootType" value="huntingspear" />
 		<attribute key="maxHitChance" value="80" />
 		<attribute key="range" value="3" />
 	</item>

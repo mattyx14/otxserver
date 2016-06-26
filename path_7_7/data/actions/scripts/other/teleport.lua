@@ -1,4 +1,4 @@
-local upFloorIds = {1386, 3678, 5543}
+local upFloorIds = {1386, 3678}
 local draw_well = 1369
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)

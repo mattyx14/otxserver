@@ -32,7 +32,6 @@ class House;
 class Container;
 class Tile;
 class Connection;
-class Quest;
 class ProtocolGame;
 typedef std::shared_ptr<ProtocolGame> ProtocolGame_ptr;
 
@@ -122,8 +121,6 @@ class ProtocolGame final : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 
-		void parseQuestLine(NetworkMessage& msg);
-
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
 		void parseRevokePartyInvite(NetworkMessage& msg);
@@ -165,18 +162,13 @@ class ProtocolGame final : public Protocol
 		void sendCreatureTurn(const Creature* creature, uint32_t stackpos);
 		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos = nullptr);
 
-		void sendQuestLog();
-		void sendQuestLine(const Quest* quest);
-
 		void sendCancelWalk();
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
 		void sendCancelTarget();
 		void sendCreatureVisible(const Creature* creature, bool visible);
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
-		// void sendTextMessage(MessageClasses mclass, const std::string& message);
 		void sendTextMessage(const TextMessage& message);
-		void sendReLoginWindow();
 
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);

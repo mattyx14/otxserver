@@ -30,18 +30,22 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 	if (!rawMessages) {
 		msg->writeMessageLength();
 
-		if (encryptionEnabled) {
-			XTEA_encrypt(*msg);
-			msg->addCryptoHeader();
-		}
+		#ifdef _MULTIPLATFORM77
+			if (encryptionEnabled) {
+				XTEA_encrypt(*msg);
+				msg->addCryptoHeader();
+			}
+		#endif
 	}
 }
 
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
-	if (encryptionEnabled && !XTEA_decrypt(msg)) {
-		return;
-	}
+	#ifdef _MULTIPLATFORM77
+		if (encryptionEnabled && !XTEA_decrypt(msg)) {
+			return;
+		}
+	#endif
 
 	parsePacket(msg);
 }

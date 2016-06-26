@@ -229,9 +229,6 @@
 
 	<!-- Ghosts -->
 	<monster name="Ghost" file="Ghosts/ghost.xml" />
-	<monster name="Spectre" file="Ghosts/spectre.xml" />
-	<monster name="Phantasm Summon" file="Ghosts/phantasm summon.xml" />
-	<monster name="Phantasm" file="Ghosts/phantasm.xml" />
 
 	<!-- Giants -->
 	<monster name="Behemoth" file="Giants/behemoth.xml" />

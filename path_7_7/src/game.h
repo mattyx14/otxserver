@@ -32,7 +32,6 @@
 #include "raids.h"
 #include "npc.h"
 #include "wildcardtree.h"
-#include "quests.h"
 
 class ServiceManager;
 class Creature;
@@ -339,7 +338,6 @@ class Game
 		void playerOpenChannel(uint32_t playerId, uint16_t channelId);
 		void playerCloseChannel(uint32_t playerId, uint16_t channelId);
 		void playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
-		void playerCloseNpcChannel(uint32_t playerId);
 		void playerReceivePing(uint32_t playerId);
 		void playerAutoWalk(uint32_t playerId, const std::forward_list<Direction>& listDir);
 		void playerStopAutoWalk(uint32_t playerId);
@@ -368,8 +366,6 @@ class Game
 		void playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
 		void playerTurn(uint32_t playerId, Direction dir);
 		void playerRequestOutfit(uint32_t playerId);
-		void playerShowQuestLog(uint32_t playerId);
-		void playerShowQuestLine(uint32_t playerId, uint16_t questId);
 		void playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 		               const std::string& receiver, const std::string& text);
 		void playerChangeOutfit(uint32_t playerId, Outfit_t outfit);
@@ -447,6 +443,7 @@ class Game
 
 		const std::unordered_map<uint32_t, Player*>& getPlayers() const { return players; }
 		const std::map<uint32_t, Npc*>& getNpcs() const { return npcs; }
+		const std::map<uint32_t, Monster*>& getMonsters() const { return monsters; }
 
 		void addPlayer(Player* player);
 		void removePlayer(Player* player);
@@ -477,7 +474,6 @@ class Game
 		Groups groups;
 		Map map;
 		Raids raids;
-		Quests quests;
 
 	protected:
 		bool playerSayCommand(Player* player, const std::string& text);

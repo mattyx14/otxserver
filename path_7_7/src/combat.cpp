@@ -132,9 +132,6 @@ CombatType_t Combat::ConditionToDamageType(ConditionType_t type)
 		case CONDITION_BLEEDING:
 			return COMBAT_PHYSICALDAMAGE;
 
-		case CONDITION_DROWN:
-			return COMBAT_DROWNDAMAGE;
-
 		case CONDITION_POISON:
 			return COMBAT_EARTHDAMAGE;
 
@@ -153,9 +150,6 @@ ConditionType_t Combat::DamageToConditionType(CombatType_t type)
 
 		case COMBAT_ENERGYDAMAGE:
 			return CONDITION_ENERGY;
-
-		case COMBAT_DROWNDAMAGE:
-			return CONDITION_DROWN;
 
 		case COMBAT_EARTHDAMAGE:
 			return CONDITION_POISON;
@@ -635,24 +629,14 @@ void Combat::postCombatEffects(Creature* caster, const Position& pos, const Comb
 void Combat::addDistanceEffect(Creature* caster, const Position& fromPos, const Position& toPos, uint8_t effect)
 {
 	if (effect == CONST_ANI_WEAPONTYPE) {
-		if (!caster) {
-			return;
-		}
-
 		Player* player = caster->getPlayer();
 		if (!player) {
 			return;
 		}
 
 		switch (player->getWeaponType()) {
-			case WEAPON_AXE:
-				effect = CONST_ANI_NONE;
-				break;
-			case WEAPON_SWORD:
-				effect = CONST_ANI_NONE;
-				break;
-			case WEAPON_CLUB:
-				effect = CONST_ANI_NONE;
+			case WEAPON_NONE:
+				effect = CONST_ANI_LARGEROCK;
 				break;
 			default:
 				effect = CONST_ANI_NONE;
@@ -660,7 +644,7 @@ void Combat::addDistanceEffect(Creature* caster, const Position& fromPos, const 
 		}
 	}
 
-	if (effect != CONST_ANI_NONE) {
+	if (caster && effect != CONST_ANI_NONE) {
 		g_game.addDistanceEffect(fromPos, toPos, effect);
 	}
 }

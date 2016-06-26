@@ -40,66 +40,16 @@
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
-	<melee id="7385" level="20" unproperly="1" />
 	<melee id="2377" level="20" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7408" level="25" unproperly="1" />
-	<melee id="7449" level="25" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
 	<melee id="2392" level="30" unproperly="1" />
 	<melee id="2407" level="30" unproperly="1" />
 	<melee id="2438" level="30" unproperly="1" />
-	<melee id="7407" level="30" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7424" level="30" unproperly="1" />
-	<melee id="7406" level="35" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
 	<melee id="2451" level="35" unproperly="1" />
-	<melee id="7404" level="40" unproperly="1" />
-	<melee id="7386" level="40" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
 	<melee id="2446" level="45" unproperly="1" />
-	<melee id="7402" level="45" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7383" level="50" unproperly="1" />
-	<melee id="7391" level="50" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7416" level="55" unproperly="1" />
 	<melee id="2393" level="55" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7384" level="60" unproperly="1" />
-	<melee id="7382" level="60" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7417" level="65" unproperly="1" />
-	<melee id="7403" level="65" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7418" level="70" unproperly="1" />
-	<melee id="7405" level="70" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7390" level="75" unproperly="1" />
-	<melee id="6528" level="75" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
@@ -133,52 +83,18 @@
 	</melee>
 	<melee id="2426" level="25" unproperly="1" />
 	<melee id="3962" level="30" unproperly="1" />
-	<melee id="7454" level="30" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
 	<melee id="2432" level="35" unproperly="1" />
-	<melee id="7380" level="35" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7456" level="35" unproperly="1" />
-	<melee id="7419" level="40" unproperly="1" />
-	<melee id="7413" level="40" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7412" level="45" unproperly="1" />
-	<melee id="7436" level="45" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7411" level="50" unproperly="1" />
-	<melee id="7435" level="85" unproperly="1" />
 	<melee id="2447" level="50" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
-	<melee id="7388" level="55" unproperly="1" />
 	<melee id="2427" level="55" unproperly="1" />
-	<melee id="7389" level="60" unproperly="1" />
 	<melee id="2414" level="60" unproperly="1" />
 	<melee id="2454" level="65" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
 	<melee id="2443" level="70" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7420" level="70" unproperly="1" />
-	<melee id="7434" level="75" unproperly="1" />
-	<melee id="7433" level="65" unproperly="1" />
-	<melee id="6553" level="75" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7453" level="85" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
@@ -190,42 +106,12 @@
 
 	<!--Clubs -->
 	<melee id="2423" level="20" unproperly="1" />
-	<melee id="7381" level="20" unproperly="1" />
-	<melee id="7425" level="20" unproperly="1" />
-	<melee id="7432" level="20" unproperly="1" />
 	<melee id="2434" level="25" unproperly="1" />
-	<melee id="7387" level="25" unproperly="1" />
-	<melee id="7379" level="25" unproperly="1" />
-	<melee id="7430" level="30" unproperly="1" />
 	<melee id="2436" level="30" unproperly="1" />
-	<melee id="7437" level="30" unproperly="1" />
 	<melee id="3961" level="40" unproperly="1" />
-	<melee id="7452" level="30" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7450" level="120" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
 	<melee id="2445" level="35" unproperly="1" />
-	<melee id="7451" level="35" unproperly="1" />
 	<melee id="2424" level="45" unproperly="1" />
-	<melee id="7455" level="80" unproperly="1" />
-	<melee id="7392" level="35" unproperly="1" />
-	<melee id="7426" level="40" unproperly="1" />
-	<melee id="7427" level="45" unproperly="1" />
 	<melee id="2391" level="50" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7410" level="55" unproperly="1" />
-	<melee id="7428" level="55" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
-	<melee id="7415" level="60" unproperly="1" />
-	<melee id="7414" level="60" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
@@ -233,27 +119,12 @@
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
-	<melee id="7421" level="65" unproperly="1" />
 	<melee id="2452" level="70" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
-	<melee id="7422" level="75" unproperly="1" />
-	<melee id="7429" level="75" unproperly="1" />
 	<melee id="2453" level="75" unproperly="1" />
-	<melee id="7431" level="80" unproperly="1" />
-	<melee id="7409" level="50" unproperly="1" />
-	<melee id="7423" level="85" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
 	<melee id="2421" level="85" unproperly="1" />
-
-	<!-- Bows and Crossbows -->
-	<distance id="5803" level="75" unproperly="1"> <!-- Arbalest -->
-		<vocation name="Paladin" />
-		<vocation name="Royal Paladin" showInDescription="0" />
-	</distance>
 
 	<!-- Ammunition -->
 	<distance id="1294" breakchance="3" /> <!-- small stone -->
@@ -267,12 +138,4 @@
 	<distance id="2546" action="removecount" script="burst_arrow.lua" />
 	<distance id="2547" action="removecount" unproperly="1" level="55" /> <!-- Power Bolt -->
 	<distance id="3965" breakchance="6" unproperly="1" level="20" /> <!-- Hunting Spear -->
-	<distance id="6529" action="removecount" unproperly="1" level="110" /> <!-- Infernal Bolt -->
-	<distance id="7363" action="removecount" unproperly="1" level="30" /> <!-- Piercing Bolt -->
-	<distance id="7364" action="removecount" unproperly="1" level="20" /> <!-- Sniper Arrow -->
-	<distance id="7365" action="removecount" unproperly="1" level="40" /> <!-- Onyx Arrow -->
-	<distance id="7366" breakchance="9" script="viper_star.lua" />
-	<distance id="7367" breakchance="1" unproperly="1" level="42" /> <!-- Enchanted Spear -->
-	<distance id="7368" breakchance="33" unproperly="1" level="80" /> <!-- Assassin Star -->
-	<distance id="7378" breakchance="3" unproperly="1" level="25" /> <!-- Royal Spear -->
 </weapons>

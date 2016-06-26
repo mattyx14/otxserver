@@ -124,18 +124,20 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if (!Protocol::RSA_decrypt(msg)) {
-		disconnect();
-		return;
-	}
+	#ifdef _MULTIPLATFORM77
+		if (!Protocol::RSA_decrypt(msg)) {
+			disconnect();
+			return;
+		}
 
-	uint32_t key[4];
-	key[0] = msg.get<uint32_t>();
-	key[1] = msg.get<uint32_t>();
-	key[2] = msg.get<uint32_t>();
-	key[3] = msg.get<uint32_t>();
-	enableXTEAEncryption();
-	setXTEAKey(key);
+		uint32_t key[4];
+		key[0] = msg.get<uint32_t>();
+		key[1] = msg.get<uint32_t>();
+		key[2] = msg.get<uint32_t>();
+		key[3] = msg.get<uint32_t>();
+		enableXTEAEncryption();
+		setXTEAKey(key);
+	#endif
 
 	uint32_t accountName = msg.get<uint32_t>();
 	std::string password = msg.getString();

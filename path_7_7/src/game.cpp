@@ -121,8 +121,6 @@ void Game::setGameState(GameState_t newState)
 			raids.loadFromXml();
 			raids.startup();
 
-			quests.loadFromXml();
-
 			loadMotdNum();
 			loadPlayersRecord();
 
@@ -2863,31 +2861,6 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	internalCreatureChangeOutfit(player, outfit);
 }
 
-void Game::playerShowQuestLog(uint32_t playerId)
-{
-	Player* player = getPlayerByID(playerId);
-	if (!player) {
-		return;
-	}
-
-	player->sendQuestLog();
-}
-
-void Game::playerShowQuestLine(uint32_t playerId, uint16_t questId)
-{
-	Player* player = getPlayerByID(playerId);
-	if (!player) {
-		return;
-	}
-
-	Quest* quest = quests.getQuestByID(questId);
-	if (!quest) {
-		return;
-	}
-
-	player->sendQuestLine(quest);
-}
-
 void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
                      const std::string& receiver, const std::string& text)
 {
@@ -3393,16 +3366,12 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 			break;
 		}
 
-		case COMBAT_DROWNDAMAGE: {
-			color = TEXTCOLOR_LIGHTBLUE;
-			effect = CONST_ME_LOSEENERGY;
-			break;
-		}
 		case COMBAT_FIREDAMAGE: {
 			color = TEXTCOLOR_ORANGE;
 			effect = CONST_ME_HITBYFIRE;
 			break;
 		}
+
 		case COMBAT_LIFEDRAIN: {
 			color = TEXTCOLOR_RED;
 			effect = CONST_ME_MAGIC_RED;

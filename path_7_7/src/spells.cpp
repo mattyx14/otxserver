@@ -370,9 +370,9 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 
 Spell::Spell()
 {
-	spellId = 0;
 	level = 0;
 	magLevel = 0;
+	levelPercent = 0;
 	mana = 0;
 	manaPercent = 0;
 	soul = 0;
@@ -412,7 +412,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"poison",
 		"fire",
 		"energy",
-		"drown",
 		"lifedrain",
 		"manadrain",
 		"healing",
@@ -426,7 +425,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"firecondition",
 		"poisoncondition",
 		"energycondition",
-		"drowncondition",
 	};
 
 	//static size_t size = sizeof(reservedList) / sizeof(const char*);
@@ -439,16 +437,16 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 	}
 
 	pugi::xml_attribute attr;
-	if ((attr = node.attribute("spellid"))) {
-		spellId = pugi::cast<uint16_t>(attr.value());
-	}
-
 	if ((attr = node.attribute("lvl"))) {
 		level = pugi::cast<uint32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("maglv"))) {
+	if ((attr = node.attribute("maglv")) || (attr = node.attribute("magiclevel"))) {
 		magLevel = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("levelpercent")) || (attr = node.attribute("lvlpercent"))) {
+		levelPercent = pugi::cast<int32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("mana"))) {
@@ -461,10 +459,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("soul"))) {
 		soul = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("exhaustion")) || (attr = node.attribute("cooldown"))) {
-		cooldown = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("range"))) {

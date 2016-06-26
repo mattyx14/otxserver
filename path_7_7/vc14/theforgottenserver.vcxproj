@@ -175,7 +175,6 @@
       <PrecompiledHeaderFile>otpch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="..\src\otserv.cpp" />
-    <ClCompile Include="..\src\outfit.cpp" />
     <ClCompile Include="..\src\outputmessage.cpp" />
     <ClCompile Include="..\src\party.cpp" />
     <ClCompile Include="..\src\player.cpp" />
@@ -183,9 +182,7 @@
     <ClCompile Include="..\src\protocol.cpp" />
     <ClCompile Include="..\src\protocolgame.cpp" />
     <ClCompile Include="..\src\protocollogin.cpp" />
-    <ClCompile Include="..\src\protocolold.cpp" />
     <ClCompile Include="..\src\protocolstatus.cpp" />
-    <ClCompile Include="..\src\quests.cpp" />
     <ClCompile Include="..\src\raids.cpp" />
     <ClCompile Include="..\src\rsa.cpp" />
     <ClCompile Include="..\src\scheduler.cpp" />
@@ -257,7 +254,6 @@
     <ClInclude Include="..\src\networkmessage.h" />
     <ClInclude Include="..\src\npc.h" />
     <ClInclude Include="..\src\otpch.h" />
-    <ClInclude Include="..\src\outfit.h" />
     <ClInclude Include="..\src\outputmessage.h" />
     <ClInclude Include="..\src\party.h" />
     <ClInclude Include="..\src\player.h" />
@@ -265,10 +261,8 @@
     <ClInclude Include="..\src\protocol.h" />
     <ClInclude Include="..\src\protocolgame.h" />
     <ClInclude Include="..\src\protocollogin.h" />
-    <ClInclude Include="..\src\protocolold.h" />
     <ClInclude Include="..\src\protocolstatus.h" />
     <ClInclude Include="..\src\pugicast.h" />
-    <ClInclude Include="..\src\quests.h" />
     <ClInclude Include="..\src\raids.h" />
     <ClInclude Include="..\src\rsa.h" />
     <ClInclude Include="..\src\scheduler.h" />

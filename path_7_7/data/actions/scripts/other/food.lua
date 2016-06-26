@@ -38,28 +38,6 @@ local foods = {
 	[2794] = {3, "Munch."}, -- some mushrooms
 	[2795] = {36, "Munch."}, -- fire mushroom
 	[2796] = {5, "Munch."}, -- green mushroom
-	[5097] = {4, "Yum."}, -- mango
-	[6125] = {8, "Gulp."}, -- tortoise egg
-	[6278] = {10, "Mmmm."}, -- cake
-	[6279] = {15, "Mmmm."}, -- decorated cake
-	[6393] = {12, "Mmmm."}, -- valentine's cake
-	[6394] = {15, "Mmmm."}, -- cream cake
-	[6501] = {20, "Mmmm."}, -- gingerbread man
-	[6541] = {6, "Gulp."}, -- coloured egg (yellow)
-	[6542] = {6, "Gulp."}, -- coloured egg (red)
-	[6543] = {6, "Gulp."}, -- coloured egg (blue)
-	[6544] = {6, "Gulp."}, -- coloured egg (green)
-	[6545] = {6, "Gulp."}, -- coloured egg (purple)
-	[6569] = {1, "Mmmm."}, -- candy
-	[6574] = {5, "Mmmm."}, -- bar of chocolate
-	[7158] = {15, "Munch."}, -- rainbow trout
-	[7159] = {13, "Munch."}, -- green perch
-	[7372] = {2, "Yum."}, -- ice cream cone (crispy chocolate chips)
-	[7373] = {2, "Yum."}, -- ice cream cone (velvet vanilla)
-	[7374] = {2, "Yum."}, -- ice cream cone (sweet strawberry)
-	[7375] = {2, "Yum."}, -- ice cream cone (chilly cherry)
-	[7376] = {2, "Yum."}, -- ice cream cone (mellow melon)
-	[7377] = {2, "Yum."}, -- ice cream cone (blue-barian)
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)

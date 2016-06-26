@@ -123,7 +123,7 @@ void MonsterType::createLoot(Container* corpse)
 	}
 
 	Player* owner = g_game.getPlayerByID(corpse->getCorpseOwner());
-	if (!owner || owner->getStaminaMinutes() > 840) {
+	if (!owner) {
 		for (auto it = lootItems.rbegin(), end = lootItems.rend(); it != end; ++it) {
 			auto itemList = createLootItem(*it);
 			if (itemList.empty()) {
@@ -157,7 +157,7 @@ void MonsterType::createLoot(Container* corpse)
 		}
 	} else {
 		std::ostringstream ss;
-		ss << "Loot of " << nameDescription << ": nothing (due to low stamina)";
+		ss << "Loot of " << nameDescription << ": Nothing.";
 
 		if (owner->getParty()) {
 			owner->getParty()->broadcastPartyLoot(ss.str());
@@ -479,12 +479,6 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 				minDamage = pugi::cast<int32_t>(attr.value());
 				maxDamage = minDamage;
 				tickInterval = 10000;
-			} else if ((attr = node.attribute("drown"))) {
-				conditionType = CONDITION_DROWN;
-
-				minDamage = pugi::cast<int32_t>(attr.value());
-				maxDamage = minDamage;
-				tickInterval = 5000;
 			} else if ((attr = node.attribute("bleed")) || (attr = node.attribute("physical"))) {
 				conditionType = CONDITION_BLEEDING;
 				tickInterval = 5000;
@@ -519,8 +513,6 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE);
 		} else if (tmpName == "energy") {
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE);
-		} else if (tmpName == "drown") {
-			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_DROWNDAMAGE);
 		} else if (tmpName == "lifedrain") {
 			combat->setParam(COMBAT_PARAM_TYPE, COMBAT_LIFEDRAIN);
 		} else if (tmpName == "manadrain") {
@@ -606,8 +598,7 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 			combat->setParam(COMBAT_PARAM_CREATEITEM, ITEM_ENERGYFIELD_PVP);
 		} else if (tmpName == "firecondition" || tmpName == "energycondition" ||
 		           tmpName == "earthcondition" || tmpName == "poisoncondition" ||
-		           tmpName == "drowncondition" || tmpName == "bleedcondition" ||
-		           tmpName == "physicalcondition") {
+		           tmpName == "bleedcondition" || tmpName == "physicalcondition") {
 			ConditionType_t conditionType = CONDITION_NONE;
 			uint32_t tickInterval = 2000;
 
@@ -620,9 +611,6 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 			} else if (tmpName == "energycondition") {
 				conditionType = CONDITION_ENERGY;
 				tickInterval = 10000;
-			} else if (tmpName == "drowncondition") {
-				conditionType = CONDITION_DROWN;
-				tickInterval = 5000;
 			} else if (tmpName == "physicalcondition" || tmpName == "bleedcondition") {
 				conditionType = CONDITION_BLEEDING;
 				tickInterval = 5000;
@@ -939,9 +927,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 							tmpStrValue == "earth") {
 					mType->damageImmunities |= COMBAT_EARTHDAMAGE;
 					mType->conditionImmunities |= CONDITION_POISON;
-				} else if (tmpStrValue == "drown") {
-					mType->damageImmunities |= COMBAT_DROWNDAMAGE;
-					mType->conditionImmunities |= CONDITION_DROWN;
 				} else if (tmpStrValue == "lifedrain") {
 					mType->damageImmunities |= COMBAT_LIFEDRAIN;
 				} else if (tmpStrValue == "manadrain") {
@@ -978,11 +963,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				if (attr.as_bool()) {
 					mType->damageImmunities |= COMBAT_EARTHDAMAGE;
 					mType->conditionImmunities |= CONDITION_POISON;
-				}
-			} else if ((attr = immunityNode.attribute("drown"))) {
-				if (attr.as_bool()) {
-					mType->damageImmunities |= COMBAT_DROWNDAMAGE;
-					mType->conditionImmunities |= CONDITION_DROWN;
 				}
 			} else if ((attr = immunityNode.attribute("lifedrain"))) {
 				if (attr.as_bool()) {
@@ -1069,8 +1049,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				mType->elementMap[COMBAT_FIREDAMAGE] = pugi::cast<int32_t>(attr.value());
 			} else if ((attr = elementNode.attribute("energyPercent"))) {
 				mType->elementMap[COMBAT_ENERGYDAMAGE] = pugi::cast<int32_t>(attr.value());
-			} else if ((attr = elementNode.attribute("drownPercent"))) {
-				mType->elementMap[COMBAT_DROWNDAMAGE] = pugi::cast<int32_t>(attr.value());
 			} else if ((attr = elementNode.attribute("lifedrainPercent"))) {
 				mType->elementMap[COMBAT_LIFEDRAIN] = pugi::cast<int32_t>(attr.value());
 			} else if ((attr = elementNode.attribute("manadrainPercent"))) {

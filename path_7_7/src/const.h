@@ -50,18 +50,8 @@ enum MagicEffectClasses : uint8_t {
 	CONST_ME_SOUND_PURPLE = 23,
 	CONST_ME_SOUND_BLUE = 24,
 	CONST_ME_SOUND_WHITE = 25,
-	CONST_ME_BUBBLES = 26,
-	CONST_ME_CRAPS = 27,
-	CONST_ME_GIFT_WRAPS = 28,
-	CONST_ME_FIREWORK_YELLOW = 29,
-	CONST_ME_FIREWORK_RED = 30,
-	CONST_ME_FIREWORK_BLUE = 31,
-	CONST_ME_STUN = 32,
-	CONST_ME_SLEEP = 33,
-	CONST_ME_WATERCREATURE = 34,
-	CONST_ME_GROUNDSHAKER = 35,
 
-	CONST_ME_LAST = CONST_ME_GROUNDSHAKER,
+	CONST_ME_LAST = CONST_ME_SOUND_WHITE,
 };
 
 enum ShootType_t : uint8_t {
@@ -82,21 +72,8 @@ enum ShootType_t : uint8_t {
 	CONST_ANI_SNOWBALL = 13,
 	CONST_ANI_POWERBOLT = 14,
 	CONST_ANI_POISON = 15,
-	CONST_ANI_INFERNALBOLT = 16,
-	CONST_ANI_HUNTINGSPEAR = 17,
-	CONST_ANI_ENCHANTEDSPEAR = 18,
-	CONST_ANI_REDSTAR = 19,
-	CONST_ANI_GREENSTAR = 20,
-	CONST_ANI_ROYALSPEAR = 21,
-	CONST_ANI_SNIPERARROW = 22,
-	CONST_ANI_ONYXARROW = 23,
-	CONST_ANI_PIERCINGBOLT = 24,
-	CONST_ANI_WHIRLWINDSWORD = 25,
-	CONST_ANI_WHIRLWINDAXE = 26,
-	CONST_ANI_WHIRLWINDCLUB = 27,
-	CONST_ANI_ETHEREALSPEAR = 28,
 
-	CONST_ANI_LAST = CONST_ANI_ETHEREALSPEAR,
+	CONST_ANI_LAST = CONST_ANI_POISON,
 
 	// for internal use, don't send to client
 	CONST_ANI_WEAPONTYPE = 0xFE, // 254
@@ -123,7 +100,7 @@ enum SpeakClasses : uint8_t {
 enum MessageClasses : uint8_t {
 	MESSAGE_STATUS_CONSOLE_YELLOW = 1, /*Yellow message in the console*/
 	MESSAGE_STATUS_CONSOLE_LIGHTBLUE = 4, /*Light blue message in the console*/
-	MESSAGE_STATUS_CONSOLE_ORANGE = 16, /*Orange message in the console*/
+	MESSAGE_STATUS_CONSOLE_ORANGE = 17, /*Orange message in the console*/
 	MESSAGE_STATUS_WARNING = 18, /*Red message in game window and in the console*/
 	MESSAGE_EVENT_ADVANCE = 19, /*White message in game window and in the console*/
 	MESSAGE_EVENT_DEFAULT = 20, /*White message at the bottom of the game window and in the console*/
@@ -210,21 +187,19 @@ const uint8_t clientToServerFluidMap[] = {
 enum ClientFluidTypes_t : uint8_t {
 	CLIENTFLUID_EMPTY = 0,
 	CLIENTFLUID_BLUE = 1,
-	CLIENTFLUID_PURPLE = 2,
-	CLIENTFLUID_BROWN_1 = 3,
-	CLIENTFLUID_BROWN_2 = 4,
-	CLIENTFLUID_RED = 5,
-	CLIENTFLUID_GREEN = 6,
-	CLIENTFLUID_BROWN = 7,
-	CLIENTFLUID_YELLOW = 8,
-	CLIENTFLUID_WHITE = 9,
+	CLIENTFLUID_RED = 2,
+	CLIENTFLUID_BROWN = 3,
+	CLIENTFLUID_GREEN = 4,
+	CLIENTFLUID_YELLOW = 5,
+	CLIENTFLUID_WHITE = 6,
+	CLIENTFLUID_PURPLE = 7,
 };
 
 const uint8_t fluidMap[] = {
 	CLIENTFLUID_EMPTY,
 	CLIENTFLUID_BLUE,
 	CLIENTFLUID_RED,
-	CLIENTFLUID_BROWN_1,
+	CLIENTFLUID_BROWN,
 	CLIENTFLUID_GREEN,
 	CLIENTFLUID_YELLOW,
 	CLIENTFLUID_WHITE,
@@ -243,7 +218,7 @@ enum TextColor_t : uint8_t {
 	TEXTCOLOR_DARKRED = 108,
 	TEXTCOLOR_LIGHTGREY = 129,
 	TEXTCOLOR_SKYBLUE = 143,
-	TEXTCOLOR_PURPLE = 155,
+	TEXTCOLOR_PURPLE = 154,
 	TEXTCOLOR_RED = 180,
 	TEXTCOLOR_ORANGE = 198,
 	TEXTCOLOR_YELLOW = 210,
@@ -260,7 +235,6 @@ enum Icons_t {
 	ICON_PARALYZE = 1 << 5,
 	ICON_HASTE = 1 << 6,
 	ICON_SWORDS = 1 << 7,
-	ICON_DROWNING = 1 << 8,
 };
 
 enum WeaponType_t : uint8_t {
@@ -408,6 +382,67 @@ enum PlayerFlags : uint64_t {
 	PlayerFlag_CanAnswerRuleViolations = static_cast<uint64_t>(1) << 38,
 };
 
+enum ViolationActions_t {
+	Action_None = 0,
+	Action_Notation = 1,
+	Action_Namelock = 2,
+	Action_Banishment = 4,
+	Action_NamelockBan = 8,
+	Action_BanFinalWarning = 16,
+	Action_NamelockBanFinalWarning = 32,
+	Action_StatementReport = 64,
+	Action_IpBan = 128
+};
+
+const int violationActions[6] = {
+	//ignore this
+	Action_None,
+
+	//player
+	Action_None,
+
+	//tutor
+	Action_None,
+
+	//senior tutor
+	Action_None,
+
+	//gamemaster
+	Action_Notation | Action_Namelock | Action_Banishment | Action_NamelockBan | Action_StatementReport,
+
+	//god
+	Action_Notation | Action_Namelock | Action_Banishment | Action_NamelockBan | Action_BanFinalWarning | Action_NamelockBanFinalWarning | Action_StatementReport | Action_IpBan
+};
+
+const int violationReasons[6] = {
+	//ignore this
+	0,
+
+	//player
+	0,
+
+	//tutor
+	4,
+
+	/*
+	 * senior tutor
+	 * all name reasons
+	 */
+	10,
+
+	/*
+	 * gamemaster
+	 * all name, statement & cheating reasons
+	 */
+	19,
+
+	/*
+	 * god
+	 * all reasons
+	 */
+	32,
+};
+
 #define CHANNEL_GUILD 0x00
 #define CHANNEL_PARTY 0x01
 #define CHANNEL_PRIVATE 0xFFFF
@@ -416,9 +451,6 @@ enum PlayerFlags : uint64_t {
 //[10000000 - 20000000]
 #define PSTRG_RESERVED_RANGE_START 10000000
 #define PSTRG_RESERVED_RANGE_SIZE 10000000
-//[1000 - 1500]
-#define PSTRG_OUTFITS_RANGE_START (PSTRG_RESERVED_RANGE_START + 1000)
-#define PSTRG_OUTFITS_RANGE_SIZE 500
 
 #define IS_IN_KEYRANGE(key, range) (key >= PSTRG_##range##_START && ((key - PSTRG_##range##_START) <= PSTRG_##range##_SIZE))
 

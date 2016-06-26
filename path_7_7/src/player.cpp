@@ -136,10 +136,6 @@ Player::Player(ProtocolGame_ptr p) :
 	ghostMode = false;
 	requestedOutfit = false;
 
-	staminaMinutes = 3360;
-
-	lastQuestlogUpdate = 0;
-
 	inventoryWeight = 0;
 	operatingSystem = CLIENTOS_NONE;
 	secureMode = false;
@@ -712,32 +708,11 @@ uint16_t Player::getLookCorpse() const
 
 void Player::addStorageValue(const uint32_t key, const int32_t value, const bool isLogin/* = false*/)
 {
-	if (IS_IN_KEYRANGE(key, RESERVED_RANGE)) {
-		if (IS_IN_KEYRANGE(key, OUTFITS_RANGE)) {
-			outfits.emplace_back(
-				value >> 16,
-				value & 0xFF
-			);
-			return;
-		} else {
-			std::cout << "Warning: unknown reserved key: " << key << " player: " << getName() << std::endl;
-			return;
-		}
-	}
-
 	if (value != -1) {
 		int32_t oldValue;
 		getStorageValue(key, oldValue);
 
 		storageMap[key] = value;
-
-		if (!isLogin) {
-			auto currentFrameTime = g_dispatcher.getDispatcherCycle();
-			if (lastQuestlogUpdate != currentFrameTime && g_game.quests.isQuestStorage(key, value, oldValue)) {
-				lastQuestlogUpdate = currentFrameTime;
-				sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your questlog has been updated.");
-			}
-		}
 	} else {
 		storageMap.erase(key);
 	}
@@ -998,7 +973,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 }
 
 void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
-							  const ItemType& oldType, const Item* newItem, const ItemType& newType)
+                              const ItemType& oldType, const Item* newItem, const ItemType& newType)
 {
 	Creature::onUpdateTileItem(tile, pos, oldItem, oldType, newItem, newType);
 
@@ -1014,7 +989,7 @@ void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item*
 }
 
 void Player::onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
-							  const Item* item)
+                              const Item* item)
 {
 	Creature::onRemoveTileItem(tile, pos, iType, item);
 
@@ -1191,7 +1166,7 @@ void Player::onWalk(Direction& dir)
 }
 
 void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-							const Tile* oldTile, const Position& oldPos, bool teleport)
+                            const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
 
@@ -1762,7 +1737,7 @@ bool Player::hasShield() const
 }
 
 BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-							 bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/)
+                             bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/)
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor, field);
 
@@ -1846,9 +1821,9 @@ uint32_t Player::getIP() const
 void Player::death(Creature* lastHitCreature)
 {
 	loginPosition = town->getTemplePosition();
+	sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are dead.");
 
 	if (skillLoss) {
-
 		//Magic level loss
 		uint64_t sumMana = 0;
 		uint64_t lostMana = 0;
@@ -1968,7 +1943,6 @@ void Player::death(Creature* lastHitCreature)
 
 		sendStats();
 		sendSkills();
-		sendReLoginWindow();
 
 		health = healthMax;
 		mana = manaMax;
@@ -2230,9 +2204,9 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 
 	const int32_t& slotPosition = item->getSlotPosition();
 	if ((slotPosition & SLOTP_HEAD) || (slotPosition & SLOTP_NECKLACE) ||
-			(slotPosition & SLOTP_BACKPACK) || (slotPosition & SLOTP_ARMOR) ||
-			(slotPosition & SLOTP_LEGS) || (slotPosition & SLOTP_FEET) ||
-			(slotPosition & SLOTP_RING)) {
+	        (slotPosition & SLOTP_BACKPACK) || (slotPosition & SLOTP_ARMOR) ||
+	        (slotPosition & SLOTP_LEGS) || (slotPosition & SLOTP_FEET) ||
+	        (slotPosition & SLOTP_RING)) {
 		ret = RETURNVALUE_CANNOTBEDRESSED;
 	} else if (slotPosition & SLOTP_TWO_HAND) {
 		ret = RETURNVALUE_PUTTHISOBJECTINBOTHHANDS;
@@ -2307,8 +2281,8 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					} else if (leftType == WEAPON_SHIELD && type == WEAPON_SHIELD) {
 						ret = RETURNVALUE_CANONLYUSEONESHIELD;
 					} else if (leftType == WEAPON_NONE || type == WEAPON_NONE ||
-							   leftType == WEAPON_SHIELD || leftType == WEAPON_AMMO
-							   || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+					           leftType == WEAPON_SHIELD || leftType == WEAPON_AMMO
+					           || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
 						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;
@@ -2348,8 +2322,8 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					} else if (rightType == WEAPON_SHIELD && type == WEAPON_SHIELD) {
 						ret = RETURNVALUE_CANONLYUSEONESHIELD;
 					} else if (rightType == WEAPON_NONE || type == WEAPON_NONE ||
-							   rightType == WEAPON_SHIELD || rightType == WEAPON_AMMO
-							   || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+					           rightType == WEAPON_SHIELD || rightType == WEAPON_AMMO
+					           || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
 						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;
@@ -2528,7 +2502,7 @@ Cylinder* Player::queryDestination(int32_t& index, const Thing& thing, Item** de
 			return this;
 		}
 
-		bool autoStack = !((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK);
+		bool autoStack = (g_config.getBoolean(ConfigManager::AUTO_STACK_ITEMS) && !((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK));
 		bool isStackable = item->isStackable();
 
 		std::vector<Container*> containers;
@@ -3068,7 +3042,7 @@ void Player::doAttacking(uint32_t)
 			} else if (!canDoAction()) {
 				uint32_t delay = getNextActionTime();
 				SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::checkCreatureAttack,
-									  &g_game, getID()));
+				                      &g_game, getID()));
 				setNextActionTask(task);
 			} else {
 				result = weapon->useWeapon(this, tool, attackedCreature);
@@ -3183,10 +3157,6 @@ void Player::onAddCombatCondition(ConditionType_t type)
 	switch (type) {
 		case CONDITION_POISON:
 			sendTextMessage(MESSAGE_STATUS_SMALL, "You are poisoned.");
-			break;
-
-		case CONDITION_DROWN:
-			sendTextMessage(MESSAGE_STATUS_SMALL, "You are drowning.");
 			break;
 
 		case CONDITION_PARALYZE:
@@ -3395,7 +3365,7 @@ bool Player::onKilledCreature(Creature* target, bool lastHit/* = true*/)
 
 void Player::gainExperience(uint64_t gainExp, Creature* source)
 {
-	if (hasFlag(PlayerFlag_NotGainExperience) || gainExp == 0 || staminaMinutes == 0) {
+	if (hasFlag(PlayerFlag_NotGainExperience) || gainExp == 0) {
 		return;
 	}
 
@@ -3487,15 +3457,6 @@ bool Player::canLogout()
 	return !isPzLocked() && !hasCondition(CONDITION_INFIGHT);
 }
 
-void Player::genReservedStorageRange()
-{
-	//generate outfits range
-	uint32_t base_key = PSTRG_OUTFITS_RANGE_START;
-	for (const OutfitEntry& entry : outfits) {
-		storageMap[++base_key] = (entry.lookType << 16) | entry.addons;
-	}
-}
-
 void Player::setSex(PlayerSex_t newSex)
 {
 	sex = newSex;
@@ -3565,7 +3526,7 @@ void Player::addUnjustifiedDead(const Player* attacked)
 		return;
 	}
 
-	sendTextMessage(MESSAGE_EVENT_ADVANCE, "Warning! The murder of " + attacked->getName() + " was not justified.");
+	sendTextMessage(MESSAGE_STATUS_WARNING, "Warning! The murder of " + attacked->getName() + " was not justified.");
 
 	skullTicks += g_config.getNumber(ConfigManager::FRAG_TIME);
 

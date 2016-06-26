@@ -255,18 +255,20 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	OperatingSystem_t operatingSystem = static_cast<OperatingSystem_t>(msg.get<uint16_t>());
 	version = msg.get<uint16_t>();
 
-	if (!Protocol::RSA_decrypt(msg)) {
-		disconnect();
-		return;
-	}
+#ifdef _MULTIPLATFORM77
+		if (!Protocol::RSA_decrypt(msg)) {
+			disconnect();
+			return;
+		}
 
-	uint32_t key[4];
-	key[0] = msg.get<uint32_t>();
-	key[1] = msg.get<uint32_t>();
-	key[2] = msg.get<uint32_t>();
-	key[3] = msg.get<uint32_t>();
-	enableXTEAEncryption();
-	setXTEAKey(key);
+		uint32_t key[4];
+		key[0] = msg.get<uint32_t>();
+		key[1] = msg.get<uint32_t>();
+		key[2] = msg.get<uint32_t>();
+		key[3] = msg.get<uint32_t>();
+		enableXTEAEncryption();
+		setXTEAKey(key);
+#endif
 
 	if (operatingSystem >= CLIENTOS_OTCLIENT_LINUX) {
 		NetworkMessage opcodeMessage;
@@ -430,8 +432,6 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
-		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerShowQuestLog, player->getID()); break;
-		case 0xF1: parseQuestLine(msg); break;
 		case 0xF2: /* rule violation report */ break;
 		case 0xF3: /* get object info */ break;
 
@@ -946,12 +946,6 @@ void ProtocolGame::parsePassPartyLeadership(NetworkMessage& msg)
 	addGameTask(&Game::playerPassPartyLeadership, player->getID(), targetId);
 }
 
-void ProtocolGame::parseQuestLine(NetworkMessage& msg)
-{
-	uint16_t questId = msg.get<uint16_t>();
-	addGameTask(&Game::playerShowQuestLine, player->getID(), questId);
-}
-
 // Send methods
 void ProtocolGame::sendOpenPrivateChannel(const std::string& receiver)
 {
@@ -1035,30 +1029,12 @@ void ProtocolGame::sendCreatureSquare(const Creature* creature, SquareColor_t co
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendReLoginWindow()
-{
-	NetworkMessage msg;
-	msg.addByte(0x28);
-	writeToOutputBuffer(msg);
-}
-
 void ProtocolGame::sendStats()
 {
 	NetworkMessage msg;
 	AddPlayerStats(msg);
 	writeToOutputBuffer(msg);
 }
-
-/*
-void ProtocolGame::sendTextMessage(MessageClasses mclass, const std::string& message)
-{
-	NetworkMessage msg;
-	msg.addByte(0xB4);
-	msg.addByte(mclass);
-	msg.addString(message);
-	writeToOutputBuffer(msg);
-}
-*/
 
 void ProtocolGame::sendTextMessage(const TextMessage& message)
 {
@@ -1130,7 +1106,7 @@ void ProtocolGame::sendIcons(uint16_t icons)
 {
 	NetworkMessage msg;
 	msg.addByte(0xA2);
-	msg.add<char>(icons);
+	msg.addByte(icons);
 	writeToOutputBuffer(msg);
 }
 
@@ -1155,40 +1131,6 @@ void ProtocolGame::sendContainer(uint8_t cid, const Container* container, bool h
 	for (ItemDeque::const_iterator it = itemList.begin() + firstIndex, end = itemList.end(); i < 0xFF && it != end; ++it, ++i) {
 		msg.addItem(*it);
 	}
-	writeToOutputBuffer(msg);
-}
-
-void ProtocolGame::sendQuestLog()
-{
-	NetworkMessage msg;
-	msg.addByte(0xF0);
-	msg.add<uint16_t>(g_game.quests.getQuestsCount(player));
-
-	for (const Quest& quest : g_game.quests.getQuests()) {
-		if (quest.isStarted(player)) {
-			msg.add<uint16_t>(quest.getID());
-			msg.addString(quest.getName());
-			msg.addByte(quest.isCompleted(player));
-		}
-	}
-
-	writeToOutputBuffer(msg);
-}
-
-void ProtocolGame::sendQuestLine(const Quest* quest)
-{
-	NetworkMessage msg;
-	msg.addByte(0xF1);
-	msg.add<uint16_t>(quest->getID());
-	msg.addByte(quest->getMissionsCount(player));
-
-	for (const Mission& mission : quest->getMissions()) {
-		if (mission.isStarted(player)) {
-			msg.addString(mission.getName(player));
-			msg.addString(mission.getDescription(player));
-		}
-	}
-
 	writeToOutputBuffer(msg);
 }
 
@@ -1328,7 +1270,6 @@ void ProtocolGame::sendPrivateMessage(const Player* speaker, SpeakClasses type, 
 	msg.add<uint32_t>(++statementId);
 	if (speaker) {
 		msg.addString(speaker->getName());
-		msg.add<uint16_t>(speaker->getLevel());
 	} else {
 		msg.add<uint32_t>(0x00);
 	}
@@ -1422,7 +1363,7 @@ void ProtocolGame::sendMapDescription(const Position& pos)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendAddTileItem(const Position& pos, uint32_t, const Item* item)
+void ProtocolGame::sendAddTileItem(const Position& pos, uint32_t stackpos, const Item* item)
 {
 	if (!canSee(pos)) {
 		return;
@@ -1431,6 +1372,7 @@ void ProtocolGame::sendAddTileItem(const Position& pos, uint32_t, const Item* it
 	NetworkMessage msg;
 	msg.addByte(0x6A);
 	msg.addPosition(pos);
+	msg.addByte(stackpos);
 	msg.addItem(item);
 	writeToOutputBuffer(msg);
 }
@@ -1499,17 +1441,16 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	}
 
 	if (creature != player) {
-		if (stackpos != -1) {
-			NetworkMessage msg;
-			msg.addByte(0x6A);
-			msg.addPosition(pos);
+		NetworkMessage msg;
+		msg.addByte(0x6A);
+		msg.addPosition(pos);
+		msg.addByte(stackpos);
 
-			bool known;
-			uint32_t removedKnown;
-			checkCreatureAsKnown(creature->getID(), known, removedKnown);
-			AddCreature(msg, creature, known, removedKnown);
-			writeToOutputBuffer(msg);
-		}
+		bool known;
+		uint32_t removedKnown;
+		checkCreatureAsKnown(creature->getID(), known, removedKnown);
+		AddCreature(msg, creature, known, removedKnown);
+		writeToOutputBuffer(msg);
 
 		if (isLogin) {
 			sendMagicEffect(pos, CONST_ME_TELEPORT);
@@ -1746,11 +1687,11 @@ void ProtocolGame::sendOutfitWindow()
 	msg.addByte(0xC8);
 	AddOutfit(msg, player->getCurrentOutfit());
 #ifdef _MULTIPLATFORM77
-	msg.add<uint16_t>(player->sex % 2 ? 128 : 136);
-	msg.add<uint16_t>(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
+	msg.add<uint16_t>(player->getSex() % 2 ? 128 : 136);
+	msg.add<uint16_t>(player->isPremium() ? (player->getSex() % 2 ? 134 : 142) : (player->getSex() % 2 ? 131 : 139));
 #else
-	msg.addByte(player->sex % 2 ? 128 : 136);
-	msg.addByte(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
+	msg.addByte(player->getSex() % 2 ? 128 : 136);
+	msg.addByte(player->isPremium() ? (player->getSex() % 2 ? 134 : 142) : (player->getSex() % 2 ? 131 : 139));
 #endif
 	player->hasRequestedOutfit(true);
 	writeToOutputBuffer(msg);
@@ -1836,7 +1777,7 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(std::min<int32_t>(player->getHealth(), std::numeric_limits<uint16_t>::max()));
 	msg.add<uint16_t>(std::min<int32_t>(player->getPlayerInfo(PLAYERINFO_MAXHEALTH), std::numeric_limits<uint16_t>::max()));
 
-	msg.add<uint16_t>(player->getFreeCapacity() / 100);
+	msg.add<uint16_t>(player->getFreeCapacity());
 
 	msg.add<uint32_t>(std::min<uint32_t>(player->getExperience(), 0x7FFFFFFF));
 
@@ -1850,8 +1791,6 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.addByte(player->getPlayerInfo(PLAYERINFO_MAGICLEVELPERCENT));
 
 	msg.addByte(player->getSoul());
-
-	msg.add<uint16_t>(player->getStaminaMinutes());
 }
 
 void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)

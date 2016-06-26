@@ -55,8 +55,6 @@
 	<talkaction words="!uptime" script="uptime.lua" />
 
 	<!-- No workd
-		<talkaction words="!addon" script="addons.lua" />
-		<talkaction words="!stamina" script="staminarefil.lua"/>
 		<talkaction words="!z" separator=" " script="magiceffect.lua" />
 		<talkaction words="!x" separator=" " script="animationeffect.lua" />
 	-->

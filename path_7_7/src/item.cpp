@@ -75,8 +75,6 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 			newItem = new Item(type - 37, count);
 		} else if (it.id == 2640) {
 			newItem = new Item(6132, count);
-		} else if (it.id == 6301) {
-			newItem = new Item(6300, count);
 		} else {
 			newItem = new Item(type, count);
 		}
@@ -1360,7 +1358,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				} else {
 					s << "unknown";
 				}
-			} else if (it.allowDistRead && (it.id < 7369 || it.id > 7371)) {
+			} else if (it.allowDistRead) {
 				s << '.' << std::endl;
 
 				if (lookDistance <= 4) {
@@ -1438,7 +1436,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	}
 
-	if (!it.allowDistRead || (it.id >= 7369 && it.id <= 7371)) {
+	if (!it.allowDistRead) {
 		s << '.';
 	} else {
 		if (!text && item) {
@@ -1526,7 +1524,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		s << std::endl << it.description;
 	}
 
-	if (it.allowDistRead && it.id >= 7369 && it.id <= 7371) {
+	if (it.allowDistRead) {
 		if (!text && item) {
 			text = &item->getText();
 		}

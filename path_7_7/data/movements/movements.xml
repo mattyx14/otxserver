@@ -50,38 +50,6 @@
 	<movevent event="StepIn" itemid="3543" script="quest door.lua" />
 	<movevent event="StepOut" itemid="3552" script="closingdoor.lua" />
 	<movevent event="StepIn" itemid="3552" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5106" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5106" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5115" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5115" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5124" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5124" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5133" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5133" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5289" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5289" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5291" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5291" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5746" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5746" script="quest door.lua" />
-	<movevent event="StepOut" itemid="5749" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="5749" script="quest door.lua" />
-	<movevent event="StepOut" itemid="6203" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="6203" script="quest door.lua" />
-	<movevent event="StepOut" itemid="6205" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="6205" script="quest door.lua" />
-	<movevent event="StepOut" itemid="6260" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="6260" script="quest door.lua" />
-	<movevent event="StepOut" itemid="6262" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="6262" script="quest door.lua" />
-	<movevent event="StepOut" itemid="6899" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="6899" script="quest door.lua" />
-	<movevent event="StepOut" itemid="6908" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="6908" script="quest door.lua" />
-	<movevent event="StepOut" itemid="7041" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="7041" script="quest door.lua" />
-	<movevent event="StepOut" itemid="7050" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="7050" script="quest door.lua" />
 		<movevent event="StepOut" itemid="1228" script="closingdoor.lua" />
 		<movevent event="StepIn" itemid="1228" script="level door.lua" />
 		<movevent event="StepOut" itemid="1230" script="closingdoor.lua" />
@@ -98,38 +66,9 @@
 		<movevent event="StepIn" itemid="3541" script="level door.lua" />
 		<movevent event="StepOut" itemid="3550" script="closingdoor.lua" />
 		<movevent event="StepIn" itemid="3550" script="level door.lua" />
-		<movevent event="StepOut" itemid="5104" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="5104" script="level door.lua" />
-		<movevent event="StepOut" itemid="5113" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="5113" script="level door.lua" />
-		<movevent event="StepOut" itemid="5122" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="5122" script="level door.lua" />
-		<movevent event="StepOut" itemid="5131" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="5131" script="level door.lua" />
-		<movevent event="StepOut" itemid="5293" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="5293" script="level door.lua" />
-		<movevent event="StepOut" itemid="5295" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="5295" script="level door.lua" />
-		<movevent event="StepOut" itemid="6207" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="6207" script="level door.lua" />
-		<movevent event="StepOut" itemid="6209" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="6209" script="level door.lua" />
-		<movevent event="StepOut" itemid="6264" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="6264" script="level door.lua" />
-		<movevent event="StepOut" itemid="6266" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="6266" script="level door.lua" />
-		<movevent event="StepOut" itemid="6897" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="6897" script="level door.lua" />
-		<movevent event="StepOut" itemid="6906" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="6906" script="level door.lua" />
-		<movevent event="StepOut" itemid="7039" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="7039" script="level door.lua" />
-		<movevent event="StepOut" itemid="7048" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="7048" script="level door.lua" />
 
 	<!-- Snow footprint tiles -->
 	<movevent event="StepOut" itemid="670" script="snow.lua" />
-	<movevent event="StepOut" fromid="6580" toid="6593" script="snow.lua" />
 
 	<!-- Create bread movements -->
 	<movevent event="AddItem" tileitem="1" itemid="1786" script="dough.lua" />
@@ -188,22 +127,16 @@
 	<movevent event="AddItem" itemid="1506" function="onAddField" />
 	<movevent event="StepIn" itemid="1507" function="onStepInField" />
 	<movevent event="AddItem" itemid="1507" function="onAddField" />
-	<movevent event="StepIn" itemid="7359" function="onStepInField" />
-	<movevent event="AddItem" itemid="7360" function="onAddField" />
 
 	<!-- Swimming -->
 	<movevent event="StepIn" fromid="4620" toid="4625" script="swimming.lua" />
 	<movevent event="StepOut" fromid="4620" toid="4625" script="swimming.lua" />
 	<movevent event="StepIn" fromid="4820" toid="4825" script="swimming.lua" />
 	<movevent event="StepOut" fromid="4820" toid="4825" script="swimming.lua" />
-	<movevent event="StepIn" itemid="5405" script="drowning.lua" />
-	<movevent event="StepOut" itemid="5405" script="drowning.lua" />
 
 	<!-- Boots -->
 	<movevent event="Equip" itemid="2195" slot="feet" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="2195" slot="feet" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="6132" slot="feet" function="onEquipItem" />
-	<movevent event="DeEquip" itemid="6132" slot="feet" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="2640" slot="feet" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="2640" slot="feet" function="onDeEquipItem" />
 
@@ -260,13 +193,8 @@
 	<movevent event="Equip" itemid="2214" slot="ring" function="onEquipItem" />
 	<movevent event="Equip" itemid="2216" slot="ring" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="2216" slot="ring" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="6300" slot="ring" function="onEquipItem" />
-	<movevent event="Equip" itemid="6301" slot="ring" function="onEquipItem" />
-	<movevent event="DeEquip" itemid="6301" slot="ring" function="onDeEquipItem" />
 
 	<!-- Helmets -->
-	<movevent event="Equip" itemid="5461" slot="head" function="onEquipItem" />
-	<movevent event="DeEquip" itemid="5461" slot="head" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="2474" slot="head" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="2474" slot="head" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="2343" slot="head" function="onEquipItem" />
@@ -280,8 +208,6 @@
 	<movevent event="DeEquip" itemid="2323" slot="head" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="2502" slot="head" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="2502" slot="head" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="7459" slot="head" function="onEquipItem" />
-	<movevent event="DeEquip" itemid="7459" slot="head" function="onDeEquipItem" />
 
 	<!-- Armors -->
 	<movevent event="Equip" itemid="2466" slot="armor" function="onEquipItem">
