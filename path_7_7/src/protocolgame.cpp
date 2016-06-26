@@ -1357,7 +1357,7 @@ void ProtocolGame::sendMapDescription(const Position& pos)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendAddTileItem(const Position& pos, uint32_t stackpos, const Item* item)
+void ProtocolGame::sendAddTileItem(const Position& pos, uint32_t, const Item* item)
 {
 	if (!canSee(pos)) {
 		return;
@@ -1434,15 +1434,17 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	}
 
 	if (creature != player) {
-		NetworkMessage msg;
-		msg.addByte(0x6A);
-		msg.addPosition(pos);
+		if (stackpos != -1) {
+			NetworkMessage msg;
+			msg.addByte(0x6A);
+			msg.addPosition(pos);
 
-		bool known;
-		uint32_t removedKnown;
-		checkCreatureAsKnown(creature->getID(), known, removedKnown);
-		AddCreature(msg, creature, known, removedKnown);
-		writeToOutputBuffer(msg);
+			bool known;
+			uint32_t removedKnown;
+			checkCreatureAsKnown(creature->getID(), known, removedKnown);
+			AddCreature(msg, creature, known, removedKnown);
+			writeToOutputBuffer(msg);
+		}
 
 		if (isLogin) {
 			sendMagicEffect(pos, CONST_ME_TELEPORT);
