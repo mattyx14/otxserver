@@ -22,7 +22,11 @@
 #include "protocollogin.h"
 
 #include "outputmessage.h"
+
+#ifdef _MULTIPLATFORM77
 #include "rsa.h"
+#endif
+
 #include "tasks.h"
 
 #include "configmanager.h"
