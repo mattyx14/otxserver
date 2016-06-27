@@ -73,8 +73,6 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 			newItem = new Item(type - 2, count);
 		} else if (it.id >= 2202 && it.id <= 2206) {
 			newItem = new Item(type - 37, count);
-		} else if (it.id == 2640) {
-			newItem = new Item(6132, count);
 		} else {
 			newItem = new Item(type, count);
 		}

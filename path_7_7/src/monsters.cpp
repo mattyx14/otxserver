@@ -123,7 +123,7 @@ void MonsterType::createLoot(Container* corpse)
 	}
 
 	Player* owner = g_game.getPlayerByID(corpse->getCorpseOwner());
-	if (!owner) {
+	if (owner) {
 		for (auto it = lootItems.rbegin(), end = lootItems.rend(); it != end; ++it) {
 			auto itemList = createLootItem(*it);
 			if (itemList.empty()) {
