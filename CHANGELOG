@@ -7,7 +7,7 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		LORD ZEDD
+		FORGOTTEN
 
 	Forum and website
 		http://www.blacktibia.org/f4-otx-server-2-descontinuado
@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED : OTX Server 2.X.S - 4 :: Version "LORD ZEDD"
+		COMPLETED : OTX Server 2.X.S - 5 :: Version "FORGOTTEN"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -48,7 +48,9 @@
 		- Add purseSlot
 ]
 
-[ OTX Server 2.X.S - 4 :: Version "LORD ZEDD"
+[ OTX Server 2.X.S - 5 :: Version "FORGOTTEN"
+	- Added OOP Classes for older TFS versions (0.3.x / 0.4x / ...)
+	- Dropped version 2.X.S - 4 and changed to 2.X.S - 5
 	- Fix container error :: https://www.youtube.com/watch?v=mJ1mydn6TjA
 	- Fix : https://github.com/mattyx14/otxserver/pull/ #79 to #88
 ]

@@ -89,10 +89,10 @@
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "X"
 #define PATCH_VERSION "S"
-#define REVISION_VERSION "4"
-#define SOFTWARE_CODENAME "LORD ZEDD"
-#define SOFTWARE_DEVELOPERS "Mattyx14, Comedinha and The Forgotten Server Developers"
-#define GIT_REPO "https://github.com/mattyx14/otxserver/"
+#define REVISION_VERSION "5"
+#define SOFTWARE_CODENAME "FORGOTTEN"
+#define SOFTWARE_DEVELOPERS "Mattyx14 and The Forgotten Server Developers"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0
