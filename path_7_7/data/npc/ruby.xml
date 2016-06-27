@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<npc name="Ruby" nameDescription="Ruby, the parcel and letters ventor" script="default.lua" walkinterval="2000" skull="green" floorchange="0">
+<npc name="Ruby" script="default.lua" walkinterval="2000" floorchange="0">
 	<health now="100" max="100"/>
 	<look type="137" head="20" body="120" legs="75" addons="3" feet="13"/>
 	<parameters>

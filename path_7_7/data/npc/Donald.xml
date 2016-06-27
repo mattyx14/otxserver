@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<npc name="Donald" script="default.lua" walkinterval="2000" skull="green" floorchange="0">
+<npc name="Donald" script="default.lua" walkinterval="2000" floorchange="0">
 	<health now="150" max="150"/>
 	<look type="128" head="20" body="100" legs="50" feet="99" corpse="2212"/>
 	<parameters>
