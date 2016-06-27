@@ -63,6 +63,8 @@ kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
 emoteSpells = true
 classicEquipmentSlots = false
+autoStackItems = true
+summonsDropCorpse = true
 
 -- Critical hits
 -- NOTE: criticalChance and extraPercent are percentages, not absolute values.

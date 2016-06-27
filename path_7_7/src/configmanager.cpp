@@ -85,11 +85,8 @@ bool ConfigManager::load()
 	boolean[CONVERT_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "convertUnsafeScripts", true);
 	boolean[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBoolean(L, "classicEquipmentSlots", false);
 	boolean[ALLOW_BLOCK_SPAWN] = getGlobalBoolean(L, "allowBlockSpawn", true);
-
-	boolean[AUTO_STACK_ITEMS] = getGlobalBoolean(L, "autoStackItems", false);
-	boolean[RUNES_HIT_TOP_CREATURE] = getGlobalBoolean(L, "runesHitTopCreature", true);
-	boolean[SUMMONS_DROP_CORPSE] = getGlobalBoolean(L, "summonsDropCorpse", false);
-	boolean[TILE_HEIGHT_BLOCK] = getGlobalBoolean(L, "tileHeightBlock", false);
+	boolean[AUTO_STACK_ITEMS] = getGlobalBoolean(L, "autoStackItems", true);
+	boolean[SUMMONS_DROP_CORPSE] = getGlobalBoolean(L, "summonsDropCorpse", true);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
