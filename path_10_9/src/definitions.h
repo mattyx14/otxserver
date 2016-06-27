@@ -26,7 +26,7 @@
 #define REVISION_VERSION "-"
 #define SOFTWARE_CODENAME "FORGOTTEN"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
-#define GIT_REPO "https://github.com/mattyx14/otxserver/"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv3"
 
 #define CLIENT_VERSION_MIN 1094
 #define CLIENT_VERSION_MAX 1095

@@ -26,7 +26,7 @@
 #define REVISION_VERSION "612"
 #define SOFTWARE_CODENAME "LORD ZEDD"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
-#define GIT_REPO "https://github.com/mattyx14/otxserver/"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv3"
 
 #define CLIENT_VERSION_MIN 870
 #define CLIENT_VERSION_MAX 871
