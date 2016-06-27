@@ -1,7 +1,7 @@
 local corpseIds = {3058, 3059, 3060, 3061, 3064, 3065, 3066}
 local removalLimit = 500
 
-function onCastSpell(creature, variant, isHotkey)
+function onCastSpell(creature, variant)
 	local position = variant:getPosition()
 	local tile = Tile(position)
 	if tile then

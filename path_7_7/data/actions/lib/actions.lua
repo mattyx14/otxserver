@@ -9,7 +9,7 @@ local others = {}
 local JUNGLE_GRASS = { 2782, 3985 }
 local WILD_GROWTH = { 1499 }
 
-function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
+function destroyItem(player, item, fromPosition, target, toPosition)
 	if not target or not target:isItem() then
 		return false
 	end
@@ -52,7 +52,7 @@ function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 	return true
 end
 
-function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
+function onUseRope(player, item, fromPosition, target, toPosition)
 	local tile = Tile(toPosition)
 	if not tile then
 		return false
@@ -90,7 +90,7 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 	return false
 end
 
-function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
+function onUseShovel(player, item, fromPosition, target, toPosition)
 	local targetId = target.itemid, target.actionid
 	if isInArray(others, targetId) then
 		target:transform(targetId + 1)
@@ -135,7 +135,7 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 	return true
 end
 
-function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
+function onUsePick(player, item, fromPosition, target, toPosition)
 	if toPosition.x == CONTAINER_POSITION then
 		return false
 	end
@@ -162,7 +162,7 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 	return true
 end
 
-function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
+function onUseMachete(player, item, fromPosition, target, toPosition)
 	local targetId = target.itemid
 	if isInArray(JUNGLE_GRASS, targetId) then
 		target:transform(targetId == 19433 and 19431 or targetId - 1)
@@ -176,10 +176,10 @@ function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	end
 
-	return destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
+	return destroyItem(player, item, fromPosition, target, toPosition)
 end
 
-function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
+function onUseScythe(player, item, fromPosition, target, toPosition)
 	if not isInArray({2550, 10513}, item.itemid) then
 		return false
 	end

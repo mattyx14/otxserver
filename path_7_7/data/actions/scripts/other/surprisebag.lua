@@ -7,7 +7,7 @@ local presents = {
 	}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local count = 1
 	local targetItem = presents[item.itemid]
 	if not targetItem then

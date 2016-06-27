@@ -40,7 +40,7 @@ local foods = {
 	[2796] = {5, "Munch."}, -- green mushroom
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local food = foods[item.itemid]
 	if food == nil then
 		return false

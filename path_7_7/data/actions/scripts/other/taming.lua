@@ -310,7 +310,7 @@ local config = {
 	}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local mount = config[item.itemid]
 	if not mount then
 		return false

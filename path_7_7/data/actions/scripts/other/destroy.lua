@@ -1,3 +1,3 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	return destroyItem(player, target, toPosition)
 end

@@ -34,7 +34,7 @@ local function graveStoneTeleport(cid, fromPosition, toPosition)
 	toPosition:sendMagicEffect(CONST_ME_MORTAREA)
 end
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local targetType = ItemType(target.itemid)
 	if targetType:isFluidContainer() then
 		if target.type == 0 and item.type ~= 0 then

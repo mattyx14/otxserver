@@ -1,7 +1,6 @@
 -- Combat settings
 -- NOTE: valid values for worldType are: "pvp", "no-pvp" and "pvp-enforced"
 worldType = "pvp"
-hotkeyAimbotEnabled = false
 protectionLevel = 1
 killsToRedSkull = 3
 pzLocked = 60 * 1000

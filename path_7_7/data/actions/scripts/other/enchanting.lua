@@ -41,7 +41,7 @@ local enchantedItems = {
 	[8905] = {8906, 8907, 8909, 8908},
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	if item.itemid == 7760 and target.itemid == 2342 then
 		target:transform(2343)
 		target:decay()

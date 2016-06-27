@@ -1,4 +1,4 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local position = item:getPosition()
 	local value = math.random(1, 6)
 	local isInGhostMode = player:isInGhostMode()

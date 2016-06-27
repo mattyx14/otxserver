@@ -10,7 +10,7 @@ local config = {
 	['panda'] = {mountId = 19, tameMessage = 'You have tamed the panda.', sound = 'Rrrrr...'}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	if not target:isCreature() or not target:isMonster() or target:getMaster() then
 		return false
 	end

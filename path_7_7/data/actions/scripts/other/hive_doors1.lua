@@ -1,4 +1,4 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local position = player:getPosition()
 	if position.y == toPosition.y then
 		return false

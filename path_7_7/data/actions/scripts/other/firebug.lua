@@ -1,4 +1,4 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local random = math.random(10)
 	if random >= 4 then --success 6% chance
 		if target.itemid == 7538 then --Destroy spider webs/North - South

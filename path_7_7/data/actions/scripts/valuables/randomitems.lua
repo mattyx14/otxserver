@@ -78,7 +78,7 @@ local config = {
 	}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local useId = config[item.itemid]
 	if not useId then
 		return false

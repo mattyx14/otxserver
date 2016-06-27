@@ -7,7 +7,7 @@ local blessings = {
 	{id = 6, name = 'Twist of Fate'}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local result, bless = 'Received blessings:'
 	for i = 1, #blessings do
 		bless = blessings[i]

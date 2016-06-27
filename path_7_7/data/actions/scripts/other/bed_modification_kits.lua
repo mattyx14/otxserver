@@ -15,7 +15,7 @@ local function internalBedTransform(item, targetItem, toPosition, itemArray)
 	item:remove()
 end
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local newBed = beds[item:getId()]
 	if not newBed or target == nil or not target:isItem() then
 		return false

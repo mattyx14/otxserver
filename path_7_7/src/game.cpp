@@ -1837,11 +1837,6 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 		return;
 	}
 
-	bool isHotkey = (fromPos.x == 0xFFFF && fromPos.y == 0 && fromPos.z == 0);
-	if (isHotkey && !g_config.getBoolean(ConfigManager::AIMBOT_HOTKEY_ENABLED)) {
-		return;
-	}
-
 	Thing* thing = internalGetThing(player, fromPos, fromStackPos, fromSpriteId, STACKPOS_USEITEM);
 	if (!thing) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
@@ -1910,7 +1905,7 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 	player->resetIdleTime();
 	player->setNextActionTask(nullptr);
 
-	g_actions->useItemEx(player, fromPos, toPos, toStackPos, item, isHotkey);
+	g_actions->useItemEx(player, fromPos, toPos, toStackPos, item);
 }
 
 void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPos,
@@ -1918,11 +1913,6 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
-		return;
-	}
-
-	bool isHotkey = (pos.x == 0xFFFF && pos.y == 0 && pos.z == 0);
-	if (isHotkey && !g_config.getBoolean(ConfigManager::AIMBOT_HOTKEY_ENABLED)) {
 		return;
 	}
 
@@ -1970,7 +1960,7 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 	player->resetIdleTime();
 	player->setNextActionTask(nullptr);
 
-	g_actions->useItem(player, pos, index, item, isHotkey);
+	g_actions->useItem(player, pos, index, item);
 }
 
 void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uint8_t fromStackPos, uint32_t creatureId, uint16_t spriteId)
@@ -1987,14 +1977,6 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 
 	if (!Position::areInRange<7, 5, 0>(creature->getPosition(), player->getPosition())) {
 		return;
-	}
-
-	bool isHotkey = (fromPos.x == 0xFFFF && fromPos.y == 0 && fromPos.z == 0);
-	if (!g_config.getBoolean(ConfigManager::AIMBOT_HOTKEY_ENABLED)) {
-		if (creature->getPlayer() || isHotkey) {
-			player->sendCancelMessage(RETURNVALUE_DIRECTPLAYERSHOOT);
-			return;
-		}
 	}
 
 	Thing* thing = internalGetThing(player, fromPos, fromStackPos, spriteId, STACKPOS_USEITEM);
@@ -2065,7 +2047,7 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 	player->resetIdleTime();
 	player->setNextActionTask(nullptr);
 
-	g_actions->useItemEx(player, fromPos, creature->getPosition(), creature->getParent()->getThingIndex(creature), item, isHotkey, creature);
+	g_actions->useItemEx(player, fromPos, creature->getPosition(), creature->getParent()->getThingIndex(creature), item, creature);
 }
 
 void Game::playerCloseContainer(uint32_t playerId, uint8_t cid)

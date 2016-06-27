@@ -1,4 +1,4 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local itemId = item:getId()
 	if isInArray(questDoors, itemId) then
 		if player:getStorageValue(item.actionid) ~= -1 then

@@ -1,7 +1,7 @@
 local liquidContainers = {1775, 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2014, 2015, 2023, 2031, 2032, 2033}
 local millstones = {1381, 1382, 1383, 1384}
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local itemId = item:getId()
 	if itemId == 2692 then
 		if target.type == 1 and isInArray(liquidContainers, target.itemid) then

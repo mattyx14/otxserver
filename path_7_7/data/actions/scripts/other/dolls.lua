@@ -58,7 +58,7 @@ local dolls = {
 	[24331] = {"Hail Tibia Brasileiros! (União&Força)"}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local sounds = dolls[item.itemid]
 	if not sounds then
 		return false

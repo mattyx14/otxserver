@@ -1,7 +1,7 @@
 local upFloorIds = {1386, 3678}
 local draw_well = 1369
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local t = Tile(fromPosition)
 	if t:hasFlag(TILESTATE_PROTECTIONZONE) and player:isPzLocked() then
 		player:sendTextMessage(MESSAGE_STATUS_SMALL, Game.getReturnMessage(RETURNVALUE_PLAYERISPZLOCKED))

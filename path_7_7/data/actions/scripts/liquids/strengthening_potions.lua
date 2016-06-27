@@ -19,7 +19,7 @@ local config = {
 	[7443] = bullseye
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local useItem = config[item.itemid]
 	if not useItem then
 		return true

@@ -4,7 +4,7 @@ local config = {
 	[ITEM_CRYSTAL_COIN] = {changeBack = ITEM_PLATINUM_COIN}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local coin = config[item:getId()]
 	if coin.changeTo and item.type == 100 then
 		item:remove()

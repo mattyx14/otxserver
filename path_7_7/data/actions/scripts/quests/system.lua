@@ -2,7 +2,7 @@ local specialQuests = {}
 local questsExperience = {}
 local questLog = {}
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local storage = specialQuests[item.actionid]
 	if not storage then
 		storage = item.uid

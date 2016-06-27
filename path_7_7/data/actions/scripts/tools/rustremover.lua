@@ -61,7 +61,7 @@ local config = {
 	}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local targetItem = config[target.itemid]
 	if not targetItem then
 		return true

@@ -1,4 +1,4 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	item:transform(2786)
 	item:decay()
 	Game.createItem(2677, 3, fromPosition)

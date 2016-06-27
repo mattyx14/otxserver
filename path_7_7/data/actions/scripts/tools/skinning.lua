@@ -86,7 +86,7 @@ local config = {
 	}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local skin = config[item.itemid][target.itemid]
 
 	-- Wrath of the emperor quest

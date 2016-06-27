@@ -1,4 +1,4 @@
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local count = getPlayerInstantSpellCount(player)
 	local text = ""
 	local spells = {}

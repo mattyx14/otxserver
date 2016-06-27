@@ -1575,7 +1575,6 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnumIn("configKeys", ConfigManager::ALLOW_CHANGEOUTFIT)
 	registerEnumIn("configKeys", ConfigManager::ONE_PLAYER_ON_ACCOUNT)
-	registerEnumIn("configKeys", ConfigManager::AIMBOT_HOTKEY_ENABLED)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_RUNE_CHARGES)
 	registerEnumIn("configKeys", ConfigManager::EXPERIENCE_FROM_PLAYERS)
 	registerEnumIn("configKeys", ConfigManager::FREE_PREMIUM)

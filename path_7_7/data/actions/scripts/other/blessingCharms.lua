@@ -6,7 +6,7 @@ local config = {
 	[11262] = {blessId = 5, text = 'The Wisdom of Solitude'}
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local useItem = config[item.itemid]
 	if not useItem then
 		return true

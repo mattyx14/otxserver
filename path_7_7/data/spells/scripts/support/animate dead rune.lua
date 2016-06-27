@@ -1,4 +1,4 @@
-function onCastSpell(creature, variant, isHotkey)
+function onCastSpell(creature, variant)
 	local position = Variant.getPosition(variant)
 	local tile = Tile(position)
 	if tile and creature:getSkull() ~= SKULL_BLACK then

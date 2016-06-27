@@ -10,7 +10,7 @@ local constructionKits = {
 	[5088] = 5056
 }
 
-function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function onUse(player, item, fromPosition, target, toPosition)
 	local kit = constructionKits[item.itemid]
 	if not kit then
 		return false

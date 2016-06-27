@@ -6,7 +6,7 @@ condition:setParameter(CONDITION_PARAM_TICKS, 20000)
 condition:setFormula(-0.9, 0, -0.9, 0)
 combat:setCondition(condition)
 
-function onCastSpell(creature, variant, isHotkey)
+function onCastSpell(creature, variant)
 	if not combat:execute(creature, variant) then
 		return false
 	end

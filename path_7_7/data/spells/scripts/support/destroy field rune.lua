@@ -1,4 +1,4 @@
-function onCastSpell(creature, variant, isHotkey)
+function onCastSpell(creature, variant)
 	local position = Variant.getPosition(variant)
 	local tile = Tile(position)
 	local field = tile and tile:getItemByType(ITEM_TYPE_MAGICFIELD)

@@ -24,7 +24,7 @@
 #include "enums.h"
 #include "luascript.h"
 
-typedef bool (ActionFunction)(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey);
+typedef bool (ActionFunction)(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition);
 
 class Action : public Event
 {
@@ -37,7 +37,7 @@ class Action : public Event
 
 		//scripting
 		virtual bool executeUse(Player* player, Item* item, const Position& fromPosition,
-			Thing* target, const Position& toPosition, bool isHotkey);
+			Thing* target, const Position& toPosition);
 		//
 
 		bool getAllowFarUse() const {
@@ -90,15 +90,15 @@ class Actions final : public BaseEvents
 		Actions(const Actions&) = delete;
 		Actions& operator=(const Actions&) = delete;
 
-		bool useItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey);
-		bool useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item, bool isHotkey, Creature* creature = nullptr);
+		bool useItem(Player* player, const Position& pos, uint8_t index, Item* item);
+		bool useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item, Creature* creature = nullptr);
 
 		ReturnValue canUse(const Player* player, const Position& pos);
 		ReturnValue canUse(const Player* player, const Position& pos, const Item* item);
 		ReturnValue canUseFar(const Creature* creature, const Position& toPos, bool checkLineOfSight, bool checkFloor);
 
 	protected:
-		ReturnValue internalUseItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey);
+		ReturnValue internalUseItem(Player* player, const Position& pos, uint8_t index, Item* item);
 		static void showUseHotkeyMessage(Player* player, const Item* item, uint32_t count);
 
 		void clear() final;
