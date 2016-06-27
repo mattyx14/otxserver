@@ -19,6 +19,8 @@
 
 #include "otpch.h"
 
+#include <boost/range/adaptor/reversed.hpp>
+
 #include "iologindata.h"
 #include "configmanager.h"
 #include "game.h"
@@ -785,10 +787,10 @@ bool IOLoginData::savePlayer(Player* player)
 
 		if (!db->executeQuery(query.str())) {
 			return false;
-		}
+	}
 
-		DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
-		itemList.clear();
+	DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+	itemList.clear();
 
 		for (const auto& it : player->depotLockerMap) {
 			DepotLocker* depotLocker = it.second;
