@@ -1,8 +1,16 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ENERGYAREA)
-setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -0.25, -0, -0.55, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_TELEPORT)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onGetFormulaValues(player, level, maglevel)
+	local min = (level / 5) + (maglevel * 1.4) + 8
+	local max = (level / 5) + (maglevel * 2.2) + 14
+	return -min, -max
+end
+
+combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+function onCastSpell(creature, variant)
+	return combat:execute(creature, variant)
 end

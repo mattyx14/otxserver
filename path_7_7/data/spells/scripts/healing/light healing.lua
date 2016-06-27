@@ -1,22 +1,17 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
 
-function onGetFormulaValues(cid, level, maglevel)
-	min = (level * 2 + maglevel * 3) * 0.10
-	max = (level * 2 + maglevel * 3) * 0.35
-	
-	if min < 15 then
-		min = 15
-	end
-
+function onGetFormulaValues(player, level, maglevel)
+	local min = (level / 5) + (maglevel * 1.4) + 8
+	local max = (level / 5) + (maglevel * 1.8) + 11
 	return min, max
 end
 
-setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+	return combat:execute(creature, variant)
 end

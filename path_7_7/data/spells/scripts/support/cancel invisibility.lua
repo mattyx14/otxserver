@@ -1,10 +1,8 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_INVISIBLE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_INVISIBLE)
+combat:setArea(createCombatArea(AREA_CIRCLE3X3))
 
-local area = createCombatArea(AREA_CIRCLE3X3)
-setCombatArea(combat, area)
-
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+	return combat:execute(creature, variant)
 end
