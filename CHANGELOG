@@ -17,6 +17,7 @@
 
 		OTX Server 3 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Mattyx14
+			Brewsterl
 
 		Special Thanks(s)
 			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
@@ -35,7 +36,7 @@
 
 			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/mattyx14/otxserver/graphs/contributors/
-				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin, Brewsterl
+				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin
 
 	DEVELOPMENT STATUS
 		STARTED AND ON
@@ -46,13 +47,11 @@
 	TODO WITH OPTIONAL
 		MISC:
 			- Animated Smiles
-			- Loot bag display
 			- Quest Protection
-			- Look Display
 
 		OTHERS:
-			- Added support to Tibia Protocol 8.00/11 are on WIP
-			- CastSystem for Protols 8.x
+			- Added support to Tibia Protocol 8.0 are on WIP
+			- CastSystem for Protols 7.x - 8.x
 ]
 
 [ OTX Server 3.5 :: Version " FORGOTTEN "
@@ -68,6 +67,7 @@
 	- Fixed skill bytes for 10.94/95
 	- Fixed cast system error
 	- Fixed monsters
+	- Fixed fluids
 ]
 
 [ OTX Server 3.4 :: Version " LORD ZEDD "
