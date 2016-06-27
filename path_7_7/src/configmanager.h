@@ -47,6 +47,7 @@ class ConfigManager
 			RUNES_HIT_TOP_CREATURE,
 			SUMMONS_DROP_CORPSE,
 			TILE_HEIGHT_BLOCK,
+			LOOT_MESSAGE,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

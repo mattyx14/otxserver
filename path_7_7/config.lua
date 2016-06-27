@@ -65,6 +65,7 @@ emoteSpells = true
 classicEquipmentSlots = false
 autoStackItems = true
 summonsDropCorpse = true
+displayLootMessage = false
 
 -- Critical hits
 -- NOTE: criticalChance and extraPercent are percentages, not absolute values.

@@ -87,6 +87,7 @@ bool ConfigManager::load()
 	boolean[ALLOW_BLOCK_SPAWN] = getGlobalBoolean(L, "allowBlockSpawn", true);
 	boolean[AUTO_STACK_ITEMS] = getGlobalBoolean(L, "autoStackItems", true);
 	boolean[SUMMONS_DROP_CORPSE] = getGlobalBoolean(L, "summonsDropCorpse", true);
+	boolean[LOOT_MESSAGE] = getGlobalBoolean(L, "displayLootMessage", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");

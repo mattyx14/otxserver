@@ -1590,6 +1590,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::ALLOW_BLOCK_SPAWN)
 	registerEnumIn("configKeys", ConfigManager::AUTO_STACK_ITEMS)
 	registerEnumIn("configKeys", ConfigManager::SUMMONS_DROP_CORPSE)
+	registerEnumIn("configKeys", ConfigManager::LOOT_MESSAGE)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
