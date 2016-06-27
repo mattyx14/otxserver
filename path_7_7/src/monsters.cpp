@@ -80,7 +80,7 @@ void MonsterType::reset()
 	isAttackable = true;
 	isHostile = true;
 	isPassive = false;
-	isBlockable = false;
+	isBlockable = true;
 
 	lightLevel = 0;
 	lightColor = 0;
