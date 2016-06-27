@@ -90,9 +90,6 @@ criticalExtra = 100
 deSpawnRange = 2
 deSpawnRadius = 50
 
--- Stamina
-staminaSystem = true
-
 -- Scripts
 warnUnsafeScripts = true
 convertUnsafeScripts = true
