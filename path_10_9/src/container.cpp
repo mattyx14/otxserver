@@ -443,15 +443,13 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 		return this;
 	}
 
-		if (index != INDEX_WHEREEVER) {
+	if (index != INDEX_WHEREEVER) {
 		Item* itemFromIndex = getItemByIndex(index);
 		if (itemFromIndex) {
 			*destItem = itemFromIndex;
-			
 		}
-		
 	}
-	
+
 	bool autoStack = (g_config.getBoolean(ConfigManager::AUTO_STACK_ITEMS) && !hasBitSet(FLAG_IGNOREAUTOSTACK, flags));
 	//try find a suitable item to stack with
 	if (autoStack && item->isStackable() && item->getParent() != this && !(*destItem && (*destItem)->isStackable() && (*destItem)->equals(item))) {
@@ -466,12 +464,12 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 		}
 	}
 
-		Cylinder* subCylinder = dynamic_cast<Cylinder*>(*destItem);
-		if (subCylinder) {
-			index = INDEX_WHEREEVER;
-			*destItem = nullptr;
-			return subCylinder;
-		}
+	Cylinder* subCylinder = dynamic_cast<Cylinder*>(*destItem);
+	if (subCylinder) {
+		index = INDEX_WHEREEVER;
+		*destItem = nullptr;
+		return subCylinder;
+	}
 
 	return this;
 }
