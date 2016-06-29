@@ -47,7 +47,6 @@
 	TODO WITH OPTIONAL
 		MISC:
 			- Animated Smiles
-			- Quest Protection
 
 		OTHERS:
 			- Added support to Tibia Protocol 8.0 are on WIP
@@ -56,6 +55,7 @@
 
 [ OTX Server 3.5 :: Version " FORGOTTEN "
 	- Added support to 7.6 - 7.70/72
+	- Added Purse container - Mkalo
 	- Added Reward System
 		Requite it on monster
 		<flags>
@@ -66,8 +66,8 @@
 		</loot>
 	- Fixed skill bytes for 10.94/95
 	- Fixed cast system error
-	- Fixed monsters
 	- Fixed fluids
+	- Fixed AutoStack - Mkalo
 ]
 
 [ OTX Server 3.4 :: Version " LORD ZEDD "
