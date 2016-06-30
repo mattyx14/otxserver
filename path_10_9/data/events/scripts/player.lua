@@ -86,8 +86,9 @@ function Player:onLookInShop(itemType, count)
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-	if toPosition.x ~= CONTAINER_POSITION then
-		return true
+	if toPosition.x == CONTAINER_POSITION and toCylinder and toCylinder:getId() == 17432 then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
 	end
 
 	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then	

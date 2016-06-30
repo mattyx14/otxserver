@@ -494,16 +494,6 @@ function Player.getExhaustion(self, value)
 	return storage - os.time()
 end
 
--- onMoveItem event to prevent player from moving items inside the purse.
-function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-	if toPosition.x == CONTAINER_POSITION and toCylinder and toCylinder:getId() == 17432 then
-		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-		return false
-	end
-
-	return true
-end
-
 -- How to add items to the purse with lua:
 --[[
 	local purse = player:getSlotItem(CONST_SLOT_PURSE)
