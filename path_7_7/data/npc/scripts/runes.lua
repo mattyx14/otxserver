@@ -40,6 +40,15 @@ shopModule:addBuyableItem({'convince creature'}, 2290, 1, 1, 'convince creature 
 shopModule:addBuyableItem({'chameleon'}, 2291, 210, 1, 'chameleon rune')
 shopModule:addBuyableItem({'disintegrate'}, 2310, 80, 1, 'disintegreate rune')
 
+-- Backpack Potions and Runes
+shopModule:addBuyableItemContainer({'bp hp'}, 2000, 2006, 900, 10, 'backpack of health potions')
+shopModule:addBuyableItemContainer({'bp mp'}, 2001, 2006, 1000, 7, 'backpack of mana potions')
+shopModule:addBuyableItemContainer({'bp ihr'}, 2001, 2265, 1000, 1, 'backpack of intense healing runes')
+shopModule:addBuyableItemContainer({'bp sdr'}, 2001, 2268, 1000, 1, 'backpack of sudden death runes')
+shopModule:addBuyableItemContainer({'bp uhr'}, 2001, 2273, 1000, 1, 'backpack of ultimate healing runes')
+shopModule:addBuyableItemContainer({'bp hmmr'}, 2001, 2311, 1000, 1, 'backpack of heavy magic missile runes')
+shopModule:addBuyableItemContainer({'bp epn'}, 2001, 2313, 1000, 1, 'backpack of explosion runes')
+
 shopModule:addBuyableItem({'wand of vortex', 'vortex'}, 2190, 500, 'wand of vortex')
 shopModule:addBuyableItem({'wand of dragonbreath', 'dragonbreath'}, 2191, 1000, 'wand of dragonbreath')
 shopModule:addBuyableItem({'wand of plague', 'plague'}, 2188, 5000, 'wand of plague')
