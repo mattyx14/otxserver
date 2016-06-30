@@ -60,9 +60,9 @@ allowChangeOutfit = true
 freePremium = false
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
-emoteSpells = true
-classicEquipmentSlots = false
-autoStackItems = true
+emoteSpells = false
+classicEquipmentSlots = true
+autoStackItems = false
 summonsDropCorpse = true
 displayLootMessage = false
 
