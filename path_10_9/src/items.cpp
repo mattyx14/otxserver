@@ -139,7 +139,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 	} else if (Items::dwMinorVersion < CLIENT_VERSION_1094) {
 		std::cout << "A newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
-	}
+	} 
 
 	node = f.getChildNode(node, type);
 	while (node != NO_NODE) {
@@ -414,8 +414,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				it.type = ITEM_TYPE_CONTAINER;
 			} else if (tmpStrValue == "depot") {
 				it.type = ITEM_TYPE_DEPOT;
-			} else if (tmpStrValue == "rewardchest") {
-				it.type = ITEM_TYPE_REWARDCHEST;
 			} else if (tmpStrValue == "mailbox") {
 				it.type = ITEM_TYPE_MAILBOX;
 			} else if (tmpStrValue == "trashholder") {
@@ -670,6 +668,18 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().skills[SKILL_SHIELD] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "skillfist") {
 			it.getAbilities().skills[SKILL_FIST] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "criticalchance") {
+			it.getAbilities().boosts[BOOST_CRITICALCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "criticaldamage") {
+			it.getAbilities().boosts[BOOST_CRITICALDAMAGE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "lifeleechchance") {
+			it.getAbilities().boosts[BOOST_LIFELEECHCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "lifeleechamount") {
+			it.getAbilities().boosts[BOOST_LIFELEECHAMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "manaleechchance") {
+			it.getAbilities().boosts[BOOST_MANALEECHCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "manaleechamount") {
+			it.getAbilities().boosts[BOOST_MANALEECHAMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "maxhitpoints") {
 			it.getAbilities().stats[STAT_MAXHITPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "maxhitpointspercent") {
@@ -754,8 +764,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercenthealing") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "absorbpercentundefined") {
-			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_UNDEFINEDDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "reflectpercentenergy") {
 			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "reflectpercentfire") {
@@ -772,14 +780,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_LIFEDRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "reflectpercentmanadrain") {
 			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_MANADRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentdrown") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_DROWNDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "reflectpercentphysical") {
 			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercenthealing") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentundefined") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_UNDEFINEDDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "suppressdrunk") {
 			if (valueAttribute.as_bool()) {
 				it.getAbilities().conditionSuppressions |= CONDITION_DRUNK;

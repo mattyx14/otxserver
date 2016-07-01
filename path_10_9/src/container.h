@@ -28,8 +28,6 @@
 class Container;
 class DepotChest;
 class DepotLocker;
-class RewardChest;
-class Reward;
 
 class ContainerIterator
 {
@@ -76,21 +74,7 @@ class Container : public Item, public Cylinder
 			return nullptr;
 		}
 
-		virtual RewardChest* getRewardChest() {
-			return nullptr;
-		}
-		virtual const RewardChest* getRewardChest() const {
-			return nullptr;
-		}
-
-		virtual Reward* getReward() {
-			return nullptr;
-		}
-		virtual const Reward* getReward() const {
-			return nullptr;
-		}
-
-			Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) override;
+		Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) override;
 		bool unserializeItemNode(FileLoader& f, NODE node, PropStream& propStream) override;
 		std::string getContentDescription() const;
 

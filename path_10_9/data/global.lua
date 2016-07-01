@@ -68,3 +68,4 @@ keys = {2086, 2087, 2088, 2089, 2090, 2091, 2092, 10032}
 if nextUseStaminaTime == nil then
 	nextUseStaminaTime = {}
 end
+

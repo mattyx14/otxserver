@@ -226,12 +226,9 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 		msg.addByte(player->getSkillPercent(i));
 	}
 
-	for (int i = 10; i < 16; i++) {
-		msg.add<uint16_t>(i); // this is value to display
-		msg.add<uint16_t>(15); // this is 'base' value,
-		// if lower then skill then text color is green
-		// if equal to skill then text color is gray [default for skills]
-		// if higher then skill then text color is red
+	for (uint8_t i = BOOST_FIRST; i <= BOOST_LAST; ++i) {
+		msg.add<uint16_t>(std::min<int32_t>(player->getBoostLevel(i), std::numeric_limits<uint16_t>::max()));
+		msg.add<uint16_t>(0);
 	}
 }
 

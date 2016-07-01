@@ -1413,7 +1413,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_ATTRIBUTE_DOORID)
 
 	registerEnum(ITEM_TYPE_DEPOT)
-	registerEnum(ITEM_TYPE_REWARDCHEST)
 	registerEnum(ITEM_TYPE_MAILBOX)
 	registerEnum(ITEM_TYPE_TRASHHOLDER)
 	registerEnum(ITEM_TYPE_CONTAINER)
@@ -1426,8 +1425,6 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnum(ITEM_BAG)
 	registerEnum(ITEM_GOLD_COIN)
-	registerEnum(ITEM_REWARD_CHEST)
-	registerEnum(ITEM_REWARD_CONTAINER)
 	registerEnum(ITEM_PLATINUM_COIN)
 	registerEnum(ITEM_CRYSTAL_COIN)
 	registerEnum(ITEM_AMULETOFLOSS)
@@ -1506,6 +1503,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(SKILL_FISHING)
 	registerEnum(SKILL_MAGLEVEL)
 	registerEnum(SKILL_LEVEL)
+
+	registerEnum(BOOST_CRITICALCHANCE)
+	registerEnum(BOOST_CRITICALDAMAGE)
+	registerEnum(BOOST_LIFELEECHCHANCE)
+	registerEnum(BOOST_LIFELEECHAMOUNT)
+	registerEnum(BOOST_MANALEECHCHANCE)
+	registerEnum(BOOST_MANALEECHAMOUNT)
 
 	registerEnum(SKULL_NONE)
 	registerEnum(SKULL_YELLOW)
@@ -1796,8 +1800,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MAX_MARKET_OFFERS_AT_A_TIME_PER_PLAYER)
 	registerEnumIn("configKeys", ConfigManager::EXP_FROM_PLAYERS_LEVEL_RANGE)
 	registerEnumIn("configKeys", ConfigManager::MAX_PACKETS_PER_SECOND)
-	registerEnumIn("configKeys", ConfigManager::CRITICAL_HIT_CHANCE)
-	registerEnumIn("configKeys", ConfigManager::CRITICAL_HIT_EXTRA)
 	registerEnumIn("configKeys", ConfigManager::STORE_COIN_PACKET)
 	registerEnumIn("configKeys", ConfigManager::LIVE_CAST_PORT)
 
@@ -2132,10 +2134,6 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
 
-	registerMethod("Player", "getReward", LuaScriptInterface::luaPlayerGetReward);
-	registerMethod("Player", "removeReward", LuaScriptInterface::luaPlayerRemoveReward);
-	registerMethod("Player", "getRewardList", LuaScriptInterface::luaPlayerGetRewardList);
-
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
 	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
 
@@ -2159,6 +2157,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getSkillPercent", LuaScriptInterface::luaPlayerGetSkillPercent);
 	registerMethod("Player", "getSkillTries", LuaScriptInterface::luaPlayerGetSkillTries);
 	registerMethod("Player", "addSkillTries", LuaScriptInterface::luaPlayerAddSkillTries);
+
+	registerMethod("Player", "getBoost", LuaScriptInterface::luaPlayerGetBoost);
 
 	registerMethod("Player", "addOfflineTrainingTime", LuaScriptInterface::luaPlayerAddOfflineTrainingTime);
 	registerMethod("Player", "getOfflineTrainingTime", LuaScriptInterface::luaPlayerGetOfflineTrainingTime);
@@ -2504,7 +2504,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("MonsterType", "isPassive", LuaScriptInterface::luaMonsterTypeIsHostile);
 	registerMethod("MonsterType", "isPushable", LuaScriptInterface::luaMonsterTypeIsPushable);
 	registerMethod("MonsterType", "isHealthShown", LuaScriptInterface::luaMonsterTypeIsHealthShown);
-	registerMethod("MonsterType", "isRewardBoss", LuaScriptInterface::luaMonsterTypeIsRewardBoss);
 
 	registerMethod("MonsterType", "canPushItems", LuaScriptInterface::luaMonsterTypeCanPushItems);
 	registerMethod("MonsterType", "canPushCreatures", LuaScriptInterface::luaMonsterTypeCanPushCreatures);
@@ -7727,62 +7726,6 @@ int LuaScriptInterface::luaPlayerGetFreeCapacity(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaPlayerGetReward(lua_State* L)
-{
-	// player:getReward(rewardId[, autoCreate = false])
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint32_t rewardId = getNumber<uint32_t>(L, 2);
-	bool autoCreate = getBoolean(L, 3, false);
-	if (Reward* reward = player->getReward(rewardId, autoCreate)) {
-		pushUserdata<Item>(L, reward);
-		setItemMetatable(L, -1, reward);
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerRemoveReward(lua_State* L)
-{
-	// player:removeReward(rewardId)
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint32_t rewardId = getNumber<uint32_t>(L, 2);
-	player->removeReward(rewardId);
-	pushBoolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetRewardList(lua_State* L)
-{
-	// player:getRewardList(rewardId)
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	std::vector<uint32_t> rewardVec;
-	player->getRewardList(rewardVec);
-	lua_createtable(L, rewardVec.size(), 0);
-
-	int index = 0;
-	for (const auto& rewardId : rewardVec) {
-		lua_pushnumber(L, rewardId);
-		lua_rawseti(L, -2, ++index);
-	}
-	return 1;
-}
-
 int LuaScriptInterface::luaPlayerGetDepotChest(lua_State* L)
 {
 	// player:getDepotChest(depotId[, autoCreate = false])
@@ -8039,6 +7982,19 @@ int LuaScriptInterface::luaPlayerAddSkillTries(lua_State* L)
 		uint64_t tries = getNumber<uint64_t>(L, 3);
 		player->addSkillAdvance(skillType, tries);
 		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetBoost(lua_State* L)
+{
+	// player:getBoost(boostType)
+	boosts_t boostType = getNumber<boosts_t>(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player && boostType <= BOOST_LAST) {
+		lua_pushnumber(L, player->getBoostLevel(boostType));
 	} else {
 		lua_pushnil(L);
 	}
@@ -9445,14 +9401,14 @@ int32_t LuaScriptInterface::luaPlayerStartLiveCast(lua_State* L)
 	Player* player = getUserdata<Player>(L, 1);
 	if (!player) {
 		lua_pushnil(L);
-		return 1;
+		return 1;	
 	}
-
+	
 	std::string password;
 	if (lua_gettop(L) == 2) {
 		password = getString(L, 2);
 	}
-
+	
 	lua_pushboolean(L, player->startLiveCast(password));
 	return 1;
 }
@@ -11690,19 +11646,6 @@ int LuaScriptInterface::luaMonsterTypeIsHealthShown(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaMonsterTypeIsRewardBoss(lua_State* L)
-{
-	// monsterType:isRewardBoss()
-	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
-	if (monsterType) {
-		pushBoolean(L, monsterType->isRewardBoss);
-	} else {
-		lua_pushnil(L);
-	}
-
-	return 1;
-}
-
 int LuaScriptInterface::luaMonsterTypeCanPushItems(lua_State* L)
 {
 	// monsterType:canPushItems()
@@ -11943,8 +11886,6 @@ int LuaScriptInterface::luaMonsterTypeGetLoot(lua_State* L)
 			setField(L, "maxCount", lootBlock.countmax);
 			setField(L, "actionId", lootBlock.actionId);
 			setField(L, "text", lootBlock.text);
-			pushBoolean(L, lootBlock.unique);
-			lua_setfield(L, -2, "unique");
 
 			parseLoot(lootBlock.childLoot);
 			lua_setfield(L, -2, "childLoot");

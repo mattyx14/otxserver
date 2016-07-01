@@ -31441,6 +31441,158 @@
 		<attribute key="duration" value="3" />
 		<attribute key="description" value="Only the real killers can touch me! This item was awarded by TibiaBrasileiros.com." />
 	</item>
+	<item id="25889" article="a" name="blade of mayhem (charged)">
+		<attribute key="description" value="This weapon is charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="criticalchance" value="10" />
+		<attribute key="criticaldamage" value="20" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="72000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="transformDeEquipTo" value="26233" />
+	</item>
+	<item id="25899" article="a" name="blade of mayhem (heavily charged)">
+		<attribute key="description" value="This weapon is heavily charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="criticalchance" value="15" />
+		<attribute key="criticaldamage" value="25" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="36000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="transformDeEquipTo" value="26234" />
+	</item>
+	<item id="25909" article="a" name="blade of mayhem (overcharged)">
+		<attribute key="description" value="This weapon is overcharged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="criticalchance" value="10" />
+		<attribute key="criticaldamage" value="30" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="54000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="skillSword" value="1" />
+		<attribute key="transformDeEquipTo" value="26235" />
+	</item>
+	<item id="25919" article="a" name="blade of remedy">
+		<attribute key="description" value="This weapon can be charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="48" />
+		<attribute key="weaponType" value="sword" />
+	</item>
+	<item id="25920" article="a" name="blade of remedy (charged)">
+		<attribute key="description" value="This weapon is charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="lifeleechamount" value="5" />
+		<attribute key="lifeleechchance" value="25" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="72000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="transformDeEquipTo" value="26252" />
+	</item>
+	<item id="25921" article="a" name="blade of remedy (heavily charged)">
+		<attribute key="description" value="This weapon is heavily charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="lifeleechamount" value="7" />
+		<attribute key="lifeleechchance" value="30" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="36000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="transformDeEquipTo" value="26255" />
+	</item>
+	<item id="25922" article="a" name="blade of remedy (overcharged)">
+		<attribute key="description" value="This weapon is overcharged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="lifeleechamount" value="9" />
+		<attribute key="lifeleechchance" value="35" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="54000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="skillSword" value="1" />
+		<attribute key="transformDeEquipTo" value="26256" />
+	</item>
+	<item id="25959" article="a" name="blade of carving">
+		<attribute key="description" value="This weapon can be charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="48" />
+		<attribute key="weaponType" value="sword" />
+	</item>
+	<item id="25960" article="a" name="blade of carving (charged)">
+		<attribute key="description" value="This weapon is charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="manaleechamount" value="5" />
+		<attribute key="manaleechchance" value="20" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="72000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="transformDeEquipTo" value="26261" />
+	</item>
+	<item id="25961" article="a" name="blade of carving (heavily charged)">
+		<attribute key="description" value="This weapon is heavily charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="manaleechamount" value="7" />
+		<attribute key="manaleechchance" value="25" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="36000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="transformDeEquipTo" value="26265" />
+	</item>
+	<item id="25962" article="a" name="blade of carving (overcharged)">
+		<attribute key="description" value="This weapon is overcharged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="manaleechamount" value="9" />
+		<attribute key="manaleechchance" value="30" />
+		<attribute key="decayTo" value="25879" />
+		<attribute key="duration" value="54000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="skillSword" value="1" />
+		<attribute key="transformDeEquipTo" value="26270" />
+	</item>
 	<item id="26029" article="a" name="ultimate mana potion">
 		<attribute key="weight" value="310" />
 		<attribute key="description" value="This potion can only be consumed by sorcerers and druids of level 130 or higher." />
@@ -31452,6 +31604,123 @@
 	<item id="26031" article="an" name="supreme health potion">
 		<attribute key="weight" value="310" />
 		<attribute key="description" value="This potion can only be consumed by knights of level 200 or higher." />
+	</item>
+	<item id="26233" article="a" name="blade of mayhem (charged)">
+		<attribute key="description" value="This weapon is charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="72000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25889" />
+	</item>
+	<item id="26234" article="a" name="blade of mayhem (heavily charged)">
+		<attribute key="description" value="This weapon is heavily charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="36000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25899" />
+	</item>
+	<item id="26235" article="a" name="blade of mayhem (overcharged)">
+		<attribute key="description" value="This weapon is overcharged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="54000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25909" />
+	</item>
+	<item id="26252" article="a" name="blade of remedy (charged)">
+		<attribute key="description" value="This weapon is charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="72000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25920" />
+	</item>
+	<item id="26255" article="a" name="blade of remedy (heavily charged)">
+		<attribute key="description" value="This weapon is heavily charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="36000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25921" />
+	</item>
+	<item id="26256" article="a" name="blade of remedy (overcharged)">
+		<attribute key="description" value="This weapon is overcharged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="54000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25922" />
+	</item>
+	<item id="26261" article="a" name="blade of carving (charged)">
+		<attribute key="description" value="This weapon is charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="72000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25960" />
+	</item>
+	<item id="26265" article="a" name="blade of carving (heavily charged)">
+		<attribute key="description" value="This weapon is heavily charged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="36000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25961" />
+	</item>
+	<item id="26270" article="a" name="blade of carving (overcharged)">
+		<attribute key="description" value="This weapon is overcharged." />
+		<attribute key="weight" value="5000" />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="duration" value="54000" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="transformEquipTo" value="25962" />
 	</item>
 	<item id="25453" article="a" name="depot box I" />
 	<item id="25454" article="a" name="depot box II" />

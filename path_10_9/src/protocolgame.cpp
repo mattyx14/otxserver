@@ -1,5 +1,5 @@
 /**
- * The Forgotten Server - a free and open-source MMORPG server emulator
+* The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2016  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -2051,7 +2051,10 @@ void ProtocolGame::sendFightModes()
 	msg.addByte(player->secureMode);
 	msg.addByte(PVP_MODE_DOVE);
 	writeToOutputBuffer(msg);
+	msg.addByte(0x19);
+	msg.addByte(0x00);
 }
+
 void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos, const Position& oldPos, int32_t oldStackPos, bool teleport)
 {
 	if (creature == player) {

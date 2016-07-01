@@ -796,35 +796,61 @@ Skulls_t getSkullType(const std::string& strValue)
 std::string getSkillName(uint8_t skillid)
 {
 	switch (skillid) {
-		case SKILL_FIST:
-			return "fist fighting";
+	case SKILL_FIST:
+		return "fist fighting";
 
-		case SKILL_CLUB:
-			return "club fighting";
+	case SKILL_CLUB:
+		return "club fighting";
 
-		case SKILL_SWORD:
-			return "sword fighting";
+	case SKILL_SWORD:
+		return "sword fighting";
 
-		case SKILL_AXE:
-			return "axe fighting";
+	case SKILL_AXE:
+		return "axe fighting";
 
-		case SKILL_DISTANCE:
-			return "distance fighting";
+	case SKILL_DISTANCE:
+		return "distance fighting";
 
-		case SKILL_SHIELD:
-			return "shielding";
+	case SKILL_SHIELD:
+		return "shielding";
 
-		case SKILL_FISHING:
-			return "fishing";
+	case SKILL_FISHING:
+		return "fishing";
 
-		case SKILL_MAGLEVEL:
-			return "magic level";
+	case SKILL_MAGLEVEL:
+		return "magic level";
 
-		case SKILL_LEVEL:
-			return "level";
+	case SKILL_LEVEL:
+		return "level";
 
-		default:
-			return "unknown";
+	default:
+		return "unknown";
+	}
+}
+
+std::string getBoostName(uint8_t boostid)
+{
+	switch (boostid) {
+	case BOOST_CRITICALCHANCE:
+		return "critical hit chance";
+
+	case BOOST_CRITICALDAMAGE:
+		return "critical extra damage";
+
+	case BOOST_LIFELEECHCHANCE:
+		return "hit points leech chance";
+
+	case BOOST_LIFELEECHAMOUNT:
+		return "hit points leech amount";
+
+	case BOOST_MANALEECHCHANCE:
+		return "mana leech chance";
+
+	case BOOST_MANALEECHAMOUNT:
+		return "mana leech amount";
+
+	default:
+		return "unknown";
 	}
 }
 
@@ -1030,9 +1056,6 @@ std::string getFirstLine(const std::string& str)
 const char* getReturnMessage(ReturnValue value)
 {
 	switch (value) {
-		case RETURNVALUE_REWARDCHESTISEMPTY:
-			return "The chest is currently empty. You did not take part in any battles in the last seven days or already claimed your reward.";
-
 		case RETURNVALUE_DESTINATIONOUTOFREACH:
 			return "Destination is out of reach.";
 

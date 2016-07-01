@@ -1261,7 +1261,7 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 	uint32_t maxQueryCount = 0;
 	ret = destCylinder->queryMaxCount(INDEX_WHEREEVER, *item, item->getItemCount(), maxQueryCount, flags);
 
-	if (ret != RETURNVALUE_NOERROR && toCylinder->getItem() && toCylinder->getItem()->getID() != ITEM_REWARD_CONTAINER) {
+	if (ret != RETURNVALUE_NOERROR) {
 		return ret;
 	}
 
@@ -3900,6 +3900,37 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
+		bool critical = true;
+		if (attackerPlayer) {
+			//critical damage
+			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_CRITICALCHANCE)) {
+				damage.primary.value = (int32_t)(damage.primary.value * (1 + (attackerPlayer->getBoostLevel(BOOST_CRITICALDAMAGE) / 100)));
+				addMagicEffect(targetPos, CONST_ME_CRITICALHIT);
+				critical = true;
+			}
+
+			//life leech
+			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_LIFELEECHCHANCE)) {
+				CombatParams tmpParams;
+				CombatDamage tmpDamage;
+				tmpDamage.origin = ORIGIN_SPELL;
+				tmpDamage.primary.type = COMBAT_HEALING;
+				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getBoostLevel(BOOST_LIFELEECHAMOUNT)) / 100;
+				Combat::doCombatHealth(nullptr, attackerPlayer, tmpDamage, tmpParams);
+			}
+
+			//mana leech
+			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_MANALEECHCHANCE)) {
+				CombatParams tmpParams;
+				CombatDamage tmpDamage;
+				tmpDamage.origin = ORIGIN_SPELL;
+				tmpDamage.primary.type = COMBAT_MANADRAIN;
+				//tmpDamage.primary.value = (int32_t)(std::abs(damage.primary.value) * (attackerPlayer->getBoostLevel(BOOST_MANALEECHAMOUNT) / 100));
+				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getBoostLevel(BOOST_MANALEECHAMOUNT)) / 100;
+				Combat::doCombatMana(nullptr, attackerPlayer, tmpDamage, tmpParams);
+			}
+		}
+
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
 			return true;
@@ -4035,6 +4066,12 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				addMagicEffect(list, targetPos, hitEffect);
 			}
 		}
+
+/*
+		if (critical) {
+			addMagicEffect(list, targetPos, CONST_ME_CRITICALHIT);
+		}
+*/
 
 		if (message.primary.color != TEXTCOLOR_NONE || message.secondary.color != TEXTCOLOR_NONE) {
 			std::string damageString = std::to_string(realDamage) + (realDamage != 1 ? " hitpoints" : " hitpoint");

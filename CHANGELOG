@@ -55,15 +55,8 @@
 
 [ OTX Server 3.5 :: Version " FORGOTTEN "
 	- Added support to 7.6 - 7.70/72
+	- Added Boost system (critical hits, hp/mana leech - no complete) - Thanks to: @gunz - @Milice - @Thexamx
 	- Added Purse container - Mkalo
-	- Added Reward System
-		Requite it on monster
-		<flags>
-			<flag rewardboss="1" />
-		</flags>
-		<loot>
-			<item id="5903" chance="100000" uniquedrop="1" /> <!-- ferumbras' hat -->
-		</loot>
 	- Fixed skill bytes for 10.94/95
 	- Fixed cast system error
 	- Fixed fluids

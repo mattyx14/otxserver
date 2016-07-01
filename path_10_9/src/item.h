@@ -492,276 +492,268 @@ class Item : virtual public Thing
 			if (!attributes) {
 				return 0;
 			}
-		return getIntAttr(ITEM_ATTRIBUTE_CORPSEOWNER);
-	}
-
-	void setRewardCorpse() {
-		setCorpseOwner(static_cast<uint32_t>(std::numeric_limits<int32_t>::max()));
-	}
-
-	bool isRewardCorpse() {
-		return getCorpseOwner() == static_cast<uint32_t>(std::numeric_limits<int32_t>::max());
-	}
-
-	void setDuration(int32_t time) {
-		setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
-	}
-	void decreaseDuration(int32_t time) {
-		increaseIntAttr(ITEM_ATTRIBUTE_DURATION, -time);
-	}
-	uint32_t getDuration() const {
-		if (!attributes) {
-			return 0;
+			return getIntAttr(ITEM_ATTRIBUTE_CORPSEOWNER);
 		}
-		return getIntAttr(ITEM_ATTRIBUTE_DURATION);
-	}
 
-	void setDecaying(ItemDecayState_t decayState) {
-		setIntAttr(ITEM_ATTRIBUTE_DECAYSTATE, decayState);
-	}
-	ItemDecayState_t getDecaying() const {
-		if (!attributes) {
-			return DECAYING_FALSE;
+		void setDuration(int32_t time) {
+			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
 		}
-		return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
-	}
-
-	static std::string getDescription(const ItemType& it, int32_t lookDistance, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
-	static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
-	static std::string getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count = 1);
-
-	std::string getDescription(int32_t lookDistance) const final;
-	std::string getNameDescription() const;
-	std::string getWeightDescription() const;
-
-	//serialization
-	virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);
-	bool unserializeAttr(PropStream& propStream);
-	virtual bool unserializeItemNode(FileLoader& f, NODE node, PropStream& propStream);
-
-	virtual void serializeAttr(PropWriteStream& propWriteStream) const;
-
-	bool isPushable() const final {
-		return isMoveable();
-	}
-	int32_t getThrowRange() const final {
-		return (isPickupable() ? 15 : 2);
-	}
-
-	uint16_t getID() const {
-		return id;
-	}
-	uint16_t getClientID() const {
-		return items[id].clientId;
-	}
-	void setID(uint16_t newid);
-
-	// Returns the player that is holding this item in his inventory
-	Player* getHoldingPlayer() const;
-
-	WeaponType_t getWeaponType() const {
-		return items[id].weaponType;
-	}
-	Ammo_t getAmmoType() const {
-		return items[id].ammoType;
-	}
-	uint8_t getShootRange() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_SHOOTRANGE)) {
-			return getIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE);
+		void decreaseDuration(int32_t time) {
+			increaseIntAttr(ITEM_ATTRIBUTE_DURATION, -time);
 		}
-		return items[id].shootRange;
-	}
+		uint32_t getDuration() const {
+			if (!attributes) {
+				return 0;
+			}
+			return getIntAttr(ITEM_ATTRIBUTE_DURATION);
+		}
 
-	virtual uint32_t getWeight() const;
-	uint32_t getBaseWeight() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_WEIGHT)) {
-			return getIntAttr(ITEM_ATTRIBUTE_WEIGHT);
+		void setDecaying(ItemDecayState_t decayState) {
+			setIntAttr(ITEM_ATTRIBUTE_DECAYSTATE, decayState);
 		}
-		return items[id].weight;
-	}
-	int32_t getAttack() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_ATTACK)) {
-			return getIntAttr(ITEM_ATTRIBUTE_ATTACK);
+		ItemDecayState_t getDecaying() const {
+			if (!attributes) {
+				return DECAYING_FALSE;
+			}
+			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
 		}
-		return items[id].attack;
-	}
-	int32_t getArmor() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_ARMOR)) {
-			return getIntAttr(ITEM_ATTRIBUTE_ARMOR);
+
+		static std::string getDescription(const ItemType& it, int32_t lookDistance, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
+		static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
+		static std::string getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count = 1);
+
+		std::string getDescription(int32_t lookDistance) const final;
+		std::string getNameDescription() const;
+		std::string getWeightDescription() const;
+
+		//serialization
+		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);
+		bool unserializeAttr(PropStream& propStream);
+		virtual bool unserializeItemNode(FileLoader& f, NODE node, PropStream& propStream);
+
+		virtual void serializeAttr(PropWriteStream& propWriteStream) const;
+
+		bool isPushable() const final {
+			return isMoveable();
 		}
-		return items[id].armor;
-	}
-	int32_t getDefense() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_DEFENSE)) {
-			return getIntAttr(ITEM_ATTRIBUTE_DEFENSE);
+		int32_t getThrowRange() const final {
+			return (isPickupable() ? 15 : 2);
 		}
-		return items[id].defense;
-	}
-	int32_t getExtraDefense() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE)) {
-			return getIntAttr(ITEM_ATTRIBUTE_EXTRADEFENSE);
+
+		uint16_t getID() const {
+			return id;
 		}
-		return items[id].extraDefense;
-	}
-	int32_t getSlotPosition() const {
-		return items[id].slotPosition;
-	}
-	int8_t getHitChance() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_HITCHANCE)) {
-			return getIntAttr(ITEM_ATTRIBUTE_HITCHANCE);
+		uint16_t getClientID() const {
+			return items[id].clientId;
 		}
-		return items[id].hitChance;
-	}
+		void setID(uint16_t newid);
+
+		// Returns the player that is holding this item in his inventory
+		Player* getHoldingPlayer() const;
+
+		WeaponType_t getWeaponType() const {
+			return items[id].weaponType;
+		}
+		Ammo_t getAmmoType() const {
+			return items[id].ammoType;
+		}
+		uint8_t getShootRange() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_SHOOTRANGE)) {
+				return getIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE);
+			}
+			return items[id].shootRange;
+		}
+
+		virtual uint32_t getWeight() const;
+		uint32_t getBaseWeight() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_WEIGHT)) {
+				return getIntAttr(ITEM_ATTRIBUTE_WEIGHT);
+			}
+			return items[id].weight;
+		}
+		int32_t getAttack() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_ATTACK)) {
+				return getIntAttr(ITEM_ATTRIBUTE_ATTACK);
+			}
+			return items[id].attack;
+		}
+		int32_t getArmor() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_ARMOR)) {
+				return getIntAttr(ITEM_ATTRIBUTE_ARMOR);
+			}
+			return items[id].armor;
+		}
+		int32_t getDefense() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_DEFENSE)) {
+				return getIntAttr(ITEM_ATTRIBUTE_DEFENSE);
+			}
+			return items[id].defense;
+		}
+		int32_t getExtraDefense() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE)) {
+				return getIntAttr(ITEM_ATTRIBUTE_EXTRADEFENSE);
+			}
+			return items[id].extraDefense;
+		}
+		int32_t getSlotPosition() const {
+			return items[id].slotPosition;
+		}
+		int8_t getHitChance() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_HITCHANCE)) {
+				return getIntAttr(ITEM_ATTRIBUTE_HITCHANCE);
+			}
+			return items[id].hitChance;
+		}
 
 	uint32_t getWorth() const;
-	void getLight(LightInfo& lightInfo) const;
+		void getLight(LightInfo& lightInfo) const;
 
-	bool hasProperty(ITEMPROPERTY prop) const;
-	bool isBlocking() const {
-		return items[id].blockSolid;
-	}
-	bool isStackable() const {
-		return items[id].stackable;
-	}
-	bool isAlwaysOnTop() const {
-		return items[id].alwaysOnTop;
-	}
-	bool isGroundTile() const {
-		return items[id].isGroundTile();
-	}
-	bool isMagicField() const {
-		return items[id].isMagicField();
-	}
-	bool isMoveable() const {
-		return items[id].moveable;
-	}
-	bool isPickupable() const {
-		return items[id].pickupable;
-	}
-	bool isUseable() const {
-		return items[id].useable;
-	}
-	bool isHangable() const {
-		return items[id].isHangable;
-	}
-	bool isRotatable() const {
-		const ItemType& it = items[id];
-		return it.rotatable && it.rotateTo;
-	}
-	bool hasWalkStack() const {
-		return items[id].walkStack;
-	}
-
-	const std::string& getName() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_NAME)) {
-			return getStrAttr(ITEM_ATTRIBUTE_NAME);
+		bool hasProperty(ITEMPROPERTY prop) const;
+		bool isBlocking() const {
+			return items[id].blockSolid;
 		}
-		return items[id].name;
-	}
-	const std::string getPluralName() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_PLURALNAME)) {
-			return getStrAttr(ITEM_ATTRIBUTE_PLURALNAME);
+		bool isStackable() const {
+			return items[id].stackable;
 		}
-		return items[id].getPluralName();
-	}
-	const std::string& getArticle() const {
-		if (hasAttribute(ITEM_ATTRIBUTE_ARTICLE)) {
-			return getStrAttr(ITEM_ATTRIBUTE_ARTICLE);
+		bool isAlwaysOnTop() const {
+			return items[id].alwaysOnTop;
 		}
-		return items[id].article;
-	}
-
-	// get the number of items
-	uint16_t getItemCount() const {
-		return count;
-	}
-	void setItemCount(uint8_t n) {
-		count = n;
-	}
-
-	static uint32_t countByType(const Item* i, int32_t subType);
-
-	void setDefaultSubtype();
-	uint16_t getSubType() const;
-	void setSubType(uint16_t n);
-
-	void setUniqueId(uint16_t n);
-
-	void setDefaultDuration() {
-		uint32_t duration = getDefaultDuration();
-		if (duration != 0) {
-			setDuration(duration);
+		bool isGroundTile() const {
+			return items[id].isGroundTile();
 		}
-	}
-	uint32_t getDefaultDuration() const {
-		return items[id].decayTime * 1000;
-	}
-	bool canDecay() const;
-
-	virtual bool canRemove() const {
-		return true;
-	}
-	virtual bool canTransform() const {
-		return true;
-	}
-	virtual void onRemoved();
-	virtual void onTradeEvent(TradeEvents_t, Player*) {}
-
-	virtual void startDecaying();
-
-	void setLoadedFromMap(bool value) {
-		loadedFromMap = value;
-	}
-	bool isCleanable() const {
-		return !loadedFromMap && canRemove() && isPickupable() && !hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) && !hasAttribute(ITEM_ATTRIBUTE_ACTIONID);
-	}
-
-	bool hasMarketAttributes() const;
-
-	ItemAttributes* getAttributes() {
-		if (!attributes) {
-			attributes = new ItemAttributes();
+		bool isMagicField() const {
+			return items[id].isMagicField();
 		}
-		return attributes;
-	}
-
-	void incrementReferenceCounter() {
-		++referenceCounter;
-	}
-	void decrementReferenceCounter() {
-		if (--referenceCounter == 0) {
-			delete this;
+		bool isMoveable() const {
+			return items[id].moveable;
 		}
-	}
+		bool isPickupable() const {
+			return items[id].pickupable;
+		}
+		bool isUseable() const {
+			return items[id].useable;
+		}
+		bool isHangable() const {
+			return items[id].isHangable;
+		}
+		bool isRotatable() const {
+			const ItemType& it = items[id];
+			return it.rotatable && it.rotateTo;
+		}
+		bool hasWalkStack() const {
+			return items[id].walkStack;
+		}
 
-	Cylinder* getParent() const {
-		return parent;
-	}
-	void setParent(Cylinder* cylinder) {
-		parent = cylinder;
-	}
-	Cylinder* getTopParent();
-	const Cylinder* getTopParent() const;
-	Tile* getTile();
-	const Tile* getTile() const;
-	bool isRemoved() const {
-		return !parent || parent->isRemoved();
-	}
+		const std::string& getName() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_NAME)) {
+				return getStrAttr(ITEM_ATTRIBUTE_NAME);
+			}
+			return items[id].name;
+		}
+		const std::string getPluralName() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_PLURALNAME)) {
+				return getStrAttr(ITEM_ATTRIBUTE_PLURALNAME);
+			}
+			return items[id].getPluralName();
+		}
+		const std::string& getArticle() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_ARTICLE)) {
+				return getStrAttr(ITEM_ATTRIBUTE_ARTICLE);
+			}
+			return items[id].article;
+		}
+
+		// get the number of items
+		uint16_t getItemCount() const {
+			return count;
+		}
+		void setItemCount(uint8_t n) {
+			count = n;
+		}
+
+		static uint32_t countByType(const Item* i, int32_t subType);
+
+		void setDefaultSubtype();
+		uint16_t getSubType() const;
+		void setSubType(uint16_t n);
+
+		void setUniqueId(uint16_t n);
+
+		void setDefaultDuration() {
+			uint32_t duration = getDefaultDuration();
+			if (duration != 0) {
+				setDuration(duration);
+			}
+		}
+		uint32_t getDefaultDuration() const {
+			return items[id].decayTime * 1000;
+		}
+		bool canDecay() const;
+
+		virtual bool canRemove() const {
+			return true;
+		}
+		virtual bool canTransform() const {
+			return true;
+		}
+		virtual void onRemoved();
+		virtual void onTradeEvent(TradeEvents_t, Player*) {}
+
+		virtual void startDecaying();
+
+		void setLoadedFromMap(bool value) {
+			loadedFromMap = value;
+		}
+		bool isCleanable() const {
+			return !loadedFromMap && canRemove() && isPickupable() && !hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) && !hasAttribute(ITEM_ATTRIBUTE_ACTIONID);
+		}
+
+		bool hasMarketAttributes() const;
+
+		ItemAttributes* getAttributes() {
+			if (!attributes) {
+				attributes = new ItemAttributes();
+			}
+			return attributes;
+		}
+
+		void incrementReferenceCounter() {
+			++referenceCounter;
+		}
+		void decrementReferenceCounter() {
+			if (--referenceCounter == 0) {
+				delete this;
+			}
+		}
+
+		Cylinder* getParent() const {
+			return parent;
+		}
+		void setParent(Cylinder* cylinder) {
+			parent = cylinder;
+		}
+		Cylinder* getTopParent();
+		const Cylinder* getTopParent() const;
+		Tile* getTile();
+		const Tile* getTile() const;
+		bool isRemoved() const {
+			return !parent || parent->isRemoved();
+		}
 
 	protected:
-	std::string getWeightDescription(uint32_t weight) const;
+		std::string getWeightDescription(uint32_t weight) const;
 
-	Cylinder* parent;
-	ItemAttributes* attributes;
+		Cylinder* parent;
+		ItemAttributes* attributes;
 
-	uint32_t referenceCounter;
+		uint32_t referenceCounter;
 
-	uint16_t id;  // the same id as in ItemType
-	uint8_t count; // number of stacked items
+		uint16_t id;  // the same id as in ItemType
+		uint8_t count; // number of stacked items
 
-	bool loadedFromMap;
+		bool loadedFromMap;
 
-	//Don't add variables here, use the ItemAttribute class.
+		//Don't add variables here, use the ItemAttribute class.
 };
 
 typedef std::list<Item*> ItemList;

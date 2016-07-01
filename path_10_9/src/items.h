@@ -54,7 +54,6 @@ enum ItemTypes_t {
 	ITEM_TYPE_BED,
 	ITEM_TYPE_KEY,
 	ITEM_TYPE_RUNE,
-	ITEM_TYPE_REWARDCHEST,
 	ITEM_TYPE_LAST,
 };
 
@@ -91,6 +90,9 @@ struct Abilities {
 
 	//extra skill modifiers
 	int32_t skills[SKILL_LAST + 1];
+
+	//boost modifiers
+	int32_t boosts[BOOST_LAST + 1];
 
 	int32_t speed;
 
@@ -153,9 +155,6 @@ class ItemType
 		}
 		bool isDepot() const {
 			return (type == ITEM_TYPE_DEPOT);
-		}
-		bool isRewardChest() const {
-			return (type == ITEM_TYPE_REWARDCHEST);
 		}
 		bool isMailbox() const {
 			return (type == ITEM_TYPE_MAILBOX);

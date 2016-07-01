@@ -1004,6 +1004,50 @@
 	<movevent event="Equip" itemid="18465" slot="hand" level="120" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="18465" slot="hand" function="onDeEquipItem" />
 
+	<!-- Weapons 10.9x -->
+	<movevent event="Equip" itemid="25879" slot="hand" level="100" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25879" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26233" slot="hand" level="150" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26233" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25889" slot="hand" level="150" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25889" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26234" slot="hand" level="200" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26234" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25899" slot="hand" level="200" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25899" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26235" slot="hand" level="250" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26235" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25909" slot="hand" level="250" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25909" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25959" slot="hand" level="100" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25959" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26261" slot="hand" level="150" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26261" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25960" slot="hand" level="150" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25960" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26265" slot="hand" level="200" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26265" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25961" slot="hand" level="200" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25961" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26270" slot="hand" level="250" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26270" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25962" slot="hand" level="250" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25962" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25919" slot="hand" level="100" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25919" slot="hand" function="onDeEquipItem" />		
+	<movevent event="Equip" itemid="26252" slot="hand" level="150" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26252" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25920" slot="hand" level="150" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25920" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26255" slot="hand" level="200" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26255" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25921" slot="hand" level="200" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25921" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="26256" slot="hand" level="250" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="26256" slot="hand" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="25922" slot="hand" level="250" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="25922" slot="hand" function="onDeEquipItem" />
+
 	<!-- Shields -->
 	<movevent event="Equip" itemid="2175" slot="shield" function="onEquipItem">
 		<vocation name="Sorcerer" />

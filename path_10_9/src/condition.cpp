@@ -482,6 +482,7 @@ void ConditionAttributes::updatePercentSkills(Player* player)
 void ConditionAttributes::updateSkills(Player* player)
 {
 	bool needUpdateSkills = false;
+	bool needUpdateBoosts = false;
 
 	for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
 		if (skills[i]) {
@@ -490,7 +491,14 @@ void ConditionAttributes::updateSkills(Player* player)
 		}
 	}
 
-	if (needUpdateSkills) {
+	for (int32_t i = BOOST_FIRST; i <= BOOST_LAST; ++i) {
+		if (boosts[i]) {
+			needUpdateBoosts = true;
+			player->setVarBoost(static_cast<boosts_t>(i), boosts[i]);
+		}
+	}
+
+	if (needUpdateSkills || needUpdateBoosts) {
 		player->sendSkills();
 	}
 }
@@ -505,6 +513,7 @@ void ConditionAttributes::endCondition(Creature* creature)
 	Player* player = creature->getPlayer();
 	if (player) {
 		bool needUpdateSkills = false;
+		bool needUpdateBoosts = false;
 
 		for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
 			if (skills[i] || skillsPercent[i]) {
@@ -513,7 +522,14 @@ void ConditionAttributes::endCondition(Creature* creature)
 			}
 		}
 
-		if (needUpdateSkills) {
+		for (int32_t i = BOOST_FIRST; i <= BOOST_LAST; ++i) {
+			if (boosts[i]) {
+				needUpdateBoosts = true;
+				player->setVarBoost(static_cast<boosts_t>(i), -boosts[i]);
+			}
+		}
+
+		if (needUpdateSkills || needUpdateBoosts) {
 			player->sendSkills();
 		}
 
