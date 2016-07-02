@@ -3900,12 +3900,11 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
-		bool critical = true;
+		bool critical = false;
 		if (attackerPlayer) {
 			//critical damage
 			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_CRITICALCHANCE)) {
 				damage.primary.value = (int32_t)(damage.primary.value * (1 + (attackerPlayer->getBoostLevel(BOOST_CRITICALDAMAGE) / 100)));
-				addMagicEffect(targetPos, CONST_ME_CRITICALHIT);
 				critical = true;
 			}
 
@@ -4067,11 +4066,9 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 		}
 
-/*
 		if (critical) {
 			addMagicEffect(list, targetPos, CONST_ME_CRITICALHIT);
 		}
-*/
 
 		if (message.primary.color != TEXTCOLOR_NONE || message.secondary.color != TEXTCOLOR_NONE) {
 			std::string damageString = std::to_string(realDamage) + (realDamage != 1 ? " hitpoints" : " hitpoint");
