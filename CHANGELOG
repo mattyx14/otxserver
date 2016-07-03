@@ -49,22 +49,21 @@
 			- Animated Smiles
 
 		OTHERS:
-			- Added support to Tibia Protocol 8.0 are on WIP
 			- CastSystem for Protols 7.x - 8.x
 ]
 
 [ OTX Server 3.5 :: Version " FORGOTTEN "
 	- Added support to 7.6 - 7.70/72
-	- Added Boost system (critical hits, hp/mana leech - no complete) - Thanks to: @gunz - @Milice - @Thexamx
-	- Added Advanced Securemode - Thanks to: Lundrial
-	- Added Party Protection (You can't damage party members) - Thanks to: Lundrial
+	- Added Boost system (critical hits, hp/mana leech - no complete)
+	- Added Advanced Securemode
+	- Added Party Protection (You can't damage party members)
 	- Added New spawn system
-	- Added serverSave on serverShutdown
+	- Added serverSave on closeConsole
 	- Added bossRewardSystem
 	- Fixed skill bytes for 10.94/95
 	- Fixed castSystem error
 	- Fixed fluids
-	- Fixed autoStack - Thanks to: Mkalo
+	- Fixed autoStack
 ]
 
 [ OTX Server 3.4 :: Version " LORD ZEDD "
