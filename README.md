@@ -5,6 +5,37 @@ https://github.com/mattyx14/otxserver/tree/otxserv3/
 
 ===========
 
+Open Tibia Forums - Listing best and useful
+===========
+
+##Servers
+
+** OTLand
+* Main OpenTibia Community
+https://otland.net/
+
+** TibiaKing
+* OpenTibia Community
+http://www.tibiaking.com/
+
+** OTServBR
+* OpenTibia Community
+http://forums.otserv.com.br/
+
+** BlackTibia
+* OpenTibia Community
+http://blacktibia.org/
+
+** Tibia Face
+* OpenTibia Community
+http://tibiaface.com/forum/
+
+** Vapus
+* OpenTibia Community
+http://vapus.net/forum/index.php
+
+===========
+
 Open Tibia Repos - Listing best and useful
 ===========
 
