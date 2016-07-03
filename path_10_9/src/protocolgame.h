@@ -68,7 +68,8 @@ class ProtocolGame final : public ProtocolGameBase
 		static const char* protocol_name() {
 			return "gameworld protocol";
 		}
-		explicit ProtocolGame(Connection_ptr connection):
+
+		explicit ProtocolGame(Connection_ptr connection) :
 			ProtocolGameBase(connection) {}
 
 		void login(const std::string& name, uint32_t accnumber, OperatingSystem_t operatingSystem);
@@ -86,23 +87,23 @@ class ProtocolGame final : public ProtocolGameBase
 		typedef std::vector<ProtocolSpectator_ptr> CastSpectatorVec;
 
 		/** \brief Adds a spectator from the spectators vector.
-		 *  \param spectatorClient pointer to the \ref ProtocolSpectator object representing the spectator
-		 */
+		*  \param spectatorClient pointer to the \ref ProtocolSpectator object representing the spectator
+		*/
 		void addSpectator(ProtocolSpectator_ptr spectatorClient);
 
 		/** \brief Removes a spectator from the spectators vector.
-		 *  \param spectatorClient pointer to the \ref ProtocolSpectator object representing the spectator
-		 */
+		*  \param spectatorClient pointer to the \ref ProtocolSpectator object representing the spectator
+		*/
 		void removeSpectator(ProtocolSpectator_ptr spectatorClient);
 
 		/** \brief Starts the live cast.
-		 *  \param password live cast password(optional)
-		 *  \returns bool type indicating whether starting the cast was successful
+		*  \param password live cast password(optional)
+		*  \returns bool type indicating whether starting the cast was successful
 		*/
 		bool startLiveCast(const std::string& password = "");
 
 		/** \brief Stops the live cast and disconnects all spectators.
-		 *  \returns bool type indicating whether stopping the cast was successful
+		*  \returns bool type indicating whether stopping the cast was successful
 		*/
 		bool stopLiveCast();
 
@@ -121,28 +122,28 @@ class ProtocolGame final : public ProtocolGameBase
 		std::mutex liveCastLock;
 
 		/** \brief Adds a new live cast to the list of available casts
-		 */
+		*/
 		void registerLiveCast();
 
 		/** \brief Removes a live cast from the list of available casts
-		 */
+		*/
 		void unregisterLiveCast();
 
 		/** \brief Update live cast info in the database.
-		 *  \param player pointer to the casting \ref Player object
-		 *  \param client pointer to the caster's \ref ProtocolGame object
-		 */
+		*  \param player pointer to the casting \ref Player object
+		*  \param client pointer to the caster's \ref ProtocolGame object
+		*/
 		void updateLiveCastInfo();
 
 		/** \brief Clears all live casts. Used to make sure there aro no live cast db rows left should a crash occur.
-		 *  \warning Only supposed to be called once.
-		 */
+		*  \warning Only supposed to be called once.
+		*/
 		static void clearLiveCastInfo();
 
 		/** \brief Finds the caster's \ref ProtocolGame object
-		 *  \param player pointer to the casting \ref Player object
-		 *  \returns A pointer to the \ref ProtocolGame of the caster
-		 */
+		*  \param player pointer to the casting \ref Player object
+		*  \returns A pointer to the \ref ProtocolGame of the caster
+		*/
 		static ProtocolGame_ptr getLiveCast(Player* player) {
 			const auto it = liveCasts.find(player);
 			return it != liveCasts.end() ? it->second : nullptr;
@@ -165,9 +166,9 @@ class ProtocolGame final : public ProtocolGameBase
 		}
 
 		/** \brief Allows spectators to send text messages to the caster
-		 *   and then get broadcast to the rest of the spectators
-		 *  \param text string containing the text message
-		 */
+		*   and then get broadcast to the rest of the spectators
+		*  \param text string containing the text message
+		*/
 		void broadcastSpectatorMessage(const std::string& text) {
 			if (player) {
 				sendChannelMessage("Spectator", text, TALKTYPE_CHANNEL_Y, CHANNEL_CAST);
@@ -377,15 +378,15 @@ class ProtocolGame final : public ProtocolGameBase
 		}
 
 		static LiveCastsMap liveCasts; ///< Stores all available casts.
-
-		std::atomic<bool> isCaster {false}; ///< Determines if this \ref ProtocolGame object is casting
+		
+		std::atomic<bool> isCaster{ false }; ///< Determines if this \ref ProtocolGame object is casting
 
 		/// list of spectators \warning This variable should only be accessed after locking \ref liveCastLock
 		CastSpectatorVec spectators;
 
 		/// Live cast name that is also used as login
 		std::string liveCastName;
-
+				
 		/// Password used to access the live cast
 		std::string liveCastPassword;
 		void sendInventory();

@@ -30,7 +30,7 @@ DepotChest::DepotChest(uint16_t type, bool pagination) :
 {
 	maxDepotItems = 2000;
 	maxSize = 32;
-	pagination;
+	pagination = pagination;
 }
 
 ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t count,

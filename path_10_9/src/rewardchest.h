@@ -10,7 +10,7 @@
 class RewardChest final : public Container
 {
 	public:
-		explicit RewardChest(uint16_t _type);
+		explicit RewardChest(uint16_t type);
 
 		RewardChest* getRewardChest() final {
 			return this;

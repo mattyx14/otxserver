@@ -250,7 +250,7 @@ bool ProtocolGame::startLiveCast(const std::string& password /*= ""*/)
 	}
 
 	{
-		std::lock_guard<decltype(liveCastLock)> lock {liveCastLock};
+		std::lock_guard<decltype(liveCastLock)> lock{ liveCastLock };
 		//DO NOT do any send operations here
 		liveCastName = player->getName();
 		liveCastPassword = password;
@@ -275,7 +275,7 @@ bool ProtocolGame::stopLiveCast()
 	CastSpectatorVec spectators;
 
 	{
-		std::lock_guard<decltype(liveCastLock)> lock {liveCastLock};
+		std::lock_guard<decltype(liveCastLock)> lock{ liveCastLock };
 		//DO NOT do any send operations here
 		std::swap(this->spectators, spectators);
 		isCaster.store(false, std::memory_order_relaxed);
@@ -294,11 +294,11 @@ void ProtocolGame::clearLiveCastInfo()
 {
 	static std::once_flag flag;
 	std::call_once(flag, []() {
-			assert(g_game.getGameState() == GAME_STATE_INIT);
-			std::ostringstream query;
-			query << "TRUNCATE TABLE `live_casts`;";
-			g_databaseTasks.addTask(query.str());
-		});
+		assert(g_game.getGameState() == GAME_STATE_INIT);
+		std::ostringstream query;
+		query << "TRUNCATE TABLE `live_casts`;";
+		g_databaseTasks.addTask(query.str());
+	});
 }
 
 void ProtocolGame::registerLiveCast()
@@ -1158,7 +1158,6 @@ void ProtocolGame::sendReLoginWindow(uint8_t unfairFightReduction)
 	msg.addByte(0x28);
 	msg.addByte(0x00);
 	msg.addByte(unfairFightReduction);
-
 	writeToOutputBuffer(msg);
 }
 
@@ -1374,7 +1373,7 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 	player->setInMarket(true);
 
 	std::map<uint16_t, uint32_t> depotItems;
-	std::forward_list<Container*> containerList {depotLocker};
+	std::forward_list<Container*> containerList{depotLocker};
 
 	do {
 		Container* container = containerList.front();

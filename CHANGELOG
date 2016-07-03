@@ -60,6 +60,7 @@
 	- Added Party Protection (You can't damage party members) - Thanks to: Lundrial
 	- Added New spawn system
 	- Added serverSave on serverShutdown
+	- Added bossRewardSystem
 	- Fixed skill bytes for 10.94/95
 	- Fixed castSystem error
 	- Fixed fluids

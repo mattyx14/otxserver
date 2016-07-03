@@ -43,6 +43,7 @@ struct LootBlock {
 	int32_t armor;
 	int32_t shootRange;
 	int32_t hitChance;
+	bool unique;
 
 	std::vector<LootBlock> childLoot;
 	LootBlock() {
@@ -58,6 +59,7 @@ struct LootBlock {
 		armor = -1;
 		shootRange = -1;
 		hitChance = -1;
+		unique = false;
 	}
 };
 
@@ -167,6 +169,7 @@ class MonsterType
 		bool canPushCreatures;
 		bool pushable;
 		bool isSummonable;
+		bool isRewardBoss;
 		bool isIllusionable;
 		bool isConvinceable;
 		bool isAttackable;

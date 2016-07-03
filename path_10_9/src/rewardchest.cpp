@@ -6,8 +6,8 @@
 
 #include "rewardchest.h"
 
-RewardChest::RewardChest(uint16_t _type) :
-	Container(_type)
+RewardChest::RewardChest(uint16_t type) :
+	Container(type)
 {
 	maxSize = 32;
 	unlocked = false;
@@ -20,7 +20,7 @@ ReturnValue RewardChest::queryAdd(int32_t, const Thing&, uint32_t,
 	if (actor) {
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
-
+		
 	return RETURNVALUE_NOERROR;
 }
 

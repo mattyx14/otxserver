@@ -27,6 +27,7 @@
 #include "house.h"
 #include "game.h"
 #include "bed.h"
+#include "rewardchest.h"
 
 #include "actions.h"
 #include "spells.h"
@@ -53,6 +54,8 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 	if (it.id != 0) {
 		if (it.isDepot()) {
 			newItem = new DepotLocker(type);
+		} else if (it.isRewardChest()) {
+			newItem = new RewardChest(type);
 		} else if (it.isContainer()) {
 			newItem = new Container(type);
 		} else if (it.isTeleport()) {
@@ -109,36 +112,36 @@ Item* Item::CreateItem(PropStream& propStream)
 	}
 
 	switch (id) {
-	case ITEM_FIREFIELD_PVP_FULL:
-		id = ITEM_FIREFIELD_PERSISTENT_FULL;
-		break;
+		case ITEM_FIREFIELD_PVP_FULL:
+			id = ITEM_FIREFIELD_PERSISTENT_FULL;
+			break;
 
-	case ITEM_FIREFIELD_PVP_MEDIUM:
-		id = ITEM_FIREFIELD_PERSISTENT_MEDIUM;
-		break;
+		case ITEM_FIREFIELD_PVP_MEDIUM:
+			id = ITEM_FIREFIELD_PERSISTENT_MEDIUM;
+			break;
 
-	case ITEM_FIREFIELD_PVP_SMALL:
-		id = ITEM_FIREFIELD_PERSISTENT_SMALL;
-		break;
+		case ITEM_FIREFIELD_PVP_SMALL:
+			id = ITEM_FIREFIELD_PERSISTENT_SMALL;
+			break;
 
-	case ITEM_ENERGYFIELD_PVP:
-		id = ITEM_ENERGYFIELD_PERSISTENT;
-		break;
+		case ITEM_ENERGYFIELD_PVP:
+			id = ITEM_ENERGYFIELD_PERSISTENT;
+			break;
 
-	case ITEM_POISONFIELD_PVP:
-		id = ITEM_POISONFIELD_PERSISTENT;
-		break;
+		case ITEM_POISONFIELD_PVP:
+			id = ITEM_POISONFIELD_PERSISTENT;
+			break;
 
-	case ITEM_MAGICWALL:
-		id = ITEM_MAGICWALL_PERSISTENT;
-		break;
+		case ITEM_MAGICWALL:
+			id = ITEM_MAGICWALL_PERSISTENT;
+			break;
 
-	case ITEM_WILDGROWTH:
-		id = ITEM_WILDGROWTH_PERSISTENT;
-		break;
+		case ITEM_WILDGROWTH:
+			id = ITEM_WILDGROWTH_PERSISTENT;
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 
 	return Item::CreateItem(id, 0);
@@ -279,7 +282,9 @@ void Item::setID(uint16_t newid)
 		removeAttribute(ITEM_ATTRIBUTE_DURATION);
 	}
 
-	removeAttribute(ITEM_ATTRIBUTE_CORPSEOWNER);
+	if (!isRewardCorpse()) {
+		removeAttribute(ITEM_ATTRIBUTE_CORPSEOWNER);
+	}
 
 	if (newDuration > 0 && (!prevIt.stopTime || !hasAttribute(ITEM_ATTRIBUTE_DURATION))) {
 		setDecaying(DECAYING_FALSE);
@@ -390,20 +395,20 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 	switch (attr) {
 		case ATTR_COUNT:
 		case ATTR_RUNE_CHARGES: {
-		uint8_t count;
-		if (!propStream.read<uint8_t>(count)) {
-			return ATTR_READ_ERROR;
+			uint8_t count;
+			if (!propStream.read<uint8_t>(count)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setSubType(count);
+			break;
 		}
 
-		setSubType(count);
-		break;
-	}
-
-	case ATTR_ACTION_ID: {
-		uint16_t actionId;
-		if (!propStream.read<uint16_t>(actionId)) {
-			return ATTR_READ_ERROR;
-		}
+		case ATTR_ACTION_ID: {
+			uint16_t actionId;
+			if (!propStream.read<uint16_t>(actionId)) {
+				return ATTR_READ_ERROR;
+			}
 
 			setActionId(actionId);
 			break;
@@ -854,18 +859,18 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 				if (it.runeLevel > 0) {
 					s << " level " << it.runeLevel;
-			}
-
-			if (it.runeMagLevel > 0) {
-				if (it.runeLevel > 0) {
-					s << " and";
 				}
 
-				s << " magic level " << it.runeMagLevel;
-			}
+				if (it.runeMagLevel > 0) {
+					if (it.runeLevel > 0) {
+						s << " and";
+					}
 
-			s << " or higher";
-		}
+					s << " magic level " << it.runeMagLevel;
+				}
+
+				s << " or higher";
+			}
 		}
 	} else if (it.weaponType != WEAPON_NONE) {
 		if (it.weaponType == WEAPON_DISTANCE && it.ammoType != AMMO_NONE) {
@@ -1657,17 +1662,17 @@ bool Item::canDecay() const
 uint32_t Item::getWorth() const
 {
 	switch (id) {
-	case ITEM_GOLD_COIN:
-		return count;
+		case ITEM_GOLD_COIN:
+			return count;
 
-	case ITEM_PLATINUM_COIN:
-		return count * 100;
+		case ITEM_PLATINUM_COIN:
+			return count * 100;
 
-	case ITEM_CRYSTAL_COIN:
-		return count * 10000;
+		case ITEM_CRYSTAL_COIN:
+			return count * 10000;
 
-	default:
-		return 0;
+		default:
+			return 0;
 	}
 }
 

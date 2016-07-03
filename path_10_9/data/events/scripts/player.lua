@@ -90,10 +90,14 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		self:sendCancelMessage('Sorry, not possible.')
 		return false
 	end
-
+	
 	if toPosition.x == CONTAINER_POSITION and toCylinder and toCylinder:getId() == 26052 then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
+	end
+
+	if toPosition.x ~= CONTAINER_POSITION then
+		return true
 	end
 
 	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then	
@@ -118,10 +122,36 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		end
 	end
 
-	return true
-end
+	if toPosition.x == CONTAINER_POSITION then
+		local containerId = toPosition.y - 64
+		local container = self:getContainerById(containerId)
+		if not container then
+			return true 
+		end
 
-function Player:onMoveCreature(creature, fromPosition, toPosition)
+		-- Do not let the player insert items into either the Reward Container or the Reward Chest
+		local itemId = container:getId()
+		if itemId == ITEM_REWARD_CONTAINER or itemId == ITEM_REWARD_CHEST then
+			self:sendCancelMessage('Sorry, not possible.')
+			return false
+		end
+
+		-- The player also shouldn't be able to insert items into the boss corpse
+		local tile = Tile(container:getPosition())
+		for _, item in ipairs(tile:getItems()) do
+			if item:getAttribute(ITEM_ATTRIBUTE_CORPSEOWNER) == 2^31 - 1 and item:getName() == container:getName() then
+				self:sendCancelMessage('Sorry, not possible.')
+				return false
+			end
+		end
+	end
+
+	-- Do not let the player move the boss corpse.
+	if item:getAttribute(ITEM_ATTRIBUTE_CORPSEOWNER) == 2^31 - 1 then
+		self:sendCancelMessage('Sorry, not possible.')
+		return false
+	end
+
 	return true
 end
 
