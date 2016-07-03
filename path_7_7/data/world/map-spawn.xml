@@ -1413,10 +1413,6 @@
 		<monster name="gargoyle" x="-9" y="7" z="7" spawntime="120" />
 		<monster name="blue djinn" x="9" y="7" z="7" spawntime="120" />
 	</spawn>
-	<spawn centerx="98" centery="160" centerz="7" radius="5">
-		<monster name="giant spider" x="-1" y="0" z="7" spawntime="60" />
-		<monster name="tarantula" x="-3" y="1" z="7" spawntime="60" />
-	</spawn>
 	<spawn centerx="190" centery="160" centerz="7" radius="5">
 		<monster name="crocodile" x="-2" y="-1" z="7" spawntime="120" />
 		<monster name="crocodile" x="2" y="0" z="7" spawntime="120" />
@@ -1435,16 +1431,6 @@
 		<monster name="terror bird" x="-2" y="0" z="7" spawntime="120" />
 		<monster name="carniphila" x="3" y="0" z="7" spawntime="120" />
 		<monster name="terror bird" x="2" y="2" z="7" spawntime="120" />
-	</spawn>
-	<spawn centerx="86" centery="164" centerz="7" radius="5">
-		<monster name="tarantula" x="2" y="-5" z="7" spawntime="60" />
-		<monster name="giant spider" x="-1" y="-2" z="7" spawntime="60" />
-		<monster name="tarantula" x="-4" y="3" z="7" spawntime="60" />
-	</spawn>
-	<spawn centerx="70" centery="167" centerz="7" radius="5">
-		<monster name="tarantula" x="-4" y="-4" z="7" spawntime="60" />
-		<monster name="giant spider" x="0" y="-1" z="7" spawntime="60" />
-		<monster name="tarantula" x="4" y="3" z="7" spawntime="60" />
 	</spawn>
 	<spawn centerx="222" centery="168" centerz="7" radius="5">
 		<monster name="spit nettle" x="-2" y="-3" z="7" spawntime="120" />
