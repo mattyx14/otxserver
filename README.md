@@ -10,28 +10,28 @@ Open Tibia Forums - Listing best and useful
 
 ##Servers
 
-** OTLand
-* Main OpenTibia Community
+**OTLand** <br />
+*Main OpenTibia Community* <br />
 https://otland.net/
 
-** TibiaKing
-* OpenTibia Community
+**TibiaKing** <br />
+*OpenTibia Community* <br />
 http://www.tibiaking.com/
 
-** OTServBR
-* OpenTibia Community
+**OTServBR** <br />
+*OpenTibia Community* <br />
 http://forums.otserv.com.br/
 
-** BlackTibia
-* OpenTibia Community
+**BlackTibia** <br />
+*OpenTibia Community* <br />
 http://blacktibia.org/
 
-** Tibia Face
-* OpenTibia Community
+**Tibia Face** <br />
+*OpenTibia Community* <br />
 http://tibiaface.com/forum/
 
-** Vapus
-* OpenTibia Community
+**Vapus** <br />
+*OpenTibia Community* <br />
 http://vapus.net/forum/index.php
 
 ===========
