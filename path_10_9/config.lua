@@ -76,7 +76,7 @@ emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
 coinPacketSize = 25
-coinImagesURL = "http://some.url/images/store"
+coinImagesURL = "http://some.url/images/store/"
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml

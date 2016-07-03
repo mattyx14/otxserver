@@ -86,7 +86,12 @@ function Player:onLookInShop(itemType, count)
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-	if toPosition.x == CONTAINER_POSITION and toCylinder and toCylinder:getId() == 17432 then
+	if item:getActionId() == NOT_MOVEABLE_ACTION then
+		self:sendCancelMessage('Sorry, not possible.')
+		return false
+	end
+
+	if toPosition.x == CONTAINER_POSITION and toCylinder and toCylinder:getId() == 26052 then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
 	end

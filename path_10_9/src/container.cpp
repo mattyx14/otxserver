@@ -1,21 +1,21 @@
 /**
-* The Forgotten Server - a free and open-source MMORPG server emulator
-* Copyright (C) 2016  Mark Samman <mark.samman@gmail.com>
-*
-* This program is free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program; if not, write to the Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+ * The Forgotten Server - a free and open-source MMORPG server emulator
+ * Copyright (C) 2016  Mark Samman <mark.samman@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 #include "otpch.h"
 
@@ -268,7 +268,7 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 }
 
 ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t count,
-	uint32_t flags, Creature* actor/* = nullptr*/) const
+		uint32_t flags, Creature* actor/* = nullptr*/) const
 {
 	bool childIsOwner = hasBitSet(FLAG_CHILDISOWNER, flags);
 	if (childIsOwner) {
@@ -405,7 +405,7 @@ ReturnValue Container::queryRemove(const Thing& thing, uint32_t count, uint32_t 
 }
 
 Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item** destItem,
-	uint32_t& flags)
+		uint32_t& flags)
 {
 	if (!unlocked) {
 		*destItem = nullptr;
@@ -450,7 +450,7 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 		}
 	}
 
-	bool autoStack = (!hasBitSet(FLAG_IGNOREAUTOSTACK, flags));
+	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
 	//try find a suitable item to stack with
 	if (autoStack && item->isStackable() && item->getParent() != this && !(*destItem && (*destItem)->equals(item))) {
 		uint32_t n = 0;

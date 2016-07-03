@@ -1,6 +1,8 @@
 ## Module : Premium Shop - Game Store
 ---
 
+> Notify! Please put the images in folder called "64".
+
 ### Faq
 
 ##### 1. How to make a category?
@@ -102,15 +104,16 @@ mounts.offers = {
 		]]
 	}
 }
+```
 
 ### Offer types and States.
-```
+
 | OfferTypes              | States      |
 |-------------------------|-------------|
-| OFFER_TYPE_ITEM         | STATE_NEW   |
-| OFFER_TYPE_OUTFIT       | STATE_SALE  |
-| OFFER_TYPE_OUTFIT_ADDON | STATE_TIMED |
-| OFFER_TYPE_MOUNT        |             |
-| OFFER_TYPE_NAMECHANGE   |             |
-| OFFER_TYPE_SEXCHANGE    |             |
-| OFFER_TYPE_PROMOTION    |             |
+| `OFFER_TYPE_ITEM`         | `STATE_NEW`   |
+| `OFFER_TYPE_OUTFIT`       | `STATE_SALE`  |
+| `OFFER_TYPE_OUTFIT_ADDON` | `STATE_TIMED` |
+| `OFFER_TYPE_MOUNT`        |               |
+| `OFFER_TYPE_NAMECHANGE`   |               |
+| `OFFER_TYPE_SEXCHANGE`    |               |
+| `OFFER_TYPE_PROMOTION`    |               |

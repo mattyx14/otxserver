@@ -56,11 +56,14 @@
 [ OTX Server 3.5 :: Version " FORGOTTEN "
 	- Added support to 7.6 - 7.70/72
 	- Added Boost system (critical hits, hp/mana leech - no complete) - Thanks to: @gunz - @Milice - @Thexamx
-	- Added Purse container - Mkalo
+	- Added Advanced Securemode - Thanks to: Lundrial
+	- Added Party Protection (You can't damage party members) - Thanks to: Lundrial
+	- Added New spawn system
+	- Added serverSave on serverShutdown
 	- Fixed skill bytes for 10.94/95
-	- Fixed cast system error
+	- Fixed castSystem error
 	- Fixed fluids
-	- Fixed AutoStack - Mkalo
+	- Fixed autoStack - Thanks to: Mkalo
 ]
 
 [ OTX Server 3.4 :: Version " LORD ZEDD "

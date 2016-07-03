@@ -31605,6 +31605,9 @@
 		<attribute key="weight" value="310" />
 		<attribute key="description" value="This potion can only be consumed by knights of level 200 or higher." />
 	</item>
+	<item id="26052" article="your" name="store inbox">
+		<attribute key="containerSize" value="20" />
+	</item>
 	<item id="26233" article="a" name="blade of mayhem (charged)">
 		<attribute key="description" value="This weapon is charged." />
 		<attribute key="weight" value="5000" />

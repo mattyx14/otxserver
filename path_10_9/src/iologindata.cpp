@@ -480,9 +480,9 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 		}
 	}
 
-	// Purse Container
-	if (!player->inventory[CONST_SLOT_PURSE]) {
-		player->internalAddThing(CONST_SLOT_PURSE, Item::CreateItem(ITEM_PURSE));
+	// Store Inbox
+	if (!player->inventory[CONST_SLOT_STORE_INBOX]) {
+		player->internalAddThing(CONST_SLOT_STORE_INBOX, Item::CreateItem(ITEM_STORE_INBOX));
 	}
 
 	//load depot items

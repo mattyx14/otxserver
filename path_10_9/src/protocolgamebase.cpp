@@ -573,7 +573,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	msg.addByte(0x00); // expert mode button enabled
 
 	msg.addString(g_config.getString(ConfigManager::STORE_IMAGES_URL));
-	msg.addByte(g_config.getNumber(ConfigManager::STORE_COIN_PACKET));
+	msg.add<uint16_t>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STORE_COIN_PACKET)));
 
 	writeToOutputBuffer(msg);
 
@@ -595,7 +595,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	sendInventoryItem(CONST_SLOT_FEET, player->getInventoryItem(CONST_SLOT_FEET));
 	sendInventoryItem(CONST_SLOT_RING, player->getInventoryItem(CONST_SLOT_RING));
 	sendInventoryItem(CONST_SLOT_AMMO, player->getInventoryItem(CONST_SLOT_AMMO));
-	sendInventoryItem(CONST_SLOT_AMMO, player->getInventoryItem(CONST_SLOT_PURSE));
+	sendInventoryItem(CONST_SLOT_AMMO, player->getInventoryItem(CONST_SLOT_STORE_INBOX));
 
 	sendStats();
 	sendSkills();
