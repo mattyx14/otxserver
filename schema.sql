@@ -271,7 +271,7 @@ CREATE TABLE IF NOT EXISTS `player_deaths` (
 CREATE TABLE IF NOT EXISTS `player_depotitems` (
   `player_id` int(11) NOT NULL,
   `sid` int(11) NOT NULL COMMENT 'any given range eg 0-100 will be reserved for depot lockers and all > 100 will be then normal items inside depots',
-  `pid` int(11) NOT NULL DEFAULT '0',
+  `pid` int(11) NOT NULL DEFAULT '17',
   `itemtype` smallint(6) NOT NULL,
   `count` smallint(5) NOT NULL DEFAULT '0',
   `attributes` blob NOT NULL,
@@ -321,7 +321,17 @@ CREATE TABLE IF NOT EXISTS `server_config` (
   PRIMARY KEY `config` (`config`)
 ) ENGINE=InnoDB;
 
-INSERT INTO `server_config` (`config`, `value`) VALUES ('db_version', '18'), ('motd_hash', ''), ('motd_num', '0'), ('players_record', '0');
+CREATE TABLE IF NOT EXISTS `live_casts` (
+  `player_id` int(11) NOT NULL,
+  `cast_name` varchar(255) NOT NULL,
+  `password` boolean NOT NULL DEFAULT false,
+  `description` varchar(255),
+  `spectators` smallint(5) DEFAULT 0,
+  UNIQUE KEY `player_id_2` (`player_id`),
+  FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+INSERT INTO `server_config` (`config`, `value`) VALUES ('db_version', '20'), ('motd_hash', ''), ('motd_num', '0'), ('players_record', '0');
 
 CREATE TABLE IF NOT EXISTS `tile_store` (
   `house_id` int(11) NOT NULL,

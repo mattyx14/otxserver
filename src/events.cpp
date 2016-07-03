@@ -61,7 +61,6 @@ void Events::clear()
 	playerOnGainSkillTries = -1;
 
 	// Custom
-	playerOnSave = -1;
 	monsterOnSpawn = -1;
 }
 
@@ -141,8 +140,6 @@ bool Events::load()
 				playerOnLoseExperience = event;
 			} else if (methodName == "onGainSkillTries") {
 				playerOnGainSkillTries = event;
-				} else if (methodName == "onSave") {
-					playerOnSave = event;
 			} else {
 				std::cout << "[Warning - Events::load] Unknown player method: " << methodName << std::endl;
 			}
@@ -503,9 +500,9 @@ bool Events::eventPlayerOnLookInShop(Player* player, const ItemType* itemType, u
 	return scriptInterface.callFunction(3);
 }
 
-bool Events::eventPlayerOnMoveItem(Player* player, Item* item, uint16_t count, const Position& fromPosition, const Position& toPosition)
+bool Events::eventPlayerOnMoveItem(Player* player, Item* item, uint16_t count, const Position& fromPosition, const Position& toPosition, Cylinder* fromCylinder, Cylinder* toCylinder)
 {
-	// Player:onMoveItem(item, count, fromPosition, toPosition) or Player.onMoveItem(self, item, count, fromPosition, toPosition)
+	// Player:onMoveItem(item, count, fromPosition, toPosition) or Player.onMoveItem(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
 	if (playerOnMoveItem == -1) {
 		return true;
 	}
@@ -531,7 +528,10 @@ bool Events::eventPlayerOnMoveItem(Player* player, Item* item, uint16_t count, c
 	LuaScriptInterface::pushPosition(L, fromPosition);
 	LuaScriptInterface::pushPosition(L, toPosition);
 
-	return scriptInterface.callFunction(5);
+	LuaScriptInterface::pushCylinder(L, fromCylinder);
+	LuaScriptInterface::pushCylinder(L, toCylinder);
+
+	return scriptInterface.callFunction(7);
 }
 
 bool Events::eventPlayerOnMoveCreature(Player* player, Creature* creature, const Position& fromPosition, const Position& toPosition)
@@ -760,33 +760,6 @@ void Events::eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_
 	}
 
 	scriptInterface.resetScriptEnv();
-}
-
-// Player Save
-bool Events::eventPlayerOnSave(Player* player)
-{
-	// Player:OnSave(guid)
-	if (playerOnSave == -1) {
-		return true;
-	}
-
-	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnSave] Call stack overflow" << std::endl;
-		return false;
-	}
-
-	ScriptEnvironment* env = scriptInterface.getScriptEnv();
-	env->setScriptId(playerOnSave, &scriptInterface);
-
-	lua_State* L = scriptInterface.getLuaState();
-	scriptInterface.pushFunction(playerOnSave);
-
-	LuaScriptInterface::pushUserdata<Player>(L, player);
-	LuaScriptInterface::setMetatable(L, -1, "Player");
-
-	lua_pushnumber(L, player->getGUID());
-
-	return scriptInterface.callFunction(2);
 }
 
 // Monster

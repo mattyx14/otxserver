@@ -45,6 +45,8 @@ class ConfigManager
 			CONVERT_UNSAFE_SCRIPTS,
 			CLASSIC_EQUIPMENT_SLOTS,
 			ALLOW_WALKTHROUGH,
+			ENABLE_LIVE_CASTING,
+			ALLOW_BLOCK_SPAWN,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
@@ -68,6 +70,7 @@ class ConfigManager
 			MYSQL_SOCK,
 			DEFAULT_PRIORITY,
 			MAP_AUTHOR,
+			STORE_IMAGES_URL,
 
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
@@ -104,8 +107,8 @@ class ConfigManager
 			MAX_MARKET_OFFERS_AT_A_TIME_PER_PLAYER,
 			EXP_FROM_PLAYERS_LEVEL_RANGE,
 			MAX_PACKETS_PER_SECOND,
-			CRITICAL_HIT_CHANCE,
-			CRITICAL_HIT_EXTRA,
+			STORE_COIN_PACKET,
+			LIVE_CAST_PORT,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
@@ -113,14 +116,14 @@ class ConfigManager
 		bool load();
 		bool reload();
 
-		const std::string& getString(string_config_t _what) const;
-		int32_t getNumber(integer_config_t _what) const;
-		bool getBoolean(boolean_config_t _what) const;
+		const std::string& getString(string_config_t what) const;
+		int32_t getNumber(integer_config_t what) const;
+		bool getBoolean(boolean_config_t what) const;
 
 	private:
-		static std::string getGlobalString(lua_State* L, const char* identifier, const char* _default);
-		static int32_t getGlobalNumber(lua_State* L, const char* identifier, const int32_t _default = 0);
-		static bool getGlobalBoolean(lua_State* L, const char* identifier, const bool _default);
+		static std::string getGlobalString(lua_State* L, const char* identifier, const char* defaultValue);
+		static int32_t getGlobalNumber(lua_State* L, const char* identifier, const int32_t defaultValue = 0);
+		static bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultValue);
 
 		std::string string[LAST_STRING_CONFIG];
 		int32_t integer[LAST_INTEGER_CONFIG];

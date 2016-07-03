@@ -932,6 +932,11 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		return;
 	}
 
+	if (item->getActionId() == 10) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
 	const Position& playerPos = player->getPosition();
 	const Position& mapFromPos = fromCylinder->getTile()->getPosition();
 	if (playerPos.z != mapFromPos.z) {
@@ -1027,7 +1032,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		return;
 	}
 
-	if (!g_events->eventPlayerOnMoveItem(player, item, count, fromPos, toPos)) {
+	if (!g_events->eventPlayerOnMoveItem(player, item, count, fromPos, toPos, fromCylinder, toCylinder)) {
 		return;
 	}
 
@@ -1184,7 +1189,11 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 
 	//add item
 	if (moveItem /*m - n > 0*/) {
-		toCylinder->addThing(index, moveItem);
+		if (fromCylinder == toCylinder) {
+		toCylinder->addThing(index, moveItem);	
+		} else {
+			internalAddItem(toCylinder, moveItem, INDEX_WHEREEVER, flags);	
+		}
 	}
 
 	if (itemIndex != -1) {
@@ -1252,7 +1261,7 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 	uint32_t maxQueryCount = 0;
 	ret = destCylinder->queryMaxCount(INDEX_WHEREEVER, *item, item->getItemCount(), maxQueryCount, flags);
 
-	if (ret != RETURNVALUE_NOERROR) {
+	if (ret != RETURNVALUE_NOERROR && toCylinder->getItem() && toCylinder->getItem()->getID() != ITEM_REWARD_CONTAINER) {
 		return ret;
 	}
 
@@ -2384,7 +2393,7 @@ void Game::playerSeekInContainer(uint32_t playerId, uint8_t containerId, uint16_
 	}
 
 	player->setContainerIndex(containerId, index);
-	player->sendContainer(containerId, container, false, index);
+	player->sendContainer(containerId, container, container->hasParent(), index);
 }
 
 void Game::playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text)
@@ -2398,10 +2407,13 @@ void Game::playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t w
 	uint32_t internalListId;
 
 	House* house = player->getEditHouse(internalWindowTextId, internalListId);
-	if (house && internalWindowTextId == windowTextId && listId == 0) {
+	if (house && house->canEditAccessList(internalListId, player) && internalWindowTextId == windowTextId && listId == 0) {
 		house->setAccessList(internalListId, text);
 		player->setEditHouse(nullptr);
+		return;
 	}
+
+	player->setEditHouse(nullptr);
 }
 
 void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
@@ -3251,6 +3263,10 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 		player->removeMessageBuffer();
 	}
 
+	if (channelId == CHANNEL_CAST) {
+		player->sendChannelMessage(player->getName(), text, TALKTYPE_CHANNEL_R1, channelId);
+	}
+
 	switch (type) {
 		case TALKTYPE_SAY:
 			internalCreatureSay(player, TALKTYPE_SAY, text, false);
@@ -3884,6 +3900,36 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
+		bool critical = false;
+		if (attackerPlayer) {
+			//critical damage
+			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_CRITICALCHANCE)) {
+				damage.primary.value = (int32_t)(damage.primary.value * (1 + (attackerPlayer->getBoostLevel(BOOST_CRITICALDAMAGE) / 100)));
+				critical = true;
+			}
+
+			//life leech
+			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_LIFELEECHCHANCE)) {
+				CombatParams tmpParams;
+				CombatDamage tmpDamage;
+				tmpDamage.origin = ORIGIN_SPELL;
+				tmpDamage.primary.type = COMBAT_HEALING;
+				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getBoostLevel(BOOST_LIFELEECHAMOUNT)) / 100;
+				Combat::doCombatHealth(nullptr, attackerPlayer, tmpDamage, tmpParams);
+			}
+
+			//mana leech
+			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_MANALEECHCHANCE)) {
+				CombatParams tmpParams;
+				CombatDamage tmpDamage;
+				tmpDamage.origin = ORIGIN_SPELL;
+				tmpDamage.primary.type = COMBAT_MANADRAIN;
+				//tmpDamage.primary.value = (int32_t)(std::abs(damage.primary.value) * (attackerPlayer->getBoostLevel(BOOST_MANALEECHAMOUNT) / 100));
+				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getBoostLevel(BOOST_MANALEECHAMOUNT)) / 100;
+				Combat::doCombatMana(nullptr, attackerPlayer, tmpDamage, tmpParams);
+			}
+		}
+
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
 			return true;
@@ -4018,6 +4064,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			if (hitEffect != CONST_ME_NONE) {
 				addMagicEffect(list, targetPos, hitEffect);
 			}
+		}
+
+		if (critical) {
+			addMagicEffect(list, targetPos, CONST_ME_CRITICALHIT);
 		}
 
 		if (message.primary.color != TEXTCOLOR_NONE || message.secondary.color != TEXTCOLOR_NONE) {
@@ -4377,6 +4427,9 @@ void Game::resetCommandTag()
 
 void Game::shutdown()
 {
+	std::cout << "Saving game..." << std::flush;
+	saveGameState();
+
 	std::cout << "Shutting down..." << std::flush;
 
 	g_scheduler.shutdown();
@@ -4698,8 +4751,8 @@ void Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 		return;
 	}
 
+	std::ostringstream ss;
 	if (invitedPlayer->getParty()) {
-		std::ostringstream ss;
 		ss << invitedPlayer->getName() << " is already in a party.";
 		player->sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
 		return;
@@ -5005,12 +5058,12 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 			return;
 		}
 
-		DepotChest* depotChest = player->getDepotChest(player->getLastDepotId(), false);
-		if (!depotChest) {
+		DepotLocker* depotLocker = player->getDepotLocker(player->getLastDepotId());
+		if (!depotLocker) {
 			return;
 		}
 
-		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotChest, player->getInbox());
+		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotLocker);
 		if (itemList.empty()) {
 			return;
 		}
@@ -5144,12 +5197,12 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	uint64_t totalPrice = static_cast<uint64_t>(offer.price) * amount;
 
 	if (offer.type == MARKETACTION_BUY) {
-		DepotChest* depotChest = player->getDepotChest(player->getLastDepotId(), false);
-		if (!depotChest) {
+		DepotLocker* depotLocker = player->getDepotLocker(player->getLastDepotId());
+		if (!depotLocker) {
 			return;
 		}
 
-		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotChest, player->getInbox());
+		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotLocker);
 		if (itemList.empty()) {
 			return;
 		}
@@ -5294,12 +5347,12 @@ void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const st
 	}
 }
 
-std::forward_list<Item*> Game::getMarketItemList(uint16_t wareId, uint16_t sufficientCount, DepotChest* depotChest, Inbox* inbox)
+std::forward_list<Item*> Game::getMarketItemList(uint16_t wareId, uint16_t sufficientCount, DepotLocker* depotLocker)
 {
 	std::forward_list<Item*> itemList;
 	uint16_t count = 0;
 
-	std::list<Container*> containers { depotChest, inbox };
+	std::list<Container*> containers {depotLocker};
 	do {
 		Container* container = containers.front();
 		containers.pop_front();

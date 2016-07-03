@@ -249,6 +249,18 @@ enum skills_t : uint8_t {
 	SKILL_LAST = SKILL_FISHING
 };
 
+enum boosts_t : uint8_t {
+	BOOST_CRITICALCHANCE = 1,
+	BOOST_CRITICALDAMAGE = 2,
+	BOOST_LIFELEECHCHANCE = 3,
+	BOOST_LIFELEECHAMOUNT = 4,
+	BOOST_MANALEECHCHANCE = 5,
+	BOOST_MANALEECHAMOUNT = 6,
+
+	BOOST_FIRST = BOOST_CRITICALCHANCE,
+	BOOST_LAST = BOOST_MANALEECHAMOUNT
+};
+
 enum stats_t {
 	STAT_MAXHITPOINTS,
 	STAT_MAXMANAPOINTS,
@@ -395,7 +407,8 @@ enum ReturnValue {
 	RETURNVALUE_NOTENOUGHAXELEVEL,
 	RETURNVALUE_NOTENOUGHDISTANCELEVEL,
 	RETURNVALUE_NOTENOUGHSHIELDLEVEL,
-	RETURNVALUE_NOTENOUGHFISHLEVEL
+	RETURNVALUE_NOTENOUGHFISHLEVEL,
+	RETURNVALUE_REWARDCHESTISEMPTY,
 };
 
 enum SpeechBubble_t
@@ -458,16 +471,10 @@ struct Outfit_t {
 };
 
 struct LightInfo {
-	uint8_t level;
-	uint8_t color;
-	LightInfo() {
-		level = 0;
-		color = 0;
-	}
-	LightInfo(uint8_t _level, uint8_t _color) {
-		level = _level;
-		color = _color;
-	}
+	uint8_t level = 0;
+	uint8_t color = 0;
+	LightInfo() = default;
+	LightInfo(uint8_t level, uint8_t color) : level(level), color(color) {}
 };
 
 struct ShopInfo {

@@ -26,6 +26,7 @@
 #include "game.h"
 #include "pugicast.h"
 #include "spells.h"
+#include "rewardchest.h"
 
 extern Game g_game;
 extern Spells* g_spells;
@@ -280,6 +281,10 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			if (action->executeUse(player, item, pos, nullptr, pos, isHotkey)) {
 				return RETURNVALUE_NOERROR;
 			}
+
+			if (item->isRemoved()) {
+				return RETURNVALUE_CANNOTUSETHISOBJECT;
+			}
 		} else if (action->function) {
 			if (action->function(player, item, pos, nullptr, pos, isHotkey)) {
 				return RETURNVALUE_NOERROR;
@@ -313,8 +318,38 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			openContainer = container;
 		}
 
+		//reward chest
+		if (container->getRewardChest()) {
+			RewardChest* myRewardChest = player->getRewardChest();
+			if (myRewardChest->size() == 0) {
+				return RETURNVALUE_REWARDCHESTISEMPTY;
+			}
+
+			myRewardChest->setParent(container->getParent()->getTile());
+			for (auto& it : player->rewardMap) {
+				it.second->setParent(myRewardChest);
+			}
+
+			openContainer = myRewardChest;
+		}
+
+		//reward container proxy created when the boss dies
+		if (container->getID() == ITEM_REWARD_CONTAINER && !container->getReward()) {
+			if (Reward* reward = player->getReward(container->getIntAttr(ITEM_ATTRIBUTE_DATE), false)) {
+				reward->setParent(container->getRealParent());
+				openContainer = reward;
+			} else {
+				return RETURNVALUE_THISISIMPOSSIBLE;
+			}
+		}
+
 		uint32_t corpseOwner = container->getCorpseOwner();
-		if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
+		if (container->isRewardCorpse()) {
+			//only players who participated in the fight can open the corpse
+			if (!player->getReward(container->getIntAttr(ITEM_ATTRIBUTE_DATE), false)) {
+				return RETURNVALUE_YOUARENOTTHEOWNER;
+			}
+		} else if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
 			return RETURNVALUE_YOUARENOTTHEOWNER;
 		}
 
@@ -410,23 +445,11 @@ void Actions::showUseHotkeyMessage(Player* player, const Item* item, uint32_t co
 	player->sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
 }
 
-Action::Action(LuaScriptInterface* _interface) :
-	Event(_interface)
-{
-	allowFarUse = false;
-	checkFloor = true;
-	checkLineOfSight = true;
-	function = nullptr;
-}
+Action::Action(LuaScriptInterface* interface) :
+	Event(interface), function(nullptr), allowFarUse(false), checkFloor(true), checkLineOfSight(true) {}
 
 Action::Action(const Action* copy) :
-	Event(copy)
-{
-	allowFarUse = copy->allowFarUse;
-	checkFloor = copy->checkFloor;
-	checkLineOfSight = copy->checkLineOfSight;
-	function = copy->function;
-}
+	Event(copy), function(copy->function), allowFarUse(copy->allowFarUse), checkFloor(copy->checkFloor), checkLineOfSight(copy->checkLineOfSight) {}
 
 bool Action::configureEvent(const pugi::xml_node& node)
 {

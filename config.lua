@@ -29,6 +29,10 @@ statusTimeout = 5 * 1000
 replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
+-- Casting System 
+enableLiveCasting = true
+liveCastPort = 7173
+
 -- Deaths
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default
 -- death penalty formula. For the old formula, set it to 10. For
@@ -71,6 +75,8 @@ maxMessageBuffer = 4
 emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
+coinPacketSize = 25
+coinImagesURL = "http://some.url/images/store/"
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
@@ -79,12 +85,6 @@ rateSkill = 3
 rateLoot = 2
 rateMagic = 3
 rateSpawn = 1
-
--- Critical hits
--- NOTE: criticalChance and extraPercent are percentages, not absolute values.
--- extraPercent is the extra percentage of the damage to be added.
-criticalChance = 1
-criticalExtra = 100
 
 -- Monsters
 deSpawnRange = 2

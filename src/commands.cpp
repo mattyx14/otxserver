@@ -35,6 +35,7 @@
 #include "monster.h"
 #include "scheduler.h"
 #include "events.h"
+#include "modules.h"
 
 #include "pugicast.h"
 
@@ -51,6 +52,7 @@ extern GlobalEvents* g_globalEvents;
 extern Events* g_events;
 extern Chat* g_chat;
 extern LuaEnvironment g_luaEnvironment;
+extern Modules* g_modules;
 
 s_defcommands Commands::defined_commands[] = {
 	// TODO: move all commands to talkactions
@@ -249,6 +251,9 @@ void Commands::reloadInfo(Player& player, const std::string& param)
 	} else if (tmpParam == "events") {
 		g_events->load();
 		player.sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Reloaded events.");
+	} else if (tmpParam == "modules") {
+		g_modules->reload();
+		player.sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Reloaded Modules.");
 	} else if (tmpParam == "chat" || tmpParam == "channel" || tmpParam == "chatchannels") {
 		g_chat->load();
 		player.sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Reloaded chatchannels.");

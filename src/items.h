@@ -54,11 +54,12 @@ enum ItemTypes_t {
 	ITEM_TYPE_BED,
 	ITEM_TYPE_KEY,
 	ITEM_TYPE_RUNE,
-	ITEM_TYPE_LAST
+	ITEM_TYPE_REWARDCHEST,
+	ITEM_TYPE_LAST,
 };
 
 struct Abilities {
-	Abilities() : stats(), statsPercent(), skills(), fieldAbsorbPercent(), absorbPercent() {
+	Abilities() : stats(), statsPercent(), skills(), fieldAbsorbPercent(), absorbPercent(), reflectPercent() {
 		elementType = COMBAT_NONE;
 		elementDamage = 0;
 
@@ -91,6 +92,9 @@ struct Abilities {
 	//extra skill modifiers
 	int32_t skills[SKILL_LAST + 1];
 
+	//boost modifiers
+	int32_t boosts[BOOST_LAST + 1];
+
 	int32_t speed;
 
 	// field damage abilities modifiers
@@ -98,6 +102,9 @@ struct Abilities {
 
 	//damage abilities modifiers
 	int16_t absorbPercent[COMBAT_COUNT];
+
+	//relfect abilities modifires
+	int16_t reflectPercent[COMBAT_COUNT];
 
 	//elemental damage
 	uint16_t elementDamage;
@@ -149,6 +156,9 @@ class ItemType
 		}
 		bool isDepot() const {
 			return (type == ITEM_TYPE_DEPOT);
+		}
+		bool isRewardChest() const {
+			return (type == ITEM_TYPE_REWARDCHEST);
 		}
 		bool isMailbox() const {
 			return (type == ITEM_TYPE_MAILBOX);
@@ -212,6 +222,7 @@ class ItemType
 		uint32_t wieldInfo;
 		uint32_t minReqLevel;
 		uint32_t minReqMagicLevel;
+		uint32_t minReqSkillLevel;
 		uint32_t charges;
 		int32_t maxHitChance;
 		int32_t decayTo;

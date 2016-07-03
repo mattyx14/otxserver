@@ -48,7 +48,7 @@ MuteCountMap Player::muteCountMap;
 uint32_t Player::playerAutoID = 0x10000000;
 
 Player::Player(ProtocolGame_ptr p) :
-	Creature(), inventory(), client(p), varSkills(), varStats(), inventoryAbilities()
+	Creature(), inventory(), client(p), varSkills(), varBoosts(), varStats(), inventoryAbilities()
 {
 	isConnecting = false;
 
@@ -59,8 +59,8 @@ Player::Player(ProtocolGame_ptr p) :
 	manaMax = 0;
 	manaSpent = 0;
 	soul = 0;
-	guildLevel = 0;
 	guild = nullptr;
+	guildRank = nullptr;
 
 	level = 1;
 	levelPercent = 0;
@@ -155,6 +155,8 @@ Player::Player(ProtocolGame_ptr p) :
 	operatingSystem = CLIENTOS_NONE;
 	secureMode = false;
 	guid = 0;
+
+	rewardChest = nullptr;
 }
 
 Player::~Player()
@@ -168,6 +170,10 @@ Player::~Player()
 
 	for (const auto& it : depotLockerMap) {
 		it.second->removeInbox(inbox);
+		it.second->decrementReferenceCounter();
+	}
+
+	for (const auto& it : rewardMap) {
 		it.second->decrementReferenceCounter();
 	}
 
@@ -263,28 +269,25 @@ std::string Player::getDescription(int32_t lookDistance) const
 		}
 	}
 
-	if (guild) {
-		const GuildRank* rank = guild->getRankByLevel(guildLevel);
-		if (rank) {
-			if (lookDistance == -1) {
-				s << " You are ";
-			} else if (sex == PLAYERSEX_FEMALE) {
-				s << " She is ";
-			} else {
-				s << " He is ";
-			}
+	if (guild && guildRank) {
+		if (lookDistance == -1) {
+			s << " You are ";
+		} else if (sex == PLAYERSEX_FEMALE) {
+			s << " She is ";
+		} else {
+			s << " He is ";
+		}
 
-			s << rank->name << " of the " << guild->getName();
-			if (!guildNick.empty()) {
-				s << " (" << guildNick << ')';
-			}
+		s << guildRank->name << " of the " << guild->getName();
+		if (!guildNick.empty()) {
+			s << " (" << guildNick << ')';
+		}
 
-			size_t memberCount = guild->getMemberCount();
-			if (memberCount == 1) {
-				s << ", which has 1 member, " << guild->getMembersOnline().size() << " of them online.";
-			} else {
-				s << ", which has " << memberCount << " members, " << guild->getMembersOnline().size() << " of them online.";
-			}
+		size_t memberCount = guild->getMemberCount();
+		if (memberCount == 1) {
+			s << ", which has 1 member, " << guild->getMembersOnline().size() << " of them online.";
+		} else {
+			s << ", which has " << memberCount << " members, " << guild->getMembersOnline().size() << " of them online.";
 		}
 	}
 	return s.str();
@@ -424,7 +427,7 @@ void Player::getShieldAndWeapon(const Item*& shield, const Item*& weapon) const
 				break;
 
 			case WEAPON_SHIELD: {
-				if (!shield || item->getDefense() > shield->getDefense()) {
+				if (!shield || (shield && item->getDefense() > shield->getDefense())) {
 					shield = item;
 				}
 				break;
@@ -507,7 +510,7 @@ uint16_t Player::getClientIcons() const
 		icons |= ICON_REDSWORDS;
 	}
 
-	if (_tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+	if (tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 		icons |= ICON_PIGEON;
 
 		// Don't show ICON_SWORDS if player is in protection zone.
@@ -822,7 +825,7 @@ bool Player::canWalkthrough(const Creature* creature) const
 	}
 
 	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
+	if (!player) {
 		return false;
 	}
 
@@ -858,7 +861,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	}
 
 	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
+	if (!player) {
 		return false;
 	}
 
@@ -891,6 +894,17 @@ bool Player::isNearDepotBox() const
 	return false;
 }
 
+DepotChest* Player::getDepotBox()
+{
+	DepotChest* depotBoxs = new DepotChest(ITEM_DEPOT);
+	depotBoxs->incrementReferenceCounter();
+	depotBoxs->setMaxDepotItems(getMaxDepotItems());
+	for (uint32_t index = 1; index <= 17; ++index) {
+		depotBoxs->internalAddThing(getDepotChest(18 - index, true));
+	}
+	return depotBoxs;
+}
+
 DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
 {
 	auto it = depotChests.find(depotId);
@@ -902,9 +916,8 @@ DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
 		return nullptr;
 	}
 
-	DepotChest* depotChest = new DepotChest(ITEM_DEPOT);
+	DepotChest* depotChest = new DepotChest(ITEM_DEPOT_NULL + depotId, true);
 	depotChest->incrementReferenceCounter();
-	depotChest->setMaxDepotItems(getMaxDepotItems());
 	depotChests[depotId] = depotChest;
 	return depotChest;
 }
@@ -914,6 +927,7 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	auto it = depotLockerMap.find(depotId);
 	if (it != depotLockerMap.end()) {
 		inbox->setParent(it->second);
+		getDepotBox()->setParent(it->second);
 		return it->second;
 	}
 
@@ -921,9 +935,51 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	depotLocker->setDepotId(depotId);
 	depotLocker->internalAddThing(Item::CreateItem(ITEM_MARKET));
 	depotLocker->internalAddThing(inbox);
-	depotLocker->internalAddThing(getDepotChest(depotId, true));
+	depotLocker->internalAddThing(getDepotBox());
 	depotLockerMap[depotId] = depotLocker;
 	return depotLocker;
+}
+
+RewardChest* Player::getRewardChest()
+{
+	if (rewardChest != nullptr) {
+		return rewardChest;
+	}
+
+	rewardChest = new RewardChest(ITEM_REWARD_CHEST);
+	return rewardChest;
+}
+
+Reward* Player::getReward(uint32_t rewardId, bool autoCreate)
+{
+	auto it = rewardMap.find(rewardId);
+	if (it != rewardMap.end()) {
+		return it->second;
+	}
+
+	if (!autoCreate) {
+		return nullptr;
+	}
+
+	Reward* reward = new Reward();
+	reward->incrementReferenceCounter();
+	reward->setIntAttr(ITEM_ATTRIBUTE_DATE, rewardId);
+	rewardMap[rewardId] = reward;
+
+	g_game.internalAddItem(getRewardChest(), reward, INDEX_WHEREEVER, FLAG_NOLIMIT);
+
+	return reward;
+}
+
+void Player::removeReward(uint32_t rewardId) {
+	rewardMap.erase(rewardId);
+}
+
+void Player::getRewardList(std::vector<uint32_t>& rewards) {
+	rewards.reserve(rewardMap.size());
+	for (auto& it : rewardMap) {
+		rewards.push_back(it.first);
+	}
 }
 
 void Player::sendCancelMessage(ReturnValue message) const
@@ -969,14 +1025,14 @@ void Player::sendPing()
 	}
 }
 
-Item* Player::getWriteItem(uint32_t& _windowTextId, uint16_t& _maxWriteLen)
+Item* Player::getWriteItem(uint32_t& windowTextId, uint16_t& maxWriteLen)
 {
-	_windowTextId = windowTextId;
-	_maxWriteLen = maxWriteLen;
+	windowTextId = this->windowTextId;
+	maxWriteLen = this->maxWriteLen;
 	return writeItem;
 }
 
-void Player::setWriteItem(Item* item, uint16_t _maxWriteLen /*= 0*/)
+void Player::setWriteItem(Item* item, uint16_t maxWriteLen /*= 0*/)
 {
 	windowTextId++;
 
@@ -986,18 +1042,18 @@ void Player::setWriteItem(Item* item, uint16_t _maxWriteLen /*= 0*/)
 
 	if (item) {
 		writeItem = item;
-		maxWriteLen = _maxWriteLen;
+		this->maxWriteLen = maxWriteLen;
 		writeItem->incrementReferenceCounter();
 	} else {
 		writeItem = nullptr;
-		maxWriteLen = 0;
+		this->maxWriteLen = 0;
 	}
 }
 
-House* Player::getEditHouse(uint32_t& _windowTextId, uint32_t& _listId)
+House* Player::getEditHouse(uint32_t& windowTextId, uint32_t& listId)
 {
-	_windowTextId = windowTextId;
-	_listId = editListId;
+	windowTextId = this->windowTextId;
+	listId = this->editListId;
 	return editHouse;
 }
 
@@ -1712,13 +1768,13 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 		std::string expString = std::to_string(exp) + (exp != 1 ? " experience points." : " experience point.");
 
 		TextMessage message(MESSAGE_EXPERIENCE, "You gained " + expString);
-		message.position = _position;
+		message.position = position;
 		message.primary.value = exp;
 		message.primary.color = TEXTCOLOR_WHITE_EXP;
 		sendTextMessage(message);
 
 		SpectatorVec list;
-		g_game.map.getSpectators(list, _position, false, true);
+		g_game.map.getSpectators(list, position, false, true);
 		list.erase(this);
 		if (!list.empty()) {
 			message.type = MESSAGE_EXPERIENCE_OTHERS;
@@ -1795,13 +1851,13 @@ void Player::removeExperience(uint64_t exp, bool sendText/* = false*/)
 		std::string expString = std::to_string(lostExp) + (lostExp != 1 ? " experience points." : " experience point.");
 
 		TextMessage message(MESSAGE_EXPERIENCE, "You lost " + expString);
-		message.position = _position;
+		message.position = position;
 		message.primary.value = lostExp;
 		message.primary.color = TEXTCOLOR_RED;
 		sendTextMessage(message);
 
 		SpectatorVec list;
-		g_game.map.getSpectators(list, _position, false, true);
+		g_game.map.getSpectators(list, position, false, true);
 		list.erase(this);
 		if (!list.empty()) {
 			message.type = MESSAGE_EXPERIENCE_OTHERS;
@@ -1967,6 +2023,21 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 						}
 					}
 				}
+				if (attacker) {
+					const int16_t& reflectPercent = it.abilities->reflectPercent[combatTypeToIndex(combatType)];
+					if (reflectPercent != 0) {
+						CombatParams params;
+						params.combatType = combatType;
+						params.impactEffect = CONST_ME_MAGIC_BLUE;
+
+						CombatDamage reflectDamage;
+						reflectDamage.origin = ORIGIN_SPELL;
+						reflectDamage.primary.type = combatType;
+						reflectDamage.primary.value = std::ceil(-damage * (reflectPercent / 100.));
+						
+						Combat::doCombatHealth(this, attacker, reflectDamage, params);
+					}
+				}
 			}
 		}
 
@@ -1987,17 +2058,17 @@ uint32_t Player::getIP() const
 	return 0;
 }
 
-void Player::death(Creature* _lastHitCreature)
+void Player::death(Creature* lastHitCreature)
 {
 	loginPosition = town->getTemplePosition();
 
 	if (skillLoss) {
 		uint8_t unfairFightReduction = 100;
 
-		if (_lastHitCreature) {
-			Player* lastHitPlayer = _lastHitCreature->getPlayer();
+		if (lastHitCreature) {
+			Player* lastHitPlayer = lastHitCreature->getPlayer();
 			if (!lastHitPlayer) {
-				Creature* lastHitMaster = _lastHitCreature->getMaster();
+				Creature* lastHitMaster = lastHitCreature->getMaster();
 				if (lastHitMaster) {
 					lastHitPlayer = lastHitMaster->getPlayer();
 				}
@@ -2118,10 +2189,10 @@ void Player::death(Creature* _lastHitCreature)
 		if (bitset[5]) {
 			Player* lastHitPlayer;
 
-			if (_lastHitCreature) {
-				lastHitPlayer = _lastHitCreature->getPlayer();
+			if (lastHitCreature) {
+				lastHitPlayer = lastHitCreature->getPlayer();
 				if (!lastHitPlayer) {
-					Creature* lastHitMaster = _lastHitCreature->getMaster();
+					Creature* lastHitMaster = lastHitCreature->getMaster();
 					if (lastHitMaster) {
 						lastHitPlayer = lastHitMaster->getPlayer();
 					}
@@ -2191,22 +2262,22 @@ void Player::death(Creature* _lastHitCreature)
 	}
 }
 
-bool Player::dropCorpse(Creature* _lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified)
+bool Player::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified)
 {
 	if (getZone() == ZONE_PVP) {
 		setDropLoot(true);
 		return false;
 	}
-	return Creature::dropCorpse(_lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
+	return Creature::dropCorpse(lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
 }
 
-Item* Player::getCorpse(Creature* _lastHitCreature, Creature* mostDamageCreature)
+Item* Player::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)
 {
-	Item* corpse = Creature::getCorpse(_lastHitCreature, mostDamageCreature);
+	Item* corpse = Creature::getCorpse(lastHitCreature, mostDamageCreature);
 	if (corpse && corpse->getContainer()) {
 		std::ostringstream ss;
-		if (_lastHitCreature) {
-			ss << "You recognize " << getNameDescription() << ". " << (getSex() == PLAYERSEX_FEMALE ? "She" : "He") << " was killed by " << _lastHitCreature->getNameDescription() << '.';
+		if (lastHitCreature) {
+			ss << "You recognize " << getNameDescription() << ". " << (getSex() == PLAYERSEX_FEMALE ? "She" : "He") << " was killed by " << lastHitCreature->getNameDescription() << '.';
 		} else {
 			ss << "You recognize " << getNameDescription() << '.';
 		}
@@ -2224,6 +2295,7 @@ void Player::addInFightTicks(bool pzlock /*= false*/)
 
 	if (pzlock) {
 		pzLocked = true;
+		sendIcons();
 	}
 
 	Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_INFIGHT, g_config.getNumber(ConfigManager::PZ_LOCKED), 0);
@@ -2706,7 +2778,7 @@ Cylinder* Player::queryDestination(int32_t& index, const Thing& thing, Item** de
 
 		std::vector<Container*> containers;
 
-		for (uint32_t slotIndex = CONST_SLOT_FIRST; slotIndex <= CONST_SLOT_LAST; ++slotIndex) {
+		for (uint32_t slotIndex = CONST_SLOT_FIRST; slotIndex <= CONST_SLOT_AMMO; ++slotIndex) {
 			Item* inventoryItem = inventory[slotIndex];
 			if (inventoryItem) {
 				if (inventoryItem == tradeItem) {
@@ -3040,6 +3112,66 @@ std::map<uint32_t, uint32_t>& Player::getAllItemTypeCount(std::map<uint32_t, uin
 	return countMap;
 }
 
+Item* Player::getItemByClientId(uint16_t clientId) const
+{
+	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; i++) {
+		Item* item = inventory[i];
+		if (!item) {
+			continue;
+		}
+
+		if (item->getClientID() == clientId) {
+			return item;
+		}
+
+		if (Container* container = item->getContainer()) {
+			for (ContainerIterator it = container->iterator(); it.hasNext(); it.advance()) {
+				if ((*it)->getClientID() == clientId) {
+					return (*it);
+				}
+			}
+		}
+	}
+	return nullptr;
+}
+
+std::map<uint16_t, uint16_t> Player::getInventoryClientIds() const
+{
+	std::map<uint16_t, uint16_t> itemMap;
+	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; i++) {
+		Item* item = inventory[i];
+		if (!item) {
+			continue;
+		}
+
+		itemMap.emplace(item->getClientID(), Item::countByType(item, -1));
+
+		const ItemType& itemType = Item::items[item->getID()];
+		if (itemType.transformEquipTo) {
+			itemMap.emplace(Item::items[itemType.transformEquipTo].clientId, 1);
+		}
+
+		if (itemType.transformDeEquipTo) {
+			itemMap.emplace(Item::items[itemType.transformDeEquipTo].clientId, 1);
+		}
+
+		if (Container* container = item->getContainer()) {
+			for (ContainerIterator it = container->iterator(); it.hasNext(); it.advance()) {
+				itemMap.emplace((*it)->getClientID(), Item::countByType(*it, -1));
+				const ItemType& itItemType = Item::items[(*it)->getID()];
+				if (itItemType.transformEquipTo) {
+					itemMap.emplace(Item::items[itItemType.transformEquipTo].clientId, 1);
+				}
+
+				if (itItemType.transformDeEquipTo) {
+					itemMap.emplace(Item::items[itItemType.transformDeEquipTo].clientId, 1);
+				}
+			}
+		}
+	}
+	return itemMap;
+}
+
 Thing* Player::getThing(size_t index) const
 {
 	if (index >= CONST_SLOT_FIRST && index <= CONST_SLOT_LAST) {
@@ -3072,6 +3204,7 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 
 		updateInventoryWeight();
 		updateItemsLight();
+		sendInventoryClientIds();
 		sendStats();
 	}
 
@@ -3126,6 +3259,7 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 
 		updateInventoryWeight();
 		updateItemsLight();
+		sendInventoryClientIds();
 		sendStats();
 	}
 
@@ -3208,7 +3342,7 @@ void Player::internalAddThing(uint32_t index, Thing* thing)
 	}
 
 	//index == 0 means we should equip this item at the most appropiate slot (no action required here)
-	if (index > 0 && index < 11) {
+	if (index > 0 && index < 12) {
 		if (inventory[index]) {
 			return;
 		}
@@ -3249,6 +3383,19 @@ bool Player::setAttackedCreature(Creature* creature)
 	}
 
 	if (creature) {
+		if (Monster* monster = creature->getMonster()) {
+			if (monster->isSummon()) {
+				if (Player* owner = monster->getMaster()->getPlayer()) {
+					if (owner != const_cast<Player*>(this)) {
+						addAttacked(owner);
+						addInFightTicks(true);
+						if (skull == SKULL_NONE && owner->skull == SKULL_NONE) {
+							setSkull(SKULL_WHITE);
+						}
+					}
+				}
+			}
+		}
 		g_dispatcher.addTask(createTask(std::bind(&Game::checkCreatureAttack, &g_game, getID())));
 	}
 	return true;
@@ -3504,7 +3651,7 @@ void Player::onAttackedCreature(Creature* target)
 	if (target && target->getZone() == ZONE_PVP) {
 		return;
 	}
-
+	
 	if (target == this) {
 		addInFightTicks();
 		return;
@@ -3959,8 +4106,6 @@ double Player::getLostPercent() const
 		lossPercent *= 0.7;
 	}
 
-	lossPercent *= vocation->getLessLoss();
-
 	return lossPercent * pow(0.92, blessingCount) / 100;
 }
 
@@ -4189,7 +4334,7 @@ bool Player::toggleMount(bool mount)
 			return false;
 		}
 
-		if (!group->access && _tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+		if (!group->access && tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 			sendCancelMessage(RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE);
 			return false;
 		}
@@ -4570,9 +4715,9 @@ size_t Player::getMaxDepotItems() const
 	if (group->maxDepotItems != 0) {
 		return group->maxDepotItems;
 	} else if (isPremium()) {
-		return 2000;
+		return 8000;
 	}
-	return 1000;
+	return 2000;
 }
 
 std::forward_list<Condition*> Player::getMuteConditions() const
@@ -4603,7 +4748,7 @@ void Player::setGuild(Guild* guild)
 
 	this->guildNick.clear();
 	this->guild = nullptr;
-	this->guildLevel = 0;
+	this->guildRank = nullptr;
 
 	if (guild) {
 		const GuildRank* rank = guild->getRankByLevel(1);
@@ -4612,7 +4757,7 @@ void Player::setGuild(Guild* guild)
 		}
 
 		this->guild = guild;
-		this->guildLevel = 1;
+		this->guildRank = rank;
 		guild->addMember(this);
 	}
 

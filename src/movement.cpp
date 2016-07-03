@@ -124,6 +124,7 @@ bool MoveEvents::registerEvent(Event* event, const pugi::xml_node& node)
 			it.wieldInfo = moveEvent->getWieldInfo();
 			it.minReqLevel = moveEvent->getReqLevel();
 			it.minReqMagicLevel = moveEvent->getReqMagLv();
+			it.minReqSkillLevel = moveEvent->getReqSkillLv();
 			it.vocationString = moveEvent->getVocationString();
 		}
 	} else if ((attr = node.attribute("fromid"))) {
@@ -137,6 +138,7 @@ bool MoveEvents::registerEvent(Event* event, const pugi::xml_node& node)
 			it.wieldInfo = moveEvent->getWieldInfo();
 			it.minReqLevel = moveEvent->getReqLevel();
 			it.minReqMagicLevel = moveEvent->getReqMagLv();
+			it.minReqSkillLevel = moveEvent->getReqSkillLv();
 			it.vocationString = moveEvent->getVocationString();
 
 			while (++id <= endId) {
@@ -146,6 +148,7 @@ bool MoveEvents::registerEvent(Event* event, const pugi::xml_node& node)
 				tit.wieldInfo = moveEvent->getWieldInfo();
 				tit.minReqLevel = moveEvent->getReqLevel();
 				tit.minReqMagicLevel = moveEvent->getReqMagLv();
+				tit.minReqSkillLevel = moveEvent->getReqSkillLv();
 				tit.vocationString = moveEvent->getVocationString();
 			}
 		} else {
@@ -384,19 +387,18 @@ uint32_t MoveEvents::onItemMove(Item* item, Tile* tile, bool isAdd)
 	return ret;
 }
 
-MoveEvent::MoveEvent(LuaScriptInterface* _interface) :
-	Event(_interface)
-{
-	eventType = MOVE_EVENT_NONE;
-	stepFunction = nullptr;
-	moveFunction = nullptr;
-	equipFunction = nullptr;
-	slot = SLOTP_WHEREEVER;
-	wieldInfo = 0;
-	reqLevel = 0;
-	reqMagLevel = 0;
-	premium = false;
-}
+MoveEvent::MoveEvent(LuaScriptInterface* interface) :
+	Event(interface),
+	eventType(MOVE_EVENT_NONE),
+	stepFunction(nullptr),
+	moveFunction(nullptr),
+	equipFunction(nullptr),
+	slot(SLOTP_WHEREEVER),
+	reqLevel(0),
+	reqMagLevel(0),
+	premium(false),
+	wieldInfo(0)
+{}
 
 MoveEvent::MoveEvent(const MoveEvent* copy) :
 	Event(copy)
@@ -504,6 +506,14 @@ bool MoveEvent::configureEvent(const pugi::xml_node& node)
 			reqMagLevel = pugi::cast<uint32_t>(magLevelAttribute.value());
 			if (reqMagLevel > 0) {
 				wieldInfo |= WIELDINFO_MAGLV;
+			}
+		}
+
+		pugi::xml_attribute skillLevelAttribute = node.attribute("skill");
+		if (skillLevelAttribute) {
+			reqSkillLevel = pugi::cast<uint32_t>(skillLevelAttribute.value());
+			if (reqSkillLevel > 0) {
+				wieldInfo |= WIELDINFO_SKILL;
 			}
 		}
 

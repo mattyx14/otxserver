@@ -142,16 +142,17 @@ int32_t Weapons::getMaxMeleeDamage(int32_t attackSkill, int32_t attackValue)
 //players
 int32_t Weapons::getMaxWeaponDamage(uint32_t level, int32_t attackSkill, int32_t attackValue, float attackFactor)
 {
-	return static_cast<int32_t>(std::ceil((2 * (attackValue * (attackSkill + 5.8) / 25 + (level - 1) / 10.)) / attackFactor));
+	return static_cast<int32_t>(std::round((level / 5) + (((((attackSkill / 4.) + 1) * (attackValue / 3.)) * 1.03) / attackFactor)));
 }
 
-Weapon::Weapon(LuaScriptInterface* _interface) :
-	Event(_interface)
+Weapon::Weapon(LuaScriptInterface* interface) :
+	Event(interface)
 {
 	scripted = false;
 	id = 0;
 	level = 0;
 	magLevel = 0;
+	skillLevel = 0;
 	mana = 0;
 	manaPercent = 0;
 	soul = 0;
@@ -185,6 +186,10 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("mana"))) {
 		mana = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("skill"))) {
+		skillLevel = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("manapercent"))) {
@@ -266,6 +271,10 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		wieldInfo |= WIELDINFO_MAGLV;
 	}
 
+	if (getReqSkillLv() > 0) {
+		wieldInfo |= WIELDINFO_SKILL;
+	}
+
 	if (!vocationString.empty()) {
 		wieldInfo |= WIELDINFO_VOCREQ;
 	}
@@ -280,6 +289,7 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		it.vocationString = vocationString;
 		it.minReqLevel = getReqLevel();
 		it.minReqMagicLevel = getReqMagLv();
+		it.minReqSkillLevel = getReqSkillLv();
 	}
 
 	configureWeapon(Item::items[id]);
@@ -332,18 +342,15 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target, uint8_t shoo
 		}
 
 		int32_t damageModifier = 100;
-		if (auto chance = g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE)) {
-			if (boolean_random(static_cast<double>(chance) / 100.0)) {
-				damageModifier += g_config.getNumber(ConfigManager::CRITICAL_HIT_EXTRA);
-				std::cout << "Critical hit!" << std::endl;
-			}
-		}
-
 		if (player->getLevel() < getReqLevel()) {
 			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
 		}
 
 		if (player->getMagicLevel() < getReqMagLv()) {
+			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
+		}
+
+		if (player->getSkillLevel(player->getWeaponType()) < getReqSkillLv()) {
 			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
 		}
 		return damageModifier;
@@ -524,8 +531,8 @@ void Weapon::decrementItemCount(Item* item)
 	}
 }
 
-WeaponMelee::WeaponMelee(LuaScriptInterface* _interface) :
-	Weapon(_interface), elementType(COMBAT_NONE), elementDamage(0)
+WeaponMelee::WeaponMelee(LuaScriptInterface* interface) :
+	Weapon(interface), elementType(COMBAT_NONE), elementDamage(0)
 {
 	params.blockedByArmor = true;
 	params.blockedByShield = true;
@@ -617,8 +624,8 @@ int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, cons
 	return -normal_random(0, maxValue);
 }
 
-WeaponDistance::WeaponDistance(LuaScriptInterface* _interface) :
-	Weapon(_interface), elementType(COMBAT_NONE), elementDamage(0)
+WeaponDistance::WeaponDistance(LuaScriptInterface* interface) :
+	Weapon(interface), elementType(COMBAT_NONE), elementDamage(0)
 {
 	params.blockedByArmor = true;
 	params.combatType = COMBAT_PHYSICALDAMAGE;
@@ -890,8 +897,8 @@ bool WeaponDistance::getSkillType(const Player* player, const Item*, skills_t& s
 	return true;
 }
 
-WeaponWand::WeaponWand(LuaScriptInterface* _interface) :
-	Weapon(_interface)
+WeaponWand::WeaponWand(LuaScriptInterface* interface) :
+	Weapon(interface)
 {
 	minChange = 0;
 	maxChange = 0;

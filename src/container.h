@@ -28,6 +28,8 @@
 class Container;
 class DepotChest;
 class DepotLocker;
+class RewardChest;
+class Reward;
 
 class ContainerIterator
 {
@@ -49,9 +51,9 @@ class ContainerIterator
 class Container : public Item, public Cylinder
 {
 	public:
-		explicit Container(uint16_t _type);
-		Container(uint16_t _type, uint16_t _size);
-		explicit Container(Tile* tile);
+		explicit Container(uint16_t type);
+		Container(uint16_t type, uint16_t size, bool unlocked = true, bool pagination = false);
+		explicit Container(Tile* type);
 		~Container();
 
 		// non-copyable
@@ -71,6 +73,20 @@ class Container : public Item, public Cylinder
 			return nullptr;
 		}
 		virtual const DepotLocker* getDepotLocker() const {
+			return nullptr;
+		}
+
+		virtual RewardChest* getRewardChest() {
+			return nullptr;
+		}
+		virtual const RewardChest* getRewardChest() const {
+			return nullptr;
+		}
+
+		virtual Reward* getReward() {
+			return nullptr;
+		}
+		virtual const Reward* getReward() const {
 			return nullptr;
 		}
 

@@ -22,15 +22,18 @@
 
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
-#define MINOR_VERSION "3"
+#define MINOR_VERSION "5"
 #define REVISION_VERSION "-"
-#define SOFTWARE_CODENAME "-"
-#define STATUS_SERVER_DEVELOPERS "Mattyx14 and TFS Developers"
-#define GIT_REPO "https://github.com/mattyx14/otxserver/"
+#define SOFTWARE_CODENAME "FORGOTTEN"
+#define STATUS_SERVER_DEVELOPERS "Mattyx14, Brewsterl and The Forgotten Server Developers"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv3"
 
-#define CLIENT_VERSION_MIN 1090
-#define CLIENT_VERSION_MAX 1090
-#define CLIENT_VERSION_STR "10.90"
+#define CLIENT_VERSION_MIN 1094
+#define CLIENT_VERSION_MAX 1095
+#define CLIENT_VERSION_STR "10.95"
+
+#define AUTHENTICATOR_DIGITS 6U
+#define AUTHENTICATOR_PERIOD 30U
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

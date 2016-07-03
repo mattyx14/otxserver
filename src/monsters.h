@@ -43,6 +43,7 @@ struct LootBlock {
 	int32_t armor;
 	int32_t shootRange;
 	int32_t hitChance;
+	bool unique;
 
 	std::vector<LootBlock> childLoot;
 	LootBlock() {
@@ -58,6 +59,7 @@ struct LootBlock {
 		armor = -1;
 		shootRange = -1;
 		hitChance = -1;
+		unique = false;
 	}
 };
 
@@ -65,6 +67,7 @@ struct summonBlock_t {
 	std::string name;
 	uint32_t chance;
 	uint32_t speed;
+	bool force = false;
 };
 
 class BaseSpell;
@@ -166,12 +169,14 @@ class MonsterType
 		bool canPushCreatures;
 		bool pushable;
 		bool isSummonable;
+		bool isRewardBoss;
 		bool isIllusionable;
 		bool isConvinceable;
 		bool isAttackable;
 		bool isHostile;
 		bool isPassive;
 		bool hiddenHealth;
+		bool isBlockable;
 
 		void createLoot(Container* corpse);
 		bool createLootContainer(Container* parent, const LootBlock& lootblock);

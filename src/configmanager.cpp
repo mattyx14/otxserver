@@ -88,6 +88,8 @@ bool ConfigManager::load()
 	boolean[CONVERT_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "convertUnsafeScripts", true);
 	boolean[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBoolean(L, "classicEquipmentSlots", false);
 	boolean[ALLOW_WALKTHROUGH] = getGlobalBoolean(L, "allowWalkthrough", true);
+	boolean[ENABLE_LIVE_CASTING] = getGlobalBoolean(L, "enableLiveCasting", true);
+	boolean[ALLOW_BLOCK_SPAWN] = getGlobalBoolean(L, "allowBlockSpawn", true);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -97,6 +99,7 @@ bool ConfigManager::load()
 	string[LOCATION] = getGlobalString(L, "location", "");
 	string[MOTD] = getGlobalString(L, "motd", "");
 	string[WORLD_TYPE] = getGlobalString(L, "worldType", "pvp");
+	string[STORE_IMAGES_URL] = getGlobalString(L, "coinImagesURL", "");
 
 	integer[MAX_PLAYERS] = getGlobalNumber(L, "maxPlayers");
 	integer[PZ_LOCKED] = getGlobalNumber(L, "pzLocked", 60000);
@@ -124,8 +127,8 @@ bool ConfigManager::load()
 	integer[CHECK_EXPIRED_MARKET_OFFERS_EACH_MINUTES] = getGlobalNumber(L, "checkExpiredMarketOffersEachMinutes", 60);
 	integer[MAX_MARKET_OFFERS_AT_A_TIME_PER_PLAYER] = getGlobalNumber(L, "maxMarketOffersAtATimePerPlayer", 100);
 	integer[MAX_PACKETS_PER_SECOND] = getGlobalNumber(L, "maxPacketsPerSecond", 25);
-	integer[CRITICAL_HIT_CHANCE] = getGlobalNumber(L, "criticalChance", 0);
-	integer[CRITICAL_HIT_EXTRA] = getGlobalNumber(L, "criticalExtra", 0);
+	integer[STORE_COIN_PACKET] = getGlobalNumber(L, "coinPacketSize", 25);
+	integer[LIVE_CAST_PORT] = getGlobalNumber(L, "liveCastPort", 7173);
 
 	loaded = true;
 	lua_close(L);
@@ -141,38 +144,38 @@ bool ConfigManager::reload()
 	return result;
 }
 
-const std::string& ConfigManager::getString(string_config_t _what) const
+const std::string& ConfigManager::getString(string_config_t what) const
 {
-	if (_what >= LAST_STRING_CONFIG) {
-		std::cout << "[Warning - ConfigManager::getString] Accessing invalid index: " << _what << std::endl;
+	if (what >= LAST_STRING_CONFIG) {
+		std::cout << "[Warning - ConfigManager::getString] Accessing invalid index: " << what << std::endl;
 		return string[DUMMY_STR];
 	}
-	return string[_what];
+	return string[what];
 }
 
-int32_t ConfigManager::getNumber(integer_config_t _what) const
+int32_t ConfigManager::getNumber(integer_config_t what) const
 {
-	if (_what >= LAST_INTEGER_CONFIG) {
-		std::cout << "[Warning - ConfigManager::getNumber] Accessing invalid index: " << _what << std::endl;
+	if (what >= LAST_INTEGER_CONFIG) {
+		std::cout << "[Warning - ConfigManager::getNumber] Accessing invalid index: " << what << std::endl;
 		return 0;
 	}
-	return integer[_what];
+	return integer[what];
 }
 
-bool ConfigManager::getBoolean(boolean_config_t _what) const
+bool ConfigManager::getBoolean(boolean_config_t what) const
 {
-	if (_what >= LAST_BOOLEAN_CONFIG) {
-		std::cout << "[Warning - ConfigManager::getBoolean] Accessing invalid index: " << _what << std::endl;
+	if (what >= LAST_BOOLEAN_CONFIG) {
+		std::cout << "[Warning - ConfigManager::getBoolean] Accessing invalid index: " << what << std::endl;
 		return false;
 	}
-	return boolean[_what];
+	return boolean[what];
 }
 
-std::string ConfigManager::getGlobalString(lua_State* L, const char* identifier, const char* _default)
+std::string ConfigManager::getGlobalString(lua_State* L, const char* identifier, const char* defaultValue)
 {
 	lua_getglobal(L, identifier);
 	if (!lua_isstring(L, -1)) {
-		return _default;
+		return defaultValue;
 	}
 
 	size_t len = lua_strlen(L, -1);
@@ -181,11 +184,11 @@ std::string ConfigManager::getGlobalString(lua_State* L, const char* identifier,
 	return ret;
 }
 
-int32_t ConfigManager::getGlobalNumber(lua_State* L, const char* identifier, const int32_t _default)
+int32_t ConfigManager::getGlobalNumber(lua_State* L, const char* identifier, const int32_t defaultValue)
 {
 	lua_getglobal(L, identifier);
 	if (!lua_isnumber(L, -1)) {
-		return _default;
+		return defaultValue;
 	}
 
 	int32_t val = lua_tonumber(L, -1);
@@ -193,12 +196,12 @@ int32_t ConfigManager::getGlobalNumber(lua_State* L, const char* identifier, con
 	return val;
 }
 
-bool ConfigManager::getGlobalBoolean(lua_State* L, const char* identifier, const bool _default)
+bool ConfigManager::getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultValue)
 {
 	lua_getglobal(L, identifier);
 	if (!lua_isboolean(L, -1)) {
 		if (!lua_isstring(L, -1)) {
-			return _default;
+			return defaultValue;
 		}
 
 		size_t len = lua_strlen(L, -1);
