@@ -6,63 +6,64 @@ GameStore = {
 	LastUpdated = "[CEST] 29-05-2016 07:15PM"
 }
 --== Enums ==--
-GameStore.OfferTypes = {
-	OFFER_TYPE_NONE = 0, -- (this will disable offer)
-	OFFER_TYPE_ITEM = 1,
-	OFFER_TYPE_OUTFIT = 2,
-	OFFER_TYPE_OUTFIT_ADDON = 3,
-	OFFER_TYPE_MOUNT = 4,
-	OFFER_TYPE_NAMECHANGE = 5,
-	OFFER_TYPE_SEXCHANGE = 6,
-	OFFER_TYPE_PROMOTION = 7
+GameStore.OfferTypes						= {
+	OFFER_TYPE_NONE						= 0, -- (this will disable offer)
+	OFFER_TYPE_ITEM						= 1,
+	OFFER_TYPE_STACKABLE					= 2,
+	OFFER_TYPE_OUTFIT						= 3,
+	OFFER_TYPE_OUTFIT_ADDON				= 4,
+	OFFER_TYPE_MOUNT						= 5,
+	OFFER_TYPE_NAMECHANGE				= 6,
+	OFFER_TYPE_SEXCHANGE					= 7,
+	OFFER_TYPE_PROMOTION					= 8
 }
-GameStore.ClientOfferTypes = {
-	CLIENT_STORE_OFFER_OTHER = 0,
-	CLIENT_STORE_OFFER_NAMECHANGE = 1
+GameStore.ClientOfferTypes				= {
+	CLIENT_STORE_OFFER_OTHER			= 0,
+	CLIENT_STORE_OFFER_NAMECHANGE		= 1
 }
-GameStore.HistoryTypes = {
-	HISTORY_TYPE_NONE = 0,
-	HISTORY_TYPE_GIFT = 1,
-	HISTORY_TYPE_REFUND = 2
+GameStore.HistoryTypes					= {
+	HISTORY_TYPE_NONE						= 0,
+	HISTORY_TYPE_GIFT						= 1,
+	HISTORY_TYPE_REFUND					= 2
 }
-GameStore.States = {
-	STATE_NONE = 0,
-	STATE_NEW = 1,
-	STATE_SALE = 2,
-	STATE_TIMED = 3
+GameStore.States							= {
+	STATE_NONE								= 0,
+	STATE_NEW								= 1,
+	STATE_SALE								= 2,
+	STATE_TIMED								= 3
 }
-GameStore.StoreErrors = {
-	STORE_ERROR_PURCHASE = 0,
-	STORE_ERROR_NETWORK = 1,
-	STORE_ERROR_HISTORY = 2,
-	STORE_ERROR_TRANSFER = 3,
-	STORE_ERROR_INFORMATION = 4
+GameStore.StoreErrors 					= {
+	STORE_ERROR_PURCHASE					= 0,
+	STORE_ERROR_NETWORK					= 1,
+	STORE_ERROR_HISTORY					= 2,
+	STORE_ERROR_TRANSFER					= 3,
+	STORE_ERROR_INFORMATION				= 4
 }
-GameStore.ServiceTypes = {
-	SERVICE_STANDERD = 0,
-	SERVICE_OUTFITS = 3,
-	SERVICE_MOUNTS = 4
+GameStore.ServiceTypes		 			= {
+	SERVICE_STANDERD						= 0,
+	SERVICE_OUTFITS						= 3,
+	SERVICE_MOUNTS							= 4
 }
-GameStore.SendingPackets = {
-	S_CoinBalance = 0xDF, -- 223
-	S_StoreError = 0xE0, -- 224
-	S_RequestPurchaseData = 0xE1, -- 225
-	S_CoinBalanceUpdating = 0xF2, -- 242
-	S_OpenStore = 0xFB, -- 251
-	S_StoreOffers = 0xFC, -- 252
-	S_OpenTransactionHistory = 0xFD, -- 253
-	S_CompletePurchase = 0xFE  -- 254
+GameStore.SendingPackets 				= {
+	S_CoinBalance 							= 0xDF, -- 223
+	S_StoreError							= 0xE0, -- 224
+	S_RequestPurchaseData 				= 0xE1, -- 225
+	S_CoinBalanceUpdating 				= 0xF2, -- 242
+	S_OpenStore								= 0xFB, -- 251
+	S_StoreOffers							= 0xFC, -- 252
+	S_OpenTransactionHistory			= 0xFD, -- 253
+	S_CompletePurchase					= 0xFE  -- 254
 }
-GameStore.RecivedPackets = {
-	C_StoreEvent = 0xE9, -- 233
-	C_TransferCoins = 0xEF, -- 239
-	C_OpenStore = 0xFA, -- 250
-	C_RequestStoreOffers = 0xFB, -- 251
-	C_BuyStoreOffer = 0xFC, -- 252
-	C_OpenTransactionHistory = 0xFD, -- 253
-	C_RequestTransactionHistory = 0xFE, -- 254
+GameStore.RecivedPackets				= {
+	C_StoreEvent							= 0xE9, -- 233
+	C_TransferCoins						= 0xEF, -- 239
+	C_OpenStore								= 0xFA, -- 250
+	C_RequestStoreOffers					= 0xFB, -- 251
+	C_BuyStoreOffer						= 0xFC, -- 252
+	C_OpenTransactionHistory			= 0xFD, -- 253
+	C_RequestTransactionHistory		= 0xFE, -- 254
 }
-GameStore.DefaultValues = {
+GameStore.DefaultValues					= {
 	DEFAULT_VALUE_ENTRIES_PER_PAGE	= 16
 }
 GameStore.DefaultDescriptions = {
@@ -186,13 +187,29 @@ function parseBuyStoreOffer(player, msg)
 		
 		-- If offer is item.
 		if offer.type == GameStore.OfferTypes.OFFER_TYPE_ITEM then
-			local backpack = player:getSlotItem(CONST_SLOT_BACKPACK)
-			if backpack and backpack:getEmptySlots() > 0 then
-				player:addItem(offer.thingId, offer.count or 1)
+			local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
+			if inbox and inbox:getEmptySlots() > offer.count then
+				for t = 1,offer.count do
+					inbox:addItem(offer.thingId, offer.count or 1)
+				end
 			else
-				-- ToDo: send items to player's inbox.
-				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in main backpack.")
+				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in your store inbox.")
 			end
+		-- If offer is Stackable.
+		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_STACKABLE then
+			local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
+			if inbox and inbox:getEmptySlots() > 0 then
+				local parcel = inbox:addItem(2596, 1)
+				local packagename = ''.. offer.count..'x '.. offer.name ..' package.'
+					if parcel then
+						parcel:setAttribute(ITEM_ATTRIBUTE_NAME, packagename)
+						for e = 1,offer.count do
+							parcel:addItem(offer.thingId, 1)
+					end
+				end
+			else
+				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in your store inbox.")
+		end
 		-- If offer is outfit/addon
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT or offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON then
 			local outfitLookType
@@ -309,6 +326,10 @@ function sendShowStoreOffers(player, category)
 			
 			local name = ""
 			if offer.type == GameStore.OfferTypes.OFFER_TYPE_ITEM and offer.count then
+				name = offer.count .. "x "
+			end
+			
+			if offer.type == GameStore.OfferTypes.OFFER_TYPE_STACKABLE and offer.count then
 				name = offer.count .. "x "
 			end
 			

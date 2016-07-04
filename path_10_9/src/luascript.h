@@ -982,7 +982,7 @@ class LuaScriptInterface
 		static int32_t luaPlayerStartLiveCast(lua_State* L);
 		static int32_t luaPlayerStopLiveCast(lua_State* L);
 		static int32_t luaPlayerIsLiveCaster(lua_State* L);
-
+		
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 
@@ -1012,8 +1012,6 @@ class LuaScriptInterface
 
 		static int luaMonsterSelectTarget(lua_State* L);
 		static int luaMonsterSearchTarget(lua_State* L);
-
-		static int luaMonsterTypeIsRewardBoss(lua_State* L);
 
 		// Npc
 		static int luaNpcCreate(lua_State* L);
@@ -1205,6 +1203,7 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsPassive(lua_State* L);
 		static int luaMonsterTypeIsPushable(lua_State* L);
 		static int luaMonsterTypeIsHealthShown(lua_State* L);
+		static int luaMonsterTypeIsRewardBoss(lua_State* L);
 
 		static int luaMonsterTypeCanPushItems(lua_State* L);
 		static int luaMonsterTypeCanPushCreatures(lua_State* L);

@@ -2513,6 +2513,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("MonsterType", "isPassive", LuaScriptInterface::luaMonsterTypeIsHostile);
 	registerMethod("MonsterType", "isPushable", LuaScriptInterface::luaMonsterTypeIsPushable);
 	registerMethod("MonsterType", "isHealthShown", LuaScriptInterface::luaMonsterTypeIsHealthShown);
+	registerMethod("MonsterType", "isRewardBoss", LuaScriptInterface::luaMonsterTypeIsRewardBoss);
 
 	registerMethod("MonsterType", "canPushItems", LuaScriptInterface::luaMonsterTypeCanPushItems);
 	registerMethod("MonsterType", "canPushCreatures", LuaScriptInterface::luaMonsterTypeCanPushCreatures);
@@ -6248,22 +6249,22 @@ int LuaScriptInterface::luaItemRemoveAttribute(lua_State* L)
 }
 
 int LuaScriptInterface::luaItemSerializeAttributes(lua_State* L)
-{
-	// item:serializeAttributes()
-	Item* item = getUserdata<Item>(L, 1);
+ {
+		// item:serializeAttributes()
+		Item* item = getUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
 	}
-
-	PropWriteStream propWriteStream;
+	
+		PropWriteStream propWriteStream;
 	item->serializeAttr(propWriteStream);
-
-	size_t attributesSize;
+	
+		size_t attributesSize;
 	const char* attributes = propWriteStream.getStream(attributesSize);
 	lua_pushlstring(L, attributes, attributesSize);
 	return 1;
-}
+	}
 
 int LuaScriptInterface::luaItemMoveTo(lua_State* L)
 {
@@ -7763,12 +7764,12 @@ int LuaScriptInterface::luaPlayerRemoveReward(lua_State* L)
 		lua_pushnil(L);
 		return 1;
 	}
-
-	uint32_t rewardId = getNumber<uint32_t>(L, 2);
+	
+		uint32_t rewardId = getNumber<uint32_t>(L, 2);
 	player->removeReward(rewardId);
 	pushBoolean(L, true);
 	return 1;
-}
+	}
 
 int LuaScriptInterface::luaPlayerGetRewardList(lua_State* L)
 {
@@ -9500,7 +9501,7 @@ int32_t LuaScriptInterface::luaPlayerStartLiveCast(lua_State* L)
 
 	lua_pushboolean(L, player->startLiveCast(password));
 	return 1;
-}
+	}
 
 int32_t LuaScriptInterface::luaPlayerStopLiveCast(lua_State* L)
 {

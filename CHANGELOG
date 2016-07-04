@@ -53,7 +53,9 @@
 ]
 
 [ OTX Server 3.6 :: Version " SCARETALE "
-	- 
+	- Added combatProtection on login
+	- Added Store Inbox (now work)
+	- Fixed RewardSystem
 ]
 
 [ OTX Server 3.5 :: Version " FORGOTTEN "

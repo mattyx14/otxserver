@@ -29519,7 +29519,11 @@
 	<item id="21570" name="the world board">
 		<attribute key="description" value="This board will notify you of currently active mini world changes all over Tibia." />
 	</item>
-	<item id="21584" article="a" name="reward chest">
+	<item id="21518" article="a" name="reward container">
+		<attribute key="containersize" value="24" />
+	</item>
+	<item id="21584" article="a" name="reward container">
+		<attribute key="containerSize" value="32" />
 		<attribute key="description" value="This chest contains your rewards earned in battles." />
 	</item>
 	<item id="21585" article="a" name="smoking coal">

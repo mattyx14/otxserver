@@ -1,3 +1,11 @@
+function onCreatureAppear(self, creature)
+	if self == creature then
+		if self:getType():isRewardBoss() then
+			self:setReward(true)
+		end
+	end
+end
+
 local function pushSeparated(buffer, sep, ...)
 	local argv = {...}
 	local argc = #argv
@@ -7,7 +15,7 @@ local function pushSeparated(buffer, sep, ...)
 			table.insert(buffer, sep)
 		end
 	end
-end
+end	
 
 local function insertItems(buffer, info, parent, items)
 	local start = info.running

@@ -7,8 +7,10 @@ GameStore.Categories = {
 		state = GameStore.States.STATE_NEW,
 		icons = {"Category_Mounts.png"},
 		offers = {
-			-- Item Example : thingId = itemId
-			{name = "Crystal Coin", thingId = 2160, count = 200, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 150, icons = {"Product_CC.png"}, description = "Become rich!"},
+			-- Stackable Item Example : thingId = itemId
+			{name = "Crystal Coin", thingId = 2160, count = 200, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 150, icons = {"Product_CC.png"}, description = "Become rich!"},
+			-- Normal Item Example : thingId = itemId
+			{name = "Sword", thingId = 2376, count = 3, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 150, icons = {"Product_CC.png"}, description = "Become rich!"},
 			-- Outfit Example : thingId = lookType
 			{name = "Dream Warden Outfit", thingId = {male=577,female=578}, type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT, price = 250, icons = {"Product_DreamWarden.png"}},
 			-- Addon Example : thingId = lookType, addon = ( 1 = addon 1, 2 = addon 2, 3 = both addons)
