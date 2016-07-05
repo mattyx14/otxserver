@@ -29461,6 +29461,11 @@
 	<item fromid="21514" toid="21515" article="a" name="strange shrine" />
 	<item id="21516" article="a" name="lift" />
 	<item id="21517" article="an" name="ornate door with a keyhole" />
+	<item id="21518" article="a" name="reward container">
+		<attribute key="containersize" value="32" />
+		<attribute key="pickupable" value="0" />
+		<attribute key="moveable" value="0" />
+	</item>
 	<item id="21536" article="a" name="hole">
 		<attribute key="floorchange" value="down" />
 	</item>
@@ -29519,12 +29524,12 @@
 	<item id="21570" name="the world board">
 		<attribute key="description" value="This board will notify you of currently active mini world changes all over Tibia." />
 	</item>
-	<item id="21518" article="a" name="reward container">
-		<attribute key="containersize" value="24" />
-	</item>
-	<item id="21584" article="a" name="reward container">
-		<attribute key="containerSize" value="32" />
+	<item id="21584" article="a" name="reward chest">
+		<attribute key="type" value="rewardchest" />
 		<attribute key="description" value="This chest contains your rewards earned in battles." />
+		<attribute key="containersize" value="32" />
+		<attribute key="pickupable" value="0" />
+		<attribute key="moveable" value="0" />
 	</item>
 	<item id="21585" article="a" name="smoking coal">
 		<attribute key="description" value="This coal is smoking and emmits quite a stench." />
@@ -31437,297 +31442,1042 @@
 	</item>
 	<item id="24331" article="an" name="assassin doll">
 		<attribute key="weight" value="2504" />
-		<attribute key="description" value="Only the real killers can touch me! This item was awarded by TibiaBrasileiros.com." />
+		<attribute key="description" value="Only the real killers can touch me!" />
 	</item>
 	<item id="24332" article="an" name="assassin doll">
 		<attribute key="weight" value="2504" />
-		<attribute key="decayTo" value="24331" />
-		<attribute key="duration" value="3" />
-		<attribute key="description" value="Only the real killers can touch me! This item was awarded by TibiaBrasileiros.com." />
+		<attribute key="description" value="Only the real killers can touch me!" />
 	</item>
-	<item id="25889" article="a" name="blade of mayhem (charged)">
-		<attribute key="description" value="This weapon is charged." />
+	<item id="25879" article="a" name="blade of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="48" />
+		<attribute key="weaponType" value="sword" />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25880" article="a" name="slayer of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25881" article="an" name="axe of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="26" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25882" article="a" name="chopper of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="29" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25883" article="a" name="mace of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="24" />
+		<attribute key="attack" value="48" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25884" article="a" name="hammer of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25885" article="a" name="bow of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="3" />
+		<attribute key="attack" value="3" />
+	</item>
+	<item id="25886" article="a" name="crossbow of mayhem">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="3" />
+		<attribute key="attack" value="3" />
+	</item>
+	<item id="25887" article="a" name="wand of mayhem">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 100 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25888" article="a" name="rod of mayhem">
+		<attribute key="description" value="It can only be wielded properly by druids of level 100 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25889" article="a" name="blade of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
 		<attribute key="defense" value="32" />
 		<attribute key="attack" value="49" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="criticalchance" value="10" />
-		<attribute key="criticaldamage" value="20" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="72000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="transformDeEquipTo" value="26233" />
-	</item>
-	<item id="25899" article="a" name="blade of mayhem (heavily charged)">
-		<attribute key="description" value="This weapon is heavily charged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25890" article="a" name="slayer of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25891" article="an" name="axe of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25892" article="a" name="chopper of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25893" article="a" name="mace of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25894" article="a" name="hammer of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25895" article="a" name="bow of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="4" />
+		<attribute key="attack" value="4" />
+	</item>
+	<item id="25896" article="a" name="crossbow of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="4" />
+		<attribute key="attack" value="4" />
+	</item>
+	<item id="25897" article="a" name="wand of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 150 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25898" article="a" name="rod of mayhem(charged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 150 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" /> 
+	</item>
+	<item id="25899" article="a" name="blade of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
 		<attribute key="defense" value="32" />
 		<attribute key="attack" value="50" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="criticalchance" value="15" />
-		<attribute key="criticaldamage" value="25" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="36000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="transformDeEquipTo" value="26234" />
-	</item>
-	<item id="25909" article="a" name="blade of mayhem (overcharged)">
-		<attribute key="description" value="This weapon is overcharged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25900" article="a" name="slayer of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
 		<attribute key="defense" value="34" />
 		<attribute key="attack" value="52" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="criticalchance" value="10" />
-		<attribute key="criticaldamage" value="30" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="54000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25901" article="an" name="axe of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="31" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25902" article="a" name="chopper of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25903" article="a" name="mace of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25904" article="a" name="hammer of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25905" article="a" name="crossbow of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="5" />
+		<attribute key="attack" value="5" />
+	</item>
+	<item id="25906" article="a" name="bow of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="5" />
+		<attribute key="attack" value="5" />
+	</item>
+	<item id="25907" article="a" name="wand of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 200 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25908" article="a" name="rod of mayhem(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 200 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25909" article="a" name="blade of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
 		<attribute key="weaponType" value="sword" />
+		<attribute key="weight" value="5000" />
 		<attribute key="skillSword" value="1" />
-		<attribute key="transformDeEquipTo" value="26235" />
+	</item>
+	<item id="25910" article="a" name="slayer of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="36" />
+		<attribute key="attack" value="54" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weight" value="7000" />
+		<attribute key="skillSword" value="2" />
+	</item>
+	<item id="25911" article="an" name="axe of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+		<attribute key="skillAxe" value="1" />
+	</item>
+	<item id="25912" article="a" name="chopper of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="35" />
+		<attribute key="attack" value="54" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+		<attribute key="skillAxe" value="2" />
+	</item>
+	<item id="25913" article="a" name="mace of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+		<attribute key="skillClub" value="1" />
+	</item>
+	<item id="25914" article="a" name="hammer of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="35" />
+		<attribute key="attack" value="53" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="skillClub" value="2" />
+	</item>
+	<item id="25915" article="a" name="bow of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="6" />
+		<attribute key="attack" value="6" />
+		<attribute key="skillDist" value="1" />
+	</item>
+	<item id="25916" article="a" name="crossbow of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="6" />
+		<attribute key="attack" value="6" />
+		<attribute key="skillDist" value="1" />
+	</item>
+	<item id="25917" article="a" name="wand of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 250 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="4" />
+		<attribute key="magiclevelpoints" value="1" />
+	</item>
+	<item id="25918" article="a" name="rod of mayhem(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 250 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+		<attribute key="magiclevelpoints" value="1" />
 	</item>
 	<item id="25919" article="a" name="blade of remedy">
-		<attribute key="description" value="This weapon can be charged." />
-		<attribute key="weight" value="5000" />
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
 		<attribute key="defense" value="28" />
 		<attribute key="attack" value="48" />
 		<attribute key="weaponType" value="sword" />
-	</item>
-	<item id="25920" article="a" name="blade of remedy (charged)">
-		<attribute key="description" value="This weapon is charged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25920" article="a" name="blade of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
 		<attribute key="defense" value="32" />
 		<attribute key="attack" value="49" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="lifeleechamount" value="5" />
-		<attribute key="lifeleechchance" value="25" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="72000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="transformDeEquipTo" value="26252" />
-	</item>
-	<item id="25921" article="a" name="blade of remedy (heavily charged)">
-		<attribute key="description" value="This weapon is heavily charged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25921" article="a" name="blade of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
 		<attribute key="defense" value="32" />
 		<attribute key="attack" value="50" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="lifeleechamount" value="7" />
-		<attribute key="lifeleechchance" value="30" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="36000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="transformDeEquipTo" value="26255" />
-	</item>
-	<item id="25922" article="a" name="blade of remedy (overcharged)">
-		<attribute key="description" value="This weapon is overcharged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25922" article="a" name="blade of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
 		<attribute key="defense" value="34" />
 		<attribute key="attack" value="52" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="lifeleechamount" value="9" />
-		<attribute key="lifeleechchance" value="35" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="54000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
+		<attribute key="weight" value="5000" />
 		<attribute key="skillSword" value="1" />
-		<attribute key="transformDeEquipTo" value="26256" />
+	</item>
+	<item id="25923" article="a" name="slayer of remedy">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25924" article="a" name="slayer of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25925" article="a" name="slayer of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25926" article="a" name="slayer of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="36" />
+		<attribute key="attack" value="54" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weight" value="7000" />
+		<attribute key="skillSword" value="2" />
+	</item>
+	<item id="25927" article="an" name="axe of remedy">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="26" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25928" article="an" name="axe of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25929" article="an" name="axe of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="31" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25930" article="an" name="axe of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+		<attribute key="skillAxe" value="1" />
+	</item>
+	<item id="25931" article="a" name="chopper of remedy">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="29" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25932" article="a" name="chopper of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25933" article="a" name="chopper of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25934" article="a" name="chopper of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="35" />
+		<attribute key="attack" value="54" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+		<attribute key="skillAxe" value="2" />
+	</item>
+	<item id="25935" article="a" name="mace of remedy">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="24" />
+		<attribute key="attack" value="48" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25936" article="a" name="mace of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25937" article="a" name="mace of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25938" article="a" name="mace of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+		<attribute key="skillClub" value="1" />
+	</item>
+	<item id="25939" article="a" name="hammer of remedy">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25940" article="a" name="hammer of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25941" article="a" name="hammer of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25942" article="a" name="hammer of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="35" />
+		<attribute key="attack" value="53" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="skillClub" value="2" />
+	</item>
+	<item id="25943" article="a" name="bow of remedy">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="3" />
+		<attribute key="attack" value="3" />
+	</item>
+	<item id="25944" article="a" name="bow of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="4" />
+		<attribute key="attack" value="4" />
+	</item>
+	<item id="25945" article="a" name="bow of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="5" />
+		<attribute key="attack" value="5" />
+	</item>
+	<item id="25946" article="a" name="bow of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="6" />
+		<attribute key="attack" value="6" />
+		<attribute key="skillDist" value="1" />
+	</item>
+	<item id="25947" article="a" name="crossbow of remedy">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="3" />
+		<attribute key="attack" value="3" />
+	</item>
+	<item id="25948" article="a" name="crossbow of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="4" />
+		<attribute key="attack" value="4" />
+	</item>
+	<item id="25949" article="a" name="crossbow of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="5" />
+		<attribute key="attack" value="5" />
+	</item>
+	<item id="25950" article="a" name="crossbow of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="6" />
+		<attribute key="attack" value="6" />
+		<attribute key="skillDist" value="1" />
+	</item>
+	<item id="25951" article="a" name="wand of remedy">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 100 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25952" article="a" name="wand of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 150 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25953" article="a" name="wand of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 200 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25954" article="a" name="wand of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 250 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="4" />
+		<attribute key="magiclevelpoints" value="1" />
+	</item>
+	<item id="25955" article="a" name="rod of remedy">
+		<attribute key="description" value="It can only be wielded properly by druids of level 100 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25956" article="a" name="rod of remedy(charged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 150 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" /> 
+	</item>
+	<item id="25957" article="a" name="rod of remedy(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 200 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25958" article="a" name="rod of remedy(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 250 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+		<attribute key="magiclevelpoints" value="1" />
 	</item>
 	<item id="25959" article="a" name="blade of carving">
-		<attribute key="description" value="This weapon can be charged." />
-		<attribute key="weight" value="5000" />
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
 		<attribute key="defense" value="28" />
 		<attribute key="attack" value="48" />
 		<attribute key="weaponType" value="sword" />
-	</item>
-	<item id="25960" article="a" name="blade of carving (charged)">
-		<attribute key="description" value="This weapon is charged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25960" article="a" name="blade of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
 		<attribute key="defense" value="32" />
 		<attribute key="attack" value="49" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="manaleechamount" value="5" />
-		<attribute key="manaleechchance" value="20" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="72000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="transformDeEquipTo" value="26261" />
-	</item>
-	<item id="25961" article="a" name="blade of carving (heavily charged)">
-		<attribute key="description" value="This weapon is heavily charged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25961" article="a" name="blade of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
 		<attribute key="defense" value="32" />
 		<attribute key="attack" value="50" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="manaleechamount" value="7" />
-		<attribute key="manaleechchance" value="25" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="36000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="transformDeEquipTo" value="26265" />
-	</item>
-	<item id="25962" article="a" name="blade of carving (overcharged)">
-		<attribute key="description" value="This weapon is overcharged." />
 		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25962" article="a" name="blade of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
 		<attribute key="defense" value="34" />
 		<attribute key="attack" value="52" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="manaleechamount" value="9" />
-		<attribute key="manaleechchance" value="30" />
-		<attribute key="decayTo" value="25879" />
-		<attribute key="duration" value="54000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
+		<attribute key="weight" value="5000" />
 		<attribute key="skillSword" value="1" />
-		<attribute key="transformDeEquipTo" value="26270" />
 	</item>
-	<item id="26029" article="a" name="ultimate mana potion">
-		<attribute key="weight" value="310" />
-		<attribute key="description" value="This potion can only be consumed by sorcerers and druids of level 130 or higher." />
+	<item id="25963" article="a" name="slayer of carving">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
 	</item>
-	<item id="26030" article="a" name="ultimate spirit potion">
-		<attribute key="weight" value="310" />
-		<attribute key="description" value="This potion can only be consumed by paladins of level 130 or higher." />
+	<item id="25964" article="a" name="slayer of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
 	</item>
-	<item id="26031" article="an" name="supreme health potion">
-		<attribute key="weight" value="310" />
-		<attribute key="description" value="This potion can only be consumed by knights of level 200 or higher." />
+	<item id="25965" article="a" name="slayer of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="34" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25966" article="a" name="slayer of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="36" />
+		<attribute key="attack" value="54" />
+		<attribute key="weaponType" value="sword" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weight" value="7000" />
+		<attribute key="skillSword" value="2" />
+	</item>
+	<item id="25967" article="an" name="axe of carving">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="26" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25968" article="an" name="axe of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25969" article="an" name="axe of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="31" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25970" article="an" name="axe of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="weight" value="5000" />
+		<attribute key="skillAxe" value="1" />
+	</item>
+	<item id="25971" article="a" name="chopper of carving">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="29" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25972" article="a" name="chopper of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25973" article="a" name="chopper of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+	</item>
+	<item id="25974" article="a" name="chopper of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="35" />
+		<attribute key="attack" value="54" />
+		<attribute key="weaponType" value="axe" />
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="weight" value="7000" />
+		<attribute key="skillAxe" value="2" />
+	</item>
+	<item id="25975" article="a" name="mace of carving">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="24" />
+		<attribute key="attack" value="48" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25976" article="a" name="mace of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="49" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25977" article="a" name="mace of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+	</item>
+	<item id="25978" article="a" name="mace of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="30" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="5000" />
+		<attribute key="skillClub" value="1" />
+	</item>
+	<item id="25979" article="a" name="hammer of carving">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="defense" value="28" />
+		<attribute key="attack" value="50" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25980" article="a" name="hammer of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="defense" value="32" />
+		<attribute key="attack" value="51" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25981" article="a" name="hammer of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="defense" value="33" />
+		<attribute key="attack" value="52" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+	</item>
+	<item id="25982" article="a" name="hammer of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="defense" value="35" />
+		<attribute key="attack" value="53" />
+		<attribute key="weaponType" value="club" />
+		<attribute key="weight" value="7000" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="skillClub" value="2" />
+	</item>
+	<item id="25983" article="a" name="bow of carving">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="3" />
+		<attribute key="attack" value="3" />
+	</item>
+	<item id="25984" article="a" name="bow of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="4" />
+		<attribute key="attack" value="4" />
+	</item>
+	<item id="25985" article="a" name="bow of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="5" />
+		<attribute key="attack" value="5" />
+	</item>
+	<item id="25986" article="a" name="bow of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="weight" value="5500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="arrow" />
+		<attribute key="range" value="6" />
+		<attribute key="hitChance" value="6" />
+		<attribute key="attack" value="6" />
+		<attribute key="skillDist" value="1" />
+	</item>
+	<item id="25987" article="a" name="crossbow of carving">
+		<attribute key="description" value="It can only be wielded properly by players of level 100 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="3" />
+		<attribute key="attack" value="3" />
+	</item>
+	<item id="25988" article="a" name="crossbow of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="4" />
+		<attribute key="attack" value="4" />
+	</item>
+	<item id="25989" article="a" name="crossbow of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 200 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="5" />
+		<attribute key="attack" value="5" />
+	</item>
+	<item id="25990" article="a" name="crossbow of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by players of level 250 or higher." />
+		<attribute key="weight" value="6500" />
+		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponType" value="distance" />
+		<attribute key="ammoType" value="bolt" />
+		<attribute key="range" value="5" />
+		<attribute key="hitChance" value="6" />
+		<attribute key="attack" value="6" />
+		<attribute key="skillDist" value="1" />
+	</item>
+	<item id="25991" article="a" name="wand of carving">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 100 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25992" article="a" name="wand of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 150 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25993" article="a" name="wand of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 200 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25994" article="a" name="wand of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by sorcerers of level 250 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="energy" />
+		<attribute key="range" value="4" />
+		<attribute key="magiclevelpoints" value="1" />
+	</item>
+	<item id="25995" article="a" name="rod of carving">
+		<attribute key="description" value="It can only be wielded properly by druids of level 100 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25996" article="a" name="rod of carving(charged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 150 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" /> 
+	</item>
+	<item id="25997" article="a" name="rod of carving(heavily charged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 200 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+	</item>
+	<item id="25998" article="a" name="rod of carving(overcharged)">
+		<attribute key="description" value="It can only be wielded properly by druids of level 250 or higher." />
+		<attribute key="weight" value="3500" />
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="ice" />
+		<attribute key="range" value="3" />
+		<attribute key="magiclevelpoints" value="1" />
+	</item>
+	<item id="26130" article="a" name="tiara of power">
+		<attribute key="description" value="It can only be wielded properly by sorcerers and druids of level 100 or higher." />
+		<attribute key="weight" value="1150" />
+		<attribute key="slotType" value="head" />
+		<attribute key="transformEquipTo" value="26131" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+	</item>
+	<item id="22131" article="a" name="tiara of power">
+		<attribute key="description" value="It can only be wielded properly by sorcerers and druids of level 100 or higher." />
+		<attribute key="weight" value="1150" />
+		<attribute key="slotType" value="head" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="transformDeEquipTo" value="26130" />
+		<attribute key="duration" value="3600" />
+		<attribute key="showduration" value="1" />
+		<attribute key="speed" value="20" />
+		<attribute key="armor" value="7" />
+		<attribute key="healthGain" value="2" />
+		<attribute key="healthTicks" value="6000" />
+		<attribute key="manaGain" value="8" />
+		<attribute key="manaTicks" value="6000" />
+		<attribute key="absorbPercentEnergy" value="8" />
+		<attribute key="showattributes" value="1" />
+	</item>
+	<item id="22132" name="void boots">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="1500" />
+		<attribute key="slotType" value="feet" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="transformDeEquipTo" value="26133" />
+		<attribute key="duration" value="3600" />
+		<attribute key="showduration" value="1" />
+		<attribute key="speed" value="30" />
+		<attribute key="armor" value="2" />
+		<attribute key="healthGain" value="3" />
+		<attribute key="healthTicks" value="6000" />
+		<attribute key="manaGain" value="12" />
+		<attribute key="manaTicks" value="6000" />
+		<attribute key="absorbPercentEnergy" value="10" />
+		<attribute key="showattributes" value="1" />
 	</item>
 	<item id="26052" article="your" name="store inbox">
 		<attribute key="containerSize" value="20" />
 	</item>
-	<item id="26233" article="a" name="blade of mayhem (charged)">
-		<attribute key="description" value="This weapon is charged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="32" />
-		<attribute key="attack" value="49" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="72000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
+	<item id="26133" name="void boots">
+		<attribute key="description" value="It can only be wielded properly by players of level 150 or higher." />
+		<attribute key="weight" value="1500" />
+		<attribute key="slotType" value="feet" />
+		<attribute key="transformEquipTo" value="26132" />
 		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25889" />
-	</item>
-	<item id="26234" article="a" name="blade of mayhem (heavily charged)">
-		<attribute key="description" value="This weapon is heavily charged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="32" />
-		<attribute key="attack" value="50" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="36000" />
 		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25899" />
-	</item>
-	<item id="26235" article="a" name="blade of mayhem (overcharged)">
-		<attribute key="description" value="This weapon is overcharged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="34" />
-		<attribute key="attack" value="52" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="54000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25909" />
-	</item>
-	<item id="26252" article="a" name="blade of remedy (charged)">
-		<attribute key="description" value="This weapon is charged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="32" />
-		<attribute key="attack" value="49" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="72000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25920" />
-	</item>
-	<item id="26255" article="a" name="blade of remedy (heavily charged)">
-		<attribute key="description" value="This weapon is heavily charged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="32" />
-		<attribute key="attack" value="50" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="36000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25921" />
-	</item>
-	<item id="26256" article="a" name="blade of remedy (overcharged)">
-		<attribute key="description" value="This weapon is overcharged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="34" />
-		<attribute key="attack" value="52" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="54000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25922" />
-	</item>
-	<item id="26261" article="a" name="blade of carving (charged)">
-		<attribute key="description" value="This weapon is charged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="32" />
-		<attribute key="attack" value="49" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="72000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25960" />
-	</item>
-	<item id="26265" article="a" name="blade of carving (heavily charged)">
-		<attribute key="description" value="This weapon is heavily charged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="32" />
-		<attribute key="attack" value="50" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="36000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25961" />
-	</item>
-	<item id="26270" article="a" name="blade of carving (overcharged)">
-		<attribute key="description" value="This weapon is overcharged." />
-		<attribute key="weight" value="5000" />
-		<attribute key="defense" value="34" />
-		<attribute key="attack" value="52" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="duration" value="54000" />
-		<attribute key="showduration" value="1" />
-		<attribute key="showattributes" value="1" />
-		<attribute key="weaponType" value="sword" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="transformEquipTo" value="25962" />
 	</item>
 	<item id="25453" article="a" name="depot box I" />
 	<item id="25454" article="a" name="depot box II" />

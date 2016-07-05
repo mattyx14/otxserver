@@ -867,8 +867,6 @@ class LuaScriptInterface
 		static int luaPlayerGetSkillTries(lua_State* L);
 		static int luaPlayerAddSkillTries(lua_State* L);
 
-		static int luaPlayerGetBoost(lua_State* L);
-
 		static int luaPlayerAddOfflineTrainingTime(lua_State* L);
 		static int luaPlayerGetOfflineTrainingTime(lua_State* L);
 		static int luaPlayerRemoveOfflineTrainingTime(lua_State* L);
@@ -982,7 +980,7 @@ class LuaScriptInterface
 		static int32_t luaPlayerStartLiveCast(lua_State* L);
 		static int32_t luaPlayerStopLiveCast(lua_State* L);
 		static int32_t luaPlayerIsLiveCaster(lua_State* L);
-		
+
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 

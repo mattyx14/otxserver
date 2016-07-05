@@ -670,18 +670,18 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().skills[SKILL_SHIELD] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "skillfist") {
 			it.getAbilities().skills[SKILL_FIST] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "criticalchance") {
-			it.getAbilities().boosts[BOOST_CRITICALCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "criticaldamage") {
-			it.getAbilities().boosts[BOOST_CRITICALDAMAGE] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "lifeleechchance") {
-			it.getAbilities().boosts[BOOST_LIFELEECHCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "lifeleechamount") {
-			it.getAbilities().boosts[BOOST_LIFELEECHAMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "manaleechchance") {
-			it.getAbilities().boosts[BOOST_MANALEECHCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "manaleechamount") {
-			it.getAbilities().boosts[BOOST_MANALEECHAMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "skillcriticalchance") {
+			it.getAbilities().skills[SKILL_CRITICAL_HIT_CHANCE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "skillcriticaldamage") {
+			it.getAbilities().skills[SKILL_CRITICAL_HIT_DAMAGE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "skilllifechance") {
+			it.getAbilities().skills[SKILL_LIFE_LEECH_CHANCE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "skilllifeamount") {
+			it.getAbilities().skills[SKILL_LIFE_LEECH_AMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "skillmanachance") {
+			it.getAbilities().skills[SKILL_MANA_LEECH_CHANCE] = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "skillmanaamount") {
+			it.getAbilities().skills[SKILL_MANA_LEECH_AMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "maxhitpoints") {
 			it.getAbilities().stats[STAT_MAXHITPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "maxhitpointspercent") {

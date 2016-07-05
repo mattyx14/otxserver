@@ -933,7 +933,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 			}
 
 			if (it.abilities) {
-				for (uint8_t i = SKILL_FIRST; i <= SKILL_LAST; i++) {
+				for (uint8_t i = SKILL_FIRST; i <= SKILL_FISHING; i++) {
 					if (!it.abilities->skills[i]) {
 						continue;
 					}
@@ -948,8 +948,8 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 					s << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos;
 				}
 
-				for (uint8_t i = BOOST_FIRST; i <= BOOST_LAST; i++) {
-					if (!it.abilities->boosts[i]) {
+				for (uint8_t i = SKILL_CRITICAL_HIT_CHANCE; i <= SKILL_LAST; i++) {
+					if (!it.abilities->skills[i]) {
 						continue;
 					}
 
@@ -959,8 +959,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 					} else {
 						s << ", ";
 					}
-
-					s << getBoostName(i) << ' ' << std::showpos << it.abilities->boosts[i] << '%' << std::noshowpos;
+					s << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos << '%';
 				}
 
 				if (it.abilities->stats[STAT_MAGICPOINTS]) {
@@ -1139,7 +1138,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 
 		if (it.abilities) {
-			for (uint8_t i = SKILL_FIRST; i <= SKILL_LAST; i++) {
+			for (uint8_t i = SKILL_FIRST; i <= SKILL_FISHING; i++) {
 				if (!it.abilities->skills[i]) {
 					continue;
 				}
@@ -1148,6 +1147,22 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 					begin = false;
 					s << " (";
 				} else {
+					s << ", ";
+				}
+
+				s << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos << '%';
+			}
+
+			for (uint8_t i = SKILL_CRITICAL_HIT_CHANCE; i <= SKILL_LAST; i++) {
+				if (!it.abilities->skills[i]) {
+					continue;
+				}
+
+				if (begin) {
+					begin = false;
+					s << " (";
+				}
+				else {
 					s << ", ";
 				}
 

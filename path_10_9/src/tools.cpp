@@ -611,6 +611,9 @@ MagicEffectNames magicEffectNames[] = {
 	{"yellowsmoke",		CONST_ME_YELLOWSMOKE},
 	{"greensmoke",		CONST_ME_GREENSMOKE},
 	{"purplesmoke",		CONST_ME_PURPLESMOKE},
+	{"lightning",		CONST_ME_LIGHTNING },
+	{"ragiazbonecapsule",		CONST_ME_RAGIAZ_BONE_CAPSULE},
+	{"criticalhit",		CONST_ME_CRITICAL_HIT},
 };
 
 ShootTypeNames shootTypeNames[] = {
@@ -817,6 +820,24 @@ std::string getSkillName(uint8_t skillid)
 		case SKILL_FISHING:
 			return "fishing";
 
+		case SKILL_CRITICAL_HIT_CHANCE:
+			return "critical hit chance";
+
+		case SKILL_CRITICAL_HIT_DAMAGE:
+			return "critical hit damage";
+
+		case SKILL_LIFE_LEECH_CHANCE:
+			return "life leech chance";
+
+		case SKILL_LIFE_LEECH_AMOUNT:
+			return "life leech amount";
+
+		case SKILL_MANA_LEECH_CHANCE:
+			return "mana leech chance";
+
+		case SKILL_MANA_LEECH_AMOUNT:
+			return "mana leech amount";
+
 		case SKILL_MAGLEVEL:
 			return "magic level";
 
@@ -825,32 +846,6 @@ std::string getSkillName(uint8_t skillid)
 
 		default:
 			return "unknown";
-	}
-}
-
-std::string getBoostName(uint8_t boostid)
-{
-	switch (boostid) {
-	case BOOST_CRITICALCHANCE:
-		return "critical hit chance";
-
-	case BOOST_CRITICALDAMAGE:
-		return "critical extra damage";
-
-	case BOOST_LIFELEECHCHANCE:
-		return "hit points leech chance";
-
-	case BOOST_LIFELEECHAMOUNT:
-		return "hit points leech amount";
-
-	case BOOST_MANALEECHCHANCE:
-		return "mana leech chance";
-
-	case BOOST_MANALEECHAMOUNT:
-		return "mana leech amount";
-
-	default:
-		return "unknown";
 	}
 }
 
@@ -1058,7 +1053,7 @@ const char* getReturnMessage(ReturnValue value)
 	switch (value) {
 		case RETURNVALUE_REWARDCHESTISEMPTY:
 			return "The chest is currently empty. You did not take part in any battles in the last seven days or already claimed your reward.";
-
+			
 		case RETURNVALUE_DESTINATIONOUTOFREACH:
 			return "Destination is out of reach.";
 

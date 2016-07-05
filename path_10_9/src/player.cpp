@@ -48,7 +48,7 @@ MuteCountMap Player::muteCountMap;
 uint32_t Player::playerAutoID = 0x10000000;
 
 Player::Player(ProtocolGame_ptr p) :
-	Creature(), inventory(), client(p), varSkills(), varBoosts(), varStats(), inventoryAbilities()
+	Creature(), inventory(), client(p), varSkills(), varStats(), inventoryAbilities()
 {
 	isConnecting = false;
 
@@ -176,7 +176,7 @@ Player::~Player()
 	for (const auto& it : rewardMap) {
 		it.second->decrementReferenceCounter();
 	}
-
+	
 	inbox->decrementReferenceCounter();
 
 	setWriteItem(nullptr);

@@ -504,10 +504,6 @@ class Player final : public Creature, public Cylinder
 			varSkills[skill] += modifier;
 		}
 
-		void setVarBoost(boosts_t boost, int32_t modifier) {
-			varBoosts[boost] += modifier;
-		}
-
 		void setVarStats(stats_t stat, int32_t modifier);
 		int32_t getDefaultStats(stats_t stat) const;
 
@@ -518,7 +514,7 @@ class Player final : public Creature, public Cylinder
 		void removeReward(uint32_t rewardId);
 		void getRewardList(std::vector<uint32_t>& rewards);
 		RewardChest* getRewardChest();
-
+		
 		DepotChest* getDepotBox();
 		DepotChest* getDepotChest(uint32_t depotId, bool autoCreate);
 		DepotLocker* getDepotLocker(uint32_t depotId);
@@ -629,9 +625,6 @@ class Player final : public Creature, public Cylinder
 		}
 		uint8_t getSkillPercent(uint8_t skill) const {
 			return skills[skill].percent;
-		}
-		uint16_t getBoostLevel(uint8_t boost) const {
-			return std::max<int32_t>(0, varBoosts[boost]);
 		}
 
 		bool getAddAttackSkill() const {
@@ -875,6 +868,7 @@ class Player final : public Creature, public Cylinder
 				client->sendInventoryItem(slot, item);
 			}
 		}
+
 		void sendInventoryClientIds() {
 			if (client) {
 				client->sendInventoryClientIds();
@@ -1323,7 +1317,6 @@ class Player final : public Creature, public Cylinder
 		uint32_t editListId;
 		uint32_t manaMax;
 		int32_t varSkills[SKILL_LAST + 1];
-		int32_t varBoosts[BOOST_LAST + 1];
 		int32_t varStats[STAT_LAST + 1];
 		int32_t purchaseCallback;
 		int32_t saleCallback;

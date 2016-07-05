@@ -1168,6 +1168,12 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_SKILL_DISTANCE)
 	registerEnum(CONDITION_PARAM_SKILL_SHIELD)
 	registerEnum(CONDITION_PARAM_SKILL_FISHING)
+	registerEnum(CONDITION_PARAM_SKILL_CRITICAL_HIT_CHANCE)
+	registerEnum(CONDITION_PARAM_SKILL_CRITICAL_HIT_DAMAGE)
+	registerEnum(CONDITION_PARAM_SKILL_LIFE_LEECH_CHANCE)
+	registerEnum(CONDITION_PARAM_SKILL_LIFE_LEECH_AMOUNT)
+	registerEnum(CONDITION_PARAM_SKILL_MANA_LEECH_CHANCE)
+	registerEnum(CONDITION_PARAM_SKILL_MANA_LEECH_AMOUNT)
 	registerEnum(CONDITION_PARAM_STAT_MAXHITPOINTS)
 	registerEnum(CONDITION_PARAM_STAT_MAXMANAPOINTS)
 	registerEnum(CONDITION_PARAM_STAT_MAGICPOINTS)
@@ -1183,6 +1189,12 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_SKILL_DISTANCEPERCENT)
 	registerEnum(CONDITION_PARAM_SKILL_SHIELDPERCENT)
 	registerEnum(CONDITION_PARAM_SKILL_FISHINGPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_CRITICAL_HIT_CHANCEPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_CRITICAL_HIT_DAMAGEPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_LIFE_LEECH_CHANCEPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_LIFE_LEECH_AMOUNTPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_MANA_LEECH_CHANCEPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_MANA_LEECH_AMOUNTPERCENT)
 	registerEnum(CONDITION_PARAM_BUFF_SPELL)
 	registerEnum(CONDITION_PARAM_SUBID)
 	registerEnum(CONDITION_PARAM_FIELD)
@@ -1269,6 +1281,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ME_YELLOWSMOKE)
 	registerEnum(CONST_ME_GREENSMOKE)
 	registerEnum(CONST_ME_PURPLESMOKE)
+	registerEnum(CONST_ME_LIGHTNING)
+	registerEnum(CONST_ME_RAGIAZ_BONE_CAPSULE)
+	registerEnum(CONST_ME_CRITICAL_HIT)
 
 	registerEnum(CONST_ANI_NONE)
 	registerEnum(CONST_ANI_SPEAR)
@@ -1504,15 +1519,14 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(SKILL_DISTANCE)
 	registerEnum(SKILL_SHIELD)
 	registerEnum(SKILL_FISHING)
+	registerEnum(SKILL_CRITICAL_HIT_CHANCE)
+	registerEnum(SKILL_CRITICAL_HIT_DAMAGE)
+	registerEnum(SKILL_LIFE_LEECH_CHANCE)
+	registerEnum(SKILL_LIFE_LEECH_AMOUNT)
+	registerEnum(SKILL_MANA_LEECH_CHANCE)
+	registerEnum(SKILL_MANA_LEECH_AMOUNT)
 	registerEnum(SKILL_MAGLEVEL)
 	registerEnum(SKILL_LEVEL)
-
-	registerEnum(BOOST_CRITICALCHANCE)
-	registerEnum(BOOST_CRITICALDAMAGE)
-	registerEnum(BOOST_LIFELEECHCHANCE)
-	registerEnum(BOOST_LIFELEECHAMOUNT)
-	registerEnum(BOOST_MANALEECHCHANCE)
-	registerEnum(BOOST_MANALEECHAMOUNT)
 
 	registerEnum(SKULL_NONE)
 	registerEnum(SKULL_YELLOW)
@@ -2164,8 +2178,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getSkillPercent", LuaScriptInterface::luaPlayerGetSkillPercent);
 	registerMethod("Player", "getSkillTries", LuaScriptInterface::luaPlayerGetSkillTries);
 	registerMethod("Player", "addSkillTries", LuaScriptInterface::luaPlayerAddSkillTries);
-
-	registerMethod("Player", "getBoost", LuaScriptInterface::luaPlayerGetBoost);
 
 	registerMethod("Player", "addOfflineTrainingTime", LuaScriptInterface::luaPlayerAddOfflineTrainingTime);
 	registerMethod("Player", "getOfflineTrainingTime", LuaScriptInterface::luaPlayerGetOfflineTrainingTime);
@@ -6249,22 +6261,22 @@ int LuaScriptInterface::luaItemRemoveAttribute(lua_State* L)
 }
 
 int LuaScriptInterface::luaItemSerializeAttributes(lua_State* L)
- {
-		// item:serializeAttributes()
-		Item* item = getUserdata<Item>(L, 1);
+{
+	// item:serializeAttributes()
+	Item* item = getUserdata<Item>(L, 1);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
 	}
-	
-		PropWriteStream propWriteStream;
+
+	PropWriteStream propWriteStream;
 	item->serializeAttr(propWriteStream);
-	
-		size_t attributesSize;
+
+	size_t attributesSize;
 	const char* attributes = propWriteStream.getStream(attributesSize);
 	lua_pushlstring(L, attributes, attributesSize);
 	return 1;
-	}
+}
 
 int LuaScriptInterface::luaItemMoveTo(lua_State* L)
 {
@@ -7764,12 +7776,12 @@ int LuaScriptInterface::luaPlayerRemoveReward(lua_State* L)
 		lua_pushnil(L);
 		return 1;
 	}
-	
-		uint32_t rewardId = getNumber<uint32_t>(L, 2);
+
+	uint32_t rewardId = getNumber<uint32_t>(L, 2);
 	player->removeReward(rewardId);
 	pushBoolean(L, true);
 	return 1;
-	}
+}
 
 int LuaScriptInterface::luaPlayerGetRewardList(lua_State* L)
 {
@@ -8060,19 +8072,6 @@ int LuaScriptInterface::luaPlayerAddSkillTries(lua_State* L)
 		uint64_t tries = getNumber<uint64_t>(L, 3);
 		player->addSkillAdvance(skillType, tries);
 		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetBoost(lua_State* L)
-{
-	// player:getBoost(boostType)
-	boosts_t boostType = getNumber<boosts_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player && boostType <= BOOST_LAST) {
-		lua_pushnumber(L, player->getBoostLevel(boostType));
 	} else {
 		lua_pushnil(L);
 	}
@@ -9501,7 +9500,7 @@ int32_t LuaScriptInterface::luaPlayerStartLiveCast(lua_State* L)
 
 	lua_pushboolean(L, player->startLiveCast(password));
 	return 1;
-	}
+}
 
 int32_t LuaScriptInterface::luaPlayerStopLiveCast(lua_State* L)
 {

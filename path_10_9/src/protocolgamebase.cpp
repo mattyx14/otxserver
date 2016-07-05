@@ -220,15 +220,15 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 {
 	msg.addByte(0xA1);
 
-	for (uint8_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
+	for (uint8_t i = SKILL_FIRST; i <= SKILL_FISHING; ++i) {
 		msg.add<uint16_t>(std::min<int32_t>(player->getSkillLevel(i), std::numeric_limits<uint16_t>::max()));
 		msg.add<uint16_t>(player->getBaseSkill(i));
 		msg.addByte(player->getSkillPercent(i));
 	}
 
-	for (uint8_t i = BOOST_FIRST; i <= BOOST_LAST; ++i) {
-		msg.add<uint16_t>(std::min<int32_t>(player->getBoostLevel(i), std::numeric_limits<uint16_t>::max()));
-		msg.add<uint16_t>(0);
+	for (uint8_t i = SKILL_CRITICAL_HIT_CHANCE; i <= SKILL_LAST; ++i) {
+		msg.add<uint16_t>(std::min<int32_t>(player->getSkillLevel(i), std::numeric_limits<uint16_t>::max()));
+		msg.add<uint16_t>(player->getBaseSkill(i));
 	}
 }
 

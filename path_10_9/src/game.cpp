@@ -1190,9 +1190,9 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 	//add item
 	if (moveItem /*m - n > 0*/) {
 		if (fromCylinder == toCylinder) {
-		toCylinder->addThing(index, moveItem);	
+		toCylinder->addThing(index, moveItem);
 		} else {
-			internalAddItem(toCylinder, moveItem, INDEX_WHEREEVER, flags);	
+			internalAddItem(toCylinder, moveItem, INDEX_WHEREEVER, flags);
 		}
 	}
 
@@ -3903,29 +3903,28 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		bool critical = false;
 		if (attackerPlayer) {
 			//critical damage
-			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_CRITICALCHANCE)) {
-				damage.primary.value = (int32_t)(damage.primary.value * (1 + (attackerPlayer->getBoostLevel(BOOST_CRITICALDAMAGE) / 100)));
+			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_CHANCE)) {
+				damage.primary.value = (int32_t)(damage.primary.value * (1 + (attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE) / 100)));
 				critical = true;
 			}
 
 			//life leech
-			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_LIFELEECHCHANCE)) {
+			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_CHANCE)) {
 				CombatParams tmpParams;
 				CombatDamage tmpDamage;
 				tmpDamage.origin = ORIGIN_SPELL;
 				tmpDamage.primary.type = COMBAT_HEALING;
-				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getBoostLevel(BOOST_LIFELEECHAMOUNT)) / 100;
+				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_AMOUNT)) / 100;
 				Combat::doCombatHealth(nullptr, attackerPlayer, tmpDamage, tmpParams);
 			}
 
 			//mana leech
-			if (normal_random(0, 100) < attackerPlayer->getBoostLevel(BOOST_MANALEECHCHANCE)) {
+			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_MANA_LEECH_CHANCE)) {
 				CombatParams tmpParams;
 				CombatDamage tmpDamage;
 				tmpDamage.origin = ORIGIN_SPELL;
 				tmpDamage.primary.type = COMBAT_MANADRAIN;
-				//tmpDamage.primary.value = (int32_t)(std::abs(damage.primary.value) * (attackerPlayer->getBoostLevel(BOOST_MANALEECHAMOUNT) / 100));
-				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getBoostLevel(BOOST_MANALEECHAMOUNT)) / 100;
+				tmpDamage.primary.value = (damage.primary.value * attackerPlayer->getSkillLevel(SKILL_MANA_LEECH_AMOUNT)) / 100;
 				Combat::doCombatMana(nullptr, attackerPlayer, tmpDamage, tmpParams);
 			}
 		}
@@ -4067,7 +4066,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		}
 
 		if (critical) {
-			addMagicEffect(list, targetPos, CONST_ME_CRITICALHIT);
+			addMagicEffect(list, targetPos, CONST_ME_CRITICAL_HIT);
 		}
 
 		if (message.primary.color != TEXTCOLOR_NONE || message.secondary.color != TEXTCOLOR_NONE) {

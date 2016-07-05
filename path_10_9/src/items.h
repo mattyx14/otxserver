@@ -92,9 +92,6 @@ struct Abilities {
 	//extra skill modifiers
 	int32_t skills[SKILL_LAST + 1];
 
-	//boost modifiers
-	int32_t boosts[BOOST_LAST + 1];
-
 	int32_t speed;
 
 	// field damage abilities modifiers

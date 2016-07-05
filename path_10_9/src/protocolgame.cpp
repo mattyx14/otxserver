@@ -1676,7 +1676,7 @@ void ProtocolGame::sendMarketDetail(uint16_t itemId)
 		std::ostringstream ss;
 		bool separator = false;
 
-		for (uint8_t i = SKILL_FIRST; i <= SKILL_LAST; i++) {
+		for (uint8_t i = SKILL_FIRST; i <= SKILL_FISHING; i++) {
 			if (!it.abilities->skills[i]) {
 				continue;
 			}
@@ -1688,6 +1688,21 @@ void ProtocolGame::sendMarketDetail(uint16_t itemId)
 			}
 
 			ss << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos;
+		}
+
+		for (uint8_t i = SKILL_CRITICAL_HIT_CHANCE; i <= SKILL_LAST; i++) {
+			if (!it.abilities->skills[i]) {
+				continue;
+			}
+
+			if (separator) {
+				ss << ", ";
+			}
+			else {
+				separator = true;
+			}
+
+			ss << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos << '%';
 		}
 
 		if (it.abilities->stats[STAT_MAGICPOINTS] != 0) {
