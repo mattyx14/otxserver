@@ -72,6 +72,7 @@
 	fragsToBanishment = 7
 	fragsSecondToBanishment = 21
 	fragsThirdToBanishment = 41
+	autoBanishUnknownBytes = false
 
 	-- Battle
 	-- NOTE: showHealth/ManaChangeForMonsters inherites from showHealth/ManaChange.

@@ -731,13 +731,42 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 			case 0xE7: parseViolationWindow(msg); break;
 			case 0xE8: parseDebugAssert(msg); break;
 
-			default:
+		default:
+		{
+			if (g_config.getBool(ConfigManager::BAN_UNKNOWN_BYTES))
 			{
-				std::stringstream s;
-				s << "Sent unknown byte: 0x" << std::hex << (int16_t)recvbyte << std::dec;
-				Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
-				break;
+				int64_t banTime = -1;
+				ViolationAction_t action = ACTION_BANISHMENT;
+				Account tmp = IOLoginData::getInstance()->loadAccount(player->getAccount(), true);
+
+				tmp.warnings++;
+				if (tmp.warnings >= g_config.getNumber(ConfigManager::WARNINGS_TO_DELETION))
+					action = ACTION_DELETION;
+				else if (tmp.warnings >= g_config.getNumber(ConfigManager::WARNINGS_TO_FINALBAN))
+				{
+					banTime = time(NULL) + g_config.getNumber(ConfigManager::FINALBAN_LENGTH);
+					action = ACTION_BANFINAL;
+				}
+				else
+					banTime = time(NULL) + g_config.getNumber(ConfigManager::BAN_LENGTH);
+
+				if (IOBan::getInstance()->addAccountBanishment(tmp.number, banTime, 13, action,
+					"Sending unknown packets to the server.", 0, player->getGUID()))
+				{
+					IOLoginData::getInstance()->saveAccount(tmp);
+					player->sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
+
+					g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+					Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
+						&Game::kickPlayer, &g_game, player->getID(), false)));
+				}
 			}
+
+			std::stringstream s;
+			s << "Sent unknown byte: 0x" << std::hex << (int16_t)recvbyte << std::dec;
+			Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
+			break;
+		}
 		}
 	}
 }

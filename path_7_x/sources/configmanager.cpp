@@ -245,6 +245,7 @@ bool ConfigManager::load()
 	m_confNumber[STAMINA_LIMIT_BOTTOM] = getGlobalNumber("staminaRatingLimitBottom", 840);
 	m_confBool[DISPLAY_LOGGING] = getGlobalBool("displayPlayersLogging", true);
 	m_confBool[STAMINA_BONUS_PREMIUM] = getGlobalBool("staminaThresholdOnlyPremium", true);
+	m_confBool[BAN_UNKNOWN_BYTES] = getGlobalBool("autoBanishUnknownBytes", false);
 	m_confNumber[BLESS_REDUCTION_BASE] = getGlobalNumber("blessingReductionBase", 30);
 	m_confNumber[BLESS_REDUCTION_DECREMENT] = getGlobalNumber("blessingReductionDecrement", 5);
 	m_confNumber[BLESS_REDUCTION] = getGlobalNumber("eachBlessReduction", 8);
