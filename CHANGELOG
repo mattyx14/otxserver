@@ -37,10 +37,6 @@
 ]
 
 [ BUGS AND MISSING FEATURES
-	Errors on all Protocols
-		- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
-			This error only reproduce on protocols 9.x +
-
 	Protocols
 		- Add Support to Protocols 10.37+
 		- Add browseField
@@ -53,6 +49,7 @@
 	- Dropped version 2.X.S - 4 and changed to 2.X.S - 5
 	- Fix container error :: https://www.youtube.com/watch?v=mJ1mydn6TjA
 	- Fix : https://github.com/mattyx14/otxserver/pull/ #79 to #88
+	- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 ]
 
 [ OTX Server 2.X.S - 3 :: Version "LORD ZEDD"

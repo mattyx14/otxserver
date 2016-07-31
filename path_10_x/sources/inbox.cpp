@@ -36,11 +36,20 @@ Inbox::~Inbox()
 ReturnValue Inbox::__queryAdd(int32_t index, const Thing* thing, uint32_t count,
 	uint32_t flags, Creature* actor/* = NULL*/) const
 {
-	bool skipLimit = hasBitSet(FLAG_NOLIMIT, flags);
-	if(!skipLimit)
+	if(!hasBitSet(FLAG_NOLIMIT, flags))
 		return RET_CONTAINERNOTENOUGHROOM;
 
-	return Container::__queryAdd(index, thing, count, flags, actor);
+	const Item* item = thing->getItem();
+	if(!item)
+		return RET_NOTPOSSIBLE;
+
+	if(item == this)
+		return RET_THISISIMPOSSIBLE;
+
+	if(!item->isPickupable())
+		return RET_CANNOTPICKUP;
+
+	return RET_NOERROR;
 }
 
 void Inbox::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t /*link = LINK_OWNER*/)
