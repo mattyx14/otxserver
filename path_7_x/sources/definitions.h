@@ -21,10 +21,8 @@
 // Compatible with 7.40 to 7.72
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "6"
-#define PATCH_VERSION ""
-#define REVISION_VERSION ""
-#define SOFTWARE_CODENAME "SCARETALE"
+#define MINOR_VERSION "7"
+#define SOFTWARE_CODENAME ""
 #define SOFTWARE_DEVELOPERS "Mattyx14 and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2"
 
