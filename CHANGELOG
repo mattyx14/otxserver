@@ -57,6 +57,8 @@
 	- Added Store Inbox (now work)
 	- Added boost system (critical hits, hp/mana leech)
 	- Fixed RewardSystem
+	- Fixed stackItems
+	- Fixed storeLimit for page history
 	- Support to 10.96
 ]
 
