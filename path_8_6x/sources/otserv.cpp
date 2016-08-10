@@ -150,7 +150,7 @@ bool argumentsHandler(StringVec args)
 
 		if((*it) == "--version" || (*it) == "-v")
 		{
-			std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")\n"
+			std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")\n"
 			"Compiled with " << BOOST_COMPILER << " for arch "
 			#if defined(__amd64__) || defined(_M_X64)
 			"64 Bits"
@@ -425,7 +425,7 @@ ServiceManager* services)
 	}
 #endif
 
-	std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
+	std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
 		<< "Compiled with " << BOOST_COMPILER << " for arch "
 		#if defined(__amd64__) || defined(_M_X64)
 		"64 Bits"
@@ -1180,7 +1180,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						GUI::getInstance()->m_logText = "";
 						GUI::getInstance()->m_lineCount = 0;
-						std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << " - " << REVISION_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
+						std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
 						<< "Compiled with " << BOOST_COMPILER << " for arch "
 						#if defined(__amd64__) || defined(_M_X64)
 						"64 Bits"
@@ -1539,7 +1539,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				case ID_MENU_ABOUT_SERVER:
 				{
 					MessageBox(NULL, "The " SOFTWARE_NAME " is a custom OpenTibia Server.\n"
-					"The current server version is " SOFTWARE_VERSION "." MINOR_VERSION "." PATCH_VERSION " - " REVISION_VERSION , "The " SOFTWARE_NAME , MB_OK);
+					"The current server version is " SOFTWARE_VERSION "." MINOR_VERSION , "The " SOFTWARE_NAME , MB_OK);
 					break;
 				}
 

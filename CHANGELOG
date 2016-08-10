@@ -7,7 +7,7 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		FORGOTTEN
+		SCARETALE
 
 	Website
 		https://github.com/mattyx14/otxserver/tree/otxserv2
@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED : OTX Server 2.X.S - 5 :: Version "FORGOTTEN"
+		COMPLETED : OTX Server 2.6 :: Version "SCARETALE"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -44,9 +44,10 @@
 		- Add purseSlot
 ]
 
-[ OTX Server 2.X.S - 5 :: Version "FORGOTTEN"
+[ OTX Server 2.6 :: Version "SCARETALE"
 	- Added OOP Classes for older TFS versions (0.3.x / 0.4x / ...)
-	- Dropped version 2.X.S - 4 and changed to 2.X.S - 5
+	- Added autoBanishUnknownBytes for 7.x
+	- Dropped version 2.X.S - 4 and changed to 2.6
 	- Fix container error :: https://www.youtube.com/watch?v=mJ1mydn6TjA
 	- Fix : https://github.com/mattyx14/otxserver/pull/ #79 to #88
 	- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox

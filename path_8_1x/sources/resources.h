@@ -86,10 +86,10 @@
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "X"
-#define PATCH_VERSION "S"
-#define REVISION_VERSION "5"
-#define SOFTWARE_CODENAME "FORGOTTEN"
+#define MINOR_VERSION "6"
+#define PATCH_VERSION ""
+#define REVISION_VERSION ""
+#define SOFTWARE_CODENAME "SCARETALE"
 #define SOFTWARE_DEVELOPERS "Mattyx14 and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2"
 
