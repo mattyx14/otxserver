@@ -56,6 +56,7 @@ mysqlPort = 3306
 mysqlSock = ""
 
 -- Misc.
+-- heightStackBlock : can walk/push over 2 items with height attribute (Parcels, boxes etc.)
 allowChangeOutfit = true
 freePremium = false
 kickIdlePlayerAfterMinutes = 15
@@ -65,6 +66,8 @@ classicEquipmentSlots = true
 autoStackItems = false
 summonsDropCorpse = true
 displayLootMessage = false
+UHTrap = true
+heightStackBlock = true
 
 -- Critical hits
 -- NOTE: criticalChance and extraPercent are percentages, not absolute values.

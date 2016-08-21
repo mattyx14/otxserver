@@ -47,6 +47,8 @@ class ConfigManager
 			SUMMONS_DROP_CORPSE,
 			TILE_HEIGHT_BLOCK,
 			LOOT_MESSAGE,
+			UH_TRAP,
+			HEIGHT_STACK_BLOCK,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

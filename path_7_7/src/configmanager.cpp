@@ -84,9 +84,11 @@ bool ConfigManager::load()
 	boolean[CONVERT_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "convertUnsafeScripts", true);
 	boolean[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBoolean(L, "classicEquipmentSlots", false);
 	boolean[ALLOW_BLOCK_SPAWN] = getGlobalBoolean(L, "allowBlockSpawn", true);
-	boolean[AUTO_STACK_ITEMS] = getGlobalBoolean(L, "autoStackItems", true);
+	boolean[AUTO_STACK_ITEMS] = getGlobalBoolean(L, "autoStackItems", false);
 	boolean[SUMMONS_DROP_CORPSE] = getGlobalBoolean(L, "summonsDropCorpse", true);
 	boolean[LOOT_MESSAGE] = getGlobalBoolean(L, "displayLootMessage", false);
+	boolean[UH_TRAP] = getGlobalBoolean(L, "UHTrap", true);
+	boolean[HEIGHT_STACK_BLOCK] = getGlobalBoolean(L, "heightStackBlock", true);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");

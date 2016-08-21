@@ -676,6 +676,11 @@ void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Po
 
 	player->setNextActionTask(nullptr);
 
+	if (g_config.getBoolean(ConfigManager::HEIGHT_STACK_BLOCK) && toTile->getHeight() > 1) {
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
+		return;
+	}
+
 	if (!Position::areInRange<1, 1, 0>(movingCreatureOrigPos, player->getPosition())) {
 		//need to walk to the creature first before moving it
 		std::forward_list<Direction> listDir;
@@ -774,11 +779,29 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 		}
 	}
 
+	ReturnValue ret = RETURNVALUE_NOTPOSSIBLE;
 	Tile* toTile = map.getTile(destPos);
-	if (!toTile) {
-		return RETURNVALUE_NOTPOSSIBLE;
+
+	Tile* toPos = map.getTile(destPos.x, destPos.y, destPos.z);
+	Tile* fromPos = map.getTile(currentPos.x, currentPos.y, currentPos.z);
+
+	if (toTile) {
+		if (currentPos.z > destPos.z && toPos->getHeight() > 1);
+		// not possible
+		else if ((((toPos->getHeight() - fromPos->getHeight()) < 2)) ||
+			(fromPos->hasHeight(3) && (currentPos.z == destPos.z)) ||
+			((currentPos.z < destPos.z) && (toPos->hasHeight(3) && (fromPos->getHeight() < 2))))
+			ret = internalMoveCreature(*creature, *toTile, flags);
 	}
-	return internalMoveCreature(*creature, *toTile, flags);
+
+	if (ret != RETURNVALUE_NOERROR) {
+		if (Player* player = creature->getPlayer()) {
+			player->sendCancelMessage(ret);
+			player->sendCancelWalk();
+		}
+	}
+
+	return ret;
 }
 
 ReturnValue Game::internalMoveCreature(Creature& creature, Tile& toTile, uint32_t flags /*= 0*/)

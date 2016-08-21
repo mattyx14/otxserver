@@ -228,7 +228,7 @@ class ItemType
 
 		CombatType_t combatType;
 
-		uint16_t transformToOnUse[2];
+		uint16_t transformToOnUse;
 		uint16_t transformToFree;
 		uint16_t destroyTo;
 		uint16_t maxTextLen;

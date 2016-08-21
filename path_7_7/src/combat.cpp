@@ -682,20 +682,27 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const AreaCombat*
 	const int32_t rangeY = maxY + Map::maxViewportY;
 	g_game.map.getSpectators(list, pos, true, true, rangeX, rangeX, rangeY, rangeY);
 
+	bool Second_Continue = true;
+
 	for (Tile* tile : tileList) {
 		if (canDoCombat(caster, tile, params.aggressive) != RETURNVALUE_NOERROR) {
 			continue;
 		}
 
 		if (CreatureVector* creatures = tile->getCreatures()) {
-			const Creature* topCreature = tile->getTopCreature();
 			for (Creature* creature : *creatures) {
 				if (params.targetCasterOrTopMost) {
-					if (caster && caster->getTile() == tile) {
-						if (creature != caster) {
-							continue;
+					if (!g_config.getBoolean(ConfigManager::UH_TRAP) &&
+						(caster && caster->getTile() == tile)){
+						if (creature == caster) {
+							Second_Continue = false;
 						}
-					} else if (creature != topCreature) {
+					}
+					else if (creature == tile->getBottomCreature()) {
+						Second_Continue = false;
+					}
+
+					if (Second_Continue) {
 						continue;
 					}
 				}
@@ -1055,6 +1062,11 @@ AreaCombat::AreaCombat(const AreaCombat& rhs)
 
 void AreaCombat::getList(const Position& centerPos, const Position& targetPos, std::forward_list<Tile*>& list) const
 {
+	Tile* tile = g_game.map.getTile(targetPos)
+	if (tile->hasProperty(CONST_PROP_BLOCKPROJECTILE)) {
+		return;
+	}
+
 	const MatrixArea* area = getArea(centerPos, targetPos);
 	if (!area) {
 		return;
@@ -1069,7 +1081,7 @@ void AreaCombat::getList(const Position& centerPos, const Position& targetPos, s
 		for (uint32_t x = 0; x < cols; ++x) {
 			if (area->getValue(y, x) != 0) {
 				if (g_game.isSightClear(targetPos, tmpPos, true)) {
-					Tile* tile = g_game.map.getTile(tmpPos);
+					tile = g_game.map.getTile(tmpPos);
 					if (!tile) {
 						tile = new StaticTile(tmpPos.x, tmpPos.y, tmpPos.z);
 						g_game.map.setTile(tmpPos, tile);

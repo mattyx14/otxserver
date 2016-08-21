@@ -38,7 +38,7 @@ ItemType::ItemType() :
 	stackable(false), weight(0), levelDoor(0), decayTime(0),
 	wieldInfo(0), minReqLevel(0), minReqMagicLevel(0), charges(0), maxHitChance(-1),
 	decayTo(-1), attack(0), defense(0), extraDefense(0), armor(0), rotateTo(0),
-	runeMagLevel(0), runeLevel(0), combatType(COMBAT_NONE), transformToOnUse(),
+	runeMagLevel(0), runeLevel(0), combatType(COMBAT_NONE), transformToOnUse(0),
 	transformToFree(0), destroyTo(0), maxTextLen(0), writeOnceItemId(0),
 	transformEquipTo(0), transformDeEquipTo(0), maxItems(8), slotPosition(SLOTP_HAND),
 	speed(0), wareId(0), magicEffect(CONST_ME_NONE), bedPartnerDir(DIRECTION_NONE),
@@ -849,29 +849,14 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.bedPartnerDir = getDirection(valueAttribute.as_string());
 		} else if (tmpStrValue == "leveldoor") {
 			it.levelDoor = pugi::cast<uint32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "maletransformto" || tmpStrValue == "malesleeper") {
+		} else if (tmpStrValue == "sleeper") {
 			uint16_t value = pugi::cast<uint16_t>(valueAttribute.value());
-			it.transformToOnUse[PLAYERSEX_MALE] = value;
+			it.transformToOnUse = value;
 			ItemType& other = getItemType(value);
 			if (other.transformToFree == 0) {
 				other.transformToFree = it.id;
 			}
-
-			if (it.transformToOnUse[PLAYERSEX_FEMALE] == 0) {
-				it.transformToOnUse[PLAYERSEX_FEMALE] = value;
-			}
-		} else if (tmpStrValue == "femaletransformto" || tmpStrValue == "femalesleeper") {
-			uint16_t value = pugi::cast<uint16_t>(valueAttribute.value());
-			it.transformToOnUse[PLAYERSEX_FEMALE] = value;
-
-			ItemType& other = getItemType(value);
-			if (other.transformToFree == 0) {
-				other.transformToFree = it.id;
-			}
-
-			if (it.transformToOnUse[PLAYERSEX_MALE] == 0) {
-				it.transformToOnUse[PLAYERSEX_MALE] = value;
-			}
+		}
 		} else if (tmpStrValue == "transformto") {
 			it.transformToFree = pugi::cast<uint16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "destroyto") {
@@ -898,7 +883,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 	}
 
 	//check bed items
-	if ((it.transformToFree != 0 || it.transformToOnUse[PLAYERSEX_FEMALE] != 0 || it.transformToOnUse[PLAYERSEX_MALE] != 0) && it.type != ITEM_TYPE_BED) {
+	if ((it.transformToFree != 0 || it.transformToOnUse != 0 || it.transformToOnUse != 0) && it.type != ITEM_TYPE_BED) {
 		std::cout << "[Warning - Items::parseItemNode] Item " << it.id << " is not set as a bed-type" << std::endl;
 	}
 }
