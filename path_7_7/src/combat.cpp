@@ -1062,10 +1062,10 @@ AreaCombat::AreaCombat(const AreaCombat& rhs)
 
 void AreaCombat::getList(const Position& centerPos, const Position& targetPos, std::forward_list<Tile*>& list) const
 {
-	Tile* tile = g_game.map.getTile(targetPos)
+	Tile* tile = g_game.map.getTile(targetPos);
 	if (tile->hasProperty(CONST_PROP_BLOCKPROJECTILE)) {
-		return;
-	}
+		return;	
+	}	
 
 	const MatrixArea* area = getArea(centerPos, targetPos);
 	if (!area) {

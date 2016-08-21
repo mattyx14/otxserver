@@ -856,7 +856,10 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			if (other.transformToFree == 0) {
 				other.transformToFree = it.id;
 			}
-		}
+
+			if (it.transformToOnUse == 0) {
+				it.transformToOnUse = value;
+			}
 		} else if (tmpStrValue == "transformto") {
 			it.transformToFree = pugi::cast<uint16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "destroyto") {
