@@ -29,6 +29,11 @@ statusTimeout = 5 * 1000
 replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
+-- Version Manual
+clientVersionMin = 1097
+clientVersionMax = 1097
+clientVersionStr = "10.97"
+
 -- Casting System 
 enableLiveCasting = true
 liveCastPort = 7173
