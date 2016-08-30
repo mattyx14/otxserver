@@ -7,10 +7,10 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		-
+		SAILOR
 
 	Website
-		https://github.com/mattyx14/otxserver/tree/otxserv2
+		https://github.com/mattyx14/otxserver/tree/otxserv2/
 
 	DEVELOPERS
 		Project Manager and Founder
@@ -33,7 +33,7 @@
 				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
 
 	DEVELOPMENT STATUS
-		COMPLETED : OTX Server 2.7 :: Version "  "
+		COMPLETED : OTX Server 2.7 :: Version "SAILOR"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -44,7 +44,7 @@
 		- Add purseSlot
 ]
 
-[ OTX Server 2.7 :: Version "  "
+[ OTX Server 2.7 :: Version "SAILOR"
 	- 
 ]
 

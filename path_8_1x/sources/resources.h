@@ -87,9 +87,9 @@
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "7"
-#define SOFTWARE_CODENAME ""
+#define SOFTWARE_CODENAME "SAILOR"
 #define SOFTWARE_DEVELOPERS "Mattyx14 and The Forgotten Server Developers"
-#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2/"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0
