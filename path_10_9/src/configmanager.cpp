@@ -64,6 +64,7 @@ bool ConfigManager::load()
 		string[MYSQL_PASS] = getGlobalString(L, "mysqlPass", "");
 		string[MYSQL_DB] = getGlobalString(L, "mysqlDatabase", "forgottenserver");
 		string[MYSQL_SOCK] = getGlobalString(L, "mysqlSock", "");
+		string[VERSION_STR] = getGlobalString(L, "clientVersionStr", "Only clients with protocol " CLIENT_VERSION_STR " allowed!");
 
 		integer[SQL_PORT] = getGlobalNumber(L, "mysqlPort", 3306);
 		integer[GAME_PORT] = getGlobalNumber(L, "gameProtocolPort", 7172);
@@ -71,6 +72,9 @@ bool ConfigManager::load()
 		integer[STATUS_PORT] = getGlobalNumber(L, "statusProtocolPort", 7171);
 
 		integer[MARKET_OFFER_DURATION] = getGlobalNumber(L, "marketOfferDuration", 30 * 24 * 60 * 60);
+
+		integer[VERSION_MIN] = getGlobalNumber(L, "clientVersionMin", CLIENT_VERSION_MIN);
+		integer[VERSION_MAX] = getGlobalNumber(L, "clientVersionMax", CLIENT_VERSION_MAX);
 	}
 
 	boolean[ALLOW_CHANGEOUTFIT] = getGlobalBoolean(L, "allowChangeOutfit", true);

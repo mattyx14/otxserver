@@ -154,7 +154,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 */
 
 	if (version <= 760) {
-		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!", version);
+		disconnectClient(g_config.getString(ConfigManager::VERSION_STR), version);
 		return;
 	}
 
@@ -171,8 +171,8 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	enableXTEAEncryption();
 	setXTEAKey(key);
 
-	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
-		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!", version);
+	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
+		disconnectClient(g_config.getString(ConfigManager::VERSION_STR), version);
 		return;
 	}
 

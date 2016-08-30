@@ -623,7 +623,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 		}
 	} else if (const Item* item = thing.getItem()) {
 		const TileItemVector* items = getItemList();
-		if (items && items->size() >= 0xFFFF) {
+		if (items && items->size() >= 0x3E8) {
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 

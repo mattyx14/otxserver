@@ -23,8 +23,10 @@
 #include "outputmessage.h"
 
 #include "game.h"
+#include "configmanager.h"
 
 extern Game g_game;
+extern ConfigManager g_config;
 
 void ProtocolOld::disconnectClient(const std::string& message)
 {
@@ -48,7 +50,7 @@ void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 	msg.skipBytes(12);
 
 	if (version <= 760) {
-		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
 		return;
 	}
 
@@ -69,5 +71,5 @@ void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 		disableChecksum();
 	}
 
-	disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+	disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
 }

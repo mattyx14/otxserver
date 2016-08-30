@@ -100,8 +100,8 @@ void ProtocolSpectator::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
-		disconnectSpectator("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
+		disconnectSpectator(g_config.getString(ConfigManager::VERSION_STR));
 		return;
 	}
 

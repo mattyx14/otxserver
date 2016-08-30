@@ -3,7 +3,7 @@
 >> Client version 1076.
 >> OTB version 57.
 >> Loading client files.
->> Client version 1094.
+>> Client version 1097.
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 >> New sprite found id: 21018, old: 18701, new: 602.
 >> New sprite found id: 21017, old: 18700, new: 603.
@@ -2425,4 +2425,43 @@
 >> Creating item id 26341
 >> Creating item id 26342
 >> Creating item id 26343
->> Created 2011 new items.
+>> Creating item id 26344
+>> Creating item id 26345
+>> Creating item id 26346
+>> Creating item id 26347
+>> Creating item id 26348
+>> Creating item id 26349
+>> Creating item id 26350
+>> Creating item id 26351
+>> Creating item id 26352
+>> Creating item id 26353
+>> Creating item id 26354
+>> Creating item id 26355
+>> Creating item id 26356
+>> Creating item id 26357
+>> Creating item id 26358
+>> Creating item id 26359
+>> Creating item id 26360
+>> Creating item id 26361
+>> Creating item id 26362
+>> Creating item id 26363
+>> Creating item id 26364
+>> Creating item id 26365
+>> Creating item id 26366
+>> Creating item id 26367
+>> Creating item id 26368
+>> Creating item id 26369
+>> Creating item id 26370
+>> Creating item id 26371
+>> Creating item id 26372
+>> Creating item id 26373
+>> Creating item id 26374
+>> Creating item id 26375
+>> Creating item id 26376
+>> Creating item id 26377
+>> Creating item id 26378
+>> Creating item id 26379
+>> Creating item id 26380
+>> Creating item id 26381
+>> Created 2049 new items.
+>> Saved.

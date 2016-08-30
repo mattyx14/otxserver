@@ -71,6 +71,7 @@ class ConfigManager
 			DEFAULT_PRIORITY,
 			MAP_AUTHOR,
 			STORE_IMAGES_URL,
+			VERSION_STR,
 
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
@@ -109,6 +110,8 @@ class ConfigManager
 			MAX_PACKETS_PER_SECOND,
 			STORE_COIN_PACKET,
 			LIVE_CAST_PORT,
+			VERSION_MIN,
+			VERSION_MAX,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
