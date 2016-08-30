@@ -16,24 +16,34 @@
 		Project Manager and Founder
 			Mattyx14
 
-		C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+		OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Mattyx14
 			Brewsterl
 
 		Special Thanks(s)
-			AleMadi
-			Natanael Beckman
-			Comedinha
-			Lincoln
-			Rodrigo
-			Pyromaniack
-			Druckz
-			Kazbin
-			The Forgotten Server Team
-				Credits that have not been added to a partial 99.9% of the changes are part of TFS.
+			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/otland/forgottenserver/graphs/contributors/
+
+			The OTClient - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/edubart/otclient/graphs/contributors/
+
+			FORGOTTENSERVER-ORTS - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				Old: https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors/
+				New: https://github.com/orts/server/graphs/contributors/
+
+			OpenTibia - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/opentibia/server/graphs/contributors/
+				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
+
+			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/mattyx14/otxserver/graphs/contributors/
+				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin
+
+			EvilHero90 The Forgotten Server - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/EvilHero90/forgottenserver/
 
 	DEVELOPMENT STATUS
-		COMPLETED : OTX Server 2.7 :: Version "SAILOR"
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.7 :: Version "SAILOR"
 ]
 
 [ LIST
