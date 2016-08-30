@@ -11,6 +11,12 @@ condition:addDamage(9, 4000, -2)
 condition:addDamage(20, 4000, -1)
 combat:setCondition(condition)
 
-function onUseWeapon(player, variant)
+local weapon = Weapon(WEAPON_DISTANCE)
+
+function weapon.onUseWeapon(player, variant)
 	return combat:execute(player, variant)
 end
+
+weapon:id(2545)
+weapon:type("removecount")
+weapon:register()

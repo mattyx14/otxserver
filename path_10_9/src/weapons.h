@@ -25,11 +25,16 @@
 #include "baseevents.h"
 #include "combat.h"
 #include "const.h"
+#include "vocation.h"
+
+extern Vocations g_vocations;
 
 class Weapon;
 class WeaponMelee;
 class WeaponDistance;
 class WeaponWand;
+
+typedef std::map<uint16_t, bool> VocWeaponMap;
 
 class Weapons final : public BaseEvents
 {
@@ -46,6 +51,8 @@ class Weapons final : public BaseEvents
 
 		static int32_t getMaxMeleeDamage(int32_t attackSkill, int32_t attackValue);
 		static int32_t getMaxWeaponDamage(uint32_t level, int32_t attackSkill, int32_t attackValue, float attackFactor);
+
+		bool registerLuaEvent(Event* event);
 
 	protected:
 		void clear() final;
@@ -65,7 +72,7 @@ class Weapon : public Event
 		explicit Weapon(LuaScriptInterface* interface);
 
 		bool configureEvent(const pugi::xml_node& node) override;
-		bool loadFunction(const pugi::xml_attribute&) final {
+		bool loadFunction(const pugi::xml_attribute&, bool) final {
 			return true;
 		}
 		virtual void configureWeapon(const ItemType& it);
@@ -84,22 +91,113 @@ class Weapon : public Event
 		uint16_t getID() const {
 			return id;
 		}
+		void setID(uint16_t newId) {
+			id = newId;
+		}
 
 		uint32_t getReqLevel() const {
 			return level;
 		}
+		void setRequiredLevel(uint32_t reqlvl) {
+			level = reqlvl;
+		}
+
 		uint32_t getReqMagLv() const {
 			return magLevel;
 		}
-		uint32_t getReqSkillLv() const {
-			return skillLevel;
+		void setRequiredMagLevel(uint32_t reqlvl) {
+			magLevel = reqlvl;
 		}
+
 		bool isPremium() const {
 			return premium;
 		}
+		void setNeedPremium(bool prem) {
+			premium = prem;
+		}
+
 		bool isWieldedUnproperly() const {
 			return wieldUnproperly;
 		}
+		void setWieldUnproperly(bool unproperly) {
+			wieldUnproperly = unproperly;
+		}
+
+		uint32_t getMana() const {
+			return mana;
+		}
+		void setMana(uint32_t m) {
+			mana = m;
+		}
+
+		uint32_t getManaPercent() const {
+			return manaPercent;
+		}
+		void setManaPercent(uint32_t m) {
+			manaPercent = m;
+		}
+
+		int32_t getHealth() const {
+			return health;
+		}
+		void setHealth(int32_t h) {
+			health = h;
+		}
+
+		uint32_t getHealthPercent() const {
+			return healthPercent;
+		}
+		void setHealthPercent(uint32_t m) {
+			healthPercent = m;
+		}
+
+		uint32_t getSoul() const {
+			return soul;
+		}
+		void setSoul(uint32_t s) {
+			soul = s;
+		}
+
+		uint8_t getBreakChance() const {
+			return breakChance;
+		}
+		void setBreakChance(uint8_t b) {
+			breakChance = b;
+		}
+
+		bool isEnabled() const {
+			return enabled;
+		}
+		void setIsEnabled(bool e) {
+			enabled = e;
+		}
+
+		uint32_t getWieldInfo() const {
+			return wieldInfo;
+		}
+		void setWieldInfo(uint32_t info) {
+			wieldInfo |= info;
+		}
+
+		const VocWeaponMap& getVocWeaponMap() const {
+			return vocWeaponMap;
+		}
+		void addVocWeaponMap(std::string vocName) {
+			int32_t vocationId = g_vocations.getVocationId(vocName);
+			if (vocationId != -1) {
+				vocWeaponMap[vocationId] = true;
+			}
+		}
+
+		const std::string& getVocationString() const {
+			return vocationString;
+		}
+		void setVocationString(const std::string& str) {
+			vocationString = str;
+		}
+
+		WeaponAction_t action;
+		CombatParams params;
 
 	protected:
 		std::string getScriptEventName() const final;
@@ -114,27 +212,27 @@ class Weapon : public Event
 		}
 
 		uint32_t getManaCost(const Player* player) const;
-
-		CombatParams params;
+		int32_t getHealthCost(const Player* player) const;
 
 		uint32_t level;
 		uint32_t magLevel;
-		uint32_t skillLevel;
 		uint32_t mana;
 		uint32_t manaPercent;
+		int32_t health;
+		int32_t healthPercent;
 		uint32_t soul;
+		uint32_t wieldInfo;
 		uint16_t id;
-		WeaponAction_t action;
 		uint8_t breakChance;
 		bool enabled;
 		bool premium;
 		bool wieldUnproperly;
-		bool swing;
+		std::string vocationString;
 
 	private:
 		static void decrementItemCount(Item* item);
 
-		std::map<uint16_t, bool> vocWeaponMap;
+		VocWeaponMap vocWeaponMap;
 		friend class Combat;
 };
 
@@ -192,6 +290,14 @@ class WeaponWand final : public Weapon
 		int32_t getWeaponDamage(const Player* player, const Creature* target, const Item* item, bool maxDamage = false) const final;
 		int32_t getElementDamage(const Player*, const Creature*, const Item*) const final { return 0; }
 		CombatType_t getElementType() const final { return COMBAT_NONE; }
+
+		void setMinChange(int32_t change) {
+			minChange = change;
+		}
+
+		void setMaxChange(int32_t change) {
+			maxChange = change;
+		}
 
 	protected:
 		bool getSkillType(const Player*, const Item*, skills_t&, uint32_t&) const final {

@@ -13,7 +13,9 @@ local secondCombat = Combat()
 secondCombat:setParameter(COMBAT_PARAM_TYPE, COMBAT_EARTHDAMAGE)
 secondCombat:setCondition(condition)
 
-function onUseWeapon(player, variant)
+local weapon = Weapon(WEAPON_DISTANCE)
+
+function weapon.onUseWeapon(player, variant)
 	local boolean = combat:execute(player, variant)
 	if not boolean then
 		return false
@@ -27,3 +29,7 @@ function onUseWeapon(player, variant)
 	end
 	return boolean
 end
+
+weapon:id(7366)
+weapon:breakChance(9)
+weapon:register()

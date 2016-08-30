@@ -1494,36 +1494,12 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 		if (it.wieldInfo & WIELDINFO_MAGLV) {
 			if (it.wieldInfo & WIELDINFO_LEVEL) {
-				if (it.wieldInfo & WIELDINFO_SKILL) {
-					s << ",";
-				} else {
-					s << " and";
-				}
-			} else {
-				s << " of";
-			}
-
-			s << " magic level " << it.minReqMagicLevel << " or higher";
-		}
-
-		if (it.wieldInfo & WIELDINFO_SKILL) {
-			if (it.wieldInfo & WIELDINFO_MAGLV || it.wieldInfo & WIELDINFO_LEVEL) {
 				s << " and";
 			} else {
 				s << " of";
 			}
 
-			if (it.weaponType == WEAPON_SWORD) {
-				s << " sword";
-			} else if (it.weaponType == WEAPON_CLUB) {
-				s << " club";
-			} else if (it.weaponType == WEAPON_AXE) {
-				s << " axe";
-			} else if (it.weaponType == WEAPON_DISTANCE) {
-				s << " distance";
-			}
-
-			s << " fighting " << it.minReqSkillLevel << " or higher";
+			s << " magic level " << it.minReqMagicLevel << " or higher";
 		}
 
 		s << '.';

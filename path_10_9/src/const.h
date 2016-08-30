@@ -392,9 +392,8 @@ enum WieldInfo_t {
 	WIELDINFO_NONE = 0 << 0,
 	WIELDINFO_LEVEL = 1 << 0,
 	WIELDINFO_MAGLV = 1 << 1,
-	WIELDINFO_SKILL = 1 << 2,
-	WIELDINFO_VOCREQ = 1 << 3,
-	WIELDINFO_PREMIUM = 1 << 4,
+	WIELDINFO_VOCREQ = 1 << 2,
+	WIELDINFO_PREMIUM = 1 << 3,
 };
 
 enum Skulls_t : uint8_t {

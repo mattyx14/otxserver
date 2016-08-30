@@ -986,6 +986,8 @@ class LuaScriptInterface
 		static int32_t luaPlayerStopLiveCast(lua_State* L);
 		static int32_t luaPlayerIsLiveCaster(lua_State* L);
 
+		static int luaPlayerEnterMarket(lua_State* L);
+
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 
@@ -1271,6 +1273,69 @@ class LuaScriptInterface
 		static int luaPartyIsSharedExperienceEnabled(lua_State* L);
 		static int luaPartyShareExperience(lua_State* L);
 		static int luaPartySetSharedExperience(lua_State* L);
+
+		// Actions
+		static int luaCreateAction(lua_State* L);
+		static int luaDeleteAction(lua_State* L);
+		static int luaActionOnUse(lua_State* L);
+		static int luaActionRegister(lua_State* L);
+		static int luaActionId(lua_State* L);
+		static int luaActionAid(lua_State* L);
+		static int luaActionUid(lua_State* L);
+		static int luaActionAllowFarUse(lua_State* L);
+
+		// CreatureEvents
+		static int luaCreateCreatureEvent(lua_State* L);
+		static int luaDeleteCreatureEvent(lua_State* L);
+		static int luaCreatureEventType(lua_State* L);
+		static int luaCreatureEventRegister(lua_State* L);
+		static int luaCreatureEventOnCallback(lua_State* L);
+
+		// MoveEvents
+		static int luaCreateMoveEvent(lua_State* L);
+		static int luaDeleteMoveEvent(lua_State* L);
+		static int luaMoveEventType(lua_State* L);
+		static int luaMoveEventRegister(lua_State* L);
+		static int luaMoveEventOnCallback(lua_State* L);
+		static int luaMoveEventLevel(lua_State* L);
+		static int luaMoveEventSlot(lua_State* L);
+		static int luaMoveEventMagLevel(lua_State* L);
+		static int luaMoveEventItemId(lua_State* L);
+		static int luaMoveEventPremium(lua_State* L);
+		static int luaMoveEventVocation(lua_State* L);
+
+		// GlobalEvents
+		static int luaCreateGlobalEvent(lua_State* L);
+		static int luaDeleteGlobalEvent(lua_State* L);
+		static int luaGlobalEventType(lua_State* L);
+		static int luaGlobalEventRegister(lua_State* L);
+		static int luaGlobalEventOnCallback(lua_State* L);
+		static int luaGlobalEventTime(lua_State* L);
+		static int luaGlobalEventInterval(lua_State* L);
+
+		// Weapons
+		static int luaCreateWeapon(lua_State* L);
+		static int luaDeleteWeapon(lua_State* L);
+		static int luaWeaponId(lua_State* L);
+		static int luaWeaponLevel(lua_State* L);
+		static int luaWeaponMagicLevel(lua_State* L);
+		static int luaWeaponMana(lua_State* L);
+		static int luaWeaponManaPercent(lua_State* L);
+		static int luaWeaponHealth(lua_State* L);
+		static int luaWeaponHealthPercent(lua_State* L);
+		static int luaWeaponSoul(lua_State* L);
+		static int luaWeaponPremium(lua_State* L);
+		static int luaWeaponBreakChance(lua_State* L);
+		static int luaWeaponType(lua_State* L);
+		static int luaWeaponUnproperly(lua_State* L);
+		static int luaWeaponVocation(lua_State* L);
+		static int luaWeaponOnUseWeapon(lua_State* L);
+		static int luaWeaponRegister(lua_State* L);
+
+		// WeaponWand exclusively
+		static int luaWeaponWandMinChange(lua_State* L);
+		static int luaWeaponWandMaxChange(lua_State* L);
+		static int luaWeaponWandElement(lua_State* L);
 
 		//
 		lua_State* luaState;

@@ -1003,7 +1003,7 @@ bool InstantSpell::configureEvent(const pugi::xml_node& node)
 	return true;
 }
 
-bool InstantSpell::loadFunction(const pugi::xml_attribute& attr)
+bool InstantSpell::loadFunction(const pugi::xml_attribute& attr, bool isScripted)
 {
 	const char* functionName = attr.as_string();
 	if (strcasecmp(functionName, "edithouseguest") == 0) {
@@ -1023,11 +1023,15 @@ bool InstantSpell::loadFunction(const pugi::xml_attribute& attr)
 	} else if (strcasecmp(functionName, "summonmonster") == 0) {
 		function = SummonMonster;
 	} else {
-		std::cout << "[Warning - InstantSpell::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
-		return false;
+		if (!isScripted) {
+			std::cout << "[Warning - InstantSpell::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
+			return false;
+		}
 	}
 
-	scripted = false;
+	if (!isScripted) {
+		scripted = false;
+	}
 	return true;
 }
 
@@ -1722,9 +1726,11 @@ bool ConjureSpell::configureEvent(const pugi::xml_node& node)
 	return true;
 }
 
-bool ConjureSpell::loadFunction(const pugi::xml_attribute&)
+bool ConjureSpell::loadFunction(const pugi::xml_attribute&, bool isScripted)
 {
-	scripted = false;
+	if (isScripted) {
+		scripted = false;
+	}
 	return true;
 }
 
@@ -1824,7 +1830,7 @@ bool RuneSpell::configureEvent(const pugi::xml_node& node)
 	return true;
 }
 
-bool RuneSpell::loadFunction(const pugi::xml_attribute& attr)
+bool RuneSpell::loadFunction(const pugi::xml_attribute& attr, bool isScripted)
 {
 	const char* functionName = attr.as_string();
 	if (strcasecmp(functionName, "chameleon") == 0) {
@@ -1832,11 +1838,15 @@ bool RuneSpell::loadFunction(const pugi::xml_attribute& attr)
 	} else if (strcasecmp(functionName, "convince") == 0) {
 		runeFunction = Convince;
 	} else {
-		std::cout << "[Warning - RuneSpell::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
-		return false;
+		if (!isScripted) {
+			std::cout << "[Warning - RuneSpell::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
+			return false;
+		}
 	}
 
-	scripted = false;
+	if (!isScripted) {
+		scripted = false;
+	}
 	return true;
 }
 

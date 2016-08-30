@@ -94,6 +94,117 @@ Event* MoveEvents::getEvent(const std::string& nodeName)
 	return new MoveEvent(&scriptInterface);
 }
 
+bool MoveEvents::registerLuaFunction(Event* event) {
+	MoveEvent* moveEvent = static_cast<MoveEvent*>(event); //event is guaranteed to be a MoveEvent
+
+	if (moveEvent->getItemIdRange().size() > 0) {
+		if (moveEvent->getItemIdRange().size() == 1) {
+			uint32_t id = moveEvent->getItemIdRange().at(0);
+			addEvent(moveEvent, id, itemIdMap);
+			if (moveEvent->getEventType() == MOVE_EVENT_EQUIP) {
+				ItemType& it = Item::items.getItemType(id);
+				it.wieldInfo = moveEvent->getWieldInfo();
+				it.minReqLevel = moveEvent->getReqLevel();
+				it.minReqMagicLevel = moveEvent->getReqMagLv();
+				it.vocationString = moveEvent->getVocationString();
+			}
+		} else {
+			uint32_t iterId = 0;
+			while (++iterId < moveEvent->getItemIdRange().size()) {
+				if (moveEvent->getEventType() == MOVE_EVENT_EQUIP) {
+					ItemType& it = Item::items.getItemType(moveEvent->getItemIdRange().at(iterId));
+					it.wieldInfo = moveEvent->getWieldInfo();
+					it.minReqLevel = moveEvent->getReqLevel();
+					it.minReqMagicLevel = moveEvent->getReqMagLv();
+					it.vocationString = moveEvent->getVocationString();
+				}
+				addEvent(moveEvent, moveEvent->getItemIdRange().at(iterId), itemIdMap);
+			}
+		}
+	} else {
+		return false;
+	}
+	return true;
+}
+
+bool MoveEvents::registerLuaEvent(Event* event)
+{
+	MoveEvent* moveEvent = static_cast<MoveEvent*>(event); //event is guaranteed to be a MoveEvent
+
+	if (moveEvent->getItemIdRange().size() > 0) {
+		if (moveEvent->getItemIdRange().size() == 1) {
+			uint32_t id = moveEvent->getItemIdRange().at(0);
+			addEvent(moveEvent, id, itemIdMap);
+			if (moveEvent->getEventType() == MOVE_EVENT_EQUIP) {
+				ItemType& it = Item::items.getItemType(id);
+				it.wieldInfo = moveEvent->getWieldInfo();
+				it.minReqLevel = moveEvent->getReqLevel();
+				it.minReqMagicLevel = moveEvent->getReqMagLv();
+				it.vocationString = moveEvent->getVocationString();
+			}
+		} else {
+			auto v = moveEvent->getItemIdRange();
+			for (auto i = v.begin(); i != v.end(); i++) {
+				if (moveEvent->getEventType() == MOVE_EVENT_EQUIP) {
+					ItemType& it = Item::items.getItemType(*i);
+					it.wieldInfo = moveEvent->getWieldInfo();
+					it.minReqLevel = moveEvent->getReqLevel();
+					it.minReqMagicLevel = moveEvent->getReqMagLv();
+					it.vocationString = moveEvent->getVocationString();
+				}
+				addEvent(moveEvent, *i, itemIdMap);
+			}
+		}
+	} else if (moveEvent->getActionIdRange().size() > 0) {
+		if (moveEvent->getActionIdRange().size() == 1) {
+			int32_t id = moveEvent->getActionIdRange().at(0);
+			addEvent(moveEvent, id, actionIdMap);
+		} else {
+			auto v = moveEvent->getActionIdRange();
+			for (auto i = v.begin(); i != v.end(); i++) {
+				addEvent(moveEvent, *i, actionIdMap);
+			}
+		}
+	} else if (moveEvent->getUniqueIdRange().size() > 0) {
+		if (moveEvent->getUniqueIdRange().size() == 1) {
+			int32_t id = moveEvent->getUniqueIdRange().at(0);
+			addEvent(moveEvent, id, uniqueIdMap);
+		} else {
+			auto v = moveEvent->getUniqueIdRange();
+			for (auto i = v.begin(); i != v.end(); i++) {
+				addEvent(moveEvent, *i, uniqueIdMap);
+			}
+		}
+	} else if (moveEvent->getPosList().size() > 0) {
+		if (moveEvent->getPosList().size() == 1) {
+			std::string tempPos = moveEvent->getPosList().at(0);
+			std::vector<int32_t> temp = vectorAtoi(explodeString(tempPos, ";"));
+			if (temp.size() < 3) {
+				return false;
+			}
+
+			Position pos(temp[0], temp[1], temp[2]);
+			addEvent(moveEvent, pos, positionMap);
+		} else {
+			auto v = moveEvent->getPosList();
+			for (auto i = v.begin(); i != v.end(); i++) {
+				std::string tempPos = *i;
+				std::vector<int32_t> temp = vectorAtoi(explodeString(tempPos, ";"));
+				if (temp.size() < 3) {
+					return false;
+				}
+
+				Position pos(temp[0], temp[1], temp[2]);
+				addEvent(moveEvent, pos, positionMap);
+			}
+		}
+	} else {
+		return false;
+	}
+	
+	return true;
+}
+
 bool MoveEvents::registerEvent(Event* event, const pugi::xml_node& node)
 {
 	MoveEvent* moveEvent = static_cast<MoveEvent*>(event); //event is guaranteed to be a MoveEvent
@@ -124,7 +235,6 @@ bool MoveEvents::registerEvent(Event* event, const pugi::xml_node& node)
 			it.wieldInfo = moveEvent->getWieldInfo();
 			it.minReqLevel = moveEvent->getReqLevel();
 			it.minReqMagicLevel = moveEvent->getReqMagLv();
-			it.minReqSkillLevel = moveEvent->getReqSkillLv();
 			it.vocationString = moveEvent->getVocationString();
 		}
 	} else if ((attr = node.attribute("fromid"))) {
@@ -138,7 +248,6 @@ bool MoveEvents::registerEvent(Event* event, const pugi::xml_node& node)
 			it.wieldInfo = moveEvent->getWieldInfo();
 			it.minReqLevel = moveEvent->getReqLevel();
 			it.minReqMagicLevel = moveEvent->getReqMagLv();
-			it.minReqSkillLevel = moveEvent->getReqSkillLv();
 			it.vocationString = moveEvent->getVocationString();
 
 			while (++id <= endId) {
@@ -148,7 +257,6 @@ bool MoveEvents::registerEvent(Event* event, const pugi::xml_node& node)
 				tit.wieldInfo = moveEvent->getWieldInfo();
 				tit.minReqLevel = moveEvent->getReqLevel();
 				tit.minReqMagicLevel = moveEvent->getReqMagLv();
-				tit.minReqSkillLevel = moveEvent->getReqSkillLv();
 				tit.vocationString = moveEvent->getVocationString();
 			}
 		} else {
@@ -509,14 +617,6 @@ bool MoveEvent::configureEvent(const pugi::xml_node& node)
 			}
 		}
 
-		pugi::xml_attribute skillLevelAttribute = node.attribute("skill");
-		if (skillLevelAttribute) {
-			reqSkillLevel = pugi::cast<uint32_t>(skillLevelAttribute.value());
-			if (reqSkillLevel > 0) {
-				wieldInfo |= WIELDINFO_SKILL;
-			}
-		}
-
 		pugi::xml_attribute premiumAttribute = node.attribute("premium");
 		if (premiumAttribute) {
 			premium = premiumAttribute.as_bool();
@@ -563,7 +663,7 @@ bool MoveEvent::configureEvent(const pugi::xml_node& node)
 	return true;
 }
 
-bool MoveEvent::loadFunction(const pugi::xml_attribute& attr)
+bool MoveEvent::loadFunction(const pugi::xml_attribute& attr, bool isScripted)
 {
 	const char* functionName = attr.as_string();
 	if (strcasecmp(functionName, "onstepinfield") == 0) {
@@ -579,11 +679,15 @@ bool MoveEvent::loadFunction(const pugi::xml_attribute& attr)
 	} else if (strcasecmp(functionName, "ondeequipitem") == 0) {
 		equipFunction = DeEquipItem;
 	} else {
-		std::cout << "[Warning - MoveEvent::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
-		return false;
+		if (!isScripted) {
+			std::cout << "[Warning - MoveEvent::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
+			return false;
+		}
 	}
 
-	scripted = false;
+	if (!isScripted) {
+		scripted = false;
+	}
 	return true;
 }
 
@@ -824,6 +928,9 @@ uint32_t MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, slots_t 
 uint32_t MoveEvent::fireStepEvent(Creature* creature, Item* item, const Position& pos, const Position& fromPos)
 {
 	if (scripted) {
+		if (stepFunction) {
+			stepFunction(creature, item, pos, fromPos);
+		}
 		return executeStep(creature, item, pos, fromPos);
 	} else {
 		return stepFunction(creature, item, pos, fromPos);
@@ -857,7 +964,11 @@ bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos,
 uint32_t MoveEvent::fireEquip(Player* player, Item* item, slots_t slot, bool boolean)
 {
 	if (scripted) {
-		return executeEquip(player, item, slot);
+		if (equipFunction(this, player, item, slot, boolean) == 1) {
+			return executeEquip(player, item, slot);
+		} else {
+			return 0;
+		}
 	} else {
 		return equipFunction(this, player, item, slot, boolean);
 	}
@@ -889,6 +1000,9 @@ bool MoveEvent::executeEquip(Player* player, Item* item, slots_t slot)
 uint32_t MoveEvent::fireAddRemItem(Item* item, Item* tileItem, const Position& pos)
 {
 	if (scripted) {
+		if (moveFunction) {
+			moveFunction(item, tileItem, pos);
+		}
 		return executeAddRemItem(item, tileItem, pos);
 	} else {
 		return moveFunction(item, tileItem, pos);

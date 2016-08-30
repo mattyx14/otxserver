@@ -30,6 +30,7 @@
 #include "globalevent.h"
 #include "events.h"
 #include "modules.h"
+#include "script.h"
 
 Actions* g_actions = nullptr;
 CreatureEvents* g_creatureEvents = nullptr;
@@ -41,6 +42,7 @@ TalkActions* g_talkActions = nullptr;
 MoveEvents* g_moveEvents = nullptr;
 Weapons* g_weapons = nullptr;
 Modules* g_modules = nullptr;
+Scripts* g_scripts = nullptr;
 
 extern LuaEnvironment g_luaEnvironment;
 
@@ -60,6 +62,7 @@ ScriptingManager::~ScriptingManager()
 	delete g_chat;
 	delete g_creatureEvents;
 	delete g_globalEvents;
+	delete g_scripts;
 }
 
 bool ScriptingManager::loadScriptSystems()
@@ -123,6 +126,12 @@ bool ScriptingManager::loadScriptSystems()
 	g_modules = new Modules();
 	if (!g_modules->loadFromXml()) {
 		std::cout << "> ERROR: Unable to load modules!" << std::endl;
+		return false;
+	}
+
+	g_scripts = new Scripts();
+	if (!g_scripts->loadScripts("scripts")) {
+		std::cout << "> ERROR: Unable to load scripts!" << std::endl;
 		return false;
 	}
 

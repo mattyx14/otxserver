@@ -65,6 +65,30 @@ Event* CreatureEvents::getEvent(const std::string& nodeName)
 	return new CreatureEvent(&scriptInterface);
 }
 
+bool CreatureEvents::registerLuaEvent(Event* event)
+{
+	CreatureEvent* creatureEvent = static_cast<CreatureEvent*>(event); //event is guaranteed to be a CreatureEvent
+	if (creatureEvent->getEventType() == CREATURE_EVENT_NONE) {
+		std::cout << "Error: [CreatureEvents::registerLuaEvent] Trying to register event without type!" << std::endl;
+		return false;
+	}
+
+	CreatureEvent* oldEvent = getEventByName(creatureEvent->getName(), false);
+	if (oldEvent) {
+		//if there was an event with the same that is not loaded
+		//(happens when realoading), it is reused
+		if (!oldEvent->isLoaded() && oldEvent->getEventType() == creatureEvent->getEventType()) {
+			oldEvent->copyEvent(creatureEvent);
+		}
+
+		return false;
+	} else {
+		//if not, register it normally
+		creatureEvents[creatureEvent->getName()] = creatureEvent;
+		return true;
+	}
+}
+
 bool CreatureEvents::registerEvent(Event* event, const pugi::xml_node&)
 {
 	CreatureEvent* creatureEvent = static_cast<CreatureEvent*>(event); //event is guaranteed to be a CreatureEvent
