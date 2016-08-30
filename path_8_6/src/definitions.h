@@ -23,8 +23,8 @@
 #define STATUS_SERVER_NAME "OTX Server"
 #define STATUS_SERVER_VERSION "3"
 #define MINOR_VERSION "7"
-#define REVISION_VERSION "-"
-#define SOFTWARE_CODENAME ""
+#define REVISION_VERSION "DEV"
+#define SOFTWARE_CODENAME "SAILOR"
 #define STATUS_SERVER_DEVELOPERS "Mattyx14, Brewsterl and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv3"
 

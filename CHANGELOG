@@ -48,7 +48,7 @@
 		Tibia Clients - 7.6 to 10.97
 ]
 
-[ OTX Server 4.0 :: Version " SAILOR "
+[ OTX Server 3.7 :: Version " SAILOR "
 	- Added support to manualVersion Protocol 10.94 to 10.97 is supported
 	- Added stack support for Game.createItem
 	- Added a new Creature method
