@@ -53,7 +53,6 @@
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
-	- Added to loading lua script event files (for EvilHero90)
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
@@ -62,7 +61,11 @@
 	- Fix monsters idle bug
 	- Reduse tileLimit to 1000
 	- Remove skill requeriment to weapons (it no are used)
+	- Testing to loading lua script event files (for EvilHero90)
 	- Support to 10.97
+
+	Bug:
+	- /reload no work properly for script event files
 ]
 
 [ OTX Server 3.6 :: Version " SCARETALE "

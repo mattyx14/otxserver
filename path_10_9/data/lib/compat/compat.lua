@@ -1011,6 +1011,7 @@ function getThingfromPos(pos)
 	end
 
 	local thing
+	local stackpos = pos.stackpos or 0
 	if stackpos == STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE then
 		thing = tile:getTopCreature()
 		if thing == nil then
@@ -1024,7 +1025,7 @@ function getThingfromPos(pos)
 	elseif stackpos == STACKPOS_TOP_CREATURE then
 		thing = tile:getTopCreature()
 	else
-		thing = tile:getThing(pos.stackpos)
+		thing = tile:getThing(stackpos)
 	end
 	return pushThing(thing)
 end
