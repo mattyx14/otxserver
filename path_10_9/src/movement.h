@@ -23,9 +23,6 @@
 #include "baseevents.h"
 #include "item.h"
 #include "luascript.h"
-#include "vocation.h"
-
-extern Vocations g_vocations;
 
 enum MoveEvent_t {
 	MOVE_EVENT_STEP_IN,
@@ -65,9 +62,6 @@ class MoveEvents final : public BaseEvents
 		uint32_t onItemMove(Item* item, Tile* tile, bool isAdd);
 
 		MoveEvent* getEvent(Item* item, MoveEvent_t eventType);
-
-		bool registerLuaEvent(Event* event);
-		bool registerLuaFunction(Event* event);
 
 	protected:
 		typedef std::map<int32_t, MoveEventList> MoveListMap;
@@ -113,7 +107,7 @@ class MoveEvent final : public Event
 		void setEventType(MoveEvent_t type);
 
 		bool configureEvent(const pugi::xml_node& node) final;
-		bool loadFunction(const pugi::xml_attribute& attr, bool isScripted) final;
+		bool loadFunction(const pugi::xml_attribute& attr) final;
 
 		uint32_t fireStepEvent(Creature* creature, Item* item, const Position& pos, const Position& fromPos);
 		uint32_t fireAddRemItem(Item* item, Item* tileItem, const Position& pos);
@@ -142,84 +136,15 @@ class MoveEvent final : public Event
 		const std::string& getVocationString() const {
 			return vocationString;
 		}
-		void setVocationString(const std::string& str) {
-			vocationString = str;
-		}
 		uint32_t getWieldInfo() const {
 			return wieldInfo;
 		}
 		const VocEquipMap& getVocEquipMap() const {
 			return vocEquipMap;
 		}
-		void addVocEquipMap(std::string vocName) {
-			int32_t vocationId = g_vocations.getVocationId(vocName);
-			if (vocationId != -1) {
-				vocEquipMap[vocationId] = true;
-			}
-		}
-		bool getTileItem() const {
-			return tileItem;
-		}
-		void setTileItem(bool b) {
-			tileItem = b;
-		}
-		std::vector<uint32_t> getItemIdRange() {
-			return itemIdRange;
-		}
-		void addItemId(uint32_t id) {
-			itemIdRange.emplace_back(id);
-		}
-		std::vector<uint32_t> getActionIdRange() {
-			return actionIdRange;
-		}
-		void addActionId(uint32_t id) {
-			actionIdRange.emplace_back(id);
-		}
-		std::vector<uint32_t> getUniqueIdRange() {
-			return uniqueIdRange;
-		}
-		void addUniqueId(uint32_t id) {
-			uniqueIdRange.emplace_back(id);
-		}
-		std::vector<std::string> getPosList() {
-			return posList;
-		}
-		void addPosList(std::string pos) {
-			posList.emplace_back(pos);
-		}
-		std::string getSlotName() {
-			return slotName;
-		}
-		void setSlotName(std::string name) {
-			slotName = name;
-		}
-		void setSlot(uint32_t s) {
-			slot = s;
-		}
-		uint32_t getRequiredLevel() {
-			return reqLevel;
-		}
-		void setRequiredLevel(uint32_t level) {
-			reqLevel = level;
-		}
-		uint32_t getRequiredMagLevel() {
-			return reqMagLevel;
-		}
-		void setRequiredMagLevel(uint32_t level) {
-			reqMagLevel = level;
-		}
-		bool needPremium() {
-			return premium;
-		}
-		void setNeedPremium(bool b) {
-			premium = b;
-		}
-		uint32_t getWieldInfo() {
-			return wieldInfo;
-		}
-		void setWieldInfo(WieldInfo_t info) {
-			wieldInfo |= info;
-		}
+
+	protected:
+		std::string getScriptEventName() const final;
 
 		static StepFunction StepInField;
 		static StepFunction StepOutField;
@@ -233,11 +158,7 @@ class MoveEvent final : public Event
 		StepFunction* stepFunction;
 		MoveFunction* moveFunction;
 		EquipFunction* equipFunction;
-	protected:
-		std::string getScriptEventName() const final;
-
 		uint32_t slot;
-		std::string slotName;
 
 		//onEquip information
 		uint32_t reqLevel;
@@ -246,12 +167,6 @@ class MoveEvent final : public Event
 		std::string vocationString;
 		uint32_t wieldInfo;
 		VocEquipMap vocEquipMap;
-		bool tileItem = false;
-
-		std::vector<uint32_t> itemIdRange;
-		std::vector<uint32_t> actionIdRange;
-		std::vector<uint32_t> uniqueIdRange;
-		std::vector<std::string> posList;
 };
 
 #endif

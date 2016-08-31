@@ -12,12 +12,6 @@ combat:setParameter(COMBAT_PARAM_BLOCKARMOR, true)
 combat:setFormula(COMBAT_FORMULA_SKILL, 0, 0, 1, 0)
 combat:setArea(area)
 
-local weapon = Weapon(WEAPON_DISTANCE)
-
-function weapon.onUseWeapon(player, variant)
+function onUseWeapon(player, variant)
 	return combat:execute(player, variant)
 end
-
-weapon:id(2546)
-weapon:type("removecount")
-weapon:register()
