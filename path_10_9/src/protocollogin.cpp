@@ -99,7 +99,7 @@ void ProtocolLogin::getCastingStreamsList(const std::string& password, uint16_t 
 	disconnect();
 }
 
-void ProtocolLogin::getCharacterList(const std::string& accountName, const std::string& password, const std::string& token, uint16_t version)
+void ProtocolLogin::getCharacterList(const std::string& accountName, const std::string& password, uint16_t version)
 {
 	//dispatcher thread
 	Account account;
@@ -109,23 +109,26 @@ void ProtocolLogin::getCharacterList(const std::string& accountName, const std::
 	}
 
 	auto output = OutputMessagePool::getOutputMessage();
-	if (!account.key.empty()) {
-		int32_t ticks = static_cast<int32_t>(time(nullptr) / AUTHENTICATOR_PERIOD);
-		if (token.empty() || !(token == generateToken(account.key, ticks) || token == generateToken(account.key, ticks - 1) || token == generateToken(account.key, ticks + 1))) {
-			output->addByte(0x0D);
-			output->addByte(0);
-			send(output);
-			disconnect();
-			return;
-		}
-		output->addByte(0x0C);
-		output->addByte(0);
-	}
-
 	//Update premium days
 	Game::updatePremium(account);
 
 	addWorldInfo(output, accountName, password, version);
+
+	uint8_t size = std::min<size_t>(std::numeric_limits<uint8_t>::max(), account.characters.size());
+	output->addByte(size);
+	for (uint8_t i = 0; i < size; i++) {
+		output->addByte(0);
+		output->addString(account.characters[i]);
+	}
+
+	//Add premium days
+	output->addByte(0);//0 = normal (free/premium), 1 = frozen, 2 = suspended
+	output->addByte(g_config.getBoolean(ConfigManager::FREE_PREMIUM) || account.premiumDays > 0);
+	output->add<uint32_t>(g_config.getBoolean(ConfigManager::FREE_PREMIUM) ? 0 : (time(nullptr) + (account.premiumDays * 86400)));
+
+	send(output);
+
+	disconnect();
 }
 
 void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
@@ -212,18 +215,5 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if (password.empty()) {
-		disconnectClient("Invalid password.", version);
-		return;
-	}
-
-	// read authenticator token and stay logged in flag from last 128 bytes
-	msg.skipBytes((msg.getLength() - 128) - msg.getBufferPosition());
-	if (!Protocol::RSA_decrypt(msg)) {
-		disconnectClient("Invalid authentification token.", version);
-		return;
-	}
-
-	std::string authToken = msg.getString();
-	g_dispatcher.addTask(createTask(std::bind(&ProtocolLogin::getCharacterList, thisPtr, accountName, password, authToken, version)));
+	g_dispatcher.addTask(createTask(std::bind(&ProtocolLogin::getCharacterList, thisPtr, accountName, password, version)));
 }

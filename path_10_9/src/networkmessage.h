@@ -136,9 +136,7 @@ class NetworkMessage
 			position = pos;
 		}
 
-		uint16_t getLengthHeader() const {
-			return static_cast<uint16_t>(buffer[0] | buffer[1] << 8);
-		}
+		int32_t decodeHeader();
 
 		bool isOverrun() const {
 			return overrun;
