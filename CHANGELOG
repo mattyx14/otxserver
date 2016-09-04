@@ -49,7 +49,7 @@
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "
-	- Added support to manualVersion Protocol 10.94 to 10.97 is supported
+	- Added support to manualVersion 10.97 is supported
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
