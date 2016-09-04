@@ -32,7 +32,7 @@ maxPacketsPerSecond = 25
 -- Version Manual
 clientVersionMin = 1097
 clientVersionMax = 1097
-clientVersionStr = "10.97"
+clientVersionStr = "Only clients with protocol 10.97 allowed!"
 
 -- Casting System 
 enableLiveCasting = true
