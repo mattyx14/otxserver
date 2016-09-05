@@ -59,6 +59,7 @@
 	- Fix an issue with deaths by monsters in PVP Zones
 	- Fix to summons to ignore 'runonhealth' & attack anyway
 	- Fix monsters idle bug
+	- Fix text on 7.x
 	- Reduse tileLimit to 1000
 	- Remove skill requeriment to weapons (it no are used)
 	- Support to 10.97

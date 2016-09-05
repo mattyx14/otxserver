@@ -199,7 +199,6 @@ class Monsters
 		bool reload();
 
 		MonsterType* getMonsterType(const std::string& name);
-		uint32_t getIdByName(const std::string& name);
 
 		static uint32_t getLootRandom();
 
