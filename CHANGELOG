@@ -57,6 +57,8 @@
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
 	- Added chestReward to 8.x and 7.x
+		Reserved ID: 8.7 (11242 and 12664) - 8.6 (8720 and 11242) - 7.x (I recommend create new ids)
+		And edit: ITEM_REWARD_CONTAINER - ITEM_REWARD_CHEST
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
