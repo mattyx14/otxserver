@@ -72,6 +72,7 @@ class ConfigManager
 			MYSQL_SOCK,
 			DEFAULT_PRIORITY,
 			MAP_AUTHOR,
+			VERSION_STR,
 
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
@@ -104,8 +105,8 @@ class ConfigManager
 			STAIRHOP_DELAY,
 			EXP_FROM_PLAYERS_LEVEL_RANGE,
 			MAX_PACKETS_PER_SECOND,
-			CRITICAL_HIT_CHANCE,
-			CRITICAL_HIT_EXTRA,
+			VERSION_MIN,
+			VERSION_MAX,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};

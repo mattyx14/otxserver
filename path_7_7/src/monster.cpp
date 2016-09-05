@@ -603,7 +603,7 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 		}
 
 		if (elementMod != 0) {
-			damage = static_cast<int32_t>(std::ceil(damage * ((100 - elementMod) / 100.)));
+			damage = static_cast<int32_t>(std::round(damage * ((100 - elementMod) / 100.)));
 			if (damage <= 0) {
 				damage = 0;
 				blockType = BLOCK_ARMOR;
@@ -930,7 +930,7 @@ void Monster::onThinkDefense(uint32_t interval)
 		}
 	}
 
-	if (attackedCreature && !isSummon() && summons.size() < mType->maxSummons && hasFollowPath) {
+	if (!isSummon() && summons.size() < mType->maxSummons && hasFollowPath) {
 		for (const summonBlock_t& summonBlock : mType->summons) {
 			if (summonBlock.speed > defenseTicks) {
 				resetTicks = false;

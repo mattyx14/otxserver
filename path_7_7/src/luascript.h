@@ -211,6 +211,7 @@ class LuaScriptInterface
 		int32_t loadFile(const std::string& file, Npc* npc = nullptr);
 
 		const std::string& getFileById(int32_t scriptId);
+		int32_t getEvent();
 		int32_t getEvent(const std::string& eventName);
 		int32_t getMetaEvent(const std::string& globalName, const std::string& eventName);
 
@@ -505,7 +506,6 @@ class LuaScriptInterface
 		static int luaDatabaseEscapeString(lua_State* L);
 		static int luaDatabaseEscapeBlob(lua_State* L);
 		static int luaDatabaseLastInsertId(lua_State* L);
-		static int luaDatabaseConnected(lua_State* L);
 		static int luaDatabaseTableExists(lua_State* L);
 
 		static int luaResultGetNumber(lua_State* L);
@@ -715,6 +715,7 @@ class LuaScriptInterface
 		// Creature
 		static int luaCreatureCreate(lua_State* L);
 
+		static int luaCreatureGetEvents(lua_State* L);
 		static int luaCreatureRegisterEvent(lua_State* L);
 		static int luaCreatureUnregisterEvent(lua_State* L);
 
@@ -810,6 +811,10 @@ class LuaScriptInterface
 
 		static int luaPlayerGetFreeCapacity(lua_State* L);
 
+		static int luaPlayerGetReward(lua_State* L);
+		static int luaPlayerRemoveReward(lua_State* L);
+		static int luaPlayerGetRewardList(lua_State* L);
+
 		static int luaPlayerGetDepotChest(lua_State* L);
 
 		static int luaPlayerGetSkullTime(lua_State* L);
@@ -826,6 +831,9 @@ class LuaScriptInterface
 		static int luaPlayerSetMaxMana(lua_State* L);
 		static int luaPlayerGetManaSpent(lua_State* L);
 		static int luaPlayerAddManaSpent(lua_State* L);
+
+		static int luaPlayerGetBaseMaxHealth(lua_State* L);
+		static int luaPlayerGetBaseMaxMana(lua_State* L);
 
 		static int luaPlayerGetSkillLevel(lua_State* L);
 		static int luaPlayerGetEffectiveSkillLevel(lua_State* L);
@@ -924,6 +932,8 @@ class LuaScriptInterface
 		static int luaPlayerGetContainerId(lua_State* L);
 		static int luaPlayerGetContainerById(lua_State* L);
 		static int luaPlayerGetContainerIndex(lua_State* L);
+
+		static int luaPlayerHasSecureMode(lua_State* L);
 
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
@@ -1142,6 +1152,7 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsPassive(lua_State* L);
 		static int luaMonsterTypeIsPushable(lua_State* L);
 		static int luaMonsterTypeIsHealthShown(lua_State* L);
+		static int luaMonsterTypeIsRewardBoss(lua_State* L);
 
 		static int luaMonsterTypeCanPushItems(lua_State* L);
 		static int luaMonsterTypeCanPushCreatures(lua_State* L);

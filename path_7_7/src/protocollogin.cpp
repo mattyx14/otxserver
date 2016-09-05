@@ -124,30 +124,30 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 */
 
 	if (version <= 760) {
-		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
 		return;
 	}
 
 	#ifdef _MULTIPLATFORM77
-		if (!Protocol::RSA_decrypt(msg)) {
-			disconnect();
-			return;
-		}
+	if (!Protocol::RSA_decrypt(msg)) {
+		disconnect();
+		return;
+	}
 
-		uint32_t key[4];
-		key[0] = msg.get<uint32_t>();
-		key[1] = msg.get<uint32_t>();
-		key[2] = msg.get<uint32_t>();
-		key[3] = msg.get<uint32_t>();
-		enableXTEAEncryption();
-		setXTEAKey(key);
+	uint32_t key[4];
+	key[0] = msg.get<uint32_t>();
+	key[1] = msg.get<uint32_t>();
+	key[2] = msg.get<uint32_t>();
+	key[3] = msg.get<uint32_t>();
+	enableXTEAEncryption();
+	setXTEAKey(key);
 	#endif
 
 	uint32_t accountName = msg.get<uint32_t>();
 	std::string password = msg.getString();
 
-	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
-		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
+		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
 		return;
 	}
 

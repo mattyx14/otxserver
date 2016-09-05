@@ -23,7 +23,9 @@
 #include "outputmessage.h"
 
 #include "game.h"
+#include "configmanager.h"
 
+extern ConfigManager g_config;
 extern Game g_game;
 
 void ProtocolOld::disconnectClient(const std::string& message)
@@ -48,7 +50,7 @@ void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 	msg.skipBytes(12);
 
 	if (version <= 760) {
-		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
 		return;
 	}
 
@@ -65,5 +67,5 @@ void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 	enableXTEAEncryption();
 	setXTEAKey(key);
 
-	disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+	disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
 }

@@ -24,8 +24,6 @@
 #include "condition.h"
 #include "map.h"
 #include "baseevents.h"
-#include "player.h"
-#include "monster.h"
 
 class Condition;
 class Creature;
@@ -205,7 +203,6 @@ class AreaCombat
 		// non-assignable
 		AreaCombat& operator=(const AreaCombat&) = delete;
 
-		ReturnValue doCombat(Creature* attacker, const Position& pos, const Combat& combat) const;
 		void getList(const Position& centerPos, const Position& targetPos, std::forward_list<Tile*>& list) const;
 
 		void setupArea(const std::list<uint32_t>& list, uint32_t rows);
@@ -328,8 +325,7 @@ class Combat
 	protected:
 		static void doCombatDefault(Creature* caster, Creature* target, const CombatParams& params);
 
-		static void CombatFunc(Creature* caster, const Position& pos,
-		                       const AreaCombat* area, const CombatParams& params, COMBATFUNC func, CombatDamage* data);
+		static void CombatFunc(Creature* caster, const Position& pos, const AreaCombat* area, const CombatParams& params, COMBATFUNC func, CombatDamage* data);
 
 		static void CombatHealthFunc(Creature* caster, Creature* target, const CombatParams& params, CombatDamage* data);
 		static void CombatManaFunc(Creature* caster, Creature* target, const CombatParams& params, CombatDamage* damage);

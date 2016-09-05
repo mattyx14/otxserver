@@ -283,8 +283,8 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	uint32_t accountName = msg.get<uint32_t>();
 	std::string characterName = msg.getString();
 	std::string password = msg.getString();
-	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
-		disconnectClient("Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
+		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
 		return;
 	}
 
@@ -352,16 +352,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 	uint8_t recvbyte = msg.getByte();
 
-	if (!player) {
-		if (recvbyte == 0x0F) {
-			disconnect();
-		}
-
-		return;
-	}
-
-	//a dead player can not performs actions
-	if (player->isRemoved() || player->getHealth() <= 0) {
+	//a dead player can not perform actions
+	if (!player || player->isRemoved() || player->getHealth() <= 0) {
 		if (recvbyte == 0x0F) {
 			disconnect();
 			return;
@@ -903,8 +895,15 @@ void ProtocolGame::parseRotateItem(NetworkMessage& msg)
 
 void ProtocolGame::parseBugReport(NetworkMessage& msg)
 {
-	std::string bug = msg.getString();
-	addGameTask(&Game::playerReportBug, player->getID(), bug);
+	uint8_t category = msg.getByte();
+	std::string message = msg.getString();
+
+	Position position;
+	if (category == BUG_CATEGORY_MAP) {
+		position = msg.getPosition();
+	}
+
+	addGameTask(&Game::playerReportBug, player->getID(), message, position, category);
 }
 
 void ProtocolGame::parseDebugAssert(NetworkMessage& msg)

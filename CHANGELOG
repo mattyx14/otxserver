@@ -56,7 +56,7 @@
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
-	- Added chestReward to 8.6 and 8.7x
+	- Added chestReward to 8.x and 7.x
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
