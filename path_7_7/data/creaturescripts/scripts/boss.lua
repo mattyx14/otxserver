@@ -145,16 +145,13 @@ function onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified,
 		local expectedScore = 1 / participants
 
 		for _, con in ipairs(scores) do
-			local reward, stamina -- ignoring stamina for now because I heard you receive rewards even when it's depleted   
+			local reward
 			if con.player then   
 				reward = con.player:getReward(timestamp, true)
-				stamina = con.player:getStamina()
-			else
-				stamina = con.stamina or 0
 			end
 
 			local playerLoot
-			if --[[stamina > 840 and]] con.score ~= 0 then
+			if con.score ~= 0 then
 				local lootFactor = 1
 				lootFactor = lootFactor / participants ^ (1 / 3) -- tone down the loot a notch if there are many participants
 				lootFactor = lootFactor * (1 + lootFactor) ^ (con.score / expectedScore) -- increase the loot multiplicatively by how many times the player surpassed the expected score
@@ -170,10 +167,8 @@ function onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified,
 			if con.player then
 				local lootMessage = {"The following items are available in your reward chest: "}
 
-				if --[[stamina > 840]]true then
+				if true then
 					reward:getContentDescription(lootMessage)
-				else
-					table.insert(lootMessage, 'nothing (due to low stamina)')
 				end
 				table.insert(lootMessage, ".")
 				con.player:sendTextMessage(MESSAGE_EVENT_ADVANCE, table.concat(lootMessage))
