@@ -53,38 +53,17 @@ https://github.com/opentibia/server/
 *Written in C++, based on Forgotten Server 0.3.7 - r5969 (0.4.5969)* <br />
 https://github.com/mattyx14/otxserver/tree/otxserv2/
 
-**PyOT** by Stian <br />
-*Written in Python 3, actually uses Mercurial and BitBucket but still resourceful* <br />
-https://bitbucket.org/vapus/pyot/ <br />
-
-
 ##Clients
 
 **OTClient** by Eduardo Bart <br />
 *Written in C++* <br />
 https://github.com/edubart/otclient
 
-**YATC** by OpenTibia <br />
-*Written in C++* <br />
-https://github.com/opentibia/yatc/
-
 ##Map Editors
 
 **Remere's Map Editor** by Hampus Joakim Nilsson <br />
 *Written in C++* <br />
 https://github.com/hjnilsson/rme/
-
-**Remere's Map Editor** by Reymundo Urrutia <br />
-*Written in C++* <br />
-https://github.com/ricker75/Remere-s-Map-Editor-10.80/
-
-**MapEditor** by OTLand <br />
-*Written in Go* <br />
-https://github.com/otland/mapeditor/
-
-**Forgotten Map Editor** by Ahmed Samy <br />
-*Written in Lua* <br />
-https://github.com/asamy45/forgottenmapeditor/
 
 ##Item Editors
 
