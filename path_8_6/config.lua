@@ -29,6 +29,11 @@ statusTimeout = 5 * 1000
 replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
+-- Version Manual
+clientVersionMin = 860
+clientVersionMax = 860
+clientVersionStr = "Only clients with protocol 8.60 allowed!"
+
 -- Deaths
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default
 -- death penalty formula. For the old formula, set it to 10. For
