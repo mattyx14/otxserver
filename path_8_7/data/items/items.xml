@@ -19561,9 +19561,9 @@
 		<attribute key="slotType" value="backpack" />
 	</item>
 	<item id="11242" article="an" name="expedition bag">
-		<attribute key="weight" value="800" />
-		<attribute key="containerSize" value="8" />
-		<attribute key="slotType" value="backpack" />
+		<attribute key="containersize" value="32" />
+		<attribute key="pickupable" value="0" />
+		<attribute key="moveable" value="0" />
 	</item>
 	<item id="11243" article="a" name="dragon backpack">
 		<attribute key="weight" value="1700" />
@@ -21377,7 +21377,14 @@
 		<attribute key="description" value="In memory of her - half plant, half demon, incredibly powerful and betrayed by her own creators." />
 		<attribute key="weight" value="1800" />
 	</item>
-	<item fromid="12664" toid="12665" name="treasure chest">
+	<item id="12664" name="treasure chest">
+		<attribute key="type" value="rewardchest" />
+		<attribute key="description" value="This chest contains your rewards earned in battles." />
+		<attribute key="containersize" value="32" />
+		<attribute key="pickupable" value="0" />
+		<attribute key="moveable" value="0" />
+	</item>
+	<item id="12665" name="treasure chest">
 		<attribute key="containerSize" value="20" />
 	</item>
 	<item id="12666" name="gamemaster doll">

@@ -279,7 +279,6 @@ class ItemAttributes
 		void setIntAttr(itemAttrTypes type, int64_t value);
 		void increaseIntAttr(itemAttrTypes type, int64_t value);
 
-		void addAttr(Attribute* attr);
 		const Attribute* getExistingAttr(itemAttrTypes type) const;
 		Attribute& getAttr(itemAttrTypes type);
 
@@ -493,6 +492,13 @@ class Item : virtual public Thing
 				return 0;
 			}
 			return getIntAttr(ITEM_ATTRIBUTE_CORPSEOWNER);
+		}
+
+		void setRewardCorpse() {
+			setCorpseOwner(static_cast<uint32_t>(std::numeric_limits<int32_t>::max()));
+		}
+		bool isRewardCorpse() {
+			return getCorpseOwner() == static_cast<uint32_t>(std::numeric_limits<int32_t>::max());
 		}
 
 		void setDuration(int32_t time) {

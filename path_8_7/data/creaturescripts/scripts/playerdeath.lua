@@ -54,7 +54,7 @@ function onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDama
 				byPlayer = 1
 			end
 		end
-		killerName = killer:getName()
+		killerName = killer:isMonster() and killer:getType():getNameDescription() or killer:getName()
 	else
 		killerName = "field item"
 	end
@@ -71,7 +71,7 @@ function onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDama
 				byPlayerMostDamage = 1
 			end
 		end
-		mostDamageName = mostDamageKiller:getName()
+		mostDamageName = mostDamageKiller:isMonster() and mostDamageKiller:getType():getNameDescription() or mostDamageKiller:getName()
 	else
 		mostDamageName = "field item"
 	end

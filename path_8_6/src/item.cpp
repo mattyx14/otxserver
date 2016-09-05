@@ -27,6 +27,7 @@
 #include "house.h"
 #include "game.h"
 #include "bed.h"
+#include "rewardchest.h"
 
 #include "actions.h"
 #include "spells.h"
@@ -53,6 +54,8 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 	if (it.id != 0) {
 		if (it.isDepot()) {
 			newItem = new DepotLocker(type);
+		} else if (it.isRewardChest()) {
+			newItem = new RewardChest(type);
 		} else if (it.isContainer()) {
 			newItem = new Container(type);
 		} else if (it.isTeleport()) {
@@ -277,7 +280,9 @@ void Item::setID(uint16_t newid)
 		removeAttribute(ITEM_ATTRIBUTE_DURATION);
 	}
 
-	removeAttribute(ITEM_ATTRIBUTE_CORPSEOWNER);
+	if (!isRewardCorpse()) {
+		removeAttribute(ITEM_ATTRIBUTE_CORPSEOWNER);
+	}
 
 	if (newDuration > 0 && (!prevIt.stopTime || !hasAttribute(ITEM_ATTRIBUTE_DURATION))) {
 		setDecaying(DECAYING_FALSE);
@@ -1457,36 +1462,12 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 		if (it.wieldInfo & WIELDINFO_MAGLV) {
 			if (it.wieldInfo & WIELDINFO_LEVEL) {
-				if (it.wieldInfo & WIELDINFO_SKILL) {
-					s << ",";
-				} else {
-					s << " and";
-				}
-			} else {
-				s << " of";
-			}
-
-			s << " magic level " << it.minReqMagicLevel << " or higher";
-		}
-
-		if (it.wieldInfo & WIELDINFO_SKILL) {
-			if (it.wieldInfo & WIELDINFO_MAGLV || it.wieldInfo & WIELDINFO_LEVEL) {
 				s << " and";
 			} else {
 				s << " of";
 			}
 
-			if (it.weaponType == WEAPON_SWORD) {
-				s << " sword";
-			} else if (it.weaponType == WEAPON_CLUB) {
-				s << " club";
-			} else if (it.weaponType == WEAPON_AXE) {
-				s << " axe";
-			} else if (it.weaponType == WEAPON_DISTANCE) {
-				s << " distance";
-			}
-
-			s << " fighting " << it.minReqSkillLevel << " or higher";
+			s << " magic level " << it.minReqMagicLevel << " or higher";
 		}
 
 		s << '.';

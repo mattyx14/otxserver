@@ -41,6 +41,9 @@
 			EvilHero90 The Forgotten Server - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/EvilHero90/forgottenserver/
 
+			Ninjalulz The Forgotten Server - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+				https://github.com/ninjalulz/forgottenserver/
+
 	DEVELOPMENT STATUS
 		STARTED AND ON
 
@@ -53,6 +56,7 @@
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
+	- Added chestReward to 8.6 and 8.7x
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
