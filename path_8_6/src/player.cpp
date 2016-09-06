@@ -2000,10 +2000,6 @@ void Player::death(Creature* lastHitCreature)
 						}
 					}
 				}
-
-				if (sumLevels > level) {
-					double reduce = level / static_cast<double>(sumLevels);
-				}
 			}
 
 		//Magic level loss
