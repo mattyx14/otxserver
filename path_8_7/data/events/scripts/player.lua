@@ -87,11 +87,6 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		return false
 	end
 
-	if toPosition.x == CONTAINER_POSITION and toCylinder then
-		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-		return false
-	end
-
 	if toPosition.x ~= CONTAINER_POSITION then
 		return true
 	end
