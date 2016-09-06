@@ -7032,42 +7032,42 @@
 	<item id="3836" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
-		<attribute key="maleSleeper" value="3840" />
+		<attribute key="sleeper" value="3840" />
 	</item>
 	<item id="3837" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
-		<attribute key="maleSleeper" value="3841" />
+		<attribute key="sleeper" value="3841" />
 	</item>
 	<item id="3838" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
-		<attribute key="maleSleeper" value="3842" />
+		<attribute key="sleeper" value="3842" />
 	</item>
 	<item id="3839" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
-		<attribute key="maleSleeper" value="3843" />
+		<attribute key="sleeper" value="3843" />
 	</item>
 	<item id="3840" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
-		<attribute key="maleSleeper" value="3836" />
+		<attribute key="sleeper" value="3836" />
 	</item>
 	<item id="3841" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
-		<attribute key="maleSleeper" value="3837" />
+		<attribute key="sleeper" value="3837" />
 	</item>
 	<item id="3842" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
-		<attribute key="maleSleeper" value="3838" />
+		<attribute key="sleeper" value="3838" />
 	</item>
 	<item id="3843" article="a" name="hammock">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
-		<attribute key="maleSleeper" value="3839" />
+		<attribute key="sleeper" value="3839" />
 	</item>
 	<item fromid="3844" toid="3847" article="a" name="grass mat" />
 	<item fromid="3848" toid="3851" article="a" name="straw mat" />
