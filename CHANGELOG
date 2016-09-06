@@ -56,6 +56,7 @@
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
+	- Added config UHTrap - heightStackBlock on 7.x
 	- Added chestReward to 8.x and 7.x
 		Reserved ID: 8.7 (11242 and 12664) - 8.6 (8720 and 11242) - 7.x (I recommend create new ids)
 		And edit on const.h : ITEM_REWARD_CONTAINER - ITEM_REWARD_CHEST
@@ -65,9 +66,12 @@
 	- Fix an issue with deaths by monsters in PVP Zones
 	- Fix to summons to ignore 'runonhealth' & attack anyway
 	- Fix monsters idle bug
-	- Fix text on 7.x
+	- Fix writable on 7.x
+	- Fix itemBed on 7.x
+	- Fix account on 7.x only support numbers
+	- Fix fluids on 7.x
 	- Reduse tileLimit to 1000
-	- Remove skill requeriment to weapons (it no are used)
+	- Remove skill on items this feature no are used
 	- Support to 10.97
 ]
 
