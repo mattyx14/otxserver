@@ -52,7 +52,7 @@
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "
-	- Added support to manualVersion 10.97 is supported
+	- Added support to manualVersion 10.94/97 is supported
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
@@ -61,6 +61,7 @@
 		Reserved ID: 8.7 (11242 and 12664) - 8.6 (8720 and 11242) - 7.x (I recommend create new ids)
 		And edit on const.h : ITEM_REWARD_CONTAINER - ITEM_REWARD_CHEST
 	- Added NPC with balance (MatheusMkalo)
+	- Added depotLimits (Malucooo)
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
@@ -71,9 +72,13 @@
 	- Fix itemBed on 7.x
 	- Fix account on 7.x only support numbers
 	- Fix fluids on 7.x
+	- Fix pagination depots (Malucooo)
+	- Fix manaChange (Malucooo)
+	- Fix item descritions (Malucooo)
+	- Fix reward changeLoot (Malucooo)
 	- Reduse tileLimit to 1000
 	- Remove skill on items this feature no are used
-	- Support to 10.97
+	- Support to 10.94/97
 ]
 
 [ OTX Server 3.6 :: Version " SCARETALE "

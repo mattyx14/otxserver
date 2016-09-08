@@ -30,9 +30,14 @@ replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
 -- Version Manual
-clientVersionMin = 1097
+clientVersionMin = 1094
 clientVersionMax = 1097
 clientVersionStr = "Only clients with protocol 10.97 allowed!"
+
+-- Depot Limit
+freeDepotLimit = 2000
+premiumDepotLimit = 10000
+depotBoxes = 17
 
 -- Casting System 
 enableLiveCasting = true

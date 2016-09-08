@@ -195,13 +195,16 @@ void ProtocolGameBase::AddPlayerStats(NetworkMessage& msg)
 
 	msg.add<uint16_t>(player->getLevel());
 	msg.addByte(player->getPlayerInfo(PLAYERINFO_LEVELPERCENT));
-	// msg.addDouble(0, 3); // experience bonus
-
-	msg.add<uint16_t>(100);
-	msg.add<uint16_t>(0);
-	msg.add<uint16_t>(0);
-	msg.add<uint16_t>(0);
-	msg.add<uint16_t>(100);
+	if (version < 1097) {
+		msg.addDouble(0, 3); // experience bonus
+	}
+	if (version >= 1097) {
+		msg.add<uint16_t>(100);
+		msg.add<uint16_t>(0);
+		msg.add<uint16_t>(0);
+		msg.add<uint16_t>(0);
+		msg.add<uint16_t>(100);
+	}
 
 	msg.add<uint16_t>(std::min<int32_t>(player->getMana(), std::numeric_limits<uint16_t>::max()));
 	msg.add<uint16_t>(std::min<int32_t>(player->getPlayerInfo(PLAYERINFO_MAXMANA), std::numeric_limits<uint16_t>::max()));
@@ -220,8 +223,10 @@ void ProtocolGameBase::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(condition ? condition->getTicks() / 1000 : 0x00);
 
 	msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
-	msg.add<uint16_t>(0);
-	msg.addByte(0);
+	if (version >= 1097) {
+		msg.add<uint16_t>(0);
+		msg.addByte(0);
+	}
 }
 
 void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)

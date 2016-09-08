@@ -112,6 +112,9 @@ class ConfigManager
 			LIVE_CAST_PORT,
 			VERSION_MIN,
 			VERSION_MAX,
+			FREE_DEPOT_LIMIT,
+			PREMIUM_DEPOT_LIMIT,
+			DEPOT_BOXES,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
