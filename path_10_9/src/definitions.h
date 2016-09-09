@@ -25,7 +25,7 @@
 #define MINOR_VERSION "7"
 #define REVISION_VERSION "DEV"
 #define SOFTWARE_CODENAME "SAILOR"
-#define STATUS_SERVER_DEVELOPERS "Mattyx14, Brewsterl and The Forgotten Server Developers"
+#define STATUS_SERVER_DEVELOPERS "Mattyx14, Brewsterl, Malucooo and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv3/"
 
 #define CLIENT_VERSION_MIN 1094

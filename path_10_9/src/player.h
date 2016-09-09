@@ -1183,6 +1183,13 @@ class Player final : public Creature, public Cylinder
 		bool isLiveCaster() const {
 			return client && client->isLiveCaster();
 		}
+		bool getSpectators(std::vector<ProtocolSpectator_ptr>& spectators) const {
+			if (!isLiveCaster()) {
+				return false;
+			}
+			spectators = client->spectators;
+			return true;
+		}
 
 		const std::map<uint8_t, OpenContainer>& getOpenContainers() const {
 			return openContainers;

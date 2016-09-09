@@ -2333,6 +2333,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "startLiveCast", LuaScriptInterface::luaPlayerStartLiveCast);
 	registerMethod("Player", "stopLiveCast", LuaScriptInterface::luaPlayerStopLiveCast);
 	registerMethod("Player", "isLiveCaster", LuaScriptInterface::luaPlayerIsLiveCaster);
+	registerMethod("Player", "getSpectators", LuaScriptInterface::luaPlayerGetSpectators);
 
 	registerMethod("Player", "hasSecureMode", LuaScriptInterface::luaPlayerHasSecureMode);
 
@@ -9656,6 +9657,36 @@ int32_t LuaScriptInterface::luaPlayerIsLiveCaster(lua_State* L)
 
 	lua_pushboolean(L, player->isLiveCaster());
 	return 1;
+}
+
+int32_t LuaScriptInterface::luaPlayerGetSpectators(lua_State* L)
+{
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player || !player->isLiveCaster()) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	std::lock_guard<std::mutex> lock(player->client->liveCastLock);
+	std::vector<ProtocolSpectator_ptr> spectators;
+	player->getSpectators(spectators);
+
+	lua_createtable(L, spectators.size(), 0);
+
+	int idx = 0, anonymous = 0;
+	for (const auto spectator : spectators) {
+		std::string specName = spectator->getName();
+		if (specName.empty()) {
+			anonymous += 1;
+		}
+		else {
+			pushString(L, specName);
+			lua_rawseti(L, -2, ++idx);
+		}
+	}
+
+	lua_pushnumber(L, anonymous);
+	return 2;
 }
 
 // Monster

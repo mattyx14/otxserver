@@ -16,6 +16,7 @@
 		OTX Server 3 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Mattyx14
 			Brewsterl
+			Malucooo
 
 		Special Thanks(s)
 			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
@@ -60,6 +61,7 @@
 		And edit on const.h : ITEM_REWARD_CONTAINER - ITEM_REWARD_CHEST
 	- Added NPC with balance (MatheusMkalo)
 	- Added depotLimits (Malucooo)
+	- Added playerSpectators to castSystem (Malucooo)
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage

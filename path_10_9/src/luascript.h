@@ -984,6 +984,7 @@ class LuaScriptInterface
 		static int32_t luaPlayerStartLiveCast(lua_State* L);
 		static int32_t luaPlayerStopLiveCast(lua_State* L);
 		static int32_t luaPlayerIsLiveCaster(lua_State* L);
+		static int32_t luaPlayerGetSpectators(lua_State* L);
 
 		// Monster
 		static int luaMonsterCreate(lua_State* L);

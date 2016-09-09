@@ -169,9 +169,9 @@ class ProtocolGame final : public ProtocolGameBase
 		*   and then get broadcast to the rest of the spectators
 		*  \param text string containing the text message
 		*/
-		void broadcastSpectatorMessage(const std::string& text) {
+		void broadcastSpectatorMessage(const std::string& name, const std::string& text) {
 			if (player) {
-				sendChannelMessage("Spectator", text, TALKTYPE_CHANNEL_Y, CHANNEL_CAST);
+				sendChannelMessage(name, text, TALKTYPE_CHANNEL_Y, CHANNEL_CAST);
 			}
 		}
 
@@ -263,7 +263,6 @@ class ProtocolGame final : public ProtocolGameBase
 		void parseCloseChannel(NetworkMessage& msg);
 
 		//Send functions
-		void sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel);
 		void sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent);
 		void sendClosePrivate(uint16_t channelId);
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
@@ -370,7 +369,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		static LiveCastsMap liveCasts; ///< Stores all available casts.
 		
-		std::atomic<bool> isCaster{ false }; ///< Determines if this \ref ProtocolGame object is casting
+		std::atomic<bool> isCaster { false }; ///< Determines if this \ref ProtocolGame object is casting
 
 		/// list of spectators \warning This variable should only be accessed after locking \ref liveCastLock
 		CastSpectatorVec spectators;

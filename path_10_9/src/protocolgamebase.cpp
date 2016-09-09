@@ -323,6 +323,19 @@ void ProtocolGameBase::RemoveTileThing(NetworkMessage& msg, const Position& pos,
 	msg.addByte(stackpos);
 }
 
+void ProtocolGameBase::sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel)
+{
+	NetworkMessage msg;
+	msg.addByte(0xAA);
+	msg.add<uint32_t>(0x00);
+	msg.addString(author);
+	msg.add<uint16_t>(0x00);
+	msg.addByte(type);
+	msg.add<uint16_t>(channel);
+	msg.addString(text);
+	writeToOutputBuffer(msg);
+}
+
 void ProtocolGameBase::sendUpdateTile(const Tile* tile, const Position& pos)
 {
 	if (!canSee(pos)) {

@@ -872,51 +872,72 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				s << " or higher";
 			}
 		}
-	} else if (it.weaponType != WEAPON_NONE && it.ammoType != AMMO_NONE) {
-		s << " (Range:" << static_cast<uint16_t>(item ? item->getShootRange() : it.shootRange);
-
+	} else if (it.weaponType != WEAPON_NONE) {
 		bool begin = true;
 
-		int32_t attack, defense, extraDefense;
+		int32_t attack, defense, extraDefense, shootRange;
 		int8_t hitChance;
 		if (item) {
 			attack = item->getAttack();
 			hitChance = item->getHitChance();
 			defense = item->getDefense();
 			extraDefense = item->getExtraDefense();
+			shootRange = item->getShootRange();
 		} else {
 			attack = it.attack;
 			hitChance = it.hitChance;
 			defense = it.defense;
 			extraDefense = it.extraDefense;
+			shootRange = it.shootRange;
 		}
 
 		if (attack != 0) {
 			begin = false;
-			s << " (Atk:" << attack;
+			s << "(Atk: " << attack;
 
 			if (it.abilities && it.abilities->elementType != COMBAT_NONE && it.abilities->elementDamage != 0) {
 				s << " physical + " << it.abilities->elementDamage << ' ' << getCombatName(it.abilities->elementType);
 			}
 		}
-
-		if (hitChance != 0 || defense != 0 || extraDefense != 0) {
+		if (defense != 0) {
 			if (begin) {
 				begin = false;
 				s << " (";
 			} else {
 				s << ", ";
 			}
-
 			s << "Def:" << defense;
-			if (hitChance != 0) {
-				s << ", Hit%" << std::showpos << static_cast<int16_t>(hitChance) << std::noshowpos;
+		}
+		if (hitChance != 0) {
+			if (begin) {
+				begin = false;
+				s << " (";
+			} else {
+				s << ", ";
 			}
-			if (extraDefense != 0) {
+			s << " Hit%" << std::showpos << static_cast<int16_t>(hitChance) << std::noshowpos;
+		}
+		if (shootRange >= 2) {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+				s << "Range:" << shootRange;
+			} else {
+				s << ", ";
+			}
+		if (extraDefense != 0) {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
 				s << ' ' << std::showpos << extraDefense << std::noshowpos;
 			}
-		}
-
+		
 		if (it.abilities) {
 			for (uint8_t i = SKILL_FIRST; i <= SKILL_FISHING; i++) {
 				if (!it.abilities->skills[i]) {
@@ -941,19 +962,19 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				if (begin) {
 					begin = false;
 					s << " (";
-					} else {
-						s << ", ";
-					}
-					s << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos;
+				} else {
+					s << ", ";
 				}
+				s << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos;
+			}
 
-				if (it.abilities->stats[STAT_MAGICPOINTS]) {
-					if (begin) {
-						begin = false;
+			if (it.abilities->stats[STAT_MAGICPOINTS]) {
+				if (begin) {
+					begin = false;
 						s << " (";
 					} else {
-						s << ", ";
-					}
+					s << ", ";
+				}
 
 				s << "magic level " << std::showpos << it.abilities->stats[STAT_MAGICPOINTS] << std::noshowpos;
 			}
