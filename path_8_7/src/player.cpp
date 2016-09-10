@@ -3232,19 +3232,6 @@ bool Player::setAttackedCreature(Creature* creature)
 	}
 
 	if (creature) {
-		if (Monster* monster = creature->getMonster()) {
-			if (monster->isSummon()) {
-				if (Player* owner = monster->getMaster()->getPlayer()) {
-					if (owner != const_cast<Player*>(this)) {
-						addAttacked(owner);
-						addInFightTicks(true);
-						if (skull == SKULL_NONE && owner->skull == SKULL_NONE) {
-							setSkull(SKULL_WHITE);
-						}
-					}
-				}
-			}
-		}
 		g_dispatcher.addTask(createTask(std::bind(&Game::checkCreatureAttack, &g_game, getID())));
 	}
 	return true;

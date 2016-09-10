@@ -292,8 +292,10 @@ class Tile : public Cylinder
 		void setTileFlags(const Item* item);
 		void resetTileFlags(const Item* item);
 
-	protected:
+	public:
 		Item* ground;
+
+	protected:
 		Position tilePos;
 		uint32_t flags;
 };

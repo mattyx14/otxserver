@@ -1209,19 +1209,11 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 	msg.addByte(0xAA);
 
 #ifdef _MULTIPLATFORM77
-	msg.add<uint32_t>(0);
+	static uint32_t statementId = 0;
+	msg.add<uint32_t>(++statementId);
 #endif
 
-	if (type != TALKTYPE_CHANNEL_R2) {
-		if (type != TALKTYPE_RVR_ANSWER) {
-			msg.addString(creature->getName());
-		} else {
-			msg.addString("Gamemaster");
-		}
-	} else {
-		msg.addString("");
-	}
-
+	msg.addString(creature->getName());
 	msg.addByte(type);
 	if (pos) {
 		msg.addPosition(*pos);
@@ -1239,10 +1231,13 @@ void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, co
 	msg.addByte(0xAA);
 
 #ifdef _MULTIPLATFORM77
-	msg.add<uint32_t>(0);
+	static uint32_t statementId = 0;
+	msg.add<uint32_t>(++statementId);
 #endif
 
-	if (type == TALKTYPE_CHANNEL_R2) {
+	if (!creature) {
+		msg.add<uint32_t>(0x00);
+	} else if (type == TALKTYPE_CHANNEL_R2) {
 		msg.addString("");
 		type = TALKTYPE_CHANNEL_R1;
 	} else {
@@ -1652,8 +1647,12 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, uint32_t itemId, const 
 	msg.addItem(itemId, 1);
 	msg.add<uint16_t>(text.size());
 	msg.addString(text);
+#ifdef _MULTIPLATFORM77
 	msg.add<uint16_t>(0x00);
 	msg.add<uint16_t>(0x00);
+#else
+	msg.addString("");
+#endif
 	writeToOutputBuffer(msg);
 }
 

@@ -62,6 +62,7 @@
 	- Added NPC with balance (MatheusMkalo)
 	- Added depotLimits (Malucooo)
 	- Added playerSpectators to castSystem (Malucooo)
+	- Added expertPVP (Slavidodo)
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
@@ -76,6 +77,8 @@
 	- Fix manaChange (Malucooo)
 	- Fix item descritions (Malucooo)
 	- Fix reward changeLoot (Malucooo)
+	- Fix stackpos useitem issue (Babymannen) on 7.x
+	- Fix gain skull on kill monsterSummon on party - 8.x and 7.x
 	- Reduse tileLimit to 1000
 	- Remove skill on items this feature no are used
 	- Support to 10.94/97
