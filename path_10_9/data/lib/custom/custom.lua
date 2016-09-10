@@ -493,14 +493,3 @@ function Player.getExhaustion(self, value)
 
 	return storage - os.time()
 end
-
--- How to add items to the purse with lua:
---[[
-	local purse = player:getSlotItem(CONST_SLOT_PURSE)
-	if purse then
-		local ret = purse:addItemEx(Game.createItem(7618, 100))
-		if ret ~= RETURNVALUE_NOERROR then
-			-- Item was not added, maybe because the purse was full, or maybe the player has no cap to hold the item, do something.
-		end
-	end
-]]
