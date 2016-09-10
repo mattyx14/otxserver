@@ -1253,7 +1253,27 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_NOTENOUGHFISHLEVEL:
 			return "You do not have enough fishing level";
 
+		case RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVEPLAYERS:
+			return "You cannot pass players that are aggressive against.";
+
+		case RETURNVALUE_YOUCANNOTPASSTHROUGHAGGRESSIVECREATURES:
+			return "You cannot pass creatures that are aggressive against.";
+
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
 	}
+}
+
+uint16_t getPvpItem(uint16_t itemId, bool isPvp)
+{
+	switch (itemId) {
+	case ITEM_MAGICWALL: case ITEM_MAGICWALL_NOPVP: return isPvp ? ITEM_MAGICWALL : ITEM_MAGICWALL_NOPVP;
+	case ITEM_WILDGROWTH: case ITEM_WILDGROWTH_NOPVP: return isPvp ? ITEM_WILDGROWTH : ITEM_WILDGROWTH_NOPVP;
+	case ITEM_ENERGYFIELD_PVP: case ITEM_ENERGYFIELD_NOPVP: return isPvp ? ITEM_ENERGYFIELD_PVP : ITEM_ENERGYFIELD_NOPVP;
+	case ITEM_FIREFIELD_PVP_FULL: case ITEM_FIREFIELD_NOPVP_FULL: return isPvp ? ITEM_FIREFIELD_PVP_FULL : ITEM_FIREFIELD_NOPVP_FULL;
+	case ITEM_FIREFIELD_PVP_MEDIUM: case ITEM_FIREFIELD_NOPVP_MEDIUM: return isPvp ? ITEM_FIREFIELD_PVP_MEDIUM : ITEM_FIREFIELD_NOPVP_MEDIUM;
+	case ITEM_FIREFIELD_PVP_SMALL: case ITEM_FIREFIELD_NOPVP_SMALL: return isPvp ? ITEM_FIREFIELD_PVP_SMALL : ITEM_FIREFIELD_NOPVP_SMALL;
+	case ITEM_POISONFIELD_PVP: case ITEM_POISONFIELD_NOPVP: return isPvp ? ITEM_POISONFIELD_PVP : ITEM_POISONFIELD_NOPVP;
+	}
+	return 0x00;
 }

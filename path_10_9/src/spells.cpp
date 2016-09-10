@@ -819,7 +819,7 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if (range != -1 && !g_game.canThrowObjectTo(playerPos, toPos, true, range, range)) {
+	if (range != -1 && !g_game.canThrowObjectTo(playerPos, toPos, true, range, range, player)) {
 		player->sendCancelMessage(RETURNVALUE_DESTINATIONOUTOFREACH);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
@@ -1174,10 +1174,10 @@ bool InstantSpell::canThrowSpell(const Creature* creature, const Creature* targe
 	const Position& fromPos = creature->getPosition();
 	const Position& toPos = target->getPosition();
 	if (fromPos.z != toPos.z ||
-	        (range == -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight)) ||
-	        (range != -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight, range, range))) {
-		return false;
-	}
+	        (range == -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight, 8, 6, const_cast<Creature*>(creature))) ||
+	        (range != -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight, range, range, const_cast<Creature*>(creature)))) {
+  		return false;
+  	}
 	return true;
 }
 

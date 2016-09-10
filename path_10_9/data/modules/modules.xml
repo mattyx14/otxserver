@@ -12,5 +12,7 @@
 	<!-- EquipObject By Hotkey -->
 	<module type="recvbyte" byte="119" delay="1000" script="equipobject/equipobject.lua"/>
 
+	<!-- Expert Pvp -->
+	<module type="recvbyte" byte="160" script="expertpvp/fightmodes.lua"/>
 	<!-- Join agression formula is still unknown TODO: add it.-->
 </modules>

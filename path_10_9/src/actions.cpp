@@ -235,7 +235,7 @@ ReturnValue Actions::canUseFar(const Creature* creature, const Position& toPos, 
 		return RETURNVALUE_TOOFARAWAY;
 	}
 
-	if (checkLineOfSight && !g_game.canThrowObjectTo(creaturePos, toPos)) {
+	if (checkLineOfSight && !g_game.canThrowObjectTo(creaturePos, toPos, true, 8, 6, const_cast<Creature*>(creature))) {
 		return RETURNVALUE_CANNOTTHROW;
 	}
 

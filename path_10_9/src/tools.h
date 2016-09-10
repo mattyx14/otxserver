@@ -97,4 +97,5 @@ inline int64_t OTSYS_TIME()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
+uint16_t getPvpItem(uint16_t itemId, bool isPvp);
 #endif

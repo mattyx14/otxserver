@@ -595,8 +595,8 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 		msg.addByte(0x00);
 	}
 
-	msg.addByte(0x00); // can change pvp framing option
-	msg.addByte(0x00); // expert mode button enabled
+	msg.addByte(g_game.isExpertPvpEnabled()); // can change pvp framing option
+	msg.addByte(g_game.isExpertPvpEnabled()); // expert mode button enabled
 
 	msg.addString(g_config.getString(ConfigManager::STORE_IMAGES_URL));
 	msg.add<uint16_t>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STORE_COIN_PACKET)));

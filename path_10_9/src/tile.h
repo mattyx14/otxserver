@@ -202,7 +202,7 @@ class Tile : public Cylinder
 		uint32_t getTopItemCount() const;
 		uint32_t getDownItemCount() const;
 
-		bool hasProperty(ITEMPROPERTY prop) const;
+		bool hasProperty(ITEMPROPERTY prop, Creature* caster = nullptr) const;
 		bool hasProperty(const Item* exclude, ITEMPROPERTY prop) const;
 
 		inline bool hasFlag(uint32_t flag) const {

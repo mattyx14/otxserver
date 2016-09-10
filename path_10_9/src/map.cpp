@@ -455,7 +455,7 @@ void Map::clearSpectatorCache()
 }
 
 bool Map::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight /*= true*/,
-                           int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/) const
+                           int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/, Creature* creature /*=false*/) const
 {
 	//z checks
 	//underground 8->15
@@ -481,10 +481,10 @@ bool Map::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool 
 	if (!checkLineOfSight) {
 		return true;
 	}
-	return isSightClear(fromPos, toPos, false);
+	return isSightClear(fromPos, toPos, false, creature);
 }
 
-bool Map::checkSightLine(const Position& fromPos, const Position& toPos) const
+bool Map::checkSightLine(const Position& fromPos, const Position& toPos, Creature* caster) const
 {
 	if (fromPos == toPos) {
 		return true;
@@ -514,7 +514,7 @@ bool Map::checkSightLine(const Position& fromPos, const Position& toPos) const
 		}
 
 		const Tile* tile = getTile(start.x, start.y, start.z);
-		if (tile && tile->hasProperty(CONST_PROP_BLOCKPROJECTILE)) {
+		if (tile && tile->hasProperty(CONST_PROP_BLOCKPROJECTILE, caster)) {
 			return false;
 		}
 	}
@@ -532,14 +532,14 @@ bool Map::checkSightLine(const Position& fromPos, const Position& toPos) const
 	return true;
 }
 
-bool Map::isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck) const
+bool Map::isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck, Creature* caster) const
 {
 	if (floorCheck && fromPos.z != toPos.z) {
 		return false;
 	}
 
 	// Cast two converging rays and see if either yields a result.
-	return checkSightLine(fromPos, toPos) || checkSightLine(toPos, fromPos);
+	return checkSightLine(fromPos, toPos, caster) || checkSightLine(toPos, fromPos, caster);
 }
 
 const Tile* Map::canWalkTo(const Creature& creature, const Position& pos) const

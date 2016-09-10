@@ -322,6 +322,10 @@ const uint8_t fluidMap[] = {
 
 enum SquareColor_t : uint8_t {
 	SQ_COLOR_BLACK = 0,
+	SQ_COLOR_BROWN = 114,
+	SQ_COLOR_ORANGE = 198,
+	SQ_COLOR_YELLOW = 210,
+	SQ_COLOR_NONE = 255, // internal
 };
 
 enum TextColor_t : uint8_t {
@@ -433,6 +437,9 @@ enum GuildEmblems_t : uint8_t {
 
 enum item_t : uint16_t {
 	ITEM_BROWSEFIELD = 460, // for internal use
+
+	ITEM_PVP_SAFE_NULL = 461, // for internal use
+
 	ITEM_DEPOT_NULL = 25452, // for internal use
 
 	ITEM_DEPOT_I = 25453,
@@ -459,7 +466,10 @@ enum item_t : uint16_t {
 	ITEM_FIREFIELD_PERSISTENT_FULL = 1492,
 	ITEM_FIREFIELD_PERSISTENT_MEDIUM = 1493,
 	ITEM_FIREFIELD_PERSISTENT_SMALL = 1494,
-	ITEM_FIREFIELD_NOPVP = 1500,
+
+	ITEM_FIREFIELD_NOPVP_FULL = 1500,
+	ITEM_FIREFIELD_NOPVP_MEDIUM = 1501,
+	ITEM_FIREFIELD_NOPVP_SMALL = 1502,
 
 	ITEM_POISONFIELD_PVP = 1490,
 	ITEM_POISONFIELD_PERSISTENT = 1496,
@@ -472,10 +482,12 @@ enum item_t : uint16_t {
 	ITEM_MAGICWALL = 1497,
 	ITEM_MAGICWALL_PERSISTENT = 1498,
 	ITEM_MAGICWALL_SAFE = 11098,
+	ITEM_MAGICWALL_NOPVP = 20669,
 
 	ITEM_WILDGROWTH = 1499,
 	ITEM_WILDGROWTH_PERSISTENT = 2721,
 	ITEM_WILDGROWTH_SAFE = 11099,
+	ITEM_WILDGROWTH_NOPVP = 20670,
 
 	ITEM_BAG = 1987,
 
@@ -506,6 +518,11 @@ enum item_t : uint16_t {
 	ITEM_AMULETOFLOSS = 2173,
 
 	ITEM_DOCUMENT_RO = 1968, //read-only
+};
+
+enum ItemPvpStat : uint8_t {
+	ITEM_IS_PVP,
+	ITEM_IS_SAFE
 };
 
 enum PlayerFlags : uint64_t {
