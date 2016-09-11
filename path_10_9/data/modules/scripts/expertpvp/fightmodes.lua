@@ -1,40 +1,40 @@
 function onRecvbyte(player, msg, byte)
-	local fightMode = msggetByte()
-	local chaseMode = msggetByte()
-	local secureMode = msggetByte() ~= 0
-	local pvpMode, oldPvpMode = msggetByte(), playergetPvpMode()
+	local fightMode = msg:getByte()
+	local chaseMode = msg:getByte()
+	local secureMode = msg:getByte() ~= 0
+	local pvpMode, oldPvpMode = msg:getByte(), player:getPvpMode()
 	local expertPvp = configManager.getBoolean(configKeys.EXPERT_PVP)
 
-	playersetFightMode(fightMode)
-	playersetChaseMode(chaseMode)
+	player:setFightMode(fightMode)
+	player:setChaseMode(chaseMode)
 	if expertPvp then
 		local worldType = Game.getWorldType()
 		if worldType == WORLD_TYPE_NO_PVP and pvpMode == PVP_MODE_RED_FIST then
-			playersetPvpMode(playergetPvpMode())
+			player:setPvpMode(player:getPvpMode())
 		elseif worldType == WORLD_TYPE_PVP_ENFORCED and pvpMode ~= PVP_MODE_RED_FIST then
-			playersetPvpMode(PVP_MODE_RED_FIST)
+			player:setPvpMode(PVP_MODE_RED_FIST)
 		else
-			playersetPvpMode(pvpMode)
+			player:setPvpMode(pvpMode)
 		end
 
 		-- SecureMode Formula!
 		if worldType == WORLD_TYPE_NO_PVP and secureMode == false or (worldType == WORLD_TYPE_PVP_ENFORCED and secureMode == true) then
-			playersetSecureMode(not secureMode)
+			player:setSecureMode(not secureMode)
 		else
-			if playergetPvpMode() == PVP_MODE_RED_FIST then
+			if player:getPvpMode() == PVP_MODE_RED_FIST then
 				-- force secureMode false while red fist is on!
-				playersetSecureMode(false)
+				player:setSecureMode(false)
 			else
-				playersetSecureMode(secureMode)
+				player:setSecureMode(secureMode)
 			end
 
 			if oldPvpMode == PVP_MODE_RED_FIST then
-				playersetSecureMode(true)
+				player:setSecureMode(true)
 			end
 		end
 
 		addPlayerEvent(Player.updateFightModes, 250, player)
 	else
-		playersetSecureMode(secureMode)
+		player:setSecureMode(secureMode)
 	end
 end
