@@ -199,11 +199,11 @@ Vocation::Vocation(uint16_t id)
 	gainHP = 5;
 	attackSpeed = 1500;
 	baseSpeed = 220;
-	manaMultiplier = 4.0;
-	meleeDamageMultiplier = 1.0;
-	distDamageMultiplier = 1.0;
-	defenseMultiplier = 1.0;
-	armorMultiplier = 1.0;
+	manaMultiplier = 4.0f;
+	meleeDamageMultiplier = 1.0f;
+	distDamageMultiplier = 1.0f;
+	defenseMultiplier = 1.0f;
+	armorMultiplier = 1.0f;
 	skillMultipliers[0] = 1.5f;
 	skillMultipliers[1] = 2.0f;
 	skillMultipliers[2] = 2.0f;
