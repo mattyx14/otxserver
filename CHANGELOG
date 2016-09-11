@@ -95,6 +95,7 @@
 	- Fix gain skull on kill monsterSummon on party - 8.x and 7.x
 	- Reduse tileLimit to 1000
 	- Remove skill on items this feature no are used
+	- Remove unique items from Browse Field (Kamenuvol)
 	- Support to 10.94/97
 ]
 

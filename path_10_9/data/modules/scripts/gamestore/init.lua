@@ -516,7 +516,7 @@ GameStore.insertHistory = function(accountId, mode, description, amount)
 end
 GameStore.retrieveHistoryEntries = function(accountId)
 	local entries = {}
-	local resultId = db.storeQuery("SELECT * FROM `store_history` WHERE `account_id` = " .. accountId .. " ORDER BY `time` DESC LIMIT 15;")
+	local resultId = db.storeQuery("SELECT * FROM `store_history` WHERE `account_id` = '0' ORDER BY `time` DESC LIMIT 15;") 
 	if resultId ~= false then
 		repeat
 			local entry = {
