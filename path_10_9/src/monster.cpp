@@ -43,10 +43,7 @@ Monster* Monster::createMonster(const std::string& name)
 Monster::Monster(MonsterType* mtype) :
 	Creature()
 {
-	isIdle = true;
-	isMasterInRange = false;
 	mType = mtype;
-	spawn = nullptr;
 	defaultOutfit = mType->outfit;
 	currentOutfit = mType->outfit;
 
@@ -60,23 +57,8 @@ Monster::Monster(MonsterType* mtype) :
 
 	hiddenHealth = mType->hiddenHealth;
 
-	minCombatValue = 0;
-	maxCombatValue = 0;
-
-	targetTicks = 0;
-	targetChangeTicks = 0;
-	targetChangeCooldown = 0;
-	attackTicks = 0;
-	defenseTicks = 0;
-	yellTicks = 0;
-	extraMeleeAttack = false;
-
 	strDescription = mType->nameDescription;
 	toLowerCaseString(strDescription);
-
-	stepDuration = 0;
-
-	lastMeleeAttack = 0;
 
 	// register creature events
 	for (const std::string& scriptName : mType->scripts) {
@@ -943,6 +925,17 @@ void Monster::onThinkDefense(uint32_t interval)
 
 			if (defenseTicks % summonBlock.speed >= interval) {
 				//already used this spell for this round
+				continue;
+			}
+
+			uint32_t summonCount = 0;
+			for (Creature* summon : summons) {
+				if (summon->getName() == summonBlock.name) {
+					++summonCount;
+				}
+			}
+
+			if (summonCount >= summonBlock.max) {
 				continue;
 			}
 

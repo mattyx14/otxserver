@@ -156,25 +156,26 @@ class ScriptEnvironment
 		typedef std::map<uint32_t, int32_t> StorageMap;
 		typedef std::map<uint32_t, DBResult_ptr> DBResultMap;
 
-		//script file id
-		int32_t scriptId;
-		int32_t callbackId;
-		bool timerEvent;
 		LuaScriptInterface* interface;
 
-		//local item map
-		uint32_t lastUID;
-		std::unordered_map<uint32_t, Item*> localMap;
+		//for npc scripts
+		Npc* curNpc = nullptr;
 
 		//temporary item list
 		static std::multimap<ScriptEnvironment*, Item*> tempItems;
 
+		//local item map
+		std::unordered_map<uint32_t, Item*> localMap;
+		uint32_t lastUID = std::numeric_limits<uint16_t>::max();
+
+		//script file id
+		int32_t scriptId;
+		int32_t callbackId;
+		bool timerEvent;
+
 		//result map
 		static uint32_t lastResultId;
 		static DBResultMap tempResults;
-
-		//for npc scripts
-		Npc* curNpc;
 };
 
 #define reportErrorFunc(a)  reportError(__FUNCTION__, a, true)
@@ -211,7 +212,6 @@ class LuaScriptInterface
 		int32_t loadFile(const std::string& file, Npc* npc = nullptr);
 
 		const std::string& getFileById(int32_t scriptId);
-		int32_t getEvent();
 		int32_t getEvent(const std::string& eventName);
 		int32_t getMetaEvent(const std::string& globalName, const std::string& eventName);
 

@@ -154,8 +154,8 @@ class Container : public Item, public Cylinder
 		size_t getFirstIndex() const final;
 		size_t getLastIndex() const final;
 		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const final;
-		std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t> &countMap) const final;
-		Thing*getThing(size_t index) const final;
+		std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const final;
+		Thing* getThing(size_t index) const final;
 
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
@@ -176,9 +176,9 @@ class Container : public Item, public Cylinder
 		std::ostringstream& getContentDescription(std::ostringstream& os) const;
 
 		uint32_t maxSize;
-		uint32_t totalWeight;
+		uint32_t totalWeight = 0;
 		ItemDeque itemlist;
-		uint32_t serializationCount;
+		uint32_t serializationCount = 0;
 
 		bool unlocked;
 		bool pagination;

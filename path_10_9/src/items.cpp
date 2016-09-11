@@ -26,48 +26,20 @@
 
 #include "pugicast.h"
 
-uint32_t Items::dwMajorVersion = 0;
-uint32_t Items::dwMinorVersion = 0;
-uint32_t Items::dwBuildNumber = 0;
-
 extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
-
-ItemType::ItemType() :
-	group(ITEM_GROUP_NONE), type(ITEM_TYPE_NONE), id(0), clientId(0),
-	stackable(false), isAnimation(false), weight(0), levelDoor(0), decayTime(0),
-	wieldInfo(0), minReqLevel(0), minReqMagicLevel(0), charges(0), maxHitChance(-1),
-	decayTo(-1), attack(0), defense(0), extraDefense(0), armor(0), rotateTo(0),
-	runeMagLevel(0), runeLevel(0), combatType(COMBAT_NONE), transformToOnUse(),
-	transformToFree(0), destroyTo(0), maxTextLen(0), writeOnceItemId(0),
-	transformEquipTo(0), transformDeEquipTo(0), maxItems(8), slotPosition(SLOTP_HAND),
-	speed(0), wareId(0), magicEffect(CONST_ME_NONE), bedPartnerDir(DIRECTION_NONE),
-	weaponType(WEAPON_NONE), ammoType(AMMO_NONE), shootType(CONST_ANI_NONE),
-	corpseType(RACE_NONE), fluidSource(FLUID_NONE), floorChange(0),
-	alwaysOnTopOrder(0), lightLevel(0), lightColor(0), shootRange(1), hitChance(0),
-	forceUse(false), hasHeight(false), walkStack(true), blockSolid(false),
-	blockPickupable(false), blockProjectile(false), blockPathFind(false),
-	allowPickupable(false), showDuration(false), showCharges(false),
-	showAttributes(false), replaceable(true), pickupable(false), rotatable(false),
-	useable(false), moveable(false), alwaysOnTop(false), canReadText(false),
-	canWriteText(false), isVertical(false), isHorizontal(false), isHangable(false),
-	allowDistRead(false), lookThrough(false), stopTime(false), showCount(true)
-{
-}
 
 Items::Items()
 {
 	items.reserve(30000);
-}
-
-Items::~Items()
-{
-	clear();
+	nameToItems.reserve(30000);
 }
 
 void Items::clear()
 {
 	items.clear();
+	reverseItemMap.clear();
+	nameToItems.clear();
 }
 
 bool Items::reload()
@@ -125,18 +97,18 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 				return ERROR_INVALID_FORMAT;
 			}
 
-			Items::dwMajorVersion = vi.dwMajorVersion; //items otb format file version
-			Items::dwMinorVersion = vi.dwMinorVersion; //client version
-			Items::dwBuildNumber = vi.dwBuildNumber; //revision
+			majorVersion = vi.dwMajorVersion; //items otb format file version
+			minorVersion = vi.dwMinorVersion; //client version
+			buildNumber = vi.dwBuildNumber; //revision
 		}
 	}
 
-	if (Items::dwMajorVersion == 0xFFFFFFFF) {
+	if (majorVersion == 0xFFFFFFFF) {
 		std::cout << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
-	} else if (Items::dwMajorVersion != 3) {
+	} else if (majorVersion != 3) {
 		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
-	} else if (Items::dwMinorVersion < CLIENT_VERSION_1097) {
+	} else if (minorVersion < CLIENT_VERSION_1097) {
 		std::cout << "A newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
@@ -380,6 +352,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 	}
 
 	it.name = itemNode.attribute("name").as_string();
+
+	nameToItems.insert({ asLowerCaseString(it.name), id });
 
 	pugi::xml_attribute articleAttribute = itemNode.attribute("article");
 	if (articleAttribute) {
@@ -997,15 +971,10 @@ const ItemType& Items::getItemIdByClientId(uint16_t spriteId) const
 
 uint16_t Items::getItemIdByName(const std::string& name)
 {
-	if (name.empty()) {
-		return 0;
-	}
+	auto result = nameToItems.find(asLowerCaseString(name));
 
-	const char* itemName = name.c_str();
-	for (size_t i = 100, size = items.size(); i < size; ++i) {
-		if (strcasecmp(itemName, items[i].name.c_str()) == 0) {
-			return i;
-		}
-	}
-	return 0;
+	if (result == nameToItems.end())
+		return 0;
+
+	return result->second;
 }

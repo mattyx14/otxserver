@@ -57,9 +57,7 @@ LuaEnvironment g_luaEnvironment;
 
 ScriptEnvironment::ScriptEnvironment()
 {
-	curNpc = nullptr;
 	resetEnv();
-	lastUID = std::numeric_limits<uint16_t>::max();
 }
 
 ScriptEnvironment::~ScriptEnvironment()
@@ -359,29 +357,6 @@ int32_t LuaScriptInterface::getEvent(const std::string& eventName)
 	lua_setglobal(luaState, eventName.c_str());
 
 	cacheFiles[runningEventId] = loadingFile + ":" + eventName;
-	return runningEventId++;
-}
-
-int32_t LuaScriptInterface::getEvent()
-{
-	//check if function is on the stack
-	if (!isFunction(luaState, -1)) {
-		return -1;
-	}
-
-	//get our events table
-	lua_rawgeti(luaState, LUA_REGISTRYINDEX, eventTableRef);
-	if (!isTable(luaState, -1)) {
-		lua_pop(luaState, 1);
-		return -1;
-	}
-
-	//save in our events table
-	lua_pushvalue(luaState, -2);
-	lua_rawseti(luaState, -2, runningEventId);
-	lua_pop(luaState, 2);
-
-	cacheFiles[runningEventId] = loadingFile + ":callback";
 	return runningEventId++;
 }
 
@@ -3140,7 +3115,7 @@ int LuaScriptInterface::luaCreateCombatArea(lua_State* L)
 	if (parameters >= 2) {
 		uint32_t rowsExtArea;
 		std::list<uint32_t> listExtArea;
-		if (!getArea(L, listExtArea, rowsExtArea)) {
+		if (!isTable(L, 2) || !getArea(L, listExtArea, rowsExtArea)) {
 			reportErrorFunc("Invalid extended area table.");
 			pushBoolean(L, false);
 			return 1;
@@ -3150,7 +3125,7 @@ int LuaScriptInterface::luaCreateCombatArea(lua_State* L)
 
 	uint32_t rowsArea = 0;
 	std::list<uint32_t> listArea;
-	if (!getArea(L, listArea, rowsArea)) {
+	if (!isTable(L, 1) || !getArea(L, listArea, rowsArea)) {
 		reportErrorFunc("Invalid area table.");
 		pushBoolean(L, false);
 		return 1;
