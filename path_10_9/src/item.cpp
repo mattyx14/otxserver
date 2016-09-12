@@ -899,7 +899,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				s << " physical + " << it.abilities->elementDamage << ' ' << getCombatName(it.abilities->elementType);
 			}
 		}
-		if (defense != 0) {
+		if (defense != 0 || extraDefense != 0) {
 			if (begin) {
 				begin = false;
 				s << " (";
@@ -907,6 +907,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				s << ", ";
 			}
 			s << "Def:" << defense;
+			if (extraDefense != 0) {
+				s << ' ' << std::showpos << extraDefense << std::noshowpos;
+			}
 		}
 		if (hitChance != 0) {
 			if (begin) {
