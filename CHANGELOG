@@ -93,6 +93,7 @@
 	- Fix reward changeLoot (Malucooo)
 	- Fix stackpos useitem issue (Babymannen) on 7.x
 	- Fix gain skull on kill monsterSummon on party - 8.x and 7.x
+	- Fix weaponDamage on 7.x (Babymannen)
 	- Now none vocation drop loot on  7.x (Babymannen)
 	- Reduse tileLimit to 1000
 	- Remove skill on items this feature no are used
