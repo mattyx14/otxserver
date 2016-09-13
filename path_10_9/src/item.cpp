@@ -931,18 +931,6 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 					s << ' ' << std::showpos << extraDefense << std::noshowpos;
 				}
 			}
-
-			if (shootRange >= 2) {
-				if (begin) {
-					begin = false;
-					s << " (";
-				} else {
-					s << ", ";
-				}
-				s << "Range:" << shootRange;
-			} else {
-				s << ", ";
-			}
 			if (it.abilities) {
 				for (uint8_t i = SKILL_FIRST; i <= SKILL_FISHING; i++) {
 					if (!it.abilities->skills[i]) {
