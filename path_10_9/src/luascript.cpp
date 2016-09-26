@@ -11530,60 +11530,56 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 
 	const LuaVariant& variant = getVariant(L, 3);
 	switch (variant.type) {
-		case VARIANT_NUMBER: {
-			Creature* target = g_game.getCreatureByID(variant.number);
-			if (!target) {
-				pushBoolean(L, false);
-				return 1;
-			}
-
-			if (combat->hasArea()) {
-				pushBoolean(L, combat->doCombat(creature, target->getPosition()));
-				return 1;
-			} else {
-				pushBoolean(L, combat->doCombat(creature, target));
-				return 1;
-			}
-			break;
-		}
-
-		case VARIANT_POSITION: {
-			pushBoolean(L, combat->doCombat(creature, variant.pos));
-			return 1;
-			break;
-		}
-
-		case VARIANT_TARGETPOSITION: {
-			if (combat->hasArea()) {
-				pushBoolean(L, combat->doCombat(creature, variant.pos));
-				return 1;
-			} else {
-				combat->postCombatEffects(creature, variant.pos);
-				g_game.addMagicEffect(variant.pos, CONST_ME_POFF);
-			}
-			break;
-		}
-
-		case VARIANT_STRING: {
-			Player* target = g_game.getPlayerByName(variant.text);
-			if (!target) {
-				pushBoolean(L, false);
-				return 1;
-			}
-
-			pushBoolean(L, combat->doCombat(creature, target));
-			break;
-		}
-
-		case VARIANT_NONE: {
-			reportErrorFunc(getErrorDesc(LUA_ERROR_VARIANT_NOT_FOUND));
+	case VARIANT_NUMBER: {
+		Creature* target = g_game.getCreatureByID(variant.number);
+		if (!target) {
 			pushBoolean(L, false);
 			return 1;
 		}
 
-		default: {
-			break;
+		if (combat->hasArea()) {
+			combat->doCombat(creature, target->getPosition());
+		} else {
+			combat->doCombat(creature, target);
 		}
+		break;
+	}
+
+	case VARIANT_POSITION: {
+		combat->doCombat(creature, variant.pos);
+		break;
+	}
+
+	case VARIANT_TARGETPOSITION: {
+		if (combat->hasArea()) {
+			combat->doCombat(creature, variant.pos);
+		} else {
+			combat->postCombatEffects(creature, variant.pos);
+			g_game.addMagicEffect(variant.pos, CONST_ME_POFF);
+		}
+		break;
+	}
+
+	case VARIANT_STRING: {
+		Player* target = g_game.getPlayerByName(variant.text);
+		if (!target) {
+			pushBoolean(L, false);
+			return 1;
+		}
+
+		combat->doCombat(creature, target);
+		break;
+	}
+
+	case VARIANT_NONE: {
+		reportErrorFunc(getErrorDesc(LUA_ERROR_VARIANT_NOT_FOUND));
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	default: {
+		break;
+	}
 	}
 
 	pushBoolean(L, true);
