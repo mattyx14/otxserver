@@ -173,9 +173,6 @@ class Monster final : public Creature
 			return stepDuration >= 1;
 		}
 
-		bool canAttack(Creature* creature) const final;
-		bool canWalkThroughTileItems(Tile* tile) const final;
-
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 		                     bool checkDefense = false, bool checkArmor = false, bool field = false);
 

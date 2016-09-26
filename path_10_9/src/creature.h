@@ -361,14 +361,6 @@ class Creature : virtual public Thing
 			return true;
 		}
 
-		// both functions are not related to expert pvp disabled.
-		virtual bool canAttack(Creature*) const {
-			return true;
-		}
-		virtual bool canWalkThroughTileItems(Tile*) const {
-			return true;
-		}
-
 		virtual void changeHealth(int32_t healthChange, bool sendHealthChange = true);
 		virtual void changeMana(int32_t manaChange);
 

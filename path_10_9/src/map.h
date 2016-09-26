@@ -235,7 +235,7 @@ class Map
 		  *	\returns The result if you can throw there or not
 		  */
 		bool canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight = true,
-		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY, Creature* creature = nullptr) const;
+		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY) const;
 
 		/**
 		  * Checks if path is clear from fromPos to toPos
@@ -245,8 +245,8 @@ class Map
 		  *	\param floorCheck if true then view is not clear if fromPos.z is not the same as toPos.z
 		  *	\returns The result if there is no obstacles
 		  */
-		bool isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck, Creature* caster = nullptr) const;
-		bool checkSightLine(const Position& fromPos, const Position& toPos, Creature* caster = nullptr) const;
+		bool isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck) const;
+		bool checkSightLine(const Position& fromPos, const Position& toPos) const;
 
 		const Tile* canWalkTo(const Creature& creature, const Position& pos) const;
 

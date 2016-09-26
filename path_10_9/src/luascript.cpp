@@ -1466,9 +1466,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_FIREFIELD_PERSISTENT_FULL)
 	registerEnum(ITEM_FIREFIELD_PERSISTENT_MEDIUM)
 	registerEnum(ITEM_FIREFIELD_PERSISTENT_SMALL)
-	registerEnum(ITEM_FIREFIELD_NOPVP_FULL)
-	registerEnum(ITEM_FIREFIELD_NOPVP_MEDIUM)
-	registerEnum(ITEM_FIREFIELD_NOPVP_SMALL)
+	registerEnum(ITEM_FIREFIELD_NOPVP)
 	registerEnum(ITEM_POISONFIELD_PVP)
 	registerEnum(ITEM_POISONFIELD_PERSISTENT)
 	registerEnum(ITEM_POISONFIELD_NOPVP)
@@ -1478,11 +1476,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_MAGICWALL)
 	registerEnum(ITEM_MAGICWALL_PERSISTENT)
 	registerEnum(ITEM_MAGICWALL_SAFE)
-	registerEnum(ITEM_MAGICWALL_NOPVP)
 	registerEnum(ITEM_WILDGROWTH)
 	registerEnum(ITEM_WILDGROWTH_PERSISTENT)
 	registerEnum(ITEM_WILDGROWTH_SAFE)
-	registerEnum(ITEM_WILDGROWTH_NOPVP)
 
 	registerEnum(PlayerFlag_CannotUseCombat)
 	registerEnum(PlayerFlag_CannotAttackPlayer)
@@ -1622,18 +1618,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(WORLD_TYPE_NO_PVP)
 	registerEnum(WORLD_TYPE_PVP)
 	registerEnum(WORLD_TYPE_PVP_ENFORCED)
-
-	registerEnum(CHASEMODE_STANDSTILL)
-	registerEnum(CHASEMODE_FOLLOW)
-
-	registerEnum(FIGHTMODE_ATTACK)
-	registerEnum(FIGHTMODE_BALANCED)
-	registerEnum(FIGHTMODE_DEFENSE)
-
-	registerEnum(PVP_MODE_DOVE)
-	registerEnum(PVP_MODE_WHITE_HAND)
-	registerEnum(PVP_MODE_YELLOW_HAND)
-	registerEnum(PVP_MODE_RED_FIST)
 
 	// Use with container:addItem, container:addItemEx and possibly other functions.
 	registerEnum(FLAG_NOLIMIT)
@@ -1794,7 +1778,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::ALLOW_WALKTHROUGH)
 	registerEnumIn("configKeys", ConfigManager::ENABLE_LIVE_CASTING)
 	registerEnumIn("configKeys", ConfigManager::ALLOW_BLOCK_SPAWN)
-	registerEnumIn("configKeys", ConfigManager::EXPERT_PVP)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
@@ -2328,16 +2311,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "stopLiveCast", LuaScriptInterface::luaPlayerStopLiveCast);
 	registerMethod("Player", "isLiveCaster", LuaScriptInterface::luaPlayerIsLiveCaster);
 	registerMethod("Player", "getSpectators", LuaScriptInterface::luaPlayerGetSpectators);
-
-	registerMethod("Player", "getChaseMode", LuaScriptInterface::luaPlayerGetChaseMode);
-	registerMethod("Player", "getFightMode", LuaScriptInterface::luaPlayerGetFightMode);
-	registerMethod("Player", "getSecureMode", LuaScriptInterface::luaPlayerGetSecureMode);
-	registerMethod("Player", "getPvpMode", LuaScriptInterface::luaPlayerGetPvpMode);
-
-	registerMethod("Player", "setChaseMode", LuaScriptInterface::luaPlayerSetChaseMode);
-	registerMethod("Player", "setFightMode", LuaScriptInterface::luaPlayerSetFightMode);
-	registerMethod("Player", "setSecureMode", LuaScriptInterface::luaPlayerSetSecureMode);
-	registerMethod("Player", "setPvpMode", LuaScriptInterface::luaPlayerSetPvpMode);
 
 	registerMethod("Player", "hasSecureMode", LuaScriptInterface::luaPlayerHasSecureMode);
 
@@ -9689,106 +9662,6 @@ int32_t LuaScriptInterface::luaPlayerIsLiveCaster(lua_State* L)
 	}
 
 	lua_pushboolean(L, player->isLiveCaster());
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetChaseMode(lua_State* L)
-{
-	// player:getChaseMode()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->chaseMode);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetFightMode(lua_State* L)
-{
-	// player:getFightMode()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->fightMode);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetSecureMode(lua_State* L)
-{
-	// player:getSecureMode()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushboolean(L, player->secureMode);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetPvpMode(lua_State* L)
-{
-	// player:getPvpMode()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->getPvpMode());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerSetChaseMode(lua_State* L)
-{
-	// player:setChaseMode(mode)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->setChaseMode(getNumber<chaseMode_t>(L, 2));
-		lua_pushboolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerSetFightMode(lua_State* L)
-{
-	// player:setFightMode(mode)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->setFightMode(getNumber<fightMode_t>(L, 2));
-		lua_pushboolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerSetSecureMode(lua_State* L)
-{
-	// player:setSecureMode(mode)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->setSecureMode(getBoolean(L, 2));
-		lua_pushboolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerSetPvpMode(lua_State* L)
-{
-	// player:setPvpMode(mode)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->setPvpMode(getNumber<pvpMode_t>(L, 2));
-		lua_pushboolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
 	return 1;
 }
 

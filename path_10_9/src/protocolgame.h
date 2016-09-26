@@ -319,7 +319,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		void sendFightModes();
 
-		void sendCreatureSquare(const Creature* creature, SquareColor_t color, uint8_t length);
+		void sendCreatureSquare(const Creature* creature, SquareColor_t color);
 
 		void sendSpellCooldown(uint8_t spellId, uint32_t time);
 		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time);

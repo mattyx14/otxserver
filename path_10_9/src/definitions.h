@@ -29,8 +29,8 @@
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv3/"
 
 #define CLIENT_VERSION_MIN 1094
-#define CLIENT_VERSION_MAX 1097
-#define CLIENT_VERSION_STR "10.97"
+#define CLIENT_VERSION_MAX 1098
+#define CLIENT_VERSION_STR "10.98"
 
 #define AUTHENTICATOR_DIGITS 6U
 #define AUTHENTICATOR_PERIOD 30U

@@ -174,7 +174,7 @@ void Creature::onAttacking(uint32_t interval)
 	onAttacked();
 	attackedCreature->onAttacked();
 
-	if (g_game.isSightClear(getPosition(), attackedCreature->getPosition(), true, const_cast<Creature*>(this))) {
+	if (g_game.isSightClear(getPosition(), attackedCreature->getPosition(), true)) {
 		doAttacking(interval);
 	}
 }

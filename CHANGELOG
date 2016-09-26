@@ -60,11 +60,15 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 7.6 to 10.97
+		Tibia Clients - 7.6 to 10.98
+		Tibia Client 11
+
+	BUGS
+		Fix item descritions
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "
-	- Added support to manualVersion 10.94/97 is supported
+	- Added support to manualVersion 10.94/98 is supported
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
@@ -75,8 +79,8 @@
 	- Added NPC with balance (MatheusMkalo)
 	- Added depotLimits (Malucooo)
 	- Added playerSpectators to castSystem (Malucooo)
-	- Added expertPVP (Slavidodo)
 	- Added chestReward on depot (Malucooo)
+	- Added SkullTimeFragsWindow
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
@@ -89,16 +93,16 @@
 	- Fix fluids on 7.x
 	- Fix pagination depots (Malucooo)
 	- Fix manaChange (Malucooo)
-	- Fix item descritions (Malucooo)
 	- Fix reward changeLoot (Malucooo)
 	- Fix stackpos useitem issue (Babymannen) on 7.x
 	- Fix gain skull on kill monsterSummon on party - 8.x and 7.x
 	- Fix weaponDamage on 7.x (Babymannen)
+	- Fix tradeWindow for TibiaClient 11
 	- Now none vocation drop loot on  7.x (Babymannen)
 	- Reduse tileLimit to 1000
 	- Remove skill on items this feature no are used
 	- Remove unique items from Browse Field (Kamenuvol)
-	- Support to 10.94/97
+	- Support to 10.94/98
 ]
 
 [ OTX Server 3.6 :: Version " SCARETALE "

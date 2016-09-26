@@ -1000,13 +1000,13 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 	}
 
 	if ((Position::getDistanceX(playerPos, mapToPos) > item->getThrowRange()) ||
-	        (Position::getDistanceY(playerPos, mapToPos) > item->getThrowRange()) ||
-	        (Position::getDistanceZ(mapFromPos, mapToPos) * 4 > item->getThrowRange())) {
+			(Position::getDistanceY(playerPos, mapToPos) > item->getThrowRange()) ||
+			(Position::getDistanceZ(mapFromPos, mapToPos) * 4 > item->getThrowRange())) {
 		player->sendCancelMessage(RETURNVALUE_DESTINATIONOUTOFREACH);
 		return;
 	}
 
-	if (!canThrowObjectTo(mapFromPos, mapToPos, true, 8, 6, player)) {
+	if (!canThrowObjectTo(mapFromPos, mapToPos)) {
 		player->sendCancelMessage(RETURNVALUE_CANNOTTHROW);
 		return;
 	}
@@ -2415,7 +2415,7 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 		return;
 	}
 
-	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition(), true, 8, 6, tradePartner)) {
+	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())) {
 		player->sendCancelMessage(RETURNVALUE_CREATUREISNOTREACHABLE);
 		return;
 	}
@@ -2552,7 +2552,7 @@ void Game::playerAcceptTrade(uint32_t playerId)
 		return;
 	}
 
-	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition(), true, 8, 6, tradePartner)) {
+	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())) {
 		player->sendCancelMessage(RETURNVALUE_CREATUREISNOTREACHABLE);
 		return;
 	}
@@ -3409,14 +3409,14 @@ void Game::playerSpeakToNpc(Player* player, const std::string& text)
 
 //--
 bool Game::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight /*= true*/,
-                            int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/, Creature* creature /*= false*/) const
+                            int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/) const
 {
-	return map.canThrowObjectTo(fromPos, toPos, checkLineOfSight, rangex, rangey, creature);
+	return map.canThrowObjectTo(fromPos, toPos, checkLineOfSight, rangex, rangey);
 }
 
-bool Game::isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck, Creature* caster) const
+bool Game::isSightClear(const Position& fromPos, const Position& toPos, bool floorCheck) const
 {
-	return map.isSightClear(fromPos, toPos, floorCheck, caster);
+	return map.isSightClear(fromPos, toPos, floorCheck);
 }
 
 bool Game::internalCreatureTurn(Creature* creature, Direction dir)
@@ -3865,9 +3865,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 
 		Player* attackerPlayer;
 		if (attacker) {
-			if (!attacker->canAttack(target)) {
-				return false;
-			}
 			attackerPlayer = attacker->getPlayer();
 		} else {
 			attackerPlayer = nullptr;
@@ -4180,9 +4177,6 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 
 		Player* attackerPlayer;
 		if (attacker) {
-			if (!attacker->canAttack(target)) {
-				return false;
-			}
 			attackerPlayer = attacker->getPlayer();
 		} else {
 			attackerPlayer = nullptr;
@@ -4327,10 +4321,6 @@ void Game::startDecay(Item* item)
 	} else {
 		internalDecayItem(item);
 	}
-
-	if (isExpertPvpEnabled()) {
-		updateSpectatorsPvp(item);
-	}
 }
 
 void Game::internalDecayItem(Item* item)
@@ -4361,10 +4351,6 @@ void Game::checkDecay()
 			ReleaseItem(item);
 			it = decayItems[bucket].erase(it);
 			continue;
-		}
-
-		if (g_game.isExpertPvpEnabled()) {
-			g_game.updateSpectatorsPvp(item);
 		}
 
 		int32_t duration = item->getDuration();
@@ -4747,7 +4733,8 @@ bool Game::loadExperienceStages()
 		if (strcasecmp(stageNode.name(), "config") == 0) {
 			stagesEnabled = stageNode.attribute("enabled").as_bool();
 		} else {
-			uint32_t minLevel, maxLevel, multiplier;
+			uint32_t minLevel, maxLevel;
+			float multiplier;
 
 			pugi::xml_attribute minLevelAttribute = stageNode.attribute("minlevel");
 			if (minLevelAttribute) {
@@ -4767,7 +4754,7 @@ bool Game::loadExperienceStages()
 
 			pugi::xml_attribute multiplierAttribute = stageNode.attribute("multiplier");
 			if (multiplierAttribute) {
-				multiplier = pugi::cast<uint32_t>(multiplierAttribute.value());
+				multiplier = pugi::cast<float>(multiplierAttribute.value());
 			} else {
 				multiplier = 1;
 			}
@@ -4803,19 +4790,6 @@ void Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 		return;
 	}
 
-	if (g_game.isExpertPvpEnabled()) {
-		if (invitedPlayer->isInPvpSituation()) {
-			ss << "You can't invite " << invitedPlayer->getName() << " while he is in an agression.";
-			player->sendCancelMessage(ss.str());
-			return;
-		} else if (player->isInPvpSituation()) {
-			ss << "You can't invite players while you are in an agression.";
-			player->sendCancelMessage(ss.str());
-			return;
-		}
-		
-	}
-
 	Party* party = player->getParty();
 	if (!party) {
 		party = new Party(player);
@@ -4845,11 +4819,6 @@ void Game::playerJoinParty(uint32_t playerId, uint32_t leaderId)
 
 	if (player->getParty()) {
 		player->sendTextMessage(MESSAGE_INFO_DESCR, "You are already in a party.");
-		return;
-	}
-
-	if (g_game.isExpertPvpEnabled() && (player->isInPvpSituation() || leader->isInPvpSituation())) {
-		player->sendCancelMessage("You can't join while you are in an aggression");
 		return;
 	}
 
@@ -5650,102 +5619,6 @@ void Game::removeUniqueItem(uint16_t uniqueId)
 	auto it = uniqueItems.find(uniqueId);
 	if (it != uniqueItems.end()) {
 		uniqueItems.erase(it);
-	}
-}
-
-bool Game::isExpertPvpEnabled()
-{
-	return g_config.getBoolean(ConfigManager::EXPERT_PVP);
-}
-
-void Game::updateSpectatorsPvp(Thing* thing)
-{
-	if (!thing || thing->isRemoved()) {
-		return;
-	}
-
-	if (Creature* creature = thing->getCreature()) {
-		Player* player = creature->getPlayer();
-		if (!player) {
-			return;
-		}
-
-		SpectatorVec list;
-		map.getSpectators(list, player->getPosition(), true, true);
-		for (auto it : list) {
-			Player* itPlayer = it->getPlayer();
-			if (!itPlayer || itPlayer->isRemoved()) {
-				continue;
-			}
-
-			SquareColor_t sqColor = SQ_COLOR_NONE;
-			if (player->hasPvpActivity(itPlayer)) {
-				sqColor = SQ_COLOR_YELLOW;
-			} else if (itPlayer->isInPvpSituation()) {
-				if (itPlayer == player) {
-					sqColor = SQ_COLOR_YELLOW;
-				} else if (player->hasPvpActivity(itPlayer, true)) { // if this player attacked anyone of players's guild/party
-					sqColor = SQ_COLOR_ORANGE;
-				} else {
-					sqColor = SQ_COLOR_BROWN;
-				}
-			} else { // player isn't enganged at any pvp situation! ( even if self)
-				player->sendCreatureSquare(itPlayer, SQ_COLOR_NONE, 0);
-			}
-
-			if (sqColor != SQ_COLOR_NONE) {
-				player->sendPvpSquare(itPlayer, sqColor);
-			}
-		}
-	} else if (Item* item = thing->getItem()) {
-		if (!item || item->isRemoved()) {
-			return;
-		}
-
-		MagicField* field = item->getMagicField();
-		if (!field) {
-			return;
-		}
-
-		Tile* tile = field->getTile();
-		if (!tile) {
-			return;
-		}
-
-		Player* owner = g_game.getPlayerByID(field->getOwner());
-		if (Monster* monster = getMonsterByID(field->getOwner())) {
-			if (monster->isSummon()) {
-				owner = monster->getMaster()->getPlayer();
-			}
-		}
-
-		SpectatorVec list;
-		map.getSpectators(list, field->getPosition(), true, true);
-		for (auto it : list) {
-			Player* itPlayer = it->getPlayer();
-			if (!itPlayer || itPlayer->isRemoved()) {
-				continue;
-			}
-
-			Item* newField = field->clone();
-			if (owner && !owner->isRemoved()) {
-				if (itPlayer == owner || owner->hasPvpActivity(itPlayer) || owner->getPvpMode() == PVP_MODE_RED_FIST) {
-					newField->setID(getPvpItem(field->getID(), true));
-				} else {
-					newField->setID(getPvpItem(field->getID(), false));
-				}
-			} else {
-				// else means monster/player is removed/ monster is not summon
-				if (field->isCasterPlayer) {
-					newField->setID(getPvpItem(field->getID(), false)); // If no owner(player) for this field then it's not agressive!
-				} else {
-					newField->setID(getPvpItem(field->getID(), true));
-				}
-			}
-
-			newField->setDuration(field->getDuration());
-			itPlayer->sendUpdateTileItem(tile, tile->getPosition(), newField, tile->getStackposOfItem(itPlayer, field));
-		}
 	}
 }
 

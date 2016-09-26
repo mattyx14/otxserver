@@ -724,28 +724,11 @@ bool Player::canWalkthrough(const Creature* creature) const
 
 	const Player* player = creature->getPlayer();
 	if (!player) {
-		if (!g_game.isExpertPvpEnabled()) {
-			return false;
-		}
-		if (const Monster* monster = creature->getMonster()) {
-			if (!monster->isSummon() || !monster->getMaster()->getPlayer()) {
-				return false;
-			}
-			Player* master = monster->getMaster()->getPlayer();
-			return master != this && canWalkthrough(master);
-		}
-
 		return false;
 	}
 
-	if (g_game.isExpertPvpEnabled() && !player->getGroup()->access && g_game.getWorldType() != WORLD_TYPE_NO_PVP) {
-		if (player->pvpMode == PVP_MODE_RED_FIST || hasPvpActivity(const_cast<Player*>(player)) || (pvpMode >= PVP_MODE_WHITE_HAND && hasPvpActivity(const_cast<Player*>(player), true))) {
-			return false;
-		}
-	}
-
 	const Tile* playerTile = player->getTile();
-	if (!playerTile || (!g_game.isExpertPvpEnabled() && !playerTile->hasFlag(TILESTATE_PROTECTIONZONE))) {
+	if (!playerTile || !playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 		return false;
 	}
 
@@ -754,17 +737,18 @@ bool Player::canWalkthrough(const Creature* creature) const
 		return false;
 	}
 
+	Player* thisPlayer = const_cast<Player*>(this);
 	if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
-		setLastWalkthroughAttempt(OTSYS_TIME());
+		thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
 		return false;
 	}
 
 	if (creature->getPosition() != lastWalkthroughPosition) {
-		setLastWalkthroughPosition(creature->getPosition());
+		thisPlayer->setLastWalkthroughPosition(creature->getPosition());
 		return false;
 	}
 
-	setLastWalkthroughPosition(creature->getPosition());
+	thisPlayer->setLastWalkthroughPosition(creature->getPosition());
 	return true;
 }
 
@@ -776,33 +760,11 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 
 	const Player* player = creature->getPlayer();
 	if (!player) {
-		if (!g_game.isExpertPvpEnabled()) {
-			return false;
-		}
-		if (const Monster* monster = creature->getMonster()) {
-			if (!monster->isSummon() || !monster->getMaster()->getPlayer()) {
-				return false;
-			}
-			return canWalkthroughEx(monster->getMaster()->getPlayer());
-		}
-		return false;
-	}
-
-	if (g_game.isExpertPvpEnabled() && player->pvpMode == PVP_MODE_RED_FIST) {
 		return false;
 	}
 
 	const Tile* playerTile = player->getTile();
-	if (!playerTile) {
-		return false;
-	}
-
-	if (!g_game.isExpertPvpEnabled()) {
-		return playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
-	}
-	else {
-		return !hasPvpActivity(const_cast<Player*>(player), true);
-	}
+	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
 }
 
 void Player::onReceiveMail() const
@@ -1144,11 +1106,6 @@ void Player::onRemoveTileItem(const Tile* tile, const Position& pos, const ItemT
 void Player::onCreatureAppear(Creature* creature, bool isLogin)
 {
 	Creature::onCreatureAppear(creature, isLogin);
-
-	if (g_game.isExpertPvpEnabled()) {
-		g_game.updateSpectatorsPvp(this);
-		g_game.updateSpectatorsPvp(creature);
-	}
 
 	if (isLogin && creature == this) {
 		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
@@ -1585,10 +1542,6 @@ void Player::onThink(uint32_t interval)
 	if (lastStatsTrainingTime != getOfflineTrainingTime() / 60 / 1000) {
 		sendStats();
 	}
-
-	if (g_game.isExpertPvpEnabled()) {
-		g_game.updateSpectatorsPvp(const_cast<Player*>(this));
-	}
 }
 
 uint32_t Player::isMuted() const
@@ -1945,7 +1898,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor, field);
 
-	if (!g_game.isExpertPvpEnabled() && attacker) {
+	if (attacker) {
 		sendCreatureSquare(attacker, SQ_COLOR_BLACK);
 	}
 
@@ -3538,11 +3491,7 @@ void Player::onEndCondition(ConditionType_t type)
 	if (type == CONDITION_INFIGHT) {
 		onIdleStatus();
 		pzLocked = false;
-		setPvpSituation(false);
 		clearAttacked();
-		if (g_game.isExpertPvpEnabled()) {
-			g_game.updateSpectatorsPvp(this);
-		}
 
 		if (getSkull() != SKULL_RED && getSkull() != SKULL_BLACK) {
 			setSkull(SKULL_NONE);
@@ -3588,7 +3537,7 @@ void Player::onAttackedCreature(Creature* target)
 	if (target && target->getZone() == ZONE_PVP) {
 		return;
 	}
-
+	
 	if (target == this) {
 		addInFightTicks();
 		return;
@@ -3599,16 +3548,9 @@ void Player::onAttackedCreature(Creature* target)
 	}
 
 	Player* targetPlayer = target->getPlayer();
-	if (targetPlayer) {
-		if (!g_game.isExpertPvpEnabled() && (isPartner(targetPlayer) || isGuildMate(targetPlayer))) {
-			addInFightTicks();
-			return;
-		}
-
+	if (targetPlayer && !isPartner(targetPlayer) && !isGuildMate(targetPlayer)) {
 		if (!pzLocked && g_game.getWorldType() == WORLD_TYPE_PVP_ENFORCED) {
 			pzLocked = true;
-			setPvpSituation(true);
-			targetPlayer->setPvpSituation(true);
 			sendIcons();
 		}
 
@@ -3618,8 +3560,6 @@ void Player::onAttackedCreature(Creature* target)
 		} else if (!targetPlayer->hasAttacked(this)) {
 			if (!pzLocked) {
 				pzLocked = true;
-				setPvpSituation(true);
-				targetPlayer->setPvpSituation(true);
 				sendIcons();
 			}
 
@@ -3637,10 +3577,6 @@ void Player::onAttackedCreature(Creature* target)
 		}
 	}
 
-	if (g_game.isExpertPvpEnabled()) {
-		g_game.updateSpectatorsPvp(this);
-		g_game.updateSpectatorsPvp(targetPlayer);
-	}
 	addInFightTicks();
 }
 
@@ -3975,7 +3911,7 @@ Skulls_t Player::getSkullClient(const Creature* creature) const
 			return SKULL_YELLOW;
 		}
 
-		if (isPartner(player) && !g_game.isExpertPvpEnabled()) {
+		if (isPartner(player)) {
 			return SKULL_GREEN;
 		}
 	}
@@ -4022,6 +3958,11 @@ void Player::addUnjustifiedDead(const Player* attacked)
 			setSkull(SKULL_RED);
 		}
 	}
+
+	if (!client) {
+		return;
+	}
+	client->sendSkullTime();
 }
 
 void Player::checkSkullTicks(int32_t ticks)
@@ -4727,139 +4668,5 @@ void Player::setGuild(Guild* guild)
 
 	if (oldGuild) {
 		oldGuild->removeMember(this);
-	}
-}
-
-bool Player::hasPvpActivity(Player* player, bool guildAndParty/* = false*/) const
-{
-	if (!g_game.isExpertPvpEnabled() || !player || player == const_cast<Player*>(this)) {
-		return false;
-	}
-
-	if (hasAttacked(player) || player->hasAttacked(this)) {
-		return true;
-	}
-
-	if (guildAndParty) {
-		if (guild) {
-			for (auto it : guild->getMembersOnline()) {
-				if (it->hasPvpActivity(player)) {
-					return true;
-				}
-			}
-		}
-		if (party) {
-			for (auto it : party->getMembers()) {
-				if (it->hasPvpActivity(player)) {
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
-bool Player::canAttack(Creature* creature) const
-{
-	if (!g_game.isExpertPvpEnabled()) {
-		return true;
-	}
-
-	if (Monster* monster = creature->getMonster()) {
-		if (!monster->isSummon()) {
-			return true;
-		}
-
-		Player* owner = monster->getMaster()->getPlayer();
-		if (!owner || owner == this) {
-			return true;
-		}
-
-		// It has an player (master) so, it's treated as it's master
-		return canAttack(owner);
-	} else if (Player* player = creature->getPlayer()) {
-		if (!hasSecureMode() || pvpMode == PVP_MODE_RED_FIST) {
-			return true; // a non-secure mode or red-fist mode can attack anyone
-		}
-
-		// Player is trying to attack someone with dove mode, while they didn't attack each other with fist|non-secure modes before.
-		if (pvpMode == PVP_MODE_DOVE && !hasPvpActivity(player)) {
-			return false;
-		}
-
-		// Same as dove in addition to guilds/parties.
-		if (pvpMode == PVP_MODE_WHITE_HAND && !hasPvpActivity(player, true)) {
-			return false;
-		}
-
-		// You can only attack both skulled and who attacked you before!
-		if (pvpMode == PVP_MODE_YELLOW_HAND && !hasPvpActivity(player) && player->getSkull() == SKULL_NONE) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool Player::canWalkThroughTileItems(Tile* tile) const
-{
-	if (!g_game.isExpertPvpEnabled() || !tile) {
-		return true;
-	}
-
-	TileItemVector* itemList = tile->getItemList();
-	if (!itemList) {
-		return true;
-	}
-
-	for (auto it : *itemList) {
-		if (it->getID() != ITEM_WILDGROWTH_NOPVP && it->getID() != ITEM_MAGICWALL_NOPVP) {
-			continue;
-		}
-
-		Player* owner = g_game.getPlayerByID(it->getOwner());
-		if (!owner) {
-			continue;
-		}
-
-		// only reason you can't walk is you already have activity with the owner or you are the owner!
-		if (owner == const_cast<Player*>(this) || hasPvpActivity(owner) || owner->pvpMode == PVP_MODE_RED_FIST) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool Player::isInPvpSituation()
-{
-	if (!isPvpSituation) {
-		return false;
-	}
-
-	if (pzLocked || attackedSet.size() > 0) {
-		return true;
-	}
-
-	for (auto it : g_game.getPlayers()) {
-		Player* itPlayer = it.second;
-		if (!itPlayer || itPlayer->isRemoved()) {
-			continue;
-		}
-
-		if (itPlayer->hasAttacked(this)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-void Player::sendPvpSquare(Creature* target, SquareColor_t squareColor)
-{
-	sendCreatureSquare(target, squareColor, 2);
-
-	if (squareColor == SQ_COLOR_YELLOW) {
-		sendCreatureSquare(this, squareColor, 2); // Only add to self if it's yellow.
 	}
 }

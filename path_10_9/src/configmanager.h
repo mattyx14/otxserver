@@ -45,7 +45,6 @@ class ConfigManager
 			ALLOW_WALKTHROUGH,
 			ENABLE_LIVE_CASTING,
 			ALLOW_BLOCK_SPAWN,
-			EXPERT_PVP,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
