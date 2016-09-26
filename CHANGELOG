@@ -98,11 +98,22 @@
 	- Fix gain skull on kill monsterSummon on party - 8.x and 7.x
 	- Fix weaponDamage on 7.x (Babymannen)
 	- Fix tradeWindow for TibiaClient 11
+	- Fix migrations on 7.x
+	- Fix follow on 7.x (babymannen)
+	- Fix console on 7.x (heal-mana-damage) (babymannen)
+	- Fix weightDescription on 7.x (babymannen)
+	- Fix destroy creature on 7.x (blockingCreature) (babymannen)
+	- Fix close partyChannel on 7.x (babymannen)
+	- Fix ghost on 7.x (babymannen)
+	- Fix distance formula on 7.x (babymannen)
 	- Now none vocation drop loot on  7.x (Babymannen)
 	- Reduse tileLimit to 1000
 	- Remove skill on items this feature no are used
 	- Remove unique items from Browse Field (Kamenuvol)
+	- Remove stamina on 7.x
+	- Remove weapons requeriments and fix weapons (babymannen)
 	- Support to 10.94/98
+	- Update items.xml on 7.x (babymannen)
 ]
 
 [ OTX Server 3.6 :: Version " SCARETALE "

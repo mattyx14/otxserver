@@ -1344,38 +1344,38 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 
 		if (!found) {
-			if (it.isKey()) {
-				s << " (Key:" << (item ? item->getActionId() : 0) << ')';
-			} else if (it.isFluidContainer()) {
-				if (subType > 0) {
-					const std::string& itemName = items[subType].name;
-					s << " of " << (!itemName.empty() ? itemName : "unknown");
-				} else {
-					s << ". It is empty";
-				}
-			} else if (it.isSplash()) {
-				s << " of ";
+		if (it.isKey()) {
+			s << " (Key:" << (item ? item->getActionId() : 0) << ')';
+		} else if (it.isFluidContainer()) {
+			if (subType > 0) {
+				const std::string& itemName = items[subType].name;
+				s << " of " << (!itemName.empty() ? itemName : "unknown");
+			} else {
+				s << ". It is empty";
+			}
+		} else if (it.isSplash()) {
+			s << " of ";
 
-				if (subType > 0 && !items[subType].name.empty()) {
-					s << items[subType].name;
-				} else {
-					s << "unknown";
-				}
+			if (subType > 0 && !items[subType].name.empty()) {
+				s << items[subType].name;
+			} else {
+				s << "unknown";
+			}
 			} else if (it.allowDistRead) {
-				s << '.' << std::endl;
+			s << '.' << std::endl;
 
-				if (lookDistance <= 4) {
-					if (item) {
-						text = &item->getText();
-						if (!text->empty()) {
-							const std::string& writer = item->getWriter();
-							if (!writer.empty()) {
-								s << writer << " wrote";
-								time_t date = item->getDate();
-								if (date != 0) {
-									s << " on " << formatDateShort(date);
-								}
-								s << ": ";
+			if (lookDistance <= 4) {
+				if (item) {
+					text = &item->getText();
+					if (!text->empty()) {
+						const std::string& writer = item->getWriter();
+						if (!writer.empty()) {
+							s << writer << " wrote";
+							time_t date = item->getDate();
+							if (date != 0) {
+								s << " on " << formatDateShort(date);
+							}
+							s << ": ";
 							} else {
 								s << "You read: ";
 							}
@@ -1392,9 +1392,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 			} else if (it.levelDoor != 0 && item) {
 				uint16_t actionId = item->getActionId();
 				if (actionId >= it.levelDoor) {
-					s << " for level " << (actionId - it.levelDoor);
-				}
+				s << " for level " << (actionId - it.levelDoor);
 			}
+		}
 		}
 	}
 
@@ -1573,8 +1573,8 @@ std::string Item::getWeightDescription(const ItemType& it, uint32_t weight, uint
 	} else if (weight < 100) {
 		ss << "0." << weight;
 	} else {
-		std::string weightString = std::to_string(weight);
-		weightString.insert(weightString.end() - 2, '.');
+		std::string weightString = std::to_string(weight / 10);
+		weightString.insert(weightString.end() - 1, '.');
 		ss << weightString;
 	}
 

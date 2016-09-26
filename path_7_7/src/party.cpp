@@ -114,8 +114,9 @@ bool Party::leaveParty(Player* player)
 		memberList.erase(it);
 	}
 
-	player->setParty(nullptr);
 	player->sendClosePrivate(CHANNEL_PARTY);
+	player->setParty(nullptr);
+
 	g_game.updatePlayerShield(player);
 
 	for (Player* member : memberList) {

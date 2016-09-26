@@ -23,6 +23,7 @@
 #include "iomapserialize.h"
 #include "combat.h"
 #include "creature.h"
+#include "monster.h"
 #include "game.h"
 
 extern Game g_game;
@@ -836,9 +837,16 @@ int_fast32_t AStarNodes::getMapWalkCost(AStarNode* node, const Position& neighbo
 int_fast32_t AStarNodes::getTileWalkCost(const Creature& creature, const Tile* tile)
 {
 	int_fast32_t cost = 0;
-	if (tile->getTopVisibleCreature(&creature) != nullptr) {
-		//destroy creature cost
-		cost += MAP_NORMALWALKCOST * 3;
+	if (const Creature* blockingCreature = tile->getTopVisibleCreature(&creature)) {
+		//destroy creature cost (not really)
+		const Monster* monster = creature.getMonster();
+		const Monster* blockingMonster = blockingCreature->getMonster();
+		if (monster == NULL || blockingMonster == NULL ||
+			!monster->canPushCreatures() ||
+			!blockingMonster->isPushable())
+		{
+			cost += MAP_NORMALWALKCOST * 3;
+		}
 	}
 
 	if (const MagicField* field = tile->getFieldItem()) {

@@ -1,3 +1,10 @@
+-- Ordered as in creaturescripts.xml
+local events = {
+	'PlayerDeath',
+	'DropLoot',
+	'BossParticipation',
+}
+
 local function onMovementRemoveProtection(cid, oldPosition, time)
 	local player = Player(cid)
 	if not player then
@@ -29,9 +36,6 @@ function onLogin(player)
 
 	local playerId = player:getId()
 
-	-- Stamina
-	nextUseStaminaTime[player.uid] = 0
-
 	-- Promotion
 	local vocation = player:getVocation()
 	local promotion = vocation:getPromotion()
@@ -59,9 +63,9 @@ function onLogin(player)
 	end
 
 	-- Events
-	player:registerEvent("PlayerDeath")
-	player:registerEvent("DropLoot")
-	player:registerEvent("BossParticipation")
+	for i = 1, #events do
+		player:registerEvent(events[i])
+	end
 
 	if player:getStorageValue(Storage.combatProtectionStorage) <= os.time() then
 		player:setStorageValue(Storage.combatProtectionStorage, os.time() + 10)

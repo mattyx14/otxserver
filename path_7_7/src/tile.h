@@ -102,11 +102,17 @@ class TileItemVector : private ItemVector
 		const_iterator getBeginDownItem() const {
 			return begin();
 		}
+		const_iterator getCBeginDownItem() const {
+			return getBeginDownItem();
+		}
 		iterator getEndDownItem() {
 			return begin() + downItemCount;
 		}
 		const_iterator getEndDownItem() const {
 			return begin() + downItemCount;
+		}
+		const_iterator getCEndDownItem() const {
+			return getEndDownItem();
 		}
 		iterator getBeginTopItem() {
 			return getEndDownItem();
@@ -114,11 +120,17 @@ class TileItemVector : private ItemVector
 		const_iterator getBeginTopItem() const {
 			return getEndDownItem();
 		}
+		const_iterator getCBeginTopItem() const {
+			return getBeginTopItem();
+		}
 		iterator getEndTopItem() {
 			return end();
 		}
 		const_iterator getEndTopItem() const {
 			return end();
+		}
+		const_iterator getCEndTopItem() const {
+			return getEndTopItem();
 		}
 
 		uint32_t getTopItemCount() const {

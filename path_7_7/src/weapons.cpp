@@ -145,6 +145,11 @@ int32_t Weapons::getMaxWeaponDamage(uint32_t level, int32_t attackSkill, int32_t
 	return static_cast<int32_t>(std::ceil(attackValue * attackSkill * 0.06) / attackFactor);
 }
 
+int32_t Weapons::getMaxDistanceWeaponDamage(uint32_t level, int32_t attackSkill, int32_t attackValue, float attackFactor)
+{
+	return static_cast<int32_t>(std::ceil(attackValue * attackSkill * 0.065) / attackFactor);
+}
+
 Weapon::Weapon(LuaScriptInterface* interface) :
 	Event(interface)
 {
@@ -829,7 +834,7 @@ int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* ta
 	int32_t attackSkill = player->getSkillLevel(SKILL_DISTANCE);
 	float attackFactor = player->getAttackFactor();
 
-	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->distDamageMultiplier);
+	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxDistanceWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->distDamageMultiplier);
 	if (maxDamage) {
 		return -maxValue;
 	}
