@@ -470,7 +470,7 @@
 	<rune group="attack" spellid="18" name="Explosion" id="2313" allowfaruse="1" charges="6" lvl="31" maglv="6" cooldown="2000" groupcooldown="2000" blocktype="solid" script="attack/explosion.lua" />
 	<rune group="attack" spellid="21" name="Sudden Death" id="2268" allowfaruse="1" charges="3" lvl="45" maglv="15" cooldown="2000" groupcooldown="2000" needtarget="1" blocktype="solid" script="attack/sudden death.lua" />
 	<rune group="attack" spellid="114" name="Icicle" id="2271" allowfaruse="1" charges="5" lvl="28" maglv="4" cooldown="2000" groupcooldown="2000" needtarget="1" script="attack/icicle.lua" />
-	<rune group="attack" spellid="115" name="Avalanche" id="2274" allowfaruse="1" charges="4" lvl="30" maglv="4" cooldown="2000" groupcooldown="2000" script="attack/avalanche.lua" />
+	<rune group="attack" spellid="115" name="Avalanche" id="2274" allowfaruse="1" charges="4" lvl="30" maglv="4" cooldown="2000" groupcooldown="2000" blocktype="solid" script="attack/avalanche.lua" />
 	<rune group="attack" spellid="116" name="Stone Shower" id="2288" allowfaruse="1" charges="4" lvl="28" maglv="4" cooldown="2000" groupcooldown="2000" script="attack/stone shower.lua" />
 	<rune group="attack" spellid="116" name="Light Stone Shower" id="23722" allowfaruse="1" charges="4" lvl="1" maglv="0" cooldown="2000" groupcooldown="2000" script="attack/light stone shower.lua" />
 	<rune group="attack" spellid="117" name="Thunderstorm" id="2315" allowfaruse="1" charges="4" lvl="28" maglv="4" cooldown="2000" groupcooldown="2000" script="attack/thunderstorm.lua" />

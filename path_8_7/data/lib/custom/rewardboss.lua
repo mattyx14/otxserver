@@ -97,8 +97,8 @@ end
 -- by https://otland.net/members/cbrm.25752/ with some modifications
 function MonsterType.createLootItem(self, lootBlock, chance, lootTable)
 	local lootTable, itemCount = lootTable or {}, 0
-	local randvalue = math.random(0, 100000) / (configManager.getNumber("rateLoot") * chance)
-	if randvalue < lootBlock.chance then
+	local randvalue = math.random(0, 100000)
+	if randvalue <= (lootBlock.chance) then
 		if (ItemType(lootBlock.itemId):isStackable()) then
 			itemCount = randvalue % lootBlock.maxCount + 1
 		else

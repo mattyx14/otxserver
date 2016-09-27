@@ -1249,7 +1249,7 @@ void ProtocolGame::sendContainer(uint8_t cid, const Container* container, bool h
 	const ItemDeque& itemList = container->getItemList();
 	for (ItemDeque::const_iterator cit = itemList.begin() + firstIndex, end = itemList.end(); i < 0xFF && cit != end; ++cit, ++i) {
 		msg.addItem(*cit);
- 	}
+	}
 	writeToOutputBuffer(msg);
 }
 

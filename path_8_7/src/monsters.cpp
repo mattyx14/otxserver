@@ -1179,16 +1179,21 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 		for (auto summonNode : node.children()) {
 			int32_t chance = 100;
 			int32_t speed = 1000;
+			int32_t max = mType->maxSummons;
 			bool force = false;
 
 			if ((attr = summonNode.attribute("speed")) || (attr = summonNode.attribute("interval"))) {
-				speed = pugi::cast<int32_t>(attr.value());
+				speed = std::max<int32_t>(1, pugi::cast<int32_t>(attr.value()));
 			}
 
 			if ((attr = summonNode.attribute("chance"))) {
 				chance = pugi::cast<int32_t>(attr.value());
 			}
-			
+
+			if ((attr = summonNode.attribute("max"))) {
+				max = pugi::cast<uint32_t>(attr.value());
+			}
+
 			if ((attr = summonNode.attribute("force"))) {
 				force = attr.as_bool();
 			}
@@ -1198,6 +1203,7 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 				sb.name = attr.as_string();
 				sb.speed = speed;
 				sb.chance = chance;
+				sb.max = max;
 				sb.force = force;
 				mType->summons.emplace_back(sb);
 			} else {
@@ -1230,6 +1236,23 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 	pugi::xml_attribute attr;
 	if ((attr = node.attribute("id"))) {
 		lootBlock.id = pugi::cast<int32_t>(attr.value());
+	} else if ((attr = node.attribute("name"))) {
+		auto name = attr.as_string();
+		auto ids = Item::items.nameToItems.equal_range(asLowerCaseString(name));
+
+		if (ids.first == Item::items.nameToItems.cend()) {
+			std::cout << "[Warning - Monsters::loadMonster] Unknown loot item \"" << name << "\". " << std::endl;
+			return false;
+		}
+
+		uint32_t id = ids.first->second;
+
+		if (std::next(ids.first) != ids.second) {
+			std::cout << "[Warning - Monsters::loadMonster] Non-unique loot item \"" << name << "\". " << std::endl;
+			return false;
+		}
+
+		lootBlock.id = id;
 	}
 
 	if (lootBlock.id == 0) {
@@ -1270,7 +1293,7 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 		lootBlock.text = attr.as_string();
 	}
 
-	if ((attr = node.attribute("name"))) {
+	if ((attr = node.attribute("nameItem"))) {
 		lootBlock.name = attr.as_string();
 	}
 

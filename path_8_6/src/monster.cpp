@@ -43,10 +43,7 @@ Monster* Monster::createMonster(const std::string& name)
 Monster::Monster(MonsterType* mtype) :
 	Creature()
 {
-	isIdle = true;
-	isMasterInRange = false;
 	mType = mtype;
-	spawn = nullptr;
 	defaultOutfit = mType->outfit;
 	currentOutfit = mType->outfit;
 
@@ -60,23 +57,8 @@ Monster::Monster(MonsterType* mtype) :
 
 	hiddenHealth = mType->hiddenHealth;
 
-	minCombatValue = 0;
-	maxCombatValue = 0;
-
-	targetTicks = 0;
-	targetChangeTicks = 0;
-	targetChangeCooldown = 0;
-	attackTicks = 0;
-	defenseTicks = 0;
-	yellTicks = 0;
-	extraMeleeAttack = false;
-
 	strDescription = mType->nameDescription;
 	toLowerCaseString(strDescription);
-
-	stepDuration = 0;
-
-	lastMeleeAttack = 0;
 
 	// register creature events
 	for (const std::string& scriptName : mType->scripts) {
@@ -946,6 +928,17 @@ void Monster::onThinkDefense(uint32_t interval)
 				continue;
 			}
 
+			uint32_t summonCount = 0;
+			for (Creature* summon : summons) {
+				if (summon->getName() == summonBlock.name) {
+					++summonCount;
+				}
+			}
+
+			if (summonCount >= summonBlock.max) {
+				continue;
+			}
+
 			if (summonBlock.chance < static_cast<uint32_t>(uniform_random(1, 100))) {
 				continue;
 			}
@@ -1037,7 +1030,7 @@ void Monster::pushItems(Tile* tile)
 			Item* item = items->at(i);
 			if (item && item->hasProperty(CONST_PROP_MOVEABLE) && (item->hasProperty(CONST_PROP_BLOCKPATH)
 			        || item->hasProperty(CONST_PROP_BLOCKSOLID))) {
-				if (moveCount < 20 && Monster::pushItem(item)) {
+				if (moveCount < 20 && pushItem(item)) {
 					++moveCount;
 				} else if (g_game.internalRemoveItem(item) == RETURNVALUE_NOERROR) {
 					++removeCount;
@@ -1083,7 +1076,7 @@ void Monster::pushCreatures(Tile* tile)
 		for (size_t i = 0; i < creatures->size();) {
 			Monster* monster = creatures->at(i)->getMonster();
 			if (monster && monster->isPushable()) {
-				if (monster != lastPushedMonster && Monster::pushCreature(monster)) {
+				if (monster != lastPushedMonster && pushCreature(monster)) {
 					lastPushedMonster = monster;
 					continue;
 				}
@@ -1137,11 +1130,11 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 		Tile* tile = g_game.map.getTile(pos);
 		if (tile) {
 			if (canPushItems()) {
-				Monster::pushItems(tile);
+				pushItems(tile);
 			}
 
 			if (canPushCreatures()) {
-				Monster::pushCreatures(tile);
+				pushCreatures(tile);
 			}
 		}
 	}

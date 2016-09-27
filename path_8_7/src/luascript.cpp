@@ -57,9 +57,7 @@ LuaEnvironment g_luaEnvironment;
 
 ScriptEnvironment::ScriptEnvironment()
 {
-	curNpc = nullptr;
 	resetEnv();
-	lastUID = std::numeric_limits<uint16_t>::max();
 }
 
 ScriptEnvironment::~ScriptEnvironment()
@@ -359,29 +357,6 @@ int32_t LuaScriptInterface::getEvent(const std::string& eventName)
 	lua_setglobal(luaState, eventName.c_str());
 
 	cacheFiles[runningEventId] = loadingFile + ":" + eventName;
-	return runningEventId++;
-}
-
-int32_t LuaScriptInterface::getEvent()
-{
-	//check if function is on the stack
-	if (!isFunction(luaState, -1)) {
-		return -1;
-	}
-
-	//get our events table
-	lua_rawgeti(luaState, LUA_REGISTRYINDEX, eventTableRef);
-	if (!isTable(luaState, -1)) {
-		lua_pop(luaState, 1);
-		return -1;
-	}
-
-	//save in our events table
-	lua_pushvalue(luaState, -2);
-	lua_rawseti(luaState, -2, runningEventId);
-	lua_pop(luaState, 2);
-
-	cacheFiles[runningEventId] = loadingFile + ":callback";
 	return runningEventId++;
 }
 
@@ -2071,6 +2046,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "getDescription", LuaScriptInterface::luaCreatureGetDescription);
 
 	registerMethod("Creature", "getPathTo", LuaScriptInterface::luaCreatureGetPathTo);
+
+	registerMethod("Creature", "moveTo", LuaScriptInterface::luaCreatureMoveTo);
 
 	// Player
 	registerClass("Player", "Creature", LuaScriptInterface::luaPlayerCreate);
@@ -7319,6 +7296,35 @@ int LuaScriptInterface::luaCreatureGetPathTo(lua_State* L)
 	return 1;
 }
 
+int32_t LuaScriptInterface::luaCreatureMoveTo(lua_State* L)
+{
+	//creature:moveTo(pos)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	const Position& position = getPosition(L, 2);
+
+	FindPathParams fpp;
+	fpp.minTargetDist = getNumber<int32_t>(L, 3, 0);
+	fpp.maxTargetDist = getNumber<int32_t>(L, 4, 1);
+	fpp.fullPathSearch = getBoolean(L, 5, fpp.fullPathSearch);
+	fpp.clearSight = getBoolean(L, 6, fpp.clearSight);
+	fpp.maxSearchDist = getNumber<int32_t>(L, 7, 150);
+
+	std::forward_list<Direction> dirList;
+	if (creature->getPathTo(position, dirList, fpp)) {
+		creature->hasFollowPath = true;
+		creature->startAutoWalk(dirList);
+		pushBoolean(L, true);
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
 // Player
 int LuaScriptInterface::luaPlayerCreate(lua_State* L)
 {
@@ -11038,56 +11044,56 @@ int LuaScriptInterface::luaCombatExecute(lua_State* L)
 
 	const LuaVariant& variant = getVariant(L, 3);
 	switch (variant.type) {
-		case VARIANT_NUMBER: {
-			Creature* target = g_game.getCreatureByID(variant.number);
-			if (!target) {
-				pushBoolean(L, false);
-				return 1;
-			}
-
-			if (combat->hasArea()) {
-				combat->doCombat(creature, target->getPosition());
-			} else {
-				combat->doCombat(creature, target);
-			}
-			break;
-		}
-
-		case VARIANT_POSITION: {
-			combat->doCombat(creature, variant.pos);
-			break;
-		}
-
-		case VARIANT_TARGETPOSITION: {
-			if (combat->hasArea()) {
-				combat->doCombat(creature, variant.pos);
-			} else {
-				combat->postCombatEffects(creature, variant.pos);
-				g_game.addMagicEffect(variant.pos, CONST_ME_POFF);
-			}
-			break;
-		}
-
-		case VARIANT_STRING: {
-			Player* target = g_game.getPlayerByName(variant.text);
-			if (!target) {
-				pushBoolean(L, false);
-				return 1;
-			}
-
-			combat->doCombat(creature, target);
-			break;
-		}
-
-		case VARIANT_NONE: {
-			reportErrorFunc(getErrorDesc(LUA_ERROR_VARIANT_NOT_FOUND));
+	case VARIANT_NUMBER: {
+		Creature* target = g_game.getCreatureByID(variant.number);
+		if (!target) {
 			pushBoolean(L, false);
 			return 1;
 		}
 
-		default: {
-			break;
+		if (combat->hasArea()) {
+			combat->doCombat(creature, target->getPosition());
+		} else {
+			combat->doCombat(creature, target);
 		}
+		break;
+	}
+
+	case VARIANT_POSITION: {
+		combat->doCombat(creature, variant.pos);
+		break;
+	}
+
+	case VARIANT_TARGETPOSITION: {
+		if (combat->hasArea()) {
+			combat->doCombat(creature, variant.pos);
+		} else {
+			combat->postCombatEffects(creature, variant.pos);
+			g_game.addMagicEffect(variant.pos, CONST_ME_POFF);
+		}
+		break;
+	}
+
+	case VARIANT_STRING: {
+		Player* target = g_game.getPlayerByName(variant.text);
+		if (!target) {
+			pushBoolean(L, false);
+			return 1;
+		}
+
+		combat->doCombat(creature, target);
+		break;
+	}
+
+	case VARIANT_NONE: {
+		reportErrorFunc(getErrorDesc(LUA_ERROR_VARIANT_NOT_FOUND));
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	default: {
+		break;
+	}
 	}
 
 	pushBoolean(L, true);
@@ -11644,7 +11650,7 @@ int LuaScriptInterface::luaMonsterTypeGetLoot(lua_State* L)
 
 		int index = 0;
 		for (const auto& lootBlock : lootList) {
-			lua_createtable(L, 0, 7);
+			lua_createtable(L, 0, 8);
 
 			setField(L, "itemId", lootBlock.id);
 			setField(L, "chance", lootBlock.chance);
@@ -11652,6 +11658,8 @@ int LuaScriptInterface::luaMonsterTypeGetLoot(lua_State* L)
 			setField(L, "maxCount", lootBlock.countmax);
 			setField(L, "actionId", lootBlock.actionId);
 			setField(L, "text", lootBlock.text);
+			pushBoolean(L, lootBlock.unique);
+			lua_setfield(L, -2, "unique");
 
 			parseLoot(lootBlock.childLoot);
 			lua_setfield(L, -2, "childLoot");

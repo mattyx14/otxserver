@@ -100,9 +100,9 @@
 	- Fix tradeWindow for TibiaClient 11
 	- Fix migrations on 7.x
 	- Fix follow on 7.x (babymannen)
-	- Fix console on 7.x (heal-mana-damage) (babymannen)
+	- Fix description heal-mana-damage on 7.x (babymannen)
 	- Fix weightDescription on 7.x (babymannen)
-	- Fix destroy creature on 7.x (blockingCreature) (babymannen)
+	- Fix blockingCreature on 7.x (babymannen)
 	- Fix close partyChannel on 7.x (babymannen)
 	- Fix ghost on 7.x (babymannen)
 	- Fix distance formula on 7.x (babymannen)
@@ -111,7 +111,7 @@
 	- Remove skill on items this feature no are used
 	- Remove unique items from Browse Field (Kamenuvol)
 	- Remove stamina on 7.x
-	- Remove weapons requeriments and fix weapons (babymannen)
+	- Remove weapons requeriments and fix weapons 7.x (babymannen)
 	- Support to 10.94/98
 	- Update items.xml on 7.x (babymannen)
 ]
