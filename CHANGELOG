@@ -80,6 +80,7 @@
 	- Added playerSpectators to castSystem (Malucooo)
 	- Added chestReward on depot (Malucooo)
 	- Added SkullTimeFragsWindow
+	- Added items.otb 10.98 official from TFS
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
@@ -105,13 +106,16 @@
 	- Fix close partyChannel on 7.x (babymannen)
 	- Fix ghost on 7.x (babymannen)
 	- Fix distance formula on 7.x (babymannen)
+	- Fix debug when more then 7 players are on tile (gunzino)
+	- Fix loginWindows premium display (Mark)
+	- Fix loginPosition (Mark)
 	- Now none vocation drop loot on  7.x (Babymannen)
 	- Reduse tileLimit to 1000
 	- Remove skill on items this feature no are used
 	- Remove unique items from Browse Field (Kamenuvol)
 	- Remove stamina on 7.x
 	- Remove weapons requeriments and fix weapons 7.x (babymannen)
-	- Support to 10.94/98
+	- Support to 10.94/98 - 11.00
 	- Update items.xml on 7.x (babymannen)
 ]
 

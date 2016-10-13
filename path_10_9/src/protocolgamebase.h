@@ -52,7 +52,8 @@ class ProtocolGameBase : public Protocol {
 			challengeTimestamp(0),
 			challengeRandom(0),
 			debugAssertSent(false),
-			acceptPackets(false) {}
+			acceptPackets(false) {},
+			tileLogin(false)
 
 		virtual void writeToOutputBuffer(const NetworkMessage& msg, bool broadcast = true) = 0;
 		void onConnect() final;
