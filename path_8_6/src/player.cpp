@@ -1000,7 +1000,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 			sendContainer(it.first, container, false, firstIndex);
 		}
 
-		client->sendRemoveContainerItem(it.first, std::max<uint16_t>(slot, firstIndex), container->getItemByIndex(container->capacity() + firstIndex));
+		client->sendRemoveContainerItem(it.first, std::max<uint16_t>(slot, firstIndex));
 	}
 }
 
