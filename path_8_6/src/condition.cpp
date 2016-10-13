@@ -1118,11 +1118,12 @@ bool ConditionDamage::doDamage(Creature* creature, int32_t healthChange)
 	damage.origin = ORIGIN_CONDITION;
 	damage.primary.value = healthChange;
 	damage.primary.type = Combat::ConditionToDamageType(conditionType);
+
+	Creature* attacker = g_game.getCreatureByID(owner);
 	if (field && creature->getPlayer() && attacker && attacker->getPlayer()) {
 		damage.primary.value = static_cast<int32_t>(std::round(damage.primary.value / 2.));
 	}
 
-	Creature* attacker = g_game.getCreatureByID(owner);
 	if (!creature->isAttackable() || Combat::canDoCombat(attacker, creature) != RETURNVALUE_NOERROR) {
 		if (!creature->isInGhostMode()) {
 			g_game.addMagicEffect(creature->getPosition(), CONST_ME_POFF);
