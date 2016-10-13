@@ -300,6 +300,7 @@ class ProtocolGame final : public Protocol
 
 		bool debugAssertSent;
 		bool acceptPackets;
+		bool tileLogin;
 };
 
 #endif

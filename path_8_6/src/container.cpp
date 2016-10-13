@@ -63,6 +63,11 @@ Container* Container::getParentContainer()
 	return thing->getContainer();
 }
 
+bool Container::hasParent() const
+{
+	return dynamic_cast<const Player*>(getParent()) == nullptr;
+}
+
 void Container::addItem(Item* item)
 {
 	itemlist.push_back(item);
@@ -592,7 +597,7 @@ uint32_t Container::getItemTypeCount(uint16_t itemId, int32_t subType/* = -1*/) 
 	return count;
 }
 
-std::map<uint32_t, uint32_t>& Container::getAllItemTypeCount(std::map<uint32_t, uint32_t> &countMap) const
+std::map<uint32_t, uint32_t>& Container::getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const
 {
 	for (Item* item : itemlist) {
 		countMap[item->getID()] += item->getItemCount();
