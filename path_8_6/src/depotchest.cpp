@@ -26,6 +26,7 @@ DepotChest::DepotChest(uint16_t type) :
 	Container(type)
 {
 	maxDepotItems = 5000;
+	maxSize = 32;
 }
 
 ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t count,
