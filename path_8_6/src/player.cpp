@@ -4226,9 +4226,9 @@ size_t Player::getMaxDepotItems() const
 	if (group->maxDepotItems != 0) {
 		return group->maxDepotItems;
 	} else if (isPremium()) {
-		return 10000;
+		return 5000;
 	}
-	return 5000;
+	return 2000;
 }
 
 std::forward_list<Condition*> Player::getMuteConditions() const

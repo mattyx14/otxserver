@@ -22,7 +22,11 @@
 #include "depotlocker.h"
 
 DepotLocker::DepotLocker(uint16_t type) :
-	Container(type), depotId(0) {}
+	Container(type)
+{
+	depotId = 0;
+	maxSize = 30;
+}
 
 Attr_ReadValue DepotLocker::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
