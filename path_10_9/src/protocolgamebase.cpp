@@ -195,16 +195,12 @@ void ProtocolGameBase::AddPlayerStats(NetworkMessage& msg)
 
 	msg.add<uint16_t>(player->getLevel());
 	msg.addByte(player->getPlayerInfo(PLAYERINFO_LEVELPERCENT));
-	if (version < 1097) {
-		msg.addDouble(0, 3); // experience bonus
-	}
-	if (version >= 1097) {
-		msg.add<uint16_t>(100);
-		msg.add<uint16_t>(0);
-		msg.add<uint16_t>(0);
-		msg.add<uint16_t>(0);
-		msg.add<uint16_t>(100);
-	}
+
+	msg.add<uint16_t>(100); // base xp gain rate
+	msg.add<uint16_t>(0); // xp voucher
+	msg.add<uint16_t>(0); // low level bonus
+	msg.add<uint16_t>(0); // xp boost
+	msg.add<uint16_t>(100); // stamina multiplier (100 = x1.0)
 
 	msg.add<uint16_t>(std::min<int32_t>(player->getMana(), std::numeric_limits<uint16_t>::max()));
 	msg.add<uint16_t>(std::min<int32_t>(player->getPlayerInfo(PLAYERINFO_MAXMANA), std::numeric_limits<uint16_t>::max()));
@@ -223,10 +219,9 @@ void ProtocolGameBase::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(condition ? condition->getTicks() / 1000 : 0x00);
 
 	msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
-	if (version >= 1097) {
-		msg.add<uint16_t>(0);
-		msg.addByte(0);
-	}
+
+	msg.add<uint16_t>(0); // xp boost time (seconds)
+	msg.addByte(0); // enables exp boost in the store
 }
 
 void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
