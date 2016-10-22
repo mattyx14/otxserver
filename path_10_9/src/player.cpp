@@ -48,12 +48,8 @@ MuteCountMap Player::muteCountMap;
 uint32_t Player::playerAutoID = 0x10000000;
 
 Player::Player(ProtocolGame_ptr p) :
-	Creature(), client(p)
+	Creature(), lastPing(OTSYS_TIME()), lastPong(lastPing), inbox(new Inbox(ITEM_INBOX)), client(std::move(p))
 {
-	lastPing = OTSYS_TIME();
-	lastPong = lastPing;
-
-	inbox = new Inbox(ITEM_INBOX);
 	inbox->incrementReferenceCounter();
 }
 
@@ -3537,7 +3533,7 @@ void Player::onAttackedCreature(Creature* target)
 	if (target && target->getZone() == ZONE_PVP) {
 		return;
 	}
-	
+
 	if (target == this) {
 		addInFightTicks();
 		return;
@@ -3962,6 +3958,7 @@ void Player::addUnjustifiedDead(const Player* attacked)
 	if (!client) {
 		return;
 	}
+
 	client->sendSkullTime();
 }
 

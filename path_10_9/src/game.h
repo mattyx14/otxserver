@@ -49,9 +49,9 @@ enum stackPosType_t {
 };
 
 enum WorldType_t {
-	WORLD_TYPE_NO_PVP = 1, // optional pvp
-	WORLD_TYPE_PVP = 2, // open pvp
-	WORLD_TYPE_PVP_ENFORCED = 3, // hardcore pvp
+	WORLD_TYPE_NO_PVP = 1,
+	WORLD_TYPE_PVP = 2,
+	WORLD_TYPE_PVP_ENFORCED = 3,
 };
 
 enum GameState_t {
@@ -71,9 +71,9 @@ enum LightState_t {
 	LIGHT_STATE_SUNRISE,
 };
 
-#define EVENT_LIGHTINTERVAL 10000
-#define EVENT_DECAYINTERVAL 250
-#define EVENT_DECAY_BUCKETS 4
+static constexpr int32_t EVENT_LIGHTINTERVAL = 10000;
+static constexpr int32_t EVENT_DECAYINTERVAL = 250;
+static constexpr int32_t EVENT_DECAY_BUCKETS = 4;
 
 /**
   * Main Game class.
@@ -522,7 +522,7 @@ class Game
 		std::unordered_map<std::string, Player*> mappedPlayerNames;
 		std::unordered_map<uint32_t, Guild*> guilds;
 		std::unordered_map<uint16_t, Item*> uniqueItems;
-		std::map<uint32_t, float> stages;
+		std::map<uint32_t, uint32_t> stages;
 
 		std::list<Item*> decayItems[EVENT_DECAY_BUCKETS];
 		std::list<Creature*> checkCreatureLists[EVENT_CREATURECOUNT];
@@ -548,10 +548,10 @@ class Game
 		ModalWindow offlineTrainingWindow { std::numeric_limits<uint32_t>::max(), "Choose a Skill", "Please choose a skill:" };
 		Commands commands;
 
-		static const int32_t LIGHT_LEVEL_DAY = 250;
-		static const int32_t LIGHT_LEVEL_NIGHT = 40;
-		static const int32_t SUNSET = 1305;
-		static const int32_t SUNRISE = 430;
+		static constexpr int32_t LIGHT_LEVEL_DAY = 250;
+		static constexpr int32_t LIGHT_LEVEL_NIGHT = 40;
+		static constexpr int32_t SUNSET = 1305;
+		static constexpr int32_t SUNRISE = 430;
 
 		GameState_t gameState = GAME_STATE_NORMAL;
 		WorldType_t worldType = WORLD_TYPE_PVP;

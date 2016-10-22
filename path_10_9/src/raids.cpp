@@ -110,7 +110,7 @@ bool Raids::loadFromXml()
 	return true;
 }
 
-#define MAX_RAND_RANGE 10000000
+static constexpr int32_t MAX_RAND_RANGE = 10000000;
 
 bool Raids::startup()
 {
@@ -545,8 +545,6 @@ bool AreaSpawnEvent::executeEvent()
 	}
 	return true;
 }
-
-ScriptEvent::ScriptEvent(LuaScriptInterface* interface) : Event(interface) {}
 
 bool ScriptEvent::configureRaidEvent(const pugi::xml_node& eventNode)
 {

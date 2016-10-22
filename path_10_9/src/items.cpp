@@ -566,19 +566,19 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				std::cout << "[Warning - Items::parseItemNode] Unknown slotType: " << valueAttribute.as_string() << std::endl;
 			}
 		} else if (tmpStrValue == "ammotype") {
-			it.ammoType = getAmmoType(valueAttribute.as_string());
+			it.ammoType = getAmmoType(asLowerCaseString(valueAttribute.as_string()));
 			if (it.ammoType == AMMO_NONE) {
 				std::cout << "[Warning - Items::parseItemNode] Unknown ammoType: " << valueAttribute.as_string() << std::endl;
 			}
 		} else if (tmpStrValue == "shoottype") {
-			ShootType_t shoot = getShootType(valueAttribute.as_string());
+			ShootType_t shoot = getShootType(asLowerCaseString(valueAttribute.as_string()));
 			if (shoot != CONST_ANI_NONE) {
 				it.shootType = shoot;
 			} else {
 				std::cout << "[Warning - Items::parseItemNode] Unknown shootType: " << valueAttribute.as_string() << std::endl;
 			}
 		} else if (tmpStrValue == "effect") {
-			MagicEffectClasses effect = getMagicEffect(valueAttribute.as_string());
+			MagicEffectClasses effect = getMagicEffect(asLowerCaseString(valueAttribute.as_string()));
 			if (effect != CONST_ME_NONE) {
 				it.magicEffect = effect;
 			} else {
@@ -677,8 +677,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 		} else if (tmpStrValue == "absorbpercentall" || tmpStrValue == "absorbpercentallelements") {
 			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
 			Abilities& abilities = it.getAbilities();
-			for (size_t i = 0; i < COMBAT_COUNT; ++i) {
-				abilities.absorbPercent[i] += value;
+			for (auto& i : abilities.absorbPercent) {
+				i += value;
 			}
 		} else if (tmpStrValue == "reflectpercentall" || tmpStrValue == "reflectpercentallelements") {
 			int16_t value = pugi::cast<int16_t>(valueAttribute.value());

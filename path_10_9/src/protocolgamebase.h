@@ -109,15 +109,15 @@ class ProtocolGameBase : public Protocol {
 		bool canSee(const Creature*) const;
 		bool canSee(const Position& pos) const;
 
-		Player* player;
-		uint32_t eventConnect;
-		uint16_t version;
+		Player* player = nullptr;
+		uint32_t eventConnect = 0;
+		uint16_t version = CLIENT_VERSION_MIN;
 
-		uint32_t challengeTimestamp;
-		uint8_t challengeRandom;
+		uint32_t challengeTimestamp = 0;
+		uint8_t challengeRandom = 0;
 
-		bool debugAssertSent;
-		bool acceptPackets;
+		bool debugAssertSent = false;
+		bool acceptPackets = false;
 
 		std::unordered_set<uint32_t> knownCreatureSet;
 };

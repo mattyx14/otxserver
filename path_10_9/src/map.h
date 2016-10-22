@@ -36,7 +36,7 @@ class Game;
 class Tile;
 class Map;
 
-#define MAP_MAX_LAYERS 16
+static constexpr int32_t MAP_MAX_LAYERS = 16;
 
 struct FindPathParams;
 struct AStarNode {
@@ -45,10 +45,10 @@ struct AStarNode {
 	uint16_t x, y;
 };
 
-#define MAX_NODES 512
+static constexpr int32_t MAX_NODES = 512;
 
-#define MAP_NORMALWALKCOST 10
-#define MAP_DIAGONALWALKCOST 25
+static constexpr int32_t MAP_NORMALWALKCOST = 10;
+static constexpr int32_t MAP_DIAGONALWALKCOST = 25;
 
 class AStarNodes
 {
@@ -75,19 +75,19 @@ class AStarNodes
 
 typedef std::map<Position, SpectatorVec> SpectatorCache;
 
-#define FLOOR_BITS 3
-#define FLOOR_SIZE (1 << FLOOR_BITS)
-#define FLOOR_MASK (FLOOR_SIZE - 1)
+static constexpr int32_t FLOOR_BITS = 3;
+static constexpr int32_t FLOOR_SIZE = (1 << FLOOR_BITS);
+static constexpr int32_t FLOOR_MASK = (FLOOR_SIZE - 1);
 
 struct Floor {
-	Floor() = default;
+	constexpr Floor() = default;
 	~Floor();
 
 	// non-copyable
 	Floor(const Floor&) = delete;
 	Floor& operator=(const Floor&) = delete;
 
-	Tile* tiles[FLOOR_SIZE][FLOOR_SIZE] = {{ nullptr }};
+	Tile* tiles[FLOOR_SIZE][FLOOR_SIZE] = {};
 };
 
 class FrozenPathingConditionCall;
@@ -96,7 +96,7 @@ class QTreeLeafNode;
 class QTreeNode
 {
 	public:
-		QTreeNode();
+		constexpr QTreeNode() = default;
 		virtual ~QTreeNode();
 
 		// non-copyable
@@ -127,9 +127,9 @@ class QTreeNode
 		QTreeLeafNode* createLeaf(uint32_t x, uint32_t y, uint32_t level);
 
 	protected:
-		QTreeNode* child[4];
+		QTreeNode* child[4] = {};
 
-		bool leaf;
+		bool leaf = false;
 
 		friend class Map;
 };
@@ -137,7 +137,7 @@ class QTreeNode
 class QTreeLeafNode final : public QTreeNode
 {
 	public:
-		QTreeLeafNode();
+		QTreeLeafNode() { leaf = true; newLeaf = true; }
 		~QTreeLeafNode();
 
 		// non-copyable
@@ -154,9 +154,9 @@ class QTreeLeafNode final : public QTreeNode
 
 	protected:
 		static bool newLeaf;
-		QTreeLeafNode* leafS;
-		QTreeLeafNode* leafE;
-		Floor* array[MAP_MAX_LAYERS];
+		QTreeLeafNode* leafS = nullptr;
+		QTreeLeafNode* leafE = nullptr;
+		Floor* array[MAP_MAX_LAYERS] = {};
 		CreatureVector creature_list;
 		CreatureVector player_list;
 
@@ -172,10 +172,10 @@ class QTreeLeafNode final : public QTreeNode
 class Map
 {
 	public:
-		static const int32_t maxViewportX = 11; //min value: maxClientViewportX + 1
-		static const int32_t maxViewportY = 11; //min value: maxClientViewportY + 1
-		static const int32_t maxClientViewportX = 8;
-		static const int32_t maxClientViewportY = 6;
+		static constexpr int32_t maxViewportX = 11; //min value: maxClientViewportX + 1
+		static constexpr int32_t maxViewportY = 11; //min value: maxClientViewportY + 1
+		static constexpr int32_t maxClientViewportX = 8;
+		static constexpr int32_t maxClientViewportY = 6;
 
 		uint32_t clean() const;
 

@@ -51,23 +51,13 @@ enum slots_t : uint8_t {
 };
 
 struct FindPathParams {
-	bool fullPathSearch;
-	bool clearSight;
-	bool allowDiagonal;
-	bool keepDistance;
-	int32_t maxSearchDist;
-	int32_t minTargetDist;
-	int32_t maxTargetDist;
-
-	FindPathParams() {
-		fullPathSearch = true;
-		clearSight = true;
-		allowDiagonal = true;
-		keepDistance = false;
-		maxSearchDist = 0;
-		minTargetDist = -1;
-		maxTargetDist = -1;
-	}
+	bool fullPathSearch = true;
+	bool clearSight = true;
+	bool allowDiagonal = true;
+	bool keepDistance = false;
+	int32_t maxSearchDist = 0;
+	int32_t minTargetDist = -1;
+	int32_t maxTargetDist = -1;
 };
 
 class Map;
@@ -79,14 +69,14 @@ class Npc;
 class Item;
 class Tile;
 
-#define EVENT_CREATURECOUNT 10
-#define EVENT_CREATURE_THINK_INTERVAL 1000
-#define EVENT_CHECK_CREATURE_INTERVAL (EVENT_CREATURE_THINK_INTERVAL / EVENT_CREATURECOUNT)
+static constexpr int32_t EVENT_CREATURECOUNT = 10;
+static constexpr int32_t EVENT_CREATURE_THINK_INTERVAL = 1000;
+static constexpr int32_t EVENT_CHECK_CREATURE_INTERVAL = (EVENT_CREATURE_THINK_INTERVAL / EVENT_CREATURECOUNT);
 
 class FrozenPathingConditionCall
 {
 	public:
-		explicit FrozenPathingConditionCall(Position targetPos) : targetPos(targetPos) {}
+		explicit FrozenPathingConditionCall(Position targetPos) : targetPos(std::move(targetPos)) {}
 
 		bool operator()(const Position& startPos, const Position& testPos,
 		                const FindPathParams& fpp, int32_t& bestMatchDist) const;
@@ -156,13 +146,6 @@ class Creature : virtual public Thing
 		}
 		virtual void removeList() = 0;
 		virtual void addList() = 0;
-
-		const Position& getLastPosition() const {
-			return lastPosition;
-		}
-		void setLastPosition(const Position& newLastPos) {
-			lastPosition = newLastPos;
-		}
 
 		virtual bool canSee(const Position& pos) const;
 		virtual bool canSeeCreature(const Creature* creature) const;
@@ -468,6 +451,13 @@ class Creature : virtual public Thing
 
 		int32_t getWalkCache(const Position& pos) const;
 
+		const Position& getLastPosition() const {
+			return lastPosition;
+		}
+		void setLastPosition(Position newLastPos) {
+			lastPosition = newLastPos;
+		}
+
 		static bool canSee(const Position& myPos, const Position& pos, int32_t viewRangeX, int32_t viewRangeY);
 
 		double getDamageRatio(Creature* attacker) const;
@@ -494,10 +484,10 @@ class Creature : virtual public Thing
 			int64_t ticks;
 		};
 
-		static const int32_t mapWalkWidth = Map::maxViewportX * 2 + 1;
-		static const int32_t mapWalkHeight = Map::maxViewportY * 2 + 1;
-		static const int32_t maxWalkCacheWidth = (mapWalkWidth - 1) / 2;
-		static const int32_t maxWalkCacheHeight = (mapWalkHeight - 1) / 2;
+		static constexpr int32_t mapWalkWidth = Map::maxViewportX * 2 + 1;
+		static constexpr int32_t mapWalkHeight = Map::maxViewportY * 2 + 1;
+		static constexpr int32_t maxWalkCacheWidth = (mapWalkWidth - 1) / 2;
+		static constexpr int32_t maxWalkCacheHeight = (mapWalkHeight - 1) / 2;
 
 		Position position;
 

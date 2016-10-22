@@ -44,8 +44,8 @@ void MoveEvents::clearMap(MoveListMap& map)
 	std::unordered_set<MoveEvent*> set;
 	for (const auto& it : map) {
 		const MoveEventList& moveEventList = it.second;
-		for (int32_t i = 0; i < MOVE_EVENT_LAST; ++i) {
-			for (MoveEvent* moveEvent : moveEventList.moveEvent[i]) {
+		for (const auto& i : moveEventList.moveEvent) {
+			for (MoveEvent* moveEvent : i) {
 				set.insert(moveEvent);
 			}
 		}
@@ -65,8 +65,8 @@ void MoveEvents::clear()
 
 	for (const auto& it : positionMap) {
 		const MoveEventList& moveEventList = it.second;
-		for (int32_t i = 0; i < MOVE_EVENT_LAST; ++i) {
-			for (MoveEvent* moveEvent : moveEventList.moveEvent[i]) {
+		for (const auto& i : moveEventList.moveEvent) {
+			for (MoveEvent* moveEvent : i) {
 				delete moveEvent;
 			}
 		}
@@ -285,7 +285,7 @@ void MoveEvents::addEvent(MoveEvent* moveEvent, const Position& pos, MovePosList
 
 MoveEvent* MoveEvents::getEvent(const Tile* tile, MoveEvent_t eventType)
 {
-	MovePosListMap::iterator it = positionMap.find(tile->getPosition());
+	auto it = positionMap.find(tile->getPosition());
 	if (it != positionMap.end()) {
 		std::list<MoveEvent*>& moveEventList = it->second.moveEvent[eventType];
 		if (!moveEventList.empty()) {
@@ -384,37 +384,21 @@ uint32_t MoveEvents::onItemMove(Item* item, Tile* tile, bool isAdd)
 	return ret;
 }
 
-MoveEvent::MoveEvent(LuaScriptInterface* interface) :
-	Event(interface),
-	eventType(MOVE_EVENT_NONE),
-	stepFunction(nullptr),
-	moveFunction(nullptr),
-	equipFunction(nullptr),
-	slot(SLOTP_WHEREEVER),
-	reqLevel(0),
-	reqMagLevel(0),
-	premium(false),
-	wieldInfo(0)
-{}
+MoveEvent::MoveEvent(LuaScriptInterface* interface) : Event(interface) {}
 
 MoveEvent::MoveEvent(const MoveEvent* copy) :
-	Event(copy)
-{
-	eventType = copy->eventType;
-	stepFunction = copy->stepFunction;
-	moveFunction = copy->moveFunction;
-	equipFunction = copy->equipFunction;
-	slot = copy->slot;
-
-	if (copy->eventType == MOVE_EVENT_EQUIP) {
-		wieldInfo = copy->wieldInfo;
-		reqLevel = copy->reqLevel;
-		reqMagLevel = copy->reqMagLevel;
-		vocationString = copy->vocationString;
-		premium = copy->premium;
-		vocEquipMap = copy->vocEquipMap;
-	}
-}
+	Event(copy),
+	eventType(copy->eventType),
+	stepFunction(copy->stepFunction),
+	moveFunction(copy->moveFunction),
+	equipFunction(copy->equipFunction),
+	slot(copy->slot),
+	reqLevel(copy->reqLevel),
+	reqMagLevel(copy->reqMagLevel),
+	premium(copy->premium),
+	vocationString(copy->vocationString),
+	wieldInfo(copy->wieldInfo),
+	vocEquipMap(copy->vocEquipMap) {}
 
 std::string MoveEvent::getScriptEventName() const
 {

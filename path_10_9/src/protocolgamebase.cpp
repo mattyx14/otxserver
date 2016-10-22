@@ -86,7 +86,7 @@ void ProtocolGameBase::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& 
 
 	if (knownCreatureSet.size() > 1300) {
 		// Look for a creature to remove
-		for (std::unordered_set<uint32_t>::iterator it = knownCreatureSet.begin(), end = knownCreatureSet.end(); it != end; ++it) {
+		for (auto it = knownCreatureSet.begin(), end = knownCreatureSet.end(); it != end; ++it) {
 			Creature* creature = g_game.getCreatureByID(*it);
 			if (!canSee(creature)) {
 				removedKnown = *it;
@@ -96,7 +96,7 @@ void ProtocolGameBase::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& 
 		}
 
 		// Bad situation. Let's just remove anyone.
-		std::unordered_set<uint32_t>::iterator it = knownCreatureSet.begin();
+		auto it = knownCreatureSet.begin();
 		if (*it == id) {
 			++it;
 		}

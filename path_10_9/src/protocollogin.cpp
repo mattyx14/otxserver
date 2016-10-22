@@ -1,21 +1,21 @@
 /**
-* The Forgotten Server - a free and open-source MMORPG server emulator
-* Copyright (C) 2016  Mark Samman <mark.samman@gmail.com>
-*
-* This program is free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program; if not, write to the Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+ * The Forgotten Server - a free and open-source MMORPG server emulator
+ * Copyright (C) 2016  Mark Samman <mark.samman@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 #include "otpch.h"
 
@@ -154,14 +154,16 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		msg.skipBytes(12);
 	}
 	/*
-	* Skipped bytes:
-	* 4 bytes: protocolVersion
-	* 12 bytes: dat, spr, pic signatures (4 bytes each)
-	* 1 byte: 0
-	*/
+	 * Skipped bytes:
+	 * 4 bytes: protocolVersion
+	 * 12 bytes: dat, spr, pic signatures (4 bytes each)
+	 * 1 byte: 0
+	 */
 
 	if (version <= 760) {
-		disconnectClient(g_config.getString(ConfigManager::VERSION_STR), version);
+		std::ostringstream ss;
+		ss << "Only clients with protocol " << g_config.getString(ConfigManager::VERSION_STR) << " allowed!";
+		disconnectClient(ss.str(), version);
 		return;
 	}
 
@@ -179,7 +181,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	setXTEAKey(key);
 
 	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
-		disconnectClient(g_config.getString(ConfigManager::VERSION_STR), version);
+		std::ostringstream ss;
+		ss << "Only clients with protocol " << g_config.getString(ConfigManager::VERSION_STR) << " allowed!";
+		disconnectClient(ss.str(), version);
 		return;
 	}
 

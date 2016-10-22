@@ -1,7 +1,7 @@
 [ OTX Server 3 - CHANGE LOG
 	PROJECT NAME
 		OTX Server 3
-			The OTX Server are based on The Forgotten Server Version: 1.2
+			The OTX Server are based on The Forgotten Server Version: 1.3
 
 	CODENAME
 		SAILOR
@@ -117,6 +117,9 @@
 	- Remove weapons requeriments and fix weapons 7.x (babymannen)
 	- Support to 10.94/98 - 11.00
 	- Update items.xml on 7.x (babymannen)
+
+	Now:
+		The OTX Server are based on The Forgotten Server Version: 1.3
 ]
 
 [ OTX Server 3.6 :: Version " SCARETALE "
