@@ -704,29 +704,31 @@ bool Player::canWalkthrough(const Creature* creature) const
 		return false;
 	}
 
+	if ((player->isAttackable() && (player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)))) {
+		return true;
+	}
+
 	const Tile* playerTile = player->getTile();
-	if (!playerTile || !playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-		return false;
+	if (playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+		Item* playerTileGround = playerTile->getGround();
+		if (playerTileGround && playerTileGround->hasWalkStack()) {
+			Player* thisPlayer = const_cast<Player*>(this);
+			if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
+				thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
+				return true;
+			}
+
+			if (creature->getPosition() != lastWalkthroughPosition) {
+				thisPlayer->setLastWalkthroughPosition(creature->getPosition());
+				return false;
+			}
+
+			thisPlayer->setLastWalkthroughPosition(creature->getPosition());
+			return true;
+		}
 	}
 
-	const Item* playerTileGround = playerTile->getGround();
-	if (!playerTileGround || !playerTileGround->hasWalkStack()) {
-		return false;
-	}
-
-	Player* thisPlayer = const_cast<Player*>(this);
-	if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
-		thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
-		return false;
-	}
-
-	if (creature->getPosition() != lastWalkthroughPosition) {
-		thisPlayer->setLastWalkthroughPosition(creature->getPosition());
-		return false;
-	}
-
-	thisPlayer->setLastWalkthroughPosition(creature->getPosition());
-	return true;
+	return false;
 }
 
 bool Player::canWalkthroughEx(const Creature* creature) const
@@ -741,7 +743,11 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	}
 
 	const Tile* playerTile = player->getTile();
-	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
+	if ((!player->isAttackable() && (player->getLevel() > (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)))) {
+		return true;
+	}
+
+	return playerTile && playerTile->hasFlag(TILESTATE_NONE);
 }
 
 void Player::onReceiveMail() const
