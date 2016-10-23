@@ -45,15 +45,7 @@ class ProtocolGameBase : public Protocol {
 
 	protected:
 		explicit ProtocolGameBase(Connection_ptr connection):
-			Protocol(connection),
-			player(nullptr),
-			eventConnect(0),
-			version(CLIENT_VERSION_MIN),
-			challengeTimestamp(0),
-			challengeRandom(0),
-			debugAssertSent(false),
-			acceptPackets(false) {},
-			tileLogin(false)
+			Protocol(connection) {}
 
 		virtual void writeToOutputBuffer(const NetworkMessage& msg, bool broadcast = true) = 0;
 		void onConnect() final;
@@ -118,6 +110,8 @@ class ProtocolGameBase : public Protocol {
 
 		bool debugAssertSent = false;
 		bool acceptPackets = false;
+
+		bool tileLogin = true;
 
 		std::unordered_set<uint32_t> knownCreatureSet;
 };

@@ -390,11 +390,6 @@ void ProtocolGameBase::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 					playerSpawned = true;
 				}
 
-				bool known;
-				uint32_t removedKnown;
-				checkCreatureAsKnown(creature->getID(), known, removedKnown);
-				AddCreature(msg, creature, known, removedKnown);
-
 				if (count == 8 && playerSpawned == false) {
 					bool known;
 					uint32_t removedKnown;

@@ -27,8 +27,8 @@
 int32_t NetworkMessage::decodeHeader()
 {
 	int32_t newSize = static_cast<int32_t>(buffer[0] | buffer[1] << 8);
-	length = newSize;
-	return length;
+	info.length = newSize;
+	return info.length;
 }
 
 /******************************************************************************/

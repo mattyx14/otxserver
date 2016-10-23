@@ -53,7 +53,7 @@ void MonsterType::createLoot(Container* corpse)
 		return;
 	}
 
-	if (isRewardBoss) {
+	if (info.isRewardBoss) {
 		auto timestamp = time(nullptr);
 		Item* rewardContainer = Item::CreateItem(ITEM_REWARD_CONTAINER);
 		rewardContainer->setIntAttr(ITEM_ATTRIBUTE_DATE, timestamp);
