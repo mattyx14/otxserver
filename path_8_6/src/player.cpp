@@ -709,7 +709,7 @@ bool Player::canWalkthrough(const Creature* creature) const
 	}
 
 	const Tile* playerTile = player->getTile();
-	if ((!player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)) || playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+	if ((!player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)) || playerTile || playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 		Item* playerTileGround = playerTile->getGround();
 		if ((player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)) && playerTileGround && playerTileGround->hasWalkStack()) {
 			Player* thisPlayer = const_cast<Player*>(this);
