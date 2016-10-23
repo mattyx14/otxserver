@@ -1119,7 +1119,9 @@ void Player::onChangeZone(ZoneType_t zone)
 		}
 	}
 
-	g_game.updateCreatureWalkthrough(this);
+	if ((!player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) {
+		g_game.updateCreatureWalkthrough(this);
+	}
 	sendIcons();
 }
 
