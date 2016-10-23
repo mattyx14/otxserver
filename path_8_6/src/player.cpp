@@ -1119,6 +1119,7 @@ void Player::onChangeZone(ZoneType_t zone)
 		}
 	}
 
+	const Player* player = creature->getPlayer();
 	if ((!player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) {
 		g_game.updateCreatureWalkthrough(this);
 	}
