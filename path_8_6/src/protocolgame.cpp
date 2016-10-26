@@ -42,19 +42,6 @@ extern Actions actions;
 extern CreatureEvents* g_creatureEvents;
 extern Chat* g_chat;
 
-ProtocolGame::ProtocolGame(Connection_ptr connection) :
-	Protocol(connection),
-	player(nullptr),
-	eventConnect(0),
-	challengeTimestamp(0),
-	version(CLIENT_VERSION_MIN),
-	challengeRandom(0),
-	debugAssertSent(false),
-	acceptPackets(false)
-{
-	//
-}
-
 void ProtocolGame::release()
 {
 	//dispatcher thread
@@ -291,8 +278,10 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
-		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
+	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
+		std::ostringstream ss;
+		ss << "Only clients with protocol " << CLIENT_VERSION_STR << " allowed!";
+		disconnectClient(ss.str());
 		return;
 	}
 
@@ -383,8 +372,16 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 	uint8_t recvbyte = msg.getByte();
 
-	//a dead player can not perform actions
-	if (!player || player->isRemoved() || player->getHealth() <= 0) {
+	if (!player) {
+		if (recvbyte == 0x0F) {
+			disconnect();
+		}
+
+		return;
+	}
+
+	//a dead player can not performs actions
+	if (player->isRemoved() || player->getHealth() <= 0) {
 		if (recvbyte == 0x0F) {
 			disconnect();
 			return;
@@ -621,7 +618,7 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& remo
 
 	if (knownCreatureSet.size() > 250) {
 		// Look for a creature to remove
-		for (std::unordered_set<uint32_t>::iterator it = knownCreatureSet.begin(), end = knownCreatureSet.end(); it != end; ++it) {
+		for (auto it = knownCreatureSet.begin(), end = knownCreatureSet.end(); it != end; ++it) {
 			Creature* creature = g_game.getCreatureByID(*it);
 			if (!canSee(creature)) {
 				removedKnown = *it;
@@ -631,7 +628,7 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& remo
 		}
 
 		// Bad situation. Let's just remove anyone.
-		std::unordered_set<uint32_t>::iterator it = knownCreatureSet.begin();
+		auto it = knownCreatureSet.begin();
 		if (*it == id) {
 			++it;
 		}
@@ -1285,7 +1282,7 @@ void ProtocolGame::sendShop(Npc*, const ShopInfoList& itemList)
 	msg.addByte(itemsToSend);
 
 	uint16_t i = 0;
-	for (ShopInfoList::const_iterator it = itemList.begin(); i < itemsToSend; ++it, ++i) {
+	for (auto it = itemList.begin(); i < itemsToSend; ++it, ++i) {
 		AddShopItem(msg, *it);
 	}
 
@@ -1978,11 +1975,7 @@ void ProtocolGame::sendOutfitWindow()
 	std::vector<ProtocolOutfit> protocolOutfits;
 	if (player->isAccessPlayer()) {
 		static const std::string gamemasterOutfitName = "Gamemaster";
-		protocolOutfits.emplace_back(
-			&gamemasterOutfitName,
-			75,
-			0
-		);
+		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0);
 	}
 
 	const auto& outfits = Outfits::getInstance()->getOutfits(player->getSex());
@@ -1993,12 +1986,8 @@ void ProtocolGame::sendOutfitWindow()
 			continue;
 		}
 
-		protocolOutfits.emplace_back(
-			&outfit.name,
-			outfit.lookType,
-			addons
-		);
-		if (protocolOutfits.size() == 26) { // Game client doesn't allow more than 150 outfits
+		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
+		if (protocolOutfits.size() == 26) { // Game client doesn't allow more than 26 outfits
 			break;
 		}
 	}
@@ -2006,7 +1995,7 @@ void ProtocolGame::sendOutfitWindow()
 	msg.addByte(protocolOutfits.size());
 	for (const ProtocolOutfit& outfit : protocolOutfits) {
 		msg.add<uint16_t>(outfit.lookType);
-		msg.addString(*outfit.name);
+		msg.addString(outfit.name);
 		msg.addByte(outfit.addons);
 	}
 

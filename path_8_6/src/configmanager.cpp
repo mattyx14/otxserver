@@ -58,7 +58,7 @@ bool ConfigManager::load()
 		string[MYSQL_PASS] = getGlobalString(L, "mysqlPass", "");
 		string[MYSQL_DB] = getGlobalString(L, "mysqlDatabase", "forgottenserver");
 		string[MYSQL_SOCK] = getGlobalString(L, "mysqlSock", "");
-		string[VERSION_STR] = getGlobalString(L, "clientVersionStr", "Only clients with protocol " CLIENT_VERSION_STR " allowed!");
+		string[VERSION_STR] = getGlobalString(L, "clientVersionStr", "");
 
 		integer[SQL_PORT] = getGlobalNumber(L, "mysqlPort", 3306);
 		integer[GAME_PORT] = getGlobalNumber(L, "gameProtocolPort", 7172);

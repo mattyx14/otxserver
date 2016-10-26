@@ -20,17 +20,17 @@
 #ifndef FS_DEFINITIONS_H_877452FEC245450C9F96B8FD268D8963
 #define FS_DEFINITIONS_H_877452FEC245450C9F96B8FD268D8963
 
-#define STATUS_SERVER_NAME "OTX Server"
-#define STATUS_SERVER_VERSION "3"
-#define MINOR_VERSION "7"
-#define REVISION_VERSION "DEV"
-#define SOFTWARE_CODENAME "SAILOR"
-#define STATUS_SERVER_DEVELOPERS "Mattyx14, Brewsterl, Malucooo and The Forgotten Server Developers"
-#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv3/"
+static constexpr auto STATUS_SERVER_NAME = "OTX Server";
+static constexpr auto STATUS_SERVER_VERSION = "3";
+static constexpr auto MINOR_VERSION = "7";
+static constexpr auto REVISION_VERSION = "DEV";
+static constexpr auto SOFTWARE_CODENAME = "SAILOR";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "Mattyx14, Brewsterl, Malucooo and The Forgotten Server Developers";
+static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/";
 
-#define CLIENT_VERSION_MIN 860
-#define CLIENT_VERSION_MAX 860
-#define CLIENT_VERSION_STR "8.6"
+static constexpr auto CLIENT_VERSION_MIN = 860;
+static constexpr auto CLIENT_VERSION_MAX = 860;
+static constexpr auto CLIENT_VERSION_STR = "8.60";
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

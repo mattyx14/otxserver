@@ -83,8 +83,8 @@ enum tradestate_t : uint8_t {
 };
 
 struct VIPEntry {
-	VIPEntry(uint32_t guid, std::string name, const std::string& description, uint32_t icon, bool notify)
-		: guid(guid), name(name), description(description), icon(icon), notify(notify) {}
+	VIPEntry(uint32_t guid, std::string name, std::string description, uint32_t icon, bool notify) :
+		guid(guid), name(std::move(name)), description(std::move(description)), icon(icon), notify(notify) {}
 
 	uint32_t guid;
 	std::string name;
@@ -99,23 +99,22 @@ struct OpenContainer {
 };
 
 struct OutfitEntry {
-	OutfitEntry(uint16_t lookType, uint8_t addons) : lookType(lookType), addons(addons) {}
+	constexpr OutfitEntry(uint16_t lookType, uint8_t addons) : lookType(lookType), addons(addons) {}
 
 	uint16_t lookType;
 	uint8_t addons;
 };
 
 struct Skill {
-	Skill() : tries(0), level(10), percent(0) {}
-	uint64_t tries;
-	uint16_t level;
-	uint8_t percent;
+	uint64_t tries = 0;
+	uint16_t level = 10;
+	uint8_t percent = 0;
 };
 
 typedef std::map<uint32_t, uint32_t> MuteCountMap;
 
-#define PLAYER_MAX_SPEED 1500
-#define PLAYER_MIN_SPEED 10
+static constexpr int32_t PLAYER_MAX_SPEED = 1500;
+static constexpr int32_t PLAYER_MIN_SPEED = 10;
 
 class Player final : public Creature, public Cylinder
 {
@@ -146,7 +145,7 @@ class Player final : public Creature, public Cylinder
 			return name;
 		}
 		void setName(std::string name) {
-			this->name = name;
+			this->name = std::move(name);
 		}
 		const std::string& getNameDescription() const final {
 			return name;
@@ -1136,7 +1135,7 @@ class Player final : public Creature, public Cylinder
 		const GuildRank* guildRank = nullptr;
 		Group* group = nullptr;
 		Item* tradeItem = nullptr;
-		Item* inventory[CONST_SLOT_LAST + 1] = { nullptr };
+		Item* inventory[CONST_SLOT_LAST + 1] = {};
 		Item* writeItem = nullptr;
 		House* editHouse = nullptr;
 		Npc* shopOwner = nullptr;
@@ -1165,8 +1164,8 @@ class Player final : public Creature, public Cylinder
 		uint32_t windowTextId = 0;
 		uint32_t editListId = 0;
 		uint32_t manaMax = 0;
-		int32_t varSkills[SKILL_LAST + 1] = { 0 };
-		int32_t varStats[STAT_LAST + 1] = { 0 };
+		int32_t varSkills[SKILL_LAST + 1] = {};
+		int32_t varStats[STAT_LAST + 1] = {};
 		int32_t purchaseCallback = -1;
 		int32_t saleCallback = -1;
 		int32_t MessageBufferCount = 0;
@@ -1200,7 +1199,7 @@ class Player final : public Creature, public Cylinder
 		bool pzLocked = false;
 		bool isConnecting = false;
 		bool addAttackSkillPoint = false;
-		bool inventoryAbilities[CONST_SLOT_LAST + 1] = { false };
+		bool inventoryAbilities[CONST_SLOT_LAST + 1] = {};
 
 		static uint32_t playerAutoID;
 
