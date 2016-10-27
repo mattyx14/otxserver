@@ -101,6 +101,6 @@ class Spawns
 		bool started = false;
 };
 
-static constexpr int32_t NONBLOCKABLE_SPAWN_INTERVAL 1400
+static constexpr int32_t NONBLOCKABLE_SPAWN_INTERVAL = 1400;
 
 #endif

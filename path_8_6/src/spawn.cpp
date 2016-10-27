@@ -253,12 +253,12 @@ void Spawn::checkSpawn()
 
 		spawnBlock_t& sb = it.second;
 		if (OTSYS_TIME() >= sb.lastSpawn + sb.interval) {
-			if (sb.mType->isBlockable && findPlayer(sb.pos)) {
+			if (sb.mType->info.isBlockable && findPlayer(sb.pos)) {
 				sb.lastSpawn = OTSYS_TIME();
 				continue;
 			}
 
-			if (sb.mType->isBlockable) {
+			if (sb.mType->info.isBlockable) {
 				spawnMonster(spawnId, sb.mType, sb.pos, sb.direction);
 			} else {
 				scheduleSpawn(spawnId, sb, 3 * NONBLOCKABLE_SPAWN_INTERVAL);

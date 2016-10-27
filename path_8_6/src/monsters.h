@@ -160,7 +160,7 @@ class MonsterType
 		bool isAttackable = true;
 		bool isHostile = true;
 		bool hiddenHealth = false;
-		bool isBlockable = fales;
+		bool isBlockable = true;
 		bool isPassive = false;
 		bool isRewardBoss = false;
 	};

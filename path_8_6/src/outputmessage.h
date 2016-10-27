@@ -75,6 +75,7 @@ class OutputMessage : public NetworkMessage
 			info.length += sizeof(T);
 		}
 
+		bool isBroadcastMesssage {false};
 		MsgSize_t outputBufferStart = INITIAL_BUFFER_POSITION;
 };
 
