@@ -31,7 +31,7 @@ Container::Container(uint16_t type) :
 Container::Container(uint16_t type, uint16_t size, bool unlocked /*= true*/) :
 	Item(type),
 	maxSize(size),
-	unlocked(unlocked),
+	unlocked(unlocked)
 {}
 
 Container::~Container()
