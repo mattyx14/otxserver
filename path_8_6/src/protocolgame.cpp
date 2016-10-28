@@ -42,9 +42,6 @@ extern Actions actions;
 extern CreatureEvents* g_creatureEvents;
 extern Chat* g_chat;
 
-ProtocolGame::ProtocolGame(Connection_ptr connection) :
-	Protocol(connection), player(nullptr), eventConnect(0), challengeTimestamp(0), version(CLIENT_VERSION_MIN), challengeRandom(0), debugAssertSent(false), acceptPackets(false) {}
-
 void ProtocolGame::release()
 {
 	//dispatcher thread
