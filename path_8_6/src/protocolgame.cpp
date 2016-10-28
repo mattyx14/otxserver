@@ -42,6 +42,9 @@ extern Actions actions;
 extern CreatureEvents* g_creatureEvents;
 extern Chat* g_chat;
 
+ProtocolGame::ProtocolGame(Connection_ptr connection) :
+	Protocol(connection), player(nullptr), eventConnect(0), challengeTimestamp(0), version(CLIENT_VERSION_MIN), challengeRandom(0), debugAssertSent(false), acceptPackets(false) {}
+
 void ProtocolGame::release()
 {
 	//dispatcher thread
@@ -372,16 +375,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 	uint8_t recvbyte = msg.getByte();
 
-	if (!player) {
-		if (recvbyte == 0x0F) {
-			disconnect();
-		}
-
-		return;
-	}
-
-	//a dead player can not performs actions
-	if (player->isRemoved() || player->getHealth() <= 0) {
+	//a dead player can not perform actions
+	if (!player || player->isRemoved() || player->getHealth() <= 0) {
 		if (recvbyte == 0x0F) {
 			disconnect();
 			return;

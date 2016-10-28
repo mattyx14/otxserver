@@ -63,7 +63,7 @@ class ProtocolGame final : public Protocol
 			return "gameworld protocol";
 		}
 
-		explicit ProtocolGame(Connection_ptr connection) : Protocol(connection) {}
+		explicit ProtocolGame(Connection_ptr connection);
 
 		void login(const std::string& name, uint32_t accnumber, OperatingSystem_t operatingSystem);
 		void logout(bool displayEffect, bool forced);
@@ -283,17 +283,17 @@ class ProtocolGame final : public Protocol
 		}
 
 		std::unordered_set<uint32_t> knownCreatureSet;
-		Player* player = nullptr;
+		Player* player;
 
-		uint32_t eventConnect = 0;
-		uint32_t challengeTimestamp = 0;
-		uint16_t version = CLIENT_VERSION_MIN;
+		uint32_t eventConnect;
+		uint32_t challengeTimestamp;
+		uint16_t version;
 
-		uint8_t challengeRandom = 0;
+		uint8_t challengeRandom;
 
-		bool debugAssertSent = false;
-		bool acceptPackets = false;
-		bool tileLogin = true;
+		bool debugAssertSent;
+		bool acceptPackets;
+		bool tileLogin;
 };
 
 #endif
