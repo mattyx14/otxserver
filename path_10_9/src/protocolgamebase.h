@@ -111,7 +111,7 @@ class ProtocolGameBase : public Protocol {
 		bool debugAssertSent = false;
 		bool acceptPackets = false;
 
-		bool tileLogin = true;
+		bool loggedIn = false;
 
 		std::unordered_set<uint32_t> knownCreatureSet;
 };

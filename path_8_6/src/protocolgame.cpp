@@ -487,7 +487,7 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 		}
 	}
 
-	if (tileLogin && tile->getPosition() == player->getPosition()) {
+	if (!loggedIn && tile->getPosition() == player->getPosition()) {
 		bool playerSpawned = false;
 		const CreatureVector *creatures = tile->getCreatures();
 		if (creatures) {
@@ -500,9 +500,12 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 					playerSpawned = true;
 				}
 
-				if (count == 8 && playerSpawned == false) {
-					bool known;
-					uint32_t removedKnown;
+				bool known;
+				uint32_t removedKnown;
+				checkCreatureAsKnown(creature->getID(), known, removedKnown);
+				AddCreature(msg, creature, known, removedKnown);
+
+				if (count == 8 && playerSpawned == false) { // player still not spawned and we need to send him too
 					checkCreatureAsKnown(player->getID(), known, removedKnown);
 					AddCreature(msg, player, known, removedKnown);
 					++count;
@@ -1750,9 +1753,8 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 
 	writeToOutputBuffer(msg);
 
-	tileLogin = true;
 	sendMapDescription(pos);
-	tileLogin = false;
+	loggedIn = true;
 
 	if (isLogin) {
 		sendMagicEffect(pos, CONST_ME_TELEPORT);
