@@ -700,28 +700,23 @@ bool Player::canWalkthrough(const Creature* creature) const
 		return false;
 	}
 
-	if ((player->isAttackable() && (player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)))) {
-		return true;
-	}
-
 	const Tile* playerTile = player->getTile();
-	if ((player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)) || playerTile || playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-		Item* playerTileGround = playerTile->getGround();
-		if (playerTileGround && playerTileGround->hasWalkStack()) {
-			Player* thisPlayer = const_cast<Player*>(this);
-			if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
-				thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
-				return true;
-			}
-
-			if (creature->getPosition() != lastWalkthroughPosition) {
-				thisPlayer->setLastWalkthroughPosition(creature->getPosition());
-				return false;
-			}
-
-			thisPlayer->setLastWalkthroughPosition(creature->getPosition());
+	Item* playerTileGround = playerTile->getGround();
+	Player* thisPlayer = const_cast<Player*>(this);
+	if(((!player->isAttackable()) || (!player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE)
+		|| ((player->isAttackable()) || (player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) && player->getTile()->getGround() && playerTileGround && playerTileGround->hasWalkStack()) {
+		if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
+			thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
 			return true;
 		}
+
+		if (creature->getPosition() != lastWalkthroughPosition) {
+			thisPlayer->setLastWalkthroughPosition(creature->getPosition());
+			return false;
+		}
+
+		thisPlayer->setLastWalkthroughPosition(creature->getPosition());
+		return true;
 	}
 
 	return false;
