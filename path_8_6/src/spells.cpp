@@ -421,7 +421,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		level = pugi::cast<uint32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("maglv"))) {
+	if ((attr = node.attribute("maglv")) || (attr = node.attribute("magiclevel"))) {
 		magLevel = pugi::cast<uint32_t>(attr.value());
 	}
 
@@ -573,13 +573,13 @@ bool Spell::playerSpellCheck(Player* player) const
 
 		if (exhaust) {
 			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-		}
 
-		if (isInstant()) {
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-		}
+			if (isInstant()) {
+				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+			}
 
-		return false;
+			return false;
+		}
 	}
 
 	if (player->getLevel() < level) {
