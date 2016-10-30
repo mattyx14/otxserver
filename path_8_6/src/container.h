@@ -117,7 +117,6 @@ class Container : public Item, public Cylinder
 			return itemlist.rend();
 		}
 
-		bool hasParent() const;
 		void addItem(Item* item);
 		Item* getItemByIndex(size_t index) const;
 		bool isHoldingItem(const Item* item) const;
@@ -173,9 +172,9 @@ class Container : public Item, public Cylinder
 		std::ostringstream& getContentDescription(std::ostringstream& os) const;
 
 		uint32_t maxSize;
-		uint32_t totalWeight = 0;
+		uint32_t totalWeight;
 		ItemDeque itemlist;
-		uint32_t serializationCount = 0;
+		uint32_t serializationCount;
 
 		bool unlocked;
 

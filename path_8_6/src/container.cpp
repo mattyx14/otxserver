@@ -31,6 +31,8 @@ Container::Container(uint16_t type) :
 Container::Container(uint16_t type, uint16_t size, bool unlocked /*= true*/) :
 	Item(type),
 	maxSize(size),
+	totalWeight(0),
+	serializationCount(0),
 	unlocked(unlocked)
 {}
 
@@ -59,11 +61,6 @@ Container* Container::getParentContainer()
 		return nullptr;
 	}
 	return thing->getContainer();
-}
-
-bool Container::hasParent() const
-{
-	return dynamic_cast<const Player*>(getParent()) == nullptr;
 }
 
 void Container::addItem(Item* item)
