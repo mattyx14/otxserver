@@ -3877,7 +3877,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		if (attackerPlayer) {
 			//critical damage
 			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_CHANCE)) {
-				damage.primary.value = (int32_t)(damage.primary.value * (1 + (attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE) / 100)));
+				damage.primary.value = (int32_t)(damage.primary.value * (1 + ((float)attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE) / 100)));
 				critical = true;
 			}
 
