@@ -231,7 +231,7 @@ class House
 		AccessList guestList;
 		AccessList subOwnerList;
 
-		Container transfer_container{ITEM_LOCKER};
+		Container transfer_container{ITEM_LOCKER1};
 
 		HouseTileList houseTiles;
 		std::list<Door*> doorList;

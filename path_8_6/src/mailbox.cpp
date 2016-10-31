@@ -91,26 +91,22 @@ void Mailbox::postRemoveNotification(Thing* thing, const Cylinder* newParent, in
 bool Mailbox::sendItem(Item* item) const
 {
 	std::string receiver;
-	uint32_t depotId = 0;
-	if (!getReceiver(item, receiver, depotId)) {
+	if (!getReceiver(item, receiver)) {
 		return false;
 	}
 
 	/**No need to continue if its still empty**/
-	if (receiver.empty() || depotId == 0) {
+	if (receiver.empty()) {
 		return false;
 	}
 
 	Player* player = g_game.getPlayerByName(receiver);
 	if (player) {
-		DepotLocker* depotLocker = player->getDepotLocker(depotId);
-		if (depotLocker) {
-			if (g_game.internalMoveItem(item->getParent(), depotLocker, INDEX_WHEREEVER,
-				item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
-				g_game.transformItem(item, item->getID() + 1);
-				player->onReceiveMail();
-				return true;
-			}
+		if (g_game.internalMoveItem(item->getParent(), player->getInbox(), INDEX_WHEREEVER,
+		                            item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
+			g_game.transformItem(item, item->getID() + 1);
+			player->onReceiveMail();
+			return true;
 		}
 	} else {
 		Player tmpPlayer(nullptr);
@@ -118,25 +114,22 @@ bool Mailbox::sendItem(Item* item) const
 			return false;
 		}
 
-		DepotLocker* depotLocker = tmpPlayer.getDepotLocker(depotId);
-		if (depotLocker) {
-			if (g_game.internalMoveItem(item->getParent(), depotLocker, INDEX_WHEREEVER,
-				item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
-				g_game.transformItem(item, item->getID() + 1);
-				IOLoginData::savePlayer(&tmpPlayer);
-				return true;
-			}
+		if (g_game.internalMoveItem(item->getParent(), tmpPlayer.getInbox(), INDEX_WHEREEVER,
+		                            item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
+			g_game.transformItem(item, item->getID() + 1);
+			IOLoginData::savePlayer(&tmpPlayer);
+			return true;
 		}
 	}
 	return false;
 }
 
-bool Mailbox::getReceiver(Item* item, std::string& name, uint32_t& depotId) const
+bool Mailbox::getReceiver(Item* item, std::string& name) const
 {
 	const Container* container = item->getContainer();
 	if (container) {
 		for (Item* containerItem : container->getItemList()) {
-			if (containerItem->getID() == ITEM_LABEL && getReceiver(containerItem, name, depotId)) {
+			if (containerItem->getID() == ITEM_LABEL && getReceiver(containerItem, name)) {
 				return true;
 			}
 		}
@@ -148,31 +141,9 @@ bool Mailbox::getReceiver(Item* item, std::string& name, uint32_t& depotId) cons
 		return false;
 	}
 
-	std::string temp;
-	std::istringstream iss(item->getText(), std::istringstream::in);
-	std::string strTown = "";
-	uint32_t curLine = 1;
-
-	while (getline(iss, temp, '\n')) {
-		if (curLine == 1) {
-			name = temp;
-		} else if (curLine == 2) {
-			strTown = temp;
-		} else {
-			break;
-		}
-
-		++curLine;
-	}
-
-	trimString(strTown);
-	Town* town = g_game.map.towns.getTown(strTown);
-	if (town) {
-		depotId = town->getID();
-		return true;
-	}
-
-	return false;
+	name = getFirstLine(text);
+	trimString(name);
+	return true;
 }
 
 bool Mailbox::canSend(const Item* item)

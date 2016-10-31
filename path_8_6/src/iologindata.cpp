@@ -345,7 +345,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 	static const std::string skillNames[] = {"skill_fist", "skill_club", "skill_sword", "skill_axe", "skill_dist", "skill_shielding", "skill_fishing"};
 	static const std::string skillNameTries[] = {"skill_fist_tries", "skill_club_tries", "skill_sword_tries", "skill_axe_tries", "skill_dist_tries", "skill_shielding_tries", "skill_fishing_tries"};
-	static const size_t size = sizeof(skillNames) / sizeof(std::string);
+	static constexpr size_t size = sizeof(skillNames) / sizeof(std::string);
 	for (uint8_t i = 0; i < size; ++i) {
 		uint16_t skillLevel = result->getNumber<uint16_t>(skillNames[i]);
 		uint64_t skillTries = result->getNumber<uint64_t>(skillNameTries[i]);
@@ -544,10 +544,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			int32_t pid = pair.second;
 
 			if (pid >= 0 && pid < 100) {
-				DepotLocker* depotLocker = player->getDepotLocker(pid);
-				if (depotLocker) {
-					depotLocker->internalAddThing(item);
-				}
+				player->getInbox()->internalAddThing(item);
 			} else {
 				ItemMap::const_iterator it2 = itemMap.find(pid);
 
@@ -837,30 +834,25 @@ bool IOLoginData::savePlayer(Player* player)
 		if (!saveItems(player, itemList, depotQuery, propWriteStream)) {
 			return false;
 		}
+	}
 
-		//save inbox items
-		query.str(std::string());
-		query << "DELETE FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID();
+	//save inbox items
+	query.str(std::string());
+	query << "DELETE FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID();
 
-		if (!db->executeQuery(query.str())) {
-			return false;
-		}
+	if (!db->executeQuery(query.str())) {
+		return false;
+	}
 
-		DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
-		itemList.clear();
+	DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+	itemList.clear();
 
-		for (const auto& it : player->depotLockerMap) {
-			DepotLocker* depotLocker = it.second;
-			for (Item* item : depotLocker->getItemList()) {
-				if (item->getID() != ITEM_DEPOT) {
-					itemList.emplace_back(it.first, item);
-				}
-			}
-		}
+	for (Item* item : player->getInbox()->getItemList()) {
+		itemList.emplace_back(0, item);
+	}
 
-		if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
-			return false;
-		}
+	if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
+		return false;
 	}
 
 	//save reward items
@@ -877,7 +869,7 @@ bool IOLoginData::savePlayer(Player* player)
 	if (!rewardList.empty()) {
 		DBInsert rewardQuery("INSERT INTO `player_rewards` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
 		itemList.clear();
-	
+
 		int running = 0;
 		for (const auto& rewardId : rewardList) {
 			Reward* reward = player->getReward(rewardId, false);

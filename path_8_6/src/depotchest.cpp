@@ -23,10 +23,7 @@
 #include "tools.h"
 
 DepotChest::DepotChest(uint16_t type) :
-	Container(type)
-{
-	maxDepotItems = 5000;
-}
+	Container(type), maxDepotItems(5000) {}
 
 ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t count,
 		uint32_t flags, Creature* actor/* = nullptr*/) const

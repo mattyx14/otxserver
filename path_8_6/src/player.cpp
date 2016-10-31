@@ -48,7 +48,10 @@ MuteCountMap Player::muteCountMap;
 uint32_t Player::playerAutoID = 0x10000000;
 
 Player::Player(ProtocolGame_ptr p) :
-	Creature(), lastPing(OTSYS_TIME()), lastPong(lastPing), client(std::move(p)) {}
+	Creature(), lastPing(OTSYS_TIME()), lastPong(lastPing), inbox(new Inbox(ITEM_INBOX)), client(std::move(p))
+{
+	inbox->incrementReferenceCounter();
+}
 
 Player::~Player()
 {
@@ -60,12 +63,11 @@ Player::~Player()
 	}
 
 	for (const auto& it : depotLockerMap) {
+		it.second->removeInbox(inbox);
 		it.second->decrementReferenceCounter();
 	}
 
-	for (const auto& it : rewardMap) {
-		it.second->decrementReferenceCounter();
-	}
+	inbox->decrementReferenceCounter();
 
 	setWriteItem(nullptr);
 	setEditHouse(nullptr);
@@ -708,16 +710,16 @@ bool Player::canWalkthrough(const Creature* creature) const
 		if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
 			thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
 			return true;
-		}
-
-		if (creature->getPosition() != lastWalkthroughPosition) {
-			thisPlayer->setLastWalkthroughPosition(creature->getPosition());
-			return false;
-		}
-
-		thisPlayer->setLastWalkthroughPosition(creature->getPosition());
-		return true;
 	}
+
+	if (creature->getPosition() != lastWalkthroughPosition) {
+		thisPlayer->setLastWalkthroughPosition(creature->getPosition());
+		return false;
+	}
+
+	thisPlayer->setLastWalkthroughPosition(creature->getPosition());
+	return true;
+}
 
 	return false;
 }
@@ -788,11 +790,13 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 {
 	auto it = depotLockerMap.find(depotId);
 	if (it != depotLockerMap.end()) {
+		inbox->setParent(it->second);
 		return it->second;
 	}
 
-	DepotLocker* depotLocker = new DepotLocker(ITEM_LOCKER);
+	DepotLocker* depotLocker = new DepotLocker(ITEM_LOCKER1);
 	depotLocker->setDepotId(depotId);
+	depotLocker->internalAddThing(inbox);
 	depotLocker->internalAddThing(getDepotChest(depotId, true));
 	depotLockerMap[depotId] = depotLocker;
 	return depotLocker;
