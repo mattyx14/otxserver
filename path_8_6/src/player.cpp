@@ -709,7 +709,7 @@ bool Player::canWalkthrough(const Creature* creature) const
 		|| ((player->isAttackable()) || (player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) && player->getTile()->getGround() && playerTileGround && playerTileGround->hasWalkStack()) {
 		if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
 			thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
-			return true;
+			return false;
 	}
 
 	if (creature->getPosition() != lastWalkthroughPosition) {
@@ -737,7 +737,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 
 	const Tile* playerTile = player->getTile();
 	if ((!player->isAttackable() && (player->getLevel() > (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)))) {
-		return true;
+		return false;
 	}
 
 	return playerTile && playerTile->hasFlag(TILESTATE_NONE);
