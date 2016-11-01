@@ -703,13 +703,19 @@ bool Player::canWalkthrough(const Creature* creature) const
 	}
 
 	const Tile* playerTile = player->getTile();
-	Item* playerTileGround = playerTile->getGround();
+	if (!playerTile || !playerTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+		return false;
+	}
+
+	const Item* playerTileGround = playerTile->getGround();
+	if (!playerTileGround || !playerTileGround->hasWalkStack()) {
+		return false;
+	}
+
 	Player* thisPlayer = const_cast<Player*>(this);
-	if(((!player->isAttackable()) || (!player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE)
-		|| ((player->isAttackable()) || (player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) && player->getTile()->getGround() && playerTileGround && playerTileGround->hasWalkStack()) {
-		if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
-			thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
-			return false;
+	if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
+		thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
+		return false;
 	}
 
 	if (creature->getPosition() != lastWalkthroughPosition) {
@@ -719,9 +725,6 @@ bool Player::canWalkthrough(const Creature* creature) const
 
 	thisPlayer->setLastWalkthroughPosition(creature->getPosition());
 	return true;
-}
-
-	return false;
 }
 
 bool Player::canWalkthroughEx(const Creature* creature) const
@@ -736,11 +739,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	}
 
 	const Tile* playerTile = player->getTile();
-	if ((!player->isAttackable() && (player->getLevel() > (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL)))) {
-		return false;
-	}
-
-	return playerTile && playerTile->hasFlag(TILESTATE_NONE);
+	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
 }
 
 void Player::onReceiveMail() const

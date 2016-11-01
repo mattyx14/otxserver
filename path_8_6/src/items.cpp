@@ -278,7 +278,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 		iType.rotatable = hasBitSet(FLAG_ROTATABLE, flags);
 		iType.canReadText = hasBitSet(FLAG_READABLE, flags);
 		iType.lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
-		// iType.walkStack = !hasBitSet(FLAG_FULLTILE, flags);
+		iType.walkStack = !hasBitSet(FLAG_FULLTILE, flags);
 		iType.forceUse = hasBitSet(FLAG_FORCEUSE, flags);
 
 		iType.id = serverId;
