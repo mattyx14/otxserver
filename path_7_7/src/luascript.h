@@ -47,6 +47,11 @@ class Condition;
 class Npc;
 class Monster;
 
+enum {
+	EVENT_ID_LOADING = 1,
+	EVENT_ID_USER = 1000,
+};
+
 enum LuaVariantType_t {
 	VARIANT_NONE,
 
@@ -69,29 +74,20 @@ enum LuaDataType {
 };
 
 struct LuaVariant {
-	LuaVariant() {
-		type = VARIANT_NONE;
-		number = 0;
-	}
-
-	LuaVariantType_t type;
+	LuaVariantType_t type = VARIANT_NONE;
 	std::string text;
 	Position pos;
-	uint32_t number;
+	uint32_t number = 0;
 };
 
 struct LuaTimerEventDesc {
-	int32_t scriptId;
-	int32_t function;
+	int32_t scriptId = -1;
+	int32_t function = -1;
 	std::list<int32_t> parameters;
-	uint32_t eventId;
+	uint32_t eventId = 0;
 
-	LuaTimerEventDesc() :
-		scriptId(-1), function(-1), eventId(0) {}
-
-	LuaTimerEventDesc(LuaTimerEventDesc&& other) :
-		scriptId(other.scriptId), function(other.function),
-		parameters(std::move(other.parameters)), eventId(other.eventId) {}
+	LuaTimerEventDesc() = default;
+	LuaTimerEventDesc(LuaTimerEventDesc&& other) = default;
 };
 
 class LuaScriptInterface;
@@ -156,25 +152,26 @@ class ScriptEnvironment
 		typedef std::map<uint32_t, int32_t> StorageMap;
 		typedef std::map<uint32_t, DBResult_ptr> DBResultMap;
 
-		//script file id
-		int32_t scriptId;
-		int32_t callbackId;
-		bool timerEvent;
 		LuaScriptInterface* interface;
 
-		//local item map
-		uint32_t lastUID;
-		std::unordered_map<uint32_t, Item*> localMap;
+		//for npc scripts
+		Npc* curNpc = nullptr;
 
 		//temporary item list
 		static std::multimap<ScriptEnvironment*, Item*> tempItems;
 
+		//local item map
+		std::unordered_map<uint32_t, Item*> localMap;
+		uint32_t lastUID = std::numeric_limits<uint16_t>::max();
+
+		//script file id
+		int32_t scriptId;
+		int32_t callbackId;
+		bool timerEvent;
+
 		//result map
 		static uint32_t lastResultId;
 		static DBResultMap tempResults;
-
-		//for npc scripts
-		Npc* curNpc;
 };
 
 #define reportErrorFunc(a)  reportError(__FUNCTION__, a, true)
@@ -211,7 +208,6 @@ class LuaScriptInterface
 		int32_t loadFile(const std::string& file, Npc* npc = nullptr);
 
 		const std::string& getFileById(int32_t scriptId);
-		int32_t getEvent();
 		int32_t getEvent(const std::string& eventName);
 		int32_t getMetaEvent(const std::string& globalName, const std::string& eventName);
 
@@ -790,6 +786,8 @@ class LuaScriptInterface
 
 		static int luaCreatureGetPathTo(lua_State* L);
 
+		static int luaCreatureMoveTo(lua_State* L);
+
 		// Player
 		static int luaPlayerCreate(lua_State* L);
 
@@ -816,6 +814,7 @@ class LuaScriptInterface
 		static int luaPlayerGetRewardList(lua_State* L);
 
 		static int luaPlayerGetDepotChest(lua_State* L);
+		static int luaPlayerGetInbox(lua_State* L);
 
 		static int luaPlayerGetSkullTime(lua_State* L);
 		static int luaPlayerSetSkullTime(lua_State* L);
@@ -1219,16 +1218,16 @@ class LuaScriptInterface
 		static int luaPartySetSharedExperience(lua_State* L);
 
 		//
-		lua_State* luaState;
+		lua_State* luaState = nullptr;
 		std::string lastLuaError;
 
 		std::string interfaceName;
-		int32_t eventTableRef;
+		int32_t eventTableRef = -1;
 
 		static ScriptEnvironment scriptEnv[16];
 		static int32_t scriptEnvIndex;
 
-		int32_t runningEventId;
+		int32_t runningEventId = EVENT_ID_USER;
 		std::string loadingFile;
 
 		//script file cache
@@ -1262,7 +1261,6 @@ class LuaEnvironment : public LuaScriptInterface
 	private:
 		void executeTimerEvent(uint32_t eventIndex);
 
-		//
 		std::unordered_map<uint32_t, LuaTimerEventDesc> timerEvents;
 		std::unordered_map<uint32_t, Combat*> combatMap;
 		std::unordered_map<uint32_t, AreaCombat*> areaMap;
@@ -1270,13 +1268,12 @@ class LuaEnvironment : public LuaScriptInterface
 		std::unordered_map<LuaScriptInterface*, std::vector<uint32_t>> combatIdMap;
 		std::unordered_map<LuaScriptInterface*, std::vector<uint32_t>> areaIdMap;
 
-		LuaScriptInterface* testInterface;
+		LuaScriptInterface* testInterface = nullptr;
 
-		uint32_t lastEventTimerId;
-		uint32_t lastCombatId;
-		uint32_t lastAreaId;
+		uint32_t lastEventTimerId = 1;
+		uint32_t lastCombatId = 0;
+		uint32_t lastAreaId = 0;
 
-		//
 		friend class LuaScriptInterface;
 		friend class CombatSpell;
 };

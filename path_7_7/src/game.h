@@ -48,9 +48,9 @@ enum stackPosType_t {
 };
 
 enum WorldType_t {
-	WORLD_TYPE_NO_PVP = 1, // optional pvp
-	WORLD_TYPE_PVP = 2, // open pvp
-	WORLD_TYPE_PVP_ENFORCED = 3, // hardcore pvp
+	WORLD_TYPE_NO_PVP = 1,
+	WORLD_TYPE_PVP = 2,
+	WORLD_TYPE_PVP_ENFORCED = 3,
 };
 
 enum GameState_t {
@@ -70,9 +70,9 @@ enum LightState_t {
 	LIGHT_STATE_SUNRISE,
 };
 
-#define EVENT_LIGHTINTERVAL 10000
-#define EVENT_DECAYINTERVAL 250
-#define EVENT_DECAY_BUCKETS 4
+static constexpr int32_t EVENT_LIGHTINTERVAL = 10000;
+static constexpr int32_t EVENT_DECAYINTERVAL = 250;
+static constexpr int32_t EVENT_DECAY_BUCKETS = 4;
 
 /**
   * Main Game class.
@@ -499,9 +499,9 @@ class Game
 		std::vector<Item*> ToReleaseItems;
 		std::vector<char> commandTags;
 
-		size_t lastBucket;
+		size_t lastBucket = 0;
 
-		WildcardTreeNode wildcardTree;
+		WildcardTreeNode wildcardTree { false };
 
 		std::map<uint32_t, Npc*> npcs;
 		std::map<uint32_t, Monster*> monsters;
@@ -513,30 +513,31 @@ class Game
 
 		Commands commands;
 
-		static const int32_t LIGHT_LEVEL_DAY = 250;
-		static const int32_t LIGHT_LEVEL_NIGHT = 40;
-		static const int32_t SUNSET = 1305;
-		static const int32_t SUNRISE = 430;
+		static constexpr int32_t LIGHT_LEVEL_DAY = 250;
+		static constexpr int32_t LIGHT_LEVEL_NIGHT = 40;
+		static constexpr int32_t SUNSET = 1305;
+		static constexpr int32_t SUNRISE = 430;
 
-		GameState_t gameState;
-		WorldType_t worldType;
+		GameState_t gameState = GAME_STATE_NORMAL;
+		WorldType_t worldType = WORLD_TYPE_PVP;
 
-		LightState_t lightState;
-		uint8_t lightLevel;
-		int32_t lightHour;
-		int32_t lightHourDelta;
+		LightState_t lightState = LIGHT_STATE_DAY;
+		uint8_t lightLevel = LIGHT_LEVEL_DAY;
+		int32_t lightHour = SUNRISE + (SUNSET - SUNRISE) / 2;
+		// (1440 minutes/day)/(3600 seconds/day)*10 seconds event interval
+		int32_t lightHourDelta = 1400 * 10 / 3600;
 
-		ServiceManager* serviceManager;
+		ServiceManager* serviceManager = nullptr;
 
 		void updatePlayersRecord() const;
-		uint32_t playersRecord;
+		uint32_t playersRecord = 0;
 
 		std::string motdHash;
-		uint32_t motdNum;
+		uint32_t motdNum = 0;
 
-		uint32_t lastStageLevel;
-		bool stagesEnabled;
-		bool useLastStageLevel;
+		uint32_t lastStageLevel = 0;
+		bool stagesEnabled = false;
+		bool useLastStageLevel = false;
 };
 
 #endif

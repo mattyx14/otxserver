@@ -17,43 +17,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_THREAD_HOLDER_H_BEB56FC46748E71D15A5BF0773ED2E67
-#define FS_THREAD_HOLDER_H_BEB56FC46748E71D15A5BF0773ED2E67
+#ifndef FS_INBOX_H_C3EF10190329447883B9C3479234EE5C
+#define FS_INBOX_H_C3EF10190329447883B9C3479234EE5C
 
-#include <thread>
-#include <atomic>
-#include "enums.h"
+#include "container.h"
 
-template <typename Derived>
-class ThreadHolder
+class Inbox final : public Container
 {
 	public:
-		ThreadHolder() {}
-		void start() {
-			setState(THREAD_STATE_RUNNING);
-			thread = std::thread(&Derived::threadMain, static_cast<Derived*>(this));
+		explicit Inbox(uint16_t type);
+
+		//cylinder implementations
+		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
+				uint32_t flags, Creature* actor = nullptr) const final;
+
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
+
+		//overrides
+		bool canRemove() const final {
+			return false;
 		}
 
-		void stop() {
-			setState(THREAD_STATE_CLOSING);
+		Cylinder* getRealParent() const final {
+			return parent;
 		}
-
-		void join() {
-			if (thread.joinable()) {
-				thread.join();
-			}
-		}
-	protected:
-		void setState(ThreadState newState) {
-			threadState.store(newState, std::memory_order_relaxed);
-		}
-
-		ThreadState getState() const {
-			return threadState.load(std::memory_order_relaxed);
-		}
-	private:
-		std::atomic<ThreadState> threadState{THREAD_STATE_TERMINATED};
-		std::thread thread;
 };
 
 #endif

@@ -28,9 +28,9 @@ static constexpr auto SOFTWARE_CODENAME = "SAILOR";
 static constexpr auto STATUS_SERVER_DEVELOPERS = "Mattyx14, Brewsterl, Malucooo and The Forgotten Server Developers";
 static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/";
 
-static constexpr auto CLIENT_VERSION_MIN = 1097;
-static constexpr auto CLIENT_VERSION_MAX = 1098;
-static constexpr auto CLIENT_VERSION_STR = "10.98";
+static constexpr auto CLIENT_VERSION_MIN = 1098;
+static constexpr auto CLIENT_VERSION_MAX = 1099;
+static constexpr auto CLIENT_VERSION_STR = "10.99";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;
 static constexpr auto AUTHENTICATOR_PERIOD = 30U;

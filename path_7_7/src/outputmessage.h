@@ -29,8 +29,7 @@ class Protocol;
 class OutputMessage : public NetworkMessage
 {
 	public:
-		OutputMessage():
-			outputBufferStart(INITIAL_BUFFER_POSITION) {}
+		OutputMessage() = default;
 
 		// non-copyable
 		OutputMessage(const OutputMessage&) = delete;
@@ -41,7 +40,7 @@ class OutputMessage : public NetworkMessage
 		}
 
 		void writeMessageLength() {
-			add_header(length);
+			add_header(info.length);
 		}
 
 		void addCryptoHeader() {
@@ -50,16 +49,16 @@ class OutputMessage : public NetworkMessage
 
 		inline void append(const NetworkMessage& msg) {
 			auto msgLen = msg.getLength();
-			memcpy(buffer + position, msg.getBuffer() + 4, msgLen);
-			length += msgLen;
-			position += msgLen;
+			memcpy(buffer + info.position, msg.getBuffer() + 8, msgLen);
+			info.length += msgLen;
+			info.position += msgLen;
 		}
 
 		inline void append(const OutputMessage_ptr& msg) {
 			auto msgLen = msg->getLength();
-			memcpy(buffer + position, msg->getBuffer() + 4, msgLen);
-			length += msgLen;
-			position += msgLen;
+			memcpy(buffer + info.position, msg->getBuffer() + 8, msgLen);
+			info.length += msgLen;
+			info.position += msgLen;
 		}
 
 	protected:
@@ -69,10 +68,10 @@ class OutputMessage : public NetworkMessage
 			outputBufferStart -= sizeof(T);
 			memcpy(buffer + outputBufferStart, &add, sizeof(T));
 			//added header size to the message size
-			length += sizeof(T);
+			info.length += sizeof(T);
 		}
 
-		MsgSize_t outputBufferStart;
+		MsgSize_t outputBufferStart = INITIAL_BUFFER_POSITION;
 };
 
 class OutputMessagePool

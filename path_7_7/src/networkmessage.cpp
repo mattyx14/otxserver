@@ -31,8 +31,8 @@
 int32_t NetworkMessage::decodeHeader()
 {
 	int32_t newSize = static_cast<int32_t>(buffer[0] | buffer[1] << 8);
-	length = newSize;
-	return length;
+	info.length = newSize;
+	return info.length;
 }
 
 /******************************************************************************/
@@ -46,8 +46,8 @@ std::string NetworkMessage::getString(uint16_t stringLen/* = 0*/)
 		return std::string();
 	}
 
-	char* v = reinterpret_cast<char*>(buffer) + position; //does not break strict aliasing
-	position += stringLen;
+	char* v = reinterpret_cast<char*>(buffer) + info.position; //does not break strict aliasing
+	info.position += stringLen;
 	return std::string(v, stringLen);
 }
 
@@ -69,9 +69,9 @@ void NetworkMessage::addString(const std::string& value)
 	}
 
 	add<uint16_t>(stringLen);
-	memcpy(buffer + position, value.c_str(), stringLen);
-	position += stringLen;
-	length += stringLen;
+	memcpy(buffer + info.position, value.c_str(), stringLen);
+	info.position += stringLen;
+	info.length += stringLen;
 }
 
 void NetworkMessage::addDouble(double value, uint8_t precision/* = 2*/)
@@ -86,9 +86,9 @@ void NetworkMessage::addBytes(const char* bytes, size_t size)
 		return;
 	}
 
-	memcpy(buffer + position, bytes, size);
-	position += size;
-	length += size;
+	memcpy(buffer + info.position, bytes, size);
+	info.position += size;
+	info.length += size;
 }
 
 void NetworkMessage::addPaddingBytes(size_t n)
@@ -97,8 +97,8 @@ void NetworkMessage::addPaddingBytes(size_t n)
 		return;
 	}
 
-	memset(buffer + position, 0x33, n);
-	length += n;
+	memset(buffer + info.position, 0x33, n);
+	info.length += n;
 }
 
 void NetworkMessage::addPosition(const Position& pos)

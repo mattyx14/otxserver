@@ -47,28 +47,8 @@ extern Vocations g_vocations;
 extern GlobalEvents* g_globalEvents;
 extern Events* g_events;
 
-Game::Game() :
-	wildcardTree(false)
-{
-	gameState = GAME_STATE_NORMAL;
-	worldType = WORLD_TYPE_PVP;
-
-	serviceManager = nullptr;
-	lastStageLevel = 0;
-	playersRecord = 0;
-	motdNum = 0;
-	useLastStageLevel = false;
-	stagesEnabled = false;
-
-	lastBucket = 0;
-
-	//(1440 minutes/day)/(3600 seconds/day)*10 seconds event interval
-	int32_t dayCycle = 3600;
-	lightHourDelta = 1440 * 10 / dayCycle;
-	lightHour = SUNRISE + (SUNSET - SUNRISE) / 2;
-	lightLevel = LIGHT_LEVEL_DAY;
-	lightState = LIGHT_STATE_DAY;
-}
+Game::Game()
+{}
 
 Game::~Game()
 {
@@ -1021,8 +1001,8 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 	}
 
 	if ((Position::getDistanceX(playerPos, mapToPos) > item->getThrowRange()) ||
-	        (Position::getDistanceY(playerPos, mapToPos) > item->getThrowRange()) ||
-	        (Position::getDistanceZ(mapFromPos, mapToPos) * 4 > item->getThrowRange())) {
+			(Position::getDistanceY(playerPos, mapToPos) > item->getThrowRange()) ||
+			(Position::getDistanceZ(mapFromPos, mapToPos) * 4 > item->getThrowRange())) {
 		player->sendCancelMessage(RETURNVALUE_DESTINATIONOUTOFREACH);
 		return;
 	}
@@ -1423,7 +1403,7 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 
 	std::vector<Container*> containers;
 
-	std::multimap<uint64_t, Item*> moneyMap;
+	std::multimap<uint32_t, Item*> moneyMap;
 	uint64_t moneyCount = 0;
 
 	for (size_t i = cylinder->getFirstIndex(), j = cylinder->getLastIndex(); i < j; ++i) {
@@ -2429,7 +2409,7 @@ void Game::playerAcceptTrade(uint32_t playerId)
 		player->setTradeState(TRADE_TRANSFER);
 		tradePartner->setTradeState(TRADE_TRANSFER);
 
-		std::map<Item*, uint32_t>::iterator it = tradeItems.find(tradeItem1);
+		auto it = tradeItems.find(tradeItem1);
 		if (it != tradeItems.end()) {
 			ReleaseItem(it->first);
 			tradeItems.erase(it);
@@ -2600,7 +2580,7 @@ void Game::internalCloseTrade(Player* player)
 	}
 
 	if (player->getTradeItem()) {
-		std::map<Item*, uint32_t>::iterator it = tradeItems.find(player->getTradeItem());
+		auto it = tradeItems.find(player->getTradeItem());
 		if (it != tradeItems.end()) {
 			ReleaseItem(it->first);
 			tradeItems.erase(it);
@@ -2618,7 +2598,7 @@ void Game::internalCloseTrade(Player* player)
 
 	if (tradePartner) {
 		if (tradePartner->getTradeItem()) {
-			std::map<Item*, uint32_t>::iterator it = tradeItems.find(tradePartner->getTradeItem());
+			auto it = tradeItems.find(tradePartner->getTradeItem());
 			if (it != tradeItems.end()) {
 				ReleaseItem(it->first);
 				tradeItems.erase(it);
@@ -3417,7 +3397,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			attackerPlayer = nullptr;
 		}
 
-		Player* targetPlayer = target->getPlayer();
 		if (damage.origin != ORIGIN_NONE) {
 			const auto& events = target->getCreatureEvents(CREATURE_EVENT_HEALTHCHANGE);
 			if (!events.empty()) {

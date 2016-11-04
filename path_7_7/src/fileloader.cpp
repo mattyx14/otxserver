@@ -21,20 +21,6 @@
 
 #include "fileloader.h"
 
-FileLoader::FileLoader() : cached_data()
-{
-	file = nullptr;
-	root = nullptr;
-	buffer = new uint8_t[1024];
-	buffer_size = 1024;
-	lastError = ERROR_NONE;
-
-	//cache
-	cache_size = 0;
-	cache_index = NO_VALID_CACHE;
-	cache_offset = NO_VALID_CACHE;
-}
-
 FileLoader::~FileLoader()
 {
 	if (file) {
@@ -45,8 +31,8 @@ FileLoader::~FileLoader()
 	NodeStruct::clearNet(root);
 	delete[] buffer;
 
-	for (int32_t i = 0; i < CACHE_BLOCKS; i++) {
-		delete[] cached_data[i].data;
+	for (auto& i : cached_data) {
+		delete[] i.data;
 	}
 }
 

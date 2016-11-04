@@ -20,7 +20,7 @@
 #ifndef FS_CONST_H_0A49B5996F074465BF44B90F4F780E8B
 #define FS_CONST_H_0A49B5996F074465BF44B90F4F780E8B
 
-#define NETWORKMESSAGE_MAXSIZE 24590
+static constexpr int32_t NETWORKMESSAGE_MAXSIZE = 24590;
 
 enum MagicEffectClasses : uint8_t {
 	CONST_ME_NONE,
@@ -325,7 +325,8 @@ enum item_t : uint16_t {
 	ITEM_REWARD_CHEST = 8720, // sturdy chest
 
 	ITEM_DEPOT = 2594,
-	ITEM_LOCKER = 2589,
+	ITEM_LOCKER1 = 2589,
+	ITEM_INBOX = 2593,
 
 	ITEM_MALE_CORPSE = 3058,
 	ITEM_FEMALE_CORPSE = 3065,
@@ -446,14 +447,14 @@ const int violationReasons[6] = {
 	32,
 };
 
-#define CHANNEL_GUILD 0x00
-#define CHANNEL_PARTY 0x01
-#define CHANNEL_PRIVATE 0xFFFF
+static constexpr int32_t CHANNEL_GUILD = 0x00;
+static constexpr int32_t CHANNEL_PARTY = 0x01;
+static constexpr int32_t CHANNEL_PRIVATE = 0xFFFF;
 
-//Reserved player storage key ranges
-//[10000000 - 20000000]
-#define PSTRG_RESERVED_RANGE_START 10000000
-#define PSTRG_RESERVED_RANGE_SIZE 10000000
+//Reserved player storage key ranges;
+//[10000000 - 20000000];
+static constexpr int32_t PSTRG_RESERVED_RANGE_START = 10000000;
+static constexpr int32_t PSTRG_RESERVED_RANGE_SIZE = 10000000;
 
 #define IS_IN_KEYRANGE(key, range) (key >= PSTRG_##range##_START && ((key - PSTRG_##range##_START) <= PSTRG_##range##_SIZE))
 

@@ -102,7 +102,7 @@ enum RaceType_t : uint8_t {
 	RACE_ENERGY,
 };
 
-enum CombatType_t {
+enum CombatType_t : uint16_t {
 	COMBAT_NONE = 0,
 
 	COMBAT_PHYSICALDAMAGE = 1 << 0,
@@ -140,6 +140,7 @@ enum CallBackParam_t {
 enum ConditionParam_t {
 	CONDITION_PARAM_OWNER = 1,
 	CONDITION_PARAM_TICKS = 2,
+	//CONDITION_PARAM_OUTFIT = 3,
 	CONDITION_PARAM_HEALTHGAIN = 4,
 	CONDITION_PARAM_HEALTHTICKS = 5,
 	CONDITION_PARAM_MANAGAIN = 6,
@@ -378,32 +379,20 @@ enum MapMark_t
 };
 
 struct Outfit_t {
-	Outfit_t() {
-		reset();
-	}
-
-	void reset() {
-		lookType = 0;
-		lookTypeEx = 0;
-		lookHead = 0;
-		lookBody = 0;
-		lookLegs = 0;
-		lookFeet = 0;
-	}
-
-	uint16_t lookType;
-	uint16_t lookTypeEx;
-	uint8_t lookHead;
-	uint8_t lookBody;
-	uint8_t lookLegs;
-	uint8_t lookFeet;
+	uint16_t lookType = 0;
+	uint16_t lookTypeEx = 0;
+	uint16_t lookMount = 0;
+	uint8_t lookHead = 0;
+	uint8_t lookBody = 0;
+	uint8_t lookLegs = 0;
+	uint8_t lookFeet = 0;
 };
 
 struct LightInfo {
 	uint8_t level = 0;
 	uint8_t color = 0;
-	LightInfo() = default;
-	LightInfo(uint8_t level, uint8_t color) : level(level), color(color) {}
+	constexpr LightInfo() = default;
+	constexpr LightInfo(uint8_t level, uint8_t color) : level(level), color(color) {}
 };
 
 enum CombatOrigin

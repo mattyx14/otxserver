@@ -28,6 +28,7 @@
 #include "protocolgame.h"
 #include "ioguild.h"
 #include "party.h"
+#include "inbox.h"
 #include "depotchest.h"
 #include "depotlocker.h"
 #include "guild.h"
@@ -82,8 +83,8 @@ enum tradestate_t : uint8_t {
 };
 
 struct VIPEntry {
-	VIPEntry(uint32_t guid, std::string name, const std::string& description, uint32_t icon, bool notify)
-		: guid(guid), name(name), description(description), icon(icon), notify(notify) {}
+	VIPEntry(uint32_t guid, std::string name, std::string description, uint32_t icon, bool notify) :
+		guid(guid), name(std::move(name)), description(std::move(description)), icon(icon), notify(notify) {}
 
 	uint32_t guid;
 	std::string name;
@@ -98,16 +99,15 @@ struct OpenContainer {
 };
 
 struct Skill {
-	Skill() : tries(0), level(10), percent(0) {}
-	uint64_t tries;
-	uint16_t level;
-	uint8_t percent;
+	uint64_t tries = 0;
+	uint16_t level = 10;
+	uint8_t percent = 0;
 };
 
 typedef std::map<uint32_t, uint32_t> MuteCountMap;
 
-#define PLAYER_MAX_SPEED 1500
-#define PLAYER_MIN_SPEED 10
+static constexpr int32_t PLAYER_MAX_SPEED = 1500;
+static constexpr int32_t PLAYER_MIN_SPEED = 10;
 
 class Player final : public Creature, public Cylinder
 {
@@ -138,7 +138,7 @@ class Player final : public Creature, public Cylinder
 			return name;
 		}
 		void setName(std::string name) {
-			this->name = name;
+			this->name = std::move(name);
 		}
 		const std::string& getNameDescription() const final {
 			return name;
@@ -223,6 +223,10 @@ class Player final : public Creature, public Cylinder
 		}
 		void hasRequestedOutfit(bool newValue) {
 			requestedOutfit = newValue;
+		}
+
+		Inbox* getInbox() const {
+			return inbox;
 		}
 
 		uint16_t getClientIcons() const;
@@ -632,6 +636,14 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
+		void sendUpdateTileItem(const Tile*, const Position& pos, const Item* item, int32_t stackpos) {
+			if (client) {
+				if (stackpos != -1) {
+					client->sendUpdateTileItem(pos, stackpos, item);
+				}
+			}
+		}
+
 		void sendRemoveTileThing(const Position& pos, int32_t stackpos) {
 			if (stackpos != -1 && client) {
 				client->sendRemoveTileThing(pos, stackpos);
@@ -975,8 +987,8 @@ class Player final : public Creature, public Cylinder
 		size_t getFirstIndex() const final;
 		size_t getLastIndex() const final;
 		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const final;
-		std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t> &countMap) const final;
-		Thing*getThing(size_t index) const final;
+		std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const final;
+		Thing* getThing(size_t index) const final;
 
 		void internalAddThing(Thing* thing) final;
 		void internalAddThing(uint32_t index, Thing* thing) final;
@@ -990,7 +1002,6 @@ class Player final : public Creature, public Cylinder
 		std::map<uint32_t, int32_t> storageMap;
 
 		std::map<uint32_t, Reward*> rewardMap;
-		RewardChest* rewardChest;
 
 		GuildWarList guildWarList;
 
@@ -1005,86 +1016,88 @@ class Player final : public Creature, public Cylinder
 		LightInfo itemsLight;
 		Position loginPosition;
 
-		time_t lastLoginSaved;
-		time_t lastLogout;
+		time_t lastLoginSaved = 0;
+		time_t lastLogout = 0;
 
-		uint64_t experience;
-		uint64_t manaSpent;
-		uint64_t lastAttack;
-		uint64_t bankBalance;
-		int64_t lastFailedFollow;
-		int64_t skullTicks;
+		uint64_t experience = 0;
+		uint64_t manaSpent = 0;
+		uint64_t lastAttack = 0;
+		uint64_t bankBalance = 0;
+		int64_t lastFailedFollow = 0;
+		int64_t skullTicks = 0;
 		int64_t lastPing;
 		int64_t lastPong;
-		int64_t nextAction;
+		int64_t nextAction = 0;
 
-		BedItem* bedItem;
-		Guild* guild;
-		const GuildRank* guildRank;
-		Group* group;
-		Item* tradeItem;
-		Item* inventory[CONST_SLOT_LAST + 1];
-		Item* writeItem;
-		House* editHouse;
-		Npc* shopOwner;
-		Party* party;
-		Player* tradePartner;
+		BedItem* bedItem = nullptr;
+		Guild* guild = nullptr;
+		const GuildRank* guildRank = nullptr;
+		Group* group = nullptr;
+		Inbox* inbox;
+		Item* tradeItem = nullptr;
+ 		Item* inventory[CONST_SLOT_LAST + 1] = {};
+		Item* writeItem = nullptr;
+		House* editHouse = nullptr;
+		Npc* shopOwner = nullptr;
+		Party* party = nullptr;
+		Player* tradePartner = nullptr;
 		ProtocolGame_ptr client;
-		SchedulerTask* walkTask;
-		Town* town;
-		Vocation* vocation;
+		SchedulerTask* walkTask = nullptr;
+		Town* town = nullptr;
+		Vocation* vocation = nullptr;
+		RewardChest* rewardChest = nullptr;
 
-		uint32_t inventoryWeight;
-		uint32_t capacity;
-		uint32_t damageImmunities;
-		uint32_t conditionImmunities;
-		uint32_t conditionSuppressions;
-		uint32_t level;
-		uint32_t magLevel;
-		uint32_t actionTaskEvent;
-		uint32_t nextStepEvent;
-		uint32_t walkTaskEvent;
-		uint32_t MessageBufferTicks;
-		uint32_t lastIP;
-		uint32_t accountNumber;
-		uint32_t guid;
-		uint32_t windowTextId;
-		uint32_t editListId;
-		uint32_t manaMax;
-		int32_t varSkills[SKILL_LAST + 1];
-		int32_t varStats[STAT_LAST + 1];
-		int32_t MessageBufferCount;
-		int32_t premiumDays;
-		int32_t bloodHitCount;
-		int32_t shieldBlockCount;
-		int32_t offlineTrainingSkill;
-		int32_t offlineTrainingTime;
-		int32_t idleTime;
+		uint32_t inventoryWeight = 0;
+		uint32_t capacity = 40000;
+		uint32_t damageImmunities = 0;
+		uint32_t conditionImmunities = 0;
+		uint32_t conditionSuppressions = 0;
+		uint32_t level = 1;
+		uint32_t magLevel = 0;
+		uint32_t actionTaskEvent = 0;
+		uint32_t nextStepEvent = 0;
+		uint32_t walkTaskEvent = 0;
+		uint32_t MessageBufferTicks = 0;
+		uint32_t lastIP = 0;
+		uint32_t accountNumber = 0;
+		uint32_t guid = 0;
+		uint32_t windowTextId = 0;
+		uint32_t editListId = 0;
+		uint32_t manaMax = 0;
+		int32_t varSkills[SKILL_LAST + 1] = {};
+		int32_t varStats[STAT_LAST + 1] = {};
+		int32_t MessageBufferCount = 0;
+		int32_t premiumDays = 0;
+		int32_t bloodHitCount = 0;
+		int32_t shieldBlockCount = 0;
+		int32_t offlineTrainingSkill = -1;
+		int32_t offlineTrainingTime = 0;
+		int32_t idleTime = 0;
 
-		uint16_t lastStatsTrainingTime;
-		uint16_t maxWriteLen;
-		int16_t lastDepotId;
+		uint16_t lastStatsTrainingTime = 0;
+		uint16_t maxWriteLen = 0;
+		int16_t lastDepotId = -1;
 
-		uint8_t soul;
-		uint8_t blessings;
-		uint8_t levelPercent;
-		uint8_t magLevelPercent;
+		uint8_t soul = 0;
+		uint8_t blessings = 0;
+		uint8_t levelPercent = 0;
+		uint8_t magLevelPercent = 0;
 
-		PlayerSex_t sex;
-		OperatingSystem_t operatingSystem;
-		BlockType_t lastAttackBlockType;
-		tradestate_t tradeState;
-		chaseMode_t chaseMode;
-		fightMode_t fightMode;
-		AccountType_t accountType;
+		PlayerSex_t sex = PLAYERSEX_FEMALE;
+		OperatingSystem_t operatingSystem = CLIENTOS_NONE;
+		BlockType_t lastAttackBlockType = BLOCK_NONE;
+		tradestate_t tradeState = TRADE_NONE;
+		chaseMode_t chaseMode = CHASEMODE_STANDSTILL;
+		fightMode_t fightMode = FIGHTMODE_ATTACK;
+		AccountType_t accountType = ACCOUNT_TYPE_NORMAL;
 
-		bool secureMode;
-		bool requestedOutfit;
-		bool ghostMode;
-		bool pzLocked;
-		bool isConnecting;
-		bool addAttackSkillPoint;
-		bool inventoryAbilities[CONST_SLOT_LAST + 1];
+		bool secureMode = false;
+		bool requestedOutfit = false;
+		bool ghostMode = false;
+		bool pzLocked = false;
+		bool isConnecting = false;
+		bool addAttackSkillPoint = false;
+		bool inventoryAbilities[CONST_SLOT_LAST + 1] = {};
 
 		static uint32_t playerAutoID;
 

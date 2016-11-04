@@ -25,12 +25,7 @@
 class Protocol : public std::enable_shared_from_this<Protocol>
 {
 	public:
-		explicit Protocol(Connection_ptr connection) : connection(connection),
-		#ifdef _MULTIPLATFORM77
-			key(),
-			encryptionEnabled(false),
-		#endif
-		rawMessages(false) {}
+		explicit Protocol(Connection_ptr connection) : connection(connection) {}
 		virtual ~Protocol() = default;
 
 		// non-copyable
@@ -98,12 +93,12 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 	private:
 		const ConnectionWeak_ptr connection;
 
-#ifdef _MULTIPLATFORM77
-		uint32_t key[4];
-		bool encryptionEnabled;
-#endif
+	#ifdef _MULTIPLATFORM77
+		uint32_t key[4] = {};
+		bool encryptionEnabled = false;
+	#endif
 
-		bool rawMessages;
+		bool rawMessages = false;
 };
 
 #endif

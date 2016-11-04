@@ -60,14 +60,14 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 7.6 to 10.98
+		Tibia Clients - 7.6 to 10.99
 		Tibia Client 11.x
 
 	BUGS
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "
-	- Added support to manualVersion 10.97/98 - 11.01.3987 is supported
+	- Added support to manualVersion 10.98/99
 	- Added stack support for Game.createItem
 	- Added a new Creature method
 	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)

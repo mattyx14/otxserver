@@ -28,14 +28,8 @@ extern Game g_game;
 extern ConfigManager g_config;
 extern Events* g_events;
 
-Party::Party(Player* leader)
+Party::Party(Player* leader) : leader(leader)
 {
-	extraExpRate = 0.20f;
-
-	sharedExpActive = false;
-	sharedExpEnabled = false;
-
-	this->leader = leader;
 	leader->setParty(this);
 }
 
@@ -114,9 +108,8 @@ bool Party::leaveParty(Player* player)
 		memberList.erase(it);
 	}
 
-	player->sendClosePrivate(CHANNEL_PARTY);
 	player->setParty(nullptr);
-
+	player->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(player);
 
 	for (Player* member : memberList) {
@@ -403,7 +396,7 @@ bool Party::setSharedExperience(Player* player, bool sharedExpActive)
 
 void Party::shareExperience(uint64_t experience, Creature* source/* = nullptr*/)
 {
-	uint32_t shareExperience = static_cast<uint64_t>(std::ceil(((static_cast<double>(experience) / (memberList.size() + 1)) + (static_cast<double>(experience) * extraExpRate))));
+	uint64_t shareExperience = static_cast<uint64_t>(std::ceil((static_cast<double>(experience) * (extraExpRate + 1)) / (memberList.size() + 1)));
 	for (Player* member : memberList) {
 		member->onGainSharedExperience(shareExperience, source);
 	}
