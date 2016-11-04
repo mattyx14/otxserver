@@ -836,25 +836,6 @@ bool IOLoginData::savePlayer(Player* player)
 		}
 	}
 
-	//save inbox items
-	query.str(std::string());
-	query << "DELETE FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID();
-
-	if (!db->executeQuery(query.str())) {
-		return false;
-	}
-
-	DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
-	itemList.clear();
-
-	for (Item* item : player->getInbox()->getItemList()) {
-		itemList.emplace_back(0, item);
-	}
-
-	if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
-		return false;
-	}
-
 	//save reward items
 	query.str(std::string());
 	query << "DELETE FROM `player_rewards` WHERE `player_id` = " << player->getGUID();
@@ -869,7 +850,7 @@ bool IOLoginData::savePlayer(Player* player)
 	if (!rewardList.empty()) {
 		DBInsert rewardQuery("INSERT INTO `player_rewards` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
 		itemList.clear();
-
+	
 		int running = 0;
 		for (const auto& rewardId : rewardList) {
 			Reward* reward = player->getReward(rewardId, false);
@@ -882,6 +863,24 @@ bool IOLoginData::savePlayer(Player* player)
 		if (!saveItems(player, itemList, rewardQuery, propWriteStream)) {
 			return false;
 		}
+	}
+
+	//save inbox items
+	query.str(std::string());
+	query << "DELETE FROM `player_inboxitems` WHERE `player_id` = " << player->getGUID();
+	if (!db->executeQuery(query.str())) {
+		return false;
+	}
+
+	DBInsert inboxQuery("INSERT INTO `player_inboxitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+	itemList.clear();
+
+	for (Item* item : player->getInbox()->getItemList()) {
+		itemList.emplace_back(0, item);
+	}
+
+	if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
+		return false;
 	}
 
 	query.str(std::string());

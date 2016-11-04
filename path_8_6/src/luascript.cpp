@@ -2065,6 +2065,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getRewardList", LuaScriptInterface::luaPlayerGetRewardList);
 
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
+	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
 
 	registerMethod("Player", "getSkullTime", LuaScriptInterface::luaPlayerGetSkullTime);
 	registerMethod("Player", "setSkullTime", LuaScriptInterface::luaPlayerSetSkullTime);
@@ -7570,6 +7571,25 @@ int LuaScriptInterface::luaPlayerGetDepotChest(lua_State* L)
 	if (depotChest) {
 		pushUserdata<Item>(L, depotChest);
 		setItemMetatable(L, -1, depotChest);
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetInbox(lua_State* L)
+{
+	// player:getInbox()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Inbox* inbox = player->getInbox();
+	if (inbox) {
+		pushUserdata<Item>(L, inbox);
+		setItemMetatable(L, -1, inbox);
 	} else {
 		pushBoolean(L, false);
 	}
