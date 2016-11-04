@@ -23,7 +23,7 @@
 				https://github.com/otland/
 
 			The Forgotten Contributors
-				https://github.com/otland/forgottenserver/graphs/contributors
+				https://github.com/otland/forgottenserver/graphs/contributors/
 
 			OpenTibia
 				https://github.com/opentibia/
@@ -54,7 +54,7 @@
 				https://github.com/BenDol/
 
 			To All OTX Server Contributors
-				https://github.com/mattyx14/otxserver/graphs/contributors
+				https://github.com/mattyx14/otxserver/graphs/contributors/
 
 	DEVELOPMENT STATUS
 		STARTED AND ON
@@ -64,6 +64,11 @@
 		Tibia Client 11.x
 
 	BUGS
+		https://github.com/mattyx14/otxserver/issues/
+]
+
+[ OTX Server 3.8 :: Version " LEZICK "
+	- 
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "

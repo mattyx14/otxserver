@@ -22,9 +22,9 @@
 
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "3";
-static constexpr auto MINOR_VERSION = "7";
-static constexpr auto REVISION_VERSION = "807";
-static constexpr auto SOFTWARE_CODENAME = "SAILOR";
+static constexpr auto MINOR_VERSION = "8";
+static constexpr auto REVISION_VERSION = "DEV";
+static constexpr auto SOFTWARE_CODENAME = "LEZICK";
 static constexpr auto STATUS_SERVER_DEVELOPERS = "Mattyx14, Brewsterl, Malucooo and The Forgotten Server Developers";
 static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/";
 
