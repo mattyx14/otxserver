@@ -38,7 +38,7 @@ struct spawnBlock_t {
 class Spawn
 {
 	public:
-		Spawn(const Position& pos, int32_t radius) : centerPos(pos), radius(radius), interval(60000), checkSpawnEvent() {}
+		Spawn(Position pos, int32_t radius) : centerPos(std::move(pos)), radius(radius) {}
 		~Spawn();
 
 		// non-copyable
@@ -71,8 +71,8 @@ class Spawn
 		Position centerPos;
 		int32_t radius;
 
-		uint32_t interval;
-		uint32_t checkSpawnEvent;
+		uint32_t interval = 60000;
+		uint32_t checkSpawnEvent = 0;
 
 		static bool findPlayer(const Position& pos);
 		bool spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& pos, Direction dir, bool startup = false);
@@ -101,6 +101,6 @@ class Spawns
 		bool started = false;
 };
 
-#define NONBLOCKABLE_SPAWN_INTERVAL 1400
+static constexpr int32_t NONBLOCKABLE_SPAWN_INTERVAL = 1400;
 
 #endif

@@ -853,29 +853,19 @@ int_fast32_t AStarNodes::getTileWalkCost(const Creature& creature, const Tile* t
 // Floor
 Floor::~Floor()
 {
-	for (uint32_t i = 0; i < FLOOR_SIZE; ++i) {
-		for (uint32_t j = 0; j < FLOOR_SIZE; ++j) {
-			delete tiles[i][j];
+	for (auto& row : tiles) {
+		for (auto tile : row) {
+			delete tile;
 		}
 	}
 }
 
 // QTreeNode
-QTreeNode::QTreeNode()
-{
-	leaf = false;
-	child[0] = nullptr;
-	child[1] = nullptr;
-	child[2] = nullptr;
-	child[3] = nullptr;
-}
-
 QTreeNode::~QTreeNode()
 {
-	delete child[0];
-	delete child[1];
-	delete child[2];
-	delete child[3];
+	for (auto* ptr : child) {
+		delete ptr;
+	}
 }
 
 QTreeLeafNode* QTreeNode::getLeaf(uint32_t x, uint32_t y)
@@ -910,21 +900,11 @@ QTreeLeafNode* QTreeNode::createLeaf(uint32_t x, uint32_t y, uint32_t level)
 
 // QTreeLeafNode
 bool QTreeLeafNode::newLeaf = false;
-QTreeLeafNode::QTreeLeafNode()
-{
-	for (uint32_t i = 0; i < MAP_MAX_LAYERS; ++i) {
-		array[i] = nullptr;
-	}
-
-	leaf = true;
-	leafS = nullptr;
-	leafE = nullptr;
-}
 
 QTreeLeafNode::~QTreeLeafNode()
 {
-	for (uint32_t i = 0; i < MAP_MAX_LAYERS; ++i) {
-		delete array[i];
+	for (auto* ptr : array) {
+		delete ptr;
 	}
 }
 
@@ -947,7 +927,7 @@ void QTreeLeafNode::addCreature(Creature* c)
 
 void QTreeLeafNode::removeCreature(Creature* c)
 {
-	CreatureVector::iterator iter = std::find(creature_list.begin(), creature_list.end(), c);
+	auto iter = std::find(creature_list.begin(), creature_list.end(), c);
 	assert(iter != creature_list.end());
 	*iter = creature_list.back();
 	creature_list.pop_back();
@@ -984,9 +964,8 @@ uint32_t Map::clean() const
 					continue;
 				}
 
-				for (size_t x = 0; x < FLOOR_SIZE; ++x) {
-					for (size_t y = 0; y < FLOOR_SIZE; ++y) {
-						Tile* tile = floor->tiles[x][y];
+				for (auto& row : floor->tiles) {
+					for (auto tile : row) {
 						if (!tile || tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 							continue;
 						}
@@ -1012,8 +991,7 @@ uint32_t Map::clean() const
 				}
 			}
 		} else {
-			for (size_t i = 0; i < 4; ++i) {
-				QTreeNode* childNode = node->child[i];
+			for (auto childNode : node->child) {
 				if (childNode) {
 					nodes.push_back(childNode);
 				}

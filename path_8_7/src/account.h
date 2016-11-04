@@ -25,12 +25,12 @@
 struct Account {
 	std::vector<std::string> characters;
 	std::string name;
-	time_t lastDay;
-	uint32_t id;
-	uint16_t premiumDays;
-	AccountType_t accountType;
+	time_t lastDay = 0;
+	uint32_t id = 0;
+	uint16_t premiumDays = 0;
+	AccountType_t accountType = ACCOUNT_TYPE_NORMAL;
 
-	Account() : lastDay(0), id(0), premiumDays(0), accountType(ACCOUNT_TYPE_NORMAL) {}
+	Account() = default;
 };
 
 #endif

@@ -69,7 +69,7 @@ struct NodeStruct {
 		}
 };
 
-#define NO_NODE 0
+static constexpr auto NO_NODE = nullptr;
 
 enum FILELOADER_ERRORS {
 	ERROR_NONE,
@@ -91,7 +91,7 @@ class PropStream;
 class FileLoader
 {
 	public:
-		FileLoader();
+		FileLoader() = default;
 		~FileLoader();
 
 		// non-copyable
@@ -130,20 +130,20 @@ class FileLoader
 			uint32_t size;
 		};
 
-#define CACHE_BLOCKS 3
-		cache cached_data[CACHE_BLOCKS];
+		static constexpr int32_t CACHE_BLOCKS = 3;
+		cache cached_data[CACHE_BLOCKS] = {};
 
-		uint8_t* buffer;
-		NODE root;
-		FILE* file;
+		uint8_t* buffer = new uint8_t[1024];
+		NODE root = nullptr;
+		FILE* file = nullptr;
 
-		FILELOADER_ERRORS lastError;
-		uint32_t buffer_size;
+		FILELOADER_ERRORS lastError = ERROR_NONE;
+		uint32_t buffer_size = 1024;
 
-		uint32_t cache_size;
-#define NO_VALID_CACHE 0xFFFFFFFF
-		uint32_t cache_index;
-		uint32_t cache_offset;
+		uint32_t cache_size = 0;
+		static constexpr uint32_t NO_VALID_CACHE = std::numeric_limits<uint32_t>::max();
+		uint32_t cache_index = NO_VALID_CACHE;
+		uint32_t cache_offset = NO_VALID_CACHE;
 
 		inline uint32_t getCacheBlock(uint32_t pos);
 		int32_t loadCacheBlock(uint32_t pos);
