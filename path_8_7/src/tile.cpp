@@ -26,6 +26,7 @@
 #include "creature.h"
 #include "combat.h"
 #include "game.h"
+#include "configmanager.h"
 #include "mailbox.h"
 #include "monster.h"
 #include "movement.h"
@@ -33,6 +34,7 @@
 #include "trashholder.h"
 
 extern Game g_game;
+extern ConfigManager g_config;
 extern MoveEvents* g_moveEvents;
 
 StaticTile real_nullptr_tile(0xFFFF, 0xFFFF, 0xFF);

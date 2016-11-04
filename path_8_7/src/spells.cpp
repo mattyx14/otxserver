@@ -463,7 +463,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		level = pugi::cast<uint32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("maglv"))) {
+	if ((attr = node.attribute("maglv")) || (attr = node.attribute("magiclevel"))) {
 		magLevel = pugi::cast<uint32_t>(attr.value());
 	}
 

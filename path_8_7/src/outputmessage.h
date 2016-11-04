@@ -65,12 +65,6 @@ class OutputMessage : public NetworkMessage
 			info.position += msgLen;
 		}
 
-		bool isBroadcastMsg() const {
-			return isBroadcastMesssage;
-		}
-		void setBroadcastMsg(bool isBroadcastMesssage) {
-			this->isBroadcastMesssage = isBroadcastMesssage;
-		}
 	protected:
 		template <typename T>
 		inline void add_header(T add) {

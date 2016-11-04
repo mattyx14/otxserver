@@ -53,4 +53,3 @@ class DepotChest final : public Container
 };
 
 #endif
-

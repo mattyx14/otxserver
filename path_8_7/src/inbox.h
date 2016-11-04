@@ -17,50 +17,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_MAILBOX_H_D231C6BE8D384CAAA3AE410C1323F9DB
-#define FS_MAILBOX_H_D231C6BE8D384CAAA3AE410C1323F9DB
+#ifndef FS_INBOX_H_C3EF10190329447883B9C3479234EE5C
+#define FS_INBOX_H_C3EF10190329447883B9C3479234EE5C
 
-#include "item.h"
-#include "cylinder.h"
-#include "const.h"
+#include "container.h"
 
-class Mailbox final : public Item, public Cylinder
+class Inbox final : public Container
 {
 	public:
-		explicit Mailbox(uint16_t itemId) : Item(itemId) {}
-
-		Mailbox* getMailbox() final {
-			return this;
-		}
-		const Mailbox* getMailbox() const final {
-			return this;
-		}
+		explicit Inbox(uint16_t type);
 
 		//cylinder implementations
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t flags, Creature* actor = nullptr) const final;
-		ReturnValue queryMaxCount(int32_t index, const Thing& thing, uint32_t count,
-				uint32_t& maxQueryCount, uint32_t flags) const final;
-		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t flags) const final;
-		Cylinder* queryDestination(int32_t& index, const Thing& thing, Item** destItem,
-				uint32_t& flags) final;
-
-		void addThing(Thing* thing) final;
-		void addThing(int32_t index, Thing* thing) final;
-
-		void updateThing(Thing* thing, uint16_t itemId, uint32_t count) final;
-		void replaceThing(uint32_t index, Thing* thing) final;
-
-		void removeThing(Thing* thing, uint32_t count) final;
 
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 
-	private:
-		bool getReceiver(Item* item, std::string& name) const;
-		bool sendItem(Item* item) const;
+		//overrides
+		bool canRemove() const final {
+			return false;
+		}
 
-		static bool canSend(const Item* item);
+		Cylinder* getRealParent() const final {
+			return parent;
+		}
 };
 
 #endif
