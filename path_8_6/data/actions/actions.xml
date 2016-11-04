@@ -179,14 +179,14 @@
 	<action itemid="2023" script="liquids/fluids.lua" />
 	<action fromid="2031" toid="2034" script="liquids/fluids.lua" />
 	<action fromid="2574" toid="2577" script="liquids/fluids.lua" />
-		<action fromid="7588" toid="7591" script="liquids/potions.lua" />
-		<action itemid="7618" script="liquids/potions.lua" />
-		<action itemid="7620" script="liquids/potions.lua" />
-		<action fromid="8472" toid="8474" script="liquids/potions.lua" />
-		<action itemid="8704" script="liquids/potions.lua" />
-			<action itemid="7439" script="liquids/strengthening_potions.lua" />
-			<action itemid="7440" script="liquids/strengthening_potions.lua" />
-			<action itemid="7443" script="liquids/strengthening_potions.lua" />
+	<action itemid="6558" script="liquids/potions.lua" />
+	<action fromid="7439" toid="7440" script="liquids/potions.lua"/>
+	<action itemid="7443" script="liquids/potions.lua"/>
+	<action fromid="7588" toid="7591" script="liquids/potions.lua" />
+	<action itemid="7618" script="liquids/potions.lua" />
+	<action itemid="7620" script="liquids/potions.lua" />
+	<action fromid="8472" toid="8474" script="liquids/potions.lua" />
+	<action itemid="8704" script="liquids/potions.lua" />
 
 	<!-- Doors -->
 	<action fromid="1209" toid="1214" script="other/doors.lua" />
