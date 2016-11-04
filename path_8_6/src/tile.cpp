@@ -1575,8 +1575,9 @@ Item* Tile::getUseItem() const
 		return ground;
 	}
 
-	for (Item* item : *items) {
-		if (Item::items[item->getID()].forceUse) {
+	for (Item* item : boost::adaptors::reverse(*items)) {
+		//if the behavior is wrong remove && !Item::items[item->getID()].isContainer()
+		if (Item::items[item->getID()].forceUse && !Item::items[item->getID()].isContainer()) {
 			return item;
 		}
 	}

@@ -81,6 +81,7 @@
 	- Added chestReward on depot (Malucooo)
 	- Added SkullTimeFragsWindow
 	- Added items.otb 10.98 official from TFS
+	- Added global Inbox to old Protocols
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
