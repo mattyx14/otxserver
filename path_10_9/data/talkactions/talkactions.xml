@@ -2,7 +2,6 @@
 <talkactions>
 	<!-- commands -->
 	<talkaction words="/ban" separator=" " script="ban.lua" />
-	<talkaction words="/ipban" separator=" " script="ipban.lua" />
 	<talkaction words="/unban" separator=" " script="unban.lua" />
 	<talkaction words="/up" script="up.lua" />
 	<talkaction words="/down" script="down.lua" />
@@ -12,7 +11,6 @@
 	<talkaction words="/t" script="teleport_home.lua" />
 	<talkaction words="/town" separator=" " script="teleport_to_town.lua" />
 	<talkaction words="/a" separator=" " script="teleport_ntiles.lua" />
-	<talkaction words="/pos" separator=" " script="position.lua" />
 	<talkaction words="/info" separator=" " script="info.lua" />
 	<talkaction words="/r" separator=" " script="removething.lua" />
 	<talkaction words="/kick" separator=" " script="kick.lua" />
@@ -26,19 +24,17 @@
 	<talkaction words="/removetutor" separator=" " script="remove_tutor.lua" />
 	<talkaction words="/looktype" separator=" " script="looktype.lua" />
 	<talkaction words="/summon" separator=" " script="place_summon.lua" />
-	<talkaction words="/chameleon" separator=" " script="chameleon.lua" />
 	<talkaction words="/addskill" separator=" " script="add_skill.lua" />
 	<talkaction words="/mccheck" script="mccheck.lua" />
 	<talkaction words="/ghost" script="ghost.lua" />
 	<talkaction words="/clean" script="clean.lua" />
-	<talkaction words="/hide" script="hide.lua" />
 
 	<!-- Customs -->
 	<talkaction words="/save" script="save.lua" />
 	<talkaction words="/addons" separator=" " script="alladdons.lua" />
 	<talkaction words="/mounts" separator=" " script="allmounts.lua" />
 	<talkaction words="/pos" separator=" " script="teleport_to_pos.lua" />
-	<talkaction words="/attr" separator=" " script="attributes.lua" />
+	<talkaction words="/attr" script="attributes.lua" />
 
 	<!-- player talkactions -->
 	<talkaction words="!buyhouse" script="buyhouse.lua" />
@@ -46,7 +42,6 @@
 	<talkaction words="!cast" separator=" " script="start_cast.lua" />
 	<talkaction words="!stopcast" script="stop_cast.lua" />
 	<talkaction words="!spectators" script="spectators.lua" />
-	<!-- <talkaction words="!nick" script="setname.lua" /> -->
 	<talkaction words="!serverinfo" script="serverinfo.lua" />
 	<talkaction words="!online" script="online.lua" />
 	<talkaction words="!deathlist" script="deathlist.lua" />
@@ -57,11 +52,4 @@
 	<talkaction words="!buypremium" script="buyprem.lua" />
 	<talkaction words="!changesex" script="changesex.lua" />
 	<talkaction words="!uptime" script="uptime.lua" />
-
-	<!-- No workd
-		<talkaction words="!addon" script="addons.lua" />
-		<talkaction words="!stamina" script="staminarefil.lua"/>
-		<talkaction words="!z" separator=" " script="magiceffect.lua" />
-		<talkaction words="!x" separator=" " script="animationeffect.lua" />
-	-->
 </talkactions>

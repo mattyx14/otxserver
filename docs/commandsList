@@ -1,0 +1,374 @@
+[ LIST
+	ACCESS COMMANDS
+		/reload
+			Reloads selected values/scripts.
+			Parameters:
+				what (What should be reloaded)
+					action/actions - Reloaded actions
+					config/configuration - Reloaded config
+					creaturescript/creaturescripts - Reloaded creature scripts
+					command/commands - Reloaded commands
+					monster/monsters - Reloaded monsters
+					move/movement/movements/moveevents/moveevent - Reloaded movements
+					npc/npcs - Reloaded npcs
+					raid/raids - Reloaded raids
+					spell/spells - Reloaded spells (include reload monsters)
+					talk/talkaction/talkactions - Reloaded talk actions
+					items - Reloaded items
+					weapon/weapons - Reloaded weapons
+					quest/quests - Reloaded quests
+					mount/mounts - Reloaded mounts
+					globalevent/globalevents - Reloaded globalevents
+					events - Reloaded events
+					modules - Reloaded modules
+					chat/channel/chatchannels - Reloaded chatchannels
+					global - Reloaded global libs
+
+			Examples
+				/reload actions
+				/reload items
+				/reload spells
+
+		/raid
+			Executes a raid.
+			Parameters
+				raidName
+
+			Examples
+				/raid orshabaal
+
+		/ban
+			Executes ban to player
+			Parameters
+				playerName
+				reason - any reason for example: botuse - cavebot
+
+			Examples
+				/ban playerName - Give default ban for 3 days
+				/ban playerName bot use - Give default ban for 3 days
+				/ban playerName bot use, 5 - Give ban for 5 days
+
+		/unban
+			Unbans by account or player name.
+			Parameters
+				playerName
+
+		/up
+			Teleports up.
+			Parameters
+				<optional>floors
+
+			Examples
+				/up
+				/up 3 (3 floors up)
+
+		/down
+			Teleports down.
+			Parameters
+				<optional>floors
+
+			Examples
+				/down
+				/down 2 (2 floors down)
+
+		/c
+			Teleports a creature to you.
+			NOTE: Player is also a creature. (Monster, npc too!)
+
+			Example
+				/c Demon
+
+		/goto
+			Teleports you to creature/place/position
+			Parameters
+				creatureName/playerName
+
+			Examples
+				/goto Eryn
+				/goto Dragon
+				/goto playerName
+
+		/owner
+			Changes house owner.
+			Parameters
+				newOwnerName
+					Values: playerName
+
+			Examples
+				/owner Eternal Oblivion
+				/owner none
+
+		/t
+			Teleports to a main temple.
+
+		/town
+			Teleports to a town.
+			Parameters
+				townName, <optional>playerName
+				townNumber
+
+			Examples
+				/town 1 - go to main city
+				/town main city
+				/town desert city
+
+		/a
+			Teleports you n tiles forward (direction same as looking at).
+			Parameters
+				numberSQM
+
+			Examples
+				/a 1 - for 1 sqm
+				/a 5 - for 5 sqm
+
+		/pos
+			Teleports you to position
+			Parameters
+				position
+
+			Examples
+				/pos 123, 60, 7
+
+		/info
+			Displays detailed info about a player
+			Parameters
+				playerName
+
+		/r
+			Removes an item or a creature from a tile.
+			NOTE: Player is also a creature. (Monster, npc too!)
+
+			Examples
+				/r (Removes last from tile)
+
+		/kick
+			Kicks a creature. If you leave param blank - will try to kick your target creature if selected.
+			Parameters
+				playerName
+
+			Example
+				/kick Taifun Devilry
+
+		/openserver
+			Opens server.
+
+		/closeserver
+			Closes server.
+			All players without proper access will be kicked.
+
+		/B
+			Broadcast message in red color.
+			Parameters
+				message
+
+		/m
+			Creates a monster.
+			Parameters
+				monsterName
+
+			Examples
+				/m Orshabaal
+
+		/i
+			Creates an item.
+			Parameters
+				id/name
+				<optional>count
+
+			Examples
+				/i magic plate armor
+				/i 2160, 50 (50 crystal coins)
+
+		/s
+			Creates a NPC.
+			Parameters
+				npcName
+
+			Example
+				/s Eryn
+
+		/addtutor
+			Promote or demote specified player to higher/lower group.
+			Parameters
+				playerName
+
+			Examples
+				/addtutor Tester
+
+		/removetutor
+			Demote specified player to higher/lower group.
+			Parameters
+				playerName
+
+			Examples
+				/removetutor Tester
+
+		/newtype
+			Outfit changer.
+			Parameters
+				lookType
+
+			Examples
+				/newtype 266
+
+		/summon
+			Summons a monster.
+			Parameters
+				monsterName
+
+			Examples
+				/summon Dragon
+
+		/addskill
+			Adds player a specified amount of a skill.
+			Parameters
+				playerName, skillType, <optional>amount
+
+			Values
+				skillType
+					l/e - for level
+					m - for magic
+					fist
+					club
+					sword
+					axe
+					distance
+					shielding
+					fishing
+
+			Examples
+				/addskill Eternal Oblivion, sword (+1 sword skill)
+				/addskill GM Test, level, 30 (+30 levels)
+
+		/mccheck
+			Checks for multiclients.
+			Examples
+				/mccheck (Check for all MC-players)
+
+		/ghost
+			Enables/disables ghost mode.
+			You're invisible for other players, if enabled.
+
+		/clean
+			Cleans map or tile.
+			Examples
+				/clean (Clean map immediately)
+
+		/save
+			Saves server.
+			Examples
+				/save (saves whole server, including map)
+
+		/addons and /mounts
+			Parameters
+				playerName
+
+			Examples
+				/addons playerName (Give all addons to player)
+				/mounts playerName (Give all mounts to player)
+
+		/attr
+			Changes thing properties.
+			Parameters
+				[command[, type, ]]attribute, value
+
+			Values
+				attribute
+					* Items
+						aid/action/actionid
+						desc/description
+						name
+						remove
+						decay
+						transform
+						clone
+						attack
+						defense
+						extradefense
+						armor
+						
+					* Creatures
+						health
+						mana
+						speed
+						droploot
+						skull
+						direction
+						maxHealth
+						say
+
+					* Players
+						fyi
+						tutorial
+						guildnick
+						group
+						vocation
+						stamina
+						town
+						balance
+						save
+						type
+						skullTime
+						maxMana
+						addItem
+						removeItem
+						premium
+						
+			Examples
+				/attr aid, 300
+				/attr name, strong armor
+				/attr skull, 2
+
+	PLAYER COMMANDS
+		!sellhouse
+			Sell your own house
+
+		!buyhouse
+			Buy to house u need money on bank or depot
+
+		!leavehouse
+			Leave house and seen all items to depot or mailbox
+
+		!cast
+			Start to cast system promotor
+
+		!stopcast
+			Stop to cast system promotor
+
+		!spectators
+			See all spectator from your cast tunnel
+
+		!serverinfo
+			Displays server information such as experience rate and loot rate.
+
+		!online
+			Displays a list of online players.
+
+		!deathlist
+			Displays a death list of specificated player.
+			Parameters
+				playerName
+
+		!kills
+			Display a numer of your unjustificated kills (frags) and a time
+			for one to decrease.
+
+		!saveme
+			Save your own player
+
+		!spells
+			Show all spells for your vocation
+
+		!commands
+			Displays all available commands for your access.
+
+		!buypremium
+			Buy premium account the default are 90 days for 10k
+
+		!changesex
+			Change sex to player have the cost are default 3 premium days
+
+		!uptime
+			Displayes an uptime of a server.
+			It's a time for which server has been online since it's last start-up
+]

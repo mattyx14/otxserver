@@ -68,7 +68,12 @@
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
-	- 
+	- Added docs
+		commandsList - How use commands
+		internalFunction - How use internal functions from TFS / OTX "WIP"
+		configHelp - How use all configFunctions from TFS / OTX "WIP"
+	- Remove dllFiles from the datapack
+	- Remove no used commands
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "
