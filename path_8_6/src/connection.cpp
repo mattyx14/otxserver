@@ -264,7 +264,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 
 uint32_t Connection::getIP()
 {
-	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
+	// std::lock_guard<std::recursive_mutex> lockClass(connectionLock); /* try with it */
 
 	// IP-address is expressed in network byte order
 	boost::system::error_code error;
