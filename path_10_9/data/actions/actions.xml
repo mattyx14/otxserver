@@ -289,7 +289,6 @@
 	<action itemid="5468" script="other/firebug.lua" />
 	<action fromid="5792" toid="5797" script="other/dice.lua" />
 	<action itemid="5957" script="other/lotteryticket.lua" />
-	<action itemid="6558" script="other/concentrated_demonic_blood.lua" />
 	<action itemid="6578" script="other/partyhat.lua" />
 	<action fromid="6570" toid="6571" script="other/surprisebag.lua" />
 	<action itemid="6576" script="other/fireworksrocket.lua" />

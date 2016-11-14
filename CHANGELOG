@@ -76,6 +76,7 @@
 	- Fix potions onTarget
 	- Remove dllFiles from the datapack
 	- Remove no used commands
+	- Remove duplicate actions
 	- Revert playerMaxSpeed on 8.6
 ]
 
