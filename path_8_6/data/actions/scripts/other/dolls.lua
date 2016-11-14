@@ -59,12 +59,6 @@ local dolls = {
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local t = Tile(fromPosition)
-	if t:hasFlag(TILESTATE_PROTECTIONZONE) and player:isPzLocked() then
-		player:sendTextMessage(MESSAGE_STATUS_SMALL, Game.getReturnMessage(RETURNVALUE_PLAYERISPZLOCKED))
-		return true
-	end
-
 	local sounds = dolls[item.itemid]
 	if not sounds then
 		return false
