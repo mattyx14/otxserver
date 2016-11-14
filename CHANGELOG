@@ -73,6 +73,7 @@
 		internalFunction - How use internal functions from TFS / OTX "WIP"
 		configHelp - How use all configFunctions from TFS / OTX "WIP"
 	- Fix connectionLock on old protocols
+	- Fix potions onTarget
 	- Remove dllFiles from the datapack
 	- Remove no used commands
 	- Revert playerMaxSpeed on 8.6

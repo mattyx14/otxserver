@@ -63,7 +63,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	local potion = potions[item:getId()]
-	if potion.level and player:getLevel() < potion.level or potion.vocations and not isInArray(potion.vocations, player:getVocation():getId()) then
+	if potion.level and player:getLevel() < potion.level or potion.vocations and not isInArray(potion.vocations, player:getVocation():getBase():getId()) and not (player:getGroup():getId() >= 2) then
 		player:say(potion.description, TALKTYPE_MONSTER_SAY)
 		return true
 	end
