@@ -55,21 +55,6 @@ enum skillsid_t {
 	SKILLVALUE_PERCENT = 2,
 };
 
-enum playerinfo_t {
-	PLAYERINFO_LEVELPERCENT,
-	PLAYERINFO_HEALTH,
-	PLAYERINFO_MAXHEALTH,
-	PLAYERINFO_MANA,
-	PLAYERINFO_MAXMANA,
-	PLAYERINFO_MAGICLEVEL,
-	PLAYERINFO_MAGICLEVELPERCENT,
-};
-
-enum chaseMode_t : uint8_t {
-	CHASEMODE_STANDSTILL = 0,
-	CHASEMODE_FOLLOW = 1,
-};
-
 enum fightMode_t : uint8_t {
 	FIGHTMODE_ATTACK = 1,
 	FIGHTMODE_BALANCED = 2,
@@ -401,11 +386,17 @@ class Player final : public Creature, public Cylinder
 		uint32_t getLevel() const {
 			return level;
 		}
+		uint8_t getLevelPercent() const {
+			return levelPercent;
+		}
 		uint32_t getMagicLevel() const {
-			return getPlayerInfo(PLAYERINFO_MAGICLEVEL);
+			return std::max<int32_t>(0, magLevel + varStats[STAT_MAGICPOINTS]);
 		}
 		uint32_t getBaseMagicLevel() const {
 			return magLevel;
+		}
+		uint8_t getMagicLevelPercent() const {
+			return magLevelPercent;
 		}
 		uint8_t getSoul() const {
 			return soul;
@@ -427,7 +418,6 @@ class Player final : public Creature, public Cylinder
 			return sex;
 		}
 		void setSex(PlayerSex_t);
-		int32_t getPlayerInfo(playerinfo_t playerinfo) const;
 		uint64_t getExperience() const {
 			return experience;
 		}
@@ -484,10 +474,10 @@ class Player final : public Creature, public Cylinder
 		}
 
 		int32_t getMaxHealth() const final {
-			return getPlayerInfo(PLAYERINFO_MAXHEALTH);
+			return std::max<int32_t>(1, healthMax + varStats[STAT_MAXHITPOINTS]);
 		}
 		uint32_t getMaxMana() const {
-			return getPlayerInfo(PLAYERINFO_MAXMANA);
+			return std::max<int32_t>(0, manaMax + varStats[STAT_MAXMANAPOINTS]);
 		}
 
 		Item* getInventoryItem(slots_t slot) const;
@@ -587,7 +577,7 @@ class Player final : public Creature, public Cylinder
 		bool updateSaleShopList(const Item* item);
 		bool hasShopItemForSale(uint32_t itemId, uint8_t subType) const;
 
-		void setChaseMode(chaseMode_t mode);
+		void setChaseMode(bool mode);
 		void setFightMode(fightMode_t mode) {
 			fightMode = mode;
 		}
@@ -720,15 +710,6 @@ class Player final : public Creature, public Cylinder
 				}
 			}
 		}
-
-		void sendUpdateTileItem(const Tile*, const Position& pos, const Item* item, int32_t stackpos) {
-			if (client) {
-				if (stackpos != -1) {
-					client->sendUpdateTileItem(pos, stackpos, item);
-				}
-			}
-		}
-
 		void sendRemoveTileThing(const Position& pos, int32_t stackpos) {
 			if (stackpos != -1 && client) {
 				client->sendRemoveTileThing(pos, stackpos);
@@ -1292,7 +1273,7 @@ class Player final : public Creature, public Cylinder
 		Group* group = nullptr;
 		Inbox* inbox;
 		Item* tradeItem = nullptr;
-		Item* inventory[CONST_SLOT_LAST + 1] = {};
+ 		Item* inventory[CONST_SLOT_LAST + 1] = {};
 		Item* writeItem = nullptr;
 		House* editHouse = nullptr;
 		Npc* shopOwner = nullptr;
@@ -1347,10 +1328,10 @@ class Player final : public Creature, public Cylinder
 		OperatingSystem_t operatingSystem = CLIENTOS_NONE;
 		BlockType_t lastAttackBlockType = BLOCK_NONE;
 		tradestate_t tradeState = TRADE_NONE;
-		chaseMode_t chaseMode = CHASEMODE_STANDSTILL;
 		fightMode_t fightMode = FIGHTMODE_ATTACK;
 		AccountType_t accountType = ACCOUNT_TYPE_NORMAL;
 
+		bool chaseMode = false;
 		bool secureMode = false;
 		bool inMarket = false;
 		bool wasMounted = false;

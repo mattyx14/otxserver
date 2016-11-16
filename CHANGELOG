@@ -72,12 +72,18 @@
 		commandsList - How use commands
 		internalFunction - How use internal functions from TFS / OTX "WIP"
 		configHelp - How use all configFunctions from TFS / OTX "WIP"
+	- Added support for 8.54/57 "WIP"
+	- Added POSIX signal handling (djarek)
+	- Fileloader refactor (djarek)
 	- Fix connectionLock on old protocols
 	- Fix potions onTarget
 	- Remove dllFiles from the datapack
 	- Remove no used commands
 	- Remove duplicate actions
+	- Remove getPlayerInfo (TFS)
+	- Replace chaseMode enumeration to bool (wgrriffel)
 	- Revert playerMaxSpeed on 8.6
+	- Update ipban (vankk)
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "

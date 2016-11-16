@@ -371,7 +371,7 @@ class Game
 		void playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);
 		void playerFollowCreature(uint32_t playerId, uint32_t creatureId);
 		void playerCancelAttackAndFollow(uint32_t playerId);
-		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, bool secureMode);
+		void playerSetFightModes(uint32_t playerId, fightMode_t fightMode, bool chaseMode, bool secureMode);
 		void playerLookAt(uint32_t playerId, const Position& pos, uint8_t stackPos);
 		void playerLookInBattleList(uint32_t playerId, uint32_t creatureId);
 		void playerRequestAddVip(uint32_t playerId, const std::string& name);
@@ -497,6 +497,9 @@ class Game
 		Item* getUniqueItem(uint16_t uniqueId);
 		bool addUniqueItem(uint16_t uniqueId, Item* item);
 		void removeUniqueItem(uint16_t uniqueId);
+		void reloadCommands() {
+			commands.reload();
+		}
 
 		bool hasEffect(uint8_t effectId);
 		bool hasDistanceEffect(uint8_t effectId);

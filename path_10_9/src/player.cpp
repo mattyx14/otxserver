@@ -440,20 +440,6 @@ void Player::updateInventoryWeight()
 	}
 }
 
-int32_t Player::getPlayerInfo(playerinfo_t playerinfo) const
-{
-	switch (playerinfo) {
-		case PLAYERINFO_LEVELPERCENT: return levelPercent;
-		case PLAYERINFO_MAGICLEVEL: return std::max<int32_t>(0, magLevel + varStats[STAT_MAGICPOINTS]);
-		case PLAYERINFO_MAGICLEVELPERCENT: return magLevelPercent;
-		case PLAYERINFO_HEALTH: return health;
-		case PLAYERINFO_MAXHEALTH: return std::max<int32_t>(1, healthMax + varStats[STAT_MAXHITPOINTS]);
-		case PLAYERINFO_MANA: return mana;
-		case PLAYERINFO_MAXMANA: return std::max<int32_t>(0, manaMax + varStats[STAT_MAXMANAPOINTS]);
-		default: return 0;
-	}
-}
-
 void Player::addSkillAdvance(skills_t skill, uint64_t count)
 {
 	uint64_t currReqTries = vocation->getReqSkillTries(skill, skills[skill].level);
@@ -1949,8 +1935,8 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 						reflectDamage.primary.value = std::round(-damage * (reflectPercent / 100.));
 
 						Combat::doCombatHealth(this, attacker, reflectDamage, params);
-			}
-		}
+					}
+				}
 			}
 		}
 
@@ -3255,7 +3241,7 @@ bool Player::setAttackedCreature(Creature* creature)
 		return false;
 	}
 
-	if (chaseMode == CHASEMODE_FOLLOW && creature) {
+	if (chaseMode && creature) {
 		if (followCreature != creature) {
 			//chase opponent
 			setFollowCreature(creature);
@@ -3358,13 +3344,13 @@ void Player::onFollowCreature(const Creature* creature)
 	}
 }
 
-void Player::setChaseMode(chaseMode_t mode)
+void Player::setChaseMode(bool mode)
 {
-	chaseMode_t prevChaseMode = chaseMode;
+	bool prevChaseMode = chaseMode;
 	chaseMode = mode;
 
 	if (prevChaseMode != chaseMode) {
-		if (chaseMode == CHASEMODE_FOLLOW) {
+		if (chaseMode) {
 			if (!followCreature && attackedCreature) {
 				//chase opponent
 				setFollowCreature(attackedCreature);
@@ -3530,7 +3516,7 @@ void Player::onAttackedCreature(Creature* target)
 {
 	Creature::onAttackedCreature(target);
 
-	if (target && target->getZone() == ZONE_PVP) {
+	if (target->getZone() == ZONE_PVP) {
 		return;
 	}
 
