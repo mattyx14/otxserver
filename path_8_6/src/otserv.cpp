@@ -270,30 +270,30 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	char szHostName[128];
 	if (gethostname(szHostName, 128) == 0) {
-		hostent* he = gethostbyname(szHostName);
+		hostent *he = gethostbyname(szHostName);
 		if (he) {
 			unsigned char** addr = (unsigned char**)he->h_addr_list;
 			while (addr[0] != nullptr) {
 				IpNetMask.first = *(uint32_t*)(*addr);
-				IpNetMask.second = 0xFFFFFFFF;
+				IpNetMask.second = 0x0000FFFF;
 				serverIPs.push_back(IpNetMask);
 				addr++;
 			}
 		}
 	}
 
-	std::string ip = g_config.getString(ConfigManager::IP);
+	std::string ip;
+	ip = g_config.getString(ConfigManager::IP);
 
 	uint32_t resolvedIp = inet_addr(ip.c_str());
 	if (resolvedIp == INADDR_NONE) {
 		struct hostent* he = gethostbyname(ip.c_str());
-		if (!he) {
-			std::ostringstream ss;
-			ss << "ERROR: Cannot resolve " << ip << "!" << std::endl;
-			startupErrorMessage(ss.str());
-			return;
+		if (he != 0) {
+			resolvedIp = *(uint32_t*)he->h_addr;
+		} else {
+			std::cout << "ERROR: Cannot resolve " << ip << "!" << std::endl;
+			startupErrorMessage("");
 		}
-		resolvedIp = *(uint32_t*)he->h_addr;
 	}
 
 	IpNetMask.first = resolvedIp;
