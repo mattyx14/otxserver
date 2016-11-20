@@ -46,7 +46,7 @@ void ProtocolLogin::disconnectClient(const std::string& message)
 	disconnect();
 }
 
-void ProtocolLogin::getCharacterList(const std::string& accountName, const std::string& password, uint16_t version)
+void ProtocolLogin::getCharacterList(const std::string& accountName, const std::string& password)
 {
 	uint32_t serverIp = serverIPs[0].first;
 	for (uint32_t i = 0; i < serverIPs.size(); i++) {
@@ -58,7 +58,7 @@ void ProtocolLogin::getCharacterList(const std::string& accountName, const std::
 
 	Account account;
 	if (!IOLoginData::loginserverAuthentication(accountName, password, account)) {
-		disconnectClient("Account name or password is not correct.", version);
+		disconnectClient("Account name or password is not correct.");
 		return;
 	}
 
@@ -122,7 +122,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	if (version <= 760) {
 		std::ostringstream ss;
 		ss << "Only clients with protocol " << g_config.getString(ConfigManager::VERSION_STR) << " allowed!";
-		disconnectClient(ss.str(), version);
+		disconnectClient(ss.str());
 		return;
 	}
 
@@ -145,17 +145,17 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
 		std::ostringstream ss;
 		ss << "Only clients with protocol " << g_config.getString(ConfigManager::VERSION_STR) << " allowed!";
-		disconnectClient(ss.str(), version);
+		disconnectClient(ss.str());
 		return;
 	}
 
 	if (g_game.getGameState() == GAME_STATE_STARTUP) {
-		disconnectClient("Gameworld is starting up. Please wait.", version);
+		disconnectClient("Gameworld is starting up. Please wait.");
 		return;
 	}
 
 	if (g_game.getGameState() == GAME_STATE_MAINTAIN) {
-		disconnectClient("Gameworld is under maintenance.\nPlease re-connect in a while.", version);
+		disconnectClient("Gameworld is under maintenance.\nPlease re-connect in a while.");
 		return;
 	}
 
@@ -172,12 +172,12 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 		std::ostringstream ss;
 		ss << "Your IP has been banned until " << formatDateShort(banInfo.expiresAt) << " by " << banInfo.bannedBy << ".\n\nReason specified:\n" << banInfo.reason;
-		disconnectClient(ss.str(), version);
+		disconnectClient(ss.str());
 		return;
 	}
 
 	if (accountName.empty()) {
-		disconnectClient("Invalid account name.", version);
+		disconnectClient("Invalid account name.");
 		return;
 	}
 

@@ -43,7 +43,7 @@ class ProtocolLogin : public Protocol
 	protected:
 		void disconnectClient(const std::string& message);
 
-		void getCharacterList(const std::string& accountName, const std::string& password, uint16_t version);
+		void getCharacterList(const std::string& accountName, const std::string& password);
 };
 
 #endif
