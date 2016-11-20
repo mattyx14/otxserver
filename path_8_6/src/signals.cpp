@@ -35,7 +35,6 @@
 #include "monster.h"
 #include "events.h"
 
-
 extern Dispatcher g_dispatcher;
 
 extern ConfigManager g_config;
@@ -160,9 +159,6 @@ void Signals::sighupHandler()
 
 	g_game.quests.reload();
 	std::cout << "Reloaded quests." << std::endl;
-
-	g_game.mounts.reload();
-	std::cout << "Reloaded mounts." << std::endl;
 
 	g_globalEvents->reload();
 	std::cout << "Reloaded globalevents." << std::endl;
