@@ -60,8 +60,10 @@ Signals::Signals(boost::asio::io_service& service) :
 {
 	set.add(SIGINT);
 	set.add(SIGTERM);
+#ifndef _WIN32
 	set.add(SIGUSR1);
 	set.add(SIGHUP);
+#endif
 
 	asyncWait();
 }
@@ -84,16 +86,18 @@ void Signals::dispatchSignalHandler(int signal)
 		case SIGINT: //Shuts the server down
 			g_dispatcher.addTask(createTask(sigintHandler));
 			break;
-		case SIGHUP: //Reload config/data
-			g_dispatcher.addTask(createTask(sighupHandler));
-			break;
 		case SIGTERM: //Shuts the server down
 			g_dispatcher.addTask(createTask(sigtermHandler));
 			break;
-		case SIGUSR1: //Saves game state
+#ifndef _WIN32
+			 case SIGHUP: //Reload config/data
+				g_dispatcher.addTask(createTask(sighupHandler));
+				break;
+			case SIGUSR1: //Saves game state
 			g_dispatcher.addTask(createTask(sigusr1Handler));
 			break;
-		default:
+#endif
+			default:
 			break;
 	}
 }
