@@ -108,12 +108,6 @@
 	<movevent event="StepIn" itemid="10783" script="quest door.lua" />
 	<movevent event="StepOut" itemid="10792" script="closingdoor.lua" />
 	<movevent event="StepIn" itemid="10792" script="quest door.lua" />
-	<movevent event="StepOut" itemid="12105" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="12105" script="quest door.lua" />
-	<movevent event="StepOut" itemid="12194" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="12194" script="quest door.lua" />
-	<movevent event="StepOut" itemid="12203" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="12203" script="quest door.lua" />
 		<movevent event="StepOut" itemid="1228" script="closingdoor.lua" />
 		<movevent event="StepIn" itemid="1228" script="level door.lua" />
 		<movevent event="StepOut" itemid="1230" script="closingdoor.lua" />
@@ -182,14 +176,6 @@
 		<movevent event="StepIn" itemid="10781" script="level door.lua" />
 		<movevent event="StepOut" itemid="10790" script="closingdoor.lua" />
 		<movevent event="StepIn" itemid="10790" script="level door.lua" />
-		<movevent event="StepOut" itemid="12098" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="12098" script="quest door.lua" />
-		<movevent event="StepOut" itemid="12103" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="12103" script="level door.lua" />
-		<movevent event="StepOut" itemid="12196" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="12196" script="level door.lua" />
-		<movevent event="StepOut" itemid="12205" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="12205" script="level door.lua" />
 
 	<!-- Snow footprint tiles -->
 	<movevent event="StepOut" itemid="670" script="snow.lua" />
@@ -318,13 +304,6 @@
 	<movevent event="DeEquip" itemid="11240" slot="feet" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="11303" slot="feet" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="11303" slot="feet" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12646" slot="feet" level="80" function="onEquipItem">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-		<vocation name="Paladin" />
-		<vocation name="Royal Paladin" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12646" slot="feet" function="onDeEquipItem" />
 
 	<!-- Amulets -->
 	<movevent event="Equip" itemid="2161" slot="necklace" function="onEquipItem" />
@@ -491,18 +470,6 @@
 		<vocation name="Elder Druid" showInDescription="0" />
 	</movevent>
 	<movevent event="DeEquip" itemid="11368" slot="head" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12630" slot="head" function="onEquipItem">
-		<vocation name="Sorcerer" />
-		<vocation name="Master Sorcerer" showInDescription="0" />
-		<vocation name="Druid" />
-		<vocation name="Elder Druid" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12630" slot="head" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12645" slot="head" level="100" function="onEquipItem">
-		<vocation name="Paladin" />
-		<vocation name="Royal Paladin" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12645" slot="head" function="onDeEquipItem" />
 
 	<!-- Armors -->
 	<movevent event="Equip" itemid="2466" slot="armor" function="onEquipItem">
@@ -743,25 +710,6 @@
 		<vocation name="Elder Druid" showInDescription="0" />
 	</movevent>
 	<movevent event="DeEquip" fromid="11355" toid="11356" slot="armor" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12607" slot="armor" level="100" function="onEquipItem">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-		<vocation name="Paladin" />
-		<vocation name="Royal Paladin" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12607" slot="armor" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12643" slot="armor" level="100" function="onEquipItem">
-		<vocation name="Sorcerer" />
-		<vocation name="Master Sorcerer" showInDescription="0" />
-		<vocation name="Druid" />
-		<vocation name="Elder Druid" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12643" slot="armor" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12642" slot="armor" level="100" function="onEquipItem">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12642" slot="armor" function="onDeEquipItem" />
 
 	<!-- Legs -->
 	<movevent event="Equip" itemid="2477" slot="legs" function="onEquipItem">
@@ -903,16 +851,4 @@
 		<vocation name="Elder Druid" showInDescription="0" />
 	</movevent>
 	<movevent event="DeEquip" itemid="8918" slot="shield" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12647" slot="shield" level="100" function="onEquipItem">
-		<vocation name="Sorcerer" />
-		<vocation name="Master Sorcerer" showInDescription="0" />
-		<vocation name="Druid" />
-		<vocation name="Elder Druid" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12647" slot="shield" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="12644" slot="shield" level="80" function="onEquipItem">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</movevent>
-	<movevent event="DeEquip" itemid="12644" slot="shield" function="onDeEquipItem" />
 </movements>

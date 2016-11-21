@@ -33,10 +33,8 @@
 
 	<!-- Ceremonial ankh & Ornamented brooch -->
 	<action itemid="6561" script="other/checkbless.lua" />
-	<action itemid="12424" script="other/checkbless.lua" />
 
 	<!-- Offline Training -->
-	<action itemid="12397" script="other/trainingbook.lua" />
 	<!-- <action fromid="ID" toid="ID" script="other/skilltrainer.lua" /> -->
 
 	<!-- Increase/Decrease ItemId -->
@@ -141,16 +139,12 @@
 	<action itemid="10454" script="other/food.lua" />
 	<action itemid="11246" script="other/food.lua" />
 	<action itemid="11370" script="other/food.lua" />
-	<action itemid="11429" script="other/food.lua" />
-	<action fromid="12415" toid="12418" script="other/food.lua" />
-	<action fromid="12637" toid="12639" script="other/food.lua" />
 
 	<!-- Spellbooks -->
 	<action itemid="2175" script="other/spellbook.lua" />
 	<action itemid="6120" script="other/spellbook.lua" />
 	<action fromid="8900" toid="8904" script="other/spellbook.lua" />
 	<action itemid="8918" script="other/spellbook.lua" />
-	<action itemid="12647" script="other/spellbook.lua" />
 
 	<!-- Construction Kits / Beds -->
 	<action fromid="3901" toid="3938" script="other/constructionkits.lua" />
@@ -216,10 +210,6 @@
 	<action fromid="10775" toid="10777" script="other/doors.lua" />
 	<action fromid="10780" toid="10786" script="other/doors.lua" />
 	<action fromid="10789" toid="10792" script="other/doors.lua" />
-	<action fromid="12092" toid="12105" script="other/doors.lua" />
-	<action fromid="12188" toid="12190" script="other/doors.lua" />
-	<action fromid="12193" toid="12199" script="other/doors.lua" />
-	<action fromid="12202" toid="12205" script="other/doors.lua" />
 		<action fromid="6436" toid="6447" script="other/windows.lua" />
 		<action fromid="6450" toid="6473" script="other/windows.lua" />
 		<action fromid="6788" toid="6791" script="other/windows.lua" />

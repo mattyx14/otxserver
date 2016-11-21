@@ -29,8 +29,8 @@ static constexpr auto STATUS_SERVER_DEVELOPERS = "Mattyx14, Brewsterl, Malucooo 
 static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/";
 
 static constexpr auto CLIENT_VERSION_MIN = 854;
-static constexpr auto CLIENT_VERSION_MAX = 857;
-static constexpr auto CLIENT_VERSION_STR = "8.54/57";
+static constexpr auto CLIENT_VERSION_MAX = 858;
+static constexpr auto CLIENT_VERSION_STR = "8.54/58";
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

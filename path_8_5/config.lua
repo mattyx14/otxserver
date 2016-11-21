@@ -30,9 +30,9 @@ replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
 -- Version Manual
-clientVersionMin = 860
-clientVersionMax = 860
-clientVersionStr = "Only clients with protocol 8.60 allowed!"
+clientVersionMin = 854
+clientVersionMax = 858
+clientVersionStr = "Only clients with protocol 8.54/58 allowed!"
 
 -- Deaths
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default
@@ -70,6 +70,7 @@ maxMessageBuffer = 4
 emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
+autoStackItems = false
 
 -- Critical hits
 -- NOTE: criticalChance and extraPercent are percentages, not absolute values.

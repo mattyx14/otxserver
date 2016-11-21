@@ -72,7 +72,7 @@
 		commandsList - How use commands
 		internalFunction - How use internal functions from TFS / OTX "WIP"
 		configHelp - How use all configFunctions from TFS / OTX "WIP"
-	- Added support for 8.54/57 "WIP"
+	- Added support for 8.54/58
 	- Added POSIX signal handling (djarek)
 	- Fileloader refactor (djarek)
 	- Fix connectionLock on old protocols

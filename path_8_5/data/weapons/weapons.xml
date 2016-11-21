@@ -141,11 +141,6 @@
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
 	<melee id="11307" level="55" unproperly="1" />
-	<melee id="12649" level="82" unproperly="1" />
-	<melee id="12613" level="58" unproperly="1">
-		<vocation name="Knight" />
-		<vocation name="Elite Knight" showInDescription="0" />
-	</melee>
 
 	<!-- Fire -->
 	<melee id="7744" action="removecharge" />
