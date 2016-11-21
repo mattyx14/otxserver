@@ -796,6 +796,10 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 	}
 
 	if (it.isRune()) {
+		if (!it.runeSpellName.empty()) {
+			s << " (\"" << it.runeSpellName << "\") " << subType << "x";
+		}
+
 		if (it.runeLevel > 0 || it.runeMagLevel > 0) {
 			if (RuneSpell* rune = g_spells->getRuneSpell(it.id)) {
 				int32_t tmpSubType = subType;
@@ -1409,7 +1413,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	}
 
-	if (it.showCharges) {
+	if (it.showCharges && !it.isRune()) {
 		s << " that has " << subType << " charge" << (subType != 1 ? "s" : "") << " left";
 	}
 

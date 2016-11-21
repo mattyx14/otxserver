@@ -43,6 +43,7 @@ class ConfigManager
 			CLASSIC_EQUIPMENT_SLOTS,
 			ALLOW_WALKTHROUGH,
 			ALLOW_BLOCK_SPAWN,
+			AUTO_STACK_ITEMS,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

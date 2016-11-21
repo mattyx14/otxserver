@@ -28,9 +28,9 @@ static constexpr auto SOFTWARE_CODENAME = "LEZICK";
 static constexpr auto STATUS_SERVER_DEVELOPERS = "Mattyx14, Brewsterl, Malucooo and The Forgotten Server Developers";
 static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/";
 
-static constexpr auto CLIENT_VERSION_MIN = 860;
-static constexpr auto CLIENT_VERSION_MAX = 860;
-static constexpr auto CLIENT_VERSION_STR = "8.60";
+static constexpr auto CLIENT_VERSION_MIN = 854;
+static constexpr auto CLIENT_VERSION_MAX = 857;
+static constexpr auto CLIENT_VERSION_STR = "8.54/57";
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__
