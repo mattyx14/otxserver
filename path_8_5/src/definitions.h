@@ -40,9 +40,12 @@ static constexpr auto CLIENT_VERSION_STR = "8.54/58";
 #define _USE_MATH_DEFINES
 #endif
 
+#include <cassert>
 #include <cmath>
+#include <cstdint>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #ifdef _WIN32
 #ifndef NOMINMAX
