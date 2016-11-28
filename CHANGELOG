@@ -43,7 +43,7 @@
 				https://github.com/EvilHero90/forgottenserver/
 
 	DEVELOPMENT STATUS
-		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.7 :: Version "SAILOR"
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.8 :: Version "LEZICK"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -53,8 +53,8 @@
 		- Add helpers Party/Guilds
 ]
 
-[ OTX Server 2.7 :: Version "SAILOR"
-	- 
+[ OTX Server 2.8 :: Version "LEZICK"
+	- Dropped version 2.7 and changed to 2.8
 ]
 
 [ OTX Server 2.6 :: Version "SCARETALE"
