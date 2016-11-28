@@ -23,10 +23,6 @@
 
 #include "game.h"
 
-#ifndef _WIN32
-#include <csignal> // for sigemptyset()
-#endif
-
 #include "configmanager.h"
 #include "scriptmanager.h"
 
@@ -80,15 +76,6 @@ int main(int argc, char* argv[])
 	// Setup bad allocation handler
 	std::set_new_handler(badAllocationHandler);
 
-#ifndef _WIN32
-	// ignore sigpipe...
-	struct sigaction sigh;
-	sigh.sa_handler = SIG_IGN;
-	sigh.sa_flags = 0;
-	sigemptyset(&sigh.sa_mask);
-	sigaction(SIGPIPE, &sigh, nullptr);
-#endif
-
 	ServiceManager serviceManager;
 
 	g_dispatcher.start();
@@ -100,19 +87,6 @@ int main(int argc, char* argv[])
 
 	if (serviceManager.is_running()) {
 		std::cout << ">> " << g_config.getString(ConfigManager::SERVER_NAME) << " Server Online!" << std::endl << std::endl;
-#ifdef _WIN32
-		SetConsoleCtrlHandler([](DWORD) -> BOOL {
-			g_dispatcher.addTask(createTask([]() {
-				g_dispatcher.addTask(createTask(
-					std::bind(&Game::shutdown, &g_game)
-				));
-				g_scheduler.stop();
-				g_databaseTasks.stop();
-				g_dispatcher.stop();
-			}));
-			ExitThread(0);
-		}, 1);
-#endif
 		serviceManager.run();
 	} else {
 		std::cout << ">> No services running. The server is NOT online." << std::endl;
@@ -294,30 +268,30 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	char szHostName[128];
 	if (gethostname(szHostName, 128) == 0) {
-		hostent* he = gethostbyname(szHostName);
+		hostent *he = gethostbyname(szHostName);
 		if (he) {
 			unsigned char** addr = (unsigned char**)he->h_addr_list;
 			while (addr[0] != nullptr) {
 				IpNetMask.first = *(uint32_t*)(*addr);
-				IpNetMask.second = 0xFFFFFFFF;
+				IpNetMask.second = 0x0000FFFF;
 				serverIPs.push_back(IpNetMask);
 				addr++;
 			}
 		}
 	}
 
-	std::string ip = g_config.getString(ConfigManager::IP);
+	std::string ip;
+	ip = g_config.getString(ConfigManager::IP);
 
 	uint32_t resolvedIp = inet_addr(ip.c_str());
 	if (resolvedIp == INADDR_NONE) {
 		struct hostent* he = gethostbyname(ip.c_str());
-		if (!he) {
-			std::ostringstream ss;
-			ss << "ERROR: Cannot resolve " << ip << "!" << std::endl;
-			startupErrorMessage(ss.str());
-			return;
+		if (he != 0) {
+			resolvedIp = *(uint32_t*)he->h_addr;
+		} else {
+			std::cout << "ERROR: Cannot resolve " << ip << "!" << std::endl;
+			startupErrorMessage("");
 		}
-		resolvedIp = *(uint32_t*)he->h_addr;
 	}
 
 	IpNetMask.first = resolvedIp;

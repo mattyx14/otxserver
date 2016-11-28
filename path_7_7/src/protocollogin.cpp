@@ -124,7 +124,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 */
 
 	if (version <= 760) {
-		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
+		std::ostringstream ss;
+		ss << "Only clients with protocol " << g_config.getString(ConfigManager::VERSION_STR) << " allowed!";
+		disconnectClient(ss.str());
 		return;
 	}
 
@@ -147,7 +149,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	std::string password = msg.getString();
 
 	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
-		disconnectClient(g_config.getString(ConfigManager::VERSION_STR));
+		std::ostringstream ss;
+		ss << "Only clients with protocol " << g_config.getString(ConfigManager::VERSION_STR) << " allowed!";
+		disconnectClient(ss.str());
 		return;
 	}
 

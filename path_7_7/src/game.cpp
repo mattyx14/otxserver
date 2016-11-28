@@ -2741,7 +2741,7 @@ void Game::playerFollowCreature(uint32_t playerId, uint32_t creatureId)
 	player->setFollowCreature(getCreatureByID(creatureId));
 }
 
-void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, chaseMode_t chaseMode, bool secureMode)
+void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, bool chaseMode, bool secureMode)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
@@ -2849,14 +2849,14 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	}
 
 	player->hasRequestedOutfit(false);
-	player->defaultOutfit = outfit;
+		player->defaultOutfit = outfit;
 
-	if (player->hasCondition(CONDITION_OUTFIT)) {
-		return;
+		if (player->hasCondition(CONDITION_OUTFIT)) {
+			return;
+		}
+
+		internalCreatureChangeOutfit(player, outfit);
 	}
-
-	internalCreatureChangeOutfit(player, outfit);
-}
 
 void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
                      const std::string& receiver, const std::string& text)
@@ -3858,9 +3858,6 @@ void Game::resetCommandTag()
 
 void Game::shutdown()
 {
-	std::cout << "Saving game..." << std::flush;
-	saveGameState();
-
 	std::cout << "Shutting down..." << std::flush;
 
 	g_scheduler.shutdown();
