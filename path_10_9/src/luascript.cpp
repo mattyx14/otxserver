@@ -1828,6 +1828,12 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::LIVE_CAST_PORT)
 	registerEnumIn("configKeys", ConfigManager::VERSION_MIN)
 	registerEnumIn("configKeys", ConfigManager::VERSION_MAX)
+	registerEnumIn("configKeys", ConfigManager::DAY_KILLS_TO_RED)
+	registerEnumIn("configKeys", ConfigManager::WEEK_KILLS_TO_RED)
+	registerEnumIn("configKeys", ConfigManager::MONTH_KILLS_TO_RED)
+	registerEnumIn("configKeys", ConfigManager::RED_SKULL_DURATION)
+	registerEnumIn("configKeys", ConfigManager::BLACK_SKULL_DURATION)
+	registerEnumIn("configKeys", ConfigManager::ORANGE_SKULL_DURATION)
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);
@@ -2162,6 +2168,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "setCapacity", LuaScriptInterface::luaPlayerSetCapacity);
 
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
+
+	registerMethod("Player", "getKills", LuaScriptInterface::luaPlayerGetKills);
+	registerMethod("Player", "setKills", LuaScriptInterface::luaPlayerSetKills);
 
 	registerMethod("Player", "getReward", LuaScriptInterface::luaPlayerGetReward);
 	registerMethod("Player", "removeReward", LuaScriptInterface::luaPlayerRemoveReward);
@@ -7854,6 +7863,60 @@ int LuaScriptInterface::luaPlayerGetFreeCapacity(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetKills(lua_State* L)
+{
+	// player:getKills()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_createtable(L, player->unjustifiedKills.size(), 0);
+	int idx = 0;
+	for (const auto& kill : player->unjustifiedKills) {
+		lua_createtable(L, 3, 0);
+		lua_pushnumber(L, kill.target);
+		lua_rawseti(L, -2, 1);
+		lua_pushnumber(L, kill.time);
+		lua_rawseti(L, -2, 2);
+		pushBoolean(L, kill.unavenged);
+		lua_rawseti(L, -2, 3);
+		lua_rawseti(L, -2, ++idx);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetKills(lua_State* L)
+{
+	// player:setKills(kills)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	luaL_checktype(L, 2, LUA_TTABLE);
+	std::vector<Kill> newKills;
+
+	lua_pushnil(L);
+	while (lua_next(L, 2) != 0) {
+		// -2 is index, -1 is value
+		luaL_checktype(L, -1, LUA_TTABLE);
+		lua_rawgeti(L, -1, 1); // push target
+		lua_rawgeti(L, -2, 2); // push time
+		lua_rawgeti(L, -3, 3); // push unavenged
+		newKills.emplace_back(luaL_checknumber(L, -3), luaL_checknumber(L, -2), getBoolean(L, -1));
+		lua_pop(L, 4);
+	}
+
+	player->unjustifiedKills = std::move(newKills);
+	player->sendUnjustifiedPoints();
+	pushBoolean(L, true);
 	return 1;
 }
 

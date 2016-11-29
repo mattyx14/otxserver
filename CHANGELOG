@@ -74,6 +74,9 @@
 		configHelp - How use all configFunctions from TFS / OTX "WIP"
 	- Added support for 8.54/58
 	- Added POSIX signal handling (djarek)
+	- Added UnjustPanel Kills (brunominervino)
+	- Added support to orangeSkull (brunominervino)
+	- Added support to current frag system (brunominervino)
 	- Fileloader refactor (djarek)
 	- Fix connectionLock on old protocols
 	- Fix potions onTarget

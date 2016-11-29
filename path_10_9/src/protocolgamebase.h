@@ -82,8 +82,8 @@ class ProtocolGameBase : public Protocol {
 		//inventory
 		void sendInventoryItem(slots_t slot, const Item* item);
 		void sendInventoryClientIds();
-		// Skull Time
-		void sendSkullTime();
+		// Unjust Panel
+		void sendUnjustifiedPoints(const uint8_t& dayProgress, const uint8_t& dayLeft, const uint8_t& weekProgress, const uint8_t& weekLeft, const uint8_t& monthProgress, const uint8_t& monthLeft, const uint8_t& skullDuration);
 
 		void sendSkills();
 

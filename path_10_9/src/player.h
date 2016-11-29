@@ -105,6 +105,14 @@ struct Skill {
 	uint8_t percent = 0;
 };
 
+struct Kill {
+	uint32_t target;
+	time_t time;
+	bool unavenged;
+
+	Kill(uint32_t _target, time_t _time, bool _unavenged) : target(_target), time(_time), unavenged(_unavenged) {}
+};
+
 typedef std::map<uint32_t, uint32_t> MuteCountMap;
 
 static constexpr int32_t PLAYER_MAX_SPEED = 1500;
@@ -293,6 +301,8 @@ class Player final : public Creature, public Cylinder
 		bool addPartyInvitation(Party* party);
 		void removePartyInvitation(Party* party);
 		void clearPartyInvitations();
+
+		void sendUnjustifiedPoints();
 
 		GuildEmblems_t getGuildEmblem(const Player* player) const;
 
@@ -670,6 +680,7 @@ class Player final : public Creature, public Cylinder
 		int64_t getSkullTicks() const { return skullTicks; }
 		void setSkullTicks(int64_t ticks) { skullTicks = ticks; }
 
+		bool hasKilled(const Player* player) const;
 		bool hasAttacked(const Player* attacked) const;
 		void addAttacked(const Player* attacked);
 		void clearAttacked();
@@ -1266,6 +1277,8 @@ class Player final : public Creature, public Cylinder
 		int64_t lastPing;
 		int64_t lastPong;
 		int64_t nextAction = 0;
+
+		std::vector<Kill> unjustifiedKills;
 
 		BedItem* bedItem = nullptr;
 		Guild* guild = nullptr;

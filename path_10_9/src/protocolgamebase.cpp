@@ -575,29 +575,17 @@ void ProtocolGameBase::sendMagicEffect(const Position& pos, uint8_t type)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGameBase::sendSkullTime()
+void ProtocolGameBase::sendUnjustifiedPoints(const uint8_t& dayProgress, const uint8_t& dayLeft, const uint8_t& weekProgress, const uint8_t& weekLeft, const uint8_t& monthProgress, const uint8_t& monthLeft, const uint8_t& skullDuration)
 {
-	int skullTime = (double) player->getSkullTicks();
-	if (skullTime <= 0) {
-		skullTime = 0;
-	}
-
-	int fragTime = (double) g_config.getNumber(ConfigManager::FRAG_TIME);
-	int kills = std::ceil(((double) skullTime / fragTime));
-
-	short killsToRed = g_config.getNumber(ConfigManager::KILLS_TO_RED);
-	short percentage = std::min<uint16_t>(((100 / killsToRed) * kills), 100);
-	short killsLeft = killsToRed - kills;
-
 	NetworkMessage msg;
 	msg.addByte(0xB7);
-	msg.addByte(percentage);
-	msg.addByte(killsLeft);
-	msg.addByte(percentage);
-	msg.addByte(killsLeft);
-	msg.addByte(percentage);
-	msg.addByte(killsLeft);
-	msg.addByte(skullTime < time(nullptr) + skullTime ? 0 : std::ceil(((double) skullTime - (double) time(nullptr)) / (double) 86400));
+	msg.addByte(dayProgress);
+	msg.addByte(dayLeft);
+	msg.addByte(weekProgress);
+	msg.addByte(weekLeft);
+	msg.addByte(monthProgress);
+	msg.addByte(monthLeft);
+	msg.addByte(skullDuration);
 	writeToOutputBuffer(msg);
 }
 
@@ -719,7 +707,6 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 
 	sendBasicData();
 	sendInventoryClientIds();
-	sendSkullTime();
 	player->sendIcons();
 }
 

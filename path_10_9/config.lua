@@ -12,6 +12,12 @@ whiteSkullTime = 15 * 60 * 1000
 stairJumpExhaustion = 2 * 1000
 experienceByKillingPlayers = false
 expFromPlayersLevelRange = 75
+dayKillsToRedSkull = 3
+weekKillsToRedSkull = 5
+monthKillsToRedSkull = 10
+redSkullDuration = 30
+blackSkullDuration = 45
+orangeSkullDuration = 7
 
 -- Connection Config
 -- NOTE: maxPlayers set to 0 means no limit
