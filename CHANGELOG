@@ -68,10 +68,10 @@
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
-	- Added docs
-		commandsList - How use commands
-		internalFunction - How use internal functions from TFS / OTX "WIP"
-		configHelp - How use all configFunctions from TFS / OTX "WIP"
+	- Added help /docs/
+		How use commands - /commandsList
+		How use internal functions from TFS / OTX "WIP" - /internalFunction
+		How use all configs from TFS / OTX "WIP" - /configHelp
 	- Added support for 8.54/58
 	- Added POSIX signal handling (djarek)
 	- Added UnjustPanel Kills (brunominervino)
