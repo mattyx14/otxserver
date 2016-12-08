@@ -29522,7 +29522,7 @@
 		<attribute key="weight" value="800" />
 	</item>
 	<item id="21570" name="the world board">
-		<attribute key="description" value="This board will notify you of currently active mini world changes all over Tibia." />
+		<attribute key="description" value="This board will notify you of currently active mini world changes all over world." />
 	</item>
 	<item id="21584" article="a" name="reward chest">
 		<attribute key="type" value="rewardchest" />
@@ -30437,7 +30437,7 @@
 		<attribute key="corpseType" value="blood" />
 	</item>
 	<item id="22691" article="a" name="jade amulet">
-		<attribute key="description" value="Golden lines are embedded in the amulet and show mysterious symbols. It was awarded by TibiaHoF." />
+		<attribute key="description" value="Golden lines are embedded in the amulet and show mysterious symbols." />
 		<attribute key="weight" value="400" />
 		<attribute key="slotType" value="necklace" />
 	</item>

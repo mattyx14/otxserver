@@ -1,6 +1,6 @@
 local config = {
 	[11260] = {blessId = 1, text = 'The Spiritual Shielding'},
-	[11259] = {blessId = 2, text = 'The Embrace of Tibia'},
+	[11259] = {blessId = 2, text = 'The Embrace of World'},
 	[11261] = {blessId = 3, text = 'The Fire of the Suns'},
 	[11258] = {blessId = 4, text = 'The Spark of the Phoenix'},
 	[11262] = {blessId = 5, text = 'The Wisdom of Solitude'}

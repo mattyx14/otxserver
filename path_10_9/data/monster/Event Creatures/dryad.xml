@@ -47,7 +47,7 @@
 		<immunity earth="1" />
 	</immunities>
 	<voices interval="2000" chance="7">
-		<voice sentence="Feel the wrath of mother Tibia!" />
+		<voice sentence="Feel the wrath of mother World!" />
 		<voice sentence="Defiler of nature!" />
 	</voices>
 	<loot>

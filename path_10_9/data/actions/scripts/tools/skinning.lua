@@ -67,7 +67,7 @@ local config = {
 		[8961] = { { value = 5000, newItem = 7487 }, { value = 10000, newItem = 7737 }, { value = 20000, 6492 }, { value = 30000, newItem = 8860 }, { value = 45000, newItem = 2683 }, { value = 60000, newItem = 2096 }, { value = 90000, newItem = 9005, amount = 50 } },
 
 		-- Marble
-		[11343] = { {value = 10000, newItem = 11345, desc = "This shoddy work was made by |PLAYERNAME|." }, {value = 35000, newItem = 11345, desc = "This little figurine made by |PLAYERNAME| has some room for improvement." }, { value = 60000, newItem = 11346, desc = "This little figurine of Tibiasula was masterfully sculpted by |PLAYERNAME|." } },
+		[11343] = { {value = 10000, newItem = 11345, desc = "This shoddy work was made by |PLAYERNAME|." }, {value = 35000, newItem = 11345, desc = "This little figurine made by |PLAYERNAME| has some room for improvement." }, { value = 60000, newItem = 11346, desc = "This little figurine of God was masterfully sculpted by |PLAYERNAME|." } },
 
 		-- Ice Cube
 		[7441] = {value = 25000, newItem = 7442},

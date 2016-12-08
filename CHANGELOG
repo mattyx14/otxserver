@@ -60,8 +60,8 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Tibia Clients - 7.6 to 10.99
-		Tibia Client 11.x
+		Version Clients - 7.6 to 10.99
+		Version Client 11.x
 
 	BUGS
 		https://github.com/mattyx14/otxserver/issues/
@@ -122,7 +122,7 @@
 	- Fix stackpos useitem issue (Babymannen) on 7.x
 	- Fix gain skull on kill monsterSummon on party - 8.x and 7.x
 	- Fix weaponDamage on 7.x (Babymannen)
-	- Fix tradeWindow for TibiaClient 11
+	- Fix tradeWindow for Version Client 11
 	- Fix migrations on 7.x
 	- Fix follow on 7.x (babymannen)
 	- Fix description heal-mana-damage on 7.x (babymannen)
@@ -295,7 +295,7 @@
 	- Update items.xml / items.otb
 	- Update firstitems scripts // missing vocation
 	- Update monsters is more complete
-	- Update outfits and mounts to lasted Tibia
+	- Update outfits and mounts to lasted Version
 	- Removed unnused variables
 	- Support 10.90
 ]
