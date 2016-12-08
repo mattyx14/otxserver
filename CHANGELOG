@@ -80,6 +80,7 @@
 	- Fileloader refactor (djarek)
 	- Fix connectionLock on old protocols
 	- Fix potions onTarget
+	- Fix and remove code from expertPvp - summon from a player, you take PK.
 	- Remove dllFiles from the datapack
 	- Remove no used commands
 	- Remove duplicate actions
