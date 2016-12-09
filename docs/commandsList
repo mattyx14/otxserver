@@ -1,3 +1,80 @@
+[ COMMANDS HELP
+	PROJECT NAME
+		OTX Server 3
+			The OTX Server are based on The Forgotten Server Version: 1.3
+
+	CODENAME
+		LEZICK
+
+	WEBSYTE
+		https://github.com/mattyx14/otxserver/tree/otxserv3/
+
+	DEVELOPERS
+		Project Manager and Founder
+			Mattyx14
+
+		OTX Server 3 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
+			Mattyx14
+			Brewsterl
+			Malucooo
+
+		Special Thanks(s)
+			The Forgotten Team
+				https://github.com/otland/
+
+			The Forgotten Contributors
+				https://github.com/otland/forgottenserver/graphs/contributors/
+
+			OpenTibia
+				https://github.com/opentibia/
+				Shivoc, Tliff, Haktivex, Fandoras, SimOne, Mips_Act, Primer, Wrzasq, Jakexblaster, Remere, Kornholijo, Elf, Edubart and Dalkon.
+
+			FORGOTTENSERVER-ORTS Team
+				https://github.com/orts/
+
+			EvilHero90
+				https://github.com/EvilHero90/
+
+			Ninjalulz
+				https://github.com/ninjalulz/
+
+			Slavidodo
+				https://github.com/slavidodo/
+
+			Babymannen
+				https://github.com/babymannen/
+
+			Bruno Carvalho
+				https://github.com/comedinha/
+
+			Ranieri Althoff
+				https://github.com/ranisalt/
+
+			Ben Dol
+				https://github.com/BenDol/
+
+			Bruno Minervino
+				https://github.com/brunominervino/
+
+			To All OTX Server Contributors
+				https://github.com/mattyx14/otxserver/graphs/contributors/
+
+	DEVELOPMENT STATUS
+		STARTED AND ON
+
+	PROTOCOL SUPPORTED
+		Version Clients - 7.6 to 10.99
+		Version Client 11.x
+
+	BUGS
+		https://github.com/mattyx14/otxserver/issues/
+]
+
+[ ABOUT
+	List of all commands 'aka talkactions.
+	Parameters, values, example usage, etc.
+]
+
 [ LIST
 	ACCESS COMMANDS
 		/reload
