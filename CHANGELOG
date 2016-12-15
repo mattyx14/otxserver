@@ -63,7 +63,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Version Clients - 7.6 to 10.99
+		Version Clients - 7.6 to 11_
 		Version Client 11.x
 
 	BUGS
@@ -80,6 +80,7 @@
 	- Added UnjustPanel Kills (brunominervino)
 	- Added support to orangeSkull (brunominervino)
 	- Added support to current frag system (brunominervino)
+	- Added support to clientVersion 11_ - aka10 - (no official items.otb // no supported new items) - (jo3bingham)
 	- Fileloader refactor (djarek)
 	- Fix connectionLock on old protocols
 	- Fix potions onTarget
