@@ -2242,24 +2242,24 @@ void ProtocolGame::sendOutfitWindow()
 
 	/* Outfits default Values
 		Male:
-			First Male Free = 0x80 // Citizen
-			0x81 // Hunter
-			0x82 // Mage
-			Last Male Free = 0x83 // Knight
+			First Male Free = 0x80 // Citizen -> 128
+			0x81 // Hunter -> 129
+			0x82 // Mage -> 130
+			Last Male Free = 0x83 // Knight -> 131
 
-			First Male Premium = 0x84 // Nobleman
-			0x85 // Summoner
-			Last Male Premium = 0x86 // Warrior
+			First Male Premium = 0x84 // Nobleman -> 132
+			0x85 // Summoner -> 133
+			Last Male Premium = 0x86 // Warrior -> 134
 
 		Female:
-			First Female Free = 0x88 // Citizen
-			0x89 // Hunter
-			0x8A // Mage
-			Last Female Free = 0x8B // Knight
+			First Female Free = 0x88 // Citizen -> 136
+			0x89 // Hunter -> 137
+			0x8A // Mage -> 138
+			Last Female Free = 0x8B // Knight -> 139
 
-			First Female Premium = 0x8C // Noblewoman
-			0x8D // Summoner
-			Last Female Premium = 0x8E // Warrior
+			First Female Premium = 0x8C // Noblewoman -> 140
+			0x8D // Summoner -> 141
+			Last Female Premium = 0x8E // Warrior -> 142
 	*/
 
 #ifdef _MULTIPLATFORM77
@@ -2296,8 +2296,8 @@ void ProtocolGame::sendOutfitWindow()
 			break;
 		*/
 		default:
-			msg->put<uint16_t>(0x80);
-			msg->put<uint16_t>(0x86);
+			msg->put<uint16_t>(0x80); // Citizen Male
+			msg->put<uint16_t>(0x86); // Warrior Male
 	}
 #else
 	switch (player->sex())
