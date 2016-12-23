@@ -2305,24 +2305,24 @@ void ProtocolGame::sendOutfitWindow()
 		case PLAYERSEX_FEMALE:
 			msg->put<char>(0x88); // First Female Free
 			if (player->isPremium())
-				msg->put<char>(0x8E); // Last Female
+				msg->put<char>(0x8E); // Last Female Premium
 			else
-				msg->put<char>(0x8B); // First Female Premium
+				msg->put<char>(0x8B); // Last Female Free
 			break;
 		case PLAYERSEX_MALE:
 			msg->put<char>(0x80); // First Female Free
 			if (player->isPremium())
-				msg->put<char>(0x86); // Last Female
+				msg->put<char>(0x86); // Last Male Premium
 			else
-				msg->put<char>(0x83); // First Female Premium
+				msg->put<char>(0x83); // Last Male Free
 			break;
 		/*
 		case PLAYERSEX_FEMALE_VIP:
 			msg->put<char>(0x00); // First Female Free
 			if (player->isPremium())
-				msg->put<char>(0x00); // Last Male Premium
+				msg->put<char>(0x00); // Last Female Premium
 			else
-				msg->put<char>(0x00); // Last Male Free
+				msg->put<char>(0x00); // Last Female Free
 			break;
 		case PLAYERSEX_MALE_VIP:
 			msg->put<char>(0x00); // First Female Free
