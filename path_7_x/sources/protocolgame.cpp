@@ -2240,13 +2240,14 @@ void ProtocolGame::sendOutfitWindow()
 	msg->put<char>(0xC8);
 	AddCreatureOutfit(msg, player, player->getDefaultOutfit(), true);
 
-	// Outfits default Values
-	/* Male:
+	/* Outfits default Values
+		Male:
 			First Male Free = 0x80 // Citizen
 			0x81 // Hunter
 			0x82 // Mage
 			Last Male Free = 0x83 // Knight
-			0x84 // Nobleman
+
+			First Male Premium = 0x84 // Nobleman
 			0x85 // Summoner
 			Last Male Premium = 0x86 // Warrior
 
@@ -2255,7 +2256,8 @@ void ProtocolGame::sendOutfitWindow()
 			0x89 // Hunter
 			0x8A // Mage
 			Last Female Free = 0x8B // Knight
-			0x8C // Noblewoman
+
+			First Female Premium = 0x8C // Noblewoman
 			0x8D // Summoner
 			Last Female Premium = 0x8E // Warrior
 	*/
