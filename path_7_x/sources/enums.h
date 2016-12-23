@@ -343,7 +343,9 @@ enum ConditionId_t
 enum PlayerSex_t
 {
 	PLAYERSEX_FEMALE = 0,
-	PLAYERSEX_MALE
+	PLAYERSEX_MALE,
+	PLAYERSEX_FEMALE_VIP,
+	PLAYERSEX_MALE_VIP
 	// DO NOT ADD HERE! Every higher sex is only for your
 	// own use- each female should be even and male odd.
 };

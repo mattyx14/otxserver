@@ -2240,12 +2240,100 @@ void ProtocolGame::sendOutfitWindow()
 	msg->put<char>(0xC8);
 	AddCreatureOutfit(msg, player, player->getDefaultOutfit(), true);
 
+	// Outfits default Values
+	/* Male:
+			First Male Free = 0x80 // Citizen
+			0x81 // Hunter
+			0x82 // Mage
+			Last Male Free = 0x83 // Knight
+			0x84 // Nobleman
+			0x85 // Summoner
+			Last Male Premium = 0x86 // Warrior
+
+		Female:
+			First Female Free = 0x88 // Citizen
+			0x89 // Hunter
+			0x8A // Mage
+			Last Female Free = 0x8B // Knight
+			0x8C // Noblewoman
+			0x8D // Summoner
+			Last Female Premium = 0x8E // Warrior
+	*/
+
 #ifdef _MULTIPLATFORM77
-	msg->put<uint16_t>(player->sex % 2 ? 128 : 136);
-	msg->put<uint16_t>(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
+	switch (player->sex())
+	{
+		case PLAYERSEX_FEMALE:
+			msg->put<uint16_t>(0x88); // First Female Free
+			if (player->isPremium())
+				msg->put<uint16_t>(0x8E); // Last Female Premium
+			else
+				msg->put<uint16_t>(0x8B); // Last Female Free
+			break;
+		case PLAYERSEX_MALE:
+			msg->put<uint16_t>(0x80); // First Female Free
+			if (player->isPremium())
+				msg->put<uint16_t>(0x86); // Last Male Premium
+			else
+				msg->put<uint16_t>(0x83); // Last Male Free
+			break;
+		/*
+		case PLAYERSEX_FEMALE_VIP:
+			msg->put<uint16_t>(0x00); // First Female Free
+			if (player->isPremium())
+				msg->put<uint16_t>(0x00); // Last Female Premium
+			else
+				msg->put<uint16_t>(0x00); // Last Female Free
+			break;
+		case PLAYERSEX_MALE_VIP:
+			msg->put<uint16_t>(0x00); // First Female Free
+			if (player->isPremium())
+				msg->put<uint16_t>(0x00); // Last Male Premium
+			else
+				msg->put<uint16_t>(0x00); // Last Male Free
+			break;
+		*/
+		default:
+			msg->put<uint16_t>(0x80);
+			msg->put<uint16_t>(0x86);
+	}
 #else
-	msg->put<char>(player->sex % 2 ? 128 : 136);
-	msg->put<char>(player->isPremium() ? (player->sex % 2 ? 134 : 142) : (player->sex % 2 ? 131 : 139));
+	switch (player->sex())
+	{
+		case PLAYERSEX_FEMALE:
+			msg->put<char>(0x88); // First Female Free
+			if (player->isPremium())
+				msg->put<char>(0x8E); // Last Female
+			else
+				msg->put<char>(0x8B); // First Female Premium
+			break;
+		case PLAYERSEX_MALE:
+			msg->put<char>(0x80); // First Female Free
+			if (player->isPremium())
+				msg->put<char>(0x86); // Last Female
+			else
+				msg->put<char>(0x83); // First Female Premium
+			break;
+		/*
+		case PLAYERSEX_FEMALE_VIP:
+			msg->put<char>(0x00); // First Female Free
+			if (player->isPremium())
+				msg->put<char>(0x00); // Last Male Premium
+			else
+				msg->put<char>(0x00); // Last Male Free
+			break;
+		case PLAYERSEX_MALE_VIP:
+			msg->put<char>(0x00); // First Female Free
+			if (player->isPremium())
+				msg->put<char>(0x00); // Last Male Premium
+			else
+				msg->put<char>(0x00); // Last Male Free
+			break;
+		*/
+		default:
+			msg->put<char>(0x80);
+			msg->put<char>(0x86);
+	}
 #endif
 
 	player->hasRequestedOutfit(true);
