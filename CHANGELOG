@@ -468,3 +468,7 @@
 	- More order on /data/actions
 	- Move compat to /data/lib/ and added more custom functions for to retro compatibility
 ]
+
+[ OTX Server // 2.x & 1.x // - History
+	CHANGELOG: https://raw.githubusercontent.com/mattyx14/otxserver/otxserv2/CHANGELOG
+]
