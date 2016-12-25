@@ -7,7 +7,7 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		LEZICK
+		VANXI
 
 	Website
 		https://github.com/mattyx14/otxserver/tree/otxserv2/
@@ -43,7 +43,7 @@
 				https://github.com/EvilHero90/forgottenserver/
 
 	DEVELOPMENT STATUS
-		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.8 :: Version "LEZICK"
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.9 :: Version "VANXI"
 
 	FEATURES
 		Special Support:
