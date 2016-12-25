@@ -315,7 +315,6 @@ enum Icons_t {
 	ICON_PARTY_BUFF = 1 << 12,
 	ICON_REDSWORDS = 1 << 13,
 	ICON_PIGEON = 1 << 14,
-	ICON_BLEEDING = 1 << 15,
 };
 
 enum WeaponType_t : uint8_t {

@@ -36,7 +36,6 @@
 #include "monster.h"
 #include "events.h"
 
-
 extern Dispatcher g_dispatcher;
 
 extern ConfigManager g_config;
