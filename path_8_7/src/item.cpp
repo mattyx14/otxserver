@@ -641,7 +641,7 @@ bool Item::unserializeAttr(PropStream& propStream)
 	return true;
 }
 
-bool Item::unserializeItemNode(FileLoader&, NODE, PropStream& propStream)
+bool Item::unserializeItemNode(OTB::Loader&, const OTB::Node&, PropStream& propStream)
 {
 	return unserializeAttr(propStream);
 }
@@ -1004,7 +1004,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 			}
 
 			if (!begin) {
-				s << ')';
+			s << ')';
 			}
 		} else if (it.weaponType != WEAPON_AMMO) {
 			bool begin = true;
