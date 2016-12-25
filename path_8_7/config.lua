@@ -3,8 +3,6 @@
 worldType = "pvp"
 hotkeyAimbotEnabled = true
 protectionLevel = 1
-killsToRedSkull = 3
-killsToBlackSkull = 6
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
@@ -12,6 +10,12 @@ whiteSkullTime = 15 * 60 * 1000
 stairJumpExhaustion = 2 * 1000
 experienceByKillingPlayers = false
 expFromPlayersLevelRange = 75
+dayKillsToRedSkull = 3
+weekKillsToRedSkull = 5
+monthKillsToRedSkull = 10
+redSkullDuration = 30
+blackSkullDuration = 45
+orangeSkullDuration = 7
 
 -- Connection Config
 -- NOTE: maxPlayers set to 0 means no limit
@@ -71,12 +75,6 @@ emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
 
--- Critical hits
--- NOTE: criticalChance and extraPercent are percentages, not absolute values.
--- extraPercent is the extra percentage of the damage to be added.
-criticalChance = 1
-criticalExtra = 100
-
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
 rateExp = 5
@@ -84,12 +82,6 @@ rateSkill = 3
 rateLoot = 2
 rateMagic = 3
 rateSpawn = 1
-
--- Critical hits
--- NOTE: criticalChance and extraPercent are percentages, not absolute values.
--- extraPercent is the extra percentage of the damage to be added.
-criticalChance = 1
-criticalExtra = 100
 
 -- Monsters
 deSpawnRange = 2
