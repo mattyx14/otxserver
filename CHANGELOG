@@ -4,7 +4,7 @@
 			The OTX Server are based on The Forgotten Server Version: 1.3
 
 	CODENAME
-		LEZICK
+		VANXI
 
 	WEBSYTE
 		https://github.com/mattyx14/otxserver/tree/otxserv3/
@@ -68,6 +68,12 @@
 
 	BUGS
 		https://github.com/mattyx14/otxserver/issues/
+]
+
+[ OTX Server 3.9 :: Version " VANXI "
+	- Added help /docs/
+		How use internal functions from TFS / OTX "WIP" - /internalFunction
+		How use all configs from TFS / OTX "WIP" - /configHelp
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
