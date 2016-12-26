@@ -1,3 +1,10 @@
+-- No move items with actionID 8000
+-- Players cannot throw items on teleports if set to true
+local blockTeleportTrashing = true
+
+-- Internal Use
+ITEM_STORE_INBOX = 26052
+
 function Player:onBrowseField(position)
 	return true
 end
@@ -86,6 +93,24 @@ function Player:onLookInShop(itemType, count)
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	-- Store Inbox
+	local containerIdFrom = fromPosition.y - 64
+	local containerFrom = self:getContainerById(containerIdFrom)
+	if (containerFrom) then
+		if (containerFrom:getId() == ITEM_STORE_INBOX and toPosition.y >= 1 and toPosition.y <= 11 and toPosition.y ~= 3) then
+			self:sendCancelMessage(RETURNVALUE_CONTAINERNOTENOUGHROOM)
+			return false
+		end
+	end
+
+	local containerTo = self:getContainerById(toPosition.y-64)
+	if (containerTo) then
+		if (containerTo:getId() == ITEM_STORE_INBOX) then
+			self:sendCancelMessage(RETURNVALUE_CONTAINERNOTENOUGHROOM)
+			return false
+		end
+	end
+
 	-- No move items with actionID 8000
 	if item:getActionId() == NOT_MOVEABLE_ACTION then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
@@ -119,30 +144,12 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		end
 	end
 
-	-- Store Inbox
-	local containerIdFrom = fromPosition.y - 64
-	local containerFrom = self:getContainerById(containerIdFrom)
-	if (containerFrom) then
-		if (containerFrom:getId() == ITEM_STORE_INBOX and toPosition.y >= 1 and toPosition.y <= 11 and toPosition.y ~= 3) then
-			self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-			return false
-		end
-	end
-
-	local containerTo = self:getContainerById(toPosition.y-64)
-	if (containerTo) then
-		if (containerTo:getId() == ITEM_STORE_INBOX) then
-			self:sendCancelMessage(RETURNVALUE_CONTAINERNOTENOUGHROOM)
-			return false
-		end
-	end
-
 	-- Reward System
 	if toPosition.x == CONTAINER_POSITION then
 		local containerId = toPosition.y - 64
 		local container = self:getContainerById(containerId)
 		if not container then
-			return true 
+			return true
 		end
 
 		-- Do not let the player insert items into either the Reward Container or the Reward Chest
@@ -168,6 +175,42 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		return false
 	end
 
+	-- Players cannot throw items on reward chest
+	local tile = Tile(toPosition)
+	if tile and tile:getItemById(ITEM_REWARD_CHEST) then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		self:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+
+	-- Players cannot throw items on teleports
+	if blockTeleportTrashing and toPosition.x ~= CONTAINER_POSITION then
+		local thing = Tile(toPosition):getItemByType(ITEM_TYPE_TELEPORT)
+		if thing then
+			self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+			self:getPosition():sendMagicEffect(CONST_ME_POFF)
+			return false
+		end
+	end
+
+	--[[-- Do not stop trying this test
+	-- No move parcel very heavy
+	if item:getWeight() > 90000 and item:getId() == ITEM_PARCEL then 
+		self:sendCancelMessage('YOU CANNOT MOVE PARCELS TOO HEAVY.')
+		return false 
+	end
+
+	-- No move if item count > 26 items
+	if tile and tile:getItemCount() > 26 then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+
+	if tile and tile:getItemById(370) then -- Trapdoor
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		self:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end ]]
 	return true
 end
 

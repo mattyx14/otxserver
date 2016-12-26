@@ -1,3 +1,7 @@
+-- No move items with actionID 8000
+-- Players cannot throw items on teleports if set to true
+local blockTeleportTrashing = true
+
 function Player:onLook(thing, position, distance)
 	local description = "You see " .. thing:getDescription(distance)
 	if self:getGroup():getAccess() then
@@ -120,7 +124,7 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		local containerId = toPosition.y - 64
 		local container = self:getContainerById(containerId)
 		if not container then
-			return true 
+			return true
 		end
 
 		-- Do not let the player insert items into either the Reward Container or the Reward Chest
@@ -146,6 +150,42 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		return false
 	end
 
+	-- Players cannot throw items on reward chest
+	local tile = Tile(toPosition)
+	if tile and tile:getItemById(ITEM_REWARD_CHEST) then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		self:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+
+	-- Players cannot throw items on teleports
+	if blockTeleportTrashing and toPosition.x ~= CONTAINER_POSITION then
+		local thing = Tile(toPosition):getItemByType(ITEM_TYPE_TELEPORT)
+		if thing then
+			self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+			self:getPosition():sendMagicEffect(CONST_ME_POFF)
+			return false
+		end
+	end
+
+	--[[-- Do not stop trying this test
+	-- No move parcel very heavy
+	if item:getWeight() > 90000 and item:getId() == ITEM_PARCEL then 
+		self:sendCancelMessage('YOU CANNOT MOVE PARCELS TOO HEAVY.')
+		return false 
+	end
+
+	-- No move if item count > 26 items
+	if tile and tile:getItemCount() > 26 then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+
+	if tile and tile:getItemById(370) then -- Trapdoor
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		self:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end ]]
 	return true
 end
 
@@ -172,6 +212,33 @@ local soulCondition = Condition(CONDITION_SOUL, CONDITIONID_DEFAULT)
 soulCondition:setTicks(4 * 60 * 1000)
 soulCondition:setParameter(CONDITION_PARAM_SOULGAIN, 1)
 
+local function useStamina(player)
+	local staminaMinutes = player:getStamina()
+	if staminaMinutes == 0 then
+		return
+	end
+
+	local playerId = player:getId()
+	local currentTime = os.time()
+	local timePassed = currentTime - nextUseStaminaTime[playerId]
+	if timePassed <= 0 then
+		return
+	end
+
+	if timePassed > 60 then
+		if staminaMinutes > 2 then
+			staminaMinutes = staminaMinutes - 2
+		else
+			staminaMinutes = 0
+		end
+		nextUseStaminaTime[playerId] = currentTime + 120
+	else
+		staminaMinutes = staminaMinutes - 1
+		nextUseStaminaTime[playerId] = currentTime + 60
+	end
+	player:setStamina(staminaMinutes)
+end
+
 function Player:onGainExperience(source, exp, rawExp)
 	if not source or source:isPlayer() then
 		return exp
@@ -186,6 +253,18 @@ function Player:onGainExperience(source, exp, rawExp)
 
 	-- Apply experience stage multiplier
 	exp = exp * Game.getExperienceStage(self:getLevel())
+
+	-- Stamina modifier
+	if configManager.getBoolean(configKeys.STAMINA_SYSTEM) then
+		useStamina(self)
+
+		local staminaMinutes = self:getStamina()
+		if staminaMinutes > 2400 and self:isPremium() then
+			exp = exp * 1.5
+		elseif staminaMinutes <= 840 then
+			exp = exp * 0.5
+		end
+	end
 
 	return exp
 end
