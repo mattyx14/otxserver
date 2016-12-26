@@ -58,7 +58,6 @@
 ]
 
 [ OTX Server 2.8 :: Version "LEZICK"
-	- Rewrite OutfitWindow for 7.x
 	- Dropped version 2.7 and changed to 2.8
 ]
 
