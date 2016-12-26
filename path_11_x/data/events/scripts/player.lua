@@ -86,16 +86,13 @@ function Player:onLookInShop(itemType, count)
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	-- No move items with actionID 8000
 	if item:getActionId() == NOT_MOVEABLE_ACTION then
-		self:sendCancelMessage('Sorry, not possible.')
-		return false
-	end
-	
-	if toPosition.x == CONTAINER_POSITION and toCylinder and toCylinder:getId() == 26052 then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
 	end
 
+	-- Check two-handed weapons 
 	if toPosition.x ~= CONTAINER_POSITION then
 		return true
 	end
@@ -122,6 +119,25 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		end
 	end
 
+	-- Store Inbox
+	local containerIdFrom = fromPosition.y - 64
+	local containerFrom = self:getContainerById(containerIdFrom)
+	if (containerFrom) then
+		if (containerFrom:getId() == ITEM_STORE_INBOX and toPosition.y >= 1 and toPosition.y <= 11 and toPosition.y ~= 3) then
+			self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+			return false
+		end
+	end
+
+	local containerTo = self:getContainerById(toPosition.y-64)
+	if (containerTo) then
+		if (containerTo:getId() == ITEM_STORE_INBOX) then
+			self:sendCancelMessage(RETURNVALUE_CONTAINERNOTENOUGHROOM)
+			return false
+		end
+	end
+
+	-- Reward System
 	if toPosition.x == CONTAINER_POSITION then
 		local containerId = toPosition.y - 64
 		local container = self:getContainerById(containerId)
@@ -132,15 +148,15 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		-- Do not let the player insert items into either the Reward Container or the Reward Chest
 		local itemId = container:getId()
 		if itemId == ITEM_REWARD_CONTAINER or itemId == ITEM_REWARD_CHEST then
-			self:sendCancelMessage('Sorry, not possible.')
+			self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 			return false
 		end
 
 		-- The player also shouldn't be able to insert items into the boss corpse
 		local tile = Tile(container:getPosition())
-		for _, item in ipairs(tile:getItems()) do
+		for _, item in ipairs(tile:getItems() or { }) do
 			if item:getAttribute(ITEM_ATTRIBUTE_CORPSEOWNER) == 2^31 - 1 and item:getName() == container:getName() then
-				self:sendCancelMessage('Sorry, not possible.')
+				self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 				return false
 			end
 		end
@@ -148,7 +164,7 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 
 	-- Do not let the player move the boss corpse.
 	if item:getAttribute(ITEM_ATTRIBUTE_CORPSEOWNER) == 2^31 - 1 then
-		self:sendCancelMessage('Sorry, not possible.')
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
 	end
 
