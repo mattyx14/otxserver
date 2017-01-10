@@ -89,7 +89,7 @@ class Events
 		void eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_t& tries);
 
 		// Custom
-		bool eventMonsterOnSpawn(Monster* monster, const Position& position, bool isStartup);
+		void eventMonsterOnSpawn(Monster* monster, const Position& position);
 
 	private:
 		LuaScriptInterface scriptInterface;

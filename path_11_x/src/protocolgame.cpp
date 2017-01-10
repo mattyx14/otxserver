@@ -1260,7 +1260,11 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 {
 	NetworkMessage msg;
 	msg.addByte(0x7B);
-	msg.add<uint64_t>(player->getMoney() + player->getBankBalance());
+	if (player->isPremium()) {
+		msg.add<uint64_t>(player->getMoney() + player->getBankBalance());
+	} else {
+		msg.add<uint64_t>(player->getMoney());
+	}
 
 	std::map<uint16_t, uint32_t> saleMap;
 

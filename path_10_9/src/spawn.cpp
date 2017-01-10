@@ -32,6 +32,7 @@ extern Events* g_events;
 extern ConfigManager g_config;
 extern Monsters g_monsters;
 extern Game g_game;
+extern Events* g_events;
 
 static constexpr int32_t MINSPAWN_INTERVAL = 1000;
 
@@ -225,6 +226,7 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 
 	spawnedMap.insert(spawned_pair(spawnId, monster));
 	spawnMap[spawnId].lastSpawn = OTSYS_TIME();
+	g_events->eventMonsterOnSpawn(monster, pos);
 	return true;
 }
 

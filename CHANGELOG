@@ -76,6 +76,7 @@
 		How use all configs from TFS / OTX "WIP" - /configHelp
 	- Fix MoveItem and storeInbox on 10.x // 11 (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
+	- Fix features from: Xeraphus(Monster:onSpawn) - Mkalo(Bank Account of Premium Accounts) - (brunominervino)
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
