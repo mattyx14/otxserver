@@ -19,10 +19,10 @@
 			Malucooo
 
 		Special Thanks(s)
-			The Forgotten Team
+			The Forgotten Team = TFT
 				https://github.com/otland/
 
-			The Forgotten Contributors
+			The Forgotten Contributors = TFC
 				https://github.com/otland/forgottenserver/graphs/contributors/
 
 			OpenTibia
@@ -72,18 +72,31 @@
 
 [ OTX Server 3.9 :: Version " VANXI "
 	- Added help /docs/
-		How use internal functions from TFS / OTX "WIP" - /internalFunction
-		How use all configs from TFS / OTX "WIP" - /configHelp
+		How use internal functions from TFT / OTX "WIP" - /internalFunction
+		How use all configs from TFT / OTX "WIP" - /configHelp
+	- Added condition type immunity check (TFC)
 	- Fix MoveItem and storeInbox on 10.x // 11 (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
 	- Fix features from: Xeraphus(Monster:onSpawn) - Mkalo(Bank Account of Premium Accounts) - (brunominervino)
+	- Fix blood splashes on pz tiles (TFC)
+	- Fix Disallow setting mounts for unsupported outfits(TFT)
+	- Fix onStep callback return value matter (TFC)
+	- Fix allowfaruse (TFC)
+	- Move findPerson to Lua (TFC)
+	- Move doSet*Outfit functions to Lua (TFC)
+	- Move house management function to Lua scripts (TFT)
+	- Improve code and cleanups (TFT)
+	- Remove player from attack list upon death (TFC)
+	- Updated spells (TFC)
+	- Updated enchantingScript (TFC)
+	- Updated monsters (TFT)
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
 	- Added help /docs/
 		How use commands - /commandsList
-		How use internal functions from TFS / OTX "WIP" - /internalFunction
-		How use all configs from TFS / OTX "WIP" - /configHelp
+		How use internal functions from TFT / OTX "WIP" - /internalFunction
+		How use all configs from TFT / OTX "WIP" - /configHelp
 	- Added support for 8.54/58
 	- Added POSIX signal handling (djarek)
 	- Added UnjustPanel Kills (brunominervino)
@@ -97,7 +110,7 @@
 	- Remove dllFiles from the datapack
 	- Remove no used commands
 	- Remove duplicate actions
-	- Remove getPlayerInfo (TFS)
+	- Remove getPlayerInfo (TFT)
 	- Replace chaseMode enumeration to bool (wgrriffel)
 	- Revert playerMaxSpeed on 8.6
 	- Update ipban (vankk)

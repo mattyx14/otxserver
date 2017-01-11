@@ -19,12 +19,6 @@ local function getMonthString(m)
 end
 
 function onSay(player, words, param)
-	if player:getExhaustion(1000) <= 0 then
-		player:setExhaustion(1000, 2)
-	else
-		print('You\'re exhausted for: '..player:getExhaustion(1000)..' seconds.')
-	end
-
 	local resultId = db.storeQuery("SELECT `id`, `name` FROM `players` WHERE `name` = " .. db.escapeString(param))
 	if resultId ~= false then
 		local targetGUID = result.getDataInt(resultId, "id")

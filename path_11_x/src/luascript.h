@@ -147,9 +147,9 @@ class ScriptEnvironment
 		void removeItemByUID(uint32_t uid);
 
 	private:
-		typedef std::vector<const LuaVariant*> VariantVector;
-		typedef std::map<uint32_t, int32_t> StorageMap;
-		typedef std::map<uint32_t, DBResult_ptr> DBResultMap;
+		using VariantVector = std::vector<const LuaVariant*>;
+		using StorageMap = std::map<uint32_t, int32_t>;
+		using DBResultMap = std::map<uint32_t, DBResult_ptr>;
 
 		LuaScriptInterface* interface;
 
@@ -461,10 +461,6 @@ class LuaScriptInterface
 		static int luaDoTargetCombatDispel(lua_State* L);
 
 		static int luaDoChallengeCreature(lua_State* L);
-
-		static int luaSetCreatureOutfit(lua_State* L);
-		static int luaSetMonsterOutfit(lua_State* L);
-		static int luaSetItemOutfit(lua_State* L);
 
 		static int luaDebugPrint(lua_State* L);
 		static int luaIsInArray(lua_State* L);
@@ -971,7 +967,10 @@ class LuaScriptInterface
 		static int luaPlayerIsPzLocked(lua_State* L);
 
 		static int luaPlayerGetClient(lua_State* L);
+
 		static int luaPlayerGetHouse(lua_State* L);
+		static int luaPlayerSendHouseWindow(lua_State* L);
+		static int luaPlayerSetEditHouse(lua_State* L);
 
 		static int luaPlayerSetGhostMode(lua_State* L);
 
@@ -1104,12 +1103,16 @@ class LuaScriptInterface
 
 		static int luaHouseGetDoors(lua_State* L);
 		static int luaHouseGetDoorCount(lua_State* L);
+		static int luaHouseGetDoorIdByPosition(lua_State* L);
 
 		static int luaHouseGetTiles(lua_State* L);
 		static int luaHouseGetTileCount(lua_State* L);
 
+		static int luaHouseCanEditAccessList(lua_State* L);
 		static int luaHouseGetAccessList(lua_State* L);
 		static int luaHouseSetAccessList(lua_State* L);
+
+		static int luaHouseKickPlayer(lua_State* L);
 
 		// ItemType
 		static int luaItemTypeCreate(lua_State* L);

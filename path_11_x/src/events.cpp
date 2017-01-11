@@ -733,6 +733,7 @@ void Events::eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_
 // Monster
 void Events::eventMonsterOnSpawn(Monster* monster, const Position& position)
 {
+	// Monster:onSpawn(position) or Monster.onSpawn(self, position)
 	if (info.monsterOnSpawn == -1) {
 		return;
 	}

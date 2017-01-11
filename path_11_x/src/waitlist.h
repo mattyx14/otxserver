@@ -30,15 +30,15 @@ struct Wait {
 	uint32_t playerGUID;
 };
 
-typedef std::list<Wait> WaitList;
-typedef WaitList::iterator WaitListIterator;
+using WaitList = std::list<Wait>;
+using WaitListIterator = WaitList::iterator;
 
 class WaitingList
 {
 	public:
-		static WaitingList* getInstance() {
+		static WaitingList& getInstance() {
 			static WaitingList waitingList;
-			return &waitingList;
+			return waitingList;
 		}
 
 		bool clientLogin(const Player* player);

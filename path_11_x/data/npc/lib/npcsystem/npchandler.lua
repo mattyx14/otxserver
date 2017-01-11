@@ -59,7 +59,6 @@ if NpcHandler == nil then
 	TAG_ITEMCOUNT = "|ITEMCOUNT|"
 	TAG_TOTALCOST = "|TOTALCOST|"
 	TAG_ITEMNAME = "|ITEMNAME|"
-	TAG_TRAVELCOST = "|TRAVELCOST|"
 
 	NpcHandler = {
 		keywordHandler = nil,

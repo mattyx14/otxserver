@@ -401,11 +401,11 @@ void ProtocolGameBase::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 					++count;
 				}
 
-				if (++count == 10) {
-					return;
-				}
+			if (++count == 10) {
+				return;
 			}
 		}
+	}
 	} else {
 		const CreatureVector *creatures = tile->getCreatures();
 		if (creatures) {
@@ -729,7 +729,10 @@ void ProtocolGameBase::sendBasicData()
 		msg.add<uint32_t>(0);
 	}
 	msg.addByte(player->getVocation()->getClientId());
-	msg.add<uint16_t>(0x00);
+	msg.add<uint16_t>(0xFF); // number of known spells
+	for (uint8_t spellId = 0x00; spellId < 0xFF; spellId++) {
+		msg.addByte(spellId);
+	}
 	writeToOutputBuffer(msg);
 }
 

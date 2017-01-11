@@ -37,7 +37,7 @@ class Connection;
 class Quest;
 class ProtocolGame;
 class ProtocolSpectator;
-typedef std::shared_ptr<ProtocolGame> ProtocolGame_ptr;
+using ProtocolGame_ptr = std::shared_ptr<ProtocolGame>;
 
 extern Game g_game;
 

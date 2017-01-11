@@ -1,6 +1,5 @@
 local increasing = {[416] = 417, [426] = 425, [446] = 447, [3216] = 3217, [3202] = 3215, [11062] = 11063}
 local decreasing = {[417] = 416, [425] = 426, [447] = 446, [3217] = 3216, [3215] = 3202, [11063] = 11062}
-local maxLevel = 1000
 
 function onStepIn(creature, item, position, fromPosition)
 	if not increasing[item.itemid] then
@@ -14,7 +13,7 @@ function onStepIn(creature, item, position, fromPosition)
 
 	item:transform(increasing[item.itemid])
 
-	if item.actionid >= 1000 and item.actionid - 1000 <= maxLevel then
+	if item.actionid >= 1000 then
 		if player:getLevel() < item.actionid - 1000 then
 			player:teleportTo(fromPosition, false)
 			position:sendMagicEffect(CONST_ME_MAGIC_BLUE)
@@ -28,10 +27,7 @@ function onStepIn(creature, item, position, fromPosition)
 		lookPosition:getNextPosition(player:getDirection())
 		local depotItem = Tile(lookPosition):getItemByType(ITEM_TYPE_DEPOT)
 		if depotItem ~= nil then
-			local depotItems = 0
-			for i = 1, 17 do
-				depotItems = depotItems + player:getDepotChest(i, true):getItemHoldingCount()
-			end
+			local depotItems = player:getDepotChest(getDepotId(depotItem:getUniqueId()), true):getItemHoldingCount()
 			player:sendTextMessage(MESSAGE_STATUS_DEFAULT, "Your depot contains " .. depotItems .. " item" .. (depotItems > 1 and "s." or "."))
 			return true
 		end

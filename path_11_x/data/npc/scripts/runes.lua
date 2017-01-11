@@ -2,18 +2,10 @@ local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
-function onCreatureAppear(cid)
-	npcHandler:onCreatureAppear(cid)
-end
-function onCreatureDisappear(cid)
-	npcHandler:onCreatureDisappear(cid)
-end
-function onCreatureSay(cid, type, msg)
-	npcHandler:onCreatureSay(cid, type, msg)
-end
-function onThink()
-	npcHandler:onThink()
-end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
 local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
@@ -31,9 +23,6 @@ shopModule:addBuyableItem({'great mana'}, 7590, 120, 1, 'great mana potion')
 shopModule:addBuyableItem({'great spirit'}, 8472, 190, 1, 'great spirit potion')
 shopModule:addBuyableItem({'ultimate health'}, 8473, 310, 1, 'ultimate health potion')
 shopModule:addBuyableItem({'antidote potion'}, 8474, 50, 1, 'antidote potion')
-shopModule:addBuyableItem({'ultimate mana potion'}, 26029, 250, 1, 'ultimate mana potion')
-shopModule:addBuyableItem({'ultimate spirit potion'}, 26030, 250, 1, 'ultimate spirit potion')
-shopModule:addBuyableItem({'supreme health potion'}, 26031, 500, 1, 'supreme health potion')
 
 shopModule:addSellableItem({'normal potion flask', 'normal flask'}, 7636, 5, 'empty small potion flask')
 shopModule:addSellableItem({'strong potion flask', 'strong flask'}, 7634, 10, 'empty strong potion flask')
@@ -109,7 +98,6 @@ function creatureSayCallback(cid, type, msg)
 	end
 
 	local player = Player(cid)
-	local vocationId = player:getVocation():getId()
 	local items = {
 		[1] = 2190,
 		[2] = 2182,
@@ -118,8 +106,9 @@ function creatureSayCallback(cid, type, msg)
 	}
 
 	if msgcontains(msg, 'first rod') or msgcontains(msg, 'first wand') then
+		local vocationId = player:getVocation():getId()
 		if isInArray({1, 2, 5, 6}, vocationId) then
-			if player:getStorageValue(3050) == -1 then
+			if player:getStorageValue(30002) == -1 then
 				selfSay('So you ask me for a {' .. ItemType(items[vocationId]):getName() .. '} to begin your advanture?', cid)
 				npcHandler.topic[cid] = 1
 			else
@@ -131,22 +120,13 @@ function creatureSayCallback(cid, type, msg)
 	elseif msgcontains(msg, 'yes') then
 		if npcHandler.topic[cid] == 1 then
 			player:addItem(items[vocationId], 1)
-			player:setStorageValue(3050, 1)
 			selfSay('Here you are young adept, take care yourself.', cid)
+			player:setStorageValue(30002, 1)
 		end
 		npcHandler.topic[cid] = 0
 	elseif msgcontains(msg, 'no') and npcHandler.topic[cid] == 1 then
 		selfSay('Ok then.', cid)
 		npcHandler.topic[cid] = 0
-	elseif isInArray({"vial", "ticket", "bonus"}, msg) then
-		if player:removeItem(7634, 100) or player:removeItem(7635, 100) or player:removeItem(7636, 100) then
-			player:addItem(5957, 1)
-			npcHandler:say("Alright, thank you very much! Here is your lottery ticket, good luck. Would you like to deposit more vials that way?", cid)
-			npcHandler.topic[cid] = 0
-		else
-			npcHandler:say("Sorry, but you don't have 100 empty flasks or vials of the SAME kind and thus don't qualify for the lottery. Would you like to deposit the vials you have as usual and receive 5 gold per vial?", cid)
-			npcHandler.topic[cid] = 0
-		end
 	end
 
 	return true

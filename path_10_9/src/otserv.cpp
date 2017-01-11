@@ -147,8 +147,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	std::cout << ">> Establishing database connection..." << std::flush;
 
-	Database* db = Database::getInstance();
-	if (!db->connect()) {
+	if (!Database::getInstance().connect()) {
 		startupErrorMessage("Failed to connect to database.");
 		return;
 	}
@@ -190,7 +189,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	}
 
 	std::cout << ">> Loading script systems" << std::endl;
-	if (!ScriptingManager::getInstance()->loadScriptSystems()) {
+	if (!ScriptingManager::getInstance().loadScriptSystems()) {
 		startupErrorMessage("Failed to load script systems");
 		return;
 	}
@@ -202,8 +201,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	}
 
 	std::cout << ">> Loading outfits" << std::endl;
-	Outfits* outfits = Outfits::getInstance();
-	if (!outfits->loadFromXml()) {
+	if (!Outfits::getInstance().loadFromXml()) {
 		startupErrorMessage("Unable to load outfits!");
 		return;
 	}
@@ -267,7 +265,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	g_game.map.houses.payHouses(rentPeriod);
 
 	IOMarket::checkExpiredOffers();
-	IOMarket::getInstance()->updateStatistics();
+	IOMarket::getInstance().updateStatistics();
 
 	std::cout << ">> Loaded all modules, server starting up..." << std::endl;
 
