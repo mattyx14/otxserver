@@ -5,7 +5,6 @@ branches:
     - master
 
 platform:
-  - Win32
   - x64
 
 configuration:
@@ -16,11 +15,14 @@ matrix:
   fast_finish: true
 
 environment:
-    BOOST_ROOT: C:\Libraries\boost_1_62_0
+  BOOST_ROOT: C:\Libraries\boost_1_62_0
 
 install:
-    - ps: if (-not (Test-Path tfs-sdk-3.2)) { Start-FileDownload https://static.otland.net/dl/tfs-sdk-3.2.zip; 7z x tfs-sdk-3.2.zip }
-    - set TFSSDKDir=%CD%\tfs-sdk-3.2
+  - ps: if (-not (Test-Path tfs-sdk-3.2)) { Start-FileDownload https://static.otland.net/dl/tfs-sdk-3.2.zip; 7z x tfs-sdk-3.2.zip }
+  - set TFSSDKDir=%CD%\tfs-sdk-3.2
 
 cache:
-    - tfs-sdk-3.2 -> appveyor.yml
+  - tfs-sdk-3.2 -> appveyor.yml
+
+artifacts:
+  - path: vc14\**\theforgottenserver.exe

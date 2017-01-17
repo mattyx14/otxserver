@@ -75,6 +75,8 @@
 		How use internal functions from TFT / OTX "WIP" - /internalFunction
 		How use all configs from TFT / OTX "WIP" - /configHelp
 	- Added condition type immunity check (TFC)
+	- Added spell methods to Lua (TFC)
+	- Added set NPCs to idle state when no player is in range (TFT)
 	- Fix MoveItem and storeInbox on 10.x // 11 (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
 	- Fix features from: Xeraphus(Monster:onSpawn) - Mkalo(Bank Account of Premium Accounts) - (brunominervino)
@@ -85,8 +87,10 @@
 	- Move findPerson to Lua (TFC)
 	- Move doSet*Outfit functions to Lua (TFC)
 	- Move house management function to Lua scripts (TFT)
+	- Move reload to talkactions (TFC)
 	- Improve code and cleanups (TFT)
 	- Remove player from attack list upon death (TFC)
+	- Remove support to clientVersion 11_ - aka10
 	- Updated spells (TFC)
 	- Updated enchantingScript (TFC)
 	- Updated monsters (TFT)

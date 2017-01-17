@@ -234,17 +234,11 @@ uint32_t Spells::getInstantSpellCount(const Player* player) const
 	return count;
 }
 
-InstantSpell* Spells::getInstantSpellByIndex(const Player* player, uint32_t index)
+InstantSpell* Spells::getInstantSpellById(uint32_t spellId)
 {
-	uint32_t count = 0;
-	for (const auto& it : instants) {
-		InstantSpell* instantSpell = it.second;
-		if (instantSpell->canCast(player)) {
-			if (count == index) {
-				return instantSpell;
-			}
-			++count;
-		}
+	auto it = std::next(instants.begin(), std::min<uint32_t>(spellId, instants.size()));
+	if (it != instants.end()) {
+		return it->second;
 	}
 	return nullptr;
 }
@@ -961,124 +955,126 @@ bool InstantSpell::configureEvent(const pugi::xml_node& node)
 }
 
 namespace {
-	bool SummonMonster(const InstantSpell* spell, Creature* creature, const std::string& param)
-	{
-		Player* player = creature->getPlayer();
-		if (!player) {
-			return false;
-		}
 
-		MonsterType* mType = g_monsters.getMonsterType(param);
-		if (!mType) {
+bool SummonMonster(const InstantSpell* spell, Creature* creature, const std::string& param)
+{
+	Player* player = creature->getPlayer();
+	if (!player) {
+		return false;
+	}
+
+	MonsterType* mType = g_monsters.getMonsterType(param);
+	if (!mType) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (!player->hasFlag(PlayerFlag_CanSummonAll)) {
+		if (!mType->info.isSummonable) {
 			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 			return false;
 		}
 
-		if (!player->hasFlag(PlayerFlag_CanSummonAll)) {
-			if (!mType->info.isSummonable) {
-				player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-				return false;
-			}
-
-			if (player->getMana() < mType->info.manaCost) {
-				player->sendCancelMessage(RETURNVALUE_NOTENOUGHMANA);
-				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-				return false;
-			}
-
-			if (player->getSummonCount() >= 2) {
-				player->sendCancelMessage("You cannot summon more creatures.");
-				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-				return false;
-			}
-		}
-
-		Monster* monster = Monster::createMonster(param);
-		if (!monster) {
-			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		if (player->getMana() < mType->info.manaCost) {
+			player->sendCancelMessage(RETURNVALUE_NOTENOUGHMANA);
 			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 			return false;
 		}
 
-		// Place the monster
-		creature->addSummon(monster);
-
-		if (!g_game.placeCreature(monster, creature->getPosition(), true)) {
-			creature->removeSummon(monster);
-			player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
+		if (player->getSummonCount() >= 2) {
+			player->sendCancelMessage("You cannot summon more creatures.");
 			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 			return false;
 		}
-
-		Spell::postCastSpell(player, mType->info.manaCost, spell->getSoulCost());
-		g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_BLUE);
-		g_game.addMagicEffect(monster->getPosition(), CONST_ME_TELEPORT);
-		return true;
 	}
 
-	bool Levitate(const InstantSpell*, Creature* creature, const std::string& param)
-	{
-		Player* player = creature->getPlayer();
-		if (!player) {
-			return false;
-		}
+	Monster* monster = Monster::createMonster(param);
+	if (!monster) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
 
-		const Position& currentPos = creature->getPosition();
-		const Position& destPos = Spells::getCasterPosition(creature, creature->getDirection());
+	// Place the monster
+	creature->addSummon(monster);
 
-		ReturnValue ret = RETURNVALUE_NOTPOSSIBLE;
+	if (!g_game.placeCreature(monster, creature->getPosition(), true)) {
+		creature->removeSummon(monster);
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
 
-		if (strcasecmp(param.c_str(), "up") == 0) {
-			if (currentPos.z != 8) {
-				Tile* tmpTile = g_game.map.getTile(currentPos.x, currentPos.y, currentPos.getZ() - 1);
-				if (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasFlag(TILESTATE_IMMOVABLEBLOCKSOLID))) {
-					tmpTile = g_game.map.getTile(destPos.x, destPos.y, destPos.getZ() - 1);
-					if (tmpTile && tmpTile->getGround() && !tmpTile->hasFlag(TILESTATE_IMMOVABLEBLOCKSOLID | TILESTATE_FLOORCHANGE)) {
-						ret = g_game.internalMoveCreature(*player, *tmpTile, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE);
-					}
-				}
-			}
-		} else if (strcasecmp(param.c_str(), "down") == 0) {
-			if (currentPos.z != 7) {
-				Tile* tmpTile = g_game.map.getTile(destPos);
-				if (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasFlag(TILESTATE_BLOCKSOLID))) {
-					tmpTile = g_game.map.getTile(destPos.x, destPos.y, destPos.z + 1);
-					if (tmpTile && tmpTile->getGround() && !tmpTile->hasFlag(TILESTATE_IMMOVABLEBLOCKSOLID | TILESTATE_FLOORCHANGE)) {
-						ret = g_game.internalMoveCreature(*player, *tmpTile, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE);
-					}
+	Spell::postCastSpell(player, mType->info.manaCost, spell->getSoulCost());
+	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_BLUE);
+	g_game.addMagicEffect(monster->getPosition(), CONST_ME_TELEPORT);
+	return true;
+}
+
+bool Levitate(const InstantSpell*, Creature* creature, const std::string& param)
+{
+	Player* player = creature->getPlayer();
+	if (!player) {
+		return false;
+	}
+
+	const Position& currentPos = creature->getPosition();
+	const Position& destPos = Spells::getCasterPosition(creature, creature->getDirection());
+
+	ReturnValue ret = RETURNVALUE_NOTPOSSIBLE;
+
+	if (strcasecmp(param.c_str(), "up") == 0) {
+		if (currentPos.z != 8) {
+			Tile* tmpTile = g_game.map.getTile(currentPos.x, currentPos.y, currentPos.getZ() - 1);
+			if (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasFlag(TILESTATE_IMMOVABLEBLOCKSOLID))) {
+				tmpTile = g_game.map.getTile(destPos.x, destPos.y, destPos.getZ() - 1);
+				if (tmpTile && tmpTile->getGround() && !tmpTile->hasFlag(TILESTATE_IMMOVABLEBLOCKSOLID | TILESTATE_FLOORCHANGE)) {
+					ret = g_game.internalMoveCreature(*player, *tmpTile, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE);
 				}
 			}
 		}
-
-		if (ret != RETURNVALUE_NOERROR) {
-			player->sendCancelMessage(ret);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
+	} else if (strcasecmp(param.c_str(), "down") == 0) {
+		if (currentPos.z != 7) {
+			Tile* tmpTile = g_game.map.getTile(destPos);
+			if (tmpTile == nullptr || (tmpTile->getGround() == nullptr && !tmpTile->hasFlag(TILESTATE_BLOCKSOLID))) {
+				tmpTile = g_game.map.getTile(destPos.x, destPos.y, destPos.z + 1);
+				if (tmpTile && tmpTile->getGround() && !tmpTile->hasFlag(TILESTATE_IMMOVABLEBLOCKSOLID | TILESTATE_FLOORCHANGE)) {
+					ret = g_game.internalMoveCreature(*player, *tmpTile, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE);
+				}
+			}
 		}
-
-		g_game.addMagicEffect(player->getPosition(), CONST_ME_TELEPORT);
-		return true;
 	}
 
-	bool Illusion(const InstantSpell*, Creature* creature, const std::string& param)
-	{
-		Player* player = creature->getPlayer();
-		if (!player) {
-			return false;
-		}
-
-		ReturnValue ret = Spell::CreateIllusion(creature, param, 180000);
-		if (ret != RETURNVALUE_NOERROR) {
-			player->sendCancelMessage(ret);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
-
-		g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
-		return true;
+	if (ret != RETURNVALUE_NOERROR) {
+		player->sendCancelMessage(ret);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
 	}
+
+	g_game.addMagicEffect(player->getPosition(), CONST_ME_TELEPORT);
+	return true;
+}
+
+bool Illusion(const InstantSpell*, Creature* creature, const std::string& param)
+{
+	Player* player = creature->getPlayer();
+	if (!player) {
+		return false;
+	}
+
+	ReturnValue ret = Spell::CreateIllusion(creature, param, 180000);
+	if (ret != RETURNVALUE_NOERROR) {
+		player->sendCancelMessage(ret);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
+	return true;
+}
+
 }
 
 bool InstantSpell::loadFunction(const pugi::xml_attribute& attr)
@@ -1475,79 +1471,81 @@ bool RuneSpell::configureEvent(const pugi::xml_node& node)
 }
 
 namespace {
-	bool RuneIllusion(const RuneSpell*, Player* player, const Position& posTo)
-	{
-		Thing* thing = g_game.internalGetThing(player, posTo, 0, 0, STACKPOS_MOVE);
-		if (!thing) {
-			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
 
-		Item* illusionItem = thing->getItem();
-		if (!illusionItem || !illusionItem->isMoveable()) {
-			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
-
-		ReturnValue ret = Spell::CreateIllusion(player, illusionItem->getID(), 200000);
-		if (ret != RETURNVALUE_NOERROR) {
-			player->sendCancelMessage(ret);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
-
-		g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
-		return true;
+bool RuneIllusion(const RuneSpell*, Player* player, const Position& posTo)
+{
+	Thing* thing = g_game.internalGetThing(player, posTo, 0, 0, STACKPOS_MOVE);
+	if (!thing) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
 	}
 
-	bool Convince(const RuneSpell* spell, Player* player, const Position& posTo)
-	{
-		if (!player->hasFlag(PlayerFlag_CanConvinceAll)) {
-			if (player->getSummonCount() >= 2) {
-				player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-				return false;
-			}
-		}
-
-		Thing* thing = g_game.internalGetThing(player, posTo, 0, 0, STACKPOS_LOOK);
-		if (!thing) {
-			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
-
-		Creature* convinceCreature = thing->getCreature();
-		if (!convinceCreature) {
-			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
-
-		uint32_t manaCost = 0;
-		if (convinceCreature->getMonster()) {
-			manaCost = convinceCreature->getMonster()->getManaCost();
-		}
-
-		if (!player->hasFlag(PlayerFlag_HasInfiniteMana) && player->getMana() < manaCost) {
-			player->sendCancelMessage(RETURNVALUE_NOTENOUGHMANA);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
-
-		if (!convinceCreature->convinceCreature(player)) {
-			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-			return false;
-		}
-
-		Spell::postCastSpell(player, manaCost, spell->getSoulCost());
-		g_game.updateCreatureType(convinceCreature);
-		g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
-		return true;
+	Item* illusionItem = thing->getItem();
+	if (!illusionItem || !illusionItem->isMoveable()) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
 	}
+
+	ReturnValue ret = Spell::CreateIllusion(player, illusionItem->getID(), 200000);
+	if (ret != RETURNVALUE_NOERROR) {
+		player->sendCancelMessage(ret);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
+	return true;
+}
+
+bool Convince(const RuneSpell* spell, Player* player, const Position& posTo)
+{
+	if (!player->hasFlag(PlayerFlag_CanConvinceAll)) {
+		if (player->getSummonCount() >= 2) {
+			player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+			return false;
+		}
+	}
+
+	Thing* thing = g_game.internalGetThing(player, posTo, 0, 0, STACKPOS_LOOK);
+	if (!thing) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	Creature* convinceCreature = thing->getCreature();
+	if (!convinceCreature) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	uint32_t manaCost = 0;
+	if (convinceCreature->getMonster()) {
+		manaCost = convinceCreature->getMonster()->getManaCost();
+	}
+
+	if (!player->hasFlag(PlayerFlag_HasInfiniteMana) && player->getMana() < manaCost) {
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHMANA);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (!convinceCreature->convinceCreature(player)) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	Spell::postCastSpell(player, manaCost, spell->getSoulCost());
+	g_game.updateCreatureType(convinceCreature);
+	g_game.addMagicEffect(player->getPosition(), CONST_ME_MAGIC_RED);
+	return true;
+}
+
 }
 
 bool RuneSpell::loadFunction(const pugi::xml_attribute& attr)

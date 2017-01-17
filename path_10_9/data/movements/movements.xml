@@ -1174,4 +1174,9 @@
 		<vocation name="Elder Druid" showInDescription="0" />
 	</movevent>
 	<movevent event="DeEquip" itemid="22424" slot="shield" function="onDeEquipItem" />
+
+	<!-- OTX Systems -->
+		<!-- Modified Scripts from TFS
+
+		-->
 </movements>

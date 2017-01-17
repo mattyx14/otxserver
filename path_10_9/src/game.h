@@ -501,6 +501,8 @@ class Game
 			commands.reload();
 		}
 
+		bool reload(ReloadTypes_t reloadType);
+
 		bool hasEffect(uint8_t effectId);
 		bool hasDistanceEffect(uint8_t effectId);
 
