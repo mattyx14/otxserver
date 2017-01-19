@@ -46,6 +46,7 @@ class Combat;
 class Condition;
 class Npc;
 class Monster;
+class InstantSpell;
 
 enum {
 	EVENT_ID_LOADING = 1,
@@ -367,6 +368,7 @@ class LuaScriptInterface
 
 		// Push
 		static void pushBoolean(lua_State* L, bool value);
+		static void pushInstantSpell(lua_State* L, const InstantSpell& spell);
 		static void pushPosition(lua_State* L, const Position& position, int32_t stackpos = 0);
 		static void pushOutfit(lua_State* L, const Outfit_t& outfit);
 
@@ -544,6 +546,8 @@ class LuaScriptInterface
 
 		static int luaGameStartRaid(lua_State* L);
 
+		static int luaGameGetClientVersion(lua_State* L);
+
 		static int luaGameReload(lua_State* L);
 
 		static int luaGameGetItemByClientId(lua_State* L);
@@ -699,11 +703,12 @@ class LuaScriptInterface
 		static int luaItemGetAttribute(lua_State* L);
 		static int luaItemSetAttribute(lua_State* L);
 		static int luaItemRemoveAttribute(lua_State* L);
-		static int luaItemSerializeAttributes(lua_State* L);
 
 		static int luaItemMoveTo(lua_State* L);
 		static int luaItemTransform(lua_State* L);
 		static int luaItemDecay(lua_State* L);
+
+		static int luaItemSerializeAttributes(lua_State* L);
 		static int luaItemMoveToSlot(lua_State* L);
 
 		static int luaItemGetDescription(lua_State* L);
@@ -742,6 +747,8 @@ class LuaScriptInterface
 		static int luaCreatureIsCreature(lua_State* L);
 		static int luaCreatureIsInGhostMode(lua_State* L);
 		static int luaCreatureIsHealthHidden(lua_State* L);
+
+		static int luaCreatureIsImmune(lua_State* L);
 
 		static int luaCreatureCanSee(lua_State* L);
 		static int luaCreatureCanSeeCreature(lua_State* L);
@@ -977,10 +984,12 @@ class LuaScriptInterface
 		static int luaPlayerGetContainerById(lua_State* L);
 		static int luaPlayerGetContainerIndex(lua_State* L);
 
-		static int luaPlayerGetInstantSpellCount(lua_State* L);
+		static int luaPlayerGetInstantSpells(lua_State* L);
 		static int luaPlayerCanCast(lua_State* L);
 
+		static int luaPlayerHasChaseMode(lua_State* L);
 		static int luaPlayerHasSecureMode(lua_State* L);
+		static int luaPlayerGetFightMode(lua_State* L);
 
 		static int32_t luaPlayerStartLiveCast(lua_State* L);
 		static int32_t luaPlayerStopLiveCast(lua_State* L);
@@ -1159,6 +1168,7 @@ class LuaScriptInterface
 		static int luaItemTypeGetDestroyId(lua_State* L);
 		static int luaItemTypeGetDecayId(lua_State* L);
 		static int luaItemTypeGetRequiredLevel(lua_State* L);
+
 		static int luaItemTypeGetSpeed(lua_State* L);
 		static int luaItemTypeGetBaseSpeed(lua_State* L);
 		static int luaItemTypeGetDecayTime(lua_State* L);
@@ -1208,9 +1218,10 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsSummonable(lua_State* L);
 		static int luaMonsterTypeIsIllusionable(lua_State* L);
 		static int luaMonsterTypeIsHostile(lua_State* L);
-		static int luaMonsterTypeIsPassive(lua_State* L);
 		static int luaMonsterTypeIsPushable(lua_State* L);
 		static int luaMonsterTypeIsHealthShown(lua_State* L);
+
+		static int luaMonsterTypeIsPassive(lua_State* L);
 		static int luaMonsterTypeIsRewardBoss(lua_State* L);
 
 		static int luaMonsterTypeCanPushItems(lua_State* L);
@@ -1280,12 +1291,7 @@ class LuaScriptInterface
 		// Spells
 		static int luaSpellCreate(lua_State* L);
 
-		static int luaSpellGetName(lua_State* L);
-		static int luaSpellGetWords(lua_State* L);
-		static int luaSpellGetLevel(lua_State* L);
-		static int luaSpellGetMagicLevel(lua_State* L);
 		static int luaSpellGetManaCost(lua_State* L);
-		static int luaSpellGetManaPercent(lua_State* L);
 		static int luaSpellGetSoulCost(lua_State* L);
 
 		static int luaSpellIsPremium(lua_State* L);

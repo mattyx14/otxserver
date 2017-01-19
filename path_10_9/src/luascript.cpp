@@ -859,6 +859,20 @@ void LuaScriptInterface::pushBoolean(lua_State* L, bool value)
 	lua_pushboolean(L, value ? 1 : 0);
 }
 
+void LuaScriptInterface::pushInstantSpell(lua_State* L, const InstantSpell& spell)
+{
+	lua_createtable(L, 0, 6);
+
+	setField(L, "name", spell.getName());
+	setField(L, "words", spell.getWords());
+	setField(L, "level", spell.getLevel());
+	setField(L, "mlevel", spell.getMagicLevel());
+	setField(L, "mana", spell.getMana());
+	setField(L, "manapercent", spell.getManaPercent());
+
+	setMetatable(L, -1, "Spell");
+}
+
 void LuaScriptInterface::pushPosition(lua_State* L, const Position& position, int32_t stackpos/* = 0*/)
 {
 	lua_createtable(L, 0, 4);
@@ -1032,6 +1046,11 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ACCOUNT_TYPE_SENIORTUTOR)
 	registerEnum(ACCOUNT_TYPE_GAMEMASTER)
 	registerEnum(ACCOUNT_TYPE_GOD)
+
+	registerEnum(BUG_CATEGORY_MAP)
+	registerEnum(BUG_CATEGORY_TYPO)
+	registerEnum(BUG_CATEGORY_TECHNICAL)
+	registerEnum(BUG_CATEGORY_OTHER)
 
 	registerEnum(CALLBACK_PARAM_LEVELMAGICVALUE)
 	registerEnum(CALLBACK_PARAM_SKILLVALUE)
@@ -1392,6 +1411,10 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CLIENTOS_OTCLIENT_LINUX)
 	registerEnum(CLIENTOS_OTCLIENT_WINDOWS)
 	registerEnum(CLIENTOS_OTCLIENT_MAC)
+
+	registerEnum(FIGHTMODE_ATTACK)
+	registerEnum(FIGHTMODE_BALANCED)
+	registerEnum(FIGHTMODE_DEFENSE)
 
 	registerEnum(ITEM_ATTRIBUTE_NONE)
 	registerEnum(ITEM_ATTRIBUTE_ACTIONID)
@@ -1874,6 +1897,8 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Game", "startRaid", LuaScriptInterface::luaGameStartRaid);
 
+	registerMethod("Game", "getClientVersion", LuaScriptInterface::luaGameGetClientVersion);
+
 	registerMethod("Game", "reload", LuaScriptInterface::luaGameReload);
 
 	registerMethod("Game", "getItemIdByClientId", LuaScriptInterface::luaGameGetItemByClientId);
@@ -2035,11 +2060,12 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "getAttribute", LuaScriptInterface::luaItemGetAttribute);
 	registerMethod("Item", "setAttribute", LuaScriptInterface::luaItemSetAttribute);
 	registerMethod("Item", "removeAttribute", LuaScriptInterface::luaItemRemoveAttribute);
-	registerMethod("Item", "serializeAttributes", LuaScriptInterface::luaItemSerializeAttributes);
 
 	registerMethod("Item", "moveTo", LuaScriptInterface::luaItemMoveTo);
 	registerMethod("Item", "transform", LuaScriptInterface::luaItemTransform);
 	registerMethod("Item", "decay", LuaScriptInterface::luaItemDecay);
+
+	registerMethod("Item", "serializeAttributes", LuaScriptInterface::luaItemSerializeAttributes);
 	registerMethod("Item", "moveToSlot", LuaScriptInterface::luaItemMoveToSlot);
 
 	registerMethod("Item", "getDescription", LuaScriptInterface::luaItemGetDescription);
@@ -2080,6 +2106,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "isRemoved", LuaScriptInterface::luaCreatureIsRemoved);
 	registerMethod("Creature", "isCreature", LuaScriptInterface::luaCreatureIsCreature);
 	registerMethod("Creature", "isInGhostMode", LuaScriptInterface::luaCreatureIsInGhostMode);
+
+	registerMethod("Creature", "isHealthHidden", LuaScriptInterface::luaCreatureIsHealthHidden);
+	registerMethod("Creature", "isImmune", LuaScriptInterface::luaCreatureIsImmune);
 
 	registerMethod("Creature", "canSee", LuaScriptInterface::luaCreatureCanSee);
 	registerMethod("Creature", "canSeeCreature", LuaScriptInterface::luaCreatureCanSeeCreature);
@@ -2317,8 +2346,12 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getContainerById", LuaScriptInterface::luaPlayerGetContainerById);
 	registerMethod("Player", "getContainerIndex", LuaScriptInterface::luaPlayerGetContainerIndex);
 
-	registerMethod("Player", "getInstantSpellCount", LuaScriptInterface::luaPlayerGetInstantSpellCount);
+	registerMethod("Player", "getInstantSpells", LuaScriptInterface::luaPlayerGetInstantSpells);
 	registerMethod("Player", "canCast", LuaScriptInterface::luaPlayerCanCast);
+
+	registerMethod("Player", "hasChaseMode", LuaScriptInterface::luaPlayerHasChaseMode);
+	registerMethod("Player", "hasSecureMode", LuaScriptInterface::luaPlayerHasSecureMode);
+	registerMethod("Player", "getFightMode", LuaScriptInterface::luaPlayerGetFightMode);
 
 	registerMethod("Player", "startLiveCast", LuaScriptInterface::luaPlayerStartLiveCast);
 	registerMethod("Player", "stopLiveCast", LuaScriptInterface::luaPlayerStopLiveCast);
@@ -2508,6 +2541,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("ItemType", "getDestroyId", LuaScriptInterface::luaItemTypeGetDestroyId);
 	registerMethod("ItemType", "getDecayId", LuaScriptInterface::luaItemTypeGetDecayId);
 	registerMethod("ItemType", "getRequiredLevel", LuaScriptInterface::luaItemTypeGetRequiredLevel);
+
 	registerMethod("ItemType", "getDecayTime", LuaScriptInterface::luaItemTypeGetDecayTime);
 	registerMethod("ItemType", "getShowDuration", LuaScriptInterface::luaItemTypeGetShowDuration);
 	registerMethod("ItemType", "getSpeed", LuaScriptInterface::luaItemTypeGetSpeed);
@@ -2563,6 +2597,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("MonsterType", "isHostile", LuaScriptInterface::luaMonsterTypeIsHostile);
 	registerMethod("MonsterType", "isPushable", LuaScriptInterface::luaMonsterTypeIsPushable);
 	registerMethod("MonsterType", "isHealthShown", LuaScriptInterface::luaMonsterTypeIsHealthShown);
+
 	registerMethod("MonsterType", "isPassive", LuaScriptInterface::luaMonsterTypeIsHostile);
 	registerMethod("MonsterType", "isRewardBoss", LuaScriptInterface::luaMonsterTypeIsRewardBoss);
 
@@ -2637,12 +2672,7 @@ void LuaScriptInterface::registerFunctions()
 	registerClass("Spell", "", LuaScriptInterface::luaSpellCreate);
 	registerMetaMethod("Spell", "__eq", LuaScriptInterface::luaUserdataCompare);
 
-	registerMethod("Spell", "getName", LuaScriptInterface::luaSpellGetName);
-	registerMethod("Spell", "getWords", LuaScriptInterface::luaSpellGetWords);
-	registerMethod("Spell", "getLevel", LuaScriptInterface::luaSpellGetLevel);
-	registerMethod("Spell", "getMagicLevel", LuaScriptInterface::luaSpellGetMagicLevel);
 	registerMethod("Spell", "getManaCost", LuaScriptInterface::luaSpellGetManaCost);
-	registerMethod("Spell", "getManaPercent", LuaScriptInterface::luaSpellGetManaPercent);
 	registerMethod("Spell", "getSoulCost", LuaScriptInterface::luaSpellGetSoulCost);
 
 	registerMethod("Spell", "isPremium", LuaScriptInterface::luaSpellIsPremium);
@@ -4483,6 +4513,16 @@ int LuaScriptInterface::luaGameStartRaid(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetClientVersion(lua_State* L)
+{
+	// Game.getClientVersion()
+	lua_createtable(L, 0, 3);
+	setField(L, "min", CLIENT_VERSION_MIN);
+	setField(L, "max", CLIENT_VERSION_MAX);
+	setField(L, "string", CLIENT_VERSION_STR);
 	return 1;
 }
 
@@ -7428,6 +7468,25 @@ int LuaScriptInterface::luaCreatureRemoveCondition(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaCreatureIsImmune(lua_State* L)
+{
+	// creature:isImmune(condition or conditionType)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (isNumber(L, 2)) {
+		pushBoolean(L, creature->isImmune(getNumber<ConditionType_t>(L, 2)));
+	} else if (Condition* condition = getUserdata<Condition>(L, 2)) {
+		pushBoolean(L, creature->isImmune(condition->getType()));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaScriptInterface::luaCreatureRemove(lua_State* L)
 {
 	// creature:remove()
@@ -9669,14 +9728,28 @@ int LuaScriptInterface::luaPlayerGetContainerIndex(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaPlayerGetInstantSpellCount(lua_State* L)
+int LuaScriptInterface::luaPlayerGetInstantSpells(lua_State* L)
 {
-	// player:getInstantSpellCount()
+	// player:getInstantSpells()
 	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, g_spells->getInstantSpellCount(player));
-	} else {
+	if (!player) {
 		lua_pushnil(L);
+		return 1;
+	}
+
+	std::vector<InstantSpell*> spells;
+	for (auto spell : g_spells->getInstantSpells()) {
+		if (spell.second->canCast(player)) {
+			spells.push_back(spell.second);
+		}
+	}
+
+	lua_createtable(L, spells.size(), 0);
+
+	int index = 0;
+	for (auto spell : spells) {
+		pushInstantSpell(L, *spell);
+		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
 }
@@ -9775,6 +9848,42 @@ int32_t LuaScriptInterface::luaPlayerGetSpectators(lua_State* L)
 
 	lua_pushnumber(L, anonymous);
 	return 2;
+}
+
+int LuaScriptInterface::luaPlayerHasChaseMode(lua_State* L)
+{
+	// player:hasChaseMode()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		pushBoolean(L, player->chaseMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerHasSecureMode(lua_State* L)
+{
+	// player:hasSecureMode()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		pushBoolean(L, player->secureMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetFightMode(lua_State* L)
+{
+	// player:getFightMode()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->fightMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
 }
 
 // Monster
@@ -12736,52 +12845,7 @@ int LuaScriptInterface::luaSpellCreate(lua_State* L)
 	}
 
 	if (spell) {
-		pushUserdata<InstantSpell>(L, spell);
-		setMetatable(L, -1, "Spell");
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSpellGetName(lua_State* L)
-{
-	// spell:getName()
-	if (InstantSpell* spell = getUserdata<InstantSpell>(L, 1)) {
-		pushString(L, spell->getName());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSpellGetWords(lua_State* L)
-{
-	// spell:getWords()
-	if (InstantSpell* spell = getUserdata<InstantSpell>(L, 1)) {
-		pushString(L, spell->getWords());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSpellGetLevel(lua_State* L)
-{
-	// spell:getLevel()
-	if (InstantSpell* spell = getUserdata<InstantSpell>(L, 1)) {
-		lua_pushnumber(L, spell->getLevel());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSpellGetMagicLevel(lua_State* L)
-{
-	// spell:getMagicLevel()
-	if (InstantSpell* spell = getUserdata<InstantSpell>(L, 1)) {
-		lua_pushnumber(L, spell->getMagicLevel());
+		pushInstantSpell(L, *spell);
 	} else {
 		lua_pushnil(L);
 	}
@@ -12795,17 +12859,6 @@ int LuaScriptInterface::luaSpellGetManaCost(lua_State* L)
 	Player* player = getUserdata<Player>(L, 2);
 	if (spell && player) {
 		lua_pushnumber(L, spell->getManaCost(player));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSpellGetManaPercent(lua_State* L)
-{
-	// spell:getManaPercent()
-	if (InstantSpell* spell = getUserdata<InstantSpell>(L, 1)) {
-		lua_pushnumber(L, spell->getManaPercent());
 	} else {
 		lua_pushnil(L);
 	}
