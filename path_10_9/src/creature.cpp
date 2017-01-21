@@ -941,14 +941,7 @@ bool Creature::setFollowCreature(Creature* creature)
 		}
 
 		const Position& creaturePos = creature->getPosition();
-		FindPathParams fpp;
-		fpp.minTargetDist = 0;
-		fpp.maxTargetDist = 1;
-		fpp.fullPathSearch = true;
-		fpp.clearSight = true;
-		fpp.maxSearchDist = 150;
-		std::forward_list<Direction> dirList;
-		if (creaturePos.z != getPosition().z || !canSee(creaturePos) || !getPathTo(creaturePos, dirList, fpp)) {
+		if (creaturePos.z != getPosition().z || !canSee(creaturePos)) {
 			followCreature = nullptr;
 			return false;
 		}
