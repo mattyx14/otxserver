@@ -280,7 +280,6 @@
 		<action actionid="2000" script="_scripts_otx/system.lua" />
 
 		<!-- Tools -->
-		<action itemid="2442" script="tools/machete.lua" />
 		<action itemid="5710" script="tools/shovel.lua" />
 		<action itemid="10223" script="tools/fishing.lua" allowfaruse="1" />
 
@@ -322,9 +321,7 @@
 		<action itemid="3955" script="_scripts_otx/voodoodoll.lua" />
 		<action itemid="5468" script="_scripts_otx/firebug.lua" />
 		<action itemid="5957" script="_scripts_otx/lotteryticket.lua" />
-		<action itemid="6572" script="_scripts_otx/partytrumpet.lua" />
 		<action itemid="16101" script="_scripts_otx/premiumscroll.lua" />
-		<action itemid="18511" script="_scripts_otx/musicbox.lua" />
 
 		<action itemid="12647" script="other/spellbook.lua" />
 		<action itemid="16112" script="other/spellbook.lua" />
