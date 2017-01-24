@@ -848,9 +848,7 @@ void Tile::addThing(int32_t, Thing* thing)
 		} else if (itemType.alwaysOnTop) {
 			if (itemType.isSplash() && items) {
 				//remove old splash if exists
-				const auto begin = items->getCBeginTopItem();
-				const auto end = items->getCEndTopItem();
-				for (auto it = begin; it != end; ++it) {
+				for (ItemVector::const_iterator it = items->getCBeginTopItem(), end = items->getCEndTopItem(); it != end; ++it) {
 					Item* oldSplash = *it;
 					if (!Item::items[oldSplash->getID()].isSplash()) {
 						continue;
@@ -867,9 +865,7 @@ void Tile::addThing(int32_t, Thing* thing)
 			bool isInserted = false;
 
 			if (items) {
-				const auto begin = items->getCBeginTopItem();
-				const auto end = items->getCEndTopItem();
-				for (auto it = begin; it != end; ++it) {
+				for (ItemVector::const_iterator it = items->getCBeginTopItem(), end = items->getCEndTopItem(); it != end; ++it) {
 					//Note: this is different from internalAddThing
 					if (itemType.alwaysOnTopOrder <= Item::items[(*it)->getID()].alwaysOnTopOrder) {
 						items->insert(it, item);
@@ -890,8 +886,7 @@ void Tile::addThing(int32_t, Thing* thing)
 			if (itemType.isMagicField()) {
 				//remove old field item if exists
 				if (items) {
-					auto end = items->getCEndDownItem();
-					for (auto it = items->getCBeginDownItem(); it != end; ++it) {
+					for (ItemVector::const_iterator it = items->getCBeginDownItem(), end = items->getCEndDownItem(); it != end; ++it) {
 						MagicField* oldField = (*it)->getMagicField();
 						if (oldField) {
 							if (oldField->isReplaceable()) {
@@ -903,6 +898,7 @@ void Tile::addThing(int32_t, Thing* thing)
 								// revalidate iterators after removal
 								it = items->getCBeginDownItem() - 1;
 								end = items->getCEndDownItem();
+								// break;
 							} else {
 								//This magic field cannot be replaced.
 								item->setParent(nullptr);
