@@ -301,6 +301,15 @@ CREATE TABLE IF NOT EXISTS `player_items` (
   KEY `sid` (`sid`)
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `player_rewards` (
+  `player_id` int(11) NOT NULL,
+  `sid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `itemtype` smallint(6) NOT NULL,
+  `count` smallint(5) NOT NULL DEFAULT '0',
+  `attributes` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE IF NOT EXISTS `player_spells` (
   `player_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
