@@ -114,7 +114,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 						gobletItem:setDescription(_skin.desc:gsub('|PLAYERNAME|', player:getName()))
 					end
 					added = true
-				elseif isInArray({7441, 7442, 7444, 7445}, target.itemid) then
+				elseif table.contains({7441, 7442, 7444, 7445}, target.itemid) then
 					player:addItem(_skin.newItem, _skin.amount or 1)
 					effect = CONST_ME_HITAREA
 					added = true
@@ -137,7 +137,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			if gobletItem then
 				gobletItem:setDescription(skin.desc:gsub('|PLAYERNAME|', player:getName()))
 			end
-		elseif isInArray({7441, 7442, 7444, 7445}, target.itemid) then
+		elseif table.contains({7441, 7442, 7444, 7445}, target.itemid) then
 			if skin.newItem == 7446 then
 				player:addAchievement('Ice Sculptor')
 			end
@@ -147,7 +147,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			player:addItem(skin.newItem, skin.amount or 1)
 		end
 	else
-		if isInArray({7441, 7442, 7444, 7445}, target.itemid) then
+		if table.contains({7441, 7442, 7444, 7445}, target.itemid) then
 			player:say('The attempt of sculpting failed miserably.', TALKTYPE_MONSTER_SAY)
 			effect = CONST_ME_HITAREA
 		else

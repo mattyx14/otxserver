@@ -32,9 +32,36 @@
 extern Game g_game;
 
 namespace {
-	std::string getGlobalString(lua_State* L, const char* identifier, const char* defaultValue)
-	{
-		lua_getglobal(L, identifier);
+
+std::string getGlobalString(lua_State* L, const char* identifier, const char* defaultValue)
+{
+	lua_getglobal(L, identifier);
+	if (!lua_isstring(L, -1)) {
+		return defaultValue;
+	}
+
+	size_t len = lua_strlen(L, -1);
+	std::string ret(lua_tostring(L, -1), len);
+	lua_pop(L, 1);
+	return ret;
+}
+
+int32_t getGlobalNumber(lua_State* L, const char* identifier, const int32_t defaultValue = 0)
+{
+	lua_getglobal(L, identifier);
+	if (!lua_isnumber(L, -1)) {
+		return defaultValue;
+	}
+
+	int32_t val = lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	return val;
+}
+
+bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultValue)
+{
+	lua_getglobal(L, identifier);
+	if (!lua_isboolean(L, -1)) {
 		if (!lua_isstring(L, -1)) {
 			return defaultValue;
 		}
@@ -42,39 +69,14 @@ namespace {
 		size_t len = lua_strlen(L, -1);
 		std::string ret(lua_tostring(L, -1), len);
 		lua_pop(L, 1);
-		return ret;
+		return booleanString(ret);
 	}
 
-	int32_t getGlobalNumber(lua_State* L, const char* identifier, const int32_t defaultValue = 0)
-	{
-		lua_getglobal(L, identifier);
-		if (!lua_isnumber(L, -1)) {
-			return defaultValue;
-		}
+	int val = lua_toboolean(L, -1);
+	lua_pop(L, 1);
+	return val != 0;
+}
 
-		int32_t val = lua_tonumber(L, -1);
-		lua_pop(L, 1);
-		return val;
-	}
-
-	bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultValue)
-	{
-		lua_getglobal(L, identifier);
-		if (!lua_isboolean(L, -1)) {
-			if (!lua_isstring(L, -1)) {
-				return defaultValue;
-			}
-
-			size_t len = lua_strlen(L, -1);
-			std::string ret(lua_tostring(L, -1), len);
-			lua_pop(L, 1);
-			return booleanString(ret);
-		}
-
-		int val = lua_toboolean(L, -1);
-		lua_pop(L, 1);
-		return val != 0;
-	}
 }
 
 bool ConfigManager::load()

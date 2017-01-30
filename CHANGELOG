@@ -98,6 +98,8 @@
 	- Move /raid to talkactions (TFT)
 	- Move doCreateItem and doCreateItemEx to compat (TFC)
 	- Move doMoveCreature to metatable (TFC)
+	- Move increase/decrease item id functions to Lua (TFT)
+	- Move isInArray to Lua (TFT)
 	- Improve code and cleanups (TFT)
 	- Remove player from attack list upon death (TFC)
 	- Remove support to clientVersion 11_ - aka10

@@ -74,7 +74,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 				target:transform(targetItem[i][2])
 				toPosition:sendMagicEffect(CONST_ME_MAGIC_GREEN)
 			else
-				player:say((isInArray({9808, 9809, 9810}, target.itemid) and "The armor was already damaged so badly that it broke when you tried to clean it." or "The legs were already damaged so badly that they broke when you tried to clean them."),TALKTYPE_MONSTER_SAY)
+				player:say((table.contains({9808, 9809, 9810}, target.itemid) and "The armor was already damaged so badly that it broke when you tried to clean it." or "The legs were already damaged so badly that they broke when you tried to clean them."),TALKTYPE_MONSTER_SAY)
 				target:remove()
 				toPosition:sendMagicEffect(CONST_ME_BLOCKHIT)
 			end

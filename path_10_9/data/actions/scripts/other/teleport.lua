@@ -6,7 +6,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	if isInArray(upFloorIds, item.itemid) then
+	if table.contains(upFloorIds, item.itemid) then
 		fromPosition:moveUpstairs()
 	else
 		fromPosition.z = fromPosition.z + 1
