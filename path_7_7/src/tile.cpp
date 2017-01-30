@@ -886,7 +886,8 @@ void Tile::addThing(int32_t, Thing* thing)
 			if (itemType.isMagicField()) {
 				//remove old field item if exists
 				if (items) {
-					for (ItemVector::const_iterator it = items->getCBeginDownItem(), end = items->getCEndDownItem(); it != end; ++it) {
+					auto end = items->getCEndDownItem();
+					for (auto it = items->getCBeginDownItem(); it != end; ++it) {
 						MagicField* oldField = (*it)->getMagicField();
 						if (oldField) {
 							if (oldField->isReplaceable()) {
@@ -898,7 +899,6 @@ void Tile::addThing(int32_t, Thing* thing)
 								// revalidate iterators after removal
 								it = items->getCBeginDownItem() - 1;
 								end = items->getCEndDownItem();
-								// break;
 							} else {
 								//This magic field cannot be replaced.
 								item->setParent(nullptr);
