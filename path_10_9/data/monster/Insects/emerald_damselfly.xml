@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Emerald Damselfly" nameDescription="an emerald damselfly" race="venom" experience="35" speed="220" manacost="0">
+<monster name="Emerald Damselfly" nameDescription="an emerald damselfly" race="venom" experience="35" speed="220">
 	<health now="90" max="90" />
 	<look type="528" corpse="19706" />
 	<targetchange interval="5000" chance="0" />
@@ -36,7 +36,7 @@
 		<item name="arrow" countmax="5" chance="7570" />
 		<item name="health potion" chance="1780" />
 		<item name="mana potion" chance="2520" />
-		<item id="14774" chance="10830" />
+		<item name="insectoid eggs" chance="10830" />
 		<item name="marsh stalker feather" chance="8610" />
 	</loot>
 </monster>

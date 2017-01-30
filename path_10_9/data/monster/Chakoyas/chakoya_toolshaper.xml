@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Chakoya Toolshaper" nameDescription="a chakoya toolshaper" race="blood" experience="40" speed="200" manacost="0">
+<monster name="Chakoya Toolshaper" nameDescription="a chakoya toolshaper" race="blood" experience="40" speed="200">
 	<health now="80" max="80" />
 	<look type="259" corpse="7320" />
 	<targetchange interval="60000" chance="0" />
@@ -43,7 +43,7 @@
 		<item name="gold coin" countmax="20" chance="60000" />
 		<item name="mace" chance="4000" />
 		<item name="bone shield" chance="870" />
-		<item id="2553" chance="940" />
+		<item name="pick" chance="940" />
 		<item id="2667" countmax="2" chance="25000" /><!-- fish -->
 		<item name="northern pike" chance="120" />
 		<item name="rainbow trout" chance="170" />
