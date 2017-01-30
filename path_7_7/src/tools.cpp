@@ -73,7 +73,7 @@ void printXMLError(const std::string& where, const std::string& fileName, const 
 	std::cout << '^' << std::endl;
 }
 
-inline static uint32_t circularShift(int bits, uint32_t value)
+static uint32_t circularShift(int bits, uint32_t value)
 {
 	return (value << bits) | (value >> (32 - bits));
 }
@@ -226,9 +226,9 @@ std::string asUpperCaseString(std::string source)
 	return source;
 }
 
-StringVec explodeString(const std::string& inString, const std::string& separator, int32_t limit/* = -1*/)
+StringVector explodeString(const std::string& inString, const std::string& separator, int32_t limit/* = -1*/)
 {
-	StringVec returnVector;
+	StringVector returnVector;
 	std::string::size_type start = 0, end = 0;
 
 	while (--limit != -1 && (end = inString.find(separator, start)) != std::string::npos) {
@@ -240,9 +240,9 @@ StringVec explodeString(const std::string& inString, const std::string& separato
 	return returnVector;
 }
 
-IntegerVec vectorAtoi(const StringVec& stringVector)
+IntegerVector vectorAtoi(const StringVector& stringVector)
 {
-	IntegerVec returnVector;
+	IntegerVector returnVector;
 	for (const auto& string : stringVector) {
 		returnVector.push_back(std::stoi(string));
 	}
@@ -996,6 +996,12 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUARENOTTHEOWNER:
 			return "You are not the owner.";
 
+		case RETURNVALUE_NOSUCHRAIDEXISTS:
+			return "No such raid exists.";
+
+		case RETURNVALUE_ANOTHERRAIDISALREADYEXECUTING:
+			return "Another raid is already executing.";
+
 		case RETURNVALUE_NOTENOUGHFISTLEVEL:
 			return "You do not have enough fist level";
 
@@ -1020,4 +1026,9 @@ const char* getReturnMessage(ReturnValue value)
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
 	}
+}
+
+int64_t OTSYS_TIME()
+{
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }

@@ -44,7 +44,7 @@ Actions::~Actions()
 	clear();
 }
 
-inline void Actions::clearMap(ActionUseMap& map)
+void Actions::clearMap(ActionUseMap& map)
 {
 	// Filter out duplicates to avoid double-free
 	std::unordered_set<Action*> set;
@@ -464,33 +464,11 @@ bool Action::configureEvent(const pugi::xml_node& node)
 	return true;
 }
 
-namespace {
-
-bool increaseItemId(Player*, Item* item, const Position&, Thing*, const Position&, bool)
-{
-	g_game.startDecay(g_game.transformItem(item, item->getID() + 1));
-	return true;
-}
-
-bool decreaseItemId(Player*, Item* item, const Position&, Thing*, const Position&, bool)
-{
-	g_game.startDecay(g_game.transformItem(item, item->getID() - 1));
-	return true;
-}
-}
+namespace {}
 
 bool Action::loadFunction(const pugi::xml_attribute& attr)
 {
 	const char* functionName = attr.as_string();
-	if (strcasecmp(functionName, "increaseitemid") == 0) {
-		function = increaseItemId;
-	} else if (strcasecmp(functionName, "decreaseitemid") == 0) {
-		function = decreaseItemId;
-	} else {
-		std::cout << "[Warning - Action::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
-		return false;
-	}
-
 	scripted = false;
 	return true;
 }

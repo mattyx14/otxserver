@@ -385,65 +385,24 @@ enum PlayerFlags : uint64_t {
 	PlayerFlag_CanAnswerRuleViolations = static_cast<uint64_t>(1) << 38,
 };
 
-enum ViolationActions_t {
-	Action_None = 0,
-	Action_Notation = 1,
-	Action_Namelock = 2,
-	Action_Banishment = 4,
-	Action_NamelockBan = 8,
-	Action_BanFinalWarning = 16,
-	Action_NamelockBanFinalWarning = 32,
-	Action_StatementReport = 64,
-	Action_IpBan = 128
-};
-
-const int violationActions[6] = {
-	//ignore this
-	Action_None,
-
-	//player
-	Action_None,
-
-	//tutor
-	Action_None,
-
-	//senior tutor
-	Action_None,
-
-	//gamemaster
-	Action_Notation | Action_Namelock | Action_Banishment | Action_NamelockBan | Action_StatementReport,
-
-	//god
-	Action_Notation | Action_Namelock | Action_Banishment | Action_NamelockBan | Action_BanFinalWarning | Action_NamelockBanFinalWarning | Action_StatementReport | Action_IpBan
-};
-
-const int violationReasons[6] = {
-	//ignore this
-	0,
-
-	//player
-	0,
-
-	//tutor
-	4,
-
-	/*
-	 * senior tutor
-	 * all name reasons
-	 */
-	10,
-
-	/*
-	 * gamemaster
-	 * all name, statement & cheating reasons
-	 */
-	19,
-
-	/*
-	 * god
-	 * all reasons
-	 */
-	32,
+enum ReloadTypes_t : uint8_t  {
+	RELOAD_TYPE_ALL,
+	RELOAD_TYPE_ACTIONS,
+	RELOAD_TYPE_CHAT,
+	RELOAD_TYPE_COMMANDS,
+	RELOAD_TYPE_CONFIG,
+	RELOAD_TYPE_CREATURESCRIPTS,
+	RELOAD_TYPE_EVENTS,
+	RELOAD_TYPE_GLOBAL,
+	RELOAD_TYPE_GLOBALEVENTS,
+	RELOAD_TYPE_ITEMS,
+	RELOAD_TYPE_MONSTERS,
+	RELOAD_TYPE_MOVEMENTS,
+	RELOAD_TYPE_NPCS,
+	RELOAD_TYPE_RAIDS,
+	RELOAD_TYPE_SPELLS,
+	RELOAD_TYPE_TALKACTIONS,
+	RELOAD_TYPE_WEAPONS,
 };
 
 static constexpr int32_t CHANNEL_GUILD = 0x00;

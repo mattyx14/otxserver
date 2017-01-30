@@ -972,9 +972,6 @@ void LuaScriptInterface::registerFunctions()
 	//doChallengeCreature(cid, target)
 	lua_register(luaState, "doChallengeCreature", LuaScriptInterface::luaDoChallengeCreature);
 
-	//isInArray(array, value)
-	lua_register(luaState, "isInArray", LuaScriptInterface::luaIsInArray);
-
 	//addEvent(callback, delay, ...)
 	lua_register(luaState, "addEvent", LuaScriptInterface::luaAddEvent);
 
@@ -3266,27 +3263,6 @@ int LuaScriptInterface::luaGetDepotId(lua_State* L)
 	}
 
 	lua_pushnumber(L, depotLocker->getDepotId());
-	return 1;
-}
-
-int LuaScriptInterface::luaIsInArray(lua_State* L)
-{
-	//isInArray(array, value)
-	if (!isTable(L, 1)) {
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	lua_pushnil(L);
-	while (lua_next(L, 1)) {
-		if (lua_equal(L, 2, -1) != 0) {
-			pushBoolean(L, true);
-			return 1;
-		}
-		lua_pop(L, 1);
-	}
-
-	pushBoolean(L, false);
 	return 1;
 }
 
@@ -9119,6 +9095,19 @@ int LuaScriptInterface::luaPlayerGetInstantSpells(lua_State* L)
 	for (auto spell : spells) {
 		pushInstantSpell(L, *spell);
 		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerCanCast(lua_State* L)
+{
+	// player:canCast(spell)
+	Player* player = getUserdata<Player>(L, 1);
+	InstantSpell* spell = getUserdata<InstantSpell>(L, 2);
+	if (player && spell) {
+		pushBoolean(L, spell->canCast(player));
+	} else {
+		lua_pushnil(L);
 	}
 	return 1;
 }

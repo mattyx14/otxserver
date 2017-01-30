@@ -73,7 +73,7 @@ class AStarNodes
 		int_fast32_t closedNodes;
 };
 
-typedef std::map<Position, SpectatorVec> SpectatorCache;
+using SpectatorCache = std::map<Position, SpectatorHashSet>;
 
 static constexpr int32_t FLOOR_BITS = 3;
 static constexpr int32_t FLOOR_SIZE = (1 << FLOOR_BITS);
@@ -110,7 +110,7 @@ class QTreeNode
 		QTreeLeafNode* getLeaf(uint32_t x, uint32_t y);
 
 		template<typename Leaf, typename Node>
-		inline static Leaf getLeafStatic(Node node, uint32_t x, uint32_t y)
+		static Leaf getLeafStatic(Node node, uint32_t x, uint32_t y)
 		{
 			do {
 				node = node->child[((x & 0x8000) >> 15) | ((y & 0x8000) >> 14)];
@@ -196,7 +196,7 @@ class Map
 		  * \returns A pointer to that tile.
 		  */
 		Tile* getTile(uint16_t x, uint16_t y, uint8_t z) const;
-		inline Tile* getTile(const Position& pos) const {
+		Tile* getTile(const Position& pos) const {
 			return getTile(pos.x, pos.y, pos.z);
 		}
 
@@ -219,7 +219,7 @@ class Map
 
 		void moveCreature(Creature& creature, Tile& newTile, bool forceTeleport = false);
 
-		void getSpectators(SpectatorVec& list, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
+		void getSpectators(SpectatorHashSet& spectators, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
 		                   int32_t minRangeX = 0, int32_t maxRangeX = 0,
 		                   int32_t minRangeY = 0, int32_t maxRangeY = 0);
 
@@ -275,7 +275,7 @@ class Map
 		uint32_t height = 0;
 
 		// Actually scans the map for spectators
-		void getSpectatorsInternal(SpectatorVec& list, const Position& centerPos,
+		void getSpectatorsInternal(SpectatorHashSet& spectators, const Position& centerPos,
 		                           int32_t minRangeX, int32_t maxRangeX,
 		                           int32_t minRangeY, int32_t maxRangeY,
 		                           int32_t minRangeZ, int32_t maxRangeZ, bool onlyPlayers) const;

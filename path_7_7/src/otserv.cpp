@@ -154,8 +154,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	std::cout << ">> Establishing database connection..." << std::flush;
 
-	Database* db = Database::getInstance();
-	if (!db->connect()) {
+	if (!Database::getInstance().connect()) {
 		startupErrorMessage("Failed to connect to database.");
 		return;
 	}
@@ -197,7 +196,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	}
 
 	std::cout << ">> Loading script systems" << std::endl;
-	if (!ScriptingManager::getInstance()->loadScriptSystems()) {
+	if (!ScriptingManager::getInstance().loadScriptSystems()) {
 		startupErrorMessage("Failed to load script systems");
 		return;
 	}

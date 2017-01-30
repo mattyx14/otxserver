@@ -24,42 +24,18 @@
 #include "enums.h"
 #include "luascript.h"
 
-typedef bool (ActionFunction)(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition);
+using ActionFunction = std::function<bool(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey)>;
 
 class Action : public Event
 {
 	public:
-		explicit Action(const Action* copy);
 		explicit Action(LuaScriptInterface* interface);
 
 		bool configureEvent(const pugi::xml_node& node) override;
-		bool loadFunction(const pugi::xml_attribute& attr) override;
 
 		//scripting
 		virtual bool executeUse(Player* player, Item* item, const Position& fromPosition,
 			Thing* target, const Position& toPosition);
-		//
-
-		bool getAllowFarUse() const {
-			return allowFarUse;
-		}
-		void setAllowFarUse(bool v) {
-			allowFarUse = v;
-		}
-
-		bool getCheckLineOfSight() const {
-			return checkLineOfSight;
-		}
-		void setCheckLineOfSight(bool v) {
-			checkLineOfSight = v;
-		}
-
-		bool getCheckFloor() const {
-			return checkFloor;
-		}
-		void setCheckFloor(bool v) {
-			checkFloor = v;
-		}
 
 		virtual ReturnValue canExecuteAction(const Player* player, const Position& toPos);
 		virtual bool hasOwnErrorHandler() {
@@ -67,13 +43,10 @@ class Action : public Event
 		}
 		virtual Thing* getTarget(Player* player, Creature* targetCreature, const Position& toPosition, uint8_t toStackPos) const;
 
-		ActionFunction* function;
+		ActionFunction function;
 
 	protected:
 		std::string getScriptEventName() const override;
-
-		static ActionFunction increaseItemId;
-		static ActionFunction decreaseItemId;
 
 		bool allowFarUse;
 		bool checkFloor;
@@ -108,7 +81,7 @@ class Actions final : public BaseEvents
 		Event* getEvent(const std::string& nodeName) final;
 		bool registerEvent(Event* event, const pugi::xml_node& node) final;
 
-		typedef std::map<uint16_t, Action*> ActionUseMap;
+		using ActionUseMap = std::map<uint16_t, Action*>;
 		ActionUseMap useItemMap;
 		ActionUseMap uniqueItemMap;
 		ActionUseMap actionItemMap;

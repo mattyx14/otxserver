@@ -695,13 +695,13 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 					strHealthGain << realHealthGain;
 					g_game.addAnimatedText(strHealthGain.str(), player->getPosition(), TEXTCOLOR_MAYABLUE);
 
-					SpectatorVec list;
-					g_game.map.getSpectators(list, player->getPosition(), false, true);
-					list.erase(player);
-					if (!list.empty()) {
+					SpectatorHashSet spectators;
+					g_game.map.getSpectators(spectators, player->getPosition(), false, true);
+					spectators.erase(player);
+					if (!spectators.empty()) {
 						message.type = MESSAGE_STATUS_SMALL;
 						message.text = player->getName() + " was healed for " + healString;
-						for (Creature* spectator : list) {
+						for (Creature* spectator : spectators) {
 							spectator->getPlayer()->sendTextMessage(message);
 						}
 					}
