@@ -98,6 +98,8 @@ bool Events::load()
 				info.playerOnMoveItem = event;
 			} else if (methodName == "onMoveCreature") {
 				info.playerOnMoveCreature = event;
+			} else if (methodName == "onReport") {
+				info.playerOnReport = event;
 			} else if (methodName == "onTurn") {
 				info.playerOnTurn = event;
 			} else if (methodName == "onGainExperience") {
@@ -504,6 +506,34 @@ bool Events::eventPlayerOnMoveCreature(Player* player, Creature* creature, const
 	return scriptInterface.callFunction(4);
 }
 
+bool Events::eventPlayerOnReport(Player* player, const std::string& message, const Position& position, uint8_t category)
+{
+	// Player:onReport(message, position, category)
+	if (info.playerOnReport == -1) {
+		return true;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		std::cout << "[Error - Events::eventPlayerOnReport] Call stack overflow" << std::endl;
+		return false;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnReport, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnReport);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	LuaScriptInterface::pushString(L, message);
+	LuaScriptInterface::pushPosition(L, position);
+	lua_pushnumber(L, category);
+
+	return scriptInterface.callFunction(4);
+}
+
 bool Events::eventPlayerOnTurn(Player* player, Direction direction)
 {
 	// Player:onTurn(direction) or Player.onTurn(self, direction)
@@ -703,16 +733,16 @@ void Events::eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_
 }
 
 // Monster
-bool Events::eventMonsterOnSpawn(Monster* monster, const Position& position, bool isStartup)
+void Events::eventMonsterOnSpawn(Monster* monster, const Position& position)
 {
-	// Monster:onSpawn(position, isStartup) or Monster.onSpawn(self, position, isStartup)
+	// Monster:onSpawn(position) or Monster.onSpawn(self, position)
 	if (info.monsterOnSpawn == -1) {
-		return true;
+		return;
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
 		std::cout << "[Error - Events::eventMonsterOnSpawn] Call stack overflow" << std::endl;
-		return false;
+		return;
 	}
 
 	ScriptEnvironment* env = scriptInterface.getScriptEnv();
@@ -726,7 +756,11 @@ bool Events::eventMonsterOnSpawn(Monster* monster, const Position& position, boo
 
 	LuaScriptInterface::pushPosition(L, position);
 
-	LuaScriptInterface::pushBoolean(L, isStartup);
+	if (scriptInterface.protectedCall(L, 2, 1) != 0) {
+		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
+	} else {
+		lua_pop(L, 1);
+	}
 
-	return scriptInterface.callFunction(3);
+	scriptInterface.resetScriptEnv();
 }
