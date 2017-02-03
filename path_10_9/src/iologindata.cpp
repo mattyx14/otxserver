@@ -19,6 +19,7 @@
 
 #include "otpch.h"
 
+#include <boost/range/adaptor/reversed.hpp>
 #include "iologindata.h"
 #include "configmanager.h"
 #include "game.h"
