@@ -130,11 +130,11 @@ function parseTransferCoins(player, msg)
 	if accountId == player:getAccountId() then
 		return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_TRANSFER, "You cannot transfer coin to a character in the same account.")
 	end
-	
+
 	if not player:canRemoveCoins(amount) then
 		return addPlayerEvent(sendStoreError, 350, player, GameStore.StoreErrors.STORE_ERROR_TRANSFER, "You don't have enough funds to transfer these coins.")
 	end
-	
+
 	player:removeCoinsBalance(amount)
 	db.asyncQuery("UPDATE `accounts` SET `coins` = `coins` + " .. amount .. " WHERE `id` = " .. accountId)
 	addPlayerEvent(sendStorePurchaseSuccessful, 550, player, "You have transfered " .. amount .. " coins to " .. reciver .. " successfully")
@@ -204,28 +204,45 @@ function parseBuyStoreOffer(player, msg)
 		if offer.type == GameStore.OfferTypes.OFFER_TYPE_ITEM then
 			local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
 			if inbox and inbox:getEmptySlots() > offer.count then
-				for t = 1,offer.count do
-					inbox:addItem(offer.thingId, offer.count or 1)
+                if player:getFreeCapacity() > ItemType(offer.thingId):getWeight(offer.count or 1) then
+					for t = 1,offer.count do
+						inbox:addItem(offer.thingId, offer.count or 1)
+					end
+                else
+                    return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "You don't have enough capacity.")
 				end
 			else
 				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in your store inbox.")
 			end
-		-- If offer is Stackable.
+			-- If offer is Stackable.
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_STACKABLE then
 			local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
 			if inbox and inbox:getEmptySlots() > 0 then
-				local parcel = inbox:addItem(2596, 1)
-				local packagename = ''.. offer.count..'x '.. offer.name ..' package.'
+				if player:getFreeCapacity() > (ItemType(offer.thingId):getWeight(offer.count or 1) + ItemType(2596):getWeight(1)) then -- if player has cap for a parcel + offer weight
+					local parcel = inbox:addItem(2596, 1)
+					local packagename = ''.. offer.count..'x '.. offer.name ..' package.'
+					local pendingCount = offer.count;
 					if parcel then
 						parcel:setAttribute(ITEM_ATTRIBUTE_NAME, packagename)
-						for e = 1,offer.count do
-							parcel:addItem(offer.thingId, 1)
+						while pendingCount > 0  do
+							if(pendingCount <= 100) then
+								parcel:addItem(offer.thingId, pendingCount)
+								pendingCount = 0
+							else
+								parcel:addItem(offer.thingId, 100)
+								pendingCount= pendingCount - 100
+							end
+						end
+					else --error creating the parcel item
+						return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "There was an error processing your purchase and your coins were not used. If this error persists, contact someone from staff.")
 					end
+				else
+					return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "You don't have enough capacity.")
 				end
 			else
 				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in your store inbox.")
-		end
-		-- If offer is outfit/addon
+			end
+			-- If offer is outfit/addon
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT or offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON then
 			local outfitLookType
 			if player:getSex() == PLAYERSEX_MALE then
@@ -238,10 +255,10 @@ function parseBuyStoreOffer(player, msg)
 			end
 
 			player:addOutfitAddon(outfitLookType, offer.addon or 0)
-		-- If offer is mount
+			-- If offer is mount
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_MOUNT then
 			player:addMount(offer.thingId)
-		-- If offer is name change
+			-- If offer is name change
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE then
 			-- If player typed name yet!
 			if productType == GameStore.ClientOfferTypes.CLIENT_STORE_OFFER_NAMECHANGE then
@@ -260,19 +277,19 @@ function parseBuyStoreOffer(player, msg)
 				newName = newName:lower():gsub("(%l)(%w*)", function(a, b) return string.upper(a) .. b end)
 				db.asyncQuery("UPDATE `players` SET `name` = " .. db.escapeString(newName) .. " WHERE `id` = " .. player:getGuid())
 				message =  "You have successfully changed you name, you must relog to see changes."
-			-- If not, we ask him to do!
+				-- If not, we ask him to do!
 			else
 				return addPlayerEvent(sendRequestPurchaseData, 250, player, offer.id, GameStore.ClientOfferTypes.CLIENT_STORE_OFFER_NAMECHANGE)
 			end
-		-- If offer is sex change
+			-- If offer is sex change
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_SEXCHANGE then
 			player:toggleSex()
-		-- If offer is promotion
+			-- If offer is promotion
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_PROMOTION then
 			if not GameStore.addPromotionToPlayer(player, offer.thingId) then
 				return false
 			end
-		-- You can add whatever offer types to suit your needs!
+			-- You can add whatever offer types to suit your needs!
 		else
 			-- ToDo :: implement purchase function
 			return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "This offer is fake, please contact admin.")
@@ -482,7 +499,7 @@ function sendStoreError(player, errorType, message)
 	msg:sendToPlayer(player)
 end
 
-function sendCoinBalanceUpdating(player, updating)	
+function sendCoinBalanceUpdating(player, updating)
 	local msg = NetworkMessage()
 	msg:addByte(GameStore.SendingPackets.S_CoinBalanceUpdating)
 	msg:addByte(0x00)
@@ -493,7 +510,7 @@ function sendCoinBalanceUpdating(player, updating)
 	end
 end
 
-function sendUpdateCoinBalance(player)	
+function sendUpdateCoinBalance(player)
 	local msg = NetworkMessage()
 	msg:addByte(GameStore.SendingPackets.S_CoinBalanceUpdating)
 	msg:addByte(0x01)
