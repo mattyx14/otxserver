@@ -1,16 +1,22 @@
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
 setCombatParam(combat, COMBAT_PARAM_BLOCKARMOR, 1)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_HITAREA)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_EXPLOSIONAREA)
 
-local area = createCombatArea(AREA_SQUARE1X1)
+local area = createCombatArea(AREA_CROSS5X5)
 setCombatArea(combat, area)
 
 function onGetFormulaValues(cid, level, maglevel)
-	min = -(level * 2.2)
-	max = -(level * 3.85)
---	min = -((level * 2) + (maglevel * 3)) * 1.4
---	max = -((level * 2) + (maglevel * 3)) * 1.65
+	if (((level * 2) + (maglevel * 3)) * 2.3) < 250 then
+		min = -250
+	else
+		min = -((level * 2) + (maglevel * 3)) * 2.3
+	end
+	if (((level * 2) + (maglevel * 3)) * 3) < 250 then
+		max = -250
+	else
+		max = -((level * 2) + (maglevel * 3)) * 3
+	end
 	return min, max
 end
 
