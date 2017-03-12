@@ -1935,8 +1935,8 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 						reflectDamage.primary.value = std::round(-damage * (reflectPercent / 100.));
 
 						Combat::doCombatHealth(this, attacker, reflectDamage, params);
-			}
-		}
+					}
+				}
 			}
 		}
 
@@ -2113,7 +2113,7 @@ void Player::death(Creature* lastHitCreature)
 			}
 		}
 	} else {
-		setLossSkill(true);
+		setSkillLoss(true);
 
 		auto it = conditions.begin(), end = conditions.end();
 		while (it != end) {
@@ -3622,7 +3622,7 @@ bool Player::onKilledCreature(Creature* target, bool lastHit/* = true*/)
 	if (Player* targetPlayer = target->getPlayer()) {
 		if (targetPlayer && targetPlayer->getZone() == ZONE_PVP) {
 			targetPlayer->setDropLoot(false);
-			targetPlayer->setLossSkill(false);
+			targetPlayer->setSkillLoss(false);
 		} else if (!hasFlag(PlayerFlag_NotGainInFight) && !isPartner(targetPlayer)) {
 			if (!Combat::isInPvpZone(this, targetPlayer) && hasAttacked(targetPlayer) && !targetPlayer->hasAttacked(this) && !isGuildMate(targetPlayer) && targetPlayer != this) {
 				if (targetPlayer->hasKilled(this)) {

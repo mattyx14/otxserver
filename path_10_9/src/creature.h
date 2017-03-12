@@ -285,9 +285,15 @@ class Creature : virtual public Thing
 		virtual BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 		                             bool checkDefense = false, bool checkArmor = false, bool field = false);
 
-		void setMaster(Creature* creature) {
-			master = creature;
+		bool setMaster(Creature* newMaster);
+
+		void removeMaster() {
+			if (master) {
+				master = nullptr;
+				decrementReferenceCounter();
+			}
 		}
+
 		bool isSummon() const {
 			return master != nullptr;
 		}
@@ -295,8 +301,6 @@ class Creature : virtual public Thing
 			return master;
 		}
 
-		void addSummon(Creature* creature);
-		void removeSummon(Creature* creature);
 		const std::list<Creature*>& getSummons() const {
 			return summons;
 		}
@@ -355,10 +359,6 @@ class Creature : virtual public Thing
 			return false;
 		}
 		virtual bool convinceCreature(Creature*) {
-			return false;
-		}
-
-		virtual bool setCreatureMaster(Creature*) {
 			return false;
 		}
 
@@ -426,7 +426,7 @@ class Creature : virtual public Thing
 		void setDropLoot(bool lootDrop) {
 			this->lootDrop = lootDrop;
 		}
-		void setLossSkill(bool skillLoss) {
+		void setSkillLoss(bool skillLoss) {
 			this->skillLoss = skillLoss;
 		}
 

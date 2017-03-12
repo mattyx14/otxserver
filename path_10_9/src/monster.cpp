@@ -40,10 +40,10 @@ Monster* Monster::createMonster(const std::string& name)
 	return new Monster(mType);
 }
 
-Monster::Monster(MonsterType* mtype) :
+Monster::Monster(MonsterType* mType) :
 	Creature(),
-	strDescription(asLowerCaseString(mtype->nameDescription)),
-	mType(mtype)
+	strDescription(asLowerCaseString(mType->nameDescription)),
+	mType(mType)
 {
 	defaultOutfit = mType->info.outfit;
 	currentOutfit = mType->info.outfit;
@@ -936,15 +936,14 @@ void Monster::onThinkDefense(uint32_t interval)
 
 			Monster* summon = Monster::createMonster(summonBlock.name);
 			if (summon) {
-				const Position& summonPos = getPosition();
-
-				addSummon(summon);
-
-				if (!g_game.placeCreature(summon, summonPos, false, summonBlock.force)) {
-					removeSummon(summon);
-				} else {
+				if (g_game.placeCreature(summon, getPosition(), false, summonBlock.force)) {
+					summon->setDropLoot(false);
+					summon->setSkillLoss(false);
+					summon->setMaster(this);
 					g_game.addMagicEffect(getPosition(), CONST_ME_MAGIC_BLUE);
 					g_game.addMagicEffect(summon->getPosition(), CONST_ME_TELEPORT);
+				} else {
+					delete summon;
 				}
 			}
 		}
@@ -1754,8 +1753,7 @@ void Monster::death(Creature*)
 
 	for (Creature* summon : summons) {
 		summon->changeHealth(-summon->getHealth());
-		summon->setMaster(nullptr);
-		summon->decrementReferenceCounter();
+		summon->removeMaster();
 	}
 	summons.clear();
 
@@ -1918,53 +1916,6 @@ bool Monster::challengeCreature(Creature* creature)
 	return result;
 }
 
-bool Monster::setCreatureMaster(Creature* master){
-
-	if (isSummon()) {
-		if (getMaster()->getPlayer()) {
-			return false;
-		} else if (getMaster() == master) {
-			return false;
-		}
-
-		Creature* oldMaster = getMaster();
-		oldMaster->removeSummon(this);
-	}
-
-	master->addSummon(this);
-
-	setFollowCreature(nullptr);
-	setAttackedCreature(nullptr);
-
-	//destroy summons
-	for (Creature* summon : summons) {
-		summon->changeHealth(-summon->getHealth());
-		summon->setMaster(nullptr);
-		summon->decrementReferenceCounter();
-	}
-	summons.clear();
-
-	isMasterInRange = true;
-	updateTargetList();
-	updateIdleStatus();
-
-	//Notify surrounding about the change
-	SpectatorHashSet spectators;
-	g_game.map.getSpectators(spectators, getPosition(), true);
-	g_game.map.getSpectators(spectators, master->getPosition(), true);
-	for (Creature* spectator : spectators) {
-		spectator->onCreatureConvinced(master, this);
-	}
-
-	if (spawn) {
-		spawn->removeMonster(this);
-		spawn = nullptr;
-	}
-	return true;
-
-
-}
-
 bool Monster::convinceCreature(Creature* creature)
 {
 	Player* player = creature->getPlayer();
@@ -1981,20 +1932,17 @@ bool Monster::convinceCreature(Creature* creature)
 			return false;
 		}
 
-		Creature* oldMaster = getMaster();
-		oldMaster->removeSummon(this);
 	}
-
-	creature->addSummon(this);
-
+	setMaster(creature);
+	setDropLoot(false);
+	setSkillLoss(false);
 	setFollowCreature(nullptr);
 	setAttackedCreature(nullptr);
 
 	//destroy summons
 	for (Creature* summon : summons) {
 		summon->changeHealth(-summon->getHealth());
-		summon->setMaster(nullptr);
-		summon->decrementReferenceCounter();
+		summon->removeMaster();
 	}
 	summons.clear();
 

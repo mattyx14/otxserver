@@ -44,7 +44,7 @@ class Monster final : public Creature
 		static int32_t despawnRange;
 		static int32_t despawnRadius;
 
-		explicit Monster(MonsterType* mtype);
+		explicit Monster(MonsterType* mType);
 		~Monster();
 
 		// non-copyable
@@ -143,7 +143,6 @@ class Monster final : public Creature
 		void onThink(uint32_t interval) final;
 
 		bool challengeCreature(Creature* creature) final;
-		bool setCreatureMaster(Creature *master);
 		bool convinceCreature(Creature* creature) final;
 
 		void setNormalCreatureLight() final;

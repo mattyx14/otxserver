@@ -18,12 +18,15 @@
 			Brewsterl
 			Malucooo
 
-		Special Thanks(s)
+		Special Thanks(s) 
 			The Forgotten Team = TFT
 				https://github.com/otland/
 
 			The Forgotten Contributors = TFC
 				https://github.com/otland/forgottenserver/graphs/contributors/
+
+			OTX Server Contributors = OTXS-C
+				https://github.com/mattyx14/otxserver/graphs/contributors/
 
 			OpenTibia
 				https://github.com/opentibia/
@@ -79,7 +82,9 @@
 	- Added missing custom scripts and commands
 	- Added set NPCs to idle state when no player is in range (TFT)
 	- Added Lua functions for player chase, secure and fight mode (TFT)
-	- Added Game.getVersion (table) (TFT)
+	- Added Game.getVersion - table (TFT)
+	- Added function to find mount by name (TFC)
+	- Drop commands support in favor of talkactions (TFT)
 	- Fix MoveItem and storeInbox on 10.x // 11 (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
 	- Fix features from: Xeraphus(Monster:onSpawn) - Mkalo(Bank Account of Premium Accounts) - (brunominervino)
@@ -89,6 +94,14 @@
 	- Fix allowfaruse (TFC)
 	- Fix missing and negated conditions on looktype.lua (TFT)
 	- Fix double check on summon creature spell (TFT)
+	- Fix wrong return value from reload (TFT)
+	- Fix CMake command for source directory (TFT)
+	- Fix memory leak in talkactions (TFC)
+	- Fix setMaster behaviour (TFC)
+	- Fix Player:getClosestFreePosition behavior (TFC)
+	- Fix removeMoney unintended behavior (TFC)
+	- Fix #175, #183, #186 #205 to 208 (OTXS-C)
+	- Lazily load monsters from XML (TFT)
 	- Move findPerson to Lua (TFC)
 	- Move doSet*Outfit functions to Lua (TFC)
 	- Move house management function to Lua scripts (TFT)
@@ -100,10 +113,14 @@
 	- Move doMoveCreature to metatable (TFC)
 	- Move increase/decrease item id functions to Lua (TFT)
 	- Move isInArray to Lua (TFT)
+	- Move !sellhouse to talkactions (TFT)
+	- Move WaitingList attributes to private implementation (TFT)
+	- Move levitate to Lua (TFT)
 	- Improve code and cleanups (TFT)
 	- Remove player from attack list upon death (TFC)
 	- Remove support to clientVersion 11_ - aka10
 	- Remove compat function from swimming.lua (TFC)
+	- Storing TalkAction instances instead of pointers (TFC)
 	- Updated spells (TFC)
 	- Updated enchantingScript (TFC)
 	- Updated monsters (TFT)

@@ -600,16 +600,16 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 			return;
 		}
 
-		NetworkMessage msg;
-		msg.addByte(0x6A);
-		msg.addPosition(pos);
-		msg.addByte(stackpos);
+			NetworkMessage msg;
+			msg.addByte(0x6A);
+			msg.addPosition(pos);
+			msg.addByte(stackpos);
 
-		bool known;
-		uint32_t removedKnown;
-		checkCreatureAsKnown(creature->getID(), known, removedKnown);
-		AddCreature(msg, creature, known, removedKnown);
-		writeToOutputBuffer(msg);
+			bool known;
+			uint32_t removedKnown;
+			checkCreatureAsKnown(creature->getID(), known, removedKnown);
+			AddCreature(msg, creature, known, removedKnown);
+			writeToOutputBuffer(msg);
 
 		if (isLogin) {
 			sendMagicEffect(pos, CONST_ME_TELEPORT);
