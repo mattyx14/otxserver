@@ -989,6 +989,19 @@ class LuaScriptInterface
 		static int32_t luaPlayerIsLiveCaster(lua_State* L);
 		static int32_t luaPlayerGetSpectators(lua_State* L);
 
+		static int luaPlayerGetBaseXpGain(lua_State *L);
+		static int luaPlayerSetBaseXpGain(lua_State *L);
+		static int luaPlayerGetVoucherXpBoost(lua_State *L);
+		static int luaPlayerSetVoucherXpBoost(lua_State *L);
+		static int luaPlayerGetGrindingXpBoost(lua_State *L);
+		static int luaPlayerSetGrindingXpBoost(lua_State *L);
+		static int luaPlayerGetStoreXpBoost(lua_State *L);
+		static int luaPlayerSetStoreXpBoost(lua_State *L);
+		static int luaPlayerGetStaminaXpBoost(lua_State *L);
+		static int luaPlayerSetStaminaXpBoost(lua_State *L);
+
+		static int luaPlayerGetIdleTime(lua_State* L);
+
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 
