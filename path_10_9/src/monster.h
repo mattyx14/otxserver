@@ -143,6 +143,7 @@ class Monster final : public Creature
 		void onThink(uint32_t interval) final;
 
 		bool challengeCreature(Creature* creature) final;
+		bool setCreatureMaster(Creature *master);
 		bool convinceCreature(Creature* creature) final;
 
 		void setNormalCreatureLight() final;

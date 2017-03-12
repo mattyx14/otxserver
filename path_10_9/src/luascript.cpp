@@ -2113,6 +2113,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "getMaster", LuaScriptInterface::luaCreatureGetMaster);
 	registerMethod("Creature", "setMaster", LuaScriptInterface::luaCreatureSetMaster);
 
+	registerMethod("Creature", "convince", LuaScriptInterface::luaCreatureConvince);
+
 	registerMethod("Creature", "getLight", LuaScriptInterface::luaCreatureGetLight);
 	registerMethod("Creature", "setLight", LuaScriptInterface::luaCreatureSetLight);
 
@@ -6899,6 +6901,32 @@ int LuaScriptInterface::luaCreatureGetMaster(lua_State* L)
 	return 1;
 }
 
+
+int LuaScriptInterface::luaCreatureConvince(lua_State* L)
+{
+	// creature:convince(master)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Creature* master = getCreature(L, 2);
+	if (master) {
+		pushBoolean(L, creature->convinceCreature(master));
+	} else {
+		master = creature->getMaster();
+		if (master) {
+			master->removeSummon(creature);
+			creature->incrementReferenceCounter();
+			creature->setDropLoot(true);
+		}
+		pushBoolean(L, true);
+	}
+	g_game.updateCreatureType(creature);
+	return 1;
+}
+
 int LuaScriptInterface::luaCreatureSetMaster(lua_State* L)
 {
 	// creature:setMaster(master)
@@ -6910,7 +6938,7 @@ int LuaScriptInterface::luaCreatureSetMaster(lua_State* L)
 
 	Creature* master = getCreature(L, 2);
 	if (master) {
-		pushBoolean(L, creature->convinceCreature(master));
+		pushBoolean(L, creature->setCreatureMaster(master));
 	} else {
 		master = creature->getMaster();
 		if (master) {
