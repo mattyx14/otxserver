@@ -546,7 +546,7 @@ function doConvinceCreature(cid, target)
 		return false
 	end
 
-	targetCreature:setMaster(creature)
+	targetCreature:convince(creature)
 	return true
 end
 

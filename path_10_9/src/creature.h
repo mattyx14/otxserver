@@ -358,6 +358,10 @@ class Creature : virtual public Thing
 			return false;
 		}
 
+		virtual bool setCreatureMaster(Creature*) {
+			return false;
+		}
+
 		void onDeath();
 		virtual uint64_t getGainedExperience(Creature* attacker) const;
 		void addDamagePoints(Creature* attacker, int32_t damagePoints);

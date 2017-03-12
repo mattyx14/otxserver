@@ -1918,6 +1918,53 @@ bool Monster::challengeCreature(Creature* creature)
 	return result;
 }
 
+bool Monster::setCreatureMaster(Creature* master){
+
+	if (isSummon()) {
+		if (getMaster()->getPlayer()) {
+			return false;
+		} else if (getMaster() == master) {
+			return false;
+		}
+
+		Creature* oldMaster = getMaster();
+		oldMaster->removeSummon(this);
+	}
+
+	master->addSummon(this);
+
+	setFollowCreature(nullptr);
+	setAttackedCreature(nullptr);
+
+	//destroy summons
+	for (Creature* summon : summons) {
+		summon->changeHealth(-summon->getHealth());
+		summon->setMaster(nullptr);
+		summon->decrementReferenceCounter();
+	}
+	summons.clear();
+
+	isMasterInRange = true;
+	updateTargetList();
+	updateIdleStatus();
+
+	//Notify surrounding about the change
+	SpectatorHashSet spectators;
+	g_game.map.getSpectators(spectators, getPosition(), true);
+	g_game.map.getSpectators(spectators, master->getPosition(), true);
+	for (Creature* spectator : spectators) {
+		spectator->onCreatureConvinced(master, this);
+	}
+
+	if (spawn) {
+		spawn->removeMonster(this);
+		spawn = nullptr;
+	}
+	return true;
+
+
+}
+
 bool Monster::convinceCreature(Creature* creature)
 {
 	Player* player = creature->getPlayer();
