@@ -5,7 +5,10 @@ local holeId = {
 	8323, 8252, 8253, 8254, 8255, 8256, 8592, 8972, 9606, 9625, 13190, 14461, 19519, 21536
 }
 
-local holes = {468, 481, 483, 7932}
+local holes = {468, 481, 483, 7932 }
+
+local pickHoleIds = {354, 355}
+
 local others = {7932}
 
 local JUNGLE_GRASS = { 2782, 3985, 19433 }
@@ -151,7 +154,7 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	if (ground.uid > 65535 or ground.actionid == 0) and not table.contains(groundIds, ground.itemid) then
+	if (ground.uid > 65535 or ground.actionid == 0) and not table.contains(pickHoleIds, ground.itemid) then
 		return false
 	end
 
