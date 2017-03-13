@@ -289,13 +289,14 @@
 	ghostModeSpellEffects = true
 
 	-- Limits
+	-- Tile Limits set to 0 for prevent crash
 	idleWarningTime = 14 * 60 * 1000
 	idleKickTime = 15 * 60 * 1000
 	expireReportsAfterReads = 1
 	playerQueryDeepness = -1
-	protectionTileLimit = 10
-	houseTileLimit = 10
-	tileLimit = 7
+	protectionTileLimit = 0
+	houseTileLimit = 0
+	tileLimit = 0
 
 	-- Premium-related
 	freePremium = false
