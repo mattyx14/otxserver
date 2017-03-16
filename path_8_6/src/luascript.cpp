@@ -4013,7 +4013,7 @@ int LuaScriptInterface::luaGameGetReturnMessage(lua_State* L)
 int LuaScriptInterface::luaGameCreateItem(lua_State* L)
 {
 	// Game.createItem(itemId[, count[, position]])
-	uint16_t count = getNumber<uint16_t>(L, 2, 1);
+	uint16_t itemId;
 	if (isNumber(L, 1)) {
 		itemId = getNumber<uint16_t>(L, 1);
 	} else {
@@ -6526,7 +6526,6 @@ int LuaScriptInterface::luaCreatureSetMaster(lua_State* L)
 	}
 
 	pushBoolean(L, creature->setMaster(getCreature(L, 2)));
-	g_game.updateCreatureType(creature);
 	return 1;
 }
 

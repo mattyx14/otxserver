@@ -3737,17 +3737,6 @@ Skulls_t Player::getSkullClient(const Creature* creature) const
 	return Creature::getSkullClient(creature);
 }
 
-bool Player::hasKilled(const Player* player) const
-{
-	for (const auto& kill : unjustifiedKills) {
-		if (kill.target == player->getGUID() && (time(nullptr) - kill.time) < g_config.getNumber(ConfigManager::ORANGE_SKULL_DURATION) * 24 * 60 * 60 && kill.unavenged) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
 bool Player::hasAttacked(const Player* attacked) const
 {
 	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked) {

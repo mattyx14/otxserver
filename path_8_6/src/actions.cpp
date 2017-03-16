@@ -466,9 +466,8 @@ bool Action::configureEvent(const pugi::xml_node& node)
 
 namespace {}
 
-bool Action::loadFunction(const pugi::xml_attribute& attr)
+bool Action::loadFunction(const pugi::xml_attribute&)
 {
-	const char* functionName = attr.as_string();
 	scripted = false;
 	return true;
 }
