@@ -17,12 +17,21 @@
 	<event class="Player" method="onLookInShop" enabled="0" />
 	<event class="Player" method="onMoveItem" enabled="1" />
 	<event class="Player" method="onMoveCreature" enabled="0" />
+	<event class="Player" method="onReport" enabled="1" />
 	<event class="Player" method="onTurn" enabled="1" />
 	<event class="Player" method="onTradeRequest" enabled="1" />
 	<event class="Player" method="onTradeAccept" enabled="0" />
 	<event class="Player" method="onGainExperience" enabled="1" />
 	<event class="Player" method="onLoseExperience" enabled="0" />
 	<event class="Player" method="onGainSkillTries" enabled="1" />
-	<!-- Custom methods -->
-	<event class="Monster" method="onSpawn" enabled="1" />
+
+	<!-- OTX Systems -->
+		<!-- Modified Scripts from TFS
+			onTargetCombat - removeCombatProtection on secure modes protection
+			onMoveItem - protections on rewardsystem and global depots
+			onTurn - move with ( ctrl + arrows ) like to TFS 0.3.x : 0.4
+			onTradeRequest - move with ( ctrl + arrows ) like to TFS 0.3.x : 0.4
+		-->
+
+		<event class="Monster" method="onSpawn" enabled="0" />
 </events>

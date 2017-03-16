@@ -2023,7 +2023,7 @@ void Player::death(Creature* lastHitCreature)
 			}
 		}
 	} else {
-		setLossSkill(true);
+		setSkillLoss(true);
 
 		auto it = conditions.begin(), end = conditions.end();
 		while (it != end) {
@@ -3470,7 +3470,7 @@ bool Player::onKilledCreature(Creature* target, bool lastHit/* = true*/)
 	if (Player* targetPlayer = target->getPlayer()) {
 		if (targetPlayer && targetPlayer->getZone() == ZONE_PVP) {
 			targetPlayer->setDropLoot(false);
-			targetPlayer->setLossSkill(false);
+			targetPlayer->setSkillLoss(false);
 		} else if (!hasFlag(PlayerFlag_NotGainInFight) && !isPartner(targetPlayer)) {
 			if (!Combat::isInPvpZone(this, targetPlayer) && hasAttacked(targetPlayer) && !targetPlayer->hasAttacked(this) && !isGuildMate(targetPlayer) && targetPlayer != this) {
 				if (targetPlayer->getSkull() == SKULL_NONE && !isInWar(targetPlayer)) {
@@ -3735,6 +3735,17 @@ Skulls_t Player::getSkullClient(const Creature* creature) const
 		}
 	}
 	return Creature::getSkullClient(creature);
+}
+
+bool Player::hasKilled(const Player* player) const
+{
+	for (const auto& kill : unjustifiedKills) {
+		if (kill.target == player->getGUID() && (time(nullptr) - kill.time) < g_config.getNumber(ConfigManager::ORANGE_SKULL_DURATION) * 24 * 60 * 60 && kill.unavenged) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool Player::hasAttacked(const Player* attacked) const

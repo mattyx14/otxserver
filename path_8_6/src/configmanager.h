@@ -45,7 +45,6 @@ class ConfigManager
 		};
 
 		enum string_config_t {
-			DUMMY_STR,
 			MAP_NAME,
 			HOUSE_RENT_PERIOD,
 			SERVER_NAME,

@@ -740,6 +740,7 @@ class LuaScriptInterface
 		static int luaCreatureChangeSpeed(lua_State* L);
 
 		static int luaCreatureSetDropLoot(lua_State* L);
+		static int luaCreatureSetSkillLoss(lua_State* L);
 
 		static int luaCreatureGetPosition(lua_State* L);
 		static int luaCreatureGetTile(lua_State* L);
@@ -1057,6 +1058,7 @@ class LuaScriptInterface
 
 		static int luaHouseGetOwnerGuid(lua_State* L);
 		static int luaHouseSetOwnerGuid(lua_State* L);
+		static int luaHouseStartTrade(lua_State* L);
 
 		static int luaHouseGetBeds(lua_State* L);
 		static int luaHouseGetBedCount(lua_State* L);

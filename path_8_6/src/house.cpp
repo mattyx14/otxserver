@@ -509,7 +509,7 @@ void AccessList::getList(std::string& list) const
 	list = this->list;
 }
 
-Door::Door(uint16_t type) : Item(type) {}
+Door::Door(uint16_t type) :	Item(type) {}
 
 Attr_ReadValue Door::readAttr(AttrTypes_t attr, PropStream& propStream)
 {

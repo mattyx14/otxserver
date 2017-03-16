@@ -7,5 +7,7 @@
 	<channel id="6" name="Advertising-Rookgaard" public="1" script="advertising-rook.lua" />
 	<channel id="7" name="Help" public="1" script="help.lua" />
 	<channel id="8" name="Gamemaster" script="gamemaster.lua" />
+
+	<!-- OTX Systems -->
 	<channel id="10" name="Guild Leaders" script="guildleaders.lua" />
 </channels>

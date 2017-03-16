@@ -19567,9 +19567,9 @@
 		<attribute key="slotType" value="backpack" />
 	</item>
 	<item id="11242" article="an" name="expedition bag">
-		<attribute key="containersize" value="32" />
-		<attribute key="pickupable" value="0" />
-		<attribute key="moveable" value="0" />
+		<attribute key="weight" value="800" />
+		<attribute key="containerSize" value="8" />
+		<attribute key="slotType" value="backpack" />
 	</item>
 	<item id="11243" article="a" name="dragon backpack">
 		<attribute key="weight" value="1700" />
