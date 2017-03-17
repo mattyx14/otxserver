@@ -101,6 +101,7 @@
 	- Fix Player:getClosestFreePosition behavior (TFC)
 	- Fix removeMoney unintended behavior (TFC)
 	- Fix #175, #183, #186 #205 to 208 (OTXS-C)
+	- Fix attack speed extra delay (TFC)
 	- Lazily load monsters from XML (TFT)
 	- Move findPerson to Lua (TFC)
 	- Move doSet*Outfit functions to Lua (TFC)
