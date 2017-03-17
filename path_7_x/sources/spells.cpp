@@ -977,7 +977,7 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	Creature* targetCreature = tile->getTopVisibleCreature(player);
+	Creature* targetCreature = tile->getTopCreature();
 	if(blockingCreature && targetCreature)
 	{
 		player->sendCancelMessage(RET_NOTENOUGHROOM);
