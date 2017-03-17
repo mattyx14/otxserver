@@ -540,14 +540,6 @@ void Player::sendIcons() const
 			icons |= (*it)->getIcons();
 	}
 
-	if(getZone() == ZONE_PROTECTION)
-	{
-		icons |= ICON_NONE;
-	}
-
-	if(pzLocked)
-		icons |= ICON_NONE;
-
 	// Tibia client debugs with 10 or more icons
 	// so let's prevent that from happening.
 	std::bitset<20> icon_bitset((uint64_t)icons);

@@ -54,7 +54,10 @@
 ]
 
 [ OTX Server 2.9 :: Version "VANXI"
-	- 
+	- Fix https://github.com/mattyx14/otxserver/issues/212
+	- Fix https://github.com/mattyx14/otxserver/issues/210
+	- Fix https://github.com/mattyx14/otxserver/issues/194
+	- Fix https://github.com/mattyx14/otxserver/commit/a256db41e92ead2becc6a00dfa2acbcdc4e31f49
 ]
 
 [ OTX Server 2.8 :: Version "LEZICK"
