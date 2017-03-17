@@ -1,5 +1,6 @@
 local increasing = {[416] = 417, [426] = 425, [446] = 447, [3216] = 3217, [3202] = 3215, [11062] = 11063}
 local decreasing = {[417] = 416, [425] = 426, [447] = 446, [3217] = 3216, [3215] = 3202, [11063] = 11062}
+local maxLevel = 1000
 
 function onStepIn(creature, item, position, fromPosition)
 	if not increasing[item.itemid] then
@@ -12,7 +13,7 @@ function onStepIn(creature, item, position, fromPosition)
 
 	item:transform(increasing[item.itemid])
 
-	if item.actionid >= 1000 then
+	if item.actionid >= 1000 and item.actionid - 1000 <= maxLevel then
 		if creature:getLevel() < item.actionid - 1000 then
 			creature:teleportTo(fromPosition, false)
 			position:sendMagicEffect(CONST_ME_MAGIC_BLUE)

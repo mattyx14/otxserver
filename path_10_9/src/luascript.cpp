@@ -1802,6 +1802,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_EQUIPMENT_SLOTS)
 	registerEnumIn("configKeys", ConfigManager::ENABLE_LIVE_CASTING)
 	registerEnumIn("configKeys", ConfigManager::ALLOW_BLOCK_SPAWN)
+	registerEnumIn("configKeys", ConfigManager::CLASSIC_ATTACK_SPEED)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)

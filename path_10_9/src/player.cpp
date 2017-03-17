@@ -3293,11 +3293,13 @@ void Player::doAttacking(uint32_t)
 		Item* tool = getWeapon();
 		const Weapon* weapon = g_weapons->getWeapon(tool);
 		uint32_t delay = getAttackSpeed();
+		bool classicSpeed = g_config.getBoolean(ConfigManager::CLASSIC_ATTACK_SPEED);
+
 		if (weapon) {
 			if (!weapon->interruptSwing()) {
 				result = weapon->useWeapon(this, tool, attackedCreature);
-			} else if (!canDoAction()) {
-				uint32_t delay = getNextActionTime();
+			} else if (!classicSpeed && !canDoAction()) {
+				delay = getNextActionTime();
 			} else {
 				result = weapon->useWeapon(this, tool, attackedCreature);
 			}
@@ -3306,8 +3308,12 @@ void Player::doAttacking(uint32_t)
 		}
 
 		SchedulerTask* task = createSchedulerTask(std::max<uint32_t>(SCHEDULER_MINTICKS, delay), std::bind(&Game::checkCreatureAttack, &g_game, getID()));
-		setNextActionTask(task);
-		
+		if (!classicSpeed) {
+			setNextActionTask(task);
+		} else {
+			g_scheduler.addEvent(task);
+		}
+
 		if (result) {
 			lastAttack = OTSYS_TIME();
 		}

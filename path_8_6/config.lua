@@ -70,6 +70,7 @@ maxMessageBuffer = 4
 emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
+classicAttackSpeed = false
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml

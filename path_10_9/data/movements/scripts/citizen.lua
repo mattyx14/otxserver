@@ -1,10 +1,13 @@
 function onStepIn(creature, item, position, fromPosition)
 	if item.actionid > 30020 and item.actionid < 30050 then
-		if not creature:isPlayer() then
+		local player = creature:getPlayer()
+		if player == nil then
 			return false
 		end
 
-		creature:setTown(Town(item.actionid - 30020))
+		local town = Town(item.actionid - 30020)
+		player:setTown(town)
+		player:sendTextMessage(MESSAGE_INFO_DESCR, "You are the newest resident of " .. town:getName(town) .. ".")
 	end
 	return true
 end

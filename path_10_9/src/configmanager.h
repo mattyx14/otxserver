@@ -42,6 +42,7 @@ class ConfigManager
 			CLASSIC_EQUIPMENT_SLOTS,
 			ENABLE_LIVE_CASTING,
 			ALLOW_BLOCK_SPAWN,
+			CLASSIC_ATTACK_SPEED,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
