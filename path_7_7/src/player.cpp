@@ -2966,12 +2966,12 @@ void Player::doAttacking(uint32_t)
 
 		Item* tool = getWeapon();
 		const Weapon* weapon = g_weapons->getWeapon(tool);
-		uint32_t delay = getAttackSpeed()
+		uint32_t delay = getAttackSpeed();
 		if (weapon) {
 			if (!weapon->interruptSwing()) {
 				result = weapon->useWeapon(this, tool, attackedCreature);
 			} else if (!canDoAction()) {
-				uint32_t delay = getNextActionTime();
+				delay = getNextActionTime();
 			} else {
 				result = weapon->useWeapon(this, tool, attackedCreature);
 			}
