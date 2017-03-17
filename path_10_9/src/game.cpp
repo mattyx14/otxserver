@@ -4058,7 +4058,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		}
 
 		if (critical) {
-			addMagicEffect(spectators, targetPos, CONST_ME_CRITICAL_HIT);
+			addMagicEffect(spectators, targetPos, CONST_ME_CRITICAL_DAMAGE);
 		}
 
 		if (message.primary.color != TEXTCOLOR_NONE || message.secondary.color != TEXTCOLOR_NONE) {
