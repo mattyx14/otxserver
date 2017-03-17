@@ -1746,7 +1746,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RETURNVALUE_TRADEPLAYERALREADYOWNSAHOUSE)
 	registerEnum(RETURNVALUE_TRADEPLAYERHIGHESTBIDDER)
 	registerEnum(RETURNVALUE_YOUCANNOTTRADETHISHOUSE)
-	registerEnum(RETURNVALUE_NOTENOUGHFISTLEVE)
+	registerEnum(RETURNVALUE_NOTENOUGHFISTLEVEL)
 	registerEnum(RETURNVALUE_NOTENOUGHCLUBLEVEL)
 	registerEnum(RETURNVALUE_NOTENOUGHSWORDLEVEL)
 	registerEnum(RETURNVALUE_NOTENOUGHAXELEVEL)
@@ -4162,7 +4162,7 @@ int LuaScriptInterface::luaGameGetReturnMessage(lua_State* L)
 int LuaScriptInterface::luaGameCreateItem(lua_State* L)
 {
 	// Game.createItem(itemId[, count[, position]])
-	uint16_t count = getNumber<uint16_t>(L, 2, 1);
+	uint16_t itemId;
 	if (isNumber(L, 1)) {
 		itemId = getNumber<uint16_t>(L, 1);
 	} else {
