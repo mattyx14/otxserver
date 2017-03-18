@@ -30,15 +30,9 @@ static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otx
 
 static constexpr auto CLIENT_VERSION_ITEMS = 3;
 
-#ifdef _MULTIPLATFORM77
 static constexpr auto CLIENT_VERSION_MIN = 770;
 static constexpr auto CLIENT_VERSION_MAX = 772;
 static constexpr auto CLIENT_VERSION_STR = "7.72";
-#else
-static constexpr auto CLIENT_VERSION_MIN = 760;
-static constexpr auto CLIENT_VERSION_MAX = 760;
-static constexpr auto CLIENT_VERSION_STR = "7.60";
-#endif
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__

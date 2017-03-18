@@ -69,7 +69,6 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 			}
 		}
 
-#ifdef _MULTIPLATFORM77
 		void enableXTEAEncryption() {
 			encryptionEnabled = true;
 		}
@@ -80,7 +79,6 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		void XTEA_encrypt(OutputMessage& msg) const;
 		bool XTEA_decrypt(NetworkMessage& msg) const;
 		static bool RSA_decrypt(NetworkMessage& msg);
-#endif
 
 		void setRawMessages(bool value) {
 			rawMessages = value;
@@ -93,10 +91,8 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 	private:
 		const ConnectionWeak_ptr connection;
 
-	#ifdef _MULTIPLATFORM77
 		uint32_t key[4] = {};
 		bool encryptionEnabled = false;
-	#endif
 
 		bool rawMessages = false;
 };

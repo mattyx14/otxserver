@@ -22,32 +22,26 @@
 #include "protocol.h"
 #include "outputmessage.h"
 
-#ifdef _MULTIPLATFORM77
 #include "rsa.h"
 extern RSA g_RSA;
-#endif
 
 void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 {
 	if (!rawMessages) {
 		msg->writeMessageLength();
 
-		#ifdef _MULTIPLATFORM77
 			if (encryptionEnabled) {
 				XTEA_encrypt(*msg);
 				msg->addCryptoHeader();
 			}
-		#endif
 	}
 }
 
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
-	#ifdef _MULTIPLATFORM77
 		if (encryptionEnabled && !XTEA_decrypt(msg)) {
 			return;
 		}
-	#endif
 
 	parsePacket(msg);
 }
@@ -63,7 +57,6 @@ OutputMessage_ptr Protocol::getOutputBuffer(int32_t size)
 	}
 }
 
-#ifdef _MULTIPLATFORM77
 void Protocol::XTEA_encrypt(OutputMessage& msg) const
 {
 	const uint32_t delta = 0x61C88647;
@@ -149,7 +142,6 @@ bool Protocol::RSA_decrypt(NetworkMessage& msg)
 	g_RSA.decrypt(reinterpret_cast<char*>(msg.getBuffer()) + msg.getBufferPosition()); //does not break strict aliasing
 	return msg.getByte() == 0;
 }
-#endif
 
 uint32_t Protocol::getIP() const
 {

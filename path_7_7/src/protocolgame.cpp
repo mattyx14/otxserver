@@ -245,7 +245,6 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	OperatingSystem_t operatingSystem = static_cast<OperatingSystem_t>(msg.get<uint16_t>());
 	version = msg.get<uint16_t>();
 
-#ifdef _MULTIPLATFORM77
 	if (!Protocol::RSA_decrypt(msg)) {
 		disconnect();
 		return;
@@ -258,7 +257,6 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	key[3] = msg.get<uint32_t>();
 	enableXTEAEncryption();
 	setXTEAKey(key);
-#endif
 
 	if (operatingSystem >= CLIENTOS_OTCLIENT_LINUX) {
 		NetworkMessage opcodeMessage;
@@ -705,11 +703,8 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 {
 	Outfit_t newOutfit;
-#ifdef _MULTIPLATFORM77
+
 	newOutfit.lookType = msg.get<uint16_t>();
-#else
-	newOutfit.lookType = msg.get<char>();
-#endif
 	newOutfit.lookHead = msg.getByte();
 	newOutfit.lookBody = msg.getByte();
 	newOutfit.lookLegs = msg.getByte();
@@ -1103,9 +1098,7 @@ void ProtocolGame::sendChannelMessage(const std::string& author, const std::stri
 {
 	NetworkMessage msg;
 	msg.addByte(0xAA);
-#ifdef _MULTIPLATFORM77
 	msg.add<uint32_t>(0x00);
-#endif
 	msg.addString(author);
 	msg.add<uint16_t>(0x00);
 	msg.addByte(type);
@@ -1221,10 +1214,8 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 	NetworkMessage msg;
 	msg.addByte(0xAA);
 
-#ifdef _MULTIPLATFORM77
 	static uint32_t statementId = 0;
 	msg.add<uint32_t>(++statementId);
-#endif
 
 	msg.addString(creature->getName());
 	msg.addByte(type);
@@ -1243,10 +1234,8 @@ void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, co
 	NetworkMessage msg;
 	msg.addByte(0xAA);
 
-#ifdef _MULTIPLATFORM77
 	static uint32_t statementId = 0;
 	msg.add<uint32_t>(++statementId);
-#endif
 
 	if (!creature) {
 		msg.add<uint32_t>(0x00);
@@ -1661,12 +1650,8 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, uint32_t itemId, const 
 	msg.addItem(itemId, 1);
 	msg.add<uint16_t>(text.size());
 	msg.addString(text);
-#ifdef _MULTIPLATFORM77
 	msg.add<uint16_t>(0x00);
 	msg.add<uint16_t>(0x00);
-#else
-	msg.addString("");
-#endif
 	writeToOutputBuffer(msg);
 }
 
@@ -1685,13 +1670,8 @@ void ProtocolGame::sendOutfitWindow()
 	NetworkMessage msg;
 	msg.addByte(0xC8);
 	AddOutfit(msg, player->getCurrentOutfit());
-#ifdef _MULTIPLATFORM77
 	msg.add<uint16_t>(player->getSex() % 2 ? 128 : 136);
 	msg.add<uint16_t>(player->isPremium() ? (player->getSex() % 2 ? 134 : 142) : (player->getSex() % 2 ? 131 : 139));
-#else
-	msg.addByte(player->getSex() % 2 ? 128 : 136);
-	msg.addByte(player->isPremium() ? (player->getSex() % 2 ? 134 : 142) : (player->getSex() % 2 ? 131 : 139));
-#endif
 	player->hasRequestedOutfit(true);
 	writeToOutputBuffer(msg);
 }
@@ -1804,11 +1784,7 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 
 void ProtocolGame::AddOutfit(NetworkMessage& msg, const Outfit_t& outfit)
 {
-#ifdef _MULTIPLATFORM77
 	msg.add<uint16_t>(outfit.lookType);
-#else
-	msg.add<char>(outfit.lookType);
-#endif
 
 	if (outfit.lookType != 0) {
 		msg.addByte(outfit.lookHead);

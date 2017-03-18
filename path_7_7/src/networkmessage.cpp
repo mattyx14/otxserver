@@ -24,9 +24,9 @@
 #include "container.h"
 #include "creature.h"
 
-#ifdef _MULTIPLATFORM77
+
 #include "rsa.h"
-#endif
+
 
 int32_t NetworkMessage::decodeHeader()
 {

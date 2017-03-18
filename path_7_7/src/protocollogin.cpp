@@ -23,9 +23,7 @@
 
 #include "outputmessage.h"
 
-#ifdef _MULTIPLATFORM77
 #include "rsa.h"
-#endif
 
 #include "tasks.h"
 
@@ -130,7 +128,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	#ifdef _MULTIPLATFORM77
+
 	if (!Protocol::RSA_decrypt(msg)) {
 		disconnect();
 		return;
@@ -143,7 +141,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	key[3] = msg.get<uint32_t>();
 	enableXTEAEncryption();
 	setXTEAKey(key);
-	#endif
 
 	uint32_t accountName = msg.get<uint32_t>();
 	std::string password = msg.getString();
