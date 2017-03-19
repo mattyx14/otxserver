@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="wild warrior" nameDescription="a wild warrior" race="blood" experience="60" speed="190" manacost="420">
+	<health now="135" max="135"/>
+	<look type="131" head="38" body="38" legs="38" feet="38" corpse="3128"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="46" attack="16"/>
+	</attacks>
+	<defenses armor="9" defense="18">
+		<defense name="haste_wildwarrior" interval="2000" chance="6"/>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="An enemy!"/>
+		<voice sentence="Gimme your money!"/>
+	</voices>
+	<loot>
+		<item id="2666" chance="40000"/><!-- 40% meat -->
+		<item id="2148" chance="40000" countmax="20"/><!-- 20 40% gold coin -->
+		<item id="2148" chance="15000" countmax="10"/><!-- 10 15% gold coin -->
+		<item id="2110" chance="500"/><!-- 0.5% doll -->
+		<item id="2458" chance="5000"/><!-- 5% chain helmet -->
+		<item id="2459" chance="500"/><!-- 0.5% iron helmet -->
+		<item id="2465" chance="2500"/><!-- 2.5% brass armor -->
+		<item id="2649" chance="15000"/><!-- 15% leather legs -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2386" chance="30000"/><!-- 30% axe -->
+				<item id="2398" chance="10000"/><!-- 10% mace -->
+				<item id="2391" chance="100"/><!-- 0.1% war hammer -->
+				<item id="2511" chance="17000"/><!-- 17% brass shield -->
+				<item id="2509" chance="1000"/><!-- 1% steel shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

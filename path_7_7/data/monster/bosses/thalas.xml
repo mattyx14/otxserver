@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Thalas" nameDescription="Thalas" race="undead" experience="2950" speed="260" manacost="0">
+	<health now="4100" max="4100"/>
+	<look type="90" corpse="3016"/>
+	<targetchange interval="1000" chance="3"/>
+	<targetstrategies nearest="80" health="10" damage="10" random="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-10" max="-650" poison="70"/>
+		<attack name="poison" interval="2000" chance="25" range="7" min="-150" max="-650">
+			<attribute key="shootEffect" value="poison"/>
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+		<attack name="melee" interval="2000" chance="20" range="7" radius="1" target="1" min="-150" max="-650">
+			<attribute key="shootEffect" value="poison"/>
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+		<attack name="paralyze_thalas" interval="2000" chance="6" range="7"/>
+		<attack name="poisoncondition" interval="2000" chance="15" radius="5" target="0" min="-34" max="-35">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+		<attack name="poison" interval="2000" chance="17" length="8" spread="3" min="-55" max="-550">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="30">
+		<defense name="healing" interval="2000" chance="20" min="150" max="450">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<summons maxSummons="8">
+		<summon name="slime2" interval="2000" chance="3000" max="8"/>
+	</summons>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="You will become a feast for my maggots."/>
+		<voice sentence="Death and decay!"/>
+		<voice sentence="Death awaits you."/>
+		<voice sentence="Your precious life will be wasted."/>
+		<voice sentence="Red is my favourite color."/>
+		<voice sentence="Flesssh to dussst!"/>
+	</voices>
+	<loot>
+		<item id="2351" chance="100000"/><!-- 100% cobrafang dagger -->
+		<item id="2148" chance="70000" countmax="80"/><!-- 80 70% gold -->
+		<item id="2148" chance="50000" countmax="85"/><!-- 85 50% gold -->
+		<item id="2148" chance="35000" countmax="95"/><!-- 95 35% gold -->
+		<item id="2149" chance="10000" countmax="3"/><!-- 3 10% small emerald -->
+		<item id="2155" chance="1000"/><!-- 1% green gem -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+			<item id="2169" chance="5000"/><!-- 5% time ring -->
+			<item id="2409" chance="2000"/><!-- 2% serpent sword -->
+			<item id="2411" chance="20000"/><!-- 20% poison dagger -->
+			<item id="2451" chance="1500"/><!-- 1.5% djinn blade -->
+			</inside>
+		</item>
+	</loot>
+</monster>

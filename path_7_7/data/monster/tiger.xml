@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Tiger" nameDescription="a tiger" race="blood" experience="40" speed="240" manacost="420">
+<monster name="tiger" nameDescription="a tiger" race="blood" experience="40" speed="200" manacost="420">
 	<health now="75" max="75"/>
 	<look type="125" corpse="4292"/>
-	<targetchange interval="5000" chance="5"/>
-	<strategy attack="100" defense="0"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
 	<flags>
-		<flag summonable="1"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
-		<flag illusionable="1"/>
+		<flag summonable="1"/>
 		<flag convinceable="1"/>
+		<flag illusionable="1"/>
 		<flag pushable="0"/>
 		<flag canpushitems="1"/>
 		<flag canpushcreatures="1"/>
@@ -18,15 +18,19 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="1500" skill="42" attack="15"/>
+		<attack name="melee" interval="2000" skill="42" attack="15"/>
 	</attacks>
 	<defenses armor="5" defense="15">
-		<defense name="speed" interval="1000" chance="12" speedchange="567" duration="3000">
-			<attribute key="areaEffect" value="redshimmer"/>
-		</defense>
+		<defense name="haste_tiger" interval="2000" chance="11"/>
 	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
 	<loot>
-		<item id="2671" countmax="2" chance="44000"/><!-- ham -->
-		<item id="2666" countmax="3" chance="55000"/><!-- meat -->
+		<item id="2671" chance="22000" countmax="2"/><!-- 2 22% ham -->
+		<item id="2666" chance="55000" countmax="3"/><!-- 3 55% meat -->
 	</loot>
 </monster>

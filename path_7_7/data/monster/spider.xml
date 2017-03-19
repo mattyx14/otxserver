@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Spider" nameDescription="a spider" race="venom" experience="12" speed="152" manacost="210">
+<monster name="spider" nameDescription="a spider" race="venom" experience="12" speed="152" manacost="210">
 	<health now="20" max="20"/>
-	<look type="30" corpse="2807"/>
-	<targetchange interval="2000" chance="0"/>
-	<strategy attack="100" defense="0"/>
+	<look type="30" corpse="3068"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
 	<flags>
-		<flag summonable="1"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
-		<flag illusionable="1"/>
+		<flag summonable="1"/>
 		<flag convinceable="1"/>
+		<flag illusionable="1"/>
 		<flag pushable="1"/>
 		<flag canpushitems="0"/>
 		<flag canpushcreatures="0"/>
@@ -20,8 +20,15 @@
 	<attacks>
 		<attack name="melee" interval="2000" skill="19" attack="7"/>
 	</attacks>
-	<defenses armor="2" defense="2"/>
+	<defenses armor="2" defense="2">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
 	<loot>
-		<item id="2148" countmax="5" chance="70000"/><!-- gold coin -->
+		<item id="2148" chance="35000" countmax="5"/><!-- 5 35% gold coin -->
 	</loot>
 </monster>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Ashmunrah" nameDescription="Ashmunrah" race="undead" experience="3100" speed="430" manacost="0">
+	<health now="5000" max="5000"/>
+	<look type="87" corpse="3016"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-0" max="-600" poison="55"/>
+		<attack name="lifedrain" interval="2000" chance="7" range="1" min="-100" max="-700"/>
+		<attack name="poison" interval="2000" chance="12" range="7" min="-100" max="-500">
+			<attribute key="shootEffect" value="poison"/>
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+		<attack name="physical" interval="2000" chance="12" range="7" min="-120" max="-750">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="mortarea"/>
+		</attack>
+		<attack name="paralyze_ashmunrah" interval="2000" chance="25" range="7"/>
+		<attack name="lifedrain" interval="2000" chance="18" length="8" spread="3" min="-50" max="-550">
+			<attribute key="areaEffect" value="yellowbubble"/>
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="30">
+		<defense name="healing" interval="2000" chance="20" min="200" max="400">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="invisible" interval="2000" chance="7" duration="2000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="outfit" interval="2000" chance="3" monster="ancient scarab" duration="6000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<summons maxSummons="4">
+		<summon name="ancient scarab" interval="2000" chance="2000" max="2"/>
+		<summon name="green djinn" interval="2000" chance="1000" max="2"/>
+	</summons>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="I might be trapped but not without power."/>
+		<voice sentence="Ahhhh all those long years."/>
+		<voice sentence="Ages come, ages go. Asmumrah remains."/>
+		<voice sentence="My traitorous son has sent thee."/>
+		<voice sentence="No mortal or undead will steal my secrets."/>
+		<voice sentence="You will be history soon."/>
+		<voice sentence="Come to me, my allys and underlings."/>
+	</voices>
+	<loot>
+		<item id="2148" chance="40000" countmax="90"/><!-- 90 40% gold -->
+		<item id="2148" chance="70000" countmax="80"/><!-- 80 70% gold -->
+		<item id="2148" chance="50000" countmax="85"/><!-- 85 50% gold -->
+		<item id="2148" chance="35000" countmax="95"/><!-- 95 35% gold -->
+		<item id="2134" chance="4000"/><!-- 4% silver brooch -->
+		<item id="2487" chance="500"/><!-- 0.5% crown armor -->
+		<item id="2140" chance="100"/><!-- 0.1% holy scarab -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2164" chance="5000"/><!-- 5% might ring -->
+				<item id="2444" chance="100"/><!-- 0.1% hammer of wrath -->
+			</inside>
+		</item>	
+	</loot>
+</monster>

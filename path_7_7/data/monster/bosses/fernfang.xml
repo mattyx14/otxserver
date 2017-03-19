@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Fernfang" nameDescription="Fernfang" race="blood" experience="600" speed="240" manacost="0">
+	<health now="400" max="400"/>
+	<look type="57" corpse="3128"/>
+	<targetchange interval="1000" chance="7"/>
+	<targetstrategies nearest="70" health="10" damage="50" random="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="40"/>
+		<attack name="manadrain" interval="1000" chance="25" range="7" min="-25" max="-45">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="energy" interval="1000" chance="13" range="7" min="-70" max="-90">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="physical" interval="1000" chance="10" range="7" min="-140" max="-180">
+			<attribute key="shootEffect" value="death"/>
+		</attack>
+	</attacks>
+	<defenses armor="15" defense="10">
+		<defense name="healing" interval="1000" chance="15" min="90" max="120">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="haste_fernfang" interval="1000" chance="7"/>
+		<defense name="outfit" interval="1000" chance="5" monster="war wolf" duration="14000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<summons maxSummons="3">
+		<summon name="War Wolf" interval="1000" chance="13" max="3"/>
+	</summons>
+	<immunities>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="You desecrated this place!"/>
+		<voice sentence="I will cleanse this isle!"/>
+		<voice sentence="Grrrrrrr"/>
+		<voice sentence="Yoooohhuuuu!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="2689" chance="14000"/><!-- 14% bread -->
+		<item id="2148" chance="15000" countmax="18"/><!-- 18 15% gold -->
+		<item id="2154" chance="400"/><!-- 0.4 yellow gem -->
+		<item id="2260" chance="18000"/><!-- 18% blank rune -->
+		<item id="2177" chance="2000"/><!-- 2% life crystal -->
+		<item id="2015" chance="9000"/><!-- 9% brown flask -->
+		<item id="2032" chance="6500"/><!-- 6.5% bowl -->
+		<item id="2802" chance="7000"/><!-- 7% sling herb -->
+		<item id="2800" chance="9000"/><!-- 9% star herb -->
+		<item id="2747" chance="9000"/><!-- 9% grave flower -->
+		<item id="2220" chance="7700"/><!-- 7.7% dirty fur -->
+		<item id="2129" chance="10000"/><!-- 10% wolf tooth chain -->
+		<item id="2652" chance="9000"/><!-- 9% green tunic -->
+		<item id="2642" chance="9000"/><!-- 9% sandals -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2044" chance="10000"/><!-- 10% lamp -->
+				<item id="2401" chance="11000"/><!-- 11% staff -->
+				<item id="2401" chance="11000"/><!-- 11% staff -->
+				<item id="2166" chance="500"/><!-- 0.5% power ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

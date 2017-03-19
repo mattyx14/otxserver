@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Witch" nameDescription="a witch" race="blood" experience="120" speed="180" manacost="0">
+<monster name="witch" nameDescription="a witch" race="blood" experience="120" speed="204" manacost="0">
 	<health now="300" max="300"/>
 	<look type="54" corpse="3065"/>
-	<targetchange interval="5000" chance="50"/>
-	<strategy attack="100" defense="0"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
 	<flags>
-		<flag summonable="0"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
-		<flag illusionable="1"/>
+		<flag summonable="0"/>
 		<flag convinceable="0"/>
+		<flag illusionable="1"/>
 		<flag pushable="0"/>
 		<flag canpushitems="1"/>
 		<flag canpushcreatures="0"/>
@@ -19,39 +19,44 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" skill="18" attack="18"/>
-		<attack name="fire" interval="1000" chance="20" range="7" min="-30" max="-75">
+		<attack name="fire" interval="1000" chance="20" range="7" min="-25" max="-55">
 			<attribute key="shootEffect" value="fire"/>
 		</attack>
 		<attack name="firefield" interval="1000" chance="13" range="7" radius="1" target="1">
 			<attribute key="shootEffect" value="fire"/>
 		</attack>
 	</attacks>
-	<defenses armor="8" defense="12"/>
+	<defenses armor="8" defense="12">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+	</elements>
 	<immunities>
 		<immunity invisible="1"/>
-		<immunity poison="1"/>
-		<immunity energy="1"/>
 	</immunities>
-	<voices interval="5000" chance="10">
+	<voices interval="2000" chance="5">
 		<voice sentence="Horax pokti!"/>
 		<voice sentence="Hihihihi!"/>
-		<voice sentence="Herba budinia ex!"/>
+		<voice sentence="Herba budinia ex!"/>  
 	</voices>
 	<loot>
-		<item id="2551" chance="40000"/><!-- broom -->
-		<item id="2654" chance="50000"/><!-- cape -->
-		<item id="2696" chance="80000"/><!-- cheese -->
-		<item id="2651" chance="40000"/><!-- coat -->
-		<item id="2687" countmax="8" chance="60000"/><!-- cookie -->
-		<item id="2148" countmax="10" chance="20000"/><!-- gold coin -->
-		<item id="2643" chance="50000"/><!-- leather boots -->
-		<item id="2405" chance="80000"/><!-- sickle -->
-		<item id="2800" chance="18000"/><!-- star herb -->
-		<item id="2129" chance="20000"/><!-- wolf tooth chain -->
+		<item id="2696" chance="40000"/><!-- 40% cheese -->
+		<item id="2687" chance="30000" countmax="8"/><!-- 8 30% cookie -->
+		<item id="2148" chance="10000" countmax="10"/><!-- 10 10% gold coin -->
+		<item id="2800" chance="9000"/><!-- 9% star herb -->
+		<item id="2551" chance="20000"/><!-- 20% broom -->
+		<item id="2643" chance="50000"/><!-- 50% leather boots -->
+		<item id="2654" chance="50000"/><!-- 50% cape -->
+		<item id="2651" chance="20000"/><!-- 20% coat -->
+		<item id="2129" chance="10000"/><!-- 10% wolf tooth chain -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<item id="2199" chance="5000"/><!-- garlic necklace -->
-			<item id="2402" chance="1000"/><!-- silver dagger -->
-			<item id="2185" chance="2000"/><!-- necrotic rod -->
+			<inside>
+				<item id="2405" chance="40000"/><!-- 40% sickle -->
+				<item id="2402" chance="500"/><!-- 0.5% silver dagger -->
+				<item id="2185" chance="1000"/><!-- 1% volcanic rod -->
+				<item id="2199" chance="2500"/><!-- 2.5% garlic necklace -->
+			</inside>
 		</item>
 	</loot>
 </monster>

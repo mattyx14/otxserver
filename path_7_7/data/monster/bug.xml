@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<monster name="Bug" namedescription="a bug" race="venom" experience="18" speed="240" manacost="250">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="bug" nameDescription="a bug" race="venom" experience="18" speed="160" manacost="250">
 	<health now="29" max="29"/>
 	<look type="45" corpse="2902"/>
-	<targetchange interval="2000" chance="0"/>
-	<strategy attack="100" defense="0"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
 	<flags>
-		<flag summonable="1"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
-		<flag illusionable="1"/>
+		<flag summonable="1"/>
 		<flag convinceable="1"/>
+		<flag illusionable="1"/>
 		<flag pushable="1"/>
 		<flag canpushitems="0"/>
 		<flag canpushcreatures="0"/>
@@ -20,11 +20,16 @@
 	<attacks>
 		<attack name="melee" interval="2000" skill="23" attack="9"/>
 	</attacks>
-	<defenses armor="2" defense="3"/>
+	<defenses armor="2" defense="3">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
 	<loot>
-		<item id="2148" countmax="6" chance="70000"/><!-- gold coin -->
-		<item id="1987" chance="100000"><!-- bag -->
-			<item id="2679" countmax="3" chance="6000"/><!-- cherry -->
-		</item>
+		<item id="2148" chance="35000" countmax="6"/><!-- 6 35% gold coin -->
+		<item id="2679" chance="3000" countmax="3"/><!-- 3 3% cherry -->
 	</loot>
 </monster>

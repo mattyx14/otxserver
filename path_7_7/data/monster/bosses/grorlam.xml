@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Grorlam" nameDescription="Grorlam" race="blood" experience="290" speed="240" manacost="0">
+	<health now="310" max="310"/>
+	<look type="205" corpse="2952"/>
+	<targetchange interval="100" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="75" attack="60"/>
+		<attack name="physical" interval="2000" checkshield="1" chance="15" range="7" min="-150" max="-200">
+			<attribute key="shootEffect" value="largerock"/>
+		</attack>
+	</attacks>
+	<defenses armor="15" defense="25">
+		<defense name="healing" interval="2000" chance="25" min="100" max="150">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="haste_grorlam" interval="2000" chance="6"/>
+	</defenses>
+		<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity paralyze="1"/>
+	</immunities>
+	<loot>
+		<item id="2148" chance="16000" countmax="15"/><!-- 15 16% gold -->
+		<item id="2150" chance="6500" countmax="2"/><!-- 2 6.5% small amethyst -->
+		<item id="2156" chance="500"/><!-- 0.5% red gem -->
+		<item id="1294" chance="13000" countmax="4"/><!-- 4 13% small stone -->
+		<item id="2553" chance="6000"/><!-- 6% pick -->
+		<item id="2124" chance="200"/><!-- 0.2% crystal ring -->
+		<item id="2483" chance="5000"/><!-- 5% scale armor -->
+		<item id="2645" chance="500"/><!-- 0.5% steel boots -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2509" chance="7000"/><!-- 7% steel shield -->
+				<item id="2166" chance="5500"/><!-- 5.5% power ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

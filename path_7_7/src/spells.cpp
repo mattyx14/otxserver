@@ -760,7 +760,7 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 		return false;
 	}
 
-	const Creature* topVisibleCreature = tile->getBottomVisibleCreature(player);
+	const Creature* topVisibleCreature = tile->getBottomCreature();
 	if (blockingCreature && topVisibleCreature) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);

@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<monster name="Centipede" namedescription="a centipede" race="blood" experience="30" speed="195" manacost="335">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="centipede" nameDescription="a centipede" race="venom" experience="30" speed="166" manacost="335">
 	<health now="70" max="70"/>
 	<look type="124" corpse="4289"/>
-	<targetchange interval="5000" chance="6"/>
-	<strategy attack="100" defense="0"/>
+	<targetchange interval="1000" chance="6"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
 	<flags>
-		<flag summonable="1"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
-		<flag illusionable="1"/>
+		<flag summonable="1"/>
 		<flag convinceable="1"/>
+		<flag illusionable="1"/>
 		<flag pushable="1"/>
 		<flag canpushitems="1"/>
 		<flag canpushcreatures="0"/>
@@ -20,15 +20,22 @@
 	<attacks>
 		<attack name="melee" interval="2000" skill="30" attack="24" poison="22"/>
 	</attacks>
-	<defenses armor="8" defense="9"/>
+	<defenses armor="8" defense="9">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
 	<immunities>
-		<immunity poison="1"/>
 	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
 	<loot>
-		<item id="2148" countmax="15" chance="80000"/><!-- gold coin -->
+		<item id="2148" chance="80000" countmax="15"/><!-- 15 80% gold coin -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<item id="2398" chance="9000"/><!-- mace -->
-			<item id="2376" chance="6000"/><!-- sword -->
+			<inside>
+				<item id="2376" chance="3000"/><!-- 3% sword -->
+				<item id="2398" chance="4500"/><!-- 4.5% mace -->
+			</inside>
 		</item>
 	</loot>
 </monster>

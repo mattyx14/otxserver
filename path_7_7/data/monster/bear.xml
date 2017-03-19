@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<monster name="Bear" namedescription="a bear" race="blood" experience="23" speed="176" manacost="300">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="bear" nameDescription="a bear" race="blood" experience="23" speed="156" manacost="300">
 	<health now="80" max="80"/>
 	<look type="16" corpse="2849"/>
-	<targetchange interval="2000" chance="0"/>
-	<strategy attack="100" defense="0"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
 	<flags>
-		<flag summonable="1"/>
 		<flag attackable="1"/>
 		<flag hostile="1"/>
-		<flag illusionable="1"/>
+		<flag summonable="1"/>
 		<flag convinceable="1"/>
+		<flag illusionable="1"/>
 		<flag pushable="0"/>
 		<flag canpushitems="0"/>
 		<flag canpushcreatures="0"/>
@@ -20,16 +20,19 @@
 	<attacks>
 		<attack name="melee" interval="2000" skill="15" attack="17"/>
 	</attacks>
-	<defenses armor="6" defense="6"/>
-	<voices interval="5000" chance="10">
+	<defenses armor="6" defense="6">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
 		<voice sentence="Grrrr"/>
 		<voice sentence="Groar"/>
 	</voices>
 	<loot>
-		<item id="2671" countmax="2" chance="80000"/><!-- ham -->
-		<item id="2666" countmax="4" chance="70000"/><!-- meat -->
-		<item id="1987" chance="100000"><!-- bag -->
-			<item id="3976" chance="10000"/><!-- worm -->
-		</item>
+		<item id="3976" chance="5000"/><!-- 5% worm -->
+		<item id="2671" chance="40000" countmax="2"/><!-- 2 40% ham -->
+		<item id="2666" chance="70000" countmax="4"/><!-- 4 70% meat -->
 	</loot>
 </monster>

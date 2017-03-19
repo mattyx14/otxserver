@@ -38,7 +38,7 @@
 		<vocation name="Paladin"/>	<vocation name="Royal Paladin"/>
 		<vocation name="Knight"/>	<vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Find Person" words="exiva" needlearn="0" lvl="8" mana="20" params="1" function="searchPlayer">
+	<instant name="Find Person" words="exiva" needlearn="0" lvl="8" mana="20" params="1" script="support/find_person.lua">
 		<vocation name="Sorcerer"/>	<vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>	<vocation name="Royal Paladin"/>
@@ -77,7 +77,7 @@
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" function="summonMonster">
+	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" script="support/summon_creature.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 	</instant>
@@ -122,7 +122,7 @@
 	<instant name="Energy Beam" words="exevo vis lux" needlearn="0" lvl="23" mana="100" direction="1" script="attack/energy_beam.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</instant>
-	<instant name="Creature Illusion" words="utevo res ina" needlearn="0" lvl="23" mana="100" params="1" function="illusion">
+	<instant name="Creature Illusion" words="utevo res ina" needlearn="0" lvl="23" mana="100" params="1" script="support/illusion.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 	</instant>
@@ -283,5 +283,59 @@
 	<conjure name="Conjure Arrow" words="exevo con" needlearn="0" lvl="13" mana="100" soul="1" conjureId="2544" conjureCount="10" function="conjureItem">
 		<vocation name="Paladin"/>	<vocation name="Royal Paladin"/>
 	</conjure>
+	
+		<!-- Monster Spells -->
+	<instant name="djinn electrify"	words="###1" aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/djinn electrify.lua"/>
+	<instant name="djinn electrify area" words="###2" aggressive="1" blockwalls="1" selftarget="1" needlearn="1" script="monster/djinn electrify area.lua"/>
+	<instant name="haste_ancientscarab"  words="###3"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_ancientscarab.lua"/>
+	<instant name="haste_assassin"  words="###4"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_assassin.lua"/>
+	<instant name="haste_behemoth"  words="###5"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_behemoth.lua"/>
+	<instant name="haste_darkmonk"  words="###6"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_darkmonk.lua"/>
+	<instant name="haste_dharalion"  words="###7"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_dharalion.lua"/>
+	<instant name="haste_dworcvoodoomaster"  words="###8"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_dworcvoodoomaster.lua"/>
+	<instant name="haste_fernfang"  words="###9"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_fernfang.lua"/>
+	<instant name="haste_gazer"  words="###10"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_gazer.lua"/>
+	<instant name="haste_giantspider"  words="###11"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_giantspider.lua"/>
+	<instant name="haste_grorlam"  words="###12"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_grorlam.lua"/>
+	<instant name="haste_kongra"  words="###13"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_kongra.lua"/>
+	<instant name="haste_monk"  words="###14"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_monk.lua"/>
+	<instant name="haste_morguthis"  words="###15"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_morguthis.lua"/>
+	<instant name="haste_oldwidow"  words="###16"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_oldwidow.lua"/>
+	<instant name="haste_orcberserker"  words="###17"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_orcberserker.lua"/>
+	<instant name="haste_orcrider"  words="###18"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_orcrider.lua"/>
+	<instant name="haste_orshabaal"  words="###19"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_orshabaal.lua"/>
+	<instant name="haste_scarab"  words="###20"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_scarab.lua"/>
+	<instant name="haste_serpentspawn"  words="###21"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_serpentspawn.lua"/>
+	<instant name="haste_sibang"  words="###22"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_sibang.lua"/>
+	<instant name="haste_tarantula"  words="###23"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_tarantula.lua"/>
+	<instant name="haste_tiger"  words="###24"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_tiger.lua"/>
+	<instant name="haste_wildwarrior"  words="###25"  aggressive="0" blockwalls="1" needtarget="1" needlearn="1" script="monster/haste_wildwarrior.lua"/>
+	<instant name="paralyze_ancientscarab"  words="###26"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_ancientscarab.lua"/>
+	<instant name="paralyze_ancientscarab2"  words="###27"  aggressive="1" blockwalls="1" needtarget="0" needlearn="1" script="monster/paralyze_ancientscarab2.lua"/>
+	<instant name="paralyze_ashmunrah"  words="###28"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_ashmunrah.lua"/>
+	<instant name="paralyze_banshee"  words="###29"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_banshee.lua"/>
+	<instant name="paralyze_carniphila"  words="###30"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_carniphila.lua"/>
+	<instant name="paralyze_dipthrah"  words="###31"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_dipthrah.lua"/>
+	<instant name="paralyze_dworcvoodoomaster"  words="###32"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_dworcvoodoomaster.lua"/>
+	<instant name="paralyze_efreet"  words="###33"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_efreet.lua"/>
+	<instant name="paralyze_elderbeholder"  words="###34"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_elderbeholder.lua"/>
+	<instant name="paralyze_evileye"  words="###35"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_evileye.lua"/>
+	<instant name="paralyze_hydra"  words="###36"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_hydra.lua"/>
+	<instant name="paralyze_lich"  words="###37"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_lich.lua"/>
+	<instant name="paralyze_marid"  words="###39"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_marid.lua"/>
+	<instant name="paralyze_morguthis"  words="###40"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_morguthis.lua"/>	
+	<instant name="paralyze_mummy"  words="###41"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_mummy.lua"/>
+	<instant name="paralyze_oldwidow"  words="###42"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_oldwidow.lua"/>
+	<instant name="paralyze_omruc"  words="###43"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_omruc.lua"/>
+	<instant name="paralyze_rahemos"  words="###44"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_rahemos.lua"/>
+	<instant name="paralyze_serpentspawn"  words="###45"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_serpentspawn.lua"/>
+	<instant name="paralyze_thalas"  words="###46"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_thalas.lua"/>
+	<instant name="paralyze_thalas2"  words="###47"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_thalas.lua"/>
+	<instant name="paralyze_vampire"  words="###48"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_vampire.lua"/>
+	<instant name="paralyze_vashresamun"  words="###49"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_vashresamun.lua"/>
+	<instant name="paralyze_warlock"  words="###50"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_warlock.lua"/>
+	<instant name="skills_dipthrah"  words="###51"  aggressive="1" blockwalls="1" needtarget="0" needlearn="1" script="monster/skills_dipthrah.lua"/>
+	<instant name="skills_morguthis"  words="###52"  aggressive="1" blockwalls="1" needtarget="0" needlearn="1" script="monster/skills_morguthis.lua"/>
+
 
 </spells>

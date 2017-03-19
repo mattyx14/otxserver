@@ -1460,14 +1460,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 	if (!it.allowDistRead || (it.id >= 7369 && it.id <= 7371)) {
 		s << '.';
-	} else {
-		if (!text && item) {
+	}
+	else if (!text && item) {
 			text = &item->getText();
-		}
-
-		if (!text || text->empty()) {
-			s << '.';
-		}
 	}
 
 	if (it.wieldInfo != 0) {
@@ -1522,13 +1517,14 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		s << std::endl << it.description;
 	}
 
+<<<<<<< HEAD
+	if (it.allowDistRead) {
+
+=======
 	if (it.allowDistRead && it.id >= 7369 && it.id <= 7371) {
+>>>>>>> eee480ac0e04c9178ac5361cf09ad9bea820c05a
 		if (!text && item) {
 			text = &item->getText();
-		}
-
-		if (text && !text->empty()) {
-			s << std::endl << *text;
 		}
 	}
 	return s.str();

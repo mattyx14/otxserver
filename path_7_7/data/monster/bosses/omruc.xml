@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Omruc" nameDescription="Omruc" race="undead" experience="2950" speed="310" manacost="0">
+	<health now="4300" max="4300"/>
+	<look type="90" corpse="3016"/>
+	<targetchange interval="1000" chance="7"/>
+	<targetstrategies nearest="70" health="10" damage="20" random="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-50" max="-300" poison="65"/>
+		<attack name="lifedrain" interval="1000" chance="20" range="1" min="-100" max="-250"/>
+		<attack name="poison" interval="1000" chance="20" min="-200" max="-500">
+			<attribute key="shootEffect" value="poisonarrow"/>
+		</attack>
+		<attack name="fire" interval="1000" chance="20" range="3" min="-120" max="-450">
+			<attribute key="shootEffect" value="burstarrow"/>
+			<attribute key="areaEffect" value="explosionarea"/>
+		</attack>
+		<attack name="melee" interval="1000" chance="20" min="-150" max="-500">
+			<attribute key="shootEffect" value="arrow"/>
+		</attack>
+		<attack name="paralyze_omruc" interval="1000" chance="25" range="7"/>
+	</attacks>
+	<defenses armor="20" defense="35">
+		<defense name="healing" interval="1000" chance="17" min="100" max="200">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="invisible" interval="1000" chance="14" duration="8000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<summons maxSummons="4">
+		<summon name="stalkers" interval="1000" chance="1000"/>
+	</summons>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Now chhhou shhhee me ... Now chhhou don't!!"/>
+		<voice sentence="Omruc is back!"/>
+	</voices>
+	<loot>
+		<item id="2352" chance="100000"/><!-- 100% crystal arrow -->
+		<item id="2674" chance="80000" countmax="2"/><!-- 2 80% apple -->
+		<item id="2148" chance="70000" countmax="80"/><!-- 80 70% gold -->
+		<item id="2148" chance="50000" countmax="85"/><!-- 85 50% gold -->
+		<item id="2148" chance="35000" countmax="95"/><!-- 95 35% gold -->
+		<item id="2145" chance="10000" countmax="3"/><!-- 3 10% small diamond -->
+		<item id="2154" chance="1000"/><!-- 1% yellow gem -->
+		<item id="2544" chance="20000" countmax="25"/><!-- 25 20% arrow -->
+		<item id="2545" chance="60000" countmax="20"/><!-- 20 60% poison arrow -->
+		<item id="2546" chance="40000" countmax="15"/><!-- 15 40% burst arrow -->
+		<item id="2547" chance="10000" countmax="5"/><!-- 5 10% power bolt -->
+		<item id="2195" chance="100"/><!-- 0.1% boots of haste -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2165" chance="5000"/><!-- 5% 2165 stealth ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>
