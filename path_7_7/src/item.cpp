@@ -1458,7 +1458,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	}
 
-	if (!it.allowDistRead || (it.id >= 7369 && it.id <= 7371)) {
+	if (!it.allowDistRead) {
 		s << '.';
 	}
 	else if (!text && item) {
@@ -1517,12 +1517,8 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		s << std::endl << it.description;
 	}
 
-<<<<<<< HEAD
 	if (it.allowDistRead) {
 
-=======
-	if (it.allowDistRead && it.id >= 7369 && it.id <= 7371) {
->>>>>>> eee480ac0e04c9178ac5361cf09ad9bea820c05a
 		if (!text && item) {
 			text = &item->getText();
 		}

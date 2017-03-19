@@ -66,7 +66,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Version Clients - 7.6 to 11_
+		Version Clients - 7.7 to 11_
 		Version Client 11.x
 
 	BUGS
@@ -100,7 +100,8 @@
 	- Fix setMaster behaviour (TFC)
 	- Fix Player:getClosestFreePosition behavior (TFC)
 	- Fix removeMoney unintended behavior (TFC)
-	- Fix #175, #183, #186 #205 to 208 (OTXS-C)
+	- Fix #164, #175, #183, #186 #205 to 208, #210 (OTXS-C)
+	- Fix stairJumpExhaustion (OTXS-C)
 	- Fix attack speed extra delay (TFC)
 	- Lazily load monsters from XML (TFT)
 	- Move findPerson to Lua (TFC)
