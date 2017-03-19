@@ -1145,7 +1145,8 @@ void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Posit
 	if (teleport || oldPos.z != newPos.z) {
 		int32_t ticks = g_config.getNumber(ConfigManager::STAIRHOP_DELAY);
 		if (ticks > 0) {
-			if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_PACIFIED, ticks, 0)) {
+			if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST_COMBAT, ticks, 0))
+			{
 				addCondition(condition);
 			}
 		}
