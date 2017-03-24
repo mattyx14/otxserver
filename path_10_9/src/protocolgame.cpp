@@ -2301,6 +2301,36 @@ void ProtocolGame::sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time)
 	writeToOutputBuffer(msg);
 }
 
+void ProtocolGame::sendCoinBalanceUpdating(bool updating)
+{
+    //by jlcvp
+    NetworkMessage msg;
+    msg.addByte(0xF2);
+    msg.addByte(0x00);
+    writeToOutputBuffer(msg);
+
+    if(updating){
+        sendUpdatedCoinBalance();
+    }
+}
+
+void ProtocolGame::sendUpdatedCoinBalance()
+{
+    NetworkMessage msg;
+    msg.addByte(0xF2); //balanceupdating
+    msg.addByte(0x01); //this is not the end
+
+    msg.addByte(0xDF); //coinBalance opcode
+    msg.addByte(0x01); //as follows
+
+    uint32_t  playerCoinBalance = IOAccount::getCoinBalance(player->getAccount());
+
+    msg.add<uint32_t>(playerCoinBalance);
+    msg.add<uint32_t>(playerCoinBalance); //I don't know why this duplicated entry is needed but... better keep it there
+
+    writeToOutputBuffer(msg);
+}
+
 void ProtocolGame::sendModalWindow(const ModalWindow& modalWindow)
 {
 	NetworkMessage msg;
