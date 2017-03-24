@@ -322,6 +322,9 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendSpellCooldown(uint8_t spellId, uint32_t time);
 		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time);
 
+		void sendCoinBalanceUpdating(bool updating);
+		void sendUpdatedCoinBalance();
+
 		//tiles
 
 		void sendAddTileItem(const Position& pos, uint32_t stackpos, const Item* item);
