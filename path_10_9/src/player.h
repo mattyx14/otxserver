@@ -1123,6 +1123,12 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
+		void sendCoinBalanceUpdating(bool updating){
+			if(client){
+				client->sendCoinBalanceUpdating(updating);
+			}
+		}
+
 		void receivePing() {
 			lastPong = OTSYS_TIME();
 		}
