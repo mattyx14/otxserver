@@ -38,11 +38,11 @@
 	<melee id="2396" action="removecharge" /> <!-- ice rapier -->
 
 	<!-- Ammunition -->
-	<distance id="1294" action="move" /> <!-- small stone breakchance="3" -->
+	<distance id="1294" action="move" breakchance="3" /> <!-- small stone -->
 	<distance id="2111" action="removecount" /> <!-- snowball -->
-	<distance id="2389" action="move" /> <!-- spear breakchance="3"  -->
-	<distance id="2399" action="move" /> <!-- throwing star breakchance="10" -->
-	<distance id="2410" action="move" /> <!-- throwing knife breakchance="7" -->
+	<distance id="2389" action="move" breakchance="3" /> <!-- spear -->
+	<distance id="2399" action="move" breakchance="10" /> <!-- throwing star -->
+	<distance id="2410" action="move" breakchance="7" /> <!-- throwing knife -->
 	<distance id="2543" action="removecount" /> <!-- bolt -->
 	<distance id="2544" action="removecount" /> <!-- arrow -->
 	<distance id="2545" action="removecount" script="poison_arrow.lua" />

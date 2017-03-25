@@ -26,19 +26,19 @@ shopModule:addBuyableItem({'manafluid'}, 2006, 50, 7, 'vial of manafluid')
 
 shopModule:addBuyableItem({'intense healing'}, 2265, 95, 1, 'intense healing rune')
 shopModule:addBuyableItem({'ultimate healing'}, 2273, 175, 1, 'ultimate healing rune')
-shopModule:addBuyableItem({'magic wall'}, 2293, 350, 1, 'magic wall rune')
-shopModule:addBuyableItem({'destroy field'}, 2261, 45, 1, 'destroy field rune')
-shopModule:addBuyableItem({'light magic missile'}, 2287, 40, 1, 'light magic missile rune')
-shopModule:addBuyableItem({'heavy magic missile'}, 2311, 120, 1, 'heavy magic missile rune')
-shopModule:addBuyableItem({'great fireball'}, 2304, 180, 1, 'great fireball rune')
-shopModule:addBuyableItem({'explosion'}, 2313, 250, 1, 'explosion rune')
-shopModule:addBuyableItem({'sudden death'}, 2268, 350, 1, 'sudden death rune')
-shopModule:addBuyableItem({'death arrow'}, 2263, 300, 1, 'death arrow rune')
+shopModule:addBuyableItem({'magic wall'}, 2293, 350, 3, 'magic wall rune')
+shopModule:addBuyableItem({'destroy field'}, 2261, 45, 3, 'destroy field rune')
+shopModule:addBuyableItem({'light magic missile'}, 2287, 40, 10, 'light magic missile rune')
+shopModule:addBuyableItem({'heavy magic missile'}, 2311, 120, 10, 'heavy magic missile rune')
+shopModule:addBuyableItem({'great fireball'}, 2304, 180, 4, 'great fireball rune')
+shopModule:addBuyableItem({'explosion'}, 2313, 250, 6, 'explosion rune')
+shopModule:addBuyableItem({'sudden death'}, 2268, 350, 3, 'sudden death rune')
+shopModule:addBuyableItem({'death arrow'}, 2263, 300, 3, 'death arrow rune')
 shopModule:addBuyableItem({'paralyze'}, 2278, 700, 1, 'paralyze rune')
 shopModule:addBuyableItem({'animate dead'}, 2316, 375, 1, 'animate dead rune')
-shopModule:addBuyableItem({'convince creature'}, 2290, 1, 1, 'convince creature rune')
+shopModule:addBuyableItem({'convince creature'}, 2290, 80, 1, 'convince creature rune')
 shopModule:addBuyableItem({'chameleon'}, 2291, 210, 1, 'chameleon rune')
-shopModule:addBuyableItem({'disintegrate'}, 2310, 80, 1, 'disintegreate rune')
+shopModule:addBuyableItem({'desintegrate'}, 2310, 80, 3, 'desintegreate rune')
 
 -- Backpack Potions and Runes
 shopModule:addBuyableItemContainer({'bp hp'}, 2000, 2006, 900, 10, 'backpack of health potions')
@@ -108,6 +108,15 @@ function creatureSayCallback(cid, type, msg)
 	elseif msgcontains(msg, 'no') and npcHandler.topic[cid] == 1 then
 		selfSay('Ok then.', cid)
 		npcHandler.topic[cid] = 0
+	elseif isInArray({"vial", "ticket", "bonus"}, msg) then
+		if player:removeItem(7634, 100) or player:removeItem(7635, 100) or player:removeItem(7636, 100) then
+			player:addItem(5957, 1)
+			npcHandler:say("Alright, thank you very much! Here is your lottery ticket, good luck. Would you like to deposit more vials that way?", cid)
+			npcHandler.topic[cid] = 0
+		else
+			npcHandler:say("Sorry, but you don't have 100 empty flasks or vials of the SAME kind and thus don't qualify for the lottery. Would you like to deposit the vials you have as usual and receive 5 gold per vial?", cid)
+			npcHandler.topic[cid] = 0
+		end
 	end
 
 	return true

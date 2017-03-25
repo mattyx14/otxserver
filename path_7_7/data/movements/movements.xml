@@ -35,38 +35,37 @@
 
 	<!-- (Level & quest) doors -->
 	<movevent event="StepOut" itemid="1224" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="1224" script="quest door.lua" />
+	<movevent event="StepIn" itemid="1224" script="quest_door.lua" />
 	<movevent event="StepOut" itemid="1226" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="1226" script="quest door.lua" />
+	<movevent event="StepIn" itemid="1226" script="quest_door.lua" />
+	<movevent event="StepOut" itemid="1228" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="1228" script="level_door.lua" />
+	<movevent event="StepOut" itemid="1230" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="1230" script="level_door.lua" />
 	<movevent event="StepOut" itemid="1242" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="1242" script="quest door.lua" />
+	<movevent event="StepIn" itemid="1242" script="quest_door.lua" />
 	<movevent event="StepOut" itemid="1244" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="1244" script="quest door.lua" />
+	<movevent event="StepIn" itemid="1244" script="quest_door.lua" />
+	<movevent event="StepOut" itemid="1246" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="1246" script="level_door.lua" />
+	<movevent event="StepOut" itemid="1248" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="1248" script="level_door.lua" />
 	<movevent event="StepOut" itemid="1256" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="1256" script="quest door.lua" />
+	<movevent event="StepIn" itemid="1256" script="quest_door.lua" />
 	<movevent event="StepOut" itemid="1258" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="1258" script="quest door.lua" />
+	<movevent event="StepIn" itemid="1258" script="quest_door.lua" />
+	<movevent event="StepOut" itemid="1260" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="1260" script="level_door.lua" />
+	<movevent event="StepOut" itemid="1262" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="1262" script="level_door.lua" />
+	<movevent event="StepOut" itemid="3541" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="3541" script="level_door.lua" />
 	<movevent event="StepOut" itemid="3543" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="3543" script="quest door.lua" />
+	<movevent event="StepIn" itemid="3543" script="quest_door.lua" />
+	<movevent event="StepOut" itemid="3550" script="closingdoor.lua" />
+	<movevent event="StepIn" itemid="3550" script="level_door.lua" />
 	<movevent event="StepOut" itemid="3552" script="closingdoor.lua" />
-	<movevent event="StepIn" itemid="3552" script="quest door.lua" />
-		<movevent event="StepOut" itemid="1228" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="1228" script="level door.lua" />
-		<movevent event="StepOut" itemid="1230" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="1230" script="level door.lua" />
-		<movevent event="StepOut" itemid="1246" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="1246" script="level door.lua" />
-		<movevent event="StepOut" itemid="1248" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="1248" script="level door.lua" />
-		<movevent event="StepOut" itemid="1260" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="1260" script="level door.lua" />
-		<movevent event="StepOut" itemid="1262" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="1262" script="level door.lua" />
-		<movevent event="StepOut" itemid="3541" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="3541" script="level door.lua" />
-		<movevent event="StepOut" itemid="3550" script="closingdoor.lua" />
-		<movevent event="StepIn" itemid="3550" script="level door.lua" />
-
+	<movevent event="StepIn" itemid="3552" script="quest_door.lua" />
 
 	<!-- Create bread movements -->
 	<movevent event="AddItem" tileitem="1" itemid="1786" script="dough.lua" />
@@ -189,5 +188,6 @@
 	<!-- Helmets -->
 	<movevent event="Equip" itemid="2343" slot="head" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="2343" slot="head" function="onDeEquipItem" />
-
-	</movements>
+	<movevent event="Equip" itemid="2502" slot="head" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="2502" slot="head" function="onDeEquipItem" />
+</movements>

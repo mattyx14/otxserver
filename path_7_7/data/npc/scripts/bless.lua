@@ -35,7 +35,6 @@ local node5 = keywordHandler:addKeyword({'fifth bless'}, StdModule.say, {npcHand
 	node5:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 5, premium = true, cost = 10000})
 	node5:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
 
-
 -- Healing
 local function addHealKeyword(text, condition, effect)
 	keywordHandler:addKeyword({'heal'}, StdModule.say, {npcHandler = npcHandler, text = text},

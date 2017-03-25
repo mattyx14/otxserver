@@ -1,15 +1,15 @@
 local statues = {
-	[18488] = SKILL_SWORD,
-	[18489] = SKILL_AXE,
-	[18490] = SKILL_CLUB,
-	[18491] = SKILL_DISTANCE,
-	[18492] = SKILL_MAGLEVEL
+	[] = SKILL_SWORD,
+	[] = SKILL_AXE,
+	[] = SKILL_CLUB,
+	[] = SKILL_DISTANCE,
+	[] = SKILL_MAGLEVEL
 }
 
 function onUse(player, item, fromPosition, target, toPosition)
 	local skill = statues[item:getId()]
 	if not player:isPremium() then
-		player:sendTextMessage(MESSAGE_STATUS_SMALL, Game.getReturnMessage(RETURNVALUE_YOUNEEDPREMIUMACCOUNT))
+		player:sendCancelMessage(RETURNVALUE_YOUNEEDPREMIUMACCOUNT)
 		return true
 	end
 

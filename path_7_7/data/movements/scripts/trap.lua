@@ -29,10 +29,10 @@ function onStepOut(creature, item, position, fromPosition)
 end
 
 function onRemoveItem(item, tile, position)
-	local thingPos = item:getPosition()
-	if thingPos:getDistance(position) > 0 then
+	local itemPosition = item:getPosition()
+	if itemPosition:getDistance(position) > 0 then
 		item:transform(item.itemid - 1)
-		thingPos:sendMagicEffect(CONST_ME_POFF)
+		itemPosition:sendMagicEffect(CONST_ME_POFF)
 	end
 	return true
 end
