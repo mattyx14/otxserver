@@ -37,6 +37,7 @@ class ConfigManager
 			WARN_UNSAFE_SCRIPTS,
 			CONVERT_UNSAFE_SCRIPTS,
 			CLASSIC_EQUIPMENT_SLOTS,
+			CLASSIC_ATTACK_SPEED,
 			ALLOW_BLOCK_SPAWN,
 			AUTO_STACK_ITEMS,
 			RUNES_HIT_TOP_CREATURE,
@@ -50,7 +51,6 @@ class ConfigManager
 		};
 
 		enum string_config_t {
-			DUMMY_STR,
 			MAP_NAME,
 			HOUSE_RENT_PERIOD,
 			SERVER_NAME,

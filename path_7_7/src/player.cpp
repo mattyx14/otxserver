@@ -400,17 +400,6 @@ uint16_t Player::getClientIcons() const
 		}
 	}
 
-	if (pzLocked) {
-		icons |= ICON_SWORDS;
-	}
-
-	if (tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-		// Don't show ICON_SWORDS if player is in protection zone.
-		if (hasBitSet(ICON_SWORDS, icons)) {
-			icons &= ~ICON_SWORDS;
-		}
-	}
-
 	// Game client debugs with 10 or more icons
 	// so let's prevent that from happening.
 	std::bitset<20> icon_bitset(static_cast<uint64_t>(icons));
@@ -1912,7 +1901,7 @@ void Player::death(Creature* lastHitCreature)
 			}
 		}
 	} else {
-		setLossSkill(true);
+		setSkillLoss(true);
 
 		auto it = conditions.begin(), end = conditions.end();
 		while (it != end) {
@@ -3275,7 +3264,7 @@ bool Player::onKilledCreature(Creature* target, bool lastHit/* = true*/)
 	if (Player* targetPlayer = target->getPlayer()) {
 		if (targetPlayer && targetPlayer->getZone() == ZONE_PVP) {
 			targetPlayer->setDropLoot(false);
-			targetPlayer->setLossSkill(false);
+			targetPlayer->setSkillLoss(false);
 		} else if (!hasFlag(PlayerFlag_NotGainInFight) && !isPartner(targetPlayer)) {
 			if (!Combat::isInPvpZone(this, targetPlayer) && hasAttacked(targetPlayer) && !targetPlayer->hasAttacked(this) && !isGuildMate(targetPlayer) && targetPlayer != this) {
 				if (targetPlayer->getSkull() == SKULL_NONE && !isInWar(targetPlayer)) {

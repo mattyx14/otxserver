@@ -32,6 +32,7 @@ class Action : public Event
 		explicit Action(LuaScriptInterface* interface);
 
 		bool configureEvent(const pugi::xml_node& node) override;
+		bool loadFunction(const pugi::xml_attribute&) override;
 
 		//scripting
 		virtual bool executeUse(Player* player, Item* item, const Position& fromPosition,

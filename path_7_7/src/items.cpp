@@ -816,16 +816,28 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.bedPartnerDir = getDirection(valueAttribute.as_string());
 		} else if (tmpStrValue == "leveldoor") {
 			it.levelDoor = pugi::cast<uint32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "sleeper") {
+		} else if (tmpStrValue == "maletransformto" || tmpStrValue == "malesleeper") {
 			uint16_t value = pugi::cast<uint16_t>(valueAttribute.value());
-			it.transformToOnUse = value;
+			it.transformToOnUse[PLAYERSEX_MALE] = value;
 			ItemType& other = getItemType(value);
 			if (other.transformToFree == 0) {
 				other.transformToFree = it.id;
 			}
 
-			if (it.transformToOnUse == 0) {
-				it.transformToOnUse = value;
+			if (it.transformToOnUse[PLAYERSEX_FEMALE] == 0) {
+				it.transformToOnUse[PLAYERSEX_FEMALE] = value;
+			}
+		} else if (tmpStrValue == "femaletransformto" || tmpStrValue == "femalesleeper") {
+			uint16_t value = pugi::cast<uint16_t>(valueAttribute.value());
+			it.transformToOnUse[PLAYERSEX_FEMALE] = value;
+
+			ItemType& other = getItemType(value);
+			if (other.transformToFree == 0) {
+				other.transformToFree = it.id;
+			}
+
+			if (it.transformToOnUse[PLAYERSEX_MALE] == 0) {
+				it.transformToOnUse[PLAYERSEX_MALE] = value;
 			}
 		} else if (tmpStrValue == "transformto") {
 			it.transformToFree = pugi::cast<uint16_t>(valueAttribute.value());
@@ -853,7 +865,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 	}
 
 	//check bed items
-	if ((it.transformToFree != 0 || it.transformToOnUse != 0 || it.transformToOnUse != 0) && it.type != ITEM_TYPE_BED) {
+	if ((it.transformToFree != 0 || it.transformToOnUse[PLAYERSEX_FEMALE] != 0 || it.transformToOnUse[PLAYERSEX_MALE] != 0) && it.type != ITEM_TYPE_BED) {
 		std::cout << "[Warning - Items::parseItemNode] Item " << it.id << " is not set as a bed-type" << std::endl;
 	}
 }

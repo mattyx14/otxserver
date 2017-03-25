@@ -444,6 +444,12 @@ bool Action::configureEvent(const pugi::xml_node& node)
 
 namespace {}
 
+bool Action::loadFunction(const pugi::xml_attribute&)
+{
+	scripted = false;
+	return true;
+}
+
 std::string Action::getScriptEventName() const
 {
 	return "onUse";
