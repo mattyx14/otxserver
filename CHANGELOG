@@ -74,16 +74,18 @@
 ]
 
 [ OTX Server 3.9 :: Version " VANXI "
-	- Added help /docs/
+	- Add help /docs/
 		How use internal functions from TFT / OTX "WIP" - /internalFunction
 		How use all configs from TFT / OTX "WIP" - /configHelp
-	- Added condition type immunity check (TFC)
-	- Added spell methods to Lua (TFC)
-	- Added missing custom scripts and commands
-	- Added set NPCs to idle state when no player is in range (TFT)
-	- Added Lua functions for player chase, secure and fight mode (TFT)
-	- Added Game.getVersion - table (TFT)
-	- Added function to find mount by name (TFC)
+	- Add condition type immunity check (TFC)
+	- Add spell methods to Lua (TFC)
+	- Add missing custom scripts and commands
+	- Add set NPCs to idle state when no player is in range (TFT)
+	- Add Lua functions for player chase, secure and fight mode (TFT)
+	- Add Game.getVersion - table (TFT)
+	- Add function to find mount by name (TFC)
+	- Add feature #219 (OTXS-C)
+	- Add tibia coin trade via market (OTXS-C)
 	- Drop commands support in favor of talkactions (TFT)
 	- Fix MoveItem and storeInbox on 10.x // 11 (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
@@ -130,16 +132,16 @@
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
-	- Added help /docs/
+	- Add help /docs/
 		How use commands - /commandsList
 		How use internal functions from TFT / OTX "WIP" - /internalFunction
 		How use all configs from TFT / OTX "WIP" - /configHelp
-	- Added support for 8.54/58
-	- Added POSIX signal handling (djarek)
-	- Added UnjustPanel Kills (brunominervino)
-	- Added support to orangeSkull (brunominervino)
-	- Added support to current frag system (brunominervino)
-	- Added support to clientVersion 11_ - aka10 - (no official items.otb // no supported new items) - (jo3bingham)
+	- Add support for 8.54/58
+	- Add POSIX signal handling (djarek)
+	- Add UnjustPanel Kills (brunominervino)
+	- Add support to orangeSkull (brunominervino)
+	- Add support to current frag system (brunominervino)
+	- Add support to clientVersion 11_ - aka10 - (no official items.otb // no supported new items) - (jo3bingham)
 	- Fileloader refactor (djarek)
 	- Fix connectionLock on old protocols
 	- Fix potions onTarget
@@ -154,21 +156,21 @@
 ]
 
 [ OTX Server 3.7 :: Version " SAILOR "
-	- Added support to manualVersion 10.98/99
-	- Added stack support for Game.createItem
-	- Added a new Creature method
-	- Added Player methods (getBaseMaxHealth & getBaseMaxMana)
-	- Added config UHTrap - heightStackBlock on 7.x
-	- Added chestReward to 8.x and 7.x
+	- Add support to manualVersion 10.98/99
+	- Add stack support for Game.createItem
+	- Add a new Creature method
+	- Add Player methods (getBaseMaxHealth & getBaseMaxMana)
+	- Add config UHTrap - heightStackBlock on 7.x
+	- Add chestReward to 8.x and 7.x
 		Reserved ID: 8.7 (11242 and 12664) - 8.6 (8720 and 11242) - 7.x (I recommend create new ids)
 		And edit on const.h : ITEM_REWARD_CONTAINER - ITEM_REWARD_CHEST
-	- Added NPC with balance (MatheusMkalo)
-	- Added depotLimits (Malucooo)
-	- Added playerSpectators to castSystem (Malucooo)
-	- Added chestReward on depot (Malucooo)
-	- Added SkullTimeFragsWindow
-	- Added items.otb 10.98 official from TFS
-	- Added global Inbox to old Protocols
+	- Add NPC with balance (MatheusMkalo)
+	- Add depotLimits (Malucooo)
+	- Add playerSpectators to castSystem (Malucooo)
+	- Add chestReward on depot (Malucooo)
+	- Add SkullTimeFragsWindow
+	- Add items.otb 10.98 official from TFS
+	- Add global Inbox to old Protocols
 	- Cleanup to Code
 	- Fix fieldCondition on player damage
 	- Fix armorFormula damage
@@ -210,69 +212,69 @@
 ]
 
 [ OTX Server 3.6 :: Version " SCARETALE "
-	- Added combatProtection on login
-	- Added Store Inbox (now work)
-	- Added boost system (critical hits, hp/mana leech)
-	- Fixed RewardSystem
-	- Fixed stackItems
-	- Fixed storeLimit for page history
+	- Add combatProtection on login
+	- Add Store Inbox (now work)
+	- Add boost system (critical hits, hp/mana leech)
+	- Fix RewardSystem
+	- Fix stackItems
+	- Fix storeLimit for page history
 	- Support to 10.96
 ]
 
 [ OTX Server 3.5 :: Version " FORGOTTEN "
-	- Added support to 7.6 - 7.70/72
-	- Added Boost system (critical hits, hp/mana leech - no complete)
-	- Added Advanced Securemode
-	- Added Party Protection (You can't damage party members)
-	- Added New spawn system
-	- Added serverSave on closeConsole
-	- Added bossRewardSystem
-	- Fixed skill bytes for 10.94/95
-	- Fixed castSystem error
-	- Fixed fluids
-	- Fixed autoStack
+	- Add support to 7.6 - 7.70/72
+	- Add Boost system (critical hits, hp/mana leech - no complete)
+	- Add Advanced Securemode
+	- Add Party Protection (You can't damage party members)
+	- Add New spawn system
+	- Add serverSave on closeConsole
+	- Add bossRewardSystem
+	- Fix skill bytes for 10.94/95
+	- Fix castSystem error
+	- Fix fluids
+	- Fix autoStack
 ]
 
 [ OTX Server 3.4 :: Version " LORD ZEDD "
-	- Added /attr command
-	- Added custom script for bless on low level this are optional and disable
-	- Added new commands :: "!saveme - !commands - !spells - !stamina"
-	- Added new function onAttackedCreatureKilled
-	- Added new script potion more simple to use
-	- Added new custom functions: getDistanceBetween - getFormattedWorldTime -
+	- Add /attr command
+	- Add custom script for bless on low level this are optional and disable
+	- Add new commands :: "!saveme - !commands - !spells - !stamina"
+	- Add new function onAttackedCreatureKilled
+	- Add new script potion more simple to use
+	- Add new custom functions: getDistanceBetween - getFormattedWorldTime -
 		doCreatureSayWithRadius - getBlessingsCost - getPvpBlessingCost - isWarrior
-	- Added Authenticator Token support
-	- Added PVPBless support
-	- Added reflect items functions attributes
-	- Added expertPVPMode
-	- Added Module System
-	- Added GameStore module ( version without market )
-	- Added Equip Object module
-	- Added fromCylinder and toCylinder to onMoveItem Lua event callback
-	- Fixed leader error
-	- Fixed death error on war
-	- Fixed bless error
-	- Fixed and rewrite door system
-	- Fixed special tiles bug
-	- Fixed wallback for quest chest
-	- Fixed promote error
-	- Fixed and rewrite commands
-	- Fixed error on outfits for free
-	- Fixed error on criticalhit display
-	- Fixed configkeys for liveCasting
-	- Fixed protection attack for low levels
-	- Fixed gain and recover for vocations
-	- Fixed crashServer on decay/traps items
-	- Fixed errors on NPC (missing info)
-	- Fixed runes.lua it solve problem on reward wand/rod on new players sorc/druid
-	- Fixed strengthening_potions
-	- Fixed console errors on use tools
-	- Fixed Guild Ranks
-	- Fixed skinning script
-	- Fixed crash when removing container in action onUse event
-	- Fixed compiler error with vc15 sp+
-	- Fixed Segmentation fault on Item::getTile()
-	- Fixed Bug house invite
+	- Add Authenticator Token support
+	- Add PVPBless support
+	- Add reflect items functions attributes
+	- Add expertPVPMode
+	- Add Module System
+	- Add GameStore module ( version without market )
+	- Add Equip Object module
+	- Add fromCylinder and toCylinder to onMoveItem Lua event callback
+	- Fix leader error
+	- Fix death error on war
+	- Fix bless error
+	- Fix and rewrite door system
+	- Fix special tiles bug
+	- Fix wallback for quest chest
+	- Fix promote error
+	- Fix and rewrite commands
+	- Fix error on outfits for free
+	- Fix error on criticalhit display
+	- Fix configkeys for liveCasting
+	- Fix protection attack for low levels
+	- Fix gain and recover for vocations
+	- Fix crashServer on decay/traps items
+	- Fix errors on NPC (missing info)
+	- Fix runes.lua it solve problem on reward wand/rod on new players sorc/druid
+	- Fix strengthening_potions
+	- Fix console errors on use tools
+	- Fix Guild Ranks
+	- Fix skinning script
+	- Fix crash when removing container in action onUse event
+	- Fix compiler error with vc15 sp+
+	- Fix Segmentation fault on Item::getTile()
+	- Fix Bug house invite
 	- Move all custom libs fuctions to custom file on libs
 		.../data/lib/custom/custom.lua
 	- Remove onSave no required
@@ -283,23 +285,23 @@
 ]
 
 [ OTX Server 3.3 :: Version " DARK SPECTER "
-	- Added some missing lua methods
-	- Added creature move locking (setMoveLocked/isMoveLocked)
-	- Added less loss attribute to vocations to customize death loss per vocation
-	- Added definitions.h to cmake source definitions
-	- Added (Ctrl + Arrow key) teleport as GM/God (helpful feature)
-	- Added missing config option allowWalkthrough this on true
-	- Added missing config options criticalhits
-	- Added new DepotSystem - Ty Comedin
-	- Added castingSystem - For the moment for client 10.91 - Ty Djarek
-	- Added function EquipHotkey only 10.x+ - Ty Ninjalulz
-	- Added GuildLeaders Channel script - Ty zbizu
-	- Added minimum skill level to wield weapons properly - Ty ranisalt
-	- Added missing tools actions and other actions on 10.x - Only here are supported in the moment
-	- Added advance reward system this are disable only on 10.x - Only here are supported in the moment
-	- Added attributes functions from 0.3.7 only on 10.x - Only here are supported in the moment
-	- Added exhausted block on talkactions .. this option worn on onsay and onuse this cool only on 10.x - Only here are supported in the moment
-	- Added functions from 0.3.7: only on 10.x - Only here are supported in the moment
+	- Add some missing lua methods
+	- Add creature move locking (setMoveLocked/isMoveLocked)
+	- Add less loss attribute to vocations to customize death loss per vocation
+	- Add definitions.h to cmake source definitions
+	- Add (Ctrl + Arrow key) teleport as GM/God (helpful feature)
+	- Add missing config option allowWalkthrough this on true
+	- Add missing config options criticalhits
+	- Add new DepotSystem - Ty Comedin
+	- Add castingSystem - For the moment for client 10.91 - Ty Djarek
+	- Add function EquipHotkey only 10.x+ - Ty Ninjalulz
+	- Add GuildLeaders Channel script - Ty zbizu
+	- Add minimum skill level to wield weapons properly - Ty ranisalt
+	- Add missing tools actions and other actions on 10.x - Only here are supported in the moment
+	- Add advance reward system this are disable only on 10.x - Only here are supported in the moment
+	- Add attributes functions from 0.3.7 only on 10.x - Only here are supported in the moment
+	- Add exhausted block on talkactions .. this option worn on onsay and onuse this cool only on 10.x - Only here are supported in the moment
+	- Add functions from 0.3.7: only on 10.x - Only here are supported in the moment
 		getMonster - getHouseByPlayerGUID - getPlayersByAccountNumber - getPlayersByIPAddress - setDescription - setText - setUniqueId - isPromoted - is(isDruid, isKnight, isPaladin, isMage, isSorcerer)
 		depositMoney - transferMoneyTo - withdrawMoney - getTile - string.split - string.trim - string.starts - string.titleCase - isHouse - isPz
 		tables
@@ -324,17 +326,17 @@
 ]
 
 [ OTX Server 3.2 :: Version " PHANTOM "
-	- Added Monster Spawn event
-	- Added DDoS protection (no complete)
-	- Added Advance Save
-	- Added swing distance weapons
-	- Added support to Critical hits
-	- Added System Quest 
-	- Added function blockDoors this is for cumstom servs
-	- Added Script AdvanceSave for save and regenerate on increase level
-	- Added new options automatic for save/clean map on globalevents
-	- Added custom commands /save /addons /mounts /gotopos
-	- Added missing elementdeath elementholy on weapons
+	- Add Monster Spawn event
+	- Add DDoS protection (no complete)
+	- Add Advance Save
+	- Add swing distance weapons
+	- Add support to Critical hits
+	- Add System Quest 
+	- Add function blockDoors this is for cumstom servs
+	- Add Script AdvanceSave for save and regenerate on increase level
+	- Add new options automatic for save/clean map on globalevents
+	- Add custom commands /save /addons /mounts /gotopos
+	- Add missing elementdeath elementholy on weapons
 	- Changes on config
 	- Check two-handed weapons on equip
 	- Enable monster passive behavior
@@ -353,7 +355,7 @@
 	- Fix swimming and citizen portal now show descrition
 	- Fix and tunes on spells
 	- Fix spell and item descriptions
-	- Fixed loginWindows for 10.9x
+	- Fix loginWindows for 10.9x
 	- Fix https://www.youtube.com/watch?v=ube4b-q4Ncg/
 	- Update items.xml / items.otb
 	- Update firstitems scripts // missing vocation
@@ -376,29 +378,29 @@
 	- Use std::make_shared<> to avoid an unnecessary, additional heap alloction
 	- Fix bug in Lua function MonsterType.getDefenseList
 	- Fix potential deadlock on dispatcher shutdown (it could potentially deadlock with itself if there was a task pending that added a new task during flushing). Use an atomic (with relaxed ordering) for the thread state flag, this fixes a race condition on that flag in the main dispatcher loop. Remove unncessary thread state check.
-	- Fixed: Enchanted Staff does not start decaying
+	- Fix: Enchanted Staff does not start decaying
 	- The item vector will no longer be created if the item being added is a ground tile
-	- Fixed: Prismatic ring
+	- Fix: Prismatic ring
 	- Create empty fluid containers by default
 	- Fix race condition on the threadState flag in the scheduler thread. Remove unnecessary comparator, use the default container for the priority_queue adapter template (which is more efficient than a vector in that role). Remove unnecessary flag check in scheduler loop.
-	- Fixed: Ground Error
+	- Fix: Ground Error
 	- Fix direction bug in internalMoveCreature
-	- Fixed: Actions::useItem and Actions::useItemEx
+	- Fix: Actions::useItem and Actions::useItemEx
 	- Automatic reMount(if wasMounted) leaving protection zone
 	- Avoid variable shadowing
-	- Fixed: 1194826 introduces problem
+	- Fix: 1194826 introduces problem
 	- Remove unnecessary includes
 	- Fix compiling error with Visual Studio
-	- Fixed: Client crash when GM outfit use mount
+	- Fix: Client crash when GM outfit use mount
 	- Variable Rename … According avoid variable shadowing
 	- Micro optimizations
 	- Remove trailing spaces
 	- Fix speed for new mounts
-	- Fixed: Not deleting player instance iomarket
+	- Fix: Not deleting player instance iomarket
 	- Add EditorConfig files
 	- Remove trailing spaces
 	- Fix rainbow shield duration
-	- Fixed: Assign null value to variables after being deleted
+	- Fix: Assign null value to variables after being deleted
 	- Missing items from Spike Tasks Quest
 	- Fix a bug in droploot.lua
 	- Update luascript.cpp
@@ -407,29 +409,29 @@
 [ OTX Server 3.0 - 3 :: Version " ALPHA "
 	- Game protocol 10.77 support
 	- Optimize and fixes on code
-	- Fixed : premiumForPromotion = false
+	- Fix : premiumForPromotion = false
 	- TileItemVector optimizations
-	- Fixed : Bug in the Ladder System
+	- Fix : Bug in the Ladder System
 	- Fix bug in unregisterCreatureEvent
 	- Iterator optimizations
 	- Rename ContainerIterator functions
 	- Allow ids and names for Player.setVocation
-	- Fixed : new promotion bug
-	- Fixed : Searchtype name typo?
+	- Fix : new promotion bug
+	- Fix : Searchtype name typo?
 	- Code improvements
 	- Minor optimization
-	- Fixed : Weapons Issue
-	- Fixed : Training Offline
+	- Fix : Weapons Issue
+	- Fix : Training Offline
 	- Remove unused include
-	- Fixed : Health bar question
-	- Fixed : Game.loadMap problems with crashes
+	- Fix : Health bar question
+	- Fix : Game.loadMap problems with crashes
 	- uint16_t is enough for item ids
 	- Optimize updateSaleShopList
-	- Fixed : Browse field client crash
+	- Fix : Browse field client crash
 	- Multiple windows of the same container can be open
 	- Fix weapon charges
-	- Fixed : [BUG] Stairs
-	- Fixed : Players can't "double fall" into holes
+	- Fix : [BUG] Stairs
+	- Fix : Players can't "double fall" into holes
 	- Fix bug in Player::getItemTypeCount
 	- Minor optimizations and Item class cleanup
 	- Move getThingfromPos to compat.lua
@@ -439,13 +441,13 @@
 	- Move Item.getType to Lua core lib
 	- Move Item methods (getId, getActionId, getUniqueId, getSubType) and Creature.getId to Lua
 	- Move unique items to Game class
-	- Fixed : It should update weight properly now.
-	- Fixed : Shop NPC Issue
-	- Fixed : Attack Value: Distance Weapons
+	- Fix : It should update weight properly now.
+	- Fix : Shop NPC Issue
+	- Fix : Attack Value: Distance Weapons
 	- Allow unique id and action id 0
-	- Fixed issue that kept players seem not invited to private channels!
-	- Fixed : direction is not adjusted when player uses stairs/ladder
-	- Fixed : Debug on trapdoor
+	- Fix issue that kept players seem not invited to private channels!
+	- Fix : direction is not adjusted when player uses stairs/ladder
+	- Fix : Debug on trapdoor
 	- Improve compile times using pipe
 	- Improve server performance using native optimizations
 	- Move __index functions to lua
@@ -457,17 +459,17 @@
 	- Remove unused data member in ContainerIterator
 	- Fix integer overflow in ItemType.getWeight
 	- Update destroyItem to use new destroyTo item property
-	- Fixed : Small Issue in Items.xml
+	- Fix : Small Issue in Items.xml
 	- otland/forgottenserver#1251
 	- Use range-based for loop for XML children iterators
 	- Make monsterScriptList temporary
 	- Update pugixml to version 1.6
 	- Code improvements and optimizations
 	- Use std::any_of() to make code more concise in Player::hasShopItemForSale() and Player::updateSaleShopList(). Remove unnecessary check in Player::internalAddThing().
-	- Fixed code formatting.
+	- Fix code formatting.
 	- Use precompiled headers with cmake.
 	- Optimize damage/heal messages. The amount of string concatenations has been reduced.
-	- Fixed wrong summon damage message.
+	- Fix wrong summon damage message.
 	- Fix mana loss messages.
 	- Update onLook formatting.
 	- Avoid unnecessary string concatenations.
@@ -475,26 +477,26 @@
 	- Fix typo in npchandler comment.
 	- Fix bug with ignoreCap in doNpcSellItem.
 	- Remove fansites from items.xml.
-	- Fixed Buying items with charge(like protection amulet) from the npc shop(eremo) bug.
-	- Fixed doors.lua.
+	- Fix Buying items with charge(like protection amulet) from the npc shop(eremo) bug.
+	- Fix doors.lua.
 	- Update Lua scripts.
 	- Fix bug in bed modification kits.
 	- Rename variables in Player::onCreatureAppear.
 	- Fix bug when connecting with very old client versions.
-	- Fixed Blueberry Bush Bug.
-	- Added New outfits & mounts.
-	- Fixed Vocations.xml Skill Multiplier.
-	- Fixed addDamageCondition(condition, turns, delay, damage) - turns/damage gets bugged when delay is below 1s.
+	- Fix Blueberry Bush Bug.
+	- Add New outfits & mounts.
+	- Fix Vocations.xml Skill Multiplier.
+	- Fix addDamageCondition(condition, turns, delay, damage) - turns/damage gets bugged when delay is below 1s.
 	- Add new magic and distance effect constants.
-	- Fixed MySQL issue with 'players_online' table when allowing clones.
+	- Fix MySQL issue with 'players_online' table when allowing clones.
 	- Update outfit names.
 	- Add missing byte to sendReLoginWindow.
 	- Fix bug in ProtocolGame::sendContainer.
 ]
 
 [ OTX Server 3.0 - 2 :: Version " ALPHA "
-	- Added new tools
-	- Added missing mounts/outfits
+	- Add new tools
+	- Add missing mounts/outfits
 	- Optimize creatureEvents and moveEvents
 	- Move stamina and loot to LUA
 	- Rewrite Spells // Walkthrough
@@ -506,17 +508,17 @@
 ]
 
 [ OTX Server 3.0 - 1 :: Version " ALPHA "
-	- Added OTX-icon to console
-	- Added itemAttribute to monsters
-	- Added skill require for use spells this for Evul
-	- Added onSave event
-	- Added DDoS protection
-	- Added missing description to rope
-	- Added questSystem like to tfs 0.3.7 and otx server 2
-	- Added first items
-	- Added Advance Save
-	- Added Auto Server Save 15 minutes
-	- Added muckremover (ORTS)
+	- Add OTX-icon to console
+	- Add itemAttribute to monsters
+	- Add skill require for use spells this for Evul
+	- Add onSave event
+	- Add DDoS protection
+	- Add missing description to rope
+	- Add questSystem like to tfs 0.3.7 and otx server 2
+	- Add first items
+	- Add Advance Save
+	- Add Auto Server Save 15 minutes
+	- Add muckremover (ORTS)
 	- Change format map to 10.35
 	- More order on /data/actions
 	- Move compat to /data/lib/ and added more custom functions for to retro compatibility

@@ -64,6 +64,7 @@ class ConfigManager
 			DEFAULT_PRIORITY,
 			MAP_AUTHOR,
 			VERSION_STR,
+
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
 
@@ -106,10 +107,10 @@ class ConfigManager
 			RATE_MONSTER_HEALTH,
 			RATE_MONSTER_ATTACK,
 			RATE_MONSTER_DEFENSE,
- 
- 			LAST_FLOATING_CONFIG
- 		};
-		
+
+			LAST_FLOATING_CONFIG
+		};
+
 		bool load();
 		bool reload();
 
@@ -123,7 +124,7 @@ class ConfigManager
 		int32_t integer[LAST_INTEGER_CONFIG] = {};
 		bool boolean[LAST_BOOLEAN_CONFIG] = {};
 		float floating[LAST_FLOATING_CONFIG] = {};
-		
+
 		bool loaded = false;
 };
 

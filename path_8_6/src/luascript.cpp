@@ -1775,6 +1775,10 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::VERSION_MIN)
 	registerEnumIn("configKeys", ConfigManager::VERSION_MAX)
 
+	registerEnumIn("configKeys", ConfigManager::RATE_MONSTER_HEALTH)
+	registerEnumIn("configKeys", ConfigManager::RATE_MONSTER_ATTACK)
+	registerEnumIn("configKeys", ConfigManager::RATE_MONSTER_DEFENSE)
+
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);
 

@@ -77,6 +77,18 @@ bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultVa
 	return val != 0;
 }
 
+float getGlobalFloat(lua_State* L, const char* identifier, const float defaultValue = 0.0)
+{
+	lua_getglobal(L, identifier);
+	if (!lua_isnumber(L, -1)) {
+		return defaultValue;
+	}
+
+	float val = lua_tonumber(L, -1);
+	lua_pop(L, 1);
+	return val;
+}
+
 }
 
 bool ConfigManager::load()
@@ -138,9 +150,9 @@ bool ConfigManager::load()
 	boolean[WARN_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "warnUnsafeScripts", true);
 	boolean[CONVERT_UNSAFE_SCRIPTS] = getGlobalBoolean(L, "convertUnsafeScripts", true);
 	boolean[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBoolean(L, "classicEquipmentSlots", false);
+	boolean[CLASSIC_ATTACK_SPEED] = getGlobalBoolean(L, "classicAttackSpeed", false);
 	boolean[ENABLE_LIVE_CASTING] = getGlobalBoolean(L, "enableLiveCasting", true);
 	boolean[ALLOW_BLOCK_SPAWN] = getGlobalBoolean(L, "allowBlockSpawn", true);
-	boolean[CLASSIC_ATTACK_SPEED] = getGlobalBoolean(L, "classicAttackSpeed", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -185,6 +197,10 @@ bool ConfigManager::load()
 	integer[BLACK_SKULL_DURATION] = getGlobalNumber(L, "blackSkullDuration", 45);
 	integer[ORANGE_SKULL_DURATION] = getGlobalNumber(L, "orangeSkullDuration", 7);
 
+	floating[RATE_MONSTER_HEALTH] = getGlobalFloat(L, "rateMonsterHealth", 1.0);
+	floating[RATE_MONSTER_ATTACK] = getGlobalFloat(L, "rateMonsterAttack", 1.0);
+	floating[RATE_MONSTER_DEFENSE] = getGlobalFloat(L, "rateMonsterDefense", 1.0);
+
 	loaded = true;
 	lua_close(L);
 	return true;
@@ -226,4 +242,13 @@ bool ConfigManager::getBoolean(boolean_config_t what) const
 		return false;
 	}
 	return boolean[what];
+}
+
+float ConfigManager::getFloat(floating_config_t what) const
+{
+	if (what >= LAST_FLOATING_CONFIG) {
+		std::cout << "[Warning - ConfigManager::getFLoat] Accessing invalid index: " << what << std::endl;
+		return 0;
+	}
+	return floating[what];
 }
