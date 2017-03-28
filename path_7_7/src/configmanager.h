@@ -46,6 +46,7 @@ class ConfigManager
 			LOOT_MESSAGE,
 			UH_TRAP,
 			HEIGHT_STACK_BLOCK,
+			HOUSE_ANTI_TRASH,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

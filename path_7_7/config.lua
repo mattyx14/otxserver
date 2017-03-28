@@ -73,6 +73,7 @@ summonsDropCorpse = true
 displayLootMessage = false
 UHTrap = true
 heightStackBlock = true
+houseAntiTrash = false
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
@@ -81,6 +82,11 @@ rateSkill = 3
 rateLoot = 2
 rateMagic = 3
 rateSpawn = 1
+
+-- Monster rates
+rateMonsterHealth = 1.0
+rateMonsterAttack = 1.0
+rateMonsterDefense = 1.0
 
 -- Monsters
 deSpawnRange = 2

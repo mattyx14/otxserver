@@ -149,6 +149,7 @@ bool ConfigManager::load()
 	boolean[LOOT_MESSAGE] = getGlobalBoolean(L, "displayLootMessage", false);
 	boolean[UH_TRAP] = getGlobalBoolean(L, "UHTrap", true);
 	boolean[HEIGHT_STACK_BLOCK] = getGlobalBoolean(L, "heightStackBlock", true);
+	boolean[HOUSE_ANTI_TRASH] = getGlobalBoolean(L, "houseAntiTrash", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");

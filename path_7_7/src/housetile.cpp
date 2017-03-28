@@ -22,8 +22,10 @@
 #include "housetile.h"
 #include "house.h"
 #include "game.h"
+#include "configmanager.h"
 
 extern Game g_game;
+extern ConfigManager g_config;
 
 HouseTile::HouseTile(int32_t x, int32_t y, int32_t z, House* house) :
 	DynamicTile(x, y, z), house(house) {}
@@ -84,9 +86,11 @@ ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 	} else if (thing.getItem() && actor) {
-		Player* actorPlayer = actor->getPlayer();
-		if (!house->isInvited(actorPlayer)) {
-			return RETURNVALUE_CANNOTTHROW;
+		if (g_config.getBoolean(ConfigManager::HOUSE_ANTI_TRASH)) {
+			Player* actorPlayer = actor->getPlayer();
+			if (!house->isInvited(actorPlayer)) {
+				return RETURNVALUE_CANNOTTHROW;
+			}
 		}
 	}
 	return Tile::queryAdd(index, thing, count, flags, actor);

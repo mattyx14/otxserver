@@ -2830,7 +2830,7 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	}
 
 	Player* player = getPlayerByID(playerId);
-	if (!player) {
+	if (!player || player->isRemoved()) {
 		return;
 	}
 
@@ -2839,14 +2839,14 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	}
 
 	player->hasRequestedOutfit(false);
-		player->defaultOutfit = outfit;
+	player->defaultOutfit = outfit;
 
-		if (player->hasCondition(CONDITION_OUTFIT)) {
-			return;
-		}
-
-		internalCreatureChangeOutfit(player, outfit);
+	if (player->hasCondition(CONDITION_OUTFIT)) {
+		return;
 	}
+
+	internalCreatureChangeOutfit(player, outfit);
+}
 
 void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
                      const std::string& receiver, const std::string& text)

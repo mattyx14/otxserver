@@ -1618,6 +1618,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::LOOT_MESSAGE)
 	registerEnumIn("configKeys", ConfigManager::UH_TRAP)
 	registerEnumIn("configKeys", ConfigManager::HEIGHT_STACK_BLOCK)
+	registerEnumIn("configKeys", ConfigManager::HOUSE_ANTI_TRASH)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
