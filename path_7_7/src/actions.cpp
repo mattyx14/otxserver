@@ -267,11 +267,6 @@ Action* Actions::getAction(const Item* item)
 	return g_spells->getRuneSpell(item->getID());
 }
 
-bool Actions::hasAction(const Item* item)
-{
-	return getAction(item) != nullptr;
-}
-
 ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_t index, Item* item)
 {
 	if (Door* door = item->getDoor()) {
