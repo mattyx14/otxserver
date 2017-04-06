@@ -3880,7 +3880,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.secondary.value = std::abs(damage.secondary.value);
 
 		bool critical = false;
-		if (attackerPlayer) {
+		if (attackerPlayer && damage.origin != ORIGIN_NONE) {
 			//critical damage
 			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_CHANCE)) {
 				damage.primary.value = (int32_t)(damage.primary.value * (1 + ((float)attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE) / 100)));
@@ -3908,6 +3908,12 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 		}
 
+		SpectatorHashSet spectators;
+		map.getSpectators(spectators, targetPos, true, true);
+		if (critical) {
+			addMagicEffect(spectators, targetPos, CONST_ME_CRITICAL_DAMAGE);
+		}
+
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
 			return true;
@@ -3916,7 +3922,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		TextMessage message;
 		message.position = targetPos;
 
-		SpectatorHashSet spectators;
 		if (target->hasCondition(CONDITION_MANASHIELD) && damage.primary.type != COMBAT_UNDEFINEDDAMAGE) {
 			int32_t manaDamage = std::min<int32_t>(target->getMana(), healthChange);
 			if (manaDamage != 0) {
@@ -3934,7 +3939,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				}
 
 				target->drainMana(attacker, manaDamage);
-				map.getSpectators(spectators, targetPos, true, true);
+
 				addMagicEffect(spectators, targetPos, CONST_ME_LOSEENERGY);
 
 				std::stringstream ss;
@@ -4034,9 +4039,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		}
 
 		target->drainHealth(attacker, realDamage);
-		if (spectators.empty()) {
-			map.getSpectators(spectators, targetPos, true, true);
-		}
 		addCreatureHealth(spectators, target);
 
 		message.primary.value = damage.primary.value;
@@ -4055,10 +4057,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			if (hitEffect != CONST_ME_NONE) {
 				addMagicEffect(spectators, targetPos, hitEffect);
 			}
-		}
-
-		if (critical) {
-			addMagicEffect(spectators, targetPos, CONST_ME_CRITICAL_DAMAGE);
 		}
 
 		if (message.primary.color != TEXTCOLOR_NONE || message.secondary.color != TEXTCOLOR_NONE) {
