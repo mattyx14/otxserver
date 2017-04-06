@@ -21,8 +21,8 @@ With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more..
 ### Features:
 
 OTX Server is great on retro features.
-- [OTX Server 2]
-* wait
+* [OTX Server 2](https://github.com/mattyx14/otxserver/tree/otxserv2)
+> wait
 
-- [OTX Server 3]
-* wait
+* [OTX Server 3](https://github.com/mattyx14/otxserver/tree/otxserv3)
+> wait
