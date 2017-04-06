@@ -2,7 +2,7 @@
 <spells>
 	<!-- Rune Spells -->
 	<rune name="adevo grav pox" id="2285" allowfaruse="1" maglv="0" blocktype="solid" charges="3" script="attack/poison_field.lua"/>
-	<rune name="adura gran" id="2265"  allowfaruse="1"maglv="1" needtarget="1" aggressive="0" charges="1" script="healing/intense_healing_rune.lua" />
+	<rune name="adura gran" id="2265"  allowfaruse="1" maglv="1" needtarget="1" aggressive="0" charges="1" script="healing/intense_healing_rune.lua" />
 	<rune name="adana pox" id="2266" allowfaruse="1" maglv="0" needtarget="1" aggressive="0" charges="1" script="healing/antidote_rune.lua" />
 	<rune name="adori" id="2287" allowfaruse="1" maglv="0" needtarget="1" charges="5" script="attack/light_magic_missile.lua" />
 	<rune name="adevo grav flam" id="2301" allowfaruse="1" maglv="1" blocktype="solid" charges="3" script="attack/fire_field.lua" />
@@ -77,7 +77,7 @@
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" script="support/summon_creature.lua">
+	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" function="summonMonster">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 	</instant>
