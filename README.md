@@ -7,6 +7,6 @@ We are trying to create the perfect custom OpenTibia server.
 ### OpenTibia Comunity:
 OpenTibia community with downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more...
 
-[OTLand](https://otland.net/) - [English]
-[Vapus](http://vapus.net/) - [English]
-[Black Tibia](http://blacktibia.org/) - [Español]
+* [OTLand](https://otland.net/) - [English]
+* [Vapus](http://vapus.net/) - [English]
+* [Black Tibia](http://blacktibia.org/) - [Español]
