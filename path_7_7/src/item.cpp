@@ -1460,14 +1460,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 	if (!it.allowDistRead) {
 		s << '.';
-	} else {
-		if (!text && item) {
+	}
+	else if (!text && item) {
 			text = &item->getText();
-		}
-
-		if (!text || text->empty()) {
-			s << '.';
-		}
 	}
 
 	if (it.wieldInfo != 0) {
@@ -1525,10 +1520,6 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 	if (it.allowDistRead) {
 		if (!text && item) {
 			text = &item->getText();
-		}
-
-		if (text && !text->empty()) {
-			s << std::endl << *text;
 		}
 	}
 	return s.str();
