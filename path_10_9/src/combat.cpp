@@ -741,6 +741,11 @@ void Combat::doCombat(Creature* caster, Creature* target) const
 	//target combat callback function
 	if (params.combatType != COMBAT_NONE) {
 		CombatDamage damage = getCombatDamage(caster, target);
+
+		if (damage.primary.value < 0 && caster && caster->getPlayer()) {
+			caster->getPlayer()->doCriticalDamage(damage);
+		}
+
 		if (damage.primary.type != COMBAT_MANADRAIN) {
 			doCombatHealth(caster, target, damage, params);
 		} else {
@@ -756,6 +761,10 @@ void Combat::doCombat(Creature* caster, const Position& position) const
 	//area combat callback function
 	if (params.combatType != COMBAT_NONE) {
 		CombatDamage damage = getCombatDamage(caster, nullptr);
+
+		if (damage.primary.value < 0 && caster && caster->getPlayer()) {
+			caster->getPlayer()->doCriticalDamage(damage);
+		}
 		if (damage.primary.type != COMBAT_MANADRAIN) {
 			doCombatHealth(caster, position, area.get(), damage, params);
 		} else {
