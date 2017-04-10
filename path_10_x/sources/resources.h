@@ -88,8 +88,8 @@
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "9"
-#define SOFTWARE_CODENAME "VANXI"
-#define SOFTWARE_DEVELOPERS "Mattyx14 and The Forgotten Server Developers"
+#define SOFTWARE_CODENAME "OpenTibia"
+#define SOFTWARE_DEVELOPERS "Matt Gomez, Leandro Brewster and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2/"
 
 //#define CLIENT_VERSION_DATA

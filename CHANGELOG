@@ -7,18 +7,18 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		VANXI
+		OpenTibia
 
 	Website
 		https://github.com/mattyx14/otxserver/tree/otxserv2/
 
 	DEVELOPERS
 		Project Manager and Founder
-			Mattyx14
+			Matt Gomez
 
 		OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-			Mattyx14
-			Brewsterl
+			Matt Gomez
+			Leandro Brewster
 
 		Special Thanks(s)
 			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
@@ -53,7 +53,7 @@
 		- Add helpers Party/Guilds
 ]
 
-[ OTX Server 2.9 :: Version "VANXI"
+[ OTX Server 2.9 :: Version "OpenTibia"
 	- Fix https://github.com/mattyx14/otxserver/issues/212
 	- Fix https://github.com/mattyx14/otxserver/issues/210
 	- Fix https://github.com/mattyx14/otxserver/issues/194
