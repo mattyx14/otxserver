@@ -4750,9 +4750,9 @@ void Player::setGuild(Guild* guild)
 
 void Player::doCriticalDamage(CombatDamage& damage) const
 {
-	int32_t criticalChance = attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_CHANCE);
+	int32_t criticalChance = getSkillLevel(SKILL_CRITICAL_HIT_CHANCE);
 	if (uniform_random(0, 100) <= criticalChance) {
-		float multiplier = 1 + ((float) attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE) / 100);
+		float multiplier = 1 + ((float) getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE) / 100);
 
 		damage.primary.value = (int32_t) (multiplier * damage.primary.value);
 		damage.secondary.value = (int32_t) (multiplier * damage.secondary.value);
