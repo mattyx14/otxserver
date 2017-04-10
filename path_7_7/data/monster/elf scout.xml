@@ -38,19 +38,19 @@
 		<voice sentence="Your existence will end here!"/>
 	</voices>
 	<loot>
-		<item id="2681" chance="18000"/><!-- 18% grapes -->
-		<item id="2148" chance="30000" countmax="5"/><!-- 5 30% gold coin -->
-		<item id="2544" chance="30000" countmax="12"/><!-- 12 30% arrow -->
-		<item id="2545" chance="15000" countmax="3"/><!-- 3 15% poison arrow -->
-		<item id="2031" chance="14000"/><!--  14% waterskin -->
-		<item id="2642" chance="10000"/><!-- 10% sandals -->
-		<item id="2482" chance="8000"/><!-- 8% studded helmet -->
-		<item id="2484" chance="12000"/><!-- 12% studded armor -->
+		<item id="2681" chance="36000"/><!-- 36% grapes -->
+		<item id="2148" chance="60000" countmax="5"/><!-- 5 60% gold coin -->
+		<item id="2544" chance="60000" countmax="12"/><!-- 12 60% arrow -->
+		<item id="2545" chance="30000" countmax="3"/><!-- 3 30% poison arrow -->
+		<item id="2031" chance="1000"/><!--  28% waterskin -->
+		<item id="2484" chance="24000"/><!-- 24% studded armor -->
+		<item id="2482" chance="16000"/><!-- 16% studded helmet -->
+		<item id="2642" chance="20000"/><!-- 20% sandals -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2456" chance="4000"/><!-- 4% bow -->
-				<item id="2397" chance="6000"/><!-- 6% longsword -->
-			</inside>
+			<!--inside-->
+				<item id="2397" chance="12000"/><!-- 12% longsword -->
+				<item id="2456" chance="8000"/><!-- 8% bow -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

@@ -33,17 +33,17 @@
 	<loot>
 		<item id="2787" chance="50000"/><!-- 50% white mushroom -->
 		<item id="2148" chance="45000" countmax="8"/><!-- 8 45% gold coin -->
-		<item id="2597" chance="8000"/><!-- 8% letter -->
-		<item id="2553" chance="10000"/><!-- 10% pick -->
-		<item id="2484" chance="8000"/><!-- 8% studded armor -->
-		<item id="2649" chance="10000"/><!-- 10% leather legs -->
+		<item id="2597" chance="16000"/><!-- 16% letter -->
+		<item id="2553" chance="20000"/><!-- 20% pick -->
+		<item id="2649" chance="20000"/><!-- 20% leather legs -->
+		<item id="2484" chance="16000"/><!-- 16% studded armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2388" chance="25000"/><!-- 25% hatchet -->
-				<item id="2386" chance="15000"/><!-- 15% axe -->
-				<item id="2530" chance="10000"/><!-- 10% cooper shield -->
-				<item id="2213" chance="100"/><!-- 0.1% dwarven ring -->
-			</inside>
+			<!--inside-->
+				<item id="2388" chance="50000"/><!-- 50% hatchet -->
+				<item id="2386" chance="30000"/><!-- 30% axe -->
+				<item id="2530" chance="20000"/><!-- 20% cooper shield -->
+				<item id="2213" chance="300"/><!-- 0.1% dwarven ring -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

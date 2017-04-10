@@ -35,18 +35,18 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2148" chance="13000" countmax="8"/><!-- 8 13% gold coin -->
-		<item id="2410" chance="11000" countmax="2"/><!-- 2 11% throwing knife -->
-		<item id="2260" chance="9000"/><!-- 9% blank rune -->
-		<item id="1998" chance="4500" dropempty="true"/><!-- 4.5% backpack -->
-		<item id="2649" chance="10000"/><!-- 10% leather legs -->
+		<item id="2148" chance="26000" countmax="8"/><!-- 8 26% gold coin -->
+		<item id="2410" chance="22000" countmax="2"/><!-- 2 22% throwing knife -->
+		<item id="1998" chance="9000"/><!-- 9% backpack -->
+		<item id="2260" chance="18000"/><!-- 18% blank rune -->
+		<item id="2649" chance="20000"/><!-- 20% leather legs -->
 		<item id="2478" chance="7000"/><!-- 7% brass legs -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2412" chance="6000"/><!-- 6% katana -->
-				<item id="2425" chance="1200"/><!-- 1.2% obsidian lance -->
-				<item id="2511" chance="5500"/><!-- 5.5% brass shield -->
-			</inside>
+			<!--inside-->
+				<item id="2425" chance="2400"/><!-- 2.4% obsidian lance -->
+				<item id="2412" chance="12000"/><!-- 12% katana -->
+				<item id="2511" chance="11000"/><!-- 11% brass shield -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

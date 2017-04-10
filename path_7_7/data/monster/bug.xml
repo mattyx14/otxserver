@@ -29,7 +29,7 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2148" chance="35000" countmax="6"/><!-- 6 35% gold coin -->
-		<item id="2679" chance="3000" countmax="3"/><!-- 3 3% cherry -->
+		<item id="2679" chance="6000" countmax="3"/><!-- 3 6% cherry -->
+		<item id="2148" chance="70000" countmax="6"/><!-- 6 70% gold coin -->
 	</loot>
 </monster>

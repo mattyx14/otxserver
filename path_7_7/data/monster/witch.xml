@@ -41,22 +41,22 @@
 		<voice sentence="Herba budinia ex!"/>  
 	</voices>
 	<loot>
-		<item id="2696" chance="40000"/><!-- 40% cheese -->
-		<item id="2687" chance="30000" countmax="8"/><!-- 8 30% cookie -->
-		<item id="2148" chance="10000" countmax="10"/><!-- 10 10% gold coin -->
-		<item id="2800" chance="9000"/><!-- 9% star herb -->
-		<item id="2551" chance="20000"/><!-- 20% broom -->
-		<item id="2643" chance="50000"/><!-- 50% leather boots -->
+		<item id="2696" chance="80000"/><!-- 80% cheese -->
+		<item id="2687" chance="60000" countmax="8"/><!-- 8 60% cookie -->
+		<item id="2148" chance="20000" countmax="10"/><!-- 10 20% gold coin -->
+		<item id="2800" chance="18000"/><!-- 18% star herb -->
+		<item id="2551" chance="40000"/><!-- 40% broom -->
+		<item id="2129" chance="20000"/><!-- 20% wolf tooth chain -->
+		<item id="2651" chance="40000"/><!-- 40% coat -->
 		<item id="2654" chance="50000"/><!-- 50% cape -->
-		<item id="2651" chance="20000"/><!-- 20% coat -->
-		<item id="2129" chance="10000"/><!-- 10% wolf tooth chain -->
+		<item id="2643" chance="50000"/><!-- 50% leather boots -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2405" chance="40000"/><!-- 40% sickle -->
-				<item id="2402" chance="500"/><!-- 0.5% silver dagger -->
-				<item id="2185" chance="1000"/><!-- 1% volcanic rod -->
-				<item id="2199" chance="2500"/><!-- 2.5% garlic necklace -->
-			</inside>
+			<!--inside-->
+				<item id="2405" chance="80000"/><!-- 80% sickle -->
+				<item id="2402" chance="1000"/><!-- 1% silver dagger -->
+				<!--<item id="2185" chance="2000"/> 2% volcanic rod -->
+				<item id="2199" chance="5000"/><!-- 5% garlic necklace -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

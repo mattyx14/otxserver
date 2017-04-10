@@ -37,18 +37,18 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="3976" chance="80000" countmax="6"/><!-- 6 80% worm -->
 		<item id="2148" chance="75000" countmax="30"/><!-- 30 75% gold coin -->
-		<item id="2229" chance="3000"/><!-- 3% skull -->
-		<item id="2460" chance="20000"/><!-- 20% brass helmet -->
-		<item id="2473" chance="5000"/><!-- 5% viking helmet -->
-		<item id="2483" chance="4000"/><!-- 4% scale armor -->
+		<!--<item id="3976" chance="80000" countmax="6"/> 6 80% worm -->
+		<item id="2229" chance="6000"/><!-- 6% skull -->
+		<item id="2473" chance="10000"/><!-- 10% viking helmet -->
+		<item id="2460" chance="40000"/><!-- 40% brass helmet -->
+		<item id="2483" chance="8000"/><!-- 8% scale armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
+			<!--inside-->
+				<item id="2403" chance="30000"/><!-- 30% knife -->
+				<item id="2168" chance="300"/><!-- 0.2% life ring -->
 				<item id="2050" chance="60000"/><!-- 60% torch -->
-				<item id="2403" chance="15000"/><!-- 15% knife -->
-				<item id="2168" chance="200"/><!-- 0.2% life ring -->
-			</inside>
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

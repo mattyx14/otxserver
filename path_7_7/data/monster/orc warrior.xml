@@ -32,17 +32,17 @@
 		<voice sentence="Alk!"/>
 	</voices>
 	<loot>
-		<item id="2666" chance="15000"/><!-- 15% meat -->
+		<item id="2666" chance="15000"/><!-- 30% meat -->
 		<item id="2148" chance="65000" countmax="15"/><!-- 15 65% gold coin -->
-		<item id="2007" chance="7000"/><!-- 7% bottle -->
-		<item id="2464" chance="7500"/><!-- 7.5% chain armor -->
+		<item id="2007" chance="14000"/><!-- 14% bottle -->
+		<item id="2464" chance="15000"/><!-- 15% chain armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
+			<!--inside-->
 				<item id="2385" chance="50000"/><!-- 50% sabre -->
-				<item id="2411" chance="100"/><!-- 0.1% poison dagger -->
-				<item id="2512" chance="18000"/><!-- 18% wooden shield -->
-				<item id="2530" chance="500"/><!-- 0.5% copper shield -->
-			</inside>
+				<item id="2411" chance="300"/><!-- 0.1% poison dagger -->
+				<item id="2512" chance="36000"/><!-- 36% wooden shield -->
+				<item id="2530" chance="1000"/><!-- 1% copper shield -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

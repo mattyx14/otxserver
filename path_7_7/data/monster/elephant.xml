@@ -32,13 +32,13 @@
 		<voice sentence="Troooooot!"/>
 	</voices>
 	<loot>
-		<item id="2671" chance="60000" countmax="3"/><!-- 3 60% ham -->
-		<item id="2666" chance="90000" countmax="4"/><!-- 4 90% meat -->
-		<item id="3956" chance="1000" countmax="2"/><!-- 2 1% elephant tusk -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="3973" chance="100"/><!-- 0.1% tusk shield -->
-			</inside>
+			<!--inside-->
+				<item id="3973" chance="300"/><!-- 0.1% tusk shield -->
+			<!--/inside-->
 		</item>
+		<item id="3956" chance="2000" countmax="2"/><!-- 2 2% elephant tusk -->
+		<item id="2666" chance="90000" countmax="4"/><!-- 4 90% meat -->
+		<item id="2671" chance="60000" countmax="3"/><!-- 3 60% ham -->
 	</loot>
 </monster>

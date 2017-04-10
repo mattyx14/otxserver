@@ -48,25 +48,25 @@
 		<item id="2672" chance="45000" countmax="3"/><!-- 3 45% dragon ham -->
 		<item id="2148" chance="80000" countmax="45"/><!-- 45 80% gold coin -->
 		<item id="2148" chance="50000" countmax="60"/><!-- 60 50% gold coin -->
-		<item id="2145" chance="400"/><!-- 0.4% small diamond -->
-		<item id="2546" chance="16000" countmax="10"/><!-- 10 16% burst arrow -->
-		<item id="2177" chance="100"/><!-- 0.1% life crystal -->
-		<item id="2457" chance="3000"/><!-- 3% steel helmet -->
-		<item id="2647" chance="2000"/><!-- 2% plate legs -->
+		<item id="2145" chance="800"/><!-- 0.8% small diamond -->
+		<item id="2177" chance="300"/><!-- 0.1% life crystal -->
+		<item id="2457" chance="6000"/><!-- 6% steel helmet -->
+		<item id="2647" chance="4000"/><!-- 4% plate legs -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2455" chance="10000"/><!-- 10% crossbow -->
-				<item id="2397" chance="4000"/><!-- 4% longsword -->
-				<item id="2413" chance="2000"/><!-- 2% broadsword -->
-				<item id="2387" chance="1000"/><!-- 1% double axe -->
-				<item id="2434" chance="500"/><!-- 0.5% dragon hammer -->
-				<item id="2409" chance="500"/><!-- 0.5% serpent sword -->
-				<item id="2406" chance="25000"/><!-- 25% short sword -->
-				<item id="2398" chance="20000"/><!-- 20% mace -->
-				<item id="2187" chance="1000"/><!-- 1% wand of inferno -->
-				<item id="2509" chance="15000"/><!-- 15% steel shield -->
-				<item id="2516" chance="300"/><!-- 0.3% dragon shield -->
-			</inside>
+			<!--inside-->
+				<item id="2546" chance="16000" countmax="10"/><!-- 10 16% burst arrow -->
+				<item id="2455" chance="20000"/><!-- 20% crossbow -->
+				<item id="2397" chance="8000"/><!-- 8% longsword -->
+				<item id="2413" chance="4000"/><!-- 4% broadsword -->
+				<!--<item id="2187" chance="2000"/> 2% wand of inferno -->
+				<item id="2387" chance="1000"/><!-- 2% double axe -->
+				<item id="2434" chance="1000"/><!-- 1% dragon hammer -->
+				<item id="2409" chance="1000"/><!-- 1% serpent sword -->
+				<item id="2406" chance="50000"/><!-- 50% short sword -->
+				<item id="2398" chance="40000"/><!-- 40% mace -->
+				<item id="2509" chance="16000"/><!-- 30% steel shield -->
+				<item id="2516" chance="600"/><!-- 0.6% dragon shield -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

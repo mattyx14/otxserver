@@ -60,22 +60,22 @@
 		<voice sentence="Thy living flesh offends me!"/>
 	</voices>
 	<loot>
-		<item id="2148" chance="30000" countmax="80"/><!-- 80 30% gold coin -->
-		<item id="2148" chance="40000" countmax="40"/><!-- 40 40% gold coin -->
-		<item id="2144" chance="5000"/><!-- 5% black pearl -->
-		<item id="2143" chance="2500"/><!-- 2.5% white pearl -->
-		<item id="2178" chance="500"/><!-- 0.5% mind stone -->
-		<item id="2237" chance="20000"/><!-- 20% dirty cape -->
-		<item id="2479" chance="500"/><!-- 0.5% strange helmet -->
-		<item id="2656" chance="100"/><!-- 0.1% blue robe -->
-		<item id="2171" chance="100"/><!-- 0.1% platinum amulet -->
+		<item id="2148" chance="60000" countmax="80"/><!-- 80 60% gold coin -->
+		<item id="2148" chance="80000" countmax="40"/><!-- 40 80% gold coin -->
+		<item id="2144" chance="10000"/><!-- 10% black pearl -->
+		<item id="2143" chance="5000"/><!-- 5% white pearl -->
+		<item id="2178" chance="1000"/><!-- 1% mind stone -->
+		<item id="2237" chance="40000"/><!-- 40% dirty cape -->
+		<item id="2171" chance="300"/><!-- 0.1% platinum amulet -->
+		<item id="2479" chance="1000"/><!-- 1% strange helmet -->
+		<item id="2656" chance="300"/><!-- 0.1% blue robe -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
+			<!--inside-->
 				<item id="2401" chance="60000"/><!-- 60% staff -->
-				<item id="2535" chance="200"/><!-- 0.2% castle shield -->
-				<item id="2175" chance="10000"/><!-- 10% spellbook -->
-				<item id="2214" chance="1000"/><!-- 1% ring of healing -->
-			</inside>
+				<item id="2535" chance="300"/><!-- 0.2% castle shield -->
+				<item id="2175" chance="20000"/><!-- 20% spellbook -->
+				<item id="2214" chance="2000"/><!-- 2% ring of healing -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

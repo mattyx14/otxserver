@@ -49,22 +49,22 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2148" chance="44400" countmax="100"/><!-- 100 44.4% gold coin -->
+		<item id="2148" chance="88800" countmax="100"/><!-- 100 88.8% gold coin -->
 	    <item id="2148" chance="75700" countmax="66"/><!-- 66 75.7% gold coin -->
 		<item id="2148" chance="99900" countmax="22"/><!-- 22 99.9% gold coin -->
-		<item id="2150" chance="1200" countmax="4"/><!-- 4 1.2% small amethyst -->
-		<item id="2149" chance="600" countmax="3"/><!-- 3 0.6% small emerald -->
-		<item id="2159" chance="5000" countmax="2"/><!-- 2 5% scarab coin -->
-		<item id="2159" chance="1000"/><!-- 1% scarab coin -->
-		<item id="2135" chance="500"/><!-- 0.5% scarab amulet -->
-		<item id="2142" chance="1000"/><!-- 1% ancient amulet -->
-		<item id="2463" chance="10000"/><!-- 10% plate armor -->
+		<item id="2150" chance="2400" countmax="4"/><!-- 4 2.4% small amethyst -->
+		<item id="2149" chance="1200" countmax="3"/><!-- 3 1.2% small emerald -->
+		<item id="2159" chance="10000" countmax="2"/><!-- 2 10% scarab coin -->
+		<item id="2159" chance="2000"/><!-- 2% scarab coin -->
+		<item id="2135" chance="1000"/><!-- 1% scarab amulet -->
+		<item id="2142" chance="2000"/><!-- 2% ancient amulet -->
+		<item id="2463" chance="20000"/><!-- 20% plate armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2162" chance="10900"/><!-- 10.9% magic light wand -->
-				<item id="2440" chance="300"/><!-- 0.3% daramanian waraxe -->
-				<item id="2540" chance="500"/><!-- 0.5% scarab shield -->
-			</inside>
-		</item>		
+			<!--inside-->
+				<item id="2440" chance="600"/><!-- 0.6% daramanian waraxe -->
+				<item id="2540" chance="1000"/><!-- 1% scarab shield -->
+				<item id="2162" chance="21800"/><!-- 21.8% magic light wand -->
+			<!--/inside-->
+		</item>
 	</loot>
 </monster>

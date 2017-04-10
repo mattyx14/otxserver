@@ -38,16 +38,16 @@
 		<voice sentence="Death to the defilers!"/>
 	</voices>
 	<loot>
-		<item id="2674" chance="20000" countmax="2"/><!-- 2 20% red apple -->
-		<item id="2544" chance="7000" countmax="3"/><!-- 3 7% arrow -->
-		<item id="2482" chance="15000"/><!-- 15% studded helmet -->
-		<item id="2643" chance="11000"/><!-- 11% leather boots -->
-		<item id="2484" chance="11000"/><!-- 11% studded armor -->
+		<item id="2674" chance="40000" countmax="2"/><!-- 2 40% red apple -->
+		<item id="2544" chance="14000" countmax="3"/><!-- 3 14% arrow -->
+		<item id="2482" chance="30000"/><!-- 30% studded helmet -->
+		<item id="2643" chance="22000"/><!-- 22% leather boots -->
+		<item id="2484" chance="22000"/><!-- 22% studded armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2397" chance="8000"/><!-- 8% longsword -->
-				<item id="2511" chance="13000"/><!-- 13% brass shield -->
-			</inside>
+			<!--inside-->
+				<item id="2397" chance="16000"/><!-- 16% longsword -->
+				<item id="2511" chance="26000"/><!-- 26% brass shield -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

@@ -62,16 +62,16 @@
 		<item id="2148" chance="70000" countmax="20"/><!-- 20 70% gold coin -->
 		<item id="2148" chance="80000" countmax="16"/><!-- 16 80% gold coin -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2377" chance="4000"/><!-- 4% two handed sword -->
-				<item id="2397" chance="9000"/><!-- 9% longsword -->
-				<item id="2394" chance="7000"/><!-- 7% morning star -->
-				<item id="2181" chance="500"/><!-- 0.5% quagmire rod -->
-				<item id="2509" chance="4000"/><!-- 4% steel shield -->
-				<item id="2512" chance="3000"/><!-- 3% wooden shield -->
-				<item id="2518" chance="100"/><!-- 0.1% beholder shield -->
-				<item id="2175" chance="5000"/><!-- 5% spellbook -->
-			</inside>
+			<!--inside-->
+				<item id="2397" chance="18000"/><!-- 18% longsword -->
+				<item id="2394" chance="14000"/><!-- 14% morning star -->
+				<item id="2377" chance="8000"/><!-- 8% two handed sword -->
+				<item id="2512" chance="6000"/><!-- 6% wooden shield -->
+				<item id="2509" chance="8000"/><!-- 8% steel shield -->
+				<item id="2518" chance="300"/><!-- 0.1% beholder shield -->
+				<!--<item id="2181" chance="1000"/> 1% quagmire rod -->
+				<item id="2175" chance="10000"/><!-- 10% spellbook -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

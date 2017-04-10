@@ -44,22 +44,21 @@
         <voice sentence="You are on my deathlist!"/>
 	</voices>
 	<loot>
-		<item id="2148" chance="15000" countmax="10"/><!-- 10 15% gold -->
-		<item id="2148" chance="80000" countmax="40"/><!-- 40 80% gold -->
-		<item id="2145" chance="200"/><!-- 0.2% small diamond -->
-		<item id="2457" chance="3000"/><!-- 3% steel helmet -->
-		<item id="3969" chance="200"/><!-- 0.2% horseman helmet -->
-		<item id="3968" chance="500"/><!-- 0.5% leopard armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="30000"/><!-- 30% torch -->
-				<item id="2050" chance="30000"/><!-- 30% torch -->
-				<item id="2403" chance="10000"/><!-- 10% knife -->
-				<item id="2404" chance="4000"/><!-- 4% combat knife -->
-				<item id="2510" chance="2000"/><!-- 2% plate shield -->
-				<item id="2513" chance="1500"/><!-- 1.5% battle shield -->
-				<item id="2509" chance="1000"/><!-- 1% steel shield -->
-			</inside>
+			<!--inside-->
+				<item id="2403" chance="20000"/><!-- 20% knife -->
+				<item id="2404" chance="8000"/><!-- 8% combat knife -->
+				<item id="2510" chance="4000"/><!-- 4% plate shield -->
+				<item id="2513" chance="3000"/><!-- 3% battle shield -->
+				<item id="2509" chance="2000"/><!-- 2% steel shield -->
+				<item id="2050" chance="60000"/><!-- 60% torch -->
+			<!--/inside-->
 		</item>
+		<item id="2145" chance="300"/><!-- 0.2% small diamond -->
+		<item id="2457" chance="6000"/><!-- 6% steel helmet -->
+		<item id="3969" chance="300"/><!-- 0.2% horseman helmet -->
+		<item id="3968" chance="1000"/><!-- 1% leopard armor -->
+		<item id="2148" chance="30000" countmax="10"/><!-- 10 30% gold -->
+		<item id="2148" chance="80000" countmax="40"/><!-- 40 80% gold -->
 	</loot>
 </monster>

@@ -40,19 +40,19 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2148" chance="33300" countmax="55"/><!-- 55 33.3% gold coin -->
-		<item id="2148" chance="99900" countmax="11"/><!-- 11 99.9% gold coin -->
+		<item id="2148" chance="66600" countmax="55"/><!-- 55 66.6% gold coin -->
 		<item id="2148" chance="66600" countmax="33"/><!-- 33 66.6% gold coin -->
-		<item id="2463" chance="10000"/><!-- 10% plate armor -->
-		<item id="2478" chance="8000"/><!-- 8% brass legs -->
-		<item id="2457" chance="5000"/><!-- 5% steel helmet -->
-		<item id="2477" chance="300"/><!-- 0.3% knight legs -->
-		<item id="2476" chance="300"/><!-- 0.3% knight armor -->
-		<item id="2171" chance="100"/><!-- 0.1% platinum amulet -->
+		<item id="2148" chance="99900" countmax="11"/><!-- 11 99.9% gold coin -->
+		<item id="2171" chance="300"/><!-- 0.1% platinum amulet -->
+		<item id="2463" chance="20000"/><!-- 20% plate armor -->
+		<item id="2478" chance="16000"/><!-- 16% brass legs -->
+		<item id="2457" chance="10000"/><!-- 10% steel helmet -->
+		<item id="2477" chance="600"/><!-- 0.6% knight legs -->
+		<item id="2476" chance="600"/><!-- 0.6% knight armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2169" chance="700"/><!-- 0.7% time ring -->
-			</inside>
+			<!--inside-->
+				<item id="2169" chance="1400"/><!-- 1.4% time ring -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

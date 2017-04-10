@@ -36,19 +36,19 @@
 		<voice sentence="Prek tars, dekklep zurk."/>
 	</voices>
 	<loot>
-		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
-		<item id="2229" chance="3000" countmax="3"/><!-- 3 3% skull -->
-		<item id="2568" chance="9000"/><!-- 9% cleaver -->
-		<item id="2467" chance="22000"/><!-- 22% leather armor -->
-		<item id="3967" chance="500"/><!-- 0.5% tribal mask -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="5500"/><!-- 5.5% torch -->
-				<item id="3964" chance="100"/><!-- 0.1% ripper lance -->
-				<item id="3965" chance="500"/><!-- 0.5% hunting spear -->
-				<item id="2411" chance="2000"/><!-- 2% poison dagger -->
-				<item id="2541" chance="1000"/><!-- 1% bone shield -->
-			</inside>
+			<!--inside-->
+				<item id="2050" chance="11000"/><!-- 11% torch -->
+				<item id="2541" chance="2000"/><!-- 2% bone shield -->
+				<item id="3964" chance="300"/><!-- 0.1% ripper lance -->
+				<item id="3965" chance="1000"/><!-- 1% hunting spear -->
+				<item id="2411" chance="4000"/><!-- 4% poison dagger -->
+			<!--/inside-->
 		</item>
+		<item id="2467" chance="22000"/><!-- 22% leather armor -->
+		<item id="3967" chance="1000"/><!-- 1% tribal mask -->
+		<item id="2568" chance="18000"/><!-- 18% cleaver -->
+		<item id="2229" chance="6000" countmax="3"/><!-- 3 6% skull -->
+		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
 	</loot>
 </monster>

@@ -37,20 +37,20 @@
 		<voice sentence="Me green, me mean!"/>
 	</voices>
 	<loot>
-		<item id="2667" chance="13000"/><!-- 13% fish -->
+		<item id="2667" chance="26000"/><!-- 26% fish -->
 		<item id="2148" chance="50000" countmax="9"/><!-- 9 50% gold coin -->
-		<item id="1294" chance="30000" countmax="3"/><!-- 3 30% small stone -->
-		<item id="2230" chance="12000"/><!-- 12% bone -->
-		<item id="2235" chance="7000"/><!-- 7% moldy cheese -->
-		<item id="2559" chance="10000"/><!-- 10% small axe -->
-		<item id="2461" chance="10000"/><!-- 10% leather helmet -->
-		<item id="2467" chance="7500"/><!-- 7.5% leather armor -->
+		<item id="1294" chance="60000" countmax="3"/><!-- 3 60% small stone -->
+		<item id="2230" chance="24000"/><!-- 24% bone -->
+		<item id="2235" chance="14000"/><!-- 14% moldy cheese -->
+		<item id="2559" chance="20000"/><!-- 20% small axe -->
+		<item id="2467" chance="15000"/><!-- 15% leather armor -->
+		<item id="2461" chance="20000"/><!-- 20% leather helmet -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2379" chance="18000"/><!-- 18% dagger -->
-				<item id="2406" chance="9000"/><!-- 9% short sword -->
-				<item id="2449" chance="5000"/><!-- 5% bone club -->
-			</inside>
+			<!--inside-->
+				<item id="2379" chance="36000"/><!-- 36% dagger -->
+				<item id="2406" chance="18000"/><!-- 18% short sword -->
+				<item id="2449" chance="10000"/><!-- 10% bone club -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

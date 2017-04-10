@@ -48,24 +48,24 @@
 		<voice sentence="Throw the soul on the altar!"/>
 	</voices>
 	<loot>
-		<item id="2674" chance="7500" countmax="2"/><!-- 2 7.5% red apple -->
-		<item id="2791" chance="3500"/><!-- 3.5% wood mushroom -->
-		<item id="2151" chance="700"/><!-- 0.7% talon -->
-		<item id="2070" chance="1400"/><!-- 1.4% wooden flute -->
-		<item id="2192" chance="1200"/><!-- 1.2% crystal ball -->
-		<item id="2032" chance="20000"/><!-- 20% bowl -->
-		<item id="2802" chance="14000"/><!-- 14% sling herb -->
-		<item id="2760" chance="12000"/><!-- 12% goat grass -->
-		<item id="2803" chance="6000"/><!-- 6% powder herb -->
-		<item id="2125" chance="600"/><!-- 0.6% crystal necklace -->
+		<item id="2674" chance="15000" countmax="2"/><!-- 2 15% red apple -->
+		<item id="2791" chance="7000"/><!-- 7% wood mushroom -->
+		<item id="2151" chance="1400"/><!-- 1.4% talon -->
+		<item id="2032" chance="40000"/><!-- 40% bowl -->
+		<item id="2802" chance="28000"/><!-- 28% sling herb -->
+		<item id="2760" chance="24000"/><!-- 24% goat grass -->
+		<item id="2803" chance="12000"/><!-- 12% powder herb -->
+		<item id="2070" chance="2800"/><!-- 2.8% wooden flute -->
+		<item id="2192" chance="2400"/><!-- 2.4% crystal ball -->
+		<item id="2125" chance="1200"/><!-- 1.2% crystal necklace -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2379" chance="23000"/><!-- 23% dagger -->
-				<item id="2423" chance="1500"/><!-- 1.5% clerical mace -->
-				<item id="2183" chance="1000"/><!-- 1% tempest rod -->
-				<item id="2529" chance="200"/><!-- 0.2% black shield -->
-				<item id="1977" chance="7000"/><!-- 7% orange book -->
-			</inside>
+			<!--inside-->
+				<!--<item id="2183" chance="2000"/> 2% tempest rod -->
+				<item id="2379" chance="46000"/><!-- 46% dagger -->
+				<item id="2423" chance="3000"/><!-- 3% clerical mace -->
+				<item id="2529" chance="300"/><!-- 0.2% black shield -->
+				<item id="1977" chance="14000"/><!-- 14% orange book -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

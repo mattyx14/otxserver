@@ -37,13 +37,13 @@
 		<voice sentence="Ahhuuaaa!"/>
 	</voices>
 	<loot>
-		<item id="2676" chance="30000" countmax="2"/><!-- 2 30% banana -->
-		<item id="2676" chance="5000" countmax="10"/><!-- 10 5% banana -->
-		<item id="2675" chance="20000" countmax="5"/><!-- 5 20% orange -->
-		<item id="2678" chance="20000" countmax="5"/><!-- 5 20% coconut -->
-		<item id="2682" chance="10000"/><!-- 10% melon -->
+		<item id="2458" chance="8000"/><!-- 8% chain helmet -->
+		<item id="1294" countmax="3" chance1="60000" chancemax="0"/><!-- 3 60% small stone -->
 		<item id="2148" chance="80000" countmax="25"/><!-- 25 80% gold coin -->
-		<item id="1294" countmax="3" chance1="30000" chancemax="0"/><!-- 3 30% small stone -->
-		<item id="2458" chance="4000"/><!-- 4% chain helmet -->
+		<item id="2682" chance="20000"/><!-- 20% melon -->
+		<item id="2675" chance="40000" countmax="5"/><!-- 5 40% orange -->
+		<item id="2678" chance="40000" countmax="5"/><!-- 5 40% coconut -->
+		<item id="2676" chance="30000" countmax="2"/><!-- 2 60% banana -->
+		<item id="2676" chance="10000" countmax="10"/><!-- 10 10% banana -->
 	</loot>
 </monster>

@@ -470,83 +470,145 @@ void Monster::onCreatureLeave(Creature* creature)
 
 bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAULT*/)
 {
-	std::list<Creature*> resultList;
-	const Position& myPos = getPosition();
+#ifdef __DEBUG__
+	std::cout << "Searching target... " << std::endl;
+#endif
 
-	for (Creature* creature : targetList) {
-		if (followCreature != creature && isTarget(creature)) {
-			if (searchType == TARGETSEARCH_RANDOM || canUseAttack(myPos, creature)) {
-				resultList.push_back(creature);
+	if (searchType == TARGETSEARCH_DEFAULT) {
+		int32_t rnd = uniform_random(1, 100);
+
+		searchType = TARGETSEARCH_NEAREST;
+
+		int32_t sum = this->mType->info.targetStrategiesNearestPercent;
+		if (rnd > sum) {
+			searchType = TARGETSEARCH_HP;
+			sum += this->mType->info.targetStrategiesLowerHPPercent;
+
+			if (rnd > sum) {
+				searchType = TARGETSEARCH_DAMAGE;
+				sum += this->mType->info.targetStrategiesMostDamagePercent;
+				if (rnd > sum) {
+					searchType = TARGETSEARCH_RANDOM;
+				}
 			}
 		}
 	}
 
+	std::list<Creature*> resultList;
+	const Position& myPos = getPosition();
+	for (CreatureList::iterator it = targetList.begin(); it != targetList.end(); ++it) {
+		if (isTarget(*it)) {
+			if ((this->mType->info.targetDistance == 1) || canUseAttack(myPos, *it)) {
+				resultList.push_back(*it);
+			}
+		}
+	}
+
+	if (resultList.empty()) {
+		return false;
+	}
+
+	Creature* target = nullptr;
+
 	switch (searchType) {
-		case TARGETSEARCH_NEAREST: {
-			Creature* target = nullptr;
-			if (!resultList.empty()) {
-				auto it = resultList.begin();
+	case TARGETSEARCH_NEAREST: {
+		target = nullptr;
+		int32_t minRange = -1;
+		for (std::list<Creature*>::iterator it = resultList.begin(); it != resultList.end(); ++it) {
+			if (minRange == -1 || std::max(std::abs(myPos.x - (*it)->getPosition().x), std::abs(myPos.y - (*it)->getPosition().y)) < minRange) {
 				target = *it;
+				minRange = std::max(std::abs(myPos.x - (*it)->getPosition().x), std::abs(myPos.y - (*it)->getPosition().y));
+			}
+			else if (std::max(std::abs(myPos.x - (*it)->getPosition().x), std::abs(myPos.y - (*it)->getPosition().y)) == minRange) {
+				int32_t rnga = uniform_random(1, 2);
+				int32_t rngb = uniform_random(1, 2);
+				if (rnga == rngb) {
+					target = *it;
+				}
+			}
+		}
 
-				if (++it != resultList.end()) {
-					const Position& targetPosition = target->getPosition();
-					int32_t minRange = Position::getDistanceX(myPos, targetPosition) + Position::getDistanceY(myPos, targetPosition);
-					do {
-						const Position& pos = (*it)->getPosition();
+		if (target && selectTarget(target)) {
+			return true;
+		}
 
-						int32_t distance = Position::getDistanceX(myPos, pos) + Position::getDistanceY(myPos, pos);
-						if (distance < minRange) {
+		break;
+	}
+	case TARGETSEARCH_HP: {
+		target = nullptr;
+		if (!resultList.empty()) {
+			auto it = resultList.begin();
+			target = *it;
+
+			if (++it != resultList.end()) {
+				int32_t minHp = target->getHealth();
+				do {
+					if ((*it)->getHealth() < minHp) {
+						target = *it;
+						minHp = target->getHealth();
+					}
+				} while (++it != resultList.end());
+			}
+		}
+
+		if (target && selectTarget(target)) {
+			return true;
+		}
+
+		break;
+	}
+	case TARGETSEARCH_DAMAGE: {
+		target = nullptr;
+		if (!resultList.empty()) {
+			auto it = resultList.begin();
+			target = *it;
+
+			if (++it != resultList.end()) {
+				int32_t mostDamage = 0;
+				do {
+					const auto& dmg = damageMap.find((*it)->getID());
+					if (dmg != damageMap.end()) {
+						if (dmg->second.total > mostDamage) {
+							mostDamage = dmg->second.total;
 							target = *it;
-							minRange = distance;
 						}
-					} while (++it != resultList.end());
-				}
-			} else {
-				int32_t minRange = std::numeric_limits<int32_t>::max();
-				for (Creature* creature : targetList) {
-					if (!isTarget(creature)) {
-						continue;
 					}
-
-					const Position& pos = creature->getPosition();
-					int32_t distance = Position::getDistanceX(myPos, pos) + Position::getDistanceY(myPos, pos);
-					if (distance < minRange) {
-						target = creature;
-						minRange = distance;
-					}
-				}
+				} while (++it != resultList.end());
 			}
-
-			if (target && selectTarget(target)) {
-				return true;
-			}
-			break;
 		}
 
-		case TARGETSEARCH_DEFAULT:
-		case TARGETSEARCH_ATTACKRANGE:
-		case TARGETSEARCH_RANDOM:
-		default: {
-			if (!resultList.empty()) {
-				auto it = resultList.begin();
-				std::advance(it, uniform_random(0, resultList.size() - 1));
-				return selectTarget(*it);
-			}
-
-			if (searchType == TARGETSEARCH_ATTACKRANGE) {
-				return false;
-			}
-
-			break;
+		if (target && selectTarget(target)) {
+			return true;
 		}
+
+		break;
+	}
+	case TARGETSEARCH_RANDOM:
+	default: {
+		if (!resultList.empty()) {
+			uint32_t index = uniform_random(0, resultList.size() - 1);
+			CreatureList::iterator it = resultList.begin();
+			std::advance(it, index);
+#ifdef __DEBUG__
+			std::cout << "Selecting target " << (*it)->getName() << std::endl;
+#endif
+			return selectTarget(*it);
+
+		}
+		break;
+	}
 	}
 
 	//lets just pick the first target in the list
-	for (Creature* target : targetList) {
-		if (followCreature != target && selectTarget(target)) {
+	for (CreatureList::iterator it = targetList.begin(); it != targetList.end(); ++it) {
+		if (selectTarget(*it)) {
+#ifdef __DEBUG__
+			std::cout << "Selecting target " << (*it)->getName() << std::endl;
+#endif
 			return true;
 		}
 	}
+
 	return false;
 }
 
@@ -737,7 +799,7 @@ void Monster::onThink(uint32_t interval)
 					searchTarget();
 				} else if (isFleeing()) {
 					if (attackedCreature && !canUseAttack(getPosition(), attackedCreature)) {
-						searchTarget(TARGETSEARCH_ATTACKRANGE);
+						searchTarget(TARGETSEARCH_DEFAULT);
 					}
 				}
 			}
@@ -877,11 +939,7 @@ void Monster::onThinkTarget(uint32_t interval)
 					targetChangeCooldown = mType->info.changeTargetSpeed;
 
 					if (mType->info.changeTargetChance >= uniform_random(1, 100)) {
-						if (mType->info.targetDistance <= 1) {
-							searchTarget(TARGETSEARCH_RANDOM);
-						} else {
-							searchTarget(TARGETSEARCH_NEAREST);
-						}
+						searchTarget(TARGETSEARCH_DEFAULT);
 					}
 				}
 			}

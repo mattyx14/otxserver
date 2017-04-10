@@ -40,18 +40,19 @@
 		<voice sentence="Hell, oh hell!"/>
 	</voices>
 	<loot>
-		<item id="2150" chance="300"/><!-- 0.3% small amethyst -->
-		<item id="2260" chance="11000"/><!-- 11% blank rune -->
+		<item id="2150" chance="600"/><!-- 0.6% small amethyst -->
+		<item id="2260" chance="22000"/><!-- 22% blank rune -->
 		<item id="2548" chance="50000"/><!-- 50% pitch fork -->
-		<item id="2568" chance="9000"/><!-- 9% cleaver -->
+		<item id="2568" chance="18000"/><!-- 18% cleaver -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="15000"/><!-- 15% torch -->
-				<item id="2387" chance="1500"/><!-- 1.5% double axe -->
-				<item id="2419" chance="6000"/><!-- 6% scimitar -->
-				<item id="2185" chance="500"/><!-- 0.5% volcanic rod -->
-				<item id="2515" chance="200"/><!-- 0.2% guardian shield -->
-			</inside>
+			<!--inside-->
+				<!--<item id="2185" chance="1000"/> 1% volcanic rod -->
+				<item id="2387" chance="3000"/><!-- 3% double axe -->
+				<item id="2419" chance="12000"/><!-- 12% scimitar -->
+				<item id="2515" chance="300"/><!-- 0.2% guardian shield -->
+				<item id="2191" chance="300"/><!-- 0.3% red spell wand -->
+				<item id="2050" chance="1000"/><!-- 30% torch -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

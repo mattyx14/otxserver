@@ -49,28 +49,28 @@
 		    <voice sentence="Feel my gentle kiss of death."/>
 	</voices>
 	<loot>
-		<item id="2148" chance="30000" countmax="80"/><!-- 80 30% gold coin -->
-		<item id="2143" chance="1000"/><!-- 1% white pearl -->
-		<item id="2144" chance="2000"/><!-- 2% black pearl -->
-		<item id="2177" chance="100"/><!-- 0.1% life crystal -->
-		<item id="2124" chance="100"/><!-- 0.1% crystal ring -->
-		<item id="2121" chance="500"/><!-- 0.5% wedding ring -->
-		<item id="2372" chance="1000"/><!-- 1% lyre -->
-		<item id="2560" chance="7000"/><!-- 7% mirror -->
-		<item id="2134" chance="1500"/><!-- 1.5% silver brooch -->
+		<item id="2148" chance="60000" countmax="80"/><!-- 80 60% gold coin -->
+		<item id="2143" chance="2000"/><!-- 2% white pearl -->
+		<item id="2144" chance="4000"/><!-- 4% black pearl -->
+		<item id="2124" chance="300"/><!-- 0.1% crystal ring -->
+		<item id="2121" chance="1000"/><!-- 1% wedding ring -->
+		<item id="2372" chance="2000"/><!-- 2% lyre -->
+		<item id="2560" chance="14000"/><!-- 14% mirror -->
+		<item id="2134" chance="3000"/><!-- 3% silver brooch -->
+		<item id="2177" chance="300"/><!-- 0.1% life crystal -->
+		<item id="2237" chance="39800"/><!-- 39.8% dirty cape -->
 		<item id="2657" chance="60000"/><!-- 60% simple dress -->
-		<item id="2237" chance="19900"/><!-- 19.9% dirty cape -->
-		<item id="2656" chance="600"/><!-- 0.6% blue robe -->
-		<item id="2655" chance="100"/><!-- 0.1% red robe -->
+		<item id="2656" chance="1200"/><!-- 1.2% blue robe -->
+		<item id="2655" chance="300"/><!-- 0.1% red robe -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
+			<!--inside-->
+				<item id="2411" chance="3000"/><!-- 3% poison dagger -->
+				<item id="2175" chance="1000"/><!-- 1% spellbook -->
+				<item id="2197" chance="1600"/><!-- 1.6% stone skin amulet -->
+				<item id="2170" chance="18000"/><!-- 18% silver amulet -->
+				<item id="2214" chance="1600"/><!-- 1.6% ring of healing -->
 				<item id="2047" chance="70000"/><!-- 70% candlestick -->
-				<item id="2411" chance="1500"/><!-- 1.5% poison dagger -->
-				<item id="2197" chance="800"/><!-- 0.8% stone skin amulet -->
-				<item id="2170" chance="9000"/><!-- 9% silver amulet -->
-				<item id="2214" chance="800"/><!-- 0.8% ring of healing -->
-				<item id="2175" chance="500"/><!-- 0.5% spellbook -->
-			</inside>
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

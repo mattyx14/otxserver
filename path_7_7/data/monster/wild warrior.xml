@@ -32,22 +32,22 @@
 		<voice sentence="Gimme your money!"/>
 	</voices>
 	<loot>
-		<item id="2666" chance="40000"/><!-- 40% meat -->
-		<item id="2148" chance="40000" countmax="20"/><!-- 20 40% gold coin -->
-		<item id="2148" chance="15000" countmax="10"/><!-- 10 15% gold coin -->
-		<item id="2110" chance="500"/><!-- 0.5% doll -->
-		<item id="2458" chance="5000"/><!-- 5% chain helmet -->
-		<item id="2459" chance="500"/><!-- 0.5% iron helmet -->
-		<item id="2465" chance="2500"/><!-- 2.5% brass armor -->
-		<item id="2649" chance="15000"/><!-- 15% leather legs -->
+		<item id="2666" chance="80000"/><!-- 80% meat -->
+		<item id="2148" chance="80000" countmax="20"/><!-- 20 80% gold coin -->
+		<item id="2148" chance="30000" countmax="10"/><!-- 10 30% gold coin -->
+		<item id="2110" chance="1000"/><!-- 1% doll -->
+		<item id="2459" chance="1000"/><!-- 1% iron helmet -->
+		<item id="2458" chance="10000"/><!-- 10% chain helmet -->
+		<item id="2465" chance="5000"/><!-- 5% brass armor -->
+		<item id="2649" chance="30000"/><!-- 30% leather legs -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2386" chance="30000"/><!-- 30% axe -->
-				<item id="2398" chance="10000"/><!-- 10% mace -->
-				<item id="2391" chance="100"/><!-- 0.1% war hammer -->
-				<item id="2511" chance="17000"/><!-- 17% brass shield -->
-				<item id="2509" chance="1000"/><!-- 1% steel shield -->
-			</inside>
+			<!--inside-->
+				<item id="2386" chance="60000"/><!-- 60% axe -->
+				<item id="2398" chance="20000"/><!-- 20% mace -->
+				<item id="2391" chance="300"/><!-- 0.1% war hammer -->
+				<item id="2509" chance="2000"/><!-- 2% steel shield -->
+				<item id="2511" chance="34000"/><!-- 34% brass shield -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

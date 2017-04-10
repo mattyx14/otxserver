@@ -40,17 +40,17 @@
 	<loot>
 		<item id="2666" chance="54000" countmax="2"/><!-- 2 54% meat -->
 		<item id="2148" chance="70500" countmax="12"/><!-- 12 70.5% gold coin -->
-		<item id="2148" chance="44500" countmax="40"/><!-- 40 44.5% gold coin -->
-		<item id="2159" chance="1000"/><!-- 1% scarab coin -->
-		<item id="2159" chance="100"/><!-- 0.1% scarab coin -->
-		<item id="2150" chance="500"/><!-- 0.5% small amethyst -->
-		<item id="2149" chance="300"/><!-- 0.3% small emerald -->
-		<item id="2544" chance="5000" countmax="3"/><!-- 3 5% arrow -->
+		<item id="2148" chance="89000" countmax="40"/><!-- 40 89% gold coin -->
+		<item id="2150" chance="1000" countmax="1"/><!-- 1% small amethyst -->
+		<item id="2149" chance="600" countmax="1"/><!-- 0.6% small emerald -->
+		<item id="2159" chance="2000" countmax="1"/><!-- 2% scarab coin -->
+		<item id="2159" chance="300" countmax="1"/><!-- 0.1% scarab coin -->
+		<item id="2544" chance="10000" countmax="3"/><!-- 3 10% arrow -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2439" chance="300"/><!-- 0.3% daramanian mace -->
-				<item id="2442" chance="500"/><!-- 0.5% heavy machete -->
-			</inside>
+			<!--inside-->
+				<item id="2439" chance="600"/><!-- 0.6% daramanian mace -->
+				<item id="2442" chance="1000"/><!-- 1% heavy machete -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

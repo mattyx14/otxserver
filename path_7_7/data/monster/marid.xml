@@ -63,20 +63,20 @@
 		<voice sentence="Wishes can come true."/>
 	</voices>
 	<loot>
-		<item id="2677" chance="25000" countmax="25"/><!-- 25 25% blueberry -->
+		<item id="2677" chance="50000" countmax="25"/><!-- 25 50% blueberry -->
 		<item id="2148" chance="50000" countmax="80"/><!-- 80 50% gold coin -->
 		<item id="2148" chance="70000" countmax="50"/><!-- 50 70% gold coin -->
-		<item id="2146" chance="7000" countmax="2"/><!-- 2 7% small sapphire -->
-		<item id="2158" chance="100"/><!-- 0.1% blue gem -->
-		<item id="1872" chance="2500"/><!-- 2.5% blue tapestry -->
-		<item id="2070" chance="300"/><!-- 0.3% wooden flute -->
-		<item id="2359" chance="20000"/><!-- 20% small oil lamp -->
-		<item id="2663" chance="200"/><!-- 0.2% mystic turban -->
+		<item id="2146" chance="14000" countmax="2"/><!-- 2 14% small sapphire -->
+		<item id="2070" chance="600"/><!-- 0.6% wooden flute -->
+		<item id="2158" chance="300"/><!-- 0.1% blue gem -->
+		<item id="1872" chance="5000"/><!-- 5% blue tapestry -->
+		<item id="2359" chance="40000"/><!-- 40% small oil lamp -->
+		<item id="2663" chance="300"/><!-- 0.2% mystic turban -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2442" chance="20000"/><!-- 20% heavy machete -->
-				<item id="2183" chance="500"/><!-- 0.5% tempest rod -->
-			</inside>
+			<!--inside-->
+				<item id="2442" chance="40000"/><!-- 40% heavy machete -->
+				<!--<item id="2183" chance="1000"/> 1% tempest rod -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

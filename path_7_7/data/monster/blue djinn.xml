@@ -53,16 +53,16 @@
 		<voice sentence="Wishes can come true."/>
 	</voices>
 	<loot>
-		<item id="2684" chance="25000"/><!-- 25% carrot -->
+		<item id="2684" chance="50000"/><!-- 50% carrot -->
 		<item id="2148" chance="70000" countmax="50"/><!-- 50 70% gold coin -->
-		<item id="2146" chance="2500" countmax="4"/><!-- 4 2.5% small sapphire -->
-		<item id="2063" chance="7500"/><!-- 7.5% small oil lamp -->
-		<item id="2745" chance="500"/><!-- 0.5% blue rose -->
-		<item id="2663" chance="100"/><!-- 0.1% mystic turban -->
+		<item id="2146" chance="5000" countmax="4"/><!-- 4 5% small sapphire -->
+		<item id="2063" chance="15000"/><!-- 15% 2063 small oil lamp -->
+		<item id="2745" chance="1000"/><!-- 1% blue rose -->
+		<item id="2663" chance="300"/><!-- 0.1% 2663 mystic turban -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="1978" chance="2500"/><!-- 2.5% blue book -->
-			</inside>
+			<!--inside-->
+				<item id="1978" chance="5000"/><!-- 5% blue book -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

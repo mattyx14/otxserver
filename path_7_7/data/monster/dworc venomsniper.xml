@@ -36,19 +36,19 @@
 		<voice sentence="Prek tars, dekklep zurk."/>
 	</voices>
 	<loot>
-		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
-		<item id="2229" chance="1000" countmax="2"/><!-- 2 1% skull -->
-		<item id="2545" chance="5000" countmax="3"/><!-- 3 5% poison arrow -->
-		<item id="2410" chance="8000" countmax="2"/><!-- 2 8% throwing knife -->
-		<item id="2467" chance="10000"/><!-- 10% leather armor -->
-		<item id="3967" chance="500"/><!-- 0.5% tribal mask -->
-		<item id="3983" chance="100"/><!-- 0.1% bast skirt -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="5500"/><!-- 5.5% torch -->
-				<item id="2411" chance="1500"/><!-- 1.5% poison dagger -->
-				<item id="2172" chance="100"/><!-- 0.1% bronze amulet -->
-			</inside>
+			<!--inside-->
+					<item id="2050" chance="11000"/><!-- 11% torch -->
+					<item id="2411" chance="3000"/><!-- 3% poison dagger -->
+					<item id="2172" chance="300"/><!-- 0.1% bronze amulet -->
+			<!--/inside-->
 		</item>
+		<item id="2467" chance="20000"/><!-- 20% leather armor -->
+		<item id="3967" chance="1000"/><!-- 1% tribal mask -->
+		<item id="3983" chance="300"/><!-- 0.1% bast skirt -->
+		<item id="2229" chance="2000" countmax="2"/><!-- 2 2% skull -->
+		<item id="2545" chance="10000" countmax="3"/><!-- 3 10% poison arrow -->
+		<item id="2410" chance="16000" countmax="2"/><!-- 2 16% throwing knife -->
+		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
 	</loot>
 </monster>

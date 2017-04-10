@@ -33,16 +33,16 @@
 		<voice sentence="Ugaar!"/>
 	</voices>
 	<loot>
-		<item id="2666" chance="30000"/><!-- 30% meat -->
-		<item id="2148" chance="22000" countmax="7"/><!-- 7 22% gold coin -->
-		<item id="2220" chance="7700"/><!-- 7.7% dirty fur -->
-		<item id="2482" chance="9000"/><!-- 9% studded helmet -->
-		<item id="2468" chance="10000"/><!-- 10% studded legs -->
+		<item id="2666" chance="60000"/><!-- 60% meat -->
+		<item id="2148" chance="44000" countmax="7"/><!-- 7 44% gold coin -->
+		<item id="2220" chance="15400"/><!-- 15.4% dirty fur -->
+		<item id="2468" chance="20000"/><!-- 20% studded legs -->
+		<item id="2482" chance="18000"/><!-- 18% studded helmet -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2389" chance="23000"/><!-- 23% spear -->
-				<item id="2420" chance="10000"/><!-- 10% machete -->
-			</inside>
+			<!--inside-->
+				<item id="2389" chance="46000"/><!-- 46% spear -->
+				<item id="2420" chance="20000"/><!-- 20% machete -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

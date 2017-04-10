@@ -34,13 +34,13 @@
 	<loot>
 		<item id="2667" chance="60000"/><!-- 60% fish -->
 		<item id="2148" chance="50000" countmax="5"/><!-- 5 50% gold coin -->
-		<item id="2643" chance="10000"/><!-- 10% leather boots -->
+		<item id="2643" chance="20000"/><!-- 20% leather boots -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="15000"/><!-- 15% torch -->
-				<item id="2379" chance="30000"/><!-- 30% dagger -->
-				<item id="2580" chance="100"/><!-- 0.1% fishing rod -->
-			</inside>
+			<!--inside-->
+				<item id="2580" chance="300"/><!-- 0.1% fishing rod -->
+				<item id="2379" chance="60000"/><!-- 60% dagger -->
+				<item id="2050" chance="15000"/><!-- 30% torch -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

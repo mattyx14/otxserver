@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="general murius" nameDescription="the general Murius" race="blood" experience="1300" speed="240" manacost="0">
 	<health now="1200" max="1200"/>
-	<look type="202" corpse="2876"/>
+	<look type="29" corpse="2876"/>
 	<targetchange interval="1000" chance="5"/>
 	<targetstrategies nearest="70" health="10" damage="20" random="0"/>
 	<flags>
@@ -47,17 +47,20 @@
 		<voice sentence="For the king!"/>
 		<voice sentence="Guards!"/>
 	</voices>
-	<loot>
-		<item id="2666" chance="10000"/><!-- 10% meat -->
-		<item id="2148" chance="50000" countmax="20"/><!-- 50 60% gold coin -->
-		<item id="2465" chance="28000"/><!-- 28% brass armor -->
-		<item id="2648" chance="35000"/><!-- 35% chain legs -->
-		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2387" chance="7500"/><!-- 7.5% double axe -->
-				<item id="2513" chance="18000"/><!-- 18% battle shield -->
-				<item id="2580" chance="5000"/><!-- 5% fishing rod -->
-			</inside>
+<loot>
+	<item id="2148" countmax="89" chance1="90000" chancemax="0"/><!-- 1-89 90% 2148 gold -->
+	<item id="2148" countmax="86" chance1="90000" chancemax="0"/><!-- 1-86 90% 2148 gold -->
+	<item id="2148" countmax="90" chance1="90000" chancemax="0"/><!-- 1-90 90% 2148 gold -->
+	<item id="2666" countmax="3" chance1="19000" chancemax="0"/><!-- 19% 2666 meat -->
+	<item id="2547" countmax="7" chance1="30000" chancemax="0"/><!-- 1-7 30% 2547 power bolt -->
+	<item id="2465" chance="60000"/><!-- 60% 2465 brass armor -->
+	<item id="2648" chance="40000"/><!-- 40% 2648 chain legs -->
+	<item id="2502" chance="4000"/><!-- 4% 2502 dwarven helmet -->
+	<item id="1987" chance="100000"><!-- bag -->
+			<!--inside-->
+			<item id="2387" chance="4000"/><!-- 4% 2387 double axe -->
+			<item id="2513" chance="15000"/><!-- 15% 2513 battle shield -->
+			<!--/inside-->
 		</item>
-	</loot>
+</loot>
 </monster>

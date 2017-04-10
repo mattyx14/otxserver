@@ -30,6 +30,6 @@
 	</voices>
 	<loot>
 		<item id="2666" chance="85000" countmax="2"/><!-- 2 85% meat -->
-		<item id="2684" chance="10000"/><!-- 10% carrot -->
+		<item id="2684" chance="20000"/><!-- 20% carrot -->
 	</loot>
 </monster>

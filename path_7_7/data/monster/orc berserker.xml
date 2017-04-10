@@ -32,16 +32,16 @@
 		<voice sentence="KRAK ORRRRRRK!" yell="1"/>
 	</voices>
 	<loot>
-		<item id="2671" chance="17000"/><!-- 17% ham -->
+		<item id="2671" chance="34000"/><!-- 34% ham -->
 		<item id="2148" chance="55000" countmax="12"/><!-- 12 55% gold coin -->
-		<item id="2458" chance="11000"/><!-- 11% chain helmet -->
-		<item id="2464" chance="10000"/><!-- 10% chain armor -->
+		<item id="2458" chance="22000"/><!-- 22% chain helmet -->
+		<item id="2464" chance="20000"/><!-- 20% chain armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2044" chance="8000"/><!-- 8% lamp -->
-				<item id="2381" chance="7000"/><!-- 7% halberd -->
-				<item id="2378" chance="6000"/><!-- 6% battle axe -->
-			</inside>
+			<!--inside-->
+				<item id="2381" chance="14000"/><!-- 14% halberd -->
+				<item id="2378" chance="12000"/><!-- 12% battle axe -->
+				<item id="2044" chance="7000"/><!-- 16% lamp -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

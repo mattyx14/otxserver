@@ -34,19 +34,19 @@
 		<voice sentence="Hail Durin!"/>
 	</voices>
 	<loot>
-		<item id="2787" chance="40000" countmax="2"/><!-- 2 40% white mushroom -->
-		<item id="2148" chance="35000" countmax="12"/><!-- 12 35% gold coin -->
-		<item id="2543" chance="40000" countmax="4"/><!-- 4 40% bolt -->
-		<item id="2554" chance="10000"/><!-- 10% shovel -->
-		<item id="2464" chance="9000"/><!-- 9% chain armor -->
-		<item id="2481" chance="12000"/><!-- 12% soldier helmet -->
+		<item id="2787" chance="80000" countmax="2"/><!-- 2 80% white mushroom -->
+		<item id="2148" chance="70000" countmax="12"/><!-- 12 70% gold coin -->
+		<item id="2543" chance="80000" countmax="4"/><!-- 4 80% bolt -->
+		<item id="2554" chance="20000"/><!-- 20% shovel -->
+		<item id="2481" chance="24000"/><!-- 24% soldier helmet -->
+		<item id="2464" chance="18000"/><!-- 18% chain armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2378" chance="2500"/><!-- 2.5% battle axe -->
-				<item id="2525" chance="5000"/><!-- 5% dwarven shield -->
-				<item id="2455" chance="4000"/><!-- 4% crossbow -->
-				<item id="2208" chance="100"/><!-- 0.1% axe ring -->
-			</inside>
+			<!--inside-->
+				<item id="2378" chance="5000"/><!-- 5% battle axe -->
+				<item id="2455" chance="8000"/><!-- 8% crossbow -->
+				<item id="2525" chance="10000"/><!-- 10% dwarven shield -->
+				<item id="2208" chance="300"/><!-- 0.1% axe ring -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

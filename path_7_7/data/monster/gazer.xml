@@ -42,13 +42,13 @@
 		<voice sentence="Me need mana!"/>
 	</voices>
 	<loot>
-		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2512" chance="3000"/><!-- 3% wooden shield -->
-			</inside>
-		</item>
 		<item id="2148" chance="90000" countmax="6"/><!-- 6 90% gold coin -->
 		<item id="2148" chance="80000" countmax="8"/><!-- 8 80% gold coin -->
 		<item id="2148" chance="70000" countmax="10"/><!-- 10 70% gold coin -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<!--inside-->
+				<item id="2512" chance="6000"/><!-- 6% wooden shield -->
+			<!--/inside-->
+		</item>
 	</loot>
 </monster>

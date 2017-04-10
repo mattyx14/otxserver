@@ -29,8 +29,8 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="3976" chance="50000" countmax="3"/><!-- 3 50% worm -->
-		<item id="2696" chance="40000"/><!-- 40% cheese -->
+		<item id="2696" chance="80000"/><!-- 80% cheese -->
+		<!--<item id="3976" chance="50000" countmax="3"/> 3 50% worm -->
 		<item id="2148" chance="70000" countmax="4"/><!-- 4 70% gold coin -->
 	</loot>
 </monster>

@@ -29,6 +29,6 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2666" chance="60000" countmax="2"/><!-- 2 30% meat -->
+		<item id="2666" chance="60000" countmax="2"/><!-- 60% meat -->
 	</loot>
 </monster>

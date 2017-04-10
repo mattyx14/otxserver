@@ -64,28 +64,29 @@
 		<voice sentence="We don't like intruders!"/>
 	</voices>
 	<loot>
-		<item id="2689" chance="11000"/><!-- 11% bread -->
-		<item id="2792" chance="3000"/><!-- 3% dark mushroom -->
-		<item id="2679" chance="20000" countmax="4"/><!-- 4 20% cherry -->
-		<item id="2148" chance="30000" countmax="80"/><!-- 80 30% gold coin -->
-		<item id="2146" chance="2800"/><!-- 1.4% small sapphire -->
-		<item id="2151" chance="1100"/><!-- 1.1% talon -->
-		<item id="1986" chance="400"/><!-- 0.4% red tome -->
-		<item id="2600" chance="13000"/><!-- 13% inkwell -->
-		<item id="2178" chance="2500"/><!-- 2.5% mind stone -->
-		<item id="2124" chance="1000"/><!-- 1% crystal ring -->
-		<item id="2123" chance="200"/><!-- 0.2% ring of the sky -->
-		<item id="2466" chance="300"/><!-- 0.3% golden armor -->
-		<item id="2656" chance="2000"/><!-- 2% blue robe -->
+		<item id="2679" chance="40000" countmax="4"/><!-- 4 40% cherry -->
+		<item id="2792" chance="6000"/><!-- 6% dark mushroom -->
+		<item id="2689" chance="22000"/><!-- 22% bread -->
+		<item id="2148" chance="60000" countmax="80"/><!-- 80 60% gold coin -->
+		<item id="2151" chance="2200"/><!-- 2.2% talon -->
+		<item id="2146" chance="2800"/><!-- 2.8% small sapphire -->
+		<item id="2124" chance="2000"/><!-- 2% crystal ring -->
+		<item id="2123" chance="300"/><!-- 0.2% ring of the sky -->
+		<item id="2178" chance="5000"/><!-- 5% mind stone -->
+		<item id="2600" chance="26000"/><!-- 26% inkwell -->
+		<item id="2656" chance="4000"/><!-- 4% blue robe -->
+		<item id="2466" chance="600"/><!-- 0.6% golden armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2047" chance="15000"/><!-- 15% candlestick -->
-				<item id="2411" chance="10000"/><!-- 10% poison dagger -->
-				<item id="2436" chance="7000"/><!-- 7% skull staff -->
-				<item id="2185" chance="4000"/><!-- 4% 2185 volcanic rod -->
-				<item id="2197" chance="500"/><!-- 0.5% stone skin amulet -->
-				<item id="2167" chance="3000"/><!-- 3% energy ring -->
-			</inside>
+			<!--inside-->
+				<!-- <item id="2185" chance="4000"/> 4% 2185 volcanic rod -->
+				<item id="2411" chance="20000"/><!-- 20% poison dagger -->
+				<item id="2436" chance="14000"/><!-- 14% skull staff -->
+				<item id="2197" chance="1000"/><!-- 1% stone skin amulet -->
+				<item id="2167" chance="6000"/><!-- 6% energy ring -->
+				<item id="2185" chance="300"/><!-- 0.3% wand of might -->
+				<item id="1986" chance="800"/><!-- 0.8% red tome -->
+				<item id="2047" chance="30000"/><!-- 30% candlestick -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

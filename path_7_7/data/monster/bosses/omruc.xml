@@ -59,22 +59,19 @@
 		<voice sentence="Omruc is back!"/>
 	</voices>
 	<loot>
-		<item id="2352" chance="100000"/><!-- 100% crystal arrow -->
-		<item id="2674" chance="80000" countmax="2"/><!-- 2 80% apple -->
-		<item id="2148" chance="70000" countmax="80"/><!-- 80 70% gold -->
-		<item id="2148" chance="50000" countmax="85"/><!-- 85 50% gold -->
-		<item id="2148" chance="35000" countmax="95"/><!-- 95 35% gold -->
-		<item id="2145" chance="10000" countmax="3"/><!-- 3 10% small diamond -->
-		<item id="2154" chance="1000"/><!-- 1% yellow gem -->
-		<item id="2544" chance="20000" countmax="25"/><!-- 25 20% arrow -->
-		<item id="2545" chance="60000" countmax="20"/><!-- 20 60% poison arrow -->
-		<item id="2546" chance="40000" countmax="15"/><!-- 15 40% burst arrow -->
-		<item id="2547" chance="10000" countmax="5"/><!-- 5 10% power bolt -->
-		<item id="2195" chance="100"/><!-- 0.1% boots of haste -->
+		<item id="2352" chance="100000"/><!-- 100% 2352 crystal arrow -->
+		<item id="2148" countmax="28" chance1="80000" chancemax="0"/><!-- 1-28 90% 2148 gold -->
+		<item id="2148" countmax="82" chance1="85000" chancemax="0"/><!-- 1-90 90% 2148 gold -->
+		<item id="2148" countmax="98" chance1="90000" chancemax="0"/><!-- 1-90 90% 2148 gold -->
+		<item id="2674" countmax="2" chance1="75000" chancemax="0"/><!-- 1-2 75% 2674 apple -->
+		<item id="2145" countmax="3" chance1="12000" chancemax="0"/><!-- 1-3 12% 2145 small diamond -->
+		<item id="2545" countmax="19" chance1="50000" chancemax="0"/><!-- 1-19 50% 2545 poison arrow -->
+		<item id="2546" countmax="15" chance1="45000" chancemax="0"/><!-- 1-15 45% 2546 burst arrow -->
+		<item id="2547" countmax="4" chance1="17000" chancemax="0"/><!-- 1-4 17% 2547 power bolt -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
+			<!--inside-->
 				<item id="2165" chance="5000"/><!-- 5% 2165 stealth ring -->
-			</inside>
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

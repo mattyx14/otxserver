@@ -30,6 +30,6 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2148" chance="25000" countmax="4"/><!-- 4 25% gold coin -->
+		<item id="2148" chance="50000" countmax="4"/><!-- 4 50% gold coin -->
 	</loot>
 </monster>

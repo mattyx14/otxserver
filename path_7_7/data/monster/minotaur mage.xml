@@ -44,21 +44,20 @@
 		<voice sentence="Kaplar!"/>
 	</voices>
 	<loot>
-		<item id="2684" chance="10000" countmax="7"/><!-- 7 10% carrot -->
+		<item id="2684" chance="20000" countmax="7"/><!-- 7 20% carrot -->
 		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
 		<item id="2817" chance="70000"/><!-- 70% dead snake -->
-		<item id="2461" chance="10000"/><!-- 10% leather helmet -->
-		<item id="2465" chance="4000"/><!-- 4% brass armor -->
-		<item id="2649" chance="15000"/><!-- 15% leather legs -->
-		<item id="2648" chance="2000"/><!-- 2% chain legs -->
+		<item id="2461" chance="20000"/><!-- 20% leather helmet -->
+		<item id="2465" chance="8000"/><!-- 8% brass armor -->
+		<item id="2649" chance="30000"/><!-- 30% leather legs -->
+		<item id="2648" chance="4000"/><!-- 4% chain legs -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="30000"/><!-- 30% torch -->
-				<item id="2050" chance="30000"/><!-- 30% torch -->
-				<item id="2404" chance="4000"/><!-- 4% combat knife -->
-				<item id="2403" chance="10000"/><!-- 10% knife -->
-				<item id="2189" chance="500"/><!-- 0.5% wand of cosmic energy -->
-			</inside>
+			<!--inside-->
+				<!--<item id="2189" chance="1000"/> 1% wand of cosmic energy -->
+				<item id="2404" chance="8000"/><!-- 8% combat knife -->
+				<item id="2403" chance="20000"/><!-- 20% knife -->
+				<item id="2050" chance="60000"/><!-- 60% torch -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

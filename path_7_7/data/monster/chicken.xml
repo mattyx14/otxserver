@@ -31,8 +31,8 @@
 		<voice sentence="Cluck Cluck"/>
 	</voices>
 	<loot>
-		<item id="3976" chance="30000" countmax="3"/><!-- 3 30% worm -->
-		<item id="2695" chance="1000"/><!-- 1% egg -->
-		<item id="2666" chance="2000" countmax="2"/><!-- 2 2% meat -->
+		<item id="2666" chance="4000" countmax="2"/><!-- 2 4% meat -->
+		<item id="2695" chance="2000"/><!-- 2% egg -->
+		<item id="3976" chance="60000" countmax="3"/><!-- 3 60% worm -->
 	</loot>
 </monster>

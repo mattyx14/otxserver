@@ -40,12 +40,12 @@
 		<voice sentence="Yooodelaaaheeeheee!"/>
 	</voices>
 	<loot>
-		<item id="2671" chance="35000" countmax="6"/><!-- 6 35% ham -->
+		<item id="2671" chance="70000" countmax="6"/><!-- 6 70% ham -->
 		<item id="2666" chance="75000" countmax="4"/><!-- 4 75% meat -->
 		<item id="2148" chance="60000" countmax="10"/><!-- 10 60% gold coin -->
-		<item id="2148" chance="30000" countmax="20"/><!-- 20 30% gold coin -->
+		<item id="2148" chance="60000" countmax="20"/><!-- 20 60% gold coin -->
 		<item id="2111" chance="50000" countmax="22"/><!-- 22 50% snowball -->
-		<item id="2129" chance="500"/><!-- 0.5% wolf tooth chain -->
-		<item id="2644" chance="100"/><!-- 0.1% bunnyslippers -->
+		<item id="2129" chance="1000"/><!-- 1% wolf tooth chain -->
+		<item id="2644" chance="300"/><!-- 0.1% bunnyslippers -->
 	</loot>
 </monster>

@@ -34,15 +34,15 @@
 	<loot>
 		<item id="2148" chance="45000" countmax="10"/><!-- 10 45% gold coin -->
 		<item id="2230" chance="50000"/><!-- 50% bone -->
-		<item id="2473" chance="8000"/><!-- 8% viking helmet -->
+		<item id="2473" chance="16000"/><!-- 16% viking helmet -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="50000"/><!-- 50% torch -->
-				<item id="2398" chance="20000"/><!-- 20% mace -->
-				<item id="2388" chance="25000"/><!-- 15% hatchet -->
-				<item id="2376" chance="2000"/><!-- 2% sword -->
-				<item id="2511" chance="12000"/><!-- 12% brass shield -->
-			</inside>
+			<!--inside-->
+			<item id="2398" chance="40000"/><!-- 40% mace -->
+			<item id="2388" chance="50000"/><!-- 50% hatchet -->
+			<item id="2376" chance="4000"/><!-- 4% sword -->
+			<item id="2511" chance="24000"/><!-- 24% brass shield -->
+			<item id="2050" chance="50000"/><!-- 50% torch -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

@@ -42,22 +42,22 @@
 		<voice sentence="I call you, my bats! Come!"/>
 	</voices>
 	<loot>
-		<item id="2148" chance="15000" countmax="20"/><!-- 20 15% gold coin -->
-		<item id="2144" chance="1500"/><!-- 1.5% black pearl -->
-		<item id="2229" chance="10000"/><!-- 10% skull -->
-		<item id="2032" chance="11000"/><!-- 11% bowl -->
-		<item id="2747" chance="36000"/><!-- 18% grave flower -->
-		<item id="2149" chance="200"/><!-- 0.2% emerald bangle -->
-		<item id="2479" chance="400"/><!-- 0.4% strange helmet -->
-		<item id="2649" chance="8000"/><!-- 8% leather legs -->
+		<item id="2148" chance="30000" countmax="20"/><!-- 20 30% gold coin -->
+		<item id="2144" chance="3000"/><!-- 3% black pearl -->
+		<item id="2149" chance="300"/><!-- 0.2% emerald bangle -->
+		<item id="2229" chance="20000"/><!-- 20% skull -->
+		<item id="2032" chance="22000"/><!-- 22% bowl -->
+		<item id="2747" chance="36000"/><!-- 36% grave flower -->
+		<item id="2479" chance="800"/><!-- 0.8% strange helmet -->
+		<item id="2649" chance="16000"/><!-- 16% leather legs -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2396" chance="300"/><!-- 0.3% ice rapier -->
-				<item id="2412" chance="15000"/><!-- 15% katana -->
-				<item id="2383" chance="1000"/><!-- 1% spike sword -->
-				<item id="2534" chance="100"/><!-- 0.1% vampire shield -->
-				<item id="2172" chance="200"/><!-- 0.2% bronze amulet -->
-			</inside>
+			<!--inside-->
+				<item id="2172" chance="300"/><!-- 0.2% bronze amulet -->
+				<item id="2383" chance="2000"/><!-- 2% spike sword -->
+				<item id="2412" chance="30000"/><!-- 30% katana -->
+				<item id="2396" chance="600"/><!-- 0.6% ice rapier -->
+				<item id="2534" chance="300"/><!-- 0.1% vampire shield -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

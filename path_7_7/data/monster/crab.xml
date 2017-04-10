@@ -30,7 +30,7 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2667" chance="20000"/><!-- 20% fish -->
 		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
+		<item id="2667" chance="40000"/><!-- 40% fish -->
 	</loot>
 </monster>

@@ -33,22 +33,22 @@
 		<voice sentence="Guess who we are hunting, hahaha!"/>
 	</voices>
 	<loot>
-		<item id="2675" chance="20000" countmax="2"/><!-- 2 20% orange -->
-		<item id="2690" chance="11000" countmax="2"/><!-- 2 11% roll -->
-		<item id="2147" chance="200"/><!-- 0.2% small ruby -->
+		<item id="2690" chance="22000" countmax="2"/><!-- 2 22% roll -->
+		<item id="2675" chance="40000" countmax="2"/><!-- 2 40% orange -->
+		<item id="2147" chance="300"/><!-- 0.2% small ruby -->
 		<item id="2544" chance="70000" countmax="10"/><!-- 10 70% arrow -->
-		<item id="2544" chance="40000" countmax="12"/><!-- 12 40% arrow -->
-		<item id="2546" chance="5000" countmax="3"/><!-- 3 5% burst arrow -->
-		<item id="2460" chance="5000"/><!-- 5% brass helmet -->
-		<item id="2461" chance="10000"/><!-- 10% leather helmet -->
-		<item id="2465" chance="5000"/><!-- 5% brass armor -->
-		<item id="2649" chance="14000"/><!-- 14% leather legs -->
+		<item id="2544" chance="80000" countmax="12"/><!-- 12 80% arrow -->
+		<item id="2546" chance="10000" countmax="3"/><!-- 3 10% burst arrow -->
+		<item id="2460" chance="10000"/><!-- 10% brass helmet -->
+		<item id="2461" chance="20000"/><!-- 20% leather helmet -->
+		<item id="2649" chance="28000"/><!-- 28% leather legs -->
+		<item id="2465" chance="10000"/><!-- 10% brass armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="5000"/><!-- 5% torch -->
-				<item id="2456" chance="30000"/><!-- 30% bow -->
-				<item id="2201" chance="3000"/><!-- 3% dragon necklace -->
-			</inside>
+			<!--inside-->
+				<item id="2456" chance="60000"/><!-- 60% bow -->
+				<item id="2050" chance="10000"/><!-- 10% torch -->
+				<item id="2201" chance="6000"/><!-- 6% dragon necklace -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

@@ -38,21 +38,21 @@
 		<voice sentence="You are no match for us!"/>
 	</voices>
 	<loot>
-		<item id="2689" chance="20000"/><!-- 20% bread -->
-		<item id="2148" chance="15000" countmax="18"/><!-- 18 15% gold coin -->
-		<item id="2177" chance="1000"/><!-- 1% life crystal -->
-		<item id="2193" chance="100"/><!-- 0.1% ankh -->
-		<item id="2015" chance="9000"/><!-- 9% brown flask -->
-		<item id="1949" chance="20000"/><!-- 20% scroll -->
-		<item id="1987" chance="13000" dropempty="true"/><!-- 13% bag -->
-		<item id="2467" chance="5500"/><!-- 5.5% leather armor -->
-		<item id="2642" chance="8000"/><!-- 8% sandals -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2044" chance="10000"/><!-- 10% lamp -->
-				<item id="2401" chance="11000"/><!-- 11% staff -->
-				<item id="2166" chance="100"/><!-- 0.1% power ring -->
-			</inside>
+			<!--inside-->
+				<item id="2044" chance="20000"/><!-- 20% lamp -->
+				<item id="2401" chance="22000"/><!-- 22% staff -->
+				<item id="2166" chance="300"/><!-- 0.1% power ring -->
+			<!--/inside-->
 		</item>
+		<item id="1987" chance="26000"/><!-- 26% bag -->
+		<item id="2467" chance="11000"/><!-- 11% leather armor -->
+		<item id="2642" chance="16000"/><!-- 16% sandals -->
+		<item id="2177" chance="2000"/><!-- 2% life crystal -->
+		<item id="2193" chance="300"/><!-- 0.1% ankh -->
+		<item id="2015" chance="18000"/><!-- 18% brown flask -->
+		<item id="1949" chance="40000"/><!-- 40% scroll -->
+		<item id="2148" chance="30000" countmax="18"/><!-- 18 30% gold coin -->
+		<item id="2689" chance="40000"/><!-- 40% bread -->
 	</loot>
 </monster>

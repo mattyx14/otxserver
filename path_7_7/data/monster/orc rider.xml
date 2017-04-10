@@ -32,20 +32,20 @@
 		<voice sentence="Orc arga Huummmak!"/>
 	</voices>
 	<loot>
-		<item id="2666" chance="30000" countmax="3"/><!-- 3 30% meat -->
+		<item id="2666" chance="60000" countmax="3"/><!-- 3 60% meat -->
 		<item id="2148" chance="50000" countmax="10"/><!-- 10 50% gold coin -->
-		<item id="2148" chance="100" countmax="80"/><!-- 80 0.1% gold coin -->
-		<item id="2129" chance="10000"/><!-- 10% wolf tooth chain -->
-		<item id="1988" chance="30000" dropempty="true"/><!-- 30% backpack -->
-		<item id="2482" chance="15000"/><!-- 15% studded helmet -->
-		<item id="2483" chance="600"/><!-- 0.6% scale armor -->
+		<item id="2148" chance="300" countmax="80"/><!-- 80 0.1% gold coin -->
+		<item id="1988" chance="60000"/><!-- 60% backpack -->
+		<item id="2129" chance="20000"/><!-- 20% wolf tooth chain -->
+		<item id="2482" chance="30000"/><!-- 30% studded helmet -->
+		<item id="2483" chance="1200"/><!-- 1.2% scale armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="8000"/><!-- 8% torch -->
-				<item id="2428" chance="15000"/><!-- 15% orcish axe -->
-				<item id="2425" chance="1000"/><!-- 1% obsidian lance -->
-				<item id="2513" chance="1000"/><!-- 1% battle shield -->
-			</inside>
+			<!--inside-->
+				<item id="2428" chance="30000"/><!-- 30% orcish axe -->
+				<item id="2425" chance="2000"/><!-- 2% obsidian lance -->
+				<item id="2513" chance="2000"/><!-- 2% battle shield -->
+				<item id="2050" chance="16000"/><!-- 16% torch -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

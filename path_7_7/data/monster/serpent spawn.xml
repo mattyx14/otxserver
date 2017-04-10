@@ -55,28 +55,28 @@
 		<voice sentence="I bring you deathhhh, mortalssss"/>
 	</voices>
 	<loot>
-		<item id="2796" chance="18000"/><!-- 18% green mushroom -->
-		<item id="2148" chance="80000" countmax="100"/><!-- 100 80% gold coin -->
-		<item id="2148" chance="40000" countmax="50"/><!-- 50 40% gold coin-->
-		<item id="2148" chance="60000" countmax="100"/><!-- 100 60% gold coin-->
-		<item id="2146" chance="6000"/><!-- 6% small sapphire -->
-		<item id="2547" chance="6000"/><!-- 6% power bolt -->
-		<item id="2177" chance="800"/><!-- 0.8% life crystal -->
-		<item id="2033" chance="3000"/><!-- 3% golden mug -->
-		<item id="1967" chance="500"/><!-- 0.5% old parchment -->
-		<item id="1976" chance="9000"/><!-- 9% gemmed book -->
-		<item id="2479" chance="600"/><!-- 0.6% strange helmet -->
-		<item id="3971" chance="2000"/><!-- 2% charmer's tiara -->
-		<item id="2498" chance="100"/><!-- 0.1% royal helmet -->
-		<item id="2492" chance="200"/><!-- 0.2% dragon scale mail -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2392" chance="300"/><!-- 0.3% fire sword -->
-				<item id="2182" chance="1000"/><!-- 1% snakebite rod -->
-				<item id="2528" chance="400"/><!-- 0.4% tower shield -->
-				<item id="2168" chance="3000"/><!-- 3% life ring -->
-				<item id="2167" chance="3000"/><!-- 3% energy ring -->
-			</inside>
+			<!--inside-->
+				<item id="2528" chance="800"/><!-- 0.8% tower shield -->
+				<item id="2392" chance="600"/><!-- 0.6% fire sword -->
+				<!--<item id="2182" chance="2000"/> 2% snakebite rod -->
+				<item id="2168" chance="6000"/><!-- 6% life ring -->
+				<item id="2167" chance="6000"/><!-- 6% energy ring -->
+			<!--/inside-->
 		</item>
+		<item id="2492" chance="300"/><!-- 0.2% dragon scale mail -->
+		<item id="2479" chance="1200"/><!-- 1.2% strange helmet -->
+		<item id="3971" chance="4000"/><!-- 4% charmer's tiara -->
+		<item id="2498" chance="300"/><!-- 0.1% royal helmet -->
+		<item id="1976" chance="18000"/><!-- 18% gemmed book -->
+		<item id="2033" chance="6000"/><!-- 6% golden mug -->
+		<item id="2547" chance="12000"/><!-- 12% power bolt -->
+		<item id="1967" chance="1000"/><!-- 1% old parchment -->
+		<item id="2177" chance="1600"/><!-- 1.6% life crystal -->
+		<item id="2146" chance="12000"/><!-- 12% small sapphire -->
+		<item id="2148" chance="80000" countmax="100"/><!-- 100 80% gold coin -->
+		<item id="2148" chance="80000" countmax="50"/><!-- 50 80% gold coin-->
+		<item id="2148" chance="60000" countmax="100"/><!-- 100 60% gold coin-->
+		<item id="2796" chance="36000"/><!-- 36% green mushroom -->
 	</loot>
 </monster>

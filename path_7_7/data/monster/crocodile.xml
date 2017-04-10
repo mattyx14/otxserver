@@ -29,11 +29,11 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2671" chance="40000" countmax="2"/><!-- 2 40% ham -->
-		<item id="2666" chance="70000" countmax="4"/><!-- 4 70% meat -->
+		<item id="3982" chance="300"/><!-- 0.1% crocodile boots -->
+		<item id="2461" chance="16000"/><!-- 16% leather helmet -->
+		<item id="2465" chance="16000"/><!-- 16% brass armor -->
 		<item id="2148" chance="50000" countmax="10"/><!-- 10 50% gold coin -->
-		<item id="3982" chance="100"/><!-- 0.1% crocodile boots -->
-		<item id="2461" chance="8000"/><!-- 8% leather helmet -->
-		<item id="2649" chance="8000"/><!-- 8% leather legs -->
+		<item id="2666" chance="70000" countmax="4"/><!-- 4 70% meat -->
+		<item id="2671" chance="80000" countmax="2"/><!-- 2 80% ham -->
 	</loot>
 </monster>

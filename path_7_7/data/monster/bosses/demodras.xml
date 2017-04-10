@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Demodras" nameDescription="Demodras" race="blood" experience="3100" speed="230" manacost="0">
 	<health now="2200" max="2200"/>
-	<look type="204" corpse="2881"/>
+	<look type="39" corpse="2881"/>
 	<targetchange interval="1000" chance="5"/>
 	<targetstrategies nearest="70" health="10" damage="10" random="10"/>
 	<flags>
@@ -19,14 +19,14 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="-160" max="-600"/>
-		<attack name="fire" interval="2000" chance="20" range="7" radius="4" target="1" min="-250" max="-350">
+		<attack name="fire" interval="3000" chance="20" range="7" radius="4" target="1" min="-250" max="-350">
 			<attribute key="shootEffect" value="fire"/>
 			<attribute key="areaEffect" value="firearea"/>
 		</attack>
 		<attack name="firefield" interval="2000" chance="10" range="7" radius="6" target="1">
 			<attribute key="shootEffect" value="fire"/>
 		</attack>
-		<attack name="fire" interval="2000" chance="20" length="8" spread="3" min="-250" max="-550">
+		<attack name="fire" interval="4000" chance="20" length="8" spread="3" min="-250" max="-550">
 			<attribute key="areaEffect" value="firearea"/>
 		</attack>
 	</attacks>
@@ -55,25 +55,30 @@
 		<voice sentence="I WILL PROTECT MY BROOD!" yell="1"/>
 	</voices>
 	<loot>
-		<item id="2672" chance="75000" countmax="10"/><!-- 10 75% dragon ham -->
-		<item id="2796" chance="24000" countmax="7"/><!-- 7 24% green mushroom -->
-		<item id="2148" chance="95000" countmax="100"/><!-- 100 95% gold -->
-		<item id="2148" chance="80000" countmax="100"/><!-- 100 80% gold -->
-		<item id="2148" chance="55000" countmax="50"/><!-- 50 55% gold -->
-		<item id="2146" chance="10000"/><!-- 10% small sapphire -->
-		<item id="2547" chance="16000"/><!-- 16% power bolt -->
-		<item id="2033" chance="6000"/><!-- 6% golden mug -->
-		<item id="1976" chance="10000"/><!-- 10% gemmed book -->
-		<item id="2177" chance="1200"/><!-- 1.2% life crystal -->
-		<item id="2498" chance="400"/><!-- 0.4% royal helmet -->
-		<item id="2479" chance="800"/><!-- 0.8% strange helmet -->
-		<item id="2492" chance="300"/><!-- 0.3% dragon scale mail -->
+		<item id="2148" countmax="98" chance1="100000" chancemax="6000"/><!-- gold -->
+		<item id="2148" countmax="99" chance1="100000" chancemax="6000"/><!-- gold -->
+		<item id="2796" countmax="7" chance1="26001" chancemax="7000"/><!-- 26% green mushroom -->
+		<item id="2146" countmax="1" chance1="13001" chancemax="13000"/><!-- 13% small sapphire -->
+		<item id="2547" countmax="10" chance1="17000" chancemax="2000"/><!-- 17% power bolt -->
+		<item id="2672" countmax="4" chance1="80000" chancemax="3000"/><!-- dragon ham -->
+		<item id="2033" chance="6000"/><!-- 6% 2033 golden mug -->
+		<item id="2177" chance="2000"/><!-- 2% life crystal -->
+		<item id="1976" chance="11000"/><!-- 11% gemmed book -->
+		<item id="2479" chance="8000"/><!-- 8% strange helmet -->
+		<item id="2492" chance="2000"/><!-- 2% dragon scale mail -->
+		<item id="2498" chance="600"/><!-- royal helmet -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2392" chance="600"/><!-- 0.6% fire sword -->
-				<item id="2528" chance="600"/><!-- 0.6% tower shield -->
-				<item id="2167" chance="10000"/><!-- 10% energy ring -->
-			</inside>
+			<!--inside-->
+				<item id="2167" chance="11000"/><!-- 11% energy ring -->
+				<item id="2409" chance="20000"/><!-- 2409 serpent sword -->
+				<item id="2434" chance="20000"/><!-- 2434 dragon hammer -->
+				<item id="2413" chance="20000"/><!-- 2413 broad sword -->
+				<!--<item id="2187" chance="20000"/> 2187 wand of inferno -->
+				<item id="2387" chance="20000"/><!-- 2387 double axe -->
+				<!--<item id="2191" chance="20000"/> 2191 wand of dragonbreath -->
+				<item id="2392" chance="2000"/><!-- 2% fire sword -->
+				<item id="2528" chance="600"/><!-- tower shield -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

@@ -55,19 +55,19 @@
 		<voice sentence="Prek tars, dekklep zurk."/>
 	</voices>
 	<loot>
-		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
-		<item id="2229" chance="3000" countmax="3"/><!-- 3 3% skull -->
-		<item id="2231" chance="7000"/><!-- 7% big bone -->
-		<item id="2230" chance="10000"/><!-- 10% bone -->
-		<item id="3955" chance="100"/><!-- 0.1% voodoo doll -->
-		<item id="2467" chance="10000"/><!-- 10% leather armor -->
-		<item id="3967" chance="500"/><!-- 0.5% tribal mask -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="5500"/><!-- 5.5% torch -->
-				<item id="2411" chance="1000"/><!-- 1% poison dagger -->
-				<item id="2174" chance="500"/><!-- 0.5% strange symbol -->
-			</inside>
+			<!--inside-->
+				<item id="2050" chance="11000"/><!-- 11% torch -->
+				<item id="2411" chance="2000"/><!-- 2% poison dagger -->
+				<item id="2174" chance="1000"/><!-- 1% strange symbol -->
+			<!--/inside-->
 		</item>
+		<item id="2467" chance="20000"/><!-- 20% leather armor -->
+		<item id="3967" chance="1000"/><!-- 1% tribal mask -->
+		<item id="2231" chance="14000"/><!-- 14% big bone -->
+		<item id="2230" chance="20000"/><!-- 20% bone -->
+		<item id="3955" chance="300"/><!-- 0.1% voodoo doll -->
+		<item id="2229" chance="6000" countmax="3"/><!-- 3 6% skull -->
+		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
 	</loot>
 </monster>

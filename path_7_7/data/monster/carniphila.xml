@@ -40,14 +40,14 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2671" chance="40000"/><!-- 40% ham -->
-		<item id="2666" chance="70000" countmax="2"/><!-- 2 70% meat -->
-		<item id="2792" chance="8000"/><!-- 8% dark mushroom -->
+		<item id="2804" chance="2000"/><!-- 2% shadow herb -->
+		<item id="2802" chance="1000"/><!-- 1% sling herb -->
+		<item id="2802" chance="1000"/><!-- 1% sling herb -->
+		<item id="2747" chance="1000"/><!-- 1% grave flower -->
 		<item id="2148" chance="80000" countmax="30"/><!-- 30 80% gold coin -->
-		<item id="2148" chance="40000" countmax="10"/><!-- 10 40% gold coin -->
-		<item id="2804" chance="1000"/><!-- 1% shadow herb -->
-		<item id="2802" chance="500"/><!-- 0.5% sling herb -->
-		<item id="2802" chance="500"/><!-- 0.5% sling herb -->
-		<item id="2747" chance="500"/><!-- 0.5% grave flower -->
+		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
+		<item id="2666" chance="70000" countmax="2"/><!-- 2 70% meat -->
+		<item id="2671" chance="80000"/><!-- 80% ham -->
+		<item id="2792" chance="16000"/><!-- 16% dark mushroom -->
 	</loot>
 </monster>

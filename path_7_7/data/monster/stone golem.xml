@@ -32,18 +32,18 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2148" chance="16000" countmax="15"/><!-- 15 16% gold coin -->
-		<item id="1294" chance="13000" countmax="4"/><!-- 4 13% small stone -->
-		<item id="2156" chance="100"/><!-- 0.1% red gem -->
-		<item id="2483" chance="5000"/><!-- 5% scale armor -->
+		<item id="2148" chance="32000" countmax="15"/><!-- 15 32% gold coin -->
+		<item id="1294" chance="26000" countmax="4"/><!-- 4 26% small stone -->
+		<item id="2156" chance="300"/><!-- 0.1% red gem -->
+		<item id="2483" chance="10000"/><!-- 10% scale armor -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="5500"/><!-- 5.5% torch -->
-				<item id="2395" chance="1500"/><!-- 1.5% carlin sword -->
-				<item id="2509" chance="7000"/><!-- 7% steel shield -->
-				<item id="2166" chance="5000"/><!-- 5% power ring -->
-				<item id="2124" chance="200"/><!-- 0.2% crystal ring -->
-			</inside>
+			<!--inside-->
+				<item id="2166" chance="10000"/><!-- 10% power ring -->
+				<item id="2124" chance="300"/><!-- 0.2% crystal ring -->
+				<item id="2395" chance="3000"/><!-- 3% carlin sword -->
+				<item id="2509" chance="14000"/><!-- 14% steel shield -->
+				<item id="2050" chance="11000"/><!-- 11% torch -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

@@ -34,19 +34,19 @@
 		<voice sentence="Your head will be mine!"/>
 	</voices>
 	<loot>
-		<item id="2691" chance="30000"/><!-- 30% brown bread -->
-		<item id="2148" chance="40000" countmax="10"/><!-- 10 40% gold coin -->
+		<item id="2691" chance="60000"/><!-- 60% brown bread -->
+		<item id="2148" chance="80000" countmax="10"/><!-- 10 80% gold coin -->
 		<item id="2229" chance="80000" countmax="2"/><!-- 2 80% skull -->
-		<item id="2147" chance="100"/><!-- 0.1% small ruby -->
+		<item id="2147" chance="300"/><!-- 0.1% small ruby -->
 		<item id="2467" chance="50000"/><!-- 50% leather armor -->
-		<item id="2125" chance="200"/><!-- 0.2% crystal necklace -->
+		<item id="2125" chance="300"/><!-- 0.2% crystal necklace -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2050" chance="5000"/><!-- 5% torch -->
+			<!--inside-->
+				<item id="2385" chance="46000"/><!-- 46% sabre -->
 				<item id="2379" chance="80000"/><!-- 80% dagger -->
-				<item id="2385" chance="23000"/><!-- 23% sabre -->
-				<item id="2526" chance="5000"/><!-- 5% studded shield -->
-			</inside>
+				<item id="2526" chance="10000"/><!-- 10% studded shield -->
+				<item id="2050" chance="10000"/><!-- 10% torch -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

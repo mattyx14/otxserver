@@ -32,7 +32,7 @@
 		<voice sentence="Groar"/>
 	</voices>
 	<loot>
-		<item id="2671" chance="40000" countmax="2"/><!-- 2 40% ham -->
 		<item id="2666" chance="70000" countmax="4"/><!-- 4 70% meat -->
+		<item id="2671" chance="40000" countmax="2"/><!-- 2 80% ham -->
 	</loot>
 </monster>

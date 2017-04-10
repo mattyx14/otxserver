@@ -148,6 +148,10 @@ class MonsterType
 		int32_t health = 100;
 		int32_t healthMax = 100;
 		int32_t changeTargetChance =0;
+		int32_t targetStrategiesNearestPercent = 0;
+		int32_t targetStrategiesLowerHPPercent = 0;
+		int32_t targetStrategiesMostDamagePercent = 0;
+		int32_t targetStrategiesRandom = 100;
 		int32_t defense = 0;
 		int32_t armor = 0;
 

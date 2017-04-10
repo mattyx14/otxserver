@@ -31,7 +31,7 @@
 	<voices interval="2000" chance="5">
 	</voices>
 	<loot>
-		<item id="2666" chance="30000"/><!-- 30% meat -->
-		<item id="2148" chance="35000" countmax="10"/><!-- 10 35% gold coin -->
+		<item id="2666" chance="60000"/><!-- 60% meat -->
+		<item id="2148" chance="70000" countmax="10"/><!-- 10 70% gold coin -->
 	</loot>
 </monster>

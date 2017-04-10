@@ -64,19 +64,19 @@
 		<voice sentence="Good wishes are for fairytales"/>
 	</voices>
 	<loot>
-		<item id="2673" chance="25000" countmax="12"/><!-- 12 25% pear -->
+		<item id="2673" chance="50000" countmax="12"/><!-- 12 50% pear -->
 		<item id="2148" chance="70000" countmax="50"/><!-- 50 70% gold coin -->
 		<item id="2148" chance="50000" countmax="80"/><!-- 80 50% gold coin -->
-		<item id="2149" chance="7000" countmax="2"/><!-- 2 7% small emerald -->
-		<item id="2155" chance="100"/><!-- 0.1% green gem -->
-		<item id="1860" chance="2500"/><!-- 2.5% green tapestry -->
-		<item id="2359" chance="20000"/><!-- 20% small oil lamp -->
-		<item id="2663" chance="200"/><!-- 0.2% mystic turban -->
+		<item id="2149" chance="14000" countmax="2"/><!-- 2 14% small emerald -->
+		<item id="2155" chance="300"/><!-- 0.1% green gem -->
+		<item id="1860" chance="5000"/><!-- 5% green tapestry -->
+		<item id="2359" chance="40000"/><!-- 40% small oil lamp -->
+		<item id="2663" chance="300"/><!-- 0.2% mystic turban -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2442" chance="20000"/><!-- 20% heavy machete -->
-				<item id="2187" chance="500"/><!-- 0.5% wand of inferno -->
-			</inside>
+			<!--inside-->
+				<item id="2442" chance="40000"/><!-- 40% heavy machete -->
+				<!--<item id="2187" chance="1000"/> 1% wand of inferno -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

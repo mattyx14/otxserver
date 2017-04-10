@@ -34,19 +34,24 @@
 		<voice sentence="Hmmm, dogs."/>
 	</voices>
 	<loot>
-		<item id="2666" chance="15000"/><!-- 15% meat -->
+		<item id="2666" chance="30000"/><!-- 30% meat -->
 		<item id="2148" chance="60000" countmax="10"/><!-- 10 60% gold coin -->
-		<item id="2120" chance="8000"/><!-- 8% rope -->
-		<item id="2461" chance="10000"/><!-- 10% leather helmet -->
-		<item id="2643" chance="10000"/><!-- 10% leather boots -->
+		<item id="2120" chance="16000"/><!-- 16% rope -->
+		<item id="2643" chance="20000"/><!-- 20% leather boots -->
+		<item id="2461" chance="20000"/><!-- 20% leather helmet -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2389" chance="20000"/><!-- 20% spear -->
-				<item id="2380" chance="36000"/><!-- 18% hand axe -->
-				<item id="2448" chance="5000"/><!-- 5% studded club -->
-				<item id="2512" chance="15000"/><!-- 15% wooden shield -->
-				<item id="2170" chance="100"/><!-- 0.1% silver amulet -->
-			</inside>
+			<!--inside-->
+				<item id="2389" chance="40000"/><!-- 40% spear -->
+				<item id="2380" chance="36000"/><!-- 36% hand axe -->
+				<item id="2448" chance="10000"/><!-- 10% studded club -->
+				<item id="2512" chance="30000"/><!-- 30% wooden shield -->
+				<item id="2170" chance="300"/><!-- 0.1% silver amulet -->
+			<!--/inside-->
 		</item>
+		
+		
+		
+		
+		
 	</loot>
 </monster>

@@ -37,20 +37,20 @@
 		<voice sentence="Chhhhhhh!"/>
 	</voices>
 	<loot>
-		<item id="3976" chance="90000" countmax="10"/><!-- 10 90% worm -->
-		<item id="2148" chance="30000" countmax="30"/><!-- 30 30% gold coin -->
-		<item id="2148" chance="40000" countmax="25"/><!-- 25 40% gold coin -->
-		<item id="2145" chance="500"/><!-- 0.5% small diamond -->
-		<item id="2399" chance="1000" countmax="3"/><!-- 3 1% throwing star -->
+		<item id="2148" chance="60000" countmax="30"/><!-- 30 60% gold coin -->
+		<item id="2148" chance="80000" countmax="25"/><!-- 25 80% gold coin -->
+		<!--<item id="3976" chance="90000" countmax="10"/> 10 90% worm -->
+		<item id="2145" chance="1000"/><!-- 1% small diamond -->
 		<item id="2230" chance="50000"/><!-- 50% bone -->
-		<item id="2227" chance="20000"/> <!-- 20% rotten meat -->
-		<item id="2459" chance="2000"/><!-- 2% iron helmet -->
+		<item id="2227" chance="40000"/> <!-- 40% rotten meat -->
+		<item id="2399" chance="2000" countmax="3"/><!-- 3 2% throwing star -->
+		<item id="2459" chance="4000"/><!-- 4% iron helmet -->
 		<item id="1987" chance="100000"><!-- bag -->
-			<inside>
-				<item id="2377" chance="2000"/><!-- 2% two handed sword -->
-				<item id="2450" chance="1000"/><!-- 1% bone sword -->
-				<item id="2541" chance="1000"/><!-- 1% bone shield -->
-			</inside>
+			<!--inside-->
+				<item id="2377" chance="4000"/><!-- 4% two handed sword -->
+				<item id="2541" chance="2000"/><!-- 2% bone shield -->
+				<item id="2450" chance="2000"/><!-- 2% bone sword -->
+			<!--/inside-->
 		</item>
 	</loot>
 </monster>

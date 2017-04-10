@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Tiquandas Revenge" nameDescription="Tiquanda's Revenge" race="venom" experience="2635" speed="440" manacost="0">
+<monster name="Tiquanda's Revenge" nameDescription="Tiquanda's Revenge" race="venom" experience="2635" speed="440" manacost="0">
 	<health now="1800" max="1800"/>
 	<look type="120" corpse="4280"/>
 	<targetchange interval="1000" chance="5"/>
@@ -43,11 +43,11 @@
 		<immunity drunk="0"/>
 		<immunity invisible="1"/>
 	</immunities>
-	<loot>
-		<item id="2792" chance="25000" countmax="5"/><!-- 5 25% dark mushroom -->
-		<item id="2671" chance="50000" countmax="2"/><!-- 2 50% ham -->
-		<item id="2666" chance="70000" countmax="4"/><!-- 4 70% meat -->
-		<item id="2148" chance="100000" countmax="28"/><!-- 28 100% gold -->
-		<item id="2148" chance="100000" countmax="90"/><!-- 90 100% gold -->
-	</loot>
+<loot>
+	<item id="2148" countmax="90" chance1="100000" chancemax="0"/><!-- 1-90 100% 2148 gold -->
+	<item id="2148" countmax="28" chance1="100000" chancemax="0"/><!-- 1-28 100% 2148 gold -->
+	<item id="2666" countmax="4" chance1="70000" chancemax="0"/><!-- 70% 2666 meat -->
+	<item id="2671" countmax="2" chance1="50000" chancemax="0"/><!-- 50% 2671 ham -->
+	<item id="2792" countmax="5" chance1="25000" chancemax="0"/><!-- 1-5 25% 2792 dark mushroom -->
+</loot>
 </monster>
