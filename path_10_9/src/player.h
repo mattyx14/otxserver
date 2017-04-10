@@ -1227,7 +1227,6 @@ class Player final : public Creature, public Cylinder
 			return idleTime;
 		}
 
-	    void doCriticalDamage(CombatDamage& damage) const;
 	protected:
 		std::forward_list<Condition*> getMuteConditions() const;
 

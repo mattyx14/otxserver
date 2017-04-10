@@ -3879,8 +3879,14 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
-
+		bool critical = false;
 		if (attackerPlayer && damage.origin != ORIGIN_NONE) {
+			//critical damage
+			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_CHANCE)) {
+				damage.primary.value = (int32_t)(damage.primary.value * (1 + ((float)attackerPlayer->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE) / 100)));
+				critical = true;
+			}
+
 			//life leech
 			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_CHANCE)) {
 				CombatParams tmpParams;
@@ -3902,17 +3908,15 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 		}
 
+		SpectatorHashSet spectators;
+		map.getSpectators(spectators, targetPos, true, true);
+		if (critical) {
+			addMagicEffect(spectators, targetPos, CONST_ME_CRITICAL_DAMAGE);
+		}
 
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
 			return true;
-		}
-
-		SpectatorHashSet spectators;
-		map.getSpectators(spectators, targetPos, true, true);
-
-		if (damage.critical) {
-			addMagicEffect(spectators, targetPos, CONST_ME_CRITICAL_DAMAGE);
 		}
 
 		TextMessage message;
