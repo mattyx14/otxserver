@@ -35,3 +35,5 @@ before_script:
 script:
   - cd ../../path_10_9/build
   - make -j2
+  - cd ../../path_7_7/build
+  - make -j2
