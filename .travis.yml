@@ -4,9 +4,25 @@ language: cpp
 compiler:
   - gcc
 env:
-  - LUAJIT=OFF
+  - LUAJIT=ON
     VERSION=10_9
   - LUAJIT=ON
+    VERSION=8_7
+  - LUAJIT=ON
+    VERSION=8_6
+  - LUAJIT=ON
+    VERSION=8_5
+  - LUAJIT=ON
+    VERSION=7_7
+  - LUAJIT=OFF
+    VERSION=10_9
+  - LUAJIT=OFF
+    VERSION=8_7
+  - LUAJIT=OFF
+    VERSION=8_6
+  - LUAJIT=OFF
+    VERSION=8_5
+  - LUAJIT=OFF
     VERSION=7_7
 cache: apt
 addons:
