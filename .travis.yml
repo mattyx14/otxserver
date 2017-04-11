@@ -2,11 +2,28 @@ sudo: required
 dist: trusty
 language: cpp
 compiler:
-  - clang
   - gcc
 env:
-  - LUAJIT=OFF
   - LUAJIT=ON
+    VERSION=10_9
+  - LUAJIT=ON
+    VERSION=8_7
+  - LUAJIT=ON
+    VERSION=8_6
+  - LUAJIT=ON
+    VERSION=8_5
+  - LUAJIT=ON
+    VERSION=7_7
+  - LUAJIT=OFF
+    VERSION=10_9
+  - LUAJIT=OFF
+    VERSION=8_7
+  - LUAJIT=OFF
+    VERSION=8_6
+  - LUAJIT=OFF
+    VERSION=8_5
+  - LUAJIT=OFF
+    VERSION=7_7
 cache: apt
 addons:
   apt:
@@ -18,7 +35,11 @@ addons:
       - libluajit-5.1-dev
       - libmysqlclient-dev
       - libpugixml-dev
+      - build-essential
+      - libgmp3-dev
 before_script:
-  - mkdir build && cd build
+  - mkdir path_${VERSION}/build
+  - cd path_${VERSION}/build
   - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_LUAJIT=${LUAJIT} ..
-script: make -j2
+script:
+  - make -j1
