@@ -24,8 +24,8 @@ static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "3";
 static constexpr auto MINOR_VERSION = "9";
 static constexpr auto REVISION_VERSION = "DEV";
-static constexpr auto SOFTWARE_CODENAME = "VANXI";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "Mattyx14, Brewsterl, Malucooo and The Forgotten Server Developers";
+static constexpr auto SOFTWARE_CODENAME = "OpenTibia";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "Matt Gomez, Leandro Brewster, Erick Nunes, João Leonardo Pereira, OTX Contributors and The Forgotten Server Developers";
 static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/";
 
 static constexpr auto CLIENT_VERSION_MIN = 854;

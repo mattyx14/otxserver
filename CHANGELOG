@@ -4,19 +4,20 @@
 			The OTX Server are based on The Forgotten Server Version: 1.3
 
 	CODENAME
-		VANXI
+		OpenTibia
 
 	WEBSYTE
 		https://github.com/mattyx14/otxserver/tree/otxserv3/
 
 	DEVELOPERS
 		Project Manager and Founder
-			Mattyx14
+			Matt Gomez
 
 		OTX Server 3 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-			Mattyx14
-			Brewsterl
-			Malucooo
+			Matt Gomez
+			Leandro Brewster
+			Erick Nunes
+			João Leonardo Pereira
 
 		Special Thanks(s) 
 			The Forgotten Team = TFT
@@ -66,14 +67,14 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Version Clients - 7.7 to 11_
-		Version Client 11.x
+		Version Clients - 7.7 to 10.99
+		Version Client 11.x (Basic Support)
 
 	BUGS
 		https://github.com/mattyx14/otxserver/issues/
 ]
 
-[ OTX Server 3.9 :: Version " VANXI "
+[ OTX Server 3.9 :: Version " OpenTibia "
 	- Add help /docs/
 		How use internal functions from TFT / OTX "WIP" - /internalFunction
 		How use all configs from TFT / OTX "WIP" - /configHelp
@@ -87,7 +88,7 @@
 	- Add feature #219 (OTXS-C)
 	- Add tibia coin trade via market (OTXS-C)
 	- Drop commands support in favor of talkactions (TFT)
-	- Fix MoveItem and storeInbox on 10.x // 11 (Eternal-Scripts)
+	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
 	- Fix features from: Xeraphus(Monster:onSpawn) - Mkalo(Bank Account of Premium Accounts) - (brunominervino)
 	- Fix blood splashes on pz tiles (TFC)
@@ -122,7 +123,7 @@
 	- Move levitate to Lua (TFT)
 	- Improve code and cleanups (TFT)
 	- Remove player from attack list upon death (TFC)
-	- Remove support to clientVersion 11_ - aka10
+	- Remove support to clientVersion 11_ - aka10 (items.otb official no)
 	- Remove compat function from swimming.lua (TFC)
 	- Storing TalkAction instances instead of pointers (TFC)
 	- Updated spells (TFC)
