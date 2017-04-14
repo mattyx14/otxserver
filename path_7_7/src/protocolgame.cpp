@@ -279,7 +279,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	if (accountName == 0) {
-		disconnectClient("You must enter your account name.");
+		disconnectClient("You must enter your account number.");
 		return;
 	}
 
@@ -307,7 +307,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	uint32_t accountId = IOLoginData::gameworldAuthentication(accountName, password, characterName);
 	if (accountId == 0) {
-		disconnectClient("Account name or password is not correct.");
+		disconnectClient("Account number or password is not correct.");
 		return;
 	}
 
