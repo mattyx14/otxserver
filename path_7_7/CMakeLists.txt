@@ -11,10 +11,8 @@ include(cotire)
 
 add_compile_options(-Wall -pipe -fvisibility=hidden)
 
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    set(CMAKE_EXE_LINKER_FLAGS "-latomic")
-elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-strict-aliasing")
+if (CMAKE_COMPILER_IS_GNUCXX)
+    add_compile_options(-fno-strict-aliasing)
 endif()
 
 include(FindCXX11)
