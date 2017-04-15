@@ -88,6 +88,7 @@
 	- Add feature #219 (OTXS-C)
 	- Add tibia coin trade via market (OTXS-C)
 	- Drop commands support in favor of talkactions (TFT)
+	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
 	- Fix features from: Xeraphus(Monster:onSpawn) - Mkalo(Bank Account of Premium Accounts) - (brunominervino)
@@ -130,6 +131,7 @@
 	- Updated enchantingScript (TFC)
 	- Updated monsters (TFT)
 	- Updated Party spells (TFC)
+	- Updated travis.yml
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
