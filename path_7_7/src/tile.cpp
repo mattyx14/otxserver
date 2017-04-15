@@ -865,7 +865,7 @@ void Tile::addThing(int32_t, Thing* thing)
 			bool isInserted = false;
 
 			if (items) {
-				for (ItemVector::const_iterator it = items->getCBeginTopItem(), end = items->getCEndTopItem(); it != end; ++it) {
+				for (auto it = items->getCBeginTopItem(), end = items->getCEndTopItem(); it != end; ++it) {
 					//Note: this is different from internalAddThing
 					if (itemType.alwaysOnTopOrder <= Item::items[(*it)->getID()].alwaysOnTopOrder) {
 						items->insert(it, item);
@@ -886,8 +886,7 @@ void Tile::addThing(int32_t, Thing* thing)
 			if (itemType.isMagicField()) {
 				//remove old field item if exists
 				if (items) {
-					auto end = items->getCEndDownItem();
-					for (auto it = items->getCBeginDownItem(); it != end; ++it) {
+					for (ItemVector::const_iterator it = items->getCEndDownItem(), end = items->getCBeginDownItem(); it != end; ++it) {
 						MagicField* oldField = (*it)->getMagicField();
 						if (oldField) {
 							if (oldField->isReplaceable()) {
