@@ -773,7 +773,7 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 		}
 	}
 
-	if (node = monsterNode.child("targetchange")) {
+	if ((node = monsterNode.child("targetchange"))) {
 		if ((attr = node.attribute("speed")) || (attr = node.attribute("interval"))) {
 			mType->info.changeTargetSpeed = pugi::cast<uint32_t>(attr.value());
 		} else {
@@ -787,7 +787,7 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 		}
 	}
 
-	if (node = monsterNode.child("targetstrategies")) {
+	if ((node = monsterNode.child("targetstrategies"))) {
 		if ((attr = node.attribute("nearest"))) {
 			mType->info.targetStrategiesNearestPercent = pugi::cast<int32_t>(attr.value());
 		} else {
