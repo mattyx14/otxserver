@@ -773,7 +773,7 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 		}
 	}
 
-	if ((node = monsterNode.child("targetchange"))) {
+	if (node = monsterNode.child("targetchange")) {
 		if ((attr = node.attribute("speed")) || (attr = node.attribute("interval"))) {
 			mType->info.changeTargetSpeed = pugi::cast<uint32_t>(attr.value());
 		} else {
@@ -788,32 +788,27 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 	}
 
 	if (node = monsterNode.child("targetstrategies")) {
-
-		if (attr = node.attribute("nearest")) {
+		if ((attr = node.attribute("nearest"))) {
 			mType->info.targetStrategiesNearestPercent = pugi::cast<int32_t>(attr.value());
-		}
-		else {
+		} else {
 			std::cout << "[Warning - Monsters::loadMonster] Missing targetStrategiesNearestPercent. " << file << std::endl;
 		}
 
-		if (attr = node.attribute("health")) {
+		if ((attr = node.attribute("health"))) {
 			mType->info.targetStrategiesLowerHPPercent = pugi::cast<int32_t>(attr.value());
-		}
-		else {
+		} else {
 			std::cout << "[Warning - Monsters::loadMonster] Missing targetStrategiesLowerHPPercent. " << file << std::endl;
 		}
 
-		if (attr = node.attribute("damage")) {
+		if ((attr = node.attribute("damage"))) {
 			mType->info.targetStrategiesMostDamagePercent = pugi::cast<int32_t>(attr.value());
-		}
-		else {
+		} else {
 			std::cout << "[Warning - Monsters::loadMonster] Missing targetStrategiesMostDamagePercent. " << file << std::endl;
 		}
 
-		if (attr = node.attribute("random")) {
+		if ((attr = node.attribute("random"))) {
 			mType->info.targetStrategiesRandom = pugi::cast<int32_t>(attr.value());
-		}
-		else {
+		} else {
 			std::cout << "[Warning - Monsters::loadMonster] Missing targetStrategiesRandom. " << file << std::endl;
 		}
 	}
