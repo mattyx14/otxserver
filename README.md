@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mattyx14/otxserver.svg?branch=otxserv3)](https://travis-ci.org/mattyx14/otxserver)
+[![Build Status](https://travis-ci.org/jlcvp/otxserver.svg?branch=otxserv3)](https://travis-ci.org/mattyx14/otxserver)
 ### What is OTX Server 3 Series
 
 We are trying to create the perfect custom OpenTibia server.
