@@ -541,8 +541,8 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 		const CreatureVector* tileCreatures = getCreatures();
 		if (const Player* player = creature->getPlayer()) {
 			if (tileCreatures && !tileCreatures->empty()
-					&& !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags)
-					&& !player->isAccessPlayer()) {
+				&& !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags)
+				&& !player->isAccessPlayer()) {
 				for (const Creature* tileCreature : *tileCreatures) {
 					if (!tileCreature->isInGhostMode())
 						return RETURNVALUE_NOTPOSSIBLE;
@@ -848,7 +848,7 @@ void Tile::addThing(int32_t, Thing* thing)
 		} else if (itemType.alwaysOnTop) {
 			if (itemType.isSplash() && items) {
 				//remove old splash if exists
-				for (ItemVector::const_iterator it = items->getCBeginTopItem(), end = items->getCEndTopItem(); it != end; ++it) {
+				for (ItemVector::const_iterator it = items->getBeginTopItem(), end = items->getEndTopItem(); it != end; ++it) {
 					Item* oldSplash = *it;
 					if (!Item::items[oldSplash->getID()].isSplash()) {
 						continue;
@@ -865,7 +865,7 @@ void Tile::addThing(int32_t, Thing* thing)
 			bool isInserted = false;
 
 			if (items) {
-				for (ItemVector::const_iterator it = items->getCBeginTopItem(), end = items->getCEndTopItem(); it != end; ++it) {
+				for (auto it = items->getBeginTopItem(), end = items->getEndTopItem(); it != end; ++it) {
 					//Note: this is different from internalAddThing
 					if (itemType.alwaysOnTopOrder <= Item::items[(*it)->getID()].alwaysOnTopOrder) {
 						items->insert(it, item);
@@ -886,8 +886,7 @@ void Tile::addThing(int32_t, Thing* thing)
 			if (itemType.isMagicField()) {
 				//remove old field item if exists
 				if (items) {
-					auto end = items->getCEndDownItem();
-					for (auto it = items->getCBeginDownItem(); it != end; ++it) {
+					for (ItemVector::const_iterator it = items->getBeginDownItem(), end = items->getEndDownItem(); it != end; ++it) {
 						MagicField* oldField = (*it)->getMagicField();
 						if (oldField) {
 							if (oldField->isReplaceable()) {
@@ -896,9 +895,7 @@ void Tile::addThing(int32_t, Thing* thing)
 								oldField->setParent(nullptr);
 								g_game.ReleaseItem(oldField);
 								postRemoveNotification(oldField, nullptr, 0);
-								// revalidate iterators after removal
-								it = items->getCBeginDownItem() - 1;
-								end = items->getCEndDownItem();
+								break;
 							} else {
 								//This magic field cannot be replaced.
 								item->setParent(nullptr);

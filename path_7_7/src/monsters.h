@@ -154,10 +154,6 @@ class MonsterType
 		int32_t targetStrategiesRandom = 100;
 		int32_t defense = 0;
 		int32_t armor = 0;
-		int32_t targetStrategiesNearestPercent = 0;
-		int32_t targetStrategiesLowerHPPercent = 0;
-		int32_t targetStrategiesMostDamagePercent = 0;
-		int32_t targetStrategiesRandom = 0;
 
 		bool canPushItems = false;
 		bool canPushCreatures = false;

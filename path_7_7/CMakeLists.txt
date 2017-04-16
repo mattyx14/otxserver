@@ -9,7 +9,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(cotire)
 
-add_compile_options(-Wall -Werror -pipe -fvisibility=hidden)
+add_compile_options(-Wall -pipe -fvisibility=hidden)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options(-fno-strict-aliasing)
@@ -27,12 +27,11 @@ find_package(Threads)
 option(USE_LUAJIT "Use LuaJIT" ${LUAJIT_FOUND})
 
 if(USE_LUAJIT)
-    find_package(LuaJIT REQUIRED)
     if(APPLE)
       set(CMAKE_EXE_LINKER_FLAGS "-pagezero_size 10000 -image_base 100000000")
     endif()
 else()
-    find_package(Lua)
+    find_package(Lua REQUIRED)
 endif()
 
 find_package(Boost 1.53.0 COMPONENTS system iostreams REQUIRED)
