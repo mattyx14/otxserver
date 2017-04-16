@@ -86,7 +86,8 @@
 	- Add Game.getVersion - table (TFT)
 	- Add function to find mount by name (TFC)
 	- Add feature #219 (OTXS-C)
-	- Add tibia coin trade via market (OTXS-C)
+	- Add T-Coins trade via market (OTXS-C)
+	- Add missing function tokens to code
 	- Drop commands support in favor of talkactions (TFT)
 	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
@@ -107,6 +108,8 @@
 	- Fix #164, #175, #183, #186 #205 to 208, #210 (OTXS-C)
 	- Fix stairJumpExhaustion (OTXS-C)
 	- Fix attack speed extra delay (TFC)
+	- Fix teleport is leading to another teleport
+	- Fix CreateItem (TFC)
 	- Lazily load monsters from XML (TFT)
 	- Move findPerson to Lua (TFC)
 	- Move doSet*Outfit functions to Lua (TFC)
@@ -131,7 +134,7 @@
 	- Updated enchantingScript (TFC)
 	- Updated monsters (TFT)
 	- Updated Party spells (TFC)
-	- Updated travis.yml
+	- Updated travis.yml - jlcvp
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "
