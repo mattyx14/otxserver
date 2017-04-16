@@ -5,6 +5,7 @@ branches:
     - otxserv3
 
 platform:
+  - Win32
   - x64
 
 configuration:
@@ -25,4 +26,4 @@ cache:
   - tfs-sdk-3.2 -> appveyor.yml
 
 artifacts:
-  - path: path_10_9\vc14\**\theforgottenserver.exe
+  - path: vc14\**\theforgottenserver.exe
