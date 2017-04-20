@@ -336,12 +336,12 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		}
 
 		uint32_t corpseOwner = container->getCorpseOwner();
-		if (container->isRewardCorpse()) {
+		/*if (container->isRewardCorpse()) {
 			//only players who participated in the fight can open the corpse
 			if (!player->getReward(container->getIntAttr(ITEM_ATTRIBUTE_DATE), false)) {
 				return RETURNVALUE_YOUARENOTTHEOWNER;
 			}
-		} else if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
+		} else*/ if (corpseOwner != 0 && !player->canOpenCorpse(corpseOwner)) {
 			return RETURNVALUE_YOUARENOTTHEOWNER;
 		}
 
