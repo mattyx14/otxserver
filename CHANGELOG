@@ -135,6 +135,7 @@
 	- Updated monsters (TFT)
 	- Updated Party spells (TFC)
 	- Updated travis.yml - jlcvp
+	- Refactor in-Game premium store to the cpp backend (jlcvp)
 ]
 
 [ OTX Server 3.8 :: Version " LEZICK "

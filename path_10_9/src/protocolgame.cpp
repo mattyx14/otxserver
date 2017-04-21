@@ -565,6 +565,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
+        case 0xEF: parseCoinTransfer(msg); break; /* premium coins transfer */
 		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerShowQuestLog, player->getID()); break;
 		case 0xF1: parseQuestLine(msg); break;
 		case 0xF2: /* rule violation report */ break;
@@ -575,6 +576,11 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF7: parseMarketCancelOffer(msg); break;
 		case 0xF8: parseMarketAcceptOffer(msg); break;
 		case 0xF9: parseModalWindowAnswer(msg); break;
+		case 0xFA: parseStoreOpen(msg); break;
+		case 0xFB: parseStoreRequestOffers(msg); break;
+		case 0xFC: parseStoreBuyOffer(msg); break;
+		case 0xFD: parseStoreOpenTransactionHistory(msg); break;
+		case 0xFE: parseStoreRequestTransactionHistory(msg); break;
 
 		//case 0x77 Equip Hotkey.
 		//case 0xDF, 0xE0, 0xE1, 0xFB, 0xFC, 0xFD, 0xFE Premium Shop.
@@ -976,6 +982,14 @@ void ProtocolGame::parseMarketBrowse(NetworkMessage& msg)
 		addGameTask(&Game::playerBrowseMarket, player->getID(), browseId);
 	}
 }
+
+void ProtocolGame::parseStoreOpen(NetworkMessage &msg) {
+
+	uint8_t serviceType = msg.getByte();
+
+	addGameTask(&Game::playerStoreOpen, player->getID(), serviceType);
+}
+
 
 void ProtocolGame::parseMarketCreateOffer(NetworkMessage& msg)
 {
@@ -2331,6 +2345,15 @@ void ProtocolGame::sendUpdatedCoinBalance()
     writeToOutputBuffer(msg);
 }
 
+void ProtocolGame::sendOpenStore(uint8_t serviceType) {
+	NetworkMessage msg;
+
+	msg.addByte(0xFB); //open store
+	msg.addByte(0x00);
+
+	//TODO: add categories
+}
+
 void ProtocolGame::sendModalWindow(const ModalWindow& modalWindow)
 {
 	NetworkMessage msg;
@@ -2473,3 +2496,4 @@ void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
 	// process additional opcodes via lua script event
 	addGameTask(&Game::parsePlayerExtendedOpcode, player->getID(), opcode, buffer);
 }
+

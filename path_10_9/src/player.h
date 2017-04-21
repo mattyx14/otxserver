@@ -1129,6 +1129,11 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
+		void sendStoreOpen(uint8_t serviceType){
+			if(client)
+				client->sendOpenStore(serviceType);
+		}
+
 		void receivePing() {
 			lastPong = OTSYS_TIME();
 		}

@@ -325,6 +325,8 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendCoinBalanceUpdating(bool updating);
 		void sendUpdatedCoinBalance();
 
+		void sendOpenStore(uint8_t serviceType);
+
 		//tiles
 
 		void sendAddTileItem(const Position& pos, uint32_t stackpos, const Item* item);
@@ -381,6 +383,8 @@ class ProtocolGame final : public ProtocolGameBase
 		/// Password used to access the live cast
 		std::string liveCastPassword;
 		void sendInventory();
+
+	void parseStoreOpen(NetworkMessage &message);
 };
 
 #endif
