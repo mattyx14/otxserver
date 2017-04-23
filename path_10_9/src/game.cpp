@@ -5461,6 +5461,14 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	player->sendMarketAcceptOffer(offer);
 }
 
+void Game::playerStoreOpen(uint32_t playerId, uint8_t serviceType) {
+	Player* player = getPlayerByID(playerId);
+	if(player){
+        player->sendOpenStore(serviceType);
+	}
+}
+
+
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {
 	Player* player = getPlayerByID(playerId);
