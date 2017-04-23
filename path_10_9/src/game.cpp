@@ -5421,7 +5421,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 void Game::playerStoreOpen(uint32_t playerId, uint8_t serviceType) {
 	Player* player = getPlayerByID(playerId);
 	if(player){
-		player->sendOpenStore();
+        player->sendOpenStore(serviceType);
 	}
 }
 

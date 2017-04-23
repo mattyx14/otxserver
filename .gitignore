@@ -178,3 +178,4 @@ vc14/theforgottenserver.VC.db
 
 #Jetbrains' IDEs config files
 .idea/
+cmake-build-*/
