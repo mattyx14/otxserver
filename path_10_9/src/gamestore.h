@@ -20,6 +20,8 @@
 #ifndef OTX_GAMESTORE_H_A21098A1C2903794B635DDB0A3E7A914
 #define OTX_GAMESTORE_H_A21098A1C2903794B635DDB0A3E7A914
 
+#include "otpch.h"
+
 enum Offer_t {
     DISABLED,
     ITEM,
@@ -32,7 +34,7 @@ enum Offer_t {
     PROMOTION
 };
 
-enum OfferState_t {
+enum CategoryState_t {
     NORMAL,
     NEW,
     SALE,
@@ -53,8 +55,50 @@ enum StoreService_t {
     SERVICE_MOUNT = 4
 };
 
-class GameStore {
+struct BaseOffer{
+    uint32_t id;
+    std::string name;
+    std::string description;
+    uint32_t price;
+    Offer_t type;
+    std::vector<std::string> icons;
+};
 
+struct ItemOffer : BaseOffer{
+    uint16_t productId;
+    uint16_t count;
+};
+
+struct MountOffer: BaseOffer{
+    uint16_t mountId;
+};
+
+struct OutfitOffer : BaseOffer {
+    uint16_t maleLookType;
+    uint16_t femaleLookType;
+    uint8_t addonNumber;
+};
+
+
+struct StoreCategory{
+    std::string name;
+    std::string description;
+    CategoryState_t state;
+    std::vector<std::string> icons;
+    std::vector<BaseOffer> offers;
+};
+
+class GameStore {
+    public:
+        bool reload();
+        bool loadFromXml();
+        const std::vector<StoreCategory>& getOffers() const{
+            return storeOffers;
+        };
+    
+    private:
+        void instantiateIds();
+        std::vector<StoreCategory> storeOffers;
 };
 
 
