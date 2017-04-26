@@ -31,7 +31,10 @@ enum Offer_t {
     MOUNT,
     NAMECHANGE,
     SEXCHANGE,
-    PROMOTION
+    PROMOTION,
+    BLESSING,
+    BOOST_XP,
+    BOOST_STAMINA
 };
 
 enum CategoryState_t {
@@ -97,6 +100,7 @@ class GameStore {
         };
     
     private:
+        uint16_t offerCount=0;
         void instantiateIds();
         std::vector<StoreCategory> storeOffers;
 };
