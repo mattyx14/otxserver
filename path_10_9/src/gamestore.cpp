@@ -44,6 +44,7 @@ bool GameStore::reload() {
 }
 
 bool GameStore::loadFromXml() {
+    offerCount=0;
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_file("data/XML/gamestore.xml");
     if (!result) {
@@ -73,12 +74,77 @@ bool GameStore::loadFromXml() {
         cat->icons= getIconsVector(categoryNode.attribute("icons").as_string("default.png"));
 
         for(auto offerNode : categoryNode.children()){
-            std::string type = categoryNode.attribute("state").as_string();
-            if(boost::iequals(type,"namechange") || boost::iequals(type,"sexchange") || boost::iequals(type,"promotion")){
-                BaseOffer* baseOffer = new BaseOffer();
+            std::string type = offerNode.attribute("type").as_string();
+            BaseOffer* offer;
+            if(boost::iequals(type,"namechange")){
+                offer = new BaseOffer();
+                offer->type = NAMECHANGE;
             }
-            else if(boost::iequals(type,"namechange")){
-                //TODO: Continue here
+            else if (boost::iequals(type,"sexchange")){
+                offer = new BaseOffer();
+                offer->type = SEXCHANGE;
+            }
+            else if(boost::iequals(type,"promotion")){
+                offer = new BaseOffer();
+                offer->type = PROMOTION;
+            }
+            else if(boost::iequals(type,"outfit")) {
+                OutfitOffer* tmp = new OutfitOffer();
+                tmp->type = OUTFIT;
+                tmp->maleLookType = (uint16_t)offerNode.attribute("malelooktype").as_uint();
+                tmp->femaleLookType = (uint16_t)offerNode.attribute("femalelooktype").as_uint();
+                tmp->addonNumber = (uint8_t) offerNode.attribute("addon").as_uint(0);
+                if(!tmp->femaleLookType || !tmp->maleLookType || tmp->addonNumber >3){
+                    printXMLError("Error parsing XML outfit offer  - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+                    return false;
+                }
+                else{
+                    offer = tmp;
+                }
+            }
+            else if(boost::iequals(type,"addon")){
+                OutfitOffer* tmp = new OutfitOffer();
+                tmp->type = OUTFIT_ADDON;
+                tmp->maleLookType = (uint16_t)offerNode.attribute("malelooktype").as_uint();
+                tmp->femaleLookType = (uint16_t)offerNode.attribute("femalelooktype").as_uint();
+                tmp->addonNumber = (uint8_t) offerNode.attribute("addon").as_uint(0);
+                if(!tmp->femaleLookType || !tmp->maleLookType || !tmp->addonNumber || tmp->addonNumber >3){
+                    printXMLError("Error parsing XML addon offer - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+                    return false;
+                }
+                else{
+                    offer =tmp;
+                }
+            }
+            else if(boost::iequals(type,"mount")){
+                MountOffer* tmp = new MountOffer();
+                tmp->type = MOUNT;
+                tmp->mountId = (uint16_t) offerNode.attribute("mountid").as_uint();
+                if(!tmp->mountId){
+                    printXMLError("Error parsing XML mountID number not specified for an mount offer - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+                    return false;
+                }
+                else{
+                    offer=tmp;
+                }
+            } //TODO: continuar aqui
+
+
+
+            if(!offer)
+            {
+                printXMLError("Error parsing XML - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+                return false;
+            }
+            else{
+                offer->name = offerNode.attribute("name").as_string();
+                offer->price = offerNode.attribute("price").as_uint();
+                offer->description = offerNode.attribute("description").as_string("");
+                offer->icons = getIconsVector(offerNode.attribute("icons").as_string("default.png"));
+
+                offerCount++;
+
+
             }
 
         }
