@@ -27,7 +27,7 @@
 std::vector<std::string> getIconsVector(std::string rawString){
     std::vector <std::string> icons;
     boost::split(icons, rawString, boost::is_any_of("|")); //converting the |-separated string to a vector of tokens
-
+    icons.shrink_to_fit();
     return icons;
 }
 
@@ -56,6 +56,11 @@ bool GameStore::loadFromXml() {
         StoreCategory* cat = new StoreCategory();
         cat->name = categoryNode.attribute("name").as_string();
         cat->description = categoryNode.attribute("description").as_string("");
+        if(!cat->name.length()){
+            printXMLError("Error parsing XML category name  - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+            return false;
+        }
+
         std::string state = categoryNode.attribute("state").as_string("normal");
 
         if(boost::iequals(state,"normal")){ //reading state (defaults to normal)
@@ -75,7 +80,7 @@ bool GameStore::loadFromXml() {
 
         for(auto offerNode : categoryNode.children()){
             std::string type = offerNode.attribute("type").as_string();
-            BaseOffer* offer;
+            BaseOffer *offer = nullptr;
             if(boost::iequals(type,"namechange")){
                 offer = new BaseOffer();
                 offer->type = NAMECHANGE;
@@ -121,19 +126,48 @@ bool GameStore::loadFromXml() {
                 tmp->type = MOUNT;
                 tmp->mountId = (uint16_t) offerNode.attribute("mountid").as_uint();
                 if(!tmp->mountId){
-                    printXMLError("Error parsing XML mountID number not specified for an mount offer - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+                    printXMLError("Error parsing XML mountID number not specified for an mount offer - GameStore::loadFromXml",
+                                  "data/XML/gamestore.xml", result);
                     return false;
                 }
                 else{
                     offer=tmp;
                 }
-            } //TODO: continuar aqui
+            }
+            else if(boost::iequals(type,"item")){
+                ItemOffer* tmp = new ItemOffer();
+                tmp->type = ITEM;
+                tmp->productId = (uint16_t ) offerNode.attribute("productid").as_uint();
+                tmp->count = (uint16_t) offerNode.attribute("count").as_uint();
 
+                if(!tmp->productId || !tmp->count){
+                    printXMLError("Error parsing XML Item Offer - GameStore::loadFromXml",
+                                  "data/XML/gamestore.xml", result);
+                    return false;
+                }
+                else{
+                    offer=tmp;
+                }
+            }
+            else if(boost::iequals(type,"item")){
+                ItemOffer* tmp = new ItemOffer();
+                tmp->type = STACKABLE_ITEM;
+                tmp->productId = (uint16_t ) offerNode.attribute("productid").as_uint();
+                tmp->count = (uint16_t) offerNode.attribute("count").as_uint();
 
+                if(!tmp->productId || !tmp->count){
+                    printXMLError("Error parsing XML Stackable Item Offer - GameStore::loadFromXml",
+                                  "data/XML/gamestore.xml", result);
+                    return false;
+                }
+                else{
+                    offer=tmp;
+                }
+            }
 
             if(!offer)
             {
-                printXMLError("Error parsing XML - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+                printXMLError("Error parsing XML invalid offer type - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
                 return false;
             }
             else{
@@ -142,25 +176,19 @@ bool GameStore::loadFromXml() {
                 offer->description = offerNode.attribute("description").as_string("");
                 offer->icons = getIconsVector(offerNode.attribute("icons").as_string("default.png"));
 
+                if( !offer->name.length() || !offer->price)
+                {
+                    printXMLError("Error parsing XML - One or more required offer params are missing - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
+                    return false;
+                }
                 offerCount++;
-
-
+                offer->id = offerCount;
+                cat->offers.push_back(*offer);
             }
-
         }
-
-
+        cat->offers.shrink_to_fit();
+        storeOffers.push_back(*cat);
     }
-
-//    for (auto mountNode : doc.child("mounts").children()) {
-//        mounts.emplace_back(
-//                static_cast<uint8_t>(pugi::cast<uint16_t>(mountNode.attribute("id").value())),
-//                pugi::cast<uint16_t>(mountNode.attribute("clientid").value()),
-//                mountNode.attribute("name").as_string(),
-//                pugi::cast<int32_t>(mountNode.attribute("speed").value()),
-//                mountNode.attribute("premium").as_bool()
-//        );
-//    }
-//    mounts.shrink_to_fit();
+    storeOffers.shrink_to_fit();
     return true;
 }
