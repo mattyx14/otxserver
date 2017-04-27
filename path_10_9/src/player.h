@@ -38,6 +38,7 @@
 #include "mounts.h"
 #include "reward.h"
 #include "rewardchest.h"
+#include "gamestore.h"
 
 class House;
 class NetworkMessage;
@@ -875,6 +876,12 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
+		void sendShowStoreCategoryOffers(const StoreCategory category){
+			if(client){
+				client->sendStoreCategoryOffers(category);
+			}
+		}
+
 		//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 		                              const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
@@ -1455,6 +1462,7 @@ class Player final : public Creature, public Cylinder
 		friend class IOLoginData;
 		friend class ProtocolGame;
 		friend class ProtocolGameBase;
+
 
 
 };

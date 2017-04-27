@@ -64,16 +64,16 @@ bool GameStore::loadFromXml() {
         std::string state = categoryNode.attribute("state").as_string("normal");
 
         if(boost::iequals(state,"normal")){ //reading state (defaults to normal)
-            cat->state=CategoryState_t::NORMAL;
+            cat->state=StoreState_t::NORMAL;
         }
         else if(boost::iequals(state,"new")){
-            cat->state=CategoryState_t::NEW;
+            cat->state=StoreState_t::NEW;
         }
         else if(boost::iequals(state,"sale")){
-            cat->state=CategoryState_t::SALE;
+            cat->state=StoreState_t::SALE;
         }
         else if(boost::iequals(state,"limitedtime")){
-            cat->state=CategoryState_t::LIMITED_TIME;
+            cat->state=StoreState_t::LIMITED_TIME;
         }
 
         cat->icons= getIconsVector(categoryNode.attribute("icons").as_string("default.png"));
@@ -175,6 +175,21 @@ bool GameStore::loadFromXml() {
                 offer->price = offerNode.attribute("price").as_uint();
                 offer->description = offerNode.attribute("description").as_string("");
                 offer->icons = getIconsVector(offerNode.attribute("icons").as_string("default.png"));
+
+                std::string offerstate = categoryNode.attribute("state").as_string("normal");
+
+                if(boost::iequals(offerstate,"normal")){ //reading state (defaults to normal)
+                    offer->state=StoreState_t::NORMAL;
+                }
+                else if(boost::iequals(offerstate,"new")){
+                    offer->state=StoreState_t::NEW;
+                }
+                else if(boost::iequals(offerstate,"sale")){
+                    offer->state=StoreState_t::SALE;
+                }
+                else if(boost::iequals(offerstate,"limitedtime")){
+                    offer->state=StoreState_t::LIMITED_TIME;
+                }
 
                 if( !offer->name.length() || !offer->price)
                 {

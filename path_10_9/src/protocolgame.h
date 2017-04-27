@@ -26,6 +26,7 @@
 #include "tasks.h"
 #include "protocolgamebase.h"
 #include "protocolspectator.h"
+#include "gamestore.h"
 
 class NetworkMessage;
 class Player;
@@ -326,6 +327,9 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendCoinBalanceUpdating(bool updating);
 		void sendUpdatedCoinBalance();
 
+		void sendOpenStore(uint8_t serviceType);
+		void sendStoreCategoryOffers(const StoreCategory category);
+
 		//tiles
 
 		void sendAddTileItem(const Position& pos, uint32_t stackpos, const Item* item);
@@ -382,6 +386,12 @@ class ProtocolGame final : public ProtocolGameBase
 		/// Password used to access the live cast
 		std::string liveCastPassword;
 		void sendInventory();
+
+	void parseStoreOpen(NetworkMessage &message);
+
+    void parseStoreRequestOffers(NetworkMessage &message);
+
+
 };
 
 #endif

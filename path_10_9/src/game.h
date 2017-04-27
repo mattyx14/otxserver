@@ -32,6 +32,7 @@
 #include "npc.h"
 #include "wildcardtree.h"
 #include "quests.h"
+#include "gamestore.h"
 
 class ServiceManager;
 class Creature;
@@ -398,7 +399,8 @@ class Game
 		void playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint32_t price, bool anonymous);
 		void playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
 		void playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
-
+		void playerStoreOpen(uint32_t playerId, uint8_t serviceType);
+		void playerShowStoreCategoryOffers(uint32_t playerId, StoreCategory category);
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 		std::forward_list<Item*> getMarketItemList(uint16_t wareId, uint16_t sufficientCount, DepotLocker* depotLocker);
@@ -505,6 +507,9 @@ class Game
 		Mounts mounts;
 		Raids raids;
 		Quests quests;
+		GameStore gameStore;
+
+
 
 	protected:
 		bool playerSaySpell(Player* player, SpeakClasses type, const std::string& text);
