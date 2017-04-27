@@ -32,9 +32,9 @@ enum Offer_t {
     NAMECHANGE,
     SEXCHANGE,
     PROMOTION,
-    BLESSING,
-    BOOST_XP,
-    BOOST_STAMINA
+    BLESSING, //not using yet
+    BOOST_XP, //not using yet
+    BOOST_STAMINA //not using yet
 };
 
 enum CategoryState_t {
