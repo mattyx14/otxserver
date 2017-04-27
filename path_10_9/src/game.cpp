@@ -121,6 +121,8 @@ void Game::setGameState(GameState_t newState)
 			quests.loadFromXml();
 			mounts.loadFromXml();
 
+			gameStore.loadFromXml();
+
 			loadMotdNum();
 			loadPlayersRecord();
 
@@ -5425,6 +5427,13 @@ void Game::playerStoreOpen(uint32_t playerId, uint8_t serviceType) {
 	}
 }
 
+void Game::playerShowStoreCategoryOffers(uint32_t playerId, const StoreCategory category){
+	Player* player = getPlayerByID(playerId);
+	if(player)
+	{
+		player->sendShowStoreCategoryOffers(category);
+	}
+}
 
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {

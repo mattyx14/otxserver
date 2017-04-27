@@ -26,6 +26,7 @@
 #include "tasks.h"
 #include "protocolgamebase.h"
 #include "protocolspectator.h"
+#include "gamestore.h"
 
 class NetworkMessage;
 class Player;
@@ -326,6 +327,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendUpdatedCoinBalance();
 
 		void sendOpenStore(uint8_t serviceType);
+		void sendStoreCategoryOffers(const StoreCategory category);
 
 		//tiles
 
@@ -385,6 +387,10 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendInventory();
 
 	void parseStoreOpen(NetworkMessage &message);
+
+    void parseStoreRequestOffers(NetworkMessage &message);
+
+
 };
 
 #endif

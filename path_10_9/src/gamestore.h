@@ -37,8 +37,8 @@ enum Offer_t {
     BOOST_STAMINA //not using yet
 };
 
-enum CategoryState_t {
-    NORMAL,
+enum StoreState_t {
+    NORMAL=0,
     NEW,
     SALE,
     LIMITED_TIME
@@ -64,6 +64,7 @@ struct BaseOffer{
     std::string description;
     uint32_t price;
     Offer_t type;
+    StoreState_t state;
     std::vector<std::string> icons;
 };
 
@@ -86,7 +87,7 @@ struct OutfitOffer : BaseOffer {
 struct StoreCategory{
     std::string name;
     std::string description;
-    CategoryState_t state;
+    StoreState_t state;
     std::vector<std::string> icons;
     std::vector<BaseOffer> offers;
 };
