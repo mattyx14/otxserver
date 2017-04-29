@@ -89,7 +89,7 @@ struct StoreCategory{
     std::string description;
     StoreState_t state;
     std::vector<std::string> icons;
-    std::vector<BaseOffer> offers;
+    std::vector<BaseOffer*> offers;
 };
 
 class GameStore {
@@ -99,6 +99,8 @@ class GameStore {
         const std::vector<StoreCategory>& getOffers() const{
             return storeOffers;
         };
+
+        const uint16_t getCategoryIndexByName(std::string categoryName) const;
     
     private:
         uint16_t offerCount=0;
