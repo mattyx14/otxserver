@@ -1,26 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <gamestore>
     <category name="Extra Services" description="Buy an Extra Service to change your character's name or sex." state="normal" icons="extraservice_icon_1.png|extraservice_icon_2.png">
         <offer name="Character Name Change" type="namechange" price="250" icons="namechanger.png" />
         <offer name="Character Sex Change" type="sexchange" price="250" icons="sexchange.png" />
         <offer name="Character Promotion" type="promotion" price="50" icons="promotion.png" />
     </category>
-
     <category name="Mounts" description="Buy your character one or more of the fabolous Mounts offered here." state="sale" icons="mounts_category.png">
         <offer name="Snow Pelt Mount" type="mount" mountid="103" description="Buying this mount will help our server survive!" price="750" icons="snowpeltmount_1.png|snowpeltmount_2.png" />
     </category>
-
     <category name="Equipments" description="Buy your character one or more of the helpful items offered here." state="new" icons="convenience.png" >
-        <offer name="Spellbook of Vigilance" type="item" productid="18401" count="1"  icons="spellbook_vigilance.png" />
+        <offer name="Spellbook of Vigilance" type="item" price="60" productid="18401" count="1"  icons="spellbook_vigilance.png" />
     </category>
-
     <category name="Runes" description="Buy magically filled runes to unleash their energy when in need of it." state="limitedtime" icons="runes.png">
-        <offer name="Chameleon Rune" description="Fool your friends with an item outfit!" type="stackableitem" productid="2291" count="250" price="10" icons="chameleon_rune.png" />
+        <offer name="Chameleon Rune" description="Fool your friends with an item outfit!" price="10" type="stackableitem" productid="2291" count="250" icons="chameleon_rune.png" />
     </category>
-
     <category name="Outfits" description="Look cooler!" icons="outfits1.png|outfits2.png|outfits3.png">
         <offer name="Sea Dog Outfit" description="Do what ya want 'cuz a pirate's free!" type="outfit" malelooktype="750" femalelooktype="749" price="200" icons="seadog_male.png|seadog_female.png" />
         <offer name="Sea Dog Addon 1" description="You arr a pirate!" type="addon" malelooktype="750" femalelooktype="749" addon="1" price="100" icons="seadogaddon1.png" />
         <offer name="Full Sea Dog Outfit" description="Yar har, fiddle-dee-dee!!" type="outfit" addon="3" malelooktype="750" femalelooktype="749" price="360" icons="seadogfull.png" />
     </category>
-
 </gamestore>

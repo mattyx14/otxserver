@@ -565,7 +565,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
-        case 0xEF: parseCoinTransfer(msg); break; /* premium coins transfer */
+        //case 0xEF: parseCoinTransfer(msg); break; /* premium coins transfer */
 		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerShowQuestLog, player->getID()); break;
 		case 0xF1: parseQuestLine(msg); break;
 		case 0xF2: /* rule violation report */ break;
@@ -578,9 +578,9 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF9: parseModalWindowAnswer(msg); break;
 		case 0xFA: parseStoreOpen(msg); break;
 		case 0xFB: parseStoreRequestOffers(msg); break;
-		case 0xFC: parseStoreBuyOffer(msg); break;
-		case 0xFD: parseStoreOpenTransactionHistory(msg); break;
-		case 0xFE: parseStoreRequestTransactionHistory(msg); break;
+		//case 0xFC: parseStoreBuyOffer(msg); break;
+		//case 0xFD: parseStoreOpenTransactionHistory(msg); break;
+		//case 0xFE: parseStoreRequestTransactionHistory(msg); break;
 
 		//case 0x77 Equip Hotkey.
 		//case 0xDF, 0xE0, 0xE1, 0xFB, 0xFC, 0xFD, 0xFE Premium Shop.
@@ -985,12 +985,29 @@ void ProtocolGame::parseMarketBrowse(NetworkMessage& msg)
 
 void ProtocolGame::parseStoreOpen(NetworkMessage &msg) {
 	uint8_t serviceType = msg.getByte();
+    std::cout << "zero 0" << std::endl;
 	addGameTask(&Game::playerStoreOpen, player->getID(), serviceType);
-	addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(),g_game.gameStore.getOffers().front())
+	addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(),g_game.gameStore.getOffers().front());
 }
 
 void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
-	uint8_t
+    //StoreService_t serviceType = SERVICE_STANDARD;
+
+    if (version >= 1092) {
+        message.getByte(); //discard service type byte
+    }
+
+    std::string categoryName = message.getString();
+    const uint16_t index = g_game.gameStore.getCategoryIndexByName(categoryName);
+
+    if(index >= 0){
+        addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(),g_game.gameStore.getOffers().at(index));
+    }
+    else{
+        std::cout << "[Warning - ProtocolGame::parseStoreRequestOffers] requested category: \""<< categoryName <<"\" doesn't exists" << std::endl;
+    }
+
+
 }
 
 void ProtocolGame::parseMarketCreateOffer(NetworkMessage& msg)
@@ -2349,19 +2366,20 @@ void ProtocolGame::sendUpdatedCoinBalance()
 
 void ProtocolGame::sendOpenStore(uint8_t serviceType) {
 	NetworkMessage msg;
-
+    std::cout << 4;
 	msg.addByte(0xFB); //open store
 	msg.addByte(0x00);
 
 	//add categories
 	uint16_t categoriesCount = g_game.gameStore.getOffers().size();
 
-	msg.add(categoriesCount);
+	msg.add<uint16_t>(categoriesCount);
 
 	for(auto category : g_game.gameStore.getOffers())
 	{
 		msg.addString(category.name);
 		msg.addString(category.description);
+        std::cout << 5;
 
 		if(version >= 1093){
 			msg.addByte(category.state);
@@ -2374,38 +2392,96 @@ void ProtocolGame::sendOpenStore(uint8_t serviceType) {
 		}
 		msg.addString(""); //TODO: parentCategory
 	}
+    std::cout << 6;
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendStoreCategoryOffers(const StoreCategory category){
+void ProtocolGame::sendStoreCategoryOffers(const StoreCategory& category){
 	NetworkMessage msg;
 
 	msg.addByte(0xFC); //StoreOffers
-
+    std::cout << 10;
 	msg.addString(category.name);
 
 	msg.add<uint16_t>((uint16_t)category.offers.size());
 
-	for(BaseOffer offer : category.offers)
-	{
+	for(BaseOffer* offer : category.offers){
 		std::stringstream offername;
-		if(offer.type==Offer_t::ITEM || offer.type == Offer_t::STACKABLE_ITEM)
+		if(offer->type==Offer_t::ITEM || offer->type == Offer_t::STACKABLE_ITEM)
 		{
-			if(((ItemOffer*)&offer)->count > 1){
-				offername << ((ItemOffer*)&offer)->count << "x ";
+			if(((ItemOffer*)offer)->count > 1){
+				offername << ((ItemOffer*)offer)->count << "x ";
 			}
 		}
-		offername << offer.name;
+		offername << offer->name;
 
 		msg.addString(offername.str());
-		msg.addString(offer.description);
+		msg.addString(offer->description);
 
-		msg.add<uint32_t>(offer.price);
-		msg.addByte((uint8_t) offer.state);
+		msg.add<uint32_t>(offer->price);
+		msg.addByte((uint8_t) offer->state);
 
 		//outfits
-		//TODO: continue here
+
+        uint8_t disabled = 0;
+        std::stringstream disabledReason;
+
+        if(offer->type == OUTFIT || offer->type == OUTFIT_ADDON){
+            OutfitOffer* outfitOffer = (OutfitOffer*) offer;
+
+            uint16_t looktype = (player->getSex() == PLAYERSEX_MALE) ? outfitOffer->maleLookType : outfitOffer->femaleLookType;
+            uint8_t addons = outfitOffer->addonNumber;
+
+            if(player->canWear(looktype, addons)){ //player can wear the offer already
+				disabled=1;
+                if(addons == 0) { //addons == 0 //oufit-only offer and player already has it
+					disabledReason << "You already have this outfit.";
+                }
+				else{
+					disabledReason << "You already have this addon.";
+				}
+			}
+			else{
+				if(outfitOffer->type == OUTFIT_ADDON && !player->canWear(looktype,0)){ //addon offer and player doesnt have the base outfit
+					disabled=1;
+					disabledReason << "You don't have the outfit, you can't buy the addon.";
+				}
+			}
+        }
+		else if(offer->type == MOUNT)
+		{
+			MountOffer* mountOffer = (MountOffer*) offer;
+			Mount* m = g_game.mounts.getMountByID(mountOffer->mountId);
+			if(player->hasMount(m)){
+				disabled=1;
+				disabledReason << "You already have this mount.";
+			}
+		}
+		else if(offer->type == PROMOTION){
+			if(player->isPromoted()){ //TODO: add support to multiple promotion levels
+				disabled=1;
+				disabledReason << "You can't get this promotion";
+			}
+		}
+
+		msg.addByte(disabled);
+
+		if(disabled){
+			msg.addString(disabledReason.str());
+		}
+
+		//add icons
+		msg.addByte((uint8_t)offer->icons.size());
+
+		for(std::string iconName : offer->icons ){
+			msg.addString(iconName);
+		}
+
+		msg.add<uint16_t>(0);
+		//TODO: add support to suboffers
 	}
+    std::cout << 11;
+	writeToOutputBuffer(msg);
 }
 
 void ProtocolGame::sendModalWindow(const ModalWindow& modalWindow)
