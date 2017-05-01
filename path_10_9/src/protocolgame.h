@@ -328,7 +328,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendUpdatedCoinBalance();
 
 		void sendOpenStore(uint8_t serviceType);
-		void sendStoreCategoryOffers(const StoreCategory& category);
+		void sendStoreCategoryOffers(StoreCategory* category);
 
 		//tiles
 
