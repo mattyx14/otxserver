@@ -21,18 +21,21 @@
 #define OTX_GAMESTORE_H_A21098A1C2903794B635DDB0A3E7A914
 
 #include "otpch.h"
+#include "position.h"
 
 enum Offer_t {
-    DISABLED,
-    ITEM,
-    STACKABLE_ITEM,
-    OUTFIT,
-    OUTFIT_ADDON,
-    MOUNT,
-    NAMECHANGE,
-    SEXCHANGE,
-    PROMOTION,
-    BLESSING, //not using yet
+    DISABLED=0,
+    ITEM=1,
+    STACKABLE_ITEM=2,
+    OUTFIT=3,
+    OUTFIT_ADDON=4,
+    MOUNT=5,
+    NAMECHANGE=6,
+    SEXCHANGE=7,
+    PROMOTION=8,
+    PREMIUM_TIME,
+    TELEPORT,
+    BLESSING,
     BOOST_XP, //not using yet
     BOOST_STAMINA //not using yet
 };
@@ -45,7 +48,7 @@ enum StoreState_t {
 };
 
 enum GameStoreError_t{
-    STORE_ERROR_PURCHASE,
+    STORE_ERROR_PURCHASE=0,
     STORE_ERROR_NETWORK,
     STORE_ERROR_HISTORY,
     STORE_ERROR_TRANSFER,
@@ -74,7 +77,7 @@ struct ItemOffer : BaseOffer{
 };
 
 struct MountOffer: BaseOffer{
-    uint16_t mountId;
+    uint8_t mountId;
 };
 
 struct OutfitOffer : BaseOffer {
@@ -83,6 +86,17 @@ struct OutfitOffer : BaseOffer {
     uint8_t addonNumber;
 };
 
+struct TeleportOffer : BaseOffer{
+    Position position;
+};
+
+struct PremiumTimeOffer : BaseOffer{
+    uint16_t days;
+};
+
+struct BlessingOffer : BaseOffer{
+    std::vector<uint8_t> blessings;
+};
 
 struct StoreCategory{
     std::string name;
@@ -110,10 +124,10 @@ class GameStore {
             return storeCategoryOffers;
         };
 
-        const uint16_t getCategoryIndexByName(std::string categoryName) const;
-    
+        const int8_t getCategoryIndexByName(std::string categoryName) const;
+        const BaseOffer* getOfferByOfferId(uint32_t offerId);
     private:
-        uint16_t offerCount=0;
+        uint32_t offerCount=0;
         bool loaded=false;
         std::vector<StoreCategory*> storeCategoryOffers;
 };

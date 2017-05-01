@@ -329,6 +329,8 @@ class ProtocolGame final : public ProtocolGameBase
 
 		void sendOpenStore(uint8_t serviceType);
 		void sendStoreCategoryOffers(StoreCategory* category);
+		void sendStoreError(GameStoreError_t error, const std::string& message);
+		void sendStorePurchaseSuccessful(const std::string& message, const uint32_t coinBalance);
 
 		//tiles
 
@@ -392,6 +394,7 @@ class ProtocolGame final : public ProtocolGameBase
     void parseStoreRequestOffers(NetworkMessage &message);
 
 
+    void parseStoreBuyOffer(NetworkMessage &message);
 };
 
 #endif

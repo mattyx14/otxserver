@@ -579,7 +579,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF9: parseModalWindowAnswer(msg); break;
 		case 0xFA: parseStoreOpen(msg); break;
 		case 0xFB: parseStoreRequestOffers(msg); break;
-		//case 0xFC: parseStoreBuyOffer(msg); break;
+		case 0xFC: parseStoreBuyOffer(msg); break;
 		//case 0xFD: parseStoreOpenTransactionHistory(msg); break;
 		//case 0xFE: parseStoreRequestTransactionHistory(msg); break;
 
@@ -1005,7 +1005,7 @@ void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
     }
 
     std::string categoryName = message.getString();
-    const uint16_t index = g_game.gameStore.getCategoryIndexByName(categoryName);
+    const int16_t index = g_game.gameStore.getCategoryIndexByName(categoryName);
 
     if(index >= 0){
         addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(),
@@ -1016,6 +1016,14 @@ void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
     }
 
 
+}
+
+
+void ProtocolGame::parseStoreBuyOffer(NetworkMessage &message) {
+    uint32_t offerId = message.get<uint32_t>();
+    uint8_t productType = message.getByte(); //used only in return of a namechange offer request
+
+    addGameTaskTimed(250, &Game::playerBuyStoreOffer, player->getID(), offerId, productType);
 }
 
 void ProtocolGame::parseMarketCreateOffer(NetworkMessage& msg)
@@ -2508,6 +2516,29 @@ void ProtocolGame::sendStoreCategoryOffers(StoreCategory* category){
 	}
 
 	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendStoreError(GameStoreError_t error, const std::string& message) {
+    NetworkMessage msg;
+
+    msg.addByte(0xE0); //storeError
+    msg.addByte(error);
+    msg.addString(message);
+
+    writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendStorePurchaseSuccessful(const std::string& message, const uint32_t coinBalance) {
+    NetworkMessage msg;
+
+    msg.addByte(0xFE); //CompletePurchase
+    msg.addByte(0x00);
+
+    msg.addString(message);
+    msg.add<uint32_t>(coinBalance);
+    msg.add<uint32_t>(coinBalance);
+
+    writeToOutputBuffer(msg);
 }
 
 void ProtocolGame::sendModalWindow(const ModalWindow& modalWindow)
