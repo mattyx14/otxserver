@@ -985,9 +985,7 @@ void ProtocolGame::parseMarketBrowse(NetworkMessage& msg)
 
 void ProtocolGame::parseStoreOpen(NetworkMessage &msg) {
 	uint8_t serviceType = msg.getByte();
-    std::cout << "zero 0" << std::endl;
-	addGameTask(&Game::playerStoreOpen, player->getID(), serviceType);
-	addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(),g_game.gameStore.getOffers().front());
+	addGameTaskTimed(600,&Game::playerStoreOpen, player->getID(), serviceType);
 }
 
 void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
@@ -1001,7 +999,8 @@ void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
     const uint16_t index = g_game.gameStore.getCategoryIndexByName(categoryName);
 
     if(index >= 0){
-        addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(),g_game.gameStore.getOffers().at(index));
+        addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(),
+                         g_game.gameStore.getCategoryOffers().at(index));
     }
     else{
         std::cout << "[Warning - ProtocolGame::parseStoreRequestOffers] requested category: \""<< categoryName <<"\" doesn't exists" << std::endl;
@@ -2366,46 +2365,61 @@ void ProtocolGame::sendUpdatedCoinBalance()
 
 void ProtocolGame::sendOpenStore(uint8_t serviceType) {
 	NetworkMessage msg;
-    std::cout << 4;
+
 	msg.addByte(0xFB); //open store
 	msg.addByte(0x00);
 
 	//add categories
-	uint16_t categoriesCount = g_game.gameStore.getOffers().size();
+	uint16_t categoriesCount = g_game.gameStore.getCategoryOffers().size();
 
 	msg.add<uint16_t>(categoriesCount);
 
-	for(auto category : g_game.gameStore.getOffers())
+	for(StoreCategory* category : g_game.gameStore.getCategoryOffers())
 	{
-		msg.addString(category.name);
-		msg.addString(category.description);
-        std::cout << 5;
+		msg.addString(category->name);
+		msg.addString(category->description);
 
 		if(version >= 1093){
-			msg.addByte(category.state);
+			uint8_t stateByte;
+			switch(category->state){
+				case NORMAL:
+					stateByte=0;
+					break;
+				case NEW:
+					stateByte=1;
+					break;
+				case SALE:
+					stateByte=2;
+					break;
+				case LIMITED_TIME:
+					stateByte=3;
+					break;
+				default:
+					stateByte=0;
+					break;
+			}
+			msg.addByte(stateByte);
 		}
 
-		msg.addByte((uint8_t)category.icons.size());
-
-		for(auto iconStr : category.icons){
+		msg.addByte((uint8_t)category->icons.size());
+		for(std::string iconStr : category->icons){
 			msg.addString(iconStr);
 		}
 		msg.addString(""); //TODO: parentCategory
 	}
-    std::cout << 6;
 	writeToOutputBuffer(msg);
+    sendCoinBalanceUpdating(true);
+	addGameTaskTimed(350, &Game::playerShowStoreCategoryOffers, player->getID(), g_game.gameStore.getCategoryOffers().at(0));
 }
 
-void ProtocolGame::sendStoreCategoryOffers(const StoreCategory& category){
+void ProtocolGame::sendStoreCategoryOffers(StoreCategory* category){
 	NetworkMessage msg;
-
 	msg.addByte(0xFC); //StoreOffers
-    std::cout << 10;
-	msg.addString(category.name);
+	msg.addString(category->name);
+	msg.add<uint16_t>(category->offers.size());
 
-	msg.add<uint16_t>((uint16_t)category.offers.size());
-
-	for(BaseOffer* offer : category.offers){
+	for(BaseOffer* offer : category->offers){
+		msg.add<uint32_t>(offer->id);
 		std::stringstream offername;
 		if(offer->type==Offer_t::ITEM || offer->type == Offer_t::STACKABLE_ITEM)
 		{
@@ -2422,7 +2436,6 @@ void ProtocolGame::sendStoreCategoryOffers(const StoreCategory& category){
 		msg.addByte((uint8_t) offer->state);
 
 		//outfits
-
         uint8_t disabled = 0;
         std::stringstream disabledReason;
 
@@ -2480,7 +2493,7 @@ void ProtocolGame::sendStoreCategoryOffers(const StoreCategory& category){
 		msg.add<uint16_t>(0);
 		//TODO: add support to suboffers
 	}
-    std::cout << 11;
+
 	writeToOutputBuffer(msg);
 }
 

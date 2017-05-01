@@ -94,18 +94,28 @@ struct StoreCategory{
 
 class GameStore {
     public:
+        bool isLoaded() {
+            return loaded;
+        }
+
         bool reload();
         bool loadFromXml();
-        const std::vector<StoreCategory>& getOffers() const{
-            return storeOffers;
+        uint16_t getOffersCount();
+
+        uint16_t getCategoryCount() {
+            return (uint16_t) storeCategoryOffers.size();
+        }
+
+        std::vector<StoreCategory*> getCategoryOffers(){
+            return storeCategoryOffers;
         };
 
         const uint16_t getCategoryIndexByName(std::string categoryName) const;
     
     private:
         uint16_t offerCount=0;
-        void instantiateIds();
-        std::vector<StoreCategory> storeOffers;
+        bool loaded=false;
+        std::vector<StoreCategory*> storeCategoryOffers;
 };
 
 

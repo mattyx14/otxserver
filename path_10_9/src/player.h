@@ -871,16 +871,13 @@ class Player final : public Creature, public Cylinder
 
 		//store
 		void sendOpenStore(uint8_t serviceType) {
-            std::cout << 2;
 			if(client) {
-                std::cout << 3;
 				client->sendOpenStore(serviceType);
 			}
 		}
 
-		void sendShowStoreCategoryOffers(const StoreCategory& category){
+		void sendShowStoreCategoryOffers(StoreCategory* category){
 			if(client){
-                std::cout << 9;
 				client->sendStoreCategoryOffers(category);
 			}
 		}
