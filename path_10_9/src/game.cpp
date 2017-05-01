@@ -5435,6 +5435,126 @@ void Game::playerShowStoreCategoryOffers(uint32_t playerId, StoreCategory* categ
 	}
 }
 
+void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t productType) {
+    Player* player = getPlayerByID(playerId);
+    if(player){
+        const BaseOffer* offer = gameStore.getOfferByOfferId(offerId);
+
+		if(offer == nullptr || offer->type == DISABLED){
+			player->sendStoreError(STORE_ERROR_NETWORK, "The offer is either fake or corrupt.");
+			return;
+		}
+//
+//		if((offer->type == ITEM || offer->type == STACKABLE_ITEM && !((ItemOffer*)offer)->productId) //item offer without product id
+//				|| (offer->type == MOUNT && !((MountOffer*)offer)->mountId) //mount offer without mountId
+//				|| (offer->type == PREMIUM_TIME && !((PremiumTimeOffer*)offer)->days)
+//				){
+//
+//		}
+
+		if(IOAccount::getCoinBalance(player->getAccount()) < offer->price) //player doesnt have enough coins
+		{
+			player->sendStoreError(STORE_ERROR_PURCHASE, "You don't have enough coins");
+			return;
+		}
+
+		std::stringstream message;
+		if(offer->type == ITEM || offer->type == STACKABLE_ITEM){
+			const ItemOffer* tmp = (ItemOffer*) offer;
+
+			message << "You have purchased " << tmp->count << "x " << offer->name << " for " << offer->price << " coins.";
+
+			Thing* thing = player->getThing(CONST_SLOT_STORE_INBOX);
+			if(thing == nullptr){
+				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate you store inbox, try again after relog and if this error persists, contact the system administrator.");
+				return;
+			}
+
+			Container* inbox = (Container*) thing->getItem(); //TODO: Not the right way to get the storeInbox
+			uint32_t freeSlots = inbox->capacity() - inbox->capacity();
+			uint32_t requiredSlots = (tmp->type == ITEM) ? tmp->count : (tmp->count%100)? (uint32_t)(tmp->count/100)+1 :(uint32_t) tmp->count/100;
+			uint32_t capNeeded = Item::items[tmp->productId].weight * tmp->count;
+
+			if(freeSlots < requiredSlots ) {
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Insuficient free slots in your store inbox.");
+				return;
+			}
+			else if(player->getFreeCapacity()< capNeeded){
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Not enough cap to carry.");
+				return;
+			}
+			else{
+				uint16_t pendingCount = tmp->count;
+				uint8_t packSize = (offer->type == STACKABLE_ITEM) ? 100 : 1;
+				IOAccount::removeCoins(player->getAccount(), offer->price);
+				IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+
+				while(pendingCount>0)
+				{
+					Item* item;
+					item = Item::CreateItem(tmp->productId, std::min<uint16_t>(packSize, pendingCount));
+
+					if (internalAddItem(inbox, item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						IOAccount::addCoins(player->getAccount(),(offer->price * (tmp->count - pendingCount))/tmp->count); //charging partially
+						player->sendStoreError(STORE_ERROR_PURCHASE, "We couldn't deliver all the items, try again later.");
+						IOAccount::registerTransaction(player->getAccount(), -1*offer->price + (offer->price * (tmp->count - pendingCount))/tmp->count, offer->name);
+						return;
+					}
+					pendingCount-= std::min<uint16_t>(pendingCount,packSize);
+				}
+
+				player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+				return;
+			}
+		}
+		else if(offer->type == OUTFIT || offer->type == OUTFIT_ADDON){
+			const OutfitOffer* outfitOffer = (OutfitOffer*) offer;
+
+			uint16_t looktype = (player->getSex()==PLAYERSEX_MALE)? outfitOffer->maleLookType : outfitOffer->femaleLookType;
+			uint8_t addons = outfitOffer->addonNumber;
+
+			if(!player->canWear(looktype, addons)) {
+				IOAccount::removeCoins(player->getAccount(), offer->price);
+				player->addOutfit(looktype, addons);
+				IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+				message<< "You successfully bought the "<< outfitOffer->name;
+				player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+				return;
+			}
+			else{
+				player->sendStoreError(STORE_ERROR_NETWORK, "This outfit seems not to suit you well, we are sorry for that!");
+				return;
+			}
+		}
+		else if(offer->type == MOUNT){
+			const MountOffer* mntOffer = (MountOffer*) offer;
+			const Mount* mount = mounts.getMountByID(mntOffer->mountId);
+			if(player->hasMount(mount)){
+				player->sendStoreError(STORE_ERROR_PURCHASE, "You arealdy own this mount.");
+				return;
+			}
+			else{
+				IOAccount::removeCoins(player->getAccount(), mntOffer->price);
+				if(!player->tameMount(mount->id)){
+					IOAccount::addCoins(player->getAccount(), mntOffer->price);
+					player->sendStoreError(STORE_ERROR_PURCHASE, "An error ocurred processing your purchase. Try again later.");
+					return;
+				}
+				else{
+					IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+				}
+			}
+		}
+		else{
+			//TODO: Namechange, sexchange,promotion,premium_time,teleport,blessing
+			player->sendStoreError(STORE_ERROR_INFORMATION, "JLCVP: NOT YET IMPLEMENTED!");
+		}
+    }
+}
+
+
+
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {
 	Player* player = getPlayerByID(playerId);

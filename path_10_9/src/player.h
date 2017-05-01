@@ -882,7 +882,22 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		//event methods
+        void sendStoreError(GameStoreError_t error, const std::string& errorMessage) {
+            if(client)
+            {
+                client->sendStoreError(error, errorMessage);
+            }
+        }
+
+		void sendStorePurchaseSuccessful(const std::string& message, const uint32_t coinBalance) {
+			if(client)
+			{
+				client->sendStorePurchaseSuccessful(message, coinBalance);
+			}
+		}
+
+
+	//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 		                              const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
 		void onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
@@ -1468,8 +1483,7 @@ class Player final : public Creature, public Cylinder
 		friend class ProtocolGame;
 		friend class ProtocolGameBase;
 
-
-
+	void sendStorePurchaseSuccessful(const std::string message);
 };
 
 #endif
