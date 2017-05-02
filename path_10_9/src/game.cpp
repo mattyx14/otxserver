@@ -5950,3 +5950,4 @@ bool Game::hasDistanceEffect(uint8_t effectId) {
 	}
 	return false;
 }
+
