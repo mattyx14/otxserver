@@ -18,7 +18,6 @@
  */
 
 #include "otpch.h"
-
 #include "tools.h"
 #include "configmanager.h"
 
@@ -1242,4 +1241,48 @@ const char* getReturnMessage(ReturnValue value)
 int64_t OTSYS_TIME()
 {
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
+
+std::string capitalizeWords(std::string source) {
+	std::string ret = asLowerCaseString(source);
+	int i=0;
+	for(char &c : ret)
+	{
+		if(i==0)
+			c+= toupper(c);
+		else if((*(&c - sizeof(char))) == ' ' || (*(&c - sizeof(char))) == '\'')
+			c = toupper(c);
+	}
+
+	return ret;
+}
+
+NameEval_t validateName(const std::string &name) {
+
+	StringVector prohibitedWords = {"owner", "gamemaster", "hoster", "admin", "staff", "tibia", "account", "god", "anal", "ass", "fuck", "sex", "hitler", "pussy", "dick", "rape", "cm", "gm", "tutor", "counsellor", "god"};
+	StringVector toks;
+	std::regex regexValidChars("^[a-zA-Z' ]+$");
+
+	boost::split(toks, name, boost::is_any_of(" '"));
+
+
+	if(name.length()<3 || name.length()>14){
+		return INVALID_LENGTH;
+	}
+
+	if(!std::regex_match(name, regexValidChars)) //invalid chars in name
+	{
+		return INVALID_CHARACTER;
+	}
+
+	for(std::string str : toks)
+	{
+		if(str.length()<2)
+			return INVALID_TOKEN_LENGTH;
+		else if(std::find(prohibitedWords.begin(), prohibitedWords.end(),str) != prohibitedWords.end()){ //searching for prohibited words
+			return INVALID_FORBIDDEN;
+		}
+	}
+
+	return VALID;
 }

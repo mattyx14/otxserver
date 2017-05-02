@@ -40,6 +40,11 @@ enum Offer_t {
     BOOST_STAMINA //not using yet
 };
 
+enum ClientOffer_t{
+    SIMPLE=0,
+    ADDITIONALINFO=1
+};
+
 enum StoreState_t {
     NORMAL=0,
     NEW,

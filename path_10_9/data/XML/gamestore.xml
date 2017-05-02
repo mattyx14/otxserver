@@ -23,7 +23,7 @@
         <offer name="Sea Dog Addon 1" description="You arr a pirate!" type="addon" malelooktype="750" femalelooktype="749" addon="1" price="100" icons="seadogaddon1.png" />
         <offer name="Full Sea Dog Outfit" description="Yar har, fiddle-dee-dee!!" type="outfit" addon="3" malelooktype="750" femalelooktype="749" price="360" icons="seadogfull.png" />
     </category>
-    <category name="Premium Time" description="Buy Premium Time today and get new spells, and access to premium areas!"  state="sale" icons="premiumtime.png" >
+    <category name="Premium Time" description="Buy Premium Time today and get new spells, and access to premium areas!" icons="premiumtime.png" >
         <offer name="30 days of Premium Time" description="get a month (30 days) of premium time." price="250" type="premiumtime" duration="30" icons="premium30.png"/>
         <offer name="90 days of Premium Time" description="90 days of premium time." price="400" state="sale" type="premiumtime" duration="90" icons="premium90sale.png"/>
     </category>

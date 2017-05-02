@@ -1022,8 +1022,11 @@ void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
 void ProtocolGame::parseStoreBuyOffer(NetworkMessage &message) {
     uint32_t offerId = message.get<uint32_t>();
     uint8_t productType = message.getByte(); //used only in return of a namechange offer request
-
-    addGameTaskTimed(250, &Game::playerBuyStoreOffer, player->getID(), offerId, productType);
+	std::string additionalInfo;
+	if(productType == ADDITIONALINFO) {
+		additionalInfo = message.getString();
+	}
+    addGameTaskTimed(250, &Game::playerBuyStoreOffer, player->getID(), offerId, productType, additionalInfo);
 }
 
 void ProtocolGame::parseMarketCreateOffer(NetworkMessage& msg)
@@ -2460,6 +2463,8 @@ void ProtocolGame::sendStoreCategoryOffers(StoreCategory* category){
         uint8_t disabled = 0;
         std::stringstream disabledReason;
 
+        disabledReason <<"";
+
         if(offer->type == OUTFIT || offer->type == OUTFIT_ADDON){
             OutfitOffer* outfitOffer = (OutfitOffer*) offer;
 
@@ -2535,10 +2540,20 @@ void ProtocolGame::sendStorePurchaseSuccessful(const std::string& message, const
     msg.addByte(0x00);
 
     msg.addString(message);
-    msg.add<uint32_t>(coinBalance);
+    msg.add<uint32_t>(coinBalance); //dont know why the client needs it duplicated. But ok...
     msg.add<uint32_t>(coinBalance);
 
     writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendStoreRequestAdditionalInfo(uint32_t offerId, ClientOffer_t clientOfferType) {
+	NetworkMessage msg;
+
+	msg.addByte(0xE1); //RequestPurchaseData
+	msg.add<uint32_t>(offerId);
+	msg.addByte(clientOfferType);
+
+	writeToOutputBuffer(msg);
 }
 
 void ProtocolGame::sendModalWindow(const ModalWindow& modalWindow)

@@ -578,6 +578,15 @@ enum ReloadTypes_t : uint8_t  {
 	RELOAD_TYPE_WEAPONS,
 };
 
+enum NameEval_t : uint8_t {
+	VALID,
+	INVALID,
+	INVALID_LENGTH,
+	INVALID_TOKEN_LENGTH,
+	INVALID_FORBIDDEN,
+	INVALID_CHARACTER
+};
+
 static constexpr int32_t CHANNEL_GUILD = 0x00;
 static constexpr int32_t CHANNEL_PARTY = 0x01;
 static constexpr int32_t CHANNEL_PRIVATE = 0xFFFF;

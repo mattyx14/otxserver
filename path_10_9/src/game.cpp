@@ -41,6 +41,7 @@
 #include "talkaction.h"
 #include "weapons.h"
 
+
 extern ConfigManager g_config;
 extern Actions* g_actions;
 extern Chat* g_chat;
@@ -5478,7 +5479,7 @@ void Game::playerShowStoreCategoryOffers(uint32_t playerId, StoreCategory* categ
 	}
 }
 
-void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t productType) {
+void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t productType, const std::string& additionalInfo /* ="" */) {
     Player* player = getPlayerByID(playerId);
     if(player){
         const BaseOffer* offer = gameStore.getOfferByOfferId(offerId);
@@ -5502,6 +5503,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 		}
 
 		std::stringstream message;
+
 		if(offer->type == ITEM || offer->type == STACKABLE_ITEM){
 			const ItemOffer* tmp = (ItemOffer*) offer;
 
@@ -5546,7 +5548,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 					if (internalAddItem(inbox, item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 						delete item;
 						IOAccount::addCoins(player->getAccount(),(offer->price * (tmp->count - pendingCount))/tmp->count); //charging partially
-						player->sendStoreError(STORE_ERROR_PURCHASE, "We couldn't deliver all the items, try again later.");
+						player->sendStoreError(STORE_ERROR_PURCHASE, "We couldn't deliver all the items.\nOnly the delivered ones were charged from you account");
 						IOAccount::registerTransaction(player->getAccount(), -1*offer->price + (offer->price * (tmp->count - pendingCount))/tmp->count, offer->name);
 						return;
 					}
@@ -5567,7 +5569,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 				IOAccount::removeCoins(player->getAccount(), offer->price);
 				player->addOutfit(looktype, addons);
 				IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
-				message<< "You successfully bought the "<< outfitOffer->name;
+				message<< "You've successfully bought the "<< outfitOffer->name << ".";
 				player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
 				return;
 			}
@@ -5592,6 +5594,69 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 				}
 				else{
 					IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+					message << "You've successfully bought the " << mount->name <<" Mount.";
+					player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+					return;
+				}
+			}
+		}
+		else if(offer->type == NAMECHANGE){
+			if(productType == SIMPLE){ //client didn't sent the new name yet, request additionalInfo
+				player->sendStoreRequestAdditionalInfo(offer->id, ADDITIONALINFO);
+				return;
+			}
+			else{
+				std::string newName = additionalInfo;
+				trimString(newName);
+				toLowerCaseString(newName);
+
+				std::string responseMessage;
+				NameEval_t nameValidation = validateName(newName);
+
+				switch (nameValidation){
+					case INVALID_LENGTH:
+						responseMessage = "Your new name's must be more than 3 and less than 14 characters long.";
+						break;
+					case INVALID_TOKEN_LENGTH:
+						responseMessage = "Every words of your new name must be at least 2 characters long.";
+						break;
+					case INVALID_FORBIDDEN:
+						responseMessage = "You're using forbidden words in your new name.";
+						break;
+					case INVALID_CHARACTER:
+						responseMessage = "Your new name contains invalid characters.";
+						break;
+					case INVALID:
+						responseMessage = "Your new name is invalid.";
+						break;
+					case VALID:
+						responseMessage = "You have successfully changed you name, you must relog to see changes.";
+						break;
+				}
+
+				if(nameValidation != VALID) { //invalid name typed
+					player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
+					return;
+				}
+				else{ //valid name
+					newName = capitalizeWords(newName);
+					Database& db = Database::getInstance();
+
+					std::ostringstream query;
+					query << "UPDATE `players` SET `name` = " << db.escapeString(newName) <<  " WHERE `id` = " << player->getGUID();
+					if(db.executeQuery(query.str())){
+						IOAccount::removeCoins(player->getAccount(), offer->price);
+						IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+						message << "You have successfully changed you name, you must relog to see the changes.";
+
+						player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+						return;
+					}
+					else{
+						message << "An error ocurred processing your request, no changes were made.";
+						player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
+						return;
+					}
 				}
 			}
 		}

@@ -896,6 +896,12 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
+        void sendStoreRequestAdditionalInfo(uint32_t offerId, ClientOffer_t clientOfferType){
+            if(client){
+                client->sendStoreRequestAdditionalInfo(offerId, clientOfferType);
+            }
+        }
+
 
 	//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
@@ -1162,6 +1168,8 @@ class Player final : public Creature, public Cylinder
 			if(client)
 				client->sendOpenStore(serviceType);
 		}
+
+
 
 		void receivePing() {
 			lastPong = OTSYS_TIME();
@@ -1483,7 +1491,9 @@ class Player final : public Creature, public Cylinder
 		friend class ProtocolGame;
 		friend class ProtocolGameBase;
 
-	void sendStorePurchaseSuccessful(const std::string message);
+
+
+
 };
 
 #endif
