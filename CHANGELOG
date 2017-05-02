@@ -88,6 +88,7 @@
 	- Add feature #219 (OTXS-C)
 	- Add T-Coins trade via market (OTXS-C)
 	- Add missing function tokens to code
+	- Add support to wallfields to monsters (OTXS-C)
 	- Drop commands support in favor of talkactions (TFT)
 	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
@@ -130,6 +131,7 @@
 	- Remove support to clientVersion 11_ - aka10 (items.otb official no)
 	- Remove compat function from swimming.lua (TFC)
 	- Storing TalkAction instances instead of pointers (TFC)
+	- Support to 10_AKa-11 Support // Items.otb no official (OTXS-C)
 	- Updated spells (TFC)
 	- Updated enchantingScript (TFC)
 	- Updated monsters (TFT)

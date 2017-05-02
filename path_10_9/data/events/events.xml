@@ -35,4 +35,5 @@
 		-->
 
 		<event class="Monster" method="onSpawn" enabled="0" />
+		<event class="Player" method="onWrapItem" enabled="1" />
 </events>

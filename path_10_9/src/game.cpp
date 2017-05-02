@@ -2239,6 +2239,42 @@ void Game::playerRotateItem(uint32_t playerId, const Position& pos, uint8_t stac
 	}
 }
 
+void Game::playerWrapItem(uint32_t playerId, const Position& pos, uint8_t stackPos, const uint16_t spriteId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	Thing* thing = internalGetThing(player, pos, stackPos, 0, STACKPOS_TOPDOWN_ITEM);
+	if (!thing) {
+		return;
+	}
+
+	Item* item = thing->getItem();
+	if (!item || item->getClientID() != spriteId || !item->isWrappable() || item->hasAttribute(ITEM_ATTRIBUTE_UNIQUEID)) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
+	if (pos.x != 0xFFFF && !Position::areInRange<1, 1, 0>(pos, player->getPosition())) {
+		std::forward_list<Direction> listDir;
+		if (player->getPathTo(pos, listDir, 0, 1, true, true)) {
+			g_dispatcher.addTask(createTask(std::bind(&Game::playerAutoWalk,
+				this, player->getID(), listDir)));
+
+				SchedulerTask* task = createSchedulerTask(400, std::bind(&Game::playerWrapItem, this,
+					playerId, pos, stackPos, spriteId));
+			player->setNextWalkActionTask(task);
+		} else {
+			player->sendCancelMessage(RETURNVALUE_THEREISNOWAY);
+		}
+		return;
+	}
+
+	g_events->eventPlayerOnWrapItem(player, item);
+}
+
 void Game::playerWriteItem(uint32_t playerId, uint32_t windowTextId, const std::string& text)
 {
 	Player* player = getPlayerByID(playerId);
@@ -3879,7 +3915,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
-
 		if (attackerPlayer && damage.origin != ORIGIN_NONE) {
 			//life leech
 			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_CHANCE)) {
@@ -3901,7 +3936,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				Combat::doCombatMana(nullptr, attackerPlayer, tmpDamage, tmpParams);
 			}
 		}
-
 
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
@@ -4035,6 +4069,15 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		}
 
 		target->drainHealth(attacker, realDamage);
+		if (realDamage > 0) {
+			if (Monster* targetMonster = target->getMonster()) {
+				if (targetMonster->isRandomSteping()) {
+					targetMonster->setIgnoreFieldDamage(true);
+					targetMonster->updateMapCache();
+				}
+			}
+		}
+
 		addCreatureHealth(spectators, target);
 
 		message.primary.value = damage.primary.value;

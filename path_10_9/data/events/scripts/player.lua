@@ -246,6 +246,21 @@ function Player:onReport(message, position, category)
 	return true
 end
 
+function Player:onWrapItem(item)
+	local pos = item:getPosition()
+	local house = Tile(pos):getHouse()
+
+	if not house then
+		self:sendTextMessage(MESSAGE_STATUS_SMALL, "You can only wrap and unwrap this item inside a house.")
+		return
+	end
+
+	local wrapId = item:getType():getWrapId()
+	if wrapId ~= 0 then
+		item:transform(wrapId)
+	end
+end
+
 function Player:onTurn(direction)
 	if self:getGroup():getAccess() and self:getDirection() == direction then
 		local nextPosition = self:getPosition()
