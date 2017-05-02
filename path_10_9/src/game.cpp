@@ -5513,8 +5513,14 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 				return;
 			}
 
-			Container* inbox = (Container*) thing->getItem(); //TODO: Not the right way to get the storeInbox
-			uint32_t freeSlots = inbox->capacity() - inbox->capacity();
+
+
+			Container* inbox = thing->getItem()->getContainer(); //TODO: Not the right way to get the storeInbox
+			if(!inbox){
+				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate you store inbox, try again after relog and if this error persists, contact the system administrator.");
+				return;
+			}
+			uint32_t freeSlots = inbox->capacity() - inbox->size();
 			uint32_t requiredSlots = (tmp->type == ITEM) ? tmp->count : (tmp->count%100)? (uint32_t)(tmp->count/100)+1 :(uint32_t) tmp->count/100;
 			uint32_t capNeeded = Item::items[tmp->productId].weight * tmp->count;
 
