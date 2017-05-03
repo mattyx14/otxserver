@@ -2477,7 +2477,7 @@ void ProtocolGame::sendStoreCategoryOffers(StoreCategory* category){
 					disabledReason << "You already have this outfit.";
                 }
 				else{
-					disabledReason << "You already have this addon.";
+					disabledReason << "You already have this outfit/addon.";
 				}
 			}
 			else{
@@ -2497,7 +2497,7 @@ void ProtocolGame::sendStoreCategoryOffers(StoreCategory* category){
 			}
 		}
 		else if(offer->type == PROMOTION){
-			if(player->isPromoted()){ //TODO: add support to multiple promotion levels
+			if(player->isPromoted() || !player->isPremium()){ //TODO: add support to multiple promotion levels
 				disabled=1;
 				disabledReason << "You can't get this promotion";
 			}

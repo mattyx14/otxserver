@@ -5606,63 +5606,198 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 				return;
 			}
 			else{
+				Database &db = Database::getInstance();
+				std::ostringstream query;
 				std::string newName = additionalInfo;
 				trimString(newName);
-				toLowerCaseString(newName);
 
-				std::string responseMessage;
-				NameEval_t nameValidation = validateName(newName);
-
-				switch (nameValidation){
-					case INVALID_LENGTH:
-						responseMessage = "Your new name's must be more than 3 and less than 14 characters long.";
-						break;
-					case INVALID_TOKEN_LENGTH:
-						responseMessage = "Every words of your new name must be at least 2 characters long.";
-						break;
-					case INVALID_FORBIDDEN:
-						responseMessage = "You're using forbidden words in your new name.";
-						break;
-					case INVALID_CHARACTER:
-						responseMessage = "Your new name contains invalid characters.";
-						break;
-					case INVALID:
-						responseMessage = "Your new name is invalid.";
-						break;
-					case VALID:
-						responseMessage = "You have successfully changed you name, you must relog to see changes.";
-						break;
-				}
-
-				if(nameValidation != VALID) { //invalid name typed
-					player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
+				query << "SELECT `id` FROM `players` WHERE `name`=" << db.escapeString(newName);
+				if(db.storeQuery(query.str())){ //name already in use
+					message << "This name is already in use.";
+					player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
 					return;
 				}
-				else{ //valid name
-					newName = capitalizeWords(newName);
-					Database& db = Database::getInstance();
+				else {
+                    query.str("");
+					toLowerCaseString(newName);
 
-					std::ostringstream query;
-					query << "UPDATE `players` SET `name` = " << db.escapeString(newName) <<  " WHERE `id` = " << player->getGUID();
-					if(db.executeQuery(query.str())){
-						IOAccount::removeCoins(player->getAccount(), offer->price);
-						IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
-						message << "You have successfully changed you name, you must relog to see the changes.";
+					std::string responseMessage;
+					NameEval_t nameValidation = validateName(newName);
 
-						player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
-						return;
+					switch (nameValidation) {
+						case INVALID_LENGTH:
+							responseMessage = "Your new name must be more than 3 and less than 14 characters long.";
+							break;
+						case INVALID_TOKEN_LENGTH:
+							responseMessage = "Every words of your new name must be at least 2 characters long.";
+							break;
+						case INVALID_FORBIDDEN:
+							responseMessage = "You're using forbidden words in your new name.";
+							break;
+						case INVALID_CHARACTER:
+							responseMessage = "Your new name contains invalid characters.";
+							break;
+						case INVALID:
+							responseMessage = "Your new name is invalid.";
+							break;
+						case VALID:
+							responseMessage = "You have successfully changed you name, you must relog to see changes.";
+							break;
 					}
-					else{
-						message << "An error ocurred processing your request, no changes were made.";
-						player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
+
+					if (nameValidation != VALID) { //invalid name typed
+						player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
 						return;
+					} else { //valid name so far
+
+						//check if it's an NPC or Monster name.
+
+						if (g_monsters.getMonsterType(newName)) {
+							responseMessage = "Your new name cannot be a monster's name.";
+							player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
+							return;
+						} else if (getNpcByName(newName)) {
+							responseMessage = "Your new name cannot be an NPC's name.";
+							player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
+							return;
+						} else {
+							capitalizeWords(newName);
+
+							query << "UPDATE `players` SET `name` = " << db.escapeString(newName) << " WHERE `id` = "
+								  << player->getGUID();
+							if (db.executeQuery(query.str())) {
+								IOAccount::removeCoins(player->getAccount(), offer->price);
+								IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+
+								message << "You have successfully changed you name, you must relog to see the changes.";
+								player->sendStorePurchaseSuccessful(message.str(),
+																	IOAccount::getCoinBalance(player->getAccount()));
+								return;
+							} else {
+								message << "An error ocurred processing your request, no changes were made.";
+								player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
+								return;
+							}
+						}
 					}
 				}
 			}
 		}
+		else if(offer->type == SEXCHANGE) {
+			PlayerSex_t playerSex = player->getSex();
+			Outfit_t playerOutfit = player->getCurrentOutfit();
+
+			message << "Your character is now ";
+
+            if(playerSex == PLAYERSEX_FEMALE) {
+				player->setSex(PLAYERSEX_MALE);
+				playerOutfit.lookType=128; //default citizen
+                playerOutfit.lookAddons=0;
+				message << "male.";
+			}
+			else {//player is male
+				player->setSex(PLAYERSEX_FEMALE);
+				playerOutfit.lookType=136; //default citizen
+                playerOutfit.lookAddons=0;
+				message << "female.";
+			}
+			playerChangeOutfit(player->getID(),playerOutfit);
+			//TODO: add the other sex equivalent outfits player already have in the current sex.
+			IOAccount::removeCoins(player->getAccount(),offer->price);
+			IOAccount::registerTransaction(player->getAccount(),offer->price,offer->name);
+			player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+			return;
+		}
+        else if(offer->type == PROMOTION){
+            if(player->isPremium() && !player->isPromoted()){
+                uint16_t promotedId = g_vocations.getPromotedVocation(player->getVocation()->getId());
+
+                if(promotedId == VOCATION_NONE || promotedId == player->getVocation()->getId()){
+                    player->sendStoreError(STORE_ERROR_PURCHASE, "Your character cannot be promoted.");
+                    return;
+                }
+                else{
+                    IOAccount::removeCoins(player->getAccount(), offer->price);
+                    IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+                    player->setVocation(promotedId);
+					player->addStorageValue(STORAGEVALUE_PROMOTION,1);
+					message << "You've been promoted! Relog to see the changes.";
+					player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+					return;
+                }
+            }
+			else{
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Your character cannot be promoted.");
+				return;
+			}
+        }
+		else if (offer->type == PREMIUM_TIME){
+			PremiumTimeOffer* premiumTimeOffer = (PremiumTimeOffer*) offer;
+			IOAccount::removeCoins(player->getAccount(),offer->price);
+			IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+			player->setPremiumDays(player->premiumDays+premiumTimeOffer->days);
+			IOLoginData::addPremiumDays(player->getAccount(),premiumTimeOffer->days);
+			message<< "You've successfully bought "<< premiumTimeOffer->days << " days of premium time.";
+			player->sendStorePurchaseSuccessful(message.str(),IOAccount::getCoinBalance(player->getAccount()));
+			return;
+		}
+		else if(offer->type == TELEPORT){
+			TeleportOffer* tpOffer = (TeleportOffer*) offer;
+			if(player->canLogout()) {
+				Position toPosition;
+				Position fromPosition = player->getPosition();
+				if(tpOffer->position.x == 0 || tpOffer->position.y == 0 || tpOffer->position.z == 0){ //temple teleport
+					toPosition=player->getTemplePosition();
+				}
+				else{
+					toPosition = tpOffer->position;
+				}
+
+				ReturnValue returnValue = internalTeleport(player, toPosition, false);
+				if(returnValue!=RETURNVALUE_NOERROR){
+					player->sendStoreError(STORE_ERROR_PURCHASE, "Your character cannot be teleported there at the moment.");
+					return;
+				}
+				else {
+					IOAccount::removeCoins(player->getAccount(), offer->price);
+					IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+					addMagicEffect(fromPosition, CONST_ME_POFF);
+					addMagicEffect(toPosition,CONST_ME_TELEPORT);
+					player->sendStorePurchaseSuccessful("You've successfully been teleported.", IOAccount::getCoinBalance(player->getAccount()));
+					return;
+				}
+			}
+			else{
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Your character has some teleportation block at the moment and cannot be teleported.");
+				return;
+			}
+		}
+		else if(offer->type == BLESSING){
+			BlessingOffer* blessingOffer = (BlessingOffer*) offer;
+
+			uint8_t blessingsToAdd=0;
+			for(uint8_t bless : blessingOffer->blessings){
+				if(player->hasBlessing(bless)){//player already has this bless
+					message << "Your character already has ";
+					message << ((blessingOffer->blessings.size() >1)? "one or more of these blessings." : "this bless.");
+
+					player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
+					return;
+				}
+				blessingsToAdd |= static_cast<uint8_t>(1) << bless;
+			}
+
+			IOAccount::removeCoins(player->getAccount(), offer->price);
+			player->addBlessing(blessingsToAdd);
+			IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+			message<< "You've successfully bought the "<< offer->name << ".";
+			player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+			return;
+		}
 		else{
-			//TODO: Namechange, sexchange,promotion,premium_time,teleport,blessing
+			//TODO: BOOST_XP and BOOST_STAMINA (the support systems are not yet implemented)
 			player->sendStoreError(STORE_ERROR_INFORMATION, "JLCVP: NOT YET IMPLEMENTED!");
+			return;
 		}
     }
 }

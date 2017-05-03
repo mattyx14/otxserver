@@ -1243,18 +1243,24 @@ int64_t OTSYS_TIME()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-std::string capitalizeWords(std::string source) {
-	std::string ret = asLowerCaseString(source);
-	int i=0;
-	for(char &c : ret)
+/**
+ * @authors jlcvp, acmh
+ * @details
+ * capitalize the first letter of every word in source
+ * @param source
+ */
+void capitalizeWords(std::string& source) {
+	toLowerCaseString(source);
+	uint8_t size = (uint8_t) source.size();
+	for(uint8_t i=0; i< size; i++)
 	{
-		if(i==0)
-			c+= toupper(c);
-		else if((*(&c - sizeof(char))) == ' ' || (*(&c - sizeof(char))) == '\'')
-			c = toupper(c);
+		if(i==0) {
+			source[i] = (char)toupper(source[i]);
+		}
+		else if(source[i-1] == ' ' || source[i-1] == '\'') {
+			source[i] = (char)toupper(source[i]);
+		}
 	}
-
-	return ret;
 }
 
 NameEval_t validateName(const std::string &name) {

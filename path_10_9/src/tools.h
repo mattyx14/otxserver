@@ -38,7 +38,7 @@ void trim_left(std::string& source, char t);
 void toLowerCaseString(std::string& source);
 std::string asLowerCaseString(std::string source);
 std::string asUpperCaseString(std::string source);
-std::string capitalizeWords(std::string source);
+
 
 using StringVector = std::vector<std::string>;
 using IntegerVector = std::vector<int32_t>;
@@ -94,6 +94,7 @@ itemAttrTypes stringToItemAttribute(const std::string& str);
 const char* getReturnMessage(ReturnValue value);
 
 NameEval_t validateName(const std::string &name);
+void capitalizeWords(std::string &source);
 
 int64_t OTSYS_TIME();
 

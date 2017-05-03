@@ -210,8 +210,9 @@ bool GameStore::loadFromXml() {
                 else if(boost::iequals(type, "premiumtime")){
                     PremiumTimeOffer* tmp = new PremiumTimeOffer();
                     tmp->type = PREMIUM_TIME;
-                    uint16_t days = (uint16_t)offerNode.attribute("duration").as_uint();
-                    if(!days){
+
+                    tmp->days = (uint16_t)offerNode.attribute("days").as_uint();
+                    if(tmp->days == 0){
                         printXMLError("Error parsing XML premiumtime offer type - required 'days' attribute not found - GameStore::loadFromXml",
                                       "data/XML/gamestore.xml",
                                       result);
@@ -239,7 +240,9 @@ bool GameStore::loadFromXml() {
                     } else if (boost::iequals(offerstate, "new")) {
                         offer->state = StoreState_t::NEW;
                     } else if (boost::iequals(offerstate, "sale")) {
-                        offer->state = StoreState_t::SALE;
+                        //offer->state = StoreState_t::SALE;
+                     // TODO: Solve the client crash with sale offers. Probably we need to add the previous price to show the strikethrough text indicating a sale.
+                        offer->state = StoreState_t::NORMAL;
                     } else if (boost::iequals(offerstate, "limitedtime")) {
                         offer->state = StoreState_t::LIMITED_TIME;
                     }
