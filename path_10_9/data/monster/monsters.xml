@@ -340,6 +340,7 @@
 	<monster name="Shaburak Demon" file="Demons/shaburak_demon.xml" />
 	<monster name="Shaburak Lord" file="Demons/shaburak_lord.xml" />
 	<monster name="Shaburak Prince" file="Demons/shaburak_prince.xml" />
+	<monster name="Vexclaw" file="Demons/vexclaw.xml" />
 	<monster name="Yielothax" file="Demons/yielothax.xml" />
 
 	<!-- Djinn -->
@@ -502,6 +503,9 @@
 	<monster name="Cyclops Smith" file="Giants/cyclops_smith.xml" />
 	<monster name="Frost Giant" file="Giants/frost_giant.xml" />
 	<monster name="Frost Giantess" file="Giants/frost_giantess.xml" />
+	<monster name="Ogre Brute" file="Giants/ogre_brute.xml" />
+	<monster name="Ogre Savage" file="Giants/ogre_savage.xml" />
+	<monster name="Ogre Shaman" file="Giants/ogre_shaman.xml" />
 
 	<!-- Goblins -->
 	<monster name="Goblin" file="Goblins/goblin.xml" />
