@@ -113,6 +113,11 @@ struct StoreCategory{
 
 class GameStore {
     public:
+        static uint8_t HISTORY_ENTRIES_PER_PAGE;
+        static void startup(){
+            HISTORY_ENTRIES_PER_PAGE=16;
+        }
+
         bool isLoaded() {
             return loaded;
         }
@@ -131,10 +136,26 @@ class GameStore {
 
         const int8_t getCategoryIndexByName(std::string categoryName) const;
         const BaseOffer* getOfferByOfferId(uint32_t offerId);
+
     private:
         uint32_t offerCount=0;
         bool loaded=false;
         std::vector<StoreCategory*> storeCategoryOffers;
+};
+
+
+struct HistoryStoreOffer {
+    uint32_t time;
+    uint8_t mode;
+    int32_t amount;
+    std::string description;
+};
+
+using HistoryStoreOfferList = std::vector<HistoryStoreOffer>;
+
+class IOGameStore {
+    public:
+        static HistoryStoreOfferList getHistoryEntries(uint32_t account_id, uint32_t page);
 };
 
 

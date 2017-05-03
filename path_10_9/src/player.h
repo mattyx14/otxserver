@@ -902,6 +902,12 @@ class Player final : public Creature, public Cylinder
             }
         }
 
+        void sendStoreTrasactionHistory(HistoryStoreOfferList& list, uint32_t page, uint8_t entriesPerPage){
+            if(client){
+                client->sendStoreTrasactionHistory(list, page, entriesPerPage);
+            }
+        }
+
 
 	//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,

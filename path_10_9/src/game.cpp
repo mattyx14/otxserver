@@ -123,6 +123,7 @@ void Game::setGameState(GameState_t newState)
 			mounts.loadFromXml();
 
 			gameStore.loadFromXml();
+            gameStore.startup();
 
 			loadMotdNum();
 			loadPlayersRecord();
@@ -5667,7 +5668,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 								  << player->getGUID();
 							if (db.executeQuery(query.str())) {
 								IOAccount::removeCoins(player->getAccount(), offer->price);
-								IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+								IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
 
 								message << "You have successfully changed you name, you must relog to see the changes.";
 								player->sendStorePurchaseSuccessful(message.str(),
@@ -5704,7 +5705,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 			playerChangeOutfit(player->getID(),playerOutfit);
 			//TODO: add the other sex equivalent outfits player already have in the current sex.
 			IOAccount::removeCoins(player->getAccount(),offer->price);
-			IOAccount::registerTransaction(player->getAccount(),offer->price,offer->name);
+			IOAccount::registerTransaction(player->getAccount(),-1*offer->price,offer->name);
 			player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
 			return;
 		}
@@ -5718,7 +5719,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
                 }
                 else{
                     IOAccount::removeCoins(player->getAccount(), offer->price);
-                    IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+                    IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
                     player->setVocation(promotedId);
 					player->addStorageValue(STORAGEVALUE_PROMOTION,1);
 					message << "You've been promoted! Relog to see the changes.";
@@ -5734,7 +5735,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 		else if (offer->type == PREMIUM_TIME){
 			PremiumTimeOffer* premiumTimeOffer = (PremiumTimeOffer*) offer;
 			IOAccount::removeCoins(player->getAccount(),offer->price);
-			IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+			IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
 			player->setPremiumDays(player->premiumDays+premiumTimeOffer->days);
 			IOLoginData::addPremiumDays(player->getAccount(),premiumTimeOffer->days);
 			message<< "You've successfully bought "<< premiumTimeOffer->days << " days of premium time.";
@@ -5760,7 +5761,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 				}
 				else {
 					IOAccount::removeCoins(player->getAccount(), offer->price);
-					IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+					IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
 					addMagicEffect(fromPosition, CONST_ME_POFF);
 					addMagicEffect(toPosition,CONST_ME_TELEPORT);
 					player->sendStorePurchaseSuccessful("You've successfully been teleported.", IOAccount::getCoinBalance(player->getAccount()));
@@ -5789,7 +5790,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 
 			IOAccount::removeCoins(player->getAccount(), offer->price);
 			player->addBlessing(blessingsToAdd);
-			IOAccount::registerTransaction(player->getAccount(), offer->price, offer->name);
+			IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
 			message<< "You've successfully bought the "<< offer->name << ".";
 			player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
 			return;
@@ -5802,7 +5803,76 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
     }
 }
 
+void Game::playerCoinTransfer(uint32_t playerId, const std::string &receiverName, uint32_t amount) {
+	Player* sender = getPlayerByID(playerId);
+	Player* receiver = getPlayerByName(receiverName);
 
+	std::stringstream message;
+
+	if(!sender){
+		return;
+	}
+	else if(!receiver){
+		message << "Player \""<<receiverName << "\" doesn't exist.";
+		sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+		return;
+	}
+	else if(sender->getAccount() == receiver->getAccount()) { //sender and receiver are the same
+		message << "You cannot send coins to your own account.";
+		sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+		return;
+	}
+	else if(IOAccount::getCoinBalance(sender->getAccount()) < amount){
+		message << "You don't have enough funds to transfer these coins.";
+		sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+		return;
+	}
+	else{
+		DBTransaction transaction;
+		Database& db = Database::getInstance();
+
+		std::ostringstream querySender, queryReceiver;
+
+		querySender << "UPDATE `accounts` SET `coins` = `coins` - " << amount << "WHERE `id` = "<< sender->getAccount();
+		queryReceiver << "UPDATE `accounts` SET `coins` = `coins` + " << amount << "WHERE `id` = "<< receiver->getAccount();
+		if (!transaction.begin()) {
+			sender->sendStoreError(STORE_ERROR_TRANSFER, "Internal error, try again later.");
+			return;
+		}
+
+		db.executeQuery(querySender.str());
+		db.executeQuery(queryReceiver.str());
+
+		transaction.commit();
+
+		message << "Transfered to " << receiver->name;
+		IOAccount::registerTransaction(sender->getAccount(),-1*amount, message.str());
+
+		message.str("");
+		message << "Received from" << sender->name;
+		IOAccount::registerTransaction(receiver->getAccount(),amount, message.str());
+
+		message.str("");
+		message << "You have successfully transfered " << amount << " coins to " <<receiver->name <<".";
+		sender->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(sender->getAccount()));
+		if(!receiver->isOffline()){
+			receiver->sendCoinBalanceUpdating(true);
+		}
+	}
+}
+
+void Game::playerStoreTransactionHistory(uint32_t playerId, uint32_t page) {
+	Player* player = getPlayerByID(playerId);
+	if(player){
+		HistoryStoreOfferList list = IOGameStore::getHistoryEntries(player->getAccount(),page);
+		if(list.empty()) {
+			player->sendStoreTrasactionHistory(list, page, GameStore::HISTORY_ENTRIES_PER_PAGE);
+		}
+		else{
+			player->sendStoreError(STORE_ERROR_HISTORY, "You don't have any entries yet.");
+		}
+	}
+}
 
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {

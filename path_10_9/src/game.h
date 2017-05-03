@@ -402,6 +402,9 @@ class Game
 		void playerStoreOpen(uint32_t playerId, uint8_t serviceType);
 		void playerShowStoreCategoryOffers(uint32_t playerId, StoreCategory* category);
 		void playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t productType, const std::string& additionalInfo="");
+        void playerCoinTransfer(uint32_t playerId, const std::string& receiverName, uint32_t amount);
+        void playerStoreTransactionHistory(uint32_t playerId, uint32_t page);
+
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 		std::forward_list<Item*> getMarketItemList(uint16_t wareId, uint16_t sufficientCount, DepotLocker* depotLocker);

@@ -566,7 +566,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
-        //case 0xEF: parseCoinTransfer(msg); break; /* premium coins transfer */
+        case 0xEF: parseCoinTransfer(msg); break; /* premium coins transfer */
 		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerShowQuestLog, player->getID()); break;
 		case 0xF1: parseQuestLine(msg); break;
 		case 0xF2: /* rule violation report */ break;
@@ -580,8 +580,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xFA: parseStoreOpen(msg); break;
 		case 0xFB: parseStoreRequestOffers(msg); break;
 		case 0xFC: parseStoreBuyOffer(msg); break;
-		//case 0xFD: parseStoreOpenTransactionHistory(msg); break;
-		//case 0xFE: parseStoreRequestTransactionHistory(msg); break;
+		case 0xFD: parseStoreOpenTransactionHistory(msg); break;
+		case 0xFE: parseStoreRequestTransactionHistory(msg); break;
 
 		//case 0x77 Equip Hotkey.
 		//case 0xDF, 0xE0, 0xE1, 0xFB, 0xFC, 0xFD, 0xFE Premium Shop.
@@ -999,7 +999,6 @@ void ProtocolGame::parseStoreOpen(NetworkMessage &msg) {
 
 void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
     //StoreService_t serviceType = SERVICE_STANDARD;
-
     if (version >= 1092) {
         message.getByte(); //discard service type byte
     }
@@ -1014,10 +1013,7 @@ void ProtocolGame::parseStoreRequestOffers(NetworkMessage &message) {
     else{
         std::cout << "[Warning - ProtocolGame::parseStoreRequestOffers] requested category: \""<< categoryName <<"\" doesn't exists" << std::endl;
     }
-
-
 }
-
 
 void ProtocolGame::parseStoreBuyOffer(NetworkMessage &message) {
     uint32_t offerId = message.get<uint32_t>();
@@ -1027,6 +1023,30 @@ void ProtocolGame::parseStoreBuyOffer(NetworkMessage &message) {
 		additionalInfo = message.getString();
 	}
     addGameTaskTimed(250, &Game::playerBuyStoreOffer, player->getID(), offerId, productType, additionalInfo);
+}
+
+void ProtocolGame::parseStoreOpenTransactionHistory(NetworkMessage& msg){
+	uint8_t entriesPerPage = msg.getByte();
+	if(entriesPerPage>0 && entriesPerPage!=GameStore::HISTORY_ENTRIES_PER_PAGE){
+        GameStore::HISTORY_ENTRIES_PER_PAGE=entriesPerPage;
+	}
+
+	addGameTaskTimed(250, &Game::playerStoreTransactionHistory, player->getID(), 1);
+}
+
+void ProtocolGame::parseStoreRequestTransactionHistory(NetworkMessage& msg){
+	uint32_t pageNumber = msg.get<uint32_t>();
+	if(pageNumber>0)
+	{
+		addGameTaskTimed(250,&Game::playerStoreTransactionHistory,player->getID(), pageNumber);
+	}
+}
+
+void ProtocolGame::parseCoinTransfer(NetworkMessage& msg){
+	std::string receiverName =msg.getString();
+	uint32_t amount = msg.get<uint32_t>();
+
+	addGameTaskTimed(350, &Game::playerCoinTransfer, player->getID(), receiverName, amount);
 }
 
 void ProtocolGame::parseMarketCreateOffer(NetworkMessage& msg)
@@ -2556,6 +2576,26 @@ void ProtocolGame::sendStoreRequestAdditionalInfo(uint32_t offerId, ClientOffer_
 	writeToOutputBuffer(msg);
 }
 
+void ProtocolGame::sendStoreTrasactionHistory(HistoryStoreOfferList &list, uint32_t page, uint8_t entriesPerPage) {
+	NetworkMessage msg;
+	uint32_t isLastPage = (list.size() > entriesPerPage) ? 1:0;
+
+	msg.addByte(0xFD); //BrowseTransactionHistory
+	msg.add<uint32_t>(page); //which page
+	msg.add<uint32_t>(isLastPage);	//is the last page?
+	msg.addByte((uint8_t)list.size()); //how many elements follows
+
+	for(auto entry:list){
+		msg.add<uint32_t>(entry.time);
+		msg.addByte(entry.mode);
+		msg.add<int32_t>(entry.amount);
+		msg.addString(entry.description);
+	}
+
+	writeToOutputBuffer(msg);
+}
+
+
 void ProtocolGame::sendModalWindow(const ModalWindow& modalWindow)
 {
 	NetworkMessage msg;
@@ -2698,3 +2738,4 @@ void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
 	// process additional opcodes via lua script event
 	addGameTask(&Game::parsePlayerExtendedOpcode, player->getID(), opcode, buffer);
 }
+
