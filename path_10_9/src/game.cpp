@@ -5815,57 +5815,71 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 void Game::playerCoinTransfer(uint32_t playerId, const std::string &receiverName, uint32_t amount) {
 	Player* sender = getPlayerByID(playerId);
 	Player* receiver = getPlayerByName(receiverName);
-
-	std::stringstream message;
-
 	if(!sender){
 		return;
 	}
-	else if(!receiver){
-		message << "Player \""<<receiverName << "\" doesn't exist.";
-		sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
-		return;
-	}
-	else if(sender->getAccount() == receiver->getAccount()) { //sender and receiver are the same
-		message << "You cannot send coins to your own account.";
-		sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
-		return;
-	}
-	else if(IOAccount::getCoinBalance(sender->getAccount()) < amount){
-		message << "You don't have enough funds to transfer these coins.";
-		sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
-		return;
-	}
-	else{
-		DBTransaction transaction;
-		Database& db = Database::getInstance();
+	else {
+		std::ostringstream query;
+		Database &db = Database::getInstance();
 
-		std::ostringstream querySender, queryReceiver;
+		query << "SELECT `name`,`account_id` from `players` WHERE `name`=" << db.escapeString(receiverName);
 
-		querySender << "UPDATE `accounts` SET `coins` = `coins` - " << amount << "WHERE `id` = "<< sender->getAccount();
-		queryReceiver << "UPDATE `accounts` SET `coins` = `coins` + " << amount << "WHERE `id` = "<< receiver->getAccount();
-		if (!transaction.begin()) {
-			sender->sendStoreError(STORE_ERROR_TRANSFER, "Internal error, try again later.");
+		std::stringstream message;
+
+
+		DBResult_ptr result = db.storeQuery(query.str());
+		if(!result){
+			message << "Player \"" << receiverName << "\" doesn't exist.";
+			sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
 			return;
 		}
+		else {
+			uint32_t receiverAccountId = result->getNumber<uint32_t>("account_id");
+			std::string capitalizedReceiverName = result->getString("name");
+			if (receiverAccountId == 0) {
+				message << "Player \"" << receiverName << "\" doesn't exist.";
+				sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+				return;
+			} else if (sender->getAccount() == receiverAccountId) { //sender and receiver are the same
+				message << "You cannot send coins to your own account.";
+				sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+				return;
+			} else if (IOAccount::getCoinBalance(sender->getAccount()) < amount) {
+				message << "You don't have enough funds to transfer these coins.";
+				sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+				return;
+			} else {
+				DBTransaction transaction;
+				std::ostringstream querySender, queryReceiver;
 
-		db.executeQuery(querySender.str());
-		db.executeQuery(queryReceiver.str());
+				querySender << "UPDATE `accounts` SET `coins` = `coins` - " << amount << " WHERE `id` = "
+							<< sender->getAccount();
+				queryReceiver << "UPDATE `accounts` SET `coins` = `coins` + " << amount << " WHERE `id` = "
+							  << receiverAccountId;
+				if (!transaction.begin()) {
+					sender->sendStoreError(STORE_ERROR_TRANSFER, "Internal error, try again later.");
+					return;
+				}
 
-		transaction.commit();
+				db.executeQuery(querySender.str());
+				db.executeQuery(queryReceiver.str());
 
-		message << "Transfered to " << receiver->name;
-		IOAccount::registerTransaction(sender->getAccount(),-1*amount, message.str());
+				transaction.commit();
 
-		message.str("");
-		message << "Received from" << sender->name;
-		IOAccount::registerTransaction(receiver->getAccount(),amount, message.str());
+				message << "Transfered to " << capitalizedReceiverName;
+				IOAccount::registerTransaction(sender->getAccount(), -1 * amount, message.str());
 
-		message.str("");
-		message << "You have successfully transfered " << amount << " coins to " <<receiver->name <<".";
-		sender->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(sender->getAccount()));
-		if(!receiver->isOffline()){
-			receiver->sendCoinBalanceUpdating(true);
+				message.str("");
+				message << "Received from" << sender->name;
+				IOAccount::registerTransaction(receiverAccountId, amount, message.str());
+
+				message.str("");
+				message << "You have successfully transfered " << amount << " coins to " << capitalizedReceiverName << ".";
+				sender->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(sender->getAccount()));
+				if (receiver && !receiver->isOffline()) {
+					receiver->sendCoinBalanceUpdating(true);
+				}
+			}
 		}
 	}
 }
@@ -5874,7 +5888,7 @@ void Game::playerStoreTransactionHistory(uint32_t playerId, uint32_t page) {
 	Player* player = getPlayerByID(playerId);
 	if(player){
 		HistoryStoreOfferList list = IOGameStore::getHistoryEntries(player->getAccount(),page);
-		if(list.empty()) {
+		if(!list.empty()) {
 			player->sendStoreTrasactionHistory(list, page, GameStore::HISTORY_ENTRIES_PER_PAGE);
 		}
 		else{

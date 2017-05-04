@@ -25,7 +25,7 @@
 
 #include <boost/algorithm/string.hpp>
 
-uint8_t GameStore::HISTORY_ENTRIES_PER_PAGE=16;
+uint16_t GameStore::HISTORY_ENTRIES_PER_PAGE=16;
 
 std::vector<std::string> getIconsVector(std::string rawString) {
     std::vector<std::string> icons;
@@ -306,10 +306,9 @@ HistoryStoreOfferList IOGameStore::getHistoryEntries(uint32_t account_id, uint32
 
     std::ostringstream query;
 
-    query << "SELECT mode, description, coin_amount, time FROM `store_history` WHERE `account_id` = " <<account_id
-                << " ORDER BY `time` DESC LIMIT " << (page-1)*GameStore::HISTORY_ENTRIES_PER_PAGE
-                << "," << GameStore::HISTORY_ENTRIES_PER_PAGE;
-
+    query << "SELECT `description`,`mode`,`coin_amount`,`time` FROM `store_history` WHERE `account_id` = " <<account_id << " ORDER BY `time` DESC LIMIT "
+          << (std::max<int>((page-1),0)*GameStore::HISTORY_ENTRIES_PER_PAGE)
+          << "," << (uint)GameStore::HISTORY_ENTRIES_PER_PAGE <<";";
     DBResult_ptr result = Database::getInstance().storeQuery(query.str());
 
     if(result) {
@@ -318,13 +317,11 @@ HistoryStoreOfferList IOGameStore::getHistoryEntries(uint32_t account_id, uint32
 
             entry.description = result->getString("description");
             entry.mode = result->getNumber<uint8_t>("mode");
-            entry.amount = result->getNumber<int32_t>("coin_amount");
+            entry.amount = result->getNumber<uint32_t>("coin_amount");
             entry.time = result->getNumber<uint32_t>("time");
 
             historyStoreOfferList.push_back(entry);
-
         } while (result->next());
     }
-
     return historyStoreOfferList;
 }

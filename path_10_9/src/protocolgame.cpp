@@ -580,8 +580,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xFA: parseStoreOpen(msg); break;
 		case 0xFB: parseStoreRequestOffers(msg); break;
 		case 0xFC: parseStoreBuyOffer(msg); break;
-		case 0xFD: parseStoreOpenTransactionHistory(msg); break;
-		case 0xFE: parseStoreRequestTransactionHistory(msg); break;
+//		case 0xFD: parseStoreOpenTransactionHistory(msg); break;
+//		case 0xFE: parseStoreRequestTransactionHistory(msg); break;
 
 		//case 0x77 Equip Hotkey.
 		//case 0xDF, 0xE0, 0xE1, 0xFB, 0xFC, 0xFD, 0xFE Premium Shop.
@@ -1022,7 +1022,7 @@ void ProtocolGame::parseStoreBuyOffer(NetworkMessage &message) {
 	if(productType == ADDITIONALINFO) {
 		additionalInfo = message.getString();
 	}
-    addGameTaskTimed(250, &Game::playerBuyStoreOffer, player->getID(), offerId, productType, additionalInfo);
+    addGameTaskTimed(350, &Game::playerBuyStoreOffer, player->getID(), offerId, productType, additionalInfo);
 }
 
 void ProtocolGame::parseStoreOpenTransactionHistory(NetworkMessage& msg){
@@ -1031,15 +1031,12 @@ void ProtocolGame::parseStoreOpenTransactionHistory(NetworkMessage& msg){
         GameStore::HISTORY_ENTRIES_PER_PAGE=entriesPerPage;
 	}
 
-	addGameTaskTimed(250, &Game::playerStoreTransactionHistory, player->getID(), 1);
+	addGameTaskTimed(2000, &Game::playerStoreTransactionHistory, player->getID(), 1);
 }
 
 void ProtocolGame::parseStoreRequestTransactionHistory(NetworkMessage& msg){
 	uint32_t pageNumber = msg.get<uint32_t>();
-	if(pageNumber>0)
-	{
-		addGameTaskTimed(250,&Game::playerStoreTransactionHistory,player->getID(), pageNumber);
-	}
+	addGameTaskTimed(2000,&Game::playerStoreTransactionHistory,player->getID(), pageNumber);
 }
 
 void ProtocolGame::parseCoinTransfer(NetworkMessage& msg){
@@ -2578,18 +2575,23 @@ void ProtocolGame::sendStoreRequestAdditionalInfo(uint32_t offerId, ClientOffer_
 
 void ProtocolGame::sendStoreTrasactionHistory(HistoryStoreOfferList &list, uint32_t page, uint8_t entriesPerPage) {
 	NetworkMessage msg;
-	uint32_t isLastPage = (list.size() > entriesPerPage) ? 1:0;
+	uint32_t isLastPage = (list.size() <= entriesPerPage) ? 0x01:0x00;
+
+	//TODO: Support multiple pages
+	isLastPage=0x01; //FIXME
+	page=0x00;
+	////////////////////////
 
 	msg.addByte(0xFD); //BrowseTransactionHistory
 	msg.add<uint32_t>(page); //which page
-	msg.add<uint32_t>(isLastPage);	//is the last page?
+	msg.add<uint32_t>(isLastPage);	//is the last page? /
 	msg.addByte((uint8_t)list.size()); //how many elements follows
 
-	for(auto entry:list){
-		msg.add<uint32_t>(entry.time);
-		msg.addByte(entry.mode);
-		msg.add<int32_t>(entry.amount);
-		msg.addString(entry.description);
+	for(HistoryStoreOffer offer:list){
+		msg.add<uint32_t>(offer.time);
+		msg.addByte(offer.mode);
+		msg.add<uint32_t>(offer.amount); //FIXME: investigate why it doesn't send the price properly
+		msg.addString(offer.description);
 	}
 
 	writeToOutputBuffer(msg);

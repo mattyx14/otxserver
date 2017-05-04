@@ -113,7 +113,7 @@ struct StoreCategory{
 
 class GameStore {
     public:
-        static uint8_t HISTORY_ENTRIES_PER_PAGE;
+        static uint16_t HISTORY_ENTRIES_PER_PAGE;
         static void startup(){
             HISTORY_ENTRIES_PER_PAGE=16;
         }
@@ -147,7 +147,7 @@ class GameStore {
 struct HistoryStoreOffer {
     uint32_t time;
     uint8_t mode;
-    int32_t amount;
+    uint32_t amount;
     std::string description;
 };
 
