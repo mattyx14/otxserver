@@ -5690,10 +5690,19 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 
 			message << "Your character is now ";
 
+			for(auto outfit : player->outfits){ //adding all outfits of the oposite sex.
+				const Outfit* opositeSexOutfit = Outfits::getInstance().getOpositeSexOutfitByLookType(playerSex, outfit.lookType);
+
+				if(opositeSexOutfit) {
+					player->addOutfit(opositeSexOutfit->lookType, 0);//since addons could have different recipes, we can't add automatically
+				}
+			}
+
             if(playerSex == PLAYERSEX_FEMALE) {
 				player->setSex(PLAYERSEX_MALE);
 				playerOutfit.lookType=128; //default citizen
-                playerOutfit.lookAddons=0;
+				playerOutfit.lookAddons=0;
+
 				message << "male.";
 			}
 			else {//player is male
