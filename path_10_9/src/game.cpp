@@ -41,6 +41,7 @@
 #include "talkaction.h"
 #include "weapons.h"
 
+
 extern ConfigManager g_config;
 extern Actions* g_actions;
 extern Chat* g_chat;
@@ -120,6 +121,9 @@ void Game::setGameState(GameState_t newState)
 
 			quests.loadFromXml();
 			mounts.loadFromXml();
+
+			gameStore.loadFromXml();
+            gameStore.startup();
 
 			loadMotdNum();
 			loadPlayersRecord();
@@ -5461,6 +5465,438 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	player->sendMarketAcceptOffer(offer);
 }
 
+void Game::playerStoreOpen(uint32_t playerId, uint8_t serviceType) {
+	Player* player = getPlayerByID(playerId);
+	if(player){
+        player->sendOpenStore(serviceType);
+	}
+}
+
+void Game::playerShowStoreCategoryOffers(uint32_t playerId, StoreCategory* category){
+	Player* player = getPlayerByID(playerId);
+	if(player)
+	{
+		player->sendShowStoreCategoryOffers(category);
+	}
+}
+
+void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t productType, const std::string& additionalInfo /* ="" */) {
+    Player* player = getPlayerByID(playerId);
+    if(player){
+        const BaseOffer* offer = gameStore.getOfferByOfferId(offerId);
+
+		if(offer == nullptr || offer->type == DISABLED){
+			player->sendStoreError(STORE_ERROR_NETWORK, "The offer is either fake or corrupt.");
+			return;
+		}
+//
+//		if((offer->type == ITEM || offer->type == STACKABLE_ITEM && !((ItemOffer*)offer)->productId) //item offer without product id
+//				|| (offer->type == MOUNT && !((MountOffer*)offer)->mountId) //mount offer without mountId
+//				|| (offer->type == PREMIUM_TIME && !((PremiumTimeOffer*)offer)->days)
+//				){
+//
+//		}
+
+		if(IOAccount::getCoinBalance(player->getAccount()) < offer->price) //player doesnt have enough coins
+		{
+			player->sendStoreError(STORE_ERROR_PURCHASE, "You don't have enough coins");
+			return;
+		}
+
+		std::stringstream message;
+
+		if(offer->type == ITEM || offer->type == STACKABLE_ITEM){
+			const ItemOffer* tmp = (ItemOffer*) offer;
+
+			message << "You have purchased " << tmp->count << "x " << offer->name << " for " << offer->price << " coins.";
+
+			Thing* thing = player->getThing(CONST_SLOT_STORE_INBOX);
+			if(thing == nullptr){
+				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate you store inbox, try again after relog and if this error persists, contact the system administrator.");
+				return;
+			}
+
+
+
+			Container* inbox = thing->getItem()->getContainer(); //TODO: Not the right way to get the storeInbox
+			if(!inbox){
+				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate you store inbox, try again after relog and if this error persists, contact the system administrator.");
+				return;
+			}
+			uint32_t freeSlots = inbox->capacity() - inbox->size();
+			uint32_t requiredSlots = (tmp->type == ITEM) ? tmp->count : (tmp->count%100)? (uint32_t)(tmp->count/100)+1 :(uint32_t) tmp->count/100;
+			uint32_t capNeeded = Item::items[tmp->productId].weight * tmp->count;
+
+			if(freeSlots < requiredSlots ) {
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Insuficient free slots in your store inbox.");
+				return;
+			}
+			else if(player->getFreeCapacity()< capNeeded){
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Not enough cap to carry.");
+				return;
+			}
+			else{
+				uint16_t pendingCount = tmp->count;
+				uint8_t packSize = (offer->type == STACKABLE_ITEM) ? 100 : 1;
+				IOAccount::removeCoins(player->getAccount(), offer->price);
+				IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+
+				while(pendingCount>0)
+				{
+					Item* item;
+					item = Item::CreateItem(tmp->productId, std::min<uint16_t>(packSize, pendingCount));
+
+					if (internalAddItem(inbox, item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						IOAccount::addCoins(player->getAccount(),(offer->price * (tmp->count - pendingCount))/tmp->count); //charging partially
+						player->sendStoreError(STORE_ERROR_PURCHASE, "We couldn't deliver all the items.\nOnly the delivered ones were charged from you account");
+						IOAccount::registerTransaction(player->getAccount(), -1*offer->price + (offer->price * (tmp->count - pendingCount))/tmp->count, offer->name);
+						return;
+					}
+					pendingCount-= std::min<uint16_t>(pendingCount,packSize);
+				}
+
+				player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+				return;
+			}
+		}
+		else if(offer->type == OUTFIT || offer->type == OUTFIT_ADDON){
+			const OutfitOffer* outfitOffer = (OutfitOffer*) offer;
+
+			uint16_t looktype = (player->getSex()==PLAYERSEX_MALE)? outfitOffer->maleLookType : outfitOffer->femaleLookType;
+			uint8_t addons = outfitOffer->addonNumber;
+
+			if(!player->canWear(looktype, addons)) {
+				IOAccount::removeCoins(player->getAccount(), offer->price);
+				player->addOutfit(looktype, addons);
+				IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+				message<< "You've successfully bought the "<< outfitOffer->name << ".";
+				player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+				return;
+			}
+			else{
+				player->sendStoreError(STORE_ERROR_NETWORK, "This outfit seems not to suit you well, we are sorry for that!");
+				return;
+			}
+		}
+		else if(offer->type == MOUNT){
+			const MountOffer* mntOffer = (MountOffer*) offer;
+			const Mount* mount = mounts.getMountByID(mntOffer->mountId);
+			if(player->hasMount(mount)){
+				player->sendStoreError(STORE_ERROR_PURCHASE, "You arealdy own this mount.");
+				return;
+			}
+			else{
+				IOAccount::removeCoins(player->getAccount(), mntOffer->price);
+				if(!player->tameMount(mount->id)){
+					IOAccount::addCoins(player->getAccount(), mntOffer->price);
+					player->sendStoreError(STORE_ERROR_PURCHASE, "An error ocurred processing your purchase. Try again later.");
+					return;
+				}
+				else{
+					IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+					message << "You've successfully bought the " << mount->name <<" Mount.";
+					player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+					return;
+				}
+			}
+		}
+		else if(offer->type == NAMECHANGE){
+			if(productType == SIMPLE){ //client didn't sent the new name yet, request additionalInfo
+				player->sendStoreRequestAdditionalInfo(offer->id, ADDITIONALINFO);
+				return;
+			}
+			else{
+				Database &db = Database::getInstance();
+				std::ostringstream query;
+				std::string newName = additionalInfo;
+				trimString(newName);
+
+				query << "SELECT `id` FROM `players` WHERE `name`=" << db.escapeString(newName);
+				if(db.storeQuery(query.str())){ //name already in use
+					message << "This name is already in use.";
+					player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
+					return;
+				}
+				else {
+                    query.str("");
+					toLowerCaseString(newName);
+
+					std::string responseMessage;
+					NameEval_t nameValidation = validateName(newName);
+
+					switch (nameValidation) {
+						case INVALID_LENGTH:
+							responseMessage = "Your new name must be more than 3 and less than 14 characters long.";
+							break;
+						case INVALID_TOKEN_LENGTH:
+							responseMessage = "Every words of your new name must be at least 2 characters long.";
+							break;
+						case INVALID_FORBIDDEN:
+							responseMessage = "You're using forbidden words in your new name.";
+							break;
+						case INVALID_CHARACTER:
+							responseMessage = "Your new name contains invalid characters.";
+							break;
+						case INVALID:
+							responseMessage = "Your new name is invalid.";
+							break;
+						case VALID:
+							responseMessage = "You have successfully changed you name, you must relog to see changes.";
+							break;
+					}
+
+					if (nameValidation != VALID) { //invalid name typed
+						player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
+						return;
+					} else { //valid name so far
+
+						//check if it's an NPC or Monster name.
+
+						if (g_monsters.getMonsterType(newName)) {
+							responseMessage = "Your new name cannot be a monster's name.";
+							player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
+							return;
+						} else if (getNpcByName(newName)) {
+							responseMessage = "Your new name cannot be an NPC's name.";
+							player->sendStoreError(STORE_ERROR_PURCHASE, responseMessage);
+							return;
+						} else {
+							capitalizeWords(newName);
+
+							query << "UPDATE `players` SET `name` = " << db.escapeString(newName) << " WHERE `id` = "
+								  << player->getGUID();
+							if (db.executeQuery(query.str())) {
+								IOAccount::removeCoins(player->getAccount(), offer->price);
+								IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+
+								message << "You have successfully changed you name, you must relog to see the changes.";
+								player->sendStorePurchaseSuccessful(message.str(),
+																	IOAccount::getCoinBalance(player->getAccount()));
+								return;
+							} else {
+								message << "An error ocurred processing your request, no changes were made.";
+								player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
+		else if(offer->type == SEXCHANGE) {
+			PlayerSex_t playerSex = player->getSex();
+			Outfit_t playerOutfit = player->getCurrentOutfit();
+
+			message << "Your character is now ";
+
+			for(auto outfit : player->outfits){ //adding all outfits of the oposite sex.
+				const Outfit* opositeSexOutfit = Outfits::getInstance().getOpositeSexOutfitByLookType(playerSex, outfit.lookType);
+
+				if(opositeSexOutfit) {
+					player->addOutfit(opositeSexOutfit->lookType, 0);//since addons could have different recipes, we can't add automatically
+				}
+			}
+
+            if(playerSex == PLAYERSEX_FEMALE) {
+				player->setSex(PLAYERSEX_MALE);
+				playerOutfit.lookType=128; //default citizen
+				playerOutfit.lookAddons=0;
+
+				message << "male.";
+			}
+			else {//player is male
+				player->setSex(PLAYERSEX_FEMALE);
+				playerOutfit.lookType=136; //default citizen
+                playerOutfit.lookAddons=0;
+				message << "female.";
+			}
+			playerChangeOutfit(player->getID(),playerOutfit);
+			//TODO: add the other sex equivalent outfits player already have in the current sex.
+			IOAccount::removeCoins(player->getAccount(),offer->price);
+			IOAccount::registerTransaction(player->getAccount(),-1*offer->price,offer->name);
+			player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+			return;
+		}
+        else if(offer->type == PROMOTION){
+            if(player->isPremium() && !player->isPromoted()){
+                uint16_t promotedId = g_vocations.getPromotedVocation(player->getVocation()->getId());
+
+                if(promotedId == VOCATION_NONE || promotedId == player->getVocation()->getId()){
+                    player->sendStoreError(STORE_ERROR_PURCHASE, "Your character cannot be promoted.");
+                    return;
+                }
+                else{
+                    IOAccount::removeCoins(player->getAccount(), offer->price);
+                    IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+                    player->setVocation(promotedId);
+					player->addStorageValue(STORAGEVALUE_PROMOTION,1);
+					message << "You've been promoted! Relog to see the changes.";
+					player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+					return;
+                }
+            }
+			else{
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Your character cannot be promoted.");
+				return;
+			}
+        }
+		else if (offer->type == PREMIUM_TIME){
+			PremiumTimeOffer* premiumTimeOffer = (PremiumTimeOffer*) offer;
+			IOAccount::removeCoins(player->getAccount(),offer->price);
+			IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+			player->setPremiumDays(player->premiumDays+premiumTimeOffer->days);
+			IOLoginData::addPremiumDays(player->getAccount(),premiumTimeOffer->days);
+			message<< "You've successfully bought "<< premiumTimeOffer->days << " days of premium time.";
+			player->sendStorePurchaseSuccessful(message.str(),IOAccount::getCoinBalance(player->getAccount()));
+			return;
+		}
+		else if(offer->type == TELEPORT){
+			TeleportOffer* tpOffer = (TeleportOffer*) offer;
+			if(player->canLogout()) {
+				Position toPosition;
+				Position fromPosition = player->getPosition();
+				if(tpOffer->position.x == 0 || tpOffer->position.y == 0 || tpOffer->position.z == 0){ //temple teleport
+					toPosition=player->getTemplePosition();
+				}
+				else{
+					toPosition = tpOffer->position;
+				}
+
+				ReturnValue returnValue = internalTeleport(player, toPosition, false);
+				if(returnValue!=RETURNVALUE_NOERROR){
+					player->sendStoreError(STORE_ERROR_PURCHASE, "Your character cannot be teleported there at the moment.");
+					return;
+				}
+				else {
+					IOAccount::removeCoins(player->getAccount(), offer->price);
+					IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+					addMagicEffect(fromPosition, CONST_ME_POFF);
+					addMagicEffect(toPosition,CONST_ME_TELEPORT);
+					player->sendStorePurchaseSuccessful("You've successfully been teleported.", IOAccount::getCoinBalance(player->getAccount()));
+					return;
+				}
+			}
+			else{
+				player->sendStoreError(STORE_ERROR_PURCHASE, "Your character has some teleportation block at the moment and cannot be teleported.");
+				return;
+			}
+		}
+		else if(offer->type == BLESSING){
+			BlessingOffer* blessingOffer = (BlessingOffer*) offer;
+
+			uint8_t blessingsToAdd=0;
+			for(uint8_t bless : blessingOffer->blessings){
+				if(player->hasBlessing(bless)){//player already has this bless
+					message << "Your character already has ";
+					message << ((blessingOffer->blessings.size() >1)? "one or more of these blessings." : "this bless.");
+
+					player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
+					return;
+				}
+				blessingsToAdd |= static_cast<uint8_t>(1) << bless;
+			}
+
+			IOAccount::removeCoins(player->getAccount(), offer->price);
+			player->addBlessing(blessingsToAdd);
+			IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
+			message<< "You've successfully bought the "<< offer->name << ".";
+			player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
+			return;
+		}
+		else{
+			//TODO: BOOST_XP and BOOST_STAMINA (the support systems are not yet implemented)
+			player->sendStoreError(STORE_ERROR_INFORMATION, "JLCVP: NOT YET IMPLEMENTED!");
+			return;
+		}
+    }
+}
+
+void Game::playerCoinTransfer(uint32_t playerId, const std::string &receiverName, uint32_t amount) {
+	Player* sender = getPlayerByID(playerId);
+	Player* receiver = getPlayerByName(receiverName);
+	if(!sender){
+		return;
+	}
+	else {
+		std::ostringstream query;
+		Database &db = Database::getInstance();
+
+		query << "SELECT `name`,`account_id` from `players` WHERE `name`=" << db.escapeString(receiverName);
+
+		std::stringstream message;
+
+
+		DBResult_ptr result = db.storeQuery(query.str());
+		if(!result){
+			message << "Player \"" << receiverName << "\" doesn't exist.";
+			sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+			return;
+		}
+		else {
+			uint32_t receiverAccountId = result->getNumber<uint32_t>("account_id");
+			std::string capitalizedReceiverName = result->getString("name");
+			if (receiverAccountId == 0) {
+				message << "Player \"" << receiverName << "\" doesn't exist.";
+				sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+				return;
+			} else if (sender->getAccount() == receiverAccountId) { //sender and receiver are the same
+				message << "You cannot send coins to your own account.";
+				sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+				return;
+			} else if (IOAccount::getCoinBalance(sender->getAccount()) < amount) {
+				message << "You don't have enough funds to transfer these coins.";
+				sender->sendStoreError(STORE_ERROR_TRANSFER, message.str());
+				return;
+			} else {
+				DBTransaction transaction;
+				std::ostringstream querySender, queryReceiver;
+
+				querySender << "UPDATE `accounts` SET `coins` = `coins` - " << amount << " WHERE `id` = "
+							<< sender->getAccount();
+				queryReceiver << "UPDATE `accounts` SET `coins` = `coins` + " << amount << " WHERE `id` = "
+							  << receiverAccountId;
+				if (!transaction.begin()) {
+					sender->sendStoreError(STORE_ERROR_TRANSFER, "Internal error, try again later.");
+					return;
+				}
+
+				db.executeQuery(querySender.str());
+				db.executeQuery(queryReceiver.str());
+
+				transaction.commit();
+
+				message << "Transfered to " << capitalizedReceiverName;
+				IOAccount::registerTransaction(sender->getAccount(), -1 * amount, message.str());
+
+				message.str("");
+				message << "Received from" << sender->name;
+				IOAccount::registerTransaction(receiverAccountId, amount, message.str());
+
+				message.str("");
+				message << "You have successfully transfered " << amount << " coins to " << capitalizedReceiverName << ".";
+				sender->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(sender->getAccount()));
+				if (receiver && !receiver->isOffline()) {
+					receiver->sendCoinBalanceUpdating(true);
+				}
+			}
+		}
+	}
+}
+
+void Game::playerStoreTransactionHistory(uint32_t playerId, uint32_t page) {
+	Player* player = getPlayerByID(playerId);
+	if(player){
+		HistoryStoreOfferList list = IOGameStore::getHistoryEntries(player->getAccount(),page);
+		if(!list.empty()) {
+			player->sendStoreTrasactionHistory(list, page, GameStore::HISTORY_ENTRIES_PER_PAGE);
+		}
+		else{
+			player->sendStoreError(STORE_ERROR_HISTORY, "You don't have any entries yet.");
+		}
+	}
+}
+
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {
 	Player* player = getPlayerByID(playerId);
@@ -5807,3 +6243,4 @@ bool Game::hasDistanceEffect(uint8_t effectId) {
 	}
 	return false;
 }
+

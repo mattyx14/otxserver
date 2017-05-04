@@ -4759,3 +4759,5 @@ void Player::doCriticalDamage(CombatDamage& damage) const
 		damage.critical = true;
 	}
 }
+
+

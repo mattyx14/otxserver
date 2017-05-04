@@ -38,6 +38,7 @@
 #include "mounts.h"
 #include "reward.h"
 #include "rewardchest.h"
+#include "gamestore.h"
 
 class House;
 class NetworkMessage;
@@ -868,7 +869,47 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		//event methods
+		//store
+		void sendOpenStore(uint8_t serviceType) {
+			if(client) {
+				client->sendOpenStore(serviceType);
+			}
+		}
+
+		void sendShowStoreCategoryOffers(StoreCategory* category){
+			if(client){
+				client->sendStoreCategoryOffers(category);
+			}
+		}
+
+        void sendStoreError(GameStoreError_t error, const std::string& errorMessage) {
+            if(client)
+            {
+                client->sendStoreError(error, errorMessage);
+            }
+        }
+
+		void sendStorePurchaseSuccessful(const std::string& message, const uint32_t coinBalance) {
+			if(client)
+			{
+				client->sendStorePurchaseSuccessful(message, coinBalance);
+			}
+		}
+
+        void sendStoreRequestAdditionalInfo(uint32_t offerId, ClientOffer_t clientOfferType){
+            if(client){
+                client->sendStoreRequestAdditionalInfo(offerId, clientOfferType);
+            }
+        }
+
+        void sendStoreTrasactionHistory(HistoryStoreOfferList& list, uint32_t page, uint8_t entriesPerPage){
+            if(client){
+                client->sendStoreTrasactionHistory(list, page, entriesPerPage);
+            }
+        }
+
+
+	//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 		                              const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
 		void onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
@@ -1128,6 +1169,13 @@ class Player final : public Creature, public Cylinder
 				client->sendCoinBalanceUpdating(updating);
 			}
 		}
+
+		void sendStoreOpen(uint8_t serviceType){
+			if(client)
+				client->sendOpenStore(serviceType);
+		}
+
+
 
 		void receivePing() {
 			lastPong = OTSYS_TIME();
@@ -1448,6 +1496,10 @@ class Player final : public Creature, public Cylinder
 		friend class IOLoginData;
 		friend class ProtocolGame;
 		friend class ProtocolGameBase;
+
+
+
+
 };
 
 #endif

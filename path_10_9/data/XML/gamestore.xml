@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gamestore>
+    <category name="Extra Services" description="Buy an Extra Service to change your character's name or sex." state="normal" icons="extraservice_icon_1.png|extraservice_icon_2.png">
+        <offer name="Character Name Change" type="namechange" price="250" icons="namechanger.png" />
+        <offer name="Character Sex Change" type="sexchange" price="250" icons="sexchange.png" />
+        <offer name="Character Promotion" type="promotion" price="50" icons="promotion.png" />
+        <offer name="The Spiritual Shielding" type="bless" blessnumber="1" price="30" icons="spiritualshielding.png"/>
+        <offer name="[PACK] The Embrace of Open Tibia + The Fire of the Suns" type="bless" price="55" state="sale" blessnumber="2|3" icons="embrace_and_suns.png"/>
+        <offer name="Teleport home" description="Go back to your home temple in an instant." price="20" state="new" type="teleport" icons="teleporttemple.png" />
+        <offer name="Teleport to x,y,z" description="Go to a specific location" price="100" type="teleport" x="500" y="1000" z="7" icons="teleportxyz.png" />
+    </category>
+    <category name="Mounts" description="Buy your character one or more of the fabolous mounts offered here." state="sale" icons="mounts_category.png">
+        <offer name="Lady Bug Mount" type="mount" mountid="27" description="Buying this mount will help our server survive!" price="750" icons="snowpeltmount_2.png" />
+    </category>
+    <category name="Equipments" description="Buy your character one or more of the helpful items offered here." state="new" icons="convenience.png" >
+        <offer name="Spellbook of Vigilance" type="item" price="60" productid="18401" count="1"  icons="spellbook_vigilance.png" />
+    </category>
+    <category name="Runes" description="Buy magically filled runes to unleash their energy when in need of it." state="limitedtime" icons="runes.png">
+        <offer name="Chameleon Rune" description="Fool your friends with an item outfit!" price="10" type="stackableitem" productid="2291" count="250" icons="chameleon_rune.png" />
+        <offer name="Days of Premium Time" description="get a month (30 days) of premium time." price="250" type="premiumtime" days="30" icons="premium30.png"/>
+    </category>
+    <category name="Outfits" description="Look cooler!" icons="outfits1.png|outfits2.png|outfits3.png">
+        <offer name="Sea Dog Outfit" description="Do what ya want 'cuz a pirate's free!" type="outfit" malelooktype="750" femalelooktype="749" price="200" icons="seadog_male.png|seadog_female.png" />
+        <offer name="Sea Dog Addon 1" description="You arr a pirate!" type="addon" malelooktype="750" femalelooktype="749" addon="1" price="100" icons="seadogaddon1.png" />
+        <offer name="Full Sea Dog Outfit" description="Yar har, fiddle-dee-dee!!" type="outfit" addon="3" malelooktype="750" femalelooktype="749" price="360" icons="seadogfull.png" />
+        <offer name="30 days of Premium Time" description="get a month 30 days of premium time." price="250" type="premiumtime" days="30" icons="premium30.png"/>
+    </category>
+    <category name="Premium Time" description="Buy Premium Time today and get new spells, and access to premium areas!" icons="premiumtime.png" >
+        <offer name="30 days of Premium Time" description="get a month (30 days) of premium time." price="250" type="premiumtime" days="30" icons="premium30.png"/>
+        <offer name="90 days of Premium Time" description="90 days of premium time." price="400" state="sale" type="premiumtime" days="90" icons="premium90sale.png"/>
+    </category>
+</gamestore>
