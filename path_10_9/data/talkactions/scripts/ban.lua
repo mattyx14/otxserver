@@ -8,7 +8,7 @@ function onSay(cid, words, param)
 	return print("Warning: Could not open ".. config.file)
 	end
     local player = Player(cid)
-    if player:getAccountType() <= 1 then
+    if player:getAccountType() < ACCOUNT_TYPE_GOD then
         return false
     end
  
