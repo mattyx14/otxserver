@@ -6,7 +6,9 @@ function onSay(player, words, param)
 	if player:getAccountType() < ACCOUNT_TYPE_GOD then
 		return false
 	end
-
+	--create logcommand
+	logCommand(player, words, param)
+	
 	local position = player:getPosition()
 	local monster = Game.createMonster(param, position)
 	if monster ~= nil then
