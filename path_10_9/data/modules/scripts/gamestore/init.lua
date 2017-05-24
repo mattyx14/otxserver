@@ -1,7 +1,7 @@
 -- Please don't edit those information!
 GameStore = {
 	ModuleName = "GameStore",
-	Developer = "OTX TEAM",
+	Developer = "Slavidodo",
 	Version = "0.3",
 	LastUpdated = "24-09-2016 07:15PM"
 }
