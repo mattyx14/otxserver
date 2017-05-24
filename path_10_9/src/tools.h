@@ -39,7 +39,6 @@ void toLowerCaseString(std::string& source);
 std::string asLowerCaseString(std::string source);
 std::string asUpperCaseString(std::string source);
 
-
 using StringVector = std::vector<std::string>;
 using IntegerVector = std::vector<int32_t>;
 

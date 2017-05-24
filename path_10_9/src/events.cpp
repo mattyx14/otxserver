@@ -562,33 +562,6 @@ bool Events::eventPlayerOnReport(Player* player, const std::string& message, con
 	return scriptInterface.callFunction(4);
 }
 
-bool Events::eventPlayerOnWrapItem(Player* player, Item* item)
-{
-	// Player:onWrapItem(item) or Player.onWrapItem(self, item)
-	if (info.playerOnWrapItem == -1) {
-		return true;
-	}
-
-	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnWrapItem] Call stack overflow" << std::endl;
-		return false;
-	}
-
-	ScriptEnvironment* env = scriptInterface.getScriptEnv();
-	env->setScriptId(info.playerOnWrapItem, &scriptInterface);
-
-	lua_State* L = scriptInterface.getLuaState();
-	scriptInterface.pushFunction(info.playerOnWrapItem);
-
-	LuaScriptInterface::pushUserdata<Player>(L, player);
-	LuaScriptInterface::setMetatable(L, -1, "Player");
-
-	LuaScriptInterface::pushUserdata<Item>(L, item);
-	LuaScriptInterface::setItemMetatable(L, -1, item);
-
-	return scriptInterface.callFunction(2);
-}
-
 bool Events::eventPlayerOnTurn(Player* player, Direction direction)
 {
 	// Player:onTurn(direction) or Player.onTurn(self, direction)

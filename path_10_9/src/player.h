@@ -199,6 +199,19 @@ class Player final : public Creature, public Cylinder
 			return staminaMinutes;
 		}
 
+		uint16_t getPreyStamina(uint16_t index) const {
+			return preyStaminaMinutes[index];
+		}
+		uint16_t getPreyType(uint16_t index) const {
+			return preyBonusType[index];
+		}
+		uint16_t getPreyValue(uint16_t index) const {
+			return preyBonusValue[index];
+		}
+		std::string getPreyName(uint16_t index) const {
+			return preyBonusName[index];
+		}
+
 		bool addOfflineTrainingTries(skills_t skill, uint64_t tries);
 
 		void addOfflineTrainingTime(int32_t addTime) {
@@ -417,6 +430,8 @@ class Player final : public Creature, public Cylinder
 		}
 		bool isPremium() const;
 		void setPremiumDays(int32_t v);
+
+		void setTibiaCoins(int32_t v);
 
 		uint16_t getHelpers() const;
 
@@ -909,7 +924,7 @@ class Player final : public Creature, public Cylinder
         }
 
 
-	//event methods
+		//event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 		                              const ItemType& oldType, const Item* newItem, const ItemType& newType) final;
 		void onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
@@ -1413,6 +1428,7 @@ class Player final : public Creature, public Cylinder
 		int32_t saleCallback = -1;
 		int32_t MessageBufferCount = 0;
 		int32_t premiumDays = 0;
+		int32_t tibiaCoins = 0;
 		int32_t bloodHitCount = 0;
 		int32_t shieldBlockCount = 0;
 		int32_t offlineTrainingSkill = -1;
@@ -1421,6 +1437,10 @@ class Player final : public Creature, public Cylinder
 
 		uint16_t lastStatsTrainingTime = 0;
 		uint16_t staminaMinutes = 2520;
+		std::vector<uint16_t> preyStaminaMinutes = {7200, 7200, 7200};
+		std::vector<uint16_t> preyBonusType = {0, 0, 0};
+		std::vector<uint16_t> preyBonusValue = {0, 0, 0};
+		std::vector<std::string> preyBonusName = {"", "", ""};
 		uint16_t maxWriteLen = 0;
 		uint16_t baseXpGain = 100;
 		uint16_t voucherXpBoost = 0;
@@ -1496,10 +1516,6 @@ class Player final : public Creature, public Cylinder
 		friend class IOLoginData;
 		friend class ProtocolGame;
 		friend class ProtocolGameBase;
-
-
-
-
 };
 
 #endif

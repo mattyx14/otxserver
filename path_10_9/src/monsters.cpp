@@ -1270,6 +1270,19 @@ void Monsters::loadLootContainer(const pugi::xml_node& node, LootBlock& lBlock)
 	}
 }
 
+// Prey Monsters
+std::vector<std::string> Monsters::getPreyMonsters()
+{
+	std::vector<std::string> monsterList;
+	for (const auto& m : monsters) {
+		if (m.second.info.experience > 0 && m.second.info.isRewardBoss == false && m.second.info.staticAttackChance > 0) {
+			monsterList.push_back(m.first);
+		}
+	}
+
+	return monsterList;
+}
+
 MonsterType* Monsters::getMonsterType(const std::string& name)
 {
 	std::string lowerCaseName = asLowerCaseString(name);

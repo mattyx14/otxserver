@@ -87,6 +87,9 @@ class ProtocolGameBase : public Protocol {
 
 		void sendSkills();
 
+		// Send preyInfo
+		void sendPreyData();
+
 		void sendCreatureLight(const Creature* creature);
 		void sendWorldLight(const LightInfo& lightInfo);
 		void sendMapDescription(const Position& pos);

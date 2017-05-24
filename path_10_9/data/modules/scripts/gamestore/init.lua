@@ -61,6 +61,7 @@ GameStore.SendingPackets = {
 	S_OpenTransactionHistory = 0xFD, -- 253
 	S_CompletePurchase = 0xFE  -- 254
 }
+
 GameStore.RecivedPackets = {
 	C_StoreEvent = 0xE9, -- 233
 	C_TransferCoins = 0xEF, -- 239
@@ -74,6 +75,7 @@ GameStore.RecivedPackets = {
 GameStore.DefaultValues = {
 	DEFAULT_VALUE_ENTRIES_PER_PAGE	= 16
 }
+
 GameStore.DefaultDescriptions = {
 	OUTFIT = {"This outfit looks nice. Only high-class people are able to wear it!",
 		"An outfit that was created to suit you. We are sure you'll like it.",
@@ -113,6 +115,7 @@ function onRecvbyte(player, msg, byte)
 	end
 	return true
 end
+
 function parseTransferCoins(player, msg)
 	local reciver = msg:getString()
 	local amount = msg:getU32()
@@ -204,12 +207,12 @@ function parseBuyStoreOffer(player, msg)
 		if offer.type == GameStore.OfferTypes.OFFER_TYPE_ITEM then
 			local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
 			if inbox and inbox:getEmptySlots() > offer.count then
-                if player:getFreeCapacity() > ItemType(offer.thingId):getWeight(offer.count or 1) then
+				if player:getFreeCapacity() > ItemType(offer.thingId):getWeight(offer.count or 1) then
 					for t = 1,offer.count do
 						inbox:addItem(offer.thingId, offer.count or 1)
 					end
-                else
-                    return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "You don't have enough capacity.")
+				else
+					return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "You don't have enough capacity.")
 				end
 			else
 				return addPlayerEvent(sendStoreError, 250, player, GameStore.StoreErrors.STORE_ERROR_NETWORK, "Please make sure you have free slots in your store inbox.")
@@ -218,10 +221,10 @@ function parseBuyStoreOffer(player, msg)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_STACKABLE then
 			local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
 			if inbox and inbox:getEmptySlots() > 0 then
-				if player:getFreeCapacity() > (ItemType(offer.thingId):getWeight(offer.count or 1) + ItemType(2596):getWeight(1)) then -- if player has cap for a parcel + offer weight
+				if player:getFreeCapacity() > (ItemType(offer.thingId):getWeight(offer.count or 1) + ItemType(2596):getWeight()) then -- if player has cap for a parcel + offer weight
 					local parcel = inbox:addItem(2596, 1)
 					local packagename = ''.. offer.count..'x '.. offer.name ..' package.'
-					local pendingCount = offer.count;
+					local pendingCount = offer.count or 1;
 					if parcel then
 						parcel:setAttribute(ITEM_ATTRIBUTE_NAME, packagename)
 						while pendingCount > 0  do

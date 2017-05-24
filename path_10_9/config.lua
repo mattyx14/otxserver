@@ -34,9 +34,9 @@ replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
 -- Version Manual
-clientVersionMin = 1098
+clientVersionMin = 1100
 clientVersionMax = 1200
-clientVersionStr = "Only clients with protocol 10.98/99 - 10.00 or allowed!"
+clientVersionStr = "Only clients with protocol 10.00 or allowed!"
 
 -- Depot Limit
 freeDepotLimit = 2000

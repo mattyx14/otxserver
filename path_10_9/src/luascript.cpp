@@ -920,6 +920,9 @@ void LuaScriptInterface::registerFunctions()
 	//getCreatureCondition(cid, condition[, subId])
 	lua_register(luaState, "getCreatureCondition", LuaScriptInterface::luaGetCreatureCondition);
 
+	//getPreyMonsters() table
+	lua_register(luaState, "getPreyMonsters", LuaScriptInterface::luaGetPreyMonsters);
+
 	//isValidUID(uid)
 	lua_register(luaState, "isValidUID", LuaScriptInterface::luaIsValidUID);
 
@@ -2277,6 +2280,15 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getStamina", LuaScriptInterface::luaPlayerGetStamina);
 	registerMethod("Player", "setStamina", LuaScriptInterface::luaPlayerSetStamina);
 
+	registerMethod("Player", "getPreyStamina", LuaScriptInterface::luaPlayerGetPreyStamina);
+	registerMethod("Player", "getPreyType", LuaScriptInterface::luaPlayerGetPreyType);
+	registerMethod("Player", "getPreyValue", LuaScriptInterface::luaPlayerGetPreyValue);
+	registerMethod("Player", "getPreyName", LuaScriptInterface::luaPlayerGetPreyName);
+	registerMethod("Player", "setPreyStamina", LuaScriptInterface::luaPlayerSetPreyStamina);
+	registerMethod("Player", "setPreyType", LuaScriptInterface::luaPlayerSetPreyType);
+	registerMethod("Player", "setPreyValue", LuaScriptInterface::luaPlayerSetPreyValue);
+	registerMethod("Player", "setPreyName", LuaScriptInterface::luaPlayerSetPreyName);
+
 	registerMethod("Player", "getSoul", LuaScriptInterface::luaPlayerGetSoul);
 	registerMethod("Player", "addSoul", LuaScriptInterface::luaPlayerAddSoul);
 	registerMethod("Player", "getMaxSoul", LuaScriptInterface::luaPlayerGetMaxSoul);
@@ -2321,6 +2333,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getPremiumDays", LuaScriptInterface::luaPlayerGetPremiumDays);
 	registerMethod("Player", "addPremiumDays", LuaScriptInterface::luaPlayerAddPremiumDays);
 	registerMethod("Player", "removePremiumDays", LuaScriptInterface::luaPlayerRemovePremiumDays);
+
+	registerMethod("Player", "getTibiaCoins", LuaScriptInterface::luaPlayerGetTibiaCoins);
+	registerMethod("Player", "addTibiaCoins", LuaScriptInterface::luaPlayerAddTibiaCoins);
+	registerMethod("Player", "removeTibiaCoins", LuaScriptInterface::luaPlayerRemoveTibiaCoins);
 
 	registerMethod("Player", "hasBlessing", LuaScriptInterface::luaPlayerHasBlessing);
 	registerMethod("Player", "addBlessing", LuaScriptInterface::luaPlayerAddBlessing);
@@ -2547,6 +2563,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("ItemType", "getAttack", LuaScriptInterface::luaItemTypeGetAttack);
 	registerMethod("ItemType", "getDefense", LuaScriptInterface::luaItemTypeGetDefense);
 	registerMethod("ItemType", "getExtraDefense", LuaScriptInterface::luaItemTypeGetExtraDefense);
+	registerMethod("ItemType", "getImbuingSlots", LuaScriptInterface::luaItemTypeGetImbuingSlots);
 	registerMethod("ItemType", "getArmor", LuaScriptInterface::luaItemTypeGetArmor);
 	registerMethod("ItemType", "getWeaponType", LuaScriptInterface::luaItemTypeGetWeaponType);
 
@@ -4053,6 +4070,20 @@ int LuaScriptInterface::luaGameGetPlayers(lua_State* L)
 		setMetatable(L, -1, "Player");
 		lua_rawseti(L, -2, ++index);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaGetPreyMonsters(lua_State* L)
+{
+	std::vector<std::string> monsters = g_monsters.getPreyMonsters();
+	lua_createtable(L, monsters.size(), 0);
+
+	int index = 0;
+	for (const auto& name : monsters) {
+		pushString(L, name);
+		lua_rawseti(L, -2, ++index);
+	}
+
 	return 1;
 }
 
@@ -6531,9 +6562,13 @@ int LuaScriptInterface::luaContainerAddItem(lua_State* L)
 		}
 	}
 
-	uint32_t subType = getNumber<uint32_t>(L, 3, 1);
+	uint32_t count = getNumber<uint32_t>(L, 3, 1);
+	const ItemType& it = Item::items[itemId];
+	if (it.stackable) {
+		count = std::min<uint16_t>(count, 100);
+	}
 
-	Item* item = Item::CreateItem(itemId, std::min<uint32_t>(subType, 100));
+	Item* item = Item::CreateItem(itemId, count);
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -7900,6 +7935,7 @@ int LuaScriptInterface::luaPlayerGetDepotChest(lua_State* L)
 	bool autoCreate = getBoolean(L, 3, false);
 	DepotChest* depotChest = player->getDepotChest(depotId, autoCreate);
 	if (depotChest) {
+		player->setLastDepotId(depotId);
 		pushUserdata<Item>(L, depotChest);
 		setItemMetatable(L, -1, depotChest);
 	} else {
@@ -8536,6 +8572,116 @@ int LuaScriptInterface::luaPlayerSetGroup(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetPreyStamina(lua_State* L)
+{
+	uint16_t column = getNumber<uint16_t>(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getPreyStamina(column));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetPreyType(lua_State* L)
+{
+	Player* player = getUserdata<Player>(L, 1);
+	uint16_t column = getNumber<uint16_t>(L, 2);
+
+	if (player) {
+		lua_pushnumber(L, player->getPreyType(column));
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetPreyValue(lua_State* L)
+{
+	Player* player = getUserdata<Player>(L, 1);
+	uint16_t column = getNumber<uint16_t>(L, 2);
+
+	if (player) {
+		lua_pushnumber(L, player->getPreyValue(column));
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetPreyName(lua_State* L)
+{
+	Player* player = getUserdata<Player>(L, 1);
+	uint16_t column = getNumber<uint16_t>(L, 2);
+
+	if (player) {
+		pushString(L, player->getPreyName(column));
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetPreyStamina(lua_State* L)
+{
+	uint16_t column = getNumber<uint16_t>(L, 2);
+	uint16_t stamina = getNumber<uint16_t>(L, 3);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->preyStaminaMinutes[column] = std::min<uint16_t>(7200, stamina);
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetPreyType(lua_State* L)
+{
+	uint16_t column = getNumber<uint16_t>(L, 2);
+	uint16_t type = getNumber<uint16_t>(L, 3);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->preyBonusType[column] = type;
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetPreyValue(lua_State* L)
+{
+	uint16_t value = getNumber<uint16_t>(L, 3);
+	uint16_t column = getNumber<uint16_t>(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->preyBonusValue[column] = value;
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetPreyName(lua_State* L)
+{
+	uint16_t column = getNumber<uint16_t>(L, 2);
+	std::string name = getString(L, 3);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->preyBonusName[column] = name;
+	} else {
+		lua_pushnil(L);
+	}
+
 	return 1;
 }
 
@@ -9266,6 +9412,60 @@ int LuaScriptInterface::luaPlayerRemovePremiumDays(lua_State* L)
 		if (removeDays > 0) {
 			player->setPremiumDays(player->premiumDays - removeDays);
 			IOLoginData::removePremiumDays(player->getAccount(), removeDays);
+		}
+	}
+	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetTibiaCoins(lua_State* L)
+{
+	// player:getTibiaCoins()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->tibiaCoins);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerAddTibiaCoins(lua_State* L)
+{
+	// player:addTibiaCoins(coins)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (player->tibiaCoins != std::numeric_limits<int32_t>::max()) {
+		int32_t coins = getNumber<int32_t>(L, 2);
+		int32_t addCoins = std::min<int32_t>(std::numeric_limits<int32_t>::max() - player->tibiaCoins, coins);
+		if (addCoins > 0) {
+			player->setTibiaCoins(player->tibiaCoins + addCoins);
+			IOAccount::addCoins(player->getAccount(), addCoins);
+		}
+	}
+	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerRemoveTibiaCoins(lua_State* L)
+{
+	// player:removeTibiaCoins(coins)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (player->tibiaCoins != std::numeric_limits<int32_t>::max()) {
+		int32_t coins = getNumber<int32_t>(L, 2);
+		int32_t removeCoins = std::min<int32_t>(player->tibiaCoins, coins);
+		if (removeCoins > 0) {
+			player->setTibiaCoins(player->tibiaCoins - removeCoins);
+			IOAccount::removeCoins(player->getAccount(), removeCoins);
 		}
 	}
 	pushBoolean(L, true);
@@ -11533,6 +11733,18 @@ int LuaScriptInterface::luaItemTypeGetExtraDefense(lua_State* L)
 	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
 	if (itemType) {
 		lua_pushnumber(L, itemType->extraDefense);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemTypeGetImbuingSlots(lua_State* L)
+{
+	// itemType:getImbuingSlots()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType) {
+		lua_pushnumber(L, itemType->imbuingSlots);
 	} else {
 		lua_pushnil(L);
 	}

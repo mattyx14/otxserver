@@ -240,6 +240,31 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 	}
 }
 
+// Send preyInfo
+void ProtocolGameBase::sendPreyData()
+{
+	NetworkMessage msg;
+	for (int i = 0; i < 3; i++) {
+		msg.addByte(0xE8);
+		msg.addByte(i);
+
+		msg.addByte(0x00);
+		msg.addByte(0x00);
+		msg.add<uint16_t>(0);
+	}
+
+	msg.addByte(0xEC);
+	msg.addByte(0xEE);
+	msg.addByte(0x0A);
+	msg.add<uint64_t>(0);
+	msg.addByte(0xEE);
+	msg.addByte(0x01);
+	msg.add<uint64_t>(0);
+	msg.addByte(0xE9);
+	msg.add<uint32_t>(0);
+	writeToOutputBuffer(msg);
+}
+
 void ProtocolGameBase::AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo)
 {
 	msg.addByte(0x82);

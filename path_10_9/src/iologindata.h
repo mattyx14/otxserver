@@ -41,9 +41,11 @@ class IOLoginData
 		static bool preloadPlayer(Player* player, const std::string& name);
 
 		static bool loadPlayerById(Player* player, uint32_t id);
+		static bool loadPlayerPreyById(Player* player, uint32_t id);
 		static bool loadPlayerByName(Player* player, const std::string& name);
 		static bool loadPlayer(Player* player, DBResult_ptr result);
 		static bool savePlayer(Player* player);
+		static bool savePlayerPreyById(Player* player, uint32_t id);
 		static uint32_t getGuidByName(const std::string& name);
 		static bool getGuidByNameEx(uint32_t& guid, bool& specialVip, std::string& name);
 		static std::string getNameByGuid(uint32_t guid);

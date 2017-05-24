@@ -200,6 +200,7 @@ class Monsters
 		bool reload();
 
 		MonsterType* getMonsterType(const std::string& name);
+		std::vector<std::string> getPreyMonsters();
 
 		static uint32_t getLootRandom();
 

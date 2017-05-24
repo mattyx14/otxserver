@@ -133,10 +133,13 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 			return;
 		}
 
-		if (!IOLoginData::loadPlayerByName(player, name)) {
+		if (!IOLoginData::loadPlayerById(player, player->getGUID())) {
 			disconnectClient("Your character could not be loaded.");
 			return;
 		}
+
+		// Prey System
+		IOLoginData::loadPlayerPreyById(player, player->getGUID());
 
 		player->setOperatingSystem(operatingSystem);
 
@@ -530,7 +533,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x88: parseUpArrowContainer(msg); break;
 		case 0x89: parseTextWindow(msg); break;
 		case 0x8A: parseHouseWindow(msg); break;
-		case 0x8B: parseWrapItem(msg); break;
+		case 0x8B: parseWrapableItem(msg); break;
 		case 0x8C: parseLookAt(msg); break;
 		case 0x8D: parseLookInBattleList(msg); break;
 		case 0x8E: /* join aggression */ break;
@@ -902,12 +905,12 @@ void ProtocolGame::parseRotateItem(NetworkMessage& msg)
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerRotateItem, player->getID(), pos, stackpos, spriteId);
 }
 
-void ProtocolGame::parseWrapItem(NetworkMessage& msg)
+void ProtocolGame::parseWrapableItem(NetworkMessage& msg)
 {
 	Position pos = msg.getPosition();
 	uint16_t spriteId = msg.get<uint16_t>();
 	uint8_t stackpos = msg.getByte();
-	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerWrapItem, player->getID(), pos, stackpos, spriteId);
+	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerWrapableItem, player->getID(), pos, stackpos, spriteId);
 }
 
 void ProtocolGame::parseBugReport(NetworkMessage& msg)
@@ -2740,4 +2743,3 @@ void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
 	// process additional opcodes via lua script event
 	addGameTask(&Game::parsePlayerExtendedOpcode, player->getID(), opcode, buffer);
 }
-
