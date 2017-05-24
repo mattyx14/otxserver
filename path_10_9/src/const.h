@@ -440,6 +440,8 @@ enum item_t : uint16_t {
 
 	ITEM_DEPOT_NULL = 25452, // for internal use
 
+	TRANSFORM_BOX_ID = 26054, // for internal use
+
 	ITEM_DEPOT_I = 25453,
 	ITEM_DEPOT_II = 25454,
 	ITEM_DEPOT_III = 25455,
