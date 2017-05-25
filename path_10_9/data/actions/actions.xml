@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
+	<!-- Imbuement -->
+	<action fromid="27728" toid="27729" script="_scripts_otx/imbuement.lua" /> 
+	<action fromid="27716" toid="27717" script="_scripts_otx/imbuement.lua" />
+
 	<!-- Enchanting -->
 	<action fromid="2146" toid="2147" script="other/enchanting.lua" />
 	<action fromid="2149" toid="2150" script="other/enchanting.lua" />

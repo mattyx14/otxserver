@@ -23,6 +23,9 @@
 			The Forgotten Team = TFT
 				https://github.com/otland/
 
+			Otxserver-New Contributors = NWOTX
+				https://github.com/malucooo/Otxserver-New/graphs/contributors
+
 			The Forgotten Contributors = TFC
 				https://github.com/otland/forgottenserver/graphs/contributors/
 
@@ -89,6 +92,11 @@
 	- Add T-Coins trade via market (OTXS-C)
 	- Add missing function tokens to code
 	- Add support to wallfields to monsters (OTXS-C)
+	- Add features from Client 11 (NWOTX)
+		List:
+			* Imbuement System
+			* Prey System
+			* Inspection System
 	- Drop commands support in favor of talkactions (TFT)
 	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)

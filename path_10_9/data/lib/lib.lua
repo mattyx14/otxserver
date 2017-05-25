@@ -8,3 +8,4 @@ dofile('data/lib/compat/compat.lua')
 dofile('data/lib/custom/custom.lua')
 dofile('data/lib/custom/storages.lua')
 dofile('data/lib/custom/rewardboss.lua')
+dofile('data/lib/custom/specialLib.lua') -- Special Lib => Imbuement System
