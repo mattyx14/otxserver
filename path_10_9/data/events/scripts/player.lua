@@ -20,6 +20,47 @@ function Player:onLook(thing, position, distance)
 				description = string.format("%s, Action ID: %d", description, actionId)
 			end
 
+			-- Imbuement System
+			local itemType = thing:getType()
+			if (itemType and itemType:getImbuingSlots() > 0) then
+				local imbuingSlots = "Imbuements: ("
+				for i = 1, itemType:getImbuingSlots() do
+					local specialAttr = thing:getSpecialAttribute(i)
+					local time = 0
+					if (thing:getSpecialAttribute(i+3)) then
+						time = getTime(thing:getSpecialAttribute(i+3))
+					end
+
+					if (specialAttr and specialAttr ~= 0) then
+						if (i ~= itemType:getImbuingSlots()) then
+							imbuingSlots = imbuingSlots.. "" ..specialAttr.." " ..time..", "
+						else
+							imbuingSlots = imbuingSlots.. "" ..specialAttr.." " ..time..")."
+						end
+					else
+						if (i ~= itemType:getImbuingSlots()) then
+							imbuingSlots = imbuingSlots.. "Empty Slot, "
+						else
+							imbuingSlots = imbuingSlots.. "Empty Slot)."
+						end
+					end
+				end
+				description = string.gsub(description, "It weighs", imbuingSlots.. "\nIt weighs")
+			end
+
+			--[[-- KD System => onLook
+			if thing:isCreature() and thing:isPlayer() then
+				description = string.format("%s\n [PVP Kills: %d] \n [PVP Deaths: %d] \n",
+				description, math.max(0, thing:getStorageValue(167912)), math.max(0, thing:getStorageValue(167913)))
+			end
+
+			-- Marry System => onLook
+			if LOOK_MARRIAGE_DESCR and thing:isCreature() then
+				if thing:isPlayer() then
+				description = description .. self:getMarriageDescription(thing)
+				end
+			end]]
+
 			local uniqueId = thing:getAttribute(ITEM_ATTRIBUTE_UNIQUEID)
 			if uniqueId > 0 and uniqueId < 65536 then
 				description = string.format("%s, Unique ID: %d", description, uniqueId)
@@ -81,6 +122,20 @@ function Player:onLookInBattleList(creature, distance)
 			description = string.format("%s\nIP: %s", description, Game.convertIpToString(creature:getIp()))
 		end
 	end
+
+	--[[-- KD look
+	if creature:isPlayer() and creature:isCreature() then
+		description = string.format("%s\n [PVP Kills: %d] \n [PVP Deaths: %d] \n",
+		description, math.max(0, creature:getStorageValue(167912)), math.max(0, creature:getStorageValue(167913)))
+	end
+
+	-- MARRY
+	if LOOK_MARRIAGE_DESCR and creature:isCreature() then
+		if creature:isPlayer() then
+			description = description .. self:getMarriageDescription(creature)
+		end
+	end]]
+
 	self:sendTextMessage(MESSAGE_INFO_DESCR, description)
 end
 
@@ -117,15 +172,15 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		return false
 	end
 
-	-- Check two-handed weapons 
+	-- Check two-handed weapons
 	if toPosition.x ~= CONTAINER_POSITION then
 		return true
 	end
 
-	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then	
+	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then
 		local itemType, moveItem = ItemType(item:getId())
 		if bit.band(itemType:getSlotPosition(), SLOTP_TWO_HAND) ~= 0 and toPosition.y == CONST_SLOT_LEFT then
-			moveItem = self:getSlotItem(CONST_SLOT_RIGHT)	
+			moveItem = self:getSlotItem(CONST_SLOT_RIGHT)
 		elseif itemType:getWeaponType() == WEAPON_SHIELD and toPosition.y == CONST_SLOT_RIGHT then
 			moveItem = self:getSlotItem(CONST_SLOT_LEFT)
 			if moveItem and bit.band(ItemType(moveItem:getId()):getSlotPosition(), SLOTP_TWO_HAND) == 0 then
@@ -195,9 +250,9 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 
 	--[[-- Do not stop trying this test
 	-- No move parcel very heavy
-	if item:getWeight() > 90000 and item:getId() == ITEM_PARCEL then 
+	if item:getWeight() > 90000 and item:getId() == ITEM_PARCEL then
 		self:sendCancelMessage('YOU CANNOT MOVE PARCELS TOO HEAVY.')
-		return false 
+		return false
 	end
 
 	-- No move if item count > 26 items
@@ -210,7 +265,8 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		self:getPosition():sendMagicEffect(CONST_ME_POFF)
 		return false
-	end ]]
+	end]]
+
 	return true
 end
 
@@ -244,21 +300,6 @@ function Player:onReport(message, position, category)
 
 	self:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Your report has been sent to " .. configManager.getString(configKeys.SERVER_NAME) .. ".")
 	return true
-end
-
-function Player:onWrapItem(item)
-	local pos = item:getPosition()
-	local house = Tile(pos):getHouse()
-
-	if not house then
-		self:sendTextMessage(MESSAGE_STATUS_SMALL, "You can only wrap and unwrap this item inside a house.")
-		return
-	end
-
-	local wrapId = item:getType():getWrapId()
-	if wrapId ~= 0 then
-		item:transform(wrapId)
-	end
 end
 
 function Player:onTurn(direction)
@@ -311,10 +352,57 @@ local function useStamina(player)
 	player:setStamina(staminaMinutes)
 end
 
+-- useStaminaPrey
+local function useStaminaPrey(player, name)
+	for i = 1, 3 do
+		if (player:isActiveByName(i-1, name)) then
+			local staminaMinutes = player:getPreyStamina(i-1)/60
+			if (staminaMinutes > 0) then
+				local playerId = player:getId()+i
+				local currentTime = os.time()
+				local timePassed = currentTime - nextUseStaminaPrey[playerId].Time
+				if timePassed > 0 then
+					if timePassed > 60 then
+						if staminaMinutes > 2 then
+							staminaMinutes = staminaMinutes - 2
+						else
+							staminaMinutes = 0
+						end
+
+						nextUseStaminaPrey[playerId].Time = currentTime + 120
+					else
+						staminaMinutes = staminaMinutes - 1
+						nextUseStaminaPrey[playerId].Time = currentTime + 60
+					end
+				end
+
+				player:setPreyStamina(i-1, staminaMinutes*60)
+				player:sendPreyTimeLeft(i-1, staminaMinutes*60)
+			end
+		end
+	end
+end
+
+-- exp card
+local BONUS_EXP_STORAGE = 61398
+local BONUS_EXP_MULT = 1.3
+
+local configexp =  {
+	["Monday"] = 1.0,
+	["Tuesday"] = 1.0,
+	["Wednesday"] = 1.0,
+	["Thursday"] = 1.0,
+	["Friday"] = 1.0,
+	["Saturday"] = 2.0,
+	["Sunday"] = 2.0
+}
+
 function Player:onGainExperience(source, exp, rawExp)
 	if not source or source:isPlayer() then
 		return exp
 	end
+
+	exp = exp * configexp[os.date("%A")]
 
 	-- Soul regeneration
 	local vocation = self:getVocation()
@@ -326,6 +414,17 @@ function Player:onGainExperience(source, exp, rawExp)
 	-- Apply experience stage multiplier
 	exp = exp * Game.getExperienceStage(self:getLevel())
 
+	-- Prey System -> BOOST_EXP
+	for i = 1, 3 do
+		if (self:isActive(i-1)) then
+			local bonusInfo = self:getBonusInfo(i-1)
+			if (bonusInfo.Type == 2 and source:getName() == bonusInfo.Name) then
+				exp = exp + math.floor(exp * (bonusInfo.Value/100))
+				break
+			end
+		end
+	end
+
 	-- Stamina modifier
 	if configManager.getBoolean(configKeys.STAMINA_SYSTEM) then
 		useStamina(self)
@@ -336,6 +435,14 @@ function Player:onGainExperience(source, exp, rawExp)
 		elseif staminaMinutes <= 840 then
 			exp = exp * 0.5
 		end
+	end
+
+	-- Prey Stamina Modifier
+	useStaminaPrey(self, source:getName())
+
+	-- Exp Card
+	if self:getStorageValue(BONUS_EXP_STORAGE) - os.time() > 0 then
+		exp = exp * BONUS_EXP_MULT
 	end
 
 	return exp
