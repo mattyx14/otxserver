@@ -32496,6 +32496,21 @@
 	<item id="25467" article="a" name="depot box XV" />
 	<item id="25468" article="a" name="depot box XVI" />
 	<item id="25469" article="a" name="depot box XVII" />
+	<item fromid="27716" toid="27717" name="imbuing shrine"/>
+	<item id="27727" article="a" name="dead Shaper Matriarch">
+		<attribute key="containerSize" value="15" />
+		<attribute key="decayTo" value="27728" />
+		<attribute key="duration" value="900" />
+		<attribute key="corpseType" value="blood" />
+		<attribute key="fluidSource" value="blood" />
+	</item>
+	<item id="27728" article="a" name="dead Shaper Matriarch">
+		<attribute key="containerSize" value="15" />
+		<attribute key="decayTo" value="27729" />
+		<attribute key="duration" value="900" />
+		<attribute key="corpseType" value="blood" />
+		<attribute key="fluidSource" value="blood" />
+	</item>
 	<item id="30001" name="water" />
 	<item id="30002" name="blood" />
 	<item id="30003" name="beer" />
