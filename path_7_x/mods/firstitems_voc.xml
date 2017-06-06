@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="First Items" version="1.0" author="Mattyx14" contact="martyx@otland.net" enabled="yes">
+<mod name="First Items" version="1.0" author="slawkens - edited by: mattyx14" contact="martyx@otland.net" enabled="yes">
 	<description><![CDATA[
 		Custom First Items
 	]]></description>
-
 	<config name="firstitems_config"><![CDATA[
 		config = {
 			storage = 40046,
 			items = {}
 		}
 	]]></config>
-
 	<event type="login" name="FirstItems" event="buffer"><![CDATA[
 		domodlib('firstitems_config')
 		if(getPlayerStorageValue(cid, config.storage) > 0) then
