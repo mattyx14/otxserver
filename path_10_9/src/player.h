@@ -1276,8 +1276,8 @@ class Player final : public Creature, public Cylinder
 		uint16_t getStoreXpBoost() const {
 			return storeXpBoost;
 		}
-		void setStoreXpBoost(uint16_t value) {
-			storeXpBoost = std::min<uint16_t>(std::numeric_limits<uint16_t>::max(), value);
+		void setStoreXpBoost(uint16_t exp) {
+			storeXpBoost = exp;
 		}
 		uint16_t getStaminaXpBoost() const {
 			return staminaXpBoost;
@@ -1286,11 +1286,19 @@ class Player final : public Creature, public Cylinder
 			staminaXpBoost = std::min<uint16_t>(std::numeric_limits<uint16_t>::max(), value);
 		}
 
+		void setExpBoostStamina(uint16_t stamina) {
+			expBoostStamina = stamina;
+		}
+
+		uint16_t getExpBoostStamina() {
+			return expBoostStamina;
+		}
+
 		int32_t getIdleTime() const {
 			return idleTime;
 		}
 
-	    void doCriticalDamage(CombatDamage& damage) const;
+		void doCriticalDamage(CombatDamage& damage) const;
 	protected:
 		std::forward_list<Condition*> getMuteConditions() const;
 
@@ -1434,6 +1442,7 @@ class Player final : public Creature, public Cylinder
 		int32_t offlineTrainingSkill = -1;
 		int32_t offlineTrainingTime = 0;
 		int32_t idleTime = 0;
+		uint16_t expBoostStamina = 0;
 
 		uint16_t lastStatsTrainingTime = 0;
 		uint16_t staminaMinutes = 2520;

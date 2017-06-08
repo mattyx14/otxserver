@@ -110,6 +110,10 @@ bool Events::load()
 				info.playerOnLoseExperience = event;
 			} else if (methodName == "onGainSkillTries") {
 				info.playerOnGainSkillTries = event;
+			} else if (methodName == "onUseWeapon") {
+				info.playerOnUseWeapon = event;
+			} else if (methodName == "onCombatSpell") {
+				info.playerOnCombatSpell = event;
 			} else {
 				std::cout << "[Warning - Events::load] Unknown player method: " << methodName << std::endl;
 			}
@@ -755,6 +759,80 @@ void Events::eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_
 	} else {
 		tries = LuaScriptInterface::getNumber<uint64_t>(L, -1);
 		lua_pop(L, 1);
+	}
+
+	scriptInterface.resetScriptEnv();
+}
+
+void Events::eventPlayerOnUseWeapon(Player* player, int32_t& normalDamage, CombatType_t& elementType, int32_t& elementDamage)
+{
+	// Player:onGainSkillTries(skill, tries)
+	if (info.playerOnUseWeapon == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		std::cout << "[Error - Events::eventPlayerOnUseWeapon] Call stack overflow" << std::endl;
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnUseWeapon, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnUseWeapon);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	lua_pushnumber(L, normalDamage);
+	lua_pushnumber(L, elementType);
+	lua_pushnumber(L, elementDamage);
+
+	if (scriptInterface.protectedCall(L, 4, 3) != 0) {
+		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
+	} else {
+		normalDamage = LuaScriptInterface::getNumber<int32_t>(L, -3);
+		elementType = LuaScriptInterface::getNumber<CombatType_t>(L, -2);
+		elementDamage = LuaScriptInterface::getNumber<int32_t>(L, -1);
+		lua_pop(L, 3);
+	}
+
+	scriptInterface.resetScriptEnv();
+}
+
+void Events::eventPlayerOnCombatSpell(Player* player, int32_t& normalDamage, int32_t& elementDamage, CombatType_t& elementType)
+{
+	// Player:onGainSkillTries(skill, tries)
+	if (info.playerOnCombatSpell == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		std::cout << "[Error - Events::eventPlayerOnCombatSpell] Call stack overflow" << std::endl;
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnCombatSpell, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnCombatSpell);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	lua_pushnumber(L, normalDamage);
+	lua_pushnumber(L, elementDamage);
+	lua_pushnumber(L, elementType);
+
+	if (scriptInterface.protectedCall(L, 4, 3) != 0) {
+		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
+	} else {
+		normalDamage = LuaScriptInterface::getNumber<int32_t>(L, -3);
+		elementType = LuaScriptInterface::getNumber<CombatType_t>(L, -2);
+		elementDamage = LuaScriptInterface::getNumber<int32_t>(L, -1);
+		lua_pop(L, 3);
 	}
 
 	scriptInterface.resetScriptEnv();

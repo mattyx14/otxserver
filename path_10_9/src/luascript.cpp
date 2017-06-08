@@ -2390,6 +2390,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "setStoreXpBoost", LuaScriptInterface::luaPlayerSetStoreXpBoost);
 	registerMethod("Player", "getStaminaXpBoost", LuaScriptInterface::luaPlayerGetStaminaXpBoost);
 	registerMethod("Player", "setStaminaXpBoost", LuaScriptInterface::luaPlayerSetStaminaXpBoost);
+	registerMethod("Player", "getExpBoostStamina", LuaScriptInterface::luaPlayerGetExpBoostStamina);
+	registerMethod("Player", "setExpBoostStamina", LuaScriptInterface::luaPlayerSetExpBoostStamina);
 
 	registerMethod("Player", "getIdleTime", LuaScriptInterface::luaPlayerGetIdleTime);
 
@@ -10090,8 +10092,8 @@ int LuaScriptInterface::luaPlayerSetStoreXpBoost(lua_State *L)
 	// player:setStoreXpBoost(value)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
-		player->setStoreXpBoost(getNumber<uint16_t>(L, 2));
-		player->sendStats();
+		uint16_t experience = getNumber<uint16_t>(L, 2);
+		player->setStoreXpBoost(experience);
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -10125,6 +10127,31 @@ int LuaScriptInterface::luaPlayerSetStaminaXpBoost(lua_State *L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerSetExpBoostStamina(lua_State* L)
+{
+	// player:setExpBoostStamina(percent)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint16_t stamina = getNumber<uint16_t>(L, 2);
+		player->setExpBoostStamina(stamina);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetExpBoostStamina(lua_State* L)
+{
+	// player:getExpBoostStamina()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getExpBoostStamina());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
 
 int LuaScriptInterface::luaPlayerGetIdleTime(lua_State* L)
 {

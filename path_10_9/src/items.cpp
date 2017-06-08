@@ -375,13 +375,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 		std::string tmpStrValue = asLowerCaseString(keyAttribute.as_string());
 
 		// Put here because have many conditions (C1601 - compiler limit: blocks nested too deeply)
-		if (tmpStrValue == "imbuingslots") {
-			it.imbuingSlots = pugi::cast<int32_t>(valueAttribute.value());
-		}
-		else if (tmpStrValue == "wrapcontainer") {
-			it.wrapContainer = valueAttribute.as_bool();
-		}
-
 		if (tmpStrValue == "type") {
 			tmpStrValue = asLowerCaseString(valueAttribute.as_string());
 			if (tmpStrValue == "key") {
@@ -426,6 +419,10 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.extraDefense = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "attack") {
 			it.attack = pugi::cast<int32_t>(valueAttribute.value());
+		} else if (tmpStrValue == "wrapcontainer") {
+			it.wrapContainer = valueAttribute.as_bool();
+		} else if (tmpStrValue == "imbuingslots") {
+			it.imbuingSlots = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "wrapableto" || tmpStrValue == "unwrapableto") {
 			it.wrapableTo = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "rotateto") {
@@ -687,28 +684,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			for (auto& i : abilities.absorbPercent) {
 				i += value;
 			}
-		} else if (tmpStrValue == "reflectpercentall" || tmpStrValue == "reflectpercentallelements") {
-			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
-			Abilities& abilities = it.getAbilities();
-			for (size_t i = 0; i < COMBAT_COUNT; i++) {
-				abilities.reflectPercent[i] += value;
-			}
-		} else if (tmpStrValue == "reflectbpercentelements") {
-			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
-			Abilities& abilities = it.getAbilities();
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
-		} else if (tmpStrValue == "reflectpercentmagic") {
-			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
-			Abilities& abilities = it.getAbilities();
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += value;
-			abilities.reflectPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += value;
 		} else if (tmpStrValue == "absorbpercentelements") {
 			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
 			Abilities& abilities = it.getAbilities();
@@ -747,24 +722,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercenthealing") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentenergy") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentfire") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentpoison" || tmpStrValue == "reflectpercentearth") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentice") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentholy") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentdeath") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentlifedrain") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_LIFEDRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentmanadrain") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_MANADRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
-		} else if (tmpStrValue == "reflectpercentphysical") {
-			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "suppressdrunk") {
 			if (valueAttribute.as_bool()) {
 				it.getAbilities().conditionSuppressions |= CONDITION_DRUNK;

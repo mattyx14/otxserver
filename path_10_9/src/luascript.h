@@ -1014,6 +1014,8 @@ class LuaScriptInterface
 		static int luaPlayerSetStoreXpBoost(lua_State *L);
 		static int luaPlayerGetStaminaXpBoost(lua_State *L);
 		static int luaPlayerSetStaminaXpBoost(lua_State *L);
+		static int luaPlayerGetExpBoostStamina(lua_State* L);
+		static int luaPlayerSetExpBoostStamina(lua_State* L);
 
 		static int luaPlayerGetIdleTime(lua_State* L);
 

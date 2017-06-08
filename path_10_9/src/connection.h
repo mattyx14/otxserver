@@ -29,7 +29,7 @@ using Protocol_ptr = std::shared_ptr<Protocol>;
 class OutputMessage;
 using OutputMessage_ptr = std::shared_ptr<OutputMessage>;
 class Connection;
-using Connection_ptr = std::shared_ptr<Connection> ;
+using Connection_ptr = std::shared_ptr<Connection>;
 using ConnectionWeak_ptr = std::weak_ptr<Connection>;
 class ServiceBase;
 using Service_ptr = std::shared_ptr<ServiceBase>;
@@ -66,23 +66,29 @@ class Connection : public std::enable_shared_from_this<Connection>
 		enum { write_timeout = 30 };
 		enum { read_timeout = 30 };
 
-		enum ConnectionState_t {
-			CONNECTION_STATE_OPEN,
-			CONNECTION_STATE_CLOSED,
+		enum ConnectionState_t : int8_t {
+			CONNECTION_STATE_DISCONNECTED,
+			CONNECTION_STATE_CONNECTING_STAGE1,
+			CONNECTION_STATE_CONNECTING_STAGE2,
+			CONNECTION_STATE_GAME,
+			CONNECTION_STATE_PENDING
 		};
 
 		enum { FORCE_CLOSE = true };
 
 		Connection(boost::asio::io_service& io_service,
-		           ConstServicePort_ptr service_port) :
+			ConstServicePort_ptr service_port) :
 			readTimer(io_service),
 			writeTimer(io_service),
 			service_port(std::move(service_port)),
 			socket(io_service) {
-			connectionState = CONNECTION_STATE_OPEN;
-			receivedFirst = false;
+			connectionState = CONNECTION_STATE_PENDING;
 			packetsSent = 0;
 			timeConnected = time(nullptr);
+			receivedFirst = false;
+			serverNameTime = 0;
+			receivedName = false;
+			receivedLastChar = false;
 		}
 		~Connection();
 
@@ -114,8 +120,6 @@ class Connection : public std::enable_shared_from_this<Connection>
 		friend class ServicePort;
 
 		NetworkMessage msg;
-		void broadcastMessage(OutputMessage_ptr msg);
-		void dispatchBroadcastMessage(const OutputMessage_ptr& msg);
 
 		boost::asio::deadline_timer readTimer;
 		boost::asio::deadline_timer writeTimer;
@@ -132,8 +136,12 @@ class Connection : public std::enable_shared_from_this<Connection>
 		time_t timeConnected;
 		uint32_t packetsSent;
 
-		bool connectionState;
+		int8_t connectionState;
 		bool receivedFirst;
+
+		uint32_t serverNameTime;
+		bool receivedName;
+		bool receivedLastChar;
 };
 
 #endif

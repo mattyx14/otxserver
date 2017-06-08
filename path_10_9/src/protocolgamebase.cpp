@@ -220,8 +220,8 @@ void ProtocolGameBase::AddPlayerStats(NetworkMessage& msg)
 
 	msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
 
-	msg.add<uint16_t>(0); // xp boost time (seconds)
-	msg.addByte(0); // enables exp boost in the store
+	msg.add<uint16_t>(player->getExpBoostStamina()); // xp boost time (seconds)
+	msg.addByte(1); // enables exp boost in the store
 }
 
 void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
@@ -732,6 +732,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 
 	sendBasicData();
 	sendInventoryClientIds();
+	sendPreyData();
 	player->sendIcons();
 }
 

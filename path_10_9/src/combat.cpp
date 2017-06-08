@@ -944,8 +944,13 @@ void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage, bool u
 					}
 				}
 
-				damage.secondary.type = weapon->getElementType();
-				damage.secondary.value = weapon->getElementDamage(player, nullptr, tool);
+				CombatType_t imbuingCombat = COMBAT_NONE;
+				int32_t imbuingDamage = 0;
+
+				g_events->eventPlayerOnCombatSpell(player, attackValue, imbuingDamage, imbuingCombat);
+
+				damage.secondary.type = (imbuingCombat != COMBAT_NONE) ? imbuingCombat : weapon->getElementType();
+				damage.secondary.value = weapon->getElementDamage(player, nullptr, tool, imbuingDamage, imbuingCombat);
 				if (useCharges) {
 					uint16_t charges = tool->getCharges();
 					if (charges != 0) {
