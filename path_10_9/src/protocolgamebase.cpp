@@ -171,7 +171,7 @@ void ProtocolGameBase::AddCreature(NetworkMessage& msg, const Creature* creature
 	msg.addByte(creatureType); // Type (for summons)
 	msg.addByte(creature->getSpeechBubble());
 	msg.addByte(0xFF); // MARK_UNMARKED
-	msg.addByte(0x00); // version >= 1110
+	msg.addByte(0x00); // ??
 
 	if (otherPlayer) {
 		msg.add<uint16_t>(otherPlayer->getHelpers());
@@ -427,11 +427,11 @@ void ProtocolGameBase::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 					++count;
 				}
 
-			if (++count == 10) {
-				return;
+				if (++count == 10) {
+					return;
+				}
 			}
 		}
-	}
 	} else {
 		const CreatureVector *creatures = tile->getCreatures();
 		if (creatures) {
@@ -757,7 +757,7 @@ void ProtocolGameBase::sendBasicData()
 	}
 	msg.addByte(player->getVocation()->getClientId());
 
-	// version > 1099
+	// Prey window
 	if (player->getVocation()->getId() == 0) {
 		msg.addByte(0);
 	} else {
