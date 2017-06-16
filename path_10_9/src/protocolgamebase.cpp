@@ -171,7 +171,9 @@ void ProtocolGameBase::AddCreature(NetworkMessage& msg, const Creature* creature
 	msg.addByte(creatureType); // Type (for summons)
 	msg.addByte(creature->getSpeechBubble());
 	msg.addByte(0xFF); // MARK_UNMARKED
-	msg.addByte(0x00); // ??
+	if (version >= 1110) {
+		msg.addByte(0x00); // ??
+	}
 
 	if (otherPlayer) {
 		msg.add<uint16_t>(otherPlayer->getHelpers());
@@ -865,6 +867,9 @@ void ProtocolGameBase::sendVIP(uint32_t guid, const std::string& name, const std
 	msg.add<uint32_t>(std::min<uint32_t>(10, icon));
 	msg.addByte(notify ? 0x01 : 0x00);
 	msg.addByte(status);
+	if (version >= 1110) {
+		msg.addByte(0x00); // ??
+	}
 	writeToOutputBuffer(msg);
 }
 
