@@ -83,7 +83,7 @@ void Monster::removeList()
 
 bool Monster::canSee(const Position& pos) const
 {
-	return Creature::canSee(getPosition(), pos, 9, 9);
+	return Creature::canSee(getPosition(), pos, 10, 10); //jlcvp FIX - range 10 Avoids killing monster without reaction
 }
 
 bool Monster::canWalkOnFieldType(CombatType_t combatType) const
