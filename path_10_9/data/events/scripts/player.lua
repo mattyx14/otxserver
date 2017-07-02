@@ -88,8 +88,6 @@ function Player:onLook(thing, position, distance)
 			end
 			description = string.gsub(description, "It weighs", imbuingSlots.. "\nIt weighs")
 		end
-	else
-		description = description .. thing:getDescription(distance)
 	end
 
 	self:sendTextMessage(MESSAGE_INFO_DESCR, description)
