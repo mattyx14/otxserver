@@ -30,29 +30,15 @@ function onLogin(player)
 	local playerId = player:getId()
 
 	-- Stamina
-	nextUseStaminaTime[player.uid] = 1
-
-	-- Promotion
-	local vocation = player:getVocation()
-	local promotion = vocation:getPromotion()
-	if player:isPremium() then
-		local value = player:getStorageValue(STORAGEVALUE_PROMOTION)
-		if not promotion and value ~= 1 then
-			player:setStorageValue(STORAGEVALUE_PROMOTION, 1)
-		elseif value == 1 then
-			player:setVocation(promotion)
-		end
-	elseif not promotion then
-		player:setVocation(vocation:getDemotion())
-	end
+	nextUseStaminaTime[playerId] = 1
 
 	-- EXP Stamina
-	nextUseXpStamina[player.uid] = 1
+	nextUseXpStamina[playerId] = 1
 
 	--Prey Stamina
-	nextUseStaminaPrey[player.uid+1] = {Time = 1}
-	nextUseStaminaPrey[player.uid+2] = {Time = 1}
-	nextUseStaminaPrey[player.uid+3] = {Time = 1}
+	nextUseStaminaPrey[playerId+1] = {Time = 1}
+	nextUseStaminaPrey[playerId+2] = {Time = 1}
+	nextUseStaminaPrey[playerId+3] = {Time = 1}
 
 	-- Prey Data
 	if (player:getVocation():getId() ~= 0) then
