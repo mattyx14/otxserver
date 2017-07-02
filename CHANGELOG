@@ -17,7 +17,7 @@
 			Matt Gomez
 			Leandro Brewster
 			Erick Nunes
-			João Leonardo Pereira
+			Joao Leonardo Pereira
 
 		Special Thanks(s) 
 			The Forgotten Team = TFT
@@ -70,8 +70,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Version Clients - 7.7 to 10.99
-		Version Client 11.x (Basic Support)
+		Version Clients - 7.7 to "10_11 (Basic Support)"
 
 	BUGS
 		https://github.com/mattyx14/otxserver/issues/
@@ -92,12 +91,13 @@
 	- Add T-Coins trade via market (OTXS-C)
 	- Add missing function tokens to code
 	- Add support to wallfields to monsters (OTXS-C)
-	- Add features from Client 11 (NWOTX)
+	- Add features from Client_10_11 (NWOTX)
 		List:
 			* Imbuement System
 			* Prey System
 			* Inspection System
 	- Drop commands support in favor of talkactions (TFT)
+	- Drop client 10_9
 	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
@@ -139,7 +139,7 @@
 	- Remove support to clientVersion 11_ - aka10 (items.otb official no)
 	- Remove compat function from swimming.lua (TFC)
 	- Storing TalkAction instances instead of pointers (TFC)
-	- Support to 10_AKa-11 Support // Items.otb no official (OTXS-C)
+	- Support to Client_10_11 Support // Items.otb no official (OTXS-C)
 	- Updated spells (TFC)
 	- Updated enchantingScript (TFC)
 	- Updated monsters (TFT)

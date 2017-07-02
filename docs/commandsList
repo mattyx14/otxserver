@@ -17,14 +17,20 @@
 			Matt Gomez
 			Leandro Brewster
 			Erick Nunes
-			João Leonardo Pereira
+			Joao Leonardo Pereira
 
-		Special Thanks(s)
-			The Forgotten Team
+		Special Thanks(s) 
+			The Forgotten Team = TFT
 				https://github.com/otland/
 
-			The Forgotten Contributors
+			Otxserver-New Contributors = NWOTX
+				https://github.com/malucooo/Otxserver-New/graphs/contributors
+
+			The Forgotten Contributors = TFC
 				https://github.com/otland/forgottenserver/graphs/contributors/
+
+			OTX Server Contributors = OTXS-C
+				https://github.com/mattyx14/otxserver/graphs/contributors/
 
 			OpenTibia
 				https://github.com/opentibia/
@@ -64,8 +70,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Version Clients - 7.6 to 10.99
-		Version Client 11.x
+		Version Clients - 7.7 to "10_11 (Basic Support)"
 
 	BUGS
 		https://github.com/mattyx14/otxserver/issues/
