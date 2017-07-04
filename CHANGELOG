@@ -91,11 +91,13 @@
 	- Add T-Coins trade via market (OTXS-C)
 	- Add missing function tokens to code
 	- Add support to wallfields to monsters (OTXS-C)
+	- Add ruleviolation report system (NWOTX)
 	- Add features from Client_10_11 (NWOTX)
 		List:
 			* Imbuement System
 			* Prey System
 			* Inspection System
+	- Clean and formated items.xml
 	- Drop commands support in favor of talkactions (TFT)
 	- Drop client 10_9
 	- Fix critical damage calculations (OTXS-C)

@@ -870,6 +870,7 @@ void ProtocolGameBase::sendVIP(uint32_t guid, const std::string& name, const std
 	if (version >= 1110) {
 		msg.addByte(0x00); // ??
 	}
+
 	writeToOutputBuffer(msg);
 }
 
