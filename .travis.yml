@@ -5,7 +5,7 @@ compiler:
   - gcc
 env:
   - LUAJIT=ON
-    VERSION=10_9
+    VERSION=10_11
 #  - LUAJIT=ON
 #    VERSION=8_7
   - LUAJIT=ON
@@ -15,7 +15,7 @@ env:
   - LUAJIT=ON
     VERSION=7_7
   - LUAJIT=OFF
-    VERSION=10_9
+    VERSION=10_11
 #  - LUAJIT=OFF
 #    VERSION=8_7
   - LUAJIT=OFF
