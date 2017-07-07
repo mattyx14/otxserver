@@ -60,6 +60,13 @@
 	<outfit type="0" looktype="929" name="Festive Outfit" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="956" name="Pharaoh" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="958" name="Trophy Hunter" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="963" name="Retro Warrior" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="965" name="Retro Summoner" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="967" name="Retro Noblewoman" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="969" name="Retro Wizard" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="971" name="Retro Knight" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="973" name="Retro Hunter" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="975" name="Retro Citizen" premium="yes" unlocked="no" enabled="yes" />
 
 	<!-- Male outfits -->
 	<outfit type="1" looktype="128" name="Citizen" premium="no" unlocked="yes" enabled="yes" />
@@ -121,4 +128,11 @@
 	<outfit type="1" looktype="931" name="Festive Outfit" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="955" name="Pharaoh" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="957" name="Trophy Hunter" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="962" name="Retro Warrior" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="964" name="Retro Summoner" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="966" name="Retro Nobleman" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="968" name="Retro Wizard" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="970" name="Retro Knight" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="972" name="Retro Hunter" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="974" name="Retro Citizen" premium="yes" unlocked="no" enabled="yes" />
 </outfits>
