@@ -563,7 +563,7 @@
 	<movevent event="Equip" itemid="18408" level="120" slot="ring" function="onEquipItem" />
 	<movevent event="Equip" itemid="18528" level="120" slot="ring" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="18528" slot="ring" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="10310" level="100" slot="ring" script="others/noxiousclaw.lua" />
+	<movevent event="Equip" itemid="10310" level="100" slot="ring" script="_scripts_otx/noxiousclaw.lua" />
 	<movevent event="Equip" itemid="10309" level="100" slot="ring" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="10309" level="100" slot="ring" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="10311" level="100" slot="ring" function="onEquipItem" />
