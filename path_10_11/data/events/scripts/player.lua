@@ -33,6 +33,17 @@ end
 
 function Player:onLook(thing, position, distance)
 	local description = "You see " .. thing:getDescription(distance)
+	if thing.itemid >= 28553 and thing.itemid <= 28557 or thing.itemid >= 28563 and thing.itemid <= 28566 or thing.itemid >= 28573 and thing.itemid <= 28574 or thing.itemid >= 28577 and thing.itemid <= 28588 then
+		local charges = thing.actionid - 1000
+		if charges >= 0 then
+			description = string.format('%s \nCharges left: %d', description, charges)
+		elseif thing.itemid <= 28574 then
+			description = string.format('%s That is brand-new\nCharges left: 1000', description, charges)
+		elseif thing.itemid >= 28577 then
+			description = string.format('%s That is brand-new\nCharges left: 250', description, charges)
+		end
+	end
+
 	if self:getGroup():getAccess() then
 		if thing:isItem() then
 			description = string.format("%s\nItem ID: %d", description, thing:getId())
@@ -395,18 +406,14 @@ local function useStaminaPrey(player, name)
 	end
 end
 
--- exp card
-local BONUS_EXP_STORAGE = 61398
-local BONUS_EXP_MULT = 1.3
-
 local configexp =  {
 	["Monday"] = 1.0,
 	["Tuesday"] = 1.0,
 	["Wednesday"] = 1.0,
 	["Thursday"] = 1.0,
 	["Friday"] = 1.0,
-	["Saturday"] = 2.0,
-	["Sunday"] = 2.0
+	["Saturday"] = 1.0,
+	["Sunday"] = 1.0
 }
 
 function Player:onGainExperience(source, exp, rawExp)
@@ -451,12 +458,6 @@ function Player:onGainExperience(source, exp, rawExp)
 
 	-- Prey Stamina Modifier
 	useStaminaPrey(self, source:getName())
-
-	-- Exp Card
-	if self:getStorageValue(BONUS_EXP_STORAGE) - os.time() > 0 then
-		exp = exp * BONUS_EXP_MULT
-	end
-
 	return exp
 end
 

@@ -2,6 +2,8 @@
 <actions>
 	<!-- Imbuement -->
 	<action fromid="27716" toid="27717" script="_scripts_otx/imbuement.lua" />
+	<action fromid="27830" toid="27831" script="_scripts_otx/imbuement.lua" />
+	<action fromid="27838" toid="27839" script="_scripts_otx/imbuement.lua" />
 
 	<!-- Enchanting -->
 	<action fromid="2146" toid="2147" script="other/enchanting.lua" />
@@ -9,6 +11,46 @@
 	<action itemid="2342" script="other/enchanting.lua" />
 	<action fromid="7759" toid="7762" script="other/enchanting.lua" />
 	<action itemid="24739" script="other/enchanting.lua" />
+
+	<!-- Carpets -->
+	<!-- 
+		<action fromid="25392" toid="25393" script="other/carpets.lua"/>
+		<action fromid="26192" toid="26193" script="other/carpets.lua"/>
+		<action itemid="26087" script="other/carpets.lua"/> <!-- yalaha carpet-->
+		<action itemid="26109" script="other/carpets.lua"/> <!-- yalaha carpet-->
+		<action itemid="26088" script="other/carpets.lua"/> <!-- white fur -->
+		<action itemid="26110" script="other/carpets.lua"/> <!-- white fur -->
+		<action itemid="26089" script="other/carpets.lua"/> <!-- bamboo mat -->
+		<action itemid="26111" script="other/carpets.lua"/> <!-- bamboo mat -->
+		<action itemid="26366" script="other/carpets.lua"/> <!-- azure carpet -->
+		<action itemid="26372" script="other/carpets.lua"/> <!-- azure carpet -->
+		<action itemid="26363" script="other/carpets.lua"/> <!-- crimson carpet -->
+		<action itemid="26371" script="other/carpets.lua"/> <!-- crimson carpet -->
+		<action itemid="26367" script="other/carpets.lua"/> <!-- emerald carpet -->
+		<action itemid="26373" script="other/carpets.lua"/> <!-- emerald carpet -->
+		<action itemid="26368" script="other/carpets.lua"/> <!-- light parquet -->
+		<action itemid="26374" script="other/carpets.lua"/> <!-- light parquet -->
+		<action itemid="26369" script="other/carpets.lua"/> <!-- dark parquet -->
+		<action itemid="26375" script="other/carpets.lua"/> <!-- dark parquet -->
+		<action itemid="26370" script="other/carpets.lua"/> <!-- marble floor -->
+		<action itemid="26376" script="other/carpets.lua"/> <!-- marble floor -->
+		<action itemid="27072" script="other/carpets.lua"/> <!-- flowery carpet -->
+		<action itemid="27080" script="other/carpets.lua"/> <!-- flowery carpet -->
+		<action itemid="27073" script="other/carpets.lua"/> <!-- Colourful Carpet -->
+		<action itemid="27081" script="other/carpets.lua"/> <!-- Colourful Carpet -->
+		<action itemid="27074" script="other/carpets.lua"/> <!-- striped carpet -->
+		<action itemid="27082" script="other/carpets.lua"/> <!-- striped carpet -->
+		<action itemid="27075" script="other/carpets.lua"/> <!-- fur carpet -->
+		<action itemid="27083" script="other/carpets.lua"/> <!-- fur carpet -->
+		<action itemid="27076" script="other/carpets.lua"/> <!-- diamond carpet -->
+		<action itemid="27084" script="other/carpets.lua"/> <!-- diamond carpet -->
+		<action itemid="27077" script="other/carpets.lua"/> <!-- patterned carpet -->
+		<action itemid="27085" script="other/carpets.lua"/> <!-- patterned carpet -->
+		<action itemid="27078" script="other/carpets.lua"/> <!-- night sky carpet -->
+		<action itemid="27086" script="other/carpets.lua"/> <!-- night sky carpet -->
+		<action itemid="27079" script="other/carpets.lua"/> <!-- star carpet -->
+		<action itemid="27087" script="other/carpets.lua"/> <!-- star carpet -->
+	-->
 
 	<!-- Quests -->
 	<action itemid="1740" script="quests/quests.lua" />

@@ -1,8 +1,9 @@
 --[[
-	1~3 => Element Type
-	4~6 => Total Time (segundos - 20 h)
-	7~9 => Time Passed (seconds)
-]]--
+1~3 => Element Type
+4~6 => Total Time (segundos - 20 h)
+7~9 => Time Passed (seconds)
+]]
+
 ImbuingSystem = {
 	Developer = "Charles (Cjaker)",
 	Version = "1.0",
@@ -125,7 +126,7 @@ local function tableContains(table, value)
 	return false
 end
 
-local function haveImbuingShrine(player) 
+local function haveImbuingShrine(player)
 	for x = -1, 1 do
 		for y = -1, 1 do
 			local posX, posY, posZ = player:getPosition().x+x, player:getPosition().y+y, player:getPosition().z
@@ -218,7 +219,6 @@ local function getNewList(item)
 	local equip = getEquipById(item:getId())
 	local myImbuements = getImbuementEquip(equip)
 	local imbuingSlots = item:getType():getImbuingSlots()
-
 	for i = 1, imbuingSlots do
 		if (item:isActiveImbuement(i+3)) then
 			local existsImbuement, enchantLevel = getActiveImbuement(item, i)
@@ -271,7 +271,6 @@ function Player.applyImbuement(self, msg)
 	end
 
 	slot = slot + 1
-
 	for j = 1, imbuingLevel do
 		local itemID, itemCount = myImbuement.Items[j][1], myImbuement.Items[j][2]
 		if (self:getItemCount(itemID) < itemCount) then
@@ -286,7 +285,7 @@ function Player.applyImbuement(self, msg)
 		sendImbuementError(self, "An error ocurred, please reopen imbuement window.", ErrorMessages.MESSAGEDIALOG_IMBUEMENT_ERROR)
 		return false
 	end
-	
+
 	local applyChance = math.random(100)
 	if (ImbuingInfo[imbuingLevel].Percent < applyChance) then
 		sendImbuementError(self, "Item failed to apply imbuement.", ErrorMessages.MESSAGEDIALOG_IMBUEMENT_ROLL_FAILED)
@@ -316,7 +315,6 @@ function Player.clearImbuement(self, msg)
 	end
 
 	weaponSlot = weaponSlot + 1
-
 	if (not item:isActiveImbuement(weaponSlot + 3)) then
 		sendImbuementError(self, "Sorry, not possible.", ErrorMessages.MESSAGEDIALOG_CLEARING_CHARM_ERROR)
 		return false
@@ -326,7 +324,7 @@ function Player.clearImbuement(self, msg)
 		sendImbuementError(self, "You don't have enough money 15000 gps.", ErrorMessages.MESSAGEDIALOG_CLEARING_CHARM_ERROR)
 		return false
 	end
-	
+
 	item:setSpecialAttribute(weaponSlot, 0, weaponSlot+3, 0, weaponSlot+6, 0)
 	self:openImbuementWindow(item)
 	sendImbuementError(self, "Item clean success!", ErrorMessages.MESSAGEDIALOG_CLEARING_CHARM_SUCCESS)
@@ -367,6 +365,7 @@ function Player.openImbuementWindow(self, item)
 			msg:addByte(0x01) -- No have imbuement (byte 1 need more packets)
 			msg:addU32(900) -- Start Read Imbuement Data
 			msg:addString(existsImbuement.Levels[enchantLevel].. " " ..existsImbuement.Name) -- Name Element
+
 			local newDescription = existsImbuement.Description:gsub(" %%", " " ..existsImbuement.LevelsPercent[enchantLevel].."%%")
 			msg:addString(newDescription.. "\nLasts for 20h 0min while fighting.") -- Description
 			msg:addString(existsImbuement.Category) -- Type Imbuement
@@ -380,6 +379,7 @@ function Player.openImbuementWindow(self, item)
 				msg:addString(itemName or "") -- Astral Name
 				msg:addU16(existsImbuement.Items[j][2]) -- Astral Necessary count
 			end
+
 			msg:addU32(ImbuingInfo[enchantLevel].Price)
 			msg:addByte(ImbuingInfo[enchantLevel].Percent)
 			msg:addU32(ImbuingInfo[enchantLevel].Protection) -- End Read Imbuement Data
@@ -397,6 +397,7 @@ function Player.openImbuementWindow(self, item)
 			index = index + 1
 			msg:addU32(index) -- Start Read Imbuement Data
 			msg:addString(myImbuements[k].Levels[i].. " " ..myImbuements[k].Name) -- Name Element
+
 			local newDescription = myImbuements[k].Description:gsub(" %%", " " ..myImbuements[k].LevelsPercent[i].."%%")
 			msg:addString(newDescription.. "\nLasts for 20h 0min while fighting.") -- Description
 			msg:addString(myImbuements[k].Category) -- Type Imbuement
@@ -407,6 +408,7 @@ function Player.openImbuementWindow(self, item)
 			else
 				msg:addByte(0x00) -- premium false
 			end
+
 			msg:addByte(i) -- Loop Length astral sources
 			for j = 1, i do
 				local itemID, itemName = myImbuements[k].Items[j][1], ItemType(myImbuements[k].Items[j][1]):getName()
@@ -414,6 +416,7 @@ function Player.openImbuementWindow(self, item)
 				msg:addString(itemName or "") -- Astral Name
 				msg:addU16(myImbuements[k].Items[j][2]) -- Astral Necessary count
 			end
+
 			msg:addU32(ImbuingInfo[i].Price)
 			msg:addByte(ImbuingInfo[i].Percent)
 			msg:addU32(ImbuingInfo[i].Protection) -- End Read Imbuement Data
@@ -427,6 +430,7 @@ function Player.openImbuementWindow(self, item)
 			msg:addU16(self:getItemCount(myImbuements[k].Items[j][1]))
 		end
 	end
+
 	self:sendResource("bank", self:getBankBalance())
 	self:sendResource("inventory", self:getMoney())
 	msg:sendToPlayer(self)
