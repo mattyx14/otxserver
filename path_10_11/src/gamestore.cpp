@@ -183,8 +183,19 @@ bool GameStore::loadFromXml() {
                     } else {
                         offer = tmp;
                     }
-                }
-                else if(boost::iequals(type, "bless")){
+                } else if (boost::iequals(type, "wrapitem")) {
+                    ItemOffer *tmp = new ItemOffer();
+                    tmp->type = WRAP_ITEM;
+                    tmp->productId = (uint16_t) offerNode.attribute("productid").as_uint();
+                    tmp->count = (uint16_t) offerNode.attribute("count").as_uint();
+                    if (!tmp->productId || !tmp->count) {
+                        printXMLError("Error parsing XML Wrappable Item Offer - GameStore::loadFromXml",
+                                      "data/XML/gamestore.xml", result);
+                        return false;
+                    } else {
+                        offer = tmp;
+                    }
+                } else if(boost::iequals(type, "bless")){
                     BlessingOffer* tmp = new BlessingOffer();
                     tmp->blessings = getIntVector(offerNode.attribute("blessnumber").as_string());
                     tmp->type = BLESSING;
@@ -197,8 +208,7 @@ bool GameStore::loadFromXml() {
 
                     offer = tmp;
 
-                }
-                else if(boost::iequals(type, "teleport")){
+                } else if(boost::iequals(type, "teleport")){
                     TeleportOffer* tmp = new TeleportOffer();
                     tmp->type = TELEPORT;
 
