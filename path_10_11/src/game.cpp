@@ -5562,14 +5562,14 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 
 		std::stringstream message;
 
-		if(offer->type == ITEM || offer->type == STACKABLE_ITEM){
+		if(offer->type == ITEM || offer->type == STACKABLE_ITEM || offer->type == WRAP_ITEM){
 			const ItemOffer* tmp = (ItemOffer*) offer;
 
 			message << "You have purchased " << tmp->count << "x " << offer->name << " for " << offer->price << " coins.";
 
 			Thing* thing = player->getThing(CONST_SLOT_STORE_INBOX);
 			if(thing == nullptr){
-				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate you store inbox, try again after relog and if this error persists, contact the system administrator.");
+				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate your store inbox, try again after relog and if this error persists, contact the system administrator.");
 				return;
 			}
 
@@ -5577,12 +5577,12 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 
 			Container* inbox = thing->getItem()->getContainer(); //TODO: Not the right way to get the storeInbox
 			if(!inbox){
-				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate you store inbox, try again after relog and if this error persists, contact the system administrator.");
+				player->sendStoreError(STORE_ERROR_NETWORK, "We cannot locate your store inbox, try again after relog and if this error persists, contact the system administrator.");
 				return;
 			}
 			uint32_t freeSlots = inbox->capacity() - inbox->size();
-			uint32_t requiredSlots = (tmp->type == ITEM) ? tmp->count : (tmp->count%100)? (uint32_t)(tmp->count/100)+1 :(uint32_t) tmp->count/100;
-			uint32_t capNeeded = Item::items[tmp->productId].weight * tmp->count;
+			uint32_t requiredSlots = (tmp->type == ITEM || tmp->type == WRAP_ITEM) ? tmp->count : (tmp->count%100)? (uint32_t)(tmp->count/100)+1 :(uint32_t) tmp->count/100;
+			uint32_t capNeeded = (tmp->type == WRAP_ITEM)?0:Item::items[tmp->productId].weight * tmp->count;
 
 			if(freeSlots < requiredSlots ) {
 				player->sendStoreError(STORE_ERROR_PURCHASE, "Insuficient free slots in your store inbox.");
@@ -5601,7 +5601,14 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 				while(pendingCount>0)
 				{
 					Item* item;
-					item = Item::CreateItem(tmp->productId, std::min<uint16_t>(packSize, pendingCount));
+
+					if(offer->type == WRAP_ITEM){
+						item = Item::CreateItem(TRANSFORM_BOX_ID, std::min<uint16_t>(packSize, pendingCount));
+						item->setActionId(tmp->productId);
+						item->setSpecialDescription("Unwrap it in your own house to create a <" + Item::items[tmp->productId].name + ">.");
+					}else{
+						item = Item::CreateItem(tmp->productId, std::min<uint16_t>(packSize, pendingCount));
+					}
 
 					if (internalAddItem(inbox, item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 						delete item;

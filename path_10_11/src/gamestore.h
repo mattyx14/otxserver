@@ -37,7 +37,8 @@ enum Offer_t {
     TELEPORT,
     BLESSING,
     BOOST_XP, //not using yet
-    BOOST_STAMINA //not using yet
+    BOOST_STAMINA, //not using yet
+    WRAP_ITEM
 };
 
 enum ClientOffer_t{

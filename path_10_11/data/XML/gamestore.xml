@@ -194,4 +194,8 @@
 		<offer name="30 days of Premium Time" description="get a month (30 days) of premium time." price="250" type="premiumtime" days="30" icons="premium30.png"/>
 		<offer name="90 days of Premium Time" description="90 days of premium time." price="400" state="sale" type="premiumtime" days="90" icons="premium90sale.png"/>
 	</category>
+	<category name="Furniture" description="make your house look fabulous" icons="furniture_category.png" >
+		<offer name="Magnificent chair" description="a magnificent chair" type="wrapitem" productid="26059" count="1" price="8" icons="o26059.png" />
+		<offer name="4x Magnificent chair" description="full magnificent chair set" type="wrapitem" productid="26059" count="4" price="20" icons="o26059x4.png" />
+	</category>
 </gamestore>
