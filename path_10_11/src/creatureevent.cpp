@@ -127,7 +127,7 @@ bool CreatureEvents::playerLogout(Player* player) const
 }
 
 bool CreatureEvents::playerAdvance(Player* player, skills_t skill, uint32_t oldLevel,
-                                       uint32_t newLevel)
+									   uint32_t newLevel)
 {
 	for (const auto& it : creatureEvents) {
 		if (it.second->getEventType() == CREATURE_EVENT_ADVANCE) {
@@ -385,7 +385,7 @@ bool CreatureEvent::executeOnDeath(Creature* creature, Item* corpse, Creature* k
 }
 
 bool CreatureEvent::executeAdvance(Player* player, skills_t skill, uint32_t oldLevel,
-                                       uint32_t newLevel)
+									   uint32_t newLevel)
 {
 	//onAdvance(player, skill, oldLevel, newLevel)
 	if (!scriptInterface->reserveScriptEnv()) {

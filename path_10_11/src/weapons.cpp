@@ -179,7 +179,7 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		premium = attr.as_bool();
 	}
 
-	if ((attr = node.attribute("breakchance"))) {
+	if ((attr = node.attribute("breakchance")) && g_config.getBoolean(ConfigManager::REMOVE_WEAPON_CHARGES)) {
 		breakChance = std::min<uint8_t>(100, pugi::cast<uint16_t>(attr.value()));
 	}
 
@@ -434,12 +434,14 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile* destTile) const
 
 	switch (action) {
 		case WEAPONACTION_REMOVECOUNT:
-			Weapon::decrementItemCount(item);
+			if(g_config.getBoolean(ConfigManager::REMOVE_WEAPON_AMMO)) {
+				Weapon::decrementItemCount(item);
+			}
 			break;
 
 		case WEAPONACTION_REMOVECHARGE: {
 			uint16_t charges = item->getCharges();
-			if (charges != 0) {
+			if (charges != 0 && g_config.getBoolean(ConfigManager::REMOVE_WEAPON_CHARGES)) {
 				g_game.transformItem(item, item->getID(), charges - 1);
 			}
 			break;

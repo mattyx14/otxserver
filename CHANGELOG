@@ -92,6 +92,7 @@
 	- Add missing function tokens to code
 	- Add support to wallfields to monsters (OTXS-C)
 	- Add ruleviolation report system (NWOTX)
+	- Add disable Weapon Ammo/Charge on config (NWOTX)
 	- Add features from Client_10_11 (NWOTX)
 		List:
 			* Imbuement System

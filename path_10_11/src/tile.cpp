@@ -508,7 +508,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 
 						const Monster* creatureMonster = tileCreature->getMonster();
 						if (!creatureMonster || !tileCreature->isPushable() ||
-						        (creatureMonster->isSummon() && creatureMonster->getMaster()->getPlayer())) {
+								(creatureMonster->isSummon() && creatureMonster->getMaster()->getPlayer())) {
 							return RETURNVALUE_NOTPOSSIBLE;
 						}
 					}
@@ -808,7 +808,7 @@ Tile* Tile::queryDestination(int32_t&, const Thing&, Item** destItem, uint32_t& 
 	if (destTile == nullptr) {
 		destTile = this;
 	} else {
-		flags |= FLAG_NOLIMIT;    //Will ignore that there is blocking items/creatures
+		flags |= FLAG_NOLIMIT; //Will ignore that there is blocking items/creatures
 	}
 
 	if (destTile) {

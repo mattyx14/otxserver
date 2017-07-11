@@ -498,6 +498,13 @@ void Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 		}
 	}
 
+	if (caster) {
+		Player* casterPlayer = caster->getPlayer();
+		if (casterPlayer) {
+			casterPlayer->doCriticalDamage(damage);
+		}
+	}
+
 	if (g_game.combatChangeHealth(caster, target, damage)) {
 		CombatConditionFunc(caster, target, params, nullptr);
 		CombatDispelFunc(caster, target, params, nullptr);

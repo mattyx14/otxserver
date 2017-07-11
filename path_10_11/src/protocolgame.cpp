@@ -1042,21 +1042,24 @@ void ProtocolGame::parseStoreBuyOffer(NetworkMessage &message) {
 	addGameTaskTimed(350, &Game::playerBuyStoreOffer, player->getID(), offerId, productType, additionalInfo);
 }
 
-void ProtocolGame::parseStoreOpenTransactionHistory(NetworkMessage& msg){
+void ProtocolGame::parseStoreOpenTransactionHistory(NetworkMessage& msg)
+{
 	uint8_t entriesPerPage = msg.getByte();
-	if(entriesPerPage>0 && entriesPerPage!=GameStore::HISTORY_ENTRIES_PER_PAGE){
+	if(entriesPerPage>0 && entriesPerPage!=GameStore::HISTORY_ENTRIES_PER_PAGE) {
 		GameStore::HISTORY_ENTRIES_PER_PAGE=entriesPerPage;
 	}
 
 	addGameTaskTimed(2000, &Game::playerStoreTransactionHistory, player->getID(), 1);
 }
 
-void ProtocolGame::parseStoreRequestTransactionHistory(NetworkMessage& msg){
+void ProtocolGame::parseStoreRequestTransactionHistory(NetworkMessage& msg)
+{
 	uint32_t pageNumber = msg.get<uint32_t>();
 	addGameTaskTimed(2000,&Game::playerStoreTransactionHistory,player->getID(), pageNumber);
 }
 
-void ProtocolGame::parseCoinTransfer(NetworkMessage& msg){
+void ProtocolGame::parseCoinTransfer(NetworkMessage& msg)
+{
 	std::string receiverName =msg.getString();
 	uint32_t amount = msg.get<uint32_t>();
 
@@ -2459,7 +2462,7 @@ void ProtocolGame::sendOpenStore(uint8_t serviceType)
 		msg.addByte(stateByte);
 
 		msg.addByte((uint8_t)category->icons.size());
-		for(std::string iconStr : category->icons){
+		for(std::string iconStr : category->icons) {
 			msg.addString(iconStr);
 		}
 		msg.addString(""); //TODO: parentCategory
@@ -2477,12 +2480,11 @@ void ProtocolGame::sendStoreCategoryOffers(StoreCategory* category)
 	msg.addString(category->name);
 	msg.add<uint16_t>(category->offers.size());
 
-	for(BaseOffer* offer : category->offers){
+	for(BaseOffer* offer : category->offers) {
 		msg.add<uint32_t>(offer->id);
 		std::stringstream offername;
-		if(offer->type==Offer_t::ITEM || offer->type == Offer_t::STACKABLE_ITEM)
-		{
-			if(((ItemOffer*)offer)->count > 1){
+		if(offer->type==Offer_t::ITEM || offer->type == Offer_t::STACKABLE_ITEM) {
+			if(((ItemOffer*)offer)->count > 1) {
 				offername << ((ItemOffer*)offer)->count << "x ";
 			}
 		}
@@ -2510,10 +2512,10 @@ void ProtocolGame::sendStoreCategoryOffers(StoreCategory* category)
 				disabled=1;
 				if(addons == 0) { //addons == 0 //oufit-only offer and player already has it
 					disabledReason << "You already have this outfit.";
-				} else{
+				} else {
 					disabledReason << "You already have this outfit/addon.";
 				}
-			} else{
+			} else {
 				if(outfitOffer->type == OUTFIT_ADDON && !player->canWear(looktype,0)) { //addon offer and player doesnt have the base outfit
 					disabled=1;
 					disabledReason << "You don't have the outfit, you can't buy the addon.";

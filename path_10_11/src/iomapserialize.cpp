@@ -109,7 +109,7 @@ bool IOMapSerialize::saveHouseItems()
 	//End the transaction
 	bool success = transaction.commit();
 	std::cout << "> Saved house items in: " <<
-	          (OTSYS_TIME() - start) / (1000.) << " s" << std::endl;
+			  (OTSYS_TIME() - start) / (1000.) << " s" << std::endl;
 	return success;
 }
 

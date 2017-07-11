@@ -62,10 +62,10 @@ class ProtocolGameBase : public Protocol {
 		void GetTileDescription(const Tile* tile, NetworkMessage& msg);
 		// translate a floor to clientreadable format
 		void GetFloorDescription(NetworkMessage& msg, int32_t x, int32_t y, int32_t z,
-		                         int32_t width, int32_t height, int32_t offset, int32_t& skip);
+								 int32_t width, int32_t height, int32_t offset, int32_t& skip);
 		// translate a map area to clientreadable format
 		void GetMapDescription(int32_t x, int32_t y, int32_t z,
-		                       int32_t width, int32_t height, NetworkMessage& msg);
+							   int32_t width, int32_t height, NetworkMessage& msg);
 
 		static void RemoveTileThing(NetworkMessage& msg, const Position& pos, uint32_t stackpos);
 

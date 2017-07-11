@@ -82,15 +82,16 @@ const Outfit* Outfits::getOutfitByLookType(PlayerSex_t sex, uint16_t lookType) c
  * @param lookType current looktype
  * @return <b>const</b> pointer to the outfit or <b>nullptr</b> if it could not be found.
  */
-const Outfit *Outfits::getOpositeSexOutfitByLookType(PlayerSex_t sex, uint16_t lookType) {
+
+const Outfit *Outfits::getOpositeSexOutfitByLookType(PlayerSex_t sex, uint16_t lookType)
+{
 	PlayerSex_t	searchSex = (sex == PLAYERSEX_MALE)?PLAYERSEX_FEMALE:PLAYERSEX_MALE;
 
-	for(uint16_t i=0; i< outfits[sex].size(); i++){
-		if(outfits[sex].at(i).lookType == lookType){
-			if(outfits[searchSex].size()>i){
+	for(uint16_t i=0; i< outfits[sex].size(); i++) {
+		if(outfits[sex].at(i).lookType == lookType) {
+			if(outfits[searchSex].size()>i) {
 				return &outfits[searchSex].at(i);
-			}
-			else{ //looktype found but the oposite sex array doesn't have this index.
+			} else { //looktype found but the oposite sex array doesn't have this index.
 				return nullptr;
 			}
 		}

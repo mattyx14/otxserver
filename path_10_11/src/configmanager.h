@@ -43,6 +43,8 @@ class ConfigManager
 			CLASSIC_ATTACK_SPEED,
 			ALLOW_BLOCK_SPAWN,
 			ENABLE_LIVE_CASTING,
+			REMOVE_WEAPON_AMMO,
+			REMOVE_WEAPON_CHARGES,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

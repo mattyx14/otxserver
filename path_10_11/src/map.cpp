@@ -170,8 +170,8 @@ bool Map::placeCreature(const Position& centerPos, Creature* creature, bool exte
 
 	if (!foundTile) {
 		static std::vector<std::pair<int32_t, int32_t>> extendedRelList {
-			                   {0, -2},
-			         {-1, -1}, {0, -1}, {1, -1},
+							   {0, -2},
+					 {-1, -1}, {0, -1}, {1, -1},
 			{-2, 0}, {-1,  0},          {1,  0}, {2, 0},
 			         {-1,  1}, {0,  1}, {1,  1},
 			                   {0,  2}
@@ -455,7 +455,7 @@ void Map::clearSpectatorCache()
 }
 
 bool Map::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight /*= true*/,
-                           int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/) const
+						   int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/) const
 {
 	//z checks
 	//underground 8->15
@@ -1004,7 +1004,7 @@ uint32_t Map::clean() const
 	}
 
 	std::cout << "> CLEAN: Removed " << count << " item" << (count != 1 ? "s" : "")
-	          << " from " << tiles << " tile" << (tiles != 1 ? "s" : "") << " in "
-	          << (OTSYS_TIME() - start) / (1000.) << " seconds." << std::endl;
+			  << " from " << tiles << " tile" << (tiles != 1 ? "s" : "") << " in "
+			  << (OTSYS_TIME() - start) / (1000.) << " seconds." << std::endl;
 	return count;
 }

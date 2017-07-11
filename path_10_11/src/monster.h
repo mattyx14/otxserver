@@ -184,7 +184,7 @@ class Monster final : public Creature
 		}
 
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-		                     bool checkDefense = false, bool checkArmor = false, bool field = false);
+							 bool checkDefense = false, bool checkArmor = false, bool field = false);
 
 		static uint32_t monsterAutoID;
 
@@ -247,10 +247,10 @@ class Monster final : public Creature
 
 		bool canUseAttack(const Position& pos, const Creature* target) const;
 		bool canUseSpell(const Position& pos, const Position& targetPos,
-		                 const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks);
+						 const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks);
 		bool getRandomStep(const Position& creaturePos, Direction& direction) const;
 		bool getDanceStep(const Position& creaturePos, Direction& direction,
-		                  bool keepAttack = true, bool keepDistance = true);
+						  bool keepAttack = true, bool keepDistance = true);
 		bool isInSpawnRange(const Position& pos) const;
 		bool canWalkTo(Position pos, Direction direction) const;
 

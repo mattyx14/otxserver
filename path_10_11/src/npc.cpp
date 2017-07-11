@@ -281,7 +281,7 @@ void Npc::onRemoveCreature(Creature* creature, bool isLogout)
 }
 
 void Npc::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-                         const Tile* oldTile, const Position& oldPos, bool teleport)
+						 const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
 
@@ -354,7 +354,7 @@ void Npc::doSayToPlayer(Player* player, const std::string& text)
 }
 
 void Npc::onPlayerTrade(Player* player, int32_t callback, uint16_t itemId, uint8_t count,
-                        uint8_t amount, bool ignore/* = false*/, bool inBackpacks/* = false*/)
+						uint8_t amount, bool ignore/* = false*/, bool inBackpacks/* = false*/)
 {
 	if (npcEventHandler) {
 		npcEventHandler->onPlayerTrade(player, callback, itemId, count, amount, ignore, inBackpacks);
@@ -1200,7 +1200,7 @@ void NpcEventsHandler::onCreatureSay(Creature* creature, SpeakClasses type, cons
 }
 
 void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t itemid,
-                              uint8_t count, uint8_t amount, bool ignore, bool inBackpacks)
+							  uint8_t count, uint8_t amount, bool ignore, bool inBackpacks)
 {
 	if (callback == -1) {
 		return;

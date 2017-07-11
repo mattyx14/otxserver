@@ -363,7 +363,7 @@ void Creature::onAddTileItem(const Tile* tile, const Position& pos)
 }
 
 void Creature::onUpdateTileItem(const Tile* tile, const Position& pos, const Item*,
-                                const ItemType& oldType, const Item*, const ItemType& newType)
+								const ItemType& oldType, const Item*, const ItemType& newType)
 {
 	if (!isMapLoaded) {
 		return;
@@ -449,7 +449,7 @@ void Creature::onAttackedCreatureChangeZone(ZoneType_t zone)
 }
 
 void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-                              const Tile* oldTile, const Position& oldPos, bool teleport)
+							  const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	if (creature == this) {
 		lastStep = OTSYS_TIME();
@@ -801,7 +801,7 @@ void Creature::drainMana(Creature* attacker, int32_t manaLoss)
 }
 
 BlockType_t Creature::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-                               bool checkDefense /* = false */, bool checkArmor /* = false */, bool /* field  = false */)
+							   bool checkDefense /* = false */, bool checkArmor /* = false */, bool /* field  = false */)
 {
 	BlockType_t blockType = BLOCK_NONE;
 
@@ -1507,7 +1507,7 @@ CreatureEventList Creature::getCreatureEvents(CreatureEventType_t type)
 }
 
 bool FrozenPathingConditionCall::isInRange(const Position& startPos, const Position& testPos,
-        const FindPathParams& fpp) const
+		const FindPathParams& fpp) const
 {
 	if (fpp.fullPathSearch) {
 		if (testPos.x > targetPos.x + fpp.maxTargetDist) {
@@ -1554,7 +1554,7 @@ bool FrozenPathingConditionCall::isInRange(const Position& startPos, const Posit
 }
 
 bool FrozenPathingConditionCall::operator()(const Position& startPos, const Position& testPos,
-        const FindPathParams& fpp, int32_t& bestMatchDist) const
+		const FindPathParams& fpp, int32_t& bestMatchDist) const
 {
 	if (!isInRange(startPos, testPos, fpp)) {
 		return false;

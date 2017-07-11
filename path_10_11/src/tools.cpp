@@ -1250,43 +1250,39 @@ int64_t OTSYS_TIME()
  * capitalize the first letter of every word in source
  * @param source
  */
-void capitalizeWords(std::string& source) {
+void capitalizeWords(std::string& source)
+{
 	toLowerCaseString(source);
 	uint8_t size = (uint8_t) source.size();
-	for(uint8_t i=0; i< size; i++)
-	{
+	for(uint8_t i=0; i< size; i++) {
 		if(i==0) {
 			source[i] = (char)toupper(source[i]);
-		}
-		else if(source[i-1] == ' ' || source[i-1] == '\'') {
+		} else if(source[i-1] == ' ' || source[i-1] == '\'') {
 			source[i] = (char)toupper(source[i]);
 		}
 	}
 }
 
-NameEval_t validateName(const std::string &name) {
+NameEval_t validateName(const std::string &name)
+{
 
 	StringVector prohibitedWords = {"owner", "gamemaster", "hoster", "admin", "staff", "tibia", "account", "god", "anal", "ass", "fuck", "sex", "hitler", "pussy", "dick", "rape", "cm", "gm", "tutor", "counsellor", "god"};
 	StringVector toks;
 	std::regex regexValidChars("^[a-zA-Z' ]+$");
 
 	boost::split(toks, name, boost::is_any_of(" '"));
-
-
-	if(name.length()<3 || name.length()>14){
+	if(name.length()<3 || name.length()>14) {
 		return INVALID_LENGTH;
 	}
 
-	if(!std::regex_match(name, regexValidChars)) //invalid chars in name
-	{
+	if(!std::regex_match(name, regexValidChars)) //invalid chars in name {
 		return INVALID_CHARACTER;
 	}
 
-	for(std::string str : toks)
-	{
+	for(std::string str : toks) {
 		if(str.length()<2)
 			return INVALID_TOKEN_LENGTH;
-		else if(std::find(prohibitedWords.begin(), prohibitedWords.end(),str) != prohibitedWords.end()){ //searching for prohibited words
+		else if(std::find(prohibitedWords.begin(), prohibitedWords.end(),str) != prohibitedWords.end()) { //searching for prohibited words
 			return INVALID_FORBIDDEN;
 		}
 	}

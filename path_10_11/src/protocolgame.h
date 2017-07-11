@@ -350,7 +350,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendRemoveTileThing(const Position& pos, uint32_t stackpos);
 
 		void sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos,
-		                      const Position& oldPos, int32_t oldStackPos, bool teleport);
+							  const Position& oldPos, int32_t oldStackPos, bool teleport);
 
 		//containers
 		void sendAddContainerItem(uint8_t cid, uint16_t slot, const Item* item);
