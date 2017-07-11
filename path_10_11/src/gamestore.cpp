@@ -93,7 +93,6 @@ bool GameStore::loadFromXml()
 			}
 
 			std::string state = categoryNode.attribute("state").as_string("normal");
-
 			if (boost::iequals(state, "normal")) { //reading state (defaults to normal)
 				cat->state = StoreState_t::NORMAL;
 			} else if (boost::iequals(state, "new")) {
@@ -103,7 +102,6 @@ bool GameStore::loadFromXml()
 			} else if (boost::iequals(state, "limitedtime")) {
 				cat->state = StoreState_t::LIMITED_TIME;
 			}
-
 			cat->icons = getIconsVector(categoryNode.attribute("icons").as_string("default.png"));
 
 			for (auto offerNode : categoryNode.children()) {
@@ -139,9 +137,7 @@ bool GameStore::loadFromXml()
 					tmp->femaleLookType = (uint16_t) offerNode.attribute("femalelooktype").as_uint();
 					tmp->addonNumber = (uint8_t) offerNode.attribute("addon").as_uint(0);
 					if (!tmp->femaleLookType || !tmp->maleLookType || !tmp->addonNumber || tmp->addonNumber > 3) {
-						printXMLError("Error parsing XML addon offer - GameStore::loadFromXml",
-									  "data/XML/gamestore.xml",
-									  result);
+						printXMLError("Error parsing XML addon offer - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
 						return false;
 					} else {
 						offer = tmp;
@@ -208,7 +204,6 @@ bool GameStore::loadFromXml()
 					}
 
 					offer = tmp;
-
 				} else if(boost::iequals(type, "teleport")) {
 					TeleportOffer* tmp = new TeleportOffer();
 					tmp->type = TELEPORT;
@@ -238,9 +233,7 @@ bool GameStore::loadFromXml()
 				}
 
 				if (!offer) {
-					printXMLError("Error parsing XML invalid offer type - GameStore::loadFromXml",
-								  "data/XML/gamestore.xml",
-								  result);
+					printXMLError("Error parsing XML invalid offer type - GameStore::loadFromXml", "data/XML/gamestore.xml", result);
 					return false;
 				} else {
 					offer->name = offerNode.attribute("name").as_string();
@@ -296,9 +289,7 @@ const int8_t GameStore::getCategoryIndexByName(std::string categoryName) const
 uint16_t GameStore::getOffersCount()
 {
 	uint16_t count = 0;
-
-	for(auto category:storeCategoryOffers)
-	{
+	for(auto category:storeCategoryOffers) {
 		count+= category->offers.size();
 	}
 
@@ -308,15 +299,18 @@ uint16_t GameStore::getOffersCount()
 const BaseOffer *GameStore::getOfferByOfferId(uint32_t offerId)
 {
 	for(StoreCategory* category : storeCategoryOffers) {
-		for (BaseOffer *offer : category->offers)
-			if (offer->id == offerId)
+		for (BaseOffer *offer : category->offers) {
+			if (offer->id == offerId) {
 				return offer;
+			}
+		}
 	}
 
 	return nullptr;
 }
 
-HistoryStoreOfferList IOGameStore::getHistoryEntries(uint32_t account_id, uint32_t page) {
+HistoryStoreOfferList IOGameStore::getHistoryEntries(uint32_t account_id, uint32_t page)
+{
 	HistoryStoreOfferList historyStoreOfferList;
 
 	std::ostringstream query;
@@ -338,5 +332,6 @@ HistoryStoreOfferList IOGameStore::getHistoryEntries(uint32_t account_id, uint32
 			historyStoreOfferList.push_back(entry);
 		} while (result->next());
 	}
+
 	return historyStoreOfferList;
 }
