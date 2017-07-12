@@ -20,8 +20,6 @@
 #ifndef FS_CONFIGMANAGER_H_6BDD23BD0B8344F4B7C40E8BE6AF6F39
 #define FS_CONFIGMANAGER_H_6BDD23BD0B8344F4B7C40E8BE6AF6F39
 
-#include <lua.hpp>
-
 class ConfigManager
 {
 	public:
@@ -41,15 +39,15 @@ class ConfigManager
 			WARN_UNSAFE_SCRIPTS,
 			CONVERT_UNSAFE_SCRIPTS,
 			CLASSIC_EQUIPMENT_SLOTS,
-			ALLOW_WALKTHROUGH,
+			CLASSIC_ATTACK_SPEED,
 			ALLOW_BLOCK_SPAWN,
-			AUTO_STACK_ITEMS,
+			REMOVE_WEAPON_AMMO,
+			REMOVE_WEAPON_CHARGES,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
 
 		enum string_config_t {
-			DUMMY_STR,
 			MAP_NAME,
 			HOUSE_RENT_PERIOD,
 			SERVER_NAME,
@@ -107,21 +105,27 @@ class ConfigManager
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
 
+		enum floating_config_t {
+			RATE_MONSTER_HEALTH,
+			RATE_MONSTER_ATTACK,
+			RATE_MONSTER_DEFENSE,
+
+			LAST_FLOATING_CONFIG
+		};
+
 		bool load();
 		bool reload();
 
 		const std::string& getString(string_config_t what) const;
 		int32_t getNumber(integer_config_t what) const;
 		bool getBoolean(boolean_config_t what) const;
+		float getFloat(floating_config_t what) const;
 
 	private:
-		static std::string getGlobalString(lua_State* L, const char* identifier, const char* defaultValue);
-		static int32_t getGlobalNumber(lua_State* L, const char* identifier, const int32_t defaultValue = 0);
-		static bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultValue);
-
 		std::string string[LAST_STRING_CONFIG] = {};
 		int32_t integer[LAST_INTEGER_CONFIG] = {};
 		bool boolean[LAST_BOOLEAN_CONFIG] = {};
+		float floating[LAST_FLOATING_CONFIG] = {};
 
 		bool loaded = false;
 };

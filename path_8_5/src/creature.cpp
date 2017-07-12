@@ -42,8 +42,7 @@ Creature::~Creature()
 {
 	for (Creature* summon : summons) {
 		summon->setAttackedCreature(nullptr);
-		summon->setMaster(nullptr);
-		summon->decrementReferenceCounter();
+		summon->removeMaster();
 	}
 
 	for (Condition* condition : conditions) {
@@ -413,7 +412,7 @@ void Creature::onRemoveCreature(Creature* creature, bool)
 	onCreatureDisappear(creature, true);
 	if (creature == this) {
 		if (master && !master->isRemoved()) {
-			master->removeSummon(this);
+			setMaster(nullptr);
 		}
 	} else if (isMapLoaded) {
 		if (creature->getPosition().z == getPosition().z) {
@@ -638,8 +637,10 @@ void Creature::onDeath()
 
 			if (attacker != this) {
 				uint64_t gainExp = getGainedExperience(attacker);
-				if (Player* player = attacker->getPlayer()) {
-					Party* party = player->getParty();
+				if (Player* attackerPlayer = attacker->getPlayer()) {
+					attackerPlayer->removeAttacked(getPlayer());
+
+					Party* party = attackerPlayer->getParty();
 					if (party && party->getLeader() && party->isSharedExperienceActive() && party->isSharedExperienceEnabled()) {
 						attacker = party->getLeader();
 					}
@@ -672,7 +673,7 @@ void Creature::onDeath()
 	death(lastHitCreature);
 
 	if (master) {
-		master->removeSummon(this);
+		setMaster(nullptr);
 	}
 
 	if (droppedCorpse) {
@@ -939,14 +940,7 @@ bool Creature::setFollowCreature(Creature* creature)
 		}
 
 		const Position& creaturePos = creature->getPosition();
-		FindPathParams fpp;
-		fpp.minTargetDist = 0;
-		fpp.maxTargetDist = 1;
-		fpp.fullPathSearch = true;
-		fpp.clearSight = true;
-		fpp.maxSearchDist = 150;
-		std::forward_list<Direction> dirList;
-		if (creaturePos.z != getPosition().z || !canSee(creaturePos) || !getPathTo(creaturePos, dirList, fpp)) {
+		if (creaturePos.z != getPosition().z || !canSee(creaturePos)) {
 			followCreature = nullptr;
 			return false;
 		}
@@ -1123,25 +1117,27 @@ void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 	g_game.addAnimatedText(strExp.str(), position, TEXTCOLOR_WHITE_EXP);
 }
 
-void Creature::addSummon(Creature* creature)
-{
-	creature->setDropLoot(false);
-	creature->setLossSkill(false);
-	creature->setMaster(this);
-	creature->incrementReferenceCounter();
-	summons.push_back(creature);
-}
-
-void Creature::removeSummon(Creature* creature)
-{
-	auto cit = std::find(summons.begin(), summons.end(), creature);
-	if (cit != summons.end()) {
-		creature->setDropLoot(false);
-		creature->setLossSkill(true);
-		creature->setMaster(nullptr);
-		creature->decrementReferenceCounter();
-		summons.erase(cit);
+bool Creature::setMaster(Creature* newMaster) {
+	if (!newMaster && !master) {
+		return false;
 	}
+
+	if (newMaster) {
+		incrementReferenceCounter();
+		newMaster->summons.push_back(this);
+	}
+
+	Creature* oldMaster = master;
+	master = newMaster;
+
+	if (oldMaster) {
+		auto summon = std::find(oldMaster->summons.begin(), oldMaster->summons.end(), this);
+		if (summon != oldMaster->summons.end()) {
+			oldMaster->summons.erase(summon);
+			decrementReferenceCounter();
+		}
+	}
+	return true;
 }
 
 bool Creature::addCondition(Condition* condition, bool force/* = false*/)

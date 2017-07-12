@@ -7,6 +7,8 @@ killsToRedSkull = 3
 killsToBlackSkull = 6
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
+removeWeaponAmmunition = true
+removeWeaponCharges = true
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
 whiteSkullTime = 15 * 60 * 1000
 stairJumpExhaustion = 2 * 1000
@@ -30,9 +32,9 @@ replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
 -- Version Manual
-clientVersionMin = 854
-clientVersionMax = 858
-clientVersionStr = "Only clients with protocol 8.54/58 allowed!"
+clientVersionMin = 860
+clientVersionMax = 860
+clientVersionStr = "Only clients with protocol 8.60 allowed!"
 
 -- Deaths
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default
@@ -56,9 +58,9 @@ mapAuthor = "Komic"
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = ""
+mysqlUser = "forgottenserver"
 mysqlPass = ""
-mysqlDatabase = ""
+mysqlDatabase = "forgottenserver"
 mysqlPort = 3306
 mysqlSock = ""
 
@@ -70,7 +72,7 @@ maxMessageBuffer = 4
 emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
-autoStackItems = false
+classicAttackSpeed = false
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
@@ -79,6 +81,11 @@ rateSkill = 3
 rateLoot = 2
 rateMagic = 3
 rateSpawn = 1
+
+-- Monster rates
+rateMonsterHealth = 1.0
+rateMonsterAttack = 1.0
+rateMonsterDefense = 1.0
 
 -- Monsters
 deSpawnRange = 2

@@ -163,6 +163,9 @@ class MonsterType
 		bool isBlockable = true;
 		bool isPassive = false;
 		bool isRewardBoss = false;
+		bool canWalkOnEnergy = true;
+		bool canWalkOnFire = true;
+		bool canWalkOnPoison = true;
 	};
 
 	public:
@@ -202,15 +205,16 @@ class Monsters
 
 	private:
 		ConditionDamage* getDamageCondition(ConditionType_t conditionType,
-		                                    int32_t maxDamage, int32_t minDamage, int32_t startDamage, uint32_t tickInterval);
+											int32_t maxDamage, int32_t minDamage, int32_t startDamage, uint32_t tickInterval);
 		bool deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, const std::string& description = "");
 
-		bool loadMonster(const std::string& file, const std::string& monsterName, std::list<std::pair<MonsterType*, std::string>>& monsterScriptList, bool reloading = false);
+		MonsterType* loadMonster(const std::string& file, const std::string& monsterName, bool reloading = false);
 
 		void loadLootContainer(const pugi::xml_node& node, LootBlock&);
 		bool loadLootItem(const pugi::xml_node& node, LootBlock&);
 
 		std::map<std::string, MonsterType> monsters;
+		std::map<std::string, std::string> unloadedMonsters;
 		std::unique_ptr<LuaScriptInterface> scriptInterface;
 
 		bool loaded = false;

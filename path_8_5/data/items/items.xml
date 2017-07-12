@@ -2681,9 +2681,9 @@
 	</item>
 	<item id="2268" article="a" name="sudden death rune">
 		<attribute key="type" value="rune" />
-		<attribute key="runeSpellName" value="adori vita vis" />
+		<attribute key="runeSpellName" value="adori gran mort" />
 		<attribute key="weight" value="70" />
-		<attribute key="charges" value="1" />
+		<attribute key="charges" value="3" />
 	</item>
 	<item id="2269" article="a" name="wild growth rune">
 		<attribute key="type" value="rune" />
@@ -2785,11 +2785,11 @@
 		<attribute key="weight" value="210" />
 		<attribute key="charges" value="1" />
 	</item>
-	<item id="2292" article="a" name="envenom rune">
+	<item id="2292" article="a" name="stalagmite rune">
 		<attribute key="type" value="rune" />
-		<attribute key="runeSpellName" value="adevo res pox" />
+		<attribute key="runeSpellName" value="adori tera" />
 		<attribute key="weight" value="21" />
-		<attribute key="charges" value="1" />
+		<attribute key="charges" value="10" />
 	</item>
 	<item id="2293" article="a" name="magic wall rune">
 		<attribute key="type" value="rune" />
@@ -2821,7 +2821,7 @@
 		<attribute key="type" value="rune" />
 		<attribute key="runeSpellName" value="adori flam" />
 		<attribute key="weight" value="42" />
-		<attribute key="charges" value="2" />
+		<attribute key="charges" value="5" />
 	</item>
 	<item id="2303" article="a" name="fire wall rune">
 		<attribute key="type" value="rune" />
@@ -2831,9 +2831,9 @@
 	</item>
 	<item id="2304" article="a" name="great fireball rune">
 		<attribute key="type" value="rune" />
-		<attribute key="runeSpellName" value="adori gran flam" />
+		<attribute key="runeSpellName" value="adori mas flam" />
 		<attribute key="weight" value="52" />
-		<attribute key="charges" value="2" />
+		<attribute key="charges" value="4" />
 	</item>
 	<item id="2305" article="a" name="fire bomb rune">
 		<attribute key="type" value="rune" />
@@ -2863,9 +2863,9 @@
 	</item>
 	<item id="2311" article="a" name="heavy magic missile rune">
 		<attribute key="type" value="rune" />
-		<attribute key="runeSpellName" value="adori gran" />
+		<attribute key="runeSpellName" value="adori vis" />
 		<attribute key="weight" value="21" />
-		<attribute key="charges" value="5" />
+		<attribute key="charges" value="10" />
 	</item>
 	<item id="2312" article="a" name="spell rune">
 		<attribute key="type" value="rune" />
@@ -2875,7 +2875,7 @@
 		<attribute key="type" value="rune" />
 		<attribute key="runeSpellName" value="adevo mas hur" />
 		<attribute key="weight" value="35" />
-		<attribute key="charges" value="3" />
+		<attribute key="charges" value="6" />
 	</item>
 	<item id="2314" article="a" name="spell rune">
 		<attribute key="type" value="rune" />
@@ -19567,9 +19567,9 @@
 		<attribute key="slotType" value="backpack" />
 	</item>
 	<item id="11242" article="an" name="expedition bag">
-		<attribute key="containersize" value="32" />
-		<attribute key="pickupable" value="0" />
-		<attribute key="moveable" value="0" />
+		<attribute key="weight" value="800" />
+		<attribute key="containerSize" value="8" />
+		<attribute key="slotType" value="backpack" />
 	</item>
 	<item id="11243" article="a" name="dragon backpack">
 		<attribute key="weight" value="1700" />

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
  *
@@ -271,7 +271,7 @@ class ItemType
 class Items
 {
 	public:
-		using nameMap = std::unordered_multimap<std::string, uint16_t>;
+		using NameMap = std::unordered_multimap<std::string, uint16_t>;
 
 		Items();
 
@@ -300,11 +300,11 @@ class Items
 		bool loadFromXml();
 		void parseItemNode(const pugi::xml_node& itemNode, uint16_t id);
 
-		inline size_t size() const {
+		size_t size() const {
 			return items.size();
 		}
 
-		nameMap nameToItems;
+		NameMap nameToItems;
 
 	protected:
 		std::map<uint16_t, uint16_t> reverseItemMap;

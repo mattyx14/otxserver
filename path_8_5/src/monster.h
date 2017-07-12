@@ -27,8 +27,8 @@ class Creature;
 class Game;
 class Spawn;
 
-typedef std::unordered_set<Creature*> CreatureHashSet;
-typedef std::list<Creature*> CreatureList;
+using CreatureHashSet = std::unordered_set<Creature*>;
+using CreatureList = std::list<Creature*>;
 
 enum TargetSearchType_t {
 	TARGETSEARCH_DEFAULT,
@@ -44,7 +44,7 @@ class Monster final : public Creature
 		static int32_t despawnRange;
 		static int32_t despawnRadius;
 
-		explicit Monster(MonsterType* mtype);
+		explicit Monster(MonsterType* mType);
 		~Monster();
 
 		// non-copyable
@@ -127,6 +127,7 @@ class Monster final : public Creature
 			this->spawn = spawn;
 		}
 
+		bool canWalkOnFieldType(CombatType_t combatType) const;
 		void onAttackedCreatureDisappear(bool isLogout) final;
 
 		void onCreatureAppear(Creature* creature, bool isLogin) final;
@@ -172,9 +173,18 @@ class Monster final : public Creature
 		bool isTargetNearby() const {
 			return stepDuration >= 1;
 		}
+		bool isRandomSteping() const {
+			return randomSteping;
+		}
+		void setIgnoreFieldDamage(bool ignore) {
+			ignoreFieldDamage = ignore;
+		}
+		bool getIgnoreFieldDamage() const {
+			return ignoreFieldDamage;
+		}
 
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-		                     bool checkDefense = false, bool checkArmor = false, bool field = false);
+							 bool checkDefense = false, bool checkArmor = false, bool field = false);
 
 		static uint32_t monsterAutoID;
 
@@ -204,6 +214,8 @@ class Monster final : public Creature
 		bool isIdle = true;
 		bool extraMeleeAttack = false;
 		bool isMasterInRange = false;
+		bool randomSteping = false;
+		bool ignoreFieldDamage = false;
 
 		void onCreatureEnter(Creature* creature);
 		void onCreatureLeave(Creature* creature);
@@ -235,10 +247,10 @@ class Monster final : public Creature
 
 		bool canUseAttack(const Position& pos, const Creature* target) const;
 		bool canUseSpell(const Position& pos, const Position& targetPos,
-		                 const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks);
+						 const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks);
 		bool getRandomStep(const Position& creaturePos, Direction& direction) const;
 		bool getDanceStep(const Position& creaturePos, Direction& direction,
-		                  bool keepAttack = true, bool keepDistance = true);
+						  bool keepAttack = true, bool keepDistance = true);
 		bool isInSpawnRange(const Position& pos) const;
 		bool canWalkTo(Position pos, Direction direction) const;
 
@@ -269,7 +281,7 @@ class Monster final : public Creature
 		}
 		void getPathSearchParams(const Creature* creature, FindPathParams& fpp) const final;
 		bool useCacheMap() const final {
-			return true;
+			return !randomSteping;
 		}
 
 		friend class LuaScriptInterface;

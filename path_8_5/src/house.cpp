@@ -41,11 +41,11 @@ void House::addTile(HouseTile* tile)
 void House::setOwner(uint32_t guid, bool updateDatabase/* = true*/, Player* player/* = nullptr*/)
 {
 	if (updateDatabase && owner != guid) {
-		Database* db = Database::getInstance();
+		Database& db = Database::getInstance();
 
 		std::ostringstream query;
 		query << "UPDATE `houses` SET `owner` = " << guid << ", `bid` = 0, `bid_end` = 0, `last_bid` = 0, `highest_bidder` = 0  WHERE `id` = " << id;
-		db->executeQuery(query.str());
+		db.executeQuery(query.str());
 	}
 
 	if (isLoaded && owner == guid) {
@@ -509,8 +509,7 @@ void AccessList::getList(std::string& list) const
 	list = this->list;
 }
 
-Door::Door(uint16_t type) :
-	Item(type) {}
+Door::Door(uint16_t type) :	Item(type) {}
 
 Attr_ReadValue Door::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
@@ -622,8 +621,8 @@ bool Houses::loadHousesXML(const std::string& filename)
 		);
 		if (entryPos.x == 0 && entryPos.y == 0 && entryPos.z == 0) {
 			std::cout << "[Warning - Houses::loadHousesXML] House entry not set"
-					    << " - Name: " << house->getName()
-					    << " - House id: " << houseId << std::endl;
+						<< " - Name: " << house->getName()
+						<< " - House id: " << houseId << std::endl;
 		}
 		house->setEntryPos(entryPos);
 

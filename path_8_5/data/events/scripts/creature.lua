@@ -3,7 +3,7 @@ function Creature:onChangeOutfit(outfit)
 end
 
 function Creature:onAreaCombat(tile, isAggressive)
-	return true
+	return RETURNVALUE_NOERROR
 end
 
 local function removeCombatProtection(cid)

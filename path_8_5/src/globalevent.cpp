@@ -140,7 +140,7 @@ void GlobalEvents::timer()
 
 	if (nextScheduledTime != std::numeric_limits<int64_t>::max()) {
 		timerEventId = g_scheduler.addEvent(createSchedulerTask(std::max<int64_t>(1000, nextScheduledTime * 1000),
-							                std::bind(&GlobalEvents::timer, this)));
+											std::bind(&GlobalEvents::timer, this)));
 	}
 }
 

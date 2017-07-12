@@ -44,7 +44,7 @@ Actions::~Actions()
 	clear();
 }
 
-inline void Actions::clearMap(ActionUseMap& map)
+void Actions::clearMap(ActionUseMap& map)
 {
 	// Filter out duplicates to avoid double-free
 	std::unordered_set<Action*> set;
@@ -396,7 +396,7 @@ bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* 
 }
 
 bool Actions::useItemEx(Player* player, const Position& fromPos, const Position& toPos,
-                        uint8_t toStackPos, Item* item, bool isHotkey, Creature* creature/* = nullptr*/)
+						uint8_t toStackPos, Item* item, bool isHotkey, Creature* creature/* = nullptr*/)
 {
 	player->setNextAction(OTSYS_TIME() + g_config.getNumber(ConfigManager::EX_ACTIONS_DELAY_INTERVAL));
 	player->stopWalk();
@@ -444,54 +444,31 @@ void Actions::showUseHotkeyMessage(Player* player, const Item* item, uint32_t co
 Action::Action(LuaScriptInterface* interface) :
 	Event(interface), function(nullptr), allowFarUse(false), checkFloor(true), checkLineOfSight(true) {}
 
-Action::Action(const Action* copy) :
-	Event(copy), function(copy->function), allowFarUse(copy->allowFarUse), checkFloor(copy->checkFloor), checkLineOfSight(copy->checkLineOfSight) {}
-
 bool Action::configureEvent(const pugi::xml_node& node)
 {
 	pugi::xml_attribute allowFarUseAttr = node.attribute("allowfaruse");
 	if (allowFarUseAttr) {
-		setAllowFarUse(allowFarUseAttr.as_bool());
+		allowFarUse = allowFarUseAttr.as_bool();
 	}
 
 	pugi::xml_attribute blockWallsAttr = node.attribute("blockwalls");
 	if (blockWallsAttr) {
-		setCheckLineOfSight(blockWallsAttr.as_bool());
+		checkLineOfSight = blockWallsAttr.as_bool();
 	}
 
 	pugi::xml_attribute checkFloorAttr = node.attribute("checkfloor");
 	if (checkFloorAttr) {
-		setCheckFloor(checkFloorAttr.as_bool());
+		checkFloor = checkFloorAttr.as_bool();
 	}
 
 	return true;
 }
 
-bool Action::loadFunction(const pugi::xml_attribute& attr)
-{
-	const char* functionName = attr.as_string();
-	if (strcasecmp(functionName, "increaseitemid") == 0) {
-		function = increaseItemId;
-	} else if (strcasecmp(functionName, "decreaseitemid") == 0) {
-		function = decreaseItemId;
-	} else {
-		std::cout << "[Warning - Action::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
-		return false;
-	}
+namespace {}
 
+bool Action::loadFunction(const pugi::xml_attribute&)
+{
 	scripted = false;
-	return true;
-}
-
-bool Action::increaseItemId(Player*, Item* item, const Position&, Thing*, const Position&, bool)
-{
-	g_game.startDecay(g_game.transformItem(item, item->getID() + 1));
-	return true;
-}
-
-bool Action::decreaseItemId(Player*, Item* item, const Position&, Thing*, const Position&, bool)
-{
-	g_game.startDecay(g_game.transformItem(item, item->getID() - 1));
 	return true;
 }
 
@@ -502,10 +479,10 @@ std::string Action::getScriptEventName() const
 
 ReturnValue Action::canExecuteAction(const Player* player, const Position& toPos)
 {
-	if (!getAllowFarUse()) {
+	if (!allowFarUse) {
 		return g_actions->canUse(player, toPos);
 	} else {
-		return g_actions->canUseFar(player, toPos, getCheckLineOfSight(), getCheckFloor());
+		return g_actions->canUseFar(player, toPos, checkLineOfSight, checkFloor);
 	}
 }
 
