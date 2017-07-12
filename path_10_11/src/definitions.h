@@ -25,11 +25,11 @@ static constexpr auto STATUS_SERVER_VERSION = "3";
 static constexpr auto MINOR_VERSION = "9";
 static constexpr auto REVISION_VERSION = "DEV";
 static constexpr auto SOFTWARE_CODENAME = "OpenTibia";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "Matt Gomez, Leandro Brewster, Erick Nunes, Joao Leonardo Pereira, OTX Contributors and The Forgotten Server Developers";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "Matt Gomez, Leandro Brewster, Erick Nunes, Joao Leonardo Pereira, Bruno Carvalh, Cjaker, OTX Contributors and The Forgotten Server Developers";
 static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/";
 
 static constexpr auto CLIENT_VERSION_MIN = 1100;
-static constexpr auto CLIENT_VERSION_MAX = 1300;
+static constexpr auto CLIENT_VERSION_MAX = 1132;
 static constexpr auto CLIENT_VERSION_STR = "10.00 or 11.00";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;

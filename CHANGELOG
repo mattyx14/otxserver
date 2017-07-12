@@ -18,6 +18,8 @@
 			Leandro Brewster
 			Erick Nunes
 			Joao Leonardo Pereira
+			Bruno Carvalho
+			Cjaker
 
 		Special Thanks(s) 
 			The Forgotten Team = TFT
@@ -25,12 +27,14 @@
 
 			Otxserver-New Contributors = NWOTX
 				https://github.com/malucooo/Otxserver-New/graphs/contributors
+				Bruno Carvalho, Cjaker, sn4tch0vsk, MichelFigueira, Xavier Carreón, Marcos L, Luan Luciano
 
 			The Forgotten Contributors = TFC
 				https://github.com/otland/forgottenserver/graphs/contributors/
 
 			OTX Server Contributors = OTXS-C
 				https://github.com/mattyx14/otxserver/graphs/contributors/
+				sn4tch0vsk, MichelFigueira, Xavier Carreón, Marcos L, Luan Luciano
 
 			OpenTibia
 				https://github.com/opentibia/
@@ -59,9 +63,6 @@
 
 			Ben Dol
 				https://github.com/BenDol/
-
-			Bruno Minervino
-				https://github.com/brunominervino/
 
 			To All OTX Server Contributors
 				https://github.com/mattyx14/otxserver/graphs/contributors/
@@ -139,7 +140,6 @@
 	- Move levitate to Lua (TFT)
 	- Improve code and cleanups (TFT)
 	- Remove player from attack list upon death (TFC)
-	- Remove support to clientVersion 11_ - aka10 (items.otb official no)
 	- Remove compat function from swimming.lua (TFC)
 	- Storing TalkAction instances instead of pointers (TFC)
 	- Support to Client_10_11 Support // Items.otb no official (OTXS-C)

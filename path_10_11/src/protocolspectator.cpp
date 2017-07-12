@@ -65,6 +65,9 @@ void ProtocolSpectator::onRecvFirstMessage(NetworkMessage& msg)
 
 	operatingSystem = (OperatingSystem_t)msg.get<uint16_t>();
 	version = msg.get<uint16_t>();
+	if (version >= 1111) {
+		enableCompact();
+	}
 
 	msg.skipBytes(7); // U32 clientVersion, U8 clientType
 

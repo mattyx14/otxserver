@@ -357,6 +357,9 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	OperatingSystem_t operatingSystem = static_cast<OperatingSystem_t>(msg.get<uint16_t>());
 	version = msg.get<uint16_t>();
+	if (version >= 1111) {
+		enableCompact();
+	}
 
 	msg.skipBytes(7); // U32 client version, U8 client type, U16 dat revision
 

@@ -77,6 +77,12 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		void disableChecksum() {
 			checksumEnabled = false;
 		}
+		void enableCompact() {
+			compactCrypt = true;
+		}
+		bool isCompact() {
+			return compactCrypt;
+		}
 
 		void XTEA_encrypt(OutputMessage& msg) const;
 		bool XTEA_decrypt(NetworkMessage& msg) const;
@@ -95,6 +101,7 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		uint32_t key[4] = {};
 		bool encryptionEnabled = false;
 		bool checksumEnabled = true;
+		bool compactCrypt = false;
 		bool rawMessages = false;
 };
 
