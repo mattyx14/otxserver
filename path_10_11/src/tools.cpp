@@ -1275,7 +1275,7 @@ NameEval_t validateName(const std::string &name)
 		return INVALID_LENGTH;
 	}
 
-	if(!std::regex_match(name, regexValidChars)) //invalid chars in name {
+	if(!std::regex_match(name, regexValidChars)) { //invalid chars in name
 		return INVALID_CHARACTER;
 	}
 
