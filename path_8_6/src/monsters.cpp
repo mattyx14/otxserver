@@ -241,7 +241,7 @@ bool Monsters::reload()
 }
 
 ConditionDamage* Monsters::getDamageCondition(ConditionType_t conditionType,
-        int32_t maxDamage, int32_t minDamage, int32_t startDamage, uint32_t tickInterval)
+		int32_t maxDamage, int32_t minDamage, int32_t startDamage, uint32_t tickInterval)
 {
 	ConditionDamage* condition = static_cast<ConditionDamage*>(Condition::createCondition(CONDITIONID_COMBAT, conditionType, 0, 0));
 	condition->setParam(CONDITION_PARAM_TICKINTERVAL, tickInterval);
@@ -550,12 +550,12 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 		} else if (tmpName == "energyfield") {
 			combat->setParam(COMBAT_PARAM_CREATEITEM, ITEM_ENERGYFIELD_PVP);
 		} else if (tmpName == "firecondition" || tmpName == "energycondition" ||
-		           tmpName == "earthcondition" || tmpName == "poisoncondition" ||
-		           tmpName == "icecondition" || tmpName == "freezecondition" ||
-		           tmpName == "deathcondition" || tmpName == "cursecondition" ||
-		           tmpName == "holycondition" || tmpName == "dazzlecondition" ||
-		           tmpName == "drowncondition" || tmpName == "bleedcondition" ||
-		           tmpName == "physicalcondition") {
+				   tmpName == "earthcondition" || tmpName == "poisoncondition" ||
+				   tmpName == "icecondition" || tmpName == "freezecondition" ||
+				   tmpName == "deathcondition" || tmpName == "cursecondition" ||
+				   tmpName == "holycondition" || tmpName == "dazzlecondition" ||
+				   tmpName == "drowncondition" || tmpName == "bleedcondition" ||
+				   tmpName == "physicalcondition") {
 			ConditionType_t conditionType = CONDITION_NONE;
 			uint32_t tickInterval = 2000;
 
@@ -678,7 +678,7 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 
 	if (reloading) {
 		auto it = monsters.find(asLowerCaseString(monsterName));
-		if (it == monsters.end()) {
+		if (it != monsters.end()) {
 			mType = &it->second;
 			mType->info = {};
 		}
@@ -809,6 +809,12 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 				mType->info.hiddenHealth = attr.as_bool();
 			} else if (strcasecmp(attrName, "isblockable") == 0) {
 				mType->info.isBlockable = attr.as_bool();
+			} else if (strcasecmp(attrName, "canwalkonenergy") == 0) {
+				mType->info.canWalkOnEnergy = attr.as_bool();
+			} else if (strcasecmp(attrName, "canwalkonfire") == 0) {
+				mType->info.canWalkOnFire = attr.as_bool();
+			} else if (strcasecmp(attrName, "canwalkonpoison") == 0) {
+				mType->info.canWalkOnPoison = attr.as_bool();
 			} else {
 				std::cout << "[Warning - Monsters::loadMonster] Unknown flag attribute: " << attrName << ". " << file << std::endl;
 			}

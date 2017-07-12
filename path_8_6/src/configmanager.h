@@ -41,6 +41,8 @@ class ConfigManager
 			CLASSIC_EQUIPMENT_SLOTS,
 			CLASSIC_ATTACK_SPEED,
 			ALLOW_BLOCK_SPAWN,
+			REMOVE_WEAPON_AMMO,
+			REMOVE_WEAPON_CHARGES,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
