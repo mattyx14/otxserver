@@ -32,68 +32,18 @@ local function getTime(seconds)
 end
 
 function Player:onLook(thing, position, distance)
-	local description = "You see " .. thing:getDescription(distance)
-	if thing.itemid >= 28553 and thing.itemid <= 28557 or thing.itemid >= 28563 and thing.itemid <= 28566 or thing.itemid >= 28573 and thing.itemid <= 28574 or thing.itemid >= 28577 and thing.itemid <= 28588 then
-		local charges = thing.actionid - 1000
-		if charges >= 0 then
-			description = string.format('%s \nCharges left: %d', description, charges)
-		elseif thing.itemid <= 28574 then
-			description = string.format('%s That is brand-new\nCharges left: 1000', description, charges)
-		elseif thing.itemid >= 28577 then
-			description = string.format('%s That is brand-new\nCharges left: 250', description, charges)
-		end
-	end
-
-	if self:getGroup():getAccess() then
-		if thing:isItem() then
-			description = string.format("%s\nItem ID: %d", description, thing:getId())
-
-			local actionId = thing:getActionId()
-			if actionId ~= 0 then
-				description = string.format("%s, Action ID: %d", description, actionId)
-			end
-
-			local uniqueId = thing:getAttribute(ITEM_ATTRIBUTE_UNIQUEID)
-			if uniqueId > 0 and uniqueId < 65536 then
-				description = string.format("%s, Unique ID: %d", description, uniqueId)
-			end
-
-			local itemType = thing:getType()
-
-			local transformEquipId = itemType:getTransformEquipId()
-			local transformDeEquipId = itemType:getTransformDeEquipId()
-			if transformEquipId ~= 0 then
-				description = string.format("%s\nTransforms to: %d (onEquip)", description, transformEquipId)
-			elseif transformDeEquipId ~= 0 then
-				description = string.format("%s\nTransforms to: %d (onDeEquip)", description, transformDeEquipId)
-			end
-
-			local decayId = itemType:getDecayId()
-			if decayId ~= -1 then
-				description = string.format("%s\nDecays to: %d", description, decayId)
-			end
-		elseif thing:isCreature() then
-			local str = "%s\nHealth: %d / %d"
-			if thing:getMaxMana() > 0 then
-				str = string.format("%s, Mana: %d / %d", str, thing:getMana(), thing:getMaxMana())
-			end
-			description = string.format(str, description, thing:getHealth(), thing:getMaxHealth()) .. "."
-		end
-
-		local position = thing:getPosition()
-		description = string.format(
-			"%s\nPosition: %d, %d, %d",
-			description, position.x, position.y, position.z
-		)
-
-		if thing:isCreature() then
-			if thing:isPlayer() then
-				description = string.format("%s\nIP: %s.", description, Game.convertIpToString(thing:getIp()))
-			end
-		end
-	end
-
+	local description = 'You see '
 	if thing:isItem() then
+		if thing.itemid >= 28553 and thing.itemid <= 28557 or thing.itemid >= 28563 and thing.itemid <= 28566 or thing.itemid >= 28573 and thing.itemid <= 28574 or thing.itemid >= 28577 and thing.itemid <= 28588 then
+			description = description .. thing:getDescription(distance)
+			local charges = thing:getCharges()
+			if charges then
+			description = string.format('%s\nIt has %d refillings left.', description, charges)
+			end
+		else
+			description = description .. thing:getDescription(distance)
+		end
+
 		local itemType = thing:getType()
 		if (itemType and itemType:getImbuingSlots() > 0) then
 			local imbuingSlots = "Imbuements: ("
@@ -103,7 +53,7 @@ function Player:onLook(thing, position, distance)
 				if (thing:getSpecialAttribute(i+3)) then
 					time = getTime(thing:getSpecialAttribute(i+3))
 				end
-				
+
 				if (specialAttr) then
 					if (i ~= itemType:getImbuingSlots()) then
 						imbuingSlots = imbuingSlots.. "" ..specialAttr.." " ..time..", "
@@ -120,8 +70,57 @@ function Player:onLook(thing, position, distance)
 			end
 			description = string.gsub(description, "It weighs", imbuingSlots.. "\nIt weighs")
 		end
+	else
+		description = description .. thing:getDescription(distance)
 	end
 
+	if self:getGroup():getAccess() then
+		if thing:isItem() then
+			description = string.format('%s\nItem ID: %d', description, thing.itemid)
+
+			local actionId = thing.actionid
+			if actionId ~= 0 then
+				description = string.format('%s, Action ID: %d', description, actionId)
+			end
+
+			local uniqueId = thing:getAttribute(ITEM_ATTRIBUTE_UNIQUEID)
+			if uniqueId > 0 and uniqueId < 65536 then
+				description = string.format('%s, Unique ID: %d', description, uniqueId)
+			end
+
+			description = description .. '.'
+			local itemType = thing:getType()
+
+			local transformEquipId = itemType:getTransformEquipId()
+			local transformDeEquipId = itemType:getTransformDeEquipId()
+			if transformEquipId ~= 0 then
+				description = string.format('%s\nTransforms to: %d (onEquip)', description, transformEquipId)
+			elseif transformDeEquipId ~= 0 then
+				description = string.format('%s\nTransforms to: %d (onDeEquip)', description, transformDeEquipId)
+			end
+
+			local decayId = itemType:getDecayId()
+			if decayId ~= -1 then
+				description = string.format('%s\nDecays to: %d', description, decayId)
+			end
+		elseif thing:isCreature() then
+			local str = '%s\nHealth: %d / %d'
+			if thing:getMaxMana() > 0 then
+				str = string.format('%s, Mana: %d / %d', str, thing:getMana(), thing:getMaxMana())
+			end
+			description = string.format(str, description, thing:getHealth(), thing:getMaxHealth()) .. '.'
+		end
+
+		local position = thing:getPosition()
+		description = string.format(
+			'%s\nPosition: %d, %d, %d',
+			description, position.x, position.y, position.z
+		)
+
+		if thing:isCreature() and thing:isPlayer() then
+			description = string.format('%s\nIP: %s.', description, Game.convertIpToString(thing:getIp()))
+		end
+	end
 	self:sendTextMessage(MESSAGE_INFO_DESCR, description)
 end
 
