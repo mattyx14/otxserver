@@ -52,6 +52,7 @@ void ProtocolGameBase::onConnect()
 
 	// Go back and write checksum
 	output->skipBytes(-12);
+	// To support 11.10-, not have problems with 11.11+
 	output->add<uint32_t>(adlerChecksum(output->getOutputBuffer() + sizeof(uint32_t), 8));
 
 	send(std::move(output));
