@@ -9561,6 +9561,7 @@ int LuaScriptInterface::luaPlayerAddBlessing(lua_State* L)
 	}
 
 	player->addBlessing(1 << blessing);
+	player->sendBlessStatus();
 	pushBoolean(L, true);
 	return 1;
 }

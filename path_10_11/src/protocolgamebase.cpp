@@ -244,6 +244,24 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 	}
 }
 
+void ProtocolGameBase::sendBlessStatus() {
+	NetworkMessage msg;
+	int32_t blessCount = 0;
+	for (int i = 1; i <= 6; i++) {
+		if (player->hasBlessing(i)) {
+			blessCount++;
+		}
+	}
+
+	msg.addByte(0x9C);
+	if (blessCount >= 5) {
+		msg.add<uint16_t>(0x01);
+	} else {
+		msg.add<uint16_t>(0x00);
+	}
+	writeToOutputBuffer(msg);
+}
+
 // Send preyInfo
 void ProtocolGameBase::sendPreyData()
 {
@@ -695,6 +713,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 
 	sendStats();
 	sendSkills();
+	sendBlessStatus();
 
 	//gameworld light-settings
 	LightInfo lightInfo;
@@ -737,6 +756,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	sendBasicData();
 	sendInventoryClientIds();
 	sendPreyData();
+	player->sendClientCheck();
 	player->sendIcons();
 }
 

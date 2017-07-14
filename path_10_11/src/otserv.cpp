@@ -35,7 +35,6 @@
 #include "databasemanager.h"
 #include "scheduler.h"
 #include "databasetasks.h"
-// TODO: #include "stdarg.h"
 
 DatabaseTasks g_databaseTasks;
 Dispatcher g_dispatcher;
@@ -97,7 +96,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void mainLoader(int argc, char* argv[], ServiceManager* services)
+void mainLoader(int, char*[], ServiceManager* services)
 {
 	//dispatcher thread
 	g_game.setGameState(GAME_STATE_STARTUP);
@@ -125,18 +124,10 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	std::cout << "Visit our forum for updates, support, and resources: " << GIT_REPO <<"." << std::endl;
 	std::cout << std::endl;
 
-	// TODO: dirty for now; Use stdarg;
-	if (argc > 1) {
-		std::string param = { argv[1] };
-		if (param == "-c") {
-			g_config.setConfigFileLua(argv[2]);
-		}
-	}
-
 	// read global config
-	std::cout << ">> Loading config: " << g_config.getConfigFileLua() << std::endl;
+	std::cout << ">> Loading config" << std::endl;
 	if (!g_config.load()) {
-		startupErrorMessage("Unable to load Config File!");
+		startupErrorMessage("Unable to load config.lua!");
 		return;
 	}
 
@@ -167,7 +158,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	std::cout << ">> Running database manager" << std::endl;
 
 	if (!DatabaseManager::isDatabaseSetup()) {
-		startupErrorMessage("The database you have specified in config lua file is empty, please import the schema.sql to your database.");
+		startupErrorMessage("The database you have specified in config.lua is empty, please import the schema.sql to your database.");
 		return;
 	}
 	g_databaseTasks.start();

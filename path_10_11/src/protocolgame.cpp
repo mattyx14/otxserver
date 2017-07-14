@@ -1354,15 +1354,36 @@ void ProtocolGame::sendCloseShop()
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
+void ProtocolGame::sendClientCheck()
 {
 	NetworkMessage msg;
-	msg.addByte(0x7B);
-	if (player->isPremium()) {
-		msg.add<uint64_t>(player->getMoney() + player->getBankBalance());
-	} else {
-		msg.add<uint64_t>(player->getMoney());
+	msg.addByte(0x63);
+	msg.add<uint32_t>(0);
+	msg.addByte(0);
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendResourceBalance(uint64_t money, uint64_t bank)
+{
+	NetworkMessage msg;
+	msg.addByte(0xEE);
+	msg.addByte(0x00);
+	msg.add<uint64_t>(bank);
+	msg.addByte(0xEE);
+	msg.addByte(0x01);
+	msg.add<uint64_t>(money);
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
+{
+	if (player->getProtocolVersion() >= 1100) {
+		sendResourceBalance(player->getMoney(), player->getBankBalance());
 	}
+
+	NetworkMessage msg;
+	msg.addByte(0x7B);
+	msg.add<uint64_t>(player->getMoney() + player->getBankBalance());
 
 	std::map<uint16_t, uint32_t> saleMap;
 
