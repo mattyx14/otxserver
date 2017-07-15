@@ -967,6 +967,8 @@ class LuaScriptInterface
 		static int luaPlayerAddBlessing(lua_State* L);
 		static int luaPlayerRemoveBlessing(lua_State* L);
 
+		static int luaPlayerGetBlessingCount(lua_State * L);
+
 		static int luaPlayerCanLearnSpell(lua_State* L);
 		static int luaPlayerLearnSpell(lua_State* L);
 		static int luaPlayerForgetSpell(lua_State* L);

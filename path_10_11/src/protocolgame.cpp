@@ -1358,8 +1358,17 @@ void ProtocolGame::sendClientCheck()
 {
 	NetworkMessage msg;
 	msg.addByte(0x63);
-	msg.add<uint32_t>(0);
-	msg.addByte(0);
+	msg.add<uint32_t>(1);
+	msg.addByte(1);
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendGameNews()
+{
+	NetworkMessage msg;
+	msg.addByte(0x98);
+	msg.add<uint32_t>(1); // unknown
+	msg.addByte(1); //(0 = open | 1 = highlight)
 	writeToOutputBuffer(msg);
 }
 

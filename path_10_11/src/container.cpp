@@ -420,7 +420,7 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 	if (index == 255 /*add wherever*/) {
 		index = INDEX_WHEREEVER;
 		*destItem = nullptr;
-	} else if (index >= static_cast<int32_t>(capacity())) {
+	} else if (index >= static_cast<int32_t>(capacity()) && !hasPagination()) {
 		/*
 		if you have a container, maximize it to show all 20 slots
 		then you open a bag that is inside the container you will have a bag with 8 slots

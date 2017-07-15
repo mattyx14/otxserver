@@ -40,6 +40,7 @@
 #include "spells.h"
 #include "talkaction.h"
 #include "weapons.h"
+#include "modules.h"
 
 extern ConfigManager g_config;
 extern Actions* g_actions;
@@ -54,6 +55,7 @@ extern CreatureEvents* g_creatureEvents;
 extern Monsters g_monsters;
 extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
+extern Modules* g_modules;
 
 Game::Game()
 {
@@ -2184,8 +2186,16 @@ void Game::playerMoveUpContainer(uint32_t playerId, uint8_t cid)
 		}
 	}
 
-	player->addContainer(cid, parentContainer);
-	player->sendContainer(cid, parentContainer, parentContainer->hasParent(), player->getContainerIndex(cid));
+	if (parentContainer->hasPagination()) {
+		uint16_t indexContainer = std::floor(parentContainer->getThingIndex(container) / parentContainer->capacity()) * parentContainer->capacity();
+		player->addContainer(cid, parentContainer);
+
+		player->setContainerIndex(cid, indexContainer);
+		player->sendContainer(cid, parentContainer, parentContainer->hasParent(), indexContainer);
+	} else {
+		player->addContainer(cid, parentContainer);
+		player->sendContainer(cid, parentContainer, parentContainer->hasParent(), player->getContainerIndex(cid));
+	}
 }
 
 void Game::playerUpdateContainer(uint32_t playerId, uint8_t cid)
@@ -5826,7 +5836,7 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 		} else if(offer->type == BLESSING) {
 			BlessingOffer* blessingOffer = (BlessingOffer*) offer;
 
-			uint8_t blessingsToAdd=0;
+			uint8_t blessingsToAdd = 0;
 			for(uint8_t bless : blessingOffer->blessings) {
 				if(player->hasBlessing(bless)) {//player already has this bless
 					message << "Your character already has ";
@@ -5835,11 +5845,11 @@ void Game::playerBuyStoreOffer(uint32_t playerId, uint32_t offerId, uint8_t prod
 					player->sendStoreError(STORE_ERROR_PURCHASE, message.str());
 					return;
 				}
-				blessingsToAdd |= static_cast<uint8_t>(1) << bless;
+				blessingsToAdd = bless;
 			}
 
 			IOAccount::removeCoins(player->getAccount(), offer->price);
-			player->addBlessing(blessingsToAdd);
+			player->addBlessing(blessingsToAdd, 1);
 			IOAccount::registerTransaction(player->getAccount(), -1*offer->price, offer->name);
 			message<< "You've successfully bought the "<< offer->name << ".";
 			player->sendStorePurchaseSuccessful(message.str(), IOAccount::getCoinBalance(player->getAccount()));
@@ -6200,6 +6210,7 @@ bool Game::reload(ReloadTypes_t reloadType)
 		case RELOAD_TYPE_GLOBALEVENTS: return g_globalEvents->reload();
 		case RELOAD_TYPE_ITEMS: return Item::items.reload();
 		case RELOAD_TYPE_MONSTERS: return g_monsters.reload();
+		case RELOAD_TYPE_MODULES: return g_modules->reload();
 		case RELOAD_TYPE_MOUNTS: return mounts.reload();
 		case RELOAD_TYPE_MOVEMENTS: return g_moveEvents->reload();
 		case RELOAD_TYPE_NPCS: {

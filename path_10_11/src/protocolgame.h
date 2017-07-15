@@ -306,6 +306,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendShop(Npc* npc, const ShopInfoList& itemList);
 		void sendCloseShop();
 		void sendClientCheck();
+		void sendGameNews();
 		void sendResourceBalance(uint64_t money, uint64_t bank);
 		void sendSaleItemList(const std::list<ShopInfo>& shop);
 		void sendMarketEnter(uint32_t depotId);

@@ -246,8 +246,9 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 
 void ProtocolGameBase::sendBlessStatus() {
 	NetworkMessage msg;
-	int32_t blessCount = 0;
-	for (int i = 1; i <= 6; i++) {
+	uint8_t blessCount = 0;
+	uint8_t maxBlessings = (version >= 1130) ? 8 : 6;
+	for (int i = 1; i <= maxBlessings; i++) {
 		if (player->hasBlessing(i)) {
 			blessCount++;
 		}
@@ -255,11 +256,33 @@ void ProtocolGameBase::sendBlessStatus() {
 
 	msg.addByte(0x9C);
 	if (blessCount >= 5) {
-		msg.add<uint16_t>(0x01);
+		uint8_t blessFlag = 0;
+		uint8_t maxFlag = (maxBlessings == 8) ? 256 : 64;
+		for (int i = 2; i < maxFlag; i *= 2) {
+			blessFlag += i;
+		}
+
+		msg.add<uint16_t>(blessFlag-1);
 	} else {
 		msg.add<uint16_t>(0x00);
 	}
+
+	msg.addByte((blessCount >= 5) ? 2 : 1); // 1 = Disabled | 2 = normal | 3 = green
 	writeToOutputBuffer(msg);
+}
+
+void ProtocolGameBase::sendPremiumTrigger()
+{
+	if (!g_config.getBoolean(ConfigManager::FREE_PREMIUM)) {
+		NetworkMessage msg;
+		msg.addByte(0x9E);
+		msg.addByte(16);
+		for (uint16_t i = 0; i <= 15; i++) {
+			//PREMIUM_TRIGGER_TRAIN_OFFLINE = false, PREMIUM_TRIGGER_XP_BOOST = false, PREMIUM_TRIGGER_MARKET = false, PREMIUM_TRIGGER_VIP_LIST = false, PREMIUM_TRIGGER_DEPOT_SPACE = false, PREMIUM_TRIGGER_INVITE_PRIVCHAT = false
+			msg.addByte(0x01);
+		}
+		writeToOutputBuffer(msg);
+	}
 }
 
 // Send preyInfo
@@ -714,6 +737,8 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	sendStats();
 	sendSkills();
 	sendBlessStatus();
+	sendPremiumTrigger();
+	sendStoreHighlight();
 
 	//gameworld light-settings
 	LightInfo lightInfo;
@@ -757,6 +782,7 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	sendInventoryClientIds();
 	sendPreyData();
 	player->sendClientCheck();
+	player->sendGameNews();
 	player->sendIcons();
 }
 
@@ -764,6 +790,17 @@ void ProtocolGameBase::sendStats()
 {
 	NetworkMessage msg;
 	AddPlayerStats(msg);
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGameBase::sendStoreHighlight()
+{
+	NetworkMessage msg;
+	bool haveSale = g_game.gameStore.haveCategoryByState(StoreState_t::SALE);
+	bool haveNewItem = g_game.gameStore.haveCategoryByState(StoreState_t::NEW);
+	msg.addByte(0x19);
+	msg.addByte((haveSale) ? 1 : 0);
+	msg.addByte((haveNewItem) ? 1 : 0);
 	writeToOutputBuffer(msg);
 }
 

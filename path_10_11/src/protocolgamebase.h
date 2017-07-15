@@ -55,6 +55,7 @@ class ProtocolGameBase : public Protocol {
 		void AddPlayerStats(NetworkMessage& msg);
 		void AddPlayerSkills(NetworkMessage& msg);
 		void sendBlessStatus();
+		void sendPremiumTrigger();
 		void AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo);
 		void AddCreatureLight(NetworkMessage& msg, const Creature* creature);
 		void AddOutfit(NetworkMessage& msg, const Outfit_t& outfit);
@@ -77,6 +78,7 @@ class ProtocolGameBase : public Protocol {
 		void sendAddCreature(const Creature* creature, const Position& pos, int32_t stackpos, bool isLogin);
 		void sendMagicEffect(const Position& pos, uint8_t type);
 		void sendStats();
+		void sendStoreHighlight();
 		void sendBasicData();
 		void sendPendingStateEntered();
 		void sendEnterWorld();

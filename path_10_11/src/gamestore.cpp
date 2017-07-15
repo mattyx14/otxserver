@@ -286,6 +286,17 @@ const int8_t GameStore::getCategoryIndexByName(std::string categoryName) const
 	return -1;
 }
 
+bool GameStore::haveCategoryByState(StoreState_t state)
+{
+	for (auto category : storeCategoryOffers) {
+		if (category->state == state) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 uint16_t GameStore::getOffersCount()
 {
 	uint16_t count = 0;

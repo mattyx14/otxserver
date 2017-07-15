@@ -335,14 +335,17 @@ class Player final : public Creature, public Cylinder
 			bedItem = b;
 		}
 
-		void addBlessing(uint8_t blessing) {
-			blessings |= blessing;
+		void addBlessing(uint8_t index, uint8_t count) {
+			blessings[index-1] += count;
 		}
-		void removeBlessing(uint8_t blessing) {
-			blessings &= ~blessing;
+		void removeBlessing(uint8_t index, uint8_t count) {
+			blessings[index-1] -= count;
 		}
-		bool hasBlessing(uint8_t value) const {
-			return (blessings & (static_cast<uint8_t>(1) << value)) != 0;
+		bool hasBlessing(uint8_t index) const {
+			return blessings[index-1] != 0;
+		}
+		uint8_t getBlessingCount(uint8_t index) const {
+			return blessings[index-1];
 		}
 
 		bool isOffline() const {
@@ -997,6 +1000,11 @@ class Player final : public Creature, public Cylinder
 				client->sendClientCheck();
 			}
 		}
+		void sendGameNews() const {
+			if (client) {
+				client->sendGameNews();
+			}
+		}
 		void sendMagicEffect(const Position& pos, uint8_t type) const {
 			if (client) {
 				client->sendMagicEffect(pos, type);
@@ -1458,6 +1466,7 @@ class Player final : public Creature, public Cylinder
 		std::vector<uint16_t> preyBonusType = {0, 0, 0};
 		std::vector<uint16_t> preyBonusValue = {0, 0, 0};
 		std::vector<std::string> preyBonusName = {"", "", ""};
+		std::vector<uint8_t> blessings = { 0, 0, 0, 0, 0, 0, 0, 0 };
 		uint16_t maxWriteLen = 0;
 		uint16_t baseXpGain = 100;
 		uint16_t voucherXpBoost = 0;
@@ -1467,7 +1476,6 @@ class Player final : public Creature, public Cylinder
 		int16_t lastDepotId = -1;
 
 		uint8_t soul = 0;
-		uint8_t blessings = 0;
 		uint8_t levelPercent = 0;
 		uint8_t magLevelPercent = 0;
 

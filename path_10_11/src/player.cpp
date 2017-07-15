@@ -2075,16 +2075,19 @@ void Player::death(Creature* lastHitCreature)
 			}
 		}
 
-		std::bitset<6> bitset(blessings);
-		if (bitset[5]) {
+		if (hasBlessing(6)) {
 			if (lastHitPlayer) {
-				bitset.reset(5);
-				blessings = bitset.to_ulong();
+				removeBlessing(6, 1);
 			} else {
-				blessings = 32;
+				for (int i = 1; i <= 5; i++) {
+					removeBlessing(i, 1);
+				}
 			}
 		} else {
-			blessings = 0;
+			uint8_t maxBlessing = (getProtocolVersion() >= 1130) ? 8 : 6;
+			for (int i = 1; i <= maxBlessing; i++) {
+				removeBlessing(i, 1);
+			}
 		}
 
 		sendStats();
@@ -4027,7 +4030,13 @@ bool Player::isPromoted() const
 
 double Player::getLostPercent() const
 {
-	int32_t blessingCount = std::bitset<5>(blessings).count();
+	int32_t blessingCount = 0;
+	uint8_t maxBlessing = (getProtocolVersion() >= 1130) ? 8 : 6;
+	for (int i = 1; i <= maxBlessing; i++) {
+		if (hasBlessing(i)) {
+			blessingCount++;
+		}
+	}
 
 	int32_t deathLosePercent = g_config.getNumber(ConfigManager::DEATH_LOSE_PERCENT);
 	if (deathLosePercent != -1) {

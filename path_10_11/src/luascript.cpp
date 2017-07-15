@@ -1795,6 +1795,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RELOAD_TYPE_GLOBALEVENTS)
 	registerEnum(RELOAD_TYPE_ITEMS)
 	registerEnum(RELOAD_TYPE_MONSTERS)
+	registerEnum(RELOAD_TYPE_MODULES)
 	registerEnum(RELOAD_TYPE_MOUNTS)
 	registerEnum(RELOAD_TYPE_MOVEMENTS)
 	registerEnum(RELOAD_TYPE_NPCS)
@@ -1835,6 +1836,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_ATTACK_SPEED)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_WEAPON_AMMO)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_WEAPON_CHARGES)
+	registerEnumIn("configKeys", ConfigManager::REMOVE_POTION_CHARGES)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
@@ -2370,6 +2372,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "hasBlessing", LuaScriptInterface::luaPlayerHasBlessing);
 	registerMethod("Player", "addBlessing", LuaScriptInterface::luaPlayerAddBlessing);
 	registerMethod("Player", "removeBlessing", LuaScriptInterface::luaPlayerRemoveBlessing);
+	registerMethod("Player", "getBlessingCount", LuaScriptInterface::luaPlayerGetBlessingCount);
 
 	registerMethod("Player", "canLearnSpell", LuaScriptInterface::luaPlayerCanLearnSpell);
 	registerMethod("Player", "learnSpell", LuaScriptInterface::luaPlayerLearnSpell);
@@ -9554,13 +9557,18 @@ int LuaScriptInterface::luaPlayerAddBlessing(lua_State* L)
 		return 1;
 	}
 
-	uint8_t blessing = getNumber<uint8_t>(L, 2) - 1;
+	uint8_t blessing = getNumber<uint8_t>(L, 2);
+	uint8_t count = getNumber<uint8_t>(L, 3);
+	if (!count) {
+		count = 1;
+	}
+
 	if (player->hasBlessing(blessing)) {
 		pushBoolean(L, false);
 		return 1;
 	}
 
-	player->addBlessing(1 << blessing);
+	player->addBlessing(blessing, count);
 	player->sendBlessStatus();
 	pushBoolean(L, true);
 	return 1;
@@ -9575,14 +9583,36 @@ int LuaScriptInterface::luaPlayerRemoveBlessing(lua_State* L)
 		return 1;
 	}
 
-	uint8_t blessing = getNumber<uint8_t>(L, 2) - 1;
+	uint8_t blessing = getNumber<uint8_t>(L, 2);
+	uint8_t count = getNumber<uint8_t>(L, 3);
+	if (!count) {
+		count = 1;
+	}
+
 	if (!player->hasBlessing(blessing)) {
 		pushBoolean(L, false);
 		return 1;
 	}
 
-	player->removeBlessing(1 << blessing);
+	player->removeBlessing(blessing, count);
 	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetBlessingCount(lua_State* L)
+{
+	// player:getBlessingCount(index)
+	Player* player = getUserdata<Player>(L, 1);
+	uint8_t index = getNumber<uint8_t>(L, 2);
+	if (!index) {
+		index = 1;
+	}
+
+	if (player) {
+		lua_pushnumber(L, player->getBlessingCount(index));
+	} else {
+		lua_pushnil(L);
+	}
 	return 1;
 }
 

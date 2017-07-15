@@ -136,6 +136,7 @@ class GameStore {
 		};
 
 		const int8_t getCategoryIndexByName(std::string categoryName) const;
+		bool haveCategoryByState(StoreState_t state);
 		const BaseOffer* getOfferByOfferId(uint32_t offerId);
 
 	private:
