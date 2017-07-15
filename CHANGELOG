@@ -126,6 +126,7 @@
 	- Fix Depot Global (OTXS-C)
 	- Fix Store Button Highlight (OTXS-C)
 	- Fix Premium Features (OTXS-C)
+	- Fix Blessing Features (OTXS-C)
 	- Lazily load monsters from XML (TFT)
 	- Move findPerson to Lua (TFC)
 	- Move doSet*Outfit functions to Lua (TFC)

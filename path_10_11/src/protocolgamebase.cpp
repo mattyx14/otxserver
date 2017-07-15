@@ -123,6 +123,14 @@ void ProtocolGameBase::AddCreature(NetworkMessage& msg, const Creature* creature
 		msg.add<uint32_t>(remove);
 		msg.add<uint32_t>(creature->getID());
 		msg.addByte(creatureType);
+
+		if (creatureType == CREATURETYPE_SUMMONPLAYER) {
+			const Creature* master = creature->getMaster();
+			if (master) {
+				msg.add<uint32_t>(master->getID());
+			}
+		}
+
 		msg.addString(creature->getName());
 	}
 
@@ -160,16 +168,20 @@ void ProtocolGameBase::AddCreature(NetworkMessage& msg, const Creature* creature
 		if (master) {
 			const Player* masterPlayer = master->getPlayer();
 			if (masterPlayer) {
-				if (masterPlayer == player) {
-					creatureType = CREATURETYPE_SUMMON_OWN;
-				} else {
-					creatureType = CREATURETYPE_SUMMON_OTHERS;
-				}
+				creatureType = CREATURETYPE_SUMMONPLAYER;
 			}
 		}
 	}
 
 	msg.addByte(creatureType); // Type (for summons)
+
+	if (creatureType == CREATURETYPE_SUMMONPLAYER) {
+		const Creature* master = creature->getMaster();
+		if (master) {
+			msg.add<uint32_t>(master->getID());
+		}
+	}
+
 	msg.addByte(creature->getSpeechBubble());
 	msg.addByte(0xFF); // MARK_UNMARKED
 	if (version >= 1110) {
@@ -247,7 +259,7 @@ void ProtocolGameBase::AddPlayerSkills(NetworkMessage& msg)
 void ProtocolGameBase::sendBlessStatus() {
 	NetworkMessage msg;
 	uint8_t blessCount = 0;
-	uint8_t maxBlessings = (version >= 1130) ? 8 : 6;
+	uint8_t maxBlessings = (player->operatingSystem == CLIENTOS_NEW_WINDOWS) ? 8 : 6;
 	for (int i = 1; i <= maxBlessings; i++) {
 		if (player->hasBlessing(i)) {
 			blessCount++;

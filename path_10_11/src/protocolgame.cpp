@@ -1190,12 +1190,20 @@ void ProtocolGame::sendCreatureSkull(const Creature* creature)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendCreatureType(uint32_t creatureId, uint8_t creatureType)
+void ProtocolGame::sendCreatureType(const Creature* creature, uint8_t creatureType)
 {
 	NetworkMessage msg;
 	msg.addByte(0x95);
-	msg.add<uint32_t>(creatureId);
+	msg.add<uint32_t>(creature->getID());
 	msg.addByte(creatureType);
+
+	if (creatureType == CREATURETYPE_SUMMONPLAYER) {
+		const Creature* master = creature->getMaster();
+		if (master) {
+			msg.add<uint32_t>(master->getID());
+		}
+	}
+
 	writeToOutputBuffer(msg);
 }
 
@@ -1246,6 +1254,7 @@ void ProtocolGame::sendReLoginWindow(uint8_t unfairFightReduction)
 	msg.addByte(0x28);
 	msg.addByte(0x00);
 	msg.addByte(unfairFightReduction);
+	msg.addByte(0x00); //Use death redemption
 	writeToOutputBuffer(msg);
 }
 
