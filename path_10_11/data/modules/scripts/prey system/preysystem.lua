@@ -1,7 +1,8 @@
 PreySystem = {
 	Developer = "Charles (Cjaker)",
-	Version = "2.0",
-	LastUpdate = "20/06/2017 - 13:06 (PM)"
+	Version = "3.0",
+	LastUpdate = "15/07/2017 - 09:02 (AM)",
+	Missing = {}
 }
 
 local RerollStorages = {
@@ -149,10 +150,15 @@ function changeStateToSelectionChangeMonster(player, indexColumn)
 	msg:addByte(StateTypes.STATE_SELECTION_CHANGE_MONSTER)
 
 	local newBonus = getRandomBonus(player, indexColumn, player:getPreyName(indexColumn), true)
+	if (player:getPreyName(indexColumn) == "") then
+		player:setPreyName(indexColumn, "BONUSREROLL")
+		player:setPreyType(indexColumn, newBonus.Type)
+		player:setPreyValue(indexColumn, newBonus.Value)
+	end
 
-	msg:addByte(newBonus.Type) -- Type
-	msg:addU16(newBonus.Value) -- Value
-	msg:addByte(newBonus.Grade) -- 1~10 Grade
+	msg:addByte(player:getPreyType(indexColumn)) -- Type
+	msg:addU16(player:getPreyValue(indexColumn)) -- Value
+	msg:addByte(getBonusGrade(player:getPreyType(indexColumn), player:getPreyValue(indexColumn))) -- 1~10 Grade
 
 	local Monsters = getMonsterList(player, indexColumn)
 	if (not Monsters) then
@@ -246,6 +252,9 @@ function sendPreyData(player, indexColumn)
 	elseif (player:isActive(indexColumn)) then
 		-- STATE_ACTIVE
 		changeStateToActive(player, indexColumn)
+	elseif (player:isBonusReroll(indexColumn)) then
+		-- STATE_SELECTION_CHANGE_MONSTER
+		changeStateToSelectionChangeMonster(player, indexColumn)
 	else
 		-- STATE_SELECTION
 		changeStateToSelection(player, indexColumn)
@@ -277,9 +286,12 @@ function CheckPrey(player, msg)
 	if (PreyAction == 0) then
 		player:preyRerollList(PreyColumn)
 	elseif (PreyAction == 1) then
+		if (player:isBonusReroll(PreyColumn)) then
+			return sendError(player, "Are you fucking kidding me? Do you really wanna try bug my system? get out of here little sniffer.")
+		end
+
 		-- Bonus Reroll
-		--player:bonusReroll(PreyColumn)
-		return sendError(player, "Bonus reroll disabled temporary.")
+		player:bonusReroll(PreyColumn)
 	elseif (PreyAction == 2) then
 		local PreyIndex = msg:getByte() -- monster index
 		--print(PreyColumn.. " e " ..PreyAction.. " e " ..PreyIndex)
@@ -301,7 +313,11 @@ function CheckPrey(player, msg)
 	end
 end
 
-local function getBonusValue(min, max, steps)
+local function getBonusValue(min, max, steps, bonusReroll)
+	if (bonusReroll) then
+		return max, 10
+	end
+
 	local retValue = 0
 	local retGrade = 0
 	local random = math.random(1, 10)
@@ -342,7 +358,7 @@ function getRandomBonus(player, column, name, bonusReroll)
 	end
 
 	local Bonus = BonusValues[randomBonus]
-	local BonusValue, BonusGrade = getBonusValue(Bonus.Min, Bonus.Max, Bonus.Steps)
+	local BonusValue, BonusGrade = getBonusValue(Bonus.Min, Bonus.Max, Bonus.Steps, bonusReroll)
 	local retTable = {Type = randomBonus, Left = 7200, Value = BonusValue, Grade = BonusGrade}
 
 	if (not bonusReroll) then
@@ -400,7 +416,14 @@ function SelectPrey(player, PreyColumn, mType)
 		return sendError(player, "[ERROR] Monster is invalid, please contact Administrator.")
 	end
 
-	local newBonus = getRandomBonus(player, PreyColumn, mType:getName(), false)
+	local newBonus = nil
+	if (player:isBonusReroll(PreyColumn)) then
+		newBonus = {Type = player:getPreyType(PreyColumn), Left = 7200, Value = player:getPreyValue(PreyColumn), Grade = 10}
+		player:setPreyName(PreyColumn, mType:getName())
+	else
+		newBonus = getRandomBonus(player, PreyColumn, mType:getName(), false)
+	end
+
 	if (not newBonus) then
 		return sendError(player, "[ERROR] You can't select a prey with bonus active.")
 	end
@@ -461,6 +484,7 @@ function Player.preyRerollList(self, column)
 
 	self:removeBonus(column)
 	db.query("DELETE FROM player_prey WHERE player_id = " ..self:getGuid().. " AND mcolumn = " ..column)
+	db.query("UPDATE player_preytimes SET bonus_name" ..(column+1) .. " = '' WHERE player_id = " ..self:getGuid())
 	self:setStorageValue(rerollStorage, (os.time() / 60.000) + 1200)
 	changeStateToSelection(self, column)
 end
@@ -584,7 +608,25 @@ function Player.setStaminaBonus(self, column, value)
 end
 
 function Player.removePreyMonster(self, name)
-	db.query("DELETE FROM player_prey WHERE player_id = " ..self:getGuid().. " AND name = " ..db.escapeString(name))
+	local resultId = db.storeQuery("SELECT * FROM player_prey WHERE player_id = " ..self:getGuid().. " AND name = " ..db.escapeString(name))
+	if (resultId ~= false) then
+		local lastIndex = 0
+		local mIndex = result.getDataInt(resultId, "mindex")
+		local mColumn = result.getDataInt(resultId, "mcolumn")
+		local totalElements = db.storeQuery("SELECT COUNT(*) FROM player_prey WHERE player_id = " ..self:getGuid().. " AND mcolumn = " ..mColumn)
+		if (totalElements ~= false) then lastIndex = result.getDataInt(totalElements, "COUNT(*)")-1 end
+		if (mIndex == lastIndex) then
+			return true
+		end
+
+		local resultMonsters = db.storeQuery("SELECT * FROM player_prey WHERE player_id = " ..self:getGuid().. " AND mcolumn = " ..mColumn.. " AND mindex > " ..mIndex.. " AND mindex <= " ..lastIndex)
+		repeat
+			local tmpIndex = result.getDataInt(resultMonsters, "mindex")
+			db.query("UPDATE player_prey SET mindex = mindex - 1 WHERE player_id = " ..self:getGuid() .. " AND mcolumn = " ..mColumn.. " AND mindex = " ..tmpIndex)
+		until not result.next(resultMonsters)
+		result.free(resultMonsters)
+		db.query("DELETE FROM player_prey WHERE player_id = " ..self:getGuid().. " AND name = " ..db.escapeString(name))
+	end
 end
 
 function Player.addPreySlot(self)
@@ -607,4 +649,8 @@ function Player.sendPreyTimeLeft(self, column, time)
 	msg:addByte(column)
 	msg:addU16(time)
 	msg:sendToPlayer(self)
+end
+
+function Player.isBonusReroll(self, column)
+	return self:getPreyName(column) == "BONUSREROLL"
 end

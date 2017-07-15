@@ -70,7 +70,7 @@
 		<offer name="Flying Divan" type="mount" mountid="65" description="Buying this mount will help our server survive!" price="900" icons="o682.png" />
 		<offer name="Magic Carpet" type="mount" mountid="66" description="Buying this mount will help our server survive!" price="900" icons="o685.png" />
 	</category>
-	<category name="Potions|Runes" description="Buy runes and potions" state="new" icons="Category_Potions.png">
+	<category name="Potions & Kegs" description="Buy potions and kegs" state="new" icons="Category_Potions.png">
 		<offer name="Health Potion" description="" price="4" type="stackableitem" productid="7618" count="125" icons="7618.png" />
 		<offer name="Health Potion" description="" price="10" type="stackableitem" productid="7618" count="300" icons="7618.png" />
 		<offer name="Strong Health Potion" description="" price="7" type="stackableitem" productid="7588" count="100" icons="7588.png" />
@@ -93,6 +93,8 @@
 		<offer name="Great Spirit Potion" description="" price="34" type="stackableitem" productid="8472" count="250" icons="8472.png" />
 		<offer name="Ultimate Spirit Potion" description="" price="25" type="stackableitem" productid="26030" count="100" icons="26030.png" />
 		<offer name="Ultimate Spirit Potion" description="" price="63" type="stackableitem" productid="26030" count="250" icons="26030.png" />
+	</category>
+	<category name="Runes" description="Buy Runes" state="new" icons="Category_Runes.png">
 		<offer name="Animate Dead Rune" description="" price="75" type="stackableitem" productid="2316" count="250" icons="2316.png" />
 		<offer name="Avalanche Rune" description="" price="9" type="stackableitem" productid="2274" count="250" icons="2274.png" />
 		<offer name="Chameleon Rune" description="" price="42" type="stackableitem" productid="2291" count="250" icons="2291.png" />
@@ -122,13 +124,16 @@
 		<offer name="Wild Growth Rune" description="" price="32" type="stackableitem" productid="2269" count="250" icons="2269.png" />
 	</category>
 	<category name="Blessings" description="" state="new" icons="Category_Blessings.png">
-		<offer name="The Spiritual Shielding" type="bless" blessnumber="1" price="30" icons="Product_Blessing_Shielding.png" />
-		<offer name="The Embrace of World" type="bless" blessnumber="2" price="15" icons="Product_Blessing_Shielding.png" />
-		<offer name="The Fire of the Suns" type="bless" blessnumber="3" price="15" icons="Product_Blessing_Shielding.png" />
-		<offer name="The Spark of the Phoenix" type="bless" blessnumber="4" price="20" icons="Product_Blessing_Shielding.png" />
-		<offer name="The Wisdom of Solitude" type="bless" blessnumber="5" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="Twist of Fate" type="bless" blessnumber="1" price="30" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Spiritual Shielding" type="bless" blessnumber="5" price="30" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Embrace of Tibia" type="bless" blessnumber="6" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="Heart of the Mountain" type="bless" blessnumber="7" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="Blood of the Mountain" type="bless" blessnumber="8" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Fire of the Suns" type="bless" blessnumber="4" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Spark of the Phoenix" type="bless" blessnumber="3" price="20" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Wisdom of Solitude" type="bless" blessnumber="2" price="15" icons="Product_Blessing_Shielding.png" />
 	</category>
-	<category name="Utilitys" description="" state="new" icons="Category_.png">
+	<category name="Useful Things" description="" state="new" icons="Category_usefulthings.png">
 		<offer name="Gold Pounch" description="" price="900" type="item" productid="26377" count="1" icons="26377.png" />
 		<offer name="Gold Converter" description="" price="5" type="item" productid="26378" count="1" icons="26378.png" />
 		<offer name="Teleport home" description="Go back to your home temple in an instant." price="20" state="new" type="teleport" icons="Product_Transportation_TempleTeleport.png" />
@@ -222,7 +227,7 @@
 		<offer name="Sea Dog Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="750" femalelooktype="749" price="120" icons="f750.png" />
 		<offer name="Sea Dog Outfits Addon 1" description="" type="outfit" addon="2" malelooktype="750" femalelooktype="749" price="120" icons="f750.png" />
 	</category>
-	<category name="Decorations" description="make your house look fabulous" icons="Category_HouseEquipment.png">
+	<category name="House Equipaments" description="make your house look fabulous" icons="Category_HouseEquipment.png">
 		<offer name="Gilded Imbuing Shrine" description="Buy an incredible Gilded Imbuing Shrine to decorate your home." type="wrapitem" productid="27838" count="1" price="200" icons="o27838.png" />
 		<offer name="Imbuing Shrine" description="Buy an incredible Imbuing Shrine to decorate your home." type="wrapitem" productid="27830" count="1" price="150" icons="o27930.png" />
 		<offer name="Magnificent Cabinet" description="Buy an incredible Magnificent Cabinet to decorate your home." type="wrapitem" productid="26075" count="1" price="100" icons="o26075.png" />
