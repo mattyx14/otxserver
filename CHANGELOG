@@ -71,7 +71,7 @@
 		STARTED AND ON
 
 	PROTOCOL SUPPORTED
-		Version Clients - 7.7 to "10_11 (Basic Support)"
+		Version Clients - 7.7 to "10_11"
 
 	BUGS
 		https://github.com/mattyx14/otxserver/issues/
@@ -123,6 +123,9 @@
 	- Fix attack speed extra delay (TFC)
 	- Fix teleport is leading to another teleport
 	- Fix CreateItem (TFC)
+	- Fix Depot Global (OTXS-C)
+	- Fix Store Button Highlight (OTXS-C)
+	- Fix Premium Features (OTXS-C)
 	- Lazily load monsters from XML (TFT)
 	- Move findPerson to Lua (TFC)
 	- Move doSet*Outfit functions to Lua (TFC)
