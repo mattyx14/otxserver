@@ -514,6 +514,19 @@ enum item_t : uint16_t {
 
 	ITEM_TIBIA_COIN = 24774,
 
+	/** Casks and Kegs **/
+	ITEM_HEALTH_CASK_START = 28553,
+	ITEM_HEALTH_CASK_END = 28557,
+
+	ITEM_MANA_CASK_START = 28563,
+	ITEM_MANA_CASK_END = 28567,
+
+	ITEM_SPIRIT_CASK_START = 28573,
+	ITEM_SPIRIT_CASK_END = 28574,
+
+	ITEM_KEG_START = 28577, //kegs ids are contiguous in item.otb
+	ITEM_KEG_END = 28588,
+
 	ITEM_DOCUMENT_RO = 1968, //read-only
 };
 

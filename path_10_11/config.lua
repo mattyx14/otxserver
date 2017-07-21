@@ -46,6 +46,9 @@ freeDepotLimit = 2000
 premiumDepotLimit = 10000
 depotBoxes = 17
 
+-- GameStore
+gamestoreByModules = true
+
 -- Casting System 
 enableLiveCasting = true
 liveCastPort = 7173

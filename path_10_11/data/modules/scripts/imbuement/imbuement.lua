@@ -65,11 +65,161 @@ local Imbuements = {
 		Name = "Vampirism",
 		Category = "Life Leech",
 		Type = "hitpointsleech",
-		Description = "converts % of damage to HP with a chance of 100%",
+		Description = "converts % of damage to HP with a chance of 100%.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {5, 10, 25},
 		Weapons = {"axe", "club", "sword", "wand", "rod", "bow", "armor"},
 		Items = {{10602, 25}, {10550, 15}, {10580, 5}}
+	},
+	{
+		Name = "Void",
+		Category = "Mana Leech",
+		Type = "manapointsleech",
+		Description = "converts % of damage to MP with a chance of 100%.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {3, 5, 8},
+		Weapons = {"axe", "club", "sword", "wand", "rod", "bow", "helmet"},
+		Items = {{12448, 25}, {22534, 25}, {25386, 5}}
+	},
+	{
+		Name = "Strike",
+		Category = "Critical Hit",
+		Type = "criticaldamage",
+		Description = "raises crit hit damage by % and crit hit chance by 10%.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {15, 25, 50},
+		Weapons = {"axe", "club", "sword", "bow"},
+		Items = {{12400, 20}, {11228, 25}, {25384, 5}}
+	},
+	{
+		Name = "Lich Shroud",
+		Category = "Death Damage",
+		Type = "absorbPercentDeath",
+		Description = "reduces death damage by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {3, 8, 15},
+		Weapons = {"armor", "shield"},
+		Items = {{12422, 25}, {24663, 20}, {10577, 5}}
+	},
+	{
+		Name = "Snake Skin",
+		Category = "Eart Damage",
+		Type = "absorbPercentEarth",
+		Description = "reduces earth damage by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {3, 8, 15},
+		Weapons = {"armor", "shield"},
+		Items = {{20103, 25}, {10611, 20}, {12658, 10}}
+	},
+	{
+		Name = "Hide Dragon",
+		Category = "Fire Damage",
+		Type = "absorbPercentFire",
+		Description = "reduces fire damage by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {3, 8, 15},
+		Weapons = {"armor", "shield"},
+		Items = {{5877, 25}, {18425, 10}, {12614, 5}}
+	},
+	{
+		Name = "Quara Scale",
+		Category = "Ice Damage",
+		Type = "absorbPercentIce",
+		Description = "reduces ice damage by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {3, 8, 15},
+		Weapons = {"armor", "shield"},
+		Items = {{11212, 25}, {11224, 15}, {15425, 10}}
+	},
+	{
+		Name = "Cloud Fabric",
+		Category = "Energy Damage",
+		Type = "absorbPercentEnergy",
+		Description = "reduces energy damage by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {3, 8, 15},
+		Weapons = {"armor", "shield"},
+		Items = {{10561, 25}, {15482, 15}, {10582, 10}}
+	},
+	{
+		Name = "Demon Presence",
+		Category = "Holy Damage",
+		Type = "absorbPercentHoly",
+		Description = "reduces holy damage by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {3, 8, 15},
+		Weapons = {"armor", "shield"},
+		Items = {{10556, 25}, {10555, 25}, {11221, 20}}
+	},
+	{
+		Name = "Swiftness",
+		Category = "Increase Speed",
+		Type = "speed",
+		Description = "raises walking speed by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {10, 15, 20},
+		Weapons = {"boots"},
+		Items = {{19738, 15}, {11219, 25}, {15484, 20}}
+	},
+	{
+		Name = "Chop",
+		Category = "Increase Axe Fighting",
+		Type = "skillAxe",
+		Description = "raises axe fighting skill by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {1, 2, 4},
+		Weapons = {"axe", "helmet"},
+		Items = {{11113, 20}, {12403, 25}, {23571, 20}}
+	},
+	{
+		Name = "Slash",
+		Category = "Increase Sword Fighting",
+		Type = "skillSword",
+		Description = "raises sword fighting skill by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {1, 2, 4},
+		Weapons = {"sword", "helmet"},
+		Items = {{10608, 25}, {23573, 25}, {10571, 5}}
+	},
+	{
+		Name = "Bash",
+		Category = "Increase Club Fighting",
+		Type = "skillClub",
+		Description = "raises club fighting skill by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {1, 2, 4},
+		Weapons = {"club", "helmet"},
+		Items = {{10574, 20}, {24845, 15}, {11322, 10}}
+	},
+	{
+		Name = "Precision",
+		Category = "Increase Distance Fighting",
+		Type = "skillDist",
+		Description = "raises distance fighting skill by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {1, 2, 4},
+		Weapons = {"bow", "helmet"},
+		Items = {{12420, 25}, {21311, 20}, {11215, 10}}
+	},
+	{
+		Name = "Blockade",
+		Category = "Increase Shielding",
+		Type = "skillShield",
+		Description = "raises shielding skill by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {1, 2, 4},
+		Weapons = {"shield", "helmet"},
+		Items = {{10558, 20}, {12659, 25}, {22533, 25}}
+	},
+	{
+		Name = "Epiphany",
+		Category = "Increase Magic Level",
+		Type = "magiclevelpoints",
+		Description = "raises magic level by %.",
+		Levels = {"Basic", "Intricate", "Powerful"},
+		LevelsPercent = {1, 2, 4},
+		Weapons = {"wand", "rod", "helmetmage"},
+		Items = {{10552, 25}, {12408, 15}, {11226, 15}}
 	}
 }
 
@@ -287,12 +437,12 @@ function Player.applyImbuement(self, msg)
 	end
 
 	local applyChance = math.random(100)
-	if (ImbuingInfo[imbuingLevel].Percent < applyChance) then
+	if (ImbuingInfo[imbuingLevel].Percent < applyChance and useProtection == 0) then
 		sendImbuementError(self, "Item failed to apply imbuement.", ErrorMessages.MESSAGEDIALOG_IMBUEMENT_ROLL_FAILED)
 		return false
 	end
 
-	item:setSpecialAttribute(slot, myImbuement.Levels[imbuingLevel]..myImbuement.Name, slot+3, 72000, slot+6, 0)
+	item:setSpecialAttribute(slot, myImbuement.Levels[imbuingLevel].. " " ..myImbuement.Name, slot+3, 72000, slot+6, 0)
 	self:openImbuementWindow(item)
 end
 

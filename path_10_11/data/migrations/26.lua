@@ -9,6 +9,5 @@ function onUpdateDatabase()
 	db.query("ALTER TABLE `players` ADD COLUMN `blessings6` tinyint(4) NOT NULL DEFAULT '0' AFTER `blessings5`")
 	db.query("ALTER TABLE `players` ADD COLUMN `blessings7` tinyint(4) NOT NULL DEFAULT '0' AFTER `blessings6`")
 	db.query("ALTER TABLE `players` ADD COLUMN `blessings8` tinyint(4) NOT NULL DEFAULT '0' AFTER `blessings7`")
-	db.query("ALTER TABLE `players` DROP COLUMN `blessings`")
 	return true
 end

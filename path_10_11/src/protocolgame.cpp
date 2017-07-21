@@ -52,6 +52,10 @@ void ProtocolGame::release()
 	//dispatcher thread
 	stopLiveCast();
 	if (player && player->client == shared_from_this()) {
+		if (player->getTile() && (player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || !player->hasCondition(CONDITION_INFIGHT))) {
+			logout(true, true);
+		}
+
 		player->client.reset();
 		player->decrementReferenceCounter();
 		player = nullptr;
@@ -489,6 +493,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 			this_ptr->stopLiveCast();
 		}));
 		if (recvbyte == 0x0F) {
+			// we need to make the player pointer != null in this part, game.cpp release is the first step
+			// login(player->getName(), player->getAccount(), player->operatingSystem);
 			disconnect();
 			return;
 		}
@@ -572,7 +578,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
-		case 0xEF: parseCoinTransfer(msg); break; /* premium coins transfer */
+		case 0xEF: if (!g_config.getBoolean(ConfigManager::STOREMODULES)) { parseCoinTransfer(msg); } break; /* premium coins transfer */
 		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerShowQuestLog, player->getID()); break;
 		case 0xF1: parseQuestLine(msg); break;
 		case 0xF2: parseRuleViolationReport(msg); break;
@@ -583,9 +589,9 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF7: parseMarketCancelOffer(msg); break;
 		case 0xF8: parseMarketAcceptOffer(msg); break;
 		case 0xF9: parseModalWindowAnswer(msg); break;
-		case 0xFA: parseStoreOpen(msg); break;
-		case 0xFB: parseStoreRequestOffers(msg); break;
-		case 0xFC: parseStoreBuyOffer(msg); break;
+		case 0xFA: if (!g_config.getBoolean(ConfigManager::STOREMODULES)) { parseStoreOpen(msg); } break;
+		case 0xFB: if (!g_config.getBoolean(ConfigManager::STOREMODULES)) { parseStoreRequestOffers(msg); } break;
+		case 0xFC: if (!g_config.getBoolean(ConfigManager::STOREMODULES)) { parseStoreBuyOffer(msg); } break;
 //		case 0xFD: parseStoreOpenTransactionHistory(msg); break;
 //		case 0xFE: parseStoreRequestTransactionHistory(msg); break;
 
@@ -1534,6 +1540,49 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 		msg.add<uint16_t>(it->first);
 		msg.add<uint16_t>(std::min<uint32_t>(0xFFFF, it->second));
 	}
+
+	writeToOutputBuffer(msg);
+
+	updateCoinBalance();
+	sendResourceBalance(player->getMoney(), player->getBankBalance());
+}
+
+void ProtocolGame::updateCoinBalance()
+{
+	NetworkMessage msg;
+	msg.addByte(0xF2);
+	msg.addByte(0x00);
+
+	writeToOutputBuffer(msg);
+
+	g_dispatcher.addTask(
+		createTask(std::bind([](ProtocolGame_ptr client) {
+		client->sendCoinBalance();
+	}, getThis()))
+	);
+}
+
+void ProtocolGame::sendCoinBalance()
+{
+	Database& db = Database::getInstance();
+
+	std::ostringstream query;
+
+	query << "SELECT `coins` FROM `accounts` WHERE `id`=" + std::to_string(player->getAccount());
+	DBResult_ptr result = db.storeQuery(query.str());
+	if (!result) {
+		return;
+	}
+
+	NetworkMessage msg;
+	msg.addByte(0xF2);
+	msg.addByte(0x01);
+
+	msg.addByte(0xDF);
+	msg.addByte(0x01);
+
+	msg.add<uint32_t>(result->getNumber<uint32_t>("coins")); //total coins
+	msg.add<uint32_t>(result->getNumber<uint32_t>("coins")); //transferable coins
 
 	writeToOutputBuffer(msg);
 }

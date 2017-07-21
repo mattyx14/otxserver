@@ -1289,3 +1289,9 @@ NameEval_t validateName(const std::string &name)
 
 	return VALID;
 }
+bool isCaskItem(uint16_t itemId)
+{
+	return (itemId >= ITEM_HEALTH_CASK_START && itemId <= ITEM_HEALTH_CASK_END) || 
+		(itemId >= ITEM_MANA_CASK_START && itemId <= ITEM_MANA_CASK_END) || 
+		(itemId >= ITEM_SPIRIT_CASK_START && itemId <= ITEM_SPIRIT_CASK_END);
+}

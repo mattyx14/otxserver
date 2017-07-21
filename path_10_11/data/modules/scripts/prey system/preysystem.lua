@@ -630,7 +630,7 @@ function Player.removePreyMonster(self, name)
 end
 
 function Player.addPreySlot(self)
-	db.query("UPDATE players SET prey_column = 10 WHERE id = " ..self:getGuid())
+	db.query("UPDATE players SET prey_column = 2 WHERE id = " ..self:getGuid())
 	sendPreyData(self, 2)
 end
 

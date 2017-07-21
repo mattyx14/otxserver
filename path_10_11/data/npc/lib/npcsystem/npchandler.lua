@@ -1,7 +1,7 @@
 -- Advanced NPC System by Jiddo
 
 if NpcHandler == nil then
-	local storage, duration = 1.4, 0.8
+local storage, duration = 1.4, 0.1
 	-- Constant talkdelay behaviors.
 	TALKDELAY_NONE = 0 -- No talkdelay. Npc will reply immedeatly.
 	TALKDELAY_ONTHINK = 1 -- Talkdelay handled through the onThink callback function. (Default)
@@ -473,8 +473,8 @@ if NpcHandler == nil then
 	-- Handles onBuy events. If you wish to handle this yourself, use the CALLBACK_ONBUY callback.
 	function NpcHandler:onBuy(creature, itemid, subType, amount, ignoreCap, inBackpacks)
 		local cid = creature.uid
-		if (os.time() - getPlayerStorageValue(cid, storage)) >= duration then
-		setPlayerStorageValue(cid, storage, os.time()) -- DELAY PRA COMPRAR 
+		if (os.clock() - getPlayerStorageValue(cid, storage)) >= 0.1 then
+		setPlayerStorageValue(cid, storage, os.clock()) -- DELAY PRA COMPRAR 
 		local callback = self:getCallback(CALLBACK_ONBUY)
 		if callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks) then
 			if self:processModuleCallback(CALLBACK_ONBUY, cid, itemid, subType, amount, ignoreCap, inBackpacks) then

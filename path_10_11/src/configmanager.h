@@ -46,6 +46,7 @@ class ConfigManager
 			REMOVE_WEAPON_AMMO,
 			REMOVE_WEAPON_CHARGES,
 			REMOVE_POTION_CHARGES,
+			STOREMODULES,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

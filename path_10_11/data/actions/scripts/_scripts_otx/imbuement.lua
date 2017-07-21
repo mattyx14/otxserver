@@ -1,13 +1,9 @@
-function onUse(cid, item, fromPosition, itemEx, toPosition)
-	local player = Player(cid)
-	if not player then
+function onUse(player, item, fromPosition, itemEx, toPosition)
+	if player:getStorageValue(50730) < 1 then
+		player:sendTextMessage(MESSAGE_STATUS_SMALL, 'You not have permission.')
 		return true
 	end
 
-	if player:getStorageValue(2526) >= 1 then
-		player:openImbuementWindow(itemEx)
-	else
-		player:sendTextMessage(MESSAGE_STATUS_SMALL, 'You not have permission.')
-	end
+	player:openImbuementWindow(itemEx)
 	return true
 end

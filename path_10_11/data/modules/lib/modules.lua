@@ -1,4 +1,9 @@
-function addPlayerEvent(callable, delay, player, ...)
+function addPlayerEvent(callable, delay, playerId, ...)
+	local player = Player(playerId)
+	if not player then
+		return false
+	end
+
 	addEvent(function(callable, playerId, ...)
 		local player = Player(playerId)
 		if player then

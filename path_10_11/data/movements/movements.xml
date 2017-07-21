@@ -1217,6 +1217,11 @@
 	<movevent event="DeEquip" itemid="23539" slot="legs" function="onDeEquipItem" />
 
 	<!-- Weapons -->
+	<movevent event="Equip" itemid="2393" slot="hand" level="55" function="onEquipItem" script="_scripts_otx/imbuement.lua">
+		<vocation name="Knight" />
+		<vocation name="Elite Knight" showInDescription="0" />
+	</movevent>
+	<movevent event="DeEquip" itemid="2393" slot="hand" function="onDeEquipItem" script="_scripts_otx/imbuement.lua"/>
 	<movevent event="Equip" itemid="18390" slot="hand" level="65" function="onEquipItem">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" showInDescription="0" />
@@ -1344,8 +1349,8 @@
 		<vocation name="Elite Knight" showInDescription="0" />
 	</movevent>
 	<!-- chopper of mayhem (heavily charged) -->
-	<movevent event="DeEquip" itemid="26243" slot="hand" function="onDeEquipItem" />
-	<movevent event="Equip" itemid="26243" slot="hand" level="250" function="onEquipItem">
+	<movevent event="DeEquip" itemid="26243" slot="hand" function="onDeEquipItem" script="_scripts_otx/imbuement.lua" />
+	<movevent event="Equip" itemid="26243" slot="hand" level="55" function="onEquipItem" script="_scripts_otx/imbuement.lua">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</movevent>

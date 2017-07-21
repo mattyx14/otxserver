@@ -266,7 +266,8 @@ function Player:onMoveCreature(creature, fromPosition, toPosition)
 	return true
 end
 
-function Player:onReportRuleViolation(targetName, reportType, reportReason, comment, translation)
+-- Temporal disable
+--[[function Player:onReportRuleViolation(targetName, reportType, reportReason, comment, translation)
 	local name = self:getName()
 	local pendingReport = function () local f = io.open(string.format("data/reports/players/%s-%s-%d.txt", name, targetName, reportType), "r") ; if f then io.close(f) return true else return false end end
 	if pendingReport() then
@@ -294,13 +295,9 @@ function Player:onReportRuleViolation(targetName, reportType, reportReason, comm
 	io.close(file)
 	self:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("Thank you for reporting %s. Your report will be processed by %s team as soon as possible.", targetName, configManager.getString(configKeys.SERVER_NAME)))
 	return
-end
- 
-function Player:onReportBug(message, position, category)
- if self:getAccountType() == ACCOUNT_TYPE_NORMAL then
-		return false
-	end
+end]]
 
+function Player:onReportBug(message, position, category)
 	local name = self:getName()
 	local file = io.open("data/reports/bugs/" .. name .. " report.txt", "a")
 

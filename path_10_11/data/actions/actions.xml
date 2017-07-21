@@ -288,6 +288,9 @@
 		<action itemid="5957" script="_scripts_otx/lotteryticket.lua" />
 		<action itemid="16101" script="_scripts_otx/premiumscroll.lua" />
 
+		<!-- Casks and Kegs -->
+		<action fromid="7634" toid="7636" script="_scripts_otx/caskkegs.lua"/>
+
 		<!-- Carpets -->
 		<!-- 
 			<action fromid="25392" toid="25393" script="_scripts_otx/carpets.lua"/>

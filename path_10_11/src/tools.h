@@ -92,8 +92,10 @@ itemAttrTypes stringToItemAttribute(const std::string& str);
 
 const char* getReturnMessage(ReturnValue value);
 
-NameEval_t validateName(const std::string &name);
 void capitalizeWords(std::string &source);
+NameEval_t validateName(const std::string &name);
+
+bool isCaskItem(uint16_t itemId);
 
 int64_t OTSYS_TIME();
 

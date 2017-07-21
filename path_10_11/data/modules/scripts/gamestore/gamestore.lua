@@ -3,9 +3,32 @@ dofile('data/modules/scripts/gamestore/init.lua')
 -- Config
 GameStore.Categories = {
 	{
+		name = "Sale Products",
+		state = GameStore.States.STATE_NEW,
+		rookgaard = false,
+		icons = {"New_Products.png"},
+		offers = {
+			{name = "Jackalope", basePrice = 500, price = 375, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 103, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, icons = {"Product_PremiumTime30.png"}, description = "Here you can purchase the Mount  for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
+		}
+	},
+
+	{
+		name = "Premium Time",
+		state = GameStore.States.STATE_NEW,
+		rookgaard = false,
+		icons = {"New_Products.png"},
+		offers = {
+			{name = "30 Days", basePrice = 500, price = 375, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 30, type = GameStore.OfferTypes.OFFER_TYPE_PREMIUM, icons = {"Product_PremiumTime30.png"}, description = "Premium Account for 30 days."},
+			{name = "60 Days", basePrice = 1000, price = 500, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 60, type = GameStore.OfferTypes.OFFER_TYPE_PREMIUM, icons = {"Product_PremiumTime60.png"}, description = "Premium Account for 60 days."},
+			{name = "180 Days", basePrice = 1600, price = 800, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 180, type = GameStore.OfferTypes.OFFER_TYPE_PREMIUM, icons = {"Product_PremiumTime180.png"}, description = "Premium Account for 180 days."}
+		}
+	},
+
+	{
 		name = "New Products",
 		state = GameStore.States.STATE_NEW,
 		icons = {"New_Products.png"},
+		rookgaard = false,
 		offers = {
 			-- Addon Example : thingId = lookType, addon = ( 1 = addon 1, 2 = addon 2, 3 = both addons)
 			{name = "Grove Keeper", thingId = {male=908,female=909}, addon = 3, type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON, price = 60, icons = {"f909.png", "f908.png"}},
@@ -26,6 +49,7 @@ GameStore.Categories = {
 	{
 		name = "Overcharged items",
 		state = GameStore.States.STATE_NEW,
+		rookgaard = false,
 		icons = {"New_Products.png"},
 		offers = {
 			-- Item Example : thingId = itemId
@@ -68,6 +92,7 @@ GameStore.Categories = {
 		name = "Mounts",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Mounts.png"},
+		rookgaard = false,
 		offers = {
 			-- Mount Example : thingId = mountId
 			{name = "Widow Queen", thingId = 1, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, price = 30, icons = {"o368.png"}, description = "Here you can purchase the Mount  for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
@@ -280,6 +305,7 @@ GameStore.Categories = {
 		name = "Outfits",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Outfits.png"},
+		rookgaard = false,
 		offers = {
 			-- Addon Example : thingId = lookType, addon = ( 1 = addon 1, 2 = addon 2, 3 = both addons)
 			{name = "Citizen Addon", thingId = {male=128,female=136}, addon = 3, type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON, price = 20, icons = {"f128.png", "f136.png"}},
@@ -393,6 +419,7 @@ GameStore.Categories = {
 		name = "Items",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Items.png"},
+		rookgaard = false,
 		offers = {
 			{name = "crystalline token", thingId = 18423, count = 5, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 10, icons = {"18423.png"}, description = "Become rich!"},
 			-- Item Example : thingId = itemId
@@ -463,6 +490,7 @@ GameStore.Categories = {
 		name = "Items for Knights",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Knight.png"},
+		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Earthmind Raiment", thingId = 25191, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 90, icons = {"25191.png"}, description = "Become rich!"},
@@ -499,6 +527,7 @@ GameStore.Categories = {
 		name = "Items for Paladins",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Pally.png"},
+		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Firesoul Tabard", thingId = 25186, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 90, icons = {"25186.png"}, description = "Become rich!"},
@@ -518,6 +547,7 @@ GameStore.Categories = {
 		name = "Items for Druids",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Druid.png"},
+		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Thundermind Raiment", thingId = 25192, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 90, icons = {"25192.png"}, description = "Become rich!"},
@@ -534,6 +564,7 @@ GameStore.Categories = {
 		name = "House Equipment",
 		state = GameStore.States.STATE_NEW,
 		icons = {"Category_House_Equipment.png"},
+		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Parrot", thingId = 26890, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 180, icons = {"26890.png"}, description = "Become rich!"},
@@ -579,6 +610,7 @@ GameStore.Categories = {
 		name = "Blessings",
 		state = GameStore.States.STATE_NEW,
 		icons = {"Category_Blessings.png"},
+		rookgaard = false,
 		offers = {
 			-- NameChange example
 			{name = "Twist of Fate", thingId = 1, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
@@ -597,6 +629,7 @@ GameStore.Categories = {
 		name = "Extra Services",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_ExtraServices.png"},
+		rookgaard = false,
 		offers = {
 			-- NameChange example
 			{name = "Character Name Change", type = GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE, price = 20, icons = {"Product_CharacterNameChange.png"}},
