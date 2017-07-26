@@ -106,7 +106,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 	} else if (majorVersion != 3) {
 		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
-	} else if (minorVersion < CLIENT_VERSION_1100_V2) {
+	} else if (minorVersion < CLIENT_VERSION_1140) {
 		std::cout << "A newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}

@@ -112,4 +112,8 @@
 	<mount id="110" clientid="959" name="Jungle Saurian" speed="20" premium="yes" />
 	<mount id="111" clientid="960" name="Ember Saurian" speed="20" premium="yes" />
 	<mount id="112" clientid="961" name="Lagoon Saurian" speed="20" premium="yes" />
+	<!--Summer Update-->
+	<mount id="113" clientid="1017" name="New mount" speed="20" premium="yes" />
+	<mount id="114" clientid="1018" name="New mount" speed="20" premium="yes" />
+	<mount id="115" clientid="1019" name="New mount" speed="20" premium="yes" />
 </mounts>

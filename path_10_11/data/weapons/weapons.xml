@@ -2,7 +2,7 @@
 <weapons>
 	<!-- Rods -->
 	<wand id="23721" level="1" mana="1" min="3" max="7" type="ice"> <!-- The Chiller -->
-		<vocation name="None" />
+		<vocation name="Druid" />
 	</wand>
 	<wand id="2182" level="7" mana="2" min="8" max="18" type="earth"> <!-- Snakebit Rod -->
 		<vocation name="Druid" />
@@ -115,7 +115,7 @@
 
 	<!-- Wands -->
 	<wand id="23719" level="1" mana="1" min="3" max="7" type="fire"> <!-- The Scorcher -->
-		<vocation name="None" />
+		<vocation name="Sorcerer" />
 	</wand>
 	<wand id="2190" level="7" mana="2" min="8" max="18" type="energy"> <!-- Wand of Vortex -->
 		<vocation name="Sorcerer" />
@@ -269,7 +269,7 @@
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>
-	<melee id="25962" level="250" unproperly="1">
+	<melee id="27760" level="250" unproperly="1">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</melee>

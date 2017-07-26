@@ -1,5 +1,4 @@
 __picif = {}
-
 function Creature:onChangeOutfit(outfit)
 	return true
 end
@@ -34,13 +33,6 @@ local function removeCombatProtection(cid)
 		player:remove()
 	end, time * 1000, cid)
 end
-
-local staminaBonus = {
-	target = 'Training Monk',
-	period = 120000, -- Period in milliseconds
-	bonus = 1, -- stamina that wins
-	events = {}
-}
 
 local function addStamina(name)
 	local player = Player(name)

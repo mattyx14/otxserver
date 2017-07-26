@@ -1,10 +1,10 @@
--- No move items with actionID 8000
--- Players cannot throw items on teleports if set to true
-local blockTeleportTrashing = true
-
 -- Internal Use
 ITEM_STORE_INBOX = 26052
 GOLD_POUNCH = 26377
+
+-- No move items with actionID 8000
+-- Players cannot throw items on teleports if set to true
+local blockTeleportTrashing = true
 
 function Player:onBrowseField(position)
 	return true
@@ -240,25 +240,6 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		end
 	end
 
-	--[[-- Do not stop trying this test
-	-- No move parcel very heavy
-	if item:getWeight() > 90000 and item:getId() == ITEM_PARCEL then
-		self:sendCancelMessage('YOU CANNOT MOVE PARCELS TOO HEAVY.')
-		return false
-	end
-
-	-- No move if item count > 26 items
-	if tile and tile:getItemCount() > 26 then
-		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-		return false
-	end
-
-	if tile and tile:getItemById(370) then -- Trapdoor
-		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-		self:getPosition():sendMagicEffect(CONST_ME_POFF)
-		return false
-	end]]
-
 	return true
 end
 
@@ -409,6 +390,33 @@ local function useStamina(player)
 	player:setStamina(staminaMinutes)
 end
 
+local function useStaminaXp(player)
+	local staminaMinutes = player:getExpBoostStamina()
+	if staminaMinutes == 0 then
+		return
+	end
+
+	local playerId = player:getId()
+	local currentTime = os.time()
+	local timePassed = currentTime - nextUseXpStamina[playerId]
+	if timePassed <= 0 then
+		return
+	end
+
+	if timePassed > 60 then
+		if staminaMinutes > 2 then
+			staminaMinutes = staminaMinutes - 2
+		else
+			staminaMinutes = 0
+		end
+		nextUseXpStamina[playerId] = currentTime + 120
+	else
+		staminaMinutes = staminaMinutes - 1
+		nextUseXpStamina[playerId] = currentTime + 60
+	end
+	player:setExpBoostStamina(staminaMinutes)
+end
+
 -- useStaminaPrey
 local function useStaminaPrey(player, name)
 	for i = 1, 3 do
@@ -457,61 +465,7 @@ function Player:onUseWeapon(normalDamage, elementType, elementDamage)
 					useStaminaImbuing(self:getId(), weapon:getUniqueId())
 				end
 
-				if (typeEnchant ~= "hitpointsleech" and typeEnchant ~= "manapointsleech" and typeEnchant ~= "criticalhit") then
-					percentDamage = normalDamage*(enchantPercent/100)
-					normalDamage = normalDamage - percentDamage
-					elementDamage = weapon:getType():getAttack()*(enchantPercent/100)
-				else
-					if (typeEnchant == "hitpointsleech") then
-						local healAmountHP = normalDamage*(enchantPercent/100)
-						self:addHealth(healAmountHP)
-					elseif (typeEnchant == "manapointsleech") then
-						local healAmountMP = normalDamage*(enchantPercent/100)
-						self:addMana(healAmountMP)
-					end
-				end
-
-				if (typeEnchant == "firedamage") then
-					elementType = COMBAT_FIREDAMAGE
-				elseif (typeEnchant == "earthdamage") then
-					elementType = COMBAT_EARTHDAMAGE
-				elseif (typeEnchant == "icedamage") then
-					elementType = COMBAT_ICEDAMAGE
-				elseif (typeEnchant == "energydamage") then
-					elementType = COMBAT_ENERGYDAMAGE
-				elseif (typeEnchant == "deathdamage") then
-					elementType = COMBAT_DEATHDAMAGE
-				end
-			end
-		end
-	end
-	return normalDamage, elementType, elementDamage
-end
-
-function Player:onCombatSpell(normalDamage, elementDamage, elementType)
-	local weapon = self:getSlotItem(CONST_SLOT_LEFT)
-	if not weapon or weapon:getType():getWeaponType() == WEAPON_SHIELD then
-		weapon = self:getSlotItem(CONST_SLOT_RIGHT)
-	end
-
-	-- Imbuement
-	if (weapon and weapon:getType():getImbuingSlots() > 0) then
-		for i = 1, weapon:getType():getImbuingSlots() do
-			local slotEnchant = weapon:getSpecialAttribute(i)
-			if (slotEnchant) then
-				local percentDamage, enchantPercent = 0, weapon:getImbuementPercent(slotEnchant)
-				local typeEnchant = weapon:getImbuementType(i) or ""
-				if (typeEnchant ~= "") then
-					useStaminaImbuing(self:getId(), weapon:getUniqueId())
-				end
-
-				if (typeEnchant ~= "hitpointsleech" and typeEnchant ~= "manapointsleech" and typeEnchant ~= "criticalhit") then
-					percentDamage = normalDamage*(enchantPercent/100)
-					normalDamage = normalDamage - percentDamage
-					elementDamage = weapon:getType():getAttack()*(enchantPercent/100)
-				end
-
-				if (typeEnchant == "firedamage") then
+			if (typeEnchant == "firedamage") then
 					elementType = COMBAT_FIREDAMAGE
 				elseif (typeEnchant == "earthdamage") then
 					elementType = COMBAT_EARTHDAMAGE

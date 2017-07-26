@@ -5,14 +5,36 @@ local holeId = {
 	8323, 8252, 8253, 8254, 8255, 8256, 8592, 8972, 9606, 9625, 13190, 14461, 19519, 21536
 }
 
-local holes = {468, 481, 483, 7932 }
+local holes = {468, 481, 483, 7932, 23712}
 
 local pickHoleIds = {354, 355}
 
 local others = {7932}
 
-local JUNGLE_GRASS = { 2782, 3985, 19433 }
-local WILD_GROWTH = { 1499, 11099 }
+local JUNGLE_GRASS = {2782, 3985, 19433}
+local WILD_GROWTH = {1446, 1447, 1499, 1775, 2101, 11099}
+
+local function revertItem(position, itemId, transformId)
+	local item = Tile(position):getItemById(itemId)
+	if item then
+		item:transform(transformId)
+	end
+end
+
+local function removeRemains(toPosition)
+	local item = Tile(toPosition):getItemById(2248)
+	if item then
+		item:remove()
+	end
+end
+
+local function revertCask(position)
+	local caskItem = Tile(position):getItemById(2249)
+	if caskItem then
+		caskItem:transform(5539)
+		position:sendMagicEffect(CONST_ME_MAGIC_GREEN)
+	end
+end
 
 function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 	if type(target) ~= "userdata" or not target:isItem() then
@@ -24,7 +46,7 @@ function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	if toPosition.x == CONTAINER_POSITION then
-		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		player:sendCancelMessage(Game.getReturnMessage(RETURNVALUE_NOTPOSSIBLE))
 		return true
 	end
 
@@ -188,6 +210,13 @@ function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
+	if target.itemid == 5464 then
+		target:transform(5463)
+		target:decay()
+		Game.createItem(5467, 1, toPosition)
+		return true
+	end
+
 	if target.itemid == 2739 then
 		target:transform(2737)
 		target:decay()
@@ -195,5 +224,5 @@ function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	end
 
-	return destroyItem(player, target, toPosition)
+	return destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 end

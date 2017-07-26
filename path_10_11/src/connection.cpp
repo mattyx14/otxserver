@@ -248,6 +248,11 @@ void Connection::parsePacket(const boost::system::error_code& error)
 		receivedFirst = true;
 
 		if (!protocol) {
+			// As of 11.11+ update, we need to check if it's a outdated client or a status client server with this ugly check
+			if(msg.getLength() < 280) {
+				msg.skipBytes(-NetworkMessage::CHECKSUM_LENGTH); //those 32bits read up there
+			}
+
 			// Game protocol has already been created at this point
 			protocol = service_port->make_protocol(true, msg, shared_from_this());
 			if (!protocol) {
