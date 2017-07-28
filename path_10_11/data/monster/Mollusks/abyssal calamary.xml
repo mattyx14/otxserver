@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Abyssal Calamary" nameDescription="an abyssal calamary" race="blood" experience="200" speed="200" manacost="0">
+	<health now="300" max="300" />
+	<look type="451" corpse="15280" />
+	<targetchange interval="2000" chance="5" />
+	<strategy attack="100" defense="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="0" />
+		<flag isblockable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag staticattack="90" />
+		<flag targetdistance="1" />
+		<flag runonhealth="75" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="20" attack="30" />
+		<attack name="drunk" interval="2000" chance="13" range="7" target="1" duration="2000">
+			<attribute key="shootEffect" value="explosion" />
+			<attribute key="areaEffect" value="stun" />
+		</attack>
+	</attacks>
+	<defenses armor="12" defense="20">
+		<defense name="speed" interval="2000" chance="12" speedchange="600" duration="5000">
+			<attribute key="areaEffect" value="poff" />
+		</defense>
+	</defenses>
+	<elements>
+		<element energyPercent="-5" />
+		<element physicalPercent="-5" />
+	</elements>
+	<immunities>
+		<immunity fire="1" />
+		<immunity earth="1" />
+		<immunity drown="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Bubble!" />
+		<voice sentence="Bobble!" />
+	</voices>
+	<loot>
+		<item id="2144" countmax="1" chance="1720" /> <!-- black pearl -->
+		<item id="2667" countmax="1" chance="7470" /> <!-- fish -->
+		<item id="2670" countmax="5" chance="6320" /> <!-- shrimp -->
+		<item id="2150" countmax="2" chance="1720" /> <!-- small amethyst -->
+		<item id="2146" countmax="3" chance="2270" /> <!-- small sapphire -->
+	</loot>
+</monster>

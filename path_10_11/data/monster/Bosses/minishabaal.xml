@@ -58,7 +58,7 @@
 		<voice sentence="Muahaha!" />
 	</voices>
 	<loot>
-		<item id="2136" chance="909" /><!-- demonbone amulet -->
+		<item id="2136" chance="909" /> <!-- demonbone amulet -->
 		<item name="gold coin" countmax="20" chance="100000" />
 		<item name="gold coin" countmax="20" chance="100000" />
 		<item name="small amethyst" countmax="2" chance="1428" />

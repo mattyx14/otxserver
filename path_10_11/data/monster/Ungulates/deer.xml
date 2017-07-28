@@ -15,6 +15,9 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="25" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-1" />
@@ -23,6 +26,6 @@
 	<loot>
 		<item name="meat" countmax="4" chance="80000" />
 		<item name="ham" countmax="2" chance="50000" />
-		<item id="11214" chance="870" /><!-- antlers -->
+		<item id="11214" chance="870" /> <!-- antlers -->
 	</loot>
 </monster>

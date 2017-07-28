@@ -56,15 +56,15 @@
 		<voice sentence="My powers are divine!" />
 	</voices>
 	<loot>
-		<item id="1949" chance="10000" /><!-- scroll -->
-		<item id="2032" chance="4000" /><!-- bowl -->
+		<item id="1949" chance="10000" /> <!-- scroll -->
+		<item id="2032" chance="4000" /> <!-- bowl -->
 		<item name="oil lamp" chance="2857" />
 		<item name="crystal necklace" chance="1818" />
 		<item name="gold coin" countmax="20" chance="100000" />
 		<item name="yellow gem" chance="1333" />
 		<item name="life crystal" chance="2857" />
 		<item name="blank rune" chance="4000" />
-		<item id="2401" chance="3000" /><!-- staff -->
+		<item id="2401" chance="3000" /> <!-- staff -->
 		<item name="bow" chance="10000" />
 		<item name="arrow" countmax="10" chance="20000" />
 		<item name="closed trap" chance="5000" />

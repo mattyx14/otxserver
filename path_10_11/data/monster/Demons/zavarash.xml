@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Zavarash" nameDescription="a zavarash" race="blood" experience="21000" speed="460" manacost="0">
+	<health now="35000" max="35000" />
+	<look type="12" head="0" body="15" legs="57" feet="85" addons="1" corpse="6068" />
+	<targetchange interval="5000" chance="15" />
+	<strategy attack="100" defense="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="4" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="120" attack="100" />
+		<attack name="energy" interval="2000" chance="22" target="0" radius="3" min="-130" max="-400">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>
+		<attack name="paralyze" interval="2000" chance="17" range="7" />
+		<attack name="energy" interval="2000" chance="15" length="8" spread="0" min="-400" max="-510">
+			<attribute key="areaEffect" value="energy" />
+		</attack>
+		<attack name="effect" interval="2000" chance="18" length="8" spread="3">
+			<attribute key="areaEffect" value="rednote" />
+		</attack>
+	</attacks>
+	<defenses armor="45" defense="55">
+		<defense name="healing" interval="2000" chance="22" min="425" max="575" radius="8">
+			<attribute key="areaEffect" value="redspark" />
+		</defense>
+	</defenses>
+	<elements>
+		<element icePercent="25" />
+		<element energyPercent="60" />
+		<element earthPercent="40" />
+		<element firePercent="25" />
+		<element holyPercent="40" />
+		<element physicalPercent="30" />
+	</elements>
+	<immunities>
+		<immunity death="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="Dark Torturer" interval="2000" chance="15" max="2" />
+	</summons>
+	<loot>
+		<item id="22396" chance="100000" /> <!-- cluster of solace -->
+		<item id="22598" chance="100000" /> <!-- dream -->
+		<item id="5954" chance="100000" /> <!-- demon horn -->
+		<item id="22610" chance="10430" /> <!-- dream warden mask -->
+		<item id="2148" countmax="185" chance="100000" /> <!-- gold coin -->
+		<item id="2152" countmax="50" chance="100000" /> <!-- platinum coin -->
+		<item id="7421" chance="4020" /> <!-- onyx flail -->
+		<item id="7428" chance="15000" /> <!-- bonebreaker -->
+		<item id="2427" chance="15950" /> <!-- guardian halberd -->
+		<item id="7387" chance="8380" /> <!-- diamond sceptre -->
+		<item id="2452" chance="12920" /> <!-- heavy mace -->
+		<item id="8877" chance="350" /> <!-- lavos armor -->
+		<item id="22397" chance="5110" /> <!-- dream matter -->
+		<item id="8473" countmax="10" chance="32330" /> <!-- ultimate health potion -->
+		<item id="8472" countmax="10" chance="33620" /> <!-- great spirit potion -->
+		<item id="7590" countmax="10" chance="34050" /> <!-- great mana potion -->
+		<item id="18413" countmax="8" chance="31330" /> <!-- blue crystal shard -->
+		<item id="18414" countmax="8" chance="38100" /> <!-- violet crystal shard -->
+		<item id="18415" countmax="8" chance="30570" /> <!-- green crystal shard -->
+		<item id="7632" chance="42380" /> <!-- giant shimmering pearl blue -->
+		<item id="7633" chance="42380" /> <!-- giant shimmering pearl brown -->
+		<item id="2158" chance="15550" /> <!-- blue gem -->
+		<item id="2155" chance="20050" /> <!-- green gem -->
+		<item id="9971" chance="15360" /> <!-- gold ingot -->
+		<item id="2519" chance="11580" /> <!-- crown shield -->
+		<item id="8891" chance="9660" /> <!-- paladin armor -->
+		<item id="2515" chance="15930" /> <!-- guardian shield -->
+		<item id="2520" chance="6240" /> <!-- demon shield -->
+	</loot>
+</monster>

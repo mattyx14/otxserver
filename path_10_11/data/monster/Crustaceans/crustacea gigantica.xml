@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Crustacea Gigantica" nameDescription="a crustacea gigantica" race="blood" experience="1800" speed="290" manacost="0">
+	<health now="1600" max="1600" />
+	<look type="383" corpse="13331" />
+	<targetchange interval="5000" chance="8" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag isblockable="0" />
+		<flag staticattack="90" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-160" />
+		<attack name="ice" interval="2000" chance="10" length="8" spread="3" min="0" max="-200">
+			<attribute key="areaEffect" value="iceattack" />
+		</attack>
+		<attack name="ice" interval="2000" chance="10" target="1" radius="4" min="0" max="-160">
+			<attribute key="areaEffect" value="icearea" />
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="20">
+		<defense name="healing" interval="2000" chance="15" min="75" max="245">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<defenses armor="30" defense="45" />
+	<elements>
+		<element physicalPercent="12" />
+		<element deathPercent="10" />
+		<element energyPercent="-10" />
+	</elements>
+	<immunities>
+		<immunity ice="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<voices interval="2000" chance="7">
+		<voice sentence="Chrchrchr" yell="1" />
+		<voice sentence="Klonklonk" yell="1" />
+		<voice sentence="Chrrrrr" yell="1" />
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="98500" /> <!-- gold coin -->
+		<item id="2148" countmax="75" chance="98500" /> <!-- gold coin -->
+		<item id="7589" chance="9885" /> <!-- strong mana potion -->
+		<item id="7588" chance="2885" /> <!-- strong health potion -->
+		<item id="13304" chance="5600" /> <!-- giant crab pincer -->
+		<item id="2214" chance="885" /> <!-- ring of healing -->
+	</loot>
+</monster>

@@ -15,6 +15,8 @@
 		<flag targetdistance="4" />
 		<flag staticattack="80" />
 		<flag runonhealth="15" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-30" />
@@ -60,7 +62,7 @@
 		<item name="terra rod" chance="920" />
 		<item name="snakebite rod" chance="230" />
 		<item name="cape" chance="8640" />
-		<item id="3077" chance="30000" /><!-- dead snake -->
+		<item id="3077" chance="30000" /> <!-- dead snake -->
 		<item name="charmer's tiara" chance="230" />
 		<item name="lizard leather" chance="1320" />
 		<item name="lizard scale" chance="860" />

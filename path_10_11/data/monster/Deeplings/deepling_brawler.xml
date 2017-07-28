@@ -14,6 +14,8 @@
 		<flag canpushcreatures="1" />
 		<flag targetdistance="0" />
 		<flag runonhealth="40" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-100" />
@@ -35,7 +37,7 @@
 	</immunities>
 	<loot>
 		<item name="gold coin" countmax="44" chance="61000" />
-		<item id="2667" countmax="3" chance="19120" /><!-- fish-->
+		<item id="2667" countmax="3" chance="19120" /> <!-- fish-->
 		<item name="fish fin" chance="740" />
 		<item name="heavy trident" chance="2940" />
 		<item name="eye of a deepling" chance="6600" />

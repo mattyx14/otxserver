@@ -15,6 +15,9 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-100" />
@@ -44,9 +47,9 @@
 		<voice sentence="Your end has come!" />
 	</voices>
 	<loot>
-		<item id="1949" chance="1790" /><!-- scroll -->
+		<item id="1949" chance="1790" /> <!-- scroll -->
 		<item name="brown flask" chance="380" />
-		<item id="2044" chance="550" /><!-- lamp -->
+		<item id="2044" chance="550" /> <!-- lamp -->
 		<item name="gold coin" countmax="18" chance="14600" />
 		<item name="power ring" chance="120" />
 		<item name="life crystal" chance="990" />

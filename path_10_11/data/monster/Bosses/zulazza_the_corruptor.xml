@@ -4,6 +4,7 @@
 	<look type="334" corpse="11107" />
 	<targetchange interval="2000" chance="10" />
 	<flags>
+		<flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -68,11 +69,11 @@
 		<item name="mastermind potion" chance="10500" />
 		<item name="great mana potion" chance="20500" />
 		<item name="great health potion" chance="30500" />
-		<item id="7632" countmax="2" chance="28000" /><!-- giant shimmering pearl -->
+		<item id="7632" countmax="2" chance="28000" /> <!-- giant shimmering pearl -->
 		<item name="ultimate health potion" chance="10500" />
 		<item name="earthborn titan armor" chance="5500" />
 		<item name="paladin armor" chance="5500" />
-		<item id="9808" chance="50500" /><!-- rusty armor -->
+		<item id="9808" chance="50500" /> <!-- rusty armor -->
 		<item name="gold ingot" countmax="4" chance="33000" />
 		<item name="dragon scale boots" chance="5500" />
 	</loot>

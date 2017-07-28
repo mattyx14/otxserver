@@ -15,6 +15,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="70" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-510" />
@@ -67,8 +69,8 @@
 		<voice sentence="Dieee!" />
 	</voices>
 	<loot>
-		<item id="2120" countmax="3" chance="8000" /><!-- small amethyst -->
-		<item id="2124" chance="410" /><!-- crystal ring-->
+		<item id="2120" countmax="3" chance="8000" /> <!-- small amethyst -->
+		<item id="2124" chance="410" /> <!-- crystal ring-->
 		<item name="gold coin" countmax="100" chance="30000" />
 		<item name="gold coin" countmax="100" chance="30000" />
 		<item name="gold coin" countmax="69" chance="38000" />
@@ -81,13 +83,13 @@
 		<item name="red piece of cloth" chance="4000" />
 		<item name="soul orb" chance="21500" />
 		<item name="soul orb" chance="50" />
-		<item id="6301" chance="60" /><!-- death ring-->
+		<item id="6301" chance="60" /> <!-- death ring-->
 		<item name="demonic essence" chance="22500" />
 		<item name="concentrated demonic blood" countmax="3" chance="35000" />
 		<item name="assassin dagger" chance="660" />
 		<item name="noble axe" chance="2000" />
 		<item name="great health potion" chance="10500" />
 		<item name="jalapeño pepper" countmax="4" chance="29280" />
-		<item id="9813" chance="1920" /><!-- rusty legs -->
+		<item id="9813" chance="1920" /> <!-- rusty legs -->
 	</loot>
 </monster>

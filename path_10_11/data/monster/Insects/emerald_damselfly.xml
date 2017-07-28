@@ -15,6 +15,9 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-4" poison="10" />
@@ -31,7 +34,7 @@
 		<voice sentence="Bzzzzz!" />
 	</voices>
 	<loot>
-		<item id="2120" chance="4300" /><!-- rope -->
+		<item id="2120" chance="4300" /> <!-- rope -->
 		<item name="gold coin" countmax="18" chance="90000" />
 		<item name="arrow" countmax="5" chance="7570" />
 		<item name="health potion" chance="1780" />

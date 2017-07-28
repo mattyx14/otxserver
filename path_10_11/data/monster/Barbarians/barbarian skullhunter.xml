@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Barbarian Skullhunter" nameDescription="a barbarian skullhunter" race="blood" experience="85" speed="220" manacost="450">
+	<health now="135" max="135" />
+	<look type="254" head="0" body="77" legs="77" feet="114" corpse="20347" />
+	<targetchange interval="60000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="1" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag staticattack="70" />
+		<flag lightlevel="0" />
+		<flag lightcolor="0" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="20" attack="40" />
+	</attacks>
+	<defenses armor="15" defense="15" />
+	<elements>
+		<element icePercent="50" />
+		<element holyPercent="10" />
+		<element energyPercent="20" />
+		<element physicalPercent="5" />
+		<element earthPercent="-10" />
+		<element deathPercent="-1" />
+	</elements>
+	<immunities>
+		<immunity paralyze="1" />
+	</immunities>
+	<voices interval="2000" chance="7">
+		<voice sentence="You will become my trophy." />
+		<voice sentence="Fight harder, coward." />
+		<voice sentence="Show that you are a worthy opponent." />
+	</voices>
+	<loot>
+		<item id="2148" countmax="30" chance="7500" /> <!-- gold coin -->
+		<item id="2050" chance="6100" /> <!-- torch -->
+		<item id="2460" chance="2000" /> <!-- brass helmet -->
+		<item id="2403" chance="1550" /> <!-- knife -->
+		<item id="2473" chance="790" /> <!-- viking helmet -->
+		<item id="2483" chance="410" /> <!-- scale armor -->
+		<item id="2229" chance="320" /> <!-- skull -->
+		<item id="7449" chance="10" /> <!-- crystal sword -->
+		<item id="7618" chance="90" /> <!-- HP -->
+		<item id="5913" chance="50" /> <!-- brown piece of cloth -->
+		<item id="2168" chance="30" /> <!-- life ring -->
+		<item id="7462" chance="10" /> <!-- ragnir helmet -->
+		<item id="7457" chance="10" /> <!-- fur boots -->
+	</loot>
+</monster>

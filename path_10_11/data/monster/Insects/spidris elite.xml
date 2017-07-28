@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Spidris Elite" nameDescription="a spidris elite" race="venom" experience="4000" speed="260" manacost="0">
+	<health now="3700" max="3700" />
+	<look type="457" corpse="15296" />
+	<targetchange interval="4000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="1" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="0" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="75" attack="82" />
+	</attacks>
+	<defenses armor="30" defense="30" />
+	<immunities>
+		<immunity earth="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<elements>
+		<element holyPercent="-10" />
+	</elements>
+	<loot>
+		<item id="2148" countmax="100" chance="40000" /> <!-- gold coin -->
+		<item id="2148" countmax="98" chance="58000" /> <!-- gold coin -->
+		<item id="2152" countmax="6" chance="84000" /> <!-- platinum coin -->
+		<item id="2147" countmax="2" chance="16000" /> <!-- small ruby -->
+		<item id="15486" chance="16000" /> <!-- compound eye -->
+		<item id="7590" chance="18000" /> <!-- gmp -->
+		<item id="15485" chance="16000" /> <!-- compound eye -->
+		<item id="8473" chance="12000" /> <!-- uhp -->
+		<item id="6300" chance="620" /> <!-- Death Ring -->
+		<item id="7632" chance="4000" /> <!-- giant shimmering pearl -->
+		<item id="15489" chance="830" /> <!-- calpteryx cape -->
+		<item id="15492" chance="1650" /> <!-- hive scythe -->
+		<item id="15491" chance="920" /> <!-- carapace shield -->
+		<item id="7413" chance="550" /> <!-- Titan Axe -->
+		<item id="2153" chance="550" /> <!-- Violet Gem -->
+	</loot>
+</monster>

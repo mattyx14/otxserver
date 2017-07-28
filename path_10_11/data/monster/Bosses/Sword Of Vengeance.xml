@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Sword Of Vengeance" nameDescription="a Sword Of Vengeance" race="undead" experience="0" speed="100" manacost="0">
+	<health now="500" max="500" />
+	<look typeex="26883" />
+	<targetchange interval="2000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag staticattack="98" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-350" max="-400" />
+	</attacks>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity drown="1" />
+		<immunity invisible="1" />
+	</immunities>
+</monster>

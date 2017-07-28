@@ -15,6 +15,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-250" />
@@ -51,7 +53,7 @@
 		<item name="protection amulet" chance="2200" />
 		<item name="two handed sword" chance="1900" />
 		<item name="throwing star" countmax="18" chance="15700" />
-		<item id="2419" chance="11280" /><!-- scimitar -->
+		<item id="2419" chance="11280" /> <!-- scimitar -->
 		<item name="knight axe" chance="280" />
 		<item name="plate armor" chance="1700" />
 		<item name="brass armor" chance="4700" />

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monsters>
+<!-- NOVOS 11.2 bosses -->
+<monster name="Lady Tenebris" file="11.2/bosses/Lady Tenebris.xml" />
+<monster name="Lloyd" file="11.2/bosses/Lloyd.xml" />
+<monster name="Melting Frozen Horror" file="11.2/bosses/Melting Frozen Horror.xml" />
+<monster name="The Last Lore Keeper" file="11.2/bosses/The Last Lore Keeper.xml" />
+<monster name="Sword Of Vengeance" file="11.2/bosses/Sword Of Vengeance.xml" />
+<monster name="An Observer Eye" file="11.2/bosses/An Observer Eye.xml" />
+<monster name="Dragonking Zyrtarch" file="11.2/bosses/Dragonking Zyrtarch.xml" />
+<monster name="Soul of Dragonking Zyrtarch" file="11.2/bosses/Soul of Dragonking Zyrtarch.xml" />
+<monster name="Mounted Thorn Knight" file="11.2/bosses/Mounted Thorn Knight.xml" />
+<monster name="The Shielded Thorn Knight" file="11.2/bosses/The Shielded Thorn Knight.xml" />
+<monster name="Thorn Steed" file="11.2/bosses/Thorn Steed.xml" />
+<monster name="The Enraged Thorn Knight" file="11.2/bosses/The Enraged Thorn Knight.xml" />
+<!-- NOVOS 11.2 -->
+<monster name="A Shielded Astral Glyph" file="11.2/A Shielded Astral Glyph.xml" />
+<monster name="Unbound Demon" file="11.2/Unbound Demon.xml" />
+<monster name="Stone Rhino" file="11.2/Stone Rhino.xml" />
+<monster name="An Observer Eye (Imune)" file="11.2/An Observer Eye (Imune).xml" />
+<monster name="Angry Plant" file="11.2/Angry Plant.xml" />
+<monster name="Animated Sword" file="11.2/Animated Sword.xml" />
+<monster name="baby dragon" file="11.2/baby dragon.xml" />
+<monster name="Bound Astral Power" file="11.2/Bound Astral Power.xml" />
+<monster name="Broken Shaper" file="11.2/Broken Shaper.xml" />
+<monster name="Cave Parrot" file="11.2/Cave Parrot.xml" />
+<monster name="Corrupted Soul" file="11.2/Corrupted Soul.xml" />
+<monster name="Cosmic Energy Prism A" file="11.2/Cosmic Energy Prism A.xml" />
+<monster name="Cosmic Energy Prism B" file="11.2/Cosmic Energy Prism B.xml" />
+<monster name="Cosmic Energy Prism C" file="11.2/Cosmic Energy Prism C.xml" />
+<monster name="Cosmic Energy Prism D" file="11.2/Cosmic Energy Prism D.xml" />
+<monster name="Diamond Servant Replica" file="11.2/Diamond Servant Replica.xml" />
+<monster name="Dragon Essence" file="11.2/Dragon Essence.xml" />
+<monster name="Dragon Warden" file="11.2/Dragon Warden.xml" />
+</monsters>

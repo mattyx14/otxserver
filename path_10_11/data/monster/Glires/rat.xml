@@ -15,6 +15,9 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="5" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-10" />
@@ -31,6 +34,6 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="4" chance="100000" />
-		<item id="2696" chance="39410" /><!-- cheese -->
+		<item id="2696" chance="39410" /> <!-- cheese -->
 	</loot>
 </monster>

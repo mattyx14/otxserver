@@ -14,6 +14,9 @@
 		<flag canpushcreatures="0" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-80" />
@@ -39,7 +42,7 @@
 	<loot>
 		<item name="gold coin" countmax="10" chance="18000" />
 		<item name="dragon hammer" chance="200" />
-		<item id="2667" countmax="4" chance="8000" /><!-- fish -->
+		<item id="2667" countmax="4" chance="8000" /> <!-- fish -->
 		<item name="rainbow trout" chance="8000" />
 		<item name="green perch" chance="7000" />
 	</loot>

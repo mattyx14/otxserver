@@ -15,6 +15,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="300" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-150" />
@@ -68,7 +70,7 @@
 		<item name="ham" countmax="2" chance="29000" />
 		<item name="mysterious voodoo skull" chance="123" />
 		<item name="soul orb" chance="20000" />
-		<item id="6300" chance="1298" /><!-- death ring -->
+		<item id="6300" chance="1298" /> <!-- death ring -->
 		<item name="demonic essence" chance="10000" />
 		<item name="skeleton decoration" chance="337" />
 		<item name="concentrated demonic blood" countmax="2" chance="19666" />

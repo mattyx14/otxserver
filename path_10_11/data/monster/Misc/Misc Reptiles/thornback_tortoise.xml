@@ -15,6 +15,9 @@
 		<flag staticattack="90" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-110" poison="40" />
@@ -31,7 +34,7 @@
 		<item name="black pearl" chance="800" />
 		<item name="gold coin" countmax="48" chance="89500" />
 		<item name="war hammer" chance="260" />
-		<item id="2667" countmax="2" chance="10800" /><!-- fish -->
+		<item id="2667" countmax="2" chance="10800" /> <!-- fish -->
 		<item name="white mushroom" chance="1200" />
 		<item name="brown mushroom" chance="700" />
 		<item name="tortoise egg" countmax="3" chance="790" />

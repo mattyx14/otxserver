@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="The Shielded Thorn Knight" nameDescription="a The Shielded Thorn Knight" race="blood" experience="0" speed="390" manacost="290">
+	<health now="20000" max="20000" />
+	<look type="512" addons="3" head="81" body="121" legs="121" feet="121" corpse="27480" />
+	<targetchange interval="5000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="15" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="250" attack="180" />
+	</attacks>
+	<defenses armor="10" defense="10" />
+	<elements>
+		<element energyPercent="20" />
+		<element holyPercent="1" />
+		<element earthPercent="100" />
+		<element deathPercent="-10" />
+	</elements>
+	<voices interval="2000" chance="7">
+		<voice sentence="Togheter we are unstoppable!" />
+		<voice sentence="You will fall before our might!" />
+	</voices>
+</monster>

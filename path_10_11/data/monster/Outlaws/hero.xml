@@ -15,6 +15,7 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-240" />
@@ -47,10 +48,10 @@
 		<voice sentence="I will sing a tune at your grave." />
 	</voices>
 	<loot>
-		<item id="1949" chance="45000" /><!-- scroll -->
-		<item id="2071" chance="1640" /><!-- lyre -->
+		<item id="1949" chance="45000" /> <!-- scroll -->
+		<item id="2071" chance="1640" /> <!-- lyre -->
 		<item name="piggy bank" chance="80" />
-		<item id="2120" chance="2190" /><!-- rope -->
+		<item id="2120" chance="2190" /> <!-- rope -->
 		<item name="wedding ring" chance="4910" />
 		<item name="gold coin" countmax="100" chance="59500" />
 		<item name="might ring" chance="470" />

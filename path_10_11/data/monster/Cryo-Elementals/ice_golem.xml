@@ -16,6 +16,8 @@
 		<flag lightcolor="0" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-220" />
@@ -56,7 +58,7 @@
 		<item name="ice rapier" chance="400" />
 		<item name="strange helmet" chance="444" />
 		<item name="shard" chance="266" />
-		<item id="7441" chance="5000" /><!-- ice cube -->
+		<item id="7441" chance="5000" /> <!-- ice cube -->
 		<item name="crystal sword" chance="177" />
 		<item name="strong health potion" chance="444" />
 		<item name="glacier mask" chance="111" />

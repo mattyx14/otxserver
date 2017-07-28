@@ -4,6 +4,7 @@
 	<look type="340" corpse="11316" />
 	<targetchange interval="2000" chance="10" />
 	<flags>
+		<flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -15,6 +16,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-455" />
@@ -57,7 +60,7 @@
 		<item name="gold coin" countmax="10" chance="69825" />
 		<item name="small emerald" chance="5750" />
 		<item name="green gem" chance="16300" />
-		<item id="2169" chance="11025" /><!-- time ring -->
+		<item id="2169" chance="11025" /> <!-- time ring -->
 		<item name="dragon scale mail" chance="5750" />
 		<item name="lizard scale" chance="100000" />
 		<item name="great health potion" chance="5750" />

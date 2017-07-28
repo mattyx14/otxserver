@@ -4,6 +4,7 @@
 	<look type="416" corpse="13834" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
+		<flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -69,6 +70,6 @@
 		<item name="spellbook of mind control" chance="610" />
 		<item name="royal tapestry" chance="1220" />
 		<item name="luminous orb" chance="4270" />
-		<item id="133940" chance="1220" /><!-- elemental spikes -->
+		<item id="133940" chance="1220" /> <!-- elemental spikes -->
 	</loot>
 </monster>

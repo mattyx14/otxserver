@@ -15,6 +15,8 @@
 		<flag staticattack="90" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-113" />
@@ -35,7 +37,7 @@
 		<item name="gold coin" countmax="20" chance="90000" />
 		<item name="chain armor" chance="5555" />
 		<item name="brass legs" chance="2170" />
-		<item id="2667" chance="13000" /><!-- fish -->
+		<item id="2667" chance="13000" /> <!-- fish -->
 		<item name="bloody pincers" chance="6260" />
 	</loot>
 </monster>

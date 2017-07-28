@@ -15,6 +15,9 @@
 		<flag targetdistance="4" />
 		<flag staticattack="90" />
 		<flag runonhealth="15" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-15" />
@@ -46,7 +49,7 @@
 		<voice sentence="Huumans stinkk!" />
 	</voices>
 	<loot>
-		<item id="1958" chance="520" /><!-- book -->
+		<item id="1958" chance="520" /> <!-- book -->
 		<item name="gold coin" countmax="5" chance="90000" />
 		<item name="wand of decay" chance="1000" />
 		<item name="spear" chance="4850" />

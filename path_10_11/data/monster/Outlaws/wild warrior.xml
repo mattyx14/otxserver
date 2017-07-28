@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Wild Warrior" nameDescription="a wild warrior" race="blood" experience="60" speed="190" manacost="420">
+	<health now="135" max="135" />
+	<look type="131" head="57" body="57" legs="57" feet="57" corpse="20534" />
+	<targetchange interval="4000" chance="0" />
+	<flags>
+		<flag summonable="1" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag staticattack="90" />
+		<flag targetdistance="1" />
+		<flag runonhealth="10" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-70" />
+	</attacks>
+	<defenses armor="20" defense="20">
+		<defense name="speed" interval="2000" chance="5" speedchange="200" duration="5000">
+			<attribute key="areaEffect" value="redshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element holyPercent="10" />
+		<element physicalPercent="-5" />
+		<element deathPercent="-5" />
+	</elements>
+	<voices interval="2000" chance="7">
+		<voice sentence="An enemy!" />
+		<voice sentence="Gimme your money!" />
+	</voices>
+	<loot>
+		<item id="2148" countmax="30" chance="64070" /> <!-- gold coin -->
+		<item id="2386" chance="21700" /> <!-- axe -->
+		<item id="2511" chance="17100" /> <!-- brass shield -->
+		<item id="2398" chance="13200" /> <!-- mace -->
+		<item id="2328" countmax="2" chance="13000" /> <!-- egg -->
+		<item id="2458" chance="5500" /> <!-- chain helmet -->
+		<item id="2465" chance="2800" /> <!-- brass armor -->
+		<item id="2509" chance="1550" /> <!-- steel shield -->
+		<item id="2459" chance="790" /> <!-- iron helmet -->
+		<item id="2110" chance="440" /> <!-- doll -->
+	</loot>
+</monster>

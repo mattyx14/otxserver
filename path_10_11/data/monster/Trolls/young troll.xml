@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Young Troll" nameDescription="a young troll" race="blood" experience="12" speed="170" manacost="0">
+	<health now="30" max="30" />
+	<look type="15" corpse="5960" />
+	<targetchange interval="5000" chance="20" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="15" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-10" />
+	</attacks>
+	<defenses armor="1" defense="2" />
+	<loot>
+		<item id="2148" countmax="12" chance="64000" /> <!-- gold coin -->
+		<item id="2666" chance="26400" /> <!-- meat -->
+		<item id="2120" chance="6200" /> <!-- rope -->
+		<item id="2389" chance="6270" /> <!-- spear -->
+		<item id="2643" chance="5030" /> <!-- leather boots -->
+		<item id="2461" chance="5030" /> <!-- leather helmet -->
+		<item id="2512" chance="2590" /> <!-- wooden shield -->
+		<item id="10606" chance="1800" /> <!-- bunch of troll hair -->
+	</loot>
+</monster>

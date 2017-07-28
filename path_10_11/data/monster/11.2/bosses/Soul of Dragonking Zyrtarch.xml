@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Soul of Dragonking Zyrtarch" nameDescription="a Soul of Dragonking Zyrtarch" race="blood" experience="70000" speed="500" manacost="290">
+	<health now="50000" max="50000" />
+	<look type="938" corpse="27721" />
+	<targetchange interval="5000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="15" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="100" attack="300" />
+		<attack name="Poison Bomb" interval="5000" range="7" min="-400" max="-800" />
+	</attacks>
+	<defenses armor="10" defense="10" />
+	<elements>
+		<element energyPercent="20" />
+		<element holyPercent="1" />
+		<element earthPercent="-12" />
+		<element deathPercent="-10" />
+	</elements>
+	<voices interval="2000" chance="7">
+		<voice sentence="What have you done?!" />
+	</voices>
+	<immunities>
+		<immunity drown="1" />
+		<immunity lifedrain="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+		<immunity earth="1" />
+	</immunities>
+	<loot>
+		<item id="2148" countmax="100" chance="97000" /> <!-- gold coin -->
+		<item id="2152" countmax="6" chance="90000" /> <!-- platinum coin -->
+		<item id="7590" countmax="3" chance="22120" /> <!-- great mana potion -->
+		<item id="8473" countmax="3" chance="19500" /> <!-- ultimate health potion -->
+		<item id="8472" countmax="3" chance="18250" /> <!-- great spirit potion -->
+		<item id="7368" countmax="10" chance="12430" /> <!-- assassin star -->
+		<item id="2149" countmax="5" chance="9660" /> <!-- small emerald -->
+		<item id="2147" countmax="5" chance="7360" /> <!-- small ruby -->
+		<item id="2146" countmax="5" chance="7360" /> <!-- small sapphire-->
+		<item id="9970" countmax="5" chance="7350" /> <!-- small topaz -->
+		<item id="2150" countmax="5" chance="7150" /> <!-- small amethyst -->
+		<item id="18413" countmax="5" chance="9660" /> <!-- blue crystal shard -->
+		<item id="18414" countmax="5" chance="9660" /> <!-- green crystal shard-->
+		<item id="18415" countmax="5" chance="9660" /> <!-- violet crystal shard -->
+		<item id="7632" chance="7000" /> <!-- Giant Shimmering Pearl -->
+		<item id="9971" chance="7000" /> <!-- gold ingot -->
+		<item id="2158" chance="5000" /> <!-- Blue Gem -->
+		<item id="2155" chance="5000" /> <!-- Green Gem -->
+		<item id="2156" chance="5000" /> <!-- red Gem -->
+		<item id="2154" chance="5000" /> <!-- yellow Gem -->
+		<item id="9980" chance="5000" /> <!-- crystal of power -->
+		<item id="5904" chance="5000" /> <!-- Magic Sulphur -->
+		<item id="27624" chance="5000" /> <!--  Golden Talon -->
+		<item id="8849" chance="5000" /> <!--  Modified Crossbow -->
+		<item id="27611" chance="100" /> <!--  Part of a Rune(segunda) -->
+		<item id="5889" chance="5000" /> <!--  Piece of Draconian Steel -->
+		<item id="5882" chance="5000" /> <!-- Red Dragon Scale -->
+		<item id="5887" chance="5000" /> <!-- Piece of Royal Steel -->
+		<item id="5948" chance="5000" /> <!-- Red Dragon Leather-->
+		<item id="9808" chance="5000" /> <!--  Rusty Armor-->
+		<item id="8902" chance="5000" /> <!--  Spellbook of Mind Control-->
+		<item id="12644" chance="100" /> <!--  Shield of Corruption-->
+		<item id="11308" chance="100" /> <!--  Drachaku-->
+		<item id="2506" chance="1" /> <!--  Dragon Scale Helmet-->
+		<item id="12648" chance="500" /> <!--   Snake God's Sceptre-->
+		<item id="25377" chance="1970" /> <!-- Gold Token -->
+		<item id="25172" chance="1970" /> <!-- silver token -->
+	</loot>
+</monster>

@@ -38,7 +38,7 @@
 	</immunities>
 	<loot>
 		<item name="platinum coin" countmax="5" chance="100000" />
-		<item id="2169" chance="33333" /><!-- time ring -->
+		<item id="2169" chance="33333" /> <!-- time ring -->
 		<item name="steel helmet" chance="50000" />
 		<item name="knight legs" chance="50000" />
 		<item name="spider silk" chance="50000" />

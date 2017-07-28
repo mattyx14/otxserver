@@ -15,6 +15,7 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-500" />
@@ -54,7 +55,7 @@
 		<item name="platinum coin" countmax="10" chance="100000" />
 		<item name="stealth ring" chance="33333" />
 		<item name="energy ring" chance="33333" />
-		<item id="2169" chance="33333" /><!-- time ring -->
+		<item id="2169" chance="33333" /> <!-- time ring -->
 		<item name="platinum amulet" chance="25000" />
 		<item name="steel helmet" chance="100000" />
 		<item name="knight armor" chance="50000" />

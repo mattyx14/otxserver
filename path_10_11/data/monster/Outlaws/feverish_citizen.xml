@@ -15,6 +15,9 @@
 		<flag staticattack="90" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-18" />
@@ -45,7 +48,7 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="35" chance="30300" />
-		<item id="2230" chance="4920" /><!-- bone -->
+		<item id="2230" chance="4920" /> <!-- bone -->
 		<item name="worm" countmax="3" chance="25730" />
 		<item name="ominous piece of cloth" chance="1660" />
 		<item name="dubious piece of cloth" chance="1720" />

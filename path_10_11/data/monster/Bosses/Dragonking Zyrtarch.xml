@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dragonking Zyrtarch" nameDescription="a Dragonking Zyrtarch" race="blood" experience="1600" speed="150" manacost="290">
+	<health now="10000" max="10000" />
+	<look type="938" corpse="27721" />
+	<targetchange interval="5000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="15" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="10" attack="100" />
+		<attack name="Poison Bomb" interval="5000" range="7" min="-100" max="-400" />
+	</attacks>
+	<defenses armor="10" defense="10" />
+	<elements>
+		<element energyPercent="20" />
+		<element holyPercent="1" />
+		<element earthPercent="-12" />
+		<element deathPercent="-10" />
+	</elements>
+	<voices interval="2000" chance="7">
+		<voice sentence="<grunt>" />
+		<voice sentence="Raar!!" />
+	</voices>
+	<immunities>
+		<immunity fire="1" />
+		<immunity drown="1" />
+		<immunity lifedrain="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+		<immunity energy="1" />
+		<immunity ice="1" />
+		<immunity earth="1" />
+		<immunity death="1" />
+		<immunity holy="1" />
+		<immunity physical="1" />
+	</immunities>
+</monster>

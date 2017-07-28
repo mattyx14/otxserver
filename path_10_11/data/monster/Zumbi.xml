@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Zumbi" nameDescription="a zumbi" race="undead" experience="0" speed="200" manacost="0">
+	<health now="9900000" max="9900000" />
+	<look type="311" corpse="0" />
+	<targetchange interval="4000" chance="70" />
+	<strategy attack="100" defense="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="0" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="9999999" attack="9999999" />
+		<attack name="physical" interval="2000" chance="20" range="7" min="99999" max="99999">
+			<attribute key="shootEffect" value="bolt" />
+		</attack>
+	</attacks>
+	<defenses armor="15" defense="15" />
+	<elements>
+		<element firePercent="50" />
+	</elements>
+	<immunities>
+		<immunity fire="1" />
+		<immunity death="1" />
+		<immunity energy="1" />
+		<immunity ice="1" />
+		<immunity earth="1" />
+		<immunity drown="1" />
+		<immunity drunk="1" />
+		<immunity lifedrain="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<voices interval="5000" chance="40">
+		<voice sentence="Mst.... klll...." />
+		<voice sentence="Whrrrr... ssss.... mmm.... grrrrl" />
+		<voice sentence="Dnnnt... cmmm... clsrrr...." />
+		<voice sentence="Httt.... hmnnsss..." />
+	</voices>
+</monster>

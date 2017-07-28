@@ -16,6 +16,8 @@
 		<flag lightcolor="0" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-275" />
@@ -47,7 +49,7 @@
 	<loot>
 		<item name="gold coin" countmax="87" chance="99700" />
 		<item name="shard" chance="40000" />
-		<item id="7441" chance="80000" /><!-- ice cube -->
+		<item id="7441" chance="80000" /> <!-- ice cube -->
 		<item name="crystal sword" chance="30000" />
 		<item name="strong health potion" chance="100000" />
 		<item name="frosty heart" chance="40000" />

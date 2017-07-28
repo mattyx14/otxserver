@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Nightfiend" nameDescription="a nightfiend" race="blood" experience="2100" speed="210" manacost="0">
+	<health now="2700" max="2700" />
+	<look type="554" corpse="21453" />
+	<targetchange interval="5000" chance="8" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="4" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="20" attack="30" />
+		<attack name="physical" interval="1000" chance="10" range="7" min="-5" max="-40">
+			<attribute key="shootEffect" value="throwingknife" />
+		</attack>
+	</attacks>
+	<defenses armor="11" defense="11" />
+	<elements>
+		<element physicalPercent="5" />
+		<element energyPercent="5" />
+		<element icePercent="5" />
+		<element firePercent="-5" />
+		<element holyPercent="-5" />
+	</elements>
+	<immunities>
+		<immunity death="1" />
+		<immunity earth="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<loot>
+		<item id="2148" countmax="148" chance="97000" /> <!-- gold coin -->
+		<item id="2152" countmax="4" chance="35000" /> <!-- platinum coin -->
+		<item id="10602" chance="11200" /> <!-- Vampire Teeth -->
+		<item id="2534" chance="200" /> <!-- Vampire Shield -->
+		<item id="7588" countmax="3" chance="4300" /> <!-- Strong Health Potion -->
+		<item id="7589" countmax="4" chance="9400" /> <!-- Strong Mana Potion -->
+		<item id="2147" countmax="3" chance="8010" /> <!-- Small Ruby, -->
+		<item id="21241" chance="6500" /> <!-- Tooth File -->
+		<item id="2156" chance="1400" /> <!-- Red Gem -->
+		<item id="2127" chance="1410" /> <!-- Emerald Bangle -->
+		<item id="12405" chance="5110" /> <!-- Blood Preservation, -->
+		<item id="2214" chance="2910" /> <!-- Ring of Healing -->
+	</loot>
+</monster>

@@ -16,6 +16,9 @@
 		<flag lightcolor="0" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-50" />
@@ -42,7 +45,7 @@
 		<voice sentence="Die! Die! Die!" />
 	</voices>
 	<loot>
-		<item id="2050" chance="61500" /><!-- torch -->
+		<item id="2050" chance="61500" /> <!-- torch -->
 		<item name="gold coin" countmax="30" chance="60000" />
 		<item name="life ring" chance="230" />
 		<item name="skull of Ratha" chance="3270" />

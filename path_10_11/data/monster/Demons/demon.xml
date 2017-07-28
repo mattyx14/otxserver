@@ -96,7 +96,7 @@
 		<item name="demon horn" chance="467" />
 		<item name="assassin star" countmax="5" chance="5263" />
 		<item name="demonrage sword" chance="80" />
-		<item id="7393" chance="100" /><!-- demon trophy -->
+		<item id="7393" chance="100" /> <!-- demon trophy -->
 		<item name="great mana potion" countmax="3" chance="14285" />
 		<item name="ultimate health potion" countmax="3" chance="20000" />
 	</loot>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Mounted Thorn Knight" nameDescription="a Mounted Thorn Knight" race="blood" experience="0" speed="430" manacost="290">
+	<health now="50000" max="50000" />
+	<look type="512" addons="3" head="81" body="121" legs="121" feet="121" mount="626" />
+	<targetchange interval="5000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="200" attack="240" />
+	</attacks>
+	<defenses armor="10" defense="10" />
+	<elements>
+		<element energyPercent="20" />
+		<element holyPercent="1" />
+		<element earthPercent="100" />
+		<element deathPercent="-10" />
+	</elements>
+	<voices interval="20000" chance="7">
+		<voice sentence="I'm the hunter and you are my prey!" />
+	</voices>
+</monster>

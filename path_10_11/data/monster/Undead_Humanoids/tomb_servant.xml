@@ -15,6 +15,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-130" />
@@ -36,7 +38,7 @@
 		<item name="gold coin" countmax="108" chance="82350" />
 		<item name="scarab coin" chance="8210" />
 		<item name="rotten meat" chance="2000" />
-		<item id="2230" chance="49000" /><!-- bone -->
+		<item id="2230" chance="49000" /> <!-- bone -->
 		<item name="longsword" chance="6560" />
 		<item name="bone shield" chance="5300" />
 		<item name="worm" countmax="12" chance="25325" />

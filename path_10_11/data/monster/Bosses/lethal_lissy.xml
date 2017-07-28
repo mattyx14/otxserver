@@ -38,6 +38,6 @@
 		<item name="double axe" chance="1500" />
 		<item name="plate armor" chance="4000" />
 		<item name="knight armor" chance="1200" />
-		<item id="6100" chance="100000" /><!-- lethal lissy's shirt -->
+		<item id="6100" chance="100000" /> <!-- lethal lissy's shirt -->
 	</loot>
 </monster>

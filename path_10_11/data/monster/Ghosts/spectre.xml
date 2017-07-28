@@ -15,6 +15,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-308" poison="300" />
@@ -58,10 +60,10 @@
 		<voice sentence="Life...force! Feed me your... lifeforce!" />
 	</voices>
 	<loot>
-		<item id="2071" chance="9620" /><!-- lyre -->
+		<item id="2071" chance="9620" /> <!-- lyre -->
 		<item name="silver brooch" chance="850" />
 		<item name="silver brooch" chance="110" />
-		<item id="2136" chance="110" /><!--demonbone amulet -->
+		<item id="2136" chance="110" /> <!--demonbone amulet -->
 		<item name="gold coin" countmax="100" chance="33000" />
 		<item name="gold coin" countmax="100" chance="33000" />
 		<item name="gold coin" countmax="97" chance="33000" />
@@ -71,7 +73,7 @@
 		<item name="blank rune" countmax="2" chance="30310" />
 		<item name="white piece of cloth" chance="3800" />
 		<item name="soul orb" chance="6005" />
-		<item id="6300" chance="280" /><!-- death ring -->
+		<item id="6300" chance="280" /> <!-- death ring -->
 		<item name="demonic essence" chance="6270" />
 		<item name="relic sword" chance="700" />
 		<item name="great mana potion" chance="920" />

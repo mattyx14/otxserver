@@ -44,8 +44,8 @@
 	</immunities>
 	<loot>
 		<item name="small stone" countmax="5" chance="20000" />
-		<item id="1295" chance="10000" /><!-- stone -->
-		<item id="2050" chance="20000" /><!-- torch -->
+		<item id="1295" chance="10000" /> <!-- stone -->
+		<item id="2050" chance="20000" /> <!-- torch -->
 		<item name="gold coin" countmax="20" chance="100000" />
 		<item name="carlin sword" chance="2500" />
 		<item name="scale armor" chance="10000" />

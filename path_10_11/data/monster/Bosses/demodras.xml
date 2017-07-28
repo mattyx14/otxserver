@@ -65,7 +65,7 @@
 		<item name="green mushroom" countmax="1" chance="6666" />
 		<item name="worm" countmax="10" chance="50000" />
 		<item name="red dragon scale" countmax="1" chance="5000" />
-		<item id="5919" chance="100000" /><!-- dragon claw -->
+		<item id="5919" chance="100000" /> <!-- dragon claw -->
 		<item name="red dragon leather" countmax="1" chance="5000" />
 	</loot>
 </monster>

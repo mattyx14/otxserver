@@ -43,9 +43,9 @@
 		<voice sentence="A MIC to rule them all!" />
 	</voices>
 	<loot>
-		<item id="2120" chance="20000" /><!-- rope -->
-		<item id="2120" chance="6666" /><!-- rope -->
-		<item id="2120" chance="3333" /><!-- rope -->
+		<item id="2120" chance="20000" /> <!-- rope -->
+		<item id="2120" chance="6666" /> <!-- rope -->
+		<item id="2120" chance="3333" /> <!-- rope -->
 		<item name="gold coin" countmax="27" chance="100000" />
 		<item name="amulet of loss" chance="500" />
 		<item name="brown bread" chance="4000" />

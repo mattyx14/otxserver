@@ -70,6 +70,6 @@
 		<item name="golden legs" chance="6500" />
 		<item name="knight legs" chance="6666" />
 		<item name="demon shield" chance="9999" />
-		<item id="6300" chance="7777" /><!-- death ring -->
+		<item id="6300" chance="7777" /> <!-- death ring -->
 	</loot>
 </monster>

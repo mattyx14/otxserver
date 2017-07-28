@@ -15,6 +15,8 @@
 		<flag staticattack="90" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-110" />
@@ -37,7 +39,7 @@
 		<item name="small sapphire" chance="920" />
 		<item name="gold coin" countmax="30" chance="94000" />
 		<item name="stealth ring" chance="520" />
-		<item id="2229" chance="920" /><!-- skull -->
+		<item id="2229" chance="920" /> <!-- skull -->
 		<item name="two handed sword" chance="580" />
 		<item name="chain armor" chance="4761" />
 		<item name="fish fin" chance="520" />

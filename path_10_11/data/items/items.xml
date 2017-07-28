@@ -1491,7 +1491,6 @@
 		<attribute key="weaponType" value="sword" />
 		<attribute key="imbuingSlots" value="1" />
 	</item>
-
 	<item id="100" name="void" />
 	<item id="101" name="earth" />
 	<item id="103" name="dirt" />
@@ -5077,7 +5076,6 @@
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 	</item>
-
 	<item id="2428" article="an" name="orcish axe">
 		<attribute key="weight" value="4500" />
 		<attribute key="defense" value="12" />
@@ -5182,7 +5180,6 @@
 		<attribute key="attack" value="32" />
 		<attribute key="weaponType" value="club" />
 	</item>
-
 	<item id="2437" article="a" name="light mace">
 		<attribute key="weight" value="4100" />
 		<attribute key="defense" value="9" />
@@ -5248,7 +5245,6 @@
 		<attribute key="attack" value="13" />
 		<attribute key="weaponType" value="sword" />
 	</item>
-
 	<item id="2454" article="a" name="war axe">
 		<attribute key="weight" value="6150" />
 		<attribute key="defense" value="10" />
@@ -5460,7 +5456,6 @@
 		<attribute key="defense" value="30" />
 		<attribute key="weaponType" value="shield" />
 	</item>
-
 	<item id="2517" article="a" name="shield of honour">
 		<attribute key="description" value="A mighty shield awarded by the gods of World." />
 		<attribute key="weight" value="5400" />
@@ -9089,7 +9084,6 @@
 		<attribute key="extradef" value="2" />
 		<attribute key="weaponType" value="club" />
 	</item>
-
 	<item id="3963" article="a" name="templar scytheblade">
 		<attribute key="weight" value="2900" />
 		<attribute key="defense" value="15" />
@@ -13832,7 +13826,6 @@
 	<item id="7186" article="a" name="big crack in the ice">
 		<attribute key="description" value="Now the ice passage is destroyed." />
 	</item>
-
 	<item fromid="7187" toid="7188" article="a" name="raft" />
 	<item id="7189" article="a" name="stone shelf">
 		<attribute key="containerSize" value="6" />
@@ -14526,7 +14519,6 @@
 	<item fromid="25004" toid="25010" article="a" name="dry grass" />
 	<item fromid="25018" toid="25041" article="a" name="dry grass" />
 	<item id="24990" article="a" name="clay hut" />
-
 	<item id="7420" article="a" name="reaper's axe">
 		<attribute key="weight" value="5900" />
 		<attribute key="defense" value="25" />
@@ -14534,7 +14526,6 @@
 		<attribute key="weaponType" value="axe" />
 		<attribute key="extradef" value="2" />
 	</item>
-
 	<item id="7422" article="a" name="jade hammer">
 		<attribute key="weight" value="3200" />
 		<attribute key="defense" value="20" />
@@ -18169,7 +18160,6 @@
 		<attribute key="decayTo" value="0" />
 		<attribute key="duration" value="10" />
 	</item>
-
 	<item id="8966" name="the remains of an elemental">
 		<attribute key="weight" value="25000" />
 		<attribute key="containerSize" value="14" />
@@ -21650,7 +21640,6 @@
 	<item id="11322" article="a" name="warmaster's wristguards">
 		<attribute key="weight" value="120" />
 	</item>
-
 	<item id="11324" article="a" name="shaggy tail">
 		<attribute key="weight" value="112" />
 	</item>
@@ -25620,7 +25609,6 @@
 		<attribute key="description" value="There is a fully grown finger snapper plant in it. This plant can't wither anymore." />
 		<attribute key="weight" value="150" />
 	</item>
-
 	<item id="15452" article="a" name="deepling ridge">
 		<attribute key="weight" value="180" />
 	</item>
@@ -25697,7 +25685,6 @@
 		<attribute key="speed" value="20" />
 		<attribute key="showattributes" value="1" />
 	</item>
-
 	<item id="15497" article="a" name="dead deepling worker">
 		<attribute key="weight" value="6300" />
 		<attribute key="containerSize" value="18" />
@@ -28205,7 +28192,6 @@
 	<item id="20131" article="a" name="broken throwing axe">
 		<attribute key="weight" value="1100" />
 	</item>
-
 	<item id="20133" name="lost bracers" plural="lost bracers">
 		<attribute key="weight" value="290" />
 	</item>
@@ -36485,6 +36471,8 @@
 	<item id="26378" article="a" name="gold converter">
 		<attribute key="weight" value="1800" />
 		<attribute key="wrapableTo" value="26054" />
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
 	</item>
 	<item id="26377" article="a" name="gold pouch">
 		<attribute key="weight" value="1800" />

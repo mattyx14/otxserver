@@ -15,6 +15,8 @@
 		<flag targetdistance="4" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="death" interval="2000" chance="10" length="6" spread="0" min="-150" max="-300">
@@ -77,7 +79,7 @@
 		<item name="terra boots" chance="880" />
 		<item name="small topaz" chance="9780" />
 		<item name="clay lump" chance="500" />
-		<item id="13757" chance="10930" /><!-- Coal -->
+		<item id="13757" chance="10930" /> <!-- Coal -->
 		<item name="buckle" chance="8180" />
 		<item name="buckle" chance="770" />
 		<item name="bonecarving knife" chance="8510" />

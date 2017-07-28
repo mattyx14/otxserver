@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Blood Hand" nameDescription="a blood hand" race="blood" experience="750" speed="220" manacost="0">
+	<health now="700" max="700" />
+	<look type="552" corpse="21261" />
+	<targetchange interval="4000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="0" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-100" poison="4" />
+		<attack name="lifedrain" interval="2000" chance="20" target="0" radius="4" min="-20" max="-60">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+		<attack name="speed" interval="2000" chance="10" range="1" radius="4" speedchange="-200" duration="15000">
+			<attribute key="areaEffect" value="yellowspark" />
+		</attack>
+		<attack name="bleedcondition" interval="2000" chance="15" target="0" radius="6" min="-120" max="-160">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="25">
+		<defense name="healing" interval="2000" chance="15" min="30" max="50">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element energyPercent="5" />
+		<element icePercent="5" />
+		<element deathPercent="5" />
+		<element firePercent="-10" />
+		<element holyPercent="-5" />
+	</elements>
+	<immunities>
+		<immunity invisible="1" />
+		<immunity earth="1" />
+		<immunity drown="1" />
+	</immunities>
+<defenses>
+		<defense name="healing" interval="2000" chance="20" min="70" max="90">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<voices interval="2000" chance="7">
+		<voice sentence="Blood for the dark god!" />
+		<voice sentence="Die, filth!" />
+	</voices>
+	<loot>
+		<item id="2148" countmax="135" chance="100000" /> <!-- gold coin -->
+		<item id="21245" chance="15000" /> <!-- blood tincture in a vial -->
+		<item id="21242" chance="6680" /> <!-- lancet -->
+		<item id="21246" chance="9600" /> <!-- incantation notes -->
+		<item id="11237" chance="9440" /> <!-- book of necromantic rituals -->
+		<item id="21243" chance="8000" /> <!-- horoscope -->
+		<item id="21247" chance="6300" /> <!-- pieces of magic chalk -->
+		<item id="7589" chance="850" /> <!-- strong mana potion -->
+		<item id="2185" chance="1000" /> <!-- necrotic rod -->
+		<item id="2663" chance="1100" /> <!-- mystic turban -->
+		<item id="5909" chance="350" /> <!-- white piece of cloth -->
+		<item id="8900" chance="230" /> <!-- spellbook of enlightenment -->
+		<item id="5911" chance="380" /> <!-- red piece of cloth -->
+		<item id="2156" chance="510" /> <!-- red gem -->
+		<item id="2195" chance="120" /> <!-- boots of haste -->
+		<item id="2436" chance="70" /> <!-- skull staff -->
+		<item id="7456" chance="20" /> <!-- noble axe -->
+	</loot>
+</monster>

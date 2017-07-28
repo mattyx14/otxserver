@@ -15,6 +15,9 @@
 		<flag staticattack="90" />
 		<flag targetdistance="1" />
 		<flag runonhealth="10" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-30" poison="20" />
@@ -41,7 +44,7 @@
 		<item name="gold coin" countmax="21" chance="75000" />
 		<item name="two handed sword" chance="500" />
 		<item name="mace" chance="2000" />
-		<item id="2667" chance="22000" /><!-- fish -->
+		<item id="2667" chance="22000" /> <!-- fish -->
 		<item name="poisonous slime" chance="3000" />
 	</loot>
 </monster>

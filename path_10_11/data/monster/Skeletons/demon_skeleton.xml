@@ -15,6 +15,7 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-185" />
@@ -36,7 +37,7 @@
 		<immunity drunk="1" />
 	</immunities>
 	<loot>
-		<item id="2050" chance="5270" /><!-- torch -->
+		<item id="2050" chance="5270" /> <!-- torch -->
 		<item name="black pearl" chance="2900" />
 		<item name="small ruby" chance="1400" />
 		<item name="gold coin" countmax="75" chance="97000" />

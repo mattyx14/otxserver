@@ -16,6 +16,9 @@
 		<flag lightcolor="0" />
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-35" />
@@ -44,11 +47,11 @@
 		<item name="mace" chance="4000" />
 		<item name="bone shield" chance="870" />
 		<item name="pick" chance="940" />
-		<item id="2667" countmax="2" chance="25000" /><!-- fish -->
+		<item id="2667" countmax="2" chance="25000" /> <!-- fish -->
 		<item name="northern pike" chance="120" />
 		<item name="rainbow trout" chance="170" />
 		<item name="green perch" chance="100" />
 		<item name="mammoth whopper" chance="150" />
-		<item id="7441" chance="470" /><!-- ice cube -->
+		<item id="7441" chance="470" /> <!-- ice cube -->
 	</loot>
 </monster>

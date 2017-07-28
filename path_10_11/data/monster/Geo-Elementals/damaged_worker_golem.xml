@@ -15,6 +15,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-45" />
@@ -55,7 +57,7 @@
 		<item name="sword ring" chance="570" />
 		<item name="iron ore" chance="400" />
 		<item name="nail" chance="1460" />
-		<item id="9808" chance="790" /><!-- rusty armor -->
+		<item id="9808" chance="790" /> <!-- rusty armor -->
 		<item name="gear crystal" chance="200" />
 	</loot>
 </monster>

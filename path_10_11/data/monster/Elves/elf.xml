@@ -15,6 +15,9 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-15" />
@@ -45,7 +48,7 @@
 		<item name="plate shield" chance="9300" />
 		<item name="arrow" countmax="3" chance="7060" />
 		<item name="leather boots" chance="11410" />
-		<item id="5921" chance="940" /><!-- heaven blossom -->
+		<item id="5921" chance="940" /> <!-- heaven blossom -->
 		<item name="plum" countmax="2" chance="20000" />
 		<item name="elvish talisman" chance="2100" />
 	</loot>

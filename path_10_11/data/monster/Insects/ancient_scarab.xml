@@ -15,6 +15,8 @@
 		<flag targetdistance="1" />
 		<flag staticattack="80" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-130" poison="56" />
@@ -57,7 +59,7 @@
 		<item name="small emerald" countmax="3" chance="4810" />
 		<item name="small amethyst" countmax="4" chance="5000" />
 		<item name="scarab coin" countmax="2" chance="7692" />
-		<item id="2162" chance="11480" /><!-- magic lightwand -->
+		<item id="2162" chance="11480" /> <!-- magic lightwand -->
 		<item name="daramian waraxe" chance="420" />
 		<item name="plate armor" chance="10300" />
 		<item name="scarab shield" chance="480" />

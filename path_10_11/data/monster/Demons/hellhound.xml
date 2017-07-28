@@ -70,7 +70,7 @@
 		<item name="gold coin" countmax="100" chance="100000" />
 		<item name="platinum coin" countmax="7" chance="100000" />
 		<item name="wand of inferno" chance="9000" />
-		<item id="2231" chance="1000" /><!-- big bone -->
+		<item id="2231" chance="1000" /> <!-- big bone -->
 		<item name="spike sword" chance="16310" />
 		<item name="fire sword" chance="6900" />
 		<item name="giant sword" chance="950" />
@@ -85,7 +85,7 @@
 		<item name="great mana potion" countmax="3" chance="15150" />
 		<item name="great health potion" countmax="2" chance="15150" />
 		<item name="magma legs" chance="1270" />
-		<item id="9810" chance="4500" /><!-- rusty armor -->
+		<item id="9810" chance="4500" /> <!-- rusty armor -->
 		<item name="gold ingot" chance="1500" />
 		<item name="hellhound slobber" chance="18000" />
 	</loot>

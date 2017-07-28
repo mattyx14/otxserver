@@ -15,6 +15,9 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="15" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-35" />
@@ -41,5 +44,6 @@
 		<item name="meat" chance="10160" />
 		<item name="orc tooth" chance="210" />
 		<item name="orc leather" chance="590" />
+		<item id="26642" chance="1000" /> <!-- heavy old tome -->
 	</loot>
 </monster>

@@ -15,6 +15,7 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-300" />
@@ -52,6 +53,6 @@
 		<item name="spiked iron ball" chance="9960" />
 		<item name="clay lump" chance="720" />
 		<item name="piece of marble rock" chance="430" />
-		<item id="13757" chance="400" /><!-- coal -->
+		<item id="13757" chance="400" /> <!-- coal -->
 	</loot>
 </monster>

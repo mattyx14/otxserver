@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Canopic Jar" nameDescription="a canopic jar" race="undead" experience="0" speed="0" manacost="0">
+	<health now="1000" max="1000" />
+	<look type="598" corpse="0" />
+	<targetchange interval="2000" chance="0" />
+	<strategy attack="100" defense="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="earth" interval="2000" chance="25" range="7" target="1" min="-100" max="-200">
+			<attribute key="shootEffect" value="poison" />
+		</attack>
+	</attacks>
+	<defenses armor="22" defense="44">
+		<defense name="canopic jar heal" interval="2000" chance="50" />
+	</defenses>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity drunk="1" />
+		<immunity outfit="1" />
+		<immunity invisible="1" />
+	</immunities>
+</monster>

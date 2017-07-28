@@ -15,6 +15,7 @@
 		<flag targetdistance="1" />
 		<flag staticattack="70" />
 		<flag runonhealth="250" />
+		<flag canwalkonenergy="0" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-225" />
@@ -85,6 +86,6 @@
 		<item name="green mushroom" chance="12000" />
 		<item name="shard" chance="550" />
 		<item name="dragon slayer" chance="120" />
-		<item id="7441" chance="4000" /><!-- ice cube -->
+		<item id="7441" chance="4000" /> <!-- ice cube -->
 	</loot>
 </monster>

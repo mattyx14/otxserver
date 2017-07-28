@@ -60,11 +60,11 @@
 		<voice sentence="Yoooohhuuuu!" yell="1" />
 	</voices>
 	<loot>
-		<item id="1949" chance="10000" /><!-- scroll -->
-		<item id="2044" chance="6666" /><!-- lamp -->
+		<item id="1949" chance="10000" /> <!-- scroll -->
+		<item id="2044" chance="6666" /> <!-- lamp -->
 		<item name="gold coin" countmax="20" chance="100000" />
 		<item name="power ring" chance="1428" />
-		<item id="2401" chance="3333" /><!-- staff -->
+		<item id="2401" chance="3333" /> <!-- staff -->
 		<item name="leather armor" chance="10000" />
 		<item name="sandals" chance="6666" />
 		<item name="bread" countmax="3" chance="20000" />

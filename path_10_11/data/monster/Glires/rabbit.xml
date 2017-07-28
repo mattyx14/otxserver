@@ -15,10 +15,13 @@
 		<flag targetdistance="1" />
 		<flag staticattack="90" />
 		<flag runonhealth="15" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
 	</flags>
 	<defenses armor="5" defense="5" />
 	<loot>
 		<item name="meat" countmax="2" chance="85620" />
-		<item id="2684" countmax="2" chance="10000" /><!-- carrot -->
+		<item id="2684" countmax="2" chance="10000" /> <!-- carrot -->
 	</loot>
 </monster>
