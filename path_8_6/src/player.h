@@ -54,6 +54,16 @@ enum skillsid_t {
 	SKILLVALUE_PERCENT = 2,
 };
 
+enum playerinfo_t {
+	PLAYERINFO_LEVELPERCENT,
+	PLAYERINFO_HEALTH,
+	PLAYERINFO_MAXHEALTH,
+	PLAYERINFO_MANA,
+	PLAYERINFO_MAXMANA,
+	PLAYERINFO_MAGICLEVEL,
+	PLAYERINFO_MAGICLEVELPERCENT,
+};
+
 enum fightMode_t : uint8_t {
 	FIGHTMODE_ATTACK = 1,
 	FIGHTMODE_BALANCED = 2,
@@ -360,17 +370,11 @@ class Player final : public Creature, public Cylinder
 		uint32_t getLevel() const {
 			return level;
 		}
-		uint8_t getLevelPercent() const {
-			return levelPercent;
-		}
 		uint32_t getMagicLevel() const {
-			return std::max<int32_t>(0, magLevel + varStats[STAT_MAGICPOINTS]);
+			return getPlayerInfo(PLAYERINFO_MAGICLEVEL);
 		}
 		uint32_t getBaseMagicLevel() const {
 			return magLevel;
-		}
-		uint8_t getMagicLevelPercent() const {
-			return magLevelPercent;
 		}
 		uint8_t getSoul() const {
 			return soul;
@@ -390,6 +394,7 @@ class Player final : public Creature, public Cylinder
 			return sex;
 		}
 		void setSex(PlayerSex_t);
+		int32_t getPlayerInfo(playerinfo_t playerinfo) const;
 		uint64_t getExperience() const {
 			return experience;
 		}
@@ -442,10 +447,10 @@ class Player final : public Creature, public Cylinder
 		}
 
 		int32_t getMaxHealth() const final {
-			return std::max<int32_t>(1, healthMax + varStats[STAT_MAXHITPOINTS]);
+			return getPlayerInfo(PLAYERINFO_MAXHEALTH);
 		}
 		uint32_t getMaxMana() const {
-			return std::max<int32_t>(0, manaMax + varStats[STAT_MAXMANAPOINTS]);
+			return getPlayerInfo(PLAYERINFO_MAXMANA);
 		}
 
 		Item* getInventoryItem(slots_t slot) const;
