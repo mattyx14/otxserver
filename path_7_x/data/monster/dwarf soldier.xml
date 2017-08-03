@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="dwarf soldier" nameDescription="a dwarf soldier" race="blood" experience="70" speed="176" manacost="360">
+	<health now="135" max="135"/>
+	<look type="71" corpse="2985"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="42" attack="21"/>
+		<attack name="physical" interval="1000" chance="13" range="7" min="-20" max="-40">
+			<attribute key="shootEffect" value="bolt"/>
+		</attack>
+	</attacks>
+	<defenses armor="9" defense="20">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Hail Durin!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2378" chance="5000"/><!-- 5% battle axe -->
+				<item id="2525" chance="10000"/><!-- 10% dwarven shield -->
+				<item id="2455" chance="8000"/><!-- 8% crossbow -->
+				<item id="2208" chance="300"/><!-- 0.1% axe ring -->
+			</inside>
+		</item>
+		<item id="2464" chance="18000"/><!-- 18% chain armor -->
+		<item id="2481" chance="24000"/><!-- 24% soldier helmet -->
+		<item id="2554" chance="20000"/><!-- 20% shovel -->
+		<item id="2543" chance="80000" countmax="4"/><!-- 4 80% bolt -->
+		<item id="2148" chance="70000" countmax="12"/><!-- 12 70% gold coin -->
+		<item id="2787" chance="80000" countmax="2"/><!-- 2 80% white mushroom -->
+	</loot>
+</monster>

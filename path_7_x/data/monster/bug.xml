@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="bug" nameDescription="a bug" race="venom" experience="18" speed="160" manacost="250">
+	<health now="29" max="29"/>
+	<look type="45" corpse="2902"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="23" attack="9"/>
+	</attacks>
+	<defenses armor="2" defense="3">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+	</voices>
+	<loot>
+		<item id="2148" chance="70000" countmax="6"/><!-- 6 70% gold coin -->
+		<item id="2679" chance="6000" countmax="3"/><!-- 3 6% cherry -->
+	</loot>
+</monster>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="behemoth" nameDescription="a behemoth" race="blood" experience="2500" speed="340" manacost="0">
+	<health now="4000" max="4000"/>
+	<look type="55" corpse="2931"/>
+	<targetchange interval="1000" chance="5"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="110" attack="75"/>
+		<attack name="physical" interval="1000" chance="15" range="7" min="-125" max="-185">
+			<attribute key="shootEffect" value="largerock"/>
+		</attack>
+	</attacks>
+	<defenses armor="50" defense="65">
+		<defense name="speed" interval="1000" chance="7" speedchange="260" duration="8000">
+		<!--<defense name="speed" interval="1000" chance="7" speedchange="90" duration="8000">-->
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="You're so little!"/>
+		<voice sentence="Human flesh - delicious!"/>
+		<voice sentence="Crush the intruders!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2393" chance="2000"/><!-- 2% giant sword -->
+				<item id="2377" chance="8000"/><!-- 8% two-handed sword -->
+				<item id="2387" chance="20000"/><!-- 20% double axe -->
+				<item id="2416" chance="30000"/><!-- 30% crowbar -->
+				<item id="2174" chance="1600"/><!-- 1.6% strange symbol -->
+			</inside>
+		</item>
+		<item id="2645" chance="800"/><!-- 0.8% steel boots -->
+		<item id="2489" chance="6000"/><!-- 6% dark armor -->	
+		<item id="2463" chance="4000"/><!-- 4% plate armor -->
+		<item id="2125" chance="600"/><!-- 0.6% crystal necklace -->
+		<item id="2231" chance="14000"/><!-- 14% big bone -->
+		<item id="2553" chance="12000"/><!-- 12% pick -->
+		<item id="2023" chance="22000"/><!-- 22% amphora  -->
+		<item id="2150" chance="8000" countmax="2"/><!-- 2 8% small amethyst -->
+		<item id="2666" chance="80000" countmax="6"/><!-- 6 80% meat -->
+		<item id="2148" chance="70000" countmax="60"/><!-- 60 70% gold coin -->
+		<item id="2148" chance="50000" countmax="80"/><!-- 80 50% gold coin -->
+	</loot>
+</monster>

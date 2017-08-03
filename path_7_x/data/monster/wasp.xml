@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="wasp" nameDescription="a wasp" race="venom" experience="24" speed="320" manacost="280">
+	<health now="35" max="35"/>
+	<look type="44" corpse="2899"/>
+	<targetchange interval="1000" chance="10"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="23" attack="12" poison="25"/>
+	</attacks>
+	<defenses armor="4" defense="8">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Bsssssss"/>
+	</voices>
+	<loot>
+	</loot>
+</monster>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="merlkin" nameDescription="a merlkin" race="blood" experience="135" speed="194" manacost="0">
+	<health now="230" max="230"/>
+	<look type="117" corpse="4271"/>
+	<targetchange interval="1000" chance="50"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="25" attack="15"/>
+		<attack name="fire" interval="2000" chance="13" range="7" min="-30" max="-90">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="energy" interval="3000" chance="34" range="7" min="-15" max="-45">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="poisonfield" interval="1000" chance="15" range="7" radius="1" target="1">
+			<attribute key="shootEffect" value="energy"/>
+		</attack>
+	</attacks>
+	<defenses armor="16" defense="40">
+		<defense name="healing" interval="1000" chance="9" min="10" max="40">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Ugh! Ugh! Ugh!"/>
+		<voice sentence="Holy banana!"/>
+		<voice sentence="Chakka! Chakka!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2162" chance="10000"/><!-- 10% magic lightwand -->
+				<item id="2188" chance="2000"/><!-- 2% wand of plague -->
+				<item id="3966" chance="300"/><!-- 0.1% banana staff -->
+			</inside>
+		</item>
+		<item id="2150" chance="1000"/><!-- 1% small amethyst -->
+		<item id="2148" chance="80000" countmax="25"/><!-- 25 80% gold coin -->
+		<item id="2676" chance="60000" countmax="2"/><!-- 2 60% banana -->
+		<item id="2676" chance="10000" countmax="10"/><!-- 10 10% banana -->
+		<item id="2675" chance="2000" countmax="5"/><!-- 5 2% orange -->
+	</loot>
+</monster>

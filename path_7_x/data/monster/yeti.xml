@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="yeti" nameDescription="a yeti" race="blood" experience="460" speed="250" manacost="0">
+	<health now="950" max="950"/>
+	<look type="110" corpse="3055"/>
+	<targetchange interval="1000" chance="5"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="79" attack="53"/>
+		<attack name="physical" interval="1000" chance="15" range="7" min="-170" max="-200">
+			<attribute key="shootEffect" value="snowball"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="energy" interval="1000" chance="12" length="3" spread="3" min="-120" max="-210">
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+	</attacks>
+	<defenses armor="28" defense="43">
+	</defenses>
+	<elements>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Yooodelaaahooohooo!"/>
+		<voice sentence="Yooodelaaaheeeheee!"/>
+	</voices>
+	<loot>
+		<item id="2644" chance="300"/><!-- 0.1% bunnyslippers -->
+		<item id="2129" chance="1000"/><!-- 1% wolf tooth chain -->
+		<item id="2111" chance="50000" countmax="22"/><!-- 22 50% snowball -->
+		<item id="2148" chance="60000" countmax="10"/><!-- 10 60% gold coin -->
+		<item id="2148" chance="60000" countmax="20"/><!-- 20 60% gold coin -->
+		<item id="2666" chance="75000" countmax="4"/><!-- 4 75% meat -->
+		<item id="2671" chance="70000" countmax="6"/><!-- 6 70% ham -->
+	</loot>
+</monster>

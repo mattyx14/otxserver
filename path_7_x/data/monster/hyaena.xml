@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="hyaena" nameDescription="a hyaena" race="blood" experience="20" speed="196" manacost="275">
+	<health now="60" max="60"/>
+	<look type="94" corpse="3019"/>
+	<targetchange interval="1000" chance="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="30"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="18" attack="11"/>
+	</attacks>
+	<defenses armor="1" defense="5">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Grrrrrr"/>
+		<voice sentence="Hou hou hou!"/>
+	</voices>
+	<loot>
+		<item id="2666" chance="50000" countmax="2"/><!-- 2 50% meat -->
+		<item id="3976" chance="50000" countmax="3"/><!-- 3 50% worm -->
+	</loot>
+</monster>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="fire devil" nameDescription="a fire devil" race="blood" experience="110" speed="180" manacost="530">
+	<health now="200" max="200"/>
+	<look type="40" corpse="2886"/>
+	<targetchange interval="1000" chance="50"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="30" attack="22"/>
+		<attack name="fire" interval="1000" chance="12" range="7" radius="4" target="1" min="-60" max="-90">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="fire" interval="1000" chance="25" range="7" radius="2" target="1" min="-20" max="-50">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+	</attacks>
+	<defenses armor="13" defense="15">
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Hot, eh?"/>
+		<voice sentence="Hell, oh hell!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2050" chance="1000"/><!-- 30% torch -->
+				<item id="2185" chance="1000"/><!-- 1% volcanic rod -->
+				<item id="2387" chance="3000"/><!-- 3% double axe -->
+				<item id="2419" chance="12000"/><!-- 12% scimitar -->
+				<item id="2515" chance="300"/><!-- 0.2% guardian shield -->
+			</inside>
+		</item>
+		<item id="2260" chance="22000"/><!-- 22% blank rune -->
+		<item id="2548" chance="50000"/><!-- 50% pitch fork -->
+		<item id="2568" chance="18000"/><!-- 18% cleaver -->
+		<item id="2150" chance="600"/><!-- 0.6% small amethyst -->
+	</loot>
+</monster>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="witch" nameDescription="a witch" race="blood" experience="120" speed="204" manacost="0">
+	<health now="300" max="300"/>
+	<look type="54" corpse="3065"/>
+	<targetchange interval="1000" chance="50"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="30"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="18" attack="18"/>
+		<attack name="fire" interval="1000" chance="20" range="7" min="-25" max="-55">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="firefield" interval="1000" chance="13" range="7" radius="1" target="1">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+	</attacks>
+	<defenses armor="8" defense="12">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="Horax pokti!"/>
+		<voice sentence="Hihihihi!"/>
+		<voice sentence="Herba budinia ex!"/>  
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2405" chance="80000"/><!-- 80% sickle -->
+				<item id="2402" chance="1000"/><!-- 1% silver dagger -->
+				<item id="2185" chance="2000"/><!-- 2% volcanic rod -->
+				<item id="2199" chance="5000"/><!-- 5% garlic necklace -->
+			</inside>
+		</item>	
+		<item id="2643" chance="50000"/><!-- 50% leather boots -->
+		<item id="2654" chance="50000"/><!-- 50% cape -->
+		<item id="2651" chance="40000"/><!-- 40% coat -->
+		<item id="2129" chance="20000"/><!-- 20% wolf tooth chain -->
+		<item id="2551" chance="40000"/><!-- 40% broom -->
+		<item id="2800" chance="18000"/><!-- 18% star herb -->
+		<item id="2148" chance="20000" countmax="10"/><!-- 10 20% gold coin -->
+		<item id="2687" chance="60000" countmax="8"/><!-- 8 60% cookie -->
+		<item id="2696" chance="80000"/><!-- 80% cheese -->	
+	</loot>
+</monster>

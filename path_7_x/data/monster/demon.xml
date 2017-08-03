@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="demon" nameDescription="a demon" race="fire" experience="6000" speed="240" manacost="0">
+	<health now="8200" max="8200"/>
+	<look type="35" corpse="2916"/>
+	<targetchange interval="1000" chance="10"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="120" attack="80"/>
+		<attack name="manadrain" interval="1000" chance="13" range="7" min="-40" max="-100"/>
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-110" max="-200">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="firefield" interval="1000" chance="15" range="7" radius="1" target="1">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="energy" interval="1000" chance="10" length="8" spread="0" min="-300" max="-420">
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+	</attacks>
+	<defenses armor="40" defense="65">
+		<defense name="healing" interval="1000" chance="15" min="90" max="150">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<summons maxSummons="1">
+		<summon name="fire elemental" interval="1000" chance="9" max="1"/>
+	</summons>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="MUHAHAHAHA!" yell="1"/>
+		<voice sentence="I SMELL FEEEEEAAAR!" yell="1"/>
+		<voice sentence="CHAMEK ATH UTHUL ARAK!" yell="1"/>
+		<voice sentence="Your resistance is futile!"/>
+		<voice sentence="Your soul will be mine!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2520" chance="1400"/><!-- 1.4% demon shield -->
+				<item id="2514" chance="1000"/><!-- 1% mastermind shield -->
+				<item id="2432" chance="8000"/><!-- 8% fire axe -->
+				<item id="2393" chance="4000"/><!-- 4% giant sword -->
+				<item id="2387" chance="40000"/><!-- 40% double axe -->
+				<item id="2396" chance="1200"/><!-- 1.2% ice rapier -->
+				<item id="2418" chance="3000"/><!-- 3% golden sickle -->
+				<item id="2214" chance="1000"/><!-- 1% ring of healing -->
+				<item id="2164" chance="300"/><!-- 0.2% might ring -->
+				<item id="2165" chance="2800"/><!-- 2.8% stealth ring -->
+			</inside>
+		</item>
+		<item id="2472" chance="300"/><!-- 0.1% magic plate armor -->
+		<item id="2470" chance="800"/><!-- 0.8% golden legs -->
+		<item id="2171" chance="1400"/><!-- 1.4% platinum amulet -->
+		<item id="2462" chance="2400"/><!-- 2.4% devil helmet -->
+		<item id="2176" chance="6000"/><!-- 6% orb -->
+		<item id="2180" chance="800"/><!-- 0.8% orb of nature -->
+		<item id="1982" chance="2600"/><!-- 2.6% purple tome -->
+		<item id="2179" chance="2200"/><!-- 2.2% gold ring -->
+		<item id="2151" chance="7000"/><!-- 7% talon -->
+		<item id="2149" chance="22000"/><!-- 22% small emerald -->
+		<item id="2148" chance="80000" countmax="100"/><!-- 100 80% gold coin -->
+		<item id="2148" chance="70000" countmax="100"/><!-- 100 70% gold coin -->
+		<item id="2148" chance="60000" countmax="100"/><!-- 100 60% gold coin -->
+		<item id="2148" chance="50000" countmax="100"/><!-- 100 50% gold coin -->
+		<item id="2795" chance="55000" countmax="6"/><!-- 6 40% fire mushroom -->
+	</loot>
+</monster>

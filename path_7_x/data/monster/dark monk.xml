@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="dark monk" nameDescription="a dark monk" race="blood" experience="145" speed="230" manacost="480">
+	<health now="190" max="190"/>
+	<look type="225" corpse="3128"/>
+	<targetchange interval="1000" chance="5"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="37"/>
+		<attack name="lifedrain" interval="1000" chance="12" range="1" min="-25" max="-49"/>
+	</attacks>
+	<defenses armor="22" defense="43">
+		<defense name="healing" interval="1000" chance="12" min="25" max="49">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="10" speedchange="480" duration="2000">
+		<!--<defense name="speed" interval="1000" chance="10" speedchange="110" duration="2000">-->
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="This is where your path will end!"/>
+		<voice sentence="Your end has come."/>
+		<voice sentence="You are no match for us!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2044" chance="20000"/><!-- 20% lamp -->
+				<item id="2401" chance="22000"/><!-- 22% staff -->
+				<item id="2166" chance="300"/><!-- 0.1% power ring -->
+			</inside>
+		</item>
+		<item id="1987" chance="26000"/><!-- 26% bag -->
+		<item id="2467" chance="11000"/><!-- 11% leather armor -->
+		<item id="2642" chance="16000"/><!-- 16% sandals -->
+		<item id="2177" chance="2000"/><!-- 2% life crystal -->
+		<item id="2193" chance="300"/><!-- 0.1% ankh -->
+		<item id="2015" chance="18000"/><!-- 18% brown flask -->
+		<item id="1949" chance="40000"/><!-- 40% scroll -->
+		<item id="2148" chance="30000" countmax="18"/><!-- 18 30% gold coin -->
+		<item id="2689" chance="40000"/><!-- 40% bread -->
+	</loot>
+</monster>
