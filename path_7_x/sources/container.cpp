@@ -300,11 +300,8 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 		}
 	}
 
-	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT)
-	{
-		if((index == INDEX_WHEREEVER && full()))
-			return RET_CONTAINERNOTENOUGHROOM;
-	}
+	if(index == INDEX_WHEREEVER && !((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT) && full())
+		return RET_CONTAINERNOTENOUGHROOM;
 
 	const Cylinder* topParent = getTopParent();
 	if(topParent != this)
@@ -440,7 +437,7 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 		uint32_t n = itemlist.size();
 		for(ItemList::reverse_iterator cit = itemlist.rbegin(); cit != itemlist.rend(); ++cit, --n)
 		{
-			if((*cit)->getID() == item->getID() && (*cit)->getItemCount() < 100)
+			if((*cit)->getID() != item->getID() && (*cit)->getItemCount() < 100)
 			{
 				*destItem = (*cit);
 				index = n;

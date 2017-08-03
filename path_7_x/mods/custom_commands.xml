@@ -672,20 +672,6 @@
 		end
 	]]></talkaction>
 
-	<!-- Full Stamina Command at player -->
-	<talkaction words="!stamina;/stamina" event="script"><![CDATA[
-		function onSay(cid, words, param)
-			if getPlayerMoney(cid) >= 250000 then
-				doPlayerRemoveMoney(cid, 250000)
-				doPlayerSetStamina(cid, 2520)
-			else
-				doPlayerSendCancel(cid, "You need 25 cristal coints for a regenerate full stamina.")
-			end
-
-			return true
-		end
-	]]></talkaction>
-
 	<!-- Info mana - exp -->
 	<talkaction words="!mana" event="script"><![CDATA[
 		 function onSay(cid, words, param, channel)
