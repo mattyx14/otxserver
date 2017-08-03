@@ -59,6 +59,8 @@
 	- Fix https://github.com/mattyx14/otxserver/issues/194
 	- Fix https://github.com/mattyx14/otxserver/commit/a256db41e92ead2becc6a00dfa2acbcdc4e31f49
 	- Fix and update mods / description autor
+	- Fix https://github.com/mattyx14/otxserver/issues/286
+	- Fix console errors on 7.x (duplicate commands)
 ]
 
 [ OTX Server 2.8 :: Version "LEZICK"
