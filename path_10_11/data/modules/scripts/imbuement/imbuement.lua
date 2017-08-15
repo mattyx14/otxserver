@@ -417,10 +417,10 @@ function Player.applyImbuement(self, msg)
 	-- A FUNÇÃO ABAIXO ATÉ O FINAL DESTE COMENTÁRIO É RESPONSAVEL PELA REMOÇÃO DOS ITENS DOS PLAYERS E DINHEIRO DO BANCO --
 
 	-- Cria um Array para Descobrir o Level numeral do encantamento.
-	local TempArrayLevel = { 
-		['Basic'] 		= 1,
-		['Intricate'] 	= 2,
-		['Powerful'] 	= 3
+	local TempArrayLevel = {
+		['Basic'] = 1,
+		['Intricate'] = 2,
+		['Powerful'] = 3
 	}
 
 	-- Retorna o Level numeral a partir do selecionado no cliente.
@@ -442,7 +442,7 @@ function Player.applyImbuement(self, msg)
 
 	-- Verifica se o Player Tem os Itens Necessários antes da Remoção.
 	for i = 1, VerificaLeveldeRemocao do
-			local = myImbuement.Items[i][1]
+			local ItemId = myImbuement.Items[i][1]
 			local ItemQtd = myImbuement.Items[i][2]
 			if (self:getItemCount(ItemId) < ItemQtd) then
 				Player.closeImbuementWindow(self)
@@ -469,8 +469,8 @@ function Player.applyImbuement(self, msg)
 
 	-- Remove os itens .
 	for i = 1, VerificaLeveldeRemocao do
-		local	ItemId = myImbuement.Items[i][1]
-		local	ItemQtd = myImbuement.Items[i][2]
+		local ItemId = myImbuement.Items[i][1]
+		local ItemQtd = myImbuement.Items[i][2]
 
 		if (not self:removeItem(ItemId, ItemQtd)) then
 			Player.closeImbuementWindow(self)

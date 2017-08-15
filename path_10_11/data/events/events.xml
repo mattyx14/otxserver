@@ -37,5 +37,5 @@
 			onTurn - move with ( ctrl + arrows ) like to TFS 0.3.x : 0.4
 			onTradeRequest - move with ( ctrl + arrows ) like to TFS 0.3.x : 0.4
 		-->
-		<event class="Monster" method="onSpawn" enabled="0" />
+	<event class="Monster" method="onSpawn" enabled="0" />
 </events>

@@ -3,32 +3,9 @@ dofile('data/modules/scripts/gamestore/init.lua')
 -- Config
 GameStore.Categories = {
 	{
-		name = "Sale Products",
-		state = GameStore.States.STATE_NEW,
-		rookgaard = false,
-		icons = {"New_Products.png"},
-		offers = {
-			{name = "Jackalope", basePrice = 500, price = 375, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 103, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, icons = {"Product_PremiumTime30.png"}, description = "Here you can purchase the Mount  for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
-		}
-	},
-
-	{
-		name = "Premium Time",
-		state = GameStore.States.STATE_NEW,
-		rookgaard = false,
-		icons = {"New_Products.png"},
-		offers = {
-			{name = "30 Days", basePrice = 500, price = 375, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 30, type = GameStore.OfferTypes.OFFER_TYPE_PREMIUM, icons = {"Product_PremiumTime30.png"}, description = "Premium Account for 30 days."},
-			{name = "60 Days", basePrice = 1000, price = 500, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 60, type = GameStore.OfferTypes.OFFER_TYPE_PREMIUM, icons = {"Product_PremiumTime60.png"}, description = "Premium Account for 60 days."},
-			{name = "180 Days", basePrice = 1600, price = 800, state = GameStore.States.STATE_SALE, validUntil = 30, thingId = 180, type = GameStore.OfferTypes.OFFER_TYPE_PREMIUM, icons = {"Product_PremiumTime180.png"}, description = "Premium Account for 180 days."}
-		}
-	},
-
-	{
 		name = "New Products",
 		state = GameStore.States.STATE_NEW,
 		icons = {"New_Products.png"},
-		rookgaard = false,
 		offers = {
 			-- Addon Example : thingId = lookType, addon = ( 1 = addon 1, 2 = addon 2, 3 = both addons)
 			{name = "Grove Keeper", thingId = {male=908,female=909}, addon = 3, type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON, price = 60, icons = {"f909.png", "f908.png"}},
@@ -43,13 +20,13 @@ GameStore.Categories = {
 			{name = "Gold Sphinx", thingId = 107, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, price = 60, icons = {"o950.png"}, description = "Here you can purchase the Mount for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
 			{name = "Emerald Sphinx", thingId = 108, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, price = 60, icons = {"o951.png"}, description = "Here you can purchase the Mount  for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
 			{name = "Shadow Sphinx", thingId = 109, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, price = 60, icons = {"o952.png"}, description = "Here you can purchase the Mount  for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
+			--{name = "Elephant", thingId = 107, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, price = 1, icons = {"o937.png"}, description = "Here you can purchase the Mount  for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
 		}
 	},
 
 	{
 		name = "Overcharged items",
 		state = GameStore.States.STATE_NEW,
-		rookgaard = false,
 		icons = {"New_Products.png"},
 		offers = {
 			-- Item Example : thingId = itemId
@@ -92,7 +69,6 @@ GameStore.Categories = {
 		name = "Mounts",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Mounts.png"},
-		rookgaard = false,
 		offers = {
 			-- Mount Example : thingId = mountId
 			{name = "Widow Queen", thingId = 1, type = GameStore.OfferTypes.OFFER_TYPE_MOUNT, price = 30, icons = {"o368.png"}, description = "Here you can purchase the Mount  for your character. Riding on a mount is not only cool, but also gives your character a speed boost."},
@@ -305,7 +281,6 @@ GameStore.Categories = {
 		name = "Outfits",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Outfits.png"},
-		rookgaard = false,
 		offers = {
 			-- Addon Example : thingId = lookType, addon = ( 1 = addon 1, 2 = addon 2, 3 = both addons)
 			{name = "Citizen Addon", thingId = {male=128,female=136}, addon = 3, type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON, price = 20, icons = {"f128.png", "f136.png"}},
@@ -419,7 +394,6 @@ GameStore.Categories = {
 		name = "Items",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Items.png"},
-		rookgaard = false,
 		offers = {
 			{name = "crystalline token", thingId = 18423, count = 5, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 10, icons = {"18423.png"}, description = "Become rich!"},
 			-- Item Example : thingId = itemId
@@ -465,8 +439,6 @@ GameStore.Categories = {
 			{name = "Umbral Master Spellbook", thingId = 22424, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 60, icons = {"Umbral_Master_Spellbook.png"}, description = "Become rich!"},
 			{name = "Great Shield", thingId = 2522, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 80, icons = {"Great_Shield.png"}, description = "Become rich!"},
 			{name = "Blessed Shield", thingId = 2523, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 100, icons = {"Blessed_Shield.png"}, description = "Become rich!"},
-			{name = "Gold Pounch", state = GameStore.States.STATE_NEW, thingId = 26377, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 450, icons = {"Product_MagicCoinPurse.png"}, description="This item can't be moved from Store Inbox.\nYou can only put inside money.\nWarning: this item drop when you die red or black skull!"},
-			{name = "Blood Herb", thingId = 2798, count = 10, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 30, icons = {"BloodHerb.png"}, description = "Become rich!"}
 		}
 	},
 
@@ -490,7 +462,6 @@ GameStore.Categories = {
 		name = "Items for Knights",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Knight.png"},
-		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Earthmind Raiment", thingId = 25191, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 90, icons = {"25191.png"}, description = "Become rich!"},
@@ -527,7 +498,6 @@ GameStore.Categories = {
 		name = "Items for Paladins",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Pally.png"},
-		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Firesoul Tabard", thingId = 25186, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 90, icons = {"25186.png"}, description = "Become rich!"},
@@ -547,7 +517,6 @@ GameStore.Categories = {
 		name = "Items for Druids",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_Druid.png"},
-		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Thundermind Raiment", thingId = 25192, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_ITEM, price = 90, icons = {"25192.png"}, description = "Become rich!"},
@@ -564,83 +533,26 @@ GameStore.Categories = {
 		name = "House Equipment",
 		state = GameStore.States.STATE_NEW,
 		icons = {"Category_House_Equipment.png"},
-		rookgaard = false,
 		offers = {
 			-- Item Example : thingId = itemId
 			{name = "Parrot", thingId = 26890, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 180, icons = {"26890.png"}, description = "Become rich!"},
-			{name = "Magnificent Cabinet", thingId = 26075, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 50, icons = {"MagnificantCabinet.png"}, description = "Become rich!"},
-			{name = "Magnificent Chair", thingId = 26062, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 30, icons = {"Product_HouseEquipment_BaroqueFurniture_Chair.png"}, description = "Become rich!"},
-			{name = "Magnificent Trunk", thingId = 26086, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 35, icons = {"Product_HouseEquipment_BaroqueFurniture_Chest.png"}, description = "Become rich!"},
-			{name = "Magnificent Table", thingId = 26074, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 30, icons = {"Product_HouseEquipment_BaroqueFurniture_Table.png"}, description = "Become rich!"},
-			{name = "Ferocious Cabinet", thingId = 26078, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 55, icons = {"Product_HouseEquipment_TortureChamberFurniture_Cabinet.png"}, description = "Become rich!"},
-			{name = "Ferocious Chair", thingId = 26066, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 100, icons = {"Product_HouseEquipment_TortureChamberFurniture_Chair.png"}, description = "Become rich!"},
-			{name = "Ferocious Trunk", thingId = 26082, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 40, icons = {"Product_HouseEquipment_TortureChamberFurniture_Chest.png"}, description = "Become rich!"},
-			{name = "Ferocious Table", thingId = 26070, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 25, icons = {"Product_HouseEquipment_TortureChamberFurniture_Table.png"}, description = "Become rich!"},
-			{name = "Rustic Cabinet", thingId = 26357, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 50, icons = {"Product_HouseEquipment_RusticFurniture_Cabinet.png"}, description = "Become rich!"},
-			{name = "Rustic Chair", thingId = 26352, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 25, icons = {"Product_HouseEquipment_RusticFurniture_Chair.png"}, description = "Become rich!"},
-			{name = "Rustic Trunk", thingId = 26362, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 40, icons = {"Product_HouseEquipment_RusticFurniture_Chest.png"}, description = "Become rich!"},
-			{name = "Rustic Table", thingId = 26355, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 25, icons = {"Product_HouseEquipment_RusticFurniture_Table.png"}, description = "Become rich!"},
-			{name = "Yalaharian Carpet", thingId = 26109, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 17, icons = {"Product_HouseEquipment_Carpet1.png"}, description = "Become rich!"},
-			{name = "White Fur Carpet", thingId = 26110, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 15, icons = {"Product_HouseEquipment_Carpet2.png"}, description = "Become rich!"},
-			{name = "Bamboo Mat", thingId = 26111, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 12, icons = {"Product_HouseEquipment_Carpet3.png"}, description = "Become rich!"},
-			{name = "Crimson Carpet", thingId = 26371, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 17, icons = {"Product_HouseEquipment_Carpet_04.png"}, description = "Become rich!"},
-			{name = "Azure Carpet", thingId = 26372, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 17, icons = {"Product_HouseEquipment_Carpet_05.png"}, description = "Become rich!"},
-			{name = "Emerald Carpet", thingId = 26373, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 17, icons = {"Product_HouseEquipment_Carpet_06.png"}, description = "Become rich!"},
-			{name = "Light Parquet", thingId = 26374, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 15, icons = {"Product_HouseEquipment_Carpet_07.png"}, description = "Become rich!"},
-			{name = "Dark Parquet", thingId = 26375, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 15, icons = {"Product_HouseEquipment_Carpet_08.png"}, description = "Become rich!"},
-			{name = "Marble Parquet", thingId = 26376, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 15, icons = {"Product_HouseEquipment_Carpet_09.png"}, description = "Become rich!"},
-			{name = "Fish Tank", thingId = 26347, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 90, icons = {"Product_HouseEquipment_Housepet_FishTank.png"}, description = "Become rich!"},
-			{name = "Dog House", thingId = 26353, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 75, icons = {"Product_HouseEquipment_Housepet_DogHouse.png"}, description = "Become rich!"},
-			{name = "Baby Dragon", thingId = 26099, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 125, icons = {"Product_HouseEquipment_Housepet_BabyDragon.png"}, description = "Become rich!"},
-			{name = "Cat in a Basket", thingId = 26108, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 75, icons = {"Product_HouseEquipment_Housepet_Cat.png"}, description = "Become rich!"},
-			{name = "Hamster in a Wheel", thingId = 26101, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 90, icons = {"Product_HouseEquipment_Housepet_Hamster.png"}, description = "Become rich!"},
-			{name = "Protectress Lamp", thingId = 26097, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 45, icons = {"Product_HouseEquipment_Lamp_Goddess.png"}, description = "Become rich!"},
-			{name = "Predator Lamp", thingId = 26093, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 30, icons = {"Product_HouseEquipment_Lamp_Leopard.png"}, description = "Become rich!"},
-			{name = "Ornate Mailbox", thingId = 26058, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 100, icons = {"Product_HouseEquipment_Mailbox_Golden.png"}, description = "Become rich!"},
-			{name = "Royal Mailbox", thingId = 26056, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 75, icons = {"Product_HouseEquipment_Mailbox_Standard.png"}, description = "Become rich!"},
-			{name = "Lordly Tapestry", thingId = 26104, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 25, icons = {"Product_HouseEquipment_Tapestry_01.png"}, description = "Become rich!"},
-			{name = "Menacing Tapestry", thingId = 26105, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 35, icons = {"Product_HouseEquipment_Tapestry_02.png"}, description = "Become rich!"},
-			{name = "AllSeeing Tapestry", thingId = 26106, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 30, icons = {"Product_HouseEquipment_Tapestry_03.png"}, description = "Become rich!"},
-			{name = "Golden Dragon Tapestry", thingId = 26379, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 35, icons = {"Product_HouseEquipment_Tapestry_04.png"}, description = "Become rich!"},
-			{name = "Sword Tapestry", thingId = 26380, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 30, icons = {"Product_HouseEquipment_Tapestry_05.png"}, description = "Become rich!"},
-			{name = "Brocade Tapestry", thingId = 26381, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_HOUSE, price = 25, icons = {"Product_HouseEquipment_Tapestry_06.png"}, description = "Become rich!"},
-			}
-	},
-	{
-		name = "Blessings",
-		state = GameStore.States.STATE_NEW,
-		icons = {"Category_Blessings.png"},
-		rookgaard = false,
-		offers = {
-			-- NameChange example
-			{name = "Twist of Fate", thingId = 1, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
-			{name = "The Wisdom of Solitude", thingId = 2, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
-			{name = "The Spark of the Phoenix", thingId = 3, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 20, icons = {"Product_Wisdom.png"}},
-			{name = "The Fire of the Suns", thingId = 4, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
-			{name = "The Spiritual Shielding", thingId = 5, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
-			{name = "The Embrace of Tibia", thingId = 6, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
-			{name = "The Heart of the Mountain", thingId = 7, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
-			{name = "Blood of the Mountain", thingId = 8, type = GameStore.OfferTypes.OFFER_TYPE_BLESSINGS, price = 15, icons = {"Product_Wisdom.png"}},
-			-- Promotion example
-			--{name = "First Promotion", thingId = 1--[[ed/ms/rp/ek]], type = GameStore.OfferTypes.OFFER_TYPE_PROMOTION, price = 100, icons = {"Product_FirstPromotion.png"}}
+			{name = "Fish Tank", thingId = 26344, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 180, icons = {"26344.png"}, description = "Become rich!"},
+			{name = "Dog House", thingId = 26349, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 150, icons = {"26349.png"}, description = "Become rich!"},
+			{name = "Baby Dragon", thingId = 26098, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 250, icons = {"26098.png"}, description = "Become rich!"},
+			{name = "Cat in a Basket", thingId = 26107, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 150, icons = {"26107.png"}, description = "Become rich!"},
+			{name = "Hamster in a Wheel", thingId = 26100, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE, price = 180, icons = {"26100.png"}, description = "Become rich!"},
 		}
 	},
+
 	{
 		name = "Extra Services",
 		state = GameStore.States.STATE_NONE,
 		icons = {"Category_ExtraServices.png"},
-		rookgaard = false,
 		offers = {
 			-- NameChange example
 			{name = "Character Name Change", type = GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE, price = 20, icons = {"Product_CharacterNameChange.png"}},
 			-- Sexchange example
 			{name = "Character Sex Change", type = GameStore.OfferTypes.OFFER_TYPE_SEXCHANGE, price = 20, icons = {"Product_CharacterSexChange.png"}},
-			-- Services Pay to win example
-			{name = "XP Boost 50%", state = GameStore.States.STATE_NEW, type = GameStore.OfferTypes.OFFER_TYPE_EXPBOOST, price = 15, icons = {"xpboost.png"}, description="50% XP Boost for 1 hour!"},
-			{name = "Prey Bonus Reroll", state = GameStore.States.STATE_NEW, count = 1, type = GameStore.OfferTypes.OFFER_TYPE_PREYBONUS, price = 5, icons = {"Product_UsefulThings_PreyBonusReroll.png"}},
-			{name = "5x Prey Bonus Reroll", state = GameStore.States.STATE_NEW, count = 5, type = GameStore.OfferTypes.OFFER_TYPE_PREYBONUS, price = 25, icons = {"Product_UsefulThings_PreyBonusReroll.png"}},
-			{name = "Permanent Prey Slot", state = GameStore.States.STATE_NEW, type = GameStore.OfferTypes.OFFER_TYPE_PREYSLOT, price = 450, icons = {"Product_UsefulThings_PermanentPreySlot.png"}},
-			{name = "Temple Teleport", type = GameStore.OfferTypes.OFFER_TYPE_TEMPLE, price = 25, icons = {"Product_Transportation_TempleTeleport.png"}},
 			-- Promotion example
 			--{name = "First Promotion", thingId = 1--[[ed/ms/rp/ek]], type = GameStore.OfferTypes.OFFER_TYPE_PROMOTION, price = 100, icons = {"Product_FirstPromotion.png"}}
 		}

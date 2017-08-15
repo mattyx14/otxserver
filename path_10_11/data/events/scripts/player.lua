@@ -510,7 +510,7 @@ function Player:onGainExperience(source, exp, rawExp)
 		self:setStoreXpBoost(0) -- reset xp boost to 0
 	end
 
-	-- More compact, after checking before (reset) it only of xp if you have :v
+	-- More compact, after checking before (reset) it only of xp if you have
 	if (self:getStoreXpBoost() > 0) then
 		exp = exp + (exp * (self:getStoreXpBoost()/100)) -- Exp Boost
 	end
