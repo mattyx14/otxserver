@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void mainLoader(int, char*[], ServiceManager* services)
+void mainLoader(int argc, char* argv[], ServiceManager* services)
 {
 	//dispatcher thread
 	g_game.setGameState(GAME_STATE_STARTUP);
@@ -104,7 +104,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 #ifdef _WIN32
 	SetConsoleTitle(STATUS_SERVER_NAME);
 #endif
-	std::cout << "The " << STATUS_SERVER_NAME << " Version: (" << STATUS_SERVER_VERSION << "." << MINOR_VERSION << " . " << REVISION_VERSION << ") - Codename: ( " << SOFTWARE_CODENAME << " )" << std::endl;
+	std::cout << "The " << STATUS_SERVER_NAME << " Global - Version: (" << STATUS_SERVER_VERSION << "." << MINOR_VERSION << " . " << REVISION_VERSION << ") - Codename: ( " << SOFTWARE_CODENAME << " )" << std::endl;
 	std::cout << "Compiled with: " << BOOST_COMPILER << std::endl;
 	std::cout << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
 
@@ -123,10 +123,18 @@ void mainLoader(int, char*[], ServiceManager* services)
 	std::cout << "Visit our forum for updates, support, and resources: " << GIT_REPO <<"." << std::endl;
 	std::cout << std::endl;
 
+	// TODO: dirty for now; Use stdarg;
+	if (argc > 1) {
+		std::string param = { argv[1] };
+		if (param == "-c") {
+			g_config.setConfigFileLua(argv[2]);
+		}
+	}
+
 	// read global config
-	std::cout << ">> Loading config" << std::endl;
+	std::cout << ">> Loading config: " << g_config.getConfigFileLua() << std::endl;
 	if (!g_config.load()) {
-		startupErrorMessage("Unable to load config.lua!");
+		startupErrorMessage("Unable to load Config File!");
 		return;
 	}
 
@@ -157,7 +165,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	std::cout << ">> Running database manager" << std::endl;
 
 	if (!DatabaseManager::isDatabaseSetup()) {
-		startupErrorMessage("The database you have specified in config.lua is empty, please import the schema.sql to your database.");
+		startupErrorMessage("The database you have specified in config lua file is empty, please import the schema.sql to your database.");
 		return;
 	}
 	g_databaseTasks.start();

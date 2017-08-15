@@ -15,7 +15,7 @@ local function pushSeparated(buffer, sep, ...)
 			table.insert(buffer, sep)
 		end
 	end
-end	
+end
 
 local function insertItems(buffer, info, parent, items)
 	local start = info.running
@@ -49,7 +49,7 @@ local function insertRewardItems(playerGuid, timestamp, itemList)
 		function(query)
 			local lastReward = 0
 			local lastStoreId
-			if query then
+			if (query) then
 				repeat
 					local sid = result.getDataInt(query, 'sid')
 					local pid = result.getDataInt(query, 'pid')
@@ -71,10 +71,9 @@ local function insertRewardItems(playerGuid, timestamp, itemList)
 
 			local bag = Game.createItem(ITEM_REWARD_CONTAINER)
 			bag:setAttribute(ITEM_ATTRIBUTE_DATE, timestamp)
-
 			if itemList then
-				for _, item in ipairs(itemList) do
-					bag:addItem(item[1], item[2])
+				for _, p in ipairs(itemList) do
+					bag:addItem(p[1], p[2])
 				end
 			end
 
@@ -155,7 +154,7 @@ function onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified,
 
 			local playerLoot
 			if --[[stamina > 840 and]] con.score ~= 0 then
-				local lootFactor = 1
+				local lootFactor = 1.000
 				lootFactor = lootFactor / participants ^ (1 / 3) -- tone down the loot a notch if there are many participants
 				lootFactor = lootFactor * (1 + lootFactor) ^ (con.score / expectedScore) -- increase the loot multiplicatively by how many times the player surpassed the expected score
 				playerLoot = monsterType:getBossReward(lootFactor, _ == 1)
@@ -194,7 +193,7 @@ function onThink(creature, interval)
 	for _, player in pairs(info) do
 		player.active = false
 	end
-	
+
 	-- Set all players in boss' target list as active in the fight
 	local targets = creature:getTargetList()
 	for _, target in ipairs(targets) do

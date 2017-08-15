@@ -7,6 +7,7 @@ killsToRedSkull = 3
 killsToBlackSkull = 6
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
+removeChargesFromPotions = true
 removeWeaponAmmunition = true
 removeWeaponCharges = true
 timeToDecreaseFrags = 24 * 60 * 60 * 1000

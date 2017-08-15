@@ -27,13 +27,17 @@
 	<movevent event="StepOut" itemid="4209" script="trap.lua" />
 
 	<!-- Citizen teleport -->
-	<movevent event="StepIn" itemid="1387" script="citizen.lua" />
+	<movevent event="StepIn" fromuid="9056" touid="9068" script="citizen.lua" />
+	<movevent event="StepIn" uniqueid="9240" script="citizen.lua" />
+	<movevent event="StepIn" fromuid="9500" touid="9501" script="citizen.lua" />
 	<movevent event="StepIn" itemid="1397" script="citizen.lua" />
 
 	<!-- Walkback when walking on quest chest -->
 	<movevent event="StepIn" itemid="1738" script="walkback.lua" />
-	<movevent event="StepIn" itemid="1740" script="walkback.lua" />
+	<movevent event="StepIn" fromid="1740" toid="1741" script="walkback.lua" />
 	<movevent event="StepIn" fromid="1746" toid="1749" script="walkback.lua" />
+	<movevent event="StepIn" fromid="1714" toid="1717" script="walkback.lua" />
+	<movevent event="StepIn" actionid="5640" script="walkback.lua" />
 
 	<!-- (Level & quest) doors -->
 	<movevent event="StepOut" itemid="1224" script="closingdoor.lua" />

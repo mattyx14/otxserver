@@ -1,19 +1,16 @@
-local freeBlessMaxLevel = 100
-
-function onLogin(player)
+local freeBlessMaxLevel = 50
+function onLogin(cid)
+	local player = Player(cid)
 	if player:getLevel() <= freeBlessMaxLevel then
 		for i = 1, 6 do
-			player:addBlessing(i)
-			player:getPosition():sendMagicEffect(CONST_ME_HOLYDAMAGE)
-			player:say('FREE BLESS LVL ' .. freeBlessMaxLevel .. '.', TALKTYPE_ORANGE_1)
+			if not player:hasBlessing(i) then
+				player:addBlessing(i, 1)
+			end
 		end
+
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE,'You received all blessing for you to be level less than ' .. freeBlessMaxLevel .. '!')
+		player:getPosition():sendMagicEffect(CONST_ME_HOLYDAMAGE)
 	end
 
-	if player:getStorageValue(Storage.FreeBless) == 1 then
-		for i = 1, 6 do
-			player:addBlessing(i)
-			player:getPosition():sendMagicEffect(CONST_ME_HOLYDAMAGE)
-		end
-	end
 	return true
 end

@@ -17,6 +17,5 @@ function onLogout(player)
 			stats.stamina = player:getStamina()
 		end
 	end
-
 	return true
 end

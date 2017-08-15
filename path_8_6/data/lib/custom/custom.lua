@@ -21,6 +21,17 @@ function getFormattedWorldTime()
 	return hours .. ':' .. minutes
 end
 
+function getTibianTime()
+	local worldTime = getWorldTime()
+	local hours = math.floor(worldTime / 60)
+
+	local minutes = worldTime % 60
+	if minutes < 10 then
+		minutes = '0' .. minutes
+	end
+	return hours .. ':' .. minutes
+end
+
 function doCreatureSayWithRadius(cid, text, type, radiusx, radiusy, position)
 	if not position then
 		position = Creature(cid):getPosition()
@@ -492,4 +503,16 @@ function Player.getExhaustion(self, value)
 	end
 
 	return storage - os.time()
+end
+
+-- The following 2 functions can be used for delayed shouted text
+function say(param)
+	selfSay(text)
+	doCreatureSay(param.cid, param.text, 1)
+end
+
+function delayedSay(text, delay)
+	local delay = delay or 0
+	local cid = getNpcCid()
+	addEvent(say, delay, {cid = cid, text = text})
 end

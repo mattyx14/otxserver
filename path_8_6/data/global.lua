@@ -58,6 +58,36 @@ string.trim = function(str)
 	return str:match'^()%s*$' and '' or str:match'^%s*(.*%S)'
 end
 
-if not nextUseStaminaTime then
+if nextUseStaminaTime == nil then
 	nextUseStaminaTime = {}
+end
+
+if nextUseXpStamina == nil then
+	nextUseXpStamina = {}
+end
+
+--Boss entry
+if not bosssPlayers then
+	bosssPlayers = {
+		addPlayers = function (self, cid)
+			local player = Player(cid)
+			if not player then return false end
+			if not self.players then
+				self.players = {}
+			end
+			self.players[player:getId()] = 1
+		end,
+		removePlayer = function (self, cid)
+			local player = Player(cid)
+			if not player then  return false end
+			if not self.players then return false end
+			self.players[player:getId()] = nil
+		end,
+		getPlayersCount = function (self)
+			if not self.players then return 0 end
+			local c = 0
+			for _ in pairs(self.players) do  c = c + 1 end
+			return c
+		end
+	}
 end

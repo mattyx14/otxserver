@@ -30,29 +30,18 @@ function onLogin(player)
 	local playerId = player:getId()
 
 	-- Stamina
-	nextUseStaminaTime[player.uid] = 0
+	nextUseStaminaTime[playerId] = 1
 
-	-- Promotion
-	local vocation = player:getVocation()
-	local promotion = vocation:getPromotion()
-	if player:isPremium() then
-		local value = player:getStorageValue(STORAGEVALUE_PROMOTION)
-		if not promotion and value ~= 1 then
-			player:setStorageValue(STORAGEVALUE_PROMOTION, 1)
-		elseif value == 1 then
-			player:setVocation(promotion)
-		end
-	elseif not promotion then
-		player:setVocation(vocation:getDemotion())
-	end
+	-- EXP Stamina
+	nextUseXpStamina[playerId] = 1
 
 	-- Rewards notice
 	local rewards = #player:getRewardList()
-	if rewards > 0 then
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You have %s %s in your reward chest.", rewards == 1 and 'one' or rewards, rewards > 1 and "rewards" or "reward"))
+	if(rewards > 0) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You have %d %s in your reward chest.", rewards, rewards > 1 and "rewards" or "reward"))
 	end
 
-	-- Update player id 
+	-- Update player id
 	local stats = player:inBossFight()
 	if stats then
 		stats.playerId = player:getId()

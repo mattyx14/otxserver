@@ -230,6 +230,4 @@
 		<action fromid="5792" toid="5797" script="_scripts_otx/dice.lua" />
 		<action itemid="5957" script="_scripts_otx/lotteryticket.lua" />
 		<!-- <action itemid="16101" script="_scripts_otx/premiumscroll.lua" /> -->
-
-		<action itemid="12647" script="other/spellbook.lua" />
 </actions>
