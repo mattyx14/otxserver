@@ -4159,6 +4159,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 		}
 
+		if (spectators.empty()) {
+			map.getSpectators(spectators, targetPos, true, true);
+		}
+
 		addCreatureHealth(spectators, target);
 
 		message.primary.value = damage.primary.value;

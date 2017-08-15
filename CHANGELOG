@@ -99,7 +99,7 @@
 			* Imbuement System
 			* Prey System
 			* Inspection System
-	- Clean and formated items.xml
+	- Clean and formated items-monsters(files)-spells.xml
 	- Drop commands support in favor of talkactions (TFT)
 	- Drop client 10_9
 	- Fix critical damage calculations (OTXS-C)
