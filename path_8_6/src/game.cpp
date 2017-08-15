@@ -3768,13 +3768,8 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		}
 
 		target->drainHealth(attacker, realDamage);
-		if (realDamage > 0) {
-			if (Monster* targetMonster = target->getMonster()) {
-				if (targetMonster->isRandomSteping()) {
-					targetMonster->setIgnoreFieldDamage(true);
-					targetMonster->updateMapCache();
-				}
-			}
+		if (spectators.empty()) {
+			map.getSpectators(spectators, targetPos, true, true);
 		}
 
 		addCreatureHealth(spectators, target);
