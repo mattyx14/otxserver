@@ -617,17 +617,10 @@ bool Spell::checkSpell(Player* player) const
 	if(!isEnabled())
 		return false;
 
-	bool exhausted = false;
-	if(isAggressive)
+	if(isAggressive && !player->hasFlag(PlayerFlag_IgnoreProtectionZone) && player->getZone() == ZONE_PROTECTION)
 	{
-		if(!player->hasFlag(PlayerFlag_IgnoreProtectionZone) && player->getZone() == ZONE_PROTECTION)
-		{
-			player->sendCancelMessage(RET_ACTIONNOTPERMITTEDINPROTECTIONZONE);
-			return false;
-		}
-
-		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_COMBAT))
-			exhausted = true;
+		player->sendCancelMessage(RET_ACTIONNOTPERMITTEDINPROTECTIONZONE);
+		return false;
 	}
 
 	if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
@@ -651,18 +644,6 @@ bool Spell::checkSpell(Player* player) const
 
 			return false;
 		}
-	}
-
-	if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_HEALING))
-		exhausted = true;
-
-	if(exhausted && !player->hasFlag(PlayerFlag_HasNoExhaustion))
-	{
-		player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-		if(isInstant())
-			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-
-		return false;
 	}
 
 	if(isPremium() && !player->isPremium())
