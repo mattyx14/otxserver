@@ -869,7 +869,7 @@ void Tile::__addThing(Creature* actor, int32_t, Thing* thing)
 		creature->setParent(this);
 
 		CreatureVector* creatures = makeCreatures();
-		creatures->insert(creatures->begin(), creature);
+		creatures->insert(creatures->end(), creature);
 
 		++thingCount;
 		return;
@@ -1562,7 +1562,7 @@ void Tile::__internalAddThing(uint32_t, Thing* thing)
 	{
 		g_game.clearSpectatorCache();
 		CreatureVector* creatures = makeCreatures();
-		creatures->insert(creatures->begin(), creature);
+		creatures->insert(creatures->end(), creature);
 
 		++thingCount;
 		return;

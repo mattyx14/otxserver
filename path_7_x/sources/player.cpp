@@ -2529,17 +2529,17 @@ Item* Player::createCorpse(DeathList deathList)
 	return corpse;
 }
 
-void Player::addCooldown(uint32_t ticks, uint16_t spellId)
+void Player::addCombatExhaust(uint32_t ticks, Exhaust_t exhaust)
 {
 	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT,
-		CONDITION_SPELLCOOLDOWN, ticks, 0, false, spellId))
+		CONDITION_EXHAUST_COMBAT, ticks, 0, false, (int32_t)exhaust))
 		addCondition(condition);
 }
 
 void Player::addExhaust(uint32_t ticks, Exhaust_t exhaust)
 {
 	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT,
-		CONDITION_EXHAUST, ticks, 0, false, (int32_t)exhaust))
+		CONDITION_EXHAUST_HEAL, ticks, 0, false, (int32_t)exhaust))
 		addCondition(condition);
 }
 

@@ -120,7 +120,7 @@ class Spell : public BaseSpell
 		bool configureSpell(xmlNodePtr xmlspell);
 		const std::string& getName() const {return name;}
 
-		void postSpell(Player* player) const;
+		void postSpell(Player* player, bool isFinished = true, bool payCost = true) const;
 		#ifdef _MULTIPLATFORM76
 		void postSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const;
 		#else

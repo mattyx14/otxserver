@@ -2,290 +2,290 @@
 
 <spells>
 	<!-- Rune Spells -->
-	<rune name="adevo grav pox" id="2285" maglv="0" blocktype="solid" charges="3" script="attack/poison_field.lua"/>
-	<rune name="adura gran" id="2265" maglv="1" needtarget="1" aggressive="0" charges="1" script="healing/intense_healing_rune.lua" />
-	<rune name="adana pox" id="2266" maglv="0" needtarget="1" aggressive="0" charges="1" script="healing/antidote_rune.lua" />
-	<rune name="adori" id="2287" maglv="0" needtarget="1" charges="5" script="attack/light_magic_missile.lua" />
-	<rune name="adevo grav flam" id="2301" maglv="1" blocktype="solid" charges="3" script="attack/fire_field.lua" />
-	<rune name="adeta sio" id="2290" maglv="5" needtarget="1" charges="1" function="convince" />
-	<rune name="adito grav" id="2261" maglv="3" range="4" blocktype="solid" aggressive="0" charges="3" script="support/destroy_field_rune.lua" />
-	<rune name="adevo grav vis" id="2277" maglv="3" blocktype="solid" charges="3" script="attack/energy_field.lua" />
-	<rune name="adito tera" id="2310" maglv="4" charges="3" range="1" script="support/desintegrate_rune.lua" />
-	<rune name="adura vita" id="2273" maglv="4" needtarget="1" aggressive="0" charges="1" script="healing/ultimate_healing_rune.lua" />
-	<rune name="adori gran" id="2311" maglv="3" needtarget="1" charges="5" script="attack/heavy_magic_missile.lua"/>
-	<rune name="adevo mas pox" id="2286" maglv="4" blocktype="solid" charges="2" script="attack/poison_bomb.lua" />
-	<rune name="adevo mas flam" id="2305" maglv="5" blocktype="solid" charges="2" script="attack/firebomb.lua" />
-	<rune name="adevo res flam" id="2308" maglv="7" needtarget="1" charges="2" script="attack/soulfire.lua" />
-	<rune name="adevo ina" id="2291" maglv="4" aggressive="0" charges="1" function="chameleon" />
-	<rune name="adori flam" id="2302" maglv="4" needtarget="0" charges="3" script="attack/fireball.lua" />
-	<rune name="adana mort" id="2316" maglv="4" blocktype="solid" charges="2" script="summon/animate_dead_rune.lua" />
-	<rune name="adevo mas grav pox" id="2289" maglv="5" blocktype="solid" charges="4" script="attack/poison_wall.lua" />
-	<rune name="adori gran flam" id="2304" maglv="4" charges="2" script="attack/great_fireball.lua" />
-	<rune name="adevo mas hur" id="2313" maglv="6" charges="3" script="attack/explosion.lua" />
-	<rune name="adevo grav tera" id="2293" maglv="9" blocktype="all" charges="4" script="support/magic_wall_rune.lua" />
-	<rune name="adevo mas grav flam" id="2303" maglv="6" blocktype="solid" charges="4" script="attack/fire_wall.lua" />
-	<rune name="adevo mas vis" id="2262" maglv="10" blocktype="solid" charges="2" script="attack/energybomb.lua" />
-	<rune name="adevo mas grav vis" id="2279" maglv="9" blocktype="solid" charges="4" script="attack/energy_wall.lua" />
-	<rune name="adori vita vis" id="2268" maglv="15" needtarget="1" charges="1" script="attack/sudden_death.lua" />
-	 <rune name="adevo res pox" id="2292" maglv="4" needtarget="1" charges="3" script="attack/envenom.lua" />
-	<rune name="adana ani" id="2278" maglv="18" needtarget="1" mana="1400" charges="1" script="support/paralyze_rune.lua">
+	<rune name="adevo grav pox" id="2285" maglv="0" blocktype="solid" charges="3" event="script" value="attack/poison_field.lua"/>
+	<rune name="adura gran" id="2265" maglv="1" needtarget="1" aggressive="0" charges="1" event="script" value="healing/intense_healing_rune.lua" />
+	<rune name="adana pox" id="2266" maglv="0" needtarget="1" aggressive="0" charges="1" event="script" value="healing/antidote_rune.lua" />
+	<rune name="adori" id="2287" maglv="0" needtarget="1" charges="5" event="script" value="attack/light_magic_missile.lua" />
+	<rune name="adevo grav flam" id="2301" maglv="1" blocktype="solid" charges="3" event="script" value="attack/fire_field.lua" />
+	<rune name="adeta sio" id="2290" maglv="5" needtarget="1" charges="1" event="function" value="convince" />
+	<rune name="adito grav" id="2261" maglv="3" range="4" blocktype="solid" aggressive="0" charges="3" event="script" value="support/destroy_field_rune.lua" />
+	<rune name="adevo grav vis" id="2277" maglv="3" blocktype="solid" charges="3" event="script" value="attack/energy_field.lua" />
+	<rune name="adito tera" id="2310" maglv="4" charges="3" range="1" event="script" value="support/desintegrate_rune.lua" />
+	<rune name="adura vita" id="2273" maglv="4" needtarget="1" aggressive="0" charges="1" event="script" value="healing/ultimate_healing_rune.lua" />
+	<rune name="adori gran" id="2311" maglv="3" needtarget="1" charges="5" event="script" value="attack/heavy_magic_missile.lua"/>
+	<rune name="adevo mas pox" id="2286" maglv="4" blocktype="solid" charges="2" event="script" value="attack/poison_bomb.lua" />
+	<rune name="adevo mas flam" id="2305" maglv="5" blocktype="solid" charges="2" event="script" value="attack/firebomb.lua" />
+	<rune name="adevo res flam" id="2308" maglv="7" needtarget="1" charges="2" event="script" value="attack/soulfire.lua" />
+	<rune name="adevo ina" id="2291" maglv="4" aggressive="0" charges="1" event="function" value="chameleon" />
+	<rune name="adori flam" id="2302" maglv="4" needtarget="0" charges="3" event="script" value="attack/fireball.lua" />
+	<rune name="adana mort" id="2316" maglv="4" blocktype="solid" charges="2" event="script" value="summon/animate_dead_rune.lua" />
+	<rune name="adevo mas grav pox" id="2289" maglv="5" blocktype="solid" charges="4" event="script" value="attack/poison_wall.lua" />
+	<rune name="adori gran flam" id="2304" maglv="4" charges="2" event="script" value="attack/great_fireball.lua" />
+	<rune name="adevo mas hur" id="2313" maglv="6" charges="3" event="script" value="attack/explosion.lua" />
+	<rune name="adevo grav tera" id="2293" maglv="9" blocktype="all" charges="4" event="script" value="support/magic_wall_rune.lua" />
+	<rune name="adevo mas grav flam" id="2303" maglv="6" blocktype="solid" charges="4" event="script" value="attack/fire_wall.lua" />
+	<rune name="adevo mas vis" id="2262" maglv="10" blocktype="solid" charges="2" event="script" value="attack/energybomb.lua" />
+	<rune name="adevo mas grav vis" id="2279" maglv="9" blocktype="solid" charges="4" event="script" value="attack/energy_wall.lua" />
+	<rune name="adori vita vis" id="2268" maglv="15" needtarget="1" charges="1" event="script" value="attack/sudden_death.lua" />
+	 <rune name="adevo res pox" id="2292" maglv="4" needtarget="1" charges="3" event="script" value="attack/envenom.lua" />
+	<rune name="adana ani" id="2278" maglv="18" needtarget="1" mana="1400" charges="1" event="script" value="support/paralyze_rune.lua">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</rune>
 
 	<!-- Instant Spells -->
-	<instant name="Light" words="utevo lux" needlearn="0" lvl="8" maglv="0" mana="20" selftarget="1" aggressive="0" script="support/light.lua">
+	<instant name="Light" words="utevo lux" needlearn="0" lvl="8" maglv="0" mana="20" selftarget="1" aggressive="0" event="script" value="support/light.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Find Person" words="exiva" needlearn="0" lvl="8" maglv="0" mana="20" params="1" function="searchPlayer">
+	<instant name="Find Person" words="exiva" needlearn="0" lvl="8" maglv="0" mana="20" params="1" event="function" value="searchPlayer">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Magic Rope" words="exani tera" needlearn="0" lvl="9" maglv="1" mana="20" aggressive="0" script="support/magic_rope.lua">
+	<instant name="Magic Rope" words="exani tera" needlearn="0" lvl="9" maglv="1" mana="20" aggressive="0" event="script" value="support/magic_rope.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Light Healing" words="exura" needlearn="0" lvl="9" maglv="1" mana="25" selftarget="1" aggressive="0" script="healing/light_healing.lua">
+	<instant name="Light Healing" words="exura" needlearn="0" lvl="9" maglv="1" mana="25" selftarget="1" aggressive="0" event="script" value="healing/light_healing.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Antidote" words="exana pox" needlearn="0" lvl="10" maglv="2" mana="30" selftarget="1" aggressive="0" script="healing/antidote.lua">
+	<instant name="Antidote" words="exana pox" needlearn="0" lvl="10" maglv="2" mana="30" selftarget="1" aggressive="0" event="script" value="healing/antidote.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Intense Healing" words="exura gran" needlearn="0" lvl="11" maglv="2" mana="40" selftarget="1" aggressive="0" script="healing/intense_healing.lua">
+	<instant name="Intense Healing" words="exura gran" needlearn="0" lvl="11" maglv="2" mana="40" selftarget="1" aggressive="0" event="script" value="healing/intense_healing.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</instant>
-	<instant name="Levitate" words="exani hur" needlearn="0" lvl="0" maglv="3" prem="1" mana="50" params="1" function="levitate">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
-		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
-		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
-	</instant>
-	<instant name="Energy Strike" words="exori vis" lvl="12" maglv="3" mana="20" direction="1" customexhaust="1000" script="attack/energy_strike.lua">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
-	</instant>
-	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" maglv="16" params="1" function="summonMonster">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
-	</instant>
-	<instant name="Great Light" words="utevo gran lux" needlearn="0" lvl="15" maglv="3" mana="60" selftarget="1" aggressive="0" script="support/great_light.lua">
+	<instant name="Levitate" words="exani hur" needlearn="0" lvl="0" maglv="3" prem="1" mana="50" params="1" event="function" value="levitate">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Magic Shield" words="utamo vita" lvl="14" maglv="4" mana="50" selftarget="1" aggressive="0" script="support/magic_shield.lua">
+	<instant name="Energy Strike" words="exori vis" lvl="12" maglv="3" mana="20" direction="1" customexhaust="1000" event="script" value="attack/energy_strike.lua">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
+	</instant>
+	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" maglv="16" params="1" event="function" value="summonMonster">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
+	</instant>
+	<instant name="Great Light" words="utevo gran lux" needlearn="0" lvl="15" maglv="3" mana="60" selftarget="1" aggressive="0" event="script" value="support/great_light.lua">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
+		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
+		<vocation name="Knight"/>  <vocation name="Elite Knight"/>
+	</instant>
+	<instant name="Magic Shield" words="utamo vita" lvl="14" maglv="4" mana="50" selftarget="1" aggressive="0" event="script" value="support/magic_shield.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</instant>
-	<instant name="Haste" words="utani hur" needlearn="0" lvl="14" maglv="4" prem="1" mana="60" selftarget="1" aggressive="0" script="support/haste.lua" />
-	<instant name="Flame Strike" words="exori flam" lvl="14" maglv="3" prem="1" mana="20" direction="1" customexhaust="1000" script="attack/flame_strike.lua">
+	<instant name="Haste" words="utani hur" needlearn="0" lvl="14" maglv="4" prem="1" mana="60" selftarget="1" aggressive="0" event="script" value="support/haste.lua" />
+	<instant name="Flame Strike" words="exori flam" lvl="14" maglv="3" prem="1" mana="20" direction="1" customexhaust="1000" event="script" value="attack/flame_strike.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Force Strike" words="exori mort" needlearn="0" lvl="16" maglv="2" prem="1" mana="20" direction="1" customexhaust="1000" script="attack/force_strike.lua">
+	<instant name="Force Strike" words="exori mort" needlearn="0" lvl="16" maglv="2" prem="1" mana="20" direction="1" customexhaust="1000" event="script" value="attack/force_strike.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Fire Wave" words="exevo flam hur" needlearn="0" lvl="18" maglv="7" mana="80" direction="1" script="attack/fire_wave.lua">
+	<instant name="Fire Wave" words="exevo flam hur" needlearn="0" lvl="18" maglv="7" mana="80" direction="1" event="script" value="attack/fire_wave.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</instant>
-	<instant name="Heal Friend" words="exura sio" needlearn="0" lvl="19" maglv="7" mana="70" prem="1" needtarget="1" params="1" aggressive="0" blockwalls="0" script="healing/heal_friend.lua">
+	<instant name="Heal Friend" words="exura sio" needlearn="0" lvl="19" maglv="7" mana="70" prem="1" needtarget="1" params="1" aggressive="0" blockwalls="0" event="script" value="healing/heal_friend.lua">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Ultimate Healing" words="exura vita" needlearn="0" lvl="20" maglv="8" mana="80" selftarget="1" aggressive="0" script="healing/ultimate_healing.lua">
+	<instant name="Ultimate Healing" words="exura vita" needlearn="0" lvl="20" maglv="8" mana="80" selftarget="1" aggressive="0" event="script" value="healing/ultimate_healing.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</instant>
-	<instant name="Strong Haste" words="utani gran hur" needlearn="0" lvl="20" maglv="8" prem="1" mana="100" selftarget="1" aggressive="0" script="support/strong_haste.lua">
+	<instant name="Strong Haste" words="utani gran hur" needlearn="0" lvl="20" maglv="8" prem="1" mana="100" selftarget="1" aggressive="0" event="script" value="support/strong_haste.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Challenge" words="exeta res" needlearn="0" lvl="20" maglv="4" prem="1" mana="90" selftarget="1" script="support/challenge.lua">
+	<instant name="Challenge" words="exeta res" needlearn="0" lvl="20" maglv="4" prem="1" mana="90" selftarget="1" event="script" value="support/challenge.lua">
 		<vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Energy Beam" words="exevo vis lux" needlearn="0" lvl="23" maglv="10" mana="100" direction="1" script="attack/energy_beam.lua">
+	<instant name="Energy Beam" words="exevo vis lux" needlearn="0" lvl="23" maglv="10" mana="100" direction="1" event="script" value="attack/energy_beam.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</instant>
-	<instant name="Creature Illusion" words="utevo res ina" needlearn="0" lvl="21" maglv="10" mana="100" params="1" function="illusion">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
-	</instant>
-	<instant name="Cancel Invisibility" words="exana ina" needlearn="0" lvl="30" maglv="12" prem="1" mana="200" selftarget="1" script="support/cancel_invisibility.lua">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-	</instant>
-	<instant name="Ultimate Light" words="utevo vis lux" needlearn="0" lvl="20" maglv="12" mana="140" aggressive="0" selftarget="1" script="support/ultimate_light.lua">
+	<instant name="Creature Illusion" words="utevo res ina" needlearn="0" lvl="21" maglv="10" mana="100" params="1" event="function" value="illusion">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Great Energy Beam" words="exevo gran vis lux" needlearn="0" lvl="29" maglv="14" mana="200" direction="1" script="attack/great_energy_beam.lua">
+	<instant name="Cancel Invisibility" words="exana ina" needlearn="0" lvl="30" maglv="12" prem="1" mana="200" selftarget="1" event="script" value="support/cancel_invisibility.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</instant>
-	<instant name="Berserk" words="exori" needlearn="0" lvl="35" maglv="5" levelpercent="400" selftarget="1" script="attack/berserk.lua">
+	<instant name="Ultimate Light" words="utevo vis lux" needlearn="0" lvl="20" maglv="12" mana="140" aggressive="0" selftarget="1" event="script" value="support/ultimate_light.lua">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
+	</instant>
+	<instant name="Great Energy Beam" words="exevo gran vis lux" needlearn="0" lvl="29" maglv="14" mana="200" direction="1" event="script" value="attack/great_energy_beam.lua">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+	</instant>
+	<instant name="Berserk" words="exori" needlearn="0" lvl="35" maglv="5" levelpercent="400" selftarget="1" event="script" value="attack/berserk.lua">
 		<vocation name="Knight"/>   <vocation name="Elite Knight"/>
 	</instant>
-	<instant name="Invisibility" words="utana vid" needlearn="0" lvl="35" maglv="15" mana="210" prem="1" selftarget="1" aggressive="0" script="support/invisible.lua">
+	<instant name="Invisibility" words="utana vid" needlearn="0" lvl="35" maglv="15" mana="210" prem="1" selftarget="1" aggressive="0" event="script" value="support/invisible.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</instant>
-	<instant name="Mass Healing" words="exura gran mas res" needlearn="0" lvl="36" maglv="19" prem="1" mana="150" selftarget="1" aggressive="0" script="healing/mass_healing.lua">
+	<instant name="Mass Healing" words="exura gran mas res" needlearn="0" lvl="36" maglv="19" prem="1" mana="150" selftarget="1" aggressive="0" event="script" value="healing/mass_healing.lua">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Undead Legion" words="exana mas mort" needlearn="0" lvl="30" maglv="15" prem="1" mana="500" selftarget="1" script="summon/undead_legion.lua">
+	<instant name="Undead Legion" words="exana mas mort" needlearn="0" lvl="30" maglv="15" prem="1" mana="500" selftarget="1" event="script" value="summon/undead_legion.lua">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Ultimate Explosion" words="exevo gran mas vis" needlearn="0" lvl="60" prem="1" maglv="40" mana="800" selftarget="1" script="attack/ultimate_explosion.lua">
+	<instant name="Ultimate Explosion" words="exevo gran mas vis" needlearn="0" lvl="60" prem="1" maglv="40" mana="800" selftarget="1" event="script" value="attack/ultimate_explosion.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</instant>
-	<instant name="Poison Storm" words="exevo gran mas pox" needlearn="0" lvl="50" maglv="28" prem="1" mana="600" selftarget="1" script="attack/poison_storm.lua">
+	<instant name="Poison Storm" words="exevo gran mas pox" needlearn="0" lvl="50" maglv="28" prem="1" mana="600" selftarget="1" event="script" value="attack/poison_storm.lua">
 		<vocation name="Druid"/> <vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Energy Wave" words="exevo mort hur" needlearn="0" lvl="38" maglv="20" mana="250" prem="1" direction="1" script="attack/energy_wave.lua">
+	<instant name="Energy Wave" words="exevo mort hur" needlearn="0" lvl="38" maglv="20" mana="250" prem="1" direction="1" event="script" value="attack/energy_wave.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</instant>
-	<instant name="Wild Growth" words="exevo grav vita" needlearn="0" lvl="27" maglv="13" mana="220" prem="1" direction="1" blocktype="all" script="support/wild_growth.lua">
+	<instant name="Wild Growth" words="exevo grav vita" needlearn="0" lvl="27" maglv="13" mana="220" prem="1" direction="1" blocktype="all" event="script" value="support/wild_growth.lua">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</instant>
 
 <!-- Conjure Spells -->
-	<conjure name="Poison Field" words="adevo grav pox" needlearn="0" lvl="14" soul="1" mana="200" aggressive="0" reagentId="2260" conjureId="2285" conjureCount="3" function="conjureRune">
+	<conjure name="Poison Field" words="adevo grav pox" needlearn="0" lvl="14" soul="1" mana="200" aggressive="0" reagentId="2260" conjureId="2285" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Food" words="exevo pan" needlearn="0" maglv="0" soul="0" mana="30" selftarget="1" aggressive="0" script="support/conjure food.lua">
+	<conjure name="Food" words="exevo pan" needlearn="0" maglv="0" soul="0" mana="30" selftarget="1" aggressive="0" event="script" value="support/conjure food.lua">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Intense Healing Rune" words="adura gran" needlearn="0" lvl="15" soul="2" mana="120" reagentId="2260" conjureId="2265" conjureCount="1" function="conjureRune">
+	<conjure name="Intense Healing Rune" words="adura gran" needlearn="0" lvl="15" soul="2" mana="120" reagentId="2260" conjureId="2265" conjureCount="1" event="function" value="conjureRune">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Antidote Rune" words="adana pox" needlearn="0" lvl="15" mana="100" soul="2" reagentId="2260" conjureId="2266" conjureCount="1" function="conjureRune">
+	<conjure name="Antidote Rune" words="adana pox" needlearn="0" lvl="15" mana="100" soul="2" reagentId="2260" conjureId="2266" conjureCount="1" event="function" value="conjureRune">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Light Magic Missile" words="adori" needlearn="0" lvl="15" mana="120" soul="1" reagentId="2260" conjureId="2287" conjureCount="5" function="conjureRune">
+	<conjure name="Light Magic Missile" words="adori" needlearn="0" lvl="15" mana="120" soul="1" reagentId="2260" conjureId="2287" conjureCount="5" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>    <vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Fire Field" words="adevo grav flam" needlearn="0" lvl="15" mana="240" soul="1" reagentId="2260" conjureId="2301" conjureCount="3" function="conjureRune">
+	<conjure name="Fire Field" words="adevo grav flam" needlearn="0" lvl="15" mana="240" soul="1" reagentId="2260" conjureId="2301" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Convince Creature" words="adeta sio" needlearn="0" lvl="16" soul="3" mana="200" reagentId="2260" conjureId="2290" conjureCount="1" function="conjureRune">
+	<conjure name="Convince Creature" words="adeta sio" needlearn="0" lvl="16" soul="3" mana="200" reagentId="2260" conjureId="2290" conjureCount="1" event="function" value="conjureRune">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Conjure Poisoned Arrow" words="exevo con pox" needlearn="0" maglv="5" soul="1" mana="70" conjureId="2545" conjureCount="10" function="conjureItem">
+	<conjure name="Conjure Poisoned Arrow" words="exevo con pox" needlearn="0" maglv="5" soul="1" mana="70" conjureId="2545" conjureCount="10" event="function" value="conjureItem">
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Destroy Field" words="adito grav" needlearn="0" lvl="17" soul="2" mana="120" reagentId="2260" conjureId="2261" conjureCount="3" function="conjureRune">
+	<conjure name="Destroy Field" words="adito grav" needlearn="0" lvl="17" soul="2" mana="120" reagentId="2260" conjureId="2261" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Conjure Bolt" words="exevo con mort" needlearn="0" maglv="6" soul="0" mana="70" conjureId="2543" conjureCount="10" function="conjureItem">
+	<conjure name="Conjure Bolt" words="exevo con mort" needlearn="0" maglv="6" soul="0" mana="70" conjureId="2543" conjureCount="10" event="function" value="conjureItem">
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Energy Field" words="adevo grav vis" needlearn="0" lvl="18" mana="320" soul="2" reagentId="2260" conjureId="2277" conjureCount="3" function="conjureRune">
+	<conjure name="Energy Field" words="adevo grav vis" needlearn="0" lvl="18" mana="320" soul="2" reagentId="2260" conjureId="2277" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Stalagmite" words="adori tera" lvl="24" needlearn="0" mana="400" soul="2" prem="2" reagentId="2260" conjureId="2292" conjureCount="10" exhaustion="1000" function="conjureRune">
+	<conjure name="Stalagmite" words="adori tera" lvl="24" needlearn="0" mana="400" soul="2" prem="2" reagentId="2260" conjureId="2292" conjureCount="10" exhaustion="1000" event="function" value="conjureRune">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Desintegrate" words="adito tera" needlearn="0" lvl="21" soul="3" mana="200" reagentId="2260" conjureId="2310" conjureCount="3" function="conjureRune">
+	<conjure name="Desintegrate" words="adito tera" needlearn="0" lvl="21" soul="3" mana="200" reagentId="2260" conjureId="2310" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Ultimate Healing Rune" words="adura vita" needlearn="0" lvl="24" soul="3" mana="400" reagentId="2260" conjureId="2273" conjureCount="1" function="conjureRune">
+	<conjure name="Ultimate Healing Rune" words="adura vita" needlearn="0" lvl="24" soul="3" mana="400" reagentId="2260" conjureId="2273" conjureCount="1" event="function" value="conjureRune">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Heavy Magic Missile" words="adori gran" needlearn="0" lvl="25" soul="3" mana="350" reagentId="2260" conjureId="2311" conjureCount="5" function="conjureRune">
+	<conjure name="Heavy Magic Missile" words="adori gran" needlearn="0" lvl="25" soul="3" mana="350" reagentId="2260" conjureId="2311" conjureCount="5" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Conjure Explosive Arrow" words="exevo con flam" needlearn="0" maglv="10" soul="0" mana="120" conjureId="2546" conjureCount="5" function="conjureItem">
+	<conjure name="Conjure Explosive Arrow" words="exevo con flam" needlearn="0" maglv="10" soul="0" mana="120" conjureId="2546" conjureCount="5" event="function" value="conjureItem">
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Poison Bomb" words="adevo mas pox" needlearn="0" lvl="25" mana="520" soul="2" reagentId="2260" conjureId="2286" conjureCount="2" function="conjureRune">
+	<conjure name="Poison Bomb" words="adevo mas pox" needlearn="0" lvl="25" mana="520" soul="2" reagentId="2260" conjureId="2286" conjureCount="2" event="function" value="conjureRune">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Fire Bomb" words="adevo mas flam" maglv="9" lvl="27" needlearn="0" mana="600" soul="4" reagentId="2260" conjureId="2305" conjureCount="2" function="conjureRune">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
-	</conjure>
-	<conjure name="Soulfire" words="adevo res flam" needlearn="0" lvl="27" soul="3" mana="420" reagentId="2260" conjureId="2308" conjureCount="2" function="conjureRune">
+	<conjure name="Fire Bomb" words="adevo mas flam" maglv="9" lvl="27" needlearn="0" mana="600" soul="4" reagentId="2260" conjureId="2305" conjureCount="2" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Chameleon" words="adevo ina" needlearn="0" lvl="27" mana="200" soul="2" reagentId="2260" conjureId="2291" conjureCount="1" function="conjureRune">
-		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
-	</conjure>
-	<conjure name="Fireball" words="adori flam" needlearn="0" lvl="27" mana="460" reagentId="2260" soul="3" conjureId="2302" conjureCount="3" function="conjureRune">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-	</conjure>
-	<conjure name="Animate Dead" words="adana mort" needlearn="0" maglv="7" soul="2" mana="300" reagentId="2260" conjureId="2316" conjureCount="1" function="conjureRune">
+	<conjure name="Soulfire" words="adevo res flam" needlearn="0" lvl="27" soul="3" mana="420" reagentId="2260" conjureId="2308" conjureCount="2" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Poison Wall" words="adevo mas grav pox" needlearn="0" lvl="29" mana="640" soul="3" reagentId="2260" conjureId="2289" conjureCount="4" function="conjureRune">
+	<conjure name="Chameleon" words="adevo ina" needlearn="0" lvl="27" mana="200" soul="2" reagentId="2260" conjureId="2291" conjureCount="1" event="function" value="conjureRune">
+		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
+	</conjure>
+	<conjure name="Fireball" words="adori flam" needlearn="0" lvl="27" mana="460" reagentId="2260" soul="3" conjureId="2302" conjureCount="3" event="function" value="conjureRune">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+	</conjure>
+	<conjure name="Animate Dead" words="adana mort" needlearn="0" maglv="7" soul="2" mana="300" reagentId="2260" conjureId="2316" conjureCount="1" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Great Fireball" words="adori gran flam" needlearn="0" lvl="23" soul="3" mana="530" reagentId="2260" conjureId="2304" conjureCount="4" function="conjureRune">
-		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
-	</conjure>
-	<conjure name="Explosion" words="adevo mas hur" needlearn="0" maglv="12" soul="2" mana="180" reagentId="2260" conjureId="2313" conjureCount="3" function="conjureRune">
+	<conjure name="Poison Wall" words="adevo mas grav pox" needlearn="0" lvl="29" mana="640" soul="3" reagentId="2260" conjureId="2289" conjureCount="4" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Magic Wall" words="adevo grav tera" needlearn="0" lvl="32" soul="5" mana="750" reagentId="2260" conjureId="2293" conjureCount="3" function="conjureRune">
+	<conjure name="Great Fireball" words="adori gran flam" needlearn="0" lvl="23" soul="3" mana="530" reagentId="2260" conjureId="2304" conjureCount="4" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</conjure>
-	<conjure name="Fire Wall" words="adevo mas grav flam" needlearn="0" lvl="33" soul="4" mana="780" reagentId="2260" conjureId="2303" conjureCount="4" function="conjureRune">
+	<conjure name="Explosion" words="adevo mas hur" needlearn="0" maglv="12" soul="2" mana="180" reagentId="2260" conjureId="2313" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Energy Bomb" words="adevo mas vis" needlearn="0" lvl="37" soul="5" mana="880" reagentId="2260" conjureId="2262" conjureCount="2" function="conjureRune">
+	<conjure name="Magic Wall" words="adevo grav tera" needlearn="0" lvl="32" soul="5" mana="750" reagentId="2260" conjureId="2293" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</conjure>
-	<conjure name="Enchant Staff" words="exeta vis" needlearn="0" maglv="22" soul="5" mana="80" reagentId="2401" conjureId="2433" function="conjureItem">
+	<conjure name="Fire Wall" words="adevo mas grav flam" needlearn="0" lvl="33" soul="4" mana="780" reagentId="2260" conjureId="2303" conjureCount="4" event="function" value="conjureRune">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
+	</conjure>
+	<conjure name="Energy Bomb" words="adevo mas vis" needlearn="0" lvl="37" soul="5" mana="880" reagentId="2260" conjureId="2262" conjureCount="2" event="function" value="conjureRune">
+		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
+	</conjure>
+	<conjure name="Enchant Staff" words="exeta vis" needlearn="0" maglv="22" soul="5" mana="80" reagentId="2401" conjureId="2433" event="function" value="conjureItem">
 		<vocation name="Master Sorcerer"/>
 	</conjure>
-	<conjure name="Energy Wall" words="adevo mas grav vis" needlearn="0" lvl="41" soul="5" mana="1000" reagentId="2260" conjureId="2279" conjureCount="4" function="conjureRune">
+	<conjure name="Energy Wall" words="adevo mas grav vis" needlearn="0" lvl="41" soul="5" mana="1000" reagentId="2260" conjureId="2279" conjureCount="4" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</conjure>
-	<conjure name="Sudden Death" words="adori vita vis" needlearn="0" lvl="45" mana="985" soul="5" reagentId="2260" conjureId="2268" conjureCount="1" function="conjureRune">
+	<conjure name="Sudden Death" words="adori vita vis" needlearn="0" lvl="45" mana="985" soul="5" reagentId="2260" conjureId="2268" conjureCount="1" event="function" value="conjureRune">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 	</conjure>
-	<conjure name="Paralyze" words="adana ani" lvl="54" needlearn="0" mana="1400" soul="3" reagentId="2260" conjureId="2278" conjureCount="1" function="conjureRune">
+	<conjure name="Paralyze" words="adana ani" lvl="54" needlearn="0" mana="1400" soul="3" reagentId="2260" conjureId="2278" conjureCount="1" event="function" value="conjureRune">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Envenom" words="adevo res pox" maglv="7" needlearn="0" mana="100" reagentId="2260" conjureId="2292" conjureCount="3" function="conjureRune">
+	<conjure name="Envenom" words="adevo res pox" maglv="7" needlearn="0" mana="100" reagentId="2260" conjureId="2292" conjureCount="3" event="function" value="conjureRune">
 		<vocation name="Druid"/>    <vocation name="Elder Druid"/>
 	</conjure>
-	<conjure name="Conjure Power Bolt" words="exevo con vis" needlearn="0" maglv="14" soul="1" mana="200" conjureId="2547" conjureCount="4" function="conjureItem">
+	<conjure name="Conjure Power Bolt" words="exevo con vis" needlearn="0" maglv="14" soul="1" mana="200" conjureId="2547" conjureCount="4" event="function" value="conjureItem">
 		<vocation name="Royal Paladin"/>
 	</conjure>
-	<conjure name="Conjure Arrow" words="exevo con" maglv="2" needlearn="0" soul="2" mana="40" conjureId="2544" conjureCount="15" function="conjureItem">
+	<conjure name="Conjure Arrow" words="exevo con" maglv="2" needlearn="0" soul="2" mana="40" conjureId="2544" conjureCount="15" event="function" value="conjureItem">
 		<vocation name="Paladin"/>  <vocation name="Royal Paladin"/>
 	</conjure>		
 </spells>
