@@ -2,7 +2,7 @@ ImbuingSystem = {
 	Developer = "Charles (Cjaker)",
 	Version = "1.0",
 	LastUpdate = "24/05/2017 - 03:50 (AM)",
-	FixedBy = "Leu (jlvc) and Clenir (Mikii)"
+	FixedBy = "Leu (jlcvp) and Clenir (Mikii)"
 }
 
 --[[
@@ -424,20 +424,13 @@ function Player.applyImbuement(self, msg)
 	}
 
 	-- Retorna o Level numeral a partir do selecionado no cliente.
-	local VerificaLeveldeRemocao = TempArrayLevel[myImbuement.Levels[imbuingLevel]]	
+	local VerificaLeveldeRemocao = TempArrayLevel[myImbuement.Levels[imbuingLevel]]
 
-	-- Retorna o Valor Total - Se tem Proteção - Soma Valor + Valor Proteção - Senao cobra o Valor Simples.		
+	-- Retorna o Valor Total - Se tem Proteção - Soma Valor + Valor Proteção - Senao cobra o Valor Simples.
 	if  (useProtection == 1) then
 		ValorTotal = ImbuingInfo[VerificaLeveldeRemocao].Price + ImbuingInfo[VerificaLeveldeRemocao].Protection
 	else
 		ValorTotal = ImbuingInfo[VerificaLeveldeRemocao].Price
-	end
-
-	-- Verifica se o Player Tem o valor no Banco antes da Remoção.		
-	if (not self:removeMoneyNpc(ValorTotal)) then
-		Player.closeImbuementWindow(self)
-		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You don't have enough money.")
-		return false
 	end
 
 	-- Verifica se o Player Tem os Itens Necessários antes da Remoção.
@@ -479,14 +472,17 @@ function Player.applyImbuement(self, msg)
 		end
 	end
 	-- Remove o dinheiro.
-	self:setBankBalance(self:getBankBalance() - ValorTotal)
-
+	if (not self:removeMoneyNpc(ValorTotal)) then
+		Player.closeImbuementWindow(self)
+		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You don't have enough money.")
+		return false
+	end
 	-- Faz a contagem de % para o item quebrar caso nao esteja usando Proteção .
 	if (useProtection == 0) then
 		local ParseAcerto = ImbuingInfo[VerificaLeveldeRemocao].Percent
 			if(math.random(1,100) >= ParseAcerto) then
 				Player.closeImbuementWindow(self)
-				self:removeItem(item:getId(), 1)	
+				self:removeItem(item:getId(), 1)
 				self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Nossa tentativa falhou.")
 
 			end
