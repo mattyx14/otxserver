@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monsters>
+	<!-- VOCATION SUMMONS LV 200+ -->
+	<monster name="Emberwing" file="summons/Emberwing.xml" />
+	<monster name="Thundergiant" file="summons/Thundergiant.xml" />
+	<monster name="Skullfrost" file="summons/Skullfrost.xml" />
+	<monster name="Grovebeast" file="summons/Grovebeast.xml" />
+
 	<!-- NOVOS -->
-	<!-- NOVOS 11.2 bosses -->
 	<monster name="Lady Tenebris" file="11.2/bosses/Lady Tenebris.xml" />
 	<monster name="Lloyd" file="11.2/bosses/Lloyd.xml" />
 	<monster name="Melting Frozen Horror" file="11.2/bosses/Melting Frozen Horror.xml" />
@@ -14,7 +19,6 @@
 	<monster name="The Shielded Thorn Knight" file="11.2/bosses/The Shielded Thorn Knight.xml" />
 	<monster name="Thorn Steed" file="11.2/bosses/Thorn Steed.xml" />
 	<monster name="The Enraged Thorn Knight" file="11.2/bosses/The Enraged Thorn Knight.xml" />
-	<!-- NOVOS 11.2 -->
 	<monster name="A Shielded Astral Glyph" file="11.2/A Shielded Astral Glyph.xml" />
 	<monster name="Stone Rhino" file="11.2/Stone Rhino.xml" />
 	<monster name="An Observer Eye (Imune)" file="11.2/An Observer Eye (Imune).xml" />

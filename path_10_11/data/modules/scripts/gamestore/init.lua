@@ -306,7 +306,7 @@ function parseBuyStoreOffer(playerId, msg)
 						addEvent(function() changeParcel(parcel) end, 250)
 					else
 						local kegItem = inbox:addItem(offer.thingId,1)
-						kegItem:setAttribute(ITEM_ATTRIBUTE_CHARGES, pack)
+						kegItem:setAttribute(ITEM_ATTRIBUTE_CHARGES, offer.count)
 					end
 				elseif (offer.count > 100) then
 					local parcel = Item(inbox:addItem(2596, 1):getUniqueId())
