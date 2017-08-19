@@ -947,12 +947,10 @@ void Spell::postSpell(Player* player, bool finishedCast /*= true*/, bool payCost
 	if(finishedCast)
 	{
 		if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
-			if (isAggressive > 0) {
-				if (isAggressive) {
+			if (isAggressive) {
 					player->addCombatExhaust(exhaustion, EXHAUST_COMBAT);
-				} else {
-					player->addExhaust(exhaustion, EXHAUST_HEALING);
-				}
+			} else {
+				player->addExhaust(exhaustion, EXHAUST_HEALING);
 			}
 
 			if (!player->hasFlag(PlayerFlag_NotGainInFight)) {
