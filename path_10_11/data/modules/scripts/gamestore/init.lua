@@ -420,7 +420,7 @@ function parseBuyStoreOffer(playerId, msg)
 			local currentExpBoostTime = player:getExpBoostStamina()
 
 			player:setStoreXpBoost(50)
-			player:setStaminaXpBoost(currentExpBoostTime + 60)
+			player:setStaminaXpBoost(currentExpBoostTime + 3600)
 		elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_PREYSLOT then
 			local unlockedColumns = player:getPreySlots()
 			if (unlockedColumns == 2) then
