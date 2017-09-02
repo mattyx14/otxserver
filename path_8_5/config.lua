@@ -7,6 +7,7 @@ killsToRedSkull = 3
 killsToBlackSkull = 6
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
+removeChargesFromPotions = true
 removeWeaponAmmunition = true
 removeWeaponCharges = true
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
@@ -32,9 +33,9 @@ replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 
 -- Version Manual
-clientVersionMin = 860
-clientVersionMax = 860
-clientVersionStr = "Only clients with protocol 8.60 allowed!"
+clientVersionMin = 854
+clientVersionMax = 858
+clientVersionStr = "Only clients with protocol 8.58 allowed!"
 
 -- Deaths
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default

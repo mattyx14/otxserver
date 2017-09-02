@@ -1,6 +1,30 @@
+-- Internal Use
+-- EXAMPLE = 26052
+
 -- No move items with actionID 8000
 -- Players cannot throw items on teleports if set to true
 local blockTeleportTrashing = true
+
+local function getHours(seconds)
+	return math.floor((seconds/60)/60)
+end
+
+local function getMinutes(seconds)
+	return math.floor(seconds/60)
+end
+
+local function getTime(seconds)
+	local hours, minutes = getHours(seconds), getMinutes(seconds)
+	if (minutes > 59) then
+		minutes = minutes-hours*60
+	end
+
+	if (minutes < 10) then
+		minutes = "0" ..minutes
+	end
+
+	return hours..":"..minutes.. "h"
+end
 
 function Player:onLook(thing, position, distance)
 	local description = "You see " .. thing:getDescription(distance)
@@ -92,15 +116,15 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		return false
 	end
 
-	-- Check two-handed weapons 
+	-- Check two-handed weapons
 	if toPosition.x ~= CONTAINER_POSITION then
 		return true
 	end
 
-	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then	
+	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then
 		local itemType, moveItem = ItemType(item:getId())
 		if bit.band(itemType:getSlotPosition(), SLOTP_TWO_HAND) ~= 0 and toPosition.y == CONST_SLOT_LEFT then
-			moveItem = self:getSlotItem(CONST_SLOT_RIGHT)	
+			moveItem = self:getSlotItem(CONST_SLOT_RIGHT)
 		elseif itemType:getWeaponType() == WEAPON_SHIELD and toPosition.y == CONST_SLOT_RIGHT then
 			moveItem = self:getSlotItem(CONST_SLOT_LEFT)
 			if moveItem and bit.band(ItemType(moveItem:getId()):getSlotPosition(), SLOTP_TWO_HAND) == 0 then
@@ -269,6 +293,67 @@ local function useStamina(player)
 		nextUseStaminaTime[playerId] = currentTime + 60
 	end
 	player:setStamina(staminaMinutes)
+end
+
+local function useStaminaXp(player)
+	local staminaMinutes = player:getExpBoostStamina()
+	if staminaMinutes == 0 then
+		return
+	end
+
+	local playerId = player:getId()
+	local currentTime = os.time()
+	local timePassed = currentTime - nextUseXpStamina[playerId]
+	if timePassed <= 0 then
+		return
+	end
+
+	if timePassed > 60 then
+		if staminaMinutes > 2 then
+			staminaMinutes = staminaMinutes - 2
+		else
+			staminaMinutes = 0
+		end
+		nextUseXpStamina[playerId] = currentTime + 120
+	else
+		staminaMinutes = staminaMinutes - 1
+		nextUseXpStamina[playerId] = currentTime + 60
+	end
+	player:setExpBoostStamina(staminaMinutes)
+end
+
+function Player:onUseWeapon(normalDamage, elementType, elementDamage)
+	local weapon = self:getSlotItem(CONST_SLOT_LEFT)
+	if not weapon or weapon:getType():getWeaponType() == WEAPON_SHIELD then
+		weapon = self:getSlotItem(CONST_SLOT_RIGHT)
+	end
+
+	-- Imbuement
+	if (weapon and weapon:getType():getImbuingSlots() > 0) then
+		for i = 1, weapon:getType():getImbuingSlots() do
+			local slotEnchant = weapon:getSpecialAttribute(i)
+			if (slotEnchant) then
+				local percentDamage, enchantPercent = 0, weapon:getImbuementPercent(slotEnchant)
+				local typeEnchant = weapon:getImbuementType(i) or ""
+				if (typeEnchant ~= "") then
+					useStaminaImbuing(self:getId(), weapon:getUniqueId())
+				end
+
+			if (typeEnchant == "firedamage") then
+					elementType = COMBAT_FIREDAMAGE
+				elseif (typeEnchant == "earthdamage") then
+					elementType = COMBAT_EARTHDAMAGE
+				elseif (typeEnchant == "icedamage") then
+					elementType = COMBAT_ICEDAMAGE
+				elseif (typeEnchant == "energydamage") then
+					elementType = COMBAT_ENERGYDAMAGE
+				elseif (typeEnchant == "deathdamage") then
+					elementType = COMBAT_DEATHDAMAGE
+				end
+			end
+		end
+	end
+	return normalDamage, elementType, elementDamage
 end
 
 function Player:onGainExperience(source, exp, rawExp)

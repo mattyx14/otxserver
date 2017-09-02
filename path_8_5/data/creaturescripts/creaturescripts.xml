@@ -30,4 +30,5 @@
 			<event type="login" name="onadv_register" script="onadvance_reward.lua"/>
 			<event type="login" name="freebless" script="freeblesslowlevel.lua"/>
 		-->
+		<event type="login" name="AntiMc" script="antimc.lua" />
 </creaturescripts>

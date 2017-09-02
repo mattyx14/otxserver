@@ -1,9 +1,10 @@
+__picif = {}
 function Creature:onChangeOutfit(outfit)
 	return true
 end
 
 function Creature:onAreaCombat(tile, isAggressive)
-	return RETURNVALUE_NOERROR
+	return true
 end
 
 local function removeCombatProtection(cid)
@@ -33,9 +34,31 @@ local function removeCombatProtection(cid)
 	end, time * 1000, cid)
 end
 
+local function addStamina(name)
+	local player = Player(name)
+	if not player then
+		staminaBonus.events[name] = nil
+	else
+		local target = player:getTarget()
+		if not target or target:getName() ~= staminaBonus.target then
+			staminaBonus.events[name] = nil
+		else
+			player:setStamina(player:getStamina() + staminaBonus.bonus)
+			staminaBonus.events[name] = addEvent(addStamina, staminaBonus.period, name)
+		end
+	end
+end
+
 function Creature:onTargetCombat(target)
 	if not self then
 		return true
+	end
+
+	if not __picif[target.uid] then
+		if target:isMonster() then
+			target:registerEvent("RewardSystemSlogan")
+			__picif[target.uid] = {}
+		end
 	end
 
 	if target:isPlayer() then

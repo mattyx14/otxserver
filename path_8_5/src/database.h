@@ -160,11 +160,25 @@ class DBResult
 				return static_cast<T>(0);
 			}
 
-			T data;
+			T data = { 0 };
 			try {
 				data = boost::lexical_cast<T>(row[it->second]);
-			} catch (boost::bad_lexical_cast&) {
-				data = 0;
+			}
+			catch (boost::bad_lexical_cast&) {
+				// overflow; tries to get it as uint64 (as big as possible);
+				uint64_t u64data;
+				try {
+					u64data = boost::lexical_cast<uint64_t>(row[it->second]);
+					if (u64data > 0) {
+						// is a valid! thus truncate into int max for data type;
+						data = std::numeric_limits<T>::max();
+					}
+				}
+				catch (boost::bad_lexical_cast &e) {
+					// invalid! discard value.
+					std::cout << "[Error - DBResult::getNumber] Column '" << s << "' has an invalid value set: " << e.what() << std::endl;
+					data = 0;
+				}
 			}
 			return data;
 		}
