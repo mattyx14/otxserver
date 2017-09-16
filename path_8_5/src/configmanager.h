@@ -43,6 +43,7 @@ class ConfigManager
 			ALLOW_BLOCK_SPAWN,
 			REMOVE_WEAPON_AMMO,
 			REMOVE_WEAPON_CHARGES,
+			AUTO_STACK_ITEMS,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

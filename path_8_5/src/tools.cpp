@@ -529,7 +529,6 @@ MagicEffectNames magicEffectNames = {
 	{"bats",		CONST_ME_BATS},
 	{"smoke",		CONST_ME_SMOKE},
 	{"insects",		CONST_ME_INSECTS},
-	{"dragonhead",		CONST_ME_DRAGONHEAD},
 };
 
 ShootTypeNames shootTypeNames = {

@@ -769,13 +769,4 @@ class Item : virtual public Thing
 using ItemList = std::list<Item*>;
 using ItemDeque = std::deque<Item*>;
 
-inline uint32_t Item::countByType(const Item* i, int32_t subType)
-{
-	if (subType == -1 || subType == i->getSubType()) {
-		return i->getItemCount();
-	}
-
-	return 0;
-}
-
 #endif
