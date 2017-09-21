@@ -98,7 +98,7 @@
 			* Inspection System
 	- Clean and formated items-monsters(files)-spells.xml
 	- Drop commands support in favor of talkactions (TFT)
-	- Drop client 10_9
+	- Drop client 10_9 - 8_7
 	- Dropped version 3.9 and changed to 3.10
 	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
