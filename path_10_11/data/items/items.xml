@@ -137,8 +137,8 @@
 		<attribute key="weight" value="220" />
 	</item>
 	<!-- New Items 10.9x -->
-	<item id="27728" article="a" name="Imbuing Shrine"/>
-	<item id="27729" article="a" name="Imbuing Shrine"/>
+	<item id="27728" article="a" name="Imbuing Shrine" />
+	<item id="27729" article="a" name="Imbuing Shrine" />
 	<item id="27850" article="a" name="Gilded Imbuing Shrine">
 		<attribute key="rotateTo" value="27851" />
 		<attribute key="wrapableTo" value="26054" />
@@ -148,18 +148,18 @@
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="27756" article="an" name="Porcelain Mask">
-		<attribute key="armor" value="1"/>
-		<attribute key="absorbPercentManaDrain" value="10"/>
-		<attribute key="weight" value="450"/>
+		<attribute key="armor" value="1" />
+		<attribute key="absorbPercentManaDrain" value="10" />
+		<attribute key="weight" value="450" />
 	</item>
 	<item id="27061" article="an" name="Pillow Backpack">
-		<attribute key="containerSize" value="24"/>
-		<attribute key="weight" value="1450"/>
+		<attribute key="containerSize" value="24" />
+		<attribute key="weight" value="1450" />
 	</item>
 	<item id="27063" article="an" name="Birthday Backpack">
-		<attribute key="containerSize" value="20"/>
-		<attribute key="weight" value="1500"/>
-		<attribute key="description" value="It was awarded during the festivities of Tibia's 20th anniversary."/>
+		<attribute key="containerSize" value="20" />
+		<attribute key="weight" value="1500" />
+		<attribute key="description" value="It was awarded during the festivities of Tibia's 20th anniversary." />
 	</item>
 	<item id="23939" article="a" name="ramp">
 		<attribute key="floorchange" value="north" />
@@ -174,52 +174,52 @@
 		<attribute key="floorchange" value="east" />
 	</item>
 	<item id="27070" article="an" name="Chocolatey Dragon Scale Legs">
-		<attribute key="armor" value="2"/>
-		<attribute key="weight" value="1800"/>
-		<attribute key="description" value="This is a chocolate replica of the famous dragon scale legs."/>
+		<attribute key="armor" value="2" />
+		<attribute key="weight" value="1800" />
+		<attribute key="description" value="This is a chocolate replica of the famous dragon scale legs." />
 	</item>
 	<item id="27072" article="an" name="Tatty Dragon Scale Legs">
-		<attribute key="armor" value="2"/>
-		<attribute key="weight" value="3800"/>
-		<attribute key="description" value="They clearly have seen better days."/>
+		<attribute key="armor" value="2" />
+		<attribute key="weight" value="3800" />
+		<attribute key="description" value="They clearly have seen better days." />
 	</item>
 	<item id="27073" article="an" name="Rusty Winged Helmet">
-		<attribute key="armor" value="2"/>
-		<attribute key="weight" value="1200"/>
-		<attribute key="description" value="It's the Helmet of Hermes but it clearly has seen better days."/>
+		<attribute key="armor" value="2" />
+		<attribute key="weight" value="1200" />
+		<attribute key="description" value="It's the Helmet of Hermes but it clearly has seen better days." />
 	</item>
 	<item id="27065" article="an" name="Ferumbras' Candy Hat">
-		<attribute key="armor" value="1"/>
-		<attribute key="weight" value="850"/>
-		<attribute key="description" value="It is a sweet candy replica of the famous Ferumbras' hat."/>
+		<attribute key="armor" value="1" />
+		<attribute key="weight" value="850" />
+		<attribute key="description" value="It is a sweet candy replica of the famous Ferumbras' hat." />
 	</item>
 	<item id="26377" article="an" name="Gold Pouch">
-		<attribute key="containerSize" value="8"/>
-		<attribute key="description" value="A infinity bag where you can hold coins."/>
+		<attribute key="containerSize" value="8" />
+		<attribute key="description" value="A infinity bag where you can hold coins." />
 	</item>
 	<!-- Dawnport -->
 	<item id="23764" article="a" name="piece of paper">
 		<attribute key="description" value="It is torn and blotched, but you can still make out some meticulous handwriting." />
 	</item>
 	<!-- House Decorations 10.9x -->
-	<item id="26054" article="a" name="Decoration Kit"/>
+	<item id="26054" article="a" name="Decoration Kit" />
 	<item id="26055" article="an" name="Royal Mailbox">
-		<attribute key="rotateTo" value="26056"/>
+		<attribute key="rotateTo" value="26056" />
 		<attribute key="type" value="mailbox" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26056" article="an" name="Royal Mailbox">
-		<attribute key="rotateTo" value="26055"/>
+		<attribute key="rotateTo" value="26055" />
 		<attribute key="type" value="mailbox" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26057" article="an" name="Ornate Mailbox">
-		<attribute key="rotateTo" value="26058"/>
+		<attribute key="rotateTo" value="26058" />
 		<attribute key="type" value="mailbox" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26058" article="an" name="Ornate Mailbox">
-		<attribute key="rotateTo" value="26057"/>
+		<attribute key="rotateTo" value="26057" />
 		<attribute key="type" value="mailbox" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
@@ -443,26 +443,26 @@
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26365" article="an" name="Dog House">
-		<attribute key="decayTo" value="26353"/>
-		<attribute key="duration" value="2"/>
+		<attribute key="decayTo" value="26353" />
+		<attribute key="duration" value="2" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26353" article="an" name="Dog House">
-		<attribute key="decayTo" value="26359"/>
-		<attribute key="duration" value="4"/>
+		<attribute key="decayTo" value="26359" />
+		<attribute key="duration" value="4" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26359" article="an" name="Dog House">
-		<attribute key="decayTo" value="26364"/>
-		<attribute key="duration" value="2"/>
+		<attribute key="decayTo" value="26364" />
+		<attribute key="duration" value="2" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26098" article="an" name="Baby Dragon">
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26099" article="an" name="Baby Dragon">
-		<attribute key="decayTo" value="26098"/>
-		<attribute key="duration" value="8"/>
+		<attribute key="decayTo" value="26098" />
+		<attribute key="duration" value="8" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<item id="26107" article="an" name="Cat in a Basket">
@@ -471,10 +471,10 @@
 	<item id="26108" article="an" name="Cat in a Basket">
 		<attribute key="wrapableTo" value="26054" />
 	</item>
-	<item id="26100" article="an" name="Hamster in a Wheel" >
+	<item id="26100" article="an" name="Hamster in a Wheel">
 		<attribute key="wrapableTo" value="26054" />
 	</item>
-	<item id="26101" article="an" name="Hamster in a Wheel" >
+	<item id="26101" article="an" name="Hamster in a Wheel">
 		<attribute key="wrapableTo" value="26054" />
 	</item>
 	<!-- Decoration Tiles -->
@@ -3810,7 +3810,7 @@
 	<item id="27871" name="Relembra boots">
 		<attribute key="absorbPercentFire" value="3" />
 		<attribute key="weight" value="250" />
-		<attribute key="slotType" value="feet"/>
+		<attribute key="slotType" value="feet" />
 		<attribute key="speed" value="40" />
 		<attribute key="healthGain" value="15" />
 		<attribute key="healthTicks" value="1000" />
@@ -9564,7 +9564,7 @@
 	</item>
 	<item id="4860" name="wooden trash" />
 	<item id="4861" article="a" name="cobra statue" />
-	<item id="4862" name="destroyed cobra statue" >
+	<item id="4862" name="destroyed cobra statue">
 		<attribute key="decayTo" value="4861" />
 		<attribute key="duration" value="60" />
 	</item>
@@ -24794,8 +24794,8 @@
 		<attribute key="weight" value="475" />
 	</item>
 	<item fromid="13882" toid="13883" article="a" name="fire" />
-	<item id="13884" article="a" name="destroy field rune"/>
-	<item id="13885" article="a" name="pitch black gap"/>
+	<item id="13884" article="a" name="destroy field rune" />
+	<item id="13885" article="a" name="pitch black gap" />
 	<item fromid="13886" toid="13901" name="large spider web" />
 	<item fromid="13904" toid="13920" name="large spider web" />
 	<item fromid="13921" toid="13922" article="a" name="warning sign">
@@ -28036,7 +28036,7 @@
 	<item id="19519" article="a" name="hole">
 		<attribute key="floorchange" value="down" />
 	</item>
-	<item id="19596" name="cobbled pavement"/>
+	<item id="19596" name="cobbled pavement" />
 	<item fromid="19598" toid="19599" article="a" name="magic door" />
 	<item id="19606" article="a" name="pillar railing" />
 	<item fromid="19610" toid="19615" article="an" name="ornament" />
@@ -31697,13 +31697,13 @@
 		<attribute key="weight" value="180" />
 		<attribute key="description" value="It holds a liquid concentrate developed by the gnomes to fertilise mushrooms." />
 	</item>
-	<item id="21565" article="a" name="gardener mushroom"/>
+	<item id="21565" article="a" name="gardener mushroom" />
 	<item id="21566" article="a" name="partially charged lodestone">
 		<attribute key="weight" value="300" />
 	</item>
-	<item id="21567" article="a" name="magnetic monolith"/>
-	<item id="21559" article="a" name="monster nest"/>
-	<item id="21560" article="a" name="broken monster nest"/>
+	<item id="21567" article="a" name="magnetic monolith" />
+	<item id="21559" article="a" name="monster nest" />
+	<item id="21560" article="a" name="broken monster nest" />
 	<item id="21568" article="a" name="highly charged lodestone">
 		<attribute key="weight" value="300" />
 	</item>
@@ -36611,7 +36611,7 @@
 	<item id="24185" article="a" name="tainted glooth capsule">
 		<attribute key="weight" value="150" />
 	</item>
-	<item fromid="23702" toid="23703" name="voting results" >
+	<item fromid="23702" toid="23703" name="voting results">
 		<attribute key="description" value="This board will notify you of all relevant voting results, courtesy of the Rathleton Magistrate." />
 	</item>
 	<item id="23754" article="a" name="stone of insight">
@@ -36624,14 +36624,14 @@
 	<item id="24733" article="a" name="arena 1vs1">
 		<attribute key="description" value="Use the ticket 1vs1 for enter in Arena, buy it from Victor." />
 	</item>
-	<item id="24181" article="a" name="ticket 10vs10" >
+	<item id="24181" article="a" name="ticket 10vs10">
 		<attribute key="weight" value="1800" />
 	</item>
 	<item id="24913" article="a" name="large cauldron (ogres)" />
 	<item id="24914" article="a" name="large cauldron (ogres)" />
 	<item id="24912" article="a" name="large cauldron (ogres)" />
 	<item id="24911" article="a" name="large cauldron (ogres)" />
-	<item id="24173" article="a" name="ticket 1vs1" >
+	<item id="24173" article="a" name="ticket 1vs1">
 		<attribute key="weight" value="1800" />
 	</item>
 	<item id="23782" article="a" name="shopping bag">
