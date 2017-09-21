@@ -26,4 +26,8 @@
 	<!-- Inspection System (11.10) -->
 	<module type="recvbyte" byte="205" script="inspection/inspection.lua"/>
 	<module type="recvbyte" byte="206" script="inspection/inspection.lua"/>
+
+	<!-- Expert Pvp -->
+	<!--<module type="recvbyte" byte="160" script="expertpvp/fightmodes.lua"/>-->
+	<!-- Join agression formula is still unknown TODO: add it.-->
 </modules>

@@ -225,17 +225,17 @@ local Imbuements = {
 }
 
 local Weapons = {
-	["armor"] = {21692, 2500, 2656, 2464, 2487, 2494, 15407, 2492, 2503, 12607, 2466, 23538, 10296, 2476, 3968, 2472, 7463, 8888, 23537, 2486, 15406, 8891, 18404, 10363},
-	["shield"] = {2537, 2518, 15491, 2534, 2535, 2536, 2542, 2539, 2519, 2520, 25382, 25414, 15411, 2516, 2514, 2522, 2533, 2531, 21707, 10289, 6433, 6391, 7460, 2524, 15413, 21697, 3974, 12644, 10297, 10294, 2509, 10364, 15453, 25411, 2217, 8900, 8901},
-	["boots"] = {9931, 3982, 15410, 2646, 24637, 5462, 18406, 2645, 25412, 21708},
-	["helmet"] = {2499, 2139, 3972, 2491, 2497, 2493, 2502, 12645, 7458, 2471, 10298, 10299, 20132, 2662, 10291, 2498, 24848, 5741, 25410, 2475, 11302},
-	["helmetmage"] = {10016, 2323, 12630, 11368, 8820, 10570, 9778},
-	["bow"] = {7438, 15643, 21696, 10295, 18454, 25522, 8857, 8854, 8850, 8851, 8852, 8853, 2455, 8849, 16111, 21690},
-	["wand"] = {8920, 8921, 8922, 2191},
-	["rod"] = {8910, 8911, 24839},
-	["axe"] = {2426, 2427, 2414, 2415, 2443, 11323, 7455, 2447, 7412, 8926, 7419, 7453, 2435, 3962, 15451, 7434, 7435, 6553, 15492, 7456, 8925, 18451, 2431, 8924},
-	["club"] = {7424, 2452, 2444, 7426, 7414, 7452, 7429, 7421, 15414, 7410, 15647, 20093, 7430, 7431, 23543, 2453, 8929, 12648, 7423, 2436, 2424, 7451, 7437, 2421, 8928, 18452, 25418},
-	["sword"] = {7407, 2393, 7382, 7403, 2413, 7405, 7391, 11309, 12613, 7417, 2376, 2400, 7404, 12649, 2438, 8930, 2451, 11395, 2407, 7416, 11307, 7418, 6528, 7408, 18465, 8931}
+            ["armor"] = {21692, 2500, 2656, 2464, 2487, 2494, 15407, 2492, 2503, 12607, 2466, 23538, 10296, 2476, 3968, 2472, 7463, 8888, 23537, 2486, 15406, 8891, 18404, 10363},
+            ["shield"] = {2537, 2518, 15491, 2534, 2535, 2536, 2542, 2539, 2519, 2520, 25382, 25414, 15411, 2516, 2514, 2522, 2533, 2531, 21707, 10289, 6433, 6391, 7460, 2524, 15413, 21697, 3974, 12644, 10297, 10294, 2509, 10364, 15453, 25411, 2217, 8900, 8901},
+            ["boots"] = {9931, 3982, 15410, 2646, 24637, 5462, 18406, 2645, 25412, 21708},
+            ["helmet"] = {2499, 2139, 3972, 2491, 2497, 2493, 2502, 12645, 7458, 2471, 10298, 10299, 20132, 2662, 10291, 2498, 24848, 5741, 25410, 2475, 11302},
+            ["helmetmage"] = {10016, 2323, 12630, 11368, 8820, 10570, 9778},
+            ["bow"] = {7438, 15643, 21696, 10295, 18454, 25522, 8857, 8854, 8850, 8851, 8852, 8853, 2455, 8849, 16111, 21690},
+            ["wand"] = {8920, 8921, 8922, 2191},
+            ["rod"] = {8910, 8911, 24839},
+            ["axe"] = {2426, 2427, 2414, 2415, 2443, 11323, 7455, 2447, 7412, 8926, 7419, 7453, 2435, 3962, 15451, 7434, 7435, 6553, 15492, 7456, 8925, 18451, 2431, 8924},
+            ["club"] = {7424, 2452, 2444, 7426, 7414, 7452, 7429, 7421, 15414, 7410, 15647, 20093, 7430, 7431, 23543, 2453, 8929, 12648, 7423, 2436, 2424, 7451, 7437, 2421, 8928, 18452, 25418},
+            ["sword"] = {7407, 2393, 7382, 7403, 2413, 7405, 7391, 11309, 12613, 7417, 2376, 2400, 7404, 12649, 2438, 8930, 2451, 11395, 2407, 7416, 11307, 7418, 6528, 7408, 18465, 8931}
 }
 
 local ImbuingInfo = {
@@ -245,7 +245,7 @@ local ImbuingInfo = {
 }
 
 local imbuingShrineIds = {
-	27789, 27790, 27716, 27717
+	27728, 27729, 27771, 27772, 27850, 27851, 27842, 27843
 }
 
 local ImbuementElements = {
@@ -363,37 +363,37 @@ end
 
 -- ############### leu(jlcvp) ############## --
 function Player.clearImbuement(self, msg)
-	if (not haveImbuingShrine(self)) then
-		sendImbuementError(self, "Sorry, not possible.")
-		return false
-	end
+    if (not haveImbuingShrine(self)) then
+        sendImbuementError(self, "Sorry, not possible.")
+        return false
+    end
 
-	local item = lastItemImbuing[self:getGuid()]
-	if (item == nil) then
-		sendImbuementError(self, "Cannot find item, please send this message to a Administrator.")
-		return false
-	end
+    local item = lastItemImbuing[self:getGuid()]
+    if (item == nil) then
+        sendImbuementError(self, "Cannot find item, please send this message to a Administrator.")
+        return false
+    end
 
-	local weaponSlot = msg:getByte()
-	if (not weaponSlot) then
-		sendImbuementError(self, "Sorry, not possible.")
-		return false
-	end
+    local weaponSlot = msg:getByte()
+    if (not weaponSlot) then
+        sendImbuementError(self, "Sorry, not possible.")
+        return false
+    end
 
-	weaponSlot = weaponSlot + 1
+    weaponSlot = weaponSlot + 1
 
-	if (not item:isActiveImbuement(weaponSlot + 3)) then
-		sendImbuementError(self, "Sorry, not possible.")
-		return false
-	end
+    if (not item:isActiveImbuement(weaponSlot + 3)) then
+        sendImbuementError(self, "Sorry, not possible.")
+        return false
+    end
 
-	if (not self:removeMoneyNpc(15000)) then
-		sendImbuementError(self, "You don't have enough money 15000 gps.")
-		return false
-	end
-	
-	item:setSpecialAttribute(weaponSlot, 0, weaponSlot+3, 0, weaponSlot+6, 0)
-	self:openImbuementWindow(item)
+    if (not self:removeMoneyNpc(15000)) then
+        sendImbuementError(self, "You don't have enough money 15000 gps.")
+        return false
+    end
+    
+    item:setSpecialAttribute(weaponSlot, 0, weaponSlot+3, 0, weaponSlot+6, 0)
+    self:openImbuementWindow(item)
 end
 -- ###########################################--
 
@@ -431,6 +431,13 @@ function Player.applyImbuement(self, msg)
 		ValorTotal = ImbuingInfo[VerificaLeveldeRemocao].Price + ImbuingInfo[VerificaLeveldeRemocao].Protection
 	else
 		ValorTotal = ImbuingInfo[VerificaLeveldeRemocao].Price
+	end
+
+	-- Verifica se o Player Tem o valor no Banco antes da Remoção.
+	if (not self:removeMoneyNpc(ValorTotal)) then
+		Player.closeImbuementWindow(self)
+		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You don't have enough money.")
+		return false
 	end
 
 	-- Verifica se o Player Tem os Itens Necessários antes da Remoção.
@@ -471,12 +478,10 @@ function Player.applyImbuement(self, msg)
 			return false
 		end
 	end
+
 	-- Remove o dinheiro.
-	if (not self:removeMoneyNpc(ValorTotal)) then
-		Player.closeImbuementWindow(self)
-		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You don't have enough money.")
-		return false
-	end
+	self:setBankBalance(self:getBankBalance() - ValorTotal)
+
 	-- Faz a contagem de % para o item quebrar caso nao esteja usando Proteção .
 	if (useProtection == 0) then
 		local ParseAcerto = ImbuingInfo[VerificaLeveldeRemocao].Percent

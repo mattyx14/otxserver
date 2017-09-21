@@ -201,8 +201,6 @@ enum SpeakClasses : uint8_t {
 };
 
 enum MessageClasses : uint8_t {
-	MESSAGE_STATUS_CONSOLE_BLUE = 4, /*FIXME Blue message in the console*/
-
 	MESSAGE_STATUS_CONSOLE_RED = 13, /*Red message in the console*/
 
 	MESSAGE_STATUS_DEFAULT = 17, /*White message at the bottom of the game window and in the console*/
@@ -226,6 +224,8 @@ enum MessageClasses : uint8_t {
 	MESSAGE_PARTY = 35, /*White message in channel (+ channelId)*/
 	MESSAGE_EVENT_ORANGE = 36, /*Orange message in the console*/
 	MESSAGE_STATUS_CONSOLE_ORANGE = 37,  /*Orange message in the console*/
+
+	MESSAGE_STATUS_CONSOLE_BLUE = MESSAGE_EVENT_ADVANCE,
 };
 
 enum FluidColors_t : uint8_t {

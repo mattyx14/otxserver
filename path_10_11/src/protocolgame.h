@@ -286,6 +286,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos = nullptr);
 
 		void sendQuestLog();
+		void sendQuestTracker();
 		void sendQuestLine(const Quest* quest);
 
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
