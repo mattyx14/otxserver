@@ -99,7 +99,7 @@
 	- Clean and formated items-monsters(files)-spells.xml
 	- Drop commands support in favor of talkactions (TFT)
 	- Drop client 10_9
-	- Dropped version 3.8 and changed to 3.10
+	- Dropped version 3.9 and changed to 3.10
 	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
 	- Fix compiler errors on 8.7x
