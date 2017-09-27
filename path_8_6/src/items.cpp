@@ -911,6 +911,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			abilities.elementType = COMBAT_HOLYDAMAGE;
 		} else if (tmpStrValue == "walkstack") {
 			it.walkStack = valueAttribute.as_bool();
+		} else if (tmpStrValue == "forceuse") {
+			it.forceUse = valueAttribute.as_bool();
 		} else if (tmpStrValue == "blocking") {
 			it.blockSolid = valueAttribute.as_bool();
 		} else if (tmpStrValue == "allowdistread") {
