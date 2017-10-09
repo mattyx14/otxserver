@@ -245,25 +245,41 @@ function changeStateToActive(player, indexColumn)
 end
 
 function sendPreyData(player, indexColumn)
-	local isUnlockedColumn = player:isOpenColumn(indexColumn)
-	if (not isUnlockedColumn) then
-		-- STATE_LOCKED
-		changeStateToLocked(player, indexColumn)
-	elseif (player:isActive(indexColumn)) then
-		-- STATE_ACTIVE
-		changeStateToActive(player, indexColumn)
-	elseif (player:isBonusReroll(indexColumn)) then
-		-- STATE_SELECTION_CHANGE_MONSTER
-		changeStateToSelectionChangeMonster(player, indexColumn)
-	else
-		if (player:getBonusMonster(indexColumn) ~= "") then
-			player:removePreyMonster(player:getBonusMonster(indexColumn))
-			player:removeBonus(indexColumn)
+	if player:isPremium() then
+		if (player:isActive(indexColumn)) then
+			-- STATE_ACTIVE
+			changeStateToActive(player, indexColumn)
+		elseif (player:isBonusReroll(indexColumn)) then
+			-- STATE_SELECTION_CHANGE_MONSTER
+			changeStateToSelectionChangeMonster(player, indexColumn)
+		else
+			if (player:getBonusMonster(indexColumn) ~= "") then
+				player:removePreyMonster(player:getBonusMonster(indexColumn))
+				player:removeBonus(indexColumn)
+			end
+			-- STATE_SELECTION
+			changeStateToSelection(player, indexColumn)
 		end
-		-- STATE_SELECTION
-		changeStateToSelection(player, indexColumn)
+	else
+		local isUnlockedColumn = player:isOpenColumn(indexColumn)
+		if (not isUnlockedColumn) then
+			-- STATE_LOCKED
+			changeStateToLocked(player, indexColumn)
+		elseif (player:isActive(indexColumn)) then
+			-- STATE_ACTIVE
+			changeStateToActive(player, indexColumn)
+		elseif (player:isBonusReroll(indexColumn)) then
+			-- STATE_SELECTION_CHANGE_MONSTER
+			changeStateToSelectionChangeMonster(player, indexColumn)
+		else
+			if (player:getBonusMonster(indexColumn) ~= "") then
+				player:removePreyMonster(player:getBonusMonster(indexColumn))
+				player:removeBonus(indexColumn)
+			end
+			-- STATE_SELECTION
+			changeStateToSelection(player, indexColumn)
+		end
 	end
-	-- STATE_SELECTION_CHANGE_MONSTER IS FROM BONUSREROLL
 end
 
 local function getMonsterName(player, column, index)
