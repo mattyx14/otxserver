@@ -246,7 +246,7 @@ end
 
 function sendPreyData(player, indexColumn)
 	local isUnlockedColumn = player:isOpenColumn(indexColumn)
-	if (not isUnlockedColumn) then
+	if (not isUnlockedColumn) and (not player:isPremium()) then
 		-- STATE_LOCKED
 		changeStateToLocked(player, indexColumn)
 	elseif (player:isActive(indexColumn)) then
@@ -299,7 +299,7 @@ function CheckPrey(player, msg)
 	elseif (PreyAction == 2) then
 		local PreyIndex = msg:getByte() -- monster index
 		--print(PreyColumn.. " e " ..PreyAction.. " e " ..PreyIndex)
-		if (getUnlockedColumn(player) < PreyColumn) then
+		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
 			return sendError(player, "[ERROR] You don't have this column unlocked.")
 		end
 
