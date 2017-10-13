@@ -4579,14 +4579,14 @@ void Game::kickPlayer(uint32_t playerId, bool displayEffect)
 	player->kickPlayer(displayEffect);
 }
 
-void Game::playerReportBug(uint32_t playerId, const std::string& message, const Position& position, uint8_t category)
+void Game::playerReportBug(uint32_t playerId, const std::string& message)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
 		return;
 	}
 
-	g_events->eventPlayerOnReport(player, message, position, category);
+	g_events->eventPlayerOnReport(player, message);
 }
 
 void Game::playerDebugAssert(uint32_t playerId, const std::string& assertLine, const std::string& date, const std::string& description, const std::string& comment)
