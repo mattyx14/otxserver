@@ -971,15 +971,8 @@ void ProtocolGame::parseRotateItem(NetworkMessage& msg)
 
 void ProtocolGame::parseBugReport(NetworkMessage& msg)
 {
-	uint8_t category = msg.getByte();
 	std::string message = msg.getString();
-
-	Position position;
-	if (category == BUG_CATEGORY_MAP) {
-		position = msg.getPosition();
-	}
-
-	addGameTask(&Game::playerReportBug, player->getID(), message, position, category);
+	addGameTask(&Game::playerReportBug, player->getID(), message);
 }
 
 void ProtocolGame::parseDebugAssert(NetworkMessage& msg)

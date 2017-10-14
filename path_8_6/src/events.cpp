@@ -510,9 +510,9 @@ bool Events::eventPlayerOnMoveCreature(Player* player, Creature* creature, const
 	return scriptInterface.callFunction(4);
 }
 
-bool Events::eventPlayerOnReport(Player* player, const std::string& message, const Position& position, uint8_t category)
+bool Events::eventPlayerOnReport(Player* player, const std::string& message)
 {
-	// Player:onReport(message, position, category)
+	// Player:onReport(message)
 	if (info.playerOnReport == -1) {
 		return true;
 	}
@@ -532,10 +532,8 @@ bool Events::eventPlayerOnReport(Player* player, const std::string& message, con
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
 	LuaScriptInterface::pushString(L, message);
-	LuaScriptInterface::pushPosition(L, position);
-	lua_pushnumber(L, category);
 
-	return scriptInterface.callFunction(4);
+	return scriptInterface.callFunction(2);
 }
 
 bool Events::eventPlayerOnTurn(Player* player, Direction direction)

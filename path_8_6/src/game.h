@@ -314,7 +314,7 @@ class Game
 
 		void sendGuildMotd(uint32_t playerId);
 		void kickPlayer(uint32_t playerId, bool displayEffect);
-		void playerReportBug(uint32_t playerId, const std::string& message, const Position& position, uint8_t category);
+		void playerReportBug(uint32_t playerId, const std::string& message);
 		void playerDebugAssert(uint32_t playerId, const std::string& assertLine, const std::string& date, const std::string& description, const std::string& comment);
 
 		bool internalStartTrade(Player* player, Player* partner, Item* tradeItem);

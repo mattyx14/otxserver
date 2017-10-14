@@ -82,7 +82,7 @@ class Events
 		bool eventPlayerOnLookInShop(Player* player, const ItemType* itemType, uint8_t count);
 		bool eventPlayerOnMoveItem(Player* player, Item* item, uint16_t count, const Position& fromPosition, const Position& toPosition, Cylinder* fromCylinder, Cylinder* toCylinder);
 		bool eventPlayerOnMoveCreature(Player* player, Creature* creature, const Position& fromPosition, const Position& toPosition);
-		bool eventPlayerOnReport(Player* player, const std::string& message, const Position& position, uint8_t category);
+		bool eventPlayerOnReport(Player* player, const std::string& message);
 		bool eventPlayerOnTurn(Player* player, Direction direction);
 		bool eventPlayerOnTradeRequest(Player* player, Player* target, Item* item);
 		bool eventPlayerOnTradeAccept(Player* player, Player* target, Item* item, Item* targetItem);
