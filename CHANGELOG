@@ -61,6 +61,9 @@
 			Ben Dol
 				https://github.com/BenDol/
 
+			Allesn
+				https://otland.net/members/allesn.126386/
+
 			To All OTX Server Contributors
 				https://github.com/mattyx14/otxserver/graphs/contributors/
 
@@ -95,7 +98,8 @@
 		List:
 			* Imbuement System
 			* Prey System
-			* Inspection System
+			/* Inspection System */ - No work
+			* Pet System -- Missing scripts
 	- Clean and formated items-monsters(files)-spells.xml
 	- Drop commands support in favor of talkactions (TFT)
 	- Drop client 10_9 - 8_7
