@@ -9,7 +9,7 @@
 	<module type="recvbyte" byte="253" script="gamestore/gamestore.lua"/>
 	<module type="recvbyte" byte="254" script="gamestore/gamestore.lua"/>
 
-	<!-- EquipObject By Hotkey -->
+	<!-- EquipObject -->
 	<module type="recvbyte" byte="119" delay="1000" script="equipobject/equipobject.lua"/>
 
 	<!-- Prey System -->
@@ -23,11 +23,13 @@
 	<module type="recvbyte" byte="213" script="imbuement/imbuement.lua" />
 	<module type="recvbyte" byte="214" script="imbuement/imbuement.lua" />
 
-	<!-- Inspection System (11.10) -->
+	<!-- Inspection System (11.10) 
 	<module type="recvbyte" byte="205" script="inspection/inspection.lua"/>
 	<module type="recvbyte" byte="206" script="inspection/inspection.lua"/>
+	-->
 
-	<!-- Expert Pvp -->
-	<!--<module type="recvbyte" byte="160" script="expertpvp/fightmodes.lua"/>-->
+	<!-- Expert Pvp 
+	<module type="recvbyte" byte="160" script="expertpvp/fightmodes.lua"/> -->
+
 	<!-- Join agression formula is still unknown TODO: add it.-->
 </modules>

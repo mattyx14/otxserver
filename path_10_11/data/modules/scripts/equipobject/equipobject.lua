@@ -95,7 +95,7 @@ function onRecvbyte(player, msg, byte)
 			EquipObject.StackAdd(player, item, slotP, newItemType:isStackable())
 		end
 	end
-	return player:sendCancelMessage("You are exhausted.")
+	return true
 end
 
 EquipObject.StackAdd = function(player, item, slotP, isStackable)

@@ -113,6 +113,9 @@ class Monster final : public Creature
 		bool isHostile() const {
 			return mType->info.isHostile;
 		}
+		bool isPet() const {
+			return mType->info.isPet;
+		}
 		bool isPassive() const {
 			return mType->info.isPassive;
 		}

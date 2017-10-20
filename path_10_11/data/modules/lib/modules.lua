@@ -12,6 +12,7 @@ function addPlayerEvent(callable, delay, playerId, ...)
 	end, delay, callable, player.uid, ...)
 end
 
+--[[
 function Player.updateFightModes(self)
 	local msg = NetworkMessage()
 
@@ -24,3 +25,4 @@ function Player.updateFightModes(self)
 
 	msg:sendToPlayer(self)
 end
+]]

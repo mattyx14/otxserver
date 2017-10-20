@@ -38,8 +38,8 @@ maxPacketsPerSecond = 25
 
 -- Version Manual
 clientVersionMin = 1100
-clientVersionMax = 1146
-clientVersionStr = "Only clients with protocol version 10.00 or 11.46 are allowed!"
+clientVersionMax = 1149
+clientVersionStr = "Only clients with protocol version 11.49 are allowed!"
 
 -- Depot Limit
 freeDepotLimit = 2000
@@ -50,7 +50,7 @@ depotBoxes = 17
 gamestoreByModules = true
 
 -- Casting System 
-enableLiveCasting = true
+enableLiveCasting = false
 liveCastPort = 7173
 
 -- Deaths

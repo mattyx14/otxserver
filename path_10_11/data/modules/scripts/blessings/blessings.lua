@@ -64,7 +64,7 @@ function sendBlessingsDialog(player)
 	for i = 1, historyAmount do
 		msg:addU32(1500060480) -- timestamp
 		msg:addByte(0) -- Color message (1 - Red | 0 = White loss)
-		msg:addString("Que delicia de bless cara...") -- History message
+		msg:addString("Blessing Purchased") -- History message
 	end
 
 	msg:sendToPlayer(player)

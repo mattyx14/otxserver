@@ -124,10 +124,12 @@ void ProtocolGameBase::AddCreature(NetworkMessage& msg, const Creature* creature
 		msg.add<uint32_t>(creature->getID());
 		msg.addByte(creatureType);
 
-		if (creatureType == CREATURETYPE_SUMMONPLAYER) {
-			const Creature* master = creature->getMaster();
-			if (master) {
-				msg.add<uint32_t>(master->getID());
+		if (player->getProtocolVersion() >= 1120) {
+			if (creatureType == CREATURETYPE_SUMMONPLAYER) {
+				const Creature* master = creature->getMaster();
+				if (master) {
+					msg.add<uint32_t>(master->getID());
+				}
 			}
 		}
 
@@ -163,22 +165,26 @@ void ProtocolGameBase::AddCreature(NetworkMessage& msg, const Creature* creature
 		msg.addByte(player->getGuildEmblem(otherPlayer));
 	}
 
-	if (creatureType == CREATURETYPE_MONSTER) {
-		const Creature* master = creature->getMaster();
-		if (master) {
-			const Player* masterPlayer = master->getPlayer();
-			if (masterPlayer) {
-				creatureType = CREATURETYPE_SUMMONPLAYER;
+	if (player->getProtocolVersion() >= 1120) {
+		if (creatureType == CREATURETYPE_MONSTER) {
+			const Creature* master = creature->getMaster();
+			if (master) {
+				const Player* masterPlayer = master->getPlayer();
+				if (masterPlayer) {
+					creatureType = CREATURETYPE_SUMMONPLAYER;
+				}
 			}
 		}
 	}
 
 	msg.addByte(creatureType); // Type (for summons)
 
-	if (creatureType == CREATURETYPE_SUMMONPLAYER) {
-		const Creature* master = creature->getMaster();
-		if (master) {
-			msg.add<uint32_t>(master->getID());
+	if (player->getProtocolVersion() >= 1120) {
+		if (creatureType == CREATURETYPE_SUMMONPLAYER) {
+			const Creature* master = creature->getMaster();
+			if (master) {
+				msg.add<uint32_t>(master->getID());
+			}
 		}
 	}
 
@@ -268,18 +274,25 @@ void ProtocolGameBase::sendBlessStatus() {
 
 	msg.addByte(0x9C);
 	if (blessCount >= 5) {
-		uint8_t blessFlag = 0;
-		uint8_t maxFlag = (maxBlessings == 8) ? 256 : 64;
-		for (int i = 2; i < maxFlag; i *= 2) {
-			blessFlag += i;
-		}
+		if (player->getProtocolVersion() >= 1120) {
+			uint8_t blessFlag = 0;
+			uint8_t maxFlag = (maxBlessings == 8) ? 256 : 64;
+			for (int i = 2; i < maxFlag; i *= 2) {
+				blessFlag += i;
+			}
 
-		msg.add<uint16_t>(blessFlag-1);
+			msg.add<uint16_t>(blessFlag - 1);
+		} else {
+			msg.add<uint16_t>(0x01);
+		}
 	} else {
 		msg.add<uint16_t>(0x00);
 	}
 
-	msg.addByte((blessCount >= 5) ? 2 : 1); // 1 = Disabled | 2 = normal | 3 = green
+	if (player->getProtocolVersion() >= 1120) {
+		msg.addByte((blessCount >= 5) ? 2 : 1); // 1 = Disabled | 2 = normal | 3 = green
+	}
+
 	writeToOutputBuffer(msg);
 }
 
@@ -793,8 +806,10 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 	sendBasicData();
 	sendInventoryClientIds();
 	sendPreyData();
-	player->sendClientCheck();
-	player->sendGameNews();
+	if (player->getProtocolVersion() >= 1130) {
+		player->sendClientCheck();
+		player->sendGameNews();
+	}
 	player->sendIcons();
 }
 

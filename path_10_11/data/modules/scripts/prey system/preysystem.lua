@@ -215,7 +215,7 @@ function changeStateToActive(player, indexColumn)
 	if mType then
 		mOutfit = mType:getOutfit()
 	else
-		mOutfit = {lookType = 0, lookBody = 0, lookLegs = 0, lookFeet = 0, lookAddons = 0}
+		mOutfit = {lookType = 250, lookBody = 0, lookLegs = 0, lookFeet = 0, lookAddons = 0}
 	end
 
 	local msg = NetworkMessage()
@@ -291,7 +291,7 @@ function CheckPrey(player, msg)
 		player:preyRerollList(PreyColumn)
 	elseif (PreyAction == 1) then
 		if (player:isBonusReroll(PreyColumn)) then
-			return sendError(player, "Are you fucking kidding me? Do you really wanna try bug my system? get out of here little sniffer.")
+			return sendError(player, "Are you fucking kidding me? Do you really wanna try bug my system? Get out of here little sniffer.")
 		end
 
 		-- Bonus Reroll
@@ -299,18 +299,20 @@ function CheckPrey(player, msg)
 	elseif (PreyAction == 2) then
 		local PreyIndex = msg:getByte() -- monster index
 		--print(PreyColumn.. " e " ..PreyAction.. " e " ..PreyIndex)
-		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
+<<<<<<< .mine		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
+			return sendError(player, "An internal error ocurred.")
+=======		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
 			return sendError(player, "[ERROR] You don't have this column unlocked.")
-		end
+>>>>>>> .theirs		end
 
 		local mName = getMonsterName(player, PreyColumn, PreyIndex)
 		if (not mName) then
-			return sendError(player, "[ERROR] Monster name don't exists in list.")
+			return sendError(player, "An internal error ocurred.")
 		end
 
 		local mType = MonsterType(mName)
 		if (not mType) then
-			return sendError(player, "[ERROR] This monster don't exists in Server.")
+			return sendError(player, "An internal error ocurred.")
 		end
 
 		SelectPrey(player, PreyColumn, mType)
@@ -417,7 +419,7 @@ function SelectPrey(player, PreyColumn, mType)
 
 	local mLook = mType:getOutfit()
 	if (not mLook) then
-		return sendError(player, "[ERROR] Monster is invalid, please contact Administrator.")
+		return sendError(player, "An internal error ocurred.")
 	end
 
 	local newBonus = nil
@@ -429,7 +431,7 @@ function SelectPrey(player, PreyColumn, mType)
 	end
 
 	if (not newBonus) then
-		return sendError(player, "[ERROR] You can't select a prey with bonus active.")
+		return sendError(player, "An internal error ocurred.")
 	end
 
 	player:setPreyStamina(PreyColumn, 7200)
@@ -481,7 +483,7 @@ function Player.preyRerollList(self, column)
 	if (self:getStorageValue(rerollStorage) > 0) then
 		local priceReroll = self:getRerollPrice()
 		if (not self:removeMoneyNpc(self:getRerollPrice())) then
-			sendError(self, "[ERROR] You don't have " ..priceReroll.. " gold.")
+			sendError(self, "An internal error ocurred.")
 		end
 	end
 
@@ -581,11 +583,11 @@ end
 function Player.bonusReroll(self, column)
 	local bonusReroll = self:getBonusReroll()
 	if (bonusReroll == 0) then
-		return sendError(self, "[ERROR] You don't have Bonus Reroll.")
+		return sendError(self, "An internal error ocurred.")
 	end
 
 	if (not self:isActive(column)) then
-		return sendError(self, "[ERROR] You don't have a active bonus.")
+		return sendError(self, "An internal error ocurred.")
 	end
 
 	local bonusMonster = self:getBonusMonster(column)

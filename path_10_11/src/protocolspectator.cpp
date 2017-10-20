@@ -377,7 +377,7 @@ void ProtocolSpectator::release()
 	OutputMessagePool::getInstance().removeProtocolFromAutosend(shared_from_this());
 }
 
-void ProtocolSpectator::writeToOutputBuffer(const NetworkMessage& msg, bool broadcast)
+void ProtocolSpectator::writeToOutputBuffer(const NetworkMessage& msg, bool)
 {
 	OutputMessage_ptr out = getOutputBuffer(msg.getLength());
 	out->append(msg);

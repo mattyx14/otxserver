@@ -240,7 +240,7 @@ class DBTransaction
 				return false;
 			}
 
-			state = STEATE_COMMIT;
+			state = STATE_COMMIT;
 			return Database::getInstance().commit();
 		}
 
@@ -248,7 +248,7 @@ class DBTransaction
 		enum TransactionStates_t {
 			STATE_NO_START,
 			STATE_START,
-			STEATE_COMMIT,
+			STATE_COMMIT,
 		};
 
 		TransactionStates_t state = STATE_NO_START;

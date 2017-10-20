@@ -1,10 +1,41 @@
 -- Internal Use
+STONE_SKIN_AMULET = 2197
 ITEM_STORE_INBOX = 26052
 GOLD_POUNCH = 26377
 
 -- No move items with actionID 8000
+NOT_MOVEABLE_ACTION = 8000
+
 -- Players cannot throw items on teleports if set to true
 local blockTeleportTrashing = true
+
+local titles = {
+	{storageID = 14960, title = " Scout"},
+	{storageID = 14961, title = " Sentinel"},
+	{storageID = 14962, title = " Steward"},
+	{storageID = 14963, title = " Warden"},
+	{storageID = 14964, title = " Squire"},
+	{storageID = 14965, title = " Warrior"},
+	{storageID = 14966, title = " Keeper"},
+	{storageID = 14967, title = " Guardian"},
+	{storageID = 14968, title = " Sage"},
+	{storageID = 14969, title = " Tutor"},
+	{storageID = 14970, title = " Senior Tutor"},
+	{storageID = 14971, title = " King"},
+}
+
+local function getTitle(uid)
+	local player = Player(uid)
+	if not player then return false end
+
+	for i = #titles, 1, -1 do
+		if player:getStorageValue(titles[i].storageID) == 1 then
+			return titles[i].title
+		end
+	end
+
+	return false
+end
 
 function Player:onBrowseField(position)
 	return true
@@ -34,7 +65,10 @@ end
 function Player:onLook(thing, position, distance)
 	local description = 'You see '
 	if thing:isItem() then
-		if thing.itemid >= 28553 and thing.itemid <= 28557 or thing.itemid >= 28563 and thing.itemid <= 28566 or thing.itemid >= 28573 and thing.itemid <= 28574 or thing.itemid >= 28577 and thing.itemid <= 28588 then
+		if thing.itemid >= ITEM_HEALTH_CASK_START and thing.itemid <= ITEM_HEALTH_CASK_END 
+		or thing.itemid >= ITEM_MANA_CASK_START and thing.itemid <= ITEM_MANA_CASK_END 
+		or thing.itemid >= ITEM_SPIRIT_CASK_START and thing.itemid <= ITEM_SPIRIT_CASK_END 
+		or thing.itemid >= ITEM_KEG_START and thing.itemid <= ITEM_KEG_END then
 			description = description .. thing:getDescription(distance)
 			local charges = thing:getCharges()
 			if charges then
@@ -154,7 +188,70 @@ function Player:onLookInShop(itemType, count)
 	return true
 end
 
+local config = {
+	maxItemsPerSeconds = 1,
+	exhaustTime = 2000,
+}
+
+if not pushDelay then
+	pushDelay = { }
+end
+
+local function antiPush(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	if toPosition.x == CONTAINER_POSITION then
+		return true
+	end
+
+	local tile = Tile(toPosition)
+	if not tile then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+
+	local cid = self:getId()
+	if not pushDelay[cid] then
+		pushDelay[cid] = {items = 0, time = 0}
+	end
+
+	pushDelay[cid].items = pushDelay[cid].items + 1
+
+	local currentTime = os.mtime()
+	if pushDelay[cid].time == 0 then
+		pushDelay[cid].time = currentTime
+	elseif pushDelay[cid].time == currentTime then
+		pushDelay[cid].items = pushDelay[cid].items + 1
+	elseif currentTime > pushDelay[cid].time then
+		pushDelay[cid].time = 0
+		pushDelay[cid].items = 0
+	end
+
+	if pushDelay[cid].items > config.maxItemsPerSeconds then
+		pushDelay[cid].time = currentTime + config.exhaustTime
+	end
+
+	if pushDelay[cid].time > currentTime then
+		self:sendCancelMessage("You can't move that item so fast.")
+		return false
+	end
+
+	return true
+end
+
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	-- SSA exhaust
+	local exhaust = { }
+	if toPosition.x == CONTAINER_POSITION and toPosition.y == CONST_SLOT_NECKLACE and item:getId() == STONE_SKIN_AMULET then
+		local pid = self:getId()
+		if exhaust[pid] then
+			self:sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED)
+			return false
+		else
+			exhaust[pid] = true
+			addEvent(function() exhaust[pid] = false end, 2000, pid)
+			return true
+		end
+	end
+
 	-- Store Inbox
 	local containerIdFrom = fromPosition.y - 64
 	local containerFrom = self:getContainerById(containerIdFrom)
@@ -178,6 +275,12 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 				return false
 			end
 		end
+	end
+
+	-- No move gold pounch
+	if item:getId() == GOLD_POUNCH then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
 	end
 
 	-- No move items with actionID 8000
@@ -260,6 +363,28 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 			self:getPosition():sendMagicEffect(CONST_ME_POFF)
 			return false
 		end
+	end
+
+	-- No move parcel very heavy
+	if item:getWeight() > 90000 and item:getId() == ITEM_PARCEL then
+		self:sendCancelMessage('YOU CANNOT MOVE PARCELS TOO HEAVY.')
+		return false
+	end
+
+	-- No move if item count > 20 items
+	if tile and tile:getItemCount() > 20 then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+
+	if tile and tile:getItemById(370) then -- Trapdoor
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		self:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+
+	if not antiPush(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder) then
+		return false
 	end
 
 	return true
@@ -380,6 +505,11 @@ function useStaminaImbuing(playerId, itemuid)
 				end
 
 				item:setSpecialAttribute(i+3, staminaMinutes*60)
+				if (staminaMinutes <= 0) then
+					player:removeCondition(CONDITION_HASTE, item:getId() + i)
+					player:removeCondition(CONDITION_ATTRIBUTES, item:getId() + i)
+					item:setSpecialAttribute(i, 0, i+3, 0, i+6, 0)
+				end
 			end
 		end
 	end
@@ -413,7 +543,7 @@ local function useStamina(player)
 end
 
 local function useStaminaXp(player)
-	local staminaMinutes = player:getExpBoostStamina()
+	local staminaMinutes = player:getExpBoostStamina() / 60
 	if staminaMinutes == 0 then
 		return
 	end
@@ -436,7 +566,7 @@ local function useStaminaXp(player)
 		staminaMinutes = staminaMinutes - 1
 		nextUseXpStamina[playerId] = currentTime + 60
 	end
-	player:setExpBoostStamina(staminaMinutes)
+	player:setExpBoostStamina(staminaMinutes * 60)
 end
 
 -- useStaminaPrey
@@ -471,37 +601,199 @@ local function useStaminaPrey(player, name)
 end
 
 function Player:onUseWeapon(normalDamage, elementType, elementDamage)
+	-- Imbuement
 	local weapon = self:getSlotItem(CONST_SLOT_LEFT)
 	if not weapon or weapon:getType():getWeaponType() == WEAPON_SHIELD then
 		weapon = self:getSlotItem(CONST_SLOT_RIGHT)
+		if not weapon or weapon:getType():getWeaponType() == WEAPON_SHIELD then
+			weapon = nil
+		end
 	end
 
-	-- Imbuement
-	if (weapon and weapon:getType():getImbuingSlots() > 0) then
-		for i = 1, weapon:getType():getImbuingSlots() do
-			local slotEnchant = weapon:getSpecialAttribute(i)
-			if (slotEnchant) then
-				local percentDamage, enchantPercent = 0, weapon:getImbuementPercent(slotEnchant)
-				local typeEnchant = weapon:getImbuementType(i) or ""
-				if (typeEnchant ~= "") then
-					useStaminaImbuing(self:getId(), weapon:getUniqueId())
-				end
+	for slot = 1, 10 do
+		local nextEquip = self:getSlotItem(slot)
+		if nextEquip and nextEquip:getType():getImbuingSlots() > 0 then
+			for i = 1, nextEquip:getType():getImbuingSlots() do
+				local slotEnchant = nextEquip:getSpecialAttribute(i)
+				if (slotEnchant) then
+					local percentDamage, enchantPercent = 0, nextEquip:getImbuementPercent(slotEnchant)
+					local typeEnchant = nextEquip:getImbuementType(i) or ""
+					if (typeEnchant ~= "" and typeEnchant ~= "skillShield" and not typeEnchant:find("absorb") and typeEnchant ~= "speed") then
+						useStaminaImbuing(self:getId(), nextEquip:getUniqueId())
+					end
 
-			if (typeEnchant == "firedamage") then
-					elementType = COMBAT_FIREDAMAGE
-				elseif (typeEnchant == "earthdamage") then
-					elementType = COMBAT_EARTHDAMAGE
-				elseif (typeEnchant == "icedamage") then
-					elementType = COMBAT_ICEDAMAGE
-				elseif (typeEnchant == "energydamage") then
-					elementType = COMBAT_ENERGYDAMAGE
-				elseif (typeEnchant == "deathdamage") then
-					elementType = COMBAT_DEATHDAMAGE
+					if (typeEnchant ~= "hitpointsleech" and typeEnchant ~= "manapointsleech" and typeEnchant ~= "criticaldamage" 
+						and typeEnchant ~= "skillShield" and typeEnchant ~= "magiclevelpoints" and not typeEnchant:find("absorb") and typeEnchant ~= "speed") then
+						local weaponType = nextEquip:getType():getWeaponType()
+						if weaponType ~= WEAPON_NONE and weaponType ~= WEAPON_SHIELD and weaponType ~= WEAPON_AMMO then
+							percentDamage = normalDamage*(enchantPercent/100)
+							normalDamage = normalDamage - percentDamage
+							elementDamage = nextEquip:getType():getAttack()*(enchantPercent/100)
+						end
+					end
+
+					if (typeEnchant == "hitpointsleech") then
+						local healAmountHP = normalDamage*(enchantPercent/100)
+						self:addHealth(math.abs(healAmountHP))
+					elseif (typeEnchant == "manapointsleech") then
+						local healAmountMP = normalDamage*(enchantPercent/100)
+						self:addMana(math.abs(healAmountMP))
+					end
+
+					if (typeEnchant == "firedamage") then
+						elementType = COMBAT_FIREDAMAGE
+					elseif (typeEnchant == "earthdamage") then
+						elementType = COMBAT_EARTHDAMAGE
+					elseif (typeEnchant == "icedamage") then
+						elementType = COMBAT_ICEDAMAGE
+					elseif (typeEnchant == "energydamage") then
+						elementType = COMBAT_ENERGYDAMAGE
+					elseif (typeEnchant == "deathdamage") then
+						elementType = COMBAT_DEATHDAMAGE
+					end
 				end
 			end
 		end
 	end
+	
 	return normalDamage, elementType, elementDamage
+end
+
+function Player:onCombatSpell(normalDamage, elementDamage, elementType, changeDamage)
+	-- Imbuement
+	local weapon = self:getSlotItem(CONST_SLOT_LEFT)
+	if not weapon or weapon:getType():getWeaponType() == WEAPON_SHIELD then
+		weapon = self:getSlotItem(CONST_SLOT_RIGHT)
+		if not weapon or weapon:getType():getWeaponType() == WEAPON_SHIELD then
+			weapon = nil
+		end
+	end
+
+	if normalDamage < 0 then
+		for slot = 1, 10 do
+			local nextEquip = self:getSlotItem(slot)
+			if nextEquip and nextEquip:getType():getImbuingSlots() > 0 then
+				for i = 1, nextEquip:getType():getImbuingSlots() do
+					local slotEnchant = nextEquip:getSpecialAttribute(i)
+					if (slotEnchant and type(slotEnchant) == 'string') then
+						local percentDamage, enchantPercent = 0, nextEquip:getImbuementPercent(slotEnchant)
+						local typeEnchant = nextEquip:getImbuementType(i) or ""
+						if (typeEnchant ~= "" and typeEnchant ~= "skillShield" and not typeEnchant:find("absorb") and typeEnchant ~= "speed") then
+							useStaminaImbuing(self:getId(), nextEquip:getUniqueId())
+						end
+
+						if (typeEnchant == "firedamage" or typeEnchant == "earthdamage" or typeEnchant == "icedamage" or typeEnchant == "energydamage" or typeEnchant == "deathdamage") then
+							local weaponType = nextEquip:getType():getWeaponType()
+							if weaponType ~= WEAPON_NONE and weaponType ~= WEAPON_SHIELD and weaponType ~= WEAPON_AMMO then
+								percentDamage = normalDamage*(enchantPercent/100)
+								normalDamage = normalDamage - percentDamage
+								elementDamage = nextEquip:getType():getAttack()*(enchantPercent/100)
+							end
+						end
+
+						if (typeEnchant == "firedamage") then
+							elementType = COMBAT_FIREDAMAGE
+						elseif (typeEnchant == "earthdamage") then
+							elementType = COMBAT_EARTHDAMAGE
+						elseif (typeEnchant == "icedamage") then
+							elementType = COMBAT_ICEDAMAGE
+						elseif (typeEnchant == "energydamage") then
+							elementType = COMBAT_ENERGYDAMAGE
+						elseif (typeEnchant == "deathdamage") then
+							elementType = COMBAT_DEATHDAMAGE
+						end
+					end
+				end
+			end
+		end
+	end
+
+	return normalDamage, elementDamage, elementType, changeDamage
+end
+
+function Player:onMove()
+	local haveImbuingBoots = self:getSlotItem(CONST_SLOT_FEET) and self:getSlotItem(CONST_SLOT_FEET):getType():getImbuingSlots() or 0
+	if haveImbuingBoots > 0 then
+		local bootsItem = self:getSlotItem(CONST_SLOT_FEET)
+		for slot = 1, haveImbuingBoots do
+			local slotEnchant = bootsItem:getSpecialAttribute(slot)
+			if (slotEnchant and type(slotEnchant) == 'string') then
+				local typeEnchant = bootsItem:getImbuementType(slot) or ""
+				if (typeEnchant == "speed") then
+					useStaminaImbuing(self:getId(), bootsItem:getUniqueId())
+				end
+			end
+		end
+	end
+	return true
+end
+
+function Player:onEquipImbuement(item)
+	local itemType = item:getType()
+	for i = 1, itemType:getImbuingSlots() do
+		local slotEnchant = item:getSpecialAttribute(i)
+		if (slotEnchant and type(slotEnchant) == 'string') then
+			conditionHaste = Condition(CONDITION_HASTE, item:getId() + i)
+			conditionSkill = Condition(CONDITION_ATTRIBUTES, item:getId() + i)
+			local skillValue = item:getImbuementPercent(slotEnchant)
+			local typeEnchant = item:getImbuementType(i) or ""
+			if (typeEnchant == "skillSword") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_SWORD, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "skillAxe") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_AXE, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "skillClub") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_CLUB, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "skillDist") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_DISTANCE, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "skillShield") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_SHIELD, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "magiclevelpoints") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_STAT_MAGICPOINTS, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "speed") then
+				conditionHaste:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionHaste:setParameter(CONDITION_PARAM_SPEED, self:getSpeed() * (skillValue/100))
+				self:addCondition(conditionHaste)
+			elseif (typeEnchant == "criticaldamage") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_CRITICAL_HIT_CHANCE, 10)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_CRITICAL_HIT_DAMAGE, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "hitpointsleech") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_LIFE_LEECH_CHANCE, 100)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_LIFE_LEECH_AMOUNT, skillValue)
+				self:addCondition(conditionSkill)
+			elseif (typeEnchant == "manapointsleech") then
+				conditionSkill:setParameter(CONDITION_PARAM_TICKS, -1)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_MANA_LEECH_CHANCE, 100)
+				conditionSkill:setParameter(CONDITION_PARAM_SKILL_MANA_LEECH_AMOUNT, skillValue)
+				self:addCondition(conditionSkill)
+			end
+		end
+	end
+
+	return true
+end
+
+function Player:onDeEquipImbuement(item)
+	for i = 1, item:getType():getImbuingSlots() do
+		self:removeCondition(CONDITION_HASTE, item:getId() + i)
+		self:removeCondition(CONDITION_ATTRIBUTES, item:getId() + i)
+	end
+
+	return true
 end
 
 function Player:onGainExperience(source, exp, rawExp)
@@ -571,6 +863,23 @@ function Player:onGainExperience(source, exp, rawExp)
 
 	-- Exp Boost Modifier
 	useStaminaXp(self)
+
+	-- Exp stats
+	local staminaMinutes = self:getStamina()
+	local Boost = self:getExpBoostStamina()
+	if staminaMinutes > 2400 and self:isPremium() and Boost > 0 then
+		self:setBaseXpGain(200) -- 200 = 1.0x, 200 = 2.0x, ... premium account		
+	elseif staminaMinutes > 2400 and self:isPremium() and Boost <= 0 then
+		self:setBaseXpGain(150) -- 150 = 1.0x, 150 = 1.5x, ... premium account	
+	elseif staminaMinutes <= 2400 and staminaMinutes > 840 and self:isPremium() and Boost > 0 then
+		self:setBaseXpGain(150) -- 150 = 1.5x		premium account
+	elseif staminaMinutes > 840 and Boost > 0 then
+		self:setBaseXpGain(150) -- 150 = 1.5x		free account
+	elseif staminaMinutes <= 840 and Boost > 0 then
+		self:setBaseXpGain(100) -- 50 = 0.5x	all players	
+	elseif staminaMinutes <= 840 then
+		self:setBaseXpGain(50) -- 50 = 0.5x	all players	
+	end
 
 	-- Stamina modifier
 	if configManager.getBoolean(configKeys.STAMINA_SYSTEM) then

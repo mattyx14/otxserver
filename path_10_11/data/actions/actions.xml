@@ -224,9 +224,10 @@
 			"tools scripts"
 		-->
 		<!-- Imbuement -->
-		<action fromid="27716" toid="27717" script="_scripts_otx/imbuement.lua" />
-		<action fromid="27830" toid="27831" script="_scripts_otx/imbuement.lua" />
-		<action fromid="27838" toid="27839" script="_scripts_otx/imbuement.lua" />
+		<action fromid="27728" toid="27729" script="_scripts_otx/imbuement.lua" />
+		<action fromid="27771" toid="27772" script="_scripts_otx/imbuement.lua" />
+		<action fromid="27850" toid="27851" script="_scripts_otx/imbuement.lua" />
+		<action fromid="27842" toid="27843" script="_scripts_otx/imbuement.lua" />
 
 		<!-- Quests -->
 		<action actionid="2000" script="_scripts_otx/system.lua" />
