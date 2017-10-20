@@ -299,11 +299,9 @@ function CheckPrey(player, msg)
 	elseif (PreyAction == 2) then
 		local PreyIndex = msg:getByte() -- monster index
 		--print(PreyColumn.. " e " ..PreyAction.. " e " ..PreyIndex)
-<<<<<<< .mine		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
+		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
 			return sendError(player, "An internal error ocurred.")
-=======		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
-			return sendError(player, "[ERROR] You don't have this column unlocked.")
->>>>>>> .theirs		end
+		end
 
 		local mName = getMonsterName(player, PreyColumn, PreyIndex)
 		if (not mName) then
