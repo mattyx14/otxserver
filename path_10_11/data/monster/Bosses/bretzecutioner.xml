@@ -46,30 +46,30 @@
 		<voice sentence="It's a good day to destroy!" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="1" chance="100000" /> <!-- gold coin -->
-		<item id="2148" countmax="98" chance="100000" /> <!-- gold coin -->
-		<item id="2666" chance="100000" /> <!-- meat -->
-		<item id="6500" chance="64000" /> <!-- demonic essence -->
-		<item id="7368" countmax="10" chance="100000" /> <!-- assassin star -->
-		<item id="2489" chance="68000" /> <!-- dark armor -->
-		<item id="2150" countmax="5" chance="28000" /> <!-- small amethyst -->
-		<item id="2146" countmax="5" chance="40000" /> <!-- small sapphire -->
-		<item id="2145" countmax="5" chance="32000" /> <!-- small diamond -->
-		<item id="11215" chance="100000" /> <!-- metal spike -->
-		<item id="7452" chance="32000" /> <!-- spike squelcher -->
-		<item id="2152" countmax="8" chance="100000" /> <!-- platinum coin -->
-		<item id="2393" chance="24000" /> <!-- giant sword -->
-		<item id="7591" countmax="3" chance="44000" /> <!-- great health potion -->
-		<item id="7590" countmax="3" chance="44000" /> <!-- great mana potion -->
-		<item id="8472" countmax="3" chance="44000" /> <!-- great spirit potion -->
-		<item id="7632" chance="48000" /> <!-- giant shimmering pearl -->
-		<item id="7633" chance="48000" /> <!-- giant shimmering pearl -->
-		<item id="2645" chance="4000" /> <!-- steel boots -->
-		<item id="7427" chance="24000" /> <!-- chaos mace -->
-		<item id="7419" chance="12000" /> <!-- dreaded cleaver -->
-		<item id="2125" chance="24000" /> <!-- crystal necklace -->
-		<item id="2521" chance="16000" /> <!-- dark shield -->
-		<item id="6300" chance="100000" /> <!-- death ring -->
-		<item id="5741" chance="4000" /> <!-- skull helmet -->
+		<item id="2148" countmax="1" chance="100000" /><!-- gold coin -->
+		<item id="2148" countmax="98" chance="100000" /><!-- gold coin -->
+		<item id="2666" chance="100000" /><!-- meat -->
+		<item id="6500" chance="64000" /><!-- demonic essence -->
+		<item id="7368" countmax="10" chance="100000" /><!-- assassin star -->
+		<item id="2489" chance="68000" /><!-- dark armor -->
+		<item id="2150" countmax="5" chance="28000" /><!-- small amethyst -->
+		<item id="2146" countmax="5" chance="40000" /><!-- small sapphire -->
+		<item id="2145" countmax="5" chance="32000" /><!-- small diamond -->
+		<item id="11215" chance="100000" /><!-- metal spike -->
+		<item id="7452" chance="32000" /><!-- spike squelcher -->
+		<item id="2152" countmax="8" chance="100000" /><!-- platinum coin -->
+		<item id="2393" chance="24000" /><!-- giant sword -->
+		<item id="7591" countmax="3" chance="44000" /><!-- great health potion -->
+		<item id="7590" countmax="3" chance="44000" /><!-- great mana potion -->
+		<item id="8472" countmax="3" chance="44000" /><!-- great spirit potion -->
+		<item id="7632" chance="48000" /><!-- giant shimmering pearl -->
+		<item id="7633" chance="48000" /><!-- giant shimmering pearl -->
+		<item id="2645" chance="4000" /><!-- steel boots -->
+		<item id="7427" chance="24000" /><!-- chaos mace -->
+		<item id="7419" chance="12000" /><!-- dreaded cleaver -->
+		<item id="2125" chance="24000" /><!-- crystal necklace -->
+		<item id="2521" chance="16000" /><!-- dark shield -->
+		<item id="6300" chance="100000" /><!-- death ring -->
+		<item id="5741" chance="4000" /><!-- skull helmet -->
 	</loot>
 </monster>

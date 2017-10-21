@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Baby Dragon" nameDescription="a Baby Dragon" race="blood" experience="0" speed="150" manacost="290">
+	<health now="1000" max="1000" />
+	<look type="271" corpse="7621" />
+	
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="0" />
+		<flag hostile="0" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag staticattack="98" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	
+	<defenses armor="100" defense="100" />
+	<elements>
+		<element energyPercent="20" />
+		<element holyPercent="1" />
+		<element earthPercent="-12" />
+		<element deathPercent="-10" />
+	</elements>
+	
+
+</monster>

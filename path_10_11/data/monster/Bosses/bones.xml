@@ -22,9 +22,9 @@
 		<attack name="death" interval="3000" chance="34" range="1" radius="1" target="1" min="-180" max="-500">
 			<attribute key="shootEffect" value="death" />
 		</attack>
-<!--
+		<!--
 		<attack name="blood ball" interval="3000" chance="34" range="7" radius="3" target="1" min="-120" max="-230" />
--->
+		-->
 	</attacks>
 	<defenses armor="50" defense="55">
 		<defense name="healing" interval="5000" chance="25" min="60" max="100">
@@ -49,10 +49,10 @@
 		<item name="spectral stone" chance="800" />
 		<item name="skull helmet" chance="50000" />
 		<item name="soul orb" chance="10000" />
-		<item id="6300" chance="4000" /> <!-- death ring -->
+		<item id="6300" chance="4000" /><!-- death ring -->
 		<item name="demonic essence" chance="1538" />
-		<item id="6570" countmax="3" chance="5538" /> <!-- surprise bag -->
-		<item id="6571" chance="1538" /> <!-- surprise bag -->
+		<item id="6570" countmax="3" chance="5538" /><!-- surprise bag -->
+		<item id="6571" chance="1538" /><!-- surprise bag -->
 		<item name="dragonbone staff" chance="50000" />
 	</loot>
 </monster>

@@ -63,7 +63,7 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="48" chance="65000" />
-		<item id="2175" chance="4650" /> <!-- spellbook -->
+		<item id="2175" chance="4650" /><!-- spellbook -->
 		<item name="terra rod" chance="570" />
 		<item name="two handed sword" chance="3840" />
 		<item name="morning star" chance="6950" />

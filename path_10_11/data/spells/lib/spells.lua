@@ -210,6 +210,21 @@ AREADIAGONAL_WALLFIELD = {
 {1, 0, 0, 0, 0},
 }
 
+-- Walls Energy
+AREA_WALLFIELD_ENERGY = {
+{1, 1, 1, 3, 1, 1, 1}
+}
+
+AREADIAGONAL_WALLFIELD_ENERGY = {
+{0, 0, 0, 0, 0, 0, 1},
+{0, 0, 0, 0, 0, 1, 1},
+{0, 0, 0, 0, 1, 1, 0},
+{0, 0, 1, 3, 1, 0, 0},
+{0, 1, 1, 0, 0, 0, 0},
+{0, 1, 0, 0, 0, 0, 0},
+{1, 0, 0, 0, 0, 0, 0},
+}
+
 -- Spells-only arrays
 
 --This HUGE array contains all corpses of the game, until protocol 8.0

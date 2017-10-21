@@ -56,7 +56,7 @@
 		<item name="gold coin" countmax="26" chance="50000" />
 		<item name="brass helmet" chance="3250" />
 		<item name="bone shield" chance="950" />
-		<item id="2667" countmax="3" chance="29000" /> <!-- fish -->
+		<item id="2667" countmax="3" chance="29000" /><!-- fish -->
 		<item name="northern pike" chance="60" />
 		<item name="rainbow trout" chance="60" />
 		<item name="green perch" chance="60" />

@@ -67,7 +67,10 @@ function onLogin(player)
 	-- Events
 	player:registerEvent("PlayerDeath")
 	player:registerEvent("DropLoot")
-	player:registerEvent("BossParticipation")
+
+	-- Pets
+	player:registerEvent("petlogin")
+	player:registerEvent("petthink")
 
 	if player:getStorageValue(Storage.combatProtectionStorage) <= os.time() then
 		player:setStorageValue(Storage.combatProtectionStorage, os.time() + 10)

@@ -26,6 +26,6 @@
 	<loot>
 		<item name="meat" countmax="4" chance="80000" />
 		<item name="ham" countmax="2" chance="50000" />
-		<item id="11214" chance="870" /> <!-- antlers -->
+		<item id="11214" chance="870" /><!-- antlers -->
 	</loot>
 </monster>

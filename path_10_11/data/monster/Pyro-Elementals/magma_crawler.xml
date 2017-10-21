@@ -26,7 +26,7 @@
 			<attribute key="areaEffect" value="fireattack" />
 		</attack>
 		<attack name="magma crawler soulfire" interval="2000" chance="20" />
-		<attack name="monster soulfire" interval="2000" chance="10" />
+		<attack name="soulfire" interval="2000" chance="10" />
 		<attack name="fire" interval="2000" chance="15" target="0" radius="3" min="-140" max="-180">
 			<attribute key="areaEffect" value="fire" />
 		</attack>
@@ -73,7 +73,7 @@
 		<item name="magma boots" chance="1820" />
 		<item name="wand of draconia" chance="4280" />
 		<item name="fiery heart" chance="7810" />
-		<item id="13757" chance="1675" /> <!-- coal -->
+		<item id="13757" chance="1675" /><!-- coal -->
 		<item name="crystalline arrow" countmax="10" chance="5950" />
 		<item name="wand of everblazing" chance="690" />
 		<item name="blue crystal shard" countmax="2" chance="3930" />

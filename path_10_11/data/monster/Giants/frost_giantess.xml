@@ -56,7 +56,7 @@
 		<item name="battle shield" chance="1490" />
 		<item name="ham" countmax="2" chance="20990" />
 		<item name="shard" chance="100" />
-		<item id="7441" chance="2008" /> <!-- ice cube -->
+		<item id="7441" chance="2008" /><!-- ice cube -->
 		<item name="norse shield" chance="320" />
 		<item name="mana potion" chance="950" />
 		<item name="frost giant pelt" chance="4800" />

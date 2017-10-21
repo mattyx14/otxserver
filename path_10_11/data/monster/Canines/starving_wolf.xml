@@ -36,7 +36,7 @@
 		<voice sentence="Yoooohhuuuu!" />
 	</voices>
 	<loot>
-		<item id="220" chance="64730" /> <!-- dirty fur -->
+		<item id="220" chance="64730" /><!-- dirty fur -->
 		<item name="meat" countmax="2" chance="5300" />
 		<item name="wolf paw" chance="1430" />
 	</loot>

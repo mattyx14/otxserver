@@ -2,7 +2,7 @@ local function doTargetCorpse(cid, pos)
 	local getPos = pos
 	getPos.stackpos = 255
 	corpse = getThingfromPos(getPos)
-	if(corpse.uid > 0 and isCreature(corpse.uid) == FALSE and table.contains(CORPSES, corpse.itemid) == TRUE) then
+	if(corpse.uid > 0 and isCreature(corpse.uid) == FALSE and isInArray(CORPSES, corpse.itemid) == TRUE) then
 		doRemoveItem(corpse.uid)
 		local creature = doSummonCreature(cid, "Skeleton", pos)
 		doConvinceCreature(cid, creature)

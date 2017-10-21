@@ -52,11 +52,11 @@
 		<voice sentence="Screeech!" />
 	</voices>
 	<loot>
-		<item id="2124" chance="1560" /> <!-- crystal ring -->
+		<item id="2124" chance="1560" /><!-- crystal ring -->
 		<item name="crystal necklace" chance="1730" />
 		<item name="gold coin" countmax="100" chance="50000" />
 		<item name="gold coin" countmax="92" chance="50000" />
-		<item id="2169" chance="1587" /> <!-- time ring -->
+		<item id="2169" chance="1587" /><!-- time ring -->
 		<item name="platinum amulet" chance="120" />
 		<item name="steel helmet" chance="4545" />
 		<item name="plate armor" chance="10000" />

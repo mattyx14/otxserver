@@ -34,6 +34,6 @@
 		<item name="meat" countmax="2" chance="9460" />
 		<item name="worm" countmax="2" chance="2100" />
 		<item name="carrion worm fang" chance="10000" />
-		<item id="13757" chance="210" /> <!-- Coal -->
+		<item id="13757" chance="210" /><!-- Coal -->
 	</loot>
 </monster>

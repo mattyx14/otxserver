@@ -42,7 +42,7 @@
 	<loot>
 		<item name="small stone" countmax="3" chance="15290" />
 		<item name="gold coin" countmax="9" chance="50320" />
-		<item id="2230" chance="1130" /> <!-- bone -->
+		<item id="2230" chance="1130" /><!-- bone -->
 		<item name="mouldy cheese" chance="1000" />
 		<item name="dagger" chance="1800" />
 		<item name="short sword" chance="8870" />
@@ -50,7 +50,7 @@
 		<item name="leather helmet" chance="1940" />
 		<item name="leather armor" chance="2510" />
 		<item name="small axe" chance="9700" />
-		<item id="2667" chance="12750" /> <!-- fish -->
+		<item id="2667" chance="12750" /><!-- fish -->
 		<item name="goblin ear" chance="910" />
 	</loot>
 </monster>

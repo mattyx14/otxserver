@@ -48,7 +48,7 @@
 		<item name="plate shield" chance="9300" />
 		<item name="arrow" countmax="3" chance="7060" />
 		<item name="leather boots" chance="11410" />
-		<item id="5921" chance="940" /> <!-- heaven blossom -->
+		<item id="5921" chance="940" /><!-- heaven blossom -->
 		<item name="plum" countmax="2" chance="20000" />
 		<item name="elvish talisman" chance="2100" />
 	</loot>

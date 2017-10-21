@@ -71,7 +71,7 @@
 		<item name="platinum coin" chance="19720" />
 		<item name="yellow gem" chance="690" />
 		<item name="platinum amulet" chance="450" />
-		<item id="2175" chance="10000" /> <!-- spellbook -->
+		<item id="2175" chance="10000" /><!-- spellbook -->
 		<item name="mind stone" chance="350" />
 		<item name="ring of healing" chance="1540" />
 		<item name="skull staff" chance="550" />

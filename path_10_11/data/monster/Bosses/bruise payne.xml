@@ -44,15 +44,15 @@
 		<immunity invisible="1" />
 	</immunities>
 	<loot>
-		<item id="5894" countmax="2" chance="100000" /> <!-- bat wing -->
-		<item id="2167" chance="100000" /> <!-- energy ring -->
-		<item id="2148" countmax="99" chance="100000" /> <!-- gold coin -->
-		<item id="10579" chance="100000" /> <!-- mutated bat ear -->
-		<item id="2150" countmax="5" chance="100000" /> <!-- small amethyst -->
-		<item id="2800" chance="100000" /> <!-- star herb -->
-		<item id="2529" chance="92000" /> <!-- black shield -->
-		<item id="2144" countmax="5" chance="85000" /> <!-- black pearl -->
-		<item id="7386" chance="25000" /> <!-- mercenary sword -->
-		<item id="10016" chance="16000" /> <!-- batwing hat -->
+		<item id="5894" countmax="2" chance="100000" />	<!-- bat wing -->
+		<item id="2167" chance="100000" />				<!-- energy ring -->
+		<item id="2148" countmax="99" chance="100000" />	<!-- gold coin -->
+		<item id="10579" chance="100000" />				<!-- mutated bat ear -->
+		<item id="2150" countmax="5" chance="100000" />	<!-- small amethyst -->
+		<item id="2800" chance="100000" />				<!-- star herb -->
+		<item id="2529" chance="92000" />				<!-- black shield -->
+		<item id="2144" countmax="5" chance="85000" />	<!-- black pearl -->
+		<item id="7386" chance="25000" />				<!-- mercenary sword -->
+		<item id="10016" chance="16000" />				<!-- batwing hat -->
 	</loot>
 </monster>

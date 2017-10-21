@@ -51,7 +51,7 @@
 		<item name="battle shield" chance="1350" />
 		<item name="meat" countmax="2" chance="4970" />
 		<item name="shard" chance="60" />
-		<item id="7441" chance="2180" /> <!-- ice cube -->
+		<item id="7441" chance="2180" /><!-- ice cube -->
 		<item name="norse shield" chance="250" />
 		<item name="health potion" chance="819" />
 		<item name="frost giant pelt" chance="5000" />

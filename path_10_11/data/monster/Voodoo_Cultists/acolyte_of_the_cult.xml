@@ -55,7 +55,7 @@
 		<voice sentence="Feel the power of the cult!" />
 	</voices>
 	<loot>
-		<item id="1962" chance="730" /> <!-- orange book -->
+		<item id="1962" chance="730" /><!-- orange book -->
 		<item name="gold coin" countmax="40" chance="66940" />
 		<item name="small emerald" chance="550" />
 		<item name="life ring" chance="560" />
@@ -63,7 +63,7 @@
 		<item name="dragon necklace" chance="1050" />
 		<item name="morning star" chance="4990" />
 		<item name="pirate voodoo doll" chance="1060" />
-		<item id="6088" chance="480" /> <!-- music sheet 2nd verse -->
+		<item id="6088" chance="480" /><!-- music sheet 2nd verse -->
 		<item name="cultish robe" chance="8070" />
 		<item name="cultish symbol" chance="40" />
 		<item name="rope belt" chance="10420" />

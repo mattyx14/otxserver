@@ -58,20 +58,20 @@
 		<voice sentence="GRROARR" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="99" chance="100000" /> <!-- gold coin -->
-		<item id="11234" chance="100000" /> <!-- werewolf fur -->
-		<item id="5897" chance="100000" /> <!-- wolf paw -->
-		<item id="8473" chance="98000" /> <!-- ultimate health potion -->
-		<item id="2789" countmax="5" chance="94000" /> <!-- brown mushroom -->
-		<item id="2152" countmax="10" chance="94000" /> <!-- platinum coin -->
-		<item id="7439" chance="82000" /> <!-- berserk potion -->
-		<item id="2197" chance="70000" /> <!-- stone skin amulet -->
-		<item id="2144" countmax="5" chance="62000" /> <!-- black pearl -->
-		<item id="5480" chance="31000" /> <!-- cat's paw -->
-		<item id="2805" chance="21000" /> <!-- troll green -->
-		<item id="11306" chance="15000" /> <!-- sai -->
-		<item id="7419" chance="9800" /> <!-- dreaded cleaver -->
-		<item id="2169" chance="6000" /> <!-- time ring -->
-		<item id="7428" chance="2000" /> <!-- bonebreaker -->
+		<item id="2148" countmax="99" chance="100000" />	<!-- gold coin -->
+		<item id="11234" chance="100000" />				<!-- werewolf fur -->
+		<item id="5897" chance="100000" />				<!-- wolf paw -->
+		<item id="8473" chance="98000" />				<!-- ultimate health potion -->
+		<item id="2789" countmax="5" chance="94000" />	<!-- brown mushroom -->
+		<item id="2152" countmax="10" chance="94000" />	<!-- platinum coin -->
+		<item id="7439" chance="82000" />				<!-- berserk potion -->
+		<item id="2197" chance="70000" />				<!-- stone skin amulet -->
+		<item id="2144" countmax="5" chance="62000" />	<!-- black pearl -->
+		<item id="5480" chance="31000" />				<!-- cat's paw -->
+		<item id="2805" chance="21000" />				<!-- troll green -->
+		<item id="11306" chance="15000" />				<!-- sai -->
+		<item id="7419" chance="9800" />					<!-- dreaded cleaver -->
+		<item id="2169" chance="6000" />					<!-- time ring -->
+		<item id="7428" chance="2000" />					<!-- bonebreaker -->
 	</loot>
 </monster>

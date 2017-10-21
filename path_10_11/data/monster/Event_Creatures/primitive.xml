@@ -59,7 +59,7 @@
 		<item name="studded helmet" chance="9500" />
 		<item name="studded armor" chance="7000" />
 		<item name="studded shield" chance="1200" />
-		<item id="6570" chance="500" /> <!-- blue surprise bag -->
-		<item id="6571" chance="500" /> <!-- red surprise bag -->
+		<item id="6570" chance="500" /><!-- blue surprise bag -->
+		<item id="6571" chance="500" /><!-- red surprise bag -->
 	</loot>
 </monster>

@@ -69,7 +69,7 @@
 		<item name="great health potion" chance="15000" />
 		<item name="underworld rod" chance="1800" />
 		<item name="wand of starstorm" chance="960" />
-		<item id="22363" chance="3700" /> <!-- broken dream -->
+		<item id="22363" chance="3700" /><!-- broken dream -->
 		<item name="goosebump leather" chance="16400" />
 		<item name="pool of chitinous glue" chance="14000" />
 	</loot>

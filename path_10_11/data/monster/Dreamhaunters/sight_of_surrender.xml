@@ -77,6 +77,6 @@
 		<item name="cluster of solace" chance="1800" />
 		<item name="sight of surrender's eye" chance="100000" />
 		<item name="broken visor" chance="100000" />
-		<item id="22542" chance="460" /> <!-- string of mending -->
+		<item id="22542" chance="460" /><!-- string of mending -->
 	</loot>
 </monster>

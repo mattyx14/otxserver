@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <monster name="The Snapper" nameDescription="The Snapper" race="blood" experience="150" speed="240">
 	<health now="300" max="300" />
 	<look type="119" corpse="6046" />
@@ -32,13 +32,13 @@
 		<immunity invisible="1" />
 	</immunities>
 	<loot>
-		<item name="gold coin" countmax="100" chance="50675" />
-		<item name="gold coin" countmax="94" chance="50675" />
-		<item name="life ring (faster regeneration)" chance="100000" />
-		<item name="plate armor" chance="35800" />
-		<item name="knight armor" chance="4025" />
-		<item name="plate legs" chance="44025" />
-		<item name="crocodile boots" chance="9900" />
-		<item name="health potion" countmax="5" chance="51100" />
+		<item id="2148" countmax="178" chance="100000" />	<!-- gold coin -->
+		<item id="2205" chance="98000" />					<!-- life ring -->
+		<item id="7618" countmax="5" chance="80000" />		<!-- health potion -->
+		<item id="2149" countmax="4" chance="75000" />		<!-- small emerald -->
+		<item id="2647" chance="44000" />					<!-- plate legs -->
+		<item id="2463" chance="39800" />					<!-- plate armor -->
+		<item id="3982" chance="6000" />						<!-- crocodile boots -->
+		<item id="2476" chance="400" />						<!-- knight armor -->
 	</loot>
 </monster>

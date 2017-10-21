@@ -33,7 +33,7 @@
 	<loot>
 		<item name="gold coin" countmax="2" chance="85000" />
 		<item name="cookie" chance="750" />
-		<item id="2696" chance="30000" /> <!-- cheese -->
+		<item id="2696" chance="30000" /><!-- cheese -->
 		<item name="worm" countmax="2" chance="9700" />
 	</loot>
 </monster>

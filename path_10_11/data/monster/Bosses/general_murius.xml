@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="General Murius" nameDescription="General Murius" race="blood" experience="450" speed="240">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="General Murius" nameDescription="General Murius" race="blood" experience="300" speed="250" manacost="0">
 	<health now="550" max="550" />
-	<look type="202" corpse="5983" />
+	<look type="611" corpse="23462" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
 		<flag summonable="0" />
@@ -17,16 +17,19 @@
 		<flag runonhealth="0" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-220" />
-		<attack name="physical" interval="1000" chance="12" range="7" min="-50" max="-120">
+		<attack name="melee" interval="2000" min="0" max="-170" />
+		<attack name="physical" interval="1000" chance="12" range="7" min="0" max="-120">
 			<attribute key="shootEffect" value="bolt" />
 		</attack>
-		<attack name="physical" interval="1000" chance="10" radius="3" target="0" min="-50" max="-80">
+		<attack name="physical" interval="1000" chance="10" radius="3" target="0" min="0" max="-80">
 			<attribute key="areaEffect" value="blackspark" />
 		</attack>
 	</attacks>
 	<defenses armor="16" defense="22">
 		<defense name="healing" interval="1000" chance="15" min="50" max="100">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="speed" interval="2000" chance="15" speedchange="275" duration="5000">
 			<attribute key="areaEffect" value="redshimmer" />
 		</defense>
 	</defenses>
@@ -37,28 +40,25 @@
 		<summon name="Minotaur Archer" interval="1000" chance="15" max="2" />
 		<summon name="Minotaur Guard" interval="1000" chance="12" max="2" />
 	</summons>
-	<voices interval="5000" chance="10">
-		<voice sentence="Feel the power of the Mooh'Tah!" />
+	<voices interval="2000" chance="7">
 		<voice sentence="You will get what you deserve!" />
+		<voice sentence="Feel the power of the Mooh'Tah!" />
 		<voice sentence="For the king!" />
+		<voice sentence="Guards!" />
 	</voices>
 	<loot>
-		<item name="gold coin" countmax="30" chance="100000" />
-		<item name="gold coin" countmax="1" chance="2857" />
-		<item name="sword ring" chance="2000" />
-		<item name="dagger" chance="6666" />
-		<item name="longsword" chance="10000" />
-		<item name="throwing knife" countmax="2" chance="50000" />
-		<item name="broadsword" chance="2857" />
-		<item id="2419" chance="10000" /> <!-- scimitar -->
-		<item name="plate armor" chance="1818" />
-		<item name="warrior helmet" chance="1000" />
-		<item name="brass legs" chance="2857" />
-		<item name="plate shield" chance="5000" />
-		<item name="plate legs" chance="1818" />
-		<item name="green tunic" chance="2500" />
-		<item name="meat" countmax="2" chance="33333" />
-		<item id="2667" countmax="1" chance="20000" /> <!-- fish -->
-		<item name="worm" countmax="10" chance="50000" />
+		<item id="2148" countmax="90" chance="100000" />	<!-- gold coin -->
+		<item id="12428" chance="100000" />				<!-- minotaur horn -->
+		<item id="5878" chance="100000" />				<!-- minotaur leather -->
+		<item id="2152" countmax="3" chance="80000" />	<!-- platinum coin -->
+		<item id="2513" chance="40000" />				<!-- battle shield -->
+		<item id="2465" chance="60000" />				<!-- brass armor -->
+		<item id="2648" chance="40000" />				<!-- chain legs -->
+		<item id="2387" chance="60000" />				<!-- double axe -->
+		<item id="7401" chance="40000" />				<!-- minotaur trophy -->
+		<item id="7363" countmax="7" chance="40000" />	<!-- piercing bolt -->
+		<item id="2666" countmax="3" chance="20000" />	<!-- meat -->
+		<item id="2547" countmax="7" chance="20000" />	<!-- power bolt -->
+		<item id="7588" chance="20000" />				<!-- strong health potion -->
 	</loot>
 </monster>

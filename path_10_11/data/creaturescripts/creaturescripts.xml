@@ -31,4 +31,8 @@
 			<event type="login" name="freebless" script="freeblesslowlevel.lua"/>
 		-->
 		<event type="login" name="AntiMc" script="antimc.lua" />
+
+		<!-- New Summons (Pets) -->
+		<event type="login" name="petlogin" script="pet.lua"/>
+		<event type="think" name="petthink" script="pet.lua" />
 </creaturescripts>

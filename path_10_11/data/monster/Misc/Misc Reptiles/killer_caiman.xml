@@ -43,7 +43,7 @@
 		<item name="obsidian lance" chance="4975" />
 		<item name="ham" chance="40100" />
 		<item name="crocodile boots" chance="510" />
-		<item id="7632" chance="1130" /> <!-- giant shimmering pearl -->
+		<item id="7632" chance="1130" /><!-- giant shimmering pearl -->
 		<item name="piece of crocodile leather" chance="25430" />
 		<item name="bunch of ripe rice" countmax="2" chance="4800" />
 	</loot>

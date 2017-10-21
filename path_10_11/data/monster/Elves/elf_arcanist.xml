@@ -56,7 +56,7 @@
 		<voice sentence="Vihil Ealuel!" />
 	</voices>
 	<loot>
-		<item id="1949" chance="31000" /> <!-- scroll -->
+		<item id="1949" chance="31000" /><!-- scroll -->
 		<item name="candlestick" chance="2100" />
 		<item name="gold coin" countmax="47" chance="37000" />
 		<item name="yellow gem" chance="50" />

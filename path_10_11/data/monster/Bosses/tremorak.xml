@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Tremorak" nameDescription="Tremorak" race="undead" experience="1300" speed="290">
+<monster name="Tremorak" nameDescription="Tremorak" race="undead" experience="1300" speed="290" manacost="0">
 	<health now="10000" max="10000" />
 	<look type="285" corpse="8933" />
 	<targetchange interval="2000" chance="5" />
-	<strategy attack="100" defense="0" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
@@ -19,7 +18,7 @@
 		<flag runonhealth="1" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-115" />
+		<attack name="melee" interval="2000" skill="36" attack="50" />
 		<attack name="earth" interval="2000" chance="16" radius="7" target="0" min="0" max="-255">
 			<attribute key="areaEffect" value="groundshaker" />
 		</attack>

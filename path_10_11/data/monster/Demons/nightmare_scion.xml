@@ -57,7 +57,7 @@
 		<item name="platinum coin" countmax="3" chance="961" />
 		<item name="crown helmet" chance="666" />
 		<item name="meat" countmax="4" chance="50000" />
-		<item id="6300" chance="250" /> <!-- death ring -->
+		<item id="6300" chance="250" /><!-- death ring -->
 		<item name="bar of chocolate" chance="280" />
 		<item name="diamond sceptre" chance="340" />
 		<item name="shadow sceptre" chance="270" />

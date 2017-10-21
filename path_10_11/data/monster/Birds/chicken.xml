@@ -26,7 +26,7 @@
 	</voices>
 	<loot>
 		<item name="meat" countmax="2" chance="2120" />
-		<item id="2695" chance="950" /> <!-- egg -->
+		<item id="2695" chance="950" /><!-- egg -->
 		<item name="worm" countmax="3" chance="10000" />
 		<item name="chicken feather" countmax="1" chance="20000" />
 	</loot>

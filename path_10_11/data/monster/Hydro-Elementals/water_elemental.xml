@@ -60,13 +60,13 @@
 		<item name="platinum coin" chance="10000" />
 		<item name="energy ring" chance="950" />
 		<item name="life ring" chance="930" />
-		<item id="2667" chance="20000" /> <!-- fish -->
+		<item id="2667" chance="20000" /><!-- fish -->
 		<item name="rainbow trout" chance="940" />
 		<item name="green perch" chance="1050" />
 		<item name="strong health potion" chance="10000" />
 		<item name="strong mana potion" chance="10000" />
-		<item id="7632" chance="800" /> <!-- giant shimmering pearl -->
-		<item id="7633" chance="800" /> <!-- giant shimmering pearl -->
+		<item id="7632" chance="800" /><!-- giant shimmering pearl -->
+		<item id="7633" chance="800" /><!-- giant shimmering pearl -->
 		<item name="leviathan's amulet" chance="260" />
 	</loot>
 </monster>

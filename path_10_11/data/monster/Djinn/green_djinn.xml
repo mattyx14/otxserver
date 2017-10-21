@@ -58,13 +58,13 @@
 		<voice sentence="Good wishes are for fairytales" />
 	</voices>
 	<loot>
-		<item id="1965" chance="2280" /> <!-- green book -->
+		<item id="1965" chance="2280" /><!-- green book -->
 		<item name="oil lamp" chance="830" />
 		<item name="gold coin" countmax="70" chance="41000" />
 		<item name="gold coin" countmax="45" chance="51000" />
 		<item name="small emerald" countmax="4" chance="2960" />
 		<item name="mystic turban" chance="140" />
-		<item id="2696" chance="23500" /> <!-- cheese -->
+		<item id="2696" chance="23500" /><!-- cheese -->
 		<item name="grave flower" chance="1000" />
 		<item name="green piece of cloth" chance="2000" />
 		<item name="royal spear" countmax="2" chance="4870" />

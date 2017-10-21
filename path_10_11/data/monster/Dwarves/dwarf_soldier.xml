@@ -43,7 +43,7 @@
 		<item name="soldier helmet" chance="12000" />
 		<item name="dwarven shield" chance="3000" />
 		<item name="bolt" countmax="7" chance="40000" />
-		<item id="2554" chance="10000" /> <!-- shovel -->
+		<item id="2554" chance="10000" /><!-- shovel -->
 		<item name="white mushroom" countmax="3" chance="40000" />
 		<item name="iron ore" chance="300" />
 		<item name="piercing bolt" countmax="3" chance="4000" />

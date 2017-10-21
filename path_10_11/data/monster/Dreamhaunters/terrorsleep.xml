@@ -80,7 +80,7 @@
 		<item name="blue crystal shard" chance="6000" />
 		<item name="blue crystal splinter" chance="13000" />
 		<item name="cyan crystal fragment" chance="17000" />
-		<item id="22363" chance="1130" /> <!-- broken dream -->
+		<item id="22363" chance="1130" /><!-- broken dream -->
 		<item name="trapped bad dream monster" chance="13000" />
 		<item name="bowl of terror sweat" chance="18000" />
 	</loot>

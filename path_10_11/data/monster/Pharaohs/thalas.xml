@@ -62,7 +62,7 @@
 		<item name="small emerald" countmax="3" chance="7000" />
 		<item name="green gem" chance="500" />
 		<item name="stealth ring" chance="1500" />
-		<item id="2169" chance="7000" /> <!-- time ring -->
+		<item id="2169" chance="7000" /><!-- time ring -->
 		<item name="cobrafang dagger" chance="100000" />
 		<item name="serpent sword" chance="500" />
 		<item name="poison dagger" chance="7000" />

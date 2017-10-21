@@ -54,18 +54,18 @@
 		<voice sentence="I will haunt you forever!" />
 	</voices>
 	<loot>
-		<item id="6558" chance="100000" /> <!-- concentrated demonic blood -->
-		<item id="6300" chance="100000" /> <!-- death ring -->
-		<item id="6500" chance="100000" /> <!-- demonic essence -->
-		<item id="11223" chance="100000" /> <!-- essence of a bad dream -->
-		<item id="2671" countmax="2" chance="100000" /> <!-- ham -->
-		<item id="2152" countmax="10" chance="90000" /> <!-- platinum coin -->
-		<item id="11229" chance="81000" /> <!-- scythe leg -->
-		<item id="2477" chance="70000" /> <!-- knight legs -->
-		<item id="5669" chance="40000" /> <!-- mysterious voodoo skull -->
-		<item id="6526" chance="28000" /> <!-- skeleton decoration -->
-		<item id="2454" chance="14000" /> <!-- war axe -->
-		<item id="7418" chance="10000" /> <!-- nightmare blade -->
-		<item id="2195" chance="8000" /> <!-- boots of haste -->
+		<item id="6558" chance="100000" />				<!-- concentrated demonic blood -->
+		<item id="6300" chance="100000" />				<!-- death ring -->
+		<item id="6500" chance="100000" />				<!-- demonic essence -->
+		<item id="11223" chance="100000" />				<!-- essence of a bad dream -->
+		<item id="2671" countmax="2" chance="100000" />	<!-- ham -->
+		<item id="2152" countmax="10" chance="90000" />	<!-- platinum coin -->
+		<item id="11229" chance="81000" />				<!-- scythe leg -->
+		<item id="2477" chance="70000" />				<!-- knight legs -->
+		<item id="5669" chance="40000" />				<!-- mysterious voodoo skull -->
+		<item id="6526" chance="28000" />				<!-- skeleton decoration -->
+		<item id="2454" chance="14000" />				<!-- war axe -->
+		<item id="7418" chance="10000" />				<!-- nightmare blade -->
+		<item id="2195" chance="8000" />					<!-- boots of haste -->
 	</loot>
 </monster>

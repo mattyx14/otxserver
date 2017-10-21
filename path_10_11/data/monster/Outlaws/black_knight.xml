@@ -45,7 +45,7 @@
 	</voices>
 	<loot>
 		<item name="piggy bank" chance="210" />
-		<item id="2120" chance="16020" /> <!-- rope -->
+		<item id="2120" chance="16020" /><!-- rope -->
 		<item name="ruby necklace" chance="740" />
 		<item name="gold coin" countmax="80" chance="23000" />
 		<item name="gold coin" countmax="56" chance="23000" />

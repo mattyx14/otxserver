@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Ragiaz" nameDescription="a ragiaz" race="blood" experience="30000" speed="485" manacost="200">
+	<health now="120000" max="120000" />
+	<look type="862" head="0" body="57" legs="76" feet="0" addons="3" corpse="9780" />
+	<targetchange interval="2000" chance="10" />
+	<flags>
+	    <flag rewardboss="1" />
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+		<flag rewardboss="1" />
+	</flags>
+	<script>
+   <event name="Ragiaz"/>
+	</script>
+	<attacks>
+		<attack name="melee" interval="2000" skill="200" attack="250" />
+		<attack name="manadrain" interval="1000" chance="7" range="7" min="-100" max="-500">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="poff" />
+		</attack>
+		<attack name="drunk" interval="1000" chance="7" range="7">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="strength" interval="1000" chance="9" range="7">
+			<attribute key="shootEffect" value="largerock" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="13" radius="8" target="0" min="-100" max="-400">
+			<attribute key="areaEffect" value="bluebubble" />
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="10" length="8" spread="0" min="-50" max="-200">
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>		
+		<attack name="renegade knight" interval="2000" chance="30"/>		
+		<attack name="choking fear drown" interval="2000" chance="20" />
+		<attack name="death" interval="2000" chance="20" radius="4" target="1" min="-450" max="-1400">
+			<attribute key="shootEffect" value="suddendeath" />
+			<attribute key="areaEffect" value="mortarea" />
+		</attack>
+		<attack name="manadrain" interval="1000" chance="10" radius="8" target="0" min="-100" max="-300">
+			<attribute key="areaEffect" value="greenshimmer" />
+		</attack>
+		<attack name="speed" interval="1000" chance="12" radius="6" target="0" speedchange="-1900" duration="60000">
+			<attribute key="areaEffect" value="poison" />
+		</attack>
+		<attack name="strength" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>
+		
+		
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-100" max="-700">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="15" length="8" spread="0" min="-100" max="-450">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+	</attacks>
+	<defenses armor="160" defense="160">
+		
+		<defense name="healing" interval="3000" chance="15" min="2000" max="6000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="speed" interval="1000" chance="8" speedchange="1901" duration="5000">
+			<attribute key="areaEffect" value="redshimmer" />
+		</defense>
+		
+		<defense name="invisible" interval="1000" chance="17" duration="2000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		
+	</defenses>
+	
+	<elements>		
+		<element deathPercent="20" />
+		</elements>
+	
+	<immunities>
+	
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	
+	<voices interval="2000" chance="15">
+		<voice sentence="Ragiaz power revives his minion!" />
+	</voices>
+	<loot capacity="5000">
+	<item id="2148" countmax="100" chance="9000" /> <!-- gold coin -->
+	<item id="2148" countmax="100" chance="9000" /> <!-- gold coin -->	
+	<item id="2152" countmax="25" chance="9000" /> <!-- platinum coin -->	
+		<item id="25172" chance="80500" /> <!-- silver token -->		
+		<item id="25414" chance="400" /> <!-- Death Gaze -->	
+	    <item id="2436" chance="600" /> <!-- Skull Staff -->
+		<item id="25522" chance="300" /> <!-- Rift Bow -->		
+	    <item id="7426" chance="500" /> <!-- Amber Staff -->	
+		 <item id="2155" chance="1500" /> <!-- Green Gem -->
+		  <item id="2154" chance="1500" /> <!-- Yellow Gem -->
+		 <item id="2156" chance="8500" /> <!-- Red Gem -->
+		<item id="2214" chance="8500" /> <!-- Ring of Healing -->
+		<item id="6500" chance="500" /> <!-- Demonic Essence -->
+	    <item id="7632" chance="9500" /> <!-- Giant Shimmering Pearl -->
+		<item id="2158" chance="8500" /> <!-- Blue Gem -->
+		<item id="8473" countmax="10" chance="8500" /> <!-- Ultimate Health Potion -->
+		<item id="9970" countmax="5" chance="4500" /> <!-- Small topaz -->
+		<item id="2150" countmax="5" chance="6500" /> <!-- Small Amethyst -->
+		<item id="2146" countmax="5" chance="9500" /> <!-- Small Sapphire -->
+		 <item id="18420" countmax="6" chance="2500" /> <!-- Red Crystal Fragment -->		
+	    <item id="18421" countmax="6" chance="1500" /> <!-- Green Crystal Fragment -->
+		<item id="7590" countmax="10" chance="4500" /> <!-- Great Mana Potion -->
+		<item id="8472" countmax="10" chance="4500" /> <!-- Great Spirit Potion -->
+		<item id="7591" countmax="10" chance="4500" /> <!-- Great Health Potion -->
+		<item id="18419" countmax="5" chance="3500" /> <!-- Cyan Crystal Fragment -->		
+		<item id="6558" countmax="5" chance="2500" /> <!-- Concentrated Demonic Blood -->   
+	   	
+	</loot>
+</monster>

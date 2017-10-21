@@ -56,7 +56,7 @@
 		<item name="magma amulet" chance="970" />
 		<item name="magma coat" chance="140" />
 		<item name="fiery heart" chance="9380" />
-		<item id="13757" chance="940" /> <!-- coal -->
+		<item id="13757" chance="940" /><!-- coal -->
 		<item name="brown crystal splinter" chance="4850" />
 		<item name="red crystal fragment" chance="2280" />
 		<item name="magma clump" chance="12440" />

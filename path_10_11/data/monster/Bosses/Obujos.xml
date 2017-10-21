@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Obujos" nameDescription="Obujos" race="blood" experience="20000" speed="560">
-	<health now="35000" max="35000" />
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Obujos" nameDescription="Obujos" race="blood" experience="25000" speed="560" manacost="0">
+	<health now="90000" max="90000" />
 	<look type="445" corpse="15224" />
 	<targetchange interval="2000" chance="50" />
 	<flags>
-		<flag rewardboss="1" />
+        <flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -16,6 +16,7 @@
 		<flag targetdistance="0" />
 		<flag runonhealth="60" />
 	</flags>
+	
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-1200" poison="360" />
 		<attack name="death" interval="3000" chance="23" range="7" radius="7" target="1" min="-200" max="-800">
@@ -42,12 +43,6 @@
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
 	</defenses>
-	<elements>
-		<element earthPercent="-20" />
-		<element energyPercent="-20" />
-		<element physicalPercent="-20" />
-		<element deathPercent="-20" />
-	</elements>
 	<immunities>
 		<immunity ice="1" />
 		<immunity paralyze="1" />
@@ -55,13 +50,19 @@
 		<immunity fire="1" />
 		<immunity invisible="1" />
 	</immunities>
-	<voices interval="3000" chance="100">
+	<voices interval="3000" chance="200">
 		<voice sentence="JN OBU!!" />
 		<voice sentence="QJELL KEJH!!" />
 	</voices>
+	<elements>
+		<element earthPercent="-20" />
+		<element energyPercent="-20" />
+		<element physicalPercent="-20" />
+		<element deathPercent="-20" />
+	</elements>
 	<loot>
-		<item name="deepling axe" chance="14285" />
-		<item name="depth scutum" chance="100000" />
-		<item name="ornate legs" chance="14285" />
+		<item id="15411" chance="100000" /><!-- depth scutum -->
+		<item id="15404" chance="1285" /><!-- deepling axe -->
+		<item id="15412" chance="1285" unique="1" /><!-- ornate legs -->
 	</loot>
 </monster>

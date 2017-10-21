@@ -49,6 +49,6 @@
 		<item name="white mushroom" countmax="2" chance="55000" />
 		<item name="iron ore" chance="510" />
 		<item name="health potion" chance="380" />
-		<item id="13757" chance="280" /> <!-- coal -->
+		<item id="13757" chance="280" /><!-- coal -->
 	</loot>
 </monster>

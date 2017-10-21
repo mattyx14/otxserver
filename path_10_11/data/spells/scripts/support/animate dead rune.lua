@@ -1,5 +1,9 @@
 function onCastSpell(creature, variant, isHotkey)
-	local position = variant:getPosition()
+	if not creature:isPlayer() then
+		return false
+	end
+
+	local position = Variant.getPosition(variant)
 	local tile = Tile(position)
 	if tile and creature:getSkull() ~= SKULL_BLACK then
 		local corpse = tile:getTopDownItem()
@@ -9,7 +13,7 @@ function onCastSpell(creature, variant, isHotkey)
 				local monster = Game.createMonster("Skeleton", position)
 				if monster then
 					corpse:remove()
-					creature:addSummon(monster)
+					monster:setMaster(creature)
 					position:sendMagicEffect(CONST_ME_MAGIC_BLUE)
 					return true
 				end

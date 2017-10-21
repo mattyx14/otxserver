@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Arachir The Ancient One" nameDescription="Arachir The Ancient One" race="undead" experience="1800" speed="300">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Arachir The Ancient One" nameDescription="Arachir The Ancient One" race="undead" experience="1800" speed="300" manacost="0">
 	<health now="1600" max="1600" />
 	<look type="287" corpse="8937" />
 	<targetchange interval="5000" chance="10" />
@@ -17,7 +17,7 @@
 		<flag runonhealth="0" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-380" />
+		<attack name="melee" interval="2000" skill="70" attack="95" />
 		<attack name="death" interval="9000" chance="100" target="0" radius="3" min="-120" max="-300">
 			<attribute key="areaEffect" value="mortarea" />
 		</attack>
@@ -45,24 +45,24 @@
 		<immunity death="1" />
 		<immunity invisible="1" />
 	</immunities>
-	<summons maxSummons="2">
-		<summon name="Lich" interval="9000" chance="100" />
-		<summon name="Lich" interval="9000" chance="100" />
-	</summons>
-	<voices interval="5000" chance="10">
+	<voices interval="2000" chance="7">
 		<voice sentence="I was the shadow that haunted the cradle of humanity!" />
 		<voice sentence="I exist since eons and you want to defy me?" />
 		<voice sentence="Can you feel the passage of time, mortal?" />
 	</voices>
+	<summons maxSummons="2">
+		<summon name="Lich" interval="9000" chance="100" />
+		<summon name="Lich" interval="9000" chance="100" />
+	</summons>
 	<loot>
-		<item name="black pearl" chance="8980" countmax="1" />
-		<item name="gold coin" chance="100000" countmax="98" />
-		<item name="platinum coin" chance="50000" countmax="5" />
-		<item name="ring of healing (faster regeneration)" chance="11111" />
+		<item id="7416" chance="1200" />
+		<item id="7588" chance="10000" />
 		<item id="2229" chance="10000" />
-		<item name="vampire shield" chance="6300" />
-		<item name="bloody edge" chance="1200" />
-		<item name="strong health potion" chance="10000" />
-		<item name="vampire lord token" chance="100000" />
+		<item id="2148" chance="100000" countmax="98" />
+		<item id="9020" chance="100000" />
+		<item id="2152" chance="50000" countmax="5" />
+		<item id="2216" chance="11111" />
+		<item id="2534" chance="6300" />
+		<item id="2144" chance="8980" countmax="1" />
 	</loot>
 </monster>

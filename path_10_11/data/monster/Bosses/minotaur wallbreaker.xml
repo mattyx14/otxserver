@@ -40,25 +40,25 @@
 		<immunity invisible="1" />
 	</immunities>
 	<loot>
-<!-- roll of covering 100% -->
-		<item id="2148" countmax="195" chance="100000" /> <!-- gold coin -->
-		<item id="2152" countmax="2" chance="58000" /> <!-- platinum coin -->
-<!-- moohtant horn -->
-<!-- giant pacifier -->
-		<item id="7591" countmax="3" chance="7300" /> <!-- great health potion -->
-		<item id="7590" countmax="3" chance="7300" /> <!-- great mana potion -->
-		<item id="2666" chance="6400" /> <!-- meat -->
-		<item id="2147" countmax="2" chance="4600" /> <!-- small ruby -->
-		<item id="5878" chance="4200" /> <!-- minotaur leather -->
-		<item id="2145" countmax="2" chance="4000" /> <!-- small diamond -->
-		<item id="2214" chance="2000" /> <!-- ring of healing -->
-		<item id="5911" chance="1700" /> <!-- red piece of cloth -->
-<!-- moohtant cudgel -->
-		<item id="2156" chance="880" /> <!-- red gem -->
-		<item id="2154" chance="730" /> <!-- yellow gem -->
-		<item id="7452" chance="440" /> <!-- spiked squelcher -->
-		<item id="7427" chance="290" /> <!-- chaos mace -->
-		<item id="9971" chance="290" /> <!-- gold ingot -->
-		<item id="7401" chance="290" /> <!-- minotaur trophy -->
+		<!-- roll of covering 100% -->
+		<item id="2148" countmax="195" chance="100000" />	<!-- gold coin -->
+		<item id="2152" countmax="2" chance="58000" />		<!-- platinum coin -->
+		<!-- moohtant horn -->
+		<!-- giant pacifier -->
+		<item id="7591" countmax="3" chance="7300" />		<!-- great health potion -->
+		<item id="7590" countmax="3" chance="7300" />		<!-- great mana potion -->
+		<item id="2666" chance="6400" />						<!-- meat -->
+		<item id="2147" countmax="2" chance="4600" />		<!-- small ruby -->
+		<item id="5878" chance="4200" />						<!-- minotaur leather -->
+		<item id="2145" countmax="2" chance="4000" />		<!-- small diamond -->
+		<item id="2214" chance="2000" />						<!-- ring of healing -->
+		<item id="5911" chance="1700" />						<!-- red piece of cloth -->
+		<!-- moohtant cudgel -->
+		<item id="2156" chance="880" />						<!-- red gem -->
+		<item id="2154" chance="730" />						<!-- yellow gem -->
+		<item id="7452" chance="440" />						<!-- spiked squelcher -->
+		<item id="7427" chance="290" />						<!-- chaos mace -->
+		<item id="9971" chance="290" />						<!-- gold ingot -->
+		<item id="7401" chance="290" />						<!-- minotaur trophy -->
 	</loot>
 </monster>

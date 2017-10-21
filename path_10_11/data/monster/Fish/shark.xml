@@ -39,9 +39,9 @@
 		<item name="small sapphire" chance="1222" />
 		<item name="gold coin" countmax="100" chance="50000" />
 		<item name="gold coin" countmax="38" chance="40000" />
-		<item id="2667" countmax="4" chance="25000" /> <!-- fish -->
+		<item id="2667" countmax="4" chance="25000" /><!-- fish -->
 		<item name="fish fin" chance="161" />
-		<item id="7632" chance="550" /> <!-- giant shimmering pearl -->
+		<item id="7632" chance="550" /><!-- giant shimmering pearl -->
 		<item name="eye of a deepling" chance="1270" />
 		<item name="deepling scales" chance="9090" />
 	</loot>

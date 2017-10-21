@@ -34,7 +34,7 @@
 			<attribute key="areaEffect" value="redshimmer" />
 		</attack>
 	</attacks>
-<defenses>
+	<defenses>
 		<defense name="healing" interval="2000" chance="30" min="228" max="449">
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
@@ -80,7 +80,7 @@
 		<item name="blank rune" countmax="2" chance="22500" />
 		<item name="crown armor" chance="660" />
 		<item name="shadow herb" countmax="2" chance="26930" />
-		<item id="6300" chance="330" /> <!-- death ring -->
+		<item id="6300" chance="330" /><!-- death ring -->
 		<item name="demonic essence" chance="16320" />
 		<item name="abyss hammer" chance="110" />
 		<item name="shadow sceptre" chance="550" />

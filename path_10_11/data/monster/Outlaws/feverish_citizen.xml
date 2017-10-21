@@ -48,7 +48,7 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="35" chance="30300" />
-		<item id="2230" chance="4920" /> <!-- bone -->
+		<item id="2230" chance="4920" /><!-- bone -->
 		<item name="worm" countmax="3" chance="25730" />
 		<item name="ominous piece of cloth" chance="1660" />
 		<item name="dubious piece of cloth" chance="1720" />

@@ -39,9 +39,9 @@
 		<voice sentence="Prek tars, dekklep zurk." />
 	</voices>
 	<loot>
-		<item id="2050" chance="4750" /> <!-- torch -->
+		<item id="2050" chance="4750" /><!-- torch -->
 		<item name="gold coin" countmax="13" chance="69000" />
-		<item id="2229" countmax="3" chance="3300" /> <!-- skull -->
+		<item id="2229" countmax="3" chance="3300" /><!-- skull -->
 		<item name="poison dagger" chance="2250" />
 		<item name="bone shield" chance="1000" />
 		<item name="wooden spoon" chance="10000" />

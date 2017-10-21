@@ -30,7 +30,7 @@
 		<immunity drown="1" />
 		<immunity invisible="1" />
 	</immunities>
-<defenses>
+	<defenses>
 		<defense name="healing" interval="2000" chance="30" min="0" max="0">
 			<attribute key="areaEffect" value="mortarea" />
 		</defense>

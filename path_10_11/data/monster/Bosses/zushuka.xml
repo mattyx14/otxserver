@@ -4,7 +4,7 @@
 	<look type="149" head="86" body="12" legs="31" feet="60" addons="0" corpse="20546" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
-		<flag rewardboss="1" />
+        <flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -17,6 +17,7 @@
 		<flag targetdistance="1" />
 		<flag runonhealth="0" />
 	</flags>
+	
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-560" />
 		<attack name="ice" interval="2000" chance="10" length="8" spread="3" min="0" max="-100">
@@ -64,37 +65,37 @@
 		<voice sentence="Your cold dead body will be a marvelous ice statue." />
 	</voices>
 	<loot>
-		<item id="2148" countmax="200" chance="92000" /> <!-- gold coin -->
-		<item id="21400" chance="92000" /> <!-- silver raid token -->
-		<item id="7290" chance="57000" /> <!-- shard -->
-		<item id="7449" chance="42000" /> <!-- crystal sword -->
-		<item id="8472" countmax="5" chance="42000" /> <!-- great spirit potion -->
-		<item id="2396" chance="42000" /> <!-- ice rapier -->
-		<item id="2168" chance="42000" /> <!-- life ring -->
-		<item id="7443" chance="35000" /> <!-- bullseye potion -->
-		<item id="7892" chance="35000" /> <!-- glacier shoes -->
-		<item id="7440" chance="35000" /> <!-- mastermind potion -->
-		<item id="2152" chance="35000" /> <!-- platinum coin -->
-		<item id="5909" countmax="2" chance="35000" /> <!-- white piece of cloth -->
-		<item id="7439" chance="28000" /> <!-- berserk potion -->
-		<item id="2158" chance="28000" /> <!-- blue gem -->
-		<item id="2663" chance="28000" /> <!-- mystic turban -->
-		<item id="7888" chance="21000" /> <!-- glacier amulet -->
-		<item id="7590" countmax="5" chance="21000" /> <!-- great mana potion -->
-		<item id="5912" chance="14000" /> <!-- blue piece of cloth -->
-		<item id="2445" chance="14000" /> <!-- crystal mace -->
-		<item id="2201" chance="14000" /> <!-- dragon necklace -->
-		<item id="7896" chance="14000" /> <!-- glacier kilt -->
-		<item id="7897" chance="14000" /> <!-- glacier robe -->
-		<item id="9971" chance="14000" /> <!-- gold ingot -->
-		<item id="7591" countmax="5" chance="14000" /> <!-- great health potion -->
-		<item id="7459" chance="14000" /> <!-- pair of earmuffs -->
-		<item id="2436" chance="14000" /> <!-- skull staff -->
-		<item id="2195" chance="7000" /> <!-- boots of haste -->
-		<item id="7902" chance="7000" /> <!-- glacier mask -->
-		<item id="5911" chance="7000" /> <!-- red piece of cloth -->
-		<item id="21699" chance="7000" /> <!-- trapped lightning -->
-		<item id="21700" chance="3000" /> <!-- icy culotte -->
-		<item id="7410" chance="3000" /> <!-- sceptre -->
+		<item id="2148" countmax="200" chance="92000" />	<!-- gold coin -->
+		<item id="21400" chance="92000" />				<!-- silver raid token -->
+		<item id="7290" chance="57000" />				<!-- shard -->
+		<item id="7449" chance="42000" />				<!-- crystal sword -->
+		<item id="8472" countmax="5" chance="42000" />	<!-- great spirit potion -->
+		<item id="2396" chance="42000" />				<!-- ice rapier -->
+		<item id="2168" chance="42000" />				<!-- life ring -->
+		<item id="7443" chance="35000" />				<!-- bullseye potion -->
+		<item id="7892" chance="35000" />				<!-- glacier shoes -->
+		<item id="7440" chance="35000" />				<!-- mastermind potion -->
+		<item id="2152" chance="35000" />				<!-- platinum coin -->
+		<item id="5909" countmax="2" chance="35000" />	<!-- white piece of cloth -->
+		<item id="7439" chance="28000" />				<!-- berserk potion -->
+		<item id="2158" chance="28000" />				<!-- blue gem -->
+		<item id="2663" chance="28000" />				<!-- mystic turban -->
+		<item id="7888" chance="21000" />				<!-- glacier amulet -->
+		<item id="7590" countmax="5" chance="21000" />	<!-- great mana potion -->
+		<item id="5912" chance="14000" />				<!-- blue piece of cloth -->
+		<item id="2445" chance="14000" />				<!-- crystal mace -->
+		<item id="2201" chance="14000" />				<!-- dragon necklace -->
+		<item id="7896" chance="14000" />				<!-- glacier kilt -->
+		<item id="7897" chance="14000" />				<!-- glacier robe -->
+		<item id="9971" chance="14000" />				<!-- gold ingot -->
+		<item id="7591" countmax="5" chance="14000" />	<!-- great health potion -->
+		<item id="7459" chance="14000" />				<!-- pair of earmuffs -->
+		<item id="2436" chance="14000" />				<!-- skull staff -->
+		<item id="2195" chance="7000" />					<!-- boots of haste -->
+		<item id="7902" chance="7000" />					<!-- glacier mask -->
+		<item id="5911" chance="7000" />					<!-- red piece of cloth -->
+		<item id="21699" chance="7000" />				<!-- trapped lightning -->
+		<item id="21700" chance="3000" />				<!-- icy culotte -->
+		<item id="7410" chance="3000" />				<!-- sceptre -->
 	</loot>
 </monster>

@@ -49,8 +49,8 @@
 	<loot>
 		<item name="small sapphire" chance="710" />
 		<item name="gold coin" countmax="35" chance="50000" />
-		<item id="2162" chance="14000" /> <!-- magic lightwand -->
-		<item id="2175" chance="360" /> <!-- Spellbook -->
+		<item id="2162" chance="14000" /><!-- magic lightwand -->
+		<item id="2175" chance="360" /><!-- Spellbook -->
 		<item name="dwarven ring" chance="530" />
 		<item name="blank rune" chance="33000" />
 		<item name="clerical mace" chance="1120" />

@@ -11,7 +11,7 @@
 		<flag illusionable="0" />
 		<flag convinceable="0" />
 		<flag pushable="0" />
-		<flag isblockable="0" />
+				<flag isblockable="0" />
 		<flag canpushcreatures="1" />
 		<flag canpushitems="1" />
 		<flag staticattack="90" />
@@ -55,22 +55,23 @@
 		<voice sentence="*shglib*" />
 	</voices>
 	<loot>
-		<item id="23515" chance="10190" /> <!-- bowl of glooth soup -->
-		<item id="23568" chance="17020" /> <!-- slimy leaf tentacle -->
-		<item id="2796" chance="2980" /> <!-- green mushroom -->
-		<item id="23554" chance="1000" /> <!-- glooth amulet -->
-		<item id="2148" countmax="173" chance="100000" /> <!-- gold coin -->
-		<item id="7588" countmax="2" chance="7490" /> <!-- strong health potion -->
-		<item id="7589" countmax="2" chance="8090" /> <!-- strong mana potion -->
-		<item id="8473" chance="1960" /> <!-- ultimate health potion -->
-		<item id="2152" countmax="3" chance="60020" /> <!-- platinum coin -->
-		<item id="9970" countmax="3" chance="8140" /> <!-- small topaz -->
-		<item id="2149" countmax="3" chance="8100" /> <!-- small emeralds -->
-		<item id="23535" chance="860" /> <!-- glooth cape -->
-		<item id="23543" chance="4000" /> <!-- glooth whip -->
-		<item id="23550" chance="940" /> <!-- glooth blade -->
-		<item id="23549" chance="1000" /> <!-- glooth club -->
-		<item id="23551" chance="1000" /> <!-- glooth axe -->
-		<item id="23529" chance="1000" /> <!-- glooth spear -->
+		<item id="23515" chance="3190" /><!-- bowl of glooth soup -->
+		<item id="23568" chance="2020" /><!--  slimy leaf tentacle -->
+		<item id="2796" chance="3180" /><!-- green mushroom -->
+		<item id="23554" chance="320" /><!-- glooth amulet -->
+		<item id="2148" countmax="170" chance="100000" /><!-- gold coin -->
+		<item id="7588" countmax="2" chance="6690" /><!-- strong health potion -->
+		<item id="7589" countmax="2" chance="6690" /><!-- strong mana potion -->
+		<item id="8473" chance="960" /><!-- ultimate health potion -->
+		<item id="2152" countmax="3" chance="57320" /><!-- platinum coin -->
+		<item id="9970" countmax="3" chance="1240" /><!-- small topaz -->
+		<item id="2149" countmax="3" chance="1600" /><!-- small emeralds -->
+		<item id="2147" countmax="3" chance="1150" /><!-- small rubies -->
+		<item id="23535" chance="140" /><!-- glooth cape -->
+		<item id="23543" chance="700" /><!-- glooth whip -->
+		<item id="23550" chance="120" /><!-- glooth blade -->
+		<item id="23549" chance="370" /><!-- glooth club -->
+		<item id="23551" chance="240" /><!-- glooth axe -->
+		<item id="23529" chance="370" /><!-- glooth spear -->
 	</loot>
 </monster>

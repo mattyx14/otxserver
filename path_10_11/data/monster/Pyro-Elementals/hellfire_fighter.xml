@@ -45,7 +45,7 @@
 	</immunities>
 	<loot>
 		<item name="emerald bangle" chance="2200" />
-		<item id="2136" chance="190" /> <!-- demonbone amulet -->
+		<item id="2136" chance="190" /><!-- demonbone amulet -->
 		<item name="small diamond" chance="1400" />
 		<item name="gold coin" countmax="100" chance="50000" />
 		<item name="gold coin" countmax="100" chance="40000" />
@@ -62,6 +62,6 @@
 		<item name="magma coat" chance="470" />
 		<item name="fiery heart" chance="9570" />
 		<item name="piece of hellfire armor" chance="5060" />
-		<item id="13757" chance="670" /> <!-- coal -->
+		<item id="13757" chance="670" /><!-- coal -->
 	</loot>
 </monster>

@@ -38,7 +38,7 @@
 	<loot>
 		<item name="gold coin" countmax="25" chance="70000" />
 		<item name="small emerald" countmax="3" chance="110" />
-		<item id="2667" countmax="3" chance="12020" /> <!-- fish -->
+		<item id="2667" countmax="3" chance="12020" /><!-- fish -->
 		<item name="fish fin" chance="350" />
 		<item name="heavy trident" chance="510" />
 		<item name="eye of a deepling" chance="283" />

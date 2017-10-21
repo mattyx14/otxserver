@@ -35,7 +35,7 @@
 		<item name="battle hammer" chance="5000" />
 		<item name="battle shield" chance="1000" />
 		<item name="guardian shield" chance="5000" />
-		<item id="6570" chance="5538" /> <!-- blue surprise bag -->
-		<item id="6571" chance="1538" /> <!-- red surprise bag -->
+		<item id="6570" chance="5538" /><!-- blue surprise bag -->
+		<item id="6571" chance="1538" /><!-- red surprise bag -->
 	</loot>
 </monster>

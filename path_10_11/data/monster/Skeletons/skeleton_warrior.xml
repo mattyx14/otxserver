@@ -34,8 +34,8 @@
 	</immunities>
 	<loot>
 		<item name="gold coin" countmax="10" chance="43500" />
-		<item id="2230" chance="50000" /> <!-- bone -->
-		<item id="2376" chance="1500" /> <!-- sword -->
+		<item id="2230" chance="50000" /><!-- bone -->
+		<item id="2376" chance="1500" /><!-- sword -->
 		<item name="mace" chance="2000" />
 		<item name="white mushroom" countmax="3" chance="24000" />
 		<item name="brown mushroom" chance="1700" />

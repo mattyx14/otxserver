@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Zamulosh" nameDescription="a zamulosh" race="blood" experience="30000" speed="525" manacost="200">
+	<health now="100000" max="100000" />
+	<look type="862" head="17" body="12" legs="73" feet="92" addons="0" corpse="9780" />
+	<targetchange interval="2000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+		<flag rewardboss="1" />
+	</flags>
+	<script>
+   <event name="Zamulosh"/>
+	</script>
+	<attacks>
+		<attack name="melee" interval="2000" skill="200" attack="250" />
+		<attack name="manadrain" interval="1000" chance="7" range="7" min="-100" max="-500">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="poff" />
+		</attack>
+		<attack name="drunk" interval="1000" chance="7" range="7">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="strength" interval="1000" chance="9" range="7">
+			<attribute key="shootEffect" value="largerock" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="13" radius="8" target="0" min="-100" max="-400">
+			<attribute key="areaEffect" value="bluebubble" />
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="10" length="8" spread="0" min="-50" max="-200">
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>		
+		<attack name="renegade knight" interval="2000" chance="30"/>		
+		<attack name="choking fear drown" interval="2000" chance="20" />
+		<attack name="death" interval="2000" chance="20" radius="4" target="1" min="-450" max="-1400">
+			<attribute key="shootEffect" value="suddendeath" />
+			<attribute key="areaEffect" value="mortarea" />
+		</attack>
+		<attack name="manadrain" interval="1000" chance="10" radius="8" target="0" min="-100" max="-300">
+			<attribute key="areaEffect" value="greenshimmer" />
+		</attack>
+		<attack name="speed" interval="1000" chance="12" radius="6" target="0" speedchange="-1900" duration="60000">
+			<attribute key="areaEffect" value="poison" />
+		</attack>
+		<attack name="strength" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>
+		
+		
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-100" max="-700">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="15" length="8" spread="0" min="-100" max="-450">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+	</attacks>
+	<defenses armor="160" defense="160">
+		
+		<defense name="healing" interval="6000" chance="25" min="2000" max="3000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="speed" interval="1000" chance="8" speedchange="1901" duration="5000">
+			<attribute key="areaEffect" value="redshimmer" />
+		</defense>
+		<defense name="invisible" interval="1000" chance="4" duration="10000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="invisible" interval="1000" chance="17" duration="2000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		
+	</defenses>
+	<immunities>
+		<immunity drown="1" />
+		<immunity lifedrain="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<summons maxSummons="3">
+		<summon name="Zamulosh Summom" interval="1000" chance="15" max="3" />
+		
+	</summons>
+	<voices interval="2000" chance="7">
+		<voice sentence="I AM ZAMULOSH!" yell="1" />
+	</voices>
+	<loot capacity="5000">
+	<item id="2148" countmax="100" chance="9000" /> <!-- gold coin -->
+	<item id="2148" countmax="100" chance="9000" /> <!-- gold coin -->	
+	<item id="2152" countmax="25" chance="9000" /> <!-- platinum coin -->
+	
+		<item id="25172" chance="80500" /> <!-- silver token -->
+		<item id="25411" chance="200" /> <!-- Book of Lies -->
+	
+	    <item id="25523" chance="200" /> <!-- Rift Crossbow -->
+	    <item id="2154" chance="1500" /> <!-- Yellow Gem -->
+	    
+		<item id="2169" chance="2500" /> <!-- Time Ring -->
+	    <item id="2165" chance="900" /> <!-- Stealth Ring -->
+	    <item id="2214" chance="300" /> <!-- Ring of Healing -->
+	    <item id="2155" chance="600" /> <!-- Green Gem -->
+	    <item id="6500" chance="700" /> <!-- Demonic Essence -->
+	    <item id="2158" chance="10500" /> <!-- Blue Gem -->
+	    <item id="2147" countmax="5" chance="8500" /> <!-- Small Ruby -->
+	    <item id="2146" countmax="5" chance="9500" /> <!-- Small Sapphire -->
+	    
+		<item id="8473" countmax="10" chance="8500" /> <!-- Ultimate Health Potion -->
+	    <item id="7590" countmax="10" chance="9500" /> <!-- Great Mana Potion -->
+	    <item id="18416" countmax="6" chance="7500" /> <!-- Green Crystal Splinter -->
+	    <item id="18417" countmax="5" chance="3500" /> <!-- Brown Crystal Splinter -->
+	    <item id="18418" countmax="6" chance="7500" /> <!-- Blue Crystal Splinter -->
+	    
+	</loot>
+</monster>

@@ -49,12 +49,12 @@
 		<voice sentence="Yohag Sssetham!" />
 	</voices>
 	<loot>
-		<item id="2124" chance="1500" /> <!-- crystal ring -->
+		<item id="2124" chance="1500" /><!-- crystal ring -->
 		<item name="silver brooch" chance="4000" />
 		<item name="black pearl" chance="1000" />
 		<item name="gold coin" countmax="80" chance="38000" />
 		<item name="strange talisman" chance="5000" />
-		<item id="2162" chance="5800" /> <!-- magic lightwand -->
+		<item id="2162" chance="5800" /><!-- magic lightwand -->
 		<item name="silver amulet" chance="100" />
 		<item name="poison dagger" chance="450" />
 		<item name="black shield" chance="170" />

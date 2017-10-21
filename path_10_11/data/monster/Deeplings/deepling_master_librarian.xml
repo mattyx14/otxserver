@@ -17,7 +17,7 @@
 		<flag runonhealth="250" />
 		<flag canwalkonenergy="0" />
 		<flag canwalkonpoison="0" />
-	</flags>
+		</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-210" />
 		<attack name="ice" interval="2000" chance="10" length="10" spread="3" min="-260" max="-450">
@@ -52,7 +52,7 @@
 		<item name="gold coin" countmax="100" chance="100000" />
 		<item name="platinum coin" countmax="3" chance="90000" />
 		<item name="life ring" chance="3200" />
-		<item id="2667" countmax="2" chance="9090" /> <!-- fish -->
+		<item id="2667" countmax="2" chance="9090" /><!-- fish -->
 		<item name="fish fin" chance="1950" />
 		<item name="eye of a deepling" chance="9380" />
 		<item name="deepling staff" chance="3130" />

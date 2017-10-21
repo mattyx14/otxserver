@@ -56,7 +56,7 @@
 		<item name="terra amulet" chance="2360" />
 		<item name="lump of earth" chance="15000" />
 		<item name="clay lump" chance="700" />
-		<item id="13757" chance="12130" /> <!-- Coal -->
+		<item id="13757" chance="12130" /><!-- Coal -->
 		<item name="green crystal splinter" chance="9780" />
 		<item name="brown crystal splinter" chance="9260" />
 		<item name="blue crystal splinter" chance="9610" />

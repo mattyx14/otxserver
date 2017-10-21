@@ -51,9 +51,9 @@
 		<voice sentence="If music is the food of death, drop dead." />
 	</voices>
 	<loot>
-		<item id="2072" chance="7000" /> <!-- lute -->
-		<item id="2074" chance="1500" /> <!-- panpipes -->
-		<item id="2124" chance="1500" /> <!-- crystal ring -->
+		<item id="2072" chance="7000" /><!-- lute -->
+		<item id="2074" chance="1500" /><!-- panpipes -->
+		<item id="2124" chance="1500" /><!-- crystal ring -->
 		<item name="ancient tiara" chance="300" />
 		<item name="white pearl" chance="7000" />
 		<item name="gold coin" countmax="90" chance="50000" />
@@ -62,6 +62,6 @@
 		<item name="blue note" chance="100000" />
 		<item name="crystal mace" chance="500" />
 		<item name="blue robe" chance="2500" />
-		<item id="7691" chance="7000" /> <!-- great mana potion -->
+		<item id="7691" chance="7000" /><!-- great mana potion -->
 	</loot>
 </monster>

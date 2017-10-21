@@ -43,7 +43,7 @@
 		<item name="small diamond" chance="510" />
 		<item name="gold coin" countmax="55" chance="57000" />
 		<item name="rotten meat" chance="1850" />
-		<item id="2230" chance="5000" /> <!-- bone -->
+		<item id="2230" chance="5000" /><!-- bone -->
 		<item name="throwing star" countmax="3" chance="910" />
 		<item name="bone sword" chance="1000" />
 		<item name="iron helmet" chance="2130" />

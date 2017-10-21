@@ -57,16 +57,16 @@
 		<voice sentence="Power to the cult!" />
 	</voices>
 	<loot>
-		<item id="1962" chance="940" /> <!-- orange book -->
+		<item id="1962" chance="940" /><!-- orange book -->
 		<item name="small ruby" chance="320" />
 		<item name="gold coin" countmax="60" chance="65520" />
-		<item id="2169" chance="420" /> <!-- time ring -->
+		<item id="2169" chance="420" /><!-- time ring -->
 		<item name="silver amulet" chance="1020" />
 		<item name="hailstorm rod" chance="220" />
 		<item name="clerical mace" chance="1260" />
 		<item name="red robe" chance="80" />
 		<item name="pirate voodoo doll" chance="1730" />
-		<item id="6089" chance="700" /> <!-- music sheet 3rd verse -->
+		<item id="6089" chance="700" /><!-- music sheet 3rd verse -->
 		<item name="lunar staff" chance="120" />
 		<item name="amber staff" chance="680" />
 		<item name="cultish robe" chance="10080" />

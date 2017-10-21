@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Deathstrike" nameDescription="Deathstrike" race="blood" experience="40000" speed="470">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Deathstrike" nameDescription="Deathstrike" race="blood" experience="40000" speed="470" manacost="0">
 	<health now="200000" max="200000" />
 	<look type="500" corpse="18384" />
 	<targetchange interval="5000" chance="8" />
@@ -14,10 +14,10 @@
 		<flag canpushcreatures="1" />
 		<flag targetdistance="0" />
 		<flag staticattack="50" />
-		<flag runonhealth="10000" />
+		<flag runonhealth="2000" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="1300" min="0" max="-540" />
+		<attack name="melee" interval="1300" skill="80" attack="120" />
 		<attack name="speed" interval="2000" chance="20" range="7" speedchange="-400" duration="2500">
 			<attribute key="shootEffect" value="whirlwindaxe" />
 		</attack>
@@ -34,31 +34,32 @@
 		</defense>
 	</defenses>
 	<elements>
-		<element physicalPercent="10" />
-		<element deathPercent="-20" />
-		<element energyPercent="-20" />
+		<element physicalPercent="40" />
+		<element holyPercent="20" />
+		<element deathPercent="50" />
+		<element firePercent="50" />
+		<element icePercent="40" />
 	</elements>
 	<immunities>
-		<immunity outfit="1" />
-		<immunity fire="1" />
 		<immunity earth="1" />
 		<immunity drown="1" />
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
 	</immunities>
-	<voices interval="5000" chance="10">
+	<voices interval="2000" chance="7">
 		<voice sentence="Deeestructiooon!" />
 		<voice sentence="Maaahhhrrr!" />
-		<voice sentence="You are nothing!" />
-		<voice sentence="Taaake ... this!" />
+		<voice sentence="I am carnage incarnate!" />
+		<voice sentence="I've seen the light! And it was all engulfing fire!" />
+		<voice sentence="Taaake... this!" />
 	</voices>
 	<loot>
-		<item name="Deathstrike's snippet" chance="100000" />
-		<item name="crystalline sword" chance="10480" />
-		<item name="crystalline axe" chance="11430" />
-		<item name="mycological mace" chance="8570" />
-		<item name="crystal crossbow" chance="12380" />
-		<item name="mycological bow" chance="11430" />
-		<item name="shiny blade" chance="11430" />
+		<item id="18465" chance="8430" />	<!-- shiny blade -->
+		<item id="18452" chance="6570" />	<!-- mycological mace -->
+		<item id="18450" chance="10480" />	<!-- crystalline sword -->
+		<item id="18430" chance="100000" />	<!-- deathstrike's snippets -->
+		<item id="18453" chance="12380" />	<!-- crystalline crossbow -->
+		<item id="18451" chance="7430" />	<!-- crystalline axe -->
+		<item id="18454" chance="11430" />	<!-- mycological bow -->
 	</loot>
 </monster>

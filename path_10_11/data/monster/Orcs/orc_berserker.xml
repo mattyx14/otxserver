@@ -37,7 +37,7 @@
 		<voice sentence="KRAK ORRRRRRK!" yell="1" />
 	</voices>
 	<loot>
-		<item id="2044" chance="830" /> <!-- lamp -->
+		<item id="2044" chance="830" /><!-- lamp -->
 		<item name="gold coin" countmax="12" chance="54000" />
 		<item name="battle axe" chance="6110" />
 		<item name="halberd" chance="7280" />

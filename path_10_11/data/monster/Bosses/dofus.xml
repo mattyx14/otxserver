@@ -42,24 +42,25 @@
 		<immunity invisible="1" />
 	</immunities>
 	<loot>
- 		<item id="3954" chance="1000" /> <!-- bear doll -->
-  		<item id="6512" chance="1000" /> <!-- santa doll -->
-  		<item id="6579" chance="1000" /> <!-- tibia doll -->
-  		<item id="9693" chance="1000" /> <!-- jester doll -->
-  		<item id="10306" chance="1000" /> <!-- fan doll of King Tibianus -->
-  		<item id="11256" chance="1000" /> <!-- snowman doll -->
-  		<item id="12666" chance="1000" /> <!-- gamemaster doll -->
-  		<item id="13559" chance="1000" /> <!-- dread doll -->
-  		<item id="13560" chance="1000" /> <!-- fan doll of Queen Eloise -->
-  		<item id="13581" chance="1000" /> <!-- dread doll -->
-  		<item id="16107" chance="1000" /> <!-- doll of Durin The Almighty -->
-  		<item id="20105" chance="1000" /> <!-- rat god doll -->
-  		<item id="20624" chance="1000" /> <!-- bookworm doll -->
-  		<item id="20625" chance="1000" /> <!-- draken doll -->
-  		<item id="23589" chance="1000" /> <!-- lisa's doll -->
-  		<item id="23806" chance="1000" /> <!-- black knight doll -->
-  		<item id="24331" chance="1000" /> <!-- assassin doll -->
-		<item id="21400" chance="1000" /> <!-- silver raid token -->
-		<item id="21399" chance="1000" /> <!-- gold raid token -->
+               <item id="3954" chance="1000" /><!-- bear doll -->
+                <item id="6512" chance="1000" /><!-- santa doll -->
+                <item id="6579" chance="1000" /><!-- tibia doll -->
+                <item id="9693" chance="1000" /><!-- jester doll -->
+                <item id="10306" chance="1000" /><!-- fan doll of King Tibianus -->
+                <item id="11256" chance="1000" /><!-- snowman doll -->
+                <item id="12666" chance="1000" /><!-- gamemaster doll -->
+                <item id="13559" chance="1000" /><!-- dread doll -->
+                <item id="13560" chance="1000" /><!-- fan doll of Queen Eloise -->
+                <item id="13581" chance="1000" /><!-- dread doll -->
+                <item id="16107" chance="1000" /><!-- doll of Durin The Almighty -->
+                <item id="20105" chance="1000" /><!-- rat god doll -->
+                <item id="20624" chance="1000" /><!-- bookworm doll -->
+                <item id="20625" chance="1000" /><!-- draken doll -->
+                <item id="23589" chance="1000" /><!-- lisa's doll -->
+                <item id="23806" chance="1000" /><!-- black knight doll -->
+                <item id="24331" chance="1000" /><!-- assassin doll -->
+
+<item id="21400" chance="1000" /><!-- silver raid token -->
+<item id="21399" chance="1000" /><!-- gold raid token -->			
 	</loot>
 </monster>

@@ -26,7 +26,7 @@
 		</attack>
 		<attack name="stampor skill reducer" range="5" interval="2000" chance="10" />
 	</attacks>
-<defenses>
+	<defenses>
 		<defense name="healing" interval="2000" chance="15" min="90" max="120">
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
@@ -46,14 +46,14 @@
 		<voice sentence="HRRRRRNG" yell="1" />
 	</voices>
 	<loot>
-		<item id="13301" chance="100000" /> <!-- hollow stampor hoof -->
-		<item id="2476" chance="100000" /> <!-- knight armor -->
-		<item id="2152" countmax="13" chance="100000" /> <!-- platinum coin -->
-		<item id="9970" countmax="5" chance="100000" /> <!-- small topaz -->
-		<item id="13299" chance="100000" /> <!-- stampor horn -->
-		<item id="13300" countmax="2" chance="100000" /> <!-- stampor talon -->
-		<item id="7588" countmax="2" chance="100000" /> <!-- strong health potion -->
-		<item id="7589" countmax="2" chance="100000" /> <!-- strong mana potion -->
-		<item id="7452" chance="50000" /> <!-- spiked squelcher -->
+		<item id="13301" chance="100000" />					<!-- hollow stampor hoof -->
+		<item id="2476" chance="100000" />					<!-- knight armor -->
+		<item id="2152" countmax="13" chance="100000" />		<!-- platinum coin -->
+		<item id="9970" countmax="5" chance="100000" />		<!-- small topaz -->
+		<item id="13299" chance="100000" />					<!-- stampor horn -->
+		<item id="13300" countmax="2" chance="100000" />		<!-- stampor talon -->
+		<item id="7588" countmax="2" chance="100000" />		<!-- strong health potion -->
+		<item id="7589" countmax="2" chance="100000" />		<!-- strong mana potion -->
+		<item id="7452" chance="50000" />					<!-- spiked squelcher -->
 	</loot>
 </monster>

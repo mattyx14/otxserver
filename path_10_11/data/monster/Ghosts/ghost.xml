@@ -38,7 +38,7 @@
 		<voice sentence="Buuuuuh" />
 	</voices>
 	<loot>
-		<item id="1962" chance="1310" /> <!-- orange book -->
+		<item id="1962" chance="1310" /><!-- orange book -->
 		<item name="stealth ring" chance="180" />
 		<item name="morning star" chance="10610" />
 		<item name="combat knife" chance="7002" />

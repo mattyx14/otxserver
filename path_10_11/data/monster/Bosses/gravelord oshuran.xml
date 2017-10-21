@@ -56,14 +56,14 @@
 		<voice sentence="Your mortality is disgusting!" />
 	</voices>
 	<loot>
-		<item id="2148" countmax="115" chance="100000" /> <!-- gold coin -->
-		<item id="7589" chance="17500" /> <!-- strong mana potion -->
-		<item id="2144" chance="15960" /> <!-- black pearl -->
-		<item id="2143" chance="15000" /> <!-- white pearl -->
-		<item id="2214" chance="15040" /> <!-- ring of healing -->
-		<item id="2656" chance="500" /> <!-- blue robe -->
-		<item id="7893" chance="900" /> <!-- lightning boots -->
-		<item id="8904" chance="300" /> <!-- spellscroll of prophecies -->
-		<item id="2175" chance="4650" /> <!-- spellbook -->
+		<item id="2148" countmax="115" chance="100000" />	<!-- gold coin -->
+		<item id="7589" chance="17500" />					<!-- strong mana potion -->
+		<item id="2144" chance="15960" />					<!-- black pearl -->
+		<item id="2143" chance="15000" />					<!-- white pearl -->
+		<item id="2214" chance="15040" />					<!-- ring of healing -->
+		<item id="2656" chance="500" />						<!-- blue robe -->
+		<item id="7893" chance="900" />						<!-- lightning boots -->
+		<item id="8904" chance="300" />						<!-- spellscroll of prophecies -->
+		<item id="2175" chance="4650" />						<!-- spellbook -->
 	</loot>
 </monster>

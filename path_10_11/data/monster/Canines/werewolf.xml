@@ -65,7 +65,7 @@
 		<item name="gold coin" countmax="90" chance="35000" />
 		<item name="gold coin" countmax="90" chance="35000" />
 		<item name="gold coin" countmax="45" chance="35000" />
-		<item id="2169" chance="800" /> <!-- time ring -->
+		<item id="2169" chance="800" /><!-- time ring -->
 		<item name="platinum amulet" chance="870" />
 		<item name="stone skin amulet" chance="1000" />
 		<item name="halberd" chance="3000" />
@@ -81,7 +81,7 @@
 		<item name="berserk potion" chance="1200" />
 		<item name="strong health potion" chance="5000" />
 		<item name="ultimate health potion" chance="2400" />
-		<item id="9809" chance="210" /> <!-- rusty armor -->
+		<item id="9809" chance="210" /><!-- rusty armor -->
 		<item name="werewolf fur" chance="10650" />
 	</loot>
 </monster>

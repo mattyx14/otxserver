@@ -58,7 +58,7 @@
 		<item name="ice rapier" chance="400" />
 		<item name="strange helmet" chance="444" />
 		<item name="shard" chance="266" />
-		<item id="7441" chance="5000" /> <!-- ice cube -->
+		<item id="7441" chance="5000" /><!-- ice cube -->
 		<item name="crystal sword" chance="177" />
 		<item name="strong health potion" chance="444" />
 		<item name="glacier mask" chance="111" />

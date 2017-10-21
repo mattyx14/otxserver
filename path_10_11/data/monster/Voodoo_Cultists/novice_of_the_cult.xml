@@ -49,7 +49,7 @@
 		<voice sentence="Your curiosity will be punished!" />
 	</voices>
 	<loot>
-		<item id="1962" chance="700" /> <!-- orange book -->
+		<item id="1962" chance="700" /><!-- orange book -->
 		<item name="small diamond" chance="210" />
 		<item name="gold coin" countmax="40" chance="43380" />
 		<item name="wand of vortex" chance="450" />
@@ -57,7 +57,7 @@
 		<item name="dwarven ring" chance="500" />
 		<item name="scarf" chance="2900" />
 		<item name="pirate voodoo doll" chance="520" />
-		<item id="6087" chance="970" /> <!-- music sheet 1st verse -->
+		<item id="6087" chance="970" /><!-- music sheet 1st verse -->
 		<item name="cultish robe" chance="1030" />
 		<item name="rope belt" chance="5910" />
 	</loot>

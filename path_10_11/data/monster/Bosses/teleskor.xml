@@ -28,13 +28,13 @@
 		<voice sentence="Mourn the dead, do not hunt them!" />
 	</voices>
 	<loot>
-		<item id="12437" chance="100000" /> <!-- pelvis bone -->
-		<item id="2148" countmax="79" chance="81000" /> <!-- gold coin -->
-		<item id="2398" chance="72000" /> <!-- mace -->
-		<item id="2473" chance="72000" /> <!-- viking helmet -->
-		<item id="2511" chance="45000" /> <!-- brass shield -->
-		<item id="2050" chance="36000" /> <!-- torch -->
-		<item id="2388" chance="27000" /> <!-- hatchet -->
-		<item id="2376" chance="27000" /> <!-- sword -->
+		<item id="12437" chance="100000" />				<!-- pelvis bone -->
+		<item id="2148" countmax="79" chance="81000" />	<!-- gold coin -->
+		<item id="2398" chance="72000" />				<!-- mace -->
+		<item id="2473" chance="72000" />				<!-- viking helmet -->
+		<item id="2511" chance="45000" />				<!-- brass shield -->
+		<item id="2050" chance="36000" />				<!-- torch -->
+		<item id="2388" chance="27000" />				<!-- hatchet -->
+		<item id="2376" chance="27000" />				<!-- sword -->
 	</loot>
 </monster>

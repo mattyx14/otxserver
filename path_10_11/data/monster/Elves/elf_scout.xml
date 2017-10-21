@@ -48,7 +48,7 @@
 		<item name="poison arrow" countmax="4" chance="15400" />
 		<item name="sandals" chance="1180" />
 		<item name="grapes" chance="17750" />
-		<item id="5921" chance="1130" /> <!-- heaven blossom -->
+		<item id="5921" chance="1130" /><!-- heaven blossom -->
 		<item name="elvish bow" chance="140" />
 		<item name="elvish talisman" chance="5200" />
 		<item name="elven scouting glass" chance="9750" />

@@ -44,5 +44,6 @@
 		<item name="broken helmet" chance="10800" />
 		<item name="orc leather" chance="4000" />
 		<item name="skull belt" chance="980" />
+		<item id="26654" chance="1000" /> <!-- heavy old tome -->
 	</loot>
 </monster>

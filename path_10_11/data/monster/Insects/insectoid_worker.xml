@@ -38,6 +38,6 @@
 		<item name="epee" chance="560" />
 		<item name="health potion" chance="5090" />
 		<item name="compound eye" chance="15380" />
-		<item id="15622" chance="14990" /> <!-- dung ball -->
+		<item id="15622" chance="14990" /><!-- dung ball -->
 	</loot>
 </monster>

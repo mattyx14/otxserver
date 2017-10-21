@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Death Priest Shargon" nameDescription="Death Priest Shargon" race="blood" experience="9000" speed="600" manacost="490">
 	<health now="65000" max="65000" />
-	<look type="278" head="0" body="0" legs="0" feet="0" corpse="20331" addons="3" />
+	<look type="278" head="0" body="0" legs="0" feet="0" corpse="20331" addons="3"/>
 	<targetchange interval="5000" chance="8" />
 	<flags>
 		<flag summonable="0" />
@@ -59,10 +59,11 @@
 		<voice sentence="Receive a lesson of the past!" />
 	</voices>
 	<loot>
-		<item id="2185" chance="100000" /> <!-- Necrotic Rod-->
-		<item id="2148" countmax="243" chance="95000" /> <!-- gold coin -->
-		<item id="2152" countmax="15" chance="36000" /> <!-- platinum coin -->
-		<item id="9971" chance="17000" /> <!-- Gold Ingot -->
-		<item id="7591" countmax="5" chance="14000" /> <!-- Great Health Potions -->
+		<item id="2185" chance="100000" />				<!-- Necrotic Rod-->
+		<item id="2148" countmax="243" chance="95000" />	<!-- gold coin -->
+		<item id="2152" countmax="15" chance="36000" />	<!-- platinum coin -->
+		<item id="9971" chance="17000" />				<!-- Gold Ingot -->
+		<item id="7591" countmax="5" chance="14000" />	<!-- Great Health Potions -->
+		
 	</loot>
 </monster>

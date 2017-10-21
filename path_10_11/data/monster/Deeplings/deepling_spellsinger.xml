@@ -55,7 +55,7 @@
 		<item name="gold coin" countmax="60" chance="70000" />
 		<item name="platinum coin" chance="80000" />
 		<item name="life ring" chance="2439" />
-		<item id="2667" chance="3448" /> <!-- fish -->
+		<item id="2667" chance="3448" /><!-- fish -->
 		<item name="fish fin" chance="498" />
 		<item name="eye of a deepling" chance="2500" />
 		<item name="deepling staff" chance="2000" />

@@ -37,7 +37,7 @@
 		<voice sentence="You'll make a nice trophy!" />
 	</voices>
 	<loot>
-		<item id="2050" chance="3300" /> <!-- torch -->
+		<item id="2050" chance="3300" /><!-- torch -->
 		<item name="small ruby" chance="150" />
 		<item name="dragon necklace" chance="3000" />
 		<item name="bow" chance="5770" />
@@ -50,9 +50,9 @@
 		<item name="roll" countmax="2" chance="11370" />
 		<item name="sniper gloves" chance="610" />
 		<item name="slingshot" chance="120" />
-		<item id="7394" chance="190" /> <!-- wolf trophy -->
-		<item id="7397" chance="520" /> <!-- deer trophy -->
-		<item id="7400" chance="70" /> <!-- lion trophy -->
+		<item id="7394" chance="190" /><!-- wolf trophy -->
+		<item id="7397" chance="520" /><!-- deer trophy -->
+		<item id="7400" chance="70" /><!-- lion trophy -->
 		<item name="hunter's quiver" chance="10240" />
 	</loot>
 </monster>

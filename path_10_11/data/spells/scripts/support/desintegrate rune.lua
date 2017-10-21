@@ -5,23 +5,20 @@ local dead_human = {
 function onCastSpell(creature, variant, isHotkey)
 	local position = Variant.getPosition(variant)
 	local tile = Tile(position)
-	local targetItem = tile and tile:getTopVisibleThing()
+	local targetItem = tile and tile:getItems()
 
-	if targetItem and not targetItem:isCreature() then
+	if targetItem then
 		local desintegrate = false
-		while not desintegrate
-			and not table.contains(dead_human, targetItem:getId())
-			and targetItem:getType():isMovable()
-			and targetItem:getUniqueId() > 65535
-			and targetItem:getActionId() == 0
-		do
-			targetItem:remove()
-			desintegrate = true
-			targetItem = tile:getTopVisibleThing()
+		for i, v in pairs(targetItem) do
+			if (v:isItem() and
+				isMoveable(v:getUniqueId())) then
+				v:remove()
+				desintegrate = true
+			end
 		end
 
 		if desintegrate then
-			position:sendMagicEffect(CONST_ME_BLOCKHIT)
+			position:sendMagicEffect(CONST_ME_POFF)
 			return true
 		end
 	end

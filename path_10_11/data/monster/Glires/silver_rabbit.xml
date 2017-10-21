@@ -23,7 +23,7 @@
 	<defenses armor="5" defense="5" />
 	<loot>
 		<item name="meat" countmax="2" chance="86170" />
-		<item id="2684" chance="11150" /> <!-- carrot -->
+		<item id="2684" chance="11150" /><!-- carrot -->
 		<item name="silky fur" chance="28670" />
 	</loot>
 </monster>

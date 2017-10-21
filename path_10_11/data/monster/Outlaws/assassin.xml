@@ -47,7 +47,7 @@
 		<voice sentence="You are on my deathlist!" />
 	</voices>
 	<loot>
-		<item id="2050" countmax="2" chance="29980" /> <!-- torch -->
+		<item id="2050" countmax="2" chance="29980" /><!-- torch -->
 		<item name="small diamond" chance="220" />
 		<item name="gold coin" countmax="50" chance="83210" />
 		<item name="gold coin" countmax="14" chance="7250" />

@@ -27,7 +27,7 @@
 			<attribute key="areaEffect" value="rednote" />
 		</attack>
 	</attacks>
-<defenses>
+	<defenses>
 		<defense name="healing" interval="2000" chance="5" min="40" max="70">
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
@@ -50,7 +50,7 @@
 		<voice sentence="You will not get my treasure!" />
 	</voices>
 	<loot>
-		<item id="1951" chance="910" /> <!-- parchment -->
+		<item id="1951" chance="910" /><!-- parchment -->
 		<item name="gold coin" countmax="67" chance="48000" />
 		<item name="stealth ring" chance="650" />
 		<item name="spike sword" chance="130" />

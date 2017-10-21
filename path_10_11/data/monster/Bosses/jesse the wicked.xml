@@ -21,7 +21,7 @@
 	</attacks>
 	<defenses armor="25" defense="25" />
 	<loot>
-		<item id="2152" countmax="85" chance="100000" /> <!-- platinum coin -->
-		<item id="14903" chance="100000" /> <!-- bag with stolen gold -->
+		<item id="2152" countmax="85" chance="100000" />	<!-- platinum coin -->
+		<item id="14903" chance="100000" />				<!-- bag with stolen gold -->
 	</loot>
 </monster>

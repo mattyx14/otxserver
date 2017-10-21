@@ -38,7 +38,7 @@
 		<voice sentence="Orc arga Huummmak!" />
 	</voices>
 	<loot>
-		<item id="2050" chance="980" /> <!-- torch-->
+		<item id="2050" chance="980" /><!-- torch-->
 		<item name="wolf tooth chain" chance="10210" />
 		<item name="gold coin" countmax="81" chance="46000" />
 		<item name="obsidian lance" chance="1100" />

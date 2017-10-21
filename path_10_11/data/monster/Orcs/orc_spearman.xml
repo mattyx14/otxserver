@@ -44,5 +44,6 @@
 		<item name="meat" chance="30200" />
 		<item name="orc tooth" chance="150" />
 		<item name="orc leather" chance="2300" />
+		<item id="26654" chance="1000" /> <!-- heavy old tome -->
 	</loot>
 </monster>

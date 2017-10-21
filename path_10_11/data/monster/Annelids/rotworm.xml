@@ -25,7 +25,7 @@
 	<defenses armor="10" defense="10" />
 	<loot>
 		<item name="gold coin" countmax="17" chance="71760" />
-		<item id="2376" chance="3000" /> <!-- sword -->
+		<item id="2376" chance="3000" /><!-- sword -->
 		<item name="mace" chance="4500" />
 		<item name="meat" chance="20000" />
 		<item name="ham" chance="20120" />

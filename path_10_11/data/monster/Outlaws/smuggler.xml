@@ -32,16 +32,16 @@
 		<voice sentence="You saw something you shouldn't!" />
 	</voices>
 	<loot>
-		<item id="2050" countmax="2" chance="30200" /> <!-- torch -->
+		<item id="2050" countmax="2" chance="30200" /><!-- torch -->
 		<item name="gold coin" countmax="10" chance="80000" />
-		<item id="2376" chance="5000" /> <!-- sword -->
+		<item id="2376" chance="5000" /><!-- sword -->
 		<item name="knife" chance="9920" />
 		<item name="combat knife" chance="4400" />
 		<item name="short sword" chance="10000" />
 		<item name="leather helmet" chance="10050" />
 		<item name="leather legs" chance="14840" />
 		<item name="ham" chance="10200" />
-		<item id="7397" chance="110" /> <!-- deer trophy -->
+		<item id="7397" chance="110" /><!-- deer trophy -->
 		<item name="raspberry" countmax="5" chance="5000" />
 	</loot>
 </monster>

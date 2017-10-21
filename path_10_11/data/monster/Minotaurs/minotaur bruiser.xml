@@ -10,7 +10,7 @@
 		<flag illusionable="0" />
 		<flag convinceable="0" />
 		<flag pushable="1" />
-		<flag isblockable="0" />
+				<flag isblockable="0" />
 		<flag canpushitems="0" />
 		<flag canpushcreatures="0" />
 		<flag targetdistance="1" />
@@ -25,18 +25,17 @@
 		<immunity invisible="1" />
 	</immunities>
 	<loot>
-		<item id="2148" countmax="15" chance="100000" /> <!-- gold coin -->
-		<item id="2510" chance="19700" /> <!-- plate shield -->
-		<item id="2398" chance="10000" /> <!-- mace -->
-		<item id="2464" chance="8600" /> <!-- chain armor -->
-		<item id="2460" chance="6600" /> <!-- brass helmet -->
-		<item id="2376" chance="13000" /> <!-- sword -->
-		<item id="2666" chance="4400" /> <!-- meat -->
-		<item id="2386" chance="15000" /> <!-- axe -->
-		<item id="12428" countmax="2" chance="1200" /> <!-- minotaur horn -->
-		<item id="5878" chance="880" /> <!-- minotaur leather -->
-		<item id="2554" chance="180" /> <!-- shovel -->
-		<item id="5878" chance="16020" /> <!-- studded armor -->
-		<item id="2172" chance="120" /> <!-- bronze amulet -->
+		<item id="2148" countmax="15" chance="65700" />	<!-- gold coin -->
+		<item id="2510" chance="20000" />				<!-- plate shield -->
+		<item id="2398" chance="12900" />				<!-- mace -->
+		<item id="2464" chance="10000" />				<!-- chain armor -->
+		<item id="2460" chance="7800" />					<!-- brass helmet -->
+		<item id="2376" chance="5000" />					<!-- sword -->
+		<item id="2666" chance="5000" />					<!-- meat -->
+		<item id="2386" chance="4000" />					<!-- axe -->
+		<item id="12428" countmax="2" chance="2000" />	<!-- minotaur horn -->
+		<item id="5878" chance="980" />					<!-- minotaur leather -->
+		<item id="2554" chance="310" />					<!-- shovel -->
+		<item id="2172" chance="120" />					<!-- bronze amulet -->
 	</loot>
 </monster>

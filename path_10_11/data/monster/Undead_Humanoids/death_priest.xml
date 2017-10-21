@@ -41,11 +41,11 @@
 		<item name="white pearl" chance="3000" />
 		<item name="gold coin" countmax="144" chance="70000" />
 		<item name="scarab coin" countmax="3" chance="10000" />
-		<item id="2175" chance="6800" /> <!-- spellbook -->
+		<item id="2175" chance="6800" /><!-- spellbook -->
 		<item name="ring of healing" chance="1000" />
 		<item name="orichalcum pearl" countmax="4" chance="6000" />
 		<item name="health potion" chance="15000" />
 		<item name="mana potion" chance="15000" />
-		<item id="13739" chance="27000" /> <!-- hieroglyph banner -->
+		<item id="13739" chance="27000" /><!-- hieroglyph banner -->
 	</loot>
 </monster>

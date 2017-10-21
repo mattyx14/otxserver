@@ -61,7 +61,7 @@
 		<item name="black pearl" chance="1800" />
 		<item name="gold coin" countmax="60" chance="90230" />
 		<item name="bronze amulet" chance="220" />
-		<item id="2229" chance="1000" /> <!-- skull -->
+		<item id="2229" chance="1000" /><!-- skull -->
 		<item name="spike sword" chance="1000" />
 		<item name="ice rapier" chance="420" />
 		<item name="katana" chance="1560" />

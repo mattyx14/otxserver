@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Cosmic Energy Prism B" nameDescription="Cosmic Energy Prism B" race="undead" experience="840" speed="0" manacost="0">
+	<health now="1000" max="1000" />
+	<look typeex="21444" corpse="0" />
+	<targetchange interval="2000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="15" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="75" />
+		
+	</attacks>	
+	<defenses armor="1" defense="1">
+		<defense name="healing" interval="2000" chance="30" min="0" max="0">
+			<attribute key="areaEffect" value="mortarea" />
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="50" />
+		<element earthPercent="50" />
+		<element energyPercent="50" />
+		<element deathPercent="50" />
+		<element physicalPercent="50" />
+		<element holyPercent="50" />
+		<element icePercent="50" />
+	</elements>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+</monster>

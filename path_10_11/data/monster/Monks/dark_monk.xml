@@ -47,9 +47,9 @@
 		<voice sentence="Your end has come!" />
 	</voices>
 	<loot>
-		<item id="1949" chance="1790" /> <!-- scroll -->
+		<item id="1949" chance="1790" /><!-- scroll -->
 		<item name="brown flask" chance="380" />
-		<item id="2044" chance="550" /> <!-- lamp -->
+		<item id="2044" chance="550" /><!-- lamp -->
 		<item name="gold coin" countmax="18" chance="14600" />
 		<item name="power ring" chance="120" />
 		<item name="life crystal" chance="990" />

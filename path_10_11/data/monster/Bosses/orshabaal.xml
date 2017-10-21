@@ -4,7 +4,7 @@
 	<look type="201" corpse="2916" />
 	<targetchange interval="2000" chance="10" />
 	<flags>
-		<flag rewardboss="1" />
+        <flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -83,7 +83,7 @@
 		<item name="platinum coin" countmax="69" chance="100000" />
 		<item name="green gem" chance="6666" />
 		<item name="blue gem" chance="20000" />
-		<item id="2162" chance="6666" /> <!-- magic lightwand -->
+		<item id="2162" chance="6666" /><!-- magic lightwand -->
 		<item name="might ring" chance="6666" />
 		<item name="silver amulet" chance="20000" />
 		<item name="platinum amulet" chance="12500" />
@@ -107,7 +107,7 @@
 		<item name="demon shield" chance="25000" />
 		<item name="Orshabaal's brain" chance="6666" />
 		<item name="demon horn" chance="50000" />
-		<item id="6300" chance="50000" /> <!-- death ring -->
+		<item id="6300" chance="50000" /><!-- death ring -->
 		<item name="demonic essence" chance="100000" />
 		<item name="assassin star" countmax="42" chance="12500" />
 		<item name="great mana potion" chance="33333" />

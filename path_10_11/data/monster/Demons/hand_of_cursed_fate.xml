@@ -71,7 +71,7 @@
 		<item name="mysterious voodoo skull" chance="247" />
 		<item name="golden figurine" chance="195" />
 		<item name="soul orb" chance="31111" />
-		<item id="6300" chance="1750" /> <!-- death ring -->
+		<item id="6300" chance="1750" /><!-- death ring -->
 		<item name="demonic essence" chance="12000" />
 		<item name="concentrated demonic blood" countmax="4" chance="30000" />
 		<item name="onyx arrow" countmax="3" chance="8333" />

@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Mad Technomancer" nameDescription="a mad technomancer" race="blood" experience="55" speed="200">
-	<health now="1800" max="1800" />
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Mad Technomancer" nameDescription="Mad Technomancer" race="blood" experience="55" speed="200" manacost="0">
+	<health now="1000" max="1000" />
 	<look type="66" corpse="6015" />
 	<targetchange interval="500" chance="25" />
 	<flags>
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
-		<flag illusionable="1" />
+		<flag illusionable="0" />
 		<flag convinceable="0" />
 		<flag pushable="0" />
 		<flag canpushitems="1" />
@@ -18,7 +18,7 @@
 		<flag canwalkonenergy="0" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-120" />
+		<attack name="melee" interval="2000" skill="50" attack="40" />
 		<attack name="fire" interval="1000" chance="10" range="7" radius="4" target="1" min="-50" max="-120">
 			<attribute key="shootEffect" value="fire" />
 			<attribute key="areaEffect" value="firearea" />
@@ -44,12 +44,12 @@
 	<immunities>
 		<immunity invisible="1" />
 	</immunities>
-	<voices interval="5000" chance="10">
+	<voices interval="2000" chance="7">
 		<voice sentence="I'm going to make them an offer they can't refuse." />
 		<voice sentence="My masterplan cannot fail!" />
 		<voice sentence="Gentlemen, you can't fight here! This is the War Room!" />
 	</voices>
 	<loot>
-		<item name="technomancer beard" chance="1000000" />
+		<item id="7699" chance="1000000" /><!-- beard -->
 	</loot>
 </monster>

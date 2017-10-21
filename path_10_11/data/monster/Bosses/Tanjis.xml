@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Tanjis" nameDescription="Tanjis" race="blood" experience="15000" speed="560">
-	<health now="30000" max="30000" />
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Tanjis" nameDescription="Tanjis" race="blood" experience="14500" speed="560" manacost="0">
+	<health now="17350" max="17350" />
 	<look type="446" corpse="15228" />
 	<targetchange interval="2000" chance="50" />
 	<flags>
-		<flag rewardboss="1" />
+        <flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -16,6 +16,7 @@
 		<flag targetdistance="0" />
 		<flag runonhealth="60" />
 	</flags>
+
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-600" />
 		<attack name="manadrain" interval="2500" chance="20" range="7" radius="4" target="1" min="-200" max="-600">
@@ -57,18 +58,18 @@
 		<immunity fire="1" />
 		<immunity invisible="1" />
 	</immunities>
+	<voices interval="3000" chance="200">
+		<voice sentence="JAUL QJELL, JAKNH JEH KENH!!" />
+	</voices>
 	<elements>
 		<element earthPercent="-20" />
 		<element energyPercent="-20" />
 		<element physicalPercent="-20" />
 		<element deathPercent="-20" />
 	</elements>
-	<voices interval="3000" chance="200">
-		<voice sentence="JAUL QJELL, JAKNH JEH KENH!!" />
-	</voices>
 	<loot>
-		<item name="depth ocrea" chance="50000" />
-		<item name="ornate shield" chance="20000" />
-		<item name="ornate mace" chance="25000" />
+		<item id="15409" chance="5000" /><!-- depth ocrea -->
+		<item id="15414" chance="20000" unique="1" /><!-- ornate mace -->
+		<item id="15413" chance="2000" /><!-- ornate shield -->
 	</loot>
 </monster>

@@ -46,7 +46,7 @@
 		<item name="ring of healing" chance="3270" />
 		<item name="steel boots" chance="130" />
 		<item name="great mana potion" countmax="4" chance="8950" />
-		<item id="7632" chance="2600" /> <!-- giant shimmering pearl -->
+		<item id="7632" chance="2600" /><!-- giant shimmering pearl -->
 		<item name="ultimate health potion" countmax="3" chance="4000" />
 		<item name="gold ingot" chance="5160" />
 		<item name="kollos shell" chance="15390" />

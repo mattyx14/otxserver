@@ -57,7 +57,7 @@
 		<item name="brass helmet" chance="9400" />
 		<item name="simple dress" chance="560" />
 		<item name="mana potion" chance="740" />
-		<item id="9808" chance="5680" /> <!-- rusty armor (common) -->
+		<item id="9808" chance="5680" /><!-- rusty armor (common) -->
 		<item name="half-eaten brain" chance="10000" />
 	</loot>
 </monster>

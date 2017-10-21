@@ -62,7 +62,7 @@
 		<voice sentence="Only the sweetest and cruelest dreams for you, my love." />
 	</voices>
 	<loot>
-		<item id="2124" chance="1030" /> <!-- crystal ring -->
+		<item id="2124" chance="1030" /><!-- crystal ring -->
 		<item name="gold coin" countmax="100" chance="50000" />
 		<item name="gold coin" countmax="10" chance="50000" />
 		<item name="platinum amulet" chance="121" />

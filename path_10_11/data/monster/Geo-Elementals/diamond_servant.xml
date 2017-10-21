@@ -62,7 +62,7 @@
 		<item name="lightning pendant" chance="710" />
 		<item name="crystalline armor" chance="20" />
 		<item name="gear wheel" chance="5000" />
-		<item id="9976" chance="5320" /> <!-- crystal pedestal -->
+		<item id="9976" chance="5320" /><!-- crystal pedestal -->
 		<item name="shockwave amulet" chance="110" />
 		<item name="gear crystal" chance="5000" />
 		<item name="slime mould" chance="480" />

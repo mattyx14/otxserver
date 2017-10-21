@@ -78,7 +78,7 @@
 		<item name="terra boots" chance="640" />
 		<item name="small topaz" countmax="2" chance="7970" />
 		<item name="clay lump" chance="930" />
-		<item id="13757" chance="2050" /> <!-- coal -->
+		<item id="13757" chance="2050" /><!-- coal -->
 		<item name="violet crystal shard" chance="3500" />
 		<item name="brown crystal splinter" countmax="2" chance="7540" />
 		<item name="blue crystal splinter" chance="4610" />

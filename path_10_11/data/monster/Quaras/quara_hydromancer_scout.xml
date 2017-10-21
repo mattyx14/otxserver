@@ -69,7 +69,7 @@
 		<item name="ring of healing" chance="590" />
 		<item name="obsidian lance" chance="1180" />
 		<item name="knight armor" chance="890" />
-		<item id="2667" countmax="2" chance="18930" /> <!-- fish -->
+		<item id="2667" countmax="2" chance="18930" /><!-- fish -->
 		<item name="shrimp" countmax="4" chance="8400" />
 		<item name="fish fin" chance="1630" />
 		<item name="quara eye" chance="12720" />

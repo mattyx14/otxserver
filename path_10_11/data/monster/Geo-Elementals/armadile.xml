@@ -55,7 +55,7 @@
 		<item name="gold coin" countmax="100" chance="100000" />
 		<item name="gold coin" countmax="98" chance="100000" />
 		<item name="platinum coin" countmax="7" chance="95000" />
-		<item id="2169" chance="1000" /> <!-- time ring -->
+		<item id="2169" chance="1000" /><!-- time ring -->
 		<item name="tower shield" chance="620" />
 		<item name="titan axe" chance="1540" />
 		<item name="bonebreaker" chance="1150" />
@@ -67,7 +67,7 @@
 		<item name="terra boots" chance="2850" />
 		<item name="crystalline armor" chance="230" />
 		<item name="battle stone" chance="12460" />
-		<item id="13757" chance="6000" /> <!-- coal -->
+		<item id="13757" chance="6000" /><!-- coal -->
 		<item name="green crystal splinter" countmax="2" chance="3920" />
 		<item name="green crystal fragment" countmax="2" chance="5690" />
 		<item name="crystalline spikes" chance="14540" />

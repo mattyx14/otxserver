@@ -69,7 +69,7 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="89" chance="55000" />
-		<item id="2175" chance="690" /> <!-- spellbook -->
+		<item id="2175" chance="690" /><!-- spellbook -->
 		<item name="clerical mace" chance="2000" />
 		<item name="bone sword" chance="8000" />
 		<item name="steel shield" chance="6000" />

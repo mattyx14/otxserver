@@ -64,7 +64,7 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="86" chance="30000" />
-		<item id="2175" chance="7500" /> <!-- spellbook -->
+		<item id="2175" chance="7500" /><!-- spellbook -->
 		<item name="two handed sword" chance="6000" />
 		<item name="steel shield" chance="6000" />
 		<item name="bonelord shield" chance="150" />

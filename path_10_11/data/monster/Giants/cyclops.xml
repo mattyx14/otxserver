@@ -46,9 +46,9 @@
 		<item name="plate shield" chance="2500" />
 		<item name="battle shield" chance="1400" />
 		<item name="meat" chance="30070" />
-		<item id="7398" chance="80" /> <!-- cyclops trophy -->
+		<item id="7398" chance="80" /><!-- cyclops trophy -->
 		<item name="health potion" chance="210" />
 		<item name="cyclops toe" chance="4930" />
-		<item id="26642" chance="1000" /> <!-- heavy old tome -->
+		<item id="26654" chance="1000" /> <!-- heavy old tome -->
 	</loot>
 </monster>

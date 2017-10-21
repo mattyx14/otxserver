@@ -33,7 +33,7 @@
 		<item name="gold coin" countmax="30" chance="59000" />
 		<item name="battle hammer" chance="730" />
 		<item name="plate shield" chance="2850" />
-		<item id="2667" chance="4600" /> <!-- fish -->
+		<item id="2667" chance="4600" /><!-- fish -->
 		<item name="tortoise egg" countmax="2" chance="770" />
 		<item name="turtle shell" chance="1300" />
 		<item name="tortoise shield" chance="200" />

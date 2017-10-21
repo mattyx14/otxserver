@@ -62,7 +62,7 @@
 		<item name="magma coat" chance="790" />
 		<item name="ultimate health potion" countmax="2" chance="15440" />
 		<item name="fiery heart" chance="13570" />
-		<item id="13757" chance="1320" /> <!-- coal -->
+		<item id="13757" chance="1320" /><!-- coal -->
 		<item name="wand of everblazing" chance="1480" />
 		<item name="violet crystal shard" chance="5430" />
 		<item name="brown crystal splinter" countmax="2" chance="12100" />

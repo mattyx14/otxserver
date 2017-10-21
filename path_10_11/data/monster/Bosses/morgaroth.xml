@@ -4,7 +4,7 @@
 	<look type="12" head="0" body="94" legs="79" feet="79" corpse="6068" />
 	<targetchange interval="10000" chance="20" />
 	<flags>
-		<flag rewardboss="1" />
+	<flag rewardboss="1" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -75,7 +75,7 @@
 		<item name="red tome" chance="20000" />
 		<item name="golden mug" chance="16666" />
 		<item name="teddy bear" chance="11111" />
-		<item id="2124" chance="5882" /> <!-- crystal ring -->
+		<item id="2124" chance="5882" /><!-- crystal ring -->
 		<item name="white pearl" countmax="13" chance="11111" />
 		<item name="black pearl" countmax="15" chance="16666" />
 		<item name="small sapphire" countmax="8" chance="25000" />
@@ -101,7 +101,7 @@
 		<item name="steel boots" chance="11111" />
 		<item name="Morgaroth's heart" chance="16666" />
 		<item name="demon horn" countmax="2" chance="20000" />
-		<item id="6300" chance="16666" /> <!-- death ring -->
+		<item id="6300" chance="16666" /><!-- death ring -->
 		<item name="demonic essence" chance="50000" />
 		<item name="assassin star" countmax="28" chance="16666" />
 		<item name="demonbone" chance="16666" />

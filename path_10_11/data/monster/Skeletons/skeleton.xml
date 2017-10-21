@@ -33,16 +33,16 @@
 		<immunity lifedrain="1" />
 	</immunities>
 	<loot>
-		<item id="2050" chance="10000" /> <!-- torch -->
-		<item id="2050" chance="9880" /> <!-- torch -->
+		<item id="2050" chance="10000" /><!-- torch -->
+		<item id="2050" chance="9880" /><!-- torch -->
 		<item name="gold coin" countmax="10" chance="43900" />
-		<item id="2230" chance="49100" /> <!-- bone -->
-		<item id="2376" chance="1940" /> <!-- sword -->
+		<item id="2230" chance="49100" /><!-- bone -->
+		<item id="2376" chance="1940" /><!-- sword -->
 		<item name="hatchet" chance="4850" />
 		<item name="mace" chance="4850" />
 		<item name="viking helmet" chance="7520" />
 		<item name="brass shield" chance="2090" />
 		<item name="pelvis bone" chance="9940" />
-		<item id="26642" chance="1000" /> <!-- heavy old tome -->
+		<item id="26654" chance="1000" /> <!-- heavy old tome -->
 	</loot>
 </monster>

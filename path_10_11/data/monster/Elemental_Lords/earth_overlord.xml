@@ -46,6 +46,6 @@
 		<item name="mother soil" chance="100000" />
 		<item name="lump of earth" chance="33333" />
 		<item name="shiny stone" chance="8333" />
-		<item id="13757" chance="552" /> <!-- coal -->
+		<item id="13757" chance="552" /><!-- coal -->
 	</loot>
 </monster>

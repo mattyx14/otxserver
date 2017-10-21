@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dragon Warden" nameDescription="a Dragon Warden" race="blood" experience="1600" speed="150" manacost="290">
+	<health now="2" max="2" />
+	<look type="947" head="5" body="5" legs="5" feet="5" corpse="27857" />
+	<targetchange interval="5000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="1" />
+		<flag pushable="1" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="15" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="10" attack="10" />
+		<attack name="physical" interval="2000"  range="7" min="0" max="-500"/>
+
+	</attacks>
+	<defenses armor="10" defense="10" />
+	<elements>
+		<element energyPercent="20" />
+		<element holyPercent="1" />
+		<element earthPercent="-12" />
+		<element deathPercent="-10" />
+	</elements>
+
+	<loot>
+		<item id="2148" countmax="165" chance="50320" /><!-- gold coin -->
+		<item id="2152" countmax="2" chance="50320" /><!-- platinun coin -->
+		<item id="2789" countmax="2" chance="50320" /><!-- Brown Mushrooms -->
+		<item id="2666" countmax="2" chance="50320" /><!-- Meats -->
+		<item id="2110" chance="11000" /><!-- doll -->
+		<item id="6569" chance="11000" /><!-- candy -->
+		<item id="6570" chance="11000" /><!-- surprise bag	blue	-->
+		<item id="6571" chance="11000" /><!-- surprise bag	red	-->
+		<item id="6394" chance="11000" /><!--  Cream Cake		-->
+		<item id="6574" chance="11000" /><!--  Bar of Chocolate		-->
+		<item id="27052" chance="11000" /><!--   Birthday Cake		-->
+		<item id="27058" chance="11000" /><!--   Chocolatey Dragon Scale Legs	-->
+		<item id="27604" chance="11000" /><!--    Bottle of Tibian Wine		-->
+		<item id="27605" chance="11000" /><!--    see Costume Bag (Retro)		-->
+		<item id="6576" chance="11000" /><!--    Fireworks Rocket-->
+		<item id="6280" chance="11000" /><!--     Party Cake-->
+		<item id="27051" chance="11" /><!--      Birthday Backpack-->
+		<item id="27053" chance="11" /><!--       Ferumbras' Candy Hat-->
+		<item id="5791" chance="110" /><!--        stuffed dragon.-->
+		<item id="7487" chance="110" /><!--        Toy Mouse.-->
+	</loot>
+</monster>

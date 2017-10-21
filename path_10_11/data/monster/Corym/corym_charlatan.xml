@@ -35,7 +35,7 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="35" chance="50000" />
-		<item id="2696" chance="10000" /> <!-- cheese -->
+		<item id="2696" chance="10000" /><!-- cheese -->
 		<item name="bola" chance="7692" />
 		<item name="spike shield" chance="492" />
 		<item name="ratana" chance="909" />

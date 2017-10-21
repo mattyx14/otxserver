@@ -50,23 +50,23 @@
 		<voice sentence="I'm taking you down with me!" />
 	</voices>
 	<loot>
-		<item id="2152" countmax="1" chance="100000" /> <!-- platinum coin -->
-		<item id="2152" countmax="13" chance="100000" /> <!-- platinum coin -->
-		<item id="7591" chance="75810" /> <!-- great health potion -->
-		<item id="11221" chance="100000" /> <!-- hellspawn tail -->
-		<item id="7368" countmax="5" chance="19350" /> <!-- assassin stars -->
-		<item id="8473" chance="77420" /> <!-- ultimate health potion -->
-		<item id="6500" chance="35480" /> <!-- demonic essence -->
-		<item id="2788" countmax="2" chance="67740" /> <!-- red mushroom -->
-		<item id="9970" countmax="4" chance="43550" /> <!-- small topaz -->
-		<item id="2477" chance="67740" /> <!-- knight legs -->
-		<item id="2475" chance="20970" /> <!-- warrior helmet -->
-		<item id="7452" chance="6450" /> <!-- spiked squelcher -->
-		<item id="7439" chance="37100" /> <!-- berserk potion -->
-		<item id="9969" chance="20970" /> <!-- black skull -->
-		<item id="9948" chance="1610" /> <!-- dracoyle statue -->
-		<item id="7421" chance="3230" /> <!-- onyx fail -->
-		<item id="13298" chance="4840" /> <!-- carron on a stick -->
-		<item id="2519" chance="29030" /> <!-- crown shield -->
+		<item id="2152" countmax="1" chance="100000" /><!-- platinum coin -->
+		<item id="2152" countmax="13" chance="100000" /><!-- platinum coin -->
+		<item id="7591" chance="75810" /><!-- great health potion -->
+		<item id="11221" chance="100000" /><!-- hellspawn tail -->
+		<item id="7368" countmax="5" chance="19350" /><!-- assassin stars -->
+		<item id="8473" chance="77420" /><!-- ultimate health potion -->
+		<item id="6500" chance="35480" /><!-- demonic essence -->
+		<item id="2788" countmax="2" chance="67740" /><!-- red mushroom -->
+		<item id="9970" countmax="4" chance="43550" /><!-- small topaz -->
+		<item id="2477" chance="67740" /><!-- knight legs -->
+		<item id="2475" chance="20970" /><!-- warrior helmet -->
+		<item id="7452" chance="6450" /><!-- spiked squelcher -->
+		<item id="7439" chance="37100" /><!-- berserk potion -->
+		<item id="9969" chance="20970" /><!-- black skull -->
+		<item id="9948" chance="1610" /><!-- dracoyle statue -->
+		<item id="7421" chance="3230" /><!-- onyx fail -->
+		<item id="13298" chance="4840" /><!-- carron on a stick -->
+		<item id="2519" chance="29030" /><!-- crown shield -->
 	</loot>
 </monster>

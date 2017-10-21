@@ -34,7 +34,7 @@
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="10" chance="40000" />
-		<item id="2230" chance="11500" /> <!-- bone -->
+		<item id="2230" chance="11500" /><!-- bone -->
 		<item name="mouldy cheese" chance="9000" />
 		<item name="dagger" chance="10300" />
 		<item name="short sword" chance="15400" />
@@ -42,6 +42,6 @@
 		<item name="leather helmet" chance="16670" />
 		<item name="leather armor" chance="5000" />
 		<item name="small axe" chance="12800" />
-		<item id="2667" chance="15000" /> <!-- fish -->
+		<item id="2667" chance="15000" /><!-- fish -->
 	</loot>
 </monster>

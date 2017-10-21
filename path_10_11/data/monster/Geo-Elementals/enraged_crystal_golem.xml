@@ -41,6 +41,5 @@
 		<item name="blue crystal splinter" chance="4120" />
 		<item name="cyan crystal fragment" chance="1050" />
 		<item name="crystalline spikes" chance="7980" />
-		<item name="crystalline axe" countmax="5" chance="5008" />
 	</loot>
 </monster>

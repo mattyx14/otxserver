@@ -67,7 +67,7 @@
 		<item name="green mushroom" chance="1310" />
 		<item name="shard" chance="530" />
 		<item name="diamond sceptre" chance="330" />
-		<item id="7441" chance="10000" /> <!-- ice cube -->
+		<item id="7441" chance="10000" /><!-- ice cube -->
 		<item name="crystal sword" chance="400" />
 		<item name="pair of earmuffs" chance="90" />
 		<item name="strong mana potion" chance="820" />

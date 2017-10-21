@@ -67,7 +67,7 @@
 		<voice sentence="Good wishes are for fairytales" />
 	</voices>
 	<loot>
-		<item id="1860" chance="2200" /> <!-- green tapestry -->
+		<item id="1860" chance="2200" /><!-- green tapestry -->
 		<item name="small oil lamp" chance="160" />
 		<item name="gold coin" countmax="75" chance="50000" />
 		<item name="gold coin" countmax="50" chance="60000" />

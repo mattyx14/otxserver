@@ -67,7 +67,7 @@
 		<voice sentence="Anotherone to bite the dust!" />
 	</voices>
 	<loot>
-		<item id="2136" chance="500" /> <!-- demonbone amulet -->
+		<item id="2136" chance="500" /><!-- demonbone amulet -->
 		<item name="black pearl" chance="7000" />
 		<item name="gold coin" countmax="80" chance="50000" />
 		<item name="gold coin" countmax="73" chance="50000" />

@@ -65,7 +65,7 @@
 		<item name="necrotic rod" chance="980" />
 		<item name="wand of cosmic energy" chance="910" />
 		<item name="spirit container" chance="140" />
-		<item id="6300" chance="300" /> <!-- death ring -->
+		<item id="6300" chance="300" /><!-- death ring -->
 		<item name="great mana potion" chance="8000" />
 		<item name="ultimate health potion" chance="9400" />
 		<item name="souleater trophy" chance="20" />

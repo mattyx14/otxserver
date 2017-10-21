@@ -36,7 +36,7 @@
 	<loot>
 		<item name="gold coin" countmax="60" chance="84000" />
 		<item name="small emerald" chance="250" />
-		<item id="2376" chance="4000" /> <!-- sword -->
+		<item id="2376" chance="4000" /><!-- sword -->
 		<item name="morning star" chance="1990" />
 		<item name="short sword" chance="9500" />
 		<item name="steel helmet" chance="2000" />

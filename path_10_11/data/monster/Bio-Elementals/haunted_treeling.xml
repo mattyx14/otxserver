@@ -60,7 +60,7 @@
 		<item name="white mushroom" countmax="2" chance="5263" />
 		<item name="red mushroom" chance="7142" />
 		<item name="orange mushroom" chance="1851" />
-		<item id="4860" chance="25000" /> <!-- wooden trash -->
+		<item id="4860" chance="25000" /><!-- wooden trash -->
 		<item name="bullseye potion" chance="80" />
 		<item name="strong health potion" chance="900" />
 		<item name="health potion" chance="5000" />

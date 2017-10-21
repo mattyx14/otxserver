@@ -50,10 +50,10 @@
 		<item name="gold coin" countmax="100" chance="50000" />
 		<item name="platinum coin" countmax="4" chance="45000" />
 		<item name="violet gem" chance="770" />
-		<item id="6300" chance="2700" /> <!-- death ring -->
+		<item id="6300" chance="2700" /><!-- death ring -->
 		<item name="titan axe" chance="920" />
 		<item name="great mana potion" countmax="2" chance="11500" />
-		<item id="7632" chance="1700" /> <!-- giant shimmering pearl -->
+		<item id="7632" chance="1700" /><!-- giant shimmering pearl -->
 		<item name="ultimate health potion" countmax="2" chance="6250" />
 		<item name="spidris mandible" chance="14960" />
 		<item name="compound eye" chance="12500" />

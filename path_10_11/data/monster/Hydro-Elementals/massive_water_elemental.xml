@@ -56,7 +56,7 @@
 		<item name="platinum coin" countmax="2" chance="20000" />
 		<item name="energy ring" chance="910" />
 		<item name="life ring" chance="1000" />
-		<item id="2667" countmax="2" chance="40000" /> <!-- fish -->
+		<item id="2667" countmax="2" chance="40000" /><!-- fish -->
 		<item name="rainbow trout" chance="1340" />
 		<item name="green perch" chance="1590" />
 		<item name="great mana potion" chance="10400" />

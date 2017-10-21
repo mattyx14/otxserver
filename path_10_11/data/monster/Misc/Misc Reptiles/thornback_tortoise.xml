@@ -34,7 +34,7 @@
 		<item name="black pearl" chance="800" />
 		<item name="gold coin" countmax="48" chance="89500" />
 		<item name="war hammer" chance="260" />
-		<item id="2667" countmax="2" chance="10800" /> <!-- fish -->
+		<item id="2667" countmax="2" chance="10800" /><!-- fish -->
 		<item name="white mushroom" chance="1200" />
 		<item name="brown mushroom" chance="700" />
 		<item name="tortoise egg" countmax="3" chance="790" />

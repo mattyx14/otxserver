@@ -44,7 +44,7 @@
 		<item name="gold coin" countmax="21" chance="75000" />
 		<item name="two handed sword" chance="500" />
 		<item name="mace" chance="2000" />
-		<item id="2667" chance="22000" /> <!-- fish -->
+		<item id="2667" chance="22000" /><!-- fish -->
 		<item name="poisonous slime" chance="3000" />
 	</loot>
 </monster>

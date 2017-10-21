@@ -47,7 +47,7 @@
 		<item name="plate shield" chance="2000" />
 		<item name="battle shield" chance="1600" />
 		<item name="meat" countmax="2" chance="50430" />
-		<item id="7398" chance="120" /> <!-- cyclops trophy -->
+		<item id="7398" chance="120" /><!-- cyclops trophy -->
 		<item name="strong health potion" chance="520" />
 		<item name="cyclops toe" chance="6750" />
 	</loot>

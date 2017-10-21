@@ -53,20 +53,20 @@
 		<voice sentence="GRRRRR!" />
 	</voices>
 	<loot>
-		<item id="2152" countmax="18" chance="100000" /> <!-- platinum coin -->
-		<item id="2144" countmax="5" chance="96880" /> <!-- black pearl -->
-		<item id="6558" countmax="1" chance="100000" /> <!-- concentrated demonic blood -->
-		<item id="6500" chance="62500" /> <!-- demonic essence -->
-		<item id="9971" countmax="5" chance="100000" /> <!-- gold ingot -->
-		<item id="2430" chance="10810" /> <!-- knight axe -->
-		<item id="6553" chance="6250" /> <!-- ruthless axe -->
-		<item id="10554" chance="100000" /> <!-- hellhound slobber -->
-		<item id="2155" chance="50000" /> <!-- green gem -->
-		<item id="2392" chance="46880" /> <!-- fire sword -->
-		<item id="4873" chance="65630" /> <!-- explorer brooch -->
-		<item id="7890" chance="96880" /> <!-- magma amulet -->
-		<item id="7590" countmax="3" chance="96880" /> <!-- great mana potion -->
-		<item id="7453" chance="3130" /> <!-- executioner -->
-		<item id="2466" chance="31250" /> <!-- golden armor -->
+		<item id="2152" countmax="18" chance="100000" /><!-- platinum coin -->
+		<item id="2144" countmax="5" chance="96880" /><!-- black pearl -->
+		<item id="6558" countmax="1" chance="100000" /><!-- concentrated demonic blood -->
+		<item id="6500" chance="62500" /><!-- demonic essence -->
+		<item id="9971" countmax="5" chance="100000" /><!-- gold ingot -->
+		<item id="2430" chance="10810" /><!-- knight axe -->
+		<item id="6553" chance="6250" /><!-- ruthless axe -->
+		<item id="10554" chance="100000" /><!-- hellhound slobber -->
+		<item id="2155" chance="50000" /><!-- green gem -->
+		<item id="2392" chance="46880" /><!-- fire sword -->
+		<item id="4873" chance="65630" /><!-- explorer brooch -->
+		<item id="7890" chance="96880" /><!-- magma amulet -->
+		<item id="7590" countmax="3" chance="96880" /><!-- great mana potion -->
+		<item id="7453" chance="3130" /><!-- executioner -->
+		<item id="2466" chance="31250" /><!-- golden armor -->
 	</loot>
 </monster>

@@ -37,13 +37,13 @@
 	<loot>
 		<item name="gold coin" countmax="25" chance="67500" />
 		<item name="bronze amulet" chance="110" />
-		<item id="2376" chance="5000" /> <!-- sword -->
+		<item id="2376" chance="5000" /><!-- sword -->
 		<item name="axe" chance="4000" />
 		<item name="mace" chance="12840" />
 		<item name="brass helmet" chance="7700" />
 		<item name="chain armor" chance="10000" />
 		<item name="plate shield" chance="20020" />
-		<item id="2554" chance="310" /> <!-- shovel -->
+		<item id="2554" chance="310" /><!-- shovel -->
 		<item name="meat" chance="5000" />
 		<item name="minotaur leather" chance="990" />
 		<item name="minotaur horn" countmax="2" chance="2090" />

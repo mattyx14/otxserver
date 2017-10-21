@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Bound Astral Power" nameDescription="a Bound Astral Power" race="blood"  speed="300" manacost="290">
+	<health now="5000" max="5000" />
+	<look type="879"  />
+	<targetchange interval="5000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag staticattack="98" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="70" attack="230" />
+		<attack name="Energy Wave" interval="3000"   min="0" max="-500"/>
+		<attack name="Energy Strike" interval="4000"  min="0" max="-380"/>
+			
+	</attacks>
+	<defenses armor="10" defense="10" />
+	<elements>
+		<element energyPercent="100" />
+		<element holyPercent="1" />
+		<element earthPercent="-12" />
+		<element deathPercent="-10" />
+		<element deathPercent="-10" />
+	</elements>
+	
+	
+</monster>

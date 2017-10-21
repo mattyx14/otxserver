@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="A Shielded Astral Glyph" nameDescription="A Shielded Astral Glyph" race="undead" experience="0" speed="0" manacost="0">
+	<health now="10000" max="10000" />
+	<look typeex="26894" />
+	<targetchange interval="2000" chance="0" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag staticattack="98" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	
+
+	<immunities>
+		<immunity physical="0" />
+		<immunity energy="0" />
+		<immunity fire="0" />
+		<immunity poison="0" />
+		<immunity ice="1" />
+		<immunity holy="0" />
+		<immunity death="0" />
+		<immunity lifedrain="0" />
+		<immunity paralyze="0" />
+		<immunity drown="0" />
+		<immunity invisible="0" />
+	</immunities>
+</monster>

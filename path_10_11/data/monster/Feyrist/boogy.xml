@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<monster name="Boogy" nameDescription="a boogy" race="blood" experience="950" speed="190" manacost="450">
+	<health now="1300" max="1300" />
+	<look type="981" corpse="29105" />
+	<targetchange interval="4000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="20" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-250" />
+		<attack name="drunk" interval="3000" chance="11" radius="6" target="0" duration="25000">
+			<attribute key="areaEffect" value="purplenote" />
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="20" />
+	<elements>
+		<element icePercent="10" />
+		<element firePercent="10" />
+		<element holyPercent="5" />
+		<element deathPercent="-5" />
+		<element physicalPercent="-5" />
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Go to sleep!" />
+		<voice sentence="Roarrr!" />
+	</voices>
+	<loot>
+		<item name="terra amulet" chance="20" />
+		<item name="golden sickle" chance="20" />
+		<item name="wooden spellbook" chance="20" />
+		<item name="mandrake" chance="20" />
+		<item name="crystal of power" chance="20" />
+		<item name="dream blossom staff" chance="20" />
+		<item name="leaf star" countmax="5" chance="200" />
+		<item name="ancient coin" countmax="5" chance="200" />
+		<item name="gold coin" countmax="100" chance="30000" />
+		<item name="stealth ring" chance="492" />
+		<item id="2684" countmax="3" chance="55000" />
+		<item name="strong health potion" chance="719" />
+		<item name="berserk potion" chance="719" />
+		<item name="red crystal fragment" chance="719" />
+		<item name="orange mushroom" chance="10000" />
+		<item name="fairy wings" chance="30100" />
+		<item name="orange mushroom" chance="5155" />
+		<item name="Shimmering Beetles" chance="591" />
+		<item name="sling herb" chance="591" />
+		<item name="wood cape" chance="591" />
+		<item name="Rainbow Quartz" chance="5800" />
+		<item name="prismatic Quartz" chance="5800" />
+		<item name="Small Enchanted Ruby" countmax="2" chance="3400" />
+	</loot>
+</monster>
