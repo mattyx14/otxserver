@@ -69,13 +69,13 @@ function onUse(player, item, fromPosition, target, toPosition)
 			end
 
 			player:say(fluidMessage[item.type] or 'Gulp.', TALKTYPE_MONSTER_SAY)
-			item:transform(item.itemid, 0)
+			doRemoveItem(item.uid, 1)
 		else
 			local pool = Game.createItem(2016, item.type, toPosition)
 			if pool then
 				pool:decay()
 			end
-			item:transform(item.itemid, 0)
+			doRemoveItem(item.uid, 1)
 		end
 
 	else
@@ -113,7 +113,7 @@ function onUse(player, item, fromPosition, target, toPosition)
 					pool:decay()
 				end
 			end
-			item:transform(item.itemid, 0)
+			doRemoveItem(item.uid, 1)
 		end
 	end
 
