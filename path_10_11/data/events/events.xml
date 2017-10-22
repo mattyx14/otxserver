@@ -26,14 +26,10 @@
 	<event class="Player" method="onGainExperience" enabled="1" />
 	<event class="Player" method="onLoseExperience" enabled="0" />
 	<event class="Player" method="onGainSkillTries" enabled="1" />
-	<event class="Player" method="onUseWeapon" enabled="1" />
-	<event class="Player" method="onCombatSpell" enabled="0" />
 
 	<!-- Imbuement System -->
 	<event class="Creature" method="onDrainHealth" enabled="1" />
 	<event class="Player" method="onMove" enabled="1" />
-	<event class="Player" method="onUseWeapon" enabled="0" />
-	<event class="Player" method="onCombatSpell" enabled="1" />
 	<event class="Player" method="onEquipImbuement" enabled="1" />
 	<event class="Player" method="onDeEquipImbuement" enabled="1" />
 
@@ -46,4 +42,6 @@
 			onTradeRequest - move with ( ctrl + arrows ) like to TFS 0.3.x : 0.4
 		-->
 	<event class="Monster" method="onSpawn" enabled="0" />
+	<event class="Player" method="onUseWeapon" enabled="0" />
+	<event class="Player" method="onCombatSpell" enabled="1" />
 </events>
