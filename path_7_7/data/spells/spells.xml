@@ -67,7 +67,7 @@
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>	<vocation name="Royal Paladin"/>
 	</instant>
-	<instant name="Levitate" words="exani hur" needlearn="0" lvl="12" prem="1" mana="50" params="1" function="levitate">
+	<instant name="Levitate" words="exani hur" needlearn="0" lvl="12" prem="1" mana="50" params="1" script="support/levitate.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 		<vocation name="Paladin"/>	<vocation name="Royal Paladin"/>
@@ -77,7 +77,7 @@
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 	</instant>
-	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" function="summonMonster">
+	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" script="support/summon.lua">
 		<vocation name="Sorcerer"/> <vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	<vocation name="Elder Druid"/>
 	</instant>
