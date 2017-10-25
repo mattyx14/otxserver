@@ -19,9 +19,13 @@ With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more..
 * [Tibia Face](http://tibiaface.com/) - [Español]
 * [Tibiaking](http://www.tibiaking.com/forum/) - [Português]
 
-### Features:
 
-OTX Server is great on retro features.
-* [OTX Server 2](https://github.com/mattyx14/otxserver/tree/otxserv2)
+### Sites compatibles
+* [Znote AAC Official](https://github.com/Znote/ZnoteAAC/archive/master.zip).
+* [MyAcc Official](https://github.com/slawkens/myaac/archive/master.zip). + [Login.php for Tibia 11 for MyACC](https://otland.net/threads/myaac-plugin-login-php-for-tibia-11.254389/).
 
-* [OTX Server 3](https://github.com/mattyx14/otxserver/tree/otxserv3)
+### OpenTibia Tools:
+
+IpChangers...
+* Protocols 7.x - 10.x: [OTLand IPChange](https://static.otland.net/ipchanger.exe)
+* Protocols 11.x: [Cjaker IPChange](http://www.tibiaking.com/forum/forums/topic/82629-1140-ip-changer/)
