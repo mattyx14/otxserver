@@ -26,8 +26,8 @@ With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more..
 ### OpenTibia Tools:
 
 IpChangers ...
-* Protocols 7.x - 10.x: [OTLand IPChange](https://static.otland.net/ipchanger.exe)
-* Protocols 11.x: [Cjaker IPChange](http://www.tibiaking.com/forum/forums/topic/82629-1140-ip-changer/)
+* Protocols 7.x - 10.x: [OTLand - IPChange](https://static.otland.net/ipchanger.exe)
+* Protocols 11.x: [Cjaker - IPChange](http://www.tibiaking.com/forum/forums/topic/82629-1140-ip-changer/)
 
 Distributions ...
-* Base to lasted source: [Otxserver-New Erick Nunes](https://github.com/malucooo/Otxserver-New)
+* Base to lasted source: [Erick Nunes - Otxserver-New](https://github.com/malucooo/Otxserver-New)
