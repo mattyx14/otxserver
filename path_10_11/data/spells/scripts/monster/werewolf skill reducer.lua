@@ -8,7 +8,7 @@ condition:setParameter(CONDITION_PARAM_SKILL_MELEEPERCENT, 65)
 
 local area = createCombatArea(AREA_BEAM1)
 combat:setArea(area)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

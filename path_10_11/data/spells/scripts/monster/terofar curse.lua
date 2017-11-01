@@ -21,7 +21,7 @@ for i = 1, 1 do
 		addDamageCondition(condition, 1, 4000, -damage)
 	end
 
-	setCombatCondition(combat[i], condition)
+	addCombatCondition(combat[i], condition)
 end
 
 function onCastSpell(cid, var)

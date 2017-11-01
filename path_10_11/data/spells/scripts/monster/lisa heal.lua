@@ -7,7 +7,7 @@ condition:setParameter(CONDITION_PARAM_HEALTHTICKS, 6 * 1000)
 function onCastSpell(creature, var)
 	if creature:getHealth() < creature:getMaxHealth() * 0.07 and not creature:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT, 88888) then
 		creature:say("Lisa takes a final breath before she's healing up!", TALKTYPE_ORANGE_1)
-		creature:addCondition(condition)
+		creature:setaddCondition(condition)
 		addEvent(function(cid)
 			creature:addHealth(math.random(18000, 23000))
 			creature:say("Lisa healed up!", TALKTYPE_ORANGE_1)

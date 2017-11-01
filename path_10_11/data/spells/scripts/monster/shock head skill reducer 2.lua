@@ -7,7 +7,7 @@ condition:setParameter(CONDITION_PARAM_STAT_MAGICPOINTSPERCENT, 70)
 
 local area = createCombatArea(AREA_CROSS6X6)
 combat:setArea(area)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

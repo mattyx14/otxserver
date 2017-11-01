@@ -42,30 +42,30 @@ struct Node
 	using ChildrenVector = std::vector<Node>;
 
 	ChildrenVector children;
-	ContentIt propsBegin;
-	ContentIt propsEnd;
-	uint8_t type;
+	ContentIt      propsBegin;
+	ContentIt      propsEnd;
+	uint8_t           type;
 	enum NodeChar: uint8_t
 	{
 		ESCAPE = 0xFD,
 		START  = 0xFE,
-		END = 0xFF,
+		END    = 0xFF,
 	};
 };
 
 struct LoadError : std::exception {
-	const char* what() const noexcept = 0;
+	const char* what() const noexcept override = 0;
 };
 
-struct InvalidOTBFormat : LoadError {
-	const char* what() const noexcept final {
+struct InvalidOTBFormat final : LoadError {
+	const char* what() const noexcept override {
 		return "Invalid OTBM file format";
 	}
 };
 
 class Loader {
-	MappedFile fileContents;
-	Node root;
+	MappedFile     fileContents;
+	Node              root;
 	std::vector<char> propBuffer;
 public:
 	Loader(const std::string& fileName, const Identifier& acceptedIdentifier);
@@ -138,7 +138,7 @@ class PropStream
 			return true;
 		}
 
-	protected:
+	private:
 		const char* p = nullptr;
 		const char* end = nullptr;
 };
@@ -178,7 +178,7 @@ class PropWriteStream
 			std::copy(str.begin(), str.end(), std::back_inserter(buffer));
 		}
 
-	protected:
+	private:
 		std::vector<char> buffer;
 };
 

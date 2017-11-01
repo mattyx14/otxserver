@@ -8,7 +8,7 @@ local condition = Condition(CONDITION_ATTRIBUTES)
 condition:setParameter(CONDITION_PARAM_BUFF_SPELL, 1)
 condition:setParameter(CONDITION_PARAM_TICKS, 10000)
 condition:setParameter(CONDITION_PARAM_SKILL_DISTANCEPERCENT, 40)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

@@ -129,7 +129,7 @@ enum CreatureType_t : uint8_t {
 	CREATURETYPE_PLAYER = 0,
 	CREATURETYPE_MONSTER = 1,
 	CREATURETYPE_NPC = 2,
-	CREATURETYPE_SUMMONPLAYER = 3
+	CREATURETYPE_SUMMONPLAYER = 3,
 };
 
 enum OperatingSystem_t : uint8_t {

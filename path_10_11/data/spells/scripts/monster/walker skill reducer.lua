@@ -48,11 +48,11 @@ function onTargetTile(creature, pos)
                 local player = Player(creatureTable[r])
 			
                 if isPlayer(creatureTable[r]) == true and table.contains(mage, player:getVocation():getId()) then
-				player:addCondition(condition2)
+				player:setaddCondition(condition2)
 				elseif isPlayer(creatureTable[r]) == true and table.contains(paladin, player:getVocation():getId()) then
-				player:addCondition(condition3)
+				player:setaddCondition(condition3)
 				elseif isPlayer(creatureTable[r]) == true and table.contains(knight, player:getVocation():getId()) then
-				player:addCondition(condition1)
+				player:setaddCondition(condition1)
 				elseif isMonster(creatureTable[r]) == true then 
 				end
             end

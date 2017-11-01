@@ -8,7 +8,7 @@
 
 	local area = createCombatArea(AREA_SQUARE1X1)
 	setCombatArea(combat, area)
-	setCombatCondition(combat, condition)
+	addCombatCondition(combat, condition)
 
 function onCastSpell(cid, var)
 	return doCombat(cid, combat, var)

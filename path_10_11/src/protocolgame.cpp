@@ -936,7 +936,7 @@ void ProtocolGame::parseRuleViolationReport(NetworkMessage &msg)
 		msg.get<uint32_t>(); // statement id, used to get whatever player have said, we don't log that.  
 	}
 
-	addGameTask(&Game::playerReportRuleViolationReport, player->getID(), targetName, reportType, reportReason, comment, translation);
+	addGameTask(&Game::playerReportRuleViolation, player->getID(), targetName, reportType, reportReason, comment, translation);
 }
 
 void ProtocolGame::parseBugReport(NetworkMessage& msg)

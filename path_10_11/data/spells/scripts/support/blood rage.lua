@@ -7,7 +7,7 @@ condition:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_GREEN)
 combat:setParameter(COMBAT_PARAM_AGGRESSIVE, 0)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

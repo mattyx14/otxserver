@@ -8,7 +8,7 @@ condition:addDamage(20, 5000, -20)
 
 local area = createCombatArea(AREA_CIRCLE3X3)
 combat:setArea(area)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

@@ -1732,11 +1732,10 @@ uint32_t Item::getWorth() const
 	}
 }
 
-void Item::getLight(LightInfo& lightInfo) const
+LightInfo Item::getLightInfo() const
 {
 	const ItemType& it = items[id];
-	lightInfo.color = it.lightColor;
-	lightInfo.level = it.lightLevel;
+	return {it.lightLevel, it.lightColor};
 }
 
 std::string ItemAttributes::emptyString;

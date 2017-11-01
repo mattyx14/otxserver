@@ -30,7 +30,7 @@ for i = 30, 50 do
 		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0}
 	})
 	combat[i]:setArea(area)
-	combat[i]:setCondition(condition)
+	combat[i]:addCondition(condition)
 end
 
 function onCastSpell(creature, var)

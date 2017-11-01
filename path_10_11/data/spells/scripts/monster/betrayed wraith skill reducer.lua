@@ -7,7 +7,7 @@ condition:setParameter(CONDITION_PARAM_SKILL_DISTANCEPERCENT, 80)
 
 local area = createCombatArea(AREA_SQUAREWAVE5)
 combat:setArea(area)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

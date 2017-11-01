@@ -14,7 +14,7 @@ arr = {
 
 local area = createCombatArea(arr)
 combat:setArea(area)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

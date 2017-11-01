@@ -16,7 +16,7 @@ for i = 5, 11 do
 		condition:addDamage(1, 4000, -damage)
 	end
 
-	combat[i]:setCondition(condition)
+	combat[i]:addCondition(condition)
 end
 
 function onCastSpell(creature, var)

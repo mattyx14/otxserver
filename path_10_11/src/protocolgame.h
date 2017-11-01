@@ -186,13 +186,13 @@ class ProtocolGame final : public ProtocolGameBase
 		void disconnectClient(const std::string& message) const;
 		void writeToOutputBuffer(const NetworkMessage& msg, bool broadcast = true) final;
 
-		void release() final;
+		void release() override;
 
 		void checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown);
 
 		// we have all the parse methods
-		void parsePacket(NetworkMessage& msg) final;
-		void onRecvFirstMessage(NetworkMessage& msg) final;
+		void parsePacket(NetworkMessage& msg) override;
+		void onRecvFirstMessage(NetworkMessage& msg) override;
 
 		//Parse methods
 		void parseAutoWalk(NetworkMessage& msg);

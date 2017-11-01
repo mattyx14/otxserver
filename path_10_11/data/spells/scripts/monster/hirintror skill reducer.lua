@@ -13,7 +13,7 @@ for i = 20, 40 do
 
 	local area = createCombatArea(AREA_SQUARE1X1)
 	setCombatArea(combat[i], area)
-	setCombatCondition(combat[i], condition)
+	addCombatCondition(combat[i], condition)
 end
 
 function onCastSpell(cid, var)

@@ -19,7 +19,7 @@ local area = createCombatArea({
 	{0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0}
 })
 combat:setArea(area)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

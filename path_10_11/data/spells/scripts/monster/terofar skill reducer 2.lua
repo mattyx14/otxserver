@@ -20,7 +20,7 @@ setConditionParam(condition, CONDITION_PARAM_STAT_MAGICPOINTSPERCENT, i)
 	})
 
 setCombatArea(combat[i], area)
-setCombatCondition(combat[i], condition)
+addCombatCondition(combat[i], condition)
 
 end
 

@@ -193,6 +193,8 @@ void Game::saveGameState()
 
 	Map::save();
 
+	g_databaseTasks.flush();
+
 	if (gameState == GAME_STATE_MAINTAIN) {
 		setGameState(GAME_STATE_NORMAL);
 	}
@@ -4637,8 +4639,7 @@ void Game::checkLight()
 	}
 
 	if (lightChange) {
-		LightInfo lightInfo;
-		getWorldLightInfo(lightInfo);
+		LightInfo lightInfo = getWorldLightInfo();
 
 		for (const auto& it : players) {
 			it.second->sendWorldLight(lightInfo);
@@ -4646,10 +4647,9 @@ void Game::checkLight()
 	}
 }
 
-void Game::getWorldLightInfo(LightInfo& lightInfo) const
+LightInfo Game::getWorldLightInfo() const
 {
-	lightInfo.level = lightLevel;
-	lightInfo.color = 0xD7;
+	return {lightLevel, 0xD7};
 }
 
 void Game::shutdown()
@@ -4764,6 +4764,7 @@ void Game::updateCreatureType(Creature* creature)
 {
 	const Player* masterPlayer = nullptr;
 
+	// uint32_t creatureId = creature->getID();
 	CreatureType_t creatureType = creature->getType();
 	if (creatureType == CREATURETYPE_MONSTER) {
 		const Creature* master = creature->getMaster();
@@ -5099,7 +5100,7 @@ void Game::kickPlayer(uint32_t playerId, bool displayEffect)
 	player->kickPlayer(displayEffect);
 }
 
-void Game::playerReportRuleViolationReport(uint32_t playerId, const std::string& targetName, uint8_t reportType, uint8_t reportReason, const std::string& comment, const std::string& translation)
+void Game::playerReportRuleViolation(uint32_t playerId, const std::string& targetName, uint8_t reportType, uint8_t reportReason, const std::string& comment, const std::string& translation)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {

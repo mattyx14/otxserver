@@ -46,7 +46,7 @@ function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	if toPosition.x == CONTAINER_POSITION then
-		player:sendCancelMessage(Game.getReturnMessage(RETURNVALUE_NOTPOSSIBLE))
+		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return true
 	end
 

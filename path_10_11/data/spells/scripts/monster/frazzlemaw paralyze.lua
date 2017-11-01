@@ -4,7 +4,7 @@
 	local condition = createConditionObject(CONDITION_PARALYZE)
 	setConditionParam(condition, CONDITION_PARAM_TICKS, 20000)
 	setConditionFormula(condition, -0.6, 0, -0.8, 0)
-	setCombatCondition(combat, condition)
+	addCombatCondition(combat, condition)
 
 	arr = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

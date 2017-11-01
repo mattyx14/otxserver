@@ -24,7 +24,7 @@ for i = 40, 170 do
 				condition:addDamage(1, 4000, -(damage * 1.2))
 			end
 		end
-		combat[index]:setCondition(condition)
+		combat[index]:addCondition(condition)
 	end
 end
 

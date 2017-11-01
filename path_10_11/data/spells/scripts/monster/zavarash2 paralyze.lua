@@ -5,7 +5,7 @@
 	local condition = createConditionObject(CONDITION_PARALYZE)
 	setConditionParam(condition, CONDITION_PARAM_TICKS, 20000)
 	setConditionFormula(condition, -0.05, 0, -0.1, 0)
-	setCombatCondition(combat, condition)
+	addCombatCondition(combat, condition)
 
 function onCastSpell(cid, var)
 	return doCombat(cid, combat, var)

@@ -12,7 +12,7 @@ for i = 60, 85 do
 
 	local area = createCombatArea(AREA_BEAM1)
 	combat[i]:setArea(area)
-	combat[i]:setCondition(condition)
+	combat[i]:addCondition(condition)
 end
 
 function onCastSpell(creature, var)

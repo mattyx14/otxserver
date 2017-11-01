@@ -23,7 +23,7 @@ setConditionParam(condition, CONDITION_PARAM_SKILL_DISTANCEPERCENT, i)
 	})
 
 setCombatArea(combat[i], area)
-setCombatCondition(combat[i], condition)
+addCombatCondition(combat[i], condition)
 
 end
 

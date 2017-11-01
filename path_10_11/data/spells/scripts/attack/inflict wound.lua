@@ -8,7 +8,7 @@ combat:setParameter(COMBATPARAM_USECHARGES, 1)
 local condition = Condition(CONDITION_BLEEDING)
 condition:setParameter(CONDITION_PARAM_DELAYED, 10)
 condition:addDamage(15, 2000, -50)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)

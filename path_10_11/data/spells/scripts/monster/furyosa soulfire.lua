@@ -5,7 +5,7 @@ setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_EXPLOSIONHIT)
 local condition = createConditionObject(CONDITION_FIRE)
 setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
 addDamageCondition(condition, 30, 9000, -10)
-setCombatCondition(combat, condition)
+addCombatCondition(combat, condition)
 
 	arr = {
 		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},

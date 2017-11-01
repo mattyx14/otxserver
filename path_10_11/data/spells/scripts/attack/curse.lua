@@ -23,7 +23,7 @@ condition:addDamage(5, 3000, -19)
 condition:addDamage(5, 3000, -15)
 condition:addDamage(6, 3000, -10)
 condition:addDamage(10, 3000, -5)
-combat:setCondition(condition)
+combat:addCondition(condition)
 
 function onCastSpell(creature, var)
 	return combat:execute(creature, var)
