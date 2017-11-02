@@ -6,7 +6,7 @@ condition:setParameter(CONDITION_PARAM_HEALTHTICKS, 30 * 1000)
 
 function onCastSpell(creature, var)
 	if creature:getHealth() < creature:getMaxHealth() * 0.1 and not creature:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT, 88888) then
-		creature:setaddCondition(condition)
+		creature:addCondition(condition)
 		addEvent(function(cid)
 			creature:addHealth(math.random(7500, 8000))
 			creature:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)

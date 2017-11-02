@@ -17,7 +17,7 @@ function onCastSpell(creature, variant)
 	end
 
 	condition:setOutfit(monsterType:getOutfit())
-	creature:setaddCondition(condition)
+	creature:addCondition(condition)
 	creature:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
 	return true
 end
