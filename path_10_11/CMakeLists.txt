@@ -9,7 +9,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(cotire)
 
-add_compile_options(-Wall -Werror -pipe -fvisibility=hidden)
+add_compile_options(-Wall -pipe -fvisibility=hidden)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options(-fno-strict-aliasing)
