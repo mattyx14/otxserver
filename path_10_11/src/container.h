@@ -164,11 +164,13 @@ class Container : public Item, public Cylinder
 		void internalAddThing(uint32_t index, Thing* thing) override final;
 		void startDecaying() override final;
 
+		uint32_t maxSize = 0;
+
+		bool unlocked = false;
+		bool pagination = false;
+
 	protected:
 		ItemDeque itemlist;
-		bool pagination;
-		uint32_t maxSize;
-		bool unlocked;
 
 	private:
 		std::ostringstream& getContentDescription(std::ostringstream& os) const;

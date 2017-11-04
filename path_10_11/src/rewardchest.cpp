@@ -5,6 +5,7 @@
 #include "otpch.h"
 
 #include "rewardchest.h"
+#include "container.h"
 
 RewardChest::RewardChest(uint16_t type) :
 	Container(type)
