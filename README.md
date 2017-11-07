@@ -34,3 +34,8 @@ Distributions ...
 
 MapEditor Compatible ...
 * Base to lasted source from [Hampus Joakim Nilsson](https://github.com/hjnilsson): [Remere's Map Editor - Edited by Mattyx14](https://mega.nz/#!8QRHxIpK!vag-xjbyYtcV2CF2Tnl5AfXkq5YZXUcP6fbqwswwEU0)
+
+### Contact:
+Facebook: https://www.facebook.com/Mattyx14
+E-mail: darkylive@live.com.mx
+Whatsapp: +5213173832937
