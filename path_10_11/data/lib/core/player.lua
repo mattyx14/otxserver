@@ -96,3 +96,20 @@ function Player.addManaSpent(...)
 	APPLY_SKILL_MULTIPLIER = true
 	return ret
 end
+
+--jlcvp - impact analyser
+function Player.sendHealingImpact(self, healAmmount)
+	local msg = NetworkMessage()
+	msg:addByte(0xCC) -- DEC: 204
+	msg:addByte(0) -- 0 = healing / 1 = damage (boolean)
+	msg:addU32(healAmmount) -- unsigned int
+	msg:sendToPlayer(self)
+end
+
+function Player.sendDamageImpact(self, damage)
+	local msg = NetworkMessage()
+	msg:addByte(0xCC) -- DEC: 204
+	msg:addByte(1) -- 0 = healing / 1 = damage (boolean)
+	msg:addU32(damage) -- unsigned int
+	msg:sendToPlayer(self)
+end
