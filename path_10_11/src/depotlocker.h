@@ -44,7 +44,7 @@ class DepotLocker final : public Container
 			return depotId;
 		}
 		void setDepotId(uint16_t depotId) {
-			this->depotId = depotId;
+			depotId = depotId;
 		}
 
 		//cylinder implementations

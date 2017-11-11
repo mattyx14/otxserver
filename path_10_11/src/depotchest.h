@@ -29,7 +29,7 @@ class DepotChest final : public Container
 
 		//serialization
 		void setMaxDepotItems(uint32_t maxitems) {
-			this->maxDepotItems = maxitems;
+			maxDepotItems = maxitems;
 		}
 
 		//cylinder implementations
