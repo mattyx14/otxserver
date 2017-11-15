@@ -63,7 +63,7 @@ local function getTime(seconds)
 end
 
 function Player:onLook(thing, position, distance)
-	local description = 'You see '
+	local description = "You see "
 	if thing:isItem() then
 		if thing.itemid >= ITEM_HEALTH_CASK_START and thing.itemid <= ITEM_HEALTH_CASK_END 
 		or thing.itemid >= ITEM_MANA_CASK_START and thing.itemid <= ITEM_MANA_CASK_END 
@@ -72,7 +72,7 @@ function Player:onLook(thing, position, distance)
 			description = description .. thing:getDescription(distance)
 			local charges = thing:getCharges()
 			if charges then
-			description = string.format('%s\nIt has %d refillings left.', description, charges)
+			description = string.format("%s\nIt has %d refillings left.", description, charges)
 			end
 		else
 			description = description .. thing:getDescription(distance)
@@ -96,9 +96,9 @@ function Player:onLook(thing, position, distance)
 					end
 				else
 					if (i ~= itemType:getImbuingSlots()) then
-						imbuingSlots = imbuingSlots.. "Free Slot, "
+						imbuingSlots = imbuingSlots.. "Empty Slot, "
 					else
-						imbuingSlots = imbuingSlots.. "Free Slot)."
+						imbuingSlots = imbuingSlots.. "Empty Slot)."
 					end
 				end
 			end
@@ -110,49 +110,50 @@ function Player:onLook(thing, position, distance)
 
 	if self:getGroup():getAccess() then
 		if thing:isItem() then
-			description = string.format('%s\nItem ID: %d', description, thing.itemid)
+			description = string.format("%s\nItem ID: %d", description, thing:getId())
 
-			local actionId = thing.actionid
+			local actionId = thing:getActionId()
 			if actionId ~= 0 then
-				description = string.format('%s, Action ID: %d', description, actionId)
+				description = string.format("%s, Action ID: %d", description, actionId)
 			end
 
 			local uniqueId = thing:getAttribute(ITEM_ATTRIBUTE_UNIQUEID)
 			if uniqueId > 0 and uniqueId < 65536 then
-				description = string.format('%s, Unique ID: %d', description, uniqueId)
+				description = string.format("%s, Unique ID: %d", description, uniqueId)
 			end
 
-			description = description .. '.'
 			local itemType = thing:getType()
 
 			local transformEquipId = itemType:getTransformEquipId()
 			local transformDeEquipId = itemType:getTransformDeEquipId()
 			if transformEquipId ~= 0 then
-				description = string.format('%s\nTransforms to: %d (onEquip)', description, transformEquipId)
+				description = string.format("%s\nTransforms to: %d (onEquip)", description, transformEquipId)
 			elseif transformDeEquipId ~= 0 then
-				description = string.format('%s\nTransforms to: %d (onDeEquip)', description, transformDeEquipId)
+				description = string.format("%s\nTransforms to: %d (onDeEquip)", description, transformDeEquipId)
 			end
 
 			local decayId = itemType:getDecayId()
 			if decayId ~= -1 then
-				description = string.format('%s\nDecays to: %d', description, decayId)
+				description = string.format("%s\nDecays to: %d", description, decayId)
 			end
 		elseif thing:isCreature() then
-			local str = '%s\nHealth: %d / %d'
+			local str = "%s\nHealth: %d / %d"
 			if thing:isPlayer() and thing:getMaxMana() > 0 then
-				str = string.format('%s, Mana: %d / %d', str, thing:getMana(), thing:getMaxMana())
+				str = string.format("%s, Mana: %d / %d", str, thing:getMana(), thing:getMaxMana())
 			end
-			description = string.format(str, description, thing:getHealth(), thing:getMaxHealth()) .. '.'
+			description = string.format(str, description, thing:getHealth(), thing:getMaxHealth()) .. "."
 		end
 
 		local position = thing:getPosition()
 		description = string.format(
-			'%s\nPosition: %d, %d, %d',
+			"%s\nPosition: %d, %d, %d",
 			description, position.x, position.y, position.z
 		)
 
-		if thing:isCreature() and thing:isPlayer() then
-			description = string.format('%s\nIP: %s.', description, Game.convertIpToString(thing:getIp()))
+		if thing:isCreature() then
+			if thing:isPlayer() then
+				description = string.format("%s\nIP: %s.", description, Game.convertIpToString(thing:getIp()))
+			end
 		end
 	end
 	self:sendTextMessage(MESSAGE_INFO_DESCR, description)
@@ -238,6 +239,13 @@ local function antiPush(self, item, count, fromPosition, toPosition, fromCylinde
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	-- No move if item count > 20 items
+	local tile = Tile(toPosition)
+	if tile and tile:getItemCount() > 20 then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+
 	-- SSA exhaust
 	local exhaust = { }
 	if toPosition.x == CONTAINER_POSITION and toPosition.y == CONST_SLOT_NECKLACE and item:getId() == STONE_SKIN_AMULET then
@@ -371,12 +379,6 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 		return false
 	end
 
-	-- No move if item count > 20 items
-	if tile and tile:getItemCount() > 20 then
-		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-		return false
-	end
-
 	if tile and tile:getItemById(370) then -- Trapdoor
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		self:getPosition():sendMagicEffect(CONST_ME_POFF)
@@ -394,11 +396,19 @@ function Player:onMoveCreature(creature, fromPosition, toPosition)
 	return true
 end
 
--- Temporal disable
---[[function Player:onReportRuleViolation(targetName, reportType, reportReason, comment, translation)
+local function hasPendingReport(name, targetName, reportType)
+	local f = io.open(string.format("data/reports/players/%s-%s-%d.txt", name, targetName, reportType), "r")
+	if f then
+		io.close(f)
+		return true
+	else
+		return false
+	end
+end
+
+function Player:onReportRuleViolation(targetName, reportType, reportReason, comment, translation)
 	local name = self:getName()
-	local pendingReport = function () local f = io.open(string.format("data/reports/players/%s-%s-%d.txt", name, targetName, reportType), "r") ; if f then io.close(f) return true else return false end end
-	if pendingReport() then
+	if hasPendingReport(name, targetName, reportType) then
 		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your report is being processed.")
 		return
 	end
@@ -411,8 +421,8 @@ end
 
 	io.output(file)
 	io.write("------------------------------\n")
-	io.write("Complainter: " .. name .. "\n")
-	io.write("Reported: " .. targetName .. "\n")
+	io.write("Reported by: " .. name .. "\n")
+	io.write("Target: " .. targetName .. "\n")
 	io.write("Type: " .. reportType .. "\n")
 	io.write("Reason: " .. reportReason .. "\n")
 	io.write("Comment: " .. comment .. "\n")
@@ -423,9 +433,13 @@ end
 	io.close(file)
 	self:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("Thank you for reporting %s. Your report will be processed by %s team as soon as possible.", targetName, configManager.getString(configKeys.SERVER_NAME)))
 	return
-end]]
+end
 
 function Player:onReportBug(message, position, category)
+	if self:getAccountType() == ACCOUNT_TYPE_NORMAL then
+		return false
+	end
+
 	local name = self:getName()
 	local file = io.open("data/reports/bugs/" .. name .. " report.txt", "a")
 
