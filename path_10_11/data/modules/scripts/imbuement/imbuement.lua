@@ -1,35 +1,36 @@
 --[[
-1~3 => Element Type
-4~6 => Total Time (segundos - 20 h)
-7~9 => Time Passed (seconds)
+	1~3 => Element Type
+	4~6 => Total Time (segundos - 20 h)
+	7~9 => Time Passed (seconds)
 ]]
+
 --[[ Icon List --
-0 = NONE
-1 ~ 3   = Critical
-4 ~ 6   = Death
-7 ~ 9   = Earth
-10 ~ 12 = Energy
-13 ~ 15 = Fire
-16 ~ 18 = Holy
-19 ~ 21 = Ice
-22 ~ 24 = Fire (grey | not used)
-25 ~ 27 = Shielding (grey | not used)
-28 ~ 30 = Reduction Earth
-31 ~ 33 = Reduction Energy
-34 ~ 36 = Reduction Fire
-37 ~ 39 = Reduction Holy
-40 ~ 42 = Reduction Ice
-43 ~ 45 = Shielding (white | not used)
-46 ~ 48 = Life Leech
-49 ~ 51 = Mana Leech
-52 ~ 54 = Axe Fighting
-55 ~ 57 = Club Fighting
-58 ~ 60 = Distance Fighting
-61 ~ 63 = Fist Fighting
-64 ~ 66 = Magic Level
-67 ~ 69 = Shielding Fighting
-70 ~ 72 = Sword Fighting
-73 ~ 75 = Speed
+	0 = NONE
+	1 ~ 3   = Critical
+	4 ~ 6   = Death
+	7 ~ 9   = Earth
+	10 ~ 12 = Energy
+	13 ~ 15 = Fire
+	16 ~ 18 = Holy
+	19 ~ 21 = Ice
+	22 ~ 24 = Fire (grey | not used)
+	25 ~ 27 = Shielding (grey | not used)
+	28 ~ 30 = Reduction Earth
+	31 ~ 33 = Reduction Energy
+	34 ~ 36 = Reduction Fire
+	37 ~ 39 = Reduction Holy
+	40 ~ 42 = Reduction Ice
+	43 ~ 45 = Shielding (white | not used)
+	46 ~ 48 = Life Leech
+	49 ~ 51 = Mana Leech
+	52 ~ 54 = Axe Fighting
+	55 ~ 57 = Club Fighting
+	58 ~ 60 = Distance Fighting
+	61 ~ 63 = Fist Fighting
+	64 ~ 66 = Magic Level
+	67 ~ 69 = Shielding Fighting
+	70 ~ 72 = Sword Fighting
+	73 ~ 75 = Speed
 ]]
 
 ImbuingSystem = {
