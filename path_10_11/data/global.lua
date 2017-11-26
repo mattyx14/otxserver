@@ -147,3 +147,24 @@ if not bosssPlayers then
 		end
 	}
 end
+
+function Player.removeMoneyNpc(self, amount)
+	amount = tonumber(amount)
+	local moneyCount = self:getMoney()
+	local bankCount = self:getBankBalance()
+	if amount > moneyCount + bankCount then
+		return false
+	end
+
+	self:removeMoney(math.min(amount, moneyCount))
+	if amount > moneyCount then
+		self:setBankBalance(bankCount - math.max(amount - moneyCount, 0))
+		if moneyCount == 0 then
+			self:sendTextMessage(MESSAGE_INFO_DESCR, ("Paid %d gold from bank account. Your account balance is now %d gold."):format(amount, self:getBankBalance()))
+		else
+			self:sendTextMessage(MESSAGE_INFO_DESCR, ("Paid %d from inventory and %d gold from bank account. Your account balance is now %d gold."):format(moneyCount, amount - moneyCount, self:getBankBalance()))
+		end
+	end
+
+	return true
+end
