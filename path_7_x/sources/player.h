@@ -461,7 +461,7 @@ class Player : public Creature, public Cylinder
 		virtual float getAttackFactor() const;
 		virtual float getDefenseFactor() const;
 
-		void addCombatExhaust(uint32_t ticks, Exhaust_t exhaust);
+		void addCooldown(uint32_t ticks, uint16_t spellId);
 		void addExhaust(uint32_t ticks, Exhaust_t exhaust);
 		void addInFightTicks(bool pzLock, int32_t ticks = 0);
 		void addDefaultRegeneration(uint32_t addTicks);

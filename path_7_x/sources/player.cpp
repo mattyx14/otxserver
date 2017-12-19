@@ -1598,7 +1598,6 @@ void Player::onWalk(Direction& dir)
 {
 	Creature::onWalk(dir);
 	setNextActionTask(NULL);
-	setNextAction(OTSYS_TIME() + getStepDuration(dir));
 }
 
 void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
@@ -2529,17 +2528,17 @@ Item* Player::createCorpse(DeathList deathList)
 	return corpse;
 }
 
-void Player::addCombatExhaust(uint32_t ticks, Exhaust_t exhaust)
+void Player::addCooldown(uint32_t ticks, uint16_t spellId)
 {
 	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT,
-		CONDITION_EXHAUST_COMBAT, ticks, 0, false, (int32_t)exhaust))
+		CONDITION_SPELLCOOLDOWN, ticks, 0, false, spellId))
 		addCondition(condition);
 }
 
 void Player::addExhaust(uint32_t ticks, Exhaust_t exhaust)
 {
 	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT,
-		CONDITION_EXHAUST_HEAL, ticks, 0, false, (int32_t)exhaust))
+		CONDITION_EXHAUST, ticks, 0, false, (int32_t)exhaust))
 		addCondition(condition);
 }
 
