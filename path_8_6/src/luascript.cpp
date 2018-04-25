@@ -6124,8 +6124,7 @@ int LuaScriptInterface::luaContainerAddItem(lua_State* L)
 	uint16_t itemId;
 	if (isNumber(L, 2)) {
 		itemId = getNumber<uint16_t>(L, 2);
-	}
-	else {
+	} else {
 		itemId = Item::items.getItemIdByName(getString(L, 2));
 		if (itemId == 0) {
 			lua_pushnil(L);
@@ -6145,8 +6144,7 @@ int LuaScriptInterface::luaContainerAddItem(lua_State* L)
 		}
 
 		subType = count;
-	}
-	else {
+	} else {
 		itemCount = std::max<int32_t>(1, count);
 	}
 
