@@ -6124,7 +6124,8 @@ int LuaScriptInterface::luaContainerAddItem(lua_State* L)
 	uint16_t itemId;
 	if (isNumber(L, 2)) {
 		itemId = getNumber<uint16_t>(L, 2);
-	} else {
+	}
+	else {
 		itemId = Item::items.getItemIdByName(getString(L, 2));
 		if (itemId == 0) {
 			lua_pushnil(L);
@@ -6132,24 +6133,55 @@ int LuaScriptInterface::luaContainerAddItem(lua_State* L)
 		}
 	}
 
-	uint32_t subType = getNumber<uint32_t>(L, 3, 1);
+	const ItemType& it = Item::items[itemId];
 
-	Item* item = Item::CreateItem(itemId, std::min<uint32_t>(subType, 100));
-	if (!item) {
-		lua_pushnil(L);
-		return 1;
+	int32_t itemCount = 1;
+	uint32_t count = getNumber<uint32_t>(L, 3, 1);
+	uint32_t subType = 1;
+
+	if (it.hasSubType()) {
+		if (it.stackable) {
+			itemCount = static_cast<int32_t>(std::ceil(static_cast<float>(count) / 100));
+		}
+
+		subType = count;
 	}
+	else {
+		itemCount = std::max<int32_t>(1, count);
+	}
+
 
 	int32_t index = getNumber<int32_t>(L, 4, INDEX_WHEREEVER);
 	uint32_t flags = getNumber<uint32_t>(L, 5, 0);
 
-	ReturnValue ret = g_game.internalAddItem(container, item, index, flags);
-	if (ret == RETURNVALUE_NOERROR) {
-		pushUserdata<Item>(L, item);
-		setItemMetatable(L, -1, item);
-	} else {
-		delete item;
-		lua_pushnil(L);
+	while (itemCount > 0) {
+		uint16_t stackCount = subType;
+		if (it.stackable && stackCount > 100) {
+			stackCount = 100;
+		}
+		Item* newItem = Item::CreateItem(itemId, stackCount);
+		if (!newItem) {
+			reportErrorFunc(getErrorDesc(LUA_ERROR_ITEM_NOT_FOUND));
+			pushBoolean(L, false);
+			return 1;
+		}
+
+		if (it.stackable) {
+			subType -= stackCount;
+		}
+
+		ReturnValue ret = g_game.internalAddItem(container, newItem, index, flags);
+		if (ret != RETURNVALUE_NOERROR) {
+			delete newItem;
+			lua_pushnil(L);
+			return 1;
+		}
+
+		if (--itemCount == 0) {
+			pushUserdata<Item>(L, newItem);
+			setItemMetatable(L, -1, newItem);
+			return 1;
+		}
 	}
 	return 1;
 }
