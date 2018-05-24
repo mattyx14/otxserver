@@ -173,6 +173,7 @@
 		attackImmediatelyAfterLoggingIn = false
 		exhaustionNPC = true
 		exhaustionInSecondsNPC = 0.5
+		delayLastPushStep = true
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
