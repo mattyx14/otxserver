@@ -5335,6 +5335,9 @@ bool Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 	if(!player || player->isRemoved())
 		return false;
 
+	if(playerId == invitedId)
+		return false;
+
 	Player* invitedPlayer = getPlayerByID(invitedId);
 	if(!invitedPlayer || invitedPlayer->isRemoved() || invitedPlayer->isInviting(player))
 		return false;
