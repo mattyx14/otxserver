@@ -5489,6 +5489,9 @@ bool Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 	if(!player || player->isRemoved())
 		return false;
 
+	if(playerId == invitedId)
+		return false;
+
 	if(player->hasCondition(CONDITION_EXHAUST, 5))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
