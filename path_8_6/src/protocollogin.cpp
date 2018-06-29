@@ -181,7 +181,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if (IOBan::isIpBanned(clientIp, banInfo))) {
+	if (IOBan::isIpBanned(clientIp, banInfo)) {
 		disconnectClient("Too many connections attempts from your IP address, please try again later.");
 		return;
 	}
