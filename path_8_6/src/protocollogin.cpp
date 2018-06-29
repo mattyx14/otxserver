@@ -108,10 +108,10 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	/*uint16_t clientos = */
-	msg.get<uint16_t>();
+	uint32_t clientIp = getConnection()->getIP();
 
+	msg.skipBytes(2);
 	uint16_t version = msg.get<uint16_t>();
-	msg.skipBytes(12);
 	/*
 	 * Skipped bytes:
 	 * 4 bytes: protocolVersion
@@ -178,6 +178,11 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 	if (accountName.empty()) {
 		disconnectClient("Invalid account name.");
+		return;
+	}
+
+	if (IOBan::isIpBanned(clientIp, banInfo))) {
+		disconnectClient("Too many connections attempts from your IP address, please try again later.");
 		return;
 	}
 
