@@ -116,7 +116,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 * 1 byte: 0
 	 */
 
-	msg.skip(12);
+	msg.skipBytes(12);
 	// RSA_decrypt
 
 	if (version <= 760) {
