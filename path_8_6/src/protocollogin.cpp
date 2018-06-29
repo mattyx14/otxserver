@@ -107,9 +107,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	/*uint16_t clientos = */
-	uint32_t clientIp = getConnection()->getIP();
-
 	msg.skipBytes(2);
 	uint16_t version = msg.get<uint16_t>();
 	/*
@@ -118,6 +115,9 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 * 12 bytes: dat, spr, pic signatures (4 bytes each)
 	 * 1 byte: 0
 	 */
+
+	msg.skip(12);
+	// RSA_decrypt
 
 	if (version <= 760) {
 		std::ostringstream ss;
@@ -181,7 +181,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if (IOBan::isIpBanned(clientIp, banInfo)) {
+	if (IOBan::isIpBanned(connection->getIP(), banInfo)) {
 		disconnectClient("Too many connections attempts from your IP address, please try again later.");
 		return;
 	}
