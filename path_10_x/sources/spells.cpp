@@ -1645,8 +1645,8 @@ ReturnValue ConjureSpell::internalConjureItem(Player* player, uint32_t conjureId
 		ReturnValue ret = g_game.internalPlayerAddItem(player, player, newItem, true);
 		if(ret != RET_NOERROR)
 			delete newItem;
-
-		g_game.startDecay(newItem);
+		else
+			g_game.startDecay(newItem);
 		return ret;
 	}
 
