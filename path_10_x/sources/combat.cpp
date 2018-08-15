@@ -646,6 +646,9 @@ bool Combat::CombatNullFunc(Creature* caster, Creature* target, const CombatPara
 
 void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile* tile, const CombatParams& params)
 {
+	if(!tile)
+		return;
+
 	if(params.itemId)
 	{
 		Player* player = NULL;
@@ -1452,6 +1455,9 @@ bool MagicField::isBlocking(const Creature* creature) const
 
 void MagicField::onStepInField(Creature* creature)
 {
+	if(!creature)
+		return;
+
 	//remove magic walls/wild growth
 	if(isUnstepable() || id == ITEM_MAGICWALL || id == ITEM_WILDGROWTH || id == ITEM_MAGICWALL_SAFE || id == ITEM_WILDGROWTH_SAFE || isBlocking(creature))
 	{
