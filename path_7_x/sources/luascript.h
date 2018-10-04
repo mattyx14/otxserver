@@ -336,6 +336,7 @@ class LuaInterface
 		virtual void registerFunctions();
 
 		//lua functions
+		static int32_t luaGetTileStackItemsSize(lua_State *L);
 		static int32_t luaDoRemoveItem(lua_State* L);
 		static int32_t luaDoPlayerFeed(lua_State* L);
 		static int32_t luaDoPlayerSendCancel(lua_State* L);

@@ -1704,6 +1704,9 @@ void LuaInterface::registerFunctions()
 	//getTopCreature(pos)
 	lua_register(m_luaState, "getTopCreature", LuaInterface::luaGetTopCreature);
 
+	//getTileStackItemsSize(pos)
+	lua_register(m_luaState, "getTileStackItemsSize", LuaInterface::luaGetTileStackItemsSize);
+
 	//doRemoveItem(uid[, count = -1])
 	lua_register(m_luaState, "doRemoveItem", LuaInterface::luaDoRemoveItem);
 
@@ -3353,6 +3356,30 @@ int32_t LuaInterface::luaDoCreatureCastSpell(lua_State* L)
 
 	errorEx(getError(LUA_ERROR_SPELL_NOT_FOUND));
 	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaGetTileStackItemsSize(lua_State *L)
+{
+	//getTileStackItemsSize(pos)
+	PositionEx pos;
+	popPosition(L, pos);
+
+	Tile* tile = g_game.getTile(pos.x, pos.y, pos.z);
+	if (!tile) {
+		errorEx(getError(LUA_ERROR_TILE_NOT_FOUND));
+		lua_pushnil(L);
+		return 1;
+	}
+
+	const TileItemVector* items = tile->getItemList();
+	if (items) {
+		lua_pushnumber(L, items->size());
+	}
+	else {
+		lua_pushnumber(L, 0);
+	}
+
 	return 1;
 }
 
