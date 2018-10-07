@@ -20,8 +20,6 @@ local TYPE_RUM = 27
 local TYPE_SWAMP = 28
 local TYPE_TEA = 35
 
-local POOL = 2016
-
 local oilLamps = {[2046] = 2044}
 local casks = {[1771] = TYPE_WATER, [1772] = TYPE_BEER, [1773] = TYPE_WINE}
 local alcoholDrinks = {TYPE_BEER, TYPE_WINE, TYPE_RUM}
@@ -142,7 +140,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		return true
 	end
 
-	doDecayItem(doCreateItem(POOL, item.type, toPosition))
+	doDecayItem(doCreateItem(2016, item.type, toPosition))
 	doChangeTypeItem(item.uid, TYPE_EMPTY)
 	return true
 end
