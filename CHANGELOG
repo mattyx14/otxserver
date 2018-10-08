@@ -54,14 +54,11 @@
 ]
 
 [ OTX Server 2.9 :: Version "OpenTibia"
-	- Fix https://github.com/mattyx14/otxserver/issues/212
-	- Fix https://github.com/mattyx14/otxserver/issues/210
-	- Fix https://github.com/mattyx14/otxserver/issues/194
-	- Fix https://github.com/mattyx14/otxserver/commit/a256db41e92ead2becc6a00dfa2acbcdc4e31f49
+	- Fix tileLimit
 	- Fix and update mods / description autor
-	- Fix https://github.com/mattyx14/otxserver/issues/286
 	- Fix console errors on 7.x (duplicate commands)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
+	- Fix #102, #104, #194, #210, #212, #286
 ]
 
 [ OTX Server 2.8 :: Version "LEZICK"
