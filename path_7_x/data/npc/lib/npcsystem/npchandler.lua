@@ -429,9 +429,9 @@ if(NpcHandler == nil) then
 					end
 				elseif(isCreature(speech.cid) and speech.start ~= nil and speech.time ~= nil and speech.message ~= nil) then
 					if(os.mtime() >= speech.time) then
-						local talkStart = self.talkStart
+						local talkStart = (self.talkStart[speech.cid] or self.talkStart)
 						if(speech.force or (self:isFocused(speech.cid) and talkStart == speech.start)) then
-							selfSay(speech.message)
+							selfSay(speech.message, speech.cid)
 						end
 
 						self.talkDelay[i] = nil
@@ -523,7 +523,7 @@ if(NpcHandler == nil) then
 	function NpcHandler:say(message, focus, delay, force)
 		local delay = delay or 0
 		if(NPCHANDLER_TALKDELAY == TALKDELAY_NONE or delay <= 0) then
-			selfSay(message)
+			selfSay(message, focus)
 			return
 		end
 
