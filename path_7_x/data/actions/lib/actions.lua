@@ -14,7 +14,6 @@ PUMPKIN_HEAD = 2096
 
 POOL = 2016
 
-
 DOORS = {
 	[1209] = 1211, [1212] = 1214, [1231] = 1233, [1234] = 1236, [1249] = 1251, [1252] = 1254, [3535] = 3537, [3544] = 3546, [4913] = 4915, [4916] = 4918
 }
@@ -138,7 +137,7 @@ TOOLS.PICK = function(cid, item, fromPosition, itemEx, toPosition)
 	errors(false)
 	local ground = getThingFromPos({x = toPosition.x, y = toPosition.y, z = toPosition.z + 1, stackpos = STACKPOS_GROUND})
 	errors(true)
-	if(isInArray(SPOTS, ground.itemid) and isInArray({354, 355}, itemEx.itemid)) then
+	if(isInArray(SPOTS, ground.itemid) and isInArray({354, 355}, itemEx.itemid) and item.actionid ~= 100) then
 		doTransformItem(itemEx.uid, 392)
 		doDecayItem(itemEx.uid)
 

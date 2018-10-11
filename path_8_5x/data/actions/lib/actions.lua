@@ -148,7 +148,7 @@ TOOLS.PICK = function(cid, item, fromPosition, itemEx, toPosition)
 	errors(false)
 	local ground = getThingFromPos({x = toPosition.x, y = toPosition.y, z = toPosition.z + 1, stackpos = STACKPOS_GROUND})
 	errors(true)
-	if(isInArray(SPOTS, ground.itemid) and isInArray({354, 355}, itemEx.itemid)) then
+	if(isInArray(SPOTS, ground.itemid) and isInArray({354, 355}, itemEx.itemid) and item.actionid ~= 100) then
 		doTransformItem(itemEx.uid, 392)
 		doDecayItem(itemEx.uid)
 
