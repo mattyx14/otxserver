@@ -154,7 +154,7 @@ function onUsePick(player, item, fromPosition, target, toPosition)
 		return false
 	end
 
-	if (ground.uid > 65535) and not table.contains(pickHoleIds, ground.itemid) and item.actionid ~= 100 then
+	if (ground.uid > 65535 or ground.actionid == 0) and not table.contains(pickHoleIds, ground.itemid) then
 		return false
 	end
 
