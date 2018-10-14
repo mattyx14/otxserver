@@ -665,7 +665,7 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 		{
 			for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
 			{
-				if(!player->canWalkthrough(*cit) && !(*cit)->isGhost() && item->isBlocking(*cit))
+				if(!creature->canWalkthrough(*cit) && !(*cit)->isGhost() && item->isBlocking(*cit))
 					return RET_NOTENOUGHROOM; //NOTPOSSIBLE
 			}
 		}
