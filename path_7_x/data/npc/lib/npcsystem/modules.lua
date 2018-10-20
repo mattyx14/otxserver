@@ -3,6 +3,20 @@
 -- Modified by The OTX Server Team.
 
 if(Modules == nil) then
+	-- default words for greeting and ungreeting the npc. Should be a table containing all such words.
+	FOCUS_GREETWORDS = {"hi", "hello"}
+	FOCUS_FAREWELLWORDS = {"bye", "farewell"}
+
+	-- The words for requesting trade window.
+	SHOP_TRADEREQUEST = {"trade"}
+
+	-- The word for accepting/declining an offer. CAN ONLY CONTAIN ONE FIELD! Should be a table with a single string value.
+	SHOP_YESWORD = {"yes"}
+	SHOP_NOWORD = {"no"}
+
+	-- Pattern used to get the amount of an item a player wants to buy/sell.
+	PATTERN_COUNT = "%d+"
+
 	-- Constants used to separate buying from selling.
 	SHOPMODULE_SELL_ITEM = 1
 	SHOPMODULE_BUY_ITEM = 2
@@ -14,7 +28,7 @@ if(Modules == nil) then
 	SHOPMODULE_MODE_BOTH = 3 -- Both working at one time
 
 	-- Used in shop mode
-	SHOPMODULE_MODE = SHOPMODULE_MODE_TALK
+	SHOPMODULE_MODE = SHOPMODULE_MODE_BOTH
 
 	-- Constants used for outfit giving mode
 	OUTFITMODULE_FUNCTION_OLD = { doPlayerAddOutfit, canPlayerWearOutfit } -- lookType usage
@@ -354,6 +368,7 @@ if(Modules == nil) then
 		yesNode = nil,
 		noNode = nil,
 	}
+
 	-- Add it to the parseable module list.
 	Modules.parseableModules['module_travel'] = TravelModule
 
@@ -1021,12 +1036,19 @@ if(Modules == nil) then
 
 	-- Function used to match a number value from a string.
 	function ShopModule:getCount(message)
-		local ret, b, e = 1, string.find(message, PATTERN_COUNT)
-		if(b ~= nil and e ~= nil) then
+		local ret = 1
+		local b, e = string.find(message, PATTERN_COUNT)
+		if b ~= nil and e ~= nil then
 			ret = tonumber(string.sub(message, b, e))
 		end
 
-		return math.max(1, math.min(self.maxCount, ret))
+		if ret <= 0 then
+			ret = 1
+		elseif ret > self.maxCount then
+			ret = self.maxCount
+		end
+
+		return ret
 	end
 
 	-- Adds a new buyable item.

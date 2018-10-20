@@ -55,6 +55,8 @@ if(NpcHandler == nil) then
 	CALLBACK_PLAYER_CLOSECHANNEL	= 9
 	CALLBACK_ONBUY			= 10
 	CALLBACK_ONSELL			= 11
+	CALLBACK_ONADDFOCUS = 18
+	CALLBACK_ONRELEASEFOCUS = 19
 
 	-- Addidional module callback ids
 	CALLBACK_MODULE_INIT		= 12
@@ -71,14 +73,16 @@ if(NpcHandler == nil) then
 		keywordHandler = nil,
 		focuses = nil,
 		talkStart = nil,
-		idleTime = 300,
-		talkRadius = 4,
-		talkDelayTime = 350, -- Seconds to delay outgoing messages.
-		queue = nil,
+		idleTime = 120,
+		talkRadius = 3,
+		talkDelayTime = 1, -- Seconds to delay outgoing messages.
 		talkDelay = nil,
 		callbackFunctions = nil,
 		modules = nil,
 		shopItems = nil, -- They must be here since ShopModule uses "static" functions
+		eventSay = nil,
+		eventDelayedSay = nil,
+		topic = nil,
 		messages = {
 			-- These are the default replies of all npcs. They can/should be changed individually for each npc.
 			[MESSAGE_GREET] 	= 'Welcome, |PLAYERNAME|! I have been expecting you.',
@@ -109,15 +113,16 @@ if(NpcHandler == nil) then
 	-- Creates a new NpcHandler with an empty callbackFunction stack.
 	function NpcHandler:new(keywordHandler)
 		local obj = {}
-		obj.messages = {}
-
-		obj.keywordHandler = keywordHandler
-		obj.queue = Queue:new(obj)
-		obj.focuses = 0
-		obj.talkStart = 0
 		obj.callbackFunctions = {}
 		obj.modules = {}
+		obj.eventSay = {}
+		obj.eventDelayedSay = {}
+		obj.topic = {}
+		obj.focuses = {}
+		obj.talkStart = {}
 		obj.talkDelay = {}
+		obj.keywordHandler = keywordHandler
+		obj.messages = {}
 		obj.shopItems = {}
 
 		setmetatable(obj.messages, self.messages)
@@ -140,54 +145,72 @@ if(NpcHandler == nil) then
 
 	-- Function used to change the focus of this npc.
 	function NpcHandler:addFocus(newFocus)
-		if((newFocus ~= 0 and not isCreature(newFocus))) then
+		if self:isFocused(newFocus) then
 			return
 		end
 
-		self.focuses = newFocus
-		self:updateFocus(true)
+		self.focuses[#self.focuses + 1] = newFocus
+		self.topic[newFocus] = 0
+		local callback = self:getCallback(CALLBACK_ONADDFOCUS)
+		if callback == nil or callback(newFocus) then
+			self:processModuleCallback(CALLBACK_ONADDFOCUS, newFocus)
+		end
+		self:updateFocus()
 	end
-	NpcHandler.changeFocus = NpcHandler.addFocus -- "changeFocus" looks better for CONVERSATION_DEFAULT
 
 	-- Function used to verify if npc is focused to certain player
-	function NpcHandler:isFocused(focus, creatureCheck)
-		local creatureCheck = creatureCheck or false
-		if(creatureCheck or isCreature(self.focuses)) then
-			return self.focuses == focus
+	function NpcHandler:isFocused(focus)
+		for k,v in pairs(self.focuses) do
+			if v == focus then
+				return true
+			end
 		end
-
-		self:changeFocus(0)
 		return false
 	end
 
 	-- This function should be called on each onThink and makes sure the npc faces the player it is talking to.
 	--	Should also be called whenever a new player is focused.
-	function NpcHandler:updateFocus(creatureCheck)
-		local creatureCheck = creatureCheck or false
-		if(creatureCheck or isCreature(self.focuses)) then
-			doNpcSetCreatureFocus(self.focuses)
-			return
+	function NpcHandler:updateFocus()
+		for pos, focus in pairs(self.focuses) do
+			if focus ~= nil then
+				doNpcSetCreatureFocus(focus)
+				return
+			end
 		end
-
 		doNpcSetCreatureFocus(0)
 	end
 
 	-- Used when the npc should un-focus the player.
 	function NpcHandler:releaseFocus(focus)
-		if(self.focuses == focus) then
-			self:changeFocus(0)
+		if self.eventDelayedSay[focus] then
+			self:cancelNPCTalk(self.eventDelayedSay[focus])
 		end
-	end
 
-	-- Internal un-focusing function, beware using!
-	function NpcHandler:unsetFocus(focus, pos)
-		if(type(self.focuses) ~= "table" or pos == nil or self.focuses[pos] == nil) then
+		if not self:isFocused(focus) then
 			return
 		end
 
-		table.remove(self.focuses, pos)
+		local pos = nil
+		for k,v in pairs(self.focuses) do
+			if v == focus then
+				pos = k
+			end
+		end
+		self.focuses[pos] = nil
+
+		self.eventSay[focus] = nil
+		self.eventDelayedSay[focus] = nil
 		self.talkStart[focus] = nil
-		self:updateFocus()
+		self.topic[focus] = nil
+
+		local callback = self:getCallback(CALLBACK_ONRELEASEFOCUS)
+		if callback == nil or callback(focus) then
+			self:processModuleCallback(CALLBACK_ONRELEASEFOCUS, focus)
+		end
+
+		if Player(focus) ~= nil then
+			self:updateFocus()
+		end
 	end
 
 	-- Returns the callback function with the specified id or nil if no such callback function exists.
@@ -243,6 +266,10 @@ if(NpcHandler == nil) then
 				tmpRet = module:callbackOnSell(...)
 			elseif(id == CALLBACK_ONTHINK and module.callbackOnThink ~= nil) then
 				tmpRet = module:callbackOnThink(...)
+			elseif id == CALLBACK_ONADDFOCUS and module.callbackOnAddFocus ~= nil then
+				tmpRet = module:callbackOnAddFocus(...)
+			elseif id == CALLBACK_ONRELEASEFOCUS and module.callbackOnReleaseFocus ~= nil then
+				tmpRet = module:callbackOnReleaseFocus(...)
 			elseif(id == CALLBACK_GREET and module.callbackOnGreet ~= nil) then
 				tmpRet = module:callbackOnGreet(...)
 			elseif(id == CALLBACK_FAREWELL and module.callbackOnFarewell ~= nil) then
@@ -299,14 +326,12 @@ if(NpcHandler == nil) then
 		local callback = self:getCallback(CALLBACK_FAREWELL)
 		if(callback == nil or callback(cid)) then
 			if(self:processModuleCallback(CALLBACK_FAREWELL)) then
-				if(self.queue == nil or not self.queue:greetNext()) then
-					local msg = self:getMessage(MESSAGE_FAREWELL)
-					msg = self:parseMessage(msg, { [TAG_PLAYERNAME] = getPlayerName(cid) or -1 })
+				local msg = self:getMessage(MESSAGE_FAREWELL)
+				msg = self:parseMessage(msg, { [TAG_PLAYERNAME] = getPlayerName(cid) or -1 })
 
-					self:resetNpc(cid)
-					self:say(msg)
-					self:releaseFocus(cid)
-				end
+				self:resetNpc(cid)
+				self:say(msg)
+				self:releaseFocus(cid)
 			end
 		end
 	end
@@ -358,13 +383,15 @@ if(NpcHandler == nil) then
 
 				if(self.keywordHandler ~= nil) then
 					local ret = self.keywordHandler:processMessage(cid, msg)
-					if(not ret) then
-						local callback = self:getCallback(CALLBACK_MESSAGE_DEFAULT)
-						if(callback ~= nil and callback(cid, class, msg)) then
-							self.talkStart = os.time()
+					if self:isFocused(cid) or not self:isFocused(cid) then
+						if(not ret) then
+							local callback = self:getCallback(CALLBACK_MESSAGE_DEFAULT)
+							if callback ~= nil and callback(cid, class, msg) then
+								self.talkStart[cid] = os.time()
+							end
+						else
+							self.talkStart[cid] = os.time()
 						end
-					else
-						self.talkStart = os.time()
 					end
 				end
 			end
@@ -442,13 +469,15 @@ if(NpcHandler == nil) then
 			end
 
 			if(self:processModuleCallback(CALLBACK_ONTHINK)) then
-				if(self.focuses ~= 0) then
-					if(not self:isInRange(self.focuses)) then
-						self:onWalkAway(self.focuses)
-					elseif((os.time() - self.talkStart) > self.idleTime) then
-						self:unGreet(self.focuses)
-					else
-						self:updateFocus()
+				for pos, focus in pairs(self.focuses) do
+					if focus ~= nil then
+						if(not self:isInRange(focus)) then
+							self:onWalkAway(focus)
+						elseif self.talkStart[focus] ~= nil and (os.time() - self.talkStart[focus]) > self.idleTime then
+							self:unGreet(focus)
+						else
+							self:updateFocus()
+						end
 					end
 				end
 			end
@@ -458,22 +487,48 @@ if(NpcHandler == nil) then
 	-- Tries to greet the player with the given cid.
 	function NpcHandler:onGreet(cid)
 		if(self:isInRange(cid)) then
-			if(self.focuses == 0) then
+			if not self:isFocused(cid) then
 				self:greet(cid)
-			elseif(self.focuses == cid) then
-				local msg = self:getMessage(MESSAGE_ALREADYFOCUSED)
-				local parseInfo = { [TAG_PLAYERNAME] = getCreatureName(cid) }
-				msg = self:parseMessage(msg, parseInfo)
-				self:say(msg)
-			else
-				if(not self.queue:isInQueue(cid)) then
-					self.queue:push(cid)
-				end
+				return
+			end
+		end
+	end
 
-				local msg = self:getMessage(MESSAGE_PLACEDINQUEUE)
-				local parseInfo = { [TAG_PLAYERNAME] = getCreatureName(cid), [TAG_QUEUESIZE] = self.queue:getSize() }
-				msg = self:parseMessage(msg, parseInfo)
-				self:say(msg)
+	-- Handles onThink events. If you wish to handle this yourself, please use the CALLBACK_ONTHINK callback.
+	function NpcHandler:onThink()
+		local callback = self:getCallback(CALLBACK_ONTHINK)
+		if callback == nil or callback() then
+			if NPCHANDLER_TALKDELAY == TALKDELAY_ONTHINK then
+				for cid, talkDelay in pairs(self.talkDelay) do
+					if talkDelay.time ~= nil and talkDelay.message ~= nil and os.time() >= talkDelay.time then
+						selfSay(talkDelay.message, cid, talkDelay.publicize and true or false)
+						self.talkDelay[cid] = nil
+					end
+				end
+			end
+
+			if self:processModuleCallback(CALLBACK_ONTHINK) then
+				for pos, focus in pairs(self.focuses) do
+					if focus ~= nil then
+						if not self:isInRange(focus) then
+							self:onWalkAway(focus)
+						elseif self.talkStart[focus] ~= nil and (os.time() - self.talkStart[focus]) > self.idleTime then
+							self:unGreet(focus)
+						else
+							self:updateFocus()
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- Tries to greet the player with the given cid.
+	function NpcHandler:onGreet(cid)
+		if self:isInRange(cid) then
+			if not self:isFocused(cid) then
+				self:greet(cid)
+				return
 			end
 		end
 	end
@@ -489,12 +544,10 @@ if(NpcHandler == nil) then
 			local callback = self:getCallback(CALLBACK_CREATURE_DISAPPEAR)
 			if(callback == nil or callback(cid)) then
 				if(self:processModuleCallback(CALLBACK_CREATURE_DISAPPEAR, cid)) then
-					if(self.queue == nil or not self.queue:greetNext()) then
-						local msg = self:getMessage(MESSAGE_WALKAWAY)
-						self:resetNpc(cid)
-						self:say(self:parseMessage(msg, { [TAG_PLAYERNAME] = getPlayerName(cid) or -1 }))
-						self:releaseFocus(cid)
-					end
+					local msg = self:getMessage(MESSAGE_WALKAWAY)
+					self:resetNpc(cid)
+					self:say(self:parseMessage(msg, { [TAG_PLAYERNAME] = getPlayerName(cid) or -1 }))
+					self:releaseFocus(cid)
 				end
 			end
 		end
