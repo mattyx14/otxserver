@@ -538,7 +538,7 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 				for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
 				{
 					if(!creature->canWalkthrough(*cit))
-						return RET_NOTENOUGHROOM; //NOTPOSSIBLE
+						return RET_NOTPOSSIBLE; //NOTPOSSIBLE
 				}
 			}
 
@@ -1345,7 +1345,7 @@ uint32_t Tile::getHeight() const
 		}
 	}
 
-	return height;
+	return std::min(height, 4);
 }
 
 int32_t Tile::getClientIndexOfThing(const Player*, const Thing* thing) const
