@@ -718,18 +718,6 @@ bool Spell::checkSpell(Player* player) const
 		}
 	}
 
-	if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_HEALING))
-		exhausted = true;
-
-	if(exhausted && !player->hasFlag(PlayerFlag_HasNoExhaustion))
-	{
-		player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-		if(isInstant())
-			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-
-		return false;
-	}
-
 	if(isPremium() && !player->isPremium())
 	{
 		player->sendCancelMessage(RET_YOUNEEDPREMIUMACCOUNT);

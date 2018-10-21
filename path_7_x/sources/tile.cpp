@@ -1345,7 +1345,7 @@ uint32_t Tile::getHeight() const
 		}
 	}
 
-	return std::min(height, 4);
+	return height;
 }
 
 int32_t Tile::getClientIndexOfThing(const Player*, const Thing* thing) const
