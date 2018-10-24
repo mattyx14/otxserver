@@ -330,7 +330,6 @@ class ConfigManager
 			MANUAL_ADVANCED_CONFIG,
 			USE_RUNE_REQUIREMENTS,
 			CLASSIC_EQUIPMENT_SLOTS,
-			DELAY_LAST_PUSH_STEP,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

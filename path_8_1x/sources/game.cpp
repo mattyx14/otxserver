@@ -1096,8 +1096,8 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 
 	if(!player->canDoAction())
 	{
-		SchedulerTask* task = createSchedulerTask(player->getNextActionTime(),
-			boost::bind(&Game::playerMoveCreature, this, playerId, movingCreatureId, movingCreaturePos, toPos, true));
+		SchedulerTask* task = createSchedulerTask(1500,
+			boost::bind(&Game::playerMoveCreature, this, playerId, movingCreatureId, movingCreaturePos, toPos, false));
 		player->setNextActionTask(task);
 		return false;
 	}
@@ -1115,8 +1115,8 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 		{
 			Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 				this, player->getID(), listDir)));
-			SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
-				boost::bind(&Game::playerMoveCreature, this, playerId, movingCreatureId, movingCreaturePos, toPos, true));
+			SchedulerTask* task = createSchedulerTask(100,
+				boost::bind(&Game::playerMoveCreature, this, playerId, movingCreatureId, movingCreaturePos, toPos, false));
 
 			player->setNextWalkActionTask(task);
 			return true;

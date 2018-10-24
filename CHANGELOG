@@ -58,7 +58,8 @@
 	- Fix and update mods / description autor
 	- Fix console errors on 7.x (duplicate commands)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
-	- Fix #102, #104, #194, #210, #212, #286, #337(pick), #386, #388(KOLISAO), #390
+	- Fix #102, #104, #194, #210, #212, #286, #337(pick), #347,
+		#386, #388(KOLISAO), #390
 ]
 
 [ OTX Server 2.8 :: Version "LEZICK"
