@@ -62,12 +62,18 @@ if(Modules == nil) then
 			return false
 		end
 
-		local parseInfo = {[TAG_PLAYERNAME] = getCreatureName(cid)}
-		npcHandler:say(npcHandler:parseMessage(parameters.text or parameters.message, parseInfo), cid, parameters.publicize and true)
-		if(parameters.reset) then
+		local parseInfo = {[TAG_PLAYERNAME] = getCreatureName()}
+		if parameters.text then
+			npcHandler:say(npcHandler:parseMessage(parameters.text, parseInfo), cid, parameters.publicize and true)
+		end
+
+		if parameters.ungreet then
 			npcHandler:resetNpc(cid)
-		elseif(parameters.moveup and type(parameters.moveup) == 'number') then
-			npcHandler.keywordHandler:moveUp(parameters.moveup)
+			npcHandler:releaseFocus(cid)
+		elseif parameters.reset then
+			npcHandler:resetNpc(cid)
+		elseif parameters.moveup ~= nil then
+			npcHandler.keywordHandler:moveUp(cid, parameters.moveup)
 		end
 
 		return true
@@ -251,19 +257,19 @@ if(Modules == nil) then
 		self.npcHandler = handler
 		for i, word in pairs(FOCUS_GREETWORDS) do
 			local obj = {}
-			table.insert(obj, word)
-
+			obj[#obj + 1] = word
 			obj.callback = FOCUS_GREETWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
 
 		for i, word in pairs(FOCUS_FAREWELLWORDS) do
 			local obj = {}
-			table.insert(obj, word)
-
+			obj[#obj + 1] = word
 			obj.callback = FOCUS_FAREWELLWORDS.callback or FocusModule.messageMatcher
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
+
+		return true
 	end
 
 	-- Greeting callback function.
@@ -274,13 +280,12 @@ if(Modules == nil) then
 
 	-- UnGreeting callback function.
 	function FocusModule.onFarewell(cid, message, keywords, parameters)
-		if(not parameters.module.npcHandler:isFocused(cid)) then
+		if parameters.module.npcHandler:isFocused(cid) then
+			parameters.module.npcHandler:onFarewell(cid)
+			return true
+		else
 			return false
 		end
-
-		parameters.module.npcHandler:onFarewell(cid)
-		parameters.module.npcHandler:resetNpc(cid)
-		return true
 	end
 
 	-- Custom message matching callback function for greeting messages.
@@ -322,6 +327,7 @@ if(Modules == nil) then
 
 	function KeywordModule:init(handler)
 		self.npcHandler = handler
+		return true
 	end
 
 	-- Parses all known parameters.
@@ -339,7 +345,7 @@ if(Modules == nil) then
 
 			local keywords = {}
 			for temp in string.gmatch(keys, '[^,]+') do
-				table.insert(keywords, temp)
+				keywords[#keywords + 1] = temp
 				i = i + 1
 			end
 
@@ -383,8 +389,8 @@ if(Modules == nil) then
 		self.npcHandler = handler
 		self.yesNode = KeywordNode:new(SHOP_YESWORD, TravelModule.onConfirm, {module = self})
 		self.noNode = KeywordNode:new(SHOP_NOWORD, TravelModule.onDecline, {module = self})
-
 		self.destinations = {}
+		return true
 	end
 
 	-- Parses all known parameters.
@@ -1005,17 +1011,18 @@ if(Modules == nil) then
 		self.npcHandler = handler
 		self.yesNode = KeywordNode:new(SHOP_YESWORD, ShopModule.onConfirm, {module = self})
 		self.noNode = KeywordNode:new(SHOP_NOWORD, ShopModule.onDecline, {module = self})
-
 		self.noText = handler:getMessage(MESSAGE_DECLINE)
-		if(SHOPMODULE_MODE ~= SHOPMODULE_MODE_TALK) then
+
+		if SHOPMODULE_MODE ~= SHOPMODULE_MODE_TALK then
 			for i, word in pairs(SHOP_TRADEREQUEST) do
 				local obj = {}
-				table.insert(obj, word)
-
+				obj[#obj + 1] = word
 				obj.callback = SHOP_TRADEREQUEST.callback or ShopModule.messageMatcher
 				handler.keywordHandler:addKeyword(obj, ShopModule.requestTrade, {module = self})
 			end
 		end
+
+		return true
 	end
 
 	-- Custom message matching callback function for requesting trade messages.

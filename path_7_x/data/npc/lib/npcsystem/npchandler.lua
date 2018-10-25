@@ -232,17 +232,10 @@ if(NpcHandler == nil) then
 
 	-- Adds a module to this npchandler and inits it.
 	function NpcHandler:addModule(module)
-		if(self.modules == nil or module == nil) then
-			return false
+		if self.modules ~= nil then
+			self.modules[#self.modules + 1] = module
+			module:init(self)
 		end
-
-		module:init(self)
-		if(module.parseParameters ~= nil) then
-			module:parseParameters()
-		end
-
-		table.insert(self.modules, module)
-		return true
 	end
 
 	-- Calls the callback function represented by id for all modules added to this npchandler with the given arguments.
@@ -308,13 +301,11 @@ if(NpcHandler == nil) then
 
 	-- Translates all message tags found in msg using parseInfo
 	function NpcHandler:parseMessage(msg, parseInfo)
+		local ret = msg
 		for search, replace in pairs(parseInfo) do
-			if(replace ~= nil) then
-				msg = msg:gsub(search, replace)
-			end
+			ret = string.gsub(ret, search, replace)
 		end
-
-		return msg
+		return ret
 	end
 
 	-- Makes sure the npc un-focuses the currently focused player
@@ -519,16 +510,6 @@ if(NpcHandler == nil) then
 						end
 					end
 				end
-			end
-		end
-	end
-
-	-- Tries to greet the player with the given cid.
-	function NpcHandler:onGreet(cid)
-		if self:isInRange(cid) then
-			if not self:isFocused(cid) then
-				self:greet(cid)
-				return
 			end
 		end
 	end

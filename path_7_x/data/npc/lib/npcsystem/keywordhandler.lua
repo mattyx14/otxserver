@@ -83,21 +83,21 @@ if(KeywordHandler == nil) then
 
 	-- Adds a pre-created childNode to this node. Should be used for example if several nodes should have a common child.
 	function KeywordNode:addChildKeywordNode(childNode)
-		table.insert(self.children, childNode)
+		self.children[#self.children + 1] = childNode
 		childNode.parent = self
 		return childNode
 	end
 
 	KeywordHandler = {
 		root = nil,
-		lastNode = {}
+		lastNode = nil
 	}
 
 	-- Creates a new keywordhandler with an empty rootnode.
 	function KeywordHandler:new()
 		local obj = {}
 		obj.root = KeywordNode:new(nil, nil, nil)
-
+		obj.lastNode = {}
 		setmetatable(obj, self)
 		self.__index = self
 		return obj
