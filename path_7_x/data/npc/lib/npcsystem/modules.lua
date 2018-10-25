@@ -1109,7 +1109,7 @@ if(Modules == nil) then
 
 			for i, name in pairs(names) do
 				local keywords = {}
-				table.insert(keywords, 'buy')
+				--table.insert(keywords, 'buy')
 				table.insert(keywords, name)
 
 				local node = self.npcHandler.keywordHandler:addKeyword(keywords, ShopModule.tradeItem, parameters)
@@ -1141,7 +1141,7 @@ if(Modules == nil) then
 
 			for i, name in pairs(names) do
 				local keywords = {}
-				table.insert(keywords, 'buy')
+				--table.insert(keywords, 'buy')
 				table.insert(keywords, name)
 
 				local node = self.npcHandler.keywordHandler:addKeyword(keywords, ShopModule.tradeItem, parameters)
