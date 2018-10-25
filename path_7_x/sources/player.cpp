@@ -828,8 +828,7 @@ bool Player::canWalkthrough(const Creature* creature) const
 
 	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL &&
 		!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
-		&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
-		|| player->getAccess() <= getAccess()))
+		&& (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || player->getAccess() <= getAccess()))
 		return true;
 
 	return (player->isGhost() && getGhostAccess() < player->getGhostAccess())

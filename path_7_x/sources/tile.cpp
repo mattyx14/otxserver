@@ -389,7 +389,7 @@ void Tile::onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newIte
 		(*it)->onUpdateTileItem(this, pos, oldItem, oldType, newItem, newType);
 }
 
-void Tile::onRemoveTileItem(const SpectatorVec& list, std::vector<uint32_t>& oldStackposVector, Item* item)
+void Tile::onRemoveTileItem(const SpectatorVec& list, std::vector<int32_t>& oldStackposVector, Item* item)
 {
 	updateTileFlags(item, true);
 	const ItemType& iType = Item::items[item->getID()];
@@ -441,7 +441,7 @@ void Tile::moveCreature(Creature* actor, Creature* creature, Cylinder* toCylinde
 	if(forceTeleport || !newTile->ground || !Position::areInRange<1,1,0>(pos, newPos))
 		teleport = true;
 
-	std::vector<uint32_t> oldStackposVector;
+	std::vector<int32_t> oldStackposVector;
 	Player* tmpPlayer = NULL;
 	for(it = list.begin(); it != list.end(); ++it)
 	{
@@ -538,7 +538,7 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 				for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
 				{
 					if(!creature->canWalkthrough(*cit))
-						return RET_NOTPOSSIBLE; //NOTPOSSIBLE
+						return RET_NOTENOUGHROOM; //NOTPOSSIBLE
 				}
 			}
 
@@ -854,7 +854,7 @@ Cylinder* Tile::__queryDestination(int32_t&, const Thing*, Item** destItem,
 
 	if(destTile)
 	{
-		if(Item* item = destTile->getTopTopItem())
+		if(Item* item = destTile->getTopDownItem())
 			*destItem = item;
 	}
 
@@ -869,7 +869,7 @@ void Tile::__addThing(Creature* actor, int32_t, Thing* thing)
 		creature->setParent(this);
 
 		CreatureVector* creatures = makeCreatures();
-		creatures->insert(creatures->end(), creature);
+		creatures->insert(creatures->begin(), creature);
 
 		++thingCount;
 		return;
@@ -1221,7 +1221,7 @@ void Tile::__removeThing(Thing* thing, uint32_t count)
 	if(item == ground)
 	{
 		const SpectatorVec& list = g_game.getSpectators(pos);
-		std::vector<uint32_t> oldStackposVector;
+		std::vector<int32_t> oldStackposVector;
 
 		Player* tmpPlayer = NULL;
 		for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
@@ -1267,7 +1267,7 @@ void Tile::__removeThing(Thing* thing, uint32_t count)
 		if(it != items->end())
 		{
 			const SpectatorVec& list = g_game.getSpectators(pos);
-			std::vector<uint32_t> oldStackposVector;
+			std::vector<int32_t> oldStackposVector;
 
 			Player* tmpPlayer = NULL;
 			for(SpectatorVec::const_iterator iit = list.begin(); iit != list.end(); ++iit)
@@ -1303,7 +1303,7 @@ void Tile::__removeThing(Thing* thing, uint32_t count)
 			else
 			{
 				const SpectatorVec& list = g_game.getSpectators(pos);
-				std::vector<uint32_t> oldStackposVector;
+				std::vector<int32_t> oldStackposVector;
 
 				Player* tmpPlayer = NULL;
 				for(SpectatorVec::const_iterator iit = list.begin(); iit != list.end(); ++iit)
@@ -1380,17 +1380,12 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 
 	if(const CreatureVector* creatures = getCreatures())
 	{
-		if(thing->getCreature())
+		for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
 		{
-			for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
-			{
-				++n;
-				if((*cit) == thing)
-					return n;
-			}
+			++n;
+			if((*cit) == thing)
+				return n;
 		}
-		else
-			n += creatures->size();
 	}
 
 	if(items)
@@ -1562,7 +1557,7 @@ void Tile::__internalAddThing(uint32_t, Thing* thing)
 	{
 		g_game.clearSpectatorCache();
 		CreatureVector* creatures = makeCreatures();
-		creatures->insert(creatures->end(), creature);
+		creatures->insert(creatures->begin(), creature);
 
 		++thingCount;
 		return;
