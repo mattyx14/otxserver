@@ -208,11 +208,6 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 	for(StringVec::iterator it = map->descriptions.begin(); it != map->descriptions.end(); ++it)
 		std::clog << " - \"" << (*it) << "\"";
 
-#ifdef __GROUND_CACHE__
-	typedef std::map<uint16_t, std::pair<Item*, int32_t> > CacheMap;
-	CacheMap groundCache;
-
-#endif
 	NODE nodeMapData = f.getChildNode(nodeMap, type);
 	while(nodeMapData != NO_NODE)
 	{
@@ -370,39 +365,9 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 								{
 									if(ground)
 									{
-#ifdef __GROUND_CACHE__
-										CacheMap::iterator it = groundCache.find(ground->getID());
-										bool erase = it == groundCache.end();
-										if(!erase)
-										{
-											it->second.second--;
-											erase = it->second.second < 1;
-											if(erase)
-												groundCache.erase(it);
-										}
-
-										if(erase)
-#endif
-											delete ground;
+										delete ground;
 									}
 
-#ifdef __GROUND_CACHE__
-									const ItemType& tit = Item::items[item->getID()];
-									if(!(tit.magicEffect != MAGIC_EFFECT_NONE || !tit.walkStack || tit.transformUseTo != 0 || tit.cache ||
-										item->floorChange() || item->canDecay() || item->getActionId() > 0 || item->getUniqueId() > 0))
-									{
-										CacheMap::iterator it = groundCache.find(item->getID());
-										if(it != groundCache.end())
-										{
-											delete item;
-											item = it->second.first;
-											it->second.second++;
-										}
-										else
-											groundCache[item->getID()] = std::make_pair(item, 1);
-									}
-
-#endif
 									ground = item;
 								}
 								else
@@ -475,39 +440,9 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 								{
 									if(ground)
 									{
-#ifdef __GROUND_CACHE__
-										CacheMap::iterator it = groundCache.find(ground->getID());
-										bool erase = it == groundCache.end();
-										if(!erase)
-										{
-											it->second.second--;
-											erase = it->second.second < 1;
-											if(erase)
-												groundCache.erase(it);
-										}
-
-										if(erase)
-#endif
-											delete ground;
+										delete ground;
 									}
 
-#ifdef __GROUND_CACHE__
-									const ItemType& tit = Item::items[item->getID()];
-									if(!(tit.magicEffect != MAGIC_EFFECT_NONE || !tit.walkStack || tit.transformUseTo != 0 || tit.cache ||
-										item->floorChange() || item->canDecay() || item->getActionId() > 0 || item->getUniqueId() > 0))
-									{
-										CacheMap::iterator it = groundCache.find(item->getID());
-										if(it != groundCache.end())
-										{
-											delete item;
-											item = it->second.first;
-											it->second.second++;
-										}
-										else
-											groundCache[item->getID()] = std::make_pair(item, 1);
-									}
-
-#endif
 									ground = item;
 								}
 								else
@@ -657,16 +592,6 @@ bool IOMap::loadMap(Map* map, const std::string& identifier)
 
 		nodeMapData = f.getNextNode(nodeMapData, type);
 	}
-
-#ifdef __GROUND_CACHE__
-	for(CacheMap::iterator it = groundCache.begin(); it != groundCache.end(); ++it)
-	{
-		//it->second.first->setParent(NULL);
-		g_game.grounds[it->second.first] = it->second.second;
-	}
-
-	groundCache.clear();
-#endif
 	return true;
 }
 

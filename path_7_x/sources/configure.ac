@@ -57,13 +57,6 @@ AC_ARG_ENABLE(luajit, [  --enable-luajit		enable luajit instead of lua],
 	luaJIT=yes
 )
 
-# check if we want to cache ground items
-groundCache=no
-AC_ARG_ENABLE(groundcache, [  --enable-groundcache		enable caching of ground items],
-	[OPTIONAL_FLAGS="$OPTIONAL_FLAGS -D__GROUND_CACHE__"]
-	groundCache=yes
-)
-
 # check if we want a debug build
 debugBuild=no
 AC_ARG_ENABLE(debug, [  --enable-debug		enable debuging],

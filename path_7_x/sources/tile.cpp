@@ -906,25 +906,8 @@ void Tile::__addThing(Creature* actor, int32_t, Thing* thing)
 			updateTileFlags(item, false);
 			ground = item;
 
-#ifdef __GROUND_CACHE__
-			std::map<Item*, int32_t>::iterator it = g_game.grounds.find(oldGround);
-			bool erase = it == g_game.grounds.end();
-			if(!erase)
-			{
-				it->second--;
-				erase = it->second < 1;
-				if(erase)
-					g_game.grounds.erase(it);
-			}
-
-			if(erase)
-			{
-#endif
-				oldGround->setParent(NULL);
-				g_game.freeThing(oldGround);
-#ifdef __GROUND_CACHE__
-			}
-#endif
+			oldGround->setParent(NULL);
+			g_game.freeThing(oldGround);
 
 			postRemoveNotification(actor, oldGround, NULL, oldGroundIndex, true);
 			onUpdateTile();
@@ -1143,26 +1126,8 @@ void Tile::__replaceThing(uint32_t index, Thing* thing)
 		updateTileFlags(item, false);
 
 		onUpdateTileItem(oldItem, Item::items[oldItem->getID()], item, Item::items[item->getID()]);
-#ifdef __GROUND_CACHE__
-
-		std::map<Item*, int32_t>::iterator it = g_game.grounds.find(oldItem);
-		bool erase = it == g_game.grounds.end();
-		if(!erase)
-		{
-			it->second--;
-			erase = it->second < 1;
-			if(erase)
-				g_game.grounds.erase(it);
-		}
-
-		if(erase)
-		{
-#endif
-			oldItem->setParent(NULL);
-			g_game.freeThing(oldItem);
-#ifdef __GROUND_CACHE__
-		}
-#endif
+		oldItem->setParent(NULL);
+		g_game.freeThing(oldItem);
 
 		return/* RET_NOERROR*/;
 	}
@@ -1230,25 +1195,8 @@ void Tile::__removeThing(Thing* thing, uint32_t count)
 				oldStackposVector.push_back(getClientIndexOfThing(tmpPlayer, ground));
 		}
 
-#ifdef __GROUND_CACHE__
-		std::map<Item*, int32_t>::iterator it = g_game.grounds.find(ground);
-		bool erase = it == g_game.grounds.end();
-		if(!erase)
-		{
-			it->second--;
-			erase = it->second < 1;
-			if(erase)
-				g_game.grounds.erase(it);
-		}
-
-		if(erase)
-		{
-#endif
-			ground->setParent(NULL);
-			g_game.freeThing(ground);
-#ifdef __GROUND_CACHE__
-		}
-#endif
+		ground->setParent(NULL);
+		g_game.freeThing(ground);
 
 		ground = NULL;
 		--thingCount;
