@@ -290,6 +290,9 @@ class Player : public Creature, public Cylinder
 		uint32_t getBaseMagicLevel() const {return magLevel;}
 		uint64_t getSpentMana() const {return manaSpent;}
 
+		uint32_t getExtraAttackSpeed() const {return extraAttackSpeed;}
+		void setPlayerExtraAttackSpeed(uint32_t speed);
+
 		bool isPremium() const;
 		int32_t getPremiumDays() const {return premiumDays;}
 		void addPremiumDays(int32_t days);
@@ -485,6 +488,7 @@ class Player : public Creature, public Cylinder
 		bool addUnjustifiedKill(const Player* attacked, bool countNow);
 
 		virtual int32_t getArmor() const;
+		virtual int32_t getCriticalHitChance() const;
 		virtual int32_t getDefense() const;
 		virtual float getAttackFactor() const;
 		virtual float getDefenseFactor() const;
@@ -816,7 +820,7 @@ class Player : public Creature, public Cylinder
 		virtual void __internalAddThing(Thing* thing);
 		virtual void __internalAddThing(uint32_t index, Thing* thing);
 
-		uint32_t getVocAttackSpeed() const {return vocation->getAttackSpeed();}
+		uint32_t getVocAttackSpeed() const {return vocation->getAttackSpeed() - getPlayer()->getExtraAttackSpeed();}
 		virtual int32_t getStepSpeed() const
 		{
 			if(getSpeed() > SPEED_MAX)
@@ -888,6 +892,7 @@ class Player : public Creature, public Cylinder
 		uint32_t clientVersion;
 		uint32_t messageTicks;
 		uint32_t idleTime;
+		uint32_t extraAttackSpeed;
 		uint32_t accountId;
 		uint32_t lastIP;
 		uint32_t level;

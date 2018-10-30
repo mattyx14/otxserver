@@ -75,7 +75,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	vocationId = VOCATION_NONE;
 
 	promotionLevel = walkTaskEvent = actionTaskEvent = nextStepEvent = bloodHitCount = shieldBlockCount = 0;
-	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = 0;
+	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = extraAttackSpeed = 0;
 	soul = guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
 	conditionImmunities = conditionSuppressions = groupId = managerNumber2 = town = skullEnd = 0;
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
@@ -431,6 +431,18 @@ int32_t Player::getArmor() const
 		return int32_t(armor * vocation->getMultiplier(MULTIPLIER_ARMOR));
 
 	return armor;
+}
+
+int32_t Player::getCriticalHitChance() const
+{
+	int32_t i = SLOT_FIRST, crit = 0;
+	for(; i < SLOT_LAST; ++i)
+	{
+		if(Item* item = getInventoryItem((slots_t)i))
+		crit += item->getCriticalHitChance();
+	}
+
+	return crit;
 }
 
 void Player::getShieldAndWeapon(const Item* &_shield, const Item* &_weapon) const
@@ -5731,4 +5743,9 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 	ss << std::fixed << std::setprecision(2) << "Your " << ucwords(getSkillName(skill)) << " skill changed from level " << oldSkillValue << " (with " << oldPercentToNextLevel << "% progress towards level " << (oldSkillValue + 1) << ") to level " << newSkillValue << " (with " << newPercentToNextLevel << "% progress towards level " << (newSkillValue + 1) << ")";
 	sendTextMessage(MSG_EVENT_ADVANCE, ss.str().c_str());
 	return true;
+}
+
+void Player::setPlayerExtraAttackSpeed(uint32_t speed)
+{
+	extraAttackSpeed = speed;
 }

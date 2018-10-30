@@ -1771,6 +1771,9 @@ void LuaInterface::registerFunctions()
 	//doPlayerAddSoul(cid, amount)
 	lua_register(m_luaState, "doPlayerAddSoul", LuaInterface::luaDoPlayerAddSoul);
 
+	//doPlayerSetExtraAttackSpeed(cid, speed)
+	lua_register(m_luaState, "doPlayerSetExtraAttackSpeed", LuaInterface::luaDoPlayerSetExtraAttackSpeed);
+
 	//doPlayerAddItem(cid, itemid[, count/subtype = 1[, canDropOnMap = true[, slot = 0]]])
 	//doPlayerAddItem(cid, itemid[, count = 1[, canDropOnMap = true[, subtype = 1[, slot = 0]]]])
 	//Returns uid of the created item
@@ -5693,6 +5696,25 @@ int32_t LuaInterface::luaDoPlayerAddSoul(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaDoPlayerSetExtraAttackSpeed(lua_State *L)
+{
+	uint32_t speed = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		player->setPlayerExtraAttackSpeed(speed);
+		lua_pushnumber(L, true);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushnumber(L, false);
+	}
+
+	return 1;
+}
+
 int32_t LuaInterface::luaGetPlayerItemCount(lua_State* L)
 {
 	//getPlayerItemCount(cid, itemid[, subType = -1])
@@ -7285,6 +7307,7 @@ int32_t LuaInterface::luaGetMonsterInfo(lua_State* L)
 	setFieldBool(L, "convinceable", mType->isConvinceable);
 	setFieldBool(L, "attackable", mType->isAttackable);
 	setFieldBool(L, "hostile", mType->isHostile);
+	setFieldBool(L, "passive", mType->isPassive);
 
 	lua_pushstring(L, "outfit"); // name the table created by pushOutfit
 	pushOutfit(L, mType->outfit);
@@ -10451,6 +10474,7 @@ int32_t LuaInterface::luaGetItemInfo(lua_State* L)
 	setField(L, "date", item->date);
 	setField(L, "writer", item->writer);
 	setField(L, "text", item->text);
+	setField(L, "criticalHitChance", item->criticalHitChance);
 	setField(L, "attack", item->attack);
 	setField(L, "extraAttack", item->extraAttack);
 	setField(L, "defense", item->defense);

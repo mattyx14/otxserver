@@ -518,6 +518,9 @@ bool Monster::selectTarget(Creature* creature)
 		return false;
 	}
 
+	if(isPassive() && !hasBeenAttacked(creature->getID()))
+		return false;
+
 	if((isHostile() || isSummon()) && setAttackedCreature(creature) && !isSummon())
 		Dispatcher::getInstance().addTask(createTask(
 			boost::bind(&Game::checkCreatureAttack, &g_game, getID())));

@@ -4907,15 +4907,18 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 							textList.push_back(*it);
 					}
 
-					MessageDetails* details = new MessageDetails(damage, textColor);
 					if(elementDamage)
 					{
 						getCombatDetails(params.element.type, magicEffect, textColor);
-						details->sub = new MessageDetails(elementDamage, textColor);
 						addMagicEffect(list, targetPos, magicEffect);
 					}
 
 					std::stringstream ss;
+
+					char buffer[20];
+					sprintf(buffer, "-%d", damage);
+					addAnimatedText(list, targetPos, textColor, buffer);
+
 					int32_t totalDamage = damage + elementDamage;
 
 					std::string plural = (totalDamage != 1 ? "s" : "");
@@ -4928,7 +4931,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 						else
 							ss << ucfirst(target->getNameDescription()) << " loses " << totalDamage << " hitpoint" << plural << " due to a self attack.";
 
-						addStatsMessage(textList, MSG_DAMAGE_OTHERS, ss.str(), targetPos, details);
+						addStatsMessage(textList, MSG_DAMAGE_OTHERS, ss.str(), targetPos);
 						ss.str("");
 					}
 
@@ -4940,7 +4943,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 						else
 							ss << "You lose " << totalDamage << " hitpoint" << plural << " due to your attack.";
 
-						player->sendStatsMessage(MSG_DAMAGE_DEALT, ss.str(), targetPos, details);
+						player->sendStatsMessage(MSG_DAMAGE_DEALT, ss.str(), targetPos);
 						ss.str("");
 					}
 
@@ -4951,13 +4954,8 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 						else
 							ss << "You lose " << totalDamage << " hitpoint" << plural << ".";
 
-						player->sendStatsMessage(MSG_DAMAGE_RECEIVED, ss.str(), targetPos, details);
+						player->sendStatsMessage(MSG_DAMAGE_RECEIVED, ss.str(), targetPos);
 					}
-
-					if(details->sub)
-						delete details->sub;
-
-					delete details;
 				}
 			}
 		}
@@ -5085,7 +5083,11 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 			}
 
 			std::stringstream ss;
-			MessageDetails* details = new MessageDetails(manaLoss, COLOR_BLUE);
+
+			char buffer[20];
+			sprintf(buffer, "-%d", manaLoss);
+			addAnimatedText(list, targetPos, COLOR_BLUE, buffer);
+
 			if(!textList.empty())
 			{
 				if(!attacker)
@@ -5095,7 +5097,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 				else
 					ss << ucfirst(target->getNameDescription()) << " loses " << manaLoss << " mana due to a self attack.";
 
-				addStatsMessage(textList, MSG_DAMAGE_OTHERS, ss.str(), targetPos, details);
+				addStatsMessage(textList, MSG_DAMAGE_OTHERS, ss.str(), targetPos);
 				ss.str("");
 			}
 
@@ -5107,7 +5109,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 				else
 					ss << "You lose " << manaLoss << " mana due to your attack.";
 
-				player->sendStatsMessage(MSG_DAMAGE_DEALT, ss.str(), targetPos, details);
+				player->sendStatsMessage(MSG_DAMAGE_DEALT, ss.str(), targetPos);
 				ss.str("");
 			}
 
@@ -5118,10 +5120,8 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 				else
 					ss << "You lose " << manaLoss << " mana.";
 
-				player->sendStatsMessage(MSG_DAMAGE_RECEIVED, ss.str(), targetPos, details);
+				player->sendStatsMessage(MSG_DAMAGE_RECEIVED, ss.str(), targetPos);
 			}
-
-			delete details;
 		}
 	}
 
