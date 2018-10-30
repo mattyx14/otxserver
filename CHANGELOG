@@ -54,9 +54,12 @@
 ]
 
 [ OTX Server 2.9 :: Version "OpenTibia"
+	- Added feature criticalhit to weapons (8.6-TFACE)
+	- Added passive flag to monsters (8.6-TFACE)
 	- Fix tileLimit
 	- Fix and update mods / description autor
 	- Fix console errors on 7.x (duplicate commands)
+	- Fix display animated msg and console diplay errors (8.6-TFACE)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
 	- Fix #102, #104, #194, #210, #212, #286, #337(pick), #347,
 		#386, #388(KOLISAO), #390
