@@ -453,7 +453,9 @@
 	<item id="1385" name="stairs">
 		<attribute key="floorchange" value="north" />
 	</item>
-	<item id="1386" article="a" name="ladder" />
+	<item id="1386" article="a" name="ladder">
+		<attribute key="forceUse" value="true" />
+	</item>
 	<item id="1387" article="a" name="magic forcefield">
 		<attribute key="description" value="You can see the other side through it." />
 		<attribute key="type" value="teleport" />
@@ -6848,7 +6850,9 @@
 	<item fromid="3648" toid="3656" name="debris" />
 	<item fromid="3657" toid="3670" article="a" name="stone" />
 	<item fromid="3671" toid="3677" article="a" name="painted stone" />
-	<item id="3678" article="a" name="ladder" />
+	<item id="3678" article="a" name="ladder">
+		<attribute key="forceUse" value="true" />
+	</item>
 	<item id="3679" article="a" name="ramp">
 		<attribute key="floorchange" value="east" />
 	</item>
