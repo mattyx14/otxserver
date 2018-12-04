@@ -419,6 +419,9 @@ class Creature : virtual public Thing
 		void setSkillLoss(bool skillLoss) {
 			this->skillLoss = skillLoss;
 		}
+		void setUseDefense(bool useDefense) {
+			canUseDefense = useDefense;
+		}
 
 		//creature script events
 		bool registerCreatureEvent(const std::string& name);
@@ -535,6 +538,7 @@ class Creature : virtual public Thing
 		bool hasFollowPath = false;
 		bool forceUpdateFollowPath = false;
 		bool hiddenHealth = false;
+		bool canUseDefense = true;
 		bool moveLocked = false;
 
 		//creature script events

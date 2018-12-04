@@ -93,6 +93,10 @@ class Spawns
 			return started;
 		}
 
+		std::forward_list<Spawn>& getSpawnList() {
+			return spawnList;
+		}
+
 	private:
 		std::forward_list<Npc*> npcList;
 		std::forward_list<Spawn> spawnList;

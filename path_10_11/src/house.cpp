@@ -229,7 +229,17 @@ bool House::transferToDepot(Player* player) const
 	for (HouseTile* tile : houseTiles) {
 		if (const TileItemVector* items = tile->getItemList()) {
 			for (Item* item : *items) {
-				if (item->isPickupable()) {
+				if (item->isWrapable()) {
+					std::string itemName = item->getName();
+					uint16_t itemID = item->getID();
+					Item* newItem = g_game.transformItem(item, 26054);
+					newItem->setIntAttr(ITEM_ATTRIBUTE_ACTIONID, itemID);
+					std::ostringstream ss;
+					ss << "Unwrap it in your own house to create a <" << itemName << ">.";
+					newItem->setStrAttr(ITEM_ATTRIBUTE_DESCRIPTION, ss.str());
+					moveItemList.push_back(newItem);
+				}
+				else if (item->isPickupable()) {
 					moveItemList.push_back(item);
 				} else {
 					Container* container = item->getContainer();

@@ -692,6 +692,18 @@ void LuaScriptInterface::setCreatureMetatable(lua_State* L, int32_t index, const
 	lua_setmetatable(L, index - 1);
 }
 
+CombatDamage LuaScriptInterface::getCombatDamage(lua_State* L)
+{
+	CombatDamage damage;
+	damage.primary.value = getNumber<int32_t>(L, -4);
+	damage.primary.type = getNumber<CombatType_t>(L, -3);
+	damage.secondary.value = getNumber<int32_t>(L, -2);
+	damage.secondary.type = getNumber<CombatType_t>(L, -1);
+
+	lua_pop(L, 4);
+	return damage;
+}
+
 // Get
 std::string LuaScriptInterface::getString(lua_State* L, int32_t arg)
 {
@@ -857,6 +869,15 @@ LuaDataType LuaScriptInterface::getUserdataType(lua_State* L, int32_t arg)
 void LuaScriptInterface::pushBoolean(lua_State* L, bool value)
 {
 	lua_pushboolean(L, value ? 1 : 0);
+}
+
+void LuaScriptInterface::pushCombatDamage(lua_State* L, const CombatDamage& damage)
+{
+	lua_pushnumber(L, damage.primary.value);
+	lua_pushnumber(L, damage.primary.type);
+	lua_pushnumber(L, damage.secondary.value);
+	lua_pushnumber(L, damage.secondary.type);
+	lua_pushnumber(L, damage.origin);
 }
 
 void LuaScriptInterface::pushInstantSpell(lua_State* L, const InstantSpell& spell)
@@ -1210,6 +1231,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_BUFF_SPELL)
 	registerEnum(CONDITION_PARAM_SUBID)
 	registerEnum(CONDITION_PARAM_FIELD)
+	registerEnum(CONDITION_PARAM_DISABLE_DEFENSE)
 
 	registerEnum(CONST_ME_NONE)
 	registerEnum(CONST_ME_DRAWBLOOD)
@@ -1843,6 +1865,12 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RELOAD_TYPE_TALKACTIONS)
 	registerEnum(RELOAD_TYPE_WEAPONS)
 
+	registerEnum(ZONE_PROTECTION)
+	registerEnum(ZONE_NOPVP)
+	registerEnum(ZONE_PVP)
+	registerEnum(ZONE_NOLOGOUT)
+	registerEnum(ZONE_NORMAL)
+
 	// _G
 	registerGlobalVariable("INDEX_WHEREEVER", INDEX_WHEREEVER);
 	registerGlobalBoolean("VIRTUAL_PARENT", true);
@@ -2255,6 +2283,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "getPathTo", LuaScriptInterface::luaCreatureGetPathTo);
 	registerMethod("Creature", "move", LuaScriptInterface::luaCreatureMove);
 
+	registerMethod("Creature", "getZone", LuaScriptInterface::luaCreatureGetZone);
+
 	// Player
 	registerClass("Player", "Creature", LuaScriptInterface::luaPlayerCreate);
 	registerMetaMethod("Player", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -2495,7 +2525,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Monster", "selectTarget", LuaScriptInterface::luaMonsterSelectTarget);
 	registerMethod("Monster", "searchTarget", LuaScriptInterface::luaMonsterSearchTarget);
-
+	registerMethod("Monster", "setSpawnPosition", LuaScriptInterface::luaMonsterSetSpawnPosition);
 	// Npc
 	registerClass("Npc", "Creature", LuaScriptInterface::luaNpcCreate);
 	registerMetaMethod("Npc", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -2594,6 +2624,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("House", "getDoorIdByPosition", LuaScriptInterface::luaHouseGetDoorIdByPosition);
 
 	registerMethod("House", "getTiles", LuaScriptInterface::luaHouseGetTiles);
+	registerMethod("House", "getItems", LuaScriptInterface::luaHouseGetItems);
 	registerMethod("House", "getTileCount", LuaScriptInterface::luaHouseGetTileCount);
 
 	registerMethod("House", "canEditAccessList", LuaScriptInterface::luaHouseCanEditAccessList);
@@ -2715,6 +2746,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("MonsterType", "isPet", LuaScriptInterface::luaMonsterTypeIsPet);
 	registerMethod("MonsterType", "isPassive", LuaScriptInterface::luaMonsterTypeIsHostile);
 	registerMethod("MonsterType", "isRewardBoss", LuaScriptInterface::luaMonsterTypeIsRewardBoss);
+	registerMethod("MonsterType", "isBoss", LuaScriptInterface::luaMonsterTypeIsRewardBoss);
 
 	registerMethod("MonsterType", "canPushItems", LuaScriptInterface::luaMonsterTypeCanPushItems);
 	registerMethod("MonsterType", "canPushCreatures", LuaScriptInterface::luaMonsterTypeCanPushCreatures);
@@ -6006,6 +6038,8 @@ int LuaScriptInterface::luaItemSplit(lua_State* L)
 		return 1;
 	}
 
+	splitItem->setItemCount(count);
+
 	ScriptEnvironment* env = getScriptEnv();
 	uint32_t uid = env->addThing(item);
 
@@ -6279,12 +6313,6 @@ int LuaScriptInterface::luaItemSetAttribute(lua_State* L)
 	}
 
 	if (ItemAttributes::isIntAttrType(attribute)) {
-		if (attribute == ITEM_ATTRIBUTE_UNIQUEID) {
-			reportErrorFunc("Attempt to set protected key \"uid\"");
-			pushBoolean(L, false);
-			return 1;
-		}
-
 		item->setIntAttr(attribute, getNumber<int32_t>(L, 3));
 		pushBoolean(L, true);
 	} else if (ItemAttributes::isStrAttrType(attribute)) {
@@ -7681,10 +7709,15 @@ int LuaScriptInterface::luaCreatureMove(lua_State* L)
 // Player
 int LuaScriptInterface::luaPlayerCreate(lua_State* L)
 {
-	// Player(id or name or userdata)
+	// Player(id or guid or name or userdata)
 	Player* player;
 	if (isNumber(L, 2)) {
-		player = g_game.getPlayerByID(getNumber<uint32_t>(L, 2));
+		uint32_t id = getNumber<uint32_t>(L, 2);
+		if (id >= 0x10000000 && id <= Player::playerAutoID) {
+			player = g_game.getPlayerByID(id);
+		} else {
+			player = g_game.getPlayerByGUID(id);
+		}
 	} else if (isString(L, 2)) {
 		ReturnValue ret = g_game.getPlayerByNameWildcard(getString(L, 2), player);
 		if (ret != RETURNVALUE_NOERROR) {
@@ -7971,6 +8004,18 @@ int LuaScriptInterface::luaMonsterTypeIsRewardBoss(lua_State* L)
 	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
 	if (monsterType) {
 		pushBoolean(L, monsterType->info.isRewardBoss);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterTypeIsBoss(lua_State* L)
+{
+	// monsterType:isBoss()
+	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
+	if (monsterType) {
+		pushBoolean(L, monsterType->info.isBoss);
 	} else {
 		lua_pushnil(L);
 	}
@@ -9163,18 +9208,24 @@ int LuaScriptInterface::luaPlayerShowTextDialog(lua_State* L)
 		text = getString(L, 3);
 	}
 
-	uint16_t itemId;
+	Item* item;
 	if (isNumber(L, 2)) {
-		itemId = getNumber<uint16_t>(L, 2);
-	} else {
-		itemId = Item::items.getItemIdByName(getString(L, 2));
-		if (itemId == 0) {
-			lua_pushnil(L);
+		item = Item::CreateItem(getNumber<uint16_t>(L, 2));
+	}
+	else if (isString(L, 2)) {
+		item = Item::CreateItem(Item::items.getItemIdByName(getString(L, 2)));
+	}
+	else if (isUserdata(L, 2)) {
+		if (getUserdataType(L, 2) != LuaData_Item) {
+			pushBoolean(L, false);
 			return 1;
 		}
+
+		item = getUserdata<Item>(L, 2);
+	} else {
+		item = nullptr;
 	}
 
-	Item* item = Item::CreateItem(itemId);
 	if (!item) {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_ITEM_NOT_FOUND));
 		pushBoolean(L, false);
@@ -10600,6 +10651,27 @@ int LuaScriptInterface::luaMonsterSearchTarget(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaMonsterSetSpawnPosition(lua_State* L)
+{
+	// monster:setSpawnPosition()
+	Monster* monster = getUserdata<Monster>(L, 1);
+	if (!monster) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	const Position& pos = monster->getPosition();
+	monster->setMasterPos(pos);
+
+	g_game.map.spawns.getSpawnList().emplace_front(pos, 5);
+	Spawn& spawn = g_game.map.spawns.getSpawnList().front();
+	spawn.addMonster(monster->mType->name, pos, DIRECTION_NORTH, 60000);
+	spawn.startSpawnCheck();
+
+	pushBoolean(L, true);
+	return 1;
+}
+
 // Npc
 int LuaScriptInterface::luaNpcCreate(lua_State* L)
 {
@@ -11504,6 +11576,33 @@ int LuaScriptInterface::luaHouseGetTiles(lua_State* L)
 		pushUserdata<Tile>(L, tile);
 		setMetatable(L, -1, "Tile");
 		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaHouseGetItems(lua_State* L)
+{
+	// house:getItems()
+	House* house = getUserdata<House>(L, 1);
+	if (!house) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	const auto& tiles = house->getTiles();
+	lua_newtable(L);
+
+	int index = 0;
+	for (Tile* tile : tiles) {
+		TileItemVector* itemVector = tile->getItemList();
+		if (itemVector) {
+			for (Item* item : *itemVector) {
+				pushUserdata<Item>(L, item);
+				setItemMetatable(L, -1, item);
+				lua_rawseti(L, -2, ++index);
+				
+			}
+		}
 	}
 	return 1;
 }

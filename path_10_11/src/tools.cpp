@@ -1192,6 +1192,9 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUARENOTTHEOWNER:
 			return "You are not the owner.";
 
+		case RETURNVALUE_YOUCANTOPENCORPSEADM:
+			return "You can't open this corpse, because you are an Admin.";
+
 		case RETURNVALUE_NOSUCHRAIDEXISTS:
 			return "No such raid exists.";
 

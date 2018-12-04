@@ -94,6 +94,9 @@
 	- Add support to wallfields to monsters (OTXS-C)
 	- Add ruleviolation report system (NWOTX)
 	- Add disable Weapon Ammo/Charge on config (NWOTX)
+	- Add protection to rewardcorpe access 4+ (NWOTX)
+	- Add depotConfigurables for premium users (NWOTX)
+	- Add flag "boss" to monsters for skip monsterslist on prey (NWOTX)
 	- Add features from Client_10_11 (NWOTX)
 		List:
 			* Imbuement System
@@ -129,6 +132,9 @@
 	- Fix Store Button Highlight (OTXS-C)
 	- Fix Premium Features (OTXS-C)
 	- Fix Blessing Features (OTXS-C)
+	- Fix Disable Defense (NWOTX)
+	- Fix bug do market (NWOTX)
+	- Fix decaying items (NWOTX)
 	- Lazily load monsters from XML (TFT)
 	- Move findPerson to Lua (TFC)
 	- Move doSet*Outfit functions to Lua (TFC)

@@ -721,7 +721,7 @@ class Player final : public Creature, public Cylinder
 				client->sendCreatureSkull(creature);
 			}
 		}
-		void checkSkullTicks(int32_t ticks);
+		void checkSkullTicks(int64_t ticks);
 
 		bool canWear(uint32_t lookType, uint8_t addons) const;
 		void addOutfit(uint16_t lookType, uint8_t addons);
@@ -1316,6 +1316,13 @@ class Player final : public Creature, public Cylinder
 		}
 
 		void doCriticalDamage(CombatDamage& damage) const;
+
+		//Custom: Anti bug do market
+		bool isMarketExhausted() const;
+		void updateMarketExhausted() {
+			lastMarketInteraction = OTSYS_TIME();
+		}
+
 	private:
 		std::forward_list<Condition*> getMuteConditions() const;
 
