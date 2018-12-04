@@ -7706,6 +7706,18 @@ int LuaScriptInterface::luaCreatureMove(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaCreatureGetZone(lua_State* L)
+{
+	// creature:getZone()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (creature) {
+		lua_pushnumber(L, creature->getZone());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 // Player
 int LuaScriptInterface::luaPlayerCreate(lua_State* L)
 {
