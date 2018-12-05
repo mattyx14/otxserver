@@ -5497,7 +5497,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			IOLoginData::savePlayer(buyerPlayer);
 			delete buyerPlayer;
 		} else {
-			buyerPlayer->onReceiveMail()
+			buyerPlayer->onReceiveMail();
 			if (it.id == ITEM_TIBIA_COIN) {
 				buyerPlayer->sendCoinBalanceUpdating(true);
 			}
