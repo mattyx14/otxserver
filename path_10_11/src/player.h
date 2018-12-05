@@ -900,33 +900,32 @@ class Player final : public Creature, public Cylinder
 
 		//store
 		void sendOpenStore(uint8_t serviceType) {
-			if(client) {
+			if (client) {
 				client->sendOpenStore(serviceType);
 			}
 		}
 		void sendShowStoreCategoryOffers(StoreCategory* category) {
-			if(client) {
+			if (client) {
 				client->sendStoreCategoryOffers(category);
 			}
 		}
 		void sendStoreError(GameStoreError_t error, const std::string& errorMessage) {
-			if(client) {
+			if (client) {
 				client->sendStoreError(error, errorMessage);
 			}
 		}
 		void sendStorePurchaseSuccessful(const std::string& message, const uint32_t coinBalance) {
-			if(client)
-			{
+			if (client) {
 				client->sendStorePurchaseSuccessful(message, coinBalance);
 			}
 		}
 		void sendStoreRequestAdditionalInfo(uint32_t offerId, ClientOffer_t clientOfferType) {
-			if(client) {
+			if (client) {
 				client->sendStoreRequestAdditionalInfo(offerId, clientOfferType);
 			}
 		}
 		void sendStoreTrasactionHistory(HistoryStoreOfferList& list, uint32_t page, uint8_t entriesPerPage) {
-			if(client) {
+			if (client) {
 				client->sendStoreTrasactionHistory(list, page, entriesPerPage);
 			}
 		}
@@ -1202,14 +1201,15 @@ class Player final : public Creature, public Cylinder
 		}
 
 		void sendCoinBalanceUpdating(bool updating) {
-			if(client) {
+			if (client) {
 				client->sendCoinBalanceUpdating(updating);
 			}
 		}
 
 		void sendStoreOpen(uint8_t serviceType) {
-			if(client)
+			if (client) {
 				client->sendOpenStore(serviceType);
+			}
 		}
 
 		void receivePing() {

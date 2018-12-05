@@ -788,10 +788,11 @@ void Monster::doAttacking(uint32_t interval)
 				}
 
 				float multiplier;
-				if(maxCombatValue > 0) //defense
+				if (maxCombatValue > 0) { //defense
 					multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_DEFENSE);
-				else //attack
+				} else { //attack
 					multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_ATTACK);
+				}
 
 				minCombatValue = spellBlock.minCombatValue * multiplier;
 				maxCombatValue = spellBlock.maxCombatValue * multiplier;
@@ -1842,10 +1843,11 @@ bool Monster::getCombatValues(int32_t& min, int32_t& max)
 	}
 
 	float multiplier;
-	if(maxCombatValue > 0) //defense
+	if (maxCombatValue > 0) { //defense
 		multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_DEFENSE);
-	else //attack
+	} else { //attack
 		multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_ATTACK);
+	}
 
 	min = minCombatValue * multiplier;
 	max = maxCombatValue * multiplier;

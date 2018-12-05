@@ -88,8 +88,8 @@ const Outfit *Outfits::getOpositeSexOutfitByLookType(PlayerSex_t sex, uint16_t l
 	PlayerSex_t	searchSex = (sex == PLAYERSEX_MALE)?PLAYERSEX_FEMALE:PLAYERSEX_MALE;
 
 	for(uint16_t i=0; i< outfits[sex].size(); i++) {
-		if(outfits[sex].at(i).lookType == lookType) {
-			if(outfits[searchSex].size()>i) {
+		if (outfits[sex].at(i).lookType == lookType) {
+			if (outfits[searchSex].size()>i) {
 				return &outfits[searchSex].at(i);
 			} else { //looktype found but the oposite sex array doesn't have this index.
 				return nullptr;
