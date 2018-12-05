@@ -15,7 +15,6 @@ We currently provide build instructions for the following systems:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more...
 * [Tibiaking](http://www.tibiaking.com/forum/) - [Português]
 * [OTLand](https://otland.net/) - [English]
-* [Black Tibia](http://blacktibia.org/) - [Español]
 * [Tibia Face](http://tibiaface.com/) - [Español]
 
 
