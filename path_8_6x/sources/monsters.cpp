@@ -39,8 +39,8 @@ extern ConfigManager g_config;
 
 void MonsterType::reset()
 {
-	canPushItems = canPushCreatures = isSummonable = isIllusionable = isConvinceable = isLureable = isWalkable = hideName = hideHealth = eliminable = false;
-	pushable = isAttackable = isHostile = isPassive = true;
+	canPushItems = canPushCreatures = isSummonable = isIllusionable = isConvinceable = isLureable = isWalkable = hideName = hideHealth = eliminable = isPassive = false;
+	pushable = isAttackable = isHostile = true;
 
 	outfit.lookHead = outfit.lookBody = outfit.lookLegs = outfit.lookFeet = outfit.lookType = outfit.lookTypeEx = outfit.lookAddons = 0;
 	runAwayHealth = healthMin = manaCost = lightLevel = lightColor = yellSpeedTicks = yellChance = changeTargetSpeed = changeTargetChance = 0;
