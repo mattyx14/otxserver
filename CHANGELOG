@@ -56,6 +56,7 @@
 [ OTX Server 2.9 :: Version "OpenTibia"
 	- Added feature criticalhit to weapons (8.6-TFACE)
 	- Added passive flag to monsters (8.6-TFACE)
+	- Added config noAttackHealingSimultaneus 8.6
 	- Fix tileLimit
 	- Fix and update mods / description autor
 	- Fix console errors on 7.x (duplicate commands)
