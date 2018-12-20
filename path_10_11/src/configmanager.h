@@ -47,6 +47,7 @@ class ConfigManager
 			REMOVE_WEAPON_CHARGES,
 			REMOVE_POTION_CHARGES,
 			STOREMODULES,
+			ALLOW_BLOCK_SPAWN,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

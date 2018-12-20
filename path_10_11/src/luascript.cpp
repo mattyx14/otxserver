@@ -1904,6 +1904,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::REMOVE_WEAPON_CHARGES)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_POTION_CHARGES)
 	registerEnumIn("configKeys", ConfigManager::STOREMODULES)
+	registerEnumIn("configKeys", ConfigManager::ALLOW_BLOCK_SPAWN)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)

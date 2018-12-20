@@ -247,8 +247,13 @@ void Spawn::checkSpawn()
 			continue;
 		}
 
+		if(OTSYS_TIME() >= sb.lastSpawn + sb.interval) {
+			continue;
+		}
+
 		spawnBlock_t& sb = it.second;
-		if (OTSYS_TIME() >= sb.lastSpawn + sb.interval) {
+		if (g_config.getBoolean(ConfigManager::ALLOW_BLOCK_SPAWN)
+			&& sb.mType->info.isBlockable && findPlayer(sb.pos)) {
 			if (sb.mType->info.isBlockable && findPlayer(sb.pos)) {
 				sb.lastSpawn = OTSYS_TIME();
 				continue;
