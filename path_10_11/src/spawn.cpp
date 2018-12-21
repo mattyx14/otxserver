@@ -243,6 +243,7 @@ void Spawn::checkSpawn()
 
 	for (auto& it : spawnMap) {
 		uint32_t spawnId = it.first;
+		spawnBlock_t& sb = it.second;
 		if (spawnedMap.find(spawnId) != spawnedMap.end()) {
 			continue;
 		}
@@ -251,7 +252,6 @@ void Spawn::checkSpawn()
 			continue;
 		}
 
-		spawnBlock_t& sb = it.second;
 		if (g_config.getBoolean(ConfigManager::ALLOW_BLOCK_SPAWN)
 			&& sb.mType->info.isBlockable && findPlayer(sb.pos)) {
 			if (sb.mType->info.isBlockable && findPlayer(sb.pos)) {
