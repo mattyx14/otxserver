@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="gazer" nameDescription="a gazer" race="blood" experience="90" speed="140" manacost="0">
+	<health now="120" max="120"/>
+	<look type="109" corpse="3049"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="25" attack="9"/>
+		<attack name="lifedrain" chance="12" range="7" min="-25" max="-35">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="manadrain" chance="15" range="7" min="-5" max="-15">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+	</attacks>
+	<defenses armor="4" defense="18">
+		<defense name="haste_gazer" chance="9"/>
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Mommy!?"/>
+		<voice sentence="Buuuuhaaaahhaaaaa!"/>
+		<voice sentence="Me need mana!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2512" chance="3000"/><!-- 3% wooden shield -->
+			</inside>
+		</item>
+		<item id="2148" chance="90000" countmax="6"/><!-- 6 90% gold coin -->
+		<item id="2148" chance="80000" countmax="8"/><!-- 8 80% gold coin -->
+		<item id="2148" chance="70000" countmax="10"/><!-- 10 70% gold coin -->
+	</loot>
+</monster>

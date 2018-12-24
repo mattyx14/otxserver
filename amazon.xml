@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="amazon" nameDescription="an amazon" race="blood" experience="60" speed="172" manacost="390">
+	<health now="110" max="110"/>
+	<look type="137" head="113" body="120" legs="95" feet="115" corpse="3065"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="24" attack="16"/>
+		<attack name="physical" checkshield="1" chance="10" range="7" min="-20" max="-30">
+			<attribute key="shootEffect" value="throwingknife"/>
+		</attack>
+	</attacks>
+	<defenses armor="11" defense="13">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="10">
+		<voice sentence="Yeee ha!"/>
+		<voice sentence="Your head will be mine!"/>
+	</voices>
+	<loot>
+		<item id="2691" chance="30000"/><!-- 30% brown bread -->
+		<item id="2148" chance="40000" countmax="10"/><!-- 10 40% gold coin -->
+		<item id="2229" chance="80000" countmax="2"/><!-- 2 80% skull -->
+		<item id="2147" chance="100"/><!-- 0.1% small ruby -->
+		<item id="2467" chance="50000"/><!-- 50% leather armor -->
+		<item id="2125" chance="200"/><!-- 0.2% crystal necklace -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2050" chance="5000"/><!-- 5% torch -->
+				<item id="2379" chance="80000"/><!-- 80% dagger -->
+				<item id="2385" chance="23000"/><!-- 23% sabre -->
+				<item id="2526" chance="5000"/><!-- 5% studded shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

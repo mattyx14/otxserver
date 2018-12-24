@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="panda" nameDescription="a panda" race="blood" experience="23" speed="156" manacost="300">
+	<health now="80" max="80"/>
+	<look type="123" corpse="4286"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="15"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="14" attack="15"/>
+	</attacks>
+	<defenses armor="8" defense="5">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Grrrr"/>
+		<voice sentence="Groar"/>
+	</voices>
+	<loot>
+		<item id="2671" chance="40000" countmax="2"/><!-- 2 40% ham -->
+		<item id="2666" chance="70000" countmax="4"/><!-- 4 70% meat -->
+	</loot>
+</monster>

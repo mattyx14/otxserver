@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="parrot" nameDescription="a parrot" race="blood" experience="0" speed="320" manacost="250">
+	<health now="25" max="25"/>
+	<look type="217" corpse="4314"/>
+	<targetchange interval="1000" chance="10"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="0"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="25"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="13" attack="6"/>
+	</attacks>
+	<defenses armor="2" defense="3">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="BR? PL? SWE?"/>
+		<voice sentence="Screeeeeeech!"/>
+		<voice sentence="Neeeewbiiieee!"/>
+		<voice sentence="You advanshed, you advanshed!"/>
+		<voice sentence="Hope you die and loooosh it!"/>
+		<voice sentence="Hunterrr ish PK!"/>
+	</voices>
+	<loot>
+	</loot>
+</monster>

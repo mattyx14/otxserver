@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="pig" nameDescription="a pig" race="blood" experience="0" speed="114" manacost="255">
+	<health now="25" max="25"/>
+	<look type="60" corpse="2935"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="0"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="25"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="10" attack="0"/>
+	</attacks>
+	<defenses armor="2" defense="1">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+	</voices>
+	<loot>
+		<item id="2666" chance="65000" countmax="4"/><!-- 4 65% meat -->
+	</loot>
+</monster>

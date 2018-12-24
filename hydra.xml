@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="hydra" nameDescription="a hydra" race="blood" experience="2100" speed="200" manacost="0">
+	<health now="2250" max="2250"/>
+	<look type="121" corpse="4283"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="10" damage="10" random="10"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="300"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="71" attack="56"/>
+		<attack name="paralyze_hydra" chance="13" range="7"/>
+		<attack name="physical" chance="15" length="8" spread="3" min="-100" max="-200">
+			<attribute key="areaEffect" value="bluebubble"/>
+		</attack>
+		<attack name="poison" chance="12" length="8" spread="3" min="-60" max="-300">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="27" defense="159">
+		<defense name="healing" chance="34" min="200" max="400">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="FCHHHHH" yell="1"/>
+		<voice sentence="HISSSS" yell="1"/>
+	</voices>
+	<loot>
+		<item id="2671" chance="60000" countmax="3"/><!-- 3 60% ham -->
+		<item id="2666" chance="90000" countmax="4"/><!-- 4 90% meat -->
+		<item id="2148" chance="60000" countmax="100"/><!-- 100 60% gold coin -->
+		<item id="2148" chance="40000" countmax="50"/><!-- 50 40% gold coin -->
+		<item id="2148" chance="80000" countmax="100"/><!-- 100 80% gold coin -->
+		<item id="2146" chance="5000"/><!-- 5% small sapphire -->
+		<item id="4850" chance="900"/><!-- 0.9% hydra egg -->
+		<item id="2177" chance="600"/><!-- 0.6% life crystal -->
+		<item id="2476" chance="1000"/><!-- 1% knight armor -->
+		<item id="2475" chance="1000"/><!-- 1% warrior helmet -->
+		<item id="2498" chance="200"/><!-- 0.2% royal helmet -->
+		<item id="2195" chance="100"/><!-- 0.1% boots of haste -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2536" chance="100"/><!-- 0.1% medusa shield -->
+				<item id="2197" chance="800"/><!-- 0.8% stone skin amulet -->
+				<item id="2214" chance="1200"/><!-- 1.2% ring of healing -->
+			</inside>
+		</item>
+	</loot>
+</monster>

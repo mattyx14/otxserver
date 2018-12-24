@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="minotaur archer" nameDescription="a minotaur archer" race="blood" experience="65" speed="160" manacost="390">
+	<health now="100" max="100"/>
+	<look type="24" corpse="2871"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="20" attack="15"/>
+		<attack name="physical" checkshield="1" chance="34" range="7" min="-45" max="-85">
+			<attribute key="shootEffect" value="bolt"/>
+		</attack>
+	</attacks>
+	<defenses armor="7" defense="8">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Ruan Wihmpy!"/>
+		<voice sentence="Kaplar!"/>
+	</voices>
+	<loot>
+		<item id="2666" chance="10000"/><!-- 10% meat -->
+		<item id="2148" chance="70000" countmax="10"/><!-- 10 70% gold coin -->
+		<item id="2148" chance="15000" countmax="20"/><!-- 20 15% gold coin -->
+		<item id="2543" chance="50000" countmax="15"/><!-- 15 50% bolt -->
+		<item id="2543" chance="80000" countmax="5"/><!-- 5 80% bolt -->
+		<item id="2461" chance="5000"/><!-- 5% leather helmet -->
+		<item id="2481" chance="2000"/><!-- 2% soldier helmet -->
+		<item id="2649" chance="5000"/><!-- 5% leather legs -->
+		<item id="2465" chance="1000"/><!-- 1% brass armor -->
+		<item id="2483" chance="2000"/><!-- 2% scale armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2455" chance="10000"/><!-- 10% crossbow -->
+			</inside>
+		</item>
+	</loot>
+</monster>

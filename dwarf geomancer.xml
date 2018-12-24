@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="dwarf geomancer" nameDescription="a dwarf geomancer" race="blood" experience="245" speed="200" manacost="0">
+	<health now="380" max="380"/>
+	<look type="66" corpse="2987"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="150"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="50" attack="30"/>
+		<attack name="physical" checkshield="1" chance="34" range="7" min="-55" max="-105">
+			<attribute key="shootEffect" value="largerock"/>
+		</attack>
+		<attack name="manadrain" chance="25" range="7" min="-50" max="-80"/>
+	</attacks>
+	<defenses armor="15" defense="87">
+		<defense name="healing" chance="50" min="75" max="125">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Hail Durin!"/>
+		<voice sentence="Earth is the strongest element."/>
+		<voice sentence="Dust to dust."/>
+	</voices>
+	<loot>
+		<item id="2673" chance="18000" countmax="2"/><!-- 2 18% pear -->
+		<item id="2787" chance="60000" countmax="2"/><!-- 2 60% white mushroom -->
+		<item id="2148" chance="70000" countmax="30"/><!-- 30 70% gold coin -->
+		<item id="2146" chance="100"/><!-- 0.1% small sapphire -->
+		<item id="2260" chance="10000"/><!-- 10% blank rune -->
+		<item id="1987" chance="50000" dropempty="true"/><!-- 50% bag -->
+		<item id="2643" chance="40000"/><!-- 40% leather boots -->
+		<item id="2481" chance="8000"/><!-- 8% soldier helmet -->
+		<item id="2468" chance="20000"/><!-- 20% studded legs -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2162" chance="12000"/><!-- 12% magic lightwand -->
+				<item id="2423" chance="1000"/><!-- 1% clerical mace -->
+				<item id="2175" chance="400"/><!-- 0.4% spellbook -->
+				<item id="2213" chance="300"/><!-- 0.3% dwarven ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

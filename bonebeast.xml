@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="bonebeast" nameDescription="a bonebeast" race="undead" experience="580" speed="218" manacost="0">
+	<health now="515" max="515"/>
+	<look type="101" corpse="3031"/>
+	<targetchange interval="1000" chance="20"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="75" attack="47" poison="110"/>
+		<attack name="poison" chance="10" range="7" min="-25" max="-65">
+			<attribute key="shootEffect" value="poison"/>
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+		<attack name="lifedrain" chance="15" radius="3" target="0" min="-30" max="-50">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="poisoncondition" chance="13" radius="3" target="0" min="-60" max="-80">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="40" defense="168">
+		<defense name="healing" chance="12" min="30" max="60">
+			<attribute key="areaEffect" value="greenspark"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Cccchhhhhhhhh!"/>
+		<voice sentence="Knooorrrrr!"/>
+	</voices>
+	<loot>
+		<item id="2796" chance="1500"/><!-- 1.5% green mushroom -->
+		<item id="2148" chance="30000" countmax="90"/><!-- 90 30% gold coin -->
+		<item id="2231" chance="10000"/><!-- 10% big bone -->
+		<item id="2230" chance="50000"/><!-- 50% bone -->
+		<item id="2229" chance="20000"/><!-- 20% skull -->
+		<item id="2463" chance="8000"/><!-- 8% plate armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2449" chance="5000"/><!-- 5% bone club -->
+				<item id="2541" chance="2000"/><!-- 2% bone shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

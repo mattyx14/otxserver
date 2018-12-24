@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="dwarf guard" nameDescription="a dwarf guard" race="blood" experience="165" speed="206" manacost="650">
+	<health now="245" max="245"/>
+	<look type="70" corpse="2983"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="0" damage="20" random="10"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="55" attack="39"/>
+	</attacks>
+	<defenses armor="15" defense="101">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Hail Durin!"/>
+	</voices>
+	<loot>
+		<item id="2787" chance="55000" countmax="2"/><!-- 2 55% white mushroom -->
+		<item id="2148" chance="50000" countmax="30"/><!-- 30 50% gold coin -->
+		<item id="2150" chance="100"/><!-- 0.1% small amethyst -->
+		<item id="2643" chance="40000"/><!-- 40% leather boots -->
+		<item id="2483" chance="10000"/><!-- 10% scale armor -->
+		<item id="2457" chance="2000"/><!-- 2% steel helmet -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2417" chance="4000"/><!-- 4% battle hammer -->
+				<item id="2387" chance="600"/><!-- 0.6% double axe -->
+				<item id="2513" chance="7500"/><!-- 7.5% battle shield -->
+				<item id="2208" chance="200"/><!-- 0.2% axe ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

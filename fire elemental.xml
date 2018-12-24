@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="fire elemental" nameDescription="a fire elemental" race="fire" experience="220" speed="190" manacost="690">
+	<health now="280" max="280"/>
+	<look type="49" corpse="1492"/>
+	<targetchange interval="1000" chance="10"/>
+	<targetstrategies nearest="80" health="0" damage="0" random="20"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="38" attack="38"/>
+		<attack name="fire" chance="25" range="7" radius="2" target="1" min="-55" max="-155">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="firefield" chance="34" range="7" radius="1" target="1">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+	</attacks>
+	<defenses armor="18" defense="38">
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+	</voices>
+	<loot>
+	</loot>
+</monster>

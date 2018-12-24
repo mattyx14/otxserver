@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="centipede" nameDescription="a centipede" race="venom" experience="30" speed="166" manacost="335">
+	<health now="70" max="70"/>
+	<look type="124" corpse="4289"/>
+	<targetchange interval="1000" chance="6"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="30" attack="24" poison="22"/>
+	</attacks>
+	<defenses armor="8" defense="13">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+	</voices>
+	<loot>
+		<item id="2148" chance="80000" countmax="15"/><!-- 15 80% gold coin -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2376" chance="3000"/><!-- 3% sword -->
+				<item id="2398" chance="4500"/><!-- 4.5% mace -->
+			</inside>
+		</item>
+	</loot>
+</monster>

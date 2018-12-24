@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="assassin" nameDescription="an assassin" race="blood" experience="105" speed="224" manacost="450">
+	<health now="175" max="175"/>
+	<look type="129" head="95" body="95" legs="95" feet="95" corpse="3128"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="20" damage="10" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="45" attack="45"/>
+		<attack name="physical" checkshield="1" chance="13" range="7" min="-28" max="-38">
+			<attribute key="shootEffect" value="throwingstar"/>
+		</attack>
+		<attack name="drunk" chance="9" range="6" duration="3000">
+			<attribute key="shootEffect" value="poison"/>
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="17" defense="90">
+		<defense name="invisible" chance="9" duration="2000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="haste_assassin" chance="9"/>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+        <voice sentence="Die!"/>
+        <voice sentence="Feel the hand of death!"/>
+        <voice sentence="You are on my deathlist!"/>
+	</voices>
+	<loot>
+		<item id="2148" chance="15000" countmax="10"/><!-- 10 15% gold -->
+		<item id="2148" chance="80000" countmax="40"/><!-- 40 80% gold -->
+		<item id="2145" chance="200"/><!-- 0.2% small diamond -->
+		<item id="2457" chance="3000"/><!-- 3% steel helmet -->
+		<item id="3969" chance="200"/><!-- 0.2% horseman helmet -->
+		<item id="3968" chance="500"/><!-- 0.5% leopard armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2050" chance="30000"/><!-- 30% torch -->
+				<item id="2050" chance="30000"/><!-- 30% torch -->
+				<item id="2403" chance="10000"/><!-- 10% knife -->
+				<item id="2404" chance="4000"/><!-- 4% combat knife -->
+				<item id="2510" chance="2000"/><!-- 2% plate shield -->
+				<item id="2513" chance="1500"/><!-- 1.5% battle shield -->
+				<item id="2509" chance="1000"/><!-- 1% steel shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="elf scout" nameDescription="an elf scout" race="blood" experience="75" speed="220" manacost="360">
+	<health now="160" max="160"/>
+	<look type="64" corpse="2981"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="25" attack="18"/>
+		<attack name="physical" checkshield="1" chance="25" range="7" min="-30" max="-60">
+			<attribute key="shootEffect" value="arrow"/>
+		</attack>
+	</attacks>
+	<defenses armor="7" defense="22">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Tha'shi Ab'Dendriel!"/>
+		<voice sentence="Feel the sting of my arrows!"/>
+		<voice sentence="Thy blood will quench the soil's thirst!"/>
+		<voice sentence="Evicor guide my arrow."/>
+		<voice sentence="Your existence will end here!"/>
+	</voices>
+	<loot>
+		<item id="2681" chance="18000"/><!-- 18% grapes -->
+		<item id="2148" chance="30000" countmax="5"/><!-- 5 30% gold coin -->
+		<item id="2544" chance="30000" countmax="12"/><!-- 12 30% arrow -->
+		<item id="2545" chance="15000" countmax="3"/><!-- 3 15% poison arrow -->
+		<item id="2031" chance="14000"/><!--  14% waterskin -->
+		<item id="2642" chance="10000"/><!-- 10% sandals -->
+		<item id="2482" chance="8000"/><!-- 8% studded helmet -->
+		<item id="2484" chance="12000"/><!-- 12% studded armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2456" chance="4000"/><!-- 4% bow -->
+				<item id="2397" chance="6000"/><!-- 6% longsword -->
+			</inside>
+		</item>
+	</loot>
+</monster>

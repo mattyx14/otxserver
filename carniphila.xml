@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="carniphila" nameDescription="a carniphila" race="venom" experience="150" speed="110" manacost="490">
+	<health now="255" max="255"/>
+	<look type="120" corpse="4280"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="40" attack="40" poison="95"/>
+		<attack name="poison" chance="25" range="7" min="-60" max="-90">
+			<attribute key="shootEffect" value="poison"/>
+			<attribute key="areaEffect" value="greenspark"/>
+		</attack>
+		<attack name="paralyze_carniphila" chance="34" range="7"/>
+		<attack name="poison" chance="12" radius="3" target="0" min="-40" max="-130">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="26" defense="40">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+	</voices>
+	<loot>
+		<item id="2671" chance="40000"/><!-- 40% ham -->
+		<item id="2666" chance="70000" countmax="2"/><!-- 2 70% meat -->
+		<item id="2792" chance="8000"/><!-- 8% dark mushroom -->
+		<item id="2148" chance="80000" countmax="30"/><!-- 30 80% gold coin -->
+		<item id="2148" chance="40000" countmax="10"/><!-- 10 40% gold coin -->
+		<item id="2804" chance="1000"/><!-- 1% shadow herb -->
+		<item id="2802" chance="500"/><!-- 0.5% sling herb -->
+		<item id="2802" chance="500"/><!-- 0.5% sling herb -->
+		<item id="2747" chance="500"/><!-- 0.5% grave flower -->
+	</loot>
+</monster>

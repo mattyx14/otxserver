@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="orc leader" nameDescription="an orc leader" race="blood" experience="270" speed="230" manacost="640">
+	<health now="450" max="450"/>
+	<look type="59" corpse="2938"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="15" damage="15" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="52" attack="48"/>
+		<attack name="physical" checkshield="1" chance="17" range="7" min="-50" max="-70">
+			<attribute key="shootEffect" value="throwingknife"/>
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="117">
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Ulderek futgyr human!"/>
+	</voices>
+	<loot>
+		<item id="2666" chance="15000" countmax="2"/><!-- 2 15% meat -->
+		<item id="2667" chance="30000"/><!-- 30% fish -->
+		<item id="2148" chance="28000" countmax="35"/><!-- 35 28% gold coin -->
+		<item id="2410" chance="10000" countmax="4"/><!-- 4 10% throwing knife -->
+		<item id="1988" chance="20000" dropempty="true"/><!-- 20% backpack -->
+		<item id="2475" chance="100"/><!-- 0.1% warrior helmet -->
+		<item id="2478" chance="2500"/><!-- 2.5% brass legs -->
+		<item id="2647" chance="400"/><!-- 0.4% plate legs -->
+		<item id="2463" chance="1500"/><!-- 1.5% plate armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2413" chance="800"/><!-- 0.8% broad sword -->
+				<item id="2397" chance="8000"/><!-- 8% longsword -->
+				<item id="2419" chance="12000"/><!-- 12% scimitar -->
+				<item id="2379" chance="23000"/><!-- 23% dagger -->
+				<item id="2510" chance="10000"/><!-- 10% plate shield -->
+				<item id="2207" chance="4000"/><!-- 4% sword ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

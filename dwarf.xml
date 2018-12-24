@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="dwarf" nameDescription="a dwarf" race="blood" experience="45" speed="170" manacost="320">
+	<health now="90" max="90"/>
+	<look type="69" corpse="2960"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="23" attack="14"/>
+	</attacks>
+	<defenses armor="8" defense="16">
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Hail Durin!"/>
+	</voices>
+	<loot>
+		<item id="2787" chance="50000"/><!-- 50% white mushroom -->
+		<item id="2148" chance="45000" countmax="8"/><!-- 8 45% gold coin -->
+		<item id="2597" chance="8000"/><!-- 8% letter -->
+		<item id="2553" chance="10000"/><!-- 10% pick -->
+		<item id="2484" chance="8000"/><!-- 8% studded armor -->
+		<item id="2649" chance="10000"/><!-- 10% leather legs -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2388" chance="25000"/><!-- 25% hatchet -->
+				<item id="2386" chance="15000"/><!-- 15% axe -->
+				<item id="2530" chance="10000"/><!-- 10% cooper shield -->
+				<item id="2213" chance="100"/><!-- 0.1% dwarven ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

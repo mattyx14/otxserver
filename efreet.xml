@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="efreet" nameDescription="an efreet" race="blood" experience="300" speed="234" manacost="0">
+	<health now="550" max="550"/>
+	<look type="103" corpse="3037"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="55" attack="35"/>
+		<attack name="fire" chance="50" range="7" min="-40" max="-110">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="energy" chance="25" range="7" min="-65" max="-115">
+			<attribute key="shootEffect" value="energy"/>
+		</attack>
+		<attack name="lifedrain" chance="20" range="7" min="-60" max="-120">
+			<attribute key="shootEffect" value="death"/>
+		</attack>
+		<attack name="paralyze_efreet" chance="13" range="7"/>
+		<attack name="drunk" chance="20" range="7" duration="60000">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="teleport"/>
+		</attack>
+		<attack name="outfit" chance="17" range="7" monster="rat" duration="30000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</attack>
+		<attack name="djinn electrify area" chance="17" min="-60" max="-100"/>
+	</attacks>
+	<defenses armor="24" defense="96">
+	    <defense name="healing" chance="15" min="50" max="80">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<summons maxSummons="2">
+		<summon name="green djinn" chance="15" max="2"/>
+	</summons>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="I grant you a deathwish!"/>
+		<voice sentence="Muhahahaha!"/>
+		<voice sentence="I wish you a merry trip to hell!"/>
+		<voice sentence="Tell me your last wish!"/>
+		<voice sentence="Good wishes are for fairytales"/>
+	</voices>
+	<loot>
+		<item id="2673" chance="25000" countmax="12"/><!-- 12 25% pear -->
+		<item id="2148" chance="70000" countmax="50"/><!-- 50 70% gold coin -->
+		<item id="2148" chance="50000" countmax="80"/><!-- 80 50% gold coin -->
+		<item id="2149" chance="7000" countmax="2"/><!-- 2 7% small emerald -->
+		<item id="2155" chance="100"/><!-- 0.1% green gem -->
+		<item id="1860" chance="2500"/><!-- 2.5% green tapestry -->
+		<item id="2359" chance="20000"/><!-- 20% small oil lamp -->
+		<item id="2663" chance="200"/><!-- 0.2% mystic turban -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2442" chance="20000"/><!-- 20% heavy machete -->
+				<item id="2187" chance="500"/><!-- 0.5% wand of inferno -->
+			</inside>
+		</item>
+	</loot>
+</monster>

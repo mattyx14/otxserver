@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="dragon lord" nameDescription="a dragon lord" race="blood" experience="2100" speed="200" manacost="0">
+	<health now="1900" max="1900"/>
+	<look type="39" corpse="2881"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="10" damage="10" random="10"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="300"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="65" attack="55"/>
+		<attack name="fire" chance="17" range="7" radius="4" target="1" min="-120" max="-180">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="firefield" chance="15" range="7" radius="4" target="1">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="fire" chance="17" length="8" spread="3" min="-150" max="-250">
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+	</attacks>
+	<defenses armor="32" defense="156">
+		<defense name="healing" chance="25" min="57" max="93">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="ZCHHHHH" yell="1"/>
+		<voice sentence="YOU WILL BURN!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="2672" chance="60000" countmax="5"/><!-- 5 60% dragon ham -->
+		<item id="2796" chance="12000"/><!-- 12% green mushroom -->
+		<item id="2148" chance="80000" countmax="100"/><!-- 100 80% gold coin -->
+		<item id="2148" chance="40000" countmax="50"/><!-- 50 40% gold coin-->
+		<item id="2148" chance="60000" countmax="100"/><!-- 100 60% gold coin-->
+		<item id="2146" chance="5000"/><!-- 5% small sapphire -->
+		<item id="2547" chance="6000"/><!-- 6% power bolt -->
+		<item id="2177" chance="600"/><!-- 0.6% life crystal -->
+		<item id="1976" chance="9000"/><!-- 9% gemmed book -->
+		<item id="2033" chance="3000"/><!-- 3% golden mug -->
+		<item id="2479" chance="400"/><!-- 0.4% strange helmet -->
+		<item id="2492" chance="100"/><!-- 0.1% dragon scale mail -->
+		<item id="2498" chance="200"/><!-- 0.2% royal helmet -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2392" chance="300"/><!-- 0.3% fire sword -->
+				<item id="2528" chance="300"/><!-- 0.3% tower shield -->
+				<item id="2167" chance="5000"/><!-- 5% energy ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

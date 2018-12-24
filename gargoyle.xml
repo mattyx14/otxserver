@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="gargoyle" nameDescription="a gargoyle" race="undead" experience="150" speed="200" manacost="0">
+	<health now="250" max="250"/>
+	<look type="95" corpse="3022"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="30"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="45" attack="24"/>
+	</attacks>
+	<defenses armor="26" defense="67">
+	    <defense name="healing" chance="10" min="5" max="15">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Harrrr Harrrr!"/>
+		<voice sentence="Stone sweet stone."/>
+		<voice sentence="Feel my claws, softskin."/>
+		<voice sentence="Chhhhhrrrrk!"/>
+		<voice sentence="There is a stone in your shoe!"/>
+	</voices>
+	<loot>
+		<item id="2671" chance="20000" countmax="2"/><!-- 2 20% ham -->
+		<item id="2666" chance="50000"/><!-- 50% meat -->
+		<item id="2148" chance="70000" countmax="10"/><!-- 10 70% gold coin -->
+		<item id="2148" chance="40000" countmax="20"/><!-- 20 40% gold coin -->
+		<item id="1294" chance="10000" countmax="10"/><!-- 10 10% small stone -->
+		<item id="2129" chance="200"/><!-- 0.2% wolf tooth chain -->
+		<item id="2457" chance="200"/><!-- 0.2% steel helmet -->
+		<item id="2489" chance="200"/><!-- 0.2% dark armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2448" chance="8000"/><!-- 8% studded club -->
+				<item id="2394" chance="1000"/><!-- 1% morning star -->
+				<item id="2513" chance="1500"/><!-- 1.5% battle shield -->
+				<item id="2209" chance="100"/><!-- 0.1% club ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="elf" nameDescription="an elf" race="blood" experience="42" speed="190" manacost="320">
+	<health now="100" max="100"/>
+	<look type="62" corpse="2945"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="20" attack="12"/>
+		<attack name="physical" checkshield="1" chance="5" range="7" min="-15" max="-35">
+			<attribute key="shootEffect" value="arrow"/>
+		</attack>
+	</attacks>
+	<defenses armor="6" defense="12">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Ulathil beia Thratha!"/>
+		<voice sentence="Bahaha aka!"/>
+		<voice sentence="You are not welcome here."/>
+		<voice sentence="Flee as long as you can."/>
+		<voice sentence="Death to the defilers!"/>
+	</voices>
+	<loot>
+		<item id="2674" chance="20000" countmax="2"/><!-- 2 20% red apple -->
+		<item id="2544" chance="7000" countmax="3"/><!-- 3 7% arrow -->
+		<item id="2482" chance="15000"/><!-- 15% studded helmet -->
+		<item id="2643" chance="11000"/><!-- 11% leather boots -->
+		<item id="2484" chance="11000"/><!-- 11% studded armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2397" chance="8000"/><!-- 8% longsword -->
+				<item id="2511" chance="13000"/><!-- 13% brass shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

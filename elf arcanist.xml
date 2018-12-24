@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="elf arcanist" nameDescription="an elf arcanist" race="blood" experience="175" speed="220" manacost="0">
+	<health now="220" max="220"/>
+	<look type="63" corpse="2979"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="25" attack="20"/>
+		<attack name="physical" checkshield="1" chance="9" range="7" min="-15" max="-45">
+			<attribute key="shootEffect" value="arrow"/>
+		</attack>
+		<attack name="energy" chance="9" range="7" min="-30" max="-50">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="physical" chance="12" range="7" min="-60" max="-80">
+			<attribute key="shootEffect" value="death"/>
+		</attack>
+	</attacks>
+	<defenses armor="15" defense="25">
+		<defense name="healing" chance="20" min="42" max="68">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Feel my wrath!"/>
+		<voice sentence="For the Daughter of the Stars!"/>
+		<voice sentence="I'll bring balance upon you!"/>
+		<voice sentence="Tha'shi Cenath!"/>
+		<voice sentence="Vihil Ealuel!"/>
+	</voices>
+	<loot>
+		<item id="2682" chance="22000"/><!-- 22% melon -->
+		<item id="2689" chance="14000"/><!-- 14% bread -->
+		<item id="2544" chance="6000"  countmax="3"/><!-- 3 6% arrow -->
+		<item id="2177" chance="1000"/><!-- 1% life crystal -->
+		<item id="2600" chance="9000"/><!-- 9% inkwell -->
+		<item id="1949" chance="30000"/><!-- 30% scroll -->
+		<item id="2032" chance="5500"/><!-- 5.5% bowl -->
+		<item id="2154" chance="200"/><!-- 0.2% yellow gem -->
+		<item id="2747" chance="7000"/><!-- 7% grave flower -->
+		<item id="2802" chance="5000"/><!-- 5% sling herb -->
+		<item id="2260" chance="18000"/><!-- 18% blank rune -->
+		<item id="2642" chance="26000"/><!-- 13% sandals -->
+		<item id="2652" chance="7000"/><!-- 7% green tunic -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2047" chance="22000"/><!-- 22% candlestick -->
+				<item id="2401" chance="11000"/><!-- 11% staff -->
+				<item id="2189" chance="1000"/><!-- 1% wand of cosmic energy -->
+				<item id="2198" chance="2000"/><!-- 2% elven amulet -->
+			</inside>
+		</item>
+	</loot>
+</monster>

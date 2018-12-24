@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="demon skeleton" nameDescription="a demon skeleton" race="undead" experience="240" speed="180" manacost="620">
+	<health now="400" max="400"/>
+	<look type="37" head="0" body="0" legs="0" feet="0" corpse="2809"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="70" attack="45"/>
+		<attack name="lifedrain" chance="10" range="1" min="-30" max="-50"/>
+	</attacks>
+	<defenses armor="25" defense="122">
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+	</immunities>
+	<loot>
+		<item id="2148" chance="40000" countmax="20"/><!-- 20 40% gold coin -->
+		<item id="2148" chance="30000" countmax="25"/><!-- 25 30% gold coin -->
+		<item id="2399" chance="10000" countmax="3"/><!-- 3 10% throwing star -->
+		<item id="2194" chance="300"/><!-- 0.3% mysterious fetiche -->
+		<item id="2178" chance="200"/><!-- 0.2% mind stone -->
+		<item id="2459" chance="2000"/><!-- 2% iron helmet -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2050" chance="50000"/><!-- 50% torch -->
+				<item id="2417" chance="3000"/><!-- 3% battle hammer -->
+				<item id="2515" chance="1000"/><!-- 1% battle shield -->
+				<item id="2513" chance="100"/><!-- 0.1% guardian shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

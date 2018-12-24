@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="giant spider" nameDescription="a giant spider" race="venom" experience="900" speed="240" manacost="0">
+	<health now="1300" max="1300"/>
+	<look type="38" corpse="2857"/>
+	<targetchange interval="1000" chance="10"/>
+	<targetstrategies nearest="70" health="20" damage="0" random="10"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="80" attack="65"/>
+		<attack name="poisonfield" chance="17" range="7" radius="1" target="1">
+			<attribute key="shootEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="30" defense="160">
+		<defense name="haste_giantspider" chance="6"/>
+	</defenses>
+	<summons maxSummons="2">
+		<summon name="poison spider" chance="10" max="2"/>
+	</summons>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+	</voices>
+	<loot>
+		<item id="2148" chance="33300" countmax="55"/><!-- 55 33.3% gold coin -->
+		<item id="2148" chance="99900" countmax="11"/><!-- 11 99.9% gold coin -->
+		<item id="2148" chance="66600" countmax="33"/><!-- 33 66.6% gold coin -->
+		<item id="2463" chance="10000"/><!-- 10% plate armor -->
+		<item id="2478" chance="8000"/><!-- 8% brass legs -->
+		<item id="2457" chance="5000"/><!-- 5% steel helmet -->
+		<item id="2477" chance="300"/><!-- 0.3% knight legs -->
+		<item id="2476" chance="300"/><!-- 0.3% knight armor -->
+		<item id="2171" chance="100"/><!-- 0.1% platinum amulet -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2169" chance="700"/><!-- 0.7% time ring -->
+			</inside>
+		</item>
+	</loot>
+</monster>

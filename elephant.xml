@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="elephant" nameDescription="an elephant" race="blood" experience="160" speed="190" manacost="500">
+	<health now="320" max="320"/>
+	<look type="211" corpse="4295"/>
+	<targetchange interval="1000" chance="5"/>
+	<targetstrategies nearest="70" health="0" damage="30" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="45" attack="41"/>
+	</attacks>
+	<defenses armor="20" defense="36">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Hooooot-Toooooot!"/>
+		<voice sentence="Tooooot."/>
+		<voice sentence="Troooooot!"/>
+	</voices>
+	<loot>
+		<item id="2671" chance="60000" countmax="3"/><!-- 3 60% ham -->
+		<item id="2666" chance="90000" countmax="4"/><!-- 4 90% meat -->
+		<item id="3956" chance="1000" countmax="2"/><!-- 2 1% elephant tusk -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="3973" chance="100"/><!-- 0.1% tusk shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

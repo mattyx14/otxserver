@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="elder beholder" nameDescription="an elder beholder" race="blood" experience="280" speed="170" manacost="0">
+	<health now="500" max="500"/>
+	<look type="108" corpse="3052"/>
+	<targetchange interval="1000" chance="50"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="45" attack="16"/>
+		<attack name="energy" chance="8" range="7" min="-45" max="-75">
+			<attribute key="shootEffect" value="energy"/>
+		</attack>
+		<attack name="fire" chance="7" range="7" min="-60" max="-80">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="physical" chance="9" range="7" min="-70" max="-90">
+			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="mortarea"/>
+		</attack>
+		<attack name="poison" chance="8" range="7" min="-30" max="-70">
+			<attribute key="shootEffect" value="poison"/>
+		</attack>
+		<attack name="lifedrain" chance="6" range="7" min="-75" max="-85">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="lifedrain" chance="6" range="7" min="-75" max="-85">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="manadrain" chance="6" range="7" min="-20" max="-40">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="paralyze_elderbeholder" chance="10" range="7"/>
+	</attacks>
+	<defenses armor="13" defense="58">
+	</defenses>
+	<summons maxSummons="6">
+		<summon name="gazer" chance="13" max="6"/>
+		<summon name="crypt shambler" chance="12" max="6"/>
+	</summons>
+	<elements>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="653768764!"/>
+		<voice sentence="Let me take a look at you!"/>
+		<voice sentence="Inferior creatures, bow before my power!"/>
+		<voice sentence="659978 54764!"/>
+	</voices>
+	<loot>
+		<item id="2148" chance="90000" countmax="24"/><!-- 24 90% gold coin -->
+		<item id="2148" chance="80000" countmax="32"/><!-- 32 80% gold coin -->
+		<item id="2148" chance="70000" countmax="35"/><!-- 35 70% gold coin -->
+		<item id="3972" chance="100"/><!-- 0.1% beholder helmet -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2377" chance="6000"/><!-- 6% two handed sword -->
+				<item id="2394" chance="10000"/><!-- 10% morning star -->
+				<item id="2397" chance="12000"/><!-- 12% longsword -->
+				<item id="2509" chance="6000"/><!-- 6% steel shield -->
+				<item id="2518" chance="100"/><!-- 0.1% beholder shield -->
+				<item id="2175" chance="1000"/><!-- 1% spellbook -->
+			</inside>
+		</item>
+	</loot>
+</monster>

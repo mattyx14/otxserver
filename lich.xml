@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="lich" nameDescription="a lich" race="undead" experience="900" speed="210" manacost="0">
+	<health now="880" max="880"/>
+	<look type="99" corpse="3025"/>
+	<targetchange interval="1000" chance="3"/>
+	<targetstrategies nearest="80" health="10" damage="10" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="40" attack="40" poison="400"/>
+		<attack name="lifedrain" chance="4" range="1" min="-50" max="-250">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</attack>
+		<attack name="paralyze_lich" chance="15" range="7"/>
+		<attack name="lifedrain" chance="17" radius="3" target="0" min="-120" max="-200">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="lifedrain" chance="9" length="8" spread="0" min="-100" max="-200">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="poisoncondition" chance="9" length="8" spread="0" min="-300" max="-400">
+			<attribute key="areaEffect" value="greenspark"/>
+		</attack>
+	</attacks>
+	<defenses armor="50" defense="120">
+		<defense name="healing" chance="17" min="50" max="150">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>	
+	</defenses>
+	<summons maxSummons="4">
+		<summon name="bonebeast" chance="17" max="4"/>
+	</summons>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Death awaits all!"/>
+		<voice sentence="Doomed be the living!"/>
+		<voice sentence="Death and Decay!"/>
+		<voice sentence="You will endure agony beyond thy death!"/>
+		<voice sentence="Come to me my children!"/>
+		<voice sentence="Pain sweet pain!"/>
+		<voice sentence="Thy living flesh offends me!"/>
+	</voices>
+	<loot>
+		<item id="2148" chance="30000" countmax="80"/><!-- 80 30% gold coin -->
+		<item id="2148" chance="40000" countmax="40"/><!-- 40 40% gold coin -->
+		<item id="2144" chance="5000"/><!-- 5% black pearl -->
+		<item id="2143" chance="2500"/><!-- 2.5% white pearl -->
+		<item id="2178" chance="500"/><!-- 0.5% mind stone -->
+		<item id="2237" chance="20000"/><!-- 20% dirty cape -->
+		<item id="2479" chance="500"/><!-- 0.5% strange helmet -->
+		<item id="2656" chance="100"/><!-- 0.1% blue robe -->
+		<item id="2171" chance="100"/><!-- 0.1% platinum amulet -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2401" chance="60000"/><!-- 60% staff -->
+				<item id="2535" chance="200"/><!-- 0.2% castle shield -->
+				<item id="2175" chance="10000"/><!-- 10% spellbook -->
+				<item id="2214" chance="1000"/><!-- 1% ring of healing -->
+			</inside>
+		</item>
+	</loot>
+</monster>

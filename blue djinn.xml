@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="blue djinn" nameDescription="a blue djinn" race="blood" experience="190" speed="220" manacost="0">
+	<health now="330" max="330"/>
+	<look type="80" corpse="3001"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="0"/>
+		<flag convinceable="0"/>
+		<flag illusionable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="50" attack="30"/>
+		<attack name="fire" chance="50" range="7" min="-45" max="-75">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="djinn electrify" chance="34" range="7" min="-50" max="-90"/>
+		<attack name="lifedrain" chance="25" range="7" min="-55" max="-105">
+			<attribute key="shootEffect" value="death"/>
+		</attack>
+		<attack name="drunk" chance="20" range="7" duration="30000">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="teleport"/>
+		</attack>
+		<attack name="outfit" chance="17" range="7" monster="rabbit" duration="20000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="75">
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Simsalabim"/>
+		<voice sentence="Feel the power of my magic, tiny mortal!"/>
+		<voice sentence="Be careful what you wish for."/>
+		<voice sentence="Wishes can come true."/>
+	</voices>
+	<loot>
+		<item id="2684" chance="25000"/><!-- 25% carrot -->
+		<item id="2148" chance="70000" countmax="50"/><!-- 50 70% gold coin -->
+		<item id="2146" chance="2500" countmax="4"/><!-- 4 2.5% small sapphire -->
+		<item id="2063" chance="7500"/><!-- 7.5% small oil lamp -->
+		<item id="2745" chance="500"/><!-- 0.5% blue rose -->
+		<item id="2663" chance="100"/><!-- 0.1% mystic turban -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="1978" chance="2500"/><!-- 2.5% blue book -->
+			</inside>
+		</item>
+	</loot>
+</monster>

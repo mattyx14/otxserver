@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="frost troll" nameDescription="a frost troll" race="blood" experience="23" speed="140" manacost="300">
+	<health now="55" max="55"/>
+	<look type="53" corpse="2928"/>
+	<targetchange interval="1000" chance="0"/>
+	<targetstrategies nearest="100" health="0" damage="0" random="0"/>
+	<flags>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag summonable="1"/>
+		<flag convinceable="1"/>
+		<flag illusionable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="80"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" skill="19" attack="11"/>
+	</attacks>
+	<defenses armor="7" defense="8">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="1000" chance="5">
+		<voice sentence="Brrrr"/>
+		<voice sentence="Broar!"/>
+	</voices>
+	<loot>
+		<item id="2667" chance="18000"/><!-- 18% fish -->
+		<item id="2148" chance="50000" countmax="12"/><!-- 12 50% gold coin -->
+		<item id="2245" chance="8000"/><!-- 8% twigs -->
+		<item id="2651" chance="12000"/><!-- 12% coat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2389" chance="20000"/><!-- 20% spear -->
+				<item id="2384" chance="15000"/><!-- 15% rapier -->
+				<item id="2382" chance="9000"/><!-- 9% club -->
+				<item id="2512" chance="15000"/><!-- 15% wooden shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>
