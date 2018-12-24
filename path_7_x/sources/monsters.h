@@ -100,6 +100,11 @@ class MonsterType
 		PartyShields_t partyShield;
 		LootMessage_t lootMessage;
 
+		int32_t targetStrategiesNearestPercent;  //code othire
+		int32_t targetStrategiesLowerHPPercent;
+		int32_t targetStrategiesMostDamagePercent;
+		int32_t targetStrategiesRandom;  //hasta aqui llegan los code othire
+
 		int32_t defense, armor, health, healthMin, healthMax, baseSpeed, lookCorpse, corpseUnique, corpseAction,
 			maxSummons, targetDistance, runAwayHealth, conditionImmunities, damageImmunities,
 			lightLevel, lightColor, changeTargetSpeed, changeTargetChance;
