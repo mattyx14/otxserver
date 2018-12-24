@@ -1,5 +1,30 @@
 <?xml version="1.0"?>
 <monsters>
+	<!-- otros-->
+	<monster name="Grim Reaper" file="grim reaper.xml"/>
+	<monster name="Braindeath" file="braindeath.xml"/>
+
+	<!-- POI -->
+	<monster name="Hellfire Fighter" file="poi/hellfire fighter.xml"/>	
+	<monster name="Hellhound" file="poi/hellhound.xml"/>
+	<monster name="Dark Torturer" file="poi/dark torturer.xml"/>
+	<monster name="destroyer" file="poi/destroyer.xml"/>
+	<monster name="Diabolic Imp" file="poi/diabolic imp.xml"/>
+	<monster name="Fury" file="poi/fury.xml"/>
+	<monster name="Hand of Cursed Fate" file="poi/hand of cursed fate.xml"/>
+	<monster name="Defiler" file="poi/defiler.xml"/>
+	<monster name="Son of Verminor" file="poi/son of verminor.xml"/>
+	<monster name="Juggernaut" file="poi/juggernaut.xml"/>
+	<monster name="Nightmare" file="poi/nightmare.xml"/>
+	<monster name="plaguesmith" file="poi/plaguesmith.xml"/>	
+	<monster name="Lost Soul" file="poi/lost soul.xml"/>
+	<monster name="Blightwalker" file="poi/blightwalker.xml"/>
+	<monster name="Phantasm" file="poi/phantasm.xml"/>
+	<monster name="Demon (Goblin)" file="poi/demon (goblin).xml"/>
+	<monster name="Spectre" file="poi/spectre.xml"/>
+	<monster name="Betrayed Wraith" file="poi/betrayed wraith.xml"/>
+	<monster name="Undead Dragon" file="poi/undead dragon.xml"/>
+<!-- MONSTERS 772NORMAL -->
 	<monster name="Amazon" file="amazon.xml"/>
 	<monster name="Ancient Scarab" file="ancient scarab.xml"/>
 	<monster name="Assassin" file="assassin.xml"/>
