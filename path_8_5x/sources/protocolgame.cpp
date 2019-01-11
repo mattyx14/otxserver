@@ -2373,45 +2373,47 @@ void ProtocolGame::sendHouseWindow(uint32_t windowTextId, House*,
 void ProtocolGame::sendOutfitWindow()
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
-	if(!msg)
-		return;
-
-	TRACK_MESSAGE(msg);
-	msg->put<char>(0xC8);
-	AddCreatureOutfit(msg, player, player->getDefaultOutfit(), true);
-
-	std::list<Outfit> outfitList;
-	for(OutfitMap::iterator it = player->outfits.begin(); it != player->outfits.end(); ++it)
+	if(msg)
 	{
-		if(player->canWearOutfit(it->first, it->second.addons))
-			outfitList.push_back(it->second);
-	}
+		TRACK_MESSAGE(msg);
+		msg->put<char>(0xC8);
+		AddCreatureOutfit(msg, player, player->getDefaultOutfit(), true);
 
-	if(outfitList.size())
-	{
-		msg->put<char>((size_t)std::min((size_t)OUTFITS_MAX_NUMBER, outfitList.size()));
-		std::list<Outfit>::iterator it = outfitList.begin();
-		for(int32_t i = 0; it != outfitList.end() && i < OUTFITS_MAX_NUMBER; ++it, ++i)
+		std::vector<Outfit> outfitList;
+		for(OutfitMap::iterator it = player->outfits.begin(); it != player->outfits.end(); ++it)
 		{
-			msg->put<uint16_t>(it->lookType);
-			msg->putString(it->name);
-			if(player->hasCustomFlag(PlayerCustomFlag_CanWearAllAddons))
-				msg->put<char>(0x03);
-			else if(!g_config.getBool(ConfigManager::ADDONS_PREMIUM) || player->isPremium())
-				msg->put<char>(it->addons);
-			else
-				msg->put<char>(0x00);
+			if(player->canWearOutfit(it->first, it->second.addons))
+				outfitList.push_back(it->second);
 		}
-	}
-	else
-	{
-		msg->put<char>(1);
-		msg->put<uint16_t>(player->getDefaultOutfit().lookType);
-		msg->putString("Your outfit");
-		msg->put<char>(player->getDefaultOutfit().lookAddons);
-	}
 
-	player->hasRequestedOutfit(true);
+		if(outfitList.size())
+		{
+			while(outfitList.size() > 24)
+				outfitList.erase((outfitList.begin() + (uint8_t)random_range((uint8_t)0, (uint8_t)(outfitList.size() - 1))));
+
+			msg->put<char>(outfitList.size());
+			for(std::vector<Outfit>::iterator it = outfitList.begin(); it != outfitList.end(); ++it)
+			{
+				msg->put<uint16_t>(it->lookType);
+				msg->putString(it->name);
+				if(player->hasCustomFlag(PlayerCustomFlag_CanWearAllAddons))
+					msg->put<char>(0x03);
+				else if(!g_config.getBool(ConfigManager::ADDONS_PREMIUM) || player->isPremium())
+					msg->put<char>(it->addons);
+				else
+					msg->put<char>(0x00);
+			}
+		}
+		else
+		{
+			msg->put<char>(1);
+			msg->put<uint16_t>(player->getDefaultOutfit().lookType);
+			msg->putString("Your outfit");
+			msg->put<char>(player->getDefaultOutfit().lookAddons);
+		}
+
+		player->hasRequestedOutfit(true);
+	}
 }
 
 void ProtocolGame::sendQuests()
