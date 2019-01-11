@@ -8,13 +8,12 @@ function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, a
 	end
 
 	if(item.itemid == TILE_SNOW) then
-		doTransformItem(item.uid, TILE_FOOTPRINT_I)
-		doDecayItem(item.uid)
+		doDecayItem(doCreateItem(TILE_FOOTPRINT_I, position))
 	elseif(item.itemid == TILE_FOOTPRINT_I) then
 		doTransformItem(item.uid, TILE_FOOTPRINT_II)
 		doDecayItem(item.uid)
 	else
-		doTransformItem(item.uid, TILE_FOOTPRINT_I)
+		doDecayItem(doCreateItem(TILE_FOOTPRINT_I, position))
 	end
 
 	return true
