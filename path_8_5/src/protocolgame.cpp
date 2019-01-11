@@ -1969,7 +1969,7 @@ void ProtocolGame::sendOutfitWindow()
 		}
 
 		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
-		if (protocolOutfits.size() == 26) { // Game client doesn't allow more than 26 outfits
+		if (protocolOutfits.size() == 24) { // Game client doesn't allow more than 26 outfits
 			break;
 		}
 	}
