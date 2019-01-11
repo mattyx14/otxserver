@@ -1952,12 +1952,6 @@ void ProtocolGame::sendOutfitWindow()
 	if (player->isAccessPlayer()) {
 		static const std::string gamemasterOutfitName = "Gamemaster";
 		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0);
-
-		static const std::string gmCustomerSupport = "CS";
-		protocolOutfits.emplace_back(gmCustomerSupport, 266, 0);
-
-		static const std::string communityManager = "CM";
-		protocolOutfits.emplace_back(communityManager, 302, 0);
 	}
 
 	const auto& outfits = Outfits::getInstance().getOutfits(player->getSex());
@@ -1969,7 +1963,7 @@ void ProtocolGame::sendOutfitWindow()
 		}
 
 		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
-		if (protocolOutfits.size() == 26) { // Game client doesn't allow more than 26 outfits
+		if (protocolOutfits.size() == 25) { // Game client doesn't allow more than 26 outfits
 			break;
 		}
 	}
