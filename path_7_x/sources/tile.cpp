@@ -646,9 +646,6 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 	}
 	else if(const Item* item = thing->getItem())
 	{
-		if(isFull())
-			return RET_TILEISFULL;
-
 #ifdef __DEBUG__
 		if(thing->getParent() == NULL && !hasBitSet(FLAG_NOLIMIT, flags))
 			std::clog << "[Notice - Tile::__queryAdd] thing->getParent() == NULL" << std::endl;
@@ -656,6 +653,9 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 #endif
 		if(hasBitSet(FLAG_NOLIMIT, flags))
 			return RET_NOERROR;
+
+		if(isFull())
+			return RET_TILEISFULL;  // se agrego porque asi estaba en tfs arreglo gm invisible
 
 		bool isHangable = item->isHangable();
 		if(!ground && !isHangable)
@@ -1296,12 +1296,7 @@ uint32_t Tile::getHeight() const
 	return height;
 }
 
-int32_t Tile::getClientIndexOfThing(const Player*, const Thing* thing) const
-{
-	return __getIndexOfThing(thing);
-}
-
-int32_t Tile::__getIndexOfThing(const Thing* thing) const
+int32_t Tile::getClientIndexOfThing(const Player* player, const Thing* thing) const     //posible arreglo gm invisible
 {
 	if(ground && ground == thing)
 		return 0;
@@ -1328,17 +1323,67 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 
 	if(const CreatureVector* creatures = getCreatures())
 	{
-		if(thing->getCreature())
+		for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
 		{
-			for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
+			if((*cit) == thing || player->canSeeCreature(*cit)) {
+				++n;
+			}
+			if((*cit) == thing)
+				return n;
+		}
+	}
+
+	if(items)
+	{
+		if(thing && thing->getItem())
+		{
+			for(ItemVector::const_iterator it = items->getBeginDownItem(); it != items->getEndDownItem(); ++it)
 			{
 				++n;
-				if((*cit) == thing)
+				if((*it) == thing)
 					return n;
 			}
 		}
 		else
-			n += creatures->size();
+			n += items->getDownItemCount();
+	}
+
+	return -1;
+}
+
+int32_t Tile::__getIndexOfThing(const Thing* thing) const   //posible arreglo gm invisible
+{
+	if(ground && ground == thing)
+		return 0;
+
+	int32_t n = 0;
+	if(!ground)
+		n--;
+
+	const TileItemVector* items = getItemList();
+	if(items)
+	{
+		if(thing && thing->getItem())
+		{
+			for(ItemVector::const_iterator it = items->getBeginTopItem(); it != items->getEndTopItem(); ++it)
+			{
+				++n;
+				if((*it) == thing)
+					return n;
+			}
+		}
+		else
+			n += items->getTopItemCount();
+	}
+
+	if(const CreatureVector* creatures = getCreatures())
+	{
+		for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
+		{
+			++n;
+			if((*cit) == thing)
+				return n;
+		}
 	}
 
 	if(items)
