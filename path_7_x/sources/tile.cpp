@@ -1795,8 +1795,3 @@ void Tile::updateTileFlags(Item* item, bool remove)
 			resetFlag(TILESTATE_IMMOVABLENOFIELDBLOCKPATH);
 	}
 }
-
-bool Tile::isMoveableBlocking() const
-{
-	return !ground || hasFlag(TILESTATE_BLOCKSOLID);
-}
