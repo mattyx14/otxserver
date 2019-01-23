@@ -495,6 +495,7 @@ bool Monsters::deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, co
 				combat->setParam(COMBAT_PARAM_AGGRESSIVE, 0);
 			} else {
 				conditionType = CONDITION_PARALYZE;
+				combat->setParam(COMBAT_PARAM_DISPEL, CONDITION_HASTE);
 			}
 
 			ConditionSpeed* condition = static_cast<ConditionSpeed*>(Condition::createCondition(CONDITIONID_COMBAT, conditionType, duration, 0));
