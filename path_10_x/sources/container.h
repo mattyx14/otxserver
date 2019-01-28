@@ -97,6 +97,8 @@ class Container : public Item, public Cylinder
 		ContainerIterator begin() const;
 		ContainerIterator end() const;
 
+		const ItemList& getItemList() const {return itemlist;}
+
 		ItemList::const_iterator getItems() const {return itemlist.begin();}
 		ItemList::const_iterator getEnd() const {return itemlist.end();}
 
