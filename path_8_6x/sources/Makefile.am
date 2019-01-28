@@ -1,6 +1,6 @@
 noinst_PROGRAMS = theotxserver
 
-CXXFLAGS = -pipe -Ofast -march=native -DNDEBUG
+CXXFLAGS = -pipe -Ofast -march=native -DNDEBUG -std=c++11
 AM_CXXFLAGS = $(XML_CPPFLAGS) $(OTSERV_FLAGS) $(LUA_CFLAGS) $(DEBUG_FLAGS)\
 $(MYSQL_FLAGS) $(MYSQLPP_FLAGS) $(SQLITE_FLAGS) $(PGSQL_FLAGS) $(PROFILER_FLAGS)\
 $(OPTIONAL_FLAGS) -D_THREAD_SAFE -D_REENTRANT -Wall -Wextra -Wno-strict-aliasing -Wno-unused-parameter -Wno-array-bounds -pthread
