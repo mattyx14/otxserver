@@ -432,11 +432,11 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 	{
 		//try find a suitable item to stack with
 		uint32_t n = 0;
-		for(Item* listItem : itemlist)
+		for(ItemList::reverse_iterator cit = itemlist.rbegin(); cit != itemlist.rend(); ++cit, --n)
 		{
-			if(listItem != item && listItem->getID() == item->getID() && listItem->getItemCount() < 100)
+			if((*cit) != item && (*cit)->getID() == item->getID() && (*cit)->getItemCount() < 100)
 			{
-				*destItem = listItem;
+				*destItem = (*cit);
 				index = n;
 				return this;
 			}
