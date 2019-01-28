@@ -140,7 +140,6 @@ std::string Status::getStatusString(bool sendPlayers) const
 	xmlAddChild(root, p);
 
 	p = xmlNewNode(NULL,(const xmlChar*)"players");
-
 	// sprintf(buffer, "%d", g_game.getPlayersOnline());
 	uint32_t real = 0;
 	std::map<uint32_t, uint32_t> listIP;
@@ -162,7 +161,6 @@ std::string Status::getStatusString(bool sendPlayers) const
 		}
 	}
 	sprintf(buffer, "%d", real);
-
 	xmlSetProp(p, (const xmlChar*)"online", (const xmlChar*)buffer);
 	sprintf(buffer, "%d", (int32_t)g_config.getNumber(ConfigManager::MAX_PLAYERS));
 	xmlSetProp(p, (const xmlChar*)"max", (const xmlChar*)buffer);
