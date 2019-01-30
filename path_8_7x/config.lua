@@ -172,7 +172,7 @@
 		highscoreDisplayPlayers = 10
 		updateHighscoresAfterMinutes = 60
 		exhaustionNPC = true
-		exhaustionInSecondsNPC = 0.5
+		exhaustionInSecondsNPC = 1
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.

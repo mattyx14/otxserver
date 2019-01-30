@@ -1208,10 +1208,6 @@ if(Modules == nil) then
 		end
 
 		local subType, count = shopItem.subType or 0, amount
-		if(inBackpacks and isItemStackable(itemid)) then
-			amount = amount * 100 / math.max(1, subType)
-		end
-
 		local backpack, backpackPrice, totalCost = 1988, 20, amount * shopItem.buy
 		if(inBackpacks) then
 			totalCost = totalCost + (math.max(1, math.floor(count / getContainerCapById(backpack))) * backpackPrice)
