@@ -184,8 +184,7 @@
 		versionMsg = "Only clients with protocol 8.60 allowed!"
 
 		-- ConfigSpells
-		-- Note: enableCooldowns = true, if you requre this feature work (noAttackHealingSimultaneus)
-		enableCooldowns = true
+		-- Note: set noAttackHealingSimultaneus to true if you want the attack and healing spells to have the same exhausted
 		noAttackHealingSimultaneus = false
 
 	-- Connection config
