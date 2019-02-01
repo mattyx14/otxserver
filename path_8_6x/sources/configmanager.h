@@ -331,7 +331,6 @@ class ConfigManager
 			USE_RUNE_REQUIREMENTS,
 			CLASSIC_EQUIPMENT_SLOTS,
 			NO_ATTACKHEALING_SIMULTANEUS,
-			ENABLE_COOLDOWNS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

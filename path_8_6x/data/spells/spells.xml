@@ -3,6 +3,7 @@
 	<!-- INFO
 		Function: icon
 		Are not supported for it not compiled on spells.cpp
+		To use the grouped exhausted add the following tag: exhaustedGroup="type"(type being: attack, heal, support or special) to the desired spells
 	 -->
 
 	<!-- Attack Runes -->
