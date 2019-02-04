@@ -65,7 +65,7 @@
 		<item name="elven amulet" chance="1999" />
 		<item name="blank rune" chance="18000" />
 		<item name="arrow" countmax="3" chance="6000" />
-		<item name="inkwell" chance="1000" />
+		<item id="2600" chance="1000" /><!-- inkwell -->
 		<item name="sandals" chance="950" />
 		<item name="green tunic" chance="7000" />
 		<item name="melon" chance="22000" />
