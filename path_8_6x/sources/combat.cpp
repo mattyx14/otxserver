@@ -1197,12 +1197,15 @@ bool CombatArea::getList(const Position& centerPos, const Position& targetPos, s
 {
 	Tile* tile = g_game.getTile(targetPos);
 	
-	if (tile->hasProperty(BLOCKPROJECTILE))
-		return false;
-	if (tile->hasFlag(TILESTATE_FLOORCHANGE))
-		return false;
-	if (tile->getTeleportItem())
-		return false;
+	if (tile)
+	{
+		if (tile->hasProperty(BLOCKPROJECTILE))
+			return false;
+		if (tile->hasFlag(TILESTATE_FLOORCHANGE))
+			return false;
+		if (tile->getTeleportItem()) 
+			return false;
+	}
 	
 	const MatrixArea* area = getArea(centerPos, targetPos);
 	if(!area)
