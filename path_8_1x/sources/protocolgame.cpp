@@ -442,6 +442,11 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	bool gamemaster = (msg.get<char>() != (char)0);
 	uint32_t name = msg.get<uint32_t>();
 	std::string character = msg.getString(), password = msg.getString();
+	if(character.empty() || !IOLoginData::getInstance()->playerExists(character))
+	{
+		disconnectClient(0x0A, "This character does not exist.");
+		return;
+	}
 
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
