@@ -171,8 +171,8 @@
 		classicDamageOnWeapons = true
 
 		-- ConfigSpells
-		noAttackHealingSimultaneus = true
-		enableCooldowns = true
+		-- Note: set noAttackHealingSimultaneus to true if you want the attack and healing spells to have the same exhausted
+		noAttackHealingSimultaneus = false
 
 	-- Connection config
 	loginTries = 20

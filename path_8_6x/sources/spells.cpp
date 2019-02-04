@@ -593,18 +593,21 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(readXMLString(p, "aggressive", strValue))
 		isAggressive = booleanString(strValue);
 
-	if (readXMLString(p, "exhaustedGroup", strValue))
+	if(readXMLString(p, "exhaustedGroup", strValue))
 	{
 		std::string tmpStrValue = asLowerCaseString(strValue);
-		if (tmpStrValue == "attack" || tmpStrValue == "attacking" || tmpStrValue == "heal" || tmpStrValue == "healing" || tmpStrValue == "support"
+		if(tmpStrValue == "attack" || tmpStrValue == "attacking" || tmpStrValue == "heal" || tmpStrValue == "healing" || tmpStrValue == "support"
 			|| tmpStrValue == "supporting" || tmpStrValue == "special" || tmpStrValue == "ultimate")
 				exhaustedGroup = tmpStrValue;
 		else
 			std::clog << "[Warning - Spell::configureSpell] exhaustedGroup \"" << strValue << "\" does not exist." << std::endl;
-	}else {
-		if (!g_config.getBool(ConfigManager::NO_ATTACKHEALING_SIMULTANEUS))
+	}
+	else
+	{
+		if(!g_config.getBool(ConfigManager::NO_ATTACKHEALING_SIMULTANEUS))
 			exhaustedGroup = isAggressive ? "attack" : "heal";
 	}
+
 	std::string error;
 	for(xmlNodePtr vocationNode = p->children; vocationNode; vocationNode = vocationNode->next)
 	{
@@ -617,24 +620,24 @@ bool Spell::configureSpell(xmlNodePtr p)
 
 bool Spell::checkSpell(Player* player) const
 {
-	if (player->hasFlag(PlayerFlag_CannotUseSpells))
+	if(player->hasFlag(PlayerFlag_CannotUseSpells))
 		return false;
 
-	if (player->hasFlag(PlayerFlag_IgnoreSpellCheck))
+	if(player->hasFlag(PlayerFlag_IgnoreSpellCheck))
 		return true;
 
-	if (!isEnabled())
+	if(!isEnabled())
 		return false;
 
-	if (isAggressive)
+	if(isAggressive)
 	{
-		if (!player->hasFlag(PlayerFlag_IgnoreProtectionZone) && player->getZone() == ZONE_PROTECTION)
+		if(!player->hasFlag(PlayerFlag_IgnoreProtectionZone) && player->getZone() == ZONE_PROTECTION)
 		{
 			player->sendCancelMessage(RET_ACTIONNOTPERMITTEDINPROTECTIONZONE);
 			return false;
 		}
 
-		if (player->checkLoginDelay())
+		if(player->checkLoginDelay())
 		{
 			player->sendCancelMessage(RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN);
 			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -642,57 +645,57 @@ bool Spell::checkSpell(Player* player) const
 		}
 	}
 
-	if (!player->hasFlag(PlayerFlag_HasNoExhaustion))
+	if(!player->hasFlag(PlayerFlag_HasNoExhaustion))
 	{
-		if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_NONE) && exhaustedGroup == "none")
+		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_NONE) && exhaustedGroup == "none")
 		{
 			player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-			if (isInstant())
+			if(isInstant())
 				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 
 			return false;
 		}
-		if (g_config.getBool(ConfigManager::NO_ATTACKHEALING_SIMULTANEUS))
+		if(g_config.getBool(ConfigManager::NO_ATTACKHEALING_SIMULTANEUS))
 		{
-			if ((player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_ATTACK) && (exhaustedGroup == "heal" || exhaustedGroup == "healing")) ||
+			if((player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_ATTACK) && (exhaustedGroup == "heal" || exhaustedGroup == "healing")) ||
 				(player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_HEALING) && (exhaustedGroup == "attack" || exhaustedGroup == "attack")))
 			{
 				player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-				if (isInstant())
+				if(isInstant())
 					g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 
 				return false;
 			}
 		}
 
-		if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_ATTACK) && (exhaustedGroup == "attack" || exhaustedGroup == "attacking" ))
+		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_ATTACK) && (exhaustedGroup == "attack" || exhaustedGroup == "attacking" ))
 		{
 			player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-			if (isInstant())
+			if(isInstant())
 				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 
 			return false;
 		}
-		if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_HEALING) && (exhaustedGroup == "heal" || exhaustedGroup == "healing"))
+		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_HEALING) && (exhaustedGroup == "heal" || exhaustedGroup == "healing"))
 		{
 			player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-			if (isInstant())
+			if(isInstant())
 				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 
 			return false;
 		}
-		if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_SUPPORT) && (exhaustedGroup == "support" || exhaustedGroup == "supporting"))
+		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_SUPPORT) && (exhaustedGroup == "support" || exhaustedGroup == "supporting"))
 		{
 			player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-			if (isInstant())
+			if(isInstant())
 				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 
 			return false;
 		}
-		if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_SPECIAL) && (exhaustedGroup == "special" || exhaustedGroup == "ultimate"))
+		if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_SPELLGROUP_SPECIAL) && (exhaustedGroup == "special" || exhaustedGroup == "ultimate"))
 		{
 			player->sendCancelMessage(RET_YOUAREEXHAUSTED);
-			if (isInstant())
+			if(isInstant())
 				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 
 			return false;
@@ -700,7 +703,7 @@ bool Spell::checkSpell(Player* player) const
 
 	}
 
-	if (isPremium() && !player->isPremium())
+	if(isPremium() && !player->isPremium())
 	{
 		player->sendCancelMessage(RET_YOUNEEDPREMIUMACCOUNT);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1067,18 +1070,20 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 
 void Spell::postSpell(Player* player) const
 {
-	if (!player->hasFlag(PlayerFlag_HasNoExhaustion) && exhaustion > 0) {
-			if (exhaustedGroup == "none")
-				player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_NONE);
-			else if (exhaustedGroup == "attack" || exhaustedGroup == "attacking")
-				player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_ATTACK);
-			else if (exhaustedGroup == "heal" || exhaustedGroup == "healing")
-				player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_HEALING);
-			else if (exhaustedGroup == "support" || exhaustedGroup == "supporting")
-				player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_SUPPORT);
-			else if (exhaustedGroup == "special" || exhaustedGroup == "ultimate")
-				player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_SPECIAL);
+	if(!player->hasFlag(PlayerFlag_HasNoExhaustion) && exhaustion > 0)
+	{
+		if(exhaustedGroup == "none")
+			player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_NONE);
+		else if(exhaustedGroup == "attack" || exhaustedGroup == "attacking")
+			player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_ATTACK);
+		else if(exhaustedGroup == "heal" || exhaustedGroup == "healing")
+			player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_HEALING);
+		else if(exhaustedGroup == "support" || exhaustedGroup == "supporting")
+			player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_SUPPORT);
+		else if(exhaustedGroup == "special" || exhaustedGroup == "ultimate")
+			player->addExhaust(exhaustion, EXHAUST_SPELLGROUP_SPECIAL);
 	}
+
 	if(isAggressive && !player->hasFlag(PlayerFlag_NotGainInFight))
 		player->addInFightTicks(false);
 

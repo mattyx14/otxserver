@@ -162,6 +162,7 @@ class Spell : public BaseSpell
 		bool learnable;
 		bool enabled;
 
+		std::string exhaustedGroup;
 		int32_t mana;
 		int32_t manaPercent;
 		int32_t soul;

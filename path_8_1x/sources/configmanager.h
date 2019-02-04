@@ -318,6 +318,7 @@ class ConfigManager
 			TILE_HEIGHT_BLOCK,
 			RUNES_HIT_TOP_CREATURE,
 			CLASSIC_EQUIPMENT_SLOTS,
+			NO_ATTACKHEALING_SIMULTANEUS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

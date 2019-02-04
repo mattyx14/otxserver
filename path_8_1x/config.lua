@@ -183,6 +183,10 @@
 		versionMax = 811
 		versionMsg = "Only clients with protocol 8.00/11 allowed!"
 
+		-- ConfigSpells
+		-- Note: set noAttackHealingSimultaneus to true if you want the attack and healing spells to have the same exhausted
+		noAttackHealingSimultaneus = false
+
 	-- Connection config
 	loginTries = 20
 	retryTimeout = 5 * 1000

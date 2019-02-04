@@ -168,6 +168,7 @@ class Spell : public BaseSpell
 		bool learnable;
 		bool enabled;
 
+		std::string exhaustedGroup;
 		int32_t mana;
 		int32_t manaPercent;
 		#ifdef _MULTIPLATFORM76
