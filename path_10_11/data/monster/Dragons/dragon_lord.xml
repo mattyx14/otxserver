@@ -49,7 +49,7 @@
 		<voice sentence="YOU WILL BURN!" yell="1" />
 	</voices>
 	<loot>
-		<item name="gemmed book" chance="9000" />
+		<item id="1976" chance="9000" /> <!-- book (gemmed) -->
 		<item name="golden mug" chance="3190" />
 		<item name="small sapphire" chance="5300" />
 		<item name="gold coin" countmax="100" chance="33750" />
