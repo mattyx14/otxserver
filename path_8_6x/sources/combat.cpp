@@ -89,6 +89,7 @@ bool Combat::getMinMaxValues(Creature* creature, Creature* target, CombatParams&
 
 				case FORMULA_SKILL:
 				{
+					bool crit = false;
 					Item* item = player->getWeapon(false);
 					if(const Weapon* weapon = g_weapons->getWeapon(item))
 					{
@@ -99,14 +100,18 @@ bool Combat::getMinMaxValues(Creature* creature, Creature* target, CombatParams&
 							_params.element.damage = random_range((int32_t)0, (int32_t)(_params.element.damage * maxa + maxb), DISTRO_NORMAL);
 						}
 
-						max = (int32_t)(weapon->getWeaponDamage(player, target, item, true) * maxa + maxb);
+						max = (int32_t)(weapon->getWeaponDamage(player, target, item, true, &crit) * maxa + maxb);
 						if(params.useCharges && item->hasCharges() && g_config.getBool(ConfigManager::REMOVE_WEAPON_CHARGES))
 							g_game.transformItem(item, item->getID(), std::max((int32_t)0, ((int32_t)item->getCharges()) - 1));
 					}
 					else
 						max = (int32_t)maxb;
 
-					min = (int32_t)minb;
+					if (crit)
+						min = max;
+					else
+						min = (int32_t)minb;
+
 					if(maxc && std::abs(max) < std::abs(maxc))
 						max = maxc;
 
