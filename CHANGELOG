@@ -43,7 +43,7 @@
 				https://github.com/EvilHero90/forgottenserver/
 
 	DEVELOPMENT STATUS
-		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.9 :: Version "OpenTibia"
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.12 :: Version "OpenTibia"
 ]
 
 [ BUGS AND MISSING FEATURES
@@ -53,7 +53,7 @@
 		- Add helpers Party/Guilds
 ]
 
-[ OTX Server 2.9 :: Version "OpenTibia"
+[ OTX Server 2.12 :: Version "OpenTibia"
 	- Added feature criticalhit to weapons (8.6-TFACE)
 	- Added passive flag to monsters (8.6-TFACE)
 	- Added config noAttackHealingSimultaneus 8.6
@@ -65,12 +65,12 @@
 	- Fix #102, #104, #194, #210, #212, #286, #337(pick), #347,
 		#386, #388(KOLISAO), #390, #402(Reason184), #403,
 		#408(Reason184), #412(Reason184), #410(Reason184), #416, (Reason184)
-		#421, #424(Reason184), #428(Reason184), #429(Reason184)
+		#421, #424(Reason184), #428(Reason184), #429(Reason184), #435(Reason184)
 	- Update statusOnline 0.0.0.0 no counter
 ]
 
 [ OTX Server 2.8 :: Version "LEZICK"
-	- Dropped version 2.7 and changed to 2.8
+	- Dropped version 2.7/2.8/2.9 and changed to 2.12
 ]
 
 [ OTX Server 2.6 :: Version "SCARETALE"
