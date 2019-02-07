@@ -408,8 +408,8 @@ bool Weapon::internalUseWeapon(Player* player, Item* item, Creature* target, int
 		CombatParams _params = params;
 		_params.element.type = item->getElementType();
 		_params.element.damage = getWeaponElementDamage(player, item);
-
-		int32_t damage = (getWeaponDamage(player, target, item) * modifier) / 100;
+		bool isCritical = false;
+		int32_t damage = (getWeaponDamage(player, target, item, isCritical) * modifier) / 100;
 		Combat::doCombatHealth(player, target, damage, damage, _params);
 	}
 
@@ -624,7 +624,7 @@ bool WeaponMelee::getSkillType(const Player* player, const Item* item,
 	return false;
 }
 
-int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, const Item* item, bool maxDamage /*= false*/) const
+int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, const Item* item, bool& isCritical, bool maxDamage /*= false*/) const
 {
 	int32_t attackSkill = player->getWeaponSkill(item), attackValue = std::max((int32_t)0,
 		(int32_t(item->getAttack() + item->getExtraAttack()) - item->getElementDamage()));
@@ -633,6 +633,7 @@ int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, cons
 	double maxValue = Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor);
 	if(player->getCriticalHitChance() + g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE) >= random_range(1, 100))
 	{
+		isCritical = true;
 		maxDamage = true;
 		maxValue *= g_config.getDouble(ConfigManager::CRITICAL_HIT_MUL);
 		player->sendCritical();
@@ -883,7 +884,7 @@ void WeaponDistance::onUsedAmmo(Player* player, Item* item, Tile* destTile) cons
 		Weapon::onUsedAmmo(player, item, destTile);
 }
 
-int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* target, const Item* item, bool maxDamage /*= false*/) const
+int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* target, const Item* item, bool& isCritical, bool maxDamage /*= false*/) const
 {
 	int32_t attackValue = attack;
 	if(item->getWeaponType() == WEAPON_AMMO)
@@ -898,6 +899,7 @@ int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* ta
 	double maxValue = Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor);
 	if(player->getCriticalHitChance() + g_config.getNumber(ConfigManager::CRITICAL_HIT_CHANCE) >= random_range(1, 100))
 	{
+		isCritical = true;
 		maxDamage = true;
 		maxValue *= g_config.getDouble(ConfigManager::CRITICAL_HIT_MUL);
 		player->sendCritical();
@@ -979,7 +981,7 @@ bool WeaponWand::configureWeapon(const ItemType& it)
 	return Weapon::configureWeapon(it);
 }
 
-int32_t WeaponWand::getWeaponDamage(const Player* player, const Creature*, const Item*, bool maxDamage /* = false*/) const
+int32_t WeaponWand::getWeaponDamage(const Player* player, const Creature*, const Item*, bool& isCritical, bool maxDamage /* = false*/) const
 {
 	float multiplier = 1.0f;
 	if(Vocation* vocation = player->getVocation())
