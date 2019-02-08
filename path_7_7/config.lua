@@ -2,14 +2,22 @@
 -- NOTE: valid values for worldType are: "pvp", "no-pvp" and "pvp-enforced"
 worldType = "pvp"
 protectionLevel = 1
-killsToRedSkull = 3
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
-timeToDecreaseFrags = 24 * 60 * 60 * 1000
-whiteSkullTime = 15 * 60 * 1000
 stairJumpExhaustion = 2 * 1000
 experienceByKillingPlayers = false
 expFromPlayersLevelRange = 75
+
+-- Skull System
+banLength = 30 * 24 * 60 * 60
+whiteSkullTime = 15 * 60
+redSkullTime = 30 * 24 * 60 * 60
+killsDayRedSkull = 3
+killsWeekRedSkull = 5
+killsMonthRedSkull = 10
+killsDayBanishment = 6
+killsWeekBanishment = 10
+killsMonthBanishment = 20
 
 -- Connection Config
 -- NOTE: maxPlayers set to 0 means no limit
@@ -74,6 +82,11 @@ displayLootMessage = false
 UHTrap = true
 heightStackBlock = true
 houseAntiTrash = false
+	-- Character Rooking
+	-- Level threshold is the level requirement to teleport players back to newbie town
+	teleportNewbies = true
+	newbieTownId = 11
+	newbieLevelThreshold = 5
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml

@@ -88,14 +88,6 @@ bool ChatChannel::addUser(Player& player)
 		return false;
 	}
 
-	// TODO: Move to script when guild channels can be scripted
-	if (id == CHANNEL_GUILD) {
-		Guild* guild = player.getGuild();
-		if (guild && !guild->getMotd().empty()) {
-			g_scheduler.addEvent(createSchedulerTask(150, std::bind(&Game::sendGuildMotd, &g_game, player.getID())));
-		}
-	}
-
 	users[player.getID()] = &player;
 	return true;
 }
@@ -111,13 +103,6 @@ bool ChatChannel::removeUser(const Player& player)
 
 	executeOnLeaveEvent(player);
 	return true;
-}
-
-void ChatChannel::sendToAll(const std::string& message, SpeakClasses type) const
-{
-	for (const auto& it : users) {
-		it.second->sendChannelMessage("", message, type, id);
-	}
 }
 
 bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, const std::string& text)

@@ -615,7 +615,7 @@ bool Player::getStorageValue(const uint32_t key, int32_t& value) const
 {
 	auto it = storageMap.find(key);
 	if (it == storageMap.end()) {
-		value = -1;
+		value = 0;
 		return false;
 	}
 
@@ -1303,7 +1303,7 @@ void Player::onThink(uint32_t interval)
 	if (!getTile()->hasFlag(TILESTATE_NOLOGOUT) && !isAccessPlayer()) {
 		idleTime += interval;
 		const int32_t kickAfterMinutes = g_config.getNumber(ConfigManager::KICK_AFTER_MINUTES);
-		if (idleTime > (kickAfterMinutes * 60000) + 60000) {
+		if ((!pzLocked && OTSYS_TIME() - lastPong >= 60000) || idleTime > (kickAfterMinutes * 60000) + 60000) {
 			kickPlayer(true);
 		} else if (client && idleTime == 60000 * kickAfterMinutes) {
 			std::ostringstream ss;
@@ -1313,7 +1313,7 @@ void Player::onThink(uint32_t interval)
 	}
 
 	if (g_game.getWorldType() != WORLD_TYPE_PVP_ENFORCED) {
-		checkSkullTicks(interval);
+		checkSkullTicks();
 	}
 
 	addOfflineTrainingTime(interval);
@@ -1842,9 +1842,7 @@ void Player::death(Creature* lastHitCreature)
 		if (expLoss != 0) {
 			uint32_t oldLevel = level;
 
-			if (vocation->getId() == VOCATION_NONE || level > 7) {
-				experience -= expLoss;
-			}
+			experience -= expLoss;
 
 			while (level > 1 && experience < Player::getExpForLevel(level)) {
 				--level;
@@ -1870,7 +1868,7 @@ void Player::death(Creature* lastHitCreature)
 
 		std::bitset<6> bitset(blessings);
 		if (bitset[5]) {
-			if (lastHitPlayer) {
+			if (Player::lastHitIsPlayer(lastHitCreature)) {
 				bitset.reset(5);
 				blessings = bitset.to_ulong();
 			} else {
@@ -1897,6 +1895,54 @@ void Player::death(Creature* lastHitCreature)
 				delete condition;
 			} else {
 				++it;
+			}
+		}
+
+		// Teleport newbies to newbie island
+		if (g_config.getBoolean(ConfigManager::TELEPORT_NEWBIES)) {
+			if (getVocationId() != VOCATION_NONE && level <= static_cast<uint32_t>(g_config.getNumber(ConfigManager::NEWBIE_LEVEL_THRESHOLD))) {
+				Town* newbieTown = g_game.map.towns.getTown(g_config.getNumber(ConfigManager::NEWBIE_TOWN));
+				if (newbieTown) {
+					// Restart stats
+					level = 1;
+					experience = 0;
+					levelPercent = 0;
+					capacity = 400;
+					health = 150;
+					healthMax = 150;
+					mana = 0;
+					manaMax = 0;
+					magLevel = 0;
+					magLevelPercent = 0;
+					manaSpent = 0;
+					setVocation(0);
+
+					// Restart skills
+					for (uint8_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) { //for each skill
+						skills[i].level = 10;
+						skills[i].tries = 0;
+						skills[i].percent = 0;
+					}
+
+					// Restart town
+					setTown(newbieTown);
+					loginPosition = getTemplePosition();
+
+					// Restart first items
+					lastLoginSaved = 0;
+					lastLogout = 0;
+
+					// Restart items
+					for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; slot++)
+					{
+						Item* item = inventory[slot];
+						if (item) {
+							g_game.internalRemoveItem(item, item->getItemCount());
+						}
+					}
+				} else {
+					std::cout << "[Warning - Player:death] Newbie teletransportation is enabled, newbie town does not exist." << std::endl;
+				}
 			}
 		}
 	} else {
@@ -2032,7 +2078,7 @@ bool Player::removeVIP(uint32_t vipGuid)
 
 bool Player::addVIP(uint32_t vipGuid, const std::string& vipName, bool online)
 {
-	if (VIPList.size() >= getMaxVIPEntries() || VIPList.size() == 200) { // max number of buddies is 200 in 9.53
+	if (VIPList.size() >= getMaxVIPEntries() || VIPList.size() == 100) { // max number of buddies is 100 in 7.6
 		sendTextMessage(MESSAGE_STATUS_SMALL, "You cannot add more buddies.");
 		return false;
 	}
@@ -2052,7 +2098,7 @@ bool Player::addVIP(uint32_t vipGuid, const std::string& vipName, bool online)
 
 bool Player::addVIPInternal(uint32_t vipGuid)
 {
-	if (VIPList.size() >= getMaxVIPEntries() || VIPList.size() == 200) { // max number of buddies is 200 in 9.53
+	if (VIPList.size() >= getMaxVIPEntries() || VIPList.size() == 100) { // max number of buddies is 100 in 7.6
 		return false;
 	}
 
@@ -2883,6 +2929,51 @@ void Player::internalAddThing(uint32_t index, Thing* thing)
 	}
 }
 
+uint32_t Player::checkPlayerKilling()
+{
+	time_t today = std::time(nullptr);
+	uint32_t lastDay = 0;
+	uint32_t lastWeek = 0;
+	uint32_t lastMonth = 0;
+	uint64_t egibleMurders = 0;
+
+	time_t dayTimestamp = today - (24 * 60 * 60);
+	time_t weekTimestamp = today - (7 * 24 * 60 * 60);
+	time_t monthTimestamp = today - (30 * 24 * 60 * 60);
+
+	for (time_t currentMurderTimestamp : murderTimeStamps) {
+		if (currentMurderTimestamp > dayTimestamp) {
+			lastDay++;
+		}
+
+		if (currentMurderTimestamp > weekTimestamp) {
+			lastWeek++;
+		}
+
+		egibleMurders = lastMonth + 1;
+
+		if (currentMurderTimestamp <= monthTimestamp) {
+			egibleMurders = lastMonth;
+		}
+
+		lastMonth = egibleMurders;
+	}
+
+	if (lastDay >= g_config.getNumber(ConfigManager::KILLS_DAY_RED_SKULL) ||
+		lastWeek >= g_config.getNumber(ConfigManager::KILLS_WEEK_RED_SKULL) ||
+		lastMonth >= g_config.getNumber(ConfigManager::KILLS_MONTH_RED_SKULL)) {
+		return 1; // red skull!
+	}
+
+	if (lastDay >= g_config.getNumber(ConfigManager::KILLS_DAY_BANISHMENT) ||
+		lastWeek >= g_config.getNumber(ConfigManager::KILLS_WEEK_BANISHMENT) ||
+		lastMonth >= g_config.getNumber(ConfigManager::KILLS_MONTH_BANISHMENT)) {
+		return 2; // banishment!
+	}
+
+	return 0;
+}
+
 bool Player::setFollowCreature(Creature* creature)
 {
 	if (!Creature::setFollowCreature(creature)) {
@@ -3472,25 +3563,48 @@ void Player::addUnjustifiedDead(const Player* attacked)
 		return;
 	}
 
+	// current unjustified kill!
+	murderTimeStamps.push_back(std::time(nullptr));
+
 	sendTextMessage(MESSAGE_STATUS_WARNING, "Warning! The murder of " + attacked->getName() + " was not justified.");
 
-	skullTicks += g_config.getNumber(ConfigManager::FRAG_TIME);
+	if (playerKillerEnd == 0) {
+		// white skull time, it only sets on first kill!
+		playerKillerEnd = std::time(nullptr) + g_config.getNumber(ConfigManager::WHITE_SKULL_TIME);
+	}
 
-	if (getSkull() != SKULL_RED && g_config.getNumber(ConfigManager::KILLS_TO_RED) != 0 && skullTicks > (g_config.getNumber(ConfigManager::KILLS_TO_RED) - 1) * static_cast<int64_t>(g_config.getNumber(ConfigManager::FRAG_TIME))) {
+	uint32_t murderResult = checkPlayerKilling();
+	if (murderResult >= 1) {
+		// red skull player
+		playerKillerEnd = std::time(nullptr) + g_config.getNumber(ConfigManager::RED_SKULL_TIME);
 		setSkull(SKULL_RED);
+
+		if (murderResult == 2) {
+			// banishment for too many unjustified kills
+			Database& db = Database::getInstance();
+
+			std::ostringstream ss;
+			ss << "INSERT INTO `account_bans` (`account_id`, `reason`, `banned_at`, `expires_at`, `banned_by`) VALUES (";
+			ss << getAccount() << ", ";
+			ss << db.escapeString("Too many unjustified kills") << ", ";
+			ss << std::time(nullptr) << ", ";
+			ss << std::time(nullptr) + g_config.getNumber(ConfigManager::BAN_LENGTH) << ", ";
+			ss << "1);";
+
+			db.executeQuery(ss.str());
+
+			g_game.addMagicEffect(getPosition(), CONST_ME_GREEN_RINGS);
+			g_game.removeCreature(this);
+			disconnect();
+		}
 	}
 }
 
-void Player::checkSkullTicks(int32_t ticks)
+void Player::checkSkullTicks()
 {
-	int32_t newTicks = skullTicks - ticks;
-	if (newTicks < 0) {
-		skullTicks = 0;
-	} else {
-		skullTicks = newTicks;
-	}
+	time_t today = std::time(nullptr);
 
-	if (skull == SKULL_RED && skullTicks < 1000 && !hasCondition(CONDITION_INFIGHT)) {
+	if (!hasCondition(CONDITION_INFIGHT) && ((skull == SKULL_RED && today >= playerKillerEnd) || (skull == SKULL_WHITE))) {
 		setSkull(SKULL_NONE);
 	}
 }

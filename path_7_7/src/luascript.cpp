@@ -741,8 +741,8 @@ Outfit_t LuaScriptInterface::getOutfit(lua_State* L, int32_t arg)
 	outfit.lookBody = getField<uint8_t>(L, arg, "lookBody");
 	outfit.lookHead = getField<uint8_t>(L, arg, "lookHead");
 
-	outfit.lookTypeEx = getField<uint16_t>(L, arg, "lookTypeEx");
-	outfit.lookType = getField<uint16_t>(L, arg, "lookType");
+	outfit.lookTypeEx = getField<uint8_t>(L, arg, "lookTypeEx");
+	outfit.lookType = getField<uint8_t>(L, arg, "lookType");
 
 	lua_pop(L, 6);
 	return outfit;
@@ -994,9 +994,6 @@ void LuaScriptInterface::registerFunctions()
 	//sendChannelMessage(channelId, type, message)
 	lua_register(luaState, "sendChannelMessage", LuaScriptInterface::luaSendChannelMessage);
 
-	//sendGuildChannelMessage(guildId, type, message)
-	lua_register(luaState, "sendGuildChannelMessage", LuaScriptInterface::luaSendGuildChannelMessage);
-
 #ifndef LUAJIT_VERSION
 	//bit operations for Lua, based on bitlib project release 24
 	//bit.bnot, bit.band, bit.bor, bit.bxor, bit.lshift, bit.rshift
@@ -1029,11 +1026,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ACCOUNT_TYPE_SENIORTUTOR)
 	registerEnum(ACCOUNT_TYPE_GAMEMASTER)
 	registerEnum(ACCOUNT_TYPE_GOD)
-
-	registerEnum(BUG_CATEGORY_MAP)
-	registerEnum(BUG_CATEGORY_TYPO)
-	registerEnum(BUG_CATEGORY_TECHNICAL)
-	registerEnum(BUG_CATEGORY_OTHER)
 
 	registerEnum(CALLBACK_PARAM_LEVELMAGICVALUE)
 	registerEnum(CALLBACK_PARAM_SKILLVALUE)
@@ -1398,6 +1390,20 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(SKULL_WHITE)
 	registerEnum(SKULL_RED)
 
+	registerEnum(FLUID_NONE)
+	registerEnum(FLUID_WATER)
+	registerEnum(FLUID_WINE)
+	registerEnum(FLUID_BEER)
+	registerEnum(FLUID_MUD)
+	registerEnum(FLUID_BLOOD)
+	registerEnum(FLUID_SLIME)
+	registerEnum(FLUID_OIL)
+	registerEnum(FLUID_URINE)
+	registerEnum(FLUID_MILK)
+	registerEnum(FLUID_MANAFLUID)
+	registerEnum(FLUID_LIFEFLUID)
+	registerEnum(FLUID_LEMONADE)
+
 	registerEnum(TALKTYPE_SAY)
 	registerEnum(TALKTYPE_WHISPER)
 	registerEnum(TALKTYPE_YELL)
@@ -1619,6 +1625,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::UH_TRAP)
 	registerEnumIn("configKeys", ConfigManager::HEIGHT_STACK_BLOCK)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_ANTI_TRASH)
+	registerEnumIn("configKeys", ConfigManager::TELEPORT_NEWBIES)
 
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_RENT_PERIOD)
@@ -1650,7 +1657,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::RATE_MAGIC)
 	registerEnumIn("configKeys", ConfigManager::RATE_SPAWN)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_PRICE)
-	registerEnumIn("configKeys", ConfigManager::KILLS_TO_RED)
 	registerEnumIn("configKeys", ConfigManager::MAX_MESSAGEBUFFER)
 	registerEnumIn("configKeys", ConfigManager::ACTIONS_DELAY_INTERVAL)
 	registerEnumIn("configKeys", ConfigManager::EX_ACTIONS_DELAY_INTERVAL)
@@ -1660,6 +1666,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::STATUSQUERY_TIMEOUT)
 	registerEnumIn("configKeys", ConfigManager::FRAG_TIME)
 	registerEnumIn("configKeys", ConfigManager::WHITE_SKULL_TIME)
+	registerEnumIn("configKeys", ConfigManager::RED_SKULL_TIME)
+	registerEnumIn("configKeys", ConfigManager::KILLS_DAY_RED_SKULL)
+	registerEnumIn("configKeys", ConfigManager::KILLS_WEEK_RED_SKULL)
+	registerEnumIn("configKeys", ConfigManager::KILLS_MONTH_RED_SKULL)
+	registerEnumIn("configKeys", ConfigManager::KILLS_DAY_BANISHMENT)
+	registerEnumIn("configKeys", ConfigManager::KILLS_WEEK_BANISHMENT)
+	registerEnumIn("configKeys", ConfigManager::KILLS_MONTH_BANISHMENT)
 	registerEnumIn("configKeys", ConfigManager::GAME_PORT)
 	registerEnumIn("configKeys", ConfigManager::LOGIN_PORT)
 	registerEnumIn("configKeys", ConfigManager::STATUS_PORT)
@@ -1668,6 +1681,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MAX_PACKETS_PER_SECOND)
 	registerEnumIn("configKeys", ConfigManager::VERSION_MIN)
 	registerEnumIn("configKeys", ConfigManager::VERSION_MAX)
+	registerEnumIn("configKeys", ConfigManager::NEWBIE_TOWN)
+	registerEnumIn("configKeys", ConfigManager::NEWBIE_LEVEL_THRESHOLD)
 
 	registerEnumIn("configKeys", ConfigManager::RATE_MONSTER_HEALTH)
 	registerEnumIn("configKeys", ConfigManager::RATE_MONSTER_ATTACK)
@@ -1988,8 +2003,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
 	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
 
-	registerMethod("Player", "getSkullTime", LuaScriptInterface::luaPlayerGetSkullTime);
-	registerMethod("Player", "setSkullTime", LuaScriptInterface::luaPlayerSetSkullTime);
+	registerMethod("Player", "getMurderTimestamps", LuaScriptInterface::luaPlayerGetMurderTimestamps);
+	registerMethod("Player", "getPlayerKillerEnd", LuaScriptInterface::luaPlayerGetPlayerKillerEnd);
+	registerMethod("Player", "setPlayerKillerEnd", LuaScriptInterface::luaPlayerSetPlayerKillerEnd);
 	registerMethod("Player", "getDeathPenalty", LuaScriptInterface::luaPlayerGetDeathPenalty);
 
 	registerMethod("Player", "getExperience", LuaScriptInterface::luaPlayerGetExperience);
@@ -3400,24 +3416,6 @@ int LuaScriptInterface::luaSendChannelMessage(lua_State* L)
 
 	SpeakClasses type = getNumber<SpeakClasses>(L, 2);
 	std::string message = getString(L, 3);
-	channel->sendToAll(message, type);
-	pushBoolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaSendGuildChannelMessage(lua_State* L)
-{
-	//sendGuildChannelMessage(guildId, type, message)
-	uint32_t guildId = getNumber<uint32_t>(L, 1);
-	ChatChannel* channel = g_chat->getGuildChannelById(guildId);
-	if (!channel) {
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	SpeakClasses type = getNumber<SpeakClasses>(L, 2);
-	std::string message = getString(L, 3);
-	channel->sendToAll(message, type);
 	pushBoolean(L, true);
 	return 1;
 }
@@ -7353,24 +7351,42 @@ int LuaScriptInterface::luaPlayerGetInbox(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaPlayerGetSkullTime(lua_State* L)
+int LuaScriptInterface::luaPlayerGetMurderTimestamps(lua_State * L)
 {
-	// player:getSkullTime()
+	// player:getMurderTimestamps()
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
-		lua_pushnumber(L, player->getSkullTicks());
+		lua_createtable(L, player->murderTimeStamps.size(), 0);
+
+		uint32_t i = 1;
+		for (time_t currentMurderTimestamp : player->murderTimeStamps) {
+			lua_pushnumber(L, static_cast<int64_t>(currentMurderTimestamp));
+			lua_rawseti(L, -2, ++i);
+		}
 	} else {
 		lua_pushnil(L);
 	}
 	return 1;
 }
 
-int LuaScriptInterface::luaPlayerSetSkullTime(lua_State* L)
+int LuaScriptInterface::luaPlayerGetPlayerKillerEnd(lua_State* L)
 {
-	// player:setSkullTime(skullTime)
+	// player:getPlayerKillerEnd()
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
-		player->setSkullTicks(getNumber<int64_t>(L, 2));
+		lua_pushnumber(L, player->getPlayerKillerEnd());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetPlayerKillerEnd(lua_State* L)
+{
+	// player:setPlayerKillerEnd(skullTime)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->setPlayerKillerEnd(getNumber<time_t>(L, 2));
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -8042,7 +8058,7 @@ int LuaScriptInterface::luaPlayerGetStorageValue(lua_State* L)
 	if (player->getStorageValue(key, value)) {
 		lua_pushnumber(L, value);
 	} else {
-		lua_pushnumber(L, -1);
+		lua_pushnumber(L, 0);
 	}
 	return 1;
 }
@@ -11054,8 +11070,8 @@ int LuaScriptInterface::luaConditionSetOutfit(lua_State* L)
 		outfit.lookLegs = getNumber<uint8_t>(L, 6);
 		outfit.lookBody = getNumber<uint8_t>(L, 5);
 		outfit.lookHead = getNumber<uint8_t>(L, 4);
-		outfit.lookType = getNumber<uint16_t>(L, 3);
-		outfit.lookTypeEx = getNumber<uint16_t>(L, 2);
+		outfit.lookType = getNumber<uint8_t>(L, 3);
+		outfit.lookTypeEx = getNumber<uint8_t>(L, 2);
 	}
 
 	ConditionOutfit* condition = dynamic_cast<ConditionOutfit*>(getUserdata<Condition>(L, 1));

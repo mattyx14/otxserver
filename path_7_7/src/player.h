@@ -589,8 +589,8 @@ class Player final : public Creature, public Cylinder
 
 		Skulls_t getSkull() const final;
 		Skulls_t getSkullClient(const Creature* creature) const final;
-		int64_t getSkullTicks() const { return skullTicks; }
-		void setSkullTicks(int64_t ticks) { skullTicks = ticks; }
+		time_t getPlayerKillerEnd() const { return playerKillerEnd; }
+		void setPlayerKillerEnd(time_t ticks) { playerKillerEnd = ticks; }
 
 		bool hasAttacked(const Player* attacked) const;
 		void addAttacked(const Player* attacked);
@@ -602,7 +602,7 @@ class Player final : public Creature, public Cylinder
 				client->sendCreatureSkull(creature);
 			}
 		}
-		void checkSkullTicks(int32_t ticks);
+		void checkSkullTicks();
 
 		bool canLogout();
 
@@ -884,6 +884,27 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
+		void sendRemoveRuleViolationReport(const std::string& name) const {
+			if (client) {
+				client->sendRemoveRuleViolationReport(name);
+			}
+		}
+		void sendRuleViolationCancel(const std::string& name) const {
+			if (client) {
+				client->sendRuleViolationCancel(name);
+			}
+		}
+		void sendLockRuleViolationReport() const {
+			if (client) {
+				client->sendLockRuleViolation();
+			}
+		}
+		void sendRuleViolationsChannel(uint16_t channelId) const {
+			if (client) {
+				client->sendRuleViolationsChannel(channelId);
+			}
+		}
+
 		void sendChannel(uint16_t channelId, const std::string& channelName) {
 			if (client) {
 				client->sendChannel(channelId, channelName);
@@ -976,6 +997,8 @@ class Player final : public Creature, public Cylinder
 		void internalAddThing(Thing* thing) final;
 		void internalAddThing(uint32_t index, Thing* thing) final;
 
+		uint32_t checkPlayerKilling();
+
 		std::unordered_set<uint32_t> attackedSet;
 		std::unordered_set<uint32_t> VIPList;
 
@@ -992,6 +1015,8 @@ class Player final : public Creature, public Cylinder
 		std::forward_list<std::string> learnedInstantSpellList;
 		std::forward_list<Condition*> storedConditionList; // TODO: This variable is only temporarily used when logging in, get rid of it somehow
 
+		std::list<time_t> murderTimeStamps;
+
 		std::string name;
 		std::string guildNick;
 
@@ -1001,6 +1026,7 @@ class Player final : public Creature, public Cylinder
 
 		time_t lastLoginSaved = 0;
 		time_t lastLogout = 0;
+		time_t playerKillerEnd = 0;
 
 		uint64_t experience = 0;
 		uint64_t manaSpent = 0;

@@ -256,7 +256,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	player->soul = result->getNumber<uint16_t>("soul");
-	player->capacity = result->getNumber<uint32_t>("cap") * 100;
+	player->capacity = std::max<uint32_t>(400, result->getNumber<uint32_t>("cap")) * 100;
 	player->blessings = result->getNumber<uint16_t>("blessings");
 
 	unsigned long conditionsSize;
@@ -303,15 +303,15 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	player->currentOutfit = player->defaultOutfit;
 
 	if (g_game.getWorldType() != WORLD_TYPE_PVP_ENFORCED) {
-		const time_t skullSeconds = result->getNumber<time_t>("skulltime") - time(nullptr);
-		if (skullSeconds > 0) {
-			//ensure that we round up the number of ticks
-			player->skullTicks = (skullSeconds + 2) * 1000;
+		player->playerKillerEnd = result->getNumber<time_t>("skulltime");
 
-			uint16_t skull = result->getNumber<uint16_t>("skull");
-			if (skull == SKULL_RED) {
-				player->skull = SKULL_RED;
-			}
+		uint16_t skull = result->getNumber<uint16_t>("skull");
+		if (skull == SKULL_RED) {
+			player->skull = SKULL_RED;
+		}
+
+		if (player->playerKillerEnd == 0) {
+			player->skull = SKULL_NONE;
 		}
 	}
 
@@ -355,6 +355,15 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	std::ostringstream query;
+
+	query << "SELECT `date` FROM `player_murders` WHERE `player_id` = " << player->getGUID() << " ORDER BY `date` ASC";
+	if ((result = db.storeQuery(query.str()))) {
+		do {
+			player->murderTimeStamps.push_back(result->getNumber<time_t>("date"));
+		} while (result->next());
+	}
+
+	query.str(std::string());
 	query << "SELECT `guild_id`, `rank_id`, `nick` FROM `guild_membership` WHERE `player_id` = " << player->getGUID();
 	if ((result = db.storeQuery(query.str()))) {
 		uint32_t guildId = result->getNumber<uint32_t>("guild_id");
@@ -712,18 +721,13 @@ bool IOLoginData::savePlayer(Player* player)
 	query << "`conditions` = " << db.escapeBlob(conditions, conditionsSize) << ',';
 
 	if (g_game.getWorldType() != WORLD_TYPE_PVP_ENFORCED) {
-		int32_t skullTime = 0;
-
-		if (player->skullTicks > 0) {
-			skullTime = time(nullptr) + player->skullTicks / 1000;
-		}
-
-		query << "`skulltime` = " << skullTime << ',';
+		query << "`skulltime` = " << player->getPlayerKillerEnd() << ',';
 
 		Skulls_t skull = SKULL_NONE;
 		if (player->skull == SKULL_RED) {
 			skull = SKULL_RED;
 		}
+
 		query << "`skull` = " << static_cast<uint32_t>(skull) << ',';
 	}
 
@@ -783,7 +787,29 @@ bool IOLoginData::savePlayer(Player* player)
 		return false;
 	}
 
+	query.str(std::string());
+	query << "DELETE FROM `player_murders` WHERE `player_id` = " << player->getGUID();
+	
+	if (!db.executeQuery(query.str())) {
+		return false;
+	}
+
+	query.str(std::string());
+
+	DBInsert murdersQuery("INSERT INTO `player_murders`(`id`, `player_id`, `date`) VALUES ");
+	for (time_t timestamp : player->murderTimeStamps) {
+		query << "NULL," << player->getGUID() << ',' << timestamp;
+		if (!murdersQuery.addRow(query)) {
+			return false;
+		}
+	}
+
+	if (!murdersQuery.execute()) {
+		return false;
+	}
+
 	//item saving
+	query.str(std::string());
 	query << "DELETE FROM `player_items` WHERE `player_id` = " << player->getGUID();
 	if (!db.executeQuery(query.str())) {
 		return false;

@@ -764,7 +764,7 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 		return false;
 	}
 
-	const Creature* topVisibleCreature = tile->getBottomCreature();
+	const Creature* topVisibleCreature = tile->getTopCreature();
 	if (blockingCreature && topVisibleCreature) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
@@ -1406,7 +1406,7 @@ bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* t
 			if (target == nullptr) {
 				Tile* toTile = g_game.map.getTile(toPosition);
 				if (toTile) {
-					const Creature* visibleCreature = toTile->getBottomVisibleCreature(player);
+					const Creature* visibleCreature = toTile->getTopCreature();
 					if (visibleCreature) {
 						var.number = visibleCreature->getID();
 					}

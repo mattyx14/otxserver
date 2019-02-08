@@ -369,17 +369,11 @@ Thing* Tile::getTopVisibleThing(const Creature* creature)
 	TileItemVector* items = getItemList();
 	if (items) {
 		for (ItemVector::const_iterator it = items->getBeginDownItem(), end = items->getEndDownItem(); it != end; ++it) {
-			const ItemType& iit = Item::items[(*it)->getID()];
-			if (!iit.lookThrough) {
-				return (*it);
-			}
+			return (*it);
 		}
 
 		for (auto it = ItemVector::const_reverse_iterator(items->getEndTopItem()), end = ItemVector::const_reverse_iterator(items->getBeginTopItem()); it != end; ++it) {
-			const ItemType& iit = Item::items[(*it)->getID()];
-			if (!iit.lookThrough) {
-				return (*it);
-			}
+			return (*it);
 		}
 	}
 
@@ -466,7 +460,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			return RETURNVALUE_NOERROR;
 		}
 
-		if (hasBitSet(FLAG_PATHFINDING, flags) && hasFlag(TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT)) {
+		if (hasBitSet(FLAG_PATHFINDING, flags) && hasFlag(TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT | TILESTATE_IMMOVABLENOFIELDBLOCKPATH)) {
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
@@ -476,6 +470,14 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 
 		if (const Monster* monster = creature->getMonster()) {
 			if (hasFlag(TILESTATE_PROTECTIONZONE | TILESTATE_FLOORCHANGE | TILESTATE_TELEPORT)) {
+				return RETURNVALUE_NOTPOSSIBLE;
+			}
+
+			if (hasFlag(TILESTATE_IMMOVABLEBLOCKPATH | TILESTATE_IMMOVABLENOFIELDBLOCKPATH)) {
+				return RETURNVALUE_NOTPOSSIBLE;
+			}
+
+			if (hasFlag(TILESTATE_BLOCKSOLID)) {
 				return RETURNVALUE_NOTPOSSIBLE;
 			}
 
@@ -543,10 +545,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			if (tileCreatures && !tileCreatures->empty()
 				&& !hasBitSet(FLAG_IGNOREBLOCKCREATURE, flags)
 				&& !player->isAccessPlayer()) {
-				for (const Creature* tileCreature : *tileCreatures) {
-					if (!tileCreature->isInGhostMode())
-						return RETURNVALUE_NOTPOSSIBLE;
-				}
+					return RETURNVALUE_NOTPOSSIBLE;
 			}
 
 			if (player->getParent() == nullptr && hasFlag(TILESTATE_NOLOGOUT)) {

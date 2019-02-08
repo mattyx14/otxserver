@@ -239,7 +239,7 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 			}
 
 			case STACKPOS_USETARGET: {
-				thing = tile->getTopVisibleCreature(player);
+				thing = tile->getTopCreature();
 				if (!thing) {
 					thing = tile->getUseItem();
 				}
@@ -1757,7 +1757,11 @@ void Game::playerOpenChannel(uint32_t playerId, uint16_t channelId)
 		return;
 	}
 
-	player->sendChannel(channel->getId(), channel->getName());
+	if (channel->getId() == CHANNEL_RULE_REP) {
+		player->sendRuleViolationsChannel(channel->getId());
+	} else {
+		player->sendChannel(channel->getId(), channel->getName());
+	}
 }
 
 void Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
@@ -2887,11 +2891,23 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 		case TALKTYPE_CHANNEL_Y:
 		case TALKTYPE_CHANNEL_R1:
 		case TALKTYPE_CHANNEL_R2:
-			g_chat->talkToChannel(*player, type, text, channelId);
+			if (channelId == CHANNEL_RULE_REP) {
+				playerSay(playerId, 0, TALKTYPE_SAY, receiver, text);
+			} else {
+				g_chat->talkToChannel(*player, type, text, channelId);
+			}
 			break;
 
 		case TALKTYPE_BROADCAST:
 			playerBroadcastMessage(player, text);
+			break;
+
+		case TALKTYPE_RVR_CHANNEL:
+			playerReportRuleViolationReport(player, text);
+			break;
+
+		case TALKTYPE_RVR_CONTINUE:
+			playerContinueRuleViolationReport(player, text);
 			break;
 
 		default:
@@ -4173,17 +4189,106 @@ void Game::playerEnableSharedPartyExperience(uint32_t playerId, bool sharedExpAc
 	party->setSharedExperience(player, sharedExpActive);
 }
 
-void Game::sendGuildMotd(uint32_t playerId)
+void Game::playerProcessRuleViolationReport(uint32_t playerId, const std::string& name)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
 		return;
 	}
 
-	Guild* guild = player->getGuild();
-	if (guild) {
-		player->sendChannelMessage("Message of the Day", guild->getMotd(), TALKTYPE_CHANNEL_R1, CHANNEL_GUILD);
+	if (player->getAccountType() < ACCOUNT_TYPE_GAMEMASTER) {
+		return;
 	}
+
+	Player* reporter = getPlayerByName(name);
+	if (!reporter) {
+		return;
+	}
+
+	auto it = ruleViolations.find(reporter->getID());
+	if (it == ruleViolations.end()) {
+		return;
+	}
+
+	RuleViolation& ruleViolation = it->second;
+	if (!ruleViolation.pending) {
+		return;
+	}
+
+	ruleViolation.gamemasterId = player->getID();
+	ruleViolation.pending = false;
+
+	ChatChannel* channel = g_chat->getChannelById(CHANNEL_RULE_REP);
+	if (channel) {
+		for (auto userPtr : channel->getUsers()) {
+			if (userPtr.second) {
+				userPtr.second->sendRemoveRuleViolationReport(reporter->getName());
+			}
+		}
+	}
+}
+
+void Game::playerCloseRuleViolationReport(uint32_t playerId, const std::string& name)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	Player* reporter = getPlayerByName(name);
+	if (!reporter) {
+		return;
+	}
+
+	closeRuleViolationReport(reporter);
+}
+
+void Game::playerCancelRuleViolationReport(uint32_t playerId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	cancelRuleViolationReport(player);
+}
+
+void Game::playerReportRuleViolationReport(Player* player, const std::string& text)
+{
+	auto it = ruleViolations.find(player->getID());
+	if (it != ruleViolations.end()) {
+		player->sendCancelMessage("You already have a pending rule violation report. Close it before starting a new one.");
+		return;
+	}
+
+	RuleViolation ruleViolation = RuleViolation(player->getID(), text);
+	ruleViolations[player->getID()] = ruleViolation;
+
+	ChatChannel* channel = g_chat->getChannelById(CHANNEL_RULE_REP);
+	if (channel) {
+		for (auto userPtr : channel->getUsers()) {
+			if (userPtr.second) {
+				userPtr.second->sendToChannel(player, TALKTYPE_RVR_CHANNEL, text, CHANNEL_RULE_REP);
+			}
+		}
+	}
+}
+
+void Game::playerContinueRuleViolationReport(Player* player, const std::string& text)
+{
+	auto it = ruleViolations.find(player->getID());
+	if (it == ruleViolations.end()) {
+		return;
+	}
+
+	RuleViolation& rvr = it->second;
+	Player* toPlayer = getPlayerByID(rvr.gamemasterId);
+	if (!toPlayer) {
+		return;
+	}
+
+	toPlayer->sendCreatureSay(player, TALKTYPE_RVR_CONTINUE, text, 0);
+	player->sendTextMessage(MESSAGE_STATUS_SMALL, "Message sent to Counsellor.");
 }
 
 void Game::kickPlayer(uint32_t playerId, bool displayEffect)
@@ -4194,16 +4299,6 @@ void Game::kickPlayer(uint32_t playerId, bool displayEffect)
 	}
 
 	player->kickPlayer(displayEffect);
-}
-
-void Game::playerReportBug(uint32_t playerId, const std::string& message, const Position& position, uint8_t category)
-{
-	Player* player = getPlayerByID(playerId);
-	if (!player) {
-		return;
-	}
-
-	g_events->eventPlayerOnReport(player, message, position, category);
 }
 
 void Game::playerDebugAssert(uint32_t playerId, const std::string& assertLine, const std::string& date, const std::string& description, const std::string& comment)
@@ -4232,6 +4327,54 @@ void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const st
 	for (CreatureEvent* creatureEvent : player->getCreatureEvents(CREATURE_EVENT_EXTENDED_OPCODE)) {
 		creatureEvent->executeExtendedOpcode(player, opcode, buffer);
 	}
+}
+
+void Game::closeRuleViolationReport(Player* player)
+{
+	const auto it = ruleViolations.find(player->getID());
+	if (it == ruleViolations.end()) {
+		return;
+	}
+
+	ruleViolations.erase(it);
+	player->sendLockRuleViolationReport();
+
+	ChatChannel* channel = g_chat->getChannelById(CHANNEL_RULE_REP);
+	if (channel) {
+		for (UsersMap::const_iterator ut = channel->getUsers().begin(); ut != channel->getUsers().end(); ++ut) {
+			if (ut->second) {
+				ut->second->sendRemoveRuleViolationReport(player->getName());
+			}
+		}
+	}
+}
+
+void Game::cancelRuleViolationReport(Player* player)
+{
+	const auto it = ruleViolations.find(player->getID());
+	if (it == ruleViolations.end()) {
+		return;
+	}
+
+	RuleViolation& ruleViolation = it->second;
+	Player* gamemaster = getPlayerByID(ruleViolation.gamemasterId);
+	if (!ruleViolation.pending && gamemaster) {
+		// Send to the responder
+		gamemaster->sendRuleViolationCancel(player->getName());
+	}
+
+	// Send to channel
+	ChatChannel* channel = g_chat->getChannelById(CHANNEL_RULE_REP);
+	if (channel) {
+		for (UsersMap::const_iterator ut = channel->getUsers().begin(); ut != channel->getUsers().end(); ++ut) {
+			if (ut->second) {
+				ut->second->sendRemoveRuleViolationReport(player->getName());
+			}
+		}
+	}
+
+	// Erase it
+	ruleViolations.erase(it);
 }
 
 void Game::forceAddCondition(uint32_t creatureId, Condition* condition)

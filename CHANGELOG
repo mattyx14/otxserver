@@ -103,6 +103,7 @@
 			* Prey System
 			/* Inspection System */ - No work
 			* Pet System -- Missing scripts
+	- Add support to skullSystem and ruleViolations to 7.x
 	- Clean and formated items-monsters(files)-spells.xml
 	- Drop commands support in favor of talkactions (TFT)
 	- Drop client 10_9 - 8_7
@@ -160,6 +161,7 @@
 	- Updated monsters (TFT)
 	- Updated Party spells (TFC)
 	- Updated travis.yml - jlcvp
+	- Updated statusOnline 0.0.0.0 no counter
 	- Refactor in-Game premium store to the cpp backend (jlcvp)
 ]
 

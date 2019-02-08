@@ -101,6 +101,9 @@ class ProtocolGame final : public Protocol
 		void parseAttack(NetworkMessage& msg);
 		void parseFollow(NetworkMessage& msg);
 
+		void parseProcessRuleViolationReport(NetworkMessage& msg);
+		void parseCloseRuleViolationReport(NetworkMessage& msg);
+
 		void parseBugReport(NetworkMessage& msg);
 		void parseDebugAssert(NetworkMessage& msg);
 
@@ -195,6 +198,12 @@ class ProtocolGame final : public Protocol
 		void sendAddCreature(const Creature* creature, const Position& pos, int32_t stackpos, bool isLogin);
 		void sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos,
 		                      const Position& oldPos, int32_t oldStackPos, bool teleport);
+
+		//rule violations
+		void sendRemoveRuleViolationReport(const std::string& name);
+		void sendLockRuleViolation();
+		void sendRuleViolationCancel(const std::string& name);
+		void sendRuleViolationsChannel(uint16_t channelId);
 
 		//containers
 		void sendAddContainerItem(uint8_t cid, const Item* item);
