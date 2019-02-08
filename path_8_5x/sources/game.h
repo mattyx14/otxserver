@@ -717,7 +717,7 @@ class Game
 		StageList stages;
 		uint32_t lastStageLevel;
 
-		Highscore highscoreStorage[9];
+		Highscore highscoreStorage[8];
 		time_t lastHighscoreCheck;
 };
 #endif
