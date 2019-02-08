@@ -364,6 +364,15 @@
 	maxLevelThresholdForKilledPlayer = 1.1
 
 	-- Stamina System
+	-- NOTE: The Stamina gain will only start counting after 10 minutes of being offline
+	-- rateStaminaLoss = The amount of Stamina(in minutes) a player will loose after 1 minute of hunting
+	-- rateStaminaGain = The amount of time(in minutes) a player will need to be offline to get 1 minute of Stamina(from 0 stamina to 'staminaRatingLimitTop')
+	-- rateStaminaThresholdGain = The amount of time(in minutes) a player will need to be offline to get 1 minute of Stamina(from 'staminaRatingLimitTop' to full stamina)
+	-- staminaRatingLimitTop = Above this Stamina players will receive 'rateStaminaAboveNormal' times the amount of the exp
+	-- staminaRatingLimitBottom = Below this Stamina players will receive 'rateStaminaUnderNormal' times the amount of the exp
+	-- staminaLootLimit = Below this Stamina players will no longer receive any loot
+	-- rateStaminaAboveNormal = The experience multiplier for players above 'staminaRatingLimitTop' Stamina(1.5 means the player will receive 50% extra experience)
+	-- rateStaminaUnderNormal = The experience multiplier for players below 'staminaRatingLimitBottom' Stamina(0.5 means the player will receive only half the experience)
 	rateStaminaLoss = 1
 	rateStaminaGain = 3
 	rateStaminaThresholdGain = 12
