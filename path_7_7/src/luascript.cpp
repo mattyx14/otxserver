@@ -991,9 +991,6 @@ void LuaScriptInterface::registerFunctions()
 	//getWaypointPosition(name)
 	lua_register(luaState, "getWaypointPositionByName", LuaScriptInterface::luaGetWaypointPositionByName);
 
-	//sendChannelMessage(channelId, type, message)
-	lua_register(luaState, "sendChannelMessage", LuaScriptInterface::luaSendChannelMessage);
-
 #ifndef LUAJIT_VERSION
 	//bit operations for Lua, based on bitlib project release 24
 	//bit.bnot, bit.band, bit.bor, bit.bxor, bit.lshift, bit.rshift
@@ -3387,22 +3384,6 @@ int LuaScriptInterface::luaGetWaypointPositionByName(lua_State* L)
 	} else {
 		pushBoolean(L, false);
 	}
-	return 1;
-}
-
-int LuaScriptInterface::luaSendChannelMessage(lua_State* L)
-{
-	//sendChannelMessage(channelId, type, message)
-	uint32_t channelId = getNumber<uint32_t>(L, 1);
-	ChatChannel* channel = g_chat->getChannelById(channelId);
-	if (!channel) {
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	SpeakClasses type = getNumber<SpeakClasses>(L, 2);
-	std::string message = getString(L, 3);
-	pushBoolean(L, true);
 	return 1;
 }
 
