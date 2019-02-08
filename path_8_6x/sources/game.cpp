@@ -4034,12 +4034,12 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 	int32_t muted = 0;
 	bool mute = player->isMuted(channelId, type, muted);
-	
+
 	ReturnValue ret = g_spells->onPlayerSay(player, text);
 
 	if(ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE && !g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
 		return true;
-	
+
 	if(muted && mute)
 	{
 		if(muted > 0)

@@ -409,6 +409,16 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		case ATTR_CRITICALHITCHANCE:
+		{
+			int32_t criticalHitChance;
+			if(!propStream.getLong((uint32_t&)criticalHitChance))
+				return ATTR_READ_ERROR;
+
+			setAttribute("criticalhitchance", criticalHitChance);
+			break;
+		}
+
 		case ATTR_ATTACK:
 		{
 			int32_t attack;
@@ -908,6 +918,18 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 			}
 		}
 
+		if(it.criticalHitChance || (item && item->getCriticalHitChance()))
+		{
+			if(begin)
+			{
+				begin = false;
+				s << " (";
+			}
+			else
+				s << ", ";
+				s << "Crit Chance:" << std::showpos << int32_t(item ? item->getCriticalHitChance() : it.criticalHitChance) << "%"<< std::noshowpos;
+		}
+
 		if(it.attackSpeed || (item && item->getAttackSpeed()))
 		{
 			if(begin)
@@ -1201,6 +1223,18 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		{
 			s << " (Arm:" << tmp;
 			begin = false;
+		}
+
+		if(it.criticalHitChance || (item && item->getCriticalHitChance()))
+		{
+			if(begin)
+			{
+				begin = false;
+				s << " (";
+			}
+			else
+				s << ", ";
+				s << "Crit Chance:" << std::showpos << int32_t(item ? item->getCriticalHitChance() : it.criticalHitChance) << "%"<< std::noshowpos;
 		}
 
 		if(it.hasAbilities())
@@ -1729,4 +1763,37 @@ void Item::getLight(LightInfo& lightInfo)
 void Item::__startDecaying()
 {
 	g_game.startDecay(this);
+}
+
+void Item::generateSerial()
+{
+	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	std::string serial = "";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+	serial += "-";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+	serial += "-";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+	serial += "-";
+	for(int32_t i = 1; i < 6; i++)
+	{
+		int32_t l = rand() % (letters.length() - 1) + 1;
+		serial += letters.substr(l, 1);
+	}
+
+	std::string key = "serial";
+	this->setAttribute(key.c_str(), serial);
+	serial = "";
 }

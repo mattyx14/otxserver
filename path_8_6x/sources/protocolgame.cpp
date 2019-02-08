@@ -532,7 +532,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 		disconnectClient(0x0A, "This character does not exist.");
 		return;
 	}
-	
+
 	msg.skip(6);
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
 	{
@@ -625,7 +625,6 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	else
 		Dispatcher::getInstance().addTask(createTask(boost::bind(
 			&ProtocolGame::login, this, character, id, password, operatingSystem, version, gamemaster)));
-
 }
 
 void ProtocolGame::parsePacket(NetworkMessage &msg)

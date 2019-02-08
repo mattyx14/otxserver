@@ -1654,6 +1654,12 @@ void LuaInterface::registerFunctions()
 	//doCreatureSetStorage(uid, key, value)
 	lua_register(m_luaState, "doCreatureSetStorage", LuaInterface::luaDoCreatureSetStorage);
 
+	//getPlayerSpectators(cid)
+	lua_register(m_luaState, "getPlayerSpectators", LuaInterface::luaGetPlayerSpectators);
+
+	//doPlayerSetSpectators(cid, data)
+	lua_register(m_luaState, "doPlayerSetSpectators", LuaInterface::luaDoPlayerSetSpectators);
+
 	//getStorageList()
 	lua_register(m_luaState, "getStorageList", LuaInterface::luaGetStorageList);
 
@@ -1764,6 +1770,9 @@ void LuaInterface::registerFunctions()
 
 	//doPlayerAddSoul(cid, amount)
 	lua_register(m_luaState, "doPlayerAddSoul", LuaInterface::luaDoPlayerAddSoul);
+
+	//doPlayerSetExtraAttackSpeed(cid, speed)
+	lua_register(m_luaState, "doPlayerSetExtraAttackSpeed", LuaInterface::luaDoPlayerSetExtraAttackSpeed);
 
 	//doPlayerAddItem(cid, itemid[, count/subtype = 1[, canDropOnMap = true[, slot = 0]]])
 	//doPlayerAddItem(cid, itemid[, count = 1[, canDropOnMap = true[, subtype = 1[, slot = 0]]]])
@@ -2423,6 +2432,12 @@ void LuaInterface::registerFunctions()
 
 	//doAddAccountBanishment(...)
 	lua_register(m_luaState, "doAddAccountBanishment", LuaInterface::luaDoAddAccountBanishment);
+
+	//doAddAccountWarnings(...)
+	lua_register(m_luaState, "doAddAccountWarnings", LuaInterface::luaDoAddAccountWarnings);
+
+	//getAccountWarnings(accountId)
+	lua_register(m_luaState, "getAccountWarnings", LuaInterface::luaGetAccountWarnings);
 
 	//doAddNotation(...)
 	lua_register(m_luaState, "doAddNotation", LuaInterface::luaDoAddNotation);
@@ -5216,6 +5231,131 @@ int32_t LuaInterface::luaDoCreatureSetStorage(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaGetPlayerSpectators(lua_State* L)
+{
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		lua_newtable(L);
+		setFieldBool(L, "broadcast", player->client->isBroadcasting());
+		setField(L, "password", player->client->getPassword());
+		setFieldBool(L, "auth", player->client->isAuth());
+
+		createTable(L, "names");
+		StringVec t = player->client->list();
+
+		StringVec::const_iterator it = t.begin();
+		for(uint32_t i = 1; it != t.end(); ++it, ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_pushstring(L, (*it).c_str());
+			pushTable(L);
+		}
+
+		pushTable(L);
+		createTable(L, "mutes");
+		t = player->client->muteList();
+
+		it = t.begin();
+		for(uint32_t i = 1; it != t.end(); ++it, ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_pushstring(L, (*it).c_str());
+			pushTable(L);
+		}
+
+		pushTable(L);
+		createTable(L, "bans");
+		std::map<std::string, uint32_t> _t = player->client->banList();
+
+		std::map<std::string, uint32_t>::const_iterator _it = _t.begin();
+		for(uint32_t i = 1; _it != _t.end(); ++_it, ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_pushstring(L, _it->first.c_str());
+			pushTable(L);
+		}
+
+		pushTable(L);
+		createTable(L, "kick");
+		pushTable(L);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSetSpectators(lua_State* L)
+{
+	std::string password = getFieldString(L, "password");
+	bool broadcast = getFieldBool(L, "broadcast"),
+		auth = getFieldBool(L, "auth");
+
+	StringVec m, b, k;
+	lua_pushstring(L, "mutes");
+	lua_gettable(L, -2);
+
+	lua_pushnil(L);
+	while(lua_next(L, -2))
+	{
+		m.push_back(asLowerCaseString(lua_tostring(L, -1)));
+		lua_pop(L, 1);
+	}
+
+	lua_pop(L, 1);
+	lua_pushstring(L, "bans");
+	lua_gettable(L, -2);
+
+	lua_pushnil(L);
+	while(lua_next(L, -2))
+	{
+		b.push_back(asLowerCaseString(lua_tostring(L, -1)));
+		lua_pop(L, 1);
+	}
+
+	lua_pop(L, 1);
+	lua_pushstring(L, "kick");
+	lua_gettable(L, -2);
+
+	lua_pushnil(L);
+	while(lua_next(L, -2))
+	{
+		k.push_back(asLowerCaseString(lua_tostring(L, -1)));
+		lua_pop(L, 1);
+	}
+
+	lua_pop(L, 2);
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		if(player->client->getPassword() != password && !password.empty())
+			player->client->clear(false);
+
+		player->client->setPassword(password);
+		if(!broadcast && player->client->isBroadcasting())
+			player->client->clear(false);
+
+		player->client->kick(k);
+		player->client->mute(m);
+		player->client->ban(b);
+
+		player->client->setBroadcast(broadcast);
+		player->client->setAuth(auth);
+		lua_pushboolean(L, true);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
 int32_t LuaInterface::luaGetTileInfo(lua_State* L)
 {
 	//getTileInfo(pos)
@@ -5551,6 +5691,25 @@ int32_t LuaInterface::luaDoPlayerAddSoul(lua_State* L)
 	{
 		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
 		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSetExtraAttackSpeed(lua_State *L)
+{
+	uint32_t speed = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		player->setPlayerExtraAttackSpeed(speed);
+		lua_pushnumber(L, true);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushnumber(L, false);
 	}
 
 	return 1;
@@ -7148,6 +7307,7 @@ int32_t LuaInterface::luaGetMonsterInfo(lua_State* L)
 	setFieldBool(L, "convinceable", mType->isConvinceable);
 	setFieldBool(L, "attackable", mType->isAttackable);
 	setFieldBool(L, "hostile", mType->isHostile);
+	setFieldBool(L, "passive", mType->isPassive);
 
 	lua_pushstring(L, "outfit"); // name the table created by pushOutfit
 	pushOutfit(L, mType->outfit);
@@ -10315,6 +10475,7 @@ int32_t LuaInterface::luaGetItemInfo(lua_State* L)
 	setField(L, "date", item->date);
 	setField(L, "writer", item->writer);
 	setField(L, "text", item->text);
+	setField(L, "criticalHitChance", item->criticalHitChance);
 	setField(L, "attack", item->attack);
 	setField(L, "extraAttack", item->extraAttack);
 	setField(L, "defense", item->defense);
@@ -10745,6 +10906,21 @@ int32_t LuaInterface::luaDoAddAccountBanishment(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaDoAddAccountWarnings(lua_State* L)
+{
+	//doAddAccountWarnings(accountId[, warnings])
+	uint32_t warnings = 1;
+	int32_t params = lua_gettop(L);
+	if(params > 1)
+		warnings = popNumber(L);
+
+	Account account = IOLoginData::getInstance()->loadAccount(popNumber(L), true);
+	account.warnings += warnings;
+	IOLoginData::getInstance()->saveAccount(account);
+	lua_pushboolean(L, true);
+	return 1;
+}
+
 int32_t LuaInterface::luaDoAddNotation(lua_State* L)
 {
 	//doAddNotation(accountId[, playerId[, reason[, comment[, admin[, statement]]]]]])
@@ -10846,6 +11022,14 @@ int32_t LuaInterface::luaDoRemoveNotations(lua_State* L)
 		playerId = popNumber(L);
 
 	lua_pushboolean(L, IOBan::getInstance()->removeNotations((uint32_t)popNumber(L), playerId));
+	return 1;
+}
+
+int32_t LuaInterface::luaGetAccountWarnings(lua_State* L)
+{
+	//getAccountWarnings(accountId)
+	Account account = IOLoginData::getInstance()->loadAccount(popNumber(L));
+	lua_pushnumber(L, account.warnings);
 	return 1;
 }
 

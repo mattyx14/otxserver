@@ -18,11 +18,11 @@
 
 #include "condition.h"
 #include "tools.h"
-#include "configmanager.h"
 
 #include "game.h"
 #include "creature.h"
 #include "combat.h"
+#include "configmanager.h"
 
 extern Game g_game;
 extern ConfigManager g_config;

@@ -2409,6 +2409,7 @@ bool Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
 		return false;
 
 	g_chat.removeUserFromChannel(player, channelId);
+	player->client->chat(channelId);
 	return true;
 }
 
@@ -4033,6 +4034,12 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 	int32_t muted = 0;
 	bool mute = player->isMuted(channelId, type, muted);
+
+	ReturnValue ret = g_spells->onPlayerSay(player, text);
+
+	if(ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE && !g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
+		return true;
+
 	if(muted && mute)
 	{
 		if(muted > 0)
@@ -4057,15 +4064,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 	if(g_talkActions->onPlayerSay(player, type == MSG_SPEAK_SAY ? (unsigned)CHANNEL_DEFAULT : channelId, text, false))
 		return true;
-
-	ReturnValue ret = RET_NOERROR;
-	if(!muted)
-	{
-		ret = g_spells->onPlayerSay(player, text);
-		if(ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE &&
-			!g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
-			return true;
-	}
 
 	if(mute && type != MSG_NPC_TO)
 		player->removeMessageBuffer();
