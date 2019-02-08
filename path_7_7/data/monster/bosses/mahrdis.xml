@@ -26,7 +26,6 @@
 			<attribute key="shootEffect" value="fire"/>
 			<attribute key="areaEffect" value="firearea"/>
 		</attack>
-		<attack name="paralyze_mahrdis" interval="2000" chance="13" range="7"/>
 		<attack name="fire" interval="2000" chance="34" radius="3" target="0" min="-80" max="-800">
 			<attribute key="areaEffect" value="explosionarea"/>
 		</attack>

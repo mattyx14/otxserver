@@ -322,7 +322,6 @@
 	<instant name="paralyze_evileye"  words="###35"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_evileye.lua"/>
 	<instant name="paralyze_hydra"  words="###36"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_hydra.lua"/>
 	<instant name="paralyze_lich"  words="###37"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_lich.lua"/>
-	<instant name="paralyze_mahrdis"  words="###38"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_mahrdis.lua"/>
 	<instant name="paralyze_marid"  words="###39"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_marid.lua"/>
 	<instant name="paralyze_morguthis"  words="###40"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_morguthis.lua"/>	
 	<instant name="paralyze_mummy"  words="###41"  aggressive="1" blockwalls="1" needtarget="1" needlearn="1" script="monster/paralyze_mummy.lua"/>
