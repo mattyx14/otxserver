@@ -337,7 +337,7 @@
 	minLevelThresholdForKilledPlayer = 0.9
 	maxLevelThresholdForKilledPlayer = 1.1
 
-		-- Stamina System
+	-- Stamina System
 	-- NOTE: The Stamina gain will only start counting after 10 minutes of being offline
 	-- rateStaminaLoss = The amount of Stamina(in minutes) a player will loose after 1 minute of hunting
 	-- rateStaminaGain = The amount of time(in minutes) a player will need to be offline to get 1 minute of Stamina(from 0 stamina to 'staminaRatingLimitTop')
