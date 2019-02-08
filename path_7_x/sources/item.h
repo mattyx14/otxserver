@@ -113,6 +113,7 @@ enum AttrTypes_t
 	ATTR_ARTICLE = 41,
 	ATTR_SCRIPTPROTECTED = 42,
 	ATTR_DUALWIELD = 43,
+	ATTR_CRITICALHITCHANCE = 44,
 	ATTR_ATTRIBUTE_MAP = 128
 };
 
@@ -255,6 +256,7 @@ class Item : virtual public Thing, public ItemAttributes
 		bool isDualWield() const;
 
 		int32_t getAttack() const;
+		int32_t getCriticalHitChance() const;
 		int32_t getExtraAttack() const;
 		int32_t getDefense() const;
 		int32_t getExtraDefense() const;
@@ -392,6 +394,16 @@ inline bool Item::isScriptProtected() const
 		return v;
 
 	return false;
+}
+
+inline int32_t Item::getCriticalHitChance() const
+{
+	bool ok;
+	int32_t v = getIntegerAttribute("criticalhitchance", ok);
+	if(ok)
+		return v;
+
+	return items[id].criticalHitChance;
 }
 
 inline int32_t Item::getAttack() const

@@ -69,6 +69,7 @@ ItemType::ItemType()
 	attack = extraAttack = 0;
 	defense = extraDefense = 0;
 	attackSpeed = 0;
+	criticalHitChance = 0;
 	armor = 0;
 	decayTo = -1;
 	decayTime = 0;
@@ -727,6 +728,11 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 				it.extraDefenseRndMin = intValue;
 			if(readXMLInteger(itemAttributesNode, "random_max", intValue))
 				it.extraDefenseRndMax = intValue;
+		}
+		else if(tmpStrValue == "criticalhitchance")
+		{
+			if(readXMLInteger(itemAttributesNode, "value", intValue))
+				it.criticalHitChance = intValue;
 		}
 		else if(tmpStrValue == "attack")
 		{

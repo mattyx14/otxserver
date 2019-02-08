@@ -10272,6 +10272,7 @@ int32_t LuaInterface::luaGetItemInfo(lua_State* L)
 	setField(L, "date", item->date);
 	setField(L, "writer", item->writer);
 	setField(L, "text", item->text);
+	setField(L, "criticalHitChance", item->criticalHitChance);
 	setField(L, "attack", item->attack);
 	setField(L, "extraAttack", item->extraAttack);
 	setField(L, "defense", item->defense);
