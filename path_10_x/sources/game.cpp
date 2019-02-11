@@ -4157,6 +4157,15 @@ bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::
 
 bool Game::playerSpeakToNpc(Player* player, const std::string& text)
 {
+	if(player->hasCondition(CONDITION_EXHAUST, 2))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait... to keep talking here.");
+		return false;
+	}
+
+	if(Condition* conditionnpc = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 2))
+		player->addCondition(conditionnpc);
+
 	SpectatorVec list;
 	SpectatorVec::iterator it;
 	getSpectators(list, player->getPosition());
