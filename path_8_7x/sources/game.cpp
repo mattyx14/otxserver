@@ -4188,7 +4188,7 @@ bool Game::playerSpeakToNpc(Player* player, const std::string& text)
 {
 	if(player->hasCondition(CONDITION_EXHAUST, 2))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait... to keep talking here.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait ... To keep talking here.");
 		return false;
 	}
 
