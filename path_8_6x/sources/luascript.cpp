@@ -1699,9 +1699,6 @@ void LuaInterface::registerFunctions()
 	//getTileItemByType(pos, type)
 	lua_register(m_luaState, "getTileItemByType", LuaInterface::luaGetTileItemByType);
 
-	//getTileThingByPos(pos)
-	lua_register(m_luaState, "getTileThingByPos", LuaInterface::luaGetTileThingByPos);
-
 	//getTopCreature(pos)
 	lua_register(m_luaState, "getTopCreature", LuaInterface::luaGetTopCreature);
 
@@ -4773,6 +4770,13 @@ int32_t LuaInterface::luaGetThingFromPosition(lua_State* L)
 			thing = tile->getFieldItem();
 		else if(pos.stackpos == 253)
 			thing = tile->getTopCreature();
+		else if(pos.stackpos == 0)
+			thing = tile->ground;
+		else if(pos.stackpos == -1)
+		{
+			lua_pushnumber(L, tile->getThingCount());
+			return 1;
+		}
 		else
 			thing = tile->__getThing(pos.stackpos);
 
@@ -4784,8 +4788,11 @@ int32_t LuaInterface::luaGetThingFromPosition(lua_State* L)
 		return 1;
 	}
 
-	errorEx(getError(LUA_ERROR_TILE_NOT_FOUND));
-	pushThing(L, NULL, 0);
+	if(pos.stackpos != -1)
+		pushThing(L, NULL, 0);
+	else
+		lua_pushnil(L);
+
 	return 1;
 }
 
@@ -4897,9 +4904,20 @@ int32_t LuaInterface::luaGetTileItemByType(lua_State* L)
 	}
 
 	ScriptEnviroment* env = getEnv();
+	if(tile->ground)
+	{
+		const ItemType& it = Item::items[tile->ground->getID()];
+		if(it.type == (ItemTypes_t)rType)
+		{
+			uint32_t uid = env->addThing(tile->ground);
+			pushThing(L, tile->ground, uid);
+			return 1;
+		}
+	}
+
 	if(TileItemVector* items = tile->getItemList())
 	{
-		for(ItemVector::iterator it = items->begin(); it != items->end(); ++it)
+		for(ItemVector::const_iterator it = items->begin(), end = items->end(); it != end; ++it)
 		{
 			if(Item::items[(*it)->getID()].type != (ItemTypes_t)rType)
 				continue;
@@ -4910,45 +4928,6 @@ int32_t LuaInterface::luaGetTileItemByType(lua_State* L)
 	}
 
 	pushThing(L, NULL, 0);
-	return 1;
-}
-
-int32_t LuaInterface::luaGetTileThingByPos(lua_State* L)
-{
-	//getTileThingByPos(pos)
-	PositionEx pos;
-	popPosition(L, pos);
-	ScriptEnviroment* env = getEnv();
-
-	Tile* tile = g_game.getTile(pos.x, pos.y, pos.z);
-	if(!tile)
-	{
-		if(pos.stackpos == -1)
-		{
-			lua_pushnumber(L, -1);
-			return 1;
-		}
-		else
-		{
-			pushThing(L, NULL, 0);
-			return 1;
-		}
-	}
-
-	if(pos.stackpos == -1)
-	{
-		lua_pushnumber(L, tile->getThingCount());
-		return 1;
-	}
-
-	Thing* thing = tile->__getThing(pos.stackpos);
-	if(!thing)
-	{
-		pushThing(L, NULL, 0);
-		return 1;
-	}
-
-	pushThing(L, thing, env->addThing(thing));
 	return 1;
 }
 
@@ -5881,7 +5860,7 @@ int32_t LuaInterface::luaSetHouseOwner(lua_State* L)
 
 int32_t LuaInterface::luaGetWorldType(lua_State* L)
 {
-	lua_pushnumber(L, (uint32_t)g_game.getWorldType());
+	lua_pushnumber(L, (uint32_t)g_game.getWorldType(NULL));
 	return 1;
 }
 
@@ -10436,6 +10415,7 @@ int32_t LuaInterface::luaGetItemInfo(lua_State* L)
 	setFieldBool(L, "blockPathing", item->blockPathFind);
 	setFieldBool(L, "allowPickupable", item->allowPickupable);
 	setFieldBool(L, "alwaysOnTop", item->alwaysOnTop);
+	setFieldBool(L, "dualWield", item->dualWield);
 
 	createTable(L, "floorChange");
 	for(int32_t i = CHANGE_FIRST; i <= CHANGE_LAST; ++i)
@@ -10701,17 +10681,17 @@ int32_t LuaInterface::luaGetItemParent(lua_State* L)
 		return 1;
 	}
 
-	if(Tile* tile = thing->getParent()->getTile())
-	{
-		if(tile->ground)
-			pushThing(L, tile->ground, env->addThing(tile->ground));
-		else
-			pushThing(L, NULL, 0);
-	}
 	if(Item* container = thing->getParent()->getItem())
 		pushThing(L, container, env->addThing(container));
 	else if(Creature* creature = thing->getParent()->getCreature())
 		pushThing(L, creature, env->addThing(creature));
+	else if(Tile* tile = thing->getParent()->getTile())
+	{
+		if(tile->ground && tile->ground != thing)
+			pushThing(L, tile->ground, env->addThing(tile->ground));
+		else
+			pushThing(L, NULL, 0);
+	}
 	else
 		pushThing(L, NULL, 0);
 

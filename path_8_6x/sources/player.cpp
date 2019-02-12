@@ -918,11 +918,11 @@ bool Player::canWalkthrough(const Creature* creature) const
 	if(!player)
 		return false;
 
-	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) &&
-			!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
-			&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
-			|| player->getAccess() <= getAccess()))
-			return true;
+	if(((g_game.getWorldType(this, player) == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) && !player->isProtected())
+		|| player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
+		&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
+		|| player->getAccess() <= getAccess()))
+		return true;
 
 	return (player->isGhost() && getGhostAccess() < player->getGhostAccess())
 		|| (isGhost() && getGhostAccess() > player->getGhostAccess());
@@ -1625,12 +1625,15 @@ void Player::onTargetChangeZone(ZoneType_t zone)
 		setAttackedCreature(NULL);
 		onTargetDisappear(false);
 	}
-	else if(zone == ZONE_OPEN && g_game.getWorldType() == WORLDTYPE_OPTIONAL && attackedCreature->getPlayer()
-		&& !attackedCreature->getPlayer()->isEnemy(this, true))
+	else if (zone == ZONE_OPEN)
 	{
-		//attackedCreature can leave a pvp zone if not pzlocked
-		setAttackedCreature(NULL);
-		onTargetDisappear(false);
+		if (g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
+			&& attackedCreature->getPlayer() && !attackedCreature->getPlayer()->isEnemy(this, true))
+		{
+			//attackedCreature can leave a pvp zone if not pzlocked
+			setAttackedCreature(NULL);
+			onTargetDisappear(false);
+		}
 	}
 }
 
@@ -1987,7 +1990,12 @@ void Player::onThink(uint32_t interval)
 		if(hasClient())
 			client->logout(true, true);
 		else if(g_creatureEvents->playerLogout(this, false))
+		{
+			if(!isGhost())
+				g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_POFF);
+
 			g_game.removeCreature(this, true);
+		}
 	}
 
 	messageTicks += interval;
@@ -2451,7 +2459,11 @@ bool Player::onDeath()
 			}
 
 			if(skillLoss && !preventLoss && it.abilities->preventLoss)
+			{
 				preventLoss = item;
+				if(preventLoss != preventDrop && it.abilities->preventDrop)
+					preventDrop = item;
+			}
 		}
 	}
 
@@ -2707,7 +2719,7 @@ void Player::addExhaust(uint32_t ticks, Exhaust_t exhaust)
 
 void Player::addInFightTicks(bool pzLock, int32_t ticks/* = 0*/)
 {
-	if(hasFlag(PlayerFlag_NotGainInFight))
+	if(hasFlag(PlayerFlag_NotGainInFight) || getZone() == ZONE_PROTECTION)
 		return;
 
 	if(!ticks)
@@ -2768,7 +2780,10 @@ void Player::kick(bool displayEffect, bool forceLogout)
 	if(!hasClient())
 	{
 		if(g_creatureEvents->playerLogout(this, forceLogout))
+		{
+			client->clear(true);
 			g_game.removeCreature(this);
+		}
 	}
 	else
 		client->logout(displayEffect, forceLogout);
@@ -4006,7 +4021,7 @@ void Player::onEndCondition(ConditionType_t type)
 	sendIcons();
 }
 
-void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
+void Player::onCombatRemoveCondition(const Creature* attacker, Condition* condition)
 {
 	//Creature::onCombatRemoveCondition(attacker, condition);
 	bool remove = true;
@@ -4014,7 +4029,7 @@ void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
 	{
 		remove = false;
 		//Means the condition is from an item, id == slot
-		if(g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		if(g_game.getWorldType(this, attacker->getPlayer()) == WORLDTYPE_HARDCORE)
 		{
 			if(Item* item = getInventoryItem((slots_t)condition->getId()))
 			{
@@ -4064,7 +4079,7 @@ void Player::onTarget(Creature* target)
 	Player* targetPlayer = target->getPlayer();
 	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
-		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		if(!pzLocked && g_game.getWorldType(this, targetPlayer) == WORLDTYPE_HARDCORE)
 		{
 			pzLocked = true;
 			sendIcons();
@@ -4215,7 +4230,7 @@ bool Player::isEnemy(const Player* player, bool allies) const
 	if(!guild)
 		return false;
 
-	return !warMap.empty() && (((g_game.getWorldType() != WORLDTYPE_OPTIONAL || g_config.getBool(
+	return !warMap.empty() && (((g_game.getWorldType(this, player) != WORLDTYPE_OPTIONAL || g_config.getBool(
 		ConfigManager::OPTIONAL_WAR_ATTACK_ALLY)) && allies && guildId == guild) ||
 		warMap.find(guild) != warMap.end());
 }
@@ -4525,14 +4540,14 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 {
 	if(const Player* player = creature->getPlayer())
 	{
-		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+		if(g_game.getWorldType(this, player) != WORLDTYPE_OPEN)
 			return SKULL_NONE;
 
 		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
 		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
-			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
+			g_game.getWorldType(this, player) != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
 
@@ -4567,7 +4582,7 @@ void Player::addAttacked(const Player* attacked)
 
 void Player::setSkullEnd(time_t _time, bool login, Skulls_t _skull)
 {
-	if(g_game.getWorldType() != WORLDTYPE_OPEN
+	if(g_game.getWorldType(this) != WORLDTYPE_OPEN
 		|| hasFlag(PlayerFlag_NotGainInFight) ||
 		hasCustomFlag(PlayerCustomFlag_NotGainSkull))
 		return;
@@ -4596,9 +4611,9 @@ void Player::setSkullEnd(time_t _time, bool login, Skulls_t _skull)
 bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 {
 	if(!g_config.getBool(ConfigManager::USE_FRAG_HANDLER) || hasFlag(
-		PlayerFlag_NotGainInFight) || g_game.getWorldType() != WORLDTYPE_OPEN
+		PlayerFlag_NotGainInFight) || g_game.getWorldType(this, attacked) != WORLDTYPE_OPEN
 		|| hasCustomFlag(PlayerCustomFlag_NotGainUnjustified) || hasCustomFlag(
-		PlayerCustomFlag_NotGainSkull) || attacked == this)
+		PlayerCustomFlag_NotGainSkull))
 		return false;
 
 	if(countNow)
@@ -5458,6 +5473,9 @@ PartyShields_t Player::getPartyShield(const Creature* creature) const
 
 	if(player->isInviting(this))
 		return SHIELD_WHITEYELLOW;
+
+	if(g_game.getWorldType(NULL) != g_game.getWorldType(player) && player != this)
+		return SHIELD_YELLOW;
 
 	return SHIELD_NONE;
 }

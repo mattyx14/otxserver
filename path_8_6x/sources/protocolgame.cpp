@@ -297,6 +297,19 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			return false;
 		}
 
+		if(!g_game.placeCreature(player, player->getLoginPosition()))
+		{
+			Position pos = g_game.getClosestFreeTile(player, player->getMasterPosition(), true, false);
+			if(!pos.x)
+				pos = player->getMasterPosition();
+
+			if(!g_game.placeCreature(player, pos, false, true))
+			{
+				disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
+				return false;
+			}
+		}
+
 		player->setClientVersion(version);
 		player->setOperatingSystem(operatingSystem);
 
@@ -309,19 +322,13 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		player->lastLoad = OTSYS_TIME();
 		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
 
-		if(!g_game.placeCreature(player, player->getLoginPosition()) && !g_game.placeCreature(player, player->getMasterPosition(), false, true))
-		{
-			disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
-			return false;
-		}
-
 		m_acceptPackets = true;
 		return true;
 	}
 
 	if(gamemaster && !_player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
 	{
-		disconnectClient(0x14, "You are not a gamemaster! Turn off the gamemaster mode in your IP changer.");
+		disconnectClient(0x14, "You are not allowed to play on spectator mode.");
 		return false;
 	}
 
@@ -375,7 +382,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 					return false;
 				}
 
-				if(player->getZone() != ZONE_PROTECTION && player->hasCondition(CONDITION_INFIGHT))
+				if(!player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) && player->hasCondition(CONDITION_INFIGHT))
 				{
 					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
 						player->addCondition(condition);
@@ -505,7 +512,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 #endif
 		g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
-		disconnect();
+		getConnection()->close();
 		return;
 	}
 
@@ -589,7 +596,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	std::string hash, salt;
-	if(name != "10" && (!IOLoginData::getInstance()->getPassword(id, hash, salt, character) || !encryptTest(salt + password, hash)))
+	if(id != 10 && (!IOLoginData::getInstance()->getPassword(id, hash, salt, character) || !encryptTest(salt + password, hash)))
 	{
 		ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 		disconnectClient(0x14, "Invalid password.");
@@ -619,12 +626,12 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, true);
-	if(name == "10")
-		Dispatcher::getInstance().addTask(createTask(boost::bind(
-			&ProtocolGame::spectate, this, character, password)));
-	else
+	if(id != 10)
 		Dispatcher::getInstance().addTask(createTask(boost::bind(
 			&ProtocolGame::login, this, character, id, password, operatingSystem, version, gamemaster)));
+	else
+		Dispatcher::getInstance().addTask(createTask(boost::bind(
+			&ProtocolGame::spectate, this, character, password)));
 }
 
 void ProtocolGame::parsePacket(NetworkMessage &msg)

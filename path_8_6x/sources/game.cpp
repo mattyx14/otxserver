@@ -94,6 +94,15 @@ Game::~Game()
 	delete map;
 }
 
+WorldType_t Game::getWorldType(const Player* player, const Player* target/* = NULL*/) const
+{
+	std::string value;
+	return g_config.getBool(ConfigManager::OPTIONAL_PROTECTION) && ((player && player->getStorage("protected", value)
+		&& booleanString(value)) || (player && target && target->getStorage("protected", value)
+		&& booleanString(value) && !player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)))
+		? WORLDTYPE_OPTIONAL : worldType;
+}
+
 void Game::start(ServiceManager* servicer)
 {
 	checkDecayEvent = Scheduler::getInstance().addEvent(createSchedulerTask(EVENT_DECAYINTERVAL,
@@ -1211,10 +1220,11 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 				}
 			}
 
-			if(player->isProtected())
+			if(Player* movingPlayer = movingCreature->getPlayer())
 			{
-				Player* movingPlayer = movingCreature->getPlayer();
-				if(movingPlayer && !movingPlayer->isProtected())
+				if((player->isProtected() && !movingPlayer->isProtected()) || (getWorldType(player) == WORLDTYPE_OPTIONAL
+					&& getWorldType(movingPlayer) != WORLDTYPE_OPTIONAL && !player->isEnemy(movingPlayer, true)
+					&& !player->isAlly(movingPlayer)))
 				{
 					player->sendCancelMessage(RET_NOTMOVABLE);
 					return false;
