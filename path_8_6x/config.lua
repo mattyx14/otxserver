@@ -288,7 +288,6 @@
 	daemonize = false
 	defaultPriority = "higher"
 	niceLevel = 5
-	serviceThreads = 1
 	coresUsed = "-1" -- ("0, 1, 2, 3") -- For QuadCore ONLY Windows
 	startupDatabaseOptimization = true
 	removePremiumOnInit = true

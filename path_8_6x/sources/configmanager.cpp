@@ -102,7 +102,6 @@ bool ConfigManager::load()
 		m_confBool[OPTIMIZE_DATABASE] = getGlobalBool("startupDatabaseOptimization", true);
 		m_confString[MAP_NAME] = getGlobalString("mapName", "forgotten.otbm");
 		m_confBool[GLOBALSAVE_ENABLED] = getGlobalBool("globalSaveEnabled", true);
-		m_confNumber[SERVICE_THREADS] = getGlobalNumber("serviceThreads", 1);
 		m_confNumber[GLOBALSAVE_H] = getGlobalNumber("globalSaveHour", 8);
 		m_confNumber[GLOBALSAVE_M] = getGlobalNumber("globalSaveMinute", 0);
 		m_confString[HOUSE_RENT_PERIOD] = getGlobalString("houseRentPeriod", "monthly");
