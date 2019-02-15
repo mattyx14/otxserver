@@ -173,6 +173,8 @@
 		attackImmediatelyAfterLoggingIn = false
 		exhaustionNPC = true
 		exhaustionInSecondsNPC = 1
+		delayLastPushStep = true
+		optionalProtection = true
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
@@ -202,12 +204,27 @@
 	packetsPerSecond = 50
 	loginProtectionTime = 10
 
-	-- Deathlist
+	-- Death List and Blessings
+	-- Function retroPVP true change it:
+	-- deathAssistCount to 1
+	-- useFairfightReduction to false
+	-- fairFightTimeRange = 30
 	deathListEnabled = true
 	deathListRequiredTime = 1 * 60 * 1000
-	deathAssistCount = 20
 	maxDeathRecords = 5
 	multipleNames = false
+		-- Retro PVP
+		retroPVP = false
+		deathAssistCount = 20
+		-- Blessings
+		blessings = true
+		blessingOnlyPremium = true
+		blessingReductionBase = 30
+		blessingReductionDecrement = 5
+		eachBlessReduction = 8
+			useFairfightReduction = true
+			fairFightTimeRange = 60
+			pvpBlessingThreshold = 40
 
 	-- Guilds
 	-- NOTE: externalGuildWarsManagement supports Automatic Account Creator(webpage or whatever you want)
@@ -272,7 +289,6 @@
 	daemonize = false
 	defaultPriority = "higher"
 	niceLevel = 5
-	serviceThreads = 1
 	coresUsed = "-1" -- ("0, 1, 2, 3") -- For QuadCore ONLY Windows
 	startupDatabaseOptimization = true
 	removePremiumOnInit = true
@@ -323,16 +339,6 @@
 	freePremium = false
 	premiumForPromotion = true
 	updatePremiumStateAtStartup = true
-
-	-- Blessings
-	blessings = true
-	blessingOnlyPremium = true
-	blessingReductionBase = 30
-	blessingReductionDecrement = 5
-	eachBlessReduction = 8
-	useFairfightReduction = true
-	pvpBlessingThreshold = 40
-	fairFightTimeRange = 60
 
 	-- Rates
 	experienceStages = false

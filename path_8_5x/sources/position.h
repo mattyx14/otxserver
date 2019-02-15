@@ -32,12 +32,14 @@ enum Direction
 	SOUTHWEST = 4,
 	SOUTHEAST = 5,
 	NORTHWEST = 6,
-	NORTHEAST = 7
+	NORTHEAST = 7,
+	NODIR = 8
 };
 
 typedef std::pair<int32_t, int32_t> PositionPair;
 typedef std::vector<PositionPair> PairVector;
 typedef std::vector<Direction> DirVector;
+typedef std::list<Direction> DirList;
 
 class Position
 {
