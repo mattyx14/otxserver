@@ -69,6 +69,7 @@
 		#421, #424(Reason184), #428(Reason184), #429(Reason184), #435(Reason184)
 	- Optimize code in critical fixes
 	- Update statusOnline 0.0.0.0 no counter
+	- Update items (base OTX 3)
 ]
 
 [ OTX Server 2.8 :: Version "LEZICK"
