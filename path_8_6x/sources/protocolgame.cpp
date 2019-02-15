@@ -361,7 +361,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 	if(!player)
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 1))
+	if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_DEFAULT))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
 		return false;
@@ -375,7 +375,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 			{
 				if(player->getTile()->hasFlag(TILESTATE_NOLOGOUT))
 				{
-					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, EXHAUST_DEFAULT))
 						player->addCondition(condition);
 
 					player->sendCancelMessage(RET_YOUCANNOTLOGOUTHERE);
@@ -384,7 +384,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 
 				if(!player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) && player->hasCondition(CONDITION_INFIGHT))
 				{
-					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, EXHAUST_DEFAULT))
 						player->addCondition(condition);
 
 					player->sendCancelMessage(RET_YOUMAYNOTLOGOUTDURINGAFIGHT);
