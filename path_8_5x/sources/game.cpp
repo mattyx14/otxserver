@@ -6891,12 +6891,8 @@ void Game::freeThing(Thing* thing)
 
 void Game::showHotkeyUseMessage(Player* player, Item* item)
 {
-	int32_t subType = -1;
-	if(item->hasSubType() && !item->hasCharges())
-		subType = item->getSubType();
-
 	const ItemType& it = Item::items[item->getID()];
-	uint32_t count = player->__getItemTypeCount(item->getID(), subType, false);
+	uint32_t count = player->__getItemTypeCount(item->getID(), item->isFluidContainer() ? item->getFluidType() : -1);
 
 	std::stringstream stream;
 	if(!it.showCount)
