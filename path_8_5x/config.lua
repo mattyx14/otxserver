@@ -174,7 +174,7 @@
 		exhaustionNPC = true
 		exhaustionInSecondsNPC = 1
 		delayLastPushStep = true
-		optionalProtection = true
+		optionalProtection = false
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
