@@ -12,7 +12,7 @@
 			for _, pid in ipairs(players) do
 				local data = getPlayerSpectators(pid)
 				if(data.broadcast) then
-					db.executeQuery("UPDATE `players` SET `viewers` = " .. table.size(data.names) .. " WHERE `id` = " .. getPlayerGUID(pid) .. ";")
+					db.executeQuery("UPDATE `players` set `viewers` = " .. table.maxn(data.names) .. " where `id` = " .. getPlayerGUID(pid) .. ";")
 				end
 			end
 
@@ -219,15 +219,15 @@
 				if(t[2]) then
 					if(isInArray({'off', 'no', 'disable'}, t[2])) then
 						if(data.password:len() ~= 0) then
-							db.executeQuery("UPDATE `players` SET `broadcasting` = 1 WHERE `id` = " .. getPlayerGUID(cid))
+							db.executeQuery("UPDATE `players` SET `broadcasting` = `broadcasting` - 2 WHERE `id` = " .. getPlayerGUID(cid))
 						end
 
 						data.password = ""
 						doPlayerSetSpectators(cid, data)
 						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have removed password for your stream.")
 					else
-						if(data.password:len() == 0) then
-							db.executeQuery("UPDATE `players` SET `broadcasting` = 3 WHERE `id` = " .. getPlayerGUID(cid))
+						if(data.password:len() ~= 0) then
+							db.executeQuery("UPDATE `players` SET `broadcasting` = `broadcasting` + 2 WHERE `id` = " .. getPlayerGUID(cid))
 						end
 
 						data.password = string.trim(t[2])
