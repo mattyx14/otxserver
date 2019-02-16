@@ -3272,8 +3272,8 @@ bool Game::playerAcceptTrade(uint32_t playerId)
 		tradeItems.erase(it);
 	}
 
-	ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, 0, true);
-	ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, 0, true);
+	ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, FLAG_IGNOREAUTOSTACK, true);
+	ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, FLAG_IGNOREAUTOSTACK, true);
 
 	bool success = false;
 	if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
@@ -3282,14 +3282,14 @@ bool Game::playerAcceptTrade(uint32_t playerId)
 		ret2 = internalRemoveItem(player, tradeItem2, tradeItem2->getItemCount(), true);
 		if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
 		{
-			internalMoveItem(player, tradeItem1->getParent(), tradePartner, INDEX_WHEREEVER,
-				tradeItem1, tradeItem1->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
-			internalMoveItem(tradePartner, tradeItem2->getParent(), player, INDEX_WHEREEVER,
-				tradeItem2, tradeItem2->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
-
-			tradeItem1->onTradeEvent(ON_TRADE_TRANSFER, tradePartner, player);
-			tradeItem2->onTradeEvent(ON_TRADE_TRANSFER, player, tradePartner);
-			success = true;
+			ret1 = internalMoveTradeItem(NULL, tradeItem1->getParent(), tradePartner, INDEX_WHEREEVER, tradeItem1, tradeItem2, tradeItem1->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
+			if(ret1 == RET_NOERROR)
+			{
+				internalMoveItem(NULL, tradeItem2->getParent(), player, INDEX_WHEREEVER, tradeItem2, tradeItem2->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
+				tradeItem1->onTradeEvent(ON_TRADE_FINISH, tradePartner, player);
+				tradeItem2->onTradeEvent(ON_TRADE_FINISH, player, tradePartner);
+				success = true;
+			}
 		}
 	}
 
