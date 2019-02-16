@@ -1690,6 +1690,158 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	return ret;
 }
 
+ReturnValue Game::internalMoveTradeItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder,
+	int32_t index, Item* item, Item* tradeItem, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/)
+{
+	if(!toCylinder)
+		return RET_NOTPOSSIBLE;
+
+	if(!item->getParent())
+	{
+		assert(fromCylinder == item->getParent());
+		return internalAddItem(actor, toCylinder, item, INDEX_WHEREEVER, FLAG_NOLIMIT);
+	}
+
+	Item* toItem = NULL;
+	Cylinder* subCylinder = NULL;
+
+	int32_t floor = 0;
+	while((subCylinder = toCylinder->__queryDestination(index, item, &toItem, flags)) != toCylinder)
+	{
+		flags = 0;
+		toCylinder = subCylinder;
+		//to prevent infinite loop
+		if(++floor >= MAP_MAX_LAYERS)
+			break;
+	}
+
+	//destination is the same as the source?
+	if(item == toItem)
+		return RET_NOERROR; //silently ignore move
+
+	//check if we can add this item
+	ReturnValue ret = toCylinder->__queryAdd(index, item, count, flags, actor);
+	if(ret == RET_NEEDEXCHANGE)
+	{
+		//check if we can add it to source cylinder
+		int32_t fromIndex = fromCylinder->__getIndexOfThing(item);
+		if((ret = fromCylinder->__queryAdd(fromIndex, toItem, toItem->getItemCount(), 0, actor)) == RET_NOERROR)
+		{
+			//check how much we can move
+			uint32_t maxExchangeQueryCount = 0;
+			ReturnValue retExchangeMaxCount = fromCylinder->__queryMaxCount(INDEX_WHEREEVER, toItem, toItem->getItemCount(), maxExchangeQueryCount, 0);
+			if(retExchangeMaxCount != RET_NOERROR && maxExchangeQueryCount == 0)
+				return retExchangeMaxCount;
+
+			if((toCylinder->__queryRemove(toItem, toItem->getItemCount(), flags, actor) == RET_NOERROR) && ret == RET_NOERROR)
+			{
+				int32_t oldToItemIndex = toCylinder->__getIndexOfThing(toItem);
+				toCylinder->__removeThing(toItem, toItem->getItemCount());
+
+				fromCylinder->__addThing(actor, toItem);
+				if(oldToItemIndex != -1)
+					toCylinder->postRemoveNotification(actor, toItem, fromCylinder, oldToItemIndex, true);
+
+				int32_t newToItemIndex = fromCylinder->__getIndexOfThing(toItem);
+				if(newToItemIndex != -1)
+					fromCylinder->postAddNotification(actor, toItem, toCylinder, newToItemIndex);
+
+				ret = toCylinder->__queryAdd(index, item, count, flags, actor);
+				toItem = NULL;
+			}
+		}
+	}
+
+	if(ret != RET_NOERROR)
+		return ret;
+
+	//check how much we can move
+	uint32_t maxQueryCount = 0;
+	ReturnValue retMaxCount = toCylinder->__queryMaxCount(index, item, count, maxQueryCount, flags);
+	if(retMaxCount != RET_NOERROR && !maxQueryCount)
+		return ret;
+
+	uint32_t m = maxQueryCount;
+	if(item->isStackable())
+		m = std::min((uint32_t)count, m);
+
+	Item* moveItem = item;
+	//check if we can remove this item
+	if((ret = fromCylinder->__queryRemove(item, m, flags, actor)) != RET_NOERROR)
+		return ret;
+
+	if(toCylinder->getItem() == tradeItem)
+		return RET_NOTENOUGHROOM;
+
+	Cylinder* tmpCylinder = toCylinder->getParent();
+	while(tmpCylinder)
+	{
+		if(tmpCylinder->getItem() == tradeItem)
+			return RET_NOTENOUGHROOM;
+
+		tmpCylinder = tmpCylinder->getParent();
+	}
+
+	//remove the item
+	int32_t itemIndex = fromCylinder->__getIndexOfThing(item);
+	fromCylinder->__removeThing(item, m);
+	bool isCompleteRemoval = item->isRemoved();
+
+	Item* updateItem = NULL;
+	if(item->isStackable())
+	{
+		uint8_t n = 0;
+		if(toItem && toItem->getID() == item->getID())
+		{
+			n = std::min((uint32_t)100 - toItem->getItemCount(), m);
+			toCylinder->__updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
+			updateItem = toItem;
+		}
+
+		if(m - n > 0)
+			moveItem = Item::CreateItem(item->getID(), m - n);
+		else
+			moveItem = NULL;
+
+		if(item->isRemoved())
+			freeThing(item);
+	}
+
+	if(moveItem)
+		toCylinder->__addThing(actor, index, moveItem);
+
+	if(itemIndex != -1)
+		fromCylinder->postRemoveNotification(actor, item, toCylinder, itemIndex, isCompleteRemoval);
+
+	if(moveItem)
+	{
+		int32_t moveItemIndex = toCylinder->__getIndexOfThing(moveItem);
+		if(moveItemIndex != -1)
+			toCylinder->postAddNotification(actor, moveItem, fromCylinder, moveItemIndex);
+	}
+
+	if(updateItem)
+	{
+		int32_t updateItemIndex = toCylinder->__getIndexOfThing(updateItem);
+		if(updateItemIndex != -1)
+			toCylinder->postAddNotification(actor, updateItem, fromCylinder, updateItemIndex);
+	}
+
+	if(_moveItem)
+	{
+		if(moveItem)
+			*_moveItem = moveItem;
+		else
+			*_moveItem = item;
+	}
+
+	//we could not move all, inform the player
+	if(item->isStackable() && maxQueryCount < count)
+		return retMaxCount;
+
+	return ret;
+}
+
 ReturnValue Game::internalAddItem(Creature* actor, Cylinder* toCylinder, Item* item, int32_t index /*= INDEX_WHEREEVER*/,
 	uint32_t flags/* = 0*/, bool test/* = false*/)
 {
