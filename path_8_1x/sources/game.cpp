@@ -3253,8 +3253,8 @@ bool Game::playerAcceptTrade(uint32_t playerId)
 			if(ret1 == RET_NOERROR)
 			{
 				internalMoveItem(NULL, tradeItem2->getParent(), player, INDEX_WHEREEVER, tradeItem2, tradeItem2->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
-				tradeItem1->onTradeEvent(ON_TRADE_FINISH, tradePartner, player);
-				tradeItem2->onTradeEvent(ON_TRADE_FINISH, player, tradePartner);
+				tradeItem1->onTradeEvent(ON_TRADE_TRANSFER, tradePartner, player);
+				tradeItem2->onTradeEvent(ON_TRADE_TRANSFER, player, tradePartner);
 				success = true;
 			}
 		}
