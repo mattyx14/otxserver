@@ -2,7 +2,12 @@
 <mod name="Mod Cast" version="1.0" author="Martyx" contact="martyx@otland.net" enabled="yes">
 	<event type="logout" name="cast-log-out" event="script"><![CDATA[
 		function onLogout(cid, forceLogout)
+			if(getCreatureNoMove(cid)) then
+				return false
+			end
+
 			db.executeQuery("UPDATE `players` SET `broadcasting` = 0, `viewers` = 0 WHERE `id` = " .. getPlayerGUID(cid) .. " LIMIT 1")
+			doCreatureSetStorage(cid, "save")
 			return true
 		end
 	]]></event>

@@ -522,12 +522,14 @@ function getContainerItems(uid, itemid, recursive)
 	return a
 end
 
+-- Focus Save
 function doPlayerSaveEx(cid)
 	doCreatureSetStorage(cid, "save")
 	local result = doPlayerSave(cid)
 	doCreatureSetStorage(cid, "save", (os.time() + math.rand(30, 90)))
 	return result
 end
+-- Focus Save
 
 function doPlayerBuyItem(cid, itemid, count, cost, charges)
 	return doPlayerRemoveMoneyEx(cid, cost) and doPlayerGiveItem(cid, itemid, count, charges)
