@@ -1551,7 +1551,7 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 }
 
 ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder,
-	int32_t index, Item* item, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/)
+	int32_t index, Item* item, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/, Item* tradeItem/* = NULL*/)
 {
 	if(!toCylinder)
 		return RET_NOTPOSSIBLE;
@@ -1629,6 +1629,21 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	//check if we can remove this item
 	if((ret = fromCylinder->__queryRemove(item, m, flags, actor)) != RET_NOERROR)
 		return ret;
+
+	if(tradeItem)
+	{
+		if(toCylinder->getItem() == tradeItem)
+			return RET_NOTENOUGHROOM;
+
+		Cylinder* tmpCylinder = toCylinder->getParent();
+		while(tmpCylinder)
+		{
+			if(tmpCylinder->getItem() == tradeItem)
+				return RET_NOTENOUGHROOM;
+
+			tmpCylinder = tmpCylinder->getParent();
+		}
+	}
 
 	//remove the item
 	int32_t itemIndex = fromCylinder->__getIndexOfThing(item);
@@ -3371,110 +3386,121 @@ bool Game::internalStartTrade(Player* player, Player* tradePartner, Item* tradeI
 	return true;
 }
 
-bool Game::playerAcceptTrade(uint32_t playerId)
+void Game::playerAcceptTrade(uint32_t playerId)
 {
 	Player* player = getPlayerByID(playerId);
-	if(!player || player->isRemoved() || (player->getTradeState() != TRADE_ACKNOWLEDGE
-		&& player->getTradeState() != TRADE_INITIATED))
-		return false;
+	if (!player) {
+		return;
+	}
+
+	if (!(player->getTradeState() == TRADE_ACKNOWLEDGE || player->getTradeState() == TRADE_INITIATED)) {
+		return;
+	}
 
 	Player* tradePartner = player->tradePartner;
-	if(!tradePartner)
-		return false;
+	if (!tradePartner) {
+		return;
+	}
 
-	if(!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())
-		&& !player->hasCustomFlag(PlayerCustomFlag_CanThrowAnywhere))
-	{
+	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())) {
 		player->sendCancelMessage(RET_CREATUREISNOTREACHABLE);
-		return false;
+		return;
 	}
 
 	player->setTradeState(TRADE_ACCEPT);
-	if(tradePartner->getTradeState() != TRADE_ACCEPT)
-		return false;
 
-	Item* tradeItem1 = player->tradeItem;
-	Item* tradeItem2 = tradePartner->tradeItem;
+	if (tradePartner->getTradeState() == TRADE_ACCEPT) {
+		Item* tradeItem1 = player->tradeItem;
+		Item* tradeItem2 = tradePartner->tradeItem;
 
-	bool deny = false;
-	CreatureEventList tradeEvents = player->getCreatureEvents(CREATURE_EVENT_TRADE_ACCEPT);
-	for(CreatureEventList::iterator it = tradeEvents.begin(); it != tradeEvents.end(); ++it)
-	{
-		if(!(*it)->executeTradeAccept(player, tradePartner, tradeItem1, tradeItem2))
-			deny = true;
-	}
+		bool deny = false;
+		CreatureEventList tradeEvents = player->getCreatureEvents(CREATURE_EVENT_TRADE_ACCEPT);
+		for(CreatureEventList::iterator it = tradeEvents.begin(); it != tradeEvents.end(); ++it)
+		{
+			if(!(*it)->executeTradeAccept(player, tradePartner, tradeItem1, tradeItem2))
+				deny = true;
+		}
 
-	if(deny)
-		return false;
+		if(deny)
+			return;
 
-	player->setTradeState(TRADE_TRANSFER);
-	tradePartner->setTradeState(TRADE_TRANSFER);
+		player->setTradeState(TRADE_TRANSFER);
+		tradePartner->setTradeState(TRADE_TRANSFER);
 
-	std::map<Item*, uint32_t>::iterator it = tradeItems.find(tradeItem1);
-	if(it != tradeItems.end())
-	{
-		freeThing(it->first);
-		tradeItems.erase(it);
-	}
+		std::map<Item*, uint32_t>::iterator it = tradeItems.find(tradeItem1);
+		if(it != tradeItems.end())
+		{
+			freeThing(it->first);
+			tradeItems.erase(it);
+		}
 
-	it = tradeItems.find(tradeItem2);
-	if(it != tradeItems.end())
-	{
-		freeThing(it->first);
-		tradeItems.erase(it);
-	}
+		it = tradeItems.find(tradeItem2);
+		if(it != tradeItems.end())
+		{
+			freeThing(it->first);
+			tradeItems.erase(it);
+		}
 
-	ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, FLAG_IGNOREAUTOSTACK, true);
-	ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, FLAG_IGNOREAUTOSTACK, true);
+		bool isSuccess = false;
 
-	bool success = false;
-	if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
-	{
-		ret1 = internalRemoveItem(tradePartner, tradeItem1, tradeItem1->getItemCount(), true);
-		ret2 = internalRemoveItem(player, tradeItem2, tradeItem2->getItemCount(), true);
+		ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, 0, true);
+		ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, 0, true);
 		if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
 		{
-			ret1 = internalMoveTradeItem(NULL, tradeItem1->getParent(), tradePartner, INDEX_WHEREEVER, tradeItem1, tradeItem2, tradeItem1->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
-			if(ret1 == RET_NOERROR)
+			ret1 = internalRemoveItem(tradePartner, tradeItem1, tradeItem1->getItemCount(), true);
+			ret2 = internalRemoveItem(player, tradeItem2, tradeItem2->getItemCount(), true);
+			if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
 			{
-				internalMoveItem(NULL, tradeItem2->getParent(), player, INDEX_WHEREEVER, tradeItem2, tradeItem2->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
-				tradeItem1->onTradeEvent(ON_TRADE_TRANSFER, tradePartner, player);
-				tradeItem2->onTradeEvent(ON_TRADE_TRANSFER, player, tradePartner);
-				success = true;
+				Cylinder* cylinder1 = tradeItem1->getParent();
+				Cylinder* cylinder2 = tradeItem2->getParent();
+
+				uint32_t count1 = tradeItem1->getItemCount();
+				uint32_t count2 = tradeItem2->getItemCount();
+
+				ret1 = internalMoveItem(NULL, cylinder1, tradePartner, INDEX_WHEREEVER, tradeItem1, count1, NULL, FLAG_IGNOREAUTOSTACK);
+				//ret1 = internalMoveTradeItem(NULL, tradeItem1->getParent(), tradePartner, INDEX_WHEREEVER, tradeItem1, tradeItem2, tradeItem1->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
+				if(ret1 == RET_NOERROR)
+				{
+					internalMoveItem(NULL, cylinder2, player, INDEX_WHEREEVER, tradeItem2, count2, NULL, FLAG_IGNOREAUTOSTACK);
+					//internalMoveItem(NULL, tradeItem2->getParent(), player, INDEX_WHEREEVER, tradeItem2, tradeItem2->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
+
+					tradeItem1->onTradeEvent(ON_TRADE_TRANSFER, tradePartner, player);
+					tradeItem2->onTradeEvent(ON_TRADE_TRANSFER, player, tradePartner);
+
+					isSuccess = true;
+				}
 			}
 		}
-	}
 
-	if(!success)
-	{
-		std::string error;
-		if(tradeItem2)
+		if(!isSuccess)
 		{
-			error = getTradeErrorDescription(ret1, tradeItem1);
-			tradePartner->sendTextMessage(MSG_EVENT_ADVANCE, error);
-			tradeItem2->onTradeEvent(ON_TRADE_CANCEL, tradePartner, player);
+			std::string errorDescription;
+
+			if(tradePartner->tradeItem)
+			{
+				errorDescription = getTradeErrorDescription(ret1, tradeItem1);
+				tradePartner->sendTextMessage(MSG_EVENT_ADVANCE, errorDescription);
+				tradeItem2->onTradeEvent(ON_TRADE_CANCEL, tradePartner, player);
+			}
+
+			if(player->tradeItem)
+			{
+				errorDescription = getTradeErrorDescription(ret2, tradeItem2);
+				player->sendTextMessage(MSG_EVENT_ADVANCE, errorDescription);
+				tradeItem1->onTradeEvent(ON_TRADE_CANCEL, player, tradePartner);
+			}
 		}
 
-		if(tradeItem1)
-		{
-			error = getTradeErrorDescription(ret2, tradeItem2);
-			player->sendTextMessage(MSG_EVENT_ADVANCE, error);
-			tradeItem1->onTradeEvent(ON_TRADE_CANCEL, player, tradePartner);
-		}
+		player->setTradeState(TRADE_NONE);
+		player->tradeItem = NULL;
+		player->tradePartner = NULL;
+		player->sendTradeClose();
+
+		tradePartner->setTradeState(TRADE_NONE);
+		tradePartner->tradeItem = NULL;
+		tradePartner->tradePartner = NULL;
+		tradePartner->sendTradeClose();
 	}
-
-	player->setTradeState(TRADE_NONE);
-	player->tradeItem = NULL;
-	player->tradePartner = NULL;
-	player->sendTradeClose();
-	IOLoginData::getInstance()->savePlayer(player);
-
-	tradePartner->setTradeState(TRADE_NONE);
-	tradePartner->tradeItem = NULL;
-	tradePartner->tradePartner = NULL;
-	tradePartner->sendTradeClose();
-	IOLoginData::getInstance()->savePlayer(tradePartner);
-	return success;
 }
 
 std::string Game::getTradeErrorDescription(ReturnValue ret, Item* item)
