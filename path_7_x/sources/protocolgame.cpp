@@ -1695,11 +1695,13 @@ void ProtocolGame::sendTradeItemRequest(const Player* _player, const Item* item,
 		msg->put<char>(0x7E);
 
 	msg->putString(_player->getName());
-	if (const Container* container = item->getContainer())
+	if(const Container* container = item->getContainer())
 	{
-		msg->put<char>(container->getItemHoldingCount() + 1);
+		msg->put<char>(std::min(255U, container->getItemHoldingCount() + 1));
 		msg->putItem(item);
-		for (ContainerIterator it = container->begin(); it != container->end(); ++it)
+
+		uint16_t i = 0;
+		for(ContainerIterator it = container->begin(); i < 255 && it != container->end(); ++it, ++i)
 			msg->putItem(*it);
 	}
 	else

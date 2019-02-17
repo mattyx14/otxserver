@@ -355,7 +355,7 @@ class Game
 			Cylinder* toCylinder, uint32_t flags = 0, bool forceTeleport = false);
 
 		ReturnValue internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index,
-			Item* item, uint32_t count, Item** _moveItem, uint32_t flags = 0);
+			Item* item, uint32_t count, Item** _moveItem, uint32_t flags = 0, Item* tradeItem = NULL);
 		ReturnValue internalMoveTradeItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index,
 			Item* item, Item* tradeItem, uint32_t count, Item** _moveItem, uint32_t flags = 0);
 
@@ -501,7 +501,7 @@ class Game
 		bool playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
 		bool playerRequestTrade(uint32_t playerId, const Position& pos, int16_t stackpos,
 			uint32_t tradePlayerId, uint16_t spriteId);
-		bool playerAcceptTrade(uint32_t playerId);
+		void playerAcceptTrade(uint32_t playerId);
 		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
 		bool playerCloseTrade(uint32_t playerId);
 		bool playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);

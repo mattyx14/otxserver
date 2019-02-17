@@ -3389,27 +3389,32 @@ bool Game::internalStartTrade(Player* player, Player* tradePartner, Item* tradeI
 void Game::playerAcceptTrade(uint32_t playerId)
 {
 	Player* player = getPlayerByID(playerId);
-	if (!player) {
+	if(!player)
+	{
 		return;
 	}
 
-	if (!(player->getTradeState() == TRADE_ACKNOWLEDGE || player->getTradeState() == TRADE_INITIATED)) {
+	if(!(player->getTradeState() == TRADE_ACKNOWLEDGE || player->getTradeState() == TRADE_INITIATED))
+	{
 		return;
 	}
 
 	Player* tradePartner = player->tradePartner;
-	if (!tradePartner) {
+	if(!tradePartner)
+	{
 		return;
 	}
 
-	if (!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())) {
+	if(!canThrowObjectTo(tradePartner->getPosition(), player->getPosition()))
+	{
 		player->sendCancelMessage(RET_CREATUREISNOTREACHABLE);
 		return;
 	}
 
 	player->setTradeState(TRADE_ACCEPT);
 
-	if (tradePartner->getTradeState() == TRADE_ACCEPT) {
+	if(tradePartner->getTradeState() == TRADE_ACCEPT)
+	{
 		Item* tradeItem1 = player->tradeItem;
 		Item* tradeItem2 = tradePartner->tradeItem;
 
@@ -3458,11 +3463,9 @@ void Game::playerAcceptTrade(uint32_t playerId)
 				uint32_t count2 = tradeItem2->getItemCount();
 
 				ret1 = internalMoveItem(NULL, cylinder1, tradePartner, INDEX_WHEREEVER, tradeItem1, count1, NULL, FLAG_IGNOREAUTOSTACK);
-				//ret1 = internalMoveTradeItem(NULL, tradeItem1->getParent(), tradePartner, INDEX_WHEREEVER, tradeItem1, tradeItem2, tradeItem1->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
 				if(ret1 == RET_NOERROR)
 				{
 					internalMoveItem(NULL, cylinder2, player, INDEX_WHEREEVER, tradeItem2, count2, NULL, FLAG_IGNOREAUTOSTACK);
-					//internalMoveItem(NULL, tradeItem2->getParent(), player, INDEX_WHEREEVER, tradeItem2, tradeItem2->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
 
 					tradeItem1->onTradeEvent(ON_TRADE_TRANSFER, tradePartner, player);
 					tradeItem2->onTradeEvent(ON_TRADE_TRANSFER, player, tradePartner);
