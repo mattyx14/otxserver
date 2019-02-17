@@ -526,7 +526,7 @@ end
 function doPlayerSaveEx(cid)
 	doCreatureSetStorage(cid, "save")
 	local result = doPlayerSave(cid)
-	doCreatureSetStorage(cid, "save", (os.time() + math.rand(30, 90)))
+	doCreatureSetStorage(cid, "save", (os.time() + math.random(30, 90)))
 	return result
 end
 -- Focus Save
