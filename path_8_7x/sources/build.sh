@@ -21,11 +21,10 @@
 # sys	0m4.766s
 
 # 1/7 of the original compile time!
-# When more you do it, more ccache will cache, default is limited to use 1GB storage
+# The more one uses it, the more ccache will cache
+# CCache is limited to use 1GB of storage by default
 
 echo "The OTX Server build script - "
-
-# Enable CCache
 if test -x `which ccache`; then
 	echo "Using ccache"
 	if [ -f /usr/lib/ccache/bin ]; then
@@ -39,11 +38,18 @@ else
 	echo "Warning: NOT using ccache, increase build time"
 fi
 
-# Get number cores
 CORES=`grep processor /proc/cpuinfo | wc -l`
-# Set make processes - 1 + number of cores
-MAKEOPT=$(($CORES + 1))
+
+MAKEOPT=$(($CORES / 2 + 1))
+if [ "$1" == "fast" ]; then
+	MAKEOPT=$(($CORES + 1))
+else
+	if [ "$1" == "slow" ]; then
+		MAKEOPT=2
+	fi
+fi
+
 echo ""
-echo "Start building on $CORES cores, using $MAKEOPT processes"
+echo "Building on $CORES cores, using $MAKEOPT processes"
 echo ""
 make V=0 -j $MAKEOPT

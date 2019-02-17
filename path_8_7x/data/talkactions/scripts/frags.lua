@@ -1,4 +1,8 @@
 function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
+	end
+
 	if(not getBooleanFromString(getConfigValue('useFragHandler'))) then
 		return false
 	end

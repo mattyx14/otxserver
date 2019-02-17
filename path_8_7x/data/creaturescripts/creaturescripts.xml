@@ -21,4 +21,5 @@
 	<event type="login" name="obs_login" event="script" value="obsidianknife.lua"/>
 	<event type="extendedopcode" name="ExtendedOpcode" event="script" value="extendedopcode.lua"/>
 	<event type="moveitem" name="MoveItem" event="script" value="houseprotect.lua"/>
+	<event type="tradeaccept" name="PlayerTrade" event="script" value="playerTrade.lua"/>
 </creaturescripts>

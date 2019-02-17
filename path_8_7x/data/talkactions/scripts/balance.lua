@@ -7,6 +7,10 @@ local function isValidMoney(value)
 end
 
 function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
+	end
+
 	local guild = getPlayerGuildId(cid)
 	if(guild == 0) then
 		return false

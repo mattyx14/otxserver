@@ -95,6 +95,15 @@ Game::~Game()
 	delete map;
 }
 
+WorldType_t Game::getWorldType(const Player* player, const Player* target/* = NULL*/) const
+{
+	std::string value;
+	return g_config.getBool(ConfigManager::OPTIONAL_PROTECTION) && ((player && player->getStorage("protected", value)
+		&& booleanString(value)) || (player && target && target->getStorage("protected", value)
+		&& booleanString(value) && !player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)))
+		? WORLDTYPE_OPTIONAL : worldType;
+}
+
 void Game::start(ServiceManager* servicer)
 {
 	checkDecayEvent = Scheduler::getInstance().addEvent(createSchedulerTask(EVENT_DECAYINTERVAL,
@@ -1212,10 +1221,11 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 				}
 			}
 
-			if(player->isProtected())
+			if(Player* movingPlayer = movingCreature->getPlayer())
 			{
-				Player* movingPlayer = movingCreature->getPlayer();
-				if(movingPlayer && !movingPlayer->isProtected())
+				if((player->isProtected() && !movingPlayer->isProtected()) || (getWorldType(player) == WORLDTYPE_OPTIONAL
+					&& getWorldType(movingPlayer) != WORLDTYPE_OPTIONAL && !player->isEnemy(movingPlayer, true)
+					&& !player->isAlly(movingPlayer)))
 				{
 					player->sendCancelMessage(RET_NOTMOVABLE);
 					return false;
@@ -1516,6 +1526,9 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 		return false;
 	}
 
+	if(!g_creatureEvents->executeMoveItems(player, item, mapFromPos, mapToPos))
+		return false;
+
 	bool deny = false;
 	CreatureEventList throwEvents = player->getCreatureEvents(CREATURE_EVENT_THROW);
 	for(CreatureEventList::iterator it = throwEvents.begin(); it != throwEvents.end(); ++it)
@@ -1539,7 +1552,7 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 }
 
 ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder,
-	int32_t index, Item* item, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/)
+	int32_t index, Item* item, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/, Item* tradeItem/* = NULL*/)
 {
 	if(!toCylinder)
 		return RET_NOTPOSSIBLE;
@@ -1617,6 +1630,173 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	//check if we can remove this item
 	if((ret = fromCylinder->__queryRemove(item, m, flags, actor)) != RET_NOERROR)
 		return ret;
+
+	if(tradeItem)
+	{
+		if(toCylinder->getItem() == tradeItem)
+			return RET_NOTENOUGHROOM;
+
+		Cylinder* tmpCylinder = toCylinder->getParent();
+		while(tmpCylinder)
+		{
+			if(tmpCylinder->getItem() == tradeItem)
+				return RET_NOTENOUGHROOM;
+
+			tmpCylinder = tmpCylinder->getParent();
+		}
+	}
+
+	//remove the item
+	int32_t itemIndex = fromCylinder->__getIndexOfThing(item);
+	fromCylinder->__removeThing(item, m);
+	bool isCompleteRemoval = item->isRemoved();
+
+	Item* updateItem = NULL;
+	if(item->isStackable())
+	{
+		uint8_t n = 0;
+		if(toItem && toItem->getID() == item->getID())
+		{
+			n = std::min((uint32_t)100 - toItem->getItemCount(), m);
+			toCylinder->__updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
+			updateItem = toItem;
+		}
+
+		if(m - n > 0)
+			moveItem = Item::CreateItem(item->getID(), m - n);
+		else
+			moveItem = NULL;
+
+		if(item->isRemoved())
+			freeThing(item);
+	}
+
+	if(moveItem)
+		toCylinder->__addThing(actor, index, moveItem);
+
+	if(itemIndex != -1)
+		fromCylinder->postRemoveNotification(actor, item, toCylinder, itemIndex, isCompleteRemoval);
+
+	if(moveItem)
+	{
+		int32_t moveItemIndex = toCylinder->__getIndexOfThing(moveItem);
+		if(moveItemIndex != -1)
+			toCylinder->postAddNotification(actor, moveItem, fromCylinder, moveItemIndex);
+	}
+
+	if(updateItem)
+	{
+		int32_t updateItemIndex = toCylinder->__getIndexOfThing(updateItem);
+		if(updateItemIndex != -1)
+			toCylinder->postAddNotification(actor, updateItem, fromCylinder, updateItemIndex);
+	}
+
+	if(_moveItem)
+	{
+		if(moveItem)
+			*_moveItem = moveItem;
+		else
+			*_moveItem = item;
+	}
+
+	//we could not move all, inform the player
+	if(item->isStackable() && maxQueryCount < count)
+		return retMaxCount;
+
+	return ret;
+}
+
+ReturnValue Game::internalMoveTradeItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder,
+	int32_t index, Item* item, Item* tradeItem, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/)
+{
+	if(!toCylinder)
+		return RET_NOTPOSSIBLE;
+
+	if(!item->getParent())
+	{
+		assert(fromCylinder == item->getParent());
+		return internalAddItem(actor, toCylinder, item, INDEX_WHEREEVER, FLAG_NOLIMIT);
+	}
+
+	Item* toItem = NULL;
+	Cylinder* subCylinder = NULL;
+
+	int32_t floor = 0;
+	while((subCylinder = toCylinder->__queryDestination(index, item, &toItem, flags)) != toCylinder)
+	{
+		flags = 0;
+		toCylinder = subCylinder;
+		//to prevent infinite loop
+		if(++floor >= MAP_MAX_LAYERS)
+			break;
+	}
+
+	//destination is the same as the source?
+	if(item == toItem)
+		return RET_NOERROR; //silently ignore move
+
+	//check if we can add this item
+	ReturnValue ret = toCylinder->__queryAdd(index, item, count, flags, actor);
+	if(ret == RET_NEEDEXCHANGE)
+	{
+		//check if we can add it to source cylinder
+		int32_t fromIndex = fromCylinder->__getIndexOfThing(item);
+		if((ret = fromCylinder->__queryAdd(fromIndex, toItem, toItem->getItemCount(), 0, actor)) == RET_NOERROR)
+		{
+			//check how much we can move
+			uint32_t maxExchangeQueryCount = 0;
+			ReturnValue retExchangeMaxCount = fromCylinder->__queryMaxCount(INDEX_WHEREEVER, toItem, toItem->getItemCount(), maxExchangeQueryCount, 0);
+			if(retExchangeMaxCount != RET_NOERROR && maxExchangeQueryCount == 0)
+				return retExchangeMaxCount;
+
+			if((toCylinder->__queryRemove(toItem, toItem->getItemCount(), flags, actor) == RET_NOERROR) && ret == RET_NOERROR)
+			{
+				int32_t oldToItemIndex = toCylinder->__getIndexOfThing(toItem);
+				toCylinder->__removeThing(toItem, toItem->getItemCount());
+
+				fromCylinder->__addThing(actor, toItem);
+				if(oldToItemIndex != -1)
+					toCylinder->postRemoveNotification(actor, toItem, fromCylinder, oldToItemIndex, true);
+
+				int32_t newToItemIndex = fromCylinder->__getIndexOfThing(toItem);
+				if(newToItemIndex != -1)
+					fromCylinder->postAddNotification(actor, toItem, toCylinder, newToItemIndex);
+
+				ret = toCylinder->__queryAdd(index, item, count, flags, actor);
+				toItem = NULL;
+			}
+		}
+	}
+
+	if(ret != RET_NOERROR)
+		return ret;
+
+	//check how much we can move
+	uint32_t maxQueryCount = 0;
+	ReturnValue retMaxCount = toCylinder->__queryMaxCount(index, item, count, maxQueryCount, flags);
+	if(retMaxCount != RET_NOERROR && !maxQueryCount)
+		return ret;
+
+	uint32_t m = maxQueryCount;
+	if(item->isStackable())
+		m = std::min((uint32_t)count, m);
+
+	Item* moveItem = item;
+	//check if we can remove this item
+	if((ret = fromCylinder->__queryRemove(item, m, flags, actor)) != RET_NOERROR)
+		return ret;
+
+	if(toCylinder->getItem() == tradeItem)
+		return RET_NOTENOUGHROOM;
+
+	Cylinder* tmpCylinder = toCylinder->getParent();
+	while(tmpCylinder)
+	{
+		if(tmpCylinder->getItem() == tradeItem)
+			return RET_NOTENOUGHROOM;
+
+		tmpCylinder = tmpCylinder->getParent();
+	}
 
 	//remove the item
 	int32_t itemIndex = fromCylinder->__getIndexOfThing(item);
@@ -2412,6 +2592,15 @@ bool Game::playerOpenPrivateChannel(uint32_t playerId, std::string& receiver)
 	if(!player || player->isRemoved())
 		return false;
 
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYEROPENCHANNEL))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "Please wait few seconds.");
+		return false;
+	}
+
+	if (Condition* privCondition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PLAYEROPENCHANNEL))
+		player->addCondition(privCondition);
+
 	bool deny = false;
 	CreatureEventList openEvents = player->getCreatureEvents(CREATURE_EVENT_CHANNEL_REQUEST);
 	for(CreatureEventList::iterator it = openEvents.begin(); it != openEvents.end(); ++it)
@@ -2984,13 +3173,13 @@ bool Game::playerRequestTrade(uint32_t playerId, const Position& pos, int16_t st
 	if(!player || player->isRemoved())
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 8))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERTRADE))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before you can trade again.");
 		return false;
 	}
 
-	if(Condition* conditiontrade = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 8))
+	if (Condition* conditiontrade = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PLAYERTRADE))
 		player->addCondition(conditiontrade);
 
 	Player* tradePartner = getPlayerByID(tradePlayerId);
@@ -3138,110 +3327,124 @@ bool Game::internalStartTrade(Player* player, Player* tradePartner, Item* tradeI
 	return true;
 }
 
-bool Game::playerAcceptTrade(uint32_t playerId)
+void Game::playerAcceptTrade(uint32_t playerId)
 {
 	Player* player = getPlayerByID(playerId);
-	if(!player || player->isRemoved() || (player->getTradeState() != TRADE_ACKNOWLEDGE
-		&& player->getTradeState() != TRADE_INITIATED))
-		return false;
+	if(!player)
+	{
+		return;
+	}
+
+	if(!(player->getTradeState() == TRADE_ACKNOWLEDGE || player->getTradeState() == TRADE_INITIATED))
+	{
+		return;
+	}
 
 	Player* tradePartner = player->tradePartner;
 	if(!tradePartner)
-		return false;
+	{
+		return;
+	}
 
-	if(!canThrowObjectTo(tradePartner->getPosition(), player->getPosition())
-		&& !player->hasCustomFlag(PlayerCustomFlag_CanThrowAnywhere))
+	if(!canThrowObjectTo(tradePartner->getPosition(), player->getPosition()))
 	{
 		player->sendCancelMessage(RET_CREATUREISNOTREACHABLE);
-		return false;
+		return;
 	}
 
 	player->setTradeState(TRADE_ACCEPT);
-	if(tradePartner->getTradeState() != TRADE_ACCEPT)
-		return false;
 
-	Item* tradeItem1 = player->tradeItem;
-	Item* tradeItem2 = tradePartner->tradeItem;
-
-	bool deny = false;
-	CreatureEventList tradeEvents = player->getCreatureEvents(CREATURE_EVENT_TRADE_ACCEPT);
-	for(CreatureEventList::iterator it = tradeEvents.begin(); it != tradeEvents.end(); ++it)
+	if(tradePartner->getTradeState() == TRADE_ACCEPT)
 	{
-		if(!(*it)->executeTradeAccept(player, tradePartner, tradeItem1, tradeItem2))
-			deny = true;
-	}
+		Item* tradeItem1 = player->tradeItem;
+		Item* tradeItem2 = tradePartner->tradeItem;
 
-	if(deny)
-		return false;
+		bool deny = false;
+		CreatureEventList tradeEvents = player->getCreatureEvents(CREATURE_EVENT_TRADE_ACCEPT);
+		for(CreatureEventList::iterator it = tradeEvents.begin(); it != tradeEvents.end(); ++it)
+		{
+			if(!(*it)->executeTradeAccept(player, tradePartner, tradeItem1, tradeItem2))
+				deny = true;
+		}
 
-	player->setTradeState(TRADE_TRANSFER);
-	tradePartner->setTradeState(TRADE_TRANSFER);
+		if(deny)
+			return;
 
-	std::map<Item*, uint32_t>::iterator it = tradeItems.find(tradeItem1);
-	if(it != tradeItems.end())
-	{
-		freeThing(it->first);
-		tradeItems.erase(it);
-	}
+		player->setTradeState(TRADE_TRANSFER);
+		tradePartner->setTradeState(TRADE_TRANSFER);
 
-	it = tradeItems.find(tradeItem2);
-	if(it != tradeItems.end())
-	{
-		freeThing(it->first);
-		tradeItems.erase(it);
-	}
+		std::map<Item*, uint32_t>::iterator it = tradeItems.find(tradeItem1);
+		if(it != tradeItems.end())
+		{
+			freeThing(it->first);
+			tradeItems.erase(it);
+		}
 
-	ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, 0, true);
-	ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, 0, true);
+		it = tradeItems.find(tradeItem2);
+		if(it != tradeItems.end())
+		{
+			freeThing(it->first);
+			tradeItems.erase(it);
+		}
 
-	bool success = false;
-	if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
-	{
-		ret1 = internalRemoveItem(tradePartner, tradeItem1, tradeItem1->getItemCount(), true);
-		ret2 = internalRemoveItem(player, tradeItem2, tradeItem2->getItemCount(), true);
+		bool isSuccess = false;
+
+		ReturnValue ret1 = internalAddItem(player, tradePartner, tradeItem1, INDEX_WHEREEVER, 0, true);
+		ReturnValue ret2 = internalAddItem(tradePartner, player, tradeItem2, INDEX_WHEREEVER, 0, true);
 		if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
 		{
-			internalMoveItem(player, tradeItem1->getParent(), tradePartner, INDEX_WHEREEVER,
-				tradeItem1, tradeItem1->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
-			internalMoveItem(tradePartner, tradeItem2->getParent(), player, INDEX_WHEREEVER,
-				tradeItem2, tradeItem2->getItemCount(), NULL, FLAG_IGNOREAUTOSTACK);
+			ret1 = internalRemoveItem(tradePartner, tradeItem1, tradeItem1->getItemCount(), true);
+			ret2 = internalRemoveItem(player, tradeItem2, tradeItem2->getItemCount(), true);
+			if(ret1 == RET_NOERROR && ret2 == RET_NOERROR)
+			{
+				Cylinder* cylinder1 = tradeItem1->getParent();
+				Cylinder* cylinder2 = tradeItem2->getParent();
 
-			tradeItem1->onTradeEvent(ON_TRADE_TRANSFER, tradePartner, player);
-			tradeItem2->onTradeEvent(ON_TRADE_TRANSFER, player, tradePartner);
-			success = true;
+				uint32_t count1 = tradeItem1->getItemCount();
+				uint32_t count2 = tradeItem2->getItemCount();
+
+				ret1 = internalMoveItem(NULL, cylinder1, tradePartner, INDEX_WHEREEVER, tradeItem1, count1, NULL, FLAG_IGNOREAUTOSTACK);
+				if(ret1 == RET_NOERROR)
+				{
+					internalMoveItem(NULL, cylinder2, player, INDEX_WHEREEVER, tradeItem2, count2, NULL, FLAG_IGNOREAUTOSTACK);
+
+					tradeItem1->onTradeEvent(ON_TRADE_TRANSFER, tradePartner, player);
+					tradeItem2->onTradeEvent(ON_TRADE_TRANSFER, player, tradePartner);
+
+					isSuccess = true;
+				}
+			}
 		}
-	}
 
-	if(!success)
-	{
-		std::string error;
-		if(tradeItem2)
+		if(!isSuccess)
 		{
-			error = getTradeErrorDescription(ret1, tradeItem1);
-			tradePartner->sendTextMessage(MSG_EVENT_ADVANCE, error);
-			tradeItem2->onTradeEvent(ON_TRADE_CANCEL, tradePartner, player);
+			std::string errorDescription;
+
+			if(tradePartner->tradeItem)
+			{
+				errorDescription = getTradeErrorDescription(ret1, tradeItem1);
+				tradePartner->sendTextMessage(MSG_EVENT_ADVANCE, errorDescription);
+				tradeItem2->onTradeEvent(ON_TRADE_CANCEL, tradePartner, player);
+			}
+
+			if(player->tradeItem)
+			{
+				errorDescription = getTradeErrorDescription(ret2, tradeItem2);
+				player->sendTextMessage(MSG_EVENT_ADVANCE, errorDescription);
+				tradeItem1->onTradeEvent(ON_TRADE_CANCEL, player, tradePartner);
+			}
 		}
 
-		if(tradeItem1)
-		{
-			error = getTradeErrorDescription(ret2, tradeItem2);
-			player->sendTextMessage(MSG_EVENT_ADVANCE, error);
-			tradeItem1->onTradeEvent(ON_TRADE_CANCEL, player, tradePartner);
-		}
+		player->setTradeState(TRADE_NONE);
+		player->tradeItem = NULL;
+		player->tradePartner = NULL;
+		player->sendTradeClose();
+
+		tradePartner->setTradeState(TRADE_NONE);
+		tradePartner->tradeItem = NULL;
+		tradePartner->tradePartner = NULL;
+		tradePartner->sendTradeClose();
 	}
-
-	player->setTradeState(TRADE_NONE);
-	player->tradeItem = NULL;
-	player->tradePartner = NULL;
-	player->sendTradeClose();
-	IOLoginData::getInstance()->savePlayer(player);
-
-	tradePartner->setTradeState(TRADE_NONE);
-	tradePartner->tradeItem = NULL;
-	tradePartner->tradePartner = NULL;
-	tradePartner->sendTradeClose();
-	IOLoginData::getInstance()->savePlayer(tradePartner);
-	return success;
 }
 
 std::string Game::getTradeErrorDescription(ReturnValue ret, Item* item)
@@ -3536,13 +3739,13 @@ bool Game::playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteI
 	if(!player || player->isRemoved())
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 7))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOK))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a few seconds before doing this again.");
 		return false;
 	}
 
-	if(Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 7))
+	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PLAYERLOOK))
 		player->addCondition(conditionlook);
 
 	Thing* thing = internalGetThing(player, pos, stackpos, spriteId, STACKPOS_LOOK);
@@ -3854,9 +4057,9 @@ bool Game::playerRequestAddVip(uint32_t playerId, const std::string& vipName)
 		return false;
 	}
 
-	if(player->hasCondition(CONDITION_EXHAUST, 1))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERVIP))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "Please wait few seconds before adding new player to your vip list.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "Please wait few seconds before adding a new player to your vip list.");
 		return false;
 	}
 
@@ -3864,7 +4067,7 @@ bool Game::playerRequestAddVip(uint32_t playerId, const std::string& vipName)
 	if(Player* target = getPlayerByName(name))
 		online = player->canSeeCreature(target);
 
-	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 3000, 0, false, 1))
+	if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PLAYERVIP))
 		player->addCondition(condition);
 
 	return player->addVIP(guid, name, online);
@@ -3876,13 +4079,13 @@ bool Game::playerRequestRemoveVip(uint32_t playerId, uint32_t guid)
 	if(!player || player->isRemoved())
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 1))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERVIP))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "Please wait few seconds before deleting next player from your vip list.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "Please wait few seconds before deleting a player from your vip list.");
 		return false;
 	}
 
-	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 3000, 0, false, 1))
+	if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PLAYERVIP))
 		player->addCondition(condition);
 
 	player->removeVIP(guid);
@@ -3924,13 +4127,13 @@ bool Game::playerRequestOutfit(uint32_t playerId)
 	if(!player || player->isRemoved())
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 4))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_OUTFIT))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a few seconds to change your outfit again.");
 		return false;
 	}
 
-	if(Condition* conditionoutfit = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 4))
+	if (Condition* conditionoutfit = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_OUTFIT))
 		player->addCondition(conditionoutfit);
 
 	player->sendOutfitWindow();
@@ -3943,13 +4146,13 @@ bool Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	if(!player || player->isRemoved())
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 4))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_OUTFIT))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a few seconds to change your outfit again.");
 		return false;
 	}
 
-	if(Condition* conditionoutfit = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 4))
+	if (Condition* conditionoutfit = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_OUTFIT))
 		player->addCondition(conditionoutfit);
 
 	if(!player->changeOutfit(outfit, true))
@@ -3989,6 +4192,12 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 	int32_t muted = 0;
 	bool mute = player->isMuted(channelId, type, muted);
+
+	ReturnValue ret = g_spells->onPlayerSay(player, text);
+
+	if(ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE && !g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
+		return true;
+
 	if(muted && mute)
 	{
 		if(muted > 0)
@@ -4013,15 +4222,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 	if(g_talkActions->onPlayerSay(player, type == MSG_SPEAK_SAY ? (unsigned)CHANNEL_DEFAULT : channelId, text, false))
 		return true;
-
-	ReturnValue ret = RET_NOERROR;
-	if(!muted)
-	{
-		ret = g_spells->onPlayerSay(player, text);
-		if(ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE &&
-			!g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
-			return true;
-	}
 
 	if(mute && type != MSG_NPC_TO)
 		player->removeMessageBuffer();
@@ -4140,13 +4340,13 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 
 bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId)
 {
-	if(player->hasCondition(CONDITION_EXHAUST, 6))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERSPEAK))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while to keep talking here.");
 		return false;
 	}
 
-	if(Condition* conditionchannel = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 300, 0, false, 6))
+	if (Condition* conditionchannel = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PLAYERSPEAK))
 		player->addCondition(conditionchannel);
 
 	switch(type)
@@ -4186,13 +4386,13 @@ bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::
 
 bool Game::playerSpeakToNpc(Player* player, const std::string& text)
 {
-	if(player->hasCondition(CONDITION_EXHAUST, 2))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_TALKNPC))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait ... To keep talking here.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while to keep talking here.");
 		return false;
 	}
 
-	if(Condition* conditionnpc = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 2))
+	if (Condition* conditionnpc = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_TALKNPC))
 		player->addCondition(conditionnpc);
 
 	SpectatorVec list;
@@ -5355,13 +5555,13 @@ bool Game::playerInviteToParty(uint32_t playerId, uint32_t invitedId)
 	if(playerId == invitedId)
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 5))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PARTY))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have a few seconds to invite a player to the party.");
 		return false;
 	}
 
-	if(Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 5))
+	if (Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PARTY))
 		player->addCondition(conditionparty);
 
 	Player* invitedPlayer = getPlayerByID(invitedId);
@@ -5389,13 +5589,13 @@ bool Game::playerJoinParty(uint32_t playerId, uint32_t leaderId)
 	if(!player || player->isRemoved())
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 5))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PARTY))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have a few seconds before joining a party again.");
 		return false;
 	}
 
-	if(Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 5))
+	if (Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PARTY))
 		player->addCondition(conditionparty);
 
 	Player* leader = getPlayerByID(leaderId);
@@ -5429,13 +5629,13 @@ bool Game::playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId)
 	if(!player || player->isRemoved() || !player->getParty() || player->getParty()->getLeader() != player)
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 5))
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PARTY))
 	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have a few seconds to pass the party's leadership again.");
 		return false;
 	}
 
-	if(Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, 5))
+	if (Condition* conditionparty = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PARTY))
 		player->addCondition(conditionparty);
 
 	Player* newLeader = getPlayerByID(newLeaderId);

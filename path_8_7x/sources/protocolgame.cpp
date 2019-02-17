@@ -253,6 +253,19 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			return false;
 		}
 
+		if(!g_game.placeCreature(player, player->getLoginPosition()))
+		{
+			Position pos = g_game.getClosestFreeTile(player, player->getMasterPosition(), true, false);
+			if(!pos.x)
+				pos = player->getMasterPosition();
+
+			if(!g_game.placeCreature(player, pos, false, true))
+			{
+				disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
+				return false;
+			}
+		}
+
 		player->setClientVersion(version);
 		player->setOperatingSystem(operatingSystem);
 
@@ -264,12 +277,6 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		player->lastIP = player->getIP();
 		player->lastLoad = OTSYS_TIME();
 		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
-
-		if(!g_game.placeCreature(player, player->getLoginPosition()) && !g_game.placeCreature(player, player->getMasterPosition(), false, true))
-		{
-			disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
-			return false;
-		}
 
 		m_acceptPackets = true;
 		return true;
@@ -310,7 +317,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 	if(!player)
 		return false;
 
-	if(player->hasCondition(CONDITION_EXHAUST, 1))
+	if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_DEFAULT))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
 		return false;
@@ -324,16 +331,16 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 			{
 				if(player->getTile()->hasFlag(TILESTATE_NOLOGOUT))
 				{
-					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, EXHAUST_DEFAULT))
 						player->addCondition(condition);
 
 					player->sendCancelMessage(RET_YOUCANNOTLOGOUTHERE);
 					return false;
 				}
 
-				if(player->getZone() != ZONE_PROTECTION && player->hasCondition(CONDITION_INFIGHT))
+				if(!player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) && player->hasCondition(CONDITION_INFIGHT))
 				{
-					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, EXHAUST_DEFAULT))
 						player->addCondition(condition);
 
 					player->sendCancelMessage(RET_YOUMAYNOTLOGOUTDURINGAFIGHT);
@@ -456,7 +463,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	bool gamemaster = (msg.get<char>() != (char)0);
 	std::string name = msg.getString(), character = msg.getString(), password = msg.getString();
-	if(name.empty() || !IOLoginData::getInstance()->playerExists(character))
+	if(!IOLoginData::getInstance()->playerExists(character))
 	{
 		disconnectClient(0x14, "This character does not exist.");
 		return;
@@ -1738,9 +1745,11 @@ void ProtocolGame::sendTradeItemRequest(const Player* _player, const Item* item,
 	msg->putString(_player->getName());
 	if(const Container* container = item->getContainer())
 	{
-		msg->put<char>(container->getItemHoldingCount() + 1);
+		msg->put<char>(std::min(255U, container->getItemHoldingCount() + 1));
 		msg->putItem(item);
-		for(ContainerIterator it = container->begin(); it != container->end(); ++it)
+
+		uint16_t i = 0;
+		for(ContainerIterator it = container->begin(); i < 255 && it != container->end(); ++it, ++i)
 			msg->putItem(*it);
 	}
 	else

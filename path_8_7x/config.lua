@@ -173,6 +173,7 @@
 		updateHighscoresAfterMinutes = 60
 		exhaustionNPC = true
 		exhaustionInSecondsNPC = 1
+		optionalProtection = false
 
 		-- Advanced Version
 		-- Note: If you use another protocol than the one we set as you will have functional failures.
@@ -268,7 +269,6 @@
 	daemonize = false
 	defaultPriority = "higher"
 	niceLevel = 5
-	serviceThreads = 1
 	coresUsed = "-1" -- ("0, 1, 2, 3") -- For QuadCore ONLY Windows
 	startupDatabaseOptimization = true
 	removePremiumOnInit = true
