@@ -2221,7 +2221,6 @@
 	</item>
 	<item id="2157" article="a" name="gold nugget">
 		<attribute key="weight" value="80"/>
-		<attribute key="worth" value="1000000"/>
 	</item>
 	<item id="2158" article="a" name="blue gem">
 		<attribute key="weight" value="100"/>
