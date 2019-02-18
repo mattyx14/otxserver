@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <items>
 	<item id="100" name="void"/>
 	<item id="101" name="earth"/>
@@ -522,9 +522,7 @@
 	<item id="1385" name="stairs">
 		<attribute key="floorchange" value="north"/>
 	</item>
-	<item id="1386" article="a" name="ladder">
-		<attribute key="forceUse" value="true"/>
-	</item>
+	<item id="1386" article="a" name="ladder"/>
 	<item id="1387" article="a" name="magic forcefield">
 		<attribute key="description" value="You can see the other side through it."/>
 		<attribute key="type" value="teleport"/>
@@ -661,8 +659,7 @@
 	<item id="1486" article="a" name="stone coal basin"/>
 	<item id="1487" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="decayTo" value="1488"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="replaceable" value="0"/>
 		<attribute key="field" value="fire">
 			<attribute key="damage" value="20"/>
 			<attribute key="ticks" value="10000"/>
@@ -672,8 +669,7 @@
 	</item>
 	<item id="1488" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="decayTo" value="1489"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="replaceable" value="0"/>
 		<attribute key="field" value="fire">
 			<attribute key="ticks" value="10000"/>
 			<attribute key="count" value="7"/>
@@ -682,14 +678,12 @@
 	</item>
 	<item id="1489" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="decayTo" value="0"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="replaceable" value="0"/>
 		<attribute key="field" value="fire"/>
 	</item>
 	<item id="1490" article="a" name="poison field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="decayTo" value="0"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="replaceable" value="0"/>
 		<attribute key="field" value="poison">
 			<attribute key="ticks" value="5000"/>
 			<attribute key="start" value="5"/>
@@ -698,8 +692,7 @@
 	</item>
 	<item id="1491" article="an" name="energy field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="decayTo" value="0"/>
-		<attribute key="duration" value="120"/>
+		<attribute key="replaceable" value="0"/>
 		<attribute key="field" value="energy">
 			<attribute key="damage" value="30"/>
 			<attribute key="ticks" value="10000"/>
@@ -708,7 +701,8 @@
 	</item>
 	<item id="1492" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="replaceable" value="0"/>
+		<attribute key="decayTo" value="1493"/>
+		<attribute key="duration" value="120"/>
 		<attribute key="field" value="fire">
 			<attribute key="damage" value="20"/>
 			<attribute key="ticks" value="10000"/>
@@ -718,7 +712,8 @@
 	</item>
 	<item id="1493" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="replaceable" value="0"/>
+		<attribute key="decayTo" value="1494"/>
+		<attribute key="duration" value="120"/>
 		<attribute key="field" value="fire">
 			<attribute key="ticks" value="10000"/>
 			<attribute key="count" value="7"/>
@@ -727,12 +722,14 @@
 	</item>
 	<item id="1494" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="replaceable" value="0"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="120"/>
 		<attribute key="field" value="fire"/>
 	</item>
 	<item id="1495" article="an" name="energy field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="replaceable" value="0"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="120"/>
 		<attribute key="field" value="energy">
 			<attribute key="damage" value="30"/>
 			<attribute key="ticks" value="10000"/>
@@ -741,17 +738,20 @@
 	</item>
 	<item id="1496" article="a" name="poison field">
 		<attribute key="type" value="magicfield"/>
-		<attribute key="replaceable" value="0"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="duration" value="120"/>
 		<attribute key="field" value="poison">
-			<attribute key="ticks" value="5000"/>
-			<attribute key="start" value="5"/>
-			<attribute key="damage" value="100"/>
+			<attribute key="damage" value="5"/>
+			<attribute key="ticks" value="10000"/>
+			<attribute key="count" value="7"/>
+			<attribute key="damage" value="10"/>
 		</attribute>
 	</item>
 	<item id="1497" article="a" name="magic wall">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="0"/>
 		<attribute key="duration" value="20"/>
+		<attribute key="blocksolid" value="1"/>
 	</item>
 	<item id="1498" article="a" name="magic wall">
 		<attribute key="type" value="magicfield"/>
@@ -760,7 +760,7 @@
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="0"/>
 		<attribute key="duration" value="45"/>
-		<attribute key="blocking" value="1"/>
+		<attribute key="blocksolid" value="1"/>
 	</item>
 	<item id="1500" article="a" name="fire field">
 		<attribute key="type" value="magicfield"/>
@@ -816,7 +816,7 @@
 	<item id="1506" article="a" name="searing fire">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="1507"/>
-		<attribute key="duration" value="10"/>
+		<attribute key="duration" value="5"/>
 		<attribute key="replaceable" value="0"/>
 		<attribute key="field" value="fire">
 			<attribute key="damage" value="300"/>
@@ -825,7 +825,7 @@
 	<item id="1507" article="a" name="searing fire">
 		<attribute key="type" value="magicfield"/>
 		<attribute key="decayTo" value="1508"/>
-		<attribute key="duration" value="10"/>
+		<attribute key="duration" value="5"/>
 		<attribute key="replaceable" value="0"/>
 		<attribute key="field" value="fire">
 			<attribute key="damage" value="300"/>
@@ -6771,7 +6771,7 @@
 		<attribute key="duration" value="600"/>
 		<attribute key="corpseType" value="blood"/>
 	</item>
-	<item id="3135-3136" article="a" name="ladder">
+		<item id="3135-3136" article="a" name="ladder">
 		<attribute key="floorchange" value="down"/>
 	</item>
 	<item id="3137" article="a" name="trapdoor">
