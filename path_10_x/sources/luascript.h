@@ -398,6 +398,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSetVocation(lua_State* L);
 		static int32_t luaDoPlayerRemoveItem(lua_State* L);
 		static int32_t luaDoPlayerAddSoul(lua_State* L);
+		static int32_t luaDoPlayerSetExtraAttackSpeed(lua_State* L);
 		static int32_t luaDoPlayerSetStamina(lua_State* L);
 		static int32_t luaDoPlayerAddExperience(lua_State* L);
 		static int32_t luaDoPlayerSetGuildId(lua_State* L);
@@ -476,7 +477,6 @@ class LuaInterface
 		static int32_t luaGetThingFromPosition(lua_State* L);
 		static int32_t luaGetTileItemById(lua_State* L);
 		static int32_t luaGetTileItemByType(lua_State* L);
-		static int32_t luaGetTileThingByPos(lua_State* L);
 		static int32_t luaGetTopCreature(lua_State* L);
 		static int32_t luaGetTileInfo(lua_State* L);
 		static int32_t luaDoTileQueryAdd(lua_State* L);

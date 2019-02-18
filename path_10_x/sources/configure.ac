@@ -9,16 +9,16 @@ AC_PROG_CXX
 AC_LANG(C++)
 
 # Config for 32Bits
-#OPTIONAL_FLAGS="-Ofast -march=native"
+#OPTIONAL_FLAGS="-Ofast -march=native -DNDEBUG"
 
 # Config for 64Bits
-#OPTIONAL_FLAGS="-Ofast -march=core2"
+#OPTIONAL_FLAGS="-Ofast -march=core2 -DNDEBUG"
 
 # Config for 32Bits
-DEBUG_FLAGS="-O0 -march=native -fomit-frame-pointer"
+DEBUG_FLAGS="-Ofast -march=native -fomit-frame-pointer -DNDEBUG"
 
 # Config for 64Bits
-#DEBUG_FLAGS="-O0 -march=core2 -fomit-frame-pointer"
+#DEBUG_FLAGS="-Ofast -march=core2 -fomit-frame-pointer -DNDEBUG"
 
 # check if we want server diag enabled
 serverDiag=no
@@ -325,4 +325,3 @@ echo Build with PostgreSQL....... : $usePostgreSQL
 echo
 
 echo Configure complete, now you may type \'./build.sh\'.
-
