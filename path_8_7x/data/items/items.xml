@@ -20961,7 +20961,7 @@
 	<item id="11785-11792" name="muddy floor"/>
 	<item id="11793-11795" article="a" name="skull pillar"/>
 	<item id="11796" article="a" name="dimensional portal">
-			<attribute key="type" value="teleport" />
+		<attribute key="type" value="teleport" />
 	</item>
 	<item id="11797" article="a" name="skull pillar"/>
 	<item id="11798" article="a" name="dimensional portal">
@@ -22069,7 +22069,8 @@
 	<item id="12660" name="trashed draken boots">
 		<attribute key="description" value="They will expire within a short time, sell them back to Esrik before they do."/>
 		<attribute key="weight" value="2500"/>
-		<item id="12661" name="remains of a water elemental">
+	</item>
+	<item id="12661" name="remains of a water elemental">
 		<attribute key="description" value="Something is wobbling inside. Maybe with a fishing rod you could reach it."/>
 		<attribute key="decayTo" value="10500"/>
 		<attribute key="duration" value="600"/>

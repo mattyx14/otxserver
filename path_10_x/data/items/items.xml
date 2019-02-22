@@ -2191,6 +2191,7 @@
 	</item>
 	<item id="2148" article="a" name="gold coin">
 		<attribute key="weight" value="10"/>
+		<attribute key="worth" value="1"/>
 	</item>
 	<item id="2149" article="a" name="small emerald">
 		<attribute key="weight" value="10"/>
@@ -2204,6 +2205,7 @@
 	</item>
 	<item id="2152" article="a" name="platinum coin">
 		<attribute key="weight" value="10"/>
+		<attribute key="worth" value="100"/>
 	</item>
 	<item id="2153" article="a" name="violet gem">
 		<attribute key="weight" value="30"/>
@@ -2228,6 +2230,7 @@
 	</item>
 	<item id="2160" article="a" name="crystal coin">
 		<attribute key="weight" value="10"/>
+		<attribute key="worth" value="10000"/>
 	</item>
 	<item id="2161" article="a" name="strange talisman">
 		<attribute key="weight" value="290"/>
@@ -2719,13 +2722,11 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adito grav"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2262" article="an" name="energy bomb rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo mas vis"/>
 		<attribute key="weight" value="105"/>
-		<attribute key="charges" value="2"/>
 	</item>
 	<item id="2263-2264" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2735,13 +2736,11 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adura gran"/>
 		<attribute key="weight" value="210"/>
-		<attribute key="charges" value="1"/>
 	</item>
 	<item id="2266" article="an" name="cure poison rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adana pox"/>
 		<attribute key="weight" value="210"/>
-		<attribute key="charges" value="1"/>
 	</item>
 	<item id="2267" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2751,13 +2750,11 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori gran mort"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2269" article="a" name="wild growth rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo grav vita"/>
 		<attribute key="weight" value="105"/>
-		<attribute key="charges" value="2"/>
 	</item>
 	<item id="2270" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2767,7 +2764,6 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori frigo"/>
 		<attribute key="weight" value="42"/>
-		<attribute key="charges" value="5"/>
 	</item>
 	<item id="2272" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2777,13 +2773,11 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adura vita"/>
 		<attribute key="weight" value="210"/>
-		<attribute key="charges" value="1"/>
 	</item>
 	<item id="2274" article="an" name="avalanche rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori mas frigo"/>
 		<attribute key="weight" value="52"/>
-		<attribute key="charges" value="4"/>
 	</item>
 	<item id="2275-2276" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2793,19 +2787,16 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo grav vis"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2278" article="a" name="paralyze rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adana ani"/>
 		<attribute key="weight" value="210"/>
-		<attribute key="charges" value="1"/>
 	</item>
 	<item id="2279" article="an" name="energy wall rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo mas grav vis"/>
 		<attribute key="weight" value="52"/>
-		<attribute key="charges" value="4"/>
 	</item>
 	<item id="2280-2284" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2815,55 +2806,46 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo grav pox"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2286" article="a" name="poison bomb rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo mas pox"/>
 		<attribute key="weight" value="105"/>
-		<attribute key="charges" value="2"/>
 	</item>
 	<item id="2287" article="a" name="light magic missile rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori min vis"/>
 		<attribute key="weight" value="21"/>
-		<attribute key="charges" value="10"/>
 	</item>
 	<item id="2288" article="a" name="stone shower rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori mas tera"/>
 		<attribute key="weight" value="52"/>
-		<attribute key="charges" value="4"/>
 	</item>
 	<item id="2289" article="a" name="poison wall rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo mas grav pox"/>
 		<attribute key="weight" value="52"/>
-		<attribute key="charges" value="4"/>
 	</item>
 	<item id="2290" article="a" name="convince creature rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adeta sio"/>
 		<attribute key="weight" value="210"/>
-		<attribute key="charges" value="1"/>
 	</item>
 	<item id="2291" article="a" name="chameleon rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo ina"/>
 		<attribute key="weight" value="210"/>
-		<attribute key="charges" value="1"/>
 	</item>
 	<item id="2292" article="a" name="stalagmite rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori tera"/>
 		<attribute key="weight" value="21"/>
-		<attribute key="charges" value="10"/>
 	</item>
 	<item id="2293" article="a" name="magic wall rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo grav tera"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2294" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2873,7 +2855,6 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori san"/>
 		<attribute key="weight" value="42"/>
-		<attribute key="charges" value="5"/>
 	</item>
 	<item id="2296-2300" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2883,31 +2864,26 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo grav flam"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2302" article="a" name="fireball rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori flam"/>
 		<attribute key="weight" value="42"/>
-		<attribute key="charges" value="5"/>
 	</item>
 	<item id="2303" article="a" name="fire wall rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo mas grav flam"/>
 		<attribute key="weight" value="52"/>
-		<attribute key="charges" value="4"/>
 	</item>
 	<item id="2304" article="a" name="great fireball rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori mas flam"/>
 		<attribute key="weight" value="52"/>
-		<attribute key="charges" value="4"/>
 	</item>
 	<item id="2305" article="a" name="fire bomb rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo mas flam"/>
 		<attribute key="weight" value="105"/>
-		<attribute key="charges" value="2"/>
 	</item>
 	<item id="2306-2307" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2917,7 +2893,6 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo res flam"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2309" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2927,13 +2902,11 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adito tera"/>
 		<attribute key="weight" value="70"/>
-		<attribute key="charges" value="3"/>
 	</item>
 	<item id="2311" article="a" name="heavy magic missile rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori vis"/>
 		<attribute key="weight" value="21"/>
-		<attribute key="charges" value="10"/>
 	</item>
 	<item id="2312" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2943,7 +2916,6 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adevo mas hur"/>
 		<attribute key="weight" value="35"/>
-		<attribute key="charges" value="6"/>
 	</item>
 	<item id="2314" article="a" name="spell rune">
 		<attribute key="type" value="rune"/>
@@ -2953,13 +2925,11 @@
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adori mas vis"/>
 		<attribute key="weight" value="52"/>
-		<attribute key="charges" value="4"/>
 	</item>
 	<item id="2316" article="an" name="animate dead rune">
 		<attribute key="type" value="rune"/>
 		<attribute key="runeSpellName" value="adana mort"/>
 		<attribute key="weight" value="210"/>
-		<attribute key="charges" value="1"/>
 	</item>
 	<item id="2317" article="a" name="dead human"/>
 	<item id="2318" article="a" name="family brooch">
@@ -6771,7 +6741,7 @@
 		<attribute key="duration" value="600"/>
 		<attribute key="corpseType" value="blood"/>
 	</item>
-		<item id="3135-3136" article="a" name="ladder">
+	<item id="3135-3136" article="a" name="ladder">
 		<attribute key="floorchange" value="down"/>
 	</item>
 	<item id="3137" article="a" name="trapdoor">
@@ -6975,9 +6945,7 @@
 	<item id="3648-3656" name="debris"/>
 	<item id="3657-3670" article="a" name="stone"/>
 	<item id="3671-3677" article="a" name="painted stone"/>
-	<item id="3678" article="a" name="ladder">
-		<attribute key="forceUse" value="true"/>
-	</item>
+	<item id="3678" article="a" name="ladder"/>
 	<item id="3679" article="a" name="ramp">
 		<attribute key="floorchange" value="east"/>
 	</item>
@@ -8023,55 +7991,78 @@
 	<item id="4580-4594" name="mossy spots"/>
 	<item id="4595" name="gravel"/>
 	<item id="4596-4607" name="sand"/>
-	<item id="4608-4616" name="shallow water">
+	<item id="4608-4613" name="shallow water">
 		<attribute key="description" value="You see the silvery movement of fish."/>
 		<attribute key="type" value="trashholder"/>
 		<attribute key="effect" value="bluebubble"/>
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
+	</item>
+	<item id="4614" name="shallow water">
+		<attribute key="decayTo" value="4608"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="type" value="trashholder"/>
+		<attribute key="effect" value="bluebubble"/>
+		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
+	</item>
+	<item id="4615" name="shallow water">
+		<attribute key="decayTo" value="4609"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="type" value="trashholder"/>
+		<attribute key="effect" value="bluebubble"/>
+		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
+	</item>
+	<item id="4616" name="shallow water">
+		<attribute key="decayTo" value="4610"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="type" value="trashholder"/>
+		<attribute key="effect" value="bluebubble"/>
+		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
 	</item>
 	<item id="4617" name="shallow water">
-		<attribute key="decayTo" value="4608"/>
-		<attribute key="duration" value="1200"/>
+		<attribute key="decayTo" value="4611"/>
+		<attribute key="duration" value="60"/>
 		<attribute key="type" value="trashholder"/>
 		<attribute key="effect" value="bluebubble"/>
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
 	</item>
 	<item id="4618" name="shallow water">
-		<attribute key="decayTo" value="4609"/>
-		<attribute key="duration" value="1200"/>
+		<attribute key="decayTo" value="4612"/>
+		<attribute key="duration" value="60"/>
 		<attribute key="type" value="trashholder"/>
 		<attribute key="effect" value="bluebubble"/>
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
 	</item>
 	<item id="4619" name="shallow water">
-		<attribute key="decayTo" value="4610"/>
-		<attribute key="duration" value="1200"/>
+		<attribute key="decayTo" value="4613"/>
+		<attribute key="duration" value="60"/>
 		<attribute key="type" value="trashholder"/>
 		<attribute key="effect" value="bluebubble"/>
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
 	</item>
 	<item id="4620-4625" name="shallow water">
 		<attribute key="type" value="trashholder"/>
 		<attribute key="effect" value="bluebubble"/>
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
 	</item>
 	<item id="4632-4643" name="shallow water">
 		<attribute key="fluidSource" value="water"/>
 	</item>
 	<item id="4644-4663" name="shallow water">
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
 	</item>
 	<item id="4664-4666" name="shallow water">
 		<attribute key="type" value="trashholder"/>
 		<attribute key="effect" value="bluebubble"/>
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
+		<attribute key="allowpickupable" value="1"/>
 	</item>
 	<item id="4667-4690" name="dirt"/>
 	<item id="4691-4712" name="swamp">
@@ -8090,8 +8081,8 @@
 	<item id="4784-4795" name="grass"/>
 	<item id="4796-4819" name="dirt"/>
 	<item id="4820-4825" name="shallow water">
+		<attribute key="type" value="trashholder"/>
 		<attribute key="effect" value="bluebubble"/>
-		<attribute key="allowpickupable" value="1"/>
 		<attribute key="fluidSource" value="water"/>
 	</item>
 	<item id="4826-4827" article="a" name="mountain"/>
@@ -20911,13 +20902,26 @@
 	<item id="11549-11560" name="acid"/>
 	<item id="11561" name="mud"/>
 	<item id="11562-11570" name="dead bamboo"/>
+	<item id="11571-11604" article="a" name="giant verminous"/>
 	<item id="11631-11637" article="a" name="small mudpit"/>
-	<item id="11647-11649" article="a" name="sulphur puddle"/>
-	<item id="11662-11666" article="a" name="sulphur puddle"/>
-	<item id="11683" article="a" name="dreadcoil"/>
+	<item id="11647-11649" article="a" name="sulphur puddle" />
+	<item id="11650-11661" article="a" name="giant verminous" />
+	<item id="11662-11666" article="a" name="sulphur puddle" />
+	<item id="11667-11668" article="a" name="bitter calyx" />
+	<item id="11669-11670" article="a" name="doomato" />
+	<item id="11671" article="a" name="witherstem" />
+	<item id="11672" article="a" name="carnivortex" />
+	<item id="11673" article="a" name="toxic tulip" />
+	<item id="11674" article="a" name="sprocketwhip" />
+	<item id="11676" article="a" name="wraithtongue" />
+	<item id="11677-11678" article="a" name="acid foxglove" />
+	<item id="11679" article="a" name="dark delight" />
+	<item id="11683" article="a" name="dreadcoil" />
+	<item id="11691-11693" article="a" name="giant dreadcoil" />
+	<item id="11694-11695" article="a" name="giant verminous" />
+	<item id="11696" article="a" name="giant dreadcoil" />
 	<item id="11700" article="a" name="stone wall"/>
 	<item id="11702" article="a" name="stone wall"/>
-	<item id="11704" article="an" name="insectoid pore"/>
 	<item id="11729-11752" name="ground"/>
 	<item id="11754" article="a" name="ferumbras doll">
 		<attribute key="description" value="It was awarded by Tibiopedia.pl."/>
@@ -20954,9 +20958,13 @@
 	<item id="11775-11778" name="ground"/>
 	<item id="11785-11792" name="muddy floor"/>
 	<item id="11793-11795" article="a" name="skull pillar"/>
-	<item id="11796" article="a" name="dimensional portal"/>
+	<item id="11796" article="a" name="dimensional portal">
+		<attribute key="type" value="teleport" />
+	</item>
 	<item id="11797" article="a" name="skull pillar"/>
-	<item id="11798" article="a" name="dimensional portal"/>
+	<item id="11798" article="a" name="dimensional portal">
+		<attribute key="type" value="teleport" />
+	</item>
 	<item id="11812" article="a" name="pillar vine"/>
 	<item id="11813" article="a" name="pillar growth"/>
 	<item id="11817" article="a" name="tangerine tail"/>
