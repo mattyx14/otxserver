@@ -56,6 +56,5 @@ function onLogin(cid)
 
 	registerCreatureEvent(cid, "GuildEvents")
 	registerCreatureEvent(cid, "AdvanceSave")
-	registerCreatureEvent(cid, "CaveThings")
 	return true
 end

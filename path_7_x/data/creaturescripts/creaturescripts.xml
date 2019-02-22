@@ -10,6 +10,4 @@
 	<event type="advance" name="AdvanceSave" event="script" value="advancesave.lua"/>
 	<event type="think" name="Idle" event="script" value="idle.lua"/>
 	<event type="think" name="SkullCheck" event="script" value="skullcheck.lua"/>
-	<event type="moveitem" name="MoveItem" event="script" value="houseprotect.lua"/>
-	<event type="moveitem" name="CaveThings" event="script" value="caveThings.lua"/>
 </creaturescripts>

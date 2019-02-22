@@ -261,6 +261,17 @@ Creature* Tile::getTopCreature()
 	return NULL;
 }
 
+Creature* Tile::getBottomCreature()
+{
+	if(CreatureVector* creatures = getCreatures())
+	{
+		if(!creatures->empty())
+			return *creatures->rbegin();
+	}
+
+	return NULL;
+}
+
 Item* Tile::getTopDownItem()
 {
 	if(TileItemVector* items = getItemList())
@@ -343,6 +354,34 @@ const Creature* Tile::getTopVisibleCreature(const Creature* creature) const
 	if(const CreatureVector* creatures = getCreatures())
 	{
 		for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
+		{
+			if(creature->canSeeCreature(*cit))
+				return (*cit);
+		}
+	}
+
+	return NULL;
+}
+
+Creature* Tile::getBottomVisibleCreature(const Creature* creature)
+{
+	if(CreatureVector* creatures = getCreatures())
+	{
+		for(CreatureVector::reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
+		{
+			if(creature->canSeeCreature(*cit))
+				return (*cit);
+		}
+	}
+
+	return NULL;
+}
+
+const Creature* Tile::getBottomVisibleCreature(const Creature* creature) const
+{
+	if(const CreatureVector* creatures = getCreatures())
+	{
+		for(CreatureVector::const_reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
 		{
 			if(creature->canSeeCreature(*cit))
 				return (*cit);
@@ -655,7 +694,7 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 			return RET_NOERROR;
 
 		if(isFull())
-			return RET_TILEISFULL;  // se agrego porque asi estaba en tfs arreglo gm invisible
+			return RET_TILEISFULL;
 
 		bool isHangable = item->isHangable();
 		if(!ground && !isHangable)
@@ -670,34 +709,74 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 			}
 		}
 
-		bool hasHangable = false, supportHangable = false;
-		if(items)
+		if(ground)
 		{
-			for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
+			if(ground->isBlocking(NULL))
 			{
-				const ItemType& iType = Item::items[(*it)->getID()];
-				if(iType.isHangable)
-					hasHangable = true;
+				const ItemType& iType = Item::items[ground->getID()];
+				if(!iType.allowPickupable || item->isBlocking(NULL))
+				{
+					if(!item->isPickupable())
+						return RET_NOTENOUGHROOM;
 
-				if(iType.isHorizontal || iType.isVertical)
-					supportHangable = true;
-
-				if((isHangable && (iType.isHorizontal || iType.isVertical)) || !(*it)->isBlocking(NULL))
-					continue;
-
-				if(!item->isPickupable())
-					return RET_NOTPOSSIBLE;
-
-				if(iType.allowPickupable)
-					continue;
-
-				if(!iType.hasHeight || iType.pickupable || iType.isBed())
-					return RET_NOTPOSSIBLE;
+					if(!iType.hasHeight || iType.pickupable || iType.isBed())
+						return RET_NOTENOUGHROOM;
+				}
 			}
 		}
 
-		if(isHangable && hasHangable && supportHangable)
-			return RET_NEEDEXCHANGE;
+		if(items)
+		{
+			if(isHangable)
+			{
+				bool hasHangable = false, supportHangable = false;
+				for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
+				{
+					const ItemType& iType = Item::items[(*it)->getID()];
+					if((*it)->getCorpseOwner() && !iType.movable)
+						return RET_NOTPOSSIBLE;
+
+					if(iType.isHangable)
+						hasHangable = true;
+
+					if(iType.isHorizontal || iType.isVertical)
+					{
+						supportHangable = true;
+						continue;
+					}
+
+					if(!(*it)->isBlocking(NULL) || iType.allowPickupable)
+						continue;
+
+					if(!item->isPickupable())
+						return RET_NOTPOSSIBLE;
+
+					if(!iType.hasHeight || iType.pickupable || iType.isBed())
+						return RET_NOTPOSSIBLE;
+				}
+
+				if(hasHangable && supportHangable)
+					return RET_NEEDEXCHANGE;
+			}
+			else
+			{
+				for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
+				{
+					const ItemType& iType = Item::items[(*it)->getID()];
+					if((*it)->getCorpseOwner() && !iType.movable)
+						return RET_NOTPOSSIBLE;
+
+					if(!(*it)->isBlocking(NULL) || iType.allowPickupable)
+						continue;
+
+					if(!item->isPickupable())
+						return RET_NOTPOSSIBLE;
+
+					if(!iType.hasHeight || iType.pickupable || iType.isBed())
+						return RET_NOTPOSSIBLE;
+				}
+			}
+		}
 	}
 
 	return RET_NOERROR;
@@ -1404,7 +1483,7 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const   //posible arreglo gm
 	return -1;
 }
 
-uint32_t Tile::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool itemCount /*= true*/) const
+uint32_t Tile::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
 {
 	const TileItemVector* items = getItemList();
 	if(!items)
@@ -1413,18 +1492,8 @@ uint32_t Tile::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, boo
 	uint32_t count = 0;
 	for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
 	{
-		if((*it)->getID() == itemId) count += Item::countByType(*it, subType, itemCount);
-			continue;
-
-		if(!itemCount)
-		{
-			if((*it)->isRune())
-				count+= (*it)->getCharges();
-			else
-				count+= (*it)->getItemCount();
-		}
-		else
-			count+= (*it)->getItemCount();
+		if((*it)->getID() == itemId)
+			count += Item::countByType(*it, subType);
 	}
 
 	return count;

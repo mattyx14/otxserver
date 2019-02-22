@@ -96,7 +96,6 @@ bool ConfigManager::load()
 		m_confBool[OPTIMIZE_DATABASE] = getGlobalBool("startupDatabaseOptimization", true);
 		m_confString[MAP_NAME] = getGlobalString("mapName", "forgotten.otbm");
 		m_confBool[GLOBALSAVE_ENABLED] = getGlobalBool("globalSaveEnabled", true);
-		m_confNumber[SERVICE_THREADS] = getGlobalNumber("serviceThreads", 1);
 		m_confNumber[GLOBALSAVE_H] = getGlobalNumber("globalSaveHour", 8);
 		m_confNumber[GLOBALSAVE_M] = getGlobalNumber("globalSaveMinute", 0);
 		m_confString[HOUSE_RENT_PERIOD] = getGlobalString("houseRentPeriod", "monthly");
@@ -339,9 +338,9 @@ bool ConfigManager::load()
 	m_confBool[CHARLIST_INFO] = getGlobalBool("charlistBasicInfo", false);
 	m_confBool[CLASSIC_DAMAGE_ON_WEAPONS] = getGlobalBool("classicDamageOnWeapons", true);
 	m_confBool[NO_ATTACKHEALING_SIMULTANEUS] = getGlobalBool("noAttackHealingSimultaneus", true);
-	m_confBool[ENABLE_COOLDOWNS] = getGlobalBool("enableCooldowns", true);
 	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
 	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
+	m_confBool[OPTIONAL_PROTECTION] = getGlobalBool("optionalProtection", true);
 
 	m_loaded = true;
 	return true;

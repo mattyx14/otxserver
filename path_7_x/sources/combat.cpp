@@ -26,6 +26,7 @@
 #include "creature.h"
 #include "player.h"
 #include "weapons.h"
+#include "tile.h"
 
 extern Game g_game;
 extern Weapons* g_weapons;
@@ -218,7 +219,7 @@ ConditionType_t Combat::DamageToConditionType(CombatType_t type)
 	return CONDITION_NONE;
 }
 
-ReturnValue Combat::canDoCombat(const Creature* caster, const Tile* tile, bool isAggressive, bool/* createItem*/)
+ReturnValue Combat::canDoCombat(const Creature* caster, const Tile* tile, bool isAggressive, bool createItem)
 {
 	if(tile->hasProperty(BLOCKPROJECTILE) || tile->floorChange() || tile->getTeleportItem())
 		return RET_NOTENOUGHROOM;
@@ -241,6 +242,9 @@ ReturnValue Combat::canDoCombat(const Creature* caster, const Tile* tile, bool i
 
 		if(caster->getPosition().z > tile->getPosition().z)
 			return RET_FIRSTGOUPSTAIRS;
+
+		if(createItem && tile->isFull())
+			return RET_TILEISFULL;
 
 		if(!isAggressive)
 			return RET_NOERROR;
@@ -280,7 +284,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 		if((attackerPlayer = attacker->getPlayer()) || (attackerPlayer = attacker->getPlayerMaster()))
 		{
 			checkZones = true;
-			if((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !Combat::isInPvpZone(attacker, target)
+			if((g_game.getWorldType(attackerPlayer, targetPlayer) == WORLDTYPE_OPTIONAL && !Combat::isInPvpZone(attacker, target)
 				&& !attackerPlayer->isEnemy(targetPlayer)) || isProtected(const_cast<Player*>(attackerPlayer),
 				const_cast<Player*>(targetPlayer)) || (g_config.getBool(ConfigManager::CANNOT_ATTACK_SAME_LOOKFEET)
 				&& attackerPlayer->getDefaultOutfit().lookFeet == targetPlayer->getDefaultOutfit().lookFeet)
@@ -290,7 +294,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 	}
 	else if(target->getMonster())
 	{
-		if(attacker->getMonster() && !target->getPlayerMaster() && !attacker->getPlayerMaster())
+		if(!target->isAttackable())
 			return RET_YOUMAYNOTATTACKTHISCREATURE;
 
 		const Player* attackerPlayer = NULL;
@@ -302,8 +306,8 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 			if(target->isPlayerSummon())
 			{
 				checkZones = true;
-				if(g_game.getWorldType() == WORLDTYPE_OPTIONAL && !Combat::isInPvpZone(attacker, target)
-					&& !attackerPlayer->isEnemy(target->getPlayerMaster()))
+				if(g_game.getWorldType(attackerPlayer, target->getPlayerMaster()) == WORLDTYPE_OPTIONAL &&
+					!Combat::isInPvpZone(attacker, target) && !attackerPlayer->isEnemy(target->getPlayerMaster()))
 					return RET_YOUMAYNOTATTACKTHISCREATURE;
 			}
 		}
@@ -373,7 +377,7 @@ bool Combat::isInPvpZone(const Creature* attacker, const Creature* target)
 
 bool Combat::isProtected(Player* attacker, Player* target)
 {
-	if(attacker->hasFlag(PlayerFlag_CannotAttackPlayer))
+	if(attacker->getNoMove() || target->getNoMove() || attacker->hasFlag(PlayerFlag_CannotAttackPlayer))
 		return true;
 
 	if(attacker->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
@@ -620,9 +624,13 @@ bool Combat::CombatDispelFunc(Creature* caster, Creature* target, const CombatPa
 	{
 		if(Player* player = target->getPlayer())
 		{
+			Player* casterPlayer = NULL;
+			if(caster)
+				casterPlayer = caster->getPlayer();
+
 			Item* item = player->getEquippedItem(SLOT_RING);
-			if(item && item->getID() == ITEM_STEALTH_RING && (g_game.getWorldType() == WORLDTYPE_HARDCORE
-				|| player->getTile()->hasFlag(TILESTATE_HARDCOREZONE)) && random_range(1, 100) <= 10)
+			if(item && item->getID() == ITEM_STEALTH_RING && (g_game.getWorldType(casterPlayer, player)
+				== WORLDTYPE_HARDCORE || player->getTile()->hasFlag(TILESTATE_HARDCOREZONE)) && random_range(1, 100) <= 10)
 				g_game.internalRemoveItem(NULL, item);
 		}
 	}
@@ -658,8 +666,8 @@ void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile*
 		if(player)
 		{
 			bool pzLock = false;
-			if((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !tile->hasFlag(
-				TILESTATE_HARDCOREZONE)) || tile->hasFlag(TILESTATE_OPTIONALZONE))
+			if(((g_game.getWorldType(player) == WORLDTYPE_OPTIONAL || g_config.getBool(ConfigManager::OPTIONAL_PROTECTION))
+				&& !tile->hasFlag(TILESTATE_HARDCOREZONE)) || tile->hasFlag(TILESTATE_OPTIONALZONE))
 			{
 				switch(itemId)
 				{
@@ -682,7 +690,7 @@ void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile*
 						break;
 				}
 			}
-			else if(params.isAggressive && !Item::items[itemId].blockPathFind)
+			else if(params.isAggressive && !Item::items[itemId].blockSolid && Item::items[itemId].blockPathFind)
 				pzLock = true;
 
 			player->addInFightTicks(pzLock);
@@ -1473,7 +1481,8 @@ void MagicField::onStepInField(Creature* creature)
 				ownerPlayer = owner->getPlayerMaster();
 
 			bool harmful = true;
-			if((g_game.getWorldType() == WORLDTYPE_OPTIONAL || tile->hasFlag(TILESTATE_OPTIONALZONE)) && ownerPlayer)
+			if(ownerPlayer && (tile->hasFlag(TILESTATE_OPTIONALZONE) || g_game.getWorldType(
+				ownerPlayer, creature->getPlayer()) == WORLDTYPE_OPTIONAL))
 				harmful = false;
 			else if(Player* player = creature->getPlayer())
 			{

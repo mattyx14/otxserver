@@ -171,9 +171,12 @@ class Tile : public Cylinder
 		Item* getItemByTopOrder(uint32_t topOrder);
 
 		Creature* getTopCreature();
+		Creature* getBottomCreature();
 		Thing* getTopVisibleThing(const Creature* creature);
 		Creature* getTopVisibleCreature(const Creature* creature);
 		const Creature* getTopVisibleCreature(const Creature* creature) const;
+		Creature* getBottomVisibleCreature(const Creature* creature);
+		const Creature* getBottomVisibleCreature(const Creature* creature) const;
 
 		uint32_t getThingCount() const {return thingCount;}
 		void updateThingCount(int32_t amount) {thingCount += amount;}
@@ -277,7 +280,7 @@ class Tile : public Cylinder
 		virtual int32_t __getLastIndex() const {return thingCount;}
 
 		virtual Thing* __getThing(uint32_t index) const;
-		virtual uint32_t __getItemTypeCount(uint16_t itemId, int32_t subType = -1, bool itemCount = true) const;
+		virtual uint32_t __getItemTypeCount(uint16_t itemId, int32_t subType = -1) const;
 
 		virtual void postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
 			int32_t index, CylinderLink_t link = LINK_OWNER);

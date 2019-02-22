@@ -78,7 +78,6 @@
 	-- NOTE: showHealth/ManaChangeForMonsters inherites from showHealth/ManaChange.
 	protectionLevel = 1
 	pvpTileIgnoreLevelAndVocationProtection = true
-	allowFightback = true
 	pzLocked = 60 * 1000
 	huntingDuration = 60 * 1000
 	criticalHitMultiplier = 1
@@ -169,6 +168,7 @@
 		runesHitTopCreature = false
 		charlistBasicInfo = false
 		classicDamageOnWeapons = true
+		optionalProtection = false
 
 		-- ConfigSpells
 		-- Note: set noAttackHealingSimultaneus to true if you want the attack and healing spells to have the same exhausted
@@ -253,7 +253,6 @@
 	daemonize = false
 	defaultPriority = "higher"
 	niceLevel = 5
-	serviceThreads = 1
 	coresUsed = "-1" -- ("0, 1, 2, 3") -- For QuadCore ONLY Windows
 	startupDatabaseOptimization = true
 	removePremiumOnInit = true

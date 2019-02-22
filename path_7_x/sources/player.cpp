@@ -838,7 +838,7 @@ bool Player::canWalkthrough(const Creature* creature) const
 	if(!player)
 		return false;
 
-	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL &&
+	if(((g_game.getWorldType(this, player) == WORLDTYPE_OPTIONAL &&
 		!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
 		&& (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges) || player->getAccess() <= getAccess()))
 		return true;
@@ -1523,11 +1523,15 @@ void Player::onTargetChangeZone(ZoneType_t zone)
 		setAttackedCreature(NULL);
 		onTargetDisappear(false);
 	}
-	else if(zone == ZONE_OPEN && g_game.getWorldType() == WORLDTYPE_OPTIONAL && attackedCreature->getPlayer())
+	else if (zone == ZONE_OPEN)
 	{
-		//attackedCreature can leave a pvp zone if not pzlocked
-		setAttackedCreature(NULL);
-		onTargetDisappear(false);
+		if (g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
+			&& attackedCreature->getPlayer() && !attackedCreature->getPlayer()->isEnemy(this))
+		{
+			//attackedCreature can leave a pvp zone if not pzlocked
+			setAttackedCreature(NULL);
+			onTargetDisappear(false);
+		}
 	}
 }
 
@@ -1609,6 +1613,7 @@ void Player::onWalk(Direction& dir)
 {
 	Creature::onWalk(dir);
 	setNextActionTask(NULL);
+	setNextAction(OTSYS_TIME() + getStepDuration(dir));
 }
 
 void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
@@ -1831,7 +1836,12 @@ void Player::onThink(uint32_t interval)
 		if(hasClient())
 			client->logout(true, true);
 		else if(g_creatureEvents->playerLogout(this, false))
+		{
+			if(!isGhost())
+				g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_POFF);
+
 			g_game.removeCreature(this, true);
+		}
 	}
 
 	messageTicks += interval;
@@ -2297,7 +2307,11 @@ bool Player::onDeath()
 			}
 
 			if(skillLoss && !preventLoss && it.abilities->preventLoss)
+			{
 				preventLoss = item;
+				if(preventLoss != preventDrop && it.abilities->preventDrop)
+					preventDrop = item;
+			}
 		}
 	}
 
@@ -2555,7 +2569,7 @@ void Player::addExhaust(uint32_t ticks, Exhaust_t exhaust)
 
 void Player::addInFightTicks(bool pzLock, int32_t ticks/* = 0*/)
 {
-	if(hasFlag(PlayerFlag_NotGainInFight))
+	if(hasFlag(PlayerFlag_NotGainInFight) || getZone() == ZONE_PROTECTION)
 		return;
 
 	if(!ticks)
@@ -2614,7 +2628,10 @@ void Player::kick(bool displayEffect, bool forceLogout)
 	if(!hasClient())
 	{
 		if(g_creatureEvents->playerLogout(this, forceLogout))
+		{
+			client->clear(true);
 			g_game.removeCreature(this);
+		}
 	}
 	else
 		client->logout(displayEffect, forceLogout);
@@ -2734,11 +2751,10 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 		item->getParent() && item->getParent() != VirtualCylinder::virtualCylinder))
 		return RET_CANNOTPICKUP;
 
-	bool childOwner = ((flags & FLAG_CHILDISOWNER) == FLAG_CHILDISOWNER), skipLimit = ((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT);
-	if(childOwner)
+	if((flags & FLAG_CHILDISOWNER) == FLAG_CHILDISOWNER)
 	{
 		//a child container is querying the player, just check if enough capacity
-		if(skipLimit || hasCapacity(item, count))
+		if((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT || hasCapacity(item, count))
 			return RET_NOERROR;
 
 		return RET_NOTENOUGHCAPACITY;
@@ -2956,7 +2972,7 @@ ReturnValue Player::__queryMaxCount(int32_t index, const Thing* thing, uint32_t 
 					n += queryCount;
 					for(ContainerIterator cit = subContainer->begin(); cit != subContainer->end(); ++cit)
 					{
-						if(Container* tmpContainer  = (*cit)->getContainer())
+						if(Container* tmpContainer = (*cit)->getContainer())
 						{
 							queryCount = 0;
 							tmpContainer->__queryMaxCount(INDEX_WHEREEVER, item, item->getItemCount(), queryCount, flags);
@@ -3386,7 +3402,7 @@ int32_t Player::__getLastIndex() const
 	return SLOT_LAST;
 }
 
-uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool itemCount /*= true*/) const
+uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
 {
 	Item* item = NULL;
 	Container* container = NULL;
@@ -3398,7 +3414,7 @@ uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, b
 			continue;
 
 		if(item->getID() == itemId)
-			count += Item::countByType(item, subType, itemCount);
+			count += Item::countByType(item, subType);
 
 		if(!(container = item->getContainer()))
 			continue;
@@ -3406,7 +3422,7 @@ uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, b
 		for(ContainerIterator it = container->begin(), end = container->end(); it != end; ++it)
 		{
 			if((*it)->getID() == itemId)
-				count += Item::countByType(*it, subType, itemCount);
+				count += Item::countByType(*it, subType);
 		}
 	}
 
@@ -3414,8 +3430,7 @@ uint32_t Player::__getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, b
 
 }
 
-std::map<uint32_t, uint32_t>& Player::__getAllItemTypeCount(std::map<uint32_t,
-	uint32_t>& countMap, bool itemCount/* = true*/) const
+std::map<uint32_t, uint32_t>& Player::__getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const
 {
 	Item* item = NULL;
 	Container* container = NULL;
@@ -3424,12 +3439,12 @@ std::map<uint32_t, uint32_t>& Player::__getAllItemTypeCount(std::map<uint32_t,
 		if(!(item = inventory[i]))
 			continue;
 
-		countMap[item->getID()] += Item::countByType(item, -1, itemCount);
+		countMap[item->getID()] += Item::countByType(item, -1);
 		if(!(container = item->getContainer()))
 			continue;
 
 		for(ContainerIterator it = container->begin(), end = container->end(); it != end; ++it)
-			countMap[(*it)->getID()] += Item::countByType(*it, -1, itemCount);
+			countMap[(*it)->getID()] += Item::countByType(*it, -1);
 	}
 
 	return countMap;
@@ -3848,7 +3863,7 @@ void Player::onEndCondition(ConditionType_t type)
 	sendIcons();
 }
 
-void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
+void Player::onCombatRemoveCondition(const Creature* attacker, Condition* condition)
 {
 	//Creature::onCombatRemoveCondition(attacker, condition);
 	bool remove = true;
@@ -3856,7 +3871,7 @@ void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
 	{
 		remove = false;
 		//Means the condition is from an item, id == slot
-		if(g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		if(g_game.getWorldType(this, attacker->getPlayer()) == WORLDTYPE_HARDCORE)
 		{
 			if(Item* item = getInventoryItem((slots_t)condition->getId()))
 			{
@@ -3906,7 +3921,7 @@ void Player::onTarget(Creature* target)
 	Player* targetPlayer = target->getPlayer();
 	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
-		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		if(!pzLocked && g_game.getWorldType(this, targetPlayer) == WORLDTYPE_HARDCORE)
 		{
 			pzLocked = true;
 			sendIcons();
@@ -4129,21 +4144,21 @@ bool Player::rateExperience(double& gainExp, Creature* target)
 		vocation->getExperienceMultiplier());
 	if(g_config.getBool(ConfigManager::USE_STAMINA))
 	{
-	if(!hasFlag(PlayerFlag_HasInfiniteStamina))
-	{
-		int32_t minutes = getStaminaMinutes();
-		if(minutes >= g_config.getNumber(ConfigManager::STAMINA_LIMIT_TOP))
+		if(!hasFlag(PlayerFlag_HasInfiniteStamina))
 		{
-			if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
-				gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
+			int32_t minutes = getStaminaMinutes();
+			if(minutes >= g_config.getNumber(ConfigManager::STAMINA_LIMIT_TOP))
+			{
+				if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
+					gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
+			}
+			else if(minutes < (g_config.getNumber(ConfigManager::STAMINA_LIMIT_BOTTOM)) && minutes > 0)
+				gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_UNDER);
+			else if(minutes <= 0)
+				gainExp = 0;
 		}
-		else if(minutes < (g_config.getNumber(ConfigManager::STAMINA_LIMIT_BOTTOM)) && minutes > 0)
-			gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_UNDER);
-		else if(minutes <= 0)
-			gainExp = 0;
-	}
-	else if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
-		gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
+		else if(isPremium() || !g_config.getBool(ConfigManager::STAMINA_BONUS_PREMIUM))
+			gainExp *= g_config.getDouble(ConfigManager::RATE_STAMINA_ABOVE);
 	}
 
 	return true;
@@ -4253,14 +4268,14 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 {
 	if(const Player* player = creature->getPlayer())
 	{
-		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+		if(g_game.getWorldType(this, player) != WORLDTYPE_OPEN)
 			return SKULL_NONE;
 
 		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this))
 			return SKULL_YELLOW;
 
 		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
-			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
+			g_game.getWorldType(this, player) != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
 
@@ -4295,7 +4310,7 @@ void Player::addAttacked(const Player* attacked)
 
 void Player::setSkullEnd(time_t _time, bool login, Skulls_t _skull)
 {
-	if(g_game.getWorldType() != WORLDTYPE_OPEN
+	if(g_game.getWorldType(this) != WORLDTYPE_OPEN
 		|| hasFlag(PlayerFlag_NotGainInFight) ||
 		hasCustomFlag(PlayerCustomFlag_NotGainSkull))
 		return;
@@ -4324,9 +4339,9 @@ void Player::setSkullEnd(time_t _time, bool login, Skulls_t _skull)
 bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 {
 	if(!g_config.getBool(ConfigManager::USE_FRAG_HANDLER) || hasFlag(
-		PlayerFlag_NotGainInFight) || g_game.getWorldType() != WORLDTYPE_OPEN
+		PlayerFlag_NotGainInFight) || g_game.getWorldType(this, attacked) != WORLDTYPE_OPEN
 		|| hasCustomFlag(PlayerCustomFlag_NotGainUnjustified) || hasCustomFlag(
-		PlayerCustomFlag_NotGainSkull) || attacked == this)
+		PlayerCustomFlag_NotGainSkull))
 		return false;
 
 	if(countNow)
@@ -4359,20 +4374,21 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(skull < SKULL_RED && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
 		setSkullEnd(now + g_config.getNumber(ConfigManager::RED_SKULL_LENGTH), false, SKULL_RED);
 
-		f += g_config.getNumber(ConfigManager::BAN_LIMIT);
-		s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
-		t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
-		if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
-			return true;
+	f += g_config.getNumber(ConfigManager::BAN_LIMIT);
+	s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
+	t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+	if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
+		return true;
 
-		if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
-			ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
-			return true;
+	if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
+		ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
+		return true;
 
-		sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
-		g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
-		Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
-			&Game::kickPlayer, &g_game, getID(), false)));
+	sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
+	g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+	Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
+		&Game::kickPlayer, &g_game, getID(), false)));
+
 	return true;
 }
 
@@ -4822,7 +4838,7 @@ void Player::manageAccount(const std::string &text)
 					}
 				}
 
-				if(msg.str().length() == 17)
+				if(msg.str().length() == NULL)
 					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
@@ -5431,4 +5447,9 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 	ss << std::fixed << std::setprecision(2) << "Your " << ucwords(getSkillName(skill)) << " skill changed from level " << oldSkillValue << " (with " << oldPercentToNextLevel << "% progress towards level " << (oldSkillValue + 1) << ") to level " << newSkillValue << " (with " << newPercentToNextLevel << "% progress towards level " << (newSkillValue + 1) << ")";
 	sendTextMessage(MSG_EVENT_ADVANCE, ss.str().c_str());
 	return true;
+}
+
+void Player::setPlayerExtraAttackSpeed(uint32_t speed)
+{
+	extraAttackSpeed = speed;
 }
