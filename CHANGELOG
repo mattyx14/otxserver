@@ -56,10 +56,11 @@
 [ OTX Server 2.12 :: Version "OpenTibia"
 	- Added feature criticalhit to weapons (8.6-TFACE)
 	- Added passive flag to monsters (8.6-TFACE)
-	- Added config noAttackHealingSimultaneus - optionalProtection 8.5x/6x
-	- Added castSystem to 8.5x
-	- Fix tileLimit
-	- Fix and update mods / description autor
+	- Added config noAttackHealingSimultaneus - optionalProtection
+	- Added castSystem to 8_5x
+	- Drop protocolversion 8_1x
+	- Fix tileLimit/stackPosition
+	- Fix and update mods
 	- Fix console errors on 7.x (duplicate commands)
 	- Fix display animated msg and console diplay errors (8.6-TFACE)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
