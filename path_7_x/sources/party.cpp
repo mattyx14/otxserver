@@ -207,7 +207,7 @@ bool Party::invitePlayer(Player* player)
 	player->addPartyInvitation(this);
 
 	char buffer[150];
-	sprintf(buffer, "%s has been invited.%s", player->getName().c_str(), (!memberList.size() ? " Open the party channel to communicate with your members." : ""));
+	sprintf(buffer, "%s has been invited.", player->getName().c_str());
 	leader->sendTextMessage(MSG_PARTY, buffer);
 
 	sprintf(buffer, "%s has invited you to %s party.", leader->getName().c_str(), (leader->getSex(false) ? "his" : "her"));
