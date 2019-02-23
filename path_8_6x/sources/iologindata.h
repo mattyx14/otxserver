@@ -74,6 +74,7 @@ class IOLoginData
 
 		bool loadPlayer(Player* player, const std::string& name, bool preLoad = false);
 		bool savePlayer(Player* player, bool preSave = true, bool shallow = false);
+		bool savePlayerItems(Player* player);
 
 		bool playerStatement(Player* _player, uint16_t channelId, const std::string& text, uint32_t& statementId);
 		bool playerDeath(Player* _player, const DeathList& dl);
