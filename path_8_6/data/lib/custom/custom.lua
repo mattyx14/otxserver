@@ -401,7 +401,16 @@ table.find = function (table, value)
 	return nil
 end
 
-table.contains = function (txt, str)
+table.contains = function(array, value)	
+	for _, targetColumn in pairs(array) do	
+		if targetColumn == value then	
+			return true	
+		end	
+	end	
+	return false	
+end
+
+table.isStrIn = function (txt, str)
 	for i, v in pairs(str) do
 		if(txt:find(v) and not txt:find('(%w+)' .. v) and not txt:find(v .. '(%w+)')) then
 			return true
@@ -410,7 +419,6 @@ table.contains = function (txt, str)
 
 	return false
 end
-table.isStrIn = table.contains
 
 table.count = function (table, item)
 	local count = 0
