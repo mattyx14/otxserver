@@ -131,14 +131,20 @@ bool Spawns::parseSpawnNode(xmlNodePtr p, bool checkDuplicate)
 				continue;
 
 			std::string name = strValue;
-			if((!readXMLInteger(tmpNode, "spawntime", intValue) && !readXMLInteger(tmpNode, "interval", intValue)) || !intValue)
+			int32_t interval = MINSPAWN_INTERVAL / 1000;
+			if(readXMLInteger(tmpNode, "spawntime", intValue) || readXMLInteger(tmpNode, "interval", intValue))
 			{
-				std::clog << "[Warning - Spawns::loadFromXml] " << name << " "
-					<< centerPos << " spawntime cannot be 0 seconds." << std::endl;
-				continue;
+				if(intValue <= interval)
+				{
+					std::clog << "[Warning - Spawns::loadFromXml] " << name << " " << centerPos << " spawntime cannot"
+						<< " be less or equal than " << interval << " seconds." << std::endl;
+					continue;
+				}
+
+				interval = intValue;
 			}
 
-			uint32_t interval = intValue * 1000;
+			interval *= 1000;
 			Position placePos = centerPos;
 			if(readXMLInteger(tmpNode, "x", intValue))
 				placePos.x += intValue;
@@ -225,16 +231,8 @@ bool Spawns::isInZone(const Position& centerPos, int32_t radius, const Position&
 
 void Spawn::startEvent()
 {
-	if(checkSpawnEvent)
-	{
-		if((checkSpawnTime - OTSYS_TIME()) <= SCHEDULER_MINTICKS)
-			return;
-
-		stopEvent();
-	}
-
-	checkSpawnEvent = Scheduler::getInstance().addEvent(createSchedulerTask(SCHEDULER_MINTICKS, boost::bind(&Spawn::checkSpawn, this)));
-	checkSpawnTime = OTSYS_TIME() + SCHEDULER_MINTICKS;
+	if(!checkSpawnEvent)
+		checkSpawnEvent = Scheduler::getInstance().addEvent(createSchedulerTask(getInterval(), boost::bind(&Spawn::checkSpawn, this)));
 }
 
 Spawn::Spawn(const Position& _pos, int32_t _radius)
@@ -242,7 +240,7 @@ Spawn::Spawn(const Position& _pos, int32_t _radius)
 	centerPos = _pos;
 	radius = _radius;
 	interval = DEFAULTSPAWN_INTERVAL;
-	checkSpawnEvent = checkSpawnTime = 0;
+	checkSpawnEvent = 0;
 }
 
 Spawn::~Spawn()
@@ -255,8 +253,8 @@ Spawn::~Spawn()
 			continue;
 
 		monster->setSpawn(NULL);
-		monster->unRef();
-		monster->setMasterPosition(monster->getMasterPosition(), -1);
+		if(!monster->isRemoved())
+			g_game.freeThing(monster);
 	}
 
 	spawnedMap.clear();
@@ -269,7 +267,7 @@ bool Spawn::findPlayer(const Position& pos)
 	g_game.getSpectators(list, pos);
 
 	Player* tmpPlayer = NULL;
-	for(SpectatorVec::const_iterator it = list.begin(), end = list.end(); it != end; ++it)
+	for(SpectatorVec::iterator it = list.begin(); it != list.end(); ++it)
 	{
 		if((tmpPlayer = (*it)->getPlayer()) && !tmpPlayer->hasFlag(PlayerFlag_IgnoredByMonsters))
 			return true;
@@ -302,8 +300,8 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 	monster->setSpawn(this);
 	monster->setMasterPosition(pos, radius);
 	monster->setDirection(dir);
-	monster->addRef();
 
+	monster->addRef();
 	spawnedMap.insert(SpawnedPair(spawnId, monster));
 	spawnMap[spawnId].lastSpawn = OTSYS_TIME();
 	return true;
@@ -311,92 +309,72 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 
 void Spawn::startup()
 {
+	spawnBlock_t sb;
 	for(SpawnMap::iterator it = spawnMap.begin(); it != spawnMap.end(); ++it)
 	{
-		const spawnBlock_t& sb = it->second;
+		sb = it->second;
 		spawnMonster(it->first, sb.mType, sb.pos, sb.direction, true);
 	}
 }
 
 void Spawn::checkSpawn()
 {
-	checkSpawnEvent = checkSpawnTime = 0;
-	for(SpawnedMap::iterator it = spawnedMap.begin(); it != spawnedMap.end();)
+#ifdef __DEBUG_SPAWN__
+	std::clog << "[Notice] Spawn::checkSpawn " << this << std::endl;
+#endif
+	checkSpawnEvent = 0;
+	for(SpawnedMap::iterator it = spawnedMap.begin(); it != spawnedMap.end(); )
 	{
 		if(it->second->isRemoved())
 		{
 			if(it->first)
 				spawnMap[it->first].lastSpawn = OTSYS_TIME();
 
-			it->second->unRef();
+			if(it->second)
+				it->second->unRef();
+
 			spawnedMap.erase(it++);
 		}
 		else
 			++it;
 	}
 
-	bool blocked = g_config.getBool(ConfigManager::ALLOW_BLOCK_SPAWN);
-	if(blocked)
-	{
-		std::string ignore = g_config.getString(ConfigManager::IGNORED_SPAWNS);
-		if(!ignore.empty())
-		{
-			StringVec strVector = explodeString(ignore, ";");
-			for(StringVec::const_iterator it = strVector.begin(), end = strVector.end(); it != end; ++it)
-			{
-				IntegerVec intVector = vectorAtoi(explodeString(*it, ","));
-				if(intVector.size() != 3 || intVector[0] != centerPos.x ||
-					intVector[1] != centerPos.y || intVector[2] != centerPos.z)
-					continue;
-
-				blocked = false;
-				break;
-			}
-		}
-	}
-
-	bool spawned = false;
-	uint32_t ticks = interval;
+	uint32_t spawnCount = 0;
 	for(SpawnMap::iterator it = spawnMap.begin(); it != spawnMap.end(); ++it)
 	{
 		spawnBlock_t& sb = it->second;
-		if(spawnedMap.find(it->first) != spawnedMap.end())
+		if(spawnedMap.count(it->first))
 			continue;
 
 		if(OTSYS_TIME() < sb.lastSpawn + sb.interval)
-		{
-			ticks = std::max((uint32_t)SCHEDULER_MINTICKS, std::min(ticks, (uint32_t)(sb.lastSpawn + sb.interval - OTSYS_TIME())));
 			continue;
-		}
 
-		if(blocked && findPlayer(sb.pos))
+		if(g_config.getBool(ConfigManager::ALLOW_BLOCK_SPAWN) && findPlayer(sb.pos))
 		{
-			ticks = std::max((uint32_t)SCHEDULER_MINTICKS, std::min(ticks, sb.interval));
 			sb.lastSpawn = OTSYS_TIME();
 			continue;
 		}
 
-		if(!spawned)
-		{
-			spawnMonster(it->first, sb.mType, sb.pos, sb.direction);
-			spawned = true;
-		}
-		else
-			ticks = SCHEDULER_MINTICKS;
+		spawnMonster(it->first, sb.mType, sb.pos, sb.direction);
+		uint32_t minSpawnCount = g_config.getNumber(ConfigManager::RATE_SPAWN_MIN),
+			maxSpawnCount = g_config.getNumber(ConfigManager::RATE_SPAWN_MAX);
+		if(++spawnCount >= (uint32_t)random_range(minSpawnCount, maxSpawnCount))
+			break;
 	}
 
 	if(spawnedMap.size() < spawnMap.size())
-	{
-		checkSpawnEvent = Scheduler::getInstance().addEvent(createSchedulerTask(ticks, boost::bind(&Spawn::checkSpawn, this)));
-		checkSpawnTime = OTSYS_TIME() + ticks;
-	}
+		checkSpawnEvent = Scheduler::getInstance().addEvent(createSchedulerTask(getInterval(), boost::bind(&Spawn::checkSpawn, this)));
+#ifdef __DEBUG_SPAWN__
+	else
+		std::clog << "[Notice] Spawn::checkSpawn stopped " << this << std::endl;
+#endif
 }
 
 bool Spawn::addMonster(const std::string& _name, const Position& _pos, Direction _dir, uint32_t _interval)
 {
 	if(!g_game.getTile(_pos))
 	{
-		std::clog << "[Spawn::addMonster] Empty tile at spawn position (" << _pos << ")" << std::endl;
+		std::clog << "[Spawn::addMonster] NULL tile at spawn position (" << _pos << ")" << std::endl;
 		return false;
 	}
 
@@ -417,7 +395,8 @@ bool Spawn::addMonster(const std::string& _name, const Position& _pos, Direction
 	sb.interval = _interval;
 	sb.lastSpawn = 0;
 
-	spawnMap[(uint32_t)spawnMap.size() + 1] = sb;
+	uint32_t spawnId = (int32_t)spawnMap.size() + 1;
+	spawnMap[spawnId] = sb;
 	return true;
 }
 
@@ -441,5 +420,4 @@ void Spawn::stopEvent()
 
 	Scheduler::getInstance().stopEvent(checkSpawnEvent);
 	checkSpawnEvent = 0;
-	checkSpawnTime = 0;
 }

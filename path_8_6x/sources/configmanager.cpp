@@ -363,7 +363,6 @@ bool ConfigManager::load()
 	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
 	m_confBool[NO_ATTACKHEALING_SIMULTANEUS] = getGlobalBool("noAttackHealingSimultaneus", false);
 	m_confBool[OPTIONAL_PROTECTION] = getGlobalBool("optionalProtection", true);
-	m_confString[IGNORED_SPAWNS] = getGlobalString("ignoredSpawns", "");
 
 	m_loaded = true;
 	return true;

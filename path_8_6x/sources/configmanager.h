@@ -70,7 +70,6 @@ class ConfigManager
 			ADMIN_ENCRYPTION_DATA,
 			GAME_PORT,
 			VERSION_MSG,
-			IGNORED_SPAWNS,
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
 
