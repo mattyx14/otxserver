@@ -154,6 +154,7 @@
 	- Improve code and cleanups (TFT)
 	- Remove player from attack list upon death (TFC)
 	- Remove compat function from swimming.lua (TFC)
+	- Remove duplicate function (danielsalim1)
 	- Storing TalkAction instances instead of pointers (TFC)
 	- Support to Client_10_11 Support // Items.otb no official (OTXS-C)
 	- Updated spells (TFC)
