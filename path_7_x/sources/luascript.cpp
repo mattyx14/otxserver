@@ -1769,6 +1769,9 @@ void LuaInterface::registerFunctions()
 	lua_register(m_luaState, "doPlayerAddSoul", LuaInterface::luaDoPlayerAddSoul);
 	#endif
 
+	//doPlayerSetExtraAttackSpeed(cid, speed)
+	lua_register(m_luaState, "doPlayerSetExtraAttackSpeed", LuaInterface::luaDoPlayerSetExtraAttackSpeed);
+
 	//doPlayerAddItem(cid, itemid[, count/subtype = 1[, canDropOnMap = true[, slot = 0]]])
 	//doPlayerAddItem(cid, itemid[, count = 1[, canDropOnMap = true[, subtype = 1[, slot = 0]]]])
 	//Returns uid of the created item
@@ -1925,6 +1928,9 @@ void LuaInterface::registerFunctions()
 
 	//doPlayerSave(cid[, shallow = false])
 	lua_register(m_luaState, "doPlayerSave", LuaInterface::luaDoPlayerSave);
+
+	//doPlayerSaveItems(cid)
+	lua_register(m_luaState, "doPlayerSaveItems", LuaInterface::luaDoPlayerSaveItems);
 
 	//isPlayerPzLocked(cid)
 	lua_register(m_luaState, "isPlayerPzLocked", LuaInterface::luaIsPlayerPzLocked);
@@ -5157,7 +5163,7 @@ int32_t LuaInterface::luaDoCreatureSetStorage(lua_State* L)
 int32_t LuaInterface::luaGetPlayerSpectators(lua_State* L)
 {
 	ScriptEnviroment* env = getEnv();
-	if (Player* player = env->getPlayerByUID(popNumber(L)))
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
 		lua_newtable(L);
 		setFieldBool(L, "broadcast", player->client->isBroadcasting());
@@ -5168,7 +5174,7 @@ int32_t LuaInterface::luaGetPlayerSpectators(lua_State* L)
 		StringVec t = player->client->list();
 
 		StringVec::const_iterator it = t.begin();
-		for (uint32_t i = 1; it != t.end(); ++it, ++i)
+		for(uint32_t i = 1; it != t.end(); ++it, ++i)
 		{
 			lua_pushnumber(L, i);
 			lua_pushstring(L, (*it).c_str());
@@ -5180,7 +5186,7 @@ int32_t LuaInterface::luaGetPlayerSpectators(lua_State* L)
 		t = player->client->muteList();
 
 		it = t.begin();
-		for (uint32_t i = 1; it != t.end(); ++it, ++i)
+		for(uint32_t i = 1; it != t.end(); ++it, ++i)
 		{
 			lua_pushnumber(L, i);
 			lua_pushstring(L, (*it).c_str());
@@ -5192,7 +5198,7 @@ int32_t LuaInterface::luaGetPlayerSpectators(lua_State* L)
 		std::map<std::string, uint32_t> _t = player->client->banList();
 
 		std::map<std::string, uint32_t>::const_iterator _it = _t.begin();
-		for (uint32_t i = 1; _it != _t.end(); ++_it, ++i)
+		for(uint32_t i = 1; _it != _t.end(); ++_it, ++i)
 		{
 			lua_pushnumber(L, i);
 			lua_pushstring(L, _it->first.c_str());
@@ -5223,7 +5229,7 @@ int32_t LuaInterface::luaDoPlayerSetSpectators(lua_State* L)
 	lua_gettable(L, -2);
 
 	lua_pushnil(L);
-	while (lua_next(L, -2))
+	while(lua_next(L, -2))
 	{
 		m.push_back(asLowerCaseString(lua_tostring(L, -1)));
 		lua_pop(L, 1);
@@ -5234,7 +5240,7 @@ int32_t LuaInterface::luaDoPlayerSetSpectators(lua_State* L)
 	lua_gettable(L, -2);
 
 	lua_pushnil(L);
-	while (lua_next(L, -2))
+	while(lua_next(L, -2))
 	{
 		b.push_back(asLowerCaseString(lua_tostring(L, -1)));
 		lua_pop(L, 1);
@@ -5245,7 +5251,7 @@ int32_t LuaInterface::luaDoPlayerSetSpectators(lua_State* L)
 	lua_gettable(L, -2);
 
 	lua_pushnil(L);
-	while (lua_next(L, -2))
+	while(lua_next(L, -2))
 	{
 		k.push_back(asLowerCaseString(lua_tostring(L, -1)));
 		lua_pop(L, 1);
@@ -5253,13 +5259,13 @@ int32_t LuaInterface::luaDoPlayerSetSpectators(lua_State* L)
 
 	lua_pop(L, 2);
 	ScriptEnviroment* env = getEnv();
-	if (Player* player = env->getPlayerByUID(popNumber(L)))
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
-		if (player->client->getPassword() != password && !password.empty())
+		if(player->client->getPassword() != password && !password.empty())
 			player->client->clear(false);
 
 		player->client->setPassword(password);
-		if (!broadcast && player->client->isBroadcasting())
+		if(!broadcast && player->client->isBroadcasting())
 			player->client->clear(false);
 
 		player->client->kick(k);
@@ -9041,6 +9047,7 @@ int32_t LuaInterface::luaDoPlayerSetStamina(lua_State* L)
 {
 	//doPlayerSetStamina(cid, minutes)
 	uint32_t minutes = popNumber(L);
+
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
@@ -9655,6 +9662,27 @@ int32_t LuaInterface::luaDoPlayerSave(lua_State* L)
 	{
 		player->loginPosition = player->getPosition();
 		lua_pushboolean(L, IOLoginData::getInstance()->savePlayer(player, false, shallow));
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSaveItems(lua_State* L)
+{
+	//doPlayerSaveItems(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		player->loginPosition = player->getPosition();
+		IOLoginData *p = IOLoginData::getInstance();
+		boost::thread th(&IOLoginData::savePlayerItems, p, player);
+		th.detach();
+		lua_pushboolean(L, true);
 	}
 	else
 	{
@@ -10595,7 +10623,7 @@ int32_t LuaInterface::luaDoAddAccountWarnings(lua_State* L)
 	//doAddAccountWarnings(accountId[, warnings])
 	uint32_t warnings = 1;
 	int32_t params = lua_gettop(L);
-	if (params > 1)
+	if(params > 1)
 		warnings = popNumber(L);
 
 	Account account = IOLoginData::getInstance()->loadAccount(popNumber(L), true);

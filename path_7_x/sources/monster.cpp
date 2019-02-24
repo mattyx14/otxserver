@@ -385,20 +385,20 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 	std::cout << "Searching target... " << std::endl;
 #endif
 
-	if (searchType == TARGETSEARCH_DEFAULT) {
+	if(searchType == TARGETSEARCH_DEFAULT) {
 		int32_t rnd = random_range(1, 100);
 
 		searchType = TARGETSEARCH_NEAREST;
 
 		int32_t sum = this->mType->targetStrategiesNearestPercent;
-		if (rnd > sum) {
+		if(rnd > sum) {
 			searchType = TARGETSEARCH_HP;
 			sum += this->mType->targetStrategiesLowerHPPercent;
 
-			if (rnd > sum) {
+			if(rnd > sum) {
 				searchType = TARGETSEARCH_DAMAGE;
 				sum += this->mType->targetStrategiesMostDamagePercent;
-				if (rnd > sum) {
+				if(rnd > sum) {
 					searchType = TARGETSEARCH_RANDOM;
 				}
 			}
@@ -407,39 +407,39 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 
 	std::list<Creature*> resultList;
 	const Position& myPos = getPosition();
-	for (CreatureList::iterator it = targetList.begin(); it != targetList.end(); ++it) {
-		if (isTarget(*it)) {
-			if ((this->mType->targetDistance == 1) || canUseAttack(myPos, *it)) {
+	for(CreatureList::iterator it = targetList.begin(); it != targetList.end(); ++it) {
+		if(isTarget(*it)) {
+			if((this->mType->targetDistance == 1) || canUseAttack(myPos, *it)) {
 				resultList.push_back(*it);
 			}
 		}
 	}
 
-	if (resultList.empty()) {
+	if(resultList.empty()) {
 		return false;
 	}
 
 	Creature* target = NULL;
 
-	switch (searchType) {
+	switch(searchType) {
 	case TARGETSEARCH_NEAREST: {
 		target = NULL;
 		int32_t minRange = -1;
-		for (std::list<Creature*>::iterator it = resultList.begin(); it != resultList.end(); ++it) {
-			if (minRange == -1 || ((std::abs(myPos.x - (*it)->getPosition().x) + std::abs(myPos.y - (*it)->getPosition().y)) < minRange)) {
+		for(std::list<Creature*>::iterator it = resultList.begin(); it != resultList.end(); ++it) {
+			if(minRange == -1 || ((std::abs(myPos.x - (*it)->getPosition().x) + std::abs(myPos.y - (*it)->getPosition().y)) < minRange)) {
 				target = *it;
 				minRange = std::abs(myPos.x - (*it)->getPosition().x) + std::abs(myPos.y - (*it)->getPosition().y);
 			}
-			else if ((std::abs(myPos.x - (*it)->getPosition().x) + std::abs(myPos.y - (*it)->getPosition().y)) == minRange) {
+			else if((std::abs(myPos.x - (*it)->getPosition().x) + std::abs(myPos.y - (*it)->getPosition().y)) == minRange) {
 				int32_t rnga = random_range(1, 2);
 				int32_t rngb = random_range(1, 2);
-				if (rnga == rngb) {
+				if(rnga == rngb) {
 					target = *it;
 				}
 			}
 		}
 
-		if (target && selectTarget(target)) {
+		if(target && selectTarget(target)) {
 			return true;
 		}
 
@@ -447,14 +447,14 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 	}
 	case TARGETSEARCH_HP: {
 		target = NULL;
-		if (!resultList.empty()) {
+		if(!resultList.empty()) {
 			std::list<Creature*>::iterator it = resultList.begin();
 			target = *it;
 
-			if (++it != resultList.end()) {
+			if(++it != resultList.end()) {
 				int32_t minHp = target->getHealth();
 				do {
-					if ((*it)->getHealth() < minHp) {
+					if((*it)->getHealth() < minHp) {
 						target = *it;
 						minHp = target->getHealth();
 					}
@@ -462,7 +462,7 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 			}
 		}
 
-		if (target && selectTarget(target)) {
+		if(target && selectTarget(target)) {
 			return true;
 		}
 
@@ -470,16 +470,16 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 	}
 	case TARGETSEARCH_DAMAGE: {
 		target = NULL;
-		if (!resultList.empty()) {
+		if(!resultList.empty()) {
 			std::list<Creature*>::iterator it = resultList.begin();
 			target = *it;
 
-			if (++it != resultList.end()) {
+			if(++it != resultList.end()) {
 				int32_t mostDamage = 0;
 				do {
 					CountMap::const_iterator dmg = damageMap.find((*it)->getID());
-					if (dmg != damageMap.end()) {
-						if (dmg->second.total > mostDamage) {
+					if(dmg != damageMap.end()) {
+						if(dmg->second.total > mostDamage) {
 							mostDamage = dmg->second.total;
 							target = *it;
 						}
@@ -488,7 +488,7 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 			}
 		}
 
-		if (target && selectTarget(target)) {
+		if(target && selectTarget(target)) {
 			return true;
 		}
 
@@ -496,7 +496,7 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 	}
 	case TARGETSEARCH_RANDOM:
 	default: {
-		if (!resultList.empty()) {
+		if(!resultList.empty()) {
 			uint32_t index = random_range(0, resultList.size() - 1);
 			CreatureList::iterator it = resultList.begin();
 			std::advance(it, index);
@@ -511,8 +511,8 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 	}
 
 	//lets just pick the first target in the list
-	for (CreatureList::iterator it = targetList.begin(); it != targetList.end(); ++it) {
-		if (selectTarget(*it)) {
+	for(CreatureList::iterator it = targetList.begin(); it != targetList.end(); ++it) {
+		if(selectTarget(*it)) {
 #ifdef __DEBUG__
 			std::cout << "Selecting target " << (*it)->getName() << std::endl;
 #endif

@@ -1148,41 +1148,42 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	return trans.commit();
 }
 
-bool IOLoginData::savePlayerItems(Player* player) {
+bool IOLoginData::savePlayerItems(Player* player)
+{
 
 	Database* db = Database::getInstance();
 	DBQuery query;
 	DBInsert stmt(db);
 
-	if (!player) {
+	if(!player) {
 		return false;
 	}
 
 	DBTransaction trans(db);
-	if (!trans.begin())
+	if(!trans.begin())
 		return false;
 
 	//item saving
 	query.str("");
 	query << "DELETE FROM `player_items` WHERE `player_id` = " << player->getGUID();
-	if (!db->query(query.str()))
+	if(!db->query(query.str()))
 		return false;
 
 	ItemBlockList itemList;
-	for (int32_t slotId = 1; slotId < 11; ++slotId)
+	for(int32_t slotId = 1; slotId < 11; ++slotId)
 	{
-		if (Item* item = player->inventory[slotId])
+		if(Item* item = player->inventory[slotId])
 			itemList.push_back(itemBlock(slotId, item));
 	}
 
 	stmt.setQuery("INSERT INTO `player_items` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
-	if (!saveItems(player, itemList, stmt))
+	if(!saveItems(player, itemList, stmt))
 		return false;
 
 	itemList.clear();
 	//save depot items
 	//std::stringstream ss;
-	for (DepotMap::iterator it = player->depots.begin(); it != player->depots.end(); ++it)
+	for(DepotMap::iterator it = player->depots.begin(); it != player->depots.end(); ++it)
 	{
 		/*if(it->second.second)
 		{
@@ -1199,13 +1200,13 @@ bool IOLoginData::savePlayerItems(Player* player) {
 
 	query.str("");
 	query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();// << " AND `pid` IN (" << s.substr(0, --size) << ")";
-	if (!db->query(query.str()))
+	if(!db->query(query.str()))
 		return false;
 
-	if (itemList.size())
+	if(itemList.size())
 	{
 		stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
-		if (!saveItems(player, itemList, stmt))
+		if(!saveItems(player, itemList, stmt))
 			return false;
 
 		itemList.clear();
@@ -1214,21 +1215,21 @@ bool IOLoginData::savePlayerItems(Player* player) {
 
 	query.str("");
 	query << "DELETE FROM `player_storage` WHERE `player_id` = " << player->getGUID();
-	if (!db->query(query.str()))
+	if(!db->query(query.str()))
 		return false;
 
 	player->generateReservedStorage();
 	query.str("");
 
 	stmt.setQuery("INSERT INTO `player_storage` (`player_id`, `key`, `value`) VALUES ");
-	for (StorageMap::const_iterator cit = player->getStorageBegin(); cit != player->getStorageEnd(); ++cit)
+	for(StorageMap::const_iterator cit = player->getStorageBegin(); cit != player->getStorageEnd(); ++cit)
 	{
 		query << player->getGUID() << "," << db->escapeString(cit->first) << "," << db->escapeString(cit->second);
-		if (!stmt.addRow(query))
+		if(!stmt.addRow(query))
 			return false;
 	}
 
-	if (!stmt.execute())
+	if(!stmt.execute())
 		return false;
 
 	//End the transaction

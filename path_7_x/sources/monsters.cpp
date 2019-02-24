@@ -1108,30 +1108,30 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 			else
 				SHOW_XML_WARNING("Missing targetchange.chance");
 		}
-		else if (xmlStrcmp(p->name, (const xmlChar*)"targetstrategies") == 0) {  //code agregado othire
+		else if(xmlStrcmp(p->name, (const xmlChar*)"targetstrategies") == 0) {  //code agregado othire
 
-			if (readXMLInteger(p, "nearest", intValue)) {
+			if(readXMLInteger(p, "nearest", intValue)) {
 				mType->targetStrategiesNearestPercent = std::max(1, intValue);
 			}
 			else {
 				SHOW_XML_WARNING("Missing targetStrategiesNearestPercent");
 			}
 
-			if (readXMLInteger(p, "health", intValue)) {
+			if(readXMLInteger(p, "health", intValue)) {
 				mType->targetStrategiesLowerHPPercent = std::max(1, intValue);
 			}
 			else {
 				SHOW_XML_WARNING("Missing targetStrategiesLowerHPPercent");
 			}
 
-			if (readXMLInteger(p, "damage", intValue)) {
+			if(readXMLInteger(p, "damage", intValue)) {
 				mType->targetStrategiesMostDamagePercent = std::max(1, intValue);
 			}
 			else {
 				SHOW_XML_WARNING("Missing targetStrategiesMostDamagePercent");
 			}
 
-			if (readXMLInteger(p, "random", intValue)) {
+			if(readXMLInteger(p, "random", intValue)) {
 				mType->targetStrategiesRandom = std::max(1, intValue);
 			}
 			else {

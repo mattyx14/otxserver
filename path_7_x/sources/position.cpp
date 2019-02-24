@@ -55,6 +55,8 @@ std::ostream& operator<<(std::ostream& os, const Direction& dir)
 		case NORTHEAST:
 			os << "North-East";
 			break;
+		default:
+			break;
 	}
 
 	return os;

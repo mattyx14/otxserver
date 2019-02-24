@@ -1946,6 +1946,9 @@ void LuaInterface::registerFunctions()
 	//doPlayerSave(cid[, shallow = false])
 	lua_register(m_luaState, "doPlayerSave", LuaInterface::luaDoPlayerSave);
 
+	//doPlayerSaveItems(cid)
+	lua_register(m_luaState, "doPlayerSaveItems", LuaInterface::luaDoPlayerSaveItems);
+
 	//isPlayerPzLocked(cid)
 	lua_register(m_luaState, "isPlayerPzLocked", LuaInterface::luaIsPlayerPzLocked);
 
@@ -9938,6 +9941,27 @@ int32_t LuaInterface::luaDoPlayerSave(lua_State* L)
 	{
 		player->loginPosition = player->getPosition();
 		lua_pushboolean(L, IOLoginData::getInstance()->savePlayer(player, false, shallow));
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSaveItems(lua_State* L)
+{
+	//doPlayerSaveItems(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		player->loginPosition = player->getPosition();
+		IOLoginData *p = IOLoginData::getInstance();
+		boost::thread th(&IOLoginData::savePlayerItems, p, player);
+		th.detach();
+		lua_pushboolean(L, true);
 	}
 	else
 	{

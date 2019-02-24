@@ -90,6 +90,7 @@ class Spawn
 
 	private:
 		uint32_t interval, checkSpawnEvent;
+		uint64_t checkSpawnTime;
 
 		Position centerPos;
 		int32_t radius, despawnRange, despawnRadius;

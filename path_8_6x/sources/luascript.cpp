@@ -9955,7 +9955,7 @@ int32_t LuaInterface::luaDoPlayerSaveItems(lua_State* L)
 {
 	//doPlayerSaveItems(cid)
 	ScriptEnviroment* env = getEnv();
-	if (Player* player = env->getPlayerByUID(popNumber(L)))
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
 	{
 		player->loginPosition = player->getPosition();
 		IOLoginData *p = IOLoginData::getInstance();

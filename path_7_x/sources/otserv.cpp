@@ -671,17 +671,17 @@ ServiceManager* services)
 	DBResult* result;
 	bool duplicated = false;
 
-	if (result = db->storeQuery(query.str()))
+	if(result = db->storeQuery(query.str()))
 	{
 		do
 		{
 			std::string serial = result->getDataString("serial");
-			if (serial != "" && serial.length() > 1)
+			if(serial != "" && serial.length() > 1)
 			{
 				DBResult* result_;
 				DBQuery query_playeritems;
 				query_playeritems << "SELECT `player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_items` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if (result_ = db->storeQuery(query_playeritems.str()))
+				if(result_ = db->storeQuery(query_playeritems.str()))
 				{
 					duplicated = true;
 					do
@@ -699,7 +699,7 @@ ServiceManager* services)
 				query_playeritems.clear();
 				DBQuery query_playerdepotitems;
 				query_playerdepotitems << "SELECT `player_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_depotitems` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if (result_ = db->storeQuery(query_playerdepotitems.str()))
+				if(result_ = db->storeQuery(query_playerdepotitems.str()))
 				{
 					duplicated = true;
 					do
@@ -717,7 +717,7 @@ ServiceManager* services)
 				query_playerdepotitems.clear();
 				DBQuery query_tileitems;
 				query_tileitems << "SELECT `tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `tile_items` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if (result_ = db->storeQuery(query_tileitems.str()))
+				if(result_ = db->storeQuery(query_tileitems.str()))
 				{
 					duplicated = true;
 					do
@@ -733,26 +733,26 @@ ServiceManager* services)
 				query_tileitems.clear();
 				DBQuery query_deletepi;
 				query_deletepi << "DELETE FROM `player_items` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if (!db->query(query_deletepi.str()))
+				if(!db->query(query_deletepi.str()))
 					std::clog << ">> Cannot delete duplicated items from 'player_items'!" << std::endl;
 
 				query_deletepi.clear();
 				DBQuery query_deletedi;
 				query_deletedi << "DELETE FROM `player_depotitems` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if (!db->query(query_deletedi.str()))
+				if(!db->query(query_deletedi.str()))
 					std::clog << ">> Cannot delete duplicated items from 'player_depotitems'!" << std::endl;
 
 				query_deletedi.clear();
 				DBQuery query_deleteti;
 				query_deleteti << "DELETE FROM `tile_items` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if (!db->query(query_deleteti.str()))
+				if(!db->query(query_deleteti.str()))
 					std::clog << ">> Cannot delete duplicated items from 'tile_items'!" << std::endl;
 
 				query_deleteti.clear();
 			}
 		} while (result->next());
 		result->free();
-		if (duplicated)
+		if(duplicated)
 			std::clog << ">> Duplicated items successfully removed." << std::endl;
 	}
 	else

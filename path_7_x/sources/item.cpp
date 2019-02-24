@@ -1752,25 +1752,25 @@ void Item::generateSerial()
 {
 	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	std::string serial = "";
-	for (int32_t i = 1; i < 6; i++)
+	for(int32_t i = 1; i < 6; i++)
 	{
 		int32_t l = rand() % (letters.length() - 1) + 1;
 		serial += letters.substr(l, 1);
 	}
 	serial += "-";
-	for (int32_t i = 1; i < 6; i++)
+	for(int32_t i = 1; i < 6; i++)
 	{
 		int32_t l = rand() % (letters.length() - 1) + 1;
 		serial += letters.substr(l, 1);
 	}
 	serial += "-";
-	for (int32_t i = 1; i < 6; i++)
+	for(int32_t i = 1; i < 6; i++)
 	{
 		int32_t l = rand() % (letters.length() - 1) + 1;
 		serial += letters.substr(l, 1);
 	}
 	serial += "-";
-	for (int32_t i = 1; i < 6; i++)
+	for(int32_t i = 1; i < 6; i++)
 	{
 		int32_t l = rand() % (letters.length() - 1) + 1;
 		serial += letters.substr(l, 1);

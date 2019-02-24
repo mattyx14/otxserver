@@ -838,7 +838,7 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult* result)
 				std::clog << "[Warning - IOLoginData::loadItems] Unserialize error for item with id " << item->getID() << std::endl;
 
 			std::string serial = result->getDataString("serial");
-			if (serial != "")
+			if(serial != "")
 			{
 				std::string key = "serial";
 				item->setAttribute(key.c_str(), serial);
@@ -1127,6 +1127,94 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	return trans.commit();
 }
 
+bool IOLoginData::savePlayerItems(Player* player)
+{
+
+	Database* db = Database::getInstance();
+	DBQuery query;
+	DBInsert stmt(db);
+
+	if(!player) {
+		return false;
+	}
+
+	DBTransaction trans(db);
+	if(!trans.begin())
+		return false;
+
+	//item saving
+	query.str("");
+	query << "DELETE FROM `player_items` WHERE `player_id` = " << player->getGUID();
+	if(!db->query(query.str()))
+		return false;
+
+	ItemBlockList itemList;
+	for(int32_t slotId = 1; slotId < 11; ++slotId)
+	{
+		if(Item* item = player->inventory[slotId])
+			itemList.push_back(itemBlock(slotId, item));
+	}
+
+	stmt.setQuery("INSERT INTO `player_items` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
+	if(!saveItems(player, itemList, stmt))
+		return false;
+
+	itemList.clear();
+	//save depot items
+	//std::stringstream ss;
+	for(DepotMap::iterator it = player->depots.begin(); it != player->depots.end(); ++it)
+	{
+		/*if(it->second.second)
+		{
+		it->second.second = false;
+		ss << it->first << ",";*/
+		itemList.push_back(itemBlock(it->first, it->second.first));
+		//}
+	}
+
+	/*std::string s = ss.str();
+	size_t size = s.length();
+	if(size > 0)
+	{*/
+
+	query.str("");
+	query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();// << " AND `pid` IN (" << s.substr(0, --size) << ")";
+	if(!db->query(query.str()))
+		return false;
+
+	if(itemList.size())
+	{
+		stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
+		if(!saveItems(player, itemList, stmt))
+			return false;
+
+		itemList.clear();
+	}
+	//}
+
+	query.str("");
+	query << "DELETE FROM `player_storage` WHERE `player_id` = " << player->getGUID();
+	if(!db->query(query.str()))
+		return false;
+
+	player->generateReservedStorage();
+	query.str("");
+
+	stmt.setQuery("INSERT INTO `player_storage` (`player_id`, `key`, `value`) VALUES ");
+	for(StorageMap::const_iterator cit = player->getStorageBegin(); cit != player->getStorageEnd(); ++cit)
+	{
+		query << player->getGUID() << "," << db->escapeString(cit->first) << "," << db->escapeString(cit->second);
+		if(!stmt.addRow(query))
+			return false;
+	}
+
+	if(!stmt.execute())
+		return false;
+
+	//End the transaction
+	return trans.commit();
+}
+
 bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList, DBInsert& stmt)
 {
 	Database* db = Database::getInstance();
@@ -1143,7 +1231,7 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 
 		std::string key = "serial";
 		boost::any value = item->getAttribute(key.c_str());
-		if (value.empty())
+		if(value.empty())
 		{
 			item->generateSerial();
 			value = item->getAttribute(key.c_str());
@@ -1181,7 +1269,7 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 
 			std::string key = "serial";
 			boost::any value = item->getAttribute(key.c_str());
-			if (value.empty())
+			if(value.empty())
 			{
 				item->generateSerial();
 				value = item->getAttribute(key.c_str());

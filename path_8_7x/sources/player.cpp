@@ -1619,9 +1619,9 @@ void Player::onTargetChangeZone(ZoneType_t zone)
 		setAttackedCreature(NULL);
 		onTargetDisappear(false);
 	}
-	else if (zone == ZONE_OPEN)
+	else if(zone == ZONE_OPEN)
 	{
-		if (g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
+		if(g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
 			&& attackedCreature->getPlayer() && !attackedCreature->getPlayer()->isEnemy(this, true))
 		{
 			//attackedCreature can leave a pvp zone if not pzlocked
@@ -1773,7 +1773,7 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 	}
 
 	// unset editing house
-	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+	if(editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
 		editHouse = NULL;
 
 	if(getZone() == ZONE_PROTECTION && newTile->ground && oldTile->ground &&
@@ -5143,7 +5143,7 @@ void Player::manageAccount(const std::string &text)
 					}
 				}
 
-				if(msg.str().length() == 17)
+				if(msg.str().length() == NULL)
 					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])

@@ -123,14 +123,12 @@ class Spell : public BaseSpell
 		void postSpell(Player* player) const;
 		#ifdef _MULTIPLATFORM76
 		void postSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const;
+		int32_t getSoulCost() const {return soul;}
 		#else
 		void postSpell(Player* player, uint32_t manaCost) const;
 		#endif
 
 		int32_t getManaCost(const Player* player) const;
-		#ifdef _MULTIPLATFORM76
-		int32_t getSoulCost() const {return soul;}
-		#endif
 		uint32_t getLevel() const {return level;}
 		int32_t getMagicLevel() const {return magLevel;}
 		int32_t getMana() const {return mana;}

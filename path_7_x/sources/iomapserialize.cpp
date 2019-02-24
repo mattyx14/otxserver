@@ -847,7 +847,7 @@ bool IOMapSerialize::saveItems(Database* db, uint32_t& tileId, uint32_t houseId,
 
 		std::string key = "serial";
 		boost::any value = item->getAttribute(key.c_str());
-		if (value.empty())
+		if(value.empty())
 		{
 			item->generateSerial();
 			value = item->getAttribute(key.c_str());

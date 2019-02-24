@@ -71,7 +71,7 @@ class ProtocolGame : public Protocol
 		void chat(uint16_t channelId);
 
 		void setPlayer(Player* p);
-		Player* getPlayer() const { return player; }
+		Player* getPlayer() const {return player;}
 
 	private:
 		void disconnectClient(uint8_t error, const char* message);

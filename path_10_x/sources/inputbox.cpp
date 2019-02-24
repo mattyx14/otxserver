@@ -33,7 +33,7 @@ CInputBox::CInputBox(HWND hWndParent)
 {
 	HINSTANCE hInst = GetModuleHandle(NULL);
 	WNDCLASSEX wcex;
-	if (!GetClassInfoEx(hInst, "InputBox", &wcex))
+	if(!GetClassInfoEx(hInst, "InputBox", &wcex))
 	{
 		wcex.cbSize 		= sizeof(WNDCLASSEX);
 		wcex.style			= CS_HREDRAW | CS_VREDRAW;

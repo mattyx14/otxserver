@@ -426,7 +426,7 @@ bool hasBitSet(uint32_t flag, uint32_t flags)
 #if !defined(_MSC_VER) || _MSC_VER < 1800
 double round(double v)
 {
-	if (v >= 0.0)
+	if(v >= 0.0)
 		return std::floor(v + 0.5);
 	else
 		return std::ceil(v - 0.5);

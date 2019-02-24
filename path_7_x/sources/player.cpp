@@ -58,7 +58,7 @@ MuteCountMap Player::muteCountMap;
 Player::Player(const std::string& _name, ProtocolGame* p):
 	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(new Spectators(p))
 {
-	if (client->getOwner())
+	if(client->getOwner())
 		p->setPlayer(this);
 
 	pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = outfitAttributes = sentChat = false;
@@ -1281,10 +1281,10 @@ void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, c
 
 void Player::sendContainers(ProtocolGame* target)
 {
-	if (!target)
+	if(!target)
 		return;
 
-	for (ContainerVector::const_iterator cl = containerVec.begin(); cl != containerVec.end(); ++cl)
+	for(ContainerVector::const_iterator cl = containerVec.begin(); cl != containerVec.end(); ++cl)
 		target->sendContainer(cl->first, cl->second, dynamic_cast<const Container*>(cl->second->getParent()) != NULL);
 }
 
@@ -1523,9 +1523,9 @@ void Player::onTargetChangeZone(ZoneType_t zone)
 		setAttackedCreature(NULL);
 		onTargetDisappear(false);
 	}
-	else if (zone == ZONE_OPEN)
+	else if(zone == ZONE_OPEN)
 	{
-		if (g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
+		if(g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
 			&& attackedCreature->getPlayer() && !attackedCreature->getPlayer()->isEnemy(this))
 		{
 			//attackedCreature can leave a pvp zone if not pzlocked
@@ -1643,7 +1643,7 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 	}
 
 	// unset editing house
-	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+	if(editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
 		editHouse = NULL;
 }
 

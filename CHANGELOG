@@ -58,6 +58,7 @@
 	- Added passive flag to monsters (8.6-TFACE)
 	- Added config noAttackHealingSimultaneus - optionalProtection
 	- Added castSystem to 8_5x
+	- Added savePlayerItems (all protocols - Reason184)
 	- Drop protocolversion 8_1x
 	- Fix tileLimit/stackPosition
 	- Fix and update mods
