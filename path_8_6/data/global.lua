@@ -16,48 +16,6 @@ questDoors = {1223, 1225, 1241, 1243, 1255, 1257, 3542, 3551, 5105, 5114, 5123, 
 levelDoors = {1227, 1229, 1245, 1247, 1259, 1261, 3540, 3549, 5103, 5112, 5121, 5130, 5292, 5294, 6206, 6208, 6263, 6265, 6896, 6905, 7038, 7047, 8555, 8557, 9179, 9181, 9281, 9283, 10282, 10284, 10473, 10482, 10780, 10789, 10780, 12095, 12102, 12204, 12195}
 keys = {2086, 2087, 2088, 2089, 2090, 2091, 2092, 10032}
 
-function getDistanceBetween(firstPosition, secondPosition)
-	local xDif = math.abs(firstPosition.x - secondPosition.x)
-	local yDif = math.abs(firstPosition.y - secondPosition.y)
-	local posDif = math.max(xDif, yDif)
-	if firstPosition.z ~= secondPosition.z then
-		posDif = posDif + 15
-	end
-	return posDif
-end
-
-function getFormattedWorldTime()
-	local worldTime = getWorldTime()
-	local hours = math.floor(worldTime / 60)
-
-	local minutes = worldTime % 60
-	if minutes < 10 then
-		minutes = '0' .. minutes
-	end
-	return hours .. ':' .. minutes
-end
-
-table.contains = function(array, value)
-	for _, targetColumn in pairs(array) do
-		if targetColumn == value then
-			return true
-		end
-	end
-	return false
-end
-
-string.split = function(str, sep)
-	local res = {}
-	for v in str:gmatch("([^" .. sep .. "]+)") do
-		res[#res + 1] = v
-	end
-	return res
-end
-
-string.trim = function(str)
-	return str:match'^()%s*$' and '' or str:match'^%s*(.*%S)'
-end
-
 if nextUseStaminaTime == nil then
 	nextUseStaminaTime = {}
 end
