@@ -314,6 +314,7 @@ class ConfigManager
 			NO_ATTACKHEALING_SIMULTANEUS,
 			ENABLE_COOLDOWNS,
 			CLASSIC_EQUIPMENT_SLOTS,
+			ALLOW_FIGHT_BACK,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 
