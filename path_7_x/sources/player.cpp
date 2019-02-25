@@ -3905,13 +3905,21 @@ void Player::onTarget(Creature* target)
 			addAttacked(targetPlayer);
 			targetPlayer->sendCreatureSkull(this);
 		}
-		else if(!targetPlayer->hasAttacked(this))
+		else if((!targetPlayer->hasAttacked(this)) || (!g_config.getBool(ConfigManager::ALLOW_FIGHT_BACK))) //nuevo code fightallowback
+		{
+				if (!pzLocked && g_game.getWorldType() != WORLDTYPE_OPEN) 
+				{
+					pzLocked = true;
+					sendIcons();
+				} //hasta aqui llega el new code allowfightback
+
+		/*else if(!targetPlayer->hasAttacked(this)) oldcode
 		{
 			if(!pzLocked)
 			{
 				pzLocked = true;
 				sendIcons();
-			}
+			}*/ //oldcode
 
 			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(targetPlayer))
 			{
