@@ -313,6 +313,7 @@ class ConfigManager
 			NO_ATTACKHEALING_SIMULTANEUS,
 			CLASSIC_EQUIPMENT_SLOTS,
 			OPTIONAL_PROTECTION,
+			ALLOW_FIGHT_BACK,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 
