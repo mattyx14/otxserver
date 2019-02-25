@@ -341,6 +341,7 @@ bool ConfigManager::load()
 	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
 	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
 	m_confBool[OPTIONAL_PROTECTION] = getGlobalBool("optionalProtection", true);
+	m_confBool[ALLOW_FIGHT_BACK] = getGlobalBool("allowFightBack", false);
 
 	m_loaded = true;
 	return true;
