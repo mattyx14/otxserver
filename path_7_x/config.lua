@@ -168,6 +168,7 @@
 		runesHitTopCreature = false
 		charlistBasicInfo = false
 		classicDamageOnWeapons = true
+		allowFightback = false
 		optionalProtection = false
 
 		-- ConfigSpells
