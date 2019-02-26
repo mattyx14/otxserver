@@ -1658,6 +1658,12 @@ void LuaInterface::registerFunctions()
 	//doCreatureSetStorage(uid, key, value)
 	lua_register(m_luaState, "doCreatureSetStorage", LuaInterface::luaDoCreatureSetStorage);
 
+	//getPlayerSpectators(cid)
+	lua_register(m_luaState, "getPlayerSpectators", LuaInterface::luaGetPlayerSpectators);
+
+	//doPlayerSetSpectators(cid, data)
+	lua_register(m_luaState, "doPlayerSetSpectators", LuaInterface::luaDoPlayerSetSpectators);
+
 	//getStorageList()
 	lua_register(m_luaState, "getStorageList", LuaInterface::luaGetStorageList);
 
@@ -5220,6 +5226,131 @@ int32_t LuaInterface::luaDoCreatureSetStorage(lua_State* L)
 	else
 	{
 		errorEx(getError(LUA_ERROR_CREATURE_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaGetPlayerSpectators(lua_State* L)
+{
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		lua_newtable(L);
+		setFieldBool(L, "broadcast", player->client->isBroadcasting());
+		setField(L, "password", player->client->getPassword());
+		setFieldBool(L, "auth", player->client->isAuth());
+
+		createTable(L, "names");
+		StringVec t = player->client->list();
+
+		StringVec::const_iterator it = t.begin();
+		for(uint32_t i = 1; it != t.end(); ++it, ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_pushstring(L, (*it).c_str());
+			pushTable(L);
+		}
+
+		pushTable(L);
+		createTable(L, "mutes");
+		t = player->client->muteList();
+
+		it = t.begin();
+		for(uint32_t i = 1; it != t.end(); ++it, ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_pushstring(L, (*it).c_str());
+			pushTable(L);
+		}
+
+		pushTable(L);
+		createTable(L, "bans");
+		std::map<std::string, uint32_t> _t = player->client->banList();
+
+		std::map<std::string, uint32_t>::const_iterator _it = _t.begin();
+		for(uint32_t i = 1; _it != _t.end(); ++_it, ++i)
+		{
+			lua_pushnumber(L, i);
+			lua_pushstring(L, _it->first.c_str());
+			pushTable(L);
+		}
+
+		pushTable(L);
+		createTable(L, "kick");
+		pushTable(L);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int32_t LuaInterface::luaDoPlayerSetSpectators(lua_State* L)
+{
+	std::string password = getFieldString(L, "password");
+	bool broadcast = getFieldBool(L, "broadcast"),
+		auth = getFieldBool(L, "auth");
+
+	StringVec m, b, k;
+	lua_pushstring(L, "mutes");
+	lua_gettable(L, -2);
+
+	lua_pushnil(L);
+	while(lua_next(L, -2))
+	{
+		m.push_back(asLowerCaseString(lua_tostring(L, -1)));
+		lua_pop(L, 1);
+	}
+
+	lua_pop(L, 1);
+	lua_pushstring(L, "bans");
+	lua_gettable(L, -2);
+
+	lua_pushnil(L);
+	while(lua_next(L, -2))
+	{
+		b.push_back(asLowerCaseString(lua_tostring(L, -1)));
+		lua_pop(L, 1);
+	}
+
+	lua_pop(L, 1);
+	lua_pushstring(L, "kick");
+	lua_gettable(L, -2);
+
+	lua_pushnil(L);
+	while(lua_next(L, -2))
+	{
+		k.push_back(asLowerCaseString(lua_tostring(L, -1)));
+		lua_pop(L, 1);
+	}
+
+	lua_pop(L, 2);
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		if(player->client->getPassword() != password && !password.empty())
+			player->client->clear(false);
+
+		player->client->setPassword(password);
+		if(!broadcast && player->client->isBroadcasting())
+			player->client->clear(false);
+
+		player->client->kick(k);
+		player->client->mute(m);
+		player->client->ban(b);
+
+		player->client->setBroadcast(broadcast);
+		player->client->setAuth(auth);
+		lua_pushboolean(L, true);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
 		lua_pushboolean(L, false);
 	}
 

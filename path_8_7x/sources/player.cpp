@@ -41,10 +41,6 @@
 #include "textlogger.h"
 #include "outputmessage.h"
 
-#if defined(WINDOWS) && !defined(_CONSOLE)
-#include "gui.h"
-#endif
-
 extern ConfigManager g_config;
 extern Game g_game;
 extern Chat g_chat;
@@ -59,9 +55,9 @@ uint32_t Player::playerCount = 0;
 MuteCountMap Player::muteCountMap;
 
 Player::Player(const std::string& _name, ProtocolGame* p):
-	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(p)
+	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(new Spectators(p))
 {
-	if(client)
+	if(client->getOwner())
 		p->setPlayer(this);
 
 	pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = mounted = outfitAttributes = sentChat = false;
@@ -138,6 +134,7 @@ Player::~Player()
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 	playerCount--;
 #endif
+	delete client;
 	for(int32_t i = 0; i < 11; ++i)
 	{
 		if(!inventory[i])
@@ -1378,6 +1375,15 @@ void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, c
 	}
 }
 
+void Player::sendContainers(ProtocolGame* target)
+{
+	if(!target)
+		return;
+
+	for(ContainerVector::const_iterator cl = containerVec.begin(); cl != containerVec.end(); ++cl)
+		target->sendContainer(cl->first, cl->second, dynamic_cast<const Container*>(cl->second->getParent()) != NULL);
+}
+
 void Player::onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 	const ItemType& oldType, const Item* newItem, const ItemType& newType)
 {
@@ -1567,10 +1573,6 @@ void Player::onCreatureAppear(const Creature* creature)
 		}
 	}
 
-	#if defined(WINDOWS) && !defined(_CONSOLE)
-	GUI::getInstance()->m_pBox.addPlayer(this);
-	#endif
-
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
 		std::clog << name << " has logged in." << std::endl;
 }
@@ -1637,6 +1639,7 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	if(creature != this)
 		return;
 
+	client->clear(true);
 	if(isLogout)
 		loginPosition = getPosition();
 
@@ -1664,10 +1667,6 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	g_chat.removeUserFromChannels(this);
 	if(!isGhost())
 		IOLoginData::getInstance()->updateOnlineStatus(guid, false);
-
-	#if defined(WINDOWS) && !defined(_CONSOLE)
-	GUI::getInstance()->m_pBox.removePlayer(this);
-	#endif
 
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
 		std::clog << getName() << " has logged out." << std::endl;
@@ -2773,7 +2772,10 @@ void Player::kick(bool displayEffect, bool forceLogout)
 	if(!hasClient())
 	{
 		if(g_creatureEvents->playerLogout(this, forceLogout))
+		{
+			client->clear(true);
 			g_game.removeCreature(this);
+		}
 	}
 	else
 		client->logout(displayEffect, forceLogout);
