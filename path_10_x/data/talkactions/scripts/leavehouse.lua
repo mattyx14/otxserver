@@ -1,4 +1,8 @@
 function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return true
+	end
+
 	local house = getHouseFromPos(getCreaturePosition(cid))
 	if(not house) then
 		doPlayerSendCancel(cid, "You are not inside a house.")

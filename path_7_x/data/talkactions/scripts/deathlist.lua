@@ -9,7 +9,7 @@ end
 
 function onSay(cid, words, param, channel)
 	if(not checkExhausted(cid, 666, 10)) then
-		return false
+		return true
 	end
 
 	local target = db.getResult("SELECT `name`, `id` FROM `players` WHERE `name` = " .. db.escapeString(param) .. ";")

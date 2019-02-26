@@ -10,6 +10,10 @@ local config = {
 }
 
 function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return true
+	end
+
 	local exp = config.rateExperience
 	if(config.stages) then
 		exp = getExperienceStage(getPlayerLevel(cid), getVocationInfo(getPlayerVocation(cid)).experienceMultiplier)
