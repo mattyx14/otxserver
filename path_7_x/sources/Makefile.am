@@ -32,7 +32,7 @@ theotxserver_SOURCES = account.h actions.cpp actions.h  baseevents.cpp baseevent
 	$(MAYBE_MYSQLPP) $(MAYBE_SQLITE) $(MAYBE_PGSQL) depot.cpp depot.h dispatcher.cpp \
 	dispatcher.h exception.cpp exception.h fileloader.cpp fileloader.h \
 	game.cpp game.h $(MAYBE_LOGIN) globalevent.cpp globalevent.h group.cpp \
-	group.h gui.cpp gui.h house.cpp house.h housetile.cpp housetile.h inputbox.cpp inputbox.h ioban.cpp ioban.h \
+	group.h house.cpp house.h housetile.cpp housetile.h ioban.cpp ioban.h \
 	ioguild.cpp ioguild.h iologindata.cpp iologindata.h iomap.cpp iomap.h \
 	iomapserialize.cpp iomapserialize.h item.cpp item.h itemattributes.cpp \
 	itemattributes.h items.cpp items.h luascript.cpp luascript.h \
@@ -40,10 +40,10 @@ theotxserver_SOURCES = account.h actions.cpp actions.h  baseevents.cpp baseevent
 	monster.h monsters.cpp monsters.h movement.cpp movement.h \
 	networkmessage.cpp networkmessage.h npc.cpp npc.h otpch.cpp otpch.h otserv.cpp \
 	otsystem.h outfit.cpp outfit.h outputmessage.cpp outputmessage.h \
-	party.cpp party.h playerbox.cpp playerbox.h player.cpp player.h position.cpp position.h \
+	party.cpp party.h player.cpp player.h position.cpp position.h \
 	protocol.cpp protocol.h protocolgame.cpp protocolgame.h \
 	protocollogin.cpp protocollogin.h raids.cpp raids.h \
-	resources.h scheduler.cpp scheduler.h scriptmanager.cpp \
+	scheduler.cpp scheduler.h scriptmanager.cpp \
 	scriptmanager.h server.cpp server.h spawn.cpp spawn.h spectators.cpp spectators.h \
 	spells.cpp spells.h status.cpp status.h talkaction.cpp talkaction.h teleport.cpp \
 	teleport.h templates.h textlogger.cpp textlogger.h thing.cpp thing.h \

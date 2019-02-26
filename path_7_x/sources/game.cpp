@@ -6542,10 +6542,6 @@ void Game::shutdown()
 	std::clog << "(done)." << std::endl;
 	if(services)
 		services->stop();
-
-#if defined(WINDOWS) && !defined(_CONSOLE)
-	exit(1);
-#endif
 }
 
 void Game::cleanup()

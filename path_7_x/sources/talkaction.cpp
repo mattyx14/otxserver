@@ -41,7 +41,6 @@
 #include "game.h"
 #include "chat.h"
 #include "tools.h"
-#include "resources.h"
 
 extern ConfigManager g_config;
 extern Game g_game;

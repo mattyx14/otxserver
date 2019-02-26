@@ -38,10 +38,6 @@
 #include "textlogger.h"
 #include "outputmessage.h"
 
-#if defined(WINDOWS) && !defined(_CONSOLE)
-#include "gui.h"
-#endif
-
 extern ConfigManager g_config;
 extern Game g_game;
 extern Chat g_chat;
@@ -1475,10 +1471,6 @@ void Player::onCreatureAppear(const Creature* creature)
 		}
 	}
 
-	#if defined(WINDOWS) && !defined(_CONSOLE)
-	GUI::getInstance()->m_pBox.addPlayer(this);
-	#endif
-
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
 		std::clog << name << " has logged in." << std::endl;
 }
@@ -1582,10 +1574,6 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	g_chat.removeUserFromChannels(this);
 	if(!isGhost())
 		IOLoginData::getInstance()->updateOnlineStatus(guid, false);
-
-	#if defined(WINDOWS) && !defined(_CONSOLE)
-	GUI::getInstance()->m_pBox.removePlayer(this);
-	#endif
 
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
 		std::clog << getName() << " has logged out." << std::endl;

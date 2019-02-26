@@ -32,11 +32,6 @@
 
 #include "configmanager.h"
 #include "game.h"
-#include "resources.h"
-
-#if defined(WINDOWS) && !defined(_CONSOLE)
-#include "gui.h"
-#endif
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -71,11 +66,7 @@ void ProtocolLogin::disconnectClient(uint8_t error, const char* message)
 
 void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 {
-	if(
-#if defined(WINDOWS) && !defined(_CONSOLE)
-		!GUI::getInstance()->m_connections ||
-#endif
-		g_game.getGameState() == GAMESTATE_SHUTDOWN)
+	if(g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
 		getConnection()->close();
 		return;
