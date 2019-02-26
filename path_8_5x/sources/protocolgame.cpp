@@ -44,12 +44,6 @@
 #include "configmanager.h"
 #include "game.h"
 
-#include "resources.h"
-
-#if defined(WINDOWS) && !defined(_CONSOLE)
-#include "gui.h"
-#endif
-
 extern Game g_game;
 extern ConfigManager g_config;
 extern Actions actions;
@@ -506,11 +500,7 @@ void ProtocolGame::onConnect()
 
 void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 {
-	if(
-#if defined(WINDOWS) && !defined(_CONSOLE)
-		!GUI::getInstance()->m_connections ||
-#endif
-		g_game.getGameState() == GAMESTATE_SHUTDOWN)
+	if(g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
 		getConnection()->close();
 		return;
