@@ -570,6 +570,8 @@ class LuaInterface
 		static int32_t luaGetCreatureStorageList(lua_State* L);
 		static int32_t luaGetCreatureStorage(lua_State* L);
 		static int32_t luaDoCreatureSetStorage(lua_State* L);
+		static int32_t luaGetPlayerSpectators(lua_State* L);
+		static int32_t luaDoPlayerSetSpectators(lua_State* L);
 		static int32_t luaDoPlayerAddBlessing(lua_State* L);
 		static int32_t luaGetPlayerBlessing(lua_State* L);
 		static int32_t luaDoPlayerSetPVPBlessing(lua_State* L);

@@ -1225,14 +1225,11 @@ bool IOLoginData::savePlayerItems(Player* player)
 	itemList.clear();
 	//save depot items
 	//std::stringstream ss;
-	for(DepotMap::iterator it = player->depots.begin(); it != player->depots.end(); ++it)
+	for(DepotMap::iterator it = player->depotChests.begin(); it != player->depotChests.end(); ++it)
 	{
-		/*if(it->second.second)
-		{
-		it->second.second = false;
-		ss << it->first << ",";*/
-		itemList.push_back(itemBlock(it->first, it->second.first));
-		//}
+		DepotChest* depotChest = it->second;
+		for (ItemList::const_iterator iit = depotChest->getItems(), end = depotChest->getEnd(); iit != end; ++iit)
+			itemList.push_back(itemBlock(it->first, *iit));
 	}
 
 	/*std::string s = ss.str();

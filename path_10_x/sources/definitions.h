@@ -18,6 +18,26 @@
 #ifndef __DEFINITIONS__
 #define __DEFINITIONS__
 
+// Compatible with 10.35
+#define CLIENT_VERSION_MIN 1035
+#define CLIENT_VERSION_MAX 1035
+#define CLIENT_VERSION_ITEMS 55
+#define CLIENT_VERSION_STRING "10.35"
+
+#define SOFTWARE_NAME "OTX Server"
+#define SOFTWARE_VERSION "2"
+#define MINOR_VERSION "12"
+#define SOFTWARE_CODENAME "OpenTibia"
+#define SOFTWARE_DEVELOPERS "Matt Gomez, Leandro Brewster and The Forgotten Server Developers"
+#define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2/"
+
+//#define CLIENT_VERSION_DATA
+#define CLIENT_VERSION_DAT 0
+#define CLIENT_VERSION_SPR 0
+#define CLIENT_VERSION_PIC 0
+
+#define VERSION_DATABASE 43
+
 #undef MULTI_SQL_DRIVERS
 #define SQL_DRIVERS __USE_SQLITE__+__USE_MYSQL__+__USE_PGSQL__
 

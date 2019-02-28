@@ -97,7 +97,7 @@ class NetworkMessage
 		int32_t decodeHeader();
 
 		// message propeties functions
-	  	uint16_t size() const {return m_size;}
+		uint16_t size() const {return m_size;}
 		void setSize(uint16_t size) {m_size = size;}
 
 		uint16_t position() const {return m_position;}

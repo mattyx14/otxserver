@@ -26,8 +26,6 @@
 #include "weapons.h"
 #include "spells.h"
 
-#include "resources.h"
-
 extern Spells* g_spells;
 extern ConfigManager g_config;
 extern MoveEvents* g_moveEvents;

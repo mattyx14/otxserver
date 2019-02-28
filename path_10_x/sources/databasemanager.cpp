@@ -1230,7 +1230,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 30:
 		{
-			std::clog << "> Updating database to version 31..." << std::endl;
+			std::clog << "> Updating database to version 31... (PVP Blessing System)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_SQLITE:
@@ -1258,7 +1258,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 31:
 		{
-			std::clog << "> Updating database to version 32..." << std::endl;
+			std::clog << "> Updating database to version 32... (warSystem MySQL)" << std::endl;
 			if(db->getDatabaseEngine() == DATABASE_ENGINE_MYSQL)
 			{
 				query << "CREATE TABLE IF NOT EXISTS `player_statements`\
@@ -1325,7 +1325,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 32:
 		{
-			std::clog << "> Updating database to version 33..." << std::endl;
+			std::clog << "> Updating database to version 33... (Drop Rule Violation System)" << std::endl;
 			if(db->getDatabaseEngine() == DATABASE_ENGINE_MYSQL)
 			{
 				query << "ALTER TABLE `bans` DROP `reason`;";
@@ -1347,7 +1347,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 33:
 		{
-			std::clog << "> Updating database to version 34..." << std::endl;
+			std::clog << "> Updating database to version 34... (Market System this no work on 9.4+)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_MYSQL:
@@ -1376,7 +1376,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 34:
 		{
-			std::clog << "> Updating database to version 35..." << std::endl;
+			std::clog << "> Updating database to version 35... (warSystem SQLite)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_SQLITE:
@@ -1661,6 +1661,40 @@ uint32_t DatabaseManager::updateDatabase()
 
 			registerDatabaseConfig("db_version", 41);
 			return 41;
+		}
+
+		case 41:
+		{
+			std::clog << "> Updating database to version 42... (FIX)" << std::endl;
+			registerDatabaseConfig("db_version", 42);
+			return 42;
+		}
+
+		case 42:
+		{
+			std::clog << "> Updating database to version 43... (Cast & AntiDupe System)" << std::endl;
+			switch(db->getDatabaseEngine())
+			{
+				case DATABASE_ENGINE_MYSQL:
+				{
+					db->query("ALTER TABLE `players` ADD `broadcasting` tinyint(4) DEFAULT '0'");
+					db->query("ALTER TABLE `players` ADD `viewers` INT(1) DEFAULT '0'");
+					break;
+				}
+
+				case DATABASE_ENGINE_SQLITE:
+				{
+					db->query("ALTER TABLE `players` ADD `broadcasting` BOOLEAN(4) NOT NULL DEFAULT 0;");
+					db->query("ALTER TABLE `players` ADD `viewers` INTEGER(1) NOT NULL DEFAULT 0;");
+					break;
+				}
+
+				default:
+					break;
+			}
+
+			registerDatabaseConfig("db_version", 43);
+			return 43;
 		}
 
 		default:

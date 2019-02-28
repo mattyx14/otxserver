@@ -34,6 +34,7 @@ class Connection;
 class Quest;
 class DepotChest;
 class DepotLocker;
+class Spectators;
 
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
 typedef boost::shared_ptr<NetworkMessage> NetworkMessage_ptr;
@@ -50,8 +51,8 @@ class ProtocolGame : public Protocol
 			protocolGameCount++;
 #endif
 			player = NULL;
-			m_eventConnect = 0;
-			m_debugAssertSent = m_acceptPackets = false;
+			m_eventConnect = m_packetCount = m_packetTime = 0;
+			m_debugAssertSent = m_acceptPackets = m_spectator = false;
 		}
 		virtual ~ProtocolGame()
 		{
@@ -65,11 +66,14 @@ class ProtocolGame : public Protocol
 		enum {hasChecksum = true};
 		static const char* protocolName() {return "game protocol";}
 
+		void spectate(const std::string& name, const std::string& password);
 		bool login(const std::string& name, uint32_t id, const std::string& password,
 			OperatingSystem_t operatingSystem, uint16_t version, bool gamemaster);
 		bool logout(bool displayEffect, bool forceLogout);
+		void chat(uint16_t channelId);
 
 		void setPlayer(Player* p);
+		Player* getPlayer() const {return player;}
 
 	private:
 		void disconnectClient(uint8_t error, const char* message);
@@ -344,9 +348,10 @@ class ProtocolGame : public Protocol
 		void addGameTaskInternal(uint32_t delay, const FunctionType&);
 
 		friend class Player;
+		friend class Spectators;
 		Player* player;
 
 		uint32_t m_eventConnect, m_maxSizeCount, m_packetCount, m_packetTime;
-		bool m_debugAssertSent, m_acceptPackets;
+		bool m_debugAssertSent, m_acceptPackets, m_spectator;
 };
 #endif
