@@ -106,7 +106,7 @@ class Weapon : public Event
 		uint32_t exhaustion;
 		bool enabled, premium, wieldUnproperly, swing;
 		int32_t level, magLevel, mana, manaPercent;
-		#ifdef _MULTIPLATFORM76
+		#ifdef MULTIPLATFORM76
 		int32_t soul;
 		#endif
 

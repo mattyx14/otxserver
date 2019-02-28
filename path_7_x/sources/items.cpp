@@ -1254,7 +1254,7 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.getAbilities()->statsPercent[STAT_MAXMANA] = intValue;
 		}
-		#ifdef _MULTIPLATFORM76
+		#ifdef MULTIPLATFORM76
 		else if(tmpStrValue == "soulpoints")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
@@ -1651,7 +1651,7 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 			if(readXMLInteger(itemAttributesNode, "value", intValue) && intValue != 0)
 				it.getAbilities()->conditionSuppressions |= CONDITION_REGENERATION;
 		}
-		#ifdef _MULTIPLATFORM76
+		#ifdef MULTIPLATFORM76
 		else if(tmpStrValue == "suppresssoul")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue) && intValue != 0)

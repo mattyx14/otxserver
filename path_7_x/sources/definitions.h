@@ -26,14 +26,14 @@
 #define SOFTWARE_DEVELOPERS "Matt Gomez, Leandro Brewster and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2/"
 
-#if defined(_MULTIPLATFORM77)
-	#define _MULTIPLATFORM76
+#if defined(MULTIPLATFORM77)
+	#define MULTIPLATFORM76
 	#define ITEMS_PATH std::string("77")
 	#define CLIENT_VERSION_ITEMS 3
 	#define CLIENT_VERSION_MIN 770
 	#define CLIENT_VERSION_MAX 772
 	#define CLIENT_VERSION_STRING "7.70/72"
-#elif defined(_MULTIPLATFORM76)
+#elif defined(MULTIPLATFORM76)
 	#define ITEMS_PATH std::string("76")
 	#define CLIENT_VERSION_ITEMS 3
 	#define CLIENT_VERSION_MIN 760

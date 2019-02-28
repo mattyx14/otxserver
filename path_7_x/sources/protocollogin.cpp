@@ -77,7 +77,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	uint16_t version = msg.get<uint16_t>();
 
 	msg.skip(12);
-	#ifdef _MULTIPLATFORM77
+	#ifdef MULTIPLATFORM77
 	if(!RSA_decrypt(msg))
 	{
 		getConnection()->close();

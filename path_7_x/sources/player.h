@@ -60,7 +60,7 @@ enum playerinfo_t
 	PLAYERINFO_MAXMANA,
 	PLAYERINFO_MAGICLEVEL,
 	PLAYERINFO_MAGICLEVELPERCENT,
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	PLAYERINFO_SOUL,
 	#endif
 };
@@ -341,7 +341,7 @@ class Player : public Creature, public Cylinder
 		void setCapacity(double newCapacity) {capacity = newCapacity;}
 		double getFreeCapacity() const;
 
-		#ifdef _MULTIPLATFORM76
+		#ifdef MULTIPLATFORM76
 		virtual int32_t getSoul() const {return getPlayerInfo(PLAYERINFO_SOUL);}
 		int32_t getSoulMax() const {return soulMax;}
 		void changeSoul(int32_t soulChange);
@@ -814,7 +814,7 @@ class Player : public Creature, public Cylinder
 		uint16_t lastStatsTrainingTime;
 
 		int32_t premiumDays;
-		#ifdef _MULTIPLATFORM76
+		#ifdef MULTIPLATFORM76
 		int32_t soul;
 		int32_t soulMax;
 		#endif

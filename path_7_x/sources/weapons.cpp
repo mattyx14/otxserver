@@ -165,7 +165,7 @@ Weapon::Weapon(LuaInterface* _interface):
 	magLevel = 0;
 	mana = 0;
 	manaPercent = 0;
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	soul = 0;
 	#endif
 	exhaustion = 0;
@@ -210,7 +210,7 @@ bool Weapon::configureEvent(xmlNodePtr p)
 	if(readXMLInteger(p, "manapercent", intValue))
 	 	manaPercent = intValue;
 
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	if(readXMLInteger(p, "soul", intValue))
 	 	soul = intValue;
 	#endif
@@ -310,7 +310,7 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target) const
 	if(player->getMana() < getManaCost(player))
 		return 0;
 
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	if(player->getSoul() < soul)
 		return 0;
 	#endif
@@ -460,7 +460,7 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile*) const
 			player->addManaSpent(manaCost);
 	}
 
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	if(!player->hasFlag(PlayerFlag_HasInfiniteSoul) && soul > 0)
 		player->changeSoul(-soul);
 	#endif

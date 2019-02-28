@@ -26,7 +26,7 @@
 #include "connection.h"
 #include "outputmessage.h"
 
-#ifdef _MULTIPLATFORM77
+#ifdef MULTIPLATFORM77
 #include <openssl/rsa.h>
 extern RSA* g_RSA;
 #endif
@@ -40,7 +40,7 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 	if(!m_rawMessages)
 	{
 		msg->writeMessageLength();
-		#ifdef _MULTIPLATFORM77
+		#ifdef MULTIPLATFORM77
 		if(m_encryptionEnabled)
 		{
 			#ifdef __DEBUG_NET_DETAIL__
@@ -62,7 +62,7 @@ void Protocol::onRecvMessage(NetworkMessage& msg)
 	std::clog << "Protocol::onRecvMessage" << std::endl;
 	#endif
 
-	#ifdef _MULTIPLATFORM77
+	#ifdef MULTIPLATFORM77
 	if(m_encryptionEnabled)
 	{
 		#ifdef __DEBUG_NET_DETAIL__
@@ -104,7 +104,7 @@ void Protocol::deleteProtocolTask()
 	delete this;
 }
 
-#ifdef _MULTIPLATFORM77
+#ifdef MULTIPLATFORM77
 void Protocol::XTEA_encrypt(OutputMessage& msg)
 {
 	//add bytes until reach 8 multiple

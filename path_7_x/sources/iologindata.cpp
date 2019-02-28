@@ -303,7 +303,7 @@ bool IOLoginData::getPassword(uint32_t accountId, std::string& password, std::st
 bool IOLoginData::setPassword(uint32_t accountId, std::string newPassword)
 {
 	std::string salt;
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	if(g_config.getBool(ConfigManager::GENERATE_ACCOUNT_SALT))
 	{
 		salt = generateRecoveryKey(2, 19, true);
@@ -424,7 +424,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	DBQuery query;
 	query << "SELECT `id`, `account_id`, `group_id`, `world_id`, `sex`, `vocation`, `experience`, `level`, "
 	<< "`maglevel`, `health`, `healthmax`, `blessings`, `pvp_blessing`, `mana`, `manamax`, `manaspent`, "
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	<< "`soul`, "
 	#endif
 	<< "`lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `posx`, `posy`, "
@@ -486,7 +486,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	if(currExpCount < nextExpCount)
 		player->levelPercent = Player::getPercentLevel(player->experience - currExpCount, nextExpCount - currExpCount);
 
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	player->soul = result->getDataInt("soul");
 	#endif
 	player->capacity = result->getDataInt("cap");
@@ -889,7 +889,7 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	query << "`mana` = " << player->mana << ", ";
 	query << "`manamax` = " << player->manaMax << ", ";
 	query << "`manaspent` = " << player->manaSpent << ", ";
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	query << "`soul` = " << player->soul << ", ";
 	#endif
 	query << "`town_id` = " << player->town << ", ";

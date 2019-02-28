@@ -395,7 +395,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSetTown(lua_State* L);
 		static int32_t luaDoPlayerSetVocation(lua_State* L);
 		static int32_t luaDoPlayerRemoveItem(lua_State* L);
-		#ifdef _MULTIPLATFORM76
+		#ifdef MULTIPLATFORM76
 		static int32_t luaDoPlayerAddSoul(lua_State* L);
 		#endif
 		static int32_t luaDoPlayerSetExtraAttackSpeed(lua_State* L);
@@ -511,7 +511,7 @@ class LuaInterface
 		static int32_t luaGetPlayerTown(lua_State* L);
 		static int32_t luaGetPlayerItemCount(lua_State* L);
 		static int32_t luaGetPlayerMoney(lua_State* L);
-		#ifdef _MULTIPLATFORM76
+		#ifdef MULTIPLATFORM76
 		static int32_t luaGetPlayerSoul(lua_State* L);
 		#endif
 		static int32_t luaGetPlayerStamina(lua_State* L);

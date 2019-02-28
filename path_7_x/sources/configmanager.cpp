@@ -178,7 +178,7 @@ bool ConfigManager::load()
 	m_confNumber[STATUSQUERY_TIMEOUT] = getGlobalNumber("statusTimeout", 300000);
 	m_confBool[BROADCAST_BANISHMENTS] = getGlobalBool("broadcastBanishments", true);
 	m_confBool[GENERATE_ACCOUNT_NUMBER] = getGlobalBool("generateAccountNumber", false);
-	#ifdef _MULTIPLATFORM76
+	#ifdef MULTIPLATFORM76
 	m_confBool[GENERATE_ACCOUNT_SALT] = getGlobalBool("generateAccountSalt", true);
 	#endif
 	m_confBool[INGAME_GUILD_MANAGEMENT] = getGlobalBool("ingameGuildManagement", true);
