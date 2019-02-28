@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Behemoth" nameDescription="a behemoth" race="blood" experience="2500" speed="340" manacost="0">
+	<health now="4000" max="4000"/>
+	<look type="55" head="0" body="0" legs="0" feet="0" corpse="2931"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="70" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="110" attack="75"/>
+		<attack name="physical" interval="2000" chance="15" range="7" min="-1" max="-185">
+			<attribute key="shootEffect" value="largerock"/>
+		</attack>
+	</attacks>
+	<defenses armor="50" defense="65">
+		<defense name="speed" interval="2000" chance="7" speedchange="500" duration="8000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="You're so little!"/>
+		<voice sentence="Human flesh - delicious!"/>
+		<voice sentence="Crush the intruders!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2150" countmax="2" chance="3475" /> -- small amethyst
+		<item id="2174" chance="1250" /> -- strange symbol
+		<item id="2023" chance="150" /> -- amphora
+		<item id="2273" chance="1300" /> -- ultimate healing rune
+		<item id="2454" chance="75" /> -- war axe :: Def 10 :: Atk 48
+		<item id="2125" chance="800" /> -- crystal necklace
+		<item id="2416" chance="550" /> -- crowbar :: Def 6 :: Atk 6
+		</inside>
+		</item>
+		<item id="2188" chance="500" /> -- green spell wand
+		<item id="2666" chance="31325" /> -- meat
+		<item id="2645" chance="500" /> -- steel boots :: Arm 3
+		<item id="2387" chance="5300" /> -- double axe :: Def 12 :: Atk 35
+		<item id="2231" chance="1250" /> -- big bone
+		<item id="2377" chance="4525" /> -- two handed sword :: Def 25 :: Atk 30
+		<item id="2489" chance="3475" /> -- dark armor :: Arm 10
+		<item id="2553" chance="1250" /> -- pick
+		<item id="2463" chance="2750" /> -- plate armor :: Arm 10
+		<item id="2393" chance="1450" /> -- giant sword :: Def 22 :: Atk 46
+		<item id="2148" countmax="100" chance="30050" /> -- gold coin
+		<item id="2148" countmax="80" chance="30050" /> -- gold coin
+	</loot>
+</monster>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Orc Leader" nameDescription="an orc leader" race="blood" experience="270" speed="230" manacost="640">
+	<health now="450" max="450"/>
+	<look type="59" head="0" body="0" legs="0" feet="0" corpse="2938"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="70" defense="15"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="52" attack="48"/>
+		<attack name="physical" interval="2000" chance="17" range="7" min="-50" max="-70">
+			<attribute key="shootEffect" value="throwingknife"/>
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="45"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="1"/>
+		<immunity poison="0"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Ulderek futgyr human!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2463" chance="1000" /> -- plate armor :: Arm 10
+		<item id="2478" chance="4900" /> -- brass legs :: Arm 5
+		<item id="2413" chance="1000" /> -- broad sword :: Def 23 :: Atk 26
+		<item id="2419" chance="2750" /> -- scimitar :: Def 13 :: Atk 19
+		<item id="2647" chance="1000" /> -- plate legs :: Arm 7
+		<item id="2475" chance="1225" /> -- warrior helmet :: Arm 8
+		</inside>
+		</item>
+		<item id="2510" chance="20350" /> -- plate shield :: Def 17
+		<item id="2410" countmax="4" chance="12150" /> -- throwing knife :: Atk 25
+		<item id="2667" chance="48650" /> -- fish
+		<item id="2789" chance="16825" /> -- brown mushroom
+		<item id="2397" chance="4650" /> -- longsword :: Def 14 :: Atk 17
+		<item id="2207" chance="6650" /> -- sword ring
+		<item id="2148" countmax="40" chance="64925" /> -- gold coin
+	</loot>
+</monster>

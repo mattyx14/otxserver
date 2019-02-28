@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dwarf Geomancer" nameDescription="a dwarf geomancer" race="blood" experience="245" speed="200" manacost="0">
+	<health now="380" max="380"/>
+	<look type="66" head="0" body="0" legs="0" feet="0" corpse="2987"/>
+	<targetchange interval="2000" chance="50"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="4"/>
+		<flag runonhealth="150"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="30"/>
+		<attack name="physical" interval="2000" chance="34" range="7" min="-55" max="-105">
+			<attribute key="shootEffect" value="largerock"/>
+		</attack>
+		<attack name="manadrain" interval="2000" chance="25" range="7" min="-50" max="-80"/>
+	</attacks>
+	<defenses armor="15" defense="35">
+		<defense name="healing" interval="2000" chance="50" min="75" max="125">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Hail Durin!"/>
+		<voice sentence="Earth is the strongest element."/>
+		<voice sentence="Dust to dust."/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2162" chance="25850" /> -- magic lightwand
+		<item id="2146" chance="2550" /> -- small sapphire
+		<item id="2175" chance="1000" /> -- spellbook :: Def 14
+		</inside>
+		</item>
+		<item id="2787" countmax="2" chance="80700" /> -- white mushroom
+		<item id="2673" chance="43775" /> -- pear
+		<item id="2260" chance="60650" /> -- blank rune
+		<item id="2213" chance="4100" /> -- dwarven ring
+		<item id="2148" countmax="90" chance="87600" /> -- gold coin
+	</loot>
+</monster>

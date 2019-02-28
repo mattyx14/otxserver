@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Grynch Clan Goblin" nameDescription="a grynch clan goblin" race="blood" experience="5" speed="264" manacost="0">
+	<health now="80" max="80"/>
+	<look type="61" head="0" body="0" legs="0" feet="0" corpse="2940"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="10"/>
+		<flag runonhealth="15"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="15" attack="10"/>
+	</attacks>
+	<defenses armor="6" defense="8"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="0"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="T'was not me hand in your pocket!"/>
+		<voice sentence="Look! Cool stuff in house. Let's get it!"/>
+		<voice sentence="Uhh! Nobody home!"/>
+		<voice sentence="Me just borrowed it!"/>
+		<voice sentence="Me no steal! Me found it!"/>
+		<voice sentence="Me had it for five minutes. It's family heirloom now!"/>
+		<voice sentence="Nice human won't hurt little, good goblin?"/>
+		<voice sentence="Gimmegimme!"/>
+		<voice sentence="Invite me in you lovely house plx!"/>
+		<voice sentence="Other Goblin stole it!"/>
+		<voice sentence="All presents mine!"/>
+		<voice sentence="Me got ugly ones purse"/>
+		<voice sentence="Free itans plz!"/>
+		<voice sentence="Not me! Not me!"/>
+		<voice sentence="Guys, help me here! Guys? Guys???"/>
+		<voice sentence="That only much dust in me pocket! Honest!"/>
+		<voice sentence="Can me have your stuff?"/>
+	</voices>
+<loot capacity="3000">
+		<item id="2331" chance="70000"/> -- present
+	</loot>
+</monster>

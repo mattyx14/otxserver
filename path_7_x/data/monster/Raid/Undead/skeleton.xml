@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Skeleton" nameDescription="a skeleton" race="undead" experience="35" speed="154" manacost="300">
+	<health now="50" max="50"/>
+	<look type="33" head="0" body="0" legs="0" feet="0" corpse="2843"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="18" attack="14"/>
+		<attack name="lifedrain" interval="2000" chance="9" range="1" min="-7" max="-13"/>
+	</attacks>
+	<defenses armor="2" defense="9"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2230" chance="89650" /> -- bone
+		<item id="2050" chance="18200" /> -- torch
+		<item id="2473" chance="14700" /> -- viking helmet :: Arm 4
+		</inside>
+		</item>
+		<item id="2511" chance="8125" /> -- brass shield :: Def 16
+		<item id="2376" chance="4350" /> -- sword :: Def 12 :: Atk 14
+		<item id="2388" chance="10875" /> -- hatchet :: Def 8 :: Atk 15
+		<item id="2398" chance="10675" /> -- mace :: Def 11 :: Atk 16
+		<item id="2148" countmax="20" chance="84150" /> -- gold coin
+	</loot>
+</monster>

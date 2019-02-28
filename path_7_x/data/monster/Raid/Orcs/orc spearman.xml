@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Orc Spearman" nameDescription="an orc spearman" race="blood" experience="38" speed="176" manacost="310">
+	<health now="105" max="105"/>
+	<look type="50" head="0" body="0" legs="0" feet="0" corpse="2920"/>
+	<targetchange interval="2000" chance="50"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag runonhealth="10"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="19" attack="17"/>
+		<attack name="physical" interval="2000" chance="7" range="7" min="-16" max="-40">
+			<attribute key="shootEffect" value="spear"/>
+		</attack>
+	</attacks>
+	<defenses armor="6" defense="12"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="0"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Ugaar!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2482" chance="16900" /> -- studded helmet :: Arm 2
+		<item id="2420" chance="6175" /> -- machete :: Def 9 :: Atk 12
+		</inside>
+		</item>
+		<item id="2389" chance="28225" /> -- spear :: Atk 25
+		<item id="2468" chance="20300" /> -- studded legs :: Arm 2
+		<item id="2666" chance="49700" /> -- meat
+		<item id="2148" countmax="22" chance="64550" /> -- gold coin
+	</loot>
+</monster>

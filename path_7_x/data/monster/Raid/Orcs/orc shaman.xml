@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Orc Shaman" nameDescription="an orc shaman" race="blood" experience="110" speed="140" manacost="0">
+	<health now="115" max="115"/>
+	<look type="6" head="0" body="0" legs="0" feet="0" corpse="2860"/>
+	<targetchange interval="2000" chance="50"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag runonhealth="15"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="20" attack="13"/>
+		<attack name="energy" interval="1000" chance="13" range="7" min="-20" max="-30">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="fire" interval="1000" chance="8" range="7" radius="1" target="1" min="-5" max="-45">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+	</attacks>
+	<defenses armor="8" defense="10">
+		<defense name="healing" interval="1000" chance="25" min="27" max="43">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="1"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="4">
+		<summon name="snake" interval="1000" chance="25" max="4"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="Grak brrretz gulu."/>
+		<voice sentence="Huumans stinkk!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2686" countmax="2" chance="14900" /> -- corncob
+		<item id="2188" chance="2575" /> -- green spell wand
+		<item id="1958" chance="1200" /> -- book
+		</inside>
+		</item>
+		<item id="2389" chance="12025" /> -- spear :: Atk 25
+		<item id="2464" chance="16650" /> -- chain armor :: Arm 6
+		<item id="2148" countmax="10" chance="93425" /> -- gold coin
+	</loot>
+</monster>

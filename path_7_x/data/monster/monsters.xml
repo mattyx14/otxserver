@@ -1,185 +1,205 @@
 <?xml version="1.0"?>
 <monsters>
-	<!-- otros-->
-	<monster name="Grim Reaper" file="grim reaper.xml"/>
-	<monster name="Braindeath" file="braindeath.xml"/>
-
-	<!-- POI -->
-	<monster name="Hellfire Fighter" file="poi/hellfire fighter.xml"/>	
-	<monster name="Hellhound" file="poi/hellhound.xml"/>
-	<monster name="Dark Torturer" file="poi/dark torturer.xml"/>
-	<monster name="destroyer" file="poi/destroyer.xml"/>
-	<monster name="Diabolic Imp" file="poi/diabolic imp.xml"/>
-	<monster name="Fury" file="poi/fury.xml"/>
-	<monster name="Hand of Cursed Fate" file="poi/hand of cursed fate.xml"/>
-	<monster name="Defiler" file="poi/defiler.xml"/>
-	<monster name="Son of Verminor" file="poi/son of verminor.xml"/>
-	<monster name="Juggernaut" file="poi/juggernaut.xml"/>
-	<monster name="Nightmare" file="poi/nightmare.xml"/>
-	<monster name="plaguesmith" file="poi/plaguesmith.xml"/>	
-	<monster name="Lost Soul" file="poi/lost soul.xml"/>
-	<monster name="Blightwalker" file="poi/blightwalker.xml"/>
-	<monster name="Phantasm" file="poi/phantasm.xml"/>
-	<monster name="Demon (Goblin)" file="poi/demon (goblin).xml"/>
-	<monster name="Spectre" file="poi/spectre.xml"/>
-	<monster name="Betrayed Wraith" file="poi/betrayed wraith.xml"/>
-	<monster name="Undead Dragon" file="poi/undead dragon.xml"/>
-<!-- MONSTERS 772NORMAL -->
-	<monster name="Amazon" file="amazon.xml"/>
-	<monster name="Ancient Scarab" file="ancient scarab.xml"/>
-	<monster name="Assassin" file="assassin.xml"/>
-	<monster name="Badger" file="badger.xml"/>
-	<monster name="Bandit" file="bandit.xml"/>
-	<monster name="Banshee" file="banshee.xml"/>
-	<monster name="Bat" file="bat.xml"/>
-	<monster name="Bear" file="bear.xml"/>
-	<monster name="Behemoth" file="behemoth.xml"/>
-	<monster name="Beholder" file="beholder.xml"/>
-	<monster name="Black Knight" file="black knight.xml"/>
-	<monster name="Black Sheep" file="black sheep.xml"/>
-	<monster name="Blue Djinn" file="blue djinn.xml"/>
-	<monster name="Bonebeast" file="bonebeast.xml"/>
-	<monster name="Bug" file="bug.xml"/>
-	<monster name="Butterfly" file="butterfly.xml"/>
-		<monster name="Purple Butterfly" file="butterfly purple.xml"/>
-		<monster name="Yellow Butterfly " file="butterfly yellow.xml"/>
-		<monster name="Red Butterfly" file="butterfly red.xml"/>
-		<monster name="Blue Butterfly" file="butterfly blue.xml"/>
-	<monster name="Carniphila" file="carniphila.xml"/>
-	<monster name="Cave Rat" file="cave rat.xml"/>
-	<monster name="Centipede" file="centipede.xml"/>
-	<monster name="Chicken" file="chicken.xml"/>
-	<monster name="Cobra" file="cobra.xml"/>
-	<monster name="Crab" file="crab.xml"/>
-	<monster name="Crocodile" file="crocodile.xml"/>
-	<monster name="Crypt Shambler" file="crypt shambler.xml"/>
-	<monster name="Cyclops" file="cyclops.xml"/>
-	<monster name="Dark Monk" file="dark monk.xml"/>
-	<monster name="Deer" file="deer.xml"/>
-	<monster name="Demon Skeleton" file="demon skeleton.xml"/>
-	<monster name="Demon" file="demon.xml"/>
-	<monster name="Dog" file="dog.xml"/>
-	<monster name="Dragon Lord" file="dragon lord.xml"/>
-	<monster name="Dragon" file="dragon.xml"/>
-	<monster name="Dwarf Geomancer" file="dwarf geomancer.xml"/>
-	<monster name="Dwarf Guard" file="dwarf guard.xml"/>
-	<monster name="Dwarf Soldier" file="dwarf soldier.xml"/>
-	<monster name="Dwarf" file="dwarf.xml"/>
-	<monster name="Dworc Fleshhunter" file="dworc fleshhunter.xml"/>
-	<monster name="Dworc Venomsniper" file="dworc venomsniper.xml"/>
-	<monster name="Dworc Voodoomaster" file="dworc voodoomaster.xml"/>
-	<monster name="Efreet" file="efreet.xml"/>
-	<monster name="Elder Beholder" file="elder beholder.xml"/>
-	<monster name="Elephant" file="elephant.xml"/>
-	<monster name="Elf Arcanist" file="elf arcanist.xml"/>
-	<monster name="Elf Scout" file="elf scout.xml"/>
-	<monster name="Elf" file="elf.xml"/>
-	<monster name="Fire Devil" file="fire devil.xml"/>
-	<monster name="Fire Elemental" file="fire elemental.xml"/>
-	<monster name="Flamingo" file="flamingo.xml"/>
-	<monster name="Frost Troll" file="frost troll.xml"/>
-	<monster name="Gargoyle" file="gargoyle.xml"/>
-	<monster name="Gazer" file="gazer.xml"/>
-	<monster name="Ghost" file="ghost.xml"/>
-	<monster name="Ghoul" file="ghoul.xml"/>
-	<monster name="Giant Spider" file="giant spider.xml"/>
-	<monster name="Goblin" file="goblin.xml"/>
-	<monster name="Green Djinn" file="green djinn.xml"/>
-	<monster name="Hero" file="hero.xml"/>
-	<monster name="Hunter" file="hunter.xml"/>
-	<monster name="Hyaena" file="hyaena.xml"/>
-	<monster name="Hydra" file="hydra.xml"/>
-	<monster name="Kongra" file="kongra.xml"/>
-	<monster name="Larva" file="larva.xml"/>
-	<monster name="Lich" file="lich.xml"/>
-	<monster name="Lion" file="lion.xml"/>
-	<monster name="Lizard Sentinel" file="lizard sentinel.xml"/>
-	<monster name="Lizard Snakecharmer" file="lizard snakecharmer.xml"/>
-	<monster name="Lizard Templar" file="lizard templar.xml"/>
-	<monster name="Marid" file="marid.xml"/>
-	<monster name="Merlkin" file="merlkin.xml"/>
-	<monster name="Minotaur Archer" file="minotaur archer.xml"/>
-	<monster name="Minotaur Guard" file="minotaur guard.xml"/>
-	<monster name="Minotaur Mage" file="minotaur mage.xml"/>
-	<monster name="Minotaur" file="minotaur.xml"/>
-	<monster name="Monk" file="monk.xml"/>
-	<monster name="Mummy" file="mummy.xml"/>
-	<monster name="Necromancer" file="necromancer.xml"/>
-	<monster name="Orc Berserker" file="orc berserker.xml"/>
-	<monster name="Orc Leader" file="orc leader.xml"/>
-	<monster name="Orc Rider" file="orc rider.xml"/>
-	<monster name="Orc Shaman" file="orc shaman.xml"/>
-	<monster name="Orc Spearman" file="orc spearman.xml"/>
-	<monster name="Orc Warlord" file="orc warlord.xml"/>
-	<monster name="Orc Warrior" file="orc warrior.xml"/>
-	<monster name="Orc" file="orc.xml"/>
-	<monster name="Panda" file="panda.xml"/>
-	<monster name="Parrot" file="parrot.xml"/>
-	<monster name="Pig" file="pig.xml"/>
-	<monster name="Poison Spider" file="poison spider.xml"/>
-	<monster name="Polar Bear" file="polar bear.xml"/>
-	<monster name="Priestess" file="priestess.xml"/>
-	<monster name="Rabbit" file="rabbit.xml"/>
-	<monster name="Rat" file="rat.xml"/>
-	<monster name="Rotworm" file="rotworm.xml"/>
-	<monster name="Scarab" file="scarab.xml"/>
-	<monster name="Scorpion" file="scorpion.xml"/>
-	<monster name="Serpent Spawn" file="serpent spawn.xml"/>
-	<monster name="Sheep" file="sheep.xml"/>
-	<monster name="Sibang" file="sibang.xml"/>
-	<monster name="Skeleton" file="skeleton.xml"/>
-	<monster name="Skunk" file="skunk.xml"/>
-	<monster name="Slime2" file="slime2.xml"/>
-	<monster name="Slime" file="slime.xml"/>
-	<monster name="Smuggler" file="smuggler.xml"/>
-	<monster name="Snake" file="snake.xml"/>
-	<monster name="Spider" file="spider.xml"/>
-	<monster name="Spit Nettle" file="spit nettle.xml"/>
-	<monster name="Stalker" file="stalker.xml"/>
-	<monster name="Stone Golem" file="stone golem.xml"/>
-	<monster name="Swamp Troll" file="swamp troll.xml"/>
-	<monster name="Tarantula" file="tarantula.xml"/>
-	<monster name="Terror Bird" file="terror bird.xml"/>
-	<monster name="Tiger" file="tiger.xml"/>
-	<monster name="Troll" file="troll.xml"/>
-	<monster name="Training Monk" file="training monk.xml"/>
-	<monster name="Valkyrie" file="valkyrie.xml"/>
-	<monster name="Vampire" file="vampire.xml"/>
-	<monster name="War Wolf" file="war wolf.xml"/>
-	<monster name="Warlock" file="warlock.xml"/>
-	<monster name="Wasp" file="wasp.xml"/>
-	<monster name="Wild Warrior" file="wild warrior.xml"/>
-	<monster name="Winter Wolf" file="winter wolf.xml"/>
-	<monster name="Witch" file="witch.xml"/>
-	<monster name="Wolf" file="wolf.xml"/>
-	<monster name="Yeti" file="yeti.xml"/>
-	
-<!-- Bosses -->
-	<monster name="Ashmunrah" file="Bosses\ashmunrah.xml"/>
-	<monster name="Deathslicer" file="Bosses\deathslicer.xml"/>
-	<monster name="Demodras" file="Bosses\demodras.xml"/>
-	<monster name="demongoblin" file="Bosses\demongoblin.xml"/>
-	<monster name="Dharalion" file="Bosses\dharalion.xml"/>
-	<monster name="Dipthrah" file="Bosses\dipthrah.xml"/>
-	<monster name="Fernfang" file="Bosses\fernfang.xml"/>
-	<monster name="Flamethrower" file="Bosses\flamethrower.xml"/>
-	<monster name="General Murius" file="Bosses\general murius.xml"/>
-	<monster name="Grorlam" file="Bosses\grorlam.xml"/>
-	<monster name="Magicthrower" file="Bosses\magicthrower.xml"/>
-	<monster name="Mahrdis" file="Bosses\mahrdis.xml"/>
-	<monster name="Morguthis" file="Bosses\morguthis.xml"/>
-	<monster name="Necropharus" file="Bosses\necropharus.xml"/>
-	<monster name="Omruc" file="Bosses\omruc.xml"/>
-	<monster name="Orshabaal" file="Bosses\orshabaal.xml"/>
-	<monster name="Plaguethrower" file="Bosses\plaguethrower.xml"/>
-	<monster name="Poisonthrower" file="Bosses\poisonthrower.xml"/>
-	<monster name="Rahemos" file="Bosses\rahemos.xml"/>
-	<monster name="Shredderthrower" file="Bosses\shredderthrower.xml"/>
-	<monster name="Tiquanda's Revenge" file="Bosses\tiquanda's revenge.xml"/>
-	<monster name="Thalas" file="Bosses\thalas.xml"/>
-	<monster name="The Evil Eye" file="Bosses\the evil eye.xml"/>
-	<monster name="The Horned Fox" file="Bosses\the horned fox.xml"/>
-	<monster name="The Old Widow" file="Bosses\the old widow.xml"/>
-	<monster name="Vashresamun" file="Bosses\vashresamun.xml"/>
-	
+<monster name="Rook Minotaur Mage" counterid="184" file="Rookgaard/Rook minotaur mage.xml"/>
+<monster name="Basilisk" counterid="250" file="basilisk.xml"/>
+<monster name="Morgaroth" counterid="87" file="Morgaroth.xml"/>
+<monster name="Mimic" counterid="88" file="Mimic.xml"/>
+<monster name="Infernatil" counterid="89" file="Infernatil.xml"/>
+<monster name="The Halloween Hare" counterid="90" file="The Halloween Hare.xml"/>
+<monster name="Human" counterid="91" file="Human.xml"/>
+<monster name="Gamemaster" counterid="92" file="Gamemaster.xml"/>
+<monster name="Fernfang" counterid="93" file="Fernfang.xml"/>
+<monster name="Ferumbras" counterid="94" file="Ferumbras.xml"/>
+<monster name="Blue Butterfly" counterid="95" file="Blue Butterfly.xml"/>
+<monster name="Purple Butterfly" counterid="96" file="Purple Butterfly.xml"/>
+<monster name="Red Butterfly" counterid="97" file="Red Butterfly.xml"/>
+<monster name="Yellow Butterfly" counterid="98" file="Yellow Butterfly.xml"/>
+<monster name="Pink Butterfly" counterid="98" file="Pink Butterfly.xml"/>
+<monster name="Butterfly" counterid="99" file="Butterfly.xml"/>
+<monster name="Amazon" counterid="100" file="amazon.xml"/>
+<monster name="Ancient Scarab" counterid="101" file="ancient scarab.xml"/>
+<monster name="Ashmunrah" counterid="103" file="ashmunrah.xml"/>
+<monster name="Assassin" counterid="104" file="assassin.xml"/>
+<monster name="Badger" counterid="105" file="badger.xml"/>
+<monster name="Bandit" counterid="106" file="bandit.xml"/>
+<monster name="Banshee" counterid="107" file="banshee.xml"/>
+<monster name="Bat" counterid="108" file="Bat.xml"/>
+<monster name="Bazir" counterid="109" file="Bazir.xml"/>
+<monster name="Bear" counterid="110" file="bear.xml"/>
+<monster name="Behemoth" counterid="111" file="behemoth.xml"/>
+<monster name="Beholder" counterid="112" file="beholder.xml"/>
+<monster name="Black Knight" counterid="113" file="black knight.xml"/>
+<monster name="Black Sheep" counterid="114" file="black sheep.xml"/>
+<monster name="Blue Djinn" counterid="115" file="blue djinn.xml"/>
+<monster name="BoneBeast" counterid="116" file="bone beast.xml"/>
+<monster name="Bone Beast" counterid="117" file="bone beast.xml"/>
+<monster name="Bug" counterid="118" file="bug.xml"/>
+<monster name="Carniphila" counterid="120" file="carniphila.xml"/>
+<monster name="Cave Rat" counterid="121" file="cave rat.xml"/>
+<monster name="Centipede" counterid="122" file="centipede.xml"/>
+<monster name="Chicken" counterid="123" file="chicken.xml"/>
+<monster name="Cobra" counterid="124" file="cobra.xml"/>
+<monster name="Crab" counterid="125" file="crab.xml"/>
+<monster name="Crocodile" counterid="126" file="crocodile.xml"/>
+<monster name="Crypt Shambler" counterid="127" file="crypt shambler.xml"/>
+<monster name="Cyclops" counterid="128" file="cyclops.xml"/>
+<monster name="Dark Monk" counterid="129" file="dark monk.xml"/>
+<monster name="Deathslicer" counterid="130" file="deathslicer.xml"/>
+<monster name="Deer" counterid="131" file="deer.xml"/>
+<monster name="Demodras" counterid="132" file="demodras.xml"/>
+<monster name="Demon Skeleton" counterid="133" file="demon skeleton.xml"/>
+<monster name="Demon" counterid="134" file="demon.xml"/>
+<monster name="Dharalion" counterid="135" file="dharalion.xml"/>
+<monster name="Dipthrah" counterid="136" file="dipthrah.xml"/>
+<monster name="Dog" counterid="137" file="dog.xml"/>
+<monster name="Dragon Lord" counterid="138" file="dragon lord.xml"/>
+<monster name="Dragon" counterid="139" file="dragon.xml"/>
+<monster name="Dwarf Geomancer" counterid="140" file="dwarf geomancer.xml"/>
+<monster name="Dwarf Guard" counterid="141" file="dwarf guard.xml"/>
+<monster name="Dwarf Soldier" counterid="142" file="dwarf soldier.xml"/>
+<monster name="Dwarf" counterid="143" file="dwarf.xml"/>
+<monster name="Dworc Fleshhunter" counterid="144" file="dworc fleshhunter.xml"/>
+<monster name="Dworc Venomsniper" counterid="145" file="dworc venomsniper.xml"/>
+<monster name="Dworc Voodoomaster" counterid="146" file="dworc voodoomaster.xml"/>
+<monster name="Efreet" counterid="147" file="efreet.xml"/>
+<monster name="Elder Beholder" counterid="148" file="elder beholder.xml"/>
+<monster name="Elephant" counterid="149" file="elephant.xml"/>
+<monster name="Elf Arcanist" counterid="150" file="elf arcanist.xml"/>
+<monster name="Elf Scout" counterid="151" file="elf scout.xml"/>
+<monster name="Elf" counterid="152" file="elf.xml"/>
+<monster name="Fire Devil" counterid="153" file="fire devil.xml"/>
+<monster name="Fire Elemental" counterid="154" file="fire elemental.xml"/>
+<monster name="Flamethrower" counterid="155" file="flamethrower.xml"/>
+<monster name="Flamingo" counterid="156" file="flamingo.xml"/>
+<monster name="Frost Troll" counterid="157" file="frost troll.xml"/>
+<monster name="Gargoyle" counterid="158" file="gargoyle.xml"/>
+<monster name="Gazer" counterid="159" file="gazer.xml"/>
+<monster name="General Murius" counterid="160" file="general murius.xml"/>
+<monster name="Ghost" counterid="161" file="ghost.xml"/>
+<monster name="Ghoul" counterid="162" file="ghoul.xml"/>
+<monster name="Giant Spider" counterid="163" file="giant spider.xml"/>
+<monster name="Goblin" counterid="164" file="goblin.xml"/>
+<monster name="Green Djinn" counterid="165" file="green djinn.xml"/>
+<monster name="Grorlam" counterid="166" file="grorlam.xml"/>
+<monster name="Hero" counterid="167" file="hero.xml"/>
+<monster name="Hunter" counterid="168" file="hunter.xml"/>
+<monster name="Hyaena" counterid="169" file="hyaena.xml"/>
+<monster name="Hydra" counterid="170" file="hydra.xml"/>
+<monster name="Kongra" counterid="171" file="kongra.xml"/>
+<monster name="Larva" counterid="172" file="larva.xml"/>
+<monster name="Lich" counterid="173" file="lich.xml"/>
+<monster name="Lion" counterid="174" file="lion.xml"/>
+<monster name="Lizard Sentinel" counterid="175" file="lizard sentinel.xml"/>
+<monster name="Lizard Snakecharmer" counterid="176" file="lizard snakecharmer.xml"/>
+<monster name="Lizard Templar" counterid="177" file="lizard templar.xml"/>
+<monster name="Magicthrower" counterid="178" file="magicthrower.xml"/>
+<monster name="Mahrdis" counterid="179" file="mahrdis.xml"/>
+<monster name="Marid" counterid="180" file="marid.xml"/>
+<monster name="Merlkin" counterid="181" file="merlkin.xml"/>
+<monster name="Minotaur Archer" counterid="182" file="minotaur archer.xml"/>
+<monster name="Minotaur Guard" counterid="183" file="minotaur guard.xml"/>
+<monster name="Minotaur Mage" counterid="184" file="minotaur mage.xml"/>
+<monster name="Minotaur" counterid="185" file="minotaur.xml"/>
+<monster name="Monk" counterid="186" file="monk.xml"/>
+<monster name="Morguthis" counterid="187" file="morguthis.xml"/>
+<monster name="Mummy" counterid="188" file="mummy.xml"/>
+<monster name="Necromancer" counterid="189" file="necromancer.xml"/>
+<monster name="Necropharus" counterid="190" file="necropharus.xml"/>
+<monster name="Omruc" counterid="191" file="omruc.xml"/>
+<monster name="Orc Berserker" counterid="192" file="orc berserker.xml"/>
+<monster name="Orc Leader" counterid="193" file="orc leader.xml"/>
+<monster name="Orc Rider" counterid="194" file="orc rider.xml"/>
+<monster name="Orc Shaman" counterid="195" file="orc shaman.xml"/>
+<monster name="Orc Spearman" counterid="196" file="orc spearman.xml"/>
+<monster name="Orc Warlord" counterid="197" file="orc warlord.xml"/>
+<monster name="Orc Warrior" counterid="198" file="orc warrior.xml"/>
+<monster name="Orc" counterid="199" file="orc.xml"/>
+<monster name="Orshabaal" counterid="200" file="orshabaal.xml"/>
+<monster name="Panda" counterid="201" file="panda.xml"/>
+<monster name="Parrot" counterid="202" file="parrot.xml"/>
+<monster name="Pig" counterid="203" file="pig.xml"/>
+<monster name="Plaguethrower" counterid="204" file="plaguethrower.xml"/>
+<monster name="Poison Spider" counterid="205" file="poison spider.xml"/>
+<monster name="Poisonthrower" counterid="206" file="poisonthrower.xml"/>
+<monster name="Polar Bear" counterid="207" file="polar bear.xml"/>
+<monster name="Priestess" counterid="208" file="priestess.xml"/>
+<monster name="Rabbit" counterid="209" file="rabbit.xml"/>
+<monster name="Rahemos" counterid="210" file="rahemos.xml"/>
+<monster name="Rat" counterid="211" file="rat.xml"/>
+<monster name="Rotworm" counterid="212" file="rotworm.xml"/>
+<monster name="Scarab" counterid="213" file="scarab.xml"/>
+<monster name="Scorpion" counterid="214" file="scorpion.xml"/>
+<monster name="Serpent Spawn" counterid="215" file="serpent spawn.xml"/>
+<monster name="Sheep" counterid="216" file="sheep.xml"/>
+<monster name="Shredderthrower" counterid="217" file="shredderthrower.xml"/>
+<monster name="Sibang" counterid="218" file="sibang.xml"/>
+<monster name="Skeleton" counterid="219" file="skeleton.xml"/>
+<monster name="Skunk" counterid="220" file="skunk.xml"/>
+<monster name="Slime Summon" counterid="221" file="slime summon.xml"/>
+<monster name="Slime" counterid="222" file="slime.xml"/>
+<monster name="Smuggler" counterid="223" file="smuggler.xml"/>
+<monster name="Snake" counterid="224" file="snake.xml"/>
+<monster name="Spider" counterid="225" file="spider.xml"/>
+<monster name="Spit Nettle" counterid="226" file="spit nettle.xml"/>
+<monster name="Stalker" counterid="227" file="stalker.xml"/>
+<monster name="Stone Golem" counterid="228" file="stone golem.xml"/>
+<monster name="Swamp Troll" counterid="229" file="swamp troll.xml"/>
+<monster name="Tarantula" counterid="230" file="tarantula.xml"/>
+<monster name="Terror Bird" counterid="231" file="terror bird.xml"/>
+<monster name="Thalas" counterid="232" file="thalas.xml"/>
+<monster name="The Evil Eye" counterid="233" file="the evil eye.xml"/>
+<monster name="The Horned Fox" counterid="234" file="the horned fox.xml"/>
+<monster name="The Old Orc" counterid="235" file="the old orc.xml"/>
+<monster name="The Old Widow" counterid="236" file="the old widow.xml"/>
+<monster name="Tiger" counterid="237" file="tiger.xml"/>
+<monster name="Troll" counterid="238" file="troll.xml"/>
+<monster name="Valkyrie" counterid="239" file="valkyrie.xml"/>
+<monster name="Vampire" counterid="240" file="vampire.xml"/>
+<monster name="Vashresamun" counterid="241" file="vashresamun.xml"/>
+<monster name="War Wolf" counterid="242" file="war wolf.xml"/>
+<monster name="Warlock" counterid="243" file="warlock.xml"/>
+<monster name="Wasp" counterid="244" file="wasp.xml"/>
+<monster name="Wild Warrior" counterid="245" file="wild warrior.xml"/>
+<monster name="Winter Wolf" counterid="246" file="winter wolf.xml"/>
+<monster name="Witch" counterid="247" file="witch.xml"/>
+<monster name="Wolf" counterid="248" file="wolf.xml"/>
+<monster name="Yeti" counterid="249" file="yeti.xml"/>
+<monster name="Orc Berserker(raid)" counterid="192" file="Raid/Orcs/orc berserker.xml"/>
+<monster name="Orc Leader(raid)" counterid="193" file="Raid/Orcs/orc leader.xml"/>
+<monster name="Orc Rider(raid)" counterid="194" file="Raid/Orcs/orc rider.xml"/>
+<monster name="Orc Shaman(raid)" counterid="195" file="Raid/Orcs/orc shaman.xml"/>
+<monster name="Orc Spearman(raid)" counterid="196" file="Raid/Orcs/orc spearman.xml"/>
+<monster name="Orc Warlord(raid)" counterid="197" file="Raid/Orcs/orc warlord.xml"/>
+<monster name="Orc Warrior(raid)" counterid="198" file="Raid/Orcs/orc warrior.xml"/>
+<monster name="Orc(raid)" counterid="199" file="Raid/Orcs/orc.xml"/>
+<monster name="Elf Arcanist(raid)" counterid="150" file="Raid/Elfs/elf arcanist.xml"/>
+<monster name="Elf Scout(raid)" counterid="151" file="Raid/Elfs/elf scout.xml"/>
+<monster name="Elf(raid)" counterid="152" file="Raid/Elfs/elf.xml"/>
+<monster name="Cave Rat(raid)" counterid="121" file="Raid/Rats/cave rat.xml"/>
+<monster name="Rat(raid)" counterid="211" file="Raid/Rats/rat.xml"/>
+<monster name="Ancient Scarab(raid)" counterid="101" file="Raid/Scarabs/ancient scarab.xml"/>
+<monster name="Scarab(raid)" counterid="213" file="Raid/Scarabs/scarab.xml"/>
+<monster name="Larva(raid)" counterid="172" file="Raid/Scarabs/larva.xml"/>
+<monster name="Giant Spider(raid)" counterid="163" file="Raid/Spiders/giant spider.xml"/>
+<monster name="The Old Widow(raid)" counterid="236" file="Raid/Spiders/the old widow.xml"/>
+<monster name="Beholder(raid)" counterid="112" file="Raid/Undead/beholder.xml"/>
+<monster name="BoneBeast(raid)" counterid="116" file="Raid/Undead/bone beast.xml"/>
+<monster name="Bone Beast(raid)" counterid="117" file="Raid/Undead/bone beast.xml"/>
+<monster name="Demon Skeleton(raid)" counterid="133" file="Raid/Undead/demon skeleton.xml"/>
+<monster name="Necromancer(raid)" counterid="189" file="Raid/Undead/necromancer.xml"/>
+<monster name="Skeleton(raid)" counterid="219" file="Raid/Undead/skeleton.xml"/>
+<monster name="Vampire(raid)" counterid="240" file="Raid/Undead/vampire.xml"/>
+<monster name="Banshee(raid)" counterid="107" file="Raid/Undead/banshee.xml"/>
+<monster name="Ghoul(raid)" counterid="162" file="Raid/Undead/ghoul.xml"/>
+<monster name="Stalker(raid)" counterid="162" file="Raid/Undead/stalker.xml"/>
+<monster name="Badger(raid)" counterid="105" file="Raid/Animals/badger.xml"/>
+<monster name="Dwarf Geomancer(raid)" counterid="140" file="Raid/Dwarfs/dwarf geomancer.xml"/>
+<monster name="Dwarf Guard(raid)" counterid="141" file="Raid/Dwarfs/dwarf guard.xml"/>
+<monster name="Dwarf Soldier(raid)" counterid="142" file="Raid/Dwarfs/dwarf soldier.xml"/>
+<monster name="Dwarf(raid)" counterid="143" file="Raid/Dwarfs/dwarf.xml"/>
+<monster name="War Wolf(raid)" counterid="242" file="Raid/Animals/war wolf.xml"/>
+<monster name="Wolf(raid)" counterid="248" file="Raid/Animals/wolf.xml"/>
+<monster name="Orshabaal(raid)" counterid="200" file="Raid/Bosses/orshabaal.xml"/>
+<monster name="Demodras(raid)" counterid="132" file="Raid/Bosses/demodras.xml"/>
+<monster name="Dragon Lord(raid)" counterid="138" file="Raid/Dragons/dragon lord.xml"/>
 </monsters>

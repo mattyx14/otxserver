@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Vashresamun" nameDescription="Vashresamun" race="undead" experience="2950" speed="310" manacost="0">
+	<health now="4000" max="4000"/>
+	<look type="85" head="0" body="0" legs="0" feet="0" corpse="3016"/>
+	<targetchange interval="2000" chance="3"/>
+	<strategy attack="80" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="60" attack="45" poison="65"/>
+		<attack name="lifedrain" interval="2000" chance="7" range="1" min="-50" max="-750"/>
+		<attack name="speed" interval="2000" chance="13" range="7" speedchange="-450" duration="50000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="20" radius="5" target="0" min="-250" max="-550">
+			<attribute key="areaEffect" value="rednote"/>
+		</attack>
+	</attacks>
+	<defenses armor="40" defense="75">
+		<defense name="healing" interval="2000" chance="20" min="250" max="450">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="banshee" interval="2000" chance="20" max="2"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="Heheheheee!"/>
+		<voice sentence="Come my maidens, we have visitors!"/>
+		<voice sentence="Are you enjoying my music?"/>
+		<voice sentence="Dance a dance of death for me!"/>
+		<voice sentence="If music is the food of death, drop dead."/>
+		<voice sentence="Chakka Chakka!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2074" chance="200" /> -- panpipes
+		<item id="2656" chance="1525" /> -- blue robe :: Arm 11
+		<item id="2445" chance="1100" /> -- crystal mace :: Def 16 :: Atk 38
+		<item id="2124" chance="1725" /> -- crystal ring
+		</inside>
+		<item id="2349" chance="100000" /> -- blue note
+		<item id="2143" chance="8650" /> -- white pearl
+		<item id="2072" chance="8450" /> -- lute
+		<item id="2148" countmax="100" chance="27925" /> -- gold coin
+		<item id="2148" countmax="100" chance="27925" /> -- gold coin
+		<item id="2148" countmax="50" chance="27925" /> -- gold coin
+		</item>
+	</loot>
+</monster>

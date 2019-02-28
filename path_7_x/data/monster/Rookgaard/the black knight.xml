@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="The Black Knight" nameDescription="the black knight" race="blood" experience="1600" hide="1" speed="390" manacost="0">
+	<health now="1800" max="1800"/>
+	<look type="131" head="95" body="95" legs="95" feet="95" corpse="3128"/>
+	<targetchange interval="2000" chance="3"/>
+	<strategy attack="80" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="88" attack="60"/>
+		<attack name="physical" interval="2000" chance="15" range="7" min="-1" max="-185">
+			<attribute key="shootEffect" value="spear"/>
+		</attack>
+	</attacks>
+	<defenses armor="42" defense="60"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="MINE!" yell="1"/>
+		<voice sentence="NO PRISONERS!" yell="1"/>
+		<voice sentence="NO MERCY!" yell="1"/>
+		<voice sentence="By Bolg's Blood!"/>
+		<voice sentence="You're no match for me!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2691" countmax="2" chance="14775" /> -- brown bread
+		<item id="2478" chance="14075" /> -- brass legs :: Arm 5
+		<item id="2120" chance="14800" /> -- rope
+		<item id="2463" chance="11975" /> -- plate armor :: Arm 10
+		<item id="2414" chance="1450" /> -- dragon lance :: Def 16 :: Atk 47
+		<item id="2477" chance="2375" /> -- knight legs :: Arm 8
+		<item id="2476" chance="975" /> -- knight armor :: Arm 12
+		<item id="2133" chance="1450" /> -- ruby necklace
+		<item id="2195" chance="200" /> -- boots of haste
+		</inside>
+		</item>
+		<item id="2389" countmax="3" chance="20650" /> -- spear :: Atk 25
+		<item id="2457" chance="12675" /> -- steel helmet :: Arm 6
+		<item id="2377" chance="10575" /> -- two handed sword :: Def 25 :: Atk 30
+		<item id="2475" chance="5425" /> -- warrior helmet :: Arm 8
+		<item id="2381" chance="12900" /> -- halberd :: Def 14 :: Atk 35
+		<item id="2490" chance="2900" /> -- dark helmet :: Arm 6
+		<item id="7589" chance="250" />
+		<item id="2417" chance="6825" /> -- battle hammer :: Def 14 :: Atk 24
+		<item id="2430" chance="2900" /> -- knight axe :: Def 21 :: Atk 33
+		<item id="2489" chance="2375" /> -- dark armor :: Arm 10
+		<item id="2148" countmax="99" chance="37175" /> -- gold coin
+		<item id="2148" countmax="28" chance="17175" /> -- gold coin
+	</loot>
+</monster>

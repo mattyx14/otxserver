@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dwarf Guard" nameDescription="a dwarf guard" race="blood" experience="165" speed="206" manacost="650">
+	<health now="245" max="245"/>
+	<look type="70" head="0" body="0" legs="0" feet="0" corpse="2983"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="70" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="55" attack="39"/>
+	</attacks>
+	<defenses armor="15" defense="37"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Hail Durin!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2457" chance="2925" /> -- steel helmet :: Arm 6
+		<item id="2208" chance="250" /> -- axe ring
+		<item id="2150" chance="145" /> -- small amethyst
+		</inside>
+		</item>
+		<item id="2787" countmax="2" chance="81800" /> -- white mushroom
+		<item id="2643" chance="80025" /> -- leather boots :: Arm 1
+		<item id="2387" chance="2100" /> -- double axe :: Def 12 :: Atk 35
+		<item id="2483" chance="18600" /> -- scale armor :: Arm 9
+		<item id="2513" chance="12450" /> -- battle shield :: Def 23
+		<item id="2417" chance="8550" /> -- battle hammer :: Def 14 :: Atk 24
+		<item id="2148" countmax="60" chance="91350" /> -- gold coin
+	</loot>
+</monster>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Fernfang" nameDescription="Fernfang" race="blood" experience="400" speed="270" manacost="0">
+	<health now="400" max="400"/>
+	<look type="206" head="0" body="0" legs="0" feet="0" corpse="3058"/>
+	<targetchange interval="2000" chance="7"/>
+	<strategy attack="70" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="4"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="40"/>
+		<attack name="manadrain" interval="1000" chance="12" range="7" min="-25" max="-45"/>
+		<attack name="energy" interval="1000" chance="13" range="7" min="-70" max="-90">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="physical" interval="1000" chance="10" range="7" min="-1" max="-180">
+			<attribute key="shootEffect" value="death"/>
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="50">
+		<defense name="healing" interval="1000" chance="15" min="90" max="120">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="7" speedchange="400" duration="10000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+		<defense name="strength" interval="1000" chance="5">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+		<defense name="outfit" interval="1000" chance="5" monster="war wolf" duration="14000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="4">
+		<summon name="war wolf" interval="1000" chance="13" max="4"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="You desecrated this place!"/>
+		<voice sentence="I will cleanse this isle!"/>
+		<voice sentence="Grrrrrrr"/>
+		<voice sentence="Yoooohhuuuu!" yell="1"/>
+	</voices>
+<loot capacity="3000">
+		<item id="2260" countmax="1" chance="18000"/> -- blank rune
+		<item id="2032" countmax="1" chance="6500"/> -- bowl
+		<item id="2689" countmax="1" chance="14000"/> -- bread
+		<item id="2015" countmax="1" chance="9000"/> -- brown flask
+		<item id="2220" countmax="1" chance="7700"/> -- dirty fur
+		<item id="2148" countmax="36" chance="15000"/> -- gold coin
+		<item id="2747" countmax="1" chance="9000"/> -- grave flower
+		<item id="2652" countmax="1" chance="9000"/> -- green tunic :: Arm 1
+		<item id="2177" countmax="1" chance="2000"/> -- life crystal
+		<item id="2044" countmax="1" chance="10000"/> -- lamp
+		<item id="2166" countmax="1" chance="100"/> -- power ring
+		<item id="2642" countmax="1" chance="9000"/> -- sandals
+		<item id="2802" countmax="1" chance="7000"/> -- sling herb
+		<item id="2401" countmax="1" chance="11000"/> -- staff :: Def 25 :: Atk 10
+		<item id="2401" countmax="1" chance="11000"/> -- staff :: Def 25 :: Atk 10
+		<item id="2800" countmax="1" chance="9000"/> -- star herb
+		<item id="2129" countmax="1" chance="10000"/> -- wolf tooth chain
+		<item id="2154" countmax="1" chance="400"/> -- yellow gem
+	</loot>
+</monster>

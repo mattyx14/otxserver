@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="The Halloween Hare" nameDescription="The Halloween Hare" race="blood" experience="0" speed="320" manacost="0">
+	<health now="2000" max="2000"/>
+	<look type="74" head="0" body="0" legs="0" feet="0"/>
+	<targetchange interval="2000" chance="95"/>
+	<strategy attack="0" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="0"/>
+		<flag hostile="0"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="0" attack="0"/>
+		<attack name="outfit" interval="1000" chance="2" range="5" radius="4" target="1" monster="witch" duration="6000000">
+			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="outfit" interval="1000" chance="2" range="5" radius="4" target="1" monster="ghost" duration="6000000">
+			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="outfit" interval="1000" chance="2" range="5" radius="4" target="1" item="2097" duration="6000000">
+			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="outfit" interval="1000" chance="2" range="5" radius="4" target="1" monster="skeleton" duration="6000000">
+			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="outfit" interval="1000" chance="2" range="5" radius="4" target="1" monster="vampire" duration="6000000">
+			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="outfit" interval="1000" chance="2" range="5" radius="4" target="1" monster="mummy" duration="6000000">
+			<attribute key="shootEffect" value="death"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+	</attacks>
+	<defenses armor="999" defense="999">
+		<defense name="outfit" interval="1000" chance="100" monster="rabbit" duration="60000"/>
+	</defenses>
+	<immunities>
+		<immunity physical="1"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+</monster>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Gamemaster" nameDescription="a gamemaster" race="blood" experience="0" hide="1" speed="478" manacost="0">
+	<health now="8200" max="8200"/>
+	<look type="75" head="0" body="0" legs="0" feet="0" corpse="3058"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="0"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="20"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="599" attack="299"/>
+		<attack name="lifedrain" interval="1000" chance="34" range="1" min="-1850" max="-2150"/>
+		<attack name="manadrain" interval="1000" chance="25" range="7" min="-969" max="-1029"/>
+		<attack name="energy" interval="1000" chance="20" length="1" spread="0" min="-1750" max="-2250">
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+	</attacks>
+	<defenses armor="199" defense="199">
+		<defense name="healing" interval="1000" chance="50" min="4500" max="7500">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="1"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Watch the rules!"/>
+		<voice sentence="Hey, you! I've seen that!"/>
+		<voice sentence="Are you AFK or what?"/>
+		<voice sentence="Does your mother know what you are doing?"/>
+	</voices>
+</monster>

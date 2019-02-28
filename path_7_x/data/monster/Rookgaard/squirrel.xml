@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Squirrel" nameDescription="a squirrel" race="blood" experience="0" speed="520" manacost="220">
+	<health now="20" max="20"/>
+	<look type="223" head="0" body="0" legs="0" feet="0" corpse="4871"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="0"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="9"/>
+		<flag runonhealth="8"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="0" attack="0"/>
+	</attacks>
+	<defenses armor="1" defense="2"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="0"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<voices interval="3000" chance="10">
+		<voice sentence="Chchch!"/>
+	</voices>
+	<loot>
+		<item id="11207" chance="45700" /> -- acorn --
+		<item id="7909" chance="1275" /> -- walnut --
+		<item id="1987" chance="100000"> -- bag --
+		<inside>
+		<item id="7910" chance="1650" /> -- peanut --
+		</inside>
+		</item>
+	</loot>
+</monster>

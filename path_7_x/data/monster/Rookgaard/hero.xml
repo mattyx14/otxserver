@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Hero" nameDescription="a hero" race="blood" experience="1200" speed="280" manacost="0">
+	<health now="1400" max="1400"/>
+	<look type="73" head="0" body="0" legs="0" feet="0" corpse="3128"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="80" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="80" attack="58"/>
+		<attack name="physical" interval="2000" chance="25" range="7" min="-1" max="-125">
+			<attribute key="shootEffect" value="arrow"/>
+		</attack>
+	</attacks>
+	<defenses armor="35" defense="50">
+		<defense name="healing" interval="2000" chance="10" min="200" max="250">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Let's have a fight!"/>
+		<voice sentence="Welcome to my battleground."/>
+		<voice sentence="Have you seen princess Lumelia?"/>
+		<voice sentence="I will sing a tune at your grave."/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2487" chance="1175" /> -- crown armor :: Arm 13
+		<item id="2273" chance="925" /> -- ultimate healing rune
+		<item id="2377" chance="1900" /> -- two handed sword :: Def 25 :: Atk 30
+		<item id="2661" chance="1275" /> -- scarf :: Arm 1
+		<item id="2391" chance="1650" /> -- war hammer :: Def 10 :: Atk 45
+		<item id="2164" chance="1350" /> -- might ring
+		<item id="2114" chance="200" /> -- piggy bank
+		<item id="2491" chance="975" /> -- crown helmet :: Arm 7
+		<item id="2488" chance="975" /> -- crown legs :: Arm 8
+		<item id="2519" chance="150" /> -- crown shield :: Def 32
+		<item id="2392" chance="925" /> -- fire sword :: Def 20 :: Atk 35
+		</inside>
+		</item>
+		<item id="2652" chance="8450" /> -- green tunic :: Arm 1
+		<item id="2666" chance="10150" /> -- meat
+		<item id="1949" chance="45675" /> -- scroll
+		<item id="2544" countmax="13" chance="16050" /> -- arrow :: Atk 25
+		<item id="2744" chance="20400" /> -- red rose
+		<item id="2681" chance="20450" /> -- grapes
+		<item id="2456" chance="14025" /> -- bow
+		<item id="2071" chance="2075" /> -- lyre
+		<item id="2121" chance="5675" /> -- wedding ring
+		<item id="2120" chance="3000" /> -- rope
+		<item id="2148" countmax="99" chance="52825" /> -- gold coin
+	</loot>
+</monster>

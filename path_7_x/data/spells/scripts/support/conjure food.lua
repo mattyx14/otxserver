@@ -1,11 +1,11 @@
 local FOODS = {
-	ITEM_FOOD_MEAT,
-	ITEM_FOOD_HAM,
-	ITEM_FOOD_GRAPE,
-	ITEM_FOOD_APLE,
-	ITEM_FOOD_BREAD,
-	ITEM_FOOD_ROOL,
-	ITEM_FOOD_CHEESE
+	2666, -- meat
+	2671, -- ham
+	2681, -- grape
+	2674, -- aple
+	2689, -- bread
+	2690, -- roll
+	2696 -- cheese
 }
 
 function onCastSpell(cid, var)

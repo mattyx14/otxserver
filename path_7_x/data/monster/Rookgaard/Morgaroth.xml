@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Morgaroth" nameDescription="Morgaroth" race="fire" experience="15000" speed="450" manacost="0">
+	<health now="55000" max="55000"/>
+	<look type="35" head="0" body="0" legs="0" feet="0" corpse="2916"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="65" defense="5"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="2500"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="200" attack="200"/>
+		<attack name="manadrain" interval="1000" chance="7" range="7" min="-100" max="-1000">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="strength" interval="1000" chance="9" range="7">
+			<attribute key="shootEffect" value="largerock"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="13" radius="8" target="0" min="-400" max="-700">
+			<attribute key="areaEffect" value="bluebubble"/>
+		</attack>
+		<attack name="manadrain" interval="1000" chance="10" radius="8" target="0" min="-400" max="-700">
+			<attribute key="areaEffect" value="greenshimmer"/>
+		</attack>
+		<attack name="speed" interval="1000" chance="13" radius="8" target="0" speedchange="-900" duration="30000">
+			<attribute key="areaEffect" value="rednote"/>
+		</attack>
+		<attack name="strength" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark"/>
+		</attack>
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-100" max="-900">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="15" length="8" spread="0" min="-500" max="-850">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+	</attacks>
+	<defenses armor="130" defense="130">
+		<defense name="healing" interval="1000" chance="15" min="3000" max="6000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="healing" interval="1000" chance="25" min="800" max="1200">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="6" speedchange="450" duration="7000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="6">
+		<summon name="demon" interval="1000" chance="13" max="6"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="I AM MORGAROTH, LORD OF THE TRIANGLE ... AND YOU ARE LOST!" yell="1"/>
+		<voice sentence="THE TRIANGLE OF TERROR WILL RISE!" yell="1"/>
+		<voice sentence="MY SEED IS FEAR AND MY HARVEST ARE YOUR SOULS!" yell="1"/>
+		<voice sentence="ZATHROTH! LOOK AT THE DESTRUCTION I AM CAUSING IN YOUR NAME!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="1988" chance="100000"> -- backpack
+		<inside>
+		<item id="2171" chance="2625" /> -- platinum amulet :: Arm 2
+		<item id="2112" chance="11150" /> -- teddy bear
+		<item id="2143" countmax="14" chance="7175" /> -- white pearl
+		<item id="2162" chance="15400" /> -- magic lightwand
+		<item id="2520" chance="6875" /> -- demon shield :: Def 35
+		<item id="2174" chance="21775" /> -- strange symbol
+		<item id="2155" chance="34550" /> -- green gem
+		<item id="2273" chance="23900" /> -- ultimate healing rune
+		<item id="2145" countmax="5" chance="15825" /> -- small diamond
+		<item id="2167" chance="9000" /> -- energy ring
+		<item id="2144" countmax="15" chance="9425" /> -- black pearl
+		<item id="2146" countmax="8" chance="19375" /> -- small sapphire
+		<item id="2177" chance="19650" /> -- life crystal
+		<item id="2200" chance="2625" /> -- protection amulet
+		<item id="1986" chance="13275" /> -- red tome
+		<item id="2387" chance="17525" /> -- double axe :: Def 12 :: Atk 35
+		<item id="2149" countmax="10" chance="15600" /> -- small emerald
+		<item id="2176" chance="9000" /> -- orb
+		<item id="2214" chance="19650" /> -- ring of healing
+		<item id="2197" chance="2625" /> -- stone skin amulet
+		<item id="2472" chance="11150" /> -- magic plate armor :: Arm 17
+		<item id="2152" countmax="74" chance="54175" /> -- platinum coin
+		<item id="2645" chance="4750" /> -- steel boots :: Arm 3
+		<item id="2150" countmax="20" chance="14650" /> -- small amethyst
+		<item id="2179" chance="4750" /> -- gold ring
+		<item id="2033" chance="4750" /> -- golden mug
+		</inside>
+		</item>
+		<item id="2192" chance="11150" /> -- crystal ball
+		<item id="2151" chance="2625" /> -- talon
+		<item id="2164" chance="6875" /> -- might ring
+		<item id="2514" chance="19650" /> -- mastermind shield :: Def 37
+		<item id="2421" chance="6875" /> -- thunder hammer :: Def 35 :: Atk 49
+		<item id="2158" chance="11150" /> -- blue gem
+		<item id="2470" chance="6875" /> -- golden legs :: Arm 9
+		<item id="2462" chance="13275" /> -- devil helmet :: Arm 7
+		<item id="2432" chance="13275" /> -- fire axe :: Def 16 :: Atk 38
+		<item id="2123" chance="6875" /> -- ring of the sky
+		<item id="2522" chance="13275" /> -- great shield :: Def 38
+		<item id="2393" chance="6875" /> -- giant sword :: Def 22 :: Atk 46
+		<item id="2165" chance="11150" /> -- stealth ring
+		<item id="2178" chance="17525" /> -- mind stone
+	</loot>
+</monster>

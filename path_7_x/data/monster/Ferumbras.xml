@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Ferumbras" nameDescription="Ferumbras" race="blood" experience="9999" speed="390" manacost="0">
+	<health now="28000" max="28000"/>
+	<look type="282" head="0" body="0" legs="0" feet="0" corpse="3058"/>
+	<targetchange interval="2000" chance="20"/>
+	<strategy attack="60" defense="5"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="2500"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="165" attack="155"/>
+		<attack name="manadrain" interval="1000" chance="12" range="7" min="-350" max="-650">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="poisoncondition" interval="1000" chance="9" radius="6" target="0" min="-50" max="-750">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+		<attack name="energycondition" interval="1000" chance="10" radius="6" target="0" min="-600" max="-700">
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="manadrain" interval="1000" chance="8" radius="6" target="0" min="-125" max="-375">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="10" radius="6" target="0" min="-200" max="-400">
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="strength" interval="1000" chance="6" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark"/>
+		</attack>
+		<attack name="firecondition" interval="1000" chance="15" range="7" radius="7" target="1" min="-300" max="-700">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="9" length="8" spread="0" min="-50" max="-850">
+			<attribute key="areaEffect" value="greenspark"/>
+		</attack>
+	</attacks>
+	<defenses armor="90" defense="110">
+		<defense name="healing" interval="1000" chance="25" min="600" max="1000">
+			<attribute key="areaEffect" value="greenshimmer"/>
+		</defense>
+		<defense name="healing" interval="1000" chance="10" min="1400" max="2600">
+			<attribute key="areaEffect" value="greenshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="4" speedchange="600" duration="7000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="4">
+		<summon name="demon" interval="1000" chance="12" max="4"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="NOONE WILL STOP ME THIS TIME!" yell="1"/>
+		<voice sentence="THE POWER IS MINE!" yell="1"/>
+		<voice sentence="I returned from death and you dream about defeating me?"/>
+		<voice sentence="Witness the first seconds of my eternal world domination!"/>
+		<voice sentence="The powers of darkness are with me!"/>
+		<voice sentence="Even in my weakened state I will crush you all!"/>
+		<voice sentence="I came, I see, I will win!"/>
+	</voices>
+	<loot>
+		<item id="1988" chance="100000"> -- backpack
+		<inside>
+		<item id="2522" chance="16500" /> -- great shield :: Def 38
+		<item id="2147" countmax="96" chance="8450" /> -- small ruby
+		<item id="2143" countmax="99" chance="5975" /> -- white pearl
+		<item id="2150" countmax="76" chance="5525" /> -- small amethyst
+		<item id="2466" chance="11175" /> -- golden armor :: Arm 14
+		<item id="2127" chance="17825" /> -- emerald bangle
+		<item id="2472" chance="16500" /> -- magic plate armor :: Arm 17
+		<item id="2145" countmax="90" chance="6550" /> -- small diamond
+		<item id="2387" chance="1825" /> -- double axe :: Def 12 :: Atk 35
+		<item id="2402" chance="1825" /> -- silver dagger :: Def 7 :: Atk 8
+		<item id="2377" chance="1825" /> -- two handed sword :: Def 25 :: Atk 30
+		<item id="2178" chance="1825" /> -- mind stone
+		<item id="2539" chance="27175" /> -- phoenix shield :: Def 34
+		<item id="2144" countmax="96" chance="5275" /> -- black pearl
+		<item id="2149" countmax="99" chance="7350" /> -- small emerald
+		<item id="2415" chance="12500" /> -- great axe :: Def 32 :: Atk 56
+		<item id="2152" countmax="43" chance="2175" /> -- platinum coin
+		<item id="2520" chance="7175" /> -- demon shield :: Def 35
+		</inside>
+		</item>
+		<item id="2470" chance="17825" /> -- golden legs :: Arm 9
+		<item id="2146" countmax="92" chance="4600" /> -- small sapphire
+		<item id="2542" chance="21825" /> -- tempest shield :: Def 36
+		<item id="1986" chance="8500" /> -- red tome
+		<item id="2514" chance="28500" /> -- mastermind shield :: Def 37
+		<item id="2148" countmax="100" chance="53550" /> -- gold coin
+		<item id="2148" countmax="84" chance="53550" /> -- gold coin
+	</loot>
+</monster>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Orc Berserker" nameDescription="an orc berserker" race="blood" experience="195" speed="250" manacost="590">
+	<health now="210" max="210"/>
+	<look type="8" head="0" body="0" legs="0" feet="0" corpse="2864"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="60" defense="40"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="65"/>
+	</attacks>
+	<defenses armor="12" defense="12">
+		<defense name="speed" interval="2000" chance="9" speedchange="500" duration="6000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="KRAK ORRRRRRK!" yell="1"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2671" chance="21275" /> -- ham
+		<item id="2044" chance="21200" /> -- lamp
+		<item id="2464" chance="2675" /> -- chain armor :: Arm 6
+		</inside>
+		</item>
+		<item id="2381" chance="14100" /> -- halberd :: Def 14 :: Atk 35
+		<item id="2378" chance="12475" /> -- battle axe :: Def 10 :: Atk 25
+		<item id="2148" countmax="22" chance="81000" /> -- gold coin
+	</loot>
+</monster>

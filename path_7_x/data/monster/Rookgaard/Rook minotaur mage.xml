@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Minotaur Mage" nameDescription="a minotaur mage" race="blood" experience="150" speed="170" manacost="0">
+	<health now="155" max="155"/>
+	<look type="23" head="0" body="0" legs="0" feet="0" corpse="2866"/>
+	<targetchange interval="2000" chance="50"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="4"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="18" attack="15"/>
+		<attack name="energy" interval="2000" chance="17" range="7" min="-15" max="-45">
+			<attribute key="shootEffect" value="energy"/>
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="fire" interval="2000" chance="10" range="7" radius="1" target="1" min="-35" max="-95">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="energyfield" interval="2000" chance="12" range="7" radius="1" target="1">
+			<attribute key="shootEffect" value="energy"/>
+		</attack>
+	</attacks>
+	<defenses armor="18" defense="40"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="1"/>
+		<immunity fire="0"/>
+		<immunity poison="0"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="#W Learrn tha secrret uf deathhh!"/>
+		<voice sentence="Kaplar!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2050" chance="4500" /> -- torch
+		<item id="2461" chance="4700" /> -- leather helmet :: Arm 1
+		</inside>
+		</item>
+		<item id="2684" countmax="8" chance="8100" /> -- carrot
+		<item id="2649" chance="6175" /> -- leather legs :: Arm 1
+		<item id="2148" countmax="70" chance="45550" /> -- gold coin
+	</loot>
+</monster>

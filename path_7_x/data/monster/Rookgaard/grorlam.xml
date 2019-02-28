@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Grorlam" nameDescription="Grorlam" race="undead" experience="1600" speed="280" manacost="590">
+	<health now="2700" max="2700"/>
+	<look type="205" head="0" body="0" legs="0" feet="0" corpse="2952"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="75" attack="60"/>
+		<attack name="physical" interval="2000" chance="15" range="7" min="-1" max="-200">
+			<attribute key="shootEffect" value="largerock"/>
+		</attack>
+	</attacks>
+	<defenses armor="55" defense="35">
+		<defense name="healing" interval="2000" chance="25" min="100" max="150">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="2000" chance="6" speedchange="400" duration="6000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="1295" chance="10000"/> -- stone
+		<item id="1294" countmax="5" chance="20000"/> -- small stone :: Atk 5
+		<item id="2395" chance="2500"/> -- carlin sword :: Def 13 :: Atk 15
+		<item id="2050" chance="20000"/> -- torch
+		<item id="2580" chance="5000"/> -- fishing rod
+		</inside>
+		</item>
+		<item id="2483" chance="10000"/> -- scale armor :: Arm 9
+		<item id="2148" countmax="40" chance="100000"/> -- gold coin
+	</loot>
+</monster>

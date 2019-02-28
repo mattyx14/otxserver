@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Orc Warlord" nameDescription="an orc warlord" race="blood" experience="670" speed="234" manacost="0">
+	<health now="950" max="950"/>
+	<look type="2" head="0" body="0" legs="0" feet="0" corpse="2967"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="70" defense="15"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="72" attack="68"/>
+		<attack name="physical" interval="2000" chance="25" range="7" min="-100" max="-120">
+			<attribute key="shootEffect" value="throwingstar"/>
+		</attack>
+	</attacks>
+	<defenses armor="28" defense="55">
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="1"/>
+		<immunity poison="0"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="0"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Ranat Ulderek!"/>
+		<voice sentence="Orc buta bana!"/>
+		<voice sentence="Ikem rambo zambo!"/>
+		<voice sentence="Futchi maruk buta!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2463" chance="14975" /> -- plate armor :: Arm 10
+		<item id="2377" chance="4100" /> -- two handed sword :: Def 25 :: Atk 30
+		<item id="2465" chance="2300" /> -- brass armor :: Arm 8
+		<item id="2647" chance="10150" /> -- plate legs :: Arm 7
+		<item id="2490" chance="2500" /> -- dark helmet :: Arm 6
+		<item id="2200" chance="4525" /> -- protection amulet
+		<item id="2499" chance="500" /> -- amazon helmet :: Arm 7
+		<item id="2500" chance="700" /> -- amazon armor :: Arm 13
+		<item id="2537" chance="300" /> -- amazon shield :: Def 32
+		</inside>
+		</item>
+		<item id="2428" chance="8525" /> -- orcish axe :: Def 12 :: Atk 23
+		<item id="2399" countmax="18" chance="18400" /> -- throwing star :: Atk 30
+		<item id="2667" countmax="2" chance="18075" /> -- fish
+		<item id="2419" chance="6925" /> -- scimitar :: Def 13 :: Atk 19
+		<item id="2148" countmax="70" chance="60925" /> -- gold coin
+	</loot>
+</monster>

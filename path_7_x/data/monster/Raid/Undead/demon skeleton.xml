@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Demon Skeleton" nameDescription="a demon skeleton" race="undead" experience="240" speed="180" manacost="620">
+	<health now="400" max="400"/>
+	<look type="37" head="0" body="0" legs="0" feet="0" corpse="2809"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="70" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="70" attack="45"/>
+		<attack name="lifedrain" interval="2000" chance="10" range="1" min="-30" max="-50"/>
+	</attacks>
+	<defenses armor="60" defense="80"/>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2459" chance="4650" /> -- iron helmet :: Arm 5
+		<item id="2194" chance="1475" /> -- mysterious fetish
+		<item id="2178" chance="400" /> -- mind stone
+		<item id="2515" chance="200" /> -- guardian shield :: Def 30
+		</inside>
+		</item>
+		<item id="2050" chance="63925" /> -- torch
+		<item id="2513" chance="2475" /> -- battle shield :: Def 23
+		<item id="2417" chance="6325" /> -- battle hammer :: Def 14 :: Atk 24
+		<item id="2399" countmax="3" chance="12950" /> -- throwing star :: Atk 30
+		<item id="2148" countmax="60" chance="88300" /> -- gold coin
+	</loot>
+</monster>

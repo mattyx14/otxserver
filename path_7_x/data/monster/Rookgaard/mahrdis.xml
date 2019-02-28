@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Mahrdis" nameDescription="Mahrdis" race="undead" experience="3050" speed="300" manacost="0">
+	<health now="3900" max="3900"/>
+	<look type="86" head="0" body="0" legs="0" feet="0" corpse="3016"/>
+	<targetchange interval="2000" chance="3"/>
+	<strategy attack="80" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="60" attack="45" poison="65"/>
+		<attack name="lifedrain" interval="2000" chance="7" range="1" min="-50" max="-750"/>
+		<attack name="firecondition" interval="2000" chance="25" range="1" min="-300" max="-800">
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="fire" interval="2000" chance="7" range="7" min="-300" max="-600">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="yellowspark"/>
+		</attack>
+		<attack name="speed" interval="2000" chance="13" range="7" speedchange="-450" duration="50000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+		<attack name="fire" interval="2000" chance="34" radius="3" target="0" min="-100" max="-800">
+			<attribute key="areaEffect" value="explosionarea"/>
+		</attack>
+		<attack name="firefield" interval="2000" chance="12" radius="4" target="0">
+			<attribute key="areaEffect" value="yellowspark"/>
+		</attack>
+		<attack name="firecondition" interval="2000" chance="13" length="8" spread="3" min="-400" max="-500">
+			<attribute key="areaEffect" value="explosion"/>
+		</attack>
+	</attacks>
+	<defenses armor="40" defense="60">
+		<defense name="healing" interval="2000" chance="20" min="20" max="800">
+			<attribute key="areaEffect" value="yellowspark"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="1"/>
+		<immunity drunk="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="4">
+		<summon name="fire elemental" interval="2000" chance="12" max="4"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="Burnnnnnnnnn!"/>
+		<voice sentence="Fire, Fire!"/>
+		<voice sentence="May my flames engulf you!"/>
+		<voice sentence="The eternal flame demands its due!"/>
+		<voice sentence="I am hotter than hot."/>
+		<voice sentence="Ashes to ashes!"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2168" chance="5400" /> -- life ring
+		<item id="2156" chance="2050" /> -- red gem
+		<item id="2432" chance="100" /> -- fire axe :: Def 16 :: Atk 38
+		</inside>
+		</item>
+		<item id="2353" chance="100000" /> -- burning heart
+		<item id="2147" countmax="3" chance="8175" /> -- small ruby
+		<item id="2273" chance="9050" /> -- ultimate healing rune
+		<item id="2148" countmax="100" chance="30525" /> -- gold coin
+		<item id="2148" countmax="100" chance="30525" /> -- gold coin
+		<item id="2148" countmax="20" chance="30525" /> -- gold coin
+	</loot>
+</monster>

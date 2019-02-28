@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Scarab" nameDescription="a scarab" race="venom" experience="120" speed="160" manacost="395">
+	<health now="320" max="320"/>
+	<look type="83" head="0" body="0" legs="0" feet="0" corpse="3013"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="80"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="42" attack="25"/>
+		<attack name="poisonfield" interval="2000" chance="20" radius="1" target="0">
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="poison" interval="2000" chance="17" range="1" radius="1" target="1" min="-15" max="-25">
+			<attribute key="areaEffect" value="poison"/>
+		</attack>
+	</attacks>
+	<defenses armor="21" defense="26">
+		<defense name="speed" interval="2000" chance="5" speedchange="300" duration="4000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity physical="0"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="0"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2150" chance="1800" /> -- small amethyst
+		<item id="2439" chance="400" /> -- daramanian mace :: Def 12 :: Atk 21
+		<item id="2149" chance="400" /> -- small emerald
+		</inside>
+		</item>
+		<item id="2159" chance="2550" /> -- scarab coin
+		<item id="2666" countmax="2" chance="80475" /> -- meat
+		<item id="2148" countmax="60" chance="97550" /> -- gold coin
+	</loot>
+</monster>

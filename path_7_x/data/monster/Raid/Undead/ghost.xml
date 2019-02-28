@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Ghost" nameDescription="a ghost" race="undead" experience="120" speed="160" manacost="0">
+	<health now="150" max="150"/>
+	<look type="48" head="0" body="0" legs="0" feet="0" corpse="2913"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="45" attack="28"/>
+		<attack name="lifedrain" interval="2000" chance="15" range="1" min="-25" max="-45"/>
+	</attacks>
+	<defenses armor="10" defense="20"/>
+	<immunities>
+		<immunity physical="1"/>
+		<immunity energy="0"/>
+		<immunity fire="0"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity outfit="0"/>
+		<immunity drunk="0"/>
+		<immunity invisible="0"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Huh!"/>
+		<voice sentence="Shhhhhh"/>
+		<voice sentence="Buuuuuh"/>
+	</voices>
+	<loot>
+		<item id="1987" chance="100000"> -- bag
+		<inside>
+		<item id="2654" chance="18650" /> -- cape :: Arm 1
+		<item id="2532" chance="2275" /> -- ancient shield :: Def 27
+		<item id="2165" chance="1450" /> -- stealth ring
+		</inside>
+		</item>
+		<item id="2404" chance="14725" /> -- combat knife :: Def 6 :: Atk 8
+		<item id="2804" chance="25400" /> -- shadow herb
+		<item id="2394" chance="21200" /> -- morning star :: Def 11 :: Atk 25
+		<item id="1962" chance="4000" /> -- book
+	</loot>
+</monster>
