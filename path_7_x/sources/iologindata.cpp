@@ -1197,9 +1197,8 @@ bool IOLoginData::savePlayerItems(Player* player)
 	if(!db->query(query.str()))
 		return false;
 
-	player->generateReservedStorage();
-	query.str("");
 
+	query.str("");
 	stmt.setQuery("INSERT INTO `player_storage` (`player_id`, `key`, `value`) VALUES ");
 	for(StorageMap::const_iterator cit = player->getStorageBegin(); cit != player->getStorageEnd(); ++cit)
 	{

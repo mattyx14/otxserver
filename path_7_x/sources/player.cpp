@@ -3922,7 +3922,7 @@ void Player::onTarget(Creature* target)
 		}
 			else if((!targetPlayer->hasAttacked(this)) || (!g_config.getBool(ConfigManager::ALLOW_FIGHT_BACK))) //nuevo code fightallowback
 		{
-				if (!pzLocked && g_game.getWorldType() != WORLDTYPE_OPEN) 
+				if (!pzLocked && g_game.getWorldType(this, targetPlayer) != WORLDTYPE_OPEN)
 				{
 					pzLocked = true;
 					sendIcons();
