@@ -315,7 +315,7 @@ int32_t Game::loadMap(std::string filename)
 	if(!map)
 		map = new Map;
 
-	#ifdef MULTIPLATFORM76
+	#ifdef _MULTIPLATFORM76
 	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + filename);
 	if(!fileExists(file.c_str()))
 		file = getFilePath(FILE_TYPE_OTHER, "world/" + filename);
@@ -626,7 +626,7 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 			case STACKPOS_USEITEM:
 			{
 				thing = tile->getTopDownItem();
-				#ifdef MULTIPLATFORM76
+				#ifdef _MULTIPLATFORM76
 				Item* item = tile->getItemByTopOrder(2);
 				#else
 				Item* item = tile->getItemByTopOrder(1);

@@ -31,7 +31,7 @@
 #endif
 
 #include <boost/config.hpp>
-#ifdef MULTIPLATFORM77
+#ifdef _MULTIPLATFORM77
 #include <openssl/rsa.h>
 #include <openssl/bn.h>
 #include <openssl/err.h>
@@ -78,7 +78,7 @@ inline void boost::throw_exception(std::exception const & e)
 	std::clog << "Boost exception: " << e.what() << std::endl;
 }
 #endif
-#ifdef MULTIPLATFORM77
+#ifdef _MULTIPLATFORM77
 RSA* g_RSA;
 #endif
 ConfigManager g_config;
@@ -504,7 +504,7 @@ void otserv(StringVec, ServiceManager* services)
 		boost::this_thread::sleep(boost::posix_time::seconds(15));
 	}
 
-	#ifdef MULTIPLATFORM77
+	#ifdef _MULTIPLATFORM77
 	std::clog << ">> Loading RSA key" << std::endl;
 	g_RSA = RSA_new();
 

@@ -1540,7 +1540,7 @@ void LuaInterface::registerFunctions()
 	//getPlayerMoney(cid)
 	lua_register(m_luaState, "getPlayerMoney", LuaInterface::luaGetPlayerMoney);
 
-	#ifdef MULTIPLATFORM76
+	#ifdef _MULTIPLATFORM76
 	//getPlayerSoul(cid[, ignoreModifiers = false])
 	lua_register(m_luaState, "getPlayerSoul", LuaInterface::luaGetPlayerSoul);
 	#endif
@@ -1764,7 +1764,7 @@ void LuaInterface::registerFunctions()
 	//doPlayerAddSpentMana(cid, amount[, useMultiplier = true])
 	lua_register(m_luaState, "doPlayerAddSpentMana", LuaInterface::luaDoPlayerAddSpentMana);
 
-	#ifdef MULTIPLATFORM76
+	#ifdef _MULTIPLATFORM76
 	//doPlayerAddSoul(cid, amount)
 	lua_register(m_luaState, "doPlayerAddSoul", LuaInterface::luaDoPlayerAddSoul);
 	#endif
@@ -5605,7 +5605,7 @@ int32_t LuaInterface::luaDoPlayerSetSex(lua_State* L)
 	return 1;
 }
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 int32_t LuaInterface::luaDoPlayerAddSoul(lua_State* L)
 {
 	//doPlayerAddSoul(cid, amount)
@@ -5909,7 +5909,7 @@ int32_t LuaInterface::luaGetPlayerLight(lua_State* L)
 	}
 }
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 int32_t LuaInterface::luaGetPlayerSoul(lua_State* L)
 {
 	//getPlayerSoul(cid[, ignoreModifiers = false])
@@ -9332,7 +9332,7 @@ int32_t LuaInterface::luaGetVocationInfo(lua_State* L)
 	setField(L, "baseSpeed", voc->getBaseSpeed());
 	setField(L, "fromVocation", voc->getFromVocation());
 	setField(L, "promotedVocation", Vocations::getInstance()->getPromotedVocation(id));
-	#ifdef MULTIPLATFORM76
+	#ifdef _MULTIPLATFORM76
 	setField(L, "soul", voc->getGain(GAIN_SOUL));
 	setField(L, "soulAmount", voc->getGainAmount(GAIN_SOUL));
 	setField(L, "soulTicks", voc->getGainTicks(GAIN_SOUL));

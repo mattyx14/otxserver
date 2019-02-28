@@ -33,7 +33,7 @@ bool BaseEvents::loadFromXml()
 	if(!getInterface().loadDirectory(path, false, true))
 		std::clog << "[Warning - BaseEvents::loadFromXml] Cannot load " << path << std::endl;
 
-	#ifdef MULTIPLATFORM76
+	#ifdef _MULTIPLATFORM76
 	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsName + "/" + scriptsName + ".xml"));
 	#else
 	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsName + "/" + ITEMS_PATH + "/" + scriptsName + ".xml"));

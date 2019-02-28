@@ -472,7 +472,7 @@ Spell::Spell()
 	mana = 0;
 	exhaustedGroup = "none";
 	manaPercent = 0;
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 	soul = 0;
 #endif
 	range = -1;
@@ -550,7 +550,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(readXMLInteger(p, "manapercent", intValue))
 		manaPercent = intValue;
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 	if(readXMLInteger(p, "soul", intValue))
 		soul = intValue;
 #endif
@@ -745,7 +745,7 @@ bool Spell::checkSpell(Player* player) const
 		return false;
 	}
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 	if(player->getSoul() < soul && !player->hasFlag(PlayerFlag_HasInfiniteSoul))
 	{
 		player->sendCancelMessage(RET_NOTENOUGHSOUL);
@@ -1021,14 +1021,14 @@ void Spell::postSpell(Player* player) const
 	if(isAggressive && !player->hasFlag(PlayerFlag_NotGainInFight))
 		player->addInFightTicks(false);
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 	postSpell(player, (uint32_t)getManaCost(player), (uint32_t)getSoulCost());
 #else
 	postSpell(player, (uint32_t)getManaCost(player));
 #endif
 }
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 void Spell::postSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const
 #else
 void Spell::postSpell(Player* player, uint32_t manaCost) const
@@ -1042,7 +1042,7 @@ void Spell::postSpell(Player* player, uint32_t manaCost) const
 			player->addManaSpent(manaCost);
 	}
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 	if(soulCost > 0)
 		player->changeSoul(-(int32_t)soulCost);
 #endif
@@ -1448,7 +1448,7 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 	ReturnValue ret = g_game.placeSummon(creature, param);
 	if(ret == RET_NOERROR)
 	{
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 		spell->postSpell(player, (uint32_t)manaCost, (uint32_t)spell->getSoulCost());
 #else
 		spell->postSpell(player, (uint32_t)manaCost);
@@ -1764,7 +1764,7 @@ bool RuneSpell::loadFunction(const std::string& functionName)
 		function = Illusion;
 	else if(tmpFunctionName == "convince")
 		function = Convince;
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 	else if(tmpFunctionName == "soulfire")
 		function = Soulfire;
 #endif
@@ -1869,7 +1869,7 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 		return false;
 	}
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 	spell->postSpell(player, (uint32_t)manaCost, (uint32_t)spell->getSoulCost());
 #else
 	spell->postSpell(player, (uint32_t)manaCost);
@@ -1878,7 +1878,7 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 	return true;
 }
 
-#ifdef MULTIPLATFORM76
+#ifdef _MULTIPLATFORM76
 bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, const Position&, const Position& posTo)
 {
 	Player* player = creature->getPlayer();

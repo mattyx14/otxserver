@@ -32,7 +32,7 @@ class Protocol : boost::noncopyable
 			m_connection = connection;
 			m_refCount = 0;
 			m_rawMessages = false;
-			#ifdef MULTIPLATFORM77
+			#ifdef _MULTIPLATFORM77
 			m_encryptionEnabled = false;
 			for(int8_t i = 0; i < 4; ++i)
 				m_key[i] = 0;
@@ -62,7 +62,7 @@ class Protocol : boost::noncopyable
 		OutputMessage_ptr getOutputBuffer();
 
 		void setRawMessages(bool value) {m_rawMessages = value;}
-		#ifdef MULTIPLATFORM77
+		#ifdef _MULTIPLATFORM77
 		void enableXTEAEncryption() {m_encryptionEnabled = true;}
 		void disableXTEAEncryption() {m_encryptionEnabled = false;}
 		void setXTEAKey(const uint32_t* key) {memcpy(&m_key, key, sizeof(uint32_t) * 4);}
@@ -82,7 +82,7 @@ class Protocol : boost::noncopyable
 		uint32_t m_refCount;
 
 		bool m_rawMessages;
-		#ifdef MULTIPLATFORM77
+		#ifdef _MULTIPLATFORM77
 		bool m_encryptionEnabled;
 		uint32_t m_key[4];
 		#endif
