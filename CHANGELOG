@@ -63,11 +63,14 @@
 	- Fix tileLimit/stackPosition
 	- Fix and update mods
 	- Fix console errors on 7.x (duplicate commands)
+	- Fix container error :: https://www.youtube.com/watch?v=mJ1mydn6TjA
 	- Fix display animated msg and console diplay errors (8.6-TFACE)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
-	- Fix #102, #104, #194, #210, #212, #286, #337(pick), #347,
-		#386, #383, #388(KOLISAO), #390, #402(Reason184), #403,
-		#408(Reason184), #412(Reason184), #410(Reason184), #416(Reason184),
+	- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+	- Fix #75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
+		#102, #104, #194, #210, #212, #286, #337(pick), #347,
+		#383, #386, #388(KOLISAO), #390, #402(Reason184), #403,
+		#408(Reason184), #410(Reason184), #411(Reason184), #416(Reason184),
 		#421, #424(Reason184), #428(Reason184), #429(Reason184), #435(Reason184),
 		#450(WeslleyKiyo)
 	- Fix stackItemsTrade
@@ -75,19 +78,15 @@
 	- Remove GUI interface
 	- Update statusOnline 0.0.0.0 no counter
 	- Update items (base OTX 3)
-]
 
-[ OTX Server 2.8 :: Version "LEZICK"
-	- Dropped version 2.7/2.8/2.9 and changed to 2.12
+	Note:
+	* It is recommended to update all your data files.
+		Because if you do not use the data as they are you will have stability problems.
+	* The server load/save/clean more fast ...
 ]
 
 [ OTX Server 2.6 :: Version "SCARETALE"
-	- Added OOP Classes for older TFS versions (0.3.x / 0.4x / ...)
-	- Added autoBanishUnknownBytes for 7.x
-	- Dropped version 2.X.S - 4 and changed to 2.6
-	- Fix container error :: https://www.youtube.com/watch?v=mJ1mydn6TjA
-	- Fix : https://github.com/mattyx14/otxserver/pull/ #79 to #88
-	- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+	- Dropped version 2.6/2.7/2.8/2.9/2.10/2.11 and changed to 2.12
 ]
 
 [ OTX Server 2.X.S - 3 :: Version "LORD ZEDD"
