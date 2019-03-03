@@ -72,7 +72,7 @@
 		#383, #386, #388(KOLISAO), #390, #402(Reason184), #403,
 		#408(Reason184), #410(Reason184), #411(Reason184), #416(Reason184),
 		#421, #424(Reason184), #428(Reason184), #429(Reason184), #435(Reason184),
-		#450(WeslleyKiyo)
+		#450(WeslleyKiyo), #473(matheusjp2)
 	- Fix stackItemsTrade
 	- Optimize code in critical fixes
 	- Remove GUI interface
