@@ -4824,7 +4824,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 
 				Color_t textColor = COLOR_NONE;
 				MagicEffect_t magicEffect = MAGIC_EFFECT_NONE;
-
+				const SpectatorVec& list = getSpectators(targetPos); //monster can be teleported/moved on statschange, a new list must be created
 				addCreatureHealth(list, target);
 				if(params.combatType == COMBAT_PHYSICALDAMAGE)
 				{
