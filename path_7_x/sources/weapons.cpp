@@ -364,7 +364,8 @@ bool Weapon::useFist(Player* player, Creature* target)
 	const Position& targetPos = target->getPosition();
 	if(!Position::areInRange<1,1>(playerPos, targetPos))
 		return false;
-
+	
+	bool isCritical = false;
 	float attackFactor = player->getAttackFactor();
 	int32_t attackSkill = player->getSkill(SKILL_FIST, SKILL_LEVEL), attackValue = g_config.getNumber(ConfigManager::FIST_BASE_ATTACK);
 
@@ -373,6 +374,7 @@ bool Weapon::useFist(Player* player, Creature* target)
 	{
 		maxDamage *= g_config.getDouble(ConfigManager::CRITICAL_HIT_MUL);
 		player->sendCritical();
+		isCritical = true;
 	}
 
 	Vocation* vocation = player->getVocation();
@@ -381,7 +383,10 @@ bool Weapon::useFist(Player* player, Creature* target)
 
 	maxDamage = std::floor(maxDamage);
 	int32_t damage = -random_range(0, (int32_t)maxDamage, DISTRO_NORMAL);
-
+	
+	if (isCritical)
+		damage = -maxDamage;
+	
 	CombatParams fist;
 	fist.blockedByArmor = true;
 	fist.blockedByShield = true;
