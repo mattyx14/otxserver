@@ -245,22 +245,27 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				if(!it->second->isRemoved() && it->second->client->isBroadcasting())
 					players.push_back(it->second);
 			}
-
-			std::sort(players.begin(), players.end(), Player::sort);
-			output->put<char>(players.size());
-			for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
+			
+			if (!players.size())
+				disconnectClient(0x0A, "There are no livestreams online right now.");
+			else 
 			{
-				std::stringstream s;
-				s << (*it)->getLevel();
-				if(!(*it)->client->check(password))
-					s << "*";
+				std::sort(players.begin(), players.end(), Player::sort);
+				output->put<char>(players.size());
+				for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
+				{
+					std::stringstream s;
+					s << (*it)->getLevel();
+					if(!(*it)->client->check(password))
+						s << "*";
 
-				output->putString((*it)->getName());
-				output->putString(s.str());
-				output->put<uint32_t>(serverIp);
+					output->putString((*it)->getName());
+					output->putString(s.str());
+					output->put<uint32_t>(serverIp);
 
-				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+					IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
+					output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+				}
 			}
 		}
 		else
