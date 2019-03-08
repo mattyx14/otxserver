@@ -12,11 +12,17 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 	elseif(not getTileInfo(fromPosition).house) then
 		doPlayerSendCancel(cid,"You may construct this only inside a house.")
 	elseif(CONSTRUCTIONS[item.itemid] ~= nil) then
-		doTransformItem(item.uid, CONSTRUCTIONS[item.itemid])
-		doSendMagicEffect(fromPosition, CONST_ME_POFF)
+		if getItemInfo(CONSTRUCTIONS[item.itemid]).type ~= ITEM_TYPE_CONTAINER then
+			doTransformItem(item.uid, CONSTRUCTIONS[item.itemid])
+			doSendMagicEffect(fromPosition, CONST_ME_POFF)
+		else
+			local kitPos = getThingPos(item.uid)
+			doRemoveItem(item.uid)
+			doCreateItem(CONSTRUCTIONS[item.itemid], 1, kitPos)
+			doSendMagicEffect(fromPosition, CONST_ME_POFF)
+		end
 	else
 		return false
 	end
-
 	return true
 end
