@@ -18,7 +18,7 @@
 
 		OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Matt Gomez
-			Matheus Matias
+			Leandro Brewster
 
 		Special Thanks(s)
 			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
@@ -33,13 +33,11 @@
 
 			OpenTibia - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/opentibia/server/graphs/contributors/
-				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster,
-				Remere, Kornholijo, Elf, edubart and Dalkon.
+				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
 
 			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/mattyx14/otxserver/graphs/contributors/
-				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin,
-				Leandro Brewster.
+				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin
 
 			EvilHero90 The Forgotten Server - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/EvilHero90/forgottenserver/
