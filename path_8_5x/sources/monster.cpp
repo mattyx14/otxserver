@@ -766,6 +766,9 @@ void Monster::onThinkTarget(uint32_t interval)
 
 void Monster::doHealing(uint32_t interval)
 {
+	if (health >= healthMax) //the monster doesn't need to heal if it has full health
+		return;
+		
 	resetTicks = true;
 	defenseTicks += interval;
 	for(SpellList::iterator it = mType->spellDefenseList.begin(); it != mType->spellDefenseList.end(); ++it)
