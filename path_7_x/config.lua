@@ -162,8 +162,6 @@
 		-- Others
 		enableLootBagDisplay = false
 		attackImmediatelyAfterLoggingIn = false
-		exhaustionNPC = true
-		exhaustionInSecondsNPC = 1
 
 		-- Old Configs
 		tileHeightBlock = true

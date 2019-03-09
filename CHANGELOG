@@ -58,7 +58,7 @@
 [ OTX Server 2.12 :: Version "OpenTibia"
 	- Added feature criticalhit to weapons (8.6-TFACE)
 	- Added passive flag to monsters (8.6-TFACE)
-	- Added config noAttackHealingSimultaneus - optionalProtection
+	- Added config noAttackHealingSimultaneus - optionalProtection - monsterAttacksOnlyDamagePlayers(Reason184)
 	- Added castSystem to 8_5x
 	- Added savePlayerItems
 	- Drop protocolversion 8_1x
@@ -69,15 +69,18 @@
 	- Fix display animated msg and console diplay errors (8.6-TFACE)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
 	- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+	- Fix infinite healing on monsters (Reason184)
+	- Fix Fixes Cast/Live problem (Reason184)
+	- Fix stackItemsTrade
 	- Fix #75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
 		#102, #104, #194, #210, #212, #286, #337(pick), #347,
 		#383, #386, #388(KOLISAO), #390, #402(Reason184), #403,
 		#408(Reason184), #410(Reason184), #411(Reason184), #416(Reason184),
 		#421, #424(Reason184), #428(Reason184), #429(Reason184), #435(Reason184),
 		#450(WeslleyKiyo), #454(Reason184), #457(Reason184), #461(Reason184), #468(Felipe21),
-		#469(Reason184), #473(matheusjp2), #476(Reason184), #477(Reason184)
-	- Fix stackItemsTrade
+		#469(Reason184), #473(matheusjp2), #476(Reason184), #477(Reason184), #481(Reason184)
 	- Optimize code in critical fixes
+	- Optimize NPCLibs
 	- Remove GUI interface
 	- Update statusOnline 0.0.0.0 no counter
 	- Update items (base OTX 3)
