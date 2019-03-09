@@ -499,10 +499,20 @@ if(NpcHandler == nil) then
 
 	-- Handles onBuy events. If you wish to handle this yourself, use the CALLBACK_ONBUY callback.
 	function NpcHandler:onBuy(cid, itemid, subType, amount, ignoreCap, inBackpacks)
-		local callback = self:getCallback(CALLBACK_ONBUY)
-		if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
-			if(self:processModuleCallback(CALLBACK_ONBUY, cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
-				--
+		local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
+		if(exhaustionNPC) then
+			local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC')
+			if(os.clock() - getPlayerStorageValue(cid, storage)) >= getConfigValue('exhaustionInSecondsNPC') then
+				setPlayerStorageValue(cid, storage, os.clock())
+				local callback = self:getCallback(CALLBACK_ONBUY)
+				if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
+					if(self:processModuleCallback(CALLBACK_ONBUY, cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
+						--
+					end
+				end
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_DEFAULT, "Please wait " .. exhaustionInSeconds .. " seconds before trying buy again.")
+			else
+				return false
 			end
 		end
 	end

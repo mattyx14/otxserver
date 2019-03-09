@@ -82,17 +82,6 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 	local backpack = backpack or 1988
 	local item = 0
 
-	local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
-	if(exhaustionNPC) then
-		local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC')
-		local storage = 45814
-		if(exhaustion.check(cid, storage) == true) then
-			return 0
-		end
-		exhaustion.set(cid, storage, exhaustionInSeconds)
-		doPlayerSendTextMessage(cid, MESSAGE_EVENT_DEFAULT, "Please wait " .. exhaustionInSeconds .. " seconds before trying buy again.")
-	end
-
 	if isItemStackable(itemid) then
 		if(inBackpacks) then
 			stuff = doCreateItemEx(backpack, 1)

@@ -176,7 +176,7 @@
 		updateHighscoresAfterMinutes = 60
 		attackImmediatelyAfterLoggingIn = false
 		exhaustionNPC = true
-		exhaustionInSecondsNPC = 1
+		exhaustionInSecondsNPC = 1.0
 		delayLastPushStep = true
 		optionalProtection = false
 
