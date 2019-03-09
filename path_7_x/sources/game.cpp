@@ -1592,18 +1592,21 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	//destination is the same as the source?
 	if(item == toItem)
 		return RET_NOERROR; //silently ignore move
-
-	if(toCylinder->getTile()->hasFlag(TILESTATE_TELEPORT))
+	
+	if(toCylinder->getTile())
 	{
-		Teleport* teleport = toCylinder->getTile()->getTeleportItem();
-		Position dest = teleport->getDestination();
-		if(dest.x != 0 && dest.y != 0) //checks if the portal has a destination set
+		if(toCylinder->getTile()->hasFlag(TILESTATE_TELEPORT))
 		{
-			Tile* tile = map->getTile(dest);
-			if(tile)
+			Teleport* teleport = toCylinder->getTile()->getTeleportItem();
+			Position dest = teleport->getDestination();
+			if(dest.x != 0 && dest.y != 0) //checks if the portal has a destination set
 			{
-				if((tile->hasFlag(TILESTATE_BLOCKSOLID) || tile->getTopCreature()) && item->hasProperty(BLOCKSOLID))
-					return RET_NOTPOSSIBLE;
+				Tile* tile = map->getTile(dest);
+				if(tile)
+				{
+					if((tile->hasFlag(TILESTATE_BLOCKSOLID) || tile->getTopCreature()) && item->hasProperty(BLOCKSOLID))
+						return RET_NOTPOSSIBLE;
+				}
 			}
 		}
 	}
