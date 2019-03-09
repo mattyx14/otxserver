@@ -140,6 +140,10 @@
 		rookLevelToLeaveRook = 8
 		rookTownId = 1
 		useRookSystem = true
+		
+		-- Monsters Attack Config
+		-- set monsterAttacksOnlyDamagePlayers to false if you want monster's attacks to damage other nearby monsters
+		monsterAttacksOnlyDamagePlayers = true
 
 		-- Paralyze delay
 		paralyzeDelay = 1500
