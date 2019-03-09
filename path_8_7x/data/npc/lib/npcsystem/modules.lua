@@ -1207,10 +1207,10 @@ if(Modules == nil) then
 			return false
 		end
 
-		local subType, count = shopItem.subType or 0, amount
-		local backpack, backpackPrice, totalCost = 1988, 20, amount * shopItem.buy
+		local backpack = 1988
+		local totalCost = amount * shopItem.buy
 		if(inBackpacks) then
-			totalCost = totalCost + (math.max(1, math.floor(count / getContainerCapById(backpack))) * backpackPrice)
+			totalCost = totalCost + 20 or totalCost + (math.max(1, math.floor(amount / getContainerCapById(backpack))) * 20)
 		end
 
 		local parseInfo = {
@@ -1225,7 +1225,8 @@ if(Modules == nil) then
 			return false
 		end
 
-		local a, b = doNpcSellItem(cid, itemid, count, subType, ignoreCap, inBackpacks, backpack)
+		local subType = shopItem.subType or 1
+		local a, b = doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
 		if(a < amount) then
 			local msgId = MESSAGE_NEEDMORESPACE
 			if(a == 0) then
@@ -1243,24 +1244,23 @@ if(Modules == nil) then
 			end
 
 			if(a > 0) then
-				doPlayerRemoveMoney(cid, ((a * shopItem.buy) + (b * backpackPrice)))
+				doPlayerRemoveMoney(cid, ((a * shopItem.buy) + (b * 20)))
 				return true
 			end
 
 			return false
-		end
-
-		local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
-		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
-
-		doPlayerRemoveMoney(cid, totalCost)
-		if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
-			self.npcHandler.talkStart[cid] = os.time()
 		else
-			self.npcHandler.talkStart = os.time()
-		end
+			local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
 
-		return true
+			doPlayerRemoveMoney(cid, totalCost)
+			if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
+				self.npcHandler.talkStart[cid] = os.time()
+			else
+				self.npcHandler.talkStart = os.time()
+			end
+			return true
+		end
 	end
 
 	-- Callback onSell() function. If you wish, you can change certain Npc to use your onSell().

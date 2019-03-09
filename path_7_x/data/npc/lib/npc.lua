@@ -75,30 +75,28 @@ function doMessageCheck(message, keyword, exact)
 end
 
 function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
-	local amount, subType, ignoreCap, inBackpacks, backpack  = amount or 1, subType or 0, ignoreCap or false, inBackpacks or false, backpack or 1988
+	local amount = amount or 1
+	local subType = subType or 0
+	local ignoreCap = ignoreCap or false
+	local inBackpacks = inBackpacks or false
+	local backpack = backpack or 1988
+	local item = 0
 
-	local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
-	if(exhaustionNPC) then
-		local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC')
-		local storage = 45814
-		if(exhaustion.check(cid, storage) == true) then
-			return 0
+	if isItemStackable(itemid) then
+		if(inBackpacks) then
+			stuff = doCreateItemEx(backpack, 1)
+			item = doAddContainerItem(stuff, itemid, math.min(100, amount))
+		else
+			stuff = doCreateItemEx(itemid, math.min(100, amount))
 		end
-		exhaustion.set(cid, storage, exhaustionInSeconds)
-		doPlayerSendTextMessage(cid, MESSAGE_EVENT_DEFAULT, "Please wait " .. exhaustionInSeconds .. " seconds before trying buy again.")
+
+		return doPlayerAddItemEx(cid, stuff, ignoreCap) ~= RETURNVALUE_NOERROR and 0 or amount, 0
 	end
 
-	local item, a = nil, 0
-	if(inBackpacks) then
-		local custom, stackable = 1, isItemStackable(itemid)
-		if(stackable) then
-			custom = math.max(1, subType)
-			subType = amount
-			amount = math.max(1, math.floor(amount / 100))
-		end
-
+	local a = 0
+	if inBackpacks then
 		local container, b = doCreateItemEx(backpack, 1), 1
-		for i = 1, amount * custom do
+		for i = 1, amount do
 			item = doAddContainerItem(container, itemid, subType)
 			if(itemid == ITEM_PARCEL) then
 				doAddContainerItem(item, ITEM_LABEL)
@@ -118,25 +116,7 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 			end
 		end
 
-		if(not stackable) then
-			return a, b
-		end
-
-		return (a * subType / custom), b
-	end
-
-	if(isItemStackable(itemid)) then
-		a = amount * math.max(1, subType)
-		repeat
-			local tmp = math.min(100, a)
-			item = doCreateItemEx(itemid, tmp)
-			if(doPlayerAddItemEx(cid, item, ignoreCap) ~= RETURNVALUE_NOERROR) then
-				return 0, 0
-			end
-
-			a = a - tmp
-		until a == 0
-		return amount, 0
+		return a, b
 	end
 
 	for i = 1, amount do
