@@ -89,8 +89,10 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 		else
 			stuff = doCreateItemEx(itemid, math.min(100, amount))
 		end
-
-		return doPlayerAddItemEx(cid, stuff, ignoreCap) ~= RETURNVALUE_NOERROR and 0 or amount, 0
+		local ret = doPlayerAddItemEx(cid, stuff, ignoreCap)
+		if ret == RETURNVALUE_NOERROR then
+			return amount,0
+		end
 	end
 
 	local a = 0

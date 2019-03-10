@@ -1245,6 +1245,9 @@ if(Modules == nil) then
 
 			if(a > 0) then
 				doPlayerRemoveMoney(cid, ((a * shopItem.buy) + (b * 20)))
+				parseInfo[TAG_TOTALCOST] = a * shopItem.buy
+				local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
 				return true
 			end
 
