@@ -3,6 +3,8 @@
 -- Modified by The OTX Server Team.
 
 if(NpcHandler == nil) then
+	local storage = 35418 -- For exhaustion in Seconds
+
 	-- Constant talkdelay behaviors.
 	TALKDELAY_NONE = 0 -- No talkdelay. Npc will reply immedeatly.
 	TALKDELAY_ONTHINK = 1 -- Talkdelay handled through the onThink callback function. (Default)
@@ -502,7 +504,7 @@ if(NpcHandler == nil) then
 		local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
 		if(exhaustionNPC) then
 			local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC')
-			if(os.clock() - getPlayerStorageValue(cid, storage)) >= getConfigValue('exhaustionInSecondsNPC') then
+			if(os.clock() - getPlayerStorageValue(cid, storage)) >= 1.0 then
 				setPlayerStorageValue(cid, storage, os.clock())
 				local callback = self:getCallback(CALLBACK_ONBUY)
 				if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
