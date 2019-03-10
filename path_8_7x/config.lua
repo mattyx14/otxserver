@@ -176,7 +176,7 @@
 		highscoreDisplayPlayers = 10
 		updateHighscoresAfterMinutes = 60
 		exhaustionNPC = true
-		exhaustionInSecondsNPC = 1.0
+		exhaustionInSecondsNPC = 0.5
 		optionalProtection = false
 
 		-- Advanced Version

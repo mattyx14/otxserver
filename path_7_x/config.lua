@@ -163,7 +163,7 @@
 		enableLootBagDisplay = false
 		attackImmediatelyAfterLoggingIn = false
 		exhaustionNPC = true
-		exhaustionInSecondsNPC = 1.0
+		exhaustionInSecondsNPC = 0.5
 
 		-- Old Configs
 		tileHeightBlock = true
