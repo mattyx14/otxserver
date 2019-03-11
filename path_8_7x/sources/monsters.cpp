@@ -201,7 +201,7 @@ void MonsterType::dropLoot(Container* corpse)
 	if(message < LOOTMSG_PLAYER)
 		return;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription() << ".";
 	if(owner->getParty() && message > LOOTMSG_PLAYER)
 		owner->getParty()->broadcastMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());

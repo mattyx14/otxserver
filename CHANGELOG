@@ -80,7 +80,8 @@
 		#450(WeslleyKiyo), #454(Reason184), #457(Reason184), #461(Reason184), #468(Felipe21),
 		#469(Reason184), #473(matheusjp2), #476(Reason184), #477(Reason184), #481(Reason184)
 		#482
-	- Optimize code in critical fixes
+	- Optimize code fixes
+	- Optimize code Connection and SQL Services // Security
 	- Optimize NPCLibs
 	- Remove GUI interface
 	- Update statusOnline 0.0.0.0 no counter

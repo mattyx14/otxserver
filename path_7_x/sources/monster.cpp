@@ -931,7 +931,7 @@ void Monster::doHealing(uint32_t interval)
 			if(health >= healthMax) //the monster doesn't need to heal if it has full health
 				continue;
 		}
-			
+
 		if((it->chance >= (uint32_t)random_range(1, 100)))
 		{
 			minCombatValue = it->minCombatValue;

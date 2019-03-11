@@ -36,6 +36,7 @@
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/tr1/unordered_set.hpp>
 
 #include <cstddef>
 #include <cstdlib>

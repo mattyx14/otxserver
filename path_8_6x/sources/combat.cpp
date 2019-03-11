@@ -291,7 +291,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 				return RET_NOTPOSSIBLE;
 		}
 	}
-	
+
 	bool checkZones = false;
 	if(const Player* targetPlayer = target->getPlayer())
 	{

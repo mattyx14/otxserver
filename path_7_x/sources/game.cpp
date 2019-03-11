@@ -1229,7 +1229,9 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 
 			if(Player* movingPlayer = movingCreature->getPlayer())
 			{
-				if((player->isProtected() && !movingPlayer->isProtected()))
+				if((player->isProtected() && !movingPlayer->isProtected()) || (getWorldType(player) == WORLDTYPE_OPTIONAL
+					&& getWorldType(movingPlayer) != WORLDTYPE_OPTIONAL && !player->isEnemy(movingPlayer)
+					&& !player->isAlly(movingPlayer)))
 				{
 					player->sendCancelMessage(RET_NOTMOVABLE);
 					return false;
@@ -3502,7 +3504,7 @@ std::string Game::getTradeErrorDescription(ReturnValue ret, Item* item)
 	if(!item)
 		return std::string();
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	if(ret == RET_NOTENOUGHCAPACITY)
 	{
 		ss << "You do not have enough capacity to carry";
@@ -3546,7 +3548,7 @@ bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t
 	if(!tradeItem)
 		return false;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "You see ";
 
 	int32_t lookDistance = std::max(std::abs(player->getPosition().x - tradeItem->getPosition().x),
@@ -3743,7 +3745,7 @@ bool Game::playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteI
 	if(deny)
 		return false;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "You see " << thing->getDescription(lookDistance);
 	if(player->hasCustomFlag(PlayerCustomFlag_CanSeeItemDetails))
 	{
@@ -5723,7 +5725,7 @@ bool Game::playerViolationWindow(uint32_t playerId, std::string name, uint8_t re
 	if(kickAction == FULL_KICK)
 		IOBan::getInstance()->removeNotations(account.number);
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	if(g_config.getBool(ConfigManager::BROADCAST_BANISHMENTS))
 		ss << player->getName() << " has";
 	else
@@ -5939,7 +5941,7 @@ std::string Game::getSearchString(const Position& fromPos, const Position& toPos
 			direction = DIR_S;
 	}
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	switch(distance)
 	{
 		case DISTANCE_BESIDE:
@@ -6199,7 +6201,7 @@ int32_t Game::getMotdId()
 	lastMotd = g_config.getString(ConfigManager::MOTD);
 	Database* db = Database::getInstance();
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "INSERT INTO `server_motd` (`id`, `world_id`, `text`) VALUES (" << lastMotdId + 1 << ", " << g_config.getNumber(ConfigManager::WORLD_ID) << ", " << db->escapeString(lastMotd) << ")";
 	if(db->query(query.str()))
 		++lastMotdId;
@@ -6210,7 +6212,7 @@ int32_t Game::getMotdId()
 void Game::loadMotd()
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `id`, `text` FROM `server_motd` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << " ORDER BY `id` DESC LIMIT 1";
 
 	DBResult* result;
@@ -6242,7 +6244,7 @@ void Game::checkPlayersRecord(Player* player)
 void Game::loadPlayersRecord()
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `record` FROM `server_record` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << " ORDER BY `timestamp` DESC LIMIT 1";
 
 	DBResult* result;

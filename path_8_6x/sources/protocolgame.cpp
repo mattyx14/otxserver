@@ -170,7 +170,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			else
 				IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-			std::stringstream stream;
+			std::ostringstream stream;
 			stream << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " << name_.c_str()
 				<< "\nReason:\n" << getReason(ban.reason).c_str() << ".\nComment:\n" << ban.comment.c_str() << ".\nYour " << (deletion ? "account won't be undeleted" : "banishment will be lifted at:\n")
 				<< (deletion ? "" : formatDateEx(ban.expires).c_str());
@@ -258,7 +258,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			if(OutputMessage_ptr output = OutputMessagePool::getInstance()->getOutputMessage(this, false))
 			{
 				TRACK_MESSAGE(output);
-				std::stringstream ss;
+				std::ostringstream ss;
 				ss << "Too many players online.\n" << "You are ";
 
 				int32_t slot = WaitingList::getInstance()->getSlot(player);
@@ -606,7 +606,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 		else
 			IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-		std::stringstream stream;
+		std::ostringstream stream;
 		stream << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " << name_.c_str()
 			   << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ? "account won't be undeleted" : "banishment will be lifted at:\n")
 			   << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
@@ -627,17 +627,6 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 void ProtocolGame::parsePacket(NetworkMessage &msg)
 {
 	if(!player || !m_acceptPackets || g_game.getGameState() == GAMESTATE_SHUTDOWN || !msg.size())
-		return;
-
-	uint32_t now = time(NULL);
-	if(m_packetTime != now)
-	{
-		m_packetTime = now;
-		m_packetCount = 0;
-	}
-
-	++m_packetCount;
-	if(m_packetCount > (uint32_t)g_config.getNumber(ConfigManager::PACKETS_PER_SECOND))
 		return;
 
 	uint8_t recvbyte = msg.get<char>();
@@ -765,7 +754,7 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 
 			default:
 			{
-				std::stringstream s;
+				std::ostringstream s;
 				s << "Sent unknown byte: 0x" << std::hex << (int16_t)recvbyte << std::dec;
 				Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
 				break;
@@ -1063,7 +1052,7 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 		for(uint8_t i = 0; i < dirCount; ++i)
 			msg.get<char>();
 
-		std::stringstream s;
+		std::ostringstream s;
 		s << "Attempt to auto walk for " << (uint16_t)dirCount << " steps - client is limited to 128 steps.";
 		Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
 		return;
@@ -1267,7 +1256,7 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 	const std::string text = msg.getString();
 	if(text.length() > 255) //client limit
 	{
-		std::stringstream s;
+		std::ostringstream s;
 		s << "Attempt to send message with size " << text.length() << " - client is limited to 255 characters.";
 		Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
 		return;
@@ -1413,7 +1402,7 @@ void ProtocolGame::parseDebugAssert(NetworkMessage& msg)
 	if(m_debugAssertSent)
 		return;
 
-	std::stringstream s;
+	std::ostringstream s;
 	s << "----- " << formatDate() << " - " << player->getName() << " (" << convertIPAddress(getIP())
 		<< ") -----" << std::endl
 		<< msg.getString() << std::endl

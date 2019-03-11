@@ -148,7 +148,7 @@ bool ScriptEnviroment::saveGameState()
 		return true;
 
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "DELETE FROM `global_storage` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << ";";
 	if(!db->query(query.str()))
@@ -172,7 +172,7 @@ bool ScriptEnviroment::loadGameState()
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `key`, `value` FROM `global_storage` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << ";";
 	if((result = db->storeQuery(query.str())))
 	{
@@ -493,7 +493,7 @@ bool ScriptEnviroment::getStorage(const std::string& key, std::string& value) co
 	return false;
 }
 
-void ScriptEnviroment::streamVariant(std::stringstream& stream, const std::string& local, const LuaVariant& var)
+void ScriptEnviroment::streamVariant(std::ostringstream& stream, const std::string& local, const LuaVariant& var)
 {
 	if(!local.empty())
 		stream << "local " << local << " = {" << std::endl;
@@ -523,7 +523,7 @@ void ScriptEnviroment::streamVariant(std::stringstream& stream, const std::strin
 		stream << std::endl << "}" << std::endl;
 }
 
-void ScriptEnviroment::streamThing(std::stringstream& stream, const std::string& local, Thing* thing, uint32_t id/* = 0*/)
+void ScriptEnviroment::streamThing(std::ostringstream& stream, const std::string& local, Thing* thing, uint32_t id/* = 0*/)
 {
 	if(!local.empty())
 		stream << "local " << local << " = {" << std::endl;
@@ -589,7 +589,7 @@ void ScriptEnviroment::streamThing(std::stringstream& stream, const std::string&
 		stream << "}" << std::endl;
 }
 
-void ScriptEnviroment::streamPosition(std::stringstream& stream, const std::string& local, const Position& position, uint32_t stackpos)
+void ScriptEnviroment::streamPosition(std::ostringstream& stream, const std::string& local, const Position& position, uint32_t stackpos)
 {
 	if(!local.empty())
 		stream << "local " << local << " = {" << std::endl;
@@ -603,7 +603,7 @@ void ScriptEnviroment::streamPosition(std::stringstream& stream, const std::stri
 		stream << "}" << std::endl;
 }
 
-void ScriptEnviroment::streamOutfit(std::stringstream& stream, const std::string& local, const Outfit_t& outfit)
+void ScriptEnviroment::streamOutfit(std::ostringstream& stream, const std::string& local, const Outfit_t& outfit)
 {
 	if(!local.empty())
 		stream << "local " << local << " = {" << std::endl;
@@ -895,8 +895,9 @@ bool LuaInterface::initState()
 #endif
 
 	registerFunctions();
-	if(!loadDirectory(getFilePath(FILE_TYPE_OTHER, "lib/"), false, true))
-		std::clog << "[Warning - LuaInterface::initState] Cannot load " << getFilePath(FILE_TYPE_OTHER, "lib/") << std::endl;
+	std::string path = getFilePath(FILE_TYPE_OTHER, "lib/");
+	if(!fileExists(path) || !loadDirectory(path, false, true))
+		std::clog << "[Warning - LuaInterface::initState] Cannot load " << path << std::endl;
 
 	lua_newtable(m_luaState);
 	lua_setfield(m_luaState, LUA_REGISTRYINDEX, "EVENTS");
@@ -2704,7 +2705,7 @@ int32_t LuaInterface::internalGetPlayerInfo(lua_State* L, PlayerInfo_t info)
 	const Player* player = env->getPlayerByUID(popNumber(L));
 	if(!player)
 	{
-		std::stringstream s;
+		std::ostringstream s;
 		s << getError(LUA_ERROR_PLAYER_NOT_FOUND) << " when requesting player info #" << info;
 		errorEx(s.str());
 
@@ -10428,7 +10429,7 @@ int32_t LuaInterface::luaDoSaveServer(lua_State* L)
 	if(lua_gettop(L) > 0)
 		flags = popNumber(L);
 
-	Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::saveGameState, &g_game, flags)));
+	g_game.saveGameState(flags);
 	lua_pushnil(L);
 	return 1;
 }
@@ -10454,7 +10455,7 @@ int32_t LuaInterface::luaDoSaveHouse(lua_State* L)
 	{
 		if(!(house = Houses::getInstance()->getHouse(*it)))
 		{
-			std::stringstream s;
+			std::ostringstream s;
 			s << "House not found, ID: " << (*it);
 			errorEx(s.str());
 
@@ -10477,14 +10478,14 @@ int32_t LuaInterface::luaDoSaveHouse(lua_State* L)
 	{
 		if(!IOMapSerialize::getInstance()->saveHouse(db, *it))
 		{
-			std::stringstream s;
+			std::ostringstream s;
 			s << "Unable to save house information, ID: " << (*it)->getId();
 			errorEx(s.str());
 		}
 
 		if(!IOMapSerialize::getInstance()->saveHouseItems(db, *it))
 		{
-			std::stringstream s;
+			std::ostringstream s;
 			s << "Unable to save house items, ID: " << (*it)->getId();
 			errorEx(s.str());
 		}
@@ -10822,7 +10823,7 @@ int32_t LuaInterface::luaGetItemWeight(lua_State* L)
 	double weight = item->getWeight();
 	if(precise)
 	{
-		std::stringstream ws;
+		std::ostringstream ws;
 		ws << std::fixed << std::setprecision(2) << weight;
 		weight = atof(ws.str().c_str());
 	}
@@ -11505,7 +11506,7 @@ int32_t LuaInterface::luaSystemTime(lua_State* L)
 int32_t LuaInterface::luaDatabaseExecute(lua_State* L)
 {
 	//db.query(query)
-	DBQuery query; //lock mutex
+	std::ostringstream query; //lock mutex
 	query << popString(L);
 
 	lua_pushboolean(L, Database::getInstance()->query(query.str()));
@@ -11516,7 +11517,7 @@ int32_t LuaInterface::luaDatabaseStoreQuery(lua_State* L)
 {
 	//db.storeQuery(query)
 	ScriptEnviroment* env = getEnv();
-	DBQuery query; //lock mutex
+	std::ostringstream query; //lock mutex
 
 	query << popString(L);
 	if(DBResult* res = Database::getInstance()->storeQuery(query.str()))

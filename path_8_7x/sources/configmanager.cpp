@@ -348,7 +348,7 @@ bool ConfigManager::load()
 	m_confBool[ALLOW_BLOCK_SPAWN] = getGlobalBool("allowBlockSpawn", true);
 	m_confNumber[FOLLOW_EXHAUST] = getGlobalNumber("playerFollowExhaust", 2000);
 	m_confBool[MULTIPLE_NAME] = getGlobalBool("multipleNames", false);
-	m_confNumber[PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
+	m_confNumber[MAX_PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
 	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);

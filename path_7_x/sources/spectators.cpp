@@ -50,7 +50,7 @@ void Spectators::handle(ProtocolGame* client, const std::string& text, uint16_t 
 		toLowerCaseString(t[0]);
 		if(t[0] == "show")
 		{
-			std::stringstream s;
+			std::ostringstream s;
 			s << spectators.size() << " spectators. ";
 			for(SpectatorList::const_iterator it = spectators.begin(); it != spectators.end(); ++it)
 			{
@@ -115,7 +115,7 @@ void Spectators::handle(ProtocolGame* client, const std::string& text, uint16_t 
 				if(_t.size() > 1)
 				{
 					Database* db = Database::getInstance();
-					DBQuery query;
+					std::ostringstream query;
 
 					query << "SELECT `id`, `salt`, `password` FROM `accounts` WHERE `name` " << db->getStringComparer() << db->escapeString(_t[0]) << " LIMIT 1";
 					if(DBResult* result = db->storeQuery(query.str()))
@@ -239,7 +239,7 @@ void Spectators::addSpectator(ProtocolGame* client)
 	if(++id == 65536)
 		id = 1;
 
-	std::stringstream s;
+	std::ostringstream s;
 	s << "Spectator [" << id << "]";
 
 	spectators[client] = std::make_pair(s.str(), false);

@@ -826,7 +826,7 @@ double Item::getWeight() const
 std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const Item* item/* = NULL*/,
 	int32_t subType/* = -1*/, bool addArticle/* = true*/)
 {
-	std::stringstream s;
+	std::ostringstream s;
 	s << getNameDescription(it, item, subType, addArticle);
 	if(item)
 		subType = item->getSubType();
@@ -1616,7 +1616,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		time_t now = time(NULL);
 		tm* ts = localtime(&now);
 
-		std::stringstream ss;
+		std::ostringstream ss;
 		ss << ts->tm_sec;
 		replaceString(str, "|SECONDS|", ss.str());
 
@@ -1664,7 +1664,7 @@ std::string Item::getNameDescription(const ItemType& it, const Item* item/* = NU
 	if(item)
 		subType = item->getSubType();
 
-	std::stringstream s;
+	std::ostringstream s;
 	if(it.loaded || (item && !item->getName().empty()))
 	{
 		if(subType > 1 && it.stackable && it.showCount)
@@ -1695,7 +1695,7 @@ std::string Item::getWeightDescription(double weight, bool stackable, uint32_t c
 	if(weight <= 0)
 		return "";
 
-	std::stringstream s;
+	std::ostringstream s;
 	if(stackable && count > 1)
 		s << "They weigh " << std::fixed << std::setprecision(2) << weight << " oz.";
 	else

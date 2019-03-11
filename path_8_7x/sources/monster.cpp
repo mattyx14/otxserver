@@ -780,7 +780,7 @@ void Monster::doHealing(uint32_t interval)
 
 		if(defenseTicks % it->speed >= interval) //already used this spell for this round
 			continue;
-			
+
 		if(it->minCombatValue > 0 && it->maxCombatValue > 0) //it's a healing spell
 		{ 
 			if(health >= healthMax) //the monster doesn't need to heal if it has full health

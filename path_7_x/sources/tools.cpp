@@ -20,6 +20,7 @@
 #include <iostream>
 #include <iomanip>
 
+#include <boost/filesystem.hpp>
 #include <openssl/sha.h>
 #include <openssl/md5.h>
 
@@ -318,7 +319,7 @@ bool parseXMLContentString(xmlNodePtr node, std::string& value)
 
 std::string getLastXMLError()
 {
-	std::stringstream ss;
+	std::ostringstream ss;
 	xmlErrorPtr lastError = xmlGetLastError();
 	if(lastError->line)
 		ss << "Line: " << lastError->line << ", ";
@@ -634,7 +635,7 @@ bool checkText(std::string text, std::string str)
 
 std::string generateRecoveryKey(int32_t fieldCount, int32_t fieldLenght, bool mixCase/* = false*/)
 {
-	std::stringstream key;
+	std::ostringstream key;
 	int32_t i = 0, j = 0, lastNumber = 99, number = 0;
 
 	char character = 0, lastCharacter = 0;
@@ -715,7 +716,7 @@ std::string formatDate(time_t _time/* = 0*/)
 		_time = time(NULL);
 
 	const tm* tms = localtime(&_time);
-	std::stringstream s;
+	std::ostringstream s;
 	if(tms)
 		s << tms->tm_mday << "/" << (tms->tm_mon + 1) << "/" << (tms->tm_year + 1900) << " " << tms->tm_hour << ":" << tms->tm_min << ":" << tms->tm_sec;
 	else
@@ -747,7 +748,7 @@ std::string formatTime(time_t _time/* = 0*/, bool ms/* = false*/)
 		ms = false;
 
 	const tm* tms = localtime(&_time);
-	std::stringstream s;
+	std::ostringstream s;
 	if(tms)
 	{
 		s << tms->tm_hour << ":" << tms->tm_min << ":";
@@ -1146,7 +1147,7 @@ MagicEffect_t getMagicEffect(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(magicEffectNames) / sizeof(MagicEffectNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), magicEffectNames[i].name))
+		if(boost::algorithm::iequals(strValue, magicEffectNames[i].name))
 			return magicEffectNames[i].magicEffect;
 	}
 
@@ -1157,7 +1158,7 @@ ShootEffect_t getShootType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(shootTypeNames) / sizeof(ShootTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), shootTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, shootTypeNames[i].name))
 			return shootTypeNames[i].shootType;
 	}
 
@@ -1168,7 +1169,7 @@ CombatType_t getCombatType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(combatTypeNames) / sizeof(CombatTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), combatTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, combatTypeNames[i].name))
 			return combatTypeNames[i].combatType;
 	}
 
@@ -1179,7 +1180,7 @@ Ammo_t getAmmoType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(ammoTypeNames) / sizeof(AmmoTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), ammoTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, ammoTypeNames[i].name))
 			return ammoTypeNames[i].ammoType;
 	}
 
@@ -1190,7 +1191,7 @@ AmmoAction_t getAmmoAction(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(ammoActionNames) / sizeof(AmmoActionNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), ammoActionNames[i].name))
+		if(boost::algorithm::iequals(strValue, ammoActionNames[i].name))
 			return ammoActionNames[i].ammoAction;
 	}
 
@@ -1201,7 +1202,7 @@ FluidTypes_t getFluidType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(fluidTypeNames) / sizeof(FluidTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), fluidTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, fluidTypeNames[i].name))
 			return fluidTypeNames[i].fluidType;
 	}
 
@@ -1212,7 +1213,7 @@ skills_t getSkillId(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(skillIdNames) / sizeof(SkillIdNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), skillIdNames[i].name))
+		if(boost::algorithm::iequals(strValue, skillIdNames[i].name))
 			return skillIdNames[i].skillId;
 	}
 
@@ -1223,7 +1224,7 @@ WeaponType_t getWeaponType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(weaponTypeNames) / sizeof(WeaponTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), weaponTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, weaponTypeNames[i].name))
 			return weaponTypeNames[i].weaponType;
 	}
 
@@ -1588,7 +1589,7 @@ bool parseVocationNode(xmlNodePtr vocationNode, VocationMap& vocationMap, String
 			}
 			else
 			{
-				std::stringstream ss;
+				std::ostringstream ss;
 				ss << "Wrong vocation id: " << intVector[i];
 
 				errorStr = ss.str();
@@ -1624,14 +1625,9 @@ bool parseIntegerVec(std::string str, IntegerVec& intVector)
 	return true;
 }
 
-bool fileExists(const char* filename)
+bool fileExists(const std::string& filename)
 {
-	FILE* f = fopen(filename, "rb");
-	if(!f)
-		return false;
-
-	fclose(f);
-	return true;
+	return boost::filesystem::exists(filename);
 }
 
 std::string getFilePath(FileType_t type, std::string name/* = ""*/)

@@ -200,7 +200,7 @@ void MonsterType::dropLoot(Container* corpse)
 	if(message < LOOTMSG_PLAYER)
 		return;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription() << ".";
 	if(owner->getParty() && message > LOOTMSG_PLAYER)
 		owner->getParty()->broadcastMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
@@ -1022,6 +1022,9 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 
 					if(readXMLString(tmpNode, "hostile", strValue))
 						mType->isHostile = booleanString(strValue);
+
+					if(readXMLString(tmpNode, "passive", strValue))
+						mType->isPassive = booleanString(strValue);
 
 					if(readXMLString(tmpNode, "illusionable", strValue))
 						mType->isIllusionable = booleanString(strValue);

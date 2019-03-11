@@ -305,7 +305,7 @@ int32_t GlobalEvent::executeRecord(uint32_t current, uint32_t old, Player* playe
 		ScriptEnviroment* env = m_interface->getEnv();
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 			scriptstream << "local current = " << current << std::endl;
 			scriptstream << "local old = " << old << std::endl;
 			scriptstream << "local cid = " << env->addThing(player) << std::endl;
@@ -358,7 +358,7 @@ int32_t GlobalEvent::executeEvent()
 		ScriptEnviroment* env = m_interface->getEnv();
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 			if(m_eventType == GLOBALEVENT_NONE)
 				scriptstream << "local interval = " << m_interval << std::endl;
 			else if(m_eventType == GLOBALEVENT_TIMER)

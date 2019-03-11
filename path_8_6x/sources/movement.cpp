@@ -1182,7 +1182,7 @@ uint32_t MoveEvent::executeStep(Creature* actor, Creature* creature, Item* item,
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 
 			env->streamThing(scriptstream, "item", item, env->addThing(item));
@@ -1208,7 +1208,7 @@ uint32_t MoveEvent::executeStep(Creature* actor, Creature* creature, Item* item,
 		else
 		{
 			#ifdef __DEBUG_LUASCRIPTS__
-			std::stringstream desc;
+			std::ostringstream desc;
 			desc << creature->getName() << " itemid: " << item->getID() << " - " << pos;
 			env->setEvent(desc.str());
 			#endif
@@ -1259,7 +1259,7 @@ bool MoveEvent::executeEquip(Player* player, Item* item, slots_t slot, bool bool
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(player->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(player) << std::endl;
 			env->streamThing(scriptstream, "item", item, env->addThing(item));
@@ -1282,7 +1282,7 @@ bool MoveEvent::executeEquip(Player* player, Item* item, slots_t slot, bool bool
 		else
 		{
 			#ifdef __DEBUG_LUASCRIPTS__
-			std::stringstream desc;
+			std::ostringstream desc;
 			desc << player->getName() << " itemid: " << item->getID() << " slot: " << slot;
 			env->setEvent(desc.str());
 			#endif
@@ -1329,7 +1329,7 @@ uint32_t MoveEvent::executeAddRemItem(Creature* actor, Item* item, Item* tileIte
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(pos);
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			env->streamThing(scriptstream, "moveItem", item, env->addThing(item));
 			env->streamThing(scriptstream, "tileItem", tileItem, env->addThing(tileItem));
@@ -1353,7 +1353,7 @@ uint32_t MoveEvent::executeAddRemItem(Creature* actor, Item* item, Item* tileIte
 		else
 		{
 			#ifdef __DEBUG_LUASCRIPTS__
-			std::stringstream desc;
+			std::ostringstream desc;
 			if(tileItem)
 				desc << "tileid: " << tileItem->getID();
 

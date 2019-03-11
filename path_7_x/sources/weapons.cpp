@@ -518,7 +518,7 @@ bool Weapon::executeUseWeapon(Player* player, const LuaVariant& var) const
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(player->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(player) << std::endl;
 			env->streamVariant(scriptstream, "var", var);

@@ -14,10 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////
+
 #include "otpch.h"
+
 #ifdef __USE_SQLITE__
 #include <iostream>
 #include <boost/regex.hpp>
+
 
 #include "database.h"
 #include "databasesqlite.h"
@@ -31,22 +34,23 @@ extern ConfigManager g_config;
 #define sqlite3_prepare_v2 sqlite3_prepare
 #endif
 
-DatabaseSQLite::DatabaseSQLite() :
-	m_handle(NULL)
+bool DatabaseSQLite::connect()
 {
 	// test for existence of database file;
 	// sqlite3_open will create a new one if it isn't there (what we don't want)
-	if(!fileExists(g_config.getString(ConfigManager::SQL_FILE).c_str()))
-		return;
+	if(!fileExists(g_config.getString(ConfigManager::SQL_FILE)))
+		return false;
 
 	// Initialize sqlite
-	if(sqlite3_open(g_config.getString(ConfigManager::SQL_FILE).c_str(), &m_handle) != SQLITE_OK)
+	if(sqlite3_open(g_config.getString(ConfigManager::SQL_FILE).c_str(), &m_handle) == SQLITE_OK)
 	{
-		std::clog << "Failed to initialize SQLite connection: " << sqlite3_errmsg(m_handle) << " (" << sqlite3_errcode(m_handle) << ")" << std::endl;
-		sqlite3_close(m_handle);
-	}
-	else
 		m_connected = true;
+		return true;
+	}
+
+	std::clog << "Failed to initialize SQLite connection: " << sqlite3_errmsg(m_handle) << " (" << sqlite3_errcode(m_handle) << ")" << std::endl;
+	sqlite3_close(m_handle);
+	return false;
 }
 
 std::string DatabaseSQLite::_parse(const std::string& s)
@@ -82,31 +86,27 @@ bool DatabaseSQLite::query(std::string query)
 		return false;
 
 	std::string buf = _parse(query);
-#ifdef __SQL_QUERY_DEBUG__
-	std::clog << "SQLLITE DEBUG, query: " << buf << std::endl;
-#endif
 	sqlite3_stmt* stmt;
-	// prepares statement
+
+	m_lock.lock();
 	if(sqlite3_prepare_v2(m_handle, buf.c_str(), buf.length(), &stmt, NULL) != SQLITE_OK)
 	{
 		sqlite3_finalize(stmt);
+		m_lock.unlock();
+
 		std::clog << "sqlite3_prepare_v2(): SQLITE ERROR: " << sqlite3_errmsg(m_handle)  << " (" << buf << ")" << std::endl;
 		return false;
 	}
 
-	// executes it once
 	int32_t ret = sqlite3_step(stmt);
-	if(ret != SQLITE_OK && ret != SQLITE_DONE && ret != SQLITE_ROW)
-	{
-		sqlite3_finalize(stmt);
-		std::clog << "sqlite3_step(): SQLITE ERROR: " << sqlite3_errmsg(m_handle) << std::endl;
-		return false;
-	}
-
-	// closes statement
-	// at all not sure if it should be debugged - query was executed correctly...
 	sqlite3_finalize(stmt);
-	return true;
+
+	m_lock.unlock();
+	if(ret == SQLITE_OK || ret == SQLITE_DONE || ret == SQLITE_ROW)
+		return true;
+
+	std::clog << "sqlite3_step(): SQLITE ERROR: " << sqlite3_errmsg(m_handle) << std::endl;
+	return false;
 }
 
 DBResult* DatabaseSQLite::storeQuery(std::string query)
@@ -116,18 +116,19 @@ DBResult* DatabaseSQLite::storeQuery(std::string query)
 		return NULL;
 
 	std::string buf = _parse(query);
-#ifdef __SQL_QUERY_DEBUG__
-	std::clog << "SQLLITE DEBUG, storeQuery: " << buf << std::endl;
-#endif
 	sqlite3_stmt* stmt;
-	// prepares statement
+
+	m_lock.lock();
 	if(sqlite3_prepare_v2(m_handle, buf.c_str(), buf.length(), &stmt, NULL) != SQLITE_OK)
 	{
 		sqlite3_finalize(stmt);
+		m_lock.unlock();
+
 		std::clog << "sqlite3_prepare_v2(): SQLITE ERROR: " << sqlite3_errmsg(m_handle)  << " (" << buf << ")" << std::endl;
 		return NULL;
 	}
 
+	m_lock.unlock();
 	DBResult* result = new SQLiteResult(stmt);
 	return verifyResult(result);
 }

@@ -182,7 +182,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		else
 			IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-		std::stringstream ss;
+		std::ostringstream ss;
 		ss << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str()
 			<< " by: " << name_.c_str() << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ?
 			"account won't be undeleted" : "banishment will be lifted at:\n") << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
@@ -254,7 +254,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				output->put<char>(players.size());
 				for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
 				{
-					std::stringstream s;
+					std::ostringstream s;
 					s << (*it)->getLevel();
 					if(!(*it)->client->check(password))
 						s << "*";
