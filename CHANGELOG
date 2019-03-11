@@ -85,12 +85,13 @@
 	- Optimize NPCLibs
 	- Remove GUI interface
 	- Update statusOnline 0.0.0.0 no counter
-	- Update items (base OTX 3)
+	- Update items.xml (base OTX 3 - Series)
 
 	Note:
 	* It is recommended to update all your data files.
 		Because if you do not use the data as they are you will have stability problems.
 	* The server load/save/clean more fast ...
+		The server is more stable and secure, even with a large database.
 ]
 
 [ OTX Server 2.6 :: Version "SCARETALE"
