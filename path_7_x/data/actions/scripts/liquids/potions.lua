@@ -1,5 +1,3 @@
-local ITEM_RUM_FLASK = 5553
-
 local TYPE_EMPTY = 0
 local TYPE_WATER = 1
 local TYPE_BLOOD = 2
@@ -140,7 +138,13 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		return true
 	end
 
-	doDecayItem(doCreateItem(2016, item.type, toPosition))
+	if(toPosition.x == CONTAINER_POSITION) then
+		toPosition = getThingPos(cid)
+	end
+
+	local splash = doCreateItem(2016, item.type, toPosition)
+	doDecayItem(splash)
+
 	doChangeTypeItem(item.uid, TYPE_EMPTY)
 	return true
 end
