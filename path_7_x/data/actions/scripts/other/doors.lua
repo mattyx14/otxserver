@@ -1,8 +1,6 @@
-local function doorEnter(cid, uid, id, position)
-	doTransformItem(uid, id)
-	doTeleportThing(cid, position)
-	return true
-end
+local config = {
+	maxLevel = getConfigInfo('maximumDoorLevel')
+}
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
 	if(fromPosition.x ~= CONTAINER_POSITION and isPlayerPzLocked(cid) and getTileInfo(fromPosition).protection) then
@@ -24,7 +22,8 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 				return true
 			end
 
-			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+			doTeleportThing(cid, toPosition)
+			return false
 		end
 
 		local gender = item.aid - 186
@@ -34,7 +33,8 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 				return true
 			end
 
-			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+			doTeleportThing(cid, toPosition)
+			return false
 		end
 
 		local skull = item.aid - 180
@@ -44,7 +44,8 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 				return true
 			end
 
-			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+			doTeleportThing(cid, toPosition)
+			return false
 		end
 
 		local group = item.aid - 150
@@ -54,7 +55,8 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 				return true
 			end
 
-			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+			doTeleportThing(cid, toPosition)
+			return false
 		end
 
 		local vocation = item.aid - 100
@@ -65,11 +67,13 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 				return true
 			end
 
-			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+			doTeleportThing(cid, toPosition)
+			return false
 		end
 
-		if(item.aid == 190 or (item.aid ~= 0 and getPlayerLevel(cid) >= (item.aid - door.levelDoor))) then
-			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		if(item.aid == 190 or (item.aid >= 1000 and (item.aid - door.levelDoor) <= config.maxLevel and getPlayerLevel(cid) >= (item.aid - door.levelDoor))) then
+			doTeleportThing(cid, toPosition)
+			return false
 		end
 
 		doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
@@ -77,28 +81,24 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 	end
 
 	if(door.specialDoor) then
-		if(item.aid == 100 or (item.aid ~= 0 and getCreatureStorage(cid, item.aid) > 0)) then
-			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		if(item.aid == 100 or (item.aid ~= 0 and getCreatureStorage(cid, item.aid) ~= EMPTY_STORAGE)) then
+			doTeleportThing(cid, toPosition)
+			return false
 		end
 
 		doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
 		return true
 	end
 
-	toPosition.stackpos = STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE
-	local fields, thing = getTileItemsByType(fromPosition, ITEM_TYPE_MAGICFIELD), getThingFromPosition(toPosition)
-	if(item.uid ~= thing.uid and thing.itemid >= 100 and table.maxn(fields) ~= 0) then
-		return true
-	end
+	if(getTileInfo(toPosition).creatures > 0) then -- check only if there are any creatures
+		local position = {x = toPosition.x, y = toPosition.y, z = toPosition.z, stackpos = STACKPOS_TOP_CREATURE}
+		position.x = position.x + 1
 
-	local doorCreature = getThingFromPosition(toPosition)
-	if(doorCreature.itemid ~= 0) then
-		toPosition.x = toPosition.x + 1
-		local query = doTileQueryAdd(doorCreature.uid, toPosition, 20) -- allow to stack outside doors, but not on teleports or floor changing tiles
+		local query = doTileQueryAdd(cid, position, 20)
 		if(query == RETURNVALUE_NOTPOSSIBLE) then
-			toPosition.x = toPosition.x - 1
-			toPosition.y = toPosition.y + 1
-			query = doTileQueryAdd(doorCreature.uid, toPosition, 20) -- repeat until found
+			position.x = position.x - 1
+			position.y = position.y + 1
+			query = doTileQueryAdd(cid, position, 20)
 		end
 
 		if(query ~= RETURNVALUE_NOERROR) then
@@ -106,13 +106,22 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 			return true
 		end
 
-		doTeleportThing(doorCreature.uid, toPosition)
-		if(not door.closingDoor) then
-			doTransformItem(item.uid, door.transformUseTo)
-		end
+		toPosition.stackpos = STACKPOS_TOP_CREATURE
+		while(true) do
+			local thing = getThingFromPosition(toPosition)
+			if(thing.uid == 0) then
+				break
+			end
 
-		return true
+			doTeleportThing(thing.uid, position)
+		end
 	end
 
-	return false
+	local field = getTileItemByType(toPosition, ITEM_TYPE_MAGICFIELD)
+	if(field.uid ~= 0) then
+		doRemoveItem(field.uid)
+	end
+
+	doRelocate(toPosition, position, true, false)
+	return door.closingDoor
 end
