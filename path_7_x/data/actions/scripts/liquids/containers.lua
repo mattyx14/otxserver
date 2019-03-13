@@ -134,7 +134,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		local tmp = oilLamps[itemEx.itemid]
 		if(item.type == TYPE_OIL and tmp ~= nil) then
 			doTransformItem(itemEx.uid, tmp)
-			doChangeTypeItem(item.uid, TYPE_NONE)
+			doChangeTypeItem(item.uid, TYPE_EMPTY)
 			return true
 		end
 
