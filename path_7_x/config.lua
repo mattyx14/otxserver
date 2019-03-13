@@ -279,7 +279,7 @@
 	storePlayerDirection = false
 	savePlayerData = true
 	monsterLootMessage = 3
-	monsterLootMessageType = 19
+	monsterLootMessageType = 22
 	separateViplistPerCharacter = false
 	vipListDefaultLimit = 20
 	vipListDefaultPremiumLimit = 100
