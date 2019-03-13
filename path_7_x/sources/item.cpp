@@ -179,7 +179,8 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 
 	setItemCount(1);
 	setDefaultDuration();
-
+	itemUid = -1;
+	
 	const ItemType& it = items[id];
 	if(it.isFluidContainer() || it.isSplash())
 		setFluidType(amount);
@@ -377,7 +378,8 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			uint16_t uid;
 			if(!propStream.getShort(uid))
 				return ATTR_READ_ERROR;
-
+			
+			itemUid = uid;
 			setUniqueId(uid);
 			break;
 		}
