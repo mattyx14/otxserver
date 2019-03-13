@@ -5483,10 +5483,10 @@ void Game::checkDecay()
 		boost::bind(&Game::checkDecay, this)));
 
 	size_t bucket = (lastBucket + 1) % EVENT_DECAYBUCKETS;
-	for(DecayList::iterator it = decayItems[bucket].begin(); it != decayItems[bucket].end();)
+	for (DecayList::iterator it = decayItems[bucket].begin(); it != decayItems[bucket].end();)
 	{
 		Item* item = *it;
-		if(!item->canDecay())
+		if (!item->canDecay())
 		{
 			item->setDecaying(DECAYING_FALSE);
 			freeThing(item);
@@ -5494,24 +5494,26 @@ void Game::checkDecay()
 			continue;
 		}
 
-		int32_t decreaseTime = EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS;
-		if((int32_t)item->getDuration() - decreaseTime < 0)
-			decreaseTime = item->getDuration();
+		int32_t duration = item->getDuration();
+		int32_t decreaseTime = std::min<int32_t>(EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS, duration);
+		if (decreaseTime > duration) {
+			decreaseTime = duration;
+		}
 
+		duration -= decreaseTime;
 		item->decreaseDuration(decreaseTime);
 
-		int32_t dur = item->getDuration();
-		if(dur <= 0)
+		if (duration <= 0)
 		{
 			it = decayItems[bucket].erase(it);
 			internalDecayItem(item);
 			freeThing(item);
 		}
-		else if(dur < EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS)
+		else if (duration < EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS)
 		{
 			it = decayItems[bucket].erase(it);
-			size_t newBucket = (bucket + ((dur + EVENT_DECAYINTERVAL / 2) / 1000)) % EVENT_DECAYBUCKETS;
-			if(newBucket == bucket)
+			size_t newBucket = (bucket + ((duration + EVENT_DECAYINTERVAL / 2) / 1000)) % EVENT_DECAYBUCKETS;
+			if (newBucket == bucket)
 			{
 				internalDecayItem(item);
 				freeThing(item);

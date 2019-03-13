@@ -1743,14 +1743,20 @@ void Item::setUniqueId(int32_t uid)
 
 bool Item::canDecay()
 {
-	if(isRemoved())
+	if (isRemoved()) {
 		return false;
-
-	if(loadedFromMap && (getUniqueId() || (getActionId() && getContainer())))
-		return false;
+	}
 
 	const ItemType& it = Item::items[id];
-	return it.decayTo >= 0 && it.decayTime;
+	if (it.decayTo < 0 || it.decayTime == 0) {
+		return false;
+	}
+
+	if (itemUid != -1) {
+		return false;
+	}
+
+	return true;
 }
 
 void Item::getLight(LightInfo& lightInfo)
