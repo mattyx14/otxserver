@@ -503,7 +503,7 @@ class Game
 		bool playerRequestTrade(uint32_t playerId, const Position& pos, int16_t stackpos,
 			uint32_t tradePlayerId, uint16_t spriteId);
 		void playerAcceptTrade(uint32_t playerId);
-		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
+		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t index);
 		bool playerCloseTrade(uint32_t playerId);
 		bool playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);
 		bool playerFollowCreature(uint32_t playerId, uint32_t creatureId);
