@@ -138,7 +138,6 @@
 	#endif
 #endif
 
-#define NDEBUG
 #ifdef __WINDOWS__
 	#ifdef _WIN32_WINNT
 		#undef _WIN32_WINNT
