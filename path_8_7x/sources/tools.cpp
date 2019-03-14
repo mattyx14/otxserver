@@ -944,6 +944,8 @@ Direction getReverseDirection(Direction dir)
 			return SOUTHWEST;
 		case SOUTHEAST:
 			return NORTHWEST;
+		default:
+			break;
 	}
 
 	return SOUTH;
@@ -980,6 +982,8 @@ Position getNextPosition(Direction direction, Position pos)
 		case NORTHEAST:
 			pos.x++;
 			pos.y--;
+			break;
+		default:
 			break;
 	}
 

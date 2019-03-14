@@ -319,7 +319,7 @@ int32_t Game::loadMap(std::string filename)
 		map = new Map;
 
 	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + filename);
-	if(!fileExists(file.c_str()))
+	if(!fileExists(file))
 		file = getFilePath(FILE_TYPE_OTHER, "world/" + filename);
 
 	return map->loadMap(file);
@@ -3552,7 +3552,7 @@ std::string Game::getTradeErrorDescription(ReturnValue ret, Item* item)
 	else
 		ss << "Trade could not be completed.";
 
-	return ss.str().c_str();
+	return ss.str();
 }
 
 bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t index)

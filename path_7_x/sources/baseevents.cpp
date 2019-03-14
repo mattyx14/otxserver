@@ -20,7 +20,6 @@
 #include "baseevents.h"
 #include "configmanager.h"
 #include "tools.h"
-#include <boost/filesystem.hpp>
 
 extern ConfigManager g_config;
 

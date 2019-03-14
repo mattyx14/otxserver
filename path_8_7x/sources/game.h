@@ -18,6 +18,7 @@
 #ifndef __GAME__
 #define __GAME__
 #include "otsystem.h"
+#include <boost/tr1/unordered_map.hpp>
 
 #include "enums.h"
 #include "templates.h"

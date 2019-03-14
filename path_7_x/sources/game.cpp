@@ -318,11 +318,11 @@ int32_t Game::loadMap(std::string filename)
 
 	#ifdef _MULTIPLATFORM76
 	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + filename);
-	if(!fileExists(file.c_str()))
+	if(!fileExists(file))
 		file = getFilePath(FILE_TYPE_OTHER, "world/" + filename);
 	#else
 	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + ITEMS_PATH + "/" + filename);
-	if(!fileExists(file.c_str()))
+	if(!fileExists(file))
 		file = getFilePath(FILE_TYPE_OTHER, "world/" + ITEMS_PATH + "/" + filename);
 	#endif
 
@@ -2395,7 +2395,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount/* = -1*/)
 	if(curType.type == newType.type)
 	{
 		//Both items has the same type so we can safely change id/subtype
-		if(!newCount && (item->isStackable() || (curType.charges > 0)))
+		if(!newCount && (item->isStackable() || item->hasCharges()))
 		{
 			if(!item->isStackable() && (!item->getDefaultDuration() || item->getDuration() <= 0))
 			{
@@ -3526,7 +3526,7 @@ std::string Game::getTradeErrorDescription(ReturnValue ret, Item* item)
 	else
 		ss << "Trade could not be completed.";
 
-	return ss.str().c_str();
+	return ss.str();
 }
 
 bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t index)

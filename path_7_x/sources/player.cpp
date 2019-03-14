@@ -16,7 +16,6 @@
 ////////////////////////////////////////////////////////////////////////
 #include "otpch.h"
 #include <iostream>
-#include <iomanip>
 
 #include "player.h"
 
@@ -2537,7 +2536,7 @@ Item* Player::createCorpse(DeathList deathList)
 	}
 
 	ss << ".";
-	corpse->setSpecialDescription(ss.str().c_str());
+	corpse->setSpecialDescription(ss.str());
 	return corpse;
 }
 
