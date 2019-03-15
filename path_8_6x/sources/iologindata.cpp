@@ -1985,5 +1985,5 @@ void IOLoginData::increaseBankBalance(uint32_t guid, uint64_t bankBalance)
 	std::ostringstream query;
 
 	query << "UPDATE `players` SET `balance` = `balance` + " << bankBalance << " WHERE `id` = " << guid << ";";
-	Database::getInstance()->query(query.str());
+	// return db->query(query.str());
 }
