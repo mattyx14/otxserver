@@ -122,6 +122,5 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		doRemoveItem(field.uid)
 	end
 
-	doRelocate(toPosition, position, true, false)
 	return door.closingDoor
 end
