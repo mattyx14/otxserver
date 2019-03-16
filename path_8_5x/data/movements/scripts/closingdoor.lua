@@ -4,14 +4,13 @@ function onStepOut(cid, item, position, lastPosition)
 	end
 
 	local newPosition = {x = position.x + 1, y = position.y, z = position.z}
-	local query = doTileQueryAdd(cid, newPosition)
-	if(query == RETURNVALUE_NOTENOUGHROOM) then
+	local query = doTileQueryAdd(cid, newPosition, 6)
+	if query ~= RETURNVALUE_NOERROR or query == RETURNVALUE_NOTENOUGHROOM then
 		newPosition.x = newPosition.x - 1
 		newPosition.y = newPosition.y + 1
-		query = doTileQueryAdd(cid, newPosition) -- repeat until found
+		query = doTileQueryAdd(cid, newPosition, 6) -- repeat until found
 	end
-
-	if(query == RETURNVALUE_NOERROR and query == RETURNVALUE_NOTENOUGHROOM) then
+	if query == RETURNVALUE_NOERROR or ((not query == RETURNVALUE_NOTENOUGHROOM) and (not query == RETURNVALUE_NOTPOSSIBLE)) then
 		doRelocate(position, newPosition)
 	end
 
@@ -20,19 +19,13 @@ function onStepOut(cid, item, position, lastPosition)
 	while(tileItem.uid ~= 0 and i < tileCount) do
 		position.stackpos = i
 		tileItem = getTileThingByPos(position)
-		if(tileItem.uid ~= 0 and tileItem.uid ~= item.uid and not isMovable(tileItem.uid)) then
+		if(tileItem.uid ~= 0 and tileItem.uid ~= item.uid and not isMovable(tileItem.uid) and not isCorpse(tileItem.uid)) then
 			doRemoveItem(tileItem.uid)
 		else
 			i = i + 1
 		end
 	end
 
-	local itemInfo = getItemInfo(item.itemid)
-	doTransformItem(item.uid, itemInfo.transformUseTo)
-	return true
-end
-
-function onStepOut(cid, item, position, lastPosition)
 	local itemInfo = getItemInfo(item.itemid)
 	doTransformItem(item.uid, itemInfo.transformUseTo)
 	return true
