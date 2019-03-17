@@ -74,7 +74,7 @@ if(Modules == nil) then
 		end
 
 		local parseInfo = {
-				[TAG_PLAYERNAME] = getPlayerName(cid),
+				[TAG_PLAYERNAME] = getCreatureName(cid),
 				[TAG_TIME] = getTibiaTime(),
 				[TAG_TRAVELCOST] = costMessage,
 			}
