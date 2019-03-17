@@ -62,18 +62,28 @@ if(Modules == nil) then
 			return false
 		end
 
-		local parseInfo = {[TAG_PLAYERNAME] = getCreatureName()}
-		if parameters.text then
-			npcHandler:say(npcHandler:parseMessage(parameters.text, parseInfo), cid, parameters.publicize and true)
+		local cost, costMessage = parameters.cost, '%d gold coins'
+		if cost and cost > 0 then
+			if parameters.discount then
+				cost = cost - StdModule.travelDiscount(cid, parameters.discount)
+			end
+
+			costMessage = cost > 0 and string.format(costMessage, cost) or 'free'
+		else
+			costMessage = 'free'
 		end
 
-		if parameters.ungreet then
-			npcHandler:resetNpc(cid)
-			npcHandler:releaseFocus(cid)
-		elseif parameters.reset then
-			npcHandler:resetNpc(cid)
-		elseif parameters.moveup ~= nil then
-			npcHandler.keywordHandler:moveUp(cid, parameters.moveup)
+		local parseInfo = {
+				[TAG_PLAYERNAME] = getPlayerName(cid),
+				[TAG_TIME] = getTibiaTime(),
+				[TAG_TRAVELCOST] = costMessage,
+			}
+		msgout = npcHandler:parseMessage(parameters.text or parameters.message, parseInfo)
+		npcHandler:say(msgout)
+		if(parameters.reset == true) then
+			npcHandler:resetNpc()
+		elseif(parameters.moveup ~= nil and type(parameters.moveup) == 'number') then
+			npcHandler.keywordHandler:moveUp(parameters.moveup)
 		end
 
 		return true
