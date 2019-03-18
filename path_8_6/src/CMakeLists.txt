@@ -74,6 +74,5 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/waitlist.cpp
 	${CMAKE_CURRENT_LIST_DIR}/weapons.cpp
 	${CMAKE_CURRENT_LIST_DIR}/wildcardtree.cpp
-	${CMAKE_CURRENT_LIST_DIR}/xtea.cpp
 	PARENT_SCOPE)
 
