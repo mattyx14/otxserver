@@ -3,6 +3,8 @@
 -- Modified by The OTX Server Team.
 
 if(Modules == nil) then
+	local storage = 35418 -- For exhaustion in Seconds
+
 	-- default words for greeting and ungreeting the npc. Should be a table containing all such words.
 	FOCUS_GREETWORDS = {"hi", "hello"}
 	FOCUS_FAREWELLWORDS = {"bye", "farewell"}
