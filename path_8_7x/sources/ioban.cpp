@@ -34,7 +34,7 @@ bool IOBan::isIpBanished(uint32_t ip, uint32_t mask/* = 0xFFFFFFFF*/) const
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `id`, `value`, `param`, `expires` FROM `bans` WHERE `type` = " << BAN_IP << " AND `active` = 1";
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -62,7 +62,7 @@ bool IOBan::isPlayerBanished(uint32_t playerId, PlayerBan_t type) const
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `id` FROM `bans` WHERE `type` = " << BAN_PLAYER << " AND `value` = " << playerId << " AND `param` = " << type << " AND `active` = 1 LIMIT 1";
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -83,7 +83,7 @@ bool IOBan::isAccountBanished(uint32_t account, uint32_t playerId/* = 0*/) const
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `expires` FROM `bans` WHERE `type` = " << BAN_ACCOUNT << " AND `value` = " << account;
 	if(playerId > 0)
 		query << " AND `param` = " << playerId;
@@ -111,7 +111,7 @@ bool IOBan::addIpBanishment(uint32_t ip, int64_t banTime, std::string comment, u
 		(*it)->kick(true, true);
 
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "INSERT INTO `bans` (`id`, `type`, `value`, `param`, `expires`, `added`, `admin_id`, `comment`) "
 		<< "VALUES (NULL, " << BAN_IP << ", " << ip << ", " << mask << ", " << banTime << ", "
@@ -125,7 +125,7 @@ bool IOBan::addPlayerBanishment(uint32_t playerId, int64_t banTime, std::string 
 		return false;
 
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "INSERT INTO `bans` (`id`, `type`, `value`, `param`, `expires`, `added`, `admin_id`, `comment`) "
 		<< "VALUES (NULL, " << BAN_PLAYER << ", " << playerId << ", " << type << ", " << banTime << ", "
@@ -146,7 +146,7 @@ bool IOBan::addAccountBanishment(uint32_t account, int64_t banTime, std::string 
 		return false;
 
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "INSERT INTO `bans` (`id`, `type`, `value`, `param`, `expires`, `added`, `admin_id`, `comment`) "
 		<< "VALUES (NULL, " << BAN_ACCOUNT << ", " << account << ", " << playerId << ", " << banTime << ", "
@@ -157,7 +157,7 @@ bool IOBan::addAccountBanishment(uint32_t account, int64_t banTime, std::string 
 bool IOBan::addNotation(uint32_t account, std::string comment, uint32_t gamemaster, uint32_t playerId) const
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "INSERT INTO `bans` (`id`, `type`, `value`, `param`, `expires`, `added`, `admin_id`, `comment`) "
 		<< "VALUES (NULL, " << BAN_NOTATION << ", " << account << ", " << playerId << ", '-1', "
@@ -168,7 +168,7 @@ bool IOBan::addNotation(uint32_t account, std::string comment, uint32_t gamemast
 bool IOBan::removeIpBanishment(uint32_t ip, uint32_t mask/* = 0xFFFFFFFF*/) const
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "UPDATE `bans` SET `active` = 0 WHERE `value` = " << ip << " AND `param` = " << mask
 		<< " AND `type` = " << BAN_IP << " AND `active` = 1" << db->getUpdateLimiter();
@@ -178,7 +178,7 @@ bool IOBan::removeIpBanishment(uint32_t ip, uint32_t mask/* = 0xFFFFFFFF*/) cons
 bool IOBan::removePlayerBanishment(uint32_t guid, PlayerBan_t type) const
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "UPDATE `bans` SET `active` = 0 WHERE `value` = " << guid << " AND `param` = " << type
 		<< " AND `type` = " << BAN_PLAYER << " AND `active` = 1" << db->getUpdateLimiter();
@@ -195,7 +195,7 @@ bool IOBan::removePlayerBanishment(std::string name, PlayerBan_t type) const
 bool IOBan::removeAccountBanishment(uint32_t account, uint32_t playerId/* = 0*/) const
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "UPDATE `bans` SET `active` = 0 WHERE `value` = " << account;
 	if(playerId > 0)
@@ -208,7 +208,7 @@ bool IOBan::removeAccountBanishment(uint32_t account, uint32_t playerId/* = 0*/)
 bool IOBan::removeNotations(uint32_t account, uint32_t playerId/* = 0*/) const
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "UPDATE `bans` SET `active` = 0 WHERE `value` = " << account;
 	if(playerId > 0)
@@ -223,7 +223,7 @@ uint32_t IOBan::getNotationsCount(uint32_t account, uint32_t playerId/* = 0*/) c
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT COUNT(`id`) AS `count` FROM `bans` WHERE `value` = " << account;
 	if(playerId > 0)
 		query << " AND `param` = " << playerId;
@@ -240,7 +240,7 @@ uint32_t IOBan::getNotationsCount(uint32_t account, uint32_t playerId/* = 0*/) c
 bool IOBan::getData(Ban& ban) const
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	query << "SELECT * FROM `bans` WHERE `value` = " << ban.value;
 	if(ban.param)
@@ -272,7 +272,7 @@ BansVec IOBan::getList(Ban_t type, uint32_t value/* = 0*/, uint32_t param/* = 0*
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT * FROM `bans` WHERE ";
 	if(value)
 		query << "`value` = " << value << " AND ";

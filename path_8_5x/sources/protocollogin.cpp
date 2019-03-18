@@ -32,6 +32,7 @@
 
 #include "configmanager.h"
 #include "game.h"
+
 extern ConfigManager g_config;
 extern Game g_game;
 
@@ -181,7 +182,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		else
 			IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-		std::stringstream ss;
+		std::ostringstream ss;
 		ss << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str()
 			<< " by: " << name_.c_str() << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ?
 			"account won't be undeleted" : "banishment will be lifted at:\n") << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
@@ -245,22 +246,26 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				if(!it->second->isRemoved() && it->second->client->isBroadcasting())
 					players.push_back(it->second);
 			}
-
-			std::sort(players.begin(), players.end(), Player::sort);
-			output->put<char>(players.size());
-			for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
+			if (!players.size())
+				disconnectClient(0x0A, "There are no livestreams online right now.");
+			else 
 			{
-				std::stringstream s;
-				s << (*it)->getLevel();
-				if(!(*it)->client->check(password))
-					s << "*";
+				std::sort(players.begin(), players.end(), Player::sort);
+				output->put<char>(players.size());
+				for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
+				{
+					std::ostringstream s;
+					s << (*it)->getLevel();
+					if(!(*it)->client->check(password))
+						s << "*";
 
-				output->putString((*it)->getName());
-				output->putString(s.str());
-				output->put<uint32_t>(serverIp);
+					output->putString((*it)->getName());
+					output->putString(s.str());
+					output->put<uint32_t>(serverIp);
 
-				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+					IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
+					output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+				}
 			}
 		}
 		else

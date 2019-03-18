@@ -135,11 +135,11 @@ double Container::getWeight() const
 
 std::string Container::getContentDescription() const
 {
-	std::stringstream s;
+	std::ostringstream s;
 	return getContentDescription(s).str();
 }
 
-std::stringstream& Container::getContentDescription(std::stringstream& s) const
+std::ostringstream& Container::getContentDescription(std::ostringstream& s) const
 {
 	bool begin = true;
 	Container* evil = const_cast<Container*>(this);

@@ -87,7 +87,7 @@ void Logger::log(const char* func, LogType_t type, std::string message, std::str
 	if(!m_loaded)
 		return;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "[" << formatDate() << "]" << " (";
 	switch(type)
 	{
@@ -143,7 +143,7 @@ std::streambuf::int_type OutputHandler::overflow(std::streambuf::int_type c/* = 
 	std::cout.write(m_cache.c_str(), m_cache.size());
 	if(Logger::getInstance()->isLoaded())
 	{
-		std::stringstream s;
+		std::ostringstream s;
 		if(m_cache.size() > 1)
 			s << "[" << formatDate() << "] ";
 

@@ -18,7 +18,7 @@
 
 		OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Matt Gomez
-			Leandro Brewster
+			Matheus Matias
 
 		Special Thanks(s)
 			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
@@ -33,11 +33,13 @@
 
 			OpenTibia - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/opentibia/server/graphs/contributors/
-				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster, Remere, Kornholijo, Elf, edubart and Dalkon.
+				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster,
+				Remere, Kornholijo, Elf, edubart and Dalkon.
 
 			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/mattyx14/otxserver/graphs/contributors/
-				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin
+				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin,
+				Leandro Brewster.
 
 			EvilHero90 The Forgotten Server - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/EvilHero90/forgottenserver/
@@ -56,9 +58,10 @@
 [ OTX Server 2.12 :: Version "OpenTibia"
 	- Added feature criticalhit to weapons (8.6-TFACE)
 	- Added passive flag to monsters (8.6-TFACE)
-	- Added config noAttackHealingSimultaneus - optionalProtection
+	- Added config noAttackHealingSimultaneus, optionalProtection,
+		monsterAttacksOnlyDamagePlayers(Matheus Matias)
 	- Added castSystem to 8_5x
-	- Added savePlayerItems (all protocols - Reason184)
+	- Added savePlayerItems
 	- Drop protocolversion 8_1x
 	- Fix tileLimit/stackPosition
 	- Fix and update mods
@@ -67,22 +70,32 @@
 	- Fix display animated msg and console diplay errors (8.6-TFACE)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
 	- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
-	- Fix #75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
-		#102, #104, #194, #210, #212, #286, #337(pick), #347,
-		#383, #386, #388(KOLISAO), #390, #402(Reason184), #403,
-		#408(Reason184), #410(Reason184), #411(Reason184), #416(Reason184),
-		#421, #424(Reason184), #428(Reason184), #429(Reason184), #435(Reason184),
-		#450(WeslleyKiyo), #473(matheusjp2)
+	- Fix infinite healing on monsters (Matheus Matias)
+	- Fix Fixes Cast/Live problem (Matheus Matias)
 	- Fix stackItemsTrade
-	- Optimize code in critical fixes
+	- Fix #75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
+		#102, #104, #194, #210, #212, #286, #332, #337(pick), #347,
+		#383, #386, #385(Matheus Matias), #388(KOLISAO), #390, #402(Matheus Matias), #403,
+		#408(Matheus Matias), #410(Matheus Matias), #411(Matheus Matias), #416(Matheus Matias),
+		#421, #424(Matheus Matias), #428(Matheus Matias), #429(Matheus Matias), #435(Matheus Matias),
+		#450(WeslleyKiyo), #454(Matheus Matias), #457(Matheus Matias), #461(Matheus Matias), #468(Felipe21),
+		#469(Matheus Matias), #473(matheusjp2), #476(Matheus Matias), #477(Matheus Matias), #481(Matheus Matias)
+		#482
+	- Optimize code fixes
+	- Optimize code Connection and SQL Services // Security
+	- Optimize NPCLibs
+	- Optimizes decayItem (Matheus Matias)
+		This should remove lagspikes when you start the server(cpu consumption greatly reduced),
+		it should be more noticeable on big maps.
 	- Remove GUI interface
 	- Update statusOnline 0.0.0.0 no counter
-	- Update items (base OTX 3)
+	- Update items.xml (base OTX 3 - Series)
 
 	Note:
 	* It is recommended to update all your data files.
 		Because if you do not use the data as they are you will have stability problems.
 	* The server load/save/clean more fast ...
+		The server is more stable and secure, even with a large database.
 ]
 
 [ OTX Server 2.6 :: Version "SCARETALE"

@@ -20,6 +20,7 @@
 #include "outputmessage.h"
 #include "connection.h"
 #include "game.h"
+
 extern Game g_game;
 
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__

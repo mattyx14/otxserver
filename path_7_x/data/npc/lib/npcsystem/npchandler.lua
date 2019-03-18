@@ -3,6 +3,8 @@
 -- Modified by The OTX Server Team.
 
 if(NpcHandler == nil) then
+	local storage = 35418 -- For exhaustion in Seconds
+
 	-- Constant talkdelay behaviors.
 	TALKDELAY_NONE = 0 -- No talkdelay. Npc will reply immedeatly.
 	TALKDELAY_ONTHINK = 1 -- Talkdelay handled through the onThink callback function. (Default)
@@ -68,8 +70,6 @@ if(NpcHandler == nil) then
 	TAG_TOTALCOST = '|TOTALCOST|'
 	TAG_ITEMNAME = '|ITEMNAME|'
 	TAG_QUEUESIZE = '|QUEUESIZE|'
-	TAG_TIME = '|TIME|'
-	TAG_TRAVELCOST = '|TRAVELCOST|'
 
 	NpcHandler = {
 		keywordHandler = nil,
@@ -198,21 +198,20 @@ if(NpcHandler == nil) then
 				pos = k
 			end
 		end
-		self.focuses[pos] = nil
+		if(pos ~= nil) then
+			self:unsetFocus(focus, pos)
+		end
+	end
 
-		self.eventSay[focus] = nil
-		self.eventDelayedSay[focus] = nil
+	-- Internal un-focusing function, beware using!
+	function NpcHandler:unsetFocus(focus, pos)
+		if(type(self.focuses) ~= "table" or pos == nil or self.focuses[pos] == nil) then
+			return
+		end
+
+		table.remove(self.focuses, pos)
 		self.talkStart[focus] = nil
-		self.topic[focus] = nil
-
-		local callback = self:getCallback(CALLBACK_ONRELEASEFOCUS)
-		if callback == nil or callback(focus) then
-			self:processModuleCallback(CALLBACK_ONRELEASEFOCUS, focus)
-		end
-
-		if Player(focus) ~= nil then
-			self:updateFocus()
-		end
+		self:updateFocus()
 	end
 
 	-- Returns the callback function with the specified id or nil if no such callback function exists.
@@ -419,6 +418,17 @@ if(NpcHandler == nil) then
 
 	-- Handles onBuy events. If you wish to handle this yourself, use the CALLBACK_ONBUY callback.
 	function NpcHandler:onBuy(cid, itemid, subType, amount, ignoreCap, inBackpacks)
+	
+		local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
+		if(exhaustionNPC) then
+		local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC') or 0.5
+		if(exhaustion.check(cid, storage) == true) then
+			doPlayerSendCancel(cid, "Please wait " .. exhaustionInSeconds .. " seconds before trying to buy again.")
+			return false
+		end
+			exhaustion.set(cid, storage, exhaustionInSeconds)
+		end
+		
 		local callback = self:getCallback(CALLBACK_ONBUY)
 		if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
 			if(self:processModuleCallback(CALLBACK_ONBUY, cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
@@ -429,6 +439,17 @@ if(NpcHandler == nil) then
 
 	-- Handles onSell events. If you wish to handle this yourself, use the CALLBACK_ONSELL callback.
 	function NpcHandler:onSell(cid, itemid, subType, amount, ignoreCap, inBackpacks)
+	
+		local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
+		if(exhaustionNPC) then
+			local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC') or 0.5
+			if(exhaustion.check(cid, storage) == true) then
+				doPlayerSendCancel(cid, "Please wait " .. exhaustionInSeconds .. " seconds before trying to sell again.")
+				return false
+			end
+			exhaustion.set(cid, storage, exhaustionInSeconds)
+		end
+		
 		local callback = self:getCallback(CALLBACK_ONSELL)
 		if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
 			if(self:processModuleCallback(CALLBACK_ONSELL, cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
@@ -483,35 +504,6 @@ if(NpcHandler == nil) then
 			if not self:isFocused(cid) then
 				self:greet(cid)
 				return
-			end
-		end
-	end
-
-	-- Handles onThink events. If you wish to handle this yourself, please use the CALLBACK_ONTHINK callback.
-	function NpcHandler:onThink()
-		local callback = self:getCallback(CALLBACK_ONTHINK)
-		if callback == nil or callback() then
-			if NPCHANDLER_TALKDELAY == TALKDELAY_ONTHINK then
-				for cid, talkDelay in pairs(self.talkDelay) do
-					if talkDelay.time ~= nil and talkDelay.message ~= nil and os.time() >= talkDelay.time then
-						selfSay(talkDelay.message, cid, talkDelay.publicize and true or false)
-						self.talkDelay[cid] = nil
-					end
-				end
-			end
-
-			if self:processModuleCallback(CALLBACK_ONTHINK) then
-				for pos, focus in pairs(self.focuses) do
-					if focus ~= nil then
-						if not self:isInRange(focus) then
-							self:onWalkAway(focus)
-						elseif self.talkStart[focus] ~= nil and (os.time() - self.talkStart[focus]) > self.idleTime then
-							self:unGreet(focus)
-						else
-							self:updateFocus()
-						end
-					end
-				end
 			end
 		end
 	end

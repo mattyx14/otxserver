@@ -140,7 +140,7 @@ bool House::isBidded() const
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `house_id` FROM `house_auctions` WHERE `house_id` = " << id << " LIMIT 1";
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -935,7 +935,7 @@ bool Houses::payHouse(House* house, time_t _time, uint32_t bid)
 			{
 				letter->setWriter(g_config.getString(ConfigManager::SERVER_NAME));
 				letter->setDate(std::time(NULL));
-				std::stringstream s;
+				std::ostringstream s;
 
 				s << "Warning!\nThe ";
 				switch(rentPeriod)

@@ -52,6 +52,7 @@
 #include "weapons.h"
 #include "mounts.h"
 
+#include "teleport.h"
 #include "textlogger.h"
 #include "vocation.h"
 #include "group.h"
@@ -319,7 +320,7 @@ int32_t Game::loadMap(std::string filename)
 		map = new Map;
 
 	std::string file = getFilePath(FILE_TYPE_CONFIG, "world/" + filename);
-	if(!fileExists(file.c_str()))
+	if(!fileExists(file))
 		file = getFilePath(FILE_TYPE_OTHER, "world/" + filename);
 
 	return map->loadMap(file);
@@ -1579,6 +1580,24 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	//destination is the same as the source?
 	if(item == toItem)
 		return RET_NOERROR; //silently ignore move
+	
+	if(toCylinder->getTile())
+	{
+		if(toCylinder->getTile()->hasFlag(TILESTATE_TELEPORT))
+		{
+			Teleport* teleport = toCylinder->getTile()->getTeleportItem();
+			Position dest = teleport->getDestination();
+			if(dest.x != 0 && dest.y != 0) //checks if the portal has a destination set
+			{
+				Tile* tile = map->getTile(dest);
+				if(tile)
+				{
+					if((tile->hasFlag(TILESTATE_BLOCKSOLID) || tile->getTopCreature()) && item->hasProperty(BLOCKSOLID))
+						return RET_NOTPOSSIBLE;
+				}
+			}
+		}
+	}
 
 	//check if we can add this item
 	ReturnValue ret = toCylinder->__queryAdd(index, item, count, flags, actor);
@@ -2362,7 +2381,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount/* = -1*/)
 	if(curType.type == newType.type)
 	{
 		//Both items has the same type so we can safely change id/subtype
-		if(!newCount && (item->isStackable() || (curType.charges > 0)))
+		if(!newCount && (item->isStackable() || item->hasCharges()))
 		{
 			if(!item->isStackable() && (!item->getDefaultDuration() || item->getDuration() <= 0))
 			{
@@ -3453,7 +3472,7 @@ std::string Game::getTradeErrorDescription(ReturnValue ret, Item* item)
 	if(!item)
 		return std::string();
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	if(ret == RET_NOTENOUGHCAPACITY)
 	{
 		ss << "You do not have enough capacity to carry";
@@ -3475,7 +3494,7 @@ std::string Game::getTradeErrorDescription(ReturnValue ret, Item* item)
 	else
 		ss << "Trade could not be completed.";
 
-	return ss.str().c_str();
+	return ss.str();
 }
 
 bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t index)
@@ -3497,7 +3516,7 @@ bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t
 	if(!tradeItem)
 		return false;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "You see ";
 
 	int32_t lookDistance = std::max(std::abs(player->getPosition().x - tradeItem->getPosition().x),
@@ -3725,7 +3744,7 @@ bool Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 	else
 		subType = count;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "You see " << Item::getDescription(it, 1, NULL, subType);
 	if(player->hasCustomFlag(PlayerCustomFlag_CanSeeItemDetails))
 		ss << std::endl << "ItemID: [" << it.id << "].";
@@ -3786,7 +3805,7 @@ bool Game::playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteI
 	if(deny)
 		return false;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "You see " << thing->getDescription(lookDistance);
 	if(player->hasCustomFlag(PlayerCustomFlag_CanSeeItemDetails))
 	{
@@ -4851,7 +4870,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 			healthChange = (target->getHealth() - oldHealth);
 			std::string plural = (healthChange != 1 ? "s." : ".");
 
-			std::stringstream ss;
+			std::ostringstream ss;
 			char buffer[20];
 			sprintf(buffer, "+%d", healthChange);
 			addAnimatedText(list, targetPos, COLOR_MAYABLUE, buffer);
@@ -4943,7 +4962,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 
 				Color_t textColor = COLOR_NONE;
 				MagicEffect_t magicEffect = MAGIC_EFFECT_NONE;
-
+				const SpectatorVec& list = getSpectators(targetPos); //monster can be teleported/moved on statschange, a new list must be created
 				addCreatureHealth(list, target);
 				if(params.combatType == COMBAT_PHYSICALDAMAGE)
 				{
@@ -5017,7 +5036,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 						addMagicEffect(list, targetPos, magicEffect);
 					}
 
-					std::stringstream ss;
+					std::ostringstream ss;
 					int32_t totalDamage = damage + elementDamage;
 
 					std::string plural = (totalDamage != 1 ? "s" : "");
@@ -5105,7 +5124,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 			manaChange = (target->getMana() - oldMana);
 			std::string plural = (manaChange != 1 ? "s." : ".");
 
-			std::stringstream ss;
+			std::ostringstream ss;
 			char buffer[20];
 			sprintf(buffer, "+%d", manaChange);
 			addAnimatedText(list, targetPos, COLOR_DARKPURPLE, buffer);
@@ -5186,7 +5205,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 					textList.push_back(*it);
 			}
 
-			std::stringstream ss;
+			std::ostringstream ss;
 			MessageDetails* details = new MessageDetails(manaLoss, COLOR_BLUE);
 			if(!textList.empty())
 			{
@@ -5369,10 +5388,10 @@ void Game::checkDecay()
 		boost::bind(&Game::checkDecay, this)));
 
 	size_t bucket = (lastBucket + 1) % EVENT_DECAYBUCKETS;
-	for(DecayList::iterator it = decayItems[bucket].begin(); it != decayItems[bucket].end();)
+	for (DecayList::iterator it = decayItems[bucket].begin(); it != decayItems[bucket].end();)
 	{
 		Item* item = *it;
-		if(!item->canDecay())
+		if (!item->canDecay())
 		{
 			item->setDecaying(DECAYING_FALSE);
 			freeThing(item);
@@ -5380,24 +5399,26 @@ void Game::checkDecay()
 			continue;
 		}
 
-		int32_t decreaseTime = EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS;
-		if((int32_t)item->getDuration() - decreaseTime < 0)
-			decreaseTime = item->getDuration();
+		int32_t duration = item->getDuration();
+		int32_t decreaseTime = std::min<int32_t>(EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS, duration);
+		if (decreaseTime > duration) {
+			decreaseTime = duration;
+		}
 
+		duration -= decreaseTime;
 		item->decreaseDuration(decreaseTime);
 
-		int32_t dur = item->getDuration();
-		if(dur <= 0)
+		if (duration <= 0)
 		{
 			it = decayItems[bucket].erase(it);
 			internalDecayItem(item);
 			freeThing(item);
 		}
-		else if(dur < EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS)
+		else if (duration < EVENT_DECAYINTERVAL * EVENT_DECAYBUCKETS)
 		{
 			it = decayItems[bucket].erase(it);
-			size_t newBucket = (bucket + ((dur + EVENT_DECAYINTERVAL / 2) / 1000)) % EVENT_DECAYBUCKETS;
-			if(newBucket == bucket)
+			size_t newBucket = (bucket + ((duration + EVENT_DECAYINTERVAL / 2) / 1000)) % EVENT_DECAYBUCKETS;
+			if (newBucket == bucket)
 			{
 				internalDecayItem(item);
 				freeThing(item);
@@ -5412,6 +5433,7 @@ void Game::checkDecay()
 	lastBucket = bucket;
 	cleanup();
 }
+
 
 void Game::checkLight()
 {
@@ -5864,7 +5886,7 @@ std::string Game::getSearchString(const Position& fromPos, const Position& toPos
 			direction = DIR_S;
 	}
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	switch(distance)
 	{
 		case DISTANCE_BESIDE:
@@ -6135,7 +6157,7 @@ void Game::checkHighscores()
 std::string Game::getHighscoreString(uint16_t skill)
 {
 	Highscore hs = highscoreStorage[skill];
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "Highscore for " << getSkillName(skill) << "\n\nRank Level - Player Name";
 	for(uint32_t i = 0; i < hs.size(); ++i)
 		ss << "\n" << (i + 1) << ".  " << hs[i].second << "  -  " << hs[i].first;
@@ -6148,7 +6170,7 @@ Highscore Game::getHighscore(uint16_t skill)
 {
 	Database* db = Database::getInstance();
 	DBResult* result;
-	DBQuery query;
+	std::ostringstream query;
 
 	Highscore hs;
 	if(skill >= SKILL__MAGLEVEL)
@@ -6206,7 +6228,7 @@ int32_t Game::getMotdId()
 	lastMotd = g_config.getString(ConfigManager::MOTD);
 	Database* db = Database::getInstance();
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "INSERT INTO `server_motd` (`id`, `world_id`, `text`) VALUES (" << lastMotdId + 1 << ", " << g_config.getNumber(ConfigManager::WORLD_ID) << ", " << db->escapeString(lastMotd) << ")";
 	if(db->query(query.str()))
 		++lastMotdId;
@@ -6217,7 +6239,7 @@ int32_t Game::getMotdId()
 void Game::loadMotd()
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `id`, `text` FROM `server_motd` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << " ORDER BY `id` DESC LIMIT 1";
 
 	DBResult* result;
@@ -6249,7 +6271,7 @@ void Game::checkPlayersRecord(Player* player)
 void Game::loadPlayersRecord()
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `record` FROM `server_record` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << " ORDER BY `timestamp` DESC LIMIT 1";
 
 	DBResult* result;
@@ -6629,7 +6651,7 @@ void Game::showHotkeyUseMessage(Player* player, Item* item)
 	const ItemType& it = Item::items[item->getID()];
 	uint32_t count = player->__getItemTypeCount(item->getID(), item->isFluidContainer() ? item->getFluidType() : -1);
 
-	std::stringstream stream;
+	std::ostringstream stream;
 	if(!it.showCount)
 		stream << "Using one of " << it.name << "...";
 	else if(count == 1)

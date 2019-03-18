@@ -39,7 +39,7 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 	#endif
 	if(!m_rawMessages)
 	{
-		msg->writeMessageLength();
+		msg->addHeader();
 		#ifdef _MULTIPLATFORM77
 		if(m_encryptionEnabled)
 		{
@@ -86,6 +86,18 @@ OutputMessage_ptr Protocol::getOutputBuffer()
 
 	m_outputBuffer = OutputMessagePool::getInstance()->getOutputMessage(this);
 	return m_outputBuffer;
+}
+
+void Protocol::writeOutputBuffer(NetworkMessage& msg)
+{
+	if(!m_outputBuffer && !m_connection)
+		return;
+
+	if(!m_outputBuffer || NETWORK_MAX_SIZE < m_outputBuffer->position() + msg.size())
+		m_outputBuffer = OutputMessagePool::getInstance()->getOutputMessage(this);
+
+	if(m_outputBuffer)
+		m_outputBuffer->putString(msg.buffer(NETWORK_CRYPTOHEADER_SIZE), msg.size(), false);
 }
 
 void Protocol::releaseProtocol()
@@ -211,9 +223,8 @@ bool Protocol::RSA_decrypt(NetworkMessage& msg)
 
 uint32_t Protocol::getIP() const
 {
-	if(getConnection()) {
-		return getConnection()->getIP();
-	}
+	if(Connection_ptr connection = getConnection())
+		return connection->getIP();
 
 	return 0;
 }

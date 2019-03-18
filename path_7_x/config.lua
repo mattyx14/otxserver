@@ -131,6 +131,10 @@
 		rookLevelToLeaveRook = 8
 		rookTownId = 1
 		useRookSystem = true
+		
+		-- Monsters Attack Config
+		-- set monsterAttacksOnlyDamagePlayers to false if you want monster's attacks to damage other nearby monsters
+		monsterAttacksOnlyDamagePlayers = true
 
 		-- Paralyze delay
 		paralyzeDelay = 1500
@@ -159,7 +163,7 @@
 		enableLootBagDisplay = false
 		attackImmediatelyAfterLoggingIn = false
 		exhaustionNPC = true
-		exhaustionInSecondsNPC = 1
+		exhaustionInSecondsNPC = 0.5
 
 		-- Old Configs
 		tileHeightBlock = true
@@ -275,7 +279,7 @@
 	storePlayerDirection = false
 	savePlayerData = true
 	monsterLootMessage = 3
-	monsterLootMessageType = 19
+	monsterLootMessageType = 22
 	separateViplistPerCharacter = false
 	vipListDefaultLimit = 20
 	vipListDefaultPremiumLimit = 100

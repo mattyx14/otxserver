@@ -178,7 +178,7 @@ std::string DatabaseMySQLpp::escapeBlob(const char* s, uint32_t)
 
 uint64_t DatabaseMySQLpp::getLastInsertId()
 {
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT LAST_INSERT_ID() AS `t`;";
 	DBResult* result = storeQuery(query.str());
 	if(!result)

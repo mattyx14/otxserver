@@ -22,6 +22,127 @@
 #include "item.h"
 #include "player.h"
 
+SocketCode_t NetworkMessage::read(SOCKET socket, bool ignoreLength, int32_t timeout/* = NETWORK_RETRY_TIME*/)
+{
+	int32_t waiting = 0, data = NETWORK_SOCKET_SIZE;
+	if(!ignoreLength)
+	{
+		do
+		{
+			// just read the size to avoid reading 2 messages at once
+			int32_t ret = recv(socket, (char*)m_buffer, NETWORK_HEADER_SIZE, 0);
+			if(ret <= 0)
+			{
+				if(errno == EWOULDBLOCK)
+				{
+					ret = 0;
+					OTSYS_SLEEP(10);
+
+					waiting += 10;
+					if(waiting > timeout)
+					{
+						reset(NETWORK_HEADER_SIZE);
+						return SOCKET_CODE_TIMEOUT;
+					}
+				}
+				else
+				{
+					reset(NETWORK_HEADER_SIZE);
+					return SOCKET_CODE_ERROR;
+				}
+			}
+
+			m_size += ret;
+		}
+		while(m_size < NETWORK_HEADER_SIZE);
+
+		// for now we expect 2 bytes at once, it should not be splitted
+		data = (int32_t)(m_buffer[0] | m_buffer[1] << 8);
+		if(m_size != NETWORK_HEADER_SIZE || data > NETWORK_MAX_SIZE - NETWORK_HEADER_SIZE)
+		{
+			reset(NETWORK_HEADER_SIZE);
+			return SOCKET_CODE_ERROR;
+		}
+	}
+
+	int32_t recvd = 0;
+	do
+	{
+		// read the real data
+		int32_t ret = recv(socket, (char*)m_buffer + recvd + NETWORK_HEADER_SIZE, data - recvd, 0);
+		if(ret <= 0)
+		{
+			if(errno == EWOULDBLOCK)
+			{
+				ret = 0;
+				OTSYS_SLEEP(100);
+
+				waiting += 100;
+				if(waiting > timeout)
+				{
+					reset(NETWORK_HEADER_SIZE);
+					return SOCKET_CODE_TIMEOUT;
+				}
+			}
+			else if(data == NETWORK_SOCKET_SIZE)
+				break;
+			else
+			{
+				reset(NETWORK_HEADER_SIZE);
+				return SOCKET_CODE_ERROR;
+			}
+		}
+
+		recvd += ret;
+	}
+	while(recvd < data);
+	m_size += recvd;
+
+	// we got something unexpected/incomplete
+	if(m_size <= NETWORK_HEADER_SIZE || (!ignoreLength && m_size - NETWORK_HEADER_SIZE != data))
+	{
+		reset(NETWORK_HEADER_SIZE);
+		return SOCKET_CODE_ERROR;
+	}
+
+	m_position = NETWORK_HEADER_SIZE;
+	return SOCKET_CODE_OK;
+}
+
+SocketCode_t NetworkMessage::write(SOCKET socket, int32_t timeout/* = NETWORK_RETRY_TIME*/)
+{
+	if(!m_size)
+		return SOCKET_CODE_OK;
+
+	m_buffer[2] = (uint8_t)(m_size);
+	m_buffer[3] = (uint8_t)(m_size >> 8);
+
+	int32_t sent = 0, waiting = 0;
+	do
+	{
+		int32_t ret = send(socket, (char*)m_buffer + sent + NETWORK_HEADER_SIZE,
+			std::min(m_size - sent + NETWORK_HEADER_SIZE, 1000), 0);
+		if(ret <= 0)
+		{
+			if(errno == EWOULDBLOCK)
+			{
+				ret = 0;
+				OTSYS_SLEEP(100);
+
+				waiting += 100;
+				if(waiting > timeout)
+					return SOCKET_CODE_TIMEOUT;
+			}
+			else
+				return SOCKET_CODE_ERROR;
+		}
+
+	    	sent += ret;
+	}
+	while(sent < m_size + NETWORK_HEADER_SIZE);
+	return SOCKET_CODE_OK;
+}
+
 std::string NetworkMessage::getString(bool peek/* = false*/, uint16_t size/* = 0*/)
 {
 	if(!size)
@@ -31,7 +152,7 @@ std::string NetworkMessage::getString(bool peek/* = false*/, uint16_t size/* = 0
 	if(peek)
 		position += 2;
 
-	if(size >= (16384 - position))
+	if(size >= (NETWORK_MAX_SIZE - position))
 		return std :: string();
 
 	char* v = (char*)(m_buffer + position);
@@ -51,10 +172,10 @@ Position NetworkMessage::getPosition()
 	return pos;
 }
 
-void NetworkMessage::putString(const char* value, int length, bool addSize/* = true*/)
+void NetworkMessage::putString(const char* value, uint32_t length, bool addSize/* = true*/)
 {
 	uint32_t size = (uint32_t)length;
-	if(!hasSpace(size + (addSize ? 2 : 0)) || size > 8192)
+	if(!hasSpace(size + (addSize ? 2 : 0)) || size > (addSize ? 8192 : NETWORK_BODY_SIZE))
 		return;
 
 	if(addSize)

@@ -18,13 +18,7 @@
 #ifndef __HOUSE__
 #define __HOUSE__
 #include "otsystem.h"
-
 #include <boost/regex.hpp>
-#if defined __GNUC__ && __GNUC__ >= 4
-#include <tr1/unordered_set>
-#else
-#include <boost/tr1/unordered_set.hpp>
-#endif
 
 #include "position.h"
 #include "housetile.h"

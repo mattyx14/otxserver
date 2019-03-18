@@ -1361,7 +1361,7 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;
@@ -1409,7 +1409,7 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;

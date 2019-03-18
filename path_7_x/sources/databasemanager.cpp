@@ -17,7 +17,6 @@
 #include "otpch.h"
 #include "enums.h"
 #include <iostream>
-#include <stack>
 
 #include "databasemanager.h"
 #include "tools.h"
@@ -28,7 +27,7 @@ extern ConfigManager g_config;
 bool DatabaseManager::optimizeTables()
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 	switch(db->getDatabaseEngine())
 	{
 		case DATABASE_ENGINE_MYSQL:
@@ -84,7 +83,7 @@ bool DatabaseManager::optimizeTables()
 bool DatabaseManager::triggerExists(std::string trigger)
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 	switch(db->getDatabaseEngine())
 	{
 		case DATABASE_ENGINE_SQLITE:
@@ -114,7 +113,7 @@ bool DatabaseManager::triggerExists(std::string trigger)
 bool DatabaseManager::tableExists(std::string table)
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 	switch(db->getDatabaseEngine())
 	{
 		case DATABASE_ENGINE_SQLITE:
@@ -148,7 +147,7 @@ bool DatabaseManager::isDatabaseSetup()
 	{
 		case DATABASE_ENGINE_MYSQL:
 		{
-			DBQuery query;
+			std::ostringstream query;
 			query << "SELECT `TABLE_NAME` FROM `information_schema`.`tables` WHERE `TABLE_SCHEMA` = " << db->escapeString(g_config.getString(ConfigManager::SQL_DB)) << ";";
 
 			DBResult* result;
@@ -193,7 +192,7 @@ uint32_t DatabaseManager::updateDatabase()
 	if(version < 0)
 		return 0;
 
-	DBQuery query;
+	std::ostringstream query;
 	switch(version)
 	{
 		case 0:
@@ -292,7 +291,7 @@ bool DatabaseManager::getDatabaseConfig(std::string config, int32_t &value)
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `value` FROM `server_config` WHERE `config` = " << db->escapeString(config) << ";";
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -309,7 +308,7 @@ bool DatabaseManager::getDatabaseConfig(std::string config, std::string &value)
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT `value` FROM `server_config` WHERE `config` = " << db->escapeString(config) << ";";
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -322,7 +321,7 @@ bool DatabaseManager::getDatabaseConfig(std::string config, std::string &value)
 void DatabaseManager::registerDatabaseConfig(std::string config, int32_t value)
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	int32_t tmp = 0;
 	if(!getDatabaseConfig(config, tmp))
@@ -336,7 +335,7 @@ void DatabaseManager::registerDatabaseConfig(std::string config, int32_t value)
 void DatabaseManager::registerDatabaseConfig(std::string config, std::string value)
 {
 	Database* db = Database::getInstance();
-	DBQuery query;
+	std::ostringstream query;
 
 	std::string tmp;
 	if(!getDatabaseConfig(config, tmp))
@@ -366,8 +365,8 @@ void DatabaseManager::checkEncryption()
 					}
 
 					Database* db = Database::getInstance();
-					DBQuery query;
-					if(db->getDatabaseEngine() != DATABASE_ENGINE_MYSQL && db->getDatabaseEngine() != DATABASE_ENGINE_POSTGRESQL)
+					std::ostringstream query;
+					if(db->getDatabaseEngine() == DATABASE_ENGINE_SQLITE)
 					{
 						query << "SELECT `id`, `password`, `key` FROM `accounts`;";
 						if(DBResult* result = db->storeQuery(query.str()))
@@ -398,8 +397,8 @@ void DatabaseManager::checkEncryption()
 					}
 
 					Database* db = Database::getInstance();
-					DBQuery query;
-					if(db->getDatabaseEngine() != DATABASE_ENGINE_MYSQL && db->getDatabaseEngine() != DATABASE_ENGINE_POSTGRESQL)
+					std::ostringstream query;
+					if(db->getDatabaseEngine() == DATABASE_ENGINE_SQLITE)
 					{
 						query << "SELECT `id`, `password`, `key` FROM `accounts`;";
 						if(DBResult* result = db->storeQuery(query.str()))
@@ -430,7 +429,7 @@ void DatabaseManager::checkEncryption()
 					}
 
 					Database* db = Database::getInstance();
-					DBQuery query;
+					std::ostringstream query;
 
 					query << "SELECT `id`, `password`, `key` FROM `accounts`;";
 					if(DBResult* result = db->storeQuery(query.str()))
@@ -458,7 +457,7 @@ void DatabaseManager::checkEncryption()
 					}
 
 					Database* db = Database::getInstance();
-					DBQuery query;
+					std::ostringstream query;
 
 					query << "SELECT `id`, `password`, `key` FROM `accounts`;";
 					if(DBResult* result = db->storeQuery(query.str()))
@@ -495,7 +494,7 @@ void DatabaseManager::checkEncryption()
 				case ENCRYPTION_MD5:
 				{
 					Database* db = Database::getInstance();
-					DBQuery query;
+					std::ostringstream query;
 					query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToMD5("1", false)) << " WHERE `id` = 1 AND `password` = '1';";
 					db->query(query.str());
 					break;
@@ -504,7 +503,7 @@ void DatabaseManager::checkEncryption()
 				case ENCRYPTION_SHA1:
 				{
 					Database* db = Database::getInstance();
-					DBQuery query;
+					std::ostringstream query;
 					query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToSHA1("1", false)) << " WHERE `id` = 1 AND `password` = '1';";
 					db->query(query.str());
 					break;
@@ -513,7 +512,7 @@ void DatabaseManager::checkEncryption()
 				case ENCRYPTION_SHA256:
 				{
 					Database* db = Database::getInstance();
-					DBQuery query;
+					std::ostringstream query;
 					query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToSHA256("1", false)) << " WHERE `id` = 1 AND `password` = '1';";
 					db->query(query.str());
 					break;
@@ -522,7 +521,7 @@ void DatabaseManager::checkEncryption()
 				case ENCRYPTION_SHA512:
 				{
 					Database* db = Database::getInstance();
-					DBQuery query;
+					std::ostringstream query;
 					query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToSHA512("1", false)) << " WHERE `id` = 1 AND `password` = '1';";
 					db->query(query.str());
 					break;
@@ -560,7 +559,7 @@ void DatabaseManager::checkTriggers()
 				"CREATE TRIGGER `ondelete_players` BEFORE DELETE ON `players` FOR EACH ROW BEGIN DELETE FROM `bans` WHERE `type` = 2 AND `value` = OLD.`id`; UPDATE `houses` SET `owner` = 0 WHERE `owner` = OLD.`id`; END;"
 			};
 
-			DBQuery query;
+			std::ostringstream query;
 			for(uint32_t i = 0; i < sizeof(triggerName) / sizeof(std::string); ++i)
 			{
 				if(!triggerExists(triggerName[i]))
@@ -725,7 +724,7 @@ END;",
 				"CREATE TRIGGER `onupdate_player_killers` BEFORE UPDATE ON `player_killers` FOR EACH ROW BEGIN SELECT RAISE(ROLLBACK, 'UPDATE on table `player_killers` violates foreign: `player_id`') WHERE NEW.`player_id` IS NULL OR (SELECT `id` FROM `players` WHERE `id` = NEW.`player_id`) IS NULL; SELECT RAISE(ROLLBACK, 'UPDATE on table `killers` violates foreign: `kill_id`') WHERE NEW.`kill_id` IS NULL OR (SELECT `id` FROM `killers` WHERE `id` = NEW.`kill_id`) IS NULL; END;"
 			};
 
-			DBQuery query;
+			std::ostringstream query;
 			for(uint32_t i = 0; i < sizeof(triggerName) / sizeof(std::string); ++i)
 			{
 				if(!triggerExists(triggerName[i]))

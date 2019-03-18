@@ -18,6 +18,7 @@
 #ifndef __GAME__
 #define __GAME__
 #include "otsystem.h"
+#include <boost/tr1/unordered_map.hpp>
 
 #include "enums.h"
 #include "templates.h"
@@ -515,7 +516,7 @@ class Game
 		bool playerRequestTrade(uint32_t playerId, const Position& pos, int16_t stackpos,
 			uint32_t tradePlayerId, uint16_t spriteId);
 		void playerAcceptTrade(uint32_t playerId);
-		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
+		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t index);
 		bool playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
 			bool ignoreCap = false, bool inBackpacks = false);
 		bool playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,

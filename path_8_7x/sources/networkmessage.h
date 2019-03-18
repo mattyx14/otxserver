@@ -41,6 +41,7 @@ class NetworkMessage
 		{
 			m_size = 0;
 			m_position = size;
+			m_overrun = false;
 		}
 
 		// socket functions
@@ -51,6 +52,12 @@ class NetworkMessage
 		template<typename T>
 		T get(bool peek = false)
 		{
+			if(sizeof(T) >= (unsigned)(NETWORK_MAX_SIZE - m_position))
+			{
+				m_overrun = true;
+				return 0;
+			}
+
 			T value = *(T*)(m_buffer + m_position);
 			if(peek)
 				return value;
@@ -81,7 +88,7 @@ class NetworkMessage
 		}
 
 		void putString(const std::string& value, bool addSize = true) {putString(value.c_str(), value.length(), addSize);}
-		void putString(const char* value, int length, bool addSize = true);
+		void putString(const char* value, uint32_t length, bool addSize = true);
 
 		void putPadding(uint32_t amount);
 
@@ -93,6 +100,7 @@ class NetworkMessage
 		void putItemId(uint16_t itemId);
 
 		int32_t decodeHeader();
+		bool overrun() const {return m_overrun;}
 
 		// message propeties functions
 		uint16_t size() const {return m_size;}
@@ -101,8 +109,8 @@ class NetworkMessage
 		uint16_t position() const {return m_position;}
 		void setPosition(uint16_t position) {m_position = position;}
 
-		char* buffer() {return (char*)&m_buffer[0];}
-		char* bodyBuffer()
+		char* buffer(uint16_t position = 0) {return (char*)&m_buffer[position];}
+		char* writeBuffer()
 		{
 			m_position = NETWORK_HEADER_SIZE;
 			return (char*)&m_buffer[NETWORK_HEADER_SIZE];
@@ -115,7 +123,7 @@ class NetworkMessage
 #endif
 	protected:
 		// used to check available space while writing
-		inline bool hasSpace(int32_t size) const {return (size + m_position < NETWORK_MAX_SIZE - 16);}
+		inline bool hasSpace(int32_t size) const {return (size + m_position < NETWORK_BODY_SIZE);}
 
 		// message propeties
 		uint16_t m_size;
@@ -123,6 +131,9 @@ class NetworkMessage
 
 		// message data
 		uint8_t m_buffer[NETWORK_MAX_SIZE];
+
+		// security
+		bool m_overrun;
 };
 
 typedef boost::shared_ptr<NetworkMessage> NetworkMessage_ptr;

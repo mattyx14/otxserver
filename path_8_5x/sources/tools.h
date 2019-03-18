@@ -172,7 +172,7 @@ std::string getReason(int32_t reasonId);
 std::string getAction(ViolationAction_t actionId, bool ipBanishment);
 std::string getWeaponName(WeaponType_t weaponType);
 
-bool fileExists(const char* filename);
+bool fileExists(const std::string& filename);
 std::string getFilePath(FileType_t type, std::string name = "");
 
 extern uint8_t serverFluidToClient(uint8_t serverFluid);

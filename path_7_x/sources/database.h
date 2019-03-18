@@ -18,7 +18,6 @@
 #ifndef __DATABASE__
 #define __DATABASE__
 #include "otsystem.h"
-
 #include "enums.h"
 #include <sstream>
 
@@ -94,7 +93,11 @@ class _Database
 		* @param DBParam_t parameter to get
 		* @return suitable for given parameter
 		*/
-		DATABASE_VIRTUAL bool multiLine() const {return false;}
+		DATABASE_VIRTUAL bool isMultiLine() {return false;}
+
+		/**
+		*/
+		DATABASE_VIRTUAL bool connect() {return false;}
 
 		/**
 		* Database connected.
@@ -180,6 +183,9 @@ class _Database
 		DATABASE_VIRTUAL std::string getStringComparer() {return "= ";}
 		DATABASE_VIRTUAL std::string getUpdateLimiter() {return " LIMIT 1;";}
 
+		DATABASE_VIRTUAL void lock() {m_lock.lock();}
+		DATABASE_VIRTUAL void unlock() {m_lock.unlock();}
+
 		/**
 		* Get database engine
 		*
@@ -195,6 +201,8 @@ class _Database
 
 		bool m_connected;
 		int64_t m_use;
+
+		boost::recursive_mutex m_lock;
 
 	private:
 		static Database* m_instance;
@@ -242,22 +250,6 @@ class _DBResult
 };
 
 /**
- * Thread locking hack.
- *
- * By using this class for your queries you lock and unlock database for threads.
-*/
-class DBQuery : public std::stringstream
-{
-	friend class _Database;
-	public:
-		DBQuery() {databaseLock.lock();}
-		~DBQuery() {databaseLock.unlock();}
-
-	protected:
-		static boost::recursive_mutex databaseLock;
-};
-
-/**
  * INSERT statement.
  *
  * Gives possibility to optimize multiple INSERTs on databases that support multiline INSERTs.
@@ -270,7 +262,7 @@ class DBInsert
 		*
 		* @param Database* database wrapper
 		*/
-		DBInsert(Database* db): m_db(db), m_rows(0) {}
+		DBInsert(Database* db);
 		~DBInsert() {}
 
 		/**
@@ -291,7 +283,7 @@ class DBInsert
 		/**
 		* Allows to use addRow() with stringstream as parameter.
 		*/
-		bool addRow(std::stringstream& row);
+		bool addRow(std::ostringstream& row);
 
 		/**
 		* Executes current buffer.
@@ -300,6 +292,7 @@ class DBInsert
 
 	protected:
 		Database* m_db;
+		bool m_multiLine;
 
 		uint32_t m_rows;
 		std::string m_query, m_buf;
@@ -329,13 +322,17 @@ class DBTransaction
 
 		~DBTransaction()
 		{
-			if(m_state == STATE_READY)
-				m_db->rollback();
+			if(m_state != STATE_READY)
+				return;
+
+			m_db->rollback();
+			m_db->unlock();
 		}
 
 		bool begin()
 		{
 			m_state = STATE_READY;
+			m_db->lock();
 			return m_db->beginTransaction();
 		}
 
@@ -345,7 +342,9 @@ class DBTransaction
 				return false;
 
 			m_state = STATE_DONE;
-			return m_db->commit();
+			bool result = m_db->commit();
+			m_db->unlock();
+			return result;
 		}
 
 	private:

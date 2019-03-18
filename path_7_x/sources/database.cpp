@@ -33,7 +33,6 @@
 extern ConfigManager g_config;
 #endif
 
-boost::recursive_mutex DBQuery::databaseLock;
 Database* _Database::m_instance = NULL;
 
 Database* _Database::getInstance()
@@ -75,6 +74,14 @@ DBResult* _Database::verifyResult(DBResult* result)
 	return NULL;
 }
 
+DBInsert::DBInsert(Database* db)
+{
+	m_db = db;
+	m_rows = 0;
+	// checks if current database engine supports multiline INSERTs
+	m_multiLine = m_db->isMultiLine();
+}
+
 void DBInsert::setQuery(std::string query)
 {
 	m_query = query;
@@ -84,13 +91,15 @@ void DBInsert::setQuery(std::string query)
 
 bool DBInsert::addRow(std::string row)
 {
-	if(!m_db->multiLine())
+	if(!m_multiLine) // executes INSERT for current row
 		return m_db->query(m_query + "(" + row + ")");
 
-	++m_rows;
-	if(m_buf.empty())
+	m_rows++;
+	int32_t size = m_buf.length();
+	// adds new row to buffer
+	if(!size)
 		m_buf = "(" + row + ")";
-	else if(m_buf.length() > 8192)
+	else if(size > 8192)
 	{
 		if(!execute())
 			return false;
@@ -103,7 +112,7 @@ bool DBInsert::addRow(std::string row)
 	return true;
 }
 
-bool DBInsert::addRow(std::stringstream& row)
+bool DBInsert::addRow(std::ostringstream& row)
 {
 	bool ret = addRow(row.str());
 	row.str("");
@@ -112,11 +121,12 @@ bool DBInsert::addRow(std::stringstream& row)
 
 bool DBInsert::execute()
 {
-	if(!m_db->multiLine() || m_buf.empty() || !m_rows)
+	if(!m_multiLine || m_buf.length() < 1 || !m_rows) // INSERTs were executed on-fly or there's no rows to execute
 		return true;
 
-	m_rows = 0;
+	// executes buffer
 	bool ret = m_db->query(m_query + m_buf);
+	m_rows = 0;
 	m_buf = "";
 	return ret;
 }

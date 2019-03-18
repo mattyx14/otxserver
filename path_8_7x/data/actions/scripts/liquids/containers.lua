@@ -46,7 +46,11 @@ setConditionParam(burn, CONDITION_PARAM_TICKINTERVAL, 10000) -- Delay between da
 setConditionParam(burn, CONDITION_PARAM_FORCEUPDATE, true) -- Re-update condition when adding it(ie. min/max value)
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
-	if(isPlayer(itemEx.uid)) then
+	if(doComparePositions(getCreaturePosition(cid), toPosition))then
+		itemEx.uid = cid
+	end
+
+	if(itemEx.uid == cid) then
 		if(item.type == TYPE_EMPTY) then
 			doPlayerSendCancel(cid, "It is empty.")
 			return true
@@ -66,31 +70,26 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 
 			doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER)
 			doSendMagicEffect(toPosition, CONST_ME_MAGIC_BLUE)
-		elseif(itemEx.uid == cid) then
-			if(isInArray(alcoholDrinks, item.type)) then
-				if(not doTargetCombatCondition(0, cid, drunk, CONST_ME_NONE)) then
-					return false
-				end
-
-				doCreatureSay(cid, "Aaah...", TALKTYPE_MONSTER)
-			elseif(isInArray(poisonDrinks, item.type)) then
-				if(not doTargetCombatCondition(0, cid, poison, CONST_ME_NONE)) then
-					return false
-				end
-
-				doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER)
-			elseif(item.type == TYPE_LAVA) then
-				if(not doTargetCombatCondition(0, cid, burn, CONST_ME_NONE)) then
-					return false
-				end
-
-				doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER)
-			else
-				doCreatureSay(cid, "Gulp.", TALKTYPE_MONSTER)
+		elseif(isInArray(alcoholDrinks, item.type)) then
+			if(not doTargetCombatCondition(0, cid, drunk, CONST_ME_NONE)) then
+				return false
 			end
+
+			doCreatureSay(cid, "Aaah...", TALKTYPE_MONSTER)
+		elseif(isInArray(poisonDrinks, item.type)) then
+			if(not doTargetCombatCondition(0, cid, poison, CONST_ME_NONE)) then
+				return false
+			end
+
+			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER)
+		elseif(item.type == TYPE_LAVA) then
+			if(not doTargetCombatCondition(0, cid, burn, CONST_ME_NONE)) then
+				return false
+			end
+
+			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER)
 		else
-			doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
-			return true
+			doCreatureSay(cid, "Gulp.", TALKTYPE_MONSTER)
 		end
 
 		doChangeTypeItem(item.uid, TYPE_EMPTY)
@@ -134,7 +133,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		local tmp = oilLamps[itemEx.itemid]
 		if(item.type == TYPE_OIL and tmp ~= nil) then
 			doTransformItem(itemEx.uid, tmp)
-			doChangeTypeItem(item.uid, TYPE_NONE)
+			doChangeTypeItem(item.uid, TYPE_EMPTY)
 			return true
 		end
 
@@ -149,7 +148,18 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		end
 	end
 
-	doDecayItem(doCreateItem(POOL, item.type, toPosition))
+	if(item.type == TYPE_EMPTY) then
+		doPlayerSendCancel(cid, "It is empty.")
+		return true
+	end
+
+	if(toPosition.x == CONTAINER_POSITION) then
+		toPosition = getThingPos(cid)
+	end
+
+	local splash = doCreateItem(2016, item.type, toPosition)
+	doDecayItem(splash)
+
 	doChangeTypeItem(item.uid, TYPE_EMPTY)
 	return true
 end

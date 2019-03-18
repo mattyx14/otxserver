@@ -64,13 +64,13 @@ void PrivateChatChannel::invitePlayer(Player* player, Player* invitePlayer)
 	if(player == invitePlayer || !addInvited(invitePlayer))
 		return;
 
-	std::stringstream msg;
+	std::ostringstream msg;
 	msg << player->getName() << " invites you to " << (player->getSex(false) ? "his" : "her") << " private chat channel.";
-	invitePlayer->sendTextMessage(MSG_INFO_DESCR, msg.str().c_str());
+	invitePlayer->sendTextMessage(MSG_INFO_DESCR, msg.str());
 
 	msg.str("");
 	msg << invitePlayer->getName() << " has been invited.";
-	player->sendTextMessage(MSG_INFO_DESCR, msg.str().c_str());
+	player->sendTextMessage(MSG_INFO_DESCR, msg.str());
 }
 
 void PrivateChatChannel::excludePlayer(Player* player, Player* excludePlayer)
@@ -80,7 +80,7 @@ void PrivateChatChannel::excludePlayer(Player* player, Player* excludePlayer)
 
 	std::string msg = excludePlayer->getName();
 	msg += " has been excluded.";
-	player->sendTextMessage(MSG_INFO_DESCR, msg.c_str());
+	player->sendTextMessage(MSG_INFO_DESCR, msg);
 
 	removeUser(excludePlayer);
 	excludePlayer->sendClosePrivate(getId());
@@ -552,7 +552,7 @@ bool Chat::talk(Player* player, MessageClasses type, const std::string& text, ui
 
 		if(channel->getConditionId() >= 0 && player->hasCondition(CONDITION_MUTED, channel->getConditionId()))
 		{
-			player->sendCancel(channel->getConditionMessage().c_str());
+			player->sendCancel(channel->getConditionMessage());
 			return true;
 		}
 	}

@@ -176,7 +176,8 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 
 	setItemCount(1);
 	setDefaultDuration();
-
+	itemUid = -1;
+	
 	const ItemType& it = items[type];
 	if(it.isFluidContainer() || it.isSplash())
 		setFluidType(amount);
@@ -374,7 +375,8 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			uint16_t uid;
 			if(!propStream.getShort(uid))
 				return ATTR_READ_ERROR;
-
+			
+			itemUid = uid;
 			setUniqueId(uid);
 			break;
 		}
@@ -826,7 +828,7 @@ double Item::getWeight() const
 std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const Item* item/* = NULL*/,
 	int32_t subType/* = -1*/, bool addArticle/* = true*/)
 {
-	std::stringstream s;
+	std::ostringstream s;
 	s << getNameDescription(it, item, subType, addArticle);
 	if(item)
 		subType = item->getSubType();
@@ -1616,7 +1618,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		time_t now = time(NULL);
 		tm* ts = localtime(&now);
 
-		std::stringstream ss;
+		std::ostringstream ss;
 		ss << ts->tm_sec;
 		replaceString(str, "|SECONDS|", ss.str());
 
@@ -1664,7 +1666,7 @@ std::string Item::getNameDescription(const ItemType& it, const Item* item/* = NU
 	if(item)
 		subType = item->getSubType();
 
-	std::stringstream s;
+	std::ostringstream s;
 	if(it.loaded || (item && !item->getName().empty()))
 	{
 		if(subType > 1 && it.stackable && it.showCount)
@@ -1695,7 +1697,7 @@ std::string Item::getWeightDescription(double weight, bool stackable, uint32_t c
 	if(weight <= 0)
 		return "";
 
-	std::stringstream s;
+	std::ostringstream s;
 	if(stackable && count > 1)
 		s << "They weigh " << std::fixed << std::setprecision(2) << weight << " oz.";
 	else
@@ -1743,14 +1745,20 @@ void Item::setUniqueId(int32_t uid)
 
 bool Item::canDecay()
 {
-	if(isRemoved())
+	if (isRemoved()) {
 		return false;
-
-	if(loadedFromMap && (getUniqueId() || (getActionId() && getContainer())))
-		return false;
+	}
 
 	const ItemType& it = Item::items[id];
-	return it.decayTo >= 0 && it.decayTime;
+	if (it.decayTo < 0 || it.decayTime == 0) {
+		return false;
+	}
+
+	if (itemUid != -1) {
+		return false;
+	}
+
+	return true;
 }
 
 void Item::getLight(LightInfo& lightInfo)
