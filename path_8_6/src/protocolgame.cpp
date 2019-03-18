@@ -488,57 +488,38 @@ void ProtocolGame::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 		for (auto it = items->getBeginTopItem(), end = items->getEndTopItem(); it != end; ++it) {
 			msg.addItem(*it);
 
-			if (++count == 10) {
+			count++;
+			if (count == 9 && tile->getPosition() == player->getPosition()) {
+				break;
+			} else if (count == 10) {
 				return;
 			}
 		}
 	}
 
-	if (!loggedIn && tile->getPosition() == player->getPosition()) {
-		bool playerSpawned = false;
-		const CreatureVector *creatures = tile->getCreatures();
-		if (creatures) {
-			for (const Creature *creature : boost::adaptors::reverse(*creatures)) {
-				if (!player->canSeeCreature(creature)) {
-					continue;
-				}
-
-				if (creature == player) {
-					playerSpawned = true;
-				}
-
-				bool known;
-				uint32_t removedKnown;
-				checkCreatureAsKnown(creature->getID(), known, removedKnown);
-				AddCreature(msg, creature, known, removedKnown);
-
-				if (count == 8 && playerSpawned == false) { // player still not spawned and we need to send him too
-					checkCreatureAsKnown(player->getID(), known, removedKnown);
-					AddCreature(msg, player, known, removedKnown);
-					++count;
-				}
-
-				if (++count == 10) {
-					return;
-				}
+	const CreatureVector* creatures = tile->getCreatures();
+	if (creatures) {
+		bool playerAdded = false;
+		for (const Creature* creature : boost::adaptors::reverse(*creatures)) {
+			if (!player->canSeeCreature(creature)) {
+				continue;
 			}
-		}
-	} else {
-		const CreatureVector *creatures = tile->getCreatures();
-		if (creatures) {
-			for (const Creature *creature : boost::adaptors::reverse(*creatures)) {
-				if (!player->canSeeCreature(creature)) {
-					continue;
-				}
 
-				bool known;
-				uint32_t removedKnown;
-				checkCreatureAsKnown(creature->getID(), known, removedKnown);
-				AddCreature(msg, creature, known, removedKnown);
+			if (tile->getPosition() == player->getPosition() && count == 9 && !playerAdded) {
+				creature = player;
+			}
 
-				if (++count == 10) {
-					return;
-				}
+			if (creature->getID() == player->getID()) {
+				playerAdded = true;
+			}
+
+			bool known;
+			uint32_t removedKnown;
+			checkCreatureAsKnown(creature->getID(), known, removedKnown);
+			AddCreature(msg, creature, known, removedKnown);
+
+			if (++count == 10) {
+				return;
 			}
 		}
 	}

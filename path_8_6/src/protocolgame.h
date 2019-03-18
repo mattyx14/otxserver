@@ -285,7 +285,6 @@ class ProtocolGame final : public Protocol
 
 		bool debugAssertSent = false;
 		bool acceptPackets = false;
-		bool loggedIn = false;
 };
 
 #endif
