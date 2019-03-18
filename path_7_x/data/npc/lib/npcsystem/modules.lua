@@ -78,12 +78,17 @@ if(Modules == nil) then
 				[TAG_TIME] = getTibiaTime(),
 				[TAG_TRAVELCOST] = costMessage,
 			}
-		msgout = npcHandler:parseMessage(parameters.text or parameters.message, parseInfo)
-		npcHandler:say(msgout)
-		if(parameters.reset == true) then
-			npcHandler:resetNpc()
-		elseif(parameters.moveup ~= nil and type(parameters.moveup) == 'number') then
-			npcHandler.keywordHandler:moveUp(parameters.moveup)
+		if parameters.text then
+			npcHandler:say(npcHandler:parseMessage(parameters.text, parseInfo), cid, parameters.publicize and true)
+		end
+
+		if parameters.ungreet then
+			npcHandler:resetNpc(cid)
+			npcHandler:releaseFocus(cid)
+		elseif parameters.reset then
+			npcHandler:resetNpc(cid)
+		elseif parameters.moveup ~= nil then
+			npcHandler.keywordHandler:moveUp(cid, parameters.moveup)
 		end
 
 		return true
