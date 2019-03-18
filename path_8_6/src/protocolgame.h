@@ -43,6 +43,7 @@ struct TextMessage
 	MessageClasses type = MESSAGE_STATUS_DEFAULT;
 	std::string text;
 	Position position;
+	uint16_t channelId;
 	struct {
 		int32_t value = 0;
 		TextColor_t color;
@@ -65,7 +66,7 @@ class ProtocolGame final : public Protocol
 
 		explicit ProtocolGame(Connection_ptr connection) : Protocol(connection) {}
 
-		void login(const std::string& name, uint32_t accnumber, OperatingSystem_t operatingSystem);
+		void login(const std::string& name, uint32_t accountId, OperatingSystem_t operatingSystem);
 		void logout(bool displayEffect, bool forced);
 
 		uint16_t getVersion() const {
@@ -80,7 +81,7 @@ class ProtocolGame final : public Protocol
 		void disconnectClient(const std::string& message) const;
 		void writeToOutputBuffer(const NetworkMessage& msg);
 
-		void release() final;
+		void release() override;
 
 		void checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown);
 
@@ -89,9 +90,9 @@ class ProtocolGame final : public Protocol
 		bool canSee(const Position& pos) const;
 
 		// we have all the parse methods
-		void parsePacket(NetworkMessage& msg) final;
-		void onRecvFirstMessage(NetworkMessage& msg) final;
-		void onConnect() final;
+		void parsePacket(NetworkMessage& msg) override;
+		void onRecvFirstMessage(NetworkMessage& msg) override;
+		void onConnect() override;
 
 		//Parse methods
 		void parseAutoWalk(NetworkMessage& msg);
@@ -105,6 +106,7 @@ class ProtocolGame final : public Protocol
 
 		void parseBugReport(NetworkMessage& msg);
 		void parseDebugAssert(NetworkMessage& msg);
+		void parseRuleViolationReport(NetworkMessage& msg);
 
 		void parseThrow(NetworkMessage& msg);
 		void parseUseItemEx(NetworkMessage& msg);
@@ -162,7 +164,7 @@ class ProtocolGame final : public Protocol
 		void sendCreatureHealth(const Creature* creature);
 		void sendSkills();
 		void sendPing();
-		void sendCreatureTurn(const Creature* creature, uint32_t stackpos);
+		void sendCreatureTurn(const Creature* creature, uint32_t stackPos);
 		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos = nullptr);
 
 		void sendQuestLog();
@@ -171,7 +173,6 @@ class ProtocolGame final : public Protocol
 		void sendCancelWalk();
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
 		void sendCancelTarget();
-		void sendCreatureVisible(const Creature* creature, bool visible);
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
 		void sendTextMessage(const TextMessage& message);
@@ -184,7 +185,7 @@ class ProtocolGame final : public Protocol
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
 
-		void sendShop(Npc* npc, const ShopInfoList& itemList);
+		void sendShop(const ShopInfoList& itemList);
 		void sendCloseShop();
 		void sendSaleItemList(const std::list<ShopInfo>& shop);
 		void sendTradeItemRequest(const std::string& traderName, const Item* item, bool ack);
@@ -195,13 +196,15 @@ class ProtocolGame final : public Protocol
 		void sendHouseWindow(uint32_t windowTextId, const std::string& text);
 		void sendOutfitWindow();
 
-		void sendUpdatedVIPStatus(uint32_t guid, bool online);
-		void sendVIP(uint32_t guid, const std::string& name, bool isOnline);
+		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
+		void sendVIP(uint32_t guid, const std::string& name, VipStatus_t status);
 
 		void sendFightModes();
 
+		void sendAnimatedText(const std::string& message, const Position& pos, TextColor_t color);;
+
 		void sendCreatureLight(const Creature* creature);
-		void sendWorldLight(const LightInfo& lightInfo);
+		void sendWorldLight(LightInfo lightInfo);
 
 		void sendCreatureSquare(const Creature* creature, SquareColor_t color);
 
@@ -228,9 +231,6 @@ class ProtocolGame final : public Protocol
 		//inventory
 		void sendInventoryItem(slots_t slot, const Item* item);
 
-		//messages
-		void sendAnimatedText(const std::string& message, const Position& pos, TextColor_t color);
-
 		// translate a tile to clientreadable format
 		void GetTileDescription(const Tile* tile, NetworkMessage& msg);
 
@@ -246,7 +246,7 @@ class ProtocolGame final : public Protocol
 		void AddPlayerStats(NetworkMessage& msg);
 		void AddOutfit(NetworkMessage& msg, const Outfit_t& outfit);
 		void AddPlayerSkills(NetworkMessage& msg);
-		void AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo);
+		void AddWorldLight(NetworkMessage& msg, LightInfo lightInfo);
 		void AddCreatureLight(NetworkMessage& msg, const Creature* creature);
 
 		//tiles
@@ -254,14 +254,6 @@ class ProtocolGame final : public Protocol
 
 		void MoveUpCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos, const Position& oldPos);
 		void MoveDownCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos, const Position& oldPos);
-
-		//container
-		void AddContainerItem(NetworkMessage& msg, uint8_t cid, const Item* item);
-		void UpdateContainerItem(NetworkMessage& msg, uint8_t cid, uint16_t slot, const Item* item);
-		void RemoveContainerItem(NetworkMessage& msg, uint8_t cid, uint16_t slot);
-
-		//inventory
-		void SetInventoryItem(NetworkMessage& msg, slots_t slot, const Item* item);
 
 		//shop
 		void AddShopItem(NetworkMessage& msg, const ShopInfo& item);

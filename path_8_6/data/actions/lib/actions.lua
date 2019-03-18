@@ -7,7 +7,7 @@ local holeId = {
 
 local holes = {468, 481, 483, 7932}
 
-local pickHoleIds = {354, 355}
+local groundIds = {354, 355}
 
 local others = {7932}
 
@@ -38,7 +38,7 @@ function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	if toPosition.x == CONTAINER_POSITION then
-		player:sendCancelMessage(Game.getReturnMessage(RETURNVALUE_NOTPOSSIBLE))
+		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return true
 	end
 
@@ -49,7 +49,7 @@ function destroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 
 	if math.random(7) == 1 then
 		local item = Game.createItem(destroyId, 1, toPosition)
-		if item ~= nil then
+		if item then
 			item:decay()
 		end
 
@@ -77,9 +77,8 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	if table.contains(ropeSpots, tile:getGround():getId()) or tile:getItemById(14435) then
-		tile = Tile(toPosition:moveUpstairs())
-		if tile:hasFlag(TILESTATE_PROTECTIONZONE) and player:isPzLocked() then
-			player:sendTextMessage(MESSAGE_STATUS_SMALL, Game.getReturnMessage(RETURNVALUE_PLAYERISPZLOCKED))
+		if Tile(toPosition:moveUpstairs()):hasFlag(TILESTATE_PROTECTIONZONE) and player:isPzLocked() then
+			player:sendCancelMessage(RETURNVALUE_PLAYERISPZLOCKED)
 			return true
 		end
 		player:teleportTo(toPosition, false)
@@ -90,8 +89,7 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 		if tile then
 			local thing = tile:getTopVisibleThing()
 			if thing:isPlayer() then
-				tile = Tile(toPosition:moveUpstairs())
-				if tile:hasFlag(TILESTATE_PROTECTIONZONE) and thing:isPzLocked() then
+				if Tile(toPosition:moveUpstairs()):hasFlag(TILESTATE_PROTECTIONZONE) and thing:isPzLocked() then
 					return false
 				end
 				return thing:teleportTo(toPosition, false)
@@ -158,6 +156,22 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
+	if target.itemid == 11227 then -- shiny stone refining
+		local chance = math.random(1, 100)
+		if chance == 1 then
+			player:addItem(ITEM_CRYSTAL_COIN) -- 1% chance of getting crystal coin
+		elseif chance <= 6 then
+			player:addItem(ITEM_GOLD_COIN) -- 5% chance of getting gold coin
+		elseif chance <= 51 then
+			player:addItem(ITEM_PLATINUM_COIN) -- 45% chance of getting platinum coin
+		else
+			player:addItem(2145) -- 49% chance of getting small diamond
+		end
+		target:getPosition():sendMagicEffect(CONST_ME_BLOCKHIT)
+		target:remove(1)
+		return true
+	end
+
 	local tile = Tile(toPosition)
 	if not tile then
 		return false
@@ -168,7 +182,7 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	if (ground.uid > 65535 or ground.actionid == 0) and not table.contains(pickHoleIds, ground.itemid) then
+	if (ground.uid > 65535 or ground.actionid == 0) and not table.contains(groundIds, ground.itemid) then
 		return false
 	end
 

@@ -65,7 +65,7 @@ class OutputMessage : public NetworkMessage
 			info.position += msgLen;
 		}
 
-	protected:
+	private:
 		template <typename T>
 		void add_header(T add) {
 			assert(outputBufferStart >= sizeof(T));
@@ -75,7 +75,6 @@ class OutputMessage : public NetworkMessage
 			info.length += sizeof(T);
 		}
 
-		bool isBroadcastMesssage {false};
 		MsgSize_t outputBufferStart = INITIAL_BUFFER_POSITION;
 };
 

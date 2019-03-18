@@ -44,7 +44,7 @@ Monster* Monster::createMonster(const std::string& name)
 
 Monster::Monster(MonsterType* mType) :
 	Creature(),
-	strDescription(asLowerCaseString(mType->nameDescription)),
+	strDescription(mType->nameDescription),
 	mType(mType)
 {
 	defaultOutfit = mType->info.outfit;
@@ -94,9 +94,9 @@ bool Monster::canWalkOnFieldType(CombatType_t combatType) const
 		case COMBAT_FIREDAMAGE:
 			return mType->info.canWalkOnFire;
 		case COMBAT_EARTHDAMAGE:
-				return mType->info.canWalkOnPoison;
-			default:
-		return true;
+			return mType->info.canWalkOnPoison;
+		default:
+			return true;
 	}
 }
 
@@ -189,7 +189,7 @@ void Monster::onRemoveCreature(Creature* creature, bool isLogout)
 }
 
 void Monster::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-							 const Tile* oldTile, const Position& oldPos, bool teleport)
+                             const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
 
@@ -239,7 +239,7 @@ void Monster::onCreatureMove(Creature* creature, const Tile* newTile, const Posi
 		}
 
 		if (canSeeNewPos && isSummon() && getMaster() == creature) {
-			isMasterInRange = true; //Follow master again
+			isMasterInRange = true;    //Follow master again
 		}
 
 		updateIdleStatus();
@@ -451,7 +451,7 @@ bool Monster::isOpponent(const Creature* creature) const
 		}
 	} else {
 		if ((creature->getPlayer() && !creature->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) ||
-				(creature->getMaster() && creature->getMaster()->getPlayer())) {
+		        (creature->getMaster() && creature->getMaster()->getPlayer())) {
 			return true;
 		}
 	}
@@ -584,7 +584,7 @@ void Monster::onFollowCreatureComplete(const Creature* creature)
 }
 
 BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-							  bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */)
+                              bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */)
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor);
 
@@ -611,7 +611,7 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 bool Monster::isTarget(const Creature* creature) const
 {
 	if (creature->isRemoved() || !creature->isAttackable() ||
-			creature->getZone() == ZONE_PROTECTION || !canSeeCreature(creature)) {
+	        creature->getZone() == ZONE_PROTECTION || !canSeeCreature(creature)) {
 		return false;
 	}
 
@@ -834,7 +834,7 @@ bool Monster::canUseAttack(const Position& pos, const Creature* target) const
 }
 
 bool Monster::canUseSpell(const Position& pos, const Position& targetPos,
-						  const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks)
+                          const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks)
 {
 	inRange = true;
 
@@ -1043,7 +1043,7 @@ void Monster::pushItems(Tile* tile)
 		for (int32_t i = downItemSize; --i >= 0;) {
 			Item* item = items->at(i);
 			if (item && item->hasProperty(CONST_PROP_MOVEABLE) && (item->hasProperty(CONST_PROP_BLOCKPATH)
-					|| item->hasProperty(CONST_PROP_BLOCKSOLID))) {
+			        || item->hasProperty(CONST_PROP_BLOCKSOLID))) {
 				if (moveCount < 20 && Monster::pushItem(item)) {
 					++moveCount;
 				} else if (g_game.internalRemoveItem(item) == RETURNVALUE_NOERROR) {
@@ -1120,12 +1120,12 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 	bool result = false;
 	if ((!followCreature || !hasFollowPath) && (!isSummon() || !isMasterInRange)) {
 		if (getWalkDelay() <= 0) {
-			randomSteping = true;
+			randomStepping = true;
 			//choose a random direction
 			result = getRandomStep(getPosition(), direction);
 		}
 	} else if ((isSummon() && isMasterInRange) || followCreature) {
-		randomSteping = false;
+		randomStepping = false;
 		result = Creature::getNextStep(direction, flags);
 		if (result) {
 			flags |= FLAG_PATHFINDING;
@@ -1181,7 +1181,7 @@ bool Monster::getRandomStep(const Position& creaturePos, Direction& direction) c
 }
 
 bool Monster::getDanceStep(const Position& creaturePos, Direction& direction,
-						   bool keepAttack /*= true*/, bool keepDistance /*= true*/)
+                           bool keepAttack /*= true*/, bool keepDistance /*= true*/)
 {
 	bool canDoAttackNow = canUseAttack(creaturePos, attackedCreature);
 
@@ -1926,6 +1926,12 @@ void Monster::setNormalCreatureLight()
 void Monster::drainHealth(Creature* attacker, int32_t damage)
 {
 	Creature::drainHealth(attacker, damage);
+
+	if (damage > 0 && randomStepping) {
+		ignoreFieldDamage = true;
+		updateMapCache();
+	}
+
 	if (isInvisible()) {
 		removeCondition(CONDITION_INVISIBLE);
 	}
@@ -1950,63 +1956,6 @@ bool Monster::challengeCreature(Creature* creature)
 		targetChangeTicks = 0;
 	}
 	return result;
-}
-
-bool Monster::convinceCreature(Creature* creature)
-{
-	Player* player = creature->getPlayer();
-	if (player && !player->hasFlag(PlayerFlag_CanConvinceAll)) {
-		if (!mType->info.isConvinceable) {
-			return false;
-		}
-	}
-
-	if (isSummon()) {
-		if (getMaster()->getPlayer()) {
-			return false;
-		} else if (getMaster() == creature) {
-			return false;
-		}
-
-	}
-	setMaster(creature);
-	setDropLoot(false);
-	setSkillLoss(false);
-	setFollowCreature(nullptr);
-	setAttackedCreature(nullptr);
-
-	//destroy summons
-	for (Creature* summon : summons) {
-		summon->changeHealth(-summon->getHealth());
-		summon->removeMaster();
-	}
-	summons.clear();
-
-	isMasterInRange = true;
-	updateTargetList();
-	updateIdleStatus();
-
-	//Notify surrounding about the change
-	SpectatorHashSet spectators;
-	g_game.map.getSpectators(spectators, getPosition(), true);
-	g_game.map.getSpectators(spectators, creature->getPosition(), true);
-	for (Creature* spectator : spectators) {
-		spectator->onCreatureConvinced(creature, this);
-	}
-
-	if (spawn) {
-		spawn->removeMonster(this);
-		spawn = nullptr;
-	}
-	return true;
-}
-
-void Monster::onCreatureConvinced(const Creature* convincer, const Creature* creature)
-{
-	if (convincer != this && (isFriend(creature) || isOpponent(creature))) {
-		updateTargetList();
-		updateIdleStatus();
-	}
 }
 
 void Monster::getPathSearchParams(const Creature* creature, FindPathParams& fpp) const

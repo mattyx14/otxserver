@@ -35,6 +35,10 @@ class Reward : public Container
 		Cylinder* getRealParent() const final {
 			return parent;
 		}
+
+	private:
+		uint32_t maxSize;
+		bool unlocked;
 };
 
 #endif

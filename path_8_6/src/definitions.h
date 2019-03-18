@@ -40,12 +40,7 @@ static constexpr auto CLIENT_VERSION_STR = "8.60";
 #define _USE_MATH_DEFINES
 #endif
 
-#include <cassert>
 #include <cmath>
-#include <cstdint>
-#include <string>
-#include <vector>
-#include <chrono>
 
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -66,7 +61,7 @@ static constexpr auto CLIENT_VERSION_STR = "8.60";
 #pragma warning(disable:4267) // 'var' : conversion from 'size_t' to 'type', possible loss of data
 #pragma warning(disable:4351) // new behavior: elements of array will be default initialized
 #pragma warning(disable:4458) // declaration hides class member
-#pragma warning(disable:4996)
+#pragma warning(disable:4996) //gethostbyname is deprecated
 #endif
 
 #define strcasecmp _stricmp
@@ -81,7 +76,5 @@ static constexpr auto CLIENT_VERSION_STR = "8.60";
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
-
-typedef std::vector<std::pair<uint32_t, uint32_t>> IPList;
 
 #endif

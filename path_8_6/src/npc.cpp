@@ -99,6 +99,7 @@ void Npc::reset()
 {
 	loaded = false;
 	walkTicks = 1500;
+	pushable = true;
 	floorChange = false;
 	attackable = false;
 	ignoreHeight = true;
@@ -150,6 +151,10 @@ bool Npc::loadFromXml()
 		baseSpeed = pugi::cast<uint32_t>(attr.value());
 	} else {
 		baseSpeed = 100;
+	}
+
+	if ((attr = npcNode.attribute("pushable"))) {
+		pushable = attr.as_bool();
 	}
 
 	if ((attr = npcNode.attribute("walkinterval"))) {
@@ -381,7 +386,7 @@ bool Npc::getNextStep(Direction& dir, uint32_t& flags)
 		return true;
 	}
 
-	if (walkTicks <= 0) {
+	if (walkTicks == 0) {
 		return false;
 	}
 
@@ -473,10 +478,10 @@ bool Npc::getRandomStep(Direction& dir) const
 	return true;
 }
 
-void Npc::doMoveTo(const Position& target)
+void Npc::doMoveTo(const Position& pos)
 {
 	std::forward_list<Direction> listDir;
-	if (getPathTo(target, listDir, 1, 1, true, true)) {
+	if (getPathTo(pos, listDir, 1, 1, true, true)) {
 		startAutoWalk(listDir);
 	}
 }
@@ -825,7 +830,7 @@ int NpcScriptInterface::luaOpenShopWindow(lua_State* L)
 
 	npc->addShopPlayer(player);
 	player->setShopOwner(npc, buyCallback, sellCallback);
-	player->openShopWindow(npc, items);
+	player->openShopWindow(items);
 
 	pushBoolean(L, true);
 	return 1;
@@ -1030,7 +1035,7 @@ int NpcScriptInterface::luaNpcOpenShopWindow(lua_State* L)
 	npc->addShopPlayer(player);
 
 	player->setShopOwner(npc, buyCallback, sellCallback);
-	player->openShopWindow(npc, items);
+	player->openShopWindow(items);
 
 	pushBoolean(L, true);
 	return 1;
@@ -1107,6 +1112,7 @@ void NpcEventsHandler::onCreatureAppear(Creature* creature)
 	//onCreatureAppear(creature)
 	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - NpcScript::onCreatureAppear] Call stack overflow" << std::endl;
+		return;
 	}
 
 	ScriptEnvironment* env = scriptInterface->getScriptEnv();
@@ -1193,7 +1199,7 @@ void NpcEventsHandler::onCreatureSay(Creature* creature, SpeakClasses type, cons
 	scriptInterface->callFunction(3);
 }
 
-void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t itemid,
+void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t itemId,
                               uint8_t count, uint8_t amount, bool ignore, bool inBackpacks)
 {
 	if (callback == -1) {
@@ -1214,7 +1220,7 @@ void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t 
 	LuaScriptInterface::pushCallback(L, callback);
 	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
-	lua_pushnumber(L, itemid);
+	lua_pushnumber(L, itemId);
 	lua_pushnumber(L, count);
 	lua_pushnumber(L, amount);
 	LuaScriptInterface::pushBoolean(L, ignore);

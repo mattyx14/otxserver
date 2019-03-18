@@ -30,19 +30,18 @@
 #include "ban.h"
 #include <iomanip>
 #include "game.h"
+#include "tools.h"
 
 extern ConfigManager g_config;
-extern IPList serverIPs;
 extern Game g_game;
+extern IPList serverIPs;
 
 void ProtocolLogin::disconnectClient(const std::string& message)
 {
 	auto output = OutputMessagePool::getOutputMessage();
-
 	output->addByte(0x0A);
 	output->addString(message);
 	send(output);
-
 	disconnect();
 }
 
@@ -107,17 +106,16 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	msg.skipBytes(2);
+	msg.skipBytes(2); // client OS
+
 	uint16_t version = msg.get<uint16_t>();
+	msg.skipBytes(12);
 	/*
 	 * Skipped bytes:
 	 * 4 bytes: protocolVersion
 	 * 12 bytes: dat, spr, pic signatures (4 bytes each)
 	 * 1 byte: 0
 	 */
-
-	msg.skipBytes(12);
-	// RSA_decrypt
 
 	if (version <= 760) {
 		std::ostringstream ss;
@@ -138,9 +136,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	key[3] = msg.get<uint32_t>();
 	enableXTEAEncryption();
 	setXTEAKey(key);
-
-	std::string accountName = msg.getString();
-	std::string password = msg.getString();
 
 	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
 		std::ostringstream ss;
@@ -176,13 +171,15 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
+	std::string accountName = msg.getString();
 	if (accountName.empty()) {
 		disconnectClient("Invalid account name.");
 		return;
 	}
 
-	if (IOBan::isIpBanned(connection->getIP(), banInfo)) {
-		disconnectClient("Too many connections attempts from your IP address, please try again later.");
+	std::string password = msg.getString();
+	if (password.empty()) {
+		disconnectClient("Invalid password.");
 		return;
 	}
 

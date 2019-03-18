@@ -41,6 +41,20 @@ function onLogin(player)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You have %d %s in your reward chest.", rewards, rewards > 1 and "rewards" or "reward"))
 	end
 
+	-- Promotion
+	local vocation = player:getVocation()
+	local promotion = vocation:getPromotion()
+	if player:isPremium() then
+		local value = player:getStorageValue(STORAGEVALUE_PROMOTION)
+		if not promotion and value ~= 1 then
+			player:setStorageValue(STORAGEVALUE_PROMOTION, 1)
+		elseif value == 1 then
+			player:setVocation(promotion)
+		end
+	elseif not promotion then
+		player:setVocation(vocation:getDemotion())
+	end
+
 	-- Update player id
 	local stats = player:inBossFight()
 	if stats then

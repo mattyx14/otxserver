@@ -86,7 +86,7 @@ bool IOMap::loadMap(Map* map, const std::string& fileName)
 	}
 
 	uint32_t headerVersion = root_header.version;
-	if (headerVersion <= 0) {
+	if (headerVersion == 0) {
 		//In otbm version 1 the count variable after splashes/fluidcontainers and stackables
 		//are saved as attributes instead, this solves alot of problems with items
 		//that is changed (stackable/charges/fluidcontainer/splash) during an update.
@@ -331,7 +331,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 						std::cout << "[Warning - IOMap::loadMap] Moveable item with ID: " << item->getID() << ", in house: " << house->getId() << ", at position [x: " << x << ", y: " << y << ", z: " << z << "]." << std::endl;
 						delete item;
 					} else {
-						if (item->getItemCount() <= 0) {
+						if (item->getItemCount() == 0) {
 							item->setItemCount(1);
 						}
 
@@ -394,7 +394,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 				std::cout << "[Warning - IOMap::loadMap] Moveable item with ID: " << item->getID() << ", in house: " << house->getId() << ", at position [x: " << x << ", y: " << y << ", z: " << z << "]." << std::endl;
 				delete item;
 			} else {
-				if (item->getItemCount() <= 0) {
+				if (item->getItemCount() == 0) {
 					item->setItemCount(1);
 				}
 

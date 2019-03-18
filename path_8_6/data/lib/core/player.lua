@@ -32,17 +32,21 @@ function Player.getDepotItems(self, depotId)
 	return self:getDepotChest(depotId, true):getItemHoldingCount()
 end
 
+function Player.hasFlag(self, flag)
+	return self:getGroup():hasFlag(flag)
+end
+
+local lossPercent = {
+	[0] = 100,
+	[1] = 70,
+	[2] = 45,
+	[3] = 25,
+	[4] = 10,
+	[5] = 0
+}
+
 function Player.getLossPercent(self)
 	local blessings = 0
-	local lossPercent = {
-		[0] = 100,
-		[1] = 70,
-		[2] = 45,
-		[3] = 25,
-		[4] = 10,
-		[5] = 0
-	}
-
 	for i = 1, 5 do
 		if self:hasBlessing(i) then
 			blessings = blessings + 1

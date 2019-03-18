@@ -456,9 +456,7 @@
 	<item id="1385" name="stairs">
 		<attribute key="floorchange" value="north" />
 	</item>
-	<item id="1386" article="a" name="ladder">
-		<attribute key="forceUse" value="true" />
-	</item>
+	<item id="1386" article="a" name="ladder" />
 	<item id="1387" article="a" name="magic forcefield">
 		<attribute key="description" value="You can see the other side through it." />
 		<attribute key="type" value="teleport" />
@@ -2187,8 +2185,8 @@
 		<attribute key="slotType" value="ring" />
 		<attribute key="charges" value="20" />
 		<attribute key="showcharges" value="1" />
-		<attribute key="absorbPercentPhysical" value="20" />
-		<attribute key="absorbPercentMagic" value="20" />
+		<attribute key="absorbPercentPhysical" value="100" />
+		<attribute key="absorbPercentMagic" value="100" />
 		<attribute key="showattributes" value="1" />
 	</item>
 	<item id="2165" article="a" name="stealth ring">
@@ -4323,7 +4321,7 @@
 	</item>
 	<item fromid="2589" toid="2592" article="a" name="locker">
 		<attribute key="type" value="depot" />
-		<attribute key="containerSize" value="2" />
+		<attribute key="containerSize" value="1" />
 	</item>
 	<item id="2593" article="a" name="mailbox">
 		<attribute key="description" value="Royal Mail." />
@@ -6883,9 +6881,7 @@
 	<item fromid="3648" toid="3656" name="debris" />
 	<item fromid="3657" toid="3670" article="a" name="stone" />
 	<item fromid="3671" toid="3677" article="a" name="painted stone" />
-	<item id="3678" article="a" name="ladder">
-		<attribute key="forceUse" value="true" />
-	</item>
+	<item id="3678" article="a" name="ladder" />
 	<item id="3679" article="a" name="ramp">
 		<attribute key="floorchange" value="east" />
 	</item>
@@ -8883,9 +8879,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	<item id="5543" article="a" name="rope-ladder">
-		<attribute key="forceUse" value="true" />
-	</item>
+	<item id="5543" article="a" name="rope-ladder" />
 	<item id="5544" article="a" name="cart" />
 	<item id="5545" article="a" name="trapdoor">
 		<attribute key="floorchange" value="down" />
@@ -15398,9 +15392,7 @@
 	</item>
 	<item id="8597" name="wooden floor" />
 	<item id="8598" name="stone floor" />
-	<item id="8599" article="a" name="ladder">
-		<attribute key="forceUse" value="true" />
-	</item>
+	<item id="8599" article="a" name="ladder" />
 	<item id="8600" article="a" name="branch">
 		<attribute key="weight" value="100000" />
 		<attribute key="description" value="Push it back to Zirella by holding the left mousebutton down on it and pushing it over the grass." />
@@ -17839,9 +17831,7 @@
 	<item id="10034" article="a" name="metal fitting">
 		<attribute key="weight" value="250" />
 	</item>
-	<item id="10035" article="a" name="ladder">
-		<attribute key="forceUse" value="true" />
-	</item>
+	<item id="10035" article="a" name="ladder" />
 	<item id="10038" article="a" name="crucible" />
 	<item fromid="10039" toid="10040" article="a" name="bellow" />
 	<item fromid="10041" toid="10043" article="a" name="crucible" />

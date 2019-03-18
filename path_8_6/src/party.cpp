@@ -45,7 +45,6 @@ void Party::disband()
 	currentLeader->setParty(nullptr);
 	currentLeader->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(currentLeader);
-
 	currentLeader->sendCreatureSkull(currentLeader);
 	currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
 
@@ -124,7 +123,6 @@ bool Party::leaveParty(Player* player)
 	player->sendTextMessage(MESSAGE_INFO_DESCR, "You have left the party.");
 
 	updateSharedExperience();
-	updateVocationsList();
 
 	clearPlayerPoints(player);
 
@@ -213,7 +211,6 @@ bool Party::joinParty(Player& player)
 
 	player.removePartyInvitation(this);
 	updateSharedExperience();
-	updateVocationsList();
 
 	const std::string& leaderName = leader->getName();
 	ss.str(std::string());
@@ -268,7 +265,7 @@ bool Party::invitePlayer(Player& player)
 	std::ostringstream ss;
 	ss << player.getName() << " has been invited.";
 
-	if (memberList.empty() && inviteList.empty()) {
+	if (empty()) {
 		ss << " Open the party channel to communicate with your members.";
 		g_game.updatePlayerShield(leader);
 		leader->sendCreatureSkull(leader);
@@ -342,30 +339,6 @@ void Party::updateSharedExperience()
 	}
 }
 
-void Party::updateVocationsList()
-{
-	std::set<uint32_t> vocationIds;
-
-	uint32_t vocationId = leader->getVocation()->getFromVocation();
-	if (vocationId != VOCATION_NONE) {
-		vocationIds.insert(vocationId);
-	}
-
-	for (const Player* member : memberList) {
-		vocationId = member->getVocation()->getFromVocation();
-		if (vocationId != VOCATION_NONE) {
-			vocationIds.insert(vocationId);
-		}
-	}
-
-	size_t size = vocationIds.size();
-	if (size > 1) {
-		extraExpRate = static_cast<float>(size * (10 + (size - 1) * 5)) / 100.f;
-	} else {
-		extraExpRate = 0.20f;
-	}
-}
-
 bool Party::setSharedExperience(Player* player, bool sharedExpActive)
 {
 	if (!player || leader != player) {
@@ -396,7 +369,9 @@ bool Party::setSharedExperience(Player* player, bool sharedExpActive)
 
 void Party::shareExperience(uint64_t experience, Creature* source/* = nullptr*/)
 {
-	uint64_t shareExperience = static_cast<uint64_t>(std::ceil((static_cast<double>(experience) * (extraExpRate + 1)) / (memberList.size() + 1)));
+	uint64_t shareExperience = experience;
+	g_events->eventPartyOnShareExperience(this, shareExperience);
+
 	for (Player* member : memberList) {
 		member->onGainSharedExperience(shareExperience, source);
 	}
@@ -416,7 +391,7 @@ bool Party::canUseSharedExperience(const Player* player) const
 		}
 	}
 
-	uint32_t minLevel = static_cast<int32_t>(std::ceil((static_cast<float>(highestLevel) * 2) / 3));
+	uint32_t minLevel = static_cast<uint32_t>(std::ceil((static_cast<float>(highestLevel) * 2) / 3));
 	if (player->getLevel() < minLevel) {
 		return false;
 	}

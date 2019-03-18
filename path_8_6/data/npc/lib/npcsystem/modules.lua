@@ -48,29 +48,11 @@ if Modules == nil then
 			return false
 		end
 
-		local player = Player(cid)
-		local cost, costMessage = parameters.cost, '%d gold coins'
-		if cost and cost > 0 then
-			if parameters.discount then
-				cost = cost - StdModule.travelDiscount(player, parameters.discount)
-			end
-
-			costMessage = cost > 0 and string.format(costMessage, cost) or 'free'
-		else
-			costMessage = 'free'
-		end
-
-		local parseInfo = {[TAG_PLAYERNAME] = player:getName(), [TAG_TRAVELCOST] = costMessage}
-		if parameters.text then
-			npcHandler:say(npcHandler:parseMessage(parameters.text, parseInfo), cid, parameters.publicize and true)
-		end
-
-		if parameters.ungreet then
+		local parseInfo = {[TAG_PLAYERNAME] = Player(cid):getName()}
+		npcHandler:say(npcHandler:parseMessage(parameters.text or parameters.message, parseInfo), cid, parameters.publicize and true)
+		if parameters.reset then
 			npcHandler:resetNpc(cid)
-			npcHandler:releaseFocus(cid)
-		elseif parameters.reset then
-			npcHandler:resetNpc(cid)
-		elseif parameters.moveup ~= nil then
+		elseif parameters.moveup then
 			npcHandler.keywordHandler:moveUp(cid, parameters.moveup)
 		end
 
@@ -179,41 +161,27 @@ if Modules == nil then
 		end
 
 		local player = Player(cid)
-		local cost = parameters.cost
-		if cost and cost > 0 then
-			if parameters.discount then
-				cost = cost - StdModule.travelDiscount(player, parameters.discount)
+		if player:isPremium() or not parameters.premium then
+			if player:isPzLocked() then
+				npcHandler:say("First get rid of those blood stains! You are not going to ruin my vehicle!", cid)
+			elseif parameters.level and player:getLevel() < parameters.level then
+				npcHandler:say("You must reach level " .. parameters.level .. " before I can let you go there.", cid)
+			elseif not player:removeMoney(parameters.cost) then
+				npcHandler:say("You don't have enough money.", cid)
+			else
+				npcHandler:say(parameters.msg or "Set the sails!", cid)
+				npcHandler:releaseFocus(cid)
 
-				if cost < 0 then
-					cost = 0
-				end
+				local destination = Position(parameters.destination)
+				local position = player:getPosition()
+				player:teleportTo(destination)
+
+				position:sendMagicEffect(CONST_ME_TELEPORT)
+				destination:sendMagicEffect(CONST_ME_TELEPORT)
 			end
 		else
-			cost = 0
-		end
-
-		if parameters.premium and not player:isPremium() then
 			npcHandler:say("I'm sorry, but you need a premium account in order to travel onboard our ships.", cid)
-		elseif parameters.level and player:getLevel() < parameters.level then
-			npcHandler:say("You must reach level " .. parameters.level .. " before I can let you go there.", cid)
-		elseif player:isPzLocked() then
-			npcHandler:say("First get rid of those blood stains! You are not going to ruin my vehicle!", cid)
-		elseif not player:removeMoney(cost) then
-			npcHandler:say("You don't have enough money.", cid)
-		else
-			npcHandler:releaseFocus(cid)
-			npcHandler:say(parameters.text or "Set the sails!", cid)
-			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-
-			local destination = parameters.destination
-			if type(destination) == 'function' then
-				destination = destination(player)
-			end
-
-			player:teleportTo(destination)
-			destination:sendMagicEffect(CONST_ME_TELEPORT)
 		end
-
 		npcHandler:resetNpc(cid)
 		return true
 	end
@@ -299,7 +267,7 @@ if Modules == nil then
 	-- Parses all known parameters.
 	function KeywordModule:parseParameters()
 		local ret = NpcSystem.getParameter("keywords")
-		if ret ~= nil then
+		if ret then
 			self:parseKeywords(ret)
 		end
 	end
@@ -317,7 +285,7 @@ if Modules == nil then
 
 			if i ~= 1 then
 				local reply = NpcSystem.getParameter("keyword_reply" .. n)
-				if reply ~= nil then
+				if reply then
 					self:addKeyword(keywords, reply)
 				else
 					print("[Warning : " .. Npc():getName() .. "] NpcSystem:", "Parameter '" .. "keyword_reply" .. n .. "' missing. Skipping...")
@@ -362,7 +330,7 @@ if Modules == nil then
 	-- Parses all known parameters.
 	function TravelModule:parseParameters()
 		local ret = NpcSystem.getParameter("travel_destinations")
-		if ret ~= nil then
+		if ret then
 			self:parseDestinations(ret)
 
 			self.npcHandler.keywordHandler:addKeyword({"destination"}, TravelModule.listDestinations, {module = self})
@@ -402,7 +370,7 @@ if Modules == nil then
 				i = i + 1
 			end
 
-			if name ~= nil and x ~= nil and y ~= nil and z ~= nil and cost ~= nil then
+			if name and x and y and z and cost then
 				self:addDestination(name, {x=x, y=y, z=z}, cost, premium)
 			else
 				print("[Warning : " .. Npc():getName() .. "] NpcSystem:", "Parameter(s) missing for travel destination:", name, x, y, z, cost, premium)
@@ -581,17 +549,17 @@ if Modules == nil then
 	-- Parses all known parameters.
 	function ShopModule:parseParameters()
 		local ret = NpcSystem.getParameter("shop_buyable")
-		if ret ~= nil then
+		if ret then
 			self:parseBuyable(ret)
 		end
 
 		local ret = NpcSystem.getParameter("shop_sellable")
-		if ret ~= nil then
+		if ret then
 			self:parseSellable(ret)
 		end
 
 		local ret = NpcSystem.getParameter("shop_buyable_containers")
-		if ret ~= nil then
+		if ret then
 			self:parseBuyableContainers(ret)
 		end
 	end
@@ -630,7 +598,7 @@ if Modules == nil then
 			end
 
 			if SHOPMODULE_MODE == SHOPMODULE_MODE_TRADE then
-				if itemid ~= nil and cost ~= nil then
+				if itemid and cost then
 					if subType == nil and it:isFluidContainer() then
 						print("[Warning : " .. Npc():getName() .. "] NpcSystem:", "SubType missing for parameter item:", item)
 					else
@@ -640,7 +608,7 @@ if Modules == nil then
 					print("[Warning : " .. Npc():getName() .. "] NpcSystem:", "Parameter(s) missing for item:", itemid, cost)
 				end
 			else
-				if name ~= nil and itemid ~= nil and cost ~= nil then
+				if name and itemid and cost then
 					if subType == nil and it:isFluidContainer() then
 						print("[Warning : " .. Npc():getName() .. "] NpcSystem:", "SubType missing for parameter item:", item)
 					else
@@ -684,13 +652,13 @@ if Modules == nil then
 			end
 
 			if SHOPMODULE_MODE == SHOPMODULE_MODE_TRADE then
-				if itemid ~= nil and cost ~= nil then
+				if itemid and cost then
 					self:addSellableItem(nil, itemid, cost, realName, subType)
 				else
 					print("[Warning : " .. Npc():getName() .. "] NpcSystem:", "Parameter(s) missing for item:", itemid, cost)
 				end
 			else
-				if name ~= nil and itemid ~= nil and cost ~= nil then
+				if name and itemid and cost then
 					local names = {}
 					names[#names + 1] = name
 					self:addSellableItem(names, itemid, cost, realName, subType)
@@ -732,7 +700,7 @@ if Modules == nil then
 				i = i + 1
 			end
 
-			if name ~= nil and container ~= nil and itemid ~= nil and cost ~= nil then
+			if name and container and itemid and cost then
 				if subType == nil and ItemType(itemid):isFluidContainer() then
 					print("[Warning : " .. Npc():getName() .. "] NpcSystem:", "SubType missing for parameter item:", item)
 				else
@@ -787,7 +755,7 @@ if Modules == nil then
 	function ShopModule:getCount(message)
 		local ret = 1
 		local b, e = string.find(message, PATTERN_COUNT)
-		if b ~= nil and e ~= nil then
+		if b and e then
 			ret = tonumber(string.sub(message, b, e))
 		end
 
@@ -820,7 +788,7 @@ if Modules == nil then
 			end
 		end
 
-		if names ~= nil and SHOPMODULE_MODE ~= SHOPMODULE_MODE_TRADE then
+		if names and SHOPMODULE_MODE ~= SHOPMODULE_MODE_TRADE then
 			for i, name in pairs(names) do
 				local parameters = {
 						itemid = itemid,
@@ -874,7 +842,7 @@ if Modules == nil then
 	--	subType - The subType of each rune or fluidcontainer item. Can be left out if it is not a rune/fluidcontainer. Default value is 1.
 	--	realName - The real, full name for the item. Will be used as ITEMNAME in MESSAGE_ONBUY and MESSAGE_ONSELL if defined. Default value is nil (getItemName will be used)
 	function ShopModule:addBuyableItemContainer(names, container, itemid, cost, subType, realName)
-		if names ~= nil then
+		if names then
 			for i, name in pairs(names) do
 				local parameters = {
 						container = container,
@@ -915,7 +883,7 @@ if Modules == nil then
 			end
 		end
 
-		if names ~= nil and SHOPMODULE_MODE ~= SHOPMODULE_MODE_TRADE then
+		if names and SHOPMODULE_MODE ~= SHOPMODULE_MODE_TRADE then
 			for i, name in pairs(names) do
 				local parameters = {
 					itemid = itemid,

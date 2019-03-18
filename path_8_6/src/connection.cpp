@@ -116,7 +116,7 @@ void Connection::accept()
 {
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	try {
-		readTimer.expires_from_now(boost::posix_time::seconds(Connection::read_timeout));
+		readTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()), std::placeholders::_1));
 
 		// Read size of the first packet
@@ -134,17 +134,17 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	readTimer.cancel();
 
-	int32_t size = msg.decodeHeader();
-	if (error || size <= 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
+	if (error) {
 		close(FORCE_CLOSE);
-	}
-
-	if (connectionState != CONNECTION_STATE_OPEN) {
+		return;
+	} else if (connectionState != CONNECTION_STATE_OPEN) {
 		return;
 	}
 
 	uint32_t timePassed = std::max<uint32_t>(1, (time(nullptr) - timeConnected) + 1);
 	if ((++packetsSent / timePassed) > static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND))) {
+		std::cout << convertIPToString(getIP()) << " disconnected for exceeding packet per second limit." << std::endl;
+		close();
 		return;
 	}
 
@@ -153,8 +153,14 @@ void Connection::parseHeader(const boost::system::error_code& error)
 		packetsSent = 0;
 	}
 
+	uint16_t size = msg.getLengthHeader();
+	if (size == 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
+		close(FORCE_CLOSE);
+		return;
+	}
+
 	try {
-		readTimer.expires_from_now(boost::posix_time::seconds(Connection::read_timeout));
+		readTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
 		                                    std::placeholders::_1));
 
@@ -175,9 +181,8 @@ void Connection::parsePacket(const boost::system::error_code& error)
 
 	if (error) {
 		close(FORCE_CLOSE);
-	}
-
-	if (connectionState != CONNECTION_STATE_OPEN) {
+		return;
+	} else if (connectionState != CONNECTION_STATE_OPEN) {
 		return;
 	}
 
@@ -217,7 +222,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 	}
 
 	try {
-		readTimer.expires_from_now(boost::posix_time::seconds(Connection::read_timeout));
+		readTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
 		                                    std::placeholders::_1));
 
@@ -249,7 +254,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 {
 	protocol->onSendMessage(msg);
 	try {
-		writeTimer.expires_from_now(boost::posix_time::seconds(Connection::write_timeout));
+		writeTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_WRITE_TIMEOUT));
 		writeTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
 		                                     std::placeholders::_1));
 
@@ -264,7 +269,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 
 uint32_t Connection::getIP()
 {
-	// std::lock_guard<std::recursive_mutex> lockClass(connectionLock); /* try with it */
+	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 
 	// IP-address is expressed in network byte order
 	boost::system::error_code error;

@@ -12,7 +12,7 @@ function onSay(player, words, param)
 
 	local position = player:getPosition()
 	local monster = Game.createMonster(param, position)
-	if monster ~= nil then
+	if monster then
 		if monster:getType():isRewardBoss() then
 			monster:setReward(true)
 		end

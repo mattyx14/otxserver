@@ -116,6 +116,8 @@
 	<action itemid="1386" script="other/teleport.lua" />
 	<action itemid="3678" script="other/teleport.lua" />
 	<action itemid="5543" script="other/teleport.lua" />
+	<action itemid="8599" script="other/teleport.lua" />
+	<action itemid="10035" script="other/teleport.lua" />
 	<action fromid="2376" toid="2404" script="other/destroy.lua" />
 	<action fromid="2406" toid="2419" script="other/destroy.lua" />
 	<action fromid="2421" toid="2453" script="other/destroy.lua" />

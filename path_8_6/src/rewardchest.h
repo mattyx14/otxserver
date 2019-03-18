@@ -29,6 +29,10 @@ class RewardChest final : public Container
 		bool canRemove() const final {
 			return false;
 		}
+
+	private:
+		uint32_t maxSize;
+		bool unlocked;
 };
 
 #endif

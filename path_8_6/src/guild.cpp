@@ -33,6 +33,7 @@ void Guild::addMember(Player* player)
 void Guild::removeMember(Player* player)
 {
 	membersOnline.remove(player);
+
 	if (membersOnline.empty()) {
 		g_game.removeGuild(id);
 		delete this;
@@ -43,6 +44,16 @@ GuildRank* Guild::getRankById(uint32_t rankId)
 {
 	for (auto& rank : ranks) {
 		if (rank.id == rankId) {
+			return &rank;
+		}
+	}
+	return nullptr;
+}
+
+const GuildRank* Guild::getRankByName(const std::string& name) const
+{
+	for (const auto& rank : ranks) {
+		if (rank.name == name) {
 			return &rank;
 		}
 	}

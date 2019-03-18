@@ -32,6 +32,7 @@
 #include "databasemanager.h"
 #include "scheduler.h"
 #include "databasetasks.h"
+#include <fstream>
 
 DatabaseTasks g_databaseTasks;
 Dispatcher g_dispatcher;
@@ -55,9 +56,9 @@ void startupErrorMessage(const std::string& errorStr)
 	g_loaderSignal.notify_all();
 }
 
-void mainLoader(int argc, char* argv[], ServiceManager* servicer);
+void mainLoader(int argc, char* argv[], ServiceManager* services);
 
-void badAllocationHandler()
+[[noreturn]] void badAllocationHandler()
 {
 	// Use functions that only use stack allocation
 	puts("Allocation failed, server out of memory.\nDecrease the size of your map or compile in 64 bits mode.\n");
@@ -185,7 +186,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 
 	// load item data
 	std::cout << ">> Loading items" << std::endl;
-	if (Item::items.loadFromOtb("data/items/items.otb") != ERROR_NONE) {
+	if (!Item::items.loadFromOtb("data/items/items.otb")) {
 		startupErrorMessage("Unable to load items (OTB)!");
 		return;
 	}
@@ -241,14 +242,14 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	g_game.setGameState(GAME_STATE_INIT);
 
 	// Game client protocols
-	services->add<ProtocolGame>(g_config.getNumber(ConfigManager::GAME_PORT));
-	services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
+	services->add<ProtocolGame>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT)));
+	services->add<ProtocolLogin>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT)));
 
 	// OT protocols
-	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT));
+	services->add<ProtocolStatus>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STATUS_PORT)));
 
 	// Legacy login protocol
-	services->add<ProtocolOld>(g_config.getNumber(ConfigManager::LOGIN_PORT));
+	services->add<ProtocolOld>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT)));
 
 	RentPeriod_t rentPeriod;
 	std::string strRentPeriod = asLowerCaseString(g_config.getString(ConfigManager::HOUSE_RENT_PERIOD));
@@ -276,30 +277,30 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 
 	char szHostName[128];
 	if (gethostname(szHostName, 128) == 0) {
-		hostent *he = gethostbyname(szHostName);
+		hostent* he = gethostbyname(szHostName);
 		if (he) {
 			unsigned char** addr = (unsigned char**)he->h_addr_list;
 			while (addr[0] != nullptr) {
 				IpNetMask.first = *(uint32_t*)(*addr);
-				IpNetMask.second = 0x0000FFFF;
+				IpNetMask.second = 0xFFFFFFFF;
 				serverIPs.push_back(IpNetMask);
 				addr++;
 			}
 		}
 	}
 
-	std::string ip;
-	ip = g_config.getString(ConfigManager::IP);
+	std::string ip = g_config.getString(ConfigManager::IP);
 
 	uint32_t resolvedIp = inet_addr(ip.c_str());
 	if (resolvedIp == INADDR_NONE) {
 		struct hostent* he = gethostbyname(ip.c_str());
-		if (he != 0) {
-			resolvedIp = *(uint32_t*)he->h_addr;
-		} else {
-			std::cout << "ERROR: Cannot resolve " << ip << "!" << std::endl;
-			startupErrorMessage("");
+		if (!he) {
+			std::ostringstream ss;
+			ss << "ERROR: Cannot resolve " << ip << "!" << std::endl;
+			startupErrorMessage(ss.str());
+			return;
 		}
+		resolvedIp = *(uint32_t*)he->h_addr;
 	}
 
 	IpNetMask.first = resolvedIp;

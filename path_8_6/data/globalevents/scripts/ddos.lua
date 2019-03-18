@@ -1,7 +1,7 @@
 function onThink(interval)
 local counter = 0
 local players = getOnlinePlayers()
-	if players[1] ~= nil then
+	if players[1] then
 		local l = (#players > 50 and 50 or #players)
 		for i = 1, l do
 			local tmpPlayer = Player(players[i])

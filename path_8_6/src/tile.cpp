@@ -456,7 +456,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
-		if (creature->isMoveLocked() || ground == nullptr) {
+		if (ground == nullptr) {
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
@@ -475,7 +475,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 
 						const Monster* creatureMonster = tileCreature->getMonster();
 						if (!creatureMonster || !tileCreature->isPushable() ||
-								(creatureMonster->isSummon() && creatureMonster->getMaster()->getPlayer())) {
+							(creatureMonster->isSummon() && creatureMonster->getMaster()->getPlayer())) {
 							return RETURNVALUE_NOTPOSSIBLE;
 						}
 					}
@@ -503,21 +503,23 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			}
 
 			MagicField* field = getFieldItem();
-			if (field && !field->isBlocking() && field->getDamage() != 0) {
-				CombatType_t combatType = field->getCombatType();
+			if (!field || field->isBlocking() || field->getDamage() == 0) {
+				return RETURNVALUE_NOERROR;
+			}
 
-				//There is 3 options for a monster to enter a magic field
-				//1) Monster is immune
-				if (!monster->isImmune(combatType)) {
-					//1) Monster is able to walk over field type
-					//2) Being attacked while random stepping will make it ignore field damages
-					if (hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags)) {
-						if (!(monster->canWalkOnFieldType(combatType) || monster->getIgnoreFieldDamage())) {
-							return RETURNVALUE_NOTPOSSIBLE;
-						}
-					} else {
+			CombatType_t combatType = field->getCombatType();
+
+			//There is 3 options for a monster to enter a magic field
+			//1) Monster is immune
+			if (!monster->isImmune(combatType)) {
+				//1) Monster is able to walk over field type
+				//2) Being attacked while random stepping will make it ignore field damages
+				if (hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags)) {
+					if (!(monster->canWalkOnFieldType(combatType) || monster->isIgnoringFieldDamage())) {
 						return RETURNVALUE_NOTPOSSIBLE;
 					}
+				} else {
+					return RETURNVALUE_NOTPOSSIBLE;
 				}
 			}
 
@@ -590,7 +592,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 		}
 	} else if (const Item* item = thing.getItem()) {
 		const TileItemVector* items = getItemList();
-		if (items && items->size() >= 0x3E8) {
+		if (items && items->size() >= 0xFFFF) {
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
@@ -1568,23 +1570,16 @@ bool Tile::isMoveableBlocking() const
 	return !ground || hasFlag(TILESTATE_BLOCKSOLID);
 }
 
-Item* Tile::getUseItem() const
+Item* Tile::getUseItem(int32_t index) const
 {
 	const TileItemVector* items = getItemList();
 	if (!items || items->size() == 0) {
 		return ground;
 	}
 
-	for (Item* item : boost::adaptors::reverse(*items)) {
-		//if the behavior is wrong remove && !Item::items[item->getID()].isContainer()
-		if (Item::items[item->getID()].forceUse && !Item::items[item->getID()].isContainer()) {
-			return item;
-		}
+	if (Thing* thing = getThing(index)) {
+		return thing->getItem();
 	}
 
-	Item* item = items->getTopDownItem();
-	if (!item) {
-		item = items->getTopTopItem();
-	}
-	return item;
+	return nullptr;
 }

@@ -78,12 +78,10 @@ class Party
 		bool canUseSharedExperience(const Player* player) const;
 		void updateSharedExperience();
 
-		void updateVocationsList();
-
 		void updatePlayerTicks(Player* player, uint32_t points);
 		void clearPlayerPoints(Player* player);
 
-	protected:
+	private:
 		bool canEnableSharedExperience();
 
 		std::map<uint32_t, int64_t> ticksMap;
@@ -92,8 +90,6 @@ class Party
 		PlayerVector inviteList;
 
 		Player* leader;
-
-		float extraExpRate = 0.20f;
 
 		bool sharedExpActive = false;
 		bool sharedExpEnabled = false;

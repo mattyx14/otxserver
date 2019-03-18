@@ -109,21 +109,21 @@ void Weapons::loadDefaults()
 	}
 }
 
-Event* Weapons::getEvent(const std::string& nodeName)
+Event_ptr Weapons::getEvent(const std::string& nodeName)
 {
 	if (strcasecmp(nodeName.c_str(), "melee") == 0) {
-		return new WeaponMelee(&scriptInterface);
+		return Event_ptr(new WeaponMelee(&scriptInterface));
 	} else if (strcasecmp(nodeName.c_str(), "distance") == 0) {
-		return new WeaponDistance(&scriptInterface);
+		return Event_ptr(new WeaponDistance(&scriptInterface));
 	} else if (strcasecmp(nodeName.c_str(), "wand") == 0) {
-		return new WeaponWand(&scriptInterface);
+		return Event_ptr(new WeaponWand(&scriptInterface));
 	}
 	return nullptr;
 }
 
-bool Weapons::registerEvent(Event* event, const pugi::xml_node&)
+bool Weapons::registerEvent(Event_ptr event, const pugi::xml_node&)
 {
-	Weapon* weapon = static_cast<Weapon*>(event); //event is guaranteed to be a Weapon
+	Weapon* weapon = static_cast<Weapon*>(event.release()); //event is guaranteed to be a Weapon
 
 	auto result = weapons.emplace(weapon->getID(), weapon);
 	if (!result.second) {
@@ -177,7 +177,7 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		premium = attr.as_bool();
 	}
 
-	if ((attr = node.attribute("breakchance")) && g_config.getBoolean(ConfigManager::REMOVE_WEAPON_CHARGES)) {
+	if ((attr = node.attribute("breakchance"))) {
 		breakChance = std::min<uint8_t>(100, pugi::cast<uint16_t>(attr.value()));
 	}
 
@@ -427,14 +427,12 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile* destTile) const
 
 	switch (action) {
 		case WEAPONACTION_REMOVECOUNT:
-			if(g_config.getBoolean(ConfigManager::REMOVE_WEAPON_AMMO)) {
-				Weapon::decrementItemCount(item);
-			}
+			Weapon::decrementItemCount(item);
 			break;
 
 		case WEAPONACTION_REMOVECHARGE: {
 			uint16_t charges = item->getCharges();
-			if (charges != 0 && g_config.getBoolean(ConfigManager::REMOVE_WEAPON_CHARGES)) {
+			if (charges != 0) {
 				g_game.transformItem(item, item->getID(), charges - 1);
 			}
 			break;
@@ -527,7 +525,7 @@ bool WeaponMelee::useWeapon(Player* player, Item* item, Creature* target) const
 }
 
 bool WeaponMelee::getSkillType(const Player* player, const Item* item,
-	skills_t& skill, uint32_t& skillpoint) const
+                               skills_t& skill, uint32_t& skillpoint) const
 {
 	if (player->getAddAttackSkill() && player->getLastAttackBlockType() != BLOCK_IMMUNITY) {
 		skillpoint = 1;
@@ -873,23 +871,26 @@ bool WeaponWand::configureEvent(const pugi::xml_node& node)
 		maxChange = pugi::cast<int32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("type"))) {
-		std::string tmpStrValue = asLowerCaseString(attr.as_string());
-		if (tmpStrValue == "earth") {
-			params.combatType = COMBAT_EARTHDAMAGE;
-		} else if (tmpStrValue == "ice") {
-			params.combatType = COMBAT_ICEDAMAGE;
-		} else if (tmpStrValue == "energy") {
-			params.combatType = COMBAT_ENERGYDAMAGE;
-		} else if (tmpStrValue == "fire") {
-			params.combatType = COMBAT_FIREDAMAGE;
-		} else if (tmpStrValue == "death") {
-			params.combatType = COMBAT_DEATHDAMAGE;
-		} else if (tmpStrValue == "holy") {
-			params.combatType = COMBAT_HOLYDAMAGE;
-		} else {
-			std::cout << "[Warning - WeaponWand::configureEvent] Type \"" << attr.as_string() << "\" does not exist." << std::endl;
-		}
+	attr = node.attribute("type");
+	if (!attr) {
+		return true;
+	}
+
+	std::string tmpStrValue = asLowerCaseString(attr.as_string());
+	if (tmpStrValue == "earth") {
+		params.combatType = COMBAT_EARTHDAMAGE;
+	} else if (tmpStrValue == "ice") {
+		params.combatType = COMBAT_ICEDAMAGE;
+	} else if (tmpStrValue == "energy") {
+		params.combatType = COMBAT_ENERGYDAMAGE;
+	} else if (tmpStrValue == "fire") {
+		params.combatType = COMBAT_FIREDAMAGE;
+	} else if (tmpStrValue == "death") {
+		params.combatType = COMBAT_DEATHDAMAGE;
+	} else if (tmpStrValue == "holy") {
+		params.combatType = COMBAT_HOLYDAMAGE;
+	} else {
+		std::cout << "[Warning - WeaponWand::configureEvent] Type \"" << attr.as_string() << "\" does not exist." << std::endl;
 	}
 	return true;
 }
