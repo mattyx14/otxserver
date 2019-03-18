@@ -1343,17 +1343,30 @@ int64_t Creature::getStepDuration() const
 		return 0;
 	}
 
+	uint32_t calculatedStepSpeed;
 	uint32_t groundSpeed;
+
 	int32_t stepSpeed = getStepSpeed();
+	if (stepSpeed > -Creature::speedB) {
+		calculatedStepSpeed = floor((Creature::speedA * log((stepSpeed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
+		if (calculatedStepSpeed == 0) {
+			calculatedStepSpeed = 1;
+		}
+	} else {
+		calculatedStepSpeed = 1;
+	}
 
 	Item* ground = tile->getGround();
 	if (ground) {
 		groundSpeed = Item::items[ground->getID()].speed;
+		if (groundSpeed == 0) {
+			groundSpeed = 150;
+		}
 	} else {
-		groundSpeed = 0;
+		groundSpeed = 150;
 	}
 
-	double duration = std::floor(1000 * groundSpeed / stepSpeed);
+	double duration = std::floor(1000 * groundSpeed / calculatedStepSpeed);
 	int64_t stepDuration = std::ceil(duration / 50) * 50;
 
 	const Monster* monster = getMonster();
