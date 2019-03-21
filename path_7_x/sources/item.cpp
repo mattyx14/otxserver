@@ -174,13 +174,13 @@ bool Item::loadContainer(xmlNodePtr parentNode, Container* parent)
 Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	ItemAttributes(), id(type)
 {
+	duration = 0;
 	raid = NULL;
 	loadedFromMap = false;
 
 	setItemCount(1);
 	setDefaultDuration();
 	itemUid = -1;
-	duration = 0;
 	
 	const ItemType& it = items[id];
 	if(it.isFluidContainer() || it.isSplash())
