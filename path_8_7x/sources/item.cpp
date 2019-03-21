@@ -177,6 +177,7 @@ Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	setItemCount(1);
 	setDefaultDuration();
 	itemUid = -1;
+	duration = 0;
 	
 	const ItemType& it = items[type];
 	if(it.isFluidContainer() || it.isSplash())
@@ -230,7 +231,7 @@ Item* Item::clone() const
 
 void Item::copyAttributes(Item* item)
 {
-	if(item && item->attributes && !item->attributes->empty())
+	if (item && item->attributes && !item->attributes->empty())
 	{
 		createAttributes();
 		*attributes = *item->attributes;
@@ -238,7 +239,7 @@ void Item::copyAttributes(Item* item)
 	}
 
 	eraseAttribute("decaying");
-	eraseAttribute("duration");
+	duration = 0;
 }
 
 void Item::makeUnique(Item* parent)
@@ -279,14 +280,14 @@ void Item::setID(uint16_t newId)
 	id = newId;
 
 	uint32_t newDuration = it.decayTime * 1000;
-	if(!newDuration && !it.stopTime && it.decayTo == -1)
+	if (!newDuration && !it.stopTime && it.decayTo == -1)
 	{
 		eraseAttribute("decaying");
-		eraseAttribute("duration");
+		duration = -1;
 	}
 
 	eraseAttribute("corpseowner");
-	if(newDuration > 0 && (!pit.stopTime || !hasIntegerAttribute("duration")))
+	if (newDuration > 0 && (!pit.stopTime || duration == 0))
 	{
 		setDecaying(DECAYING_FALSE);
 		setDuration(newDuration);
@@ -577,7 +578,8 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			if(!propStream.getLong((uint32_t&)duration))
 				return ATTR_READ_ERROR;
 
-			setAttribute("duration", duration);
+			//setAttribute("duration", duration);
+			this->duration = duration;
 			break;
 		}
 
@@ -699,13 +701,19 @@ bool Item::unserializeAttr(PropStream& propStream)
 
 bool Item::serializeAttr(PropWriteStream& propWriteStream) const
 {
-	if(isStackable() || isFluidContainer() || isSplash())
+	if (isStackable() || isFluidContainer() || isSplash())
 	{
 		propWriteStream.addByte(ATTR_COUNT);
 		propWriteStream.addByte((uint8_t)getSubType());
 	}
 
-	if(attributes && !attributes->empty())
+	if (duration != 0)
+	{
+		propWriteStream.addByte(ATTR_DURATION);
+		propWriteStream.addType(duration);
+	}
+
+	if (attributes && !attributes->empty())
 	{
 		propWriteStream.addByte(ATTR_ATTRIBUTE_MAP);
 		serializeMap(propWriteStream);
@@ -1514,9 +1522,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 
 	if(it.showDuration)
 	{
-		if(item && item->hasIntegerAttribute("duration"))
+		int32_t duration = item ? item->getDuration() / 1000 : 0;
+		if (duration != 0)
 		{
-			int32_t duration = item->getDuration() / 1000;
 			s << " that will expire in ";
 			if(duration >= 86400)
 			{
