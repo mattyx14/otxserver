@@ -74,7 +74,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 	{
 		case CONDITIONATTR_TYPE:
 		{
-			int32_t value = 0;
+			uint32_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -84,7 +84,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 
 		case CONDITIONATTR_ID:
 		{
-			int32_t value = 0;
+			uint32_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -104,7 +104,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 
 		case CONDITIONATTR_BUFF:
 		{
-			int32_t value = 0;
+			uint8_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -114,7 +114,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 
 		case CONDITIONATTR_SUBID:
 		{
-			int32_t value = 0;
+			uint32_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -135,19 +135,19 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 bool Condition::serialize(PropWriteStream& propWriteStream)
 {
 	propWriteStream.addByte(CONDITIONATTR_TYPE);
-	propWriteStream.addType((int32_t)conditionType);
+	propWriteStream.addType((uint32_t)conditionType);
 
 	propWriteStream.addByte(CONDITIONATTR_ID);
-	propWriteStream.addType((int32_t)id);
+	propWriteStream.addType((uint32_t)id);
 
 	propWriteStream.addByte(CONDITIONATTR_TICKS);
 	propWriteStream.addType((int32_t)ticks);
 
 	propWriteStream.addByte(CONDITIONATTR_BUFF);
-	propWriteStream.addType((int32_t)buff ? 1 : 0);
+	propWriteStream.addType((uint8_t)(buff ? 1 : 0));
 
 	propWriteStream.addByte(CONDITIONATTR_SUBID);
-	propWriteStream.addType((int32_t)subId);
+	propWriteStream.addType((uint32_t)subId);
 	return true;
 }
 
@@ -171,7 +171,7 @@ bool Condition::executeCondition(Creature* creature, int32_t interval)
 	if(interval > 0)
 	{
 		bool tmp = false;
-		creature->onTickCondition(getType(), interval, tmp);
+		creature->onTickCondition(conditionType, id, interval, tmp);
 	}
 
 	if(ticks == -1)
@@ -258,15 +258,15 @@ Condition* Condition::createCondition(PropStream& propStream)
 	if(!propStream.getByte(attr) || attr != CONDITIONATTR_TICKS)
 		return NULL;
 
-	uint32_t _ticks = 0;
-	if(!propStream.getLong(_ticks))
+	int32_t _ticks = 0;
+	if(!propStream.getType(_ticks))
 		return NULL;
 
 	if(!propStream.getByte(attr) || attr != CONDITIONATTR_BUFF)
 		return NULL;
 
-	uint32_t _buff = 0;
-	if(!propStream.getLong(_buff))
+	uint8_t _buff = 0;
+	if(!propStream.getByte(_buff))
 		return NULL;
 
 	if(!propStream.getByte(attr) || attr != CONDITIONATTR_SUBID)
@@ -953,11 +953,11 @@ bool ConditionDamage::unserializeProp(ConditionAttr_t attr, PropStream& propStre
 	{
 		case CONDITIONATTR_DELAYED:
 		{
-			bool value = false;
+			uint8_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
-			delayed = value;
+			delayed = (value != 0);
 			return true;
 		}
 
@@ -1007,7 +1007,7 @@ bool ConditionDamage::serialize(PropWriteStream& propWriteStream)
 		return false;
 
 	propWriteStream.addByte(CONDITIONATTR_DELAYED);
-	propWriteStream.addType(delayed);
+	propWriteStream.addType((uint8_t)delayed);
 
 	propWriteStream.addByte(CONDITIONATTR_PERIODDAMAGE);
 	propWriteStream.addType(periodDamage);
@@ -1126,7 +1126,7 @@ bool ConditionDamage::executeCondition(Creature* creature, int32_t interval)
 	else if(!damageList.empty())
 	{
 		bool remove = getTicks() != -1;
-		creature->onTickCondition(getType(), interval, remove);
+		creature->onTickCondition(conditionType, id, interval, remove);
 
 		IntervalInfo& damageInfo = damageList.front();
 		damageInfo.timeLeft -= interval;
@@ -1174,7 +1174,7 @@ bool ConditionDamage::getNextDamage(int32_t& damage)
 
 bool ConditionDamage::doDamage(Creature* creature, int32_t damage)
 {
-	if(creature->isSuppress(getType()))
+	if(creature->isSuppress(conditionType))
 		return true;
 
 	Creature* attacker = g_game.getCreatureByID(owner);

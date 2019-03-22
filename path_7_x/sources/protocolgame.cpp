@@ -611,7 +611,7 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 		return;
 
 	uint8_t recvbyte = msg.get<char>();
-	if((player->getHealth() == 0 || player->isRemoved()) && recvbyte != 0x14) //a dead player cannot performs actions
+	if(player->isRemoved() && recvbyte != 0x14) //a dead player cannot performs actions
 		return;
 
 	if(m_spectator)

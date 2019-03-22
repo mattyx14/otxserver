@@ -1217,13 +1217,13 @@ void Creature::onAddCondition(ConditionType_t type, bool hadCondition)
 	}
 }
 
-void Creature::onEndCondition(ConditionType_t type)
+void Creature::onEndCondition(ConditionType_t type, ConditionId_t)
 {
 	if(type == CONDITION_INVISIBLE && !hasCondition(CONDITION_INVISIBLE, -1, false))
 		g_game.internalCreatureChangeVisible(this, VISIBLE_APPEAR);
 }
 
-void Creature::onTickCondition(ConditionType_t type, int32_t, bool& _remove)
+void Creature::onTickCondition(ConditionType_t type, ConditionId_t, int32_t, bool& _remove)
 {
 	if(const MagicField* field = getTile()->getFieldItem())
 	{
@@ -1519,16 +1519,16 @@ void Creature::removeCondition(ConditionType_t type)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_ABORT);
-		onEndCondition(condition->getType());
+		onEndCondition(condition->getType(), condition->getId());
 		delete condition;
 	}
 }
 
-void Creature::removeCondition(ConditionType_t type, ConditionId_t id)
+void Creature::removeCondition(ConditionType_t type, ConditionId_t conditionId)
 {
 	for(ConditionList::iterator it = conditions.begin(); it != conditions.end(); )
 	{
-		if((*it)->getType() != type || (*it)->getId() != id)
+		if((*it)->getType() != type || (*it)->getId() != conditionId)
 		{
 			++it;
 			continue;
@@ -1538,7 +1538,7 @@ void Creature::removeCondition(ConditionType_t type, ConditionId_t id)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_ABORT);
-		onEndCondition(condition->getType());
+		onEndCondition(condition->getType(), condition->getId());
 		delete condition;
 	}
 }
@@ -1552,7 +1552,7 @@ void Creature::removeCondition(Condition* condition)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_ABORT);
-		onEndCondition(condition->getType());
+		onEndCondition(condition->getType(), condition->getId());
 		delete condition;
 	}
 }
@@ -1581,16 +1581,16 @@ void Creature::removeConditions(ConditionEnd_t reason, bool onlyPersistent/* = t
 		it = conditions.erase(it);
 
 		condition->endCondition(this, reason);
-		onEndCondition(condition->getType());
+		onEndCondition(condition->getType(), condition->getId());
 		delete condition;
 	}
 }
 
-Condition* Creature::getCondition(ConditionType_t type, ConditionId_t id, uint32_t subId/* = 0*/) const
+Condition* Creature::getCondition(ConditionType_t type, ConditionId_t conditionId, uint32_t subId/* = 0*/) const
 {
 	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
 	{
-		if((*it)->getType() == type && (*it)->getId() == id && (*it)->getSubId() == subId)
+		if((*it)->getType() == type && (*it)->getId() == conditionId && (*it)->getSubId() == subId)
 			return *it;
 	}
 
@@ -1611,7 +1611,7 @@ void Creature::executeConditions(uint32_t interval)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_TICKS);
-		onEndCondition(condition->getType());
+		onEndCondition(condition->getType(), condition->getId());
 		delete condition;
 	}
 }
@@ -1621,12 +1621,14 @@ bool Creature::hasCondition(ConditionType_t type, int32_t subId/* = 0*/, bool ch
 	if(isSuppress(type))
 		return false;
 
+	Condition* condition = NULL;
 	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
 	{
-		if((*it)->getType() != type || (subId != -1 && (*it)->getSubId() != (uint32_t)subId))
+		if(!(condition = *it) || condition->getType() != type ||
+			(subId != -1 && condition->getSubId() != (uint32_t)subId))
 			continue;
 
-		if(!checkTime || !(*it)->getEndTime() || (*it)->getEndTime() >= OTSYS_TIME())
+		if(!checkTime || !condition->getEndTime() || condition->getEndTime() >= OTSYS_TIME())
 			return true;
 	}
 

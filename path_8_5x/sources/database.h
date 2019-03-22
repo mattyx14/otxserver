@@ -66,11 +66,6 @@ class PgSQLResult;
 typedef DATABASE_CLASS Database;
 typedef RESULT_CLASS DBResult;
 
-enum DBParam_t
-{
-	DBPARAM_MULTIINSERT = 1
-};
-
 class _Database
 {
 	public:

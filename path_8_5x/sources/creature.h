@@ -320,11 +320,11 @@ class Creature : public AutoId, virtual public Thing
 		bool addCondition(Condition* condition);
 		bool addCombatCondition(Condition* condition);
 		void removeCondition(ConditionType_t type);
-		void removeCondition(ConditionType_t type, ConditionId_t id);
+		void removeCondition(ConditionType_t type, ConditionId_t conditionId);
 		void removeCondition(Condition* condition);
 		void removeCondition(const Creature* attacker, ConditionType_t type);
 		void removeConditions(ConditionEnd_t reason, bool onlyPersistent = true);
-		Condition* getCondition(ConditionType_t type, ConditionId_t id, uint32_t subId = 0) const;
+		Condition* getCondition(ConditionType_t type, ConditionId_t conditionId, uint32_t subId = 0) const;
 		void executeConditions(uint32_t interval);
 		bool hasCondition(ConditionType_t type, int32_t subId = 0, bool checkTime = true) const;
 		virtual bool isImmune(ConditionType_t type) const;
@@ -364,8 +364,8 @@ class Creature : public AutoId, virtual public Thing
 		//combat event functions
 		virtual void onAddCondition(ConditionType_t type, bool hadCondition);
 		virtual void onAddCombatCondition(ConditionType_t, bool) {}
-		virtual void onEndCondition(ConditionType_t type);
-		virtual void onTickCondition(ConditionType_t type, int32_t interval, bool& _remove);
+		virtual void onEndCondition(ConditionType_t type, ConditionId_t conditionId);
+		virtual void onTickCondition(ConditionType_t type, ConditionId_t conditionId, int32_t interval, bool& _remove);
 		virtual void onCombatRemoveCondition(const Creature* attacker, Condition* condition);
 		virtual void onTarget(Creature*) {}
 		virtual void onSummonTarget(Creature*, Creature*) {}

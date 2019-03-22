@@ -173,7 +173,7 @@ class Monster : public Creature
 		void updateIdleStatus();
 
 		virtual void onAddCondition(ConditionType_t type, bool hadCondition);
-		virtual void onEndCondition(ConditionType_t type);
+		virtual void onEndCondition(ConditionType_t type, ConditionId_t id);
 		virtual void onCreatureConvinced(const Creature* convincer, const Creature* creature);
 
 		bool canUseAttack(const Position& pos, const Creature* target) const;
