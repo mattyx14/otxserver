@@ -10924,6 +10924,7 @@
 	<item id="6266" article="a" name="gate of expertise">
 		<attribute key="type" value="door"/>
 		<attribute key="closingDoor" value="1"/>
+		<attribute key="transformUseTo" value="6265"/>
 	</item>
 	<item id="6267" name="metal trash"/>
 	<item id="6268-6270" name="tendrils"/>
