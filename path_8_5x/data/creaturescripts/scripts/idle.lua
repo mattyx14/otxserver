@@ -4,16 +4,20 @@ local config = {
 }
 
 function onThink(cid, interval)
-	if(getTileInfo(getCreaturePosition(cid)).noLogout or getCreatureNoMove(cid) or
-		getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_ALLOWIDLE)) then
+	local tile = getTileInfo(position)
+	if(tile.noLogout or getCreatureNoMove(cid) or
+		getPlayerCustomFlagValue(cid, PlayerCustomFlag_AllowIdle)) then
 		return true
 	end
 
 	local idleTime = getPlayerIdleTime(cid) + interval
 	doPlayerSetIdleTime(cid, idleTime)
-	if(config.idleKick > 0 and idleTime > config.idleKick) then
+	if(config.idleKick > 0 and idleTime > config.idleKick and (not hasCreatureCondition(cid, CONDITION_INFIGHT) or tile.protection)) then
 		doRemoveCreature(cid)
-	elseif(config.idleWarning > 0 and idleTime == config.idleWarning) then
+		return true
+	end
+
+	if(config.idleWarning > 0 and idleTime == config.idleWarning) then
 		local message = "There was no variation in your behaviour for " .. math.ceil(config.idleWarning / 60000) .. " minutes"
 		if(config.idleKick > 0) then
 			message = message .. ". You will be disconnected in "
@@ -24,7 +28,7 @@ function onThink(cid, interval)
 				message = message .. "one minute"
 			end
 
-			message = message .. " if there is no change in your actions until then."
+			message = message .. " if there is no change in your actions until then"
 		end
 
 		doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, message .. ".")
