@@ -570,9 +570,9 @@ void Monster::onAddCondition(ConditionType_t type, bool hadCondition)
 	updateIdleStatus();
 }
 
-void Monster::onEndCondition(ConditionType_t type)
+void Monster::onEndCondition(ConditionType_t type, ConditionId_t id)
 {
-	Creature::onEndCondition(type);
+	Creature::onEndCondition(type, id);
 	//the walkCache need to be updated if the monster loose the "resistent" to the damage, see Tile::__queryAdd()
 	updateMapCache();
 	updateIdleStatus();
@@ -780,6 +780,12 @@ void Monster::doHealing(uint32_t interval)
 
 		if(defenseTicks % it->speed >= interval) //already used this spell for this round
 			continue;
+
+		if(it->minCombatValue > 0 && it->maxCombatValue > 0) //it's a healing spell
+		{ 
+			if(health >= healthMax) //the monster doesn't need to heal if it has full health
+				continue;
+		}
 
 		if((it->chance >= (uint32_t)random_range(1, 100)))
 		{

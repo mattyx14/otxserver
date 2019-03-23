@@ -32,8 +32,7 @@ class Creature;
 class Player;
 
 class Container;
-class DepotChest;
-class DepotLocker;
+class Depot;
 
 class TrashHolder;
 class Mailbox;
@@ -189,6 +188,7 @@ class Item : virtual public Thing, public ItemAttributes
 		static std::string getDescription(const ItemType& it, int32_t lookDistance, const Item* item = NULL, int32_t subType = -1, bool addArticle = true);
 		static std::string getNameDescription(const ItemType& it, const Item* item = NULL, int32_t subType = -1, bool addArticle = true);
 		static std::string getWeightDescription(double weight, bool stackable, uint32_t count = 1);
+		void generateSerial();
 
 		virtual std::string getDescription(int32_t lookDistance) const {return getDescription(items[id], lookDistance, this);}
 		std::string getNameDescription() const {return getNameDescription(items[id], this);}
@@ -204,7 +204,7 @@ class Item : virtual public Thing, public ItemAttributes
 		virtual bool unserializeItemNode(FileLoader&, NODE, PropStream& propStream) {return unserializeAttr(propStream);}
 
 		// Item attributes
-		void setDuration(int32_t time) {setAttribute("duration", time);}
+		void setDuration(int32_t time) { duration = time; }
 		void decreaseDuration(int32_t time);
 		int32_t getDuration() const;
 
@@ -351,6 +351,8 @@ class Item : virtual public Thing, public ItemAttributes
 	protected:
 		uint16_t id;
 		uint8_t count;
+		int32_t itemUid;
+		int32_t duration;
 
 		Raid* raid;
 		bool loadedFromMap;
@@ -498,20 +500,12 @@ inline bool Item::isDualWield() const
 
 inline void Item::decreaseDuration(int32_t time)
 {
-	bool ok;
-	int32_t v = getIntegerAttribute("duration", ok);
-	if(ok)
-		setAttribute("duration", v - time);
+	duration -= time;
 }
 
 inline int32_t Item::getDuration() const
 {
-	bool ok;
-	int32_t v = getIntegerAttribute("duration", ok);
-	if(ok)
-		return v;
-
-	return 0;
+	return duration;
 }
 
 inline std::string Item::getSpecialDescription() const

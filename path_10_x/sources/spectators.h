@@ -151,7 +151,6 @@ class Spectators
 		}
 
 		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel);
-		void sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent);
 		void sendClosePrivate(uint16_t channelId);
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
 		void sendChannelsDialog(const ChannelsList& channels)
@@ -210,33 +209,14 @@ class Spectators
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
 				it->first->sendMagicEffect(pos, type);
 		}
-		void sendPingBack() const
+		void sendAnimatedText(const Position& pos, uint8_t color, const std::string& text)
 		{
 			if(!owner)
 				return;
 
-			owner->sendPingBack();
-		}
-		void sendBasicData() const
-		{
-			if(!owner)
-				return;
-
-			owner->sendBasicData();
-		}
-		void sendEnterWorld() const
-		{
-			if(!owner)
-				return;
-
-			owner->sendEnterWorld();
-		}
-		void sendCreatureType(uint32_t creatureId, uint8_t creatureType)
-		{
-			if(!owner)
-				return;
-
-			owner->sendCreatureType(creatureId, creatureType);
+			owner->sendAnimatedText(pos, color, text);
+			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
+				it->first->sendAnimatedText(pos, color, text);
 		}
 		void sendCreatureHealth(const Creature* creature)
 		{
@@ -280,7 +260,7 @@ class Spectators
 				return;
 
 			owner->sendCreatureSay(creature, type, text, pos, statementId);
-			if(type == MSG_PRIVATE_FROM || type == MSG_GAMEMASTER_PRIVATE_FROM || type == MSG_NPC_FROM) // care for privacy!
+			if(type == MSG_PRIVATE || type == MSG_GAMEMASTER_PRIVATE || type == MSG_NPC_TO) // care for privacy!
 				return;
 
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
@@ -384,13 +364,6 @@ class Spectators
 
 			owner->sendAddMarker(pos, markType, desc);
 		}
-		void sendModalDialog(ModalDialog& dialog)
-		{
-			if(!owner)
-				return;
-
-			owner->sendModalDialog(dialog);
-		}
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
 		{
 			if(!owner)
@@ -482,47 +455,6 @@ class Spectators
 			owner->sendCloseTrade();
 		}
 
-		void sendMarketEnter(uint32_t depotId)
-		{
-			if(owner)
-				owner->sendMarketEnter(depotId);
-		}
-		void sendMarketLeave()
-		{
-			if(owner)
-				owner->sendMarketLeave();
-		}
-		void sendMarketBrowseItem(uint16_t itemId, const MarketOfferList& buyOffers, const MarketOfferList& sellOffers)
-		{
-			if(owner)
-				owner->sendMarketBrowseItem(itemId, buyOffers, sellOffers);
-		}
-		void sendMarketAcceptOffer(MarketOfferEx offer)
-		{
-			if(owner)
-				owner->sendMarketAcceptOffer(offer);
-		}
-		void sendMarketBrowseOwnOffers(const MarketOfferList& buyOffers, const MarketOfferList& sellOffers)
-		{
-			if(owner)
-				owner->sendMarketBrowseOwnOffers(buyOffers, sellOffers);
-		}
-		void sendMarketCancelOffer(MarketOfferEx offer)
-		{
-			if(owner)
-				owner->sendMarketCancelOffer(offer);
-		}
-		void sendMarketBrowseOwnHistory(const HistoryMarketOfferList& buyOffers, const HistoryMarketOfferList& sellOffers)
-		{
-			if(owner)
-				owner->sendMarketBrowseOwnHistory(buyOffers, sellOffers);
-		}
-		void sendMarketDetail(uint16_t itemId)
-		{
-			if(owner)
-				owner->sendMarketDetail(itemId);
-		}
-
 		void sendTextWindow(uint32_t windowTextId, Item* item, uint16_t maxLen, bool canWrite)
 		{
 			if(!owner)
@@ -560,15 +492,20 @@ class Spectators
 			owner->sendQuestInfo(quest);
 		}
 
-		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus)
+		void sendVIPLogIn(uint32_t guid)
 		{
 			if(owner)
-				owner->sendUpdatedVIPStatus(guid, newStatus);
+				owner->sendVIPLogIn(guid);
 		}
-		void sendVIP(uint32_t guid, const std::string& name, const std::string& desc, uint32_t& icon, bool notify, VipStatus_t status)
+		void sendVIPLogOut(uint32_t guid)
 		{
 			if(owner)
-				owner->sendVIP(guid, name, desc, icon, notify, status);
+				owner->sendVIPLogOut(guid);
+		}
+		void sendVIP(uint32_t guid, const std::string& name, bool isOnline)
+		{
+			if(owner)
+				owner->sendVIP(guid, name, isOnline);
 		}
 
 		void sendCreatureLight(const Creature* creature)
@@ -684,14 +621,14 @@ class Spectators
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
 				it->first->sendUpdateContainerItem(cid, slot, item);
 		}
-		void sendRemoveContainerItem(uint8_t cid, uint8_t slot, const Item* lastItem)
+		void sendRemoveContainerItem(uint8_t cid, uint8_t slot)
 		{
 			if(!owner)
 				return;
 
-			owner->sendRemoveContainerItem(cid, slot, lastItem);
+			owner->sendRemoveContainerItem(cid, slot);
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
-				it->first->sendRemoveContainerItem(cid, slot, lastItem);
+				it->first->sendRemoveContainerItem(cid, slot);
 		}
 
 		void sendContainer(uint32_t cid, const Container* container, bool hasParent)

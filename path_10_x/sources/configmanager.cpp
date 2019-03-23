@@ -119,7 +119,6 @@ bool ConfigManager::load()
 		m_confString[RSA_PUBLIC] = getGlobalString("rsaPublic", "65537");
 		m_confString[RSA_MODULUS] = getGlobalString("rsaModulus", "109120132967399429278860960508995541528237502902798129123468757937266291492576446330739696001110603907230888610072655818825358503429057592827629436413108566029093628212635953836686562675849720620786279431090218017681061521755056710823876476444260558147179707119674283982419152118103759076030616683978566631413");
 		m_confString[RSA_PRIVATE] = getGlobalString("rsaPrivate", "46730330223584118622160180015036832148732986808519344675210555262940258739805766860224610646919605860206328024326703361630109888417839241959507572247284807035235569619173792292786907845791904955103601652822519121908367187885509270025388641700821735345222087940578381210879116823013776808975766851829020659073");
-		m_confNumber[MARKET_OFFER_DURATION] = getGlobalNumber("marketOfferDuration",  30 * 24 * 60 * 60);
 	}
 
 	m_confString[MAP_AUTHOR] = getGlobalString("mapAuthor", "Unknown");
@@ -164,6 +163,7 @@ bool ConfigManager::load()
 	m_confBool[START_CHOOSEVOC] = getGlobalBool("newPlayerChooseVoc", false);
 	m_confNumber[HOUSE_PRICE] = getGlobalNumber("housePriceEachSquare", 1000);
 	m_confNumber[WHITE_SKULL_TIME] = getGlobalNumber("whiteSkullTime", 900000);
+	m_confBool[ON_OR_OFF_CHARLIST] = getGlobalBool("displayOnOrOffAtCharlist", false);
 	m_confBool[ALLOW_CHANGEOUTFIT] = getGlobalBool("allowChangeOutfit", true);
 	m_confBool[ONE_PLAYER_ON_ACCOUNT] = getGlobalBool("onePlayerOnlinePerAccount", true);
 	m_confBool[CANNOT_ATTACK_SAME_LOOKFEET] = getGlobalBool("noDamageToSameLookfeet", false);
@@ -345,18 +345,12 @@ bool ConfigManager::load()
 	m_confBool[HOUSE_PROTECTION] = getGlobalBool("houseProtection", true);
 	m_confBool[FAIRFIGHT_REDUCTION] = getGlobalBool("useFairfightReduction", true);
 	m_confNumber[MYSQL_RECONNECTION_ATTEMPTS] = getGlobalNumber("mysqlReconnectionAttempts", 3);
-	m_confBool[MARKET_ENABLED] = getGlobalBool("marketEnabled", true);
-	m_confBool[MARKET_PREMIUM] = getGlobalBool("premiumToCreateMarketOffer", true);
-	m_confNumber[CHECK_EXPIRED_MARKET_OFFERS_EACH_MINUTES] = getGlobalNumber("checkExpiredMarketOffersEachMinutes", 60);
-	m_confNumber[MAX_MARKET_OFFERS_AT_A_TIME_PER_PLAYER] = getGlobalNumber("maxMarketOffersAtATimePerPlayer", 100);
 	m_confBool[ALLOW_BLOCK_SPAWN] = getGlobalBool("allowBlockSpawn", true);
 	m_confNumber[FOLLOW_EXHAUST] = getGlobalNumber("playerFollowExhaust", 2000);
 	m_confBool[MULTIPLE_NAME] = getGlobalBool("multipleNames", false);
-	m_confNumber[PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
+	m_confNumber[MAX_PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
-	m_confBool[SERVER_PREVIEW] = getGlobalBool("serverPreview", false);
-	m_confNumber[LEVEL_TO_OFFLINE] = getGlobalNumber("levelToOfflineTraining", 8);
 	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);
 	m_confNumber[VERSION_MIN] = getGlobalNumber("versionMin", CLIENT_VERSION_MIN);
 	m_confNumber[VERSION_MAX] = getGlobalNumber("versionMax", CLIENT_VERSION_MAX);
@@ -367,6 +361,7 @@ bool ConfigManager::load()
 	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
 	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
 	m_confBool[OPTIONAL_PROTECTION] = getGlobalBool("optionalProtection", false);
+	m_confBool[MONSTER_ATTACK_MONSTER] = getGlobalBool("monsterAttacksOnlyDamagePlayers", true);
 
 	m_loaded = true;
 	return true;

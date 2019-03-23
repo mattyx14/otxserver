@@ -16,7 +16,6 @@
 ////////////////////////////////////////////////////////////////////////
 #include "otpch.h"
 #include <iostream>
-#include <iomanip>
 
 #include "player.h"
 #include "manager.h"
@@ -60,11 +59,6 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	if(client->getOwner())
 		p->setPlayer(this);
 
-	dialogControl.dialogId = 0;
-	dialogControl.pos.x = 0;
-	dialogControl.pos.y = 0;
-	dialogControl.pos.z = 0;
-
 	pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = mounted = outfitAttributes = sentChat = false;
 	saving = true;
 
@@ -83,7 +77,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
 	windowTextId = nextExAction = offlineTrainingTime = lastStatsTrainingTime = 0;
 
-	purchaseCallback = saleCallback = offlineTrainingSkill = marketDepotId = lastDepotId = -1;
+	purchaseCallback = saleCallback = offlineTrainingSkill = -1;
 	level = 1;
 	rates[SKILL__MAGLEVEL] = rates[SKILL__LEVEL] = 1.0f;
 	soulMax = 100;
@@ -99,13 +93,9 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	tradePartner = NULL;
 	walkTask = NULL;
 	weapon = NULL;
-	bed = NULL;
 
 	setVocation(0);
 	setParty(NULL);
-
-	inbox = new Inbox(ITEM_INBOX);
-	inbox->addRef();
 
 	transferContainer.setParent(NULL);
 	for(int32_t i = 0; i < 11; ++i)
@@ -160,12 +150,8 @@ Player::~Player()
 	setNextWalkActionTask(NULL);
 
 	transferContainer.setParent(NULL);
-	for(DepotLockerMap::iterator it = depotLockerMap.begin(), end = depotLockerMap.end(); it != end; ++it)
-	{
-		it->second->removeInbox(inbox);
-		it->second->unRef();
-	}
-	inbox->unRef();
+	for(DepotMap::iterator it = depots.begin(); it != depots.end(); ++it)
+		it->second.first->unRef();
 }
 
 void Player::setVocation(uint32_t id)
@@ -176,8 +162,6 @@ void Player::setVocation(uint32_t id)
 
 	Creature::setDropLoot((vocation->getDropLoot() ? LOOT_DROP_FULL : LOOT_DROP_PREVENT));
 	Creature::setLossSkill(vocation->getLossSkill());
-	if(client)
-		client->sendBasicData();
 
 	soulMax = vocation->getGain(GAIN_SOUL);
 	if(Condition* condition = getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT))
@@ -212,7 +196,7 @@ bool Player::isPushable() const
 
 std::string Player::getDescription(int32_t lookDistance) const
 {
-	std::stringstream s;
+	std::ostringstream s;
 	if(lookDistance == -1)
 	{
 		s << "yourself.";
@@ -570,9 +554,6 @@ void Player::sendIcons() const
 	if(pzLocked)
 		icons |= ICON_PZBLOCK;
 
-	if(!getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT))
-		icons |= ICON_HUNGRY;
-
 	// Tibia client debugs with 10 or more icons
 	// so let's prevent that from happening.
 	std::bitset<20> icon_bitset((uint64_t)icons);
@@ -671,7 +652,7 @@ void Player::addSkillAdvance(skills_t skill, uint64_t count, bool useMultiplier/
 	if(useMultiplier)
 		count = uint64_t((double)count * rates[skill] * g_config.getDouble(ConfigManager::RATE_SKILL));
 
-	std::stringstream s;
+	std::ostringstream s;
 	while(skills[skill][SKILL_TRIES] + count >= nextReqTries)
 	{
 		count -= nextReqTries - skills[skill][SKILL_TRIES];
@@ -963,38 +944,54 @@ void Player::setWalkthrough(const Creature* creature, bool walkthrough)
 		sendCreatureWalkthrough(creature, !walkthrough ? canWalkthrough(creature) : walkthrough);
 }
 
-DepotChest* Player::getDepotChest(uint32_t depotId, bool autoCreate)
+Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
 {
-	DepotMap::iterator it = depotChests.find(depotId);
-	if(it != depotChests.end())
-		return it->second;
+	DepotMap::iterator it = depots.find(depotId);
+	if(it != depots.end())
+		return it->second.first;
 
-	if(!autoCreate)
-		return NULL;
-
-	DepotChest* depotChest = new DepotChest(ITEM_DEPOT);
-	depotChest->addRef();
-	depotChest->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
-	depotChests[depotId] = depotChest;
-	return depotChest;
-}
-
-DepotLocker* Player::getDepotLocker(uint32_t depotId)
-{
-	DepotLockerMap::iterator it = depotLockerMap.find(depotId);
-	if(it != depotLockerMap.end())
+	//create a new depot?
+	if(autoCreateDepot)
 	{
-		inbox->setParent(it->second);
-		return it->second;
+		Item* locker = Item::CreateItem(ITEM_LOCKER);
+		if(Container* container = locker->getContainer())
+		{
+			if(Depot* depot = container->getDepot())
+			{
+				container->__internalAddThing(Item::CreateItem(ITEM_DEPOT));
+				internalAddDepot(depot, depotId);
+				return depot;
+			}
+		}
+
+		g_game.freeThing(locker);
+		std::clog << "Failure: Creating a new depot with id: " << depotId <<
+			", for player: " << getName() << std::endl;
 	}
 
-	DepotLocker* depotLocker = new DepotLocker(ITEM_LOCKER);
-	depotLocker->setDepotId(depotId);
-	depotLocker->__internalAddThing(Item::CreateItem(ITEM_MARKET));
-	depotLocker->__internalAddThing(inbox);
-	depotLocker->__internalAddThing(getDepotChest(depotId, true));
-	depotLockerMap[depotId] = depotLocker;
-	return depotLocker;
+	return NULL;
+}
+
+bool Player::addDepot(Depot* depot, uint32_t depotId)
+{
+	if(getDepot(depotId, false))
+		return false;
+
+	internalAddDepot(depot, depotId);
+	return true;
+}
+
+void Player::internalAddDepot(Depot* depot, uint32_t depotId)
+{
+	depots[depotId] = std::make_pair(depot, false);
+	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
+}
+
+void Player::useDepot(uint32_t depotId, bool value)
+{
+	DepotMap::iterator it = depots.find(depotId);
+	if(it != depots.end())
+		depots[depotId] = std::make_pair(it->second.first, value);
 }
 
 void Player::sendCancelMessage(ReturnValue message) const
@@ -1256,7 +1253,7 @@ void Player::sendCancelMessage(ReturnValue message) const
 
 		case RET_YOUCANONLYTRADEUPTOX:
 		{
-			std::stringstream s;
+			std::ostringstream s;
 			s << "You can only trade up to " << g_config.getNumber(ConfigManager::TRADE_LIMIT) << " items at a time.";
 			sendCancel(s.str());
 		}
@@ -1365,7 +1362,7 @@ void Player::sendUpdateContainerItem(const Container* container, uint8_t slot, c
 	}
 }
 
-void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, const Item* lastItem)
+void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, const Item*)
 {
 	if(!client)
 		return;
@@ -1373,7 +1370,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint8_t slot, c
 	for(ContainerVector::const_iterator cl = containerVec.begin(); cl != containerVec.end(); ++cl)
 	{
 		if(cl->second == container)
-			client->sendRemoveContainerItem(cl->first, slot, lastItem);
+			client->sendRemoveContainerItem(cl->first, slot);
 	}
 }
 
@@ -1429,8 +1426,8 @@ void Player::onCreatureAppear(const Creature* creature)
 	}
 
 	updateWeapon();
-	if(BedItem* _bed = Beds::getInstance()->getBedBySleeper(guid))
-		_bed->wakeUp();
+	if(BedItem* bed = Beds::getInstance()->getBedBySleeper(guid))
+		bed->wakeUp();
 
 	Outfit outfit;
 	if(Outfits::getInstance()->getOutfit(defaultOutfit.lookType, outfit))
@@ -1564,20 +1561,16 @@ void Player::onCreatureAppear(const Creature* creature)
 	{
 		IOLoginData::getInstance()->updateOnlineStatus(guid, true);
 		for(AutoList<Player>::iterator it = autoList.begin(); it != autoList.end(); ++it)
-			it->second->notifyStatusChange(this, VIPSTATUS_ONLINE);
+			it->second->notifyLogIn(this);
 	}
 	else
 	{
 		for(AutoList<Player>::iterator it = autoList.begin(); it != autoList.end(); ++it)
 		{
 			if(it->second->canSeeCreature(this))
-				it->second->notifyStatusChange(this, VIPSTATUS_ONLINE);
+				it->second->notifyLogIn(this);
 		}
 	}
-
-	#if defined(WINDOWS) && !defined(_CONSOLE)
-	GUI::getInstance()->m_pBox.addPlayer(this);
-	#endif
 
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
 		std::clog << name << " has logged in." << std::endl;
@@ -2089,7 +2082,7 @@ void Player::addManaSpent(uint64_t amount, bool useMultiplier/* = true*/)
 	if(useMultiplier)
 		amount = uint64_t((double)amount * rates[SKILL__MAGLEVEL] * g_config.getDouble(ConfigManager::RATE_MAGIC));
 
-	std::stringstream s;
+	std::ostringstream s;
 	while(manaSpent + amount >= nextReqMana)
 	{
 		amount -= nextReqMana - manaSpent;
@@ -2173,7 +2166,7 @@ void Player::addExperience(uint64_t exp)
 		for(CreatureEventList::iterator it = advanceEvents.begin(); it != advanceEvents.end(); ++it)
 			(*it)->executeAdvance(this, SKILL__LEVEL, prevLevel, level);
 
-		std::stringstream s;
+		std::ostringstream s;
 		s << "You advanced from Level " << prevLevel << " to Level " << level << ".";
 
 		sendTextMessage(MSG_EVENT_ADVANCE, s.str());
@@ -2225,7 +2218,7 @@ void Player::removeExperience(uint64_t exp, bool updateStats/* = true*/)
 		for(CreatureEventList::iterator it = advanceEvents.begin(); it != advanceEvents.end(); ++it)
 			(*it)->executeAdvance(this, SKILL__LEVEL, prevLevel, level);
 
-		std::stringstream s;
+		std::ostringstream s;
 		s << "You were downgraded from Level " << prevLevel << " to Level " << level << ".";
 
 		sendTextMessage(MSG_EVENT_ADVANCE, s.str());
@@ -2659,7 +2652,7 @@ Item* Player::createCorpse(DeathList deathList)
 	if(!corpse)
 		return NULL;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "You recognize " << nameDescription << ". " << (sex % 2 ? "He" : "She") << " was killed by ";
 	if(deathList[0].isCreatureKill())
 	{
@@ -2697,7 +2690,7 @@ Item* Player::createCorpse(DeathList deathList)
 	}
 
 	ss << ".";
-	corpse->setSpecialDescription(ss.str().c_str());
+	corpse->setSpecialDescription(ss.str());
 	return corpse;
 }
 
@@ -2755,14 +2748,14 @@ void Player::removeList()
 	if(!isGhost())
 	{
 		for(AutoList<Player>::iterator it = autoList.begin(); it != autoList.end(); ++it)
-			it->second->notifyStatusChange(this, VIPSTATUS_OFFLINE);
+			it->second->notifyLogOut(this);
 	}
 	else
 	{
 		for(AutoList<Player>::iterator it = autoList.begin(); it != autoList.end(); ++it)
 		{
 			if(it->second->canSeeCreature(this))
-				it->second->notifyStatusChange(this, VIPSTATUS_OFFLINE);
+				it->second->notifyLogOut(this);
 		}
 	}
 }
@@ -2787,19 +2780,29 @@ void Player::kick(bool displayEffect, bool forceLogout)
 		client->logout(displayEffect, forceLogout);
 }
 
-void Player::notifyStatusChange(Player* loginPlayer, VipStatus_t status)
+void Player::notifyLogIn(Player* loginPlayer)
 {
 	if(!client)
 		return;
 
-	VIPMap::iterator it = VIPList.find(loginPlayer->getGUID());
+	VIPSet::iterator it = VIPList.find(loginPlayer->getGUID());
 	if(it != VIPList.end())
-		client->sendUpdatedVIPStatus(loginPlayer->getGUID(), status);
+		client->sendVIPLogIn(loginPlayer->getGUID());
+}
+
+void Player::notifyLogOut(Player* logoutPlayer)
+{
+	if(!client)
+		return;
+
+	VIPSet::iterator it = VIPList.find(logoutPlayer->getGUID());
+	if(it != VIPList.end())
+		client->sendVIPLogOut(logoutPlayer->getGUID());
 }
 
 bool Player::removeVIP(uint32_t _guid)
 {
-	VIPMap::iterator it = VIPList.find(_guid);
+	VIPSet::iterator it = VIPList.find(_guid);
 	if(it == VIPList.end())
 		return false;
 
@@ -2807,7 +2810,7 @@ bool Player::removeVIP(uint32_t _guid)
 	return true;
 }
 
-bool Player::addVIP(uint32_t _guid, const std::string& name, const std::string& description, const uint32_t& icon, bool notify, VipStatus_t status, bool loading/* = false*/)
+bool Player::addVIP(uint32_t _guid, const std::string& name, bool online, bool loading/* = false*/)
 {
 	if(guid == _guid)
 	{
@@ -2823,7 +2826,7 @@ bool Player::addVIP(uint32_t _guid, const std::string& name, const std::string& 
 		return false;
 	}
 
-	VIPMap::iterator it = VIPList.find(_guid);
+	VIPSet::iterator it = VIPList.find(_guid);
 	if(it != VIPList.end())
 	{
 		if(!loading)
@@ -2832,28 +2835,10 @@ bool Player::addVIP(uint32_t _guid, const std::string& name, const std::string& 
 		return false;
 	}
 
-	VIP_t tmp;
-	tmp.description = description;
-	tmp.icon = icon;
-	tmp.notify = notify;
-
-	VIPList.insert(VIPPair(_guid, tmp));
-
+	VIPList.insert(_guid);
 	if(!loading && client)
-		client->sendVIP(_guid, name, tmp.description, tmp.icon, tmp.notify, status);
+		client->sendVIP(_guid, name, online);
 
-	return true;
-}
-
-bool Player::editVIP(uint32_t _guid, const std::string& description, const uint32_t& icon, bool notify)
-{
-	VIPMap::iterator it = VIPList.find(_guid);
-	if(it == VIPList.end())
-		return false;
-
-	(*it).second.description = description;
-	(*it).second.icon = icon;
-	(*it).second.notify = notify;
 	return true;
 }
 
@@ -3689,16 +3674,16 @@ void Player::postRemoveNotification(Creature*, Thing* thing, const Cylinder* new
 				onSendContainer(container);
 			else if(const Container* topContainer = dynamic_cast<const Container*>(container->getTopParent()))
 			{
-				if(const DepotChest* depotChest = dynamic_cast<const DepotChest*>(topContainer))
+				if(const Depot* depot = dynamic_cast<const Depot*>(topContainer))
 				{
 					bool isOwner = false;
-					for(DepotMap::iterator it = depotChests.begin(); it != depotChests.end(); ++it)
+					for(DepotMap::iterator it = depots.begin(); it != depots.end(); ++it)
 					{
-						if(it->second == depotChest)
-						{
-							isOwner = true;
-							onSendContainer(container);
-						}
+						if(it->second.first != depot)
+							continue;
+
+						isOwner = true;
+						onSendContainer(container);
 					}
 
 					if(!isOwner)
@@ -4012,9 +3997,9 @@ void Player::onAddCombatCondition(ConditionType_t type, bool)
 		sendTextMessage(MSG_STATUS_DEFAULT, "You are " + tmp + ".");
 }
 
-void Player::onEndCondition(ConditionType_t type)
+void Player::onEndCondition(ConditionType_t type, ConditionId_t id)
 {
-	Creature::onEndCondition(type);
+	Creature::onEndCondition(type, id);
 	if(type == CONDITION_INFIGHT)
 	{
 		onIdleStatus();
@@ -4065,9 +4050,9 @@ void Player::onCombatRemoveCondition(const Creature* attacker, Condition* condit
 	}
 }
 
-void Player::onTickCondition(ConditionType_t type, int32_t interval, bool& _remove)
+void Player::onTickCondition(ConditionType_t type, ConditionId_t id, int32_t interval, bool& _remove)
 {
-	Creature::onTickCondition(type, interval, _remove);
+	Creature::onTickCondition(type, id, interval, _remove);
 	if(type == CONDITION_HUNTING)
 		useStamina(-(interval * g_config.getNumber(ConfigManager::RATE_STAMINA_LOSS)));
 }
@@ -4524,7 +4509,7 @@ void Player::generateReservedStorage()
 			& it->second.addons) == it->second.addons))
 			continue;
 
-		std::stringstream k, v;
+		std::ostringstream k, v;
 		k << key++; // this may not work as intended, revalidate it
 		v << ((it->first << 16) | (it->second.addons & 0xFF));
 
@@ -4854,7 +4839,7 @@ bool Player::hasLearnedInstantSpell(const std::string& name) const
 
 void Player::manageAccount(const std::string &text)
 {
-	std::stringstream msg;
+	std::ostringstream msg;
 	bool noSwap = true;
 	switch(accountManager)
 	{
@@ -5432,7 +5417,6 @@ void Player::addPremiumDays(int32_t days)
 		}
 
 		IOLoginData::getInstance()->saveAccount(account);
-		sendBasicData();
 	}
 }
 
@@ -5674,7 +5658,7 @@ bool Player::transferMoneyTo(const std::string& name, uint64_t amount)
 void Player::sendCritical() const
 {
 	if(g_config.getBool(ConfigManager::DISPLAY_CRITICAL_HIT))
-		sendTextMessage(MSG_STATUS_CONSOLE_RED, "You strike a critical hit!");
+		g_game.addAnimatedText(getPosition(), COLOR_DARKRED, "CRITICAL!");
 }
 
 void Player::setMounted(bool mounting)
@@ -5915,70 +5899,6 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 	ss << std::fixed << std::setprecision(2) << "Your " << ucwords(getSkillName(skill)) << " skill changed from level " << oldSkillValue << " (with " << oldPercentToNextLevel << "% progress towards level " << (oldSkillValue + 1) << ") to level " << newSkillValue << " (with " << newPercentToNextLevel << "% progress towards level " << (newSkillValue + 1) << ")";
 	sendTextMessage(MSG_EVENT_ADVANCE, ss.str().c_str());
 	return true;
-}
-
-void Player::executeSleep(uint8_t button, uint8_t choice)
-{
-	if(!bed)
-		return;
-
-	if(button != 1 || !bed->canUse(this) || (choice > SKILL_DIST && choice != SKILL__MAGLEVEL))
-	{
-		bed = NULL;
-		return;
-	}
-
-	offlineTrainingSkill = choice;
-	bed->sleep(this);
-	bed = NULL;
-}
-
-void Player::prepareSleep(BedItem* _bed)
-{
-	ModalDialog tmp;
-	ModalChoice tmpChoice;
-	tmp.id = OFFLINE_TRAINING_DIALOG;
-
-	tmp.title = "Choose a skill";
-	tmp.message = "Please choose a skill:";
-	tmp.popup = true;
-
-	tmpChoice.id = tmp.buttonEnter = 1;
-	tmpChoice.value = "Okay";
-	tmp.buttons.push_back(tmpChoice);
-
-	tmpChoice.id = tmp.buttonEscape = 2;
-	tmpChoice.value = "Cancel";
-	tmp.buttons.push_back(tmpChoice);
-
-	tmpChoice.id = SKILL_SWORD;
-	tmpChoice.value = ucwords(getSkillName(SKILL_SWORD));
-	tmp.choices.push_back(tmpChoice);
-
-	tmpChoice.id = SKILL_AXE;
-	tmpChoice.value = ucwords(getSkillName(SKILL_AXE));
-	tmp.choices.push_back(tmpChoice);
-
-	tmpChoice.id = SKILL_CLUB;
-	tmpChoice.value = ucwords(getSkillName(SKILL_CLUB));
-	tmp.choices.push_back(tmpChoice);
-
-	tmpChoice.id = SKILL_DIST;
-	tmpChoice.value = ucwords(getSkillName(SKILL_DIST));
-	tmp.choices.push_back(tmpChoice);
-
-	tmpChoice.id = SKILL__MAGLEVEL;
-	tmpChoice.value = ucwords(getSkillName(SKILL__MAGLEVEL));
-	tmp.choices.push_back(tmpChoice);
-
-	tmpChoice.id = SKILL_FIST;
-	tmpChoice.value = ucwords(getSkillName(SKILL_FIST));
-	tmp.choices.push_back(tmpChoice);
-
-	dialogControl.dialogId = OFFLINE_TRAINING_DIALOG;
-	dialogControl.pos = getPosition();
-	bed = _bed;
-	sendModalDialog(tmp);
 }
 
 void Player::setPlayerExtraAttackSpeed(uint32_t speed)

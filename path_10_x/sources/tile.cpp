@@ -1794,7 +1794,7 @@ void Tile::updateTileFlags(Item* item, bool remove)
 		if(item->getBed())
 			setFlag(TILESTATE_BED);
 
-		if(item->getContainer() && item->getContainer()->getDepotLocker())
+		if(item->getContainer() && item->getContainer()->getDepot())
 			setFlag(TILESTATE_DEPOT);
 
 		if(item->hasProperty(BLOCKSOLID))
@@ -1883,7 +1883,7 @@ void Tile::updateTileFlags(Item* item, bool remove)
 		if(item->getBed())
 			resetFlag(TILESTATE_BED);
 
-		if(item->getContainer() && item->getContainer()->getDepotLocker())
+		if(item->getContainer() && item->getContainer()->getDepot())
 			resetFlag(TILESTATE_DEPOT);
 
 		if(item->hasProperty(BLOCKSOLID) && !hasProperty(item, BLOCKSOLID))

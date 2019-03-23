@@ -370,7 +370,7 @@ void otserv(StringVec, ServiceManager* services)
 		<< std::endl
 		<< "A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl
 		<< "Visit for updates, support, and resources: " GIT_REPO "" << std::endl;
-	std::stringstream ss;
+	std::ostringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
 #endif
@@ -451,7 +451,7 @@ void otserv(StringVec, ServiceManager* services)
 		SetProcessAffinityMask(GetCurrentProcess(), mask);
 	}
 
-	std::stringstream mutexName;
+	std::ostringstream mutexName;
 	mutexName << "otxserver_" << g_config.getNumber(ConfigManager::WORLD_ID);
 
 	CreateMutex(NULL, FALSE, mutexName.str().c_str());
@@ -545,7 +545,7 @@ void otserv(StringVec, ServiceManager* services)
 	else
 	{
 		ERR_load_crypto_strings();
-		std::stringstream s;
+		std::ostringstream s;
 
 		s << std::endl << "> OpenSSL failed - " << ERR_error_string(ERR_get_error(), NULL);
 		startupErrorMessage(s.str());
@@ -553,7 +553,7 @@ void otserv(StringVec, ServiceManager* services)
 
 	std::clog << ">> Starting SQL connection" << std::endl;
 	Database* db = Database::getInstance();
-	if(db && db->isConnected())
+	if(db && db->connect())
 	{
 		std::clog << ">> Running Database Manager" << std::endl;
 		if(DatabaseManager::getInstance()->isDatabaseSetup())
@@ -581,7 +581,7 @@ void otserv(StringVec, ServiceManager* services)
 		startupErrorMessage("Couldn't estabilish connection to SQL database!");
 
 	std::clog << ">> Checking for duplicated items" << std::endl;
-	DBQuery query;
+	std::ostringstream query;
 	query << "SELECT unitedItems.serial, COUNT(1) AS duplicatesCount FROM (SELECT serial FROM `player_items` UNION ALL SELECT serial FROM `player_depotitems` UNION ALL SELECT serial FROM `tile_items`) unitedItems GROUP BY unitedItems.serial HAVING COUNT(1) > 1;";
 	std::string logText = "";
 
@@ -596,7 +596,7 @@ void otserv(StringVec, ServiceManager* services)
 			if(serial != "" && serial.length() > 1)
 			{
 				DBResult* result_;
-				DBQuery query_playeritems;
+				std::ostringstream query_playeritems;
 				query_playeritems << "SELECT `player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_items` WHERE `serial` = " << db->escapeString(serial) << ";";
 				if(result_ = db->storeQuery(query_playeritems.str()))
 				{
@@ -606,7 +606,7 @@ void otserv(StringVec, ServiceManager* services)
 						std::string name;
 						IOLoginData::getInstance()->getNameByGuid((uint32_t)result_->getDataInt("player_id"), name, false);
 						std::clog << ">> Deleted item from 'player_items' with SERIAL: [" << serial.c_str() << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name.c_str() << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]" << std::endl;
-						std::stringstream logText;
+						std::ostringstream logText;
 						logText << "Deleted item from 'player_items' with SERIAL: [" << serial << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]";
 						Logger::getInstance()->eFile("anti_dupe.log", logText.str(), true);
 					}
@@ -615,7 +615,7 @@ void otserv(StringVec, ServiceManager* services)
 				}
 
 				query_playeritems.clear();
-				DBQuery query_playerdepotitems;
+				std::ostringstream query_playerdepotitems;
 				query_playerdepotitems << "SELECT `player_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_depotitems` WHERE `serial` = " << db->escapeString(serial) << ";";
 				if(result_ = db->storeQuery(query_playerdepotitems.str()))
 				{
@@ -625,7 +625,7 @@ void otserv(StringVec, ServiceManager* services)
 						std::string name;
 						IOLoginData::getInstance()->getNameByGuid((uint32_t)result_->getDataInt("player_id"), name, false);
 						std::clog << ">> Deleted item from 'player_depotitems' with SERIAL: [" << serial.c_str() << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name.c_str() << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]" << std::endl;
-						std::stringstream logText;
+						std::ostringstream logText;
 						logText << "Deleted item from 'player_depotitems' with SERIAL: [" << serial << "] PLAYER: [" << result_->getDataInt("player_id") << "] PLAYER NAME: [" << name << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]";
 						Logger::getInstance()->eFile("anti_dupe.log", logText.str(), true);
 					}
@@ -634,7 +634,7 @@ void otserv(StringVec, ServiceManager* services)
 				}
 
 				query_playerdepotitems.clear();
-				DBQuery query_tileitems;
+				std::ostringstream query_tileitems;
 				query_tileitems << "SELECT `tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `tile_items` WHERE `serial` = " << db->escapeString(serial) << ";";
 				if(result_ = db->storeQuery(query_tileitems.str()))
 				{
@@ -642,7 +642,7 @@ void otserv(StringVec, ServiceManager* services)
 					do
 					{
 						std::clog << ">> Deleted item from 'tile_items' with SERIAL: [" << serial.c_str() << "] TILE ID: [" << result_->getDataInt("tile_id") << "] WORLD ID: [" << result_->getDataInt("world_id") << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]" << std::endl;
-						std::stringstream logText;
+						std::ostringstream logText;
 						logText << "Deleted item from 'tile_items' with SERIAL: [" << serial << "] TILE ID: [" << result_->getDataInt("tile_id") << "] WORLD ID: [" << result_->getDataInt("world_id") << "] ITEM: [" << result_->getDataInt("itemtype") << "] COUNT: [" << result_->getDataInt("count") << "]";
 						Logger::getInstance()->eFile("anti_dupe.log", logText.str(), true);
 					}
@@ -651,19 +651,19 @@ void otserv(StringVec, ServiceManager* services)
 				}
 
 				query_tileitems.clear();
-				DBQuery query_deletepi;
+				std::ostringstream query_deletepi;
 				query_deletepi << "DELETE FROM `player_items` WHERE `serial` = " << db->escapeString(serial) << ";";
 				if(!db->query(query_deletepi.str()))
 					std::clog << ">> Cannot delete duplicated items from 'player_items'!" << std::endl;
 
 				query_deletepi.clear();
-				DBQuery query_deletedi;
+				std::ostringstream query_deletedi;
 				query_deletedi << "DELETE FROM `player_depotitems` WHERE `serial` = " << db->escapeString(serial) << ";";
 				if(!db->query(query_deletedi.str()))
 					std::clog << ">> Cannot delete duplicated items from 'player_depotitems'!" << std::endl;
 
 				query_deletedi.clear();
-				DBQuery query_deleteti;
+				std::ostringstream query_deleteti;
 				query_deleteti << "DELETE FROM `tile_items` WHERE `serial` = " << db->escapeString(serial) << ";";
 				if(!db->query(query_deleteti.str()))
 					std::clog << ">> Cannot delete duplicated items from 'tile_items'!" << std::endl;
@@ -752,7 +752,7 @@ void otserv(StringVec, ServiceManager* services)
 			startupErrorMessage("Unable to load monsters!");
 	}
 
-	if(fileExists(getFilePath(FILE_TYPE_OTHER, "npc/npcs.xml").c_str()))
+	if(fileExists(getFilePath(FILE_TYPE_OTHER, "npc/npcs.xml")))
 	{
 		std::clog << ">> Loading npcs" << std::endl;
 		if (!g_npcs.loadFromXml())
@@ -764,11 +764,14 @@ void otserv(StringVec, ServiceManager* services)
 		}
 	}
 
-	std::clog << ">> Loading map and spawns:" << std::endl;
+	std::clog << ">> Loading raids" << std::endl;
+	Raids::getInstance()->loadFromXml();
+
+	std::clog << ">> Loading map and spawns..." << std::endl;
 	if(!g_game.loadMap(g_config.getString(ConfigManager::MAP_NAME)))
 		startupErrorMessage();
 
-	std::clog << ">> Checking world type: ";
+	std::clog << ">> Checking world type... ";
 	std::string worldType = asLowerCaseString(g_config.getString(ConfigManager::WORLD_TYPE));
 	if(worldType == "open" || worldType == "2" || worldType == "openpvp")
 	{
@@ -832,7 +835,7 @@ void otserv(StringVec, ServiceManager* services)
 		{
 			if(hostent* host = gethostbyname(hostName))
 			{
-				std::stringstream s;
+				std::ostringstream s;
 				for(uint8_t** addr = (uint8_t**)host->h_addr_list; addr[0]; addr++)
 				{
 					uint32_t resolved = swap_uint32(*(uint32_t*)(*addr));
@@ -840,7 +843,7 @@ void otserv(StringVec, ServiceManager* services)
 						continue;
 
 					ipList.push_back(boost::asio::ip::address_v4(resolved));
-					serverIps.push_front(std::make_pair(*(uint32_t*)(*addr), 0x0000FFFF));
+					// serverIps.push_front(std::make_pair(*(uint32_t*)(*addr), 0x0000FFFF));
 
 					s << (int32_t)(addr[0][0]) << "." << (int32_t)(addr[0][1]) << "."
 						<< (int32_t)(addr[0][2]) << "." << (int32_t)(addr[0][3]) << "\t";

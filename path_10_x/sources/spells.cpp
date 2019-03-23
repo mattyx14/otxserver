@@ -74,7 +74,7 @@ ReturnValue Spells::onPlayerSay(Player* player, const std::string& words)
 	if(!instantSpell->castInstant(player, reParam))
 		return RET_NEEDEXCHANGE;
 
-	MessageClasses type = MSG_SPEAK_SPELL;
+	MessageClasses type = MSG_SPEAK_SAY;
 	if(g_config.getBool(ConfigManager::EMOTE_SPELLS))
 		type = MSG_SPEAK_MONSTER_SAY;
 
@@ -420,7 +420,7 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 			env->streamVariant(scriptstream, "var", var);
@@ -1389,7 +1389,7 @@ bool InstantSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 			env->streamVariant(scriptstream, "var", var);
@@ -1455,7 +1455,7 @@ bool InstantSpell::SearchPlayer(const InstantSpell*, Creature* creature, const s
 		return false;
 	}
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << targetPlayer->getName() << " " << g_game.getSearchString(player->getPosition(), targetPlayer->getPosition(), true, true) << ".";
 	player->sendTextMessage(MSG_INFO_DESCR, ss.str().c_str());
 
@@ -1963,7 +1963,7 @@ bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, cons
 	}
 
 	Creature* target = thing->getCreature();
-	if(!target)
+	if(!target || !target->getPlayer())
 	{
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1974,7 +1974,7 @@ bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, cons
 	soulfireCondition->setParam(CONDITIONPARAM_SUBID, 1);
 	soulfireCondition->setParam(CONDITIONPARAM_OWNER, player->getID());
 
-	soulfireCondition->addDamage((int32_t)std::ceil((player->getLevel() + player->getMagicLevel()) / 9.), 9000, -10);
+	soulfireCondition->addDamage(std::ceil((player->getLevel() + player->getMagicLevel()) / 3.), 9000, -10);
 	if(!target->addCondition(soulfireCondition))
 	{
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
@@ -2018,8 +2018,17 @@ bool RuneSpell::executeUse(Player* player, Item* item, const PositionEx& posFrom
 	if(isScripted())
 	{
 		LuaVariant var;
-		if(creatureId && needTarget)
+		if(needTarget)
 		{
+			if(!creatureId)
+			{
+				if(Tile* tileTo = g_game.getTile(posTo))
+				{
+					if(const Creature* creature = tileTo->getBottomVisibleCreature(player))
+						creatureId = creature->getID();
+				}
+			}
+
 			var.type = VARIANT_NUMBER;
 			var.number = creatureId;
 		}
@@ -2080,7 +2089,7 @@ bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 			env->streamVariant(scriptstream, "var", var);

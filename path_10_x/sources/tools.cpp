@@ -20,6 +20,7 @@
 #include <iostream>
 #include <iomanip>
 
+#include <boost/filesystem.hpp>
 #include <openssl/sha.h>
 #include <openssl/md5.h>
 
@@ -318,7 +319,7 @@ bool parseXMLContentString(xmlNodePtr node, std::string& value)
 
 std::string getLastXMLError()
 {
-	std::stringstream ss;
+	std::ostringstream ss;
 	xmlErrorPtr lastError = xmlGetLastError();
 	if(lastError->line)
 		ss << "Line: " << lastError->line << ", ";
@@ -634,7 +635,7 @@ bool checkText(std::string text, std::string str)
 
 std::string generateRecoveryKey(int32_t fieldCount, int32_t fieldLenght, bool mixCase/* = false*/)
 {
-	std::stringstream key;
+	std::ostringstream key;
 	int32_t i = 0, j = 0, lastNumber = 99, number = 0;
 
 	char character = 0, lastCharacter = 0;
@@ -715,7 +716,7 @@ std::string formatDate(time_t _time/* = 0*/)
 		_time = time(NULL);
 
 	const tm* tms = localtime(&_time);
-	std::stringstream s;
+	std::ostringstream s;
 	if(tms)
 		s << tms->tm_mday << "/" << (tms->tm_mon + 1) << "/" << (tms->tm_year + 1900) << " " << tms->tm_hour << ":" << tms->tm_min << ":" << tms->tm_sec;
 	else
@@ -747,7 +748,7 @@ std::string formatTime(time_t _time/* = 0*/, bool ms/* = false*/)
 		ms = false;
 
 	const tm* tms = localtime(&_time);
-	std::stringstream s;
+	std::ostringstream s;
 	if(tms)
 	{
 		s << tms->tm_hour << ":" << tms->tm_min << ":";
@@ -810,9 +811,6 @@ Skulls_t getSkulls(std::string strValue)
 PartyShields_t getShields(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "gray" || tmpStrValue == "11")
-		return SHIELD_GRAY;
-
 	if(tmpStrValue == "whitenoshareoff" || tmpStrValue == "10")
 		return SHIELD_YELLOW_NOSHAREDEXP;
 
@@ -849,12 +847,6 @@ PartyShields_t getShields(std::string strValue)
 GuildEmblems_t getEmblems(std::string strValue)
 {
 	std::string tmpStrValue = asLowerCaseString(strValue);
-	if(tmpStrValue == "other" || tmpStrValue == "5")
-		return GUILDEMBLEM_OTHER;
-
-	if(tmpStrValue == "member" || tmpStrValue == "4")
-		return GUILDEMBLEM_MEMBER;
-
 	if(tmpStrValue == "blue" || tmpStrValue == "neutral" || tmpStrValue == "3")
 		return GUILDEMBLEM_NEUTRAL;
 
@@ -952,6 +944,8 @@ Direction getReverseDirection(Direction dir)
 			return SOUTHWEST;
 		case SOUTHEAST:
 			return NORTHWEST;
+		default:
+			break;
 	}
 
 	return SOUTH;
@@ -988,6 +982,8 @@ Position getNextPosition(Direction direction, Position pos)
 		case NORTHEAST:
 			pos.x++;
 			pos.y--;
+			break;
+		default:
 			break;
 	}
 
@@ -1113,14 +1109,7 @@ MagicEffectNames magicEffectNames[] =
 	{"bats", MAGIC_EFFECT_BATS},
 	{"smoke", MAGIC_EFFECT_SMOKE},
 	{"insects", MAGIC_EFFECT_INSECTS},
-	{"dragonhead", MAGIC_EFFECT_DRAGONHEAD},
-	{"orcshaman", MAGIC_EFFECT_ORCSHAMAN},
-	{"orcshamanfire", MAGIC_EFFECT_ORCSHAMAN_FIRE},
-	{"thunder", MAGIC_EFFECT_THUNDER},
-	{"ferumbras", MAGIC_EFFECT_FERUMBRAS},
-	{"confettihorizontal", MAGIC_EFFECT_CONFETTIHORIZONTAL},
-	{"confettivertical", MAGIC_EFFECT_CONFETTIVERTICAL},
-	{"blacksmoke", MAGIC_EFFECT_BLACKSMOKE}
+	{"dragonhead", MAGIC_EFFECT_DRAGONHEAD}
 };
 
 ShootTypeNames shootTypeNames[] =
@@ -1167,13 +1156,7 @@ ShootTypeNames shootTypeNames[] =
 	{"smallearth", SHOOT_EFFECT_SMALLEARTH},
 	{"eartharrow", SHOOT_EFFECT_EARTHARROW},
 	{"explosion", SHOOT_EFFECT_EXPLOSION},
-	{"cake", SHOOT_EFFECT_CAKE},
-	{"tarsalarrow", SHOOT_EFFECT_TARSALARROW},
-	{"vortexbolt", SHOOT_EFFECT_VORTEXBOLT},
-	{"prismaticbolt", SHOOT_EFFECT_PRISMATICBOLT},
-	{"crystallinearrow", SHOOT_EFFECT_CRYSTALLINEARROW},
-	{"drillbolt", SHOOT_EFFECT_DRILLBOLT},
-	{"envenomedarrow", SHOOT_EFFECT_ENVENOMEDARROW}
+	{"cake", SHOOT_EFFECT_CAKE}
 };
 
 CombatTypeNames combatTypeNames[] =
@@ -1293,7 +1276,7 @@ MagicEffect_t getMagicEffect(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(magicEffectNames) / sizeof(MagicEffectNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), magicEffectNames[i].name))
+		if(boost::algorithm::iequals(strValue, magicEffectNames[i].name))
 			return magicEffectNames[i].magicEffect;
 	}
 
@@ -1304,7 +1287,7 @@ ShootEffect_t getShootType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(shootTypeNames) / sizeof(ShootTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), shootTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, shootTypeNames[i].name))
 			return shootTypeNames[i].shootType;
 	}
 
@@ -1315,7 +1298,7 @@ CombatType_t getCombatType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(combatTypeNames) / sizeof(CombatTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), combatTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, combatTypeNames[i].name))
 			return combatTypeNames[i].combatType;
 	}
 
@@ -1326,7 +1309,7 @@ Ammo_t getAmmoType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(ammoTypeNames) / sizeof(AmmoTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), ammoTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, ammoTypeNames[i].name))
 			return ammoTypeNames[i].ammoType;
 	}
 
@@ -1337,7 +1320,7 @@ AmmoAction_t getAmmoAction(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(ammoActionNames) / sizeof(AmmoActionNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), ammoActionNames[i].name))
+		if(boost::algorithm::iequals(strValue, ammoActionNames[i].name))
 			return ammoActionNames[i].ammoAction;
 	}
 
@@ -1348,7 +1331,7 @@ FluidTypes_t getFluidType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(fluidTypeNames) / sizeof(FluidTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), fluidTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, fluidTypeNames[i].name))
 			return fluidTypeNames[i].fluidType;
 	}
 
@@ -1359,7 +1342,7 @@ skills_t getSkillId(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(skillIdNames) / sizeof(SkillIdNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), skillIdNames[i].name))
+		if(boost::algorithm::iequals(strValue, skillIdNames[i].name))
 			return skillIdNames[i].skillId;
 	}
 
@@ -1370,7 +1353,7 @@ WeaponType_t getWeaponType(const std::string& strValue)
 {
 	for(uint32_t i = 0; i < sizeof(weaponTypeNames) / sizeof(WeaponTypeNames); ++i)
 	{
-		if(boost::algorithm::iequals(strValue.c_str(), weaponTypeNames[i].name))
+		if(boost::algorithm::iequals(strValue, weaponTypeNames[i].name))
 			return weaponTypeNames[i].weaponType;
 	}
 
@@ -1647,7 +1630,7 @@ bool parseVocationNode(xmlNodePtr vocationNode, VocationMap& vocationMap, String
 			}
 			else
 			{
-				std::stringstream ss;
+				std::ostringstream ss;
 				ss << "Wrong vocation id: " << intVector[i];
 
 				errorStr = ss.str();
@@ -1683,14 +1666,9 @@ bool parseIntegerVec(std::string str, IntegerVec& intVector)
 	return true;
 }
 
-bool fileExists(const char* filename)
+bool fileExists(const std::string& filename)
 {
-	FILE* f = fopen(filename, "rb");
-	if(!f)
-		return false;
-
-	fclose(f);
-	return true;
+	return boost::filesystem::exists(filename);
 }
 
 uint32_t adlerChecksum(uint8_t* data, size_t length)
@@ -1767,19 +1745,6 @@ std::string getFilePath(FileType_t type, std::string name/* = ""*/)
 			break;
 	}
 	return path;
-}
-
-std::string getFirstLine(const std::string& str)
-{
-	std::string firstLine = "";
-	for(uint32_t i = 0, strLength = str.length(); i < strLength; ++i)
-	{
-		if(str[i] == '\n')
-			break;
-
-		firstLine += str[i];
-	}
-	return firstLine;
 }
 
 uint8_t serverFluidToClient(uint8_t serverFluid)

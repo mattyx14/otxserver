@@ -167,7 +167,7 @@ std::string Status::getStatusString(bool sendPlayers) const
 	xmlSetProp(p, (const xmlChar*)"peak", (const xmlChar*)buffer);
 	if(sendPlayers)
 	{
-		std::stringstream ss;
+		std::ostringstream ss;
 		for(AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
 		{
 			if(it->second->isRemoved() || it->second->isGhost())

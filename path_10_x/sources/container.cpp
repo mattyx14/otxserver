@@ -133,11 +133,11 @@ double Container::getWeight() const
 
 std::string Container::getContentDescription() const
 {
-	std::stringstream s;
+	std::ostringstream s;
 	return getContentDescription(s).str();
 }
 
-std::stringstream& Container::getContentDescription(std::stringstream& s) const
+std::ostringstream& Container::getContentDescription(std::ostringstream& s) const
 {
 	bool begin = true;
 	Container* evil = const_cast<Container*>(this);
@@ -253,12 +253,11 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
 
 	//send change to client
-	Item* lastItem = getItem(maxSize);
 	Player* player = NULL;
 	for(it = list.begin(); it != list.end(); ++it)
 	{
 		if((player = (*it)->getPlayer()))
-			player->sendRemoveContainerItem(this, index, lastItem);
+			player->sendRemoveContainerItem(this, index, item);
 	}
 
 	//event methods
@@ -295,9 +294,6 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 		{
 			if(cylinder == container)
 				return RET_THISISIMPOSSIBLE;
-
-			if(dynamic_cast<const Inbox*>(cylinder))
-				return RET_CONTAINERNOTENOUGHROOM;
 		}
 	}
 

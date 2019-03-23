@@ -355,7 +355,7 @@ bool Weapon::useFist(Player* player, Creature* target)
 	const Position& targetPos = target->getPosition();
 	if(!Position::areInRange<1,1>(playerPos, targetPos))
 		return false;
-
+	
 	bool isCritical = false;
 	float attackFactor = player->getAttackFactor();
 	int32_t attackSkill = player->getSkill(SKILL_FIST, SKILL_LEVEL), attackValue = g_config.getNumber(ConfigManager::FIST_BASE_ATTACK);
@@ -507,7 +507,7 @@ bool Weapon::executeUseWeapon(Player* player, const LuaVariant& var) const
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(player->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(player) << std::endl;
 			env->streamVariant(scriptstream, "var", var);

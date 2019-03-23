@@ -46,7 +46,7 @@ Connection_ptr ConnectionManager::createConnection(boost::asio::ip::tcp::socket*
 	std::clog << "Creating new Connection" << std::endl;
 	#endif
 	boost::recursive_mutex::scoped_lock lockClass(m_connectionManagerLock);
-	Connection_ptr connection = boost::shared_ptr<Connection>(new Connection(socket, io_service, servicer));
+	Connection_ptr connection = Connection_ptr(new Connection(socket, io_service, servicer));
 
 	m_connections.push_back(connection);
 	return connection;
@@ -92,10 +92,10 @@ void Connection::close()
 	#ifdef __DEBUG_NET_DETAIL__
 	std::clog << "Connection::close" << std::endl;
 	#endif
-	boost::recursive_mutex::scoped_lock lockClass(m_connectionLock);
-	if(m_connectionState == CONNECTION_STATE_CLOSED || m_connectionState == CONNECTION_STATE_REQUEST_CLOSE)
+	if(m_connectionState == CONNECTION_STATE_CLOSING || m_connectionState == CONNECTION_STATE_CLOSED || m_connectionState == CONNECTION_STATE_REQUEST_CLOSE)
 		return;
 
+	boost::recursive_mutex::scoped_lock lockClass(m_connectionLock);
 	m_connectionState = CONNECTION_STATE_REQUEST_CLOSE;
 	Dispatcher::getInstance().addTask(createTask(boost::bind(&Connection::closeConnection, this)));
 }
@@ -366,7 +366,7 @@ void Connection::parseHeader(const boost::system::error_code& error)
 
 		// Read packet content
 		m_msg.setSize(size + NETWORK_HEADER_SIZE);
-		boost::asio::async_read(getHandle(), boost::asio::buffer(m_msg.bodyBuffer(), size),
+		boost::asio::async_read(getHandle(), boost::asio::buffer(m_msg.writeBuffer(), size),
 			boost::bind(&Connection::parsePacket, shared_from_this(), boost::asio::placeholders::error));
 	}
 	catch(std::exception& e)
@@ -396,19 +396,18 @@ void Connection::parsePacket(const boost::system::error_code& error)
 		return;
 	}
 
-	uint32_t timePassed = std::max<uint32_t>(1, (time(NULL) - m_timeConnected) + 1);
-	if((++m_packetsSent / timePassed) > (uint32_t)g_config.getNumber(ConfigManager::PACKETS_PER_SECOND))
+	uint32_t passed = std::max((time_t)1, (time(NULL) - m_time) + 1);
+	if((++m_packets / passed) > (uint32_t)g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND))
 	{
-		std::cout << convertIPAddress(getIP()) << " disconnected for exceeding packet per second limit." << std::endl;
-		close();;
+		close();
 		m_connectionLock.unlock();
 		return;
 	}
 
-	if(timePassed > 2)
+	if(passed > 2)
 	{
-		m_timeConnected = time(NULL);
-		m_packetsSent = 0;
+		m_time = time(NULL);
+		m_packets = 0;
 	}
 
 	--m_pendingRead;
@@ -488,8 +487,8 @@ bool Connection::send(OutputMessage_ptr msg)
 	TRACK_MESSAGE(msg);
 	if(!m_pendingWrite)
 	{
-		if(msg->getProtocol())
-			msg->getProtocol()->onSendMessage(msg);
+		if(Protocol* protocol = msg->getProtocol())
+			protocol->onSendMessage(msg);
 
 		#ifdef __DEBUG_NET_DETAIL__
 		std::clog << "Connection::send " << msg->size() << std::endl;
@@ -636,7 +635,7 @@ void Connection::handleReadTimeout(boost::weak_ptr<Connection> weak, const boost
 	if(error == boost::asio::error::operation_aborted || weak.expired())
 		return;
 
-	if(shared_ptr<Connection> connection = weak.lock())
+	if(Connection_ptr connection = weak.lock())
 	{
 		#ifdef __DEBUG_NET_DETAIL__
 		std::clog << "Connection::handleReadTimeout" << std::endl;
@@ -674,7 +673,7 @@ void Connection::handleWriteTimeout(boost::weak_ptr<Connection> weak, const boos
 	if(error == boost::asio::error::operation_aborted || weak.expired())
 		return;
 
-	if(shared_ptr<Connection> connection = weak.lock())
+	if(Connection_ptr connection = weak.lock())
 	{
 		#ifdef __DEBUG_NET_DETAIL__
 		std::clog << "Connection::handleWriteTimeout" << std::endl;
@@ -682,4 +681,3 @@ void Connection::handleWriteTimeout(boost::weak_ptr<Connection> weak, const boos
 		connection->onWriteTimeout();
 	}
 }
-

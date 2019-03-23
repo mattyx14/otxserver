@@ -24,7 +24,7 @@
 
 SocketCode_t NetworkMessage::read(SOCKET socket, bool ignoreLength, int32_t timeout/* = NETWORK_RETRY_TIME*/)
 {
-	int32_t waiting = 0, data = NETWORK_DEFAULT_SIZE;
+	int32_t waiting = 0, data = NETWORK_SOCKET_SIZE;
 	if(!ignoreLength)
 	{
 		do
@@ -84,7 +84,7 @@ SocketCode_t NetworkMessage::read(SOCKET socket, bool ignoreLength, int32_t time
 					return SOCKET_CODE_TIMEOUT;
 				}
 			}
-			else if(data == NETWORK_DEFAULT_SIZE)
+			else if(data == NETWORK_SOCKET_SIZE)
 				break;
 			else
 			{
@@ -152,7 +152,7 @@ std::string NetworkMessage::getString(bool peek/* = false*/, uint16_t size/* = 0
 	if(peek)
 		position += 2;
 
-	if(size >= (16384 - position))
+	if(size >= (NETWORK_MAX_SIZE - position))
 		return std :: string();
 
 	char* v = (char*)(m_buffer + position);
@@ -172,10 +172,10 @@ Position NetworkMessage::getPosition()
 	return pos;
 }
 
-void NetworkMessage::putString(const char* value, int length, bool addSize/* = true*/)
+void NetworkMessage::putString(const char* value, uint32_t length, bool addSize/* = true*/)
 {
 	uint32_t size = (uint32_t)length;
-	if(!hasSpace(size + (addSize ? 2 : 0)) || size > 8192)
+	if(!hasSpace(size + (addSize ? 2 : 0)) || size > (addSize ? 8192 : NETWORK_BODY_SIZE))
 		return;
 
 	if(addSize)
@@ -184,12 +184,6 @@ void NetworkMessage::putString(const char* value, int length, bool addSize/* = t
 	memcpy((char*)(m_buffer + m_position), value, length);
 	m_position += size;
 	m_size += size;
-}
-
-void NetworkMessage::putDouble(double value, uint8_t precision/* = 2*/)
-{
-	put<char>(precision);
-	put<uint32_t>((value * std::pow((float)10, precision)) + INT_MAX);
 }
 
 void NetworkMessage::putPadding(uint32_t amount)
@@ -212,28 +206,20 @@ void NetworkMessage::putItem(uint16_t id, uint8_t count)
 {
 	const ItemType &it = Item::items[id];
 	put<uint16_t>(it.clientId);
-	put<char>(0xFF); // MARK_UNMARKED
 	if(it.stackable)
 		put<char>(count);
 	else if(it.isSplash() || it.isFluidContainer())
 		put<char>(fluidMap[count % 8]);
-
-	if(it.isAnimation)
-		put<char>(0xFE);
 }
 
 void NetworkMessage::putItem(const Item* item)
 {
 	const ItemType& it = Item::items[item->getID()];
 	put<uint16_t>(it.clientId);
-	put<char>(0xFF); // MARK_UNMARKED
 	if(it.stackable)
 		put<char>(item->getSubType());
 	else if(it.isSplash() || it.isFluidContainer())
 		put<char>(fluidMap[item->getSubType() % 8]);
-
-	if(it.isAnimation)
-		put<char>(0xFE);
 }
 
 void NetworkMessage::putItemId(const Item* item)

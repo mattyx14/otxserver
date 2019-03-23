@@ -44,7 +44,6 @@ enum CreatureEventType_t
 	CREATURE_EVENT_HOUSEEDIT,
 	CREATURE_EVENT_REPORTBUG,
 	CREATURE_EVENT_REPORTVIOLATION,
-	CREATURE_EVENT_THANKYOU,
 	CREATURE_EVENT_THINK,
 	CREATURE_EVENT_STATSCHANGE,
 	CREATURE_EVENT_COMBAT_AREA,
@@ -141,7 +140,6 @@ class CreatureEvent : public Event
 		uint32_t executeReportBug(Player* player, const std::string& comment);
 		uint32_t executeReportViolation(Player* player, ReportType_t type, uint8_t reason, const std::string& name,
 			const std::string& comment, const std::string& translation, uint32_t statementId);
-		uint32_t executeThankYou(Player* player, uint32_t statementId);
 		uint32_t executeThink(Creature* creature, uint32_t interval);
 		uint32_t executeDirection(Creature* creature, Direction old, Direction current);
 		uint32_t executeOutfit(Creature* creature, const Outfit_t& old, const Outfit_t& current);

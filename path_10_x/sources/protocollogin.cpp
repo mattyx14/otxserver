@@ -32,6 +32,7 @@
 
 #include "configmanager.h"
 #include "game.h"
+
 extern ConfigManager g_config;
 extern Game g_game;
 
@@ -75,16 +76,13 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	msg.skip(2); // client platform
 	uint16_t version = msg.get<uint16_t>();
 
-	if(version >= 971)
-		msg.skip(17);
-	else
-		msg.skip(12);
-
 #ifdef CLIENT_VERSION_DATA
 	uint32_t datSignature = msg.get<uint32_t>();
 	uint32_t sprSignature = msg.get<uint32_t>();
 
 	uint32_t picSignature = msg.get<uint32_t>();
+#else
+	msg.skip(12);
 #endif
 	if(!RSA_decrypt(msg))
 	{
@@ -184,7 +182,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		else
 			IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-		std::stringstream ss;
+		std::ostringstream ss;
 		ss << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str()
 			<< " by: " << name_.c_str() << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ?
 			"account won't be undeleted" : "banishment will be lifted at:\n") << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
@@ -256,7 +254,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				output->put<char>(players.size());
 				for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
 				{
-					std::stringstream s;
+					std::ostringstream s;
 					s << (*it)->getLevel();
 					if(!(*it)->client->check(password))
 						s << "*";
@@ -267,10 +265,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 					IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
 					output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-					if(!g_config.getBool(ConfigManager::SERVER_PREVIEW))
-						output->put<char>(0x00);
-					else
-						output->put<char>(0x01);
 				}
 			}
 		}
@@ -286,10 +280,6 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
 				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-				if(!g_config.getBool(ConfigManager::SERVER_PREVIEW))
-					output->put<char>(0x00);
-				else
-					output->put<char>(0x01);
 			}
 			else
 				output->put<char>((uint8_t)account.charList.size());
@@ -297,28 +287,35 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			#ifndef __LOGIN_SERVER__
 			for(Characters::iterator it = account.charList.begin(); it != account.charList.end(); ++it)
 			{
-				output->putString(g_config.getString(ConfigManager::SERVER_NAME));
-				output->put<uint32_t>(serverIp);
+				output->putString((*it));
+				if(g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST))
+				{
+					if(g_game.getPlayerByName((*it)))
+						output->putString("Online");
+					else
+						output->putString("Offline");
+				}
+				else
+					output->putString(g_config.getString(ConfigManager::SERVER_NAME));
 
+				output->put<uint32_t>(serverIp);
 				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
 				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-				if (!g_config.getBool(ConfigManager::SERVER_PREVIEW))
-					output->put<char>(0x00);
-				else
-					output->put<char>(0x01);
 			}
 			#else
 			for(Characters::iterator it = charList.begin(); it != charList.end(); ++it)
 			{
-				output->putString(g_config.getString(ConfigManager::SERVER_NAME));
-				output->put<uint32_t>(serverIp);
-
-				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-				if (!g_config.getBool(ConfigManager::SERVER_PREVIEW))
-					output->put<char>(0x00);
+				output->putString(it->second.name);
+				if(!g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST) || it->second.status < 0)
+					output->putString(it->second.server->getName());
+				else if(it->second.status)
+					output->putString("Online");
 				else
-					output->put<char>(0x01);
+					output->putString("Offline");
+
+				output->put<uint32_t>(it->second.server->getAddress());
+				IntegerVec games = it->second.server->getPorts();
+				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
 			}
 			#endif
 		}

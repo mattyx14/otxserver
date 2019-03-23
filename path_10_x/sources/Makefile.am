@@ -1,9 +1,9 @@
 noinst_PROGRAMS = theotxserver
 
-CXXFLAGS = -pipe -Ofast -march=native -DNDEBUG
+CXXFLAGS = -pipe -g
 AM_CXXFLAGS = $(XML_CPPFLAGS) $(OTSERV_FLAGS) $(LUA_CFLAGS) $(DEBUG_FLAGS)\
 $(MYSQL_FLAGS) $(MYSQLPP_FLAGS) $(SQLITE_FLAGS) $(PGSQL_FLAGS) $(PROFILER_FLAGS)\
-$(OPTIONAL_FLAGS) -D_THREAD_SAFE -D_REENTRANT -Wall -Wextra -Wno-strict-aliasing -Wno-unused-parameter -Wno-array-bounds -pthread
+$(OPTIONAL_FLAGS) -D_THREAD_SAFE -D_REENTRANT -Wall -Wextra -Werror -Wno-strict-aliasing
 
 theotxserver_LDADD = $(LUA_LIBS)
 
@@ -33,12 +33,12 @@ theotxserver_SOURCES = account.h actions.cpp actions.h $(MAYBE_OTADMIN) \
 	const.h container.cpp container.h creature.cpp creature.h \
 	creatureevent.cpp creatureevent.h cylinder.cpp cylinder.h database.cpp \
 	database.h databasemanager.cpp databasemanager.h $(MAYBE_MYSQL) \
-	$(MAYBE_MYSQLPP) $(MAYBE_SQLITE) $(MAYBE_PGSQL) depotchest.cpp depotchest.h depotlocker.cpp depotlocker.h dispatcher.cpp \
+	$(MAYBE_MYSQLPP) $(MAYBE_SQLITE) $(MAYBE_PGSQL) depot.cpp depot.h dispatcher.cpp \
 	dispatcher.h exception.cpp exception.h fileloader.cpp fileloader.h \
 	game.cpp game.h $(MAYBE_LOGIN) globalevent.cpp globalevent.h group.cpp \
-	group.h house.cpp house.h housetile.cpp housetile.h inbox.cpp inbox.h ioban.cpp ioban.h \
+	group.h house.cpp house.h housetile.cpp housetile.h ioban.cpp ioban.h \
 	ioguild.cpp ioguild.h iologindata.cpp iologindata.h iomap.cpp iomap.h \
-	iomapserialize.cpp iomapserialize.h iomarket.cpp iomarket.h item.cpp item.h itemattributes.cpp \
+	iomapserialize.cpp iomapserialize.h item.cpp item.h itemattributes.cpp \
 	itemattributes.h items.cpp items.h luascript.cpp luascript.h \
 	mailbox.cpp mailbox.h manager.cpp manager.h map.cpp map.h monster.cpp \
 	monster.h monsters.cpp monsters.h mounts.cpp mounts.h movement.cpp movement.h \

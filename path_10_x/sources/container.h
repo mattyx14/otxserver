@@ -22,9 +22,8 @@
 #include "cylinder.h"
 #include "item.h"
 
+class Depot;
 class Container;
-class DepotChest;
-class DepotLocker;
 
 class ContainerIterator
 {
@@ -63,20 +62,17 @@ class Container : public Item, public Cylinder
 		virtual Container* getContainer() {return this;}
 		virtual const Container* getContainer() const {return this;}
 
-		virtual DepotChest* getDepotChest() {return NULL;}
-		virtual const DepotChest* getDepotChest() const {return NULL;}
-
-		virtual DepotLocker* getDepotLocker() {return NULL;}
-		virtual const DepotLocker* getDepotLocker() const {return NULL;}
+		virtual Depot* getDepot() {return NULL;}
+		virtual const Depot* getDepot() const {return NULL;}
 
 		Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);
 		bool unserializeItemNode(FileLoader& f, NODE node, PropStream& propStream);
 
 		std::string getContentDescription() const;
-		virtual uint32_t getItemHoldingCount() const;
+		uint32_t getItemHoldingCount() const;
 		virtual double getWeight() const;
 
-		uint32_t capacity() const {return maxSize ? maxSize : std::min(255U, (uint32_t)itemlist.size() + 1);}
+		uint32_t capacity() const {return maxSize ? maxSize : std::min(255, (int32_t)itemlist.size() + 1);}
 		uint32_t size() const {return (uint32_t)itemlist.size();}
 		bool full() const
 		{
@@ -159,7 +155,7 @@ class Container : public Item, public Cylinder
 
 		Container* getParentContainer();
 		void updateItemWeight(double diff);
-		std::stringstream& getContentDescription(std::stringstream& s) const;
+		std::ostringstream& getContentDescription(std::ostringstream& s) const;
 
 	protected:
 		uint32_t maxSize, serializationCount;

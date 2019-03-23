@@ -84,10 +84,7 @@
     <ClInclude Include="..\definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\depotchest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\depotlocker.h">
+    <ClInclude Include="..\depot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\dispatcher.h">
@@ -120,9 +117,6 @@
     <ClInclude Include="..\housetile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inbox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\ioban.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -136,9 +130,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\iomapserialize.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\iomarket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\item.h">
@@ -347,10 +338,7 @@
     <ClCompile Include="..\databasesqlite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\depotchest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\depotlocker.cpp">
+    <ClCompile Include="..\depot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\dispatcher.cpp">
@@ -380,9 +368,6 @@
     <ClCompile Include="..\housetile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\inbox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\ioban.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -396,9 +381,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\iomapserialize.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\iomarket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\item.cpp">

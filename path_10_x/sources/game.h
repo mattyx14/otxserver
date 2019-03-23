@@ -18,6 +18,7 @@
 #ifndef __GAME__
 #define __GAME__
 #include "otsystem.h"
+#include <boost/tr1/unordered_map.hpp>
 
 #include "enums.h"
 #include "templates.h"
@@ -460,7 +461,6 @@ class Game
 		bool playerReportBug(uint32_t playerId, std::string comment);
 		bool playerReportViolation(uint32_t playerId, ReportType_t type, uint8_t reason, const std::string& name,
 			const std::string& comment, const std::string& translation, uint32_t statementId);
-		bool playerThankYou(uint32_t playerId, uint32_t statementId);
 		bool playerMoveThing(uint32_t playerId, const Position& fromPos, uint16_t spriteId,
 			int16_t fromStackpos, const Position& toPos, uint8_t count);
 		bool playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
@@ -476,7 +476,6 @@ class Game
 		bool playerCloseChannel(uint32_t playerId, uint16_t channelId);
 		bool playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
 		bool playerCloseNpcChannel(uint32_t playerId);
-		bool playerReceivePingBack(uint32_t playerId);
 		bool playerReceivePing(uint32_t playerId);
 		bool playerAutoWalk(uint32_t playerId, std::list<Direction>& listDir);
 		bool playerStopAutoWalk(uint32_t playerId);
@@ -496,7 +495,7 @@ class Game
 		bool playerRequestTrade(uint32_t playerId, const Position& pos, int16_t stackpos,
 			uint32_t tradePlayerId, uint16_t spriteId);
 		void playerAcceptTrade(uint32_t playerId);
-		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
+		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t index);
 		bool playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
 			bool ignoreCap = false, bool inBackpacks = false);
 		bool playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
@@ -514,7 +513,6 @@ class Game
 		bool playerQuestInfo(uint32_t playerId, uint16_t questId);
 		bool playerRequestAddVip(uint32_t playerId, const std::string& name);
 		bool playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
-		bool playerRequestEditVip(uint32_t playerId, uint32_t guid, std::string description, uint32_t icon, bool notify);
 		bool playerTurn(uint32_t playerId, Direction dir);
 		bool playerRequestOutfit(uint32_t playerId);
 		bool playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
@@ -527,16 +525,7 @@ class Game
 		bool playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId);
 		bool playerLeaveParty(uint32_t playerId, bool forced = false);
 		bool playerSharePartyExperience(uint32_t playerId, bool activate);
-		bool playerLeaveMarket(uint32_t playerId);
-		bool playerBrowseMarket(uint32_t playerId, uint16_t spriteId);
-		bool playerBrowseMarketOwnOffers(uint32_t playerId);
-		bool playerBrowseMarketOwnHistory(uint32_t playerId);
-		bool playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint32_t price, bool anonymous);
-		bool playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
-		bool playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
-		bool playerAnswerModalDialog(uint32_t playerId, uint32_t dialog, uint8_t button, uint8_t choice);
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
-		void checkExpiredMarketOffers();
 
 		void kickPlayer(uint32_t playerId, bool displayEffect);
 		bool broadcastMessage(const std::string& text, MessageClasses type);
@@ -579,7 +568,6 @@ class Game
 
 		void updateCreatureSkull(Creature* creature);
 		void updateCreatureShield(Creature* creature);
-		void updateCreatureType(Creature* creature);
 		void updateCreatureEmblem(Creature* creature);
 		void updateCreatureWalkthrough(Creature* creature);
 
@@ -621,6 +609,8 @@ class Game
 		void addCreatureSquare(const Creature* target, uint8_t squareColor);
 		void addCreatureSquare(const SpectatorVec& list, const Creature* target, uint8_t squareColor);
 
+		void addAnimatedText(const Position& pos, uint8_t textColor, const std::string& text);
+		void addAnimatedText(const SpectatorVec& list, const Position& pos, uint8_t textColor, const std::string& text);
 		void addMagicEffect(const Position& pos, uint8_t effect, bool ghostMode = false);
 		void addMagicEffect(const SpectatorVec& list, const Position& pos, uint8_t effect, bool ghostMode = false);
 		void addDistanceEffect(const SpectatorVec& list, const Position& fromPos, const Position& toPos, uint8_t effect);
@@ -703,7 +693,7 @@ class Game
 		StageList stages;
 		uint32_t lastStageLevel;
 
-		Highscore highscoreStorage[8];
+		Highscore highscoreStorage[9];
 		time_t lastHighscoreCheck;
 };
 #endif

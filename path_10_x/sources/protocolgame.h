@@ -32,8 +32,7 @@ class Container;
 class Tile;
 class Connection;
 class Quest;
-class DepotChest;
-class DepotLocker;
+class Depot;
 class Spectators;
 
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
@@ -51,7 +50,7 @@ class ProtocolGame : public Protocol
 			protocolGameCount++;
 #endif
 			player = NULL;
-			m_eventConnect = m_packetCount = m_packetTime = 0;
+			m_eventConnect = 0;
 			m_debugAssertSent = m_acceptPackets = m_spectator = false;
 		}
 		virtual ~ProtocolGame()
@@ -101,7 +100,6 @@ class ProtocolGame : public Protocol
 		void parseCancelWalk(NetworkMessage& msg);
 		void parseCancelTarget(NetworkMessage& msg);
 
-		void parseReceivePingBack(NetworkMessage& msg);
 		void parseReceivePing(NetworkMessage& msg);
 		void parseAutoWalk(NetworkMessage& msg);
 		void parseMove(NetworkMessage& msg, Direction dir);
@@ -119,7 +117,6 @@ class ProtocolGame : public Protocol
 		void parseFollow(NetworkMessage& msg);
 
 		void parseBugReport(NetworkMessage& msg);
-		void parseThankYou(NetworkMessage& msg);
 		void parseDebugAssert(NetworkMessage& msg);
 
 		void parseThrow(NetworkMessage& msg);
@@ -154,17 +151,9 @@ class ProtocolGame : public Protocol
 		void parseAcceptTrade(NetworkMessage& msg);
 		void parseCloseTrade();
 
-		//market methods
-		void parseMarketLeave();
-		void parseMarketBrowse(NetworkMessage& msg);
-		void parseMarketCreateOffer(NetworkMessage& msg);
-		void parseMarketCancelOffer(NetworkMessage& msg);
-		void parseMarketAcceptOffer(NetworkMessage& msg);
-
 		//VIP methods
 		void parseAddVip(NetworkMessage& msg);
 		void parseRemoveVip(NetworkMessage& msg);
-		void parseEditVip(NetworkMessage& msg);
 
 		void parseRotateItem(NetworkMessage& msg);
 
@@ -183,7 +172,6 @@ class ProtocolGame : public Protocol
 
 		//Send functions
 		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel);
-		void sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent);
 		void sendClosePrivate(uint16_t channelId);
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
 		void sendChannelsDialog(const ChannelsList& channels);
@@ -194,10 +182,10 @@ class ProtocolGame : public Protocol
 
 		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type);
 		void sendMagicEffect(const Position& pos, uint8_t type);
+		void sendAnimatedText(const Position& pos, uint8_t color, std::string text);
 		void sendCreatureHealth(const Creature* creature);
 		void sendSkills();
 		void sendPing();
-		void sendPingBack();
 		void sendCreatureTurn(const Creature* creature, int16_t stackpos);
 		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos, uint32_t statementId);
 		void sendCreatureChannelSay(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId);
@@ -208,7 +196,6 @@ class ProtocolGame : public Protocol
 		void sendCancelTarget();
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
-		void sendBasicData();
 		void sendTextMessage(MessageClasses mclass, const std::string& message);
 		void sendStatsMessage(MessageClasses mclass, const std::string& message,
 			Position pos, MessageDetails* details = NULL);
@@ -219,21 +206,12 @@ class ProtocolGame : public Protocol
 
 		void sendCreatureSkull(const Creature* creature);
 		void sendCreatureShield(const Creature* creature);
-		void sendCreatureType(uint32_t creatureId, uint8_t creatureType);
 		void sendCreatureEmblem(const Creature* creature) {reloadCreature(creature);}
 		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough);
 
 		void sendShop(Npc* npc, const ShopInfoList& shop);
 		void sendCloseShop();
 		void sendGoods(const ShopInfoList& shop);
-		void sendMarketEnter(uint32_t depotId);
-		void sendMarketLeave();
-		void sendMarketBrowseItem(uint16_t itemId, const MarketOfferList& buyOffers, const MarketOfferList& sellOffers);
-		void sendMarketAcceptOffer(MarketOfferEx offer);
-		void sendMarketBrowseOwnOffers(const MarketOfferList& buyOffers, const MarketOfferList& sellOffers);
-		void sendMarketCancelOffer(MarketOfferEx offer);
-		void sendMarketBrowseOwnHistory(const HistoryMarketOfferList& buyOffers, const HistoryMarketOfferList& sellOffers);
-		void sendMarketDetail(uint16_t itemId);
 		void sendTradeItemRequest(const Player* _player, const Item* item, bool ack);
 		void sendCloseTrade();
 
@@ -244,11 +222,9 @@ class ProtocolGame : public Protocol
 		void sendQuests();
 		void sendQuestInfo(Quest* quest);
 
-		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
-		void sendVIP(uint32_t guid, const std::string& name, const std::string& desc, uint32_t& icon, bool notify, VipStatus_t status);
-
-		void sendPendingStateEntered();
-		void sendEnterWorld();
+		void sendVIPLogIn(uint32_t guid);
+		void sendVIPLogOut(uint32_t guid);
+		void sendVIP(uint32_t guid, const std::string& name, bool online);
 
 		void sendSpellCooldown(Spells_t icon, uint32_t cooldown);
 		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t cooldown);
@@ -272,7 +248,7 @@ class ProtocolGame : public Protocol
 		//containers
 		void sendAddContainerItem(uint8_t cid, const Item* item);
 		void sendUpdateContainerItem(uint8_t cid, uint8_t slot, const Item* item);
-		void sendRemoveContainerItem(uint8_t cid, uint8_t slot, const Item* lastItem);
+		void sendRemoveContainerItem(uint8_t cid, uint8_t slot);
 
 		void sendContainer(uint32_t cid, const Container* container, bool hasParent);
 		void sendCloseContainer(uint32_t cid);
@@ -299,6 +275,8 @@ class ProtocolGame : public Protocol
 		void AddMapDescription(NetworkMessage_ptr msg, const Position& pos);
 		void AddTextMessage(NetworkMessage_ptr msg, MessageClasses mclass, const std::string& message,
 			Position* pos = NULL, MessageDetails* details = NULL);
+		void AddAnimatedText(NetworkMessage_ptr msg, const Position& pos,
+			uint8_t color, const std::string& text);
 		void AddMagicEffect(NetworkMessage_ptr msg, const Position& pos, uint8_t type);
 		void AddDistanceShoot(NetworkMessage_ptr msg, const Position& from, const Position& to, uint8_t type);
 		void AddCreature(NetworkMessage_ptr msg, const Creature* creature, bool known, uint32_t remove);
@@ -325,7 +303,7 @@ class ProtocolGame : public Protocol
 		//container
 		void AddContainerItem(NetworkMessage_ptr msg, uint8_t cid, const Item* item);
 		void UpdateContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot, const Item* item);
-		void RemoveContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot, const Item* lastItem);
+		void RemoveContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot);
 
 		//inventory
 		void AddInventoryItem(NetworkMessage_ptr msg, slots_t slot, const Item* item);
@@ -334,10 +312,6 @@ class ProtocolGame : public Protocol
 
 		//shop
 		void AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item);
-
-		//modal dialog
-		void parseModalDialogAnswer(NetworkMessage& msg);
-		void sendModalDialog(ModalDialog& dialog);
 
 		void parseExtendedOpcode(NetworkMessage& msg);
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);

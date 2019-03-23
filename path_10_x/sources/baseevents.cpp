@@ -18,7 +18,10 @@
 #include <libxml/xmlmemory.h>
 
 #include "baseevents.h"
+#include "configmanager.h"
 #include "tools.h"
+
+extern ConfigManager g_config;
 
 bool BaseEvents::loadFromXml()
 {
@@ -29,11 +32,12 @@ bool BaseEvents::loadFromXml()
 		return false;
 	}
 
-	std::string path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsName + "/lib/"));
-	if(!getInterface().loadDirectory(path, false, true))
+	std::string scriptsPath = getScriptPath(scriptsName);
+	std::string path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsPath + "/lib/"));
+	if(!fileExists(path) || !getInterface().loadDirectory(path, false, true))
 		std::clog << "[Warning - BaseEvents::loadFromXml] Cannot load " << path << std::endl;
 
-	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsName + "/" + scriptsName + ".xml"));
+	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsPath + "/" + scriptsName + ".xml"));
 	xmlDocPtr doc = xmlParseFile(path.c_str());
 	if(!doc)
 	{
@@ -50,13 +54,24 @@ bool BaseEvents::loadFromXml()
 		return false;
 	}
 
-	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsName + "/scripts/"));
+	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsPath + "/scripts/"));
 	for(xmlNodePtr p = root->children; p; p = p->next)
 		parseEventNode(p, path, false);
 
 	xmlFreeDoc(doc);
 	m_loaded = true;
 	return m_loaded;
+}
+
+std::string BaseEvents::getScriptPath(std::string path/* = ""*/) const
+{
+	if(path.empty())
+		path = getScriptBaseName();
+
+	if(fileExists(getFilePath(FILE_TYPE_OTHER, std::string(path + "." + asString(g_config.getNumber(ConfigManager::WORLD_ID)) + "/" + path + ".xml"))))
+		path += "." + asString(g_config.getNumber(ConfigManager::WORLD_ID));
+
+	return path;
 }
 
 bool BaseEvents::parseEventNode(xmlNodePtr p, std::string scriptsPath, bool override)
@@ -87,7 +102,7 @@ bool BaseEvents::parseEventNode(xmlNodePtr p, std::string scriptsPath, bool over
 				strValue = scriptsPath + strValue;
 
 			if(success)
-				success = event->checkScript(getScriptBaseName(), strValue, file) && event->loadScript(strValue, file);
+				success = event->checkScript(getScriptPath(), strValue, file) && event->loadScript(strValue, file);
 		}
 		else if(tmpStrValue == "buffer")
 		{
@@ -95,7 +110,7 @@ bool BaseEvents::parseEventNode(xmlNodePtr p, std::string scriptsPath, bool over
 				success = parseXMLContentString(p->children, strValue);
 
 			if(success)
-				success = event->checkBuffer(getScriptBaseName(), strValue) && event->loadBuffer(strValue);
+				success = event->checkBuffer(getScriptPath(), strValue) && event->loadBuffer(strValue);
 		}
 		else if(tmpStrValue == "function")
 		{
@@ -119,7 +134,7 @@ bool BaseEvents::parseEventNode(xmlNodePtr p, std::string scriptsPath, bool over
 				strValue = scriptsPath + strValue;
 
 			if(success)
-				success = event->checkScript(getScriptBaseName(), strValue, file) && event->loadScript(strValue, file);
+				success = event->checkScript(getScriptPath(), strValue, file) && event->loadScript(strValue, file);
 		}
 		else if(readXMLString(p, "buffer", strValue))
 		{
@@ -127,11 +142,11 @@ bool BaseEvents::parseEventNode(xmlNodePtr p, std::string scriptsPath, bool over
 				success = parseXMLContentString(p->children, strValue);
 
 			if(success)
-				success = event->checkBuffer(getScriptBaseName(), strValue) && event->loadBuffer(strValue);
+				success = event->checkBuffer(getScriptPath(), strValue) && event->loadBuffer(strValue);
 		}
 		else if((readXMLString(p, "function", strValue) && event->loadFunction(strValue))
 			|| (parseXMLContentString(p->children, strValue) && event->checkBuffer(
-			getScriptBaseName(), strValue) && event->loadBuffer(strValue)))
+			getScriptPath(), strValue) && event->loadBuffer(strValue)))
 			success = true;
 		else
 			success = false;
@@ -209,7 +224,7 @@ bool Event::checkBuffer(const std::string& base, const std::string& script) cons
 	testInterface.initState();
 
 	std::string path = getFilePath(FILE_TYPE_OTHER, std::string(base + "/lib/"));
-	if(!testInterface.loadDirectory(path, false, true))
+	if(!fileExists(path) || !testInterface.loadDirectory(path, false, true))
 		std::clog << "[Warning - Event::checkBuffer] Cannot load " << path << std::endl;
 
 	if(m_scriptData)
@@ -222,7 +237,7 @@ bool Event::checkBuffer(const std::string& base, const std::string& script) cons
 	std::string buffer = script;
 	trimString(buffer);
 
-	std::stringstream scriptstream;
+	std::ostringstream scriptstream;
 	scriptstream << "function " << getScriptEventName() << "(" << getScriptEventParams() << ")" << std::endl << buffer << std::endl << "end";
 
 	buffer = scriptstream.str();
@@ -255,7 +270,7 @@ bool Event::loadScript(const std::string& script, bool file)
 		trimString(buffer);
 		if(buffer.find(function) == std::string::npos)
 		{
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 			scriptstream << function << "(" << getScriptEventParams() << ")" << std::endl << buffer << std::endl << "end";
 			buffer = scriptstream.str();
 		}
@@ -306,7 +321,7 @@ bool Event::checkScript(const std::string& base, const std::string& script, bool
 		trimString(buffer);
 		if(buffer.find(function) == std::string::npos)
 		{
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 			scriptstream << function << "(" << getScriptEventParams() << ")" << std::endl << buffer << std::endl << "end";
 			buffer = scriptstream.str();
 		}

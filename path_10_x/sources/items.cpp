@@ -26,6 +26,7 @@
 #include "weapons.h"
 #include "spells.h"
 
+
 extern Spells* g_spells;
 extern ConfigManager g_config;
 extern MoveEvents* g_moveEvents;
@@ -255,7 +256,7 @@ int32_t Items::loadFromOtb(std::string file)
 		iType->canReadText = hasBitSet(FLAG_READABLE, flags);
 		iType->lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
 		iType->isAnimation = hasBitSet(FLAG_ANIMATION, flags);
-		iType->walkStack = hasBitSet(FLAG_WALKSTACK, flags);
+		iType->walkStack = !hasBitSet(FLAG_WALKSTACK, flags);
 
 		attribute_t attr;
 		while(props.getType(attr))
@@ -279,8 +280,8 @@ int32_t Items::loadFromOtb(std::string file)
 					if(!props.getShort(serverId))
 						return ERROR_INVALID_FORMAT;
 
-					if(serverId > 30000 && serverId < 30100)
-						serverId = serverId - 30000;
+					if(serverId > 20000 && serverId < 20100)
+						serverId = serverId - 20000;
 					else if(lastId > 99 && lastId != serverId - 1)
 					{
 						static ItemType dummyItemType;
@@ -541,9 +542,9 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 {
 	int32_t intValue;
 	std::string strValue;
-	if(id > 30000 && id < 30100)
+	if(id > 20000 && id < 20100)
 	{
-		id -= 30000;
+		id -= 20000;
 		ItemType* iType = new ItemType();
 
 		iType->id = id;
