@@ -4,6 +4,11 @@ local config = {
 }
 
 function onThink(cid, interval)
+	if(not isPlayer(cid)) then
+		return false
+	end
+
+	local position = getThingPosition(cid)
 	local tile = getTileInfo(position)
 	if(tile.noLogout or getCreatureNoMove(cid) or
 		getPlayerCustomFlagValue(cid, PlayerCustomFlag_AllowIdle)) then
