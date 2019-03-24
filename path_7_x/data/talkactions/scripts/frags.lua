@@ -38,7 +38,10 @@ function onSay(cid, words, param, channel)
 	if(getBooleanFromString(getConfigValue('advancedFragList'))) then
 		local result = "Frags gained today: " .. size.day .. "."
 		if(size.day > 0) then
-			for _, content in ipairs(contents.day) do
+			for i, content in ipairs(contents.day) do
+				if i > 5 then
+					break
+				end
 				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
 			end
 
@@ -47,7 +50,10 @@ function onSay(cid, words, param, channel)
 
 		result = result .. "\nFrags gained this week: " .. (size.day + size.week) .. "."
 		if(size.week > 0) then
-			for _, content in ipairs(contents.week) do
+			for i, content in ipairs(contents.week) do
+				if i > 5 then
+					break
+				end
 				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
 			end
 
@@ -56,7 +62,10 @@ function onSay(cid, words, param, channel)
 
 		result = result .. "\nFrags gained this month: " .. (size.day + size.week + size.month) .. "."
 		if(size.month > 0) then
-			for _, content in ipairs(contents.month) do
+			for i, content in ipairs(contents.month) do
+				if i > 5 then
+					break
+				end
 				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
 			end
 

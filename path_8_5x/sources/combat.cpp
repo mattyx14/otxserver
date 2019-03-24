@@ -409,6 +409,9 @@ bool Combat::isProtected(Player* attacker, Player* target)
 
 	if(attacker->getZone() == ZONE_HARDCORE && target->getZone() == ZONE_HARDCORE && g_config.getBool(ConfigManager::PVP_TILE_IGNORE_PROTECTION))
 		return false;
+	
+	if (target->checkLoginDelay())
+		return true;
 
 	return target->isProtected() || attacker->isProtected() || (attacker->checkLoginDelay() && !attacker->hasBeenAttacked(target->getID()));
 }
