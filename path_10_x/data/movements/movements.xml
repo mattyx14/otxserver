@@ -360,18 +360,6 @@
 			<vocation id="7;8" showInDescription="0"/>
 		</movevent>
 		<movevent type="DeEquip" itemid="12646" slot="feet" event="function" value="onDeEquipItem"/>
-		<!-- Depth Calcei -->
-		<movevent type="Equip" itemid="15410" slot="feet" level="150" event="function" value="onEquipItem">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15410" slot="feet" event="function" value="onDeEquipItem"/>
-		<!-- Prismatic Boots -->
-		<movevent type="Equip" itemid="18406" slot="feet" level="150" event="function" value="onEquipItem">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18406" slot="feet" event="function" value="onDeEquipItem"/>
 
 	<!-- Amulets -->
 		<!-- Strange Talisman -->
@@ -410,15 +398,6 @@
 		<!-- Beetle Necklace -->
 		<movevent type="Equip" itemid="11374" slot="necklace" event="function" value="onEquipItem"/>
 		<movevent type="DeEquip" itemid="11374" slot="necklace" event="function" value="onDeEquipItem"/>
-		<!-- Necklace of the Deep -->
-		<movevent type="Equip" itemid="15403" slot="necklace" level="120" event="function" value="onEquipItem"/>
-		<movevent type="DeEquip" itemid="15403" slot="necklace" event="function" value="onDeEquipItem"/>
-		<!-- Gill Necklace -->
-		<movevent type="Equip" itemid="18402" slot="necklace" level="150" event="function" value="onEquipItem"/>
-		<movevent type="DeEquip" itemid="18402" slot="necklace" event="function" value="onDeEquipItem"/>
-		<!-- Prismatic Necklace -->
-		<movevent type="Equip" itemid="18407" slot="necklace" level="150" event="function" value="onEquipItem"/>
-		<movevent type="DeEquip" itemid="18407" slot="necklace" event="function" value="onDeEquipItem"/>
 
 	<!-- Rings -->
 		<!-- Might Ring -->
@@ -471,10 +450,6 @@
 		<!-- claw of 'The Noxious Spawn' -->
 		<movevent type="Equip" itemid="10311" slot="ring" level="100" event="function" value="onEquipItem"/>
 		<movevent type="DeEquip" itemid="10311" slot="ring" event="function" value="onDeEquipItem"/>
-		<!-- prismatic ring -->
-		<movevent type="Equip" itemid="18408" slot="ring" level="120" event="function" value="onEquipItem"/>
-		<movevent type="Equip" itemid="18528" slot="ring" level="120" event="function" value="onEquipItem"/>
-		<movevent type="DeEquip" itemid="18528" slot="ring" level="120" event="function" value="onDeEquipItem"/>
 
 	<!-- Helmets -->
 		<!-- Hat of the Mad -->
@@ -583,29 +558,6 @@
 			<vocation id="7" showInDescription="0"/>
 		</movevent>
 		<movevent type="DeEquip" itemid="12645" slot="head" event="function" value="onDeEquipItem"/>
-		<!-- Mage's Cap -->
-		<movevent type="Equip" itemid="13756" slot="head" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="13756" slot="head" event="function" value="onDeEquipItem"/>
-		<!-- Elite Draken Helmet -->
-		<movevent type="Equip" itemid="15408" slot="head" level="150" event="function" value="onEquipItem"/>
-		<movevent type="DeEquip" itemid="15408" slot="head" event="function" value="onDeEquipItem"/>
-		<!-- Gill Gugel -->
-		<movevent type="Equip" itemid="18398" slot="head" level="150" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18398" slot="head" event="function" value="onDeEquipItem"/>
-		<!-- Prismatic Helmet -->
-		<movevent type="Equip" itemid="18403" slot="head" level="150" event="function" value="onEquipItem">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18403" slot="head" event="function" value="onDeEquipItem"/>
 
 	<!-- Armors -->
 		<!-- Golden Armor -->
@@ -894,39 +846,6 @@
 			<vocation id="8" showInDescription="0"/>
 		</movevent>
 		<movevent type="DeEquip" itemid="12642" slot="armor" event="function" value="onDeEquipItem"/>
-		<!-- Ornate Chestplate -->
-		<movevent type="Equip" itemid="15406" slot="armor" level="200" event="function" value="onEquipItem">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15406" slot="armor" event="function" value="onDeEquipItem"/>
-		<!-- Depth Lorica -->
-		<movevent type="Equip" itemid="15407" slot="armor" level="150" event="function" value="onEquipItem">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15407" slot="armor" event="function" value="onDeEquipItem"/>
-		<!-- Calopteryx Cape -->
-		<movevent type="Equip" itemid="15489" slot="armor" level="80" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15489" slot="armor" event="function" value="onDeEquipItem"/>
-		<!-- Gill Coat -->
-		<movevent type="Equip" itemid="18399" slot="armor" level="150" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18399" slot="armor" event="function" value="onDeEquipItem"/>
-		<!-- Prismatic Armor -->
-		<movevent type="Equip" itemid="18404" slot="armor" level="120" event="function" value="onEquipItem">
-			<vocation name="Paladin"/>
-			<vocation name="Knight"/>
-			<vocation id="7;8" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18404" slot="armor" event="function" value="onDeEquipItem"/>
 
 	<!-- Legs -->
 		<!-- Golden Legs -->
@@ -996,35 +915,6 @@
 		<!-- Zaoan Legs -->
 		<movevent type="Equip" itemid="11304" slot="legs" event="function" value="onEquipItem"/>
 		<movevent type="DeEquip" itemid="11304" slot="legs" event="function" value="onDeEquipItem"/>
-		<!-- Depth Ocrea -->
-		<movevent type="Equip" itemid="15409" slot="legs" level="130" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15409" slot="legs" event="function" value="onDeEquipItem"/>
-		<!-- Ornate Legs -->
-		<movevent type="Equip" itemid="15412" slot="legs" level="185" event="function" value="onEquipItem">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15412" slot="legs" event="function" value="onDeEquipItem"/>
-		<!-- Grasshopper Legs -->
-		<movevent type="Equip" itemid="15490" slot="legs" level="75" event="function" value="onEquipItem"/>
-		<movevent type="DeEquip" itemid="15490" slot="legs" event="function" value="onDeEquipItem"/>
-		<!-- Gill Legs -->
-		<movevent type="Equip" itemid="18400" slot="legs" level="150" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18400" slot="legs" event="function" value="onDeEquipItem"/>
-		<!-- Prismatic Legs -->
-		<movevent type="Equip" itemid="18405" slot="legs" level="150" event="function" value="onEquipItem">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18405" slot="legs" event="function" value="onDeEquipItem"/>
 
 	<!-- Shields -->
 		<!-- Spellbook -->
@@ -1115,39 +1005,6 @@
 			<vocation id="5;6" showInDescription="0"/>
 		</movevent>
 		<movevent type="DeEquip" itemid="12647" slot="shield" event="function" value="onDeEquipItem"/>
-		<!-- Depth Scutum -->
-		<movevent type="Equip" itemid="15411" slot="shield" level="120" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15411" slot="shield" event="function" value="onDeEquipItem"/>
-		<!-- ornate shield -->
-		<movevent type="Equip" itemid="15413" slot="shield" level="130" event="function" value="onEquipItem">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="15413" slot="shield" event="function" value="onDeEquipItem"/>
-		<!-- Spellbook of Ancient Arcana -->
-		<movevent type="Equip" itemid="16112" slot="shield" level="150" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="16112" slot="shield" event="function" value="onDeEquipItem"/>
-		<!-- Spellbook of Vigilance -->
-		<movevent type="Equip" itemid="18401" slot="shield" level="130" event="function" value="onEquipItem">
-			<vocation name="Sorcerer"/>
-			<vocation name="Druid"/>
-			<vocation id="5;6" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18401" slot="shield" event="function" value="onDeEquipItem"/>
-		<!-- Prismatic Shield -->
-		<movevent type="Equip" itemid="18410" slot="shield" level="150" event="function" value="onEquipItem">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</movevent>
-		<movevent type="DeEquip" itemid="18410" slot="shield" event="function" value="onDeEquipItem"/>
 
 	<!-- Other -->
 		<!-- Magical Torch -->
@@ -1230,40 +1087,4 @@
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8858" slot="two-handed" event="function" value="onDeEquipItem"/>
-		<!-- Shimmer Bow -->
-	<movevent type="Equip" itemid="13873" level="40" slot="two-handed" event="function" value="onEquipItem">
-		<vocation name="Paladin"/>
-		<vocation id="7" showInDescription="0"/>
-	</movevent>
-	<movevent type="DeEquip" itemid="13873" slot="two-handed" event="function" value="onDeEquipItem"/>
-		<!-- Hive Bow -->
-	<movevent type="Equip" itemid="15643" level="85" slot="two-handed" event="function" value="onEquipItem">
-		<vocation name="Paladin"/>
-		<vocation id="7" showInDescription="0"/>
-	</movevent>
-	<movevent type="DeEquip" itemid="15643" slot="two-handed" event="function" value="onDeEquipItem"/>
-		<!-- Ornate Crossbow -->
-	<movevent type="Equip" itemid="15644" level="50" slot="two-handed" event="function" value="onEquipItem">
-		<vocation name="Paladin"/>
-		<vocation id="7" showInDescription="0"/>
-	</movevent>
-	<movevent type="DeEquip" itemid="15644" slot="two-handed" event="function" value="onDeEquipItem"/>
-		<!-- Thorn Spitter -->
-	<movevent type="Equip" itemid="16111" level="150" slot="two-handed" event="function" value="onEquipItem">
-		<vocation name="Paladin"/>
-		<vocation id="7" showInDescription="0"/>
-	</movevent>
-	<movevent type="DeEquip" itemid="16111" slot="two-handed" event="function" value="onDeEquipItem"/>
-		<!-- Crystal Crossbow -->
-	<movevent type="Equip" itemid="18453" level="90" slot="two-handed" event="function" value="onEquipItem">
-		<vocation name="Paladin"/>
-		<vocation id="7" showInDescription="0"/>
-	</movevent>
-	<movevent type="DeEquip" itemid="18453" slot="two-handed" event="function" value="onDeEquipItem"/>
-		<!-- Mycological Bow -->
-	<movevent type="Equip" itemid="18454" level="105" slot="two-handed" event="function" value="onEquipItem">
-		<vocation name="Paladin"/>
-		<vocation id="7" showInDescription="0"/>
-	</movevent>
-	<movevent type="DeEquip" itemid="18454" slot="two-handed" event="function" value="onDeEquipItem"/>
 </movements>

@@ -33,9 +33,6 @@
 		</attack>
 	</attacks>
 	<defenses armor="30" defense="33"/>
-	<elements>
-		<element firePercent="60"/>
-	</elements>
 	<immunities>
 		<immunity outfit="1"/>
 		<immunity drunk="1"/>

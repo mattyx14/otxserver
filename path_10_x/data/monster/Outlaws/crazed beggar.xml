@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Crazed Beggar" nameDescription="a crazed beggar" race="blood" experience="35" speed="220" manacost="300">
 	<health now="100" max="100"/>
-	<look type="153" body="38" feet="97" head="59" legs="38" addons="3" corpse="20558"/>
+	<look type="153" body="38" feet="97" head="59" legs="38" addons="3" corpse="3058"/>
 	<targetchange interval="4000" chance="0"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
@@ -25,8 +25,8 @@
 		<element physicalPercent="5"/>
 		<element energyPercent="20"/>
 		<element holyPercent="10"/>
-		<element earthPercent="-10"/>
-		<element deathPercent="-15"/>
+		<element earth="-10"/>
+		<element death="-15"/>
 	</elements>
 	<voices interval="4000" chance="16">
 		<voice sentence="Hehehe!"/>

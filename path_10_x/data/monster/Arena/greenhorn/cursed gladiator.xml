@@ -31,6 +31,5 @@
 	</immunities>
 	<voices interval="2000" chance="5">
 		<voice sentence="Death where are you?"/>
-		<voice sentence="Slay me, end my curse."/>
 	</voices>
 </monster>

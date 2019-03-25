@@ -21,7 +21,7 @@ local FOODS, MAX_FOOD = {
 	[9114] = {60, "Crunch."}, [10454] = {0, "Your head begins to feel better."},
 	[11246] = {310, "Yum."}, [11429] = {150, "Mmmm."}, [12415] = {360, "Yum."}, [12416] = {130, "Munch."},
 	[12417] = {60, "Crunch."}, [12418] = {80, "Crunch."}, [12637] = {660, "Gulp."}, [12638] = {260, "Yum."},
-	[12639] = {18, "Munch."}, [13297] = {240, "Crunch."}, [15405] = {660, "Munch."}, [18397] = {396, "Munch."}
+	[12639] = {18, "Munch."}
 }, 1200
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)

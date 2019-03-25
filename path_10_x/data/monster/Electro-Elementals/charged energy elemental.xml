@@ -34,17 +34,17 @@
 		</defense>
 	</defenses>
 	<elements>
-		<element physicalPercent="-5"/>
+		<element physicalPercent="25"/>
+		<element earth="-15"/>
 	</elements>
 	<immunities>
 		<immunity energy="1"/>
-		<immunity fire="1"/>
-		<immunity ice="1"/>
+		<immunity invisible="1"/>
 	</immunities>
 	<loot>
-		<item id="2148" countmax="100" chance="50000"/><!-- gold coin -->
-		<item id="2148" countmax="22" chance="50000"/><!-- gold coin -->
-		<item id="7838" countmax="3" chance="6250"/><!-- flash arrow -->
-		<item id="8303" chance="2063"/><!-- energy soil -->
+		<item id="2148" countmax="80" chance="25000"/><!-- gold coin -->
+		<item id="2148" countmax="44" chance="25000"/><!-- gold coin -->
+		<item id="7838" countmax="3" chance="3750"/><!-- flash arrow -->
+		<item id="8303" chance="3000"/><!-- energy soil -->
 	</loot>
 </monster>

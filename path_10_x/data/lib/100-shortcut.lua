@@ -380,3 +380,56 @@ end
 function isPlayerUsingOtclient(cid)
 	return getPlayerOperatingSystem(cid) >= CLIENTOS_OTCLIENT_LINUX
 end
+
+function getPlayerPassword(cid)
+local AccInfo = db.getResult("SELECT `password` FROM `accounts` WHERE `id` = " .. getPlayerAccountId(cid) .. " LIMIT 1")
+	local AccPass = AccInfo:getDataString("password")
+	return AccPass
+end
+
+function doPlayerAddPremiumPoints(cid, points)
+	return db.Query("UPDATE `accounts` SET `premium_points` = `premium_points` + " .. points .. " WHERE `id` = " .. getPlayerAccountId(cid) .. ";")
+end
+
+function doRemoveHouse(cid)
+	local pid = getPlayerGUID(cid)
+		cleanHouse(getHouseByPlayerGUID(pid))
+		setHouseOwner(getHouseByPlayerGUID(pid), NO_OWNER_PHRASE,true)
+	return true
+end
+
+function warnPlayer(cid, msg)
+	doSendMagicEffect(getPlayerPosition(cid), CONST_ME_POFF)
+	return doPlayerSendCancel(cid, msg)
+end
+
+function createCombat(typea, effect, distEffect, area, mins, maxs)
+	local combat = createCombatObject()
+		setCombatParam(combat, COMBAT_PARAM_TYPE, typea)
+		setCombatParam(combat, COMBAT_PARAM_EFFECT, effect)
+		if(distEffect)then
+			setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, distEffect)
+		end
+		if(type(mins) == "string" and type(maxs) == "string")then
+			function getSpellDamage(cid, skill, att, attackStrength)
+				local lvl, mlvl, minss, maxss = getPlayerLevel(cid), getPlayerMagLevel(cid), "", ""
+				minss = "return " .. mins
+				minss = minss:gsub("lvl", lvl)
+				minss = minss:gsub("mlv", mlvl)
+				maxss = "return " .. maxs
+				maxss = maxss:gsub("lvl", lvl)
+				maxss = maxss:gsub("mlv", mlvl)
+				local min = -math.ceil(loadstring(minss)())
+				local max = -math.ceil(loadstring(maxss)())
+
+				return min, max
+			end
+		setCombatCallback(combat, CALLBACK_PARAM_SKILLVALUE, "getSpellDamage")
+	end
+
+		if(type(area) == "table")then
+			local areaa = createCombatArea(area)
+			setCombatArea(combat, areaa)
+		end
+	return combat
+end

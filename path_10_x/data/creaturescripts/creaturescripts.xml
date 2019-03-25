@@ -12,7 +12,6 @@
 	<event type="channeljoin" name="GuildEvents" event="script" value="guild.lua"/>
 	<event type="mailreceive" name="Mail" event="script" value="mail.lua"/>
 	<event type="reportbug" name="ReportBug" script="reportbug.lua"/>
-	<event type="thankyou" name="ThankYou" script="thankyou.lua"/>
 	<event type="advance" name="AdvanceSave" event="script" value="advancesave.lua"/>
 	<event type="think" name="Idle" event="script" value="idle.lua"/>
 	<event type="think" name="SkullCheck" event="script" value="skullcheck.lua"/>
@@ -20,6 +19,6 @@
 	<event type="login" name="recordIp" event="script" value="recordIp.lua"/>
 	<event type="kill" name="SummonKill" event="script" value="obsidianknife.lua"/>
 	<event type="login" name="obs_login" event="script" value="obsidianknife.lua"/>
-	<event type="extendedopcode" name="ExtendedOpcode" event="script" value="extendedopcode.lua"/>
 	<event type="moveitem" name="MoveItem" event="script" value="houseprotect.lua"/>
+	<event type="tradeaccept" name="PlayerTrade" event="script" value="playerTrade.lua"/>
 </creaturescripts>

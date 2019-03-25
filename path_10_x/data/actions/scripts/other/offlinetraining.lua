@@ -1,22 +1,17 @@
 local statue = {
-	[18488] = SKILL_SWORD,
-	[18489] = SKILL_AXE,
-	[18490] = SKILL_CLUB,
-	[18491] = SKILL_DISTANCE,
-	[18492] = SKILL__MAGLEVEL
+	[1444] = SKILL_SWORD,
+	[1449] = SKILL_AXE,
+	[3705] = SKILL_CLUB,
+	[3739] = SKILL_DISTANCE,
+	[1448] = SKILL__MAGLEVEL
 }
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
-	if item.actionid == 1000 then
+	if isPlayerPzLocked(cid) then
 		return false
 	end
 
-	OfflineLevel = getConfigValue('levelToOfflineTraining')
-	if getPlayerLevel(cid) <= OfflineLevel then
-		return false
-	end
-
-	if getPlayerPremiumDays(cid) > 0 then
+	if item.actionid == 1000 and getPlayerPremiumDays(cid) > 0 then
 		doPlayerSetOfflineTrainingSkill(cid, statue[item.itemid])
 		doRemoveCreature(cid)
 	else

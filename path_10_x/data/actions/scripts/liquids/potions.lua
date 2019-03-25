@@ -1,9 +1,12 @@
 local config = {
+	endless = "no",
 	removeOnUse = "no",
-	usableOnTarget = "yes", -- can be used on target? (fe. healing friend)
+	usableOnTarget = "yes", -- can be used on a target? (eg. healing a friend)
+	checkTargetRequirements = "yes",
 	splashable = "yes",
-	range = -1,
-	area = {1, 1} -- if not set correctly, the message will be sent only to user of the item
+	sameContainer = "yes",
+	range = 7,
+	area = {3, 3} -- if not set correctly, the message will be sent only to user of the item
 }
 
 local multiplier = {
@@ -26,11 +29,15 @@ local POTIONS = {
 }
 
 for index, potion in pairs(POTIONS) do
-	if(type(index) == 'number')then
+	if(type(index) == 'number') then
 		for k, v in pairs(config) do
 			if(not potion[k]) then
 				potion[k] = v
 			end
+		end
+
+		if(potion.endless) then
+			potion.endless = getBooleanFromString(potion.endless)
 		end
 
 		if(potion.removeOnUse) then
@@ -41,19 +48,26 @@ for index, potion in pairs(POTIONS) do
 			potion.usableOnTarget = getBooleanFromString(potion.usableOnTarget)
 		end
 
+		if(potion.checkTargetRequirements) then
+			potion.checkTargetRequirements = getBooleanFromString(potion.checkTargetRequirements)
+		end
+
 		if(potion.splashable) then
 			potion.splashable = getBooleanFromString(potion.splashable)
 		end
 
-		if(type(potion.health) == 'table' and table.maxn(potion.health) > 1) then
+		if(potion.sameContainer) then
+			potion.sameContainer = getBooleanFromString(potion.sameContainer)
+		end
+
+		if(type(potion.health) == 'table' and table.size(potion.health) > 1) then
 			potion.health[1] = math.ceil(potion.health[1] * multiplier.health)
 			potion.health[2] = math.ceil(potion.health[2] * multiplier.health)
 		else
 			potion.health = nil
 		end
 
-
-		if(type(potion.mana) == 'table' and table.maxn(potion.mana) > 1) then
+		if(type(potion.mana) == 'table' and table.size(potion.mana) > 1) then
 			potion.mana[1] = math.ceil(potion.mana[1] * multiplier.mana)
 			potion.mana[2] = math.ceil(potion.mana[2] * multiplier.mana)
 		else
@@ -85,19 +99,49 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 			return true
 		end
 
+		local flask = doCreateItemEx(potion.empty, 1)
 		if(fromPosition.x ~= CONTAINER_POSITION) then
-			doCreateItem(potion.empty, fromPosition)
+			doTileAddItemEx(fromPosition, flask)
+		elseif(potion.sameContainer) then
+			errors(false)
+			local parent = getItemParent(item.uid)
+			if(doAddContainerItemEx(parent.uid, flask) ~= RETURNVALUE_NOERROR) then
+				doPlayerAddItemEx(cid, flask, true)
+				errors(true)
+			end
 		else
-			doPlayerAddItem(cid, potion.empty, 1)
+			doPlayerAddItemEx(cid, flask, true)
 		end
 
 		return true
 	end
 
-	if(((potion.level and getPlayerLevel(itemEx.uid) < potion.level) or (potion.vocations and not isInArray(potion.vocations, getPlayerVocation(itemEx.uid)))) and
-		not getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES))
-	then
-		doCreatureSay(itemEx.uid, "Only " .. potion.vocStr .. (potion.level and (" of level " .. potion.level) or "") .. " or above may drink this fluid.", TALKTYPE_MONSTER, false, cid)
+	local check = itemEx.uid
+	if(not potion.checkTargetRequirements) then
+		check = cid
+	end
+
+	local vocation = not potion.vocations or type(potion.vocations) ~= 'table' or table.size(potion.vocations) == 0
+	if(not vocation) then
+		for _, func in ipairs(potion.vocations) do
+			if(func(check)) then
+				vocation = true
+				break
+			end
+		end
+
+		if(vocation and potion.noVocations and type(potion.noVocations) == 'table' and table.size(potion.noVocations) > 0) then
+			for _, func in ipairs(potion.noVocations) do
+				if(func(check)) then
+					vocation = false
+					break
+				end
+			end
+		end
+	end
+
+	if((not vocation or (potion.level and getPlayerLevel(check) < potion.level)) and not getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES)) then
+		doCreatureSay(cid, "Only " .. potion.vocStr .. (potion.level and (" of level " .. potion.level) or "") .. " or above may drink this fluid.", TALKTYPE_MONSTER, false, cid)
 		return true
 	end
 
@@ -114,7 +158,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		return false
 	end
 
-	if(type(potion.area) == 'table' and table.maxn(potion.area) > 1) then
+	if(type(potion.area) == 'table' and table.size(potion.area) > 1) then
 		for i, tid in ipairs(getSpectators(getThingPosition(itemEx.uid), potion.area[1], potion.area[2])) do
 			if(isPlayer(tid)) then
 				doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER, false, tid)
@@ -127,15 +171,27 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		end
 	end
 
+	if(potion.endless) then
+		return true
+	end
+
 	doRemoveItem(item.uid, 1)
 	if(not potion.empty or potion.removeOnUse) then
 		return true
 	end
 
+	local flask = doCreateItemEx(potion.empty, 1)
 	if(fromPosition.x ~= CONTAINER_POSITION) then
-		doCreateItem(potion.empty, fromPosition)
+		doTileAddItemEx(fromPosition, flask)
+	elseif(potion.sameContainer) then
+		errors(false)
+		local parent = getItemParent(item.uid)
+		if(doAddContainerItemEx(parent.uid, flask) ~= RETURNVALUE_NOERROR) then
+			doPlayerAddItemEx(cid, flask, true)
+			errors(true)
+		end
 	else
-		doPlayerAddItem(cid, potion.empty, 1)
+		doPlayerAddItemEx(cid, flask, true)
 	end
 
 	return true

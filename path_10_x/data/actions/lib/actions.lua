@@ -1,4 +1,4 @@
-SPOTS = { 384, 418, 8278, 8592, 13189, 15635, 19518 }
+SPOTS = { 384, 418, 8278, 8592 }
 ROPABLE = { 294, 369, 370, 383, 392, 408, 409, 427, 428, 430, 462, 469, 470, 482, 484, 485, 489, 924, 3135, 3136, 7933, 7938, 8170, 8286, 8285,
 	8284, 8281, 8280, 8279, 8277, 8276, 8323, 8380, 8567, 8585, 8596, 8595, 8249, 8250, 8251, 8252, 8253, 8254, 8255, 8256, 8972, 9606, 9625 }
 
@@ -58,7 +58,7 @@ function destroyItem(cid, itemEx, toPosition)
 		return true
 	end
 
-	if not(isInArray({1770, 2098, 1774, 2064, 2094, 2095, 1619, 2602, 3805, 3806}, itemEx.itemid) or
+	if not(isInArray({1770, 2098, 1774, 1775, 2064, 2094, 2095, 1619, 2602, 3805, 3806}, itemEx.itemid) or
 		(itemEx.itemid >= 1724 and itemEx.itemid <= 1741) or
 		(itemEx.itemid >= 2581 and itemEx.itemid <= 2588) or
 		(itemEx.itemid >= 1747 and itemEx.itemid <= 1753) or
@@ -148,7 +148,7 @@ TOOLS.PICK = function(cid, item, fromPosition, itemEx, toPosition)
 	errors(false)
 	local ground = getThingFromPos({x = toPosition.x, y = toPosition.y, z = toPosition.z + 1, stackpos = STACKPOS_GROUND})
 	errors(true)
-	if(isInArray(SPOTS, ground.itemid) and isInArray({354, 355}, itemEx.itemid)) then
+	if(isInArray(SPOTS, ground.itemid) and isInArray({354, 355}, itemEx.itemid) and item.actionid ~= 100) then
 		doTransformItem(itemEx.uid, 392)
 		doDecayItem(itemEx.uid)
 

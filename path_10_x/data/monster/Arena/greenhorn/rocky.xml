@@ -22,11 +22,11 @@
 		</defense>
 	</defenses>
 	<elements>
-		<element firePercent="10"/>
+		<element earthPercent="100"/>
+		<element energyPercent="100"/>
+		<element firePercent="13"/>
 	</elements>
 	<immunities>
-		<immunity energy="1"/>
-		<immunity earth="1"/>
 		<immunity outfit="1"/>
 		<immunity drunk="1"/>
 		<immunity invisible="1"/>

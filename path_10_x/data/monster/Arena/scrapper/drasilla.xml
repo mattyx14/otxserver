@@ -29,11 +29,11 @@
 		</defense>
 	</defenses>
 	<elements>
+		<element firePercent="100"/>
 		<element energyPercent="20"/>
 		<element icePercent="-10"/>
 	</elements>
 	<immunities>
-		<immunity fire="1"/>
 		<immunity outfit="1"/>
 		<immunity drunk="1"/>
 		<immunity invisible="1"/>

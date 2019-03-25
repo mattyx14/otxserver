@@ -31,14 +31,11 @@
 		<element energyPercent="-10"/>
 	</elements>
 	<immunities>
-		<immunity ice="1"/>
-		<immunity earth="1"/>
 		<immunity outfit="1"/>
 		<immunity drunk="1"/>
 		<immunity invisible="1"/>
 	</immunities>
 	<voices interval="5000" chance="5">
 		<voice sentence="You will pay for imprisoning me here."/>
-		<voice sentence="Puny warmblood."/>
 	</voices>
 </monster>

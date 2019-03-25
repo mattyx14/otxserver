@@ -37,7 +37,7 @@
         <defense name="outfit" interval="4500" chance="30" monster="bat" duration="4000"/>
     </defenses>
     <elements>
-        <element physicalPercent="20"/>
+        <element phyisicalPercent="20"/>
         <element holyPercent="-15"/>
         <element firePercent="-10"/>
     </elements>
@@ -56,14 +56,14 @@
         <summon name="Lich" interval="9000" chance="100"/>
     </summons>
     <loot>
-        <item id="7416" chance="1200"/>
-        <item id="7588" chance="10000"/>
-        <item id="2229" chance="10000"/>
-        <item id="2148" chance1="100000" countmax="98"/>
-        <item id="9020" chance1="100000" />
-        <item id="2152" chance1="50000" countmax="5"/>
-        <item id="2216" chance="11111"/>
-        <item id="2534" chance="6300"/>
-        <item id="2144" chance1="8980" countmax="1"/>
+        <item id="7416" chance="1200"/> -- bloody edge :: Def 21 :: Atk 43
+        <item id="7588" chance="10000"/> -- strong health potion
+        <item id="2229" chance="10000"/> -- skull
+        <item id="2148" chance1="100000" countmax="98"/> -- gold coin
+        <item id="9020" chance1="100000" /> -- vampire token
+        <item id="2152" chance1="50000" countmax="5"/> -- platinum coin
+        <item id="2216" chance="11111"/> -- ring of healing
+        <item id="2534" chance="6300"/> -- vampire shield :: Def 34
+        <item id="2144" chance1="8980" countmax="1"/> -- black pearl
     </loot>
 </monster>

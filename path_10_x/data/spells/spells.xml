@@ -198,9 +198,6 @@
 	<instant name="Intense Wound Cleansing" words="exura gran ico" lvl="80" mana="200" prem="1" selftarget="1" aggressive="0" exhaustion="2000" groups="2,2000" icon="158" needlearn="0" event="script" value="healing/intense wound cleansing.lua">
 		<vocation id="4;8"/>
 	</instant>
-	<instant name="Cure Bleeding" words="exana kor" lvl="30" mana="30" prem="1" aggressive="0" selftarget="1" exhaustion="2000" groups="2,2000" icon="144" needlearn="0" event="script" value="healing/cure bleeding.lua">
-		<vocation id="4;8"/>
-	</instant>
 	<instant name="Cure Electrification" words="exana vis" lvl="22" mana="30" prem="1" aggressive="0" selftarget="1" exhaustion="2000" groups="2,2000" icon="146" needlearn="0" event="script" value="healing/cure electrification.lua">
 		<vocation id="2;6"/>
 	</instant>

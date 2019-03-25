@@ -18,13 +18,14 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="47" attack="38" poison="4"/>
-		<attack name="poisoncondition" interval="1000" chance="20" range="1" min="-54" max="-79">
+		<attack name="melee" interval="2000" skill="30" attack="45" poison="2"/>
+		<attack name="poisonfield" interval="1000" chance="20" range="1">
 			<attribute key="shootEffect" value="poison"/>
-		</attack>	
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
 	</attacks>
 	<defenses armor="15" defense="17">
-		<defense name="speed" interval="1000" chance="13" speedchange="314" duration="5000">
+		<defense name="speed" interval="1000" chance="13" speedchange="334" duration="5000">
 			<attribute key="areaEffect" value="redshimmer"/>
 		</defense>
 	</defenses>

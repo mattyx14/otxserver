@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Spirit of Fire" nameDescription="the spirit of fire" race="blood" experience="950" speed="220" manacost="0">
-	<health now="2210" max="2210"/>
+	<health now="2140" max="2140"/>
 	<look type="242" corpse="7349"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
@@ -24,11 +24,11 @@
 	</attacks>
 	<defenses armor="25" defense="25"/>
 	<elements>
+		<element firePercent="100"/>
 		<element energyPercent="20"/>
-		<element icePercent="-10"/>
+		<element icePercent="-13"/>
 	</elements>
 	<immunities>
-		<immunity fire="1"/>
 		<immunity outfit="1"/>
 		<immunity drunk="1"/>
 		<immunity invisible="1"/>

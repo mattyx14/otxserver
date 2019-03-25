@@ -9,5 +9,4 @@
 
 	<!-- Examples -->
 	<!-- <globalevent name="timer_example" time="21:35:11" event="script" value="my_script.lua"/> -->
-	<!-- <globalevent name="eventcolor" interval="2000" event="script" value="eventcolor.lua"/> -->
 </globalevents>

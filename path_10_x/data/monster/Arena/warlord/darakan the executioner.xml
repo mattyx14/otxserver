@@ -25,8 +25,8 @@
 		</defense>
 	</defenses>
 	<elements>
-		<element icePercent="15"/>
-		<element firePercent="-15"/>
+		<element icePercent="33"/>
+		<element firePercent="-11"/>
 	</elements>
 	<immunities>
 		<immunity outfit="1"/>

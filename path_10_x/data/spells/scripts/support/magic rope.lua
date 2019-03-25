@@ -1,4 +1,4 @@
-local SPOTS = {384, 418, 8278, 8592, 13189, 15635}
+local SPOTS = {384, 418, 8278, 8592, 13189}
 
 function onCastSpell(cid, var)
 	local position = getThingPosition(cid)

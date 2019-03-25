@@ -3,6 +3,8 @@
 -- Modified by The OTX Server Team.
 
 if(NpcHandler == nil) then
+	local storage = 35418 -- For exhaustion in Seconds
+
 	-- Constant talkdelay behaviors.
 	TALKDELAY_NONE = 0 -- No talkdelay. Npc will reply immedeatly.
 	TALKDELAY_ONTHINK = 1 -- Talkdelay handled through the onThink callback function. (Default)
@@ -499,6 +501,16 @@ if(NpcHandler == nil) then
 
 	-- Handles onBuy events. If you wish to handle this yourself, use the CALLBACK_ONBUY callback.
 	function NpcHandler:onBuy(cid, itemid, subType, amount, ignoreCap, inBackpacks)
+		local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
+		if(exhaustionNPC) then
+		local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC') or 0.5
+		if(exhaustion.check(cid, storage) == true) then
+			doPlayerSendCancel(cid, "Please wait " .. exhaustionInSeconds .. " seconds before trying to buy again.")
+			return false
+		end
+			exhaustion.set(cid, storage, exhaustionInSeconds)
+		end
+
 		local callback = self:getCallback(CALLBACK_ONBUY)
 		if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
 			if(self:processModuleCallback(CALLBACK_ONBUY, cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
@@ -509,6 +521,16 @@ if(NpcHandler == nil) then
 
 	-- Handles onSell events. If you wish to handle this yourself, use the CALLBACK_ONSELL callback.
 	function NpcHandler:onSell(cid, itemid, subType, amount, ignoreCap, inBackpacks)
+		local exhaustionNPC = getBooleanFromString(getConfigValue('exhaustionNPC'))
+		if(exhaustionNPC) then
+			local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC') or 0.5
+			if(exhaustion.check(cid, storage) == true) then
+				doPlayerSendCancel(cid, "Please wait " .. exhaustionInSeconds .. " seconds before trying to sell again.")
+				return false
+			end
+			exhaustion.set(cid, storage, exhaustionInSeconds)
+		end
+
 		local callback = self:getCallback(CALLBACK_ONSELL)
 		if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
 			if(self:processModuleCallback(CALLBACK_ONSELL, cid, itemid, subType, amount, ignoreCap, inBackpacks)) then

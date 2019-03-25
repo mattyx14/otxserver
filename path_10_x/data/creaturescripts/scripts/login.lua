@@ -49,12 +49,8 @@ function onLogin(cid)
 
 	registerCreatureEvent(cid, "Idle")
 	registerCreatureEvent(cid, "Mail")
-	if(getPlayerOperatingSystem(cid) >= CLIENTOS_OTCLIENT_LINUX) then
-		registerCreatureEvent(cid, "ExtendedOpcode")
-	end
 
 	registerCreatureEvent(cid, "ReportBug")
-	registerCreatureEvent(cid, "ThankYou")
 	if(config.useFragHandler) then
 		registerCreatureEvent(cid, "SkullCheck")
 	end
@@ -63,5 +59,8 @@ function onLogin(cid)
 	registerCreatureEvent(cid, "AdvanceSave")
 	registerCreatureEvent(cid, "recordIp")
 	registerCreatureEvent(cid, "partyAndGuildProtection")
+	registerCreatureEvent(cid, "PlayerTrade")
+
+	doCreatureSetStorage(cid, "save", (os.time() + 120))
 	return true
 end

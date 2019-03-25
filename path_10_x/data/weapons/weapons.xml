@@ -41,21 +41,6 @@
 			<vocation name="Druid"/>
 			<vocation id="6" showInDescription="0"/>
 		</wand>
-		<!-- Shimmer Rod -->
-		<wand id="13872" level="40" mana="13" min="55" max="75" type="ice" event="function" value="default">
-			<vocation name="Druid"/>
-			<vocation id="6" showInDescription="0"/>
-		</wand>
-		<!-- Muck Rod -->
-		<wand id="18411" level="65" mana="17" min="70" max="100" type="earth" event="function" value="default">
-			<vocation name="Druid"/>
-			<vocation id="6" showInDescription="0"/>
-		</wand>
-		<!-- Glacial Rod -->
-		<wand id="18412" level="65" mana="17" min="70" max="100" type="ice" event="function" value="default">
-			<vocation name="Druid"/>
-			<vocation id="6" showInDescription="0"/>
-		</wand>
 
 	<!-- Wands -->
 		<!-- Wand of Inferno -->
@@ -95,26 +80,6 @@
 		</wand>
 		<!-- Wand of Voodoo -->
 		<wand id="8922" level="42" mana="13" min="55" max="75" type="death" event="function" value="default">
-			<vocation name="Sorcerer"/>
-			<vocation id="5" showInDescription="0"/>
-		</wand>
-		<!-- Wand of Dimensions -->
-		<wand id="13760" level="37" mana="13" min="55" max="75" type="death" event="function" value="default">
-			<vocation name="Sorcerer"/>
-			<vocation id="5" showInDescription="0"/>
-		</wand>
-		<!-- Shimmer Wand -->
-		<wand id="13880" level="40" mana="13" min="55" max="75" type="energy" event="function" value="default">
-			<vocation name="Sorcerer"/>
-			<vocation id="5" showInDescription="0"/>
-		</wand>
-		<!-- Wand of Defiance -->
-		<wand id="18390" level="65" mana="17" min="70" max="100" type="energy" event="function" value="default">
-			<vocation name="Sorcerer"/>
-			<vocation id="5" showInDescription="0"/>
-		</wand>
-		<!-- Wand of Everblazing -->
-		<wand id="18409" level="65" mana="17" min="70" max="100" type="fire" event="function" value="default">
 			<vocation name="Sorcerer"/>
 			<vocation id="5" showInDescription="0"/>
 		</wand>
@@ -253,17 +218,6 @@
 		</melee>
 		<!-- Blade of Corruption -->
 		<melee id="12649" level="82" unproperly="1" event="function" value="default"/>
-		<!-- Shimmer Sword -->
-		<melee id="13871" level="40" unproperly="1" event="function" value="default">
-			<vocation name="Knight"/>
-			<vocation id="8" showInDescription="0"/>
-		</melee>
-		<!-- Crystalline Sword -->
-		<melee id="18450" level="62" unproperly="1" event="function" value="default"/>
-		<!-- Shiny Blade -->
-		<melee id="18465" level="120" unproperly="1" event="function" value="default"/>
-		<!-- Ratana -->
-		<melee id="20092" level="15" unproperly="1" event="function" value="default"/>
 			<!-- Fire -->
 			<melee id="7745" level="50" unproperly="1" event="function" value="default"/>
 			<melee id="7746" level="60" unproperly="1" event="function" value="default"/>
@@ -426,20 +380,6 @@
 		<melee id="11305" level="60" unproperly="1" event="function" value="default"/>
 		<!-- Zaoan Halberd -->
 		<melee id="11323" level="25" unproperly="1" event="function" value="default"/>
-		<!-- Heavy Trident -->
-		<melee id="13838" level="25" unproperly="1" event="function" value="default"/>
-		<!-- Deepling Axe -->
-		<melee id="15404" level="80" unproperly="1" event="function" value="default"/>
-		<!-- Warrior's Axe -->
-		<melee id="15451" level="40" unproperly="1" event="function" value="default"/>
-		<!-- Guardian Axe -->
-		<melee id="15454" level="50" unproperly="1" event="function" value="default"/>
-		<!-- Hive Scythe -->
-		<melee id="15492" level="70" unproperly="1" event="function" value="default"/>
-		<!-- Crystalline Axe -->
-		<melee id="18451" level="120" unproperly="1" event="function" value="default"/>
-		<!-- Hive Scythe -->
-		<melee id="20093" level="15" unproperly="1" event="function" value="default"/>
 			<!-- Fire -->
 			<melee id="7749" level="20" event="function" value="default"/>
 			<melee id="7750" level="25" unproperly="1" event="function" value="default"/>
@@ -605,14 +545,6 @@
 		</melee>
 		<!-- Snake God's Sceptre -->
 		<melee id="12648" level="82" unproperly="1" event="function" value="default"/> 
-		<!-- Deepling Staff -->
-		<melee id="15400" level="38" unproperly="1" event="function" value="default"/>
-		<!-- Ornate Mace -->
-		<melee id="15414" level="90" unproperly="1" event="function" value="default"/>
-		<!-- Deepling Squelcher -->
-		<melee id="15647" level="48" unproperly="1" event="function" value="default"/>
-		<!-- Mycological Mace -->
-		<melee id="18452" level="120" unproperly="1" event="function" value="default"/>
 			<!-- Fire -->
 			<melee id="7754" level="20" unproperly="1" event="function" value="default"/>
 			<melee id="7755" level="35" unproperly="1" event="function" value="default"/>
@@ -712,36 +644,6 @@
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
-		<!-- Shimmer Bow -->
-		<distance id="13873" level="40" unproperly="1" event="function" value="default">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</distance>
-		<!-- Hive Bow -->
-		<distance id="15643" level="85" unproperly="1" event="function" value="default">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</distance>
-		<!-- Ornate Crossbow -->
-		<distance id="15644" level="50" unproperly="1" event="function" value="default">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</distance>
-		<!-- Thorn Spitter -->
-		<distance id="16111" level="150" unproperly="1" event="function" value="default">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</distance>
-		<!-- Crystal Crossbow -->
-		<distance id="18453" level="90" unproperly="1" event="function" value="default">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</distance>
-		<!-- Mycological Bow -->
-		<distance id="18454" level="105" unproperly="1" event="function" value="default">
-			<vocation name="Paladin"/>
-			<vocation id="7" showInDescription="0"/>
-		</distance>
 
 	<!-- Ammunition -->
 		<!-- Small Stone -->
@@ -790,16 +692,4 @@
 		<distance id="7840" type="fire" event="function" value="default"/>
 		<!-- Earth Arrow -->
 		<distance id="7850" type="earth" event="function" value="default"/>
-		<!-- Tarsal Arrow -->
-		<distance id="15648" level="30" event="function" value="default"/>
-		<!-- Vortex Bolt -->
-		<distance id="15649" level="40" event="function" value="default"/>
-		<!-- Crystalline Arrow -->
-		<distance id="18304" level="90" event="function" value="default"/>
-		<!-- Prismatic Bolt -->
-		<distance id="18435" level="90" event="function" value="default"/>
-		<!-- Drill Bolt -->
-		<distance id="18436" level="70" event="function" value="default"/>
-		<!-- Envenomed Arrow -->
-		<distance id="18437" level="70" event="function" value="default"/>
 </weapons>
