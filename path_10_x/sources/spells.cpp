@@ -74,7 +74,7 @@ ReturnValue Spells::onPlayerSay(Player* player, const std::string& words)
 	if(!instantSpell->castInstant(player, reParam))
 		return RET_NEEDEXCHANGE;
 
-	MessageClasses type = MSG_SPEAK_SAY;
+	MessageClasses type = MSG_SPEAK_SPELL;
 	if(g_config.getBool(ConfigManager::EMOTE_SPELLS))
 		type = MSG_SPEAK_MONSTER_SAY;
 
@@ -420,7 +420,7 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::ostringstream scriptstream;
+			std::stringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 			env->streamVariant(scriptstream, "var", var);
@@ -837,16 +837,8 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 
 	if(!needTarget)
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		{
-			if(!isAggressive || player->getSkull() != SKULL_BLACK)
-				return true;
-		}
-		else
-		{
-			if(!isAggressive)
-				return true;
-		}
+		if(!isAggressive || player->getSkull() != SKULL_BLACK)
+			return true;
 
 		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -872,14 +864,11 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 		return false;
 	}
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	if(player->getSkull() == SKULL_BLACK)
 	{
-		if(player->getSkull() == SKULL_BLACK)
-		{
-			player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
-			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-			return false;
-		}
+		player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
+		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+		return false;
 	}
 
 	return true;
@@ -937,14 +926,11 @@ bool Spell::checkInstantSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	if(player->getSkull() == SKULL_BLACK && isAggressive && range == -1) // CHECKME: -1 is (usually?) an area spell
 	{
-		if(player->getSkull() == SKULL_BLACK && isAggressive && range == -1) // CHECKME: -1 is (usually?) an area spell
-		{
-			player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
-			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-			return false;
-		}
+		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
+		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+		return false;
 	}
 
 	return true;
@@ -1013,16 +999,8 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 
 	if(!needTarget)
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		{
-			if(!isAggressive || player->getSkull() != SKULL_BLACK)
-				return true;
-		}
-		else
-		{
-			if(!isAggressive)
-				return true;
-		}
+		if(!isAggressive || player->getSkull() != SKULL_BLACK)
+			return true;
 
 		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1048,11 +1026,8 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-	{
-		if(player->getSkull() != SKULL_BLACK)
-			return true;
-	}
+	if(player->getSkull() != SKULL_BLACK)
+		return true;
 
 	player->sendCancelMessage(RET_YOUMAYNOTATTACKTHISPLAYER);
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1389,7 +1364,7 @@ bool InstantSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::ostringstream scriptstream;
+			std::stringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 			env->streamVariant(scriptstream, "var", var);
@@ -1455,7 +1430,7 @@ bool InstantSpell::SearchPlayer(const InstantSpell*, Creature* creature, const s
 		return false;
 	}
 
-	std::ostringstream ss;
+	std::stringstream ss;
 	ss << targetPlayer->getName() << " " << g_game.getSearchString(player->getPosition(), targetPlayer->getPosition(), true, true) << ".";
 	player->sendTextMessage(MSG_INFO_DESCR, ss.str().c_str());
 
@@ -1480,14 +1455,11 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 	int32_t manaCost = (int32_t)(mType->manaCost * g_config.getDouble(ConfigManager::RATE_MONSTER_MANA));
 	if(!player->hasFlag(PlayerFlag_CanSummonAll))
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+		if(player->getSkull() == SKULL_BLACK)
 		{
-			if(player->getSkull() == SKULL_BLACK)
-			{
-				player->sendCancelMessage(RET_NOTPOSSIBLE);
-				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-				return false;
-			}
+			player->sendCancelMessage(RET_NOTPOSSIBLE);
+			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
 		}
 
 		if(!mType->isSummonable)
@@ -1673,8 +1645,8 @@ ReturnValue ConjureSpell::internalConjureItem(Player* player, uint32_t conjureId
 		ReturnValue ret = g_game.internalPlayerAddItem(player, player, newItem, true);
 		if(ret != RET_NOERROR)
 			delete newItem;
-		else
-			g_game.startDecay(newItem);
+
+		g_game.startDecay(newItem);
 		return ret;
 	}
 
@@ -1884,14 +1856,11 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 
 	if(!player->hasFlag(PlayerFlag_CanConvinceAll))
 	{
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+		if(player->getSkull() == SKULL_BLACK)
 		{
-			if(player->getSkull() == SKULL_BLACK)
-			{
-				player->sendCancelMessage(RET_NOTPOSSIBLE);
-				g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-				return false;
-			}
+			player->sendCancelMessage(RET_NOTPOSSIBLE);
+			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
 		}
 
 		if((int32_t)player->getSummonCount() >= g_config.getNumber(ConfigManager::MAX_PLAYER_SUMMONS))
@@ -1963,7 +1932,7 @@ bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, cons
 	}
 
 	Creature* target = thing->getCreature();
-	if(!target || !target->getPlayer())
+	if(!target)
 	{
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1974,7 +1943,7 @@ bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, cons
 	soulfireCondition->setParam(CONDITIONPARAM_SUBID, 1);
 	soulfireCondition->setParam(CONDITIONPARAM_OWNER, player->getID());
 
-	soulfireCondition->addDamage(std::ceil((player->getLevel() + player->getMagicLevel()) / 3.), 9000, -10);
+	soulfireCondition->addDamage((int32_t)std::ceil((player->getLevel() + player->getMagicLevel()) / 9.), 9000, -10);
 	if(!target->addCondition(soulfireCondition))
 	{
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
@@ -2018,17 +1987,8 @@ bool RuneSpell::executeUse(Player* player, Item* item, const PositionEx& posFrom
 	if(isScripted())
 	{
 		LuaVariant var;
-		if(needTarget)
+		if(creatureId && needTarget)
 		{
-			if(!creatureId)
-			{
-				if(Tile* tileTo = g_game.getTile(posTo))
-				{
-					if(const Creature* creature = tileTo->getBottomVisibleCreature(player))
-						creatureId = creature->getID();
-				}
-			}
-
 			var.type = VARIANT_NUMBER;
 			var.number = creatureId;
 		}
@@ -2089,7 +2049,7 @@ bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::ostringstream scriptstream;
+			std::stringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 			env->streamVariant(scriptstream, "var", var);

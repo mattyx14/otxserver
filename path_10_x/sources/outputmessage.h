@@ -22,8 +22,8 @@
 
 #include "connection.h"
 #include "networkmessage.h"
-#ifdef __TRACK_NETWORK__
 
+#ifdef __TRACK_NETWORK__
 #include <iostream>
 #include <sstream>
 #endif
@@ -38,28 +38,20 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 
 	public:
 		virtual ~OutputMessage() {}
-		enum OutputMessageState
-		{
-			STATE_FREE,
-			STATE_ALLOCATED,
-			STATE_ALLOCATED_NO_AUTOSEND,
-			STATE_WAITING
-		};
 
 		Protocol* getProtocol() const {return m_protocol;}
 		Connection_ptr getConnection() const {return m_connection;}
 
 		char* getOutputBuffer() {return (char*)&m_buffer[m_outputBufferStart];}
-		OutputMessageState getState() const {return m_state;}
 		uint64_t getFrame() const {return m_frame;}
 
-		void addHeader() {header((uint16_t)(m_size));}
+		void writeMessageLength() {addHeader((uint16_t)(m_size));}
 		void addCryptoHeader(bool addChecksum)
 		{
 			if(addChecksum)
-				header((adlerChecksum((uint8_t*)(m_buffer + m_outputBufferStart), m_size)));
+				addHeader((adlerChecksum((uint8_t*)(m_buffer + m_outputBufferStart), m_size)));
 
-			header((uint16_t)(m_size));
+			addHeader((uint16_t)(m_size));
 		}
 
 #ifdef __TRACK_NETWORK__
@@ -84,15 +76,23 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 			for(std::list<std::string>::const_reverse_iterator it = lastUses.rbegin(); it != lastUses.rend(); ++it, ++n)
 				std::clog << "\t" << n << ".\t" << (*it) << std::endl;
 		}
-
 #endif
+
+		enum OutputMessageState
+		{
+			STATE_FREE,
+			STATE_ALLOCATED,
+			STATE_ALLOCATED_NO_AUTOSEND,
+			STATE_WAITING
+		};
+
 	protected:
 		template <typename T>
-		inline void header(T value)
+		inline void addHeader(T value)
 		{
 			if((int32_t)m_outputBufferStart - (int32_t)sizeof(T) < 0)
 			{
-				std::clog << "[Error - OutputMessage::header] m_outputBufferStart(" << m_outputBufferStart << ") < " << sizeof(T) << std::endl;
+				std::clog << "[Error - OutputMessage::addHeader] m_outputBufferStart(" << m_outputBufferStart << ") < " << sizeof(T) << std::endl;
 				return;
 			}
 
@@ -111,7 +111,7 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 			// 2 bytes for unencrypted message
 			// 4 bytes for checksum
 			// 2 bytes for encrypted message
-			m_outputBufferStart = NETWORK_CRYPTOHEADER_SIZE;
+			m_outputBufferStart = 8;
 			setState(OutputMessage::STATE_FREE);
 		}
 
@@ -121,14 +121,16 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 		void setConnection(Connection_ptr connection) {m_connection = connection;}
 
 		void setState(OutputMessageState state) {m_state = state;}
+		OutputMessageState getState() const {return m_state;}
+
 		void setFrame(uint64_t frame) {m_frame = frame;}
 
 		Protocol* m_protocol;
 		Connection_ptr m_connection;
 #ifdef __TRACK_NETWORK__
 		std::list<std::string> lastUses;
-
 #endif
+
 		OutputMessageState m_state;
 		uint64_t m_frame;
 		uint32_t m_outputBufferStart;
@@ -159,6 +161,8 @@ class OutputMessagePool
 		void startExecutionFrame();
 		void autoSend(OutputMessage_ptr msg);
 
+		int64_t getFrameTime() const { return m_frameTime; }
+
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 		size_t getTotalMessageCount() const {return (size_t)outputMessagePoolCount;}
 #else
@@ -186,6 +190,7 @@ class OutputMessagePool
 		uint64_t m_frameTime;
 		bool m_shutdown;
 };
+
 #ifdef __TRACK_NETWORK__
 	#define TRACK_MESSAGE(omsg) (omsg)->track(__FILE__, __LINE__, __FUNCTION__)
 #else

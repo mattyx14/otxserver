@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="action-shop" version="1.0" author="slawkens" contact="slawkens@gmail.com" enabled="no">
+<mod name="action-shop" version="1.0" author="slawkens" contact="https://code.google.com/p/tfs-mods/" enabled="no">
 	<config name="action-shop-config"><![CDATA[
 		items = {
 			-- health potions

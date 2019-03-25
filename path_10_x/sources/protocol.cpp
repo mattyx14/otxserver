@@ -36,7 +36,7 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 	#endif
 	if(!m_rawMessages)
 	{
-		msg->addHeader();
+		msg->writeMessageLength();
 		if(m_encryptionEnabled)
 		{
 			#ifdef __DEBUG_NET_DETAIL__
@@ -48,9 +48,9 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 		if(m_checksumEnabled)
 		{
 			#ifdef __DEBUG_NET_DETAIL__
-			std::clog << "Protocol::onSendMessage - encrypt" << std::endl;
+			std::clog << "Protocol::onSendMessage - crypto header" << std::endl;
 			#endif
-			msg->addCryptoHeader(true);
+			msg->addCryptoHeader(m_checksumEnabled);
 		}
 	}
 
@@ -85,18 +85,6 @@ OutputMessage_ptr Protocol::getOutputBuffer()
 
 	m_outputBuffer = OutputMessagePool::getInstance()->getOutputMessage(this);
 	return m_outputBuffer;
-}
-
-void Protocol::writeOutputBuffer(NetworkMessage& msg)
-{
-	if(!m_outputBuffer && !m_connection)
-		return;
-
-	if(!m_outputBuffer || NETWORK_MAX_SIZE < m_outputBuffer->position() + msg.size())
-		m_outputBuffer = OutputMessagePool::getInstance()->getOutputMessage(this);
-
-	if(m_outputBuffer)
-		m_outputBuffer->putString(msg.buffer(NETWORK_CRYPTOHEADER_SIZE), msg.size(), false);
 }
 
 void Protocol::releaseProtocol()

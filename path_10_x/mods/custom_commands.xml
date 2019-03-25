@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="Custom Commands" version="1.0" author="slawkens - edited by: mattyx14" contact="martyx@otland.net" enabled="yes">
+<mod name="Custom Commands" version="1.0" author="Mattyx14" contact="martyx@otland.net" enabled="yes">
 	<!-- News Command -->
 	<config name="news-config"><![CDATA[
 		added = {"add", "adicionar", "new"}
@@ -217,7 +217,7 @@
 		local BLESSINGS = {"Wisdom of Solitude", "Spark of the Phoenix", "Fire of the Suns", "Spiritual Shielding", "Embrace of Tibia", "Twist of Fate"}
 		function onSay(cid, words, param)
 			local result = ""
-			for i = 1, #BLESSINGS do
+			for i = 1, (table.maxn(BLESSINGS) - 1) do
 				result = (getPlayerBlessing(cid, i) and result .. (result:len() > 0 and ", " or "") .. BLESSINGS[i] or result)
 			end
 
@@ -699,7 +699,7 @@
 				doPlayerRemoveMoney(cid, 250000)
 				doPlayerSetStamina(cid, 2520)
 			else
-				doPlayerSendCancel(cid, "You need 25 cristal coints for a regenerate full stamina.")
+				doPlayerSendCancel(cid, "Nesesitas 25 crystal coins para llenarte la stamina.")
 			end
 
 			return true
@@ -874,59 +874,59 @@
 			local t = string.explode(param, " ", 2)
 			local command = t[1]:lower()
 			if(command == 'balance') then
-				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your account balance is " .. getPlayerBalance(cid) .. " gold.")
+				doPlayerSendCancel(cid, "Your account balance is " .. getPlayerBalance(cid) .. " gold.")
 			elseif(command == 'deposit') then
 				if(not t[2]) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Amount is required.")
+					doPlayerSendCancel(cid, "Amount is required.")
 					return true
 				end
 
 				local amount = getAmount(t[2], cid, getPlayerMoney)
 				if(validAmount(amount) and getPlayerMoney(cid) >= amount and doPlayerDepositMoney(cid, amount)) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, amount .. " gold has been deposited.")
+					doPlayerSendCancel(cid, amount .. " gold has been deposited.")
 				else
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Not enough money to deposit.")
+					doPlayerSendCancel(cid, "Not enough money to deposit.")
 				end
 			elseif(command == 'withdraw') then
 				if(not t[2]) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Amount is required.")
+					doPlayerSendCancel(cid, "Amount is required.")
 					return true
 				end
 
 				local amount = getAmount(t[2], cid, getPlayerBalance)
 				if(validAmount(amount) and getPlayerBalance(cid) >= amount and doPlayerWithdrawMoney(cid, amount)) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, amount .. " gold has been withdrawn.")
+					doPlayerSendCancel(cid, amount .. " gold has been withdrawn.")
 				else
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Not enough money to withdraw.")
+					doPlayerSendCancel(cid, "Not enough money to withdraw.")
 				end
 			elseif(command == 'transfer') then
 				if(not t[2]) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Amount is required.")
+					doPlayerSendCancel(cid, "Amount is required.")
 					return true
 				end
 
 				if(not t[3]) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player name to transfer is required.")
+					doPlayerSendCancel(cid, "Player name to transfer is required.")
 					return true
 				end
 
 				local amount, target = tonumber(t[2]), t[3]
 				if(getPlayerGUID(cid) == getPlayerGUIDByName(target)) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You cannot transfer money to yourself.")
+					doPlayerSendCancel(cid, "You cannot transfer money to yourself.")
 				elseif(isInArray(config.transferDisabledVocations, getPlayerVocation(cid))) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your vocation cannot transfer money.")
+					doPlayerSendCancel(cid, "Your vocation cannot transfer money.")
 				elseif(not validAmount(amount) or getPlayerBalance(cid) < amount) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Not enough money to transfer.")
+					doPlayerSendCancel(cid, "Not enough money to transfer.")
 				else
 					local targetVocation = getPlayerVocationByName(target)
 					if(not playerExists(target) or not targetVocation or isInArray(config.transferDisabledVocations, targetVocation) or not doPlayerTransferMoneyTo(cid, target, amount)) then
-						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "This player does not exist on this world or have no vocation.")
+						doPlayerSendCancel(cid, "This player does not exist on this world or have no vocation.")
 					else
-						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have transferred " .. amount .. " gold to \"" .. target .."\".")
+						doPlayerSendCancel(cid, "You have transferred " .. amount .. " gold to \"" .. target .."\".")
 					end
 				end
 			else
-				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Invalid command usage. Use '!bank' to view manual.")
+				doPlayerSendCancel(cid, "Invalid command usage. Use '!bank' to view manual.")
 			end
 
 			return true

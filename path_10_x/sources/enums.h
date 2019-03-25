@@ -62,11 +62,42 @@ enum gain_t
 	GAIN_LAST = GAIN_SOUL
 };
 
+enum VipStatus_t
+{
+	VIPSTATUS_OFFLINE = 0,
+	VIPSTATUS_ONLINE = 1,
+	VIPSTATUS_PENDING = 2
+};
+
+enum MarketAction_t
+{
+	MARKETACTION_BUY = 0,
+	MARKETACTION_SELL = 1
+};
+
+enum MarketRequest_t
+{
+	MARKETREQUEST_OWN_OFFERS = 0xFFFE,
+	MARKETREQUEST_OWN_HISTORY = 0xFFFF
+};
+
+enum MarketOfferState_t
+{
+	OFFERSTATE_ACTIVE = 0,
+	OFFERSTATE_CANCELLED = 1,
+	OFFERSTATE_EXPIRED = 2,
+	OFFERSTATE_ACCEPTED = 3,
+
+	OFFERSTATE_ACCEPTEDEX = 255
+};
+
 enum CreatureType_t
 {
 	CREATURETYPE_PLAYER = 0,
 	CREATURETYPE_MONSTER = 1,
-	CREATURETYPE_NPC = 2
+	CREATURETYPE_NPC = 2,
+	CREATURETYPE_SUMMON_OWN = 3,
+	CREATURETYPE_SUMMON_OTHERS = 4
 };
 
 enum DatabaseEngine_t
@@ -236,19 +267,6 @@ enum Exhaust_t
 	EXHAUST_SPELLGROUP_SUPPORT = 4,
 	EXHAUST_SPELLGROUP_SPECIAL = 5,
 	EXHAUST_MELEE = 6
-};
-
-enum ExhaustSubId_t
-{
-	EXHAUST_DEFAULT = 1,
-	EXHAUST_TALKNPC = 2,
-	EXHAUST_PLAYERVIP = 3,
-	EXHAUST_OUTFIT = 4,
-	EXHAUST_PARTY = 5,
-	EXHAUST_PLAYERSPEAK = 6,
-	EXHAUST_PLAYERLOOK = 7,
-	EXHAUST_PLAYERTRADE = 8,
-	EXHAUST_PLAYEROPENCHANNEL = 9
 };
 
 enum BlockType_t
@@ -424,5 +442,111 @@ struct ShopInfo
 		sellPrice(_sellPrice), itemName(_itemName) {}
 };
 
+struct MarketOffer
+{
+	uint32_t price;
+	uint32_t timestamp;
+	uint16_t amount;
+	uint16_t counter;
+	uint16_t itemId;
+	std::string playerName;
+};
+
+struct MarketOfferEx
+{
+	uint32_t playerId;
+	uint32_t timestamp;
+	uint32_t price;
+	uint16_t amount;
+	uint16_t counter;
+	uint16_t itemId;
+	MarketAction_t type;
+	std::string playerName;
+};
+
+struct ExpiredMarketOffer
+{
+	uint32_t id;
+	uint32_t price;
+	uint16_t amount;
+	uint16_t itemId;
+	uint32_t playerId;
+};
+
+struct HistoryMarketOffer
+{
+	uint32_t timestamp;
+	uint32_t price;
+	uint16_t itemId;
+	uint16_t amount;
+	MarketOfferState_t state;
+};
+
+struct MarketStatistics
+{
+	MarketStatistics()
+	{
+		numTransactions = 0;
+		highestPrice = 0;
+		totalPrice = 0;
+		lowestPrice = 0;
+	}
+
+	uint32_t numTransactions;
+	uint32_t highestPrice;
+	uint64_t totalPrice;
+	uint32_t lowestPrice;
+};
+
+struct ModalChoice
+{
+	ModalChoice() 
+	{
+		id = 0;
+		value = "";
+	}
+	uint8_t id;
+	std::string value;
+};
+
+struct ModalDialog
+{
+	ModalDialog() 
+	{
+		id = 0;
+		title = "";
+		message = "";
+		buttonEnter = 0;
+		buttonEscape = 0;
+		popup = false;
+	}
+
+	uint32_t id;
+	std::string title;
+	std::string message;
+	uint8_t buttonEnter;
+	uint8_t buttonEscape; 
+	std::vector<ModalChoice> buttons; 
+	std::vector<ModalChoice> choices;
+	bool popup;
+};
+
+struct VIP_t
+{
+	VIP_t()
+	{
+		icon = 0;
+		description = "";
+		notify = false;
+	};
+
+	uint32_t icon;
+	std::string description;
+	bool notify;
+};
+
+typedef std::list<MarketOffer> MarketOfferList;
+typedef std::list<ExpiredMarketOffer> ExpiredMarketOfferList;
+typedef std::list<HistoryMarketOffer> HistoryMarketOfferList;
 typedef std::list<ShopInfo> ShopInfoList;
 #endif

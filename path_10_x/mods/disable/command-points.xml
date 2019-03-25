@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="command-points" version="1.0" author="slawkens" contact="slawkens@gmail.com" enabled="no">
+<mod name="command-points" version="1.0" author="slawkens" contact="https://code.google.com/p/tfs-mods/" enabled="no">
 	<config name="command-points-config"><![CDATA[
 		config = {
 			logFile = "data/logs/points.log", -- set file name where to save logs. Leave empty do disable logs.
@@ -11,17 +11,10 @@
 				minLevel = 8
 			},
 
-			pacc = {
-				enabled = "yes",
-				points = 50,
-				days = 14,
-				maxDays = 360 -- maximum premium account days
-			},
-
 			changeName = {
 				enabled = "yes",
 				points = 50,
-				storage = 3008,
+				storage = 70009,
 				delay = 30 * 24 * 60 * 60 -- 30 days, in seconds
 			},
 
@@ -52,10 +45,12 @@
 		domodlib('command-points-config')
 
 		config.pointsRune.enabled = getBooleanFromString(config.pointsRune.enabled)
-		config.pacc.enabled = getBooleanFromString(config.pacc.enabled)
 		config.changeName.enabled = getBooleanFromString(config.changeName.enabled)
 		config.changeSex.enabled = getBooleanFromString(config.changeSex.enabled)
+
 		config.removeSkull.enabled = getBooleanFromString(config.removeSkull.enabled)
+		--config.removeSkull.frags = getBooleanFromString(config.removeSkull.frags)
+
 		config.refuelStamina.enabled = getBooleanFromString(config.refuelStamina.enabled)
 
 		function getPlayerPoints(cid)
@@ -125,28 +120,6 @@
 				else
 					doPlayerSendCancel(cid, "ERROR. Please try again later.")
 				end
-			end,
-
-			pacc = function(cid)
-				if(getPlayerPoints(cid) < command_points.config.pacc.points) then
-					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Sorry, not enought points on your account. Premium account cost " .. command_points.config.pacc.points .. " points.")
-					return true
-				end
-
-				if(getPlayerPremiumDays(cid) > command_points.config.pacc.maxDays) then
-					doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You can not buy more than " .. config.days + command_points.config.pacc.maxDays .. " days of Premium Account.")
-					doSendMagicEffect(getPlayerPosition(cid), CONST_ME_POFF)
-					return
-				end
-
-				if(not doPlayerRemovePoints(cid, command_points.config.pacc.points)) then
-					doPlayerSendCancel(cid, "You don't have enough points, " .. command_points.config.pacc.days .. " days premium account costs " .. command_points.config.pacc.points .. " points.")
-					doSendMagicEffect(getPlayerPosition(cid), CONST_ME_POFF)
-					return
-				end
-
-				doPlayerAddPremiumDays(cid, command_points.config.pacc.days)
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have bought " .. command_points.config.pacc.days .. " days of premium account.")
 			end,
 
 			changeName = function (cid)
@@ -261,8 +234,6 @@
 				command_points.changeName(cid)
 			elseif(command_points.config.changeSex.enabled and isInArray({"sex", "changesex", "changender", "changegender"}, param)) then
 				command_points.changeSex(cid)
-			elseif(command_points.config.pacc.enabled and isInArray({"pacc", "premium"}, param)) then
-				command_points.pacc(cid)
 			elseif(command_points.config.pointsRune.enabled and isInArray({"rune", "pointsrune"}, param)) then
 				command_points.pointsRune(cid)
 			elseif(command_points.config.removeSkull.enabled and isInArray({"rs", "skull", "frags"}, param)) then
@@ -284,7 +255,7 @@
 		end
 	]]></talkaction>
 
-	<talkaction words="!changename" event="script"><![CDATA[
+ 	<talkaction words="!changename" event="script"><![CDATA[
 		domodlib('command-points-lib')
 		function onSay(cid, words, param, channel)
 			command_points.changeName(cid
@@ -292,18 +263,10 @@
 		end
 	]]></talkaction>
 
-	<talkaction words="!changesex" event="script"><![CDATA[
+ 	<talkaction words="!changesex" event="script"><![CDATA[
 		domodlib('command-points-lib')
 		function onSay(cid, words, param, channel)
 			command_points.changeSex(cid
-			return true
-		end
-	]]></talkaction>
-
-	<talkaction words="!pacc" event="script"><![CDATA[
-		domodlib('command-points-lib')
-		function onSay(cid, words, param, channel)
-			command_points.pacc(cid
 			return true
 		end
 	]]></talkaction>

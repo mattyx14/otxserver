@@ -92,8 +92,7 @@ BANTYPE_NOTATION = 4
 BANTYPE_DELETION = 3
 
 CONST_PROP_MOVEABLE = CONST_PROP_MOVABLE
-CONST_PROP_BLOCKINGANDNOTMOVEABLE = CONST_PROP_IMMOVABLEBLOCKSOLID
-CONST_PROP_BLOCKINGANDNOTMOVABLE = CONST_PROP_IMMOVABLEBLOCKSOLID
+CONST_PROP_BLOCKINGANDNOTMOVEABLE = CONST_PROP_BLOCKINGANDNOTMOVABLE
 
 CONDITION_EARTH = CONDITION_POISON
 
@@ -187,7 +186,6 @@ isNumber = isNumeric
 doSetItemActionId = doItemSetActionId
 getOnlinePlayers = getPlayersOnlineEx
 addDialog = doPlayerAddDialog
-getTileThingByPos = getThingFromPosition
 doSendPlayerExtendedOpcode = doPlayerSendExtendedOpcode
 
 PlayerFlag_CannotUseCombat = 0
@@ -228,7 +226,7 @@ PlayerFlag_IgnoreSpellCheck = 34
 PlayerFlag_IgnoreWeaponCheck = 35
 PlayerFlag_CannotBeMuted = 36
 PlayerFlag_IsAlwaysPremium = 37
-PlayerFlag_38 = 38 -- ignore
+PlayerFlag_38 = 38
 PlayerFlag_39 = 39 -- ignore
 PlayerFlag_ShowGroupNameInsteadOfVocation = 40
 PlayerFlag_HasInfiniteStamina = 41

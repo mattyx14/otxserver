@@ -99,7 +99,6 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		doCreatureSetStorage(cid, storage, 1)
 	else
 		result = (getPlayerFreeCap(cid) < getItemWeight(reward.uid)) and result .. ". Weighing " .. getItemWeight(reward.uid) .. " oz it is too heavy." or result .. ", but you have no room to take it."
-		doPlayerSaveEx(cid)
 	end	
 		if(questsExperience[storage] ~= nil) then
 			doPlayerAddExpEx(cid, questsExperience[storage])

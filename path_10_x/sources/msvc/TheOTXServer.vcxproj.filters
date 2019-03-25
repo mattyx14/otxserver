@@ -84,7 +84,10 @@
     <ClInclude Include="..\definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\depot.h">
+    <ClInclude Include="..\depotchest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\depotlocker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\dispatcher.h">
@@ -111,10 +114,19 @@
     <ClInclude Include="..\group.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\gui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\house.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\housetile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inputbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\ioban.h">
@@ -130,6 +142,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\iomapserialize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\iomarket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\item.h">
@@ -192,6 +207,9 @@
     <ClInclude Include="..\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\playerbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -226,9 +244,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\spawn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\spectators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\spells.h">
@@ -338,7 +353,10 @@
     <ClCompile Include="..\databasesqlite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\depot.cpp">
+    <ClCompile Include="..\depotchest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\depotlocker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\dispatcher.cpp">
@@ -362,10 +380,19 @@
     <ClCompile Include="..\group.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\house.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\housetile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inputbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\ioban.cpp">
@@ -381,6 +408,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\iomapserialize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\iomarket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\item.cpp">
@@ -440,6 +470,9 @@
     <ClCompile Include="..\player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\playerbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -474,9 +507,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\spawn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\spectators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\spells.cpp">
@@ -515,5 +545,10 @@
     <ClCompile Include="..\weapons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\gui_resources.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

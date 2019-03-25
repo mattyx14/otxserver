@@ -18,7 +18,6 @@
 #ifndef __TILE__
 #define __TILE__
 #include <boost/shared_ptr.hpp>
-#include <boost/tr1/unordered_set.hpp>
 
 #include "cylinder.h"
 #include "item.h"
@@ -172,12 +171,9 @@ class Tile : public Cylinder
 		Item* getItemByTopOrder(uint32_t topOrder);
 
 		Creature* getTopCreature();
-		Creature* getBottomCreature();
 		Thing* getTopVisibleThing(const Creature* creature);
 		Creature* getTopVisibleCreature(const Creature* creature);
 		const Creature* getTopVisibleCreature(const Creature* creature) const;
-		Creature* getBottomVisibleCreature(const Creature* creature);
-		const Creature* getBottomVisibleCreature(const Creature* creature) const;
 
 		uint32_t getThingCount() const {return thingCount;}
 		void updateThingCount(int32_t amount) {thingCount += amount;}

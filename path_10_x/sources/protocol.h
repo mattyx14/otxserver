@@ -23,7 +23,6 @@
 class OutputMessage;
 class Connection;
 class NetworkMessage;
-class Protocol;
 
 class Protocol : boost::noncopyable
 {
@@ -54,12 +53,10 @@ class Protocol : boost::noncopyable
 
 		int32_t addRef() {return ++m_refCount;}
 		int32_t unRef() {return --m_refCount;}
-		int32_t refCount() const {return m_refCount;}
 
 	protected:
 		//use this function for autosend messages only
 		OutputMessage_ptr getOutputBuffer();
-		void writeOutputBuffer(NetworkMessage& msg);
 
 		void setRawMessages(bool value) {m_rawMessages = value;}
 		void enableChecksum() {m_checksumEnabled = true;}

@@ -26,6 +26,7 @@
 #include "weapons.h"
 #include "spells.h"
 
+#include "resources.h"
 
 extern Spells* g_spells;
 extern ConfigManager g_config;
@@ -68,7 +69,6 @@ ItemType::ItemType()
 	attack = extraAttack = 0;
 	defense = extraDefense = 0;
 	attackSpeed = 0;
-	criticalHitChance = 0;
 	armor = 0;
 	decayTo = -1;
 	decayTime = 0;
@@ -256,7 +256,7 @@ int32_t Items::loadFromOtb(std::string file)
 		iType->canReadText = hasBitSet(FLAG_READABLE, flags);
 		iType->lookThrough = hasBitSet(FLAG_LOOKTHROUGH, flags);
 		iType->isAnimation = hasBitSet(FLAG_ANIMATION, flags);
-		iType->walkStack = !hasBitSet(FLAG_WALKSTACK, flags);
+		iType->walkStack = hasBitSet(FLAG_WALKSTACK, flags);
 
 		attribute_t attr;
 		while(props.getType(attr))
@@ -280,8 +280,8 @@ int32_t Items::loadFromOtb(std::string file)
 					if(!props.getShort(serverId))
 						return ERROR_INVALID_FORMAT;
 
-					if(serverId > 20000 && serverId < 20100)
-						serverId = serverId - 20000;
+					if(serverId > 30000 && serverId < 30100)
+						serverId = serverId - 30000;
 					else if(lastId > 99 && lastId != serverId - 1)
 					{
 						static ItemType dummyItemType;
@@ -542,9 +542,9 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 {
 	int32_t intValue;
 	std::string strValue;
-	if(id > 20000 && id < 20100)
+	if(id > 30000 && id < 30100)
 	{
-		id -= 20000;
+		id -= 30000;
 		ItemType* iType = new ItemType();
 
 		iType->id = id;
@@ -729,11 +729,6 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 				it.extraDefenseRndMin = intValue;
 			if(readXMLInteger(itemAttributesNode, "random_max", intValue))
 				it.extraDefenseRndMax = intValue;
-		}
-		else if(tmpStrValue == "criticalhitchance")
-		{
-			if(readXMLInteger(itemAttributesNode, "value", intValue))
-				it.criticalHitChance = intValue;
 		}
 		else if(tmpStrValue == "attack")
 		{
@@ -1451,7 +1446,7 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.getAbilities()->reflect[REFLECT_PERCENT][COMBAT_FIREDAMAGE] += intValue;
 		}
-		else if(tmpStrValue == "reflectpercentpoison" || tmpStrValue == "reflectpercentearth")
+		else if(tmpStrValue == "reflectpercentpoison" ||	tmpStrValue == "reflectpercentearth")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.getAbilities()->reflect[REFLECT_PERCENT][COMBAT_EARTHDAMAGE] += intValue;

@@ -66,7 +66,7 @@ bool IOMapSerialize::saveMap(Map* map)
 bool IOMapSerialize::updateAuctions()
 {
 	Database* db = Database::getInstance();
-	std::ostringstream query;
+	DBQuery query;
 
 	time_t now = time(NULL);
 	query << "SELECT `house_id`, `player_id`, `bid` FROM `house_auctions` WHERE `endtime` < " << now;
@@ -99,7 +99,7 @@ bool IOMapSerialize::updateAuctions()
 bool IOMapSerialize::loadHouses()
 {
 	Database* db = Database::getInstance();
-	std::ostringstream query;
+	DBQuery query;
 
 	query << "SELECT * FROM `houses` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 	DBResult* result;
@@ -149,7 +149,7 @@ bool IOMapSerialize::loadHouses()
 bool IOMapSerialize::updateHouses()
 {
 	Database* db = Database::getInstance();
-	std::ostringstream query;
+	DBQuery query;
 
 	House* house = NULL;
 	for(HouseMap::iterator it = Houses::getInstance()->getHouseBegin(); it != Houses::getInstance()->getHouseEnd(); ++it)
@@ -227,7 +227,7 @@ bool IOMapSerialize::saveHouses()
 
 bool IOMapSerialize::saveHouse(Database* db, House* house)
 {
-	std::ostringstream query;
+	DBQuery query;
 	query << "UPDATE `houses` SET `owner` = " << house->getOwner() << ", `paid` = "
 		<< house->getPaidUntil() << ", `warnings` = " << house->getRentWarnings() << ", `lastwarning` = "
 		<< house->getLastWarning() << ", `clear` = 0 WHERE `id` = " << house->getId() << " AND `world_id` = "
@@ -284,7 +284,7 @@ bool IOMapSerialize::saveHouseItems(Database* db, House* house)
 	std::string config = asLowerCaseString(g_config.getString(ConfigManager::HOUSE_STORAGE));
 	if(config == "binary-tilebased")
 	{
-		std::ostringstream query;
+		DBQuery query;
 		query << "DELETE FROM `tile_store` WHERE `house_id` = " << house->getId()
 			<< " AND `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 		if(!db->query(query.str()))
@@ -296,7 +296,7 @@ bool IOMapSerialize::saveHouseItems(Database* db, House* house)
 	}
 	else if(config == "binary")
 	{
-		std::ostringstream query;
+		DBQuery query;
 		query << "DELETE FROM `house_data` WHERE `house_id` = "<< house->getId()
 			<< " AND `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 		if(!db->query(query.str()))
@@ -307,7 +307,7 @@ bool IOMapSerialize::saveHouseItems(Database* db, House* house)
 		return saveHouseBinary(db, stmt, house) && stmt.execute();
 	}
 
-	std::ostringstream query;
+	DBQuery query;
 	query << "DELETE FROM `tile_items` WHERE `tile_id` IN (SELECT `id` FROM `tiles` WHERE `house_id` = "
 		<< house->getId() << " AND `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID)
 		<< ") AND `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
@@ -335,7 +335,7 @@ bool IOMapSerialize::saveHouseItems(Database* db, House* house)
 bool IOMapSerialize::loadMapRelational(Map* map)
 {
 	Database* db = Database::getInstance();
-	std::ostringstream query; //lock mutex!
+	DBQuery query; //lock mutex!
 
 	House* house = NULL;
 	for(HouseMap::iterator it = Houses::getInstance()->getHouseBegin(); it != Houses::getInstance()->getHouseEnd(); ++it)
@@ -359,8 +359,7 @@ bool IOMapSerialize::loadMapRelational(Map* map)
 					{
 						if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 						{
-							Depot* depot = player->getDepot(house->getTownId(), true);
-							loadItems(itemsResult, depot, true);
+							loadItems(itemsResult, player->getInbox(), true);
 							if(player->isVirtual())
 							{
 								IOLoginData::getInstance()->savePlayer(player);
@@ -403,8 +402,7 @@ bool IOMapSerialize::loadMapRelational(Map* map)
 						{
 							if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 							{
-								Depot* depot = player->getDepot(house->getTownId(), true);
-								loadItems(itemsResult, depot, true);
+								loadItems(itemsResult, player->getInbox(), true);
 								if(player->isVirtual())
 								{
 									IOLoginData::getInstance()->savePlayer(player);
@@ -436,7 +434,7 @@ bool IOMapSerialize::saveMapRelational(Map*)
 		return false;
 
 	//clear old tile data
-	std::ostringstream query;
+	DBQuery query;
 	query << "DELETE FROM `tile_items` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 	if(!db->query(query.str()))
 		return false;
@@ -459,7 +457,7 @@ bool IOMapSerialize::loadMapBinary(Map* map)
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	std::ostringstream query;
+	DBQuery query;
 	query << "SELECT `house_id`, `data` FROM `house_data` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -492,9 +490,8 @@ bool IOMapSerialize::loadMapBinary(Map* map)
 			{
 				if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 				{
-					Depot* depot = player->getDepot(player->getTown(), true);
 					while(itemCount--)
-						loadItem(propStream, depot, true);
+						loadItem(propStream, player->getInbox(), true);
 
 					if(player->isVirtual())
 					{
@@ -529,7 +526,7 @@ bool IOMapSerialize::saveMapBinary(Map*)
 	if(!transaction.begin())
 		return false;
 
-	std::ostringstream query;
+	DBQuery query;
 	query << "DELETE FROM `house_data` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 	if(!db->query(query.str()))
 		return false;
@@ -552,7 +549,7 @@ bool IOMapSerialize::loadMapBinaryTileBased(Map* map)
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	std::ostringstream query;
+	DBQuery query;
 	query << "SELECT `house_id`, `data` FROM `tile_store` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -585,9 +582,8 @@ bool IOMapSerialize::loadMapBinaryTileBased(Map* map)
 			{
 				if(Player* player = g_game.getPlayerByGuidEx(house->getOwner()))
 				{
-					Depot* depot = player->getDepot(player->getTown(), true);
 					while(itemCount--)
-						loadItem(propStream, depot, true);
+						loadItem(propStream, player->getInbox(), true);
 
 					if(player->isVirtual())
 					{
@@ -622,7 +618,7 @@ bool IOMapSerialize::saveMapBinaryTileBased(Map*)
 	if(!transaction.begin())
 		return false;
 
-	std::ostringstream query;
+	DBQuery query;
 	query << "DELETE FROM `tile_store` WHERE `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID);
 	if(!db->query(query.str()))
 		return false;
@@ -662,7 +658,7 @@ bool IOMapSerialize::saveHouseBinary(Database* db, DBInsert& stmt, House* house)
 	if(!attributesSize)
 		return true;
 
-	std::ostringstream query;
+	DBQuery query;
 	query << house->getId() << ", " << g_config.getNumber(ConfigManager::WORLD_ID)
 		<< ", " << db->escapeBlob(attributes, attributesSize);
 	return stmt.addRow(query);
@@ -681,7 +677,7 @@ bool IOMapSerialize::saveHouseBinaryTileBased(Database* db, DBInsert& stmt, Hous
 		if(!attributesSize)
 			continue;
 
-		std::ostringstream query;
+		DBQuery query;
 		query << house->getId() << ", " << g_config.getNumber(ConfigManager::WORLD_ID)
 			<< ", " << db->escapeBlob(attributes, attributesSize);
 		if(!stmt.addRow(query))
@@ -821,9 +817,9 @@ bool IOMapSerialize::saveItems(Database* db, uint32_t& tileId, uint32_t houseId,
 
 	bool stored = false;
 	DBInsert stmt(db);
-	stmt.setQuery("INSERT INTO `tile_items` (`tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
+	stmt.setQuery("INSERT INTO `tile_items` (`tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`) VALUES ");
 
-	std::ostringstream query;
+	DBQuery query;
 	for(int32_t i = 0; i < thingCount; ++i)
 	{
 		if(!(item = tile->__getThing(i)->getItem()) || (!item->isMovable() && !item->forceSerialize()))
@@ -845,21 +841,11 @@ bool IOMapSerialize::saveItems(Database* db, uint32_t& tileId, uint32_t houseId,
 		PropWriteStream propWriteStream;
 		item->serializeAttr(propWriteStream);
 
-		std::string key = "serial";
-		boost::any value = item->getAttribute(key.c_str());
-		if(value.empty())
-		{
-			item->generateSerial();
-			value = item->getAttribute(key.c_str());
-		}
-
-		item->eraseAttribute(key.c_str());
-
 		uint32_t attributesSize = 0;
 		const char* attributes = propWriteStream.getStream(attributesSize);
 
 		query << tileId << ", " << g_config.getNumber(ConfigManager::WORLD_ID) << ", " << ++runningId << ", " << parentId << ", "
-			<< item->getID() << ", " << (int32_t)item->getSubType() << ", " << db->escapeBlob(attributes, attributesSize) << ", " << db->escapeString(boost::any_cast<std::string>(value).c_str());
+			<< item->getID() << ", " << (int32_t)item->getSubType() << ", " << db->escapeBlob(attributes, attributesSize);
 		if(!stmt.addRow(query.str()))
 			return false;
 

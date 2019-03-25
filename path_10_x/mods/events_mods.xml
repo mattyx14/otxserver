@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mod name="events mods" version="1.0" author="slawkens - edited by: mattyx14" contact="marty@otland.net" enabled="yes">
+<mod name="events mods" version="1.0" author="Mattyx14" contact="marty@otland.net" enabled="yes">
 	<changelog><![CDATA[
 		* [01/06/2012 v1.0] Adori blank event
 		* [01/06/2012 v1.0] Display items in bag event
@@ -88,7 +88,7 @@
 		}
 
 		function onLook(cid, thing, position, lookDistance)
-			if(isPlayer(thing.uid) and cid ~= thing.uid and getPlayerAccess(cid) < config.hiddenAccess) then
+			if(isPlayer(thing.uid) and cid ~= thing and getPlayerAccess(cid) < config.hiddenAccess) then
 				doPlayerSendTextMessage(thing.uid, config.messageType, (config.anonymous and "Someone" or getPlayerName(cid)) .. " is looking at you.")
 			end
 

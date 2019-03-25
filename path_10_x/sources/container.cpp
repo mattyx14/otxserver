@@ -133,11 +133,11 @@ double Container::getWeight() const
 
 std::string Container::getContentDescription() const
 {
-	std::ostringstream s;
+	std::stringstream s;
 	return getContentDescription(s).str();
 }
 
-std::ostringstream& Container::getContentDescription(std::ostringstream& s) const
+std::stringstream& Container::getContentDescription(std::stringstream& s) const
 {
 	bool begin = true;
 	Container* evil = const_cast<Container*>(this);
@@ -253,11 +253,12 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
 
 	//send change to client
+	Item* lastItem = getItem(maxSize);
 	Player* player = NULL;
 	for(it = list.begin(); it != list.end(); ++it)
 	{
 		if((player = (*it)->getPlayer()))
-			player->sendRemoveContainerItem(this, index, item);
+			player->sendRemoveContainerItem(this, index, lastItem);
 	}
 
 	//event methods
@@ -271,7 +272,8 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t count,
 	uint32_t flags, Creature* actor/* = NULL*/) const
 {
-	if((flags & FLAG_CHILDISOWNER) == FLAG_CHILDISOWNER)
+	bool childIsOwner = hasBitSet(FLAG_CHILDISOWNER, flags);
+	if(childIsOwner)
 	{
 		//a child container is querying, since we are the top container (not carried by a player)
 		//just return with no error.
@@ -288,16 +290,21 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 	if(item == this)
 		return RET_THISISIMPOSSIBLE;
 
+	bool isInbox = false;
+
 	if(const Container* container = item->getContainer())
 	{
 		for(const Cylinder* cylinder = getParent(); cylinder; cylinder = cylinder->getParent())
 		{
 			if(cylinder == container)
 				return RET_THISISIMPOSSIBLE;
+
+			if(!hasBitSet(FLAG_NOLIMIT, flags) && !isInbox && dynamic_cast<const Inbox*>(cylinder))
+				isInbox = true;
 		}
 	}
 
-	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT && (index == INDEX_WHEREEVER && size() >= capacity()))
+	if(isInbox || (index == INDEX_WHEREEVER && size() >= capacity() && !hasBitSet(FLAG_NOLIMIT, flags)))
 		return RET_CONTAINERNOTENOUGHROOM;
 
 	const Cylinder* topParent = getTopParent();
@@ -343,7 +350,7 @@ ReturnValue Container::__queryMaxCount(int32_t index, const Thing* thing, uint32
 		}
 		else
 		{
-			const Thing* destThing = __getThing(index);
+			const Thing* destThing = __getThing(index-1);
 			const Item* destItem = NULL;
 			if(destThing)
 				destItem = destThing->getItem();
@@ -363,7 +370,7 @@ ReturnValue Container::__queryMaxCount(int32_t index, const Thing* thing, uint32
 	else
 	{
 		maxQueryCount = freeSlots;
-		if(!maxQueryCount)
+		if(maxQueryCount == 0)
 			return RET_CONTAINERNOTENOUGHROOM;
 	}
 
@@ -377,10 +384,10 @@ ReturnValue Container::__queryRemove(const Thing* thing, uint32_t count, uint32_
 		return RET_NOTPOSSIBLE;
 
 	const Item* item = thing->getItem();
-	if(!item)
+	if(item == NULL)
 		return RET_NOTPOSSIBLE;
 
-	if(!count || (item->isStackable() && count > item->getItemCount() && item->getItemCount() != 0))
+	if(count == 0 || (item->isStackable() && count > item->getItemCount()))
 		return RET_NOTPOSSIBLE;
 
 	if(!item->isMovable() && !hasBitSet(FLAG_IGNORENOTMOVABLE, flags))
@@ -427,20 +434,19 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 	if(!item)
 		return this;
 
-	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
-	if(autoStack && item->isStackable() && item->getParent() != this)
+	if(!((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK)
+		&& item->isStackable() && item->getParent() != this)
 	{
-		//try find a suitable item to stack with
-		uint32_t n = 0;
+		//try to find a suitable item to stack with
+		uint32_t n = itemlist.size();
 		for(ItemList::reverse_iterator cit = itemlist.rbegin(); cit != itemlist.rend(); ++cit, --n)
 		{
-			if((*cit) != item && (*cit)->getID() == item->getID() && (*cit)->getItemCount() < 100)
+			if((*cit)->getID() == item->getID() && (*cit)->getItemCount() < 100)
 			{
 				*destItem = (*cit);
 				index = n;
 				return this;
 			}
-			++n;
 		}
 	}
 

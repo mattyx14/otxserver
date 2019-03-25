@@ -20,6 +20,11 @@
 #include "outputmessage.h"
 #include "connection.h"
 #include "game.h"
+#include "resources.h"
+
+#if defined(WINDOWS) && !defined(_CONSOLE)
+#include "gui.h"
+#endif
 
 extern Game g_game;
 
@@ -50,7 +55,11 @@ void ProtocolOld::disconnectClient(uint8_t error, const char* message)
 
 void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 {
-	if(g_game.getGameState() == GAMESTATE_SHUTDOWN)
+	if(
+#if defined(WINDOWS) && !defined(_CONSOLE)
+		!GUI::getInstance()->m_connections ||
+#endif
+		g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
 		getConnection()->close();
 		return;

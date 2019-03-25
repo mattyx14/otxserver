@@ -57,10 +57,7 @@ class Protocol;
 class ConnectionManager
 {
 	public:
-		virtual ~ConnectionManager()
-		{
-			shutdown();
-		}
+		virtual ~ConnectionManager() {}
 		static ConnectionManager* getInstance()
 		{
 			static ConnectionManager instance;
@@ -111,11 +108,11 @@ class Connection : public boost::enable_shared_from_this<Connection>, boost::non
 		Connection(boost::asio::ip::tcp::socket* socket, boost::asio::io_service& io_service, ServicePort_ptr servicePort):
 			m_socket(socket), m_readTimer(io_service), m_writeTimer(io_service), m_service(io_service), m_servicePort(servicePort)
 		{
-			m_refCount = m_pendingWrite = m_pendingRead = m_packets = 0;
+			m_refCount = m_pendingWrite = m_pendingRead = m_packetsSent = 0;
 			m_connectionState = CONNECTION_STATE_OPEN;
 			m_receivedFirst = m_writeError = m_readError = false;
 			m_protocol = NULL;
-			m_time = time(NULL);
+			m_timeConnected = time(NULL);
 
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 			connectionCount++;
@@ -180,10 +177,9 @@ class Connection : public boost::enable_shared_from_this<Connection>, boost::non
 
 		int32_t m_pendingWrite, m_pendingRead;
 		ConnectionState_t m_connectionState;
-		uint32_t m_refCount;
+		uint32_t m_refCount, m_packetsSent;
 
-		time_t m_time;
-		uint32_t m_packets;
+		time_t m_timeConnected;
 
 		static bool m_logError;
 		boost::recursive_mutex m_connectionLock;

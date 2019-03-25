@@ -32,6 +32,11 @@
 
 #include "configmanager.h"
 #include "game.h"
+#include "resources.h"
+
+#if defined(WINDOWS) && !defined(_CONSOLE)
+#include "gui.h"
+#endif
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -66,7 +71,11 @@ void ProtocolLogin::disconnectClient(uint8_t error, const char* message)
 
 void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 {
-	if(g_game.getGameState() == GAMESTATE_SHUTDOWN)
+	if(
+#if defined(WINDOWS) && !defined(_CONSOLE)
+		!GUI::getInstance()->m_connections ||
+#endif
+		g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
 		getConnection()->close();
 		return;
@@ -76,13 +85,16 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	msg.skip(2); // client platform
 	uint16_t version = msg.get<uint16_t>();
 
+	if(version >= 971)
+		msg.skip(17);
+	else
+		msg.skip(12);
+
 #ifdef CLIENT_VERSION_DATA
 	uint32_t datSignature = msg.get<uint32_t>();
 	uint32_t sprSignature = msg.get<uint32_t>();
 
 	uint32_t picSignature = msg.get<uint32_t>();
-#else
-	msg.skip(12);
 #endif
 	if(!RSA_decrypt(msg))
 	{
@@ -97,7 +109,14 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	std::string name = msg.getString(), password = msg.getString();
 	if(name.empty())
 	{
-		name = "10";
+		if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER))
+		{
+			disconnectClient(0x0A, "Invalid account name.");
+			return;
+		}
+
+		name = "1";
+		password = "1";
 	}
 
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
@@ -162,7 +181,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	Account account;
-	if(!IOLoginData::getInstance()->loadAccount(account, name) || (account.name != "10" && !encryptTest(account.salt + password, account.password)))
+	if(!IOLoginData::getInstance()->loadAccount(account, name) || !encryptTest(account.salt + password, account.password))
 	{
 		ConnectionManager::getInstance()->addAttempt(clientIp, protocolId, false);
 		disconnectClient(0x0A, "Invalid account name or password.");
@@ -182,7 +201,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		else
 			IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-		std::ostringstream ss;
+		std::stringstream ss;
 		ss << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str()
 			<< " by: " << name_.c_str() << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ?
 			"account won't be undeleted" : "banishment will be lifted at:\n") << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
@@ -194,7 +213,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	// remove premium days
 	#ifndef __LOGIN_SERVER__
 	IOLoginData::getInstance()->removePremium(account);
-	if(account.name != "10" && !g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !account.charList.size())
+	if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !account.charList.size())
 	{
 		disconnectClient(0x0A, std::string("This account does not contain any character yet.\nCreate a new character on the "
 			+ g_config.getString(ConfigManager::SERVER_NAME) + " website at " + g_config.getString(ConfigManager::URL) + ".").c_str());
@@ -209,7 +228,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	IOLoginData::getInstance()->removePremium(account);
-	if(account.name != "10" && !g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !charList.size())
+	if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !charList.size())
 	{
 		disconnectClient(0x0A, std::string("This account does not contain any character on this client yet.\nCreate a new character on the "
 			+ g_config.getString(ConfigManager::SERVER_NAME) + " website at " + g_config.getString(ConfigManager::URL) + ".").c_str());
@@ -238,87 +257,31 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 
 		//Add char list
 		output->put<char>(0x64);
-		if(account.name == "10" && account.name != "0")
-		{
-			PlayerVector players;
-			for(AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
-			{
-				if(!it->second->isRemoved() && it->second->client->isBroadcasting())
-					players.push_back(it->second);
-			}
-			if (!players.size())
-				disconnectClient(0x0A, "There are no livestreams online right now.");
-			else 
-			{
-				std::sort(players.begin(), players.end(), Player::sort);
-				output->put<char>(players.size());
-				for(PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
-				{
-					std::ostringstream s;
-					s << (*it)->getLevel();
-					if(!(*it)->client->check(password))
-						s << "*";
-
-					output->putString((*it)->getName());
-					output->putString(s.str());
-					output->put<uint32_t>(serverIp);
-
-					IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-					output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-				}
-			}
-		}
+		output->put<char>(0x01); // number of worlds
+		output->put<char>(0x00); // world id
+		output->putString(g_config.getString(ConfigManager::SERVER_NAME));
+		output->putString(g_config.getString(ConfigManager::IP));
+		IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
+		output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
+		if(!g_config.getBool(ConfigManager::SERVER_PREVIEW))
+			output->put<char>(0x00);
 		else
+			output->put<char>(0x01);
+
+		output->put<char>((uint8_t)account.charList.size());
+		#ifndef __LOGIN_SERVER__
+		for(Characters::iterator it = account.charList.begin(); it != account.charList.end(); ++it)
 		{
-			if(g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && account.number != 1)
-			{
-				output->put<char>(account.charList.size() + 1);
-				output->putString("Account Manager");
-
-				output->putString(g_config.getString(ConfigManager::SERVER_NAME));
-				output->put<uint32_t>(serverIp);
-
-				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-			}
-			else
-				output->put<char>((uint8_t)account.charList.size());
-
-			#ifndef __LOGIN_SERVER__
-			for(Characters::iterator it = account.charList.begin(); it != account.charList.end(); ++it)
-			{
-				output->putString((*it));
-				if(g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST))
-				{
-					if(g_game.getPlayerByName((*it)))
-						output->putString("Online");
-					else
-						output->putString("Offline");
-				}
-				else
-					output->putString(g_config.getString(ConfigManager::SERVER_NAME));
-
-				output->put<uint32_t>(serverIp);
-				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-			}
-			#else
-			for(Characters::iterator it = charList.begin(); it != charList.end(); ++it)
-			{
-				output->putString(it->second.name);
-				if(!g_config.getBool(ConfigManager::ON_OR_OFF_CHARLIST) || it->second.status < 0)
-					output->putString(it->second.server->getName());
-				else if(it->second.status)
-					output->putString("Online");
-				else
-					output->putString("Offline");
-
-				output->put<uint32_t>(it->second.server->getAddress());
-				IntegerVec games = it->second.server->getPorts();
-				output->put<uint16_t>(games[random_range(0, games.size() - 1)]);
-			}
-			#endif
+			output->put<char>(0x00);
+			output->putString((*it));
 		}
+		#else
+		for(Characters::iterator it = charList.begin(); it != charList.end(); ++it)
+		{
+			output->put<char>(0x00);
+			output->putString((*it));
+		}
+		#endif
 
 		//Add premium days
 		if(g_config.getBool(ConfigManager::FREE_PREMIUM))

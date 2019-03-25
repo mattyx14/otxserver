@@ -27,7 +27,7 @@ extern ConfigManager g_config;
 DatabasePgSQL::DatabasePgSQL() :
 	m_handle(NULL)
 {
-	std::ostringstream dns;
+	std::stringstream dns;
 	dns << "host='" << g_config.getString(ConfigManager::SQL_HOST) << "' dbname='" << g_config.getString(ConfigManager::SQL_DB) << "' user='" << g_config.getString(ConfigManager::SQL_USER) << "' password='" << g_config.getString(ConfigManager::SQL_PASS) << "' port='" << g_config.getNumber(ConfigManager::SQL_PORT) << "'";
 
 	m_handle = PQconnectdb(dns.str().c_str());

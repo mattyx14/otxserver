@@ -76,7 +76,6 @@ class Monster : public Creature
 		bool canPushItems() const {return mType->canPushItems;}
 		bool canPushCreatures() const {return mType->canPushCreatures;}
 		bool isHostile() const;
-		bool isPassive() const {return mType->isPassive;}
 		virtual bool isWalkable() const;
 		virtual bool canSeeInvisibility() const {return Creature::isImmune(CONDITION_INVISIBLE);}
 		uint32_t getManaCost() const {return mType->manaCost;}
@@ -171,7 +170,7 @@ class Monster : public Creature
 		void updateIdleStatus();
 
 		virtual void onAddCondition(ConditionType_t type, bool hadCondition);
-		virtual void onEndCondition(ConditionType_t type, ConditionId_t id);
+		virtual void onEndCondition(ConditionType_t type);
 		virtual void onCreatureConvinced(const Creature* convincer, const Creature* creature);
 
 		bool canUseAttack(const Position& pos, const Creature* target) const;

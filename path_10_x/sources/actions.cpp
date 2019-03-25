@@ -343,14 +343,6 @@ ReturnValue Actions::canUse(const Player* player, const Position& pos)
 	if(!Position::areInRange<1,1,0>(playerPos, pos))
 		return RET_TOOFARAWAY;
 
-	Tile* tile = g_game.getTile(pos);
-	if(tile)
-	{
-		HouseTile* houseTile = tile->getHouseTile();
-		if(houseTile && houseTile->getHouse() && !houseTile->getHouse()->isInvited(player))
-			return RET_PLAYERISNOTINVITED;
-	}
-
 	return RET_NOERROR;
 }
 
@@ -483,7 +475,11 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		if(!bed->canUse(player))
 			return RET_CANNOTUSETHISOBJECT;
 
-		bed->sleep(player);
+		uint32_t levelToOffinBedHouse = g_config.getNumber(ConfigManager::LEVEL_TO_OFFLINE);
+		if(player->getLevel() <= levelToOffinBedHouse)
+			bed->sleep(player);
+
+		player->prepareSleep(bed);
 		return RET_NOERROR;
 	}
 
@@ -494,17 +490,15 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			return RET_YOUARENOTTHEOWNER;
 
 		Container* tmpContainer = NULL;
-		if(Depot* depot = container->getDepot())
+		if(DepotLocker* depot = container->getDepotLocker())
 		{
 			if(player->hasFlag(PlayerFlag_CannotPickupItem))
 				return RET_CANNOTUSETHISOBJECT;
 
-			if(Depot* playerDepot = player->getDepot(depot->getDepotId(), true))
-			{
-				player->useDepot(depot->getDepotId(), true);
-				playerDepot->setParent(depot->getParent());
-				tmpContainer = playerDepot;
-			}
+			DepotLocker* myDepotLocker = player->getDepotLocker(depot->getDepotId());
+			myDepotLocker->setParent(depot->getParent());
+			tmpContainer = myDepotLocker;
+			player->setLastDepotId(depot->getDepotId());
 		}
 
 		if(!tmpContainer)
@@ -541,6 +535,21 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		return RET_NOERROR;
 	}
 
+	if(item->getID() == ITEM_MARKET)
+	{
+		if(!g_config.getBool(ConfigManager::MARKET_ENABLED))
+		{
+			player->sendTextMessage(MSG_INFO_DESCR, "The market is disabled.");
+			return RET_NOERROR;
+		}
+
+		if(player->getLastDepotId() == -1)
+			return RET_NOERROR;
+
+		player->sendMarketEnter(player->getLastDepotId());
+		return RET_NOERROR;
+	}
+
 	const ItemType& it = Item::items[item->getID()];
 	if(it.transformUseTo)
 	{
@@ -551,10 +560,10 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 
 	if(item->isPremiumScroll())
 	{
-		std::ostringstream ss;
+		std::stringstream ss;
 		ss << " You have recived " << it.premiumDays << " premium days.";
 		player->sendTextMessage(MSG_INFO_DESCR, ss.str());
-
+		
 		player->addPremiumDays(it.premiumDays);
 		g_game.internalRemoveItem(NULL, item, 1);
 		return RET_NOERROR;
@@ -721,7 +730,7 @@ bool Action::executeUse(Player* player, Item* item, const PositionEx& fromPos, c
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(player->getPosition());
-			std::ostringstream scriptstream;
+			std::stringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(player) << std::endl;
 			env->streamThing(scriptstream, "item", item, env->addThing(item));
@@ -755,7 +764,7 @@ bool Action::executeUse(Player* player, Item* item, const PositionEx& fromPos, c
 		else
 		{
 			#ifdef __DEBUG_LUASCRIPTS__
-			std::ostringstream desc;
+			std::stringstream desc;
 			desc << player->getName() << " - " << item->getID() << " " << fromPos << "|" << toPos;
 			env->setEvent(desc.str());
 			#endif

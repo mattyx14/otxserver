@@ -1,8 +1,4 @@
 function onSay(cid, words, param, channel)
-	if(not checkExhausted(cid, 666, 10)) then
-		return true
-	end
-
 	local strings, i, position, added, showGamemasters = {""}, 1, 1, false, getBooleanFromString(getConfigValue('displayGamemastersWithOnlineCommand'))
 	for _, pid in ipairs(getPlayersOnline()) do
 		if(added) then

@@ -3,10 +3,6 @@ local config = {
 }
 
 function onSay(cid, words, param, channel)
-	if(not checkExhausted(cid, 666, 10)) then
-		return true
-	end
-
 	local t = { param }
 	if(t[1] ~= nil) then
 		t = string.explode(param, " ", 1)

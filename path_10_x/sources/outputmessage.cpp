@@ -36,12 +36,13 @@ OutputMessagePool::OutputMessagePool()
 	}
 
 	m_frameTime = OTSYS_TIME();
-	m_shutdown = false;
 }
 
 void OutputMessagePool::startExecutionFrame()
 {
+	//boost::recursive_mutex::scoped_lock lockClass(m_outputPoolLock);
 	m_frameTime = OTSYS_TIME();
+	m_shutdown = false;
 }
 
 OutputMessagePool::~OutputMessagePool()
@@ -58,57 +59,77 @@ void OutputMessagePool::send(OutputMessage_ptr msg)
 	OutputMessage::OutputMessageState state = msg->getState();
 
 	m_outputPoolLock.unlock();
-	if(state != OutputMessage::STATE_ALLOCATED_NO_AUTOSEND)
-		return;
-
-	if(Connection_ptr connection = msg->getConnection())
+	if(state == OutputMessage::STATE_ALLOCATED_NO_AUTOSEND)
 	{
-		if(connection->send(msg))
-			return;
-
-		if(Protocol* protocol = msg->getProtocol())
-			protocol->onSendMessage(msg);
+		#ifdef __DEBUG_NET_DETAIL__
+		std::clog << "Sending message - SINGLE" << std::endl;
+		#endif
+		if(msg->getConnection())
+		{
+			if(!msg->getConnection()->send(msg) && msg->getProtocol())
+				msg->getProtocol()->onSendMessage(msg);
+		}
+		#ifdef __DEBUG_NET__
+		else
+			std::clog << "[Error - OutputMessagePool::send] NULL connection." << std::endl;
+		#endif
 	}
+	#ifdef __DEBUG_NET__
+	else
+		std::clog << "[Warning - OutputMessagePool::send] State != STATE_ALLOCATED_NO_AUTOSEND" << std::endl;
+	#endif
 }
 
 void OutputMessagePool::sendAll()
 {
 	boost::recursive_mutex::scoped_lock lockClass(m_outputPoolLock);
-	const uint64_t dropTime = m_frameTime - 10000;
-	const uint64_t frameTime = m_frameTime - 10;
-
-	OutputMessageList::iterator it, end;
-	for(it = m_addQueue.begin(), end = m_addQueue.end(); it != end; ++it)
+	OutputMessageList::iterator it;
+	for(it = m_addQueue.begin(); it != m_addQueue.end();)
 	{
-		OutputMessage_ptr omsg = (*it);
-		const uint64_t frame = omsg->getFrame();
-		if(frame >= dropTime)
+		//drop messages that are older than 10 seconds
+		if(OTSYS_TIME() - (*it)->getFrame() > 10000)
 		{
-			(*it)->setState(OutputMessage::STATE_ALLOCATED);
-			if(frameTime > frame)
-				m_autoSend.push_front(omsg);
-			else
-				m_autoSend.push_back(omsg);
+			if((*it)->getProtocol())
+				(*it)->getProtocol()->onSendMessage(*it);
+
+			it = m_addQueue.erase(it);
+			continue;
 		}
-		else if((omsg)->getProtocol())
-			(omsg)->getProtocol()->onSendMessage(omsg);
+
+		(*it)->setState(OutputMessage::STATE_ALLOCATED);
+		m_autoSend.push_back(*it);
+		++it;
 	}
 
 	m_addQueue.clear();
-	for(it = m_autoSend.begin(), end = m_autoSend.end(); it != end; it = m_autoSend.erase(it))
+	for(it = m_autoSend.begin(); it != m_autoSend.end();)
 	{
 		OutputMessage_ptr omsg = (*it);
-		if(frameTime <= omsg->getFrame())
-			break;
-
-		if(Connection_ptr connection = omsg->getConnection())
+		#ifdef __NO_PLAYER_SENDBUFFER__
+		//use this define only for debugging
+		if(true)
+		#else
+		//It will send only messages bigger then 1 kb or with a lifetime greater than 10 ms
+		if(omsg->size() > 1024 || (m_frameTime - omsg->getFrame() > 10))
+		#endif
 		{
-			if(connection->send(omsg))
-				continue;
+			#ifdef __DEBUG_NET_DETAIL__
+			std::clog << "Sending message - ALL" << std::endl;
+			#endif
+			if(omsg->getConnection())
+			{
+				if(!omsg->getConnection()->send(omsg) && omsg->getProtocol())
+					omsg->getProtocol()->onSendMessage(omsg);
+			}
+			#ifdef __DEBUG_NET__
+			else
+				std::clog << "[Error - OutputMessagePool::send] NULL connection." << std::endl;
+			#endif
 
-			if(Protocol* protocol = omsg->getProtocol())
-				protocol->onSendMessage(omsg);
+			it = m_autoSend.erase(it);
 		}
+		else
+			++it;
 	}
 }
 
@@ -120,21 +141,21 @@ void OutputMessagePool::releaseMessage(OutputMessage* msg)
 
 void OutputMessagePool::internalReleaseMessage(OutputMessage* msg)
 {
-	if(Protocol* protocol = msg->getProtocol())
-		protocol->unRef();
+	if(msg->getProtocol())
+		msg->getProtocol()->unRef();
 	else
 		std::clog << "[Warning - OutputMessagePool::internalReleaseMessage] protocol not found." << std::endl;
 
-	if(Connection_ptr connection = msg->getConnection())
-		connection->unRef();
-	else if(!msg->getProtocol())
+	if(msg->getConnection())
+		msg->getConnection()->unRef();
+	else
 		std::clog << "[Warning - OutputMessagePool::internalReleaseMessage] connection not found." << std::endl;
 
 	msg->freeMessage();
 #ifdef __TRACK_NETWORK__
 	msg->clearTrack();
-
 #endif
+
 	m_outputPoolLock.lock();
 	m_outputMessages.push_back(msg);
 	m_outputPoolLock.unlock();
@@ -186,16 +207,14 @@ void OutputMessagePool::configureOutputMessage(OutputMessage_ptr msg, Protocol* 
 		msg->setState(OutputMessage::STATE_ALLOCATED_NO_AUTOSEND);
 
 	Connection_ptr connection = protocol->getConnection();
+	assert(connection);
 
 	msg->setProtocol(protocol);
 	protocol->addRef();
-
-	msg->setFrame(m_frameTime);
-	if(!connection)
-		return;
-
 	msg->setConnection(connection);
 	connection->addRef();
+
+	msg->setFrame(m_frameTime);
 }
 
 void OutputMessagePool::autoSend(OutputMessage_ptr msg)

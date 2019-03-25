@@ -87,47 +87,30 @@ void Mailbox::__addThing(Creature* actor, int32_t, Thing* thing)
 
 bool Mailbox::sendItem(Creature* actor, Item* item)
 {
-	uint32_t depotId = 0;
 	std::string name;
-	if(!getRecipient(item, name, depotId) || name.empty() || !depotId)
+	if(!getReceiver(item, name) || name.empty())
 		return false;
 
-	return IOLoginData::getInstance()->playerMail(actor, name, depotId, item);
+	return IOLoginData::getInstance()->playerMail(actor, name, item);
 }
 
-bool Mailbox::getDepotId(const std::string& townString, uint32_t& depotId)
-{
-	Town* town = Towns::getInstance()->getTown(townString);
-	if(!town)
-		return false;
-
-	std::string disabledTowns = g_config.getString(ConfigManager::MAILBOX_DISABLED_TOWNS);
-	if(disabledTowns.size())
-	{
-		IntegerVec tmpVec = vectorAtoi(explodeString(disabledTowns, ","));
-		if(tmpVec[0] != 0 && std::find(tmpVec.begin(), tmpVec.end(), town->getID()) != tmpVec.end())
-			return false;
-	}
-
-	depotId = town->getID();
-	return true;
-}
-
-bool Mailbox::getRecipient(Item* item, std::string& name, uint32_t& depotId)
+bool Mailbox::getReceiver(Item* item, std::string& name)
 {
 	if(!item)
 		return false;
 
 	if(item->getID() == ITEM_PARCEL) /**We need to get the text from the label incase its a parcel**/
 	{
-		if(Container* parcel = item->getContainer())
+		Container* parcel = item->getContainer();
+		if(parcel)
 		{
 			for(ItemList::const_iterator cit = parcel->getItems(); cit != parcel->getEnd(); ++cit)
 			{
-				if((*cit)->getID() == ITEM_LABEL && !(*cit)->getText().empty())
+				if((*cit)->getID() == ITEM_LABEL)
 				{
 					item = (*cit);
-					break;
+					if(item->getText().empty())
+						break;
 				}
 			}
 		}
@@ -141,24 +124,7 @@ bool Mailbox::getRecipient(Item* item, std::string& name, uint32_t& depotId)
 	if(!item || item->getText().empty()) // No label or letter found or its empty
 		return false;
 
-	std::istringstream iss(item->getText(), std::istringstream::in);
-	uint32_t curLine = 0;
-
-	std::string tmp, townString;
-	while(getline(iss, tmp, '\n') && curLine < 2)
-	{
-		if(curLine == 0)
-			name = tmp;
-		else if(curLine == 1)
-			townString = tmp;
-
-		++curLine;
-	}
-
+	name = getFirstLine(item->getText());
 	trimString(name);
-	if(townString.empty())
-		return false;
-
-	trimString(townString);
-	return getDepotId(townString, depotId);
+	return true;
 }

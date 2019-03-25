@@ -36,6 +36,10 @@ boost::recursive_mutex AutoId::lock;
 uint32_t AutoId::count = 1000;
 AutoId::List AutoId::list;
 
+double Creature::speedA = 857.36;
+double Creature::speedB = 261.29;
+double Creature::speedC = -4795.01;
+
 extern Game g_game;
 extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
@@ -163,18 +167,22 @@ int64_t Creature::getTimeSinceLastMove() const
 
 int32_t Creature::getWalkDelay(Direction dir) const
 {
-	if(lastStep)
-		return getStepDuration(dir) - (OTSYS_TIME() - lastStep);
+	if(lastStep == 0)
+		return 0;
 
-	return 0;
+	int64_t ct = OTSYS_TIME();
+	int64_t stepDuration = getStepDuration(dir);
+	return stepDuration - (ct - lastStep);
 }
 
 int32_t Creature::getWalkDelay() const
 {
-	if(lastStep)
-		return getStepDuration() - (OTSYS_TIME() - lastStep);
+	if(lastStep == 0)
+		return 0;
 
-	return 0;
+	int64_t ct = OTSYS_TIME();
+	int64_t stepDuration = getStepDuration() * lastStepCost;
+	return stepDuration - (ct - lastStep);
 }
 
 void Creature::onThink(uint32_t interval)
@@ -334,6 +342,13 @@ bool Creature::getNextStep(Direction& dir, uint32_t&)
 
 bool Creature::startAutoWalk(std::list<Direction>& listDir)
 {
+	const Player* thisPlayer = getPlayer();
+	if(thisPlayer && thisPlayer->getNoMove())
+	{
+		thisPlayer->sendCancelWalk();
+		return false;
+	}
+
 	listWalkDir = listDir;
 	addEventWalk(listDir.size() == 1);
 	return true;
@@ -342,11 +357,15 @@ bool Creature::startAutoWalk(std::list<Direction>& listDir)
 void Creature::addEventWalk(bool firstStep/* = false*/)
 {
 	cancelNextWalk = false;
-	if(getStepSpeed() < 1 || eventWalk)
+
+	if(getStepSpeed() <= 0)
+		return;
+
+	if(eventWalk != 0)
 		return;
 
 	int64_t ticks = getEventStepTicks(firstStep);
-	if(ticks < 1)
+	if(ticks <= 0)
 		return;
 
 	if(ticks == 1)
@@ -1217,13 +1236,13 @@ void Creature::onAddCondition(ConditionType_t type, bool hadCondition)
 	}
 }
 
-void Creature::onEndCondition(ConditionType_t type, ConditionId_t)
+void Creature::onEndCondition(ConditionType_t type)
 {
 	if(type == CONDITION_INVISIBLE && !hasCondition(CONDITION_INVISIBLE, -1, false))
 		g_game.internalCreatureChangeVisible(this, VISIBLE_APPEAR);
 }
 
-void Creature::onTickCondition(ConditionType_t type, ConditionId_t, int32_t, bool& _remove)
+void Creature::onTickCondition(ConditionType_t type, int32_t, bool& _remove)
 {
 	if(const MagicField* field = getTile()->getFieldItem())
 	{
@@ -1361,7 +1380,7 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
-	std::ostringstream ss;
+	std::stringstream ss;
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;
@@ -1409,7 +1428,7 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
-	std::ostringstream ss;
+	std::stringstream ss;
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;
@@ -1519,16 +1538,16 @@ void Creature::removeCondition(ConditionType_t type)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_ABORT);
-		onEndCondition(condition->getType(), condition->getId());
+		onEndCondition(condition->getType());
 		delete condition;
 	}
 }
 
-void Creature::removeCondition(ConditionType_t type, ConditionId_t conditionId)
+void Creature::removeCondition(ConditionType_t type, ConditionId_t id)
 {
 	for(ConditionList::iterator it = conditions.begin(); it != conditions.end(); )
 	{
-		if((*it)->getType() != type || (*it)->getId() != conditionId)
+		if((*it)->getType() != type || (*it)->getId() != id)
 		{
 			++it;
 			continue;
@@ -1538,7 +1557,7 @@ void Creature::removeCondition(ConditionType_t type, ConditionId_t conditionId)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_ABORT);
-		onEndCondition(condition->getType(), condition->getId());
+		onEndCondition(condition->getType());
 		delete condition;
 	}
 }
@@ -1552,7 +1571,7 @@ void Creature::removeCondition(Condition* condition)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_ABORT);
-		onEndCondition(condition->getType(), condition->getId());
+		onEndCondition(condition->getType());
 		delete condition;
 	}
 }
@@ -1581,16 +1600,16 @@ void Creature::removeConditions(ConditionEnd_t reason, bool onlyPersistent/* = t
 		it = conditions.erase(it);
 
 		condition->endCondition(this, reason);
-		onEndCondition(condition->getType(), condition->getId());
+		onEndCondition(condition->getType());
 		delete condition;
 	}
 }
 
-Condition* Creature::getCondition(ConditionType_t type, ConditionId_t conditionId, uint32_t subId/* = 0*/) const
+Condition* Creature::getCondition(ConditionType_t type, ConditionId_t id, uint32_t subId/* = 0*/) const
 {
 	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
 	{
-		if((*it)->getType() == type && (*it)->getId() == conditionId && (*it)->getSubId() == subId)
+		if((*it)->getType() == type && (*it)->getId() == id && (*it)->getSubId() == subId)
 			return *it;
 	}
 
@@ -1611,7 +1630,7 @@ void Creature::executeConditions(uint32_t interval)
 		it = conditions.erase(it);
 
 		condition->endCondition(this, CONDITIONEND_TICKS);
-		onEndCondition(condition->getType(), condition->getId());
+		onEndCondition(condition->getType());
 		delete condition;
 	}
 }
@@ -1621,14 +1640,12 @@ bool Creature::hasCondition(ConditionType_t type, int32_t subId/* = 0*/, bool ch
 	if(isSuppress(type))
 		return false;
 
-	Condition* condition = NULL;
 	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
 	{
-		if(!(condition = *it) || condition->getType() != type ||
-			(subId != -1 && condition->getSubId() != (uint32_t)subId))
+		if((*it)->getType() != type || (subId != -1 && (*it)->getSubId() != (uint32_t)subId))
 			continue;
 
-		if(!checkTime || !condition->getEndTime() || condition->getEndTime() >= OTSYS_TIME())
+		if(!checkTime || !(*it)->getEndTime() || (*it)->getEndTime() >= OTSYS_TIME())
 			return true;
 	}
 
@@ -1658,37 +1675,56 @@ std::string Creature::getDescription(int32_t) const
 int32_t Creature::getStepDuration(Direction dir) const
 {
 	if(dir == NORTHWEST || dir == NORTHEAST || dir == SOUTHWEST || dir == SOUTHEAST)
-		return getStepDuration() << 1;
+		return getStepDuration() *3;
 
 	return getStepDuration();
 }
 
 int32_t Creature::getStepDuration() const
 {
-	if(removed)
+	if(isRemoved())
 		return 0;
 
-	uint32_t stepSpeed = getStepSpeed();
-	if(!stepSpeed)
-		return 0;
+	uint32_t calculatedStepSpeed;
+	uint32_t groundSpeed;
+
+	int32_t stepSpeed = getStepSpeed();
+	if(stepSpeed > -Creature::speedB)
+	{
+		calculatedStepSpeed = floor((Creature::speedA * log((stepSpeed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
+		if(calculatedStepSpeed <= 0)
+			calculatedStepSpeed = 1;
+	}
+	else
+		calculatedStepSpeed = 1;
 
 	const Tile* tile = getTile();
-	if(!tile || !tile->ground)
-		return 0;
+	if(tile && tile->ground)
+	{
+		uint32_t groundId = tile->ground->getID();
+		groundSpeed = Item::items[groundId].speed;
+		if(groundSpeed == 0)
+			groundSpeed = 150;
+	}
+	else
+		groundSpeed = 150;
 
-	return ((1000 * Item::items[tile->ground->getID()].speed) / stepSpeed) * lastStepCost;
+	double duration = std::floor(1000 * groundSpeed / (double)calculatedStepSpeed);
+	return std::ceil(duration / 50) * 50;
 }
 
 int64_t Creature::getEventStepTicks(bool onlyDelay/* = false*/) const
 {
 	int64_t ret = getWalkDelay();
-	if(ret > 0)
-		return ret;
-
-	if(!onlyDelay)
-		return getStepDuration();
-
-	return 1;
+	if(ret <= 0)
+	{
+		int32_t stepDuration = getStepDuration();
+		if(onlyDelay && stepDuration > 0)
+			ret = 1;
+		else
+			ret = stepDuration * lastStepCost;
+	}
+	return ret;
 }
 
 void Creature::getCreatureLight(LightInfo& light) const
@@ -1788,9 +1824,13 @@ bool FrozenPathingConditionCall::operator()(const Position& startPos, const Posi
 
 	int32_t testDist = std::max(std::abs(targetPos.x - testPos.x), std::abs(targetPos.y - testPos.y));
 	if(fpp.maxTargetDist == 1)
-		return (testDist >= fpp.minTargetDist && testDist <= fpp.maxTargetDist);
+	{
+		if(testDist < fpp.minTargetDist || testDist > fpp.maxTargetDist)
+			return false;
 
-	if(testDist <= fpp.maxTargetDist)
+		return true;
+	}
+	else if(testDist <= fpp.maxTargetDist)
 	{
 		if(testDist < fpp.minTargetDist)
 			return false;
@@ -1807,6 +1847,5 @@ bool FrozenPathingConditionCall::operator()(const Position& startPos, const Posi
 			return true;
 		}
 	}
-
 	return false;
 }

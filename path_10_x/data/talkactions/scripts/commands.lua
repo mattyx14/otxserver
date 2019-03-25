@@ -3,10 +3,6 @@ local config = {
 }
 
 function onSay(cid, words, param, channel)
-	if(not checkExhausted(cid, 666, 10)) then
-		return true
-	end
-
 	local playerAccess, t = getPlayerAccess(cid), {}
 	for i, talk in ipairs(getTalkActionList()) do
 		if(not talk.hidden and playerAccess >= talk.access) then

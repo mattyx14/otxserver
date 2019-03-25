@@ -5,10 +5,6 @@ local worlds = {
 }
 
 function onSay(cid, words, param, channel)
-	if(not checkExhausted(cid, 666, 10)) then
-		return true
-	end
-
 	local world = worlds[getWorldType()]
 	if(not world) then
 		return true

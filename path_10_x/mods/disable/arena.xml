@@ -16,11 +16,9 @@
 			}
 		}
 	]]></config>
-
 	<event type="login" name="arena_login" event="script"><![CDATA[
 		return registerCreatureEvent(cid, "arena_dead")
 	]]></event>
-
 	<event type="statschange" name="arena_dead" event="script"><![CDATA[
 		domodlib("arena_config")
 		if type == 1 and getCreatureHealth(cid) <= value and isCreature(attacker) and isPlayer(cid) then
@@ -33,7 +31,6 @@
 		end
 		return true
 	]]></event>
-
 	<action uniqueid="1981" event="script"><![CDATA[
 		domodlib("arena_config")
 		if item.itemid == 1945 then

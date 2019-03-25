@@ -18,11 +18,11 @@
 
 #include "condition.h"
 #include "tools.h"
+#include "configmanager.h"
 
 #include "game.h"
 #include "creature.h"
 #include "combat.h"
-#include "configmanager.h"
 
 extern Game g_game;
 extern ConfigManager g_config;
@@ -74,7 +74,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 	{
 		case CONDITIONATTR_TYPE:
 		{
-			uint32_t value = 0;
+			int32_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -84,7 +84,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 
 		case CONDITIONATTR_ID:
 		{
-			uint32_t value = 0;
+			int32_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -104,7 +104,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 
 		case CONDITIONATTR_BUFF:
 		{
-			uint8_t value = 0;
+			int32_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -114,7 +114,7 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 
 		case CONDITIONATTR_SUBID:
 		{
-			uint32_t value = 0;
+			int32_t value = 0;
 			if(!propStream.getType(value))
 				return false;
 
@@ -135,19 +135,19 @@ bool Condition::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
 bool Condition::serialize(PropWriteStream& propWriteStream)
 {
 	propWriteStream.addByte(CONDITIONATTR_TYPE);
-	propWriteStream.addType((uint32_t)conditionType);
+	propWriteStream.addType((int32_t)conditionType);
 
 	propWriteStream.addByte(CONDITIONATTR_ID);
-	propWriteStream.addType((uint32_t)id);
+	propWriteStream.addType((int32_t)id);
 
 	propWriteStream.addByte(CONDITIONATTR_TICKS);
 	propWriteStream.addType((int32_t)ticks);
 
 	propWriteStream.addByte(CONDITIONATTR_BUFF);
-	propWriteStream.addType((uint8_t)(buff ? 1 : 0));
+	propWriteStream.addType((int32_t)buff ? 1 : 0);
 
 	propWriteStream.addByte(CONDITIONATTR_SUBID);
-	propWriteStream.addType((uint32_t)subId);
+	propWriteStream.addType((int32_t)subId);
 	return true;
 }
 
@@ -171,7 +171,7 @@ bool Condition::executeCondition(Creature* creature, int32_t interval)
 	if(interval > 0)
 	{
 		bool tmp = false;
-		creature->onTickCondition(conditionType, id, interval, tmp);
+		creature->onTickCondition(getType(), interval, tmp);
 	}
 
 	if(ticks == -1)
@@ -256,15 +256,15 @@ Condition* Condition::createCondition(PropStream& propStream)
 	if(!propStream.getByte(attr) || attr != CONDITIONATTR_TICKS)
 		return NULL;
 
-	int32_t _ticks = 0;
-	if(!propStream.getType(_ticks))
+	uint32_t _ticks = 0;
+	if(!propStream.getLong(_ticks))
 		return NULL;
 
 	if(!propStream.getByte(attr) || attr != CONDITIONATTR_BUFF)
 		return NULL;
 
-	uint8_t _buff = 0;
-	if(!propStream.getByte(_buff))
+	uint32_t _buff = 0;
+	if(!propStream.getLong(_buff))
 		return NULL;
 
 	if(!propStream.getByte(attr) || attr != CONDITIONATTR_SUBID)
@@ -948,11 +948,11 @@ bool ConditionDamage::unserializeProp(ConditionAttr_t attr, PropStream& propStre
 	{
 		case CONDITIONATTR_DELAYED:
 		{
-			uint8_t value = 0;
+			bool value = false;
 			if(!propStream.getType(value))
 				return false;
 
-			delayed = (value != 0);
+			delayed = value;
 			return true;
 		}
 
@@ -1002,7 +1002,7 @@ bool ConditionDamage::serialize(PropWriteStream& propWriteStream)
 		return false;
 
 	propWriteStream.addByte(CONDITIONATTR_DELAYED);
-	propWriteStream.addType((uint8_t)delayed);
+	propWriteStream.addType(delayed);
 
 	propWriteStream.addByte(CONDITIONATTR_PERIODDAMAGE);
 	propWriteStream.addType(periodDamage);
@@ -1121,7 +1121,7 @@ bool ConditionDamage::executeCondition(Creature* creature, int32_t interval)
 	else if(!damageList.empty())
 	{
 		bool remove = getTicks() != -1;
-		creature->onTickCondition(conditionType, id, interval, remove);
+		creature->onTickCondition(getType(), interval, remove);
 
 		IntervalInfo& damageInfo = damageList.front();
 		damageInfo.timeLeft -= interval;
@@ -1169,20 +1169,12 @@ bool ConditionDamage::getNextDamage(int32_t& damage)
 
 bool ConditionDamage::doDamage(Creature* creature, int32_t damage)
 {
-	if(creature->isSuppress(conditionType))
+	if(creature->isSuppress(getType()))
 		return true;
 
 	Creature* attacker = g_game.getCreatureByID(owner);
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-	{
-		if(damage < 0 && attacker && attacker->getPlayer() && creature->getPlayer() && creature->getPlayer()->getSkull() != SKULL_BLACK)
-			damage = damage / 2;
-	}
-	else
-	{
-		if(damage < 0 && attacker && attacker->getPlayer() && creature->getPlayer())
-			damage = damage / 2;
-	}
+	if(damage < 0 && attacker && attacker->getPlayer() && creature->getPlayer() && creature->getPlayer()->getSkull() != SKULL_BLACK)
+		damage = damage / 2;
 
 	CombatType_t combatType = Combat::ConditionToDamageType(conditionType);
 	if(g_game.combatBlockHit(combatType, attacker, creature, damage, false, false, field))

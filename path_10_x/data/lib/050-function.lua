@@ -168,13 +168,10 @@ function getExperienceForLevel(lv)
 	return ((50 * lv * lv * lv) - (150 * lv * lv) + (400 * lv)) / 3
 end
 
-function doMutePlayer(cid, time, sub)
+function doMutePlayer(cid, time)
 	local condition = createConditionObject(CONDITION_MUTED, (time == -1 and time or time * 1000))
-	if(type(sub) == 'number') then
-		setConditionParam(condition, CONDITION_PARAM_SUBID, sub, false)
-	end
-
 	return doAddCondition(cid, condition, false)
+
 end
 
 function doSummonCreature(name, pos)
@@ -322,7 +319,7 @@ function doCopyItem(item, attributes)
 		for i = (getContainerSize(item.uid) - 1), 0, -1 do
 			local tmp = getContainerItem(item.uid, i)
 			if(tmp.itemid > 0) then
-				doAddContainerItemEx(ret, doCopyItem(tmp, attributes).uid)
+				doAddContainerItemEx(ret, doCopyItem(tmp, true).uid)
 			end
 		end
 	end
@@ -398,9 +395,9 @@ function getItemTopParent(uid)
 		return nil
 	end
 
-	for i = 1, 1000 do
+	while(true) do
 		local tmp = getItemParent(parent.uid)
-		if(tmp and tmp.uid ~= 0 and (not parent or parent.uid == 0 or tmp.uid ~= parent.uid)) then
+		if(tmp and tmp.uid ~= 0) then
 			parent = tmp
 		else
 			break
@@ -417,9 +414,9 @@ function getItemHolder(uid)
 	end
 
 	local holder = nil
-	for i = 1, 1000 do
+	while(true) do
 		local tmp = getItemParent(parent.uid)
-		if(tmp and tmp.uid ~= 0 and (not parent or parent.uid == 0 or tmp.uid ~= parent.uid)) then
+		if(tmp and tmp.uid ~= 0) then
 			if(tmp.itemid == 1) then -- a creature
 				holder = tmp
 				break
@@ -440,101 +437,4 @@ function valid(f)
 			return f(p, ...)
 		end
 	end
-end
-
-function addContainerItems(container,items)
-	local items_mod = {}
-	for _, it in ipairs(items) do
-		if( isItemStackable(it.id) and it.count > 100) then
-			local c = it.count
-			while( c > 100 ) do
-				table.insert(items_mod,{id = it.id,count = 100})
-				c = c - 100
-			end
-			if(c > 0) then
-				table.insert(items_mod,{id = it.id,count = c})
-			end
-		else
-			table.insert(items_mod,{id = it.id,count = 1})
-		end
-	end
-
-	local free = getContainerCap(container.uid) - (getContainerSize(container.uid) )
-	local count = math.ceil(#items_mod/ free)
-	local main_bp = container.uid
-	local insert_bp = main_bp
-	local counter = 1
-	for c,it in ipairs(items_mod) do
-		local _c = isItemStackable(it.id) and (it.count > 100 and 100 or it.count) or 1
-		if count > 1 then
-			if (counter < free) then
-				doAddContainerItem(insert_bp, it.id, _c)
-			else
-				insert_bp = doAddContainerItem(insert_bp, container.itemid, 1)
-				count = (#items_mod)-(free-1)
-				free = getContainerCap(insert_bp) 
-				count = math.ceil(count/ free)
-				doAddContainerItem(insert_bp, it.id, _c)
-				counter = 1
-			end
-			counter = counter + 1
-		else
-			doAddContainerItem(insert_bp, it.id, _c)
-		end
-	end
-
-	return main_bp
-end
-
-function getContainerItemCount(uid, itemid, recursive)
-	local c, s = 0, getContainerSize(uid)
-	for i = 1, s do
-		local thing = getContainerItem(uid, (i - 1))
-		if(thing.uid ~= 0) then
-			if(recursive and isContainer(thing.uid)) then
-				c = c + getContainerItemCount(thing.uid, itemid, recursive)
-			end
-
-			if(thing.itemid == itemid) then
-				c = c + thing.type
-			end
-		end
-	end
-
-	return c
-end
-
-function getContainerItems(uid, itemid, recursive)
-	local a, s = {}, getContainerSize(uid)
-	for i = 1, s do
-		local thing = getContainerItem(uid, (i - 1))
-		if(thing.uid ~= 0) then
-			if(recursive and isContainer(thing.uid)) then
-				a = table.merge(a, getContainerItems(thing.uid, itemid, true))
-			end
-
-			if(thing.itemid == itemid) then
-				table.insert(a, thing)
-			end
-		end
-	end
-
-	return a
-end
-
--- Focus Save
-function doPlayerSaveEx(cid)
-	doCreatureSetStorage(cid, "save")
-	local result = doPlayerSave(cid)
-	doCreatureSetStorage(cid, "save", (os.time() + math.random(30, 90)))
-	return result
-end
--- Focus Save
-
-function doPlayerBuyItem(cid, itemid, count, cost, charges)
-	return doPlayerRemoveMoneyEx(cid, cost) and doPlayerGiveItem(cid, itemid, count, charges)
-end
-
-function doPlayerBuyItemContainer(cid, containerid, itemid, count, cost, charges)
-	return doPlayerRemoveMoneyEx(cid, cost) and doPlayerGiveItemContainer(cid, containerid, itemid, count, charges)
 end

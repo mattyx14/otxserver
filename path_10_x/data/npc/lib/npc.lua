@@ -82,10 +82,10 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 		local exhaustionInSeconds = getConfigValue('exhaustionInSecondsNPC')
 		local storage = 45814
 		if(exhaustion.check(cid, storage) == true) then
-			return 0
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You cant buy it so fast.")
+			return false
 		end
 		exhaustion.set(cid, storage, exhaustionInSeconds)
-		doPlayerSendTextMessage(cid, MESSAGE_EVENT_DEFAULT, "Please wait " .. exhaustionInSeconds .. " seconds before trying buy again.")
 	end
 
 	local item, a = nil, 0

@@ -23,10 +23,19 @@ enum OperatingSystem_t
 {
 	CLIENTOS_LINUX = 1,
 	CLIENTOS_WINDOWS = 2,
+	CLIENTOS_FLASH = 3,
 
 	CLIENTOS_OTCLIENT_LINUX = 10,
 	CLIENTOS_OTCLIENT_WINDOWS = 11,
 	CLIENTOS_OTCLIENT_MAC = 12
+};
+
+enum ChannelEvent_t
+{
+	CHANNELEVENT_JOIN = 0,
+	CHANNELEVENT_LEAVE = 1,
+	CHANNELEVENT_INVITE = 2,
+	CHANNELEVENT_EXCLUDE = 3
 };
 
 enum ReportType_t
@@ -108,7 +117,15 @@ enum MagicEffect_t
 	MAGIC_EFFECT_SMOKE = 67,
 	MAGIC_EFFECT_INSECTS = 68,
 	MAGIC_EFFECT_DRAGONHEAD = 69,
-	MAGIC_EFFECT_LAST = MAGIC_EFFECT_DRAGONHEAD,
+	MAGIC_EFFECT_ORCSHAMAN = 70,
+	MAGIC_EFFECT_ORCSHAMAN_FIRE = 71,
+	MAGIC_EFFECT_THUNDER = 72,
+	MAGIC_EFFECT_FERUMBRAS = 73,
+	MAGIC_EFFECT_CONFETTIHORIZONTAL = 74,
+	MAGIC_EFFECT_CONFETTIVERTICAL = 75,
+	// 76-156 are empty
+	MAGIC_EFFECT_BLACKSMOKE = 157,
+	MAGIC_EFFECT_LAST = MAGIC_EFFECT_BLACKSMOKE,
 
 	//for internal use, dont send to client
 	MAGIC_EFFECT_NONE = 0xFF,
@@ -159,7 +176,13 @@ enum ShootEffect_t
 	SHOOT_EFFECT_EARTHARROW = 39,
 	SHOOT_EFFECT_EXPLOSION = 40,
 	SHOOT_EFFECT_CAKE = 41,
-	SHOOT_EFFECT_LAST = SHOOT_EFFECT_CAKE,
+	SHOOT_EFFECT_TARSALARROW = 43,
+	SHOOT_EFFECT_VORTEXBOLT = 44,
+	SHOOT_EFFECT_PRISMATICBOLT = 47,
+	SHOOT_EFFECT_CRYSTALLINEARROW = 48,
+	SHOOT_EFFECT_DRILLBOLT = 49,
+	SHOOT_EFFECT_ENVENOMEDARROW = 50,
+	SHOOT_EFFECT_LAST = SHOOT_EFFECT_ENVENOMEDARROW,
 
 	//for internal use, dont send to client
 	SHOOT_EFFECT_WEAPONTYPE = 0xFE, //254
@@ -173,51 +196,51 @@ enum MessageClasses
 	MSG_SPEAK_SAY = 1,
 	MSG_SPEAK_WHISPER = 2,
 	MSG_SPEAK_YELL = 3,
-	MSG_NPC_TO = 4,
-	MSG_NPC_FROM = 5,
-	MSG_PRIVATE = 6,
-	MSG_CHANNEL = 7, 
-	MSG_CHANNEL_MANAGEMENT = 8,
-	MSG_GAMEMASTER_BROADCAST = 9,
-	MSG_GAMEMASTER_CHANNEL = 10,
-	MSG_GAMEMASTER_PRIVATE = 11,
-	MSG_CHANNEL_HIGHLIGHT = 12,
-	MSG_SPEAK_MONSTER_SAY = 13,
-	MSG_SPEAK_MONSTER_YELL = 14,
+	MSG_PRIVATE_FROM = 4,
+	MSG_PRIVATE_TO = 5,
+	MSG_CHANNEL_MANAGEMENT = 6,
+	MSG_CHANNEL = 7,
+	MSG_CHANNEL_HIGHLIGHT = 8,
+	MSG_SPEAK_SPELL = 9,
+	MSG_NPC_FROM = 10,
+	MSG_NPC_TO = 11,
+	MSG_GAMEMASTER_BROADCAST = 12,
+	MSG_GAMEMASTER_CHANNEL = 13,
+	MSG_GAMEMASTER_PRIVATE_FROM = 14,
+	MSG_GAMEMASTER_PRIVATE_TO = 15,
+	MSG_SPEAK_MONSTER_SAY = 34,
+	MSG_SPEAK_MONSTER_YELL = 35,
 
 	MSG_SPEAK_FIRST = MSG_SPEAK_SAY,
-	MSG_SPEAK_LAST = MSG_CHANNEL_HIGHLIGHT,
+	MSG_SPEAK_LAST = MSG_GAMEMASTER_PRIVATE_TO,
 	MSG_SPEAK_MONSTER_FIRST = MSG_SPEAK_MONSTER_SAY,
 	MSG_SPEAK_MONSTER_LAST = MSG_SPEAK_MONSTER_YELL,
 
-	MSG_EVENT_ORANGE = 13, /*Orange message in local chat*/
-	MSG_STATUS_CONSOLE_ORANGE = 14, /*Orange message in local chat*/
-	MSG_STATUS_WARNING = 15, /*Red message in game window and in the console*/
-	MSG_EVENT_ADVANCE = 16, /*White message in game window and in the console*/
-	MSG_EVENT_DEFAULT = 17, /*White message at the bottom of the game window and in the console*/
-	MSG_STATUS_DEFAULT = 18, /*White message at the bottom of the game window and in the console*/
-	MSG_INFO_DESCR = 19, /*Green message in game window and in the console*/
-	MSG_STATUS_SMALL = 20, /*White message at the bottom of the game window"*/
-	MSG_STATUS_CONSOLE_BLUE = 21, /*Teal message in local chat*/
-	MSG_STATUS_CONSOLE_RED = 22, /*Red message in local chat*/
-
-	//for internal use
-	MSG_LOOT = MSG_INFO_DESCR, /*Green message in game window and in the console*/
-	MSG_TRADE_NPC = MSG_INFO_DESCR, /*Green message in game window and in the console*/
-	MSG_EVENT_GUILD = MSG_INFO_DESCR, /*Green message in game window and in the console*/
-	MSG_PARTY_MANAGEMENT = MSG_INFO_DESCR, /*Green message in game window and in the console*/
-	MSG_PARTY = MSG_INFO_DESCR, /*Green message in game window and in the console*/
-	MSG_REPORT = MSG_EVENT_ADVANCE, /*White message in game window and in the console*/
-	MSG_HOTKEY_USE = MSG_INFO_DESCR, /*Green message in game window*/
-	MSG_DAMAGE_DEALT = MSG_STATUS_DEFAULT,
-	MSG_DAMAGE_RECEIVED = MSG_STATUS_DEFAULT,
-	MSG_HEALED = MSG_STATUS_DEFAULT,
-	MSG_EXPERIENCE = MSG_STATUS_DEFAULT,
-
-	MSG_HIDDEN = 0xFF,
-	MSG_DAMAGE_OTHERS = MSG_HIDDEN,
-	MSG_HEALED_OTHERS = MSG_HIDDEN,
-	MSG_EXPERIENCE_OTHERS = MSG_HIDDEN
+	MSG_STATUS_CONSOLE_BLUE = 4, /*Teal message in local chat*/
+	MSG_STATUS_CONSOLE_RED = 12, /*Red message in console*/
+	MSG_STATUS_DEFAULT = 16, /*White message at the bottom of the game window and in the console*/
+	MSG_STATUS_WARNING = 17, /*Red message in game window and in the console*/
+	MSG_EVENT_ADVANCE = 18, /*White message in game window and in the console*/
+	MSG_STATUS_SMALL = 19, /*White message at the bottom of the game window"*/
+	MSG_INFO_DESCR = 20, /*Green message in game window and in the console*/
+	MSG_DAMAGE_DEALT = 21,
+	MSG_DAMAGE_RECEIVED = 22,
+	MSG_HEALED = 23,
+	MSG_EXPERIENCE = 24,
+	MSG_DAMAGE_OTHERS = 25,
+	MSG_HEALED_OTHERS = 26,
+	MSG_EXPERIENCE_OTHERS = 27,
+	MSG_EVENT_DEFAULT = 28, /*White message at the bottom of the game window and in the console*/
+	MSG_LOOT = 29, /*Green message in game window and in the console*/
+	MSG_TRADE_NPC = 30, /*Green message in game window and in the console*/
+	MSG_EVENT_GUILD = 31, /*Green message in game window and in the console*/
+	MSG_PARTY_MANAGEMENT = 32, /*Green message in game window and in the console*/
+	MSG_PARTY = 33, /*Green message in game window and in the console*/
+	MSG_EVENT_ORANGE = 34, /*Orange message in local chat*/
+	MSG_STATUS_CONSOLE_ORANGE = 35, /*Orange message in local chat*/
+	MSG_REPORT = 36, /*White message in game window and in the console*/
+	MSG_HOTKEY_USE = 37, /*Green message in game window*/
+	MSG_TUTORIAL_HINT = 38
 };
 
 enum MapMarks_t
@@ -392,7 +415,7 @@ enum Icons_t
 	ICON_PZBLOCK = 1 << 13,
 	ICON_PZ = 1 << 14,
 	ICON_BLEED = 1 << 15,
-	ICON_HUNGRY = 1 << 16
+	ICON_HUNGRY = 1 << 16 //should be 31 [found in flash client]
 };
 
 enum skills_t
@@ -480,7 +503,8 @@ enum PartyShields_t
 	SHIELD_YELLOW_NOSHAREDEXP_BLINK,
 	SHIELD_BLUE_NOSHAREDEXP,
 	SHIELD_YELLOW_NOSHAREDEXP,
-	SHIELD_LAST = SHIELD_YELLOW_NOSHAREDEXP
+	SHIELD_GRAY,
+	SHIELD_LAST = SHIELD_GRAY
 };
 
 enum GuildEmblems_t
@@ -488,7 +512,9 @@ enum GuildEmblems_t
 	GUILDEMBLEM_NONE = 0,
 	GUILDEMBLEM_ALLY = 1,
 	GUILDEMBLEM_ENEMY = 2,
-	GUILDEMBLEM_NEUTRAL = 3
+	GUILDEMBLEM_NEUTRAL = 3,
+	GUILDEMBLEM_MEMBER = 4,
+	GUILDEMBLEM_OTHER = 5
 };
 
 enum SpellGroup_t
@@ -667,11 +693,12 @@ enum Spells_t
 
 enum item_t
 {
-	ITEM_FIREFIELD = 1492,
+	ITEM_BROWSEFIELD = 460, // for internal use and it no are added "Require dev it"
+	ITEM_FIREFIELD = 1487,
 	ITEM_FIREFIELD_SAFE = 1500,
-	ITEM_POISONFIELD = 1496,
+	ITEM_POISONFIELD = 1490,
 	ITEM_POISONFIELD_SAFE = 1503,
-	ITEM_ENERGYFIELD = 1495,
+	ITEM_ENERGYFIELD = 1491,
 	ITEM_ENERGYFIELD_SAFE = 1504,
 	ITEM_MAGICWALL = 1497,
 	ITEM_MAGICWALL_SAFE = 11098,
@@ -679,6 +706,8 @@ enum item_t
 	ITEM_WILDGROWTH_SAFE = 11099,
 	ITEM_DEPOT = 2594,
 	ITEM_LOCKER = 2589,
+	ITEM_INBOX = 14404,
+	ITEM_MARKET = 14405,
 	ITEM_MALE_CORPSE = 3058,
 	ITEM_FEMALE_CORPSE = 3065,
 	ITEM_FULLSPLASH = 2016,
@@ -780,6 +809,23 @@ enum PlayerCustomFlags
 	PlayerCustomFlag_LastFlag
 };
 
+enum VipIcons_t
+{
+	VIP_ICON_FIRST = 0,
+	VIP_ICON_NONE = VIP_ICON_FIRST,
+	VIP_ICON_HEART,
+	VIP_ICON_SKULL,
+	VIP_ICON_LIGHTNING,
+	VIP_ICON_CROSSHAIR,
+	VIP_ICON_STAR,
+	VIP_ICON_JINJANG,
+	VIP_ICON_TRIANGLE,
+	VIP_ICON_CROSS,
+	VIP_ICON_CASH,
+	VIP_ICON_MEDAL,
+	VIP_ICON_LAST = VIP_ICON_MEDAL
+};
+
 struct MessageDetails
 {
 	int32_t value;
@@ -808,12 +854,11 @@ struct MessageDetails
 #define PSTRG_MOUNTS_RANGE_SIZE 10
 #define PSTRG_MOUNTS_CURRENTMOUNT (PSTRG_MOUNTS_RANGE_START + PSTRG_MOUNTS_RANGE_SIZE)
 
+#define NETWORK_CRYPTOHEADER_SIZE 8
 #define NETWORK_RETRY_TIMEOUT 5000
-#define NETWORK_SOCKET_SIZE 4096
+#define NETWORK_DEFAULT_SIZE 4096
 #define NETWORK_HEADER_SIZE 2
-#define NETWORK_CRYPTOHEADER_SIZE (NETWORK_HEADER_SIZE + 6)
 #define NETWORK_MAX_SIZE 24590
-#define NETWORK_BODY_SIZE (NETWORK_MAX_SIZE - NETWORK_CRYPTOHEADER_SIZE - 6)
 
 #define LOCALHOST 2130706433
 #define SWIMMING_OUTFIT 267

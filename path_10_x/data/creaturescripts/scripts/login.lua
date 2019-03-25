@@ -63,8 +63,5 @@ function onLogin(cid)
 	registerCreatureEvent(cid, "AdvanceSave")
 	registerCreatureEvent(cid, "recordIp")
 	registerCreatureEvent(cid, "partyAndGuildProtection")
-	registerCreatureEvent(cid, "PlayerTrade")
-
-	doCreatureSetStorage(cid, "save", (os.time() + 120))
 	return true
 end

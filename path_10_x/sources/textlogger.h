@@ -19,13 +19,19 @@
 #define __TEXTLOGGER__
 #include "otsystem.h"
 
+#if defined(WINDOWS) && !defined(_CONSOLE)
+#include <ostream>
+#include <fstream>
+#endif
+
 enum LogFile_t
 {
 	LOGFILE_FIRST = 0,
 	LOGFILE_ADMIN = LOGFILE_FIRST,
 	LOGFILE_OUTPUT = 1,
 	LOGFILE_ASSERTIONS = 2,
-	LOGFILE_LAST = LOGFILE_ASSERTIONS
+	LOGFILE_CLIENT_ASSERTION = 3,
+	LOGFILE_LAST = LOGFILE_CLIENT_ASSERTION
 };
 
 enum LogType_t
@@ -49,40 +55,37 @@ class Logger
 		void open();
 		void close();
 
-		bool isLoaded() const {return m_loaded;}
-
 		void iFile(LogFile_t file, std::string output, bool newLine);
 		void eFile(std::string file, std::string output, bool newLine);
 
 		void log(const char* func, LogType_t type, std::string message, std::string channel = "", bool newLine = true);
 
 	private:
-		Logger() {m_loaded = false;}
+		Logger() {}
 		void internal(FILE* file, std::string output, bool newLine);
 
 		FILE* m_files[LOGFILE_LAST + 1];
-		bool m_loaded;
 };
 
 #define LOG_MESSAGE(type, message, channel) \
 	Logger::getInstance()->log(__PRETTY_FUNCTION__, type, message, channel);
 
-class OutputHandler : public std::streambuf
+#if defined(WINDOWS) && !defined(_CONSOLE)
+class GUILogger : public std::streambuf
 {
 	public:
-		virtual ~OutputHandler();
-		static OutputHandler* getInstance()
-		{
-			static OutputHandler instance;
-			return &instance;
-		}
+		GUILogger();
+		virtual ~GUILogger();
+
+		std::streambuf* err;
+		std::streambuf* log;
+		std::streambuf* out;
 
 	protected:
-		OutputHandler();
-		std::streambuf::int_type overflow(std::streambuf::int_type c = traits_type::eof());
+		int32_t overflow(int32_t c);
 
-		std::streambuf* log;
-		std::streambuf* err;
+		bool m_displayDate;
 		std::string m_cache;
 };
+#endif
 #endif

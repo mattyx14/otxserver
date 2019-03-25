@@ -151,7 +151,7 @@ bool House::isBidded() const
 	Database* db = Database::getInstance();
 	DBResult* result;
 
-	std::ostringstream query;
+	DBQuery query;
 	query << "SELECT `house_id` FROM `house_auctions` WHERE `house_id` = " << id << " LIMIT 1";
 	if(!(result = db->storeQuery(query.str())))
 		return false;
@@ -294,9 +294,8 @@ bool House::transferToDepot()
 
 	if(player)
 	{
-		Depot* depot = player->getDepot(townId, true);
 		for(ItemList::iterator it = moveList.begin(); it != moveList.end(); ++it)
-			g_game.internalMoveItem(NULL, (*it)->getParent(), depot, INDEX_WHEREEVER, (*it), (*it)->getItemCount(), NULL, FLAG_NOLIMIT);
+			g_game.internalMoveItem(NULL, (*it)->getParent(), player->getInbox(), INDEX_WHEREEVER, (*it), (*it)->getItemCount(), NULL, FLAG_NOLIMIT);
 
 		if(player->isVirtual())
 		{
@@ -827,8 +826,8 @@ bool Houses::payRent(Player* player, House* house, uint32_t bid, time_t _time/* 
 		player->balance -= amount;
 		paid = true;
 	}
-	else if(Depot* depot = player->getDepot(town->getID(), true))
-		paid = g_game.removeMoney(depot, amount, FLAG_NOLIMIT);
+	else if(DepotChest* depotChest = player->getDepotChest(town->getID(), true))
+		paid = g_game.removeMoney(depotChest, amount, FLAG_NOLIMIT);
 
 	if(!paid)
 		return false;
@@ -946,48 +945,44 @@ bool Houses::payHouse(House* house, time_t _time, uint32_t bid)
 		return false;
 	}
 
-	if(Depot* depot = player->getDepot(town->getID(), true))
+	if(Item* letter = Item::CreateItem(ITEM_LETTER_STAMPED))
 	{
-		if(Item* letter = Item::CreateItem(ITEM_LETTER_STAMPED))
+		if(g_game.internalAddItem(NULL, player->getInbox(), letter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RET_NOERROR)
 		{
-			if(g_game.internalAddItem(NULL, depot, letter, INDEX_WHEREEVER, FLAG_NOLIMIT) == RET_NOERROR)
+			letter->setWriter(g_config.getString(ConfigManager::SERVER_NAME));
+			letter->setDate(std::time(NULL));
+			std::stringstream s;
+
+			s << "Warning!\nThe ";
+			switch(rentPeriod)
 			{
-				letter->setWriter(g_config.getString(ConfigManager::SERVER_NAME));
-				letter->setDate(std::time(NULL));
-				std::ostringstream s;
-
-				s << "Warning!\nThe ";
-				switch(rentPeriod)
-				{
-					case RENTPERIOD_DAILY:
-						s << "daily";
-						break;
-					case RENTPERIOD_WEEKLY:
-						s << "weekly";
-						break;
-					case RENTPERIOD_MONTHLY:
-						s << "monthly";
-						break;
-					case RENTPERIOD_YEARLY:
-						s << "annual";
-						break;
-					default:
-						break;
-				}
-
-				s << " rent of " << house->getRent() << " gold for your "
-					<< (house->isGuild() ? "guild hall" : "house") << " \"" << house->getName()
-					<< "\" has to be paid. Have it within " << (warningsLimit - warnings)
-					<< " days or you will lose your " << (house->isGuild() ? "guild hall" : "house") << ".";
-
-				letter->setText(s.str().c_str());
-				if(player->isVirtual())
-					IOLoginData::getInstance()->savePlayer(player);
+				case RENTPERIOD_DAILY:
+					s << "daily";
+					break;
+				case RENTPERIOD_WEEKLY:
+					s << "weekly";
+					break;
+				case RENTPERIOD_MONTHLY:
+					s << "monthly";
+					break;
+				case RENTPERIOD_YEARLY:
+					s << "annual";
+					break;
+				default:
+					break;
 			}
 
-			else
-				g_game.freeThing(letter);
+			s << " rent of " << house->getRent() << " gold for your "
+				<< (house->isGuild() ? "guild hall" : "house") << " \"" << house->getName()
+				<< "\" has to be paid. Have it within " << (warningsLimit - warnings)
+				<< " days or you will lose your " << (house->isGuild() ? "guild hall" : "house") << ".";
+			
+			letter->setText(s.str().c_str());
+			if(player->isVirtual())
+				IOLoginData::getInstance()->savePlayer(player);
 		}
+		else
+			g_game.freeThing(letter);
 	}
 
 	house->setLastWarning(_time);

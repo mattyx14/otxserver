@@ -112,9 +112,14 @@ function onStepIn(cid, item, position, fromPosition)
 end
 
 function onStepOut(cid, item, position, fromPosition)
-	if(config.decreasing[item.itemid] and not isPlayerGhost(cid)) then
-		doTransformItem(item.uid, config.decreasing[item.itemid])
+	if(not config.decreasing[item.itemid]) then
+		return false
 	end
 
-	return true
+	if(not isPlayerGhost(cid)) then
+		doTransformItem(item.uid, config.decreasing[item.itemid])
+		return true
+	end
+
+	return false
 end

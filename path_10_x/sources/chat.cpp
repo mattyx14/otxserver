@@ -65,13 +65,20 @@ void PrivateChatChannel::invitePlayer(Player* player, Player* invitePlayer)
 	if(player == invitePlayer || !addInvited(invitePlayer))
 		return;
 
-	std::ostringstream msg;
+	std::stringstream msg;
 	msg << player->getName() << " invites you to " << (player->getSex(false) ? "his" : "her") << " private chat channel.";
-	invitePlayer->sendTextMessage(MSG_INFO_DESCR, msg.str());
+	invitePlayer->sendTextMessage(MSG_INFO_DESCR, msg.str().c_str());
 
 	msg.str("");
 	msg << invitePlayer->getName() << " has been invited.";
-	player->sendTextMessage(MSG_INFO_DESCR, msg.str());
+	player->sendTextMessage(MSG_INFO_DESCR, msg.str().c_str());
+
+	Player* tmpPlayer = NULL;
+	for(UsersMap::iterator cit = m_users.begin(); cit != m_users.end(); ++cit)
+	{
+		if((tmpPlayer = cit->second->getPlayer()))
+			tmpPlayer->sendChannelEvent(m_id, invitePlayer->getName(), CHANNELEVENT_INVITE);
+	}
 }
 
 void PrivateChatChannel::excludePlayer(Player* player, Player* excludePlayer)
@@ -81,10 +88,17 @@ void PrivateChatChannel::excludePlayer(Player* player, Player* excludePlayer)
 
 	std::string msg = excludePlayer->getName();
 	msg += " has been excluded.";
-	player->sendTextMessage(MSG_INFO_DESCR, msg);
+	player->sendTextMessage(MSG_INFO_DESCR, msg.c_str());
 
 	removeUser(excludePlayer, true);
 	excludePlayer->sendClosePrivate(getId());
+
+	Player* tmpPlayer = NULL;
+	for(UsersMap::iterator cit = m_users.begin(); cit != m_users.end(); ++cit)
+	{
+		if((tmpPlayer = cit->second->getPlayer()))
+			tmpPlayer->sendChannelEvent(m_id, excludePlayer->getName(), CHANNELEVENT_EXCLUDE);
+	}
 }
 
 void PrivateChatChannel::closeChannel()
@@ -126,6 +140,16 @@ bool ChatChannel::addUser(Player* player)
 		return false;
 	}
 
+	if(m_id == CHANNEL_PARTY || m_id == CHANNEL_GUILD || m_id == CHANNEL_PRIVATE)
+	{
+		Player* tmpPlayer = NULL;
+		for(UsersMap::iterator cit = m_users.begin(); cit != m_users.end(); ++cit)
+		{
+			if((tmpPlayer = cit->second->getPlayer()) && (!tmpPlayer->isGhost() || player->getAccess() >= tmpPlayer->getAccess()))
+				tmpPlayer->sendChannelEvent(m_id, player->getName(), CHANNELEVENT_JOIN);
+		}
+	}
+
 	m_users[player->getID()] = player;
 	CreatureEventList joinEvents = player->getCreatureEvents(CREATURE_EVENT_CHANNEL_JOIN);
 	for(CreatureEventList::iterator it = joinEvents.begin(); it != joinEvents.end(); ++it)
@@ -135,7 +159,7 @@ bool ChatChannel::addUser(Player* player)
 	return true;
 }
 
-bool ChatChannel::removeUser(Player* player, bool/* exclude = false*/)
+bool ChatChannel::removeUser(Player* player, bool exclude/* = false*/)
 {
 	if(!player)
 		return false;
@@ -148,6 +172,16 @@ bool ChatChannel::removeUser(Player* player, bool/* exclude = false*/)
 	CreatureEventList leaveEvents = player->getCreatureEvents(CREATURE_EVENT_CHANNEL_LEAVE);
 	for(CreatureEventList::iterator it = leaveEvents.begin(); it != leaveEvents.end(); ++it)
 		(*it)->executeChannel(player, m_id, m_users);
+
+	if((m_id == CHANNEL_PARTY || m_id == CHANNEL_GUILD || m_id == CHANNEL_PRIVATE) && !exclude)
+	{
+		Player* tmpPlayer = NULL;
+		for(UsersMap::iterator cit = m_users.begin(); cit != m_users.end(); ++cit)
+		{
+			if((tmpPlayer = cit->second->getPlayer()) && (!tmpPlayer->isGhost() || player->getAccess() >= tmpPlayer->getAccess()))
+				tmpPlayer->sendChannelEvent(m_id, player->getName(), CHANNELEVENT_LEAVE);
+		}
+	}
 
 	Manager::getInstance()->removeUser(player->getID(), m_id);
 	return true;
@@ -555,7 +589,7 @@ bool Chat::talk(Player* player, MessageClasses type, const std::string& text, ui
 
 		if(channel->getConditionId() >= 0 && player->hasCondition(CONDITION_MUTED, channel->getConditionId()))
 		{
-			player->sendCancel(channel->getConditionMessage());
+			player->sendCancel(channel->getConditionMessage().c_str());
 			return true;
 		}
 	}

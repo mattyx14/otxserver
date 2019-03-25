@@ -14,7 +14,6 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. '.')
 				doPlayerAddItem(cid, item.uid ,1)
 				setPlayerStorageValue(cid, item.uid, 1)
-				doPlayerSaveEx(cid)
 			else
 				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. ' weighing ' .. itemWeight .. ' oz it\'s too heavy.')
 			end
