@@ -968,7 +968,7 @@ bool ScriptEvent::executeEvent(const std::string& name) const
 		ScriptEnviroment* env = m_interface.getEnv();
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 			scriptstream << "local name = \"" << name << "\"" << std::endl;
 
 			bool result = true;

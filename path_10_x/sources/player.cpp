@@ -41,10 +41,6 @@
 #include "textlogger.h"
 #include "outputmessage.h"
 
-#if defined(WINDOWS) && !defined(_CONSOLE)
-#include "gui.h"
-#endif
-
 extern ConfigManager g_config;
 extern Game g_game;
 extern Chat g_chat;
@@ -81,7 +77,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	vocationId = VOCATION_NONE;
 
 	promotionLevel = walkTaskEvent = actionTaskEvent = nextStepEvent = bloodHitCount = shieldBlockCount = 0;
-	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = 0;
+	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = extraAttackSpeed = 0;
 	soul = guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
 	conditionImmunities = conditionSuppressions = groupId = managerNumber2 = town = skullEnd = 0;
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
@@ -215,7 +211,7 @@ bool Player::isPushable() const
 
 std::string Player::getDescription(int32_t lookDistance) const
 {
-	std::stringstream s;
+	std::ostringstream s;
 	if(lookDistance == -1)
 	{
 		s << "yourself.";
@@ -448,6 +444,18 @@ int32_t Player::getArmor() const
 	return armor;
 }
 
+int32_t Player::getCriticalHitChance() const
+{
+	int32_t i = SLOT_FIRST, crit = 0;
+	for(; i < SLOT_LAST; ++i)
+	{
+		if(Item* item = getInventoryItem((slots_t)i))
+		crit += item->getCriticalHitChance();
+	}
+
+	return crit;
+}
+
 void Player::getShieldAndWeapon(const Item* &_shield, const Item* &_weapon) const
 {
 	_shield = NULL;
@@ -662,7 +670,7 @@ void Player::addSkillAdvance(skills_t skill, uint64_t count, bool useMultiplier/
 	if(useMultiplier)
 		count = uint64_t((double)count * rates[skill] * g_config.getDouble(ConfigManager::RATE_SKILL));
 
-	std::stringstream s;
+	std::ostringstream s;
 	while(skills[skill][SKILL_TRIES] + count >= nextReqTries)
 	{
 		count -= nextReqTries - skills[skill][SKILL_TRIES];
@@ -924,8 +932,8 @@ bool Player::canWalkthrough(const Creature* creature) const
 	if(!player)
 		return false;
 
-	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) &&
-		!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
+	if(((g_game.getWorldType(this, player) == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) && !player->isProtected())
+		|| player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
 		&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
 		|| player->getAccess() <= getAccess()))
 		return true;
@@ -1241,9 +1249,13 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You may not attack immediately after logging in.");
 			break;
 
+		case RET_YOUHAVETOWAIT:
+			sendCancel("Sorry, you have to wait.");
+			break;
+
 		case RET_YOUCANONLYTRADEUPTOX:
 		{
-			std::stringstream s;
+			std::ostringstream s;
 			s << "You can only trade up to " << g_config.getNumber(ConfigManager::TRADE_LIMIT) << " items at a time.";
 			sendCancel(s.str());
 		}
@@ -1466,7 +1478,7 @@ void Player::onCreatureAppear(const Creature* creature)
 			{
 				std::ostringstream ss;
 				ss << "During your absence you trained for ";
-	
+
 				int32_t hours = trainingTime / 3600;
 				if(hours > 1)
 					ss << hours << " hours";
@@ -1538,11 +1550,6 @@ void Player::onCreatureAppear(const Creature* creature)
 	}
 
 	g_game.checkPlayersRecord(this);
-
-	#if defined(WINDOWS) && !defined(_CONSOLE)
-	GUI::getInstance()->m_pBox.addPlayer(this);
-	#endif
-
 	if(!isGhost())
 	{
 		IOLoginData::getInstance()->updateOnlineStatus(guid, true);
@@ -1606,12 +1613,15 @@ void Player::onTargetChangeZone(ZoneType_t zone)
 		setAttackedCreature(NULL);
 		onTargetDisappear(false);
 	}
-	else if(zone == ZONE_OPEN && g_game.getWorldType() == WORLDTYPE_OPTIONAL && attackedCreature->getPlayer()
-		&& !attackedCreature->getPlayer()->isEnemy(this, true))
+	else if(zone == ZONE_OPEN)
 	{
-		//attackedCreature can leave a pvp zone if not pzlocked
-		setAttackedCreature(NULL);
-		onTargetDisappear(false);
+		if(g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
+			&& attackedCreature->getPlayer() && !attackedCreature->getPlayer()->isEnemy(this, true))
+		{
+			//attackedCreature can leave a pvp zone if not pzlocked
+			setAttackedCreature(NULL);
+			onTargetDisappear(false);
+		}
 	}
 }
 
@@ -1648,10 +1658,6 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	g_chat.removeUserFromChannels(this);
 	if(!isGhost())
 		IOLoginData::getInstance()->updateOnlineStatus(guid, false);
-
-	#if defined(WINDOWS) && !defined(_CONSOLE)
-	GUI::getInstance()->m_pBox.removePlayer(this);
-	#endif
 
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
 		std::clog << getName() << " has logged out." << std::endl;
@@ -1755,6 +1761,10 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 				addCondition(condition);
 		}
 	}
+
+	// unset editing house
+	if(editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
+		editHouse = NULL;
 
 	if(getZone() == ZONE_PROTECTION && newTile->ground && oldTile->ground &&
 		Item::items[newTile->ground->getID()].walkStack != Item::items[oldTile->ground->getID()].walkStack)
@@ -1950,7 +1960,12 @@ void Player::onThink(uint32_t interval)
 		if(hasClient())
 			client->logout(true, true);
 		else if(g_creatureEvents->playerLogout(this, false))
+		{
+			if(!isGhost())
+				g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_POFF);
+
 			g_game.removeCreature(this, true);
+		}
 	}
 
 	messageTicks += interval;
@@ -2059,7 +2074,7 @@ void Player::addManaSpent(uint64_t amount, bool useMultiplier/* = true*/)
 	if(useMultiplier)
 		amount = uint64_t((double)amount * rates[SKILL__MAGLEVEL] * g_config.getDouble(ConfigManager::RATE_MAGIC));
 
-	std::stringstream s;
+	std::ostringstream s;
 	while(manaSpent + amount >= nextReqMana)
 	{
 		amount -= nextReqMana - manaSpent;
@@ -2143,7 +2158,7 @@ void Player::addExperience(uint64_t exp)
 		for(CreatureEventList::iterator it = advanceEvents.begin(); it != advanceEvents.end(); ++it)
 			(*it)->executeAdvance(this, SKILL__LEVEL, prevLevel, level);
 
-		std::stringstream s;
+		std::ostringstream s;
 		s << "You advanced from Level " << prevLevel << " to Level " << level << ".";
 
 		sendTextMessage(MSG_EVENT_ADVANCE, s.str());
@@ -2195,7 +2210,7 @@ void Player::removeExperience(uint64_t exp, bool updateStats/* = true*/)
 		for(CreatureEventList::iterator it = advanceEvents.begin(); it != advanceEvents.end(); ++it)
 			(*it)->executeAdvance(this, SKILL__LEVEL, prevLevel, level);
 
-		std::stringstream s;
+		std::ostringstream s;
 		s << "You were downgraded from Level " << prevLevel << " to Level " << level << ".";
 
 		sendTextMessage(MSG_EVENT_ADVANCE, s.str());
@@ -2427,7 +2442,11 @@ bool Player::onDeath()
 			}
 
 			if(skillLoss && !preventLoss && it.abilities->preventLoss)
+			{
 				preventLoss = item;
+				if(preventLoss != preventDrop && it.abilities->preventDrop)
+					preventDrop = item;
+			}
 		}
 	}
 
@@ -2625,7 +2644,7 @@ Item* Player::createCorpse(DeathList deathList)
 	if(!corpse)
 		return NULL;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "You recognize " << nameDescription << ". " << (sex % 2 ? "He" : "She") << " was killed by ";
 	if(deathList[0].isCreatureKill())
 	{
@@ -2663,7 +2682,7 @@ Item* Player::createCorpse(DeathList deathList)
 	}
 
 	ss << ".";
-	corpse->setSpecialDescription(ss.str().c_str());
+	corpse->setSpecialDescription(ss.str());
 	return corpse;
 }
 
@@ -2683,7 +2702,7 @@ void Player::addExhaust(uint32_t ticks, Exhaust_t exhaust)
 
 void Player::addInFightTicks(bool pzLock, int32_t ticks/* = 0*/)
 {
-	if(hasFlag(PlayerFlag_NotGainInFight))
+	if(hasFlag(PlayerFlag_NotGainInFight) || getZone() == ZONE_PROTECTION)
 		return;
 
 	if(!ticks)
@@ -2872,11 +2891,10 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 		item->getParent() && item->getParent() != VirtualCylinder::virtualCylinder))
 		return RET_CANNOTPICKUP;
 
-	bool childOwner = ((flags & FLAG_CHILDISOWNER) == FLAG_CHILDISOWNER), skipLimit = ((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT);
-	if(childOwner)
+	if((flags & FLAG_CHILDISOWNER) == FLAG_CHILDISOWNER)
 	{
 		//a child container is querying the player, just check if enough capacity
-		if(skipLimit || hasCapacity(item, count))
+		if((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT || hasCapacity(item, count))
 			return RET_NOERROR;
 
 		return RET_NOTENOUGHCAPACITY;
@@ -3094,7 +3112,7 @@ ReturnValue Player::__queryMaxCount(int32_t index, const Thing* thing, uint32_t 
 					n += queryCount;
 					for(ContainerIterator cit = subContainer->begin(); cit != subContainer->end(); ++cit)
 					{
-						if(Container* tmpContainer  = (*cit)->getContainer())
+						if(Container* tmpContainer = (*cit)->getContainer())
 						{
 							queryCount = 0;
 							tmpContainer->__queryMaxCount(INDEX_WHEREEVER, item, item->getItemCount(), queryCount, flags);
@@ -3976,9 +3994,9 @@ void Player::onAddCombatCondition(ConditionType_t type, bool)
 		sendTextMessage(MSG_STATUS_DEFAULT, "You are " + tmp + ".");
 }
 
-void Player::onEndCondition(ConditionType_t type)
+void Player::onEndCondition(ConditionType_t type, ConditionId_t id)
 {
-	Creature::onEndCondition(type);
+	Creature::onEndCondition(type, id);
 	if(type == CONDITION_INFIGHT)
 	{
 		onIdleStatus();
@@ -3994,7 +4012,7 @@ void Player::onEndCondition(ConditionType_t type)
 	sendIcons();
 }
 
-void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
+void Player::onCombatRemoveCondition(const Creature* attacker, Condition* condition)
 {
 	//Creature::onCombatRemoveCondition(attacker, condition);
 	bool remove = true;
@@ -4002,7 +4020,7 @@ void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
 	{
 		remove = false;
 		//Means the condition is from an item, id == slot
-		if(g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		if(g_game.getWorldType(this, attacker->getPlayer()) == WORLDTYPE_HARDCORE)
 		{
 			if(Item* item = getInventoryItem((slots_t)condition->getId()))
 			{
@@ -4029,9 +4047,9 @@ void Player::onCombatRemoveCondition(const Creature*, Condition* condition)
 	}
 }
 
-void Player::onTickCondition(ConditionType_t type, int32_t interval, bool& _remove)
+void Player::onTickCondition(ConditionType_t type, ConditionId_t id, int32_t interval, bool& _remove)
 {
-	Creature::onTickCondition(type, interval, _remove);
+	Creature::onTickCondition(type, id, interval, _remove);
 	if(type == CONDITION_HUNTING)
 		useStamina(-(interval * g_config.getNumber(ConfigManager::RATE_STAMINA_LOSS)));
 }
@@ -4052,7 +4070,7 @@ void Player::onTarget(Creature* target)
 	Player* targetPlayer = target->getPlayer();
 	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
-		if(!pzLocked && g_game.getWorldType() == WORLDTYPE_HARDCORE)
+		if(!pzLocked && g_game.getWorldType(this, targetPlayer) == WORLDTYPE_HARDCORE)
 		{
 			pzLocked = true;
 			sendIcons();
@@ -4071,7 +4089,7 @@ void Player::onTarget(Creature* target)
 				sendIcons();
 			}
 
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this, false))
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(targetPlayer, false))
 			{
 				addAttacked(targetPlayer);
 
@@ -4203,7 +4221,7 @@ bool Player::isEnemy(const Player* player, bool allies) const
 	if(!guild)
 		return false;
 
-	return !warMap.empty() && (((g_game.getWorldType() != WORLDTYPE_OPTIONAL || g_config.getBool(
+	return !warMap.empty() && (((g_game.getWorldType(this, player) != WORLDTYPE_OPTIONAL || g_config.getBool(
 		ConfigManager::OPTIONAL_WAR_ATTACK_ALLY)) && allies && guildId == guild) ||
 		warMap.find(guild) != warMap.end());
 }
@@ -4488,7 +4506,7 @@ void Player::generateReservedStorage()
 			& it->second.addons) == it->second.addons))
 			continue;
 
-		std::stringstream k, v;
+		std::ostringstream k, v;
 		k << key++; // this may not work as intended, revalidate it
 		v << ((it->first << 16) | (it->second.addons & 0xFF));
 
@@ -4524,14 +4542,14 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 {
 	if(const Player* player = creature->getPlayer())
 	{
-		if(g_game.getWorldType() != WORLDTYPE_OPEN)
+		if(g_game.getWorldType(this, player) != WORLDTYPE_OPEN)
 			return SKULL_NONE;
 
 		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
 		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
-			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
+			g_game.getWorldType(this, player) != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 
 		if(canRevenge(player->getGUID()))
@@ -4543,7 +4561,7 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
-	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked)
+	if(hasFlag(PlayerFlag_NotGainInFight) || !attacked)
 		return false;
 
 	AttackedSet::const_iterator it;
@@ -4569,7 +4587,7 @@ void Player::addAttacked(const Player* attacked)
 
 void Player::setSkullEnd(time_t _time, bool login, Skulls_t _skull)
 {
-	if(g_game.getWorldType() != WORLDTYPE_OPEN
+	if(g_game.getWorldType(this) != WORLDTYPE_OPEN
 		|| hasFlag(PlayerFlag_NotGainInFight) ||
 		hasCustomFlag(PlayerCustomFlag_NotGainSkull))
 		return;
@@ -4598,9 +4616,9 @@ void Player::setSkullEnd(time_t _time, bool login, Skulls_t _skull)
 bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 {
 	if(!g_config.getBool(ConfigManager::USE_FRAG_HANDLER) || hasFlag(
-		PlayerFlag_NotGainInFight) || g_game.getWorldType() != WORLDTYPE_OPEN
+		PlayerFlag_NotGainInFight) || g_game.getWorldType(this, attacked) != WORLDTYPE_OPEN
 		|| hasCustomFlag(PlayerCustomFlag_NotGainUnjustified) || hasCustomFlag(
-		PlayerCustomFlag_NotGainSkull) || attacked == this)
+		PlayerCustomFlag_NotGainSkull))
 		return false;
 
 	if(countNow)
@@ -4818,7 +4836,7 @@ bool Player::hasLearnedInstantSpell(const std::string& name) const
 
 void Player::manageAccount(const std::string &text)
 {
-	std::stringstream msg;
+	std::ostringstream msg;
 	bool noSwap = true;
 	switch(accountManager)
 	{
@@ -5123,7 +5141,7 @@ void Player::manageAccount(const std::string &text)
 					}
 				}
 
-				if(msg.str().length() == 17)
+				if(msg.str().length() == NULL)
 					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
@@ -5472,6 +5490,9 @@ PartyShields_t Player::getPartyShield(const Creature* creature) const
 
 	if(player->isInviting(this))
 		return SHIELD_WHITEYELLOW;
+
+	if(g_game.getWorldType(NULL) != g_game.getWorldType(player) && player != this)
+		return SHIELD_YELLOW;
 
 	return SHIELD_NONE;
 }
@@ -5940,4 +5961,9 @@ void Player::prepareSleep(BedItem* _bed)
 	dialogControl.pos = getPosition();
 	bed = _bed;
 	sendModalDialog(tmp);
+}
+
+void Player::setPlayerExtraAttackSpeed(uint32_t speed)
+{
+	extraAttackSpeed = speed;
 }

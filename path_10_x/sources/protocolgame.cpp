@@ -46,8 +46,6 @@
 #include "configmanager.h"
 #include "game.h"
 
-#include "resources.h"
-
 /*
 Bytes not yet added:
 	0x87 -> Position swapping (http://www.tibia.com/support/?subtopic=faq&question=swapping)
@@ -139,7 +137,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			else
 				IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-			std::stringstream stream;
+			std::ostringstream stream;
 			stream << "Your character has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " << name_.c_str()
 				   << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ? "character won't be undeleted" : "banishment will be lifted at:\n")
 				   << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
@@ -228,7 +226,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			if(OutputMessage_ptr output = OutputMessagePool::getInstance()->getOutputMessage(this, false))
 			{
 				TRACK_MESSAGE(output);
-				std::stringstream ss;
+				std::ostringstream ss;
 				ss << "Too many players online.\n" << "You are ";
 
 				int32_t slot = WaitingList::getInstance()->getSlot(player);
@@ -274,10 +272,17 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
 
 		sendPendingStateEntered();
-		if(!g_game.placeCreature(player, player->getLoginPosition()) && !g_game.placeCreature(player, player->getMasterPosition(), false, true))
+		if(!g_game.placeCreature(player, player->getLoginPosition()))
 		{
-			disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
-			return false;
+			Position pos = g_game.getClosestFreeTile(player, player->getMasterPosition(), true, false);
+			if(!pos.x)
+				pos = player->getMasterPosition();
+
+			if(!g_game.placeCreature(player, pos, false, true))
+			{
+				disconnectClient(0x14, "Temple position is wrong. Contact with the administration.");
+				return false;
+			}
 		}
 
 		m_acceptPackets = true;
@@ -319,6 +324,12 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 	if(!player)
 		return false;
 
+	if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_DEFAULT))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while.");
+		return false;
+	}
+
 	if(!player->isRemoved())
 	{
 		if(!forceLogout)
@@ -327,12 +338,18 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 			{
 				if(player->getTile()->hasFlag(TILESTATE_NOLOGOUT))
 				{
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, EXHAUST_DEFAULT))
+						player->addCondition(condition);
+
 					player->sendCancelMessage(RET_YOUCANNOTLOGOUTHERE);
 					return false;
 				}
 
-				if(player->getZone() != ZONE_PROTECTION && player->hasCondition(CONDITION_INFIGHT))
+				if(!player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) && player->hasCondition(CONDITION_INFIGHT))
 				{
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, EXHAUST_DEFAULT))
+						player->addCondition(condition);
+
 					player->sendCancelMessage(RET_YOUMAYNOTLOGOUTDURINGAFIGHT);
 					return false;
 				}
@@ -426,13 +443,9 @@ void ProtocolGame::onConnect()
 
 void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 {
-	if(
-#if defined(WINDOWS) && !defined(_CONSOLE)
-		!GUI::getInstance()->m_connections ||
-#endif
-		g_game.getGameState() == GAMESTATE_SHUTDOWN)
+	if(g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
-		disconnect();
+		getConnection()->close();
 		return;
 	}
 
@@ -457,6 +470,11 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 	bool gamemaster = (msg.get<char>() != (char)0);
 	std::string name = msg.getString(), character = msg.getString(), password = msg.getString();
+	if(!IOLoginData::getInstance()->playerExists(character))
+	{
+		disconnectClient(0x14, "This character does not exist.");
+		return;
+	}
 
 	msg.skip(6);
 	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
@@ -541,7 +559,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 		else
 			IOLoginData::getInstance()->getNameByGuid(ban.adminId, name_, true);
 
-		std::stringstream stream;
+		std::ostringstream stream;
 		stream << "Your account has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " << name_.c_str()
 			   << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\nYour " << (deletion ? "account won't be undeleted" : "banishment will be lifted at:\n")
 			   << (deletion ? "" : formatDateEx(ban.expires).c_str()) << ".";
@@ -696,7 +714,7 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 
 			default:
 			{
-				std::stringstream s;
+				std::ostringstream s;
 				s << "Sent unknown byte: 0x" << std::hex << (int16_t)recvbyte << std::dec;
 				Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
 				break;
@@ -961,7 +979,7 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 		for(uint8_t i = 0; i < dirCount; ++i)
 			msg.get<char>();
 
-		std::stringstream s;
+		std::ostringstream s;
 		s << "Attempt to auto walk for " << (uint16_t)dirCount << " steps - client is limited to 128 steps.";
 		Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
 		return;
@@ -992,6 +1010,7 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 				dir = SOUTHWEST;
 				break;
 			case 7:
+				dir = SOUTH;
 				break;
 			case 8:
 				dir = SOUTHEAST;
@@ -1167,7 +1186,7 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 	const std::string text = msg.getString();
 	if(text.length() > 255) //client limit
 	{
-		std::stringstream s;
+		std::ostringstream s;
 		s << "Attempt to send message with size " << text.length() << " - client is limited to 255 characters.";
 		Logger::getInstance()->eFile("bots/" + player->getName() + ".log", s.str(), true);
 		return;
@@ -1336,7 +1355,7 @@ void ProtocolGame::parseDebugAssert(NetworkMessage& msg)
 	if(m_debugAssertSent)
 		return;
 
-	std::stringstream s;
+	std::ostringstream s;
 	s << "----- " << formatDate() << " - " << player->getName() << " (" << convertIPAddress(getIP())
 		<< ") -----" << std::endl
 		<< msg.getString() << std::endl

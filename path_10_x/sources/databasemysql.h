@@ -38,11 +38,12 @@
 class DatabaseMySQL : public _Database
 {
 	public:
-		DatabaseMySQL();
+		DatabaseMySQL():
+			m_handle(new MYSQL), m_timeoutTask(0) {}
 		DATABASE_VIRTUAL ~DatabaseMySQL();
 
-		DATABASE_VIRTUAL bool connect(bool _reconnect);
-		DATABASE_VIRTUAL bool multiLine() const {return true;}
+		DATABASE_VIRTUAL bool connect();
+		DATABASE_VIRTUAL bool isMultiLine() {return true;}
 
 		DATABASE_VIRTUAL bool beginTransaction() {return query("BEGIN");}
 		DATABASE_VIRTUAL bool rollback();
@@ -61,7 +62,6 @@ class DatabaseMySQL : public _Database
 		DATABASE_VIRTUAL void keepAlive();
 
 		MYSQL* m_handle;
-		uint16_t m_attempts;
 		uint32_t m_timeoutTask;
 };
 

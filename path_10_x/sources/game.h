@@ -18,6 +18,7 @@
 #ifndef __GAME__
 #define __GAME__
 #include "otsystem.h"
+#include <boost/tr1/unordered_map.hpp>
 
 #include "enums.h"
 #include "templates.h"
@@ -175,7 +176,7 @@ class Game
 		}
 
 		void setWorldType(WorldType_t type) {worldType = type;}
-		WorldType_t getWorldType() const {return worldType;}
+		WorldType_t getWorldType(const Player* player, const Player* target = NULL) const;
 
 		Cylinder* internalGetCylinder(Player* player, const Position& pos);
 		Thing* internalGetThing(Player* player, const Position& pos, int32_t index,
@@ -350,7 +351,9 @@ class Game
 			Cylinder* toCylinder, uint32_t flags = 0, bool forceTeleport = false);
 
 		ReturnValue internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index,
-			Item* item, uint32_t count, Item** _moveItem, uint32_t flags = 0);
+			Item* item, uint32_t count, Item** _moveItem, uint32_t flags = 0, Item* tradeItem = NULL);
+		ReturnValue internalMoveTradeItem(Creature* actor, Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index,
+			Item* item, Item* tradeItem, uint32_t count, Item** _moveItem, uint32_t flags = 0);
 
 		ReturnValue internalAddItem(Creature* actor, Cylinder* toCylinder, Item* item, int32_t index = INDEX_WHEREEVER,
 			uint32_t flags = 0, bool test = false);
@@ -493,8 +496,8 @@ class Game
 		bool playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
 		bool playerRequestTrade(uint32_t playerId, const Position& pos, int16_t stackpos,
 			uint32_t tradePlayerId, uint16_t spriteId);
-		bool playerAcceptTrade(uint32_t playerId);
-		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
+		void playerAcceptTrade(uint32_t playerId);
+		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t index);
 		bool playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
 			bool ignoreCap = false, bool inBackpacks = false);
 		bool playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,

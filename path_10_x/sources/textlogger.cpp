@@ -24,22 +24,29 @@
 #include "game.h"
 #include "tools.h"
 
-#if defined(WINDOWS) && !defined(_CONSOLE)
-#include "gui.h"
-#endif
-
 extern ConfigManager g_config;
 extern Game g_game;
 
 void Logger::open()
 {
+	std::string path = g_config.getString(ConfigManager::OUTPUT_LOG);
+	if(path.length() < 3)
+		path = "";
+	else if(path[0] != '/' && path[1] != ':')
+		path = getFilePath(FILE_TYPE_LOG, path);
+
 	m_files[LOGFILE_ADMIN] = fopen(getFilePath(FILE_TYPE_LOG, "admin.log").c_str(), "a");
+	if(!path.empty())
+		m_files[LOGFILE_OUTPUT] = fopen(path.c_str(), (g_config.getBool(ConfigManager::TRUNCATE_LOG) ? "w" : "a"));
+
 	m_files[LOGFILE_ASSERTIONS] = fopen(getFilePath(FILE_TYPE_LOG, "client_assertions.log").c_str(), "a");
+	m_loaded = true;
 }
 
 void Logger::close()
 {
-	for(uint8_t i = 0; i <= LOGFILE_LAST; i++)
+	m_loaded = false;
+	for(uint8_t i = 0; i <= LOGFILE_LAST; ++i)
 	{
 		if(m_files[i])
 			fclose(m_files[i]);
@@ -48,7 +55,7 @@ void Logger::close()
 
 void Logger::iFile(LogFile_t file, std::string output, bool newLine)
 {
-	if(!m_files[file])
+	if(!m_loaded || !m_files[file])
 		return;
 
 	internal(m_files[file], output, newLine);
@@ -78,7 +85,10 @@ void Logger::internal(FILE* file, std::string output, bool newLine)
 
 void Logger::log(const char* func, LogType_t type, std::string message, std::string channel/* = ""*/, bool newLine/* = true*/)
 {
-	std::stringstream ss;
+	if(!m_loaded)
+		return;
+
+	std::ostringstream ss;
 	ss << "[" << formatDate() << "]" << " (";
 	switch(type)
 	{
@@ -103,61 +113,47 @@ void Logger::log(const char* func, LogType_t type, std::string message, std::str
 	}
 
 	ss << " - " << func << ") ";
-
 	if(!channel.empty())
 		ss << channel << ": ";
 
 	ss << message;
 	iFile(LOGFILE_ADMIN, ss.str(), newLine);
 }
-#if defined(WINDOWS) && !defined(_CONSOLE)
 
-GUILogger::GUILogger()
+OutputHandler::OutputHandler()
 {
-	log = std::clog.rdbuf();
-	err = std::cerr.rdbuf();
-	out = std::cout.rdbuf();
-	m_displayDate = true;
+	log = std::clog.rdbuf(this);
+	err = std::cerr.rdbuf(this);
 }
 
-GUILogger::~GUILogger()
+OutputHandler::~OutputHandler()
 {
 	std::clog.rdbuf(log);
 	std::cerr.rdbuf(err);
-	std::cout.rdbuf(out);
 }
 
-int32_t GUILogger::overflow(int32_t c)
+std::streambuf::int_type OutputHandler::overflow(std::streambuf::int_type c/* = traits_type::eof()*/)
 {
-	if(c == '\n')
+	m_cache += c;
+	if(c != '\n' && c != '\r')
+		return c;
+
+	if(m_cache.size() > 1)
+		std::cout << "[" << formatTime(0, true) << "] ";
+
+	std::cout.write(m_cache.c_str(), m_cache.size());
+	if(Logger::getInstance()->isLoaded())
 	{
-		GUI::getInstance()->m_logText += "\r\n";
-		SendMessage(GetDlgItem(GUI::getInstance()->m_mainWindow, ID_LOG), WM_SETTEXT, 0, (LPARAM)GUI::getInstance()->m_logText.c_str());
-		SendMessage(GUI::getInstance()->m_logWindow, EM_LINESCROLL, 0, ++GUI::getInstance()->m_lineCount);
+		std::ostringstream s;
+		if(m_cache.size() > 1)
+			s << "[" << formatDate() << "] ";
 
-		char buffer[85];
-		sprintf(buffer, "logs/server/%s.log", formatDateEx().c_str());
-		if(FILE* file = fopen(buffer, "a"))
-		{
-			fprintf(file, "[%s] %s\n", formatDate().c_str(), m_cache.c_str());
-			fclose(file);
-			m_cache = "";
-		}
-
-		m_displayDate = true;
-	}
-	else
-	{
-		if(m_displayDate)
-		{
-			GUI::getInstance()->m_logText += std::string("[" + formatDate() +"] ").c_str();
-			m_displayDate = false;
-		}
-
-		GUI::getInstance()->m_logText += (char)c;
-		m_cache += c;
+		s.write(m_cache.c_str(), m_cache.size());
+		Logger::getInstance()->iFile(LOGFILE_OUTPUT, s.str(), false);
+		if(g_game.isRunning())
+			Dispatcher::getInstance().addTask(createTask(boost::bind(&Manager::output, Manager::getInstance(), m_cache)));
 	}
 
+	m_cache.clear();
 	return c;
 }
-#endif

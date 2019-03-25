@@ -615,6 +615,7 @@ ResponseList Npc::parseInteractionNode(xmlNodePtr node)
 				ItemListMap::iterator it = itemListMap.find(strValue);
 				if(it == itemListMap.end())
 				{
+					std::string listId = strValue;
 					std::list<ListItem>& list = itemListMap[strValue];
 
 					xmlNodePtr tmpNode = node->children;
@@ -995,7 +996,7 @@ ResponseList Npc::parseInteractionNode(xmlNodePtr node)
 									if(readXMLString(subNode, "time", strValue))
 									{
 										action.actionType = ACTION_SETSTORAGE;
-										std::stringstream s;
+										std::ostringstream s;
 
 										s << time(NULL) + atoi(strValue.c_str());
 										action.strValue = s.str();
@@ -1560,10 +1561,9 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 				case ACTION_SETSPELL:
 				{
+					npcState->spellName = "";
 					if(g_spells->getInstantSpellByName(it->strValue))
 						npcState->spellName = it->strValue;
-					else
-						npcState->spellName = "";
 
 					break;
 				}
@@ -1638,11 +1638,9 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 						if(it->strValue == "|PRICE|")
 							moneyCount = npcState->price * npcState->amount;
 
-						int32_t subType;
+						int32_t subType = -1;
 						if(iit.hasSubType())
 							subType = npcState->subType;
-						else
-							subType = -1;
 
 						int32_t itemCount = player->__getItemTypeCount(iit.id, subType);
 						if(itemCount >= npcState->amount)
@@ -1663,13 +1661,11 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 						if(it->strValue == "|PRICE|")
 							moneyCount = npcState->price * npcState->amount;
 
-						int32_t subType;
+						int32_t subType = -1;
 						if(iit.hasSubType())
 							subType = npcState->subType;
-						else
-							subType = -1;
 
-						if(g_game.removeMoney(player, moneyCount))
+						if(g_game.getMoney(player) >= moneyCount)
 						{
 							int32_t amount = npcState->amount;
 							if(iit.stackable)
@@ -1704,6 +1700,8 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 							if(it->strValue == "|PRICE|")
 								moneyCount = npcState->price * amount;
+
+							g_game.removeMoney(player, moneyCount);
 						}
 					}
 					break;
@@ -1718,11 +1716,9 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 					const ItemType& iit = Item::items[npcState->itemId];
 					if(iit.id != 0)
 					{
-						int32_t subType;
+						int32_t subType = -1;
 						if(iit.hasSubType())
 							subType = npcState->subType;
-						else
-							subType = -1;
 
 						int32_t itemCount = player->__getItemTypeCount(itemId, subType);
 						if(itemCount >= npcState->amount)
@@ -1740,11 +1736,9 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 					const ItemType& iit = Item::items[itemId];
 					if(iit.id != 0)
 					{
-						int32_t subType;
+						int32_t subType = -1;
 						if(iit.hasSubType())
 							subType = npcState->subType;
-						else
-							subType = -1;
 
 						for(int32_t i = 0; i < npcState->amount; ++i)
 						{
@@ -1758,7 +1752,7 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 				case ACTION_TAKEMONEY:
 				{
-					uint64_t moneyCount;
+					uint64_t moneyCount = 0;
 					if(it->strValue == "|PRICE|")
 						moneyCount = npcState->price * npcState->amount;
 					else
@@ -1770,7 +1764,7 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 
 				case ACTION_GIVEMONEY:
 				{
-					uint64_t moneyCount;
+					uint64_t moneyCount = 0;
 					if(it->strValue == "|PRICE|")
 						moneyCount = npcState->price * npcState->amount;
 					else
@@ -1787,7 +1781,7 @@ void Npc::executeResponse(Player* player, NpcState* npcState, const NpcResponse*
 					if(interface.reserveEnv())
 					{
 						ScriptEnviroment* env = m_interface->getEnv();
-						std::stringstream scriptstream;
+						std::ostringstream scriptstream;
 
 						//attach various variables that could be interesting
 						scriptstream << "local cid = " << env->addThing(player) << std::endl;
@@ -2101,7 +2095,7 @@ void Npc::setCreatureFocus(Creature* creature)
 
 	float tan = 10;
 	if(dx != 0)
-		tan = (float)dy / dx;
+		tan = dy / dx;
 
 	Direction dir = SOUTH;
 	if(std::abs(tan) < 1)
@@ -2307,7 +2301,7 @@ const NpcResponse* Npc::getResponse(const ResponseList& list, const Player* play
 			player->getStorage((*it)->getStorageId(), value);
 			if(asLowerCaseString(storageValue) == "_time")
 			{
-				std::stringstream s;
+				std::ostringstream s;
 				s << time(NULL);
 				storageValue = s.str();
 			}
@@ -2548,7 +2542,7 @@ std::string Npc::formatResponse(Creature* creature, const NpcState* npcState, co
 {
 	std::string responseString = response->getText();
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << npcState->price * npcState->amount;
 	replaceString(responseString, "|PRICE|", ss.str());
 
@@ -2983,7 +2977,7 @@ void NpcEvents::onCreatureAppear(const Creature* creature)
 		lua_State* L = m_interface->getState();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif
@@ -3014,7 +3008,7 @@ void NpcEvents::onCreatureDisappear(const Creature* creature)
 		lua_State* L = m_interface->getState();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif
@@ -3045,7 +3039,7 @@ void NpcEvents::onCreatureMove(const Creature* creature, const Position& oldPos,
 		lua_State* L = m_interface->getState();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif
@@ -3079,7 +3073,7 @@ void NpcEvents::onCreatureSay(const Creature* creature, MessageClasses type, con
 		lua_State* L = m_interface->getState();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif
@@ -3114,7 +3108,7 @@ void NpcEvents::onPlayerTrade(const Player* player, int32_t callback, uint16_t i
 		lua_State* L = m_interface->getState();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif
@@ -3153,7 +3147,7 @@ void NpcEvents::onPlayerEndTrade(const Player* player)
 		lua_State* L = m_interface->getState();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif
@@ -3184,7 +3178,7 @@ void NpcEvents::onPlayerCloseChannel(const Player* player)
 		lua_State* L = m_interface->getState();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif
@@ -3214,7 +3208,7 @@ void NpcEvents::onThink()
 		ScriptEnviroment* env = m_interface->getEnv();
 
 		#ifdef __DEBUG_LUASCRIPTS__
-		std::stringstream desc;
+		std::ostringstream desc;
 		desc << "npc " << m_npc->getName();
 		env->setEvent(desc.str());
 		#endif

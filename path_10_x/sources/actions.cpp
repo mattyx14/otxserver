@@ -343,6 +343,14 @@ ReturnValue Actions::canUse(const Player* player, const Position& pos)
 	if(!Position::areInRange<1,1,0>(playerPos, pos))
 		return RET_TOOFARAWAY;
 
+	Tile* tile = g_game.getTile(pos);
+	if(tile)
+	{
+		HouseTile* houseTile = tile->getHouseTile();
+		if(houseTile && houseTile->getHouse() && !houseTile->getHouse()->isInvited(player))
+			return RET_PLAYERISNOTINVITED;
+	}
+
 	return RET_NOERROR;
 }
 
@@ -560,10 +568,10 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 
 	if(item->isPremiumScroll())
 	{
-		std::stringstream ss;
+		std::ostringstream ss;
 		ss << " You have recived " << it.premiumDays << " premium days.";
 		player->sendTextMessage(MSG_INFO_DESCR, ss.str());
-		
+
 		player->addPremiumDays(it.premiumDays);
 		g_game.internalRemoveItem(NULL, item, 1);
 		return RET_NOERROR;
@@ -730,7 +738,7 @@ bool Action::executeUse(Player* player, Item* item, const PositionEx& fromPos, c
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(player->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 
 			scriptstream << "local cid = " << env->addThing(player) << std::endl;
 			env->streamThing(scriptstream, "item", item, env->addThing(item));
@@ -764,7 +772,7 @@ bool Action::executeUse(Player* player, Item* item, const PositionEx& fromPos, c
 		else
 		{
 			#ifdef __DEBUG_LUASCRIPTS__
-			std::stringstream desc;
+			std::ostringstream desc;
 			desc << player->getName() << " - " << item->getID() << " " << fromPos << "|" << toPos;
 			env->setEvent(desc.str());
 			#endif

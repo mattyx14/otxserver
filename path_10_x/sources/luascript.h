@@ -38,6 +38,7 @@ extern "C"
 	#endif
 }
 #endif
+#include <boost/tr1/unordered_map.hpp>
 
 #include "database.h"
 #include "position.h"
@@ -161,12 +162,12 @@ class ScriptEnviroment
 		void reset();
 		void resetCallback() {m_callbackId = 0;}
 
-		void streamVariant(std::stringstream& stream, const std::string& local, const LuaVariant& var);
-		void streamThing(std::stringstream& stream, const std::string& local, Thing* thing, uint32_t id = 0);
-		void streamPosition(std::stringstream& stream, const std::string& local, const PositionEx& position)
+		void streamVariant(std::ostringstream& stream, const std::string& local, const LuaVariant& var);
+		void streamThing(std::ostringstream& stream, const std::string& local, Thing* thing, uint32_t id = 0);
+		void streamPosition(std::ostringstream& stream, const std::string& local, const PositionEx& position)
 			{streamPosition(stream, local, position, position.stackpos);}
-		void streamPosition(std::stringstream& stream, const std::string& local, const Position& position, uint32_t stackpos);
-		void streamOutfit(std::stringstream& stream, const std::string& local, const Outfit_t& outfit);
+		void streamPosition(std::ostringstream& stream, const std::string& local, const Position& position, uint32_t stackpos);
+		void streamOutfit(std::ostringstream& stream, const std::string& local, const Outfit_t& outfit);
 
 	private:
 		typedef std::map<uint64_t, Thing*> ThingMap;
@@ -398,6 +399,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSetVocation(lua_State* L);
 		static int32_t luaDoPlayerRemoveItem(lua_State* L);
 		static int32_t luaDoPlayerAddSoul(lua_State* L);
+		static int32_t luaDoPlayerSetExtraAttackSpeed(lua_State* L);
 		static int32_t luaDoPlayerSetStamina(lua_State* L);
 		static int32_t luaDoPlayerAddExperience(lua_State* L);
 		static int32_t luaDoPlayerSetGuildId(lua_State* L);
@@ -421,6 +423,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSetSkullEnd(lua_State* L);
 		static int32_t luaDoPlayerSwitchSaving(lua_State* L);
 		static int32_t luaDoPlayerSave(lua_State* L);
+		static int32_t luaDoPlayerSaveItems(lua_State* L);
 		static int32_t luaDoPlayerSendOutfitWindow(lua_State* L);
 		static int32_t luaDoCreatureExecuteTalkAction(lua_State* L);
 		static int32_t luaGetCreatureByName(lua_State* L);
@@ -476,7 +479,6 @@ class LuaInterface
 		static int32_t luaGetThingFromPosition(lua_State* L);
 		static int32_t luaGetTileItemById(lua_State* L);
 		static int32_t luaGetTileItemByType(lua_State* L);
-		static int32_t luaGetTileThingByPos(lua_State* L);
 		static int32_t luaGetTopCreature(lua_State* L);
 		static int32_t luaGetTileInfo(lua_State* L);
 		static int32_t luaDoTileQueryAdd(lua_State* L);

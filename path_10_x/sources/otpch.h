@@ -39,8 +39,3 @@
 //otserv
 #include "configmanager.h"
 #include "thing.h"
-
-//GUI
-#include "gui.h"
-#include "inputbox.h"
-#include "playerbox.h"

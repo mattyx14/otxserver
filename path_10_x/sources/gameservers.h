@@ -19,7 +19,6 @@
 #define __GAMESERVER__
 #include "otsystem.h"
 #include "const.h"
-#include "resources.h"
 
 class GameServer
 {

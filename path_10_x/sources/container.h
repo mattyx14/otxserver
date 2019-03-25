@@ -157,7 +157,7 @@ class Container : public Item, public Cylinder
 
 		Container* getParentContainer();
 		void updateItemWeight(double diff);
-		std::stringstream& getContentDescription(std::stringstream& s) const;
+		std::ostringstream& getContentDescription(std::ostringstream& s) const;
 
 	protected:
 		uint32_t maxSize, serializationCount;

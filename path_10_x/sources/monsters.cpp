@@ -39,7 +39,7 @@ extern ConfigManager g_config;
 
 void MonsterType::reset()
 {
-	canPushItems = canPushCreatures = isSummonable = isIllusionable = isConvinceable = isLureable = isWalkable = hideName = hideHealth = eliminable = false;
+	canPushItems = canPushCreatures = isSummonable = isIllusionable = isConvinceable = isLureable = isWalkable = hideName = hideHealth = eliminable = isPassive = false;
 	pushable = isAttackable = isHostile = true;
 
 	outfit.lookHead = outfit.lookBody = outfit.lookLegs = outfit.lookFeet = outfit.lookType = outfit.lookTypeEx = outfit.lookAddons = outfit.lookMount = 0;
@@ -201,7 +201,7 @@ void MonsterType::dropLoot(Container* corpse)
 	if(message < LOOTMSG_PLAYER)
 		return;
 
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription() << ".";
 	if(owner->getParty() && message > LOOTMSG_PLAYER)
 		owner->getParty()->broadcastMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
@@ -1040,6 +1040,9 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 
 					if(readXMLString(tmpNode, "hostile", strValue))
 						mType->isHostile = booleanString(strValue);
+
+					if(readXMLString(tmpNode, "passive", strValue))
+						mType->isPassive = booleanString(strValue);
 
 					if(readXMLString(tmpNode, "illusionable", strValue))
 						mType->isIllusionable = booleanString(strValue);

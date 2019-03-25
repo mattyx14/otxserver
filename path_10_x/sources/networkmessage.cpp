@@ -24,7 +24,7 @@
 
 SocketCode_t NetworkMessage::read(SOCKET socket, bool ignoreLength, int32_t timeout/* = NETWORK_RETRY_TIME*/)
 {
-	int32_t waiting = 0, data = NETWORK_DEFAULT_SIZE;
+	int32_t waiting = 0, data = NETWORK_SOCKET_SIZE;
 	if(!ignoreLength)
 	{
 		do
@@ -84,7 +84,7 @@ SocketCode_t NetworkMessage::read(SOCKET socket, bool ignoreLength, int32_t time
 					return SOCKET_CODE_TIMEOUT;
 				}
 			}
-			else if(data == NETWORK_DEFAULT_SIZE)
+			else if(data == NETWORK_SOCKET_SIZE)
 				break;
 			else
 			{
@@ -152,7 +152,7 @@ std::string NetworkMessage::getString(bool peek/* = false*/, uint16_t size/* = 0
 	if(peek)
 		position += 2;
 
-	if(size >= (16384 - position))
+	if(size >= (NETWORK_MAX_SIZE - position))
 		return std :: string();
 
 	char* v = (char*)(m_buffer + position);
@@ -172,10 +172,10 @@ Position NetworkMessage::getPosition()
 	return pos;
 }
 
-void NetworkMessage::putString(const char* value, int length, bool addSize/* = true*/)
+void NetworkMessage::putString(const char* value, uint32_t length, bool addSize/* = true*/)
 {
 	uint32_t size = (uint32_t)length;
-	if(!hasSpace(size + (addSize ? 2 : 0)) || size > 8192)
+	if(!hasSpace(size + (addSize ? 2 : 0)) || size > (addSize ? 8192 : NETWORK_BODY_SIZE))
 		return;
 
 	if(addSize)

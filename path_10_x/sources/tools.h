@@ -170,7 +170,7 @@ std::string getCombatName(CombatType_t combatType);
 std::string getSkillName(uint16_t skillId, bool suffix = true);
 std::string getWeaponName(WeaponType_t weaponType);
 
-bool fileExists(const char* filename);
+bool fileExists(const std::string& filename);
 std::string getFilePath(FileType_t type, std::string name = "");
 std::string getFirstLine(const std::string& str);
 

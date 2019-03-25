@@ -114,6 +114,7 @@ enum AttrTypes_t
 	ATTR_ARTICLE = 41,
 	ATTR_SCRIPTPROTECTED = 42,
 	ATTR_DUALWIELD = 43,
+	ATTR_CRITICALHITCHANCE = 44,
 	ATTR_ATTRIBUTE_MAP = 128
 };
 
@@ -203,7 +204,7 @@ class Item : virtual public Thing, public ItemAttributes
 		virtual bool unserializeItemNode(FileLoader&, NODE, PropStream& propStream) {return unserializeAttr(propStream);}
 
 		// Item attributes
-		void setDuration(int32_t time) {setAttribute("duration", time);}
+		void setDuration(int32_t time) { duration = time; }
 		void decreaseDuration(int32_t time);
 		int32_t getDuration() const;
 
@@ -255,6 +256,7 @@ class Item : virtual public Thing, public ItemAttributes
 		bool isDualWield() const;
 
 		int32_t getAttack() const;
+		int32_t getCriticalHitChance() const;
 		int32_t getExtraAttack() const;
 		int32_t getDefense() const;
 		int32_t getExtraDefense() const;
@@ -349,6 +351,8 @@ class Item : virtual public Thing, public ItemAttributes
 	protected:
 		uint16_t id;
 		uint8_t count;
+		int32_t itemUid;
+		int32_t duration;
 
 		Raid* raid;
 		bool loadedFromMap;
@@ -392,6 +396,16 @@ inline bool Item::isScriptProtected() const
 		return v;
 
 	return false;
+}
+
+inline int32_t Item::getCriticalHitChance() const
+{
+	bool ok;
+	int32_t v = getIntegerAttribute("criticalhitchance", ok);
+	if(ok)
+		return v;
+
+	return items[id].criticalHitChance;
 }
 
 inline int32_t Item::getAttack() const
@@ -486,20 +500,12 @@ inline bool Item::isDualWield() const
 
 inline void Item::decreaseDuration(int32_t time)
 {
-	bool ok;
-	int32_t v = getIntegerAttribute("duration", ok);
-	if(ok)
-		setAttribute("duration", v - time);
+	duration -= time;
 }
 
 inline int32_t Item::getDuration() const
 {
-	bool ok;
-	int32_t v = getIntegerAttribute("duration", ok);
-	if(ok)
-		return v;
-
-	return 0;
+	return duration;
 }
 
 inline std::string Item::getSpecialDescription() const

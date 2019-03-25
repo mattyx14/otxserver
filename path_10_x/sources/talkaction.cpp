@@ -44,7 +44,6 @@
 #include "game.h"
 #include "chat.h"
 #include "tools.h"
-#include "resources.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -204,7 +203,7 @@ bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std:
 	if(talkAction->isLogged())
 	{
 		if(player)
-			player->sendTextMessage(MSG_EVENT_ORANGE, words.c_str());
+			player->sendTextMessage(MSG_EVENT_ORANGE, words);
 
 		Logger::getInstance()->eFile("talkactions/" + creature->getName() + ".log", words, true);
 	}
@@ -346,7 +345,7 @@ int32_t TalkAction::executeSay(Creature* creature, const std::string& words, std
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
 			env->setRealPos(creature->getPosition());
-			std::stringstream scriptstream;
+			std::ostringstream scriptstream;
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 
 			scriptstream << "local words = \"" << words << "\"" << std::endl;
@@ -542,7 +541,7 @@ bool TalkAction::houseBuy(Creature* creature, const std::string&, const std::str
 		ret += "bank or ";
 
 	ret += "depot of this town for rent.";
-	player->sendTextMessage(MSG_INFO_DESCR, ret.c_str());
+	player->sendTextMessage(MSG_INFO_DESCR, ret);
 
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
 	return false;
@@ -848,27 +847,27 @@ bool TalkAction::guildCreate(Creature* creature, const std::string&, const std::
 	const uint32_t levelToFormGuild = g_config.getNumber(ConfigManager::LEVEL_TO_FORM_GUILD);
 	if(player->getLevel() < levelToFormGuild)
 	{
-		std::stringstream stream;
+		std::ostringstream stream;
 		stream << "You have to be at least Level " << levelToFormGuild << " to form a guild.";
-		player->sendCancel(stream.str().c_str());
+		player->sendCancel(stream.str());
 		return true;
 	}
 
 	const int32_t premiumDays = g_config.getNumber(ConfigManager::GUILD_PREMIUM_DAYS);
 	if(player->getPremiumDays() < premiumDays && !g_config.getBool(ConfigManager::FREE_PREMIUM))
 	{
-		std::stringstream stream;
+		std::ostringstream stream;
 		stream << "You need to have at least " << premiumDays << " premium days to form a guild.";
-		player->sendCancel(stream.str().c_str());
+		player->sendCancel(stream.str());
 		return true;
 	}
 
 	player->setGuildName(param_);
 	IOGuild::getInstance()->createGuild(player);
 
-	std::stringstream stream;
-	stream << "You have formed guild \"" << param.c_str() << "\"!";
-	player->sendTextMessage(MSG_EVENT_GUILD, stream.str().c_str());
+	std::ostringstream stream;
+	stream << "You have formed guild \"" << param << "\"!";
+	player->sendTextMessage(MSG_EVENT_GUILD, stream.str());
 	return true;
 }
 
@@ -943,7 +942,7 @@ bool TalkAction::thingProporties(Creature* creature, const std::string&, const s
 			}
 			else
 			{
-				std::stringstream s;
+				std::ostringstream s;
 				s << action << " (" << parseParams(it, tokens.end()) << ")";
 				invalid += s.str();
 				break;
@@ -1044,7 +1043,7 @@ bool TalkAction::thingProporties(Creature* creature, const std::string&, const s
 					_player->switchSaving();
 				else
 				{
-					std::stringstream s;
+					std::ostringstream s;
 					s << action << " (" << parseParams(it, tokens.end()) << ")";
 					invalid += s.str();
 					break;
@@ -1058,7 +1057,7 @@ bool TalkAction::thingProporties(Creature* creature, const std::string&, const s
 			}*/
 			else
 			{
-				std::stringstream s;
+				std::ostringstream s;
 				s << action << " (" << parseParams(it, tokens.end()) << ")";
 				invalid += s.str();
 				break;
@@ -1084,7 +1083,7 @@ bool TalkAction::thingProporties(Creature* creature, const std::string&, const s
 	else
 	{
 		std::string tmp = "Following action was invalid: " + invalid;
-		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, tmp.c_str());
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, tmp);
 	}
 
 	g_game.addMagicEffect(pos, MAGIC_EFFECT_WRAPS_GREEN);
@@ -1166,11 +1165,11 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 	if(deletion)
 		end = what + (std::string)" won't be undeleted";
 
-	std::stringstream ss;
-	ss << what.c_str() << " has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y").c_str() << " by: " <<
-		admin.c_str() << ".\nThe comment given was:\n" << ban.comment.c_str() << ".\n" << end.c_str() << (deletion ? "." : formatDateEx(ban.expires).c_str()) << ".";
+	std::ostringstream ss;
+	ss << what << " has been " << (deletion ? "deleted" : "banished") << " at:\n" << formatDateEx(ban.added, "%d %b %Y") << " by: " <<
+		admin << ".\nThe comment given was:\n" << ban.comment << ".\n" << end << (deletion ? "." : formatDateEx(ban.expires)) << ".";
 
-	player->sendFYIBox(ss.str().c_str());
+	player->sendFYIBox(ss.str());
 	return true;
 }
 
@@ -1181,7 +1180,7 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 		return false;
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 
-	std::stringstream s;
+	std::ostringstream s;
 	s << "Server diagonostic:" << std::endl;
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
 
@@ -1294,9 +1293,8 @@ bool TalkAction::software(Creature* creature, const std::string&, const std::str
 	if(!player)
 		return false;
 
-	std::stringstream s;
-		s << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << ")" << std::endl;
-		s << REVISION_VERSION << std::endl;
+	std::ostringstream s;
+		s << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << ")" << std::endl;
 		s << "Codename: (" << SOFTWARE_CODENAME << ")" << std::endl << std::endl;
 		s << "Server Developers: " << SOFTWARE_DEVELOPERS << "." << std::endl;
 

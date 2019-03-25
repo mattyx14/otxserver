@@ -3,7 +3,7 @@ noinst_PROGRAMS = theotxserver
 CXXFLAGS = -pipe -g
 AM_CXXFLAGS = $(XML_CPPFLAGS) $(OTSERV_FLAGS) $(LUA_CFLAGS) $(DEBUG_FLAGS)\
 $(MYSQL_FLAGS) $(MYSQLPP_FLAGS) $(SQLITE_FLAGS) $(PGSQL_FLAGS) $(PROFILER_FLAGS)\
-$(OPTIONAL_FLAGS) -D_THREAD_SAFE -D_REENTRANT -Wall -Wextra -Wno-strict-aliasing -Wno-unused-parameter -Wno-array-bounds -pthread
+$(OPTIONAL_FLAGS) -D_THREAD_SAFE -D_REENTRANT -Wall -Wextra -Wno-strict-aliasing -Wno-unused-parameter
 
 theotxserver_LDADD = $(LUA_LIBS)
 
@@ -36,7 +36,7 @@ theotxserver_SOURCES = account.h actions.cpp actions.h $(MAYBE_OTADMIN) \
 	$(MAYBE_MYSQLPP) $(MAYBE_SQLITE) $(MAYBE_PGSQL) depotchest.cpp depotchest.h depotlocker.cpp depotlocker.h dispatcher.cpp \
 	dispatcher.h exception.cpp exception.h fileloader.cpp fileloader.h \
 	game.cpp game.h $(MAYBE_LOGIN) globalevent.cpp globalevent.h group.cpp \
-	group.h gui.cpp gui.h house.cpp house.h housetile.cpp housetile.h inbox.cpp inbox.h inputbox.cpp inputbox.h ioban.cpp ioban.h \
+	group.h house.cpp house.h housetile.cpp housetile.h inbox.cpp inbox.h ioban.cpp ioban.h \
 	ioguild.cpp ioguild.h iologindata.cpp iologindata.h iomap.cpp iomap.h \
 	iomapserialize.cpp iomapserialize.h iomarket.cpp iomarket.h item.cpp item.h itemattributes.cpp \
 	itemattributes.h items.cpp items.h luascript.cpp luascript.h \
@@ -44,11 +44,11 @@ theotxserver_SOURCES = account.h actions.cpp actions.h $(MAYBE_OTADMIN) \
 	monster.h monsters.cpp monsters.h mounts.cpp mounts.h movement.cpp movement.h \
 	networkmessage.cpp networkmessage.h npc.cpp npc.h otpch.cpp otpch.h otserv.cpp \
 	otsystem.h outfit.cpp outfit.h outputmessage.cpp outputmessage.h \
-	party.cpp party.h playerbox.cpp playerbox.h player.cpp player.h position.cpp position.h \
+	party.cpp party.h player.cpp player.h position.cpp position.h \
 	protocol.cpp protocol.h protocolgame.cpp protocolgame.h \
 	protocolhttp.cpp protocolhttp.h protocollogin.cpp protocollogin.h \
 	protocolold.cpp protocolold.h quests.cpp quests.h raids.cpp raids.h \
-	resources.h scheduler.cpp scheduler.h scriptmanager.cpp \
+	scheduler.cpp scheduler.h scriptmanager.cpp \
 	scriptmanager.h server.cpp server.h spawn.cpp spawn.h \
 	spells.cpp spells.h status.cpp status.h talkaction.cpp talkaction.h teleport.cpp \
 	teleport.h templates.h textlogger.cpp textlogger.h thing.cpp thing.h \
