@@ -78,6 +78,7 @@ function onStartup()
 	db.executeQuery("UPDATE `players` SET `online` = 0 WHERE `world_id` = " .. getConfigValue('worldId') .. " AND `online` > 0;")
 	db.executeQuery("UPDATE `bans` SET `active` = 0 WHERE `expires` <= " .. time .. " AND `expires` >= 0 AND `active` = 1")
 	db.executeQuery("DELETE FROM `guild_wars` WHERE `status` = 0 AND `begin` < " .. (time - 2 * 86400) .. ";")
+	db.executeQuery("UPDATE `players` SET `broadcasting` = 0")
 
 	if(getConfigValue("sqlType") ~= "sqlite") then
 		db.executeQuery("TRUNCATE TABLE `player_statements`;")
