@@ -2218,7 +2218,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 		if(!element && transform)
 			g_game.transformItem(item, item->getID(), std::max((int32_t)0, (int32_t)item->getCharges() - 1));
 	}
-
+/*
 	if(outfitAttributes)
 	{
 		uint32_t tmp = Outfits::getInstance()->getOutfitAbsorb(defaultOutfit.lookType, sex, combatType);
@@ -2232,7 +2232,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 				reflected += (int32_t)std::ceil((double)(damage * tmp) / 100.);
 		}
 	}
-
+*/
 	if(vocation->getAbsorb(combatType))
 		blocked += (int32_t)std::ceil((double)(damage * vocation->getAbsorb(combatType)) / 100.);
 
