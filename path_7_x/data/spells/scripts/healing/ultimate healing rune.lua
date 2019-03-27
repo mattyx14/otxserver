@@ -3,7 +3,7 @@ setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
 setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
 setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, 1)
 setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+-- setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
 function onGetFormulaValues(cid, level, maglevel)
 if getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 4 then
@@ -25,8 +25,9 @@ end
 setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
 
 function onCastSpell(cid, var)
-if getCreatureCondition(cid,CONDITION_PARALYZE) then
-doRemoveCondition(cid, CONDITION_PARALYZE)
-end
+	if getCreatureCondition(cid,CONDITION_PARALYZE) then
+		doRemoveCondition(cid, CONDITION_PARALYZE)
+	end
+
 	return doCombat(cid, combat, var)
 end
