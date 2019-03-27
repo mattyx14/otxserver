@@ -219,7 +219,7 @@ function isNpc(cid)
 end
 
 function isUnderWater(cid)
-	return underWater[getTileInfo(getCreaturePosition(cid)).itemid] ~= nil
+	return isInArray(underWater, getTileInfo(getCreaturePosition(cid)).itemid)
 end
 
 function doPlayerAddLevel(cid, amount, round)
