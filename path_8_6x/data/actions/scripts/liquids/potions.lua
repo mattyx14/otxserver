@@ -17,19 +17,19 @@ local multiplier = {
 local POTIONS = {
 	[8704] = {empty = 7636, splash = 42, health = {50, 100}}, -- small health potion
 	[7618] = {empty = 7636, splash = 42, health = {100, 200}}, -- health potion
-	[7588] = {empty = 7634, splash = 42, health = {200, 400}, level = 50, vocations = {3, 4, 7, 8}, vocStr = "knights and paladins"}, -- strong health potion
-	[7591] = {empty = 7635, splash = 42, health = {500, 700}, level = 80, vocations = {4, 8}, vocStr = "knights"}, -- great health potion
-	[8473] = {empty = 7635, splash = 42, health = {800, 1000}, level = 130, vocations = {4, 8}, vocStr = "knights"}, -- ultimate health potion
+	[7588] = {empty = 7634, splash = 42, health = {200, 400}, level = 50, vocations = {isKnight, isPaladin}, vocStr = "knights and paladins"}, -- strong health potion
+	[7591] = {empty = 7635, splash = 42, health = {500, 700}, level = 80, vocations = {isKnight}, vocStr = "knights"}, -- great health potion
+	[8473] = {empty = 7635, splash = 42, health = {800, 1000}, level = 130, vocations = {isKnight}, vocStr = "knights"}, -- ultimate health potion
 
 	[7620] = {empty = 7636, splash = 47, mana = {70, 130}}, -- mana potion
-	[7589] = {empty = 7634, splash = 47, mana = {110, 190}, level = 50, vocations = {1, 2, 3, 5, 6, 7}, vocStr = "sorcerers, druids and paladins"}, -- strong mana potion
-	[7590] = {empty = 7635, splash = 47, mana = {200, 300}, level = 80, vocations = {1, 2, 5, 6}, vocStr = "sorcerers and druids"}, -- great mana potion
+	[7589] = {empty = 7634, splash = 47, mana = {110, 190}, level = 50, vocations = {isSorcerer, isDruid, isPaladin}, vocStr = "sorcerers, druids and paladins"}, -- strong mana potion
+	[7590] = {empty = 7635, splash = 47, mana = {200, 300}, level = 80, vocations = {isSorcerer, isDruid}, vocStr = "sorcerers and druids"}, -- great mana potion
 
-	[8472] = {empty = 7635, splash = 43, health = {200, 400}, mana = {110, 190}, level = 80, vocations = {3, 7}, vocStr = "paladins"} -- great spirit potion
+	[8472] = {empty = 7635, splash = 43, health = {200, 400}, mana = {110, 190}, level = 80, vocations = {isPaladin}, vocStr = "paladins"} -- great spirit potion
 }
 
-for index, potion in pairs(POTIONS) do
-	if(type(index) == 'number') then
+for i, potion in pairs(POTIONS) do
+	if(type(i) == 'number') then
 		for k, v in pairs(config) do
 			if(not potion[k]) then
 				potion[k] = v
@@ -74,7 +74,7 @@ for index, potion in pairs(POTIONS) do
 			potion.mana = nil
 		end
 
-		POTIONS[index] = potion
+		POTIONS[i] = potion
 	end
 end
 

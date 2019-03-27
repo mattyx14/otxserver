@@ -46,7 +46,7 @@ string.diff = function (diff)
 	for k, v in ipairs(format) do
 		local d, tmp = math.floor(v[2]), ""
 		if(d > 0) then
-			tmp = (k < table.maxn(format) and (table.maxn(t) > 0 and ", " or "") or " and ") .. d .. " " .. v[1] .. (d ~= 1 and "s" or "")
+			tmp = (k < table.maxn(format) and (table.maxn(t) > 0 and ", " or "") or (table.maxn(t) > 0 and " and " or "")) .. d .. " " .. v[1] .. (d ~= 1 and "s" or "")
 			table.insert(t, tmp)
 		end
 	end

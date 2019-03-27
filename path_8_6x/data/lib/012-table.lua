@@ -5,30 +5,26 @@ end
 
 table.size = function (t)
 	local size = 0
-	for i, n in pairs(table) do
+	for k, v in pairs(t) do
 		size = size + 1
 	end
 
 	return size
 end
 
-table.find = function (table, value, sensitive)
-	local sensitive = sensitive or true
-	if(not sensitive and type(value) == "string") then
-		for i, v in pairs(table) do
-			if(type(v) == "string") then
-				if(v:lower() == value:lower()) then
-					return i
-				end
+table.find = function (t, value, caseSensitive)
+	if((caseSensitive == nil or caseSensitive == false) and type(value) == "string") then
+		local lowerValue = value:lower()
+		for k, v in pairs(t) do
+			if(type(v) == "string" and lowerValue == v:lower()) then
+				return k
 			end
 		end
-
-		return nil
-	end
-
-	for i, v in pairs(table) do
-		if(v == value) then
-			return i
+	else
+		for k, v in pairs(t) do
+			if(value == v) then
+				return k
+			end
 		end
 	end
 
@@ -36,21 +32,30 @@ table.find = function (table, value, sensitive)
 end
 table.getPos = table.find
 
-table.contains = function (txt, str)
-	for i, v in pairs(str) do
-		if(txt:find(v) and not txt:find('(%w+)' .. v) and not txt:find(v .. '(%w+)')) then
-			return true
+table.contains = function (t, value, caseSensitive)
+	if((caseSensitive == nil or caseSensitive == false) and type(value) == "string") then
+		local lowerValue = value:lower()
+		for k, v in pairs(t) do
+			if(type(v) == "string" and lowerValue == v:lower()) then
+				return true
+			end
+		end
+	else
+		for k, v in pairs(t) do
+			if(value == v) then
+				return true
+			end
 		end
 	end
 
 	return false
 end
-table.isStrIn = table.contains
+table.isInArray = table.contains
 
-table.count = function (table, item)
+table.count = function (t, item)
 	local count = 0
-	for i, n in pairs(table) do
-		if(item == n) then
+	for k, v in pairs(t) do
+		if(item == v) then
 			count = count + 1
 		end
 	end
@@ -59,8 +64,18 @@ table.count = function (table, item)
 end
 table.countElements = table.count
 
-table.getCombinations = function (table, num)
-	local a, number, select, newList = {}, table.size(table), num, {}
+table.isStrIn = function (txt, str)
+	for k, v in pairs(str) do
+		if(txt:find(v) and not txt:find('(%w+)' .. v) and not txt:find(v .. '(%w+)')) then
+			return true
+		end
+	end
+
+	return false
+end
+
+table.getCombinations = function (t, num)
+	local a, number, select, newList = {}, table.size(t), num, {}
 	for i = 1, select do
 		table.insert(a, i)
 	end
@@ -69,10 +84,10 @@ table.getCombinations = function (table, num)
 	while(true) do
 		local newRow = {}
 		for i = 1, select do
-			table.insert(newRow, table[a[i]])
+			table.insert(newRow, t[a[i]])
 		end
 
-		table.insert(newList, newRow)
+		t.insert(newList, newRow)
 		i = select
 		while(a[i] == (number - select + i)) do
 			i = i - 1
@@ -128,4 +143,31 @@ function table.unserialize(str)
 	end
 
 	return loadstring("return " .. str)()
+end
+
+function table.clone(src)
+	if(type(src) ~= 'table') then
+		return src
+	end
+
+	local clone = {}
+	for key, value in pairs(src) do
+		clone[key] = table.clone(value)
+	end
+
+	return clone
+end
+
+function table.merge(t1, t2, override)
+	if(override) then
+		for k, v in pairs(t2) do
+			t1[k] = v
+		end
+	else
+		for _, v in ipairs(t2) do
+			table.insert(t1, v)
+		end
+	end
+
+	return t1
 end
