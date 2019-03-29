@@ -363,7 +363,8 @@ bool ConfigManager::load()
 	m_confBool[NO_ATTACKHEALING_SIMULTANEUS] = getGlobalBool("noAttackHealingSimultaneus", false);
 	m_confBool[OPTIONAL_PROTECTION] = getGlobalBool("optionalProtection", true);
 	m_confBool[MONSTER_ATTACK_MONSTER] = getGlobalBool("monsterAttacksOnlyDamagePlayers", true);
-
+	m_confBool[ALLOW_CORPSE_BLOCK] = getGlobalBool("allowCorpseBlock", false);
+	
 	m_loaded = true;
 	return true;
 }

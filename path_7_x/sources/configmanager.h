@@ -315,6 +315,7 @@ class ConfigManager
 			CLASSIC_EQUIPMENT_SLOTS,
 			OPTIONAL_PROTECTION,
 			ALLOW_FIGHT_BACK,
+			ALLOW_CORPSE_BLOCK,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

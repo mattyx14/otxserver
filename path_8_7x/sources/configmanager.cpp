@@ -362,7 +362,8 @@ bool ConfigManager::load()
 	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
 	m_confBool[OPTIONAL_PROTECTION] = getGlobalBool("optionalProtection", false);
 	m_confBool[MONSTER_ATTACK_MONSTER] = getGlobalBool("monsterAttacksOnlyDamagePlayers", true);
-
+	m_confBool[ALLOW_CORPSE_BLOCK] = getGlobalBool("allowCorpseBlock", false);
+	
 	m_loaded = true;
 	return true;
 }

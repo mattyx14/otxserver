@@ -331,6 +331,7 @@ class ConfigManager
 			USE_RUNE_REQUIREMENTS,
 			CLASSIC_EQUIPMENT_SLOTS,
 			OPTIONAL_PROTECTION,
+			ALLOW_CORPSE_BLOCK,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

@@ -763,8 +763,12 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 				for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
 				{
 					const ItemType& iType = Item::items[(*it)->getID()];
-					if((*it)->getCorpseOwner() && !iType.movable)
-						return RET_NOTPOSSIBLE;
+					
+					if (g_config.getBool(ConfigManager::ALLOW_CORPSE_BLOCK))
+					{
+						if ((*it)->getCorpseOwner() && !iType.movable)
+							return RET_NOTPOSSIBLE;
+					}
 
 					if(!(*it)->isBlocking(NULL) || iType.allowPickupable)
 						continue;
