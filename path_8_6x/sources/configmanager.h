@@ -333,6 +333,7 @@ class ConfigManager
 			NO_ATTACKHEALING_SIMULTANEUS,
 			OPTIONAL_PROTECTION,
 			ALLOW_CORPSE_BLOCK,
+			ALLOW_INDEPENDENT_PUSH,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

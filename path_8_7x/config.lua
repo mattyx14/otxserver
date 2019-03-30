@@ -130,6 +130,10 @@
 		-- Corpse Block
 		-- If set to true, players won't be able to immediately throw fields on top of corpses after killing the monster
 		allowCorpseBlock = false
+				
+		-- Corpse Block
+		-- If set to false, players won't be able to push creatures while other actions are exhausted(for example potions)
+		allowIndependentCreaturePush = true
 		
 		-- Battle
 		optionalWarAttackableAlly = true

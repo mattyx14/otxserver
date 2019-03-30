@@ -316,6 +316,7 @@ class ConfigManager
 			OPTIONAL_PROTECTION,
 			ALLOW_FIGHT_BACK,
 			ALLOW_CORPSE_BLOCK,
+			ALLOW_INDEPENDENT_PUSH,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

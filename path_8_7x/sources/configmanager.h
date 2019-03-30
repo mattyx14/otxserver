@@ -332,6 +332,7 @@ class ConfigManager
 			CLASSIC_EQUIPMENT_SLOTS,
 			OPTIONAL_PROTECTION,
 			ALLOW_CORPSE_BLOCK,
+			ALLOW_INDEPENDENT_PUSH,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

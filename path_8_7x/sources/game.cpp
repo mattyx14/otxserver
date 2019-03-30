@@ -1113,7 +1113,7 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 	if(!player || player->isRemoved() || player->hasFlag(PlayerFlag_CannotMoveCreatures))
 		return false;
 
-	if(!player->canDoAction())
+	if(!player->canDoAction() && !g_config.getBool(ConfigManager::ALLOW_INDEPENDENT_PUSH))
 	{
 		SchedulerTask* task = createSchedulerTask(1500,
 			boost::bind(&Game::playerMoveCreature, this, playerId, movingCreatureId, movingCreaturePos, toPos, false));
