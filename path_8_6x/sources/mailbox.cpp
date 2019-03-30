@@ -92,7 +92,7 @@ bool Mailbox::sendItem(Creature* actor, Item* item)
 	if(!getRecipient(item, name, depotId) || name.empty() || !depotId)
 		return false;
 
-	return IOLoginData::getInstance()->playerMail(actor, name, depotId, item);
+	return IOLoginData::getInstance()->playerMail(actor, name, item, depotId);
 }
 
 bool Mailbox::getDepotId(const std::string& townString, uint32_t& depotId)

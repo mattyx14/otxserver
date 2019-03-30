@@ -363,15 +363,8 @@ function getItemWeightById(itemid, count, precision)
 end
 
 function choose(...)
-	local arg, ret = {...}
-
-	if type(arg[1]) == 'table' then
-		ret = arg[1][math.random(#arg[1])]
-	else
-		ret = arg[math.random(#arg)]
-	end
-
-	return ret
+	local arg = {...}
+	return arg[math.rand(1, table.maxn(arg))]
 end
 
 function doPlayerAddExpEx(cid, amount)
@@ -538,3 +531,29 @@ end
 function doPlayerBuyItemContainer(cid, containerid, itemid, count, cost, charges)
 	return doPlayerRemoveMoneyEx(cid, cost) and doPlayerGiveItemContainer(cid, containerid, itemid, count, charges)
 end
+
+function isRookie(cid, promoted)
+	local arr = {0}
+	if(promoted) then
+		table.remove(arr, 1)
+	end
+
+	return isInArray(arr, getPlayerVocation(cid))
+end
+
+function doGenerateCode()
+	local chars = {}
+	for i = 1, 8 do
+		local tmp = math.rand(1, (i == 1 and 2 or 3))
+		if(tmp == 1) then
+			table.insert(chars, math.rand(65, 90))
+		elseif(tmp == 2) then
+			table.insert(chars, math.rand(97, 122))
+		else
+			table.insert(chars, math.rand(48, 57))
+		end
+	end
+
+	return string.format("%c%c%c%c%c%c%c%c", chars[1], chars[2], chars[3], chars[4], chars[5], chars[6], chars[7], chars[8])
+end
+

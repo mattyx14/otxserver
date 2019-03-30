@@ -54,39 +54,39 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		end
 
 		if(item.type == TYPE_MANA_FLUID) then
-			if(not doPlayerAddMana(itemEx.uid, math.random(40, 80))) then
+			if(not doPlayerAddMana(itemEx.uid, math.random(80, 160))) then
 				return false
 			end
 
-			doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER_SAY)
+			doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER)
 			doSendMagicEffect(toPosition, CONST_ME_MAGIC_BLUE)
 		elseif(item.type == TYPE_LIFE_FLUID) then
-			if(not doCreatureAddHealth(itemEx.uid, math.random(40, 80))) then
+			if(not doCreatureAddHealth(itemEx.uid, math.random(40, 75))) then
 				return false
 			end
 
-			doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER_SAY)
+			doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER)
 			doSendMagicEffect(toPosition, CONST_ME_MAGIC_BLUE)
 		elseif(isInArray(alcoholDrinks, item.type)) then
 			if(not doTargetCombatCondition(0, cid, drunk, CONST_ME_NONE)) then
 				return false
 			end
 
-			doCreatureSay(cid, "Aaah...", TALKTYPE_MONSTER_SAY)
+			doCreatureSay(cid, "Aaah...", TALKTYPE_MONSTER)
 		elseif(isInArray(poisonDrinks, item.type)) then
 			if(not doTargetCombatCondition(0, cid, poison, CONST_ME_NONE)) then
 				return false
 			end
 
-			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER_SAY)
+			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER)
 		elseif(item.type == TYPE_LAVA) then
 			if(not doTargetCombatCondition(0, cid, burn, CONST_ME_NONE)) then
 				return false
 			end
 
-			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER_SAY)
+			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER)
 		else
-			doCreatureSay(cid, "Gulp.", TALKTYPE_MONSTER_SAY)
+			doCreatureSay(cid, "Gulp.", TALKTYPE_MONSTER)
 		end
 
 		doChangeTypeItem(item.uid, TYPE_EMPTY)
@@ -118,7 +118,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		local tmp = oilLamps[itemEx.itemid]
 		if(item.type == TYPE_OIL and tmp ~= nil) then
 			doTransformItem(itemEx.uid, tmp)
-			doChangeTypeItem(item.uid, TYPE_NONE)
+			doChangeTypeItem(item.uid, TYPE_EMPTY)
 			return true
 		end
 

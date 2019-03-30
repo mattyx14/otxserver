@@ -118,7 +118,7 @@ enum GamemasterCondition_t
 typedef std::set<uint32_t> VIPSet;
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
 typedef std::vector<std::pair<uint32_t, Container*> > ContainerVector;
-typedef std::map<uint32_t, std::pair<Depot*, bool> > DepotMap;
+typedef std::map<uint32_t, Depot*> DepotMap;
 typedef std::map<uint32_t, uint32_t> MuteCountMap;
 typedef std::list<std::string> LearnedInstantSpellList;
 typedef std::list<uint32_t> InvitationsList;
@@ -368,9 +368,9 @@ class Player : public Creature, public Cylinder
 		uint32_t getLossPercent(lossTypes_t lossType) const {return lossPercent[lossType];}
 		void setLossPercent(lossTypes_t lossType, uint32_t newPercent) {lossPercent[lossType] = newPercent;}
 
-		Depot* getDepot(uint32_t depotId, bool autoCreateDepot);
-		bool addDepot(Depot* depot, uint32_t depotId);
-		void useDepot(uint32_t depotId, bool value);
+		Depot* getDepot(uint32_t depotId, bool autoCreate);
+		void addDepot(Depot* depot, uint32_t depotId);
+		void resetDepots();
 
 		virtual bool canSee(const Position& pos) const;
 		virtual bool canSeeCreature(const Creature* creature) const;

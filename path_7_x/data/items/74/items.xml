@@ -3041,7 +3041,9 @@
 	<item id="2333" article="a" name="letter to Markwin">
 		<attribute key="weight" value="50"/>
 	</item>
-	<item id="2334" name="Santas Mailbox"/>
+	<item id="2334" name="Santas Mailbox">
+		<attribute key="type" value="mailbox"/>
+	</item>
 	<item id="2335" article="a" name="helmet ornament">
 		<attribute key="description" value="This item seems to be a single part of a bigger object."/>
 		<attribute key="weight" value="160"/>

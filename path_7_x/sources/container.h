@@ -52,6 +52,8 @@ class ContainerIterator
 		friend class Container;
 };
 
+typedef std::list<Container*> ContainerList;
+
 class Container : public Item, public Cylinder
 {
 	public:
@@ -72,16 +74,16 @@ class Container : public Item, public Cylinder
 		virtual uint32_t getItemHoldingCount() const;
 		virtual double getWeight() const;
 
-		uint32_t capacity() const {return maxSize ? maxSize : std::min(255U, (uint32_t)itemlist.size() + 1);}
-		uint32_t size() const {return (uint32_t)itemlist.size();}
+		uint32_t capacity() const {return maxSize ? maxSize : std::min(255U, (uint32_t)itemList.size() + 1);}
+		uint32_t size() const {return (uint32_t)itemList.size();}
 		bool full() const
 		{
 			if(maxSize)
-				return itemlist.size() >= maxSize;
+				return itemList.size() >= maxSize;
 
 			return true;
 		}
-		bool empty() const {return itemlist.empty();}
+		bool empty() const {return itemList.empty();}
 
 		void addItem(Item* item);
 		Item* getItem(uint32_t index);
@@ -93,13 +95,11 @@ class Container : public Item, public Cylinder
 		ContainerIterator begin() const;
 		ContainerIterator end() const;
 
-		const ItemList& getItemList() const {return itemlist;}
+		ItemList::const_iterator getItems() const {return itemList.begin();}
+		ItemList::const_iterator getEnd() const {return itemList.end();}
 
-		ItemList::const_iterator getItems() const {return itemlist.begin();}
-		ItemList::const_iterator getEnd() const {return itemlist.end();}
-
-		ItemList::const_reverse_iterator getReversedItems() const {return itemlist.rbegin();}
-		ItemList::const_reverse_iterator getReversedEnd() const {return itemlist.rend();}
+		ItemList::const_reverse_iterator getReversedItems() const {return itemList.rbegin();}
+		ItemList::const_reverse_iterator getReversedEnd() const {return itemList.rend();}
 
 		//cylinder implementations
 		virtual Cylinder* getParent() {return Thing::getParent();}
@@ -154,14 +154,15 @@ class Container : public Item, public Cylinder
 		void onRemoveContainerItem(uint32_t index, Item* item);
 
 		Container* getParentContainer();
-		void updateItemWeight(double diff);
 		std::ostringstream& getContentDescription(std::ostringstream& s) const;
 
 	protected:
+		virtual void updateItemWeight(double diff);
+
 		uint32_t maxSize, serializationCount;
 		double totalWeight;
 
-		ItemList itemlist;
+		ItemList itemList;
 		friend class ContainerIterator;
 		friend class IOMapSerialize;
 };

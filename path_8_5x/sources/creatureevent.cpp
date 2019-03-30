@@ -688,7 +688,7 @@ uint32_t CreatureEvent::executeAdvance(Player* player, skills_t skill, uint32_t 
 	}
 }
 
-uint32_t CreatureEvent::executeMail(Player* player, Player* target, Item* item, bool openBox)
+uint32_t CreatureEvent::executeMail(Player* player, Player* target, Item* item, bool openBox, uint16_t townId)
 {
 	//onMail[Send/Receive](cid, target, item, openBox)
 	if(m_interface->reserveEnv())
@@ -703,6 +703,7 @@ uint32_t CreatureEvent::executeMail(Player* player, Player* target, Item* item, 
 
 			env->streamThing(scriptstream, "item", item, env->addThing(item));
 			scriptstream << "local openBox = " << (openBox ? "true" : "false") << std::endl;
+			scriptstream << "local townId = " << townId << std::endl;
 
 			if(m_scriptData)
 				scriptstream << *m_scriptData;
@@ -736,8 +737,9 @@ uint32_t CreatureEvent::executeMail(Player* player, Player* target, Item* item, 
 
 			LuaInterface::pushThing(L, item, env->addThing(item));
 			lua_pushboolean(L, openBox);
+			lua_pushnumber(L, townId);
 
-			bool result = m_interface->callFunction(4);
+			bool result = m_interface->callFunction(5);
 			m_interface->releaseEnv();
 			return result;
 		}
