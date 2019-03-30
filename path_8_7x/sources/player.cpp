@@ -151,7 +151,7 @@ Player::~Player()
 
 	transferContainer.setParent(NULL);
 	for(DepotMap::iterator it = depots.begin(); it != depots.end(); ++it)
-		it->second->unRef();
+		it->second.first->unRef();
 }
 
 void Player::setVocation(uint32_t id)
@@ -944,57 +944,54 @@ void Player::setWalkthrough(const Creature* creature, bool walkthrough)
 		sendCreatureWalkthrough(creature, !walkthrough ? canWalkthrough(creature) : walkthrough);
 }
 
-Depot* Player::getDepot(uint32_t depotId, bool autoCreate)
+Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
 {
 	DepotMap::iterator it = depots.find(depotId);
 	if(it != depots.end())
-		return it->second;
+		return it->second.first;
 
 	//create a new depot?
-	if(!autoCreate)
-		return NULL;
-
-	Item* locker = Item::CreateItem(ITEM_LOCKER);
-	if(Container* container = locker->getContainer())
+	if(autoCreateDepot)
 	{
-		if(Depot* depot = container->getDepot())
+		Item* locker = Item::CreateItem(ITEM_LOCKER);
+		if(Container* container = locker->getContainer())
 		{
-			Item* item = Item::CreateItem(ITEM_INBOX);
-			if(item)
-				container->__internalAddThing(item);
-
-			if((item = Item::CreateItem(ITEM_DEPOT)))
-				container->__internalAddThing(item);
-
-			depot->use(true);
-			addDepot(depot, depotId);
-			return depot;
+			if(Depot* depot = container->getDepot())
+			{
+				container->__internalAddThing(Item::CreateItem(ITEM_DEPOT));
+				internalAddDepot(depot, depotId);
+				return depot;
+			}
 		}
+
+		g_game.freeThing(locker);
+		std::clog << "Failure: Creating a new depot with id: " << depotId <<
+			", for player: " << getName() << std::endl;
 	}
 
-	g_game.freeThing(locker);
-	std::clog << "Failure: Creating a new depot with id: " << depotId
-		<< ", for player: " << name << std::endl;
 	return NULL;
 }
 
-void Player::addDepot(Depot* depot, uint32_t depotId)
+bool Player::addDepot(Depot* depot, uint32_t depotId)
 {
-	depots[depotId] = depot;
-	depot->setOwner(this);
+	if(getDepot(depotId, false))
+		return false;
 
-	depot->setDepotId(depotId);
-	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
-
-	ItemList::const_iterator rit = depot->getItems();
-	depot->setLocker((*rit)->getContainer());
-	depot->setInbox((*(++rit))->getContainer());
+	internalAddDepot(depot, depotId);
+	return true;
 }
 
-void Player::resetDepots()
+void Player::internalAddDepot(Depot* depot, uint32_t depotId)
 {
-	for(DepotMap::iterator it = depots.begin(); it != depots.end(); ++it)
-		it->second->use(false);
+	depots[depotId] = std::make_pair(depot, false);
+	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
+}
+
+void Player::useDepot(uint32_t depotId, bool value)
+{
+	DepotMap::iterator it = depots.find(depotId);
+	if(it != depots.end())
+		depots[depotId] = std::make_pair(it->second.first, value);
 }
 
 void Player::sendCancelMessage(ReturnValue message) const

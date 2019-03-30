@@ -19,8 +19,11 @@
 #include "tools.h"
 
 Depot::Depot(uint16_t type):
-	Container(type), inbox(NULL), locker(NULL), owner(NULL), depotLimit(1000), used(false)
-{}
+	Container(type)
+{
+	maxSize = 30;
+	depotLimit = 1000;
+}
 
 Attr_ReadValue Depot::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
@@ -68,32 +71,14 @@ ReturnValue Depot::__queryMaxCount(int32_t index, const Thing* thing, uint32_t c
 	return Container::__queryMaxCount(index, thing, count, maxQueryCount, flags);
 }
 
-std::map<uint32_t, uint32_t>& Depot::__getAllItemTypeCount(std::map<uint32_t,
-	uint32_t>& countMap) const
-{
-	for(ContainerIterator it = locker->begin(); it != locker->end(); ++it)
-		countMap[(*it)->getID()] += (*it)->getItemCount();
-
-	return countMap;
-}
-
-void Depot::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
-	int32_t index, CylinderLink_t /*link = LINK_OWNER*/)
+void Depot::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t /*link = LINK_OWNER*/)
 {
 	if(getParent())
 		getParent()->postAddNotification(actor, thing, oldParent, index, LINK_PARENT);
 }
 
-void Depot::postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent,
-	int32_t index, bool isCompleteRemoval, CylinderLink_t /*link = LINK_OWNER*/)
+void Depot::postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent, int32_t index, bool isCompleteRemoval, CylinderLink_t /*link = LINK_OWNER*/)
 {
 	if(getParent())
 		getParent()->postRemoveNotification(actor, thing, newParent, index, isCompleteRemoval, LINK_PARENT);
-}
-
-void Depot::updateItemWeight(double diff)
-{
-	Container::updateItemWeight(diff);
-	if(owner)
-		used = true;
 }

@@ -18,7 +18,6 @@
 #ifndef __DEPOT__
 #define __DEPOT__
 #include "container.h"
-class Player;
 
 class Depot : public Container
 {
@@ -31,22 +30,8 @@ class Depot : public Container
 
 		//serialization
 		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);
-		virtual uint32_t getItemHoldingCount() const {return Container::getItemHoldingCount() - 3;}
-
-		bool isUsed() const {return used;}
-		void use(bool s) {used = s;}
 
 		uint32_t getDepotId() const;
-		void setDepotId(int32_t depotId) {setAttribute("depotid", depotId);}
-
-		void setInbox(Container* container) {inbox = container;}
-		Container* getInbox() {return inbox ? inbox : this;}
-
-		void setLocker(Container* container) {locker = container;}
-		Container* getLocker() const {return locker;}
-
-		void setOwner(Player* player) {owner = player;}
-		Player* getOwner() const {return owner;}
 
 		void setMaxDepotLimit(uint32_t count) {depotLimit = count;}
 
@@ -68,8 +53,6 @@ class Depot : public Container
 		virtual ReturnValue __queryMaxCount(int32_t index, const Thing* thing, uint32_t count,
 			uint32_t& maxQueryCount, uint32_t flags) const;
 
-		virtual std::map<uint32_t, uint32_t>& __getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const;
-
 		virtual void postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
 			int32_t index, CylinderLink_t link = LINK_OWNER);
 		virtual void postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent,
@@ -78,14 +61,8 @@ class Depot : public Container
 		//overrides
 		virtual bool canRemove() const {return false;}
 
-	protected:
-		virtual void updateItemWeight(double diff);
-
 	private:
-		Container *inbox, *locker;
-		Player* owner;
 		uint32_t depotLimit;
-		bool used;
 };
 
 inline uint32_t Depot::getDepotId() const

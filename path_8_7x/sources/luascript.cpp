@@ -8696,7 +8696,7 @@ int32_t LuaInterface::luaDoPlayerSendMailByName(lua_State* L)
 		return 1;
 	}
 
-	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), item, town);
+	bool result = IOLoginData::getInstance()->playerMail(actor, popString(L), town, item);
 	if(result)
 		env->removeTempItem(env, item);
 

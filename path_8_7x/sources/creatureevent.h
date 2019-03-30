@@ -132,7 +132,7 @@ class CreatureEvent : public Event
 		uint32_t executeChannelRequest(Player* player, const std::string& channel, bool isPrivate, bool custom);
 		uint32_t executeAdvance(Player* player, skills_t skill, uint32_t oldLevel, uint32_t newLevel);
 		uint32_t executeLook(Player* player, Thing* thing, const Position& position, int16_t stackpos, int32_t lookDistance);
-		uint32_t executeMail(Player* player, Player* target, Item* item, bool openBox, uint16_t townId);
+		uint32_t executeMail(Player* player, Player* target, Item* item, bool openBox);
 		uint32_t executeTradeRequest(Player* player, Player* target, Item* item);
 		uint32_t executeTradeAccept(Player* player, Player* target, Item* item, Item* targetItem);
 		uint32_t executeTextEdit(Player* player, Item* item, const std::string& newText);

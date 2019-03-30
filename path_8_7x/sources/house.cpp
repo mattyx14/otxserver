@@ -292,32 +292,19 @@ bool House::transferToDepot()
 		}
 	}
 
-	bool result = false;
 	if(player)
 	{
-		uint32_t town = townId;
-		if(!town)
-			town = player->getTown();
-
 		Depot* depot = player->getDepot(townId, true);
-		if(depot && depot->getInbox())
-		{
-			for(ItemList::iterator it = moveList.begin(); it != moveList.end(); ++it)
-			{
-				if(g_game.internalMoveItem(NULL, (*it)->getParent(), depot->getInbox(), INDEX_WHEREEVER,
-					(*it), (*it)->getItemCount(), NULL, FLAG_NOLIMIT) != RET_NOERROR)
-					g_game.internalRemoveItem(NULL, (*it), (*it)->getItemCount(), false, FLAG_NOLIMIT);
-			}
-
-			IOLoginData::getInstance()->savePlayer(player);
-			result = true;
-		}
+		for(ItemList::iterator it = moveList.begin(); it != moveList.end(); ++it)
+			g_game.internalMoveItem(NULL, (*it)->getParent(), depot, INDEX_WHEREEVER, (*it), (*it)->getItemCount(), NULL, FLAG_NOLIMIT);
 
 		if(player->isVirtual())
+		{
+			IOLoginData::getInstance()->savePlayer(player);
 			delete player;
+		}
 	}
-
-	if(!result)
+	else
 	{
 		for(ItemList::iterator it = moveList.begin(); it != moveList.end(); ++it)
 			g_game.internalRemoveItem(NULL, (*it), (*it)->getItemCount(), false, FLAG_NOLIMIT);

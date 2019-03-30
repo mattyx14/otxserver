@@ -1034,28 +1034,36 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 
 	itemList.clear();
 	//save depot items
-	bool save = false;
-	for(DepotMap::const_iterator it = player->depots.begin(); it != player->depots.end(); ++it)
+	//std::ostringstream ss;
+	for(DepotMap::iterator it = player->depots.begin(); it != player->depots.end(); ++it)
 	{
-		itemList.push_back(itemBlock(it->first, it->second));
-		if(!save)
-			save = it->second->isUsed();
+		/*if(it->second.second)
+		{
+			it->second.second = false;
+			ss << it->first << ",";*/
+			itemList.push_back(itemBlock(it->first, it->second.first));
+		//}
 	}
 
-	if(save)
-	{
+	/*std::string s = ss.str();
+	size_t size = s.length();
+	if(size > 0)
+	{*/
+
 		query.str("");
-		query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();
+		query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();// << " AND `pid` IN (" << s.substr(0, --size) << ")";
 		if(!db->query(query.str()))
 			return false;
 
-		stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, serial) VALUES ");
-		if(!saveItems(player, itemList, stmt))
-			return false;
+		if(itemList.size())
+		{
+			stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
+			if(!saveItems(player, itemList, stmt))
+				return false;
 
-		player->resetDepots();
-		itemList.clear();
-	}
+			itemList.clear();
+		}
+	//}
 
 	query.str("");
 	query << "DELETE FROM `player_storage` WHERE `player_id` = " << player->getGUID();
@@ -1174,28 +1182,36 @@ bool IOLoginData::savePlayerItems(Player* player)
 
 	itemList.clear();
 	//save depot items
-	bool save = false;
-	for(DepotMap::const_iterator it = player->depots.begin(); it != player->depots.end(); ++it)
+	//std::ostringstream ss;
+	for(DepotMap::iterator it = player->depots.begin(); it != player->depots.end(); ++it)
 	{
-		itemList.push_back(itemBlock(it->first, it->second));
-		if(!save)
-			save = it->second->isUsed();
+		/*if(it->second.second)
+		{
+		it->second.second = false;
+		ss << it->first << ",";*/
+		itemList.push_back(itemBlock(it->first, it->second.first));
+		//}
 	}
 
-	if(save)
-	{
-		query.str("");
-		query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();
-		if(!db->query(query.str()))
-			return false;
+	/*std::string s = ss.str();
+	size_t size = s.length();
+	if(size > 0)
+	{*/
 
-		stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, serial) VALUES ");
+	query.str("");
+	query << "DELETE FROM `player_depotitems` WHERE `player_id` = " << player->getGUID();// << " AND `pid` IN (" << s.substr(0, --size) << ")";
+	if(!db->query(query.str()))
+		return false;
+
+	if(itemList.size())
+	{
+		stmt.setQuery("INSERT INTO `player_depotitems` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial`) VALUES ");
 		if(!saveItems(player, itemList, stmt))
 			return false;
 
-		player->resetDepots();
 		itemList.clear();
 	}
+	//}
 
 	query.str("");
 	query << "DELETE FROM `player_storage` WHERE `player_id` = " << player->getGUID();
@@ -1385,7 +1401,7 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 	return trans.commit();
 }
 
-bool IOLoginData::playerMail(Creature* actor, std::string name, Item* item, uint32_t townId/* = 0*/)
+bool IOLoginData::playerMail(Creature* actor, std::string name, uint32_t townId, Item* item)
 {
 	Player* player = g_game.getPlayerByNameEx(name);
 	if(!player)
@@ -1395,8 +1411,8 @@ bool IOLoginData::playerMail(Creature* actor, std::string name, Item* item, uint
 		townId = player->getTown();
 
 	Depot* depot = player->getDepot(townId, true);
-	if(!depot || !depot->getInbox() || g_game.internalMoveItem(actor, item->getParent(), depot->getInbox(),
-		INDEX_WHEREEVER, item, item->getItemCount(), NULL, FLAG_NOLIMIT) != RET_NOERROR)
+	if(g_game.internalMoveItem(actor, item->getParent(), depot, INDEX_WHEREEVER,
+		item, item->getItemCount(), NULL, FLAG_NOLIMIT) != RET_NOERROR)
 	{
 		if(player->isVirtual())
 			delete player;
@@ -1404,18 +1420,17 @@ bool IOLoginData::playerMail(Creature* actor, std::string name, Item* item, uint
 		return false;
 	}
 
-	if(item->getID() == ITEM_PARCEL || item->getID() == ITEM_LETTER)
-		g_game.transformItem(item, item->getID() + 1);
+	g_game.transformItem(item, item->getID() == ITEM_PARCEL ? ITEM_PARCEL_STAMPED : ITEM_LETTER_STAMPED);
+	bool result = true, opened = player->getContainerID(depot) != -1;
 
 	Player* tmp = NULL;
 	if(actor)
 		tmp = actor->getPlayer();
 
-	bool result = true, opened = player->getContainerID(depot) != -1;
 	CreatureEventList mailEvents = player->getCreatureEvents(CREATURE_EVENT_MAIL_RECEIVE);
 	for(CreatureEventList::iterator it = mailEvents.begin(); it != mailEvents.end(); ++it)
 	{
-		if(!(*it)->executeMail(player, tmp, item, opened, townId) && result)
+		if(!(*it)->executeMail(player, tmp, item, opened) && result)
 			result = false;
 	}
 
@@ -1424,7 +1439,7 @@ bool IOLoginData::playerMail(Creature* actor, std::string name, Item* item, uint
 		mailEvents = tmp->getCreatureEvents(CREATURE_EVENT_MAIL_SEND);
 		for(CreatureEventList::iterator it = mailEvents.begin(); it != mailEvents.end(); ++it)
 		{
-			if(!(*it)->executeMail(tmp, player, item, opened, townId) && result)
+			if(!(*it)->executeMail(tmp, player, item, opened) && result)
 				result = false;
 		}
 	}

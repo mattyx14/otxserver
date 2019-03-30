@@ -1029,7 +1029,7 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent, bool dep
 			for(ItemList::const_iterator it = container->getItems(); it != container->getEnd(); ++it)
 				parent->__addThing(NULL, (*it));
 
-			container->itemList.clear();
+			container->itemlist.clear();
 		}
 	}
 
