@@ -323,8 +323,6 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 			}
 		}
 	}
-	else if(target->getNpc() && !target->isAttackable())
-		return RET_YOUMAYNOTATTACKTHISCREATURE;
 
 	return checkZones && (target->getTile()->hasFlag(TILESTATE_OPTIONALZONE) ||
 		(attacker->getTile()->hasFlag(TILESTATE_OPTIONALZONE)
