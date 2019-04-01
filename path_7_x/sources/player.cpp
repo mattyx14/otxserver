@@ -1529,7 +1529,7 @@ void Player::onTargetChangeZone(ZoneType_t zone)
 	else if(zone == ZONE_OPEN)
 	{
 		if(g_game.getWorldType(this, attackedCreature->getPlayer()) == WORLDTYPE_OPTIONAL
-			&& attackedCreature->getPlayer() && !attackedCreature->getPlayer()->isEnemy(this, true))
+			&& attackedCreature->getPlayer() && !attackedCreature->getPlayer()->isEnemy(this))
 		{
 			//attackedCreature can leave a pvp zone if not pzlocked
 			setAttackedCreature(NULL);
