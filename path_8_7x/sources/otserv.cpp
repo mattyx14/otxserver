@@ -334,6 +334,7 @@ int main(int argc, char* argv[])
 	Scheduler::getInstance().exit();
 
 	boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+	exit(0);
 	return 0;
 }
 

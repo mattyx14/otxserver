@@ -702,7 +702,7 @@ void Combat::combatTileEffects(const SpectatorVec& list, Creature* caster, Tile*
 						break;
 				}
 			}
-			else if(params.isAggressive && !Item::items[itemId].blockSolid && Item::items[itemId].blockPathFind)
+			else if(params.isAggressive && !Item::items[itemId].blockPathFind)
 				pzLock = true;
 
 			player->addInFightTicks(pzLock);

@@ -4376,6 +4376,12 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 		return false;
 	}
 
+	if(type == MSG_GAMEMASTER_PRIVATE && (player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->hasFlag(PlayerFlag_CannotBeMuted)))
+		type = MSG_PRIVATE;
+
+	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
+	toPlayer->onCreatureSay(player, type, text);
+
 	bool canSee = player->canSeeCreature(toPlayer);
 	if(toPlayer->hasCondition(CONDITION_GAMEMASTER, GAMEMASTER_IGNORE)
 		&& !player->hasFlag(PlayerFlag_CannotBeMuted))
@@ -4389,12 +4395,6 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 		player->sendTextMessage(MSG_STATUS_SMALL, buffer);
 		return false;
 	}
-
-	if(type == MSG_GAMEMASTER_PRIVATE && (player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->hasFlag(PlayerFlag_CannotBeMuted)))
-		type = MSG_PRIVATE;
-
-	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
-	toPlayer->onCreatureSay(player, type, text);
 	if(!canSee)
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "A player with this name is not online.");
@@ -7077,6 +7077,9 @@ void Game::shutdown()
 	std::clog << "(done)." << std::endl;
 	if(services)
 		services->stop();
+
+	exit(0);
+	return;
 }
 
 void Game::cleanup()

@@ -508,7 +508,7 @@ bool Spell::configureSpell(xmlNodePtr p)
 
 		for(uint32_t i = 0; i < sizeof(reservedList) / sizeof(const char*); ++i)
 		{
-			if(boost::algorithm::iequals(reservedList[i], name.c_str()))
+			if(boost::algorithm::iequals(reservedList[i], name))
 			{
 				std::clog << "[Error - Spell::configureSpell] Spell is using a reserved name: " << reservedList[i] << std::endl;
 				return false;
@@ -1400,7 +1400,7 @@ bool InstantSpell::SearchPlayer(const InstantSpell*, Creature* creature, const s
 
 	std::ostringstream ss;
 	ss << targetPlayer->getName() << " " << g_game.getSearchString(player->getPosition(), targetPlayer->getPosition(), true, true) << ".";
-	player->sendTextMessage(MSG_INFO_DESCR, ss.str().c_str());
+	player->sendTextMessage(MSG_INFO_DESCR, ss.str());
 
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
 	return true;
@@ -1501,7 +1501,7 @@ bool InstantSpell::Levitate(const InstantSpell*, Creature* creature, const std::
 				Tile* tile = player->getTile();
 				tmpTile = g_game.getTile(destination);
 				if(tile && tmpTile && tmpTile->ground && !tmpTile->hasProperty(IMMOVABLEBLOCKSOLID) &&
-					tile->hasFlag(TILESTATE_HOUSE) == tmpTile->hasFlag(TILESTATE_HOUSE)
+					!tmpTile->floorChange() && tile->hasFlag(TILESTATE_HOUSE) == tmpTile->hasFlag(TILESTATE_HOUSE)
 					&& tile->hasFlag(TILESTATE_PROTECTIONZONE) == tmpTile->hasFlag(TILESTATE_PROTECTIONZONE))
 					ret = g_game.internalMoveCreature(NULL, player, tile, tmpTile, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE);
 			}
@@ -1956,7 +1956,7 @@ bool RuneSpell::executeUse(Player* player, Item* item, const PositionEx& posFrom
 			{
 				if(Tile* tileTo = g_game.getTile(posTo))
 				{
-					if(const Creature* creature = tileTo->getBottomVisibleCreature(player))
+					if(const Creature* creature = tileTo->getTopVisibleCreature(player))
 						creatureId = creature->getID();
 				}
 			}

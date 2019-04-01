@@ -1591,12 +1591,17 @@ void Player::onFollowCreatureDisappear(bool isLogout)
 
 void Player::onChangeZone(ZoneType_t zone)
 {
-	if(zone == ZONE_PROTECTION && !hasFlag(PlayerFlag_IgnoreProtectionZone))
+	if(!hasFlag(PlayerFlag_IgnoreProtectionZone))
 	{
-		if(attackedCreature)
+		if(zone == ZONE_PROTECTION)
 		{
-			setAttackedCreature(NULL);
-			onTargetDisappear(false);
+			if(attackedCreature)
+			{
+				setAttackedCreature(NULL);
+				onTargetDisappear(false);
+			}
+
+			removeCondition(CONDITION_INFIGHT);
 		}
 	}
 
@@ -1606,15 +1611,21 @@ void Player::onChangeZone(ZoneType_t zone)
 
 void Player::onTargetChangeZone(ZoneType_t zone)
 {
-	if(zone == ZONE_PROTECTION && !hasFlag(PlayerFlag_IgnoreProtectionZone))
+	if(zone == ZONE_PROTECTION)
 	{
-		setAttackedCreature(NULL);
-		onTargetDisappear(false);
+		if(!hasFlag(PlayerFlag_IgnoreProtectionZone))
+		{
+			setAttackedCreature(NULL);
+			onTargetDisappear(false);
+		}
 	}
-	else if(zone == ZONE_OPTIONAL && attackedCreature->getPlayer() && !hasFlag(PlayerFlag_IgnoreProtectionZone))
+	else if(zone == ZONE_OPTIONAL)
 	{
-		setAttackedCreature(NULL);
-		onTargetDisappear(false);
+		if(attackedCreature->getPlayer() && !hasFlag(PlayerFlag_IgnoreProtectionZone))
+		{
+			setAttackedCreature(NULL);
+			onTargetDisappear(false);
+		}
 	}
 	else if(zone == ZONE_OPEN)
 	{
@@ -1636,9 +1647,11 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 
 	client->clear(true);
 	if(isLogout)
+	{
 		loginPosition = getPosition();
+		lastLogout = time(NULL);
+	}
 
-	lastLogout = time(NULL);
 	Item* item = NULL;
 	for(int32_t slot = SLOT_FIRST; slot < SLOT_LAST; ++slot)
 	{
@@ -3993,16 +4006,23 @@ void Player::onAddCombatCondition(ConditionType_t type, bool)
 void Player::onEndCondition(ConditionType_t type, ConditionId_t id)
 {
 	Creature::onEndCondition(type, id);
-	if(type == CONDITION_INFIGHT)
+	switch(type)
 	{
-		onIdleStatus();
-		clearAttacked();
+		case CONDITION_INFIGHT:
+		{
+			onIdleStatus();
+			clearAttacked();
 
-		pzLocked = false;
-		if(skull < SKULL_RED)
-			setSkull(SKULL_NONE);
+			pzLocked = false;
+			if(skull < SKULL_RED)
+				setSkull(SKULL_NONE);
 
-		g_game.updateCreatureSkull(this);
+			g_game.updateCreatureSkull(this);
+			break;
+		}
+
+		default:
+			break;
 	}
 
 	sendIcons();
@@ -4046,8 +4066,15 @@ void Player::onCombatRemoveCondition(const Creature* attacker, Condition* condit
 void Player::onTickCondition(ConditionType_t type, ConditionId_t id, int32_t interval, bool& _remove)
 {
 	Creature::onTickCondition(type, id, interval, _remove);
-	if(type == CONDITION_HUNTING)
-		useStamina(-(interval * g_config.getNumber(ConfigManager::RATE_STAMINA_LOSS)));
+	switch(type)
+	{
+		case CONDITION_HUNTING:
+			useStamina(-(interval * g_config.getNumber(ConfigManager::RATE_STAMINA_LOSS)));
+			break;
+
+		default:
+			break;
+	}
 }
 
 void Player::onTarget(Creature* target)
