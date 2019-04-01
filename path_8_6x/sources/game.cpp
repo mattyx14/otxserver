@@ -5486,6 +5486,13 @@ void Game::checkDecay()
 	for (DecayList::iterator it = decayItems[bucket].begin(); it != decayItems[bucket].end();)
 	{
 		Item* item = *it;
+		
+		if (!item) {
+			freeThing(item);
+			it = decayItems[bucket].erase(it);
+			continue;
+		}
+		
 		if (!item->canDecay())
 		{
 			item->setDecaying(DECAYING_FALSE);
