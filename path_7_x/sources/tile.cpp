@@ -693,7 +693,7 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 		if(hasBitSet(FLAG_NOLIMIT, flags))
 			return RET_NOERROR;
 
-		if(isFull())
+		if(isFull() && !item->isMagicField())
 			return RET_TILEISFULL;
 
 		bool isHangable = item->isHangable();

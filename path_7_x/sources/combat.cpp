@@ -243,9 +243,6 @@ ReturnValue Combat::canDoCombat(const Creature* caster, const Tile* tile, bool i
 		if(caster->getPosition().z > tile->getPosition().z)
 			return RET_FIRSTGOUPSTAIRS;
 
-		if(createItem && tile->isFull())
-			return RET_TILEISFULL;
-
 		if(!isAggressive)
 			return RET_NOERROR;
 
