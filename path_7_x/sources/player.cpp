@@ -1504,7 +1504,6 @@ void Player::onChangeZone(ZoneType_t zone)
 		}
 	}
 
-	g_game.updateCreatureWalkthrough(this);
 	sendIcons();
 }
 
@@ -1563,7 +1562,6 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 	if(eventWalk)
 		setFollowCreature(NULL);
 
-	closeShopWindow();
 	if(tradePartner)
 		g_game.internalCloseTrade(this);
 
