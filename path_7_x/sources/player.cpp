@@ -3923,6 +3923,10 @@ void Player::onTarget(Creature* target)
 {
 	Creature::onTarget(target);
 
+	if (target && target->getZone() == ZONE_HARDCORE) {
+		return;
+	}
+
 	if(target == this)
 	{
 		addInFightTicks(false);
@@ -3946,32 +3950,24 @@ void Player::onTarget(Creature* target)
 			addAttacked(targetPlayer);
 			targetPlayer->sendCreatureSkull(this);
 		}
-			else if((!targetPlayer->hasAttacked(this)) || (!g_config.getBool(ConfigManager::ALLOW_FIGHT_BACK))) //nuevo code fightallowback
+		else
 		{
+			if((!targetPlayer->hasAttacked(this)) || (!g_config.getBool(ConfigManager::ALLOW_FIGHT_BACK)))
+			{
 				if (!pzLocked && g_game.getWorldType(this, targetPlayer) != WORLDTYPE_OPEN)
 				{
 					pzLocked = true;
 					sendIcons();
-				} //hasta aqui llega el new code allowfightback
-
-		/*else if(!targetPlayer->hasAttacked(this)) oldcode
-		{
-			if(!pzLocked)
-			{
-				pzLocked = true;
-				sendIcons();
-			}*/ //oldcode
-
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(targetPlayer))
-			{
-				addAttacked(targetPlayer);
-
-				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
-				{
-					setSkull(SKULL_WHITE);
-					g_game.updateCreatureSkull(this);
 				}
-
+				if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(targetPlayer))
+				{
+					addAttacked(targetPlayer);
+					if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
+					{
+						setSkull(SKULL_WHITE);
+						g_game.updateCreatureSkull(this);
+					}
+				}
 				if(getSkull() == SKULL_NONE)
 					targetPlayer->sendCreatureSkull(this);
 			}
