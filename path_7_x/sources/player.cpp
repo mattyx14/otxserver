@@ -4292,7 +4292,7 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 		if(player->hasAttacked(this))
 			return SKULL_YELLOW;
 
-		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
+		if((isPartner(player) || isAlly(player)) &&
 			g_game.getWorldType(this, player) != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
