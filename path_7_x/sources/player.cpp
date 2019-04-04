@@ -3937,7 +3937,7 @@ void Player::onTarget(Creature* target)
 		return;
 
 	Player* targetPlayer = target->getPlayer();
-	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
+	if(targetPlayer && !isPartner(targetPlayer))
 	{
 		if(!pzLocked && g_game.getWorldType(this, targetPlayer) == WORLDTYPE_HARDCORE)
 		{
@@ -3954,7 +3954,7 @@ void Player::onTarget(Creature* target)
 		{
 			if((!targetPlayer->hasAttacked(this)) || (!g_config.getBool(ConfigManager::ALLOW_FIGHT_BACK)))
 			{
-				if (!pzLocked && g_game.getWorldType(this, targetPlayer) != WORLDTYPE_OPEN)
+				if(!pzLocked && g_game.getWorldType(this, targetPlayer) != WORLDTYPE_HARDCORE)
 				{
 					pzLocked = true;
 					sendIcons();
