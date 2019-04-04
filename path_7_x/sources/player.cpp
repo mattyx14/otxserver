@@ -4100,8 +4100,8 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		return true;
 
 	Player* targetPlayer = target->getPlayer();
-	if(!targetPlayer || Combat::isInPvpZone(this, targetPlayer)
-		|| isPartner(targetPlayer) || isAlly(targetPlayer))
+	if(!Combat::isInPvpZone(this, targetPlayer) && hasAttacked(targetPlayer)
+		&& !targetPlayer->hasAttacked(this) && targetPlayer != this)
 		return true;
 
 	War_t enemy;
@@ -4289,7 +4289,7 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 		if(g_game.getWorldType(this, player) != WORLDTYPE_OPEN)
 			return SKULL_NONE;
 
-		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this))
+		if(player->hasAttacked(this))
 			return SKULL_YELLOW;
 
 		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
