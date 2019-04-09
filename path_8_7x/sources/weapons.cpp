@@ -641,7 +641,7 @@ int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, cons
 	if(maxDamage)
 		return -ret;
 
-	return -random_range(0, ret, DISTRO_NORMAL);
+	return -random_range((int32_t)std::round(ret/3.75f), (int32_t)std::round(ret*0.85), DISTRO_NORMAL);
 }
 
 int32_t WeaponMelee::getWeaponElementDamage(const Player* player, const Item* item, bool maxDamage/* = false*/) const
@@ -908,15 +908,8 @@ int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* ta
 		return -ret;
 
 	int32_t minValue = 0;
-	if(target)
-	{
-		if(target->getPlayer())
-			minValue = (int32_t)std::ceil(player->getLevel() * 0.1);
-		else
-			minValue = (int32_t)std::ceil(player->getLevel() * 0.2);
-	}
 
-	return -random_range(minValue, ret, DISTRO_NORMAL);
+	return -random_range((int32_t)std::round(ret/3.75f), (int32_t)std::round(ret*0.85), DISTRO_NORMAL);
 }
 
 bool WeaponDistance::getSkillType(const Player* player, const Item*,

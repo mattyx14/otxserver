@@ -23,6 +23,7 @@
 #include <boost/filesystem.hpp>
 #include <openssl/sha.h>
 #include <openssl/md5.h>
+#include <random>
 
 #include "vocation.h"
 #include "configmanager.h"
@@ -439,54 +440,59 @@ uint32_t rand24b()
 	return ((rand() << 12) ^ rand()) & 0xFFFFFF;
 }
 
-float box_muller(float m, float s)
+std::mt19937& getRandomGenerator()
 {
-	// normal random variate generator
-	// mean m, standard deviation s
-	float x1, x2, w, y1;
-	static float y2;
+	static std::random_device rd;
+	static std::mt19937 generator(rd());
+	return generator;
+}
 
-	static bool useLast = false;
-	if(useLast) // use value from previous call
-	{
-		y1 = y2;
-		useLast = false;
-		return (m + y1 * s);
+int32_t normal_random(int32_t minNumber, int32_t maxNumber)
+{
+	static std::normal_distribution<float> normalRand(0.45f, 0.22f);
+
+	if (minNumber == maxNumber) {
+		return minNumber;
+	}
+	else if (minNumber > maxNumber) {
+		std::swap(minNumber, maxNumber);
 	}
 
-	do
-	{
-		double r1 = (((float)(rand()) / RAND_MAX));
-		double r2 = (((float)(rand()) / RAND_MAX));
-
-		x1 = 2.0 * r1 - 1.0;
-		x2 = 2.0 * r2 - 1.0;
-		w = x1 * x1 + x2 * x2;
+	int32_t increment;
+	const int32_t diff = maxNumber - minNumber;
+	const float v = normalRand(getRandomGenerator());
+	if (v < 0.0) {
+		increment = diff / 2;
 	}
-	while(w >= 1.0);
-	w = sqrt((-2.0 * log(w)) / w);
+	else if (v > 1.0) {
+		increment = (diff + 1) / 2;
+	}
+	else {
+		increment = round(v * diff);
+	}
+	return minNumber + increment;
+}
 
-	y1 = x1 * w;
-	y2 = x2 * w;
-
-	useLast = true;
-	return (m + y1 * s);
+int32_t uniform_random(int32_t minNumber, int32_t maxNumber)
+{
+	static std::uniform_int_distribution<int32_t> uniformRand;
+	if (minNumber == maxNumber) {
+		return minNumber;
+	}
+	else if (minNumber > maxNumber) {
+		std::swap(minNumber, maxNumber);
+	}
+	return uniformRand(getRandomGenerator(), std::uniform_int_distribution<int32_t>::param_type(minNumber, maxNumber));
 }
 
 int32_t random_range(int32_t lowestNumber, int32_t highestNumber, DistributionType_t type /*= DISTRO_UNIFORM*/)
 {
-	if(highestNumber == lowestNumber)
-		return lowestNumber;
-
-	if(lowestNumber > highestNumber)
-		std::swap(lowestNumber, highestNumber);
-
 	switch(type)
 	{
 		case DISTRO_UNIFORM:
-			return (lowestNumber + ((int32_t)rand24b() % (highestNumber - lowestNumber + 1)));
+			return uniform_random(lowestNumber, highestNumber);
 		case DISTRO_NORMAL:
-			return (lowestNumber + int32_t(float(highestNumber - lowestNumber) * (float)std::min((float)1, std::max((float)0, box_muller(0.5, 0.25)))));
+			return normal_random(lowestNumber, highestNumber);
 		default:
 			break;
 	}
