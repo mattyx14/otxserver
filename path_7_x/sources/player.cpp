@@ -2915,7 +2915,7 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 	{
 		//need an exchange with source?
 		Item* tmpItem = NULL;
-		if((tmpItem = getInventoryItem((slots_t)index)) && (!tmpItem->isStackable() || tmpItem->getID() != item->getID()))
+		if((tmpItem = getInventoryItem((slots_t)index)) && (!tmpItem->isStackable() || tmpItem->isRune() || tmpItem->getID() != item->getID()))
 			return RET_NEEDEXCHANGE;
 
 		if(!hasCapacity(item, count)) //check if enough capacity
@@ -3007,7 +3007,7 @@ ReturnValue Player::__queryMaxCount(int32_t index, const Thing* thing, uint32_t 
 
 		if(destItem)
 		{
-			if(destItem->isStackable() && item->getID() == destItem->getID() && destItem->getItemCount() < 100)
+			if(!destItem->isRune() && destItem->isStackable() && item->getID() == destItem->getID() && destItem->getItemCount() < 100)
 				maxQueryCount = 100 - destItem->getItemCount();
 			else
 				maxQueryCount = 0;
@@ -3963,10 +3963,7 @@ void Player::onTarget(Creature* target)
 				{
 					addAttacked(targetPlayer);
 					if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
-					{
 						setSkull(SKULL_WHITE);
-						g_game.updateCreatureSkull(this);
-					}
 				}
 				if(getSkull() == SKULL_NONE)
 					targetPlayer->sendCreatureSkull(this);
@@ -4100,8 +4097,8 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		return true;
 
 	Player* targetPlayer = target->getPlayer();
-	if(!Combat::isInPvpZone(this, targetPlayer) && hasAttacked(targetPlayer)
-		&& !targetPlayer->hasAttacked(this) && targetPlayer != this)
+	if(!targetPlayer || Combat::isInPvpZone(this, targetPlayer)
+		|| isPartner(targetPlayer) || isAlly(targetPlayer))
 		return true;
 
 	War_t enemy;

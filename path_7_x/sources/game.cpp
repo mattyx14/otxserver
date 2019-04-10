@@ -1555,7 +1555,7 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 	if(deny)
 		return false;
 
-	ReturnValue ret = internalMoveItem(player, fromCylinder, toCylinder, toIndex, item, count, NULL);
+	ReturnValue ret = internalMoveItem(player, fromCylinder, toCylinder, toIndex, item, item->isRune() ? item->getItemCount() : count, NULL);
 	if(ret != RET_NOERROR)
 	{
 		player->sendCancelMessage(ret);
@@ -1655,9 +1655,16 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	if(retMaxCount != RET_NOERROR && !maxQueryCount)
 		return ret;
 
-	uint32_t m = maxQueryCount;
+	uint32_t m;
 	if(item->isStackable())
-		m = std::min((uint32_t)count, m);
+	{
+		if(item->isRune())
+			m = std::min<uint32_t>(item->getItemCount(), maxQueryCount);
+		else
+			m = std::min<uint32_t>(count, maxQueryCount);
+	}
+	else
+		m = maxQueryCount;
 
 	Item* moveItem = item;
 	//check if we can remove this item
@@ -1688,7 +1695,7 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	if(item->isStackable())
 	{
 		uint8_t n = 0;
-		if(toItem && toItem->getID() == item->getID())
+		if(!item->isRune() && toItem && toItem->getID() == item->getID())
 		{
 			n = std::min((uint32_t)100 - toItem->getItemCount(), m);
 			toCylinder->__updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
@@ -1930,7 +1937,7 @@ ReturnValue Game::internalAddItem(Creature* actor, Cylinder* toCylinder, Item* i
 		return RET_NOERROR;
 
 	Item* toItem = *stackItem;
-	if(item->isStackable() && toItem)
+	if(item->isStackable() && !item->isRune() && toItem)
 	{
 		uint32_t m = std::min((uint32_t)item->getItemCount(), maxQueryCount), n = 0;
 		if(toItem->getID() == item->getID())
