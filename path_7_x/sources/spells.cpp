@@ -968,7 +968,7 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 
 	Creature* targetCreature = tile->getTopCreature();
 	
-	if (needTarget && targetCreature == player) {
+	if (needTarget && targetCreature == player && isAggressive) {
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;

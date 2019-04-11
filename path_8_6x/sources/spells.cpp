@@ -1009,7 +1009,7 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 	
-	if(blockingCreature && targetCreature)
+	if(blockingCreature && targetCreature && isAggressive)
 	{
 		player->sendCancelMessage(RET_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
