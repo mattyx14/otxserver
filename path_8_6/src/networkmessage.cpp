@@ -24,6 +24,13 @@
 #include "container.h"
 #include "creature.h"
 
+int32_t NetworkMessage::decodeHeader()
+{
+	int32_t newSize = static_cast<int32_t>(buffer[0] | buffer[1] << 8);
+	info.length = newSize;
+	return info.length;
+}
+
 std::string NetworkMessage::getString(uint16_t stringLen/* = 0*/)
 {
 	if (stringLen == 0) {
