@@ -875,39 +875,38 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		}
 		else if(it.weaponType != WEAPON_AMMO && it.weaponType != WEAPON_WAND)
 		{
-			if(it.attack || it.extraAttack || (item && (item->getAttack() || item->getExtraAttack())))
-			{
-				begin = false;
-				s << " (Atk:";
-				if(it.hasAbilities() && it.abilities->elementType != COMBAT_NONE)
-				{
-					s << std::max((int32_t)0, int32_t((item ? item->getAttack() : it.attack) - it.abilities->elementDamage));
-					if(it.extraAttack || (item && item->getExtraAttack()))
-						s << " " << std::showpos << int32_t(item ? item->getExtraAttack() : it.extraAttack) << std::noshowpos;
+			int32_t attack, defense, extraDefense;
+			if (item) {
+				attack = item->getAttack();
+				defense = item->getDefense();
+				extraDefense = item->getExtraDefense();
+			} else {
+				attack = it.attack;
+				defense = it.defense;
+				extraDefense = it.extraDefense;
+			}
 
-					s << " physical + " << it.abilities->elementDamage << " " << getCombatName(it.abilities->elementType);
-				}
-				else
-				{
-					s << int32_t(item ? item->getAttack() : it.attack);
-					if(it.extraAttack || (item && item->getExtraAttack()))
-						s << " " << std::showpos << int32_t(item ? item->getExtraAttack() : it.extraAttack) << std::noshowpos;
+			if (attack != 0) {
+				begin = false;
+				s << " (Atk:" << attack;
+
+				if (it.abilities && it.abilities->elementType != COMBAT_NONE && it.abilities->elementDamage != 0) {
+					s << " physical + " << it.abilities->elementDamage << ' ' << getCombatName(it.abilities->elementType);
 				}
 			}
 
-			if(it.defense || it.extraDefense || (item && (item->getDefense() || item->getExtraDefense())))
-			{
-				if(begin)
-				{
+			if (defense != 0 || extraDefense != 0) {
+				if (begin) {
 					begin = false;
 					s << " (";
-				}
-				else
+				} else {
 					s << ", ";
+				}
 
-				s << "Def:" << int32_t(item ? item->getDefense() : it.defense);
-				if(it.extraDefense || (item && item->getExtraDefense()))
-					s << " " << std::showpos << int32_t(item ? item->getExtraDefense() : it.extraDefense) << std::noshowpos;
+				s << "Def:" << defense;
+				if (extraDefense != 0) {
+					s << ' ' << std::showpos << extraDefense << std::noshowpos;
+				}
 			}
 		}
 
