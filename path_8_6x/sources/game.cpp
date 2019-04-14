@@ -4256,7 +4256,7 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		std::ostringstream ss;
 		ss << "You are still muted for " << muteTime << " seconds.";
 		player->sendTextMessage(MSG_STATUS_SMALL, ss.str());
-		return;
+		return false;
 	}
 
 	ReturnValue ret = g_spells->onPlayerSay(player, text);
