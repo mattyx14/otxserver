@@ -77,6 +77,7 @@
     <ClInclude Include="..\protocolold.h" />
     <ClInclude Include="..\quests.h" />
     <ClInclude Include="..\raids.h" />
+    <ClInclude Include="..\rsa.h" />
     <ClInclude Include="..\scheduler.h" />
     <ClInclude Include="..\scriptmanager.h" />
     <ClInclude Include="..\server.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="..\protocolold.cpp" />
     <ClCompile Include="..\quests.cpp" />
     <ClCompile Include="..\raids.cpp" />
+    <ClCompile Include="..\rsa.cpp" />
     <ClCompile Include="..\scheduler.cpp" />
     <ClCompile Include="..\scriptmanager.cpp" />
     <ClCompile Include="..\server.cpp" />

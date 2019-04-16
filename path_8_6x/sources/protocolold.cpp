@@ -20,6 +20,7 @@
 #include "outputmessage.h"
 #include "connection.h"
 #include "game.h"
+#include "rsa.h"
 
 extern Game g_game;
 

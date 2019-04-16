@@ -121,6 +121,8 @@ class NetworkMessage
 		virtual void clearTrack() {}
 
 #endif
+
+		uint8_t m_buffer[NETWORK_MAX_SIZE];
 	protected:
 		// used to check available space while writing
 		inline bool hasSpace(int32_t size) const {return (size + m_position < NETWORK_BODY_SIZE);}
@@ -130,7 +132,6 @@ class NetworkMessage
 		uint16_t m_position;
 
 		// message data
-		uint8_t m_buffer[NETWORK_MAX_SIZE];
 
 		// security
 		bool m_overrun;
