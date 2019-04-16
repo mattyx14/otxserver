@@ -5022,15 +5022,32 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 
 				if(textColor < COLOR_NONE && magicEffect < MAGIC_EFFECT_NONE)
 				{
-					addMagicEffect(list, targetPos, magicEffect);
 					SpectatorVec textList;
-					for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-					{
-						if(!(*it)->getPlayer())
-							continue;
 
-						if((*it) != attacker && (*it) != target && (*it)->getPosition().z == target->getPosition().z)
-							textList.push_back(*it);
+					if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
+					{ 
+						const SpectatorVec& newList = getSpectators(targetPos);
+						addMagicEffect(newList, targetPos, magicEffect);
+						for (SpectatorVec::const_iterator it = newList.begin(); it != newList.end(); ++it)
+						{
+							if (!(*it)->getPlayer())
+								continue;
+
+							if ((*it) != attacker && (*it) != target && (*it)->getPosition().z == target->getPosition().z)
+								textList.push_back(*it);
+						}
+					}
+					else
+					{
+						addMagicEffect(list, targetPos, magicEffect);
+						for (SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
+						{
+							if (!(*it)->getPlayer())
+								continue;
+
+							if ((*it) != attacker && (*it) != target && (*it)->getPosition().z == target->getPosition().z)
+								textList.push_back(*it);
+						}
 					}
 
 					MessageDetails* details = new MessageDetails(damage, textColor);
@@ -5038,7 +5055,11 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 					{
 						getCombatDetails(params.element.type, magicEffect, textColor);
 						details->sub = new MessageDetails(elementDamage, textColor);
-						addMagicEffect(list, targetPos, magicEffect);
+
+						if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
+							addMagicEffect(getSpectators(targetPos), targetPos, magicEffect);
+						else
+							addMagicEffect(list, targetPos, magicEffect);
 					}
 
 					std::ostringstream ss;

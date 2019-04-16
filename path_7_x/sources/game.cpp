@@ -4913,17 +4913,31 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 				if(textColor < COLOR_NONE && magicEffect < MAGIC_EFFECT_NONE)
 				{
 					char buffer[20];
-					addMagicEffect(list, targetPos, magicEffect);
+					
+						if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
+							addMagicEffect(getSpectators(targetPos), targetPos, magicEffect);
+						else
+							addMagicEffect(list, targetPos, magicEffect);
+						
 					if(elementDamage)
 					{
 						sprintf(buffer, "%d+%d", damage, elementDamage);
 						getCombatDetails(params.element.type, magicEffect, textColor);
-						addMagicEffect(list, targetPos, magicEffect);
+						
+						if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
+							addMagicEffect(getSpectators(targetPos), targetPos, magicEffect);
+						else
+							addMagicEffect(list, targetPos, magicEffect);
+						
 					}
 					else
 						sprintf(buffer, "%d", damage);
-		
-					addAnimatedText(list, targetPos, textColor, buffer);
+					
+						if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
+							addAnimatedText(getSpectators(targetPos), targetPos, textColor, buffer);
+						else
+							addAnimatedText(list, targetPos, textColor, buffer);
+						
 					std::stringstream ss;
 					uint16_t totalDamage = damage + elementDamage;
 					Player* player = NULL;
