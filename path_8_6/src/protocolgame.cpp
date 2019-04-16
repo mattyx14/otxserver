@@ -372,7 +372,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 	uint8_t recvbyte = msg.getByte();
 
 	//a dead player can not performs actions
-	if (!player->isRemoved() && recvbyte != 0x14) {
+	if (player->isRemoved() && recvbyte != 0x14) {
 		return;
 	}
 
