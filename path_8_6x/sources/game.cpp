@@ -5031,6 +5031,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 			if(damage > 0)
 			{
 				bool deny = false;
+				Position creaturePos = target->getPosition();
 				CreatureEventList statsChangeEvents = target->getCreatureEvents(CREATURE_EVENT_STATSCHANGE);
 				for(CreatureEventList::iterator it = statsChangeEvents.begin(); it != statsChangeEvents.end(); ++it)
 				{
@@ -5047,8 +5048,12 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 
 				Color_t textColor = COLOR_NONE;
 				MagicEffect_t magicEffect = MAGIC_EFFECT_NONE;
-				const SpectatorVec& list = getSpectators(targetPos); //monster can be teleported/moved on statschange, a new list must be created
-				addCreatureHealth(list, target);
+				
+				if (target->getPosition() != creaturePos)// The target was teleported/moved on statschange, a new spectator list must be created
+					addCreatureHealth(getSpectators(targetPos), target);
+				else	
+					addCreatureHealth(list, target);
+				
 				if(params.combatType == COMBAT_PHYSICALDAMAGE)
 				{
 					Item* splash = NULL;
