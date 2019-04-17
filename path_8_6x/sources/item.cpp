@@ -933,10 +933,12 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 			{
 				begin = false;
 				s << " (";
-			}
-			else
-				s << ", ";
+				} else {
+					s << ", ";
+				}
+
 				s << "Crit Chance:" << std::showpos << int32_t(item ? item->getCriticalHitChance() : it.criticalHitChance) << "%"<< std::noshowpos;
+			}
 		}
 
 		if(it.attackSpeed || (item && item->getAttackSpeed()))
