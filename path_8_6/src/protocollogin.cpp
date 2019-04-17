@@ -49,9 +49,11 @@ void ProtocolLogin::getCharacterList(const std::string& accountName, const std::
 {
 	uint32_t serverIp = serverIPs[0].first;
 	for (uint32_t i = 0; i < serverIPs.size(); i++) {
-		if ((serverIPs[i].first & serverIPs[i].second) == (getConnection()->getIP() & serverIPs[i].second)) {
-			serverIp = serverIPs[i].first;
-			break;
+		if (getConnection()) {
+			if ((serverIPs[i].first & serverIPs[i].second) == (getConnection()->getIP() & serverIPs[i].second)) {
+				serverIp = serverIPs[i].first;
+				break;
+			}
 		}
 	}
 
