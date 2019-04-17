@@ -81,12 +81,12 @@ bool Weapons::loadDefaults()
 					break;
 				}
 
-				case WEAPON_DIST:
-					if(it->ammoType != AMMO_NONE)
-						break;
-
 				case WEAPON_AMMO:
+				case WEAPON_DIST:
 				{
+					if(it->weaponType == WEAPON_DIST && it->ammoType != AMMO_NONE)
+						continue;
+
 					if(WeaponDistance* weapon = new WeaponDistance(&m_interface))
 					{
 						weapon->configureWeapon(*it);
@@ -677,7 +677,7 @@ bool WeaponDistance::configureWeapon(const ItemType& it)
 	else //one-handed is set to 75%
 		maxHitChance = 75;
 
-	if(it.hitChance > 0)
+	if(it.hitChance >= 0)
 		hitChance = it.hitChance;
 
 	if(it.maxHitChance > 0)
@@ -906,8 +906,6 @@ int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* ta
 	int32_t ret = (int32_t)std::floor(maxValue);
 	if(maxDamage)
 		return -ret;
-
-	int32_t minValue = 0;
 
 	return -random_range((int32_t)std::round(ret/3.75f), (int32_t)std::round(ret*0.85), DISTRO_NORMAL);
 }
