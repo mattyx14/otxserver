@@ -5127,9 +5127,6 @@ void Player::manageAccount(const std::string &text)
 						talkState[12] = true;
 					}
 				}
-
-				if(msg.str().length() == NULL)
-					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
 			{
