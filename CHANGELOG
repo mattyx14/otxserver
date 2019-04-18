@@ -73,14 +73,19 @@
 	- Fix infinite healing on monsters (Matheus Matias)
 	- Fix Fixes Cast/Live problem (Matheus Matias)
 	- Fix stackItemsTrade
+	- Fix outfitAttributes (Matheus Matias)
+	- Fix COMBAT_PARAM_DISPEL no work on 7.x
+	- Fix runeEffects (Matheus Matias)
 	- Fix #75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
 		#102, #104, #194, #210, #212, #286, #332, #337(pick), #347,
 		#383, #386, #385(Matheus Matias), #388(KOLISAO), #390, #402(Matheus Matias), #403,
 		#408(Matheus Matias), #410(Matheus Matias), #411(Matheus Matias), #416(Matheus Matias),
 		#421, #424(Matheus Matias), #428(Matheus Matias), #429(Matheus Matias), #435(Matheus Matias),
 		#450(WeslleyKiyo), #454(Matheus Matias), #457(Matheus Matias), #461(Matheus Matias), #468(Felipe21),
-		#469(Matheus Matias), #473(matheusjp2), #476(Matheus Matias), #477(Matheus Matias), #481(Matheus Matias)
-		#482
+		#469(Matheus Matias), #473(matheusjp2), #476(Matheus Matias), #477(Matheus Matias), #481(Matheus Matias),
+		#482, #495, #502(Matheus Matias), #505(Matheus Matias), #509(Matheus Matias), #514(Matheus Matias),
+		#519(Matheus Matias), #525(Matheus Matias), #526(Matheus Matias), #527(Matheus Matias), #530, #533,
+		#538, #539(Matheus Matias), #542(Matheus Matias), #550(Matheus Matias), #551(Matheus Matias)
 	- Optimize code fixes
 	- Optimize code Connection and SQL Services // Security
 	- Optimize NPCLibs
@@ -88,14 +93,18 @@
 		This should remove lagspikes when you start the server(cpu consumption greatly reduced),
 		it should be more noticeable on big maps.
 	- Remove GUI interface
+	- Remove RSA-OpenSSL and use standard mod
 	- Update statusOnline 0.0.0.0 no counter
 	- Update items.xml (base OTX 3 - Series)
+	- Update potions.lua
+	- Update mutedCode on OTX2 (base OTX 3 - Series) - (Matheus Matias).
 
 	Note:
 	* It is recommended to update all your data files.
 		Because if you do not use the data as they are you will have stability problems.
 	* The server load/save/clean more fast ...
 		The server is more stable and secure, even with a large database.
+	* Decrease CPU usage: map and/or spectators should be a lot faster now (Matheus Matias).
 ]
 
 [ OTX Server 2.6 :: Version "SCARETALE"
