@@ -5036,7 +5036,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 				}
 				else
 					addCreatureHealth(list, target);
-				
+
 				if(params.combatType == COMBAT_PHYSICALDAMAGE)
 				{
 					Item* splash = NULL;
