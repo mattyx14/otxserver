@@ -4171,8 +4171,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 			return internalCreatureSay(player, MSG_SPEAK_SAY, text, false, NULL, NULL, statementId);
 		}
-		case MSG_NPC_TO:
-			return playerSpeakToNpc(player, text);
 		case MSG_GAMEMASTER_BROADCAST:
 			return playerBroadcastMessage(player, MSG_GAMEMASTER_BROADCAST, text, statementId);
 		case MSG_RVR_CHANNEL:
