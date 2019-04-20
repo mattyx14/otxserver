@@ -71,7 +71,11 @@ class AccessList
 		void getList(std::string& _list) const;
 
 	private:
+		#if BOOST_VERSION >= 016500
+		typedef boost::unordered_set<uint32_t> PlayerList;
+		#else
 		typedef std::tr1::unordered_set<uint32_t> PlayerList;
+		#endif
 		typedef std::list<std::pair<uint32_t, int32_t> > GuildList;
 		typedef std::list<std::string> ExpressionList;
 		typedef std::list<std::pair<boost::regex, bool> > RegexList;
