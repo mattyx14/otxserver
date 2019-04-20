@@ -36,11 +36,7 @@
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/algorithm/string/predicate.hpp>
-#if BOOST_VERSION >= 016500
-#include <boost/unordered_set.hpp>
-#else
-#include <boost/tr1/unordered_set.hpp>
-#endif
+
 
 #include <cstddef>
 #include <cstdlib>

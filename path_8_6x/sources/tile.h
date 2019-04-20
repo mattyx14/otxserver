@@ -18,11 +18,7 @@
 #ifndef __TILE__
 #define __TILE__
 #include <boost/shared_ptr.hpp>
-#if BOOST_VERSION >= 016500
-#include <boost/unordered_set.hpp>
-#else
-#include <boost/tr1/unordered_set.hpp>
-#endif
+#include <unordered_set>
 
 #include "cylinder.h"
 #include "item.h"

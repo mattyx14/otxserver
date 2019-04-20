@@ -18,11 +18,6 @@
 #ifndef __GAME__
 #define __GAME__
 #include "otsystem.h"
-#if BOOST_VERSION >= 016500
-#include <boost/unordered_map.hpp>
-#else
-#include <boost/tr1/unordered_map.hpp>
-#endif
 
 #include "enums.h"
 #include "templates.h"
