@@ -828,9 +828,6 @@ void Monster::doAttacking(uint32_t interval)
 			extraMeleeAttack = true;
 	}
 
-	if(updateLook)
-		updateLookDirection();
-
 	if(resetTicks)
 		attackTicks = 0;
 }
@@ -1418,53 +1415,82 @@ bool Monster::getCombatValues(int32_t& min, int32_t& max)
 void Monster::updateLookDirection()
 {
 	Direction newDir = getDirection();
-	if(attackedCreature)
+	if (attackedCreature)
 	{
 		const Position& pos = getPosition();
 		const Position& attackedCreaturePos = attackedCreature->getPosition();
 
-		int32_t dx = attackedCreaturePos.x - pos.x, dy = attackedCreaturePos.y - pos.y;
-		if(std::abs(dx) > std::abs(dy))
-		{
+		int_fast32_t offsetx = Position::getOffsetX(attackedCreaturePos, pos);
+		int_fast32_t offsety = Position::getOffsetY(attackedCreaturePos, pos);
+
+		int32_t dx = std::abs(offsetx);
+		int32_t dy = std::abs(offsety);
+
+		if (dx > dy) {
 			//look EAST/WEST
-			if(dx < 0)
+			if (offsetx < 0) {
 				newDir = WEST;
-			else
+			}
+			else {
 				newDir = EAST;
+			}
 		}
-		else if(std::abs(dx) < std::abs(dy))
-		{
+		else if (dx < dy) {
 			//look NORTH/SOUTH
-			if(dy < 0)
+			if (offsety < 0) {
 				newDir = NORTH;
-			else
+			}
+			else {
 				newDir = SOUTH;
+			}
 		}
-		else if(dx < 0 && dy < 0)
-		{
-			if(getDirection() == SOUTH)
-				newDir = WEST;
-			else if(getDirection() == EAST)
-				newDir = NORTH;
+		else {
+			Direction dir = getDirection();
+			if (offsetx < 0 && offsety < 0) {
+				if (dir == SOUTH) {
+					newDir = WEST;
+				}
+				else if (dir == NORTH) {
+					newDir = WEST;
+				}
+				else if (dir == EAST) {
+					newDir = WEST;
+				}
+			}
+			else if (offsetx < 0 && offsety > 0) {
+				if (dir == NORTH) {
+					newDir = WEST;
+				}
+				else if (dir == SOUTH) {
+					newDir = WEST;
+				}
+				else if (dir == EAST) {
+					newDir = WEST;
+				}
+			}
+			else if (offsetx > 0 && offsety < 0) {
+				if (dir == SOUTH) {
+					newDir = EAST;
+				}
+				else if (dir == NORTH) {
+					newDir = EAST;
+				}
+				else if (dir == WEST) {
+					newDir = EAST;
+				}
+			}
+			else {
+				if (dir == NORTH) {
+					newDir = EAST;
+				}
+				else if (dir == SOUTH) {
+					newDir = EAST;
+				}
+				else if (dir == WEST) {
+					newDir = EAST;
+				}
+			}
 		}
-		else if(dx < 0 && dy > 0)
-		{
-			if(getDirection() == NORTH)
-				newDir = WEST;
-			else if(getDirection() == EAST)
-				newDir = SOUTH;
-		}
-		else if(dx > 0 && dy < 0)
-		{
-			if(getDirection() == SOUTH)
-				newDir = EAST;
-			else if(getDirection() == WEST)
-				newDir = NORTH;
-		}
-		else if(getDirection() == NORTH)
-			newDir = EAST;
-		else if(getDirection() == WEST)
-			newDir = SOUTH;
 	}
 
 	g_game.internalCreatureTurn(this, newDir);

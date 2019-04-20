@@ -63,6 +63,16 @@ class Position
 		{
 			return !(std::abs(float(p1.x - p2.x)) > r.x || std::abs(float(p1.y - p2.y)) > r.y || std::abs(float(p1.z - p2.z)) > r.z);
 		}
+		
+		static int_fast32_t getOffsetX(const Position& p1, const Position& p2) {
+			return p1.x - p2.x;
+		}
+		static int_fast32_t getOffsetY(const Position& p1, const Position& p2) {
+			return p1.y - p2.y;
+		}
+		static int_fast16_t getOffsetZ(const Position& p1, const Position& p2) {
+			return p1.z - p2.z;
+		}
 
 		Position(uint16_t _x, uint16_t _y, uint16_t _z): x(_x), y(_y), z(_z) {}
 		uint16_t x, y, z;
