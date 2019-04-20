@@ -3698,7 +3698,7 @@ int32_t LuaInterface::luaDoCreatureSay(lua_State* L)
 			return 1;
 		}
 
-		list.push_back(target);
+		list.insert(target);
 	}
 
 	if(params > 5)
@@ -3746,7 +3746,7 @@ int32_t LuaInterface::luaDoSendMagicEffect(lua_State* L)
 	if(lua_gettop(L) > 2)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint32_t type = popNumber(L);
@@ -3773,7 +3773,7 @@ int32_t LuaInterface::luaDoSendDistanceShoot(lua_State* L)
 	if(lua_gettop(L) > 3)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint32_t type = popNumber(L);
@@ -4460,7 +4460,7 @@ int32_t LuaInterface::luaDoSendCreatureSquare(lua_State* L)
 	if(lua_gettop(L) > 2)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint8_t color = popNumber(L);
@@ -4490,7 +4490,7 @@ int32_t LuaInterface::luaDoSendAnimatedText(lua_State* L)
 	if(lua_gettop(L) > 3)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint8_t color = popNumber(L);
@@ -10043,7 +10043,7 @@ int32_t LuaInterface::luaGetSpectators(lua_State* L)
 	popPosition(L, centerPos);
 
 	SpectatorVec list;
-	g_game.getSpectators(list, centerPos, false, multifloor, rangex, rangex, rangey, rangey);
+	g_game.getSpectators(list, centerPos, multifloor, false, rangex, rangex, rangey, rangey);
 	if(list.empty())
 	{
 		lua_pushnil(L);

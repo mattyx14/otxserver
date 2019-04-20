@@ -32,6 +32,7 @@
 
 #include "configmanager.h"
 #include "game.h"
+#include "rsa.h"
 
 extern ConfigManager g_config;
 extern Game g_game;

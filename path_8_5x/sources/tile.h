@@ -18,7 +18,7 @@
 #ifndef __TILE__
 #define __TILE__
 #include <boost/shared_ptr.hpp>
-#include <boost/tr1/unordered_set.hpp>
+#include <unordered_set>
 
 #include "cylinder.h"
 #include "item.h"
@@ -35,9 +35,9 @@ class House;
 class HouseTile;
 class QTreeLeafNode;
 
-typedef std::list<Creature*> SpectatorVec;
+typedef std::unordered_set<Creature*> SpectatorVec;
 typedef std::vector<Creature*> CreatureVector;
-typedef std::map<Position, boost::shared_ptr<SpectatorVec> > SpectatorCache;
+typedef std::map<Position, SpectatorVec> SpectatorCache;
 
 enum tileflags_t
 {

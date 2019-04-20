@@ -824,7 +824,7 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const CombatArea*
 	}
 
 	SpectatorVec list;
-	g_game.getSpectators(list, pos, false, true, maxX + Map::maxViewportX, maxX + Map::maxViewportX,
+	g_game.getSpectators(list, pos, true, true, maxX + Map::maxViewportX, maxX + Map::maxViewportX,
 		maxY + Map::maxViewportY, maxY + Map::maxViewportY);
 
 	Tile* tile = NULL;
@@ -1020,7 +1020,9 @@ void Combat::doCombatDefault(Creature* caster, Creature* target, const CombatPar
 	if(params.isAggressive && (caster == target || Combat::canDoCombat(caster, target, true) != RET_NOERROR))
 		return;
 
-	const SpectatorVec& list = g_game.getSpectators(target->getTile()->getPosition());
+	SpectatorVec list;
+	g_game.getSpectators(list, target->getPosition(), true, true);
+
 	CombatNullFunc(caster, target, params, NULL);
 
 	combatTileEffects(list, caster, target->getTile(), params);

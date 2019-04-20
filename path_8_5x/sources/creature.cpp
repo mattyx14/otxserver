@@ -1358,7 +1358,7 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 	const Position& targetPos = getPosition();
 
 	SpectatorVec list;
-	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
+	g_game.getSpectators(list, targetPos, false, true, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
 	std::ostringstream ss;
@@ -1371,7 +1371,7 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 			continue;
 
 		if((*it) != this)
-			textList.push_back(*it);
+			textList.insert(*it);
 	}
 
 	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);
@@ -1406,7 +1406,7 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 	const Position& targetPos = getPosition();
 
 	SpectatorVec list;
-	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
+	g_game.getSpectators(list, targetPos, false, true, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
 	std::ostringstream ss;
@@ -1419,7 +1419,7 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 			continue;
 
 		if((*it) != this)
-			textList.push_back(*it);
+			textList.insert(*it);
 	}
 
 	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);

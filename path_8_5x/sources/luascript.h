@@ -38,7 +38,7 @@ extern "C"
 	#endif
 }
 #endif
-#include <boost/tr1/unordered_map.hpp>
+
 
 #include "database.h"
 #include "position.h"

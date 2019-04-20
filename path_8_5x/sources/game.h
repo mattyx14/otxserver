@@ -18,7 +18,6 @@
 #ifndef __GAME__
 #define __GAME__
 #include "otsystem.h"
-#include <boost/tr1/unordered_map.hpp>
 
 #include "enums.h"
 #include "templates.h"
@@ -354,11 +353,18 @@ class Game
 		uint32_t getPlayersRecord() const {return playersRecord;}
 		void getWorldLightInfo(LightInfo& lightInfo);
 
-		void getSpectators(SpectatorVec& list, const Position& centerPos, bool checkforduplicate = false, bool multifloor = false,
+		void getSpectators(SpectatorVec& list, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
 			int32_t minRangeX = 0, int32_t maxRangeX = 0,
 			int32_t minRangeY = 0, int32_t maxRangeY = 0)
-			{map->getSpectators(list, centerPos, checkforduplicate, multifloor, minRangeX, maxRangeX, minRangeY, maxRangeY);}
-		const SpectatorVec& getSpectators(const Position& centerPos) {return map->getSpectators(centerPos);}
+		{
+			map->getSpectators(list, centerPos, multifloor, onlyPlayers, minRangeX, maxRangeX, minRangeY, maxRangeY);
+		}
+		SpectatorVec getSpectators(const Position& centerPos) {
+			SpectatorVec list;
+			map->getSpectators(list, centerPos, true, false);
+			return list;
+		}
+
 		void clearSpectatorCache() {if(map) map->clearSpectatorCache();}
 
 		ReturnValue internalMoveCreature(Creature* creature, Direction direction, uint32_t flags = 0);

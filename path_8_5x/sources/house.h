@@ -20,6 +20,16 @@
 #include "otsystem.h"
 #include <boost/regex.hpp>
 
+#if defined __GNUC__ && __GNUC__ >= 4
+#include <tr1/unordered_set>
+#else
+#if BOOST_VERSION >= 016500
+#include <boost/unordered_set.hpp>
+#else
+#include <boost/tr1/unordered_set.hpp>
+#endif
+#endif
+
 #include "position.h"
 #include "housetile.h"
 #include "player.h"
@@ -71,7 +81,7 @@ class AccessList
 		void getList(std::string& _list) const;
 
 	private:
-		typedef std::tr1::unordered_set<uint32_t> PlayerList;
+		typedef std::unordered_set<uint32_t> PlayerList;
 		typedef std::list<std::pair<uint32_t, int32_t> > GuildList;
 		typedef std::list<std::string> ExpressionList;
 		typedef std::list<std::pair<boost::regex, bool> > RegexList;

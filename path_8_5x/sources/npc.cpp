@@ -1331,7 +1331,9 @@ void Npc::onThink(uint32_t interval)
 	std::vector<Player*> list;
 	Player* tmpPlayer = NULL;
 
-	const SpectatorVec& tmpList = g_game.getSpectators(getPosition());
+	SpectatorVec tmpList;
+	g_game.getSpectators(tmpList, getPosition(), true, true);
+
 	if(tmpList.size()) //loop only if there's at least one spectator
 	{
 		for(SpectatorVec::const_iterator it = tmpList.begin(); it != tmpList.end(); ++it)

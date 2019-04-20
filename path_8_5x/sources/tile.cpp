@@ -472,9 +472,9 @@ void Tile::moveCreature(Creature* actor, Creature* creature, Cylinder* toCylinde
 	SpectatorVec list;
 	SpectatorVec::iterator it;
 
-	g_game.getSpectators(list, pos, false, true);
+	g_game.getSpectators(list, pos, true, false);
 	Position newPos = newTile->getPosition();
-	g_game.getSpectators(list, newPos, true, true);
+	g_game.getSpectators(list, newPos, true, false);
 
 	bool teleport = false;
 	if(forceTeleport || !newTile->ground || !Position::areInRange<1,1,0>(pos, newPos))
@@ -1581,14 +1581,11 @@ Thing* Tile::__getThing(uint32_t index) const
 void Tile::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
 	int32_t index, CylinderLink_t link/* = LINK_OWNER*/)
 {
-	const SpectatorVec& list = g_game.getSpectators(pos);
-	SpectatorVec::const_iterator it;
 
-	Player* tmpPlayer = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->postAddNotification(actor, thing, oldParent, index, LINK_NEAR);
+	SpectatorVec list;
+	g_game.getSpectators(list, pos, true, true);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->postAddNotification(actor, thing, oldParent, index, LINK_NEAR);
 	}
 
 	//add a reference to this item, it may be deleted after being added (mailbox for example)
@@ -1634,18 +1631,14 @@ void Tile::postAddNotification(Creature* actor, Thing* thing, const Cylinder* ol
 void Tile::postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent,
 	int32_t index, bool isCompleteRemoval, CylinderLink_t/* link = LINK_OWNER*/)
 {
-	const SpectatorVec& list = g_game.getSpectators(pos);
-	SpectatorVec::const_iterator it;
-	if(/*isCompleteRemoval && */thingCount > 8)
+	SpectatorVec list;
+	g_game.getSpectators(list, pos, true, true);
+	if (/*isCompleteRemoval && */thingCount > 8)
 		onUpdateTile();
 
-	Player* tmpPlayer = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->postRemoveNotification(actor, thing, newParent, index, isCompleteRemoval, LINK_NEAR);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->postRemoveNotification(actor, thing, newParent, index, isCompleteRemoval, LINK_NEAR);
 	}
-
 	//calling movement scripts
 	if(Creature* creature = thing->getCreature())
 	{

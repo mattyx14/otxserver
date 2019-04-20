@@ -201,7 +201,7 @@ void Container::onAddContainerItem(Item* item)
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
 	Player* player = NULL;
@@ -226,7 +226,7 @@ void Container::onUpdateContainerItem(uint32_t index, Item* oldItem, const ItemT
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
 	Player* player = NULL;
@@ -250,7 +250,7 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send change to client
 	Player* player = NULL;
