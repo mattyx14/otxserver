@@ -23,6 +23,9 @@
 #include <boost/utility.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
+static constexpr int32_t CONNECTION_WRITE_TIMEOUT = 30;
+static constexpr int32_t CONNECTION_READ_TIMEOUT = 30;
+
 class OutputMessage;
 typedef boost::shared_ptr<OutputMessage> OutputMessage_ptr;
 

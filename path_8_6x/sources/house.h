@@ -23,7 +23,11 @@
 #if defined __GNUC__ && __GNUC__ >= 4
 #include <tr1/unordered_set>
 #else
+#if BOOST_VERSION >= 016500
+#include <boost/unordered_set.hpp>
+#else
 #include <boost/tr1/unordered_set.hpp>
+#endif
 #endif
 
 #include "position.h"
