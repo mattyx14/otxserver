@@ -4771,7 +4771,6 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 			return false;
 
 		bool deny = false;
-		Position creaturePos = target->getPosition();
 		CreatureEventList statsChangeEvents = target->getCreatureEvents(CREATURE_EVENT_STATSCHANGE);
 		for(CreatureEventList::iterator it = statsChangeEvents.begin(); it != statsChangeEvents.end(); ++it)
 		{
@@ -4826,6 +4825,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 			damage = std::min(target->getHealth(), damage);
 			if(damage > 0)
 			{
+				Position creaturePos = target->getPosition();
 				bool deny = false;
 				CreatureEventList statsChangeEvents = target->getCreatureEvents(CREATURE_EVENT_STATSCHANGE);
 				for(CreatureEventList::iterator it = statsChangeEvents.begin(); it != statsChangeEvents.end(); ++it)
