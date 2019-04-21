@@ -335,9 +335,9 @@ class Player : public Creature, public Cylinder
 		virtual int32_t getThrowRange() const {return 1;}
 		virtual double getGainedExperience(Creature* attacker) const;
 
-		uint32_t isMuted() const;
+		uint32_t isMuted(uint16_t channelId) const;
 		void addMessageBuffer();
-		void removeMessageBuffer();
+		void removeMessageBuffer(uint16_t channelId);
 
 		double getCapacity() const {return capacity;}
 		void setCapacity(double newCapacity) {capacity = newCapacity;}

@@ -4116,7 +4116,7 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 	player->setIdleTime(0);
 
-	uint32_t muteTime = player->isMuted();
+	uint32_t muteTime = player->isMuted(channelId);
 	if (muteTime > 0) {
 		std::ostringstream ss;
 		ss << "You are still muted for " << muteTime << " seconds.";
@@ -4139,7 +4139,7 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return true;
 
 	if (type != MSG_PRIVATE) {
-		player->removeMessageBuffer();
+		player->removeMessageBuffer(channelId);
 	}
 
 	if(ret == RET_NEEDEXCHANGE)
@@ -4265,7 +4265,7 @@ bool Game::playerSpeakToChannel(Player* player, MessageClasses type, const std::
 	if(player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERSPEAK))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a while to keep talking here.");
-		return false;
+		return true;
 	}
 
 	if(Condition* conditionchannel = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_PLAYERSPEAK))

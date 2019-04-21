@@ -2013,7 +2013,7 @@ void Player::onThink(uint32_t interval)
 		sendStats();
 }
 
-uint32_t Player::isMuted() const
+uint32_t Player::isMuted(uint16_t channelId) const
 {
 	if (hasFlag(PlayerFlag_CannotBeMuted)) {
 		return 0;
@@ -2021,7 +2021,7 @@ uint32_t Player::isMuted() const
 
 	int32_t muteTicks = 0;
 	for (Condition* condition : conditions) {
-		if (condition->getType() == CONDITION_MUTED && condition->getTicks() > muteTicks) {
+		if (condition->getType() == CONDITION_MUTED && condition->getTicks() > muteTicks && channelId == condition->getSubId()) {
 			muteTicks = condition->getTicks();
 		}
 	}
@@ -2030,13 +2030,13 @@ uint32_t Player::isMuted() const
 
 void Player::addMessageBuffer()
 {
-	if (!hasFlag(PlayerFlag_CannotBeMuted) && g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER) && messageBuffer)
+	if(!hasFlag(PlayerFlag_CannotBeMuted) && g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER) && messageBuffer)
 		messageBuffer--;
 }
 
-void Player::removeMessageBuffer()
+void Player::removeMessageBuffer(uint16_t channelId)
 {
-	if (hasFlag(PlayerFlag_CannotBeMuted))
+	if(hasFlag(PlayerFlag_CannotBeMuted))
 		return;
 
 	const int32_t maxMessageBuffer = g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER);
@@ -2050,7 +2050,7 @@ void Player::removeMessageBuffer()
 
 			uint32_t muteTime = 5 * muteCount * muteCount;
 			muteCountMap[guid] = muteCount + 1;
-			Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_MUTED, muteTime * 1000, 0);
+			Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_MUTED, muteTime * 1000, channelId);
 			addCondition(condition);
 
 			std::ostringstream ss;
