@@ -4131,7 +4131,7 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 	if(player->isAccountManager())
 	{
-		player->removeMessageBuffer();
+		player->removeMessageBuffer(channelId);
 		return internalCreatureSay(player, MSG_SPEAK_SAY, text, false);
 	}
 
