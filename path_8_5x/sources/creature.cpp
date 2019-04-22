@@ -1764,49 +1764,84 @@ FrozenPathingConditionCall::FrozenPathingConditionCall(const Position& _targetPo
 bool FrozenPathingConditionCall::isInRange(const Position& startPos, const Position& testPos,
 	const FindPathParams& fpp) const
 {
-	int32_t dxMin = ((fpp.fullPathSearch || (startPos.x - targetPos.x) <= 0) ? fpp.maxTargetDist : 0),
-	dxMax = ((fpp.fullPathSearch || (startPos.x - targetPos.x) >= 0) ? fpp.maxTargetDist : 0),
-	dyMin = ((fpp.fullPathSearch || (startPos.y - targetPos.y) <= 0) ? fpp.maxTargetDist : 0),
-	dyMax = ((fpp.fullPathSearch || (startPos.y - targetPos.y) >= 0) ? fpp.maxTargetDist : 0);
-	if(testPos.x > targetPos.x + dxMax || testPos.x < targetPos.x - dxMin)
-		return false;
+	if (fpp.fullPathSearch) {
+		if (testPos.x > targetPos.x + fpp.maxTargetDist) {
+			return false;
+		}
 
-	if(testPos.y > targetPos.y + dyMax || testPos.y < targetPos.y - dyMin)
-		return false;
+		if (testPos.x < targetPos.x - fpp.maxTargetDist) {
+			return false;
+		}
 
+		if (testPos.y > targetPos.y + fpp.maxTargetDist) {
+			return false;
+		}
+
+		if (testPos.y < targetPos.y - fpp.maxTargetDist) {
+			return false;
+		}
+	}
+	else {
+		int_fast32_t dx = Position::getOffsetX(startPos, targetPos);
+
+		int32_t dxMax = (dx >= 0 ? fpp.maxTargetDist : 0);
+		if (testPos.x > targetPos.x + dxMax) {
+			return false;
+		}
+
+		int32_t dxMin = (dx <= 0 ? fpp.maxTargetDist : 0);
+		if (testPos.x < targetPos.x - dxMin) {
+			return false;
+		}
+
+		int_fast32_t dy = Position::getOffsetY(startPos, targetPos);
+
+		int32_t dyMax = (dy >= 0 ? fpp.maxTargetDist : 0);
+		if (testPos.y > targetPos.y + dyMax) {
+			return false;
+		}
+
+		int32_t dyMin = (dy <= 0 ? fpp.maxTargetDist : 0);
+		if (testPos.y < targetPos.y - dyMin) {
+			return false;
+		}
+	}
 	return true;
 }
 
 bool FrozenPathingConditionCall::operator()(const Position& startPos, const Position& testPos,
 	const FindPathParams& fpp, int32_t& bestMatchDist) const
 {
-	if(!isInRange(startPos, testPos, fpp))
+	if (!isInRange(startPos, testPos, fpp)) {
 		return false;
+	}
 
-	if(fpp.clearSight && !g_game.isSightClear(testPos, targetPos, true))
+	if (fpp.clearSight && !g_game.isSightClear(testPos, targetPos, true)) {
 		return false;
+	}
 
-	int32_t testDist = std::max(std::abs(targetPos.x - testPos.x), std::abs(targetPos.y - testPos.y));
-	if(fpp.maxTargetDist == 1)
-		return (testDist >= fpp.minTargetDist && testDist <= fpp.maxTargetDist);
-
-	if(testDist <= fpp.maxTargetDist)
-	{
-		if(testDist < fpp.minTargetDist)
+	int32_t testDist = std::max<int32_t>(Position::getDistanceX(targetPos, testPos), Position::getDistanceY(targetPos, testPos));
+	if (fpp.maxTargetDist == 1) {
+		if (testDist < fpp.minTargetDist || testDist > fpp.maxTargetDist) {
 			return false;
+		}
 
-		if(testDist == fpp.maxTargetDist)
-		{
+		return true;
+	}
+	else if (testDist <= fpp.maxTargetDist) {
+		if (testDist < fpp.minTargetDist) {
+			return false;
+		}
+
+		if (testDist == fpp.maxTargetDist) {
 			bestMatchDist = 0;
 			return true;
 		}
-		else if(testDist > bestMatchDist)
-		{
+		else if (testDist > bestMatchDist) {
 			//not quite what we want, but the best so far
 			bestMatchDist = testDist;
 			return true;
 		}
 	}
-
 	return false;
 }

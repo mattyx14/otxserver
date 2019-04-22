@@ -375,7 +375,7 @@ void Map::getSpectatorsInternal(SpectatorVec& list, const Position& centerPos, i
 							continue;
 						}
 
-						int_fast16_t offsetZ = static_cast<int_fast16_t>(centerPos.z) - static_cast<int_fast16_t>(cpos.z);
+						int_fast16_t offsetZ = Position::getOffsetZ(centerPos, cpos);
 						if (cpos.y < (min_y + offsetZ) || cpos.y > (max_y + offsetZ)) {
 							continue;
 						}

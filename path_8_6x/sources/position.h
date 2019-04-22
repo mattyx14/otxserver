@@ -64,6 +64,7 @@ class Position
 			return !(std::abs(float(p1.x - p2.x)) > r.x || std::abs(float(p1.y - p2.y)) > r.y || std::abs(float(p1.z - p2.z)) > r.z);
 		}
 		
+		//--TFS 1.X METHODS--//
 		static int_fast32_t getOffsetX(const Position& p1, const Position& p2) {
 			return p1.x - p2.x;
 		}
@@ -73,6 +74,16 @@ class Position
 		static int_fast16_t getOffsetZ(const Position& p1, const Position& p2) {
 			return p1.z - p2.z;
 		}
+		static int32_t getDistanceX(const Position& p1, const Position& p2) {
+			return std::abs(Position::getOffsetX(p1, p2));
+		}
+		static int32_t getDistanceY(const Position& p1, const Position& p2) {
+			return std::abs(Position::getOffsetY(p1, p2));
+		}
+		static int16_t getDistanceZ(const Position& p1, const Position& p2) {
+			return std::abs(Position::getOffsetZ(p1, p2));
+		}
+		//--END OF TFS 1.X METHODS--//
 
 		Position(uint16_t _x, uint16_t _y, uint16_t _z): x(_x), y(_y), z(_z) {}
 		uint16_t x, y, z;
