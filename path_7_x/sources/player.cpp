@@ -1859,51 +1859,62 @@ void Player::onThink(uint32_t interval)
 		sendStats();
 }
 
-uint32_t Player::isMuted(uint16_t channelId) const
+bool Player::isMuted(uint16_t channelId, MessageClasses type, int32_t& time)
 {
-	if (hasFlag(PlayerFlag_CannotBeMuted)) {
-		return 0;
-	}
+	time = 0;
+	if (hasFlag(PlayerFlag_CannotBeMuted))
+		return false;
 
 	int32_t muteTicks = 0;
-	for (Condition* condition : conditions) {
-		if (condition->getType() == CONDITION_MUTED && condition->getTicks() > muteTicks && channelId == condition->getSubId()) {
-			muteTicks = condition->getTicks();
+	for (ConditionList::iterator it = conditions.begin(); it != conditions.end(); ++it)
+	{
+		if ((*it)->getType() == CONDITION_MUTED && (*it)->getSubId() == 0)
+		{
+			if ((*it)->getTicks() == -1)
+			{
+				time = -1;
+				break;
+			}
+
+			if ((*it)->getTicks() > muteTicks)
+				muteTicks = (*it)->getTicks();
 		}
 	}
-	return static_cast<uint32_t>(muteTicks) / 1000;
+
+	if (muteTicks)
+		time = (uint32_t)muteTicks / 1000;
+
+	return type != MSG_NPC_TO && (type != MSG_CHANNEL || (channelId != CHANNEL_GUILD && !g_chat.isPrivateChannel(channelId)));
 }
 
 void Player::addMessageBuffer()
 {
-	if(!hasFlag(PlayerFlag_CannotBeMuted) && g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER) && messageBuffer)
+	if (!hasFlag(PlayerFlag_CannotBeMuted) && g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER) && messageBuffer)
 		messageBuffer--;
 }
 
-void Player::removeMessageBuffer(uint16_t channelId)
+void Player::removeMessageBuffer()
 {
-	if(hasFlag(PlayerFlag_CannotBeMuted))
+	if (hasFlag(PlayerFlag_CannotBeMuted))
 		return;
 
-	const int32_t maxMessageBuffer = g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER);
-	if (maxMessageBuffer != 0 && messageBuffer <= maxMessageBuffer + 1) {
-		if (++messageBuffer > maxMessageBuffer) {
-			uint32_t muteCount = 1;
-			auto it = muteCountMap.find(guid);
-			if (it != muteCountMap.end()) {
-				muteCount = it->second;
-			}
+	int32_t maxBuffer = g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER);
+	if (!maxBuffer || messageBuffer > maxBuffer + 1 || ++messageBuffer <= maxBuffer)
+		return;
 
-			uint32_t muteTime = 5 * muteCount * muteCount;
-			muteCountMap[guid] = muteCount + 1;
-			Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_MUTED, muteTime * 1000, channelId);
-			addCondition(condition);
+	uint32_t muteCount = 1;
+	MuteCountMap::iterator it = muteCountMap.find(guid);
+	if (it != muteCountMap.end())
+		muteCount = it->second;
 
-			std::ostringstream ss;
-			ss << "You are muted for " << muteTime << " seconds.";
-			sendTextMessage(MSG_STATUS_SMALL, ss.str());
-		}
-	}
+	uint32_t muteTime = 5 * muteCount * muteCount;
+	muteCountMap[guid] = muteCount + 1;
+	if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_MUTED, muteTime * 1000))
+		addCondition(condition);
+
+	char buffer[50];
+	sprintf(buffer, "You are muted for %d seconds.", muteTime);
+	sendTextMessage(MSG_STATUS_SMALL, buffer);
 }
 
 double Player::getFreeCapacity() const

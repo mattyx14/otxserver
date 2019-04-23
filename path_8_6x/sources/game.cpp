@@ -4246,79 +4246,92 @@ bool Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type, const std::string& receiver, const std::string& text)
 {
 	Player* player = getPlayerByID(playerId);
-	if(!player || player->isRemoved())
+	if (!player || player->isRemoved())
 		return false;
 
 	player->setIdleTime(0);
 
-	uint32_t muteTime = player->isMuted(channelId);
-	if (muteTime > 0) {
-		std::ostringstream ss;
-		ss << "You are still muted for " << muteTime << " seconds.";
-		player->sendTextMessage(MSG_STATUS_SMALL, ss.str());
+	int32_t muted = 0;
+	bool mute = player->isMuted(channelId, type, muted);
+	if (muted && mute)
+	{
+		if (muted > 0)
+		{
+			char buffer[75];
+			sprintf(buffer, "You are still muted for %d seconds.", muted);
+			player->sendTextMessage(MSG_STATUS_SMALL, buffer);
+		}
+		else
+			player->sendTextMessage(MSG_STATUS_SMALL, "You are muted permanently.");
+
 		return false;
 	}
 
-	ReturnValue ret = g_spells->onPlayerSay(player, text);
-
-	if(ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE && !g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
-		return true;
-
-	if(player->isAccountManager())
+	if (player->isAccountManager())
 	{
-		player->removeMessageBuffer(channelId);
+		if (mute)
+			player->removeMessageBuffer();
+
 		return internalCreatureSay(player, MSG_SPEAK_SAY, text, false);
 	}
 
-	if(g_talkActions->onPlayerSay(player, type == MSG_SPEAK_SAY ? (unsigned)CHANNEL_DEFAULT : channelId, text, false))
+	if (g_talkActions->onPlayerSay(player, type == MSG_SPEAK_SAY ? (unsigned)CHANNEL_DEFAULT : channelId, text, false))
 		return true;
 
-	if (type != MSG_PRIVATE) {
-		player->removeMessageBuffer(channelId);
+	ReturnValue ret = RET_NOERROR;
+	if (!muted)
+	{
+		ret = g_spells->onPlayerSay(player, text);
+		if (ret == RET_NOERROR || (ret == RET_NEEDEXCHANGE &&
+			!g_config.getBool(ConfigManager::BUFFER_SPELL_FAILURE)))
+			return true;
 	}
 
-	if(ret == RET_NEEDEXCHANGE)
+	if (mute && type != MSG_NPC_TO)
+		player->removeMessageBuffer();
+
+	if (ret == RET_NEEDEXCHANGE)
 		return true;
 
 	uint32_t statementId = 0;
-	if(g_config.getBool(ConfigManager::SAVE_STATEMENT))
+	if (g_config.getBool(ConfigManager::SAVE_STATEMENT))
 		IOLoginData::getInstance()->playerStatement(player, channelId, text, statementId);
 
-	switch(type)
+	switch (type)
 	{
-		case MSG_SPEAK_SAY:
-			return internalCreatureSay(player, MSG_SPEAK_SAY, text, false, NULL, NULL, statementId);
-		case MSG_SPEAK_WHISPER:
-			return playerWhisper(player, text, statementId);
-		case MSG_SPEAK_YELL:
-			return playerYell(player, text, statementId);
-		case MSG_PRIVATE:
-		case MSG_GAMEMASTER_PRIVATE:
-		case MSG_RVR_ANSWER:
-			return playerSpeakTo(player, type, receiver, text, statementId);
-		case MSG_CHANNEL:
-		case MSG_CHANNEL_HIGHLIGHT:
-		case MSG_GAMEMASTER_CHANNEL:
-		case MSG_GAMEMASTER_ANONYMOUS:
-		{
-			if(playerSpeakToChannel(player, type, text, channelId, statementId))
-				return true;
+	case MSG_SPEAK_SAY:
+		return internalCreatureSay(player, MSG_SPEAK_SAY, text, false, NULL, NULL, statementId);
+	case MSG_SPEAK_WHISPER:
+		return playerWhisper(player, text, statementId);
+	case MSG_SPEAK_YELL:
+		return playerYell(player, text, statementId);
+	case MSG_PRIVATE:
+	case MSG_GAMEMASTER_PRIVATE:
+	case MSG_RVR_ANSWER:
+		return playerSpeakTo(player, type, receiver, text, statementId);
+	case MSG_CHANNEL:
+	case MSG_CHANNEL_HIGHLIGHT:
+	case MSG_GAMEMASTER_CHANNEL:
+	case MSG_GAMEMASTER_ANONYMOUS:
+	{
+		if (playerSpeakToChannel(player, type, text, channelId, statementId))
+			return true;
 
-			return internalCreatureSay(player, MSG_SPEAK_SAY, text, false, NULL, NULL, statementId);
-		}
-		case MSG_NPC_TO:
-			return playerSpeakToNpc(player, text);
-		case MSG_GAMEMASTER_BROADCAST:
-			return playerBroadcastMessage(player, MSG_GAMEMASTER_BROADCAST, text, statementId);
-		case MSG_RVR_CHANNEL:
-			return playerReportRuleViolation(player, text);
-			break;
-		case MSG_RVR_CONTINUE:
-			return playerContinueReport(player, text);
-			break;
+		return internalCreatureSay(player, MSG_SPEAK_SAY, text, false, NULL, NULL, statementId);
+	}
+	case MSG_NPC_TO:
+		return playerSpeakToNpc(player, text);
+	case MSG_GAMEMASTER_BROADCAST:
+		return playerBroadcastMessage(player, MSG_GAMEMASTER_BROADCAST, text, statementId);
+	case MSG_RVR_CHANNEL:
+		return playerReportRuleViolation(player, text);
+		break;
+	case MSG_RVR_CONTINUE:
+		return playerContinueReport(player, text);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	return false;
