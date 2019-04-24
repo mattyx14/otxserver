@@ -542,7 +542,9 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 		lastStepCost = 1;
 		if(!teleport)
 		{
-			if(std::abs(newPos.x - oldPos.x) >= 1 && std::abs(newPos.y - oldPos.y) >= 1)
+			if(oldPos.z != newPos.z)
+				lastStepCost = 2;
+			else if(std::abs(newPos.x - oldPos.x) >= 1 && std::abs(newPos.y - oldPos.y) >= 1)
 				lastStepCost = 3;
 		}
 		else
@@ -1655,7 +1657,7 @@ std::string Creature::getDescription(int32_t) const
 	return "a creature";
 }
 
-int32_t Creature::getStepDuration(Direction dir) const
+int64_t Creature::getStepDuration(Direction dir) const
 {
 	if(dir == NORTHWEST || dir == NORTHEAST || dir == SOUTHWEST || dir == SOUTHEAST)
 		return getStepDuration() << 1;
@@ -1663,7 +1665,7 @@ int32_t Creature::getStepDuration(Direction dir) const
 	return getStepDuration();
 }
 
-int32_t Creature::getStepDuration() const
+int64_t Creature::getStepDuration() const
 {
 	if(removed)
 		return 0;
@@ -1676,19 +1678,22 @@ int32_t Creature::getStepDuration() const
 	if(!tile || !tile->ground)
 		return 0;
 
-	return ((1000 * Item::items[tile->ground->getID()].speed) / stepSpeed) * lastStepCost;
+	return ((1000 * Item::items[tile->ground->getID()].speed) / stepSpeed);
 }
 
 int64_t Creature::getEventStepTicks(bool onlyDelay/* = false*/) const
 {
 	int64_t ret = getWalkDelay();
-	if(ret > 0)
-		return ret;
+	if(ret <= 0)
+	{
+		int64_t stepDuration = getStepDuration();
+		if(onlyDelay && stepDuration > 0)
+			ret = 1;
+		else
+			ret = stepDuration * lastStepCost;
+	}
 
-	if(!onlyDelay)
-		return getStepDuration();
-
-	return 1;
+	return ret;
 }
 
 void Creature::getCreatureLight(LightInfo& light) const
