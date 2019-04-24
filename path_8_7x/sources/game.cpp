@@ -4354,12 +4354,6 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 		return false;
 	}
 
-	if(!canSee)
-	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "A player with this name is not online.");
-		return false;
-	}
-
 	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
 	toPlayer->onCreatureSay(player, type, text);
 
