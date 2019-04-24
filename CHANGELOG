@@ -66,17 +66,18 @@
 	- Fix tileLimit/stackPosition
 	- Fix and update mods
 	- Fix console errors on 7.x (duplicate commands)
-	- Fix container error :: https://www.youtube.com/watch?v=mJ1mydn6TjA
+	- Fix container bug :: https://www.youtube.com/watch?v=mJ1mydn6TjA
 	- Fix display animated msg and console diplay errors (8.6-TFACE)
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
-	- Fix error on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
+	- Fix bug on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 	- Fix infinite healing on monsters (Matheus Matias)
 	- Fix Fixes Cast/Live problem (Matheus Matias)
 	- Fix stackItemsTrade
 	- Fix outfitAttributes (Matheus Matias)
 	- Fix COMBAT_PARAM_DISPEL no work on 7.x
 	- Fix runeEffects (Matheus Matias)
-	- Fix #75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
+	- Fix list issues from OTX 2 GitHub:
+		#75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
 		#102, #104, #194, #210, #212, #286, #332, #337(pick), #347,
 		#383, #386, #385(Matheus Matias), #388(KOLISAO), #390, #402(Matheus Matias), #403,
 		#408(Matheus Matias), #410(Matheus Matias), #411(Matheus Matias), #416(Matheus Matias),
@@ -105,10 +106,6 @@
 	* The server load/save/clean more fast ...
 		The server is more stable and secure, even with a large database.
 	* Decrease CPU usage: map and/or spectators should be a lot faster now (Matheus Matias).
-]
-
-[ OTX Server 2.6 :: Version "SCARETALE"
-	- Dropped version 2.6/2.7/2.8/2.9/2.10/2.11 and changed to 2.12
 ]
 
 [ OTX Server 2.X.S - 3 :: Version "LORD ZEDD"
