@@ -4354,12 +4354,19 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 		return false;
 	}
 
+	char buffer[80];
 	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
 	toPlayer->onCreatureSay(player, type, text);
 
-	char buffer[80];
-	sprintf(buffer, "Message sent to %s.", toPlayer->getName().c_str());
-	player->sendTextMessage(MSG_STATUS_SMALL, buffer);
+	if (!canSee)
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "A player with this name is not online.");
+	}else 
+	{
+		sprintf(buffer, "Message sent to %s.", toPlayer->getName().c_str());
+		player->sendTextMessage(MSG_STATUS_SMALL, buffer);
+	}
+	
 	return true;
 }
 
