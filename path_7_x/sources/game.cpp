@@ -4152,7 +4152,7 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 			return true;
 	}
 
-	if (mute && type != MSG_NPC_TO)
+	if (mute)
 		player->removeMessageBuffer();
 
 	if (ret == RET_NEEDEXCHANGE)
