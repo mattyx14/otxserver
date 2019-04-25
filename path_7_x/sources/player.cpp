@@ -1884,7 +1884,7 @@ bool Player::isMuted(uint16_t channelId, MessageClasses type, int32_t& time)
 	if (muteTicks)
 		time = (uint32_t)muteTicks / 1000;
 
-	return type != MSG_NPC_TO && (type != MSG_CHANNEL || (channelId != CHANNEL_GUILD && !g_chat.isPrivateChannel(channelId)));
+	return (type != MSG_CHANNEL || (channelId != CHANNEL_GUILD && !g_chat.isPrivateChannel(channelId)));
 }
 
 void Player::addMessageBuffer()
