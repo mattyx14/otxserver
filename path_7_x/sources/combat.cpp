@@ -372,6 +372,9 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 		if(player->getSecureMode() == SECUREMODE_ON)
 			return RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
 	}
+	
+	if (target->getNpc())
+		return RET_YOUMAYNOTATTACKTHISCREATURE;
 
 	return Combat::canDoCombat(player, target, true);
 }
