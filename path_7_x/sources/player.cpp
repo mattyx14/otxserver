@@ -3937,7 +3937,7 @@ void Player::onTarget(Creature* target)
 		return;
 
 	Player* targetPlayer = target->getPlayer();
-	if(targetPlayer && !isPartner(targetPlayer))
+	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
 		if(!pzLocked && g_game.getWorldType(this, targetPlayer) == WORLDTYPE_HARDCORE)
 		{
@@ -3954,7 +3954,7 @@ void Player::onTarget(Creature* target)
 		{
 			if((!targetPlayer->hasAttacked(this)) || (!g_config.getBool(ConfigManager::ALLOW_FIGHT_BACK)))
 			{
-				if(!pzLocked && g_game.getWorldType(this, targetPlayer) != WORLDTYPE_HARDCORE)
+				if(!pzLocked && g_game.getWorldType(this, targetPlayer) != WORLDTYPE_OPEN)
 				{
 					pzLocked = true;
 					sendIcons();
@@ -4286,10 +4286,10 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 		if(g_game.getWorldType(this, player) != WORLDTYPE_OPEN)
 			return SKULL_NONE;
 
-		if(player->hasAttacked(this))
+		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this))
 			return SKULL_YELLOW;
 
-		if((isPartner(player) || isAlly(player)) &&
+		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
 			g_game.getWorldType(this, player) != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
