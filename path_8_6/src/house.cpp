@@ -238,7 +238,12 @@ bool House::transferToDepot(Player* player) const
 	if (townId == 0 || owner == 0) {
 		return false;
 	}
-
+	
+	DepotLocker* depot = player->getDepotLocker(townId);
+	if (!depot) {
+		return false;
+	}
+	
 	ItemList moveItemList;
 	for (HouseTile* tile : houseTiles) {
 		if (const TileItemVector* items = tile->getItemList()) {
@@ -257,7 +262,6 @@ bool House::transferToDepot(Player* player) const
 		}
 	}
 
-	DepotLocker* depot = player->getDepotLocker(townId);
 	for (Item* item : moveItemList) {
 		g_game.internalMoveItem(item->getParent(), depot, INDEX_WHEREEVER, item, item->getItemCount(), nullptr, FLAG_NOLIMIT);
 	}
