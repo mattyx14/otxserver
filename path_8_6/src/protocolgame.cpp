@@ -1736,7 +1736,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	}
 
 	for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
-		sendInventoryItem((slots_t)i, player->getInventoryItem((slots_t)i));
+		sendInventoryItem(static_cast<slots_t>(i), player->getInventoryItem(static_cast<slots_t>(i)));
 	}
 
 	sendStats();
