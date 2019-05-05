@@ -4266,12 +4266,12 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return playerYell(player, text, statementId);
 	case MSG_PRIVATE:
 	case MSG_GAMEMASTER_PRIVATE:
-	case MSG_RVR_ANSWER:
+
 		return playerSpeakTo(player, type, receiver, text, statementId);
 	case MSG_CHANNEL:
 	case MSG_CHANNEL_HIGHLIGHT:
 	case MSG_GAMEMASTER_CHANNEL:
-	case MSG_GAMEMASTER_ANONYMOUS:
+
 	{
 		if (playerSpeakToChannel(player, type, text, channelId, statementId))
 			return true;
@@ -4282,12 +4282,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return playerSpeakToNpc(player, text);
 	case MSG_GAMEMASTER_BROADCAST:
 		return playerBroadcastMessage(player, MSG_GAMEMASTER_BROADCAST, text, statementId);
-	case MSG_RVR_CHANNEL:
-		return playerReportRuleViolation(player, text);
-		break;
-	case MSG_RVR_CONTINUE:
-		return playerContinueReport(player, text);
-		break;
 
 	default:
 		break;
