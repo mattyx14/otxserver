@@ -40,3 +40,4 @@ En servidor 1:
 	adminPort = 7171 -- lo cambiaremos a 0
 
 Es importante que el servidor 0 lleve la flag: __LOGIN_SERVER__ (windows) --enable-login-server (linux) para que el servidor 2 pueda interpretar login en el primero
+Es importante tambien saber que esto con dos servidores de mapas grandes si un servidor consume 4GB .. 2 por logico consumiran 8 :D
