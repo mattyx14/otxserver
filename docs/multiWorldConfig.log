@@ -39,4 +39,4 @@ En servidor 1:
 	managerPort = 7171 -- lo cambiaremos a 0
 	adminPort = 7171 -- lo cambiaremos a 0
 
-Es importante que el servidor 1 lleve la flag: __LOGIN_SERVER__ (windows) --enable-login-server (linux) para que el servidor 2 pueda interpretar login en el primero
+Es importante que el servidor 0 lleve la flag: __LOGIN_SERVER__ (windows) --enable-login-server (linux) para que el servidor 2 pueda interpretar login en el primero
