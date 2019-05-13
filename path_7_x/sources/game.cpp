@@ -3545,6 +3545,15 @@ bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t
 	Player* tradePartner = player->tradePartner;
 	if(!tradePartner)
 		return false;
+	
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOKTRADE))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before doing this again.");
+		return false;
+	}
+
+	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 200, 0, false, EXHAUST_PLAYERLOOKTRADE))
+		player->addCondition(conditionlook);
 
 	Item* tradeItem = NULL;
 	if(lookAtCounterOffer)

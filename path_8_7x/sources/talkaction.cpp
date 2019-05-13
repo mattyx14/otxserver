@@ -132,6 +132,15 @@ bool TalkActions::registerEvent(Event* event, xmlNodePtr p, bool override)
 
 bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std::string& words, bool ignoreAccess)
 {
+	if (Player* player = creature->getPlayer())
+	{
+		if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_TALKACTION))
+		{
+			player->sendTextMessage(MSG_STATUS_SMALL, "Please wait a few seconds before using this command again.");
+			return true;
+		}
+	}
+	
 	std::string cmd[TALKFILTER_LAST], param[TALKFILTER_LAST];
 	for(int32_t i = 0; i < TALKFILTER_LAST; ++i)
 		cmd[i] = words;
@@ -206,6 +215,12 @@ bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std:
 			player->sendTextMessage(MSG_EVENT_ORANGE, words);
 
 		Logger::getInstance()->eFile("talkactions/" + creature->getName() + ".log", words, true);
+	}
+	
+	if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 5000, 0, false, EXHAUST_TALKACTION))
+	{
+		if (!player->hasFlag(PlayerFlag_HasNoExhaustion))
+			player->addCondition(condition);
 	}
 
 	if(talkAction->isScripted())

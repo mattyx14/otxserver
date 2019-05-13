@@ -3506,6 +3506,15 @@ bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t
 	Player* tradePartner = player->tradePartner;
 	if(!tradePartner)
 		return false;
+	
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOKTRADE))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before doing this again.");
+		return false;
+	}
+
+	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 200, 0, false, EXHAUST_PLAYERLOOKTRADE))
+		player->addCondition(conditionlook);
 
 	Item* tradeItem = NULL;
 	if(lookAtCounterOffer)
@@ -3667,11 +3676,20 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
 		return false;
+	
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERPURCHASEITEM))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before buying again.");
+		return false;
+	}
 
 	int32_t onBuy, onSell;
 	Npc* merchant = player->getShopOwner(onBuy, onSell);
 	if(!merchant)
 		return false;
+	
+	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 200, 0, false, EXHAUST_PLAYERPURCHASEITEM))
+		player->addCondition(conditionlook);
 
 	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if(!it.id)
@@ -3695,11 +3713,20 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
 		return false;
+	
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERSELLITEM))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before selling again.");
+		return false;
+	}
 
 	int32_t onBuy, onSell;
 	Npc* merchant = player->getShopOwner(onBuy, onSell);
 	if(!merchant)
 		return false;
+	
+	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 200, 0, false, EXHAUST_PLAYERSELLITEM))
+		player->addCondition(conditionlook);
 
 	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if(!it.id)
@@ -3733,6 +3760,15 @@ bool Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 	Player* player = getPlayerByID(playerId);
 	if(player == NULL || player->isRemoved())
 		return false;
+	
+	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOKSHOP))
+	{
+		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before doing this again.");
+		return false;
+	}
+
+	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 200, 0, false, EXHAUST_PLAYERLOOKSHOP))
+		player->addCondition(conditionlook);
 
 	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if(!it.id)
@@ -4418,7 +4454,7 @@ bool Game::playerSpeakToNpc(Player* player, const std::string& text)
 		return false;
 	}
 
-	if(Condition* conditionnpc = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_TALKNPC))
+	if(Condition* conditionnpc = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 250, 0, false, EXHAUST_TALKNPC))
 		player->addCondition(conditionnpc);
 
 	SpectatorVec list;
