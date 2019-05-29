@@ -41,11 +41,9 @@ void Dispatcher::dispatcherThread()
 	dispatcherExceptionHandler.InstallHandler();
 	#endif
 
-	OutputMessagePool* outputPool = NULL;
 	boost::unique_lock<boost::mutex> taskLockUnique(m_taskLock, boost::defer_lock);
 	while(Dispatcher::m_threadState != Dispatcher::STATE_TERMINATED)
 	{
-		Task* task = NULL;
 		// check if there are tasks waiting
 		taskLockUnique.lock();
 		if(m_taskList.empty()) //if the list is empty wait for signal
@@ -54,28 +52,20 @@ void Dispatcher::dispatcherThread()
 		if(!m_taskList.empty() && Dispatcher::m_threadState != Dispatcher::STATE_TERMINATED)
 		{
 			// take the first task
-			task = m_taskList.front();
+			Task* task = m_taskList.front();
 			m_taskList.pop_front();
+			taskLockUnique.unlock();
+
+			if(!task->hasExpired())
+			{
+				(*task)();
+
+				g_game.clearSpectatorCache();
+			}
+			delete task;
+		} else {
+			taskLockUnique.unlock();
 		}
-
-		taskLockUnique.unlock();
-		// finally execute the task...
-		if(!task)
-			continue;
-
-		if(!task->hasExpired())
-		{
-			if((outputPool = OutputMessagePool::getInstance()))
-				outputPool->startExecutionFrame();
-
-			(*task)();
-			if(outputPool)
-				outputPool->sendAll();
-
-			g_game.clearSpectatorCache();
-		}
-
-		delete task;
 	}
 
 	#if defined __EXCEPTION_TRACER__
@@ -109,7 +99,6 @@ void Dispatcher::addTask(Task* task, bool front/* = false*/)
 void Dispatcher::flush()
 {
 	Task* task = NULL;
-	OutputMessagePool* outputPool = OutputMessagePool::getInstance();
 	while(!m_taskList.empty())
 	{
 		task = m_taskList.front();
@@ -117,8 +106,6 @@ void Dispatcher::flush()
 
 		(*task)();
 		delete task;
-		if(outputPool)
-			outputPool->sendAll();
 
 		g_game.clearSpectatorCache();
 	}

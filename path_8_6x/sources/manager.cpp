@@ -61,13 +61,13 @@ void ProtocolManager::onRecvFirstMessage(NetworkMessage&)
 		return;
 	}
 
-	if(NetworkMessage_ptr msg = getOutputBuffer())
+	if(OutputMessage_ptr msg = getOutputBuffer())
 	{
 		TRACK_MESSAGE(msg);
-		msg->put<char>(MP_MSG_HELLO);
+		msg->addByte(MP_MSG_HELLO);
 
-		msg->put<uint32_t>(1); //version
-		msg->putString("TFMANAGER");
+		msg->add<uint32_t>(1); //version
+		msg->addString("TFMANAGER");
 	}
 
 	m_lastCommand = time(NULL);
@@ -102,8 +102,8 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 
 			if(m_loginTries > 3)
 			{
-				output->put<char>(MP_MSG_ERROR);
-				output->putString("Too many login attempts");
+				output->addByte(MP_MSG_ERROR);
+				output->addString("Too many login attempts");
 
 				getConnection()->close();
 				addLogLine(LOGTYPE_WARNING, "Too many login attempts");
@@ -112,8 +112,8 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 
 			if(recvbyte != MP_MSG_LOGIN)
 			{
-				output->put<char>(MP_MSG_ERROR);
-				output->putString("You are not logged in");
+				output->addByte(MP_MSG_ERROR);
+				output->addString("You are not logged in");
 
 				getConnection()->close();
 				addLogLine(LOGTYPE_WARNING, "Wrong command while not logged in");
@@ -146,8 +146,8 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 				{
 					if(!Manager::getInstance()->loginConnection(this))
 					{
-						output->put<char>(MP_MSG_FAILURE);
-						output->putString("Unknown connection");
+						output->addByte(MP_MSG_FAILURE);
+						output->addString("Unknown connection");
 
 						getConnection()->close();
 						addLogLine(LOGTYPE_ERROR, "Login failed due to unknown connection");
@@ -155,7 +155,7 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 					}
 					else
 					{
-						output->put<char>(MP_MSG_USERS);
+						output->addByte(MP_MSG_USERS);
 						addLogLine(LOGTYPE_EVENT, "Logged in, sending users");
 
 						std::map<uint32_t, std::string> users;
@@ -165,21 +165,21 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 								users[it->first] = it->second->getName();
 						}
 
-						output->put<uint16_t>(users.size());
+						output->add<uint16_t>(users.size());
 						for(std::map<uint32_t, std::string>::iterator it = users.begin(); it != users.end(); ++it)
 						{
-							output->put<uint32_t>(it->first);
-							output->putString(it->second);
+							output->add<uint32_t>(it->first);
+							output->addString(it->second);
 						}
 
-						OutputMessagePool::getInstance()->send(output);
+						send(output);
 						m_state = LOGGED_IN;
 					}
 				}
 				else
 				{
-					output->put<char>(MP_MSG_ERROR);
-					output->putString("Wrong password");
+					output->addByte(MP_MSG_ERROR);
+					output->addString("Wrong password");
 
 					m_loginTries++;
 					addLogLine(LOGTYPE_EVENT, "Login failed due to wrong password (" + pass + ")");
@@ -191,8 +191,8 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 
 		case MP_MSG_LOGOUT:
 		{
-			output->put<char>(MP_MSG_BYE);
-			output->putString("Bye, bye!");
+			output->addByte(MP_MSG_BYE);
+			output->addString("Bye, bye!");
 
 			getConnection()->close();
 			addLogLine(LOGTYPE_EVENT, "Logout");
@@ -235,31 +235,23 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 	}
 }
 
-void ProtocolManager::releaseProtocol()
+void ProtocolManager::release()
 {
 	addLogLine(LOGTYPE_EVENT, "Closing protocol");
 	Manager::getInstance()->removeConnection(this);
-	Protocol::releaseProtocol();
+	Protocol::release();
 }
 
-#ifdef __DEBUG_NET_DETAIL__
-void ProtocolManager::deleteProtocolTask()
-{
-	std::clog << "Deleting ProtocolManager" << std::endl;
-	Protocol::deleteProtocolTask();
-}
-
-#endif
 void ProtocolManager::pong()
 {
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
-	msg->put<char>(MP_MSG_PONG);
+	msg->addByte(MP_MSG_PONG);
 }
 
 void ProtocolManager::execute(std::string lua)
@@ -267,7 +259,7 @@ void ProtocolManager::execute(std::string lua)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
@@ -275,21 +267,21 @@ void ProtocolManager::execute(std::string lua)
 	{
 		case LUA_TRUE:
 		{
-			msg->put<char>(MP_MSG_SUCCESS);
+			msg->addByte(MP_MSG_SUCCESS);
 			addLogLine(LOGTYPE_EVENT, "Executed Lua script");
 			break;
 		}
 		case LUA_RESERVE:
 		{
-			msg->put<char>(MP_MSG_FAILURE);
-			msg->putString("Unable to reserve enviroment for Lua script");
+			msg->addByte(MP_MSG_FAILURE);
+			msg->addString("Unable to reserve enviroment for Lua script");
 			addLogLine(LOGTYPE_ERROR, "Unable to reserve enviroment for Lua script");
 			break;
 		}
 		default:
 		{
-			msg->put<char>(MP_MSG_FAILURE);
-			msg->putString("An error occured while executing Lua script, please check Server Log");
+			msg->addByte(MP_MSG_FAILURE);
+			msg->addString("An error occured while executing Lua script, please check Server Log");
 			addLogLine(LOGTYPE_ERROR, "An error occured while executing Lua script");
 			break;
 		}
@@ -301,26 +293,26 @@ void ProtocolManager::user(uint32_t playerId)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	if(Player* player = g_game.getPlayerByID(playerId))
 	{
-		msg->put<char>(MP_MSG_USER_DATA);
-		msg->put<uint32_t>(playerId);
+		msg->addByte(MP_MSG_USER_DATA);
+		msg->add<uint32_t>(playerId);
 
-		msg->put<int32_t>(player->getGroupId());
-		msg->put<uint32_t>(player->getVocationId());
+		msg->add<int32_t>(player->getGroupId());
+		msg->add<uint32_t>(player->getVocationId());
 
-		msg->put<uint32_t>(player->getLevel());
-		msg->put<uint32_t>(player->getMagicLevel());
+		msg->add<uint32_t>(player->getLevel());
+		msg->add<uint32_t>(player->getMagicLevel());
 		// TODO: continue...
 	}
 	else
 	{
-		msg->put<char>(MP_MSG_ERROR);
-		msg->putString("Player not found");
+		msg->addByte(MP_MSG_ERROR);
+		msg->addString("Player not found");
 	}
 }
 
@@ -329,21 +321,21 @@ void ProtocolManager::channels()
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
-	msg->put<char>(MP_MSG_CHAT_LIST);
+	msg->addByte(MP_MSG_CHAT_LIST);
 	ChannelList list = g_chat.getPublicChannels();
 
-	msg->put<uint16_t>(list.size());
+	msg->add<uint16_t>(list.size());
 	for(ChannelList::const_iterator it = list.begin(); it != list.end(); ++it)
 	{
-		msg->put<uint16_t>((*it)->getId());
-		msg->putString((*it)->getName());
+		msg->add<uint16_t>((*it)->getId());
+		msg->addString((*it)->getName());
 
-		msg->put<uint16_t>((*it)->getFlags());
-		msg->put<uint16_t>((*it)->getUsers().size());
+		msg->add<uint16_t>((*it)->getFlags());
+		msg->add<uint16_t>((*it)->getUsers().size());
 	}
 }
 
@@ -352,7 +344,7 @@ void ProtocolManager::chat(std::string name, uint16_t channelId, MessageClasses 
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
@@ -361,16 +353,16 @@ void ProtocolManager::chat(std::string name, uint16_t channelId, MessageClasses 
 	{
 		if(!channel->talk(name, type, message))
 		{
-			msg->put<char>(MP_MSG_FAILURE);
-			msg->putString("Could not talk to channel");
+			msg->addByte(MP_MSG_FAILURE);
+			msg->addString("Could not talk to channel");
 		}
 		else
-			msg->put<char>(MP_MSG_SUCCESS);
+			msg->addByte(MP_MSG_SUCCESS);
 	}
 	else
 	{
-		msg->put<char>(MP_MSG_ERROR);
-		msg->putString("Invalid channel");
+		msg->addByte(MP_MSG_ERROR);
+		msg->addString("Invalid channel");
 	}
 }
 
@@ -379,7 +371,7 @@ void ProtocolManager::channel(uint16_t channelId, bool opening)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
@@ -389,29 +381,29 @@ void ProtocolManager::channel(uint16_t channelId, bool opening)
 		if((channel = g_chat.getChannelById(channelId)) && g_chat.isPublicChannel(channelId))
 		{
 			m_channels |= (1 << (uint32_t)channelId);
-			msg->put<char>(MP_MSG_CHAT_USERS);
-			msg->put<uint16_t>(channelId);
+			msg->addByte(MP_MSG_CHAT_USERS);
+			msg->add<uint16_t>(channelId);
 
 			UsersMap users = channel->getUsers();
-			msg->put<uint16_t>(users.size());
+			msg->add<uint16_t>(users.size());
 			for(UsersMap::const_iterator it = users.begin(); it != users.end(); ++it)
-				msg->put<uint32_t>(it->first);
+				msg->add<uint32_t>(it->first);
 		}
 		else
 		{
-			msg->put<char>(MP_MSG_ERROR);
-			msg->putString("Invalid channel");
+			msg->addByte(MP_MSG_ERROR);
+			msg->addString("Invalid channel");
 		}
 	}
 	else if(g_chat.getChannelById(channelId) && g_chat.isPublicChannel(channelId))
 	{
 		m_channels &= ~(1 << (uint32_t)channelId);
-		msg->put<char>(MP_MSG_SUCCESS);
+		msg->addByte(MP_MSG_SUCCESS);
 	}
 	else
 	{
-		msg->put<char>(MP_MSG_ERROR);
-		msg->putString("Invalid channel");
+		msg->addByte(MP_MSG_ERROR);
+		msg->addString("Invalid channel");
 	}
 }
 
@@ -420,13 +412,13 @@ void ProtocolManager::output(const std::string& message)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	TRACK_MESSAGE(msg);
-	msg->put<char>(MP_MSG_OUTPUT);
-	msg->putString(message);
+	msg->addByte(MP_MSG_OUTPUT);
+	msg->addString(message);
 }
 
 void ProtocolManager::addUser(Player* player)
@@ -434,15 +426,15 @@ void ProtocolManager::addUser(Player* player)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	TRACK_MESSAGE(msg);
-	msg->put<char>(MP_MSG_USER_ADD);
+	msg->addByte(MP_MSG_USER_ADD);
 
-	msg->put<uint32_t>(player->getID());
-	msg->putString(player->getName());
+	msg->add<uint32_t>(player->getID());
+	msg->addString(player->getName());
 }
 
 void ProtocolManager::removeUser(uint32_t playerId)
@@ -450,13 +442,13 @@ void ProtocolManager::removeUser(uint32_t playerId)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	TRACK_MESSAGE(msg);
-	msg->put<char>(MP_MSG_USER_REMOVE);
-	msg->put<uint32_t>(playerId);
+	msg->addByte(MP_MSG_USER_REMOVE);
+	msg->add<uint32_t>(playerId);
 }
 
 void ProtocolManager::talk(uint32_t playerId, uint16_t channelId, MessageClasses type, const std::string& message)
@@ -464,7 +456,7 @@ void ProtocolManager::talk(uint32_t playerId, uint16_t channelId, MessageClasses
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
@@ -472,12 +464,12 @@ void ProtocolManager::talk(uint32_t playerId, uint16_t channelId, MessageClasses
 		return;
 
 	TRACK_MESSAGE(msg);
-	msg->put<char>(MP_MSG_CHAT_MESSAGE);
-	msg->put<uint32_t>(playerId);
+	msg->addByte(MP_MSG_CHAT_MESSAGE);
+	msg->add<uint32_t>(playerId);
 
-	msg->put<uint16_t>(channelId);
-	msg->put<char>(type);
-	msg->putString(message);
+	msg->add<uint16_t>(channelId);
+	msg->addByte(type);
+	msg->addString(message);
 }
 
 void ProtocolManager::addUser(uint32_t playerId, uint16_t channelId)
@@ -485,15 +477,15 @@ void ProtocolManager::addUser(uint32_t playerId, uint16_t channelId)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	TRACK_MESSAGE(msg);
-	msg->put<char>(MP_MSG_CHAT_USER_ADD);
+	msg->addByte(MP_MSG_CHAT_USER_ADD);
 
-	msg->put<uint32_t>(playerId);
-	msg->put<uint16_t>(channelId);
+	msg->add<uint32_t>(playerId);
+	msg->add<uint16_t>(channelId);
 }
 
 void ProtocolManager::removeUser(uint32_t playerId, uint16_t channelId)
@@ -501,15 +493,15 @@ void ProtocolManager::removeUser(uint32_t playerId, uint16_t channelId)
 	if(m_state != LOGGED_IN)
 		return;
 
-	NetworkMessage_ptr msg = getOutputBuffer();
+	OutputMessage_ptr msg = getOutputBuffer();
 	if(!msg)
 		return;
 
 	TRACK_MESSAGE(msg);
-	msg->put<char>(MP_MSG_CHAT_USER_REMOVE);
+	msg->addByte(MP_MSG_CHAT_USER_REMOVE);
 
-	msg->put<uint32_t>(playerId);
-	msg->put<uint16_t>(channelId);
+	msg->add<uint32_t>(playerId);
+	msg->add<uint16_t>(channelId);
 }
 
 bool Manager::addConnection(ProtocolManager* client)
@@ -542,7 +534,7 @@ void Manager::removeConnection(ProtocolManager* client)
 bool Manager::allow(uint32_t ip) const
 {
 	if(!g_config.getBool(ConfigManager::MANAGER_LOCALHOST_ONLY))
-		return !ConnectionManager::getInstance()->isDisabled(ip, 0xFE);
+		return true;
 
 	if(ip == 0x0100007F) //127.0.0.1
 		return true;

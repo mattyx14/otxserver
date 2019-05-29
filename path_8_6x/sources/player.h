@@ -134,7 +134,7 @@ class Player : public Creature, public Cylinder
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 		static uint32_t playerCount;
 #endif
-		Player(const std::string& name, ProtocolGame* p);
+		Player(const std::string& name, ProtocolGame_ptr p);
 		virtual ~Player();
 
 		virtual Player* getPlayer() {return this;}

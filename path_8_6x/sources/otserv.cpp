@@ -318,9 +318,8 @@ int main(int argc, char* argv[])
 	g_loaderSignal.wait(g_loaderUniqueLock);
 
 	boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
-	if(servicer.isRunning())
+	if(servicer.is_running())
 	{
-		Status::getInstance();
 		std::clog << ">> " << g_config.getString(ConfigManager::SERVER_NAME) << " server Online!" << std::endl << std::endl;
 		servicer.run();
 	}
@@ -769,102 +768,73 @@ void otserv(StringVec, ServiceManager* services)
 
 	std::clog << ">> Initializing game state and binding services:" << std::endl;
 	g_game.setGameState(GAMESTATE_INIT);
-	IPAddressList ipList;
 
-	StringVec ip = explodeString(g_config.getString(ConfigManager::IP), ",");
-	if(asLowerCaseString(ip[0]) == "auto") {}
-
-	IPAddress m_ip;
-	std::clog << ">> Global IP address(es): ";
-	for(StringVec::iterator it = ip.begin(); it != ip.end(); ++it)
-	{
-		uint32_t resolvedIp = inet_addr(it->c_str());
-		if(resolvedIp == INADDR_NONE)
-		{
-			struct hostent* host = gethostbyname(it->c_str());
-			if(!host)
-			{
-				std::clog << "..." << std::endl;
-				startupErrorMessage("Cannot resolve " + (*it) + "!");
-			}
-
-			resolvedIp = *(uint32_t*)host->h_addr;
-		}
-
-		serverIps.push_front(std::make_pair(resolvedIp, 0));
-		m_ip = boost::asio::ip::address_v4(swap_uint32(resolvedIp));
-
-		ipList.push_back(m_ip);
-		std::clog << m_ip.to_string() << std::endl;
-	}
-
-	ipList.push_back(boost::asio::ip::address_v4(INADDR_LOOPBACK));
-	if(!g_config.getBool(ConfigManager::BIND_ONLY_GLOBAL_ADDRESS))
-	{
-		char hostName[128];
-		if(!gethostname(hostName, 128))
-		{
-			if(hostent* host = gethostbyname(hostName))
-			{
-				std::ostringstream s;
-				for(uint8_t** addr = (uint8_t**)host->h_addr_list; addr[0]; addr++)
-				{
-					uint32_t resolved = swap_uint32(*(uint32_t*)(*addr));
-					if(m_ip.to_v4().to_ulong() == resolved)
-						continue;
-
-					ipList.push_back(boost::asio::ip::address_v4(resolved));
-					// serverIps.push_front(std::make_pair(*(uint32_t*)(*addr), 0x0000FFFF));
-
-					s << (int32_t)(addr[0][0]) << "." << (int32_t)(addr[0][1]) << "."
-						<< (int32_t)(addr[0][2]) << "." << (int32_t)(addr[0][3]) << "\t";
-				}
-
-				if(s.str().size())
-					std::clog << ">>> Local IP address(es): " << s.str() << std::endl;
-			}
-		}
-
-		if(m_ip.to_v4().to_ulong() != LOCALHOST)
-			ipList.push_back(boost::asio::ip::address_v4(LOCALHOST));
-	}
-	else if(ipList.size() < 2)
-		startupErrorMessage("Unable to bind any IP address! You may want to disable \"bindOnlyGlobalAddress\" setting in config.lua");
-
-	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT), ipList);
-	services->add<ProtocolManager>(g_config.getNumber(ConfigManager::MANAGER_PORT), ipList);
-	#ifdef __OTADMIN__
-	services->add<ProtocolAdmin>(g_config.getNumber(ConfigManager::ADMIN_PORT), ipList);
-	#endif
-
-	//services->add<ProtocolHTTP>(8080, ipList);
-	if(
-#ifdef __LOGIN_SERVER__
-	true
-#else
-	!g_config.getBool(ConfigManager::LOGIN_ONLY_LOGINSERVER)
+	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT));
+	services->add<ProtocolManager>(g_config.getNumber(ConfigManager::MANAGER_PORT));
+#ifdef __OTADMIN__
+	services->add<ProtocolAdmin>(g_config.getNumber(ConfigManager::ADMIN_PORT));
 #endif
-	)
+	//services->add<ProtocolHTTP>(8080);
+	if (
+#ifdef __LOGIN_SERVER__
+		true
+#else
+		!g_config.getBool(ConfigManager::LOGIN_ONLY_LOGINSERVER)
+#endif
+		)
 	{
-		services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT), ipList);
-		services->add<ProtocolOldLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT), ipList);
+		services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 	}
 
-	services->add<ProtocolOldGame>(g_config.getNumber(ConfigManager::LOGIN_PORT), ipList);
+	services->add<ProtocolOld>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 	IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-	for(IntegerVec::const_iterator it = games.begin(); it != games.end(); ++it)
+	for (IntegerVec::const_iterator it = games.begin(); it != games.end(); ++it)
 	{
-		services->add<ProtocolGame>(*it, ipList);
+		services->add<ProtocolGame>(*it);
 		break; // CRITICAL: more ports are causing crashes- either find the issue or drop the "feature"
 	}
 
-	std::clog << "> Bound ports: ";
+	std::pair<uint32_t, uint32_t> IpNetMask;
+	IpNetMask.first = inet_addr("127.0.0.1");
+	IpNetMask.second = 0xFFFFFFFF;
+	serverIps.push_back(IpNetMask);
 
-	std::list<uint16_t> ports = services->getPorts();
-	for(std::list<uint16_t>::iterator it = ports.begin(); it != ports.end(); ++it)
-		std::clog << (*it) << "\t";
+	char szHostName[128];
+	if (gethostname(szHostName, 128) == 0) {
+		hostent* he = gethostbyname(szHostName);
+		if (he) {
+			unsigned char** addr = (unsigned char**)he->h_addr_list;
+			while (addr[0] != nullptr) {
+				IpNetMask.first = *(uint32_t*)(*addr);
+				IpNetMask.second = 0xFFFFFFFF;
+				serverIps.push_back(IpNetMask);
+				addr++;
+			}
+		}
+	}
+
+	std::string ip = g_config.getString(ConfigManager::IP);
+
+	uint32_t resolvedIp = inet_addr(ip.c_str());
+	if (resolvedIp == INADDR_NONE) {
+		struct hostent* he = gethostbyname(ip.c_str());
+		if (!he) {
+			std::ostringstream ss;
+			ss << "ERROR: Cannot resolve " << ip << "!" << std::endl;
+			startupErrorMessage(ss.str());
+			return;
+		}
+		resolvedIp = *(uint32_t*)he->h_addr;
+	}
+
+	IpNetMask.first = resolvedIp;
+	IpNetMask.second = 0;
+	serverIps.push_back(IpNetMask);
 
 	std::clog << std::endl << ">> Everything smells good, server is starting up..." << std::endl;
+#if defined(WINDOWS) && !defined(_CONSOLE)
+	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Everything smells good, server is starting up...");
+#endif
 	g_game.start(services);
 	g_game.setGameState(g_config.getBool(ConfigManager::START_CLOSED) ? GAMESTATE_CLOSED : GAMESTATE_NORMAL);
 	g_loaderSignal.notify_all();

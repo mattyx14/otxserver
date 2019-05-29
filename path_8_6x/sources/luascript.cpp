@@ -5932,11 +5932,7 @@ int32_t LuaInterface::luaGetWorldCreatures(lua_State* L)
 int32_t LuaInterface::luaGetWorldUpTime(lua_State* L)
 {
 	//getWorldUpTime()
-	uint32_t uptime = 0;
-	if(Status* status = Status::getInstance())
-		uptime = status->getUptime();
-
-	lua_pushnumber(L, uptime);
+	lua_pushnumber(L, (OTSYS_TIME() - ProtocolStatus::start) / 1000);
 	return 1;
 }
 

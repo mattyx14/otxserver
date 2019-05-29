@@ -6790,6 +6790,34 @@ void Game::checkPlayersRecord(Player* player)
 	playersRecord = count;
 }
 
+uint32_t Game::getPlayersWithMcLimit()
+{
+
+	std::map<uint32_t, uint32_t> ips;
+	uint32_t count = 0;
+
+	for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+	{
+		if (!it->second->isRemoved())
+		{
+			uint32_t ip = it->second->getIP();
+
+
+			if (ips.find(ip) == ips.end())
+			{
+				ips[ip] = 1;
+				count++;
+			}
+			else if (ips[ip] < 5)
+			{
+				ips[ip]++;
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 void Game::loadPlayersRecord()
 {
 	Database* db = Database::getInstance();
