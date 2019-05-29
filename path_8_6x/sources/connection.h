@@ -23,6 +23,9 @@
 #include "networkmessage.h"
 #include "mutex"
 
+static constexpr int32_t CONNECTION_WRITE_TIMEOUT = 30;
+static constexpr int32_t CONNECTION_READ_TIMEOUT = 30;
+
 class Protocol;
 typedef std::shared_ptr<Protocol> Protocol_ptr;
 class OutputMessage;
