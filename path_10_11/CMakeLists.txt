@@ -16,24 +16,17 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 include(FindCXX11)
-include(FindLTO)
 
 # Find packages.
 find_package(GMP REQUIRED)
 find_package(PugiXML REQUIRED)
+find_package(LuaJIT)
 find_package(MySQL)
 find_package(Threads)
 
-# Selects LuaJIT if user defines or auto-detected
-if(DEFINED USE_LUAJIT AND NOT USE_LUAJIT)
-    set(FORCE_LUAJIT ${USE_LUAJIT})
-else()
-    find_package(LuaJIT)
-    set(FORCE_LUAJIT ${LuaJIT_FOUND})
-endif()
-option(USE_LUAJIT "Use LuaJIT" ${FORCE_LUAJIT})
+option(USE_LUAJIT "Use LuaJIT" ${LUAJIT_FOUND})
 
-if(FORCE_LUAJIT)
+if(USE_LUAJIT)
     if(APPLE)
       set(CMAKE_EXE_LINKER_FLAGS "-pagezero_size 10000 -image_base 100000000")
     endif()
