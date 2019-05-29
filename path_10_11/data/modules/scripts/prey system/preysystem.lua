@@ -8,7 +8,7 @@ PreySystem = {
 local RerollStorages = {
 	[0] = 8420390,
 	[1] = 8420391,
-	[10] = 8420392
+	[2] = 8420392
 }
 
 local ServerPackets = {
@@ -86,21 +86,22 @@ local function havePreyMonsterByName(playerId, name)
 end
 
 local function createMonstersColumn(player, column)
-	local monsters, newTable = getPreyMonsters(), {}
+	local monsters, newTable, finalQuery = getPreyMonsters(), {}, ""
 	local count = 1
 
-	-- Get New List
+	--local havePreyMonster = db.storeQuery("SELECT player_id FROM player_prey WHERE player_id = " ..playerId.. " AND name = " ..db.escapeString(randomName))
 	repeat
 		local randomName = monsters[math.random(#monsters)]
-		if (not havePreyMonsterByName(player:getGuid(), randomName)) then
-			if (MonsterType(randomName) and MonsterType(randomName):getOutfit().lookType > 0) then
-				newTable[count] = {Name = randomName, Index = count, Column = column}
-				db.query("INSERT INTO player_prey SET player_id = " ..player:getGuid().. ", name = " ..db.escapeString(randomName).. ", mindex = " ..(count-1).. ", mcolumn = " ..column)
-				count = count + 1
+		--if (not havePreyMonsterByName(player:getGuid(), randomName)) then
+		if (MonsterType(randomName) and MonsterType(randomName):getOutfit().lookType > 0) then
+			finalQuery = finalQuery.."(" ..player:getGuid().. ", " ..db.escapeString(randomName).. ", " ..(count-1).. ", " ..column..")" ..(count ~= 9 and ',' or ';')
+			newTable[count] = {Name = randomName, Index = count, Column = column}
+			count = count + 1
 			end
-		end
+		-- end
 	until count == 10
 
+	db.query("INSERT INTO player_prey (player_id, name, mindex, mcolumn) VALUES " ..finalQuery)
 	return newTable
 end
 
@@ -206,7 +207,8 @@ function changeStateToActive(player, indexColumn)
 	local timeLeft = player:getStaminaBonus(indexColumn)
 	local Bonus = loadBonus(player, indexColumn)
 	if (not Bonus) then
-		return changeStateToSelection(player, indexColumn)
+		changeStateToSelection(player, indexColumn)
+		return
 	end
 
 	local mType = MonsterType(Bonus.Name)
@@ -214,7 +216,7 @@ function changeStateToActive(player, indexColumn)
 	if mType then
 		mOutfit = mType:getOutfit()
 	else
-		mOutfit = {lookType = 250, lookBody = 0, lookLegs = 0, lookFeet = 0, lookAddons = 0}
+		mOutfit = {lookType = 0, lookBody = 0, lookLegs = 0, lookFeet = 0, lookAddons = 0}
 	end
 
 	local msg = NetworkMessage()
@@ -245,7 +247,7 @@ end
 
 function sendPreyData(player, indexColumn)
 	local isUnlockedColumn = player:isOpenColumn(indexColumn)
-	if (not isUnlockedColumn) and (not player:isPremium()) then
+	if (not isUnlockedColumn) then
 		-- STATE_LOCKED
 		changeStateToLocked(player, indexColumn)
 	elseif (player:isActive(indexColumn)) then
@@ -287,10 +289,18 @@ function CheckPrey(player, msg)
 	local PreyAction = msg:getByte() -- Type Action (2 == select)
 
 	if (PreyAction == 0) then
+		if (getUnlockedColumn(player) < PreyColumn) then
+			return sendError(player, "[ERROR] You don't have this column unlocked.")
+		end
+		
 		player:preyRerollList(PreyColumn)
 	elseif (PreyAction == 1) then
+		if (getUnlockedColumn(player) < PreyColumn) then
+			return sendError(player, "[ERROR] You don't have this column unlocked.")
+		end
+
 		if (player:isBonusReroll(PreyColumn)) then
-			return sendError(player, "Are you fucking kidding me? Do you really wanna try bug my system? Get out of here little sniffer.")
+			return sendError(player, "Are you fucking kidding me? Do you really wanna try bug my system? get out of here little sniffer.")
 		end
 
 		-- Bonus Reroll
@@ -298,18 +308,18 @@ function CheckPrey(player, msg)
 	elseif (PreyAction == 2) then
 		local PreyIndex = msg:getByte() -- monster index
 		--print(PreyColumn.. " e " ..PreyAction.. " e " ..PreyIndex)
-		if (getUnlockedColumn(player) < PreyColumn) and (not player:isPremium()) then
-			return sendError(player, "An internal error ocurred.")
+		if (getUnlockedColumn(player) < PreyColumn) then
+			return sendError(player, "[ERROR] You don't have this column unlocked.")
 		end
 
 		local mName = getMonsterName(player, PreyColumn, PreyIndex)
 		if (not mName) then
-			return sendError(player, "An internal error ocurred.")
+			return sendError(player, "[ERROR] Monster name don't exists in list.")
 		end
 
 		local mType = MonsterType(mName)
 		if (not mType) then
-			return sendError(player, "An internal error ocurred.")
+			return sendError(player, "[ERROR] This monster don't exists in Server.")
 		end
 
 		SelectPrey(player, PreyColumn, mType)
@@ -323,7 +333,7 @@ local function getBonusValue(min, max, steps, bonusReroll)
 
 	local retValue = 0
 	local retGrade = 0
-	local random = math.random(1, 10)
+	local random = math.random(7, 10)
 	while (retValue == 0) do
 		if (retGrade >= 10) then
 			retGrade = 0
@@ -416,7 +426,7 @@ function SelectPrey(player, PreyColumn, mType)
 
 	local mLook = mType:getOutfit()
 	if (not mLook) then
-		return sendError(player, "An internal error ocurred.")
+		return sendError(player, "[ERROR] Monster is invalid, please contact Administrator.")
 	end
 
 	local newBonus = nil
@@ -428,7 +438,7 @@ function SelectPrey(player, PreyColumn, mType)
 	end
 
 	if (not newBonus) then
-		return sendError(player, "An internal error ocurred.")
+		return sendError(player, "[ERROR] You can't select a prey with bonus active.")
 	end
 
 	player:setPreyStamina(PreyColumn, 7200)
@@ -476,11 +486,16 @@ function Player.getRerollPrice(self)
 end
 
 function Player.preyRerollList(self, column)
+if (self:getExhaustion(5042021) > 0) then
+		return addEvent(function() sendError(self, "[ERROR] Wait a time!") end, 250)
+	end
+
+	self:setExhaustion(5042021, 2)
 	local rerollStorage = RerollStorages[column]
 	if (self:getStorageValue(rerollStorage) > 0) then
 		local priceReroll = self:getRerollPrice()
 		if (not self:removeMoneyNpc(self:getRerollPrice())) then
-			sendError(self, "An internal error ocurred.")
+			sendError(self, "[ERROR] You don't have " ..priceReroll.. " gold.")
 		end
 	end
 
@@ -580,11 +595,11 @@ end
 function Player.bonusReroll(self, column)
 	local bonusReroll = self:getBonusReroll()
 	if (bonusReroll == 0) then
-		return sendError(self, "An internal error ocurred.")
+		return sendError(self, "[ERROR] You don't have Bonus Reroll.")
 	end
 
 	if (not self:isActive(column)) then
-		return sendError(self, "An internal error ocurred.")
+		return sendError(self, "[ERROR] You don't have a active bonus.")
 	end
 
 	local bonusMonster = self:getBonusMonster(column)

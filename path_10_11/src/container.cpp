@@ -89,6 +89,26 @@ Container* Container::getParentContainer()
 	return thing->getContainer();
 }
 
+Container* Container::getTopParentContainer() const
+{
+	Thing* thing = getParent();
+	Thing* prevThing = const_cast<Container*>(this);
+	if (!thing) {
+		return prevThing->getContainer();
+	}
+
+	while (thing->getParent() != nullptr && thing->getParent()->getContainer()) {
+		prevThing = thing;
+		thing = thing->getParent();
+	}
+
+	if (prevThing) {
+		return prevThing->getContainer();
+	}
+
+	return thing->getContainer();
+}
+
 bool Container::hasParent() const
 {
 	return getID() != ITEM_BROWSEFIELD && dynamic_cast<const Player*>(getParent()) == nullptr;
@@ -207,6 +227,17 @@ uint32_t Container::getItemHoldingCount() const
 	return counter;
 }
 
+uint32_t Container::getContainerHoldingCount() const
+{
+	uint32_t counter = 0;
+	for (ContainerIterator it = iterator(); it.hasNext(); it.advance()) {
+		if ((*it)->getContainer()) {
+			++counter;
+		}
+	}
+	return counter;
+}
+
 bool Container::isHoldingItem(const Item* item) const
 {
 	for (ContainerIterator it = iterator(); it.hasNext(); it.advance()) {
@@ -316,6 +347,26 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 			}
 
 			cylinder = cylinder->getParent();
+		}
+	}
+
+	if (const Container* topParentContainer = getTopParentContainer()) {
+		uint32_t maxItem = static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_ITEM));
+		if (const Container* addContainer = item->getContainer()) {
+			uint32_t addContainerCount = addContainer->getContainerHoldingCount() + 1;
+			uint32_t maxContainer = static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_CONTAINER));
+			if (addContainerCount + topParentContainer->getContainerHoldingCount() > maxContainer) {
+				return RETURNVALUE_NOTPOSSIBLE;
+			}
+
+			uint32_t addItemCount = addContainer->getItemHoldingCount() + 1;
+			if (addItemCount + topParentContainer->getItemHoldingCount() > maxItem) {
+				return RETURNVALUE_NOTPOSSIBLE;
+			}
+		}
+
+		if (topParentContainer->getItemHoldingCount() + 1 > maxItem) {
+			return RETURNVALUE_NOTPOSSIBLE;
 		}
 	}
 
@@ -441,20 +492,6 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 		return this;
 	}
 
-	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
-	if (autoStack && item->isStackable() && item->getParent() != this) {
-		//try find a suitable item to stack with
-		uint32_t n = 0;
-		for (Item* listItem : itemlist) {
-			if (listItem != item && listItem->equals(item) && listItem->getItemCount() < 100) {
-				*destItem = listItem;
-				index = n;
-				return this;
-			}
-			++n;
-		}
-	}
-
 	if (index != INDEX_WHEREEVER) {
 		Item* itemFromIndex = getItemByIndex(index);
 		if (itemFromIndex) {
@@ -466,6 +503,20 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 			index = INDEX_WHEREEVER;
 			*destItem = nullptr;
 			return subCylinder;
+		}
+	}
+
+	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
+	if (autoStack && item->isStackable() && item->getParent() != this) {
+		//try find a suitable item to stack with
+		uint32_t n = 0;
+		for (Item* listItem : itemlist) {
+			if (listItem != item && listItem->equals(item) && listItem->getItemCount() < 100) {
+				*destItem = listItem;
+				index = n;
+				return this;
+			}
+			++n;
 		}
 	}
 	return this;
@@ -688,6 +739,19 @@ void Container::startDecaying()
 	for (Item* item : itemlist) {
 		item->startDecaying();
 	}
+}
+
+uint16_t Container::getFreeSlots() const
+{
+	uint16_t counter = std::max<uint16_t>(0, capacity() - size());
+
+	for (Item* item : itemlist) {
+		if (Container* container = item->getContainer()) {
+			counter += std::max<uint16_t>(0, container->getFreeSlots());
+		}
+	}
+
+	return counter;
 }
 
 ContainerIterator Container::iterator() const

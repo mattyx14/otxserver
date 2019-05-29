@@ -103,7 +103,7 @@ local Imbuements = {
 		Description = "converts % of damage to HP with a chance of 100%.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {5, 10, 25},
-		Weapons = {"axe", "club", "sword", "wand", "rod", "bow", "armor"},
+		Weapons = {"axe", "club", "sword", "wand", "rod", "especial", "bow", "crossbow", "armor"},
 		Items = {{10602, 25}, {10550, 15}, {10580, 5}}
 	},
 	{
@@ -114,7 +114,7 @@ local Imbuements = {
 		Description = "converts % of damage to MP with a chance of 100%.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {3, 5, 8},
-		Weapons = {"axe", "club", "sword", "wand", "rod", "bow", "helmet"},
+		Weapons = {"axe", "club", "sword", "wand", "rod", "especial", "bow", "crossbow", "helmet"},
 		Items = {{12448, 25}, {22534, 25}, {25386, 5}}
 	},
 	{
@@ -125,7 +125,7 @@ local Imbuements = {
 		Description = "raises crit hit damage by % and crit hit chance by 10%.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {15, 25, 50},
-		Weapons = {"axe", "club", "sword", "bow"},
+		Weapons = {"axe", "club", "sword", "bow", "crossbow", "especial"},
 		Items = {{12400, 20}, {11228, 25}, {25384, 5}}
 	},
 	{
@@ -136,7 +136,7 @@ local Imbuements = {
 		Description = "reduces death damage by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {3, 8, 15},
-		Weapons = {"armor", "shield"},
+		Weapons = {"armor", "spellbooks"},
 		Items = {{12422, 25}, {24663, 20}, {10577, 5}}
 	},
 	{
@@ -147,7 +147,7 @@ local Imbuements = {
 		Description = "reduces earth damage by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {3, 8, 15},
-		Weapons = {"armor", "shield"},
+		Weapons = {"armor", "spellbooks"},
 		Items = {{20103, 25}, {10611, 20}, {12658, 10}}
 	},
 	{
@@ -158,7 +158,7 @@ local Imbuements = {
 		Description = "reduces fire damage by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {3, 8, 15},
-		Weapons = {"armor", "shield"},
+		Weapons = {"armor", "spellbooks"},
 		Items = {{5877, 25}, {18425, 10}, {12614, 5}}
 	},
 	{
@@ -169,7 +169,7 @@ local Imbuements = {
 		Description = "reduces ice damage by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {3, 8, 15},
-		Weapons = {"armor", "shield"},
+		Weapons = {"armor", "spellbooks"},
 		Items = {{11212, 25}, {11224, 15}, {15425, 10}}
 	},
 	{
@@ -180,7 +180,7 @@ local Imbuements = {
 		Description = "reduces energy damage by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {3, 8, 15},
-		Weapons = {"armor", "shield"},
+		Weapons = {"armor", "spellbooks"},
 		Items = {{10561, 25}, {15482, 15}, {10582, 10}}
 	},
 	{
@@ -191,7 +191,7 @@ local Imbuements = {
 		Description = "reduces holy damage by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {3, 8, 15},
-		Weapons = {"armor", "shield"},
+		Weapons = {"armor", "spellbooks"},
 		Items = {{10556, 25}, {10555, 25}, {11221, 20}}
 	},
 	{
@@ -246,7 +246,7 @@ local Imbuements = {
 		Description = "raises distance fighting skill by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {1, 2, 4},
-		Weapons = {"bow", "helmet"},
+		Weapons = {"bow", "crossbow", "helmet"},
 		Items = {{12420, 25}, {21311, 20}, {11215, 10}}
 	},
 	{
@@ -257,7 +257,7 @@ local Imbuements = {
 		Description = "raises shielding skill by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {1, 2, 4},
-		Weapons = {"shield", "helmet"},
+		Weapons = {"shield", "helmet", "spellbooks"},
 		Items = {{10558, 20}, {12659, 25}, {22533, 25}}
 	},
 	{
@@ -268,7 +268,7 @@ local Imbuements = {
 		Description = "raises magic level by %.",
 		Levels = {"Basic", "Intricate", "Powerful"},
 		LevelsPercent = {1, 2, 4},
-		Weapons = {"wand", "rod", "helmetmage"},
+		Weapons = {"wand", "rod", "helmetmage", "especial"},
 		Items = {{10552, 25}, {12408, 15}, {11226, 15}}
 	},
 	{
@@ -285,18 +285,22 @@ local Imbuements = {
 }
 
 local Weapons = {
-	["armor"] = {21692, 2500, 2656, 2464, 2487, 2494, 15407, 2492, 2503, 12607, 2505, 2466, 23538, 10296, 2476, 3968, 2472, 7463, 8888, 23537, 2486, 15406, 8891, 18404},
-	["shield"] = {2528, 2537, 2518, 15491, 2534, 2535, 2536, 2542, 2539, 2519, 2520, 25382, 25414, 15411, 2516, 2514, 2522, 2533, 2531, 21707, 10289, 6433, 6391, 7460, 2524, 15413, 21697, 3974, 12644, 10297, 10294, 2509, 10364, 15453, 25411, 2217, 2175, 8900, 8901, 29003, 22422, 22423, 22424},
-	["boots"] = {9931, 3982, 15410, 2646, 24637, 5462, 18406, 2645, 25412, 21708},
-	["helmet"] = {2499, 2139, 3972, 2458, 2491, 2497, 2493, 2502, 12645, 7458, 2471, 10298, 10299, 20132, 2662, 10291, 2498, 24848, 5741, 25410, 2475, 11302},
-	["helmetmage"] = {10016, 2323, 12630, 11368, 8820, 10570, 9778},
-	["bow"] = {8855, 7438, 15643, 21696, 10295, 18454, 25522, 8857, 8854, 22416, 22417, 22418, 8850, 8851, 8852, 8853, 2455, 8849, 25523, 16111, 21690, 22419, 22420, 22421, 25885, 25886, 25943, 25947, 25983, 25987},
-	["backpack"] = {1988, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 3940, 5801, 3960, 5926, 5949, 7342, 9774, 10518, 10519, 10521, 10522, 11119, 11241, 11243, 11244, 11263, 15645, 15646, 16007, 18393, 18394, 21475, 22696, 23666, 23816, 24740, 26181, 27061, 27063},
-	["wand"] = {8920, 8921, 8922, 2191, 29006, 29004, 25887, 25951, 25991},
-	["rod"] = {8910, 8911, 24839, 29006, 29004, 25888, 25955, 25995},
-	["axe"] = {2429, 2454, 2426, 2427, 2414, 2415, 2443, 7380, 7389, 11323, 7455, 2447, 7412, 8926, 7419, 7453, 2430, 2435, 3962, 15451, 7434, 7435, 6553, 15492, 7456, 8925, 18451, 2431, 8924, 25931, 11305, 25383, 22404, 22405, 22407, 22408, 22409, 25881, 25882, 25927, 25931, 25967, 25971},
-	["club"] = {2391, 2423, 7415, 2445, 7424, 2452, 2444, 7426, 7414, 7452, 7429, 7421, 15414, 7410, 15647, 20093, 7430, 7431, 23543, 2453, 8929, 12648, 7423, 2436, 2424, 7451, 7437, 2421, 8928, 18452, 25418, 22410, 22411, 22412, 22413, 22414, 22415, 25883, 25884, 25935, 25939},
-	["sword"] = {7407, 2393, 2383, 7382, 7383, 7384, 7385, 7403, 2413, 7405, 7406, 7391, 7392, 11309, 12613, 7417, 2376, 2400, 7404, 7402, 12649, 2438, 8930, 2451, 11395, 2407, 7416, 11307, 7418, 6528, 7408, 18465, 8931, 22398, 22399, 22400, 22401, 22402, 22403, 25879, 25880, 25919, 25923, 25959, 25963}
+	["armor"] = {21692, 2500, 2656, 2464, 2487, 2494, 15407, 2492, 2503, 12607, 2505, 32419, 30883, 2466, 23538, 10296, 2476, 3968, 2472, 7463, 8888, 23537, 2486, 15406, 8891, 18404}, -- ok
+	["shield"] = {2537, 2518, 15491, 2535, 2519, 25414, 2520, 15411, 2516, 32422, 32421, 30885, 2522, 2533, 21707, 2514, 10289, 2536, 6433, 6391, 7460, 2524, 15413, 2539, 25382, 21697, 3974, 10297, 12644, 10294, 2509, 2542, 2528, 2534, 2531, 15453}, -- ok
+	["boots"] = {24742, 2195, 2644, 9931, 3982, 11117, 15410, 11118, 12646, 7457, 7892, 2646, 11240, 2643, 7893, 7891, 23540, 24637, 2641, 5462, 18406, 2642, 2645, 7886, 25412, 21708, 11303}, --ok
+	["helmet"] = {2499, 2139, 3972, 2458, 2491, 2497, 2493, 2502, 12645, 32414, 32415, 7458, 30882, 2471, 10299, 20132, 10298, 2662, 10291, 2498, 24848, 5741, 25410, 2475, 11302}, --ok
+	["helmetmage"] = {10016, 2323, 11368, 8820, 10570, 9778}, -- ok
+	["bow"] = {25946, 30690, 8855, 7438, 32418, 15643, 21696, 10295, 18454, 25522, 8857, 22417, 22418, 8854}, -- ok
+	["crossbow"] = {25950, 8850, 2455, 30691, 8849, 25523, 8851, 8852, 8853, 16111, 21690, 22420, 22421}, -- ok
+	["backpack"] = {1988, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2365, 3940, 3960, 5801, 5926, 5949, 7342, 9774, 10518, 10519, 10521, 10522, 11119, 11241, 11243, 11244, 11263, 15645, 15646, 16007, 18393, 18394, 21475, 22696, 23666, 23816, 24740, 26181, 27061, 27063, 35056, 33318},
+	["wand"] = {2191, 8920, 8921, 8922}, --ok
+	["rod"] = {8910, 8911, 24839}, --ok
+	["axe"] = {30686, 2429, 3962, 7412, 30687, 18451, 8926, 2414, 11305, 7419, 2435, 7453, 32424, 2415, 2427, 7380, 8924, 7389, 15492, 7435, 2430, 7455, 7456, 2443, 25383, 7434, 6553, 8925, 2431, 2447, 22405, 22408, 22406, 22409, 2454, 15451, 11323}, --ok
+	["club"] = {7414, 7426, 2453, 7429, 2423, 7415, 2445, 15647, 7431, 7430, 32425, 23543, 30689, 2444, 2452, 20093, 7424, 30688, 25418, 18452, 8928, 7421, 7392, 15414, 7410, 7437, 7451, 2424, 2436, 7423, 12648, 7452, 8929, 22414, 22411, 22415, 22412, 2421, 2391}, --ok
+	["sword"] = {7404, 7403, 7406, 12649, 30684, 7416, 2407, 2413, 7385, 7382, 2451, 7402, 8930, 2438, 32423, 2393, 30886, 7407, 7405, 2400, 7384, 7418, 7383, 7417, 18465, 30685, 2383, 2376, 7391, 6528, 8931, 12613, 11309, 22399, 22403, 22400, 22402, 7408, 11307}, --ok
+	["spellbooks"] = {25411, 2175, 8900, 8901, 22423, 22424, 29004}, -- ok
+	["especial"] = {32417, 32416, 30693, 30692} --ok falcon and destruction rod/wand crit
+
 }
 
 local ImbuingInfo = {
@@ -325,6 +329,31 @@ local ClientPackets = {
 	ApplyImbuement = 0xD5,
 	ClearImbuement = 0xD6
 }
+
+local enablingStorages = {
+	["shroud"] = Storage.ForgottenKnowledge.LadyTenebrisKilled,
+	["reap"] = Storage.ForgottenKnowledge.LadyTenebrisKilled,
+	["vampirism"] = Storage.ForgottenKnowledge.LadyTenebrisKilled,
+	["cloud fabric"] = Storage.ForgottenKnowledge.LloydKilled,
+	["electrify"] = Storage.ForgottenKnowledge.LloydKilled,
+	["swiftness"] = Storage.ForgottenKnowledge.LloydKilled,
+	["snake skin"] = Storage.ForgottenKnowledge.ThornKnightKilled,
+	["venom"] = Storage.ForgottenKnowledge.ThornKnightKilled,
+	["slash"] = Storage.ForgottenKnowledge.ThornKnightKilled,
+	["chop"] = Storage.ForgottenKnowledge.ThornKnightKilled,
+	["bash"] = Storage.ForgottenKnowledge.ThornKnightKilled,
+	["dragon hide"] = Storage.ForgottenKnowledge.DragonkingKilled,
+	["scorch"] = Storage.ForgottenKnowledge.DragonkingKilled,
+	["void"] = Storage.ForgottenKnowledge.DragonkingKilled,
+	["quara scale"] = Storage.ForgottenKnowledge.HorrorKilled,
+	["frost"] = Storage.ForgottenKnowledge.HorrorKilled,
+	["blockade"] = Storage.ForgottenKnowledge.HorrorKilled,
+	["demon presence"] = Storage.ForgottenKnowledge.TimeGuardianKilled,
+	["precision"] = Storage.ForgottenKnowledge.TimeGuardianKilled,
+	["strike"] = Storage.ForgottenKnowledge.LastLoreKilled,
+	["epiphany"] = Storage.ForgottenKnowledge.LastLoreKilled,
+}
+
 
 function onRecvbyte(player, msg, byte)
 	if (byte == ClientPackets.ApplyImbuement) then
@@ -374,11 +403,16 @@ local function getEquipById(id)
 	return nil
 end
 
-local function getImbuementEquip(equip)
+local function getImbuementEquip(equip, pid)
 	local tableReturn = {}
+	local player = Player(pid)
+
 	for i = 1, #Imbuements do
 		if (tableContains(Imbuements[i].Weapons, equip)) then
-			tableReturn[#tableReturn+1] = Imbuements[i]
+			local storageNeeded = enablingStorages[Imbuements[i].Name:lower()]
+			if player:getStorageValue(storageNeeded) > 0 then
+				tableReturn[#tableReturn+1] = Imbuements[i]
+			end
 		end
 	end
 
@@ -447,7 +481,7 @@ function Player.applyImbuement(self, msg)
 	end
 
 	local slot, choiceId, useProtection = msg:getByte(), msg:getU32(), msg:getByte()
-	local myImbuements = getImbuementEquip(getEquipById(item:getId()))
+	local myImbuements = getImbuementEquip(getEquipById(item:getId()),self:getId())
 	local imbuingLevel = 0
 	local imbuementNow, index = nil, 0
 
@@ -563,17 +597,10 @@ function Player.openImbuementWindow(self, item)
 		return false
 	end
 
-	for slot = 1, 10 do
-		if (self:getSlotItem(slot) and self:getSlotItem(slot):getUniqueId() == item:getUniqueId()) then
-			self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot imbue an equipped item.")
-			return false
-		end
-	end
-
 	local msg = NetworkMessage()
 	local itemID = item:getId()
 	local equip = getEquipById(item:getId())
-	local myImbuements = getImbuementEquip(equip)
+	local myImbuements = getImbuementEquip(equip,self:getId())
 	local imbuingSlots = item:getType():getImbuingSlots()
 	lastItemImbuing[self:getGuid()] = item
 
@@ -721,3 +748,4 @@ function Item:getImbuementPercent(name)
 
 	return nil
 end
+

@@ -186,13 +186,13 @@ class ProtocolGame final : public ProtocolGameBase
 		void disconnectClient(const std::string& message) const;
 		void writeToOutputBuffer(const NetworkMessage& msg, bool broadcast = true) final;
 
-		void release() override;
+		void release() final;
 
 		void checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown);
 
 		// we have all the parse methods
-		void parsePacket(NetworkMessage& msg) override;
-		void onRecvFirstMessage(NetworkMessage& msg) override;
+		void parsePacket(NetworkMessage& msg) final;
+		void onRecvFirstMessage(NetworkMessage& msg) final;
 
 		//Parse methods
 		void parseAutoWalk(NetworkMessage& msg);
@@ -312,7 +312,6 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendSaleItemList(const std::list<ShopInfo>& shop);
 		void sendMarketEnter(uint32_t depotId);
 		void updateCoinBalance();
-		void sendCoinBalance();
 		void sendMarketLeave();
 		void sendMarketBrowseItem(uint16_t itemId, const MarketOfferList& buyOffers, const MarketOfferList& sellOffers);
 		void sendMarketAcceptOffer(const MarketOfferEx& offer);
@@ -337,8 +336,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendSpellCooldown(uint8_t spellId, uint32_t time);
 		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time);
 
-		void sendCoinBalanceUpdating(bool updating);
-		void sendUpdatedCoinBalance();
+		void sendCoinBalance();
 
 		void sendOpenStore(uint8_t serviceType);
 		void sendStoreCategoryOffers(StoreCategory* category);

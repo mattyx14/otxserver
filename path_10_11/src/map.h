@@ -56,7 +56,7 @@ class AStarNodes
 		AStarNodes(uint32_t x, uint32_t y);
 
 		AStarNode* createOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f);
-		AStarNode* getBestNode();
+		AStarNode* getBestNode(const Position& targetPos);
 		void closeNode(AStarNode* node);
 		void openNode(AStarNode* node);
 		int_fast32_t getClosedNodes() const;
@@ -127,10 +127,9 @@ class QTreeNode
 		QTreeLeafNode* createLeaf(uint32_t x, uint32_t y, uint32_t level);
 
 	protected:
-		bool leaf = false;
-
-	private:
 		QTreeNode* child[4] = {};
+
+		bool leaf = false;
 
 		friend class Map;
 };
@@ -153,7 +152,7 @@ class QTreeLeafNode final : public QTreeNode
 		void addCreature(Creature* c);
 		void removeCreature(Creature* c);
 
-	private:
+	protected:
 		static bool newLeaf;
 		QTreeLeafNode* leafS = nullptr;
 		QTreeLeafNode* leafE = nullptr;
@@ -221,8 +220,8 @@ class Map
 		void moveCreature(Creature& creature, Tile& newTile, bool forceTeleport = false);
 
 		void getSpectators(SpectatorHashSet& spectators, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
-		                   int32_t minRangeX = 0, int32_t maxRangeX = 0,
-		                   int32_t minRangeY = 0, int32_t maxRangeY = 0);
+						   int32_t minRangeX = 0, int32_t maxRangeX = 0,
+						   int32_t minRangeY = 0, int32_t maxRangeY = 0);
 
 		void clearSpectatorCache();
 
@@ -236,7 +235,7 @@ class Map
 		  *	\returns The result if you can throw there or not
 		  */
 		bool canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight = true,
-		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY) const;
+							  int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY) const;
 
 		/**
 		  * Checks if path is clear from fromPos to toPos
@@ -251,8 +250,8 @@ class Map
 
 		const Tile* canWalkTo(const Creature& creature, const Position& pos) const;
 
-		bool getPathMatching(const Creature& creature, std::forward_list<Direction>& dirList,
-		                     const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const;
+		bool getPathMatching(const Creature& creature, const Position& targetPos, std::forward_list<Direction>& dirList,
+ 		const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const;
 
 		std::map<std::string, Position> waypoints;
 
@@ -263,8 +262,7 @@ class Map
 		Spawns spawns;
 		Towns towns;
 		Houses houses;
-
-	private:
+	protected:
 		SpectatorCache spectatorCache;
 		SpectatorCache playersSpectatorCache;
 
@@ -278,9 +276,9 @@ class Map
 
 		// Actually scans the map for spectators
 		void getSpectatorsInternal(SpectatorHashSet& spectators, const Position& centerPos,
-		                           int32_t minRangeX, int32_t maxRangeX,
-		                           int32_t minRangeY, int32_t maxRangeY,
-		                           int32_t minRangeZ, int32_t maxRangeZ, bool onlyPlayers) const;
+								   int32_t minRangeX, int32_t maxRangeX,
+								   int32_t minRangeY, int32_t maxRangeY,
+								   int32_t minRangeZ, int32_t maxRangeZ, bool onlyPlayers) const;
 
 		friend class Game;
 		friend class IOMap;

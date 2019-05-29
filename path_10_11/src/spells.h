@@ -27,11 +27,12 @@
 #include "baseevents.h"
 
 class InstantSpell;
-class ConjureSpell;
 class RuneSpell;
 class Spell;
 
 using VocSpellMap = std::map<uint16_t, bool>;
+using InstantSpell_ptr = std::unique_ptr<InstantSpell>;
+using RuneSpell_ptr = std::unique_ptr<RuneSpell>;
 
 class Spells final : public BaseEvents
 {
@@ -50,7 +51,6 @@ class Spells final : public BaseEvents
 		InstantSpell* getInstantSpell(const std::string& words);
 		InstantSpell* getInstantSpellByName(const std::string& name);
 
-		uint32_t getInstantSpellCount(const Player* player) const;
 		InstantSpell* getInstantSpellById(uint32_t spellId);
 
 		TalkActionResult_t playerSaySpell(Player* player, std::string& words);
@@ -58,18 +58,22 @@ class Spells final : public BaseEvents
 		static Position getCasterPosition(Creature* creature, Direction dir);
 		std::string getScriptBaseName() const override;
 
-		const std::map<std::string, InstantSpell*>& getInstantSpells() const {
+		const std::map<std::string, InstantSpell>& getInstantSpells() const {
 			return instants;
 		};
 
-	private:
-		void clear() override;
-		LuaScriptInterface& getScriptInterface() override;
-		Event* getEvent(const std::string& nodeName) override;
-		bool registerEvent(Event* event, const pugi::xml_node& node) override;
+		void clearMaps(bool fromLua);
+		void clear(bool fromLua) override final;
+		bool registerInstantLuaEvent(InstantSpell* event);
+		bool registerRuneLuaEvent(RuneSpell* event);
 
-		std::map<uint16_t, RuneSpell*> runes;
-		std::map<std::string, InstantSpell*> instants;
+	private:
+		LuaScriptInterface& getScriptInterface() override;
+		Event_ptr getEvent(const std::string& nodeName) override;
+		bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
+
+		std::map<uint16_t, RuneSpell> runes;
+		std::map<std::string, InstantSpell> instants;
 
 		friend class CombatSpell;
 		LuaScriptInterface scriptInterface { "Spell Interface" };
@@ -131,42 +135,161 @@ class Spell : public BaseSpell
 		const std::string& getName() const {
 			return name;
 		}
+		void setName(std::string n) {
+			name = n;
+		}
+		uint8_t getId() const {
+			return spellId;
+		}
+		void setId(uint8_t id) {
+			spellId = id;
+		}
 
-		void postCastSpell(Player* player, bool finishedSpell = true, bool payCost = true) const;
+		void postCastSpell(Player* player, bool finishedCast = true, bool payCost = true) const;
 		static void postCastSpell(Player* player, uint32_t manaCost, uint32_t soulCost);
 
 		uint32_t getManaCost(const Player* player) const;
 		uint32_t getSoulCost() const {
 			return soul;
 		}
+		void setSoulCost(uint32_t s) {
+			soul = s;
+		}
 		uint32_t getLevel() const {
 			return level;
+		}
+		void setLevel(uint32_t lvl) {
+			level = lvl;
 		}
 		uint32_t getMagicLevel() const {
 			return magLevel;
 		}
+		void setMagicLevel(uint32_t lvl) {
+			magLevel = lvl;
+		}
 		uint32_t getMana() const {
 			return mana;
+		}
+		void setMana(uint32_t m) {
+			mana = m;
 		}
 		uint32_t getManaPercent() const {
 			return manaPercent;
 		}
+		void setManaPercent(uint32_t m) {
+			manaPercent = m;
+		}
 		bool isPremium() const {
 			return premium;
+		}
+		void setPremium(bool p) {
+			premium = p;
+		}
+		bool isEnabled() const {
+			return enabled;
+		}
+		void setEnabled(bool e) {
+			enabled = e;
 		}
 
 		virtual bool isInstant() const = 0;
 		bool isLearnable() const {
 			return learnable;
 		}
-
-		static ReturnValue CreateIllusion(Creature* creature, const Outfit_t& outfit, int32_t time);
-		static ReturnValue CreateIllusion(Creature* creature, const std::string& name, int32_t time);
-		static ReturnValue CreateIllusion(Creature* creature, uint32_t itemId, int32_t time);
+		void setLearnable(bool l) {
+			learnable = l;
+		}
 
 		const VocSpellMap& getVocMap() const {
 			return vocSpellMap;
 		}
+		void addVocMap(uint16_t n, bool b) {
+			vocSpellMap[n] = b;
+		}
+
+		const SpellGroup_t getGroup() const {
+			return group;
+		}
+		void setGroup(SpellGroup_t g) {
+			group = g;
+		}
+		const SpellGroup_t getSecondaryGroup() const {
+			return secondaryGroup;
+		}
+		void setSecondaryGroup(SpellGroup_t g) {
+			secondaryGroup = g;
+		}
+
+		uint32_t getCooldown() const {
+			return cooldown;
+		}
+		void setCooldown(uint32_t cd) {
+			cooldown = cd;
+		}
+		uint32_t getSecondaryCooldown() const {
+			return secondaryGroupCooldown;
+		}
+		void setSecondaryCooldown(uint32_t cd) {
+			secondaryGroupCooldown = cd;
+		}
+		uint32_t getGroupCooldown() const {
+			return groupCooldown;
+		}
+		void setGroupCooldown(uint32_t cd) {
+			groupCooldown = cd;
+		}
+
+		int32_t getRange() const {
+			return range;
+		}
+		void setRange(int32_t r) {
+			range = r;
+		}
+
+		bool getNeedTarget() const {
+			return needTarget;
+		}
+		void setNeedTarget(bool n) {
+			needTarget = n;
+		}
+		bool getNeedWeapon() const {
+			return needWeapon;
+		}
+		void setNeedWeapon(bool n) {
+			needWeapon = n;
+		}
+		bool getNeedLearn() const {
+			return learnable;
+		}
+		void setNeedLearn(bool n) {
+			learnable = n;
+		}
+		bool getSelfTarget() const {
+			return selfTarget;
+		}
+		void setSelfTarget(bool s) {
+			selfTarget = s;
+		}
+		bool getBlockingSolid() const {
+			return blockingSolid;
+		}
+		void setBlockingSolid(bool b) {
+			blockingSolid = b;
+		}
+		bool getBlockingCreature() const {
+			return blockingCreature;
+		}
+		void setBlockingCreature(bool b) {
+			blockingCreature = b;
+		}
+		bool getAggressive() const {
+			return aggressive;
+		}
+		void setAggressive(bool a) {
+			aggressive = a;
+		}
+
+		SpellType_t spellType = SPELL_UNDEFINED;
 
 	protected:
 		bool playerSpellCheck(Player* player) const;
@@ -184,13 +307,6 @@ class Spell : public BaseSpell
 		uint32_t level = 0;
 		uint32_t magLevel = 0;
 		int32_t range = -1;
-		int32_t fist = 0;
-		int32_t club = 0;
-		int32_t sword = 0;
-		int32_t axe = 0;
-		int32_t distance = 0;
-		int32_t shield = 0;
-		int32_t fish = 0;
 
 		uint8_t spellId = 0;
 
@@ -216,7 +332,7 @@ class Spell : public BaseSpell
 		std::string name;
 };
 
-class InstantSpell : public TalkAction, public Spell
+class InstantSpell final : public TalkAction, public Spell
 {
 	public:
 		explicit InstantSpell(LuaScriptInterface* interface) : TalkAction(interface) {}
@@ -237,8 +353,32 @@ class InstantSpell : public TalkAction, public Spell
 		bool getHasParam() const {
 			return hasParam;
 		}
+		void setHasParam(bool p) {
+			hasParam = p;
+		}
 		bool getHasPlayerNameParam() const {
 			return hasPlayerNameParam;
+		}
+		void setHasPlayerNameParam(bool p) {
+			hasPlayerNameParam = p;
+		}
+		bool getNeedDirection() const {
+			return needDirection;
+		}
+		void setNeedDirection(bool n) {
+			needDirection = n;
+		}
+		bool getNeedCasterTargetOrDirection() const {
+			return casterTargetOrDirection;
+		}
+		void setNeedCasterTargetOrDirection(bool d) {
+			casterTargetOrDirection = d;
+		}
+		bool getBlockWalls() const {
+			return checkLineOfSight;
+		}
+		void setBlockWalls(bool w) {
+			checkLineOfSight = w;
 		}
 		bool canCast(const Player* player) const;
 		bool canThrowSpell(const Creature* creature, const Creature* target) const;
@@ -255,40 +395,12 @@ class InstantSpell : public TalkAction, public Spell
 		bool casterTargetOrDirection = false;
 };
 
-class ConjureSpell final : public InstantSpell
-{
-	public:
-		explicit ConjureSpell(LuaScriptInterface* interface) : InstantSpell(interface) {}
-
-		bool configureEvent(const pugi::xml_node& node) override;
-		bool loadFunction(const pugi::xml_attribute& attr) override;
-
-		virtual bool playerCastInstant(Player* player, std::string& param);
-
-		bool castSpell(Creature*) override {
-			return false;
-		}
-		bool castSpell(Creature*, Creature*) override {
-			return false;
-		}
-
-	private:
-		std::string getScriptEventName() const override;
-
-		bool conjureItem(Creature* creature) const;
-
-		uint32_t conjureId = 0;
-		uint32_t conjureCount = 1;
-		uint32_t reagentId = 0;
-};
-
 class RuneSpell final : public Action, public Spell
 {
 	public:
 		explicit RuneSpell(LuaScriptInterface* interface) : Action(interface) {}
 
 		bool configureEvent(const pugi::xml_node& node) override;
-		bool loadFunction(const pugi::xml_attribute& attr) override;
 
 		ReturnValue canExecuteAction(const Player* player, const Position& toPos) override;
 		bool hasOwnErrorHandler() override {
@@ -312,15 +424,27 @@ class RuneSpell final : public Action, public Spell
 		uint16_t getRuneItemId() const {
 			return runeId;
 		}
+		void setRuneItemId(uint16_t i) {
+			runeId = i;
+		}
+		uint32_t getCharges() const {
+			return charges;
+		}
+		void setCharges(uint32_t c) {
+			if (c > 0) {
+				hasCharges = true;
+			}
+			charges = c;
+		}
 
 	private:
 		std::string getScriptEventName() const override;
 
 		bool internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
 
-		RuneSpellFunction runeFunction;
 		uint16_t runeId = 0;
-		bool hasCharges = true;
+		uint32_t charges = 0;
+		bool hasCharges = false;
 };
 
 #endif

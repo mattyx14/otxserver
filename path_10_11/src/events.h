@@ -40,6 +40,7 @@ class Events
 		int32_t partyOnJoin = -1;
 		int32_t partyOnLeave = -1;
 		int32_t partyOnDisband = -1;
+		int32_t partyOnShareExperience = -1;
 
 		// Player
 		int32_t playerOnBrowseField = -1;
@@ -49,6 +50,7 @@ class Events
 		int32_t playerOnLookInShop = -1;
 		int32_t playerOnMove = -1;
 		int32_t playerOnMoveItem = -1;
+		int32_t playerOnItemMoved = -1;
 		int32_t playerOnMoveCreature = -1;
 		int32_t playerOnReportRuleViolation = -1;
 		int32_t playerOnReportBug = -1;
@@ -62,9 +64,14 @@ class Events
 		int32_t playerOnCombatSpell = -1;
 		int32_t playerOnEquipImbuement = -1;
 		int32_t playerOnDeEquipImbuement = -1;
+		int32_t playerOnRequestQuestLog = -1;
+		int32_t playerOnRequestQuestLine = -1;
+		int32_t playerOnStorageUpdate = -1;		
+		int32_t playerOnRemoveCount = -1;
 
-		// Custom
+		// Monster
 		int32_t monsterOnSpawn = -1;
+		/*&int32_t monsterOnDropLoot = -1;*/
 	};
 
 	public:
@@ -82,6 +89,7 @@ class Events
 		bool eventPartyOnJoin(Party* party, Player* player);
 		bool eventPartyOnLeave(Party* party, Player* player);
 		bool eventPartyOnDisband(Party* party);
+		void eventPartyOnShareExperience(Party* party, uint64_t& exp);
 
 		// Player
 		bool eventPlayerOnBrowseField(Player* player, const Position& position);
@@ -90,6 +98,7 @@ class Events
 		void eventPlayerOnLookInTrade(Player* player, Player* partner, Item* item, int32_t lookDistance);
 		bool eventPlayerOnLookInShop(Player* player, const ItemType* itemType, uint8_t count);
 		bool eventPlayerOnMoveItem(Player* player, Item* item, uint16_t count, const Position& fromPosition, const Position& toPosition, Cylinder* fromCylinder, Cylinder* toCylinder);
+		void eventPlayerOnItemMoved(Player* player, Item* item, uint16_t count, const Position& fromPosition, const Position& toPosition, Cylinder* fromCylinder, Cylinder* toCylinder);
 		bool eventPlayerOnMoveCreature(Player* player, Creature* creature, const Position& fromPosition, const Position& toPosition);
 		void eventPlayerOnReportRuleViolation(Player* player, const std::string& targetName, uint8_t reportType, uint8_t reportReason, const std::string& comment, const std::string& translation);
 		bool eventPlayerOnReportBug(Player* player, const std::string& message, const Position& position, uint8_t category);
@@ -102,11 +111,16 @@ class Events
 		void eventPlayerOnUseWeapon(Player* player, int32_t& normalDamage, CombatType_t& elementType, int32_t& elementDamage);
 		void eventPlayerOnCombatSpell(Player* player, int32_t& normalDamage, int32_t& elementDamage, CombatType_t& elementType, bool changeDamage);
 		bool eventPlayerOnMove(Player* player);
+		bool eventPlayerOnRemoveCount(Player* player, Item * item);
 		void eventPlayerOnEquipImbuement(Player* player, Item* item);
 		void eventPlayerOnDeEquipImbuement(Player* player, Item* item);
+		void eventPlayerOnRequestQuestLog(Player* player);
+		void eventPlayerOnRequestQuestLine(Player* player, uint16_t questId);
+		void eventOnStorageUpdate(Player* player, const uint32_t key, const int32_t value, int32_t oldValue, uint64_t currentTime);
 
-		// Custom
+		// Monster
 		void eventMonsterOnSpawn(Monster* monster, const Position& position);
+		/*void eventMonsterOnDropLoot(Monster* monster, Container* corpse); */
 
 	private:
 		LuaScriptInterface scriptInterface;

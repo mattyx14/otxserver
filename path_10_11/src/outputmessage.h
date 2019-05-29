@@ -76,6 +76,8 @@ class OutputMessage : public NetworkMessage
 
 	private:
 		uint32_t sequence = 0;
+
+	protected:
 		template <typename T>
 		void add_header(T add) {
 			assert(outputBufferStart >= sizeof(T));

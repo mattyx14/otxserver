@@ -29,22 +29,17 @@ CreatureEvents::CreatureEvents() :
 	scriptInterface.initState();
 }
 
-CreatureEvents::~CreatureEvents()
+void CreatureEvents::clear(bool fromLua)
 {
-	for (const auto& it : creatureEvents) {
-		delete it.second;
-	}
-}
-
-void CreatureEvents::clear()
-{
-	//clear creature events
-	for (const auto& it : creatureEvents) {
-		it.second->clearEvent();
+	for (auto it = creatureEvents.begin(); it != creatureEvents.end(); ) {
+		if (fromLua == it->second.fromLua) {
+			it = creatureEvents.erase(it);
+		} else {
+			++it;
+		}
 	}
 
-	//clear lua state
-	scriptInterface.reInitState();
+	reInitState(fromLua);
 }
 
 LuaScriptInterface& CreatureEvents::getScriptInterface()
@@ -57,44 +52,52 @@ std::string CreatureEvents::getScriptBaseName() const
 	return "creaturescripts";
 }
 
-Event* CreatureEvents::getEvent(const std::string& nodeName)
+Event_ptr CreatureEvents::getEvent(const std::string& nodeName)
 {
 	if (strcasecmp(nodeName.c_str(), "event") != 0) {
 		return nullptr;
 	}
-	return new CreatureEvent(&scriptInterface);
+	return Event_ptr(new CreatureEvent(&scriptInterface));
 }
 
-bool CreatureEvents::registerEvent(Event* event, const pugi::xml_node&)
+bool CreatureEvents::registerEvent(Event_ptr event, const pugi::xml_node&)
 {
-	CreatureEvent* creatureEvent = static_cast<CreatureEvent*>(event); //event is guaranteed to be a CreatureEvent
+	CreatureEvent_ptr creatureEvent{static_cast<CreatureEvent*>(event.release())}; //event is guaranteed to be a CreatureEvent
 	if (creatureEvent->getEventType() == CREATURE_EVENT_NONE) {
 		std::cout << "Error: [CreatureEvents::registerEvent] Trying to register event without type!" << std::endl;
 		return false;
 	}
 
-	CreatureEvent* oldEvent = getEventByName(creatureEvent->getName(), false);
-	if (oldEvent) {
-		//if there was an event with the same that is not loaded
-		//(happens when realoading), it is reused
-		if (!oldEvent->isLoaded() && oldEvent->getEventType() == creatureEvent->getEventType()) {
-			oldEvent->copyEvent(creatureEvent);
-		}
-
-		return false;
-	} else {
-		//if not, register it normally
-		creatureEvents[creatureEvent->getName()] = creatureEvent;
-		return true;
+	auto result = creatureEvents.emplace(creatureEvent->getName(), std::move(*creatureEvent));
+	if (!result.second) {
+		std::cout << "[Warning - CreatureEvents::registerEvent] Duplicate registered creature event with name: " << creatureEvent->getName() << std::endl;
 	}
+
+	return result.second;
+}
+
+bool CreatureEvents::registerLuaEvent(CreatureEvent* event)
+{
+	CreatureEvent_ptr creatureEvent{ event };
+	if (creatureEvent->getEventType() == CREATURE_EVENT_NONE) {
+		std::cout << "Error: [CreatureEvents::registerLuaEvent] Trying to register event without type!" << std::endl;
+		return false;
+	}
+
+	auto result = creatureEvents.emplace(creatureEvent->getName(), std::move(*creatureEvent));
+	if (!result.second) {
+		std::cout << "[Warning - CreatureEvents::registerEvent] Duplicate registered creature event with name: " << creatureEvent->getName() << std::endl;
+	}
+
+	return result.second;
 }
 
 CreatureEvent* CreatureEvents::getEventByName(const std::string& name, bool forceLoaded /*= true*/)
 {
 	auto it = creatureEvents.find(name);
 	if (it != creatureEvents.end()) {
-		if (!forceLoaded || it->second->isLoaded()) {
-			return it->second;
+		if (!forceLoaded || it->second.isLoaded()) {
+			return &it->second;
 		}
 	}
 	return nullptr;
@@ -104,8 +107,8 @@ bool CreatureEvents::playerLogin(Player* player) const
 {
 	//fire global event if is registered
 	for (const auto& it : creatureEvents) {
-		if (it.second->getEventType() == CREATURE_EVENT_LOGIN) {
-			if (!it.second->executeOnLogin(player)) {
+		if (it.second.getEventType() == CREATURE_EVENT_LOGIN) {
+			if (!it.second.executeOnLogin(player)) {
 				return false;
 			}
 		}
@@ -117,8 +120,8 @@ bool CreatureEvents::playerLogout(Player* player) const
 {
 	//fire global event if is registered
 	for (const auto& it : creatureEvents) {
-		if (it.second->getEventType() == CREATURE_EVENT_LOGOUT) {
-			if (!it.second->executeOnLogout(player)) {
+		if (it.second.getEventType() == CREATURE_EVENT_LOGOUT) {
+			if (!it.second.executeOnLogout(player)) {
 				return false;
 			}
 		}
@@ -127,11 +130,11 @@ bool CreatureEvents::playerLogout(Player* player) const
 }
 
 bool CreatureEvents::playerAdvance(Player* player, skills_t skill, uint32_t oldLevel,
-									   uint32_t newLevel)
+                                       uint32_t newLevel)
 {
-	for (const auto& it : creatureEvents) {
-		if (it.second->getEventType() == CREATURE_EVENT_ADVANCE) {
-			if (!it.second->executeAdvance(player, skill, oldLevel, newLevel)) {
+	for (auto& it : creatureEvents) {
+		if (it.second.getEventType() == CREATURE_EVENT_ADVANCE) {
+			if (!it.second.executeAdvance(player, skill, oldLevel, newLevel)) {
 				return false;
 			}
 		}
@@ -258,7 +261,7 @@ void CreatureEvent::clearEvent()
 	loaded = false;
 }
 
-bool CreatureEvent::executeOnLogin(Player* player)
+bool CreatureEvent::executeOnLogin(Player* player) const
 {
 	//onLogin(player)
 	if (!scriptInterface->reserveScriptEnv()) {
@@ -277,7 +280,7 @@ bool CreatureEvent::executeOnLogin(Player* player)
 	return scriptInterface->callFunction(1);
 }
 
-bool CreatureEvent::executeOnLogout(Player* player)
+bool CreatureEvent::executeOnLogout(Player* player) const
 {
 	//onLogout(player)
 	if (!scriptInterface->reserveScriptEnv()) {
@@ -385,7 +388,7 @@ bool CreatureEvent::executeOnDeath(Creature* creature, Item* corpse, Creature* k
 }
 
 bool CreatureEvent::executeAdvance(Player* player, skills_t skill, uint32_t oldLevel,
-									   uint32_t newLevel)
+                                       uint32_t newLevel)
 {
 	//onAdvance(player, skill, oldLevel, newLevel)
 	if (!scriptInterface->reserveScriptEnv()) {
@@ -499,11 +502,7 @@ void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, 
 		lua_pushnil(L);
 	}
 
-	lua_pushnumber(L, damage.primary.value);
-	lua_pushnumber(L, damage.primary.type);
-	lua_pushnumber(L, damage.secondary.value);
-	lua_pushnumber(L, damage.secondary.type);
-	lua_pushnumber(L, damage.origin);
+	LuaScriptInterface::pushCombatDamage(L, damage);
 
 	if (scriptInterface->protectedCall(L, 7, 4) != 0) {
 		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
@@ -523,9 +522,8 @@ void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, 
 	scriptInterface->resetScriptEnv();
 }
 
-void CreatureEvent::executeManaChange(Creature* creature, Creature* attacker, int32_t& manaChange, CombatOrigin origin)
-{
-	//onManaChange(creature, attacker, manaChange, origin)
+void CreatureEvent::executeManaChange(Creature* creature, Creature* attacker, CombatDamage& damage) {
+	//onManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
 	if (!scriptInterface->reserveScriptEnv()) {
 		std::cout << "[Error - CreatureEvent::executeManaChange] Call stack overflow" << std::endl;
 		return;
@@ -546,15 +544,17 @@ void CreatureEvent::executeManaChange(Creature* creature, Creature* attacker, in
 		lua_pushnil(L);
 	}
 
-	lua_pushnumber(L, manaChange);
-	lua_pushnumber(L, origin);
+	LuaScriptInterface::pushCombatDamage(L, damage);
 
-	if (scriptInterface->protectedCall(L, 4, 1) != 0) {
-		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::getString(L, -1));
+	if (scriptInterface->protectedCall(L, 7, 4) != 0) {
+		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
 	} else {
-		manaChange = LuaScriptInterface::getNumber<int32_t>(L, -1);
+		damage.primary.value = LuaScriptInterface::getNumber<int32_t>(L, -4);
+		damage.primary.type = LuaScriptInterface::getNumber<CombatType_t>(L, -3);
+		damage.secondary.value = LuaScriptInterface::getNumber<int32_t>(L, -2);
+		damage.secondary.type = LuaScriptInterface::getNumber<CombatType_t>(L, -1);
+		lua_pop(L, 4);
 	}
-	lua_pop(L, 1);
 
 	scriptInterface->resetScriptEnv();
 }

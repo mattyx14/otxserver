@@ -33,6 +33,10 @@
 		<event type="login" name="AntiMc" script="antimc.lua" />
 
 		<!-- New Summons (Pets) -->
-		<event type="login" name="petlogin" script="pet.lua"/>
+		<event type="login" name="petlogin" script="pet.lua" />
 		<event type="think" name="petthink" script="pet.lua" />
+		<event type="death" name="petdeath" script="pet.lua" />
+
+		<!-- AUTO LOOT -->
+		<event type="modalwindow" name="autoloot" script="autoloot.lua"/>
 </creaturescripts>

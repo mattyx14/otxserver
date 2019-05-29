@@ -17,31 +17,22 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_PROTOCOLOLD_H_5487B862FE144AE0904D098A3238E161
-#define FS_PROTOCOLOLD_H_5487B862FE144AE0904D098A3238E161
+#ifndef FS_SCRIPTS_H
+#define FS_SCRIPTS_H
 
-#include "protocol.h"
+#include "luascript.h"
+#include "enums.h"
 
-class NetworkMessage;
-class OutputMessage;
-
-class ProtocolOld final : public Protocol
+class Scripts
 {
 	public:
-		// static protocol information
-		enum {server_sends_first = false};
-		enum {protocol_identifier = 0x01};
-		enum {use_checksum = false};
-		static const char* protocol_name() {
-			return "old login protocol";
-		}
+		Scripts();
+		~Scripts();
 
-		explicit ProtocolOld(Connection_ptr connection) : Protocol(connection) {}
+		bool loadScripts(std::string folderName, bool isLib, bool reload);
 
-		void onRecvFirstMessage(NetworkMessage& msg) final;
-
-	protected:
-		void disconnectClient(const std::string& message);
+	private:
+		LuaScriptInterface scriptInterface;
 };
 
 #endif

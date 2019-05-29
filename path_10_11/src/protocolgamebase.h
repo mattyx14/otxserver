@@ -48,7 +48,7 @@ class ProtocolGameBase : public Protocol {
 			Protocol(connection) {}
 
 		virtual void writeToOutputBuffer(const NetworkMessage& msg, bool broadcast = true) = 0;
-		void onConnect() override;
+		void onConnect() final;
 
 		void checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown);
 		void AddCreature(NetworkMessage& msg, const Creature* creature, bool known, uint32_t remove);
@@ -56,7 +56,7 @@ class ProtocolGameBase : public Protocol {
 		void AddPlayerSkills(NetworkMessage& msg);
 		void sendBlessStatus();
 		void sendPremiumTrigger();
-		void AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo);
+		void AddWorldLight(NetworkMessage& msg, LightInfo lightInfo);
 		void AddCreatureLight(NetworkMessage& msg, const Creature* creature);
 		void AddOutfit(NetworkMessage& msg, const Outfit_t& outfit);
 
@@ -94,7 +94,7 @@ class ProtocolGameBase : public Protocol {
 		void sendPreyData();
 
 		void sendCreatureLight(const Creature* creature);
-		void sendWorldLight(LightInfo lightInfo);
+		void sendWorldLight(const LightInfo& lightInfo);
 		void sendMapDescription(const Position& pos);
 
 		void sendVIP(uint32_t guid, const std::string& name, const std::string& description, uint32_t icon, bool notify, VipStatus_t status);

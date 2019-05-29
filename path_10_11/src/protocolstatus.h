@@ -36,14 +36,14 @@ class ProtocolStatus final : public Protocol
 
 		explicit ProtocolStatus(Connection_ptr connection) : Protocol(connection) {}
 
-		void onRecvFirstMessage(NetworkMessage& msg) override;
+		void onRecvFirstMessage(NetworkMessage& msg) final;
 
 		void sendStatusString();
 		void sendInfo(uint16_t requestedInfo, const std::string& characterName);
 
 		static const uint64_t start;
 
-	private:
+	protected:
 		static std::map<uint32_t, int64_t> ipConnectMap;
 };
 

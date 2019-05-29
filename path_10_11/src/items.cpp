@@ -31,8 +31,8 @@ extern Weapons* g_weapons;
 
 Items::Items()
 {
-	items.reserve(30000);
-	nameToItems.reserve(30000);
+	items.reserve(40000);
+	nameToItems.reserve(40000);
 }
 
 void Items::clear()
@@ -111,7 +111,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 		return ERROR_INVALID_FORMAT;
 	}
 
-	for (auto& itemNode : root.children) {
+	for (auto & itemNode : root.children) {
 		PropStream stream;
 		if (!loader.getProps(itemNode, stream)) {
 			return ERROR_INVALID_FORMAT;
@@ -147,8 +147,8 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 						return ERROR_INVALID_FORMAT;
 					}
 
-					if (serverId > 30000 && serverId < 30100) {
-						serverId -= 30000;
+					if (serverId > 40000 && serverId < 40100) {
+						serverId -= 40000;
 					}
 					break;
 				}
@@ -330,10 +330,32 @@ bool Items::loadFromXml()
 	return true;
 }
 
+void Items::buildInventoryList()
+{
+	inventory.reserve(items.size());
+	for (const auto& type: items) {
+		if (type.weaponType != WEAPON_NONE || type.ammoType != AMMO_NONE ||
+			type.attack != 0 || type.defense != 0 ||
+			type.extraDefense != 0 || type.armor != 0 ||
+			type.slotPosition & SLOTP_NECKLACE ||
+			type.slotPosition & SLOTP_RING ||
+			type.slotPosition & SLOTP_AMMO ||
+			type.slotPosition & SLOTP_FEET ||
+			type.slotPosition & SLOTP_HEAD ||
+			type.slotPosition & SLOTP_ARMOR ||
+			type.slotPosition & SLOTP_LEGS)
+		{
+			inventory.push_back(type.clientId);
+		}
+	}
+	inventory.shrink_to_fit();
+	std::sort(inventory.begin(), inventory.end());
+}
+
 void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 {
-	if (id > 30000 && id < 30100) {
-		id -= 30000;
+	if (id > 40000 && id < 40100) {
+		id -= 40000;
 
 		if (id >= items.size()) {
 			items.resize(id + 1);

@@ -1,6 +1,21 @@
 /**
-* This file doesn't belong to theforgottenserver developers.
-*/
+ * The Forgotten Server - a free and open-source MMORPG server emulator
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 #ifndef FS_MODULE_H_73FCAF4608CB41399D53C919316646A9
 #define FS_MODULE_H_73FCAF4608CB41399D53C919316646A9
@@ -15,33 +30,9 @@ enum ModuleType_t {
 };
 
 class Module;
+using Module_ptr = std::unique_ptr<Module>;
 
-class Modules final : public BaseEvents
-{
-	public:
-		Modules();
-		~Modules();
-
-		// non-copyable
-		Modules(const Modules&) = delete;
-		Modules& operator=(const Modules&) = delete;
-	
-		void executeOnRecvbyte(Player* player, NetworkMessage& msg, uint8_t byte);
-
-	protected:
-		LuaScriptInterface& getScriptInterface() final;
-		std::string getScriptBaseName() const final;
-		Event* getEvent(const std::string& nodeName) final;
-		bool registerEvent(Event* event, const pugi::xml_node& node) final;
-		Module* getEventByRecvbyte(uint8_t recvbyte, bool force);
-		void clear() final;
-
-
-		typedef std::map<uint8_t, Module*> ModulesList;
-		ModulesList recvbyteList;
-
-		LuaScriptInterface scriptInterface;
-};
+/**/
 
 class Module final : public Event
 {
@@ -78,6 +69,31 @@ class Module final : public Event
 		uint8_t recvbyte;
 		int16_t delay;
 		bool loaded;
+};
+
+class Modules final : public BaseEvents
+{
+	public:
+		Modules();
+
+		// non-copyable
+		Modules(const Modules&) = delete;
+		Modules& operator=(const Modules&) = delete;
+	
+		void executeOnRecvbyte(Player* player, NetworkMessage& msg, uint8_t byte) const;
+
+	protected:
+		LuaScriptInterface& getScriptInterface() override;
+		std::string getScriptBaseName() const override;
+		Event_ptr getEvent(const std::string& nodeName) override;
+		bool registerEvent(Event_ptr  event, const pugi::xml_node& node) override;
+		Module* getEventByRecvbyte(uint8_t recvbyte, bool force);
+		void clear(bool) override final;
+
+		typedef std::map<uint8_t, Module> ModulesList;
+		ModulesList recvbyteList;
+
+		LuaScriptInterface scriptInterface;
 };
 
 #endif

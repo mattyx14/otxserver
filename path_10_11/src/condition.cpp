@@ -186,7 +186,7 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 
 		case CONDITION_INFIGHT:
 		case CONDITION_DRUNK:
-		case CONDITION_EXHAUST_WEAPON:
+		case CONDITION_EXHAUST:
 		case CONDITION_EXHAUST_COMBAT:
 		case CONDITION_EXHAUST_HEAL:
 		case CONDITION_MUTED:
@@ -266,7 +266,7 @@ bool Condition::isPersistent() const
 		return false;
 	}
 
-	if (!(id == CONDITIONID_DEFAULT || id == CONDITIONID_COMBAT || conditionType == CONDITION_MUTED)) {
+	if (!(id == CONDITIONID_DEFAULT || id == CONDITIONID_COMBAT)) {
 		return false;
 	}
 
@@ -611,18 +611,8 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			return true;
 		}
 
-		case CONDITION_PARAM_SKILL_CRITICAL_HIT_CHANCEPERCENT: {
-			skillsPercent[SKILL_CRITICAL_HIT_CHANCE] = value;
-			return true;
-		}
-
 		case CONDITION_PARAM_SKILL_CRITICAL_HIT_DAMAGE: {
 			skills[SKILL_CRITICAL_HIT_DAMAGE] = value;
-			return true;
-		}
-
-		case CONDITION_PARAM_SKILL_CRITICAL_HIT_DAMAGEPERCENT: {
-			skillsPercent[SKILL_CRITICAL_HIT_DAMAGE] = value;
 			return true;
 		}
 
@@ -631,18 +621,8 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			return true;
 		}
 
-		case CONDITION_PARAM_SKILL_LIFE_LEECH_CHANCEPERCENT: {
-			skillsPercent[SKILL_LIFE_LEECH_CHANCE] = value;
-			return true;
-		}
-
 		case CONDITION_PARAM_SKILL_LIFE_LEECH_AMOUNT: {
 			skills[SKILL_LIFE_LEECH_AMOUNT] = value;
-			return true;
-		}
-
-		case CONDITION_PARAM_SKILL_LIFE_LEECH_AMOUNTPERCENT: {
-			skillsPercent[SKILL_LIFE_LEECH_AMOUNT] = value;
 			return true;
 		}
 
@@ -651,18 +631,8 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			return true;
 		}
 
-		case CONDITION_PARAM_SKILL_MANA_LEECH_CHANCEPERCENT: {
-			skillsPercent[SKILL_MANA_LEECH_CHANCE] = value;
-			return true;
-		}
-
 		case CONDITION_PARAM_SKILL_MANA_LEECH_AMOUNT: {
 			skills[SKILL_MANA_LEECH_AMOUNT] = value;
-			return true;
-		}
-
-		case CONDITION_PARAM_SKILL_MANA_LEECH_AMOUNTPERCENT: {
-			skillsPercent[SKILL_MANA_LEECH_AMOUNT] = value;
 			return true;
 		}
 
@@ -757,46 +727,42 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 	internalHealthTicks += interval;
 	internalManaTicks += interval;
 
-	if (creature->getZone() == ZONE_PROTECTION) {
-		return ConditionGeneric::executeCondition(creature, interval);
-	}
+	if (creature->getZone() != ZONE_PROTECTION) {
+		if (internalHealthTicks >= healthTicks) {
+			internalHealthTicks = 0;
 
-	if (internalHealthTicks >= healthTicks) {
-		internalHealthTicks = 0;
+			int32_t realHealthGain = creature->getHealth();
+			creature->changeHealth(healthGain);
+			realHealthGain = creature->getHealth() - realHealthGain;
 
-		int32_t realHealthGain = creature->getHealth();
-		creature->changeHealth(healthGain);
-		realHealthGain = creature->getHealth() - realHealthGain;
+			if (isBuff && realHealthGain > 0) {
+				Player* player = creature->getPlayer();
+				if (player) {
+					std::string healString = std::to_string(realHealthGain) + (realHealthGain != 1 ? " hitpoints." : " hitpoint.");
 
-		if (isBuff && realHealthGain > 0) {
-			Player* player = creature->getPlayer();
-			if (player) {
-				std::string healString = std::to_string(realHealthGain) + (realHealthGain != 1 ? " hitpoints." : " hitpoint.");
+					TextMessage message(MESSAGE_HEALED, "You were healed for " + healString);
+					message.position = player->getPosition();
+					message.primary.value = realHealthGain;
+					message.primary.color = TEXTCOLOR_MAYABLUE;
+					player->sendTextMessage(message);
 
-				TextMessage message(MESSAGE_HEALED, "You were healed for " + healString);
-				message.position = player->getPosition();
-				message.primary.value = realHealthGain;
-				message.primary.color = TEXTCOLOR_MAYABLUE;
-				player->sendTextMessage(message);
-
-				SpectatorHashSet spectators;
-				g_game.map.getSpectators(spectators, player->getPosition(), false, true);
-				spectators.erase(player);
-				if (!spectators.empty()) {
-					message.type = MESSAGE_HEALED_OTHERS;
-					message.text = player->getName() + " was healed for " + healString;
-					for (Creature* spectator : spectators) {
-						spectator->getPlayer()->sendTextMessage(message);
+					SpectatorHashSet spectators;
+					g_game.map.getSpectators(spectators, player->getPosition(), false, true);
+					spectators.erase(player);
+					if (!spectators.empty()) {
+						message.type = MESSAGE_HEALED_OTHERS;
+						message.text = player->getName() + " was healed for " + healString;
+						for (Creature* spectator : spectators) {
+							spectator->getPlayer()->sendTextMessage(message);
+						}
 					}
 				}
 			}
 		}
-	}
 
-	if (internalManaTicks >= manaTicks) {
-		internalManaTicks = 0;
-		if (Player* player = creature->getPlayer()) {
-			player->changeMana(manaGain);
+		if (internalManaTicks >= manaTicks) {
+			internalManaTicks = 0;
+			creature->changeMana(manaGain);
 		}
 	}
 
@@ -1040,24 +1006,22 @@ bool ConditionDamage::init()
 		return true;
 	}
 
-	if (!damageList.empty()) {
-		return true;
-	}
+	if (damageList.empty()) {
+		setTicks(0);
 
-	setTicks(0);
+		int32_t amount = uniform_random(minDamage, maxDamage);
+		if (amount != 0) {
+			if (startDamage > maxDamage) {
+				startDamage = maxDamage;
+			} else if (startDamage == 0) {
+				startDamage = std::max<int32_t>(1, std::ceil(amount / 20.0));
+			}
 
-	int32_t amount = uniform_random(minDamage, maxDamage);
-	if (amount != 0) {
-		if (startDamage > maxDamage) {
-			startDamage = maxDamage;
-		} else if (startDamage == 0) {
-			startDamage = std::max<int32_t>(1, std::ceil(amount / 20.0));
-		}
-
-		std::list<int32_t> list;
-		ConditionDamage::generateDamageList(amount, startDamage, list);
-		for (int32_t value : list) {
-			addDamage(1, tickInterval, -value);
+			std::list<int32_t> list;
+			ConditionDamage::generateDamageList(amount, startDamage, list);
+			for (int32_t value : list) {
+				addDamage(1, tickInterval, -value);
+			}
 		}
 	}
 	return !damageList.empty();
@@ -1545,12 +1509,12 @@ void ConditionLight::endCondition(Creature* creature)
 	g_game.changeLight(creature);
 }
 
-void ConditionLight::addCondition(Creature* creature, const Condition* addCondition)
+void ConditionLight::addCondition(Creature* creature, const Condition* condition)
 {
-	if (updateCondition(addCondition)) {
-		setTicks(addCondition->getTicks());
+	if (updateCondition(condition)) {
+		setTicks(condition->getTicks());
 
-		const ConditionLight& conditionLight = static_cast<const ConditionLight&>(*addCondition);
+		const ConditionLight& conditionLight = static_cast<const ConditionLight&>(*condition);
 		lightInfo.level = conditionLight.lightInfo.level;
 		lightInfo.color = conditionLight.lightInfo.color;
 		lightChangeInterval = ticks / lightInfo.level;

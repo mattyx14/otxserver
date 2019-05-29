@@ -275,7 +275,7 @@ void ProtocolGameBase::sendBlessStatus() {
 	if (blessCount >= 5) {
 		if (player->getProtocolVersion() >= 1120) {
 			uint8_t blessFlag = 0;
-			uint16_t maxFlag = (maxBlessings == 8) ? 256 : 64;
+			uint8_t maxFlag = (maxBlessings == 8) ? 256 : 64;
 			for (int i = 2; i < maxFlag; i *= 2) {
 				blessFlag += i;
 			}
@@ -334,7 +334,7 @@ void ProtocolGameBase::sendPreyData()
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGameBase::AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo)
+void ProtocolGameBase::AddWorldLight(NetworkMessage& msg, LightInfo lightInfo)
 {
 	msg.addByte(0x82);
 	msg.addByte((player->isAccessPlayer() ? 0xFF : lightInfo.level));
@@ -464,57 +464,39 @@ void ProtocolGameBase::GetTileDescription(const Tile* tile, NetworkMessage& msg)
 		for (auto it = items->getBeginTopItem(), end = items->getEndTopItem(); it != end; ++it) {
 			msg.addItem(*it);
 
-			if (++count == 10) {
+			count++;
+			if (count == 9 && tile->getPosition() == player->getPosition()) {
+				break;
+			}
+			else if (count == 10) {
 				return;
 			}
 		}
 	}
 
-	if (!loggedIn && tile->getPosition() == player->getPosition()) {
-		bool playerSpawned = false;
-		const CreatureVector *creatures = tile->getCreatures();
-		if (creatures) {
-			for (const Creature *creature : boost::adaptors::reverse(*creatures)) {
-				if (!player->canSeeCreature(creature)) {
-					continue;
-				}
-
-				if (creature == player) {
-					playerSpawned = true;
-				}
-
-				bool known;
-				uint32_t removedKnown;
-				checkCreatureAsKnown(creature->getID(), known, removedKnown);
-				AddCreature(msg, creature, known, removedKnown);
-
-				if (count == 8 && playerSpawned == false) { // player still not spawned and we need to send him too
-					checkCreatureAsKnown(player->getID(), known, removedKnown);
-					AddCreature(msg, player, known, removedKnown);
-					++count;
-				}
-
-				if (++count == 10) {
-					return;
-				}
+	const CreatureVector* creatures = tile->getCreatures();
+	if (creatures) {
+		bool playerAdded = false;
+		for (const Creature* creature : boost::adaptors::reverse(*creatures)) {
+			if (!player->canSeeCreature(creature)) {
+				continue;
 			}
-		}
-	} else {
-		const CreatureVector *creatures = tile->getCreatures();
-		if (creatures) {
-			for (const Creature *creature : boost::adaptors::reverse(*creatures)) {
-				if (!player->canSeeCreature(creature)) {
-					continue;
-				}
 
-				bool known;
-				uint32_t removedKnown;
-				checkCreatureAsKnown(creature->getID(), known, removedKnown);
-				AddCreature(msg, creature, known, removedKnown);
+			if (tile->getPosition() == player->getPosition() && count == 9 && !playerAdded) {
+				creature = player;
+			}
 
-				if (++count == 10) {
-					return;
-				}
+			if (creature->getID() == player->getID()) {
+				playerAdded = true;
+			}
+
+			bool known;
+			uint32_t removedKnown;
+			checkCreatureAsKnown(creature->getID(), known, removedKnown);
+			AddCreature(msg, creature, known, removedKnown);
+
+			if (++count == 10) {
+				return;
 			}
 		}
 	}
@@ -745,17 +727,9 @@ void ProtocolGameBase::sendAddCreature(const Creature* creature, const Position&
 		sendMagicEffect(pos, CONST_ME_TELEPORT);
 	}
 
-	sendInventoryItem(CONST_SLOT_HEAD, player->getInventoryItem(CONST_SLOT_HEAD));
-	sendInventoryItem(CONST_SLOT_NECKLACE, player->getInventoryItem(CONST_SLOT_NECKLACE));
-	sendInventoryItem(CONST_SLOT_BACKPACK, player->getInventoryItem(CONST_SLOT_BACKPACK));
-	sendInventoryItem(CONST_SLOT_ARMOR, player->getInventoryItem(CONST_SLOT_ARMOR));
-	sendInventoryItem(CONST_SLOT_RIGHT, player->getInventoryItem(CONST_SLOT_RIGHT));
-	sendInventoryItem(CONST_SLOT_LEFT, player->getInventoryItem(CONST_SLOT_LEFT));
-	sendInventoryItem(CONST_SLOT_LEGS, player->getInventoryItem(CONST_SLOT_LEGS));
-	sendInventoryItem(CONST_SLOT_FEET, player->getInventoryItem(CONST_SLOT_FEET));
-	sendInventoryItem(CONST_SLOT_RING, player->getInventoryItem(CONST_SLOT_RING));
-	sendInventoryItem(CONST_SLOT_AMMO, player->getInventoryItem(CONST_SLOT_AMMO));
-	sendInventoryItem(CONST_SLOT_STORE_INBOX, player->getInventoryItem(CONST_SLOT_STORE_INBOX));
+	for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
+		sendInventoryItem(static_cast<slots_t>(i), player->getInventoryItem(static_cast<slots_t>(i)));
+	}
 
 	sendStats();
 	sendSkills();
@@ -922,7 +896,7 @@ void ProtocolGameBase::sendCreatureLight(const Creature* creature)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGameBase::sendWorldLight(LightInfo lightInfo)
+void ProtocolGameBase::sendWorldLight(const LightInfo& lightInfo)
 {
 	NetworkMessage msg;
 	AddWorldLight(msg, lightInfo);

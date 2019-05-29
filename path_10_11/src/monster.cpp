@@ -23,9 +23,11 @@
 #include "configmanager.h"
 #include "game.h"
 #include "spells.h"
+//#include "events.h"
 
 extern Game g_game;
 extern Monsters g_monsters;
+//extern Events* g_events;
 extern ConfigManager g_config;
 
 int32_t Monster::despawnRange;
@@ -723,6 +725,15 @@ void Monster::onThink(uint32_t interval)
 		}
 	}
 
+	uint32_t minutes = g_game.getLightHour();
+	bool isday = false;
+	if (minutes >= ((6 * 60) + 30) && minutes <= ((17 * 60) + 30))
+		isday = true;
+
+	if ((mType->info.respawnType == RESPAWN_IN_DAY && !isday) || (mType->info.respawnType == RESPAWN_IN_NIGHT && isday) || (mType->info.respawnType == RESPAWN_IN_DAY_CAVER && !isday && position.z == 7) || (mType->info.respawnType == RESPAWN_IN_NIGHT_CAVER && isday && position.z == 7)) {
+		g_game.removeCreature(this);
+	}
+
 	if (!isInSpawnRange(position)) {
 		g_game.internalTeleport(this, masterPos);
 		setIdle(true);
@@ -779,6 +790,10 @@ void Monster::doAttacking(uint32_t interval)
 
 	for (const spellBlock_t& spellBlock : mType->info.attackSpells) {
 		bool inRange = false;
+
+		if (attackedCreature == nullptr) {
+			break;
+		}
 
 		if (canUseSpell(myPos, targetPos, spellBlock, interval, inRange, resetTicks)) {
 			if (spellBlock.chance >= static_cast<uint32_t>(uniform_random(1, 100))) {
@@ -1120,13 +1135,13 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 
 	bool result = false;
 	if ((!followCreature || !hasFollowPath) && (!isSummon() || !isMasterInRange)) {
-		if (getWalkDelay() <= 0) {
-			randomSteping = true;
+		if (getTimeSinceLastMove() >= 1000) {
+			randomStepping = true;
 			//choose a random direction
 			result = getRandomStep(getPosition(), direction);
 		}
 	} else if ((isSummon() && isMasterInRange) || followCreature) {
-		randomSteping = false;
+		randomStepping = false;
 		result = Creature::getNextStep(direction, flags);
 		if (result) {
 			flags |= FLAG_PATHFINDING;
@@ -1928,6 +1943,11 @@ void Monster::setNormalCreatureLight()
 void Monster::drainHealth(Creature* attacker, int32_t damage)
 {
 	Creature::drainHealth(attacker, damage);
+	if (damage > 0 && randomStepping) {
+		ignoreFieldDamage = true;
+		updateMapCache();
+	}
+
 	if (isInvisible()) {
 		removeCondition(CONDITION_INVISIBLE);
 	}
@@ -1952,63 +1972,6 @@ bool Monster::challengeCreature(Creature* creature)
 		targetChangeTicks = 0;
 	}
 	return result;
-}
-
-bool Monster::convinceCreature(Creature* creature)
-{
-	Player* player = creature->getPlayer();
-	if (player && !player->hasFlag(PlayerFlag_CanConvinceAll)) {
-		if (!mType->info.isConvinceable) {
-			return false;
-		}
-	}
-
-	if (isSummon()) {
-		if (getMaster()->getPlayer()) {
-			return false;
-		} else if (getMaster() == creature) {
-			return false;
-		}
-
-	}
-	setMaster(creature);
-	setDropLoot(false);
-	setSkillLoss(false);
-	setFollowCreature(nullptr);
-	setAttackedCreature(nullptr);
-
-	//destroy summons
-	for (Creature* summon : summons) {
-		summon->changeHealth(-summon->getHealth());
-		summon->removeMaster();
-	}
-	summons.clear();
-
-	isMasterInRange = true;
-	updateTargetList();
-	updateIdleStatus();
-
-	//Notify surrounding about the change
-	SpectatorHashSet spectators;
-	g_game.map.getSpectators(spectators, getPosition(), true);
-	g_game.map.getSpectators(spectators, creature->getPosition(), true);
-	for (Creature* spectator : spectators) {
-		spectator->onCreatureConvinced(creature, this);
-	}
-
-	if (spawn) {
-		spawn->removeMonster(this);
-		spawn = nullptr;
-	}
-	return true;
-}
-
-void Monster::onCreatureConvinced(const Creature* convincer, const Creature* creature)
-{
-	if (convincer != this && (isFriend(creature) || isOpponent(creature))) {
-		updateTargetList();
-		updateIdleStatus();
-	}
 }
 
 void Monster::getPathSearchParams(const Creature* creature, FindPathParams& fpp) const

@@ -33,7 +33,8 @@ enum GlobalEvent_t {
 };
 
 class GlobalEvent;
-using GlobalEventMap = std::map<std::string, GlobalEvent*>;
+using GlobalEvent_ptr = std::unique_ptr<GlobalEvent>;
+using GlobalEventMap = std::map<std::string, GlobalEvent>;
 
 class GlobalEvents final : public BaseEvents
 {
@@ -52,16 +53,18 @@ class GlobalEvents final : public BaseEvents
 		void execute(GlobalEvent_t type) const;
 
 		GlobalEventMap getEventMap(GlobalEvent_t type);
-		static void clearMap(GlobalEventMap& map);
+		static void clearMap(GlobalEventMap& map, bool fromLua);
+
+		bool registerLuaEvent(GlobalEvent* event);
+		void clear(bool fromLua) override final;
 
 	private:
 		std::string getScriptBaseName() const override {
 			return "globalevents";
 		}
-		void clear() override;
 
-		Event* getEvent(const std::string& nodeName) override;
-		bool registerEvent(Event* event, const pugi::xml_node& node) override;
+		Event_ptr getEvent(const std::string& nodeName) override;
+		bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
 
 		LuaScriptInterface& getScriptInterface() override {
 			return scriptInterface;
@@ -80,18 +83,27 @@ class GlobalEvent final : public Event
 		bool configureEvent(const pugi::xml_node& node) override;
 
 		bool executeRecord(uint32_t current, uint32_t old);
-		bool executeEvent();
+		bool executeEvent() const;
 
 		GlobalEvent_t getEventType() const {
 			return eventType;
+		}
+		void setEventType(GlobalEvent_t type) {
+			eventType = type;
 		}
 
 		const std::string& getName() const {
 			return name;
 		}
+		void setName(std::string eventName) {
+			name = eventName;
+		}
 
 		uint32_t getInterval() const {
 			return interval;
+		}
+		void setInterval(uint32_t eventInterval) {
+			interval |= eventInterval;
 		}
 
 		int64_t getNextExecution() const {

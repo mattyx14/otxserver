@@ -23,12 +23,16 @@
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "3";
 static constexpr auto MINOR_VERSION = "10";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "Matt Gomez, Leandro Brewster, Erick Nunes, Joao Leonardo Pereira, Bruno Carvalho, Charles Kassab, OTX Contributors and The Forgotten Server Developers";
-static constexpr auto GIT_REPO = "https://github.com/mattyx14/otxserver/tree/otxserv3/CHANGELOG";
+static constexpr auto STATUS_SERVER_CREDITS = "OTServBR Team and Contributors, OTXServer (Mattyx Gomez) and The Forgotten Server Developers";
+static constexpr auto STATUS_SERVER_CONTRIBUTORS = "Eduardo Dantas and Otavio Milani";
+static constexpr auto GIT_ISSUE_INFO = "Did you find a mistake or a debug? Report to our repository at the link below. Create an issue by going to the link and then 'new issue', put 'Title' and 'Description' and 'Submit Issue', just wait for a response from someone from OTServBR.";
+static constexpr auto GIT_ISSUE = "https://github.com/opentibiabr/OTServBR-Global/issues";
+static constexpr auto GIT_REPO = "https://github.com/opentibiabr/OTServBR-Global";
+static constexpr auto GIT_CONTRIBUTORS = "https://github.com/opentibiabr/OTServBR-Global/graphs/contributors";
 
 static constexpr auto CLIENT_VERSION_MIN = 1100;
-static constexpr auto CLIENT_VERSION_MAX = 1171;
-static constexpr auto CLIENT_VERSION_STR = "11.71";
+static constexpr auto CLIENT_VERSION_MAX = 1149;
+static constexpr auto CLIENT_VERSION_STR = "11.49";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;
 static constexpr auto AUTHENTICATOR_PERIOD = 30U;
@@ -62,6 +66,8 @@ static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 #pragma warning(disable:4267) // 'var' : conversion from 'size_t' to 'type', possible loss of data
 #pragma warning(disable:4351) // new behavior: elements of array will be default initialized
 #pragma warning(disable:4458) // declaration hides class member
+#pragma warning(disable:4101) // local variable not referenced
+#pragma warning(disable:4996) // declaration std::fpos<_Mbstatet>::seekpos
 #endif
 
 #define strcasecmp _stricmp

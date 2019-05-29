@@ -27,22 +27,28 @@ class Inbox final : public Container
 	public:
 		explicit Inbox(uint16_t type);
 
+		void setMaxInboxItems(uint32_t maxitems) {
+			maxInboxItems = maxitems;
+		}
+
 		//cylinder implementations
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
-				uint32_t flags, Creature* actor = nullptr) const override;
+				uint32_t flags, Creature* actor = nullptr) const final;
 
-		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 
 		//overrides
-		bool canRemove() const override {
+		bool canRemove() const final {
 			return false;
 		}
 
-		Cylinder* getParent() const override;
-		Cylinder* getRealParent() const override {
+		Cylinder* getParent() const final;
+		Cylinder* getRealParent() const final {
 			return parent;
 		}
+	protected:
+		uint32_t maxInboxItems;
 };
 
 #endif

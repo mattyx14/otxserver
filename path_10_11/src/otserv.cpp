@@ -35,6 +35,7 @@
 #include "databasemanager.h"
 #include "scheduler.h"
 #include "databasetasks.h"
+#include "script.h"
 // TODO: #include "stdarg.h"
 
 DatabaseTasks g_databaseTasks;
@@ -45,6 +46,7 @@ Game g_game;
 ConfigManager g_config;
 Monsters g_monsters;
 Vocations g_vocations;
+extern Scripts* g_scripts;
 RSA g_RSA;
 
 std::mutex g_loaderLock;
@@ -121,8 +123,12 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 #endif
 	std::cout << std::endl;
 
-	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
-	std::cout << "Visit our forum for updates, support, and resources: " << GIT_REPO << std::endl;
+	std::cout << "Special Credits for: " << STATUS_SERVER_CREDITS << "." << std::endl;
+	std::cout << "A server developed by " << STATUS_SERVER_CONTRIBUTORS << "." << std::endl;
+	std::cout << "Visit our forum for updates, support, and resources: " << GIT_REPO <<"." << std::endl;
+	std::cout << "For report issues or debugs please acess: " << GIT_ISSUE <<"." << std::endl;
+	std::cout << "List of contributors: " << GIT_CONTRIBUTORS <<"." << std::endl;
+	std::cout << GIT_ISSUE_INFO << std::endl;
 	std::cout << std::endl;
 
 	// TODO: dirty for now; Use stdarg;
@@ -215,6 +221,12 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		return;
 	}
 
+	std::cout << ">> Loading lua scripts" << std::endl;
+	if (!g_scripts->loadScripts("scripts", false, false)) {
+		startupErrorMessage("Failed to load lua scripts");
+		return;
+	}
+
 	std::cout << ">> Checking world type... " << std::flush;
 	std::string worldType = asLowerCaseString(g_config.getString(ConfigManager::WORLD_TYPE));
 	if (worldType == "pvp") {
@@ -231,6 +243,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		startupErrorMessage(ss.str());
 		return;
 	}
+
 	std::cout << asUpperCaseString(worldType) << std::endl;
 
 	std::cout << ">> Loading map" << std::endl;

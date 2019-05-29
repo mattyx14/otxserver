@@ -42,7 +42,7 @@ class SchedulerTask : public Task
 			return expiration;
 		}
 
-	private:
+	protected:
 		SchedulerTask(uint32_t delay, std::function<void (void)>&& f) : Task(delay, std::move(f)) {}
 
 		uint32_t eventId = 0;
@@ -67,8 +67,7 @@ class Scheduler : public ThreadHolder<Scheduler>
 		void shutdown();
 
 		void threadMain();
-
-	private:
+	protected:
 		std::thread thread;
 		std::mutex eventLock;
 		std::condition_variable eventSignal;

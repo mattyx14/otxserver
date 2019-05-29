@@ -52,12 +52,10 @@ class Task
 		}
 
 	protected:
-		std::chrono::system_clock::time_point expiration = SYSTEM_TIME_ZERO;
-
-	private:
 		// Expiration has another meaning for scheduler tasks,
 		// then it is the time the task should be added to the
 		// dispatcher
+		std::chrono::system_clock::time_point expiration = SYSTEM_TIME_ZERO;
 		std::function<void (void)> func;
 };
 
@@ -76,7 +74,7 @@ class Dispatcher : public ThreadHolder<Dispatcher> {
 
 		void threadMain();
 
-	private:
+	protected:
 		std::thread thread;
 		std::mutex taskLock;
 		std::condition_variable taskSignal;

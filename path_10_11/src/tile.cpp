@@ -628,6 +628,12 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
+		if (hasFlag(TILESTATE_PROTECTIONZONE) || !hasFlag(TILESTATE_PROTECTIONZONE)) {
+			if (item->getWeight() >= 150000) {
+				return RETURNVALUE_NOTPOSSIBLE;
+			}
+		}
+
 		if (hasBitSet(FLAG_NOLIMIT, flags)) {
 			return RETURNVALUE_NOERROR;
 		}
@@ -843,6 +849,12 @@ void Tile::addThing(int32_t, Thing* thing)
 		TileItemVector* items = getItemList();
 		if (items && items->size() >= 0xFFFF) {
 			return /*RETURNVALUE_NOTPOSSIBLE*/;
+		}
+
+		if (hasFlag(TILESTATE_PROTECTIONZONE) || !hasFlag(TILESTATE_PROTECTIONZONE)) {
+			if (item->getWeight() >= 150000) {
+				return /*RETURNVALUE_NOTPOSSIBLE*/;
+			}
 		}
 
 		item->setParent(this);
@@ -1455,6 +1467,12 @@ void Tile::internalAddThing(uint32_t, Thing* thing)
 			return /*RETURNVALUE_NOTPOSSIBLE*/;
 		}
 
+		if (hasFlag(TILESTATE_PROTECTIONZONE) || !hasFlag(TILESTATE_PROTECTIONZONE)) {
+			if (item->getWeight() >= 150000) {
+				return /*RETURNVALUE_NOTPOSSIBLE*/;
+			}
+		}
+
 		if (itemType.alwaysOnTop) {
 			bool isInserted = false;
 			for (auto it = items->getBeginTopItem(), end = items->getEndTopItem(); it != end; ++it) {
@@ -1602,25 +1620,18 @@ bool Tile::isMoveableBlocking() const
 	return !ground || hasFlag(TILESTATE_BLOCKSOLID);
 }
 
-Item* Tile::getUseItem() const
+Item* Tile::getUseItem(int32_t index) const
 {
 	const TileItemVector* items = getItemList();
 	if (!items || items->size() == 0) {
 		return ground;
 	}
 
-	for (Item* item : boost::adaptors::reverse(*items)) {
-		//if the behavior is wrong remove && !Item::items[item->getID()].isContainer()
-		if (Item::items[item->getID()].forceUse && !Item::items[item->getID()].isContainer()) {
-			return item;
-		}
+	if (Thing* thing = getThing(index)) {
+		return thing->getItem();
 	}
 
-	Item* item = items->getTopDownItem();
-	if (!item) {
-		item = items->getTopTopItem();
-	}
-	return item;
+	return nullptr;
 }
 
 HouseTile::HouseTile(int32_t x, int32_t y, int32_t z, House* house) :

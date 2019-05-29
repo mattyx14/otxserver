@@ -84,6 +84,8 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 			return compactCrypt;
 		}
 
+		void XTEA_encrypt(OutputMessage& msg) const;
+		bool XTEA_decrypt(NetworkMessage& msg) const;
 		static bool RSA_decrypt(NetworkMessage& msg);
 
 		void setRawMessages(bool value) {
@@ -91,15 +93,10 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		}
 
 		virtual void release() {}
-
-	private:
-		void XTEA_encrypt(OutputMessage& msg) const;
-		bool XTEA_decrypt(NetworkMessage& msg) const;
-
 		friend class Connection;
 
 		OutputMessage_ptr outputBuffer;
-
+	private:
 		const ConnectionWeak_ptr connection;
 		uint32_t key[4] = {};
 		bool encryptionEnabled = false;

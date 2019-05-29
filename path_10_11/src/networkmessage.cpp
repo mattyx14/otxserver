@@ -31,6 +31,7 @@ int32_t NetworkMessage::decodeHeader()
 	return info.length;
 }
 
+/******************************************************************************/
 std::string NetworkMessage::getString(uint16_t stringLen/* = 0*/)
 {
 	if (stringLen == 0) {
@@ -54,6 +55,7 @@ Position NetworkMessage::getPosition()
 	pos.z = getByte();
 	return pos;
 }
+/******************************************************************************/
 
 void NetworkMessage::addString(const std::string& value)
 {

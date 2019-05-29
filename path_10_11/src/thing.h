@@ -30,10 +30,11 @@ class Container;
 
 class Thing
 {
-	public:
+	protected:
 		constexpr Thing() = default;
-		virtual ~Thing() = default;
+		~Thing() = default;
 
+	public:
 		// non-copyable
 		Thing(const Thing&) = delete;
 		Thing& operator=(const Thing&) = delete;

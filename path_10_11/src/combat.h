@@ -38,7 +38,7 @@ class ValueCallback final : public CallBack
 		explicit ValueCallback(formulaType_t type): type(type) {}
 		void getMinMaxValues(Player* player, CombatDamage& damage, bool useCharges) const;
 
-	private:
+	protected:
 		formulaType_t type;
 };
 
@@ -46,12 +46,18 @@ class TileCallback final : public CallBack
 {
 	public:
 		void onTileCombat(Creature* creature, Tile* tile) const;
+
+	protected:
+		formulaType_t type;
 };
 
 class TargetCallback final : public CallBack
 {
 	public:
 		void onTargetCombat(Creature* creature, Creature* target) const;
+
+	protected:
+		formulaType_t type;
 };
 
 struct CombatParams {
@@ -152,7 +158,7 @@ class MatrixArea
 			return data_[i];
 		}
 
-	private:
+	protected:
 		uint32_t centerX;
 		uint32_t centerY;
 
@@ -182,7 +188,7 @@ class AreaCombat
 		void setupExtArea(const std::list<uint32_t>& list, uint32_t rows);
 		void clear();
 
-	private:
+	protected:
 		enum MatrixOperation_t {
 			MATRIXOPERATION_COPY,
 			MATRIXOPERATION_MIRROR,
@@ -293,7 +299,7 @@ class Combat
 			params.origin = origin;
 		}
 
-	private:
+	protected:
 		static void doCombatDefault(Creature* caster, Creature* target, const CombatParams& params);
 
 		static void CombatFunc(Creature* caster, const Position& pos, const AreaCombat* area, const CombatParams& params, CombatFunction func, CombatDamage* data);
@@ -325,10 +331,10 @@ class MagicField final : public Item
 	public:
 		explicit MagicField(uint16_t type) : Item(type), createTime(OTSYS_TIME()) {}
 
-		MagicField* getMagicField() override {
+		MagicField* getMagicField() final {
 			return this;
 		}
-		const MagicField* getMagicField() const override {
+		const MagicField* getMagicField() const final {
 			return this;
 		}
 

@@ -243,17 +243,23 @@ void Spawn::checkSpawn()
 
 	for (auto& it : spawnMap) {
 		uint32_t spawnId = it.first;
-		spawnBlock_t& sb = it.second;
 		if (spawnedMap.find(spawnId) != spawnedMap.end()) {
 			continue;
 		}
 
-		if(OTSYS_TIME() >= sb.lastSpawn + sb.interval) {
+		spawnBlock_t& sb = it.second;
+
+		uint32_t minutes = g_game.getLightHour();
+		bool isday = false;
+		if (minutes >= ((6 * 60) + 30) && minutes <= ((17 * 60) + 30))
+			isday = true;
+
+		if ((sb.mType->info.respawnType == RESPAWN_IN_DAY && !isday) || (sb.mType->info.respawnType == RESPAWN_IN_NIGHT && isday) || (sb.mType->info.respawnType == RESPAWN_IN_DAY_CAVER && !isday && sb.pos.z == 7) || (sb.mType->info.respawnType == RESPAWN_IN_NIGHT_CAVER && isday && sb.pos.z == 7)) {
+			sb.lastSpawn = OTSYS_TIME();
 			continue;
 		}
 
-		if (g_config.getBoolean(ConfigManager::ALLOW_BLOCK_SPAWN)
-			&& sb.mType->info.isBlockable && findPlayer(sb.pos)) {
+		if (OTSYS_TIME() >= sb.lastSpawn + sb.interval) {
 			if (sb.mType->info.isBlockable && findPlayer(sb.pos)) {
 				sb.lastSpawn = OTSYS_TIME();
 				continue;

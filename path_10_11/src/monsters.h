@@ -48,7 +48,7 @@ struct LootBlock {
 	std::vector<LootBlock> childLoot;
 	LootBlock() {
 		id = 0;
-		countmax = 0;
+		countmax = 1;
 		chance = 0;
 
 		subType = -1;
@@ -61,6 +61,17 @@ struct LootBlock {
 		hitChance = -1;
 		unique = false;
 	}
+};
+
+class Loot {
+	public:
+		Loot() = default;
+
+		// non-copyable
+		Loot(const Loot&) = delete;
+		Loot& operator=(const Loot&) = delete;
+
+		LootBlock lootBlock;
 };
 
 struct summonBlock_t {
@@ -137,6 +148,7 @@ class MonsterType
 		uint32_t conditionImmunities = 0;
 		uint32_t damageImmunities = 0;
 		uint32_t baseSpeed = 200;
+		uint32_t respawnType = RESPAWN_IN_ALL;
 
 		int32_t creatureAppearEvent = -1;
 		int32_t creatureDisappearEvent = -1;
@@ -147,7 +159,7 @@ class MonsterType
 		int32_t runAwayHealth = 0;
 		int32_t health = 100;
 		int32_t healthMax = 100;
-		int32_t changeTargetChance =0;
+		int32_t changeTargetChance = 0;
 		int32_t defense = 0;
 		int32_t armor = 0;
 
@@ -164,7 +176,7 @@ class MonsterType
 		bool isPet = false;
 		bool isPassive = false;
 		bool isRewardBoss = false;
-		bool isBoss = false;
+		bool isPreyable = true;
 		bool canWalkOnEnergy = true;
 		bool canWalkOnFire = true;
 		bool canWalkOnPoison = true;
@@ -181,10 +193,55 @@ class MonsterType
 		std::string nameDescription;
 
 		MonsterInfo info;
-
+		
 		void createLoot(Container* corpse);
 		bool createLootContainer(Container* parent, const LootBlock& lootblock);
 		std::vector<Item*> createLootItem(const LootBlock& lootBlock, bool canRerollLoot = false);
+	
+		//void loadLoot(MonsterType* monsterType, LootBlock lootblock); (from tfs)
+};
+
+class MonsterSpell
+{
+	public:
+		MonsterSpell() = default;
+
+		MonsterSpell(const MonsterSpell&) = delete;
+		MonsterSpell& operator=(const MonsterSpell&) = delete;
+
+		std::string name = "";
+		std::string scriptName = "";
+
+		uint8_t chance = 100;
+		uint8_t range = 0;
+
+		uint16_t interval = 2000;
+
+		int32_t minCombatValue = 0;
+		int32_t maxCombatValue = 0;
+		int32_t attack = 0;
+		int32_t skill = 0;
+		int32_t length = 0;
+		int32_t spread = 0;
+		int32_t radius = 0;
+		int32_t conditionMinDamage = 0;
+		int32_t conditionMaxDamage = 0;
+		int32_t conditionStartDamage = 0;
+		int32_t tickInterval = 0;
+		int32_t speedChange = 0;
+		int32_t duration = 0;
+
+		bool isScripted = false;
+		bool needTarget = false;
+		bool needDirection = false;
+		bool combatSpell = false;
+		bool isMelee = false;
+
+		Outfit_t outfit = {};
+		ShootType_t shoot = CONST_ANI_NONE;
+		MagicEffectClasses effect = CONST_ME_NONE;
+		ConditionType_t conditionType = CONDITION_NONE;
+		CombatType_t combatType = COMBAT_UNDEFINEDDAMAGE;
 };
 
 class Monsters
@@ -202,9 +259,13 @@ class Monsters
 		bool reload();
 
 		MonsterType* getMonsterType(const std::string& name);
-		std::vector<std::string> getPreyMonsters();
-
+		void addMonsterType(const std::string& name, MonsterType* mType);
+		bool deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std::string& description = "");
 		static uint32_t getLootRandom();
+		
+		std::vector<std::string> getPreyMonsters();
+		
+		std::unique_ptr<LuaScriptInterface> scriptInterface;
 
 	private:
 		ConditionDamage* getDamageCondition(ConditionType_t conditionType,
@@ -218,7 +279,6 @@ class Monsters
 
 		std::map<std::string, MonsterType> monsters;
 		std::map<std::string, std::string> unloadedMonsters;
-		std::unique_ptr<LuaScriptInterface> scriptInterface;
 
 		bool loaded = false;
 };

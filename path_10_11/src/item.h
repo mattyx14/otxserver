@@ -208,13 +208,16 @@ class ItemAttributes
 			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
 		}
 
-	private:
+	protected:
 		bool hasAttribute(itemAttrTypes type) const {
 			return (type & attributeBits) != 0;
 		}
 		void removeAttribute(itemAttrTypes type);
 
 		static std::string emptyString;
+		static int64_t emptyInt;
+		static double emptyDouble;
+		static bool emptyBool;
 
 		struct Attribute
 		{
@@ -320,10 +323,10 @@ class Item : virtual public Thing
 
 		bool equals(const Item* otherItem) const;
 
-		Item* getItem() override final {
+		Item* getItem() final {
 			return this;
 		}
-		const Item* getItem() const override final {
+		const Item* getItem() const final {
 			return this;
 		}
 		virtual Teleport* getTeleport() {
@@ -530,7 +533,7 @@ class Item : virtual public Thing
 		static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
 		static std::string getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count = 1);
 
-		std::string getDescription(int32_t lookDistance) const override final;
+		std::string getDescription(int32_t lookDistance) const final;
 		std::string getNameDescription() const;
 		std::string getWeightDescription() const;
 
@@ -541,10 +544,10 @@ class Item : virtual public Thing
 
 		virtual void serializeAttr(PropWriteStream& propWriteStream) const;
 
-		bool isPushable() const override final {
+		bool isPushable() const final {
 			return isMoveable();
 		}
-		int32_t getThrowRange() const override final {
+		int32_t getThrowRange() const final {
 			return (isPickupable() ? 15 : 2);
 		}
 
@@ -753,32 +756,29 @@ class Item : virtual public Thing
 			}
 		}
 
-		Cylinder* getParent() const override {
+		Cylinder* getParent() const {
 			return parent;
 		}
-		void setParent(Cylinder* cylinder) override {
+		void setParent(Cylinder* cylinder) {
 			parent = cylinder;
 		}
 		Cylinder* getTopParent();
 		const Cylinder* getTopParent() const;
-		Tile* getTile() override;
-		const Tile* getTile() const override;
-		bool isRemoved() const override {
+		Tile* getTile();
+		const Tile* getTile() const;
+		bool isRemoved() const {
 			return !parent || parent->isRemoved();
 		}
 
 	protected:
-		Cylinder* parent = nullptr;
-
-		uint16_t id;  // the same id as in ItemType
-
-	private:
 		std::string getWeightDescription(uint32_t weight) const;
 
+		Cylinder* parent = nullptr;
 		std::unique_ptr<ItemAttributes> attributes;
 
 		uint32_t referenceCounter = 0;
 
+		uint16_t id;  // the same id as in ItemType
 		uint8_t count = 1; // number of stacked items
 
 		bool loadedFromMap = false;

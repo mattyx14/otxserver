@@ -41,20 +41,20 @@ template <typename ProtocolType>
 class Service final : public ServiceBase
 {
 	public:
-		bool is_single_socket() const override {
+		bool is_single_socket() const final {
 			return ProtocolType::server_sends_first;
 		}
-		bool is_checksummed() const override {
+		bool is_checksummed() const final {
 			return ProtocolType::use_checksum;
 		}
-		uint8_t get_protocol_identifier() const override {
+		uint8_t get_protocol_identifier() const final {
 			return ProtocolType::protocol_identifier;
 		}
-		const char* get_protocol_name() const override {
+		const char* get_protocol_name() const final {
 			return ProtocolType::protocol_name();
 		}
 
-		Protocol_ptr make_protocol(const Connection_ptr& c) const override {
+		Protocol_ptr make_protocol(const Connection_ptr& c) const final {
 			return std::make_shared<ProtocolType>(c);
 		}
 };
@@ -81,7 +81,7 @@ class ServicePort : public std::enable_shared_from_this<ServicePort>
 		void onStopServer();
 		void onAccept(Connection_ptr connection, const boost::system::error_code& error);
 
-	private:
+	protected:
 		void accept();
 
 		boost::asio::io_service& io_service;
@@ -112,7 +112,7 @@ class ServiceManager
 			return acceptors.empty() == false;
 		}
 
-	private:
+	protected:
 		void die();
 
 		std::unordered_map<uint16_t, ServicePort_ptr> acceptors;
@@ -144,8 +144,8 @@ bool ServiceManager::add(uint16_t port)
 
 		if (service_port->is_single_socket() || ProtocolType::server_sends_first) {
 			std::cout << "ERROR: " << ProtocolType::protocol_name() <<
-			          " and " << service_port->get_protocol_names() <<
-			          " cannot use the same port " << port << '.' << std::endl;
+					  " and " << service_port->get_protocol_names() <<
+					  " cannot use the same port " << port << '.' << std::endl;
 			return false;
 		}
 	}
