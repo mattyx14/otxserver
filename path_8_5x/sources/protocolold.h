@@ -23,49 +23,20 @@ class NetworkMessage;
 class ProtocolOld : public Protocol
 {
 	public:
-#ifdef __ENABLE_SERVER_DIAGNOSTIC__
-		static uint32_t protocolOldCount;
-#endif
-		virtual void onRecvFirstMessage(NetworkMessage& msg);
-
-		ProtocolOld(Connection_ptr connection): Protocol(connection)
-		{
-#ifdef __ENABLE_SERVER_DIAGNOSTIC__
-			protocolOldCount++;
-#endif
-		}
-		virtual ~ProtocolOld()
-		{
-#ifdef __ENABLE_SERVER_DIAGNOSTIC__
-			protocolOldCount--;
-#endif
+		// static protocol information
+		enum {server_sends_first = false};
+		enum {protocol_identifier = 0x01};
+		enum {use_checksum = false};
+		static const char* protocol_name() {
+			return "old login protocol";
 		}
 
-		enum {isSingleSocket = false};
-		enum {hasChecksum = false};
+		explicit ProtocolOld(Connection_ptr connection): Protocol(connection) {}
+
+		void onRecvFirstMessage(NetworkMessage& msg) final;
 
 	protected:
-		#ifdef __DEBUG_NET_DETAIL__
-		virtual void deleteProtocolTask();
-		#endif
 		void disconnectClient(uint8_t error, const char* message);
 };
 
-class ProtocolOldLogin : public ProtocolOld
-{
-	public:
-		ProtocolOldLogin(Connection_ptr connection) : ProtocolOld(connection) {}
-
-		enum {protocolId = 0x01};
-		static const char* protocolName() {return "old login protocol";}
-};
-
-class ProtocolOldGame : public ProtocolOld
-{
-	public:
-		ProtocolOldGame(Connection_ptr connection) : ProtocolOld(connection) {}
-
-		enum {protocolId = 0x0A};
-		static const char* protocolName() {return "old game protocol";}
-};
 #endif

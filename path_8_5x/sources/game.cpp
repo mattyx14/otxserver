@@ -3564,7 +3564,7 @@ bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t
 	Player* tradePartner = player->tradePartner;
 	if(!tradePartner)
 		return false;
-	
+
 	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOKTRADE))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before doing this again.");
@@ -3734,7 +3734,7 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
 		return false;
-	
+
 	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERPURCHASEITEM))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before buying again.");
@@ -3745,10 +3745,10 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	Npc* merchant = player->getShopOwner(onBuy, onSell);
 	if(!merchant)
 		return false;
-	
+
 	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 200, 0, false, EXHAUST_PLAYERPURCHASEITEM))
 		player->addCondition(conditionlook);
-	
+
 	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if(!it.id)
 		return false;
@@ -3771,7 +3771,7 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
 		return false;
-	
+
 	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERSELLITEM))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before selling again.");
@@ -3782,7 +3782,7 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 	Npc* merchant = player->getShopOwner(onBuy, onSell);
 	if(!merchant)
 		return false;
-	
+
 	if (Condition* conditionlook = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 200, 0, false, EXHAUST_PLAYERSELLITEM))
 		player->addCondition(conditionlook);
 
@@ -3818,7 +3818,7 @@ bool Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 	Player* player = getPlayerByID(playerId);
 	if(player == NULL || player->isRemoved())
 		return false;
-	
+
 	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOKSHOP))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before doing this again.");
@@ -4435,15 +4435,16 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
 	toPlayer->onCreatureSay(player, type, text);
 
-	if (!canSee)
-	{
+	char buffer[80];
+	sprintf(buffer, "Message sent to %s.", toPlayer->getName().c_str());
+	player->sendTextMessage(MSG_STATUS_SMALL, buffer);
+	if (!canSee) {
 		player->sendTextMessage(MSG_STATUS_SMALL, "A player with this name is not online.");
-	}else 
-	{
+	} else {
 		sprintf(buffer, "Message sent to %s.", toPlayer->getName().c_str());
 		player->sendTextMessage(MSG_STATUS_SMALL, buffer);
 	}
-	
+
 	return true;
 }
 
@@ -6787,6 +6788,32 @@ void Game::checkPlayersRecord(Player* player)
 		it->second->executeRecord(count, playersRecord, player);
 
 	playersRecord = count;
+}
+
+uint32_t Game::getPlayersWithMcLimit()
+{
+	std::map<uint32_t, uint32_t> ips;
+	uint32_t count = 0;
+
+	for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+	{
+		if (!it->second->isRemoved())
+		{
+			uint32_t ip = it->second->getIP();
+			if (ips.find(ip) == ips.end())
+			{
+				ips[ip] = 1;
+				count++;
+			}
+			else if (ips[ip] < 5)
+			{
+				ips[ip]++;
+				count++;
+			}
+		}
+	}
+
+	return count;
 }
 
 void Game::loadPlayersRecord()

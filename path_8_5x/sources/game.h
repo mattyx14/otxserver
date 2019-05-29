@@ -349,6 +349,7 @@ class Game
 		uint32_t getMonstersOnline() {return (uint32_t)Monster::autoList.size();}
 		uint32_t getNpcsOnline() {return (uint32_t)Npc::autoList.size();}
 		uint32_t getCreaturesOnline() {return (uint32_t)autoList.size();}
+		uint32_t getPlayersWithMcLimit();
 
 		uint32_t getPlayersRecord() const {return playersRecord;}
 		void getWorldLightInfo(LightInfo& lightInfo);
@@ -659,7 +660,7 @@ class Game
 		Map* getMap() {return map;}
 		const Map* getMap() const {return map;}
 
-		bool isRunning() const {return services && services->isRunning();}
+		bool isRunning() const {return services && services->is_running();}
 		int32_t getLightHour() const {return lightHour;}
 		void startDecay(Item* item);
 

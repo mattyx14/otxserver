@@ -23,6 +23,8 @@
 #define CLIENT_VERSION_ITEMS 17
 #define CLIENT_VERSION_STRING "8.58"
 
+#define TRACK_MESSAGE(x)
+
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "12"

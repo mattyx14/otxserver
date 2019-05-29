@@ -389,6 +389,9 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 	if (target->getNpc())
 		return RET_YOUMAYNOTATTACKTHISCREATURE;
 
+	if (target->getNpc())
+		return RET_YOUMAYNOTATTACKTHISCREATURE;
+
 	return Combat::canDoCombat(player, target, true);
 }
 

@@ -52,7 +52,7 @@ uint32_t Player::playerCount = 0;
 #endif
 MuteCountMap Player::muteCountMap;
 
-Player::Player(const std::string& _name, ProtocolGame* p):
+Player::Player(const std::string& _name, ProtocolGame_ptr p):
 	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(new Spectators(p))
 {
 	if(client->getOwner())

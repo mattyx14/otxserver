@@ -20,12 +20,11 @@
 #include "outputmessage.h"
 #include "connection.h"
 #include "game.h"
-#include "rsa.h"
 
 extern Game g_game;
 
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
-uint32_t ProtocolOld::protocolOldCount = 0;
+//uint32_t ProtocolOld::protocolOldCount = 0;
 
 #endif
 #ifdef __DEBUG_NET_DETAIL__
@@ -38,35 +37,31 @@ void ProtocolOld::deleteProtocolTask()
 #endif
 void ProtocolOld::disconnectClient(uint8_t error, const char* message)
 {
-	if(OutputMessage_ptr output = OutputMessagePool::getInstance()->getOutputMessage(this, false))
-	{
-		TRACK_MESSAGE(output);
-		output->put<char>(error);
-		output->putString(message);
-		OutputMessagePool::getInstance()->send(output);
-	}
-
-	getConnection()->close();
+	OutputMessage_ptr output = OutputMessagePool::getOutputMessage();
+	output->addByte(error);
+	output->addString(message);
+	send(output);
+	disconnect();
 }
 
 void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 {
 	if(g_game.getGameState() == GAMESTATE_SHUTDOWN)
 	{
-		getConnection()->close();
+		disconnect();
 		return;
 	}
 
-	msg.skip(2);
+	msg.skipBytes(2);
 	uint16_t version = msg.get<uint16_t>();
 
-	msg.skip(12);
+	msg.skipBytes(12);
 	if(version <= 760)
 		disconnectClient(0x0A, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
 
 	if(!RSA_decrypt(msg))
 	{
-		getConnection()->close();
+		disconnect();
 		return;
 	}
 

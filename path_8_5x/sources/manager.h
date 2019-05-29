@@ -123,10 +123,12 @@ class ProtocolManager : public Protocol
 #endif
 		}
 
-		enum {protocolId = 0xFD};
-		enum {isSingleSocket = false};
-		enum {hasChecksum = false};
-		static const char* protocolName() {return "manager protocol";}
+                enum {server_sends_first = false};
+                enum {protocol_identifier = 0xFD};
+                enum {use_checksum = false};
+                static const char* protocol_name() {
+                        return "manager protocol";
+                }
 
 		bool checkChannel(uint16_t channelId) const {return ((m_channels & (uint32_t)channelId) == (uint32_t)channelId);}
 
@@ -147,10 +149,7 @@ class ProtocolManager : public Protocol
 		};
 
 		virtual void parsePacket(NetworkMessage& msg);
-		virtual void releaseProtocol();
-#ifdef __DEBUG_NET_DETAIL__
-		virtual void deleteProtocolTask();
-#endif
+		virtual void release();
 
 		void pong();
 		void execute(std::string lua);

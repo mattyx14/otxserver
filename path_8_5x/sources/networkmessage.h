@@ -12,130 +12,164 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef __NETWORKMESSAGE__
-#define __NETWORKMESSAGE__
-#include "otsystem.h"
+#ifndef FS_NETWORKMESSAGE_H_B853CFED58D1413A87ACED07B2926E03
+#define FS_NETWORKMESSAGE_H_B853CFED58D1413A87ACED07B2926E03
+
 #include "const.h"
 
-enum SocketCode_t
-{
-	SOCKET_CODE_OK,
-	SOCKET_CODE_TIMEOUT,
-	SOCKET_CODE_ERROR,
-};
-
 class Item;
+class Creature;
+class Player;
 class Position;
+class RSA;
 
 class NetworkMessage
 {
 	public:
-		NetworkMessage() {reset();}
-		virtual ~NetworkMessage() {}
+		typedef uint16_t MsgSize_t;
+		// Headers:
+		// 2 bytes for unencrypted message size
+		// 4 bytes for checksum
+		// 2 bytes for encrypted message size
+		static const MsgSize_t INITIAL_BUFFER_POSITION = 8;
+		enum { HEADER_LENGTH = 2 };
+		enum { CHECKSUM_LENGTH = 4 };
+		enum { XTEA_MULTIPLE = 8 };
+		enum { MAX_BODY_LENGTH = NETWORKMESSAGE_MAXSIZE - HEADER_LENGTH - CHECKSUM_LENGTH - XTEA_MULTIPLE };
+		enum { MAX_PROTOCOL_BODY_LENGTH = MAX_BODY_LENGTH - 10 };
 
-		// resets the internal buffer to an empty message
-		void reset(uint16_t size = NETWORK_CRYPTOHEADER_SIZE)
-		{
-			m_size = 0;
-			m_position = size;
-			m_overrun = false;
+		NetworkMessage() {
+			reset();
 		}
 
-		// socket functions
-		SocketCode_t read(SOCKET socket, bool ignoreLength, int32_t timeout = NETWORK_RETRY_TIMEOUT);
-		SocketCode_t write(SOCKET socket, int32_t timeout = NETWORK_RETRY_TIMEOUT);
+		void reset() {
+			overrun = false;
+			length = 0;
+			position = INITIAL_BUFFER_POSITION;
+		}
 
-		// simple read functions for incoming message
-		template<typename T>
-		T get(bool peek = false)
-		{
-			if(sizeof(T) >= (unsigned)(NETWORK_MAX_SIZE - m_position))
-			{
-				m_overrun = true;
+		// simply read functions for incoming message
+		uint8_t getByte() {
+			if (!canRead(1)) {
 				return 0;
 			}
 
-			T value = *(T*)(m_buffer + m_position);
-			if(peek)
-				return value;
-
-			m_position += sizeof(T);
-			return value;
+			return buffer[position++];
 		}
 
-		std::string getString(bool peek = false, uint16_t size = 0);
-		std::string getRaw(bool peek = false) {return getString(peek, m_size - m_position);}
+		uint8_t getPreviousByte() {
+			return buffer[--position];
+		}
 
-		// read for complex types
+		template<typename T>
+		T get() {
+			if (!canRead(sizeof(T))) {
+				return 0;
+			}
+
+			T v;
+			memcpy(&v, buffer + position, sizeof(T));
+			position += sizeof(T);
+			return v;
+		}
+
+		std::string getString(uint16_t stringLen = 0);
 		Position getPosition();
 
 		// skips count unknown/unused bytes in an incoming message
-		void skip(int32_t count) {m_position += count;}
+		void skipBytes(int16_t count) {
+			position += count;
+		}
 
-		// simple write functions for outgoing message
-		template<typename T>
-		void put(T value)
-		{
-			if(!hasSpace(sizeof(T)))
+		// simply write functions for outgoing message
+		void addByte(uint8_t value) {
+			if (!canAdd(1)) {
 				return;
+			}
 
-			*(T*)(m_buffer + m_position) = value;
-			m_position += sizeof(T);
-			m_size += sizeof(T);
+			buffer[position++] = value;
+			length++;
 		}
 
-		void putString(const std::string& value, bool addSize = true) {putString(value.c_str(), value.length(), addSize);}
-		void putString(const char* value, uint32_t length, bool addSize = true);
+		template<typename T>
+		void add(T value) {
+			if (!canAdd(sizeof(T))) {
+				return;
+			}
 
-		void putPadding(uint32_t amount);
-
-		// write for complex types
-		void putPosition(const Position& pos);
-		void putItem(uint16_t id, uint8_t count);
-		void putItem(const Item* item);
-		void putItemId(const Item* item);
-		void putItemId(uint16_t itemId);
-
-		int32_t decodeHeader();
-		bool overrun() const {return m_overrun;}
-
-		// message propeties functions
-		uint16_t size() const {return m_size;}
-		void setSize(uint16_t size) {m_size = size;}
-
-		uint16_t position() const {return m_position;}
-		void setPosition(uint16_t position) {m_position = position;}
-
-		char* buffer(uint16_t position = 0) {return (char*)&m_buffer[position];}
-		char* writeBuffer()
-		{
-			m_position = NETWORK_HEADER_SIZE;
-			return (char*)&m_buffer[NETWORK_HEADER_SIZE];
+			memcpy(buffer + position, &value, sizeof(T));
+			position += sizeof(T);
+			length += sizeof(T);
 		}
 
-#ifdef __TRACK_NETWORK__
-		virtual void track(std::string file, int32_t line, std::string func) {}
-		virtual void clearTrack() {}
+		void addBytes(const char* bytes, size_t size);
+		void addPaddingBytes(size_t n);
 
-#endif
+		void addString(const std::string& value);
 
-		uint8_t m_buffer[NETWORK_MAX_SIZE];
+		void addDouble(double value, uint8_t precision = 2);
+
+		// write functions for complex types
+		void addPosition(const Position& pos);
+		void addItem(uint16_t id, uint8_t count);
+		void addItem(const Item* item);
+		void addItemId(uint16_t itemId);
+
+		MsgSize_t getLength() const {
+			return length;
+		}
+
+		void setLength(MsgSize_t newLength) {
+			length = newLength;
+		}
+
+		MsgSize_t getBufferPosition() const {
+			return position;
+		}
+
+		uint16_t getLengthHeader() const {
+			return static_cast<uint16_t>(buffer[0] | buffer[1] << 8);
+		}
+
+		bool isOverrun() const {
+			return overrun;
+		}
+
+		uint8_t* getBuffer() {
+			return buffer;
+		}
+
+		const uint8_t* getBuffer() const {
+			return buffer;
+		}
+
+		uint8_t* getBodyBuffer() {
+			position = 2;
+			return buffer + HEADER_LENGTH;
+		}
+
 	protected:
-		// used to check available space while writing
-		inline bool hasSpace(int32_t size) const {return (size + m_position < NETWORK_BODY_SIZE);}
+		inline bool canAdd(size_t size) const {
+			return (size + position) < MAX_BODY_LENGTH;
+		}
 
-		// message propeties
-		uint16_t m_size;
-		uint16_t m_position;
+		inline bool canRead(int32_t size) {
+			if ((position + size) > (length + 8) || size >= (NETWORKMESSAGE_MAXSIZE - position)) {
+				overrun = true;
+				return false;
+			}
+			return true;
+		}
 
-		// message data
+		MsgSize_t length;
+		MsgSize_t position;
+		bool overrun;
 
-		// security
-		bool m_overrun;
+		uint8_t buffer[NETWORKMESSAGE_MAXSIZE];
 };
 
-typedef boost::shared_ptr<NetworkMessage> NetworkMessage_ptr;
-#endif
+#endif // #ifndef __NETWORK_MESSAGE_H__
+

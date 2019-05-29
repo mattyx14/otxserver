@@ -134,7 +134,7 @@ class Player : public Creature, public Cylinder
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 		static uint32_t playerCount;
 #endif
-		Player(const std::string& name, ProtocolGame* p);
+		Player(const std::string& name, ProtocolGame_ptr p);
 		virtual ~Player();
 
 		virtual Player* getPlayer() {return this;}
@@ -821,15 +821,9 @@ class Player : public Creature, public Cylinder
 		virtual void __internalAddThing(uint32_t index, Thing* thing);
 
 		uint32_t getVocAttackSpeed() const {return vocation->getAttackSpeed() - getPlayer()->getExtraAttackSpeed();}
-		virtual int32_t getStepSpeed() const
+		int32_t getStepSpeed() const override
 		{
-			if(getSpeed() > SPEED_MAX)
-				return SPEED_MAX;
-
-			if(getSpeed() < SPEED_MIN)
-				return SPEED_MIN;
-
-			return getSpeed();
+			return std::max<int32_t>(SPEED_MIN, std::min<int32_t>(SPEED_MAX, getSpeed()));
 		}
 
 		virtual uint32_t getDamageImmunities() const {return damageImmunities;}
