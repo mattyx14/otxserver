@@ -832,9 +832,6 @@ void otserv(StringVec, ServiceManager* services)
 	serverIps.push_back(IpNetMask);
 
 	std::clog << std::endl << ">> Everything smells good, server is starting up..." << std::endl;
-#if defined(WINDOWS) && !defined(_CONSOLE)
-	SendMessage(GUI::getInstance()->m_statusBar, WM_SETTEXT, 0, (LPARAM)">> Everything smells good, server is starting up...");
-#endif
 	g_game.start(services);
 	g_game.setGameState(g_config.getBool(ConfigManager::START_CLOSED) ? GAMESTATE_CLOSED : GAMESTATE_NORMAL);
 	g_loaderSignal.notify_all();
