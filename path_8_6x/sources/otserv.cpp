@@ -130,6 +130,47 @@ bool argumentsHandler(StringVec args)
 			"\t--no-script\t\t\tStarts the server without script system.\n";
 			return false;
 		}
+		
+	std::string luajit = "no";
+	std::string groundCache = "no";
+	std::string serverDiag = "no";
+	std::string loginServer = "no";
+	std::string useMySQL = "no";
+	std::string useMySQLpp = "no";
+	std::string useSQLite = "no";
+	std::string usePostgreSQL = "no";
+
+#ifdef __LUAJIT__
+	luajit = "yes";
+#endif
+
+#ifdef __GROUND_CACHE__
+	groundCache = "yes";
+#endif
+
+#ifdef __ENABLE_SERVER_DIAGNOSTIC__
+	serverDiag = "yes";
+#endif
+
+#ifdef __LOGIN_SERVER__
+	loginServer = "yes";
+#endif
+
+#ifdef __USE_MYSQL__
+	useMySQL = "yes";
+#endif
+
+#ifdef __USE_MYSQLPP__
+	useMySQLpp = "yes";
+#endif
+
+#ifdef __USE_SQLITE__
+	useSQLite = "yes";
+#endif
+
+#ifdef __USE_PGSQL__
+	usePostgreSQL = "yes";
+#endif
 
 		if((*it) == "--version" || (*it) == "-v")
 		{
@@ -363,6 +404,47 @@ void otserv(StringVec, ServiceManager* services)
 		if(buffer != 121 && buffer != 89)
 			startupErrorMessage("Aborted.");
 	}
+#endif
+
+	std::string luajit = "no";
+	std::string groundCache = "no";
+	std::string serverDiag = "no";
+	std::string loginServer = "no";
+	std::string useMySQL = "no";
+	std::string useMySQLpp = "no";
+	std::string useSQLite = "no";
+	std::string usePostgreSQL = "no";
+
+#ifdef __LUAJIT__
+	luajit = "yes";
+#endif
+
+#ifdef __GROUND_CACHE__
+	groundCache = "yes";
+#endif
+
+#ifdef __ENABLE_SERVER_DIAGNOSTIC__
+	serverDiag = "yes";
+#endif
+
+#ifdef __LOGIN_SERVER__
+	loginServer = "yes";
+#endif
+
+#ifdef __USE_MYSQL__
+	useMySQL = "yes";
+#endif
+
+#ifdef __USE_MYSQLPP__
+	useMySQLpp = "yes";
+#endif
+
+#ifdef __USE_SQLITE__
+	useSQLite = "yes";
+#endif
+
+#ifdef __USE_PGSQL__
+	usePostgreSQL = "yes";
 #endif
 
 	std::clog << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << ") - Codename: (" << SOFTWARE_CODENAME << ")" << std::endl
