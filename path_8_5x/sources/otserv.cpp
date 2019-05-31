@@ -142,9 +142,21 @@ bool argumentsHandler(StringVec args)
 			#else
 			"unk"
 			#endif
-			" at " << __DATE__ << " " << __TIME__ << "\n"
+			" at " << __DATE__ << " " << __TIME__ << ".\n"
 
 			"\n"
+			"\t\tFEATURES ON THIS BUILD:\n"
+				
+				"LuaJIT: " << luajit << "\n"<<
+				"BOOST: " << BOOST_LIB_VERSION << "\n"
+				"GroundCache: " << groundCache << "\n"
+				"ServerDiag: " << serverDiag << "\n"
+				"LoginServer: " << loginServer << "\n"
+				"UseMySQL: " << useMySQL << "\n"
+				"UseSQLite: " << useSQLite << "\n"
+				"UsePostgreSQL: " << usePostgreSQL << "\n"
+				
+
 			"A server developed by: " SOFTWARE_DEVELOPERS ".\n"
 			"Visit for updates, support, and resources: " GIT_REPO "\n";
 			return false;
@@ -362,11 +374,22 @@ void otserv(StringVec, ServiceManager* services)
 		#else
 		"unk"
 		#endif
-		" at " << __DATE__ << " " << __TIME__ << std::endl
+			" at " << __DATE__ << " " << __TIME__ << std::endl << std::endl <<
 
-		<< std::endl
-		<< "A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl
-		<< "Visit for updates, support, and resources: " GIT_REPO "" << std::endl;
+			"\t\tFEATURES ON THIS BUILD: "<< std::endl << std::endl <<
+				
+				"\t\tLuaJIT: " << luajit << std::endl <<
+				"\t\tBOOST: " << BOOST_LIB_VERSION << std::endl <<
+				"\t\tGroundCache: " << groundCache << std::endl <<
+				"\t\tServerDiag: " << serverDiag << std::endl <<
+				"\t\tLoginServer: " << loginServer << std::endl <<
+				"\t\tUseMySQL: " << useMySQL << std::endl <<
+				"\t\tUseSQLite: " << useSQLite << std::endl <<
+				"\t\tUsePostgreSQL: " << usePostgreSQL << std::endl << std::endl <<
+				
+
+			"A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl<<
+			"Visit for updates, support, and resources: " GIT_REPO << std::endl;
 	std::ostringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
