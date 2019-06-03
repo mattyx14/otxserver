@@ -2919,10 +2919,12 @@ bool Game::playerUseItem(uint32_t playerId, const Position& pos, int16_t stackpo
 				Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 					this, player->getID(), listDir)));
 
+				// Hard to stop movement when right clicking
 				SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 					boost::bind(&Game::playerUseItem, this, playerId, pos, stackpos, index, spriteId, isHotkey));
 
 				player->setNextWalkActionTask(task);
+				// Hard to stop movement when right clicking
 				return true;
 			}
 
