@@ -1678,7 +1678,7 @@ int64_t Creature::getStepDuration() const
 	if(!tile || !tile->ground)
 		return 0;
 
-	return ((1000 * Item::items[tile->ground->getID()].speed) / stepSpeed);
+	return ((1000 * Item::items[tile->ground->getID()].speed) / stepSpeed) * lastStepCost;
 }
 
 int64_t Creature::getEventStepTicks(bool onlyDelay/* = false*/) const
