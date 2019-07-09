@@ -105,7 +105,7 @@ bool FileLoader::openFile(const char* name, const char* accept_identifier, bool 
 	m_root = new NodeStruct();
 	m_root->start = 4;
 
-	int32_t byte;
+	int32_t byte = 0;
 	if(safeSeek(4) && readByte(byte) && byte == NODE_START)
 		return parseNode(m_root);
 

@@ -289,12 +289,18 @@ class PropWriteStream
 	public:
 		PropWriteStream()
 		{
-			buffer = (char*)malloc(32 * sizeof(char));
 			bufferSize = 32;
+			buffer = reinterpret_cast<char*>(malloc(bufferSize));
+			if (!buffer) {
+				throw std::bad_alloc();
+			}
 			size = 0;
-			memset(buffer, 0, 32 * sizeof(char));
 		}
-		virtual ~PropWriteStream() {free(buffer);}
+		~PropWriteStream() {free(buffer);}
+
+		inline void clear() {
+			size = 0;
+		}
 
 		const char* getStream(uint32_t& _size) const
 		{
@@ -305,35 +311,8 @@ class PropWriteStream
 		template <typename T>
 		inline void addType(T add)
 		{
-			if((bufferSize - size) < sizeof(T))
-			{
-				bufferSize += ((sizeof(T) + 0x1F) & 0xFFFFFFE0);
-				char* tmp = (char*)realloc(buffer, bufferSize);
-				if(tmp != NULL)
-					buffer = tmp;
-				else
-					std::clog << "[Error - PropWriteStream::addType] Failed to allocate memory" << std::endl;
-			}
-
-			memcpy(&buffer[size], &add, sizeof(T));
-			size += sizeof(T);
-		}
-
-		//TODO: might need tmp buffer and zero fill the memory chunk allocated by realloc
-		template <typename T>
-		inline void addStruct(T* add)
-		{
-			if((bufferSize - size) < sizeof(T))
-			{
-				bufferSize += ((sizeof(T) + 0x1F) & 0xFFFFFFE0);
-				char* tmp = (char*)realloc(buffer, bufferSize);
-				if(tmp != NULL)
-					buffer = tmp;
-				else
-					std::clog << "[Error - PropWriteStream::addStruct] Failed to allocate memory" << std::endl;
-			}
-
-			memcpy(&buffer[size], (char*)add, sizeof(T));
+			reserve(sizeof(T));
+			memcpy(buffer + size, &add, sizeof(T));
 			size += sizeof(T);
 		}
 
@@ -346,42 +325,40 @@ class PropWriteStream
 		{
 			uint16_t strLen = add.size();
 			addShort(strLen);
-			if((bufferSize - size) < strLen)
-			{
-				bufferSize += ((strLen + 0x1F) & 0xFFFFFFE0);
-				char* tmp = (char*)realloc(buffer, bufferSize);
-				if(tmp != NULL)
-					buffer = tmp;
-				else
-					std::clog << "[Error - PropWriteStream::addString] Failed to allocate memory" << std::endl;
-			}
-
-			memcpy(&buffer[size], add.c_str(), strLen);
+			reserve(strLen);
+			memcpy(buffer + size, add.c_str(), strLen);
 			size += strLen;
 		}
 
 		inline void addLongString(const std::string& add)
 		{
-			uint16_t strLen = add.size();
+			uint32_t strLen = add.size();
 			addLong(strLen);
-			if((bufferSize - size) < strLen)
-			{
-				bufferSize += ((strLen + 0x1F) & 0xFFFFFFE0);
-				char* tmp = (char*)realloc(buffer, bufferSize);
-				if(tmp != NULL)
-					buffer = tmp;
-				else
-					std::clog << "[Error - PropWriteStream::addLongString] Failed to allocate memory" << std::endl;
-			}
-
-			memcpy(&buffer[size], add.c_str(), strLen);
+			reserve(strLen);
+			memcpy(buffer + size, add.c_str(), strLen);
 			size += strLen;
 		}
 
 
 	protected:
+		void reserve(size_t length) {
+			if ((bufferSize - size) >= length) {
+				return;
+			}
+
+			do {
+				bufferSize <<= 1;
+			} while ((bufferSize - size) < length);
+
+			void* newBuffer = realloc(buffer, bufferSize);
+			if (!newBuffer) {
+				throw std::bad_alloc();
+			}
+
+			buffer = reinterpret_cast<char*>(newBuffer);
+		}
+
 		char* buffer;
 		uint32_t bufferSize, size;
 };
 #endif
-

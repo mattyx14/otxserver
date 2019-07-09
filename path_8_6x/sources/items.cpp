@@ -379,8 +379,10 @@ int32_t Items::loadFromOtb(std::string file)
 
 		// store the found item
 		items.addElement(iType, iType->id);
-		if(iType->clientId)
-			reverseItemMap[iType->clientId] = iType->id;
+		if (iType->clientId) {
+			if (reverseItemMap.find(iType->clientId) == reverseItemMap.end())
+				reverseItemMap[iType->clientId] = iType->id;
+		}
 	}
 
 	return ERROR_NONE;
@@ -2030,14 +2032,11 @@ const ItemType& Items::getItemType(int32_t id) const
 
 const ItemType& Items::getItemIdByClientId(int32_t spriteId) const
 {
-	uint32_t i = 100;
-	ItemType* iType;
-	do
-	{
-		if((iType = items.getElement(i++)) && iType->clientId == spriteId)
-			return *iType;
+	auto it = reverseItemMap.find(spriteId);
+	if (it != reverseItemMap.end()) {
+		return getItemType(it->second);
 	}
-	while(iType);
+
 	static ItemType dummyItemType; // use this for invalid ids
 	return dummyItemType;
 }

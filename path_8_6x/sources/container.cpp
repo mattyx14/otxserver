@@ -204,18 +204,13 @@ void Container::onAddContainerItem(Item* item)
 	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendAddContainerItem(this, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendAddContainerItem(this, item);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onAddContainerItem(this, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onAddContainerItem(this, item);
 	}
 }
 
@@ -229,18 +224,13 @@ void Container::onUpdateContainerItem(uint32_t index, Item* oldItem, const ItemT
 	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendUpdateContainerItem(this, index, oldItem, newItem);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendUpdateContainerItem(this, index, oldItem, newItem);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onUpdateContainerItem(this, index, oldItem, oldType, newItem, newType);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onUpdateContainerItem(this, index, oldItem, oldType, newItem, newType);
 	}
 }
 
@@ -253,18 +243,13 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send change to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendRemoveContainerItem(this, index, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendRemoveContainerItem(this, index, item);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onRemoveContainerItem(this, index, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onRemoveContainerItem(this, index, item);
 	}
 }
 

@@ -171,8 +171,14 @@ void Spectators::handle(ProtocolGame* client, const std::string& text, uint16_t 
 		StringVec::const_iterator mit = std::find(mutes.begin(), mutes.end(), asLowerCaseString(sit->second.first));
 		if(mit == mutes.end())
 		{
-			if(channel && channel->getId() == channelId)
+			if (channel && channel->getId() == channelId) {
+				if ((time(NULL) - client->lastCastMsg) < 10) {
+					client->sendCreatureSay(owner->getPlayer(), MSG_PRIVATE, "You are exhausted.", NULL, 0);
+					return;
+				}
+				client->lastCastMsg = time(NULL);
 				channel->talk(sit->second.first, MSG_CHANNEL_HIGHLIGHT, text);
+			}
 		}
 		else
 			client->sendCreatureSay(owner->getPlayer(), MSG_PRIVATE, "You are muted.", NULL, 0);

@@ -1121,7 +1121,7 @@ bool Creature::setFollowCreature(Creature* creature, bool /*fullPathSearch = fal
 		followCreature = NULL;
 	}
 
-	g_game.updateCreatureWalk(id);
+	//g_game.updateCreatureWalk(id);
 	onFollowCreature(creature);
 	return true;
 }
@@ -1367,13 +1367,9 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;
-	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if(!(*it)->getPlayer())
-			continue;
-
-		if((*it) != this)
-			textList.insert(*it);
+	for (Creature* spectator : list) {
+		if (spectator != this)
+			textList.insert(spectator);
 	}
 
 	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);
@@ -1415,13 +1411,9 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;
-	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if(!(*it)->getPlayer())
-			continue;
-
-		if((*it) != this)
-			textList.insert(*it);
+	for (Creature* spectator : list) {
+		if (spectator != this)
+			textList.insert(spectator);
 	}
 
 	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);
