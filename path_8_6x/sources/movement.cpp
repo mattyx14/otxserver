@@ -407,7 +407,7 @@ MoveEvent* MoveEvents::getEvent(Item* item, uint16_t uniqueId, uint16_t actionId
 
 	if (uniqueId)
 	{
-		it = it = m_uniqueIdMap.find(uniqueId);
+		it = m_uniqueIdMap.find(uniqueId);
 		if(it != m_uniqueIdMap.end())
 		{
 			EventList& moveEventList = it->second.moveEvent[eventType];
