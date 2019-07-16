@@ -17,7 +17,7 @@ function onThink(cid, interval)
 
 	local idleTime = getPlayerIdleTime(cid) + interval
 	doPlayerSetIdleTime(cid, idleTime)
-	if(config.idleKick > 0 and idleTime > config.idleKick and (not hasCreatureCondition(cid, CONDITION_INFIGHT) or tile.protection)) then
+	if(config.idleKick > 0 and idleTime > config.idleKick) then
 		doRemoveCreature(cid)
 		return true
 	end

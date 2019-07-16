@@ -6797,7 +6797,7 @@ uint32_t Game::getPlayersWithMcLimit()
 
 	for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
 	{
-		if (!it->second->isRemoved())
+		if (!it->second->isRemoved() && it->second->getIdleTime() < 960000)
 		{
 			uint32_t ip = it->second->getIP();
 			if (ips.find(ip) == ips.end())

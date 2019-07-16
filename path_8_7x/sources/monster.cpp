@@ -983,7 +983,7 @@ bool Monster::getNextStep(Direction& dir, uint32_t& flags)
 	bool result = false;
 	if((!followCreature || !hasFollowPath) && !isSummon())
 	{
-		if(followCreature || getTimeSinceLastMove() > 1000) //choose a random direction
+		if(getWalkDelay() <= 0 && getTimeSinceLastMove() > 1000) //choose a random direction
 			result = getRandomStep(getPosition(), dir);
 	}
 	else if(isSummon() || followCreature)
