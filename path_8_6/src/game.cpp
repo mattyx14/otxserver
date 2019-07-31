@@ -4636,8 +4636,10 @@ void Game::playerLeaveParty(uint32_t playerId)
 	}
 
 	Party* party = player->getParty();
-	if (!party || player->hasCondition(CONDITION_INFIGHT)) {
-		return;
+	if(player->getZone() != ZONE_PROTECTION) {
+		if (!party || player->hasCondition(CONDITION_INFIGHT)) {
+			return;
+		}
 	}
 
 	party->leaveParty(player);
