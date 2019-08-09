@@ -217,21 +217,23 @@ RuneSpell* Spells::getRuneSpellByName(const std::string& name)
 InstantSpell* Spells::getInstantSpell(const std::string& words)
 {
 	InstantSpell* result = NULL;
-	for(InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
+	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
 	{
 		InstantSpell* instantSpell = it->second;
-		if(!asLowerCaseString(words).compare(0, instantSpell->getWords().length(),
-			asLowerCaseString(instantSpell->getWords())))
-		{
-			if(!result || instantSpell->getWords().length() > result->getWords().length())
+		const std::string& instantSpellWords = instantSpell->getWords();
+		size_t spellLen = instantSpellWords.length();
+
+		if (strncasecmp(instantSpellWords.c_str(), words.c_str(), spellLen) == 0) {
+			if (!result || spellLen > result->getWords().length()) {
 				result = instantSpell;
+			}
 		}
 	}
 
-	if(result && words.length() > result->getWords().length())
+	if (result && words.length() > result->getWords().length())
 	{
 		std::string param = words.substr(result->getWords().length(), words.length());
-		if(param[0] != ' ' || (param.length() > 1 && (!result->getHasParam() || param.find(' ', 1) != std::string::npos) && param[1] != '"'))
+		if (param[0] != ' ' || (param.length() > 1 && (!result->getHasParam() || param.find(' ', 1) != std::string::npos) && param[1] != '"'))
 			return NULL;
 	}
 
@@ -270,16 +272,15 @@ InstantSpell* Spells::getInstantSpellByIndex(const Player* player, uint32_t inde
 
 InstantSpell* Spells::getInstantSpellByName(const std::string& name)
 {
-	std::string tmpName = asLowerCaseString(name);
-	for(InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
+	const char* cName = name.c_str();
+	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
 	{
-		if(tmpName == asLowerCaseString(it->second->getName()))
+		if (strcasecmp(cName, it->second->getName().c_str()) == 0)
 			return it->second;
 	}
 
 	return NULL;
 }
-
 Position Spells::getCasterPosition(Creature* creature, Direction dir)
 {
 	return getNextPosition(dir, creature->getPosition());

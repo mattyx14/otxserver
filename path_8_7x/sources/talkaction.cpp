@@ -217,7 +217,7 @@ bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std:
 		Logger::getInstance()->eFile("talkactions/" + creature->getName() + ".log", words, true);
 	}
 	
-	if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 5000, 0, false, EXHAUST_TALKACTION))
+	if (Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 1000, 0, false, EXHAUST_TALKACTION))
 	{
 		if (!player->hasFlag(PlayerFlag_HasNoExhaustion))
 			player->addCondition(condition);

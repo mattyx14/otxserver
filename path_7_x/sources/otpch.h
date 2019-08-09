@@ -25,6 +25,11 @@
 #include <winerror.h>
 #endif
 
+#ifdef _MSC_VER
+#define strncasecmp _strnicmp
+#define strcasecmp _stricmp
+#endif
+
 //libxml
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
