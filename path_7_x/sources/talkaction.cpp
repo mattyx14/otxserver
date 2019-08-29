@@ -1201,18 +1201,19 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 	s << "Protocols:" << std::endl
 		<< "--------------------" << std::endl
 		<< "ProtocolGame: " << ProtocolGame::protocolGameCount << std::endl
-		<< "ProtocolLogin: " << ProtocolLogin::protocolLoginCount << std::endl
-		<< "ProtocolStatus: " << ProtocolStatus::protocolStatusCount << std::endl;
+		<< "ProtocolLogin: " << ProtocolLogin::protocolLoginCount << std::endl;
+		//<< "ProtocolStatus: " << ProtocolStatus::protocolStatusCount << std::endl;
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
 
 	s.str("");
 	s << "Connections:" << std::endl
-		<< "--------------------" << std::endl
+		<< "--------------------" << std::endl;
+		/*
 		<< "Active connections: " << Connection::connectionCount << std::endl
 		<< "Total message pool: " << OutputMessagePool::getInstance()->getTotalMessageCount() << std::endl
 		<< "Auto message pool: " << OutputMessagePool::getInstance()->getAutoMessageCount() << std::endl
 		<< "Queued message pool: " << OutputMessagePool::getInstance()->getQueuedMessageCount() << std::endl
-		<< "Free message pool: " << OutputMessagePool::getInstance()->getAvailableMessageCount() << std::endl;
+		<< "Free message pool: " << OutputMessagePool::getInstance()->getAvailableMessageCount() << std::endl;*/
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
 
 #else

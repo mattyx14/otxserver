@@ -106,6 +106,8 @@ std::string transformToSHA1(const std::string &plainText, bool upperCase);
 std::string transformToSHA256(const std::string &plainText, bool upperCase);
 std::string transformToSHA512(const std::string &plainText, bool upperCase);
 
+uint32_t adlerChecksum(uint8_t* data, size_t length);
+
 void _encrypt(std::string& str, bool upperCase);
 bool encryptTest(std::string plain, std::string& hash);
 

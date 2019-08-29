@@ -18,7 +18,7 @@
 #ifndef __TILE__
 #define __TILE__
 #include <boost/shared_ptr.hpp>
-#include <boost/tr1/unordered_set.hpp>
+
 
 #include "cylinder.h"
 #include "item.h"

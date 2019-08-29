@@ -15,34 +15,27 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef FS_STATUS_H_8B28B354D65B4C0483E37AD1CA316EB4
-#define FS_STATUS_H_8B28B354D65B4C0483E37AD1CA316EB4
+#ifndef __RSA__
+#define __RSA__
 
-#include "networkmessage.h"
-#include "protocol.h"
+#include "otsystem.h"
+#include <gmp.h>
 
-class ProtocolStatus final : public Protocol
+class RSA
 {
 	public:
-		// static protocol information
-		enum {server_sends_first = false};
-		enum {protocol_identifier = 0xFF};
-		enum {use_checksum = false};
-		static const char* protocol_name() {
-			return "status protocol";
-		}
+		RSA();
+		virtual ~RSA();
 
-		explicit ProtocolStatus(Connection_ptr connection) : Protocol(connection) {}
+		void initialize(const char* p, const char* q, const char* d);
+		bool initialize(const std::string& file);
 
-		void onRecvFirstMessage(NetworkMessage& msg) final;
+		void decrypt(char* msg);
 
-		void sendStatusString();
-		void sendInfo(uint16_t requestedInfo, const std::string& characterName);
-
-		static const uint64_t start;
+		void getPublicKey(char* buffer);
 
 	protected:
-		static std::map<uint32_t, int64_t> ipConnectMap;
+		boost::recursive_mutex rsaLock;
+		mpz_t m_p, m_q, m_u, m_d, m_dp, m_dq, m_mod;
 };
-
 #endif

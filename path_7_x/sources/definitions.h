@@ -19,6 +19,7 @@
 #define __DEFINITIONS__
 
 // Compatible with 7.40 to 7.72
+#define TRACK_MESSAGE(x)
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "12"

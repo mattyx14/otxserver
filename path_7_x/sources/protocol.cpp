@@ -14,217 +14,145 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////
+
 #include "otpch.h"
-#if defined WINDOWS
-#include <winerror.h>
-#endif
 
 #include "protocol.h"
-#include "tools.h"
-
-#include "scheduler.h"
-#include "connection.h"
 #include "outputmessage.h"
+#include "rsa.h"
 
-#ifdef _MULTIPLATFORM77
-#include <openssl/rsa.h>
-extern RSA* g_RSA;
-#endif
-#include "definitions.h"
+extern RSA g_RSA;
 
-void Protocol::onSendMessage(OutputMessage_ptr msg)
+void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 {
-	#ifdef __DEBUG_NET_DETAIL__
-	std::clog << "Protocol::onSendMessage" << std::endl;
-	#endif
-	if(!m_rawMessages)
-	{
-		msg->addHeader();
-		#ifdef _MULTIPLATFORM77
-		if(m_encryptionEnabled)
-		{
-			#ifdef __DEBUG_NET_DETAIL__
-			std::clog << "Protocol::onSendMessage - encrypt" << std::endl;
-			#endif
-			XTEA_encrypt(*msg);
-			msg->addCryptoHeader();
-		}
-		#endif
-	}
+	if (!rawMessages) {
+		msg->writeMessageLength();
 
-	if(msg == m_outputBuffer)
-		m_outputBuffer.reset();
+		if (encryptionEnabled) {
+			XTEA_encrypt(*msg);
+			msg->addCryptoHeader(checksumEnabled);
+		}
+	}
 }
 
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
-	#ifdef __DEBUG_NET_DETAIL__
-	std::clog << "Protocol::onRecvMessage" << std::endl;
-	#endif
-
-	#ifdef _MULTIPLATFORM77
-	if(m_encryptionEnabled)
-	{
-		#ifdef __DEBUG_NET_DETAIL__
-		std::clog << "Protocol::onRecvMessage - decrypt" << std::endl;
-		#endif
-		if(!XTEA_decrypt(msg))
-			return;
+	if (encryptionEnabled && !XTEA_decrypt(msg)) {
+		return;
 	}
-	#endif
 
 	parsePacket(msg);
 }
 
 OutputMessage_ptr Protocol::getOutputBuffer()
 {
-	if(m_outputBuffer)
-		return m_outputBuffer;
-
-	if(!m_connection)
-		return OutputMessage_ptr();
-
-	m_outputBuffer = OutputMessagePool::getInstance()->getOutputMessage(this);
-	return m_outputBuffer;
+	if(!outputBuffer)
+		outputBuffer = OutputMessagePool::getOutputMessage();
+	return outputBuffer;
+}
+OutputMessage_ptr Protocol::getOutputBuffer(int32_t size)
+{
+	//dispatcher thread
+	if (!outputBuffer) {
+		outputBuffer = OutputMessagePool::getOutputMessage();
+	} else if ((outputBuffer->getLength() + size) > NetworkMessage::MAX_PROTOCOL_BODY_LENGTH) {
+		send(outputBuffer);
+		outputBuffer = OutputMessagePool::getOutputMessage();
+	}
+	return outputBuffer;
 }
 
-void Protocol::writeOutputBuffer(NetworkMessage& msg)
+void Protocol::XTEA_encrypt(OutputMessage& msg) const
 {
-	if(!m_outputBuffer && !m_connection)
-		return;
+	const uint32_t delta = 0x61C88647;
 
-	if(!m_outputBuffer || NETWORK_MAX_SIZE < m_outputBuffer->position() + msg.size())
-		m_outputBuffer = OutputMessagePool::getInstance()->getOutputMessage(this);
-
-	if(m_outputBuffer)
-		m_outputBuffer->putString(msg.buffer(NETWORK_CRYPTOHEADER_SIZE), msg.size(), false);
-}
-
-void Protocol::releaseProtocol()
-{
-	if(m_refCount > 0)
-		Scheduler::getInstance().addEvent(createSchedulerTask(SCHEDULER_MINTICKS, boost::bind(&Protocol::releaseProtocol, this)));
-	else
-		deleteProtocolTask();
-}
-
-void Protocol::deleteProtocolTask()
-{
-	//dispather thread
-	assert(!m_refCount);
-	setConnection(Connection_ptr());
-	delete this;
-}
-
-#ifdef _MULTIPLATFORM77
-void Protocol::XTEA_encrypt(OutputMessage& msg)
-{
-	//add bytes until reach 8 multiple
-	uint16_t messageLength = msg.size();
-	if(messageLength % 8)
-	{
-		uint16_t n = 8 - (messageLength % 8);
-		msg.putPadding(n);
-		messageLength += n;
+	// The message must be a multiple of 8
+	size_t paddingBytes = msg.getLength() % 8;
+	if (paddingBytes != 0) {
+		msg.addPaddingBytes(8 - paddingBytes);
 	}
 
-	int32_t readPos = -1;
-	uint32_t *buffer = (uint32_t*)msg.getOutputBuffer(), delta = 0x61C88647;
-	while(++readPos < messageLength >> 2)
-	{
-		uint32_t v0 = buffer[readPos], v1 = buffer[readPos + 1], sum = 0;
-		for(int32_t i = 0; i < 32; ++i)
-		{
-			v0 += ((v1 << 4 ^ v1 >> 5) + v1) ^ (sum + m_key[sum & 3]);
+	uint8_t* buffer = msg.getOutputBuffer();
+	const size_t messageLength = msg.getLength();
+	size_t readPos = 0;
+	const uint32_t k[] = {key[0], key[1], key[2], key[3]};
+	while (readPos < messageLength) {
+		uint32_t v0;
+		memcpy(&v0, buffer + readPos, 4);
+		uint32_t v1;
+		memcpy(&v1, buffer + readPos + 4, 4);
+
+		uint32_t sum = 0;
+
+		for (int32_t i = 32; --i >= 0;) {
+			v0 += ((v1 << 4 ^ v1 >> 5) + v1) ^ (sum + k[sum & 3]);
 			sum -= delta;
-			v1 += ((v0 << 4 ^ v0 >> 5) + v0) ^ (sum + m_key[sum >> 11 & 3]);
+			v1 += ((v0 << 4 ^ v0 >> 5) + v0) ^ (sum + k[(sum >> 11) & 3]);
 		}
 
-		buffer[readPos] = v0;
-		buffer[++readPos] = v1;
+		memcpy(buffer + readPos, &v0, 4);
+		readPos += 4;
+		memcpy(buffer + readPos, &v1, 4);
+		readPos += 4;
 	}
 }
 
-bool Protocol::XTEA_decrypt(NetworkMessage& msg)
+bool Protocol::XTEA_decrypt(NetworkMessage& msg) const
 {
-	if((msg.size() - 2) % 8)
-	{
-		std::clog << "[Failure - Protocol::XTEA_decrypt] Not valid encrypted message size";
-		int32_t ip = getIP();
-		if(ip)
-			std::clog << " (IP: " << convertIPAddress(ip) << ")";
-
-		std::clog << std::endl;
+	if (((msg.getLength() - 6) & 7) != 0) {
 		return false;
 	}
 
-	int32_t messageLength = msg.size() - 2, readPos = -1;
-	uint32_t *buffer = (uint32_t*)(msg.buffer() + msg.position()), delta = 0x61C88647;
-	while(++readPos < messageLength >> 2)
-	{
-		uint32_t v0 = buffer[readPos], v1 = buffer[readPos + 1], sum = 0xC6EF3720;
-		for(int32_t i = 0; i < 32; ++i)
-		{
-			v1 -= ((v0 << 4 ^ v0 >> 5) + v0) ^ (sum + m_key[sum >> 11 & 3]);
+	const uint32_t delta = 0x61C88647;
+
+	uint8_t* buffer = msg.getBuffer() + msg.getBufferPosition();
+	const size_t messageLength = (msg.getLength() - 6);
+	size_t readPos = 0;
+	const uint32_t k[] = {key[0], key[1], key[2], key[3]};
+	while (readPos < messageLength) {
+		uint32_t v0;
+		memcpy(&v0, buffer + readPos, 4);
+		uint32_t v1;
+		memcpy(&v1, buffer + readPos + 4, 4);
+
+		uint32_t sum = 0xC6EF3720;
+
+		for (int32_t i = 32; --i >= 0;) {
+			v1 -= ((v0 << 4 ^ v0 >> 5) + v0) ^ (sum + k[(sum >> 11) & 3]);
 			sum += delta;
-			v0 -= ((v1 << 4 ^ v1 >> 5) + v1) ^ (sum + m_key[sum & 3]);
+			v0 -= ((v1 << 4 ^ v1 >> 5) + v1) ^ (sum + k[sum & 3]);
 		}
 
-		buffer[readPos] = v0;
-		buffer[++readPos] = v1;
+		memcpy(buffer + readPos, &v0, 4);
+		readPos += 4;
+		memcpy(buffer + readPos, &v1, 4);
+		readPos += 4;
 	}
 
-	int32_t tmp = msg.get<uint16_t>();
-	if(tmp > msg.size() - 4)
-	{
-		std::clog << "[Failure - Protocol::XTEA_decrypt] Not valid unencrypted message size";
-		uint32_t ip = getIP();
-		if(ip)
-			std::clog << " (IP: " << convertIPAddress(ip) << ")";
-
-		std::clog << std::endl;
+	int innerLength = msg.get<uint16_t>();
+	if (innerLength > msg.getLength() - 8) {
 		return false;
 	}
 
-	msg.setSize(tmp);
+	msg.setLength(innerLength);
 	return true;
 }
 
 bool Protocol::RSA_decrypt(NetworkMessage& msg)
 {
-	if(msg.size() - msg.position() != 128)
-	{
-		std::clog << "[Warning - Protocol::RSA_decrypt] Not valid packet size";
-		int32_t ip = getIP();
-		if(ip)
-			std::clog << " (IP: " << convertIPAddress(ip) << ")";
-
-		std::clog << std::endl;
+	if ((msg.getLength() - msg.getBufferPosition()) != 128) {
 		return false;
 	}
 
-	uint16_t size = msg.size();
-	RSA_private_decrypt(128, (uint8_t*)(msg.buffer() + msg.position()), (uint8_t*)msg.buffer(), g_RSA, RSA_NO_PADDING);
-	msg.setSize(size);
-
-	msg.setPosition(0);
-	if(!msg.get<char>())
-		return true;
-
-	std::clog << "[Warning - Protocol::RSA_decrypt] First byte != 0";
-	int32_t ip = getIP();
-	if(ip)
-		std::clog << " (IP: " << convertIPAddress(ip) << ")";
-
-	std::clog << std::endl;
-	return false;
+	g_RSA.decrypt(reinterpret_cast<char*>(msg.getBuffer()) + msg.getBufferPosition()); //does not break strict aliasing
+	return msg.getByte() == 0;
 }
-#endif
 
 uint32_t Protocol::getIP() const
 {
-	if(Connection_ptr connection = getConnection())
+	if (auto connection = getConnection()) {
 		return connection->getIP();
+	}
 
 	return 0;
 }

@@ -70,6 +70,9 @@ bool ConfigManager::load()
 		if(m_confNumber[GAME_PORT] == 0)
 			m_confNumber[GAME_PORT] = getGlobalNumber("gamePort", 7172);
 
+		if (m_confNumber[MANAGER_PORT] == 0)
+			m_confNumber[MANAGER_PORT] = getGlobalNumber("managerPort", 7171);
+
 		if(m_confNumber[STATUS_PORT] == 0)
 			m_confNumber[STATUS_PORT] = getGlobalNumber("statusPort", 7171);
 
@@ -132,6 +135,10 @@ bool ConfigManager::load()
 	m_confString[LOCATION] = getGlobalString("location");
 	m_confString[MOTD] = getGlobalString("motd");
 	m_confNumber[ALLOW_CLONES] = getGlobalNumber("allowClones", 0);
+	m_confBool[MANAGER_LOCALHOST_ONLY] = getGlobalBool("managerLocalhostOnly", true);
+	m_confNumber[MANAGER_CONNECTIONS_LIMIT] = getGlobalNumber("managerConnectionsLimit", 1);
+	m_confString[MANAGER_PASSWORD] = getGlobalString("managerPassword", "");
+	m_confBool[MANAGER_LOGS] = getGlobalBool("managerLogs", false);
 	m_confBool[EXPERIENCE_STAGES] = getGlobalBool("experienceStages", false);
 	m_confDouble[RATE_EXPERIENCE] = getGlobalDouble("rateExperience", 1);
 	m_confDouble[RATE_SKILL] = getGlobalDouble("rateSkill", 1);

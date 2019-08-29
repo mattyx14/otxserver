@@ -4429,6 +4429,35 @@ bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 	return true;
 }
 
+uint32_t Game::getPlayersWithMcLimit()
+{
+
+	std::map<uint32_t, uint32_t> ips;
+	uint32_t count = 0;
+
+	for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+	{
+		if (!it->second->isRemoved() && it->second->getIdleTime() < 960000)
+		{
+			uint32_t ip = it->second->getIP();
+
+
+			if (ips.find(ip) == ips.end())
+			{
+				ips[ip] = 1;
+				count++;
+			}
+			else if (ips[ip] < 5)
+			{
+				ips[ip]++;
+				count++;
+			}
+		}
+	}
+
+	return count;
+}
+
 bool Game::internalCreatureSay(Creature* creature, MessageClasses type, const std::string& text,
 	bool ghostMode, SpectatorVec* spectators/* = NULL*/, Position* pos/* = NULL*/, uint32_t statementId/* = 0*/)
 {

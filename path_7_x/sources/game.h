@@ -18,7 +18,8 @@
 #ifndef __GAME__
 #define __GAME__
 #include "otsystem.h"
-#include <boost/tr1/unordered_map.hpp>
+
+
 
 #include "enums.h"
 #include "templates.h"
@@ -460,6 +461,7 @@ class Game
 
 		bool internalStartTrade(Player* player, Player* partner, Item* tradeItem);
 		bool internalCloseTrade(Player* player);
+		uint32_t getPlayersWithMcLimit();
 
 		//Implementation of player invoked events
 		bool playerBroadcastMessage(Player* player, MessageClasses type, const std::string& text, uint32_t statementId);
@@ -626,7 +628,7 @@ class Game
 		Map* getMap() {return map;}
 		const Map* getMap() const {return map;}
 
-		bool isRunning() const {return services && services->isRunning();}
+		bool isRunning() const {return services && services->is_running();}
 		int32_t getLightHour() const {return lightHour;}
 		void startDecay(Item* item);
 
