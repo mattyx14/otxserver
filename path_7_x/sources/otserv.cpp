@@ -32,9 +32,9 @@
 
 #include <boost/config.hpp>
 #ifdef _MULTIPLATFORM77
-#include <openssl/rsa.h>
-#include <openssl/bn.h>
-#include <openssl/err.h>
+//#include <openssl/rsa.h>
+//#include <openssl/bn.h>
+//#include <openssl/err.h>
 #endif
 #include "server.h"
 #ifdef __LOGIN_SERVER__
@@ -611,8 +611,10 @@ void otserv(StringVec, ServiceManager* services)
 	}
 
 	#ifdef _MULTIPLATFORM77
+	/*
 	std::clog << ">> Loading RSA key" << std::endl;
 	g_RSA = RSA_new();
+
 
 	BN_dec2bn(&g_RSA->p, g_config.getString(ConfigManager::RSA_PRIME1).c_str());
 	BN_dec2bn(&g_RSA->q, g_config.getString(ConfigManager::RSA_PRIME2).c_str());
@@ -640,7 +642,7 @@ void otserv(StringVec, ServiceManager* services)
 
 		s << std::endl << "> OpenSSL failed - " << ERR_error_string(ERR_get_error(), NULL);
 		startupErrorMessage(s.str());
-	}
+	}*/
 	#endif
 
 	const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
