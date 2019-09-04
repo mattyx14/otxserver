@@ -41,9 +41,6 @@
 				AleMadi, Natanael Beckman, Comedinha, Lincoln, Rodrigo, Pyromaniack, Druckz, Kazbin,
 				Leandro Brewster.
 
-			EvilHero90 The Forgotten Server - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/EvilHero90/forgottenserver/
-
 	DEVELOPMENT STATUS
 		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.12 :: Version "OpenTibia"
 ]
@@ -71,8 +68,10 @@
 	- Fix https://otland.net/threads/crash.260035/#post-2515145
 	- Fix bug on "inBoxParcel" it are how one infinite depot try put items intro parcel on inBox
 	- Fix infinite healing on monsters (Matheus Matias)
-	- Fix Fixes Cast/Live problem (Matheus Matias)
+	- Fix Cast/Live problem (Matheus Matias)
 	- Fix stackItemsTrade
+	- Fix diagonal walk (Matheus Matias)
+	- Fix randomstep for monsters (Matheus Matias)
 	- Fix outfitAttributes (Matheus Matias)
 	- Fix COMBAT_PARAM_DISPEL no work on 7.x
 	- Fix runeEffects (Matheus Matias)
@@ -87,6 +86,7 @@
 		#482, #495, #502(Matheus Matias), #505(Matheus Matias), #509(Matheus Matias), #514(Matheus Matias),
 		#519(Matheus Matias), #525(Matheus Matias), #526(Matheus Matias), #527(Matheus Matias), #530, #533,
 		#538, #539(Matheus Matias), #542(Matheus Matias), #550(Matheus Matias), #551(Matheus Matias)
+		#609(Matheus Matias), #611(Matheus Matias)
 	- Optimize code fixes
 	- Optimize code Connection and SQL Services // Security
 	- Optimize NPCLibs
@@ -95,6 +95,7 @@
 		it should be more noticeable on big maps.
 	- Remove GUI interface
 	- Remove RSA-OpenSSL and use standard mod
+	- Spell Optimization (Matheus Matias)
 	- Update statusOnline 0.0.0.0 no counter
 	- Update items.xml (base OTX 3 - Series)
 	- Update potions.lua
