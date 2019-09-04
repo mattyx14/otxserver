@@ -912,6 +912,28 @@ void LuaScriptInterface::pushOutfit(lua_State* L, const Outfit_t& outfit)
 	setField(L, "lookAddons", outfit.lookAddons);
 }
 
+void LuaScriptInterface::pushLoot(lua_State* L, const std::vector<LootBlock>& lootList)
+{
+	lua_createtable(L, lootList.size(), 0);
+
+	int index = 0;
+	for (const auto& lootBlock : lootList) {
+		lua_createtable(L, 0, 7);
+
+		setField(L, "itemId", lootBlock.id);
+		setField(L, "chance", lootBlock.chance);
+		setField(L, "subType", lootBlock.subType);
+		setField(L, "maxCount", lootBlock.countmax);
+		setField(L, "actionId", lootBlock.actionId);
+		setField(L, "text", lootBlock.text);
+
+		pushLoot(L, lootBlock.childLoot);
+		lua_setfield(L, -2, "childLoot");
+
+		lua_rawseti(L, -2, ++index);
+	}
+}
+
 #define registerEnum(value) { std::string enumName = #value; registerGlobalVariable(enumName.substr(enumName.find_last_of(':') + 1), value); }
 #define registerEnumIn(tableName, value) { std::string enumName = #value; registerVariable(tableName, enumName.substr(enumName.find_last_of(':') + 1), value); }
 
@@ -11968,27 +11990,7 @@ int LuaScriptInterface::luaMonsterTypeGetLoot(lua_State* L)
 		return 1;
 	}
 
-	static const std::function<void(const std::vector<LootBlock>&)> parseLoot = [&](const std::vector<LootBlock>& lootList) {
-		lua_createtable(L, lootList.size(), 0);
-
-		int index = 0;
-		for (const auto& lootBlock : lootList) {
-			lua_createtable(L, 0, 7);
-
-			setField(L, "itemId", lootBlock.id);
-			setField(L, "chance", lootBlock.chance);
-			setField(L, "subType", lootBlock.subType);
-			setField(L, "maxCount", lootBlock.countmax);
-			setField(L, "actionId", lootBlock.actionId);
-			setField(L, "text", lootBlock.text);
-
-			parseLoot(lootBlock.childLoot);
-			lua_setfield(L, -2, "childLoot");
-
-			lua_rawseti(L, -2, ++index);
-		}
-	};
-	parseLoot(monsterType->info.lootItems);
+	pushLoot(L, monsterType->info.lootItems);
 	return 1;
 }
 
