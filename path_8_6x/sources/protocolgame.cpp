@@ -1731,7 +1731,15 @@ void ProtocolGame::sendGoods(const ShopInfoList& shop)
 
 	TRACK_MESSAGE(msg);
 	msg->addByte(0x7B);
-	msg->add<uint32_t>((uint32_t)g_game.getMoney(player));
+
+	uint64_t money = g_game.getMoney(player);
+	if (money >= INT32_MAX) 
+	{
+		msg->add<uint32_t>(INT32_MAX -1);
+	}
+	else {
+		msg->add<uint32_t>((uint32_t)g_game.getMoney(player));
+	}
 
 	std::map<uint32_t, uint32_t> goodsMap;
 	if(shop.size() >= 5)
