@@ -1274,6 +1274,9 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 
 ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, uint32_t flags/* = 0*/)
 {
+	if (creature->getNoMove())
+		return RET_NOTPOSSIBLE;
+	
 	const Position& currentPos = creature->getPosition();
 	Cylinder* fromTile = creature->getTile();
 	Cylinder* toTile = NULL;
@@ -1325,6 +1328,9 @@ ReturnValue Game::internalMoveCreature(Creature* actor, Creature* creature, Cyli
 	ReturnValue ret = toCylinder->__queryAdd(0, creature, 1, flags, actor);
 	if(ret != RET_NOERROR)
 		return ret;
+	
+	if (creature->getNoMove())
+		return RET_NOTPOSSIBLE;
 
 	fromCylinder->getTile()->moveCreature(actor, creature, toCylinder, forceTeleport);
 	if(creature->getParent() != toCylinder)
