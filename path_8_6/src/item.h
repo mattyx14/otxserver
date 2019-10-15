@@ -774,6 +774,16 @@ class Item : virtual public Thing
 			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
 		}
 
+		void setDecayTo(int32_t decayTo) {
+			setIntAttr(ITEM_ATTRIBUTE_DECAYTO, decayTo);
+		}
+		int32_t getDecayTo() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_DECAYTO)) {
+				return getIntAttr(ITEM_ATTRIBUTE_DECAYTO);
+			}
+			return items[id].decayTo;
+		}
+
 		static std::string getDescription(const ItemType& it, int32_t lookDistance, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
 		static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
 		static std::string getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count = 1);
