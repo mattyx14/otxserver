@@ -32,13 +32,11 @@ class NetworkMessage
 		typedef uint16_t MsgSize_t;
 		// Headers:
 		// 2 bytes for unencrypted message size
-		// 4 bytes for checksum
 		// 2 bytes for encrypted message size
 		static const MsgSize_t INITIAL_BUFFER_POSITION = 8;
 		enum { HEADER_LENGTH = 2 };
-		enum { CHECKSUM_LENGTH = 4 };
 		enum { XTEA_MULTIPLE = 8 };
-		enum { MAX_BODY_LENGTH = NETWORKMESSAGE_MAXSIZE - HEADER_LENGTH - CHECKSUM_LENGTH - XTEA_MULTIPLE };
+		enum { MAX_BODY_LENGTH = NETWORKMESSAGE_MAXSIZE - HEADER_LENGTH - XTEA_MULTIPLE };
 		enum { MAX_PROTOCOL_BODY_LENGTH = MAX_BODY_LENGTH - 10 };
 
 		NetworkMessage() {

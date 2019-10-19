@@ -427,7 +427,6 @@ void ProtocolGame::chat(uint16_t channelId)
 
 bool ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem, uint16_t version)
 {
-
 	m_eventConnect = 0;
 
 	Player* _player = g_game.getPlayerByID(playerId);

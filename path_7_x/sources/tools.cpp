@@ -23,6 +23,7 @@
 #include <boost/filesystem.hpp>
 #include <openssl/sha.h>
 #include <openssl/md5.h>
+#include <random>
 
 #include "vocation.h"
 #include "configmanager.h"
@@ -685,6 +686,18 @@ std::string trimString(std::string& str)
 {
 	str.erase(str.find_last_not_of(" ") + 1);
 	return str.erase(0, str.find_first_not_of(" "));
+}
+
+std::string convertIPToString(uint32_t ip)
+{
+	char buffer[17];
+
+	int res = sprintf(buffer, "%u.%u.%u.%u", ip & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24));
+	if (res < 0) {
+		return {};
+	}
+
+	return buffer;
 }
 
 std::string parseParams(tokenizer::iterator &it, tokenizer::iterator end)

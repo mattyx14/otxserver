@@ -61,7 +61,6 @@ public:
 
 	enum { server_sends_first = true };
 	enum { protocol_identifier = 0 }; // Not required as we send first
-	enum { use_checksum = true };
 	static const char* protocol_name() {
 		return "gameworld protocol";
 	}

@@ -120,6 +120,7 @@ std::string generateRecoveryKey(int32_t fieldCount, int32_t fieldLength, bool mi
 std::string formatDate(time_t _time = 0);
 std::string formatDateEx(time_t _time = 0, std::string format = "%d %b %Y, %H:%M:%S");
 std::string formatTime(time_t _time = 0, bool miliseconds = false);
+std::string convertIPToString(uint32_t ip);
 
 uint32_t rand24b();
 float box_muller(float m, float s);
