@@ -27,26 +27,10 @@
 #define SOFTWARE_DEVELOPERS "Matt Gomez, Matheus Matias and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2/"
 
-#if defined(_MULTIPLATFORM77)
-	#define _MULTIPLATFORM76
-	#define ITEMS_PATH std::string("77")
-	#define CLIENT_VERSION_ITEMS 3
-	#define CLIENT_VERSION_MIN 770
-	#define CLIENT_VERSION_MAX 772
-	#define CLIENT_VERSION_STRING "7.70/72"
-#elif defined(_MULTIPLATFORM76)
-	#define ITEMS_PATH std::string("76")
-	#define CLIENT_VERSION_ITEMS 3
-	#define CLIENT_VERSION_MIN 760
-	#define CLIENT_VERSION_MAX 761
-	#define CLIENT_VERSION_STRING "7.60/61"
-#else
-	#define ITEMS_PATH std::string("74")
-	#define CLIENT_VERSION_ITEMS 1
-	#define CLIENT_VERSION_MIN 740
-	#define CLIENT_VERSION_MAX 755
-	#define CLIENT_VERSION_STRING "7.40/55"
-#endif
+#define CLIENT_VERSION_ITEMS 3
+#define CLIENT_VERSION_MIN 770
+#define CLIENT_VERSION_MAX 772
+#define CLIENT_VERSION_STRING "7.70/72"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0
@@ -166,4 +150,6 @@
 #ifndef __EXCEPTION_TRACER__
 	#define DEBUG_REPORT
 #endif
+
+typedef std::vector<std::pair<uint32_t, uint32_t>> IPList;
 #endif

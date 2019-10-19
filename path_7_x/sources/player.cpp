@@ -69,9 +69,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 
 	promotionLevel = walkTaskEvent = actionTaskEvent = nextStepEvent = bloodHitCount = shieldBlockCount = 0;
 	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = 0;
-	#ifdef _MULTIPLATFORM76
 	soul = 0;
-	#endif
 	guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
 	conditionImmunities = conditionSuppressions = groupId = managerNumber2 = town = skullEnd = 0;
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
@@ -80,9 +78,7 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	purchaseCallback = saleCallback = offlineTrainingSkill = -1;
 	level = 1;
 	rates[SKILL__MAGLEVEL] = rates[SKILL__LEVEL] = 1.0f;
-	#ifdef _MULTIPLATFORM76
 	soulMax = 100;
-	#endif
 	capacity = 400.00;
 	stamina = STAMINA_MAX;
 	lastLoad = lastPing = lastPong = lastAttack = lastMail = OTSYS_TIME();
@@ -165,9 +161,7 @@ void Player::setVocation(uint32_t id)
 	Creature::setDropLoot((vocation->getDropLoot() ? LOOT_DROP_FULL : LOOT_DROP_PREVENT));
 	Creature::setLossSkill(vocation->getLossSkill());
 
-	#ifdef _MULTIPLATFORM76
 	soulMax = vocation->getGain(GAIN_SOUL);
-	#endif
 	if(Condition* condition = getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT))
 	{
 		condition->setParam(CONDITIONPARAM_HEALTHGAIN, vocation->getGainAmount(GAIN_HEALTH));
@@ -595,10 +589,8 @@ int32_t Player::getPlayerInfo(playerinfo_t playerinfo) const
 			return mana;
 		case PLAYERINFO_MAXMANA:
 			return std::max((int32_t)0, ((int32_t)manaMax + varStats[STAT_MAXMANA]));
-		#ifdef _MULTIPLATFORM76
 		case PLAYERINFO_SOUL:
 			return std::max((int32_t)0, ((int32_t)soul + varStats[STAT_SOUL]));
-		#endif
 		default:
 			break;
 	}
@@ -705,10 +697,8 @@ int32_t Player::getDefaultStats(stats_t stat)
 			return getMaxHealth() - getVarStats(STAT_MAXHEALTH);
 		case STAT_MAXMANA:
 			return getMaxMana() - getVarStats(STAT_MAXMANA);
-		#ifdef _MULTIPLATFORM76
 		case STAT_SOUL:
 			return getSoul() - getVarStats(STAT_SOUL);
-		#endif
 		default:
 			break;
 	}
@@ -1025,11 +1015,9 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You do not have enough mana.");
 			break;
 
-		#ifdef _MULTIPLATFORM76
 		case RET_NOTENOUGHSOUL:
 			sendCancel("You do not have enough soul.");
 			break;
-		#endif
 
 		case RET_YOUAREEXHAUSTED:
 			sendCancel("You are exhausted.");
@@ -2424,9 +2412,7 @@ bool Player::onDeath()
 			if(Town* rook = Towns::getInstance()->getTown(g_config.getNumber(ConfigManager::ROOK_TOWN)))
 			{
 				level = 1;
-				#ifdef _MULTIPLATFORM76
 				soulMax = soul = 100;
-				#endif
 				capacity = 400;
 				stamina = STAMINA_MAX;
 				health = healthMax = 150;
@@ -4127,7 +4113,6 @@ bool Player::gainExperience(double& gainExp, Creature* target)
 	if(!rateExperience(gainExp, target))
 		return false;
 
-	#ifdef _MULTIPLATFORM76
 	//soul regeneration
 	if(gainExp >= level)
 	{
@@ -4141,7 +4126,6 @@ bool Player::gainExperience(double& gainExp, Creature* target)
 			addCondition(condition);
 		}
 	}
-	#endif
 
 	addExperience((uint64_t)gainExp);
 	return true;
@@ -4237,7 +4221,6 @@ void Player::changeMana(int32_t manaChange)
 	sendStats();
 }
 
-#ifdef _MULTIPLATFORM76
 void Player::changeSoul(int32_t soulChange)
 {
 	if(!hasFlag(PlayerFlag_HasInfiniteSoul))
@@ -4245,7 +4228,6 @@ void Player::changeSoul(int32_t soulChange)
 
 	sendStats();
 }
-#endif
 
 bool Player::changeOutfit(Outfit_t outfit, bool checkList)
 {

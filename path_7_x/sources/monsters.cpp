@@ -732,20 +732,16 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 				param = CONDITIONPARAM_STAT_MAXHEALTHPERCENT;
 			else if(readXMLInteger(node, "maxmana", intValue))
 				param = CONDITIONPARAM_STAT_MAXMANAPERCENT;
-			#ifdef _MULTIPLATFORM76
 			else if(readXMLInteger(node, "soul", intValue))
 				param = CONDITIONPARAM_STAT_SOULPERCENT;
-			#endif
 			else if(readXMLInteger(node, "magiclevel", intValue) || readXMLInteger(node, "maglevel", intValue))
 				param = CONDITIONPARAM_STAT_MAGICLEVELPERCENT;
 			else if(readXMLInteger(node, "maxhealthPercent", intValue))
 				param = CONDITIONPARAM_STAT_MAXHEALTHPERCENT;
 			else if(readXMLInteger(node, "maxmanaPercent", intValue))
 				param = CONDITIONPARAM_STAT_MAXMANAPERCENT;
-			#ifdef _MULTIPLATFORM76
 			else if(readXMLInteger(node, "soulPercent", intValue))
 				param = CONDITIONPARAM_STAT_SOULPERCENT;
-			#endif
 			else if(readXMLInteger(node, "magiclevelPercent", intValue) || readXMLInteger(node, "maglevelPercent", intValue))
 				param = CONDITIONPARAM_STAT_MAGICLEVELPERCENT;
 

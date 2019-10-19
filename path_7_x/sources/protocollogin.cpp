@@ -32,12 +32,13 @@
 
 #include "configmanager.h"
 #include "game.h"
+#include "rsa.h"
 
 
 extern ConfigManager g_config;
 extern Game g_game;
 
-extern std::list<std::pair<uint32_t, uint32_t> > serverIps;
+extern IPList serverIPs;
 
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 uint32_t ProtocolLogin::protocolLoginCount = 0;
@@ -69,7 +70,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	uint32_t clientIp = getConnection()->getIP();
-	msg.skipBytes(2); // client platform
+	msg.get<uint16_t>(); // client platform
 	uint16_t version = msg.get<uint16_t>();
 
 #ifdef CLIENT_VERSION_DATA
@@ -80,37 +81,31 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 #else
 	msg.skipBytes(12);
 #endif
-	if(!RSA_decrypt(msg))
-	{
-		getConnection()->close();
+
+	if (!Protocol::RSA_decrypt(msg)) {
+		disconnect();
 		return;
 	}
 
-	uint32_t key[4] = {msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>(), msg.get<uint32_t>()};
+	uint32_t key[4];
+	key[0] = msg.get<uint32_t>();
+	key[1] = msg.get<uint32_t>();
+	key[2] = msg.get<uint32_t>();
+	key[3] = msg.get<uint32_t>();
 	enableXTEAEncryption();
 	setXTEAKey(key);
 
-	std::string name = msg.getString(), password = msg.getString();
-	if(name.empty())
+	uint32_t name = msg.get<uint32_t>();
+	std::string password = msg.getString();
+
+	if(!name)
 	{
-		name = "10";
+		name = 10;
 	}
 
-	if(!g_config.getBool(ConfigManager::MANUAL_ADVANCED_CONFIG))
-	{
-		if(version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX))
-		{
-			disconnectClient(0x14, g_config.getString(ConfigManager::VERSION_MSG).c_str());
-			return;
-		}
-	}
-	else
-	{
-		if(version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX)
-		{
-			disconnectClient(0x14, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
-			return;
-		}
+	if (version < g_config.getNumber(ConfigManager::VERSION_MIN) || version > g_config.getNumber(ConfigManager::VERSION_MAX)) {
+		disconnectClient(0x14, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
+		return;
 	}
 
 #ifdef CLIENT_VERSION_DATA
@@ -151,10 +146,17 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	Account account;
-	if(!IOLoginData::getInstance()->loadAccount(account, name) || (account.name != "10" && !encryptTest(account.salt + password, account.password)))
+	uint32_t id = 1;
+	if(!IOLoginData::getInstance()->getAccountId(name, id))
 	{
-		disconnectClient(0x0A, "Invalid account name or password.");
+		disconnectClient(0x0A, "Invalid account id.");
+		return;
+	}
+
+	Account account = IOLoginData::getInstance()->loadAccount(id);
+	if(name != 10 && !encryptTest(account.salt + password, account.password))
+	{
+		disconnectClient(0x0A, "Invalid password.");
 		return;
 	}
 
@@ -209,14 +211,12 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	OutputMessage_ptr output = OutputMessagePool::getOutputMessage();
 
 	output->addByte(0x14);
-	uint32_t serverIp = serverIps.front().first;
-	for(std::list<std::pair<uint32_t, uint32_t> >::iterator it = serverIps.begin(); it != serverIps.end(); ++it)
-	{
-		if((it->first & it->second) != (clientIp & it->second))
-			continue;
-
-		serverIp = it->first;
-		break;
+	uint32_t serverIp = serverIPs[0].first;
+	for (uint32_t i = 0; i < serverIPs.size(); i++) {
+		if ((serverIPs[i].first & serverIPs[i].second) == (getConnection()->getIP() & serverIPs[i].second)) {
+			serverIp = serverIPs[i].first;
+			break;
+		}
 	}
 
 	char motd[1300];
@@ -250,8 +250,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				output->addString(s.str());
 				output->add<uint32_t>(serverIp);
 
-				IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-				output->add<uint16_t>(games[random_range(0, games.size() - 1)]);
+				output->add<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT));
 			}
 		}
 	}
@@ -265,8 +264,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			output->addString(g_config.getString(ConfigManager::SERVER_NAME));
 			output->add<uint32_t>(serverIp);
 
-			IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-			output->add<uint16_t>(games[random_range(0, games.size() - 1)]);
+			output->add<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT));
 		}
 		else
 			output->addByte((uint8_t)account.charList.size());
@@ -286,8 +284,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 				output->addString(g_config.getString(ConfigManager::SERVER_NAME));
 
 			output->add<uint32_t>(serverIp);
-			IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-			output->add<uint16_t>(games[random_range(0, games.size() - 1)]);
+			output->add<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT));
 		}
 		#else
 		for(Characters::iterator it = charList.begin(); it != charList.end(); ++it)

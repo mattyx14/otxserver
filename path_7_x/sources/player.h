@@ -60,9 +60,7 @@ enum playerinfo_t
 	PLAYERINFO_MAXMANA,
 	PLAYERINFO_MAGICLEVEL,
 	PLAYERINFO_MAGICLEVELPERCENT,
-	#ifdef _MULTIPLATFORM76
 	PLAYERINFO_SOUL,
-	#endif
 };
 
 enum freeslot_t
@@ -341,11 +339,9 @@ class Player : public Creature, public Cylinder
 		void setCapacity(double newCapacity) {capacity = newCapacity;}
 		double getFreeCapacity() const;
 
-		#ifdef _MULTIPLATFORM76
 		virtual int32_t getSoul() const {return getPlayerInfo(PLAYERINFO_SOUL);}
 		int32_t getSoulMax() const {return soulMax;}
 		void changeSoul(int32_t soulChange);
-		#endif
 		virtual int32_t getMaxHealth() const {return getPlayerInfo(PLAYERINFO_MAXHEALTH);}
 		virtual int32_t getMaxMana() const {return getPlayerInfo(PLAYERINFO_MAXMANA);}
 
@@ -814,10 +810,8 @@ class Player : public Creature, public Cylinder
 		uint16_t lastStatsTrainingTime;
 
 		int32_t premiumDays;
-		#ifdef _MULTIPLATFORM76
 		int32_t soul;
 		int32_t soulMax;
-		#endif
 		int32_t vocationId;
 		int32_t groupId;
 		int32_t managerNumber, managerNumber2;

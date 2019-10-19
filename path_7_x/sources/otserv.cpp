@@ -31,11 +31,6 @@
 #endif
 
 #include <boost/config.hpp>
-#ifdef _MULTIPLATFORM77
-//#include <openssl/rsa.h>
-//#include <openssl/bn.h>
-//#include <openssl/err.h>
-#endif
 #include "server.h"
 #ifdef __LOGIN_SERVER__
 #include "gameservers.h"
@@ -78,21 +73,17 @@ inline void boost::throw_exception(std::exception const & e)
 	std::clog << "Boost exception: " << e.what() << std::endl;
 }
 #endif
-#ifdef _MULTIPLATFORM77
-
-#endif
 ConfigManager g_config;
 Game g_game;
 Chat g_chat;
 RSA g_RSA;
 Monsters g_monsters;
 Npcs g_npcs;
-
+IPList serverIPs;
 
 boost::mutex g_loaderLock;
 boost::condition_variable g_loaderSignal;
 boost::unique_lock<boost::mutex> g_loaderUniqueLock(g_loaderLock);
-std::list<std::pair<uint32_t, uint32_t> > serverIps;
 
 bool argumentsHandler(StringVec args)
 {
@@ -610,46 +601,9 @@ void otserv(StringVec, ServiceManager* services)
 		boost::this_thread::sleep(boost::posix_time::seconds(15));
 	}
 
-	#ifdef _MULTIPLATFORM77
-	/*
-	std::clog << ">> Loading RSA key" << std::endl;
-	g_RSA = RSA_new();
-
-
-	BN_dec2bn(&g_RSA->p, g_config.getString(ConfigManager::RSA_PRIME1).c_str());
-	BN_dec2bn(&g_RSA->q, g_config.getString(ConfigManager::RSA_PRIME2).c_str());
-	BN_dec2bn(&g_RSA->d, g_config.getString(ConfigManager::RSA_PRIVATE).c_str());
-	BN_dec2bn(&g_RSA->n, g_config.getString(ConfigManager::RSA_MODULUS).c_str());
-	BN_dec2bn(&g_RSA->e, g_config.getString(ConfigManager::RSA_PUBLIC).c_str());
-
-	// This check will verify keys set in config.lua
-	if(RSA_check_key(g_RSA))
-	{
-		// Ok, now we calculate a few things, dmp1, dmq1 and iqmp
-		BN_CTX* ctx = BN_CTX_new();
-		BN_CTX_start(ctx);
-
-		BIGNUM *r1 = BN_CTX_get(ctx), *r2 = BN_CTX_get(ctx);
-		BN_mod(g_RSA->dmp1, g_RSA->d, r1, ctx);
-		BN_mod(g_RSA->dmq1, g_RSA->d, r2, ctx);
-
-		BN_mod_inverse(g_RSA->iqmp, g_RSA->q, g_RSA->p, ctx);
-	}
-	else
-	{
-		ERR_load_crypto_strings();
-		std::ostringstream s;
-
-		s << std::endl << "> OpenSSL failed - " << ERR_error_string(ERR_get_error(), NULL);
-		startupErrorMessage(s.str());
-	}*/
-	#endif
-
 	const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
 	const char* q("7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101");
-	const char* d("46730330223584118622160180015036832148732986808519344675210555262940258739805766860224610646919605860206328024326703361630109888417839241959507572247284807035235569619173792292786907845791904955103601652822519121908367187885509270025388641700821735345222087940578381210879116823013776808975766851829020659073");
-
-	g_RSA.initialize(p, q, d);
+	g_RSA.setKey(p, q);
 
 	std::clog << ">> Starting SQL connection" << std::endl;
 	Database* db = Database::getInstance();
@@ -780,7 +734,7 @@ void otserv(StringVec, ServiceManager* services)
 		std::clog << ">> There wasn't duplicated items in the server." << std::endl;
 
 	std::clog << ">> Loading items (OTB)" << std::endl;
-	if(Item::items.loadFromOtb(getFilePath(FILE_TYPE_OTHER, "items/" + ITEMS_PATH + "/items.otb")))
+	if(Item::items.loadFromOtb(getFilePath(FILE_TYPE_OTHER, "items/items.otb")))
 		startupErrorMessage("Unable to load items (OTB)!");
 
 	std::clog << ">> Loading items (XML)" << std::endl;
@@ -891,11 +845,13 @@ void otserv(StringVec, ServiceManager* services)
 	std::clog << ">> Initializing game state and binding services:" << std::endl;
 	g_game.setGameState(GAMESTATE_INIT);
 
+	// Game client protocols
+	services->add<ProtocolGame>(g_config.getNumber(ConfigManager::GAME_PORT));
+	services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
+
+	// OT protocols
 	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT));
-#ifdef __OTADMIN__
-	services->add<ProtocolAdmin>(g_config.getNumber(ConfigManager::ADMIN_PORT));
-#endif
-	//services->add<ProtocolHTTP>(8080);
+
 	if (
 #ifdef __LOGIN_SERVER__
 		true
@@ -917,42 +873,47 @@ void otserv(StringVec, ServiceManager* services)
 	std::pair<uint32_t, uint32_t> IpNetMask;
 	IpNetMask.first = inet_addr("127.0.0.1");
 	IpNetMask.second = 0xFFFFFFFF;
-	serverIps.push_back(IpNetMask);
+	serverIPs.push_back(IpNetMask);
 
 	char szHostName[128];
 	if (gethostname(szHostName, 128) == 0) {
-		hostent* he = gethostbyname(szHostName);
+		hostent *he = gethostbyname(szHostName);
 		if (he) {
 			unsigned char** addr = (unsigned char**)he->h_addr_list;
 			while (addr[0] != nullptr) {
 				IpNetMask.first = *(uint32_t*)(*addr);
-				IpNetMask.second = 0xFFFFFFFF;
-				serverIps.push_back(IpNetMask);
+				IpNetMask.second = 0x0000FFFF;
+				serverIPs.push_back(IpNetMask);
 				addr++;
 			}
 		}
 	}
 
-	std::string ip = g_config.getString(ConfigManager::IP);
+	std::string ip;
+	ip = g_config.getString(ConfigManager::IP);
 
 	uint32_t resolvedIp = inet_addr(ip.c_str());
 	if (resolvedIp == INADDR_NONE) {
 		struct hostent* he = gethostbyname(ip.c_str());
-		if (!he) {
-			std::ostringstream ss;
-			ss << "ERROR: Cannot resolve " << ip << "!" << std::endl;
-			startupErrorMessage(ss.str());
-			return;
+		if (he != 0) {
+			resolvedIp = *(uint32_t*)he->h_addr;
+		} else {
+			std::cout << "ERROR: Cannot resolve " << ip << "!" << std::endl;
+			startupErrorMessage("");
 		}
-		resolvedIp = *(uint32_t*)he->h_addr;
 	}
 
 	IpNetMask.first = resolvedIp;
 	IpNetMask.second = 0;
-	serverIps.push_back(IpNetMask);
+	serverIPs.push_back(IpNetMask);
 
-	std::clog << std::endl << ">> Everything smells good, server is starting up..." << std::endl;
+#ifndef _WIN32
+	if (getuid() == 0 || geteuid() == 0) {
+		std::cout << "> Warning: " << STATUS_SERVER_NAME << " has been executed as root user, please consider running it as a normal user." << std::endl;
+	}
+#endif
+
 	g_game.start(services);
-	g_game.setGameState(g_config.getBool(ConfigManager::START_CLOSED) ? GAMESTATE_CLOSED : GAMESTATE_NORMAL);
+	g_game.setGameState(GAMESTATE_NORMAL);
 	g_loaderSignal.notify_all();
 }

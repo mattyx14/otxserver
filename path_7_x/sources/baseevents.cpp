@@ -37,11 +37,7 @@ bool BaseEvents::loadFromXml()
 	if(!fileExists(path) || !getInterface().loadDirectory(path, false, true))
 		std::clog << "[Warning - BaseEvents::loadFromXml] Cannot load " << path << std::endl;
 
-	#ifdef _MULTIPLATFORM76
 	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsPath + "/" + scriptsName + ".xml"));
-	#else
-	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsPath + "/" + ITEMS_PATH + "/" + scriptsName + ".xml"));
-	#endif
 
 	xmlDocPtr doc = xmlParseFile(path.c_str());
 	if(!doc)

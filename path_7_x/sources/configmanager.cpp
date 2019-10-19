@@ -70,9 +70,6 @@ bool ConfigManager::load()
 		if(m_confNumber[GAME_PORT] == 0)
 			m_confNumber[GAME_PORT] = getGlobalNumber("gamePort", 7172);
 
-		if (m_confNumber[MANAGER_PORT] == 0)
-			m_confNumber[MANAGER_PORT] = getGlobalNumber("managerPort", 7171);
-
 		if(m_confNumber[STATUS_PORT] == 0)
 			m_confNumber[STATUS_PORT] = getGlobalNumber("statusPort", 7171);
 
@@ -135,10 +132,6 @@ bool ConfigManager::load()
 	m_confString[LOCATION] = getGlobalString("location");
 	m_confString[MOTD] = getGlobalString("motd");
 	m_confNumber[ALLOW_CLONES] = getGlobalNumber("allowClones", 0);
-	m_confBool[MANAGER_LOCALHOST_ONLY] = getGlobalBool("managerLocalhostOnly", true);
-	m_confNumber[MANAGER_CONNECTIONS_LIMIT] = getGlobalNumber("managerConnectionsLimit", 1);
-	m_confString[MANAGER_PASSWORD] = getGlobalString("managerPassword", "");
-	m_confBool[MANAGER_LOGS] = getGlobalBool("managerLogs", false);
 	m_confBool[EXPERIENCE_STAGES] = getGlobalBool("experienceStages", false);
 	m_confDouble[RATE_EXPERIENCE] = getGlobalDouble("rateExperience", 1);
 	m_confDouble[RATE_SKILL] = getGlobalDouble("rateSkill", 1);
@@ -185,9 +178,7 @@ bool ConfigManager::load()
 	m_confNumber[STATUSQUERY_TIMEOUT] = getGlobalNumber("statusTimeout", 300000);
 	m_confBool[BROADCAST_BANISHMENTS] = getGlobalBool("broadcastBanishments", true);
 	m_confBool[GENERATE_ACCOUNT_NUMBER] = getGlobalBool("generateAccountNumber", false);
-	#ifdef _MULTIPLATFORM76
 	m_confBool[GENERATE_ACCOUNT_SALT] = getGlobalBool("generateAccountSalt", true);
-	#endif
 	m_confBool[INGAME_GUILD_MANAGEMENT] = getGlobalBool("ingameGuildManagement", true);
 	m_confBool[EXTERNAL_GUILD_WARS_MANAGEMENT] = getGlobalBool("externalGuildWarsManagement", false);
 	m_confNumber[LEVEL_TO_FORM_GUILD] = getGlobalNumber("levelToFormGuild", 8);

@@ -28,7 +28,6 @@ class ServiceBase
 {
 	public:
 		virtual bool is_single_socket() const = 0;
-		virtual bool is_checksummed() const = 0;
 		virtual uint8_t get_protocol_identifier() const = 0;
 		virtual const char* get_protocol_name() const = 0;
 
@@ -41,9 +40,6 @@ class Service final : public ServiceBase
 	public:
 		bool is_single_socket() const final {
 			return ProtocolType::server_sends_first;
-		}
-		bool is_checksummed() const final {
-			return ProtocolType::use_checksum;
 		}
 		uint8_t get_protocol_identifier() const final {
 			return ProtocolType::protocol_identifier;
@@ -74,7 +70,7 @@ class ServicePort : public std::enable_shared_from_this<ServicePort>
 		std::string get_protocol_names() const;
 
 		bool add_service(const Service_ptr& new_svc);
-		Protocol_ptr make_protocol(bool checksummed, NetworkMessage& msg, const Connection_ptr& connection) const;
+		Protocol_ptr make_protocol(NetworkMessage& msg, const Connection_ptr& connection) const;
 
 		void onStopServer();
 		void onAccept(Connection_ptr connection, const boost::system::error_code& error);

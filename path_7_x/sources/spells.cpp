@@ -473,9 +473,7 @@ Spell::Spell()
 	mana = 0;
 	exhaustedGroup = "none";
 	manaPercent = 0;
-#ifdef _MULTIPLATFORM76
 	soul = 0;
-#endif
 	range = -1;
 	exhaustion = 1000;
 	needTarget = false;
@@ -551,10 +549,8 @@ bool Spell::configureSpell(xmlNodePtr p)
 	if(readXMLInteger(p, "manapercent", intValue))
 		manaPercent = intValue;
 
-#ifdef _MULTIPLATFORM76
 	if(readXMLInteger(p, "soul", intValue))
 		soul = intValue;
-#endif
 
 	if(readXMLInteger(p, "exhaustion", intValue))
 		exhaustion = intValue;
@@ -746,14 +742,12 @@ bool Spell::checkSpell(Player* player) const
 		return false;
 	}
 
-#ifdef _MULTIPLATFORM76
 	if(player->getSoul() < soul && !player->hasFlag(PlayerFlag_HasInfiniteSoul))
 	{
 		player->sendCancelMessage(RET_NOTENOUGHSOUL);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
 	}
-#endif
 
 	if(isInstant() && isLearnable() && !player->hasLearnedInstantSpell(getName()))
 	{
@@ -1029,18 +1023,10 @@ void Spell::postSpell(Player* player) const
 	if(isAggressive && !player->hasFlag(PlayerFlag_NotGainInFight))
 		player->addInFightTicks(false);
 
-#ifdef _MULTIPLATFORM76
 	postSpell(player, (uint32_t)getManaCost(player), (uint32_t)getSoulCost());
-#else
-	postSpell(player, (uint32_t)getManaCost(player));
-#endif
 }
 
-#ifdef _MULTIPLATFORM76
 void Spell::postSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const
-#else
-void Spell::postSpell(Player* player, uint32_t manaCost) const
-#endif
 {
 	if(manaCost > 0)
 	{
@@ -1050,10 +1036,8 @@ void Spell::postSpell(Player* player, uint32_t manaCost) const
 			player->addManaSpent(manaCost);
 	}
 
-#ifdef _MULTIPLATFORM76
 	if(soulCost > 0)
 		player->changeSoul(-(int32_t)soulCost);
-#endif
 }
 
 int32_t Spell::getManaCost(const Player* player) const
@@ -1456,11 +1440,7 @@ bool InstantSpell::SummonMonster(const InstantSpell* spell, Creature* creature, 
 	ReturnValue ret = g_game.placeSummon(creature, param);
 	if(ret == RET_NOERROR)
 	{
-#ifdef _MULTIPLATFORM76
 		spell->postSpell(player, (uint32_t)manaCost, (uint32_t)spell->getSoulCost());
-#else
-		spell->postSpell(player, (uint32_t)manaCost);
-#endif
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
 		return true;
 	}
@@ -1772,10 +1752,8 @@ bool RuneSpell::loadFunction(const std::string& functionName)
 		function = Illusion;
 	else if(tmpFunctionName == "convince")
 		function = Convince;
-#ifdef _MULTIPLATFORM76
 	else if(tmpFunctionName == "soulfire")
 		function = Soulfire;
-#endif
 	else
 	{
 		std::clog << "[Warning - RuneSpell::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
@@ -1877,16 +1855,11 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item*, cons
 		return false;
 	}
 
-#ifdef _MULTIPLATFORM76
 	spell->postSpell(player, (uint32_t)manaCost, (uint32_t)spell->getSoulCost());
-#else
-	spell->postSpell(player, (uint32_t)manaCost);
-#endif
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_RED);
 	return true;
 }
 
-#ifdef _MULTIPLATFORM76
 bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, const Position&, const Position& posTo)
 {
 	Player* player = creature->getPlayer();
@@ -1925,7 +1898,6 @@ bool RuneSpell::Soulfire(const RuneSpell* spell, Creature* creature, Item*, cons
 	spell->postSpell(player, true, false);
 	return true;
 }
-#endif
 
 ReturnValue RuneSpell::canExecuteAction(const Player* player, const Position& toPos)
 {

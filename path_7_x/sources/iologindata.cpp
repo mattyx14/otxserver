@@ -35,6 +35,7 @@
 
 extern ConfigManager g_config;
 extern Game g_game;
+extern IPList serverIPs;
 
 #ifndef __GNUC__
 #pragma warning( disable : 4005)
@@ -303,13 +304,11 @@ bool IOLoginData::getPassword(uint32_t accountId, std::string& password, std::st
 bool IOLoginData::setPassword(uint32_t accountId, std::string newPassword)
 {
 	std::string salt;
-	#ifdef _MULTIPLATFORM76
 	if(g_config.getBool(ConfigManager::GENERATE_ACCOUNT_SALT))
 	{
 		salt = generateRecoveryKey(2, 19, true);
 		newPassword = salt + newPassword;
 	}
-	#endif
 
 	Database* db = Database::getInstance();
 	std::ostringstream query;
@@ -424,9 +423,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	std::ostringstream query;
 	query << "SELECT `id`, `account_id`, `group_id`, `world_id`, `sex`, `vocation`, `experience`, `level`, "
 	<< "`maglevel`, `health`, `healthmax`, `blessings`, `pvp_blessing`, `mana`, `manamax`, `manaspent`, "
-	#ifdef _MULTIPLATFORM76
 	<< "`soul`, "
-	#endif
 	<< "`lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `posx`, `posy`, "
 	<< "`posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skull`, `skulltime`, `guildnick`, "
 	<< "`rank_id`, `town_id`, `balance`, `stamina`, `direction`, `loss_experience`, `loss_mana`, `loss_skills`, "
@@ -486,9 +483,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	if(currExpCount < nextExpCount)
 		player->levelPercent = Player::getPercentLevel(player->experience - currExpCount, nextExpCount - currExpCount);
 
-	#ifdef _MULTIPLATFORM76
 	player->soul = result->getDataInt("soul");
-	#endif
 	player->capacity = result->getDataInt("cap");
 	player->setStamina(result->getDataLong("stamina"));
 	player->marriage = result->getDataInt("marriage");
@@ -890,9 +885,7 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	query << "`mana` = " << player->mana << ", ";
 	query << "`manamax` = " << player->manaMax << ", ";
 	query << "`manaspent` = " << player->manaSpent << ", ";
-	#ifdef _MULTIPLATFORM76
 	query << "`soul` = " << player->soul << ", ";
-	#endif
 	query << "`town_id` = " << player->town << ", ";
 	query << "`posx` = " << player->getLoginPosition().x << ", ";
 	query << "`posy` = " << player->getLoginPosition().y << ", ";

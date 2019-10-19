@@ -193,9 +193,7 @@ void BedItem::regeneratePlayer(Player* player) const
 		player->changeMana(amount);
 	}
 
-	#ifdef _MULTIPLATFORM76
 	player->changeSoul((int32_t)std::max((float)0, (float)sleptTime / (60 * 15)));
-	#endif
 }
 
 void BedItem::updateAppearance(const Player* player)

@@ -208,10 +208,8 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_REGENERATION:
 			return new ConditionRegeneration(_id, _type, _ticks, _buff, _subId);
 
-		#ifdef _MULTIPLATFORM76
 		case CONDITION_SOUL:
 			return new ConditionSoul(_id, _type, _ticks, _buff, _subId);
-		#endif
 
 		case CONDITION_MANASHIELD:
 			return new ConditionManaShield(_id, _type, _ticks, _buff, _subId);
@@ -570,11 +568,9 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			stats[STAT_MAXMANA] = value;
 			return true;
 
-		#ifdef _MULTIPLATFORM76
 		case CONDITIONPARAM_STAT_SOUL:
 			stats[STAT_SOUL] = value;
 			return true;
-		#endif
 
 		case CONDITIONPARAM_STAT_MAGICLEVEL:
 			stats[STAT_MAGICLEVEL] = value;
@@ -588,11 +584,9 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			statsPercent[STAT_MAXMANA] = std::max((int32_t)0, value);
 			return true;
 
-		#ifdef _MULTIPLATFORM76
 		case CONDITIONPARAM_STAT_SOULPERCENT:
 			statsPercent[STAT_SOUL] = std::max((int32_t)0, value);
 			return true;
-		#endif
 
 		case CONDITIONPARAM_STAT_MAGICLEVELPERCENT:
 			statsPercent[STAT_MAGICLEVEL] = std::max((int32_t)0, value);
@@ -791,7 +785,6 @@ bool ConditionRegeneration::setParam(ConditionParam_t param, int32_t value)
 	return ret;
 }
 
-#ifdef _MULTIPLATFORM76
 ConditionSoul::ConditionSoul(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId):
 ConditionGeneric(_id, _type, _ticks, _buff, _subId)
 {
@@ -889,7 +882,6 @@ bool ConditionSoul::setParam(ConditionParam_t param, int32_t value)
 
 	return ret;
 }
-#endif
 
 ConditionDamage::ConditionDamage(ConditionId_t _id, ConditionType_t _type, bool _buff, uint32_t _subId):
 Condition(_id, _type, 0, _buff, _subId)

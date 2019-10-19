@@ -167,29 +167,23 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	readTimer.cancel();
 
-	if (error) {
+	int32_t size = msg.getLengthHeader();
+	if (error || size <= 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
 		close(FORCE_CLOSE);
-		return;
-	} else if (connectionState != CONNECTION_STATE_OPEN) {
+	}
+
+	if (connectionState != CONNECTION_STATE_OPEN) {
 		return;
 	}
 
 	uint32_t timePassed = std::max<uint32_t>(1, (time(nullptr) - timeConnected) + 1);
 	if ((++packetsSent / timePassed) > static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND))) {
-		std::cout << convertIPAddress(getIP()) << " disconnected for exceeding packet per second limit, increase 'packetsPerSecond' on config.lua to prevent this." << std::endl;
-		close();
 		return;
 	}
 
 	if (timePassed > 2) {
 		timeConnected = time(nullptr);
 		packetsSent = 0;
-	}
-
-	uint16_t size = msg.getLengthHeader();
-	if (size == 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
-		close(FORCE_CLOSE);
-		return;
 	}
 
 	try {
@@ -214,24 +208,10 @@ void Connection::parsePacket(const boost::system::error_code& error)
 
 	if (error) {
 		close(FORCE_CLOSE);
-		return;
-	} else if (connectionState != CONNECTION_STATE_OPEN) {
-		return;
 	}
 
-	//Check packet checksum
-	uint32_t checksum;
-	int32_t len = msg.getLength() - msg.getBufferPosition() - NetworkMessage::CHECKSUM_LENGTH;
-	if (len > 0) {
-		checksum = adlerChecksum(msg.getBuffer() + msg.getBufferPosition() + NetworkMessage::CHECKSUM_LENGTH, len);
-	} else {
-		checksum = 0;
-	}
-
-	uint32_t recvChecksum = msg.get<uint32_t>();
-	if (recvChecksum != checksum) {
-		// it might not have been the checksum, step back
-		msg.skipBytes(-NetworkMessage::CHECKSUM_LENGTH);
+	if (connectionState != CONNECTION_STATE_OPEN) {
+		return;
 	}
 
 	if (!receivedFirst) {
@@ -240,7 +220,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 
 		if (!protocol) {
 			// Game protocol has already been created at this point
-			protocol = service_port->make_protocol(recvChecksum == checksum, msg, shared_from_this());
+			protocol = service_port->make_protocol(msg, shared_from_this());
 			if (!protocol) {
 				close(FORCE_CLOSE);
 				return;
@@ -302,7 +282,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 
 uint32_t Connection::getIP()
 {
-	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
+	// std::lock_guard<std::recursive_mutex> lockClass(connectionLock); /* try with it */
 
 	// IP-address is expressed in network byte order
 	boost::system::error_code error;

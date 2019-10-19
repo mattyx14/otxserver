@@ -165,9 +165,7 @@ Weapon::Weapon(LuaInterface* _interface):
 	magLevel = 0;
 	mana = 0;
 	manaPercent = 0;
-	#ifdef _MULTIPLATFORM76
 	soul = 0;
-	#endif
 	exhaustion = 0;
 	premium = false;
 	enabled = true;
@@ -210,10 +208,8 @@ bool Weapon::configureEvent(xmlNodePtr p)
 	if(readXMLInteger(p, "manapercent", intValue))
 	 	manaPercent = intValue;
 
-	#ifdef _MULTIPLATFORM76
 	if(readXMLInteger(p, "soul", intValue))
 	 	soul = intValue;
-	#endif
 
 	if(readXMLInteger(p, "exhaust", intValue) || readXMLInteger(p, "exhaustion", intValue))
 		exhaustion = intValue;
@@ -310,10 +306,8 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target) const
 	if(player->getMana() < getManaCost(player))
 		return 0;
 
-	#ifdef _MULTIPLATFORM76
 	if(player->getSoul() < soul)
 		return 0;
-	#endif
 
 	if(isPremium() && !player->isPremium())
 		return 0;
@@ -465,10 +459,8 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile*) const
 			player->addManaSpent(manaCost);
 	}
 
-	#ifdef _MULTIPLATFORM76
 	if(!player->hasFlag(PlayerFlag_HasInfiniteSoul) && soul > 0)
 		player->changeSoul(-soul);
-	#endif
 }
 
 void Weapon::onUsedAmmo(Player* player, Item* item, Tile* destTile) const

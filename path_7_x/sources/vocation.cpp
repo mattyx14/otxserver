@@ -101,7 +101,6 @@ bool Vocations::parseVocationNode(xmlNodePtr p)
 	if(readXMLInteger(p, "basespeed", intValue))
 		voc->setBaseSpeed(intValue);
 
-	#ifdef _MULTIPLATFORM76
 	if(readXMLInteger(p, "soulmax", intValue))
 		voc->setGain(GAIN_SOUL, intValue);
 
@@ -110,7 +109,6 @@ bool Vocations::parseVocationNode(xmlNodePtr p)
 
 	if(readXMLInteger(p, "gainsoulticks", intValue))
 		voc->setGainTicks(GAIN_SOUL, intValue);
-	#endif
 
 	if(readXMLString(p, "attackable", strValue))
 		voc->setAttackable(booleanString(strValue));
@@ -482,18 +480,13 @@ void Vocation::reset()
 	attackable = dropLoot = skillLoss = true;
 	lessLoss = fromVocation = 0;
 	clientId = 0;
-	#ifdef _MULTIPLATFORM76
 	gain[GAIN_SOUL] = 100;
 	gainTicks[GAIN_SOUL] = 120;
-	#endif
 	baseSpeed = 220;
 	attackSpeed = 1500;
 	name = description = "";
 
-	gainAmount[GAIN_HEALTH] = gainAmount[GAIN_MANA] = 1;
-	#ifdef _MULTIPLATFORM76
-	gainAmount[GAIN_SOUL] = 1;
-	#endif
+	gainAmount[GAIN_HEALTH] = gainAmount[GAIN_MANA] = 1, gainAmount[GAIN_SOUL] = 1;
 	gain[GAIN_HEALTH] = gain[GAIN_MANA] = capGain = 5;
 	gainTicks[GAIN_HEALTH] = gainTicks[GAIN_MANA] = 6;
 
