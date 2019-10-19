@@ -24,13 +24,6 @@
 
 extern ConfigManager g_config;
 
-ServiceManager::ServiceManager(): 
-	death_timer(io_service),
-	running(false)
-{
-	//
-}
-
 ServiceManager::~ServiceManager()
 {
 	stop();
@@ -68,14 +61,6 @@ void ServiceManager::stop()
 
 	death_timer.expires_from_now(boost::posix_time::seconds(3));
 	death_timer.async_wait(std::bind(&ServiceManager::die, this));
-}
-
-ServicePort::ServicePort(boost::asio::io_service& io_service) :
-	io_service(io_service),
-	serverPort(0),
-	pendingStart(false)
-{
-	//
 }
 
 ServicePort::~ServicePort()
