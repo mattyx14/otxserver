@@ -863,12 +863,7 @@ void otserv(StringVec, ServiceManager* services)
 		services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 	}
 
-	IntegerVec games = vectorAtoi(explodeString(g_config.getString(ConfigManager::GAME_PORT), ","));
-	for (IntegerVec::const_iterator it = games.begin(); it != games.end(); ++it)
-	{
-		services->add<ProtocolGame>(*it);
-		break; // CRITICAL: more ports are causing crashes- either find the issue or drop the "feature"
-	}
+	services->add<ProtocolGame>(g_config.getNumber(ConfigManager::GAME_PORT));
 
 	std::pair<uint32_t, uint32_t> IpNetMask;
 	IpNetMask.first = inet_addr("127.0.0.1");
