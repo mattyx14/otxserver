@@ -7,7 +7,8 @@ It is a fork of the [The Forgotten Server](https://github.com/otland/forgottense
 ### How Compile:
 We currently provide build instructions for the following systems:
 * [Windows Tutorial](https://github.com/mattyx14/otxserver/wiki/Compilling-on-Windows) 
-* [Linux Tutorial](https://github.com/mattyx14/otxserver/wiki/Compilling-on-Linux)
+* [Linux Tutorial for OTX3.2+](https://github.com/mattyx14/otxserver/wiki/Compilling-OTX3.2--on-Linux)
+* [Linux Tutorial for OTX2-3](https://github.com/mattyx14/otxserver/wiki/Compiling-OTX2-on-Ubuntu)
 
 ### OpenTibia Comunity:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
