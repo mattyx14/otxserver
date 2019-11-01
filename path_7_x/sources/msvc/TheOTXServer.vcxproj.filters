@@ -21,6 +21,12 @@
     <ClInclude Include="..\actions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\admin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\allocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\baseevents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -144,6 +150,9 @@
     <ClInclude Include="..\mailbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -189,7 +198,16 @@
     <ClInclude Include="..\protocolgame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\protocolhttp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\protocollogin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\protocolold.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\quests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\raids.h">
@@ -258,6 +276,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\actions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\admin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\allocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\baseevents.cpp">
@@ -371,6 +395,9 @@
     <ClCompile Include="..\mailbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -416,7 +443,16 @@
     <ClCompile Include="..\protocolgame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\protocolhttp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\protocollogin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\protocolold.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\quests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\raids.cpp">
@@ -473,10 +509,5 @@
     <ClCompile Include="..\weapons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="TheOTXServer.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

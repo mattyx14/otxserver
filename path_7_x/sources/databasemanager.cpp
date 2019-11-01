@@ -17,6 +17,7 @@
 #include "otpch.h"
 #include "enums.h"
 #include <iostream>
+#include <stack>
 
 #include "databasemanager.h"
 #include "tools.h"
@@ -243,7 +244,7 @@ uint32_t DatabaseManager::updateDatabase()
 		case 2:
 		{
 			std::clog << "> Updating database to version 3... (Cast & AntiDupe System)" << std::endl;
-			switch(db->getDatabaseEngine())
+			switch (db->getDatabaseEngine())
 			{
 			case DATABASE_ENGINE_MYSQL:
 			{

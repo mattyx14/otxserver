@@ -203,21 +203,16 @@ void Container::onAddContainerItem(Item* item)
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendAddContainerItem(this, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendAddContainerItem(this, item);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onAddContainerItem(this, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onAddContainerItem(this, item);
 	}
 }
 
@@ -228,21 +223,16 @@ void Container::onUpdateContainerItem(uint32_t index, Item* oldItem, const ItemT
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendUpdateContainerItem(this, index, oldItem, newItem);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendUpdateContainerItem(this, index, oldItem, newItem);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onUpdateContainerItem(this, index, oldItem, oldType, newItem, newType);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onUpdateContainerItem(this, index, oldItem, oldType, newItem, newType);
 	}
 }
 
@@ -252,21 +242,16 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send change to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendRemoveContainerItem(this, index, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendRemoveContainerItem(this, index, item);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onRemoveContainerItem(this, index, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onRemoveContainerItem(this, index, item);
 	}
 }
 
@@ -299,8 +284,11 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 		}
 	}
 
-	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT && (index == INDEX_WHEREEVER && size() >= capacity()))
-		return RET_CONTAINERNOTENOUGHROOM;
+	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT)
+	{
+		if((index == INDEX_WHEREEVER && full()))
+			return RET_CONTAINERNOTENOUGHROOM;
+	}
 
 	const Cylinder* topParent = getTopParent();
 	if(topParent != this)
@@ -430,7 +418,8 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 		return this;
 
 	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
-	if(g_config.getBool(ConfigManager::AUTO_STACK) && autoStack && item->isStackable() && item->getParent() != this)
+	if(g_config.getBool(ConfigManager::AUTO_STACK) && !((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK)
+		&& item->isStackable() && item->getParent() != this)
 	{
 		//try find a suitable item to stack with
 		uint32_t n = 0;

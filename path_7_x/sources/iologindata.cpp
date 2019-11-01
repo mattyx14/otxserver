@@ -35,7 +35,6 @@
 
 extern ConfigManager g_config;
 extern Game g_game;
-extern IPList serverIPs;
 
 #ifndef __GNUC__
 #pragma warning( disable : 4005)
@@ -422,8 +421,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	Database* db = Database::getInstance();
 	std::ostringstream query;
 	query << "SELECT `id`, `account_id`, `group_id`, `world_id`, `sex`, `vocation`, `experience`, `level`, "
-	<< "`maglevel`, `health`, `healthmax`, `blessings`, `pvp_blessing`, `mana`, `manamax`, `manaspent`, "
-	<< "`soul`, "
+	<< "`maglevel`, `health`, `healthmax`, `blessings`, `pvp_blessing`, `mana`, `manamax`, `manaspent`, `soul`, "
 	<< "`lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `posx`, `posy`, "
 	<< "`posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skull`, `skulltime`, `guildnick`, "
 	<< "`rank_id`, `town_id`, `balance`, `stamina`, `direction`, `loss_experience`, `loss_mana`, `loss_skills`, "
@@ -788,7 +786,7 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	query << "SELECT `pk`.`player_id`, `pd`.`date` FROM `player_killers` pk LEFT JOIN `killers` k"
 		<< " ON `pk`.`kill_id` = `k`.`id` LEFT JOIN `player_deaths` pd ON `k`.`death_id` = `pd`.`id`"
 		<< " WHERE `pd`.`player_id` = " << player->getGUID() << " AND `k`.`unjustified` = 1 AND "
-		<< "`pd`.`date` >= " << (time(NULL) - (7 * 86400)) << " AND `k`.`war` = 0";
+		<< "`pd`.`date` >= " << (time(NULL) - (7 * 86400)) << " AND `k`.`war` = 0"; // TODO: configurable
 
 	std::map<uint32_t, time_t> deaths;
 	if((result = db->storeQuery(query.str())))
@@ -1190,7 +1188,6 @@ bool IOLoginData::savePlayerItems(Player* player)
 	query << "DELETE FROM `player_storage` WHERE `player_id` = " << player->getGUID();
 	if(!db->query(query.str()))
 		return false;
-
 
 	query.str("");
 	stmt.setQuery("INSERT INTO `player_storage` (`player_id`, `key`, `value`) VALUES ");

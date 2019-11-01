@@ -106,7 +106,7 @@ bool Combat::getMinMaxValues(Creature* creature, Creature* target, CombatParams&
 					if(crit)
 						min = max;
 					else
-						min = (int32_t)mina;
+						min = (int32_t)minb;
 
 					return true;
 				}

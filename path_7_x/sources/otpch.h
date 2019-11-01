@@ -21,13 +21,14 @@
 
 #define __OTPCH__
 
-#if defined WINDOWS
-#include <winerror.h>
-#endif
-
 #ifdef _MSC_VER
 #define strncasecmp _strnicmp
 #define strcasecmp _stricmp
+#endif
+
+
+#if defined WINDOWS
+#include <winerror.h>
 #endif
 
 //libxml

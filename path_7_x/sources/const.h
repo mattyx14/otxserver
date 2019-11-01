@@ -18,6 +18,7 @@
 #ifndef __CONST__
 #define __CONST__
 #include "definitions.h"
+
 #define NETWORKMESSAGE_MAXSIZE 24590
 
 enum OperatingSystem_t
@@ -491,5 +492,4 @@ enum PlayerCustomFlags
 #define SWIMMING_OUTFIT 267
 #define GRATIS_PREMIUM 65535
 
-#define IS_IN_KEYRANGE(key, range) (key >= PSTRG_##range##_START && ((key - PSTRG_##range##_START) < PSTRG_##range##_SIZE))
 #endif

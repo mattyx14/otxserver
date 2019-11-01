@@ -3,7 +3,7 @@ noinst_PROGRAMS = theotxserver
 CXXFLAGS = -pipe -g -std=c++11
 AM_CXXFLAGS = $(XML_CPPFLAGS) $(OTSERV_FLAGS) $(LUA_CFLAGS) $(DEBUG_FLAGS)\
 $(MYSQL_FLAGS) $(MYSQLPP_FLAGS) $(SQLITE_FLAGS) $(PGSQL_FLAGS) $(PROFILER_FLAGS)\
-$(OPTIONAL_FLAGS) -D_THREAD_SAFE -D_REENTRANT -Wall -Wextra -Wno-strict-aliasing -Wno-unused-parameter
+$(OPTIONAL_FLAGS) -D_THREAD_SAFE -D_REENTRANT -Wall -Wextra -Wno-strict-aliasing -Wno-unused-parameter -fno-strict-aliasing
 
 theotxserver_LDADD = $(LUA_LIBS)
 
@@ -42,8 +42,9 @@ theotxserver_SOURCES = account.h actions.cpp actions.h  baseevents.cpp baseevent
 	otsystem.h outfit.cpp outfit.h outputmessage.cpp outputmessage.h \
 	party.cpp party.h player.cpp player.h position.cpp position.h \
 	protocol.cpp protocol.h protocolgame.cpp protocolgame.h \
-	protocollogin.cpp protocollogin.h raids.cpp raids.h \
-	scheduler.cpp scheduler.h scriptmanager.cpp \
+	protocollogin.cpp protocollogin.h \
+	raids.cpp raids.h \
+	rsa.cpp rsa.h scheduler.cpp scheduler.h scriptmanager.cpp \
 	scriptmanager.h server.cpp server.h spawn.cpp spawn.h spectators.cpp spectators.h \
 	spells.cpp spells.h status.cpp status.h talkaction.cpp talkaction.h teleport.cpp \
 	teleport.h templates.h textlogger.cpp textlogger.h thing.cpp thing.h \

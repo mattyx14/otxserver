@@ -401,12 +401,13 @@ void MoveEvents::addEvent(MoveEvent* moveEvent, int32_t id, MoveListMap& map, bo
 	}
 }
 
-MoveEvent* MoveEvents::getEvent(Item* item, MoveEvent_t eventType)
+MoveEvent* MoveEvents::getEvent(Item* item, uint16_t uniqueId, uint16_t actionId, MoveEvent_t eventType)
 {
 	MoveListMap::iterator it;
-	if(item->getUniqueId())
+
+	if (uniqueId)
 	{
-		it = m_uniqueIdMap.find(item->getUniqueId());
+		it = m_uniqueIdMap.find(uniqueId);
 		if(it != m_uniqueIdMap.end())
 		{
 			EventList& moveEventList = it->second.moveEvent[eventType];
@@ -415,9 +416,9 @@ MoveEvent* MoveEvents::getEvent(Item* item, MoveEvent_t eventType)
 		}
 	}
 
-	if(item->getActionId())
+	if (actionId)
 	{
-		it = m_actionIdMap.find(item->getActionId());
+		it = m_actionIdMap.find(actionId);
 		if(it != m_actionIdMap.end())
 		{
 			EventList& moveEventList = it->second.moveEvent[eventType];
@@ -534,14 +535,18 @@ MoveEvent* MoveEvents::getEvent(const Tile* tile, MoveEvent_t eventType)
 bool MoveEvents::hasEquipEvent(Item* item)
 {
 	MoveEvent* event = NULL;
-	return (event = getEvent(item, MOVE_EVENT_EQUIP)) && !event->isScripted()
-		&& (event = getEvent(item, MOVE_EVENT_DE_EQUIP)) && !event->isScripted();
+	uint16_t uniqueId = item->getUniqueId();
+	uint16_t actionId = item->getUniqueId();
+	return (event = getEvent(item, uniqueId, actionId, MOVE_EVENT_EQUIP)) && !event->isScripted()
+		&& (event = getEvent(item, uniqueId, actionId, MOVE_EVENT_DE_EQUIP)) && !event->isScripted();
 }
 
 bool MoveEvents::hasTileEvent(Item* item)
 {
-	return getEvent(item, MOVE_EVENT_STEP_IN) || getEvent(item, MOVE_EVENT_STEP_OUT) || getEvent(
-		item, MOVE_EVENT_ADD_TILEITEM) || getEvent(item, MOVE_EVENT_REMOVE_TILEITEM);
+	uint16_t uniqueId = item->getUniqueId();
+	uint16_t actionId = item->getActionId();
+	return getEvent(item, uniqueId, actionId, MOVE_EVENT_STEP_IN) || getEvent(item, uniqueId, actionId, MOVE_EVENT_STEP_OUT) || getEvent(
+		item, uniqueId, actionId, MOVE_EVENT_ADD_TILEITEM) || getEvent(item, uniqueId, actionId, MOVE_EVENT_REMOVE_TILEITEM);
 }
 
 uint32_t MoveEvents::onCreatureMove(Creature* actor, Creature* creature, const Tile* fromTile, const Tile* toTile, bool isStepping)
@@ -579,7 +584,7 @@ uint32_t MoveEvents::onCreatureMove(Creature* actor, Creature* creature, const T
 		//We cannot use iterators here since the scripts can invalidate the iterator
 		for(uint32_t i = 0; i < m_lastCacheItemVector.size(); ++i)
 		{
-			if((tileItem = m_lastCacheItemVector[i]) && (moveEvent = getEvent(tileItem, eventType)))
+			if ((tileItem = m_lastCacheItemVector[i]) && (moveEvent = getEvent(tileItem, tileItem->getUniqueId(), tileItem->getActionId(), eventType)))
 				ret &= moveEvent->fireStepEvent(actor, creature, tileItem, tile->getPosition(), fromPos, toPos);
 		}
 
@@ -596,7 +601,7 @@ uint32_t MoveEvents::onCreatureMove(Creature* actor, Creature* creature, const T
 		if(!(thing = tile->__getThing(i)) || !(tileItem = thing->getItem()))
 			continue;
 
-		if((moveEvent = getEvent(tileItem, eventType)))
+		if ((moveEvent = getEvent(tileItem, tileItem->getUniqueId(), tileItem->getActionId(), eventType)))
 		{
 			m_lastCacheItemVector.push_back(tileItem);
 			ret &= moveEvent->fireStepEvent(actor, creature, tileItem, tile->getPosition(), fromPos, toPos);
@@ -638,7 +643,7 @@ uint32_t MoveEvents::onItemMove(Creature* actor, Item* item, Tile* tile, bool is
 	if(moveEvent)
 		ret &= moveEvent->fireAddRemItem(actor, item, NULL, tile->getPosition());
 
-	moveEvent = getEvent(item, eventType);
+	moveEvent = getEvent(item, item->getUniqueId(), item->getActionId(), eventType);
 	if(moveEvent)
 		ret &= moveEvent->fireAddRemItem(actor, item, NULL, tile->getPosition());
 
@@ -654,8 +659,8 @@ uint32_t MoveEvents::onItemMove(Creature* actor, Item* item, Tile* tile, bool is
 		//We cannot use iterators here since the scripts can invalidate the iterator
 		for(uint32_t i = 0; i < m_lastCacheItemVector.size(); ++i)
 		{
-			if((tileItem = m_lastCacheItemVector[i]) && tileItem != item
-				&& (moveEvent = getEvent(tileItem, tileEventType)))
+			if ((tileItem = m_lastCacheItemVector[i]) && tileItem != item
+				&& (moveEvent = getEvent(tileItem, tileItem->getUniqueId(), tileItem->getActionId(), tileEventType)))
 				ret &= moveEvent->fireAddRemItem(actor, item, tileItem, tile->getPosition());
 		}
 
@@ -672,7 +677,7 @@ uint32_t MoveEvents::onItemMove(Creature* actor, Item* item, Tile* tile, bool is
 		if(!(thing = tile->__getThing(i)) || !(tileItem = thing->getItem()) || tileItem == item)
 			continue;
 
-		if((moveEvent = getEvent(tileItem, tileEventType)))
+		if ((moveEvent = getEvent(tileItem, tileItem->getUniqueId(), tileItem->getActionId(), tileEventType)))
 		{
 			m_lastCacheItemVector.push_back(tileItem);
 			ret &= moveEvent->fireAddRemItem(actor, item, tileItem, tile->getPosition());

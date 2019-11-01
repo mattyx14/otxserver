@@ -96,7 +96,7 @@ bool Npcs::parseNpcNode(xmlNodePtr node, FileType_t path, bool reloading/* = fal
 		return false;
 	}
 
-	bool new_nType = false;
+	bool new_nType = true;
 	NpcType* nType = NULL;
 	if(!(nType = getType(name)))
 		new_nType = true;
@@ -107,6 +107,7 @@ bool Npcs::parseNpcNode(xmlNodePtr node, FileType_t path, bool reloading/* = fal
 	}
 
 	std::string strValue;
+	int32_t intValue;
 	if(!readXMLString(node, "file", strValue) && !readXMLString(node, "path", strValue))
 	{
 		std::clog << "[Warning - Npcs::loadFromXml] Missing file path for npc with name " << name << "." << std::endl;
@@ -117,6 +118,7 @@ bool Npcs::parseNpcNode(xmlNodePtr node, FileType_t path, bool reloading/* = fal
 		nType = new NpcType();
 
 	nType->name = name;
+	nType->radius = -1;
 	toLowerCaseString(name);
 
 	nType->file = getFilePath(path, "npc/" + strValue);
@@ -126,11 +128,24 @@ bool Npcs::parseNpcNode(xmlNodePtr node, FileType_t path, bool reloading/* = fal
 	if(readXMLString(node, "script", strValue))
 		nType->script = strValue;
 
+	if(readXMLString(node, "home", strValue))
+	{
+		StringVec strVector = explodeString(strValue, ";");
+		for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
+		{
+			IntegerVec intVector = vectorAtoi(explodeString((*it), ","));
+			if(intVector.size() > 2)
+				nType->position = Position(intVector[0], intVector[1], intVector[2]);
+		}
+	}
+
+	if(readXMLInteger(node, "radius", intValue))
+		nType->radius = (intValue < 0 ? -1 : intValue);
+
 	for(xmlNodePtr q = node->children; q; q = q->next)
 	{
 		if(!xmlStrcmp(q->name, (const xmlChar*)"look"))
 		{
-			int32_t intValue;
 			if(readXMLInteger(q, "type", intValue))
 			{
 				nType->outfit.lookType = intValue;
@@ -154,12 +169,25 @@ bool Npcs::parseNpcNode(xmlNodePtr node, FileType_t path, bool reloading/* = fal
 	if(new_nType)
 		data[name] = nType;
 
+	if(nType->position.x > 0 && nType->radius >= 0)
+	{
+		Npc *npc = Npc::createNpc(nType);
+		if(npc)
+		{
+			npc->setLoadedFromFile(true);
+			npc->setMasterPosition(nType->position, nType->radius);
+			g_game.placeCreature(npc, nType->position, false, true);
+		}
+	}
+
 	return true;
 }
 
 void Npcs::reload()
 {
-	for(AutoList<Npc>::iterator it = Npc::autoList.begin(); it != Npc::autoList.end(); ++it);
+	for(AutoList<Npc>::iterator it = Npc::autoList.begin(); it != Npc::autoList.end(); ++it)
+		if(it->second->isLoadedFromFile())
+			g_game.removeCreature(it->second);
 
 	delete Npc::m_interface;
 	Npc::m_interface = NULL;
@@ -174,7 +202,8 @@ void Npcs::reload()
 	}
 
 	for(AutoList<Npc>::iterator it = Npc::autoList.begin(); it != Npc::autoList.end(); ++it)
-		it->second->reload();
+		if(!it->second->isLoadedFromFile())
+			it->second->reload();
 }
 
 NpcType* Npcs::getType(const std::string& name) const
@@ -228,6 +257,7 @@ Npc* Npc::createNpc(const std::string& name)
 		}
 
 		nType->name = name;
+		nType->radius = -1;
 		g_npcs.setType(name, nType);
 	}
 
@@ -255,7 +285,7 @@ Npc::~Npc()
 
 void Npc::reset()
 {
-	loaded = false;
+	loaded = loadedFromFile = false;
 	walkTicks = 1500;
 	floorChange = false;
 	attackable = false;
@@ -308,6 +338,9 @@ bool Npc::load()
 
 	loaded = loadFromXml();
 	defaultOutfit = currentOutfit = nType->outfit;
+	if(nType->radius > -1)
+		masterRadius = nType->radius;
+
 	return isLoaded();
 }
 
@@ -1204,7 +1237,9 @@ void Npc::onCreatureDisappear(const Creature* creature, bool isLogout)
 {
 	Creature::onCreatureDisappear(creature, isLogout);
 	if(creature == this)
+	{
 		return;
+	}
 
 	if(m_npcEventHandler)
 		m_npcEventHandler->onCreatureDisappear(creature);
@@ -1302,7 +1337,9 @@ void Npc::onThink(uint32_t interval)
 	std::vector<Player*> list;
 	Player* tmpPlayer = NULL;
 
-	const SpectatorVec& tmpList = g_game.getSpectators(getPosition());
+	SpectatorVec tmpList;
+	g_game.getSpectators(tmpList, getPosition(), true, true);
+
 	if(tmpList.size()) //loop only if there's at least one spectator
 	{
 		for(SpectatorVec::const_iterator it = tmpList.begin(); it != tmpList.end(); ++it)
@@ -1914,6 +1951,9 @@ bool Npc::getNextStep(Direction& dir, uint32_t& flags)
 bool Npc::canWalkTo(const Position& fromPos, Direction dir)
 {
 	if(cannotMove)
+		return false;
+
+	if(masterRadius == 0)
 		return false;
 
 	Position toPos = getNextPosition(dir, fromPos);

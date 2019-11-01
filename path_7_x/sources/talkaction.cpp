@@ -1117,7 +1117,8 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 			ban.value = atoi(params[1].c_str());
 			if(!ban.value)
 			{
-				IOLoginData::getInstance()->getGuidByName(ban.value, params[1], true);
+				uint32_t number = atoi(params[1].c_str());
+				IOLoginData::getInstance()->getAccountId(number, ban.value);
 				if(!ban.value)
 					ban.value = IOLoginData::getInstance()->getAccountIdByName(params[1]);
 			}
@@ -1125,11 +1126,11 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 		else
 		{
 			ban.value = atoi(params[1].c_str());
-			if(!ban.value)
+			if (!ban.value)
 			{
 				uint32_t number = atoi(params[1].c_str());
 				IOLoginData::getInstance()->getAccountId(number, ban.value);
-				if(!ban.value)
+				if (!ban.value)
 					ban.value = IOLoginData::getInstance()->getAccountIdByName(params[1]);
 			}
 		}
@@ -1137,11 +1138,11 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 	else
 	{
 		ban.value = atoi(params[0].c_str());
-		if(!ban.value)
+		if (!ban.value)
 		{
 			uint32_t number = atoi(params[0].c_str());
-				IOLoginData::getInstance()->getAccountId(number, ban.value);
-			if(!ban.value)
+			IOLoginData::getInstance()->getAccountId(number, ban.value);
+			if (!ban.value)
 				ban.value = IOLoginData::getInstance()->getAccountIdByName(params[0]);
 		}
 	}
@@ -1202,13 +1203,12 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 		<< "--------------------" << std::endl
 		<< "ProtocolGame: " << ProtocolGame::protocolGameCount << std::endl
 		<< "ProtocolLogin: " << ProtocolLogin::protocolLoginCount << std::endl;
-		//<< "ProtocolStatus: " << ProtocolStatus::protocolStatusCount << std::endl;
+
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
 
 	s.str("");
 	s << "Connections:" << std::endl
-		<< "--------------------" << std::endl;
-		/*
+		<< "--------------------" << std::endl;/*
 		<< "Active connections: " << Connection::connectionCount << std::endl
 		<< "Total message pool: " << OutputMessagePool::getInstance()->getTotalMessageCount() << std::endl
 		<< "Auto message pool: " << OutputMessagePool::getInstance()->getAutoMessageCount() << std::endl

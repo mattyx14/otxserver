@@ -50,7 +50,7 @@ uint32_t Player::playerCount = 0;
 #endif
 MuteCountMap Player::muteCountMap;
 
-Player::Player(const std::string& _name, ProtocolGame* p):
+Player::Player(const std::string& _name, ProtocolGame_ptr p):
 	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(new Spectators(p))
 {
 	if(client->getOwner())
@@ -68,9 +68,8 @@ Player::Player(const std::string& _name, ProtocolGame* p):
 	vocationId = VOCATION_NONE;
 
 	promotionLevel = walkTaskEvent = actionTaskEvent = nextStepEvent = bloodHitCount = shieldBlockCount = 0;
-	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = 0;
-	soul = 0;
-	guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
+	mailAttempts = idleTime = marriage = blessings = balance = premiumDays = mana = manaMax = manaSpent = extraAttackSpeed = 0;
+	soul = guildId = levelPercent = magLevelPercent = magLevel = experience = damageImmunities = rankId = 0;
 	conditionImmunities = conditionSuppressions = groupId = managerNumber2 = town = skullEnd = 0;
 	lastLogin = lastLogout = lastIP = messageTicks = messageBuffer = nextAction = editListId = maxWriteLen = 0;
 	windowTextId = nextExAction = offlineTrainingTime = lastStatsTrainingTime = 0;
@@ -540,6 +539,12 @@ void Player::sendIcons() const
 		if(!isSuppress((*it)->getType()))
 			icons |= (*it)->getIcons();
 	}
+
+	if(getZone() == ZONE_PROTECTION)
+		icons |= ICON_NONE;
+
+	if(pzLocked)
+		icons |= ICON_NONE;
 
 	// Tibia client debugs with 10 or more icons
 	// so let's prevent that from happening.
@@ -2438,7 +2443,7 @@ bool Player::onDeath()
 				}
 			}
 		}
-		else if(!inventory[SLOT_BACKPACK])
+		else if(!inventory[SLOT_BACKPACK]) // FIXME: you should receive the bag after you login back...
 			__internalAddThing(SLOT_BACKPACK, Item::CreateItem(g_config.getNumber(ConfigManager::DEATH_CONTAINER)));
 
 		sendIcons();
@@ -3909,10 +3914,6 @@ void Player::onTarget(Creature* target)
 {
 	Creature::onTarget(target);
 
-	if (target && target->getZone() == ZONE_HARDCORE) {
-		return;
-	}
-
 	if(target == this)
 	{
 		addInFightTicks(false);
@@ -3936,21 +3937,24 @@ void Player::onTarget(Creature* target)
 			addAttacked(targetPlayer);
 			targetPlayer->sendCreatureSkull(this);
 		}
-		else
+		else if(!targetPlayer->hasAttacked(this))
 		{
-			if((!targetPlayer->hasAttacked(this)) || (!g_config.getBool(ConfigManager::ALLOW_FIGHT_BACK)))
+			if(!pzLocked)
 			{
-				if(!pzLocked && g_game.getWorldType(this, targetPlayer) != WORLDTYPE_OPEN)
+				pzLocked = true;
+				sendIcons();
+			}
+
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(targetPlayer))
+			{
+				addAttacked(targetPlayer);
+
+				if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
 				{
-					pzLocked = true;
-					sendIcons();
+					setSkull(SKULL_WHITE);
+					g_game.updateCreatureSkull(this);
 				}
-				if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(targetPlayer))
-				{
-					addAttacked(targetPlayer);
-					if(targetPlayer->getSkull() == SKULL_NONE && getSkull() == SKULL_NONE)
-						setSkull(SKULL_WHITE);
-				}
+
 				if(getSkull() == SKULL_NONE)
 					targetPlayer->sendCreatureSkull(this);
 			}
@@ -4141,6 +4145,7 @@ bool Player::rateExperience(double& gainExp, Creature* target)
 
 	gainExp *= rates[SKILL__LEVEL] * g_game.getExperienceStage(level,
 		vocation->getExperienceMultiplier());
+
 	if(g_config.getBool(ConfigManager::USE_STAMINA))
 	{
 		if(!hasFlag(PlayerFlag_HasInfiniteStamina))
@@ -4371,9 +4376,10 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 	if(skull < SKULL_RED && ((f > 0 && fc >= f) || (s > 0 && sc >= s) || (t > 0 && tc >= t)))
 		setSkullEnd(now + g_config.getNumber(ConfigManager::RED_SKULL_LENGTH), false, SKULL_RED);
 
-	f += g_config.getNumber(ConfigManager::BAN_LIMIT);
-	s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
-	t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+		f += g_config.getNumber(ConfigManager::BAN_LIMIT);
+		s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
+		t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+
 	if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
 		return true;
 

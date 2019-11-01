@@ -19,8 +19,6 @@
 #define __GAME__
 #include "otsystem.h"
 
-
-
 #include "enums.h"
 #include "templates.h"
 #include "server.h"
@@ -87,7 +85,9 @@ enum ReloadInfo_t
 	RELOAD_CHAT = 2,
 	RELOAD_CONFIG = 3,
 	RELOAD_CREATUREEVENTS = 4,
+#ifdef __LOGIN_SERVER__
 	RELOAD_GAMESERVERS = 5,
+#endif
 	RELOAD_GLOBALEVENTS = 6,
 	RELOAD_GROUPS = 7,
 	RELOAD_ITEMS = 8,
@@ -341,15 +341,23 @@ class Game
 		uint32_t getMonstersOnline() {return (uint32_t)Monster::autoList.size();}
 		uint32_t getNpcsOnline() {return (uint32_t)Npc::autoList.size();}
 		uint32_t getCreaturesOnline() {return (uint32_t)autoList.size();}
+		uint32_t getPlayersWithMcLimit();
 
 		uint32_t getPlayersRecord() const {return playersRecord;}
 		void getWorldLightInfo(LightInfo& lightInfo);
 
-		void getSpectators(SpectatorVec& list, const Position& centerPos, bool checkforduplicate = false, bool multifloor = false,
+		void getSpectators(SpectatorVec& list, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
 			int32_t minRangeX = 0, int32_t maxRangeX = 0,
 			int32_t minRangeY = 0, int32_t maxRangeY = 0)
-			{map->getSpectators(list, centerPos, checkforduplicate, multifloor, minRangeX, maxRangeX, minRangeY, maxRangeY);}
-		const SpectatorVec& getSpectators(const Position& centerPos) {return map->getSpectators(centerPos);}
+		{
+			map->getSpectators(list, centerPos, multifloor, onlyPlayers, minRangeX, maxRangeX, minRangeY, maxRangeY);
+		}
+		SpectatorVec getSpectators(const Position& centerPos) {
+			SpectatorVec list;
+			map->getSpectators(list, centerPos, true, false);
+			return list;
+		}
+
 		void clearSpectatorCache() {if(map) map->clearSpectatorCache();}
 
 		ReturnValue internalMoveCreature(Creature* creature, Direction direction, uint32_t flags = 0);
@@ -461,7 +469,6 @@ class Game
 
 		bool internalStartTrade(Player* player, Player* partner, Item* tradeItem);
 		bool internalCloseTrade(Player* player);
-		uint32_t getPlayersWithMcLimit();
 
 		//Implementation of player invoked events
 		bool playerBroadcastMessage(Player* player, MessageClasses type, const std::string& text, uint32_t statementId);
@@ -631,6 +638,10 @@ class Game
 		bool isRunning() const {return services && services->is_running();}
 		int32_t getLightHour() const {return lightHour;}
 		void startDecay(Item* item);
+
+#ifdef __GROUND_CACHE__
+		std::map<Item*, int32_t> grounds;
+#endif
 
 	protected:
 		bool playerWhisper(Player* player, const std::string& text, uint32_t statementId);

@@ -30,7 +30,7 @@
 
 extern ConfigManager g_config;
 
-std::string transformToMD5(const std::string &plainText, bool upperCase)
+std::string transformToMD5(std::string plainText, bool upperCase)
 {
 	MD5_CTX c;
 	MD5_Init(&c);
@@ -49,7 +49,7 @@ std::string transformToMD5(const std::string &plainText, bool upperCase)
 	return asLowerCaseString(std::string(output));
 }
 
-std::string transformToSHA1(const std::string &plainText, bool upperCase)
+std::string transformToSHA1(std::string plainText, bool upperCase)
 {
 	SHA_CTX c;
 	SHA1_Init(&c);
@@ -68,7 +68,7 @@ std::string transformToSHA1(const std::string &plainText, bool upperCase)
 	return asLowerCaseString(std::string(output));
 }
 
-std::string transformToSHA256(const std::string &plainText, bool upperCase)
+std::string transformToSHA256(std::string plainText, bool upperCase)
 {
 	SHA256_CTX c;
 	SHA256_Init(&c);
@@ -87,7 +87,7 @@ std::string transformToSHA256(const std::string &plainText, bool upperCase)
 	return asLowerCaseString(std::string(output));
 }
 
-std::string transformToSHA512(const std::string &plainText, bool upperCase)
+std::string transformToSHA512(std::string plainText, bool upperCase)
 {
 	SHA512_CTX c;
 	SHA512_Init(&c);
@@ -474,20 +474,59 @@ float box_muller(float m, float s)
 	return (m + y1 * s);
 }
 
+std::mt19937& getRandomGenerator()
+{
+	static std::random_device rd;
+	static std::mt19937 generator(rd());
+	return generator;
+}
+
+int32_t normal_random(int32_t minNumber, int32_t maxNumber)
+{
+	static std::normal_distribution<float> normalRand(0.45f, 0.22f);
+
+	if (minNumber == maxNumber) {
+		return minNumber;
+	}
+	else if (minNumber > maxNumber) {
+		std::swap(minNumber, maxNumber);
+	}
+
+	int32_t increment;
+	const int32_t diff = maxNumber - minNumber;
+	const float v = normalRand(getRandomGenerator());
+	if (v < 0.0) {
+		increment = diff / 2;
+	}
+	else if (v > 1.0) {
+		increment = (diff + 1) / 2;
+	}
+	else {
+		increment = round(v * diff);
+	}
+	return minNumber + increment;
+}
+
+int32_t uniform_random(int32_t minNumber, int32_t maxNumber)
+{
+	static std::uniform_int_distribution<int32_t> uniformRand;
+	if (minNumber == maxNumber) {
+		return minNumber;
+	}
+	else if (minNumber > maxNumber) {
+		std::swap(minNumber, maxNumber);
+	}
+	return uniformRand(getRandomGenerator(), std::uniform_int_distribution<int32_t>::param_type(minNumber, maxNumber));
+}
+
 int32_t random_range(int32_t lowestNumber, int32_t highestNumber, DistributionType_t type /*= DISTRO_UNIFORM*/)
 {
-	if(highestNumber == lowestNumber)
-		return lowestNumber;
-
-	if(lowestNumber > highestNumber)
-		std::swap(lowestNumber, highestNumber);
-
 	switch(type)
 	{
 		case DISTRO_UNIFORM:
-			return (lowestNumber + ((int32_t)rand24b() % (highestNumber - lowestNumber + 1)));
+			return uniform_random(lowestNumber, highestNumber);
 		case DISTRO_NORMAL:
-			return (lowestNumber + int32_t(float(highestNumber - lowestNumber) * (float)std::min((float)1, std::max((float)0, box_muller(0.5, 0.25)))));
+			return normal_random(lowestNumber, highestNumber);
 		default:
 			break;
 	}

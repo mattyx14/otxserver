@@ -19,6 +19,7 @@
 #define __ITEM_ATTRIBUTES__
 #include "otsystem.h"
 #include <boost/any.hpp>
+#include <unordered_map>
 
 class PropWriteStream;
 class PropStream;
@@ -97,7 +98,7 @@ class ItemAttributes
 	protected:
 		void createAttributes();
 
-		typedef std::map<std::string, ItemAttribute> AttributeMap;
+		typedef std::unordered_map<std::string, ItemAttribute> AttributeMap;
 		AttributeMap* attributes;
 };
 

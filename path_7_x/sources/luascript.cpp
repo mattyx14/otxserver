@@ -1246,7 +1246,6 @@ int32_t LuaInterface::popCallback(lua_State* L)
 Outfit_t LuaInterface::popOutfit(lua_State* L)
 {
 	Outfit_t outfit;
-
 	outfit.lookFeet = getField(L, "lookFeet");
 	outfit.lookLegs = getField(L, "lookLegs");
 	outfit.lookBody = getField(L, "lookBody");
@@ -2299,15 +2298,6 @@ void LuaInterface::registerFunctions()
 	//getPartyMembers(lid)
 	lua_register(m_luaState, "getPartyMembers", LuaInterface::luaGetPartyMembers);
 
-	//isPartyLeader(cid)
-	lua_register(m_luaState, "isPartyLeader", LuaInterface::luaIsPartyLeader);
-
-	//isPartySharedExperienceActive(cid)
-	lua_register(m_luaState, "isPartySharedExperienceActive", LuaInterface::luaIsPartySharedExperienceActive);
-
-	//setPartySharedExperience(cid, active)
-	lua_register(m_luaState, "setPartySharedExperience", LuaInterface::luaSetPartySharedExperience);
-
 	//getCreatureMaster(cid)
 	lua_register(m_luaState, "getCreatureMaster", LuaInterface::luaGetCreatureMaster);
 
@@ -2532,6 +2522,16 @@ void LuaInterface::registerFunctions()
 
 	//std table
 	luaL_register(m_luaState, "std", LuaInterface::luaStdTable);
+
+	//isPartyLeader(cid)
+	lua_register(m_luaState, "isPartyLeader", LuaInterface::luaIsPartyLeader);
+
+	//isPartySharedExperienceActive(cid)
+	lua_register(m_luaState, "isPartySharedExperienceActive", LuaInterface::luaIsPartySharedExperienceActive);
+
+	//setPartySharedExperience(cid, active)
+	lua_register(m_luaState, "setPartySharedExperience", LuaInterface::luaSetPartySharedExperience);
+
 }
 
 const luaL_Reg LuaInterface::luaSystemTable[] =
@@ -3662,7 +3662,7 @@ int32_t LuaInterface::luaDoCreatureSay(lua_State* L)
 			return 1;
 		}
 
-		list.push_back(target);
+		list.insert(target);
 	}
 
 	if(params > 5)
@@ -3710,7 +3710,7 @@ int32_t LuaInterface::luaDoSendMagicEffect(lua_State* L)
 	if(lua_gettop(L) > 2)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint32_t type = popNumber(L);
@@ -3737,7 +3737,7 @@ int32_t LuaInterface::luaDoSendDistanceShoot(lua_State* L)
 	if(lua_gettop(L) > 3)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint32_t type = popNumber(L);
@@ -4403,7 +4403,7 @@ int32_t LuaInterface::luaDoSendCreatureSquare(lua_State* L)
 	if(lua_gettop(L) > 2)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint8_t color = popNumber(L);
@@ -4433,7 +4433,7 @@ int32_t LuaInterface::luaDoSendAnimatedText(lua_State* L)
 	if(lua_gettop(L) > 3)
 	{
 		if(Creature* creature = env->getCreatureByUID(popNumber(L)))
-			list.push_back(creature);
+			list.insert(creature);
 	}
 
 	uint8_t color = popNumber(L);
@@ -7954,7 +7954,7 @@ int32_t LuaInterface::luaGetPlayerGUIDByName(lua_State* L)
 
 	std::string name = popString(L);
 	uint32_t guid;
-	if(Player* player = g_game.getPlayerByName(name.c_str()))
+	if(Player* player = g_game.getPlayerByName(name))
 		lua_pushnumber(L, player->getGUID());
 	else if(IOLoginData::getInstance()->getGuidByName(guid, name, multiworld))
 		lua_pushnumber(L, guid);
@@ -9183,6 +9183,36 @@ int32_t LuaInterface::luaDoPlayerLeaveParty(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
+{
+	//isPlayerUsingOtclient(cid)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		lua_pushboolean(L, player->isUsingOtclient());
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
+int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
+{
+	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
+	std::string buffer = popString(L);
+	int32_t opcode = popNumber(L);
+
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = env->getPlayerByUID(popNumber(L)))
+	{
+		player->sendExtendedOpcode(opcode, buffer);
+		lua_pushboolean(L, true);
+	}
+
+	lua_pushboolean(L, false);
+	return 1;
+}
+
 int32_t LuaInterface::luaGetPartyMembers(lua_State* L)
 {
 	//getPartyMembers(cid)
@@ -9260,36 +9290,6 @@ int32_t LuaInterface::luaSetPartySharedExperience(lua_State *L)
 			lua_pushboolean(L, party->setSharedExperience(party->getLeader(), active));
 			return 1;
 		}
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
-{
-	//isPlayerUsingOtclient(cid)
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		lua_pushboolean(L, player->isUsingOtclient());
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
-{
-	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
-	std::string buffer = popString(L);
-	int32_t opcode = popNumber(L);
-
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		player->sendExtendedOpcode(opcode, buffer);
-		lua_pushboolean(L, true);
 	}
 
 	lua_pushboolean(L, false);
@@ -9750,7 +9750,7 @@ int32_t LuaInterface::luaGetSpectators(lua_State* L)
 	popPosition(L, centerPos);
 
 	SpectatorVec list;
-	g_game.getSpectators(list, centerPos, false, multifloor, rangex, rangex, rangey, rangey);
+	g_game.getSpectators(list, centerPos, multifloor, false, rangex, rangex, rangey, rangey);
 	if(list.empty())
 	{
 		lua_pushnil(L);

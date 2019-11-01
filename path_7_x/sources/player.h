@@ -134,7 +134,7 @@ class Player : public Creature, public Cylinder
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 		static uint32_t playerCount;
 #endif
-		Player(const std::string& name, ProtocolGame* p);
+		Player(const std::string& name, ProtocolGame_ptr p);
 		virtual ~Player();
 
 		virtual Player* getPlayer() {return this;}
@@ -340,10 +340,9 @@ class Player : public Creature, public Cylinder
 		double getFreeCapacity() const;
 
 		virtual int32_t getSoul() const {return getPlayerInfo(PLAYERINFO_SOUL);}
-		int32_t getSoulMax() const {return soulMax;}
-		void changeSoul(int32_t soulChange);
 		virtual int32_t getMaxHealth() const {return getPlayerInfo(PLAYERINFO_MAXHEALTH);}
 		virtual int32_t getMaxMana() const {return getPlayerInfo(PLAYERINFO_MAXMANA);}
+		int32_t getSoulMax() const {return soulMax;}
 
 		Item* getInventoryItem(slots_t slot) const;
 		Item* getEquippedItem(slots_t slot) const;
@@ -420,6 +419,7 @@ class Player : public Creature, public Cylinder
 
 		virtual void changeHealth(int32_t healthChange);
 		virtual void changeMana(int32_t manaChange);
+		void changeSoul(int32_t soulChange);
 
 		bool isPzLocked() const {return pzLocked;}
 		void setPzLocked(bool v) {pzLocked = v;}
@@ -511,7 +511,7 @@ class Player : public Creature, public Cylinder
 		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel)
 			{if(client) client->sendChannelMessage(author, text, type, channel);}
 		void sendCreatureAppear(const Creature* creature)
-			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
+			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->__getIndexOfThing(creature));}
 		void sendCreatureAppear(const Creature* creature, ProtocolGame* target)
 			{if(target) target->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
 		void sendCreatureDisappear(const Creature* creature, uint32_t stackpos)
@@ -757,15 +757,9 @@ class Player : public Creature, public Cylinder
 		virtual void __internalAddThing(uint32_t index, Thing* thing);
 
 		uint32_t getVocAttackSpeed() const {return vocation->getAttackSpeed() - getPlayer()->getExtraAttackSpeed();}
-		virtual int32_t getStepSpeed() const
+		int32_t getStepSpeed() const override
 		{
-			if(getSpeed() > SPEED_MAX)
-				return SPEED_MAX;
-
-			if(getSpeed() < SPEED_MIN)
-				return SPEED_MIN;
-
-			return getSpeed();
+			return std::max<int32_t>(SPEED_MIN, std::min<int32_t>(SPEED_MAX, getSpeed()));
 		}
 
 		virtual uint32_t getDamageImmunities() const {return damageImmunities;}

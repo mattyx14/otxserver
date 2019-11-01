@@ -642,7 +642,7 @@ void otserv(StringVec, ServiceManager* services)
 	DBResult* result;
 	bool duplicated = false;
 
-	if(result = db->storeQuery(query.str()))
+	if((result = db->storeQuery(query.str())))
 	{
 		do
 		{
@@ -652,7 +652,7 @@ void otserv(StringVec, ServiceManager* services)
 				DBResult* result_;
 				std::ostringstream query_playeritems;
 				query_playeritems << "SELECT `player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_items` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if(result_ = db->storeQuery(query_playeritems.str()))
+				if((result_ = db->storeQuery(query_playeritems.str())))
 				{
 					duplicated = true;
 					do
@@ -671,7 +671,7 @@ void otserv(StringVec, ServiceManager* services)
 				query_playeritems.clear();
 				std::ostringstream query_playerdepotitems;
 				query_playerdepotitems << "SELECT `player_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `player_depotitems` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if(result_ = db->storeQuery(query_playerdepotitems.str()))
+				if((result_ = db->storeQuery(query_playerdepotitems.str())))
 				{
 					duplicated = true;
 					do
@@ -690,7 +690,7 @@ void otserv(StringVec, ServiceManager* services)
 				query_playerdepotitems.clear();
 				std::ostringstream query_tileitems;
 				query_tileitems << "SELECT `tile_id`, `world_id`, `sid`, `pid`, `itemtype`, `count`, `attributes`, `serial` FROM `tile_items` WHERE `serial` = " << db->escapeString(serial) << ";";
-				if(result_ = db->storeQuery(query_tileitems.str()))
+				if((result_ = db->storeQuery(query_tileitems.str())))
 				{
 					duplicated = true;
 					do
@@ -727,11 +727,12 @@ void otserv(StringVec, ServiceManager* services)
 		}
 		while(result->next());
 		result->free();
+
 		if(duplicated)
 			std::clog << ">> Duplicated items successfully removed." << std::endl;
-	}
-	else
+	} else {
 		std::clog << ">> There wasn't duplicated items in the server." << std::endl;
+	}
 
 	std::clog << ">> Loading items (OTB)" << std::endl;
 	if(Item::items.loadFromOtb(getFilePath(FILE_TYPE_OTHER, "items/items.otb")))
@@ -845,13 +846,7 @@ void otserv(StringVec, ServiceManager* services)
 	std::clog << ">> Initializing game state and binding services:" << std::endl;
 	g_game.setGameState(GAMESTATE_INIT);
 
-	// Game client protocols
-	services->add<ProtocolGame>(g_config.getNumber(ConfigManager::GAME_PORT));
-	services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
-
-	// OT protocols
 	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT));
-
 	if (
 #ifdef __LOGIN_SERVER__
 		true

@@ -147,10 +147,10 @@ bool Party::join(Player* player)
 
 	char buffer[200];
 	sprintf(buffer, "%s has joined the party.", player->getName().c_str());
-	broadcastMessage(MSG_PARTY, buffer);
+	broadcastMessage(MSG_INFO_DESCR, buffer);
 
-	sprintf(buffer, "You have joined %s'%s party. Open the party channel to communicate with your companions.", leader->getName().c_str(), (leader->getName()[leader->getName().length() - 1] == 's' ? "" : "s"));
-	player->sendTextMessage(MSG_PARTY, buffer);
+	sprintf(buffer, "You have joined %s'%s party.", leader->getName().c_str(), (leader->getName()[leader->getName().length() - 1] == 's' ? "" : "s"));
+	player->sendTextMessage(MSG_INFO_DESCR, buffer);
 
 	memberList.push_back(player);
 	player->setParty(this);
@@ -207,7 +207,7 @@ bool Party::invitePlayer(Player* player)
 	player->addPartyInvitation(this);
 
 	char buffer[150];
-	sprintf(buffer, "%s has been invited.", player->getName().c_str());
+	sprintf(buffer, "%s has been invited.%s", player->getName().c_str(), (!memberList.size() ? " Open the party channel to communicate with your members." : ""));
 	leader->sendTextMessage(MSG_PARTY, buffer);
 
 	sprintf(buffer, "%s has invited you to %s party.", leader->getName().c_str(), (leader->getSex(false) ? "his" : "her"));

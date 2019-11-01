@@ -62,7 +62,7 @@ class MoveEvents : public BaseEvents
 		bool onPlayerDeEquip(Player* player, Item* item, slots_t slot, bool isRemoval);
 		uint32_t onItemMove(Creature* actor, Item* item, Tile* tile, bool isAdd);
 
-		MoveEvent* getEvent(Item* item, MoveEvent_t eventType);
+		MoveEvent* getEvent(Item* item, uint16_t uniqueId, uint16_t actionId, MoveEvent_t eventType);
 		bool hasEquipEvent(Item* item);
 		bool hasTileEvent(Item* item);
 

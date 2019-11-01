@@ -27,6 +27,8 @@ class Npc;
 struct NpcType
 {
 	std::string name, file, nameDescription, script;
+	Position position;
+	int32_t radius;
 	Outfit_t outfit;
 };
 
@@ -37,6 +39,7 @@ class Npcs
 		virtual ~Npcs();
 		void reload();
 
+		bool loadNpcs(bool reloading = false);
 		bool loadFromXml(bool reloading = false);
 		bool parseNpcNode(xmlNodePtr node, FileType_t path, bool reloading = false);
 
@@ -366,7 +369,8 @@ class Npc : public Creature
 		virtual bool canSee(const Position& pos) const;
 		virtual bool canSeeInvisibility() const {return true;}
 
-		bool isLoaded() {return loaded;}
+		bool isLoaded() const { return loaded; }
+		bool isLoadedFromFile() const { return loadedFromFile; }
 		bool load();
 		void reload();
 
@@ -384,6 +388,7 @@ class Npc : public Creature
 		Npc(NpcType* _nType);
 		NpcType* nType;
 		bool loaded;
+		bool loadedFromFile;
 
 		void reset();
 		bool loadFromXml();
@@ -397,12 +402,15 @@ class Npc : public Creature
 		bool isImmune(CombatType_t) const {return true;}
 		bool isImmune(ConditionType_t) const {return true;}
 
+		void setLoadedFromFile(bool b) { loadedFromFile = b; }
+
 		virtual std::string getDescription(int32_t) const {return nType->nameDescription + ".";}
 		virtual bool getNextStep(Direction& dir, uint32_t& flags);
 		bool getRandomStep(Direction& dir);
 		bool canWalkTo(const Position& fromPos, Direction dir);
 
-		const NpcResponse* getResponse(const ResponseList& list, const Player* player, NpcState* npcState, const std::string& text, bool exactMatch = false);
+		const NpcResponse* getResponse(const ResponseList& list, const Player* player,
+			NpcState* npcState, const std::string& text, bool exactMatch = false);
 		const NpcResponse* getResponse(const Player* player, NpcState* npcState, const std::string& text);
 		const NpcResponse* getResponse(const Player* player, NpcEvent_t eventType);
 		const NpcResponse* getResponse(const Player* player, NpcState* npcState, NpcEvent_t eventType);

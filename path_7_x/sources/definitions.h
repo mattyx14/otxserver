@@ -18,19 +18,19 @@
 #ifndef __DEFINITIONS__
 #define __DEFINITIONS__
 
-// Compatible with 7.40 to 7.72
+#define CLIENT_VERSION_MIN 770
+#define CLIENT_VERSION_MAX 772
+#define CLIENT_VERSION_ITEMS 3
+#define CLIENT_VERSION_STRING "7.70/72"
+
 #define TRACK_MESSAGE(x)
+
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
 #define MINOR_VERSION "12"
 #define SOFTWARE_CODENAME "OpenTibia"
 #define SOFTWARE_DEVELOPERS "Matt Gomez, Matheus Matias and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2/"
-
-#define CLIENT_VERSION_ITEMS 3
-#define CLIENT_VERSION_MIN 770
-#define CLIENT_VERSION_MAX 772
-#define CLIENT_VERSION_STRING "7.70/72"
 
 //#define CLIENT_VERSION_DATA
 #define CLIENT_VERSION_DAT 0

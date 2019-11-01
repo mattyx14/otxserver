@@ -264,15 +264,11 @@ Spawn::~Spawn()
 bool Spawn::findPlayer(const Position& pos)
 {
 	SpectatorVec list;
-	g_game.getSpectators(list, pos);
-
-	Player* tmpPlayer = NULL;
-	for(SpectatorVec::iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()) && !tmpPlayer->hasFlag(PlayerFlag_IgnoredByMonsters))
+	g_game.getSpectators(list, pos, false, true);
+	for (Creature* spectator : list) {
+		if (!spectator->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters))
 			return true;
 	}
-
 	return false;
 }
 

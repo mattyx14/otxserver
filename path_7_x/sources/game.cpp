@@ -967,7 +967,7 @@ bool Game::placeCreature(Creature* creature, const Position& pos, bool extendedP
 	SpectatorVec::iterator it;
 	SpectatorVec list;
 
-	getSpectators(list, creature->getPosition(), false, true);
+	getSpectators(list, creature->getPosition(), true, false);
 	for(it = list.begin(); it != list.end(); ++it)
 	{
 		if((tmpPlayer = (*it)->getPlayer()))
@@ -1010,7 +1010,7 @@ bool Game::removeCreature(Creature* creature, bool isLogout /*= true*/)
 
 	Tile* tile = creature->getTile();
 	SpectatorVec list;
-	getSpectators(list, tile->getPosition(), false, true);
+	getSpectators(list, tile->getPosition(), true, false);
 
 	SpectatorVec::iterator it;
 	for(it = list.begin(); it != list.end(); ++it)
@@ -1020,10 +1020,11 @@ bool Game::removeCreature(Creature* creature, bool isLogout /*= true*/)
 	{
 		list.clear();
 		tile = creature->getTile();
-		getSpectators(list, tile->getPosition(), false, true);
+		getSpectators(list, tile->getPosition(), true, false);
 	}
 
 	Player* player = NULL;
+
 	int32_t oldIndex = tile->__getIndexOfThing(creature);
 	if(!map->removeCreature(creature))
 		return false;
@@ -1444,7 +1445,7 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 		{
 			Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 				this, player->getID(), listDir)));
-			SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
+			SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 				boost::bind(&Game::playerMoveItem, this, playerId, fromPos, spriteId, fromStackpos, toPos, count));
 
 			player->setNextWalkActionTask(task);
@@ -1508,7 +1509,7 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 			{
 				Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 					this, player->getID(), listDir)));
-				SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
+				SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 					boost::bind(&Game::playerMoveItem, this, playerId, itemPos, spriteId, itemStackpos, toPos, count));
 
 				player->setNextWalkActionTask(task);
@@ -1529,12 +1530,12 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 			player->sendCancelMessage(RET_DESTINATIONOUTOFREACH);
 			return false;
 		}
-	}
 
-	if(!canThrowObjectTo(mapFromPos, mapToPos) && !player->hasCustomFlag(PlayerCustomFlag_CanThrowAnywhere))
-	{
-		player->sendCancelMessage(RET_CANNOTTHROW);
-		return false;
+		if(!canThrowObjectTo(mapFromPos, mapToPos))
+		{
+			player->sendCancelMessage(RET_CANNOTTHROW);
+			return false;
+		}
 	}
 
 	if(!g_creatureEvents->executeMoveItems(player, item, mapFromPos, mapToPos))
@@ -1551,7 +1552,7 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 	if(deny)
 		return false;
 
-	ReturnValue ret = internalMoveItem(player, fromCylinder, toCylinder, toIndex, item, item->isRune() ? item->getItemCount() : count, NULL);
+	ReturnValue ret = internalMoveItem(player, fromCylinder, toCylinder, toIndex, item, count, NULL);
 	if(ret != RET_NOERROR)
 	{
 		player->sendCancelMessage(ret);
@@ -1651,16 +1652,9 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	if(retMaxCount != RET_NOERROR && !maxQueryCount)
 		return ret;
 
-	uint32_t m;
+	uint32_t m = maxQueryCount;
 	if(item->isStackable())
-	{
-		if(item->isRune())
-			m = std::min<uint32_t>(item->getItemCount(), maxQueryCount);
-		else
-			m = std::min<uint32_t>(count, maxQueryCount);
-	}
-	else
-		m = maxQueryCount;
+		m = std::min((uint32_t)count, m);
 
 	Item* moveItem = item;
 	//check if we can remove this item
@@ -1691,7 +1685,7 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	if(item->isStackable())
 	{
 		uint8_t n = 0;
-		if(!item->isRune() && toItem && toItem->getID() == item->getID())
+		if(toItem && toItem->getID() == item->getID())
 		{
 			n = std::min((uint32_t)100 - toItem->getItemCount(), m);
 			toCylinder->__updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
@@ -1933,7 +1927,7 @@ ReturnValue Game::internalAddItem(Creature* actor, Cylinder* toCylinder, Item* i
 		return RET_NOERROR;
 
 	Item* toItem = *stackItem;
-	if(item->isStackable() && !item->isRune() && toItem)
+	if(item->isStackable() && toItem)
 	{
 		uint32_t m = std::min((uint32_t)item->getItemCount(), maxQueryCount), n = 0;
 		if(toItem->getID() == item->getID())
@@ -2840,7 +2834,7 @@ bool Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, int16_t f
 				Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 					this, player->getID(), listDir)));
 
-				SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
+				SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 					boost::bind(&Game::playerUseItemEx, this, playerId, itemPos, fromStackpos, fromSpriteId, toPos, toStackpos, toSpriteId));
 
 				player->setNextWalkActionTask(task);
@@ -2908,10 +2902,12 @@ bool Game::playerUseItem(uint32_t playerId, const Position& pos, int16_t stackpo
 				Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 					this, player->getID(), listDir)));
 
-				SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
+				// Hard to stop movement when right clicking
+				SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 					boost::bind(&Game::playerUseItem, this, playerId, pos, stackpos, index, spriteId));
 
 				player->setNextWalkActionTask(task);
+				// Hard to stop movement when right clicking
 				return true;
 			}
 
@@ -2980,7 +2976,7 @@ bool Game::playerUseBattleWindow(uint32_t playerId, const Position& pos, int16_t
 				Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 					this, player->getID(), listDir)));
 
-				SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
+				SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 					boost::bind(&Game::playerUseBattleWindow, this, playerId, pos, stackpos, creatureId, spriteId));
 
 				player->setNextWalkActionTask(task);
@@ -3099,7 +3095,7 @@ bool Game::playerRotateItem(uint32_t playerId, const Position& pos, int16_t stac
 			Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 				this, player->getID(), listDir)));
 
-			SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
+			SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 				boost::bind(&Game::playerRotateItem, this, playerId, pos, stackpos, spriteId));
 
 			player->setNextWalkActionTask(task);
@@ -3298,7 +3294,7 @@ bool Game::playerRequestTrade(uint32_t playerId, const Position& pos, int16_t st
 			Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::playerAutoWalk,
 				this, player->getID(), listDir)));
 
-			SchedulerTask* task = createSchedulerTask(std::max((int32_t)SCHEDULER_MINTICKS, player->getStepDuration()),
+			SchedulerTask* task = createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, player->getStepDuration()),
 				boost::bind(&Game::playerRequestTrade, this, playerId, pos, stackpos, tradePlayerId, spriteId));
 
 			player->setNextWalkActionTask(task);
@@ -4157,7 +4153,7 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 			return true;
 	}
 
-	if (mute)
+	if(mute)
 		player->removeMessageBuffer();
 
 	if (ret == RET_NEEDEXCHANGE)
@@ -4395,6 +4391,9 @@ bool Game::isSightClear(const Position& fromPos, const Position& toPos, bool flo
 
 bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 {
+	if (creature->getDirection() == dir)
+		return false;
+
 	bool deny = false;
 	CreatureEventList directionEvents = creature->getCreatureEvents(CREATURE_EVENT_DIRECTION);
 	for(CreatureEventList::iterator it = directionEvents.begin(); it != directionEvents.end(); ++it)
@@ -4403,55 +4402,17 @@ bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 			deny = true;
 	}
 
-	if(deny || creature->getDirection() == dir)
+	if (deny)
 		return false;
 
 	creature->setDirection(dir);
-	const SpectatorVec& list = getSpectators(creature->getPosition());
-	SpectatorVec::const_iterator it;
 
-	//send to client
-	Player* tmpPlayer = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->sendCreatureTurn(creature);
+	SpectatorVec list;
+	getSpectators(list, creature->getPosition(), true, true);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendCreatureTurn(creature);
 	}
-
-	//event method
-	for(it = list.begin(); it != list.end(); ++it)
-		(*it)->onCreatureTurn(creature);
-
 	return true;
-}
-
-uint32_t Game::getPlayersWithMcLimit()
-{
-
-	std::map<uint32_t, uint32_t> ips;
-	uint32_t count = 0;
-
-	for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
-	{
-		if (!it->second->isRemoved() && it->second->getIdleTime() < 960000)
-		{
-			uint32_t ip = it->second->getIP();
-
-
-			if (ips.find(ip) == ips.end())
-			{
-				ips[ip] = 1;
-				count++;
-			}
-			else if (ips[ip] < 5)
-			{
-				ips[ip]++;
-				count++;
-			}
-		}
-	}
-
-	return count;
 }
 
 bool Game::internalCreatureSay(Creature* creature, MessageClasses type, const std::string& text,
@@ -4481,7 +4442,7 @@ bool Game::internalCreatureSay(Creature* creature, MessageClasses type, const st
 				Map::maxClientViewportX, Map::maxClientViewportX,
 				Map::maxClientViewportY, Map::maxClientViewportY);
 		else
-			getSpectators(list, destPos, false, true, 18, 18, 14, 14);
+			getSpectators(list, destPos, true, false, 18, 18, 14, 14);
 	}
 	else
 		list = (*spectators);
@@ -4651,15 +4612,12 @@ void Game::changeSpeed(Creature* creature, int32_t varSpeed)
 		return;
 
 	creature->setSpeed(creature->getSpeed() - creature->getBaseSpeed() + varSpeed);
-	const SpectatorVec& list = getSpectators(creature->getPosition());
-	SpectatorVec::const_iterator it;
 
 	//send to client
-	Player* tmpPlayer = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((*it) && (tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->sendChangeSpeed(creature, creature->getStepSpeed());
+	SpectatorVec list;
+	getSpectators(list, creature->getPosition(), false, true);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendChangeSpeed(creature, creature->getStepSpeed());
 	}
 }
 
@@ -4680,50 +4638,35 @@ void Game::internalCreatureChangeOutfit(Creature* creature, const Outfit_t& outf
 	}
 
 	creature->setCurrentOutfit(outfit);
-	const SpectatorVec& list = getSpectators(creature->getPosition());
-	SpectatorVec::const_iterator it;
+
+	SpectatorVec list;
+	getSpectators(list, creature->getPosition(), true, true);
 
 	//send to client
-	Player* tmpPlayer = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->sendCreatureChangeOutfit(creature, outfit);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendCreatureChangeOutfit(creature, outfit);
 	}
-
-	//event method
-	for(it = list.begin(); it != list.end(); ++it)
-		(*it)->onCreatureChangeOutfit(creature, outfit);
 }
 
 void Game::internalCreatureChangeVisible(Creature* creature, Visible_t visible)
 {
-	const SpectatorVec& list = getSpectators(creature->getPosition());
-	SpectatorVec::const_iterator it;
-
+	SpectatorVec list;
+	getSpectators(list, creature->getPosition(), true, true);
 	//send to client
-	Player* tmpPlayer = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->sendCreatureChangeVisible(creature, visible);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendCreatureChangeVisible(creature, visible);
 	}
-
-	//event method
-	for(it = list.begin(); it != list.end(); ++it)
-		(*it)->onCreatureChangeVisible(creature, visible);
 }
 
 
 void Game::changeLight(const Creature* creature)
 {
-	const SpectatorVec& list = getSpectators(creature->getPosition());
-
+	SpectatorVec list;
+	getSpectators(list, creature->getPosition(), true, true);
 	//send to client
-	Player* tmpPlayer = NULL;
-	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()) && !tmpPlayer->hasCustomFlag(PlayerCustomFlag_HasFullLight))
+	for (Creature* spectator : list) {
+		Player* tmpPlayer = spectator->getPlayer();
+		if (!tmpPlayer->hasCustomFlag(PlayerCustomFlag_HasFullLight))
 			tmpPlayer->sendCreatureLight(creature);
 	}
 }
@@ -4735,7 +4678,8 @@ bool Game::combatBlockHit(CombatType_t combatType, Creature* attacker, Creature*
 		return false;
 
 	const Position& targetPos = target->getPosition();
-	const SpectatorVec& list = getSpectators(targetPos);
+	SpectatorVec list;
+	getSpectators(list, targetPos, true, true);
 	if(Combat::canDoCombat(attacker, target, true) != RET_NOERROR)
 	{
 		if(!element)
@@ -4838,7 +4782,8 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 			char buffer[20];
 			sprintf(buffer, "+%d", healthChange);
 
-			const SpectatorVec& list = getSpectators(targetPos);
+			SpectatorVec list;
+			getSpectators(list, targetPos, true, true);
 			if(params.combatType != COMBAT_HEALING)
 				addMagicEffect(list, targetPos, MAGIC_EFFECT_WRAPS_BLUE);
 
@@ -4847,7 +4792,8 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 	}
 	else
 	{
-		const SpectatorVec& list = getSpectators(targetPos);
+		SpectatorVec list;
+		getSpectators(list, targetPos, true, true);
 		if(target->getHealth() < 1 || Combat::canDoCombat(attacker, target, true) != RET_NOERROR)
 		{
 			addMagicEffect(list, targetPos, MAGIC_EFFECT_POFF);
@@ -4874,8 +4820,8 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 			damage = std::min(target->getHealth(), damage);
 			if(damage > 0)
 			{
-				Position creaturePos = target->getPosition();
 				bool deny = false;
+				Position creaturePos = target->getPosition();
 				CreatureEventList statsChangeEvents = target->getCreatureEvents(CREATURE_EVENT_STATSCHANGE);
 				for(CreatureEventList::iterator it = statsChangeEvents.begin(); it != statsChangeEvents.end(); ++it)
 				{
@@ -4894,10 +4840,14 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 				MagicEffect_t magicEffect = MAGIC_EFFECT_NONE;
 				
 				if (target->getPosition() != creaturePos)// The target was teleported/moved on statschange, a new spectator list must be created
-					addCreatureHealth(getSpectators(targetPos), target);
-				else	
+				{
+					SpectatorVec newList;
+					getSpectators(newList, targetPos, true, true);
+					addCreatureHealth(newList, target);
+				}
+				else
 					addCreatureHealth(list, target);
-				
+
 				if(params.combatType == COMBAT_PHYSICALDAMAGE)
 				{
 					Item* splash = NULL;
@@ -4952,31 +4902,17 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 				if(textColor < COLOR_NONE && magicEffect < MAGIC_EFFECT_NONE)
 				{
 					char buffer[20];
-					
-						if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
-							addMagicEffect(getSpectators(targetPos), targetPos, magicEffect);
-						else
-							addMagicEffect(list, targetPos, magicEffect);
-						
+					addMagicEffect(list, targetPos, magicEffect);
 					if(elementDamage)
 					{
 						sprintf(buffer, "%d+%d", damage, elementDamage);
 						getCombatDetails(params.element.type, magicEffect, textColor);
-						
-						if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
-							addMagicEffect(getSpectators(targetPos), targetPos, magicEffect);
-						else
-							addMagicEffect(list, targetPos, magicEffect);
-						
+						addMagicEffect(list, targetPos, magicEffect);
 					}
 					else
 						sprintf(buffer, "%d", damage);
-					
-						if (target->getPosition() != creaturePos) // The target was teleported/moved on statschange, a new spectator list must be created
-							addAnimatedText(getSpectators(targetPos), targetPos, textColor, buffer);
-						else
-							addAnimatedText(list, targetPos, textColor, buffer);
-						
+		
+					addAnimatedText(list, targetPos, textColor, buffer);
 					std::stringstream ss;
 					uint16_t totalDamage = damage + elementDamage;
 					Player* player = NULL;
@@ -5059,8 +4995,11 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 
 void Game::addCreatureHealth(const Creature* target)
 {
-	const SpectatorVec& list = getSpectators(target->getPosition());
-	addCreatureHealth(list, target);
+	SpectatorVec list;
+	getSpectators(list, target->getPosition(), true, true);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendCreatureHealth(target);
+	}
 }
 
 void Game::addCreatureHealth(const SpectatorVec& list, const Creature* target)
@@ -5075,7 +5014,8 @@ void Game::addCreatureHealth(const SpectatorVec& list, const Creature* target)
 
 void Game::addCreatureSquare(const Creature* target, uint8_t squareColor)
 {
-	const SpectatorVec& list = getSpectators(target->getPosition());
+	SpectatorVec list;
+	getSpectators(list, target->getPosition(), true, true);
 	addCreatureSquare(list, target, squareColor);
 }
 
@@ -5091,7 +5031,8 @@ void Game::addCreatureSquare(const SpectatorVec& list, const Creature* target, u
 
 void Game::addAnimatedText(const Position& pos, uint8_t textColor, const std::string& text)
 {
-	const SpectatorVec& list = getSpectators(pos);
+	SpectatorVec list;
+	getSpectators(list, pos, true, true);
 	addAnimatedText(list, pos, textColor, text);
 }
 
@@ -5111,7 +5052,8 @@ void Game::addMagicEffect(const Position& pos, uint8_t effect, bool ghostMode/* 
 	if(ghostMode)
 		return;
 
-	const SpectatorVec& list = getSpectators(pos);
+	SpectatorVec list;
+	map->getSpectators(list, pos, true, true);
 	addMagicEffect(list, pos, effect);
 }
 
@@ -5132,8 +5074,8 @@ void Game::addMagicEffect(const SpectatorVec& list, const Position& pos, uint8_t
 void Game::addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect)
 {
 	SpectatorVec list;
-	getSpectators(list, fromPos, false);
-	getSpectators(list, toPos, true);
+	getSpectators(list, fromPos, false, true);
+	getSpectators(list, toPos, false, true);
 	addDistanceEffect(list, fromPos, toPos, effect);
 }
 
@@ -5361,27 +5303,23 @@ bool Game::closeRuleViolation(Player* player)
 
 void Game::updateCreatureSkull(Creature* creature)
 {
-	const SpectatorVec& list = getSpectators(creature->getPosition());
+	SpectatorVec list;
+	getSpectators(list, creature->getPosition(), true, true);
 
 	//send to client
-	Player* tmpPlayer = NULL;
-	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->sendCreatureSkull(creature);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendCreatureSkull(creature);
 	}
 }
 
 void Game::updateCreatureShield(Creature* creature)
 {
-	const SpectatorVec& list = getSpectators(creature->getPosition());
+	SpectatorVec list;
+	getSpectators(list, creature->getPosition(), true, true);
 
 	//send to client
-	Player* tmpPlayer = NULL;
-	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if((tmpPlayer = (*it)->getPlayer()))
-			tmpPlayer->sendCreatureShield(creature);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendCreatureShield(creature);
 	}
 }
 
@@ -6315,6 +6253,34 @@ void Game::checkPlayersRecord(Player* player)
 	playersRecord = count;
 }
 
+uint32_t Game::getPlayersWithMcLimit()
+{
+
+	std::map<uint32_t, uint32_t> ips;
+	uint32_t count = 0;
+
+	for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+	{
+		if (!it->second->isRemoved() && it->second->getIdleTime() < 960000)
+		{
+			uint32_t ip = it->second->getIP();
+
+
+			if (ips.find(ip) == ips.end())
+			{
+				ips[ip] = 1;
+				count++;
+			}
+			else if (ips[ip] < 5)
+			{
+				ips[ip]++;
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 void Game::loadPlayersRecord()
 {
 	Database* db = Database::getInstance();
@@ -6377,17 +6343,17 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 			break;
 		}
 
+#ifdef __LOGIN_SERVER__
 		case RELOAD_GAMESERVERS:
 		{
-			#ifdef __LOGIN_SERVER__
 			if(GameServers::getInstance()->reload())
 				done = true;
 			else
 				std::clog << "[Error - Game::reloadInfo] Failed to reload game servers." << std::endl;
 
-			#endif
 			break;
 		}
+#endif
 
 		case RELOAD_GLOBALEVENTS:
 		{

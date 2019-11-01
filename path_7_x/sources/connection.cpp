@@ -208,9 +208,8 @@ void Connection::parsePacket(const boost::system::error_code& error)
 
 	if (error) {
 		close(FORCE_CLOSE);
-	}
-
-	if (connectionState != CONNECTION_STATE_OPEN) {
+		return;
+	} else if (connectionState != CONNECTION_STATE_OPEN) {
 		return;
 	}
 
@@ -282,7 +281,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 
 uint32_t Connection::getIP()
 {
-	// std::lock_guard<std::recursive_mutex> lockClass(connectionLock); /* try with it */
+	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 
 	// IP-address is expressed in network byte order
 	boost::system::error_code error;

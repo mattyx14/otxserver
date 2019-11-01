@@ -258,7 +258,7 @@ enum Exhaust_t
 enum ExhaustSubId_t
 {
 	EXHAUST_DEFAULT = 1,
-	EXHAUST_TALKNPC = 2, // No used
+	EXHAUST_TALKNPC = 2,
 	EXHAUST_PLAYERVIP = 3,
 	EXHAUST_OUTFIT = 4,
 	EXHAUST_PARTY = 5,
@@ -349,9 +349,7 @@ enum ConditionId_t
 enum PlayerSex_t
 {
 	PLAYERSEX_FEMALE = 0,
-	PLAYERSEX_MALE,
-	PLAYERSEX_FEMALE_VIP,
-	PLAYERSEX_MALE_VIP
+	PLAYERSEX_MALE
 	// DO NOT ADD HERE! Every higher sex is only for your
 	// own use- each female should be even and male odd.
 };

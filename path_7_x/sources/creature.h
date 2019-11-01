@@ -234,8 +234,8 @@ class Creature : public AutoId, virtual public Thing
 
 		int32_t getWalkDelay(Direction dir) const;
 		int32_t getWalkDelay() const;
-		int32_t getStepDuration(Direction dir) const;
-		int32_t getStepDuration() const;
+		int64_t getStepDuration(Direction dir) const;
+		int64_t getStepDuration() const;
 
 		int64_t getEventStepTicks(bool onlyDelay = false) const;
 		int64_t getTimeSinceLastMove() const;
@@ -453,10 +453,11 @@ class Creature : public AutoId, virtual public Thing
 		virtual void setParent(Cylinder* cylinder)
 		{
 			_tile = dynamic_cast<Tile*>(cylinder);
+			_position = _tile->getPosition();
 			Thing::setParent(cylinder);
 		}
 
-		virtual Position getPosition() const {return _tile->getPosition();}
+		virtual Position getPosition() const {return _position;}
 		virtual Tile* getTile() {return _tile;}
 		virtual const Tile* getTile() const {return _tile;}
 		int32_t getWalkCache(const Position& pos) const;
@@ -472,6 +473,7 @@ class Creature : public AutoId, virtual public Thing
 
 		virtual bool useCacheMap() const {return false;}
 
+		Position _position;
 		Tile* _tile;
 		uint32_t id;
 		bool removed;
