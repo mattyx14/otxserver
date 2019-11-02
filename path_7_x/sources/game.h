@@ -639,9 +639,6 @@ class Game
 		int32_t getLightHour() const {return lightHour;}
 		void startDecay(Item* item);
 
-#ifdef __GROUND_CACHE__
-		std::map<Item*, int32_t> grounds;
-#endif
 
 	protected:
 		bool playerWhisper(Player* player, const std::string& text, uint32_t statementId);

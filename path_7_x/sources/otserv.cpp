@@ -115,7 +115,6 @@ bool argumentsHandler(StringVec args)
 		}
 		
 	std::string luajit = "no";
-	std::string groundCache = "no";
 	std::string serverDiag = "no";
 	std::string loginServer = "no";
 	std::string useMySQL = "no";
@@ -125,10 +124,6 @@ bool argumentsHandler(StringVec args)
 
 #ifdef __LUAJIT__
 	luajit = "yes";
-#endif
-
-#ifdef __GROUND_CACHE__
-	groundCache = "yes";
 #endif
 
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
@@ -173,7 +168,6 @@ bool argumentsHandler(StringVec args)
 				
 				"LuaJIT: " << luajit << "\n"<<
 				"BOOST: " << BOOST_LIB_VERSION << "\n"
-				"GroundCache: " << groundCache << "\n"
 				"ServerDiag: " << serverDiag << "\n"
 				"LoginServer: " << loginServer << "\n"
 				"UseMySQL: " << useMySQL << "\n"
@@ -386,7 +380,6 @@ void otserv(StringVec, ServiceManager* services)
 #endif
 
 	std::string luajit = "no";
-	std::string groundCache = "no";
 	std::string serverDiag = "no";
 	std::string loginServer = "no";
 	std::string useMySQL = "no";
@@ -396,10 +389,6 @@ void otserv(StringVec, ServiceManager* services)
 
 #ifdef __LUAJIT__
 	luajit = "yes";
-#endif
-
-#ifdef __GROUND_CACHE__
-	groundCache = "yes";
 #endif
 
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
@@ -441,7 +430,6 @@ void otserv(StringVec, ServiceManager* services)
 				
 				"\t\tLuaJIT: " << luajit << std::endl <<
 				"\t\tBOOST: " << BOOST_LIB_VERSION << std::endl <<
-				"\t\tGroundCache: " << groundCache << std::endl <<
 				"\t\tServerDiag: " << serverDiag << std::endl <<
 				"\t\tLoginServer: " << loginServer << std::endl <<
 				"\t\tUseMySQL: " << useMySQL << std::endl <<
