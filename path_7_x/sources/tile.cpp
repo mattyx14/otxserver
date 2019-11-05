@@ -695,6 +695,14 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 
 		if(isFull() && !item->isMagicField())
 			return RET_TILEISFULL;
+		
+		if (item->isMagicField())
+		{
+			if (hasFlag(TILESTATE_BLOCKSOLID))
+			{
+				return RET_NOTPOSSIBLE;
+			}
+		}
 
 		bool isHangable = item->isHangable();
 		if(!ground && !isHangable)
