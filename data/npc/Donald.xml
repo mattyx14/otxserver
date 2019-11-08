@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Donald" script="default.lua" walkinterval="2000" skull="green" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="128" head="20" body="100" legs="50" feet="99" corpse="2212"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell ham, meat, carrots, apples, brown breads, brown mushrooms and eggs (everything for 8 gold coins)!. say {trade}."/>
+		<parameter key="shop_buyable" value="brown bread,2691,8;ham,2671,8;carrot,2684,8;meat,2666,8;apple,2674,8;brown mushroom,2789,8;egg,2695,8"/>
+	</parameters>
+</npc>

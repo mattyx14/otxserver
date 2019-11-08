@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Reality Reaver" nameDescription="a reality reaver" race="energy" experience="3100" speed="390" manacost="0">
+	<health now="3900" max="3900" />
+	<look type="879" corpse="26068" />
+	<targetchange interval="4000" chance="15" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag staticattack="85" />
+		<flag lightlevel="0" />
+		<flag lightcolor="0" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="60" attack="170" />
+		<attack name="energy" interval="2000" chance="10" range="7" radius="2" target="1" min="-170" max="-415">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="energy" />
+		</attack>
+		<attack name="energy strike" interval="2000" chance="30" range="1" min="-210" max="-300">
+		</attack>
+		<attack name="energy" interval="2000" chance="15" range="7" target="1" min="-175" max="-205">
+			<attribute key="shootEffect" value="energyball" />
+			<attribute key="areaEffect" value="energy" />
+		</attack>
+		<attack name="massive energy elemental electrify" interval="2000" chance="29">
+			<attribute key="areaEffect" value="yellowspark" />
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="20">
+		<defense name="healing" interval="2000" chance="5" min="190" max="250">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="-5" />
+		<element earthPercent="20" />
+		<element icePercent="-20" />
+	</elements>
+	<immunities>		
+		<immunity energy="1" />
+		<immunity lifedrain="1" />
+		<immunity invisible="1" />
+		<immunity paralyze="1" />
+	</immunities>
+	<voices interval="2000" chance="15">
+		<voice sentence="Ssshhh!" />
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="50000" /><!-- gold coin -->
+		<item id="2148" countmax="91" chance="50000" /><!-- gold coin -->		
+		<item id="2152" countmax="6" chance="5450" /><!-- platinum coin -->		
+		<item id="7591" countmax="2" chance="5550" /><!-- Great Health Potion -->		
+		<item id="7590" countmax="2" chance="5450" /><!-- great mana potion -->
+		<item id="8472" countmax="2" chance="5450" /><!-- great spirit potion -->		
+		<item id="18413" chance="1730" /><!-- Blue Crystal Shard -->
+		<item id="18418" chance="1730" /><!-- Blue Crystal Splinter -->
+		<item id="26171" chance="1730" /><!-- Dangerous Proto Matter -->
+		<item id="26191" countmax="2" chance="5730" /><!-- Energy Bar -->		
+		<item id="26201" countmax="2" chance="3270" /><!-- Energy Drink -->			
+		<item id="26164" chance="730" /><!-- Energy Vein -->
+		<item id="7901" chance="930" /><!-- Lightning Headband -->		
+		<item id="26176" chance="730" /><!-- Plasmatic Lightning -->
+		<item id="26200" chance="200" /><!-- Collar of Red Plasma -->
+		<item id="26162" chance="730" /><!-- Plasma Pearls -->		
+		<item id="18420" chance="560" /><!-- Red Crystal Fragment -->		
+		<item id="26187" chance="150" /><!-- Ring of Green Plasma -->	
+	</loot>
+</monster>

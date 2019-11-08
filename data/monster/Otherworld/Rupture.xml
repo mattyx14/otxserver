@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Rupture" nameDescription="a rupture" race="blood" experience="300000" speed="525" manacost="200">
+	<health now="290000" max="290000" />
+	<look type="875" head="77" body="38" legs="59" feet="87" addons="0" corpse="26220" />
+	<targetchange interval="2000" chance="40" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<script>
+   <event name="Rupture"/>
+	</script>
+	<attacks>
+		<attack name="melee" interval="2000" skill="190" attack="340" />
+		<attack name="manadrain" interval="1000" chance="7" range="7" min="-400" max="-700">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="poff" />
+		</attack>		
+		<attack name="fire" interval="2000" chance="10" target="0" length="8" spread="0" min="-1000" max="-2050">
+			<attribute key="areaEffect" value="fireattack" />
+		</attack>
+		<attack name="strength" interval="1000" chance="9" range="7">
+			<attribute key="shootEffect" value="largerock" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="energy strike" interval="2000" chance="30" range="1" min="-510" max="-2200">
+		</attack>
+		<attack name="fire" interval="2000" chance="8" range="7" radius="7" target="1" min="-750" max="-1550">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="strength" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>
+		<attack name="manadrain" interval="2000" chance="12" radius="8" target="0" min="-545" max="-1490">
+      			<attribute key="areaEffect" value="yellowbubble" />
+    		</attack>
+    		<attack name="phantasm drown" interval="2000" chance="20" />
+    	<attack name="drunk" interval="2000" chance="15" duration="10000" range="7" radius="6" target="0">
+      		<attribute key="areaEffect" value="redshimmer" />
+    		</attack>
+		<attack name="lifedrain" interval="1000" chance="20" radius="8" target="0" min="-600" max="-900">
+			<attribute key="areaEffect" value="bluebubble" />
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="10" length="8" spread="0" min="-750" max="-1200">
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>		
+		<attack name="renegade knight" interval="2000" chance="30"/>		
+		<attack name="choking fear drown" interval="2000" chance="20" />
+		<attack name="death" interval="2000" chance="20" radius="4" target="1" min="-350" max="-700">
+			<attribute key="shootEffect" value="suddendeath" />
+			<attribute key="areaEffect" value="mortarea" />
+		</attack>
+		<attack name="bleedcondition" interval="2000" chance="20" target="1" radius="4" min="-150" max="-725">
+			<attribute key="shootEffect" value="throwingknife" />
+			<attribute key="areaEffect" value="redspark" />
+	</attack>
+		<attack name="vile grandmaster" interval="2000" chance="15"/>
+		<attack name="manadrain" interval="1000" chance="10" radius="8" target="0" min="-500" max="-1700">
+			<attribute key="areaEffect" value="greenshimmer" />
+		</attack>
+		<attack name="speed" interval="1000" chance="12" radius="6" target="0" speedchange="-1900" duration="60000">
+			<attribute key="areaEffect" value="poison" />
+		</attack>
+		<attack name="strength" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>		
+		
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-100" max="-700">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		
+	</attacks>
+	<defenses armor="160" defense="160">
+		
+		<defense name="healing" interval="6000" chance="20" min="1700" max="4400">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+				
+		
+	</defenses>
+	<elements>
+		<element physicalPercent="-5" />
+		<element deathPercent="1" />
+		<element earthPercent="-5" />
+	</elements>
+	<immunities>
+		<immunity drown="1" />
+		<immunity lifedrain="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<summons maxSummons="6">
+		<summon name="Instable Breach BroodSummon" interval="1000" chance="15" max="6" />		
+	</summons>
+	<voices interval="2000" chance="7">
+		<voice sentence="I AM RUPTURE!" yell="1" />
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="29000" /><!-- gold coin -->
+		<item id="2148" countmax="100" chance="29000" /><!-- gold coin -->		
+		<item id="2152" countmax="8" chance="20000" /><!-- platinum coin -->		
+	    <item id="8473" countmax="5" chance="100000" /><!-- Ultimate Health Potion -->
+		<item id="7590" countmax="4" chance="9000" /><!-- Great Mana Potion -->			
+		<item id="18413" countmax="3" chance="9000" /><!-- Blue Crystal Shard -->	
+		<item id="18415" countmax="3" chance="3000" /><!-- Green Crystal Shard -->	
+		<item id="2150" countmax="2" chance="10000" /><!-- Small Amethyst-->		
+		<item id="2146" countmax="2" chance="12000" /><!--  Small Sapphire -->
+		<item id="18414" countmax="3" chance="5000" /><!-- Violet Crystal Shard -->
+		<item id="26187" chance="2000" /><!-- Ring of Green Plasma -->	
+		<item id="26191" countmax="5" chance="19000" /><!-- Energy Bar -->		
+		<item id="7427" chance="7000" /><!-- Chaos Mace-->
+		<item id="26162" chance="3000" /><!-- Plasma Pearls -->
+		<item id="2155" chance="1200" /><!-- Green Gem -->
+		<item id="26166" chance="3000" /><!-- Odd Organ -->
+		<item id="25377" chance="3000" /><!-- Gold Token -->
+		<item id="26165" chance="8000" /><!-- Mysterious Remains -->
+	</loot>
+	
+	
+</monster>

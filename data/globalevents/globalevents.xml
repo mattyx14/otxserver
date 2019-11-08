@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<globalevents>
+	<globalevent type="startup" name="ServerStartup" script="startup.lua" />
+	<globalevent type="record" name="PlayerRecord" script="record.lua" />
+
+	<!-- OTX Systems -->
+		<!-- Modified Scripts from TFS
+			serversave.lua - for save with interval time
+		-->
+
+		<!-- Save 15 minutes / Clean 2 hours -->
+		<globalevent name="Server Save" interval="900000" script="serversave.lua" />
+		<globalevent name="Clean Map" interval="7200000" script="cleanmap.lua" />
+</globalevents>

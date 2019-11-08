@@ -2,24 +2,11 @@ sudo: required
 dist: trusty
 language: cpp
 compiler:
+  - clang
   - gcc
 env:
-  - LUAJIT=ON
-    VERSION=10_11
-  - LUAJIT=ON
-    VERSION=8_6
-  - LUAJIT=ON
-    VERSION=8_5
-  - LUAJIT=ON
-    VERSION=7_7
   - LUAJIT=OFF
-    VERSION=10_11
-  - LUAJIT=OFF
-    VERSION=8_6
-  - LUAJIT=OFF
-    VERSION=8_5
-  - LUAJIT=OFF
-    VERSION=7_7
+  - LUAJIT=ON
 cache: apt
 addons:
   apt:
@@ -27,16 +14,11 @@ addons:
       - libboost-dev
       - libboost-system-dev
       - libboost-iostreams-dev
-      - libboost-filesystem-dev
       - liblua5.2-dev
       - libluajit-5.1-dev
       - libmysqlclient-dev
       - libpugixml-dev
-      - build-essential
-      - libgmp3-dev
 before_script:
-  - mkdir path_${VERSION}/build
-  - cd path_${VERSION}/build
+  - mkdir build && cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_LUAJIT=${LUAJIT} ..
-script:
-  - make -j1
+script: make -j2

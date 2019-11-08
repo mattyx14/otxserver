@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Despair" nameDescription="a despair" race="blood" experience="10" speed="0" manacost="0">
+	<health now="20000" max="20000" />
+	<look typeex="22444" corpse="0" />
+	<targetchange interval="4000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="3" />
+		<flag staticattack="90" />
+		<flag runonhealth="300" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="40" max="-289" fire="6" />
+		
+				
+	</attacks>
+	<defenses armor="20" defense="20">
+		<defense name="healing" interval="2000" chance="10" min="80" max="95">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="-10" />
+	</elements>
+	<immunities>
+	
+		<immunity invisible="1" />
+	</immunities>
+	
+	
+	<voices interval="3000" chance="20">
+		<voice sentence="Snort!" />		
+	</voices>
+	
+</monster>

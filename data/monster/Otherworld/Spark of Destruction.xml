@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Spark of Destruction" nameDescription="a spark of destruction" race="energy" experience="3000" speed="380" manacost="0">
+	<health now="3900" max="3900" />
+	<look type="879" />
+	<targetchange interval="4000" chance="15" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag staticattack="85" />
+		<flag lightlevel="0" />
+		<flag lightcolor="0" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="60" attack="180" />
+		<attack name="energy" interval="2000" chance="10" range="7" radius="2" target="1" min="-170" max="-415">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="energy" />
+		</attack>
+		<attack name="energy strike" interval="2000" chance="30" range="1" min="-210" max="-300">
+		</attack>
+		<attack name="energy" interval="2000" chance="15" range="7" target="1" min="-175" max="-205">
+			<attribute key="shootEffect" value="energyball" />
+			<attribute key="areaEffect" value="energy" />
+		</attack>
+		<attack name="massive energy elemental electrify" interval="2000" chance="20">
+			<attribute key="areaEffect" value="yellowspark" />
+		</attack>
+	</attacks>
+	<defenses armor="20" defense="20">
+		<defense name="healing" interval="2000" chance="5" min="190" max="250">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element holyPercent="-5" />
+		<element deathPercent="1" />
+		<element earthPercent="-5" />
+	</elements>
+	<immunities>
+		<immunity energy="1" />
+		<immunity invisible="1" />
+		<immunity paralyze="1" />
+	</immunities>
+	
+</monster>

@@ -1,0 +1,100 @@
+	<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Feroxa" nameDescription="a feroxa" race="blood" experience="10000" speed="480" manacost="0">
+	<health now="90000" max="90000" />
+	<look type="731" corpse="24745" />
+	<targetchange interval="4000" chance="10" />
+	<flags>
+	    <flag rewardboss="1" />
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="80" />
+		<flag runonhealth="275" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="60" attack="130" />
+		<attack name="poison" interval="2000" chance="20" range="7" radius="1" target="1" max="-430">
+			<attribute key="shootEffect" value="poison" />
+			<attribute key="areaEffect" value="poison" />
+		</attack>
+		<attack name="fire" interval="2000" chance="10" lenght="8" spread="3" max="-474">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="physical" interval="2000" chance="15" radius="3" min="-300" max="-646">
+			<attribute key="areaEffect" value="poff" />
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="10" length="8" spread="0" min="-50" max="-200">
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>		
+		<attack name="renegade knight" interval="2000" chance="30"/>		
+		<attack name="choking fear drown" interval="2000" chance="20" />
+		<attack name="death" interval="2000" chance="20" radius="4" target="1" min="-450" max="-1400">
+			<attribute key="shootEffect" value="suddendeath" />
+			<attribute key="areaEffect" value="mortarea" />
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="15" range="7" target="1" min="-148" max="-250">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+	</attacks>
+	<defenses armor="70" defense="85" />
+	<elements>
+		<element holyPercent="10" />
+		<element energyPercent="20" />
+		<element deathPercent="30" />
+		<element icePercent="20" />
+	</elements>
+	<immunities>
+		<immunity earth="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="Werewolf" interval="2000" chance="30" max="2" />
+	</summons>
+	<voices interval="2000" chance="40">
+		<voice sentence="GROOOWL" />
+		<voice sentence="GRRR" />
+	</voices>
+	<loot>
+		<item id="2148" countmax="242" chance="97000" />	<!-- gold coin -->		
+		<item id="2152" countmax="5" chance="18200" />				<!-- platinum -->	
+        <item id="7591" countmax="2" chance="1200" />					<!--  great Health Potion -->
+		<item id="18418" countmax="3" chance="1200" />					<!--  Blue Crystal Splinter -->
+		<item id="18417" countmax="3" chance="1200" />					<!-- Brown Crystal Splinters -->
+		<item id="7590" chance="1200" />					<!--  great mana Potion -->			
+        <item id="8472" chance="2210" />					<!-- great spirit Potion -->			
+		<item id="18415" chance="800" />				<!-- Green Crystal Shard -->		
+		<item id="18416" countmax="2" chance="1900" />					<!-- Green Crystal Splinter -->	
+		<item id="2145" countmax="3" chance="950" />					<!-- Small Diamond -->		
+		<item id="2147" countmax="3" chance="880" />					<!-- Small Ruby -->			
+		<item id="2146" countmax="3" chance="900" />					<!-- Small Sapphyre -->			
+		<item id="9970" countmax="3" chance="960" />					<!-- Small Topaz  -->		
+		<item id="18414" chance="430" />					<!-- Violet Crystal Shard -->		
+		<item id="7436" chance="1020" />					<!--  Angelic Axe -->
+        <item id="2158" chance="400" />					<!-- Blue Gem -->		
+		<item id="7428" chance="200" />					<!-- Bonebreaker -->
+		<item id="24742" chance="200" />				<!-- Badger Boots -->
+		<item id="7419" chance="200" />				<!-- Dreaded Cleaver, -->		
+		<item id="24741" chance="400" />					<!-- Fur Armor -->		
+	    <item id="7454" chance="400" />					<!-- Glorious Axe -->		
+	    <item id="24716" chance="100" />					<!-- Werewolf Amulet -->	    
+	    <item id="2156" chance="300" />					<!-- Red Gem -->		
+		<item id="7383" chance="300" />					<!-- Relic Sword -->	    
+		<item id="2197" subtype="5" chance="430" />					<!-- Stone Skin Amulet -->	    
+		<item id="24760" chance="900" unique="1"/>					<!-- Trophy of Feroxa -->	    
+		<item id="8473" countmax="2" chance="1200" />					<!--  ultimate Health Potion -->
+	    <item id="8910" chance="900" />					<!-- Underworld Rod -->			
+		<item id="8922" chance="2000" />					<!-- Wand of Voodoo -->
+		<item id="24743" chance="2000" />					<!-- Wereboar Loincloth -->		
+		<item id="24740" chance="20000" />					<!-- Wolf Backpack -->
+		<item id="24718" chance="2000" unique="1"/>					<!-- Werewolf Helmet -->
+		<item id="24739" chance="300000" />					<!-- moonlight crystals -->
+		
+	</loot>
+</monster>

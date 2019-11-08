@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="World Devourer" nameDescription="a world devourer" race="blood" experience="300000" speed="525" manacost="200">
+	<health now="800000" max="800000" />
+	<look type="875" head="82" body="79" legs="120" feet="94" addons="3" corpse="26220" />
+	<targetchange interval="2000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<script>
+   <event name="World Devourer"/>
+	</script>
+	<attacks>
+		<attack name="melee" interval="2000" skill="250" attack="350" />
+		<attack name="manadrain" interval="1000" chance="7" range="7" min="-900" max="-1500">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="poff" />
+		</attack>
+		
+		<attack name="drunk" interval="2000" chance="20" target="0" radius="5" duration="9000">
+			<attribute key="areaEffect" value="smallclouds" />
+		</attack>
+		<attack name="strength" interval="1000" chance="9" range="7">
+			<attribute key="shootEffect" value="largerock" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="energy strike" interval="2000" chance="30" range="1" min="-910" max="-1700">
+		</attack>
+		<attack name="fire" interval="2000" chance="8" range="7" radius="7" target="1" min="-750" max="-1550">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="energy" interval="2000" chance="15" range="7" target="1" min="-975" max="-1405">
+			<attribute key="shootEffect" value="energyball" />
+			<attribute key="areaEffect" value="energy" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="20" radius="8" target="0" min="-600" max="-900">
+			<attribute key="areaEffect" value="bluebubble" />
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="10" length="8" spread="0" min="-750" max="-1200">
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>		
+		<attack name="renegade knight" interval="2000" chance="30"/>		
+		<attack name="choking fear drown" interval="2000" chance="20" />
+		<attack name="death" interval="2000" chance="20" radius="4" target="1" min="-450" max="-1400">
+			<attribute key="shootEffect" value="suddendeath" />
+			<attribute key="areaEffect" value="mortarea" />
+		</attack>
+		<attack name="manadrain" interval="1000" chance="10" radius="8" target="0" min="-800" max="-2300">
+			<attribute key="areaEffect" value="greenshimmer" />
+		</attack>
+		<attack name="speed" interval="1000" chance="12" radius="6" target="0" speedchange="-1900" duration="60000">
+			<attribute key="areaEffect" value="poison" />
+		</attack>
+		<attack name="strength" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>		
+		
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-100" max="-700">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="15" length="8" spread="0" min="-300" max="-950">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+	</attacks>
+	<defenses armor="160" defense="160">
+		
+		<defense name="healing" interval="6000" chance="25" min="2000" max="5000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="speed" interval="1000" chance="8" speedchange="1901" duration="5000">
+			<attribute key="areaEffect" value="redshimmer" />
+		</defense>
+		<defense name="invisible" interval="1000" chance="4" duration="5000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="invisible" interval="1000" chance="17" duration="2000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		
+	</defenses>
+	<immunities>
+		<immunity drown="1" />
+		<immunity lifedrain="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<summons maxSummons="10">
+		<summon name="Charger" interval="1000" chance="15" max="3" />
+		<summon name="Spark of Destruction" interval="1000" chance="15" max="5" />
+	</summons>
+	<voices interval="2000" chance="7">
+		<voice sentence="I AM DEVOURER!" yell="1" />
+	</voices>
+	
+</monster>

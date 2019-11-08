@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Professor Maxxen" nameDescription="a professor maxxen" race="blood" experience="31000" speed="600" manacost="490">
+	<health now="90000" max="90000" />
+	<look type="679" corpse="24279" />
+	<targetchange interval="4000" chance="80" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="210" attack="260" />
+		<attack name="firecondition" interval="1000" chance="7" range="2" min="-100" max="-700">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="yellowspark" />
+		</attack>
+		<attack name="physical" interval="1000" chance="7" radius="6" target="0" min="-50" max="-150">
+			<attribute key="areaEffect" value="explosion" />
+		</attack>
+		<attack name="fire" interval="1000" chance="50" radius="5" target="0" min="-20" max="-100">
+			<attribute key="areaEffect" value="yellowspark" />
+		</attack>
+		<attack name="firefield" interval="1000" chance="4" radius="8" target="0">
+			<attribute key="areaEffect" value="explosion" />
+		</attack>
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-50" max="-150">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="fire" interval="1000" chance="13" length="8" spread="0" min="-50" max="-100">
+			<attribute key="areaEffect" value="explosion" />
+		</attack>
+		<attack name="fire" interval="1000" chance="10" length="8" spread="3" min="-30" max="-100">
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+	</attacks>
+	<defenses armor="165" defense="150">
+		<defense name="healing" interval="1000" chance="15" min="500" max="1000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="healing" interval="1000" chance="25" min="200" max="300">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="speed" interval="1000" chance="10" speedchange="1800" duration="3000">
+			<attribute key="areaEffect" value="redshimmer" />
+		</defense>
+	</defenses>
+	<immunities>
+		
+		<immunity invisible="1" />
+	</immunities>
+	<elements>
+		<element energyPercent="5" />
+		<element holyPercent="5" />
+		<element earthPercent="-5" />
+		<element deathPercent="-5" />
+	</elements>
+	<summons maxSummons="4">
+		<summon name="glooth trasher" interval="1000" chance="7" max="2" />
+		<summon name="glooth slasher" interval="1000" chance="10" max="2" />
+	</summons>
+	<voices interval="2000" chance="7">
+		<voice sentence="Let's see if you can handle THIS!" />
+		<voice sentence="The world will bow before my brilliancy!" />
+		<voice sentence="You will perish!" />
+	
+	</voices>
+	<loot>
+			<item id="2148" countmax="199" chance="100000"/><!-- gold coin -->
+		<item id="2152" countmax="14" chance="37170"/><!-- platinum coin -->
+		<item id="23474" countmax="3" chance="23574"/><!-- glooth bag -->		
+	    <item id="9971" chance="23574"/><!-- Gold Ingot -->	
+	    <item id="9808" chance="23574"/><!-- Rusty Armor -->
+	
+		
+	</loot>
+</monster>

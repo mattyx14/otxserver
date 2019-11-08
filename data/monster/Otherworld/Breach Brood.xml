@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Breach Brood" nameDescription="a breach brood" race="undead" experience="2200" speed="370" manacost="0">
+	<health now="3500" max="3500" />
+	<look type="878" corpse="26209" />
+	<targetchange interval="20000" chance="15" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag staticattack="85" />
+		<flag lightlevel="0" />
+		<flag lightcolor="0" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="50" attack="150" />
+		<attack name="energy" interval="2000" chance="20" range="6" radius="4" target="1" min="-168" max="-400">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>
+		<attack name="energy strike" interval="2000" chance="30" range="1" min="-50" max="-180">
+		</attack>
+		<attack name="energycondition" interval="1000" chance="15" radius="3" target="0">
+			<attribute key="areaEffect" value="yellowenergy" />
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="25">
+		<defense name="healing" interval="2000" chance="15" min="90" max="150">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>		
+		<element deathPercent="-10" />
+		<element icePercent="-30" />
+		<element firePercent="-40" />
+		<element earthPercent="20" />
+	</elements>
+	<immunities>
+		<immunity energy="1" />
+		<immunity lifedrain="1" />
+		<immunity invisible="1" />
+		<immunity paralyze="1" />
+	</immunities>
+	<voices interval="2000" chance="20">
+		<voice sentence="Hisss!" />				
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="50000" /><!-- gold coin -->
+		<item id="2152" countmax="2" chance="50000" /><!-- platinum coin -->
+		<item id="26201" chance="2000" /><!-- energy drink -->
+		<item id="26191" chance="2000" /><!-- energy bar -->
+		<item id="26174" chance="1000" /><!-- Spark Sphere --> 
+		<item id="26163" chance="700" /><!-- Crystallized Anger -->
+		<item id="7590" chance="3000" /> <!-- great mana potion -->
+		<item id="7591" chance="3000" /> <!-- great health potion -->
+		<item id="8472" chance="3000" /> <!-- great spirit potion -->		
+		<item id="26167" chance="1000" /><!-- Curious Matter -->		
+		<item id="26162" chance="1000" /><!-- plasma pearls -->		
+		<item id="26170" chance="1000" /><!-- Volatile Proto Matter -->		
+		<item id="18418" countmax="2" chance="900" /><!-- Blue Crystal Splinter -->		
+		<item id="18419" chance="1300" /><!-- Cyan Crystal Fragment -->
+		<item id="18413" chance="1300" /><!-- Blue Crystal Shard -->
+		<item id="18415" chance="1500" /><!-- green crystal shard -->		
+		<item id="26198" chance="200" /><!-- Collar of Blue Plasma  -->
+		<item id="26200" chance="200" /><!-- Collar of Red Plasma  -->			
+		
+	</loot>
+</monster>

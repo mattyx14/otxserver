@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dread Intruder" nameDescription="a dread intruder" race="undead" experience="3000" speed="370" manacost="0">
+	<health now="4500" max="4500" />
+	<look type="882" corpse="26213" />
+	<targetchange interval="20000" chance="20" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="1" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag staticattack="85" />
+		<flag lightlevel="0" />
+		<flag lightcolor="0" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="30" attack="50" />
+		<attack name="energy" interval="2000" chance="20" range="6" radius="4" target="1" min="-168" max="-300">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>
+		
+		<attack name="energy" interval="2000" chance="20" range="6" radius="4" target="1" min="-100" max="-190">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>
+		
+		<attack name="energycondition" interval="1000" chance="15" radius="4" target="0">
+			<attribute key="areaEffect" value="yellowenergy" />
+		</attack>
+		<attack name="physical" interval="1000" chance="12" radius="4" target="0" min="0" max="-200">
+			<attribute key="areaEffect" value="poff" />
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="25">
+		<defense name="healing" interval="2000" chance="15" min="90" max="150">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element physicalPercent="-5" />
+	</elements>
+	<immunities>
+		<immunity energy="1" />
+		<immunity fire="1" />
+		<immunity ice="1" />
+	</immunities>
+	<loot>
+		<item id="2148" countmax="100" chance="50000" /><!-- gold coin -->
+		<item id="2152" countmax="7" chance="50000" /><!-- platinum coin -->
+		<item id="2150" countmax="2" chance="2000" /><!-- small amethyst -->
+		<item id="2147" countmax="2" chance="2000" /><!-- Small Rubys -->		
+		<item id="18418" chance="2000" /><!-- Blue Crystal Splinter -->
+		<item id="18419" chance="2000" /><!-- Cyan Crystal Fragment -->
+		<item id="26179" chance="1000" /><!-- Energy Ball -->
+		<item id="26191" chance="1600" /><!-- Energy Bar -->
+		<item id="26201" chance="2000" /><!-- energy drink -->
+		<item id="26175" chance="1600" /><!-- Frozen Lightning -->		
+		<item id="7591" chance="3000" /> <!-- great health potion -->
+		<item id="7590" chance="3000" /> <!-- great spirit potion -->
+		<item id="8473" chance="3000" /> <!-- ultimate health potion -->
+		<item id="8472" chance="3000" /> <!-- great mana potion -->		
+		<item id="26172" chance="1500" /><!-- Instable Proto Matter -->
+		<item id="26166" chance="1000" /><!-- Odd Organ -->
+		<item id="18414" chance="500" /><!-- Violet Crystal Shard -->
+		<item id="2153" chance="500" /><!-- Violet Gem -->		
+		
+	</loot>
+</monster>

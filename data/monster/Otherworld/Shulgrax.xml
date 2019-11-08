@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Shulgrax" nameDescription="a shulgrax" race="blood" experience="30000" speed="485" manacost="200">
+	<health now="120000" max="120000" />
+	<look type="842" head="19" body="82" legs="41" feet="41" addons="1" corpse="9780" />
+	<targetchange interval="2000" chance="10" />
+	<flags>
+	    <flag rewardboss="1" />
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag runonhealth="0" />
+		<flag rewardboss="1" />
+	</flags>
+	<script>
+   <event name="Shulgrax"/>
+	</script>
+	<attacks>
+		<attack name="melee" interval="2000" skill="200" attack="290" />
+		<attack name="manadrain" interval="1000" chance="7" range="7" min="-200" max="-800">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="poff" />
+		</attack>
+		<attack name="drunk" interval="1000" chance="7" range="7">
+			<attribute key="shootEffect" value="energy" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="strength" interval="1000" chance="9" range="7">
+			<attribute key="shootEffect" value="largerock" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="13" radius="8" target="0" min="-500" max="-1400">
+			<attribute key="areaEffect" value="bluebubble" />
+		</attack>
+		<attack name="manadrain" interval="1000" chance="10" radius="8" target="0" min="-100" max="-300">
+			<attribute key="areaEffect" value="greenshimmer" />
+		</attack>
+		<attack name="lifedrain" interval="2000" chance="10" length="8" spread="0" min="-50" max="-200">
+			<attribute key="areaEffect" value="purpleenergy" />
+		</attack>		
+		<attack name="renegade knight" interval="2000" chance="30"/>		
+		<attack name="choking fear drown" interval="2000" chance="20" />
+		<attack name="death" interval="2000" chance="20" radius="4" target="1" min="-450" max="-1400">
+			<attribute key="shootEffect" value="suddendeath" />
+			<attribute key="areaEffect" value="mortarea" />
+		</attack>
+		<attack name="speed" interval="1000" chance="12" radius="6" target="0" speedchange="-1900" duration="60000">
+			<attribute key="areaEffect" value="poison" />
+		</attack>
+		<attack name="strength" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>
+		
+		
+		<attack name="fire" interval="1000" chance="34" range="7" radius="7" target="1" min="-100" max="-700">
+			<attribute key="shootEffect" value="fire" />
+			<attribute key="areaEffect" value="firearea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="15" length="8" spread="0" min="-100" max="-550">
+			<attribute key="areaEffect" value="redshimmer" />
+		</attack>
+	</attacks>
+	<defenses armor="160" defense="160">
+		
+		<defense name="healing" interval="3000" chance="13" min="2000" max="4000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="speed" interval="1000" chance="8" speedchange="1901" duration="5000">
+			<attribute key="areaEffect" value="redshimmer" />
+		</defense>
+		
+		<defense name="invisible" interval="3000" chance="17" duration="2000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		
+	</defenses>
+		
+	<immunities>
+	
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	
+	<loot capacity="5000">
+	<item id="2148" countmax="100" chance="9000" /> <!-- gold coin -->
+	<item id="2148" countmax="100" chance="9000" /> <!-- gold coin -->	
+	<item id="2152" countmax="25" chance="9000" /> <!-- platinum coin -->	
+		<item id="25172" chance="80500" /> <!-- silver token -->		
+         <item id="2154" chance="2500" /> <!-- Yellow Gem -->
+         <item id="2153" chance="2500" /> <!-- Violet Gem -->
+         <item id="2156" chance="2500" /> <!-- Red Gem -->	
+        <item id="2155" chance="2500" /> <!-- Green Gem -->		 
+		<item id="25412" chance="500" /> <!-- Treader of Torment -->		
+		<item id="25382" chance="120" /> <!-- Rift Shield -->		
+		<item id="25383" chance="300" /> <!-- Rift Lance-->		
+		<item id="25523" chance="200" /> <!-- Rift Crossbow -->	
+		<item id="7451" chance="500" /> <!-- Shadow Sceptre -->	
+		<item id="20108" chance="900" /> <!-- Pair of Iron Fists -->	
+		<item id="7889" subtype="200" chance="1500" /> <!-- Lightning Pendant -->			
+		<item id="7895" chance="700" /> <!-- Lightning Legs -->			
+		<item id="6500" chance="1000" /> <!-- Demonic Essence -->		
+	    <item id="7419" chance="900" /> <!-- Dreaded Cleaver -->			
+        <item id="6300" chance="1000" /> <!-- Death Ring -->
+		<item id="8473" countmax="10" chance="9500" /> <!-- Ultimate Health Potion -->
+		<item id="8472" countmax="10" chance="9500" /> <!-- Great Spirit Potion -->
+		<item id="7590" countmax="10" chance="900" /> <!-- Great Mana Potion -->		
+		<item id="7416" countmax="5" chance="800" /> <!-- Bloody Edge -->
+		<item id="9970" countmax="5" chance="700" /> <!-- Small Topaz -->		
+		<item id="2149" countmax="5" chance="500" /> <!-- Small Emerald -->		
+		<item id="2147" countmax="5" chance="500" /> <!-- Small Ruby -->		
+		<item id="2145" countmax="5" chance="4500" /> <!-- Small Diamond -->
+		<item id="24850" countmax="5" chance="5500" /> <!-- Opal -->
+		<item id="24849" countmax="5" chance="5500" /> <!-- Onyx Chip -->
+		<item id="6558" countmax="5" chance="4500" /> <!-- Concentrated Demonic Blood -->			
+				 
+	</loot>
+</monster>
+

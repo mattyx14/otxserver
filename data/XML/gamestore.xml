@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gamestore>
+	<category name="Extra Services" description="Buy an Extra Service to change your character's name or sex." state="normal" icons="Category_ExtraServices.png">
+		<offer name="Character Name Change" type="namechange" price="250" icons="Product_CharacterNameChange.png" />
+		<offer name="Character Sex Change" type="sexchange" price="250" icons="Product_CharacterSexChange.png" />
+		<offer name="Character Promotion" type="promotion" price="50" icons="Category_Boosts.png" />
+	</category>
+	<category name="Mounts" description="Buy your character one or more of the fabolous mounts offered here." state="sale" icons="Category_Mounts.png">
+		<offer name="Desert King" type="mount" mountid="41" description="Buying this mount will help our server survive!" price="450" icons="o572.png" />
+		<offer name="Jade Lion" type="mount" mountid="48" description="Buying this mount will help our server survive!" price="450" icons="o627.png" />
+		<offer name="Winter King" type="mount" mountid="52" description="Buying this mount will help our server survive!" price="450" icons="o631.png" />
+		<offer name="Coralripper" type="mount" mountid="79" description="Buying this mount will help our server survive!" price="570" icons="o735.png" />
+		<offer name="Plumfish" type="mount" mountid="80" description="Buying this mount will help our server survive!" price="570" icons="o736.png" />
+		<offer name="Sea Devil" type="mount" mountid="78" description="Buying this mount will help our server survive!" price="570" icons="o734.png" />
+		<offer name="Copper Fly" type="mount" mountid="61" description="Buying this mount will help our server survive!" price="600" icons="o671.png" />
+		<offer name="Golden Dragonfly" type="mount" mountid="59" description="Buying this mount will help our server survive!" price="600" icons="o669.png" />
+		<offer name="Steel Bee" type="mount" mountid="60" description="Buying this mount will help our server survive!" price="600" icons="o670.png" />
+		<offer name="Death Crawler" type="mount" mountid="46" description="Buying this mount will help our server survive!" price="600" icons="o624.png" />
+		<offer name="Jade Pincer" type="mount" mountid="49" description="Buying this mount will help our server survive!" price="600" icons="o628.png" />
+		<offer name="Tombstinger" type="mount" mountid="36" description="Buying this mount will help our server survive!" price="600" icons="o546.png" />
+		<offer name="Black Stag" type="mount" mountid="73" description="Buying this mount will help our server survive!" price="660" icons="o692.png" />
+		<offer name="Emperor Deer" type="mount" mountid="74" description="Buying this mount will help our server survive!" price="660" icons="o693.png" />
+		<offer name="Shadow Hart" type="mount" mountid="72" description="Buying this mount will help our server survive!" price="660" icons="o691.png" />
+		<offer name="Blackpelt" type="mount" mountid="58" description="Buying this mount will help our server survive!" price="690" icons="o651.png" />
+		<offer name="Poisonbane" type="mount" mountid="57" description="Buying this mount will help our server survive!" price="690" icons="o650.png" />
+		<offer name="Siegebreaker" type="mount" mountid="56" description="Buying this mount will help our server survive!" price="690" icons="o649.png" />
+		<offer name="Mould Shell" type="mount" mountid="96" description="Buying this mount will help our server survive!" price="690" icons="o887.png" />
+		<offer name="Reed Lurker" type="mount" mountid="97" description="Buying this mount will help our server survive!" price="690" icons="o888.png" />
+		<offer name="Swamp Snapper" type="mount" mountid="95" description="Buying this mount will help our server survive!" price="690" icons="o886.png" />
+		<offer name="Gorongra" type="mount" mountid="81" description="Buying this mount will help our server survive!" price="720" icons="o738.png" />
+		<offer name="Noctungra" type="mount" mountid="82" description="Buying this mount will help our server survive!" price="720" icons="o739.png" />
+		<offer name="Silverneck" type="mount" mountid="83" description="Buying this mount will help our server survive!" price="720" icons="o740.png" />
+		<offer name="Bloodcurl" type="mount" mountid="92" description="Buying this mount will help our server survive!" price="750" icons="o869.png" />
+		<offer name="Leafscuttler" type="mount" mountid="93" description="Buying this mount will help our server survive!" price="750" icons="o870.png" />
+		<offer name="Mouldpincer" type="mount" mountid="91" description="Buying this mount will help our server survive!" price="750" icons="o868.png" />
+		<offer name="Emerald Waccoon" type="mount" mountid="70" description="Buying this mount will help our server survive!" price="750" icons="o689.png" />
+		<offer name="Night Waccoon" type="mount" mountid="69" description="Buying this mount will help our server survive!" price="750" icons="o688.png" />
+		<offer name="Ringtail Waccoon" type="mount" mountid="68" description="Buying this mount will help our server survive!" price="750" icons="o687.png" />
+		<offer name="Glacier Vagabond" type="mount" mountid="64" description="Buying this mount will help our server survive!" price="750" icons="o674.png" />
+		<offer name="Highland Yak" type="mount" mountid="63" description="Buying this mount will help our server survive!" price="750" icons="o673.png" />
+		<offer name="Tundra Rambler" type="mount" mountid="62" description="Buying this mount will help our server survive!" price="750" icons="o672.png" />
+		<offer name="Ivory Fang" type="mount" mountid="100" description="Buying this mount will help our server survive!" price="750" icons="o901.png" />
+		<offer name="Shadow Claw" type="mount" mountid="101" description="Buying this mount will help our server survive!" price="750" icons="o902.png" />
+		<offer name="Snow Pelt" type="mount" mountid="102" description="Buying this mount will help our server survive!" price="750" icons="o903.png" />
+		<offer name="Emerald Sphinx" type="mount" mountid="108" description="Buying this mount will help our server survive!" price="750" icons="o951.png" />
+		<offer name="Gold Sphinx" type="mount" mountid="107" description="Buying this mount will help our server survive!" price="750" icons="o950.png" />
+		<offer name="Shadow Sphinx" type="mount" mountid="109" description="Buying this mount will help our server survive!" price="750" icons="o952.png" />
+		<offer name="Jungle Saurian" type="mount" mountid="110" description="Buying this mount will help our server survive!" price="750" icons="o629.png" />
+		<offer name="Ember Saurian" type="mount" mountid="111" description="Buying this mount will help our server survive!" price="750" icons="o629.png" />
+		<offer name="Lagoon Saurian" type="mount" mountid="112" description="Buying this mount will help our server survive!" price="750" icons="o629.png" />
+		<offer name="Doombringer" type="mount" mountid="53" description="Buying this mount will help our server survive!" price="780" icons="o644.png" />
+		<offer name="Hailtorm Fury" type="mount" mountid="55" description="Buying this mount will help our server survive!" price="780" icons="o648.png" />
+		<offer name="Woodland Princes" type="mount" mountid="54" description="Buying this mount will help our server survive!" price="780" icons="o647.png" />
+		<offer name="Nightstinger" type="mount" mountid="85" description="Buying this mount will help our server survive!" price="780" icons="o762.png" />
+		<offer name="Razorcreep" type="mount" mountid="86" description="Buying this mount will help our server survive!" price="780" icons="o763.png" />
+		<offer name="Slagsnare" type="mount" mountid="84" description="Buying this mount will help our server survive!" price="780" icons="o761.png" />
+		<offer name="Batcat" type="mount" mountid="77" description="Buying this mount will help our server survive!" price="870" icons="o728.png" />
+		<offer name="Flitterkatzen" type="mount" mountid="75" description="Buying this mount will help our server survive!" price="870" icons="o726.png" />
+		<offer name="Venompaw" type="mount" mountid="76" description="Buying this mount will help our server survive!" price="870" icons="o727.png" />
+		<offer name="Cinderhoof" type="mount" mountid="90" description="Buying this mount will help our server survive!" price="870" icons="o851.png" />
+		<offer name="Frostflare" type="mount" mountid="89" description="Buying this mount will help our server survive!" price="870" icons="o850.png" />
+		<offer name="Nightdweller" type="mount" mountid="88" description="Buying this mount will help our server survive!" price="870" icons="o849.png" />
+		<offer name="Jackalope" type="mount" mountid="103" description="Buying this mount will help our server survive!" price="870" icons="o905.png" />
+		<offer name="Dreadhare" type="mount" mountid="104" description="Buying this mount will help our server survive!" price="870" icons="o907.png" />
+		<offer name="Wolpertinger" type="mount" mountid="105" description="Buying this mount will help our server survive!" price="870" icons="o906.png" />
+		<offer name="Flamesteed" type="mount" mountid="47" description="Buying this mount will help our server survive!" price="900" icons="o626.png" />
+		<offer name="Nethersteed" type="mount" mountid="50" description="Buying this mount will help our server survive!" price="900" icons="o629.png" />
+		<offer name="Tempest" type="mount" mountid="51" description="Buying this mount will help our server survive!" price="900" icons="o630.png" />
+		<offer name="Floating Kashmir" type="mount" mountid="67" description="Buying this mount will help our server survive!" price="900" icons="o686.png" />
+		<offer name="Flying Divan" type="mount" mountid="65" description="Buying this mount will help our server survive!" price="900" icons="o682.png" />
+		<offer name="Magic Carpet" type="mount" mountid="66" description="Buying this mount will help our server survive!" price="900" icons="o685.png" />
+	</category>
+	<category name="Potions & Kegs" description="Buy potions and kegs" state="new" icons="Category_Potions.png">
+		<offer name="Health Potion" description="" price="4" type="stackableitem" productid="7618" count="125" icons="7618.png" />
+		<offer name="Health Potion" description="" price="10" type="stackableitem" productid="7618" count="300" icons="7618.png" />
+		<offer name="Strong Health Potion" description="" price="7" type="stackableitem" productid="7588" count="100" icons="7588.png" />
+		<offer name="Strong Health Potion" description="" price="18" type="stackableitem" productid="7588" count="250" icons="7588.png" />
+		<offer name="Great Health Potion" description="" price="13" type="stackableitem" productid="7591" count="100" icons="7591.png" />
+		<offer name="Great Health Potion" description="" price="34" type="stackableitem" productid="7591" count="250" icons="7591.png" />
+		<offer name="Ultimate Health Potion" description="" price="22" type="stackableitem" productid="8473" count="100" icons="8473.png" />
+		<offer name="Ultimate Health Potion" description="" price="55" type="stackableitem" productid="8473" count="250" icons="8473.png" />
+		<offer name="Supreme Health Potion" description="" price="36" type="stackableitem" productid="26031" count="100" icons="26031.png" />
+		<offer name="Supreme Health Potion" description="" price="90" type="stackableitem" productid="26031" count="250" icons="26031.png" />
+		<offer name="Mana Potion" description="" price="4" type="stackableitem" productid="7620" count="125" icons="7620.png" />
+		<offer name="Mana Potion" description="" price="10" type="stackableitem" productid="7620" count="300" icons="7620.png" />
+		<offer name="Strong Mana Potion" description="" price="6" type="stackableitem" productid="7589" count="100" icons="7589.png" />
+		<offer name="Strong Mana Potion" description="" price="14" type="stackableitem" productid="7589" count="250" icons="7589.png" />
+		<offer name="Great Mana Potion" description="" price="9" type="stackableitem" productid="7590" count="100" icons="7590.png" />
+		<offer name="Great Mana Potion" description="" price="21" type="stackableitem" productid="7590" count="250" icons="7590.png" />
+		<offer name="Ultimate Mana Potion" description="" price="25" type="stackableitem" productid="26029" count="100" icons="26029.png" />
+		<offer name="Ultimate Mana Potion" description="" price="63" type="stackableitem" productid="26029" count="250" icons="26029.png" />
+		<offer name="Great Spirit Potion" description="" price="13" type="stackableitem" productid="8472" count="100" icons="8472.png" />
+		<offer name="Great Spirit Potion" description="" price="34" type="stackableitem" productid="8472" count="250" icons="8472.png" />
+		<offer name="Ultimate Spirit Potion" description="" price="25" type="stackableitem" productid="26030" count="100" icons="26030.png" />
+		<offer name="Ultimate Spirit Potion" description="" price="63" type="stackableitem" productid="26030" count="250" icons="26030.png" />
+	</category>
+	<category name="Runes" description="Buy Runes" state="new" icons="Category_Runes.png">
+		<offer name="Animate Dead Rune" description="" price="75" type="stackableitem" productid="2316" count="250" icons="2316.png" />
+		<offer name="Avalanche Rune" description="" price="9" type="stackableitem" productid="2274" count="250" icons="2274.png" />
+		<offer name="Chameleon Rune" description="" price="42" type="stackableitem" productid="2291" count="250" icons="2291.png" />
+		<offer name="Convince Creature Rune" description="" price="16" type="stackableitem" productid="2290" count="250" icons="2290.png" />
+		<offer name="Cure Poison Rune" description="" price="13" type="stackableitem" productid="2266" count="250" icons="2266.png" />
+		<offer name="Disintegrate Rune" description="" price="5" type="stackableitem" productid="2310" count="250" icons="2310.png" />
+		<offer name="Energy Bomb Rune" description="" price="32" type="stackableitem" productid="2262" count="250" icons="2262.png" />
+		<offer name="Energy Field Rune" description="" price="8" type="stackableitem" productid="2277" count="250" icons="2277.png" />
+		<offer name="Energy Wall Rune" description="" price="17" type="stackableitem" productid="2279" count="250" icons="2279.png" />
+		<offer name="Explosion Rune" description="" price="6" type="stackableitem" productid="2313" count="250" icons="2313.png" />
+		<offer name="Fireball Rune" description="" price="6" type="stackableitem" productid="2302" count="250" icons="2302.png" />
+		<offer name="Fire Bomb Rune" description="" price="23" type="stackableitem" productid="2305" count="250" icons="2305.png" />
+		<offer name="Fire Field Rune" description="" price="6" type="stackableitem" productid="2301" count="250" icons="2301.png" />
+		<offer name="Fire Wall Rune" description="" price="12" type="stackableitem" productid="2303" count="250" icons="2303.png" />
+		<offer name="Great Fireball Rune" description="" price="9" type="stackableitem" productid="2304" count="250" icons="2304.png" />
+		<offer name="Icicle Rune" description="" price="6" type="stackableitem" productid="2271" count="250" icons="2271.png" />
+		<offer name="Intense Healing Rune" description="" price="19" type="stackableitem" productid="2265" count="250" icons="2265.png" />
+		<offer name="Magic Wall Rune" description="" price="23" type="stackableitem" productid="2293" count="250" icons="2293.png" />
+		<offer name="Paralyse Rune" description="" price="140" type="stackableitem" productid="2278" count="250" icons="2278.png" />
+		<offer name="Poison Bomb Rune" description="" price="17" type="stackableitem" productid="2286" count="250" icons="2286.png" />
+		<offer name="Poison Wall Rune" description="" price="10" type="stackableitem" productid="2289" count="250" icons="2289.png" />
+		<offer name="Soulfire Rune" description="" price="9" type="stackableitem" productid="2308" count="250" icons="2308.png" />
+		<offer name="Stone Shower Rune" description="" price="7" type="stackableitem" productid="2288" count="250" icons="2288.png" />
+		<offer name="Sudden Death Rune" description="" price="22" type="stackableitem" productid="2268" count="250" icons="2268.png" />
+		<offer name="Thunderstorm Rune" description="" price="7" type="stackableitem" productid="2315" count="250" icons="2315.png" />
+		<offer name="Ultimate Healing Rune" description="" price="35" type="stackableitem" productid="2273" count="250" icons="2273.png" />
+		<offer name="Wild Growth Rune" description="" price="32" type="stackableitem" productid="2269" count="250" icons="2269.png" />
+	</category>
+	<category name="Blessings" description="" state="new" icons="Category_Blessings.png">
+		<offer name="Twist of Fate" type="bless" blessnumber="1" price="30" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Spiritual Shielding" type="bless" blessnumber="5" price="30" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Embrace of Tibia" type="bless" blessnumber="6" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="Heart of the Mountain" type="bless" blessnumber="7" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="Blood of the Mountain" type="bless" blessnumber="8" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Fire of the Suns" type="bless" blessnumber="4" price="15" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Spark of the Phoenix" type="bless" blessnumber="3" price="20" icons="Product_Blessing_Shielding.png" />
+		<offer name="The Wisdom of Solitude" type="bless" blessnumber="2" price="15" icons="Product_Blessing_Shielding.png" />
+	</category>
+	<category name="Useful Things" description="" state="new" icons="Category_usefulthings.png">
+		<offer name="Gold Pounch" description="" price="900" type="item" productid="26377" count="1" icons="26377.png" />
+		<offer name="Gold Converter" description="" price="5" type="item" productid="26378" count="1" icons="26378.png" />
+		<offer name="Teleport home" description="Go back to your home temple in an instant." price="20" state="new" type="teleport" icons="Product_Transportation_TempleTeleport.png" />
+	</category>
+	<category name="Outfits" description="Look cooler!" state="new" icons="Category_Outfits.png">
+		<offer name="Full Trophy Hunter Outfits" description="" type="outfit" addon="3" malelooktype="957" femalelooktype="958" price="870" icons="f884.png" />
+		<offer name="Trophy Hunter Outfits" description="" type="outfit" addon="0" malelooktype="957" femalelooktype="958" price="690" icons="f884.png" />
+		<offer name="Trophy Hunter Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="957" femalelooktype="958" price="120" icons="f884.png" />
+		<offer name="Trophy Hunter Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="957" femalelooktype="958" price="120" icons="f884.png" />
+		<offer name="Retro Citizen" description="" type="outfit" addon="3" malelooktype="974" femalelooktype="975" price="870" icons="f750.png" />
+		<offer name="Retro Hunter" description="" type="outfit" addon="3" malelooktype="972" femalelooktype="973" price="870" icons="f750.png" />
+		<offer name="Retro Knight" description="" type="outfit" addon="3" malelooktype="970" femalelooktype="971" price="870" icons="f750.png" />
+		<offer name="Retro Wizard" description="" type="outfit" addon="3" malelooktype="968" femalelooktype="969" price="870" icons="f750.png" />
+		<offer name="Retro Noblewoman" description="" type="outfit" addon="3" malelooktype="966" femalelooktype="967" price="870" icons="f750.png" />
+		<offer name="Retro Summoner" description="" type="outfit" addon="3" malelooktype="964" femalelooktype="965" price="870" icons="f750.png" />
+		<offer name="Retro Warrior" description="" type="outfit" addon="3" malelooktype="962" femalelooktype="963" price="870" icons="f750.png" />
+		<offer name="Full Pharaoh OutFits" description="" type="outfit" addon="3" malelooktype="955" femalelooktype="956" price="750" icons="f955.png" />
+		<offer name="Pharaoh Outfits" description="" type="outfit" addon="0" malelooktype="955" femalelooktype="956" price="570" icons="f955.png" />
+		<offer name="Pharaoh Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="955" femalelooktype="956" price="120" icons="f955.png" />
+		<offer name="Pharaoh Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="955" femalelooktype="956" price="120" icons="f955.png" />
+		<offer name="Full Grove Keeper OutFits" description="" type="outfit" addon="3" malelooktype="908" femalelooktype="909" price="870" icons="f908.png" />
+		<offer name="Grove Keeper Outfits" description="" type="outfit" addon="0" malelooktype="908" femalelooktype="909" price="690" icons="f908.png" />
+		<offer name="Grove Keeper Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="908" femalelooktype="909" price="120" icons="f908.png" />
+		<offer name="Grove Keeper Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="908" femalelooktype="909" price="120" icons="f908.png" />
+		<offer name="Full Champion Outfits" description="" type="outfit" addon="3" malelooktype="633" femalelooktype="632" price="570" icons="f633.png" />
+		<offer name="Champion Outfits" description="" type="outfit" addon="0" malelooktype="633" femalelooktype="632" price="390" icons="f633.png" />
+		<offer name="Champion Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="633" femalelooktype="632" price="120" icons="f633.png" />
+		<offer name="Champion Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="633" femalelooktype="632" price="120" icons="f633.png" />
+		<offer name="Full Conjurer Outfits" description="" type="outfit" addon="3" malelooktype="634" femalelooktype="635" price="720" icons="f634.png" />
+		<offer name="Conjurer Outfits" description="" type="outfit" addon="0" malelooktype="634" femalelooktype="635" price="540" icons="f634.png" />
+		<offer name="Conjurer Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="634" femalelooktype="635" price="120" icons="f634.png" />
+		<offer name="Conjurer Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="634" femalelooktype="635" price="120" icons="f634.png" />
+		<offer name="Full Lupine Warden Outfits" description="" type="outfit" addon="3" malelooktype="899" femalelooktype="900" price="840" icons="f899.png" />
+		<offer name="Lupine Warden Outfits" description="" type="outfit" addon="0" malelooktype="899" femalelooktype="900" price="660" icons="f899.png" />
+		<offer name="Lupine Warden Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="899" femalelooktype="900" price="120" icons="f899.png" />
+		<offer name="Lupine Warden Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="899" femalelooktype="900" price="120" icons="f899.png" />
+		<offer name="Full Arena Champion Outfits" description="" type="outfit" addon="3" malelooktype="884" femalelooktype="885" price="870" icons="f884.png" />
+		<offer name="Arena Champion Outfits" description="" type="outfit" addon="0" malelooktype="884" femalelooktype="885" price="690" icons="f884.png" />
+		<offer name="Arena Champion Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="884" femalelooktype="885" price="120" icons="f884.png" />
+		<offer name="Arena Champion Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="884" femalelooktype="885" price="120" icons="f884.png" />
+		<offer name="Full Beastmaster Outfits" description="" type="outfit" addon="3" malelooktype="637" femalelooktype="636" price="870" icons="f637.png" />
+		<offer name="Beastmaster Outfits" description="" type="outfit" addon="0" malelooktype="637" femalelooktype="636" price="690" icons="f637.png" />
+		<offer name="Beastmaster Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="637" femalelooktype="636" price="120" icons="f637.png" />
+		<offer name="Beastmaster Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="637" femalelooktype="636" price="120" icons="f637.png" />
+		<offer name="Full Winter Warden Outfits" description="" type="outfit" addon="3" malelooktype="853" femalelooktype="852" price="870" icons="f853.png" />
+		<offer name="Winter Warden Outfits" description="" type="outfit" addon="0" malelooktype="853" femalelooktype="852" price="690" icons="f853.png" />
+		<offer name="Winter Warden Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="853" femalelooktype="852" price="120" icons="f853.png" />
+		<offer name="Winter Warden Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="853" femalelooktype="852" price="120" icons="f853.png" />
+		<offer name="Full Chaos Acolyte Outfits" description="" type="outfit" addon="3" malelooktype="665" femalelooktype="664" price="900" icons="f665.png" />
+		<offer name="Chaos Acolyte Outfits" description="" type="outfit" addon="0" malelooktype="665" femalelooktype="664" price="720" icons="f665.png" />
+		<offer name="Chaos Acolyte Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="665" femalelooktype="664" price="120" icons="f665.png" />
+		<offer name="Chaos Acolyte Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="665" femalelooktype="664" price="120" icons="f665.png" />
+		<offer name="Full Death Herald Outfits" description="" type="outfit" addon="3" malelooktype="667" femalelooktype="666" price="600" icons="f667.png" />
+		<offer name="Death Herald Outfits" description="" type="outfit" addon="0" malelooktype="667" femalelooktype="666" price="420" icons="f667.png" />
+		<offer name="Death Herald Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="667" femalelooktype="666" price="120" icons="f667.png" />
+		<offer name="Death Herald Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="667" femalelooktype="666" price="120" icons="f667.png" />
+		<offer name="Full Philosopher Outfits" description="" type="outfit" addon="3" malelooktype="873" femalelooktype="874" price="750" icons="f873.png" />
+		<offer name="Philosopher Outfits" description="" type="outfit" addon="0" malelooktype="873" femalelooktype="874" price="570" icons="f873.png" />
+		<offer name="Philosopher Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="873" femalelooktype="874" price="120" icons="f873.png" />
+		<offer name="Philosopher Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="873" femalelooktype="874" price="120" icons="f873.png" />
+		<offer name="Full Ranger Outfits" description="" type="outfit" addon="3" malelooktype="684" femalelooktype="683" price="750" icons="f684.png" />
+		<offer name="Ranger Outfits" description="" type="outfit" addon="0" malelooktype="684" femalelooktype="683" price="570" icons="f684.png" />
+		<offer name="Ranger Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="684" femalelooktype="683" price="120" icons="f684.png" />
+		<offer name="Ranger Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="684" femalelooktype="683" price="120" icons="f684.png" />
+		<offer name="Full Ceremonial Garb Outfits" description="" type="outfit" addon="3" malelooktype="695" femalelooktype="30" price="750" icons="f695.png" />
+		<offer name="Ceremonial Garb Outfits" description="" type="outfit" addon="0" malelooktype="695" femalelooktype="30" price="570" icons="f695.png" />
+		<offer name="Ceremonial Garb Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="695" femalelooktype="30" price="120" icons="f695.png" />
+		<offer name="Ceremonial Garb Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="695" femalelooktype="30" price="120" icons="f695.png" />
+		<offer name="Full Royal Pumpkin Outfits" description="" type="outfit" addon="3" malelooktype="760" femalelooktype="759" price="840" icons="f760.png" />
+		<offer name="Royal Pumpkin Outfits" description="" type="outfit" addon="0" malelooktype="760" femalelooktype="759" price="660" icons="f760.png" />
+		<offer name="Royal Pumpkin Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="760" femalelooktype="759" price="120" icons="f760.png" />
+		<offer name="Royal Pumpkin Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="760" femalelooktype="759" price="120" icons="f760.png" />
+		<offer name="Full Puppeteer Outfits" description="" type="outfit" addon="3" malelooktype="697" femalelooktype="696" price="870" icons="f697.png" />
+		<offer name="Puppeteer Outfits" description="" type="outfit" addon="0" malelooktype="697" femalelooktype="696" price="690" icons="f697.png" />
+		<offer name="Puppeteer Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="697" femalelooktype="696" price="120" icons="f697.png" />
+		<offer name="Puppeteer Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="697" femalelooktype="696" price="120" icons="f697.png" />
+		<offer name="Full Spirit Caller Outfits" description="" type="outfit" addon="3" malelooktype="699" femalelooktype="698" price="600" icons="f699.png" />
+		<offer name="Spirit Caller Outfits" description="" type="outfit" addon="0" malelooktype="699" femalelooktype="698" price="420" icons="f699.png" />
+		<offer name="Spirit Caller Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="699" femalelooktype="698" price="120" icons="f699.png" />
+		<offer name="Spirit Caller Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="699" femalelooktype="698" price="120" icons="f699.png" />
+		<offer name="Full Evoker Outfits" description="" type="outfit" addon="3" malelooktype="725" femalelooktype="724" price="840" icons="f725.png" />
+		<offer name="Evoker Outfits" description="" type="outfit" addon="0" malelooktype="725" femalelooktype="724" price="660" icons="f725.png" />
+		<offer name="Evoker Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="725" femalelooktype="724" price="120" icons="f725.png" />
+		<offer name="Evoker Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="725" femalelooktype="724" price="120" icons="f725.png" />
+		<offer name="Full Seaweaver Outfits" description="" type="outfit" addon="3" malelooktype="733" femalelooktype="732" price="570" icons="f733.png" />
+		<offer name="Seaweaver Outfits" description="" type="outfit" addon="0" malelooktype="733" femalelooktype="732" price="390" icons="f733.png" />
+		<offer name="Seaweaver Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="733" femalelooktype="732" price="120" icons="f733.png" />
+		<offer name="Seaweaver Outfits Addon 2" description="" type="outfit" addon="2" malelooktype="733" femalelooktype="732" price="120" icons="f733.png" />
+		<offer name="Full Sea Dog Outfits" description="" type="outfit" addon="3" malelooktype="750" femalelooktype="749" price="600" icons="f750.png" />
+		<offer name="Sea Dog Outfits" description="" type="outfit" addon="0" malelooktype="750" femalelooktype="749" price="420" icons="f750.png" />
+		<offer name="Sea Dog Outfits Addon 1" description="" type="outfit" addon="1" malelooktype="750" femalelooktype="749" price="120" icons="f750.png" />
+		<offer name="Sea Dog Outfits Addon 1" description="" type="outfit" addon="2" malelooktype="750" femalelooktype="749" price="120" icons="f750.png" />
+	</category>
+	<category name="House Equipaments" description="make your house look fabulous" icons="Category_HouseEquipment.png">
+		<offer name="Gilded Imbuing Shrine" description="Buy an incredible Gilded Imbuing Shrine to decorate your home." type="wrapitem" productid="27838" count="1" price="200" icons="o27838.png" />
+		<offer name="Imbuing Shrine" description="Buy an incredible Imbuing Shrine to decorate your home." type="wrapitem" productid="27830" count="1" price="150" icons="o27930.png" />
+		<offer name="Magnificent Cabinet" description="Buy an incredible Magnificent Cabinet to decorate your home." type="wrapitem" productid="26075" count="1" price="100" icons="o26075.png" />
+		<offer name="Magnificent chair" description="Buy an incredible Magnificent chair to decorate your home." type="wrapitem" productid="26059" count="1" price="60" icons="o26059.png" />
+		<offer name="Magnificent Trunk" description="Buy an incredible Magnificent Trunk to decorate your home." type="wrapitem" productid="26083" count="1" price="70" icons="o26083.png" />
+		<offer name="Magnificent Table" description="Buy an incredible Magnificent Table to decorate your home." type="wrapitem" productid="26073" count="1" price="60" icons="o26073.png" />
+		<offer name="Ferocious Cabinet" description="Buy an incredible Ferocious Cabinet to decorate your home." type="wrapitem" productid="26077" count="1" price="110" icons="o26077.png" />
+		<offer name="Ferocious Chair" description="Buy an incredible Ferocious Chair to decorate your home." type="wrapitem" productid="26063" count="1" price="50" icons="o26063.png" />
+		<offer name="Ferocious Trunk" description="Buy an incredible Ferocious Trunk to decorate your home." type="wrapitem" productid="26079" count="1" price="80" icons="o26079.png" />
+		<offer name="Ferocious Table" description="Buy an incredible Ferocious Table to decorate your home." type="wrapitem" productid="26067" count="1" price="50" icons="o26067.png" />
+		<offer name="Rustic Cabinet" description="Buy an incredible Rustic Cabinet to decorate your home." type="wrapitem" productid="26356" count="1" price="100" icons="o26356.png" />
+		<offer name="Rustic Chair" description="Buy an incredible Rustic Chair to decorate your home." type="wrapitem" productid="26349" count="1" price="50" icons="o26349.png" />
+		<offer name="Rustic Trunk" description="Buy an incredible Rustic Trunk to decorate your home." type="wrapitem" productid="26358" count="1" price="80" icons="o26358.png" />
+		<offer name="Rustic Table" description="Buy an incredible Rustic Table to decorate your home." type="wrapitem" productid="26354" count="1" price="50" icons="o26354.png" />
+		<offer name="vengothic cabinet" description="Buy an incredible Vengothic Cabinet to decorate your home." type="wrapitem" productid="27901" count="1" price="100" icons="o27901.png" />
+		<offer name="Vengothic Chair" description="Buy an incredible Vengothic Chair to decorate your home." type="wrapitem" productid="27895" count="1" price="50" icons="o27895.png" />
+		<offer name="Vengothic Chest" description="Buy an incredible Vengothic Chest to decorate your home." type="wrapitem" productid="27903" count="1" price="80" icons="o27903.png" />
+		<offer name="Vengothic Table" description="Buy an incredible Vengothic Table to decorate your home." type="wrapitem" productid="27899" count="1" price="50" icons="o27899.png" />
+		<offer name="Bitter-Smack Leaf" description="Buy an incredible Bitter-Smack Leaf to decorate your home." type="wrapitem" productid="27891" count="1" price="50" icons="o27891.png" />
+		<offer name="Blooming Cactus" description="Buy an incredible Blooming Cactus to decorate your home." type="wrapitem" productid="27890" count="1" price="50" icons="o27890.png" />
+		<offer name="Pink Roses" description="Buy an incredible Pink Roses to decorate your home." type="wrapitem" productid="27892" count="1" price="50" icons="o27892.png" />
+		<offer name="Red Roses" description="Buy an incredible Red Roses to decorate your home." type="wrapitem" productid="27893" count="1" price="50" icons="o27893.png" />
+		<offer name="Yellow Roses" description="Buy an incredible Yellow Roses to decorate your home." type="wrapitem" productid="27894" count="1" price="50" icons="o27894.png" />
+		<offer name="Yalaharian Carpet" description="Buy an incredible Yalaharian Carpet to decorate your home." type="wrapitem" productid="26087" count="1" price="35" icons="o26087.png" />
+		<offer name="5x Yalaharian Carpet" description="Buy an incredible Yalaharian Carpet to decorate your home." type="wrapitem" productid="26087" count="5" price="175" icons="o26087.png" />
+		<offer name="White Fur Carpet" description="Buy an incredible White Fur Carpet to decorate your home." type="wrapitem" productid="26088" count="1" price="30" icons="o26088.png" />
+		<offer name="5x White Fur Carpet" description="Buy an incredible White Fur Carpet to decorate your home." type="wrapitem" productid="26088" count="5" price="150" icons="o26088.png" />
+		<offer name="Bamboo Mat" description="Buy an incredible Bamboo Mat to decorate your home." type="wrapitem" productid="26089" count="1" price="25" icons="o26089.png" />
+		<offer name="5x Bamboo Mat" description="Buy an incredible Bamboo Mat to decorate your home." type="wrapitem" productid="26089" count="5" price="125" icons="o26089.png" />
+		<offer name="Crimson Carpet" description="Buy an incredible Crimson Carpet to decorate your home." type="wrapitem" productid="26363" count="1" price="35" icons="o26363.png" />
+		<offer name="5x Crimson Carpet" description="Buy an incredible Crimson Carpet to decorate your home." type="wrapitem" productid="26363" count="5" price="175" icons="o26363.png" />
+		<offer name="Azure Carpet" description="Buy an incredible Azure Carpet to decorate your home." type="wrapitem" productid="26366" count="1" price="35" icons="o26366.png" />
+		<offer name="5x Azure Carpet" description="Buy an incredible Azure Carpet to decorate your home." type="wrapitem" productid="26366" count="5" price="175" icons="o26366.png" />
+		<offer name="Emerald Carpet" description="Buy an incredible Emerald Carpet to decorate your home." type="wrapitem" productid="26367" count="1" price="30" icons="o26367.png" />
+		<offer name="5x Emerald Carpet" description="Buy an incredible Emerald Carpet to decorate your home." type="wrapitem" productid="26367" count="5" price="175" icons="o26367.png" />
+		<offer name="Light Parquet" description="Buy an incredible Light Parquet to decorate your home." type="wrapitem" productid="26368" count="1" price="30" icons="o26368.png" />
+		<offer name="5x Light Parquet" description="Buy an incredible Light Parquet to decorate your home." type="wrapitem" productid="26368" count="5" price="150" icons="o26368.png" />
+		<offer name="Dark Parquet" description="Buy an incredible Dark Parquet to decorate your home." type="wrapitem" productid="26369" count="1" price="30" icons="o26369.png" />
+		<offer name="5x Dark Parquet" description="Buy an incredible Dark Parquet to decorate your home." type="wrapitem" productid="26369" count="5" price="150" icons="o26369.png" />
+		<offer name="Flowery Carpet" description="Buy an incredible Flowery Carpet to decorate your home." type="wrapitem" productid="27072" count="1" price="35" icons="o27072.png" />
+		<offer name="5x Flowery Carpet" description="Buy an incredible Flowery Carpet to decorate your home." type="wrapitem" productid="27072" count="5" price="175" icons="o27072.png" />
+		<offer name="Colourful Carpet" description="Buy an incredible Colourful Carpet to decorate your home." type="wrapitem" productid="27081" count="1" price="35" icons="o27081.png" />
+		<offer name="5x Colourful Carpet" description="Buy an incredible 5x Colourful Carpet to decorate your home." type="wrapitem" productid="27081" count="5" price="175" icons="o27081.png" />
+		<offer name="Striped Carpet" description="Buy an incredible Striped Carpet to decorate your home." type="wrapitem" productid="27074" count="1" price="35" icons="o27074.png" />
+		<offer name="5x Striped Carpet" description="Buy an incredible Striped Carpet Carpet to decorate your home." type="wrapitem" productid="27074" count="5" price="175" icons="o27074.png" />
+		<offer name="Patterned Carpet" description="Buy an incredible Patterned Carpet to decorate your home." type="wrapitem" productid="27077" count="1" price="30" icons="o27077.png" />
+		<offer name="5x Patterned Carpet" description="Buy an incredible Patterned Carpet Carpet to decorate your home." type="wrapitem" productid="27077" count="5" price="150" icons="o27077.png" />
+		<offer name="Marble Floor" description="Buy an incredible Marble Floor to decorate your home." type="wrapitem" productid="26370" count="1" price="30" icons="o26370.png" />
+		<offer name="5x Marble Floor" description="Buy an incredible Marble Floor to decorate your home." type="wrapitem" productid="26370" count="5" price="150" icons="o26370.png" />
+		<offer name="Fish Tank" description="Buy an incredible Fish Tank to decorate your home." type="wrapitem" productid="26347" count="1" price="180" icons="o26347.png" />
+		<offer name="Dog House" description="Buy an incredible Dog House to decorate your home." type="wrapitem" productid="26353" count="1" price="150" icons="o26353.png" />
+		<offer name="Baby Dragon" description="Buy an incredible Baby Dragon to decorate your home." type="wrapitem" productid="26098" count="1" price="250" icons="o26098.png" />
+		<offer name="Cat in a Basket" description="Buy an incredible Cat in a Basket to decorate your home." type="wrapitem" productid="26107" count="1" price="150" icons="o26107.png" />
+		<offer name="Hamster in a Wheel" description="Buy an incredible Hamster in a Wheel to decorate your home." type="wrapitem" productid="26100" count="1" price="180" icons="o26100.png" />
+		<offer name="Parrot" description="Buy an incredible Parrot to decorate your home." type="wrapitem" productid="27088" count="1" price="180" icons="o27088.png" />
+		<offer name="Chamaleon" description="Buy an incredible Chamaleon to decorate your home." type="wrapitem" productid="27887" count="1" price="250" icons="o27887.png" />
+		<offer name="Protectress Lamp" description="Buy an incredible Protectress Lamp to decorate your home." type="wrapitem" productid="26094" count="1" price="90" icons="o26084.png" />
+		<offer name="Predator Lamp" description="Buy an incredible Predator Lamp to decorate your home." type="wrapitem" productid="26090" count="1" price="60" icons="o26090.png" />
+		<offer name="Skull Lamp" description="Buy an incredible Skull Lamp to decorate your home." type="wrapitem" productid="27090" count="1" price="90" icons="o27090.png" />
+		<offer name="Vengothic Lamp" description="Buy an incredible Vengothic Lamp to decorate your home." type="wrapitem" productid="27884" count="1" price="180" icons="o27884.png" />
+		<offer name="Ornate Mailbox" description="Buy an incredible Ornate Mailbox to decorate your home." type="wrapitem" productid="26057" count="1" price="200" icons="o26057.png" />
+		<offer name="Royal Mailbox" description="Buy an incredible Royal Mailbox to decorate your home." type="wrapitem" productid="26055" count="1" price="150" icons="o26055.png" />
+		<offer name="Lordly Tapestry" description="Buy an incredible Lordly Tapestry to decorate your home." type="wrapitem" productid="26104" count="1" price="50" icons="o26104.png" />
+		<offer name="5x Lordly Tapestry" description="Buy an incredible Lordly Tapestry to decorate your home." type="wrapitem" productid="26104" count="5" price="250" icons="o26104.png" />
+		<offer name="Menacing Tapestry" description="Buy an incredible Menacing Tapestry to decorate your home." type="wrapitem" productid="26105" count="1" price="70" icons="o26105.png" />
+		<offer name="5x Menacing Tapestry" description="Buy an incredible Menacing Tapestry to decorate your home." type="wrapitem" productid="26105" count="5" price="350" icons="o26105.png" />
+		<offer name="All-Seeing Tapestry" description="Buy an incredible All-Seeing Tapestry to decorate your home." type="wrapitem" productid="26106" count="1" price="60" icons="o26106.png" />
+		<offer name="5x All-Seeing Tapestry" description="Buy an incredible All-Seeing Tapestry to decorate your home." type="wrapitem" productid="26106" count="5" price="300" icons="o26106.png" />
+		<offer name="Golden Dragon Tapestry" description="Buy an incredible Golden Dragon Tapestry to decorate your home." type="wrapitem" productid="26379" count="1" price="70" icons="o26379.png" />
+		<offer name="5x Golden Dragon Tapestry" description="Buy an incredible Golden Dragon Tapestry to decorate your home." type="wrapitem" productid="26379" count="5" price="350" icons="o26379.png" />
+		<offer name="Sword Tapestry" description="Buy an incredible Sword Tapestry to decorate your home." type="wrapitem" productid="26380" count="1" price="60" icons="o26380.png" />
+		<offer name="5x Sword Tapestry" description="Buy an incredible Sword Tapestry to decorate your home." type="wrapitem" productid="26380" count="5" price="300" icons="o26380.png" />
+		<offer name="Brocade Tapestry" description="Buy an incredible Brocade Tapestry to decorate your home." type="wrapitem" productid="26381" count="1" price="50" icons="o26381.png" />
+		<offer name="5x Brocade Tapestry" description="Buy an incredible Brocade Tapestry to decorate your home." type="wrapitem" productid="26381" count="5" price="250" icons="o26381.png" />
+	</category>
+	<category name="Premium Time" description="Buy Premium Time today and get new spells, and access to premium areas!" icons="Category_PremiumTime.png">
+		<offer name="30 days of Premium Time" description="get a month (30 days) of premium time." price="250" type="premiumtime" days="30" icons="Product_PremiumTime30.png" />
+		<offer name="90 days of Premium Time" description="90 days of premium time." price="750" state="sale" type="premiumtime" days="90" icons="Product_PremiumTime90.png" />
+		<offer name="180 days of Premium Time" description="180 days of premium time." price="1500" state="sale" type="premiumtime" days="180" icons="Product_PremiumTime180.png" />
+		<offer name="360 days of Premium Time" description="360 days of premium time." price="3000" state="sale" type="premiumtime" days="360" icons="Product_PremiumTime360.png" />
+	</category>
+</gamestore>
