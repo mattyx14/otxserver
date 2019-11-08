@@ -4,6 +4,7 @@
 	<look type="155" head="77" body="0" legs="76" feet="132" addons="3" corpse="20438" />
 	<targetchange interval="60000" chance="0" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -32,12 +33,15 @@
 		<summon name="Pirate Cutthroat" interval="2000" chance="50" />
 	</summons>
 	<loot>
-		<item name="small diamond" chance="100000" />
-		<item name="gold coin" countmax="40" chance="100000" />
-		<item name="skull of Ratha" countmax="1" chance="100000" />
-		<item name="double axe" chance="1500" />
-		<item name="plate armor" chance="4000" />
-		<item name="knight armor" chance="1200" />
+		<item name="small diamond" chance="12500" />
+		<item name="meat" countmax="3" chance="18750" />
+		<item name="gold coin" countmax="60" chance="50000" />
+		<item name="gold coin" countmax="61" chance="50000" />
+		<item id="2229" countmax="2" chance="81250" /> <!-- skull -->
+		<item name="pirate backpack" chance="6250" />
+		<item name="plate armor" chance="56250" />
+		<item name="knight armor" chance="12500" />
+		<item name="very old piece of paper" chance="25000" />
 		<item id="6100" chance="100000" /><!-- lethal lissy's shirt -->
 	</loot>
 </monster>

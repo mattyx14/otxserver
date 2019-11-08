@@ -41,11 +41,14 @@
 		<immunity invisible="1" />
 		<immunity drown="1" />
 	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="BLUB BLUB" />
+		<voice sentence="SWASHHH" />
+	</voices>
 	<loot>
 		<item name="small sapphire" countmax="2" chance="4125" />
 		<item name="gold coin" countmax="90" chance="27000" />
 		<item name="gold coin" countmax="87" chance="27000" />
-		<item name="shiver arrow" countmax="2" chance="1000" />
 		<item name="iced soil" chance="9000" />
 		<item name="northwind rod" chance="750" />
 	</loot>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Fernfang" nameDescription="Fernfang" race="blood" experience="600" speed="240" manacost="0">
+<monster name="Fernfang" nameDescription="Fernfang" race="blood" experience="600" speed="240">
 	<health now="400" max="400" />
 	<look type="206" corpse="20566" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -48,10 +49,10 @@
 		<summon name="War Wolf" interval="1000" chance="13" />
 	</summons>
 	<voices interval="2000" chance="7">
-		<voice sentence="You desecrated this place!" />
+		<voice sentence="You desacrated this place!" />
 		<voice sentence="I will cleanse this isle!" />
 		<voice sentence="Grrrrrrr" />
-		<voice sentence="Yoooohhuuuu!" yell="1" />
+		<voice sentence="Yoooohuuuu!" yell="1" />
 	</voices>
 	<loot>
 		<item id="10563" chance="100000" />				<!-- book of prayers -->

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Doomhowl" nameDescription="Doomhowl" experience="3750" speed="320" race="blood" manacost="0">
+<monster name="Doomhowl" nameDescription="Doomhowl" experience="3750" speed="320" race="blood">
 	<health now="8500" max="8500" />
 	<look type="308" corpse="20607" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />

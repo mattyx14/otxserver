@@ -66,7 +66,7 @@
 		<voice sentence="Abrah Kadabrah!" />
 		<voice sentence="Nothing hidden in my wrappings." />
 		<voice sentence="It's not a trick, it's Rahemos." />
-		<voice sentence="Meet my friend from hell." />
+		<voice sentence="Meet my friend from hell!" />
 		<voice sentence="I will make you believe in magic." />
 	</voices>
 	<loot>
@@ -77,7 +77,6 @@
 		<item name="violet gem" chance="500" />
 		<item name="orb" chance="500" />
 		<item name="crystal wand" chance="500" />
-		<item name="necrotic rod" chance="500" />
 		<item name="ring of healing" chance="7000" />
 		<item name="ancient rune" chance="100000" />
 		<item name="twin axe" chance="200" />

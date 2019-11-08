@@ -1,24 +1,23 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_NONE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_BLOCKHIT)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_NONE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_BLOCKHIT)
 
-local area = createCombatArea(AREA_CROSS1X1)
-setCombatArea(combat, area)
+local area = createCombatArea(AREA_CIRCLE1X1)
+combat:setArea(area)
 
 local maxsummons = 4
 
-function onCastSpell(cid, var)
-doCreatureSay(cid, "Watch my maws!", TALKTYPE_ORANGE_1)
-	local summoncount = getCreatureSummons(cid)
+function onCastSpell(creature, var)
+creature:say("Watch my maws!", TALKTYPE_ORANGE_1)
+	local summoncount = creature:getSummons()
 	if #summoncount < 4 then
 		for i = 1, maxsummons - #summoncount do
-			local mid = doSummonCreature("Guzzlemaw", getCreaturePosition(cid))
-    			if mid == false then
-				return false
+			local mid = Game.createMonster("Guzzlemaw", creature:getPosition())
+    		if not mid then
+				return
 			end
-			doConvinceCreature(cid, mid)
-
+			mid:setMaster(creature)
 		end
 	end
-	return doCombat(cid, combat, var)
+	return combat:execute(creature, var)
 end

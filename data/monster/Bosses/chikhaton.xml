@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Chikhaton" nameDescription="Chikhaton" race="blood" experience="20000" speed="220" manacost="0">
+<monster name="Chikhaton" nameDescription="Chikhaton" race="blood" experience="20000" speed="220">
 	<health now="20000" max="20000" />
 	<look type="361" corpse="12273" />
 	<targetchange interval="5000" chance="30" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />

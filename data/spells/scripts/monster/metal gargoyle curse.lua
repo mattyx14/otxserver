@@ -1,6 +1,6 @@
 local combat = {}
 
-for i = 2, 2 do
+for i = 2.32, 2.32 do
 	combat[i] = Combat()
 	combat[i]:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 	combat[i]:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
@@ -10,7 +10,7 @@ for i = 2, 2 do
 
 	local damage = i
 	condition:addDamage(1, 4000, -damage)
-	for j = 1, 20 do
+	for j = 1, 23 do
 		damage = damage * 1.2
 		condition:addDamage(1, 4000, -damage)
 	end
@@ -19,5 +19,5 @@ for i = 2, 2 do
 end
 
 function onCastSpell(creature, var)
-	return combat[math.random(2, 2)]:execute(creature, var)
+	return combat[math.random(2.32, 2.32)]:execute(creature, var)
 end

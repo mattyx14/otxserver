@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Kraknaknork" nameDescription="Kraknaknork" race="blood" experience="300" speed="180" manacost="0">
+<monster name="Kraknaknork" nameDescription="Kraknaknork" race="blood" experience="300" speed="180">
 	<health now="80" max="80" />
 	<look type="6" corpse="5978" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />

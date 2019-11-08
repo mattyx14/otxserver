@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Versperoth" nameDescription="Versperoth" race="venom" experience="20000" speed="0" manacost="0">
+<monster name="Versperoth" nameDescription="Versperoth" race="venom" experience="20000" speed="0">
 	<health now="100000" max="100000" />
 	<look type="295" corpse="0" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -20,7 +21,7 @@
 		<flag canwalkonpoison="0" />
 	</flags>
 	<attacks>
-		<attack name="melee" interval="1200" skill="120" attack="100" />
+		<attack name="melee" interval="1200" skill="120" attack="115" />
 		<attack name="fire" interval="1000" chance="40" range="5" length="8" spread="3" min="-700" max="-1615">
 			<attribute key="areaEffect" value="firearea" />
 		</attack>
@@ -28,9 +29,6 @@
 			<attribute key="areaEffect" value="explosionarea" />
 		</attack>
 	</attacks>
-	<summons maxSummons="10">
-		<summon name="Minion of Versperoth" interval="20000" chance="100" />
-	</summons>
 	<defenses armor="55" defense="55" />
 	<elements>
 		<element firePercent="90" />

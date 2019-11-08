@@ -1,11 +1,16 @@
-function onCastSpell(cid, var)
-    local health, hp, cpos = math.random(7500, 9000), (getCreatureHealth(cid)/getCreatureMaxHealth(cid))*100, getCreaturePosition(cid)
-	
-    if isCreature(cid) == true and getCreatureName(cid) == "Omrafir" and (hp < 99.99) then
-	if getTileItemById(cpos,1487).uid ~= 0 or getTileItemById(cpos,1492).uid ~= 0 or getTileItemById(cpos,1500).uid ~= 0 then
-        doCreatureAddHealth(cid, health)
-    doSendMagicEffect(cpos, CONST_ME_MAGIC_BLUE)
-    doCreatureSay(cid, "Omrafir gains new strength from the fire", TALKTYPE_ORANGE_1)
+function onCastSpell(creature, var)
+local health, hp, cpos = math.random(7500, 9000), (creature:getHealth()/creature:getMaxHealth())*100, creature:getPosition()
+
+    if creature:getName() == "Omrafir" and (hp < 99.99) then
+		local t = Tile(cpos)
+		if t == nil then
+			return
+		end
+		if t:getItemById(1487) or t:getItemById(1492) or t:getItemById(1500) then
+			creature:addHealth(health)
+			cpos:sendMagicEffect(CONST_ME_MAGIC_BLUE)
+			creature:say("Omrafir gains new strength from the fire", TALKTYPE_ORANGE_1)
+		else
 		end
 	end
 end

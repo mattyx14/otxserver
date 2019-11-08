@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Fazzrah" nameDescription="Fazzrah" race="blood" experience="2600" speed="290" manacost="0">
+<monster name="Fazzrah" nameDescription="Fazzrah" race="blood" experience="2600" speed="290">
 	<health now="2955" max="2955" />
 	<look type="343" corpse="11284" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -36,9 +37,6 @@
 		<immunity earth="1" />
 		<immunity invisible="1" />
 	</immunities>
-	<voices interval="2000" chance="7">
-		<voice sentence="Zztand and fight!" />
-	</voices>
 	<loot>
 		<item id="2148" countmax="292" chance="100000" />	<!-- gold coin -->
 		<item id="5876" chance="100000" />					<!-- lizard leather -->

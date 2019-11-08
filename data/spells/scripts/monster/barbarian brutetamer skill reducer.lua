@@ -1,19 +1,20 @@
 local combat = {}
 
-for i = CONDITION_PARAM_SKILL_FIST, CONDITION_PARAM_SKILL_SHIELD do
-	for j = 1, 6 do
-		local index = ((i - 20) * 6) + j
-		combat[index] = Combat()
-		combat[index]:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SNOWBALL)
-		combat[index]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_POFF)
+for i = 90, 99 do
+	combat[i] = Combat()
+	combat[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_HITAREA)
+	combat[i]:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SNOWBALL)
 
-		local condition = Condition(CONDITION_ATTRIBUTES)
-		condition:setParameter(CONDITION_PARAM_TICKS, 5000)
-		condition:setParameter(i, -j)
-		combat[index]:addCondition(condition)
-	end
+	local condition = Condition(CONDITION_ATTRIBUTES)
+	condition:setParameter(CONDITION_PARAM_TICKS, 8000)
+	condition:setParameter(CONDITION_PARAM_SKILL_DISTANCEPERCENT, i)
+	condition:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, i)
+	condition:setParameter(CONDITION_PARAM_SKILL_MELEEPERCENT, i)
+	condition:setParameter(CONDITION_PARAM_SKILL_FISTPERCENT, i)
+
+	combat[i]:addCondition(condition)
 end
 
 function onCastSpell(creature, var)
-	return combat[math.random(#combat)]:execute(creature, var)
+	return combat[math.random(90, 99)]:execute(creature, var)
 end

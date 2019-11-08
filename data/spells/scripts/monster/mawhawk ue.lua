@@ -1,10 +1,10 @@
 local voc = {1, 2, 3, 4, 5, 6, 7, 8}
 
-local condition = createConditionObject(CONDITION_REGENERATION)
-setConditionParam(condition, CONDITION_PARAM_SUBID, 88888)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 10 * 60 * 1000)
-setConditionParam(condition, CONDITION_PARAM_HEALTHGAIN, 0.01)
-setConditionParam(condition, CONDITION_PARAM_HEALTHTICKS, 10 * 60 * 1000)
+local condition = Condition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
+condition:setParameter(CONDITION_PARAM_SUBID, 88888)
+condition:setParameter(CONDITION_PARAM_TICKS, 10 * 60 * 1000)
+condition:setParameter(CONDITION_PARAM_HEALTHGAIN, 0.01)
+condition:setParameter(CONDITION_PARAM_HEALTHTICKS, 10 * 60 * 1000)
 
 	arr = {
 	{0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
@@ -24,12 +24,12 @@ setConditionParam(condition, CONDITION_PARAM_HEALTHTICKS, 10 * 60 * 1000)
 
 local area = createCombatArea(arr)
 
-local combat = createCombatObject()
-setCombatArea(combat, area)
+local combat = Combat()
+combat:setArea(area)
 
-function onTargetTile(cid, pos)
+function onTargetTile(creature, pos)
     local creatureTable = {}
-    local n, i = getTileInfo({x=pos.x, y=pos.y, z=pos.z}).creatures, 1
+    local n, i = Tile({x=pos.x, y=pos.y, z=pos.z}).creatures, 1
     if n ~= 0 then
         local v = getThingfromPos({x=pos.x, y=pos.y, z=pos.z, stackpos=i}).uid
         while v ~= 0 do
@@ -45,40 +45,40 @@ function onTargetTile(cid, pos)
     end
     if #creatureTable ~= nil and #creatureTable > 0 then
         for r = 1, #creatureTable do
-            if creatureTable[r] ~= cid then
+            if creatureTable[r] ~= creature then
                 local min = 1500
                 local max = 1700
-                if isPlayer(creatureTable[r]) == true and table.contains(voc, getPlayerVocation(creatureTable[r])) == true then
-                    doTargetCombatHealth(cid, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)
+                local player = Player(creatureTable[r])
+
+                if isPlayer(creatureTable[r]) == true and isInArray(voc, player:getVocation():getId()) then
+                    doTargetCombatHealth(creature, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)
                 elseif isMonster(creatureTable[r]) == true then
-                    doTargetCombatHealth(cid, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)
+                    doTargetCombatHealth(creature, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)
                 end
             end
         end
     end
-    doSendMagicEffect(pos, CONST_ME_FIREAREA)
+    pos:sendMagicEffect(CONST_ME_FIREAREA)
     return true
 end
 
-setCombatCallback(combat, CALLBACK_PARAM_TARGETTILE, "onTargetTile")
+combat:setCallback(CALLBACK_PARAM_TARGETTILE, "onTargetTile")
 
 local function delayedCastSpell(cid, var)
-    if isCreature(cid) == true then
-        doCombat(cid, combat, positionToVariant(getCreaturePosition(cid)))
-    end
+	local creature = Creature(cid)
+	if not creature then
+		return
+	end
+	return combat:execute(creature, positionToVariant(creature:getPosition()))
 end
 
-function onCastSpell(cid, var)
-    if isCreature(cid) == true then
-        if getCreatureHealth(cid) < getCreatureMaxHealth(cid) * 0.1 and getCreatureCondition(cid, CONDITION_REGENERATION, 88888) == false then
-            doAddCondition(cid, condition)
-			addEvent(delayedCastSpell, 5000, cid, var)
-			doCreatureSay(cid, "Better flee now.", TALKTYPE_ORANGE_1)
+function onCastSpell(creature, var)
+        if creature:getHealth() < creature:getMaxHealth() * 0.1 and not creature:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT, 88888) then
+            creature:addCondition(condition)
+			addEvent(delayedCastSpell, 5000, creature:getId(), var)
+			creature:say("Better flee now.", TALKTYPE_ORANGE_1)
         else
-            return false
+            return
         end
-    else
-        return false
-    end
     return true
 end

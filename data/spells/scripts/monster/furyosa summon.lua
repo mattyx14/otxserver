@@ -1,23 +1,22 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_NONE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_NONE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_NONE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_NONE)
 
 local area = createCombatArea(AREA_CIRCLE2X2)
-setCombatArea(combat, area)
+combat:setArea(area)
 
 local maxsummons = 4
 
-function onCastSpell(cid, var)
-	local summoncount = getCreatureSummons(cid)
+function onCastSpell(creature, var)
+	local summoncount = creature:getSummons()
 	if #summoncount < 4 then
 		for i = 1, maxsummons - #summoncount do
-			local mid = doSummonCreature("Fury", getCreaturePosition(cid))
-    			if mid == false then
-				return false
-			end
-			doConvinceCreature(cid, mid)
-
+			local mid = Game.createMonster("Fury", creature:getPosition())
+				if not mid then
+					return
+				end
+			mid:setMaster(creature)
 		end
 	end
-	return doCombat(cid, combat, var)
+	return combat:execute(creature, var)
 end

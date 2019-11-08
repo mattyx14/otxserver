@@ -1,13 +1,14 @@
+local storage = 674531
 local voc = {4, 8}
 
 local area = createCombatArea(AREA_CIRCLE3X3)
 
-local combat = createCombatObject()
-setCombatArea(combat, area)
+local combat = Combat()
+combat:setArea(area)
 
-function onTargetTile(cid, pos)
+function onTargetTile(creature, pos)
     local creatureTable = {}
-    local n, i = getTileInfo({x=pos.x, y=pos.y, z=pos.z}).creatures, 1
+    local n, i = Tile({x=pos.x, y=pos.y, z=pos.z}).creatures, 1
     if n ~= 0 then
         local v = getThingfromPos({x=pos.x, y=pos.y, z=pos.z, stackpos=i}).uid
         while v ~= 0 do
@@ -23,32 +24,40 @@ function onTargetTile(cid, pos)
     end
     if #creatureTable ~= nil and #creatureTable > 0 then
         for r = 1, #creatureTable do
-            if creatureTable[r] ~= cid then
+            if creatureTable[r] ~= creature then
                 local min = 4000
                 local max = 8000
-                if isPlayer(creatureTable[r]) == true and table.contains(voc, getPlayerVocation(creatureTable[r])) == true then
-                    doTargetCombatHealth(cid, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)
+                local player = Player(creatureTable[r])
+
+                if isPlayer(creatureTable[r]) == true and isInArray(voc, player:getVocation():getId()) then
+                    doTargetCombatHealth(creature, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)
                 elseif isMonster(creatureTable[r]) == true then
-                    doTargetCombatHealth(cid, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)             
-		end
+                    doTargetCombatHealth(creature, creatureTable[r], COMBAT_FIREDAMAGE, -min, -max, CONST_ME_NONE)
+				end
             end
         end
     end
-    doSendMagicEffect(pos, CONST_ME_HITBYFIRE)
+    pos:sendMagicEffect(CONST_ME_HITBYFIRE)
     return true
 end
 
-setCombatCallback(combat, CALLBACK_PARAM_TARGETTILE, "onTargetTile")
+combat:setCallback(CALLBACK_PARAM_TARGETTILE, "onTargetTile")
 
 local function delayedCastSpell(cid, var)
-    if isCreature(cid) == true then
-        doCombat(cid, combat, positionToVariant(getCreaturePosition(cid)))
-	doCreatureSay(cid, "DIE!", TALKTYPE_ORANGE_1)
-    end
+    local creature = Creature(cid)
+	if not creature then
+		return
+	end
+	creature:say("DIE!", TALKTYPE_ORANGE_1)
+	return combat:execute(creature, positionToVariant(creature:getPosition()))
 end
 
-function onCastSpell(cid, var)
-    doCreatureSay(cid, "All KNIGHTS must DIE!", TALKTYPE_ORANGE_1)
-    addEvent(delayedCastSpell, 4000, cid, var)
+function onCastSpell(creature, var)
+local value = Game.getStorageValue(storage)
+	if(os.time()-value >= 4) then
+		creature:say("All KNIGHTS must DIE!", TALKTYPE_ORANGE_1)
+		addEvent(delayedCastSpell, 4000, creature:getId(), var)
+		Game.setStorageValue(storage, os.time())
+	end
     return true
 end

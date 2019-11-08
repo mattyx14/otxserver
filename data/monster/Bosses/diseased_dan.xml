@@ -4,6 +4,7 @@
 	<look type="299" corpse="8951" />
 	<targetchange interval="60000" chance="0" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -54,19 +55,12 @@
 		<immunity invisible="1" />
 	</immunities>
 	<voices interval="2000" chance="5">
-		<voice sentence="Tchhh!" />
-		<voice sentence="Slurp!" />
+		<voice sentence="Where... Where am I?" />
+		<voice sentence="Is that you, Tom?" />
+		<voice sentence="Phew, what an awful smell ... oh, that's me." />
 	</voices>
 	<loot>
 		<item name="gold coin" countmax="65" chance="28000" />
 		<item name="gold coin" countmax="64" chance="28000" />
-		<item name="plate legs" chance="2000" />
-		<item name="great health potion" chance="5500" />
-		<item name="great spirit potion" chance="3500" />
-		<item name="ultimate health potion" chance="3500" />
-		<item name="belted cape" chance="1000" />
-		<item name="hibiscus dress" chance="300" />
-		<item name="paladin armor" chance="200" />
-		<item name="springsprout rod" chance="800" />
 	</loot>
 </monster>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <monster name="Koshei The Deathless" nameDescription="Koshei the Deathless" race="undead" experience="0" speed="390">
 	<health now="3000" max="3000" />
-	<look type="99" head="95" body="116" legs="119" feet="115" corpse="6028" />
+	<look type="99" head="95" body="116" legs="119" feet="115" corpse="8272" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -53,24 +54,14 @@
 	</summons>
 	<voices interval="5000" chance="10">
 		<voice sentence="Your pain will be beyond imagination!" />
-		<voice sentence="You can't defeat me! I will ressurect and take your soul!" />
+		<voice sentence="You can't defeat me! I will resurrect and take your soul!" />
 		<voice sentence="Death is my ally!" />
-		<voice sentence="Welcome to my domain, visitor!" />
+		<voice sentence="Welcome to my domain visitor!" />
 		<voice sentence="You will be my toy on the other side!" />
+		<voice sentence="You will endure agony beyond thy death!" />
 		<voice sentence="What a disgusting smell of life!" />
+		<voice sentence="Ahhh, your life energy tastes so delicious!" />
 	</voices>
 	<loot>
-		<item name="gold coin" countmax="100" chance="100000" />
-		<item name="gold coin" countmax="12" chance="80000" />
-		<item name="stealth ring" chance="888" />
-		<item name="platinum amulet" chance="1666" />
-		<item id="2175" chance="10000" />
-		<item name="gold ring" chance="900" />
-		<item name="dirty cape" chance="10000" />
-		<item id="2401" chance="10000" />
-		<item name="castle shield" chance="588" />
-		<item name="blue robe" chance="709" />
-		<item name="lich staff" chance="1000" />
-		<item name="lightning boots" chance="688" />
 	</loot>
 </monster>

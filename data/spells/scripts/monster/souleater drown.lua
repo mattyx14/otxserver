@@ -1,6 +1,7 @@
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_DROWNDAMAGE)
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 
 local condition = Condition(CONDITION_DROWN)
 condition:setParameter(CONDITION_PARAM_DELAYED, 1)

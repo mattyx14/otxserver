@@ -4,6 +4,7 @@
 	<look type="41" corpse="5986" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -27,7 +28,7 @@
 		<element deathPercent="-8" />
 	</elements>
 	<voices interval="2000" chance="7">
-		<voice sentence="Groarrr!" />
+		<voice sentence="Groarrrr! Rwarrrr!" />
 	</voices>
 	<loot>
 		<item id="2148" countmax="25" chance="100000" /><!-- gold coin -->

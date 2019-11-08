@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Boogey" nameDescription="Boogey" race="undead" experience="475" speed="400" manacost="0">
+<monster name="Boogey" nameDescription="Boogey" race="undead" experience="475" speed="400">
 	<health now="930" max="930" />
 	<look type="300" corpse="8955" />
 	<targetchange interval="5000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -62,8 +63,6 @@
 		<summon name="Demon Skeleton" interval="4000" chance="40" />
 	</summons>
 	<loot>
-	<item id="2148" countmax="95" chance="2000" />				<!-- gold coin -->
-		<item id="2152" countmax="9" chance="30000" />				<!-- plat coin -->
 		<item id="10296" chance="1000" />	<!-- heavy metal t-shirt -->
 		<item id="10302" chance="1000" />	<!-- club of the fury -->
 		<item id="10301" chance="1000" />	<!-- scythe of the reaper -->

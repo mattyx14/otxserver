@@ -1,24 +1,23 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_NONE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_BATS)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_NONE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_BATS)
 
 local area = createCombatArea(AREA_SQUARE1X1)
-setCombatArea(combat, area)
+combat:setArea(area)
 
 local maxsummons = 4
 
-function onCastSpell(cid, var)
-	doCreatureSay(cid, "Out of the dark I call you, fiend in the night!", TALKTYPE_ORANGE_1)
-	local summoncount = getCreatureSummons(cid)
+function onCastSpell(creature, var)
+	creature:say("Out of the dark I call you, fiend in the night!", TALKTYPE_ORANGE_1)
+	local summoncount = creature:getSummons()
 	if #summoncount < 4 then
 		for i = 1, maxsummons - #summoncount do
-		local e, f = math.random(-2, 2), math.random(-2, 2)
-			local mid = doSummonCreature("Nightfiend", { x=getCreaturePosition(cid).x+e, y=getCreaturePosition(cid).y+f, z=getCreaturePosition(cid).z })
-    			if mid == false then
-				return false
+			local mid = Game.createMonster("Nightfiend", { x=creature:getPosition().x+math.random(-2, 2), y=creature:getPosition().y+math.random(-2, 2), z=creature:getPosition().z })
+    		if not mid then
+				return
 			end
-			doConvinceCreature(cid, mid)
+			mid:setMaster(creature)
 		end
 	end
-	return doCombat(cid, combat, var)
+	return combat:execute(creature, var)
 end

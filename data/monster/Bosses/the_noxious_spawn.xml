@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="The Noxious Spawn" nameDescription="The Noxious Spawn" race="venom" experience="6000" speed="360" manacost="0">
+<monster name="The Noxious Spawn" nameDescription="The Noxious Spawn" race="venom" experience="6000" speed="360">
 	<health now="9500" max="9500" />
 	<look type="220" corpse="4323" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -53,7 +54,7 @@
 		<immunity earth="1" />
 	</immunities>
 	<voices interval="2000" chance="7">
-		<voice sentence="I bring your deathhh, mortalssss" />
+		<voice sentence="I bring you deathhhh, mortalssss" />
 	</voices>
 	<loot>
 		<item id="10611" chance="100000" />				<!-- snake skin -->
@@ -61,7 +62,6 @@
 		<item id="2152" countmax="5" chance="80000" />	<!-- platinum coin -->
 		<item id="7590" countmax="4" chance="72000" />	<!-- great mana potion -->
 		<item id="2149" countmax="5" chance="68000" />	<!-- small emerald -->
-		<item id="8478" chance="45000" />				<!-- claw of 'The Noxious Spawn' -->
 		<item id="7386" chance="45000" />				<!-- mercenary sword -->
 		<item id="2528" chance="43000" />				<!-- tower shield -->
 		<item id="7456" chance="39000" />				<!-- noble axe -->

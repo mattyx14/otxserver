@@ -1,16 +1,18 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ICEAREA)
-combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ICE)
+local combat = {}
 
-local condition = Condition(CONDITION_ATTRIBUTES)
-condition:setParameter(CONDITION_PARAM_TICKS, 5000)
-condition:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, 50)
-condition:setParameter(CONDITION_PARAM_SKILL_MELEEPERCENT, 50)
+for i = 40, 50 do
+	combat[i] = Combat()
+	combat[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_SMALLCLOUDS)
+	combat[i]:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 
-local area = createCombatArea(AREA_BEAM1)
-combat:setArea(area)
-combat:addCondition(condition)
+	local condition = Condition(CONDITION_ATTRIBUTES)
+	condition:setParameter(CONDITION_PARAM_TICKS, 6000)
+	condition:setParameter(CONDITION_PARAM_SKILL_MELEEPERCENT, i)
+	condition:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, i)
+	condition:setParameter(CONDITION_PARAM_SKILL_FISTPERCENT, i)
+	combat[i]:addCondition(condition)
+end
 
 function onCastSpell(creature, var)
-	return combat:execute(creature, var)
+	return combat[math.random(40, 50)]:execute(creature, var)
 end

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Groam" nameDescription="Groam" race="blood" experience="180" speed="560" manacost="0">
+<monster name="Groam" nameDescription="Groam" race="blood" experience="180" speed="560">
 	<health now="400" max="400" />
 	<look type="413" corpse="13839" />
 	<targetchange interval="2000" chance="50" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -29,10 +30,9 @@
 		<immunity fire="1" />
 	</immunities>
 	<voices interval="3000" chance="200">
-		<voice sentence="Njaaarh!!" />
-		<voice sentence="Begjone, intrjuder!!" />
-		<voice sentence="Djon't djare stjare injo the eyes of the djeep!" />
-		<voice sentence="Ljeave this sjacred pljace while you cjan" />
+		<voice sentence="I sjaw the eyes of the djeep!" />
+		<voice sentence="I mjake sjure yjou wjill njot sjufer the sjame fjate Ij djid!" />
+		<voice sentence="Yjou, intrjuder!!" />
 	</voices>
 	<elements>
 		<element earthPercent="-20" />

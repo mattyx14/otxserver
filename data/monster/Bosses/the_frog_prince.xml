@@ -4,6 +4,7 @@
 	<look type="224" head="69" body="66" legs="69" feet="66" corpse="6079" />
 	<targetchange interval="5000" chance="20" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -27,5 +28,6 @@
 	</elements>
 	<voices interval="2000" chance="7">
 		<voice sentence="Don't Kill me!!" />
+		<voice sentence="Have mercy!" />
 	</voices>
 </monster>

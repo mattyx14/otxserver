@@ -6,7 +6,23 @@ local condition = Condition(CONDITION_FIRE)
 condition:setParameter(CONDITION_PARAM_DELAYED, 1)
 condition:addDamage(20, 9000, -10)
 
-local area = createCombatArea(AREA_CROSS6X6)
+arr = {
+{0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+{0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+{1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1},
+{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+{0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+{0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+}
+
+local area = createCombatArea(arr)
 combat:setArea(area)
 combat:addCondition(condition)
 

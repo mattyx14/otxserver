@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Doctor Perhaps" nameDescription="doctor perhaps" race="blood" experience="325" speed="200" manacost="0">
+<monster name="Doctor Perhaps" nameDescription="doctor perhaps" race="blood" experience="325" speed="200">
 	<health now="475" max="475" />
 	<look type="133" head="95" body="0" legs="94" feet="114" addons="1" corpse="20439" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -53,9 +54,8 @@
 		<voice sentence="You can't beat what you can't comprehend!" />
 	</voices>
 	<loot>
-	
-	<item id="2148" countmax="95" chance="2000" />				<!-- gold coin -->
-		<item id="2152" countmax="9" chance="30000" />				<!-- plat coin --> 
+		<item id="2148" countmax="95" chance="2000" />				<!-- gold coin -->
+		<item id="2152" countmax="9" chance="30000" />				<!-- plat coin -->
 		<item id="10316" chance="1000" />				<!-- mighty helm of green sparks -->
 		<item id="10289" chance="1000" />				<!-- meat shield -->
 		<item id="10290" chance="1000" />				<!-- glutton's mace -->

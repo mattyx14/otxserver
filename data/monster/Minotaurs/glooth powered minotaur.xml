@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Glooth Powered Minotaur" nameDescription="a glooth powered minotaur" race="blood" experience="2600" speed="200" manacost="0">
+<monster name="Glooth Powered Minotaur" nameDescription="a glooth powered minotaur" race="blood" experience="2600" speed="200">
 	<health now="3200" max="3200" />
-	<look type="607" corpse="5962" />
+	<look type="607" corpse="23367" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
 		<flag summonable="0" />
@@ -40,4 +40,7 @@
 		<immunity invisible="1" />
 		<immunity paralyze="1" />
 	</immunities>
+	<voices interval="2000" chance="5">
+		<voice sentence="POOOWEEER!" />
+	</voices>
 </monster>

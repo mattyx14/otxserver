@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Teleskor" nameDescription="Teleskor" race="undead" experience="70" speed="150" manacost="0">
+<monster name="Teleskor" nameDescription="Teleskor" race="undead" experience="70" speed="150">
 	<health now="80" max="80" />
 	<look type="298" corpse="5972" />
 	<targetchange interval="4000" chance="5" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -24,7 +25,7 @@
 		<element holyPercent="-5" />
 	</elements>
 	<voices interval="2000" chance="7">
-		<voice sentence="Who disturbs my slumber?" />
+		<voice sentence="Who Disturbs my slumber?" />
 		<voice sentence="Mourn the dead, do not hunt them!" />
 	</voices>
 	<loot>

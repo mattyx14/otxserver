@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Flameborn" nameDescription="Flameborn" experience="2550" speed="260" race="fire" manacost="0">
+<monster name="Flameborn" nameDescription="Flameborn" experience="2550" speed="260" race="fire">
 	<health now="3500" max="3500" />
 	<targetchange interval="4000" chance="15" />
 	<look type="322" corpse="9923" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -42,15 +43,8 @@
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
 	</immunities>
-	<voices interval="2000" chance="7">
-		<voice sentence="Your fragile bones are like toothpicks to me." />
-		<voice sentence="You little weasel will not live to see another day." />
-		<voice sentence="I'm just a messenger of what's yet to come." />
-		<voice sentence="HRAAAAAAAAAAAAAAAARRRR" yell="1" />
-		<voice sentence="I'm taking you down with me!" />
-	</voices>
 	<loot>
-		<item id="2152" countmax="1" chance="100000" /><!-- platinum coin -->
+		<item id="2152" chance="100000" /><!-- platinum coin -->
 		<item id="2152" countmax="13" chance="100000" /><!-- platinum coin -->
 		<item id="7591" chance="75810" /><!-- great health potion -->
 		<item id="11221" chance="100000" /><!-- hellspawn tail -->

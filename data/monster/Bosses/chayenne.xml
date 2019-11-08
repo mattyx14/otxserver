@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Chayenne" nameDescription="Chayenne" race="blood" experience="0" speed="300" manacost="0">
+<monster name="Chayenne" nameDescription="Chayenne" race="blood" experience="0" speed="300" script="rewardboss.lua">
 	<health now="200000" max="200000"/>
 	<look type="155" head="78" body="0" legs="105" feet="99" addons="0" corpse="6081"/>
 	<targetchange interval="2000" chance="10"/>
 	<flags>
+		<flag preyable="0" />
 		<flag rewardboss="1" />
 		<flag summonable="0"/>
 		<flag attackable="1"/>
@@ -19,8 +20,8 @@
 	</flags>
 	<attacks>
 		<attack name="melee" interval="3000" skill="300" attack="150"/>
-		<attack name="manadrain" interval="2000" chance="15" range="1" min="-0" max="-1500"/>
-		<attack name="lifedrain" interval="2000" chance="15" range="7" target="1" min="-0" max="-1250">
+		<attack name="manadrain" interval="2000" chance="15" range="1" min="0" max="-1500"/>
+		<attack name="lifedrain" interval="2000" chance="15" range="7" target="1" min="0" max="-1250">
 			<attribute key="areaEffect" value="redshimmer"/>
 		</attack>
 	</attacks>
@@ -58,7 +59,7 @@
 	<loot>
 		<item id="6571" countmax="2" chance="100000" /> <!-- surprise bag -->
 		<item id="7632" chance="100000" /> <!-- giant shimmering pearl -->
-		<item id="16014" chance="100000" /> <!-- Anniversary Cake -->	
-		<item id="16015" chance="100000" unique="1" /> <!-- Chayenne's Magical Key -->		
+		<item id="16014" chance="100000" /> <!-- Anniversary Cake -->
+		<item id="16015" chance="100000" unique="1" /> <!-- Chayenne's Magical Key -->
 	</loot>
 </monster>

@@ -1,18 +1,20 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_NONE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_NONE)
-
-local area = createCombatArea(AREA_CIRCLE3X3)
-setCombatArea(combat, area)
-
-
-function onCastSpell(cid, var)
-	doCreatureSay(cid, "CRUSH THEM ALL!", TALKTYPE_ORANGE_2)
-			local mid = doSummonCreature("Demon", { x=33528, y=32330, z=12 })
-				    doSummonCreature("Demon", { x=33523, y=32338, z=12 })
-				    doSummonCreature("Demon", { x=33532, y=32337, z=12 })
-    			if mid == false then
-				return false
-			end
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, var)
+local t, spectator = Game.getSpectators(Position(33528, 32335, 12), false, false, 20, 20, 20, 20)
+    local check = 0
+    if #t ~= nil then
+        for i = 1, #t do
+		spectator = t[i]
+            if spectator:getName() == "Demon" then
+               check = check + 1
+            end
+        end
+    end
+	if (check < 1) then
+		creature:say("CRUSH THEM ALL!", TALKTYPE_ORANGE_2)
+		Game.createMonster("Demon", Position(33528, 32330, 12))
+		Game.createMonster("Demon", Position(33523, 32338, 12))
+		Game.createMonster("Demon", Position(33532, 32337, 12))
+		else
+	end
+return true
 end

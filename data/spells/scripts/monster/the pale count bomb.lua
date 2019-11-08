@@ -1,7 +1,7 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_DEATH)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_DEATH)
 
 	arr = {
 	{0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
@@ -20,9 +20,9 @@ setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_DEATH)
 	}
 
 local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
-function onCastSpell(cid, var)
-	doCreatureSay(cid, "Feel the hungry kiss of death!", TALKTYPE_ORANGE_1)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, var)
+	creature:say("Feel the hungry kiss of death!", TALKTYPE_ORANGE_1)
+	return combat:execute(creature, var)
 end

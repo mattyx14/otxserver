@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Smuggler Baron Silvertoe" nameDescription="Smuggler Baron Silvertoe" race="blood" experience="170" speed="200" manacost="0">
+<monster name="Smuggler Baron Silvertoe" nameDescription="Smuggler Baron Silvertoe" race="blood" experience="170" speed="200">
 	<health now="280" max="280" />
 	<look type="134" head="38" body="0" legs="94" feet="95" addons="0" corpse="20506" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -43,15 +44,6 @@
 	</voices>
 	<loot>
 		<item id="2148" countmax="30" chance="80000" />	<!-- gold coin -->
-		<item id="2050" countmax="2" chance="30200" />	<!-- torch -->
-		<item id="2649" chance="14000" />				<!-- leather legs -->
-		<item id="2671" chance="10000" />				<!-- ham -->
 		<item id="2406" chance="10000" />				<!-- short sword -->
-		<item id="2461" chance="10000" />				<!-- leather helmet -->
-		<item id="2403" chance="10000" />				<!-- knife -->
-		<item id="2376" chance="5000" />					<!-- sword -->
-		<item id="8840" countmax="5" chance="5000" />	<!-- raspberries -->
-		<item id="2404" chance="4000" />					<!-- combat knife -->
-		<item id="7397" chance="110" />					<!-- deer trophy -->
 	</loot>
 </monster>

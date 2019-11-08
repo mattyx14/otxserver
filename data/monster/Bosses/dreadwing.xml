@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Dreadwing" nameDescription="Dreadwing" race="blood" experience="3750" speed="245" manacost="0">
+<monster name="Dreadwing" nameDescription="Dreadwing" race="blood" experience="3750" speed="245">
 	<health now="8500" max="8500" />
 	<look type="307" corpse="9829" />
 	<targetchange interval="2000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -39,4 +40,7 @@
 		<immunity earth="1" />
 		<immunity invisible="1" />
 	</immunities>
+	<voices interval="5000" chance="20">
+		<voice sentence="More blood! More!" yell="1" />
+	</voices>
 </monster>

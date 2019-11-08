@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Energized Raging Mage" nameDescription="an energized raging mage" race="blood" experience="0" speed="230" manacost="0">
+<monster name="Energized Raging Mage" nameDescription="an energized raging mage" race="blood" experience="0" speed="230">
 	<health now="3500" max="3500" />
 	<look type="423" corpse="0" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -45,7 +46,7 @@
 	<voices interval="2000" chance="7">
 		<voice sentence="Behold the all permeating powers I draw from this gate!!" />
 		<voice sentence="ENERGY!!" />
-		<voice sentence="I FEEL, I FEEEEL... OMNIPOTENCE!!" />
+		<voice sentence="I FEEL, I FEEEEEL... OMNIPOTENCE!!" />
 		<voice sentence="MWAAAHAHAAA!! NO ONE!! NO ONE CAN DEFEAT MEEE!!!" />
 	</voices>
 	<summons maxSummons="1">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Braindeath" nameDescription="a braindeath" race="undead" experience="985" speed="230">
+<monster name="Braindeath" nameDescription="a braindeath" race="undead" experience="985" speed="109">
 	<health now="1225" max="1225" />
 	<look type="256" corpse="7256" />
 	<targetchange interval="4000" chance="10" />
@@ -15,6 +15,9 @@
 		<flag targetdistance="4" />
 		<flag staticattack="80" />
 		<flag runonhealth="0" />
+		<flag canwalkonenergy="1" />
+		<flag canwalkonfire="1" />
+		<flag canwalkonpoison="1" />
 	</flags>
 	<attacks>
 		<attack name="melee" interval="2000" min="0" max="-100" />
@@ -38,7 +41,7 @@
 		<attack name="manadrain" interval="2000" chance="10" range="7" min="0" max="-155">
 		</attack>
 	</attacks>
-	<defenses armor="20" defense="20">
+	<defenses armor="12" defense="12">
 		<defense name="healing" interval="2000" chance="15" min="150" max="200">
 			<attribute key="areaEffect" value="blueshimmer" />
 		</defense>
@@ -48,7 +51,7 @@
 	</defenses>
 	<elements>
 		<element icePercent="20" />
-		<element physicalPercent="10" />
+		<element physicalPercent="15" />
 		<element energyPercent="10" />
 		<element holyPercent="-20" />
 		<element firePercent="-15" />
@@ -68,17 +71,17 @@
 		<voice sentence="You will be punished!" />
 	</voices>
 	<loot>
-		<item name="gold coin" countmax="89" chance="55000" />
-		<item id="2175" chance="690" /><!-- spellbook -->
-		<item name="clerical mace" chance="2000" />
-		<item name="bone sword" chance="8000" />
-		<item name="steel shield" chance="6000" />
-		<item name="bonelord shield" chance="750" />
-		<item name="bonelord helmet" chance="180" />
-		<item name="bonelord eye" chance="3380" />
-		<item name="sniper arrow" countmax="4" chance="9000" />
-		<item name="haunted blade" chance="1500" />
-		<item name="spiked squelcher" chance="950" />
-		<item name="piece of dead brain" chance="4725" />
+		<item name="gold coin" countmax="89" chance="99470" />
+		<item name="bone sword" chance="15130" />
+		<item name="sniper arrow" countmax="4" chance="9560" />
+		<item name="steel shield" chance="5940" />
+		<item name="piece of dead brain" chance="5030" />
+		<item name="bonelord eye" chance="2990" />
+		<item name="clerical mace" chance="1970" />
+		<item name="haunted blade" chance="1440" />
+		<item id="2175" chance="930" /><!-- spellbook -->
+		<item name="spiked squelcher" chance="180" />
+		<item name="bonelord shield" chance="100" />
+		<item name="bonelord helmet" chance="100" />
 	</loot>
 </monster>

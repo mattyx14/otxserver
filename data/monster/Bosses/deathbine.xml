@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Deathbine" nameDescription="Deathbine" race="venom" experience="340" speed="240" manacost="0">
+<monster name="Deathbine" nameDescription="Deathbine" race="venom" experience="340" speed="240">
 	<health now="525" max="525" />
 	<look type="120" corpse="6047" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />

@@ -1,26 +1,29 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_STUN)
+local combat = {}
 
-local condition = Condition(CONDITION_ATTRIBUTES)
-condition:setParameter(CONDITION_PARAM_TICKS, 3000)
-condition:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, 70)
+for i = 40, 60 do
+	combat[i] = Combat()
+	combat[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_STUN)
 
-local area = createCombatArea({
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0}
-})
-combat:setArea(area)
-combat:addCondition(condition)
+	local condition = Condition(CONDITION_ATTRIBUTES)
+	condition:setParameter(CONDITION_PARAM_TICKS, 8000)
+	condition:setParameter(CONDITION_PARAM_SKILL_SHIELDPERCENT, i)
+
+		local arr = {
+		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0}
+		}
+
+	local area = createCombatArea(arr)
+	combat[i]:setArea(area)
+	combat[i]:addCondition(condition)
+end
 
 function onCastSpell(creature, var)
-	return combat:execute(creature, var)
+	return combat[math.random(40, 60)]:execute(creature, var)
 end

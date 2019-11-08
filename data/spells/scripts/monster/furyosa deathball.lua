@@ -1,6 +1,6 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
 
 arr = {
 {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
@@ -20,13 +20,12 @@ arr = {
 
 
 local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
-function onCastSpell(cid, var)
-    if isCreature(cid) == true then
-        if getCreatureHealth(cid) < getCreatureMaxHealth(cid) * 0.4 then
-		doCreatureSay(cid, "Back in black!", TALKTYPE_ORANGE_1)
-	return doCombat(cid, combat, var)
-end
-end
+function onCastSpell(creature, var)
+	if creature:getHealth() < creature:getMaxHealth() * 0.4 then
+		creature:say("Back in black!", TALKTYPE_ORANGE_1)
+		return combat:execute(creature, var)
+	end
+	return false
 end

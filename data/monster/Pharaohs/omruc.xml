@@ -53,8 +53,10 @@
 		<summon name="Stalker" interval="2000" chance="100" />
 	</summons>
 	<voices interval="5000" chance="10">
-		<voice sentence="Now chhhou shhhee me ... Now chhhou don't!!" />
+		<voice sentence="Now chhhou shhhee me ... Now chhhou don't." />
 		<voice sentence="Chhhhou are marked ashhh my prey." />
+		<voice sentence="Catchhhh me if chhhou can." />
+		<voice sentence="Die!" />
 		<voice sentence="Psssst, I am over chhhere." />
 	</voices>
 	<loot>
@@ -65,8 +67,6 @@
 		<item name="stealth ring" chance="5000" />
 		<item name="boots of haste" chance="1500" />
 		<item name="crystal arrow" chance="100000" />
-		<item name="ravager's axe" countmax="2" chance="10000" />
-		<item name="hammer of wrath" chance="300" />
 		<item name="arrow" countmax="21" chance="10000" />
 		<item name="poison arrow" countmax="20" chance="10000" />
 		<item name="burst arrow" countmax="15" chance="10000" />

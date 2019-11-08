@@ -1,84 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="The Rage" nameDescription="a the rage" race="fire" experience="15000" speed="400" manacost="0">
-	<health now="400000" max="400000" />
-	<look type="876" head="85" body="114" legs="59" feet="0" addons="0" corpse="26220" />
-	<targetchange interval="10000" chance="20" />
+<monster name="The Rage" nameDescription="The Rage" race="energy" experience="0" speed="400">
+	<health now="250000" max="250000"/>
+	<look type="876" head="85" body="114" legs="19" feet="0" corpse="0"/>
+	<targetchange interval="2000" chance="25"/>
 	<flags>
-	    <flag summonable="0" />
-		<flag attackable="1" />
-		<flag hostile="1" />
-		<flag illusionable="0" />
-		<flag convinceable="0" />
-		<flag pushable="0" />
-		<flag canpushitems="1" />
-		<flag canpushcreatures="1" />
-		<flag staticattack="98" />
-		<flag targetdistance="1" />
-		<flag runonhealth="0" />
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
 	</flags>
 	<script>
-   <event name="The Rage"/>
+		<event name="HeartMinionDeath" />
 	</script>
 	<attacks>
-		<attack name="melee" interval="2000" min="-500" max="-2900" />
-		<attack name="manadrain" interval="2000" chance="10" range="7" min="-800" max="-2000" />
-		<attack name="physical" interval="3000" chance="34" range="7" min="-600" max="-2000">
-			<attribute key="shootEffect" value="whirlwindsword" />
-			<attribute key="areaEffect" value="redspark" />
+		<attack name="melee" interval="2000" min="0" max="-740"/>
+		<attack name="big death wave" interval="2000" chance="20" min="-600" max="-900"/>
+		<attack name="lifedrain" interval="2000" chance="20" length="10" spread="0" min="-200" max="-400">
+			<attribute key="areaEffect" value="redshimmer"/>
 		</attack>
-		<attack name="strength" interval="1000" chance="9" range="7">
-			<attribute key="shootEffect" value="largerock" />
-			<attribute key="areaEffect" value="energyarea" />
+		<attack name="death" interval="2000" chance="20" radius="4" target="1" min="-300" max="-600">
+			<attribute key="areaEffect" value="smallclouds"/>
 		</attack>
-		<attack name="phantasm drown" interval="2000" chance="20" />
-		<attack name="energy strike" interval="2000" chance="30" range="1" min="-510" max="-1900">
+		<attack name="big explosion wave" interval="2000" chance="20" min="-600" max="-900"/>
+		<attack name="lifedrain" interval="2000" chance="20" radius="8" min="0" max="0">
+			<attribute key="areaEffect" value="redshimmer"/>
 		</attack>
-		<attack name="speed" interval="2000" chance="15" range="7" speedchange="-400" duration="15000">
-			<attribute key="shootEffect" value="throwingknife" />
+		<attack name="physical" interval="2000" chance="20" length="10" spread="0" min="-200" max="-600">
+			<attribute key="areaEffect" value="yellowbubble"/>
 		</attack>
-		<attack name="ice" interval="2000" chance="30" range="7" radius="7" target="0" min="-700" max="-3200">
-			<attribute key="areaEffect" value="bigplants" />
-		</attack>
-		<attack name="ice" interval="2000" chance="19" radius="3" target="0" min="-460" max="-820">
-			<attribute key="areaEffect" value="icetornado" />
-		</attack>
-		<attack name="physical" interval="2000" chance="15" target="0" length="1" spread="0" min="-500" max="-1520">
-			<attribute key="areaEffect" value="poff" />
-		</attack>
-		<attack name="death" interval="2000" chance="10" length="5" spread="2" target="1" min="-200" max="-900">
-			<attribute key="areaEffect" value="blacksmoke" />
-		</attack>
-		<attack name="energy" interval="2000" chance="30" radius="4" target="1" min="-390" max="-850">
-			<attribute key="areaEffect" value="teleport" />
-		</attack>
+		<attack name="anomaly break" interval="2000" chance="40"/>
+		<attack name="rage summon" interval="2000" chance="20"/>
 	</attacks>
-	<defenses armor="55" defense="65">
-		<defense name="healing" interval="3000" chance="35" min="400" max="6000">
-			<attribute key="areaEffect" value="blueshimmer" />
-		</defense>
-		<defense name="speed" interval="4000" chance="80" speedchange="460" duration="6000">
-			<attribute key="areaEffect" value="redshimmer" />
-		</defense>
-	</defenses>
-	<elements>
-		<element physicalPercent="1" />
-		<element deathPercent="1" />
-		<element holyPercent="-1" />
-		<element earthPercent="-5" />
-	</elements>
-	<immunities>		
-		<immunity ice="1" />		
-		<immunity paralyze="1" />
-		<immunity invisible="1" />
+	<defenses armor="100" defense="100"/>
+	<immunities>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
 	</immunities>
-	<summons maxSummons="9">
-		<summon name="Dread IntruderSummon" interval="4000" chance="8" max="4" />
-		<summon name="Charger" interval="4000" chance="8" max="3" />
-		<summon name="Spark of Destruction" interval="1000" chance="15" max="2" />
-	</summons>
-	<voices interval="5000" chance="20">
-		<voice sentence="COME AND GIVE ME SOME AMUSEMENT" />
-		<voice sentence="IS THAT THE BEST YOU HAVE TO OFFER, TIBIANS?" yell="1" />
-	</voices>
-	
 </monster>

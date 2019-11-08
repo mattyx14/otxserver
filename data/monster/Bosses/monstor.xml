@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Monstor" nameDescription="Monstor" race="blood" experience="575" speed="350" manacost="0">
+<monster name="Monstor" nameDescription="Monstor" race="blood" experience="575" speed="350">
 	<health now="960" max="960" />
 	<look type="244" corpse="6336" />
 	<targetchange interval="5000" chance="8" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -50,10 +51,7 @@
 	<summons maxSummons="3">
 		<summon name="Acid Blob" interval="4000" chance="40" max="3" />
 	</summons>
-	
 	<loot>
-	<item id="2148" countmax="95" chance="2000" />				<!-- gold coin -->
-		<item id="2152" countmax="9" chance="30000" />				<!-- plat coin -->
 		<item id="10298" chance="1000" />	<!-- heavy metal t-shirt -->
 		<item id="10303" chance="1000" />	<!-- club of the fury -->
 		<item id="10297" chance="1000" />	<!-- scythe of the reaper -->

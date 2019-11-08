@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Tormentor" nameDescription="Tormentor" race="blood" experience="3200" speed="240" manacost="0">
+<monster name="Tormentor" nameDescription="Tormentor" race="blood" experience="3200" speed="240">
 	<health now="4100" max="4100" />
 	<look type="245" corpse="6340" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -51,7 +52,6 @@
 		<voice sentence="Pffffrrrrrrrrrrrr." />
 		<voice sentence="Close your eyes... I have something for you." />
 		<voice sentence="I will make you scream." />
-		<voice sentence="I will haunt you forever!" />
 	</voices>
 	<loot>
 		<item id="6558" chance="100000" />				<!-- concentrated demonic blood -->

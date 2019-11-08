@@ -1,13 +1,13 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ICEAREA)
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SHIVERARROW)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ICEAREA)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SHIVERARROW)
 
-local condition = createConditionObject(CONDITION_FREEZING)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 30, 8000, -8)
-addCombatCondition(combat, condition)
+local condition = Condition(CONDITION_FREEZING)
+condition:setParameter(CONDITION_PARAM_DELAYED, 1)
+condition:addDamage(30, 8000, -8)
+combat:addCondition(condition)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, var)
+	return combat:execute(creature, var)
 end

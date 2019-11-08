@@ -1,6 +1,6 @@
 local combat = {}
 
-for i = 2, 3 do
+for i = 2, 2 do
 	combat[i] = Combat()
 	combat[i]:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 	combat[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_SMALLCLOUDS)
@@ -20,5 +20,5 @@ for i = 2, 3 do
 end
 
 function onCastSpell(creature, var)
-	return combat[math.random(2, 3)]:execute(creature, var)
+	return combat[math.random(2, 2)]:execute(creature, var)
 end

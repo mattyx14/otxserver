@@ -7,10 +7,66 @@ AREA_SHORTWAVE3 = {
 {0, 3, 0}
 }
 
+AREA_WAVE10 = {
+{1, 1, 1, 1, 1, 1, 1},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 0, 3, 0, 0, 0}
+}
+
+AREA_WAVE11 = {
+{1, 1, 1, 1, 1, 1, 1},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 0, 1, 0, 0, 0},
+{0, 0, 0, 3, 0, 0, 0}
+}
+
+AREA_WAVE12 = {
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 0, 1, 0, 0, 0},
+{0, 0, 0, 3, 0, 0, 0}
+}
+
+AREA_WAVE13 = {
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 1, 1, 1, 0, 0},
+{0, 0, 0, 1, 0, 0, 0},
+{0, 0, 0, 3, 0, 0, 0}
+}
+
 AREA_WAVE4 = {
 {1, 1, 1, 1, 1},
 {0, 1, 1, 1, 0},
 {0, 1, 1, 1, 0},
+{0, 0, 3, 0, 0}
+}
+
+AREA_WAVE5 = {
+{1, 1, 1, 1, 1},
+{0, 1, 1, 1, 0},
+{0, 1, 1, 1, 0},
+{0, 1, 1, 1, 0},
+{0, 0, 1, 0, 0},
 {0, 0, 3, 0, 0}
 }
 
@@ -153,14 +209,34 @@ AREA_CIRCLE3X3 = {
 {0, 0, 1, 1, 1, 0, 0}
 }
 
+AREA_CIRCLE3X32 = {
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 3, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1}
+}
+
+AREA_CIRCLE3X33 = {
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 0, 0, 1, 1, 1},
+{1, 1, 0, 3, 1, 1, 1},
+{1, 1, 0, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1},
+{1, 1, 1, 1, 1, 1, 1}
+}
+
 -- Crosses
-AREA_CROSS1X1 = {
+AREA_CIRCLE1X1 = {
 {0, 1, 0},
 {1, 3, 1},
 {0, 1, 0}
 }
 
-AREA_CROSS5X5 = {
+AREA_CIRCLE5X5 = {
 {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
 {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
 {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
@@ -174,7 +250,21 @@ AREA_CROSS5X5 = {
 {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}
 }
 
-AREA_CROSS6X6 = {
+AREA_CIRCLE5X5V2 = {
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+{0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
+{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
+{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 3, 1, 1, 1, 1, 0},
+{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
+{0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
+{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+}
+
+AREA_CIRCLE6X6 = {
 {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
 {0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0},
 {0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0},
@@ -360,5 +450,39 @@ function Player:addPartyCondition(combat, variant, condition, baseMana)
 	for _, member in ipairs(affectedMembers) do
 		member:addCondition(condition)
 	end
+	return true
+end
+
+function Player:conjureItem(reagentId, conjureId, conjureCount, effect)
+	if not conjureCount and conjureId ~= 0 then
+		local itemType = ItemType(conjureId)
+		if itemType:getId() == 0 then
+			return false
+		end
+
+		local charges = itemType:getCharges()
+		if charges ~= 0 then
+			conjureCount = charges
+		end
+	end
+
+	if reagentId ~= 0 and not self:removeItem(reagentId, 1, -1) then
+		self:sendCancelMessage(RETURNVALUE_YOUNEEDAMAGICITEMTOCASTSPELL)
+		self:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+
+	local item = self:addItem(conjureId, conjureCount)
+	if not item then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		self:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+
+	if item:hasAttribute(ITEM_ATTRIBUTE_DURATION) then
+		item:decay()
+	end
+
+	self:getPosition():sendMagicEffect(item:getType():isRune() and CONST_ME_MAGIC_RED or effect)
 	return true
 end

@@ -1,25 +1,21 @@
 local combat = {}
 
-for i = 30, 50 do
+for i = 1, 2 do
 	combat[i] = Combat()
 	combat[i]:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 	combat[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_SMALLCLOUDS)
-	combat[i]:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_DEATH)
 
 	local condition = Condition(CONDITION_CURSED)
 	condition:setParameter(CONDITION_PARAM_DELAYED, 1)
 
 	local damage = i
 	condition:addDamage(1, 4000, -damage)
-	for j = 1, 9 do
+	for j = 1, 30 do
 		damage = damage * 1.2
 		condition:addDamage(1, 4000, -damage)
 	end
 
 	local area = createCombatArea({
-		{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-		{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-		{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
 		{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
 		{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
 		{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
@@ -34,5 +30,5 @@ for i = 30, 50 do
 end
 
 function onCastSpell(creature, var)
-	return combat[math.random(30, 50)]:execute(creature, var)
+	return combat[math.random(1, 2)]:execute(creature, var)
 end

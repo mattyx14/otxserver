@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Bretzecutioner" nameDescription="Bretzecutioner" race="undead" experience="3700" speed="270" manacost="0">
+<monster name="Bretzecutioner" nameDescription="Bretzecutioner" race="undead" experience="3700" speed="270">
 	<health now="5600" max="5600" />
 	<look type="236" corpse="6320" />
 	<targetchange interval="4000" chance="10" />
 	<flags>
+		<flag preyable="0" />
 		<flag summonable="0" />
 		<flag attackable="1" />
 		<flag hostile="1" />
@@ -40,13 +41,8 @@
 		<immunity paralyze="1" />
 		<immunity invisible="1" />
 	</immunities>
-	<voices interval="2000" chance="7">
-		<voice sentence="COME HERE AND DIE!" />
-		<voice sentence="Destructiooooon!" />
-		<voice sentence="It's a good day to destroy!" />
-	</voices>
 	<loot>
-		<item id="2148" countmax="1" chance="100000" /><!-- gold coin -->
+		<item id="2148" chance="100000" /><!-- gold coin -->
 		<item id="2148" countmax="98" chance="100000" /><!-- gold coin -->
 		<item id="2666" chance="100000" /><!-- meat -->
 		<item id="6500" chance="64000" /><!-- demonic essence -->
