@@ -1,24 +1,33 @@
 sudo: required
-dist: trusty
+dist: bionic
 language: cpp
 compiler:
   - clang
   - gcc
 env:
-  - LUAJIT=OFF
-  - LUAJIT=ON
+  matrix:
+    - BUILD_TYPE=Debug LUAJIT=OFF
+    - BUILD_TYPE=Debug LUAJIT=ON
+    - BUILD_TYPE=Release LUAJIT=OFF
+    - BUILD_TYPE=Release LUAJIT=ON
 cache: apt
 addons:
   apt:
     packages:
       - libboost-dev
       - libboost-system-dev
+      - libboost-filesystem-dev
       - libboost-iostreams-dev
+      - libcrypto++-dev
       - liblua5.2-dev
       - libluajit-5.1-dev
       - libmysqlclient-dev
       - libpugixml-dev
+      - libgmp3-dev
+      - libspdlog-dev
+
 before_script:
   - mkdir build && cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_LUAJIT=${LUAJIT} ..
-script: make -j2
+  - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DUSE_LUAJIT=${LUAJIT} ..
+
+script: make -j`nproc`
