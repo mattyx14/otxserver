@@ -1,4 +1,6 @@
 /**
+ * @file game.h
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -17,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_GAME_H_3EC96D67DD024E6093B3BAC29B7A6D7F
-#define FS_GAME_H_3EC96D67DD024E6093B3BAC29B7A6D7F
+#ifndef OT_SRC_GAME_H_
+#define OT_SRC_GAME_H_
 
 #include "account.h"
 #include "combat.h"
@@ -74,6 +76,8 @@ enum LightState_t {
 static constexpr int32_t EVENT_LIGHTINTERVAL = 7500;
 static constexpr int32_t EVENT_DECAYINTERVAL = 250;
 static constexpr int32_t EVENT_DECAY_BUCKETS = 4;
+static constexpr int32_t EVENT_IMBUEMENTINTERVAL = 250;
+static constexpr int32_t EVENT_IMBUEMENT_BUCKETS = 4;
 
 /**
   * Main Game class.
@@ -382,6 +386,9 @@ class Game
 		void playerRequestAddVip(uint32_t playerId, const std::string& name);
 		void playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
 		void playerRequestEditVip(uint32_t playerId, uint32_t guid, const std::string& description, uint32_t icon, bool notify);
+		void playerApplyImbuement(uint32_t playerId, uint32_t imbuementid, uint8_t slot, bool protectionCharm);
+		void playerClearingImbuement(uint32_t playerid, uint8_t slot);
+		void playerCloseImbuingWindow(uint32_t playerid);
 		void playerTurn(uint32_t playerId, Direction dir);
 		void playerRequestOutfit(uint32_t playerId);
 		void playerShowQuestLog(uint32_t playerId);
@@ -460,6 +467,11 @@ class Game
 		void addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect);
 		static void addDistanceEffect(const SpectatorHashSet& spectators, const Position& fromPos, const Position& toPos, uint8_t effect);
 
+		void startImbuementCountdown(Item* item) {
+			item->incrementReferenceCounter();
+			toImbuedItems.push_front(item);
+		}
+
 		void startDecay(Item* item);
 		int32_t getLightHour() const {
 			return lightHour;
@@ -507,6 +519,7 @@ class Game
 
 		bool reload(ReloadTypes_t reloadType);
 
+		bool itemidHasMoveevent(uint32_t itemid);
 		bool hasEffect(uint8_t effectId);
 		bool hasDistanceEffect(uint8_t effectId);
 
@@ -517,7 +530,12 @@ class Game
 		Quests quests;
 		GameStore gameStore;
 
+		std::forward_list<Item*> toDecayItems;
+		std::forward_list<Item*> toImbuedItems;
+
 	protected:
+		void checkImbuements();
+
 		bool playerSaySpell(Player* player, SpeakClasses type, const std::string& text);
 		void playerWhisper(Player* player, const std::string& text);
 		bool playerYell(Player* player, const std::string& text);
@@ -536,12 +554,13 @@ class Game
 		std::list<Item*> decayItems[EVENT_DECAY_BUCKETS];
 		std::list<Creature*> checkCreatureLists[EVENT_CREATURECOUNT];
 
-		std::forward_list<Item*> toDecayItems;
+		std::list<Item*> imbuedItems[EVENT_IMBUEMENT_BUCKETS];
 
 		std::vector<Creature*> ToReleaseCreatures;
 		std::vector<Item*> ToReleaseItems;
 
 		size_t lastBucket = 0;
+		size_t lastImbuedBucket = 0;
 
 		WildcardTreeNode wildcardTree { false };
 

@@ -1,4 +1,6 @@
 /**
+ * @file condition.cpp
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -434,17 +436,18 @@ void ConditionAttributes::updatePercentStats(Player* player)
 
 void ConditionAttributes::updateStats(Player* player)
 {
-	bool needUpdateStats = false;
+	bool needUpdate = false;
 
 	for (int32_t i = STAT_FIRST; i <= STAT_LAST; ++i) {
 		if (stats[i]) {
-			needUpdateStats = true;
+			needUpdate = true;
 			player->setVarStats(static_cast<stats_t>(i), stats[i]);
 		}
 	}
 
-	if (needUpdateStats) {
+	if (needUpdate) {
 		player->sendStats();
+		player->sendSkills();
 	}
 }
 
@@ -485,30 +488,25 @@ void ConditionAttributes::endCondition(Creature* creature)
 {
 	Player* player = creature->getPlayer();
 	if (player) {
-		bool needUpdateSkills = false;
+		bool needUpdate = false;
 
 		for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
 			if (skills[i] || skillsPercent[i]) {
-				needUpdateSkills = true;
+				needUpdate = true;
 				player->setVarSkill(static_cast<skills_t>(i), -skills[i]);
 			}
 		}
 
-		if (needUpdateSkills) {
-			player->sendSkills();
-		}
-
-		bool needUpdateStats = false;
-
 		for (int32_t i = STAT_FIRST; i <= STAT_LAST; ++i) {
 			if (stats[i]) {
-				needUpdateStats = true;
+				needUpdate = true;
 				player->setVarStats(static_cast<stats_t>(i), -stats[i]);
 			}
 		}
 
-		if (needUpdateStats) {
+		if (needUpdate) {
 			player->sendStats();
+			player->sendSkills();
 		}
 	}
 
@@ -1258,12 +1256,12 @@ void ConditionDamage::generateDamageList(int32_t amount, int32_t start, std::lis
 	}
 }
 
-void ConditionSpeed::setFormulaVars(float mina, float minb, float maxa, float maxb)
+void ConditionSpeed::setFormulaVars(float NewMina, float NewMinb, float NewMaxa, float NewMaxb)
 {
-	this->mina = mina;
-	this->minb = minb;
-	this->maxa = maxa;
-	this->maxb = maxb;
+	this->mina = NewMina;
+	this->minb = NewMinb;
+	this->maxa = NewMaxa;
+	this->maxb = NewMaxb;
 }
 
 void ConditionSpeed::getFormulaValues(int32_t var, int32_t& min, int32_t& max) const
@@ -1419,9 +1417,9 @@ void ConditionInvisible::endCondition(Creature* creature)
 	}
 }
 
-void ConditionOutfit::setOutfit(const Outfit_t& outfit)
+void ConditionOutfit::setOutfit(const Outfit_t& newOutfit)
 {
-	this->outfit = outfit;
+	this->outfit = newOutfit;
 }
 
 bool ConditionOutfit::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
@@ -1491,11 +1489,11 @@ bool ConditionLight::executeCondition(Creature* creature, int32_t interval)
 
 	if (internalLightTicks >= lightChangeInterval) {
 		internalLightTicks = 0;
-		LightInfo lightInfo = creature->getCreatureLight();
+		LightInfo creatureLightInfo = creature->getCreatureLight();
 
-		if (lightInfo.level > 0) {
-			--lightInfo.level;
-			creature->setCreatureLight(lightInfo);
+		if (creatureLightInfo.level > 0) {
+			--creatureLightInfo.level;
+			creature->setCreatureLight(creatureLightInfo);
 			g_game.changeLight(creature);
 		}
 	}

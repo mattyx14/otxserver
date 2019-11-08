@@ -1,4 +1,6 @@
 ﻿/**
+ * @file items.h
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -17,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_ITEMS_H_4E2221634ABA45FE85BA50F710669B3C
-#define FS_ITEMS_H_4E2221634ABA45FE85BA50F710669B3C
+#ifndef OT_SRC_ITEMS_H_
+#define OT_SRC_ITEMS_H_
 
 #include "const.h"
 #include "enums.h"
@@ -54,6 +56,7 @@ enum ItemTypes_t {
 	ITEM_TYPE_BED,
 	ITEM_TYPE_KEY,
 	ITEM_TYPE_RUNE,
+ 	ITEM_TYPE_SUPPLY,
 	ITEM_TYPE_REWARDCHEST,
 	ITEM_TYPE_CARPET,
 	ITEM_TYPE_LAST,

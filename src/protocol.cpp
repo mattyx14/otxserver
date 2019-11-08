@@ -1,4 +1,6 @@
 /**
+ * @file protocol.cpp
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -25,7 +27,7 @@
 
 extern RSA g_RSA;
 
-void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
+void Protocol::onSendMessage(const OutputMessage_ptr& msg)
 {
 	if (!rawMessages) {
 		msg->writeMessageLength();
@@ -33,9 +35,9 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 		if (encryptionEnabled) {
 			XTEA_encrypt(*msg);
 			if (!compactCrypt) {
-				msg->addCryptoHeader((checksumEnabled ? 1 : 0));
+				msg->addCryptoHeader((checksumEnabled ? 1 : 0), sequenceNumber);
 			} else {
-				msg->addCryptoHeader(2);
+				msg->addCryptoHeader(2, sequenceNumber);
 			}
 		}
 	}
@@ -129,7 +131,7 @@ bool Protocol::XTEA_decrypt(NetworkMessage& msg) const
 		readPos += 4;
 	}
 
-	int innerLength = msg.get<uint16_t>();
+	NetworkMessage::MsgSize_t innerLength = msg.get<uint16_t>();
 	if (innerLength > msg.getLength() - 8) {
 		return false;
 	}
@@ -150,8 +152,8 @@ bool Protocol::RSA_decrypt(NetworkMessage& msg)
 
 uint32_t Protocol::getIP() const
 {
-	if (auto connection = getConnection()) {
-		return connection->getIP();
+	if (auto conn = getConnection()) {
+		return conn->getIP();
 	}
 
 	return 0;

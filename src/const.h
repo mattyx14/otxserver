@@ -1,4 +1,6 @@
 /**
+ * @file const.h
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -17,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_CONST_H_0A49B5996F074465BF44B90F4F780E8B
-#define FS_CONST_H_0A49B5996F074465BF44B90F4F780E8B
+#ifndef OT_SRC_CONST_H_
+#define OT_SRC_CONST_H_
 
 static constexpr int32_t NETWORKMESSAGE_MAXSIZE = 24590;
 
@@ -546,6 +548,9 @@ enum item_t : uint16_t {
 
 	ITEM_TIBIA_COIN = 24774,
 
+	ITEM_EXERCISE_START = 32384,
+	ITEM_EXERCISE_END = 32389,
+
 	/** Casks and Kegs **/
 	ITEM_HEALTH_CASK_START = 28555,
 	ITEM_HEALTH_CASK_END = 28559,
@@ -625,6 +630,7 @@ enum ReloadTypes_t : uint8_t  {
 	RELOAD_TYPE_SPELLS,
 	RELOAD_TYPE_TALKACTIONS,
 	RELOAD_TYPE_WEAPONS,
+	RELOAD_TYPE_IMBUEMENTS,
 };
 
 enum NameEval_t : uint8_t {
@@ -639,9 +645,6 @@ enum NameEval_t : uint8_t {
 static constexpr int32_t CHANNEL_GUILD = 0x00;
 static constexpr int32_t CHANNEL_PARTY = 0x01;
 static constexpr int32_t CHANNEL_PRIVATE = 0xFFFF;
-
-static constexpr int32_t CHANNEL_CAST = 40;
-const std::string LIVE_CAST_CHAT_NAME = "Live Cast Chat";
 
 static constexpr int32_t STORAGEVALUE_PROMOTION = 30018;
 static constexpr int32_t STORAGEVALUE_EMOTE = 30019;

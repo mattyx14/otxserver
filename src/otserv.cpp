@@ -1,4 +1,6 @@
 /**
+ * @file otserv.cpp
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -28,7 +30,6 @@
 #include "configmanager.h"
 #include "scriptmanager.h"
 #include "rsa.h"
-#include "protocolspectator.h"
 #include "protocolold.h"
 #include "protocollogin.h"
 #include "protocolstatus.h"
@@ -71,6 +72,10 @@ void badAllocationHandler()
 
 int main(int argc, char* argv[])
 {
+#ifdef DEBUG_LOG
+	spdlog::set_pattern("[%Y-%d-%m %H:%M:%S.%e] [file %@] [func %!] [thread %t] [%l] %v ");
+	SPDLOG_DEBUG("[OTSERV] SPDLOG LOG DEBUG ENABLED");
+#endif
 	// Setup bad allocation handler
 	std::set_new_handler(badAllocationHandler);
 
@@ -108,7 +113,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 #ifdef _WIN32
 	SetConsoleTitle(STATUS_SERVER_NAME);
 #endif
-	std::cout << "The " << STATUS_SERVER_NAME << " Global - Version: (" << STATUS_SERVER_VERSION << "." << MINOR_VERSION << ")" << std::endl;
+	std::cout << "The " << STATUS_SERVER_NAME << " - Version: (" << STATUS_SERVER_VERSION << ")" << std::endl;
 	std::cout << "Compiled with: " << BOOST_COMPILER << std::endl;
 	std::cout << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
 
@@ -123,12 +128,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 #endif
 	std::cout << std::endl;
 
-	std::cout << "Special Credits for: " << STATUS_SERVER_CREDITS << "." << std::endl;
-	std::cout << "A server developed by " << STATUS_SERVER_CONTRIBUTORS << "." << std::endl;
-	std::cout << "Visit our forum for updates, support, and resources: " << GIT_REPO <<"." << std::endl;
-	std::cout << "For report issues or debugs please acess: " << GIT_ISSUE <<"." << std::endl;
-	std::cout << "List of contributors: " << GIT_CONTRIBUTORS <<"." << std::endl;
-	std::cout << GIT_ISSUE_INFO << std::endl;
+	std::cout << "Visit our forum for updates, support, and resources: https://github.com/mattyx14/otxserver/tree/otxserv4/" << std::endl;
 	std::cout << std::endl;
 
 	// TODO: dirty for now; Use stdarg;
@@ -156,9 +156,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 #endif
 
 	//set RSA key
-	const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
-	const char* q("7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101");
-	g_RSA.setKey(p, q);
+	g_RSA.loadPEM("key.pem");
 
 	std::cout << ">> Establishing database connection..." << std::flush;
 
@@ -209,21 +207,27 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		return;
 	}
 
+	std::cout << ">> Loading lua scripts" << std::endl;
+	if (!g_scripts->loadScripts("scripts", false, false)) {
+		startupErrorMessage("Failed to load lua scripts");
+		return;
+	}
+
 	std::cout << ">> Loading monsters" << std::endl;
 	if (!g_monsters.loadFromXml()) {
 		startupErrorMessage("Unable to load monsters!");
 		return;
 	}
 
-	std::cout << ">> Loading outfits" << std::endl;
-	if (!Outfits::getInstance().loadFromXml()) {
-		startupErrorMessage("Unable to load outfits!");
+	std::cout << ">> Loading lua monsters" << std::endl;
+	if (!g_scripts->loadScripts("monster", false, false)) {
+		startupErrorMessage("Failed to load lua monsters");
 		return;
 	}
 
-	std::cout << ">> Loading lua scripts" << std::endl;
-	if (!g_scripts->loadScripts("scripts", false, false)) {
-		startupErrorMessage("Failed to load lua scripts");
+	std::cout << ">> Loading outfits" << std::endl;
+	if (!Outfits::getInstance().loadFromXml()) {
+		startupErrorMessage("Unable to load outfits!");
 		return;
 	}
 
@@ -256,18 +260,14 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	g_game.setGameState(GAME_STATE_INIT);
 
 	// Game client protocols
-	services->add<ProtocolGame>(g_config.getNumber(ConfigManager::GAME_PORT));
-	if (g_config.getBoolean(ConfigManager::ENABLE_LIVE_CASTING)) {
-		ProtocolGame::clearLiveCastInfo();
-		services->add<ProtocolSpectator>(g_config.getNumber(ConfigManager::LIVE_CAST_PORT));
-	}
-	services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
+	services->add<ProtocolGame>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT)));
+	services->add<ProtocolLogin>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT)));
 
 	// OT protocols
-	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT));
+	services->add<ProtocolStatus>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STATUS_PORT)));
 
 	// Legacy login protocol
-	services->add<ProtocolOld>(g_config.getNumber(ConfigManager::LOGIN_PORT));
+	services->add<ProtocolOld>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT)));
 
 	RentPeriod_t rentPeriod;
 	std::string strRentPeriod = asLowerCaseString(g_config.getString(ConfigManager::HOUSE_RENT_PERIOD));

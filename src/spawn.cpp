@@ -1,4 +1,6 @@
 /**
+ * @file spawn.cpp
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -36,20 +38,20 @@ extern Events* g_events;
 
 static constexpr int32_t MINSPAWN_INTERVAL = 1000;
 
-bool Spawns::loadFromXml(const std::string& filename)
+bool Spawns::loadFromXml(const std::string& fromFilename)
 {
 	if (loaded) {
 		return true;
 	}
 
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(filename.c_str());
+	pugi::xml_parse_result result = doc.load_file(fromFilename.c_str());
 	if (!result) {
-		printXMLError("Error - Spawns::loadFromXml", filename, result);
+		printXMLError("Error - Spawns::loadFromXml", fromFilename, result);
 		return false;
 	}
 
-	this->filename = filename;
+	this->filename = fromFilename;
 	loaded = true;
 
 	for (auto spawnNode : doc.child("spawns").children()) {
@@ -248,13 +250,7 @@ void Spawn::checkSpawn()
 		}
 
 		spawnBlock_t& sb = it.second;
-
-		uint32_t minutes = g_game.getLightHour();
-		bool isday = false;
-		if (minutes >= ((6 * 60) + 30) && minutes <= ((17 * 60) + 30))
-			isday = true;
-
-		if ((sb.mType->info.respawnType == RESPAWN_IN_DAY && !isday) || (sb.mType->info.respawnType == RESPAWN_IN_NIGHT && isday) || (sb.mType->info.respawnType == RESPAWN_IN_DAY_CAVER && !isday && sb.pos.z == 7) || (sb.mType->info.respawnType == RESPAWN_IN_NIGHT_CAVER && isday && sb.pos.z == 7)) {
+		if (!sb.mType->canSpawn(sb.pos)) {
 			sb.lastSpawn = OTSYS_TIME();
 			continue;
 		}
@@ -314,7 +310,7 @@ void Spawn::cleanup()
 	}
 }
 
-bool Spawn::addMonster(const std::string& name, const Position& pos, Direction dir, uint32_t interval)
+bool Spawn::addMonster(const std::string& name, const Position& pos, Direction dir, uint32_t scheduleInterval)
 {
 	MonsterType* mType = g_monsters.getMonsterType(name);
 	if (!mType) {
@@ -322,13 +318,13 @@ bool Spawn::addMonster(const std::string& name, const Position& pos, Direction d
 		return false;
 	}
 
-	this->interval = std::min(this->interval, interval);
+	this->interval = std::min(this->interval, scheduleInterval);
 
 	spawnBlock_t sb;
 	sb.mType = mType;
 	sb.pos = pos;
 	sb.direction = dir;
-	sb.interval = interval;
+	sb.interval = scheduleInterval;
 	sb.lastSpawn = 0;
 
 	uint32_t spawnId = spawnMap.size() + 1;

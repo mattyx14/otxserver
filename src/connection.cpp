@@ -1,4 +1,6 @@
 /**
+ * @file connection.cpp
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -102,9 +104,9 @@ Connection::~Connection()
 	closeSocket();
 }
 
-void Connection::accept(Protocol_ptr protocol)
+void Connection::accept(Protocol_ptr conProtocol)
 {
-	this->protocol = protocol;
+	this->protocol = conProtocol;
 	g_dispatcher.addTask(createTask(std::bind(&Protocol::onConnect, protocol)));
 	connectionState = CONNECTION_STATE_CONNECTING_STAGE2;
 
@@ -286,7 +288,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 	}
 }
 
-void Connection::send(const OutputMessage_ptr& msg)
+void Connection::send(const OutputMessage_ptr& conMsg)
 {
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	if (connectionState == CONNECTION_STATE_DISCONNECTED) {
@@ -294,26 +296,22 @@ void Connection::send(const OutputMessage_ptr& msg)
 	}
 
 	bool noPendingWrite = messageQueue.empty();
-	messageQueue.emplace_back(msg);
+	messageQueue.emplace_back(conMsg);
 	if (noPendingWrite) {
-		internalSend(msg);
+		internalSend(conMsg);
 	}
 }
 
-void Connection::internalSend(const OutputMessage_ptr& msg)
+void Connection::internalSend(const OutputMessage_ptr& conMsg)
 {
-	if (msg->isBroadcastMsg()) {
-		dispatchBroadcastMessage(msg);
-	}
-
-	protocol->onSendMessage(msg);
+	protocol->onSendMessage(conMsg);
 	try {
 		writeTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_WRITE_TIMEOUT));
 		writeTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
 			std::placeholders::_1));
 
 		boost::asio::async_write(socket,
-			boost::asio::buffer(msg->getOutputBuffer(), msg->getLength()),
+			boost::asio::buffer(conMsg->getOutputBuffer(), conMsg->getLength()),
 			std::bind(&Connection::onWriteOperation, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
 		std::cout << "[Network error - Connection::internalSend] " << e.what() << std::endl;
@@ -333,29 +331,6 @@ uint32_t Connection::getIP()
 	}
 
 	return htonl(endpoint.address().to_v4().to_ulong());
-}
-
-void Connection::dispatchBroadcastMessage(const OutputMessage_ptr& msg)
-{
-	auto msgCopy = OutputMessagePool::getOutputMessage();
-	msgCopy->append(msg);
-	socket.get_io_service().dispatch(std::bind(&Connection::broadcastMessage, shared_from_this(), msgCopy));
-}
-
-void Connection::broadcastMessage(OutputMessage_ptr msg)
-{
-	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
-	const auto client = std::dynamic_pointer_cast<ProtocolGame>(protocol);
-	if (client) {
-		std::lock_guard<decltype(client->liveCastLock)> lockGuard(client->liveCastLock);
-
-		const auto& spectators = client->getLiveCastSpectators();
-		for (const ProtocolSpectator_ptr& spectator : spectators) {
-			auto newMsg = OutputMessagePool::getOutputMessage();
-			newMsg->append(msg);
-			spectator->send(std::move(newMsg));
-		}
-	}
 }
 
 void Connection::onWriteOperation(const boost::system::error_code& error)

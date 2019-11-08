@@ -1,4 +1,6 @@
 /**
+ * @file protocol.h
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -17,15 +19,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_PROTOCOL_H_D71405071ACF4137A4B1203899DE80E1
-#define FS_PROTOCOL_H_D71405071ACF4137A4B1203899DE80E1
+#ifndef OT_SRC_PROTOCOL_H_
+#define OT_SRC_PROTOCOL_H_
 
 #include "connection.h"
 
 class Protocol : public std::enable_shared_from_this<Protocol>
 {
 	public:
-		explicit Protocol(Connection_ptr connection) : connection(connection) {}
+		explicit Protocol(Connection_ptr initConnection) : connection(initConnection) {}
 		virtual ~Protocol() = default;
 
 		// non-copyable
@@ -34,7 +36,7 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 
 		virtual void parsePacket(NetworkMessage&) {}
 
-		virtual void onSendMessage(const OutputMessage_ptr& msg) const;
+		virtual void onSendMessage(const OutputMessage_ptr& msg);
 		void onRecvMessage(NetworkMessage& msg);
 		virtual void onRecvFirstMessage(NetworkMessage& msg) = 0;
 		virtual void onConnect() {}
@@ -57,22 +59,22 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		}
 
 		void send(OutputMessage_ptr msg) const {
-			if (auto connection = getConnection()) {
-				connection->send(msg);
+			if (auto conn = getConnection()) {
+				conn->send(msg);
 			}
 		}
 
 	protected:
 		void disconnect() const {
-			if (auto connection = getConnection()) {
-				connection->close();
+			if (auto conn = getConnection()) {
+				conn->close();
 			}
 		}
 		void enableXTEAEncryption() {
 			encryptionEnabled = true;
 		}
-		void setXTEAKey(const uint32_t* key) {
-			memcpy(this->key, key, sizeof(*key) * 4);
+		void setXTEAKey(const uint32_t* newKey) {
+			memcpy(this->key, newKey, sizeof(*newKey) * 4);
 		}
 		void disableChecksum() {
 			checksumEnabled = false;
@@ -99,6 +101,7 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 	private:
 		const ConnectionWeak_ptr connection;
 		uint32_t key[4] = {};
+		uint32_t sequenceNumber = 0;
 		bool encryptionEnabled = false;
 		bool checksumEnabled = true;
 		bool compactCrypt = false;

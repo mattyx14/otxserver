@@ -1,4 +1,6 @@
 /**
+ * @file tools.cpp
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -665,6 +667,9 @@ ShootTypeNames shootTypeNames = {
 	{"whirlwindsword",		CONST_ANI_WHIRLWINDSWORD},
 	{"whirlwindaxe",		CONST_ANI_WHIRLWINDAXE},
 	{"whirlwindclub",		CONST_ANI_WHIRLWINDCLUB},
+	{"diamondarrow",		CONST_ANI_DIAMONDARROW},
+	{"spectralbolt",		CONST_ANI_SPECTRALBOLT},
+	{"royalstar",			CONST_ANI_ROYALSTAR},
 };
 
 CombatTypeNames combatTypeNames = {
@@ -707,6 +712,9 @@ AmmoTypeNames ammoTypeNames = {
 	{"shiverarrow",			AMMO_ARROW},
 	{"throwingstar",		AMMO_THROWINGSTAR},
 	{"throwingknife",		AMMO_THROWINGKNIFE},
+	{"diamondarrow",		AMMO_ARROW},
+	{"spectralbolt",		AMMO_BOLT},
+
 };
 
 WeaponActionNames weaponActionNames = {
@@ -728,9 +736,9 @@ SkullNames skullNames = {
 SpawnTypeNames spawnTypeNames = {
 	{"all",					RESPAWN_IN_ALL },
 	{"day",					RESPAWN_IN_DAY },
-	{"dayandcave",			RESPAWN_IN_DAY_CAVER },
+	{"dayandcave",			RESPAWN_IN_DAY_CAVE },
 	{"night",				RESPAWN_IN_NIGHT },
-	{"nightandcave",		RESPAWN_IN_NIGHT_CAVER },
+	{"nightandcave",		RESPAWN_IN_NIGHT_CAVE },
 };
 
 MagicEffectClasses getMagicEffect(const std::string& strValue)
@@ -758,6 +766,15 @@ std::string getCombatName(CombatType_t combatType)
 		return combatName->second;
 	}
 	return "unknown";
+}
+
+CombatType_t getCombatType(const std::string& combatname)
+{
+	auto it = std::find_if(combatTypeNames.begin(), combatTypeNames.end(), [combatname](std::pair<CombatType_t, std::string> const& pair) {
+		return pair.second == combatname;
+	});
+
+	return it != combatTypeNames.end() ? it->first : COMBAT_NONE;
 }
 
 Ammo_t getAmmoType(const std::string& strValue)

@@ -1,4 +1,6 @@
 ﻿/**
+ * @file items.cpp
+ * 
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -311,7 +313,11 @@ bool Items::loadFromXml()
 
 		pugi::xml_attribute fromIdAttribute = itemNode.attribute("fromid");
 		if (!fromIdAttribute) {
-			std::cout << "[Warning - Items::loadFromXml] No item id found" << std::endl;
+			if (idAttribute) {
+				std::cout << "[Warning - Items::loadFromXml] No item id (" << idAttribute.value() << ") found" << std::endl;
+			} else {
+				std::cout << "[Warning - Items::loadFromXml] No item id found" << std::endl;
+			}
 			continue;
 		}
 
@@ -424,6 +430,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				it.type = ITEM_TYPE_BED;
 			} else if (tmpStrValue == "rune") {
 				it.type = ITEM_TYPE_RUNE;
+			} else if (tmpStrValue == "supply") {
+				it.type = ITEM_TYPE_SUPPLY;
 			} else {
 				std::cout << "[Warning - Items::parseItemNode] Unknown type: " << valueAttribute.as_string() << std::endl;
 			}
