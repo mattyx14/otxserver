@@ -220,7 +220,7 @@
     <ClCompile Include="..\src\wildcardtree.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="TheForgottenServer.rc" />
+    <ResourceCompile Include="otxserver.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\account.h" />
