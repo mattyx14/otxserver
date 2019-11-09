@@ -2,7 +2,7 @@ os: Visual Studio 2015
 
 branches:
   only:
-    - otxserv3
+    - otxserv4
 
 platform:
   - Win32
