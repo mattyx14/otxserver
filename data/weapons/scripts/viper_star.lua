@@ -21,9 +21,7 @@ function onUseWeapon(player, variant)
 
 	local target = variant:getNumber()
 	if target ~= 0 then
-		if math.random(1, 100) > 90 then
-			boolean = secondCombat:execute(player, variant)
-		end
+		boolean = secondCombat:execute(player, variant)
 	end
 	return boolean
 end

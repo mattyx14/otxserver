@@ -1,6 +1,7 @@
 -- Advanced NPC System by Jiddo
 
 if KeywordHandler == nil then
+
 	KeywordNode = {
 		keywords = nil,
 		callback = nil,
@@ -218,7 +219,6 @@ if KeywordHandler == nil then
 		if steps == nil or type(steps) ~= "number" then
 			steps = 1
 		end
-
 		for i = 1, steps do
 			if self.lastNode[cid] == nil then
 				return nil
