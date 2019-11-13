@@ -1303,14 +1303,14 @@ function doPlayerTakeItem(cid, itemid, count)
 	return Player(cid):removeItem(itemid, count)
 end
 
--- CASAMENTO MARRY
-
+-- MARRY
 function getPlayerNameById(id)
-local resultName = db.storeQuery("SELECT `name` FROM `players` WHERE `id` = " .. db.escapeString(id))
-if resultName ~= false then
-local name = result.getDataString(resultName, "name")
-result.free(resultName)
-return name
-end
-return 0
+	local resultName = db.storeQuery("SELECT `name` FROM `players` WHERE `id` = " .. db.escapeString(id))
+	if resultName ~= false then
+		local name = result.getDataString(resultName, "name")
+		result.free(resultName)
+		return name
+	end
+
+	return 0
 end
