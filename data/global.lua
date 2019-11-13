@@ -98,8 +98,6 @@ damageImpact = {} -- global table to insert data
 -- New prey => preyTimeLeft
 nextPreyTime = {}
 
-
-  --
 local start = os.time()
 local linecount = 0
 debug.sethook(function(event, line)
@@ -113,7 +111,6 @@ debug.sethook(function(event, line)
         start = os.time()
     end
 end, "l")
- --
 
 function doCreatureSayWithRadius(cid, text, type, radiusx, radiusy, position)
 	if not position then
@@ -302,87 +299,14 @@ end
 
 -- The following 2 functions can be used for delayed shouted text
 function say(param)
-selfSay(text)
-doCreatureSay(param.cid, param.text, 1)
+	selfSay(text)
+	doCreatureSay(param.cid, param.text, 1)
 end
 
 function delayedSay(text, delay)
-local delay = delay or 0
-local cid = getNpcCid()
-addEvent(say, delay, {cid = cid, text = text})
-end
-
-function functionRevert()
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Corrupted, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Desert, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Dimension, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Grass, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Ice, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Mushroom, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Roshamuul, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.Venom, 0)
-Game.setStorageValue(GlobalStorage.FerumbrasAscendantQuest.Habitats.AllHabitats, 0)
-for a = 1, #basins do
-	local item = Tile(basins[a].pos):getItemById(24852)
-	item:transform(12070)
-end
-local specs, spec = Game.getSpectators(Position(33629, 32693, 12), false, false, 25, 25, 85, 85)
-for i = 1, #specs do
-	spec = specs[i]
-	if spec:isPlayer() then
-		spec:teleportTo(Position(33630, 32648, 12))
-		spec:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-		spec:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You were teleported because the habitats are returning to their original form.')
-	elseif spec:isMonster() then
-		spec:remove()
-	end
-end
-for x = 33611, 33625 do
-	for y = 32658, 32727 do
-		local position = Position(x, y, 12)
-		local tile = Tile(position)
-		if not tile then
-			return
-		end
-		local ground = tile:getGround()
-		if not ground then
-			return
-		end
-		ground:remove()
-		local items = tile:getItems()
-		if items then
-			for i = 1, #items do
-				local item = items[i]
-				item:remove()
-			end
-		end
-	end
-end
-
-for x = 33634, 33648 do
-	for y = 32658, 32727 do
-		local position = Position(x, y, 12)
-		local tile = Tile(position)
-		if not tile then
-			return
-		end
-		local ground = tile:getGround()
-		if not ground then
-			return
-		end
-		ground:remove()
-		local items = tile:getItems()
-		if items then
-			for i = 1, #items do
-				local item = items[i]
-				item:remove()
-			end
-		end
-	end
-end
-
-Game.loadMap('data/world/worldchanges/habitats.otbm')
-return true
+	local delay = delay or 0
+	local cid = getNpcCid()
+	addEvent(say, delay, {cid = cid, text = text})
 end
 
 function getLootRandom()
