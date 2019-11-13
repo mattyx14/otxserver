@@ -1,3 +1,4 @@
+-- https://github.com/opentibiabr/OTServBR-Global/
 local function _spawnNPCs()
   for i = 1,#mapNpcs do
     local npc = mapNpcs[i]
@@ -17,4 +18,3 @@ function onStartup()
     print('Advanced NPC spawn system | All NPCs will be loaded trough lib, instead of spawn.xml. Keep in mind, all your NPCs should be working, neighter the system will have a breakpoint.')
     return true
 end
---https://github.com/opentibiabr/OTServBR-Global
