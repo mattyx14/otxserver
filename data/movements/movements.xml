@@ -10,10 +10,6 @@
 	<movevent event="AddItem" tileitem="1" itemid="1387" script="others/itemTeleports.lua" />
 	<movevent event="AddItem" tileitem="1" itemid="8058" script="others/itemTeleports.lua" />
 
-	<!-- The Sharttered Isles Quest -->
-	<movevent event="StepIn" actionid="12585" script="quests/the sharttered isles/teleport.lua" />
-	<movevent event="StepIn" actionid="4000" script="quests/the sharttered isles/energyBarrier.lua" />
-
 	<!-- Threatened Dreams -->
 	<movevent event="Equip" itemid="29003" slot="ring" level="50" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="29003" slot="ring" function="onDeEquipItem" />
