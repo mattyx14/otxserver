@@ -1,7 +1,6 @@
 ---- if you want protected corpses (10 second protection after monster being killed) to be skinned/dusted, delete '--#' in the appropriate lines; be careful, it may cause abuses ----
 local config = {
 	[5908] = {
-
 		-- rabbits
 		[2992] = {value = 25000, newItem = 13159, after = 2993},
 --#		[6017] = {value = 25000, newItem = 13159, after = 2993}, -- after being killed
@@ -98,30 +97,6 @@ local config = {
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local skin = config[item.itemid][target.itemid]
-
-	-- Wrath of the emperor quest
-	if item.itemid == 5908 and target.itemid == 12295 then
-		target:transform(12287)
-		player:say("You carve a solid bowl of the chunk of wood.", TALKTYPE_MONSTER_SAY)
-	-- An Interest In Botany Quest
-	elseif item.itemid == 5908 and target.itemid == 11691 and player:getItemCount(12655) > 0 and player:getStorageValue(Storage.TibiaTales.AnInterestInBotany) == 1 then
-		player:say("The plant feels cold but dry and very soft. You streak the plant gently with your knife and put a fragment in the almanach.", TALKTYPE_MONSTER_SAY)
-		player:setStorageValue(Storage.TibiaTales.AnInterestInBotany, 2)
-	elseif item.itemid == 5908 and target.itemid == 11653 and player:getItemCount(12655) > 0 and player:getStorageValue(Storage.TibiaTales.AnInterestInBotany) == 2 then
-		player:say("You cut a leaf from a branch and put it in the almanach. It smells strangely sweet and awfully bitter at the same time.", TALKTYPE_MONSTER_SAY)
-		player:setStorageValue(Storage.TibiaTales.AnInterestInBotany, 3)
-
-	elseif item.itemid == 5908 and target.itemid == 9009 and player:getStorageValue(789100) <= 1 then
-		player:say("You got Neutral matter.", TALKTYPE_MONSTER_SAY)
-		player:addItem(8310, 1)
-		player:setStorageValue(789100, 1)
-
-	elseif item.itemid == 5908 and target.itemid == 9010 and player:getStorageValue(789100) <= 1 then
-		player:say("You got Neutral matter.", TALKTYPE_MONSTER_SAY)
-		player:addItem(8310, 1)
-		player:setStorageValue(789100, 2)
-	end
-
 	if not skin then
 		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return true
@@ -177,7 +152,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			effect = CONST_ME_POFF
 		end
 	end
-	-- SE BUGAR, PEGAR SCRIPT ANTIGO
+
 	toPosition:sendMagicEffect(effect)
 	if transform then
 		target:transform(skin.after or target:getType():getDecayId() or target.itemid + 1)
