@@ -109,6 +109,14 @@ coinImagesURL = "http://localhost/images/store/"
 classicAttackSpeed = false
 showScriptsLogInConsole = false
 
+-- Server Save
+-- NOTE: serverSaveNotifyDuration in minutes
+serverSaveNotifyMessage = true
+serverSaveNotifyDuration = 5
+serverSaveCleanMap = true
+serverSaveClose = false
+serverSaveShutdown = true
+
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
 rateExp = 5

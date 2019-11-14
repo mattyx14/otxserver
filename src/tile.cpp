@@ -630,12 +630,6 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t tileF
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 
-		if (hasFlag(TILESTATE_PROTECTIONZONE) || !hasFlag(TILESTATE_PROTECTIONZONE)) {
-			if (item->getWeight() >= 1000000) {
-				return RETURNVALUE_NOTPOSSIBLE;
-			}
-		}
-
 		if (hasBitSet(FLAG_NOLIMIT, tileFlags)) {
 			return RETURNVALUE_NOERROR;
 		}
@@ -851,12 +845,6 @@ void Tile::addThing(int32_t, Thing* thing)
 		TileItemVector* items = getItemList();
 		if (items && items->size() >= 0xFFFF) {
 			return /*RETURNVALUE_NOTPOSSIBLE*/;
-		}
-
-		if (hasFlag(TILESTATE_PROTECTIONZONE) || !hasFlag(TILESTATE_PROTECTIONZONE)) {
-			if (item->getWeight() >= 1000000) {
-				return /*RETURNVALUE_NOTPOSSIBLE*/;
-			}
 		}
 
 		item->setParent(this);
@@ -1438,6 +1426,30 @@ void Tile::postRemoveNotification(Thing* thing, const Cylinder* newParent, int32
 void Tile::internalAddThing(Thing* thing)
 {
 	internalAddThing(0, thing);
+	if (!thing->getParent()) {
+		return;
+	}
+
+	if (HouseTile* houseTile = dynamic_cast<HouseTile*>(thing->getTile())) {
+		if (Item* item = thing->getItem()) {
+			if (item->getParent() != this) {
+				return;
+			}
+
+			Door* door = item->getDoor();
+			House* house = houseTile->getHouse();
+			if (door) {
+				if (door->getDoorId() != 0) {
+					house->addDoor(door);
+				}
+			} else {
+				BedItem* bed = item->getBed();
+				if (bed) {
+					house->addBed(bed);
+				}
+			}
+		}
+	}
 }
 
 void Tile::internalAddThing(uint32_t, Thing* thing)
@@ -1467,12 +1479,6 @@ void Tile::internalAddThing(uint32_t, Thing* thing)
 		TileItemVector* items = makeItemList();
 		if (items->size() >= 0xFFFF) {
 			return /*RETURNVALUE_NOTPOSSIBLE*/;
-		}
-
-		if (hasFlag(TILESTATE_PROTECTIONZONE) || !hasFlag(TILESTATE_PROTECTIONZONE)) {
-			if (item->getWeight() >= 1000000) {
-				return /*RETURNVALUE_NOTPOSSIBLE*/;
-			}
 		}
 
 		if (itemType.alwaysOnTop) {
@@ -1642,19 +1648,6 @@ HouseTile::HouseTile(int32_t initX, int32_t initY, int32_t initZ, House* initHou
 void HouseTile::addThing(int32_t index, Thing* thing)
 {
 	Tile::addThing(index, thing);
-
-	if (!thing->getParent()) {
-		return;
-	}
-
-	if (Item* item = thing->getItem()) {
-		updateHouse(item);
-	}
-}
-
-void HouseTile::internalHouseAddThing(uint32_t index, Thing* thing)
-{
-	Tile::internalAddThing(index, thing);
 
 	if (!thing->getParent()) {
 		return;

@@ -129,6 +129,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	std::cout << std::endl;
 
 	std::cout << "Visit our forum for updates, support, and resources: https://github.com/mattyx14/otxserver/tree/otxserv4/" << std::endl;
+	std::cout << "Special Credits for: " << STATUS_SERVER_CREDITS << "." << std::endl;
 	std::cout << std::endl;
 
 	// TODO: dirty for now; Use stdarg;

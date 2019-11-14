@@ -5623,7 +5623,7 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 			return;
 		}
 
-		if (it.id == ITEM_TIBIA_COIN) {
+		if (it.id == ITEM_STORE_COIN) {
 			if (amount > IOAccount::getCoinBalance(player->getAccount())) {
 				return;
 			}
@@ -5722,7 +5722,7 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			return;
 		}
 
-		if (it.id == ITEM_TIBIA_COIN) {
+		if (it.id == ITEM_STORE_COIN) {
 			IOAccount::addCoins(player->getAccount(), offer.amount);
 		}
 		else if (it.stackable) {
@@ -5817,7 +5817,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			}
 		}
 
-		if (it.id == ITEM_TIBIA_COIN) {
+		if (it.id == ITEM_STORE_COIN) {
 			if (amount > IOAccount::getCoinBalance(player->getAccount())) {
 				return;
 			}
@@ -5850,7 +5850,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		}
 		player->setBankBalance(player->getBankBalance() + totalPrice);
 
-		if (it.id == ITEM_TIBIA_COIN) {
+		if (it.id == ITEM_STORE_COIN) {
 			IOAccount::addCoins(buyerPlayer->getAccount(), amount);
 			IOAccount::registerTransaction(buyerPlayer->getAccount(), amount, "Purchased on Market");
 		}else if (it.stackable) {
@@ -5902,7 +5902,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			g_game.removeMoney(player, remainsPrice);
 		}
 
-		if (it.id == ITEM_TIBIA_COIN) {
+		if (it.id == ITEM_STORE_COIN) {
 			IOAccount::addCoins(player->getAccount(), amount);
 			IOAccount::registerTransaction(player->getAccount(), amount, "Purchased on Market");
 		} else if (it.stackable) {
@@ -5937,12 +5937,12 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		Player* sellerPlayer = getPlayerByGUID(offer.playerId);
 		if (sellerPlayer) {
 			sellerPlayer->setBankBalance(sellerPlayer->getBankBalance() + totalPrice);
-			if (it.id == ITEM_TIBIA_COIN) {
+			if (it.id == ITEM_STORE_COIN) {
 				IOAccount::registerTransaction(sellerPlayer->getAccount(), -amount, "Sold on Market");
 			}
 		} else {
 			IOLoginData::increaseBankBalance(offer.playerId, totalPrice);
-			if (it.id == ITEM_TIBIA_COIN) {
+			if (it.id == ITEM_STORE_COIN) {
 				sellerPlayer = new Player(nullptr);
 				if (IOLoginData::loadPlayerById(sellerPlayer, offer.playerId)) {
 					IOAccount::registerTransaction(sellerPlayer->getAccount(), -amount, "Sold on Market");
@@ -5950,7 +5950,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 				delete sellerPlayer;
 			}
 		}
-		if (it.id != ITEM_TIBIA_COIN) {
+		if (it.id != ITEM_STORE_COIN) {
 			player->onReceiveMail();
 		}
 	}
