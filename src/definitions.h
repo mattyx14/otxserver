@@ -24,7 +24,7 @@
 
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "4";
-static constexpr auto STATUS_SERVER_CREDITS = "OTX Server is a base: OTServBR Server and The Forgotten Server.";
+static constexpr auto STATUS_SERVER_CREDITS = "OTServBR Server, The Forgotten Server and Contributors";
 
 static constexpr auto CLIENT_VERSION_MIN = 1100;
 static constexpr auto CLIENT_VERSION_MAX = 1200;
