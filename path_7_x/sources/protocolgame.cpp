@@ -2358,7 +2358,13 @@ void ProtocolGame::AddPlayerStats(OutputMessage_ptr msg)
 	msg->addByte(0xA0);
 	msg->add<uint16_t>(player->getHealth());
 	msg->add<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
-	msg->add<uint16_t>(int32_t(player->getFreeCapacity()));
+	
+	uint16_t capacity = uint16_t(player->getFreeCapacity());
+	if (capacity >= INT16_MAX)
+		msg->add<uint16_t>(INT16_MAX);
+	else 
+		msg->add<uint16_t>(capacity);
+	
 	uint32_t experience = player->getExperience();
 	if(experience > 0x7FFFFFFF) // client debugs after 2,147,483,647 exp
 		msg->add<uint32_t>(0x7FFFFFFF);

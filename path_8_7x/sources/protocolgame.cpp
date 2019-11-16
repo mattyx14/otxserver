@@ -2689,7 +2689,11 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	msg->put<char>(0xA0);
 	msg->put<uint16_t>(player->getHealth());
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
-	msg->put<uint32_t>(uint32_t(player->getFreeCapacity() * 100));
+	uint32_t capacity = uint32_t(player->getFreeCapacity() * 100);
+	if (capacity >= INT32_MAX)
+		msg->add<uint32_t>(INT32_MAX);
+	else 
+		msg->add<uint32_t>(capacity);
 
 	uint64_t experience = player->getExperience();
 	msg->put<uint64_t>(experience);
