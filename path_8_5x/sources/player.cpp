@@ -1646,10 +1646,11 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 		return;
 
 	client->clear(true);
+	lastLogout = time(NULL);
+	
 	if(isLogout)
 	{
 		loginPosition = getPosition();
-		lastLogout = time(NULL);
 	}
 
 	Item* item = NULL;
