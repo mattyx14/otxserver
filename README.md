@@ -33,7 +33,10 @@ With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more .
 - [otland/forgottenserver](https://github.com/otland/forgottenserver) and contributors.
 - if we forget someone, we apologize by forgot you. but you know, **forgot**tenserver.
 
-### Contact:
-Facebook: https://www.facebook.com/Mattyx14/
-E-mail: darkylive@live.com.mx
-Whatsapp: +5213173832937
+### Contacts:
+- <b>Matty(English & Spanish):</b><br>
+Facebook: https://www.facebook.com/Mattyx14/<br>
+E-mail: darkylive@live.com.mx<br>
+Whatsapp: +5213173832937<br><br>
+- <b>Reason(English & Portuguese):</b><br>
+Discord: Reason#2913
