@@ -39,7 +39,10 @@ Base Extended [Base10/11 - AKA:12.03.7790](https://github.com/opentibiabr/tools/
 MapEditor compatible ...
 * Base to lasted source from [Hampus Joakim Nilsson](https://github.com/hjnilsson/rme): [Remere's Map Editor - Edited by Mattyx14](https://mega.nz/#!8QRHxIpK!vag-xjbyYtcV2CF2Tnl5AfXkq5YZXUcP6fbqwswwEU0)
 
-### Contact:
-Facebook: https://www.facebook.com/Mattyx14/
-E-mail: darkylive@live.com.mx
-Whatsapp: +5213173832937
+### Contacts:
+- <b>Matty(English & Spanish):</b><br>
+Facebook: https://www.facebook.com/Mattyx14/<br>
+E-mail: darkylive@live.com.mx<br>
+Whatsapp: +5213173832937<br><br>
+- <b>Reason(English & Portuguese):</b><br>
+Discord: Reason#2913
