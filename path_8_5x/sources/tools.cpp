@@ -1756,6 +1756,10 @@ bool parseIntegerVec(std::string str, IntegerVec& intVector)
 	for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
 	{
 		tmpIntVector = vectorAtoi(explodeString((*it), "-"));
+		
+		if (tmpIntVector.size() == 0)
+			return false;
+		
 		if(!tmpIntVector[0] && it->substr(0, 1) != "0")
 			continue;
 
