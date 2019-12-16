@@ -10929,6 +10929,14 @@ int32_t LuaInterface::luaL_domodlib(lua_State* L)
 {
 	//domodlib(lib)
 	std::string name = asLowerCaseString(popString(L));
+	
+	if (!checkFile(name))
+	{
+		error(NULL, "[Error - LuaInterface::loadFile] The file '" + name + "' does not exist!");
+		lua_pushboolean(L, false);
+		return 1;
+	}
+	
 	for(LibMap::iterator it = ScriptManager::getInstance()->getFirstLib();
 		it != ScriptManager::getInstance()->getLastLib(); ++it)
 	{

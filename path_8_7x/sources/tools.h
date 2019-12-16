@@ -72,6 +72,11 @@ inline T fromString(const std::string& s)
 	return t;
 }
 
+inline bool checkFile(const std::string& name) {
+	struct stat buffer;
+	return (stat(name.c_str(), &buffer) == 0);
+}
+
 void trim_right(std::string& source, const std::string& t);
 void trim_left(std::string& source, const std::string& t);
 std::string trimString(std::string& str);
