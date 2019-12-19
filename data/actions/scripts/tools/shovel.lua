@@ -1,18 +1,11 @@
-local config = {
-    swampId = {20230, 18589, 18584, 18141}, -- ids dos tiles de swamp que pode ser usado a shovel
-    itemGain = {{itemId = 2818, quantGain = 1}, -- itemid que ganha, e quantidade maxima do msm.
-                {itemId = 2145, quantGain = 3},
-                {itemId = 20138, quantGain = 1}
-                }
-}
-
 local exhausth = 3600 --em quantos segundos podera usar denovo
 local holes = {468, 481, 483, 7932, 23712}
 local pools = {2016, 2017, 2018, 2019, 2020, 2021, 2025, 2026, 2027, 2028, 2029, 2030}
 function onUse(cid, item, fromPosition, itemEx, toPosition)
-if isInArray(pools, itemEx.itemid) then
+	if isInArray(pools, itemEx.itemid) then
         itemEx = Tile(toPosition):getGround()
     end
+
 	if targetId == 23712 then
 		target:transform(23713)
 		addEvent(revertItem, 30 * 1000, toPosition, 23713, 23712)

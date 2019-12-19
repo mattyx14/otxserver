@@ -44,10 +44,6 @@ function onLogin(player)
 
 	player:loadSpecialStorage()
 
-	if (player:getGroup():getId() >= 4) then
-		player:setGhostMode(true)
-	end
-
 	-- Stamina
 	nextUseStaminaTime[playerId] = 1
 
@@ -154,5 +150,6 @@ function onLogin(player)
 	if player:getStorageValue(Storage.isTraining) == 1 then -- redefinir storage de exercise weapon
 		player:setStorageValue(Storage.isTraining,0)
 	end
+
 	return true
 end
