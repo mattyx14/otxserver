@@ -1,6 +1,4 @@
 /**
- * @file imbuements.cpp
- * 
  * Credits: Yamaken
  * Credits: Cjaker
  * Rewritten and adapted: LucasCPrazeres
