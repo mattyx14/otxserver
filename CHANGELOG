@@ -68,10 +68,10 @@
 				https://github.com/mattyx14/otxserver/graphs/contributors/
 
 	DEVELOPMENT STATUS
-		STARTED AND ON
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 3.10
 
 	PROTOCOL SUPPORTED
-		Version Clients - 7.7 to "10_11"
+		Version Clients - 7.7 to "8.6"
 
 	BUGS
 		https://github.com/mattyx14/otxserver/issues/
@@ -106,7 +106,7 @@
 	- Add support to skullSystem and ruleViolations to 7.x
 	- Clean and formated items-monsters(files)-spells.xml
 	- Drop commands support in favor of talkactions (TFT)
-	- Drop client 10_9 - 8_7
+	- Drop client 10_X - 8_7
 	- Dropped version 3.9 and changed to 3.10
 	- Fix critical damage calculations (OTXS-C)
 	- Fix MoveItem and storeInbox on 10.x (Eternal-Scripts)
