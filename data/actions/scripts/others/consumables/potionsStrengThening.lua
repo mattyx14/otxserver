@@ -33,7 +33,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		end
 	end
 
-	player:addAchievementProgress('Potion Addict', 100000)
+	-- player:addAchievementProgress('Potion Addict', 100000)
 	player:addCondition(useItem)
 	player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
 

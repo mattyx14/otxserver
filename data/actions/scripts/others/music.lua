@@ -35,7 +35,7 @@ local MusicEffect = {
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	player:addAchievementProgress('Rockstar', 10000)
+	-- player:addAchievementProgress('Rockstar', 10000)
 	item:getPosition():sendMagicEffect(MusicEffect[item.itemid])
 	return true
 end

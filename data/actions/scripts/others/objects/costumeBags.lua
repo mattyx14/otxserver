@@ -11,7 +11,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
     player:sendTextMessage(MESSAGE_STATUS_DEFAULT, 'You will stay 5 minutes transformed in a monster!')
 	doSetMonsterOutfit(player, monsterNames[math.random(#monsterNames)], 300 * 1000)
-	player:addAchievementProgress('Masquerader', 100)
+	-- player:addAchievementProgress('Masquerader', 100)
 	item:getPosition():sendMagicEffect(36)
 	item:remove()
 	return true

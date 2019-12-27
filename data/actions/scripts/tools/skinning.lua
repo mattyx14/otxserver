@@ -136,7 +136,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	elseif random <= skin.value then
 		if isInArray({7441, 7442, 7444, 7445}, target.itemid) then
 			if skin.newItem == 7446 then
-				player:addAchievement('Ice Sculptor')
+				-- player:addAchievement('Ice Sculptor')
 			end
 			target:transform(skin.newItem, 1)
 			effect = CONST_ME_HITAREA

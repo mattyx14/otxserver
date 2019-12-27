@@ -90,9 +90,11 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	-- add Achievements
-	if(achievementChest[item.actionid])then
-		player:addAchievement(achievementChest[item.actionid])
-	end
+	--[[
+		if(achievementChest[item.actionid])then
+			player:addAchievement(achievementChest[item.actionid])
+		end
+	]]
 
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You have found ' .. result .. '.')
 	player:setStorageValue(storage, 1)

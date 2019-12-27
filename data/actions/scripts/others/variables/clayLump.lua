@@ -26,10 +26,12 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 				item:setDescription(tmpItem.description:gsub('|PLAYERNAME|', player:getName()))
 			end
 
+--[[
 			if tmpItem.achievement then
-				player:addAchievement('Clay Fighter')
-				player:addAchievementProgress('Clay to Fame', 5)
+				--player:addAchievement('Clay Fighter')
+				-- player:addAchievementProgress('Clay to Fame', 5)
 			end
+]]
 
 			break
 		end

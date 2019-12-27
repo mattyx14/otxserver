@@ -26,7 +26,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	else
 		item:transform(kit)
 		fromPosition:sendMagicEffect(CONST_ME_POFF)
-		player:addAchievementProgress('Interior Decorator', 1000)
+		-- player:addAchievementProgress('Interior Decorator', 1000)
 	end
 	return true
 end

@@ -98,7 +98,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			potion.combat:execute(target, Variant(target:getId()))
 		end
 
-		player:addAchievementProgress('Potion Addict', 100000)
+		-- player:addAchievementProgress('Potion Addict', 100000)
 		target:say("Aaaah...", TALKTYPE_MONSTER_SAY)
 		player:addItem(potion.flask, 1)
 		player:addCondition(exhaust)

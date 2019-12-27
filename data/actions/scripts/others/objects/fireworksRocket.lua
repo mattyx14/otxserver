@@ -8,7 +8,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		player:say("Ouch! Rather place it on the ground next time.", TALKTYPE_MONSTER_SAY)
 		player:addHealth(-10)
 	end
-	player:addAchievementProgress('Fireworks in the Sky', 250)
+	-- player:addAchievementProgress('Fireworks in the Sky', 250)
 	item:remove()
 	return true
 end
