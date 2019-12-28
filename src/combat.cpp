@@ -231,9 +231,11 @@ ReturnValue Combat::canTargetCreature(Player* player, Creature* target)
 
 ReturnValue Combat::canDoCombat(Creature* caster, Tile* tile, bool aggressive)
 {
+/*
 	if (tile->hasProperty(CONST_PROP_BLOCKPROJECTILE)) {
 		return RETURNVALUE_NOTENOUGHROOM;
 	}
+*/
 
 	if (tile->hasFlag(TILESTATE_FLOORCHANGE)) {
 		return RETURNVALUE_NOTENOUGHROOM;
