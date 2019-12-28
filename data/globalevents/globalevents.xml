@@ -17,8 +17,6 @@
 	<globalevent name="npcsSpawn" type="startup" script="server/npcsSpawn.lua"/>
 
 	<!-- DarkKonia Scripts -->
-	<!-- Demon Oak Quest -->
-	<globalevent name="DemonOakVoices" interval="15000" script="demon oak quest/voices.lua" />
 	<!-- OTX Systems -->
 		<!-- Modified Scripts from TFS
 			serversave.lua - for save with interval time
