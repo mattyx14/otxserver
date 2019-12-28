@@ -651,7 +651,9 @@ void Combat::combatTileEffects(const SpectatorHashSet& spectators, Creature* cas
 	}
 
 	if (params.impactEffect != CONST_ME_NONE) {
-		Game::addMagicEffect(spectators, tile->getPosition(), params.impactEffect);
+		if (tile->getGround() && !tile->hasProperty(CONST_PROP_BLOCKPROJECTILE) && !tile->hasProperty(CONST_PROP_BLOCKSOLID)) {
+			Game::addMagicEffect(spectators, tile->getPosition(), params.impactEffect);
+		}
 	}
 }
 

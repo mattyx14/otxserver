@@ -49,6 +49,4 @@
 #else
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_ERROR
 #endif
-#include <spdlog/spdlog.h>
-
 #endif

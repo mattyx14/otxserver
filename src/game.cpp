@@ -4878,6 +4878,12 @@ void Game::checkImbuements()
 			continue;
 		}
 
+		Player* player = item->getParent()->getCreature()->getPlayer();
+		if (!player->hasCondition(CONDITION_INFIGHT)) {
+			it++;
+			continue;
+		}
+
 		bool needUpdate = false;
 		uint8_t slots = Item::items[item->getID()].imbuingSlots;
 		for (uint8_t slot = 0; slot < slots; slot++) {
@@ -4889,7 +4895,6 @@ void Game::checkImbuements()
 			}
 		}
 
-		Player* player = item->getParent()->getCreature()->getPlayer();
 		int32_t index = player ? player->getThingIndex(item) : -1;
 		needUpdate = needUpdate && index != -1;
 

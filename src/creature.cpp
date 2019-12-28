@@ -904,7 +904,7 @@ void Creature::goToFollowCreature()
 			Direction dir = DIRECTION_NONE;
 
 			if (monster->isFleeing()) {
-				monster->getDistanceStep(followCreature->getPosition(), dir, true);
+				monster->getDistanceStep(followCreature->getPosition(), dir, false);
 			} else { //maxTargetDist > 1
 				if (!monster->getDistanceStep(followCreature->getPosition(), dir)) {
 					// if we can't get anything then let the A* calculate
