@@ -224,19 +224,6 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
-	local stonePos = Position(32648, 32134, 10)
-	if (toPosition == stonePos) then
-		local tile = Tile(stonePos)
-		local stone = tile:getItemById(1285)
-		if (stone) then
-			stone:remove(1)
-			toPosition:sendMagicEffect(CONST_ME_POFF)
-			addEvent(function() Game.createItem(1285, 1, stonePos) end, 20000)
-
-			return true
-		end
-	end
-
 	local targetId, targetActionId = target.itemid, target.actionid
 	if isInArray({354, 355}, targetId) and (target:hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) or target:hasAttribute(ITEM_ATTRIBUTE_ACTIONID)) then
 		target:transform(392)

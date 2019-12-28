@@ -9,12 +9,13 @@ function save(delay)
 end
 
 function talk.onSay(player, words, param)
-	if player:getGroup():getAccess() then
+	if not player:getGroup():getAccess() or player:getAccountType() < ACCOUNT_TYPE_GOD then
 		if isNumber(param) then
 			stopEvent(savingEvent)
 			save(tonumber(param) * 60 * 1000)
 		else
 			saveServer()
+			player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Server is saved ...")
 		end
 	end
 end

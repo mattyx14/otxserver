@@ -1,18 +1,30 @@
 local talk = TalkAction("/pos")
 
 function talk.onSay(player, words, param)
-
 	if not player:getGroup():getAccess() or player:getAccountType() < ACCOUNT_TYPE_GOD then
 		return true
 	end
-	
-	if player:getGroup():getAccess() and param ~= "" then
-		local split = param:split(",")
-		player:teleportTo(Position(split[1], split[2], split[3]))
-	else
-		local position = player:getPosition()
-		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Your current position is: " .. position.x .. ", " .. position.y .. ", " .. position.z .. ".")
+
+	if param == '' then
+		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Command param required.")
+		return false
 	end
+
+	local tile = param:split(",")
+	local pos
+	if tile[2] and tile[3] then
+		pos = Position(tile[1], tile[2], tile[3])
+	else
+		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Invalid param specified.")
+		return false
+	end
+
+	local tmp = player:getPosition()
+	if player:teleportTo(pos) and not player:isInGhostMode() then
+		tmp:sendMagicEffect(CONST_ME_POFF)
+		pos:sendMagicEffect(CONST_ME_TELEPORT)
+	end
+
 	return false
 end
 

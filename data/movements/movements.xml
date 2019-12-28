@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <movements>
-	<!-- Citizen Teleport -->
-	<movevent event="StepIn" fromuid="9056" touid="9068" script="others/teleports/citizen.lua" />
-	<movevent event="StepIn" uniqueid="9510" script="others/teleports/citizen.lua" />
-	<movevent event="StepIn" uniqueid="9240" script="others/teleports/citizen.lua" />
-	<movevent event="StepIn" fromuid="9500" touid="9501" script="others/teleports/citizen.lua" />
-
 	<!-- Item Teleport Destinations -->
 	<movevent event="AddItem" tileitem="1" itemid="1387" script="others/itemTeleports.lua" />
+	<movevent event="AddItem" tileitem="1" itemid="1397" script="others/itemTeleports.lua" />
 	<movevent event="AddItem" tileitem="1" itemid="8058" script="others/itemTeleports.lua" />
 
 	<!-- Threatened Dreams -->
@@ -3004,4 +2999,9 @@
 	<movevent event="DeEquip" itemid="2458" slot="head" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="2528" slot="shield" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="2528" slot="shield" function="onDeEquipItem" />
+
+	<!-- DarkKonia Scripts -->
+	<!-- Citizen Teleport -->
+	<movevent event="StepIn" itemid="1387" script="others/teleports/citizen.lua" />
+	<movevent event="StepIn" itemid="1397" script="others/teleports/citizen.lua" />
 </movements>

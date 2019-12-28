@@ -12,3 +12,6 @@ dofile('data/lib/rewardboss.lua')
 dofile('data/lib/modalwindow.lua')
 
 dofile('data/lib/dailyRewardLib.lua')
+
+-- DarkKonia Scripts
+dofile('data/lib/custom/custom.lua')
