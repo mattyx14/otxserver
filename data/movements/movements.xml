@@ -3001,24 +3001,7 @@
 	<movevent event="DeEquip" itemid="2528" slot="shield" function="onDeEquipItem" />
 
 	<!-- DarkKonia Scripts -->
-	<!-- Protect Tiles -->
-	<movevent event="StepIn" fromaid="5500" toaid="5600" script="storagetile.lua" />
-	<movevent event="StepIn" fromaid="50220" toaid="50221" script="vengothTeleports.lua" />
-
 	<!-- Citizen Teleport -->
 	<movevent event="StepIn" itemid="1387" script="others/teleports/citizen.lua" />
 	<movevent event="StepIn" itemid="1397" script="others/teleports/citizen.lua" />
-
-	<!-- Demon Oak Quest -->
-	<movevent event="StepIn" uniqueid="9000" script="quests/demon oak/entrance.lua" />
-	<!-- <movevent event="StepIn" itemid="8292" script="quests/demon oak/areaDamage.lua" /> -->
-	<movevent event="StepIn" fromuid="9001" touid="9005" script="quests/demon oak/squares.lua" />
-
-	<!-- Coal Basin System -->
-	<movevent event="AddItem" tileitem="1" itemid="1481" script="coalBasinSacrifice.lua" />
-	<movevent event="AddItem" tileitem="1" itemid="1482" script="coalBasinSacrifice.lua" />
-	<movevent event="AddItem" tileitem="1" itemid="1483" script="coalBasinSacrifice.lua" />
-
-	<!-- Adventurer's Guild -->
-	<movevent event="StepIn" actionid="4255" script="adventurersguild.lua" />
 </movements>
