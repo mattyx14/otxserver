@@ -78,7 +78,6 @@
 		<item name="magma monocle" chance="4760" />
 		<item name="blue gem" chance="2380" />
 		<item name="small oil lamp" chance="580" />
-		<item name="wooden flute" chance="480" />
 		<item name="heavy machete" chance="380" />
 	</loot>
 </monster>

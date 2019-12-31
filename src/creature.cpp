@@ -904,7 +904,7 @@ void Creature::goToFollowCreature()
 			Direction dir = DIRECTION_NONE;
 
 			if (monster->isFleeing()) {
-				monster->getDistanceStep(followCreature->getPosition(), dir, false);
+				monster->getDistanceStep(followCreature->getPosition(), dir, true);
 			} else { //maxTargetDist > 1
 				if (!monster->getDistanceStep(followCreature->getPosition(), dir)) {
 					// if we can't get anything then let the A* calculate
@@ -1394,7 +1394,7 @@ int64_t Creature::getStepDuration() const
 	int32_t stepSpeed = getStepSpeed();
 	if (stepSpeed > -Creature::speedB) {
 		calculatedStepSpeed = floor((Creature::speedA * log((stepSpeed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
-		if (calculatedStepSpeed <= 0) {
+		if (calculatedStepSpeed == 0) {
 			calculatedStepSpeed = 1;
 		}
 	} else {

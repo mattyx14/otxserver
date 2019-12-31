@@ -5,4 +5,5 @@
 	<talkaction words="!buypremium" script="buyprem.lua" />
 	<talkaction words="!kills" script="kills.lua" />
 	<talkaction words="!saveme" script="saveme.lua" />
+	<talkaction words="!serverinfo" script="serverinfo.lua" />
 </talkactions>

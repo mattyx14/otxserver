@@ -9,7 +9,7 @@ function save(delay)
 end
 
 function talk.onSay(player, words, param)
-	if not player:getGroup():getAccess() or player:getAccountType() < ACCOUNT_TYPE_GOD then
+	if player:getGroup():getAccess() then
 		if isNumber(param) then
 			stopEvent(savingEvent)
 			save(tonumber(param) * 60 * 1000)
