@@ -537,15 +537,21 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t tileF
 			}
 
 			MagicField* field = getFieldItem();
-			if (field && !field->isBlocking()) {
+			if (field && !field->isBlocking() && field->getDamage() != 0) {
 				CombatType_t combatType = field->getCombatType();
 
 				//There is 3 options for a monster to enter a magic field
-				if (!(monster->isImmune(combatType) || monster->canWalkOnFieldType(combatType) || monster->getIgnoreFieldDamage())) {
+				//1) Monster is immune
+				if (!monster->isImmune(combatType)) {
 					//1) Monster is able to walk over field type
-					//2) Monster is already afflicated by this type of condition
-					//3) Being attacked while random stepping will make it ignore field damages
-					return RETURNVALUE_NOTPOSSIBLE;
+					//2) Being attacked while random stepping will make it ignore field damages
+					if (hasBitSet(FLAG_IGNOREFIELDDAMAGE, tileFlags)) {
+						if (!(monster->canWalkOnFieldType(combatType) || monster->getIgnoreFieldDamage())) {
+							return RETURNVALUE_NOTPOSSIBLE;
+						}
+					} else {
+						return RETURNVALUE_NOTPOSSIBLE;
+					}
 				}
 			}
 
@@ -1670,34 +1676,32 @@ void HouseTile::updateHouse(Item* item)
 	}
 }
 
-ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t count, uint32_t flags, Creature* actor/* = nullptr*/) const
+ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t count, uint32_t tileFlags, Creature* actor/* = nullptr*/) const
 {
 	if (const Creature* creature = thing.getCreature()) {
 		if (const Player* player = creature->getPlayer()) {
 			if (!house->isInvited(player)) {
 				return RETURNVALUE_PLAYERISNOTINVITED;
 			}
-		} else {
-			if (const Monster* monster = creature->getMonster()) {
-				if (monster->isPet() && monster->getMaster() && house->isInvited(monster->getMaster()->getPlayer())) {		
-					if (hasFlag(TILESTATE_BLOCKSOLID) || (hasBitSet(FLAG_PATHFINDING, flags) && hasFlag(TILESTATE_NOFIELDBLOCKPATH))) {
-						return RETURNVALUE_NOTPOSSIBLE;
-					}
-					
-					return RETURNVALUE_NOERROR;		
+		}
+		else if (const Monster* monster = creature->getMonster()) {
+			if (monster->isSummon()) {
+				if (monster->isPet() && house->isInvited(monster->getMaster()->getPlayer())) {
+					return RETURNVALUE_NOERROR;
+				}
+				else {
+					return RETURNVALUE_NOTPOSSIBLE;
 				}
 			}
-
-			return RETURNVALUE_NOTPOSSIBLE;
 		}
-	} else if (thing.getItem() && actor) {
+	}
+	else if (thing.getItem() && actor) {
 		Player* actorPlayer = actor->getPlayer();
 		if (!house->isInvited(actorPlayer)) {
 			return RETURNVALUE_CANNOTTHROW;
 		}
 	}
-
-	return Tile::queryAdd(index, thing, count, flags, actor);
+	return Tile::queryAdd(index, thing, count, tileFlags, actor);
 }
 
 Tile* HouseTile::queryDestination(int32_t& index, const Thing& thing, Item** destItem, uint32_t& tileFlags)
