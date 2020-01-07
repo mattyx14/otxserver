@@ -4,7 +4,7 @@ end
 
 function Container.createLootItem(self, item)
 	if self:getEmptySlots() == 0 then
-		return true
+		return 0
 	end
 
 	local itemCount = 0
@@ -17,17 +17,18 @@ function Container.createLootItem(self, item)
 		end
 	end
 
-		if itemCount > 0 then
-		local tmpItem = self:addItem(item.itemId, math.min(itemCount, 100))
+	local tmpItem = false
+	if itemCount > 0 then
+		tmpItem = self:addItem(item.itemId, math.min(itemCount, 100))
 		if not tmpItem then
-			return false
+			return -1
 		end
 
 		if tmpItem:isContainer() then
 			for i = 1, #item.childLoot do
 				if not tmpItem:createLootItem(item.childLoot[i]) then
 					tmpItem:remove()
-					return false
+					return -1
 				end
 			end
 		end
@@ -44,5 +45,6 @@ function Container.createLootItem(self, item)
 			tmpItem:setText(item.text)
 		end
 	end
-	return true
+
+	return tmpItem and tmpItem.uid or 0
 end

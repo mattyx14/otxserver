@@ -32,4 +32,7 @@
 	<event type="advance" name="AdvanceSave" script="others/advance_save.lua" />
 	<event type="kill" name="bonusPreyLootKill" script="preyloot.lua"/>
 	<event type="death" name="bonusPreyLootDeath" script="preyloot.lua" />
+
+	<!-- AUTO LOOT -->
+	<event type="modalwindow" name="autoloot" script="autoloot.lua"/>
 </creaturescripts>

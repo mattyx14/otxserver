@@ -6,4 +6,8 @@
 	<talkaction words="!kills" script="kills.lua" />
 	<talkaction words="!saveme" script="saveme.lua" />
 	<talkaction words="!serverinfo" script="serverinfo.lua" />
+	<talkaction words="!online" script="online.lua" />
+	<talkaction words="!commands" script="commands.lua" />
+	<talkaction words="!autoloot" separator=" " script="autoloot.lua"/>
+	<talkaction words="!add" separator=" " script="add_autoloot.lua" />
 </talkactions>

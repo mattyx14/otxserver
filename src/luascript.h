@@ -262,6 +262,12 @@ class LuaScriptInterface
 		static std::string popString(lua_State* L);
 		static int32_t popCallback(lua_State* L);
 
+		//Autoloot
+		static int luaPlayerAddAutoLootItem(lua_State* L);
+		static int luaPlayerRemoveAutoLootItem(lua_State* L);
+		static int luaPlayerGetAutoLootItem(lua_State* L);
+		static int luaPlayerGetAutoLootList(lua_State* L);
+
 		// Userdata
 		template<class T>
 		static void pushUserdata(lua_State* L, T* value)
@@ -1068,6 +1074,11 @@ class LuaScriptInterface
 		static int luaPlayerSetExpBoostStamina(lua_State* L);
 
 		static int luaPlayerGetIdleTime(lua_State* L);
+
+		/*static int luaPlayerAddAutoLootItem(lua_State* L);
+		static int luaPlayerRemoveAutoLootItem(lua_State* L);
+		static int luaPlayerGetAutoLootItem(lua_State* L);
+		static int luaPlayerGetAutoLootList(lua_State* L); */ // NOT READY
 
 		// Monster
 		static int luaMonsterCreate(lua_State* L);

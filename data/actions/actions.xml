@@ -538,4 +538,7 @@
 	<action itemid="25419" script="valuables/randomitems.lua" />
 	<action itemid="26165" script="valuables/randomitems.lua" />
 	<action itemid="32014" script="valuables/randomitems.lua" />
+
+	<!-- Autoloot mode 2 -->
+	<action actionid="500" script="autoloot.lua" />
 </actions>

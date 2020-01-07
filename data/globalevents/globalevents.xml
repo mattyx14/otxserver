@@ -9,7 +9,7 @@
 	<!-- Others -->
 	<globalevent type="startup" name="ServerStartup" script="startup.lua" />
 	<globalevent type="record" name="PlayerRecord" script="record.lua" />
-	<!-- <globalevent name="ServerSave" time="05:55:00" script="serversave.lua" /> -->
+	<globalevent name="ServerSave" time="06:00:00" script="serversave.lua" />
 
 	<!-- <globalevent type="startup" name="doCheckHouses" script="others/doCheckHouses.lua" /> -->
 	<globalevent name="checkInbox" interval="30000" script="others/checkInbox.lua"/>
@@ -24,4 +24,7 @@
 		<!-- Save 15 minutes / Clean 2 hours -->
 		<globalevent name="Server Save" interval="900000" script="saveserver.lua" />
 		<globalevent name="Clean Map" interval="7200000" script="cleanmap.lua" />
+
+		<!-- Autoloot -->
+		<globalevent name="autoloot" type="startup" script="autoloot.lua"/>
 </globalevents>
