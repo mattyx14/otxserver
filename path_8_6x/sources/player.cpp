@@ -4756,26 +4756,24 @@ uint16_t Player::getBlessings() const
 
 uint64_t Player::getLostExperience() const
 {
-	double percent = (double)(lossPercent[LOSS_EXPERIENCE] - vocation->getLessLoss() - (getBlessings() * g_config.getNumber(
-		ConfigManager::BLESS_REDUCTION))) / 100.;
-	if(level <= 25)
-		return (uint64_t)std::floor(percent * experience / 10.);
+	int32_t blessingCount = getBlessings();
+	int32_t deathLosePercentCFG = lossPercent[LOSS_EXPERIENCE];
+	int32_t deathLossPercent = 100;
+	int64_t lossTotalExp = ((double)(level + 50) / 100) * 50 * ((level * level) - (5 * level) + 8);
 
-	int32_t base = level;
-	double levels = (double)(base + 50) / 100.;
-
-	uint64_t lost = 0;
-	while(levels > 1.0f)
+	deathLossPercent = deathLossPercent - (blessingCount * 8);
+	if (isPromoted())
 	{
-		lost += (getExpForLevel(base) - getExpForLevel(base - 1));
-		base--;
-		levels -= 1.;
+		deathLossPercent = deathLossPercent - 30;
 	}
-
-	if(levels > 0.)
-		lost += (uint64_t)std::floor(levels * (getExpForLevel(base) - getExpForLevel(base - 1)));
-
-	return (uint64_t)std::floor(percent * lost);
+	if (level <= 23)
+	{
+		return (int64_t)((((double)experience * 0.10) * ((double)deathLossPercent / 100)) * ((double)deathLosePercentCFG / 100));
+	}
+	else
+	{
+		return (int64_t)((lossTotalExp * ((double)deathLossPercent / 100)) * ((double)deathLosePercentCFG / 100));
+	}
 }
 
 uint32_t Player::getAttackSpeed() const
