@@ -158,7 +158,7 @@ enum SpellGroup_t : uint8_t {
 };
 
 // New Prey
-enum PreySlotNum_t : uint8_t
+enum PreySlotNum_t : uint16_t
 {
 	PREY_SLOTNUM_FIRST = 0,
 	PREY_SLOTNUM_SECOND = 1,
