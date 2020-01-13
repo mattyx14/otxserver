@@ -44,7 +44,26 @@
 ]
 
 [ OTX Server 4.1
-	- 
+	- Added Mod AutoLoot
+	- Added customScripts "savePlayer/cleanMap" (Global Events)
+	- Added playerTalkaction !saveme
+	- Changed baseSpeed monsters to *1.5
+	- Fix citizenTeleports items
+	- Fix usePick/useShovel/useSkinning
+	- Fix Monster:onSpawn (servantsError)
+	- Fix splitTrimmed function for to commands usage
+	- Fix lite error on items.xml (tunnel entrance)
+	- Fix Oracle/Bank/Blessing NPC
+	- Fix broadCast/Clean/Save/online talkAction
+	- Fix showUseHotkeyMessage on actions
+	- Fix followCreature (OTSBR)
+	- Fix checkImbuements (vankk)
+	- Fix buyMarket offline (OTSBR)
+	- Fix luaCreatureSay (OTSBR)
+	- Fix compiler error on Ubuntu
+	- Fix tradeWindows (OTSBR)
+	- Remove archivements on scripts
+	- Remove storages for globalServers
 ]
 
 [ OTX Server 4.0
