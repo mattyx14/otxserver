@@ -1246,6 +1246,7 @@ int32_t LuaInterface::popCallback(lua_State* L)
 Outfit_t LuaInterface::popOutfit(lua_State* L)
 {
 	Outfit_t outfit;
+
 	outfit.lookFeet = getField(L, "lookFeet");
 	outfit.lookLegs = getField(L, "lookLegs");
 	outfit.lookBody = getField(L, "lookBody");
@@ -2058,7 +2059,7 @@ void LuaInterface::registerFunctions()
 	//setCombatCallBack(combat, key, function_name)
 	lua_register(m_luaState, "setCombatCallback", LuaInterface::luaSetCombatCallBack);
 
-	//setCombatFormula(combat, type, mina, minb, maxa, maxb)
+	//setCombatFormula(combat, type, mina, minb, maxa, maxb[, minl, maxl[, minm, maxm[, minc[, maxc]]]])
 	lua_register(m_luaState, "setCombatFormula", LuaInterface::luaSetCombatFormula);
 
 	//setConditionFormula(combat, mina, minb, maxa, maxb)
@@ -2298,6 +2299,15 @@ void LuaInterface::registerFunctions()
 	//getPartyMembers(lid)
 	lua_register(m_luaState, "getPartyMembers", LuaInterface::luaGetPartyMembers);
 
+	//isPartyLeader(cid)
+	lua_register(m_luaState, "isPartyLeader", LuaInterface::luaIsPartyLeader);
+
+	//isPartySharedExperienceActive(cid)
+	lua_register(m_luaState, "isPartySharedExperienceActive", LuaInterface::luaIsPartySharedExperienceActive);
+
+	//setPartySharedExperience(cid, active)
+	lua_register(m_luaState, "setPartySharedExperience", LuaInterface::luaSetPartySharedExperience);
+
 	//getCreatureMaster(cid)
 	lua_register(m_luaState, "getCreatureMaster", LuaInterface::luaGetCreatureMaster);
 
@@ -2522,16 +2532,6 @@ void LuaInterface::registerFunctions()
 
 	//std table
 	luaL_register(m_luaState, "std", LuaInterface::luaStdTable);
-
-	//isPartyLeader(cid)
-	lua_register(m_luaState, "isPartyLeader", LuaInterface::luaIsPartyLeader);
-
-	//isPartySharedExperienceActive(cid)
-	lua_register(m_luaState, "isPartySharedExperienceActive", LuaInterface::luaIsPartySharedExperienceActive);
-
-	//setPartySharedExperience(cid, active)
-	lua_register(m_luaState, "setPartySharedExperience", LuaInterface::luaSetPartySharedExperience);
-
 }
 
 const luaL_Reg LuaInterface::luaSystemTable[] =
@@ -9160,139 +9160,6 @@ int32_t LuaInterface::luaDoPlayerJoinParty(lua_State* L)
 
 	g_game.playerJoinParty(player->getID(), leader->getID());
 	lua_pushboolean(L, true);
-	return 1;
-}
-
-int32_t LuaInterface::luaDoPlayerLeaveParty(lua_State* L)
-{
-	//doPlayerLeaveParty(cid[, forced = false])
-	bool forced = false;
-	if(lua_gettop(L) > 1)
-		forced = popBoolean(L);
-
-	ScriptEnviroment* env = getEnv();
-	Player* player = env->getPlayerByUID(popNumber(L));
-	if(!player)
-	{
-		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));
-		lua_pushboolean(L, false);
-	}
-
-	g_game.playerLeaveParty(player->getID(), forced);
-	lua_pushboolean(L, true);
-	return 1;
-}
-
-int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
-{
-	//isPlayerUsingOtclient(cid)
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		lua_pushboolean(L, player->isUsingOtclient());
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
-{
-	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
-	std::string buffer = popString(L);
-	int32_t opcode = popNumber(L);
-
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		player->sendExtendedOpcode(opcode, buffer);
-		lua_pushboolean(L, true);
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaGetPartyMembers(lua_State* L)
-{
-	//getPartyMembers(cid)
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		if(Party* party = player->getParty())
-		{
-			PlayerVector list = party->getMembers();
-			list.push_back(party->getLeader());
-
-			PlayerVector::const_iterator it = list.begin();
-			lua_newtable(L);
-			for(uint32_t i = 1; it != list.end(); ++it, ++i)
-			{
-				lua_pushnumber(L, i);
-				lua_pushnumber(L, (*it)->getID());
-				pushTable(L);
-			}
-
-			return 1;
-		}
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaIsPartyLeader(lua_State *L)
-{
-	//isPlayerPartyLeader(cid)
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		if(Party* party = player->getParty())
-		{
-			if(player == party->getLeader())
-			{
-				lua_pushboolean(L, true);
-				return 1;
-			}
-		}
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaIsPartySharedExperienceActive(lua_State *L)
-{
-	//isPartySharedExperienceActive(cid)
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		if(Party* party = player->getParty())
-		{
-			lua_pushboolean(L, party->isSharedExperienceActive());
-			return 1;
-		}
-	}
-
-	lua_pushboolean(L, false);
-	return 1;
-}
-
-int32_t LuaInterface::luaSetPartySharedExperience(lua_State *L)
-{
-	//setPartySharedExperience(cid, active)
-	bool active = popBoolean(L);
-	ScriptEnviroment* env = getEnv();
-	if(Player* player = env->getPlayerByUID(popNumber(L)))
-	{
-		if(Party* party = player->getParty())
-		{
-			lua_pushboolean(L, party->setSharedExperience(party->getLeader(), active));
-			return 1;
-		}
-	}
-
-	lua_pushboolean(L, false);
 	return 1;
 }
 

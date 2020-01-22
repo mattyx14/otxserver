@@ -379,7 +379,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			uint16_t uid;
 			if(!propStream.getShort(uid))
 				return ATTR_READ_ERROR;
-			
+
 			itemUid = uid;
 			setUniqueId(uid);
 			break;

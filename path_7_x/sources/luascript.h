@@ -593,8 +593,8 @@ class LuaInterface
 		static int32_t luaIsPlayerSaving(lua_State* L);
 		static int32_t luaIsPlayerProtected(lua_State* L);
 		static int32_t luaIsCreature(lua_State* L);
-		static int32_t luaIsItemRune(lua_State* L);
 		static int32_t luaIsMovable(lua_State* L);
+		static int32_t luaIsItemRune(lua_State* L);
 		static int32_t luaGetContainerSize(lua_State* L);
 		static int32_t luaGetContainerCap(lua_State* L);
 		static int32_t luaGetContainerItem(lua_State* L);
