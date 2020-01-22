@@ -19,6 +19,8 @@
 #define __CONST__
 #include "definitions.h"
 
+#define NETWORKMESSAGE_MAXSIZE 24590
+
 enum OperatingSystem_t
 {
 	CLIENTOS_LINUX = 1,

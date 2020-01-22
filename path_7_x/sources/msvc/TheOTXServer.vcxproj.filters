@@ -21,12 +21,6 @@
     <ClInclude Include="..\actions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\admin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\allocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\baseevents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -204,9 +198,6 @@
     <ClInclude Include="..\protocollogin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\protocolold.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\quests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -276,12 +267,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\actions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\admin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\allocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\baseevents.cpp">
@@ -447,9 +432,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\protocollogin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\protocolold.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\quests.cpp">

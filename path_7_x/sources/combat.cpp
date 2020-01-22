@@ -108,9 +108,6 @@ bool Combat::getMinMaxValues(Creature* creature, Creature* target, CombatParams&
 					else
 						min = (int32_t)minb;
 
-					if(maxc && std::abs(max) < std::abs(maxc))
-						max = maxc;
-
 					return true;
 				}
 

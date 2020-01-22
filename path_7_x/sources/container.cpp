@@ -21,7 +21,9 @@
 
 #include "iomap.h"
 #include "player.h"
+#include "configmanager.h"
 
+extern ConfigManager g_config;
 extern Game g_game;
 
 Container::Container(uint16_t type) : Item(type)
