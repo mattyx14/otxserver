@@ -1024,7 +1024,6 @@ bool Game::removeCreature(Creature* creature, bool isLogout /*= true*/)
 	}
 
 	Player* player = NULL;
-
 	int32_t oldIndex = tile->__getIndexOfThing(creature);
 	if(!map->removeCreature(creature))
 		return false;
@@ -1273,7 +1272,7 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 {
 	if (creature->getNoMove() && creature->getType() == CREATURETYPE_MONSTER)
 		return RET_NOTPOSSIBLE;
-	
+
 	const Position& currentPos = creature->getPosition();
 	Cylinder* fromTile = creature->getTile();
 	Cylinder* toTile = NULL;
@@ -1588,7 +1587,7 @@ ReturnValue Game::internalMoveItem(Creature* actor, Cylinder* fromCylinder, Cyli
 	//destination is the same as the source?
 	if(item == toItem)
 		return RET_NOERROR; //silently ignore move
-	
+
 	if(toCylinder->getTile())
 	{
 		if(toCylinder->getTile()->hasFlag(TILESTATE_TELEPORT))
@@ -3534,7 +3533,7 @@ bool Game::playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int32_t
 	Player* tradePartner = player->tradePartner;
 	if(!tradePartner)
 		return false;
-	
+
 	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOKTRADE))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before doing this again.");
@@ -4150,7 +4149,7 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 			return true;
 	}
 
-	if(mute)
+	if (mute)
 		player->removeMessageBuffer();
 
 	if (ret == RET_NEEDEXCHANGE)
@@ -4182,7 +4181,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 
 		return internalCreatureSay(player, MSG_SPEAK_SAY, text, false, NULL, NULL, statementId);
 	}
-
 	case MSG_GAMEMASTER_BROADCAST:
 		return playerBroadcastMessage(player, MSG_GAMEMASTER_BROADCAST, text, statementId);
 	case MSG_RVR_CHANNEL:
@@ -4261,15 +4259,13 @@ bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string&
 	toPlayer->sendCreatureSay(player, type, text, NULL, statementId);
 	toPlayer->onCreatureSay(player, type, text);
 
-	if (!canSee)
-	{
+	if (!canSee) {
 		player->sendTextMessage(MSG_STATUS_SMALL, "A player with this name is not online.");
-	}else 
-	{
+	} else {
 		sprintf(buffer, "Message sent to %s.", toPlayer->getName().c_str());
 		player->sendTextMessage(MSG_STATUS_SMALL, buffer);
 	}
-	
+
 	return true;
 }
 
@@ -4835,7 +4831,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 
 				Color_t textColor = COLOR_NONE;
 				MagicEffect_t magicEffect = MAGIC_EFFECT_NONE;
-				
+
 				if (target->getPosition() != creaturePos)// The target was teleported/moved on statschange, a new spectator list must be created
 				{
 					SpectatorVec newList;
@@ -4910,7 +4906,7 @@ bool Game::combatChangeHealth(const CombatParams& params, Creature* attacker, Cr
 						sprintf(buffer, "%d", damage);
 		
 					addAnimatedText(list, targetPos, textColor, buffer);
-					std::stringstream ss;
+					std::ostringstream ss;
 					uint16_t totalDamage = damage + elementDamage;
 					Player* player = NULL;
 					if((player = target->getPlayer()) && attacker != target)
@@ -4953,13 +4949,15 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 			char buffer[20];
 			sprintf(buffer, "+%d", manaChange);
 
-			const SpectatorVec& list = getSpectators(targetPos);
+			SpectatorVec list;
+			getSpectators(list, targetPos, true, true);
 			addAnimatedText(list, targetPos, COLOR_DARKPURPLE, buffer);
 		}
 	}
 	else if(!inherited && Combat::canDoCombat(attacker, target, true) != RET_NOERROR)
 	{
-		const SpectatorVec& list = getSpectators(targetPos);
+		SpectatorVec list;
+		getSpectators(list, targetPos, true, true);
 		addMagicEffect(list, targetPos, MAGIC_EFFECT_POFF);
 		return false;
 	}
@@ -4979,8 +4977,9 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, int32_t manaCh
 			if(deny)
 				return false;
 
-			const SpectatorVec& list = getSpectators(targetPos);
 			target->drainMana(attacker, combatType, manaLoss);
+			SpectatorVec list;
+			getSpectators(list, targetPos, true, true);
 			char buffer[20];
 			sprintf(buffer, "%d", manaLoss);
 			addAnimatedText(list, targetPos, COLOR_BLUE, buffer);

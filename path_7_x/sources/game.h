@@ -639,7 +639,6 @@ class Game
 		int32_t getLightHour() const {return lightHour;}
 		void startDecay(Item* item);
 
-
 	protected:
 		bool playerWhisper(Player* player, const std::string& text, uint32_t statementId);
 		bool playerYell(Player* player, const std::string& text, uint32_t statementId);
