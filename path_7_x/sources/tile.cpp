@@ -1217,6 +1217,7 @@ void Tile::__replaceThing(uint32_t index, Thing* thing)
 		updateTileFlags(item, false);
 
 		onUpdateTileItem(oldItem, Item::items[oldItem->getID()], item, Item::items[item->getID()]);
+
 		oldItem->setParent(NULL);
 		g_game.freeThing(oldItem);
 
@@ -1387,9 +1388,59 @@ uint32_t Tile::getHeight() const
 	return height;
 }
 
-int32_t Tile::getClientIndexOfThing(const Player*, const Thing* thing) const
+int32_t Tile::getClientIndexOfThing(const Player* player, const Thing* thing) const
 {
-	return __getIndexOfThing(thing);
+	if(ground && ground == thing)
+		return 0;
+
+	int32_t n = 0;
+	if(!ground)
+		n--;
+
+	const TileItemVector* items = getItemList();
+	if(items)
+	{
+		if(thing && thing->getItem())
+		{
+			for(ItemVector::const_iterator it = items->getBeginTopItem(); it != items->getEndTopItem(); ++it)
+			{
+				++n;
+				if((*it) == thing)
+					return n;
+			}
+		}
+		else
+			n += items->getTopItemCount();
+	}
+
+	if(const CreatureVector* creatures = getCreatures())
+	{
+		for(CreatureVector::const_reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
+		{
+			if((*cit) == thing)
+				return ++n;
+
+			if(player->canSeeCreature(*cit))
+				++n;
+		}
+	}
+
+	if(items)
+	{
+		if(thing && thing->getItem())
+		{
+			for(ItemVector::const_iterator it = items->getBeginDownItem(); it != items->getEndDownItem(); ++it)
+			{
+				++n;
+				if((*it) == thing)
+					return n;
+			}
+		}
+		else
+			n += items->getDownItemCount();
+	}
+
+	return -1;
 }
 
 int32_t Tile::__getIndexOfThing(const Thing* thing) const

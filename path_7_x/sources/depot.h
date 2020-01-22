@@ -30,11 +30,9 @@ class Depot : public Container
 
 		//serialization
 		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);
-		virtual uint32_t getItemHoldingCount() const {return Container::getItemHoldingCount();}
 
 		uint32_t getDepotId() const;
 
-		void setDepotId(int32_t depotId) {setAttribute("depotid", depotId);}
 		void setMaxDepotLimit(uint32_t count) {depotLimit = count;}
 
 		//cylinder implementations
@@ -49,11 +47,16 @@ class Depot : public Container
 		virtual Creature* getCreature() {return NULL;}
 		virtual const Creature* getCreature() const {return NULL;}
 
-		virtual ReturnValue __queryAdd(int32_t index, const Thing* thing, uint32_t count, uint32_t flags, Creature* actor = NULL) const;
-		virtual ReturnValue __queryMaxCount(int32_t index, const Thing* thing, uint32_t count, uint32_t& maxQueryCount, uint32_t flags) const;
+		virtual ReturnValue __queryAdd(int32_t index, const Thing* thing, uint32_t count,
+			uint32_t flags, Creature* actor = NULL) const;
 
-		virtual void postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t link = LINK_OWNER);
-		virtual void postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent, int32_t index, bool isCompleteRemoval, CylinderLink_t link = LINK_OWNER);
+		virtual ReturnValue __queryMaxCount(int32_t index, const Thing* thing, uint32_t count,
+			uint32_t& maxQueryCount, uint32_t flags) const;
+
+		virtual void postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
+			int32_t index, CylinderLink_t link = LINK_OWNER);
+		virtual void postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent,
+			int32_t index, bool isCompleteRemoval, CylinderLink_t link = LINK_OWNER);
 
 		//overrides
 		virtual bool canRemove() const {return false;}

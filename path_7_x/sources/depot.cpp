@@ -19,11 +19,8 @@
 #include "tools.h"
 
 Depot::Depot(uint16_t type):
-	Container(type)
-{
-	maxSize = 30;
-	depotLimit = 1000;
-}
+	Container(type), depotLimit(1000)
+{}
 
 Attr_ReadValue Depot::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
@@ -45,9 +42,6 @@ ReturnValue Depot::__queryAdd(int32_t index, const Thing* thing, uint32_t count,
 	if(!item)
 		return RET_NOTPOSSIBLE;
 
-	if((flags & FLAG_NOLIMIT) == FLAG_NOLIMIT)
-		return Container::__queryAdd(index, thing, count, flags, actor);
-
 	int32_t addCount = 0;
 	if((item->isStackable() && item->getItemCount() != count))
 		addCount = 1;
@@ -66,18 +60,21 @@ ReturnValue Depot::__queryAdd(int32_t index, const Thing* thing, uint32_t count,
 	return Container::__queryAdd(index, thing, count, flags, actor);
 }
 
-ReturnValue Depot::__queryMaxCount(int32_t index, const Thing* thing, uint32_t count, uint32_t& maxQueryCount, uint32_t flags) const
+ReturnValue Depot::__queryMaxCount(int32_t index, const Thing* thing, uint32_t count,
+	uint32_t& maxQueryCount, uint32_t flags) const
 {
 	return Container::__queryMaxCount(index, thing, count, maxQueryCount, flags);
 }
 
-void Depot::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t /*link = LINK_OWNER*/)
+void Depot::postAddNotification(Creature* actor, Thing* thing, const Cylinder* oldParent,
+	int32_t index, CylinderLink_t /*link = LINK_OWNER*/)
 {
 	if(getParent())
 		getParent()->postAddNotification(actor, thing, oldParent, index, LINK_PARENT);
 }
 
-void Depot::postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent, int32_t index, bool isCompleteRemoval, CylinderLink_t /*link = LINK_OWNER*/)
+void Depot::postRemoveNotification(Creature* actor, Thing* thing, const Cylinder* newParent,
+	int32_t index, bool isCompleteRemoval, CylinderLink_t /*link = LINK_OWNER*/)
 {
 	if(getParent())
 		getParent()->postRemoveNotification(actor, thing, newParent, index, isCompleteRemoval, LINK_PARENT);

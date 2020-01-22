@@ -440,40 +440,6 @@ uint32_t rand24b()
 	return ((rand() << 12) ^ rand()) & 0xFFFFFF;
 }
 
-float box_muller(float m, float s)
-{
-	// normal random variate generator
-	// mean m, standard deviation s
-	float x1, x2, w, y1;
-	static float y2;
-
-	static bool useLast = false;
-	if(useLast) // use value from previous call
-	{
-		y1 = y2;
-		useLast = false;
-		return (m + y1 * s);
-	}
-
-	do
-	{
-		double r1 = (((float)(rand()) / RAND_MAX));
-		double r2 = (((float)(rand()) / RAND_MAX));
-
-		x1 = 2.0 * r1 - 1.0;
-		x2 = 2.0 * r2 - 1.0;
-		w = x1 * x1 + x2 * x2;
-	}
-	while(w >= 1.0);
-	w = sqrt((-2.0 * log(w)) / w);
-
-	y1 = x1 * w;
-	y2 = x2 * w;
-
-	useLast = true;
-	return (m + y1 * s);
-}
-
 std::mt19937& getRandomGenerator()
 {
 	static std::random_device rd;
@@ -725,18 +691,6 @@ std::string trimString(std::string& str)
 {
 	str.erase(str.find_last_not_of(" ") + 1);
 	return str.erase(0, str.find_first_not_of(" "));
-}
-
-std::string convertIPToString(uint32_t ip)
-{
-	char buffer[17];
-
-	int res = sprintf(buffer, "%u.%u.%u.%u", ip & 0xFF, (ip >> 8) & 0xFF, (ip >> 16) & 0xFF, (ip >> 24));
-	if (res < 0) {
-		return {};
-	}
-
-	return buffer;
 }
 
 std::string parseParams(tokenizer::iterator &it, tokenizer::iterator end)
@@ -1077,7 +1031,7 @@ MagicEffectNames magicEffectNames[] =
 	{"yellownote", MAGIC_EFFECT_SOUND_YELLOW},
 	{"purplenote", MAGIC_EFFECT_SOUND_PURPLE},
 	{"bluenote", MAGIC_EFFECT_SOUND_BLUE},
-	{"whitenote", MAGIC_EFFECT_SOUND_WHITE}
+	{"whitenote", MAGIC_EFFECT_SOUND_WHITE},
 };
 
 ShootTypeNames shootTypeNames[] =
@@ -1096,7 +1050,7 @@ ShootTypeNames shootTypeNames[] =
 	{"largerock", SHOOT_EFFECT_LARGEROCK},
 	{"snowball", SHOOT_EFFECT_SNOWBALL},
 	{"powerbolt", SHOOT_EFFECT_POWERBOLT},
-	{"poison", SHOOT_EFFECT_POISONFIELD}
+	{"poison", SHOOT_EFFECT_POISONFIELD},
 };
 
 CombatTypeNames combatTypeNames[] =
@@ -1129,7 +1083,7 @@ AmmoTypeNames ammoTypeNames[] =
 	{"largerock", AMMO_STONE},
 	{"throwingstar", AMMO_THROWINGSTAR},
 	{"throwingknife", AMMO_THROWINGKNIFE},
-	{"snowball", AMMO_SNOWBALL}
+	{"snowball", AMMO_SNOWBALL},
 };
 
 AmmoActionNames ammoActionNames[] =
@@ -1300,7 +1254,7 @@ void getCombatDetails(CombatType_t combatType, MagicEffect_t& magicEffect, Color
 
 		case COMBAT_ENERGYDAMAGE:
 		{
-			textColor = COLOR_LIGHTBLUE;
+			textColor = COLOR_PURPLE;
 			magicEffect = MAGIC_EFFECT_ENERGY_DAMAGE;
 			break;
 		}

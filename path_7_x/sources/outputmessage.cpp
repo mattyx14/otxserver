@@ -22,17 +22,15 @@
 #include "lockfree.h"
 #include "scheduler.h"
 
-extern Scheduler g_scheduler;
-
-const uint16_t OUTPUTMESSAGE_FREE_LIST_CAPACITY = 2048;
-const std::chrono::milliseconds OUTPUTMESSAGE_AUTOSEND_DELAY {10};
+const uint16_t OUTPUTMESSAGE_FREE_LIST_CAPACITY = 24768;
+const std::chrono::milliseconds OUTPUTMESSAGE_AUTOSEND_DELAY {3};
 
 class OutputMessageAllocator
 {
 	public:
-		using value_type = OutputMessage;
+		typedef OutputMessage value_type;
 		template<typename U>
-		struct rebind {using other = LockfreePoolingAllocator<U, OUTPUTMESSAGE_FREE_LIST_CAPACITY>;};
+		struct rebind {typedef LockfreePoolingAllocator<U, OUTPUTMESSAGE_FREE_LIST_CAPACITY> other;};
 };
 
 void OutputMessagePool::scheduleSendAll()

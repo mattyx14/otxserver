@@ -17,13 +17,11 @@
 #include "otpch.h"
 
 #include "container.h"
-#include "configmanager.h"
 #include "game.h"
 
 #include "iomap.h"
 #include "player.h"
 
-extern ConfigManager g_config;
 extern Game g_game;
 
 Container::Container(uint16_t type) : Item(type)
@@ -284,11 +282,8 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 		}
 	}
 
-	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT)
-	{
-		if((index == INDEX_WHEREEVER && full()))
-			return RET_CONTAINERNOTENOUGHROOM;
-	}
+	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT && (index == INDEX_WHEREEVER && size() >= capacity()))
+		return RET_CONTAINERNOTENOUGHROOM;
 
 	const Cylinder* topParent = getTopParent();
 	if(topParent != this)

@@ -38,7 +38,6 @@ bool BaseEvents::loadFromXml()
 		std::clog << "[Warning - BaseEvents::loadFromXml] Cannot load " << path << std::endl;
 
 	path = getFilePath(FILE_TYPE_OTHER, std::string(scriptsPath + "/" + scriptsName + ".xml"));
-
 	xmlDocPtr doc = xmlParseFile(path.c_str());
 	if(!doc)
 	{

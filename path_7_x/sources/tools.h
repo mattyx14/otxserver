@@ -120,10 +120,9 @@ std::string generateRecoveryKey(int32_t fieldCount, int32_t fieldLength, bool mi
 std::string formatDate(time_t _time = 0);
 std::string formatDateEx(time_t _time = 0, std::string format = "%d %b %Y, %H:%M:%S");
 std::string formatTime(time_t _time = 0, bool miliseconds = false);
-std::string convertIPToString(uint32_t ip);
 
 uint32_t rand24b();
-float box_muller(float m, float s);
+
 int32_t random_range(int32_t lowestNumber, int32_t highestNumber, DistributionType_t type = DISTRO_UNIFORM);
 
 #if !defined(_MSC_VER) || _MSC_VER < 1800

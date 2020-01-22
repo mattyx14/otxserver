@@ -701,7 +701,7 @@ bool TalkAction::houseKick(Creature* creature, const std::string&, const std::st
 		player->sendCancelMessage(RET_NOTPOSSIBLE);
 	}
 	else
-		g_game.addMagicEffect(targetPlayer->getPosition(), MAGIC_EFFECT_TELEPORT);
+		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_TELEPORT);
 
 	return false;
 }
@@ -1126,11 +1126,11 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 		else
 		{
 			ban.value = atoi(params[1].c_str());
-			if (!ban.value)
+			if(!ban.value)
 			{
 				uint32_t number = atoi(params[1].c_str());
 				IOLoginData::getInstance()->getAccountId(number, ban.value);
-				if (!ban.value)
+				if(!ban.value)
 					ban.value = IOLoginData::getInstance()->getAccountIdByName(params[1]);
 			}
 		}
@@ -1138,11 +1138,11 @@ bool TalkAction::banishmentInfo(Creature* creature, const std::string&, const st
 	else
 	{
 		ban.value = atoi(params[0].c_str());
-		if (!ban.value)
+		if(!ban.value)
 		{
 			uint32_t number = atoi(params[0].c_str());
 			IOLoginData::getInstance()->getAccountId(number, ban.value);
-			if (!ban.value)
+			if(!ban.value)
 				ban.value = IOLoginData::getInstance()->getAccountIdByName(params[0]);
 		}
 	}

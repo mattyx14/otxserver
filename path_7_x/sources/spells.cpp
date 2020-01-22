@@ -712,18 +712,21 @@ bool Spell::checkSpell(Player* player) const
 		return false;
 	}
 
-	if((int32_t)player->getLevel() < level)
+	if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS))
 	{
-		player->sendCancelMessage(RET_NOTENOUGHLEVEL);
-		player->sendMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-		return false;
-	}
+		if((int32_t)player->getLevel() < level)
+		{
+			player->sendCancelMessage(RET_NOTENOUGHLEVEL);
+			player->sendMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
+		}
 
-	if((int32_t)player->getMagicLevel() < magLevel)
-	{
-		player->sendCancelMessage(RET_NOTENOUGHMAGICLEVEL);
-		player->sendMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
-		return false;
+		if((int32_t)player->getMagicLevel() < magLevel)
+		{
+			player->sendCancelMessage(RET_NOTENOUGHMAGICLEVEL);
+			player->sendMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+			return false;
+		}
 	}
 
 	for(int16_t i = SKILL_FIRST; i <= SKILL_LAST; ++i)
@@ -984,20 +987,18 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if(needTarget && !targetCreature)
+	if(!needTarget && !targetCreature)
 	{
 		player->sendCancelMessage(RET_CANONLYUSETHISRUNEONCREATURES);
-		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+		player->sendMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 		return false;
 	}
 
-	if(!targetCreature)
+	if (!targetCreature)
 		return true;
 
 	Player* targetPlayer = targetCreature->getPlayer();
-	if (isAggressive && needTarget && !Combat::isInPvpZone(player, targetPlayer)
-		&& player->getSecureMode() == SECUREMODE_ON && (targetPlayer
-		&& targetPlayer != player && targetPlayer->getSkull() == SKULL_NONE))
+	if (isAggressive && needTarget && !Combat::isInPvpZone(player, targetPlayer) && player->getSecureMode() == SECUREMODE_ON && (targetPlayer && targetPlayer != player && targetPlayer->getSkull() == SKULL_NONE))
 	{
 		player->sendCancelMessage(RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS);
 		g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
@@ -1738,11 +1739,14 @@ bool RuneSpell::configureEvent(xmlNodePtr p)
 		hasCharges = booleanString(strValue);
 
 	ItemType& it = Item::items.getItemType(runeId);
-	if(level && level != it.runeLevel)
-		it.runeLevel = level;
+	if(g_config.getBool(ConfigManager::USE_RUNE_REQUIREMENTS))
+	{
+		if(level && level != it.runeLevel)
+			it.runeLevel = level;
 
-	if(magLevel && magLevel != it.runeMagLevel)
-		it.runeMagLevel = magLevel;
+		if(magLevel && magLevel != it.runeMagLevel)
+			it.runeMagLevel = magLevel;
+	}
 
 	it.vocationString = parseVocationString(vocStringVec);
 	return true;
