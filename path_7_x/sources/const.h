@@ -19,8 +19,6 @@
 #define __CONST__
 #include "definitions.h"
 
-#define NETWORKMESSAGE_MAXSIZE 24590
-
 enum OperatingSystem_t
 {
 	CLIENTOS_LINUX = 1,
@@ -253,7 +251,7 @@ enum Color_t
 	COLOR_GREY = 129,
 	COLOR_TEAL = 143,
 	COLOR_DARKPINK = 152,
-	COLOR_PURPLE = 155,
+	COLOR_PURPLE = 154,
 	COLOR_DARKORANGE = 156,
 	COLOR_RED = 180,
 	COLOR_PINK = 190,

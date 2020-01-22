@@ -1733,8 +1733,7 @@ bool FrozenPathingConditionCall::isInRange(const Position& startPos, const Posit
 		if (testPos.y < targetPos.y - fpp.maxTargetDist) {
 			return false;
 		}
-	}
-	else {
+	} else {
 		int_fast32_t dx = Position::getOffsetX(startPos, targetPos);
 
 		int32_t dxMax = (dx >= 0 ? fpp.maxTargetDist : 0);

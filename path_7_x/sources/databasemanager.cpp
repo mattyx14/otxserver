@@ -17,7 +17,6 @@
 #include "otpch.h"
 #include "enums.h"
 #include <iostream>
-#include <stack>
 
 #include "databasemanager.h"
 #include "tools.h"
