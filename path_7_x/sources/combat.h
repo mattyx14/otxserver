@@ -73,8 +73,8 @@ struct CombatParams
 {
 	CombatParams()
 	{
-		blockedByArmor = blockedByShield = targetCasterOrTopMost = targetPlayersOrSummons = false;
-		isAggressive = useCharges = differentAreaDamage = true;
+		blockedByArmor = blockedByShield = targetCasterOrTopMost = targetPlayersOrSummons = differentAreaDamage = false;
+		isAggressive = useCharges = true;
 		dispelType = CONDITION_NONE;
 		combatType = COMBAT_NONE;
 		itemId = 0;

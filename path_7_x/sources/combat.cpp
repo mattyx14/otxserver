@@ -108,6 +108,9 @@ bool Combat::getMinMaxValues(Creature* creature, Creature* target, CombatParams&
 					else
 						min = (int32_t)minb;
 
+					if(maxc && std::abs(max) < std::abs(maxc))
+						max = maxc;
+
 					return true;
 				}
 
@@ -270,7 +273,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 
 	if(!success)
 		return RET_NOTPOSSIBLE;
-	
+
 	if (g_config.getBool(ConfigManager::MONSTER_ATTACK_MONSTER)) 
 	{
 		if (target->isSummon() && attacker->getType() == CREATURETYPE_MONSTER && !target->isPlayerSummon() && !attacker->isPlayerSummon())
@@ -281,7 +284,7 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 				return RET_NOTPOSSIBLE;
 		}
 	}
-	
+
 	if (attacker->isSummon())
 	{
 		if (target == attacker->getMaster())
@@ -380,7 +383,7 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 		if(player->getSecureMode() == SECUREMODE_ON)
 			return RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
 	}
-	
+
 	if (target->getNpc())
 		return RET_YOUMAYNOTATTACKTHISCREATURE;
 
@@ -789,7 +792,7 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const CombatArea*
 	}
 
 	SpectatorVec list;
-	g_game.getSpectators(list, pos, false, true, maxX + Map::maxViewportX, maxX + Map::maxViewportX,
+	g_game.getSpectators(list, pos, true, true, maxX + Map::maxViewportX, maxX + Map::maxViewportX,
 		maxY + Map::maxViewportY, maxY + Map::maxViewportY);
 
 	Tile* tile = NULL;
@@ -985,7 +988,9 @@ void Combat::doCombatDefault(Creature* caster, Creature* target, const CombatPar
 	if(params.isAggressive && (caster == target || Combat::canDoCombat(caster, target, true) != RET_NOERROR))
 		return;
 
-	const SpectatorVec& list = g_game.getSpectators(target->getTile()->getPosition());
+	SpectatorVec list;
+	g_game.getSpectators(list, target->getPosition(), true, true);
+
 	CombatNullFunc(caster, target, params, NULL);
 
 	combatTileEffects(list, caster, target->getTile(), params);
