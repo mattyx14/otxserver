@@ -89,7 +89,6 @@ Player::Player(const std::string& _name, ProtocolGame_ptr p):
 	tradePartner = NULL;
 	walkTask = NULL;
 	weapon = NULL;
-	bed = NULL;
 
 	setVocation(0);
 	setParty(NULL);
@@ -541,7 +540,9 @@ void Player::sendIcons() const
 	}
 
 	if(getZone() == ZONE_PROTECTION)
+	{
 		icons |= ICON_NONE;
+	}
 
 	if(pzLocked)
 		icons |= ICON_NONE;
@@ -784,6 +785,16 @@ void Player::dropLoot(Container* corpse)
 	if(!corpse || lootDrop != LOOT_DROP_FULL)
 		return;
 
+	uint32_t loss = lossPercent[LOSS_CONTAINERS], start = g_config.getNumber(
+		ConfigManager::BLESS_REDUCTION_BASE), bless = getBlessings();
+	while(bless > 0 && loss > 0)
+	{
+		loss -= start;
+		start -= g_config.getNumber(ConfigManager::BLESS_REDUCTION_DECREMENT);
+		--bless;
+	}
+
+	uint32_t itemLoss = (uint32_t)std::floor((5. + loss) * lossPercent[LOSS_ITEMS] / 1000.);
 	for(int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
 	{
 		Item* item = inventory[i];
@@ -791,7 +802,7 @@ void Player::dropLoot(Container* corpse)
 			continue;
 
 		uint32_t tmp = random_range(1, 100);
-		if(skull > SKULL_WHITE || (item->getContainer() && tmp < (lossPercent[LOSS_CONTAINERS])) || (!item->getContainer() && tmp < (lossPercent[LOSS_ITEMS])))
+		if(skull > SKULL_WHITE || (item->getContainer() && tmp < loss) || (!item->getContainer() && tmp < itemLoss))
 		{
 			g_game.internalMoveItem(NULL, this, corpse, INDEX_WHEREEVER, item, item->getItemCount(), 0);
 			sendRemoveInventoryItem((slots_t)i, inventory[(slots_t)i]);
@@ -852,13 +863,14 @@ Depot* Player::getDepot(uint32_t depotId, bool autoCreateDepot)
 			if(Depot* depot = container->getDepot())
 			{
 				container->__internalAddThing(Item::CreateItem(ITEM_DEPOT));
-				addDepot(depot, depotId);
+				internalAddDepot(depot, depotId);
 				return depot;
 			}
 		}
 
 		g_game.freeThing(locker);
-		std::clog << "Failure: Creating a new depot with id: " << depotId << ", for player: " << getName() << std::endl;
+		std::clog << "Failure: Creating a new depot with id: " << depotId <<
+			", for player: " << getName() << std::endl;
 	}
 
 	return NULL;
@@ -876,7 +888,6 @@ bool Player::addDepot(Depot* depot, uint32_t depotId)
 void Player::internalAddDepot(Depot* depot, uint32_t depotId)
 {
 	depots[depotId] = std::make_pair(depot, false);
-	depot->setDepotId(depotId);
 	depot->setMaxDepotLimit((group != NULL ? group->getDepotLimit(isPremium()) : 1000));
 }
 
@@ -1319,8 +1330,8 @@ void Player::onCreatureAppear(const Creature* creature)
 	}
 
 	updateWeapon();
-	if(BedItem* _bed = Beds::getInstance()->getBedBySleeper(guid))
-		_bed->wakeUp();
+	if(BedItem* bed = Beds::getInstance()->getBedBySleeper(guid))
+		bed->wakeUp();
 
 	Outfit outfit;
 	if(Outfits::getInstance()->getOutfit(defaultOutfit.lookType, outfit))
@@ -1538,7 +1549,7 @@ void Player::onCreatureDisappear(const Creature* creature, bool isLogout)
 
 	client->clear(true);
 	lastLogout = time(NULL);
-	
+
 	if(isLogout)
 	{
 		loginPosition = getPosition();
@@ -2066,7 +2077,6 @@ void Player::removeExperience(uint64_t exp, bool updateStats/* = true*/)
 		}
 
 		healthMax = std::max((int32_t)0, (healthMax - (int32_t)voc->getGain(GAIN_HEALTH)));
-		mana = std::max((int32_t)0, (mana - (int32_t)voc->getGain(GAIN_MANA)));
 		manaMax = std::max((int32_t)0, (manaMax - (int32_t)voc->getGain(GAIN_MANA)));
 		capacity = std::max((double)0, (capacity - (double)voc->getGainCap()));
 	}
@@ -4146,7 +4156,6 @@ bool Player::rateExperience(double& gainExp, Creature* target)
 
 	gainExp *= rates[SKILL__LEVEL] * g_game.getExperienceStage(level,
 		vocation->getExperienceMultiplier());
-
 	if(g_config.getBool(ConfigManager::USE_STAMINA))
 	{
 		if(!hasFlag(PlayerFlag_HasInfiniteStamina))
@@ -4380,19 +4389,17 @@ bool Player::addUnjustifiedKill(const Player* attacked, bool countNow)
 		f += g_config.getNumber(ConfigManager::BAN_LIMIT);
 		s += g_config.getNumber(ConfigManager::BAN_SECOND_LIMIT);
 		t += g_config.getNumber(ConfigManager::BAN_THIRD_LIMIT);
+		if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
+			return true;
 
-	if((f <= 0 || fc < f) && (s <= 0 || sc < s) && (t <= 0 || tc < t))
-		return true;
+		if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
+			ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
+			return true;
 
-	if(!IOBan::getInstance()->addAccountBanishment(accountId, (now + g_config.getNumber(
-		ConfigManager::KILLS_BAN_LENGTH)), 28, ACTION_BANISHMENT, "Player Killing (automatic)", 0, guid))
-		return true;
-
-	sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
-	g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
-	Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
-		&Game::kickPlayer, &g_game, getID(), false)));
-
+		sendTextMessage(MSG_INFO_DESCR, "You have been banished.");
+		g_game.addMagicEffect(getPosition(), MAGIC_EFFECT_WRAPS_GREEN);
+		Scheduler::getInstance().addEvent(createSchedulerTask(1000, boost::bind(
+			&Game::kickPlayer, &g_game, getID(), false)));
 	return true;
 }
 
@@ -4458,26 +4465,24 @@ uint16_t Player::getBlessings() const
 
 uint64_t Player::getLostExperience() const
 {
-	double percent = (double)(lossPercent[LOSS_EXPERIENCE] - vocation->getLessLoss() - (getBlessings() * g_config.getNumber(
-		ConfigManager::BLESS_REDUCTION))) / 100.;
-	if(level <= 25)
-		return (uint64_t)std::floor(percent * experience / 10.);
+	int32_t blessingCount = getBlessings();
+	int32_t deathLosePercentCFG = lossPercent[LOSS_EXPERIENCE];
+	int32_t deathLossPercent = 100;
+	int64_t lossTotalExp = ((double)(level + 50) / 100) * 50 * ((level * level) - (5 * level) + 8);
 
-	int32_t base = level;
-	double levels = (double)(base + 50) / 100.;
-
-	uint64_t lost = 0;
-	while(levels > 1.0f)
+	deathLossPercent = deathLossPercent - (blessingCount * 8);
+	if (isPromoted())
 	{
-		lost += (getExpForLevel(base) - getExpForLevel(base - 1));
-		base--;
-		levels -= 1.;
+		deathLossPercent = deathLossPercent - 30;
 	}
-
-	if(levels > 0.)
-		lost += (uint64_t)std::floor(levels * (getExpForLevel(base) - getExpForLevel(base - 1)));
-
-	return (uint64_t)std::floor(percent * lost);
+	if (level <= 23)
+	{
+		return (int64_t)((((double)experience * 0.10) * ((double)deathLossPercent / 100)) * ((double)deathLosePercentCFG / 100));
+	}
+	else
+	{
+		return (int64_t)((lossTotalExp * ((double)deathLossPercent / 100)) * ((double)deathLosePercentCFG / 100));
+	}
 }
 
 uint32_t Player::getAttackSpeed() const
@@ -4842,7 +4847,7 @@ void Player::manageAccount(const std::string &text)
 					}
 				}
 
-				if(msg.str().length() == NULL)
+				if(msg.str().length() == 17)
 					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])

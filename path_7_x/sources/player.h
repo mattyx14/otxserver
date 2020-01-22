@@ -40,7 +40,6 @@ class Weapon;
 class Npc;
 class Party;
 class SchedulerTask;
-class BedItem;
 class ProtocolGame;
 
 enum skillsid_t
@@ -475,7 +474,7 @@ class Player : public Creature, public Cylinder
 		virtual void onSummonTargetDrain(Creature* summon, Creature* target, int32_t points);
 		virtual void onTargetGain(Creature* target, int32_t points);
 		virtual bool onKilledCreature(Creature* target, DeathEntry& entry);
-		virtual void onGainExperience(double& gainExp, Creature* target, bool);
+		virtual void onGainExperience(double& gainExp, Creature* target, bool multiplied);
 		virtual void onGainSharedExperience(double& gainExp, Creature* taraget, bool multiplied);
 		virtual void onTargetBlockHit(Creature* target, BlockType_t blockType);
 		virtual void onBlockHit(BlockType_t blockType);
@@ -511,7 +510,7 @@ class Player : public Creature, public Cylinder
 		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel)
 			{if(client) client->sendChannelMessage(author, text, type, channel);}
 		void sendCreatureAppear(const Creature* creature)
-			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->__getIndexOfThing(creature));}
+			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
 		void sendCreatureAppear(const Creature* creature, ProtocolGame* target)
 			{if(target) target->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
 		void sendCreatureDisappear(const Creature* creature, uint32_t stackpos)
@@ -884,7 +883,6 @@ class Player : public Creature, public Cylinder
 		Item* writeItem;
 		House* editHouse;
 		Item* weapon;
-		BedItem* bed;
 
 		typedef std::set<uint32_t> AttackedSet;
 		AttackedSet attackedSet;
