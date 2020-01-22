@@ -302,6 +302,7 @@ class ProtocolGame : public Protocol
 		void UpdateInventoryItem(OutputMessage_ptr msg, slots_t slot, const Item* item);
 		void RemoveInventoryItem(OutputMessage_ptr msg, slots_t slot);
 
+		//OTClient
 		void parseExtendedOpcode(NetworkMessage& msg);
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);
 

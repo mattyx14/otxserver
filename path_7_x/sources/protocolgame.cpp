@@ -357,6 +357,9 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 
 				if (player->hasCondition(CONDITION_INFIGHT))
 				{
+					if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, EXHAUST_DEFAULT))
+						player->addCondition(condition);
+
 					player->sendCancelMessage(RET_YOUMAYNOTLOGOUTDURINGAFIGHT);
 					return false;
 				}
@@ -450,7 +453,10 @@ void ProtocolGame::disconnectClient(uint8_t error, const char* message)
 	disconnect();
 }
 
-void ProtocolGame::onConnect() {}
+void ProtocolGame::onConnect()
+{
+	//
+}
 
 void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 {
@@ -501,7 +507,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 		}
 	}
 
-	if(!name)
+	if (!name)
 	{
 		name = 10;
 	}
@@ -560,10 +566,12 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	if(name == 10)
-		Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::spectate, this, character, password)));
+	if (name == 10)
+		Dispatcher::getInstance().addTask(createTask(boost::bind(
+			&ProtocolGame::spectate, this, character, password)));
 	else
-		Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::login, this, character, id, password, operatingSystem, version, gamemaster)));
+		Dispatcher::getInstance().addTask(createTask(boost::bind(
+			&ProtocolGame::login, this, character, id, password, operatingSystem, version, gamemaster)));
 }
 
 void ProtocolGame::parsePacket(NetworkMessage &msg)
@@ -1520,7 +1528,7 @@ void ProtocolGame::sendIcons(int32_t icons)
 
 	TRACK_MESSAGE(msg);
 	msg->addByte(0xA2);
-	msg->add<uint16_t>(icons);
+	msg->addByte(icons);
 }
 
 void ProtocolGame::sendContainer(uint32_t cid, const Container* container, bool hasParent)
@@ -1892,8 +1900,8 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	TRACK_MESSAGE(msg);
 	msg->addByte(0x0A);
 	msg->add<uint32_t>(player->getID());
-	msg->add<uint16_t>(0x32);
-	msg->add<uint16_t>(0x00);
+	msg->addByte(0x32);
+	msg->addByte(0x00);
 
 	msg->addByte(player->hasFlag(PlayerFlag_CanReportBugs));
 	if(Group* group = player->getGroup())
@@ -1904,7 +1912,7 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 			msg->addByte(0x0B);
 			for(int32_t i = 0; i < 32; ++i)
 			{
-				msg->add<uint16_t>(0xFF);
+				msg->addByte(0xFF);
 			}
 		}
 	}
@@ -2335,7 +2343,7 @@ void ProtocolGame::AddCreature(OutputMessage_ptr msg, const Creature* creature, 
 	}
 
 	if(!creature->getHideHealth())
-		msg->addByte((uint32_t)std::ceil(creature->getHealth() * 100. / std::max(creature->getMaxHealth(), 1)));
+		msg->addByte((uint8_t)std::ceil(creature->getHealth() * 100. / std::max(creature->getMaxHealth(), 1)));
 	else
 		msg->addByte(0x00);
 
@@ -2358,13 +2366,13 @@ void ProtocolGame::AddPlayerStats(OutputMessage_ptr msg)
 	msg->addByte(0xA0);
 	msg->add<uint16_t>(player->getHealth());
 	msg->add<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
-	
+
 	uint16_t capacity = uint16_t(player->getFreeCapacity());
 	if (capacity >= INT16_MAX)
 		msg->add<uint16_t>(INT16_MAX);
 	else 
 		msg->add<uint16_t>(capacity);
-	
+
 	uint32_t experience = player->getExperience();
 	if(experience > 0x7FFFFFFF) // client debugs after 2,147,483,647 exp
 		msg->add<uint32_t>(0x7FFFFFFF);
@@ -2462,7 +2470,7 @@ void ProtocolGame::AddCreatureHealth(OutputMessage_ptr msg,const Creature* creat
 	msg->addByte(0x8C);
 	msg->add<uint32_t>(creature->getID());
 	if(!creature->getHideHealth())
-		msg->addByte((int32_t)std::ceil(((float)creature->getHealth()) * 100 / std::max(creature->getMaxHealth(), (int32_t)1)));
+		msg->addByte((uint8_t)std::ceil(creature->getHealth() * 100. / std::max(creature->getMaxHealth(), (int32_t)1)));
 	else
 		msg->addByte(0x00);
 }
@@ -2701,7 +2709,6 @@ void ProtocolGame::sendChannelMessage(std::string author, std::string text, Mess
 	msg->addByte(0xAA);
 	msg->add<uint32_t>(0x00);
 	msg->addString(author);
-	msg->add<uint16_t>(0x00);
 	msg->addByte(type);
 	msg->add<uint16_t>(channel);
 	msg->addString(text);

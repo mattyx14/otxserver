@@ -188,7 +188,6 @@ class Spectators
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
 				it->first->sendIcons(icons);
 		}
-
 		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type)
 		{
 			if(!owner)
@@ -421,7 +420,6 @@ class Spectators
 
 			owner->sendOutfitWindow();
 		}
-
 		void sendVIPLogIn(uint32_t guid)
 		{
 			if(owner)
