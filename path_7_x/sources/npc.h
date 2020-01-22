@@ -409,8 +409,7 @@ class Npc : public Creature
 		bool getRandomStep(Direction& dir);
 		bool canWalkTo(const Position& fromPos, Direction dir);
 
-		const NpcResponse* getResponse(const ResponseList& list, const Player* player,
-			NpcState* npcState, const std::string& text, bool exactMatch = false);
+		const NpcResponse* getResponse(const ResponseList& list, const Player* player, NpcState* npcState, const std::string& text, bool exactMatch = false);
 		const NpcResponse* getResponse(const Player* player, NpcState* npcState, const std::string& text);
 		const NpcResponse* getResponse(const Player* player, NpcEvent_t eventType);
 		const NpcResponse* getResponse(const Player* player, NpcState* npcState, NpcEvent_t eventType);

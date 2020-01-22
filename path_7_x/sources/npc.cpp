@@ -1237,9 +1237,7 @@ void Npc::onCreatureDisappear(const Creature* creature, bool isLogout)
 {
 	Creature::onCreatureDisappear(creature, isLogout);
 	if(creature == this)
-	{
 		return;
-	}
 
 	if(m_npcEventHandler)
 		m_npcEventHandler->onCreatureDisappear(creature);
@@ -1961,7 +1959,8 @@ bool Npc::canWalkTo(const Position& fromPos, Direction dir)
 		return false;
 
 	Tile* tile = g_game.getTile(toPos);
-	if(!tile || tile->hasProperty(BLOCKPATH) || g_game.isSwimmingPool(NULL, getTile(), false) != g_game.isSwimmingPool(NULL, tile, false) || (!floorChange && (tile->floorChange() || tile->positionChange())))
+	if(!tile || tile->hasProperty(BLOCKPATH) || g_game.isSwimmingPool(NULL, getTile(), false) != g_game.isSwimmingPool(NULL, tile,
+		false) || (!floorChange && (tile->floorChange() || tile->positionChange())))
 		return false;
 
 	return tile->__queryAdd(0, this, 1, FLAG_PATHFINDING) == RET_NOERROR;
@@ -2017,7 +2016,8 @@ void Npc::setCreatureFocus(Creature* creature)
 	focusCreature = creature->getID();
 }
 
-const NpcResponse* Npc::getResponse(const ResponseList& list, const Player* player, NpcState* npcState, const std::string& text, bool exactMatch /*= false*/)
+const NpcResponse* Npc::getResponse(const ResponseList& list, const Player* player,
+	NpcState* npcState, const std::string& text, bool exactMatch /*= false*/)
 {
 	std::string textString = asLowerCaseString(text);
 	StringVec wordList = explodeString(textString, " ");

@@ -27,7 +27,8 @@ class Protocol;
 class OutputMessage : public NetworkMessage
 {
 	public:
-		OutputMessage() = default;
+		OutputMessage():
+			outputBufferStart(INITIAL_BUFFER_POSITION) {}
 
 		// non-copyable
 		OutputMessage(const OutputMessage&) = delete;
@@ -45,23 +46,23 @@ class OutputMessage : public NetworkMessage
 			writeMessageLength();
 		}
 
-		void append(const NetworkMessage& msg) {
+		inline void append(const NetworkMessage& msg) {
 			auto msgLen = msg.getLength();
-			memcpy(buffer + position, msg.getBuffer() + 4, msgLen);
+			memcpy(buffer + position, msg.getBuffer() + 8, msgLen);
 			length += msgLen;
 			position += msgLen;
 		}
 
-		void append(const OutputMessage_ptr& msg) {
+		inline void append(const OutputMessage_ptr& msg) {
 			auto msgLen = msg->getLength();
-			memcpy(buffer + position, msg->getBuffer() + 4, msgLen);
+			memcpy(buffer + position, msg->getBuffer() + 8, msgLen);
 			length += msgLen;
 			position += msgLen;
 		}
 
 	protected:
 		template <typename T>
-		void add_header(T add) {
+		inline void add_header(T add) {
 			assert(outputBufferStart >= sizeof(T));
 			outputBufferStart -= sizeof(T);
 			memcpy(buffer + outputBufferStart, &add, sizeof(T));
@@ -69,7 +70,7 @@ class OutputMessage : public NetworkMessage
 			length += sizeof(T);
 		}
 
-		MsgSize_t outputBufferStart = INITIAL_BUFFER_POSITION;
+		MsgSize_t outputBufferStart;
 };
 
 class OutputMessagePool

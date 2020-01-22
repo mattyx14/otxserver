@@ -124,13 +124,13 @@ bool Party::passLeadership(Player* player)
 	if(it != memberList.end())
 		memberList.erase(it);
 
-	char buffer[125];
-	sprintf(buffer, "%s is now the leader of the party.", player->getName().c_str());
-	broadcastMessage(MSG_PARTY, buffer, true);
-
 	Player* oldLeader = leader;
 	leader = player;
 	memberList.insert(memberList.begin(), oldLeader);
+
+	char buffer[125];
+	sprintf(buffer, "%s is now the leader of the party.", player->getName().c_str());
+	broadcastMessage(MSG_PARTY, buffer, true);
 
 	player->sendTextMessage(MSG_PARTY, "You are now the leader of the party.");
 	updateSharedExperience();
@@ -145,13 +145,6 @@ bool Party::join(Player* player)
 	if(isPlayerMember(player) || !isPlayerInvited(player))
 		return false;
 
-	char buffer[200];
-	sprintf(buffer, "%s has joined the party.", player->getName().c_str());
-	broadcastMessage(MSG_INFO_DESCR, buffer);
-
-	sprintf(buffer, "You have joined %s'%s party.", leader->getName().c_str(), (leader->getName()[leader->getName().length() - 1] == 's' ? "" : "s"));
-	player->sendTextMessage(MSG_INFO_DESCR, buffer);
-
 	memberList.push_back(player);
 	player->setParty(this);
 
@@ -159,6 +152,13 @@ bool Party::join(Player* player)
 	PlayerVector::iterator it = std::find(inviteList.begin(), inviteList.end(), player);
 	if(it != inviteList.end())
 		inviteList.erase(it);
+
+	char buffer[200];
+	sprintf(buffer, "%s has joined the party.", player->getName().c_str());
+	broadcastMessage(MSG_PARTY, buffer);
+
+	sprintf(buffer, "You have joined %s'%s party. Open the party channel to communicate with your companions.", leader->getName().c_str(), (leader->getName()[leader->getName().length() - 1] == 's' ? "" : "s"));
+	player->sendTextMessage(MSG_PARTY, buffer);
 
 	updateSharedExperience();
 	updateIcons(player);
