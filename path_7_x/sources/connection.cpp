@@ -167,10 +167,12 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	readTimer.cancel();
 
-	if (error) {
+	int32_t size = msg.getLengthHeader();
+	if (error || size <= 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
 		close(FORCE_CLOSE);
-		return;
-	} else if (connectionState != CONNECTION_STATE_OPEN) {
+	}
+
+	if (connectionState != CONNECTION_STATE_OPEN) {
 		return;
 	}
 
@@ -182,12 +184,6 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	if (timePassed > 2) {
 		timeConnected = time(nullptr);
 		packetsSent = 0;
-	}
-
-	uint16_t size = msg.getLengthHeader();
-	if (size == 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
-		close(FORCE_CLOSE);
-		return;
 	}
 
 	try {

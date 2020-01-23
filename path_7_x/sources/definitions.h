@@ -150,4 +150,6 @@
 #ifndef __EXCEPTION_TRACER__
 	#define DEBUG_REPORT
 #endif
+
+typedef std::vector<std::pair<uint32_t, uint32_t>> IPList;
 #endif

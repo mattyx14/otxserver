@@ -75,7 +75,7 @@ void Scheduler::schedulerThread()
 		if(run)
 		{
 			task->unsetExpiration();
-			Dispatcher::getInstance().addTask(task, true);
+			Dispatcher::getInstance().addTask(task);
 		}
 		else
 			delete task; // was stopped, have to be deleted here

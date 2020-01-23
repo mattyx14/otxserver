@@ -24,13 +24,6 @@
 
 extern ConfigManager g_config;
 
-ServiceManager::ServiceManager(): 
-	death_timer(io_service),
-	running(false)
-{
-	//
-}
-
 ServiceManager::~ServiceManager()
 {
 	stop();
@@ -68,14 +61,6 @@ void ServiceManager::stop()
 
 	death_timer.expires_from_now(boost::posix_time::seconds(3));
 	death_timer.async_wait(std::bind(&ServiceManager::die, this));
-}
-
-ServicePort::ServicePort(boost::asio::io_service& io_service) :
-	io_service(io_service),
-	serverPort(0),
-	pendingStart(false)
-{
-	//
 }
 
 ServicePort::~ServicePort()
@@ -148,8 +133,10 @@ Protocol_ptr ServicePort::make_protocol(NetworkMessage& msg, const Connection_pt
 	uint8_t protocolID = msg.getByte();
 	for (auto& service : services) {
 		if (protocolID != service->get_protocol_identifier()) {
-			return service->make_protocol(connection);
+			continue;
 		}
+
+		return service->make_protocol(connection);
 	}
 	return nullptr;
 }

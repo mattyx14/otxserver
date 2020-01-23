@@ -114,6 +114,7 @@ class NetworkMessage
 		void addPosition(const Position& pos);
 		void addItem(uint16_t id, uint8_t count);
 		void addItem(const Item* item);
+		void addItemId(const Item* item);
 		void addItemId(uint16_t itemId);
 
 		MsgSize_t getLength() const {
@@ -131,6 +132,8 @@ class NetworkMessage
 		uint16_t getLengthHeader() const {
 			return static_cast<uint16_t>(buffer[0] | buffer[1] << 8);
 		}
+
+		int32_t decodeHeader();
 
 		bool isOverrun() const {
 			return overrun;
