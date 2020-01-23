@@ -261,17 +261,6 @@ Creature* Tile::getTopCreature()
 	return NULL;
 }
 
-Creature* Tile::getBottomCreature()
-{
-	if(CreatureVector* creatures = getCreatures())
-	{
-		if(!creatures->empty())
-			return *creatures->rbegin();
-	}
-
-	return NULL;
-}
-
 Item* Tile::getTopDownItem()
 {
 	if(TileItemVector* items = getItemList())
@@ -354,34 +343,6 @@ const Creature* Tile::getTopVisibleCreature(const Creature* creature) const
 	if(const CreatureVector* creatures = getCreatures())
 	{
 		for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
-		{
-			if(creature->canSeeCreature(*cit))
-				return (*cit);
-		}
-	}
-
-	return NULL;
-}
-
-Creature* Tile::getBottomVisibleCreature(const Creature* creature)
-{
-	if(CreatureVector* creatures = getCreatures())
-	{
-		for(CreatureVector::reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
-		{
-			if(creature->canSeeCreature(*cit))
-				return (*cit);
-		}
-	}
-
-	return NULL;
-}
-
-const Creature* Tile::getBottomVisibleCreature(const Creature* creature) const
-{
-	if(const CreatureVector* creatures = getCreatures())
-	{
-		for(CreatureVector::const_reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
 		{
 			if(creature->canSeeCreature(*cit))
 				return (*cit);
@@ -1388,59 +1349,9 @@ uint32_t Tile::getHeight() const
 	return height;
 }
 
-int32_t Tile::getClientIndexOfThing(const Player* player, const Thing* thing) const
+int32_t Tile::getClientIndexOfThing(const Player*, const Thing* thing) const
 {
-	if(ground && ground == thing)
-		return 0;
-
-	int32_t n = 0;
-	if(!ground)
-		n--;
-
-	const TileItemVector* items = getItemList();
-	if(items)
-	{
-		if(thing && thing->getItem())
-		{
-			for(ItemVector::const_iterator it = items->getBeginTopItem(); it != items->getEndTopItem(); ++it)
-			{
-				++n;
-				if((*it) == thing)
-					return n;
-			}
-		}
-		else
-			n += items->getTopItemCount();
-	}
-
-	if(const CreatureVector* creatures = getCreatures())
-	{
-		for(CreatureVector::const_reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
-		{
-			if((*cit) == thing)
-				return ++n;
-
-			if(player->canSeeCreature(*cit))
-				++n;
-		}
-	}
-
-	if(items)
-	{
-		if(thing && thing->getItem())
-		{
-			for(ItemVector::const_iterator it = items->getBeginDownItem(); it != items->getEndDownItem(); ++it)
-			{
-				++n;
-				if((*it) == thing)
-					return n;
-			}
-		}
-		else
-			n += items->getDownItemCount();
-	}
-
-	return -1;
+	return __getIndexOfThing(thing);
 }
 
 int32_t Tile::__getIndexOfThing(const Thing* thing) const
@@ -1470,7 +1381,7 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 
 	if(const CreatureVector* creatures = getCreatures())
 	{
-		if(thing && thing->getCreature())
+		if(thing->getCreature())
 		{
 			for(CreatureVector::const_iterator cit = creatures->begin(); cit != creatures->end(); ++cit)
 			{
