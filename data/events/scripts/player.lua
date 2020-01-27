@@ -9,8 +9,8 @@ CONTAINER_WEIGHT = 1000000 -- 1000000 = 10k = 10000.00 oz | this function is onl
 -- Items sold on the store that should not be moved off the store container
 local storeItemID = {32384,32385,32386,32387,32388,32389,32124,32125,32126,32127,32128,32129,32109,33299,26378,29020}
 
--- No move items with actionID 8000
-NOT_MOVEABLE_ACTION = 8000
+-- No move/trade items with actionID 8000
+BLOCK_ITEM_WITH_ACTION = 8000
 
 -- Capacity imbuement store
 local STORAGE_CAPACITY_IMBUEMENT = 42154
@@ -277,8 +277,8 @@ local function antiPush(self, item, count, fromPosition, toPosition, fromCylinde
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-	-- No trade items with actionID 8000
-	if item:getActionId() == NOT_MOVEABLE_ACTION then
+	-- No move items with actionID = 8000
+	if item:getActionId() == BLOCK_ITEM_WITH_ACTION then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
 	end
@@ -528,7 +528,8 @@ function Player:onTurn(direction)
 end
 
 function Player:onTradeRequest(target, item)
-	if item:getActionId() == NOT_MOVEABLE_ACTION then
+	-- No trade items with actionID = 8000
+	if item:getActionId() == BLOCK_ITEM_WITH_ACTION then
 		return false
 	end
 
