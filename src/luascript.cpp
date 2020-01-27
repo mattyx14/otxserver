@@ -2357,6 +2357,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Creature", "getCondition", LuaScriptInterface::luaCreatureGetCondition);
 	registerMethod("Creature", "addCondition", LuaScriptInterface::luaCreatureAddCondition);
+	registerMethod("Creature", "clearConditions", LuaScriptInterface::luaCombatClearConditions);
 	registerMethod("Creature", "removeCondition", LuaScriptInterface::luaCreatureRemoveCondition);
 
 	registerMethod("Creature", "remove", LuaScriptInterface::luaCreatureRemove);
@@ -13389,6 +13390,19 @@ int LuaScriptInterface::luaCombatSetCondition(lua_State* L)
 	Combat* combat = getUserdata<Combat>(L, 1);
 	if (combat && condition) {
 		combat->addCondition(condition->clone());
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaCombatClearConditions(lua_State* L)
+{
+	// combat:clearConditions()
+	Combat* combat = getUserdata<Combat>(L, 1);
+	if (combat) {
+		combat->clearConditions();
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);

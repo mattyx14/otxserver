@@ -3116,12 +3116,20 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 		g_moveEvents->onPlayerEquip(this, thing->getItem(), static_cast<slots_t>(index), false);
 	}
 
+	bool requireListUpdate = true;
+
 	if (link == LINK_OWNER || link == LINK_TOPPARENT) {
 		const Item* i = (oldParent ? oldParent->getItem() : nullptr);
 
 		// Check if we owned the old container too, so we don't need to do anything,
 		// as the list was updated in postRemoveNotification
 		assert(i ? i->getContainer() != nullptr : true);
+
+		if (i) {
+			requireListUpdate = i->getContainer()->getHoldingPlayer() != this;
+		} else {
+			requireListUpdate = oldParent != this;
+		}
 
 		updateInventoryWeight();
 		updateItemsLight();
@@ -3132,6 +3140,9 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 	if (const Item* item = thing->getItem()) {
 		if (const Container* container = item->getContainer()) {
 			onSendContainer(container);
+		}
+		if (shopOwner && requireListUpdate) {
+			//updateSaleShopList(item); // this causes the client to crash
 		}
 	} else if (const Creature* creature = thing->getCreature()) {
 		if (creature == this) {
@@ -3158,14 +3169,18 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 		//calling movement scripts
 		g_moveEvents->onPlayerDeEquip(this, thing->getItem(), static_cast<slots_t>(index));
 	}
-
+	bool requireListUpdate = true;
 	if (link == LINK_OWNER || link == LINK_TOPPARENT) {
 		const Item* i = (newParent ? newParent->getItem() : nullptr);
 
 		// Check if we owned the old container too, so we don't need to do anything,
 		// as the list was updated in postRemoveNotification
 		assert(i ? i->getContainer() != nullptr : true);
-
+		if (i) {
+			requireListUpdate = i->getContainer()->getHoldingPlayer() != this;
+		} else {
+			requireListUpdate = newParent != this;
+		}
 		updateInventoryWeight();
 		updateItemsLight();
 		sendInventoryClientIds();
@@ -3199,7 +3214,35 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 				autoCloseContainers(container);
 			}
 		}
+		if (shopOwner && requireListUpdate) {
+			//updateSaleShopList(item); // this causes the client to crash
+		}
 	}
+}
+
+// i will keep this function so it can be reviewed
+bool Player::updateSaleShopList(const Item* item)
+{
+	uint16_t itemId = item->getID();
+	if (itemId != ITEM_GOLD_COIN && itemId != ITEM_PLATINUM_COIN && itemId != ITEM_CRYSTAL_COIN) {
+		auto it = std::find_if(shopItemList.begin(), shopItemList.end(), [itemId](const ShopInfo& shopInfo) { return shopInfo.itemId == itemId && shopInfo.sellPrice != 0; });
+		if (it == shopItemList.end()) {
+			const Container* container = item->getContainer();
+			if (!container) {
+				return false;
+			}
+
+			const auto& items = container->getItemList();
+			return std::any_of(items.begin(), items.end(), [this](const Item* containerItem) {
+				return updateSaleShopList(containerItem);
+			});
+		}
+	}
+
+	if (client) {
+		client->sendSaleItemList(shopItemList);
+	}
+	return true;
 }
 
 bool Player::hasShopItemForSale(uint32_t itemId, uint8_t subType) const

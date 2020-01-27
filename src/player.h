@@ -665,6 +665,7 @@ class Player final : public Creature, public Cylinder
 		void stopWalk();
 		void openShopWindow(Npc* npc, const std::list<ShopInfo>& shop);
 		bool closeShopWindow(bool sendCloseShopWindow = true);
+		bool updateSaleShopList(const Item* item);
 		bool hasShopItemForSale(uint32_t itemId, uint8_t subType) const;
 
 		void setChaseMode(bool mode);
@@ -1461,7 +1462,6 @@ class Player final : public Creature, public Cylinder
 
 		 //Autoloot
 		std::unordered_set<uint32_t> autoLootList;
-		//std::unordered_set<uint32_t> autoLootList; (use this if you have ubuntu 16+)
 
 		std::unordered_set<uint32_t> VIPList;
 

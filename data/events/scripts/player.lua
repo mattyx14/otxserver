@@ -277,7 +277,12 @@ local function antiPush(self, item, count, fromPosition, toPosition, fromCylinde
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-  -- Store Items
+	-- No trade items with actionID 8000
+	if item:getActionId() == NOT_MOVEABLE_ACTION then
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+	-- Store Items
     if isInArray(storeItemID,item.itemid) then
         self:sendCancelMessage('You cannot move this item outside this container.')
         return false
@@ -316,7 +321,7 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 			return false
 		else
 			exhaust[pid] = true
-			addEvent(function() exhaust[pid] = false end, 2000, pid)
+			addEvent(function() exhaust[pid] = false end, 1000, pid)
 			return true
 		end
 	end
@@ -348,12 +353,6 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 
 	-- No move gold pouch
 	if item:getId() == GOLD_POUCH then
-		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-		return false
-	end
-
-	-- No move items with actionID 8000
-	if item:getActionId() == NOT_MOVEABLE_ACTION then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
 	end
@@ -529,7 +528,11 @@ function Player:onTurn(direction)
 end
 
 function Player:onTradeRequest(target, item)
-if isInArray(storeItemID,item.itemid) then
+	if item:getActionId() == NOT_MOVEABLE_ACTION then
+		return false
+	end
+
+	if isInArray(storeItemID,item.itemid) then
         return false
     end
  	return true

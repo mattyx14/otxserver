@@ -48,6 +48,7 @@
 	- Added customScripts "savePlayer/cleanMap" (Global Events)
 	- Added playerTalkaction !saveme
 	- Changed baseSpeed monsters to *1.5
+	- Changed function p:removeMoney to p:removeMoneyNpc
 	- Fix citizenTeleports items
 	- Fix usePick/useShovel/useSkinning
 	- Fix Monster:onSpawn (servantsError)
@@ -62,6 +63,12 @@
 	- Fix luaCreatureSay (OTSBR)
 	- Fix compiler error on Ubuntu
 	- Fix tradeWindows (OTSBR)
+	- Fix trade items with actionID (solve it https://github.com/otland/forgottenserver/pull/1915)
+	- Fix pet through walls houses (OTSBR)
+	- Fix PZLocked player on exit Client (OTSBR)
+	- Fix clear conditions (OTSBR)
+	- Fix debugs on shopList (OTSBR)
+	- Fix double respawn bug (OTSBR)
 	- Remove archivements on scripts
 	- Remove storages for globalServers
 ]
