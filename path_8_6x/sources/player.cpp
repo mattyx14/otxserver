@@ -4094,7 +4094,7 @@ void Player::onTarget(Creature* target)
 	Player* targetPlayer = target->getPlayer();
 	if(targetPlayer && !isPartner(targetPlayer) && !isAlly(targetPlayer))
 	{
-		if(!pzLocked && g_game.getWorldType(this, targetPlayer) == WORLDTYPE_HARDCORE)
+		if(!pzLocked && g_game.getWorldType(this, targetPlayer) == WORLDTYPE_HARDCORE && !targetPlayer->getTile()->hasFlag(TILESTATE_HARDCOREZONE))
 		{
 			pzLocked = true;
 			sendIcons();
@@ -4107,7 +4107,7 @@ void Player::onTarget(Creature* target)
 		}
 		else if(!targetPlayer->hasAttacked(this))
 		{
-			if(!pzLocked)
+			if(!pzLocked && !targetPlayer->getTile()->hasFlag(TILESTATE_HARDCOREZONE))
 			{
 				pzLocked = true;
 				sendIcons();
