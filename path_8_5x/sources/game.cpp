@@ -1274,7 +1274,7 @@ bool Game::playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
 
 ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, uint32_t flags/* = 0*/)
 {
-	if (creature->getNoMove() && creature->getType() == CREATURETYPE_MONSTER)
+	if (creature->getNoMove())
 		return RET_NOTPOSSIBLE;
 	
 	const Position& currentPos = creature->getPosition();
