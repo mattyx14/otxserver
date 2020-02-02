@@ -4091,6 +4091,12 @@ int32_t LuaInterface::luaDoPlayerAddItem(lua_State* L)
 
 		--itemCount;
 	}
+	
+	if (newItem->isStackable())
+	{
+		player->updateInventoryWeight();
+		player->sendStats();
+	}
 
 	if(ret)
 		return ret;

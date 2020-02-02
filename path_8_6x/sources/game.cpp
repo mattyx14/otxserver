@@ -2328,6 +2328,16 @@ void Game::addMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/)
 		}
 		while(tmp > 0);
 	}
+	
+	if (Creature* creature = cylinder->getCreature())
+	{
+		if (Player * player = creature->getPlayer())
+		{
+			player->updateInventoryWeight();
+			player->sendStats();
+		}
+	}
+	
 }
 
 Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount/* = -1*/)
