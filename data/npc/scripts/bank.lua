@@ -272,8 +272,7 @@ local function creatureSayCallback(cid, type, msg)
         end
     elseif npcHandler.topic[cid] == 2 then
         if msgcontains(msg, 'yes') then
-            if player:getMoney() + player:getBankBalance() >= tonumber(count[cid]) then
-                player:depositMoney(count[cid])
+            if player:depositMoney(count[cid]) then
                 npcHandler:say('Alright, we have added the amount of ' .. count[cid] .. ' gold to your {balance}. You can {withdraw} your money anytime you want to.', cid)
                 Player.setExhaustion(player, 494934, 2)
             else
@@ -676,8 +675,6 @@ keywordHandler:addKeyword({'help'}, StdModule.say, {npcHandler = npcHandler, tex
 keywordHandler:addKeyword({'functions'}, StdModule.say, {npcHandler = npcHandler, text = 'You can check the {balance} of your bank account, {deposit} money or {withdraw} it. You can also {transfer} money to other characters, provided that they have a vocation.'})
 keywordHandler:addKeyword({'basic'}, StdModule.say, {npcHandler = npcHandler, text = 'You can check the {balance} of your bank account, {deposit} money or {withdraw} it. You can also {transfer} money to other characters, provided that they have a vocation.'})
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, text = 'I work in this bank. I can change money for you and help you with your bank account.'})
-keywordHandler:addKeyword({'name'}, StdModule.say, {npcHandler = npcHandler, text = "My name is Naji. My mother gave me that name because she knew a Paladin with that name. I'm a spare timer hunter by myself, you know! I want to join the {Paw and Fur - hunting elite}!"})
-keywordHandler:addKeyword({'paw and fur'}, StdModule.say, {npcHandler = npcHandler, text = "The Paw and Fur - Hunting Elite is a newly founded hunting society in Port Hope. It is said that they send you on hunting mission. Sounds great if you ask me."})
 
 npcHandler:setMessage(MESSAGE_GREET, "Yes? What may I do for you, |PLAYERNAME|? Bank business, perhaps?")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Have a nice day.")
