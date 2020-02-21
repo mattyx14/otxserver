@@ -483,8 +483,6 @@ class LuaScriptInterface
 
 		static int luaSendChannelMessage(lua_State* L);
 		static int luaSendGuildChannelMessage(lua_State* L);
-		
-		static int luaGetPreyMonsters(lua_State* L);
 
 #ifndef LUAJIT_VERSION
 		static int luaBitNot(lua_State* L);
@@ -1075,11 +1073,6 @@ class LuaScriptInterface
 
 		static int luaPlayerGetIdleTime(lua_State* L);
 
-		/*static int luaPlayerAddAutoLootItem(lua_State* L);
-		static int luaPlayerRemoveAutoLootItem(lua_State* L);
-		static int luaPlayerGetAutoLootItem(lua_State* L);
-		static int luaPlayerGetAutoLootList(lua_State* L); */ // NOT READY
-
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 
@@ -1322,7 +1315,6 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsPet(lua_State* L);
 		static int luaMonsterTypeIsPassive(lua_State* L);
 		static int luaMonsterTypeIsRewardBoss(lua_State* L);
-		static int luaMonsterTypeIsPreyable(lua_State* L);
 		static int luaMonsterTypeRespawnType(lua_State* L);
 		static int luaMonsterTypeCanSpawn(lua_State* L);
 
@@ -1355,7 +1347,6 @@ class LuaScriptInterface
 		static int luaMonsterTypeAddVoice(lua_State* L);
 
 		static int luaMonsterTypeGetLoot(lua_State* L);
-		static int luaMonsterTypeAddLoot(lua_State* L);
 
 		static int luaMonsterTypeGetCreatureEvents(lua_State* L);
 		static int luaMonsterTypeRegisterEvent(lua_State* L);

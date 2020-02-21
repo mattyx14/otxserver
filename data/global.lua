@@ -7,22 +7,38 @@ ADVANCED_SECURE_MODE = 1 -- Set to 0 to disable.
 
 STORAGEVALUE_PROMOTION = 30018
 
+-- this is the new door registration system, ignore the tables below and register only in those, it is not necessary to register in actions.xml, just put the corresponding id behind the closed and open door and the script will automatically register them.
+-- start
+-- this is the custom doors (no having special requisites for open)
 customDoorsRange = {
-	{ openDoor = 26545, closedDoor = 26541 },
-	{ openDoor = 26545, closedDoor = 26542 },
-	{ openDoor = 26546, closedDoor = 26543 },
-	{ openDoor = 26546, closedDoor = 26544 },
-	{ openDoor = 33121, closedDoor = 33117 },
-	{ openDoor = 33121, closedDoor = 33118 },
-	{ openDoor = 33122, closedDoor = 33119 },
-	{ openDoor = 33122, closedDoor = 33120 },
-	{ openDoor = 34673, closedDoor = 34671 },
-	{ openDoor = 34674, closedDoor = 34672 },
-	{ openDoor = 34677, closedDoor = 34675 },
-	{ openDoor = 34678, closedDoor = 34676 },
-	{ openDoor = 12695, closedDoor = 12692 },
-	{ openDoor = 12703, closedDoor = 12701 },
+	{ closedDoor = 12692, openDoor = 12695 },
+	{ closedDoor = 12701, openDoor = 12703 },
+	{ closedDoor = 26541, openDoor = 26545 },
+	{ closedDoor = 26542, openDoor = 26545 },
+	{ closedDoor = 26543, openDoor = 26546 },
+	{ closedDoor = 26544, openDoor = 26546 },
+	{ closedDoor = 33117, openDoor = 33121 },
+	{ closedDoor = 33118, openDoor = 33121 },
+	{ closedDoor = 33119, openDoor = 33122 },
+	{ closedDoor = 33120, openDoor = 33122 },
+	{ closedDoor = 36329, openDoor = 36331 },
+	{ closedDoor = 36330, openDoor = 36332 },
+	{ closedDoor = 35684, openDoor = 35688 },
+	{ closedDoor = 35686, openDoor = 35690 },
+	{ closedDoor = 35685, openDoor = 35689 },
+	{ closedDoor = 35687, openDoor = 35691 },
 }
+-- quest doors (door for quests, put an storage on the actionid and the door is open only if player have this storage)
+questDoorsRange = {
+	{closedDoor = 34675, openDoor = 34677},
+	{closedDoor = 34676, openDoor = 34678},
+}
+-- level door
+levelDoorsRange = {
+	{closedDoor = 34671, openDoor = 34673},
+	{closedDoor = 34672, openDoor = 34674},
+}
+-- end
 
 ropeSpots = {384, 418, 8278, 8592, 13189, 14435, 14436, 15635, 19518, 26019, 24621, 24622, 24623, 24624}
 
@@ -99,6 +115,8 @@ damageImpact = {} -- global table to insert data
 -- New prey => preyTimeLeft
 nextPreyTime = {}
 
+
+  --
 local start = os.time()
 local linecount = 0
 debug.sethook(function(event, line)
@@ -112,6 +130,7 @@ debug.sethook(function(event, line)
         start = os.time()
     end
 end, "l")
+ --
 
 function doCreatureSayWithRadius(cid, text, type, radiusx, radiusy, position)
 	if not position then
@@ -248,6 +267,20 @@ if not bosssPlayers then
 			return c
 		end
 	}
+end
+
+-- function for the reload talkaction
+local logFormat = "[%s] %s %s"
+
+function logCommand(player, words, param)
+	local file = io.open("data/logs/" .. player:getName() .. " commands.log", "a")
+	if not file then
+		return
+	end
+
+	io.output(file)
+	io.write(logFormat:format(os.date("%d/%m/%Y %H:%M"), words, param):trim() .. "\n")
+	io.close(file)
 end
 
 -- MARRY

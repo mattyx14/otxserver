@@ -1530,6 +1530,10 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 		}
 	}
 
+	if (moneyCount < money) {
+		return false;
+	}
+
 	for (const auto& moneyEntry : moneyMap) {
 		Item* item = moneyEntry.second;
 		if (moneyEntry.first < money) {
@@ -4874,7 +4878,7 @@ void Game::checkImbuements()
 
 		if (item->isRemoved() || !item->getParent()->getCreature()) {
 			ReleaseItem(item);
-			it = imbuedItems[bucket].erase(it);			
+			it = imbuedItems[bucket].erase(it);
 			continue;
 		}
 
@@ -5556,7 +5560,7 @@ void Game::playerBrowseMarketOwnHistory(uint32_t playerId)
 
 void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint32_t price, bool anonymous) //Custom: Anti bug do market
 {
-	if (amount == 0 || amount > 3000) {
+	if (amount == 0 || amount > 3000 ) {
 		return;
 	}
 

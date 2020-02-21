@@ -1,7 +1,7 @@
 -- Please don't edit those information!
 GameStore = {
   ModuleName = "GameStore",
-  Developers = { "Cjaker", "metabob" },
+  Developers = { "Slavi Dodo", "Cjaker", "metabob" },
   Version = "0.4",
   LastUpdated = "15-04-2019 17:40PM"
 }
@@ -299,7 +299,7 @@ function parseBuyStoreOffer(playerId, msg)
       elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT         then GameStore.processOutfitPurchase(player, offer.sexId, offer.addon)
       elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_OUTFIT_ADDON   then GameStore.processOutfitPurchase(player, offer.sexId, offer.addon)
       elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_MOUNT          then GameStore.processMountPurchase(player, offer.id)
-      elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE     then local newName = msg:getString(); GameStore.processNameChangePurchase(player, offer.id, productType, newName)
+      elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE     then local newName = msg:getString(); GameStore.processNameChangePurchase(player, offer, productType, newName)
       elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_SEXCHANGE      then GameStore.processSexChangePurchase(player)
       elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_EXPBOOST       then GameStore.processExpBoostPuchase(player)
       elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_PREYSLOT       then GameStore.processPreySlotPurchase(player)
@@ -323,6 +323,9 @@ function parseBuyStoreOffer(playerId, msg)
     return queueSendStoreAlertToUser(alertMessage, 500, playerId)
   end
 
+  if offer.type == GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE then
+    return
+  end
 
   player:removeCoinsBalance(offerPrice)
   GameStore.insertHistory(player:getAccountId(), GameStore.HistoryTypes.HISTORY_TYPE_NONE, offer.name, (offerPrice) * -1)
@@ -547,7 +550,7 @@ function sendShowStoreOffers(playerId, category)
             disabledReason = "You can't get this promotion"
           end
         elseif offer.type == GameStore.OfferTypes.OFFER_TYPE_PREYSLOT then
-          local unlockedColumns = player:getStorageValue(63253)
+          local unlockedColumns = player:getStorageValue(STORE_SLOT_STORAGE)
           if (unlockedColumns == 1) then
             disabled = 1
             disabledReason = "You already have 3 slots released."
@@ -1076,14 +1079,19 @@ function GameStore.processAllBlessingsPurchase(player)
 end
 
 function GameStore.processPremiumPurchase(player, offerId)
-  player:addPremiumDays(offerId)
+  player:addPremiumDays(offerId-3000)
+  
+  -- Update Prey Data
+  for slot = CONST_PREY_SLOT_FIRST, CONST_PREY_SLOT_THIRD do
+    player:sendPreyData(slot)
+  end
 end
 
 function GameStore.processStackablePurchase(player, offerId, offerCount, offerName)
   local function isKegExerciseItem(itemId)
     return ((itemId >= ITEM_KEG_START and itemId <= ITEM_KEG_END) or (itemId >= ITEM_EXERCISE_START and itemId <= ITEM_EXERCISE_END) or itemId == 32109)
   end
-
+  
   if isKegExerciseItem(offerId) then
     if player:getFreeCapacity() < ItemType(offerId):getWeight(1) then
       return error({code = 0, message = "Please make sure you have free capacity to hold this item."})
@@ -1207,8 +1215,9 @@ function GameStore.processMountPurchase(player, offerId)
   player:addMount(offerId)
 end
 
-function GameStore.processNameChangePurchase(player, offerId, productType, newName)
+function GameStore.processNameChangePurchase(player, offer, productType, newName)
   local playerId = player:getId()
+  local offerId = offer.id
 
   if productType == GameStore.ClientOfferTypes.CLIENT_STORE_OFFER_NAMECHANGE then
     local tile = Tile(player:getPosition())
@@ -1230,6 +1239,8 @@ function GameStore.processNameChangePurchase(player, offerId, productType, newNa
 
     newName = newName:lower():gsub("(%l)(%w*)", function(a, b) return string.upper(a) .. b end)
     db.query("UPDATE `players` SET `name` = " .. db.escapeString(newName) .. " WHERE `id` = " .. player:getGuid())
+    player:removeCoinsBalance(offer.price)
+    GameStore.insertHistory(player:getAccountId(), GameStore.HistoryTypes.HISTORY_TYPE_NONE, offer.name, (offer.price) * -1)
     message = "You have successfully changed you name, relogin!"
     addEvent(function()
       local player = Player(playerId)
@@ -1265,12 +1276,16 @@ function GameStore.processExpBoostPuchase(player)
 end
 
 function GameStore.processPreySlotPurchase(player)
-
-  if player:getStorageValue(63253) < 1 then
-  player:setStorageValue(63253, 1)
-  end
-
-  player:setStorageValue(63253, 1)
+	if player:getStorageValue(STORE_SLOT_STORAGE) < 1 then
+		player:setStorageValue(STORE_SLOT_STORAGE, 1)
+		player:setPreyUnlocked(CONST_PREY_SLOT_THIRD, 2)
+		player:setPreyState(CONST_PREY_SLOT_THIRD, 1)
+		
+		-- Update Prey Data
+		for slot = CONST_PREY_SLOT_FIRST, CONST_PREY_SLOT_THIRD do
+			player:sendPreyData(slot)
+		end
+	end
 end
 
 function GameStore.processPreyBonusReroll(player, offerCount)
