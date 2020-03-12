@@ -130,9 +130,6 @@ void Game::setGameState(GameState_t newState)
 			raids.loadFromXml();
 			raids.startup();
 
-			if(!g_config.getBoolean(ConfigManager::QUEST_LUA))
-				quests.loadFromXml();
-
 			mounts.loadFromXml();
 
 			if (!g_config.getBoolean(ConfigManager::STOREMODULES)) {
@@ -1057,7 +1054,14 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 			toIndex = static_cast<uint8_t>(toPos.y);
 		}
 	}
-
+	if (item->isWrapable()){
+		HouseTile* toHouseTile = dynamic_cast<HouseTile*>(map.getTile(mapToPos));
+		HouseTile* fromHouseTile = dynamic_cast<HouseTile*>(map.getTile(mapFromPos));
+		if (fromHouseTile && (!toHouseTile || toHouseTile->getHouse()->getId() != fromHouseTile->getHouse()->getId())) {
+			player->sendCancelMessage("You can't move this item outside a house.");
+				return;
+		}
+	}
 	ReturnValue ret = internalMoveItem(fromCylinder, toCylinder, toIndex, item, count, nullptr, 0, player);
 	if (ret != RETURNVALUE_NOERROR) {
 		player->sendCancelMessage(ret);
@@ -1240,10 +1244,10 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 			return ret;
 		}
 
-		if (Player* player = actor->getPlayer()) {
-			if (player->getProtocolVersion() < 1140 || player->operatingSystem != CLIENTOS_NEW_WINDOWS) {
+	 	if (Player* player = actor->getPlayer()) {
+	 		if (player->getProtocolVersion() < 1140 || player->operatingSystem != CLIENTOS_NEW_WINDOWS) {
 				player->updateLootTracker(item);
-				return ret;
+	 			return ret;
 			}
 
 			const ItemType& it = Item::items[fromCylinder->getItem()->getID()];
@@ -1531,8 +1535,8 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 	}
 
 	if (moneyCount < money) {
-		return false;
-	}
+        return false;
+    }
 
 	for (const auto& moneyEntry : moneyMap) {
 		Item* item = moneyEntry.second;
@@ -2348,7 +2352,7 @@ void Game::playerMoveUpContainer(uint32_t playerId, uint8_t cid)
 
 void Game::playerUpdateContainer(uint32_t playerId, uint8_t cid)
 {
-	Player* player = getPlayerByID(playerId);
+	Player* player = getPlayerByGUID(playerId);
 	if (!player) {
 		return;
 	}
@@ -2420,12 +2424,17 @@ void Game::playerWrapableItem(uint32_t playerId, const Position& pos, uint8_t st
 
 	Item* item = thing->getItem();
 	Tile* tile = map.getTile(item->getPosition());
-	if (!tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+	HouseTile* houseTile = dynamic_cast<HouseTile*>(tile);
+	if (!tile->hasFlag(TILESTATE_PROTECTIONZONE) || !houseTile) {
 		player->sendCancelMessage("You may construct this only inside a house.");
 		return;
 	}
+	if (houseTile->getHouse() != house) {
+		player->sendCancelMessage("Only owners can wrap/unwrap inside a house.");
+			return;
+	}
 
-	if (!item || item->getClientID() != spriteId || item->hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) || item->isWrapable()) {
+	if (!item || item->getClientID() != spriteId || item->hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) || (!item->isWrapable() && item->getID() != 26054)) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
@@ -2444,69 +2453,55 @@ void Game::playerWrapableItem(uint32_t playerId, const Position& pos, uint8_t st
 		}
 		return;
 	}
-
-	const ItemType& iiType = Item::items[item->getID()];
-	uint16_t newWrapId = Item::items[item->getID()].wrapableTo;
-	std::string itemName = item->getName();
-
-	// It is not possible to unwrap containers with one or more items inside.
-	const Container* container = item->getContainer();
-	if(container && container->getItemHoldingCount() > 0){
+	
+	const Container* container = item->getContainer();	
+	if (container && container->getItemHoldingCount() > 0) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}
+	
+	if ((item->getHoldingPlayer() && item->getID() == 26054) || (tile->hasFlag(TILESTATE_IMMOVABLEBLOCKSOLID) && !item->hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID))) {
+		player->sendCancelMessage("You can only wrap/unwrap in the floor.");
+		return;
+	}
+	
+	std::string itemName = item->getName();
+	const ItemAttributes::CustomAttribute* attr = item->getCustomAttribute("unWrapId");
+	uint16_t unWrapId = 0;
+	if (attr != nullptr) {
+		uint32_t tmp = static_cast<uint32_t>(boost::get<int64_t>(attr->value));
+		unWrapId = (uint16_t)tmp;
+	}
 
-	// FOR ITEMS THAT DO NOT LOSE ACTIONID TO TRANSFORM
-	if (!iiType.wrapContainer) {
-		if (newWrapId != 0 && item->getID() != TRANSFORM_BOX_ID) {
+		if (item->isWrapable() && item->getID() != TRANSFORM_BOX_ID) {
 			uint16_t hiddenCharges = 0;
 			if (isCaskItem(item->getID())) {
 				hiddenCharges = item->getSubType();
 			}
-
-			transformItem(item, newWrapId)->setActionId(item->getID());
+			uint16_t oldItemID = item->getID();
+			addMagicEffect(item->getPosition(), CONST_ME_POFF);
+			Item* newItem = transformItem(item, 26054);
+			ItemAttributes::CustomAttribute val;
+			val.set<int64_t>(oldItemID);
+			std::string key = "unWrapId";
+			newItem->setCustomAttribute(key, val);
 			item->setSpecialDescription("Unwrap it in your own house to create a <" + itemName + ">.");
-			if (hiddenCharges > 0) { //saving the cask charges
+			if (hiddenCharges > 0) { 
 				item->setDate(hiddenCharges);
 			}
-			addMagicEffect(item->getPosition(), CONST_ME_POFF);
 			startDecay(item);
 		}
-
-		if ((item->getActionId() != 0) && !newWrapId && item->getID() == TRANSFORM_BOX_ID) {
+		else if (item->getID() == TRANSFORM_BOX_ID && unWrapId != 0) {
 			uint16_t hiddenCharges = item->getDate();
-			uint16_t boxActionId = item->getActionId();
-			transformItem(item, item->getActionId()); // transforms the item
-			item->setSpecialDescription("Wrap it in your own house to create a <" + itemName + ">.");
+			item->removeAttribute(ITEM_ATTRIBUTE_DESCRIPTION);
 			addMagicEffect(item->getPosition(), CONST_ME_POFF);
-			if (hiddenCharges > 0 && isCaskItem(boxActionId)) {
+			transformItem(item, unWrapId);
+			if (hiddenCharges > 0 && isCaskItem(unWrapId)) {
 				item->setSubType(hiddenCharges);
 			}
+			item->removeCustomAttribute("unWrapId");
 			startDecay(item);
 		}
-	} else {
-		// FOR ITEMS LOSING ACTIONID TO TRANSFORM
-		if (iiType.wrapContainer) {
-			Item* wrapContainer = transformItem(item, newWrapId);
-			if (newWrapId != 0 && item->getID() != TRANSFORM_BOX_ID) {
-				wrapContainer->setActionId(item->getID()); // Then you have to make a box adc if you have aid
-				wrapContainer->setSpecialDescription("Unwrap it in your own house to create a <" + itemName + ">.");
-				addMagicEffect(wrapContainer->getPosition(), CONST_ME_POFF);
-				startDecay(item);
-			}
-
-			if ((item->getActionId() != 0) && !newWrapId && item->getID() == TRANSFORM_BOX_ID) {
-				uint16_t hiddenCharges = item->getDate();
-				uint16_t boxActionId = item->getActionId();
-				transformItem(item, item->getActionId())->setSpecialDescription("Wrap it in your own house to create a <" + itemName + ">.");
-				addMagicEffect(item->getPosition(), CONST_ME_POFF);
-				if (hiddenCharges > 0 && isCaskItem(boxActionId)) {
-					item->setSubType(hiddenCharges);
-				}
-				startDecay(item);
-			}
-		}
-	}
 }
 
 void Game::playerWriteItem(uint32_t playerId, uint32_t windowTextId, const std::string& text)
@@ -3562,10 +3557,7 @@ void Game::playerShowQuestLog(uint32_t playerId)
 		return;
 	}
 
-	if(!g_config.getBoolean(ConfigManager::QUEST_LUA))
-		player->sendQuestLog();
-	else
-		g_events->eventPlayerOnRequestQuestLog(player);
+	g_events->eventPlayerOnRequestQuestLog(player);
 }
 
 void Game::playerShowQuestLine(uint32_t playerId, uint16_t questId)
@@ -3575,17 +3567,7 @@ void Game::playerShowQuestLine(uint32_t playerId, uint16_t questId)
 		return;
 	}
 
-	if(!g_config.getBoolean(ConfigManager::QUEST_LUA))
-	{
-		Quest* quest = quests.getQuestByID(questId);
-		if (!quest) {
-			return;
-		}
-
-		player->sendQuestLine(quest);
-	} else {
-		g_events->eventPlayerOnRequestQuestLine(player, questId);
-	}
+	g_events->eventPlayerOnRequestQuestLine(player, questId);
 }
 
 void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
@@ -4183,7 +4165,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			if (targetPlayer) {
 				targetPlayer->updateImpactTracker(realHealthChange, true);
 			}
-
 			std::stringstream ss;
 
 			ss << realHealthChange << (realHealthChange != 1 ? " hitpoints." : " hitpoint.");
@@ -4421,7 +4402,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				CombatDamage tmpDamage;
 				tmpDamage.origin = ORIGIN_SPELL;
 				tmpDamage.primary.type = COMBAT_HEALING;
-				tmpDamage.primary.value = std::round((realDamage * (attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_AMOUNT) /100.)) / damage.affected);
+				tmpDamage.primary.value = std::round((realDamage * (0.9 + (damage.affected / 10.)) * (attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_AMOUNT) /100.)) / damage.affected);
 
 				Combat::doCombatHealth(nullptr, attackerPlayer, tmpDamage, tmpParams);
 			}
@@ -4432,7 +4413,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				CombatDamage tmpDamage;
 				tmpDamage.origin = ORIGIN_SPELL;
 				tmpDamage.primary.type = COMBAT_MANADRAIN;
-				tmpDamage.primary.value = std::round((realDamage * (attackerPlayer->getSkillLevel(SKILL_MANA_LEECH_AMOUNT) /100.)) / damage.affected);
+				tmpDamage.primary.value = std::round((realDamage * (0.9 + (damage.affected / 10.)) * (attackerPlayer->getSkillLevel(SKILL_MANA_LEECH_AMOUNT) /100.)) / damage.affected);
 
 				Combat::doCombatMana(nullptr, attackerPlayer, tmpDamage, tmpParams);
 			}
@@ -5045,6 +5026,7 @@ void Game::cleanup()
 		imbuedItems[lastImbuedBucket].push_back(item);
 	}
 	toImbuedItems.clear();
+
 }
 
 void Game::ReleaseCreature(Creature* creature)
@@ -5558,9 +5540,10 @@ void Game::playerBrowseMarketOwnHistory(uint32_t playerId)
 	player->sendMarketBrowseOwnHistory(buyOffers, sellOffers);
 }
 
-void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint32_t price, bool anonymous) //Custom: Anti bug do market
+void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint32_t price, bool anonymous) // Limit of 64k of items to create offer
 {
-	if (amount == 0 || amount > 3000 ) {
+	// 64000 is size of the client limitation
+	if (amount == 0 || amount > 64000) {
 		return;
 	}
 
@@ -5581,7 +5564,7 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 		return;
 	}
 
-	//Custom: Anti bug do market
+	// Check market exhausted
 	if (player->isMarketExhausted()) {
 		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
@@ -5620,11 +5603,12 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 		fee = 1000;
 	}
 
-	if (type == MARKETACTION_SELL) {
+	if (type == MARKETACTION_SELL) {	
+
 		if (fee > (player->getBankBalance() + player->getMoney())) {
 			return;
-		}
-
+		}	
+		
 		DepotLocker* depotLocker = player->getDepotLocker(player->getLastDepotId());
 		if (!depotLocker) {
 			return;
@@ -5661,15 +5645,20 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 			}
 		}
 
-		if (fee <= player->getBankBalance()) {
+		if(fee <= player->getBankBalance())
+		{
 			player->setBankBalance(player->getBankBalance() - fee);
-		} else {
+		}
+		else
+		{
 			uint64_t remainsFee = 0;
 			remainsFee = fee - player->getBankBalance();
 			player->setBankBalance(0);
 			g_game.removeMoney(player, remainsFee);
 		}
+		
 	} else {
+
 		uint64_t totalPrice = price * amount;
 		totalPrice += fee;
 		if (totalPrice > (player->getMoney() + player->getBankBalance())) {
@@ -5677,9 +5666,12 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 		}
 
 		// Have enough money on the bank
-		if(totalPrice <= player->getBankBalance()) {
+		if(totalPrice <= player->getBankBalance())
+		{
 			player->setBankBalance(player->getBankBalance() - totalPrice);
-		} else {
+		}
+		else
+		{
 			uint64_t remainsPrice = 0;
 			remainsPrice = totalPrice - player->getBankBalance();
 			g_game.removeMoney(player, remainsPrice);
@@ -5693,11 +5685,11 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 	const MarketOfferList& sellOffers = IOMarket::getActiveOffers(MARKETACTION_SELL, it.id);
 	player->sendMarketBrowseItem(it.id, buyOffers, sellOffers);
 
-	//Custom: Anti bug do market
-	player->updateMarketExhausted();
+	// 
+	player->updateMarketExhausted(); // Exhausted for create offert in the market
 }
 
-void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter) //Custom: Anti bug do market
+void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter) // Market cancel offer
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
@@ -5708,7 +5700,7 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		return;
 	}
 
-	//Custom: Anti bug do market
+	// Check market exhausted
 	if (player->isMarketExhausted()) {
 		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
@@ -5721,7 +5713,7 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	}
 
 	if (offer.type == MARKETACTION_BUY) {
-		player->setBankBalance(player->getBankBalance() + static_cast<uint64_t>(offer.price) * offer.amount);
+		player->setBankBalance( player->getBankBalance() + static_cast<uint64_t>(offer.price) * offer.amount);
 		player->sendMarketEnter(player->getLastDepotId());
 	} else {
 		const ItemType& it = Item::items[offer.itemId];
@@ -5767,13 +5759,12 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	offer.timestamp += g_config.getNumber(ConfigManager::MARKET_OFFER_DURATION);
 	player->sendMarketCancelOffer(offer);
 	player->sendMarketEnter(player->getLastDepotId());
-	//Custom: Anti bug do market
-	player->updateMarketExhausted();
+	player->updateMarketExhausted(); // Exhausted for cancel offer in the market
 }
 
-void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount) //Custom: Anti bug do market
+void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount) // Limit of 64k of items to create offer
 {
-	if (amount == 0 || amount > 500) {
+	if (amount == 0 || amount > 64000) {
 		return;
 	}
 
@@ -5786,7 +5777,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		return;
 	}
 
-	//Custom: Anti bug do market
+	// Check market exhausted
 	if (player->isMarketExhausted()) {
 		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
@@ -5834,7 +5825,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			IOAccount::removeCoins(player->getAccount(), amount);
 			IOAccount::registerTransaction(player->getAccount(), -amount, "Sold on Market");
 
-		} else {
+		} else { 
 			std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotLocker);
 			if (itemList.empty()) {
 				return;
@@ -5895,16 +5886,19 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			IOLoginData::savePlayer(buyerPlayer);
 			delete buyerPlayer;
 		}
-	} else {
-		//MARKETACTION_SELL
+	} else {//MARKETACTION_SELL
+		
 		if (totalPrice > (player->getBankBalance() + player->getMoney())) {
 			return;
-		}
-
+		}	
+		
 		// Have enough money on the bank
-		if(totalPrice <= player->getBankBalance()) {
+		if(totalPrice <= player->getBankBalance())
+		{
 			player->setBankBalance(player->getBankBalance() - totalPrice);
-		} else {
+		}
+		else
+		{
 			uint64_t remainsPrice = 0;
 			remainsPrice = totalPrice - player->getBankBalance();
 			player->setBankBalance(0);
@@ -5953,14 +5947,16 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			IOLoginData::increaseBankBalance(offer.playerId, totalPrice);
 			if (it.id == ITEM_STORE_COIN) {
 				sellerPlayer = new Player(nullptr);
+
 				if (IOLoginData::loadPlayerById(sellerPlayer, offer.playerId)) {
 					IOAccount::registerTransaction(sellerPlayer->getAccount(), -amount, "Sold on Market");
-				}
+		}
+
 				delete sellerPlayer;
 			}
 		}
 		if (it.id != ITEM_STORE_COIN) {
-			player->onReceiveMail();
+		player->onReceiveMail();
 		}
 	}
 
@@ -5982,8 +5978,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	offer.timestamp += marketOfferDuration;
 	player->sendMarketAcceptOffer(offer);
 
-	//Custom: Anti bug do market
-	player->updateMarketExhausted();
+	player->updateMarketExhausted(); // Exhausted for accept offer in the market
 }
 
 void Game::playerStoreOpen(uint32_t playerId, uint8_t serviceType)
@@ -6673,7 +6668,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 			return true;
 		}
 
-		case RELOAD_TYPE_QUESTS: return quests.reload();
 		case RELOAD_TYPE_RAIDS: return raids.reload() && raids.startup();
 
 		case RELOAD_TYPE_SPELLS: {
@@ -6723,7 +6717,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 			g_weapons->reload();
 			g_weapons->clear(true);
 			g_weapons->loadDefaults();
-			quests.reload();
 			mounts.reload();
 			g_globalEvents->reload();
 			g_events->load();

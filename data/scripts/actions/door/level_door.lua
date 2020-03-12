@@ -1,8 +1,8 @@
--- quest door
-local questDoors = Action()
+-- level door
+local door = Action()
 local doorIds = {}
 
-for index, value in ipairs(questDoorsRange) do
+for index, value in ipairs(levelDoor) do
     if not table.contains(doorIds, value.openDoor) then
         table.insert(doorIds, value.openDoor)
     end
@@ -12,7 +12,21 @@ for index, value in ipairs(questDoorsRange) do
     end
 end
 
-function questDoors.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+function door.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local itemId = item:getId()
+    for index, value in ipairs(levelDoor) do
+		 if value.closedDoor == itemId then
+			if item.actionid > 0 and player:getLevel() >= item.actionid - 1000 then
+				item:transform(value.openDoor)
+				player:teleportTo(toPosition, true)
+				return true
+			else
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+				return true
+			end
+		end
+	end
+	
 	local doorCreature = Tile(toPosition):getTopCreature()
 	if doorCreature then
 		toPosition.x = toPosition.x + 1
@@ -37,30 +51,11 @@ function questDoors.onUse(player, item, fromPosition, target, toPosition, isHotk
 		end
 		doorCreature:teleportTo(toPosition, true)
 	end
-
-    local itemId = item:getId()
-    for index, value in ipairs(questDoorsRange) do
-		 if value.closedDoor == itemId then
-			if player:getStorageValue(item.actionid) ~= -1 then
-				item:transform(value.openDoor)
-				player:teleportTo(toPosition, true)
-				return true
-				else
-				player:sendTextMessage(MESSAGE_INFO_DESCR, "The door seems to be sealed against unwanted intruders.")
-				return true
-			end
-		end
-	end
-	for index, value in ipairs(questDoorsRange) do
-		if value.closedDoor == itemId then
-			item:transform(value.openDoor)
-		end
-	end
-return true
+	return true
 end
 
 for index, value in ipairs(doorIds) do
-    questDoors:id(value)
+    door:id(value)
 end
 
-questDoors:register()
+door:register()

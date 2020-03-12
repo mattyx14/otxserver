@@ -540,6 +540,7 @@ function Player:onTradeRequest(target, item)
 end
 
 function Player:onTradeAccept(target, item, targetItem)
+	target:closeImbuementWindow(self)
 	return true
 end
 

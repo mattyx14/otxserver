@@ -28,8 +28,8 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 
 --[[
 			if tmpItem.achievement then
-				--player:addAchievement('Clay Fighter')
-				-- player:addAchievementProgress('Clay to Fame', 5)
+				player:addAchievement('Clay Fighter')
+				player:addAchievementProgress('Clay to Fame', 5)
 			end
 ]]
 

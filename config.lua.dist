@@ -57,9 +57,6 @@ depotBoxes = 17
 -- GameStore
 gamestoreByModules = true
 
--- Quest Sytem
-loadQuestLua = true
-
 -- Expert Pvp Config
 expertPvp = false
 
@@ -110,7 +107,7 @@ emoteSpells = false
 classicEquipmentSlots = false
 allowWalkthrough = true
 coinPacketSize = 25
-coinImagesURL = "http://localhost/images/store/"
+coinImagesURL = "http://127.0.0.1/images/store/"
 classicAttackSpeed = false
 showScriptsLogInConsole = false
 

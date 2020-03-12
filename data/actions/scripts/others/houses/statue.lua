@@ -1,4 +1,5 @@
 function onUse(cid, item, fromPosition, itemEx, toPosition)
+
 	if (item:getId() == 26094) then
 		item:transform(26096)
 	elseif (item:getId() == 26095) then

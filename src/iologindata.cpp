@@ -23,6 +23,7 @@
 #include "iologindata.h"
 #include "configmanager.h"
 #include "game.h"
+#include "scheduler.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -251,7 +252,8 @@ bool IOLoginData::loadPlayerPreyData(Player* player)
 			player->preySlotBonusValue[slotNum] = result->getNumber<uint16_t>("bonus_value");
 			player->preySlotBonusGrade[slotNum] = result->getNumber<uint16_t>("bonus_grade");
 		} while (result->next());
-	} else {
+	}
+	else {
 		query.str(std::string());
 		DBInsert preyDataQuery("INSERT INTO `prey_slots` (`player_id`, `num`, `state`, `unlocked`, `current`, `monster_list`, `free_reroll_in`, `time_left`, `next_use`, `bonus_type`, `bonus_value`, `bonus_grade`) VALUES ");
 		for (size_t num = 0; num < PREY_SLOTNUM_THIRD + 1; num++) {
@@ -260,11 +262,9 @@ bool IOLoginData::loadPlayerPreyData(Player* player)
 				return false;
 			}
 		}
-
 		if (!preyDataQuery.execute()) {
 			return false;
 		}
-
 		// Reload player data
 		return loadPlayerPreyData(player);
 	}
@@ -367,7 +367,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	}
 
 	player->coinBalance = IOAccount::getCoinBalance(player->getAccount());
-
+	
 	player->preyBonusRerolls = result->getNumber<uint16_t>("bonus_rerolls"); 
 
 	Group* group = g_game.groups.getGroup(result->getNumber<uint16_t>("group_id"));
@@ -578,6 +578,9 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 	query.str(std::string());
 	query << "SELECT `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_items` WHERE `player_id` = " << player->getGUID() << " ORDER BY `sid` DESC";
+
+	std::vector<std::pair<uint8_t, Container*>> openContainersList;
+
 	if ((result = db.storeQuery(query.str()))) {
 		loadItems(itemMap, result);
 
@@ -585,6 +588,15 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			const std::pair<Item*, int32_t>& pair = it->second;
 			Item* item = pair.first;
 			int32_t pid = pair.second;
+
+			Container* itemContainer = item->getContainer();
+			if (itemContainer) {
+				uint8_t cid = item->getIntAttr(ITEM_ATTRIBUTE_OPENCONTAINER);
+				if (cid > 0) {
+					openContainersList.emplace_back(std::make_pair(cid, itemContainer));
+				}
+			}
+
 			if (pid >= 1 && pid <= 11) {
 				player->internalAddThing(pid, item);
 			} else {
@@ -599,6 +611,15 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 				}
 			}
 		}
+	}
+
+	std::sort(openContainersList.begin(), openContainersList.end(), [](const std::pair<uint8_t, Container*> &left, const std::pair<uint8_t, Container*> &right) {
+		return left.first < right.first;
+	});
+
+	for (auto& it : openContainersList) {
+		player->addContainer(it.first - 1, it.second);
+		g_scheduler.addEvent(createSchedulerTask(((it.first) * 50), std::bind(&Game::playerUpdateContainer, &g_game, player->getGUID(), it.first - 1)));
 	}
 
 	// Store Inbox
@@ -767,10 +788,32 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 	int32_t runningId = 100;
 
 	Database& db = Database::getInstance();
+	const auto& openContainers = player->getOpenContainers();
+
 	for (const auto& it : itemList) {
 		int32_t pid = it.first;
 		Item* item = it.second;
 		++runningId;
+
+		if (Container* container = item->getContainer()) {
+			if (container->getIntAttr(ITEM_ATTRIBUTE_OPENCONTAINER) > 0) {
+				container->setIntAttr(ITEM_ATTRIBUTE_OPENCONTAINER, 0);
+			}
+
+			if (!openContainers.empty()) {
+				for (const auto& its : openContainers) {
+					auto openContainer = its.second;
+					auto opcontainer = openContainer.container;
+
+					if (opcontainer == container) {
+						container->setIntAttr(ITEM_ATTRIBUTE_OPENCONTAINER, ((int)its.first) + 1);
+						break;
+					}
+				}
+			}
+
+			queue.emplace_back(container, runningId);
+		}
 
 		propWriteStream.clear();
 		item->serializeAttr(propWriteStream);
@@ -783,9 +826,6 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 			return false;
 		}
 
-		if (Container* container = item->getContainer()) {
-			queue.emplace_back(container, runningId);
-		}
 	}
 
 	while (!queue.empty()) {
@@ -798,8 +838,24 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 			++runningId;
 
 			Container* subContainer = item->getContainer();
+
 			if (subContainer) {
 				queue.emplace_back(subContainer, runningId);
+				if (subContainer->getIntAttr(ITEM_ATTRIBUTE_OPENCONTAINER) > 0) {
+					subContainer->setIntAttr(ITEM_ATTRIBUTE_OPENCONTAINER, 0);
+				}
+
+				if (!openContainers.empty()) {
+					for (const auto& it : openContainers) {
+						auto openContainer = it.second;
+						auto opcontainer = openContainer.container;
+
+						if (opcontainer == subContainer) {
+							subContainer->setIntAttr(ITEM_ATTRIBUTE_OPENCONTAINER, ((int)it.first) + 1);
+							break;
+						}
+					}
+				}
 			}
 
 			propWriteStream.clear();
@@ -1124,7 +1180,7 @@ bool IOLoginData::savePlayer(Player* player)
 	if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
 		return false;
 	}
-
+	
 	// New Prey
 	query.str(std::string());
 	query << "DELETE FROM `prey_slots` WHERE `player_id` = " << player->getGUID();

@@ -1990,6 +1990,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 					}
 				}
 			}
+
 		}
 
 		if (damage <= 0) {
@@ -2014,27 +2015,32 @@ void Player::death(Creature* lastHitCreature)
 	loginPosition = town->getTemplePosition();
 
 	if (skillLoss) {
-		uint8_t unfairFightReduction = 50;
-		bool lastHitPlayer = Player::lastHitIsPlayer(lastHitCreature);
-
-		if (lastHitPlayer) {
+		uint8_t unfairFightReduction = 100;
+		int playerDmg = 0;
+		int othersDmg = 0;
 			uint32_t sumLevels = 0;
-			uint32_t inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
+			uint32_t inFightTicks = 5 * 60 * 1000;
 			for (const auto& it : damageMap) {
 				CountBlock_t cb = it.second;
 				if ((OTSYS_TIME() - cb.ticks) <= inFightTicks) {
 					Player* damageDealer = g_game.getPlayerByID(it.first);
 					if (damageDealer) {
+						playerDmg += cb.total;
 						sumLevels += damageDealer->getLevel();
 					}
+					else{
+						othersDmg += cb.total;
+					}
+					}
 				}
-			}
-
-			if (sumLevels > level) {
+		bool pvpDeath = false;
+		if(playerDmg > 0 || othersDmg > 0){
+		pvpDeath = (Player::lastHitIsPlayer(lastHitCreature) || playerDmg / (playerDmg + static_cast<double>(othersDmg)) >= 0.05);
+		}
+			if (pvpDeath && sumLevels > level) {
 				double reduce = level / static_cast<double>(sumLevels);
 				unfairFightReduction = std::max<uint8_t>(20, std::floor((reduce * 100) + 0.5));
 			}
-		}
 
 		//Magic level loss
 		uint64_t sumMana = 0;
@@ -2129,7 +2135,7 @@ void Player::death(Creature* lastHitCreature)
 
 		uint8_t maxBlessing = 8;
 		if (hasBlessing(6)) {
-			if (lastHitPlayer && hasBlessing(1)) {
+			if (pvpDeath && hasBlessing(1)) {
 				removeBlessing(1, 1);
 			} else {
 				for (int i = 2; i <= maxBlessing; i++) {
@@ -2138,7 +2144,7 @@ void Player::death(Creature* lastHitCreature)
 			}
 			setDropLoot(false);
 		} else {
-			if (lastHitPlayer && hasBlessing(1)) {
+			if (pvpDeath && hasBlessing(1)) {
 				removeBlessing(1, 1);
 			} else {
 				for (int i = 2; i <= maxBlessing; i++) {
@@ -3076,7 +3082,9 @@ std::map<uint16_t, uint16_t> Player::getInventoryClientIds() const
 		auto rootSearch = itemMap.find(item->getClientID());
 		if (rootSearch != itemMap.end()) {
 			itemMap[item->getClientID()] = itemMap[item->getClientID()] + Item::countByType(item, -1);
-		} else {
+		}
+		else
+		{
 			itemMap.emplace(item->getClientID(), Item::countByType(item, -1));
 		}
 
@@ -3094,11 +3102,14 @@ std::map<uint16_t, uint16_t> Player::getInventoryClientIds() const
 				auto containerSearch = itemMap.find((*it)->getClientID());
 				if (containerSearch != itemMap.end()) {
 					itemMap[(*it)->getClientID()] = itemMap[(*it)->getClientID()] + Item::countByType(*it, -1);
-				} else {
+				}
+				else
+				{
 					itemMap.emplace((*it)->getClientID(), Item::countByType(*it, -1));
 				}
 				itemMap.emplace((*it)->getClientID(), Item::countByType(*it, -1));
 				const ItemType& itItemType = Item::items[(*it)->getID()];
+
 				if (itItemType.transformEquipTo) {
 					itemMap.emplace(Item::items[itItemType.transformEquipTo].clientId, 1);
 				}
@@ -3152,8 +3163,9 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 		if (const Container* container = item->getContainer()) {
 			onSendContainer(container);
 		}
+
 		if (shopOwner && requireListUpdate) {
-			 updateSaleShopList(item);
+			updateSaleShopList(item);
 		}
 	} else if (const Creature* creature = thing->getCreature()) {
 		if (creature == this) {
@@ -3180,18 +3192,22 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 		//calling movement scripts
 		g_moveEvents->onPlayerDeEquip(this, thing->getItem(), static_cast<slots_t>(index));
 	}
+
 	bool requireListUpdate = true;
+
 	if (link == LINK_OWNER || link == LINK_TOPPARENT) {
 		const Item* i = (newParent ? newParent->getItem() : nullptr);
 
 		// Check if we owned the old container too, so we don't need to do anything,
 		// as the list was updated in postRemoveNotification
 		assert(i ? i->getContainer() != nullptr : true);
+
 		if (i) {
 			requireListUpdate = i->getContainer()->getHoldingPlayer() != this;
 		} else {
 			requireListUpdate = newParent != this;
 		}
+
 		updateInventoryWeight();
 		updateItemsLight();
 		sendInventoryClientIds();
@@ -3225,6 +3241,7 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 				autoCloseContainers(container);
 			}
 		}
+
 		if (shopOwner && requireListUpdate) {
 			updateSaleShopList(item);
 		}
@@ -4847,6 +4864,23 @@ bool Player::getAutoLootItem(const uint16_t itemId)
 bool Player::isMarketExhausted() const {
 	uint32_t exhaust_time = 3000; // half second 500
 	return (OTSYS_TIME() - lastMarketInteraction < exhaust_time);
+}
+
+uint16_t Player::getFreeBackpackSlots() const
+{
+	Thing* thing = getThing(CONST_SLOT_BACKPACK);
+	if (!thing) {
+		return 0;
+	}
+
+	Container* backpack = thing->getContainer();
+	if (!backpack) {
+		return 0;
+	}
+
+	uint16_t counter = std::max<uint16_t>(0, backpack->getFreeSlots());
+
+	return counter;
 }
 
 void Player::onEquipImbueItem(Imbuement* imbuement)

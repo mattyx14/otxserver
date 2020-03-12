@@ -47,6 +47,7 @@
 	- Added Mod AutoLoot
 	- Added customScripts "savePlayer/cleanMap" (Global Events)
 	- Added playerTalkaction !saveme
+	- Added new script form *dudantas* (OTSBR)
 	- Changed baseSpeed monsters to *1.5
 	- Changed function p:removeMoney to p:removeMoneyNpc
 	- Fix citizenTeleports items
@@ -69,8 +70,20 @@
 	- Fix clear conditions (OTSBR)
 	- Fix debugs on shopList (OTSBR)
 	- Fix double respawn bug (OTSBR)
+	- Fix carpets (OTSBR)
+	- Fix exercise Dummys (OTSBR)
+	- Fix crash on trade with imbuidment items (OTSBR)
+	- Fix store items (OTSBR)
+	- Fix wrap items/functions/usage (OTSBR)
+	- Fix doublue critical hit datamage (OTSBR)
+	- Fix logout on save backpack (OTSBR)
+	- Fix Market issues (OTSBR)
+	- Fix death formula (OTSBR)
+	- Formated script/data for *dudantas* (OTSBR)
+	- Marge some changes from TFS Repo
 	- Remove archivements on scripts
 	- Remove storages for globalServers
+	- Remove QuestLua on config.lua
 ]
 
 [ OTX Server 4.0

@@ -2,18 +2,6 @@ function Player.allowMovement(self, allow)
 	return self:setStorageValue(STORAGE.blockMovementStorage, allow and -1 or 1)
 end
 
-function Player.setExhaustion(self, value, time)
-    return self:setStorageValue(value, time + os.time())
-end
-
-function Player.getExhaustion(self, value)
-    local storage = self:getStorageValue(value)
-    if storage <= 0 then
-        return 0
-    end
-    return storage - os.time()
-end
-
 function Player.addFamePoint(self)
     local points = self:getStorageValue(SPIKE_FAME_POINTS)
     local current = math.max(0, points)
@@ -225,17 +213,17 @@ end
 
 -- Loot Analyser
 function Player.sendLootStats(self, item)
-	local msg = NetworkMessage()
-	msg:addByte(0xCF) -- loot analyser bit
-	msg:addItem(item, self) -- item userdata
-	msg:addString(getItemName(item:getId()))
-	msg:sendToPlayer(self)
+    local msg = NetworkMessage()
+    msg:addByte(0xCF) -- loot analyser bit
+    msg:addItem(item, self) -- item userdata
+    msg:addString(getItemName(item:getId()))
+    msg:sendToPlayer(self)
 end
 
 -- Supply Analyser
 function Player.sendWaste(self, item)
-	local msg = NetworkMessage()
-	msg:addByte(0xCE) -- waste bit
-	msg:addItemId(item) -- itemId
-	msg:sendToPlayer(self)
+    local msg = NetworkMessage()
+    msg:addByte(0xCE) -- waste bit
+    msg:addItemId(item) -- itemId
+    msg:sendToPlayer(self)
 end

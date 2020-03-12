@@ -34,9 +34,6 @@ function talk.onSay(player, words, param)
 		return false
 	end
 
-	--log
-	logCommand(player, words, param)
-
 	local split = param:split(",")
 	if not split[2] then
 		player:sendCancelMessage("Insufficient parameters.")

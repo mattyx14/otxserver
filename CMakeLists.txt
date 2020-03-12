@@ -35,6 +35,12 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # using GCC
+
+  #Check GCC version
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.1")
+    message(FATAL_ERROR "Insufficient gcc version. It has to be equal or greater than version 5.X")
+  endif()
+
   # GCC is fairly aggressive about it: enabling strict aliasing will cause it to think that pointers that are "obviously" equivalent to a human (as in, foo *a; bar *b = (bar *) a;) cannot alias, which allows for some very aggressive transformations, but can obviously break non-carefully written code.
   add_compile_options(-fno-strict-aliasing)
 
@@ -44,8 +50,14 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS_RELEASE             "${WARNING_FLAGS} -pipe -fvisibility=hidden -march=native -O2")
   
   # cmake -DCMAKE_BUILD_TYPE=Debug ..
-  set(CMAKE_CXX_FLAGS_DEBUG               "${WARNING_FLAGS} -pipe -O0 -g -Wextra -Wconversion -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wrestrict -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wdouble-promotion -Wshadow -Wformat=2 -Wno-error")
-  
+  # Ubuntu 16.04
+  if(CMAKE_CXX_COMPILER_VERSION STREQUAL "5.4.0")
+    set(CMAKE_CXX_FLAGS_DEBUG               "${WARNING_FLAGS} -pipe -O0 -g -Wextra -Wconversion -Wlogical-op -Wold-style-cast -Wuseless-cast -Wdouble-promotion -Wshadow -Wformat=2 -Wno-error")
+  else()
+    # Ubuntu 18.04
+    set(CMAKE_CXX_FLAGS_DEBUG               "${WARNING_FLAGS} -pipe -O0 -g -Wextra -Wconversion -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wrestrict -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wdouble-promotion -Wshadow -Wformat=2 -Wno-error")
+  endif()
+
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   # using Visual Studio C++
   # cmake -DCMAKE_BUILD_TYPE=Release ..

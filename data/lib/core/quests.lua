@@ -24,6 +24,7 @@ if not LastQuestlogUpdate then
 end
 
 -- Text functions
+
 function evaluateText(value, player)
 	if type(value) == "function" then
 		return tostring(value(player))
@@ -33,6 +34,7 @@ function evaluateText(value, player)
 end
 
 -- Game functions
+
 function Game.isValidQuest(questId)
 	return (Quests and Quests[questId])
 end

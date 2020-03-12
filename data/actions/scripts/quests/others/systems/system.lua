@@ -9,7 +9,7 @@ local questsExperience = {
 local achievementChest = {
 	-- [item.actionid] = "Achievement name",
 	-- Annihilator sample
-	[2215] = "Annihilator"
+	[2215] = "Annihilator",
 }
 
 local hotaQuest = {12102, 12103, 12104, 12105, 12106, 12107}

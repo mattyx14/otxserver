@@ -30,7 +30,6 @@
 #include "movement.h"
 #include "weapons.h"
 #include "raids.h"
-#include "quests.h"
 #include "mounts.h"
 #include "globalevent.h"
 #include "monster.h"
@@ -155,9 +154,6 @@ void Signals::sighupHandler()
 	g_weapons->reload();
 	g_weapons->loadDefaults();
 	std::cout << "Reloaded weapons." << std::endl;
-
-	g_game.quests.reload();
-	std::cout << "Reloaded quests." << std::endl;
 
 	g_game.mounts.reload();
 	std::cout << "Reloaded mounts." << std::endl;
