@@ -12,7 +12,6 @@
 	<globalevent name="ServerSave" time="05:55:00" script="serversave.lua" />
 	<globalevent name="checkInbox" interval="30000" script="others/checkInbox.lua"/>
 	<globalevent interval="100000" name="GuildWar" script="guildwar.lua"/>
-	<globalevent name="npcsSpawn" type="startup" script="server/npcsSpawn.lua"/>
 
 	<!-- DarkKonia Scripts -->
 	<!-- OTX Systems -->

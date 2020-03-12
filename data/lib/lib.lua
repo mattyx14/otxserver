@@ -9,6 +9,3 @@ dofile('data/lib/compat/compat.lua')
 
 -- Miscellaneous library
 dofile('data/lib/miscellaneous/miscellaneous.lua')
-
--- Quests library
-dofile('data/lib/quests/quest.lua')
