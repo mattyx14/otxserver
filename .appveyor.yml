@@ -47,6 +47,6 @@ cache:
   - c:\tools\vcpkg\installed\
 
 artifacts:
-  - path: vc14\**\theforgottenserver*.exe
+  - path: vc14\**\otxserver*.exe
   - path: vc14\**\*.dll
-  - path: otbr.zip
+  - path: otxfiles.zip
