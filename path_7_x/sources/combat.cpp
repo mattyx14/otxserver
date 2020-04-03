@@ -394,7 +394,7 @@ bool Combat::isInPvpZone(const Creature* attacker, const Creature* target)
 
 bool Combat::isProtected(Player* attacker, Player* target)
 {
-	if(attacker->getNoMove() || target->getNoMove() || attacker->hasFlag(PlayerFlag_CannotAttackPlayer))
+	if(attacker->hasFlag(PlayerFlag_CannotAttackPlayer))
 		return true;
 
 	if(attacker->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
