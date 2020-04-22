@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_MONSTERS_H_
-#define OT_SRC_MONSTERS_H_
+#ifndef FS_MONSTERS_H_776E8327BCE2450EB7C4A260785E6C0D
+#define FS_MONSTERS_H_776E8327BCE2450EB7C4A260785E6C0D
 
 #include "creature.h"
 
@@ -190,14 +190,16 @@ class MonsterType
 		MonsterType(const MonsterType&) = delete;
 		MonsterType& operator=(const MonsterType&) = delete;
 
+		bool loadCallback(LuaScriptInterface* scriptInterface);
+
 		std::string name;
 		std::string nameDescription;
 
 		MonsterInfo info;
 
-		bool canSpawn(const Position& pos);
+		void loadLoot(MonsterType* monsterType, LootBlock lootblock);
 
-		//void loadLoot(MonsterType* monsterType, LootBlock lootblock); (from tfs)
+		bool canSpawn(const Position& pos);
 };
 
 class MonsterSpell
@@ -262,7 +264,7 @@ class Monsters
 		bool deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std::string& description = "");
 
 		std::unique_ptr<LuaScriptInterface> scriptInterface;
-		bool loadCallback(LuaScriptInterface* scriptInterface, MonsterType* mType);
+		std::map<std::string, MonsterType> monsters;
 
 	private:
 		ConditionDamage* getDamageCondition(ConditionType_t conditionType,
@@ -274,7 +276,6 @@ class Monsters
 		void loadLootContainer(const pugi::xml_node& node, LootBlock&);
 		bool loadLootItem(const pugi::xml_node& node, LootBlock&);
 
-		std::map<std::string, MonsterType> monsters;
 		std::map<std::string, std::string> unloadedMonsters;
 
 		bool loaded = false;

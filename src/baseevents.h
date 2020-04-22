@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_BASEEVENTS_H_
-#define OT_SRC_BASEEVENTS_H_
+#ifndef FS_BASEEVENTS_H_9994E32C91CE4D95912A5FDD1F41884A
+#define FS_BASEEVENTS_H_9994E32C91CE4D95912A5FDD1F41884A
 
 #include "luascript.h"
 
@@ -43,13 +43,13 @@ class Event
 		bool isScripted() const {
 			return scripted;
 		}
-		
+
 		bool scripted = false;
 		bool fromLua = false;
-		
+
 	protected:
 		virtual std::string getScriptEventName() const = 0;
-		
+
 		int32_t scriptId = 0;
 		LuaScriptInterface* scriptInterface = nullptr;
 };

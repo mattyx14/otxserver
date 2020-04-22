@@ -24,9 +24,9 @@
 #include "monster.h"
 #include "configmanager.h"
 #include "scheduler.h"
-#include "events.h"
 
 #include "pugicast.h"
+#include "events.h"
 
 extern Events* g_events;
 extern ConfigManager g_config;
@@ -162,7 +162,7 @@ bool Spawns::isInZone(const Position& centerPos, int32_t radius, const Position&
 	}
 
 	return ((pos.getX() >= centerPos.getX() - radius) && (pos.getX() <= centerPos.getX() + radius) &&
-			(pos.getY() >= centerPos.getY() - radius) && (pos.getY() <= centerPos.getY() + radius));
+	        (pos.getY() >= centerPos.getY() - radius) && (pos.getY() <= centerPos.getY() + radius));
 }
 
 void Spawn::startSpawnCheck()
@@ -290,11 +290,10 @@ void Spawn::cleanup()
 {
 	auto it = spawnedMap.begin();
 	while (it != spawnedMap.end()) {
-		uint32_t spawnId = it->first;
+	        uint32_t spawnId = it->first;
 		Monster* monster = it->second;
-		if (monster->isRemoved()) {
-			spawnMap[spawnId].lastSpawn = OTSYS_TIME();
-
+	        if (monster->isRemoved()) {
+		        spawnMap[spawnId].lastSpawn = OTSYS_TIME();
 			monster->decrementReferenceCounter();
 			it = spawnedMap.erase(it);
 		} else {

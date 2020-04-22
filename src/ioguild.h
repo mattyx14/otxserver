@@ -17,11 +17,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_IOGUILD_H_
-#define OT_SRC_IOGUILD_H_
+#ifndef FS_IOGUILD_H_EF9ACEBA0B844C388B70FF52E69F1AFF
+#define FS_IOGUILD_H_EF9ACEBA0B844C388B70FF52E69F1AFF
 
 class Guild;
-
 using GuildWarVector = std::vector<uint32_t>;
 
 class IOGuild

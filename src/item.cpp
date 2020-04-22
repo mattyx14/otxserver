@@ -213,7 +213,6 @@ Item* Item::clone() const
 			g_game.toDecayItems.push_front(item);
 		}
 	}
-
 	return item;
 }
 
@@ -1954,8 +1953,6 @@ bool Item::hasMarketAttributes() const
 			if (duration != getDefaultDuration()) {
 				return false;
 			}
-		} else {
-			return false;
 		}
 	}
 
@@ -1963,7 +1960,7 @@ bool Item::hasMarketAttributes() const
 		for (uint8_t slot = 0; slot < items[id].imbuingSlots; slot++) {
 			Item* item = const_cast<Item*>(this);
 			uint32_t info = item->getImbuement(slot);
-			if (info >> 8 != 0) {
+			if (info) {
 				return false;
 			}
 		}

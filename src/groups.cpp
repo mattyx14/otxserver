@@ -95,6 +95,7 @@ bool Groups::load()
 				}
 			}
 		}
+
 		groups.push_back(group);
 	}
 	return true;

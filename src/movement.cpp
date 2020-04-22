@@ -20,7 +20,6 @@
 #include "otpch.h"
 
 #include "game.h"
-
 #include "events.h"
 
 #include "pugicast.h"

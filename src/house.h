@@ -17,10 +17,12 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_HOUSE_H_
-#define OT_SRC_HOUSE_H_
+#ifndef FS_HOUSE_H_EB9732E7771A438F9CD0EFA8CB4C58C4
+#define FS_HOUSE_H_EB9732E7771A438F9CD0EFA8CB4C58C4
 
 #include <regex>
+#include <set>
+#include <unordered_set>
 
 #include "container.h"
 #include "housetile.h"
@@ -60,10 +62,10 @@ class Door final : public Item
 		Door(const Door&) = delete;
 		Door& operator=(const Door&) = delete;
 
-		Door* getDoor() final {
+		Door* getDoor() override {
 			return this;
 		}
-		const Door* getDoor() const final {
+		const Door* getDoor() const override {
 			return this;
 		}
 
@@ -72,8 +74,8 @@ class Door final : public Item
 		}
 
 		//serialization
-		Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) final;
-		void serializeAttr(PropWriteStream&) const final {}
+		Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) override;
+		void serializeAttr(PropWriteStream&) const override {}
 
 		void setDoorId(uint32_t doorId) {
 			setIntAttr(ITEM_ATTRIBUTE_DOORID, doorId);
@@ -87,12 +89,11 @@ class Door final : public Item
 		void setAccessList(const std::string& textlist);
 		bool getAccessList(std::string& list) const;
 
-		void onRemoved() final;
-
-	protected:
-		void setHouse(House* house);
+		void onRemoved() override;
 
 	private:
+		void setHouse(House* house);
+
 		House* house = nullptr;
 		std::unique_ptr<AccessList> accessList;
 		friend class House;
@@ -120,12 +121,12 @@ class HouseTransferItem final : public Item
 
 		explicit HouseTransferItem(House* newHouse) : Item(0), house(newHouse) {}
 
-		void onTradeEvent(TradeEvents_t event, Player* owner) final;
-		bool canTransform() const final {
+		void onTradeEvent(TradeEvents_t event, Player* owner) override;
+		bool canTransform() const override {
 			return false;
 		}
 
-	protected:
+	private:
 		House* house;
 };
 

@@ -17,10 +17,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_TOOLS_H_
-#define OT_SRC_TOOLS_H_
+#ifndef FS_TOOLS_H_5F9A9742DA194628830AA1C64909AE43
+#define FS_TOOLS_H_5F9A9742DA194628830AA1C64909AE43
 
 #include <random>
+
 #include <regex>
 #include <boost/algorithm/string.hpp>
 #include "position.h"
@@ -70,8 +71,8 @@ ShootType_t getShootType(const std::string& strValue);
 Ammo_t getAmmoType(const std::string& strValue);
 WeaponAction_t getWeaponAction(const std::string& strValue);
 Skulls_t getSkullType(const std::string& strValue);
-SpawnType_t getSpawnType(const std::string& strValue);
 std::string getCombatName(CombatType_t combatType);
+SpawnType_t getSpawnType(const std::string& strValue);
 CombatType_t getCombatType(const std::string& combatname);
 
 std::string getSkillName(uint8_t skillid);

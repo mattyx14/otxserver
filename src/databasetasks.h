@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_DATABASETASKS_H_
-#define OT_SRC_DATABASETASKS_H_
+#ifndef FS_DATABASETASKS_H_9CBA08E9F5FEBA7275CCEE6560059576
+#define FS_DATABASETASKS_H_9CBA08E9F5FEBA7275CCEE6560059576
 
 #include <condition_variable>
 #include "thread_holder_base.h"

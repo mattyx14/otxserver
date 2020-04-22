@@ -30,7 +30,7 @@ DepotChest::DepotChest(uint16_t type) :
 	pagination = true;
 }
 
-ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t amount,
+ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t count,
 		uint32_t flags, Creature* actor/* = nullptr*/) const
 {
 	const Item* item = thing.getItem();
@@ -42,7 +42,7 @@ ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t amo
 	if (!skipLimit) {
 		int32_t addCount = 0;
 
-		if ((item->isStackable() && item->getItemCount() != amount)) {
+		if ((item->isStackable() && item->getItemCount() != count)) {
 			addCount = 1;
 		}
 
@@ -64,7 +64,7 @@ ReturnValue DepotChest::queryAdd(int32_t index, const Thing& thing, uint32_t amo
 		}
 	}
 
-	return Container::queryAdd(index, thing, amount, flags, actor);
+	return Container::queryAdd(index, thing, count, flags, actor);
 }
 
 void DepotChest::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t)

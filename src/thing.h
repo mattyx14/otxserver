@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_THING_H_
-#define OT_SRC_THING_H_
+#ifndef FS_THING_H_6F16A8E566AF4ACEAE02CF32A7246144
+#define FS_THING_H_6F16A8E566AF4ACEAE02CF32A7246144
 
 #include "position.h"
 
@@ -30,11 +30,10 @@ class Container;
 
 class Thing
 {
-	protected:
-		constexpr Thing() = default;
-		~Thing() = default;
-
 	public:
+		constexpr Thing() = default;
+		virtual ~Thing() = default;
+
 		// non-copyable
 		Thing(const Thing&) = delete;
 		Thing& operator=(const Thing&) = delete;

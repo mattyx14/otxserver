@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_ITEM_H_
-#define OT_SRC_ITEM_H_
+#ifndef FS_ITEM_H_009A319FB13D477D9EEFFBBD9BB83562
+#define FS_ITEM_H_009A319FB13D477D9EEFFBBD9BB83562
 
 #include "cylinder.h"
 #include "thing.h"
@@ -105,7 +105,6 @@ enum AttrTypes_t {
 	ATTR_SPECIAL = 34,
 	ATTR_IMBUINGSLOTS = 35,
 	ATTR_OPENCONTAINER = 36,
-
 	ATTR_CUSTOM_ATTRIBUTES = 37
 };
 
@@ -342,7 +341,7 @@ class ItemAttributes
 			}
 		};
 
-	protected:
+	private:
 		bool hasAttribute(itemAttrTypes type) const {
 			return (type & attributeBits) != 0;
 		}
@@ -540,10 +539,10 @@ class Item : virtual public Thing
 
 		bool equals(const Item* otherItem) const;
 
-		Item* getItem() final {
+		Item* getItem() override final {
 			return this;
 		}
-		const Item* getItem() const final {
+		const Item* getItem() const override final {
 			return this;
 		}
 		virtual Teleport* getTeleport() {
@@ -609,6 +608,7 @@ class Item : virtual public Thing
 		void setIsLootTrackeable(bool value) {
 			isLootTrackeable = value;
 		}
+
 		bool getIsLootTrackeable() {
 			return isLootTrackeable;
 		}
@@ -782,7 +782,7 @@ class Item : virtual public Thing
 		static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
 		static std::string getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count = 1);
 
-		std::string getDescription(int32_t lookDistance) const final;
+		std::string getDescription(int32_t lookDistance) const override final;
 		std::string getNameDescription() const;
 		std::string getWeightDescription() const;
 
@@ -793,10 +793,10 @@ class Item : virtual public Thing
 
 		virtual void serializeAttr(PropWriteStream& propWriteStream) const;
 
-		bool isPushable() const final {
+		bool isPushable() const override final {
 			return isMoveable();
 		}
-		int32_t getThrowRange() const final {
+		int32_t getThrowRange() const override final {
 			return (isPickupable() ? 15 : 2);
 		}
 
@@ -1003,17 +1003,17 @@ class Item : virtual public Thing
 			}
 		}
 
-		Cylinder* getParent() const {
+		Cylinder* getParent() const override {
 			return parent;
 		}
-		void setParent(Cylinder* cylinder) {
+		void setParent(Cylinder* cylinder) override {
 			parent = cylinder;
 		}
 		Cylinder* getTopParent();
 		const Cylinder* getTopParent() const;
-		Tile* getTile();
-		const Tile* getTile() const;
-		bool isRemoved() const {
+		Tile* getTile() override;
+		const Tile* getTile() const override;
+		bool isRemoved() const override {
 			return !parent || parent->isRemoved();
 		}
 
@@ -1032,7 +1032,6 @@ class Item : virtual public Thing
 		uint8_t count = 1; // number of stacked items
 
 		bool loadedFromMap = false;
-
 		bool isLootTrackeable = false;
 
 		//Don't add variables here, use the ItemAttribute class.

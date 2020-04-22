@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_ACCOUNT_H_
-#define OT_SRC_ACCOUNT_H_
+#ifndef FS_ACCOUNT_H_34817537BA2B4CB7B71AA562AFBB118F
+#define FS_ACCOUNT_H_34817537BA2B4CB7B71AA562AFBB118F
 
 #include "enums.h"
 

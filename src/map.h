@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_MAP_H_
-#define OT_SRC_MAP_H_
+#ifndef FS_MAP_H_E3953D57C058461F856F5221D359DAFA
+#define FS_MAP_H_E3953D57C058461F856F5221D359DAFA
 
 #include "position.h"
 #include "item.h"
@@ -152,7 +152,7 @@ class QTreeLeafNode final : public QTreeNode
 		void addCreature(Creature* c);
 		void removeCreature(Creature* c);
 
-	protected:
+	private:
 		static bool newLeaf;
 		QTreeLeafNode* leafS = nullptr;
 		QTreeLeafNode* leafE = nullptr;
@@ -262,7 +262,7 @@ class Map
 		Spawns spawns;
 		Towns towns;
 		Houses houses;
-	protected:
+	private:
 		SpectatorCache spectatorCache;
 		SpectatorCache playersSpectatorCache;
 

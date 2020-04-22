@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_VOCATION_H_
-#define OT_SRC_VOCATION_H_
+#ifndef FS_VOCATION_H_ADCAA356C0DB44CEBA994A0D678EC92D
+#define FS_VOCATION_H_ADCAA356C0DB44CEBA994A0D678EC92D
 
 #include "enums.h"
 #include "item.h"
@@ -91,7 +91,7 @@ class Vocation
 		float defenseMultiplier = 1.0f;
 		float armorMultiplier = 1.0f;
 
-	protected:
+	private:
 		friend class Vocations;
 
 		std::map<uint32_t, uint64_t> cacheMana;
@@ -114,7 +114,6 @@ class Vocation
 		uint32_t attackSpeed = 1500;
 		uint32_t baseSpeed = 220;
 		uint16_t id;
-
 
 		uint16_t gainSoulTicks = 120;
 

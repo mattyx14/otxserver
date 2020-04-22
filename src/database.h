@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_DATABASE_H_
-#define OT_SRC_DATABASE_H_
+#ifndef FS_DATABASE_H_A484B0CDFDE542838F506DCE3D40C693
+#define FS_DATABASE_H_A484B0CDFDE542838F506DCE3D40C693
 
 #include <boost/lexical_cast.hpp>
 
@@ -117,7 +117,7 @@ class Database
 			return maxPacketSize;
 		}
 
-	protected:
+	private:
 		/**
 		 * Transaction related methods.
 		 *
@@ -209,7 +209,7 @@ class DBInsert
 		bool addRow(std::ostringstream& row);
 		bool execute();
 
-	protected:
+	private:
 		std::string query;
 		std::string values;
 		size_t length;
