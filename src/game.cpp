@@ -120,6 +120,7 @@ void Game::setGameState(GameState_t newState)
 	gameState = newState;
 	switch (newState) {
 		case GAME_STATE_INIT: {
+			loadItemsPrice();
 
 			groups.load();
 			g_chat->load();
@@ -204,6 +205,34 @@ void Game::saveGameState()
 	if (gameState == GAME_STATE_MAINTAIN) {
 		setGameState(GAME_STATE_NORMAL);
 	}
+}
+
+bool Game::loadItemsPrice()
+{
+	itemsSaleCount = 0;
+	std::ostringstream query, query2;
+	query << "SELECT DISTINCT `itemtype` FROM `market_offers`;";
+
+	Database& db = Database::getInstance();	
+	DBResult_ptr result = db.storeQuery(query.str());
+	if (!result) {
+		return false;
+	}
+
+	do {
+		query2.str(std::string());
+		uint16_t itemId = result->getNumber<uint16_t>("itemtype");
+		query2 << "SELECT `price` FROM `market_offers` WHERE `itemtype` = " << itemId << " ORDER BY `price` DESC LIMIT 1";
+		DBResult_ptr resultQuery2 = db.storeQuery(query2.str());
+		if (resultQuery2) {
+			itemsPriceMap[itemId] = resultQuery2->getNumber<uint32_t>("price");
+			itemsSaleCount++;
+		}
+
+	} while (result->next());
+
+
+	return true;
 }
 
 bool Game::loadMainMap(const std::string& filename)
@@ -1473,32 +1502,26 @@ Item* Game::findItemOfType(Cylinder* cylinder, uint16_t itemId,
 	return nullptr;
 }
 
-bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*/)
+bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*/, bool useBalance /*= false*/)
 {
 	if (cylinder == nullptr) {
 		return false;
 	}
-
-	if (money <= 0) {
+	if (money == 0) {
 		return true;
 	}
-
 	std::vector<Container*> containers;
-
 	std::multimap<uint32_t, Item*> moneyMap;
 	uint64_t moneyCount = 0;
-
 	for (size_t i = cylinder->getFirstIndex(), j = cylinder->getLastIndex(); i < j; ++i) {
 		Thing* thing = cylinder->getThing(i);
 		if (!thing) {
 			continue;
 		}
-
 		Item* item = thing->getItem();
 		if (!item) {
 			continue;
 		}
-
 		Container* container = item->getContainer();
 		if (container) {
 			containers.push_back(container);
@@ -1510,7 +1533,6 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 			}
 		}
 	}
-
 	size_t i = 0;
 	while (i < containers.size()) {
 		Container* container = containers[i++];
@@ -1528,9 +1550,15 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 		}
 	}
 
-	if (moneyCount < money) {
-        return false;
-    }
+	Player* player = useBalance ? dynamic_cast<Player*>(cylinder) : nullptr;
+	uint64_t balance = 0;
+	if (useBalance && player) {
+		balance = player->getBankBalance();
+	}
+
+	if (moneyCount + balance < money) {
+		return false;
+	}
 
 	for (const auto& moneyEntry : moneyMap) {
 		Item* item = moneyEntry.second;
@@ -1540,7 +1568,6 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 		} else if (moneyEntry.first > money) {
 			const uint32_t worth = moneyEntry.first / item->getItemCount();
 			const uint32_t removeCount = std::ceil(money / static_cast<double>(worth));
-
 			addMoney(cylinder, (worth * removeCount) - money, flags);
 			internalRemoveItem(item, removeCount);
 			break;
@@ -1549,7 +1576,10 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 			break;
 		}
 	}
-	moneyMap.clear();
+
+	if (useBalance && player && player->getBankBalance() >= money) {
+		player->setBankBalance(player->getBankBalance() - money);
+	}
 
 	return true;
 }
@@ -4076,6 +4106,7 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 
 bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage& damage, bool isEvent)
 {
+	using namespace std;
 	const Position& targetPos = target->getPosition();
 	if (damage.primary.value > 0) {
 		if (target->getHealth() <= 0) {
@@ -4283,6 +4314,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 					tmpPlayer->sendTextMessage(message);
 				}
 
+				applyImbuementEffects(attackerPlayer, damage, manaDamage);
 				damage.primary.value -= manaDamage;
 				if (damage.primary.value < 0) {
 					damage.secondary.value = std::max<int32_t>(0, damage.secondary.value + damage.primary.value);
@@ -4341,7 +4373,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		}
 
 		// Using real damage
-		if (attackerPlayer && damage.origin != ORIGIN_NONE) {
+		if (attackerPlayer) {
 			//life leech
 			if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_CHANCE)) {
 				CombatParams tmpParams;
@@ -4858,6 +4890,34 @@ void Game::checkImbuements()
 
 	lastImbuedBucket = bucket;
 	cleanup();
+}
+
+void Game::applyImbuementEffects(Creature * attacker, CombatDamage & damage, int32_t realDamage)
+{
+	Player *attackerPlayer = (Player *)attacker;
+	if (attackerPlayer) {
+		if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_CHANCE)) {
+			CombatParams tmpParams;
+			CombatDamage tmpDamage;
+			tmpDamage.origin = ORIGIN_SPELL;
+			tmpDamage.primary.type = COMBAT_HEALING;
+			tmpDamage.primary.value = std::round((realDamage * (0.9 + (damage.affected / 10.)) * (attackerPlayer->getSkillLevel(SKILL_LIFE_LEECH_AMOUNT) / 100.)) / damage.affected);
+
+			Combat::doCombatHealth(nullptr, attackerPlayer, tmpDamage, tmpParams);
+		}
+
+		//mana leech
+		if (normal_random(0, 100) < attackerPlayer->getSkillLevel(SKILL_MANA_LEECH_CHANCE)) {
+			CombatParams tmpParams;
+			CombatDamage tmpDamage;
+			tmpDamage.origin = ORIGIN_SPELL;
+			tmpDamage.primary.type = COMBAT_MANADRAIN;
+			tmpDamage.primary.value = std::round((realDamage * (0.9 + (damage.affected / 10.)) * (attackerPlayer->getSkillLevel(SKILL_MANA_LEECH_AMOUNT) / 100.)) / damage.affected);
+
+			Combat::doCombatMana(nullptr, attackerPlayer, tmpDamage, tmpParams);
+		}
+	}
+	
 }
 
 void Game::checkLight()
@@ -5529,18 +5589,7 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 			}
 		}
 
-		if(fee <= player->getBankBalance())
-		{
-			player->setBankBalance(player->getBankBalance() - fee);
-		}
-		else
-		{
-			uint64_t remainsFee = 0;
-			remainsFee = fee - player->getBankBalance();
-			player->setBankBalance(0);
-			g_game.removeMoney(player, remainsFee);
-		}
-		
+		g_game.removeMoney(player, fee, 0, true);
 	} else {
 
 		uint64_t totalPrice = price * amount;
@@ -5549,20 +5598,18 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 			return;
 		}
 
-		// Have enough money on the bank
-		if(totalPrice <= player->getBankBalance())
-		{
-			player->setBankBalance(player->getBankBalance() - totalPrice);
-		}
-		else
-		{
-			uint64_t remainsPrice = 0;
-			remainsPrice = totalPrice - player->getBankBalance();
-			g_game.removeMoney(player, remainsPrice);
-		}
+		g_game.removeMoney(player, totalPrice, 0, true);
 	}
 
 	IOMarket::createOffer(player->getGUID(), static_cast<MarketAction_t>(type), it.id, amount, price, anonymous);
+
+	auto ColorItem = itemsPriceMap.find(it.id);
+	if (ColorItem == itemsPriceMap.end()) {
+		itemsPriceMap[it.id] = price;
+		itemsSaleCount++;
+	} else if (ColorItem->second < price) {
+		itemsPriceMap[it.id] = price;
+	}
 
 	player->sendMarketEnter(player->getLastDepotId());
 	const MarketOfferList& buyOffers = IOMarket::getActiveOffers(MARKETACTION_BUY, it.id);
@@ -5693,6 +5740,11 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		}
 
 		Player* buyerPlayer = getPlayerByGUID(offer.playerId);
+		if (player == buyerPlayer) {
+			player->sendFYIBox("You cannot accept your own offer.");
+			return;
+		}
+
 		if (!buyerPlayer) {
 			buyerPlayer = new Player(nullptr);
 			if (!IOLoginData::loadPlayerById(buyerPlayer, offer.playerId)) {
@@ -5771,7 +5823,12 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			delete buyerPlayer;
 		}
 	} else {//MARKETACTION_SELL
-		
+		Player* sellerPlayer = getPlayerByGUID(offer.playerId);
+		if (player == sellerPlayer) {
+			player->sendFYIBox("You cannot accept your own offer.");
+			return;
+		}
+
 		if (totalPrice > (player->getBankBalance() + player->getMoney())) {
 			return;
 		}	
@@ -5821,7 +5878,6 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			}
 		}
 
-		Player* sellerPlayer = getPlayerByGUID(offer.playerId);
 		if (sellerPlayer) {
 			sellerPlayer->setBankBalance(sellerPlayer->getBankBalance() + totalPrice);
 			if (it.id == ITEM_STORE_COIN) {
