@@ -21,7 +21,4 @@
 		<!-- Save 15 minutes / Clean 2 hours -->
 		<globalevent name="Server Save" interval="900000" script="saveserver.lua" />
 		<globalevent name="Clean Map" interval="7200000" script="cleanmap.lua" />
-
-		<!-- Autoloot -->
-		<globalevent name="autoloot" type="startup" script="autoloot.lua"/>
 </globalevents>

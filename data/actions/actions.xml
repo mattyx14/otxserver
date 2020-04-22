@@ -85,22 +85,19 @@
 	<action fromid="7025" toid="7032" script="others/windows.lua" />
 	<action fromid="10264" toid="10267" script="others/windows.lua" />
 	<action fromid="10488" toid="10491" script="others/windows.lua" />
-
 	<!-- Others (Doors) -->
 	<action fromid="14755" toid="14760" script="others/doors/doorsHive1.lua" />
 	<action fromid="14767" toid="14771" script="others/doors/doorsHive2.lua" />
-
 	<!-- Others (Objects) -->
 	<action itemid="3957" script="others/objects/cornucopia.lua"/>
 	<action itemid="7737" script="others/objects/costumeBags.lua" />
 	<action itemid="7739" script="others/objects/costumeBags.lua" />
 	<action itemid="9076" script="others/objects/costumeBags.lua" />
 	<action itemid="13941" script="others/objects/cupOfMoltenGold.lua" />
-		<!-- Exercise Training -->
-		<action fromid="32384" toid="32386" script="others/objects/exerciseTraining.lua"/>
-		<action fromid="32387" toid="32389" script="others/objects/exerciseTraining.lua" allowfaruse="1"/>
-		<action fromid="32124" toid="32126" script="others/objects/exerciseTraining.lua"/>
-		<action fromid="32127" toid="32129" script="others/objects/exerciseTraining.lua" allowfaruse="1"/>
+	<action fromid="32384" toid="32386" script="others/objects/exerciseTraining.lua"/>
+	<action fromid="32387" toid="32389" script="others/objects/exerciseTraining.lua" allowfaruse="1"/>
+	<action fromid="32124" toid="32126" script="others/objects/exerciseTraining.lua"/>
+	<action fromid="32127" toid="32129" script="others/objects/exerciseTraining.lua" allowfaruse="1"/>
 	<action itemid="6576" script="others/objects/fireworksRocket.lua" />
 	<action itemid="26347" script="others/objects/fishTank.lua"/>
 	<action itemid="23574" script="others/objects/gloothBag.lua"/>
@@ -121,12 +118,11 @@
 	<action fromid="6570" toid="6571" script="others/objects/surpriseBag.lua" />
 	<action itemid="24324" script="others/objects/sweetHeart.lua"/>
 	<action itemid="3955" script="others/objects/voodooDoll.lua" />
-
 	<!-- Others (Houses) -->
 	<action fromid="26364" toid="26365" script="others/houses/pet.lua" />
 	<action fromid="26098" toid="26099" script="others/houses/pet.lua" />
 	<action fromid="26094" toid="26097" script="others/houses/statue.lua" />
-
+	<!-- <action fromid="36336" toid="36351" script="others/houses/golden_outfit_display.lua" /> -->
 	<!-- Others (Variables) -->
 	<action itemid="6558" script="others/variables/concentratedDemonicBlood.lua" />
 	<action fromid="11258" toid="11262" script="others/variables/blessingCharms.lua" />
@@ -147,10 +143,8 @@
 	<action fromaid="50030" toaid="50056" script="others/variables/thaisExhibition.lua" />
 	<action itemid="22598" script="others/variables/unrealizedDream.lua"/>
 	<action itemid="22726" script="others/variables/ursagrodon.lua" />
-		<!-- Daily Reward Shrine -->
-		<action fromid="29021" toid="29024" script="others/variables/dailyRewardShrine.lua"/>
-		<action fromid="29089" toid="29090" script="others/variables/dailyRewardShrine.lua"/>
-
+	<action fromid="29021" toid="29024" script="others/variables/dailyRewardShrine.lua"/>
+	<action fromid="29089" toid="29090" script="others/variables/dailyRewardShrine.lua"/>
 	<!-- Others (Weapons Enchanting Gems) -->
 	<action fromid="7759" toid="7762" script="others/enchanting.lua" />
 
@@ -255,7 +249,9 @@
 	<action itemid="2549" script="tools/rake.lua" />
 	<action itemid="2550" script="tools/scythe.lua" />
 	<action itemid="2580" script="tools/fishing.lua" allowfaruse="1" />
+
 	<action itemid="10223" script="tools/fish2.lua" allowfaruse="1" />
+
 	<action itemid="5710" script="tools/shovel.lua" />
 	<action itemid="2554" script="tools/shovel.lua" />
 	<action itemid="2120" script="tools/rope.lua" />
@@ -268,6 +264,7 @@
 	<action itemid="10513" script="tools/toolgear.lua" />
 	<action itemid="10515" script="tools/toolgear.lua" />
 	<action itemid="10309" script="tools/noxiousclaw.lua" />
+
 	<action itemid="2405" script="tools/sickle.lua" />
 
 	<!-- Increase/Decrease ItemId -->
@@ -448,7 +445,6 @@
 	<action itemid="20257" script="others/kits/constructionkits.lua" />
 	<action fromid="7904" toid="7907" script="others/kits/bedModificationKits.lua" />
 	<action itemid="20252" script="others/kits/bedModificationKits.lua" />
-	<action itemid="26054" script="others/kits/storeConstructionKits.lua" />  <!-- otc store -->
 
 	<!-- Potions / Fluids -->
 	<action fromid="2005" toid="2009" script="others/consumables/fluids.lua" />
@@ -496,7 +492,9 @@
 	<action itemid="25419" script="valuables/randomitems.lua" />
 	<action itemid="26165" script="valuables/randomitems.lua" />
 	<action itemid="32014" script="valuables/randomitems.lua" />
-
-	<!-- Autoloot mode 2 -->
-	<action actionid="500" script="autoloot.lua" />
 </actions>
+
+<!--
+ununseds aids: 24847 to 24857
+
+-->

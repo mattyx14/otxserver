@@ -1,34 +1,4 @@
-function Player.allowMovement(self, allow)
-	return self:setStorageValue(STORAGE.blockMovementStorage, allow and -1 or 1)
-end
-
-function Player.addFamePoint(self)
-    local points = self:getStorageValue(SPIKE_FAME_POINTS)
-    local current = math.max(0, points)
-    self:setStorageValue(SPIKE_FAME_POINTS, current + 1)
-    self:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "You have received a fame point.")
-end
-
-function Player.getFamePoints(self)
-    local points = self:getStorageValue(SPIKE_FAME_POINTS)
-    return math.max(0, points)
-end
-
-function Player.removeFamePoints(self, amount)
-    local points = self:getStorageValue(SPIKE_FAME_POINTS)
-    local current = math.max(0, points)
-    self:setStorageValue(SPIKE_FAME_POINTS, current - amount)
-end
-
-function Player.depositMoney(self, amount)
-	if not self:removeMoney(amount) then
-		return false
-	end
-
-	self:setBankBalance(self:getBankBalance() + amount)
-	return true
-end
-
+-- Functions from The Forgotten Server
 local foodCondition = Condition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
 
 function Player.feed(self, food)
@@ -52,18 +22,8 @@ function Player.feed(self, food)
 	return true
 end
 
-function Player.getBlessings(self)
-	local blessings = 0
-	for i = 1, 5 do
-		if self:hasBlessing(i) then
-			blessings = blessings + 1
-		end
-	end
-	return blessings
-end
-
 function Player.getClosestFreePosition(self, position, extended)
-	if self:getAccountType() >= ACCOUNT_TYPE_GOD then
+	if self:getGroup():getAccess() and self:getAccountType() >= ACCOUNT_TYPE_GOD then
 		return position
 	end
 	return Creature.getClosestFreePosition(self, position, extended)
@@ -73,41 +33,8 @@ function Player.getDepotItems(self, depotId)
 	return self:getDepotChest(depotId, true):getItemHoldingCount()
 end
 
-function Player.getLossPercent(self)
-	local lossPercent = {
-		[0] = 100,
-		[1] = 70,
-		[2] = 45,
-		[3] = 25,
-		[4] = 10,
-		[5] = 0
-	}
-
-	return lossPercent[self:getBlessings()]
-end
-
-function Player.hasAllowMovement(self)
-	return self:getStorageValue(STORAGE.blockMovementStorage) ~= 1
-end
-
-function Player.isDruid(self)
-	return isInArray({2, 6}, self:getVocation():getId())
-end
-
-function Player.isKnight(self)
-	return isInArray({4, 8}, self:getVocation():getId())
-end
-
-function Player.isPaladin(self)
-	return isInArray({3, 7}, self:getVocation():getId())
-end
-
-function Player.isMage(self)
-	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
-end
-
-function Player.isSorcerer(self)
-	return isInArray({1, 5}, self:getVocation():getId())
+function Player.hasFlag(self, flag)
+	return self:getGroup():hasFlag(flag)
 end
 
 function Player.isPremium(self)
@@ -115,15 +42,11 @@ function Player.isPremium(self)
 end
 
 function Player.isPromoted(self)
-	local vocation = self:getVocation()
-	local promotedVocation = vocation:getPromotion()
-	promotedVocation = promotedVocation and promotedVocation:getId() or 0
+    local vocation = self:getVocation()
+    local promotedVocation = vocation:getPromotion()
+    promotedVocation = promotedVocation and promotedVocation:getId() or 0
 
-	return promotedVocation == 0 and vocation:getId() ~= promotedVocation
-end
-
-function Player.isUsingOtClient(self)
-	return self:getClient().os >= CLIENTOS_OTCLIENT_LINUX
+    return promotedVocation == 0 and vocation:getId() ~= promotedVocation
 end
 
 function Player.sendCancelMessage(self, message)
@@ -133,17 +56,70 @@ function Player.sendCancelMessage(self, message)
 	return self:sendTextMessage(MESSAGE_STATUS_SMALL, message)
 end
 
+function Player.isUsingOtClient(self)
+	return self:getClient().os >= CLIENTOS_OTCLIENT_LINUX
+end
+
 function Player.sendExtendedOpcode(self, opcode, buffer)
 	if not self:isUsingOtClient() then
 		return false
 	end
 
 	local networkMessage = NetworkMessage()
- 	networkMessage:addByte(0x32)
- 	networkMessage:addByte(opcode)
- 	networkMessage:addString(buffer)
+	networkMessage:addByte(0x32)
+	networkMessage:addByte(opcode)
+	networkMessage:addString(buffer)
 	networkMessage:sendToPlayer(self)
- 	networkMessage:delete()
+	networkMessage:delete()
+	return true
+end
+
+APPLY_SKILL_MULTIPLIER = true
+local addSkillTriesFunc = Player.addSkillTries
+function Player.addSkillTries(...)
+	APPLY_SKILL_MULTIPLIER = false
+	local ret = addSkillTriesFunc(...)
+	APPLY_SKILL_MULTIPLIER = true
+	return ret
+end
+
+local addManaSpentFunc = Player.addManaSpent
+function Player.addManaSpent(...)
+	APPLY_SKILL_MULTIPLIER = false
+	local ret = addManaSpentFunc(...)
+	APPLY_SKILL_MULTIPLIER = true
+	return ret
+end
+
+-- Functions From OTServBR-Global
+function Player.allowMovement(self, allow)
+	return self:setStorageValue(STORAGE.blockMovementStorage, allow and -1 or 1)
+end
+
+function Player.addFamePoint(self)
+    local points = self:getStorageValue(SPIKE_FAME_POINTS)
+    local current = math.max(0, points)
+    self:setStorageValue(SPIKE_FAME_POINTS, current + 1)
+    self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have received a fame point.")
+end
+
+function Player.getFamePoints(self)
+    local points = self:getStorageValue(SPIKE_FAME_POINTS)
+    return math.max(0, points)
+end
+
+function Player.removeFamePoints(self, amount)
+    local points = self:getStorageValue(SPIKE_FAME_POINTS)
+    local current = math.max(0, points)
+    self:setStorageValue(SPIKE_FAME_POINTS, current - amount)
+end
+
+function Player.depositMoney(self, amount)
+	if not self:removeMoney(amount) then
+		return false
+	end
+
+	self:setBankBalance(self:getBankBalance() + amount)
 	return true
 end
 
@@ -177,24 +153,31 @@ function Player.withdrawMoney(self, amount)
 	return true
 end
 
-APPLY_SKILL_MULTIPLIER = true
-local addSkillTriesFunc = Player.addSkillTries
-function Player.addSkillTries(...)
-	APPLY_SKILL_MULTIPLIER = false
-	local ret = addSkillTriesFunc(...)
-	APPLY_SKILL_MULTIPLIER = true
-	return ret
+function Player.hasAllowMovement(self)
+	return self:getStorageValue(STORAGE.blockMovementStorage) ~= 1
 end
 
-local addManaSpentFunc = Player.addManaSpent
-function Player.addManaSpent(...)
-	APPLY_SKILL_MULTIPLIER = false
-	local ret = addManaSpentFunc(...)
-	APPLY_SKILL_MULTIPLIER = true
-	return ret
+function Player.isDruid(self)
+	return isInArray({2, 6}, self:getVocation():getId())
 end
 
---jlcvp - impact analyser
+function Player.isKnight(self)
+	return isInArray({4, 8}, self:getVocation():getId())
+end
+
+function Player.isPaladin(self)
+	return isInArray({3, 7}, self:getVocation():getId())
+end
+
+function Player.isMage(self)
+	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
+end
+
+function Player.isSorcerer(self)
+	return isInArray({1, 5}, self:getVocation():getId())
+end
+
+-- Impact Analyser
 function Player.sendHealingImpact(self, healAmmount)
 	local msg = NetworkMessage()
 	msg:addByte(0xCC) -- DEC: 204

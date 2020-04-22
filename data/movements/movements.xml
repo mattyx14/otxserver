@@ -2600,7 +2600,7 @@
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />
 	</movevent>
-	<movevent event="DeEquip" itemid="35232" slot="hand" function="onDeEquipItem" />
+	<movevent event="DeEquip" itemid="35232" slot="head" function="onDeEquipItem" />
 	
 	<movevent event="Equip" itemid="35233" slot="hand" level="220" function="onEquipItem"> <!-- Cobra Sword -->
 		<vocation name="Knight" />
@@ -2752,6 +2752,12 @@
 	<movevent event="Equip" itemid="35150" slot="necklace" level="220" function="onEquipItem" > <!-- Rainbow Necklace -->
 	</movevent>
 	<movevent event="DeEquip" itemid="35150" slot="necklace" function="onDeEquipItem" />
+
+	<movevent event="Equip" itemid="37451" slot="hand" level="180" function="onEquipItem"> <!-- Phantasmal Axe -->
+		<vocation name="Knight" />
+		<vocation name="Elite Knight" showInDescription="0" />
+	</movevent>
+	<movevent event="DeEquip" itemid="37451" slot="hand" function="onDeEquipItem" />
 
 	<!-- Imbuements -->
 	<movevent event="Equip" itemid="2423" slot="hand" function="onEquipItem" />

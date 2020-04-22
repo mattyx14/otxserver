@@ -6,9 +6,10 @@ function onLogin(player)
 		"BossParticipation",
 		"petlogin",
 		"petthink",
-		"bonusPreyLootKill"
+		"bonusPreyLootKill",
+		"BestiaryOnKill"
 	}
-	
+
 	for i = 1, #events do
 		player:registerEvent(events[i])
 	end
