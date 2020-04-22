@@ -39,11 +39,6 @@ maxPacketsPerSecond = 25
 maxItem = 2000
 maxContainer = 100
 
--- 0 = Disable,
--- 1 = onKillMonster,
--- 2 = onOpenCorpse -- restart required
-autolootmode = 2
-
 -- Version Manual
 clientVersionMin = 1100
 clientVersionMax = 1200
@@ -52,13 +47,10 @@ clientVersionStr = "Only support outdated 10.00 and version 12.00"
 -- Depot Limit
 freeDepotLimit = 2000
 premiumDepotLimit = 10000
-depotBoxes = 17
+depotBoxes = 18
 
 -- GameStore
 gamestoreByModules = true
-
--- Expert Pvp Config
-expertPvp = false
 
 -- Deaths
 -- NOTE: Leave deathLosePercent as -1 if you want to use the default
@@ -68,6 +60,7 @@ deathLosePercent = -1
 
 -- Houses
 -- NOTE: set housePriceEachSQM to -1 to disable the ingame buy house functionality
+-- Periods: daily/weekly/monthly/yearly/never
 housePriceEachSQM = 1000
 houseRentPeriod = "weekly"
 
@@ -79,6 +72,7 @@ timeBetweenExActions = 700
 
 -- Map
 -- NOTE: set mapName WITHOUT .otbm at the end
+-- NOTE: unzip the map world.rar
 mapName = "forgotten"
 mapAuthor = "Komic"
 
@@ -120,7 +114,8 @@ serverSaveClose = false
 serverSaveShutdown = true
 
 -- Rates
--- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
+-- NOTE: rateExp is used as a fallback only
+-- To configure experience rate see file data/stages.lua
 rateExp = 5
 rateSkill = 3
 rateLoot = 2
