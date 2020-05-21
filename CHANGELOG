@@ -75,18 +75,35 @@
 	- Fix outfitAttributes (Matheus Matias)
 	- Fix COMBAT_PARAM_DISPEL no work on 7.x
 	- Fix runeEffects (Matheus Matias)
+	- Fix crashes and others solutions (Matheus Matias and Matt Gomez)
 	- Fix list issues from OTX 2 GitHub:
-		#75, #76, #77, #78, #79, #80 #81, #82, #83, #84, #85, #86, #87, #88,
-		#102, #104, #194, #210, #212, #286, #332, #337(pick), #347,
-		#383, #386, #385(Matheus Matias), #388(KOLISAO), #390, #402(Matheus Matias), #403,
-		#408(Matheus Matias), #410(Matheus Matias), #411(Matheus Matias), #416(Matheus Matias),
-		#421, #424(Matheus Matias), #428(Matheus Matias), #429(Matheus Matias), #435(Matheus Matias),
-		#450(WeslleyKiyo), #454(Matheus Matias), #457(Matheus Matias), #461(Matheus Matias), #468(Felipe21),
-		#469(Matheus Matias), #473(matheusjp2), #476(Matheus Matias), #477(Matheus Matias), #481(Matheus Matias),
-		#482, #495, #502(Matheus Matias), #505(Matheus Matias), #509(Matheus Matias), #514(Matheus Matias),
-		#519(Matheus Matias), #525(Matheus Matias), #526(Matheus Matias), #527(Matheus Matias), #530, #533,
-		#538, #539(Matheus Matias), #542(Matheus Matias), #550(Matheus Matias), #551(Matheus Matias)
-		#609(Matheus Matias), #611(Matheus Matias)
+		#84(Fix CombatCondition)
+		#85(Fix https://www.youtube.com/watch?v=mJ1mydn6TjA)
+		#86(Fix Containers error)
+		#194(Fix Items in walls)
+		#210(Fix shoot with rune to invisble creatures)
+		#212(Fix PZ Bug when player go attack someone)
+		#388(Fix WARSystem WHITE SKULL - KOLISAO)
+		#402(Fix Snow footprint bug - Matheus Matias)
+		#403(Fix Change Outfit With GM or GOD)
+		#408(Fix monster beam casting through walls - Matheus Matias)
+		#410(Fix Use spells when muted - Matheus Matias)
+		#421(Fix Critical Bug Autostacking items bug)
+		#424(Fix and updates on grouped exhaustion - Matheus Matias)
+		#435(Fix Critical Hit Damage - Matheus Matias)
+		#450(Fix MagicFields - WeslleyKiyo)
+		#454(Fix gold and runes - Matheus Matias)
+		#457(Fix water problems causing extra cpu usage - Matheus Matias)
+		#461(Adds doPlayerSaveItems(cid) - Matheus Matias)
+		#469(Fix talkactions spam - Matheus Matias)
+		#473(Fix error on check bless - matheusjp2)
+		#476(Fix teleport bug - Matheus Matias)
+		#477(Fix Crash on Creaturescript onStatsChange - Matheus Matias)
+		#481(Fix Problem with construction kits - Matheus Matias)
+		#482(Fix Buying items from NPCs with backpack full)
+		#514(Fix Bugs summon and protect login - Matheus Matias)
+		#526(Modification with push delay - Matheus Matias)
+		#611(Fix SummonMonster (spell) - Matheus Matias)
 	- Optimize code fixes
 	- Optimize code Connection and SQL Services // Security
 	- Optimize NPCLibs
@@ -99,6 +116,7 @@
 	- Update statusOnline 0.0.0.0 no counter
 	- Update items.xml (base OTX 3 - Series)
 	- Update potions.lua
+	- Update CastSytstem (Matheus Matias)
 	- Update mutedCode on OTX2 - (Matheus Matias).
 
 	Note:
