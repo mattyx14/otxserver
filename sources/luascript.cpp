@@ -1798,7 +1798,7 @@ void LuaInterface::registerFunctions()
 	//doPlayerAddMoney(cid, money)
 	lua_register(m_luaState, "doPlayerAddMoney", LuaInterface::luaDoPlayerAddMoney);
 
-	//doPlayerRemoveMoney(cid, money)
+	//doPlayerRemoveMoney(cid, money [, canDrop = true])
 	lua_register(m_luaState, "doPlayerRemoveMoney", LuaInterface::luaDoPlayerRemoveMoney);
 
 	//doPlayerTransferMoneyTo(cid, target, money)
@@ -5544,12 +5544,17 @@ int32_t LuaInterface::luaDoPlayerAddMoney(lua_State* L)
 
 int32_t LuaInterface::luaDoPlayerRemoveMoney(lua_State* L)
 {
-	//doPlayerRemoveMoney(cid,money)
+	//doPlayerRemoveMoney(cid, money [, canDrop = true])
+	bool canDrop = true;
+	
+	if (lua_gettop(L) > 2)
+		canDrop = popBoolean(L);
+
 	uint64_t money = popNumber(L);
 
 	ScriptEnviroment* env = getEnv();
 	if(Player* player = env->getPlayerByUID(popNumber(L)))
-		lua_pushboolean(L, g_game.removeMoney(player, money));
+		lua_pushboolean(L, g_game.removeMoney(player, money, 0, canDrop));
 	else
 	{
 		errorEx(getError(LUA_ERROR_PLAYER_NOT_FOUND));

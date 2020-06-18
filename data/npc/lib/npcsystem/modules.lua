@@ -1226,12 +1226,14 @@ if(Modules == nil) then
 		end
 
 		local subType = shopItem.subType or 1
-		local a, b = doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
+		local a, b, item = doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
+		
 		if(a < amount) then
 			local msgId = MESSAGE_NEEDMORESPACE
 			if(a == 0) then
 				msgId = MESSAGE_NEEDSPACE
 			end
+			
 
 			local msg = self.npcHandler:getMessage(msgId)
 			parseInfo[TAG_ITEMCOUNT] = a
@@ -1242,21 +1244,33 @@ if(Modules == nil) then
 			else
 				self.npcHandler.talkStart = os.time()
 			end
-
 			if(a > 0) then
-				doPlayerRemoveMoney(cid, ((a * shopItem.buy) + (b * 20)))
-				parseInfo[TAG_TOTALCOST] = a * shopItem.buy
-				local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
+				local removeMoney = doPlayerRemoveMoney(cid, (a * shopItem.buy) + (b * 20), false)
+				
+				if removeMoney == true then
+					parseInfo[TAG_TOTALCOST] = a * shopItem.buy
+					local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
+					doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
+				else
+					for i = 1, #item do
+						doRemoveItem(item[i])
+					end
+					doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You don't have enough space to receive the change when buying "..amount.. "x ".. getItemNameById(itemid).."!")
+				end
 				return true
 			end
 
 			return false
 		else
-			local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
-			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
-
-			doPlayerRemoveMoney(cid, totalCost)
+			if doPlayerRemoveMoney(cid, totalCost, false) == true then
+				local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
+			else
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You don't have enough space to receive the change when buying "..amount.. "x ".. getItemNameById(itemid).."!")
+				for i = 1, #item do
+					doRemoveItem(item[i])
+				end
+			end
 			if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
 				self.npcHandler.talkStart[cid] = os.time()
 			else

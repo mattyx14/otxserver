@@ -2223,7 +2223,7 @@ uint64_t Game::getMoney(const Cylinder* cylinder)
 	return moneyCount;
 }
 
-bool Game::removeMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/)
+bool Game::removeMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/, bool canDrop /*= true*/)
 {
 	if(!cylinder)
 		return false;
@@ -2285,7 +2285,20 @@ bool Game::removeMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/
 		if(mit->first > money)
 		{
 			// Remove a monetary value from an item
-			addMoney(cylinder, (int64_t)(item->getWorth() - money), flags);
+			bool ret = addMoney(cylinder, (int64_t)(item->getWorth() - money), flags, canDrop);
+			
+			if (!ret)
+			{
+				if (Creature * creature = cylinder->getCreature()) // check if it's a creature
+				{
+					if (Player* player = creature->getPlayer()) // check if it's a player
+					{
+						//We couldn't properly add the money(maybe we couldn't add the change given the parameter 'canDrop', so let's give the money back to the player
+						addMoney(cylinder, (int64_t)(moneyCount - getMoney(player)), flags, canDrop); 
+					}
+				}
+				return false;
+			}
 			money = 0;
 		}
 		else
@@ -2298,8 +2311,11 @@ bool Game::removeMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/
 	return !money;
 }
 
-void Game::addMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/)
+bool Game::addMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/, bool canDrop /*= true*/)//changed by matheus2
 {
+	if (money == 0)
+		return true;
+
 	IntegerMap moneyMap = Item::items.getMoneyMap();
 	for(IntegerMap::reverse_iterator it = moneyMap.rbegin(); it != moneyMap.rend(); ++it)
 	{
@@ -2314,21 +2330,30 @@ void Game::addMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/)
 			Item* item = Item::CreateItem(it->second, std::min<uint16_t>(100, tmp));
 			if(internalAddItem(NULL, cylinder, item, INDEX_WHEREEVER, flags, false, remainderCount) != RET_NOERROR)
 			{
-				if(remainderCount)
-				{
-					delete item;
-					item = Item::CreateItem(it->second, remainderCount);
-				}
 
-				if(internalAddItem(NULL, cylinder->getTile(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+				if (!canDrop)  // if canDrop is set to false we end here.
+				{	
 					delete item;
+					return false;
+				}
+				else
+				{
+					if (remainderCount)
+					{
+						delete item;
+						item = Item::CreateItem(it->second, remainderCount);
+					}
+
+					if (internalAddItem(NULL, cylinder->getTile(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+						delete item;
+				}
+					
 			}
 
 			tmp -= std::min((int64_t)100, tmp);
 		}
 		while(tmp > 0);
 	}
-	
 	if (Creature* creature = cylinder->getCreature())
 	{
 		if (Player * player = creature->getPlayer())
@@ -2337,7 +2362,7 @@ void Game::addMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/)
 			player->sendStats();
 		}
 	}
-	
+	return true;
 }
 
 Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount/* = -1*/)

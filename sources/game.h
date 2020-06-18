@@ -426,17 +426,19 @@ class Game
 		  * \param cylinder to remove the money from
 		  * \param money is the amount to remove
 		  * \param flags optional flags to modifiy the default behaviour
+		  * \param canDrop optional canDrop to modify default behavior
 		  * \returns true if the removal was successful
 		  */
-		bool removeMoney(Cylinder* cylinder, int64_t money, uint32_t flags = 0);
+		bool removeMoney(Cylinder* cylinder, int64_t money, uint32_t flags = 0, bool canDrop = true);
 
 		/**
 		  * Add item(s) with monetary value
 		  * \param cylinder which will receive money
 		  * \param money the amount to give
 		  * \param flags optional flags to modify default behavior
+		  * \param canDrop optional canDrop to modify default behavior
 		  */
-		void addMoney(Cylinder* cylinder, int64_t money, uint32_t flags = 0);
+		bool addMoney(Cylinder* cylinder, int64_t money, uint32_t flags = 0, bool canDrop = true);
 
 		/**
 		  * Transform one item to another type/count

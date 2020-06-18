@@ -77,64 +77,70 @@ end
 function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
 	local amount = amount or 1
 	local subType = subType or 0
-	local ignoreCap = ignoreCap or false
+	local ignoreCap =  false
 	local inBackpacks = inBackpacks or false
 	local backpack = backpack or 1988
 	local item = 0
 
 	if isItemStackable(itemid) then
-		if(inBackpacks) then
+		if inBackpacks then
 			stuff = doCreateItemEx(backpack, 1)
 			item = doAddContainerItem(stuff, itemid, math.min(100, amount))
 		else
 			stuff = doCreateItemEx(itemid, math.min(100, amount))
 		end
 		local ret = doPlayerAddItemEx(cid, stuff, ignoreCap)
+
 		if ret == RETURNVALUE_NOERROR then
-			return amount,0
+			return amount,0, {stuff}
+		elseif ret == RETURNVALUE_NOTENOUGHROOM then
+			return 0,0, {}
+		elseif ret == RETURNVALUE_NOTENOUGHCAPACITY then
+			return 0,0, {}
 		end
 	end
-
+	
 	local a = 0
 	if inBackpacks then
 		local container, b = doCreateItemEx(backpack, 1), 1
 		for i = 1, amount do
-			item = doAddContainerItem(container, itemid, subType)
+		
+			local item = doAddContainerItem(container, itemid, subType)
 			if(itemid == ITEM_PARCEL) then
 				doAddContainerItem(item, ITEM_LABEL)
 			end
-
+			
 			if(isInArray({(getContainerCapById(backpack) * b), amount}, i)) then
-				if(doPlayerAddItemEx(cid, container, ignoreCap) ~= RETURNVALUE_NOERROR) then
+				if doPlayerAddItemEx(cid, container, ignoreCap) ~= RETURNVALUE_NOERROR then
 					b = b - 1
-					break
+					return a, b, {}
 				end
 
 				a = i
-				if(amount > i) then
+				if amount > i then
 					container = doCreateItemEx(backpack, 1)
 					b = b + 1
 				end
 			end
 		end
-
-		return a, b
+		return a, b, {container}
 	end
-
+	
+	local itemTable = {}
+	
 	for i = 1, amount do
 		item = doCreateItemEx(itemid, subType)
 		if(itemid == ITEM_PARCEL) then
 			doAddContainerItem(item, ITEM_LABEL)
 		end
-
 		if(doPlayerAddItemEx(cid, item, ignoreCap) ~= RETURNVALUE_NOERROR) then
-			break
+			return a, 0, itemTable
 		end
-
+		table.insert(itemTable, item)
 		a = i
 	end
 
-	return a, 0
+	return a, 0, itemTable
 end
 
 function doRemoveItemIdFromPosition(id, n, position)
