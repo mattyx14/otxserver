@@ -115,7 +115,7 @@ class Monster : public Creature
 		bool selectTarget(Creature* creature);
 
 		const CreatureList& getTargetList() {return targetList;}
-		const CreatureList& getFriendList() {return friendList;}
+		const std::unordered_map<uint32_t, Creature*>& getFriendList() { return friendList; }
 
 		bool isTarget(Creature* creature);
 		bool getIdleStatus() const {return isIdle;}
@@ -127,7 +127,7 @@ class Monster : public Creature
 
 	private:
 		CreatureList targetList;
-		CreatureList friendList;
+		std::unordered_map<uint32_t, Creature*> friendList;
 
 		MonsterType* mType;
 

@@ -4124,6 +4124,12 @@ bool Game::playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId)
 		return true;
 	}
 
+	if (player->getAttackedCreature())
+	{
+		if (player->getAttackedCreature()->getID() == creatureId) // the player is re-sending the attack packet(BOT)
+			return true;
+	}
+
 	Creature* attackCreature = getCreatureByID(creatureId);
 	if(!attackCreature)
 	{

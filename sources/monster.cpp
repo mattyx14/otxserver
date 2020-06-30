@@ -210,18 +210,19 @@ void Monster::onCreatureMove(const Creature* creature, const Tile* newTile, cons
 
 void Monster::updateTargetList()
 {
-	CreatureList::iterator it;
-	for(it = friendList.begin(); it != friendList.end();)
-	{
-		if((*it)->getHealth() <= 0 || !canSee((*it)->getPosition()))
-		{
-			(*it)->unRef();
-			it = friendList.erase(it);
-		}
-		else
-			++it;
-	}
+	
+	//for(it = friendList.begin(); it != friendList.end();)
 
+	for (const auto& element : friendList)
+	{
+
+		if ((element.second)->getHealth() <= 0 || !canSee((element.second)->getPosition()))
+		{
+			element.second->unRef();
+			friendList.erase(element.first);
+		}
+	}
+	CreatureList::iterator it;
 	for(it = targetList.begin(); it != targetList.end();)
 	{
 		if((*it)->getHealth() <= 0 || !canSee((*it)->getPosition()))
@@ -251,21 +252,23 @@ void Monster::clearTargetList()
 
 void Monster::clearFriendList()
 {
-	for(CreatureList::iterator it = friendList.begin(); it != friendList.end(); ++it)
-		(*it)->unRef();
+
+	for (const auto& element : friendList)
+		element.second->unRef();
 
 	friendList.clear();
 }
 
 void Monster::onCreatureFound(Creature* creature, bool pushFront /*= false*/)
 {
-	if(isFriend(creature))
+	if (isFriend(creature))
 	{
 		assert(creature != this);
-		if(std::find(friendList.begin(), friendList.end(), creature) == friendList.end())
+		auto search = friendList.find(creature->getID());
+		if (search != friendList.end())
 		{
 			creature->addRef();
-			friendList.push_back(creature);
+			friendList.insert(std::make_pair(creature->getID(), creature));
 		}
 	}
 
@@ -350,11 +353,11 @@ void Monster::onCreatureLeave(Creature* creature)
 	//update friendList
 	if(isFriend(creature))
 	{
-		CreatureList::iterator it = std::find(friendList.begin(), friendList.end(), creature);
-		if(it != friendList.end())
+		auto search = friendList.find(creature->getID());
+		if (search != friendList.end())
 		{
-			(*it)->unRef();
-			friendList.erase(it);
+			search->second->unRef();
+			friendList.erase(search->first);
 		}
 #ifdef __DEBUG__
 		else

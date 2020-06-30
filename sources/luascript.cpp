@@ -7183,18 +7183,19 @@ int32_t LuaInterface::luaGetMonsterFriendList(lua_State* L)
 	}
 
 	Creature* friendCreature;
-	const CreatureList& friendList = monster->getFriendList();
-	CreatureList::const_iterator it = friendList.begin();
+	const std::unordered_map<uint32_t, Creature*>& friendList = monster->getFriendList();
 
 	lua_newtable(L);
-	for(uint32_t i = 1; it != friendList.end(); ++it, ++i)
+	uint16_t i = 1;
+	for (const auto& element : friendList)
 	{
-		friendCreature = (*it);
-		if(!friendCreature->isRemoved() && friendCreature->getPosition().z == monster->getPosition().z)
+		friendCreature = (element.second);
+		if (!friendCreature->isRemoved() && friendCreature->getPosition().z == monster->getPosition().z)
 		{
 			lua_pushnumber(L, i);
-			lua_pushnumber(L, env->addThing(*it));
+			lua_pushnumber(L, env->addThing(element.second));
 			pushTable(L);
+			i++;
 		}
 	}
 
