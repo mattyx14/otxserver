@@ -5162,21 +5162,19 @@ int32_t LuaInterface::luaGetCreatureStorage(lua_State* L)
 	//getCreatureStorage(cid, key)
 	std::string key = popString(L);
 	ScriptEnviroment* env = getEnv();
-	if(Creature* creature = env->getCreatureByUID(popNumber(L)))
+	if (Creature * creature = env->getCreatureByUID(popNumber(L)))
 	{
 		std::string strValue;
-		if(!creature->getStorage(key, strValue))
+		if (creature->getStorage(key, strValue))
 		{
-			lua_pushnumber(L, -1);
-			lua_pushnil(L);
-			return 2;
+			int32_t intValue = atoi(strValue.c_str());
+			if (intValue || strValue == "0")
+				lua_pushnumber(L, intValue);
+			else
+				lua_pushstring(L, strValue.c_str());
 		}
-
-		int32_t intValue = atoi(strValue.c_str());
-		if(intValue || strValue == "0")
-			lua_pushnumber(L, intValue);
 		else
-			lua_pushstring(L, strValue.c_str());
+			lua_pushnumber(L, -1);
 	}
 	else
 	{
@@ -5185,6 +5183,7 @@ int32_t LuaInterface::luaGetCreatureStorage(lua_State* L)
 	}
 
 	return 1;
+
 }
 
 int32_t LuaInterface::luaDoCreatureSetStorage(lua_State* L)
