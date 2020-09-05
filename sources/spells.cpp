@@ -1310,6 +1310,12 @@ bool InstantSpell::castInstant(Player* player, const std::string& param)
 		if(!checkInstantSpell(player, var.pos))
 			return false;
 	}
+	
+	if(!BaseSpell::castSpell(player)) {
+        player->sendCancelMessage(RET_NOTPOSSIBLE);
+        player->sendMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
+        return false;
+    }
 
 	if(!internalCastSpell(player, var))
 		return false;
