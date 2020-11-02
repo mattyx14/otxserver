@@ -102,6 +102,8 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 	
 	local a = 0
 	if inBackpacks then
+	
+		local itemTable = {}
 		local container, b = doCreateItemEx(backpack, 1), 1
 		for i = 1, amount do
 		
@@ -113,17 +115,20 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 			if(isInArray({(getContainerCapById(backpack) * b), amount}, i)) then
 				if doPlayerAddItemEx(cid, container, ignoreCap) ~= RETURNVALUE_NOERROR then
 					b = b - 1
-					return a, b, {}
+					return a, b, itemTable
 				end
 
 				a = i
 				if amount > i then
+				
+					table.insert(itemTable, container)
 					container = doCreateItemEx(backpack, 1)
 					b = b + 1
+					
 				end
 			end
 		end
-		return a, b, {container}
+		return a, b, itemTable
 	end
 	
 	local itemTable = {}
