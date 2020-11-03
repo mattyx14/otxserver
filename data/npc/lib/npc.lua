@@ -105,6 +105,7 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 	
 		local itemTable = {}
 		local container, b = doCreateItemEx(backpack, 1), 1
+		table.insert(itemTable, container)
 		for i = 1, amount do
 		
 			local item = doAddContainerItem(container, itemid, subType)
@@ -121,8 +122,8 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 				a = i
 				if amount > i then
 				
-					table.insert(itemTable, container)
 					container = doCreateItemEx(backpack, 1)
+					table.insert(itemTable, container)
 					b = b + 1
 					
 				end
