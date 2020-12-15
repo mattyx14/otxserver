@@ -55,7 +55,7 @@ jobs:
         unzip -o data/world/world.zip -d data/world/
         rm data/world/world.zip
         cd ..
-        zip -r otserv.zip dkkserv
+        zip -r otserv.zip otxserver
 
     - name: Upload binary
       uses: actions/upload-artifact@v2
