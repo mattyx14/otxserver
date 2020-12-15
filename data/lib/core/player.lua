@@ -96,8 +96,60 @@ function Player.addManaSpent(...)
 end
 
 -- Functions From OTServBR-Global
+function Player.getCookiesDelivered(self)
+	local storage, amount = {
+		Storage.WhatAFoolish.CookieDelivery.SimonTheBeggar, Storage.WhatAFoolish.CookieDelivery.Markwin, Storage.WhatAFoolish.CookieDelivery.Ariella,
+		Storage.WhatAFoolish.CookieDelivery.Hairycles, Storage.WhatAFoolish.CookieDelivery.Djinn, Storage.WhatAFoolish.CookieDelivery.AvarTar,
+		Storage.WhatAFoolish.CookieDelivery.OrcKing, Storage.WhatAFoolish.CookieDelivery.Lorbas, Storage.WhatAFoolish.CookieDelivery.Wyda,
+		Storage.WhatAFoolish.CookieDelivery.Hjaern
+	}, 0
+	for i = 1, #storage do
+		if self:getStorageValue(storage[i]) == 1 then
+			amount = amount + 1
+		end
+	end
+	return amount
+end
+
 function Player.allowMovement(self, allow)
 	return self:setStorageValue(STORAGE.blockMovementStorage, allow and -1 or 1)
+end
+
+function Player.checkGnomeRank(self)
+	local points = self:getStorageValue(Storage.BigfootBurden.Rank)
+	local questProgress = self:getStorageValue(Storage.BigfootBurden.QuestLine)
+	if points >= 30 and points < 120 then
+		if questProgress <= 25 then
+			self:setStorageValue(Storage.BigfootBurden.QuestLine, 26)
+			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+			self:addAchievement('Gnome Little Helper')
+		end
+	elseif points >= 120 and points < 480 then
+		if questProgress <= 26 then
+			self:setStorageValue(Storage.BigfootBurden.QuestLine, 27)
+			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+			self:addAchievement('Gnome Little Helper')
+			self:addAchievement('Gnome Friend')
+		end
+	elseif points >= 480 and points < 1440 then
+		if questProgress <= 27 then
+			self:setStorageValue(Storage.BigfootBurden.QuestLine, 28)
+			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+			self:addAchievement('Gnome Little Helper')
+			self:addAchievement('Gnome Friend')
+			self:addAchievement('Gnomelike')
+		end
+	elseif points >= 1440 then
+		if questProgress <= 29 then
+			self:setStorageValue(Storage.BigfootBurden.QuestLine, 30)
+			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+			self:addAchievement('Gnome Little Helper')
+			self:addAchievement('Gnome Friend')
+			self:addAchievement('Gnomelike')
+			self:addAchievement('Honorary Gnome')
+		end
+	end
+	return true
 end
 
 function Player.addFamePoint(self)
@@ -184,6 +236,7 @@ function Player.hasRookgaardShield(self)
 		or self:getItemCount(2510) > 0
 		or self:getItemCount(2530) > 0
 end
+
 
 function Player.isSorcerer(self)
 	return table.contains({VOCATION.ID.SORCERER, VOCATION.ID.MASTER_SORCERER}, self:getVocation():getId())
@@ -273,4 +326,38 @@ function Player.getMarriageDescription(thing)
 		descr = descr .. "married to " .. getPlayerNameById(playerSpouse) .. '.'
 	end
 	return descr
+end
+
+function Player.sendWeatherEffect(self, groundEffect, fallEffect, thunderEffect)
+    local position, random = self:getPosition(), math.random
+    position.x = position.x + random(-7, 7)
+      position.y = position.y + random(-5, 5)
+    local fromPosition = Position(position.x + 1, position.y, position.z)
+       fromPosition.x = position.x - 7
+       fromPosition.y = position.y - 5
+    local tile, getGround
+    for Z = 1, 7 do
+        fromPosition.z = Z
+        position.z = Z
+        tile = Tile(position)
+        if tile then -- If there is a tile, stop checking floors
+            fromPosition:sendDistanceEffect(position, fallEffect)
+			position:sendMagicEffect(groundEffect, self)
+			getGround = tile:getGround()
+            if getGround and ItemType(getGround:getId()):getFluidSource() == 1 then
+                position:sendMagicEffect(CONST_ME_LOSEENERGY, self)
+            end
+            break
+        end
+    end
+    if thunderEffect and tile and not tile:hasFlag(TILESTATE_PROTECTIONZONE) then
+        if random(2) == 1 then
+            local topCreature = tile:getTopCreature()
+            if topCreature and topCreature:isPlayer() and topCreature:getAccountType() < ACCOUNT_TYPE_SENIORTUTOR then
+                position:sendMagicEffect(CONST_ME_BIGCLOUDS, self)
+                doTargetCombatHealth(0, self, COMBAT_ENERGYDAMAGE, -weatherConfig.minDMG, -weatherConfig.maxDMG, CONST_ME_NONE)
+                --self:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "You were hit by lightning and lost some health.")
+            end
+        end
+    end
 end

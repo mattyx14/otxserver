@@ -16,6 +16,3 @@ dofile('data/lib/others/others.lua')
 
 -- Quests library
 dofile('data/lib/quests/quest.lua')
-
--- DarkKonia Scripts
--- dofile('data/lib/custom/custom.lua')

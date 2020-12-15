@@ -1,13 +1,28 @@
 math.randomseed(os.time())
 dofile('data/lib/lib.lua')
 
-NOT_MOVEABLE_ACTION = 8000
+NOT_MOVEABLE_ACTION = 100
 PARTY_PROTECTION = 1 -- Set to 0 to disable.
 ADVANCED_SECURE_MODE = 1 -- Set to 0 to disable.
 
 STORAGEVALUE_PROMOTION = 30018
 
 SERVER_NAME = configManager.getString(configKeys.SERVER_NAME)
+
+--WEATHER
+weatherConfig = {
+    groundEffect = CONST_ME_LOSEENERGY,
+	fallEffect = CONST_ANI_SMALLICE,
+    thunderEffect = configManager.getBoolean(configKeys.WEATHER_THUNDER),
+    minDMG = 1,
+    maxDMG = 5
+}
+--END WEATHER
+
+-- Event Schedule
+SCHEDULE_LOOT_RATE = 100
+SCHEDULE_EXP_RATE = 100
+SCHEDULE_SKILL_RATE = 100
 
 -- MARRY
 PROPOSED_STATUS = 1
@@ -37,7 +52,54 @@ damageImpact = {}
 -- New prey => preyTimeLeft
 nextPreyTime = {}
 
-startupGlobalStorages = {}
+startupGlobalStorages = {
+	GlobalStorage.TheAncientTombs.AshmunrahSwitchesGlobalStorage,
+	GlobalStorage.TheAncientTombs.DiprathSwitchesGlobalStorage,
+	GlobalStorage.TheAncientTombs.ThalasSwitchesGlobalStorage,
+	GlobalStorage.HeroRathleton.FirstMachines,
+	GlobalStorage.HeroRathleton.SecondMachines,
+	GlobalStorage.HeroRathleton.ThirdMachines,
+	GlobalStorage.HeroRathleton.DeepRunning,
+	GlobalStorage.HeroRathleton.HorrorRunning,
+	GlobalStorage.HeroRathleton.LavaRunning,
+	GlobalStorage.HeroRathleton.MaxxenRunning,
+	GlobalStorage.HeroRathleton.LavaCounter,
+	GlobalStorage.HeroRathleton.FourthMachines,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal1,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal2,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal3,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal4,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal5,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal6,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal7,
+	GlobalStorage.FerumbrasAscendant.Crystals.Crystal8,
+	GlobalStorage.FerumbrasAscendant.Crystals.AllCrystals,
+	GlobalStorage.FerumbrasAscendant.FerumbrasEssence,
+	GlobalStorage.Feroxa.Active,
+	GlobalStorage.FerumbrasAscendant.Habitats.AllHabitats,
+	GlobalStorage.FerumbrasAscendant.Elements.Active,
+	GlobalStorage.FerumbrasAscendant.Elements.First,
+	GlobalStorage.FerumbrasAscendant.Elements.Second,
+	GlobalStorage.FerumbrasAscendant.Elements.Third,
+	GlobalStorage.FerumbrasAscendant.Elements.Done
+}
+
+do -- Event Schedule rates
+	local lootRate = Game.getEventSLoot()
+	if lootRate ~= 100 then
+		SCHEDULE_LOOT_RATE = lootRate
+	end
+
+	local expRate = Game.getEventSExp()
+	if expRate ~= 100 then
+		SCHEDULE_EXP_RATE = expRate
+	end
+
+	local skillRate = Game.getEventSSkill()
+	if skillRate ~= 100 then
+		SCHEDULE_SKILL_RATE = skillRate
+	end
+end
 
 table.contains = function(array, value)
 	for _, targetColumn in pairs(array) do

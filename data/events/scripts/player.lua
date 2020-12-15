@@ -313,7 +313,8 @@ local function antiPush(self, item, count, fromPosition, toPosition, fromCylinde
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-	-- No move items with actionID = 8000
+
+	-- No move items with actionID = 100
 	if item:getActionId() == NOT_MOVEABLE_ACTION then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
@@ -342,6 +343,32 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 			self:sendLootStats(item)
 		end
 	end
+
+	-- Cults of Tibia begin
+	local frompos = Position(33023, 31904, 14) -- Checagem
+	local topos = Position(33052, 31932, 15) -- Checagem
+	if self:getPosition():isInRange(frompos, topos) and item:getId() == 26397 then
+		local tileBoss = Tile(toPosition)
+		if tileBoss and tileBoss:getTopCreature() and tileBoss:getTopCreature():isMonster() then
+			if tileBoss:getTopCreature():getName():lower() == 'the remorseless corruptor' then
+				tileBoss:getTopCreature():addHealth(-17000)
+				item:remove(1)
+				if tileBoss:getTopCreature():getHealth() <= 300 then
+					tileBoss:getTopCreature():remove()
+					local monster = Game.createMonster('the corruptor of souls', toPosition)
+					monster:registerEvent('CheckTile')
+					if Game.getStorageValue('healthSoul') > 0 then
+						monster:addHealth(-(monster:getHealth() - Game.getStorageValue('healthSoul')))
+					end
+					Game.setStorageValue('CheckTile', os.time()+30)
+				end
+			elseif tileBoss:getTopCreature():getName():lower() == 'the corruptor of souls' then
+				Game.setStorageValue('CheckTile', os.time()+30)
+				item:remove(1)
+			end
+		end
+	end
+	-- Cults of Tibia end
 
 	-- SSA exhaust
 	local exhaust = { }
@@ -573,7 +600,7 @@ function Player:onTurn(direction)
 end
 
 function Player:onTradeRequest(target, item)
-	-- No trade items with actionID = 8000
+	-- No trade items with actionID = 100
 	if item:getActionId() == NOT_MOVEABLE_ACTION then
 		return false
 	end
@@ -715,6 +742,10 @@ function Player:onGainExperience(source, exp, rawExp)
 		exp = exp * 2
 	end
 
+	-- Event scheduler
+	if SCHEDULE_EXP_RATE ~= 100 then
+		exp = (exp * SCHEDULE_EXP_RATE)/100
+	end
 	self:setBaseXpGain(displayRate * 100)
 	return exp
 end
@@ -726,6 +757,11 @@ end
 function Player:onGainSkillTries(skill, tries)
 	if APPLY_SKILL_MULTIPLIER == false then
 		return tries
+	end
+
+	-- Event scheduler skill rate
+	if SCHEDULE_SKILL_RATE ~= 100 then
+		tries = (tries * SCHEDULE_SKILL_RATE)/100
 	end
 
 	local skillRate = configManager.getNumber(configKeys.RATE_SKILL)
@@ -790,6 +826,15 @@ function Player:canBeAppliedImbuement(imbuement, item)
 end
 
 function Player:onApplyImbuement(imbuement, item, slot, protectionCharm)
+	for slot = CONST_SLOT_HEAD, CONST_SLOT_AMMO do
+    	local slotItem = self:getSlotItem(slot)
+   		if slotItem and slotItem == item then
+			self:sendImbuementResult(MESSAGEDIALOG_IMBUEMENT_ROLL_FAILED, "You can't imbue a equipped item.")
+			self:closeImbuementWindow()
+            return true
+   		end
+	end
+
 	for _, pid in pairs(imbuement:getItems()) do
 		if self:getItemCount(pid.itemid) < pid.count then
 			self:sendImbuementResult(MESSAGEDIALOG_IMBUEMENT_ROLL_FAILED, "You don't have all necessary items.")

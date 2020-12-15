@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="The King" script="promotion.lua" walkinterval="2000" floorchange="0" speechbubble="0" skull="green">
-	<health now="100" max="100" />
-	<look type="332"/>
-	<parameters>
-		<parameter key="module_shop" value="1"/>
-		<parameter key="message_greet" value="Hello |PLAYERNAME|. I {promote} to you ..."/>
-	</parameters>
-</npc>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Milton" script="boat/milton.lua" walkinterval="2000" floorchange="0" speechbubble="0" skull="green">
-	<health now="150" max="150"/>
-	<look type="465" head="114" body="140" legs="90" feet="15" addons="1"/>
-</npc>
