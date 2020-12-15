@@ -85,7 +85,7 @@ def do_login(data):
             'worlds': [
                 {
                     'id': 0,
-                    'name': 'OTX Server',
+                    'name': 'OTXServer',
                     'externaladdressprotected': '127.0.0.1',
                     'externalportprotected': 7172,
                     'externaladdressunprotected': '127.0.0.1',
@@ -100,7 +100,7 @@ def do_login(data):
                 },
                 {
                     'id': 1,
-                    'name': 'OTX Server',
+                    'name': 'OTXServer',
                     'externaladdressprotected': '127.0.0.1',
                     'externalportprotected': 7172,
                     'externaladdressunprotected': '127.0.0.1',
@@ -228,7 +228,7 @@ def action():
                     'colorlight': '#64162b',
                     'colordark': '#7a1b34',
                     'name': 'First Event',
-                    'description': 'OTX Server Event 1',
+                    'description': 'OTXServer Event 1',
                     'isseasonal': False
                 },
                 {
@@ -237,7 +237,7 @@ def action():
                     'colorlight': '#8B6D05',
                     'colordark': '#735D10',
                     'name': 'Second Event',
-                    'description': 'OTX Server Event 2',
+                    'description': 'OTXServer Event 2',
                     'isseasonal': False
                 }
             ]

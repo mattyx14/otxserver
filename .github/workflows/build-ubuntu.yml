@@ -3,7 +3,7 @@ name: Build on Ubuntu
 on:
   push:
     branches:
-      - master
+      - otxserv5
 
   pull_request:
     paths:
