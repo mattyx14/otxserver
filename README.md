@@ -1,5 +1,5 @@
 Build Test Linux: [![Build Status](https://travis-ci.org/jlcvp/otxserver.svg?branch=otxserv3)](https://travis-ci.org/mattyx14/otxserver)
-<br>Alternatively download nightly builds for Windows: [![Build status](https://ci.appveyor.com/api/projects/status/e7qmnb9p3yu8q1e3/branch/otxserv5?svg=true)](https://ci.appveyor.com/project/mattyx14/otxserver/branch/otxserv5)
+<br>Alternatively download nightly builds for Windows: [![Build status](https://travis-ci.org/mattyx14/otxserver.svg?branch=otxserv5)](https://ci.appveyor.com/project/mattyx14/otxserver/branch/otxserv5)
 
 
 ### What is OTX Server 5 Series
