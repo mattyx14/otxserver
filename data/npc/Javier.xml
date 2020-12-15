@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Javier" script="boat/javier.lua" walkinterval="2000" skull="green" floorchange="0" speechbubble="0" skull="green">
+	<health now="150" max="150"/>
+	<look type="151" head="114" body="159" legs="144" feet="124" addons="2"/>
+</npc>

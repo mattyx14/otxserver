@@ -23,6 +23,7 @@
 #include "game.h"
 
 extern Game g_game;
+extern Monsters g_monsters;
 
 bool Condition::setParam(ConditionParam_t param, int32_t value)
 {
@@ -681,7 +682,26 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 	}
 }
 
-void ConditionRegeneration::addCondition(Creature*, const Condition* addCondition)
+bool ConditionRegeneration::startCondition(Creature* creature)
+{
+	if (!Condition::startCondition(creature)) {
+		return false;
+	}
+
+	if (Player* player = creature->getPlayer()) {
+		player->sendStats();
+	}
+	return true;
+}
+
+void ConditionRegeneration::endCondition(Creature* creature)
+{
+	if (Player* player = creature->getPlayer()) {
+		player->sendStats();
+	}
+}
+
+void ConditionRegeneration::addCondition(Creature* creature, const Condition* addCondition)
 {
 	if (updateCondition(addCondition)) {
 		setTicks(addCondition->getTicks());
@@ -693,6 +713,10 @@ void ConditionRegeneration::addCondition(Creature*, const Condition* addConditio
 
 		healthGain = conditionRegen.healthGain;
 		manaGain = conditionRegen.manaGain;
+	}
+
+	if (Player* player = creature->getPlayer()) {
+		player->sendStats();
 	}
 }
 
@@ -731,17 +755,24 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 {
 	internalHealthTicks += interval;
 	internalManaTicks += interval;
-
-	if (creature->getZone() != ZONE_PROTECTION) {
+	Player* player = creature->getPlayer();
+	int32_t PlayerdailyStreak = 0;
+	if (player) {
+		player->getStorageValue(STORAGEVALUE_DAILYREWARD, PlayerdailyStreak);
+	}
+	if (creature->getZone() != ZONE_PROTECTION || PlayerdailyStreak >= DAILY_REWARD_HP_REGENERATION) {
 		if (internalHealthTicks >= healthTicks) {
 			internalHealthTicks = 0;
 
 			int32_t realHealthGain = creature->getHealth();
-			creature->changeHealth(healthGain);
+			if (creature->getZone() == ZONE_PROTECTION && PlayerdailyStreak >= DAILY_REWARD_DOUBLE_HP_REGENERATION) {
+				creature->changeHealth(healthGain * 2); // Double regen from daily reward
+			} else {
+				creature->changeHealth(healthGain);
+			}
 			realHealthGain = creature->getHealth() - realHealthGain;
 
 			if (isBuff && realHealthGain > 0) {
-				Player* player = creature->getPlayer();
 				if (player) {
 					std::string healString = std::to_string(realHealthGain) + (realHealthGain != 1 ? " hitpoints." : " hitpoint.");
 
@@ -765,9 +796,16 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 			}
 		}
 
+	}
+
+	if (creature->getZone() != ZONE_PROTECTION || PlayerdailyStreak >= DAILY_REWARD_MP_REGENERATION) {
 		if (internalManaTicks >= manaTicks) {
 			internalManaTicks = 0;
-			creature->changeMana(manaGain);
+			if (creature->getZone() == ZONE_PROTECTION && PlayerdailyStreak >= DAILY_REWARD_DOUBLE_MP_REGENERATION) {
+				creature->changeMana(manaGain * 2); // Double regen from daily reward
+			} else {
+				creature->changeMana(manaGain);
+			}
 		}
 	}
 
@@ -1424,9 +1462,17 @@ void ConditionInvisible::endCondition(Creature* creature)
 	}
 }
 
+/**
+ * ConditionOutfit
+ */ 
+
 void ConditionOutfit::setOutfit(const Outfit_t& newOutfit)
 {
 	this->outfit = newOutfit;
+}
+
+void ConditionOutfit::setLazyMonsterOutfit(const std::string& monsterName) {
+	this->monsterName = monsterName;
 }
 
 bool ConditionOutfit::unserializeProp(ConditionAttr_t attr, PropStream& propStream)
@@ -1447,6 +1493,16 @@ void ConditionOutfit::serialize(PropWriteStream& propWriteStream)
 
 bool ConditionOutfit::startCondition(Creature* creature)
 {
+	if ((outfit.lookType == 0 && outfit.lookTypeEx == 0) && !monsterName.empty()) {
+		MonsterType* monsterType = g_monsters.getMonsterType(monsterName);
+		if (monsterType) {
+			setOutfit(monsterType->info.outfit);
+		} else {
+			std::cout << "[Error - ConditionOutfit::startCondition] Monster " << monsterName << " does not exist" << std::endl;;
+			return false;
+		}
+	}
+	
 	if (!Condition::startCondition(creature)) {
 		return false;
 	}
@@ -1471,11 +1527,26 @@ void ConditionOutfit::addCondition(Creature* creature, const Condition* addCondi
 		setTicks(addCondition->getTicks());
 
 		const ConditionOutfit& conditionOutfit = static_cast<const ConditionOutfit&>(*addCondition);
-		outfit = conditionOutfit.outfit;
+		if (!conditionOutfit.monsterName.empty() && conditionOutfit.monsterName.compare(monsterName) != 0) {
+			MonsterType* monsterType = g_monsters.getMonsterType(conditionOutfit.monsterName);
+			if (monsterType) {
+				setOutfit(monsterType->info.outfit);
+			} else {
+				std::cout << "[Error - ConditionOutfit::addCondition] Monster " << monsterName << " does not exist" << std::endl;;
+				return;
+			}
+		}
+		else if (conditionOutfit.outfit.lookType != 0 || conditionOutfit.outfit.lookTypeEx != 0) {
+			setOutfit(conditionOutfit.outfit);
+		}
 
 		g_game.internalCreatureChangeOutfit(creature, outfit);
 	}
 }
+
+/**
+ *  ConditionLight
+ */ 
 
 bool ConditionLight::startCondition(Creature* creature)
 {

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Poky" script="bank.lua" walkinterval="0" floorchange="0">
+	<health now="100" max="100" />
+	<look typeex="14898" />
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Everyone on this island has gone crazy! Except for me and you, it seems. Let's {trade} like normal people would." />
+		<parameter key="message_farewell" value="Promise to come back sometime, will ya?" />
+		<parameter key="message_walkaway" value="Hey! Don't leave me alone with all these lunatics!" />
+		<parameter key="shop_sellable" value="
+			tunnel tyrant head, 30830, 500;
+			tunnel tyrant shell, 30831, 700;
+			tunnel tyrant shell, 30831, 700;
+			suspicious device, 30888, 14000;
+			crystal mace, 2445, 12000;
+			crystalline armor, 8878, 16000;
+			energy vein, 26164, 800;
+
+			calopteryx cape, 15489, 15000;
+			heavy trident, 13838, 5000;
+
+			calopteryx cape, 15489, 15000;
+			carapace shield, 15491, 32000;
+			crowbar, 2416, 50;
+			Deepling Axe,15404,40000;
+			Deepling Squelcher,15647,7000;
+			Deepling Staff,15400,4000;
+			Depth Calcei,15410,25000;
+			Depth Galea,15408,35000;
+			Depth Lorica,15407,30000;
+			Depth Ocrea,15409,16000;
+			Depth Scutum,15411,36000;
+			Grasshopper Legs,15490,15000;
+			Guardian Axe,15454,9000;
+			Hive Bow,15643,28000;
+			Hive Scythe,15492,17000;
+			Machete,2420,6;
+			Necklace of the Deep,15403,3000;
+			Ornate Chestplate,15406,60000;
+			Ornate Crossbow,15644,12000;
+			Ornate Legs,15412,40000;
+			Ornate Mace,15414,42000;
+			Ornate Shield,15413,42000;
+			Warrior's Axe,15451,11000;
+			Warrior's Shield,15453,9000;
+			Watch,2036,6;
+			Wooden Hammer,2556,15;
+
+			empty potion flask,7634,10;
+			empty potion flask,7635,15;
+			empty small potion flask,7636,5;
+
+			Compound Eye,15486,150;
+			Crawler Head Plating,15482,210;
+			Deepling Breaktime Snack,15424,90;
+			Deepling Claw,15455,430;
+			Deepling Guard Belt Buckle,15423,230;
+			Deepling Ridge,15452,360;
+			Deepling Scales,15430,80;
+			Deepling Warts,15425,180;
+			Deeptags,15426,290;
+			Dung Ball,15622,130;
+			Eye of a Deepling,13870,150;
+			Key to the Drowned Library,15422,330;
+			Kollos Shell,15480,420;
+			Spellsinger's Seal,15421,280;
+			Spidris Mandible,15485,450;
+			Spitter Nose,15481,340;
+			Swarmer Antenna,15479,130;
+			Waspoid Claw,15483,320;
+			Waspoid Wing,15484,190;
+
+			epee, 2438, 8000;
+			springsprout rod, 8912, 3600;
+
+			ancient coin, 27058, 350;
+			bar of gold, 15515, 10000;
+			black pearl, 2144, 280;
+			blue crystal shard, 18413, 1500;
+			blue crystal splinter, 18418, 400;
+			blue rose, 2745, 200;
+			brown crystal splinter, 18417, 400;
+			butterfly ring, 29003, 2000;
+			colourful snail shell, 29001, 250;
+			coral brooch, 27059, 750;
+			crunor idol, 34693, 30000;
+			cyan crystal fragment, 18419, 800;
+			dandelion seeds, 29000, 200;
+			dragon figurine, 34691, 45000;
+			dream blossom staff, 29005, 5000;
+			empty potion flask,7634,5;
+			empty potion flask,7635,5;
+			empty potion flask,7636,5;
+			fairy wings, 28999, 200;
+			fern, 2801, 20;
+			gemmed figurine, 27060, 3500;
+			giant emerald, 34698, 90000;
+			giant ruby, 34697, 70000;
+			giant sapphire, 34699, 50000;
+			green giant shimmering pearl, 7632, 3000;
+			brown giant shimmering pearl, 7633, 3000;
+			gold ingot, 9971, 5000;
+			gold nugget, 2157, 850;
+			golden figurine, 5799, 3000;
+			green crystal fragment, 18421, 800;
+			green crystal shard, 18415, 1500;
+			green crystal splinter, 18416, 400;
+			hexagonal ruby, 34818, 30000;
+			hibiscus dress, 8873, 3000;
+			leaf star, 29036, 50;
+			mandrake, 5015, 5000;
+			onyx chip, 24849, 500;
+			opal, 24850, 500;
+			ornate locket, 34694, 18000;
+			panpipes, 2074, 150;
+			powder herb, 2803, 10;
+			prismatic quartz, 27630, 450;
+			rainbow quartz, 29038, 500;
+			red crystal fragment, 18420, 800;
+			red rose, 2744, 10;
+			shimmering beatles, 28998, 150;
+			sling herb, 2802, 10;
+			small amethyst, 2150, 200;
+			small diamond, 2145, 300;
+			small emerald, 2149, 250;
+			small enchanted amethyst, 7762, 200;
+			small enchanted emerald, 7761, 250;
+			small enchanted ruby, 7760, 250;
+			small enchanted sapphire, 7759, 250;
+			small ruby, 2147, 250;
+			small sapphire, 2146, 250;
+			small topaz, 9970, 200;
+			star herb, 2800, 15;
+			stone herb, 2799, 20;
+			summer dress, 8874, 1500;
+			tiger eye, 27629, 350;
+			unicorn figurine, 34692, 50000;
+			vial, 2006, 5;
+			violet crystal shard, 18414, 1500;
+			wedding ring, 2121, 100;
+			white pearl, 2143, 160;
+			wild flowers, 28996, 120;
+			wood cape, 2664, 5000;
+			wooden spellbook, 29004, 12000;
+
+			golden mug,2033,250;
+			blue gem,2158,5000;
+			green gem,2155,5000;
+			red gem,2156,1000;
+			violet gem,2153,10000;
+			yellow gem,2154,1000;" />
+		<parameter key="shop_buyable" value="
+			brown bread,2691,8;
+			ham,2671,8;
+			carrot,2684,8;
+			meat,2666,8;
+			apple,2674,8;
+			brown mushroom,2789,8;
+			egg,2695,8;
+
+			stone shower rune,2288,37;
+			thunderstorm rune,2315,45;
+			blank rune,2260,10;
+			energy field rune,2277,38;
+			energy wall rune,2279,85;
+			energy bomb rune,2262,162;
+			fire field rune,2301,28;
+			fire wall rune,2303,61;
+			fire bomb rune,2305,55;
+			wild growth rune,2269,160;
+			sudden death,2268,108,1;
+			ultimate healing,2273,175,1;
+			avalanche,2274,45,1;
+			explosion,2313,31,1;
+			great fireball,2304,45,1;
+			heavy magic missile,2311,12,1;
+			instense healing,2265,95,1;
+			light magic missile,2287,4,1;
+			magic wall,2293,100,1;
+
+			antidote potion,8474,50,1;
+			mana potion,7620,50,1;
+			strong mana,7589,80,1;
+			great mana,7590,120,1;
+			ultimate mana potion,26029,510,1;
+
+			health potion,7618,45,1;
+			strong health,7588,100,1;
+			great health,7591,190,1;
+			ultimate health potion,8473,310,1;
+			supreme health potion,26031,510,1;
+			great spirit,8472,310,1;
+			ultimate spirit potion,26030,510,1;
+
+			arrow,2544,3;
+			bolt,2543,4;
+			bow,2456,400;
+			crossbow,2455,500;
+			crystalline arrow,18304,20;
+			drill bolt,18436,12;
+			earth arrow,7850,5;
+			envenomed arrow,18437,12;
+			flaming arrow,7840,5;
+			flash arrow,7838,5;
+			onyx arrow,7365,7;
+			piercing bolt,7363,5;
+			power bolt,2547,7;
+			prismatic bolt,18435,20;
+			shiver arrow,7839,5;
+			sniper arrow,7364,5;
+			spear,2389,9;
+			tarsal arrow,15648,6;
+			throwing knife,2410,25;
+			throwing star,2399,42;
+			vortex bolt,15649,6;
+
+			label,2599,1;
+			letter,2597,5;
+			parcel,2595,10" />
+	</parameters>
+</npc>

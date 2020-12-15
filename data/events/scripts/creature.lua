@@ -62,31 +62,9 @@ function Creature:onTargetCombat(target)
 			picIf[target.uid] = {}
 		end
 	end
-	
-	if target:isPlayer() then
-		if self:isMonster() then
-			local protectionStorage = target:getStorageValue(Storage.combatProtectionStorage)
 
-			if target:getIp() == 0 then -- If player is disconnected, monster shall ignore to attack the player
-			    if target:isPzLocked() then return true end
-				if protectionStorage <= 0 then
-					addEvent(removeCombatProtection, 30 * 1000, target.uid)
-					target:setStorageValue(Storage.combatProtectionStorage, 1)
-				elseif protectionStorage == 1 then
-					self:searchTarget()
-					return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER
-				end
-
-				return true
-			end
-
-			if protectionStorage >= os.time() then
-				return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER
-			end
-		end
-	end
-
-	if ((target:isMonster() and self:isPlayer() and target:getType():isPet() and target:getMaster() == self) or (self:isMonster() and target:isPlayer() and self:getType():isPet() and self:getMaster() == target)) then
+	if ((target:isMonster() and self:isPlayer() and target:getType():isPet() and target:getMaster() == self)
+	or (self:isMonster() and target:isPlayer() and self:getType():isPet() and self:getMaster() == target)) then
 		return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
 	end
 
@@ -112,7 +90,8 @@ function Creature:onTargetCombat(target)
 	return true
 end
 
-function Creature:onDrainHealth(attacker, typePrimary, damagePrimary, typeSecondary, damageSecondary, colorPrimary, colorSecondary)
+function Creature:onDrainHealth(attacker, typePrimary, damagePrimary,
+				typeSecondary, damageSecondary, colorPrimary, colorSecondary)
 	if (not self) then
 		return typePrimary, damagePrimary, typeSecondary, damageSecondary, colorPrimary, colorSecondary
 	end
@@ -125,7 +104,8 @@ function Creature:onDrainHealth(attacker, typePrimary, damagePrimary, typeSecond
 	if (attacker:isPlayer()) then
 		if (self:isMonster() and not self:getMaster()) then
 			for slot = CONST_PREY_SLOT_FIRST, CONST_PREY_SLOT_THIRD do
-				if (attacker:getPreyCurrentMonster(slot) == self:getName() and attacker:getPreyBonusType(slot) == CONST_BONUS_DAMAGE_BOOST) then
+				if (attacker:getPreyCurrentMonster(slot) == self:getName()
+				and attacker:getPreyBonusType(slot) == CONST_BONUS_DAMAGE_BOOST) then
 					damagePrimary = damagePrimary + math.floor(damagePrimary * (attacker:getPreyBonusValue(slot) / 100))
 					break
 				end
@@ -135,7 +115,8 @@ function Creature:onDrainHealth(attacker, typePrimary, damagePrimary, typeSecond
 	elseif (attacker:isMonster()) then
 		if (self:isPlayer()) then
 			for slot = CONST_PREY_SLOT_FIRST, CONST_PREY_SLOT_THIRD do
-				if (self:getPreyCurrentMonster(slot) == attacker:getName() and self:getPreyBonusType(slot) == CONST_BONUS_DAMAGE_REDUCTION) then
+				if (self:getPreyCurrentMonster(slot) == attacker:getName()
+				and self:getPreyBonusType(slot) == CONST_BONUS_DAMAGE_REDUCTION) then
 					damagePrimary = damagePrimary - math.floor(damagePrimary * (self:getPreyBonusValue(slot) / 100))
 					break
 				end

@@ -503,6 +503,11 @@ using CombatTypeNames = std::unordered_map<CombatType_t, std::string, std::hash<
 using AmmoTypeNames = std::unordered_map<std::string, Ammo_t>;
 using WeaponActionNames = std::unordered_map<std::string, WeaponAction_t>;
 using SkullNames = std::unordered_map<std::string, Skulls_t>;
+
+/**
+ * @Deprecated
+ * It will be dropped with monsters. Use RespawnPeriod_t instead.
+ */
 using SpawnTypeNames = std::unordered_map<std::string, SpawnType_t>;
 
 MagicEffectNames magicEffectNames = {
@@ -731,6 +736,10 @@ SkullNames skullNames = {
 	{"white",				SKULL_WHITE},
 };
 
+/**
+ * @Deprecated
+ * It will be dropped with monsters. Use RespawnPeriod_t instead.
+ */
 SpawnTypeNames spawnTypeNames = {
 	{"all",					RESPAWN_IN_ALL },
 	{"day",					RESPAWN_IN_DAY },
@@ -802,6 +811,10 @@ Skulls_t getSkullType(const std::string& strValue)
 	return SKULL_NONE;
 }
 
+/**
+ * @Deprecated
+ * It will be dropped with monsters. Use RespawnPeriod_t instead.
+ */
 SpawnType_t getSpawnType(const std::string& strValue)
 {
 	auto spawnType = spawnTypeNames.find(strValue);
@@ -1371,4 +1384,38 @@ bool isCaskItem(uint16_t itemId)
 	return (itemId >= ITEM_HEALTH_CASK_START && itemId <= ITEM_HEALTH_CASK_END) || 
 		(itemId >= ITEM_MANA_CASK_START && itemId <= ITEM_MANA_CASK_END) || 
 		(itemId >= ITEM_SPIRIT_CASK_START && itemId <= ITEM_SPIRIT_CASK_END);
+}
+
+std::string getObjectCategoryName(ObjectCategory_t category)
+{
+	switch (category) {
+		case OBJECTCATEGORY_ARMORS: return "Armors";
+		case OBJECTCATEGORY_NECKLACES: return "Amulets";
+		case OBJECTCATEGORY_BOOTS: return "Boots";
+		case OBJECTCATEGORY_CONTAINERS: return "Containers";
+		case OBJECTCATEGORY_DECORATION: return "Decoration";
+		case OBJECTCATEGORY_FOOD: return "Food";
+		case OBJECTCATEGORY_HELMETS: return "Helmets";
+		case OBJECTCATEGORY_LEGS: return "Legs";
+		case OBJECTCATEGORY_OTHERS: return "Others";
+		case OBJECTCATEGORY_POTIONS: return "Potions";
+		case OBJECTCATEGORY_RINGS: return "Rings";
+		case OBJECTCATEGORY_RUNES: return "Runes";
+		case OBJECTCATEGORY_SHIELDS: return "Shields";
+		case OBJECTCATEGORY_TOOLS: return "Tools";
+		case OBJECTCATEGORY_VALUABLES: return "Valuables";
+		case OBJECTCATEGORY_AMMO: return "Weapons: Ammunition";
+		case OBJECTCATEGORY_AXES: return "Weapons: Axes";
+		case OBJECTCATEGORY_CLUBS: return "Weapons: Clubs";
+		case OBJECTCATEGORY_DISTANCEWEAPONS: return "Weapons: Distance";
+		case OBJECTCATEGORY_SWORDS: return "Weapons: Swords";
+		case OBJECTCATEGORY_WANDS: return "Weapons: Wands";
+		case OBJECTCATEGORY_PREMIUMSCROLLS: return "Premium Scrolls";
+		case OBJECTCATEGORY_TIBIACOINS: return "Tibia Coins";
+		case OBJECTCATEGORY_CREATUREPRODUCTS: return "Creature Products";
+		case OBJECTCATEGORY_STASHRETRIEVE: return "Stash Retrieve";
+		case OBJECTCATEGORY_GOLD: return "Gold";
+		case OBJECTCATEGORY_DEFAULT: return "Unassigned Loot";
+		default: return std::string();
+	}
 }

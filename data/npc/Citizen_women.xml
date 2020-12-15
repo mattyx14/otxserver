@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Citizen" script="default.lua" walkinterval="2000" skull="green" floorchange="0" speechbubble="0" skull="green">
+	<health now="150" max="150"/>
+	<look type="136" head="125" body="141" legs="114" feet="110" addons="0"/>
+</npc>

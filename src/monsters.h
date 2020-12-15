@@ -29,6 +29,7 @@ const uint32_t MAX_STATICWALK = 100;
 struct LootBlock {
 	uint16_t id;
 	uint32_t countmax;
+	uint32_t countmin;
 	uint32_t chance;
 
 	//optional
@@ -49,6 +50,7 @@ struct LootBlock {
 	LootBlock() {
 		id = 0;
 		countmax = 1;
+		countmin = 1;
 		chance = 0;
 
 		subType = -1;
@@ -133,6 +135,7 @@ class MonsterType
 		Skulls_t skull = SKULL_NONE;
 		Outfit_t outfit = {};
 		RaceType_t race = RACE_BLOOD;
+		RespawnType respawnType = {};
 
 		LightInfo light = {};
 		uint16_t lookcorpse = 0;
@@ -148,7 +151,6 @@ class MonsterType
 		uint32_t conditionImmunities = 0;
 		uint32_t damageImmunities = 0;
 		uint32_t baseSpeed = 200;
-		uint32_t respawnType = RESPAWN_IN_ALL;
 
 		int32_t creatureAppearEvent = -1;
 		int32_t creatureDisappearEvent = -1;
@@ -162,6 +164,10 @@ class MonsterType
 		int32_t changeTargetChance = 0;
 		int32_t defense = 0;
 		int32_t armor = 0;
+		int32_t targetStrategiesNearestPercent = 0;
+		int32_t targetStrategiesLowerHPPercent = 0;
+		int32_t targetStrategiesMostDamagePercent = 0;
+		int32_t targetStrategiesRandom = 0;
 
 		bool canPushItems = false;
 		bool canPushCreatures = false;
@@ -174,7 +180,6 @@ class MonsterType
 		bool hiddenHealth = false;
 		bool isBlockable = false;
 		bool isPet = false;
-		bool isPassive = false;
 		bool isRewardBoss = false;
 		bool canWalkOnEnergy = true;
 		bool canWalkOnFire = true;
@@ -239,6 +244,9 @@ class MonsterSpell
 		bool isMelee = false;
 
 		Outfit_t outfit = {};
+		std::string outfitMonster = "";
+		uint16_t outfitItem = 0;
+
 		ShootType_t shoot = CONST_ANI_NONE;
 		MagicEffectClasses effect = CONST_ME_NONE;
 		ConditionType_t conditionType = CONDITION_NONE;

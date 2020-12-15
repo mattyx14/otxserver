@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Elite Hunter" script="elitehunter.lua" walkinterval="2000" floorchange="0" speechbubble="0" skull="green">
+	<health now="100" max="100" />
+	<look type="684" head="80" body="110" legs="30" feet="15" addons="3" />
+</npc>

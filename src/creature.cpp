@@ -409,16 +409,12 @@ void Creature::onCreatureAppear(Creature* creature, bool isLogin)
 
 void Creature::onRemoveCreature(Creature* creature, bool)
 {
-	onCreatureDisappear(creature, true);
-	if (creature == this) {
-		if (master && !master->isRemoved()) {
-			setMaster(nullptr);
-		}
-	} else if (isMapLoaded) {
-		if (creature->getPosition().z == getPosition().z) {
-			updateTileCache(creature->getTile(), creature->getPosition());
-		}
-	}
+  onCreatureDisappear(creature, true);
+  if (creature != this && isMapLoaded) {
+    if (creature->getPosition().z == getPosition().z) {
+      updateTileCache(creature->getTile(), creature->getPosition());
+    }
+  }
 }
 
 void Creature::onCreatureDisappear(const Creature* creature, bool isLogout)
@@ -472,11 +468,9 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 			std::forward_list<Creature*> despawnList;
 			for (Creature* summon : summons) {
 				const Position& pos = summon->getPosition();
-				if (summon->getMonster()->isPet() && (Position::getDistanceZ(newPos, pos) >= 1 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) >= 15))) {
-					g_game.internalTeleport(summon, summon->getMaster()->getPosition(), true);
-				} else if (!summon->getMonster()->isPet() && (Position::getDistanceZ(newPos, pos) >= 2 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) >= 30))) {
-					despawnList.push_front(summon);
-				}
+        if (Position::getDistanceZ(newPos, pos) > 0 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > 15)) {
+          g_game.internalTeleport(summon, summon->getMaster()->getPosition(), true);
+        }
 			}
 
 			for (Creature* despawnCreature : despawnList) {
@@ -587,6 +581,7 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 	if (creature == followCreature || (creature == this && followCreature)) {
 		if (hasFollowPath) {
 			isUpdatingPath = true;
+			g_dispatcher.addTask(createTask(std::bind(&Game::updateCreatureWalk, &g_game, getID())));
 		}
 
 		if (newPos.z != oldPos.z || !canSee(followCreature->getPosition())) {
@@ -617,7 +612,7 @@ void Creature::onDeath()
 	Creature* lastHitCreature = g_game.getCreatureByID(lastHitCreatureId);
 	Creature* lastHitCreatureMaster;
 	if (lastHitCreature) {
-		lastHitUnjustified = lastHitCreature->onKilledCreature(this);
+		lastHitUnjustified = lastHitCreature->onKilledCreature(this, true);
 		lastHitCreatureMaster = lastHitCreature->getMaster();
 	} else {
 		lastHitCreatureMaster = nullptr;
@@ -763,6 +758,9 @@ void Creature::changeHealth(int32_t healthChange, bool sendHealthChange/* = true
 
 	if (sendHealthChange && oldHealth != health) {
 		g_game.addCreatureHealth(this);
+	}
+	if (health <= 0) {
+		g_dispatcher.addTask(createTask(std::bind(&Game::executeDeath, &g_game, getID())));
 	}
 }
 
@@ -1095,16 +1093,16 @@ void Creature::onAttackedCreatureKilled(Creature* target)
 	}
 }
 
-bool Creature::onKilledCreature(Creature* target, bool)
+bool Creature::onKilledCreature(Creature* target, bool lastHit)
 {
 	if (master) {
-		master->onKilledCreature(target);
+		master->onKilledCreature(target, lastHit);
 	}
 
 	//scripting event - onKill
 	const CreatureEventList& killEvents = getCreatureEvents(CREATURE_EVENT_KILL);
 	for (CreatureEvent* killEvent : killEvents) {
-		killEvent->executeOnKill(this, target);
+		killEvent->executeOnKill(this, target, lastHit);
 	}
 	return false;
 }
@@ -1141,6 +1139,9 @@ void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 }
 
 bool Creature::setMaster(Creature* newMaster) {
+	// Persists if this creature has ever been a summon
+	this->summoned = true;
+
 	if (!newMaster && !master) {
 		return false;
 	}

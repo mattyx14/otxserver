@@ -4,12 +4,11 @@ function onSay(player, words, param)
 		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Player commands:" .. "\n"
 			.. "!buypremium" .. "\n"
 			.. "!kills" .. "\n"
-			.. "!bless" .. "\n"
-			.. "!buyhouse" .. "\n"
 			.. "!leavehouse" .. "\n"
 			.. "!sellhouse" .. "\n"
 			.. "!saveme" .. "\n"
 			.. "!serverinfo" .. "\n"
+			.. "!shop" .. "\n"
 			.. "!online" .. "\n"
 			.. "!commands")
 		return false

@@ -412,13 +412,11 @@ ReturnValue Container::queryMaxCount(int32_t index, const Thing& thing, uint32_t
 		} else {
 			const Item* destItem = getItemByIndex(index);
 			if (item->equals(destItem) && destItem->getItemCount() < 100) {
-				uint32_t remainder = 100 - destItem->getItemCount();
-				if (queryAdd(index, *item, remainder, flags) == RETURNVALUE_NOERROR) {
-					n = remainder;
-				}
+				n = 100 - destItem->getItemCount();
 			}
 		}
 
+		// maxQueryCount is the limit of items I can add
 		maxQueryCount = freeSlots * 100 + n;
 		if (maxQueryCount < count) {
 			return RETURNVALUE_CONTAINERNOTENOUGHROOM;
@@ -509,6 +507,10 @@ Cylinder* Container::queryDestination(int32_t& index, const Thing &thing, Item**
 
 	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
 	if (autoStack && item->isStackable() && item->getParent() != this) {
+		if (*destItem && (*destItem)->equals(item) && (*destItem)->getItemCount() < 100) {
+			return this;
+		}
+
 		//try find a suitable item to stack with
 		uint32_t n = 0;
 		for (Item* listItem : itemlist) {

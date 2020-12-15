@@ -28,16 +28,20 @@
 
 extern Game g_game;
 
-bool Map::loadMap(const std::string& identifier, bool loadHouses)
+bool Map::loadMap(const std::string& identifier, bool loadHouses, bool loadSpawns)
 {
+	int64_t start = OTSYS_TIME();
 	IOMap loader;
 	if (!loader.loadMap(this, identifier)) {
 		std::cout << "[Fatal - Map::loadMap] " << loader.getLastErrorString() << std::endl;
 		return false;
 	}
 
-	if (!IOMap::loadSpawns(this)) {
-		std::cout << "[Warning - Map::loadMap] Failed to load spawn data." << std::endl;
+	if (loadSpawns) {
+		if (!IOMap::loadSpawns(this)) {
+			std::cout << "[Warning - Map::loadMap] Failed to load spawn data." << std::endl;
+		}
+		std::cout << "> Loaded spawns in: " << (OTSYS_TIME() - start) / (1000.) << " seconds" << std::endl;
 	}
 
 	if (loadHouses) {
@@ -302,10 +306,10 @@ void Map::moveCreature(Creature& creature, Tile& newTile, bool forceTeleport/* =
 
 void Map::getSpectatorsInternal(SpectatorHashSet& spectators, const Position& centerPos, int32_t minRangeX, int32_t maxRangeX, int32_t minRangeY, int32_t maxRangeY, int32_t minRangeZ, int32_t maxRangeZ, bool onlyPlayers) const
 {
-	int_fast16_t min_y = centerPos.y + minRangeY;
-	int_fast16_t min_x = centerPos.x + minRangeX;
-	int_fast16_t max_y = centerPos.y + maxRangeY;
-	int_fast16_t max_x = centerPos.x + maxRangeX;
+	int_fast32_t min_y = centerPos.y + minRangeY;
+	int_fast32_t min_x = centerPos.x + minRangeX;
+	int_fast32_t max_y = centerPos.y + maxRangeY;
+	int_fast32_t max_x = centerPos.x + maxRangeX;
 
 	int32_t minoffset = centerPos.getZ() - maxRangeZ;
 	uint16_t x1 = std::min<uint32_t>(0xFFFF, std::max<int32_t>(0, (min_x + minoffset)));

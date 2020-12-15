@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <raids>
-	<!-- <raid name="Chayenne" file="chayenne/chayenne.xml" interval2="1440" margin="170" /> -->
+	<!-- Raids Fynn -->
+	<raid name="Orshabaal" file="fynn/orshabaal.xml" interval2="144000" margin="100" />
+	<raid name="Morgaroth" file="anshara/morgaroth.xml" interval2="144000" margin="100" />
 </raids>

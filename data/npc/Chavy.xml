@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Chavy" script="boat/chavy.lua" walkinterval="2000" skull="green" floorchange="0" speechbubble="0" skull="green">
+	<health now="150" max="150"/>
+	<look type="251" head="125" body="123" legs="108" feet="100" addons="2"/>
+</npc>

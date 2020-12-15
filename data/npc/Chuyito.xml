@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Chuyito" script="runes.lua" walkinterval="2000" floorchange="0" speechbubble="0" skull="green">
+	<health now="100" max="100" />
+	<look type="133" head="39" body="122" legs="125" feet="57" addons="3" />
+	<parameters>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell runes,potions,wands and rods. Say {trade}." />
+		<parameter key="message_decline" value="Is |TOTALCOST| gold coins too much for you? Get out of here!" />
+		<parameter key="module_shop" value="1" />
+		<parameter key="shop_buyable" value="
+			stone shower rune,2288,37;
+			thunderstorm rune,2315,45;
+			blank rune,2260,10;
+			energy field rune,2277,38;
+			energy wall rune,2279,85;
+			energy bomb rune,2262,162;
+			fire field rune,2301,28;
+			fire wall rune,2303,61;
+			fire bomb rune,2305,55;
+			wild growth rune,2269,160;
+
+			antidote potion,8474,50,1;
+			avalanche,2274,45,1;
+			explosion,2313,31,1;
+			great fireball,2304,45,1;
+			great health,7591,190,1;
+			great mana,7590,120,1;
+			great spirit,8472,310,1;
+			hailstorm rod,2183,15000,1;
+			health potion,7618,45,1;
+			heavy magic missile,2311,12,1;
+			instense healing,2265,95,1;
+			light magic missile,2287,4,1;
+			magic wall,2293,100,1;
+			mana potion,7620,50,1;
+			moonlight rod,2186,1000,1;
+			necrotic rod,2185,5000,1;
+			northwind rod,8911,1500,1;
+			shimmer rod,13872,30000,1;
+			shimmer wand,13880,30000,1;
+			springsprout rod,8912,18000,1;
+			strong health,7588,100,1;
+			strong mana,7589,80,1;
+			sudden death,2268,108,1;
+			supreme health potion,26031,510,1;
+			terra rod,2181,10000,1;
+			ultimate healing,2273,175,1;
+			ultimate health potion,8473,310,1;
+			ultimate mana potion,26029,510,1;
+			ultimate spirit potion,26030,510,1;
+			underworld rod',8910,22000,1;
+			wand of cosmic energy,2189,10000,1;
+			wand of decay,2188,5000,1;
+			wand of dimensions,13760,30000,1;
+			wand of draconia,8921,7500,1;
+			wand of dragonbreath,2191,1000,1;
+			wand of inferno,2187,15000,1;
+			wand of starstorm,8920,18000,1;
+			wand of voodoo,8922,22000,1;" />
+		<parameter key="shop_sellable" value="
+			batwing hat,10016,8000;
+			ethno coat,8892,200;
+			focus cape,8871,6000;
+			jade hat,11368,9000;
+			spellweavers rob,11355,12000;
+			spirit cloak,8870,350;
+			zaoan robe,11356,12000;
+
+			collar of blue plasma, 26198, 6000;
+			collar of green plasma, 26199, 6000;
+			collar of red plasma, 26200, 6000;
+			ring of blue plasma, 26185, 8000;
+			ring of green plasma, 26187, 8000;
+			ring of red plasma, 26189, 8000;
+
+			empty potion flask,7634,10;
+			empty potion flask,7635,15;
+			empty small potion flask,7636,5;
+			wand of cosmic energy, 2189, 2000;
+			wand of decay, 2188, 1000;
+			wand of defiance, 18390, 6500;
+			wand of draconia, 8921, 1500;
+			wand of dragonbreath, 2191, 200;
+			wand of everblazing, 18409, 6000;
+			wand of inferno, 2187, 3000;
+			wand of starstorm, 8920, 3600;
+			wand of voodoo, 8922, 4400;
+			wand of vortex, 2190, 100;
+			glacial rod, 18412, 6500;
+			hailstorm rod, 2183, 3000;
+			moonlight rod, 2186, 200;
+			muck rod, 18411, 6000;
+			mysterious fetish, 2194, 50;
+			necrotic rod, 2185, 1000;
+			northwind rod, 8911, 750;
+			snakebite rod, 2182, 100;
+			springsprout rod, 8912, 3600;
+			terra rod, 2181, 2000;
+			underworld rod, 8910, 4400;" />
+	</parameters>
+</npc>

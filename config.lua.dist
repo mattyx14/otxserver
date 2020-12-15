@@ -2,23 +2,23 @@
 -- NOTE: valid values for worldType are: "pvp", "no-pvp" and "pvp-enforced"
 worldType = "pvp"
 hotkeyAimbotEnabled = true
-protectionLevel = 1
+protectionLevel = 0
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
 removeChargesFromPotions = true
 removeWeaponAmmunition = true
 removeWeaponCharges = true
-timeToDecreaseFrags = 45 * 24 * 60 * 60
+timeToDecreaseFrags = 7 * 24 * 60 * 60
 whiteSkullTime = 15 * 60 * 1000
 stairJumpExhaustion = 2 * 1000
 experienceByKillingPlayers = false
 expFromPlayersLevelRange = 75
-dayKillsToRedSkull = 3
-weekKillsToRedSkull = 5
-monthKillsToRedSkull = 10
-redSkullDuration = 30
-blackSkullDuration = 45
-orangeSkullDuration = 7
+dayKillsToRedSkull = 7
+weekKillsToRedSkull = 30
+monthKillsToRedSkull = 75
+redSkullDuration = 3
+blackSkullDuration = 5
+orangeSkullDuration = 5
 
 -- Connection Config
 -- NOTE: maxPlayers set to 0 means no limit
@@ -28,21 +28,20 @@ bindOnlyGlobalAddress = false
 loginProtocolPort = 7171
 gameProtocolPort = 7172
 statusProtocolPort = 7171
-maxPlayers = 0
-motd = "Welcome to The OTX Server!"
+maxPlayers = 200
+motd = "Welcome to The DarkKonia Server!"
 onePlayerOnlinePerAccount = true
 allowClones = false
-serverName = "OTX-Server"
+serverName = "DarkKonia"
 statusTimeout = 5 * 1000
 replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 maxItem = 2000
 maxContainer = 100
 
--- Version Manual
-clientVersionMin = 1100
-clientVersionMax = 1200
-clientVersionStr = "Only support outdated 10.00 and version 12.00"
+--- Version
+clientVersion = 1251
+clientVersionStr = "12.51"
 
 -- Depot Limit
 freeDepotLimit = 2000
@@ -61,20 +60,22 @@ deathLosePercent = -1
 -- Houses
 -- NOTE: set housePriceEachSQM to -1 to disable the ingame buy house functionality
 -- Periods: daily/weekly/monthly/yearly/never
-housePriceEachSQM = 1000
+housePriceEachSQM = 2000
 houseRentPeriod = "weekly"
 
 -- Item Usage
--- Do not touch here
--- Avoid use of WIPE program to crash the distro
-timeBetweenActions = 500
-timeBetweenExActions = 700
+timeBetweenActions = 200
+timeBetweenExActions = 1000
+
+-- Push Delay
+pushDelay = 1000
+pushDistanceDelay = 1500
 
 -- Map
 -- NOTE: set mapName WITHOUT .otbm at the end
 -- NOTE: unzip the map world.rar
-mapName = "forgotten"
-mapAuthor = "Komic"
+mapName = "darkkonia"
+mapAuthor = "Mattyx14"
 
 -- Market
 marketOfferDuration = 30 * 24 * 60 * 60
@@ -89,19 +90,18 @@ mysqlPass = ""
 mysqlDatabase = ""
 mysqlPort = 3306
 mysqlSock = ""
+passwordType = "sha1"
 
 -- Misc.
 allowChangeOutfit = true
 freePremium = false
 kickIdlePlayerAfterMinutes = 15
-idleWarningTime = 10 * 60 * 1000
-idleKickTime = 15 * 60 * 1000
 maxMessageBuffer = 4
-emoteSpells = false
+emoteSpells = true
 classicEquipmentSlots = false
 allowWalkthrough = true
 coinPacketSize = 25
-coinImagesURL = "http://127.0.0.1/images/store/"
+coinImagesURL = "https://darkkonia.sytes.net/images/store/"
 classicAttackSpeed = false
 showScriptsLogInConsole = false
 
@@ -114,12 +114,12 @@ serverSaveClose = false
 serverSaveShutdown = true
 
 -- Rates
--- NOTE: rateExp is used as a fallback only
--- To configure experience rate see file data/stages.lua
+-- NOTE: rateExp, rateSkill and rateMagic is used as a fallback only
+-- To configure rates see file data/stages.lua
 rateExp = 5
-rateSkill = 3
-rateLoot = 2
-rateMagic = 3
+rateSkill = 90
+rateLoot = 3
+rateMagic = 25
 rateSpawn = 1
 
 -- Monster rates
@@ -147,5 +147,5 @@ startupDatabaseOptimization = true
 -- Status server information
 ownerName = "Mattyx14"
 ownerEmail = "darkylive@live.com.mx"
-url = "https://github.com/mattyx14/otxserver"
-location = "USA"
+url = "https://github.com/mattyx14/otxserver/"
+location = "CAN"

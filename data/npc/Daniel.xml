@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Daniel" script="default.lua" walkinterval="2000" floorchange="0" speechbubble="0" skull="green">
+	<health now="100" max="100" />
+	<look type="746" head="20" body="39" legs="45" feet="7" addons="1" />
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell parcels. say {trade}."/>
+		<parameter key="shop_buyable" value="parcel,2595,10;letter,2597,10;label,2599,5" />
+	</parameters>
+</npc>

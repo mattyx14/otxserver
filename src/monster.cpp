@@ -1,6 +1,6 @@
 /**
  * @file monster.cpp
- * 
+ *
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -118,7 +118,13 @@ void Monster::onCreatureAppear(Creature* creature, bool isLogin)
 		// onCreatureAppear(self, creature)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			std::cout << "[Error - Monster::onCreatureAppear] Call stack overflow" << std::endl;
+			std::cout << "[Error - Monster::onCreatureAppear"
+				<< " Monster "
+				<< getName()
+				<< " creature "
+				<< creature->getName()
+				<< "] Call stack overflow. Too many lua script calls being nested."
+				<< std::endl;
 			return;
 		}
 
@@ -160,7 +166,13 @@ void Monster::onRemoveCreature(Creature* creature, bool isLogout)
 		// onCreatureDisappear(self, creature)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			std::cout << "[Error - Monster::onCreatureDisappear] Call stack overflow" << std::endl;
+			std::cout << "[Error - Monster::onCreatureDisappear"
+				<< " Monster "
+				<< getName()
+				<< " creature "
+				<< creature->getName()
+				<< "] Call stack overflow. Too many lua script calls being nested."
+				<< std::endl;
 			return;
 		}
 
@@ -201,7 +213,13 @@ void Monster::onCreatureMove(Creature* creature, const Tile* newTile, const Posi
 		// onCreatureMove(self, creature, oldPosition, newPosition)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			std::cout << "[Error - Monster::onCreatureMove] Call stack overflow" << std::endl;
+			std::cout << "[Error - Monster::onCreatureMove"
+				<< " Monster "
+				<< getName()
+				<< " creature "
+				<< creature->getName()
+				<< "] Call stack overflow. Too many lua script calls being nested."
+				<< std::endl;
 			return;
 		}
 
@@ -283,7 +301,13 @@ void Monster::onCreatureSay(Creature* creature, SpeakClasses type, const std::st
 		// onCreatureSay(self, creature, type, message)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			std::cout << "[Error - Monster::onCreatureSay] Call stack overflow" << std::endl;
+			std::cout << "[Error - Monster::onCreatureSay"
+				<< " Monster "
+				<< getName()
+				<< " creature "
+				<< creature->getName()
+				<< "] Call stack overflow. Too many lua script calls being nested."
+				<< std::endl;
 			return;
 		}
 
@@ -488,33 +512,59 @@ void Monster::onCreatureLeave(Creature* creature)
 
 bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAULT*/)
 {
+	if (searchType == TARGETSEARCH_DEFAULT) {
+		int32_t rnd = uniform_random(1, 100);
+
+		searchType = TARGETSEARCH_NEAREST;
+
+		int32_t sum = this->mType->info.targetStrategiesNearestPercent;
+		if (rnd > sum) {
+			searchType = TARGETSEARCH_HP;
+			sum += this->mType->info.targetStrategiesLowerHPPercent;
+
+			if (rnd > sum) {
+				searchType = TARGETSEARCH_DAMAGE;
+				sum += this->mType->info.targetStrategiesMostDamagePercent;
+				if (rnd > sum) {
+					searchType = TARGETSEARCH_RANDOM;
+				}
+			}
+		}
+	}
+
 	std::list<Creature*> resultList;
 	const Position& myPos = getPosition();
 
 	for (Creature* creature : targetList) {
-		if (followCreature != creature && isTarget(creature)) {
-			if (searchType == TARGETSEARCH_RANDOM || canUseAttack(myPos, creature)) {
+		if (isTarget(creature)) {
+			if ((this->mType->info.targetDistance == 1) || canUseAttack(myPos, creature)) {
 				resultList.push_back(creature);
 			}
 		}
 	}
 
+	if (resultList.empty()) {
+		return false;
+	}
+
+	Creature* getTarget = nullptr;
+
 	switch (searchType) {
 		case TARGETSEARCH_NEAREST: {
-			Creature* target = nullptr;
+			getTarget = nullptr;
 			if (!resultList.empty()) {
 				auto it = resultList.begin();
-				target = *it;
+				getTarget = *it;
 
 				if (++it != resultList.end()) {
-					const Position& targetPosition = target->getPosition();
-					int32_t minRange = Position::getDistanceX(myPos, targetPosition) + Position::getDistanceY(myPos, targetPosition);
+					const Position& targetPosition = getTarget->getPosition();
+					int32_t minRange = std::max<int32_t>(Position::getDistanceX(myPos, targetPosition), Position::getDistanceY(myPos, targetPosition));
 					do {
 						const Position& pos = (*it)->getPosition();
 
-						int32_t distance = Position::getDistanceX(myPos, pos) + Position::getDistanceY(myPos, pos);
+						int32_t distance = std::max<int32_t>(Position::getDistanceX(myPos, pos), Position::getDistanceY(myPos, pos));
 						if (distance < minRange) {
-							target = *it;
+							getTarget = *it;
 							minRange = distance;
 						}
 					} while (++it != resultList.end());
@@ -527,22 +577,63 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 					}
 
 					const Position& pos = creature->getPosition();
-					int32_t distance = Position::getDistanceX(myPos, pos) + Position::getDistanceY(myPos, pos);
+					int32_t distance = std::max<int32_t>(Position::getDistanceX(myPos, pos), Position::getDistanceY(myPos, pos));
 					if (distance < minRange) {
-						target = creature;
+						getTarget = creature;
 						minRange = distance;
 					}
 				}
 			}
 
-			if (target && selectTarget(target)) {
+			if (getTarget && selectTarget(getTarget)) {
 				return true;
 			}
 			break;
 		}
+		case TARGETSEARCH_HP: {
+			getTarget = nullptr;
+			if (!resultList.empty()) {
+				auto it = resultList.begin();
+				getTarget = *it;
+				if (++it != resultList.end()) {
+					int32_t minHp = getTarget->getHealth();
+					do {
+						if ((*it)->getHealth() < minHp) {
+							getTarget = *it;
 
-		case TARGETSEARCH_DEFAULT:
-		case TARGETSEARCH_ATTACKRANGE:
+							minHp = getTarget->getHealth();
+						}
+					} while (++it != resultList.end());
+				}
+			}
+			if (getTarget && selectTarget(getTarget)) {
+				return true;
+			}
+			break;
+		}
+		case TARGETSEARCH_DAMAGE: {
+			getTarget = nullptr;
+			if (!resultList.empty()) {
+				auto it = resultList.begin();
+				getTarget = *it;
+				if (++it != resultList.end()) {
+					int32_t mostDamage = 0;
+					do {
+						const auto& dmg = damageMap.find((*it)->getID());
+						if (dmg != damageMap.end()) {
+							if (dmg->second.total > mostDamage) {
+								mostDamage = dmg->second.total;
+								getTarget = *it;
+							}
+						}
+					} while (++it != resultList.end());
+				}
+			}
+			if (getTarget && selectTarget(getTarget)) {
+				return true;
+			}
+			break;
+		}
 		case TARGETSEARCH_RANDOM:
 		default: {
 			if (!resultList.empty()) {
@@ -550,18 +641,13 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 				std::advance(it, uniform_random(0, resultList.size() - 1));
 				return selectTarget(*it);
 			}
-
-			if (searchType == TARGETSEARCH_ATTACKRANGE) {
-				return false;
-			}
-
 			break;
 		}
 	}
 
 	//lets just pick the first target in the list
 	for (Creature* target : targetList) {
-		if (followCreature != target && selectTarget(target)) {
+		if (selectTarget(target)) {
 			return true;
 		}
 	}
@@ -628,10 +714,6 @@ bool Monster::isTarget(const Creature* creature) const
 bool Monster::selectTarget(Creature* creature)
 {
 	if (!isTarget(creature)) {
-		return false;
-	}
-
-	if (isPassive() && !hasBeenAttacked(creature->getID())) {
 		return false;
 	}
 
@@ -707,7 +789,11 @@ void Monster::onThink(uint32_t interval)
 		// onThink(self, interval)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			std::cout << "[Error - Monster::onThink] Call stack overflow" << std::endl;
+			std::cout << "[Error - Monster::onThink"
+				<< " Monster "
+				<< getName()
+				<< "] Call stack overflow. Too many lua script calls being nested."
+				<< std::endl;
 			return;
 		}
 
@@ -757,10 +843,10 @@ void Monster::onThink(uint32_t interval)
 				}
 			} else if (!targetList.empty()) {
 				if (!followCreature || !hasFollowPath) {
-					searchTarget();
+					searchTarget(TARGETSEARCH_NEAREST);
 				} else if (isFleeing()) {
 					if (attackedCreature && !canUseAttack(getPosition(), attackedCreature)) {
-						searchTarget(TARGETSEARCH_ATTACKRANGE);
+						searchTarget(TARGETSEARCH_DEFAULT);
 					}
 				}
 			}
@@ -790,6 +876,10 @@ void Monster::doAttacking(uint32_t interval)
 
 		if (attackedCreature == nullptr) {
 			break;
+		}
+
+		if(spellBlock.isMelee && isFleeing()){
+			continue;
 		}
 
 		if (canUseSpell(myPos, targetPos, spellBlock, interval, inRange, resetTicks)) {
@@ -917,11 +1007,7 @@ void Monster::onThinkTarget(uint32_t interval)
 					}
 
 					if (mType->info.changeTargetChance >= uniform_random(1, 100)) {
-						if (mType->info.targetDistance <= 1) {
-							searchTarget(TARGETSEARCH_RANDOM);
-						} else {
-							searchTarget(TARGETSEARCH_NEAREST);
-						}
+						searchTarget(TARGETSEARCH_DEFAULT);
 					}
 				}
 			}
@@ -1068,10 +1154,10 @@ void Monster::pushItems(Tile* tile)
 		for (int32_t i = downItemSize; --i >= 0;) {
 			Item* item = items->at(i);
 			if (item && item->hasProperty(CONST_PROP_MOVEABLE) && (item->hasProperty(CONST_PROP_BLOCKPATH)
-					|| item->hasProperty(CONST_PROP_BLOCKSOLID))) {
+					|| item->hasProperty(CONST_PROP_BLOCKSOLID)) && item->getActionId() != 100 /* non-moveable action*/) {
 				if (moveCount < 20 && Monster::pushItem(item)) {
 					++moveCount;
-				} else if (g_game.internalRemoveItem(item) == RETURNVALUE_NOERROR) {
+				} else if (!item->isCorpse() && g_game.internalRemoveItem(item) == RETURNVALUE_NOERROR) {
 					++removeCount;
 				}
 			}
@@ -1121,7 +1207,7 @@ void Monster::pushCreatures(Tile* tile)
 				}
 
 				monster->changeHealth(-monster->getHealth());
-				monster->setDropLoot(false);
+				monster->setDropLoot(true);
 				removeCount++;
 			}
 
@@ -1220,6 +1306,11 @@ bool Monster::getDanceStep(const Position& creaturePos, Direction& moveDirection
 	int_fast32_t distance_y = std::abs(offset_y);
 
 	uint32_t centerToDist = std::max<uint32_t>(distance_x, distance_y);
+
+	//monsters not at targetDistance shouldn't dancestep
+	if (centerToDist < (uint32_t) mType->info.targetDistance) {
+		return false;
+	}
 
 	std::vector<Direction> dirList;
 

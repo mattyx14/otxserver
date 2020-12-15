@@ -74,6 +74,11 @@ bool ScriptingManager::loadScriptSystems()
 		return false;
 	}
 
+    if (g_luaEnvironment.loadFile("data/startup/startup.lua") == -1) {
+		std::cout << "[Warning - ScriptingManager::loadScriptSystems] Can not load data/startup/startup.lua" << std::endl;
+		return false;
+	}
+
 	g_scripts = new Scripts();
 	std::cout << ">> Loading lua libs" << std::endl;
 	if (!g_scripts->loadScripts("scripts/lib", true, false)) {
@@ -84,8 +89,7 @@ bool ScriptingManager::loadScriptSystems()
 	g_chat = new Chat();
 
 	g_weapons = new Weapons();
-	if (!g_weapons->loadFromXml()) {
-		std::cout << "> ERROR: Unable to load weapons!" << std::endl;
+	if (!g_weapons) {
 		return false;
 	}
 
@@ -110,8 +114,7 @@ bool ScriptingManager::loadScriptSystems()
 	}
 
 	g_moveEvents = new MoveEvents();
-	if (!g_moveEvents->loadFromXml()) {
-		std::cout << "> ERROR: Unable to load move events!" << std::endl;
+	if (!g_moveEvents) {
 		return false;
 	}
 

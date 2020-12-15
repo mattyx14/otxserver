@@ -14,6 +14,10 @@
 	<globalevent interval="100000" name="GuildWar" script="guildwar.lua"/>
 
 	<!-- DarkKonia Scripts -->
+	<!-- Demon Oak Quest -->
+	<globalevent name="DemonOakVoices" interval="15000" script="demon oak quest/voices.lua" />
+	<!-- Bosses -->
+	<globalevent name="bosses" time="16:00:00" script="bosses.lua"/>
 	<!-- OTX Systems -->
 		<!-- Modified Scripts from TFS
 			serversave.lua - for save with interval time
@@ -21,4 +25,7 @@
 		<!-- Save 15 minutes / Clean 2 hours -->
 		<globalevent name="Server Save" interval="900000" script="saveserver.lua" />
 		<globalevent name="Clean Map" interval="7200000" script="cleanmap.lua" />
+
+		<!-- Shop -->
+		<globalevent name="Znote Shop" interval="30000" script="znoteshop.lua"/>
 </globalevents>

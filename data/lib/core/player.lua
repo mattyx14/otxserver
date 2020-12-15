@@ -37,16 +37,20 @@ function Player.hasFlag(self, flag)
 	return self:getGroup():hasFlag(flag)
 end
 
+function Player.hasCustomFlag(self, customflag)
+	return self:getGroup():hasCustomFlag(customflag)
+end
+
 function Player.isPremium(self)
 	return self:getPremiumDays() > 0 or configManager.getBoolean(configKeys.FREE_PREMIUM)
 end
 
 function Player.isPromoted(self)
-    local vocation = self:getVocation()
-    local promotedVocation = vocation:getPromotion()
-    promotedVocation = promotedVocation and promotedVocation:getId() or 0
+	local vocation = self:getVocation()
+	local promotedVocation = vocation:getPromotion()
+	promotedVocation = promotedVocation and promotedVocation:getId() or 0
 
-    return promotedVocation == 0 and vocation:getId() ~= promotedVocation
+	return promotedVocation == 0 and vocation:getId() ~= promotedVocation
 end
 
 function Player.sendCancelMessage(self, message)
@@ -97,21 +101,21 @@ function Player.allowMovement(self, allow)
 end
 
 function Player.addFamePoint(self)
-    local points = self:getStorageValue(SPIKE_FAME_POINTS)
-    local current = math.max(0, points)
-    self:setStorageValue(SPIKE_FAME_POINTS, current + 1)
-    self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have received a fame point.")
+	local points = self:getStorageValue(SPIKE_FAME_POINTS)
+	local current = math.max(0, points)
+	self:setStorageValue(SPIKE_FAME_POINTS, current + 1)
+	self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have received a fame point.")
 end
 
 function Player.getFamePoints(self)
-    local points = self:getStorageValue(SPIKE_FAME_POINTS)
-    return math.max(0, points)
+	local points = self:getStorageValue(SPIKE_FAME_POINTS)
+	return math.max(0, points)
 end
 
 function Player.removeFamePoints(self, amount)
-    local points = self:getStorageValue(SPIKE_FAME_POINTS)
-    local current = math.max(0, points)
-    self:setStorageValue(SPIKE_FAME_POINTS, current - amount)
+	local points = self:getStorageValue(SPIKE_FAME_POINTS)
+	local current = math.max(0, points)
+	self:setStorageValue(SPIKE_FAME_POINTS, current - amount)
 end
 
 function Player.depositMoney(self, amount)
@@ -131,12 +135,27 @@ function Player.transferMoneyTo(self, target, amount)
 
 	local targetPlayer = Player(target)
 	if targetPlayer then
-		targetPlayer:setBankBalance(targetPlayer:getBankBalance() + amount)
+		local town = targetPlayer:getTown()
+		if town and town:getId() ~= TOWNS_LIST.DAWNPORT or town:getId() ~= TOWNS_LIST.DAWNPORT_TUTORIAL then -- Blocking transfer to Dawnport
+			targetPlayer:setBankBalance(targetPlayer:getBankBalance() + amount)
+		end
 	else
 		if not playerExists(target) then
 			return false
 		end
-		db.query("UPDATE `players` SET `balance` = `balance` + '" .. amount .. "' WHERE `name` = " .. db.escapeString(target))
+
+		local query_town = db.storeQuery('SELECT `town_id` FROM `players` WHERE `name` = ' .. db.escapeString(target) ..' LIMIT 1;')
+		if query_town ~= false then
+			local town = result.getDataInt(query_town, "town_id")
+			if town then
+				local town_id = Town(town) and Town(town):getId()
+				if town_id and town_id  == TOWNS_LIST.DAWNPORT or town_id == TOWNS_LIST.DAWNPORT_TUTORIAL then -- Blocking transfer to Dawnport
+					return false
+				end
+			end
+			result.free(consulta)
+			db.query("UPDATE `players` SET `balance` = `balance` + '" .. amount .. "' WHERE `name` = " .. db.escapeString(target))
+		end
 	end
 
 	self:setBankBalance(self:getBankBalance() - amount)
@@ -157,28 +176,39 @@ function Player.hasAllowMovement(self)
 	return self:getStorageValue(STORAGE.blockMovementStorage) ~= 1
 end
 
-function Player.isDruid(self)
-	return isInArray({2, 6}, self:getVocation():getId())
-end
-
-function Player.isKnight(self)
-	return isInArray({4, 8}, self:getVocation():getId())
-end
-
-function Player.isPaladin(self)
-	return isInArray({3, 7}, self:getVocation():getId())
-end
-
-function Player.isMage(self)
-	return isInArray({1, 2, 5, 6}, self:getVocation():getId())
+function Player.hasRookgaardShield(self)
+	-- Wooden Shield, Studded Shield, Brass Shield, Plate Shield, Copper Shield
+	return self:getItemCount(2512) > 0
+		or self:getItemCount(2526) > 0
+		or self:getItemCount(2511) > 0
+		or self:getItemCount(2510) > 0
+		or self:getItemCount(2530) > 0
 end
 
 function Player.isSorcerer(self)
-	return isInArray({1, 5}, self:getVocation():getId())
+	return table.contains({VOCATION.ID.SORCERER, VOCATION.ID.MASTER_SORCERER}, self:getVocation():getId())
+end
+
+function Player.isDruid(self)
+	return table.contains({VOCATION.ID.DRUID, VOCATION.ID.ELDER_DRUID}, self:getVocation():getId())
+end
+
+function Player.isKnight(self)
+	return table.contains({VOCATION.ID.KNIGHT, VOCATION.ID.ELITE_KNIGHT}, self:getVocation():getId())
+end
+
+function Player.isPaladin(self)
+	return table.contains({VOCATION.ID.PALADIN, VOCATION.ID.ROYAL_PALADIN}, self:getVocation():getId())
+end
+
+function Player.isMage(self)
+	return table.contains({VOCATION.ID.SORCERER, VOCATION.ID.MASTER_SORCERER, VOCATION.ID.DRUID, VOCATION.ID.ELDER_DRUID},
+		self:getVocation():getId())
 end
 
 -- Impact Analyser
 function Player.sendHealingImpact(self, healAmmount)
+	-- TODO: Migrate to protocolgame.cpp
 	local msg = NetworkMessage()
 	msg:addByte(0xCC) -- DEC: 204
 	msg:addByte(0) -- 0 = healing / 1 = damage (boolean)
@@ -187,6 +217,7 @@ function Player.sendHealingImpact(self, healAmmount)
 end
 
 function Player.sendDamageImpact(self, damage)
+	-- TODO: Migrate to protocolgame.cpp
 	local msg = NetworkMessage()
 	msg:addByte(0xCC) -- DEC: 204
 	msg:addByte(1) -- 0 = healing / 1 = damage (boolean)
@@ -196,17 +227,50 @@ end
 
 -- Loot Analyser
 function Player.sendLootStats(self, item)
-    local msg = NetworkMessage()
-    msg:addByte(0xCF) -- loot analyser bit
-    msg:addItem(item, self) -- item userdata
-    msg:addString(getItemName(item:getId()))
-    msg:sendToPlayer(self)
+	local msg = NetworkMessage()
+	msg:addByte(0xCF) -- loot analyser bit
+	msg:addItem(item, self) -- item userdata
+	msg:addString(getItemName(item:getId()))
+	msg:sendToPlayer(self)
 end
 
 -- Supply Analyser
 function Player.sendWaste(self, item)
-    local msg = NetworkMessage()
-    msg:addByte(0xCE) -- waste bit
-    msg:addItemId(item) -- itemId
-    msg:sendToPlayer(self)
+	local msg = NetworkMessage()
+	msg:addByte(0xCE) -- waste bit
+	msg:addItemId(item) -- itemId
+	msg:sendToPlayer(self)
+end
+
+local ACCOUNT_STORAGES = {}
+function Player.getAccountStorage(self, accountId, key, forceUpdate)
+	local accountId = self:getAccountId()
+	if ACCOUNT_STORAGES[accountId] and not forceUpdate then
+		return ACCOUNT_STORAGES[accountId]
+	end
+
+	local query = db.storeQuery("SELECT `key`, MAX(`value`) as value FROM `player_storage` WHERE `player_id` IN (SELECT `id` FROM `players` WHERE `account_id` = ".. accountId ..") AND `key` = ".. key .." GROUP BY `key` LIMIT 1;")
+	if query ~= false then
+		local value = result.getDataInt(query, "value")
+		ACCOUNT_STORAGES[accountId] = value
+		result.free(query)
+		return value
+	end
+	return false
+end
+
+function Player.getMarriageDescription(thing)
+	local descr = ""
+	if getPlayerMarriageStatus(thing:getGuid()) == MARRIED_STATUS then
+		playerSpouse = getPlayerSpouse(thing:getGuid())
+		if self == thing then
+			descr = descr .. " You are "
+		elseif thing:getSex() == PLAYERSEX_FEMALE then
+			descr = descr .. " She is "
+		else
+			descr = descr .. " He is "
+		end
+		descr = descr .. "married to " .. getPlayerNameById(playerSpouse) .. '.'
+	end
+	return descr
 end

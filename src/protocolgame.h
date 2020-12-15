@@ -73,6 +73,8 @@ class ProtocolGame final : public Protocol
 		void AddItem(NetworkMessage& msg, const Item* item);
 		void AddItem(NetworkMessage& msg, uint16_t id, uint8_t count);
 
+		void sendLockerItems(std::map<uint16_t, uint16_t> itemMap, uint16_t count);
+
 		uint16_t getVersion() const {
 			return version;
 		}
@@ -104,6 +106,12 @@ class ProtocolGame final : public Protocol
 		void parseSay(NetworkMessage& msg);
 		void parseLookAt(NetworkMessage& msg);
 		void parseLookInBattleList(NetworkMessage& msg);
+
+		void parseQuickLoot(NetworkMessage& msg);
+		void parseLootContainer(NetworkMessage& msg);
+		void parseQuickLootBlackWhitelist(NetworkMessage& msg);
+		void parseRequestLockItems();
+
 		void parseFightModes(NetworkMessage& msg);
 		void parseAttack(NetworkMessage& msg);
 		void parseFollow(NetworkMessage& msg);
@@ -112,6 +120,7 @@ class ProtocolGame final : public Protocol
 		void parseDebugAssert(NetworkMessage& msg);
 		void parseRuleViolationReport(NetworkMessage &msg);
 
+		void parseTeleport(NetworkMessage& msg);
 		void parseThrow(NetworkMessage& msg);
 		void parseUseItemEx(NetworkMessage& msg);
 		void parseUseWithCreature(NetworkMessage& msg);
@@ -137,7 +146,7 @@ class ProtocolGame final : public Protocol
 		void parseToggleMount(NetworkMessage& msg);
 
 		// Imbuements
-		void parseApplyImbuemente(NetworkMessage& msg);
+		void parseApplyImbuement(NetworkMessage& msg);
 		void parseClearingImbuement(NetworkMessage& msg);
 		void parseCloseImbuingWindow(NetworkMessage& msg);
 
@@ -199,6 +208,7 @@ class ProtocolGame final : public Protocol
 
 		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type);
 		void sendMagicEffect(const Position& pos, uint8_t type);
+		void sendRestingStatus(uint8_t protection);		
 		void sendCreatureHealth(const Creature* creature);
 		void sendSkills();
 		void sendPing();
@@ -210,7 +220,10 @@ class ProtocolGame final : public Protocol
 		void sendUnjustifiedPoints(const uint8_t& dayProgress, const uint8_t& dayLeft, const uint8_t& weekProgress, const uint8_t& weekLeft, const uint8_t& monthProgress, const uint8_t& monthLeft, const uint8_t& skullDuration);
 
 		// Send preyInfo
-		void sendPreyData();
+		void closeImbuingWindow();
+		void initPreyData();
+		void sendPreyRerollPrice(uint32_t price = 0, uint8_t wildcard = 0,uint8_t directly = 0);
+		void sendPreyData(PreySlotNum_t slot, PreyState_t slotState);
 
 		void sendCancelWalk();
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
@@ -229,14 +242,14 @@ class ProtocolGame final : public Protocol
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
 		void sendCreatureType(const Creature* creature, uint8_t creatureType);
-		void sendCreatureHelpers(uint32_t creatureId, uint16_t helpers);
 
 		void sendShop(Npc* npc, const ShopInfoList& itemList);
 		void sendCloseShop();
 		void sendClientCheck();
 		void sendGameNews();
-		void sendResourceBalance(uint64_t money, uint64_t bank);
-		void sendSaleItemList(const std::list<ShopInfo>& shop);
+		void sendResourcesBalance(uint64_t money = 0, uint64_t bank = 0, uint64_t prey = 0);
+		void sendResourceBalance(Resource_t resourceType, uint64_t value);
+    void sendSaleItemList(const std::vector<ShopInfo>& shop, const std::map<uint32_t, uint32_t>& inventoryMap);
 		void sendMarketEnter(uint32_t depotId);
 		void updateCoinBalance();
 		void sendMarketLeave();
@@ -301,6 +314,10 @@ class ProtocolGame final : public Protocol
 		void sendContainer(uint8_t cid, const Container* container, bool hasParent, uint16_t firstIndex);
 		void sendCloseContainer(uint8_t cid);
 
+		//quickloot
+		void sendLootContainers();
+		void sendLootStats(Item* item);
+
 		//inventory
 		void sendInventoryItem(slots_t slot, const Item* item);
 		void sendInventoryClientIds();
@@ -313,6 +330,9 @@ class ProtocolGame final : public Protocol
 		void sendUpdateSupplyTracker(const Item* item);
 		void sendUpdateImpactTracker(int32_t quantity, bool isHeal);
 		void sendUpdateLootTracker(Item* item);
+		
+		// Hotkey equip/dequip item
+		void parseHotkeyEquip(NetworkMessage& msg);
 
 		//Help functions
 
@@ -329,7 +349,7 @@ class ProtocolGame final : public Protocol
 
 		void AddCreature(NetworkMessage& msg, const Creature* creature, bool known, uint32_t remove);
 		void AddPlayerStats(NetworkMessage& msg);
-		void AddOutfit(NetworkMessage& msg, const Outfit_t& outfit);
+		void AddOutfit(NetworkMessage& msg, const Outfit_t& outfit, bool addMount = true);
 		void AddPlayerSkills(NetworkMessage& msg);
 		void sendBlessStatus();
 		void sendPremiumTrigger();
@@ -347,6 +367,9 @@ class ProtocolGame final : public Protocol
 
 		//otclient
 		void parseExtendedOpcode(NetworkMessage& msg);
+
+		//reloadCreature
+		void reloadCreature(const Creature* creature);
 
 		friend class Player;
 
@@ -366,7 +389,7 @@ class ProtocolGame final : public Protocol
 
 		uint32_t eventConnect = 0;
 		uint32_t challengeTimestamp = 0;
-		uint16_t version = CLIENT_VERSION_MIN;
+		uint16_t version = CLIENT_VERSION;
 		uint32_t clientVersion = 0;
 
 		uint8_t challengeRandom = 0;
@@ -378,6 +401,11 @@ class ProtocolGame final : public Protocol
 		bool shouldAddExivaRestrictions = false;
 
 		void sendInventory();
+
+		void sendOpenStash();
+		void AddPlayerStowedItems(NetworkMessage& msg);
+		void parseStashWithdraw(NetworkMessage& msg);
+		void sendSpecialContainersAvailable(bool supplyStashAvailable);
 };
 
 #endif

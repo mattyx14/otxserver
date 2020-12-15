@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Yesenia" script="bless.lua" walkinterval="2000" floorchange="0" speechbubble="0" skull="green">
+	<health now="100" max="100" />
+	<look type="288" head="20" body="39" legs="45" feet="7" addons="2" />
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="shop_buyable" value="
+			amulet of loss,2173,50000,1;
+			blessed wooden stake,5942,100000,1;
+			phoenix charm,11258,20000,1;
+			unity charm,11259,20000,1;
+			spiritual charm,11260,20000,1;
+			twin sun charm,11261,20000,1;
+			solitude charm,11262,20000,1;
+			ceremonial ankh,6561,100000,1;" />
+	</parameters>
+</npc>

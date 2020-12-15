@@ -7,7 +7,16 @@ function onLogin(player)
 		"petlogin",
 		"petthink",
 		"bonusPreyLootKill",
-		"BestiaryOnKill"
+		"BestiaryOnKill",
+
+		-- DarkKonia
+		"onadvance_reward",
+		"KillBoss",
+		"VampireKill",
+		"BossesForgotten",
+		"KillingInTheNameOfKills",
+		"KillingInTheNameOfKillss",
+		"KillingInTheNameOfKillsss",
 	}
 
 	for i = 1, #events do

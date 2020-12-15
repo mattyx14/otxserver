@@ -35,4 +35,25 @@
 
   	<!-- Bestiary -->
   	<event type="kill" name="BestiaryOnKill" script="bestiaryadd.lua"/>
+
+	<!-- DarkKonia Scripts -->
+	<!-- Customs -->
+	<event type="advance" name="onadvance_reward" script="onadvance_reward.lua"/>
+
+	<!-- Kill Bosses -->
+	<event type="kill" name="KillBoss" script="KillBoss.lua" />
+	<event type="kill" name="VampireKill" script="quest/dracula/VampireKill.lua" />
+
+	<!-- Forgotten Knowledge -->
+	<event type="healthchange" name="HealthForgotten" script="quest/questKillMonsters/healthchange forgotten.lua"/>
+	<event type="kill" name="BossesForgotten" script="quest/questKillMonsters/bossesKill.lua"/>
+	<event type="death" name="CorruptedSoul" script="quest/forgotten knowledge/corrupted soul.lua"/>
+
+	<!-- Killing In The Name Of Quest
+	<event type="kill" name="KillingInTheNameOfKills" script="quest/killing in the name of/kills.lua" /> -->
+
+	<!-- Healing Bosses -->
+	<event type="healthchange" name="healIceDamage" script="heal_Ice.lua"/>
+	<event type="healthchange" name="healFireDamage" script="heal_Fire.lua"/>
+	<event type="healthchange" name="healDeathDamage" script="heal_Death.lua"/>
 </creaturescripts>

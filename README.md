@@ -1,8 +1,8 @@
 Build Test Linux: [![Build Status](https://travis-ci.org/jlcvp/otxserver.svg?branch=otxserv3)](https://travis-ci.org/mattyx14/otxserver)
-<br>Alternatively download nightly builds for Windows: [![Build status](https://travis-ci.org/mattyx14/otxserver.svg?branch=otxserv5)](https://ci.appveyor.com/project/mattyx14/otxserver/branch/otxserv5)
+<br>Alternatively download nightly builds for Windows: [![Build status](https://ci.appveyor.com/api/projects/status/e7qmnb9p3yu8q1e3/branch/otxserv4?svg=true)](https://ci.appveyor.com/project/mattyx14/otxserver/branch/otxserv4)
 
 
-### What is OTX Server 5 Series
+### What is OTX Server 4 Series
 
 We are trying to create the perfect custom OpenTibia server.
 <br>It is a fork of the [The Forgotten Server](https://github.com/otland/forgottenserver) and receiving a boost from: [OTServBR-Global](https://github.com/opentibiabr/OTServBR-Global) project.
@@ -16,10 +16,10 @@ We currently provide build instructions for the following systems:
 ### OpenTibia Comunity:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
 * [OTLand](https://otland.net/) - [English]
-* [OTServ Brasil](https://forums.otserv.com.br/) - [PortuguÃªs/English]
-* [Tibia Face](http://tibiaface.com/) - [EspaÃ±ol]
-* [Black Tibia](http://blacktibia.foroactivo.com/) - [EspaÃ±ol]
-* [Tibiaking](http://www.tibiaking.com/forum/) - [PortuguÃªs]
+* [OTServ Brasil](https://forums.otserv.com.br/) - [Português/English]
+* [Tibia Face](http://tibiaface.com/) - [Español]
+* [Black Tibia](http://blacktibia.foroactivo.com/) - [Español]
+* [Tibiaking](http://www.tibiaking.com/forum/) - [Português]
 
 ### Special Thanks OTServBR-Global
 - our partners OTServBR-Global.

@@ -1,0 +1,92 @@
+name: Build on Windows
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    paths:
+      - cmake/**
+      - src/**
+      - CMakeLists.txt
+      - .github/**
+
+jobs:
+  job:
+    name: ${{ matrix.os }}-${{ matrix.buildtype }}-luajit=${{ matrix.luajit }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [windows]
+        buildtype: [Release]
+        luajit: [on]
+        include:
+          - os: windows
+            triplet: x64-windows
+            packages: >
+              boost-asio boost-iostreams boost-system boost-filesystem
+              boost-variant boost-lockfree luajit libmariadb pugixml
+              cryptopp
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Unshallow
+        run: git fetch --prune --unshallow
+
+      - name: Get latest CMake
+        # Using 'latest' branch, the latest CMake is installed.
+        uses: lukka/get-cmake@latest
+
+      - name: Windows - remove C:/mysql*
+        run: rm -r -fo C:/mysql-5.7.21-winx64
+        if: contains( matrix.os, 'windows')
+
+      - name: Run vcpkg
+        uses: lukka/run-vcpkg@v2
+        with:
+          vcpkgArguments: ${{ matrix.packages }}
+          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
+          vcpkgTriplet: ${{ matrix.triplet }}
+          vcpkgGitCommitId: 7db401cb1ef1fc559ec9f9ce814d064c328fd767
+
+      - name: Build with CMake
+        uses: lukka/run-cmake@v2
+        with:
+          useVcpkgToolchainFile: true
+          buildDirectory: ${{ runner.workspace }}/build
+          cmakeBuildType: ${{ matrix.buildtype }}
+          cmakeAppendedArgs: -DUSE_LUAJIT=${{ matrix.luajit }}
+
+      - name: dir
+        run: find $RUNNER_WORKSPACE
+        shell: bash
+
+      - name: Create datapack
+        shell: powershell
+        run: |
+          md ${{ runner.workspace }}\dkkserv\dkkserv
+          Copy-Item ${{ runner.workspace }}\dkkserv\config.lua.dist     ${{ runner.workspace }}\dkkserv\dkkserv
+          Copy-Item ${{ runner.workspace }}\dkkserv\key.pem             ${{ runner.workspace }}\dkkserv\dkkserv
+          Copy-Item ${{ runner.workspace }}\dkkserv\LICENSE             ${{ runner.workspace }}\dkkserv\dkkserv
+          Copy-Item ${{ runner.workspace }}\dkkserv\README.md           ${{ runner.workspace }}\dkkserv\dkkserv
+          Copy-Item ${{ runner.workspace }}\build\otxserver.exe         ${{ runner.workspace }}\dkkserv\dkkserv\otxserver-bin.exe
+          get-childitem -path ${{ runner.workspace }}\build -filter *.dll -recurse | copy-item -destination ${{ runner.workspace }}\dkkserv\dkkserv
+          Copy-Item ${{ runner.workspace }}\dkkserv\data -Destination   ${{ runner.workspace }}\dkkserv\dkkserv\data
+          Copy-Item -Path ${{ runner.workspace }}\dkkserv\data\* -Destination ${{ runner.workspace }}\dkkserv\dkkserv\data -Recurse
+          Compress-Archive -Path ${{ runner.workspace }}\dkkserv\dkkserv -DestinationPath ${{ runner.workspace }}\otxserver.zip
+
+      - name: dir
+        run: find $RUNNER_WORKSPACE
+        shell: bash
+
+      - name: Upload datapack
+        uses: actions/upload-artifact@v2
+        with:
+          name: otxserver-${{ matrix.os }}-${{ matrix.buildtype }}-luajit=${{ matrix.luajit }}-${{ github.sha }}
+          path: ${{ runner.workspace }}/otxserver.zip
+        if: contains( matrix.os, 'windows')
