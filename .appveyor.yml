@@ -21,6 +21,7 @@ only_commits:
     - .appveyor.yml
     - cmake/
     - CMakeLists.txt
+    
 
 install:
   - cmd : vcpkg install boost-asio:x64-windows
