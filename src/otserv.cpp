@@ -148,7 +148,7 @@ void mainLoader(int, char*[], ServiceManager* services) {
 	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS
 																<< std::endl;
 	std::cout << "Visit our forum for updates, support, and resources: "
-		"https://otserv.com.br/ and https://forums.otserv.com.br" << std::endl;
+		"https://otserv.com.br/ - https://forums.otserv.com.br/ and https://github.com/mattyx14/otxserver/" << std::endl;
 	std::cout << std::endl;
 
 	std::cout << ">> Client Version: " << CLIENT_VERSION_STR
@@ -267,6 +267,8 @@ void mainLoader(int, char*[], ServiceManager* services) {
 		startupErrorMessage("Unable to load outfits!");
 		return;
 	}
+
+	g_game.loadBoostedCreature();
 
 	std::cout << ">> Checking world type... " << std::flush;
 	std::string worldType = asLowerCaseString(g_config.getString(

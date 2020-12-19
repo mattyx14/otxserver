@@ -22,7 +22,7 @@
 
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "5";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "OTServBR, Mark Samman and The Forgotten Server Developers";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "OTServBR, Mark Samman, OTX Server Team and The Forgotten Server Developers";
 
 static constexpr auto CLIENT_VERSION = 1251;
 static constexpr auto CLIENT_VERSION_STR = "12.51";
