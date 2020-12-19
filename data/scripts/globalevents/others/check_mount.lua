@@ -1,5 +1,4 @@
 local mountIds = {22, 25, 26}
-
 local rentedMounts = GlobalEvent("rentedmounts")
 function rentedMounts.onThink(interval)
 	local players = Game.getPlayers()
