@@ -1,7 +1,7 @@
 local config = {
 	heal = true,
 	save = true,
-	effect = false
+	effect = true
 }
 
 local advanceSave = CreatureEvent("AdvanceSave")
