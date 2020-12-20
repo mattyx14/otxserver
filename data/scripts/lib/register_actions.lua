@@ -375,6 +375,7 @@ function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
         target:decay()
         Game.createItem(2694, 1, toPosition)
     return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
+	end
 end
 
 function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHotkey)
