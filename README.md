@@ -1,5 +1,6 @@
 ## Builds
-![Build on Windows](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Windows/badge.svg?branch=otxserv5) ![Build on Ubuntu](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Ubuntu/badge.svg?branch=otxserv5)
+[![Build on Windows](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Windows/badge.svg?branch=otxserv5)](https://github.com/mattyx14/otxserver/actions?query=workflow%3A%22Build+on+Windows%22)
+[![Build on Ubuntu](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Ubuntu/badge.svg?branch=otxserv5)](https://github.com/mattyx14/otxserver/actions?query=workflow%3A%22Build+on+Ubuntu%22)
 
 ## What is OTX Server 5 Series
 We are trying to create the perfect custom OpenTibia server.
