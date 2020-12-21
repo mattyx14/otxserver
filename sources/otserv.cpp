@@ -188,14 +188,17 @@ bool argumentsHandler(StringVec args)
 			"\n"
 			"\t\tFEATURES ON THIS BUILD:\n"
 				
-				"LuaJIT: " << luajit << "\n"<<
-				"BOOST: " << BOOST_LIB_VERSION << "\n"
-				"GroundCache: " << groundCache << "\n"
-				"ServerDiag: " << serverDiag << "\n"
-				"LoginServer: " << loginServer << "\n"
-				"UseMySQL: " << useMySQL << "\n"
-				"UseSQLite: " << useSQLite << "\n"
-				"UsePostgreSQL: " << usePostgreSQL << "\n"
+				"\t\tLua Version: " << LUA_RELEASE << "\n" <<
+				"\t\tXML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
+				"\t\tSSL Version: " << OPENSSL_VERSION_TEXT << "\n" <<
+				"\t\tBOOST Version: " << BOOST_LIB_VERSION << "\n" <<
+				"\t\tLuaJIT: " << luajit << "\n" <<
+				"\t\tGroundCache: " << groundCache << "\n" <<
+				"\t\tServerDiag: " << serverDiag << "\n" <<
+				"\t\tLoginServer: " << loginServer << "\n" <<
+				"\t\tUseMySQL: " << useMySQL << "\n" <<
+				"\t\tUseSQLite: " << useSQLite << "\n" <<
+				"\t\tUsePostgreSQL: " << usePostgreSQL << "\n\n" <<
 				
 
 			"A server developed by: " SOFTWARE_DEVELOPERS ".\n"
@@ -460,14 +463,17 @@ void otserv(StringVec, ServiceManager* services)
 
 			"\t\tFEATURES ON THIS BUILD: "<< std::endl << std::endl <<
 				
-				"\t\tLuaJIT: " << luajit << std::endl <<
-				"\t\tBOOST: " << BOOST_LIB_VERSION << std::endl <<
-				"\t\tGroundCache: " << groundCache << std::endl <<
-				"\t\tServerDiag: " << serverDiag << std::endl <<
-				"\t\tLoginServer: " << loginServer << std::endl <<
-				"\t\tUseMySQL: " << useMySQL << std::endl <<
-				"\t\tUseSQLite: " << useSQLite << std::endl <<
-				"\t\tUsePostgreSQL: " << usePostgreSQL << std::endl << std::endl <<
+				"\t\tLua Version: " << LUA_RELEASE << "\n" <<
+				"\t\tXML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
+				"\t\tSSL Version: " << OPENSSL_VERSION_TEXT << "\n" <<
+				"\t\tBOOST Version: " << BOOST_LIB_VERSION << "\n" <<
+				"\t\tLuaJIT: " << luajit << "\n" <<
+				"\t\tGroundCache: " << groundCache << "\n" <<
+				"\t\tServerDiag: " << serverDiag << "\n" <<
+				"\t\tLoginServer: " << loginServer << "\n" <<
+				"\t\tUseMySQL: " << useMySQL << "\n" <<
+				"\t\tUseSQLite: " << useSQLite << "\n" <<
+				"\t\tUsePostgreSQL: " << usePostgreSQL << "\n\n" <<
 				
 
 			"A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl<<
