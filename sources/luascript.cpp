@@ -73,6 +73,33 @@ enum
 	EVENT_ID_USER = 1000,
 };
 
+enum STR2INT_ERROR
+{
+	SUCCESS,
+	OVERFLOWS,
+	UNDERFLOWS,
+	INCONVERTIBLE
+};
+
+STR2INT_ERROR str2int(int32_t& i, char const* s, int32_t base = 0)
+{
+	char* end;
+	long  l;
+	errno = 0;
+	l = strtol(s, &end, base);
+	if((errno == ERANGE && l == LONG_MAX) || l > INT_MAX) {
+		return OVERFLOWS;
+	}
+	if((errno == ERANGE && l == LONG_MIN) || l < INT_MIN) {
+		return UNDERFLOWS;
+	}
+	if(*s == '\0' || *end != '\0') {
+		return INCONVERTIBLE;
+	}
+	i = l;
+	return SUCCESS;
+}
+
 ScriptEnviroment::AreaMap ScriptEnviroment::m_areaMap;
 uint32_t ScriptEnviroment::m_lastAreaId = 0;
 ScriptEnviroment::CombatMap ScriptEnviroment::m_combatMap;
@@ -5162,29 +5189,33 @@ int32_t LuaInterface::luaGetCreatureStorage(lua_State* L)
 	//getCreatureStorage(cid, key)
 	std::string key = popString(L);
 	ScriptEnviroment* env = getEnv();
-	if (Creature * creature = env->getCreatureByUID(popNumber(L)))
-	{
+	if(Creature * creature = env->getCreatureByUID(popNumber(L))) {
 		std::string strValue;
-		if (creature->getStorage(key, strValue))
-		{
-			int32_t intValue = atoi(strValue.c_str());
-			if (intValue || strValue == "0")
+		if(creature->getStorage(key, strValue)) {
+
+			int32_t intValue;
+			STR2INT_ERROR ret = str2int(intValue, strValue.c_str(), 10);
+
+			if(ret == SUCCESS) { // The value was successfully converted to a number
 				lua_pushnumber(L, intValue);
-			else
+			} else if(ret == OVERFLOWS) {// The value will overflow, so we'll return the maximum possible value.
+				std::clog << "[Warning - getCreatureStorage] The " << std::string(creature->getPlayer() ? " player [" : " creature [") << creature->getName() << "] has exceeded the MAXIMUM value for the storage [" << key << "]!" << std::endl;
+				lua_pushnumber(L, INT_MAX);
+			} else if(ret == UNDERFLOWS) {// The value will underflow, so we'll return the minimum possible value.
+				std::clog << "[Warning - getCreatureStorage] The " << std::string(creature->getPlayer() ? " player [" : " creature [") << creature->getName() << "] has exceeded the MINIMUM value for the storage [" << key << "]!" << std::endl;
+				lua_pushnumber(L, INT_MIN);
+			} else if(ret == INCONVERTIBLE) {// The value cannot be converted to a number, so we'll return a string.
 				lua_pushstring(L, strValue.c_str());
-		}
-		else
+			}
+		} else
 			lua_pushnumber(L, -1);
-	}
-	else
-	{
+	} else {
 		errorEx(getError(LUA_ERROR_CREATURE_NOT_FOUND));
 		lua_pushboolean(L, false);
 	}
-
 	return 1;
-
 }
+
 
 int32_t LuaInterface::luaDoCreatureSetStorage(lua_State* L)
 {
@@ -5195,7 +5226,12 @@ int32_t LuaInterface::luaDoCreatureSetStorage(lua_State* L)
 	{
 		if(!lua_isnil(L, -1))
 		{
-			value = popString(L);
+			if(lua_isnumber(L, -1)) {
+				value = lua_tostring(L, -1);
+				popNumber(L);
+			}else
+				value = popString(L);
+
 			tmp = false;
 		}
 		else
