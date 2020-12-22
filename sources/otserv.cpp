@@ -31,6 +31,7 @@
 #endif
 
 #include <boost/config.hpp>
+#include <openssl/opensslv.h>
 
 #include "rsa.h"
 
