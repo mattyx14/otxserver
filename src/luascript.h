@@ -1020,6 +1020,10 @@ class LuaScriptInterface
 		static int luaPlayerRemoveMount(lua_State* L);
 		static int luaPlayerHasMount(lua_State* L);
 
+		static int luaPlayerAddFamiliar(lua_State* L);
+		static int luaPlayerRemoveFamiliar(lua_State* L);
+		static int luaPlayerHasFamiliar(lua_State* L);
+
 		static int luaPlayerGetPremiumDays(lua_State* L);
 		static int luaPlayerAddPremiumDays(lua_State* L);
 		static int luaPlayerRemovePremiumDays(lua_State* L);
@@ -1169,6 +1173,9 @@ class LuaScriptInterface
 		static int luaGuildGetId(lua_State* L);
 		static int luaGuildGetName(lua_State* L);
 		static int luaGuildGetMembersOnline(lua_State* L);
+
+    static int luaGuildGetBankBalance(lua_State* L);
+    static int luaGuildSetBankBalance(lua_State* L);
 
 		static int luaGuildAddRank(lua_State* L);
 		static int luaGuildGetRankById(lua_State* L);

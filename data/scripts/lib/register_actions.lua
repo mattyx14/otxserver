@@ -330,7 +330,41 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
         end
         target:getPosition():sendMagicEffect(CONST_ME_BLOCKHIT)
         target:remove(1)
-	end
+    elseif target.itemid == 11227 then
+        target:remove(1)
+        toPosition:sendMagicEffect(CONST_ME_POFF)
+        player:addItem(2152, 10)
+    elseif target.itemid == 7200 then
+        target:transform(7236)
+        target:decay()
+        toPosition:sendMagicEffect(CONST_ME_HITAREA)
+    elseif target.itemid == 468 then
+        target:transform(469)
+        target:decay()
+        toPosition:sendMagicEffect(CONST_ME_HITAREA)
+    elseif target.itemid == 6299 and target.actionid > 0 then
+        target:transform(482)
+        target:decay()
+        toPosition:sendMagicEffect(CONST_ME_HITAREA)
+    elseif target.itemid == 23712 then
+        target:transform(23713)
+        target:decay()
+        toPosition:sendMagicEffect(CONST_ME_HITAREA)
+    elseif target.itemid == 481 then
+        target:transform(482)
+        target:decay()
+        toPosition:sendMagicEffect(CONST_ME_HITAREA)
+    elseif target.itemid == 483 then
+        target:transform(484)
+        target:decay()
+        toPosition:sendMagicEffect(CONST_ME_HITAREA)
+    elseif target.itemid == 7932 then
+        target:transform(7933)
+        target:decay()
+        toPosition:sendMagicEffect(CONST_ME_HITAREA)
+    else
+        return false
+    end
     return true
 end
 
@@ -374,8 +408,10 @@ function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
         target:transform(2737)
         target:decay()
         Game.createItem(2694, 1, toPosition)
+    else
+        return false
+    end
     return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
-	end
 end
 
 function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHotkey)
