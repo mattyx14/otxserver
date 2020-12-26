@@ -25,7 +25,7 @@ exhaustion =
 	end,
 
 	set = function (cid, storage, time)
-		doCreatureSetStorage(cid, storage, os.time() + time)
+		doCreatureSetStorage(cid, storage, math.floor(os.time() + time))
 	end,
 
 	make = function (cid, storage, time)
