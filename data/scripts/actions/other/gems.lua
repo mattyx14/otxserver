@@ -12,9 +12,5 @@ function gems.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	return false
 end
 
-for index, value in pairs(shrine) do
-	gems:id(index)
-end
-
 gems:id(9970)
 gems:register()
