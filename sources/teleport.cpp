@@ -56,6 +56,11 @@ void Teleport::__addThing(Creature* actor, int32_t, Thing* thing)
 	Tile* destTile = g_game.getTile(destination);
 	if(!destTile)
 		return;
+		
+	if(destTile->hasFlag(TILESTATE_TELEPORT)){
+		std::clog << "[Warning - Teleport] The teleport at " << getPosition() << " leads to another teleport, this could cause a crash!" << std::endl;
+		return;
+	}
 
 	if(Creature* creature = thing->getCreature())
 	{
