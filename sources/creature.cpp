@@ -1676,16 +1676,13 @@ int64_t Creature::getStepDuration() const
 int64_t Creature::getEventStepTicks(bool onlyDelay/* = false*/) const
 {
 	int64_t ret = getWalkDelay();
-	if(ret <= 0)
-	{
-		int64_t stepDuration = getStepDuration();
-		if(onlyDelay && stepDuration > 0)
-			ret = 1;
-		else
-			ret = stepDuration * lastStepCost;
-	}
+	if(ret > 0)
+		return ret;
 
-	return ret;
+	if(!onlyDelay)
+		return getStepDuration();
+
+	return 1;
 }
 
 void Creature::getCreatureLight(LightInfo& light) const
