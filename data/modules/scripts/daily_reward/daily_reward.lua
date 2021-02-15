@@ -247,7 +247,7 @@ DailyReward.loadDailyReward = function(playerId, source)
 	player:sendCollectionResource(ClientPackets.CollectionResource, player:getCollectionTokens())
 	player:sendDailyReward()
 	player:sendOpenRewardWall(source)
-	player:sendDailyRewardCollectionState(0)
+	player:sendDailyRewardCollectionState(DailyReward.isRewardTaken(player:getId()) and DAILY_REWARD_COLLECTED or DAILY_REWARD_NOTCOLLECTED)
 	return true
 end
 
@@ -267,6 +267,7 @@ DailyReward.pickedReward = function(playerId)
 
 	player:setStreakLevel(player:getStreakLevel() + 1)
 	player:setStorageValue(DailyReward.storages.avoidDouble, Game.getLastServerSave())
+	player:setDailyReward(DAILY_REWARD_COLLECTED)
 	player:setNextRewardTime(Game.getLastServerSave() + DailyReward.serverTimeThreshold)
 	player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
 	return true
@@ -326,12 +327,12 @@ DailyReward.init = function(playerId)
 			timeMath = math.ceil(timeMath/(DailyReward.serverTimeThreshold))
 			if player:getJokerTokens() >= timeMath then
 				player:setJokerTokens(player:getJokerTokens() - timeMath)
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You lost " .. timeMath .. " joker tokens to prevent loosing your streak.")
+				player:sendTextMessage(MESSAGE_LOGIN, "You lost " .. timeMath .. " joker tokens to prevent loosing your streak.")
 			else
 				player:setStreakLevel(0)
 				if player:getLastLoginSaved() > 0 then -- message wont appear at first character login
 					player:setJokerTokens(-(player:getJokerTokens()))
-					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You just lost your daily reward streak.")
+					player:sendTextMessage(MESSAGE_LOGIN, "You just lost your daily reward streak.")
 				end
 			end
 		end
@@ -339,9 +340,11 @@ DailyReward.init = function(playerId)
 
 	-- Daily reward golden icon
 	if DailyReward.isRewardTaken(player:getId()) then
-		player:sendDailyRewardCollectionState(0)
+		player:sendDailyRewardCollectionState(DAILY_REWARD_COLLECTED)
+		player:setDailyReward(DAILY_REWARD_COLLECTED)
 	else
-		player:sendDailyRewardCollectionState(1)
+		player:sendDailyRewardCollectionState(DAILY_REWARD_NOTCOLLECTED)
+		player:setDailyReward(DAILY_REWARD_NOTCOLLECTED)
 	end
 	player:loadDailyRewardBonuses()
 end

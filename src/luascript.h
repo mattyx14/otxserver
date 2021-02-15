@@ -600,6 +600,7 @@ class LuaScriptInterface
 		static int luaPositionCompare(lua_State* L);
 
 		static int luaPositionGetDistance(lua_State* L);
+		static int luaPositionGetPathTo(lua_State* L);
 		static int luaPositionIsSightClear(lua_State* L);
 
 		static int luaPositionSendMagicEffect(lua_State* L);
@@ -884,6 +885,8 @@ class LuaScriptInterface
 		static int luaPlayerGetCapacity(lua_State* L);
 		static int luaPlayerSetCapacity(lua_State* L);
 
+		static int luaPlayerSetTraining(lua_State* L);
+
 		static int luaPlayerGetKills(lua_State* L);
 		static int luaPlayerSetKills(lua_State* L);
 
@@ -892,6 +895,8 @@ class LuaScriptInterface
 		static int luaPlayerGetReward(lua_State* L);
 		static int luaPlayerRemoveReward(lua_State* L);
 		static int luaPlayerGetRewardList(lua_State* L);
+
+		static int luaPlayerSetDailyReward(lua_State* L);
 
 		static int luaPlayerSendInventory(lua_State* L);
 		static int luaPlayerSendLootStats(lua_State* L);
@@ -930,6 +935,9 @@ class LuaScriptInterface
 		static int luaPlayerGetSkillTries(lua_State* L);
 		static int luaPlayerAddSkillTries(lua_State* L);
 
+		static int luaPlayerSetMagicLevel(lua_State* L);
+		static int luaPlayerSetSkillLevel(lua_State* L);
+
 		static int luaPlayerAddOfflineTrainingTime(lua_State* L);
 		static int luaPlayerGetOfflineTrainingTime(lua_State* L);
 		static int luaPlayerRemoveOfflineTrainingTime(lua_State* L);
@@ -940,6 +948,7 @@ class LuaScriptInterface
 		static int luaPlayerSetOfflineTrainingSkill(lua_State* L);
 
 		static int luaPlayerGetItemCount(lua_State* L);
+		static int luaPlayerGetStashItemCount(lua_State* L);
 		static int luaPlayerGetItemById(lua_State* L);
 
 		static int luaPlayerGetVocation(lua_State* L);
@@ -992,6 +1001,7 @@ class LuaScriptInterface
 
 		static int luaPlayerAddItem(lua_State* L);
 		static int luaPlayerAddItemEx(lua_State* L);
+		static int luaPlayerRemoveStashItem(lua_State* L);
 		static int luaPlayerRemoveItem(lua_State* L);
 		static int luaPlayerSendContainer(lua_State* L);
 
@@ -1155,6 +1165,8 @@ class LuaScriptInterface
 		static int luaMonsterGetTargetList(lua_State* L);
 		static int luaMonsterGetTargetCount(lua_State* L);
 
+		static int luaMonsterChangeTargetDistance(lua_State* L);
+
 		static int luaMonsterSelectTarget(lua_State* L);
 		static int luaMonsterSearchTarget(lua_State* L);
 
@@ -1168,6 +1180,7 @@ class LuaScriptInterface
 
 		static int luaNpcSetMasterPos(lua_State* L);
 
+		static int luaNpcGetCurrency(lua_State* L);
 		static int luaNpcGetSpeechBubble(lua_State* L);
 		static int luaNpcSetSpeechBubble(lua_State* L);
 		static int luaNpcSetName(lua_State* L);
@@ -1485,6 +1498,7 @@ class LuaScriptInterface
 		static int luaCreateLoot(lua_State* L);
 		static int luaDeleteLoot(lua_State* L);
 		static int luaLootSetId(lua_State* L);
+		static int luaLootSetIdFromName(lua_State* L);
 		static int luaLootSetMinCount(lua_State* L);
 		static int luaLootSetMaxCount(lua_State* L);
 		static int luaLootSetSubType(lua_State* L);
@@ -1695,6 +1709,7 @@ class LuaScriptInterface
 		static int luaMountGetId(lua_State* L);
 		static int luaMountGetClientId(lua_State* L);
 		static int luaMountGetSpeed(lua_State* L);
+		static int webhookSend(lua_State* L);
 
 		//
 		std::string lastLuaError;

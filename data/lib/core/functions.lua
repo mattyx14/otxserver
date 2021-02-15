@@ -86,7 +86,7 @@ function getBankMoney(cid, amount)
 	local player = Player(cid)
 	if player:getBankBalance() >= amount then
 		player:setBankBalance(player:getBankBalance() - amount)
-		player:sendTextMessage(MESSAGE_INFO_DESCR, "Paid " .. amount .. " gold from bank account. Your account balance is now " .. player:getBankBalance() .. " gold.")
+		player:sendTextMessage(MESSAGE_TRADE, "Paid " .. amount .. " gold from bank account. Your account balance is now " .. player:getBankBalance() .. " gold.")
 		return true
 	end
 	return false
@@ -672,6 +672,10 @@ end
 
 function isNumber(str)
 	return tonumber(str) ~= nil
+end
+
+function isInteger(n)
+	return (type(n) == "number") and (math.floor(n) == n)
 end
 
 -- Function for the reload talkaction

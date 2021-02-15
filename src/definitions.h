@@ -24,9 +24,6 @@ static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "5";
 static constexpr auto STATUS_SERVER_DEVELOPERS = "OTServBR, Mark Samman, OTX Server Team and The Forgotten Server Developers";
 
-static constexpr auto CLIENT_VERSION = 1260;
-static constexpr auto CLIENT_VERSION_STR = "12.60";
-
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;
 static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 

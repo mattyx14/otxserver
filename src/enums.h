@@ -101,7 +101,8 @@ enum itemAttrTypes : uint32_t {
 enum VipStatus_t : uint8_t {
 	VIPSTATUS_OFFLINE = 0,
 	VIPSTATUS_ONLINE = 1,
-	VIPSTATUS_PENDING = 2
+	VIPSTATUS_PENDING = 2,
+	VIPSTATUS_TRAINING = 3
 };
 
 enum MarketAction_t {
@@ -190,7 +191,10 @@ enum SpellGroup_t : uint8_t {
 	SPELLGROUP_HEALING = 2,
 	SPELLGROUP_SUPPORT = 3,
 	SPELLGROUP_SPECIAL = 4,
-	SPELLGROUP_CONJURE = 5,
+	SPELLGROUP_CONJURE = 5, // Deprecated
+	SPELLGROUP_CRIPPLING = 6,
+	SPELLGROUP_FOCUS = 7,
+	SPELLGROUP_ULTIMATESTRIKES = 8,
 };
 
 enum SpellType_t : uint8_t {
@@ -240,7 +244,7 @@ enum charm_t {
 	CHARM_PASSIVE = 3,
 };
 
-enum BestiaryType_t : uint8_t { 
+enum BestiaryType_t : uint8_t {
 	BESTY_RACE_NONE = 0,
 
 	BESTY_RACE_AMPHIBIC = 1,
@@ -361,7 +365,10 @@ enum ConditionParam_t {
 	CONDITION_PARAM_SKILL_MANA_LEECH_CHANCE = 51,
 	CONDITION_PARAM_SKILL_MANA_LEECH_AMOUNT = 52,
 	CONDITION_PARAM_DISABLE_DEFENSE = 53,
-	CONDITION_PARAM_STAT_CAPACITYPERCENT = 54
+	CONDITION_PARAM_STAT_CAPACITYPERCENT = 54,
+  CONDITION_PARAM_MANASHIELD = 55,
+  CONDITION_PARAM_BUFF_DAMAGEDEALT = 56,
+  CONDITION_PARAM_BUFF_DAMAGERECEIVED = 57,
 };
 
 enum BlockType_t : uint8_t {
@@ -404,6 +411,14 @@ enum stats_t {
 	STAT_LAST = STAT_CAPACITY
 };
 
+enum buffs_t {
+  BUFF_DAMAGEDEALT,
+  BUFF_DAMAGERECEIVED,
+
+  BUFF_FIRST = BUFF_DAMAGEDEALT,
+  BUFF_LAST = BUFF_DAMAGERECEIVED,
+};
+
 enum formulaType_t {
 	COMBAT_FORMULA_UNDEFINED,
 	COMBAT_FORMULA_LEVELMAGIC,
@@ -442,6 +457,7 @@ enum ConditionType_t {
 	CONDITION_PACIFIED = 1 << 25,
 	CONDITION_SPELLCOOLDOWN = 1 << 26,
 	CONDITION_SPELLGROUPCOOLDOWN = 1 << 27,
+	CONDITION_ROOTED = 1 << 28,
 };
 
 enum ConditionId_t : int8_t {
@@ -501,6 +517,7 @@ enum ReturnValue {
 	RETURNVALUE_FIRSTGODOWNSTAIRS,
 	RETURNVALUE_FIRSTGOUPSTAIRS,
 	RETURNVALUE_CONTAINERNOTENOUGHROOM,
+  RETURNVALUE_ONLYAMMOINQUIVER,
 	RETURNVALUE_NOTENOUGHCAPACITY,
 	RETURNVALUE_CANNOTPICKUP,
 	RETURNVALUE_THISISIMPOSSIBLE,
@@ -804,6 +821,7 @@ struct CombatDamage
 	}
 };
 
+using StashContainerList = std::map<uint16_t, std::pair<bool, uint32_t>>;
 using StashItemList = std::map<uint16_t, uint32_t>;
 using MarketOfferList = std::list<MarketOffer>;
 using HistoryMarketOfferList = std::list<HistoryMarketOffer>;
@@ -836,6 +854,12 @@ enum Daily_Reward_Bonus : uint8_t {
 	DAILY_REWARD_SOUL_REGENERATION = 7,
 
 	DAILY_REWARD_LAST = 7,
+};
+
+enum Daily_Reward_Status : uint8_t {
+	DAILY_REWARD_COLLECTED = 0,
+	DAILY_REWARD_NOTCOLLECTED = 1,
+	DAILY_REWARD_NOTAVAILABLE = 2
 };
 
 enum Resource_t : uint8_t
@@ -966,6 +990,43 @@ enum Cipbia_Elementals_t : uint8_t {
 	CIPBIA_ELEMENTAL_DROWN = 8,
 	CIPBIA_ELEMENTAL_LIFEDRAIN = 9,
 	CIPBIA_ELEMENTAL_UNDEFINED = 10
+};
+
+enum Webhook_Colors_t : uint32_t {
+	WEBHOOK_COLOR_ONLINE = 0x00FF00,
+	WEBHOOK_COLOR_OFFLINE = 0xFF0000,
+	WEBHOOK_COLOR_WARNING = 0xFFFF00,
+	WEBHOOK_COLOR_RAID = 0x0000FF
+};
+
+/**
+  * [OTServer BR]
+  * Team assemble finder.
+  * This class is responsible control and manage the team finder feature.
+**/
+
+class TeamFinder
+{
+ public:
+	TeamFinder() = default;
+	TeamFinder(uint16_t initMinLevel, uint16_t initMaxLevel, uint8_t initVocationIDs, uint16_t initTeamSlots, uint16_t initFreeSlots, bool initPartyBool, uint32_t initTimestamp, uint8_t initTeamType, uint16_t initBossID, uint16_t initHunt_type, uint16_t initHunt_area, uint16_t initQuestID, uint32_t initLeaderGuid, std::map<uint32_t, uint8_t> initMembersMap) :
+		minLevel(initMinLevel), maxLevel(initMaxLevel), vocationIDs(initVocationIDs), teamSlots(initTeamSlots), freeSlots(initFreeSlots), partyBool(initPartyBool), timestamp(initTimestamp), teamType(initTeamType), bossID(initBossID), hunt_type(initHunt_type), hunt_area(initHunt_area), questID(initQuestID), leaderGuid(initLeaderGuid), membersMap(initMembersMap) {}
+	virtual ~TeamFinder() = default;
+
+	uint16_t minLevel = 0;
+	uint16_t maxLevel = 0;
+	uint8_t vocationIDs = 0;
+	uint16_t teamSlots = 0;
+	uint16_t freeSlots = 0;
+	bool partyBool = false;
+	uint32_t timestamp = 0;
+	uint8_t teamType = 0;
+	uint16_t bossID = 0;
+	uint16_t hunt_type = 0;
+	uint16_t hunt_area = 0;
+	uint16_t questID = 0;
+	uint32_t leaderGuid = 0;
+	std::map<uint32_t, uint8_t> membersMap = {}; // list: player:getGuid(), player status
 };
 
 #endif

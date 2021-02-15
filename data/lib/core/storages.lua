@@ -134,8 +134,11 @@ Storage = {
 	StoreExaust = 30051,
 	LemonCupcake = 30052,
 	BlueberryCupcake = 30053,
+	PetSummonEvent10 = 30054,
+	PetSummonEvent60 = 30055,
+	FreeQuests = 990000,
 	PremiumAccount = 998899,
-	
+
 	--[[
 	Old storages
 	Over time, this will be dropped and replaced by the table above
@@ -588,7 +591,10 @@ Storage = {
 		OrcDoor = 50555,
 		ChorurnDoor = 50556,
 		DwacatraDoor = 50557,
-		FamilyBroochDoor = 50558
+		FamilyBroochDoor = 50558,
+		TheElvenPoetry = 50559,
+		SpectralStoneDoor = 50560,
+		IceMusicDoor = 50561
 	},
 	TravellingTrader = {
 		-- Reserved storage from 50600 - 50619
@@ -1191,7 +1197,7 @@ Storage = {
 		Mission02 = 515208,
 		Mission03 = 515209,
 		Mission04 = 51394,
-		Mission05 = 515151,
+		Mission05 = 56395,
 		Mission06 = 51396,
 		Mission07 = 51397,
 		Mission08 = 51398,
@@ -1363,6 +1369,41 @@ Storage = {
 		ZirellaQuestLog = 51672,
 		CarlosNpcGreetStorage = 51677,
 		CarlosQuestLog = 51678
+	},
+	TheRookieGuard = {
+		--Reserved storage 52360 - 52395
+		Questline = 52360,
+		Mission01 = 52361,
+		Mission02 = 52362,
+		Mission03 = 52363,
+		Mission04 = 52364,
+		Mission05 = 52365,
+		Mission06 = 52366,
+		Mission07 = 52367,
+		Mission08 = 52368,
+		Mission09 = 52369,
+		Mission10 = 52370,
+		Mission11 = 52371,
+		Mission12 = 52372,
+		StonePileTimer = 52373,
+		Catapults = 52374,
+		RatKills = 52375,
+		PoacherCorpse = 52376,
+		LibraryChest = 52377,
+		TrollChests = 52378,
+		TunnelPillars = 52379,
+		Sarcophagus = 52380,
+		AcademyChest = 52381,
+		KraknaknorkChests = 52382,
+		TutorialDelay = 52383,
+		LibraryDoor = 52384,
+		UnholyCryptDoor = 52385,
+		AcademyDoor = 52386,
+		AcademyChestTimer = 52387,
+		WarWolfDenChest = 52388,
+		UnholyCryptChests = 52389,
+		OrcFortressChests = 52390,
+		Level8Warning = 52391
 	},
 	BanutaSecretTunnel = {
 		-- Reserved storage from 51680 - 51689
@@ -1711,6 +1752,7 @@ Storage = {
 			ID3800 = 3800,
 			ID3801 = 3801,
 			ID3802 = 3802,
+			ID3899 = 3899,
 			ID3940 = 3940,
 			ID3980 = 3980,
 			ID4055 = 4055,
@@ -1905,7 +1947,19 @@ Storage = {
 		TheAnnihilator = {
 			Reward = 10102
 		},
-		TheParadoxTower = {},
+		TheParadoxTower = {
+			QuestLine = 10103,
+			TheFearedHugo = 10104,
+			FirstParadoxAcess = 10105,
+			FavoriteColour = 10106,
+			Mathemagics = 10107,
+			Reward = {
+				Egg = 10108,
+				Gold = 10109,
+				Talon = 10110,
+				Wand = 10111
+			}
+		},
 		ThePostmanMissions = {},
 		TheWhiteRavenMonastery = {},
 		VoodooDoll = {},

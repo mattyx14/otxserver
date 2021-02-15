@@ -186,6 +186,15 @@ std::string transformToSHA1(const std::string& input)
 	return std::string(hexstring, 40);
 }
 
+uint16_t getStashSize(StashItemList itemList)
+{
+	uint16_t size = 0;
+	for (auto item : itemList) {
+		size += ceil(item.second / 100.0);
+	}
+	return size;
+}
+
 std::string generateToken(const std::string& key, uint32_t ticks)
 {
 	// generate message from ticks
@@ -1121,6 +1130,9 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_CONTAINERNOTENOUGHROOM:
 			return "You cannot put more objects in this container.";
 
+    case RETURNVALUE_ONLYAMMOINQUIVER:
+      return "This quiver only holds arrows and bolts.\nYou cannot put any other items in it.";
+
 		case RETURNVALUE_NEEDEXCHANGE:
 		case RETURNVALUE_NOTENOUGHROOM:
 			return "There is not enough room.";
@@ -1329,6 +1341,12 @@ SpellGroup_t stringToSpellGroup(std::string value)
 		return SPELLGROUP_SUPPORT;
 	} else if (tmpStr == "special" || tmpStr == "4") {
 		return SPELLGROUP_SPECIAL;
+	} else if (tmpStr == "crippling" || tmpStr == "6") {
+		return SPELLGROUP_CRIPPLING;
+	} else if (tmpStr == "focus" || tmpStr == "7") {
+		return SPELLGROUP_FOCUS;
+	} else if (tmpStr == "ultimatestrikes" || tmpStr == "8") {
+		return SPELLGROUP_ULTIMATESTRIKES;
 	}
 
 	return SPELLGROUP_NONE;

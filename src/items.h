@@ -191,6 +191,9 @@ class ItemType
 		bool hasSubType() const {
 			return (isFluidContainer() || isSplash() || stackable || charges != 0);
 		}
+		bool isFilledBath() const {
+			return (id == 29313);
+		}
 
 		Abilities& getAbilities() {
 			if (!abilities) {
@@ -298,7 +301,6 @@ class ItemType
 		bool wrapContainer = false;
 		bool useable = false;
 		bool moveable = false;
-		bool notstowable = false;
 		bool alwaysOnTop = false;
 		bool canReadText = false;
 		bool canWriteText = false;

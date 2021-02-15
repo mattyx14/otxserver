@@ -62,6 +62,17 @@ function Monster:onSpawn(position)
 		self:setReward(true)
 	end
 
+-- Cobra Bastion Script
+--[[
+	if self:getName():lower() == "cobra scout" or 
+		self:getName():lower() == "cobra vizier" or 
+		self:getName():lower() == "cobra assassin" then
+		if getGlobalStorageValue(GlobalStorage.CobraBastionFlask) >= os.time() then
+			self:setHealth(self:getMaxHealth() * 0.75)
+		end
+	end
+]]
+
 	if not self:getType():canSpawn(position) then
 		self:remove()
 	else

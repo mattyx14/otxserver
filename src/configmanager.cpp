@@ -116,15 +116,22 @@ bool ConfigManager::load()
 		boolean[OPTIMIZE_DATABASE] = getGlobalBoolean(L, "startupDatabaseOptimization", true);
 
 		string[IP] = getGlobalString(L, "ip", "127.0.0.1");
-		string[MAP_NAME] = getGlobalString(L, "mapName", "forgotten");
-		string[MAP_AUTHOR] = getGlobalString(L, "mapAuthor", "Unknown");
+		string[MAP_NAME] = getGlobalString(L, "mapName", "otservbr");
+		string[MAP_AUTHOR] = getGlobalString(L, "mapAuthor", "OTServBR");
+		
+		string[MAP_CUSTOM_NAME] = getGlobalString(L, "mapCustomName", "");
+		string[MAP_CUSTOM_FILE] = getGlobalString(L, "mapCustomFile", "");
+		string[MAP_CUSTOM_SPAWN] = getGlobalString(L, "mapCustomSpawn", "");
+		string[MAP_CUSTOM_AUTHOR] = getGlobalString(L, "mapCustomAuthor", "OTServBR");
+		boolean[MAP_CUSTOM_ENABLED] = getGlobalBoolean(L, "mapCustomEnabled", true);
+
 		string[HOUSE_RENT_PERIOD] = getGlobalString(L, "houseRentPeriod", "never");
 		string[MYSQL_HOST] = getGlobalString(L, "mysqlHost", "127.0.0.1");
-		string[MYSQL_USER] = getGlobalString(L, "mysqlUser", "forgottenserver");
+		string[MYSQL_USER] = getGlobalString(L, "mysqlUser", "root");
 		string[MYSQL_PASS] = getGlobalString(L, "mysqlPass", "");
-		string[MYSQL_DB] = getGlobalString(L, "mysqlDatabase", "forgottenserver");
+		string[MYSQL_DB] = getGlobalString(L, "mysqlDatabase", "otservbr-global");
 		string[MYSQL_SOCK] = getGlobalString(L, "mysqlSock", "");
-		string[VERSION_STR] = getGlobalString(L, "clientVersionStr", "");
+		string[CLIENT_VERSION_STR] = getGlobalString(L, "clientVersionStr", "12.61");
 
 		integer[SQL_PORT] = getGlobalNumber(L, "mysqlPort", 3306);
 		integer[GAME_PORT] = getGlobalNumber(L, "gameProtocolPort", 7172);
@@ -133,7 +140,7 @@ bool ConfigManager::load()
 
 		integer[MARKET_OFFER_DURATION] = getGlobalNumber(L, "marketOfferDuration", 30 * 24 * 60 * 60);
 
-		integer[VERSION] = getGlobalNumber(L, "clientVersion", CLIENT_VERSION);
+		integer[CLIENT_VERSION] = getGlobalNumber(L, "clientVersion", 1261);
 		integer[FREE_DEPOT_LIMIT] = getGlobalNumber(L, "freeDepotLimit", 2000);
 		integer[PREMIUM_DEPOT_LIMIT] = getGlobalNumber(L, "premiumDepotLimit", 8000);
 		integer[DEPOT_BOXES] = getGlobalNumber(L, "depotBoxes", 19);
@@ -173,6 +180,10 @@ bool ConfigManager::load()
 	boolean[WEATHER_RAIN] = getGlobalBoolean(L, "weatherRain", false);
 	boolean[WEATHER_THUNDER] = getGlobalBoolean(L, "thunderEffect", false);
 
+	boolean[ALL_CONSOLE_LOG] = getGlobalBoolean(L, "allConsoleLog", false);
+
+	boolean[FREE_QUESTS] = getGlobalBoolean(L, "freeQuests", false);
+
 	boolean[ONLY_PREMIUM_ACCOUNT] = getGlobalBoolean(L, "onlyPremiumAccount", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
@@ -184,6 +195,7 @@ bool ConfigManager::load()
 	string[MOTD] = getGlobalString(L, "motd", "");
 	string[WORLD_TYPE] = getGlobalString(L, "worldType", "pvp");
 	string[STORE_IMAGES_URL] = getGlobalString(L, "coinImagesURL", "");
+  string[DISCORD_WEBHOOK_URL] = getGlobalString(L, "discordWebhookURL", "");
 
 	integer[MAX_PLAYERS] = getGlobalNumber(L, "maxPlayers");
 	integer[PZ_LOCKED] = getGlobalNumber(L, "pzLocked", 60000);

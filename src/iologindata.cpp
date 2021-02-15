@@ -386,6 +386,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
   player->defaultOutfit.lookMountLegs = result->getNumber<uint16_t>("lookmountlegs");
   player->defaultOutfit.lookMountFeet = result->getNumber<uint16_t>("lookmountfeet");
   player->defaultOutfit.lookFamiliarsType = result->getNumber<uint16_t>("lookfamiliarstype");
+  player->isDailyReward = result->getNumber<uint16_t>("isreward");
   player->currentOutfit = player->defaultOutfit;
 
   if (g_game.getWorldType() != WORLD_TYPE_PVP_ENFORCED) {
@@ -450,6 +451,9 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
     player->skills[i].percent = Player::getPercentLevel(skillTries, nextSkillTries);
   }
 
+  player->setManaShield(result->getNumber<uint16_t>("manashield"));
+  player->setMaxManaShield(result->getNumber<uint16_t>("max_manashield"));
+
   std::ostringstream query;
   query << "SELECT `guild_id`, `rank_id`, `nick` FROM `guild_membership` WHERE `player_id` = " << player->getGUID();
   if ((result = db.storeQuery(query.str()))) {
@@ -490,6 +494,15 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
         guild->setMemberCount(result->getNumber<uint32_t>("members"));
       }
     }
+  }
+
+  // Stash load items
+  query.str(std::string());
+  query << "SELECT `item_count`, `item_id`  FROM `player_stash` WHERE `player_id` = " << player->getGUID();
+  if ((result = db.storeQuery(query.str()))) {
+    do {
+	  player->addItemOnStash(result->getNumber<uint16_t>("item_id"), result->getNumber<uint32_t>("item_count"));
+    } while (result->next());
   }
 
   // Bestiary charms
@@ -892,6 +905,7 @@ bool IOLoginData::savePlayer(Player* player)
   query << "`lookmounthead` = " << static_cast<uint32_t>(player->defaultOutfit.lookMountHead) << ',';
   query << "`lookmountlegs` = " << static_cast<uint32_t>(player->defaultOutfit.lookMountLegs) << ',';
   query << "`lookfamiliarstype` = " << player->defaultOutfit.lookFamiliarsType << ',';
+  query << "`isreward` = " << static_cast<uint16_t>(player->isDailyReward) << ',';
   query << "`maglevel` = " << player->magLevel << ',';
   query << "`mana` = " << player->mana << ',';
   query << "`manamax` = " << player->manaMax << ',';
@@ -982,6 +996,8 @@ bool IOLoginData::savePlayer(Player* player)
   query << "`skill_mana_leech_chance_tries` = " << player->skills[SKILL_MANA_LEECH_CHANCE].tries << ',';
   query << "`skill_mana_leech_amount` = " << player->skills[SKILL_MANA_LEECH_AMOUNT].level << ',';
   query << "`skill_mana_leech_amount_tries` = " << player->skills[SKILL_MANA_LEECH_AMOUNT].tries << ',';
+  query << "`manashield` = " << player->getManaShield() << ',';
+  query << "`max_manashield` = " << player->getMaxManaShield() << ',';
   query << "`xpboost_value` = " << player->getStoreXpBoost() << ',';
   query << "`xpboost_stamina` = " << player->getExpBoostStamina() << ',';
   query << "`bonus_rerolls` = " << player->getPreyBonusRerolls() << ',';
@@ -1002,6 +1018,19 @@ bool IOLoginData::savePlayer(Player* player)
 
   if (!db.executeQuery(query.str())) {
     return false;
+  }
+
+  // Stash save items
+  query.str(std::string());
+  query << "DELETE FROM `player_stash` WHERE `player_id` = " << player->getGUID();
+  db.executeQuery(query.str());
+  for (auto it : player->getStashItems()) {
+	query.str(std::string());
+    query << "INSERT INTO `player_stash` (`player_id`,`item_id`,`item_count`) VALUES (";
+    query << player->getGUID() << ", ";
+    query << it.first << ", ";
+    query << it.second << ")";
+	db.executeQuery(query.str());
   }
 
   // learned spells

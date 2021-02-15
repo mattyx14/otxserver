@@ -118,7 +118,7 @@ struct FamiliarEntry {
 struct Skill {
 	uint64_t tries = 0;
 	uint16_t level = 10;
-	uint8_t percent = 0;
+	double_t percent = 0;
 };
 
 struct Kill {
@@ -220,6 +220,10 @@ class Player final : public Creature, public Cylinder
 		}
 		bool canSeeInvisibility() const override {
 			return hasFlag(PlayerFlag_CanSenseInvisibility) || group->access;
+		}
+
+		void setDailyReward(uint8_t reward) {
+			this->isDailyReward = reward;
 		}
 
 		void removeList() override;
@@ -365,7 +369,7 @@ class Player final : public Creature, public Cylinder
 			return inbox;
 		}
 
-		uint16_t getClientIcons() const;
+		uint32_t getClientIcons() const;
 
 		const GuildWarVector& getGuildWarVector() const {
 		return guildWarVector;
@@ -410,7 +414,7 @@ class Player final : public Creature, public Cylinder
 			operatingSystem = clientos;
 		}
 
-		uint16_t getProtocolVersion() const {
+		uint32_t getProtocolVersion() const {
 			if (!client) {
 				return 0;
 			}
@@ -525,6 +529,12 @@ class Player final : public Creature, public Cylinder
 		void setSupplyStashAvailable(bool value) {
 			supplyStashAvailable = value;
 		}
+		bool isExerciseTraining() {
+			return exerciseTraining;
+		}
+		void setExerciseTraining(bool isTraining) {
+			exerciseTraining = isTraining;
+		}
 		void setLastDepotId(int16_t newId) {
 			lastDepotId = newId;
 		}
@@ -561,7 +571,7 @@ class Player final : public Creature, public Cylinder
 		uint32_t getBaseMagicLevel() const {
 			return magLevel;
 		}
-		uint8_t getMagicLevelPercent() const {
+		double_t getMagicLevelPercent() const {
 			return magLevelPercent;
 		}
 		uint8_t getSoul() const {
@@ -620,7 +630,42 @@ class Player final : public Creature, public Cylinder
 		void addMessageBuffer();
 		void removeMessageBuffer();
 
+		bool removeItemClientId(uint16_t clientId, uint32_t count) const;
 		bool removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType, bool ignoreEquipped = false) const;
+
+		void addItemOnStash(uint16_t clientId, uint32_t amount) {
+			auto it = stashItems.find(clientId);
+			if (it != stashItems.end()) {
+				stashItems[clientId] += amount;
+				return;
+			}
+
+			stashItems[clientId] = amount;
+		}
+		uint16_t getStashItemCount(uint16_t clientId) const {
+			auto it = stashItems.find(clientId);
+			if (it != stashItems.end()) {
+				return static_cast<uint16_t>(it->second);
+			}
+			return 0;
+		}
+		bool withdrawItem(uint16_t clientId, uint32_t amount) {
+			auto it = stashItems.find(clientId);
+			if (it != stashItems.end()) {
+				if (it->second > amount) {
+					stashItems[clientId] -= amount;
+				} else if (it->second == amount) {
+					stashItems.erase(clientId);
+				} else {
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		StashItemList getStashItems() const {
+			return stashItems;
+		}
 
 		uint32_t getBaseCapacity() const {
 			if (hasFlag(PlayerFlag_CannotPickupItem)) {
@@ -732,8 +777,12 @@ class Player final : public Creature, public Cylinder
 			return shopOwner;
 		}
 
+		Npc* getOnlyShopOwner() {
+			return shopOwner;
+		}
+
 		//V.I.P. functions
-		void notifyStatusChange(Player* player, VipStatus_t status);
+		void notifyStatusChange(Player* player, VipStatus_t status, bool message = true);
 		bool removeVIP(uint32_t vipGuid);
 		bool addVIP(uint32_t vipGuid, const std::string& vipName, VipStatus_t status);
 		bool addVIPInternal(uint32_t vipGuid);
@@ -775,7 +824,7 @@ class Player final : public Creature, public Cylinder
 
 		//stash functions
 		bool addItemFromStash(uint16_t itemId, uint32_t itemCount);
-		void stowContainer(Item* item, uint32_t count, bool stowalltype = false);
+		void stowContainer(Item* item, uint32_t count);
 
 		void changeHealth(int32_t healthChange, bool sendHealthChange = true) override;
 		void changeMana(int32_t manaChange) override;
@@ -801,7 +850,7 @@ class Player final : public Creature, public Cylinder
 		uint16_t getBaseSkill(uint8_t skill) const {
 			return skills[skill].level;
 		}
-		uint8_t getSkillPercent(uint8_t skill) const {
+		double_t getSkillPercent(uint8_t skill) const {
 			return skills[skill].percent;
 		}
 
@@ -1000,6 +1049,11 @@ class Player final : public Creature, public Cylinder
 				client->sendCreatureLight(creature);
 			}
 		}
+    void sendCreatureIcon(const Creature* creature) {
+			if (client) {
+				client->sendCreatureIcon(creature);
+			}
+		}
 		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough) {
 			if (client) {
 				client->sendCreatureWalkthrough(creature, walkthrough);
@@ -1109,9 +1163,9 @@ class Player final : public Creature, public Cylinder
 				client->sendLootContainers();
 			}
 		}
-		void sendLootStats(Item* item) {
+		void sendLootStats(Item* item, uint8_t count) {
 			if (client) {
-				client->sendLootStats(item);
+				client->sendLootStats(item, count);
 			}
 		}
 
@@ -1144,7 +1198,7 @@ class Player final : public Creature, public Cylinder
 
 		void sendCancelMessage(const std::string& msg) const {
 			if (client) {
-				client->sendTextMessage(TextMessage(MESSAGE_STATUS_SMALL, msg));
+				client->sendTextMessage(TextMessage(MESSAGE_FAILURE, msg));
 			}
 		}
 		void sendCancelMessage(ReturnValue message) const;
@@ -1616,6 +1670,8 @@ class Player final : public Creature, public Cylinder
 			return idleTime;
 		}
 
+		void setTraining(bool value);
+
 		void onEquipImbueItem(Imbuement* imbuement);
 		void onDeEquipImbueItem(Imbuement* imbuement);
 
@@ -1667,6 +1723,24 @@ class Player final : public Creature, public Cylinder
  			}
  		}
 
+   		void createLeaderTeamFinder(NetworkMessage &msg)
+ 		{
+  			if (client) {
+ 				client->createLeaderTeamFinder(msg);
+ 			}
+ 		}
+   		void sendLeaderTeamFinder(bool reset)
+ 		{
+  			if (client) {
+ 				client->sendLeaderTeamFinder(reset);
+ 			}
+ 		}
+   		void sendTeamFinderList()
+ 		{
+  			if (client) {
+ 				client->sendTeamFinderList();
+ 			}
+ 		}
 		uint32_t getCharmPoints() {
 			return charmPoints;
 		}
@@ -1798,7 +1872,7 @@ class Player final : public Creature, public Cylinder
 
 		void setNextWalkActionTask(SchedulerTask* task);
 		void setNextWalkTask(SchedulerTask* task);
-		void setNextActionTask(SchedulerTask* task);
+		void setNextActionTask(SchedulerTask* task, bool resetIdleTime = true);
 		void setNextActionPushTask(SchedulerTask* task);
 		void setNextPotionActionTask(SchedulerTask* task);
 
@@ -1827,6 +1901,7 @@ class Player final : public Creature, public Cylinder
 		size_t getFirstIndex() const override;
 		size_t getLastIndex() const override;
 		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const override;
+		void stashContainer(StashContainerList itemDict);
 		std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const override;
 		Item* getItemByClientId(uint16_t clientId) const;
 		std::map<uint16_t, uint16_t> getInventoryClientIds() const;
@@ -1932,6 +2007,7 @@ class Player final : public Creature, public Cylinder
 		uint32_t lastIP = 0;
 		uint32_t accountNumber = 0;
 		uint32_t guid = 0;
+		uint8_t isDailyReward = DAILY_REWARD_NOTCOLLECTED;
 		uint32_t windowTextId = 0;
 		uint32_t editListId = 0;
 		uint32_t manaMax = 0;
@@ -1963,6 +2039,7 @@ class Player final : public Creature, public Cylinder
 		uint16_t storeXpBoost = 0;
 		uint16_t staminaXpBoost = 100;
 		int16_t lastDepotId = -1;
+		StashItemList stashItems; // [ClientID] = amount
 
 		// Bestiary
 		bool charmExpansion = false;
@@ -2006,7 +2083,7 @@ class Player final : public Creature, public Cylinder
 
 		uint8_t soul = 0;
 		uint8_t levelPercent = 0;
-		uint8_t magLevelPercent = 0;
+		double_t magLevelPercent = 0;
 
 		PlayerSex_t sex = PLAYERSEX_FEMALE;
 		OperatingSystem_t operatingSystem = CLIENTOS_NONE;
@@ -2031,6 +2108,7 @@ class Player final : public Creature, public Cylinder
 		bool scheduledSaleUpdate = false;
 		bool inEventMovePush = false;
 		bool supplyStashAvailable = false;
+		bool exerciseTraining = false;
 
 		static uint32_t playerAutoID;
 
@@ -2052,7 +2130,7 @@ class Player final : public Creature, public Cylinder
 			return vocation->getAttackSpeed();
 		}
 
-		static uint8_t getPercentLevel(uint64_t count, uint64_t nextLevelCount);
+		static double_t getPercentLevel(uint64_t count, uint64_t nextLevelCount);
 		double getLostPercent() const;
 		uint64_t getLostExperience() const override {
 			return skillLoss ? static_cast<uint64_t>(experience * getLostPercent()) : 0;
