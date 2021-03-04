@@ -9592,7 +9592,7 @@ int32_t LuaInterface::luaIsPlayerUsingOtclient(lua_State* L)
 
 int32_t LuaInterface::luaDoSendPlayerExtendedOpcode(lua_State* L)
 {
-	//doPlayerSendExtendedOpcode(cid, opcode, buffer)
+	//doSendPlayerExtendedOpcode(cid, opcode, buffer)
 	std::string buffer = popString(L);
 	int32_t opcode = popNumber(L);
 
