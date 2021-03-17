@@ -34,6 +34,7 @@ function playerLogin.onLogin(player)
 			end
 		end
 		player:addItem(2050, 1, true, 1, CONST_SLOT_AMMO)
+		db.query('UPDATE `players` SET `istutorial` = 0 where `id`='..player:getGuid())
 	else
 		player:sendTextMessage(MESSAGE_STATUS, "Welcome to " .. SERVER_NAME .. "!")
 		player:sendTextMessage(MESSAGE_LOGIN, string.format("Your last visit in ".. SERVER_NAME ..": %s.", os.date("%d. %b %Y %X", player:getLastLoginSaved())))
@@ -171,30 +172,6 @@ function playerLogin.onLogin(player)
 		[CONST_PREY_SLOT_THIRD] = 1
 	}
 
--- Tutor MSG
---[[
-	if (player:getAccountType() == ACCOUNT_TYPE_TUTOR) then
-	local msg = [[:: Tutor Rules
-		1 *> 3 Warnings you lose the job.
-		2 *> Without parallel conversations with players in Help, if the player starts offending, you simply mute it.
-		3 *> Be educated with the players in Help and especially in the Private, try to help as much as possible.
-		4 *> Always be on time, if you do not have a justification you will be removed from the staff.
-		5 *> Help is only allowed to ask questions related to tibia.
-		6 *> It is not allowed to divulge time up or to help in quest.
-		7 *> You are not allowed to sell items in the Help.
-		8 *> If the player encounters a bug, ask to go to the website to send a ticket and explain in detail.
-		9 *> Always keep the Tutors Chat open. (required).
-		10 *> You have finished your schedule, you have no tutor online, you communicate with some CM in-game
-		or ts and stay in the help until someone logs in, if you can.
-		11 *> Always keep a good Portuguese in the Help, we want tutors who support, not that they speak a satanic ritual.
-		12 *> If you see a tutor doing something that violates the rules, take a print and send it to your superiors. "
-		- Commands -
-		Mute Player: /mute nick, 90 (90 seconds)
-		Unmute Player: /unmute nick.
-		- Commands -]]
-		player:popupFYI(msg)
-	end
-]]
 
 	-- Open channels
 	if table.contains({TOWNS_LIST.DAWNPORT, TOWNS_LIST.DAWNPORT_TUTORIAL}, player:getTown():getId())then

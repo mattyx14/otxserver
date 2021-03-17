@@ -62,6 +62,7 @@ function Monster:onSpawn(position)
 		self:setReward(true)
 	end
 
+--
 -- Cobra Bastion Script
 --[[
 	if self:getName():lower() == "cobra scout" or 
