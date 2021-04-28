@@ -6848,13 +6848,12 @@ uint32_t Game::getPlayersWithMcLimit()
 		{
 			uint32_t ip = it->second->getIP();
 
-
 			if (ips.find(ip) == ips.end())
 			{
 				ips[ip] = 1;
 				count++;
 			}
-			else if (ips[ip] < 5)
+			else if (ips[ip] < 4)
 			{
 				ips[ip]++;
 				count++;
