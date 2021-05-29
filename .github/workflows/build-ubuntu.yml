@@ -59,8 +59,8 @@ jobs:
         if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
         shell: bash
         run: |
-          mv ${{ github.workspace }}/build/bin/otxsr ${{ github.workspace }}/otxsr
-          find . -maxdepth 1 ! -name otxsr ! -name data ! -name config.lua.dist ! -name key.pem ! -name LICENSE ! -name README.md ! -name schema.sql -exec rm -r {} \;
+          mv ${{ github.workspace }}/build/bin/otxserver ${{ github.workspace }}/otxserver
+          find . -maxdepth 1 ! -name otxserver ! -name data ! -name config.lua.dist ! -name key.pem ! -name LICENSE ! -name README.md ! -name schema.sql -exec rm -r {} \;
 
       - name: Prepare datapack contents
         if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
@@ -70,11 +70,11 @@ jobs:
           unzip -o data/world/world.zip -d data/world/
           rm data/world/world.zip
           cd ..
-          zip -r otserv.zip otxsr
+          zip -r otserv.zip otxserver
 
       - name: Upload binary
         if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.os }}-otxsr-amd64-${{ matrix.buildtype }}-${{ github.sha }}
+          name: ${{ matrix.os }}-otxserver-amd64-${{ matrix.buildtype }}-${{ github.sha }}
           path: ${{ runner.workspace }}/otserv.zip
