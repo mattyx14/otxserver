@@ -42,17 +42,17 @@ before_build:
       cmake --build . --config Release
 
 build:
-  project: C:\projects\otx-server\build\otxserver.sln
+  project: C:\projects\otxserver\build\otxserver.sln
   verbosity: minimal
   parallel: true
 
 after_build:
   - cd %APPVEYOR_BUILD_FOLDER%\build\bin
-  - 7z a -tzip otx-server.zip Release\
+  - 7z a -tzip otxserver.zip Release\
 
 cache:
-  - C:\projects\otx-server\build\vcpkg_installed\
+  - C:\projects\otxserver\build\vcpkg_installed\
   - C:\Users\appveyor\AppData\Local\vcpkg\archives
 
 artifacts:
-  - path: \build\bin\otx-server.zip
+  - path: \build\bin\otxserver.zip
