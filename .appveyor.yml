@@ -42,7 +42,7 @@ before_build:
       cmake --build . --config Release
 
 build:
-  project: C:\projects\otxserver\build\otxserver.sln
+  project: C:\projects\otxserver\build\otxsr.sln
   verbosity: minimal
   parallel: true
 

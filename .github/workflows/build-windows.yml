@@ -56,7 +56,7 @@ jobs:
         if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
         uses: actions/upload-artifact@v2
         with:
-          name: otxserver-full-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
+          name: otxsr-full-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
             ${{ github.workspace }}
             !${{ github.workspace }}/build/
@@ -76,6 +76,6 @@ jobs:
         if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
         uses: actions/upload-artifact@v2
         with:
-          name: otxserver-server-only-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
+          name: otxsr-server-only-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
             ${{ github.workspace }}/build/bin/

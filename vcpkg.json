@@ -1,5 +1,5 @@
 {
-  "name": "otxserver",
+  "name": "otxsr",
   "version-string": "6.0.0",
   "dependencies": [
     "boost-asio",
