@@ -360,6 +360,7 @@ docker/**/otserver
 settings.json
 c_cpp_properties.json
 .history
+TODO
 
 # CLion (JetBrains)
 .idea/
@@ -378,7 +379,11 @@ config.lua
 sftp-config.json
 
 # Binaries
-otbr
-otbr.old
 otxserver
 otxserver.old
+
+# VCPKG
+vcpkg_installed
+
+# CLION
+src/cmake-build-debug
