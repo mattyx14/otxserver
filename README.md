@@ -2,21 +2,21 @@
 [![Build on Windows](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Windows/badge.svg?branch=otxserv5)](https://github.com/mattyx14/otxserver/actions?query=workflow%3A%22Build+on+Windows%22)
 [![Build on Ubuntu](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Ubuntu/badge.svg?branch=otxserv5)](https://github.com/mattyx14/otxserver/actions?query=workflow%3A%22Build+on+Ubuntu%22)
 
-## What is OTX Server 5 Series
+## What is OTX Server 6 Series
 We are trying to create the perfect custom OpenTibia server.
 <br>It is a fork of the from: [OTServBR-Global](https://github.com/opentibiabr/OTServBR-Global) project.
 
 ## How Compile:
 We currently provide build instructions for the following systems:
-* [Windows Tutorial for OTX 5](https://forums.otserv.com.br/index.php?/forums/topic/169235-windowsvc2019-compilando-sources-otservbr-global/)
+* [Windows Tutorial for OTX 6](https://forums.otserv.com.br/index.php?/forums/topic/169235-windowsvc2019-compilando-sources-otservbr-global/)
 
 ## OpenTibia Comunity:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
 * [OTLand](https://otland.net/) - [English]
-* [OTServ Brasil](https://forums.otserv.com.br/) - [Português/English]
-* [Tibia Face](http://tibiaface.com/) - [Español]
-* [Black Tibia](http://blacktibia.foroactivo.com/) - [Español]
-* [Tibiaking](http://www.tibiaking.com/forum/) - [Português]
+* [OTServ Brasil](https://forums.otserv.com.br/) - [PortuguÃªs/English]
+* [Tibia Face](http://tibiaface.com/) - [EspaÃ±ol]
+* [Black Tibia](http://blacktibia.foroactivo.com/) - [EspaÃ±ol]
+* [Tibiaking](http://www.tibiaking.com/forum/) - [PortuguÃªs]
 
 ## Special Thanks OTServBR-Global
 - our partners OTServBR-Global.
