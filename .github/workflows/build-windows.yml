@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-        buildtype: [Debug, Release]
+        buildtype: [Release]
         include:
           - os: windows-latest
             triplet: x64-windows
