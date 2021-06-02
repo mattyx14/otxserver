@@ -1203,6 +1203,7 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 	s << "World:" << std::endl
 		<< "--------------------" << std::endl
 		<< "Player: " << g_game.getPlayersOnline() << " (" << Player::playerCount << ")" << std::endl
+		<< "Unique Players: " << g_game.getUniquePlayersOnline() << " (" << Player::playerCount << ")" << std::endl
 		<< "Npc: " << g_game.getNpcsOnline() << " (" << Npc::npcCount << ")" << std::endl
 		<< "Monster: " << g_game.getMonstersOnline() << " (" << Monster::monsterCount << ")" << std::endl << std::endl;
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());

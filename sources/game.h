@@ -351,6 +351,8 @@ class Game
 		uint32_t getCreaturesOnline() {return (uint32_t)autoList.size();}
 		uint32_t getPlayersWithMcLimit();
 
+		uint32_t getUniquePlayersOnline();
+
 		uint32_t getPlayersRecord() const {return playersRecord;}
 		void getWorldLightInfo(LightInfo& lightInfo);
 

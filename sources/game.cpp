@@ -6863,6 +6863,20 @@ uint32_t Game::getPlayersWithMcLimit()
 	return count;
 }
 
+uint32_t Game::getUniquePlayersOnline()
+{
+	std::vector<uint32_t> ips;
+	for(AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it) {
+		if(!it->second->isRemoved() && it->second->getIdleTime() < 960000) {
+
+			if(it == Player::autoList.end()) {
+				ips.push_back(it->second->getIP());
+			} 
+		}
+	}
+	return ips.size();
+}
+
 void Game::loadPlayersRecord()
 {
 	Database* db = Database::getInstance();
