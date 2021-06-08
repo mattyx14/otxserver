@@ -53,5 +53,3 @@ echo ""
 echo "Building on $CORES cores, using $MAKEOPT processes"
 echo ""
 make V=0 -j $MAKEOPT
-
-
