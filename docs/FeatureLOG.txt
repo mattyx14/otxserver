@@ -42,30 +42,15 @@
 				Leandro Brewster.
 
 	DEVELOPMENT STATUS
-		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.12 :: Version "OpenTibia"
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.15 :: Version "SNAPSHOT"
 
 	FEATURES
 		Special Support:
 			All protocols are supported but the "Support" are only on request and possibly under some cost.
 
 		Protocol supported:
-			- 7.40/60/72
-			- 7.80/82
-			- 8.00/11
-			- 8.54/57
 			- 8.60
-			- 8.6x
-			- 8.70/71
-			- 9.x
-			- 10.35
 
-			* 10.36+
-				:: Support - 500.00 USD
-
-		All Functions added from (9.x+)
-		Mounts system with mounts.xml (8.7+)
-		New spell cooldown system (8.7+)
-		Orange skull (8.62+)
 		MD5, SHA1 and RSA implementations improved using OpenSSL
 		A lot of Lua stack errors fixed
 		Lua function doRelocate is now approximately 100 times faster
@@ -87,12 +72,7 @@
 			tradeLimit
 			unifiedSpells
 			savePlayerData
-			enableCooldowns (8.7+)
-			useMounts (8.7+)
 			houseDataStorage (previously related to useHouseDataStorage)
-			mountCooldown (8.7+)
-			unmountPlayerInPz (8.7+)
-			pvpBlessingThreshold (8.62+)
 			fairFightTimeRange
 			monsterSpawnWalkback
 			useCapacity
@@ -125,20 +105,12 @@
 			db.connected()
 			getCreatureStorageList(cid)
 			getStorageList()
-			doPlayerAddMount(cid, mountId) (8.7+)
-			doPlayerRemoveMount(cid, mountId) (8.7+)
-			getPlayerMount(cid, mountId) (8.7+)
-			doPlayerSetMount(cid, mountId) (8.7+)
-			doPlayerSetMountStatus(cid, mounted) (8.7+)
 			getMountInfo([mountId])
 			doPlayerSetWalkthrough(cid, uid, walkthrough)
-			getPlayerPVPBlessing(cid) (8.7+)
-			doPlayerSetPVPBlessing(cid[, value]) (8.7+)
 			doAddAccountWarnings(accountId[, warnings])
 			getAccountWarnings(accountId)
 
 		Improved autobuild scripts for Linux
 		Fixed compiling in MSVC and added project files
-		PVP Blessings (8.62+)
 		A lot of miscellaneous cleanups, fixes and optimizations.
 ]
