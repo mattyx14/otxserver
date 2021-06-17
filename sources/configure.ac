@@ -162,6 +162,9 @@ AC_CHECK_FUNCS([ceil floor ftime gethostbyname gethostname memset pow sqrt strca
 AM_PATH_XML2(2.6.5, , AC_MSG_ERROR([You need libxml2 >= 2.6.5 to compile otxserver!]))
 LIBS="$LIBS $XML_LIBS"
 
+#add libtcmalloc_minimal.so
+LIBS="$LIBS /usr/lib/libtcmalloc_minimal.so.4"
+
 # check for gmp
 AC_CHECK_HEADERS([gmp.h], ,[AC_MSG_ERROR("gmp header not found.")])
 AC_CHECK_LIB(gmp, __gmpz_init2, ,[AC_MSG_ERROR("Linking against gmp library failed.")])
