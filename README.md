@@ -2,7 +2,7 @@
 We are trying to create the perfect custom open tibia server.
 
 ### How Compile:
-[Windows Tutorial](https://github.com/mattyx14/otxserver/wiki/Compilling-on-Windows) - [Linux Tutorial](https://github.com/mattyx14/otxserver/wiki/Compilling-on-Linux)
+[Windows Tutorial](https://github.com/mattyx14/otxserver/wiki/Compilling-on-Windows) - [Linux(Ubuntu) Tutorial](https://github.com/mattyx14/otxserver/wiki/Compiling-OTX2-on-Ubuntu)
 
 ### Contacts:
 - <b>Matty(English & Spanish):</b><br>
