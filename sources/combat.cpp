@@ -278,13 +278,13 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 	if(!success)
 		return RET_NOTPOSSIBLE;
 	
-	if (g_config.getBool(ConfigManager::MONSTER_ATTACK_MONSTER)) 
+	if(g_config.getBool(ConfigManager::MONSTER_ATTACK_MONSTER))
 	{
-		if (target->isSummon() && attacker->getType() == CREATURETYPE_MONSTER && !target->isPlayerSummon() && !attacker->isPlayerSummon())
+		if(target->getType() == CREATURETYPE_MONSTER && attacker->getType() == CREATURETYPE_MONSTER && !target->isPlayerSummon() && !attacker->isPlayerSummon())
 			return RET_NOTPOSSIBLE;
-		
-		if (!attacker->isSummon() && !target->isSummon()) {
-			if (attacker->getType() == CREATURETYPE_MONSTER && target->getType() == CREATURETYPE_MONSTER)
+
+		if(!attacker->isSummon() && !target->isSummon()) {
+			if(attacker->getType() == CREATURETYPE_MONSTER && target->getType() == CREATURETYPE_MONSTER)
 				return RET_NOTPOSSIBLE;
 		}
 	}
