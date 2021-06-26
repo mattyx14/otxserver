@@ -19,7 +19,7 @@
 #define __TEMPLATES__
 #include "otsystem.h"
 
-template<class T> class AutoList : public std::map<uint32_t, T*>
+template<class T> class AutoList : public std::unordered_map<uint32_t, T*>
 {
 	public:
 		AutoList() {}
