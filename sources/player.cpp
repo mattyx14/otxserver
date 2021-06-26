@@ -46,7 +46,9 @@ extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
 extern CreatureEvents* g_creatureEvents;
 
+uint32_t Player::playerAutoID = 0x10000000;
 AutoList<Player> Player::autoList;
+
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 uint32_t Player::playerCount = 0;
 #endif

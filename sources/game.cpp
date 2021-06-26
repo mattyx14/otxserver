@@ -718,10 +718,19 @@ Creature* Game::getCreatureByID(uint32_t id)
 	if(!id)
 		return NULL;
 
-	AutoList<Creature>::iterator it = autoList.find(id);
-	if(it != autoList.end() && !it->second->isRemoved())
-		return it->second;
-
+	if(id <= Player::playerAutoID) { // id belongs to a player
+		return getPlayerByID(id);
+	} else if(id <= Monster::monsterAutoID) { // id belongs to a monster
+		AutoList<Monster>::const_iterator it = Monster::autoList.find(id);
+		if(it != Monster::autoList.end()) {
+			return it->second;
+		}
+	} else if(id <= Npc::npcAutoID) {// id belongs to a NPC
+		auto it = Npc::autoList.find(id);
+		if(it != Npc::autoList.end()) {
+			return it->second;
+		}
+	}
 	return NULL; //just in case the player doesnt exist
 }
 

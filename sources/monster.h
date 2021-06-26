@@ -54,6 +54,14 @@ class Monster : public Creature
 		virtual const Monster* getMonster() const {return this;}
 		virtual CreatureType_t getType() const {return CREATURETYPE_MONSTER;}
 
+		static uint32_t monsterAutoID;
+		void setID() override
+		{
+			if(id == 0) {
+				id = monsterAutoID++;
+			}
+		}
+
 		virtual uint32_t rangeId() {return MONSTER_ID_RANGE;}
 		static AutoList<Monster> autoList;
 

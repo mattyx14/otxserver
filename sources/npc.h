@@ -362,6 +362,14 @@ class Npc : public Creature
 #endif
 		virtual ~Npc();
 
+		static uint32_t npcAutoID;
+		void setID() override
+		{
+			if(id == 0) {
+				id = npcAutoID++;
+			}
+		}
+
 		static Npc* createNpc(NpcType* nType);
 		static Npc* createNpc(const std::string& name);
 

@@ -40,6 +40,8 @@ extern Spells* g_spells;
 extern Npcs g_npcs;
 
 AutoList<Npc> Npc::autoList;
+uint32_t Npc::npcAutoID = 0x80000000;
+
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 uint32_t Npc::npcCount = 0;
 #endif

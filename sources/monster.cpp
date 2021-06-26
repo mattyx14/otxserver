@@ -32,7 +32,9 @@ extern ConfigManager g_config;
 extern Monsters g_monsters;
 extern CreatureEvents* g_creatureEvents;
 
+uint32_t Monster::monsterAutoID = 0x40000000;
 AutoList<Monster>Monster::autoList;
+
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 uint32_t Monster::monsterCount = 0;
 #endif

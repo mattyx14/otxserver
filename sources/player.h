@@ -141,6 +141,13 @@ class Player : public Creature, public Cylinder
 		virtual const Player* getPlayer() const {return this;}
 		virtual CreatureType_t getType() const {return CREATURETYPE_PLAYER;}
 
+		void setID() override
+		{
+			if(id == 0) {
+				id = playerAutoID++;
+			}
+		}
+
 		static MuteCountMap muteCountMap;
 
 		virtual const std::string& getName() const {return name;}
@@ -850,6 +857,7 @@ class Player : public Creature, public Cylinder
 		bool addAttackSkillPoint;
 		bool pvpBlessing;
 		bool sentChat;
+		static uint32_t playerAutoID;
 
 		OperatingSystem_t operatingSystem;
 		AccountManager_t accountManager;
