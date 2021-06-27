@@ -18,6 +18,7 @@
 #ifndef __TEMPLATES__
 #define __TEMPLATES__
 #include "otsystem.h"
+#include <unordered_map>
 
 template<class T> class AutoList : public std::unordered_map<uint32_t, T*>
 {
