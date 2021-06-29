@@ -2698,10 +2698,7 @@ const luaL_Reg LuaInterface::luaStdTable[] =
 	{"clog", LuaInterface::luaStdClog},
 	{"cerr", LuaInterface::luaStdCerr},
 
-	{"md5", LuaInterface::luaStdMD5},
 	{"sha1", LuaInterface::luaStdSHA1},
-	{"sha256", LuaInterface::luaStdSHA256},
-	{"sha512", LuaInterface::luaStdSHA512},
 
 	{"checkName", LuaInterface::luaStdCheckName},
 	{NULL, NULL}
@@ -11395,17 +11392,6 @@ EXPOSE_LOG(Cerr, std::cerr)
 
 #undef EXPOSE_LOG
 
-int32_t LuaInterface::luaStdMD5(lua_State* L)
-{
-	//std.md5(string[, upperCase = false])
-	bool upperCase = false;
-	if(lua_gettop(L) > 1)
-		upperCase = popBoolean(L);
-
-	lua_pushstring(L, transformToMD5(popString(L), upperCase).c_str());
-	return 1;
-}
-
 int32_t LuaInterface::luaStdSHA1(lua_State* L)
 {
 	//std.sha1(string[, upperCase = false])
@@ -11414,28 +11400,6 @@ int32_t LuaInterface::luaStdSHA1(lua_State* L)
 		upperCase = popBoolean(L);
 
 	lua_pushstring(L, transformToSHA1(popString(L), upperCase).c_str());
-	return 1;
-}
-
-int32_t LuaInterface::luaStdSHA256(lua_State* L)
-{
-	//std.sha256(string[, upperCase = false])
-	bool upperCase = false;
-	if(lua_gettop(L) > 1)
-		upperCase = popBoolean(L);
-
-	lua_pushstring(L, transformToSHA256(popString(L), upperCase).c_str());
-	return 1;
-}
-
-int32_t LuaInterface::luaStdSHA512(lua_State* L)
-{
-	//std.sha512(string[, upperCase = false])
-	bool upperCase = false;
-	if(lua_gettop(L) > 1)
-		upperCase = popBoolean(L);
-
-	lua_pushstring(L, transformToSHA512(popString(L), upperCase).c_str());
 	return 1;
 }
 

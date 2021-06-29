@@ -22,32 +22,12 @@
 
 #include <boost/filesystem.hpp>
 #include <openssl/sha.h>
-#include <openssl/md5.h>
 #include <random>
 
 #include "vocation.h"
 #include "configmanager.h"
 
 extern ConfigManager g_config;
-
-std::string transformToMD5(std::string plainText, bool upperCase)
-{
-	MD5_CTX c;
-	MD5_Init(&c);
-	MD5_Update(&c, plainText.c_str(), plainText.length());
-
-	uint8_t md[MD5_DIGEST_LENGTH];
-	MD5_Final(md, &c);
-
-	char output[(MD5_DIGEST_LENGTH << 1) + 1];
-	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
-		sprintf(output + (i << 1), "%.2X", md[i]);
-
-	if(upperCase)
-		return std::string(output);
-
-	return asLowerCaseString(std::string(output));
-}
 
 std::string transformToSHA1(std::string plainText, bool upperCase)
 {
@@ -68,59 +48,12 @@ std::string transformToSHA1(std::string plainText, bool upperCase)
 	return asLowerCaseString(std::string(output));
 }
 
-std::string transformToSHA256(std::string plainText, bool upperCase)
-{
-	SHA256_CTX c;
-	SHA256_Init(&c);
-	SHA256_Update(&c, plainText.c_str(), plainText.length());
-
-	uint8_t md[SHA256_DIGEST_LENGTH];
-	SHA256_Final(md, &c);
-
-	char output[(SHA256_DIGEST_LENGTH << 1) + 1];
-	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
-		sprintf(output + (i << 1), "%.2X", md[i]);
-
-	if(upperCase)
-		return std::string(output);
-
-	return asLowerCaseString(std::string(output));
-}
-
-std::string transformToSHA512(std::string plainText, bool upperCase)
-{
-	SHA512_CTX c;
-	SHA512_Init(&c);
-	SHA512_Update(&c, plainText.c_str(), plainText.length());
-
-	uint8_t md[SHA512_DIGEST_LENGTH];
-	SHA512_Final(md, &c);
-
-	char output[(SHA512_DIGEST_LENGTH << 1) + 1];
-	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
-		sprintf(output + (i << 1), "%.2X", md[i]);
-
-	if(upperCase)
-		return std::string(output);
-
-	return asLowerCaseString(std::string(output));
-}
-
 void _encrypt(std::string& str, bool upperCase)
 {
 	switch(g_config.getNumber(ConfigManager::ENCRYPTION))
 	{
-		case ENCRYPTION_MD5:
-			str = transformToMD5(str, upperCase);
-			break;
 		case ENCRYPTION_SHA1:
 			str = transformToSHA1(str, upperCase);
-			break;
-		case ENCRYPTION_SHA256:
-			str = transformToSHA256(str, upperCase);
-			break;
-		case ENCRYPTION_SHA512:
-			str = transformToSHA512(str, upperCase);
 			break;
 		default:
 		{

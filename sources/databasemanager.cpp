@@ -1605,38 +1605,6 @@ void DatabaseManager::checkEncryption()
 		{
 			switch(newValue)
 			{
-				case ENCRYPTION_MD5:
-				{
-					if((Encryption_t)value != ENCRYPTION_PLAIN)
-					{
-						std::clog << "> WARNING: You cannot change the encryption to MD5, change it back in config.lua." << std::endl;
-						return;
-					}
-
-					Database* db = Database::getInstance();
-					std::ostringstream query;
-					if(db->getDatabaseEngine() == DATABASE_ENGINE_SQLITE)
-					{
-						query << "SELECT `id`, `password`, `key` FROM `accounts`;";
-						if(DBResult* result = db->storeQuery(query.str()))
-						{
-							do
-							{
-								query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToMD5(result->getDataString("password"), false)) << ", `key` = " << db->escapeString(transformToMD5(result->getDataString("key"), false)) << " WHERE `id` = " << result->getDataInt("id") << ";";
-								db->query(query.str());
-							}
-							while(result->next());
-							result->free();
-						}
-					}
-					else
-						db->query("UPDATE `accounts` SET `password` = MD5(`password`), `key` = MD5(`key`);");
-
-					registerDatabaseConfig("encryption", (int32_t)newValue);
-					std::clog << "> Encryption updated to MD5." << std::endl;
-					break;
-				}
-
 				case ENCRYPTION_SHA1:
 				{
 					if((Encryption_t)value != ENCRYPTION_PLAIN)
@@ -1668,63 +1636,6 @@ void DatabaseManager::checkEncryption()
 					std::clog << "> Encryption set to SHA1." << std::endl;
 					break;
 				}
-
-				case ENCRYPTION_SHA256:
-				{
-					if((Encryption_t)value != ENCRYPTION_PLAIN)
-					{
-						std::clog << "> WARNING: You cannot change the encryption to SHA256, change it back in config.lua." << std::endl;
-						return;
-					}
-
-					Database* db = Database::getInstance();
-					std::ostringstream query;
-
-					query << "SELECT `id`, `password`, `key` FROM `accounts`;";
-					if(DBResult* result = db->storeQuery(query.str()))
-					{
-						do
-						{
-							query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToSHA256(result->getDataString("password"), false)) << ", `key` = " << db->escapeString(transformToSHA256(result->getDataString("key"), false)) << " WHERE `id` = " << result->getDataInt("id") << ";";
-							db->query(query.str());
-						}
-						while(result->next());
-						result->free();
-					}
-
-					registerDatabaseConfig("encryption", (int32_t)newValue);
-					std::clog << "> Encryption set to SHA256." << std::endl;
-					break;
-				}
-
-				case ENCRYPTION_SHA512:
-				{
-					if((Encryption_t)value != ENCRYPTION_PLAIN)
-					{
-						std::clog << "> WARNING: You cannot change the encryption to SHA512, change it back in config.lua." << std::endl;
-						return;
-					}
-
-					Database* db = Database::getInstance();
-					std::ostringstream query;
-
-					query << "SELECT `id`, `password`, `key` FROM `accounts`;";
-					if(DBResult* result = db->storeQuery(query.str()))
-					{
-						do
-						{
-							query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToSHA512(result->getDataString("password"), false)) << ", `key` = " << db->escapeString(transformToSHA512(result->getDataString("key"), false)) << " WHERE `id` = " << result->getDataInt("id") << ";";
-							db->query(query.str());
-						}
-						while(result->next());
-						result->free();
-					}
-
-					registerDatabaseConfig("encryption", (int32_t)newValue);
-					std::clog << "> Encryption set to SHA512." << std::endl;
-					break;
-				}
-
 				default:
 				{
 					std::clog << "> WARNING: You cannot switch from hashed passwords to plain text, change back the passwordType in config.lua to the passwordType you were previously using." << std::endl;
@@ -1740,15 +1651,6 @@ void DatabaseManager::checkEncryption()
 		{
 			switch(newValue)
 			{
-				case ENCRYPTION_MD5:
-				{
-					Database* db = Database::getInstance();
-					std::ostringstream query;
-					query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToMD5("1", false)) << " WHERE `id` = 1 AND `password` = '1';";
-					db->query(query.str());
-					break;
-				}
-
 				case ENCRYPTION_SHA1:
 				{
 					Database* db = Database::getInstance();
@@ -1757,25 +1659,6 @@ void DatabaseManager::checkEncryption()
 					db->query(query.str());
 					break;
 				}
-
-				case ENCRYPTION_SHA256:
-				{
-					Database* db = Database::getInstance();
-					std::ostringstream query;
-					query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToSHA256("1", false)) << " WHERE `id` = 1 AND `password` = '1';";
-					db->query(query.str());
-					break;
-				}
-
-				case ENCRYPTION_SHA512:
-				{
-					Database* db = Database::getInstance();
-					std::ostringstream query;
-					query << "UPDATE `accounts` SET `password` = " << db->escapeString(transformToSHA512("1", false)) << " WHERE `id` = 1 AND `password` = '1';";
-					db->query(query.str());
-					break;
-				}
-
 				default:
 					break;
 			}

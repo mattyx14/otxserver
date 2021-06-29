@@ -24,7 +24,7 @@
 	mysqlReadTimeout = 10
 	mysqlWriteTimeout = 10
 	mysqlReconnectionAttempts = 5
-	encryptionType = "sha1" --// encryptionType can be (plain, md5, sha1, sha256 or sha512).
+	encryptionType = "sha1" --// encryptionType can be (plain, sha1).
 
 	-- World / Ip / Port
 	worldId = 0

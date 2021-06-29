@@ -600,25 +600,10 @@ void otserv(StringVec, ServiceManager* services)
 
 	std::clog << ">> Loading Password encryption:" << std::endl;
 	std::string encryptionType = asLowerCaseString(g_config.getString(ConfigManager::ENCRYPTION_TYPE));
-	if(encryptionType == "md5")
-	{
-		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_MD5);
-		std::clog << ">>> Using (MD5) encryption ... (done)." << std::endl;
-	}
-	else if(encryptionType == "sha1")
+	if(encryptionType == "sha1")
 	{
 		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_SHA1);
 		std::clog << ">>> Using (SHA1) encryption ... (done)." << std::endl;
-	}
-	else if(encryptionType == "sha256")
-	{
-		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_SHA256);
-		std::clog << ">>> Using (SHA256) encryption ... (done)." << std::endl;
-	}
-	else if(encryptionType == "sha512")
-	{
-		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_SHA512);
-		std::clog << ">>> Using (SHA512) encryption ... (done)." << std::endl;
 	}
 	else
 	{
