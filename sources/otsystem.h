@@ -64,14 +64,6 @@
 	#define access _access
 	#endif
 
-	#ifndef timeb
-	#define timeb _timeb
-	#endif
-
-	#ifndef ftime
-	#define ftime _ftime
-	#endif
-
 	#ifndef EWOULDBLOCK
 	#define EWOULDBLOCK WSAEWOULDBLOCK
 	#endif
@@ -122,9 +114,8 @@
 
 inline int64_t OTSYS_TIME()
 {
-	timeb t;
-	ftime(&t);
-	return ((int64_t)t.millitm) + ((int64_t)t.time) * 1000;
+	using namespace std::chrono;
+	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
 inline uint32_t swap_uint32(uint32_t val)

@@ -681,39 +681,19 @@ std::string formatDateEx(time_t _time/* = 0*/, std::string format/* = "%d %b %Y,
 
 std::string formatTime(time_t _time/* = 0*/, bool ms/* = false*/)
 {
-	if(!_time)
-		_time = time(NULL);
-	else if(ms)
-		ms = false;
+	using namespace std::chrono;
 
-	const tm* tms = localtime(&_time);
-	std::ostringstream s;
-	if(tms)
-	{
-		s << tms->tm_hour << ":" << tms->tm_min << ":";
-		if(tms->tm_sec < 10)
-			s << "0";
+	auto now = system_clock::now();
+	auto millisec = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
+	auto timer = system_clock::to_time_t(now);
 
-		s << tms->tm_sec;
-		if(ms)
-		{
-			timeb t;
-			ftime(&t);
+	std::tm bt = *std::localtime(&timer);
+	std::ostringstream oss;
 
-			s << "."; // make it format zzz
-			if(t.millitm < 10)
-				s << "0";
+	oss << std::put_time(&bt, "%H:%M:%S"); // HH:MM:SS
+	oss << '.' << std::setfill('0') << std::setw(3) << millisec.count();
 
-			if(t.millitm < 100)
-				s << "0";
-
-			s << t.millitm;
-		}
-	}
-	else
-		s << "UNIX Time: " << (int32_t)_time;
-
-	return s.str();
+	return oss.str();
 }
 
 std::string convertIPAddress(uint32_t ip)
