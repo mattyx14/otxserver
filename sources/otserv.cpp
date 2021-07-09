@@ -31,7 +31,6 @@
 #endif
 
 #include <boost/config.hpp>
-#include <openssl/opensslv.h>
 
 #include "rsa.h"
 
@@ -191,7 +190,6 @@ bool argumentsHandler(StringVec args)
 				
 				"\t\tLua Version: " << LUA_RELEASE << "\n" <<
 				"\t\tXML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
-				"\t\tSSL Version: " << OPENSSL_VERSION_TEXT << "\n" <<
 				"\t\tBOOST Version: " << BOOST_LIB_VERSION << "\n" <<
 				"\t\tLuaJIT: " << luajit << "\n" <<
 				"\t\tGroundCache: " << groundCache << "\n" <<
@@ -466,7 +464,6 @@ void otserv(StringVec, ServiceManager* services)
 				
 				"\t\tLua Version: " << LUA_RELEASE << "\n" <<
 				"\t\tXML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
-				"\t\tSSL Version: " << OPENSSL_VERSION_TEXT << "\n" <<
 				"\t\tBOOST Version: " << BOOST_LIB_VERSION << "\n" <<
 				"\t\tLuaJIT: " << luajit << "\n" <<
 				"\t\tGroundCache: " << groundCache << "\n" <<

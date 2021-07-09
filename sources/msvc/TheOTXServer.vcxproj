@@ -82,6 +82,7 @@
     <ClInclude Include="..\scheduler.h" />
     <ClInclude Include="..\scriptmanager.h" />
     <ClInclude Include="..\server.h" />
+    <ClInclude Include="..\sha1.h" />
     <ClInclude Include="..\spawn.h" />
     <ClInclude Include="..\spectators.h" />
     <ClInclude Include="..\spells.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="..\scheduler.cpp" />
     <ClCompile Include="..\scriptmanager.cpp" />
     <ClCompile Include="..\server.cpp" />
+    <ClCompile Include="..\sha1.cpp" />
     <ClCompile Include="..\spawn.cpp" />
     <ClCompile Include="..\spectators.cpp" />
     <ClCompile Include="..\spells.cpp" />

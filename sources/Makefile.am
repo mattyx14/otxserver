@@ -49,7 +49,7 @@ theotxserver_SOURCES = account.h actions.cpp actions.h $(MAYBE_OTADMIN) \
 	protocolhttp.cpp protocolhttp.h protocollogin.cpp protocollogin.h \
 	protocolold.cpp protocolold.h quests.cpp quests.h raids.cpp raids.h \
 	rsa.cpp rsa.h scheduler.cpp scheduler.h scriptmanager.cpp \
-	scriptmanager.h server.cpp server.h spawn.cpp spawn.h spectators.cpp spectators.h \
+	scriptmanager.h server.cpp server.h sha1.cpp sha1.h spawn.cpp spawn.h spectators.cpp spectators.h \
 	spells.cpp spells.h status.cpp status.h talkaction.cpp talkaction.h teleport.cpp \
 	teleport.h templates.h textlogger.cpp textlogger.h thing.cpp thing.h \
 	tile.cpp tile.h tools.cpp tools.h town.h trashholder.cpp trashholder.h \

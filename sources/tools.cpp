@@ -21,7 +21,7 @@
 #include <iomanip>
 
 #include <boost/filesystem.hpp>
-#include <openssl/sha.h>
+#include "sha1.h"
 #include <random>
 
 #include "vocation.h"
@@ -31,21 +31,22 @@ extern ConfigManager g_config;
 
 std::string transformToSHA1(std::string plainText, bool upperCase)
 {
-	SHA_CTX c;
-	SHA1_Init(&c);
-	SHA1_Update(&c, plainText.c_str(), plainText.length());
+	SHA1 sha1;
+	unsigned sha1Hash[5];
+	std::stringstream hexStream;
 
-	uint8_t md[SHA_DIGEST_LENGTH];
-	SHA1_Final(md, &c);
+	sha1.Input((const uint8_t*)plainText.c_str(), plainText.length());
+	sha1.Result(sha1Hash);
 
-	char output[(SHA_DIGEST_LENGTH << 1) + 1];
-	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
-		sprintf(output + (i << 1), "%.2X", md[i]);
+	hexStream.flags(std::ios::hex | std::ios::uppercase);
+	for(uint32_t i = 0; i < 5; ++i)
+		hexStream << std::setw(8) << std::setfill('0') << (uint32_t)sha1Hash[i];
 
-	if(upperCase)
-		return std::string(output);
+	std::string hexStr = hexStream.str();
+	if(!upperCase)
+		toLowerCaseString(hexStr);
 
-	return asLowerCaseString(std::string(output));
+	return hexStr;
 }
 
 void _encrypt(std::string& str, bool upperCase)

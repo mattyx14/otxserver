@@ -177,10 +177,6 @@ AC_CHECK_LIB(z, main, ,[AC_MSG_ERROR("Linking against zlib library failed.")])
 AC_CHECK_HEADERS([pthread.h], ,[AC_MSG_ERROR("pthread header not found.")])
 AC_CHECK_LIB(pthread, main, ,[AC_MSG_ERROR("Linking against pthread library failed)])
 
-# check for OpenSSL
-AC_CHECK_HEADERS([openssl/bn.h openssl/err.h openssl/sha.h openssl/md5.h], , [AC_MSG_ERROR("Required OpenSSL headers not found.")])
-AC_CHECK_LIB(crypto, main, , [AC_MSG_ERROR("Linking against OpenSSL library failed")])
-
 # check for boost
 AC_CHECK_LIB(boost_thread-gcc-mt, main, , [
 	AC_CHECK_LIB(boost_thread-mt, main, , [
