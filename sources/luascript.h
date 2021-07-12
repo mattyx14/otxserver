@@ -476,6 +476,7 @@ class LuaInterface
 		static int32_t luaGetThingFromPosition(lua_State* L);
 		static int32_t luaGetTileItemById(lua_State* L);
 		static int32_t luaGetTileItemByType(lua_State* L);
+		static int32_t luaGetTileThingByPos(lua_State* L);
 		static int32_t luaGetTopCreature(lua_State* L);
 		static int32_t luaGetTileInfo(lua_State* L);
 		static int32_t luaDoTileQueryAdd(lua_State* L);
