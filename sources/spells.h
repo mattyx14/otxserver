@@ -67,6 +67,7 @@ class Spells : public BaseEvents
 
 		RunesMap runes;
 		InstantsMap instants;
+		InstantsMap instantsWithParam;
 
 		uint32_t spellId;
 		friend class CombatSpell;

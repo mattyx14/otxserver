@@ -18,6 +18,7 @@
 #include "const.h"
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <boost/algorithm/string.hpp>
 
 #include "spells.h"
 #include "tools.h"
@@ -119,6 +120,8 @@ void Spells::clear()
 		delete it->second;
 
 	instants.clear();
+
+	instantsWithParam.clear();
 	spellId = 0;
 	m_interface.reInitState();
 }
@@ -142,14 +145,21 @@ bool Spells::registerEvent(Event* event, xmlNodePtr, bool override)
 {
 	if(InstantSpell* instant = dynamic_cast<InstantSpell*>(event))
 	{
-		InstantsMap::iterator it = instants.find(instant->getWords());
+		std::string lowerWords = asLowerCaseString(instant->getWords());
+		InstantsMap::iterator it = instants.find(lowerWords);
 		instant->setId(spellId++);
 		if(it == instants.end())
 		{
-			instants[instant->getWords()] = instant;
+			instants[lowerWords] = instant;
+			if(instant->getHasParam()) {
+
+				InstantsMap::iterator itt = instantsWithParam.find(lowerWords);
+				if(itt == instantsWithParam.end()) {
+					instantsWithParam[lowerWords] = instant;
+				}
+			}
 			return true;
 		}
-
 		if(override)
 		{
 			delete it->second;
@@ -217,15 +227,28 @@ RuneSpell* Spells::getRuneSpellByName(const std::string& name)
 InstantSpell* Spells::getInstantSpell(const std::string& words)
 {
 	InstantSpell* result = NULL;
-	for (InstantsMap::iterator it = instants.begin(); it != instants.end(); ++it)
-	{
-		InstantSpell* instantSpell = it->second;
-		const std::string& instantSpellWords = instantSpell->getWords();
-		size_t spellLen = instantSpellWords.length();
 
-		if (strncasecmp(instantSpellWords.c_str(), words.c_str(), spellLen) == 0) {
-			if (!result || spellLen > result->getWords().length()) {
-				result = instantSpell;
+	std::string lower = words;
+	boost::to_lower(lower);
+
+	//First let's search on all nom-param spells
+	auto search2 = instants.find(lower);
+	if(search2 != instants.end()) {
+		result = search2->second;
+	}
+
+	//If we didn't find anything, we search on the param-spells
+	if(result == NULL) {
+
+		for(InstantsMap::iterator it = instantsWithParam.begin(); it != instantsWithParam.end(); ++it) {
+			InstantSpell* instantSpell = it->second;
+			const std::string& instantSpellWords = instantSpell->getWords();
+			size_t spellLen = instantSpellWords.length();
+
+			if(strncasecmp(instantSpellWords.c_str(), words.c_str(), spellLen) == 0) {
+				if(!result || spellLen > result->getWords().length()) {
+					result = instantSpell;
+				}
 			}
 		}
 	}
