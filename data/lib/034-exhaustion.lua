@@ -13,7 +13,7 @@ exhaustion =
 			return false
 		end
 
-		local exhaust = getCreatureStorage(cid, storage)
+		local exhaust = tonumber(getCreatureStorage(cid, storage))
 		if(exhaust > 0) then
 			local left = exhaust - os.time()
 			if(left >= 0) then
