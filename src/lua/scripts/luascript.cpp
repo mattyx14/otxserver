@@ -2052,10 +2052,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RETURNVALUE_REWARDCHESTISEMPTY)
 
 	registerEnum(RELOAD_TYPE_ALL)
+	registerEnum(RELOAD_TYPE_ACTIONS)
 	registerEnum(RELOAD_TYPE_CHAT)
 	registerEnum(RELOAD_TYPE_CONFIG)
+	registerEnum(RELOAD_TYPE_CREATURESCRIPTS)
 	registerEnum(RELOAD_TYPE_EVENTS)
 	registerEnum(RELOAD_TYPE_GLOBAL)
+	registerEnum(RELOAD_TYPE_GLOBALEVENTS)
 	registerEnum(RELOAD_TYPE_IMBUEMENTS)
 	registerEnum(RELOAD_TYPE_ITEMS)
 	registerEnum(RELOAD_TYPE_MODULES)
@@ -2065,6 +2068,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RELOAD_TYPE_RAIDS)
 	registerEnum(RELOAD_TYPE_SCRIPTS)
 	registerEnum(RELOAD_TYPE_SPELLS)
+	registerEnum(RELOAD_TYPE_TALKACTIONS)
+
 	registerEnum(RELOAD_TYPE_STAGES)
 
 	registerEnum(ZONE_PROTECTION)
@@ -3470,6 +3475,7 @@ void LuaScriptInterface::registerFunctions()
 	// Webhook
 	registerTable("Webhook");
 	registerMethod("Webhook", "send", LuaScriptInterface::webhookSend);
+	registerMethod("Webhook", "specialSend", LuaScriptInterface::webhookSpecialSend);
 }
 
 #undef registerEnum
@@ -5001,7 +5007,7 @@ int LuaScriptInterface::luaGameGetBestiaryList(lua_State* L)
 		}
    } else {
 	if (isNumber(L, 2)) {
-	   std::map<uint16_t, std::string> tmplist = g_bestiary.findRaceByName("otxserver", false, getNumber<BestiaryType_t>(L, 2));
+	   std::map<uint16_t, std::string> tmplist = g_bestiary.findRaceByName("OTBR", false, getNumber<BestiaryType_t>(L, 2));
 		for (auto itb : tmplist) {
 			if (name) {
 				pushString(L, itb.second);
@@ -19891,6 +19897,20 @@ int LuaScriptInterface::webhookSend(lua_State* L)
 	uint32_t color = getNumber<uint32_t>(L, 3, 0);
 
 	webhook_send_message(title, message, color);
+	lua_pushnil(L);
+
+	return 1;
+}
+
+int LuaScriptInterface::webhookSpecialSend(lua_State* L)
+{
+	// Webhook.specialSend(title, message, color, url)
+	std::string title = getString(L, 1);
+	std::string message = getString(L, 2);
+	uint32_t color = getNumber<uint32_t>(L, 3, 0);
+	std::string url = getString(L, 4);
+
+	webhook_send_specialmessage(title, message, color, url);
 	lua_pushnil(L);
 
 	return 1;
