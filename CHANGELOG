@@ -54,7 +54,7 @@
 	- Fix a small bug related to npc number on the status
 	- Fix for monster's summons damaging other monsters
 	- Fix sellHouse command
-	- Make compilable build on Debian 20 / Ubuntu 20
+	- Make compilable build on Debian 10 / Ubuntu 20
 	- Optimize code fixes
 	- Remove dependency to OpenSSL
 	- Remove MD5, SHA256 and SHA512
@@ -62,6 +62,7 @@
 	Note:
 	* It is recommended to update all your data files.
 		Because if you do not use the data as they are you will have stability problems.
+	* This version contains everything fixed in 2.12 which was never officially released 
 ]
 
 [ OTX Server 2.12 :: Version "OpenTibia"
