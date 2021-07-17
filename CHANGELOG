@@ -54,6 +54,7 @@
 	- Fix a small bug related to npc number on the status
 	- Fix for monster's summons damaging other monsters
 	- Fix sellHouse command
+	- Fix container issues
 	- Make compilable build on Debian 10 / Ubuntu 20
 	- Optimize code fixes
 	- Remove dependency to OpenSSL
