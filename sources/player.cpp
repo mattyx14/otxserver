@@ -3114,9 +3114,10 @@ ReturnValue Player::__queryMaxCount(int32_t index, const Thing* thing, uint32_t 
 	if(index == INDEX_WHEREEVER)
 	{
 		uint32_t n = 0;
-		for(int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i)
+		for(int32_t i = SLOT_FIRST; i <= SLOT_LAST; ++i)
 		{
-			if(Item* inventoryItem = inventory[i])
+			Item* inventoryItem = inventory[i];
+			if(inventoryItem)
 			{
 				if(Container* subContainer = inventoryItem->getContainer())
 				{
@@ -3147,7 +3148,7 @@ ReturnValue Player::__queryMaxCount(int32_t index, const Thing* thing, uint32_t 
 				if(item->isStackable())
 					n += 100;
 				else
-					n += 1;
+					++n;
 			}
 		}
 
@@ -3180,8 +3181,8 @@ ReturnValue Player::__queryMaxCount(int32_t index, const Thing* thing, uint32_t 
 
 	if(maxQueryCount < count)
 		return RET_NOTENOUGHROOM;
-
-	return RET_NOERROR;
+	else
+		return RET_NOERROR;
 }
 
 ReturnValue Player::__queryRemove(const Thing* thing, uint32_t count, uint32_t flags, Creature*) const
