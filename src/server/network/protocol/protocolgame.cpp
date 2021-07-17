@@ -435,7 +435,7 @@ void ProtocolGame::logout(bool displayEffect, bool forced)
 		}
 	}
 
-	sendSessionEndInformation(forced ? SESSION_END_FORCECLOSE : SESSION_END_LOGOUT);
+	sendSessionEndInformation(SESSION_END_LOGOUT2);
 
 	g_game.removeCreature(player);
 }
@@ -6687,6 +6687,11 @@ void ProtocolGame::sendOpenStash()
 
 void ProtocolGame::parseStashWithdraw(NetworkMessage &msg)
 {
+	if (!player->isSupplyStashMenuAvailable()) {
+		player->sendCancelMessage("You can't use supply stash right now.");
+		return;
+	}
+
 	if (player->isStashExhausted()) {
 		player->sendCancelMessage("You need to wait to do this again.");
 		return;

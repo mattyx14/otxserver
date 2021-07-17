@@ -8605,16 +8605,9 @@ bool Game::reload(ReloadTypes_t reloadType)
 			g_scripts->loadScripts("monster", false, true);
 			return true;
 		}
-		case RELOAD_TYPE_ACTIONS: return g_actions->reload();
 		case RELOAD_TYPE_CHAT: return g_chat->load();
 		case RELOAD_TYPE_CONFIG: return g_config.reload();
-		case RELOAD_TYPE_CREATURESCRIPTS: {
-			g_creatureEvents->reload();
-			g_creatureEvents->removeInvalidEvents();
-			return true;
-		}
 		case RELOAD_TYPE_EVENTS: return g_events->loadFromXml();
-		case RELOAD_TYPE_GLOBALEVENTS: return g_globalEvents->reload();
 		case RELOAD_TYPE_ITEMS: return Item::items.reload();
 		case RELOAD_TYPE_MODULES: return g_modules->reload();
 		case RELOAD_TYPE_MOUNTS: return mounts.reload();
@@ -8632,7 +8625,17 @@ bool Game::reload(ReloadTypes_t reloadType)
 			}
 			return true;
 		}
-        case RELOAD_TYPE_TALKACTIONS: return g_talkActions->reload();
+
+		// Retro
+		case RELOAD_TYPE_ACTIONS: return g_actions->reload();
+		case RELOAD_TYPE_CREATURESCRIPTS: {
+			g_creatureEvents->reload();
+			g_creatureEvents->removeInvalidEvents();
+			return true;
+		}
+		case RELOAD_TYPE_GLOBALEVENTS: return g_globalEvents->reload();
+		case RELOAD_TYPE_TALKACTIONS: return g_talkActions->reload();
+
 		case RELOAD_TYPE_SCRIPTS: {
 			// commented out stuff is TODO, once we approach further in revscriptsys
 			g_actions->clear(true);
@@ -8652,12 +8655,9 @@ bool Game::reload(ReloadTypes_t reloadType)
 				SPDLOG_WARN("[Game::reload] - Failed to reload spells.");
 				std::terminate();
 			}
-            g_actions->reload();
 			g_config.reload();
-			g_creatureEvents->reload();
 			Npcs::reload();
 			raids.reload() && raids.startup();
-			g_talkActions->reload();
 			Item::items.reload();
 			g_weapons->clear(true);
 			g_weapons->loadDefaults();
@@ -8671,6 +8671,11 @@ bool Game::reload(ReloadTypes_t reloadType)
 			g_globalEvents->clear(true);
 			g_spells->clear(true);
 			g_scripts->loadScripts("scripts", false, true);
+
+			// Retro
+			g_actions->reload();
+			g_creatureEvents->reload();
+			g_talkActions->reload();
 		}
 	}
 	return true;

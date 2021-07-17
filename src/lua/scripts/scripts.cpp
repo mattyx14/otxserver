@@ -86,8 +86,7 @@ bool Scripts::loadScriptSystems()
 	g_actions = new Actions();
 	if (!g_actions->loadFromXml()) {
 		std::cout << "> ERROR: Unable to load actions!" << std::endl;
-	  
-	  return false;
+		return false;
 	}
 
 	g_talkActions = new TalkActions();
@@ -103,7 +102,7 @@ bool Scripts::loadScriptSystems()
 	}
 
 	g_creatureEvents = new CreatureEvents();
-    if (!g_creatureEvents->loadFromXml()) {
+	if (!g_creatureEvents->loadFromXml()) {
 		std::cout << "> ERROR: Unable to load creature events!" << std::endl;
 		return false;
 	}

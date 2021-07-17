@@ -143,15 +143,9 @@ void Signals::sighupHandler()
 	//Dispatcher thread
 	SPDLOG_INFO("SIGHUP received, reloading config files...");
 
-    g_config.reload();
-	SPDLOG_INFO("Reloaded actions"); 
-	
 	g_config.reload();
 	SPDLOG_INFO("Reloaded config");
-	
-    g_config.reload();
-	SPDLOG_INFO("Reloaded creature scripts.");
-	
+
 	Npcs::reload();
 	SPDLOG_INFO("Reloaded npcs");
 
@@ -162,18 +156,11 @@ void Signals::sighupHandler()
 	g_spells->reload();;
 	SPDLOG_INFO("Reloaded spells");
 
-    g_config.reload();
-	SPDLOG_INFO("Reloaded talk actions.");
-
 	Item::items.reload();
 	SPDLOG_INFO("Reloaded items");
 
 	g_game.mounts.reload();
 	SPDLOG_INFO("Reloaded mounts");
-	
-	g_game.mounts.reload();
-	SPDLOG_INFO("Reloaded globalevents.");
-	
 
 	g_events->loadFromXml();
 	SPDLOG_INFO("Reloaded events");
@@ -186,6 +173,19 @@ void Signals::sighupHandler()
 
 	g_luaEnvironment.loadFile("data/stages.lua");
 	SPDLOG_INFO("Reloaded stages.lua");
+
+	// Retro
+	g_config.reload();
+	SPDLOG_INFO("Reloaded actions"); 
+
+	g_config.reload();
+	SPDLOG_INFO("Reloaded creature scripts.");
+
+	g_config.reload();
+	SPDLOG_INFO("Reloaded talk actions.");
+
+	g_game.mounts.reload();
+	SPDLOG_INFO("Reloaded globalevents.");
 
 	lua_gc(g_luaEnvironment.getLuaState(), LUA_GCCOLLECT, 0);
 }
