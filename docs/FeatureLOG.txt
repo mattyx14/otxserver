@@ -7,7 +7,7 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		OpenTibia
+		SNAPSHOT
 
 	Website
 		https://github.com/mattyx14/otxserver/tree/otxserv2/
