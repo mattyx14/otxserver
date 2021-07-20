@@ -6191,7 +6191,7 @@ int32_t LuaInterface::luaDoTileQueryAdd(lua_State* L)
 	bool displayError = true;
 
 	if(params > 3)
-		displayError = popNumber(L);
+		displayError = popBoolean(L);
 
 	if(params > 2)
 		flags = popNumber(L);
@@ -11660,7 +11660,7 @@ int32_t LuaInterface::luaBitNot(lua_State* L)
 
 int32_t LuaInterface::luaBitUNot(lua_State* L)
 {
-	uint32_t number = (uint32_t)popNumber(L);
+	uint64_t number = (uint64_t)popNumber(L);
 	lua_pushnumber(L, ~number);
 	return 1;
 }
