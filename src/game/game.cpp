@@ -8626,16 +8626,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 			return true;
 		}
 
-		// Retro
-		case RELOAD_TYPE_ACTIONS: return g_actions->reload();
-		case RELOAD_TYPE_CREATURESCRIPTS: {
-			g_creatureEvents->reload();
-			g_creatureEvents->removeInvalidEvents();
-			return true;
-		}
-		case RELOAD_TYPE_GLOBALEVENTS: return g_globalEvents->reload();
-		case RELOAD_TYPE_TALKACTIONS: return g_talkActions->reload();
-
 		case RELOAD_TYPE_SCRIPTS: {
 			// commented out stuff is TODO, once we approach further in revscriptsys
 			g_actions->clear(true);
@@ -8655,6 +8645,7 @@ bool Game::reload(ReloadTypes_t reloadType)
 				SPDLOG_WARN("[Game::reload] - Failed to reload spells.");
 				std::terminate();
 			}
+
 			g_config.reload();
 			Npcs::reload();
 			raids.reload() && raids.startup();
@@ -8671,11 +8662,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 			g_globalEvents->clear(true);
 			g_spells->clear(true);
 			g_scripts->loadScripts("scripts", false, true);
-
-			// Retro
-			g_actions->reload();
-			g_creatureEvents->reload();
-			g_talkActions->reload();
 		}
 	}
 	return true;

@@ -174,19 +174,6 @@ void Signals::sighupHandler()
 	g_luaEnvironment.loadFile("data/stages.lua");
 	SPDLOG_INFO("Reloaded stages.lua");
 
-	// Retro
-	g_config.reload();
-	SPDLOG_INFO("Reloaded actions"); 
-
-	g_config.reload();
-	SPDLOG_INFO("Reloaded creature scripts.");
-
-	g_config.reload();
-	SPDLOG_INFO("Reloaded talk actions.");
-
-	g_game.mounts.reload();
-	SPDLOG_INFO("Reloaded globalevents.");
-
 	lua_gc(g_luaEnvironment.getLuaState(), LUA_GCCOLLECT, 0);
 }
 

@@ -2067,12 +2067,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RELOAD_TYPE_SPELLS)
 	registerEnum(RELOAD_TYPE_STAGES)
 
-	// Retro
-	registerEnum(RELOAD_TYPE_ACTIONS)
-	registerEnum(RELOAD_TYPE_CREATURESCRIPTS)
-	registerEnum(RELOAD_TYPE_GLOBALEVENTS)
-	registerEnum(RELOAD_TYPE_TALKACTIONS)
-
 	registerEnum(ZONE_PROTECTION)
 	registerEnum(ZONE_NOPVP)
 	registerEnum(ZONE_PVP)
