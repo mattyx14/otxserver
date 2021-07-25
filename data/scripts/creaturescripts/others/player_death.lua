@@ -8,9 +8,6 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 	end
 
 	player:sendTextMessage(MESSAGE_BEYOND_LAST, 'You are dead.')
-	if player:getStorageValue(Storage.SvargrondArena.PitDoor) > 0 then
-		player:setStorageValue(Storage.SvargrondArena.PitDoor, 0)
-	end
 
 	if not deathListEnabled then
 		return

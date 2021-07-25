@@ -62,9 +62,6 @@ function Monster:onSpawn(position)
 		self:setReward(true)
 	end
 
---
--- Cobra Bastion Script
---[[
 	if self:getName():lower() == "cobra scout" or 
 		self:getName():lower() == "cobra vizier" or 
 		self:getName():lower() == "cobra assassin" then
@@ -72,7 +69,6 @@ function Monster:onSpawn(position)
 			self:setHealth(self:getMaxHealth() * 0.75)
 		end
 	end
-]]
 
 	if not self:getType():canSpawn(position) then
 		self:remove()
@@ -83,36 +79,6 @@ function Monster:onSpawn(position)
 			if monster and not monster:getType():canSpawn(position) then
 				monster:remove()
 			end
-		end
-
-		if self:getName():lower() == 'iron servant replica' then
-			local chance = math.random(100)
-			if Game.getStorageValue(GlobalStorage.ForgottenKnowledge.MechanismDiamond) >= 1
-			and Game.getStorageValue(GlobalStorage.ForgottenKnowledge.MechanismGolden) >= 1 then
-				if chance > 30 then
-					local chance2 = math.random(2)
-					if chance2 == 1 then
-						Game.createMonster('diamond servant replica', self:getPosition(), false, true)
-					elseif chance2 == 2 then
-						Game.createMonster('golden servant replica', self:getPosition(), false, true)
-					end
-					self:remove()
-				end
-				return true
-			end
-			if Game.getStorageValue(GlobalStorage.ForgottenKnowledge.MechanismDiamond) >= 1 then
-				if chance > 30 then
-					Game.createMonster('diamond servant replica', self:getPosition(), false, true)
-					self:remove()
-				end
-			end
-			if Game.getStorageValue(GlobalStorage.ForgottenKnowledge.MechanismGolden) >= 1 then
-				if chance > 30 then
-					Game.createMonster('golden servant replica', self:getPosition(), false, true)
-					self:remove()
-				end
-			end
-			return true
 		end
 	end
 end

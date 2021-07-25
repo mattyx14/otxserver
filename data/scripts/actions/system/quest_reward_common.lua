@@ -37,11 +37,9 @@ local function playerAddItem(params, item)
 
 	if params.key then
 		local itemType = ItemType(params.itemid)
-		-- 23763 Is key of Dawnport
 		-- Needs independent verification because it cannot be set as "key" in items.xml
 		-- Because it generate bug in the item description
-		if itemType:isKey() or itemType:getId(23763) then
-			-- If is key not in container, uses the "isKey = true" variable
+		if itemType:isKey() then
 			keyItem = player:addItem(params.itemid, params.count)
 			keyItem:setActionId(params.storage)
 		end

@@ -96,60 +96,8 @@ function Player.addManaSpent(...)
 end
 
 -- Functions From OTServBR-Global
-function Player.getCookiesDelivered(self)
-	local storage, amount = {
-		Storage.WhatAFoolish.CookieDelivery.SimonTheBeggar, Storage.WhatAFoolish.CookieDelivery.Markwin, Storage.WhatAFoolish.CookieDelivery.Ariella,
-		Storage.WhatAFoolish.CookieDelivery.Hairycles, Storage.WhatAFoolish.CookieDelivery.Djinn, Storage.WhatAFoolish.CookieDelivery.AvarTar,
-		Storage.WhatAFoolish.CookieDelivery.OrcKing, Storage.WhatAFoolish.CookieDelivery.Lorbas, Storage.WhatAFoolish.CookieDelivery.Wyda,
-		Storage.WhatAFoolish.CookieDelivery.Hjaern
-	}, 0
-	for i = 1, #storage do
-		if self:getStorageValue(storage[i]) == 1 then
-			amount = amount + 1
-		end
-	end
-	return amount
-end
-
 function Player.allowMovement(self, allow)
 	return self:setStorageValue(STORAGE.blockMovementStorage, allow and -1 or 1)
-end
-
-function Player.checkGnomeRank(self)
-	local points = self:getStorageValue(Storage.BigfootBurden.Rank)
-	local questProgress = self:getStorageValue(Storage.BigfootBurden.QuestLine)
-	if points >= 30 and points < 120 then
-		if questProgress <= 25 then
-			self:setStorageValue(Storage.BigfootBurden.QuestLine, 26)
-			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
-			self:addAchievement('Gnome Little Helper')
-		end
-	elseif points >= 120 and points < 480 then
-		if questProgress <= 26 then
-			self:setStorageValue(Storage.BigfootBurden.QuestLine, 27)
-			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
-			self:addAchievement('Gnome Little Helper')
-			self:addAchievement('Gnome Friend')
-		end
-	elseif points >= 480 and points < 1440 then
-		if questProgress <= 27 then
-			self:setStorageValue(Storage.BigfootBurden.QuestLine, 28)
-			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
-			self:addAchievement('Gnome Little Helper')
-			self:addAchievement('Gnome Friend')
-			self:addAchievement('Gnomelike')
-		end
-	elseif points >= 1440 then
-		if questProgress <= 29 then
-			self:setStorageValue(Storage.BigfootBurden.QuestLine, 30)
-			self:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
-			self:addAchievement('Gnome Little Helper')
-			self:addAchievement('Gnome Friend')
-			self:addAchievement('Gnomelike')
-			self:addAchievement('Honorary Gnome')
-		end
-	end
-	return true
 end
 
 function Player.addFamePoint(self)
@@ -188,7 +136,7 @@ function Player.transferMoneyTo(self, target, amount)
 	local targetPlayer = Player(target)
 	if targetPlayer then
 		local town = targetPlayer:getTown()
-		if town and town:getId() ~= TOWNS_LIST.DAWNPORT or town:getId() ~= TOWNS_LIST.DAWNPORT_TUTORIAL then -- Blocking transfer to Dawnport
+		if town then
 			targetPlayer:setBankBalance(targetPlayer:getBankBalance() + amount)
 		end
 	else
@@ -201,7 +149,7 @@ function Player.transferMoneyTo(self, target, amount)
 			local town = result.getDataInt(query_town, "town_id")
 			if town then
 				local town_id = Town(town) and Town(town):getId()
-				if town_id and town_id  == TOWNS_LIST.DAWNPORT or town_id == TOWNS_LIST.DAWNPORT_TUTORIAL then -- Blocking transfer to Dawnport
+				if town_id then
 					return false
 				end
 			end

@@ -239,13 +239,6 @@ if Modules == nil then
 			setPlayerStorageValue(cid, StorageNpcExhaust, 3 + os.time())
 			player:teleportTo(destination)
 			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-
-			-- What a foolish Quest - Mission 3
-			if player:getStorageValue(Storage.WhatAFoolish.PieBoxTimer) > os.time() then
-				if destination ~= Position(32660, 31957, 15) then -- kazordoon steamboat
-					player:setStorageValue(Storage.WhatAFoolish.PieBoxTimer, 1)
-				end
-			end
 		end
 
 		npcHandler:resetNpc(cid)

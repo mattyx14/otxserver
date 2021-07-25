@@ -814,7 +814,7 @@ function Player:canBeAppliedImbuement(imbuement, item)
 		return false
 	end
 
-	if self:getStorageValue(Storage.ForgottenKnowledge.Tomes) > 0 then
+	if self:getStorageValue(Storage.Tomes) > 0 then
 		imbuable = true
 	else
 		return false

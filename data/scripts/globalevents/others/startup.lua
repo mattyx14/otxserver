@@ -3,45 +3,47 @@ function serverstartup.onStartup()
 	Spdlog.info("Loading map attributes")
 	-- Npc table
 	loadLuaNpcs(NpcTable)
+
 	-- Sign table
-	loadLuaMapSign(SignTable)
-	Spdlog.info("Loaded " .. (#SignTable) .. " signs in the map")
+	--loadLuaMapSign(SignTable)
+	--Spdlog.info("Loaded " .. (#SignTable) .. " signs in the map")
+
 	-- Book/Document table
 	loadLuaMapBookDocument(BookDocumentTable)
 
 	-- Action and unique tables
 	-- Chest table
 	loadLuaMapAction(ChestAction)
-	loadLuaMapUnique(ChestUnique)
+	-- loadLuaMapUnique(ChestUnique)
 	-- Corpse table
 	loadLuaMapAction(CorpseAction)
-	loadLuaMapUnique(CorpseUnique)
+	-- loadLuaMapUnique(CorpseUnique)
 	-- Doors key table
 	loadLuaMapAction(KeyDoorAction)
 	-- Doors level table
 	loadLuaMapAction(LevelDoorAction)
 	-- Doors quest table
 	loadLuaMapAction(QuestDoorAction)
-	loadLuaMapUnique(QuestDoorUnique)
+	-- loadLuaMapUnique(QuestDoorUnique)
 	-- Item table
 	loadLuaMapAction(ItemAction)
-	loadLuaMapUnique(ItemUnique)
+	-- loadLuaMapUnique(ItemUnique)
 	-- Item daily reward table
 	loadLuaMapAction(DailyRewardAction)
 	-- Item unmoveable table
 	loadLuaMapAction(ItemUnmoveableAction)
 	-- Lever table
 	loadLuaMapAction(LeverAction)
-	loadLuaMapUnique(LeverUnique)
+	-- loadLuaMapUnique(LeverUnique)
 	-- Teleport (magic forcefields) table
 	loadLuaMapAction(TeleportAction)
-	loadLuaMapUnique(TeleportUnique)
+	-- loadLuaMapUnique(TeleportUnique)
 	-- Teleport item table
 	loadLuaMapAction(TeleportItemAction)
-	loadLuaMapUnique(TeleportItemUnique)
+	-- loadLuaMapUnique(TeleportItemUnique)
 	-- Tile table
 	loadLuaMapAction(TileAction)
-	loadLuaMapUnique(TileUnique)
+	-- loadLuaMapUnique(TileUnique)
 	-- Tile pick table
 	loadLuaMapAction(TilePickAction)
 
@@ -92,12 +94,6 @@ function serverstartup.onStartup()
 		result.free(banResultId)
 	end
 
-	-- Ferumbras Ascendant quest
-	for i = 1, #GlobalStorage.FerumbrasAscendant.Habitats do
-		local storage = GlobalStorage.FerumbrasAscendant.Habitats[i]
-		Game.setStorageValue(storage, 0)
-	end
-
 	-- Check house auctions
 	local resultId = db.storeQuery('SELECT `id`, `highest_bidder`, `last_bid`, (SELECT `balance` FROM \z
 	`players` WHERE `players`.`id` = `highest_bidder`) AS `balance` FROM `houses` WHERE `owner` = 0 AND \z
@@ -129,6 +125,6 @@ function serverstartup.onStartup()
 	HirelingsInit()
 
 	-- Load otservbr-custom map (data/world/custom/otservbr-custom.otbm)
-	loadCustomMap()
+	-- loadCustomMap()
 end
 serverstartup:register()

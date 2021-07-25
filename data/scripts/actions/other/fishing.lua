@@ -64,14 +64,7 @@ function fishing.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	if useWorms and player:removeItem("worm", 1) and targetId == 23785 then
-		if player:getStorageValue(Storage.Quest.Dawnport.TheDormKey) == 2 then
-			if math.random(100) >= 97 then
-				player:addItem(23773, 1)
-				player:setStorageValue(Storage.Quest.Dawnport.TheDormKey, 3)
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "With a giant splash, you heave an enormous fish out of the water.")
-				return true
-			end
-		elseif math.random(100) <= math.min(math.max(10 + (player:getEffectiveSkillLevel(SKILL_FISHING) - 10) * 0.597, 10), 50) then
+		if math.random(100) <= math.min(math.max(10 + (player:getEffectiveSkillLevel(SKILL_FISHING) - 10) * 0.597, 10), 50) then
 			player:addItem(2667, 1)
 		end
 	end

@@ -1,7 +1,6 @@
 -- Custom Modules, created to help us in this datapack
 local travelDiscounts = {
-	['postman'] = {price = 10, storage = Storage.Postman.Rank, value = 3},
-	['new frontier'] = {price = 50, storage = Storage.TheNewFrontier.Mission03, value = 1}
+	-- 
 }
 
 function StdModule.travelDiscount(player, discounts)
@@ -143,27 +142,6 @@ local hints = {
 	[27] = 'The leader of a party has the option to distribute gathered experience among all players in the party. If you are the leader, right-click on yourself and select \'Enable Shared Experience\'.',
 	[28] = 'There is nothing more I can tell you. If you are still in need of some {hints}, I can repeat them for you.'
 }
-
-function StdModule.rookgaardHints(cid, message, keywords, parameters, node)
-	local npcHandler = parameters.npcHandler
-	if npcHandler == nil then
-		error("StdModule.say called without any npcHandler instance.")
-	end
-
-	if not npcHandler:isFocused(cid) then
-		return false
-	end
-
-	local player = Player(cid)
-	local hintId = player:getStorageValue(Storage.RookgaardHints)
-	npcHandler:say(hints[hintId], cid)
-	if hintId >= #hints then
-		player:setStorageValue(Storage.RookgaardHints, -1)
-	else
-		player:setStorageValue(Storage.RookgaardHints, hintId + 1)
-	end
-	return true
-end
 
 -- VoiceModule
 VoiceModule = {

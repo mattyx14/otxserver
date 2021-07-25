@@ -1,11 +1,5 @@
 local specialQuests = {
-	[2016] = Storage.DreamersChallenge.Reward,
-	[10544] = Storage.PitsOfInferno.WeaponReward,
-	[12513] = Storage.ThievesGuild.Reward,
-	[12374] = Storage.WrathoftheEmperor.mainReward,
-	[26300] = Storage.SvargrondArena.RewardGreenhorn,
-	[27300] = Storage.SvargrondArena.RewardScrapper,
-	[28300] = Storage.SvargrondArena.RewardWarlord
+	-- 
 }
 
 local questsExperience = {
@@ -13,14 +7,7 @@ local questsExperience = {
 }
 
 local questLog = {
-	[9130] = Storage.HiddenCityOfBeregar.DefaultStart
-}
-
-local tutorialIds = {
-	[50080] = 5,
-	[50082] = 6,
-	[50084] = 10,
-	[50086] = 11
+	-- 
 }
 
 local hotaQuest = {50950, 50951, 50952, 50953, 50954, 50955}
@@ -34,10 +21,6 @@ function questSystem1.onUse(player, item, fromPosition, target, toPosition, isHo
 		if storage > 65535 then
 			return false
 		end
-	end
-
-	if storage == 26300 or storage == 27300 or storage == 28300 then
-		player:setStorageValue(Storage.SvargrondArena.PitDoor, -1)
 	end
 
 	if player:getStorageValue(storage) > 0 then
@@ -108,19 +91,6 @@ function questSystem1.onUse(player, item, fromPosition, target, toPosition, isHo
 
 	if questLog[storage] then
 		player:setStorageValue(questLog[storage], 1)
-	end
-
-	if tutorialIds[storage] then
-		player:sendTutorial(tutorialIds[storage])
-		if item.uid == 50080 then
-			player:setStorageValue(Storage.RookgaardTutorialIsland.SantiagoNpcGreetStorage, 3)
-		end
-	end
-
-	if isInArray(hotaQuest, item.uid) then
-		if player:getStorageValue(Storage.TheAncientTombs.DefaultStart) ~= 1 then
-			player:setStorageValue(Storage.TheAncientTombs.DefaultStart, 1)
-		end
 	end
 
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You have found ' .. result .. '.')

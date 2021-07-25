@@ -44,23 +44,6 @@ local enchantedItems = {
 local enchanting = Action()
 
 function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-
-	if table.contains({33268, 33269}, toPosition.x)
-	and toPosition.y == 31830 and toPosition.z == 10
-	and player:getStorageValue(Storage.ElementalSphere.QuestLine) > 0 then
-		if not table.contains(spheres[item.itemid], player:getVocation():getClientId()) then
-			return false
-		elseif table.contains({7915, 7916}, target.itemid) then
-			player:say('Turn off the machine first.', TALKTYPE_MONSTER_SAY)
-			return true
-		else
-			player:setStorageValue(Storage.ElementalSphere.MachineGemCount, math.max(1, player:getStorageValue(Storage.ElementalSphere.MachineGemCount) + 1))
-			toPosition:sendMagicEffect(CONST_ME_PURPLEENERGY)
-			item:transform(item.itemid, item.type - 1)
-			return true
-		end
-	end
-
 	if item.itemid == 2147 and target.itemid == 2342 then
 		target:transform(2343)
 		target:decay()

@@ -39,15 +39,6 @@ debug.sethook(function(event, line)
 end, "l")
 
 -- OTServBr-Global functions
-function getJackLastMissionState(player)
-	if player:getStorageValue(Storage.TibiaTales.JackFutureQuest.LastMissionState) == 1 then
-		return "You told Jack the truth about his personality. You also explained that you and Spectulus \z
-		made a mistake by assuming him as the real Jack."
-	else
-		return "You lied to the confused Jack about his true personality. You and Spectulus made him \z
-		believe that he is in fact a completely different person. Now he will never be able to find out the truth."
-	end
-end
 
 function getRateFromTable(t, level, default)
 	for _, rate in ipairs(t) do
@@ -261,79 +252,6 @@ function playerExists(name)
 		return true
 	end
 	return false
-end
-
-function functionRevert()
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Corrupted, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Desert, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Dimension, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Grass, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Ice, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Mushroom, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Roshamuul, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.Venom, 0)
-	Game.setStorageValue(GlobalStorage.FerumbrasAscendant.Habitats.AllHabitats, 0)
-	for a = 1, #basins do
-		local item = Tile(basins[a].pos):getItemById(24852)
-		item:transform(12070)
-	end
-	local specs, spec = Game.getSpectators(Position(33629, 32693, 12), false, false, 25, 25, 85, 85)
-	for i = 1, #specs do
-		spec = specs[i]
-		if spec:isPlayer() then
-			spec:teleportTo(Position(33630, 32648, 12))
-			spec:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-			spec:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You were teleported because the habitats are returning to their original form.')
-		elseif spec:isMonster() then
-			spec:remove()
-		end
-	end
-	for x = 33611, 33625 do
-		for y = 32658, 32727 do
-			local position = Position(x, y, 12)
-			local tile = Tile(position)
-			if not tile then
-				return
-			end
-			local ground = tile:getGround()
-			if not ground then
-				return
-			end
-			ground:remove()
-			local items = tile:getItems()
-			if items then
-				for i = 1, #items do
-					local item = items[i]
-					item:remove()
-				end
-			end
-		end
-	end
-
-	for x = 33634, 33648 do
-		for y = 32658, 32727 do
-			local position = Position(x, y, 12)
-			local tile = Tile(position)
-			if not tile then
-				return
-			end
-			local ground = tile:getGround()
-			if not ground then
-				return
-			end
-			ground:remove()
-			local items = tile:getItems()
-			if items then
-				for i = 1, #items do
-					local item = items[i]
-					item:remove()
-				end
-			end
-		end
-	end
-
-	Game.loadMap('data/world/worldchanges/habitats.otbm')
-	return true
 end
 
 function checkWallArito(item, toPosition)
