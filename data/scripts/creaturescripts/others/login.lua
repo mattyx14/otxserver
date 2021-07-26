@@ -40,6 +40,15 @@ function playerLogin.onLogin(player)
 		player:sendTextMessage(MESSAGE_LOGIN, string.format("Your last visit in ".. SERVER_NAME ..": %s.", os.date("%d. %b %Y %X", player:getLastLoginSaved())))
 	end
 
+	if isPremium(player) then
+		player:setStorageValue(Storage.PremiumAccount, 1)
+	end
+
+	local playerId = player:getId()
+	DailyReward.init(playerId)
+
+	player:loadSpecialStorage()
+
 	-- Boosted creature
 	player:sendTextMessage(MESSAGE_BOOSTED_CREATURE, "Today's boosted creature: " .. Game.getBoostedCreature() .. " \
 	Boosted creatures yield more experience points, carry more loot than usual and respawn at a faster rate.")
