@@ -113,7 +113,6 @@ private:
 	bool canSee(int32_t x, int32_t y, int32_t z) const;
 	bool canSee(const Creature *) const;
 	bool canSee(const Position &pos) const;
-	
 
 	// we have all the parse methods
 	void parsePacket(NetworkMessage &msg) override;
