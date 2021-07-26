@@ -256,8 +256,7 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t count,
 	uint32_t flags, Creature* actor/* = NULL*/) const
 {
-	bool childIsOwner = hasBitSet(FLAG_CHILDISOWNER, flags);
-	if(childIsOwner)
+	if((flags & FLAG_CHILDISOWNER) == FLAG_CHILDISOWNER)
 	{
 		//a child container is querying, since we are the top container (not carried by a player)
 		//just return with no error.
@@ -265,7 +264,7 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 	}
 
 	const Item* item = thing->getItem();
-	if(item == NULL)
+	if(!item)
 		return RET_NOTPOSSIBLE;
 
 	if(!item->isPickupable())
@@ -276,24 +275,21 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 
 	if(const Container* container = item->getContainer())
 	{
-		const Cylinder* cylinder = getParent();
-		if(!hasBitSet(FLAG_NOLIMIT, flags))
-		{
-			if(index == INDEX_WHEREEVER && size() >= capacity())
-				return RET_CONTAINERNOTENOUGHROOM;
-		}
-		else
+		for(const Cylinder* cylinder = getParent(); cylinder; cylinder = cylinder->getParent())
 		{
 			if(cylinder == container)
 				return RET_THISISIMPOSSIBLE;
 		}
 	}
 
+	if((flags & FLAG_NOLIMIT) != FLAG_NOLIMIT && (index == INDEX_WHEREEVER && size() >= capacity()))
+		return RET_CONTAINERNOTENOUGHROOM;
+
 	const Cylinder* topParent = getTopParent();
 	if(topParent != this)
 		return topParent->__queryAdd(INDEX_WHEREEVER, item, count, flags | FLAG_CHILDISOWNER, actor);
-	else
-		return RET_NOERROR;
+
+	return RET_NOERROR;
 }
 
 ReturnValue Container::__queryMaxCount(int32_t index, const Thing* thing, uint32_t count,
@@ -416,26 +412,9 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 	if(!item)
 		return this;
 
-	if(index != INDEX_WHEREEVER)
-	{
-		Thing* destThing = __getThing(index);
-		if(destThing)
-			*destItem = destThing->getItem();
-
-		if(Cylinder* subCylinder = dynamic_cast<Cylinder*>(*destItem))
-		{
-			index = INDEX_WHEREEVER;
-			*destItem = NULL;
-			return subCylinder;
-		}
-	}
-
 	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
 	if(autoStack && item->isStackable() && item->getParent() != this)
 	{
-		if(*destItem && (*destItem)->getID() == item->getID() && (*destItem)->getItemCount() < 100)
-			return this;
-
 		//try find a suitable item to stack with
 		uint32_t n = 0;
 		for(ItemList::reverse_iterator cit = itemlist.rbegin(); cit != itemlist.rend(); ++cit, --n)
@@ -447,6 +426,20 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 				return this;
 			}
 			++n;
+		}
+	}
+
+	if(index != INDEX_WHEREEVER)
+	{
+		Thing* destThing = __getThing(index);
+		if(destThing)
+			*destItem = destThing->getItem();
+
+		if(Cylinder* subCylinder = dynamic_cast<Cylinder*>(*destItem))
+		{
+			index = INDEX_WHEREEVER;
+			*destItem = NULL;
+			return subCylinder;
 		}
 	}
 
