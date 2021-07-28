@@ -661,8 +661,15 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendChangeSpeed(creature, newSpeed);}
 		void sendCreatureHealth(const Creature* creature) const
 			{if(client) client->sendCreatureHealth(creature);}
-		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type) const
+
+#ifdef __EXTENDED_DISTANCE_SHOOT__
+		void sendDistanceShoot(const Position& from, const Position& to, uint16_t type) const
 			{if(client) client->sendDistanceShoot(from, to, type);}
+#else
+		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type) const
+		{if(client) client->sendDistanceShoot(from, to, type);}
+#endif
+
 		void sendHouseWindow(House* house, uint32_t listId) const;
 		void sendOutfitWindow() const {if(client) client->sendOutfitWindow();}
 		void sendQuests() const {if(client) client->sendQuests();}
@@ -676,8 +683,15 @@ class Player : public Creature, public Cylinder
 		void sendClosePrivate(uint16_t channelId) const
 			{if(client) client->sendClosePrivate(channelId);}
 		void sendIcons() const;
+
+#ifdef __EXTENDED_MAGIC_EFFECTS__
+		void sendMagicEffect(const Position& pos, uint16_t type) const
+			{if(client) client->sendMagicEffect(pos, type);}
+#else
 		void sendMagicEffect(const Position& pos, uint8_t type) const
 			{if(client) client->sendMagicEffect(pos, type);}
+#endif
+
 		void sendAnimatedText(const Position& pos, uint8_t color, const std::string& text) const
 			{if(client) client->sendAnimatedText(pos, color, text);}
 		void sendSkills() const

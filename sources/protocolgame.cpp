@@ -2006,31 +2006,61 @@ void ProtocolGame::sendPing()
 	msg->addByte(0x1E);
 }
 
-void ProtocolGame::sendDistanceShoot(const Position& from, const Position& to, uint8_t type)
-{
-	if(type > SHOOT_EFFECT_LAST || (!canSee(from) && !canSee(to)))
-		return;
+#ifdef __EXTENDED_DISTANCE_SHOOT__
+	void ProtocolGame::sendDistanceShoot(const Position& from, const Position& to, uint16_t type)
+	{
+		if(type > SHOOT_EFFECT_LAST || (!canSee(from) && !canSee(to)))
+			return;
 
-	OutputMessage_ptr msg = getOutputBuffer();
-	if(!msg)
-		return;
+		OutputMessage_ptr msg = getOutputBuffer();
+		if(!msg)
+			return;
 
-	TRACK_MESSAGE(msg);
-	AddDistanceShoot(msg, from, to, type);
-}
+		TRACK_MESSAGE(msg);
+		AddDistanceShoot(msg, from, to, type);
+	}
+#else
+	void ProtocolGame::sendDistanceShoot(const Position& from, const Position& to, uint8_t type)
+	{
+		if(type > SHOOT_EFFECT_LAST || (!canSee(from) && !canSee(to)))
+			return;
 
-void ProtocolGame::sendMagicEffect(const Position& pos, uint8_t type)
-{
-	if(type > MAGIC_EFFECT_LAST || !canSee(pos))
-		return;
+		OutputMessage_ptr msg = getOutputBuffer();
+		if(!msg)
+			return;
 
-	OutputMessage_ptr msg = getOutputBuffer();
-	if(!msg)
-		return;
+		TRACK_MESSAGE(msg);
+		AddDistanceShoot(msg, from, to, type);
+	}
+#endif
 
-	TRACK_MESSAGE(msg);
-	AddMagicEffect(msg, pos, type);
-}
+#ifdef __EXTENDED_MAGIC_EFFECTS__
+	void ProtocolGame::sendMagicEffect(const Position& pos, uint16_t type)
+	{
+		if(type > MAGIC_EFFECT_LAST || !canSee(pos))
+			return;
+
+		OutputMessage_ptr msg = getOutputBuffer();
+		if(!msg)
+			return;
+
+		TRACK_MESSAGE(msg);
+		AddMagicEffect(msg, pos, type);
+	}
+#else
+	void ProtocolGame::sendMagicEffect(const Position& pos, uint8_t type)
+	{
+		if(type > MAGIC_EFFECT_LAST || !canSee(pos))
+			return;
+
+		OutputMessage_ptr msg = getOutputBuffer();
+		if(!msg)
+			return;
+
+		TRACK_MESSAGE(msg);
+		AddMagicEffect(msg, pos, type);
+	}
+#endif
 
 void ProtocolGame::sendAnimatedText(const Position& pos, uint8_t color, std::string text)
 {
@@ -2682,21 +2712,42 @@ void ProtocolGame::AddAnimatedText(OutputMessage_ptr msg, const Position& pos,
 	msg->addString(text);
 }
 
-void ProtocolGame::AddMagicEffect(OutputMessage_ptr msg, const Position& pos, uint8_t type)
-{
-	msg->addByte(0x83);
-	msg->addPosition(pos);
-	msg->addByte(type + 1);
-}
 
-void ProtocolGame::AddDistanceShoot(OutputMessage_ptr msg, const Position& from, const Position& to,
-	uint8_t type)
-{
-	msg->addByte(0x85);
-	msg->addPosition(from);
-	msg->addPosition(to);
-	msg->addByte(type + 1);
-}
+#ifdef __EXTENDED_MAGIC_EFFECTS__
+	void ProtocolGame::AddMagicEffect(OutputMessage_ptr msg, const Position& pos, uint16_t type)
+	{
+		msg->addByte(0x83);
+		msg->addPosition(pos);
+		msg->add<uint16_t>(type + 1);
+	}
+#else
+	void ProtocolGame::AddMagicEffect(OutputMessage_ptr msg, const Position& pos, uint8_t type)
+	{
+		msg->addByte(0x83);
+		msg->addPosition(pos);
+		msg->addByte(type + 1);
+	}
+#endif
+
+#ifdef __EXTENDED_DISTANCE_SHOOT__
+	void ProtocolGame::AddDistanceShoot(OutputMessage_ptr msg, const Position& from, const Position& to,
+		uint16_t type)
+	{
+		msg->addByte(0x85);
+		msg->addPosition(from);
+		msg->addPosition(to);
+		msg->add<uint16_t>(type + 1);
+	}
+#else
+	void ProtocolGame::AddDistanceShoot(OutputMessage_ptr msg, const Position& from, const Position& to,
+		uint8_t type)
+	{
+		msg->addByte(0x85);
+		msg->addPosition(from);
+		msg->addPosition(to);
+		msg->addByte(type + 1);
+	}
+#endif
 
 void ProtocolGame::AddCreature(OutputMessage_ptr msg, const Creature* creature, bool known, uint32_t remove)
 {
@@ -2774,7 +2825,7 @@ void ProtocolGame::AddPlayerSkills(OutputMessage_ptr msg)
 }
 
 void ProtocolGame::AddCreatureSpeak(OutputMessage_ptr msg, const Creature* creature, MessageClasses type,
-	std::string text, uint16_t channelId, Position* pos, uint32_t statementId)
+	const std::string& text, const uint16_t& channelId, Position* pos, const uint32_t& statementId)
 {
 	if(type > MSG_SPEAK_MONSTER_LAST) {
 		type = MSG_SPEAK_SAY;
