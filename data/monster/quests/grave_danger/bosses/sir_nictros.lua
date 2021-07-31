@@ -51,10 +51,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"Sir_Baeloc_Sir_NictrosCharge"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

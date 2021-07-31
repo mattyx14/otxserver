@@ -54,11 +54,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"HeartBossDeath",
-	"OutburstCharge"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

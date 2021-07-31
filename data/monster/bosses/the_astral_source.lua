@@ -48,10 +48,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"AstralSource"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

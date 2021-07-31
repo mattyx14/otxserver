@@ -54,10 +54,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"Somewhat Beatable Death"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

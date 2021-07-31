@@ -48,11 +48,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"ChargedDisruptionTransform",
-	"HeartMinionDeath"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

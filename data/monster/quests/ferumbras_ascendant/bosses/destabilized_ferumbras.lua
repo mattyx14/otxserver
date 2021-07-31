@@ -54,10 +54,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"FerumbrasMortalShell"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

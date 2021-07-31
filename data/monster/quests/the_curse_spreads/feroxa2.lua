@@ -55,10 +55,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"FeroxaTransform"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

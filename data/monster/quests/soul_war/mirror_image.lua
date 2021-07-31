@@ -105,10 +105,6 @@ monster.immunities = {
 	{type = "bleed", condition = false}
 }
 
-monster.events = {
-	"MirrorImageTransform"
-}
-
 mType:register(monster)
 
 local mirrorImageTransform = CreatureEvent("MirrorImageTransform")

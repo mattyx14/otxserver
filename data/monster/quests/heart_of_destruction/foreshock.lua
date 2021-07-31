@@ -54,11 +54,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"ShocksDeath",
-	"ForeshockTransform"
-}
-
 monster.light = {
 	level = 0,
 	color = 0

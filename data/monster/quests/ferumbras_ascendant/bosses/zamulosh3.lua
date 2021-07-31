@@ -55,10 +55,6 @@ monster.flags = {
 	pet = false
 }
 
-monster.events = {
-	"ZamuloshClone"
-}
-
 monster.light = {
 	level = 0,
 	color = 0
