@@ -39,7 +39,6 @@ debug.sethook(function(event, line)
 end, "l")
 
 -- OTServBr-Global functions
-
 function getRateFromTable(t, level, default)
 	for _, rate in ipairs(t) do
 		if level >= rate.minlevel and (not rate.maxlevel or level <= rate.maxlevel) then

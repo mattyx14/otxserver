@@ -1,37 +1,19 @@
-local config = {
-	-- 
-	-- [9059] = TOWNS_LIST.AB_DENDRIEL,,
-}
-
 local citizen = MoveEvent()
 
 function citizen.onStepIn(creature, item, position, fromPosition)
-	local player = creature:getPlayer()
-	if not player then
-		return true
-	end
+	if item.actionid > 30020 and item.actionid < 30050 then
+		local player = creature:getPlayer()
+		if player == nil then
+			return false
+		end
 
-	local townId = config[item.uid]
-	if not townId then
-		return true
+		local town = Town(item.actionid - 30020)
+		player:setTown(town)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are the newest resident of " .. town:getName(town) .. ".")
 	end
-
-	local town = Town(townId)
-	if not town then
-		return true
-	end
-
-	player:setTown(town)
-	player:teleportTo(town:getTemplePosition())
-	player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You are now a citizen of ' .. town:getName() .. '.')
 	return true
 end
 
 citizen:type("stepin")
-
-for index, value in pairs(config) do
-	citizen:uid(index)
-end
-
+citizen:id(1387, 1397)
 citizen:register()

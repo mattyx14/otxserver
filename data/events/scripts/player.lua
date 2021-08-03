@@ -314,8 +314,7 @@ local function antiPush(self, item, count, fromPosition, toPosition, fromCylinde
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-
-	-- No move items with actionID = 100
+	-- No move items with actionID = 8000
 	if item:getActionId() == NOT_MOVEABLE_ACTION then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return false
@@ -598,7 +597,7 @@ function Player:onTurn(direction)
 end
 
 function Player:onTradeRequest(target, item)
-	-- No trade items with actionID = 100
+	-- No trade items with actionID = 8000
 	if item:getActionId() == NOT_MOVEABLE_ACTION then
 		return false
 	end
@@ -753,10 +752,6 @@ function Player:onLoseExperience(exp)
 end
 
 function Player:onGainSkillTries(skill, tries)
-	-- Dawnport skills limit
-	if isSkillGrowthLimited(self, skill) then
-		return 0
-	end
 	if APPLY_SKILL_MULTIPLIER == false then
 		return tries
 	end
@@ -814,7 +809,7 @@ function Player:canBeAppliedImbuement(imbuement, item)
 		return false
 	end
 
-	if self:getStorageValue(Storage.Tomes) > 0 then
+	if self:getStorageValue(GlobalStorage.Tomes) > 0 then
 		imbuable = true
 	else
 		return false

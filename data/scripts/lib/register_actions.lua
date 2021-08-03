@@ -5,7 +5,7 @@ local holeId = {
 local Itemsgrinder = {
     [7759] = {item_id = 34642, effect = CONST_ME_BLUE_FIREWORKS}, -- Sapphire dust
     [18416] = {item_id = 23876, effect = CONST_ME_GREENSMOKE} -- Pinch of crystal dust
-    }
+}
 
 local holes = {
     468, 481, 483, 7932, 23712
@@ -23,54 +23,8 @@ local fruits = {
 }
 
 local lava = {
-    Position(32808, 32336, 11),
-    Position(32809, 32336, 11),
-    Position(32810, 32336, 11),
-    Position(32808, 32334, 11),
-    Position(32807, 32334, 11),
-    Position(32807, 32335, 11),
-    Position(32807, 32336, 11),
-    Position(32807, 32337, 11),
-    Position(32806, 32337, 11),
-    Position(32805, 32337, 11),
-    Position(32805, 32338, 11),
-    Position(32805, 32339, 11),
-    Position(32806, 32339, 11),
-    Position(32806, 32338, 11),
-    Position(32807, 32338, 11),
-    Position(32808, 32338, 11),
-    Position(32808, 32337, 11),
-    Position(32809, 32337, 11),
-    Position(32810, 32337, 11),
-    Position(32811, 32337, 11),
-    Position(32811, 32338, 11),
-    Position(32806, 32338, 11),
-    Position(32810, 32338, 11),
-    Position(32810, 32339, 11),
-    Position(32809, 32339, 11),
-    Position(32809, 32338, 11),
-    Position(32811, 32336, 11),
-    Position(32811, 32335, 11),
-    Position(32810, 32335, 11),
-    Position(32809, 32335, 11),
-    Position(32808, 32335, 11),
-    Position(32809, 32334, 11),
-    Position(32809, 32333, 11),
-    Position(32810, 32333, 11),
-    Position(32811, 32333, 11),
-    Position(32806, 32338, 11),
-    Position(32810, 32334, 11),
-    Position(32811, 32334, 11),
-    Position(32812, 32334, 11),
-    Position(32813, 32334, 11),
-    Position(32814, 32334, 11),
-    Position(32812, 32333, 11),
-    Position(32810, 32334, 11),
-    Position(32812, 32335, 11),
-    Position(32813, 32335, 11),
-    Position(32814, 32335, 11),
-    Position(32814, 32333, 11),
-    Position(32813, 32333, 11)
+	--
+	-- Position(32808, 32336, 11),
 }
 
 local function revertItem(position, itemId, transformId)
