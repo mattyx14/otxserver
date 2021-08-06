@@ -43,19 +43,47 @@ class TalkAction : public Event
 		const std::string& getWords() const {
 			return words;
 		}
-		char getSeparator() const {
+		const std::vector<std::string>& getWordsMap() const {
+			return wordsMap;
+		}
+		void setWords(std::string word) {
+			words = word;
+			wordsMap.push_back(word);
+		}
+		std::string getSeparator() const {
 			return separator;
+		}
+		void setSeparator(std::string sep) {
+			separator = sep;
 		}
 
 		//scripting
-		bool executeSay(Player* player, const std::string& param, SpeakClasses type) const;
-		//
+		bool executeSay(Player* player, const std::string& words, const std::string& param, SpeakClasses type) const;
+
+		AccountType_t getRequiredAccountType() const {
+			return requiredAccountType;
+		}
+
+		void setRequiredAccountType(AccountType_t reqAccType) {
+			requiredAccountType = reqAccType;
+		}
+
+		bool getNeedAccess() const {
+			return needAccess;
+		}
+
+		void setNeedAccess(bool b) {
+			needAccess = b;
+		}
 
 	private:
 		std::string getScriptEventName() const override;
 
 		std::string words;
-		char separator = '"';
+		std::vector<std::string> wordsMap;
+		std::string separator = "\"";
+		bool needAccess = false;
+		AccountType_t requiredAccountType = ACCOUNT_TYPE_NORMAL;
 };
 
 class TalkActions final : public BaseEvents
@@ -70,14 +98,16 @@ class TalkActions final : public BaseEvents
 
 		TalkActionResult_t playerSaySpell(Player* player, SpeakClasses type, const std::string& words) const;
 
+		bool registerLuaEvent(TalkAction* event);
+		void clear(bool fromLua) override final;
+
 	private:
 		LuaScriptInterface& getScriptInterface() override;
 		std::string getScriptBaseName() const override;
 		Event_ptr getEvent(const std::string& nodeName) override;
 		bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
-		void clear() override;
 
-		std::forward_list<TalkAction> talkActions;
+		std::map<std::string, TalkAction> talkActions;
 
 		LuaScriptInterface scriptInterface;
 };

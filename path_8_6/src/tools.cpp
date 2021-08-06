@@ -37,7 +37,7 @@ void printXMLError(const std::string& where, const std::string& fileName, const 
 	uint32_t currentLine = 1;
 	std::string line;
 
-	size_t offset = static_cast<size_t>(result.offset);
+	auto offset = static_cast<size_t>(result.offset);
 	size_t lineOffsetPosition = 0;
 	size_t index = 0;
 	size_t bytes;
@@ -184,6 +184,51 @@ std::string transformToSHA1(const std::string& input)
 		hexstring[index + 1] = hexDigits[byte & 15];
 	}
 	return std::string(hexstring, 40);
+}
+
+std::string generateToken(const std::string& key, uint32_t ticks)
+{
+	// generate message from ticks
+	std::string message(8, 0);
+	for (uint8_t i = 8; --i; ticks >>= 8) {
+		message[i] = static_cast<char>(ticks & 0xFF);
+	}
+
+	// hmac key pad generation
+	std::string iKeyPad(64, 0x36), oKeyPad(64, 0x5C);
+	for (uint8_t i = 0; i < key.length(); ++i) {
+		iKeyPad[i] ^= key[i];
+		oKeyPad[i] ^= key[i];
+	}
+
+	oKeyPad.reserve(84);
+
+	// hmac concat inner pad with message
+	iKeyPad.append(message);
+
+	// hmac first pass
+	message.assign(transformToSHA1(iKeyPad));
+
+	// hmac concat outer pad with message, conversion from hex to int needed
+	for (uint8_t i = 0; i < message.length(); i += 2) {
+		oKeyPad.push_back(static_cast<char>(std::strtoul(message.substr(i, 2).c_str(), nullptr, 16)));
+	}
+
+	// hmac second pass
+	message.assign(transformToSHA1(oKeyPad));
+
+	// calculate hmac offset
+	uint32_t offset = static_cast<uint32_t>(std::strtoul(message.substr(39, 1).c_str(), nullptr, 16) & 0xF);
+
+	// get truncated hash
+	uint32_t truncHash = static_cast<uint32_t>(std::strtoul(message.substr(2 * offset, 8).c_str(), nullptr, 16)) & 0x7FFFFFFF;
+	message.assign(std::to_string(truncHash));
+
+	// return only last AUTHENTICATOR_DIGITS (default 6) digits, also asserts exactly 6 digits
+	uint32_t hashLen = message.length();
+	message.assign(message.substr(hashLen - std::min(hashLen, AUTHENTICATOR_DIGITS)));
+	message.insert(0, AUTHENTICATOR_DIGITS - std::min(hashLen, AUTHENTICATOR_DIGITS), '0');
+	return message;
 }
 
 void replaceString(std::string& str, const std::string& sought, const std::string& replacement)
@@ -530,6 +575,17 @@ MagicEffectNames magicEffectNames = {
 	{"smoke",		CONST_ME_SMOKE},
 	{"insects",		CONST_ME_INSECTS},
 	{"dragonhead",		CONST_ME_DRAGONHEAD},
+	{"orcshaman",		CONST_ME_ORCSHAMAN},
+	{"orcshamanfire",	CONST_ME_ORCSHAMAN_FIRE},
+	{"thunder",		CONST_ME_THUNDER},
+	{"ferumbras",		CONST_ME_FERUMBRAS},
+	{"confettihorizontal",	CONST_ME_CONFETTI_HORIZONTAL},
+	{"confettivertical",	CONST_ME_CONFETTI_VERTICAL},
+	{"blacksmoke",		CONST_ME_BLACKSMOKE},
+	{"redsmoke",		CONST_ME_REDSMOKE},
+	{"yellowsmoke",		CONST_ME_YELLOWSMOKE},
+	{"greensmoke",		CONST_ME_GREENSMOKE},
+	{"purplesmoke",		CONST_ME_PURPLESMOKE},
 };
 
 ShootTypeNames shootTypeNames = {
@@ -575,6 +631,14 @@ ShootTypeNames shootTypeNames = {
 	{"eartharrow",		CONST_ANI_EARTHARROW},
 	{"explosion",		CONST_ANI_EXPLOSION},
 	{"cake",		CONST_ANI_CAKE},
+	{"tarsalarrow",		CONST_ANI_TARSALARROW},
+	{"vortexbolt",		CONST_ANI_VORTEXBOLT},
+	{"prismaticbolt",	CONST_ANI_PRISMATICBOLT},
+	{"crystallinearrow",	CONST_ANI_CRYSTALLINEARROW},
+	{"drillbolt",		CONST_ANI_DRILLBOLT},
+	{"envenomedarrow",	CONST_ANI_ENVENOMEDARROW},
+	{"gloothspear",		CONST_ANI_GLOOTHSPEAR},
+	{"simplearrow",		CONST_ANI_SIMPLEARROW},
 };
 
 CombatTypeNames combatTypeNames = {
@@ -631,6 +695,7 @@ SkullNames skullNames = {
 	{"white",	SKULL_WHITE},
 	{"red",		SKULL_RED},
 	{"black",	SKULL_BLACK},
+	{"orange",	SKULL_ORANGE},
 };
 
 MagicEffectClasses getMagicEffect(const std::string& strValue)
@@ -685,6 +750,32 @@ Skulls_t getSkullType(const std::string& strValue)
 		return skullType->second;
 	}
 	return SKULL_NONE;
+}
+
+std::string getSpecialSkillName(uint8_t skillid)
+{
+	switch (skillid) {
+		case SPECIALSKILL_CRITICALHITCHANCE:
+			return "critical hit chance";
+
+		case SPECIALSKILL_CRITICALHITAMOUNT:
+			return "critical extra damage";
+
+		case SPECIALSKILL_LIFELEECHCHANCE:
+			return "hitpoints leech chance";
+
+		case SPECIALSKILL_LIFELEECHAMOUNT:
+			return "hitpoints leech amount";
+
+		case SPECIALSKILL_MANALEECHCHANCE:
+			return "manapoints leech chance";
+
+		case SPECIALSKILL_MANALEECHAMOUNT:
+			return "mana points leech amount";
+
+		default:
+			return "unknown";
+	}
 }
 
 std::string getSkillName(uint8_t skillid)
@@ -904,6 +995,8 @@ itemAttrTypes stringToItemAttribute(const std::string& str)
 		return ITEM_ATTRIBUTE_FLUIDTYPE;
 	} else if (str == "doorid") {
 		return ITEM_ATTRIBUTE_DOORID;
+	} else if (str == "wrapid") {
+		return ITEM_ATTRIBUTE_WRAPID;
 	}
 	return ITEM_ATTRIBUTE_NONE;
 }
@@ -924,11 +1017,8 @@ std::string getFirstLine(const std::string& str)
 const char* getReturnMessage(ReturnValue value)
 {
 	switch (value) {
-		case RETURNVALUE_REWARDCHESTISEMPTY:
-			return "The chest is currently empty. You did not take part in any battles in the last seven days or already claimed your reward.";
-
 		case RETURNVALUE_DESTINATIONOUTOFREACH:
-			return "Destination is out of reach.";
+			return "Destination is out of range.";
 
 		case RETURNVALUE_NOTMOVEABLE:
 			return "You cannot move this object.";
@@ -952,7 +1042,7 @@ const char* getReturnMessage(ReturnValue value)
 			return "You may only use one weapon.";
 
 		case RETURNVALUE_TOOFARAWAY:
-			return "Too far away.";
+			return "You are too far away.";
 
 		case RETURNVALUE_FIRSTGODOWNSTAIRS:
 			return "First go downstairs.";
@@ -1004,7 +1094,7 @@ const char* getReturnMessage(ReturnValue value)
 			return "You do not have the required magic level to use this rune.";
 
 		case RETURNVALUE_YOUAREALREADYTRADING:
-			return "You are already trading.";
+			return "You are already trading. Finish this trade first.";
 
 		case RETURNVALUE_THISPLAYERISALREADYTRADING:
 			return "This player is already trading.";
@@ -1016,7 +1106,7 @@ const char* getReturnMessage(ReturnValue value)
 			return "You are not allowed to shoot directly on players.";
 
 		case RETURNVALUE_NOTENOUGHLEVEL:
-			return "You do not have enough level.";
+			return "Your level is too low.";
 
 		case RETURNVALUE_NOTENOUGHMAGICLEVEL:
 			return "You do not have enough magic level.";
@@ -1030,8 +1120,11 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUAREEXHAUSTED:
 			return "You are exhausted.";
 
+		case RETURNVALUE_YOUCANNOTUSEOBJECTSTHATFAST:
+			return "You cannot use objects that fast.";
+
 		case RETURNVALUE_CANONLYUSETHISRUNEONCREATURES:
-			return "You can only use this rune on creatures.";
+			return "You can only use it on creatures.";
 
 		case RETURNVALUE_PLAYERISNOTREACHABLE:
 			return "Player is not reachable.";
@@ -1043,7 +1136,7 @@ const char* getReturnMessage(ReturnValue value)
 			return "This action is not permitted in a protection zone.";
 
 		case RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER:
-			return "You may not attack this player.";
+			return "You may not attack this person.";
 
 		case RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE:
 			return "You may not attack this creature.";
@@ -1064,10 +1157,10 @@ const char* getReturnMessage(ReturnValue value)
 			return "You need a premium account.";
 
 		case RETURNVALUE_YOUNEEDTOLEARNTHISSPELL:
-			return "You need to learn this spell first.";
+			return "You must learn this spell first.";
 
 		case RETURNVALUE_YOURVOCATIONCANNOTUSETHISSPELL:
-			return "Your vocation cannot use this spell.";
+			return "You have the wrong vocation to cast this spell.";
 
 		case RETURNVALUE_YOUNEEDAWEAPONTOUSETHISSPELL:
 			return "You need to equip a weapon to use this spell.";
@@ -1126,26 +1219,17 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUCANNOTTRADETHISHOUSE:
 			return "You can not trade this house.";
 
-		case RETURNVALUE_NOTENOUGHFISTLEVEL:
-			return "You do not have enough fist level";
+		case RETURNVALUE_YOUDONTHAVEREQUIREDPROFESSION:
+			return "You don't have the required profession.";
 
-		case RETURNVALUE_NOTENOUGHCLUBLEVEL:
-			return "You do not have enough club level";
+		case RETURNVALUE_CANNOTMOVEITEMISNOTSTOREITEM:
+			return "You cannot move this item into your Store inbox as it was not bought in the Store.";
 
-		case RETURNVALUE_NOTENOUGHSWORDLEVEL:
-			return "You do not have enough sword level";
-
-		case RETURNVALUE_NOTENOUGHAXELEVEL:
-			return "You do not have enough axe level";
-
-		case RETURNVALUE_NOTENOUGHDISTANCELEVEL:
-			return "You do not have enough distance level";
-
-		case RETURNVALUE_NOTENOUGHSHIELDLEVEL:
-			return "You do not have enough shielding level";
-
-		case RETURNVALUE_NOTENOUGHFISHLEVEL:
-			return "You do not have enough fishing level";
+		case RETURNVALUE_ITEMCANNOTBEMOVEDTHERE:
+			return "This item cannot be moved there.";
+			
+		case RETURNVALUE_YOUCANNOTUSETHISBED:
+			return "This bed can't be used, but Premium Account players can rent houses and sleep in beds there to regain health and mana.";
 
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
@@ -1155,4 +1239,20 @@ const char* getReturnMessage(ReturnValue value)
 int64_t OTSYS_TIME()
 {
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
+
+SpellGroup_t stringToSpellGroup(const std::string& value)
+{
+	std::string tmpStr = asLowerCaseString(value);
+	if (tmpStr == "attack" || tmpStr == "1") {
+		return SPELLGROUP_ATTACK;
+	} else if (tmpStr == "healing" || tmpStr == "2") {
+		return SPELLGROUP_HEALING;
+	} else if (tmpStr == "support" || tmpStr == "3") {
+		return SPELLGROUP_SUPPORT;
+	} else if (tmpStr == "special" || tmpStr == "4") {
+		return SPELLGROUP_SPECIAL;
+	}
+
+	return SPELLGROUP_NONE;
 }

@@ -9,6 +9,9 @@
 *.suo
 *.user
 *.sln.docstates
+.idea/
+.vscode/
+.vs/
 
 # Build results
 
@@ -18,6 +21,7 @@ x64/
 build/
 [Bb]in/
 [Oo]bj/
+cmake-build-*/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -46,6 +50,8 @@ build/
 *.pidb
 *.log
 *.scc
+*.dll
+*.exe
 
 # Visual C++ cache files
 ipch/
@@ -171,7 +177,7 @@ pip-log.txt
 .*.swp
 .*.swo
 
-*.dll
+#############
+## TFS / OT
+#############
 config.lua
-theforgottenserver.exe
-vc14/theforgottenserver.VC.db

@@ -26,11 +26,10 @@
 #include "const.h"
 #include "enums.h"
 
-typedef std::vector<std::pair<uint32_t, uint32_t>> IPList;
-
 void printXMLError(const std::string& where, const std::string& fileName, const pugi::xml_parse_result& result);
 
 std::string transformToSHA1(const std::string& input);
+std::string generateToken(const std::string& key, uint32_t ticks);
 
 void replaceString(std::string& str, const std::string& sought, const std::string& replacement);
 void trim_right(std::string& source, char t);
@@ -94,5 +93,7 @@ itemAttrTypes stringToItemAttribute(const std::string& str);
 const char* getReturnMessage(ReturnValue value);
 
 int64_t OTSYS_TIME();
+
+SpellGroup_t stringToSpellGroup(const std::string& value);
 
 #endif

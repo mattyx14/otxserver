@@ -4,7 +4,6 @@ dofile('data/lib/core/core.lua')
 -- Compatibility library for our old Lua API
 dofile('data/lib/compat/compat.lua')
 
--- Custom
-dofile('data/lib/custom/custom.lua')
-dofile('data/lib/custom/storages.lua')
-dofile('data/lib/custom/rewardboss.lua')
+-- Debugging helper function for Lua developers
+dofile('data/lib/debugging/dump.lua')
+dofile('data/lib/debugging/lua_version.lua')

@@ -32,7 +32,7 @@ using Protocol_ptr = std::shared_ptr<Protocol>;
 class OutputMessage;
 using OutputMessage_ptr = std::shared_ptr<OutputMessage>;
 class Connection;
-using Connection_ptr = std::shared_ptr<Connection> ;
+using Connection_ptr = std::shared_ptr<Connection>;
 using ConnectionWeak_ptr = std::weak_ptr<Connection>;
 class ServiceBase;
 using Service_ptr = std::shared_ptr<ServiceBase>;
@@ -66,15 +66,10 @@ class Connection : public std::enable_shared_from_this<Connection>
 		Connection(const Connection&) = delete;
 		Connection& operator=(const Connection&) = delete;
 
-		enum ConnectionState_t {
-			CONNECTION_STATE_OPEN,
-			CONNECTION_STATE_CLOSED,
-		};
-
 		enum { FORCE_CLOSE = true };
 
 		Connection(boost::asio::io_service& io_service,
-		           ConstServicePort_ptr service_port) :
+		ConstServicePort_ptr service_port) :
 			readTimer(io_service),
 			writeTimer(io_service),
 			service_port(std::move(service_port)),
@@ -111,8 +106,8 @@ class Connection : public std::enable_shared_from_this<Connection>
 
 		NetworkMessage msg;
 
-		boost::asio::deadline_timer readTimer;
-		boost::asio::deadline_timer writeTimer;
+		boost::asio::steady_timer readTimer;
+		boost::asio::steady_timer writeTimer;
 
 		std::recursive_mutex connectionLock;
 
@@ -126,7 +121,7 @@ class Connection : public std::enable_shared_from_this<Connection>
 		time_t timeConnected;
 		uint32_t packetsSent = 0;
 
-		bool connectionState = CONNECTION_STATE_OPEN;
+		bool closed = false;
 		bool receivedFirst = false;
 };
 

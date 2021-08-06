@@ -22,7 +22,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include <mysql.h>
+#include <mysql/mysql.h>
 
 class DBResult;
 using DBResult_ptr = std::shared_ptr<DBResult>;
@@ -121,7 +121,7 @@ class Database
 		/**
 		 * Transaction related methods.
 		 *
-		 * Methods for starting, commiting and rolling back transaction. Each of the returns boolean value.
+		 * Methods for starting, committing and rolling back transaction. Each of the returns boolean value.
 		 *
 		 * @return true on success, false on error
 		 */

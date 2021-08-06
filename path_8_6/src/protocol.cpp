@@ -22,8 +22,43 @@
 #include "protocol.h"
 #include "outputmessage.h"
 #include "rsa.h"
+#include "xtea.h"
 
 extern RSA g_RSA;
+
+namespace {
+
+void XTEA_encrypt(OutputMessage& msg, const xtea::round_keys& key)
+{
+	// The message must be a multiple of 8
+	size_t paddingBytes = msg.getLength() % 8u;
+	if (paddingBytes != 0) {
+		msg.addPaddingBytes(8 - paddingBytes);
+	}
+
+	uint8_t* buffer = msg.getOutputBuffer();
+	xtea::encrypt(buffer, msg.getLength(), key);
+}
+
+bool XTEA_decrypt(NetworkMessage& msg, const xtea::round_keys& key)
+{
+	if (((msg.getLength() - 6) & 7) != 0) {
+		return false;
+	}
+
+	uint8_t* buffer = msg.getBuffer() + msg.getBufferPosition();
+	xtea::decrypt(buffer, msg.getLength() - 6, key);
+
+	uint16_t innerLength = msg.get<uint16_t>();
+	if (innerLength + 8 > msg.getLength()) {
+		return false;
+	}
+
+	msg.setLength(innerLength);
+	return true;
+}
+
+}
 
 void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 {
@@ -31,7 +66,7 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 		msg->writeMessageLength();
 
 		if (encryptionEnabled) {
-			XTEA_encrypt(*msg);
+			XTEA_encrypt(*msg, key);
 			msg->addCryptoHeader(checksumEnabled);
 		}
 	}
@@ -39,7 +74,7 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
-	if (encryptionEnabled && !XTEA_decrypt(msg)) {
+	if (encryptionEnabled && !XTEA_decrypt(msg, key)) {
 		return;
 	}
 
@@ -49,93 +84,18 @@ void Protocol::onRecvMessage(NetworkMessage& msg)
 OutputMessage_ptr Protocol::getOutputBuffer(int32_t size)
 {
 	//dispatcher thread
-	if (outputBuffer && NetworkMessage::MAX_PROTOCOL_BODY_LENGTH >= outputBuffer->getLength() + size) {
-		return outputBuffer;
-	} else {
+	if (!outputBuffer) {
 		outputBuffer = OutputMessagePool::getOutputMessage();
-		return outputBuffer;
+	} else if ((outputBuffer->getLength() + size) > NetworkMessage::MAX_PROTOCOL_BODY_LENGTH) {
+		send(outputBuffer);
+		outputBuffer = OutputMessagePool::getOutputMessage();
 	}
-}
-
-void Protocol::XTEA_encrypt(OutputMessage& msg) const
-{
-	const uint32_t delta = 0x61C88647;
-
-	// The message must be a multiple of 8
-	size_t paddingBytes = msg.getLength() % 8;
-	if (paddingBytes != 0) {
-		msg.addPaddingBytes(8 - paddingBytes);
-	}
-
-	uint8_t* buffer = msg.getOutputBuffer();
-	const size_t messageLength = msg.getLength();
-	size_t readPos = 0;
-	const uint32_t k[] = {key[0], key[1], key[2], key[3]};
-	while (readPos < messageLength) {
-		uint32_t v0;
-		memcpy(&v0, buffer + readPos, 4);
-		uint32_t v1;
-		memcpy(&v1, buffer + readPos + 4, 4);
-
-		uint32_t sum = 0;
-
-		for (int32_t i = 32; --i >= 0;) {
-			v0 += ((v1 << 4 ^ v1 >> 5) + v1) ^ (sum + k[sum & 3]);
-			sum -= delta;
-			v1 += ((v0 << 4 ^ v0 >> 5) + v0) ^ (sum + k[(sum >> 11) & 3]);
-		}
-
-		memcpy(buffer + readPos, &v0, 4);
-		readPos += 4;
-		memcpy(buffer + readPos, &v1, 4);
-		readPos += 4;
-	}
-}
-
-bool Protocol::XTEA_decrypt(NetworkMessage& msg) const
-{
-	if (((msg.getLength() - 6) & 7) != 0) {
-		return false;
-	}
-
-	const uint32_t delta = 0x61C88647;
-
-	uint8_t* buffer = msg.getBuffer() + msg.getBufferPosition();
-	const size_t messageLength = (msg.getLength() - 6);
-	size_t readPos = 0;
-	const uint32_t k[] = {key[0], key[1], key[2], key[3]};
-	while (readPos < messageLength) {
-		uint32_t v0;
-		memcpy(&v0, buffer + readPos, 4);
-		uint32_t v1;
-		memcpy(&v1, buffer + readPos + 4, 4);
-
-		uint32_t sum = 0xC6EF3720;
-
-		for (int32_t i = 32; --i >= 0;) {
-			v1 -= ((v0 << 4 ^ v0 >> 5) + v0) ^ (sum + k[(sum >> 11) & 3]);
-			sum += delta;
-			v0 -= ((v1 << 4 ^ v1 >> 5) + v1) ^ (sum + k[sum & 3]);
-		}
-
-		memcpy(buffer + readPos, &v0, 4);
-		readPos += 4;
-		memcpy(buffer + readPos, &v1, 4);
-		readPos += 4;
-	}
-
-	int innerLength = msg.get<uint16_t>();
-	if (innerLength > msg.getLength() - 8) {
-		return false;
-	}
-
-	msg.setLength(innerLength);
-	return true;
+	return outputBuffer;
 }
 
 bool Protocol::RSA_decrypt(NetworkMessage& msg)
 {
-	if ((msg.getLength() - msg.getBufferPosition()) != 128) {
+	if ((msg.getLength() - msg.getBufferPosition()) < 128) {
 		return false;
 	}
 

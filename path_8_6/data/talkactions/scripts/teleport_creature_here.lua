@@ -9,9 +9,6 @@ function onSay(player, words, param)
 		return false
 	end
 
-	--create logcommand
-	logCommand(player, words, param)
-
 	local oldPosition = creature:getPosition()
 	local newPosition = creature:getClosestFreePosition(player:getPosition(), false)
 	if newPosition.x == 0 then

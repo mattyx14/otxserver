@@ -104,17 +104,12 @@ class Monster final : public Creature
 			return mType->info.isAttackable;
 		}
 
-		bool canPushItems() const {
-			return mType->info.canPushItems;
-		}
+		bool canPushItems() const;
 		bool canPushCreatures() const {
 			return mType->info.canPushCreatures;
 		}
 		bool isHostile() const {
 			return mType->info.isHostile;
-		}
-		bool isPassive() const {
-			return mType->info.isPassive;
 		}
 		bool canSee(const Position& pos) const override;
 		bool canSeeInvisibility() const override {
@@ -127,7 +122,6 @@ class Monster final : public Creature
 			this->spawn = spawn;
 		}
 		bool canWalkOnFieldType(CombatType_t combatType) const;
-
 
 		void onAttackedCreatureDisappear(bool isLogout) override;
 
@@ -151,7 +145,7 @@ class Monster final : public Creature
 
 		void doAttacking(uint32_t interval) override;
 		bool hasExtraSwing() override {
-			return extraMeleeAttack;
+			return lastMeleeAttack == 0;
 		}
 
 		bool searchTarget(TargetSearchType_t searchType = TARGETSEARCH_DEFAULT);
@@ -166,7 +160,7 @@ class Monster final : public Creature
 
 		bool isTarget(const Creature* creature) const;
 		bool isFleeing() const {
-			return !isSummon() && getHealth() <= mType->info.runAwayHealth;
+			return !isSummon() && getHealth() <= mType->info.runAwayHealth && challengeFocusDuration <= 0;
 		}
 
 		bool getDistanceStep(const Position& targetPos, Direction& direction, bool flee = false);
@@ -178,7 +172,7 @@ class Monster final : public Creature
 		}
 
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-		                     bool checkDefense = false, bool checkArmor = false, bool field = false) override;
+		                     bool checkDefense = false, bool checkArmor = false, bool field = false, bool ignoreResistances = false) override;
 
 		static uint32_t monsterAutoID;
 
@@ -201,12 +195,12 @@ class Monster final : public Creature
 		int32_t minCombatValue = 0;
 		int32_t maxCombatValue = 0;
 		int32_t targetChangeCooldown = 0;
+		int32_t challengeFocusDuration = 0;
 		int32_t stepDuration = 0;
 
 		Position masterPos;
 
 		bool isIdle = true;
-		bool extraMeleeAttack = false;
 		bool isMasterInRange = false;
 		bool randomStepping = false;
 		bool ignoreFieldDamage = false;

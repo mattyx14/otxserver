@@ -23,6 +23,8 @@
 
 #include "game.h"
 
+#include "iomarket.h"
+
 #include "configmanager.h"
 #include "scriptmanager.h"
 #include "rsa.h"
@@ -32,18 +34,22 @@
 #include "databasemanager.h"
 #include "scheduler.h"
 #include "databasetasks.h"
+#include "script.h"
 #include <fstream>
+#include <fmt/format.h>
+#if __has_include("gitmetadata.h")
+	#include "gitmetadata.h"
+#endif
 
 DatabaseTasks g_databaseTasks;
 Dispatcher g_dispatcher;
 Scheduler g_scheduler;
 
-IPList serverIPs;
-
 Game g_game;
 ConfigManager g_config;
 Monsters g_monsters;
 Vocations g_vocations;
+extern Scripts* g_scripts;
 RSA g_RSA;
 
 std::mutex g_loaderLock;
@@ -57,6 +63,7 @@ void startupErrorMessage(const std::string& errorStr)
 }
 
 void mainLoader(int argc, char* argv[], ServiceManager* services);
+bool argumentsHandler(const StringVector& args);
 
 [[noreturn]] void badAllocationHandler()
 {
@@ -68,6 +75,11 @@ void mainLoader(int argc, char* argv[], ServiceManager* services);
 
 int main(int argc, char* argv[])
 {
+	StringVector args = StringVector(argv, argv + argc);
+	if(argc > 1 && !argumentsHandler(args)) {
+		return 0;
+	}
+
 	// Setup bad allocation handler
 	std::set_new_handler(badAllocationHandler);
 
@@ -96,19 +108,21 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void mainLoader(int argc, char* argv[], ServiceManager* services)
+void printServerVersion()
 {
-	//dispatcher thread
-	g_game.setGameState(GAME_STATE_STARTUP);
-
-	srand(static_cast<unsigned int>(OTSYS_TIME()));
-#ifdef _WIN32
-	SetConsoleTitle(STATUS_SERVER_NAME);
+#if defined(GIT_RETRIEVED_STATE) && GIT_RETRIEVED_STATE
+	std::cout << STATUS_SERVER_NAME << " - Version " << GIT_DESCRIBE << std::endl;
+	std::cout << "Git SHA1 " << GIT_SHORT_SHA1  << " dated " << GIT_COMMIT_DATE_ISO8601 << std::endl;
+	#if GIT_IS_DIRTY
+	std::cout << "*** DIRTY - NOT OFFICIAL RELEASE ***" << std::endl;
+	#endif
+#else
+	std::cout << STATUS_SERVER_NAME << " - Version " << STATUS_SERVER_VERSION << std::endl;
 #endif
-	std::cout << "The " << STATUS_SERVER_NAME << " Global - Version: (" << STATUS_SERVER_VERSION << "." << MINOR_VERSION << " . " << REVISION_VERSION << ") - Codename: ( " << SOFTWARE_CODENAME << " )" << std::endl;
-	std::cout << "Compiled with: " << BOOST_COMPILER << std::endl;
-	std::cout << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
+	std::cout << std::endl;
 
+	std::cout << "Compiled with " << BOOST_COMPILER << std::endl;
+	std::cout << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
 #if defined(__amd64__) || defined(_M_X64)
 	std::cout << "x64" << std::endl;
 #elif defined(__i386__) || defined(_M_IX86) || defined(_X86_)
@@ -118,24 +132,50 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 #else
 	std::cout << "unknown" << std::endl;
 #endif
+#if defined(LUAJIT_VERSION)
+	std::cout << "Linked with " << LUAJIT_VERSION << " for Lua support" << std::endl;
+#else
+	std::cout << "Linked with " << LUA_RELEASE << " for Lua support"  << std::endl;
+#endif
 	std::cout << std::endl;
 
-	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
-	std::cout << "Visit our forum for updates, support, and resources: " << GIT_REPO << std::endl;
+	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << std::endl;
+	std::cout << "Visit our forum for updates, support, and resources: https://otland.net/." << std::endl;
 	std::cout << std::endl;
+}
 
-	// TODO: dirty for now; Use stdarg;
-	if (argc > 1) {
-		std::string param = { argv[1] };
-		if (param == "-c") {
-			g_config.setConfigFileLua(argv[2]);
+void mainLoader(int, char*[], ServiceManager* services)
+{
+	//dispatcher thread
+	g_game.setGameState(GAME_STATE_STARTUP);
+
+	srand(static_cast<unsigned int>(OTSYS_TIME()));
+#ifdef _WIN32
+	SetConsoleTitle(STATUS_SERVER_NAME);
+#endif
+
+	printServerVersion();
+
+	// check if config.lua or config.lua.dist exist
+	const std::string& configFile = g_config.getString(ConfigManager::CONFIG_FILE);
+	std::ifstream c_test("./" + configFile);
+	if (!c_test.is_open()) {
+		std::ifstream config_lua_dist("./config.lua.dist");
+		if (config_lua_dist.is_open()) {
+			std::cout << ">> copying config.lua.dist to " << configFile << std::endl;
+			std::ofstream config_lua(configFile);
+			config_lua << config_lua_dist.rdbuf();
+			config_lua.close();
+			config_lua_dist.close();
 		}
+	} else {
+		c_test.close();
 	}
 
 	// read global config
-	std::cout << ">> Loading config: " << g_config.getConfigFileLua() << std::endl;
+	std::cout << ">> Loading config" << std::endl;
 	if (!g_config.load()) {
-		startupErrorMessage("Unable to load Config File!");
+		startupErrorMessage("Unable to load " + configFile + "!");
 		return;
 	}
 
@@ -149,9 +189,12 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 #endif
 
 	//set RSA key
-	const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
-	const char* q("7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101");
-	g_RSA.setKey(p, q);
+	try {
+		g_RSA.loadPEM("key.pem");
+	} catch(const std::exception& e) {
+		startupErrorMessage(e.what());
+		return;
+	}
 
 	std::cout << ">> Establishing database connection..." << std::flush;
 
@@ -166,7 +209,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	std::cout << ">> Running database manager" << std::endl;
 
 	if (!DatabaseManager::isDatabaseSetup()) {
-		startupErrorMessage("The database you have specified in config lua file is empty, please import the schema.sql to your database.");
+		startupErrorMessage("The database you have specified in config.lua is empty, please import the schema.sql to your database.");
 		return;
 	}
 	g_databaseTasks.start();
@@ -202,9 +245,21 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		return;
 	}
 
+	std::cout << ">> Loading lua scripts" << std::endl;
+	if (!g_scripts->loadScripts("scripts", false, false)) {
+		startupErrorMessage("Failed to load lua scripts");
+		return;
+	}
+
 	std::cout << ">> Loading monsters" << std::endl;
 	if (!g_monsters.loadFromXml()) {
 		startupErrorMessage("Unable to load monsters!");
+		return;
+	}
+
+	std::cout << ">> Loading lua monsters" << std::endl;
+	if (!g_scripts->loadScripts("monster", false, false)) {
+		startupErrorMessage("Failed to load lua monsters");
 		return;
 	}
 
@@ -224,10 +279,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		g_game.setWorldType(WORLD_TYPE_PVP_ENFORCED);
 	} else {
 		std::cout << std::endl;
-
-		std::ostringstream ss;
-		ss << "> ERROR: Unknown world type: " << g_config.getString(ConfigManager::WORLD_TYPE) << ", valid world types are: pvp, no-pvp and pvp-enforced.";
-		startupErrorMessage(ss.str());
+		startupErrorMessage(fmt::format("Unknown world type: {:s}, valid world types are: pvp, no-pvp and pvp-enforced.", g_config.getString(ConfigManager::WORLD_TYPE)));
 		return;
 	}
 	std::cout << asUpperCaseString(worldType) << std::endl;
@@ -268,44 +320,10 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 
 	g_game.map.houses.payHouses(rentPeriod);
 
+	IOMarket::checkExpiredOffers();
+	IOMarket::getInstance().updateStatistics();
+
 	std::cout << ">> Loaded all modules, server starting up..." << std::endl;
-
-	std::pair<uint32_t, uint32_t> IpNetMask;
-	IpNetMask.first = inet_addr("127.0.0.1");
-	IpNetMask.second = 0xFFFFFFFF;
-	serverIPs.push_back(IpNetMask);
-
-	char szHostName[128];
-	if (gethostname(szHostName, 128) == 0) {
-		hostent* he = gethostbyname(szHostName);
-		if (he) {
-			unsigned char** addr = (unsigned char**)he->h_addr_list;
-			while (addr[0] != nullptr) {
-				IpNetMask.first = *(uint32_t*)(*addr);
-				IpNetMask.second = 0xFFFFFFFF;
-				serverIPs.push_back(IpNetMask);
-				addr++;
-			}
-		}
-	}
-
-	std::string ip = g_config.getString(ConfigManager::IP);
-
-	uint32_t resolvedIp = inet_addr(ip.c_str());
-	if (resolvedIp == INADDR_NONE) {
-		struct hostent* he = gethostbyname(ip.c_str());
-		if (!he) {
-			std::ostringstream ss;
-			ss << "ERROR: Cannot resolve " << ip << "!" << std::endl;
-			startupErrorMessage(ss.str());
-			return;
-		}
-		resolvedIp = *(uint32_t*)he->h_addr;
-	}
-
-	IpNetMask.first = resolvedIp;
-	IpNetMask.second = 0;
-	serverIPs.push_back(IpNetMask);
 
 #ifndef _WIN32
 	if (getuid() == 0 || geteuid() == 0) {
@@ -316,4 +334,36 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	g_game.start(services);
 	g_game.setGameState(GAME_STATE_NORMAL);
 	g_loaderSignal.notify_all();
+}
+
+bool argumentsHandler(const StringVector& args)
+{
+	for (const auto& arg : args) {
+		if (arg == "--help") {
+			std::clog << "Usage:\n"
+			"\n"
+			"\t--config=$1\t\tAlternate configuration file path.\n"
+			"\t--ip=$1\t\t\tIP address of the server.\n"
+			"\t\t\t\tShould be equal to the global IP.\n"
+			"\t--login-port=$1\tPort for login server to listen on.\n"
+			"\t--game-port=$1\tPort for game server to listen on.\n";
+			return false;
+		} else if (arg == "--version") {
+			printServerVersion();
+			return false;
+		}
+
+		StringVector tmp = explodeString(arg, "=");
+
+		if (tmp[0] == "--config")
+			g_config.setString(ConfigManager::CONFIG_FILE, tmp[1]);
+		else if (tmp[0] == "--ip")
+			g_config.setString(ConfigManager::IP, tmp[1]);
+		else if (tmp[0] == "--login-port")
+			g_config.setNumber(ConfigManager::LOGIN_PORT, std::stoi(tmp[1]));
+		else if (tmp[0] == "--game-port")
+			g_config.setNumber(ConfigManager::GAME_PORT, std::stoi(tmp[1]));
+	}
+
+	return true;
 }

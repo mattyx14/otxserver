@@ -36,6 +36,7 @@ enum CreatureEventType_t {
 	CREATURE_EVENT_DEATH,
 	CREATURE_EVENT_KILL,
 	CREATURE_EVENT_ADVANCE,
+	CREATURE_EVENT_MODALWINDOW,
 	CREATURE_EVENT_TEXTEDIT,
 	CREATURE_EVENT_HEALTHCHANGE,
 	CREATURE_EVENT_MANACHANGE,
@@ -52,11 +53,20 @@ class CreatureEvent final : public Event
 		CreatureEventType_t getEventType() const {
 			return type;
 		}
+		void setEventType(CreatureEventType_t eventType) {
+			type = eventType;
+		}
 		const std::string& getName() const {
 			return eventName;
 		}
+		void setName(const std::string& name) {
+			eventName = name;
+		}
 		bool isLoaded() const {
 			return loaded;
+		}
+		void setLoaded(bool b) {
+			loaded = b;
 		}
 
 		void clearEvent();
@@ -70,6 +80,7 @@ class CreatureEvent final : public Event
 		bool executeOnDeath(Creature* creature, Item* corpse, Creature* killer, Creature* mostDamageKiller, bool lastHitUnjustified, bool mostDamageUnjustified);
 		void executeOnKill(Creature* creature, Creature* target);
 		bool executeAdvance(Player* player, skills_t, uint32_t, uint32_t);
+		void executeModalWindow(Player* player, uint32_t modalWindowId, uint8_t buttonId, uint8_t choiceId);
 		bool executeTextEdit(Player* player, Item* item, const std::string& text);
 		void executeHealthChange(Creature* creature, Creature* attacker, CombatDamage& damage);
 		void executeManaChange(Creature* creature, Creature* attacker, CombatDamage& damage);
@@ -100,12 +111,16 @@ class CreatureEvents final : public BaseEvents
 
 		CreatureEvent* getEventByName(const std::string& name, bool forceLoaded = true);
 
+		bool registerLuaEvent(CreatureEvent* event);
+		void clear(bool fromLua) override final;
+
+		void removeInvalidEvents();
+
 	private:
 		LuaScriptInterface& getScriptInterface() override;
 		std::string getScriptBaseName() const override;
 		Event_ptr getEvent(const std::string& nodeName) override;
 		bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
-		void clear() override;
 
 		//creature events
 		using CreatureEventMap = std::map<std::string, CreatureEvent>;

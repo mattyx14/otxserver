@@ -67,6 +67,12 @@ local items = {
 			[COMBAT_FIREDAMAGE] = {id = 8906}, [COMBAT_ICEDAMAGE] = {id = 8907},
 			[COMBAT_EARTHDAMAGE] = {id = 8909}, [COMBAT_ENERGYDAMAGE] = {id = 8908}
 		},
+		[9949] = { -- dracoyle statue
+			[COMBAT_EARTHDAMAGE] = {id = 9948} -- dracoyle statue (enchanted)
+		},
+		[9954] = { -- dracoyle statue
+			[COMBAT_EARTHDAMAGE] = {id = 9953} -- dracoyle statue (enchanted)
+		},
 		[10022] = { -- worn firewalker boots
 			[COMBAT_FIREDAMAGE] = {id = 9933, say = {text = "Take the boots off first."}},
 			slot = {type = CONST_SLOT_FEET, check = true}
@@ -78,6 +84,21 @@ local items = {
 				message = {text = "The amulet cannot be enchanted while worn."}
 			},
 			slot = {type = CONST_SLOT_NECKLACE, check = true}
+		},
+		[24718] = { -- werewolf helmet
+			[COMBAT_NONE] = {
+				id = {
+					[SKILL_CLUB] = {id = 24783},
+					[SKILL_SWORD] = {id = 24783},
+					[SKILL_AXE] = {id = 24783},
+					[SKILL_DISTANCE] = {id = 24783},
+					[SKILL_MAGLEVEL] = {id = 24783}
+				},
+				effects = {failure = CONST_ME_POFF, success = CONST_ME_THUNDER},
+				message = {text = "The helmet cannot be enchanted while worn."},
+				usesStorage = true
+			},
+			slot = {type = CONST_SLOT_HEAD, check = true}
 		},
 		charges = 1000, effect = CONST_ME_MAGIC_RED
 	},
@@ -95,6 +116,7 @@ local items = {
 	[7760] = {combatType = COMBAT_FIREDAMAGE}, -- small enchanted ruby
 	[7761] = {combatType = COMBAT_EARTHDAMAGE}, -- small enchanted emerald
 	[7762] = {combatType = COMBAT_ENERGYDAMAGE}, -- small enchanted amethyst
+	[24739] = {combatType = COMBAT_NONE} -- moonlight crystals
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -125,7 +147,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		end
 		player:addSoul(-items.valuables.soul)
 		player:addMana(-items.valuables.mana)
-		player:addManaSpent(items.valuables.mana * configManager.getNumber(configKeys.RATE_MAGIC))
+		player:addManaSpent(items.valuables.mana)
 		player:addItem(targetType.id)
 		player:getPosition():sendMagicEffect(items.valuables.effect)
 		item:remove(1)

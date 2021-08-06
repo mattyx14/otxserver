@@ -24,13 +24,6 @@
 #include "container.h"
 #include "creature.h"
 
-int32_t NetworkMessage::decodeHeader()
-{
-	int32_t newSize = static_cast<int32_t>(buffer[0] | buffer[1] << 8);
-	info.length = newSize;
-	return info.length;
-}
-
 std::string NetworkMessage::getString(uint16_t stringLen/* = 0*/)
 {
 	if (stringLen == 0) {
@@ -71,7 +64,7 @@ void NetworkMessage::addString(const std::string& value)
 void NetworkMessage::addDouble(double value, uint8_t precision/* = 2*/)
 {
 	addByte(precision);
-	add<uint32_t>((value * std::pow(static_cast<float>(10), precision)) + std::numeric_limits<int32_t>::max());
+	add<uint32_t>(static_cast<uint32_t>((value * std::pow(static_cast<float>(10), precision)) + std::numeric_limits<int32_t>::max()));
 }
 
 void NetworkMessage::addBytes(const char* bytes, size_t size)
@@ -108,10 +101,16 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 
 	add<uint16_t>(it.clientId);
 
+	addByte(0xFF); // MARK_UNMARKED
+
 	if (it.stackable) {
 		addByte(count);
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		addByte(fluidMap[count & 7]);
+	}
+
+	if (it.isAnimation) {
+		addByte(0xFE); // random phase (0xFF for async)
 	}
 }
 
@@ -120,11 +119,16 @@ void NetworkMessage::addItem(const Item* item)
 	const ItemType& it = Item::items[item->getID()];
 
 	add<uint16_t>(it.clientId);
+	addByte(0xFF); // MARK_UNMARKED
 
 	if (it.stackable) {
 		addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		addByte(fluidMap[item->getFluidType() & 7]);
+	}
+
+	if (it.isAnimation) {
+		addByte(0xFE); // random phase (0xFF for async)
 	}
 }
 
