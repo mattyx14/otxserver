@@ -523,11 +523,9 @@ void Player::addContainer(uint8_t cid, Container* container)
 	if (it != openContainers.end()) {
 		OpenContainer& openContainer = it->second;
 		openContainer.container = container;
-		openContainer.index = 0;
 	} else {
 		OpenContainer openContainer;
 		openContainer.container = container;
-		openContainer.index = 0;
 		openContainers[cid] = openContainer;
 	}
 }
@@ -873,13 +871,7 @@ void Player::sendAddContainerItem(const Container* container, const Item* item)
 			continue;
 		}
 
-		if (openContainer.index >= container->capacity()) {
-			item = container->getItemByIndex(openContainer.index);
-		}
-
-		if (item) {
-			client->sendAddContainerItem(it.first, item);
-		}
+		client->sendAddContainerItem(it.first, item);
 	}
 }
 
@@ -892,15 +884,6 @@ void Player::sendUpdateContainerItem(const Container* container, uint16_t slot, 
 	for (const auto& it : openContainers) {
 		const OpenContainer& openContainer = it.second;
 		if (openContainer.container != container) {
-			continue;
-		}
-
-		if (slot < openContainer.index) {
-			continue;
-		}
-
-		uint16_t pageEnd = openContainer.index + container->capacity();
-		if (slot >= pageEnd) {
 			continue;
 		}
 
@@ -920,13 +903,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 			continue;
 		}
 
-		uint16_t& firstIndex = openContainer.index;
-		if (firstIndex > 0 && firstIndex >= container->size() - 1) {
-			firstIndex -= container->capacity();
-			sendContainer(it.first, container, false, firstIndex);
-		}
-
-		client->sendRemoveContainerItem(it.first, std::max<uint16_t>(slot, firstIndex));
+		client->sendRemoveContainerItem(it.first, slot);
 	}
 }
 
@@ -1247,7 +1224,7 @@ void Player::onSendContainer(const Container* container)
 	for (const auto& it : openContainers) {
 		const OpenContainer& openContainer = it.second;
 		if (openContainer.container == container) {
-			client->sendContainer(it.first, container, hasParent, openContainer.index);
+			client->sendContainer(it.first, container, hasParent);
 		}
 	}
 }

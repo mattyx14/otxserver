@@ -289,7 +289,7 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 		}
 
 		uint8_t slot = pos.z;
-		return parentContainer->getItemByIndex(player->getContainerIndex(fromCid) + slot);
+		return parentContainer->getItemByIndex(slot);
 	} else if (pos.y == 0 && pos.z == 0) {
 		const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 		if (it.id == 0) {
@@ -297,8 +297,8 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 		}
 
 		int32_t subType;
-		if (it.isFluidContainer() && index < static_cast<int32_t>(sizeof(reverseFluidMap) / sizeof(uint8_t))) {
-			subType = reverseFluidMap[index];
+		if (it.isFluidContainer()) {
+			subType = clientFluidToServer(index);
 		} else {
 			subType = -1;
 		}
@@ -4617,8 +4617,10 @@ void Game::playerLeaveParty(uint32_t playerId)
 	}
 
 	Party* party = player->getParty();
-	if (!party || player->hasCondition(CONDITION_INFIGHT)) {
-		return;
+	if(player->getZone() != ZONE_PROTECTION) {
+		if (!party || player->hasCondition(CONDITION_INFIGHT)) {
+			return;
+		}
 	}
 
 	party->leaveParty(player);

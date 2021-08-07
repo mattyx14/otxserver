@@ -398,7 +398,7 @@ class Player final : public Creature, public Cylinder
 			if (hasFlag(PlayerFlag_CannotPickupItem)) {
 				return 0;
 			} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
-				return std::numeric_limits<uint32_t>::max();
+				return 10000;
 			}
 			return capacity;
 		}
