@@ -913,6 +913,9 @@ class Item : virtual public Thing
 		bool hasWalkStack() const {
 			return items[id].walkStack;
 		}
+		bool isForceUse() const {
+			return items[id].forceUse;
+		}
 
 		const std::string& getName() const {
 			if (hasAttribute(ITEM_ATTRIBUTE_NAME)) {

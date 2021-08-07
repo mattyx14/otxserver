@@ -148,6 +148,7 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"walkstack", ITEM_PARSE_WALKSTACK},
 	{"blocking", ITEM_PARSE_BLOCKING},
 	{"allowdistread", ITEM_PARSE_ALLOWDISTREAD},
+	{"forceuse", FLAG_FORCEUSE},
 };
 
 const std::unordered_map<std::string, ItemTypes_t> ItemTypesMap = {
