@@ -1,29 +1,30 @@
 ---
-name: Bug Report
-about: Reporting a bug reproducible using unmodified engine
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
+
 ---
-<!-- Welcome to the issues section if it's your first time! -->
 
-### Before creating an issue, please ensure:
-- [ ] This is a bug in the software that resides in this repository, and not a
-      support matter (use https://otland.net/forums/support.16/ for support)
-- [ ] This issue is reproducible without changes to the C++ code in this repository
+**Protocol version**
+7.72/8.60
 
-### Steps to reproduce (include any configuration/script required to reproduce)
-1.
-2.
-3.
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-### Expected behaviour
-<!-- Tell us what should happen -->
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-### Actual behaviour
-<!-- Tell us what happens instead -->
+**Expected behavior**
+A clear and concise description of what you expected to happen.
 
-### Environment
-<!-- If the issue is environment specific (e.g. compiling errors), include
-     name and version of the operating system and compiler you are using. -->
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
 
-### Reproduction environment
-<!-- If there are specific scripts required to reproduce the issue, provide a link to
-     a branch in your fork that has minimum necessary changes to reproduce the issue. -->
+**Additional context**
+Add any other context about the problem here.

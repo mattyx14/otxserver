@@ -352,7 +352,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 
 		if (bed->trySleep(player)) {
 			player->setBedItem(bed);
-			g_game.sendOfflineTrainingDialog(player);
+			bed->sleep(player);
 		}
 
 		return RETURNVALUE_NOERROR;
@@ -497,36 +497,10 @@ bool Action::configureEvent(const pugi::xml_node& node)
 	return true;
 }
 
-namespace {
-
-bool enterMarket(Player* player, Item*, const Position&, Thing*, const Position&, bool)
+bool Action::loadFunction(const pugi::xml_attribute& attr, bool)
 {
-	if (player->getLastDepotId() == -1) {
-		return false;
-	}
-
-	player->sendMarketEnter(player->getLastDepotId());
-	return true;
-}
-
-}
-
-bool Action::loadFunction(const pugi::xml_attribute& attr, bool isScripted)
-{
-	const char* functionName = attr.as_string();
-	if (strcasecmp(functionName, "market") == 0) {
-		function = enterMarket;
-	} else {
-		if (!isScripted) {
-			std::cout << "[Warning - Action::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
-			return false;
-		}
-	}
-
-	if (!isScripted) {
-		scripted = false;
-	}
-	return true;
+	std::cout << "[Warning - Action::loadFunction] Function \"" << attr.as_string() << "\" does not exist." << std::endl;
+	return false;
 }
 
 std::string Action::getScriptEventName() const

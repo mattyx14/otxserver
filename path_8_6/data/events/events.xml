@@ -13,7 +13,6 @@
 	<event class="Party" method="onShareExperience" enabled="1" />
 
 	<!-- Player methods -->
-	<event class="Player" method="onBrowseField" enabled="0" />
 	<event class="Player" method="onLook" enabled="1" />
 	<event class="Player" method="onLookInBattleList" enabled="1" />
 	<event class="Player" method="onLookInTrade" enabled="1" />
@@ -30,7 +29,6 @@
 	<event class="Player" method="onGainExperience" enabled="1" />
 	<event class="Player" method="onLoseExperience" enabled="0" />
 	<event class="Player" method="onGainSkillTries" enabled="1" />
-	<event class="Player" method="onWrapItem" enabled="1" />
 
 	<!-- Monster methods -->
 	<event class="Monster" method="onDropLoot" enabled="1" />

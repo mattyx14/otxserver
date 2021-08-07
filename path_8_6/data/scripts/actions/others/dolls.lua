@@ -47,58 +47,11 @@ local dollsTable = {
 		"So cold.",
 		"Run, mammoth!"
 	},
-	[23806] = {
-		"I can hear their whisperings... Revenge!",
-		"You shall feel pain and terror, |PLAYERNAME|",
-		"I do not need a sword to slaughter you",
-		"My sword is broken, but my spirit is not dead",
-		"I can say 469 and more...",
-		"My dark magic lies on the world"
-	},
-	[24331] = {
-		"Hail! (União&Força)",
-		"Hail |PLAYERNAME|! (União&Força)",
-		"Only the real killers can touch me!",
-		"The path of assassin is found in death, DIE!",
-		"<FART...> Ahhh... silent and deadly..."
-	},
-	[20624] = {
-		"Hail!",
-		"Shhhhhh, please be quiet!",
-		"Books are great!! Aren't they?"
-	},
-	[16107] = {
-		"My powers are limitless!",
-		"Hail!"
-	},
-	[13030] = {
-		"For zze emperor!",
-		"Hail!",
-		"Hail |PLAYERNAME|!"
-	},
-	[13559] = {
-		"Mhausheausheu! What a FAIL! Mwahaha!",
-		"Hail |PLAYERNAME|! You are wearing old socks!",
-		"You are so unpopular even your own shadow refuses to follow you.",
-		"Have fun!"
-	},
 	[10063] = {
 		"Hail |PLAYERNAME|! Hail!",
 		"Hauopa!",
 		"WHERE IS MY HYDROMEL?!",
 		"Yala Boom"
-	},
-	[24776] = {
-		"Silence! I smell something!",
-		"Let me guide you, |PLAYERNAME|!",
-		"I have a bad feeling about this.",
-		"Watch your steps - we found the pit latrine."
-	},
-	[24316] = {
-		"Hail!",
-		"Don't be afraid of the darkness!",
-		"Feel lucky, |PLAYERNAME|!",
-		"Purrrrrrr!"
 	}
 }
 
@@ -131,19 +84,7 @@ function dolls.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		item:decay()
 	elseif item.itemid == 6388 then
 		fromPosition:sendMagicEffect(CONST_ME_SOUND_YELLOW)
-	elseif item.itemid == 23806 then
-		item:transform(item.itemid + 1)
-		item:decay()
-	elseif item.itemid == 16107 then
-		item:transform(item.itemid + 1)
-		item:decay()
-	elseif item.itemid == 13559 then
-		item:transform(13581)
-		item:decay()
 	elseif item.itemid == 10063 then
-		item:transform(item.itemid + 1)
-		item:decay()
-	elseif item.itemid == 24776 then
 		item:transform(item.itemid + 1)
 		item:decay()
 	end

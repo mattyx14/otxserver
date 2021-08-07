@@ -1,18 +1,22 @@
-forgottenserver [![Build Status](https://travis-ci.org/otland/forgottenserver.svg?branch=master)](https://travis-ci.org/otland/forgottenserver "Travis CI status") [![Build status](https://ci.appveyor.com/api/projects/status/599x38f3a0luessl?svg=true)](https://ci.appveyor.com/project/otland/forgottenserver "Download builds for Windows")
-===============
+# TFS 1.4 Nekiro's Downgrades
 
-The Forgotten Server is a free and open-source MMORPG server emulator written in C++. It is a fork of the [OpenTibia Server](https://github.com/opentibia/server) project. To connect to the server, you can use [OTClient](https://github.com/edubart/otclient).
+This branch holds TFS 1.4 **8.60** protocol downgrade.
 
-### Getting Started
+This downgrade is not download and run distribution, monsters and spells are probably not 100% correct.
+You are welcome to submit a pull request though.
 
-* [Compiling](https://github.com/otland/forgottenserver/wiki/Compiling), alternatively download [AppVeyor builds for Windows](https://ci.appveyor.com/project/otland/forgottenserver)
-* [Scripting Reference](https://github.com/otland/forgottenserver/wiki/Script-Interface)
-* [Contributing](https://github.com/otland/forgottenserver/wiki/Contributing)
+This downgrade is up to Aug 1, 2021, commit: https://github.com/otland/forgottenserver/commit/e483acc0962d3ead01c0dd3a461b044880de73cc
 
-### Support
+## Other distributions:
+#### **[7.72](https://github.com/nekiro/TFS-1.4-Downgrades/tree/7.72)**
+#### **[8.0](https://github.com/nekiro/TFS-1.4-Downgrades/tree/8.0)**
 
-If you need help, please visit the [support forum on OTLand](https://otland.net/forums/support.16/). Our issue tracker is not a support forum, and using it as one will result in your issue being closed. If you were unable to get assistance in the support forum, you should consider [becoming a premium user on OTLand](https://otland.net/account/upgrades) which grants you access to the premium support forum and supports OTLand financially.
+## How to compile
+[Wiki](https://github.com/otland/forgottenserver/wiki/Compiling)
 
-### Issues
+## Contributing
+Pull requests are welcome. 
+Just make sure you are using english language.
 
-We use the [issue tracker on GitHub](https://github.com/otland/forgottenserver/issues). Keep in mind that everyone who is watching the repository gets notified by e-mail when there is activity, so be thoughtful and avoid writing comments that aren't meaningful for an issue (e.g. "+1"). If you'd like for an issue to be fixed faster, you should either fix it yourself and submit a pull request, or place a bounty on the issue.
+## Bugs
+If you find any bug and believe it should be fixed, submit an issue in issues section, just please follow the issue template.

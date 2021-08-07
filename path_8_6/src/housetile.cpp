@@ -86,10 +86,6 @@ ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 	} else if (const Item* item = thing.getItem()) {
-		if (item->isStoreItem() && !item->hasAttribute(ITEM_ATTRIBUTE_WRAPID)) {
-			return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
-		}
-
 		if (actor) {
 			Player* actorPlayer = actor->getPlayer();
 			if (!house->isInvited(actorPlayer)) {

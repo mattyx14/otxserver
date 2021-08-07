@@ -5,10 +5,6 @@
 	<action fromid="2149" toid="2150" script="other/enchanting.lua" />
 	<action itemid="2342" script="other/enchanting.lua" />
 	<action fromid="7759" toid="7762" script="other/enchanting.lua" />
-	<action itemid="24739" script="other/enchanting.lua" />
-
-	<!-- Market -->
-	<action itemid="14405" function="market" />
 
 	<!-- Quests -->
 	<action itemid="1740" script="quests/quests.lua" />
@@ -42,8 +38,6 @@
 	<action itemid="7183" script="other/decayto.lua" />
 	<action itemid="10719" script="other/decayto.lua" />
 	<action itemid="11401" script="other/decayto.lua" />
-	<action fromid="25545" toid="25546" script="other/decayto.lua" />
-	<action fromid="26098" toid="26099" script="other/decayto.lua" />
 
 	<!-- Food -->
 	<action itemid="2362" script="other/food.lua" />
@@ -74,17 +68,6 @@
 	<action itemid="11429" script="other/food.lua" />
 	<action fromid="12415" toid="12418" script="other/food.lua" />
 	<action fromid="12637" toid="12639" script="other/food.lua" />
-	<action itemid="13297" script="other/food.lua" />
-	<action itemid="15405" script="other/food.lua" />
-	<action fromid="15487" toid="15488" script="other/food.lua" />
-	<action itemid="16014" script="other/food.lua" />
-	<action itemid="18397" script="other/food.lua" />
-	<action itemid="19737" script="other/food.lua" />
-	<action fromid="20100" toid="20101" script="other/food.lua" />
-	<action itemid="24841" script="other/food.lua" />
-	<action itemid="24843" script="other/food.lua" />
-	<action itemid="26191" script="other/food.lua" />
-	<action itemid="26201" script="other/food.lua" />
 
 	<!-- Music -->
 	<action fromid="2070" toid="2085" script="other/music.lua" />
@@ -95,8 +78,6 @@
 	<action itemid="3957" script="other/music.lua" />
 	<action itemid="5786" script="other/music.lua" />
 	<action fromid="6572" toid="6573" script="other/music.lua" />
-	<action itemid="13759" script="other/music.lua" />
-	<action itemid="23923" script="other/music.lua" />
 
 	<!-- Construction Kits -->
 	<action fromid="3901" toid="3938" script="other/construction_kits.lua" />
@@ -111,13 +92,6 @@
 	<action itemid="11126" script="other/construction_kits.lua" />
 	<action itemid="11133" script="other/construction_kits.lua" />
 	<action itemid="11205" script="other/construction_kits.lua" />
-	<action itemid="14328" script="other/construction_kits.lua" />
-	<action itemid="14329" script="other/construction_kits.lua" />
-	<action itemid="16075" script="other/construction_kits.lua" />
-	<action itemid="16099" script="other/construction_kits.lua" />
-	<action itemid="20254" script="other/construction_kits.lua" />
-	<action itemid="20255" script="other/construction_kits.lua" />
-	<action itemid="20257" script="other/construction_kits.lua" />
 
 	<!-- Fluids -->
 	<action itemid="1775" script="other/fluids.lua" />
@@ -137,7 +111,6 @@
 	<action itemid="7620" script="other/potions.lua" />
 	<action fromid="8472" toid="8474" script="other/potions.lua" />
 	<action itemid="8704" script="other/potions.lua" />
-	<action fromid="26029" toid="26031" script="other/potions.lua" />
 
 	<!-- Other -->
 	<action itemid="430" script="other/teleport.lua" />
@@ -177,6 +150,4 @@
 	<action itemid="7828" script="other/watch.lua" />
 	<action fromid="7904" toid="7907" script="other/bed_modification_kits.lua" />
 	<action fromid="9443" toid="9444" script="other/watch.lua" />
-	<action fromid="18488" toid="18492" script="other/skill_trainer.lua" />
-	<action itemid="20252" script="other/bed_modification_kits.lua" />
 </actions>

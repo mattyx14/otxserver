@@ -408,34 +408,6 @@ class ConditionLight final : public Condition
 		uint32_t lightChangeInterval = 0;
 };
 
-class ConditionSpellCooldown final : public ConditionGeneric
-{
-	public:
-		ConditionSpellCooldown(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0, bool aggressive = false) :
-			ConditionGeneric(id, type, ticks, buff, subId, aggressive) {}
-
-		bool startCondition(Creature* creature) override;
-		void addCondition(Creature* creature, const Condition* condition) override;
-
-		ConditionSpellCooldown* clone() const override {
-			return new ConditionSpellCooldown(*this);
-		}
-};
-
-class ConditionSpellGroupCooldown final : public ConditionGeneric
-{
-	public:
-		ConditionSpellGroupCooldown(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0, bool aggressive = false) :
-			ConditionGeneric(id, type, ticks, buff, subId, aggressive) {}
-
-		bool startCondition(Creature* creature) override;
-		void addCondition(Creature* creature, const Condition* condition) override;
-
-		ConditionSpellGroupCooldown* clone() const override {
-			return new ConditionSpellGroupCooldown(*this);
-		}
-};
-
 class ConditionDrunk final : public Condition
 {
 	public:

@@ -31,16 +31,7 @@ else()
     find_package(Crypto++ REQUIRED)
 endif ()
 find_package(fmt 6.1.2 REQUIRED)
-
-# Look for vcpkg-provided libmariadb first
-# If we link to the file directly, we might miss its dependencies from vcpkg
-find_package(unofficial-libmariadb CONFIG QUIET)
-if (unofficial-libmariadb_FOUND)
-    set(MYSQL_CLIENT_LIBS "libmariadb")
-else ()
-    find_package(MySQL REQUIRED)
-endif ()
-
+find_package(MySQL REQUIRED)
 find_package(Threads REQUIRED)
 find_package(PugiXML REQUIRED)
 

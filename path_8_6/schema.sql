@@ -50,8 +50,6 @@ CREATE TABLE IF NOT EXISTS `players` (
   `onlinetime` bigint NOT NULL DEFAULT '0',
   `deletion` bigint NOT NULL DEFAULT '0',
   `balance` bigint unsigned NOT NULL DEFAULT '0',
-  `offlinetraining_time` smallint unsigned NOT NULL DEFAULT '43200',
-  `offlinetraining_skill` int NOT NULL DEFAULT '-1',
   `stamina` smallint unsigned NOT NULL DEFAULT '2520',
   `skill_fist` int unsigned NOT NULL DEFAULT 10,
   `skill_fist_tries` bigint unsigned NOT NULL DEFAULT 0,
@@ -128,8 +126,6 @@ CREATE TABLE IF NOT EXISTS `account_viplist` (
   `account_id` int NOT NULL COMMENT 'id of account whose viplist entry it is',
   `player_id` int NOT NULL COMMENT 'id of target player of viplist entry',
   `description` varchar(128) NOT NULL DEFAULT '',
-  `icon` tinyint unsigned NOT NULL DEFAULT '0',
-  `notify` tinyint NOT NULL DEFAULT '0',
   UNIQUE KEY `account_player_index` (`account_id`,`player_id`),
   FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE
@@ -277,17 +273,6 @@ CREATE TABLE IF NOT EXISTS `player_deaths` (
   KEY `mostdamage_by` (`mostdamage_by`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
-CREATE TABLE IF NOT EXISTS `player_depotitems` (
-  `player_id` int NOT NULL,
-  `sid` int NOT NULL COMMENT 'any given range eg 0-100 will be reserved for depot lockers and all > 100 will be then normal items inside depots',
-  `pid` int NOT NULL DEFAULT '0',
-  `itemtype` smallint unsigned NOT NULL,
-  `count` smallint NOT NULL DEFAULT '0',
-  `attributes` blob NOT NULL,
-  UNIQUE KEY `player_id_2` (`player_id`, `sid`),
-  FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
-
 CREATE TABLE IF NOT EXISTS `player_inboxitems` (
   `player_id` int NOT NULL,
   `sid` int NOT NULL,
@@ -310,11 +295,33 @@ CREATE TABLE IF NOT EXISTS `player_storeinboxitems` (
   FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
+CREATE TABLE IF NOT EXISTS `player_depotlockeritems` (
+  `player_id` int NOT NULL,
+  `sid` int NOT NULL COMMENT 'any given range eg 0-100 will be reserved for depot lockers and all > 100 will be then normal items inside depots',
+  `pid` int NOT NULL DEFAULT '0',
+  `itemtype` smallint NOT NULL,
+  `count` smallint NOT NULL DEFAULT '0',
+  `attributes` blob NOT NULL,
+  UNIQUE KEY `player_id_2` (`player_id`, `sid`),
+  FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+CREATE TABLE IF NOT EXISTS `player_depotitems` (
+  `player_id` int NOT NULL,
+  `sid` int NOT NULL COMMENT 'any given range eg 0-100 will be reserved for depot lockers and all > 100 will be then normal items inside depots',
+  `pid` int NOT NULL DEFAULT '0',
+  `itemtype` smallint unsigned NOT NULL,
+  `count` smallint NOT NULL DEFAULT '0',
+  `attributes` blob NOT NULL,
+  UNIQUE KEY `player_id_2` (`player_id`, `sid`),
+  FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
 CREATE TABLE IF NOT EXISTS `player_items` (
   `player_id` int NOT NULL DEFAULT '0',
   `pid` int NOT NULL DEFAULT '0',
   `sid` int NOT NULL DEFAULT '0',
-  `itemtype` smallint unsigned NOT NULL DEFAULT '0',
+  `itemtype` smallint unsigned NOT NULL,
   `count` smallint NOT NULL DEFAULT '0',
   `attributes` blob NOT NULL,
   FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE,

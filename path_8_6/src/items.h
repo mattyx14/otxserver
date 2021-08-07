@@ -167,7 +167,6 @@ enum ItemParseAttributes_t {
 	ITEM_PARSE_WALKSTACK,
 	ITEM_PARSE_BLOCKING,
 	ITEM_PARSE_ALLOWDISTREAD,
-	ITEM_PARSE_STOREITEM,
 };
 
 struct Abilities {
@@ -300,7 +299,6 @@ class ItemType
 		uint16_t id = 0;
 		uint16_t clientId = 0;
 		bool stackable = false;
-		bool isAnimation = false;
 
 		std::string name;
 		std::string article;
@@ -358,7 +356,6 @@ class ItemType
 		uint8_t shootRange = 1;
 		int8_t hitChance = 0;
 
-		bool storeItem = false;
 		bool forceUse = false;
 		bool forceSerialize = false;
 		bool hasHeight = false;

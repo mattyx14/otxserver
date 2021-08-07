@@ -3,7 +3,7 @@ name: Build with vcpkg
 on:
   push:
     branches:
-      - master
+      - 8.60
       - v*
 
     tags:
@@ -200,4 +200,3 @@ jobs:
         with:
           name: tfs-${{ matrix.name }}-${{ matrix.buildtype }}-luajit=on-${{ github.sha }}
           path: ${{ github.workspace }}
-

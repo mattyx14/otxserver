@@ -6,11 +6,6 @@ function moveevent.onAddItem(moveitem, tileitem, position)
 		tileitem:decay()
 		moveitem:remove(1)
 		position:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-	elseif moveitem:getId() == 15271 then -- ice flower seeds
-		tileitem:transform(15442) -- flower pot
-		tileitem:decay()
-		moveitem:remove(1)
-		position:sendMagicEffect(CONST_ME_MAGIC_BLUE)
 	end
 	return true
 end

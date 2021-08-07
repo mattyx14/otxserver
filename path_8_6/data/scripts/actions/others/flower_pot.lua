@@ -37,16 +37,6 @@ local flowers = {
 	{itemid = 9983, watered = true, advance = true, msg = {"You watered your plant.","Your plant has grown to the next stage!"}, after = {9982, 9990}, chance = 80},
 	{itemid = 9987, watered = true, advance = true, msg = {"You watered your plant.","Your plant has grown to the next stage!"}, after = {9986, 9988}, chance = 80},
 	{itemid = 7678, watered = true, advance = true, msg = {"You watered your plant.","Your plant has grown to the next stage!"}, after = {7670, 7680, 7682, 7684, 7686, 9982, 9986}, chance = 80},
-	{itemid = 15444, watered = true, advance = false, msg = "You finally remembered to water your plant and it recovered.", after = 15443},
-	{itemid = 15442, watered = true, advance = true, msg = {"You watered your plant.","Your plant has grown to the next stage!"}, after = {15443, 15441}, chance = 80},
-	{itemid = 15443, watered = false, advance = false, msg = "Your plant doesn't need water."},
-	{itemid = 15441, watered = false, advance = false, msg = "This plant can't wither anymore."},
-	{itemid = 15445, watered = false, advance = false, msg = "This plant can't wither anymore."},
-	{itemid = 15446, watered = false, advance = false, msg = "This plant can't wither anymore."},
-	{itemid = 15447, watered = false, advance = false, msg = "This plant can't wither anymore."},
-	{itemid = 15448, watered = false, advance = false, msg = "This plant can't wither anymore."},
-	{itemid = 15449, watered = false, advance = false, msg = "This plant can't wither anymore."},
-	{itemid = 15450, watered = false, advance = false, msg = "This plant can't wither anymore."}
 }
 
 local flowerPot = Action()

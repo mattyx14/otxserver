@@ -12,8 +12,6 @@ local decayItems = {
 	[7183] = 7184, -- baby seal doll
 	[10719] = 10720, -- friendship amulet
 	[11401] = 11402, -- Tibiora's box
-	[25545] = 25546, -- shield of destiny
-	[26098] = 26099 -- baby dragon
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)

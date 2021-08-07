@@ -60,26 +60,6 @@ local windows = {
 	[10490] = {10488}, -- limestone window
 	[10489] = {10491}, -- limestone window
 	[10491] = {10489}, -- limestone window
-	[19427] = {19447}, -- window
-	[19428] = {19448}, -- window
-	[19441] = {19450}, -- window
-	[19440] = {19449}, -- window
-	[19443] = {20180}, -- small window
-	[19444] = {20181}, -- small window
-	[19445] = {20183}, -- small window
-	[19446] = {20184}, -- small window
-	[19447] = {19427}, -- window
-	[19448] = {19428}, -- window
-	[19449] = {19440}, -- window
-	[19450] = {19441}, -- window
-	[19974] = {20182}, -- window
-	[19975] = {20185}, -- window
-	[20180] = {19443}, -- window
-	[20181] = {19444}, -- small window
-	[20182] = {19974}, -- window
-	[20183] = {19445}, -- window
-	[20184] = {19446}, -- small window
-	[20185] = {19975} -- window
 }
 
 local window = Action()

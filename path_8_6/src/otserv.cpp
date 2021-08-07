@@ -23,8 +23,6 @@
 
 #include "game.h"
 
-#include "iomarket.h"
-
 #include "configmanager.h"
 #include "scriptmanager.h"
 #include "rsa.h"
@@ -140,7 +138,8 @@ void printServerVersion()
 	std::cout << std::endl;
 
 	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << std::endl;
-	std::cout << "Visit our forum for updates, support, and resources: https://otland.net/." << std::endl;
+	std::cout << "Downgraded and further developed by Nekiro" << std::endl;
+	std::cout << "Visit our forum for updates, support, and resources: http://otland.net/." << std::endl;
 	std::cout << std::endl;
 }
 
@@ -320,9 +319,6 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	g_game.map.houses.payHouses(rentPeriod);
 
-	IOMarket::checkExpiredOffers();
-	IOMarket::getInstance().updateStatistics();
-
 	std::cout << ">> Loaded all modules, server starting up..." << std::endl;
 
 #ifndef _WIN32
@@ -358,7 +354,7 @@ bool argumentsHandler(const StringVector& args)
 		if (tmp[0] == "--config")
 			g_config.setString(ConfigManager::CONFIG_FILE, tmp[1]);
 		else if (tmp[0] == "--ip")
-			g_config.setString(ConfigManager::IP, tmp[1]);
+			g_config.setString(ConfigManager::IP_STRING, tmp[1]);
 		else if (tmp[0] == "--login-port")
 			g_config.setNumber(ConfigManager::LOGIN_PORT, std::stoi(tmp[1]));
 		else if (tmp[0] == "--game-port")

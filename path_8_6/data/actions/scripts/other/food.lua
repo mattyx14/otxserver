@@ -88,23 +88,6 @@ local foods = {
 	[12637] = {55, "Gulp."}, -- ectoplasmic sushi
 	[12638] = {18, "Yum."}, -- dragonfruit
 	[12639] = {2, "Munch."}, -- peas
-	[13297] = {20, "Crunch."}, -- haunch of boar
-	[15405] = {55, "Munch."}, -- sandfish
-	[15487] = {14, "Urgh."}, -- larvae
-	[15488] = {15, "Munch."}, -- deepling filet
-	[16014] = {60, "Mmmm."}, -- anniversary cake
-	[18397] = {33, "Munch."}, -- mushroom pie
-	[19737] = {10, "Urgh."}, -- insectoid eggs
-	[20100] = {15, "Smack."}, -- soft cheese
-	[20101] = {12, "Smack."}, -- rat cheese
-	[23514] = {15, "Munch."}, -- glooth sandwich
-	[23515] = {7, "Slurp."}, -- bowl of glooth soup
-	[23516] = {6, "Burp."}, -- bottle of glooth wine
-	[23517] = {25, "Chomp."}, -- glooth steak
-	[24841] = {12, "Yum."}, -- prickly pear
-	[24843] = {60, "Chomp."}, -- roasted meat
-	[26191] = {25, "Mmmm."}, -- energy bar
-	[26201] = {15, "Mmmm."} -- energy drink
 }
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)

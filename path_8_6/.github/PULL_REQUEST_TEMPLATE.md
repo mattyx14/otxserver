@@ -11,6 +11,10 @@
 - [ ] I have read and understood the [contribution guidelines][cont] before making this PR.
 - [ ] I am aware that this PR may be closed if the above-mentioned criteria are not fulfilled.
 
+
+**Protocol version**
+7.72/8.60
+
 ### Changes Proposed
 
 <!-- Describe the changes that this pull request makes. -->

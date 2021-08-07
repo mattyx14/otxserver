@@ -14,10 +14,6 @@ local traps = {
 		transformTo = 4209,
 		damage = {-30, -30},
 		type = COMBAT_EARTHDAMAGE
-	},
-	[25331] = { -- lava (walkable)
-		damage = {-500, -500},
-		type = COMBAT_FIREDAMAGE
 	}
 }
 

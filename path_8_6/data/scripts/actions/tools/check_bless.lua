@@ -1,6 +1,6 @@
 local blessings = {
 	"Spiritual Shielding",
-	"Embrace of the World",
+	"Embrace of Tibia",
 	"Fire of the Suns",
 	"Spark of the Phoenix",
 	"Wisdom of Solitude",

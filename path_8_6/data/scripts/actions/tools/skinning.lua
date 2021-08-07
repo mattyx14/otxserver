@@ -9,18 +9,6 @@ local config = {
 		[5981] = {chance = 7000, newItem = 5878, after = 2867}, -- minotaur mage, after being killed
 		[2876] = {chance = 7000, newItem = 5878, after = 2877}, -- minotaur guard
 		[5983] = {chance = 7000, newItem = 5878, after = 2877}, -- minotaur guard, after being killed
-		[23463] = {chance = 7000, newItem = 5878, after = 23464}, -- mooh'tah warrior
-		[23462] = {chance = 7000, newItem = 5878, after = 23464}, -- mooh'tah warrior, after being killed
-		[23467] = {chance = 7000, newItem = 5878, after = 23468}, -- minotaur hunter
-		[23466] = {chance = 7000, newItem = 5878, after = 23468}, -- minotaur hunter, after being killed
-		[23471] = {chance = 7000, newItem = 5878, after = 23472}, -- worm priestess
-		[23470] = {chance = 7000, newItem = 5878, after = 23472}, -- worm priestess, after being killed
-		[23371] = {chance = 7000, newItem = 5878, after = 23373}, -- minotaur amazon
-		[23372] = {chance = 7000, newItem = 5878, after = 23373}, -- minotaur amazon, after being killed
-		[23375] = {chance = 7000, newItem = 5878, after = 23377}, -- execowtioner
-		[23376] = {chance = 7000, newItem = 5878, after = 23377}, -- execowtioner, after being killed
-		[23367] = {chance = 7000, newItem = 5878, after = 23369}, -- moohtant
-		[23368] = {chance = 7000, newItem = 5878, after = 23369}, -- moohtant, after being killed
 
 		-- Low Class Lizards
 		[4259] = {chance = 6000, newItem = 5876, after = 4260}, -- lizard sentinel
@@ -56,10 +44,6 @@ local config = {
 		[3031] = {chance = 6000, newItem = 5925, after = 3032},
 		[6030] = {chance = 6000, newItem = 5925, after = 3032}, -- after being killed
 
-		-- Clomp
-		[25399] = {chance = 50000, newItem = 24842, after = 25400},
-		[25398] = {chance = 50000, newItem = 24842, after = 25400}, -- after being killed
-
 		-- Piece of Marble Rock
 		[11343] = {
 			{chance = 530, newItem = 11346, desc = "This little figurine of a goddess was masterfully sculpted by |PLAYERNAME|."},
@@ -72,22 +56,6 @@ local config = {
 		[7442] = {chance = 4800, newItem = 7444},
 		[7444] = {chance = 900, newItem = 7445},
 		[7445] = {chance = 40, newItem = 7446},
-
-		-- The Mutated Pumpkin
-		[13583] = {
-			{chance = 5000, newItem = 8860}, -- spiderwebs
-			{chance = 5000, newItem = 9006}, -- toy spider
-			{chance = 5000, newItem = 6492}, -- bat decoration
-			{chance = 50000, newItem = 6526}, -- skeleton decoration
-			{chance = 50000, newItem = 9005, amount = 20}, -- yummy gummy worm
-			{chance = 5000, newItem = 6570}, -- surprise bag (red)
-			{chance = 50000, newItem = 6571}, -- surprise bag (blue)
-			{chance = 50000, newItem = 6574}, -- bar of chocolate
-			{chance = 50000, newItem = 2096}, -- pumpkinhead
-			{chance = 50000, newItem = 2683}, -- pumpkin
-			{chance = 50000, newItem = 2688, amount = 50}, -- candy cane
-			{chance = 50000, newItem = 6569, amount = 50} -- candy
-		},
 	},
 	[5942] = {
 		-- Demon
@@ -99,8 +67,6 @@ local config = {
 		[6006] = {chance = 6000, newItem = 5905, after = 2957}, -- vampire, after being killed
 		[9654] = {chance = 6000, newItem = 5905, after = 9658}, -- vampire bride
 		[9660] = {chance = 6000, newItem = 5905, after = 9658}, -- vampire bride, after being killed
-		[21275] = {chance = 6000, newItem = 5905, after = 21276}, -- vampire viscount
-		[21278] = {chance = 6000, newItem = 5905, after = 21276} -- vampire viscount, after being killed
 	}
 }
 
@@ -118,7 +84,7 @@ function skinning.onUse(player, item, fromPosition, target, toPosition, isHotkey
 	if type(skin[1]) == "table" then
 		local added = false
 		for _, skinChild in ipairs(skin) do
-			if randomChance <= skinChild.chance and not target.itemid == 13583 then
+			if randomChance <= skinChild.chance then
 				if target.itemid == 11343 then
 					local marble = player:addItem(skinChild.newItem, skinChild.amount or 1)
 					if marble then
@@ -175,20 +141,6 @@ function skinning.onUse(player, item, fromPosition, target, toPosition, isHotkey
 		target:transform(skin.after or target:getType():getDecayId() or target.itemid + 1)
 	else
 		target:remove()
-	end
-	if target:getId() == 13583 then
-		if player:getStorageValue(PlayerStorageKeys.mutatedPumpkin) > os.time() then
-			player:sendCancelMessage("You already used your knife on the corpse.")
-			return true
-		end
-
-		player:setStorageValue(PlayerStorageKeys.mutatedPumpkin, os.time() + 4 * 60 * 60)
-		player:say("Happy Halloween!", TALKTYPE_MONSTER_SAY)
-		player:getPosition():sendMagicEffect(CONST_ME_GIFT_WRAPS)
-		player:addAchievement("Mutated Presents")
-		local reward = math.random(1, #skin)
-		player:addItem(skin[reward].newItem, skin[reward].amount or 1)
-		effect = CONST_ME_HITAREA
 	end
 	if toPosition.x == CONTAINER_POSITION then
 		toPosition = player:getPosition()
