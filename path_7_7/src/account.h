@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,10 @@
 
 struct Account {
 	std::vector<std::string> characters;
-	uint32_t name = 0;
-	time_t lastDay = 0;
+	std::string name;
+	std::string key;
 	uint32_t id = 0;
-	uint16_t premiumDays = 0;
+	time_t premiumEndsAt = 0;
 	AccountType_t accountType = ACCOUNT_TYPE_NORMAL;
 
 	Account() = default;

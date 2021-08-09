@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,7 +77,6 @@ class Spawn
 		static bool findPlayer(const Position& pos);
 		bool spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& pos, Direction dir, bool startup = false);
 		void checkSpawn();
-		void scheduleSpawn(uint32_t spawnId, spawnBlock_t& sb, uint16_t interval);
 };
 
 class Spawns
@@ -100,7 +99,5 @@ class Spawns
 		bool loaded = false;
 		bool started = false;
 };
-
-static constexpr int32_t NONBLOCKABLE_SPAWN_INTERVAL = 1400;
 
 #endif

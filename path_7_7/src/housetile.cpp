@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,8 +85,8 @@ ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		} else {
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
-	} else if (thing.getItem() && actor) {
-		if (g_config.getBoolean(ConfigManager::HOUSE_ANTI_TRASH)) {
+	} else if (const Item* item = thing.getItem()) {
+		if (actor) {
 			Player* actorPlayer = actor->getPlayer();
 			if (!house->isInvited(actorPlayer)) {
 				return RETURNVALUE_CANNOTTHROW;
@@ -123,4 +123,20 @@ Tile* HouseTile::queryDestination(int32_t& index, const Thing& thing, Item** des
 	}
 
 	return Tile::queryDestination(index, thing, destItem, flags);
+}
+
+ReturnValue HouseTile::queryRemove(const Thing& thing, uint32_t count, uint32_t flags, Creature* actor /*= nullptr*/) const
+{
+	const Item* item = thing.getItem();
+	if (!item) {
+		return RETURNVALUE_NOTPOSSIBLE;
+	}
+
+	if (actor && g_config.getBoolean(ConfigManager::ONLY_INVITED_CAN_MOVE_HOUSE_ITEMS)) {
+		Player* actorPlayer = actor->getPlayer();
+		if (!house->isInvited(actorPlayer)) {
+			return RETURNVALUE_NOTPOSSIBLE;
+		}
+	}
+	return Tile::queryRemove(thing, count, flags);
 }

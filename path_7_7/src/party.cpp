@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #include "configmanager.h"
 #include "events.h"
 
+#include <fmt/format.h>
+
 extern Game g_game;
 extern ConfigManager g_config;
 extern Events* g_events;
@@ -45,7 +47,6 @@ void Party::disband()
 	currentLeader->setParty(nullptr);
 	currentLeader->sendClosePrivate(CHANNEL_PARTY);
 	g_game.updatePlayerShield(currentLeader);
-
 	currentLeader->sendCreatureSkull(currentLeader);
 	currentLeader->sendTextMessage(MESSAGE_INFO_DESCR, "Your party has been disbanded.");
 
@@ -124,13 +125,10 @@ bool Party::leaveParty(Player* player)
 	player->sendTextMessage(MESSAGE_INFO_DESCR, "You have left the party.");
 
 	updateSharedExperience();
-	updateVocationsList();
 
 	clearPlayerPoints(player);
 
-	std::ostringstream ss;
-	ss << player->getName() << " has left the party.";
-	broadcastPartyMessage(MESSAGE_INFO_DESCR, ss.str());
+	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has left the party.", player->getName()));
 
 	if (missingLeader || empty()) {
 		disband();
@@ -151,9 +149,7 @@ bool Party::passPartyLeadership(Player* player)
 		memberList.erase(it);
 	}
 
-	std::ostringstream ss;
-	ss << player->getName() << " is now the leader of the party.";
-	broadcastPartyMessage(MESSAGE_INFO_DESCR, ss.str(), true);
+	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} is now the leader of the party.", player->getName()), true);
 
 	Player* oldLeader = leader;
 	leader = player;
@@ -192,9 +188,7 @@ bool Party::joinParty(Player& player)
 
 	inviteList.erase(it);
 
-	std::ostringstream ss;
-	ss << player.getName() << " has joined the party.";
-	broadcastPartyMessage(MESSAGE_INFO_DESCR, ss.str());
+	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has joined the party.", player.getName()));
 
 	player.setParty(this);
 
@@ -213,13 +207,9 @@ bool Party::joinParty(Player& player)
 
 	player.removePartyInvitation(this);
 	updateSharedExperience();
-	updateVocationsList();
 
 	const std::string& leaderName = leader->getName();
-	ss.str(std::string());
-	ss << "You have joined " << leaderName << "'" << (leaderName.back() == 's' ? "" : "s") <<
-	   " party. Open the party channel to communicate with your companions.";
-	player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("You have joined {:s}'{:s} party. Open the party channel to communicate with your companions.", leaderName, leaderName.back() == 's' ? "" : "s"));
 	return true;
 }
 
@@ -248,14 +238,8 @@ bool Party::removeInvite(Player& player, bool removeFromPlayer/* = true*/)
 
 void Party::revokeInvitation(Player& player)
 {
-	std::ostringstream ss;
-	ss << leader->getName() << " has revoked " << (leader->getSex() == PLAYERSEX_FEMALE ? "her" : "his") << " invitation.";
-	player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
-
-	ss.str(std::string());
-	ss << "Invitation for " << player.getName() << " has been revoked.";
-	leader->sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
-
+	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has revoked {:s} invitation.", leader->getName(), leader->getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
+	leader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("Invitation for {:s} has been revoked.", player.getName()));
 	removeInvite(player);
 }
 
@@ -265,16 +249,13 @@ bool Party::invitePlayer(Player& player)
 		return false;
 	}
 
-	std::ostringstream ss;
-	ss << player.getName() << " has been invited.";
-
-	if (memberList.empty() && inviteList.empty()) {
-		ss << " Open the party channel to communicate with your members.";
+	if (empty()) {
+		leader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has been invited. Open the party channel to communicate with your members.", player.getName()));
 		g_game.updatePlayerShield(leader);
 		leader->sendCreatureSkull(leader);
+	} else {
+		leader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has been invited.", player.getName()));
 	}
-
-	leader->sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
 
 	inviteList.push_back(&player);
 
@@ -283,9 +264,7 @@ bool Party::invitePlayer(Player& player)
 
 	player.addPartyInvitation(this);
 
-	ss.str(std::string());
-	ss << leader->getName() << " has invited you to " << (leader->getSex() == PLAYERSEX_FEMALE ? "her" : "his") << " party.";
-	player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has invited you to {:s} party.", leader->getName(), leader->getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
 	return true;
 }
 
@@ -322,15 +301,6 @@ void Party::broadcastPartyMessage(MessageClasses msgClass, const std::string& ms
 	}
 }
 
-void Party::broadcastPartyLoot(const std::string& loot)
-{
-	leader->sendTextMessage(MESSAGE_INFO_DESCR, loot);
-
-	for (Player* member : memberList) {
-		member->sendTextMessage(MESSAGE_INFO_DESCR, loot);
-	}
-}
-
 void Party::updateSharedExperience()
 {
 	if (sharedExpActive) {
@@ -339,30 +309,6 @@ void Party::updateSharedExperience()
 			sharedExpEnabled = result;
 			updateAllPartyIcons();
 		}
-	}
-}
-
-void Party::updateVocationsList()
-{
-	std::set<uint32_t> vocationIds;
-
-	uint32_t vocationId = leader->getVocation()->getFromVocation();
-	if (vocationId != VOCATION_NONE) {
-		vocationIds.insert(vocationId);
-	}
-
-	for (const Player* member : memberList) {
-		vocationId = member->getVocation()->getFromVocation();
-		if (vocationId != VOCATION_NONE) {
-			vocationIds.insert(vocationId);
-		}
-	}
-
-	size_t size = vocationIds.size();
-	if (size > 1) {
-		extraExpRate = static_cast<float>(size * (10 + (size - 1) * 5)) / 100.f;
-	} else {
-		extraExpRate = 0.20f;
 	}
 }
 
@@ -396,7 +342,9 @@ bool Party::setSharedExperience(Player* player, bool sharedExpActive)
 
 void Party::shareExperience(uint64_t experience, Creature* source/* = nullptr*/)
 {
-	uint64_t shareExperience = static_cast<uint64_t>(std::ceil((static_cast<double>(experience) * (extraExpRate + 1)) / (memberList.size() + 1)));
+	uint64_t shareExperience = experience;
+	g_events->eventPartyOnShareExperience(this, shareExperience);
+
 	for (Player* member : memberList) {
 		member->onGainSharedExperience(shareExperience, source);
 	}
@@ -416,7 +364,7 @@ bool Party::canUseSharedExperience(const Player* player) const
 		}
 	}
 
-	uint32_t minLevel = static_cast<int32_t>(std::ceil((static_cast<float>(highestLevel) * 2) / 3));
+	uint32_t minLevel = static_cast<uint32_t>(std::ceil((static_cast<float>(highestLevel) * 2) / 3));
 	if (player->getLevel() < minLevel) {
 		return false;
 	}

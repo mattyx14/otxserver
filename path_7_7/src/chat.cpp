@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include "game.h"
 #include "pugicast.h"
 #include "scheduler.h"
+
+#include <fmt/format.h>
 
 extern Chat* g_chat;
 extern Game g_game;
@@ -47,13 +49,9 @@ void PrivateChatChannel::invitePlayer(const Player& player, Player& invitePlayer
 		return;
 	}
 
-	std::ostringstream ss;
-	ss << player.getName() << " invites you to " << (player.getSex() == PLAYERSEX_FEMALE ? "her" : "his") << " private chat channel.";
-	invitePlayer.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
-
-	ss.str(std::string());
-	ss << invitePlayer.getName() << " has been invited.";
-	player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+	invitePlayer.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} invites you to {:s} private chat channel.", player.getName(), player.getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
+	
+	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has been invited.", invitePlayer.getName()));
 }
 
 void PrivateChatChannel::excludePlayer(const Player& player, Player& excludePlayer)
@@ -64,9 +62,7 @@ void PrivateChatChannel::excludePlayer(const Player& player, Player& excludePlay
 
 	removeUser(excludePlayer);
 
-	std::ostringstream ss;
-	ss << excludePlayer.getName() << " has been excluded.";
-	player.sendTextMessage(MESSAGE_INFO_DESCR, ss.str());
+	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has been excluded.", excludePlayer.getName()));
 
 	excludePlayer.sendClosePrivate(id);
 }
@@ -88,6 +84,14 @@ bool ChatChannel::addUser(Player& player)
 		return false;
 	}
 
+	// TODO: Move to script when guild channels can be scripted
+	if (id == CHANNEL_GUILD) {
+		Guild* guild = player.getGuild();
+		if (guild && !guild->getMotd().empty()) {
+			g_scheduler.addEvent(createSchedulerTask(150, std::bind(&Game::sendGuildMotd, &g_game, player.getID())));
+		}
+	}
+
 	users[player.getID()] = &player;
 	return true;
 }
@@ -103,6 +107,17 @@ bool ChatChannel::removeUser(const Player& player)
 
 	executeOnLeaveEvent(player);
 	return true;
+}
+
+bool ChatChannel::hasUser(const Player& player) {
+	return users.find(player.getID()) != users.end();
+}
+
+void ChatChannel::sendToAll(const std::string& message, SpeakClasses type) const
+{
+	for (const auto& it : users) {
+		it.second->sendChannelMessage("", message, type, id);
+	}
 }
 
 bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, const std::string& text)
@@ -255,21 +270,39 @@ bool Chat::load()
 		return false;
 	}
 
-	std::forward_list<uint16_t> removedChannels;
-	for (auto& channelEntry : normalChannels) {
-		ChatChannel& channel = channelEntry.second;
-		channel.onSpeakEvent = -1;
-		channel.canJoinEvent = -1;
-		channel.onJoinEvent = -1;
-		channel.onLeaveEvent = -1;
-		removedChannels.push_front(channelEntry.first);
-	}
-
 	for (auto channelNode : doc.child("channels").children()) {
-		ChatChannel channel(pugi::cast<uint16_t>(channelNode.attribute("id").value()), channelNode.attribute("name").as_string());
-		channel.publicChannel = channelNode.attribute("public").as_bool();
-
+		uint16_t channelId = pugi::cast<uint16_t>(channelNode.attribute("id").value());
+		std::string channelName = channelNode.attribute("name").as_string();
+		bool isPublic = channelNode.attribute("public").as_bool();
 		pugi::xml_attribute scriptAttribute = channelNode.attribute("script");
+
+		auto it = normalChannels.find(channelId);
+		if (it != normalChannels.end()) {
+			ChatChannel& channel = it->second;
+			channel.publicChannel = isPublic;
+			channel.name = channelName;
+
+			if (scriptAttribute) {
+				if (scriptInterface.loadFile("data/chatchannels/scripts/" + std::string(scriptAttribute.as_string())) == 0) {
+					channel.onSpeakEvent = scriptInterface.getEvent("onSpeak");
+					channel.canJoinEvent = scriptInterface.getEvent("canJoin");
+					channel.onJoinEvent = scriptInterface.getEvent("onJoin");
+					channel.onLeaveEvent = scriptInterface.getEvent("onLeave");
+				} else {
+					std::cout << "[Warning - Chat::load] Can not load script: " << scriptAttribute.as_string() << std::endl;
+				}
+			}
+
+			UsersMap tempUserMap = std::move(channel.users);
+			for (const auto& pair : tempUserMap) {
+				channel.addUser(*pair.second);
+			}
+			continue;
+		}
+
+		ChatChannel channel(channelId, channelName);
+		channel.publicChannel = isPublic;
+
 		if (scriptAttribute) {
 			if (scriptInterface.loadFile("data/chatchannels/scripts/" + std::string(scriptAttribute.as_string())) == 0) {
 				channel.onSpeakEvent = scriptInterface.getEvent("onSpeak");
@@ -281,12 +314,7 @@ bool Chat::load()
 			}
 		}
 
-		removedChannels.remove(channel.id);
 		normalChannels[channel.id] = channel;
-	}
-
-	for (uint16_t channelId : removedChannels) {
-		normalChannels.erase(channelId);
 	}
 	return true;
 }
@@ -446,13 +474,13 @@ bool Chat::talkToChannel(const Player& player, SpeakClasses type, const std::str
 	}
 
 	if (channelId == CHANNEL_GUILD) {
-		const GuildRank* rank = player.getGuildRank();
+		GuildRank_ptr rank = player.getGuildRank();
 		if (rank && rank->level > 1) {
 			type = TALKTYPE_CHANNEL_O;
 		} else if (type != TALKTYPE_CHANNEL_Y) {
 			type = TALKTYPE_CHANNEL_Y;
 		}
-	} else if (type != TALKTYPE_CHANNEL_Y && (channelId == CHANNEL_PRIVATE || channelId == CHANNEL_PARTY)) {
+	} else if (channelId == CHANNEL_PRIVATE || channelId == CHANNEL_PARTY) {
 		type = TALKTYPE_CHANNEL_Y;
 	}
 

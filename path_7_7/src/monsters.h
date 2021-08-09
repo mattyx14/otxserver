@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,7 @@
 
 #include "creature.h"
 
-
 const uint32_t MAX_LOOTCHANCE = 100000;
-const uint32_t MAX_STATICWALK = 100;
 
 struct LootBlock {
 	uint16_t id;
@@ -35,32 +33,27 @@ struct LootBlock {
 	int32_t subType;
 	int32_t actionId;
 	std::string text;
-	std::string name;
-	std::string article;
-	int32_t attack;
-	int32_t defense;
-	int32_t extraDefense;
-	int32_t armor;
-	int32_t shootRange;
-	int32_t hitChance;
-	bool unique;
 
 	std::vector<LootBlock> childLoot;
 	LootBlock() {
 		id = 0;
-		countmax = 0;
+		countmax = 1;
 		chance = 0;
 
 		subType = -1;
 		actionId = -1;
-		attack = -1;
-		defense = -1;
-		extraDefense = -1;
-		armor = -1;
-		shootRange = -1;
-		hitChance = -1;
-		unique = false;
 	}
+};
+
+class Loot {
+	public:
+		Loot() = default;
+
+		// non-copyable
+		Loot(const Loot&) = delete;
+		Loot& operator=(const Loot&) = delete;
+
+		LootBlock lootBlock;
 };
 
 struct summonBlock_t {
@@ -147,11 +140,7 @@ class MonsterType
 		int32_t runAwayHealth = 0;
 		int32_t health = 100;
 		int32_t healthMax = 100;
-		int32_t changeTargetChance =0;
-		int32_t targetStrategiesNearestPercent = 0;
-		int32_t targetStrategiesLowerHPPercent = 0;
-		int32_t targetStrategiesMostDamagePercent = 0;
-		int32_t targetStrategiesRandom = 100;
+		int32_t changeTargetChance = 0;
 		int32_t defense = 0;
 		int32_t armor = 0;
 
@@ -164,9 +153,12 @@ class MonsterType
 		bool isAttackable = true;
 		bool isHostile = true;
 		bool hiddenHealth = false;
-		bool isBlockable = true;
-		bool isPassive = false;
-		bool isRewardBoss = false;
+		bool isBoss = false;
+		bool canWalkOnEnergy = true;
+		bool canWalkOnFire = true;
+		bool canWalkOnPoison = true;
+
+		MonstersEvent_t eventType = MONSTERS_EVENT_NONE;
 	};
 
 	public:
@@ -176,14 +168,59 @@ class MonsterType
 		MonsterType(const MonsterType&) = delete;
 		MonsterType& operator=(const MonsterType&) = delete;
 
+		bool loadCallback(LuaScriptInterface* scriptInterface);
+
 		std::string name;
 		std::string nameDescription;
 
 		MonsterInfo info;
 
-		void createLoot(Container* corpse);
-		bool createLootContainer(Container* parent, const LootBlock& lootblock);
-		std::vector<Item*> createLootItem(const LootBlock& lootBlock);
+		void loadLoot(MonsterType* monsterType, LootBlock lootBlock);
+};
+
+class MonsterSpell
+{
+	public:
+		MonsterSpell() = default;
+
+		MonsterSpell(const MonsterSpell&) = delete;
+		MonsterSpell& operator=(const MonsterSpell&) = delete;
+
+		std::string name = "";
+		std::string scriptName = "";
+
+		uint8_t chance = 100;
+		uint8_t range = 0;
+		uint8_t drunkenness = 0;
+
+		uint16_t interval = 2000;
+
+		int32_t minCombatValue = 0;
+		int32_t maxCombatValue = 0;
+		int32_t attack = 0;
+		int32_t skill = 0;
+		int32_t length = 0;
+		int32_t spread = 0;
+		int32_t radius = 0;
+		int32_t conditionMinDamage = 0;
+		int32_t conditionMaxDamage = 0;
+		int32_t conditionStartDamage = 0;
+		int32_t tickInterval = 0;
+		int32_t minSpeedChange = 0;
+		int32_t maxSpeedChange = 0;
+		int32_t duration = 0;
+
+		bool isScripted = false;
+		bool needTarget = false;
+		bool needDirection = false;
+		bool combatSpell = false;
+		bool isMelee = false;
+
+		Outfit_t outfit = {};
+		ShootType_t shoot = CONST_ANI_NONE;
+		MagicEffectClasses effect = CONST_ME_NONE;
+		ConditionType_t conditionType = CONDITION_NONE;
+		CombatType_t combatType = COMBAT_UNDEFINEDDAMAGE;
 };
 
 class Monsters
@@ -200,9 +237,11 @@ class Monsters
 		}
 		bool reload();
 
-		MonsterType* getMonsterType(const std::string& name);
+		MonsterType* getMonsterType(const std::string& name, bool loadFromFile = true);
+		bool deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std::string& description = "");
 
-		static uint32_t getLootRandom();
+		std::unique_ptr<LuaScriptInterface> scriptInterface;
+		std::map<std::string, MonsterType> monsters;
 
 	private:
 		ConditionDamage* getDamageCondition(ConditionType_t conditionType,
@@ -214,9 +253,7 @@ class Monsters
 		void loadLootContainer(const pugi::xml_node& node, LootBlock&);
 		bool loadLootItem(const pugi::xml_node& node, LootBlock&);
 
-		std::map<std::string, MonsterType> monsters;
 		std::map<std::string, std::string> unloadedMonsters;
-		std::unique_ptr<LuaScriptInterface> scriptInterface;
 
 		bool loaded = false;
 };

@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,7 +114,6 @@ class NetworkMessage
 		void addPosition(const Position& pos);
 		void addItem(uint16_t id, uint8_t count);
 		void addItem(const Item* item);
-		void addItemId(const Item* item);
 		void addItemId(uint16_t itemId);
 
 		MsgSize_t getLength() const {
@@ -129,11 +128,17 @@ class NetworkMessage
 			return info.position;
 		}
 
-		void setBufferPosition(MsgSize_t pos) {
-			info.position = pos;
+		bool setBufferPosition(MsgSize_t pos) {
+			if (pos < NETWORKMESSAGE_MAXSIZE - INITIAL_BUFFER_POSITION) {
+				info.position = pos + INITIAL_BUFFER_POSITION;
+				return true;
+			}
+			return false;
 		}
 
-		int32_t decodeHeader();
+		uint16_t getLengthHeader() const {
+			return static_cast<uint16_t>(buffer[0] | buffer[1] << 8);
+		}
 
 		bool isOverrun() const {
 			return info.overrun;
@@ -153,6 +158,16 @@ class NetworkMessage
 		}
 
 	protected:
+		struct NetworkMessageInfo {
+			MsgSize_t length = 0;
+			MsgSize_t position = INITIAL_BUFFER_POSITION;
+			bool overrun = false;
+		};
+
+		NetworkMessageInfo info;
+		uint8_t buffer[NETWORKMESSAGE_MAXSIZE];
+
+	private:
 		bool canAdd(size_t size) const {
 			return (size + info.position) < MAX_BODY_LENGTH;
 		}
@@ -164,15 +179,6 @@ class NetworkMessage
 			}
 			return true;
 		}
-
-		struct NetworkMessageInfo {
-			MsgSize_t length = 0;
-			MsgSize_t position = INITIAL_BUFFER_POSITION;
-			bool overrun = false;
-		};
-
-		NetworkMessageInfo info;
-		uint8_t buffer[NETWORKMESSAGE_MAXSIZE];
 };
 
 #endif // #ifndef __NETWORK_MESSAGE_H__

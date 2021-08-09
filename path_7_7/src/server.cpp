@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ void ServiceManager::stop()
 
 	acceptors.clear();
 
-	death_timer.expires_from_now(boost::posix_time::seconds(3));
+	death_timer.expires_from_now(std::chrono::seconds(3));
 	death_timer.async_wait(std::bind(&ServiceManager::die, this));
 }
 
@@ -132,7 +132,7 @@ void ServicePort::onAccept(Connection_ptr connection, const boost::system::error
 	}
 }
 
-Protocol_ptr ServicePort::make_protocol(NetworkMessage& msg, const Connection_ptr& connection) const
+Protocol_ptr ServicePort::make_protocol(bool checksummed, NetworkMessage& msg, const Connection_ptr& connection) const
 {
 	uint8_t protocolID = msg.getByte();
 	for (auto& service : services) {
@@ -140,7 +140,9 @@ Protocol_ptr ServicePort::make_protocol(NetworkMessage& msg, const Connection_pt
 			continue;
 		}
 
-		return service->make_protocol(connection);
+		if ((checksummed && service->is_checksummed()) || !service->is_checksummed()) {
+			return service->make_protocol(connection);
+		}
 	}
 	return nullptr;
 }
@@ -167,7 +169,7 @@ void ServicePort::open(uint16_t port)
 	try {
 		if (g_config.getBoolean(ConfigManager::BIND_ONLY_GLOBAL_ADDRESS)) {
 			acceptor.reset(new boost::asio::ip::tcp::acceptor(io_service, boost::asio::ip::tcp::endpoint(
-			            boost::asio::ip::address(boost::asio::ip::address_v4::from_string(g_config.getString(ConfigManager::IP))), serverPort)));
+			            boost::asio::ip::address(boost::asio::ip::address_v4::from_string(g_config.getString(ConfigManager::IP_STRING))), serverPort)));
 		} else {
 			acceptor.reset(new boost::asio::ip::tcp::acceptor(io_service, boost::asio::ip::tcp::endpoint(
 			            boost::asio::ip::address(boost::asio::ip::address_v4(INADDR_ANY)), serverPort)));

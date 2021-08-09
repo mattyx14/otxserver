@@ -1,26 +1,23 @@
-local function doTargetCorpse(cid, pos)
-	local getPos = pos
-	getPos.stackpos = 255
-	corpse = getThingfromPos(getPos)
-	if(corpse.uid > 0 and isCreature(corpse.uid) == false and isInArray(CORPSES, corpse.itemid) ) then
-		doRemoveItem(corpse.uid)
-		doPlayerSummonCreature(cid, "Skeleton", pos)
-		doSendMagicEffect(pos, CONST_ME_MAGIC_BLUE)
-		return LUA_NO_ERROR
+function onCastSpell(creature, variant, isHotkey)
+	local position = variant:getPosition()
+	local tile = Tile(position)
+	if tile and creature:getSkull() ~= SKULL_BLACK then
+		local corpse = tile:getTopDownItem()
+		if corpse then
+			local itemType = corpse:getType()
+			if itemType:isCorpse() and itemType:isMovable() then
+				local monster = Game.createMonster("Skeleton", position)
+				if monster then
+					corpse:remove()
+					creature:addSummon(monster)
+					position:sendMagicEffect(CONST_ME_MAGIC_BLUE)
+					return true
+				end
+			end
+		end
 	end
 
-	doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF)
-	doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
-	return LUA_ERROR
-end
-
-function onCastSpell(cid, var)
-	local pos = variantToPosition(var)
-	if(pos.x ~= 0 and pos.y ~= 0 and pos.z ~= 0) then
-		return doTargetCorpse(cid, pos)
-	end
-
-	doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF)
-	doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
-	return LUA_ERROR
+	creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+	creature:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+	return false
 end

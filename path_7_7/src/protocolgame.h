@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ class House;
 class Container;
 class Tile;
 class Connection;
+class Quest;
 class ProtocolGame;
 using ProtocolGame_ptr = std::shared_ptr<ProtocolGame>;
 
@@ -42,6 +43,7 @@ struct TextMessage
 	MessageClasses type = MESSAGE_STATUS_DEFAULT;
 	std::string text;
 	Position position;
+	uint16_t channelId;
 	struct {
 		int32_t value = 0;
 		TextColor_t color;
@@ -57,13 +59,14 @@ class ProtocolGame final : public Protocol
 		// static protocol information
 		enum {server_sends_first = true};
 		enum {protocol_identifier = 0}; // Not required as we send first
+		enum {use_checksum = true};
 		static const char* protocol_name() {
 			return "gameworld protocol";
 		}
 
 		explicit ProtocolGame(Connection_ptr connection) : Protocol(connection) {}
 
-		void login(const std::string& name, uint32_t accnumber, OperatingSystem_t operatingSystem);
+		void login(const std::string& name, uint32_t accountId, OperatingSystem_t operatingSystem);
 		void logout(bool displayEffect, bool forced);
 
 		uint16_t getVersion() const {
@@ -78,7 +81,7 @@ class ProtocolGame final : public Protocol
 		void disconnectClient(const std::string& message) const;
 		void writeToOutputBuffer(const NetworkMessage& msg);
 
-		void release() final;
+		void release() override;
 
 		void checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown);
 
@@ -87,9 +90,9 @@ class ProtocolGame final : public Protocol
 		bool canSee(const Position& pos) const;
 
 		// we have all the parse methods
-		void parsePacket(NetworkMessage& msg) final;
-		void onRecvFirstMessage(NetworkMessage& msg) final;
-		void onConnect() final;
+		void parsePacket(NetworkMessage& msg) override;
+		void onRecvFirstMessage(NetworkMessage& msg) override;
+		void onConnect() override;
 
 		//Parse methods
 		void parseAutoWalk(NetworkMessage& msg);
@@ -101,11 +104,9 @@ class ProtocolGame final : public Protocol
 		void parseAttack(NetworkMessage& msg);
 		void parseFollow(NetworkMessage& msg);
 
-		void parseProcessRuleViolationReport(NetworkMessage& msg);
-		void parseCloseRuleViolationReport(NetworkMessage& msg);
-
 		void parseBugReport(NetworkMessage& msg);
 		void parseDebugAssert(NetworkMessage& msg);
+		void parseRuleViolationReport(NetworkMessage& msg);
 
 		void parseThrow(NetworkMessage& msg);
 		void parseUseItemEx(NetworkMessage& msg);
@@ -117,10 +118,17 @@ class ProtocolGame final : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 
+		void parseLookInShop(NetworkMessage& msg);
+		void parsePlayerPurchase(NetworkMessage& msg);
+		void parsePlayerSale(NetworkMessage& msg);
+
+		void parseQuestLine(NetworkMessage& msg);
+
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
 		void parseRevokePartyInvite(NetworkMessage& msg);
 		void parsePassPartyLeadership(NetworkMessage& msg);
+		void parseEnableSharedPartyExperience(NetworkMessage& msg);
 
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
@@ -149,26 +157,37 @@ class ProtocolGame final : public Protocol
 		void sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId);
 		void sendPrivateMessage(const Player* speaker, SpeakClasses type, const std::string& text);
 		void sendIcons(uint16_t icons);
+		void sendFYIBox(const std::string& message);
 
 		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type);
 		void sendMagicEffect(const Position& pos, uint8_t type);
 		void sendCreatureHealth(const Creature* creature);
 		void sendSkills();
 		void sendPing();
-		void sendCreatureTurn(const Creature* creature, uint32_t stackpos);
+		void sendCreatureTurn(const Creature* creature, uint32_t stackPos);
 		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos = nullptr);
+
+		void sendQuestLog();
+		void sendQuestLine(const Quest* quest);
 
 		void sendCancelWalk();
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
 		void sendCancelTarget();
-		void sendCreatureVisible(const Creature* creature, bool visible);
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
 		void sendTextMessage(const TextMessage& message);
+		void sendReLoginWindow();
 
+		void sendTutorial(uint8_t tutorialId);
+		void sendAddMarker(const Position& pos, uint8_t markType, const std::string& desc);
+
+		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough);
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
 
+		void sendShop(const ShopInfoList& itemList);
+		void sendCloseShop();
+		void sendSaleItemList(const std::list<ShopInfo>& shop);
 		void sendTradeItemRequest(const std::string& traderName, const Item* item, bool ack);
 		void sendCloseTrade();
 
@@ -177,13 +196,15 @@ class ProtocolGame final : public Protocol
 		void sendHouseWindow(uint32_t windowTextId, const std::string& text);
 		void sendOutfitWindow();
 
-		void sendUpdatedVIPStatus(uint32_t guid, bool online);
-		void sendVIP(uint32_t guid, const std::string& name, bool isOnline);
+		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
+		void sendVIP(uint32_t guid, const std::string& name, VipStatus_t status);
 
 		void sendFightModes();
 
+		void sendAnimatedText(const std::string& message, const Position& pos, TextColor_t color);;
+
 		void sendCreatureLight(const Creature* creature);
-		void sendWorldLight(const LightInfo& lightInfo);
+		void sendWorldLight(LightInfo lightInfo);
 
 		void sendCreatureSquare(const Creature* creature, SquareColor_t color);
 
@@ -193,17 +214,12 @@ class ProtocolGame final : public Protocol
 		void sendAddTileItem(const Position& pos, uint32_t stackpos, const Item* item);
 		void sendUpdateTileItem(const Position& pos, uint32_t stackpos, const Item* item);
 		void sendRemoveTileThing(const Position& pos, uint32_t stackpos);
+		void sendRemoveTileCreature(const Creature* creature, const Position& pos, uint32_t stackpos);
 		void sendUpdateTile(const Tile* tile, const Position& pos);
 
 		void sendAddCreature(const Creature* creature, const Position& pos, int32_t stackpos, bool isLogin);
 		void sendMoveCreature(const Creature* creature, const Position& newPos, int32_t newStackPos,
 		                      const Position& oldPos, int32_t oldStackPos, bool teleport);
-
-		//rule violations
-		void sendRemoveRuleViolationReport(const std::string& name);
-		void sendLockRuleViolation();
-		void sendRuleViolationCancel(const std::string& name);
-		void sendRuleViolationsChannel(uint16_t channelId);
 
 		//containers
 		void sendAddContainerItem(uint8_t cid, const Item* item);
@@ -216,17 +232,16 @@ class ProtocolGame final : public Protocol
 		//inventory
 		void sendInventoryItem(slots_t slot, const Item* item);
 
-		//messages
-		void sendAnimatedText(const std::string& message, const Position& pos, TextColor_t color);
+		//Help functions
 
-		// translate a tile to clientreadable format
+		// translate a tile to client-readable format
 		void GetTileDescription(const Tile* tile, NetworkMessage& msg);
 
-		// translate a floor to clientreadable format
+		// translate a floor to client-readable format
 		void GetFloorDescription(NetworkMessage& msg, int32_t x, int32_t y, int32_t z,
 		                         int32_t width, int32_t height, int32_t offset, int32_t& skip);
 
-		// translate a map area to clientreadable format
+		// translate a map area to client-readable format
 		void GetMapDescription(int32_t x, int32_t y, int32_t z,
 		                       int32_t width, int32_t height, NetworkMessage& msg);
 
@@ -234,22 +249,18 @@ class ProtocolGame final : public Protocol
 		void AddPlayerStats(NetworkMessage& msg);
 		void AddOutfit(NetworkMessage& msg, const Outfit_t& outfit);
 		void AddPlayerSkills(NetworkMessage& msg);
-		void AddWorldLight(NetworkMessage& msg, const LightInfo& lightInfo);
+		void AddWorldLight(NetworkMessage& msg, LightInfo lightInfo);
 		void AddCreatureLight(NetworkMessage& msg, const Creature* creature);
 
 		//tiles
 		static void RemoveTileThing(NetworkMessage& msg, const Position& pos, uint32_t stackpos);
+		static void RemoveTileCreature(NetworkMessage& msg, const Creature* creature, const Position& pos, uint32_t stackpos);
 
 		void MoveUpCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos, const Position& oldPos);
 		void MoveDownCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos, const Position& oldPos);
 
-		//container
-		void AddContainerItem(NetworkMessage& msg, uint8_t cid, const Item* item);
-		void UpdateContainerItem(NetworkMessage& msg, uint8_t cid, uint16_t slot, const Item* item);
-		void RemoveContainerItem(NetworkMessage& msg, uint8_t cid, uint16_t slot);
-
-		//inventory
-		void SetInventoryItem(NetworkMessage& msg, slots_t slot, const Item* item);
+		//shop
+		void AddShopItem(NetworkMessage& msg, const ShopInfo& item);
 
 		//otclient
 		void parseExtendedOpcode(NetworkMessage& msg);
@@ -258,24 +269,26 @@ class ProtocolGame final : public Protocol
 
 		// Helpers so we don't need to bind every time
 		template <typename Callable, typename... Args>
-		void addGameTask(Callable function, Args&&... args) {
-			g_dispatcher.addTask(createTask(std::bind(function, &g_game, std::forward<Args>(args)...)));
+		void addGameTask(Callable&& function, Args&&... args) {
+			g_dispatcher.addTask(createTask(std::bind(std::forward<Callable>(function), &g_game, std::forward<Args>(args)...)));
 		}
 
 		template <typename Callable, typename... Args>
-		void addGameTaskTimed(uint32_t delay, Callable function, Args&&... args) {
-			g_dispatcher.addTask(createTask(delay, std::bind(function, &g_game, std::forward<Args>(args)...)));
+		void addGameTaskTimed(uint32_t delay, Callable&& function, Args&&... args) {
+			g_dispatcher.addTask(createTask(delay, std::bind(std::forward<Callable>(function), &g_game, std::forward<Args>(args)...)));
 		}
 
 		std::unordered_set<uint32_t> knownCreatureSet;
 		Player* player = nullptr;
 
 		uint32_t eventConnect = 0;
+		uint32_t challengeTimestamp = 0;
 		uint16_t version = CLIENT_VERSION_MIN;
+
+		uint8_t challengeRandom = 0;
 
 		bool debugAssertSent = false;
 		bool acceptPackets = false;
-		bool loggedIn = false;
 };
 
 #endif

@@ -2,27 +2,38 @@ local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
-function onCreatureAppear(cid)
-	npcHandler:onCreatureAppear(cid)
-end
-function onCreatureDisappear(cid)
-	npcHandler:onCreatureDisappear(cid)
-end
-function onCreatureSay(cid, type, msg)
-	npcHandler:onCreatureSay(cid, type, msg)
-end
-function onThink()
-	npcHandler:onThink()
-end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
+
+local voices = { {text = "Runes, wands, rods, health and mana potions! Have a look!"} }
+npcHandler:addModule(VoiceModule:new(voices))
 
 local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
 
+keywordHandler:addKeyword({'stuff'}, StdModule.say, {npcHandler = npcHandler, text = 'Just ask me for a {trade} to see my offers.'})
+keywordHandler:addAliasKeyword({'wares'})
+keywordHandler:addAliasKeyword({'offer'})
+
 shopModule:addBuyableItem({'spellbook'}, 2175, 150, 'spellbook')
 shopModule:addBuyableItem({'magic lightwand'}, 2163, 400, 'magic lightwand')
 
-shopModule:addBuyableItem({'lifefluid'}, 2006, 45, 10, 'vial of lifefluid')
-shopModule:addBuyableItem({'manafluid'}, 2006, 50, 7, 'vial of manafluid')
+shopModule:addBuyableItem({'small health'}, 8704, 20, 1, 'small health potion')
+shopModule:addBuyableItem({'health potion'}, 7618, 45, 1, 'health potion')
+shopModule:addBuyableItem({'mana potion'}, 7620, 50, 1, 'mana potion')
+shopModule:addBuyableItem({'strong health'}, 7588, 100, 1, 'strong health potion')
+shopModule:addBuyableItem({'strong mana'}, 7589, 80, 1, 'strong mana potion')
+shopModule:addBuyableItem({'great health'}, 7591, 190, 1, 'great health potion')
+shopModule:addBuyableItem({'great mana'}, 7590, 120, 1, 'great mana potion')
+shopModule:addBuyableItem({'great spirit'}, 8472, 190, 1, 'great spirit potion')
+shopModule:addBuyableItem({'ultimate health'}, 8473, 310, 1, 'ultimate health potion')
+shopModule:addBuyableItem({'antidote potion'}, 8474, 50, 1, 'antidote potion')
+
+shopModule:addSellableItem({'normal potion flask', 'normal flask'}, 7636, 5, 'empty small potion flask')
+shopModule:addSellableItem({'strong potion flask', 'strong flask'}, 7634, 10, 'empty strong potion flask')
+shopModule:addSellableItem({'great potion flask', 'great flask'}, 7635, 15, 'empty great potion flask')
 
 shopModule:addBuyableItem({'intense healing'}, 2265, 95, 1, 'intense healing rune')
 shopModule:addBuyableItem({'ultimate healing'}, 2273, 175, 1, 'ultimate healing rune')
@@ -33,45 +44,58 @@ shopModule:addBuyableItem({'heavy magic missile'}, 2311, 120, 10, 'heavy magic m
 shopModule:addBuyableItem({'great fireball'}, 2304, 180, 4, 'great fireball rune')
 shopModule:addBuyableItem({'explosion'}, 2313, 250, 6, 'explosion rune')
 shopModule:addBuyableItem({'sudden death'}, 2268, 350, 3, 'sudden death rune')
-shopModule:addBuyableItem({'death arrow'}, 2263, 300, 3, 'death arrow rune')
 shopModule:addBuyableItem({'paralyze'}, 2278, 700, 1, 'paralyze rune')
 shopModule:addBuyableItem({'animate dead'}, 2316, 375, 1, 'animate dead rune')
 shopModule:addBuyableItem({'convince creature'}, 2290, 80, 1, 'convince creature rune')
 shopModule:addBuyableItem({'chameleon'}, 2291, 210, 1, 'chameleon rune')
-shopModule:addBuyableItem({'desintegrate'}, 2310, 80, 3, 'desintegreate rune')
+shopModule:addBuyableItem({'disintegrate'}, 2310, 80, 3, 'disintegrate rune')
 
--- Backpack Potions and Runes
-shopModule:addBuyableItemContainer({'bp hp'}, 2000, 2006, 900, 10, 'backpack of health potions')
-shopModule:addBuyableItemContainer({'bp mp'}, 2001, 2006, 1000, 7, 'backpack of mana potions')
-shopModule:addBuyableItemContainer({'bp ihr'}, 2001, 2265, 1900, 1, 'backpack of intense healing runes')
-shopModule:addBuyableItemContainer({'bp sdr'}, 2001, 2268, 7000, 1, 'backpack of sudden death runes')
-shopModule:addBuyableItemContainer({'bp uhr'}, 2001, 2273, 3500, 1, 'backpack of ultimate healing runes')
-shopModule:addBuyableItemContainer({'bp hmmr'}, 2001, 2311, 2400, 1, 'backpack of heavy magic missile runes')
-shopModule:addBuyableItemContainer({'bp epn'}, 2001, 2313, 5000, 1, 'backpack of explosion runes')
+shopModule:addBuyableItemContainer({'bp ap'}, 2002, 8378, 2000, 1, 'backpack of antidote potions')
+shopModule:addBuyableItemContainer({'bp slhp'}, 2000, 8610, 400, 1, 'backpack of small health potions')
+shopModule:addBuyableItemContainer({'bp hp'}, 2000, 7618, 900, 1, 'backpack of health potions')
+shopModule:addBuyableItemContainer({'bp mp'}, 2001, 7620, 1000, 1, 'backpack of mana potions')
+shopModule:addBuyableItemContainer({'bp shp'}, 2000, 7588, 2000, 1, 'backpack of strong health potions')
+shopModule:addBuyableItemContainer({'bp smp'}, 2001, 7589, 1600, 1, 'backpack of strong mana potions')
+shopModule:addBuyableItemContainer({'bp ghp'}, 2000, 7591, 3800, 1, 'backpack of great health potions')
+shopModule:addBuyableItemContainer({'bp gmp'}, 2001, 7590, 2400, 1, 'backpack of great mana potions')
+shopModule:addBuyableItemContainer({'bp gsp'}, 1999, 8376, 3800, 1, 'backpack of great spirit potions')
+shopModule:addBuyableItemContainer({'bp uhp'}, 2000, 8377, 6200, 1, 'backpack of ultimate health potions')
 
 shopModule:addBuyableItem({'wand of vortex', 'vortex'}, 2190, 500, 'wand of vortex')
 shopModule:addBuyableItem({'wand of dragonbreath', 'dragonbreath'}, 2191, 1000, 'wand of dragonbreath')
-shopModule:addBuyableItem({'wand of plague', 'plague'}, 2188, 5000, 'wand of plague')
+shopModule:addBuyableItem({'wand of decay', 'decay'}, 2188, 5000, 'wand of decay')
+shopModule:addBuyableItem({'wand of draconia', 'draconia'}, 8921, 7500, 'wand of draconia')
 shopModule:addBuyableItem({'wand of cosmic energy', 'cosmic energy'}, 2189, 10000, 'wand of cosmic energy')
 shopModule:addBuyableItem({'wand of inferno', 'inferno'}, 2187, 15000, 'wand of inferno')
+shopModule:addBuyableItem({'wand of starstorm', 'starstorm'}, 8920, 18000, 'wand of starstorm')
+shopModule:addBuyableItem({'wand of voodoo', 'voodoo'}, 8922, 22000, 'wand of voodoo')
 
 shopModule:addBuyableItem({'snakebite rod', 'snakebite'}, 2182, 500, 'snakebite rod')
 shopModule:addBuyableItem({'moonlight rod', 'moonlight'}, 2186, 1000, 'moonlight rod')
-shopModule:addBuyableItem({'volcanic rod', 'volcanic'}, 2185, 5000, 'volcanic rod')
-shopModule:addBuyableItem({'quagmire rod', 'quagmire'}, 2181, 10000, 'quagmire rod')
-shopModule:addBuyableItem({'tempest rod', 'tempest'}, 2183, 15000, 'tempest rod')
+shopModule:addBuyableItem({'necrotic rod', 'necrotic'}, 2185, 5000, 'necrotic rod')
+shopModule:addBuyableItem({'northwind rod', 'northwind'}, 8911, 7500, 'northwind rod')
+shopModule:addBuyableItem({'terra rod', 'terra'}, 2181, 10000, 'terra rod')
+shopModule:addBuyableItem({'hailstorm rod', 'hailstorm'}, 2183, 15000, 'hailstorm rod')
+shopModule:addBuyableItem({'springsprout rod', 'springsprout'}, 8912, 18000, 'springsprout rod')
+shopModule:addBuyableItem({'underworld rod', 'underworld'}, 8910, 22000, 'underworld rod')
 
 shopModule:addSellableItem({'wand of vortex', 'vortex'}, 2190, 250, 'wand of vortex')
 shopModule:addSellableItem({'wand of dragonbreath', 'dragonbreath'}, 2191, 500, 'wand of dragonbreath')
-shopModule:addSellableItem({'wand of plague', 'plague'}, 2188, 2500, 'wand of plague')
+shopModule:addSellableItem({'wand of decay', 'decay'}, 2188, 2500, 'wand of decay')
+shopModule:addSellableItem({'wand of draconia', 'draconia'}, 8921, 3750, 'wand of draconia')
 shopModule:addSellableItem({'wand of cosmic energy', 'cosmic energy'}, 2189, 5000, 'wand of cosmic energy')
 shopModule:addSellableItem({'wand of inferno', 'inferno'},2187, 7500, 'wand of inferno')
+shopModule:addSellableItem({'wand of starstorm', 'starstorm'}, 8920, 9000, 'wand of starstorm')
+shopModule:addSellableItem({'wand of voodoo', 'voodoo'}, 8922, 11000, 'wand of voodoo')
 
 shopModule:addSellableItem({'snakebite rod', 'snakebite'}, 2182, 250,'snakebite rod')
 shopModule:addSellableItem({'moonlight rod', 'moonlight'}, 2186, 500, 'moonlight rod')
-shopModule:addSellableItem({'volcanic rod', 'volcanic'}, 2185, 2500, 'volcanic rod')
-shopModule:addSellableItem({'quagmire rod', 'quagmire'}, 2181, 5000, 'quagmire rod')
-shopModule:addSellableItem({'tempest rod', 'tempest'}, 2183, 7500, 'tempest rod')
+shopModule:addSellableItem({'necrotic rod', 'necrotic'}, 2185, 2500, 'necrotic rod')
+shopModule:addSellableItem({'northwind rod', 'northwind'}, 8911, 3750, 'northwind rod')
+shopModule:addSellableItem({'terra rod', 'terra'}, 2181, 5000, 'terra rod')
+shopModule:addSellableItem({'hailstorm rod', 'hailstorm'}, 2183, 7500, 'hailstorm rod')
+shopModule:addSellableItem({'springsprout rod', 'springsprout'}, 8912, 9000, 'springsprout rod')
+shopModule:addSellableItem({'underworld rod', 'underworld'}, 8910, 11000, 'underworld rod')
 
 function creatureSayCallback(cid, type, msg)
 	if not npcHandler:isFocused(cid) then
@@ -88,9 +112,9 @@ function creatureSayCallback(cid, type, msg)
 	}
 
 	if msgcontains(msg, 'first rod') or msgcontains(msg, 'first wand') then
-		if isInArray({1, 2, 5, 6}, vocationId) then
-			if player:getStorageValue(3050) == -1 then
-				selfSay('So you ask me for a {' .. ItemType(items[vocationId]):getName() .. '} to begin your advanture?', cid)
+		if table.contains({1, 2, 5, 6}, vocationId) then
+			if player:getStorageValue(PlayerStorageKeys.firstRod) == -1 then
+				selfSay('So you ask me for a {' .. ItemType(items[vocationId]):getName() .. '} to begin your adventure?', cid)
 				npcHandler.topic[cid] = 1
 			else
 				selfSay('What? I have already gave you one {' .. ItemType(items[vocationId]):getName() .. '}!', cid)
@@ -101,22 +125,13 @@ function creatureSayCallback(cid, type, msg)
 	elseif msgcontains(msg, 'yes') then
 		if npcHandler.topic[cid] == 1 then
 			player:addItem(items[vocationId], 1)
-			player:setStorageValue(3050, 1)
 			selfSay('Here you are young adept, take care yourself.', cid)
+			player:setStorageValue(PlayerStorageKeys.firstRod, 1)
 		end
 		npcHandler.topic[cid] = 0
 	elseif msgcontains(msg, 'no') and npcHandler.topic[cid] == 1 then
 		selfSay('Ok then.', cid)
 		npcHandler.topic[cid] = 0
-	elseif isInArray({"vial", "ticket", "bonus"}, msg) then
-		if player:removeItem(7634, 100) or player:removeItem(7635, 100) or player:removeItem(7636, 100) then
-			player:addItem(5957, 1)
-			npcHandler:say("Alright, thank you very much! Here is your lottery ticket, good luck. Would you like to deposit more vials that way?", cid)
-			npcHandler.topic[cid] = 0
-		else
-			npcHandler:say("Sorry, but you don't have 100 empty flasks or vials of the SAME kind and thus don't qualify for the lottery. Would you like to deposit the vials you have as usual and receive 5 gold per vial?", cid)
-			npcHandler.topic[cid] = 0
-		end
 	end
 
 	return true

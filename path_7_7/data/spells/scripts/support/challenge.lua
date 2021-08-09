@@ -1,12 +1,13 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setArea(createCombatArea(AREA_SQUARE1X1))
 
-local area = createCombatArea(AREA_SQUARE1X1)
-setCombatArea(combat, area)
+function onTargetCreature(creature, target)
+	return doChallengeCreature(creature, target)
+end
 
-function onTargetCreature(cid, target) return doChallengeCreature(cid, target) end
-setCombatCallback(combat, CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
+combat:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+	return combat:execute(creature, variant)
 end

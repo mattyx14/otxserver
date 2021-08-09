@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,36 +91,31 @@ class Vocation
 		float defenseMultiplier = 1.0f;
 		float armorMultiplier = 1.0f;
 
-	protected:
+	private:
 		friend class Vocations;
-
-		std::map<uint32_t, uint64_t> cacheMana;
-		std::map<uint32_t, uint32_t> cacheSkill[SKILL_LAST + 1];
 
 		std::string name = "none";
 		std::string description;
 
-		float skillMultipliers[SKILL_LAST + 1] = {1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.1f};
+		double skillMultipliers[SKILL_LAST + 1] = {1.5, 2.0, 2.0, 2.0, 2.0, 1.5, 1.1};
 		float manaMultiplier = 4.0f;
 
-		uint32_t gainHealthTicks = gainHealthTicks;
-		uint32_t gainHealthAmount = gainHealthAmount;
-		uint32_t gainManaTicks = gainManaTicks;
-		uint32_t gainManaAmount = gainManaAmount;
-		uint32_t gainCap = gainCap;
-		uint32_t gainMana = gainMana;
-		uint32_t gainHP = gainHP;
+		uint32_t gainHealthTicks = 6;
+		uint32_t gainHealthAmount = 1;
+		uint32_t gainManaTicks = 6;
+		uint32_t gainManaAmount = 1;
+		uint32_t gainCap = 500;
+		uint32_t gainMana = 5;
+		uint32_t gainHP = 5;
 		uint32_t fromVocation = VOCATION_NONE;
-		uint32_t attackSpeed = attackSpeed;
-		uint32_t baseSpeed = baseSpeed;
+		uint32_t attackSpeed = 1500;
+		uint32_t baseSpeed = 220;
 		uint16_t id;
 
-		uint16_t gainSoulTicks = gainSoulTicks;
+		uint16_t gainSoulTicks = 120;
 
-		uint8_t soulMax = soulMax;
-		uint8_t clientId = clientId;
-
-		static uint32_t skillBase[SKILL_LAST + 1];
+		uint8_t soulMax = 100;
+		uint8_t clientId = 0;
 };
 
 class Vocations

@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,10 @@
 #ifndef FS_TILE_H_96C7EE7CF8CD48E59D5D554A181F0C56
 #define FS_TILE_H_96C7EE7CF8CD48E59D5D554A181F0C56
 
-#include <unordered_set>
-
 #include "cylinder.h"
 #include "item.h"
 #include "tools.h"
+#include "spectators.h"
 
 class Creature;
 class Teleport;
@@ -36,7 +35,6 @@ class BedItem;
 
 using CreatureVector = std::vector<Creature*>;
 using ItemVector = std::vector<Item*>;
-using SpectatorHashSet = std::unordered_set<Creature*>;
 
 enum tileflags_t : uint32_t {
 	TILESTATE_NONE = 0,
@@ -95,6 +93,7 @@ class TileItemVector : private ItemVector
 		using ItemVector::const_iterator;
 		using ItemVector::reverse_iterator;
 		using ItemVector::const_reverse_iterator;
+		using ItemVector::empty;
 
 		iterator getBeginDownItem() {
 			return begin();
@@ -102,17 +101,11 @@ class TileItemVector : private ItemVector
 		const_iterator getBeginDownItem() const {
 			return begin();
 		}
-		const_iterator getCBeginDownItem() const {
-			return getBeginDownItem();
-		}
 		iterator getEndDownItem() {
 			return begin() + downItemCount;
 		}
 		const_iterator getEndDownItem() const {
 			return begin() + downItemCount;
-		}
-		const_iterator getCEndDownItem() const {
-			return getEndDownItem();
 		}
 		iterator getBeginTopItem() {
 			return getEndDownItem();
@@ -120,17 +113,11 @@ class TileItemVector : private ItemVector
 		const_iterator getBeginTopItem() const {
 			return getEndDownItem();
 		}
-		const_iterator getCBeginTopItem() const {
-			return getBeginTopItem();
-		}
 		iterator getEndTopItem() {
 			return end();
 		}
 		const_iterator getEndTopItem() const {
 			return end();
-		}
-		const_iterator getCEndTopItem() const {
-			return getEndTopItem();
 		}
 
 		uint32_t getTopItemCount() const {
@@ -180,10 +167,10 @@ class Tile : public Cylinder
 		virtual const CreatureVector* getCreatures() const = 0;
 		virtual CreatureVector* makeCreatures() = 0;
 
-		int32_t getThrowRange() const final {
+		int32_t getThrowRange() const override final {
 			return 0;
 		}
-		bool isPushable() const final {
+		bool isPushable() const override final {
 			return false;
 		}
 
@@ -242,53 +229,51 @@ class Tile : public Cylinder
 		}
 
 		bool hasHeight(uint32_t n) const;
-		int32_t getHeight() const;
 
-		std::string getDescription(int32_t lookDistance) const final;
+		std::string getDescription(int32_t lookDistance) const override final;
 
 		int32_t getClientIndexOfCreature(const Player* player, const Creature* creature) const;
-		int32_t getStackposOfCreature(const Player* player, const Creature* creature) const;
 		int32_t getStackposOfItem(const Player* player, const Item* item) const;
 
 		//cylinder implementations
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t flags, Creature* actor = nullptr) const override;
 		ReturnValue queryMaxCount(int32_t index, const Thing& thing, uint32_t count,
-				uint32_t& maxQueryCount, uint32_t flags) const final;
-		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t flags) const final;
+				uint32_t& maxQueryCount, uint32_t flags) const override final;
+		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t flags, Creature* actor = nullptr) const override;
 		Tile* queryDestination(int32_t& index, const Thing& thing, Item** destItem, uint32_t& flags) override;
 
-		void addThing(Thing* thing) final;
+		void addThing(Thing* thing) override final;
 		void addThing(int32_t index, Thing* thing) override;
 
-		void updateThing(Thing* thing, uint16_t itemId, uint32_t count) final;
-		void replaceThing(uint32_t index, Thing* thing) final;
+		void updateThing(Thing* thing, uint16_t itemId, uint32_t count) override final;
+		void replaceThing(uint32_t index, Thing* thing) override final;
 
-		void removeThing(Thing* thing, uint32_t count) final;
+		void removeThing(Thing* thing, uint32_t count) override final;
 
 		void removeCreature(Creature* creature);
 
-		int32_t getThingIndex(const Thing* thing) const final;
-		size_t getFirstIndex() const final;
-		size_t getLastIndex() const final;
-		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const final;
-		Thing* getThing(size_t index) const final;
+		int32_t getThingIndex(const Thing* thing) const override final;
+		size_t getFirstIndex() const override final;
+		size_t getLastIndex() const override final;
+		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const override final;
+		Thing* getThing(size_t index) const override final;
 
-		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override final;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override final;
 
-		void internalAddThing(Thing* thing) final;
+		void internalAddThing(Thing* thing) override final;
 		void internalAddThing(uint32_t index, Thing* thing) override;
 
-		const Position& getPosition() const final {
+		const Position& getPosition() const override final {
 			return tilePos;
 		}
 
-		bool isRemoved() const final {
+		bool isRemoved() const override final {
 			return false;
 		}
 
-		Item* getUseItem() const;
+		Item* getUseItem(int32_t index) const;
 
 		Item* getGround() const {
 			return ground;
@@ -300,16 +285,13 @@ class Tile : public Cylinder
 	private:
 		void onAddTileItem(Item* item);
 		void onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newItem, const ItemType& newType);
-		void onRemoveTileItem(const SpectatorHashSet& spectators, const std::vector<int32_t>& oldStackPosVector, Item* item);
-		void onUpdateTile(const SpectatorHashSet& spectators);
+		void onRemoveTileItem(const SpectatorVec& spectators, const std::vector<int32_t>& oldStackPosVector, Item* item);
+		void onUpdateTile(const SpectatorVec& spectators);
 
 		void setTileFlags(const Item* item);
 		void resetTileFlags(const Item* item);
 
-	public:
 		Item* ground = nullptr;
-
-	protected:
 		Position tilePos;
 		uint32_t flags = 0;
 };
@@ -334,23 +316,23 @@ class DynamicTile : public Tile
 		DynamicTile(const DynamicTile&) = delete;
 		DynamicTile& operator=(const DynamicTile&) = delete;
 
-		TileItemVector* getItemList() final {
+		TileItemVector* getItemList() override {
 			return &items;
 		}
-		const TileItemVector* getItemList() const final {
+		const TileItemVector* getItemList() const override {
 			return &items;
 		}
-		TileItemVector* makeItemList() final {
+		TileItemVector* makeItemList() override {
 			return &items;
 		}
 
-		CreatureVector* getCreatures() final {
+		CreatureVector* getCreatures() override {
 			return &creatures;
 		}
-		const CreatureVector* getCreatures() const final {
+		const CreatureVector* getCreatures() const override {
 			return &creatures;
 		}
-		CreatureVector* makeCreatures() final {
+		CreatureVector* makeCreatures() override {
 			return &creatures;
 		}
 };
@@ -376,26 +358,26 @@ class StaticTile final : public Tile
 		StaticTile(const StaticTile&) = delete;
 		StaticTile& operator=(const StaticTile&) = delete;
 
-		TileItemVector* getItemList() final {
+		TileItemVector* getItemList() override {
 			return items.get();
 		}
-		const TileItemVector* getItemList() const final {
+		const TileItemVector* getItemList() const override {
 			return items.get();
 		}
-		TileItemVector* makeItemList() final {
+		TileItemVector* makeItemList() override {
 			if (!items) {
 				items.reset(new TileItemVector);
 			}
 			return items.get();
 		}
 
-		CreatureVector* getCreatures() final {
+		CreatureVector* getCreatures() override {
 			return creatures.get();
 		}
-		const CreatureVector* getCreatures() const final {
+		const CreatureVector* getCreatures() const override {
 			return creatures.get();
 		}
-		CreatureVector* makeCreatures() final {
+		CreatureVector* makeCreatures() override {
 			if (!creatures) {
 				creatures.reset(new CreatureVector);
 			}

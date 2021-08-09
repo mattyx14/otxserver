@@ -1,5 +1,6 @@
 local function levitate(creature, parameter)
 	local fromPosition = creature:getPosition()
+
 	if parameter == "up" and fromPosition.z ~= 8 or parameter == "down" and fromPosition.z ~= 7 then
 		local toPosition = creature:getPosition()
 		toPosition:getNextPosition(creature:getDirection())
@@ -13,7 +14,6 @@ local function levitate(creature, parameter)
 			end
 		end
 	end
-
 	return RETURNVALUE_NOTPOSSIBLE
 end
 

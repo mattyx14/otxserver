@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@
 #include "configmanager.h"
 #include "scheduler.h"
 #include "monster.h"
+
+#include <fmt/format.h>
 
 extern Game g_game;
 extern ConfigManager g_config;
@@ -71,9 +73,7 @@ bool Raids::loadFromXml()
 		if ((attr = raidNode.attribute("file"))) {
 			file = attr.as_string();
 		} else {
-			std::ostringstream ss;
-			ss << "raids/" << name << ".xml";
-			file = ss.str();
+			file = fmt::format("raids/{:s}.xml", name);
 			std::cout << "[Warning - Raids::loadFromXml] File tag missing for raid " << name << ". Using default: " << file << std::endl;
 		}
 

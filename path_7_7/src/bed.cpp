@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ BedItem* BedItem::getNextBedItem() const
 
 bool BedItem::canUse(Player* player)
 {
-	if (!player || !house || !player->isPremium()) {
+	if (!player || !house || !player->isPremium() || player->getZone() != ZONE_PROTECTION) {
 		return false;
 	}
 
@@ -160,7 +160,7 @@ bool BedItem::sleep(Player* player)
 	g_game.map.moveCreature(*player, *getTile());
 
 	// display 'Zzzz'/sleep effect
-	g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+	g_game.addMagicEffect(player->getPosition(), CONST_ME_SLEEP);
 
 	// kick player after he sees himself walk onto the bed and it change id
 	uint32_t playerId = player->getID();

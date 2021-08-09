@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ void ProtocolStatus::onRecvFirstMessage(NetworkMessage& msg)
 	uint32_t ip = getIP();
 	if (ip != 0x0100007F) {
 		std::string ipStr = convertIPToString(ip);
-		if (ipStr != g_config.getString(ConfigManager::IP)) {
+		if (ipStr != g_config.getString(ConfigManager::IP_STRING)) {
 			std::map<uint32_t, int64_t>::const_iterator it = ipConnectMap.find(ip);
 			if (it != ipConnectMap.end() && (OTSYS_TIME() < (it->second + g_config.getNumber(ConfigManager::STATUSQUERY_TIMEOUT)))) {
 				disconnect();
@@ -103,7 +103,7 @@ void ProtocolStatus::sendStatusString()
 	pugi::xml_node serverinfo = tsqp.append_child("serverinfo");
 	uint64_t uptime = (OTSYS_TIME() - ProtocolStatus::start) / 1000;
 	serverinfo.append_attribute("uptime") = std::to_string(uptime).c_str();
-	serverinfo.append_attribute("ip") = g_config.getString(ConfigManager::IP).c_str();
+	serverinfo.append_attribute("ip") = g_config.getString(ConfigManager::IP_STRING).c_str();
 	serverinfo.append_attribute("servername") = g_config.getString(ConfigManager::SERVER_NAME).c_str();
 	serverinfo.append_attribute("port") = std::to_string(g_config.getNumber(ConfigManager::LOGIN_PORT)).c_str();
 	serverinfo.append_attribute("location") = g_config.getString(ConfigManager::LOCATION).c_str();
@@ -117,25 +117,7 @@ void ProtocolStatus::sendStatusString()
 	owner.append_attribute("email") = g_config.getString(ConfigManager::OWNER_EMAIL).c_str();
 
 	pugi::xml_node players = tsqp.append_child("players");
-	uint32_t real = 0;
-
-	std::map<uint32_t, uint32_t> listIP;
-
-	for (const auto& it : g_game.getPlayers()) {
-		if (it.second->getIP() != 0) {
-			auto ip = listIP.find(it.second->getIP());
-			if (ip != listIP.end()) {
-				listIP[it.second->getIP()]++;
-				if (listIP[it.second->getIP()] < 5) {
-					real++;
-				}
-			} else {
-				listIP[it.second->getIP()] = 1;
-				real++;
-			}
-		}
-	}
-	players.append_attribute("online") = std::to_string(real).c_str();
+	players.append_attribute("online") = std::to_string(g_game.getPlayersOnline()).c_str();
 	players.append_attribute("max") = std::to_string(g_config.getNumber(ConfigManager::MAX_PLAYERS)).c_str();
 	players.append_attribute("peak") = std::to_string(g_game.getPlayersRecord()).c_str();
 
@@ -180,7 +162,7 @@ void ProtocolStatus::sendInfo(uint16_t requestedInfo, const std::string& charact
 	if (requestedInfo & REQUEST_BASIC_SERVER_INFO) {
 		output->addByte(0x10);
 		output->addString(g_config.getString(ConfigManager::SERVER_NAME));
-		output->addString(g_config.getString(ConfigManager::IP));
+		output->addString(g_config.getString(ConfigManager::IP_STRING));
 		output->addString(std::to_string(g_config.getNumber(ConfigManager::LOGIN_PORT)));
 	}
 

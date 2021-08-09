@@ -1,8 +1,7 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
-setCombatParam(combat, COMBAT_PARAM_CREATEITEM, ITEM_MAGICWALL)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
+combat:setParameter(COMBAT_PARAM_CREATEITEM, ITEM_MAGICWALL)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant, isHotkey)
+	return combat:execute(creature, variant)
 end

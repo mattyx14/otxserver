@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,18 +24,6 @@
 #include "container.h"
 #include "creature.h"
 
-
-#include "rsa.h"
-
-
-int32_t NetworkMessage::decodeHeader()
-{
-	int32_t newSize = static_cast<int32_t>(buffer[0] | buffer[1] << 8);
-	info.length = newSize;
-	return info.length;
-}
-
-/******************************************************************************/
 std::string NetworkMessage::getString(uint16_t stringLen/* = 0*/)
 {
 	if (stringLen == 0) {
@@ -59,7 +47,6 @@ Position NetworkMessage::getPosition()
 	pos.z = getByte();
 	return pos;
 }
-/******************************************************************************/
 
 void NetworkMessage::addString(const std::string& value)
 {
@@ -77,7 +64,7 @@ void NetworkMessage::addString(const std::string& value)
 void NetworkMessage::addDouble(double value, uint8_t precision/* = 2*/)
 {
 	addByte(precision);
-	add<uint32_t>((value * std::pow(static_cast<float>(10), precision)) + std::numeric_limits<int32_t>::max());
+	add<uint32_t>(static_cast<uint32_t>((value * std::pow(static_cast<float>(10), precision)) + std::numeric_limits<int32_t>::max()));
 }
 
 void NetworkMessage::addBytes(const char* bytes, size_t size)
@@ -117,7 +104,7 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 	if (it.stackable) {
 		addByte(count);
 	} else if (it.isSplash() || it.isFluidContainer()) {
-		addByte(fluidMap[count % 8]);
+		addByte(fluidMap[count & 7]);
 	}
 }
 
@@ -130,14 +117,8 @@ void NetworkMessage::addItem(const Item* item)
 	if (it.stackable) {
 		addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
 	} else if (it.isSplash() || it.isFluidContainer()) {
-		addByte(fluidMap[item->getFluidType() % 8]);
+		addByte(fluidMap[item->getFluidType() & 7]);
 	}
-}
-
-void NetworkMessage::addItemId(const Item* item)
-{
-	const ItemType& it = Item::items[item->getID()];
-	add<uint16_t>(it.clientId);
 }
 
 void NetworkMessage::addItemId(uint16_t itemId)

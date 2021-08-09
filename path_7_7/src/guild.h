@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@ struct GuildRank {
 		id(id), name(std::move(name)), level(level) {}
 };
 
+using GuildRank_ptr = std::shared_ptr<GuildRank>;
+
 class Guild
 {
 	public:
@@ -55,9 +57,13 @@ class Guild
 			memberCount = count;
 		}
 
-		GuildRank* getRankById(uint32_t id);
-		const GuildRank* getRankByLevel(uint8_t level) const;
-		void addRank(uint32_t id, const std::string& name, uint8_t level);
+		const std::vector<GuildRank_ptr>& getRanks() const {
+			return ranks;
+		}
+		GuildRank_ptr getRankById(uint32_t rankId);
+		GuildRank_ptr getRankByName(const std::string& name) const;
+		GuildRank_ptr getRankByLevel(uint8_t level) const;
+		void addRank(uint32_t rankId, const std::string& rankName, uint8_t level);
 
 		const std::string& getMotd() const {
 			return motd;
@@ -68,7 +74,7 @@ class Guild
 
 	private:
 		std::list<Player*> membersOnline;
-		std::vector<GuildRank> ranks;
+		std::vector<GuildRank_ptr> ranks;
 		std::string name;
 		std::string motd;
 		uint32_t id;

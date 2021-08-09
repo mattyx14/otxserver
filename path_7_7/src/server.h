@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ class ServiceBase
 {
 	public:
 		virtual bool is_single_socket() const = 0;
+		virtual bool is_checksummed() const = 0;
 		virtual uint8_t get_protocol_identifier() const = 0;
 		virtual const char* get_protocol_name() const = 0;
 
@@ -40,17 +41,20 @@ template <typename ProtocolType>
 class Service final : public ServiceBase
 {
 	public:
-		bool is_single_socket() const final {
+		bool is_single_socket() const override {
 			return ProtocolType::server_sends_first;
 		}
-		uint8_t get_protocol_identifier() const final {
+		bool is_checksummed() const override {
+			return ProtocolType::use_checksum;
+		}
+		uint8_t get_protocol_identifier() const override {
 			return ProtocolType::protocol_identifier;
 		}
-		const char* get_protocol_name() const final {
+		const char* get_protocol_name() const override {
 			return ProtocolType::protocol_name();
 		}
 
-		Protocol_ptr make_protocol(const Connection_ptr& c) const final {
+		Protocol_ptr make_protocol(const Connection_ptr& c) const override {
 			return std::make_shared<ProtocolType>(c);
 		}
 };
@@ -72,12 +76,12 @@ class ServicePort : public std::enable_shared_from_this<ServicePort>
 		std::string get_protocol_names() const;
 
 		bool add_service(const Service_ptr& new_svc);
-		Protocol_ptr make_protocol(NetworkMessage& msg, const Connection_ptr& connection) const;
+		Protocol_ptr make_protocol(bool checksummed, NetworkMessage& msg, const Connection_ptr& connection) const;
 
 		void onStopServer();
 		void onAccept(Connection_ptr connection, const boost::system::error_code& error);
 
-	protected:
+	private:
 		void accept();
 
 		boost::asio::io_service& io_service;
@@ -108,14 +112,14 @@ class ServiceManager
 			return acceptors.empty() == false;
 		}
 
-	protected:
+	private:
 		void die();
 
 		std::unordered_map<uint16_t, ServicePort_ptr> acceptors;
 
 		boost::asio::io_service io_service;
 		Signals signals{io_service};
-		boost::asio::deadline_timer death_timer { io_service };
+		boost::asio::steady_timer death_timer { io_service };
 		bool running = false;
 };
 

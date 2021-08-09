@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2017  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,10 +67,10 @@ void Connection::close(bool force)
 	ConnectionManager::getInstance().releaseConnection(shared_from_this());
 
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
-	if (connectionState != CONNECTION_STATE_OPEN) {
+	if (closed) {
 		return;
 	}
-	connectionState = CONNECTION_STATE_CLOSED;
+	closed = true;
 
 	if (protocol) {
 		g_dispatcher.addTask(
@@ -116,7 +116,7 @@ void Connection::accept()
 {
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	try {
-		readTimer.expires_from_now(boost::posix_time::seconds(Connection::read_timeout));
+		readTimer.expires_from_now(std::chrono::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()), std::placeholders::_1));
 
 		// Read size of the first packet
@@ -134,17 +134,17 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	readTimer.cancel();
 
-	int32_t size = msg.decodeHeader();
-	if (error || size <= 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
+	if (error) {
 		close(FORCE_CLOSE);
-	}
-
-	if (connectionState != CONNECTION_STATE_OPEN) {
+		return;
+	} else if (closed) {
 		return;
 	}
 
 	uint32_t timePassed = std::max<uint32_t>(1, (time(nullptr) - timeConnected) + 1);
 	if ((++packetsSent / timePassed) > static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND))) {
+		std::cout << convertIPToString(getIP()) << " disconnected for exceeding packet per second limit." << std::endl;
+		close();
 		return;
 	}
 
@@ -153,8 +153,14 @@ void Connection::parseHeader(const boost::system::error_code& error)
 		packetsSent = 0;
 	}
 
+	uint16_t size = msg.getLengthHeader();
+	if (size == 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
+		close(FORCE_CLOSE);
+		return;
+	}
+
 	try {
-		readTimer.expires_from_now(boost::posix_time::seconds(Connection::read_timeout));
+		readTimer.expires_from_now(std::chrono::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
 		                                    std::placeholders::_1));
 
@@ -175,10 +181,24 @@ void Connection::parsePacket(const boost::system::error_code& error)
 
 	if (error) {
 		close(FORCE_CLOSE);
+		return;
+	} else if (closed) {
+		return;
 	}
 
-	if (connectionState != CONNECTION_STATE_OPEN) {
-		return;
+	//Check packet checksum
+	uint32_t checksum;
+	int32_t len = msg.getLength() - msg.getBufferPosition() - NetworkMessage::CHECKSUM_LENGTH;
+	if (len > 0) {
+		checksum = adlerChecksum(msg.getBuffer() + msg.getBufferPosition() + NetworkMessage::CHECKSUM_LENGTH, len);
+	} else {
+		checksum = 0;
+	}
+
+	uint32_t recvChecksum = msg.get<uint32_t>();
+	if (recvChecksum != checksum) {
+		// it might not have been the checksum, step back
+		msg.skipBytes(-NetworkMessage::CHECKSUM_LENGTH);
 	}
 
 	if (!receivedFirst) {
@@ -187,22 +207,22 @@ void Connection::parsePacket(const boost::system::error_code& error)
 
 		if (!protocol) {
 			// Game protocol has already been created at this point
-			protocol = service_port->make_protocol(msg, shared_from_this());
+			protocol = service_port->make_protocol(recvChecksum == checksum, msg, shared_from_this());
 			if (!protocol) {
 				close(FORCE_CLOSE);
 				return;
 			}
 		} else {
-			msg.skipBytes(1);    // Skip protocol ID
+			msg.skipBytes(1); // Skip protocol ID
 		}
 
 		protocol->onRecvFirstMessage(msg);
 	} else {
-		protocol->onRecvMessage(msg);    // Send the packet to the current protocol
+		protocol->onRecvMessage(msg); // Send the packet to the current protocol
 	}
 
 	try {
-		readTimer.expires_from_now(boost::posix_time::seconds(Connection::read_timeout));
+		readTimer.expires_from_now(std::chrono::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
 		                                    std::placeholders::_1));
 
@@ -219,7 +239,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 void Connection::send(const OutputMessage_ptr& msg)
 {
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
-	if (connectionState != CONNECTION_STATE_OPEN) {
+	if (closed) {
 		return;
 	}
 
@@ -234,7 +254,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 {
 	protocol->onSendMessage(msg);
 	try {
-		writeTimer.expires_from_now(boost::posix_time::seconds(Connection::write_timeout));
+		writeTimer.expires_from_now(std::chrono::seconds(CONNECTION_WRITE_TIMEOUT));
 		writeTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
 		                                     std::placeholders::_1));
 
@@ -249,7 +269,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 
 uint32_t Connection::getIP()
 {
-	// std::lock_guard<std::recursive_mutex> lockClass(connectionLock); /* try with it */
+	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 
 	// IP-address is expressed in network byte order
 	boost::system::error_code error;
@@ -275,7 +295,7 @@ void Connection::onWriteOperation(const boost::system::error_code& error)
 
 	if (!messageQueue.empty()) {
 		internalSend(messageQueue.front());
-	} else if (connectionState == CONNECTION_STATE_CLOSED) {
+	} else if (closed) {
 		closeSocket();
 	}
 }
@@ -283,7 +303,7 @@ void Connection::onWriteOperation(const boost::system::error_code& error)
 void Connection::handleTimeout(ConnectionWeak_ptr connectionWeak, const boost::system::error_code& error)
 {
 	if (error == boost::asio::error::operation_aborted) {
-		//The timer has been manually cancelled
+		//The timer has been manually canceled
 		return;
 	}
 

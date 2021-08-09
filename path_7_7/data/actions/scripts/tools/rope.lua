@@ -1,3 +1,3 @@
-function onUse(player, item, fromPosition, target, toPosition)
-	return onUseRope(player, item, fromPosition, target, toPosition)
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	return onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 end
