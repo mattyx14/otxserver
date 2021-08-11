@@ -28,48 +28,24 @@ Storage = {
 		WereHelmetEnchant = 50381
 	},
 	ForgottenKnowledge = {
-		-- Reserved storage from 50470 - 50519
-		AccessDeath = 50470,
-		AccessViolet = 50471,
-		AccessEarth = 50472,
-		AccessFire = 50473,
-		AccessIce = 50474,
-		AccessGolden = 50475,
-		AccessLast = 50476,
-		OldDesk = 50477,
-		GirlPicture = 50478,
-		SilverKey = 50479,
-		Phial = 50480,
-		BirdCounter = 50481,
-		PlantCounter = 50482,
-		GoldenServantCounter = 50483,
-		DiamondServantCounter = 50484,
-		AccessPortals = 50485,
-		AccessMachine = 50486,
-		LadyTenebrisTimer = 50487,
-		LadyTenebrisKilled = 50488,
-		LloydTimer = 50489,
-		LloydKilled = 50490,
-		ThornKnightTimer = 50491,
-		ThornKnightKilled = 50492,
-		DragonkingTimer = 50493,
-		DragonkingKilled = 50494,
-		HorrorTimer = 50495,
-		HorrorKilled = 50496,
-		TimeGuardianTimer = 50497,
-		TimeGuardianKilled = 50498,
-		LastLoreTimer = 50499,
-		LastLoreKilled = 50501,
-		BirdCage = 50502,
-		AccessLavaTeleport = 50503,
-		Ivalisse = 50504,
-		Chalice = 50505,
-		BabyDragon = 50507,
-		SpiderWeb = 50508
+		GirlPicture = 10140, -- Fynn = 26400
+		SilverKey = 10141, -- Fynn
+		LadyTenebrisTimer = 10168, -- Fynn
+		LadyTenebrisKilled = 10150, -- Fynn
+		DragonkingTimer = 10169, -- Anshara
+		DragonkingKilled = 10156, -- Anshara
+
+		-- Internal Usage
+		LloydKilled = 10152,
+		ThornKnightKilled = 10154,
+		HorrorKilled = 10158,
+		TimeGuardianKilled = 10160,
+		LastLoreKilled = 10162,
+		Tomes = 10167,
 	},
 	OutfitQuest = {
 		-- Golden Outfit
-		GoldenOutfit = 51015
+		GoldenOutfit = 51015,
 	},
 	AdventurersGuild = {
 		Stone = 52130,
@@ -83,14 +59,13 @@ Storage = {
 			TotalUsurperCommanders = 52398, -- Global
 			Timer = 52399
 		},
-	},
+	}
 }
 
 GlobalStorage = {
 	ExpBoost = 65004,
 	XpDisplayMode = 65006,
-	CobraBastionFlask = 65012,
-	Tomes = 50506, -- Initial Imbuiment
+	CobraBastionFlask = 65012
 }
 
 -- Values extraction function

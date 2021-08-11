@@ -1,6 +1,22 @@
 if not Quests then
 	Quests = {
-		-- 
+		[1] = {
+			name = "Forgotten Knowledge",
+			startStorageId = Storage.ForgottenKnowledge.Tomes,
+			startStorageValue = 1,
+			missions = {
+				[1] = {
+					name = "The temple of glory",
+					storageId = Storage.ForgottenKnowledge.Tomes,
+					missionId = 10360,
+					startValue = 0,
+					endValue = 1,
+					states = {
+						[1] = "You have contributed with the collection of tomes."
+					}
+				}
+			}
+		},
 	}
 end
 

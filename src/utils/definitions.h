@@ -21,7 +21,7 @@
 #define FS_DEFINITIONS_H_877452FEC245450C9F96B8FD268D8963
 
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
-static constexpr auto STATUS_SERVER_VERSION = "6.0";
+static constexpr auto STATUS_SERVER_VERSION = "6.1";
 static constexpr auto STATUS_SERVER_DEVELOPERS = "OTServBR-Global Team, Mark Samman, The Forgotten Server Developers and OTX Server Team";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;

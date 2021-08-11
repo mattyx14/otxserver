@@ -2131,6 +2131,16 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::WEATHER_THUNDER)
 	registerEnumIn("configKeys", ConfigManager::FREE_QUESTS)
 	registerEnumIn("configKeys", ConfigManager::ALL_CONSOLE_LOG)
+	registerEnumIn("configKeys", ConfigManager::SAVE_INTERVAL)
+	registerEnumIn("configKeys", ConfigManager::SAVE_INTERVAL_CLEAN_MAP)
+	registerEnumIn("configKeys", ConfigManager::SAVE_INTERVAL_TIME)
+	registerEnumIn("configKeys", ConfigManager::STAMINA_TRAINER)
+	registerEnumIn("configKeys", ConfigManager::STAMINA_PZ)
+	registerEnumIn("configKeys", ConfigManager::STAMINA_ORANGE_DELAY)
+	registerEnumIn("configKeys", ConfigManager::STAMINA_GREEN_DELAY)
+	registerEnumIn("configKeys", ConfigManager::STAMINA_TRAINER_DELAY)
+	registerEnumIn("configKeys", ConfigManager::STAMINA_PZ_GAIN)
+	registerEnumIn("configKeys", ConfigManager::STAMINA_TRAINER_GAIN)
 
 	registerEnumIn("configKeys", ConfigManager::SERVER_SAVE_NOTIFY_MESSAGE)
 	registerEnumIn("configKeys", ConfigManager::SERVER_SAVE_NOTIFY_DURATION)
@@ -2227,6 +2237,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getEventSLoot", LuaScriptInterface::luaGamegetEventSLoot);
 	registerMethod("Game", "getEventSSkill", LuaScriptInterface::luaGamegetEventSSkill);
 	registerMethod("Game", "getEventSExp", LuaScriptInterface::luaGamegetEventSExp);
+	registerMethod("Game", "getEventSSpawnRate", LuaScriptInterface::luaGamegetEventSSpawnRate);
 
 	registerMethod("Game", "getSpectators", LuaScriptInterface::luaGameGetSpectators);
 
@@ -4947,6 +4958,13 @@ int LuaScriptInterface::luaGamegetEventSExp(lua_State* L)
 {
 	// Game.getEventSExp()
 	lua_pushnumber(L, g_game.getExpSchedule());
+	return 1;
+}
+
+int LuaScriptInterface::luaGamegetEventSSpawnRate(lua_State* L)
+{
+	// Game.getEventSSpawnRate()
+	lua_pushnumber(L, g_game.getSpawnSchedule());
 	return 1;
 }
 

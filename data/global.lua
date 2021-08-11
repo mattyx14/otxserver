@@ -26,6 +26,7 @@ weatherConfig = {
 SCHEDULE_LOOT_RATE = 100
 SCHEDULE_EXP_RATE = 100
 SCHEDULE_SKILL_RATE = 100
+SCHEDULE_SPAWN_RATE = 100
 
 -- MARRY
 PROPOSED_STATUS = 1
@@ -58,23 +59,6 @@ nextPreyTime = {}
 startupGlobalStorages = {
 	-- 
 }
-
-do -- Event Schedule rates
-	local lootRate = Game.getEventSLoot()
-	if lootRate ~= 100 then
-		SCHEDULE_LOOT_RATE = lootRate
-	end
-
-	local expRate = Game.getEventSExp()
-	if expRate ~= 100 then
-		SCHEDULE_EXP_RATE = expRate
-	end
-
-	local skillRate = Game.getEventSSkill()
-	if skillRate ~= 100 then
-		SCHEDULE_SKILL_RATE = skillRate
-	end
-end
 
 table.contains = function(array, value)
 	for _, targetColumn in pairs(array) do
@@ -129,4 +113,68 @@ end
 -- Delay potion
 if not playerDelayPotion then
 	playerDelayPotion = {}
+end
+
+-- Increase Stamina when Attacking Trainer
+staminaBonus = {
+	target = 'Training Machine',
+	period = configManager.getNumber(configKeys.STAMINA_TRAINER_DELAY) * 60 * 1000, -- time on miliseconds
+	bonus = configManager.getNumber(configKeys.STAMINA_TRAINER_GAIN), -- gain stamina
+	events = {}
+}
+
+function addStamina(name, ...)
+	-- Creature:onTargetCombat
+	if name then
+		local player = Player(name)
+		if configManager.getBoolean(configKeys.STAMINA_TRAINER) then
+			if not player then
+				staminaBonus.events[name] = nil
+			else
+				local target = player:getTarget()
+				if not target or target:getName() ~= staminaBonus.target then
+					staminaBonus.events[name] = nil
+				else
+					player:setStamina(player:getStamina() + staminaBonus.bonus)
+					player:sendTextMessage(MESSAGE_STATUS_SMALL,
+																string.format("%i of stamina has been refilled.",
+																configManager.getNumber(configKeys.STAMINA_TRAINER_GAIN)))
+					staminaBonus.events[name] = addEvent(addStamina, staminaBonus.period, name)
+				end
+			end
+		end
+		return not configManager.getBoolean(configKeys.STAMINA_TRAINER)
+	end
+
+	-- Player:onChangeZone
+	local id, delay = ...
+
+	if id and delay then
+		if not staminaBonus.events[id] then return false end
+		stopEvent(staminaBonus.events[id])
+
+		local player = Player(id)
+		if not player then
+			staminaBonus.events[id] = nil
+			return false
+		end
+
+		local actualStamina = player:getStamina()
+
+		if actualStamina > 2400 and actualStamina < 2520 then
+			delay = configManager.getNumber(configKeys.STAMINA_GREEN_DELAY) * 60 * 1000 -- Stamina Green 12 min.
+		elseif actualStamina == 2520 then
+			player:sendTextMessage(MESSAGE_STATUS_SMALL, "You are no longer refilling stamina, because your stamina is already full.")
+			staminaBonus.events[id] = nil
+			return false
+		end
+
+		player:setStamina(player:getStamina() + configManager.getNumber(configKeys.STAMINA_PZ_GAIN))
+		player:sendTextMessage(MESSAGE_STATUS_SMALL,
+																string.format("%i of stamina has been refilled.",
+																configManager.getNumber(configKeys.STAMINA_PZ_GAIN)))
+		staminaBonus.events[id] = addEvent(addStamina, delay, nil, id, delay)
+		return true
+	end
+	return false
 end

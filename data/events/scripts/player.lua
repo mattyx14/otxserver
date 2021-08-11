@@ -686,20 +686,13 @@ function Player:onGainExperience(source, exp, rawExp)
 
 	-- Experience Stage Multiplier
 	local expStage = getRateFromTable(experienceStages, self:getLevel(), configManager.getNumber(configKeys.RATE_EXP))
-	exp = exp * expStage
-	baseExp = rawExp * expStage
-	if Game.getStorageValue(GlobalStorage.XpDisplayMode) > 0 then
-		displayRate = expStage
-	else
-		displayRate = 1
-	end
 
 	-- Prey Bonus
+	local preyBonus = 0
 	for slot = CONST_PREY_SLOT_FIRST, CONST_PREY_SLOT_THIRD do
 		if (self:getPreyCurrentMonster(slot) == source:getName()
 		and self:getPreyBonusType(slot) == CONST_BONUS_XP_BONUS) then
-			exp = exp + math.floor(exp * (self:getPreyBonusValue(slot) / 100))
-			break
+			preyBonus = self:getPreyBonusValue(slot)
 		end
 		if (self:getPreyTimeLeft(slot) / 60) > 0 then
 			preyTimeLeft(self, slot) -- slot consumption, outside of the mosnter check
@@ -715,25 +708,20 @@ function Player:onGainExperience(source, exp, rawExp)
 
 	self:setStoreXpBoost(storeXpBoostAmount)
 
-	if (storeXpBoostAmount > 0) then
-		exp = exp + (baseExp * (storeXpBoostAmount/100)) -- Exp Boost
-	end
-
 	-- Stamina Bonus
+	local staminaBoost = 1
 	if configManager.getBoolean(configKeys.STAMINA_SYSTEM) then
 		useStamina(self)
 		local staminaMinutes = self:getStamina()
 		if staminaMinutes > 2340 and self:isPremium() then
-			exp = exp * 1.5
-			self:setStaminaXpBoost(150)
+			staminaBoost = 1.5
 		elseif staminaMinutes <= 840 then
-			exp = exp * 0.5 --TODO destroy loot of people with 840- stamina
-			self:setStaminaXpBoost(50)
-		else
-			self:setStaminaXpBoost(100)
+			staminaBoost = 0.5 --TODO destroy loot of people with 840- stamina
 		end
+
+		self:setStaminaXpBoost(staminaBoost * 100)
 	end
-			
+
 	-- Boosted creature
 	if source:getName():lower() == (Game.getBoostedCreature()):lower() then
 		exp = exp * 2
@@ -741,10 +729,10 @@ function Player:onGainExperience(source, exp, rawExp)
 
 	-- Event scheduler
 	if SCHEDULE_EXP_RATE ~= 100 then
-		exp = (exp * SCHEDULE_EXP_RATE)/100
+		expStage = math.max(0, (expStage * SCHEDULE_EXP_RATE)/100)
 	end
-	self:setBaseXpGain(displayRate * 100)
-	return exp
+
+	return (exp / 100 * ((expStage * 100 + storeXpBoostAmount + preyBonus) * staminaBoost))
 end
 
 function Player:onLoseExperience(exp)
@@ -756,19 +744,24 @@ function Player:onGainSkillTries(skill, tries)
 		return tries
 	end
 
+	local STAGES_DEFAULT = skillsStages or nil
+	local SKILL_DEFAULT = self:getSkillLevel(skill)
+	local RATE_DEFAULT = configManager.getNumber(configKeys.RATE_SKILL)
+
+	if(skill == SKILL_MAGLEVEL) then -- Magic Level
+		STAGES_DEFAULT = magicLevelStages or nil
+		SKILL_DEFAULT = self:getBaseMagicLevel()
+		RATE_DEFAULT = configManager.getNumber(configKeys.RATE_MAGIC)
+	end
+
+	skillOrMagicRate = getRateFromTable(STAGES_DEFAULT, SKILL_DEFAULT, RATE_DEFAULT)
+
 	-- Event scheduler skill rate
 	if SCHEDULE_SKILL_RATE ~= 100 then
-		tries = (tries * SCHEDULE_SKILL_RATE)/100
+		skillOrMagicRate = math.max(0, (skillOrMagicRate * SCHEDULE_SKILL_RATE)/100)
 	end
 
-	local skillRate = configManager.getNumber(configKeys.RATE_SKILL)
-	local magicRate = configManager.getNumber(configKeys.RATE_MAGIC)
-
-	if(skill == SKILL_MAGLEVEL) then -- Magic getLevel
-		return tries * getRateFromTable(magicLevelStages, self:getMagicLevel(), magicRate)
-	end
-
-	return tries * getRateFromTable(skillsStages, self:getEffectiveSkillLevel(skill), skillRate)
+	return tries / 100 * (skillOrMagicRate * 100)
 end
 
 function Player:onRemoveCount(item)
@@ -809,7 +802,7 @@ function Player:canBeAppliedImbuement(imbuement, item)
 		return false
 	end
 
-	if self:getStorageValue(GlobalStorage.Tomes) > 0 then
+	if self:getStorageValue(Storage.ForgottenKnowledge.Tomes) > 0 then
 		imbuable = true
 	else
 		return false
@@ -974,4 +967,37 @@ function Player:onCombat(target, item, primaryDamage, primaryType, secondaryDama
 	end
 
 	return primaryDamage, primaryType, secondaryDamage, secondaryType
+end
+
+function Player:onChangeZone(zone)
+	if self:isPremium() then
+		local event = staminaBonus.events[self:getId()]
+
+		if configManager.getBoolean(configKeys.STAMINA_PZ) then
+			if zone == ZONE_PROTECTION then
+				if self:getStamina() < 2520 then
+					if not event then
+						local delay = configManager.getNumber(configKeys.STAMINA_ORANGE_DELAY)
+						if self:getStamina() > 2400 and self:getStamina() <= 2520 then
+							delay = configManager.getNumber(configKeys.STAMINA_GREEN_DELAY)
+						end
+
+						self:sendTextMessage(MESSAGE_STATUS_SMALL,
+																string.format("In protection zone. \
+																Every %i minutes, gain %i stamina.",
+																delay, configManager.getNumber(configKeys.STAMINA_PZ_GAIN)))
+						staminaBonus.events[self:getId()] = addEvent(addStamina, delay * 60 * 1000, nil, self:getId(), delay * 60 * 1000)
+					end
+				end
+			else
+				if event then
+					self:sendTextMessage(MESSAGE_STATUS_SMALL, "You are no longer refilling stamina, since you left a regeneration zone.")
+					stopEvent(event)
+					staminaBonus.events[self:getId()] = nil
+				end
+			end
+			return not configManager.getBoolean(configKeys.STAMINA_PZ)
+		end
+	end
+	return false
 end
