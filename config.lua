@@ -87,6 +87,7 @@
 	protectionLevel = 1
 	pvpTileIgnoreLevelAndVocationProtection = true
 	pzLocked = 60 * 1000
+	pzlockOnAttackSkulledPlayers = false
 	huntingDuration = 60 * 1000
 	criticalHitMultiplier = 1
 	displayCriticalHitNotify = true

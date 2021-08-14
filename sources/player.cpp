@@ -4102,6 +4102,17 @@ void Player::onTarget(Creature* target)
 			sendIcons();
 		}
 
+		if(g_config.getBool(ConfigManager::PZLOCK_ON_ATTACK_SKULLED_PLAYERS))
+		{
+
+			if(!pzLocked && targetPlayer->getSkull() >= SKULL_WHITE)
+			{
+				pzLocked = true;
+				sendIcons();
+				addInFightTicks(pzLocked, 60000);
+			}
+		}
+
 		if(getSkull() == SKULL_NONE && getSkullType(targetPlayer) == SKULL_YELLOW)
 		{
 			addAttacked(targetPlayer);
@@ -4130,8 +4141,10 @@ void Player::onTarget(Creature* target)
 			}
 		}
 	}
-
-	addInFightTicks(false);
+	if(!pzLocked)
+	{
+		addInFightTicks(false);
+	}
 }
 
 void Player::onSummonTarget(Creature* summon, Creature* target)

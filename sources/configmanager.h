@@ -329,6 +329,7 @@ class ConfigManager
 			OPTIONAL_PROTECTION,
 			ALLOW_CORPSE_BLOCK,
 			ALLOW_INDEPENDENT_PUSH,
+			PZLOCK_ON_ATTACK_SKULLED_PLAYERS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 
