@@ -5,7 +5,6 @@ function advanceSave.onAdvance(player, skill, oldLevel, newLevel)
 		return true
 	end
 
-
 	player:save()
 	player:addHealth(player:getMaxHealth())
 	player:getPosition():sendMagicEffect(math.random(CONST_ME_FIREWORK_YELLOW, CONST_ME_FIREWORK_BLUE))
@@ -13,12 +12,10 @@ function advanceSave.onAdvance(player, skill, oldLevel, newLevel)
 
 	if Game.getStorageValue(GlobalStorage.XpDisplayMode) > 0 then
 		local baseRate = getRateFromTable(experienceStages, player:getLevel(), configManager.getNumber(configKeys.RATE_EXP))
-
 		-- Event scheduler
 		if SCHEDULE_EXP_RATE ~= 100 then
 			baseRate = math.max(0, (baseRate * SCHEDULE_EXP_RATE)/100)
 		end
-
 		player:setBaseXpGain(baseRate * 100)
 	end
 

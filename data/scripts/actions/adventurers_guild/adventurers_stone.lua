@@ -26,9 +26,9 @@ function adventurersStone.onUse(player, item, fromPosition, target, toPosition, 
 	player:setStorageValue(Storage.AdventurersGuild.Stone, townId)
 	playerPos:sendMagicEffect(CONST_ME_TELEPORT)
 
-	local destination = Position(32210, 32300, 6)
-		player:teleportTo(destination)
-		destination:sendMagicEffect(CONST_ME_TELEPORT)
+--	local destination = Position(926, 982, 3)
+--		player:teleportTo(destination)
+--		destination:sendMagicEffect(CONST_ME_TELEPORT)
 	return true
 end
 

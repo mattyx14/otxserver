@@ -144,10 +144,8 @@ void loadModules() {
 	// Lua Env
 	modulesLoadHelper((g_luaEnvironment.loadFile("data/global.lua") == 0),
 		"data/global.lua");
-	if (g_config.getBoolean(ConfigManager::RATE_USE_STAGES)) {
-		modulesLoadHelper((g_luaEnvironment.loadFile("data/stages.lua") == 0),
-			"data/stages.lua");
-	}
+	modulesLoadHelper((g_luaEnvironment.loadFile("data/stages.lua") == 0),
+		"data/stages.lua");
 	modulesLoadHelper((g_luaEnvironment.loadFile("data/startup/startup.lua") == 0),
 		"data/startup/startup.lua");
 
@@ -165,8 +163,6 @@ void loadModules() {
 		"data/XML/imbuements.xml");
 	modulesLoadHelper(g_modules->loadFromXml(),
 		"data/modules/modules.xml");
-	modulesLoadHelper(g_spells->loadFromXml(),
-		"data/spells/spells.xml");
 	modulesLoadHelper(g_events->loadFromXml(),
 		"data/events/events.xml");
 	modulesLoadHelper(g_scripts->loadScripts("scripts", false, false),
@@ -180,7 +176,7 @@ void loadModules() {
 #ifndef UNIT_TESTING
 int main(int argc, char* argv[]) {
 #ifdef DEBUG_LOG
-	SPDLOG_DEBUG("[otxserver] SPDLOG LOG DEBUG ENABLED");
+	SPDLOG_DEBUG("[OTXSV] SPDLOG LOG DEBUG ENABLED");
 	spdlog::set_pattern("[%Y-%d-%m %H:%M:%S.%e] [file %@] [func %!] [thread %t] [%^%l%$] %v ");
 #else
 	spdlog::set_pattern("[%Y-%d-%m %H:%M:%S.%e] [%^%l%$] %v ");

@@ -109,7 +109,7 @@ function creatureSayCallback(cid, type, msg)
 	end
 
 	local player = Player(cid)
-	local vocationId = player:getVocation():getId()
+	local vocationId = player:getVocation():getBaseId()
 	local items = {
 		[1] = 2190,
 		[2] = 2182,

@@ -207,6 +207,34 @@ function onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
         end
     end
 
+    local watt = ItemType(item.itemid):getAttack()
+    if math.random(1, 80) <= (watt and watt > 10 and watt or 10) then
+        -- Move items outside the container
+        if target:isContainer() then
+            for i = target:getSize() - 1, 0, -1 do
+                local containerItem = target:getItem(i)
+                if containerItem then
+                    containerItem:moveTo(toPosition)
+                end
+            end
+        end
+
+        -- Being better than cipsoft
+        if target:getFluidType() ~= 0 then
+            local fluid = Game.createItem(2016, target:getFluidType(), toPosition)
+            if fluid ~= nil then
+                fluid:decay()
+            end
+        end
+
+        target:remove(1)
+
+        local itemDestroy = Game.createItem(destroyId, 1, toPosition)
+        if itemDestroy ~= nil then
+            itemDestroy:decay()
+        end
+    end
+
     toPosition:sendMagicEffect(CONST_ME_POFF)
     return true
 end
@@ -318,6 +346,26 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
         toPosition:sendMagicEffect(CONST_ME_HITAREA)
     else
         return false
+    end
+    if (target ~= nil) and target:isItem() and (target:getId() == 22469) then
+        --Lower Roshamuul
+        if math.random(100) > 50 then
+            player:sendTextMessage(
+			MESSAGE_EVENT_ADVANCE,
+			"Crushing the stone produces some fine gravel."
+			)
+            target:transform(22467)
+            target:decay()
+        else
+            Game.createMonster("Frazzlemaw", toPosition)
+            player:sendTextMessage(
+            MESSAGE_EVENT_ADVANCE,
+            "Crushing the stone yields nothing but slightly finer, yet still unusable rubber."
+            )
+            target:transform(22468)
+            target:decay()
+        end
+        return true
     end
     return true
 end

@@ -47,8 +47,7 @@ function serverstartup.onStartup()
 	-- Tile pick table
 	loadLuaMapAction(TilePickAction)
 
-	Spdlog.info("Loaded all actions in the map")
-	Spdlog.info("Loaded all uniques in the map")
+	Spdlog.info("Loaded all actions and uniques in the map")
 
 	for i = 1, #startupGlobalStorages do
 		Game.setStorageValue(startupGlobalStorages[i], 0)
