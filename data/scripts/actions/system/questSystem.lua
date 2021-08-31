@@ -1,17 +1,14 @@
 local specialQuests = {
-	[2001] = Storage.Missions.DjinnMission.Done,
-	[2002] = Storage.AnniQuest.AnnihiMission.Done,
+	-- 
 }
 
 local questsExperience = {
-	[2217] = 1 -- dummy values
+	-- 
 }
 
 local questLog = {
 	-- 
 }
-
-local hotaQuest = {50950, 50951, 50952, 50953, 50954, 50955}
 
 local questSystem1 = Action()
 
