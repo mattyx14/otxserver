@@ -1,5 +1,4 @@
 ## Builds
-[![Build status](https://ci.appveyor.com/api/projects/status/e7qmnb9p3yu8q1e3/branch/otxserv6?svg=true)](https://ci.appveyor.com/project/mattyx14/otxserver/build/artifacts)
 [![Build on Ubuntu](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Ubuntu/badge.svg?branch=otxserv6)](https://github.com/mattyx14/otxserver/actions?query=workflow%3A%22Build+on+Ubuntu%22)
 
 ## What is OTX Server 6 Series
@@ -13,10 +12,10 @@ We currently provide build instructions for the following systems:
 ## OpenTibia Comunity:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
 * [OTLand](https://otland.net/) - [English]
-* [OTServ Brasil](https://forums.otserv.com.br/) - [Português/English]
-* [Tibia Face](http://tibiaface.com/) - [Español]
-* [Black Tibia](http://blacktibia.foroactivo.com/) - [Español]
-* [Tibiaking](http://www.tibiaking.com/forum/) - [Português]
+* [OTServ Brasil](https://forums.otserv.com.br/) - [PortuguÃªs/English]
+* [Tibia Face](http://tibiaface.com/) - [EspaÃ±ol]
+* [Black Tibia](http://blacktibia.foroactivo.com/) - [EspaÃ±ol]
+* [Tibiaking](http://www.tibiaking.com/forum/) - [PortuguÃªs]
 
 ## Special Thanks OTServBR-Global
 - our partners OTServBR-Global.
