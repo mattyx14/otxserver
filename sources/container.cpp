@@ -328,7 +328,7 @@ ReturnValue Container::__queryMaxCount(int32_t index, const Thing* thing, uint32
 		}
 		else
 		{
-			const Thing* destThing = __getThing(index);
+			const Thing* destThing = __getThing(index-1);
 			const Item* destItem = NULL;
 			if(destThing)
 				destItem = destThing->getItem();
@@ -416,7 +416,7 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 	if(autoStack && item->isStackable() && item->getParent() != this)
 	{
 		//try find a suitable item to stack with
-		uint32_t n = 0;
+		uint32_t n = itemlist.size();
 		for(ItemList::reverse_iterator cit = itemlist.rbegin(); cit != itemlist.rend(); ++cit, --n)
 		{
 			if((*cit) != item && (*cit)->getID() == item->getID() && (*cit)->getItemCount() < 100)
@@ -425,7 +425,6 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 				index = n;
 				return this;
 			}
-			++n;
 		}
 	}
 
