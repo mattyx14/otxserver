@@ -412,6 +412,20 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 	if(!item)
 		return this;
 
+	if(index != INDEX_WHEREEVER)
+	{
+		Thing* destThing = __getThing(index);
+		if(destThing)
+			*destItem = destThing->getItem();
+
+		if(Cylinder* subCylinder = dynamic_cast<Cylinder*>(*destItem))
+		{
+			index = INDEX_WHEREEVER;
+			*destItem = NULL;
+			return subCylinder;
+		}
+	}
+
 	bool autoStack = !hasBitSet(FLAG_IGNOREAUTOSTACK, flags);
 	if(autoStack && item->isStackable() && item->getParent() != this)
 	{
@@ -427,21 +441,6 @@ Cylinder* Container::__queryDestination(int32_t& index, const Thing* thing, Item
 			}
 		}
 	}
-
-	if(index != INDEX_WHEREEVER)
-	{
-		Thing* destThing = __getThing(index);
-		if(destThing)
-			*destItem = destThing->getItem();
-
-		if(Cylinder* subCylinder = dynamic_cast<Cylinder*>(*destItem))
-		{
-			index = INDEX_WHEREEVER;
-			*destItem = NULL;
-			return subCylinder;
-		}
-	}
-
 	return this;
 }
 

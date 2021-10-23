@@ -1,0 +1,648 @@
+[3/8/2021 7:52:4] >> Loading Password encryption:
+[3/8/2021 7:52:4] >>> Using (SHA1) encryption ... (done).
+[3/8/2021 7:52:4] >> Loading RSA key
+[3/8/2021 7:52:4] >> Starting SQL connection
+[3/8/2021 7:52:4] >> Running Database Manager
+[3/8/2021 7:52:4] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[3/8/2021 7:52:4] >>> Optimized database ... (done).
+[3/8/2021 7:52:4] >> Checking for duplicated items
+[3/8/2021 7:52:4] >> There wasn't duplicated items in the server.
+[3/8/2021 7:52:4] >> Loading items (OTB)
+[3/8/2021 7:52:4] >> Loading items (XML)
+[3/8/2021 7:52:5] >> Loading groups
+[3/8/2021 7:52:5] >> Loading outfits
+[3/8/2021 7:52:5] >> Loading quests
+[3/8/2021 7:52:5] >> Loading raids
+[3/8/2021 7:52:5] >> Loading vocations
+[3/8/2021 7:52:5] >> Loading chat channels
+[3/8/2021 7:52:5] >> Loading experience stages
+[3/8/2021 7:52:5] >> Loading mods:
+[3/8/2021 7:52:5] >>> Loading annihilator.xml ... (done).
+[3/8/2021 7:52:5] >>> Loading custom_commands.xml ... (done).
+[3/8/2021 7:52:5] >>> Loading events_mods.xml ... (done).
+[3/8/2021 7:52:5] >>> Loading firstitems_voc.xml ... (done).
+[3/8/2021 7:52:5] >>> Loading mod_cast.xml ... (done).
+[3/8/2021 7:52:5] >>> (0) mods were disabled.
+[3/8/2021 7:52:5] >> Loading script systems:
+[3/8/2021 7:52:5] >>> Loading weapons... (done).
+[3/8/2021 7:52:5] >>> Preparing weapons... (done).
+[3/8/2021 7:52:6] >>> Loading spells... (done).
+[3/8/2021 7:52:7] >>> Loading actions... (done).
+[3/8/2021 7:52:7] >>> Loading talkactions... (done).
+[3/8/2021 7:52:9] >>> Loading movements... (done).
+[3/8/2021 7:52:9] >>> Loading creaturescripts... (done).
+[3/8/2021 7:52:9] >>> Loading globalscripts... (done).
+[3/8/2021 7:52:9] >> Loading monsters
+[3/8/2021 7:52:11] >> Loading npcs
+[3/8/2021 7:52:11] >> Loading raids
+[3/8/2021 7:52:11] >> Loading map and spawns...
+[3/8/2021 7:52:12] >>> Map size: 1000x1000.
+[3/8/2021 7:52:12] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[3/8/2021 7:52:12] >>> Loading time: 0.608 seconds.
+[3/8/2021 7:52:12] >>> Parsing time: 0.222 seconds.
+[3/8/2021 7:52:13] >>> Synchronization time: 0.786 seconds.
+[3/8/2021 7:52:13] >>> Unserialization time: 0.003 seconds.
+[3/8/2021 7:52:13] >> Checking world type... Open PvP
+[3/8/2021 7:52:13] >> Starting to dominate the world... done.
+[3/8/2021 7:52:13] >> Initializing game state and binding services:
+
+[3/8/2021 7:52:13] >> Everything smells good, server is starting up...
+[3/8/2021 7:52:14] >> OTXSERVER server Online!
+
+[3/8/2021 16:47:21] >> Loading Password encryption:
+[3/8/2021 16:47:21] >>> Using (SHA1) encryption ... (done).
+[3/8/2021 16:47:21] >> Loading RSA key
+[3/8/2021 16:47:21] >> Starting SQL connection
+[3/8/2021 16:47:21] >> Running Database Manager
+[3/8/2021 16:47:21] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[3/8/2021 16:47:21] >>> Optimized database ... (done).
+[3/8/2021 16:47:21] >> Checking for duplicated items
+[3/8/2021 16:47:21] >> There wasn't duplicated items in the server.
+[3/8/2021 16:47:21] >> Loading items (OTB)
+[3/8/2021 16:47:21] >> Loading items (XML)
+[3/8/2021 16:47:21] >> Loading groups
+[3/8/2021 16:47:21] >> Loading outfits
+[3/8/2021 16:47:21] >> Loading quests
+[3/8/2021 16:47:21] >> Loading raids
+[3/8/2021 16:47:21] >> Loading vocations
+[3/8/2021 16:47:22] >> Loading chat channels
+[3/8/2021 16:47:22] >> Loading experience stages
+[3/8/2021 16:47:22] >> Loading mods:
+[3/8/2021 16:47:22] >>> Loading annihilator.xml ... (done).
+[3/8/2021 16:47:22] >>> Loading custom_commands.xml ... (done).
+[3/8/2021 16:47:23] >>> Loading events_mods.xml ... (done).
+[3/8/2021 16:47:23] >>> Loading firstitems_voc.xml ... (done).
+[3/8/2021 16:47:24] >>> Loading mod_cast.xml ... (done).
+[3/8/2021 16:47:24] >>> (0) mods were disabled.
+[3/8/2021 16:47:24] >> Loading script systems:
+[3/8/2021 16:47:24] >>> Loading weapons... (done).
+[3/8/2021 16:47:24] >>> Preparing weapons... (done).
+[10/9/2021 21:0:54] >> Loading Password encryption:
+[10/9/2021 21:0:54] >>> Using (SHA1) encryption ... (done).
+[10/9/2021 21:0:54] >> Loading RSA key
+[10/9/2021 21:0:54] >> Starting SQL connection
+[10/9/2021 21:0:54] >> Running Database Manager
+[10/9/2021 21:0:54] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[10/9/2021 21:0:54] >>> Optimized database ... (done).
+[10/9/2021 21:0:54] >> Checking for duplicated items
+[10/9/2021 21:0:54] >> There wasn't duplicated items in the server.
+[10/9/2021 21:0:54] >> Loading items (OTB)
+[10/9/2021 21:0:54] >> Loading items (XML)
+[10/9/2021 21:0:54] >> Loading groups
+[10/9/2021 21:0:54] >> Loading outfits
+[10/9/2021 21:0:54] >> Loading quests
+[10/9/2021 21:0:54] >> Loading raids
+[10/9/2021 21:0:54] >> Loading vocations
+[10/9/2021 21:0:54] >> Loading chat channels
+[10/9/2021 21:0:54] >> Loading experience stages
+[10/9/2021 21:0:54] >> Loading mods:
+[10/9/2021 21:0:54] >>> Loading annihilator.xml ... (done).
+[10/9/2021 21:0:55] >>> Loading custom_commands.xml ... (done).
+[10/9/2021 21:0:55] >>> Loading events_mods.xml ... (done).
+[10/9/2021 21:0:55] >>> Loading firstitems_voc.xml ... (done).
+[10/9/2021 21:0:55] >>> Loading mod_cast.xml ... (done).
+[10/9/2021 21:0:55] >>> (0) mods were disabled.
+[10/9/2021 21:0:55] >> Loading script systems:
+[10/9/2021 21:0:55] >>> Loading weapons... (done).
+[10/9/2021 21:0:55] >>> Preparing weapons... (done).
+[10/9/2021 21:0:56] >>> Loading spells... (done).
+[10/9/2021 21:0:57] >>> Loading actions... (done).
+[10/9/2021 21:0:57] >>> Loading talkactions... (done).
+[10/9/2021 21:0:59] >>> Loading movements... (done).
+[10/9/2021 21:0:59] >>> Loading creaturescripts... (done).
+[10/9/2021 21:0:59] >>> Loading globalscripts... (done).
+[10/9/2021 21:0:59] >> Loading monsters
+[10/9/2021 21:1:3] >> Loading npcs
+[10/9/2021 21:1:3] >> Loading raids
+[10/9/2021 21:1:3] >> Loading map and spawns...
+[10/9/2021 21:1:3] >>> Map size: 1000x1000.
+[10/9/2021 21:1:4] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[10/9/2021 21:1:4] >>> Loading time: 0.918 seconds.
+[10/9/2021 21:1:4] >>> Parsing time: 0.214 seconds.
+[10/9/2021 21:1:5] >>> Synchronization time: 0.975 seconds.
+[10/9/2021 21:1:5] >>> Unserialization time: 0.002 seconds.
+[10/9/2021 21:1:5] >> Checking world type... Open PvP
+[10/9/2021 21:1:5] >> Starting to dominate the world... done.
+[10/9/2021 21:1:5] >> Initializing game state and binding services:
+
+[10/9/2021 21:1:5] >> Everything smells good, server is starting up...
+[10/9/2021 21:1:6] >> OTXSERVER server Online!
+
+[10/9/2021 21:1:52] Account Manager has logged in.
+[10/9/2021 21:1:54] Account Manager has logged out.
+[10/9/2021 21:1:54] Account Manager has logged in.
+[10/9/2021 21:1:55] Account Manager has logged out.
+[10/9/2021 21:3:37] Account Manager has logged in.
+[10/9/2021 21:4:39] Account Manager has logged out.
+[10/9/2021 21:5:49] Matt has logged in.
+[10/9/2021 21:6:45] > Saving server...
+[10/9/2021 21:6:45] > SAVE: Complete in 0.051 seconds using binary-tilebased house storage.
+[10/9/2021 21:6:46] Matt has logged out.
+[10/9/2021 21:6:46] Matt has logged in.
+[10/9/2021 21:16:52] Matt has logged out.
+[10/9/2021 21:36:14] >> Loading Password encryption:
+[10/9/2021 21:36:14] >>> Using (SHA1) encryption ... (done).
+[10/9/2021 21:36:14] >> Loading RSA key
+[10/9/2021 21:36:14] >> Starting SQL connection
+[10/9/2021 21:36:14] >> Running Database Manager
+[10/9/2021 21:36:14] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[10/9/2021 21:36:14] >>> Optimized database ... (done).
+[10/9/2021 21:36:14] >> Checking for duplicated items
+[10/9/2021 21:36:14] >> There wasn't duplicated items in the server.
+[10/9/2021 21:36:14] >> Loading items (OTB)
+[10/9/2021 21:36:14] >> Loading items (XML)
+[10/9/2021 21:36:15] >> Loading groups
+[10/9/2021 21:36:15] >> Loading outfits
+[10/9/2021 21:36:15] >> Loading quests
+[10/9/2021 21:36:15] >> Loading raids
+[10/9/2021 21:36:15] >> Loading vocations
+[10/9/2021 21:36:15] >> Loading chat channels
+[10/9/2021 21:36:15] >> Loading experience stages
+[10/9/2021 21:36:15] >> Loading mods:
+[10/9/2021 21:36:15] >>> Loading annihilator.xml ... (done).
+[10/9/2021 21:36:15] >>> Loading custom_commands.xml ... (done).
+[10/9/2021 21:36:15] >>> Loading events_mods.xml ... (done).
+[10/9/2021 21:36:15] >>> Loading firstitems_voc.xml ... (done).
+[10/9/2021 21:36:15] >>> Loading mod_cast.xml ... (done).
+[10/9/2021 21:36:15] >>> (0) mods were disabled.
+[10/9/2021 21:36:15] >> Loading script systems:
+[10/9/2021 21:36:15] >>> Loading weapons... (done).
+[10/9/2021 21:36:15] >>> Preparing weapons... (done).
+[10/9/2021 21:36:16] >>> Loading spells... (done).
+[10/9/2021 21:36:17] >>> Loading actions... (done).
+[10/9/2021 21:36:17] >>> Loading talkactions... (done).
+[10/9/2021 21:36:19] >>> Loading movements... (done).
+[10/9/2021 21:36:19] >>> Loading creaturescripts... (done).
+[10/9/2021 21:36:19] >>> Loading globalscripts... (done).
+[10/9/2021 21:36:19] >> Loading monsters
+[10/9/2021 21:36:20] >> Loading npcs
+[10/9/2021 21:36:20] >> Loading raids
+[10/9/2021 21:36:20] >> Loading map and spawns...
+[10/9/2021 21:36:20] >>> Map size: 1000x1000.
+[10/9/2021 21:36:20] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[10/9/2021 21:36:20] >>> Loading time: 0.594 seconds.
+[10/9/2021 21:36:21] >>> Parsing time: 0.353 seconds.
+[10/9/2021 21:36:22] >>> Synchronization time: 1.274 seconds.
+[10/9/2021 21:36:22] >>> Unserialization time: 0.003 seconds.
+[10/9/2021 21:36:22] >> Checking world type... Open PvP
+[10/9/2021 21:36:22] >> Starting to dominate the world... done.
+[10/9/2021 21:36:22] >> Initializing game state and binding services:
+
+[10/9/2021 21:36:22] >> Everything smells good, server is starting up...
+[10/9/2021 21:36:23] >> OTXSERVER server Online!
+
+[10/9/2021 21:37:1] Account Manager has logged in.
+[10/9/2021 21:37:2] Account Manager has logged out.
+[10/9/2021 21:37:2] Matt has logged in.
+[10/9/2021 21:45:20] >> Loading Password encryption:
+[10/9/2021 21:45:20] >>> Using (SHA1) encryption ... (done).
+[10/9/2021 21:45:20] >> Loading RSA key
+[10/9/2021 21:45:20] >> Starting SQL connection
+[10/9/2021 21:45:20] >> Running Database Manager
+[10/9/2021 21:45:20] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[10/9/2021 21:45:20] >>> Optimized database ... (done).
+[10/9/2021 21:45:20] >> Checking for duplicated items
+[10/9/2021 21:45:20] >> There wasn't duplicated items in the server.
+[10/9/2021 21:45:20] >> Loading items (OTB)
+[10/9/2021 21:45:20] >> Loading items (XML)
+[10/9/2021 21:45:20] >> Loading groups
+[10/9/2021 21:45:20] >> Loading outfits
+[10/9/2021 21:45:20] >> Loading quests
+[10/9/2021 21:45:20] >> Loading raids
+[10/9/2021 21:45:20] >> Loading vocations
+[10/9/2021 21:45:20] >> Loading chat channels
+[10/9/2021 21:45:20] >> Loading experience stages
+[10/9/2021 21:45:20] >> Loading mods:
+[10/9/2021 21:45:20] >>> Loading annihilator.xml ... (done).
+[10/9/2021 21:45:20] >>> Loading custom_commands.xml ... (done).
+[10/9/2021 21:45:20] >>> Loading events_mods.xml ... (done).
+[10/9/2021 21:45:20] >>> Loading firstitems_voc.xml ... (done).
+[10/9/2021 21:45:20] >>> Loading mod_cast.xml ... (done).
+[10/9/2021 21:45:20] >>> (0) mods were disabled.
+[10/9/2021 21:45:20] >> Loading script systems:
+[10/9/2021 21:45:20] >>> Loading weapons... (done).
+[10/9/2021 21:45:20] >>> Preparing weapons... (done).
+[10/9/2021 21:45:21] >>> Loading spells... (done).
+[10/9/2021 21:45:22] >>> Loading actions... (done).
+[10/9/2021 21:45:22] >>> Loading talkactions... (done).
+[10/9/2021 21:45:24] >>> Loading movements... (done).
+[10/9/2021 21:45:24] >>> Loading creaturescripts... (done).
+[10/9/2021 21:45:24] >>> Loading globalscripts... (done).
+[10/9/2021 21:45:24] >> Loading monsters
+[10/9/2021 21:45:25] >> Loading npcs
+[10/9/2021 21:45:25] >> Loading raids
+[10/9/2021 21:45:25] >> Loading map and spawns...
+[10/9/2021 21:45:25] >>> Map size: 1000x1000.
+[10/9/2021 21:45:26] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[10/9/2021 21:45:26] >>> Loading time: 0.867 seconds.
+[10/9/2021 21:45:26] >>> Parsing time: 0.104 seconds.
+[10/9/2021 21:45:27] >>> Synchronization time: 0.868 seconds.
+[10/9/2021 21:45:27] >>> Unserialization time: 0.002 seconds.
+[10/9/2021 21:45:27] >> Checking world type... Open PvP
+[10/9/2021 21:45:27] >> Starting to dominate the world... done.
+[10/9/2021 21:45:27] >> Initializing game state and binding services:
+
+[10/9/2021 21:45:27] >> Everything smells good, server is starting up...
+[10/9/2021 21:45:28] >> OTXSERVER server Online!
+
+[10/9/2021 21:45:35] Matt has logged in.
+[11/9/2021 6:27:40] >> Loading Password encryption:
+[11/9/2021 6:27:40] >>> Using (SHA1) encryption ... (done).
+[11/9/2021 6:27:40] >> Loading RSA key
+[11/9/2021 6:27:40] >> Starting SQL connection
+[11/9/2021 6:27:40] >> Running Database Manager
+[11/9/2021 6:27:40] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[11/9/2021 6:27:40] >>> Optimized database ... (done).
+[11/9/2021 6:27:40] >> Checking for duplicated items
+[11/9/2021 6:27:40] >> There wasn't duplicated items in the server.
+[11/9/2021 6:27:40] >> Loading items (OTB)
+[11/9/2021 6:27:40] >> Loading items (XML)
+[11/9/2021 6:27:41] >> Loading groups
+[11/9/2021 6:27:41] >> Loading outfits
+[11/9/2021 6:27:41] >> Loading quests
+[11/9/2021 6:27:41] >> Loading raids
+[11/9/2021 6:27:41] >> Loading vocations
+[11/9/2021 6:27:41] >> Loading chat channels
+[11/9/2021 6:27:41] >> Loading experience stages
+[11/9/2021 6:27:41] >> Loading mods:
+[11/9/2021 6:27:41] >>> Loading annihilator.xml ... (done).
+[11/9/2021 6:27:42] >>> Loading custom_commands.xml ... (done).
+[11/9/2021 6:27:42] >>> Loading events_mods.xml ... (done).
+[11/9/2021 6:27:42] >>> Loading firstitems_voc.xml ... (done).
+[11/9/2021 6:27:42] >>> Loading mod_cast.xml ... (done).
+[11/9/2021 6:27:42] >>> (0) mods were disabled.
+[11/9/2021 6:27:42] >> Loading script systems:
+[11/9/2021 6:27:42] >>> Loading weapons... (done).
+[11/9/2021 6:27:42] >>> Preparing weapons... (done).
+[11/9/2021 6:27:43] >>> Loading spells... (done).
+[11/9/2021 6:27:43] >>> Loading actions... (done).
+[11/9/2021 6:27:43] >>> Loading talkactions... (done).
+[11/9/2021 6:27:45] >>> Loading movements... (done).
+[11/9/2021 6:27:45] >>> Loading creaturescripts... (done).
+[11/9/2021 6:27:45] >>> Loading globalscripts... (done).
+[11/9/2021 6:27:45] >> Loading monsters
+[11/9/2021 6:27:45] >> Loading npcs
+[11/9/2021 6:27:45] >> Loading raids
+[11/9/2021 6:27:45] >> Loading map and spawns...
+[11/9/2021 6:27:46] >>> Map size: 1000x1000.
+[11/9/2021 6:27:46] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[11/9/2021 6:27:46] >>> Loading time: 0.603 seconds.
+[11/9/2021 6:27:46] >>> Parsing time: 0.195 seconds.
+[11/9/2021 6:27:47] >>> Synchronization time: 0.718 seconds.
+[11/9/2021 6:27:47] >>> Unserialization time: 0.003 seconds.
+[11/9/2021 6:27:47] >> Checking world type... Open PvP
+[11/9/2021 6:27:47] >> Starting to dominate the world... done.
+[11/9/2021 6:27:47] >> Initializing game state and binding services:
+
+[11/9/2021 6:27:47] >> Everything smells good, server is starting up...
+[11/9/2021 6:27:48] >> OTXSERVER server Online!
+
+[11/9/2021 6:27:55] Matt has logged in.
+[11/9/2021 6:33:32] >> Loading Password encryption:
+[11/9/2021 6:33:32] >>> Using (SHA1) encryption ... (done).
+[11/9/2021 6:33:32] >> Loading RSA key
+[11/9/2021 6:33:32] >> Starting SQL connection
+[11/9/2021 6:33:32] >> Running Database Manager
+[11/9/2021 6:33:32] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[11/9/2021 6:33:32] >>> Optimized database ... (done).
+[11/9/2021 6:33:32] >> Checking for duplicated items
+[11/9/2021 6:33:32] >> There wasn't duplicated items in the server.
+[11/9/2021 6:33:32] >> Loading items (OTB)
+[11/9/2021 6:33:32] >> Loading items (XML)
+[11/9/2021 6:33:33] >> Loading groups
+[11/9/2021 6:33:33] >> Loading outfits
+[11/9/2021 6:33:33] >> Loading quests
+[11/9/2021 6:33:33] >> Loading raids
+[11/9/2021 6:33:33] >> Loading vocations
+[11/9/2021 6:33:33] >> Loading chat channels
+[11/9/2021 6:33:33] >> Loading experience stages
+[11/9/2021 6:33:33] >> Loading mods:
+[11/9/2021 6:33:33] >>> Loading annihilator.xml ... (done).
+[11/9/2021 6:33:33] >>> Loading custom_commands.xml ... (done).
+[11/9/2021 6:33:33] >>> Loading events_mods.xml ... (done).
+[11/9/2021 6:33:33] >>> Loading firstitems_voc.xml ... (done).
+[11/9/2021 6:33:33] >>> Loading mod_cast.xml ... (done).
+[11/9/2021 6:33:33] >>> (0) mods were disabled.
+[11/9/2021 6:33:33] >> Loading script systems:
+[11/9/2021 6:33:33] >>> Loading weapons... (done).
+[11/9/2021 6:33:33] >>> Preparing weapons... (done).
+[11/9/2021 6:33:34] >>> Loading spells... (done).
+[11/9/2021 6:33:34] >>> Loading actions... (done).
+[11/9/2021 6:33:35] >>> Loading talkactions... (done).
+[11/9/2021 6:33:36] >>> Loading movements... (done).
+[11/9/2021 6:33:36] >>> Loading creaturescripts... (done).
+[11/9/2021 6:33:36] >>> Loading globalscripts... (done).
+[11/9/2021 6:33:36] >> Loading monsters
+[11/9/2021 6:33:37] >> Loading npcs
+[11/9/2021 6:33:37] >> Loading raids
+[11/9/2021 6:33:37] >> Loading map and spawns...
+[11/9/2021 6:33:37] >>> Map size: 1000x1000.
+[11/9/2021 6:33:37] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[11/9/2021 6:33:37] >>> Loading time: 0.587 seconds.
+[11/9/2021 6:33:37] >>> Parsing time: 0.083 seconds.
+[11/9/2021 6:33:38] >>> Synchronization time: 0.647 seconds.
+[11/9/2021 6:33:38] >>> Unserialization time: 0.003 seconds.
+[11/9/2021 6:33:38] >> Checking world type... Open PvP
+[11/9/2021 6:33:38] >> Starting to dominate the world... done.
+[11/9/2021 6:33:38] >> Initializing game state and binding services:
+
+[11/9/2021 6:33:38] >> Everything smells good, server is starting up...
+[11/9/2021 6:33:39] >> OTXSERVER server Online!
+
+[11/9/2021 6:33:39] Matt has logged in.
+[11/9/2021 6:39:16] >> Loading Password encryption:
+[11/9/2021 6:39:16] >>> Using (SHA1) encryption ... (done).
+[11/9/2021 6:39:16] >> Loading RSA key
+[11/9/2021 6:39:16] >> Starting SQL connection
+
+[11/9/2021 6:39:16] > ERROR: Couldn't estabilish connection to SQL database!
+[11/9/2021 6:39:25] >> Loading Password encryption:
+[11/9/2021 6:39:25] >>> Using (SHA1) encryption ... (done).
+[11/9/2021 6:39:25] >> Loading RSA key
+[11/9/2021 6:39:25] >> Starting SQL connection
+
+[11/9/2021 6:39:25] > ERROR: Couldn't estabilish connection to SQL database!
+[11/9/2021 6:39:33] >> Loading Password encryption:
+[11/9/2021 6:39:33] >>> Using (SHA1) encryption ... (done).
+[11/9/2021 6:39:33] >> Loading RSA key
+[11/9/2021 6:39:33] >> Starting SQL connection
+
+[11/9/2021 6:39:33] > ERROR: Couldn't estabilish connection to SQL database!
+[11/9/2021 6:40:21] >> Loading Password encryption:
+[11/9/2021 6:40:21] >>> Using (SHA1) encryption ... (done).
+[11/9/2021 6:40:21] >> Loading RSA key
+[11/9/2021 6:40:21] >> Starting SQL connection
+[11/9/2021 6:40:21] >> Running Database Manager
+[11/9/2021 6:40:21] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[11/9/2021 6:40:21] >>> Optimized database ... (done).
+[11/9/2021 6:40:21] >> Checking for duplicated items
+[11/9/2021 6:40:21] >> There wasn't duplicated items in the server.
+[11/9/2021 6:40:21] >> Loading items (OTB)
+[11/9/2021 6:40:21] >> Loading items (XML)
+[11/9/2021 6:40:21] >> Loading groups
+[11/9/2021 6:40:21] >> Loading outfits
+[11/9/2021 6:40:21] >> Loading quests
+[11/9/2021 6:40:21] >> Loading raids
+[11/9/2021 6:40:21] >> Loading vocations
+[11/9/2021 6:40:21] >> Loading chat channels
+[11/9/2021 6:40:21] >> Loading experience stages
+[11/9/2021 6:40:21] >> Loading mods:
+[11/9/2021 6:40:21] >>> Loading annihilator.xml ... (done).
+[11/9/2021 6:40:22] >>> Loading custom_commands.xml ... (done).
+[11/9/2021 6:40:22] >>> Loading events_mods.xml ... (done).
+[11/9/2021 6:40:22] >>> Loading firstitems_voc.xml ... (done).
+[11/9/2021 6:40:22] >>> Loading mod_cast.xml ... (done).
+[11/9/2021 6:40:22] >>> (0) mods were disabled.
+[11/9/2021 6:40:22] >> Loading script systems:
+[11/9/2021 6:40:22] >>> Loading weapons... (done).
+[11/9/2021 6:40:22] >>> Preparing weapons... (done).
+[11/9/2021 6:40:23] >>> Loading spells... (done).
+[11/9/2021 6:40:23] >>> Loading actions... (done).
+[11/9/2021 6:40:23] >>> Loading talkactions... (done).
+[11/9/2021 6:40:25] >>> Loading movements... (done).
+[11/9/2021 6:40:25] >>> Loading creaturescripts... (done).
+[11/9/2021 6:40:25] >>> Loading globalscripts... (done).
+[11/9/2021 6:40:25] >> Loading monsters
+[11/9/2021 6:40:26] >> Loading npcs
+[11/9/2021 6:40:26] >> Loading raids
+[11/9/2021 6:40:26] >> Loading map and spawns...
+[11/9/2021 6:40:26] >>> Map size: 1000x1000.
+[11/9/2021 6:40:26] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[11/9/2021 6:40:26] >>> Loading time: 0.606 seconds.
+[11/9/2021 6:40:26] >>> Parsing time: 0.08 seconds.
+[11/9/2021 6:40:27] >>> Synchronization time: 0.71 seconds.
+[11/9/2021 6:40:27] >>> Unserialization time: 0.002 seconds.
+[11/9/2021 6:40:27] >> Checking world type... Open PvP
+[11/9/2021 6:40:27] >> Starting to dominate the world... done.
+[11/9/2021 6:40:27] >> Initializing game state and binding services:
+
+[11/9/2021 6:40:27] >> Everything smells good, server is starting up...
+[11/9/2021 6:40:28] >> OTXSERVER server Online!
+
+[11/9/2021 6:40:29] Account Manager has logged in.
+[11/9/2021 6:40:54] Account Manager has logged out.
+[11/9/2021 6:41:40] Mattyx has logged in.
+[11/9/2021 6:42:22] > Saving server...
+[11/9/2021 6:42:22] > SAVE: Complete in 0.05 seconds using binary-tilebased house storage.
+[11/9/2021 6:42:23] Mattyx has logged out.
+[15/10/2021 19:3:50] >> Loading Password encryption:
+[15/10/2021 19:3:50] >>> Using (SHA1) encryption ... (done).
+[15/10/2021 19:3:50] >> Loading RSA key
+[15/10/2021 19:3:50] >> Starting SQL connection
+[15/10/2021 19:3:50] >> Running Database Manager
+[15/10/2021 19:3:50] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[15/10/2021 19:3:51] >>> Optimized database ... (done).
+[15/10/2021 19:3:51] >> Checking for duplicated items
+[15/10/2021 19:3:51] >> There wasn't duplicated items in the server.
+[15/10/2021 19:3:51] >> Loading items (OTB)
+[15/10/2021 19:3:51] >> Loading items (XML)
+[15/10/2021 19:3:51] >> Loading groups
+[15/10/2021 19:3:51] >> Loading outfits
+[15/10/2021 19:3:51] >> Loading quests
+[15/10/2021 19:3:51] >> Loading raids
+[15/10/2021 19:3:51] >> Loading vocations
+[15/10/2021 19:3:51] >> Loading chat channels
+[15/10/2021 19:3:51] >> Loading experience stages
+[15/10/2021 19:3:51] >> Loading mods:
+[15/10/2021 19:3:51] >>> Loading annihilator.xml ... (done).
+[15/10/2021 19:3:51] >>> Loading custom_commands.xml ... (done).
+[15/10/2021 19:3:52] >>> Loading events_mods.xml ... (done).
+[15/10/2021 19:3:52] >>> Loading firstitems_voc.xml ... (done).
+[15/10/2021 19:3:52] >>> Loading mod_cast.xml ... (done).
+[15/10/2021 19:3:52] >>> (0) mods were disabled.
+[15/10/2021 19:3:52] >> Loading script systems:
+[15/10/2021 19:3:52] >>> Loading weapons... (done).
+[15/10/2021 19:3:52] >>> Preparing weapons... (done).
+[15/10/2021 19:3:53] >>> Loading spells... (done).
+[15/10/2021 19:3:54] >>> Loading actions... (done).
+[15/10/2021 19:3:54] >>> Loading talkactions... (done).
+[15/10/2021 19:3:56] >>> Loading movements... (done).
+[15/10/2021 19:3:56] >>> Loading creaturescripts... (done).
+[15/10/2021 19:3:56] >>> Loading globalscripts... (done).
+[15/10/2021 19:3:56] >> Loading monsters
+[15/10/2021 19:4:0] >> Loading npcs
+[15/10/2021 19:4:0] >> Loading raids
+[15/10/2021 19:4:0] >> Loading map and spawns...
+[15/10/2021 19:4:0] >>> Map size: 1000x1000.
+[15/10/2021 19:4:1] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[15/10/2021 19:4:1] >>> Loading time: 0.706 seconds.
+[15/10/2021 19:4:1] >>> Parsing time: 0.302 seconds.
+[15/10/2021 19:4:2] >>> Synchronization time: 0.839 seconds.
+[15/10/2021 19:4:2] >>> Unserialization time: 0.002 seconds.
+[15/10/2021 19:4:2] >> Checking world type... Open PvP
+[15/10/2021 19:4:2] >> Starting to dominate the world... done.
+[15/10/2021 19:4:2] >> Initializing game state and binding services:
+
+[15/10/2021 19:4:2] >> Everything smells good, server is starting up...
+[15/10/2021 19:4:3] >> OTXSERVER server Online!
+
+[15/10/2021 19:4:12] Mattyx has logged in.
+[15/10/2021 19:14:29] Mattyx has logged out.
+[23/10/2021 7:46:45] >> Loading Password encryption:
+[23/10/2021 7:46:45] >>> Using (SHA1) encryption ... (done).
+[23/10/2021 7:46:45] >> Loading RSA key
+[23/10/2021 7:46:45] >> Starting SQL connection
+[23/10/2021 7:46:45] >> Running Database Manager
+[23/10/2021 7:46:45] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[23/10/2021 7:46:45] >>> Optimized database ... (done).
+[23/10/2021 7:46:45] >> Checking for duplicated items
+[23/10/2021 7:46:45] >> There wasn't duplicated items in the server.
+[23/10/2021 7:46:45] >> Loading items (OTB)
+[23/10/2021 7:46:45] >> Loading items (XML)
+[23/10/2021 7:46:45] >> Loading groups
+[23/10/2021 7:46:45] >> Loading outfits
+[23/10/2021 7:46:45] >> Loading quests
+[23/10/2021 7:46:45] >> Loading raids
+[23/10/2021 7:46:45] >> Loading vocations
+[23/10/2021 7:46:45] >> Loading chat channels
+[23/10/2021 7:46:45] >> Loading experience stages
+[23/10/2021 7:46:45] >> Loading mods:
+[23/10/2021 7:46:45] >>> Loading annihilator.xml ... (done).
+[23/10/2021 7:46:46] >>> Loading custom_commands.xml ... (done).
+[23/10/2021 7:46:46] >>> Loading events_mods.xml ... (done).
+[23/10/2021 7:46:46] >>> Loading firstitems_voc.xml ... (done).
+[23/10/2021 7:46:46] >>> Loading mod_cast.xml ... (done).
+[23/10/2021 7:46:46] >>> (0) mods were disabled.
+[23/10/2021 7:46:46] >> Loading script systems:
+[23/10/2021 7:46:46] >>> Loading weapons... [Warning - BaseEvents::loadFromXml] Cannot open data/weapons/weapons.xml file.
+[23/10/2021 7:46:46] Line: 608, Info: Extra content at the end of the document
+
+
+[23/10/2021 7:46:46] failed!
+[23/10/2021 7:47:45] >> Loading Password encryption:
+[23/10/2021 7:47:45] >>> Using (SHA1) encryption ... (done).
+[23/10/2021 7:47:45] >> Loading RSA key
+[23/10/2021 7:47:45] >> Starting SQL connection
+[23/10/2021 7:47:45] >> Running Database Manager
+[23/10/2021 7:47:45] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[23/10/2021 7:47:45] >>> Optimized database ... (done).
+[23/10/2021 7:47:45] >> Checking for duplicated items
+[23/10/2021 7:47:45] >> There wasn't duplicated items in the server.
+[23/10/2021 7:47:45] >> Loading items (OTB)
+[23/10/2021 7:47:45] >> Loading items (XML)
+[23/10/2021 7:47:45] >> Loading groups
+[23/10/2021 7:47:45] >> Loading outfits
+[23/10/2021 7:47:45] >> Loading quests
+[23/10/2021 7:47:45] >> Loading raids
+[23/10/2021 7:47:45] >> Loading vocations
+[23/10/2021 7:47:45] >> Loading chat channels
+[23/10/2021 7:47:45] >> Loading experience stages
+[23/10/2021 7:47:45] >> Loading mods:
+[23/10/2021 7:47:45] >>> Loading annihilator.xml ... (done).
+[23/10/2021 7:47:46] >>> Loading custom_commands.xml ... (done).
+[23/10/2021 7:47:46] >>> Loading events_mods.xml ... (done).
+[23/10/2021 7:47:46] >>> Loading firstitems_voc.xml ... (done).
+[23/10/2021 7:47:46] >>> Loading mod_cast.xml ... (done).
+[23/10/2021 7:47:46] >>> (0) mods were disabled.
+[23/10/2021 7:47:46] >> Loading script systems:
+[23/10/2021 7:47:46] >>> Loading weapons... [Warning - BaseEvents::loadFromXml] Cannot open data/weapons/weapons.xml file.
+[23/10/2021 7:47:46] Line: 608, Info: Extra content at the end of the document
+
+
+[23/10/2021 7:47:46] failed!
+[23/10/2021 7:48:30] >> Loading Password encryption:
+[23/10/2021 7:48:30] >>> Using (SHA1) encryption ... (done).
+[23/10/2021 7:48:30] >> Loading RSA key
+[23/10/2021 7:48:30] >> Starting SQL connection
+[23/10/2021 7:48:30] >> Running Database Manager
+[23/10/2021 7:48:30] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[23/10/2021 7:48:30] >>> Optimized database ... (done).
+[23/10/2021 7:48:30] >> Checking for duplicated items
+[23/10/2021 7:48:30] >> There wasn't duplicated items in the server.
+[23/10/2021 7:48:30] >> Loading items (OTB)
+[23/10/2021 7:48:30] >> Loading items (XML)
+[23/10/2021 7:48:31] >> Loading groups
+[23/10/2021 7:48:31] >> Loading outfits
+[23/10/2021 7:48:31] >> Loading quests
+[23/10/2021 7:48:31] >> Loading raids
+[23/10/2021 7:48:31] >> Loading vocations
+[23/10/2021 7:48:31] >> Loading chat channels
+[23/10/2021 7:48:31] >> Loading experience stages
+[23/10/2021 7:48:31] >> Loading mods:
+[23/10/2021 7:48:31] >>> Loading annihilator.xml ... (done).
+[23/10/2021 7:48:31] >>> Loading custom_commands.xml ... (done).
+[23/10/2021 7:48:31] >>> Loading events_mods.xml ... (done).
+[23/10/2021 7:48:31] >>> Loading firstitems_voc.xml ... (done).
+[23/10/2021 7:48:31] >>> Loading mod_cast.xml ... (done).
+[23/10/2021 7:48:31] >>> (0) mods were disabled.
+[23/10/2021 7:48:31] >> Loading script systems:
+[23/10/2021 7:48:31] >>> Loading weapons... (done).
+[23/10/2021 7:48:31] >>> Preparing weapons... (done).
+[23/10/2021 7:48:32] >>> Loading spells... (done).
+[23/10/2021 7:48:33] >>> Loading actions... (done).
+[23/10/2021 7:48:33] >>> Loading talkactions... (done).
+[23/10/2021 7:48:35] >>> Loading movements... (done).
+[23/10/2021 7:48:35] >>> Loading creaturescripts... (done).
+[23/10/2021 7:48:35] >>> Loading globalscripts... (done).
+[23/10/2021 7:48:35] >> Loading monsters
+[23/10/2021 7:48:37] >> Loading npcs
+[23/10/2021 7:48:37] >> Loading raids
+[23/10/2021 7:48:37] >> Loading map and spawns...
+[23/10/2021 7:48:37] >>> Map size: 1000x1000.
+[23/10/2021 7:48:38] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[23/10/2021 7:48:38] >>> Loading time: 0.726 seconds.
+[23/10/2021 7:48:38] >>> Parsing time: 0.198 seconds.
+[23/10/2021 7:48:39] >>> Synchronization time: 0.895 seconds.
+[23/10/2021 7:48:39] >>> Unserialization time: 0.004 seconds.
+[23/10/2021 7:48:39] >> Checking world type... Open PvP
+[23/10/2021 7:48:39] >> Starting to dominate the world... done.
+[23/10/2021 7:48:39] >> Initializing game state and binding services:
+
+[23/10/2021 7:48:39] >> Everything smells good, server is starting up...
+[23/10/2021 7:48:40] >> OTXSERVER server Online!
+
+[23/10/2021 7:49:1] Mattyx has logged in.
+[23/10/2021 7:59:51] > Saving server...
+[23/10/2021 7:59:51] > SAVE: Complete in 0.058 seconds using binary-tilebased house storage.
+[23/10/2021 8:0:4] >> Loading Password encryption:
+[23/10/2021 8:0:4] >>> Using (SHA1) encryption ... (done).
+[23/10/2021 8:0:4] >> Loading RSA key
+[23/10/2021 8:0:4] >> Starting SQL connection
+[23/10/2021 8:0:4] >> Running Database Manager
+[23/10/2021 8:0:4] > WARNING: You cannot change the encryption to SHA1, change it back in config.lua.
+[23/10/2021 8:0:4] >>> Optimized database ... (done).
+[23/10/2021 8:0:4] >> Checking for duplicated items
+[23/10/2021 8:0:4] >> There wasn't duplicated items in the server.
+[23/10/2021 8:0:4] >> Loading items (OTB)
+[23/10/2021 8:0:4] >> Loading items (XML)
+[23/10/2021 8:0:4] >> Loading groups
+[23/10/2021 8:0:4] >> Loading outfits
+[23/10/2021 8:0:4] >> Loading quests
+[23/10/2021 8:0:4] >> Loading raids
+[23/10/2021 8:0:4] >> Loading vocations
+[23/10/2021 8:0:4] >> Loading chat channels
+[23/10/2021 8:0:4] >> Loading experience stages
+[23/10/2021 8:0:4] >> Loading mods:
+[23/10/2021 8:0:4] >>> Loading annihilator.xml ... (done).
+[23/10/2021 8:0:5] >>> Loading custom_commands.xml ... (done).
+[23/10/2021 8:0:5] >>> Loading events_mods.xml ... (done).
+[23/10/2021 8:0:5] >>> Loading firstitems_voc.xml ... (done).
+[23/10/2021 8:0:5] >>> Loading mod_cast.xml ... (done).
+[23/10/2021 8:0:5] >>> (0) mods were disabled.
+[23/10/2021 8:0:5] >> Loading script systems:
+[23/10/2021 8:0:5] >>> Loading weapons... (done).
+[23/10/2021 8:0:5] >>> Preparing weapons... (done).
+[23/10/2021 8:0:6] >>> Loading spells... (done).
+[23/10/2021 8:0:6] >>> Loading actions... (done).
+[23/10/2021 8:0:7] >>> Loading talkactions... (done).
+[23/10/2021 8:0:8] >>> Loading movements... (done).
+[23/10/2021 8:0:8] >>> Loading creaturescripts... (done).
+[23/10/2021 8:0:8] >>> Loading globalscripts... (done).
+[23/10/2021 8:0:8] >> Loading monsters
+[23/10/2021 8:0:8] >> Loading npcs
+[23/10/2021 8:0:8] >> Loading raids
+[23/10/2021 8:0:8] >> Loading map and spawns...
+[23/10/2021 8:0:9] >>> Map size: 1000x1000.
+[23/10/2021 8:0:9] >>> Map descriptions: - "Saved with Remere's Map Editor 1.1.8" - "The Forgotten Server"
+[23/10/2021 8:0:9] >>> Loading time: 0.596 seconds.
+[23/10/2021 8:0:9] >>> Parsing time: 0.085 seconds.
+[23/10/2021 8:0:10] >>> Synchronization time: 0.7 seconds.
+[23/10/2021 8:0:10] >>> Unserialization time: 0.004 seconds.
+[23/10/2021 8:0:10] >> Checking world type... Open PvP
+[23/10/2021 8:0:10] >> Starting to dominate the world... done.
+[23/10/2021 8:0:10] >> Initializing game state and binding services:
+
+[23/10/2021 8:0:10] >> Everything smells good, server is starting up...
+[23/10/2021 8:0:11] >> OTXSERVER server Online!
+
+[23/10/2021 8:0:11] Mattyx has logged in.

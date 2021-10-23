@@ -48,6 +48,8 @@
 [ OTX Server 2.15 :: Version "SNAPSHOT"
 	- Added "libtcmalloc_minimal.so" this lib should help reduce cpu load
 	- Added information regarding the number of unique player online (as requested by otserverlist)
+	- Added config "pzlockOnAttackSkulledPlayers"
+	- Added option to extend effects/distance shoots __EXTENDED_MAGIC_EFFECTS__ || __EXTENDED_DISTANCE_SHOOT__
 	- Enhanced TFS 0.3.6/0.4 compatibility
 	- Fix magebot diagonal
 	- Fix an issue that could cause a crash when using teleports
@@ -55,10 +57,12 @@
 	- Fix for monster's summons damaging other monsters
 	- Fix sellHouse command
 	- Fix container issues
+	- Fix BUG: closingdoor.lua
 	- Make compilable build on Debian 10 / Ubuntu 20
 	- Optimize code fixes
 	- Remove dependency to OpenSSL
 	- Remove MD5, SHA256 and SHA512
+	- Set swing="true" on weapons.xml to distance weapons
 
 	Note:
 	* It is recommended to update all your data files.

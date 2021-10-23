@@ -584,78 +584,78 @@
 
 	<!-- Bows and Crossbows -->
 		<!-- Crossbow -->
-		<distance id="2455" event="function" value="default"/>
+		<distance id="2455" event="function" value="default" swing="true"/>
 		<!-- Bow -->
-		<distance id="2456" event="function" value="default"/>
+		<distance id="2456" event="function" value="default" swing="true"/>
 		<!-- Arbalest -->
-		<distance id="5803" level="75" event="function" value="default">
+		<distance id="5803" level="75" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Elvish Bow -->
-		<distance id="7438" event="function" value="default"/>
+		<distance id="7438" event="function" value="default" swing="true"/>
 		<!-- Modified Crossbow -->
-		<distance id="8849" level="45" unproperly="1" event="function" value="default">
+		<distance id="8849" level="45" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Chain Bolter -->
-		<distance id="8850" level="60" unproperly="1" event="function" value="default">
+		<distance id="8850" level="60" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Royal Crossbow -->
-		<distance id="8851" level="130" unproperly="1" event="function" value="default">
+		<distance id="8851" level="130" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Devileye -->
-		<distance id="8852" level="100" unproperly="1" event="function" value="default">
+		<distance id="8852" level="100" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Ironworker -->
-		<distance id="8853" level="80" unproperly="1" event="function" value="default">
+		<distance id="8853" level="80" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Warsinger Bow -->
-		<distance id="8854" level="80" unproperly="1" event="function" value="default">
+		<distance id="8854" level="80" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Composite Hornbow -->
-		<distance id="8855" level="50" unproperly="1" event="function" value="default">
+		<distance id="8855" level="50" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Yol's Bow -->
-		<distance id="8856" level="60" unproperly="1" event="function" value="default">
+		<distance id="8856" level="60" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Silkweaver Bow -->
-		<distance id="8857" level="40" unproperly="1" event="function" value="default"> 
+		<distance id="8857" level="40" unproperly="1" event="function" value="default" swing="true"> 
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 		<!-- Elethriel's Elemental Bow -->
-		<distance id="8858" level="70" unproperly="1" event="function" value="default">
+		<distance id="8858" level="70" unproperly="1" event="function" value="default" swing="true">
 			<vocation name="Paladin"/>
 			<vocation id="7" showInDescription="0"/>
 		</distance>
 
 	<!-- Ammunition -->
 		<!-- Small Stone -->
-		<distance id="1294" event="function" value="default"/>
+		<distance id="1294" event="function" value="default" swing="true"/>
 		<!-- Snow Ball -->
-		<distance id="2111" event="function" value="default"/>
+		<distance id="2111" event="function" value="default" swing="true"/>
 		<!-- Spear -->
-		<distance id="2389" event="function" value="default"/>
+		<distance id="2389" event="function" value="default" swing="true"/>
 		<!-- Throwing Star -->
-		<distance id="2399" event="function" value="default"/>
+		<distance id="2399" event="function" value="default" swing="true"/>
 		<!-- Throwing Knife -->
-		<distance id="2410" event="function" value="default"/>
+		<distance id="2410" event="function" value="default" swing="true"/>
 		<!-- Bolt -->
 		<distance id="2543" event="function" value="default"/>
 		<!-- Arrow -->
@@ -667,7 +667,7 @@
 		<!-- Power Bolt -->
 		<distance id="2547" level="55" event="function" value="default"/>
 		<!-- Hunting Spear -->
-		<distance id="3965" level="20" event="function" value="default"/>
+		<distance id="3965" level="20" event="function" value="default" swing="true"/>
 		<!-- Infernal Bolt -->
 		<distance id="6529" level="110" event="function" value="default"/>
 		<!-- Piercing Bolt -->
@@ -677,13 +677,13 @@
 		<!-- Onyx Arrow -->
 		<distance id="7365" level="40" event="function" value="default"/>
 		<!-- Viper Star -->
-		<distance id="7366" event="script" value="viper_star.lua"/>
+		<distance id="7366" event="script" value="viper_star.lua" swing="true"/>
 		<!-- Enchanted Spear -->
-		<distance id="7367" level="42" event="function" value="default"/>
+		<distance id="7367" level="42" event="function" value="default" swing="true"/>
 		<!-- Assassin Star -->
-		<distance id="7368" level="80" event="function" value="default"/>
+		<distance id="7368" level="80" event="function" value="default" swing="true"/>
 		<!-- Royal Spear -->
-		<distance id="7378" level="25" event="function" value="default"/>
+		<distance id="7378" level="25" event="function" value="default" swing="true"/>
 		<!-- Flash Arrow -->
 		<distance id="7838" type="energy" event="function" value="default"/>
 		<!-- Shiver Arrow -->
