@@ -368,10 +368,12 @@ TODO
 ## CUSTOM
 # Files
 config.lua
+client_assertions.txt
 # Extensions
 *.ini
 *.otb
 *.exe
+*.manifest
 *.otbm
 *.rar
 

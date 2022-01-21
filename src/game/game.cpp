@@ -46,6 +46,7 @@
 #include "creatures/players/account/account.hpp"
 #include "creatures/npc/npc.h"
 #include "server/network/webhook/webhook.h"
+#include "items/decay/decay.h"
 
 
 extern ConfigManager g_config;
@@ -161,8 +162,7 @@ void Game::start(ServiceManager* manager)
 
 	g_scheduler.addEvent(createSchedulerTask(EVENT_LIGHTINTERVAL_MS, std::bind(&Game::checkLight, this)));
 	g_scheduler.addEvent(createSchedulerTask(EVENT_CREATURE_THINK_INTERVAL, std::bind(&Game::checkCreatures, this, 0)));
-	g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL, std::bind(&Game::checkDecay, this)));
-	g_scheduler.addEvent(createSchedulerTask(EVENT_IMBUEMENTINTERVAL, std::bind(&Game::checkImbuements, this)));
+	g_scheduler.addEvent(createSchedulerTask(EVENT_IMBUEMENT_INTERVAL, std::bind(&Game::checkImbuements, this)));
 }
 
 GameState_t Game::getGameState() const
@@ -856,41 +856,32 @@ Creature* Game::getCreatureByID(uint32_t id)
 
 Monster* Game::getMonsterByID(uint32_t id)
 {
-	if (id == 0) {
-		return nullptr;
+	auto monsterMap = monsters.find(id);
+	if (monsterMap != monsters.end()) {
+		return monsterMap->second;
 	}
 
-	auto it = monsters.find(id);
-	if (it == monsters.end()) {
-		return nullptr;
-	}
-	return it->second;
+	return nullptr;
 }
 
 Npc* Game::getNpcByID(uint32_t id)
 {
-	if (id == 0) {
-		return nullptr;
+	auto npcMap = npcs.find(id);
+	if (npcMap != npcs.end()) {
+		return npcMap->second;
 	}
 
-	auto it = npcs.find(id);
-	if (it == npcs.end()) {
-		return nullptr;
-	}
-	return it->second;
+	return nullptr;
 }
 
 Player* Game::getPlayerByID(uint32_t id)
 {
-	if (id == 0) {
-		return nullptr;
+	auto playerMap = players.find(id);
+	if (playerMap != players.end()) {
+		return playerMap->second;
 	}
 
-	auto it = players.find(id);
-	if (it == players.end()) {
-		return nullptr;
-	}
-	return it->second;
+	return nullptr;
 }
 
 Creature* Game::getCreatureByName(const std::string& s)
@@ -1246,12 +1237,12 @@ void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Po
 
 	player->pushEvent(false);
 	const Monster* monster = movingCreature->getMonster();
-	bool isPet = false;
+	bool isFamiliar = false;
 	if (monster) {
-		isPet = monster->isPet();
+		isFamiliar = monster->isFamiliar();
 	}
 
-	if (!isPet && ((!movingCreature->isPushable() && !player->hasFlag(PlayerFlag_CanPushAllCreatures)) ||
+	if (!isFamiliar && ((!movingCreature->isPushable() && !player->hasFlag(PlayerFlag_CanPushAllCreatures)) ||
 				(movingCreature->isInGhostMode() && !player->isAccessPlayer()))) {
 		player->sendCancelMessage(RETURNVALUE_NOTMOVEABLE);
 		return;
@@ -1729,18 +1720,11 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 	//update item(s)
 	if (item->isStackable()) {
 		uint32_t n;
+
 		if (toItem && item->equals(toItem)) {
 			n = std::min<uint32_t>(100 - toItem->getItemCount(), m);
-			// Update same decay item count
-			if (item->getDuration() > 0) {
-				updateItem = toItem->clone();
-				updateItem->setItemCount(toItem->getItemCount() + n);
-				toCylinder->removeThing(toItem, toItem->getItemCount());
-				toCylinder->addThing(index, updateItem);
-			} else {
 				toCylinder->updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
 				updateItem = toItem;
-			}
 		} else {
 			n = 0;
 		}
@@ -1754,6 +1738,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 		}
 
 		if (item->isRemoved()) {
+			item->stopDecaying();
 			ReleaseItem(item);
 		}
 	}
@@ -1772,6 +1757,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 		if (moveItemIndex != -1) {
 			toCylinder->postAddNotification(moveItem, fromCylinder, moveItemIndex);
 		}
+		moveItem->startDecaying();
 	}
 
 	if (updateItem) {
@@ -1779,6 +1765,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 		if (updateItemIndex != -1) {
 			toCylinder->postAddNotification(updateItem, fromCylinder, updateItemIndex);
 		}
+		updateItem->startDecaying();
 	}
 
 	if (_moveItem) {
@@ -1789,16 +1776,20 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 		}
 	}
 
-  Item* quiver = toCylinder->getItem();
-  if (quiver && quiver->getWeaponType() == WEAPON_QUIVER && quiver->getHoldingPlayer() && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
-    quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
-  }
-  else {
-    quiver = fromCylinder->getItem();
-    if (quiver && quiver->getWeaponType() == WEAPON_QUIVER && quiver->getHoldingPlayer() && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
-      quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
-    }
-  }
+	Item* quiver = toCylinder->getItem();
+	if (quiver && quiver->getWeaponType() == WEAPON_QUIVER
+			&& quiver->getHoldingPlayer()
+			&& quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
+			quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
+	} else {
+		quiver = fromCylinder->getItem();
+		if (quiver && quiver->getWeaponType() == WEAPON_QUIVER
+				&& quiver->getHoldingPlayer()
+				&& quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
+					quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
+			}
+	}
+
 	//we could not move all, inform the player
 	if (item->isStackable() && maxQueryCount < count) {
 		return retMaxCount;
@@ -1819,14 +1810,6 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 			if (it.corpseType != RACE_NONE && toCylinder->getContainer()->getTopParent() == player && item->getIsLootTrackeable()) {
 				player->updateLootTracker(item);
 			}
-		}
-	}
-
-	if (moveItem && moveItem->getDuration() > 0) {
-		if (moveItem->getDecaying() != DECAYING_TRUE) {
-			moveItem->incrementReferenceCounter();
-			moveItem->setDecaying(DECAYING_TRUE);
-			g_game.toDecayItems.push_front(moveItem);
 		}
 	}
 
@@ -1914,16 +1897,13 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 		}
 	}
 
-	if (item->getDuration() > 0) {
-		item->incrementReferenceCounter();
-		item->setDecaying(DECAYING_TRUE);
-		g_game.toDecayItems.push_front(item);
+	Item* quiver = toCylinder->getItem();
+	if (quiver && quiver->getWeaponType() == WEAPON_QUIVER
+               && quiver->getHoldingPlayer()
+               && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
+		quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
 	}
 
-  Item* quiver = toCylinder->getItem();
-  if (quiver && quiver->getWeaponType() == WEAPON_QUIVER && quiver->getHoldingPlayer() && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
-    quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
-  }
 	return RETURNVALUE_NOERROR;
 }
 
@@ -1958,18 +1938,20 @@ ReturnValue Game::internalRemoveItem(Item* item, int32_t count /*= -1*/, bool te
 
 		if (item->isRemoved()) {
 			item->onRemoved();
-			if (item->canDecay()) {
-				decayItems->remove(item);
-			}
+			item->stopDecaying();
 			ReleaseItem(item);
 		}
 
 		cylinder->postRemoveNotification(item, nullptr, index);
 	}
-  Item* quiver = cylinder->getItem();
-  if (quiver && quiver->getWeaponType() == WEAPON_QUIVER && quiver->getHoldingPlayer() && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
-    quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
-  }
+
+	Item* quiver = cylinder->getItem();
+	if (quiver && quiver->getWeaponType() == WEAPON_QUIVER
+               && quiver->getHoldingPlayer()
+               && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
+		quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
+	}
+
 	return RETURNVALUE_NOERROR;
 }
 
@@ -2109,10 +2091,10 @@ bool Game::removeMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*
 			const uint32_t removeCount = std::ceil(money / static_cast<double>(worth));
 			addMoney(cylinder, (worth * removeCount) - money, flags);
 			internalRemoveItem(item, removeCount);
-			break;
+			return true;
 		} else {
 			internalRemoveItem(item);
-			break;
+			return true;
 		}
 	}
 
@@ -2214,11 +2196,13 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 
 		Cylinder* newParent = item->getParent();
 		if (newParent == nullptr) {
+			item->stopDecaying();
 			ReleaseItem(item);
 			return nullptr;
 		}
 
 		newParent->postAddNotification(item, cylinder, newParent->getThingIndex(item));
+		item->startDecaying();
 		return item;
 	}
 
@@ -2234,7 +2218,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 					newItemId = curType.decayTo;
 				}
 
-				if (newItemId <= 0) {
+				if (newItemId < 0) {
 					internalRemoveItem(item);
 					return nullptr;
 				} else if (newItemId != newId) {
@@ -2249,15 +2233,15 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 
 					item->setParent(nullptr);
 					cylinder->postRemoveNotification(item, cylinder, itemIndex);
+					item->stopDecaying();
 					ReleaseItem(item);
+					newItem->startDecaying();
 					return newItem;
 				} else {
 					return transformItem(item, newItemId);
 				}
 			}
 		} else {
-			uint32_t currentDuration = item->getDuration();
-
 			cylinder->postRemoveNotification(item, cylinder, itemIndex);
 			uint16_t itemId = item->getID();
 			int32_t count = item->getSubType();
@@ -2275,16 +2259,25 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 			}
 
 			cylinder->updateThing(item, itemId, count);
-			if (currentDuration) {
-				item->setDuration(currentDuration);
-			}
 			cylinder->postAddNotification(item, cylinder, itemIndex);
-      Item* quiver = cylinder->getItem();
-      if (quiver && quiver->getWeaponType() == WEAPON_QUIVER && quiver->getHoldingPlayer() && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
-        quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
-      }
+
+			Item* quiver = cylinder->getItem();
+			if (quiver && quiver->getWeaponType() == WEAPON_QUIVER
+				&& quiver->getHoldingPlayer()
+				&& quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
+					quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
+			}
+			item->startDecaying();
+
 			return item;
 		}
+	}
+
+	Item* quiver = cylinder->getItem();
+	if (quiver && quiver->getWeaponType() == WEAPON_QUIVER
+			&& quiver->getHoldingPlayer()
+			&& quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
+				quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
 	}
 
 	//Replacing the the old item with the new while maintaining the old position
@@ -2304,20 +2297,10 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 
 	item->setParent(nullptr);
 	cylinder->postRemoveNotification(item, cylinder, itemIndex);
+	item->stopDecaying();
 	ReleaseItem(item);
+	newItem->startDecaying();
 
-	if (newItem->getDuration() > 0) {
-		if (newItem->getDecaying() != DECAYING_TRUE) {
-			newItem->incrementReferenceCounter();
-			newItem->setDecaying(DECAYING_TRUE);
-			g_game.toDecayItems.push_front(newItem);
-		}
-	}
-
-  Item* quiver = cylinder->getItem();
-  if (quiver && quiver->getWeaponType() == WEAPON_QUIVER && quiver->getHoldingPlayer() && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
-    quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
-  }
 	return newItem;
 }
 
@@ -3584,18 +3567,20 @@ void Game::playerWrapableItem(uint32_t playerId, const Position& pos, uint8_t st
 		if (hiddenCharges > 0) {
 			item->setDate(hiddenCharges);
 		}
-		startDecay(item);
+		newItem->startDecaying();
 	}
 	else if (item->getID() == TRANSFORM_BOX_ID && unWrapId != 0) {
 		uint16_t hiddenCharges = item->getDate();
-		item->removeAttribute(ITEM_ATTRIBUTE_DESCRIPTION);
-		addMagicEffect(item->getPosition(), CONST_ME_POFF);
-		transformItem(item, unWrapId);
-		if (hiddenCharges > 0 && isCaskItem(unWrapId)) {
-			item->setSubType(hiddenCharges);
+		Item* newItem = transformItem(item, unWrapId);
+		if (newItem) {
+			if (hiddenCharges > 0 && isCaskItem(unWrapId)) {
+				newItem->setSubType(hiddenCharges);
+			}
+			addMagicEffect(pos, CONST_ME_POFF);
+			newItem->removeCustomAttribute("unWrapId");
+			newItem->removeAttribute(ITEM_ATTRIBUTE_DESCRIPTION);
+			newItem->startDecaying();
 		}
-		item->removeCustomAttribute("unWrapId");
-		startDecay(item);
 	}
 }
 
@@ -4399,7 +4384,7 @@ void Game::playerLookAt(uint32_t playerId, const Position& pos, uint8_t stackPos
 	} else {
 		lookDistance = -1;
 	}
-
+	// Parse onLook from event player
 	g_events->eventPlayerOnLook(player, pos, thing, stackPos, lookDistance);
 }
 
@@ -4793,7 +4778,7 @@ void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
 		}
 
 		if (!vipPlayer->isInGhostMode() || player->isAccessPlayer()) {
-			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_ONLINE);
+			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), vipPlayer->statusVipList);
 		} else {
 			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_OFFLINE);
 		}
@@ -4827,56 +4812,60 @@ void Game::playerApplyImbuement(uint32_t playerId, uint32_t imbuementid, uint8_t
 		return;
 	}
 
-	if (!player->inImbuing()) {
+	if (!player->hasImbuingItem()) {
 		return;
 	}
 
 	Imbuement* imbuement = g_imbuements->getImbuement(imbuementid);
-	if(!imbuement) {
+	if (!imbuement) {
 		return;
 	}
 
-	Item* item = player->imbuing;
-	if(item == nullptr) {
+	Item* item = player->imbuingItem;
+	if (!item) {
 		return;
 	}
 
-  if (item->getTopParent() != player || item->getParent() == player) {
-    return;
-  }
+	if (item->getTopParent() != player) {
+		SPDLOG_ERROR("[Game::playerApplyImbuement] - An error occurred while player with name {} try to apply imbuement", player->getName());
+		player->sendImbuementResult("An error has occurred, reopen the imbuement window. If the problem persists, contact your administrator.");
+		return;
+	}
 
-	g_events->eventPlayerOnApplyImbuement(player, imbuement, item, slot, protectionCharm);
+	player->onApplyImbuement(imbuement, item, slot, protectionCharm);
 }
 
-void Game::playerClearingImbuement(uint32_t playerid, uint8_t slot)
+void Game::playerClearImbuement(uint32_t playerid, uint8_t slot)
 {
 	Player* player = getPlayerByID(playerid);
-	if (!player) {
+	if (!player)
+	{
 		return;
 	}
 
-	if (!player->inImbuing()) {
+	if (!player->hasImbuingItem ())
+	{
 		return;
 	}
 
-	Item* item = player->imbuing;
-	if(item == nullptr) {
+	Item* item = player->imbuingItem;
+	if (!item)
+	{
 		return;
 	}
 
-	g_events->eventPlayerClearImbuement(player, item, slot);
-	return;
+	player->onClearImbuement(item, slot);
 }
 
-void Game::playerCloseImbuingWindow(uint32_t playerid)
+void Game::playerCloseImbuementWindow(uint32_t playerid)
 {
 	Player* player = getPlayerByID(playerid);
-	if (!player) {
+	if (!player)
+	{
 		return;
 	}
 
-	player->inImbuing(nullptr);
-	return;
+	player->setImbuingItem(nullptr);
 }
 
 void Game::playerTurn(uint32_t playerId, Direction dir)
@@ -5194,11 +5183,15 @@ bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 	}
 	creature->setDirection(dir);
 
-	//send to client
+	// Send to client
 	SpectatorHashSet spectators;
 	map.getSpectators(spectators, creature->getPosition(), true, true);
 	for (Creature* spectator : spectators) {
-		spectator->getPlayer()->sendCreatureTurn(creature);
+		Player* tmpPlayer = spectator->getPlayer();
+		if(!tmpPlayer) {
+			continue;
+		}
+		tmpPlayer->sendCreatureTurn(creature);
 	}
 	return true;
 }
@@ -5302,20 +5295,25 @@ void Game::checkCreatures(size_t index)
 	g_scheduler.addEvent(createSchedulerTask(EVENT_CHECK_CREATURE_INTERVAL, std::bind(&Game::checkCreatures, this, (index + 1) % EVENT_CREATURECOUNT)));
 
 	auto& checkCreatureList = checkCreatureLists[index];
-	auto it = checkCreatureList.begin(), end = checkCreatureList.end();
-	while (it != end) {
-		Creature* creature = *it;
-		if (creature->creatureCheck) {
+	size_t it = 0, end = checkCreatureList.size();
+	while (it < end) {
+		Creature* creature = checkCreatureList[it];
+		if (creature && creature->creatureCheck) {
 			if (creature->getHealth() > 0) {
 				creature->onThink(EVENT_CREATURE_THINK_INTERVAL);
 				creature->onAttacking(EVENT_CREATURE_THINK_INTERVAL);
 				creature->executeConditions(EVENT_CREATURE_THINK_INTERVAL);
+			} else {
+				creature->onDeath();
 			}
 			++it;
 		} else {
 			creature->inCheckCreaturesVector = false;
-			it = checkCreatureList.erase(it);
 			ReleaseCreature(creature);
+
+			checkCreatureList[it] = checkCreatureList.back();
+			checkCreatureList.pop_back();
+			--end;
 		}
 	}
 
@@ -5556,7 +5554,7 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 
 			if (splash) {
 				internalAddItem(target->getTile(), splash, INDEX_WHEREEVER, FLAG_NOLIMIT);
-				startDecay(splash);
+				splash->startDecaying();
 			}
 
 			break;
@@ -5672,12 +5670,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				if(!tmpPlayer)
 				{
 					continue;
-				}
-
-				if (damage.primary.type == COMBAT_HEALING && target && target->getMonster()) {
-					if (target != attacker) {
-						return false;
-					}
 				}
 				
 				if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
@@ -6417,21 +6409,40 @@ void Game::addDistanceEffect(const SpectatorHashSet& spectators, const Position&
 
 void Game::startDecay(Item* item)
 {
-	if (!item || !item->canDecay()) {
+	if (!item) {
+		return;
+	}
+
+	int32_t duration = item->getIntAttr(ITEM_ATTRIBUTE_DURATION);
+	if (duration <= 0) {
+		internalDecayItem(item);
 		return;
 	}
 
 	ItemDecayState_t decayState = item->getDecaying();
-	if (decayState == DECAYING_TRUE) {
+	if (decayState == DECAYING_STOPPING || (!item->canDecay() && decayState == DECAYING_TRUE)) {
+		stopDecay(item);
 		return;
 	}
 
-	if (item->getDuration() > 0) {
-		item->incrementReferenceCounter();
-		item->setDecaying(DECAYING_TRUE);
-		toDecayItems.push_front(item);
-	} else {
-		internalDecayItem(item);
+	if (!item->canDecay() || decayState == DECAYING_TRUE) {
+		return;
+	}
+
+	if (duration > 0) {
+		g_decay.startDecay(item, duration);
+	}
+}
+
+void Game::stopDecay(Item* item)
+{
+	if (item->hasAttribute(ITEM_ATTRIBUTE_DECAYSTATE)) {
+		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION_TIMESTAMP)) {
+			g_decay.stopDecay(item, item->getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP));
+			item->removeAttribute(ITEM_ATTRIBUTE_DURATION_TIMESTAMP);
+		} else {
+			item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
+		}
 	}
 }
 
@@ -6474,128 +6485,36 @@ void Game::internalDecayItem(Item* item)
 				player->sendSkills();
 			}
 		}
-		Item* newItem = transformItem(item, it.decayTo);
-		startDecay(newItem);
+		transformItem(item, it.decayTo);
 	} else {
 		ReturnValue ret = internalRemoveItem(item);
 		if (ret != RETURNVALUE_NOERROR) {
-			SPDLOG_DEBUG("Game::internalDecayItem] internalDecayItem failed, "
+			SPDLOG_DEBUG("Game::internalDecayItem] - internalDecayItem failed, "
                          "error code: {}, item id: {}",
                          static_cast<uint32_t>(ret), item->getID());
 		}
 	}
 }
 
-void Game::checkDecay()
-{
-	g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL, std::bind(&Game::checkDecay, this)));
-
-	size_t bucket = (lastBucket + 1) % EVENT_DECAY_BUCKETS;
-
-	auto it = decayItems[bucket].begin(), end = decayItems[bucket].end();
-	while (it != end) {
-		Item* item = *it;
-		if (!item->canDecay()) {
-			item->setDecaying(DECAYING_FALSE);
-			ReleaseItem(item);
-			it = decayItems[bucket].erase(it);
-			continue;
-		}
-
-		int32_t duration = item->getDuration();
-		int32_t decreaseTime = std::min<int32_t>(EVENT_DECAYINTERVAL * EVENT_DECAY_BUCKETS, duration);
-
-		duration -= decreaseTime;
-		item->decreaseDuration(decreaseTime);
-
-		if (duration <= 0) {
-			it = decayItems[bucket].erase(it);
-			internalDecayItem(item);
-			ReleaseItem(item);
-		} else if (duration < EVENT_DECAYINTERVAL * EVENT_DECAY_BUCKETS) {
-			it = decayItems[bucket].erase(it);
-			size_t newBucket = (bucket + ((duration + EVENT_DECAYINTERVAL / 2) / 1000)) % EVENT_DECAY_BUCKETS;
-			if (newBucket == bucket) {
-				internalDecayItem(item);
-				ReleaseItem(item);
-			} else {
-				decayItems[newBucket].push_back(item);
-			}
-		} else {
-			++it;
-		}
-	}
-
-	lastBucket = bucket;
-	cleanup();
-}
-
 void Game::checkImbuements()
 {
-	g_scheduler.addEvent(createSchedulerTask(EVENT_IMBUEMENTINTERVAL, std::bind(&Game::checkImbuements, this)));
+	g_scheduler.addEvent(createSchedulerTask(EVENT_IMBUEMENT_INTERVAL, std::bind(&Game::checkImbuements, this)));
 
-	size_t bucket = (lastImbuedBucket + 1) % EVENT_IMBUEMENT_BUCKETS;
+	std::vector<uint32_t> toErase;
 
-	auto it = imbuedItems[bucket].begin(), end = imbuedItems[bucket].end();
-	while (it != end) {
-		Item* item = *it;
-
-		if (item->isRemoved() || !item->getParent()->getCreature()) {
-			ReleaseItem(item);
-			it = imbuedItems[bucket].erase(it);
+	for (const auto& [key, value] : playersActiveImbuements) {
+		Player* player = getPlayerByID(key);
+		if (!player) {
+			toErase.push_back(key);
 			continue;
 		}
 
-		Player* player = item->getParent()->getCreature()->getPlayer();
-		const ItemType& itemType = Item::items[item->getID()];
-		if (!player->hasCondition(CONDITION_INFIGHT) && !itemType.isContainer()) {
-			it++;
-			continue;
-		}
-
-		bool needUpdate = false;
-		uint8_t slots = Item::items[item->getID()].imbuingSlots;
-		for (uint8_t slot = 0; slot < slots; slot++) {
-			uint32_t info = item->getImbuement(slot);
-			int32_t duration = info >> 8;
-			int32_t newDuration = std::max(0, (duration - (EVENT_IMBUEMENTINTERVAL * EVENT_IMBUEMENT_BUCKETS) / 690));
-			if (duration > 0 && newDuration == 0) {
-				needUpdate = true;
-			}
-		}
-
-		int32_t index = player ? player->getThingIndex(item) : -1;
-		needUpdate = needUpdate && index != -1;
-
-		if (needUpdate) {
-			player->postRemoveNotification(item, player, index);
-			ReleaseItem(item);
-			it = imbuedItems[bucket].erase(it);
-			for (uint8_t slot = 0; slot < slots; slot++) {
-				item->setImbuement(slot, 0);
-			}
-		}
-
-		for (uint8_t slot = 0; slot < slots; slot++) {
-			uint32_t info = item->getImbuement(slot);
-			int32_t duration = info >> 8;
-			int32_t decreaseTime = std::min<int32_t>((EVENT_IMBUEMENTINTERVAL * EVENT_IMBUEMENT_BUCKETS) / 690, duration);
-			duration -= decreaseTime;
-
-			int32_t id = info & 0xFF;
-			int64_t newinfo = (duration << 8) | id;
-			item->setImbuement(slot, newinfo);
-		}
-
-		if (needUpdate) {
-			player->postAddNotification(item, player, index);
-		} else {
-			it++;
-		}
+		player->updateInventoryImbuement();
 	}
 
-	lastImbuedBucket = bucket;
-	cleanup();
+	for (uint32_t playerId : toErase) {
+		setPlayerActiveImbuements(playerId, 0);
+	}
 }
 
 void Game::checkLight()
@@ -6713,22 +6632,6 @@ void Game::cleanup()
 		item->decrementReferenceCounter();
 	}
 	ToReleaseItems.clear();
-
-	for (Item* item : toDecayItems) {
-		const uint32_t dur = item->getDuration();
-		if (dur >= EVENT_DECAYINTERVAL * EVENT_DECAY_BUCKETS) {
-			decayItems[lastBucket].push_back(item);
-		} else {
-			decayItems[(lastBucket + 1 + dur / 1000) % EVENT_DECAY_BUCKETS].push_back(item);
-		}
-	}
-	toDecayItems.clear();
-
-	for (Item* item : toImbuedItems) {
-		imbuedItems[lastImbuedBucket].push_back(item);
-	}
-	toImbuedItems.clear();
-
 }
 
 void Game::ReleaseCreature(Creature* creature)
@@ -6801,17 +6704,32 @@ void Game::updateCreatureType(Creature* creature)
 		if (master) {
 			masterPlayer = master->getPlayer();
 			if (masterPlayer) {
-				creatureType = CREATURETYPE_SUMMONPLAYER;
+				creatureType = CREATURETYPE_SUMMON_OTHERS;
 			}
 		}
 	}
 
-	//send to clients
+	if (creature->isHealthHidden()) {
+		creatureType = CREATURETYPE_HIDDEN;
+	}
+
+	// Send to clients
 	SpectatorHashSet spectators;
 	map.getSpectators(spectators, creature->getPosition(), true, true);
 
-	for (Creature* spectator : spectators) {
-		spectator->getPlayer()->sendCreatureType(creature, creatureType);
+	if (creatureType == CREATURETYPE_SUMMON_OTHERS) {
+		for (Creature* spectator : spectators) {
+			Player* player = spectator->getPlayer();
+			if (masterPlayer == player) {
+				player->sendCreatureType(creature, CREATURETYPE_SUMMON_PLAYER);
+			} else {
+				player->sendCreatureType(creature, creatureType);
+			}
+		}
+	} else {
+		for (Creature* spectator : spectators) {
+			spectator->getPlayer()->sendCreatureType(creature, creatureType);
+		}
 	}
 }
 
@@ -7374,26 +7292,21 @@ void Game::playerNpcGreet(uint32_t playerId, uint32_t npcId)
 		return;
 	}
 
-	Creature* creature = getCreatureByID(npcId);
-	if (!creature) {
+	Npc* npc = getNpcByID(npcId);
+	if (!npc) {
 		return;
 	}
 
-	Npc* npc = creature->getNpc();
-	if(npc) {
-		SpectatorHashSet spectators;
-		spectators.insert(npc);
-		map.getSpectators(spectators, player->getPosition(), true, true);
-		internalCreatureSay(player, TALKTYPE_SAY, "Hi", false, &spectators);
-		spectators.clear();
-		spectators.insert(npc);
-		if (npc->getSpeechBubble() == SPEECHBUBBLE_TRADE) {
-			internalCreatureSay(player, TALKTYPE_PRIVATE_PN, "Trade", false, &spectators);
-		} else {
-			internalCreatureSay(player, TALKTYPE_PRIVATE_PN, "Sail", false, &spectators);
-        }
-
-		return;
+	SpectatorHashSet spectators;
+	spectators.insert(npc);
+	map.getSpectators(spectators, player->getPosition(), true, true);
+	internalCreatureSay(player, TALKTYPE_SAY, "hi", false, &spectators);
+	spectators.clear();
+	spectators.insert(npc);
+	if (npc->getSpeechBubble() == SPEECHBUBBLE_TRADE) {
+		internalCreatureSay(player, TALKTYPE_PRIVATE_PN, "trade", false, &spectators);
+	} else {
+		internalCreatureSay(player, TALKTYPE_PRIVATE_PN, "sail", false, &spectators);
 	}
 }
 

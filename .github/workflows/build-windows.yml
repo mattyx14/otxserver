@@ -25,7 +25,7 @@ jobs:
       - uses: lukka/get-cmake@latest
 
       - name: Windows - remove C:/mysql*
-        run: rm -r -fo C:/mysql-5.7.21-winx64
+        run: rm -r -fo C:/mysql*
         if: contains( matrix.os, 'windows')
 
       - name: Restore artifacts, or setup vcpkg (do not install any package)
@@ -36,7 +36,7 @@ jobs:
           appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
           vcpkgTriplet: ${{ matrix.triplet }}
           additionalCachedPaths: ${{ github.workspace }}/build/vcpkg_installed
-          vcpkgGitCommitId: b9cd2a7958dec657fb869ec487d2a98cf39a8d48
+          vcpkgGitCommitId: 653912591af709c162fba2d4000a6b3362c8d3c9
 
       - name: Run CMake to install the dependencies specified in the vcpkg.json manifest, generate project file and build the project
         uses: lukka/run-cmake@v3

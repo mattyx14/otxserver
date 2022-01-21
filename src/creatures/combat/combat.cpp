@@ -355,7 +355,7 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 				if (target->isSummon() && target->getMaster()->getPlayer() && target->getZone() == ZONE_NOPVP) {
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
 				}
-	
+
 			} else if (attacker->getMonster()) {
 				const Creature* targetMaster = target->getMaster();
 
@@ -502,8 +502,9 @@ void Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 	assert(data);
 	CombatDamage damage = *data;
 	if (caster && caster->getPlayer()) {
-		Item* tool = caster->getPlayer()->getWeapon();
-		g_events->eventPlayerOnCombat(caster->getPlayer(), target, tool, damage);
+		Item *item = caster->getPlayer()->getWeapon();
+		damage = applyImbuementElementalDamage(item, damage);
+		g_events->eventPlayerOnCombat(caster->getPlayer(), target, item, damage);
 	}
 
 	if (g_game.combatBlockHit(damage, caster, target, params.blockedByShield, params.blockedByArmor, params.itemId != 0)) {
@@ -521,6 +522,34 @@ void Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 		CombatConditionFunc(caster, target, params, &damage);
 		CombatDispelFunc(caster, target, params, nullptr);
 	}
+}
+
+CombatDamage Combat::applyImbuementElementalDamage(Item* item, CombatDamage damage) {
+	if (!item) {
+		return damage;
+	}
+
+	for (uint8_t slotid = 0; slotid < item->getImbuementSlot(); slotid++) {
+		ImbuementInfo imbuementInfo;
+		if (!item->getImbuementInfo(slotid, &imbuementInfo)) {
+			continue;
+		}
+
+		if (imbuementInfo.imbuement->combatType == COMBAT_NONE) {
+			continue;
+		}
+
+		float damagePercent = imbuementInfo.imbuement->elementDamage / 100.0;
+
+		damage.secondary.type = imbuementInfo.imbuement->combatType;
+		damage.secondary.value = damage.primary.value * (damagePercent);
+		damage.primary.value = damage.primary.value * (1 - damagePercent);
+
+		/* If damage imbuement is set, we can return without checking other slots */
+		break;
+	}
+
+	return damage;
 }
 
 void Combat::CombatManaFunc(Creature* caster, Creature* target, const CombatParams& params, CombatDamage* data)
@@ -667,7 +696,7 @@ void Combat::combatTileEffects(const SpectatorHashSet& spectators, Creature* cas
 
 		ReturnValue ret = g_game.internalAddItem(tile, item);
 		if (ret == RETURNVALUE_NOERROR) {
-			g_game.startDecay(item);
+			item->startDecaying();
 		} else {
 			delete item;
 		}
@@ -876,7 +905,7 @@ void Combat::doCombatHealth(Creature* caster, Creature* target, CombatDamage& da
 		// Critical damage
 		uint16_t chance = caster->getPlayer()->getSkillLevel(SKILL_CRITICAL_HIT_CHANCE);
 		// Charm low blow rune)
-		if (target && target->getMonster()) {
+		if (target && target->getMonster() && damage.primary.type != COMBAT_HEALING) {
 			uint16_t playerCharmRaceid = caster->getPlayer()->parseRacebyCharm(CHARM_LOW, false, 0);
 			if (playerCharmRaceid != 0) {
 				MonsterType* mType = g_monsters.getMonsterType(target->getName());
@@ -889,7 +918,7 @@ void Combat::doCombatHealth(Creature* caster, Creature* target, CombatDamage& da
 				}
 			}
 		}
-		if (damage.primary.type != COMBAT_HEALING && chance != 0 && uniform_random(1, 100) <= chance) {
+		if (chance != 0 && uniform_random(1, 100) <= chance) {
 			damage.critical = true;
 			damage.primary.value += (damage.primary.value * caster->getPlayer()->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE ))/100;
 			damage.secondary.value += (damage.secondary.value * caster->getPlayer()->getSkillLevel(SKILL_CRITICAL_HIT_DAMAGE ))/100;

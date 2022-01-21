@@ -544,7 +544,7 @@ class LuaScriptInterface
 
 		// Game
 		static int luaGameCreateMonsterType(lua_State* L);
-		
+
 		static int luaGamegetEventSLoot(lua_State* L);
 		static int luaGamegetEventSSkill(lua_State* L);
 		static int luaGamegetEventSExp(lua_State* L);
@@ -763,6 +763,9 @@ class LuaScriptInterface
 
 		static int luaItemHasProperty(lua_State* L);
 
+		static int luaItemGetImbuement(lua_State* L);
+		static int luaItemGetImbuementSlot(lua_State* L);
+
 		// Container
 		static int luaContainerCreate(lua_State* L);
 
@@ -817,8 +820,6 @@ class LuaScriptInterface
 
 		static int luaCreatureGetMaster(lua_State* L);
 		static int luaCreatureSetMaster(lua_State* L);
-
-		static int luaCreatureReload(lua_State* L);
 
 		static int luaCreatureGetLight(lua_State* L);
 		static int luaCreatureSetLight(lua_State* L);
@@ -888,7 +889,7 @@ class LuaScriptInterface
 
 		static int luaPlayerGetAccountType(lua_State* L);
 		static int luaPlayerSetAccountType(lua_State* L);
-		
+
 		static int luaPlayeraddBestiaryKill(lua_State* L);
 		static int luaPlayercharmExpansion(lua_State* L);
 		static int luaPlayergetCharmMonsterType(lua_State* L);
@@ -897,6 +898,7 @@ class LuaScriptInterface
 		static int luaPlayerSetCapacity(lua_State* L);
 
 		static int luaPlayerSetTraining(lua_State* L);
+		static int luaPlayerGetIsTraining(lua_State* L);
 
 		static int luaPlayerGetKills(lua_State* L);
 		static int luaPlayerSetKills(lua_State* L);
@@ -987,7 +989,7 @@ class LuaScriptInterface
 		static int luaPlayerGetStashCounter(lua_State* L);
 		static int luaPlayerOpenStash(lua_State* L);
 		static int luaPlayerSetSpecialContainersAvailable(lua_State* L);
-		
+
 		static int luaPlayerGetStamina(lua_State* L);
 		static int luaPlayerSetStamina(lua_State* L);
 
@@ -1069,7 +1071,8 @@ class LuaScriptInterface
 		static int luaPlayerForgetSpell(lua_State* L);
 		static int luaPlayerHasLearnedSpell(lua_State* L);
 
-		static int luaPlayerSendImbuementPanel(lua_State* L);
+		static int luaPlayerOpenImbuementWindow(lua_State* L);
+		static int luaPlayerCloseImbuementWindow(lua_State* L);
 
 		static int luaPlayerSendTutorial(lua_State* L);
 		static int luaPlayerAddMapMark(lua_State* L);
@@ -1336,7 +1339,7 @@ class LuaScriptInterface
 		static int luaItemTypeGetAttack(lua_State* L);
 		static int luaItemTypeGetDefense(lua_State* L);
 		static int luaItemTypeGetExtraDefense(lua_State* L);
-		static int luaItemTypeGetImbuingSlots(lua_State* L);
+		static int luaItemTypeGetImbuementSlot(lua_State* L);
 		static int luaItemTypeGetArmor(lua_State* L);
 		static int luaItemTypeGetWeaponType(lua_State* L);
 
@@ -1418,7 +1421,7 @@ class LuaScriptInterface
 		static int luaMonsterTypeIsHealthHidden(lua_State* L);
 		static int luaMonsterTypeIsBlockable(lua_State* L);
 
-		static int luaMonsterTypeIsPet(lua_State* L);
+		static int luaMonsterTypeFamiliar(lua_State* L);
 		static int luaMonsterTypeIsRewardBoss(lua_State* L);
 		static int luaMonsterTypeRespawnType(lua_State* L);
         static int luaMonsterTypeCanSpawn(lua_State* L);

@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_ITEM_H_009A319FB13D477D9EEFFBBD9BB83562
-#define FS_ITEM_H_009A319FB13D477D9EEFFBBD9BB83562
+#ifndef SRC_ITEMS_ITEM_H_
+#define SRC_ITEMS_ITEM_H_
 
 #include <utility>
 #include <vector>
@@ -44,6 +44,7 @@ class Mailbox;
 class Door;
 class MagicField;
 class BedItem;
+class Imbuement;
 
 enum ITEMPROPERTY {
 	CONST_PROP_BLOCKSOLID = 0,
@@ -69,6 +70,7 @@ enum ItemDecayState_t : uint8_t {
 	DECAYING_FALSE = 0,
 	DECAYING_TRUE,
 	DECAYING_PENDING,
+	DECAYING_STOPPING,
 };
 
 enum AttrTypes_t {
@@ -106,11 +108,11 @@ enum AttrTypes_t {
 	ATTR_HITCHANCE = 32,
 	ATTR_SHOOTRANGE = 33,
 	ATTR_SPECIAL = 34,
-	ATTR_IMBUINGSLOTS = 35,
+	ATTR_IMBUEMENT_SLOT = 35,
 	ATTR_OPENCONTAINER = 36,
 	ATTR_CUSTOM_ATTRIBUTES = 37,
-
-	ATTR_QUICKLOOTCONTAINER = 38
+	ATTR_QUICKLOOTCONTAINER = 38,
+	ATTR_IMBUEMENT_TYPE = 39
 };
 
 enum Attr_ReadValue {
@@ -119,7 +121,10 @@ enum Attr_ReadValue {
 	ATTR_READ_END,
 };
 
-#define IMBUEMENT_SLOT 500
+struct ImbuementInfo {
+	Imbuement *imbuement;
+	int32_t duration = 0;
+};
 
 class ItemAttributes
 {
@@ -206,17 +211,25 @@ class ItemAttributes
 		}
 
 		void setDuration(int32_t time) {
-			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
+			setIntAttr(ITEM_ATTRIBUTE_DURATION, std::max<int32_t>(0, time));
 		}
-		void decreaseDuration(int32_t time) {
-			increaseIntAttr(ITEM_ATTRIBUTE_DURATION, -time);
+		void setDurationTimestamp(int64_t timestamp) {
+			setIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP, timestamp);
 		}
-		uint32_t getDuration() const {
-			return getIntAttr(ITEM_ATTRIBUTE_DURATION);
+		int32_t getDuration() const {
+			ItemDecayState_t decayState = getDecaying();
+			if (decayState == DECAYING_TRUE || decayState == DECAYING_STOPPING) {
+				return std::max<int32_t>(0, static_cast<int32_t>(getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP) - OTSYS_TIME()));
+			} else {
+				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
+			}
 		}
 
 		void setDecaying(ItemDecayState_t decayState) {
 			setIntAttr(ITEM_ATTRIBUTE_DECAYSTATE, decayState);
+			if (decayState == DECAYING_FALSE) {
+				removeAttribute(ITEM_ATTRIBUTE_DURATION_TIMESTAMP);
+			}
 		}
 		ItemDecayState_t getDecaying() const {
 			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
@@ -237,8 +250,37 @@ class ItemAttributes
 				value = v;
 			}
 
-			template<typename T>
-			const T& get();
+			const std::string& getString() const {
+				if (value.type() == typeid(std::string)) {
+					return boost::get<std::string>(value);
+				}
+
+				return emptyString;
+			}
+
+			const int64_t& getInt() const {
+				if (value.type() == typeid(int64_t)) {
+					return boost::get<int64_t>(value);
+				}
+
+				return emptyInt;
+			}
+
+			const double& getDouble() const {
+				if (value.type() == typeid(double)) {
+					return boost::get<double>(value);
+				}
+
+				return emptyDouble;
+			}
+
+			const bool& getBool() const {
+				if (value.type() == typeid(bool)) {
+					return boost::get<bool>(value);
+				}
+
+				return emptyBool;
+			}
 
 			struct PushLuaVisitor : public boost::static_visitor<> {
 				lua_State* L;
@@ -348,7 +390,7 @@ class ItemAttributes
 
 	private:
 		bool hasAttribute(itemAttrTypes type) const {
-			return (type & attributeBits) != 0;
+			return (type & static_cast<itemAttrTypes>(attributeBits)) != 0;
 		}
 		void removeAttribute(itemAttrTypes type);
 
@@ -359,8 +401,7 @@ class ItemAttributes
 
 		typedef std::unordered_map<std::string, CustomAttribute> CustomAttributeMap;
 
-		struct Attribute
-		{
+		struct Attribute {
 			union {
 				int64_t integer;
 				std::string* string;
@@ -368,7 +409,10 @@ class ItemAttributes
 			} value;
 			itemAttrTypes type;
 
-			explicit Attribute(itemAttrTypes initType) : type(initType) {
+			// Singleton - ensures we don't accidentally copy it
+			Attribute& operator=(const Attribute& other) = delete;
+
+			explicit Attribute(itemAttrTypes type) : type(type) {
 				memset(&value, 0, sizeof(value));
 			}
 			Attribute(const Attribute& i) {
@@ -383,22 +427,11 @@ class ItemAttributes
 					memset(&value, 0, sizeof(value));
 				}
 			}
-			Attribute(Attribute&& attribute) : value(attribute.value), type(attribute.type) {
+			Attribute(Attribute&& attribute) noexcept : value(attribute.value), type(attribute.type) {
 				memset(&attribute.value, 0, sizeof(value));
 				attribute.type = ITEM_ATTRIBUTE_NONE;
 			}
-			~Attribute() {
-				if (ItemAttributes::isStrAttrType(type)) {
-					delete value.string;
-				} else if (ItemAttributes::isCustomAttrType(type)) {
-					delete value.custom;
-				}
-			}
-			Attribute& operator=(Attribute other) {
-				Attribute::swap(*this, other);
-				return *this;
-			}
-			Attribute& operator=(Attribute&& other) {
+			Attribute& operator=(Attribute&& other) noexcept {
 				if (this != &other) {
 					if (ItemAttributes::isStrAttrType(type)) {
 						delete value.string;
@@ -414,15 +447,17 @@ class ItemAttributes
 				}
 				return *this;
 			}
-
-			static void swap(Attribute& first, Attribute& second) {
-				std::swap(first.value, second.value);
-				std::swap(first.type, second.type);
+			~Attribute() {
+				if (ItemAttributes::isStrAttrType(type)) {
+					delete value.string;
+				} else if (ItemAttributes::isCustomAttrType(type)) {
+					delete value.custom;
+				}
 			}
 		};
 
-		std::forward_list<Attribute> attributes;
-		uint32_t attributeBits = 0;
+		std::vector<Attribute> attributes;
+		std::underlying_type<itemAttrTypes>::type attributeBits = 0;
 
 		const std::string& getStrAttr(itemAttrTypes type) const;
 		void setStrAttr(itemAttrTypes type, const std::string& value);
@@ -444,12 +479,12 @@ class ItemAttributes
 
 		template<typename R>
 		void setCustomAttribute(int64_t key, R value) {
-			std::string tmp = boost::lexical_cast<std::string>(key);
+			std::string tmp = std::to_string(key);
 			setCustomAttribute(tmp, value);
 		}
 
 		void setCustomAttribute(int64_t key, CustomAttribute& value) {
-			std::string tmp = boost::lexical_cast<std::string>(key);
+			std::string tmp = std::to_string(key);
 			setCustomAttribute(tmp, value);
 		}
 
@@ -475,7 +510,7 @@ class ItemAttributes
 		}
 
 		const CustomAttribute* getCustomAttribute(int64_t key) {
-			std::string tmp = boost::lexical_cast<std::string>(key);
+			std::string tmp = std::to_string(key);
 			return getCustomAttribute(tmp);
 		}
 
@@ -490,7 +525,7 @@ class ItemAttributes
 		}
 
 		bool removeCustomAttribute(int64_t key) {
-			std::string tmp = boost::lexical_cast<std::string>(key);
+			std::string tmp = std::to_string(key);
 			return removeCustomAttribute(tmp);
 		}
 
@@ -505,28 +540,48 @@ class ItemAttributes
 			return false;
 		}
 
-		const static uint32_t intAttributeTypes = ITEM_ATTRIBUTE_ACTIONID | ITEM_ATTRIBUTE_UNIQUEID | ITEM_ATTRIBUTE_DATE
-			| ITEM_ATTRIBUTE_WEIGHT | ITEM_ATTRIBUTE_ATTACK | ITEM_ATTRIBUTE_DEFENSE | ITEM_ATTRIBUTE_EXTRADEFENSE
-			| ITEM_ATTRIBUTE_ARMOR | ITEM_ATTRIBUTE_HITCHANCE | ITEM_ATTRIBUTE_SHOOTRANGE | ITEM_ATTRIBUTE_OWNER
-			| ITEM_ATTRIBUTE_DURATION | ITEM_ATTRIBUTE_DECAYSTATE | ITEM_ATTRIBUTE_CORPSEOWNER | ITEM_ATTRIBUTE_CHARGES
-			| ITEM_ATTRIBUTE_FLUIDTYPE | ITEM_ATTRIBUTE_DOORID | ITEM_ATTRIBUTE_IMBUINGSLOTS
-			| ITEM_ATTRIBUTE_OPENCONTAINER | ITEM_ATTRIBUTE_QUICKLOOTCONTAINER;
-
-		const static uint32_t stringAttributeTypes = ITEM_ATTRIBUTE_DESCRIPTION | ITEM_ATTRIBUTE_TEXT | ITEM_ATTRIBUTE_WRITER
-			| ITEM_ATTRIBUTE_NAME | ITEM_ATTRIBUTE_ARTICLE | ITEM_ATTRIBUTE_PLURALNAME | ITEM_ATTRIBUTE_SPECIAL;
-
 	public:
 		static bool isIntAttrType(itemAttrTypes type) {
-			return (type & intAttributeTypes) == type;
+			std::underlying_type<itemAttrTypes>::type checkTypes = 0;
+			checkTypes |= ITEM_ATTRIBUTE_ACTIONID;
+			checkTypes |= ITEM_ATTRIBUTE_UNIQUEID;
+			checkTypes |= ITEM_ATTRIBUTE_DATE;
+			checkTypes |= ITEM_ATTRIBUTE_WEIGHT;
+			checkTypes |= ITEM_ATTRIBUTE_ATTACK;
+			checkTypes |= ITEM_ATTRIBUTE_DEFENSE;
+			checkTypes |= ITEM_ATTRIBUTE_EXTRADEFENSE;
+			checkTypes |= ITEM_ATTRIBUTE_ARMOR;
+			checkTypes |= ITEM_ATTRIBUTE_HITCHANCE;
+			checkTypes |= ITEM_ATTRIBUTE_SHOOTRANGE;
+			checkTypes |= ITEM_ATTRIBUTE_OWNER;
+			checkTypes |= ITEM_ATTRIBUTE_DURATION;
+			checkTypes |= ITEM_ATTRIBUTE_DECAYSTATE;
+			checkTypes |= ITEM_ATTRIBUTE_CORPSEOWNER;
+			checkTypes |= ITEM_ATTRIBUTE_CHARGES;
+			checkTypes |= ITEM_ATTRIBUTE_FLUIDTYPE;
+			checkTypes |= ITEM_ATTRIBUTE_DOORID;
+			checkTypes |= ITEM_ATTRIBUTE_IMBUEMENT_SLOT;
+			checkTypes |= ITEM_ATTRIBUTE_OPENCONTAINER;
+			checkTypes |= ITEM_ATTRIBUTE_QUICKLOOTCONTAINER;
+			checkTypes |= ITEM_ATTRIBUTE_DURATION_TIMESTAMP;
+			return (type & static_cast<itemAttrTypes>(checkTypes)) != 0;
 		}
 		static bool isStrAttrType(itemAttrTypes type) {
-			return (type & stringAttributeTypes) == type;
+			std::underlying_type<itemAttrTypes>::type checkTypes = 0;
+			checkTypes |= ITEM_ATTRIBUTE_DESCRIPTION;
+			checkTypes |= ITEM_ATTRIBUTE_TEXT;
+			checkTypes |= ITEM_ATTRIBUTE_WRITER;
+			checkTypes |= ITEM_ATTRIBUTE_NAME;
+			checkTypes |= ITEM_ATTRIBUTE_ARTICLE;
+			checkTypes |= ITEM_ATTRIBUTE_PLURALNAME;
+			checkTypes |= ITEM_ATTRIBUTE_SPECIAL;
+			return (type & static_cast<itemAttrTypes>(checkTypes)) != 0;
 		}
 		inline static bool isCustomAttrType(itemAttrTypes type) {
-			return (type & 0x80000000) != 0;
+			return (type & ITEM_ATTRIBUTE_CUSTOM) != 0;
 		}
 
-		const std::forward_list<Attribute>& getList() const {
+		const std::vector<Attribute>& getList() const {
 			return attributes;
 		}
 
@@ -607,16 +662,16 @@ class Item : virtual public Thing
 			getAttributes()->setStrAttr(type, value);
 		}
 
-		int32_t getIntAttr(itemAttrTypes type) const {
+		int64_t getIntAttr(itemAttrTypes type) const {
 			if (!attributes) {
 				return 0;
 			}
 			return attributes->getIntAttr(type);
 		}
-		void setIntAttr(itemAttrTypes type, int32_t value) {
+		void setIntAttr(itemAttrTypes type, int64_t value) {
 			getAttributes()->setIntAttr(type, value);
 		}
-		void increaseIntAttr(itemAttrTypes type, int32_t value) {
+		void increaseIntAttr(itemAttrTypes type, int64_t value) {
 			getAttributes()->increaseIntAttr(type, value);
 		}
 
@@ -792,20 +847,25 @@ class Item : virtual public Thing
 		}
 
 		void setDuration(int32_t time) {
-			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
+			setIntAttr(ITEM_ATTRIBUTE_DURATION, std::max<int32_t>(0, time));
 		}
-		void decreaseDuration(int32_t time) {
-			increaseIntAttr(ITEM_ATTRIBUTE_DURATION, -time);
+		void setDurationTimestamp(int64_t timestamp) {
+			setIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP, timestamp);
 		}
-		uint32_t getDuration() const {
-			if (!attributes) {
-				return 0;
+		int32_t getDuration() const {
+			ItemDecayState_t decayState = getDecaying();
+			if (decayState == DECAYING_TRUE || decayState == DECAYING_STOPPING) {
+				return std::max<int32_t>(0, static_cast<int32_t>(getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP) - OTSYS_TIME()));
+			} else {
+				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 			}
-			return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 		}
 
 		void setDecaying(ItemDecayState_t decayState) {
 			setIntAttr(ITEM_ATTRIBUTE_DECAYSTATE, decayState);
+			if (decayState == DECAYING_FALSE) {
+				removeAttribute(ITEM_ATTRIBUTE_DURATION_TIMESTAMP);
+			}
 		}
 		ItemDecayState_t getDecaying() const {
 			if (!attributes) {
@@ -814,8 +874,10 @@ class Item : virtual public Thing
 			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
 		}
 
-    static std::vector<std::pair<std::string, std::string>> getDescriptions(const ItemType& it,
-																						const Item* item = nullptr);
+		static std::string parseImbuementDescription(const Item* item);
+
+		static std::vector<std::pair<std::string, std::string>> getDescriptions(const ItemType& it,
+                                    const Item* item = nullptr);
 		static std::string getDescription(const ItemType& it, int32_t lookDistance, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
 		static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
 		static std::string getWeightDescription(const ItemType& it, uint32_t weight, uint32_t count = 1);
@@ -893,11 +955,11 @@ class Item : virtual public Thing
 			}
 			return items[id].extraDefense;
 		}
-		int32_t getImbuingSlots() const {
-			if (hasAttribute(ITEM_ATTRIBUTE_IMBUINGSLOTS)) {
-				return getIntAttr(ITEM_ATTRIBUTE_IMBUINGSLOTS);
+		int32_t getImbuementSlot() const {
+			if (hasAttribute(ITEM_ATTRIBUTE_IMBUEMENT_SLOT)) {
+				return getIntAttr(ITEM_ATTRIBUTE_IMBUEMENT_SLOT);
 			}
-			return items[id].imbuingSlots;
+			return items[id].imbuementSlot;
 		}
 		int32_t getSlotPosition() const {
 			return items[id].slotPosition;
@@ -995,9 +1057,9 @@ class Item : virtual public Thing
 			count = n;
 		}
 
-		static uint32_t countByType(const Item* i, int32_t subType) {
-			if (subType == -1 || subType == i->getSubType()) {
-				return i->getItemCount();
+		static uint32_t countByType(const Item* item, int32_t subType) {
+			if (subType == -1 || subType == item->getSubType()) {
+				return item->getItemCount();
 			}
 
 			return 0;
@@ -1031,6 +1093,7 @@ class Item : virtual public Thing
 		virtual void onTradeEvent(TradeEvents_t, Player*) {}
 
 		virtual void startDecaying();
+		virtual void stopDecaying();
 
 		void setLoadedFromMap(bool value) {
 			loadedFromMap = value;
@@ -1039,7 +1102,7 @@ class Item : virtual public Thing
 			return !loadedFromMap && canRemove() && isPickupable() && !hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) && !hasAttribute(ITEM_ATTRIBUTE_ACTIONID);
 		}
 
-		bool hasMarketAttributes() const;
+		bool hasMarketAttributes();
 
 		std::unique_ptr<ItemAttributes>& getAttributes() {
 			if (!attributes) {
@@ -1071,8 +1134,34 @@ class Item : virtual public Thing
 			return !parent || parent->isRemoved();
 		}
 
-		uint32_t getImbuement(uint8_t slot);
-		void setImbuement(uint8_t slot, int64_t info);
+		/**
+		 * @brief Get the Imbuement Info object
+		 *
+		 * @param slot
+		 * @param imbuementInfo (Imbuement *imbuement, uint32_t duration = 0)
+		 * @return true = duration is > 0 (info >> 8)
+		 * @return false
+		 */
+		bool getImbuementInfo(uint8_t slot, ImbuementInfo *imbuementInfo);
+		void setImbuement(uint8_t slot, uint16_t id, int32_t duration);
+		bool hasImbuementType(ImbuementTypes_t imbuementType, uint16_t imbuementTier) {
+			auto it = items[id].imbuementTypes.find(imbuementType);
+			if (it != items[id].imbuementTypes.end()) {
+				return (it->second >= imbuementTier);
+			}
+			return false;
+		}
+		bool hasImbuementCategoryId(uint16_t categoryId);
+		bool hasImbuements() {
+			for (uint8_t slotid = 0; slotid < getImbuementSlot(); slotid++) {
+				ImbuementInfo imbuementInfo;
+				if (getImbuementInfo(slotid, &imbuementInfo)) {
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 	protected:
 		std::string getWeightDescription(uint32_t weight) const;
@@ -1089,10 +1178,11 @@ class Item : virtual public Thing
 		bool isLootTrackeable = false;
 
 		//Don't add variables here, use the ItemAttribute class.
+		friend class Decay;
 };
 
 using ItemList = std::list<Item*>;
 using ItemDeque = std::deque<Item*>;
 using StashContainerList = std::vector<std::pair<Item*, uint32_t>>;
 
-#endif
+#endif  // SRC_ITEMS_ITEM_H_

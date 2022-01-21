@@ -573,10 +573,15 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
     for (ItemMap::const_reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
       const std::pair<Item*, int32_t>& pair = it->second;
       Item* item = pair.first;
+      if (!item) {
+        continue;
+      }
+
       int32_t pid = pair.second;
 
       if (pid >= CONST_SLOT_FIRST && pid <= CONST_SLOT_LAST) {
         player->internalAddThing(pid, item);
+        item->startDecaying();
       } else {
         ItemMap::const_iterator it2 = itemMap.find(pid);
         if (it2 == itemMap.end()) {
@@ -586,6 +591,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
         Container* container = it2->second.first->getContainer();
         if (container) {
           container->internalAddThing(item);
+          item->startDecaying();
         }
       }
 
@@ -638,6 +644,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
         DepotChest* depotChest = player->getDepotChest(pid, true);
         if (depotChest) {
           depotChest->internalAddThing(item);
+          item->startDecaying();
         }
       } else {
         ItemMap::const_iterator it2 = itemMap.find(pid);
@@ -648,6 +655,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
         Container* container = it2->second.first->getContainer();
         if (container) {
           container->internalAddThing(item);
+          item->startDecaying();
         }
       }
     }
@@ -716,6 +724,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
       if (pid >= 0 && pid < 100) {
         player->getInbox()->internalAddThing(item);
+        item->startDecaying();
       } else {
         ItemMap::const_iterator it2 = itemMap.find(pid);
 
@@ -726,6 +735,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
         Container* container = it2->second.first->getContainer();
         if (container) {
           container->internalAddThing(item);
+          item->startDecaying();
         }
       }
     }
@@ -751,6 +761,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
   loadPlayerPreyData(player);
   player->updateBaseSpeed();
   player->updateInventoryWeight();
+  player->updateInventoryImbuement(true);
   player->updateItemsLight(true);
   return true;
 }

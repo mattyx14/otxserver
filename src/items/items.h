@@ -89,6 +89,27 @@ enum ItemTypes_t {
 	ITEM_TYPE_LAST,
 };
 
+const std::unordered_map<std::string, ImbuementTypes_t> ImbuementsTypeMap = {
+	{"elemental damage", IMBUEMENT_ELEMENTAL_DAMAGE},
+	{"life leech", IMBUEMENT_LIFE_LEECH},
+	{"mana leech", IMBUEMENT_MANA_LEECH},
+	{"critical hit", IMBUEMENT_CRITICAL_HIT},
+	{"elemental protection death", IMBUEMENT_ELEMENTAL_PROTECTION_DEATH},
+	{"elemental protection earth", IMBUEMENT_ELEMENTAL_PROTECTION_EARTH},
+	{"elemental protection fire", IMBUEMENT_ELEMENTAL_PROTECTION_FIRE},
+	{"elemental protection ice", IMBUEMENT_ELEMENTAL_PROTECTION_ICE},
+	{"elemental protection energy", IMBUEMENT_ELEMENTAL_PROTECTION_ENERGY},
+	{"elemental protection holy", IMBUEMENT_ELEMENTAL_PROTECTION_HOLY},
+	{"increase speed", IMBUEMENT_INCREASE_SPEED},
+	{"skillboost axe", IMBUEMENT_SKILLBOOST_AXE},
+	{"skillboost sword", IMBUEMENT_SKILLBOOST_SWORD},
+	{"skillboost club", IMBUEMENT_SKILLBOOST_CLUB},
+	{"skillboost shielding", IMBUEMENT_SKILLBOOST_SHIELDING},
+	{"skillboost distance", IMBUEMENT_SKILLBOOST_DISTANCE},
+	{"skillboost magic level", IMBUEMENT_SKILLBOOST_MAGIC_LEVEL},
+	{"increase capacity", IMBUEMENT_INCREASE_CAPACITY}
+};
+
 struct Abilities {
 	public:
 		uint32_t conditionImmunities = 0;
@@ -252,6 +273,10 @@ class ItemType
 			return str;
 		}
 
+		void setImbuementType(ImbuementTypes_t imbuementType, uint16_t slotMaxTier) {
+			imbuementTypes[imbuementType] = std::min<uint16_t>(IMBUEMENT_MAX_TIER, slotMaxTier);
+		}
+
 		itemgroup_t group = ITEM_GROUP_NONE;
 		ItemTypes_t type = ITEM_TYPE_NONE;
 		uint16_t id = 0;
@@ -283,7 +308,7 @@ class ItemType
 		int32_t defense = 0;
 		int32_t extraDefense = 0;
 		int32_t armor = 0;
-		int32_t imbuingSlots = 0;
+		int32_t imbuementSlot = 0;
 		int32_t rotateTo = 0;
 		int32_t runeMagLevel = 0;
 		int32_t runeLevel = 0;
@@ -310,6 +335,7 @@ class ItemType
 		ShootType_t shootType = CONST_ANI_NONE;
 		RaceType_t corpseType = RACE_NONE;
 		FluidTypes_t fluidSource = FLUID_NONE;
+		std::map<ImbuementTypes_t, uint16_t> imbuementTypes;
 
 		uint8_t floorChange = 0;
 		uint8_t alwaysOnTopOrder = 0;

@@ -515,8 +515,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.rotateTo = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "wrapcontainer") {
 			it.wrapContainer = valueAttribute.as_bool();
-		} else if (tmpStrValue == "imbuingslots") {
-			it.imbuingSlots = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "wrapableto" || tmpStrValue == "unwrapableto") {
 			it.wrapableTo = pugi::cast<int32_t>(valueAttribute.value());
 			it.wrapable = true;
@@ -1005,9 +1003,35 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.blockSolid = valueAttribute.as_bool();
 		} else if (tmpStrValue == "allowdistread") {
 			it.allowDistRead = booleanString(valueAttribute.as_string());
+		} else if (tmpStrValue == "imbuementslot") {
+			it.imbuementSlot = pugi::cast<int32_t>(valueAttribute.value());
+
+			for (auto subAttributeNode : attributeNode.children()) {
+				pugi::xml_attribute subKeyAttribute = subAttributeNode.attribute("key");
+				if (!subKeyAttribute) {
+					continue;
+				}
+				pugi::xml_attribute subValueAttribute = subAttributeNode.attribute("value");
+				if (!subValueAttribute) {
+					continue;
+				}
+
+				auto itemMap = ImbuementsTypeMap.find(asLowerCaseString(subKeyAttribute.as_string()));
+				if (itemMap != ImbuementsTypeMap.end()) {
+					ImbuementTypes_t imbuementType = getImbuementType(asLowerCaseString(subKeyAttribute.as_string()));
+					if (imbuementType != IMBUEMENT_NONE) {
+						it.setImbuementType(imbuementType, pugi::cast<uint16_t>(subValueAttribute.value()));
+					}
+				}
+				else
+				{
+					SPDLOG_WARN("[Items::parseItemNode] - Unknown imbuement type: {}",
+								valueAttribute.as_string());
+				}
+			}
+
 		} else {
-			SPDLOG_WARN("[Items::parseItemNode] - Unknown key value: {}",
-                        keyAttribute.as_string());
+			SPDLOG_WARN("[Items::parseItemNode] Unknown key value: {}", keyAttribute.as_string());
 		}
 	}
 
