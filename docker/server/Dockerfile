@@ -32,12 +32,12 @@ RUN cmake -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake .. 
 # Stage 3: load data and execute
 FROM build
 
-COPY --from=build /srv/build/bin/otbr /bin/otbr
-COPY LICENSE *.sql key.pem /otbr/
-COPY data /otbr/data
-COPY config.lua.dist /otbr/config.lua
+COPY --from=build /srv/build/bin/otxsr /bin/otxsr
+COPY LICENSE *.sql key.pem /otxsr/
+COPY data /otxsr/data
+COPY config.lua.dist /otxsr/config.lua
 
-WORKDIR /otbr
+WORKDIR /otxsr
 
 RUN sed -i '/mysqlHost = .*$/c\mysqlHost = "mysql"' config.lua \
   && sed -i '/mysqlUser = .*$/c\mysqlUser = "otserver"' config.lua \
@@ -45,7 +45,7 @@ RUN sed -i '/mysqlHost = .*$/c\mysqlHost = "mysql"' config.lua \
   && sed -i '/mysqlDatabase = .*$/c\mysqlDatabase = "otserver"' config.lua \
   && unzip -o data/world/world.zip -d data/world/
 
-VOLUME /otbr
+VOLUME /otxsr
 
-ENTRYPOINT ["/bin/otbr"]
+ENTRYPOINT ["/bin/otxsr"]
 
