@@ -32,7 +32,6 @@ monster.race = "blood"
 monster.corpse = 36470
 monster.speed = 300
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -60,8 +59,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -94,7 +92,6 @@ monster.loot = {
 	{name = "green crystal shard", chance = 2130},
 	{id = 26189, chance = 740}-- ring of red plasma
 }
-
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -500},

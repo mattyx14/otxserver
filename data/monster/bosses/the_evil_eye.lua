@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 6037
 monster.speed = 240
 monster.manaCost = 0
-monster.maxSummons = 5
 
 monster.changeTarget = {
 	interval = 5000,
@@ -47,8 +46,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -56,9 +54,12 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "demon skeleton", chance = 13, interval = 1000, max = 5},
-	{name = "ghost", chance = 12, interval = 1000, max = 4}
+monster.summon = {
+	maxSummons = 5,
+	summons = {
+		{name = "demon skeleton", chance = 13, interval = 1000, count = 5},
+		{name = "ghost", chance = 12, interval = 1000, count = 3}
+	}
 }
 
 monster.voices = {

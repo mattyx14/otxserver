@@ -1268,7 +1268,7 @@ void Player::onApplyImbuement(Imbuement *imbuement, Item *item, uint8_t slot, bo
 		const ItemType& itemType = Item::items[key];
 
 		withdrawItemMessage << "Using " << mathItemCount << "x "<< itemType.name <<" from your supply stash. ";
-		withdrawItem(key, mathItemCount);
+		withdrawItem(itemType.clientId, mathItemCount);
 	}
 
 	sendTextMessage(MESSAGE_STATUS, withdrawItemMessage.str());

@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 20574
 monster.speed = 240
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 5000,
@@ -47,8 +46,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -56,10 +54,13 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Ghoul", chance = 20, interval = 1000},
-	{name = "Ghost", chance = 17, interval = 1000},
-	{name = "Mummy", chance = 15, interval = 1000}
+monster.summon = {
+	maxSummons = 6,
+	summons = {
+		{name = "Ghoul", chance = 20, interval = 1000, count = 2},
+		{name = "Ghost", chance = 17, interval = 1000, count = 2},
+		{name = "Mummy", chance = 15, interval = 1000, count = 2}
+	}
 }
 
 monster.voices = {

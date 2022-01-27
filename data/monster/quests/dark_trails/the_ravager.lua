@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 6031
 monster.speed = 340
 monster.manaCost = 0
-monster.maxSummons = 16
 
 monster.changeTarget = {
 	interval = 5000,
@@ -50,8 +49,11 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
+}
+
+monster.events = {
+	"TheRavagerDeath"
 }
 
 monster.light = {
@@ -59,10 +61,13 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Elder Mummy", chance = 9, interval = 2000, max = 4},
-	{name = "Canopic Jar", chance = 9, interval = 2000, max = 4},
-	{name = "Greater Canopic Jar", chance = 9, interval = 2000, max = 8}
+monster.summon = {
+	maxSummons = 16,
+	summons = {
+		{name = "Elder Mummy", chance = 9, interval = 2000, count = 4},
+		{name = "Canopic Jar", chance = 9, interval = 2000, count = 4},
+		{name = "Greater Canopic Jar", chance = 9, interval = 2000, count = 8}
+	}
 }
 
 monster.voices = {

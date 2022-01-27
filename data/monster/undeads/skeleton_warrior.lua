@@ -32,7 +32,6 @@ monster.race = "undead"
 monster.corpse = 5972
 monster.speed = 154
 monster.manaCost = 350
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -60,8 +59,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {

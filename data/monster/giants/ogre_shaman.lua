@@ -32,7 +32,6 @@ monster.race = "blood"
 monster.corpse = 24795
 monster.speed = 210
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 4000,
@@ -63,8 +62,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -72,9 +70,12 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Dworc Fleshhunter", chance = 30, interval = 1000, max = 1},
-	{name = "Terror Bird", chance = 30, interval = 1000, max = 1}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "Dworc Fleshhunter", chance = 30, interval = 1000, count = 1},
+		{name = "Terror Bird", chance = 30, interval = 1000, count = 1}
+	}
 }
 
 monster.voices = {

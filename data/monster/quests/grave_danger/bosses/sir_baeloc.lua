@@ -19,7 +19,6 @@ monster.race = "venom"
 monster.corpse = 36434
 monster.speed = 250
 monster.manaCost = 0
-monster.maxSummons = 6
 
 monster.changeTarget = {
 	interval = 4000,
@@ -47,8 +46,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -56,8 +54,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Retainer of Baeloc", chance = 20, interval = 2000}
+monster.summon = {
+	maxSummons = 6,
+	summons = {
+		{name = "Retainer of Baeloc", chance = 20, interval = 2000, count = 6}
+	}
 }
 
 monster.voices = {

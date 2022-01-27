@@ -37,7 +37,6 @@ monster.race = "venom"
 monster.corpse = 5992
 monster.speed = 150
 monster.manaCost = 0
-monster.maxSummons = 6
 
 monster.changeTarget = {
 	interval = 4000,
@@ -68,8 +67,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -77,8 +75,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Skeleton", chance = 20, interval = 2000, max = 6}
+monster.summon = {
+	maxSummons = 6,
+	summons = {
+		{name = "Skeleton", chance = 20, interval = 2000, count = 6}
+	}
 }
 
 monster.voices = {

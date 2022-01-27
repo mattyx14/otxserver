@@ -19,7 +19,6 @@ monster.race = "venom"
 monster.corpse = 36434
 monster.speed = 250
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -47,8 +46,11 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
+}
+
+monster.events = {
+	"Sir_Baeloc_Sir_NictrosCharge"
 }
 
 monster.light = {

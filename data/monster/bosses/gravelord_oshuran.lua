@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 6028
 monster.speed = 220
 monster.manaCost = 0
-monster.maxSummons = 4
 
 monster.changeTarget = {
 	interval = 4000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Bonebeast", chance = 10, interval = 2000}
+monster.summon = {
+	maxSummons = 4,
+	summons = {
+		{name = "Bonebeast", chance = 10, interval = 2000, count = 3}
+	}
 }
 
 monster.voices = {

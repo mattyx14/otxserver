@@ -4,7 +4,7 @@ function Creature:onChangeOutfit(outfit)
 		local familiarLookType = self:getFamiliarLooktype()
 		if familiarLookType ~= 0 then
 			for _, summon in pairs(self:getSummons()) do
-				if summon:getType():isPet() then
+				if summon:getType():familiar() then
 						if summon:getOutfit().lookType ~= familiarLookType then
 							summon:setOutfit({lookType = familiarLookType})
 						end
@@ -14,14 +14,6 @@ function Creature:onChangeOutfit(outfit)
 		end
 	end
 	return true
-end
-
-function Creature:onAreaCombat(tile, isAggressive)
-	return RETURNVALUE_NOERROR
-end
-
-function Creature:onTargetCombat(target)
-	return RETURNVALUE_NOERROR
 end
 
 function Creature:onHear(speaker, words, type)
@@ -120,14 +112,7 @@ function Creature:onTargetCombat(target)
 		end
 	end
 
-	if self:isPlayer() then
-		if target and target:getName() == staminaBonus.target then
-			local playerId = self:getId()
-			if not staminaBonus.eventsTrainer[playerId] then
-				staminaBonus.eventsTrainer[playerId] = addEvent(addStamina, staminaBonus.period, playerId)
-			end
-		end
-	end
+	self:addEventStamina(target)
 	return true
 end
 

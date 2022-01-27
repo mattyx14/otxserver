@@ -1115,6 +1115,14 @@ if Modules == nil then
 			subType = -1
 		end
 
+		local item = player:getItemById(itemid, true)
+		if item then
+			local imbuement = item:getImbuement()
+			if imbuement and imbuement.duration then
+				return player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "It is not possible to sell an imbued item.")
+			end
+		end
+
 		if player:removeItem(itemid, amount, subType, ignoreEquipped) then
 			local msg = self.npcHandler:getMessage(MESSAGE_SOLD)
 			msg = self.npcHandler:parseMessage(msg, parseInfo)

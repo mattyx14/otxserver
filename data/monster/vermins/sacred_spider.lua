@@ -32,7 +32,6 @@ monster.race = "venom"
 monster.corpse = 6060
 monster.speed = 244
 monster.manaCost = 485
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -62,8 +61,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {

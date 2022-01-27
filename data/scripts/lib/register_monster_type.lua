@@ -84,11 +84,6 @@ registerMonsterType.health = function(mtype, mask)
 		mtype:health(mask.health)
 	end
 end
-registerMonsterType.maxSummons = function(mtype, mask)
-	if mask.maxSummons then
-		mtype:maxSummons(mask.maxSummons)
-	end
-end
 registerMonsterType.race = function(mtype, mask)
 	if mask.race then
 		mtype:race(mask.race)
@@ -164,8 +159,8 @@ registerMonsterType.flags = function(mtype, mask)
 		if mask.flags.rewardBoss then
 			mtype:isRewardBoss(mask.flags.rewardBoss)
 		end
-		if mask.flags.pet then
-			mtype:isPet(mask.flags.pet)
+		if mask.flags.familiar then
+			mtype:familiar(mask.flags.familiar)
 		end
 		if mask.flags.respawntype or mask.flags.respawnType then
 			Spdlog.warn(string.format("[registerMonsterType.flags] - Monster: %s. Deprecated flag 'respawnType', use instead table 'respawnType = { period = RespawnPeriod_t, underground = boolean}'",
@@ -199,8 +194,9 @@ registerMonsterType.flags = function(mtype, mask)
 end
 registerMonsterType.light = function(mtype, mask)
 	if mask.light then
+		local color = 0
 		if mask.light.color then
-			local color = mask.light.color
+			color = mask.light.color
 		end
 		if mask.light.level then
 			mtype:light(color, mask.light.level)
@@ -259,10 +255,15 @@ registerMonsterType.voices = function(mtype, mask)
 		end
 	end
 end
-registerMonsterType.summons = function(mtype, mask)
-	if type(mask.summons) == "table" then
-		for k, v in pairs(mask.summons) do
-			mtype:addSummon(v.name, v.interval, v.chance)
+registerMonsterType.summon = function(mtype, mask)
+	if mask.summon then
+		if mask.summon.maxSummons then
+			mtype:maxSummons(mask.summon.maxSummons)
+		end
+		if type(mask.summon.summons) == "table" then
+			for k, v in pairs(mask.summon.summons) do
+				mtype:addSummon(v.name, v.interval, v.chance, v.count)
+			end
 		end
 	end
 end

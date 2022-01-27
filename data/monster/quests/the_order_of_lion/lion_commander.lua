@@ -13,21 +13,26 @@ monster.outfit = {
 	lookMount = 0
 }
 
+monster.events = {
+	"lionCommanderDeath"
+}
+
 monster.health = 15200
 monster.maxHealth = 15200
 monster.race = "blood"
 monster.corpse = 0
 monster.speed = 250
-monster.summonCost = 0
-monster.maxSummons = 5
 
 monster.faction = FACTION_LION
 monster.enemyFactions = {FACTION_LIONUSURPERS}
 
-monster.summons = {
-	{name = "lion archer", chance = 0, interval = 600000},
-	{name = "lion knight", chance = 0, interval = 600000},
-	{name = "lion warlock", chance = 0, interval = 600000}
+monster.summon = {
+	maxSummons = 6,
+	summons = {
+		{name = "lion archer", chance = 0, interval = 600000, count = 2},
+		{name = "lion knight", chance = 0, interval = 600000, count = 2},
+		{name = "lion warlock", chance = 0, interval = 600000, count = 2}
+	}
 }
 
 monster.changeTarget = {
@@ -56,8 +61,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {

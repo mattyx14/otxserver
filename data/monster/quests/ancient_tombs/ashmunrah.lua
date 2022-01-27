@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 6031
 monster.speed = 430
 monster.manaCost = 0
-monster.maxSummons = 4
 
 monster.changeTarget = {
 	interval = 5000,
@@ -48,8 +47,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -57,9 +55,12 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Ancient Scarab", chance = 100, interval = 1000, max = 2},
-	{name = "Green Djinn", chance = 100, interval = 1000, max = 2}
+monster.summon = {
+	maxSummons = 4,
+	summons = {
+		{name = "Ancient Scarab", chance = 100, interval = 1000, count = 2},
+		{name = "Green Djinn", chance = 100, interval = 1000, count = 2}
+	}
 }
 
 monster.voices = {

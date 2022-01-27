@@ -19,7 +19,6 @@ monster.race = "venom"
 monster.corpse = 26217
 monster.speed = 450
 monster.manaCost = 0
-monster.maxSummons = 8
 
 monster.changeTarget = {
 	interval = 2000,
@@ -47,8 +46,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -56,9 +54,12 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Charger", chance = 15, interval = 1000, max = 3},
-	{name = "Spark of Destruction", chance = 15, interval = 1000, max = 5}
+monster.summon = {
+	maxSummons = 8,
+	summons = {
+		{name = "Charger", chance = 15, interval = 1000, count = 3},
+		{name = "Spark of Destruction", chance = 15, interval = 1000, count = 5}
+	}
 }
 
 monster.voices = {

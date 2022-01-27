@@ -33,7 +33,6 @@ monster.race = "blood"
 monster.corpse = 20467
 monster.speed = 200
 monster.manaCost = 0
-monster.maxSummons = 1
 
 monster.changeTarget = {
 	interval = 4000,
@@ -64,8 +63,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -73,8 +71,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Chicken", chance = 10, interval = 2000}
+monster.summon = {
+	maxSummons = 1,
+	summons = {
+		{name = "Chicken", chance = 10, interval = 2000, count = 1}
+	}
 }
 
 monster.voices = {

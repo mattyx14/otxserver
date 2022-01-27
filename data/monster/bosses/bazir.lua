@@ -19,7 +19,6 @@ monster.race = "fire"
 monster.corpse = 2916
 monster.speed = 530
 monster.manaCost = 0
-monster.maxSummons = 1
 
 monster.changeTarget = {
 	interval = 2000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "bazir", chance = 15, interval = 1000, max = 1}
+monster.summon = {
+	maxSummons = 1,
+	summons = {
+		{name = "bazir", chance = 15, interval = 1000, count = 1}
+	}
 }
 
 monster.voices = {

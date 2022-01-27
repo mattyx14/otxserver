@@ -18,7 +18,6 @@ monster.maxHealth = monster.health
 monster.race = "venom"
 monster.corpse = 36443
 monster.speed = 425
-monster.maxSummons = 6
 
 monster.changeTarget = {
 	interval = 4000,
@@ -41,8 +40,7 @@ monster.flags = {
 	healthHidden = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.loot = {

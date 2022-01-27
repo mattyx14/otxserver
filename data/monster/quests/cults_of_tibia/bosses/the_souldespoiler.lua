@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 26220
 monster.speed = 250
 monster.manaCost = 0
-monster.maxSummons = 5
 
 monster.changeTarget = {
 	interval = 6000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Freed Soul", chance = 5, interval = 5000}
+monster.summon = {
+	maxSummons = 5,
+	summons = {
+		{name = "Freed Soul", chance = 5, interval = 5000, count = 5}
+	}
 }
 
 monster.voices = {

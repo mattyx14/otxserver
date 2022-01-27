@@ -18,16 +18,17 @@ monster.maxHealth = 35000
 monster.race = "blood"
 monster.corpse = 38808
 monster.speed = 260
-monster.summonCost = 0
-monster.maxSummons = 3
 
 monster.faction = FACTION_LIONUSURPERS
 monster.enemyFactions = {FACTION_LION, FACTION_PLAYER}
 
-monster.summons = {
-	{name = "preceptor lazare", chance = 10, interval = 8000},
-	{name = "grand commander soeren", chance = 10, interval = 8000},
-	{name = "grand chaplain gaunder", chance = 10, interval = 8000}
+monster.summon = {
+	maxSummons = 3,
+	summons = {
+		{name = "preceptor lazare", chance = 10, interval = 8000, count = 1},
+		{name = "grand commander soeren", chance = 10, interval = 8000, count = 1},
+		{name = "grand chaplain gaunder", chance = 10, interval = 8000, count = 1}
+	}
 }
 
 monster.changeTarget = {
@@ -56,8 +57,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {

@@ -32,7 +32,6 @@ monster.race = "venom"
 monster.corpse = 17428
 monster.speed = 340
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 4000,
@@ -63,8 +62,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -72,8 +70,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "humorless fungus", chance = 10, interval = 2000, max = 2}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "humorless fungus", chance = 10, interval = 2000, count = 2}
+	}
 }
 
 monster.voices = {

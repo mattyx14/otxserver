@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 34651
 monster.speed = 250
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -63,7 +61,6 @@ monster.voices = {
 	interval = 5000,
 	chance = 10,
 }
-
 
 monster.loot = {
 	{name = "platinum coin", minCount = 1, maxCount = 10, chance = 100000},

@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 8964
 monster.speed = 150
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -69,7 +67,7 @@ monster.loot = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -250},
-	{name ="aggresivelavawave", interval = 2000, chance = 30, minDamage = 0, maxDamage = -500, target = false},
+	{name ="aggressivelavawave", interval = 2000, chance = 30, minDamage = 0, maxDamage = -500, target = false},
 	{name ="firefield", interval = 2000, chance = 25, range = 7, radius = 3, shootEffect = CONST_ANI_FIRE, target = true}
 }
 

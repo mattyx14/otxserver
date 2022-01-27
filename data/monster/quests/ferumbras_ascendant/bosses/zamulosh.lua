@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 25151
 monster.speed = 320
 monster.manaCost = 0
-monster.maxSummons = 1
 
 monster.changeTarget = {
 	interval = 5000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Zamulosh2", chance = 100, interval = 1000, max = 1}
+monster.summon = {
+	maxSummons = 1,
+	summons = {
+		{name = "Zamulosh2", chance = 100, interval = 1000, count = 1}
+	}
 }
 
 monster.voices = {

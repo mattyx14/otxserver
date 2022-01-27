@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 30868
 monster.speed = 0
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -93,6 +91,10 @@ monster.elements = {
 	{type = COMBAT_ICEDAMAGE, percent = 100},
 	{type = COMBAT_HOLYDAMAGE , percent = 100},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
+}
+
+monster.heals = {
+	{type = COMBAT_FIREDAMAGE, percent = 100},
 }
 
 monster.immunities = {

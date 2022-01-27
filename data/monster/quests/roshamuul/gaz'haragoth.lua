@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 22562
 monster.speed = 500
 monster.manaCost = 0
-monster.maxSummons = 3
 
 monster.changeTarget = {
 	interval = 10000,
@@ -50,8 +49,11 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
+}
+
+monster.events = {
+	"GazHaragothHeal"
 }
 
 monster.light = {
@@ -59,8 +61,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Minion of Gaz'haragoth", chance = 33, interval = 4000}
+monster.summon = {
+	maxSummons = 3,
+	summons = {
+		{name = "Minion of Gaz'haragoth", chance = 33, interval = 4000, count = 3}
+	}
 }
 
 monster.voices = {

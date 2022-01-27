@@ -13,7 +13,6 @@ monster.race = "undead"
 monster.corpse = 0
 monster.speed = 0
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 2000,
@@ -41,8 +40,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -50,8 +48,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Demon", chance = 7, interval = 2000, max = 3}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "Demon", chance = 7, interval = 2000, count = 2}
+	}
 }
 
 monster.voices = {

@@ -18,8 +18,6 @@ monster.maxHealth = 7500
 monster.race = "blood"
 monster.corpse = 0
 monster.speed = 330
-monster.summonCost = 0
-monster.maxSummons = 0
 
 monster.faction = FACTION_LIONUSURPERS
 monster.enemyFactions = {FACTION_LION, FACTION_PLAYER}
@@ -50,8 +48,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {

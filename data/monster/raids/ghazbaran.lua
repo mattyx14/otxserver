@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 6068
 monster.speed = 400
 monster.manaCost = 0
-monster.maxSummons = 4
 
 monster.changeTarget = {
 	interval = 10000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Deathslicer", chance = 20, interval = 4000}
+monster.summon = {
+	maxSummons = 4,
+	summons = {
+		{name = "Deathslicer", chance = 20, interval = 4000, count = 4}
+	}
 }
 
 monster.voices = {

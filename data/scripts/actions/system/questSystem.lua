@@ -6,10 +6,6 @@ local questsExperience = {
 	-- 
 }
 
-local questLog = {
-	-- 
-}
-
 local questSystem1 = Action()
 
 function questSystem1.onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -85,10 +81,6 @@ function questSystem1.onUse(player, item, fromPosition, target, toPosition, isHo
 
 	if questsExperience[storage] then
 		player:addExperience(questsExperience[storage], true)
-	end
-
-	if questLog[storage] then
-		player:setStorageValue(questLog[storage], 1)
 	end
 
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You have found ' .. result .. '.')

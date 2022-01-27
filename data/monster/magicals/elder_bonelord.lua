@@ -34,7 +34,6 @@ monster.race = "blood"
 monster.corpse = 6037
 monster.speed = 170
 monster.manaCost = 0
-monster.maxSummons = 6
 
 monster.changeTarget = {
 	interval = 4000,
@@ -65,8 +64,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -74,9 +72,12 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Gazer", chance = 10, interval = 2000},
-	{name = "Crypt Shambler", chance = 15, interval = 2000}
+monster.summon = {
+	maxSummons = 6,
+	summons = {
+		{name = "Gazer", chance = 10, interval = 2000, count = 6},
+		{name = "Crypt Shambler", chance = 15, interval = 2000, count = 6}
+	}
 }
 
 monster.voices = {

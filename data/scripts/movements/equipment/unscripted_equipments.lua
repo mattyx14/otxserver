@@ -5224,6 +5224,16 @@ if not equipmentsTable then
 			slot = "necklace"
 		}, -- werewolf amulet
 		{
+            itemid = 24717,
+            type = "equip",
+            slot = "necklace"
+		}, -- enchanted werewolf amulet
+		{
+            itemid = 24717,
+            type = "deequip",
+            slot = "necklace"
+		}, -- enchanted werewolf amulet
+		{
 			itemid = 24637,
 			type = "equip",
 			slot = "feet",

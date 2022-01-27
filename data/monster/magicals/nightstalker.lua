@@ -32,7 +32,6 @@ monster.race = "undead"
 monster.corpse = 9915
 monster.speed = 260
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 0,
@@ -63,8 +62,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -111,7 +109,7 @@ monster.defenses = {
 	{name ="invisible", interval = 2000, chance = 10, effect = CONST_ME_YELLOW_RINGS},
 	{name ="outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "nightstalker"},
 	{name ="outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "werewolf"},
-	{name ="outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "the count"},
+	{name ="outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "the count ="},
 	{name ="outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "grim reaper"},
 	{name ="outfit", interval = 5000, chance = 10, target = false, duration = 4000, outfitMonster = "tarantula"},
 	{name ="outfit", interval = 5000, chance = 1, target = false, duration = 4000, outfitMonster = "ferumbras"}

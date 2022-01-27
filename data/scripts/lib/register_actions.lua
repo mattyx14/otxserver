@@ -350,10 +350,7 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
     if (target ~= nil) and target:isItem() and (target:getId() == 22469) then
         --Lower Roshamuul
         if math.random(100) > 50 then
-            player:sendTextMessage(
-			MESSAGE_EVENT_ADVANCE,
-			"Crushing the stone produces some fine gravel."
-			)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Crushing the stone produces some fine gravel.")
             target:transform(22467)
             target:decay()
         else

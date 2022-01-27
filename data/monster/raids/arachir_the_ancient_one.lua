@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 8937
 monster.speed = 286
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 5000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,9 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Lich", chance = 100, interval = 9000},
-	{name = "Lich", chance = 100, interval = 9000}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "Lich", chance = 100, interval = 9000, count = 2},
+	}
 }
 
 monster.voices = {

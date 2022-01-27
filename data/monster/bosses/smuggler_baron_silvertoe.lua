@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 20506
 monster.speed = 200
 monster.manaCost = 0
-monster.maxSummons = 3
 
 monster.changeTarget = {
 	interval = 4000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Wild Warrior", chance = 20, interval = 2000}
+monster.summon = {
+	maxSummons = 3,
+	summons = {
+		{name = "Wild Warrior", chance = 20, interval = 2000, count = 3}
+	}
 }
 
 monster.voices = {

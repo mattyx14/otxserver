@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 27753
 monster.speed = 340
 monster.manaCost = 0
-monster.maxSummons = 8
 
 monster.changeTarget = {
 	interval = 2000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "time waster", chance = 3, interval = 2000, max = 8}
+monster.summon = {
+	maxSummons = 8,
+	summons = {
+		{name = "time waster", chance = 3, interval = 2000, count = 8}
+	}
 }
 
 monster.voices = {

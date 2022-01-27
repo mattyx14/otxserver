@@ -17,7 +17,7 @@ monster.raceId = 1099
 monster.Bestiary = {
 	class = "Aquatic",
 	race = BESTY_RACE_AQUATIC,
-	toKill = 100,
+	toKill = 1000,
 	FirstUnlock = 50,
 	SecondUnlock = 500,
 	CharmsPoints = 25,
@@ -32,7 +32,6 @@ monster.race = "blood"
 monster.corpse = 6064
 monster.speed = 590
 monster.manaCost = 330
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 2000,
@@ -63,8 +62,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {

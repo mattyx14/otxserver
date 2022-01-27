@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 36248
 monster.speed = 190
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -50,8 +49,11 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
+}
+
+monster.events = {
+	"WeakenedDeath"
 }
 
 monster.light = {
@@ -98,7 +100,6 @@ monster.loot = {
 	{name = "gold ingot", chance = 9000},
 	{name = "giant emerald", chance = 6000},
 	{id = 36098, chance = 100000},
-	{name = "rainbow necklace", chance = 6000},
 	{name = "giant sapphire", chance = 6000},
 	{name = "winged backpack", chance = 250},
 	{name = "rainbow necklace", chance = 160},

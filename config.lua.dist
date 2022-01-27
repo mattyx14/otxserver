@@ -2,7 +2,7 @@
 -- NOTE: valid values for worldType are: "pvp", "no-pvp" and "pvp-enforced"
 worldType = "pvp"
 hotkeyAimbotEnabled = true
-protectionLevel = 0
+protectionLevel = 7
 pzLocked = 60 * 1000
 removeChargesFromRunes = true
 removeChargesFromPotions = true
@@ -164,14 +164,13 @@ serverSaveShutdown = true
 sortLootByChance = true
 
 -- Rates
--- NOTE: rateExp, rateSkill and rateMagic is used when 'rateUseStages = false' - or a fallback only
+-- NOTE: rateExp, rateSkill and rateMagic is used as a fallback only
 -- To configure rates see file data/stages.lua
-rateUseStages = true
 rateExp = 1
-rateLoot = 3
-rateSpawn = 1
 rateSkill = 1
+rateLoot = 1
 rateMagic = 1
+rateSpawn = 1
 
 -- Today regeneration condition over an loop every 1 second,
 -- so values which should regenerated less then 1 second

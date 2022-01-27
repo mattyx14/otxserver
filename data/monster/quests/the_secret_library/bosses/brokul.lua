@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 33376
 monster.speed = 210
 monster.manaCost = 0
-monster.maxSummons = 5
 
 monster.changeTarget = {
 	interval = 1000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "neutral deepling warrior", chance = 70, interval = 1000}
+monster.summon = {
+	maxSummons = 5,
+	summons = {
+		{name = "neutral deepling warrior", chance = 70, interval = 1000, count = 5}
+	}
 }
 
 monster.voices = {

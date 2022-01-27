@@ -33,7 +33,6 @@ monster.race = "blood"
 monster.corpse = 11280
 monster.speed = 256
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 4000,
@@ -61,8 +60,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -70,8 +68,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Dragon Hatchling", chance = 20, interval = 2000, max = 2}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "Dragon Hatchling", chance = 20, interval = 2000, count = 2}
+	}
 }
 
 monster.voices = {

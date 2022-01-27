@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 6344
 monster.speed = 400
 monster.manaCost = 0
-monster.maxSummons = 3
 
 monster.changeTarget = {
 	interval = 60000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,9 +57,12 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Phantasm", chance = 7, interval = 2000, max = 3},
-	{name = "Phantasm summon", chance = 7, interval = 2000, max = 3}
+monster.summon = {
+	maxSummons = 3,
+	summons = {
+		{name = "Phantasm", chance = 7, interval = 2000, count = 3},
+		{name = "Phantasm summon", chance = 7, interval = 2000, count = 3}
+	}
 }
 
 monster.voices = {

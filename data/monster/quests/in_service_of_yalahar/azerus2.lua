@@ -20,7 +20,6 @@ monster.race = "blood"
 monster.corpse = 0
 monster.speed = 286
 monster.manaCost = 0
-monster.maxSummons = 10
 
 monster.changeTarget = {
 	interval = 5000,
@@ -51,8 +50,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -60,11 +58,14 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Rift Worm", chance = 30, interval = 3000, max = 8},
-	{name = "Rift Brood", chance = 30, interval = 3000, max = 8},
-	{name = "Rift Scythe", chance = 30, interval = 3000, max = 8},
-	{name = "War Golem", chance = 30, interval = 3000, max = 5}
+monster.summon = {
+	maxSummons = 10,
+	summons = {
+		{name = "Rift Worm", chance = 30, interval = 3000, count = 8},
+		{name = "Rift Brood", chance = 30, interval = 3000, count = 8},
+		{name = "Rift Scythe", chance = 30, interval = 3000, count = 8},
+		{name = "War Golem", chance = 30, interval = 3000, count = 5}
+	}
 }
 
 monster.voices = {

@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 6031
 monster.speed = 340
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 5000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Sandstone Scorpion", chance = 12, interval = 1000}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "Sandstone Scorpion", chance = 12, interval = 1000, count = 2}
+	}
 }
 
 monster.voices = {

@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 6364
 monster.speed = 700
 monster.manaCost = 0
-monster.maxSummons = 3
 
 monster.changeTarget = {
 	interval = 5000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Diabolic Imp", chance = 40, interval = 2000, max = 3}
+monster.summon = {
+	maxSummons = 3,
+	summons = {
+		{name = "Diabolic Imp", chance = 40, interval = 2000, count = 3}
+	}
 }
 
 monster.voices = {

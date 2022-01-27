@@ -19,7 +19,6 @@ monster.race = "venom"
 monster.corpse = 26220
 monster.speed = 450
 monster.manaCost = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 2000,
@@ -50,8 +49,12 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
+}
+
+monster.events = {
+	"HeartBossDeath",
+	"EradicatorTransform"
 }
 
 monster.light = {

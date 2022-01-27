@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 5977
 monster.speed = 240
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 5000,
@@ -49,8 +48,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -58,8 +56,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "giant spider", chance = 13, interval = 1000, max = 2}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "giant spider", chance = 13, interval = 1000, count = 2}
+	}
 }
 
 monster.voices = {

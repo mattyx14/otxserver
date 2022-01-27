@@ -19,7 +19,6 @@ monster.race = "venom"
 monster.corpse = 24279
 monster.speed = 340
 monster.manaCost = 0
-monster.maxSummons = 8
 
 monster.changeTarget = {
 	interval = 2000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -59,11 +57,14 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "walker", chance = 10, interval = 2000},
-	{name = "glooth trasher", chance = 10, interval = 2000},
-	{name = "glooth smasher", chance = 10, interval = 2000},
-	{name = "glooth slasher", chance = 10, interval = 2000}
+monster.summon = {
+	maxSummons = 8,
+	summons = {
+		{name = "walker", chance = 10, interval = 2000, count = 2},
+		{name = "glooth trasher", chance = 10, interval = 2000, count = 2},
+		{name = "glooth smasher", chance = 10, interval = 2000, count = 2},
+		{name = "glooth slasher", chance = 10, interval = 2000, count = 2}
+	}
 }
 
 monster.voices = {

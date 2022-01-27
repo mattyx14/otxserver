@@ -35,6 +35,7 @@ local function graveStoneTeleport(cid, fromPosition, toPosition)
 end
 
 local fluid = Action()
+
 function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local targetType = ItemType(target.itemid)
 	if targetType:isFluidContainer() then

@@ -19,7 +19,6 @@ monster.race = "venom"
 monster.corpse = 36434
 monster.speed = 250
 monster.manaCost = 0
-monster.maxSummons = 6
 
 monster.changeTarget = {
 	interval = 4000,
@@ -47,8 +46,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -56,8 +54,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Soulless Minion", chance = 70, interval = 1800}
+monster.summon = {
+	maxSummons = 6,
+	summons = {
+		{name = "Soulless Minion", chance = 70, interval = 1800, count = 6}
+	}
 }
 
 monster.voices = {

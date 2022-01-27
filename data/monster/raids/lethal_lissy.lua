@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 20438
 monster.speed = 240
 monster.manaCost = 0
-monster.maxSummons = 4
 
 monster.changeTarget = {
 	interval = 60000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Pirate Cutthroat", chance = 50, interval = 2000}
+monster.summon = {
+	maxSummons = 4,
+	summons = {
+		{name = "Pirate Cutthroat", chance = 50, interval = 2000, count = 4}
+	}
 }
 
 monster.voices = {

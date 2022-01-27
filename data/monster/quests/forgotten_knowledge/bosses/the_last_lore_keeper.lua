@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 0
 monster.speed = 450
 monster.manaCost = 0
-monster.maxSummons = 6
 
 monster.changeTarget = {
 	interval = 2000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
-	canWalkOnPoison = true,
-	pet = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "sword of vengeance", chance = 50, interval = 2000}
+monster.summon = {
+	maxSummons = 6,
+	summons = {
+		{name = "sword of vengeance", chance = 50, interval = 2000, count = 6}
+	}
 }
 
 monster.voices = {

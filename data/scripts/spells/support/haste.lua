@@ -15,13 +15,13 @@ function spell.onCastSpell(creature, variant)
 		for i = 1, #summons do
 			local summon = summons[i]
 			local summon_t = summon:getType()
-			if summon_t and summon_t:isPet() then
+			if summon_t and summon_t:familiar() then
 				local deltaSpeed = math.max(creature:getBaseSpeed() - summon:getBaseSpeed(), 0)
-				local PetSpeed = ((summon:getBaseSpeed() + deltaSpeed) * 0.3) - 24
-				local PetHaste = createConditionObject(CONDITION_HASTE)
-				setConditionParam(PetHaste, CONDITION_PARAM_TICKS, 33000)
-				setConditionParam(PetHaste, CONDITION_PARAM_SPEED, PetSpeed)
-				summon:addCondition(PetHaste)
+				local FamiliarSpeed = ((summon:getBaseSpeed() + deltaSpeed) * 0.3) - 24
+				local FamiliarHaste = createConditionObject(CONDITION_HASTE)
+				setConditionParam(FamiliarHaste, CONDITION_PARAM_TICKS, 33000)
+				setConditionParam(FamiliarHaste, CONDITION_PARAM_SPEED, FamiliarSpeed)
+				summon:addCondition(FamiliarHaste)
 			end
 		end
 	end

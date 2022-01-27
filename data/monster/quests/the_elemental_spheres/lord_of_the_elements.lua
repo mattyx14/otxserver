@@ -19,7 +19,6 @@ monster.race = "undead"
 monster.corpse = 9009
 monster.speed = 370
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 5000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,11 +57,14 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Blistering Fire Elemental", chance = 50, interval = 4000},
-	{name = "Jagged Earth Elemental", chance = 50, interval = 4000},
-	{name = "Roaring Water Elemental", chance = 50, interval = 4000},
-	{name = "Overcharged Energy Elemental", chance = 50, interval = 4000}
+monster.summon = {
+	maxSummons = 4,
+	summons = {
+		{name = "Blistering Fire Elemental", chance = 50, interval = 4000, count = 1},
+		{name = "Jagged Earth Elemental", chance = 50, interval = 4000, count = 1},
+		{name = "Roaring Water Elemental", chance = 50, interval = 4000, count = 1},
+		{name = "Overcharged Energy Elemental", chance = 50, interval = 4000, count = 1}
+	}
 }
 
 monster.voices = {

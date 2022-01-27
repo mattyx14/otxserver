@@ -19,7 +19,6 @@ monster.race = "blood"
 monster.corpse = 11316
 monster.speed = 260
 monster.manaCost = 0
-monster.maxSummons = 2
 
 monster.changeTarget = {
 	interval = 2000,
@@ -50,8 +49,7 @@ monster.flags = {
 	isBlockable = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
-	canWalkOnPoison = false,
-	pet = false
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -59,8 +57,11 @@ monster.light = {
 	color = 0
 }
 
-monster.summons = {
-	{name = "Lizard Dragon Priest", chance = 10, interval = 2000, max = 2}
+monster.summon = {
+	maxSummons = 2,
+	summons = {
+		{name = "Lizard Dragon Priest", chance = 10, interval = 2000, count = 2}
+	}
 }
 
 monster.voices = {
