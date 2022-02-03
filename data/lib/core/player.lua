@@ -136,7 +136,7 @@ function Player.transferMoneyTo(self, target, amount)
 	local targetPlayer = Player(target)
 	if targetPlayer then
 		local town = targetPlayer:getTown()
-		if town then
+		if town and town:getId() ~= TOWNS_LIST.DAWNPORT or town:getId() ~= TOWNS_LIST.DAWNPORT_TUTORIAL then -- Blocking transfer to Dawnport
 			targetPlayer:setBankBalance(targetPlayer:getBankBalance() + amount)
 		end
 	else
@@ -149,7 +149,7 @@ function Player.transferMoneyTo(self, target, amount)
 			local town = result.getDataInt(query_town, "town_id")
 			if town then
 				local town_id = Town(town) and Town(town):getId()
-				if town_id then
+				if town_id and town_id  == TOWNS_LIST.DAWNPORT or town_id == TOWNS_LIST.DAWNPORT_TUTORIAL then -- Blocking transfer to Dawnport
 					return false
 				end
 			end

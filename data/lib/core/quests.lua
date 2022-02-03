@@ -14,7 +14,27 @@ if not Quests then
 					states = {
 						[1] = "You have contributed with the collection of tomes."
 					}
-				}
+				},
+				[2] = {
+					name = "Circle of the Black Sphinx",
+					storageId = Storage.ForgottenKnowledge.LadyTenebrisKilled,
+					missionId = 10361,
+					startValue = 0,
+					endValue = 1522018605,
+					states = {
+						[1] = "You defeated the rogue Lady Tenebris."
+					}
+				},
+				[3] = {
+					name = "Bane of the deep",
+					storageId = Storage.MisidiaQuest.JaulKilled,
+					missionId = 10362,
+					startValue = 0,
+					endValue = 1522018605,
+					states = {
+						[1] = "You defeated the terrifying Jaul."
+					}
+				},
 			}
 		},
 	}

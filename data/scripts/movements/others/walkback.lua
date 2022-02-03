@@ -1,4 +1,4 @@
-local SPECIAL_QUESTS = {2215, 2216, 10544, 12374, 12513, 26300, 27300, 28300}
+local SPECIAL_QUESTS = {}
 
 local walkback = MoveEvent()
 

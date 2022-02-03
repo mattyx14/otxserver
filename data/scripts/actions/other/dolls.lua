@@ -28,7 +28,7 @@ local dolls = {
 		"Merry Christmas!",
 		"Can you stop squeezing me now... I'm starting to feel a little sick."
 	},
-	--[8974] = {"ARE YOU PREPARED TO FACE YOUR DESTINY?"},
+	[8974] = {"ARE YOU PREPARED TO FACE YOUR DESTINY?"},
 	[8977] = {
 		"Weirdo, you're a weirdo! Actually all of you are!",
 		"Pie for breakfast, pie for lunch and pie for dinner!",

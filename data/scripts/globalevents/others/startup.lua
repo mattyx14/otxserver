@@ -5,8 +5,8 @@ function serverstartup.onStartup()
 	loadLuaNpcs(NpcTable)
 
 	-- Sign table
-	--loadLuaMapSign(SignTable)
-	--Spdlog.info("Loaded " .. (#SignTable) .. " signs in the map")
+	loadLuaMapSign(SignTable)
+	Spdlog.info("Loaded " .. (#SignTable) .. " signs in the map")
 
 	-- Book/Document table
 	loadLuaMapBookDocument(BookDocumentTable)
@@ -124,6 +124,6 @@ function serverstartup.onStartup()
 	HirelingsInit()
 
 	-- Load otservbr-custom map (data/world/custom/otservbr-custom.otbm)
-	-- loadCustomMap()
+	loadCustomMap()
 end
 serverstartup:register()

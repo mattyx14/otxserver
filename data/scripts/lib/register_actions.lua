@@ -1,5 +1,5 @@
 local holeId = {
-    294, 369, 370, 383, 392, 408, 409, 410, 427, 428, 430, 462, 469, 470, 482, 484, 485, 489, 924, 3135, 3136, 7933, 7938, 8170, 8286, 8285, 8284, 8281, 8280, 8279, 8277, 8276, 8567, 8585, 8596, 8595, 8249, 8250, 8251, 8252, 8253, 8254, 8255, 8256, 8592, 8972, 9606, 9625, 13190, 14461, 19519, 21536, 26020
+    294, 369, 370, 383, 392, 408, 409, 410, 427, 428, 430, 462, 469, 470, 482, 484, 485, 489, 924, 3135, 3136, 7933, 7938, 8170, 8286, 8285, 8284, 8281, 8280, 8279, 8277, 8276, 8380, 8567, 8585, 8596, 8595, 8249, 8250, 8251, 8252, 8253, 8254, 8255, 8256, 8592, 8972, 9606, 9625, 13190, 14461, 19519, 21536, 26020
 }
 
 local Itemsgrinder = {
@@ -240,32 +240,57 @@ function onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
-    if toPosition.x == CONTAINER_POSITION then
-        return false
-    end
+	local tile = Tile(toPosition)
+	if not tile then
+		return false
+	end
 
-    local tile = Tile(toPosition)
+	local ground = tile:getGround()
+
+	if ground and table.contains(ropeSpots, ground:getId()) or tile:getItemById(14435) then
+		tile = Tile(toPosition:moveUpstairs())
+		if not tile then
+			return false
+		end
+
+		if tile:hasFlag(TILESTATE_PROTECTIONZONE) and player:isPzLocked() then
+			return true
+		end
+
+		player:teleportTo(toPosition, false)
+		return true
+	end
+
 	if table.contains(holeId, target.itemid) then
-        toPosition.z = toPosition.z + 1
-        tile = Tile(toPosition)
-        if tile then
-            local thing = tile:getTopVisibleThing()
-            if thing:isItem() and thing:getType():isMovable() then
-                return thing:moveTo(toPosition:moveUpstairs())
-            elseif thing:isCreature() and thing:isPlayer() then
-                return thing:teleportTo(toPosition:moveUpstairs())
-            end
-        end
+		toPosition.z = toPosition.z + 1
+		tile = Tile(toPosition)
+		if not tile then
+			return false
+		end
 
-        player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
-    else
-        return false
-    end
-    return true
+		local thing = tile:getTopVisibleThing()
+		if not thing then
+			return true
+		end
+
+		if thing:isPlayer() then
+			if Tile(toPosition:moveUpstairs()):queryAdd(thing) ~= RETURNVALUE_NOERROR then
+				return false
+			end
+
+			return thing:teleportTo(toPosition, false)
+		elseif thing:isItem() and thing:getType():isMovable() then
+			return thing:moveTo(toPosition:moveUpstairs())
+		end
+
+		return true
+	end
+
+	return false
 end
 
 function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
-	if table.contains(holes, target.itemid) then
+    if table.contains(holes, target.itemid) then
         target:transform(target.itemid + 1)
         target:decay()
     elseif table.contains({231, 9059}, target.itemid) then

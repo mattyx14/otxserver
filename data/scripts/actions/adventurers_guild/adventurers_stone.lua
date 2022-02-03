@@ -1,5 +1,4 @@
 local setting = {
-	-- 
 	-- {fromPos = Position(32718, 31628, 7), toPos = Position(32736, 31639, 7), townId = TOWNS_LIST.AB_DENDRIEL},
 }
 
@@ -26,9 +25,10 @@ function adventurersStone.onUse(player, item, fromPosition, target, toPosition, 
 	player:setStorageValue(Storage.AdventurersGuild.Stone, townId)
 	playerPos:sendMagicEffect(CONST_ME_TELEPORT)
 
---	local destination = Position(926, 982, 3)
---		player:teleportTo(destination)
---		destination:sendMagicEffect(CONST_ME_TELEPORT)
+	-- Configure destination
+	local destination = Position(1, 1, 7)
+		player:teleportTo(destination)
+		destination:sendMagicEffect(CONST_ME_TELEPORT)
 	return true
 end
 

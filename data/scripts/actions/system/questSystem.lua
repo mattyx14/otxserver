@@ -1,9 +1,12 @@
 local specialQuests = {
-	-- 
+	[2001] = Storage.Missions.DjinnMission.Done,
+	[2002] = Storage.AnniQuest.AnnihiMission.Done,
 }
 
 local questsExperience = {
-	-- 
+	[2423] = 50000, -- Experience Quest "Clerial Mace + 50k_Exp" / Sohan Town
+	[2429] = 50000, -- Experience Quest "Barbarian Axe + 50k_Exp" / Fynn Castle
+	[7385] = 50000, -- Experience Quest "Crimson Sword + 50k_Exp" / Misidia Settlement
 }
 
 local questSystem1 = Action()
@@ -92,5 +95,5 @@ for index, value in pairs(specialQuests) do
 	questSystem1:aid(index)
 end
 
-questSystem1:aid(2000)
+questSystem1:aid(2000, 2423, 2429, 7385)
 questSystem1:register()

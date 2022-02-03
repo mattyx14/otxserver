@@ -20,15 +20,6 @@ keywordHandler:addKeyword({'name'}, StdModule.say, {npcHandler = npcHandler, tex
 keywordHandler:addKeyword({'time'}, StdModule.say, {npcHandler = npcHandler, text = "Precisely time."})
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, text = "I find ways to unveil the secrets of the stars. Judging by this question, I doubt you follow my weekly publications concerning this research."})
 
-local runes = {
-	{runeid = 27622},
-	{runeid = 27623},
-	{runeid = 27624},
-	{runeid = 27625},
-	{runeid = 27626},
-	{runeid = 27627}
-}
-
 local function getTable()
 	local itemsList = {
 		{name = "heavy old tome", id = 26654, sell = 500}
@@ -83,33 +74,6 @@ local function creatureSayCallback(cid, type, msg)
 	if msgcontains(msg, 'buy') then
 		npcHandler:say("I'm sorry, I don't buy anything. My main concern right now is the bulding of this temple.", cid)
 		openShopWindow(cid, getTable(), onBuy, onSell)
-	end
-
-	--- ##Astral Shaper Rune##
-	if msgcontains(msg, 'astral shaper rune') then
-		if player:getStorageValue(Storage.ForgottenKnowledge.LastLoreKilled) >= 1 then
-			npcHandler:say('Do you wish to merge your rune parts into an astral shaper rune?', cid)
-			npcHandler.topic[cid] = 8
-		else
-			npcHandler:say("I'm sorry but you lack the needed rune parts.", cid)
-		end
-	end
-
-	if msgcontains(msg, 'yes') and npcHandler.topic[cid] == 8 then
-		local haveParts = false
-		for k = 1, #runes do
-			if player:removeItem(runes[k].runeid, 1) then
-				haveParts = true
-			end
-		end
-		if haveParts then
-			npcHandler:say('As you wish.', cid)
-			player:addItem(27628, 1)
-			npcHandler:releaseFocus(cid)
-		end
-	elseif msgcontains(msg, 'no') and npcHandler.topic[cid] == 8 then
-		npcHandler:say('ok.', cid)
-		npcHandler:releaseFocus(cid)
 	end
 	return true
 end

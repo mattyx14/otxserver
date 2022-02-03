@@ -52,7 +52,6 @@ local config = {
 	[4] = { -- Knight
 		items = {
 			{2525, 1}, -- dwarven shield
-			{8601, 1}, -- steel axe
 			{2465, 1}, -- brass armor
 			{2460, 1}, -- brass helmet
 			{2478, 1}, -- brass legs
@@ -60,8 +59,6 @@ local config = {
 			{2661, 1}  -- scarf
 		},
 		container = {
-			{8602, 1}, -- jagged sword
-			{2439, 1}, -- daramanian mace
 			{2120, 1}, -- rope
 			{2554, 1}, -- shovel
 			{7618, 10}  -- health potion

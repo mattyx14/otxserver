@@ -77,7 +77,6 @@ function playerLogin.onLogin(player)
 		player:setStorageValue(Storage.combatProtectionStorage, 1)
 		onMovementRemoveProtection(playerId, player:getPosition(), 10)
 	end
-
 	-- Set Client XP Gain Rate
 	local baseExp = 100
 	if Game.getStorageValue(GlobalStorage.XpDisplayMode) > 0 then

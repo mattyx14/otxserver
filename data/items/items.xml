@@ -17102,7 +17102,10 @@
 		<attribute key="floorchange" value="north" />
 	</item>
 	<item id="8379" article="a" name="ramp" />
-	<item fromid="8380" toid="8385" article="a" name="tunnel entrance" />
+	<item id="8380" article="a" name="tunnel entrance">
+		<attribute key="floorchange" value="down" />
+	</item>
+	<item fromid="8381" toid="8385" article="a" name="tunnel entrance" />
 	<item fromid="8386" toid="8387" article="a" name="bone" />
 	<item id="8388" article="a" name="skull" />
 	<item fromid="8389" toid="8392" article="a" name="bone" />
@@ -17309,7 +17312,10 @@
 	<item fromid="8625" toid="8626" article="a" name="dwarven statue" />
 	<item fromid="8627" toid="8630" article="a" name="bone" />
 	<item id="8631" article="a" name="burning wall" />
-	<item id="8632" article="a" name="water vortex" />
+	<item id="8632" article="a" name="water vortex">
+		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="teleport" />
+	</item>
 	<item fromid="8633" toid="8636" article="a" name="large crystal" />
 	<item fromid="8637" toid="8640" article="a" name="crystal" />
 	<item fromid="8641" toid="8642" article="a" name="crucible" />

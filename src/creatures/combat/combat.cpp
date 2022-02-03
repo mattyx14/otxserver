@@ -283,7 +283,7 @@ bool Combat::isProtected(const Player* attacker, const Player* target)
 		return true;
 	}
 
-	if (attacker->getVocationId() == VOCATION_NONE || target->getVocationId() == VOCATION_NONE) {
+	if (!attacker->getVocation()->allowsPvp() || !target->getVocation()->allowsPvp()) {
 		return true;
 	}
 

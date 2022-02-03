@@ -12,6 +12,12 @@ function loginEvents.onLogin(player)
 		"RookgaardAdvance",
 		"FamiliarLogin",
 		"AdvanceFamiliar",
+
+		-- DarkKonia
+		"AdvanceReward",
+		"KillBoss",
+		"vampireKillBosses",
+		"BossesForgotten",
 	}
 
 	for i = 1, #events do
