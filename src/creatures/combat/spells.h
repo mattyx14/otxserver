@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_SPELLS_H_D78A7CCB7080406E8CAA6B1D31D3DA71
-#define FS_SPELLS_H_D78A7CCB7080406E8CAA6B1D31D3DA71
+#ifndef SRC_CREATURES_COMBAT_SPELLS_H_
+#define SRC_CREATURES_COMBAT_SPELLS_H_
 
 #include "lua/scripts/luascript.h"
 #include "creatures/players/player.h"
@@ -195,7 +195,6 @@ class Spell : public BaseSpell
 			enabled = e;
 		}
 
-
 		const VocSpellMap& getVocMap() const {
 			return vocSpellMap;
 		}
@@ -325,6 +324,7 @@ class Spell : public BaseSpell
 		bool pzLocked = false;
 
 	private:
+
 		uint32_t mana = 0;
 		uint32_t manaPercent = 0;
 		uint32_t soul = 0;
@@ -336,6 +336,7 @@ class Spell : public BaseSpell
 		bool learnable = false;
 		bool enabled = true;
 		bool premium = false;
+
 
 	private:
 		std::string name;
@@ -454,4 +455,4 @@ class RuneSpell final : public Action, public Spell
 		bool hasCharges = false;
 };
 
-#endif
+#endif  // SRC_CREATURES_COMBAT_SPELLS_H_

@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_PROTOCOLLOGIN_H_1238F4B473074DF2ABC595C29E81C46D
-#define FS_PROTOCOLLOGIN_H_1238F4B473074DF2ABC595C29E81C46D
+#ifndef SRC_SERVER_NETWORK_PROTOCOL_PROTOCOLLOGIN_H_
+#define SRC_SERVER_NETWORK_PROTOCOL_PROTOCOLLOGIN_H_
 
 #include "server/network/protocol/protocol.h"
 
@@ -29,9 +29,9 @@ class ProtocolLogin : public Protocol
 {
 	public:
 		// static protocol information
-		enum {server_sends_first = false};
-		enum {protocol_identifier = 0x01};
-		enum {use_checksum = true};
+		enum {SERVER_SENDS_FIRST = false};
+		enum {PROTOCOL_IDENTIFIER = 0x01};
+		enum {USE_CHECKSUM = true};
 		static const char* protocol_name() {
 			return "login protocol";
 		}
@@ -46,4 +46,4 @@ class ProtocolLogin : public Protocol
 		void getCharacterList(const std::string& accountName, const std::string& password, uint16_t version);
 };
 
-#endif
+#endif  // SRC_SERVER_NETWORK_PROTOCOL_PROTOCOLLOGIN_H_

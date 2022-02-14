@@ -57,18 +57,14 @@ bool Vocations::loadFromXml()
 		if ((attr = vocationNode.attribute("baseid"))) {
 			voc.baseId = pugi::cast<uint16_t>(attr.value());
 		}
-
+		
 		if ((attr = vocationNode.attribute("description"))) {
 			voc.description = attr.as_string();
 		}
 
-		if ((attr = vocationNode.attribute("allowpvp"))) {
-			voc.description = attr.as_bool();
-		}
-
-		if ((attr = vocationNode.attribute("magicshield"))) {
-			voc.magicShield = attr.as_bool();
-		}
+    if ((attr = vocationNode.attribute("magicshield"))) {
+      voc.magicShield = attr.as_bool();
+    }
 
 		if ((attr = vocationNode.attribute("gaincap"))) {
 			voc.gainCap = pugi::cast<uint32_t>(attr.value()) * 100;

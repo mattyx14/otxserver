@@ -29,8 +29,6 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
     ports:
       - 3306:3306
-    volumes:
-      - db-volume:/var/lib/mysql
 
   website:
     image: webdevops/php-nginx:alpine-php7
@@ -47,16 +45,23 @@ services:
       - mysql
 
   login:
-    build:
-      context: ../
-      dockerfile: docker/login/Dockerfile
+    image: opentibiabr/login-server:latest
     restart: unless-stopped
-    volumes:
-      - ./docker/data/:/tmp/
     ports:
       - 80:8080
     depends_on:
       - mysql
-
-volumes:
-  db-volume:
+    environment:
+      - DB_DATABASE=otxsr
+      - DB_HOSTNAME=mysql
+      - DB_PORT=3306
+      - DB_PASSWORD=otxsr
+      - DB_USERNAME=otxsr
+      - ENV_LOG_LEVEL=verbose
+      - ENV_TYPE=dev
+      - LOGIN_PORT=8080
+      - SERVER_NAME=otxsr
+      - SERVER_LOCATION=USA
+      - SERVER_IP=127.0.0.1
+      - SERVER_PORT=7172
+#      - VOCATIONS -- map your custom vocations here, if needed, comma separated

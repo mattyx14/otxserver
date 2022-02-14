@@ -20,7 +20,9 @@
 #include "otpch.h"
 
 #include "items/item.h"
+#include "items/functions/item_parse.hpp"
 #include "items/containers/container.h"
+#include "items/decay/decay.h"
 #include "game/movement/teleport.h"
 #include "items/trashholder.h"
 #include "items/containers/mailbox/mailbox.h"
@@ -74,18 +76,18 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 			newItem = new Mailbox(type);
 		} else if (it.isBed()) {
 			newItem = new BedItem(type);
-		} else if (it.id >= 2210 && it.id <= 2212) {
+		} else if (it.id >= ITEM_SWORD_RING && it.id <= ITEM_CLUB_RING) {
 			newItem = new Item(type - 3, count);
-		} else if (it.id == 2215 || it.id == 2216) {
+		} else if (it.id == ITEM_DWARVEN_RING || it.id == ITEM_RING_HEALING) {
 			newItem = new Item(type - 2, count);
-		} else if (it.id >= 2202 && it.id <= 2206) {
+		} else if (it.id >= ITEM_STEALTH_RING && it.id <= ITEM_TIME_RING) {
 			newItem = new Item(type - 37, count);
-		} else if (it.id == 2640) {
-			newItem = new Item(6132, count);
-		} else if (it.id == 6301) {
-			newItem = new Item(6300, count);
-		} else if (it.id == 18528) {
-			newItem = new Item(18408, count);
+		} else if (it.id == ITEM_PAIR_SOFT_BOOTS_ACTIVATED) {
+			newItem = new Item(ITEM_PAIR_SOFT_BOOTS, count);
+		} else if (it.id == ITEM_DEATH_RING_ACTIVATED) {
+			newItem = new Item(ITEM_DEATH_RING, count);
+		} else if (it.id == ITEM_PRISMATIC_RING_ACTIVATED) {
+			newItem = new Item(ITEM_PRISMATIC_RING, count);
 		} else {
 			newItem = new Item(type, count);
 		}
@@ -224,36 +226,43 @@ Item* Item::clone() const
 
 bool Item::equals(const Item* otherItem) const
 {
-	if (!otherItem || id != otherItem->id) {
+	if (!otherItem) {
 		return false;
 	}
 
-	if (!attributes || attributes->attributeBits == 0) {
-		return (!otherItem->attributes || otherItem->attributes->attributeBits == 0);
+	if (id != otherItem->id) {
+		return false;
+	}
+
+	if (!attributes) {
+		return !otherItem->attributes;
 	}
 
 	const auto& otherAttributes = otherItem->attributes;
-	if (!otherAttributes || attributes->attributeBits != otherAttributes->attributeBits) {
+	if (!otherAttributes) {
 		return false;
 	}
 
-	const auto& attributeList = attributes->attributes;
-	const auto& otherAttributeList = otherAttributes->attributes;
-	for (const auto& attribute : attributeList) {
-		if (ItemAttributes::isStrAttrType(attribute.type)) {
-			for (const auto& otherAttribute : otherAttributeList) {
-				if (attribute.type == otherAttribute.type && *attribute.value.string != *otherAttribute.value.string) {
-					return false;
-				}
+	if (attributes->attributeBits != otherAttributes->attributeBits) {
+		return false;
+	}
+
+	for (const auto& attribute : attributes->attributes) {
+		for (const auto& otherAttribute : otherAttributes->attributes) {
+			if (attribute.type != otherAttribute.type) {
+				continue;
 			}
-		} else {
-			for (const auto& otherAttribute : otherAttributeList) {
-				if (attribute.type == otherAttribute.type && attribute.value.integer != otherAttribute.value.integer) {
-					return false;
-				}
+
+			if (ItemAttributes::isStrAttrType(attribute.type) && *attribute.value.string != *otherAttribute.value.string) {
+				return false;
+			}
+
+			if (ItemAttributes::isIntAttrType(attribute.type) && attribute.value.integer != otherAttribute.value.integer) {
+				return false;
 			}
 		}
 	}
+
 	return true;
 }
 
@@ -890,7 +899,7 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 	if (hasAttribute(ITEM_ATTRIBUTE_CUSTOM)) {
 		const ItemAttributes::CustomAttributeMap* customAttrMap = attributes->getCustomAttributeMap();
 		propWriteStream.write<uint8_t>(ATTR_CUSTOM_ATTRIBUTES);
-		propWriteStream.write<uint64_t>(static_cast<uint64_t>(customAttrMap->size()));
+		propWriteStream.write<uint64_t>(customAttrMap->size());
 		for (const auto &entry : *customAttrMap) {
 			// Serializing key type and value
 			propWriteStream.writeString(entry.first);
@@ -911,7 +920,7 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 	}
 }
 
-bool Item::hasProperty(ITEMPROPERTY prop) const
+bool Item::hasProperty(ItemProperty prop) const
 {
 	const ItemType& it = items[id];
 	switch (prop) {
@@ -1009,16 +1018,13 @@ std::vector<std::pair<std::string, std::string>>
 				}
 
 				ss.str("");
-
 				if (i != SKILL_CRITICAL_HIT_CHANCE) {
 					ss << std::showpos;
 				}
-
 				ss << it.abilities->skills[i] << '%';
 				if (i != SKILL_CRITICAL_HIT_CHANCE) {
 					ss << std::noshowpos;
 				}
-
 				descriptions.emplace_back(getSkillName(i), ss.str());
 			}
 
@@ -1270,11 +1276,9 @@ std::vector<std::pair<std::string, std::string>>
 					ss << std::showpos;
 				}
 				ss << it.abilities->skills[i] << '%';
-
 				if (i != SKILL_CRITICAL_HIT_CHANCE) {
 					ss << std::noshowpos;
 				}
-	
 				descriptions.emplace_back(getSkillName(i), ss.str());
 			}
 
@@ -1596,7 +1600,6 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 						s << std::showpos;
 					}
 					s << it.abilities->skills[i];
-
 					if (i != SKILL_CRITICAL_HIT_CHANCE) {
 						s << std::noshowpos;
 					}
@@ -1790,7 +1793,6 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 						s << std::showpos;
 					}
 					s << it.abilities->skills[i];
-
 					if (i != SKILL_CRITICAL_HIT_CHANCE) {
 						s << std::noshowpos;
 					}
@@ -1953,13 +1955,11 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				else {
 					s << ", ";
 				}
-
 				s << getSkillName(i) << ' ';
 				if (i != SKILL_CRITICAL_HIT_CHANCE) {
 					s << std::showpos;
 				}
 				s << it.abilities->skills[i];
-
 				if (i != SKILL_CRITICAL_HIT_CHANCE) {
 					s << std::noshowpos;
 				}
@@ -2434,7 +2434,7 @@ int64_t ItemAttributes::emptyInt;
 double ItemAttributes::emptyDouble;
 bool ItemAttributes::emptyBool;
 
-const std::string& ItemAttributes::getStrAttr(itemAttrTypes type) const
+const std::string& ItemAttributes::getStrAttr(ItemAttrTypes type) const
 {
 	if (!isStrAttrType(type)) {
 		return emptyString;
@@ -2447,7 +2447,7 @@ const std::string& ItemAttributes::getStrAttr(itemAttrTypes type) const
 	return *attr->value.string;
 }
 
-void ItemAttributes::setStrAttr(itemAttrTypes type, const std::string& value)
+void ItemAttributes::setStrAttr(ItemAttrTypes type, const std::string& value)
 {
 	if (!isStrAttrType(type)) {
 		return;
@@ -2462,7 +2462,7 @@ void ItemAttributes::setStrAttr(itemAttrTypes type, const std::string& value)
 	attr.value.string = new std::string(value);
 }
 
-void ItemAttributes::removeAttribute(itemAttrTypes type)
+void ItemAttributes::removeAttribute(ItemAttrTypes type)
 {
 	if (!hasAttribute(type)) {
 		return;
@@ -2478,7 +2478,7 @@ void ItemAttributes::removeAttribute(itemAttrTypes type)
 	attributeBits &= ~type;
 }
 
-int64_t ItemAttributes::getIntAttr(itemAttrTypes type) const
+int64_t ItemAttributes::getIntAttr(ItemAttrTypes type) const
 {
 	if (!isIntAttrType(type)) {
 		return 0;
@@ -2491,7 +2491,7 @@ int64_t ItemAttributes::getIntAttr(itemAttrTypes type) const
 	return attr->value.integer;
 }
 
-void ItemAttributes::setIntAttr(itemAttrTypes type, int64_t value)
+void ItemAttributes::setIntAttr(ItemAttrTypes type, int64_t value)
 {
 	if (!isIntAttrType(type)) {
 		return;
@@ -2500,7 +2500,7 @@ void ItemAttributes::setIntAttr(itemAttrTypes type, int64_t value)
 	getAttr(type).value.integer = value;
 }
 
-void ItemAttributes::increaseIntAttr(itemAttrTypes type, int64_t value)
+void ItemAttributes::increaseIntAttr(ItemAttrTypes type, int64_t value)
 {
 	if (!isIntAttrType(type)) {
 		return;
@@ -2509,7 +2509,7 @@ void ItemAttributes::increaseIntAttr(itemAttrTypes type, int64_t value)
 	getAttr(type).value.integer += value;
 }
 
-const ItemAttributes::Attribute* ItemAttributes::getExistingAttr(itemAttrTypes type) const
+const ItemAttributes::Attribute* ItemAttributes::getExistingAttr(ItemAttrTypes type) const
 {
 	if (hasAttribute(type)) {
 		for (const Attribute& attribute : attributes) {
@@ -2521,7 +2521,7 @@ const ItemAttributes::Attribute* ItemAttributes::getExistingAttr(itemAttrTypes t
 	return nullptr;
 }
 
-ItemAttributes::Attribute& ItemAttributes::getAttr(itemAttrTypes type)
+ItemAttributes::Attribute& ItemAttributes::getAttr(ItemAttrTypes type)
 {
 	if (hasAttribute(type)) {
 		for (Attribute& attribute : attributes) {
@@ -2538,12 +2538,12 @@ ItemAttributes::Attribute& ItemAttributes::getAttr(itemAttrTypes type)
 
 void Item::startDecaying()
 {
-	g_game.startDecay(this);
+	g_decay.startDecay(this);
 }
 
 void Item::stopDecaying()
 {
-	g_game.stopDecay(this);
+	g_decay.stopDecay(this);
 }
 
 bool Item::hasMarketAttributes()

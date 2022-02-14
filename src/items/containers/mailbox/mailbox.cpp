@@ -78,12 +78,12 @@ void Mailbox::removeThing(Thing*, uint32_t)
 	//
 }
 
-void Mailbox::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t)
+void Mailbox::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t)
 {
 	getParent()->postAddNotification(thing, oldParent, index, LINK_PARENT);
 }
 
-void Mailbox::postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t)
+void Mailbox::postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, CylinderLink_t)
 {
 	getParent()->postRemoveNotification(thing, newParent, index, LINK_PARENT);
 }
@@ -111,7 +111,7 @@ bool Mailbox::sendItem(Item* item) const
 	}
 	if (player && item) {
 		if (g_game.internalMoveItem(item->getParent(), player->getInbox(), INDEX_WHEREEVER,
-		                            item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
+                                   item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
 			Item* newItem = g_game.transformItem(item, item->getID() + 1);
 			if (newItem && newItem->getID() == ITEM_LETTER_STAMPED && writer != "") {
 				newItem->setWriter(writer);
@@ -128,7 +128,7 @@ bool Mailbox::sendItem(Item* item) const
 		}
 
 		if (item && g_game.internalMoveItem(item->getParent(), tmpPlayer.getInbox(), INDEX_WHEREEVER,
-		                            item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
+                                   item, item->getItemCount(), nullptr, FLAG_NOLIMIT) == RETURNVALUE_NOERROR) {
 			Item* newItem = g_game.transformItem(item, item->getID() + 1);
 			if (newItem && newItem->getID() == ITEM_LETTER_STAMPED && writer != "") {
 				newItem->setWriter(writer);

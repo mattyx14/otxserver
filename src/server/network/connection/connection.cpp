@@ -19,7 +19,6 @@
 
 #include "otpch.h"
 
-#include "config/configmanager.h"
 #include "server/network/connection/connection.h"
 #include "server/network/message/outputmessage.h"
 #include "server/network/protocol/protocol.h"
@@ -27,7 +26,6 @@
 #include "game/scheduling/scheduler.h"
 #include "server/server.h"
 
-extern ConfigManager g_config;
 
 Connection_ptr ConnectionManager::createConnection(boost::asio::io_service& io_service, ConstServicePort_ptr servicePort)
 {
@@ -129,7 +127,7 @@ void Connection::accept()
 		} else {
 			// Read size of the first packet
 			boost::asio::async_read(socket,
-				boost::asio::buffer(msg.getBuffer(), NetworkMessage::HEADER_LENGTH),
+				boost::asio::buffer(msg.getBuffer(), HEADER_LENGTH),
 				std::bind(&Connection::parseHeader, shared_from_this(), std::placeholders::_1));
 		}
 	} catch (boost::system::system_error& e) {
@@ -151,7 +149,7 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	}
 
 	uint32_t timePassed = std::max<uint32_t>(1, (time(nullptr) - timeConnected) + 1);
-	if ((++packetsSent / timePassed) > static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND))) {
+	if ((++packetsSent / timePassed) > static_cast<uint32_t>(g_configManager().getNumber(MAX_PACKETS_PER_SECOND))) {
 			SPDLOG_INFO("{} disconnected for exceeding packet per second limit", convertIPToString(getIP()));
 			close();
 			return;
@@ -163,7 +161,7 @@ void Connection::parseHeader(const boost::system::error_code& error)
 		if (!receivedName && msgBuffer[1] == 0x00) {
 			receivedLastChar = true;
 		} else {
-			std::string serverName = g_config.getString(ConfigManager::SERVER_NAME) + "\n";
+			std::string serverName = g_configManager().getString(SERVER_NAME) + "\n";
 
 			if (!receivedName) {
 				if (static_cast<char>(msgBuffer[0]) == serverName[0]
@@ -216,12 +214,12 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	try {
 		readTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
-		                                    std::placeholders::_1));
+                                           std::placeholders::_1));
 
 		// Read packet content
-		msg.setLength(size + NetworkMessage::HEADER_LENGTH);
+		msg.setLength(size + HEADER_LENGTH);
 		boost::asio::async_read(socket, boost::asio::buffer(msg.getBodyBuffer(), size),
-		                        std::bind(&Connection::parsePacket, shared_from_this(), std::placeholders::_1));
+                               std::bind(&Connection::parsePacket, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
 		SPDLOG_ERROR("[Connection::parseHeader] - {}", e.what());
 		close(FORCE_CLOSE);
@@ -253,7 +251,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 		if (!protocol) {
 			// As of 11.11+ update, we need to check if it's a outdated client or a status client server with this ugly check
 			if (msg.getLength() < 280) {
-				msg.skipBytes(-NetworkMessage::CHECKSUM_LENGTH); //those 32bits read up there
+				msg.skipBytes(-CHECKSUM_LENGTH); //those 32bits read up there
 			}
 
 			// Game protocol has already been created at this point
@@ -274,12 +272,12 @@ void Connection::parsePacket(const boost::system::error_code& error)
 	try {
 		readTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_READ_TIMEOUT));
 		readTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
-		                                    std::placeholders::_1));
+                                           std::placeholders::_1));
 
 		// Wait to the next packet
 		boost::asio::async_read(socket,
-		                        boost::asio::buffer(msg.getBuffer(), NetworkMessage::HEADER_LENGTH),
-		                        std::bind(&Connection::parseHeader, shared_from_this(), std::placeholders::_1));
+                               boost::asio::buffer(msg.getBuffer(), HEADER_LENGTH),
+                               std::bind(&Connection::parseHeader, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
 		SPDLOG_ERROR("[Connection::parsePacket] - {}", e.what());
 		close(FORCE_CLOSE);
@@ -306,11 +304,11 @@ void Connection::internalSend(const OutputMessage_ptr& conMsg)
 	try {
 		writeTimer.expires_from_now(boost::posix_time::seconds(CONNECTION_WRITE_TIMEOUT));
 		writeTimer.async_wait(std::bind(&Connection::handleTimeout, std::weak_ptr<Connection>(shared_from_this()),
-		                                     std::placeholders::_1));
+                                            std::placeholders::_1));
 
 		boost::asio::async_write(socket,
-		                         boost::asio::buffer(conMsg->getOutputBuffer(), conMsg->getLength()),
-		                         std::bind(&Connection::onWriteOperation, shared_from_this(), std::placeholders::_1));
+                                boost::asio::buffer(conMsg->getOutputBuffer(), conMsg->getLength()),
+                                std::bind(&Connection::onWriteOperation, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
 		SPDLOG_ERROR("[Connection::internalSend] - {}", e.what());
 		close(FORCE_CLOSE);

@@ -17,10 +17,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_NETWORKMESSAGE_H_B853CFED58D1413A87ACED07B2926E03
-#define FS_NETWORKMESSAGE_H_B853CFED58D1413A87ACED07B2926E03
+#ifndef SRC_SERVER_NETWORK_MESSAGE_NETWORKMESSAGE_H_
+#define SRC_SERVER_NETWORK_MESSAGE_NETWORKMESSAGE_H_
 
-#include "utils/const.h"
+#include "utils/const.hpp"
+#include "declarations.hpp"
 
 class Item;
 class Creature;
@@ -37,11 +38,6 @@ class NetworkMessage
 		// 4 bytes for checksum
 		// 2 bytes for encrypted message size
 		static constexpr MsgSize_t INITIAL_BUFFER_POSITION = 8;
-		enum { HEADER_LENGTH = 2 };
-		enum { CHECKSUM_LENGTH = 4 };
-		enum { XTEA_MULTIPLE = 8 };
-		enum { MAX_BODY_LENGTH = NETWORKMESSAGE_MAXSIZE - HEADER_LENGTH - CHECKSUM_LENGTH - XTEA_MULTIPLE };
-		enum { MAX_PROTOCOL_BODY_LENGTH = MAX_BODY_LENGTH - 10 };
 
 		NetworkMessage() = default;
 
@@ -176,4 +172,4 @@ class NetworkMessage
 		uint8_t buffer[NETWORKMESSAGE_MAXSIZE];
 };
 
-#endif // #ifndef __NETWORK_MESSAGE_H__
+#endif // SRC_SERVER_NETWORK_MESSAGE_NETWORKMESSAGE_H_

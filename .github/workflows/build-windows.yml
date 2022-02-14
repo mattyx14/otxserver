@@ -1,8 +1,16 @@
 ---
+name: Build - Windows
 
-name: Build on Windows
+on:
+  pull_request:
+  push:
+    branches:
+      - otxserv6
 
-on: [push, pull_request]
+env:
+  VCPKG_BUILD_TYPE: release
+  CMAKE_BUILD_PARALLEL_LEVEL: 2
+  MAKEFLAGS: '-j 2'
 
 jobs:
   job:
@@ -10,10 +18,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
-        buildtype: [Release]
+        os: [windows-2019]
+        buildtype: [Debug, RelWithDebInfo]
         include:
-          - os: windows-latest
+          - os: windows-2019
             triplet: x64-windows
             packages: >
               boost-asio boost-iostreams boost-system boost-filesystem
@@ -21,10 +29,10 @@ jobs:
               luajit libmariadb pugixml spdlog
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: lukka/get-cmake@latest
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Windows - remove C:/mysql*
+      - name: Remove Windows pre-installed MySQL
         run: rm -r -fo C:/mysql*
         if: contains( matrix.os, 'windows')
 
@@ -32,32 +40,32 @@ jobs:
         uses: lukka/run-vcpkg@v7
         with:
           setupOnly: true
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
           appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
           vcpkgTriplet: ${{ matrix.triplet }}
           additionalCachedPaths: ${{ github.workspace }}/build/vcpkg_installed
           vcpkgGitCommitId: 653912591af709c162fba2d4000a6b3362c8d3c9
 
-      - name: Run CMake to install the dependencies specified in the vcpkg.json manifest, generate project file and build the project
+      - name: Get latest CMake and ninja
+        uses: lukka/get-cmake@latest
+
+      - name: Run CMake
         uses: lukka/run-cmake@v3
         with:
-          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
-          buildDirectory: ${{ github.workspace }}/build
+          cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
           useVcpkgToolchainFile: true
-          buildWithCMake: true
+          buildDirectory: ${{ github.workspace }}/build
           cmakeBuildType: ${{ matrix.buildtype }}
 
       - name: Copy artifacts
-        if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
         shell: pwsh
         run: |
           Copy-Item -Path ${{ github.workspace }}\build\bin\* -Destination ${{ github.workspace }} -Recurse
 
       - name: Create and Upload Full Datapack
-        if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
         uses: actions/upload-artifact@v2
         with:
-          name: otxsr-full-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
+          name: otxsr-full-${{ matrix.os }}-${{ matrix.buildtype }}-${{ steps.gitversion.outputs.semVer }}
           path: |
             ${{ github.workspace }}
             !${{ github.workspace }}/build/
@@ -72,11 +80,11 @@ jobs:
             !${{ github.workspace }}/cmake/
             !${{ github.workspace }}/sonar-project.properties
             !${{ github.workspace }}/Jenkinsfile
+            !${{ github.workspace }}/GitVersion.yml
 
       - name: Create and Upload Server Only
-        if: ${{ matrix.buildtype == 'Release' && github.ref == 'refs/heads/otxserv6'}}
         uses: actions/upload-artifact@v2
         with:
-          name: otxsr-server-only-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
+          name: otxsr-server-only-${{ matrix.os }}-${{ matrix.buildtype }}-${{ steps.gitversion.outputs.semVer }}
           path: |
             ${{ github.workspace }}/build/bin/

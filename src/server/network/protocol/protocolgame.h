@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_PROTOCOLGAME_H_FACA2A2D1A9348B78E8FD7E8003EBB87
-#define FS_PROTOCOLGAME_H_FACA2A2D1A9348B78E8FD7E8003EBB87
+#ifndef SRC_SERVER_NETWORK_PROTOCOL_PROTOCOLGAME_H_
+#define SRC_SERVER_NETWORK_PROTOCOL_PROTOCOLGAME_H_
 
 #include <string>
 
@@ -40,7 +40,6 @@ class Quest;
 class ProtocolGame;
 using ProtocolGame_ptr = std::shared_ptr<ProtocolGame>;
 
-extern ConfigManager g_config;
 extern Game g_game;
 
 struct TextMessage
@@ -62,21 +61,13 @@ struct TextMessage
 class ProtocolGame final : public Protocol
 {
 public:
-	// static protocol information
-	enum
-	{
-		server_sends_first = true
-	};
-	enum
-	{
-		protocol_identifier = 0
-	}; // Not required as we send first
-	enum
-	{
-		use_checksum = true
-	};
-	static const char *protocol_name()
-	{
+	// Static protocol information.
+	enum {SERVER_SENDS_FIRST = true};
+	// Not required as we send first.
+	enum {PROTOCOL_IDENTIFIER = 0};
+	enum {USE_CHECKSUM = true};
+
+	static const char *protocol_name() {
 		return "gameworld protocol";
 	}
 
@@ -178,8 +169,8 @@ private:
 	void parseHouseWindow(NetworkMessage &msg);
 
 	void parseLookInShop(NetworkMessage &msg);
-	void parsePlayerPurchase(NetworkMessage &msg);
-	void parsePlayerSale(NetworkMessage &msg);
+	void parsePlayerBuyOnShop(NetworkMessage &msg);
+	void parsePlayerSellOnShop(NetworkMessage &msg);
 
 	void parseQuestLine(NetworkMessage &msg);
 
@@ -255,6 +246,7 @@ private:
 	void closeImbuementWindow();
 
 	void sendItemsPrice();
+	void sendForgingData();
 
 	void sendDistanceShoot(const Position &from, const Position &to, uint8_t type);
 	void sendMagicEffect(const Position &pos, uint8_t type);
@@ -316,13 +308,13 @@ private:
 	void sendCreatureSkull(const Creature *creature);
 	void sendCreatureType(const Creature *creature, uint8_t creatureType);
 
-	void sendShop(Npc *npc, const ShopInfoList &itemList);
+	void sendShop(Npc *npc);
 	void sendCloseShop();
 	void sendClientCheck();
 	void sendGameNews();
 	void sendResourcesBalance(uint64_t money = 0, uint64_t bank = 0, uint64_t prey = 0);
 	void sendResourceBalance(Resource_t resourceType, uint64_t value);
-	void sendSaleItemList(const std::vector<ShopInfo> &shop, const std::map<uint32_t, uint32_t> &inventoryMap);
+	void sendSaleItemList(const ShopInfoMap &shop, const std::map<uint32_t, uint32_t> &inventoryMap);
 	void sendMarketEnter(uint32_t depotId);
 	void updateCoinBalance();
 	void sendMarketLeave();
@@ -380,7 +372,7 @@ private:
 
 	void sendAddCreature(const Creature *creature, const Position &pos, int32_t stackpos, bool isLogin);
 	void sendMoveCreature(const Creature *creature, const Position &newPos, int32_t newStackPos,
-						  const Position &oldPos, int32_t oldStackPos, bool teleport);
+                         const Position &oldPos, int32_t oldStackPos, bool teleport);
 
 	//containers
 	void sendAddContainerItem(uint8_t cid, uint16_t slot, const Item *item);
@@ -395,7 +387,7 @@ private:
 	void sendLootStats(Item *item, uint8_t count);
 
 	//inventory
-	void sendInventoryItem(slots_t slot, const Item *item);
+	void sendInventoryItem(Slots_t slot, const Item *item);
 	void sendInventoryClientIds();
 
 	//messages
@@ -418,11 +410,11 @@ private:
 
 	// translate a floor to clientreadable format
 	void GetFloorDescription(NetworkMessage &msg, int32_t x, int32_t y, int32_t z,
-							 int32_t width, int32_t height, int32_t offset, int32_t &skip);
+                              int32_t width, int32_t height, int32_t offset, int32_t &skip);
 
 	// translate a map area to clientreadable format
 	void GetMapDescription(int32_t x, int32_t y, int32_t z,
-						   int32_t width, int32_t height, NetworkMessage &msg);
+                           int32_t width, int32_t height, NetworkMessage &msg);
 
 	void AddCreature(NetworkMessage &msg, const Creature *creature, bool known, uint32_t remove);
 	void AddPlayerStats(NetworkMessage &msg);
@@ -440,7 +432,8 @@ private:
 	void MoveDownCreature(NetworkMessage &msg, const Creature *creature, const Position &newPos, const Position &oldPos);
 
 	//shop
-	void AddShopItem(NetworkMessage &msg, const ShopInfo &item);
+	void AddHiddenShopItem(NetworkMessage &msg);
+	void AddShopItem(NetworkMessage &msg, const ShopInfo &item, uint16_t itemId);
 
 	//otclient
 	void parseExtendedOpcode(NetworkMessage &msg);
@@ -468,7 +461,7 @@ private:
 
 	uint32_t eventConnect = 0;
 	uint32_t challengeTimestamp = 0;
-	uint32_t version = g_config.getNumber(ConfigManager::CLIENT_VERSION);
+	uint32_t version = g_configManager().getNumber(CLIENT_VERSION);
 	int32_t clientVersion = 0;
 
 	uint8_t challengeRandom = 0;
@@ -486,4 +479,4 @@ private:
 	void sendSpecialContainersAvailable();
 };
 
-#endif
+#endif  // SRC_SERVER_NETWORK_PROTOCOL_PROTOCOLGAME_H_

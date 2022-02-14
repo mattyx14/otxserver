@@ -9,10 +9,6 @@
 #include <iostream>
 #include <memory>
 
-#include "config/configmanager.h"
-
-extern ConfigManager g_config;
-
 // Tread no further, adventurer!
 // Go back while you still can.
 
@@ -38,36 +34,7 @@ void webhook_init() {
 static int webhook_send_message_(const char *url, const char *payload, std::string *response_body);
 static std::string get_payload(std::string title, std::string message, int color);
 
-void webhook_send_message(std::string title, std::string message, int color) {
-	std::string url = g_config.getString(ConfigManager::DISCORD_WEBHOOK_URL);
-	if (url.empty()) {
-		return;
-	}
-
-	if (!init) {
-		SPDLOG_ERROR("Failed to send webhook message; Did not (successfully) init");
-		return;
-	}
-
-	if (title.empty() || message.empty()) {
-		SPDLOG_ERROR("Failed to send webhook message; "
-                     "title or message to send was empty");
-		return;
-	}
-
-	std::string payload = get_payload(title, message, color);
-	std::string response_body = "";
-	int response_code = webhook_send_message_(url.c_str(), payload.c_str(), &response_body);
-
-	if (response_code != 204 && response_code != -1) {
-		SPDLOG_ERROR("Failed to send webhook message; "
-                     "HTTP request failed with code: {}"
-                     "response body: {} request body: {}",
-                     response_code, response_body, payload);
-	}
-}
-
-void webhook_send_specialmessage(std::string title, std::string message, int color, std::string url) {
+void webhook_send_message(std::string title, std::string message, int color, std::string url) {
 	if (url.empty()) {
 		return;
 	}
@@ -111,8 +78,8 @@ static std::string get_payload(std::string title, std::string message, int color
 
 	std::stringstream footer_text;
 	footer_text
-			<< g_config.getString(ConfigManager::IP) << ":"
-			<< g_config.getNumber(ConfigManager::GAME_PORT) << " | "
+			<< g_configManager().getString(IP) << ":"
+			<< g_configManager().getNumber(GAME_PORT) << " | "
 			<< time_buf << " UTC";
 
 	Json::Value footer(Json::objectValue);
@@ -163,7 +130,7 @@ static int webhook_send_message_(const char *url, const char *payload, std::stri
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, reinterpret_cast<void *>(&response_body));
 
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-	curl_easy_setopt(curl, CURLOPT_USERAGENT, "otservbr-global (https://github.com/Hydractify/otservbr-global)");
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, "");
 
 	CURLcode res = curl_easy_perform(curl);
 

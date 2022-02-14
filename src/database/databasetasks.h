@@ -17,13 +17,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_DATABASETASKS_H_9CBA08E9F5FEBA7275CCEE6560059576
-#define FS_DATABASETASKS_H_9CBA08E9F5FEBA7275CCEE6560059576
+#ifndef SRC_DATABASE_DATABASETASKS_H_
+#define SRC_DATABASE_DATABASETASKS_H_
 
 #include <condition_variable>
 #include "utils/thread_holder_base.h"
 #include "database/database.h"
-#include "utils/enums.h"
+#include "declarations.hpp"
 
 struct DatabaseTask {
 	DatabaseTask(std::string&& initQuery, std::function<void(DBResult_ptr, bool)>&& initCallback, bool initStore) :
@@ -38,11 +38,11 @@ class DatabaseTasks : public ThreadHolder<DatabaseTasks>
 {
 	public:
 		DatabaseTasks();
-    bool SetDatabaseInterface(Database *database);
-    void start();
-    void startThread();
-    void flush();
-    void shutdown();
+		bool SetDatabaseInterface(Database *database);
+		void start();
+		void startThread();
+		void flush();
+		void shutdown();
 
 		void addTask(std::string query, std::function<void(DBResult_ptr, bool)> callback = nullptr, bool store = false);
 
@@ -55,8 +55,10 @@ class DatabaseTasks : public ThreadHolder<DatabaseTasks>
 		std::list<DatabaseTask> tasks;
 		std::mutex taskLock;
 		std::condition_variable taskSignal;
+		std::condition_variable flushSignal;
+		bool flushTasks = false;
 };
 
 extern DatabaseTasks g_databaseTasks;
 
-#endif
+#endif  // SRC_DATABASE_DATABASETASKS_H_

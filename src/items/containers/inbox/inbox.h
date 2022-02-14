@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_INBOX_H_C3EF10190329447883B9C3479234EE5C
-#define FS_INBOX_H_C3EF10190329447883B9C3479234EE5C
+#ifndef SRC_ITEMS_CONTAINERS_INBOX_INBOX_H_
+#define SRC_ITEMS_CONTAINERS_INBOX_INBOX_H_
 
 #include "items/containers/container.h"
 
@@ -35,8 +35,8 @@ class Inbox final : public Container
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t flags, Creature* actor = nullptr) const override;
 
-		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
 
 		//overrides
 		bool canRemove() const override {
@@ -54,5 +54,5 @@ class Inbox final : public Container
 		uint32_t maxInboxItems;
 };
 
-#endif
+#endif  // SRC_ITEMS_CONTAINERS_INBOX_INBOX_H_
 

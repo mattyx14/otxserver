@@ -17,12 +17,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_TASKS_H_A66AC384766041E59DCA059DAB6E1976
-#define FS_TASKS_H_A66AC384766041E59DCA059DAB6E1976
+#ifndef SRC_GAME_SCHEDULING_TASKS_H_
+#define SRC_GAME_SCHEDULING_TASKS_H_
 
 #include <condition_variable>
+
+#include "declarations.hpp"
 #include "utils/thread_holder_base.h"
-#include "utils/enums.h"
 
 const int DISPATCHER_TASK_EXPIRATION = 2000;
 const auto SYSTEM_TIME_ZERO = std::chrono::system_clock::time_point(std::chrono::milliseconds(0));
@@ -86,4 +87,4 @@ class Dispatcher : public ThreadHolder<Dispatcher> {
 
 extern Dispatcher g_dispatcher;
 
-#endif
+#endif  // SRC_GAME_SCHEDULING_TASKS_H_

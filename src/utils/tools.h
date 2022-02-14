@@ -17,16 +17,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_TOOLS_H_5F9A9742DA194628830AA1C64909AE43
-#define FS_TOOLS_H_5F9A9742DA194628830AA1C64909AE43
+#ifndef SRC_UTILS_TOOLS_H_
+#define SRC_UTILS_TOOLS_H_
 
 #include <random>
 #include <string>
 #include <regex>
 #include <boost/algorithm/string.hpp>
+
+#include "utils/utils_definitions.hpp"
+#include "declarations.hpp"
 #include "game/movement/position.h"
-#include "utils/const.h"
-#include "utils/enums.h"
 
 void printXMLError(const std::string& where, const std::string& fileName, const pugi::xml_parse_result& result);
 
@@ -99,7 +100,7 @@ CombatType_t indexToCombatType(size_t v);
 uint8_t serverFluidToClient(uint8_t serverFluid);
 uint8_t clientFluidToServer(uint8_t clientFluid);
 
-itemAttrTypes stringToItemAttribute(const std::string& str);
+ItemAttrTypes stringToItemAttribute(const std::string& str);
 
 const char* getReturnMessage(ReturnValue value);
 
@@ -130,4 +131,4 @@ static inline Cipbia_Elementals_t getCipbiaElement(CombatType_t combatType) {
 	}
 }
 
-#endif
+#endif  // SRC_UTILS_TOOLS_H_

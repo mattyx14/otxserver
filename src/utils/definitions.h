@@ -17,12 +17,12 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_DEFINITIONS_H_877452FEC245450C9F96B8FD268D8963
-#define FS_DEFINITIONS_H_877452FEC245450C9F96B8FD268D8963
+#ifndef SRC_UTILS_DEFINITIONS_H_
+#define SRC_UTILS_DEFINITIONS_H_
 
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
-static constexpr auto STATUS_SERVER_VERSION = "6.1";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "OTServBR-Global Team, Mark Samman, The Forgotten Server Developers and OTX Server Team";
+static constexpr auto STATUS_SERVER_VERSION = "6.2";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "OpenTibiaBR Organization, OTX Server Team and Mark Samman";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;
 static constexpr auto AUTHENTICATOR_PERIOD = 30U;
@@ -44,6 +44,10 @@ static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 #ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
+#endif
+
+#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
+#define OS_WINDOWS
 #endif
 
 #define WIN32_LEAN_AND_MEAN
@@ -79,4 +83,4 @@ static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 
 typedef int error_t;
 
-#endif
+#endif  // SRC_UTILS_DEFINITIONS_H_

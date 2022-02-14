@@ -1,6 +1,6 @@
 {
   "name": "otxsr",
-  "version-string": "6.0.0",
+  "version-string": "6.2.0",
   "dependencies": [
     "boost-asio",
     "boost-lockfree",

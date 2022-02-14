@@ -1,6 +1,6 @@
 /**
  * @file connection.h
- * 
+ *
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -19,11 +19,12 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_CONNECTION_H_
-#define OT_SRC_CONNECTION_H_
+#ifndef SRC_SERVER_NETWORK_CONNECTION_CONNECTION_H_
+#define SRC_SERVER_NETWORK_CONNECTION_CONNECTION_H_
 
 #include <unordered_set>
 
+#include "declarations.hpp"
 #include "server/network/message/networkmessage.h"
 
 static constexpr int32_t CONNECTION_WRITE_TIMEOUT = 30;
@@ -67,16 +68,6 @@ class Connection : public std::enable_shared_from_this<Connection>
 		// non-copyable
 		Connection(const Connection&) = delete;
 		Connection& operator=(const Connection&) = delete;
-
-		enum ConnectionState_t : int8_t {
-			CONNECTION_STATE_DISCONNECTED,
-			CONNECTION_STATE_CONNECTING_STAGE1,
-			CONNECTION_STATE_CONNECTING_STAGE2,
-			CONNECTION_STATE_GAME,
-			CONNECTION_STATE_PENDING
-		};
-
-		enum { FORCE_CLOSE = true };
 
 		Connection(boost::asio::io_service& init_io_service,
 			ConstServicePort_ptr init_service_port) :
@@ -146,4 +137,4 @@ class Connection : public std::enable_shared_from_this<Connection>
 		bool receivedLastChar;
 };
 
-#endif
+#endif  // SRC_SERVER_NETWORK_CONNECTION_CONNECTION_H_

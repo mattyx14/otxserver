@@ -19,13 +19,11 @@
 
 #include "otpch.h"
 
-#include "config/configmanager.h"
 #include "creatures/combat/condition.h"
 #include "game/game.h"
 
 extern Game g_game;
 extern Monsters g_monsters;
-extern ConfigManager g_config;
 
 bool Condition::setParam(ConditionParam_t param, int32_t value)
 {
@@ -905,10 +903,10 @@ bool ConditionRegeneration::setParam(ConditionParam_t param, int32_t value)
 
 uint32_t ConditionRegeneration::getHealthTicks(Creature* creature) const
 {
-	Player* player = creature->getPlayer();
+	const Player* player = creature->getPlayer();
 
 	if (player != nullptr && isBuff) {
-		return healthTicks / g_config.getFloat(ConfigManager::RATE_SPELL_COOLDOWN);
+		return healthTicks / g_configManager().getFloat(RATE_SPELL_COOLDOWN);
 	}
 
 	return healthTicks;
@@ -916,10 +914,10 @@ uint32_t ConditionRegeneration::getHealthTicks(Creature* creature) const
 
 uint32_t ConditionRegeneration::getManaTicks(Creature* creature) const
 {
-	Player* player = creature->getPlayer();
+	const Player* player = creature->getPlayer();
 
 	if (player != nullptr && isBuff) {
-		return manaTicks / g_config.getFloat(ConfigManager::RATE_SPELL_COOLDOWN);
+		return manaTicks / g_configManager().getFloat(RATE_SPELL_COOLDOWN);
 	}
 
 	return manaTicks;

@@ -21,16 +21,14 @@
 
 #include "otpch.h"
 
-#include "config/configmanager.h"
+#include "creatures/monsters/monster.h"
 #include "game/game.h"
 #include "creatures/combat/spells.h"
 #include "lua/creature/events.h"
-#include "lua/callbacks/creaturecallback.h"
 
 extern Game g_game;
 extern Monsters g_monsters;
 extern Events* g_events;
-extern ConfigManager g_config;
 
 int32_t Monster::despawnRange;
 int32_t Monster::despawnRadius;
@@ -54,7 +52,7 @@ Monster::Monster(MonsterType* mType) :
 	defaultOutfit = mType->info.outfit;
 	currentOutfit = mType->info.outfit;
 	skull = mType->info.skull;
-	float multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_HEALTH);
+	float multiplier = g_configManager().getFloat(RATE_MONSTER_HEALTH);
 	health = mType->info.health*multiplier;
 	healthMax = mType->info.healthMax*multiplier;
 	baseSpeed = mType->info.baseSpeed;
@@ -132,15 +130,31 @@ void Monster::onCreatureAppear(Creature* creature, bool isLogin)
 {
 	Creature::onCreatureAppear(creature, isLogin);
 
-	// onCreatureAppear(self, creature)
-	CreatureCallback callback = CreatureCallback(mType->info.scriptInterface, this);
-	if (callback.startScriptInterface(mType->info.creatureAppearEvent)) {
-		callback.pushSpecificCreature(this);
-		callback.pushCreature(creature);
-	}
+	if (mType->info.creatureAppearEvent != -1) {
+		// onCreatureAppear(self, creature)
+		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
+		if (!scriptInterface->reserveScriptEnv()) {
+			SPDLOG_ERROR("[Monster::onCreatureAppear - Monster {} creature {}] "
+                         "Call stack overflow. Too many lua script calls being nested.",
+                         getName(), creature->getName());
+			return;
+		}
 
-	if (callback.persistLuaState()) {
-		return;
+		ScriptEnvironment* env = scriptInterface->getScriptEnv();
+		env->setScriptId(mType->info.creatureAppearEvent, scriptInterface);
+
+		lua_State* L = scriptInterface->getLuaState();
+		scriptInterface->pushFunction(mType->info.creatureAppearEvent);
+
+		LuaScriptInterface::pushUserdata<Monster>(L, this);
+		LuaScriptInterface::setMetatable(L, -1, "Monster");
+
+		LuaScriptInterface::pushUserdata<Creature>(L, creature);
+		LuaScriptInterface::setCreatureMetatable(L, -1, creature);
+
+		if (scriptInterface->callFunction(2)) {
+			return;
+		}
 	}
 
 	if (creature == this) {
@@ -160,20 +174,36 @@ void Monster::onRemoveCreature(Creature* creature, bool isLogout)
 {
 	Creature::onRemoveCreature(creature, isLogout);
 
-	// onCreatureDisappear(self, creature)
-	CreatureCallback callback = CreatureCallback(mType->info.scriptInterface, this);
-	if (callback.startScriptInterface(mType->info.creatureDisappearEvent)) {
-		callback.pushSpecificCreature(this);
-		callback.pushCreature(creature);
-	}
+	if (mType->info.creatureDisappearEvent != -1) {
+		// onCreatureDisappear(self, creature)
+		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
+		if (!scriptInterface->reserveScriptEnv()) {
+			SPDLOG_ERROR("[Monster::onCreatureDisappear - Monster {} creature {}] "
+                         "Call stack overflow. Too many lua script calls being nested.",
+                         getName(), creature->getName());
+			return;
+		}
 
-	if (callback.persistLuaState()) {
-		return;
+		ScriptEnvironment* env = scriptInterface->getScriptEnv();
+		env->setScriptId(mType->info.creatureDisappearEvent, scriptInterface);
+
+		lua_State* L = scriptInterface->getLuaState();
+		scriptInterface->pushFunction(mType->info.creatureDisappearEvent);
+
+		LuaScriptInterface::pushUserdata<Monster>(L, this);
+		LuaScriptInterface::setMetatable(L, -1, "Monster");
+
+		LuaScriptInterface::pushUserdata<Creature>(L, creature);
+		LuaScriptInterface::setCreatureMetatable(L, -1, creature);
+
+		if (scriptInterface->callFunction(2)) {
+			return;
+		}
 	}
 
 	if (creature == this) {
-		if (spawn) {
-			spawn->startSpawnCheck();
+		if (spawnMonster) {
+			spawnMonster->startSpawnMonsterCheck();
 		}
 
 		setIdle(true);
@@ -183,7 +213,7 @@ void Monster::onRemoveCreature(Creature* creature, bool isLogout)
 }
 
 void Monster::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
-							 const Tile* oldTile, const Position& oldPos, bool teleport)
+                              const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
 
@@ -271,21 +301,31 @@ void Monster::onCreatureSay(Creature* creature, SpeakClasses type, const std::st
 {
 	Creature::onCreatureSay(creature, type, text);
 
-	if (!creature->getPlayer()) {
-		return;
-	}
+	if (mType->info.creatureSayEvent != -1) {
+		// onCreatureSay(self, creature, type, message)
+		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
+		if (!scriptInterface->reserveScriptEnv()) {
+			SPDLOG_ERROR("Monster {} creature {}] Call stack overflow. Too many lua "
+				"script calls being nested.", getName(), creature->getName());
+			return;
+		}
 
-	// onCreatureSay(self, creature, type, message)
-	CreatureCallback callback = CreatureCallback(mType->info.scriptInterface, this);
-	if (callback.startScriptInterface(mType->info.creatureSayEvent)) {
-		callback.pushSpecificCreature(this);
-		callback.pushCreature(creature);
-		callback.pushNumber(type);
-		callback.pushString(text);
-	}
+		ScriptEnvironment* env = scriptInterface->getScriptEnv();
+		env->setScriptId(mType->info.creatureSayEvent, scriptInterface);
 
-	if (callback.persistLuaState()) {
-		return;
+		lua_State* L = scriptInterface->getLuaState();
+		scriptInterface->pushFunction(mType->info.creatureSayEvent);
+
+		LuaScriptInterface::pushUserdata<Monster>(L, this);
+		LuaScriptInterface::setMetatable(L, -1, "Monster");
+
+		LuaScriptInterface::pushUserdata<Creature>(L, creature);
+		LuaScriptInterface::setCreatureMetatable(L, -1, creature);
+
+		lua_pushnumber(L, type);
+		LuaScriptInterface::pushString(L, text);
+
+		scriptInterface->callVoidFunction(4);
 	}
 }
 
@@ -324,12 +364,18 @@ void Monster::addTarget(Creature* creature, bool pushFront/* = false*/)
 
 void Monster::removeTarget(Creature* creature)
 {
+	if (!creature) {
+		return;
+	}
+
 	auto it = std::find(targetList.begin(), targetList.end(), creature);
 	if (it != targetList.end()) {
 		creature->decrementReferenceCounter();
 		targetList.erase(it);
-		if(!master && getFaction() != FACTION_DEFAULT && creature->getPlayer())
+
+		if (!master && getFaction() != FACTION_DEFAULT && creature->getPlayer()) {
 			totalPlayersOnScreen--;
+		}
 	}
 }
 
@@ -438,7 +484,7 @@ bool Monster::isOpponent(const Creature* creature) const
 		if (creature != getMaster()) {
 			return true;
 		}
-	} else if (creature->getPlayer() &&  creature->getPlayer() && creature->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) {
+	} else if (creature->getPlayer() && creature->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) {
 		return false;
 	} else {
 		if (getFaction() != FACTION_DEFAULT) {
@@ -480,14 +526,14 @@ bool Monster::searchTarget(TargetSearchType_t searchType /*= TARGETSEARCH_DEFAUL
 
 		searchType = TARGETSEARCH_NEAREST;
 
-		int32_t sum = this->mType->info.targetStrategiesNearestPercent;
+		int32_t sum = this->mType->info.strategiesTargetNearest;
 		if (rnd > sum) {
 			searchType = TARGETSEARCH_HP;
-			sum += this->mType->info.targetStrategiesLowerHPPercent;
+			sum += this->mType->info.strategiesTargetHealth;
 
 			if (rnd > sum) {
 				searchType = TARGETSEARCH_DAMAGE;
-				sum += this->mType->info.targetStrategiesMostDamagePercent;
+				sum += this->mType->info.strategiesTargetDamage;
 				if (rnd > sum) {
 					searchType = TARGETSEARCH_RANDOM;
 				}
@@ -637,7 +683,7 @@ void Monster::onFollowCreatureComplete(const Creature* creature)
 }
 
 BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-							  bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */)
+                              bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */)
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor);
 
@@ -756,11 +802,29 @@ void Monster::onThink(uint32_t interval)
 {
 	Creature::onThink(interval);
 
-	// onThink(self, interval)
-	CreatureCallback callback = CreatureCallback(mType->info.scriptInterface, this);
-	if (callback.startScriptInterface(mType->info.thinkEvent)) {
-		callback.pushSpecificCreature(this);
-		callback.pushNumber(interval);
+	if (mType->info.thinkEvent != -1) {
+		// onThink(self, interval)
+		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
+		if (!scriptInterface->reserveScriptEnv()) {
+			SPDLOG_ERROR("Monster {} Call stack overflow. Too many lua script calls "
+				"being nested.", getName());
+			return;
+		}
+
+		ScriptEnvironment* env = scriptInterface->getScriptEnv();
+		env->setScriptId(mType->info.thinkEvent, scriptInterface);
+
+		lua_State* L = scriptInterface->getLuaState();
+		scriptInterface->pushFunction(mType->info.thinkEvent);
+
+		LuaScriptInterface::pushUserdata<Monster>(L, this);
+		LuaScriptInterface::setMetatable(L, -1, "Monster");
+
+		lua_pushnumber(L, interval);
+
+		if (scriptInterface->callFunction(2)) {
+			return;
+		}
 	}
 
 	if (challengeMeleeDuration != 0) {
@@ -770,10 +834,6 @@ void Monster::onThink(uint32_t interval)
 			targetDistance = mType->info.targetDistance;
 			g_game.updateCreatureIcon(this);
 		}
-	}
-
-	if (callback.persistLuaState()) {
-		return;
 	}
 
 	if (!mType->canSpawn(position)) {
@@ -854,9 +914,9 @@ void Monster::doAttacking(uint32_t interval)
 
 				float multiplier;
 				if (maxCombatValue > 0) { //defense
-					multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_DEFENSE);
+					multiplier = g_configManager().getFloat(RATE_MONSTER_DEFENSE);
 				} else { //attack
-					multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_ATTACK);
+					multiplier = g_configManager().getFloat(RATE_MONSTER_ATTACK);
 				}
 
 				minCombatValue = spellBlock.minCombatValue * multiplier;
@@ -900,7 +960,7 @@ bool Monster::canUseAttack(const Position& pos, const Creature* target) const
 }
 
 bool Monster::canUseSpell(const Position& pos, const Position& targetPos,
-						  const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks)
+                           const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks)
 {
 	inRange = true;
 
@@ -1024,7 +1084,7 @@ void Monster::onThinkDefense(uint32_t interval)
 				}
 			}
 
-			if (summonCount >= summonBlock.max) {
+			if (summonCount >= summonBlock.count) {
 				continue;
 			}
 
@@ -1073,11 +1133,6 @@ void Monster::onThinkYell(uint32_t interval)
 			}
 		}
 	}
-}
-
-void Monster::onCreatureWalk()
-{
-	Creature::onCreatureWalk();
 }
 
 bool Monster::pushItem(Item* item)
@@ -1254,7 +1309,7 @@ bool Monster::getRandomStep(const Position& creaturePos, Direction& moveDirectio
 }
 
 bool Monster::getDanceStep(const Position& creaturePos, Direction& moveDirection,
-						   bool keepAttack /*= true*/, bool keepDistance /*= true*/)
+                           bool keepAttack /*= true*/, bool keepDistance /*= true*/)
 {
 	bool canDoAttackNow = canUseAttack(creaturePos, attackedCreature);
 
@@ -1891,7 +1946,7 @@ Item* Monster::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature
 
 bool Monster::isInSpawnRange(const Position& pos) const
 {
-	if (!spawn) {
+	if (!spawnMonster) {
 		return true;
 	}
 
@@ -1899,7 +1954,7 @@ bool Monster::isInSpawnRange(const Position& pos) const
 		return true;
 	}
 
-	if (!Spawns::isInZone(masterPos, Monster::despawnRadius, pos)) {
+	if (!SpawnsMonster::isInZone(masterPos, Monster::despawnRadius, pos)) {
 		return false;
 	}
 
@@ -1922,9 +1977,9 @@ bool Monster::getCombatValues(int32_t& min, int32_t& max)
 
 	float multiplier;
 	if (maxCombatValue > 0) { //defense
-		multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_DEFENSE);
+		multiplier = g_configManager().getFloat(RATE_MONSTER_DEFENSE);
 	} else { //attack
-		multiplier = g_config.getFloat(ConfigManager::RATE_MONSTER_ATTACK);
+		multiplier = g_configManager().getFloat(RATE_MONSTER_ATTACK);
 	}
 
 	min = minCombatValue * multiplier;

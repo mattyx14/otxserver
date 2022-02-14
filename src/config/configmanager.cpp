@@ -19,13 +19,10 @@
 
 #include "otpch.h"
 
-#if __has_include("luajit/lua.hpp")
-	#include <luajit/lua.hpp>
-#else
-	#include <lua.hpp>
-#endif
+#include "lua/scripts/luajit_sync.hpp"
 
 #include "config/configmanager.h"
+#include "declarations.hpp"
 #include "game/game.h"
 
 #if LUA_VERSION_NUM >= 502
@@ -114,24 +111,22 @@ bool ConfigManager::load()
 	if (!loaded) { //info that must be loaded one time (unless we reset the modules involved)
 		boolean[BIND_ONLY_GLOBAL_ADDRESS] = getGlobalBoolean(L, "bindOnlyGlobalAddress", false);
 		boolean[OPTIMIZE_DATABASE] = getGlobalBoolean(L, "startupDatabaseOptimization", true);
+		boolean[TOGGLE_MAP_CUSTOM] = getGlobalBoolean(L, "toggleMapCustom", true);
 
 		string[IP] = getGlobalString(L, "ip", "127.0.0.1");
-		string[MAP_NAME] = getGlobalString(L, "mapName", "otservbr");
-		string[MAP_AUTHOR] = getGlobalString(L, "mapAuthor", "OTServBR");
+		string[MAP_NAME] = getGlobalString(L, "mapName", "canary");
+		string[MAP_AUTHOR] = getGlobalString(L, "mapAuthor", "Eduardo Dantas");
 
 		string[MAP_CUSTOM_NAME] = getGlobalString(L, "mapCustomName", "");
-		string[MAP_CUSTOM_FILE] = getGlobalString(L, "mapCustomFile", "");
-		string[MAP_CUSTOM_SPAWN] = getGlobalString(L, "mapCustomSpawn", "");
 		string[MAP_CUSTOM_AUTHOR] = getGlobalString(L, "mapCustomAuthor", "OTServBR");
-		boolean[MAP_CUSTOM_ENABLED] = getGlobalBoolean(L, "mapCustomEnabled", true);
 
 		string[HOUSE_RENT_PERIOD] = getGlobalString(L, "houseRentPeriod", "never");
 		string[MYSQL_HOST] = getGlobalString(L, "mysqlHost", "127.0.0.1");
 		string[MYSQL_USER] = getGlobalString(L, "mysqlUser", "root");
 		string[MYSQL_PASS] = getGlobalString(L, "mysqlPass", "");
-		string[MYSQL_DB] = getGlobalString(L, "mysqlDatabase", "otservbr-global");
+		string[MYSQL_DB] = getGlobalString(L, "mysqlDatabase", "canary");
 		string[MYSQL_SOCK] = getGlobalString(L, "mysqlSock", "");
-		string[CLIENT_VERSION_STR] = getGlobalString(L, "clientVersionStr", "12.72");
+		string[CLIENT_VERSION_STR] = getGlobalString(L, "clientVersionStr", "12.85");
 
 		integer[SQL_PORT] = getGlobalNumber(L, "mysqlPort", 3306);
 		integer[GAME_PORT] = getGlobalNumber(L, "gameProtocolPort", 7172);
@@ -140,7 +135,7 @@ bool ConfigManager::load()
 
 		integer[MARKET_OFFER_DURATION] = getGlobalNumber(L, "marketOfferDuration", 30 * 24 * 60 * 60);
 
-		integer[CLIENT_VERSION] = getGlobalNumber(L, "clientVersion", 1272);
+		integer[CLIENT_VERSION] = getGlobalNumber(L, "clientVersion", 1285);
 		integer[FREE_DEPOT_LIMIT] = getGlobalNumber(L, "freeDepotLimit", 2000);
 		integer[PREMIUM_DEPOT_LIMIT] = getGlobalNumber(L, "premiumDepotLimit", 8000);
 		integer[DEPOT_BOXES] = getGlobalNumber(L, "depotBoxes", 19);
@@ -176,21 +171,20 @@ bool ConfigManager::load()
 	boolean[SERVER_SAVE_SHUTDOWN] = getGlobalBoolean(L, "serverSaveShutdown", true);
 	boolean[STOREMODULES] = getGlobalBoolean(L, "gamestoreByModules", true);
 	boolean[ONLY_INVITED_CAN_MOVE_HOUSE_ITEMS] = getGlobalBoolean(L, "onlyInvitedCanMoveHouseItems", true);
-	boolean[ONLY_PREMIUM_ACCOUNT] = getGlobalBoolean(L, "onlyPremiumAccount", false);
+	boolean[PUSH_WHEN_ATTACKING] = getGlobalBoolean(L, "pushWhenAttacking", false);
 
 	boolean[WEATHER_RAIN] = getGlobalBoolean(L, "weatherRain", false);
 	boolean[WEATHER_THUNDER] = getGlobalBoolean(L, "thunderEffect", false);
 	boolean[ALL_CONSOLE_LOG] = getGlobalBoolean(L, "allConsoleLog", false);
-
-	boolean[SORT_LOOT_BY_CHANCE] = getGlobalBoolean(L, "sortLootByChance", false);
-
-	boolean[FREE_QUESTS] = getGlobalBoolean(L, "freeQuests", false);
-	boolean[SAVE_INTERVAL] = getGlobalBoolean(L, "saveInterval", false);
-	boolean[SAVE_INTERVAL_CLEAN_MAP] = getGlobalBoolean(L, "saveIntervalCleanMap", false);
+	boolean[TOGGLE_FREE_QUEST] = getGlobalBoolean(L, "freeQuests", false);
 	boolean[STAMINA_TRAINER] = getGlobalBoolean(L, "staminaTrainer", false);
 	boolean[STAMINA_PZ] = getGlobalBoolean(L, "staminaPz", false);
+	boolean[SORT_LOOT_BY_CHANCE] = getGlobalBoolean(L, "sortLootByChance", false);
+	boolean[TOGLE_SAVE_INTERVAL] = getGlobalBoolean(L, "togleSaveInterval", false);
+	boolean[TOGLE_SAVE_INTERVAL_CLEAN_MAP] = getGlobalBoolean(L, "togleSaveIntervalCleanMap", false);
+
+	boolean[ONLY_PREMIUM_ACCOUNT] = getGlobalBoolean(L, "onlyPremiumAccount", false);
 	boolean[TOGLE_IMBUEMENT_SHRINE_STORAGE] = getGlobalBoolean(L, "togleImbuementShrineStorage", true);
-	boolean[RATE_USE_STAGES] = getGlobalBoolean(L, "rateUseStages", true);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -202,6 +196,7 @@ bool ConfigManager::load()
 	string[WORLD_TYPE] = getGlobalString(L, "worldType", "pvp");
 	string[STORE_IMAGES_URL] = getGlobalString(L, "coinImagesURL", "");
 	string[DISCORD_WEBHOOK_URL] = getGlobalString(L, "discordWebhookURL", "");
+	string[SAVE_INTERVAL_TYPE] = getGlobalString(L, "saveIntervalType", "");
 
 	integer[MAX_PLAYERS] = getGlobalNumber(L, "maxPlayers");
 	integer[PZ_LOCKED] = getGlobalNumber(L, "pzLocked", 60000);
@@ -238,18 +233,19 @@ bool ConfigManager::load()
 	integer[ORANGE_SKULL_DURATION] = getGlobalNumber(L, "orangeSkullDuration", 7);
 	integer[SERVER_SAVE_NOTIFY_DURATION] = getGlobalNumber(L, "serverSaveNotifyDuration", 5);
 
-	integer[SAVE_INTERVAL_TIME] = getGlobalNumber(L, "saveIntervalTime", 1);
+	integer[PARTY_LIST_MAX_DISTANCE] = getGlobalNumber(L, "partyListMaxDistance", 0);
+
+	integer[PUSH_DELAY] = getGlobalNumber(L, "pushDelay", 1000);
+	integer[PUSH_DISTANCE_DELAY] = getGlobalNumber(L, "pushDistanceDelay", 1500);
+
 	integer[STAMINA_ORANGE_DELAY] = getGlobalNumber(L, "staminaOrangeDelay", 1);
 	integer[STAMINA_GREEN_DELAY] = getGlobalNumber(L, "staminaGreenDelay", 5);
 	integer[STAMINA_PZ_GAIN] = getGlobalNumber(L, "staminaPzGain", 1);
 	integer[STAMINA_TRAINER_DELAY] = getGlobalNumber(L, "staminaTrainerDelay", 5);
 	integer[STAMINA_TRAINER_GAIN] = getGlobalNumber(L, "staminaTrainerGain", 1);
+	integer[SAVE_INTERVAL_TIME] = getGlobalNumber(L, "saveIntervalTime", 1);
 	integer[MAX_ALLOWED_ON_A_DUMMY] = getGlobalNumber(L, "maxAllowedOnADummy", 1);
-
-	integer[PARTY_LIST_MAX_DISTANCE] = getGlobalNumber(L, "partyListMaxDistance", 0);
-
-	integer[PUSH_DELAY] = getGlobalNumber(L, "pushDelay", 1000);
-	integer[PUSH_DISTANCE_DELAY] = getGlobalNumber(L, "pushDistanceDelay", 1500);
+	integer[FREE_QUEST_STAGE] = getGlobalNumber(L, "freeQuestStage", 1);
 
 	floating[RATE_HEALTH_REGEN] = getGlobalFloat(L, "rateHealthRegen", 1.0);
 	floating[RATE_HEALTH_REGEN_SPEED] = getGlobalFloat(L, "rateHealthRegenSpeed", 1.0);
@@ -257,15 +253,18 @@ bool ConfigManager::load()
 	floating[RATE_MANA_REGEN_SPEED] = getGlobalFloat(L, "rateManaRegenSpeed", 1.0);
 	floating[RATE_SOUL_REGEN] = getGlobalFloat(L, "rateSoulRegen", 1.0);
 	floating[RATE_SOUL_REGEN_SPEED] = getGlobalFloat(L, "rateSoulRegenSpeed", 1.0);
-
 	floating[RATE_SPELL_COOLDOWN] = getGlobalFloat(L, "rateSpellCooldown", 1.0);
 	floating[RATE_ATTACK_SPEED] = getGlobalFloat(L, "rateAttackSpeed", 1.0);
 	floating[RATE_OFFLINE_TRAINING_SPEED] = getGlobalFloat(L, "rateOfflineTrainingSpeed", 1.0);
 	floating[RATE_EXERCISE_TRAINING_SPEED] = getGlobalFloat(L, "rateExerciseTrainingSpeed", 1.0);
-
+	
 	floating[RATE_MONSTER_HEALTH] = getGlobalFloat(L, "rateMonsterHealth", 1.0);
 	floating[RATE_MONSTER_ATTACK] = getGlobalFloat(L, "rateMonsterAttack", 1.0);
 	floating[RATE_MONSTER_DEFENSE] = getGlobalFloat(L, "rateMonsterDefense", 1.0);
+
+	floating[RATE_NPC_HEALTH] = getGlobalFloat(L, "rateNpcHealth", 1.0);
+	floating[RATE_NPC_ATTACK] = getGlobalFloat(L, "rateNpcAttack", 1.0);
+	floating[RATE_NPC_DEFENSE] = getGlobalFloat(L, "rateNpcDefense", 1.0);
 
 	loaded = true;
 	lua_close(L);
@@ -275,7 +274,7 @@ bool ConfigManager::load()
 bool ConfigManager::reload()
 {
 	bool result = load();
-	if (transformToSHA1(getString(ConfigManager::MOTD)) != g_game.getMotdHash()) {
+	if (transformToSHA1(getString(MOTD)) != g_game.getMotdHash()) {
 		g_game.incrementMotdNum();
 	}
 	return result;
@@ -283,7 +282,7 @@ bool ConfigManager::reload()
 
 static std::string dummyStr;
 
-const std::string& ConfigManager::getString(string_config_t what) const
+const std::string& ConfigManager::getString(stringConfig_t what) const
 {
 	if (what >= LAST_STRING_CONFIG) {
 		SPDLOG_WARN("[ConfigManager::getString] - Accessing invalid index: {}", what);
@@ -292,7 +291,7 @@ const std::string& ConfigManager::getString(string_config_t what) const
 	return string[what];
 }
 
-int32_t ConfigManager::getNumber(integer_config_t what) const
+int32_t ConfigManager::getNumber(integerConfig_t what) const
 {
 	if (what >= LAST_INTEGER_CONFIG) {
 		SPDLOG_WARN("[ConfigManager::getNumber] - Accessing invalid index: {}", what);
@@ -301,7 +300,7 @@ int32_t ConfigManager::getNumber(integer_config_t what) const
 	return integer[what];
 }
 
-int16_t ConfigManager::getShortNumber(integer_config_t what) const
+int16_t ConfigManager::getShortNumber(integerConfig_t what) const
 {
 	if (what >= LAST_INTEGER_CONFIG) {
 		SPDLOG_WARN("[ConfigManager::getShortNumber] - Accessing invalid index: {}", what);
@@ -310,7 +309,7 @@ int16_t ConfigManager::getShortNumber(integer_config_t what) const
 	return integer[what];
 }
 
-bool ConfigManager::getBoolean(boolean_config_t what) const
+bool ConfigManager::getBoolean(booleanConfig_t what) const
 {
 	if (what >= LAST_BOOLEAN_CONFIG) {
 		SPDLOG_WARN("[ConfigManager::getBoolean] - Accessing invalid index: {}", what);
@@ -319,7 +318,7 @@ bool ConfigManager::getBoolean(boolean_config_t what) const
 	return boolean[what];
 }
 
-float ConfigManager::getFloat(floating_config_t what) const
+float ConfigManager::getFloat(floatingConfig_t what) const
 {
 	if (what >= LAST_FLOATING_CONFIG) {
 		SPDLOG_WARN("[ConfigManager::getFLoat] - Accessing invalid index: {}", what);

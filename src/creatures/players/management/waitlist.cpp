@@ -19,11 +19,9 @@
 
 #include "otpch.h"
 
-#include "config/configmanager.h"
 #include "game/game.h"
 #include "creatures/players/management/waitlist.h"
 
-extern ConfigManager g_config;
 extern Game g_game;
 
 
@@ -108,11 +106,11 @@ std::size_t WaitingList::getTime(std::size_t slot)
 bool WaitingList::clientLogin(const Player* player)
 {
 	if (player->hasFlag(PlayerFlag_CanAlwaysLogin) ||
-      player->getAccountType() >= account::ACCOUNT_TYPE_GAMEMASTER) {
+		player->getAccountType() >= account::ACCOUNT_TYPE_GAMEMASTER) {
 		return true;
 	}
 
-	uint32_t maxPlayers = static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_PLAYERS));
+	auto maxPlayers = static_cast<uint32_t>(g_configManager().getNumber(MAX_PLAYERS));
 	if (maxPlayers == 0 || (info->priorityWaitList.empty() && info->waitList.empty() && g_game.getPlayersOnline() < maxPlayers)) {
 		return true;
 	}

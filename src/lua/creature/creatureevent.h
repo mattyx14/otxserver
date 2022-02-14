@@ -17,34 +17,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_CREATUREEVENT_H_73FCAF4608CB41399D53C919316646A9
-#define FS_CREATUREEVENT_H_73FCAF4608CB41399D53C919316646A9
+#ifndef SRC_LUA_CREATURE_CREATUREEVENT_H_
+#define SRC_LUA_CREATURE_CREATUREEVENT_H_
 
-#include "lua/scripts/luascript.h"
 #include "lua/global/baseevents.h"
-#include "utils/enums.h"
+#include "declarations.hpp"
+#include "lua/scripts/luascript.h"
 
 class CreatureEvent;
 using CreatureEvent_ptr = std::unique_ptr<CreatureEvent>;
 
-enum CreatureEventType_t {
-	CREATURE_EVENT_NONE,
-	CREATURE_EVENT_LOGIN,
-	CREATURE_EVENT_LOGOUT,
-	CREATURE_EVENT_THINK,
-	CREATURE_EVENT_PREPAREDEATH,
-	CREATURE_EVENT_DEATH,
-	CREATURE_EVENT_KILL,
-	CREATURE_EVENT_ADVANCE,
-	CREATURE_EVENT_MODALWINDOW,
-	CREATURE_EVENT_TEXTEDIT,
-	CREATURE_EVENT_HEALTHCHANGE,
-	CREATURE_EVENT_MANACHANGE,
-	CREATURE_EVENT_EXTENDED_OPCODE, // otclient additional network opcodes
-};
-
-class CreatureEvent final : public Event
-{
+class CreatureEvent final : public Event {
 	public:
 		explicit CreatureEvent(LuaScriptInterface* interface);
 
@@ -95,8 +78,7 @@ class CreatureEvent final : public Event
 		bool loaded;
 };
 
-class CreatureEvents final : public BaseEvents
-{
+class CreatureEvents final : public BaseEvents {
 	public:
 		CreatureEvents();
 
@@ -128,4 +110,4 @@ class CreatureEvents final : public BaseEvents
 		LuaScriptInterface scriptInterface;
 };
 
-#endif
+#endif  // SRC_LUA_CREATURE_CREATUREEVENT_H_

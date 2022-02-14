@@ -17,13 +17,14 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_HOUSE_H_EB9732E7771A438F9CD0EFA8CB4C58C4
-#define FS_HOUSE_H_EB9732E7771A438F9CD0EFA8CB4C58C4
+#ifndef SRC_MAP_HOUSE_HOUSE_H_
+#define SRC_MAP_HOUSE_HOUSE_H_
 
 #include <set>
 #include <unordered_set>
 
 #include "items/containers/container.h"
+#include "declarations.hpp"
 #include "map/house/housetile.h"
 #include "game/movement/position.h"
 
@@ -96,18 +97,6 @@ class Door final : public Item
 		friend class House;
 };
 
-enum AccessList_t {
-	GUEST_LIST = 0x100,
-	SUBOWNER_LIST = 0x101,
-};
-
-enum AccessHouseLevel_t {
-	HOUSE_NOT_INVITED = 0,
-	HOUSE_GUEST = 1,
-	HOUSE_SUBOWNER = 2,
-	HOUSE_OWNER = 3,
-};
-
 using HouseTileList = std::list<HouseTile*>;
 using HouseBedItemList = std::list<BedItem*>;
 
@@ -136,9 +125,9 @@ class House
 		void updateDoorDescription() const;
 
 		bool canEditAccessList(uint32_t listId, const Player* player);
-		// listId special values:
-		// GUEST_LIST	 guest list
-		// SUBOWNER_LIST subowner list
+		// listId special = values:
+		// GUEST_LIST = guest list
+		// SUBOWNER_LIST = subowner list
 		void setAccessList(uint32_t listId, const std::string& textlist);
 		bool getAccessList(uint32_t listId, std::string& list) const;
 
@@ -230,7 +219,7 @@ class House
 		AccessList guestList;
 		AccessList subOwnerList;
 
-		Container transfer_container{ITEM_LOCKER1};
+		Container transfer_container{ITEM_LOCKER};
 
 		HouseTileList houseTiles;
 		std::list<Door*> doorList;
@@ -256,14 +245,6 @@ class House
 };
 
 using HouseMap = std::map<uint32_t, House*>;
-
-enum RentPeriod_t {
-	RENTPERIOD_DAILY,
-	RENTPERIOD_WEEKLY,
-	RENTPERIOD_MONTHLY,
-	RENTPERIOD_YEARLY,
-	RENTPERIOD_NEVER,
-};
 
 class Houses
 {
@@ -312,4 +293,4 @@ class Houses
 		HouseMap houseMap;
 };
 
-#endif
+#endif  // SRC_MAP_HOUSE_HOUSE_H_

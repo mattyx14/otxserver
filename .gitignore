@@ -376,11 +376,15 @@ client_assertions.txt
 *.manifest
 *.otbm
 *.rar
+*.7z
+*.zip
 
 # SFTP for Sublime
 sftp-config.json
 
 # Binaries
+canary
+canary.old
 otxsr
 otxsr.old
 
@@ -389,3 +393,10 @@ vcpkg_installed
 
 # CLION
 src/cmake-build-debug
+otxsr.exe.manifest
+data/world/map-spawn.xml
+data/world/map-house.xml
+data/world/vanilla-house.xml
+data/world/vanilla-spawn.xml
+data/world/otservbr-house.xml
+data/world/otservbr-spawn.xml

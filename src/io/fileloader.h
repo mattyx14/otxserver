@@ -17,75 +17,67 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_FILELOADER_H_9B663D19E58D42E6BFACFE5B09D7A05E
-#define FS_FILELOADER_H_9B663D19E58D42E6BFACFE5B09D7A05E
+#ifndef SRC_IO_FILELOADER_H_
+#define SRC_IO_FILELOADER_H_
 
 #include <limits>
 #include <vector>
 #include <boost/iostreams/device/mapped_file.hpp>
 
+#include "declarations.hpp"
+
 class PropStream;
 
 namespace OTB {
-using MappedFile = boost::iostreams::mapped_file_source;
-using ContentIt  = MappedFile::iterator;
-using Identifier = std::array<char, 4>;
+	using MappedFile = boost::iostreams::mapped_file_source;
+	using ContentIt = MappedFile::iterator;
+	using Identifier = std::array < char, 4 > ;
 
-struct Node
-{
-	Node() = default;
-	Node(Node&&) = default;
-	Node& operator=(Node&&) = default;
-	Node(const Node&) = delete;
-	Node& operator=(const Node&) = delete;
+	struct Node {
+		Node() =
+			default;
+		Node(Node && ) =
+			default;
+		Node & operator = (Node && ) =
+			default;
+		Node(const Node & ) = delete;
+		Node & operator = (const Node & ) = delete;
 
-	using ChildrenVector = std::vector<Node>;
+		using ChildrenVector = std::vector < Node > ;
 
-	ChildrenVector children;
-	ContentIt propsBegin;
-	ContentIt propsEnd;
-	uint8_t type;
-	enum NodeChar: uint8_t
-	{
-		ESCAPE = 0xFD,
-		START = 0xFE,
-		END = 0xFF,
+		ChildrenVector children;
+		ContentIt propsBegin;
+		ContentIt propsEnd;
+		uint8_t type;
+		enum NodeChar: uint8_t {
+			ESCAPE = 0xFD,
+				START = 0xFE,
+				END = 0xFF,
+		};
 	};
-};
 
-struct LoadError : std::exception {
-	const char* what() const noexcept override = 0;
-};
+	struct LoadError: std::exception {
+		const char * what() const noexcept override = 0;
+	};
 
-struct InvalidOTBFormat final : LoadError {
-	const char* what() const noexcept override {
-		return "Invalid OTBM file format";
-	}
-};
+	struct InvalidOTBFormat final: LoadError {
+		const char * what() const noexcept override {
+			return "Invalid OTBM file format";
+		}
+	};
 
-class Loader {
-	MappedFile fileContents;
-	Node root;
-	std::vector<char> propBuffer;
-public:
-	Loader(const std::string& fileName, const Identifier& acceptedIdentifier);
-	bool getProps(const Node& node, PropStream& props);
-	const Node& parseTree();
-};
+	class Loader {
+		MappedFile fileContents;
+		Node root;
+		std::vector < char > propBuffer;
+		public:
+			Loader(const std::string & fileName,
+				const Identifier & acceptedIdentifier);
+		bool getProps(const Node & node, PropStream & props);
+		const Node & parseTree();
+	};
 
 } //namespace OTB
-
-enum FILELOADER_ERRORS {
-	ERROR_NONE = 0,
-	ERROR_INVALID_FILE_VERSION,
-	ERROR_CAN_NOT_OPEN,
-	ERROR_CAN_NOT_CREATE,
-	ERROR_EOF,
-	ERROR_SEEK_ERROR,
-	ERROR_NOT_OPEN,
-	ERROR_INVALID_NODE,
-	ERROR_INVALID_FORMAT,
-};
 
 class PropStream
 {
@@ -182,4 +174,4 @@ class PropWriteStream
 		std::vector<char> buffer;
 };
 
-#endif
+#endif  // SRC_IO_FILELOADER_H_

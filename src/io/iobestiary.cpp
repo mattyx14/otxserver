@@ -1,6 +1,6 @@
 /**
- * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
+ * Canary - A free and open-source MMORPG server emulator
+ * Copyright (C) 2021 OpenTibiaBR <opentibiabr@outlook.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,11 @@
 
 #include "otpch.h"
 
+#include "declarations.hpp"
+#include "game/game.h"
 #include "io/iobestiary.h"
-#include "utils/enums.h"
 #include "creatures/monsters/monster.h"
 #include "creatures/monsters/monsters.h"
-#include "game/game.h"
 #include "creatures/players/player.h"
 
 extern Game g_game;
@@ -103,6 +103,10 @@ bool IOBestiary::parseCharmCombat(Charm* charm, Player* player, Creature* target
 
 Charm* IOBestiary::getBestiaryCharm(charmRune_t activeCharm, bool force /*= false*/)
 {
+	if (!activeCharm) {
+		return nullptr;
+	}
+
 	std::vector<Charm*> charmInternal = g_game.getCharmList();
 	for (Charm* tmpCharm : charmInternal) {
 		if (tmpCharm->id == activeCharm) {

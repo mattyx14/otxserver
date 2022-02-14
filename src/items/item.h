@@ -46,86 +46,6 @@ class MagicField;
 class BedItem;
 class Imbuement;
 
-enum ITEMPROPERTY {
-	CONST_PROP_BLOCKSOLID = 0,
-	CONST_PROP_HASHEIGHT,
-	CONST_PROP_BLOCKPROJECTILE,
-	CONST_PROP_BLOCKPATH,
-	CONST_PROP_ISVERTICAL,
-	CONST_PROP_ISHORIZONTAL,
-	CONST_PROP_MOVEABLE,
-	CONST_PROP_IMMOVABLEBLOCKSOLID,
-	CONST_PROP_IMMOVABLEBLOCKPATH,
-	CONST_PROP_IMMOVABLENOFIELDBLOCKPATH,
-	CONST_PROP_NOFIELDBLOCKPATH,
-	CONST_PROP_SUPPORTHANGABLE,
-};
-
-enum TradeEvents_t {
-	ON_TRADE_TRANSFER,
-	ON_TRADE_CANCEL,
-};
-
-enum ItemDecayState_t : uint8_t {
-	DECAYING_FALSE = 0,
-	DECAYING_TRUE,
-	DECAYING_PENDING,
-	DECAYING_STOPPING,
-};
-
-enum AttrTypes_t {
-	//ATTR_DESCRIPTION = 1,
-	//ATTR_EXT_FILE = 2,
-	ATTR_TILE_FLAGS = 3,
-	ATTR_ACTION_ID = 4,
-	ATTR_UNIQUE_ID = 5,
-	ATTR_TEXT = 6,
-	ATTR_DESC = 7,
-	ATTR_TELE_DEST = 8,
-	ATTR_ITEM = 9,
-	ATTR_DEPOT_ID = 10,
-	//ATTR_EXT_SPAWN_FILE = 11,
-	ATTR_RUNE_CHARGES = 12,
-	//ATTR_EXT_HOUSE_FILE = 13,
-	ATTR_HOUSEDOORID = 14,
-	ATTR_COUNT = 15,
-	ATTR_DURATION = 16,
-	ATTR_DECAYING_STATE = 17,
-	ATTR_WRITTENDATE = 18,
-	ATTR_WRITTENBY = 19,
-	ATTR_SLEEPERGUID = 20,
-	ATTR_SLEEPSTART = 21,
-	ATTR_CHARGES = 22,
-	ATTR_CONTAINER_ITEMS = 23,
-	ATTR_NAME = 24,
-	ATTR_ARTICLE = 25,
-	ATTR_PLURALNAME = 26,
-	ATTR_WEIGHT = 27,
-	ATTR_ATTACK = 28,
-	ATTR_DEFENSE = 29,
-	ATTR_EXTRADEFENSE = 30,
-	ATTR_ARMOR = 31,
-	ATTR_HITCHANCE = 32,
-	ATTR_SHOOTRANGE = 33,
-	ATTR_SPECIAL = 34,
-	ATTR_IMBUEMENT_SLOT = 35,
-	ATTR_OPENCONTAINER = 36,
-	ATTR_CUSTOM_ATTRIBUTES = 37,
-	ATTR_QUICKLOOTCONTAINER = 38,
-	ATTR_IMBUEMENT_TYPE = 39
-};
-
-enum Attr_ReadValue {
-	ATTR_READ_CONTINUE,
-	ATTR_READ_ERROR,
-	ATTR_READ_END,
-};
-
-struct ImbuementInfo {
-	Imbuement *imbuement;
-	int32_t duration = 0;
-};
-
 class ItemAttributes
 {
 	public:
@@ -389,10 +309,10 @@ class ItemAttributes
 		};
 
 	private:
-		bool hasAttribute(itemAttrTypes type) const {
-			return (type & static_cast<itemAttrTypes>(attributeBits)) != 0;
+		bool hasAttribute(ItemAttrTypes type) const {
+			return (type & static_cast<ItemAttrTypes>(attributeBits)) != 0;
 		}
-		void removeAttribute(itemAttrTypes type);
+		void removeAttribute(ItemAttrTypes type);
 
 		static std::string emptyString;
 		static int64_t emptyInt;
@@ -407,12 +327,12 @@ class ItemAttributes
 				std::string* string;
 				CustomAttributeMap* custom;
 			} value;
-			itemAttrTypes type;
+			ItemAttrTypes type;
 
 			// Singleton - ensures we don't accidentally copy it
 			Attribute& operator=(const Attribute& other) = delete;
 
-			explicit Attribute(itemAttrTypes type) : type(type) {
+			explicit Attribute(ItemAttrTypes type) : type(type) {
 				memset(&value, 0, sizeof(value));
 			}
 			Attribute(const Attribute& i) {
@@ -457,17 +377,17 @@ class ItemAttributes
 		};
 
 		std::vector<Attribute> attributes;
-		std::underlying_type<itemAttrTypes>::type attributeBits = 0;
+		std::underlying_type_t<ItemAttrTypes> attributeBits = 0;
 
-		const std::string& getStrAttr(itemAttrTypes type) const;
-		void setStrAttr(itemAttrTypes type, const std::string& value);
+		const std::string& getStrAttr(ItemAttrTypes type) const;
+		void setStrAttr(ItemAttrTypes type, const std::string& value);
 
-		int64_t getIntAttr(itemAttrTypes type) const;
-		void setIntAttr(itemAttrTypes type, int64_t value);
-		void increaseIntAttr(itemAttrTypes type, int64_t value);
+		int64_t getIntAttr(ItemAttrTypes type) const;
+		void setIntAttr(ItemAttrTypes type, int64_t value);
+		void increaseIntAttr(ItemAttrTypes type, int64_t value);
 
-		const Attribute* getExistingAttr(itemAttrTypes type) const;
-		Attribute& getAttr(itemAttrTypes type);
+		const Attribute* getExistingAttr(ItemAttrTypes type) const;
+		Attribute& getAttr(ItemAttrTypes type);
 
 		CustomAttributeMap* getCustomAttributeMap() {
 			if (!hasAttribute(ITEM_ATTRIBUTE_CUSTOM)) {
@@ -541,8 +461,8 @@ class ItemAttributes
 		}
 
 	public:
-		static bool isIntAttrType(itemAttrTypes type) {
-			std::underlying_type<itemAttrTypes>::type checkTypes = 0;
+		static bool isIntAttrType(ItemAttrTypes type) {
+			std::underlying_type_t<ItemAttrTypes> checkTypes = 0;
 			checkTypes |= ITEM_ATTRIBUTE_ACTIONID;
 			checkTypes |= ITEM_ATTRIBUTE_UNIQUEID;
 			checkTypes |= ITEM_ATTRIBUTE_DATE;
@@ -563,11 +483,10 @@ class ItemAttributes
 			checkTypes |= ITEM_ATTRIBUTE_IMBUEMENT_SLOT;
 			checkTypes |= ITEM_ATTRIBUTE_OPENCONTAINER;
 			checkTypes |= ITEM_ATTRIBUTE_QUICKLOOTCONTAINER;
-			checkTypes |= ITEM_ATTRIBUTE_DURATION_TIMESTAMP;
-			return (type & static_cast<itemAttrTypes>(checkTypes)) != 0;
+			return (type & static_cast<ItemAttrTypes>(checkTypes)) != 0;
 		}
-		static bool isStrAttrType(itemAttrTypes type) {
-			std::underlying_type<itemAttrTypes>::type checkTypes = 0;
+		static bool isStrAttrType(ItemAttrTypes type) {
+			std::underlying_type_t<ItemAttrTypes> checkTypes = 0;
 			checkTypes |= ITEM_ATTRIBUTE_DESCRIPTION;
 			checkTypes |= ITEM_ATTRIBUTE_TEXT;
 			checkTypes |= ITEM_ATTRIBUTE_WRITER;
@@ -575,9 +494,9 @@ class ItemAttributes
 			checkTypes |= ITEM_ATTRIBUTE_ARTICLE;
 			checkTypes |= ITEM_ATTRIBUTE_PLURALNAME;
 			checkTypes |= ITEM_ATTRIBUTE_SPECIAL;
-			return (type & static_cast<itemAttrTypes>(checkTypes)) != 0;
+			return (type & static_cast<ItemAttrTypes>(checkTypes)) != 0;
 		}
-		inline static bool isCustomAttrType(itemAttrTypes type) {
+		inline static bool isCustomAttrType(ItemAttrTypes type) {
 			return (type & ITEM_ATTRIBUTE_CUSTOM) != 0;
 		}
 
@@ -652,26 +571,26 @@ class Item : virtual public Thing
 			return nullptr;
 		}
 
-		const std::string& getStrAttr(itemAttrTypes type) const {
+		const std::string& getStrAttr(ItemAttrTypes type) const {
 			if (!attributes) {
 				return ItemAttributes::emptyString;
 			}
 			return attributes->getStrAttr(type);
 		}
-		void setStrAttr(itemAttrTypes type, const std::string& value) {
+		void setStrAttr(ItemAttrTypes type, const std::string& value) {
 			getAttributes()->setStrAttr(type, value);
 		}
 
-		int64_t getIntAttr(itemAttrTypes type) const {
+		int64_t getIntAttr(ItemAttrTypes type) const {
 			if (!attributes) {
 				return 0;
 			}
 			return attributes->getIntAttr(type);
 		}
-		void setIntAttr(itemAttrTypes type, int64_t value) {
+		void setIntAttr(ItemAttrTypes type, int64_t value) {
 			getAttributes()->setIntAttr(type, value);
 		}
-		void increaseIntAttr(itemAttrTypes type, int64_t value) {
+		void increaseIntAttr(ItemAttrTypes type, int64_t value) {
 			getAttributes()->increaseIntAttr(type, value);
 		}
 
@@ -683,12 +602,12 @@ class Item : virtual public Thing
 			return isLootTrackeable;
 		}
 
-		void removeAttribute(itemAttrTypes type) {
+		void removeAttribute(ItemAttrTypes type) {
 			if (attributes) {
 				attributes->removeAttribute(type);
 			}
 		}
-		bool hasAttribute(itemAttrTypes type) const {
+		bool hasAttribute(ItemAttrTypes type) const {
 			if (!attributes) {
 				return false;
 			}
@@ -980,7 +899,7 @@ class Item : virtual public Thing
 		uint32_t getWorth() const;
 		LightInfo getLightInfo() const;
 
-		bool hasProperty(ITEMPROPERTY prop) const;
+		bool hasProperty(ItemProperty prop) const;
 		bool isBlocking() const {
 			return items[id].blockSolid;
 		}

@@ -30,7 +30,7 @@ WORKDIR /srv/build
 RUN cmake -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake .. && make -j`nproc`
 
 # Stage 3: load data and execute
-FROM build
+FROM ubuntu:20.04
 
 COPY --from=build /srv/build/bin/otxsr /bin/otxsr
 COPY LICENSE *.sql key.pem /otxsr/
@@ -39,13 +39,8 @@ COPY config.lua.dist /otxsr/config.lua
 
 WORKDIR /otxsr
 
-RUN sed -i '/mysqlHost = .*$/c\mysqlHost = "mysql"' config.lua \
-  && sed -i '/mysqlUser = .*$/c\mysqlUser = "otserver"' config.lua \
-  && sed -i '/mysqlPass = .*$/c\mysqlPass = "otserver"' config.lua \
-  && sed -i '/mysqlDatabase = .*$/c\mysqlDatabase = "otserver"' config.lua \
-  && unzip -o data/world/world.zip -d data/world/
+RUN apt-get update && apt-get install -y --no-install-recommends libluajit-5.1-dev mariadb-client
 
-VOLUME /otxsr
+COPY docker/server/start.sh start.sh
 
-ENTRYPOINT ["/bin/otxsr"]
-
+ENTRYPOINT ["/otxsr/start.sh"]

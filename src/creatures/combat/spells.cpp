@@ -20,17 +20,16 @@
 #include "otpch.h"
 
 #include "creatures/combat/combat.h"
-#include "config/configmanager.h"
-#include "game/game.h"
-#include "creatures/monsters/monster.h"
-#include "utils/pugicast.h"
 #include "creatures/combat/spells.h"
+#include "creatures/monsters/monster.h"
+#include "game/game.h"
+#include "lua/scripts/lua_environment.hpp"
+#include "utils/pugicast.h"
 
 extern Game g_game;
 extern Spells* g_spells;
 extern Monsters g_monsters;
 extern Vocations g_vocations;
-extern ConfigManager g_config;
 extern LuaEnvironment g_luaEnvironment;
 
 Spells::Spells()
@@ -213,7 +212,8 @@ std::list<uint16_t> Spells::getSpellsByVocation(uint16_t vocationId)
 		vocSpellsIt = vocSpells.find(vocationId);
 
 		if (vocSpellsIt != vocSpells.end()
-				&& vocSpellsIt->second) {
+				&& vocSpellsIt->second)
+		{
 			spellsList.push_back(it.second.getId());
 		}
 	}
@@ -822,17 +822,17 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 void Spell::applyCooldownConditions(Player* player) const
 {
 	if (cooldown > 0) {
-		Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLCOOLDOWN, cooldown / g_config.getFloat(ConfigManager::RATE_SPELL_COOLDOWN), 0, false, spellId);
+		Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLCOOLDOWN, cooldown / g_configManager().getFloat(RATE_SPELL_COOLDOWN), 0, false, spellId);
 		player->addCondition(condition);
 	}
 
 	if (groupCooldown > 0) {
-		Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, groupCooldown / g_config.getFloat(ConfigManager::RATE_SPELL_COOLDOWN), 0, false, group);
+		Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, groupCooldown / g_configManager().getFloat(RATE_SPELL_COOLDOWN), 0, false, group);
 		player->addCondition(condition);
 	}
 
 	if (secondaryGroupCooldown > 0) {
-		Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, secondaryGroupCooldown / g_config.getFloat(ConfigManager::RATE_SPELL_COOLDOWN), 0, false, secondaryGroup);
+		Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, secondaryGroupCooldown / g_configManager().getFloat(RATE_SPELL_COOLDOWN), 0, false, secondaryGroup);
 		player->addCondition(condition);
 	}
 }
@@ -1023,7 +1023,7 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 			return false;
 		}
 	}
-	
+
 	if (!allowOnSelf && playerTarget && playerTarget->getName() == player->getName()) {
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return false;
@@ -1047,8 +1047,8 @@ bool InstantSpell::canThrowSpell(const Creature* creature, const Creature* targe
 	const Position& fromPos = creature->getPosition();
 	const Position& toPos = target->getPosition();
 	if (fromPos.z != toPos.z ||
-	        (range == -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight)) ||
-	        (range != -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight, range, range))) {
+            (range == -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight)) ||
+            (range != -1 && !g_game.canThrowObjectTo(fromPos, toPos, checkLineOfSight, range, range))) {
 		return false;
 	}
 	return true;
@@ -1242,7 +1242,7 @@ bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* t
 	}
 
 	postCastSpell(player);
-	if (hasCharges && item && g_config.getBoolean(ConfigManager::REMOVE_RUNE_CHARGES)) {
+	if (hasCharges && item && g_configManager().getBoolean(REMOVE_RUNE_CHARGES)) {
 		int32_t newCount = std::max<int32_t>(0, item->getItemCount() - 1);
 		g_game.transformItem(item, item->getID(), newCount);
 		player->updateSupplyTracker(item);

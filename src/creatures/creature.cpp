@@ -19,8 +19,8 @@
 
 #include "otpch.h"
 
-#include "config/configmanager.h"
 #include "creatures/creature.h"
+#include "declarations.hpp"
 #include "game/game.h"
 #include "creatures/monsters/monster.h"
 #include "game/scheduling/scheduler.h"
@@ -30,7 +30,6 @@ double Creature::speedB = 261.29;
 double Creature::speedC = -4795.01;
 
 extern Game g_game;
-extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
 
 Creature::Creature()
@@ -469,7 +468,7 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 
 		if (!summons.empty()) {
 			//check if any of our summons is out of range (+/- 2 floors or 30 tiles away)
-			std::forward_list<Creature*> despawnList;
+			std::forward_list<Creature*> despawnMonsterList;
 			for (Creature* summon : summons) {
 				const Position& pos = summon->getPosition();
         if (Position::getDistanceZ(newPos, pos) > 0 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > 15)) {
@@ -477,7 +476,7 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
         }
 			}
 
-			for (Creature* despawnCreature : despawnList) {
+			for (Creature* despawnCreature : despawnMonsterList) {
 				g_game.removeCreature(despawnCreature, true);
 			}
 		}
@@ -631,7 +630,7 @@ void Creature::onDeath()
 	Creature* mostDamageCreature = nullptr;
 
 	const int64_t timeNow = OTSYS_TIME();
-	const uint32_t inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
+	const uint32_t inFightTicks = g_configManager().getNumber(PZ_LOCKED);
 	int32_t mostDamage = 0;
 	std::map<Creature*, uint64_t> experienceMap;
 	for (const auto& it : damageMap) {
@@ -692,7 +691,7 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 {
 	if (!lootDrop && getMonster()) {
 		if (master) {
-			//scripting event - onDeath
+			// Scripting event onDeath
 			const CreatureEventList& deathEvents = getCreatureEvents(CREATURE_EVENT_DEATH);
 			for (CreatureEvent* deathEvent : deathEvents) {
 				deathEvent->executeOnDeath(this, nullptr, lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
@@ -717,24 +716,23 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 		}
 
 		Tile* tile = getTile();
-		if (splash) {
+		if (tile && splash) {
 			g_game.internalAddItem(tile, splash, INDEX_WHEREEVER, FLAG_NOLIMIT);
 			splash->startDecaying();
 		}
 
 		Item* corpse = getCorpse(lastHitCreature, mostDamageCreature);
-		if (corpse) {
+		if (tile && corpse) {
 			g_game.internalAddItem(tile, corpse, INDEX_WHEREEVER, FLAG_NOLIMIT);
-		}
-
-		//scripting event - onDeath
-		for (CreatureEvent* deathEvent : getCreatureEvents(CREATURE_EVENT_DEATH)) {
-			deathEvent->executeOnDeath(this, corpse, lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
-		}
-
-		if (corpse) {
 			dropLoot(corpse->getContainer(), lastHitCreature);
 			corpse->startDecaying();
+		}
+
+		// Scripting event onDeath
+		for (CreatureEvent* deathEvent : getCreatureEvents(CREATURE_EVENT_DEATH)) {
+			if (deathEvent && corpse) {
+				deathEvent->executeOnDeath(this, corpse, lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
+			}
 		}
 	}
 
@@ -747,7 +745,7 @@ bool Creature::hasBeenAttacked(uint32_t attackerId)
 	if (it == damageMap.end()) {
 		return false;
 	}
-	return (OTSYS_TIME() - it->second.ticks) <= g_config.getNumber(ConfigManager::PZ_LOCKED);
+	return (OTSYS_TIME() - it->second.ticks) <= g_configManager().getNumber(PZ_LOCKED);
 }
 
 Item* Creature::getCorpse(Creature*, Creature*)
@@ -1173,7 +1171,7 @@ bool Creature::setMaster(Creature* newMaster) {
 	return true;
 }
 
-bool Creature::addCondition(Condition* condition, bool force/* = false*/)
+bool Creature::addCondition(Condition* condition)
 {
 	if (condition == nullptr) {
 		return false;
@@ -1209,7 +1207,7 @@ bool Creature::addCombatCondition(Condition* condition)
 	return true;
 }
 
-void Creature::removeCondition(ConditionType_t type, bool force/* = false*/)
+void Creature::removeCondition(ConditionType_t type)
 {
 	auto it = conditions.begin(), end = conditions.end();
 	while (it != end) {
@@ -1228,20 +1226,20 @@ void Creature::removeCondition(ConditionType_t type, bool force/* = false*/)
 	}
 }
 
-void Creature::removeCondition(ConditionType_t type, ConditionId_t conditionId, bool force/* = false*/)
+void Creature::removeCondition(ConditionType_t conditionType, ConditionId_t conditionId, bool force/* = false*/)
 {
 	auto it = conditions.begin(), end = conditions.end();
 	while (it != end) {
 		Condition* condition = *it;
-		if (condition->getType() != type || condition->getId() != conditionId) {
+		if (condition->getType() != conditionType || condition->getId() != conditionId) {
 			++it;
 			continue;
 		}
 
-		if (!force && type == CONDITION_PARALYZE) {
-			int64_t walkDelay = getWalkDelay();
+		if (!force && conditionType == CONDITION_PARALYZE) {
+			int32_t walkDelay = getWalkDelay();
 			if (walkDelay > 0) {
-				g_scheduler.addEvent(createSchedulerTask(walkDelay, std::bind(&Game::forceRemoveCondition, &g_game, getID(), type)));
+				g_scheduler.addEvent(createSchedulerTask(walkDelay, std::bind(&Game::forceRemoveCondition, &g_game, getID(), conditionType, conditionId)));
 				return;
 			}
 		}
@@ -1251,7 +1249,7 @@ void Creature::removeCondition(ConditionType_t type, ConditionId_t conditionId, 
 		condition->endCondition(this);
 		delete condition;
 
-		onEndCondition(type);
+		onEndCondition(conditionType);
 	}
 }
 
@@ -1269,7 +1267,7 @@ void Creature::removeCombatCondition(ConditionType_t type)
 	}
 }
 
-void Creature::removeCondition(Condition* condition, bool force/* = false*/)
+void Creature::removeCondition(Condition* condition)
 {
 	auto it = std::find(conditions.begin(), conditions.end(), condition);
 	if (it == conditions.end()) {

@@ -17,14 +17,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_MONSTERS_H_776E8327BCE2450EB7C4A260785E6C0D
-#define FS_MONSTERS_H_776E8327BCE2450EB7C4A260785E6C0D
+#ifndef SRC_CREATURES_MONSTERS_MONSTERS_H_
+#define SRC_CREATURES_MONSTERS_MONSTERS_H_
 
 #include "creatures/creature.h"
-#include "utils/enums.h"
-
-const uint32_t MAX_LOOTCHANCE = 100000;
-const uint32_t MAX_STATICWALK = 100;
+#include "declarations.hpp"
 
 class Loot {
 	public:
@@ -126,10 +123,10 @@ class MonsterType
 		int32_t changeTargetChance = 0;
 		int32_t defense = 0;
 		int32_t armor = 0;
-		int32_t targetStrategiesNearestPercent = 0;
-		int32_t targetStrategiesLowerHPPercent = 0;
-		int32_t targetStrategiesMostDamagePercent = 0;
-		int32_t targetStrategiesRandom = 0;
+		int32_t strategiesTargetNearest = 0;
+		int32_t strategiesTargetHealth = 0;
+		int32_t strategiesTargetDamage = 0;
+		int32_t strategiesTargetRandom = 0;
 		bool targetPreferPlayer = false;
 		bool targetPreferMaster = false;
 
@@ -257,4 +254,4 @@ class Monsters
 		bool loaded = false;
 };
 
-#endif
+#endif  // SRC_CREATURES_MONSTERS_MONSTERS_H_

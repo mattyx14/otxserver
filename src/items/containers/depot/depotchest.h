@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_DEPOTCHEST_H_6538526014684E3DBC92CC12815B6766
-#define FS_DEPOTCHEST_H_6538526014684E3DBC92CC12815B6766
+#ifndef SRC_ITEMS_CONTAINERS_DEPOT_DEPOTCHEST_H_
+#define SRC_ITEMS_CONTAINERS_DEPOT_DEPOTCHEST_H_
 
 #include "items/containers/container.h"
 
@@ -36,8 +36,8 @@ class DepotChest final : public Container
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t flags, Creature* actor = nullptr) const override;
 
-		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
 
 		//overrides
 		bool canRemove() const override {
@@ -56,5 +56,5 @@ class DepotChest final : public Container
 		uint32_t maxDepotItems;
 };
 
-#endif
+#endif  // SRC_ITEMS_CONTAINERS_DEPOT_DEPOTCHEST_H_
 

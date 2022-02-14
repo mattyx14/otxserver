@@ -19,19 +19,17 @@
 
 #include "otpch.h"
 
+#include "declarations.hpp"
 #include "creatures/combat/combat.h"
-
-#include "game/game.h"
-#include "items/weapons/weapons.h"
-#include "config/configmanager.h"
 #include "lua/creature/events.h"
-#include "creatures/monsters/monster.h"
+#include "game/game.h"
 #include "io/iobestiary.h"
+#include "creatures/monsters/monster.h"
 #include "creatures/monsters/monsters.h"
+#include "items/weapons/weapons.h"
 
 extern Game g_game;
 extern Weapons* g_weapons;
-extern ConfigManager g_config;
 extern Events* g_events;
 extern Monsters g_monsters;
 
@@ -278,12 +276,12 @@ bool Combat::isInPvpZone(const Creature* attacker, const Creature* target)
 
 bool Combat::isProtected(const Player* attacker, const Player* target)
 {
-	uint32_t protectionLevel = g_config.getNumber(ConfigManager::PROTECTION_LEVEL);
+	uint32_t protectionLevel = g_configManager().getNumber(PROTECTION_LEVEL);
 	if (target->getLevel() < protectionLevel || attacker->getLevel() < protectionLevel) {
 		return true;
 	}
 
-	if (!attacker->getVocation()->allowsPvp() || !target->getVocation()->allowsPvp()) {
+	if (attacker->getVocationId() == VOCATION_NONE || target->getVocationId() == VOCATION_NONE) {
 		return true;
 	}
 
@@ -336,6 +334,7 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 					}
 				}
 			}
+			
 			if (attacker->getMonster() && (!attackerMaster || attackerMaster->getMonster())) {
 				if (attacker->getFaction() != FACTION_DEFAULT && !attacker->getMonster()->isEnemyFaction(targetPlayer->getFaction())) {
 					return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
@@ -355,7 +354,6 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 				if (target->isSummon() && target->getMaster()->getPlayer() && target->getZone() == ZONE_NOPVP) {
 					return RETURNVALUE_ACTIONNOTPERMITTEDINANOPVPZONE;
 				}
-
 			} else if (attacker->getMonster()) {
 				const Creature* targetMaster = target->getMaster();
 
@@ -505,17 +503,15 @@ void Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 		Item *item = caster->getPlayer()->getWeapon();
 		damage = applyImbuementElementalDamage(item, damage);
 		g_events->eventPlayerOnCombat(caster->getPlayer(), target, item, damage);
+
+		if (target && target->getSkull() != SKULL_BLACK && target->getPlayer()) {
+			damage.primary.value /= 2;
+			damage.secondary.value /= 2;
+		}
 	}
 
 	if (g_game.combatBlockHit(damage, caster, target, params.blockedByShield, params.blockedByArmor, params.itemId != 0)) {
 		return;
-	}
-
-	if ((damage.primary.value < 0 || damage.secondary.value < 0)) {
-		if (caster && target && caster->getPlayer() && target->getSkull() != SKULL_BLACK && target->getPlayer()) {
-			damage.primary.value /= 2;
-			damage.secondary.value /= 2;
-		}
 	}
 
 	if (g_game.combatChangeHealth(caster, target, damage)) {
@@ -542,13 +538,13 @@ CombatDamage Combat::applyImbuementElementalDamage(Item* item, CombatDamage dama
 		float damagePercent = imbuementInfo.imbuement->elementDamage / 100.0;
 
 		damage.secondary.type = imbuementInfo.imbuement->combatType;
-		damage.secondary.value = damage.primary.value * (damagePercent);
 		damage.primary.value = damage.primary.value * (1 - damagePercent);
+		damage.secondary.value = damage.primary.value * (damagePercent);
 
 		/* If damage imbuement is set, we can return without checking other slots */
 		break;
 	}
-
+	
 	return damage;
 }
 
@@ -896,7 +892,7 @@ void Combat::doCombatHealth(Creature* caster, Creature* target, CombatDamage& da
 	}
 
 	if (params.combatType == COMBAT_HEALING && target->getMonster()){
-		if (target != caster)		{
+		if (target != caster)	{
 			return;
 		}
 	}

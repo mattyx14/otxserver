@@ -1,11 +1,12 @@
-#ifndef SRC_WEBHOOK_H_
-#define SRC_WEBHOOK_H_
+#ifndef SRC_SERVER_NETWORK_WEBHOOK_WEBHOOK_H_
+#define SRC_SERVER_NETWORK_WEBHOOK_WEBHOOK_H_
 
 #include <string>
 
+#include "config/configmanager.h"
+
 void webhook_init();
 
-void webhook_send_message(std::string title, std::string message, int color);
-void webhook_send_specialmessage(std::string title, std::string message, int color, std::string url);
+void webhook_send_message(std::string title, std::string message, int color, std::string url);
 
-#endif  // SRC_WEBHOOK_H_
+#endif  // SRC_SERVER_NETWORK_WEBHOOK_WEBHOOK_H_

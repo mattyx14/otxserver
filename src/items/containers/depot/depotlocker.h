@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_DEPOTLOCKER_H_53AD8E0606A34070B87F792611F4F3F8
-#define FS_DEPOTLOCKER_H_53AD8E0606A34070B87F792611F4F3F8
+#ifndef SRC_ITEMS_CONTAINERS_DEPOT_DEPOTLOCKER_H_
+#define SRC_ITEMS_CONTAINERS_DEPOT_DEPOTLOCKER_H_
 
 #include "items/containers/container.h"
 #include "items/containers/inbox/inbox.h"
@@ -51,8 +51,8 @@ class DepotLocker final : public Container
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t flags, Creature* actor = nullptr) const override;
 
-		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
 
 		bool canRemove() const override {
 			return false;
@@ -65,5 +65,5 @@ class DepotLocker final : public Container
 		uint16_t depotId;
 };
 
-#endif
+#endif  // SRC_ITEMS_CONTAINERS_DEPOT_DEPOTLOCKER_H_
 

@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_EVENTS_H_BD444CC0EE167E5777E4C90C766B36DC
-#define FS_EVENTS_H_BD444CC0EE167E5777E4C90C766B36DC
+#ifndef SRC_LUA_CREATURE_EVENTS_H_
+#define SRC_LUA_CREATURE_EVENTS_H_
 
 #include "creatures/players/imbuements/imbuements.h"
 #include "lua/scripts/luascript.h"
@@ -29,8 +29,7 @@ class ItemType;
 class Tile;
 class Imbuements;
 
-class Events
-{
+class Events {
 	struct EventsInfo {
 		// Creature
 		int32_t creatureOnChangeOutfit = -1;
@@ -72,6 +71,9 @@ class Events
 		// Monster
 		int32_t monsterOnDropLoot = -1;
 		int32_t monsterOnSpawn = -1;
+
+		// Npc
+		int32_t npcOnSpawn = -1;
 	};
 
 	public:
@@ -120,9 +122,12 @@ class Events
 		void eventMonsterOnDropLoot(Monster* monster, Container* corpse);
 		void eventMonsterOnSpawn(Monster* monster, const Position& position);
 
+		// Monster
+		void eventNpcOnSpawn(Npc* npc, const Position& position);
+
 	private:
 		LuaScriptInterface scriptInterface;
 		EventsInfo info;
 };
 
-#endif
+#endif  // SRC_LUA_CREATURE_EVENTS_H_

@@ -26,7 +26,6 @@
 #include "creatures/creature.h"
 #include "creatures/combat/combat.h"
 #include "game/game.h"
-#include "config/configmanager.h"
 #include "items/containers/mailbox/mailbox.h"
 #include "creatures/monsters/monster.h"
 #include "lua/creature/movement.h"
@@ -36,13 +35,12 @@
 #include "io/iomap.h"
 
 extern Game g_game;
-extern ConfigManager g_config;
 extern MoveEvents* g_moveEvents;
 
 StaticTile real_nullptr_tile(0xFFFF, 0xFFFF, 0xFF);
 Tile& Tile::nullptr_tile = real_nullptr_tile;
 
-bool Tile::hasProperty(ITEMPROPERTY prop) const
+bool Tile::hasProperty(ItemProperty prop) const
 {
 	if (ground && ground->hasProperty(prop)) {
 		return true;
@@ -58,7 +56,7 @@ bool Tile::hasProperty(ITEMPROPERTY prop) const
 	return false;
 }
 
-bool Tile::hasProperty(const Item* exclude, ITEMPROPERTY prop) const
+bool Tile::hasProperty(const Item* exclude, ItemProperty prop) const
 {
 	assert(exclude);
 
@@ -403,7 +401,7 @@ void Tile::onAddTileItem(Item* item)
 		spectator->onAddTileItem(this, cylinderMapPos);
 	}
 
-  if ((!hasFlag(TILESTATE_PROTECTIONZONE) || g_config.getBoolean(ConfigManager::CLEAN_PROTECTION_ZONES))
+  if ((!hasFlag(TILESTATE_PROTECTIONZONE) || g_configManager().getBoolean(CLEAN_PROTECTION_ZONES))
 																							&& item->isCleanable()) {
 		if (!dynamic_cast<HouseTile*>(this)) {
 			g_game.addTileToClean(this);
@@ -476,7 +474,7 @@ void Tile::onRemoveTileItem(const SpectatorHashSet& spectators, const std::vecto
 		spectator->onRemoveTileItem(this, cylinderMapPos, iType, item);
 	}
 
-  if (!hasFlag(TILESTATE_PROTECTIONZONE) || g_config.getBoolean(ConfigManager::CLEAN_PROTECTION_ZONES)) {
+  if (!hasFlag(TILESTATE_PROTECTIONZONE) || g_configManager().getBoolean(CLEAN_PROTECTION_ZONES)) {
 		auto items = getItemList();
 		if (!items || items->empty()) {
 			g_game.removeTileToClean(this);
@@ -1389,7 +1387,7 @@ Thing* Tile::getThing(size_t index) const
 	return nullptr;
 }
 
-void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link /*= LINK_OWNER*/)
+void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t link /*= LINK_OWNER*/)
 {
 	SpectatorHashSet spectators;
 	g_game.map.getSpectators(spectators, getPosition(), true, true);
@@ -1444,7 +1442,7 @@ void Tile::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t 
 	}
 }
 
-void Tile::postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t)
+void Tile::postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, CylinderLink_t)
 {
 	SpectatorHashSet spectators;
 	g_game.map.getSpectators(spectators, getPosition(), true, true);

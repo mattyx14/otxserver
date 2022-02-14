@@ -1,8 +1,6 @@
 /**
- * @file rewardchest.h
- * 
- * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
+ * Canary - A free and open-source MMORPG server emulator
+ * Copyright (C) 2021 OpenTibiaBR <opentibiabr@outlook.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef OT_SRC_REWARDCHEST_H_
-#define OT_SRC_REWARDCHEST_H_
+#ifndef SRC_ITEMS_CONTAINERS_REWARDS_REWARDCHEST_H_
+#define SRC_ITEMS_CONTAINERS_REWARDS_REWARDCHEST_H_
 
 #include "items/containers/container.h"
 
@@ -40,12 +38,12 @@ class RewardChest final : public Container
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 			uint32_t flags, Creature* actor = nullptr) const final;
 
-		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t link = LINK_OWNER) final;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, CylinderLink_t link = LINK_OWNER) final;
 
 		bool canRemove() const final {
 			return false;
 		}
 };
 
-#endif
+#endif  // SRC_ITEMS_CONTAINERS_REWARDS_REWARDCHEST_H_

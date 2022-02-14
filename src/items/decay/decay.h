@@ -22,16 +22,15 @@
 
 #include "items/item.h"
 
-#include <map>
-
 class Decay
 {
 	public:
-		void startDecay(Item* item, int32_t duration);
-		void stopDecay(Item* item, int64_t timestamp);
+		void startDecay(Item* item);
+		void stopDecay(Item* item);
 
 	private:
 		void checkDecay();
+		void internalDecayItem(Item* item);
 
 		uint64_t eventId {0};
 		std::map<int64_t, std::vector<Item*>> decayMap;
@@ -39,4 +38,4 @@ class Decay
 
 extern Decay g_decay;
 
-#endif  // SRC_ITEMS_DECAY_DECAY_H_
+#endif // SRC_ITEMS_DECAY_DECAY_H_

@@ -17,28 +17,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_GLOBALEVENT_H_B3FB9B848EA3474B9AFC326873947E3C
-#define FS_GLOBALEVENT_H_B3FB9B848EA3474B9AFC326873947E3C
+#ifndef SRC_LUA_GLOBAL_GLOBALEVENT_H_
+#define SRC_LUA_GLOBAL_GLOBALEVENT_H_
 #include "lua/global/baseevents.h"
 
-#include "utils/const.h"
-
-enum GlobalEvent_t {
-	GLOBALEVENT_NONE,
-	GLOBALEVENT_TIMER,
-
-	GLOBALEVENT_STARTUP,
-	GLOBALEVENT_SHUTDOWN,
-	GLOBALEVENT_RECORD,
-	GLOBALEVENT_PERIODCHANGE
-};
+#include "utils/utils_definitions.hpp"
 
 class GlobalEvent;
 using GlobalEvent_ptr = std::unique_ptr<GlobalEvent>;
 using GlobalEventMap = std::map<std::string, GlobalEvent>;
 
-class GlobalEvents final : public BaseEvents
-{
+class GlobalEvents final : public BaseEvents {
 	public:
 		GlobalEvents();
 		~GlobalEvents();
@@ -76,8 +65,7 @@ class GlobalEvents final : public BaseEvents
 		int32_t thinkEventId = 0, timerEventId = 0;
 };
 
-class GlobalEvent final : public Event
-{
+class GlobalEvent final : public Event {
 	public:
 		explicit GlobalEvent(LuaScriptInterface* interface);
 
@@ -125,4 +113,4 @@ class GlobalEvent final : public Event
 		uint32_t interval = 0;
 };
 
-#endif
+#endif  // SRC_LUA_GLOBAL_GLOBALEVENT_H_

@@ -17,8 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_TELEPORT_H_873B7F7F1DB24101A7ACFB54B25E0ABC
-#define FS_TELEPORT_H_873B7F7F1DB24101A7ACFB54B25E0ABC
+#ifndef SRC_GAME_MOVEMENT_TELEPORT_H_
+#define SRC_GAME_MOVEMENT_TELEPORT_H_
 
 #include "items/tile.h"
 
@@ -64,11 +64,11 @@ class Teleport final : public Item, public Cylinder
 
 		void removeThing(Thing* thing, uint32_t count) override;
 
-		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
-		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
+		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
+		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, CylinderLink_t link = LINK_OWNER) override;
 
 	private:
 		Position destPos;
 };
 
-#endif
+#endif  // SRC_GAME_MOVEMENT_TELEPORT_H_

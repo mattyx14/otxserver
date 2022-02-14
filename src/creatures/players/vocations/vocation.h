@@ -17,14 +17,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_VOCATION_H_ADCAA356C0DB44CEBA994A0D678EC92D
-#define FS_VOCATION_H_ADCAA356C0DB44CEBA994A0D678EC92D
+#ifndef SRC_CREATURES_PLAYERS_VOCATIONS_VOCATION_H_
+#define SRC_CREATURES_PLAYERS_VOCATIONS_VOCATION_H_
 
-#include "config/configmanager.h"
-#include "utils/enums.h"
+#include "declarations.hpp"
 #include "items/item.h"
-
-extern ConfigManager g_config;
 
 class Vocation
 {
@@ -63,19 +60,19 @@ class Vocation
 		}
 
 		uint32_t getManaGainTicks() const {
-			return gainManaTicks / g_config.getFloat(ConfigManager::RATE_MANA_REGEN_SPEED);
+			return gainManaTicks / g_configManager().getFloat(RATE_MANA_REGEN_SPEED);
 		}
 
 		uint32_t getManaGainAmount() const {
-			return gainManaAmount * g_config.getFloat(ConfigManager::RATE_MANA_REGEN);
+			return gainManaAmount * g_configManager().getFloat(RATE_MANA_REGEN);
 		}
 
 		uint32_t getHealthGainTicks() const {
-			return gainHealthTicks / g_config.getFloat(ConfigManager::RATE_HEALTH_REGEN_SPEED);
+			return gainHealthTicks / g_configManager().getFloat(RATE_HEALTH_REGEN_SPEED);
 		}
 
 		uint32_t getHealthGainAmount() const {
-			return gainHealthAmount * g_config.getFloat(ConfigManager::RATE_HEALTH_REGEN);
+			return gainHealthAmount * g_configManager().getFloat(RATE_HEALTH_REGEN);
 		}
 
 		uint8_t getSoulMax() const {
@@ -83,7 +80,7 @@ class Vocation
 		}
 
 		uint32_t getSoulGainTicks() const {
-			return gainSoulTicks / g_config.getFloat(ConfigManager::RATE_SOUL_REGEN_SPEED);
+			return gainSoulTicks / g_configManager().getFloat(RATE_SOUL_REGEN_SPEED);
 		}
 
 		uint32_t getBaseAttackSpeed() const {
@@ -91,7 +88,7 @@ class Vocation
 		}
 
 		uint32_t getAttackSpeed() const {
-			return attackSpeed / g_config.getFloat(ConfigManager::RATE_ATTACK_SPEED);
+			return attackSpeed / g_configManager().getFloat(RATE_ATTACK_SPEED);
 		}
 
 		uint32_t getBaseSpeed() const {
@@ -102,13 +99,9 @@ class Vocation
 			return fromVocation;
 		}
 
-		bool getMagicShield() const {
-			return magicShield;
-		}
-
-		bool allowsPvp() const {
-			return allowPvp;
-		}
+    bool getMagicShield() const {
+      return magicShield;
+    }
 
 		float meleeDamageMultiplier = 1.0f;
 		float distDamageMultiplier = 1.0f;
@@ -139,7 +132,7 @@ class Vocation
 		uint32_t baseSpeed = 220;
 		uint16_t id;
 
-		bool magicShield = false;
+    bool magicShield = false;
 
 		uint32_t gainSoulTicks = 120000;
 
@@ -147,8 +140,6 @@ class Vocation
 		uint8_t clientId = 0;
 		uint8_t baseId = 0;
 
-		bool allowPvp = true;
-		
 		static uint32_t skillBase[SKILL_LAST + 1];
 };
 
@@ -166,4 +157,4 @@ class Vocations
 		std::map<uint16_t, Vocation> vocationsMap;
 };
 
-#endif
+#endif  // SRC_CREATURES_PLAYERS_VOCATIONS_VOCATION_H_

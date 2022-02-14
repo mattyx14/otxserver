@@ -176,14 +176,14 @@ bool IOMap::parseMapDataAttributes(OTB::Loader& loader, const OTB::Node& mapNode
 				}
 				break;
 
-			case OTBM_ATTR_EXT_SPAWN_FILE:
+			case OTBM_ATTR_EXT_SPAWN_MONSTER_FILE:
 				if (!propStream.readString(tmp)) {
-					setLastErrorString("Invalid spawn tag. Make sure you are using the correct version of the map editor.");
+					setLastErrorString("Invalid monster spawn tag. Make sure you are using the correct version of the map editor.");
 					return false;
 				}
 
-				map.spawnfile = fileName.substr(0, fileName.rfind('/') + 1);
-				map.spawnfile += tmp;
+				map.monsterfile = fileName.substr(0, fileName.rfind('/') + 1);
+				map.monsterfile += tmp;
 				break;
 
 			case OTBM_ATTR_EXT_HOUSE_FILE:
@@ -194,6 +194,16 @@ bool IOMap::parseMapDataAttributes(OTB::Loader& loader, const OTB::Node& mapNode
 
 				map.housefile = fileName.substr(0, fileName.rfind('/') + 1);
 				map.housefile += tmp;
+				break;
+
+			case OTBM_ATTR_EXT_SPAWN_NPC_FILE:
+				if (!propStream.readString(tmp)) {
+					setLastErrorString("Invalid npc spawn tag. Make sure you are using the correct version of the map editor.");
+					return false;
+				}
+
+				map.npcfile = fileName.substr(0, fileName.rfind('/') + 1);
+				map.npcfile += tmp;
 				break;
 
 			default:
@@ -430,7 +440,7 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 			tile = createTile(ground_item, nullptr, x, y, z);
 		}
 
-		tile->setFlag(static_cast<tileflags_t>(tileflags));
+		tile->setFlag(static_cast<TileFlags_t>(tileflags));
 
 		map.setTile(x, y, z, tile);
 	}
