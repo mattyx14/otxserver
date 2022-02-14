@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019]
-        buildtype: [Debug, RelWithDebInfo]
+        buildtype: [Release]
         include:
           - os: windows-2019
             triplet: x64-windows
