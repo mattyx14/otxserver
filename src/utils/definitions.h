@@ -22,7 +22,7 @@
 
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "6.2";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "OpenTibiaBR Organization, OTX Server Team and Mark Samman";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "OpenTibiaBR Organization, SaiyansKing, OTX Server Team and Mark Samman";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;
 static constexpr auto AUTHENTICATOR_PERIOD = 30U;

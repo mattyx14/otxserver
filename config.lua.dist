@@ -123,7 +123,7 @@ pushWhenAttacking = false
 -- Map
 -- NOTE: set mapName WITHOUT .otbm at the end
 -- NOTE: unzip the map world.rar
-mapName = "darkkonia"
+mapName = "darkkonia_ID"
 mapAuthor = "Mattyx14"
 
 -- Party List limitations
