@@ -268,6 +268,7 @@ class ItemType
 		bool blockPickupable = false;
 		bool blockProjectile = false;
 		bool blockPathFind = false;
+		bool allowPickupable = false;
 		bool ignoreBlocking = false;
 		bool showDuration = false;
 		bool showCharges = false;
