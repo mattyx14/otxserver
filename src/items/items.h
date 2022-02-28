@@ -157,7 +157,7 @@ class ItemType
 			return (type == ITEM_TYPE_RUNE);
 		}
 		bool isPickupable() const {
-			return pickupable;
+			return (allowPickupable || pickupable);
 		}
 		bool isUseable() const {
 			return (useable);
@@ -268,7 +268,7 @@ class ItemType
 		bool blockPickupable = false;
 		bool blockProjectile = false;
 		bool blockPathFind = false;
-		bool ignoreBlocking = false;
+		bool allowPickupable = false;
 		bool showDuration = false;
 		bool showCharges = false;
 		bool showAttributes = false;
