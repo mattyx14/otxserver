@@ -49,6 +49,7 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"blockprojectile", ITEM_PARSE_BLOCKPROJECTILE},
 	{"allowpickupable", ITEM_PARSE_PICKUPABLE},
 	{"pickupable", ITEM_PARSE_PICKUPABLE},
+	{"ignoreblocking", ITEM_PARSE_IGNOREBLOCKING},
 	{"floorchange", ITEM_PARSE_FLOORCHANGE},
 	{"corpsetype", ITEM_PARSE_CORPSETYPE},
 	{"containersize", ITEM_PARSE_CONTAINERSIZE},
