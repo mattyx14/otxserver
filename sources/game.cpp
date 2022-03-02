@@ -1213,8 +1213,7 @@ bool Game::playerMoveCreature(const uint32_t& playerId, const uint32_t& movingCr
 
 		if(!player->hasFlag(PlayerFlag_CanPushAllCreatures))
 		{
-			if(toTile->getCreatureCount() && !Item::items[
-				movingCreature->getTile()->ground->getID()].walkStack)
+			if(!movingCreature->getTile()->ground || (toTile->getCreatureCount() && !Item::items[movingCreature->getTile()->ground->getID()].walkStack))
 			{
 				player->sendCancelMessage(RET_NOTENOUGHROOM);
 				return false;
