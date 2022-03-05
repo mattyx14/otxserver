@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<npcs>
+	<npc centerx="110" centery="364" centerz="5" radius="1">
+		<npc name="Dan" x="0" y="0" z="5" spawntime="60" />
+	</npc>
+	<npc centerx="161" centery="387" centerz="6" radius="1">
+		<npc name="Albinius" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="137" centery="400" centerz="6" radius="1">
+		<npc name="Yura" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="122" centery="318" centerz="7" radius="1">
+		<npc name="The King" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="150" centery="365" centerz="7" radius="1">
+		<npc name="Edson" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="135" centery="372" centerz="7" radius="1">
+		<npc name="Henrry" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="186" centery="374" centerz="7" radius="1">
+		<npc name="Wendy" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="126" centery="376" centerz="7" radius="1">
+		<npc name="Yuna" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="159" centery="387" centerz="7" radius="1">
+		<npc name="Katty" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="185" centery="389" centerz="7" radius="1">
+		<npc name="Vancer" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="179" centery="396" centerz="7" radius="1">
+		<npc name="Gloria" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+</npcs>
