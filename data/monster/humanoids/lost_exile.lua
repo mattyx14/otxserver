@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "blood"
-monster.corpse = 33430
+monster.corpse = 28819
 monster.speed = 170
 monster.manaCost = 0
 
@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "strong health potion", chance = 10950, maxCount = 2},
 	{name = "great mana potion", chance = 8330, maxCount = 2},
 	{name = "brown mushroom", chance = 16900, maxCount = 2},
-	{id = 13757, chance = 13100},
+	{id = 12600, chance = 13100},
 	{name = "holy ash", chance = 13100},
 	{name = "small topaz", chance = 10240},
 	{name = "lost husher's staff", chance = 6900},
@@ -94,7 +94,7 @@ monster.loot = {
 	{name = "bonecarving knife", chance = 8100},
 	{name = "basalt figurine", chance = 8100},
 	{name = "bone fetish", chance = 8881},
-	{name = "dwarven ring", chance = 1043},
+	{id = 3097, chance = 1043}, -- Dwarven ring
 	{name = "guardian shield", chance = 1430},
 	{name = "buckle", chance = 1900},
 	{name = "clay lump", chance = 710},
@@ -110,10 +110,10 @@ monster.loot = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -120},
-	{name ="sudden death", interval = 2000, chance = 15, minDamage = -150, maxDamage = -350, range = 3, length = 6, spread = 3, effect = CONST_ME_MORTAREA, target = false},
+	{name ="sudden death rune", interval = 2000, chance = 15, minDamage = -150, maxDamage = -350, range = 3, length = 6, spread = 3, effect = CONST_ME_MORTAREA, target = false},
 	{name ="combat", interval = 2000, chance = 15, type = COMBAT_MANADRAIN, minDamage = -150, maxDamage = -250, range = 3, length = 5, spread = 5, effect = CONST_ME_SMOKE, target = false},
 	{name ="combat", interval = 2000, chance = 15, type = COMBAT_LIFEDRAIN, minDamage = -150, maxDamage = -290, range = 3, length = 5, spread = 5, shootEffect = CONST_ANI_LARGEROCK, effect = CONST_ME_POISONAREA, target = false},
-	{name ="sudden death", interval = 2000, chance = 15, minDamage = -70, maxDamage = -250, range = 7, target = false},
+	{name ="sudden death rune", interval = 2000, chance = 15, minDamage = -70, maxDamage = -250, range = 7, target = false},
 	{name ="drunk", interval = 2000, chance = 10, range = 7, shootEffect = CONST_ANI_ENERGY, target = false, duration = 5000}
 }
 

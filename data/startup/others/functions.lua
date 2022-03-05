@@ -8,14 +8,16 @@ function loadLuaMapAction(tablename)
 			-- Checks if the position is valid
 			if tile then
 				-- Checks that you have no items created
-				if tile:getItemCountById(value.itemId) == 0 then
+				if not value.itemId == false and tile:getItemCountById(value.itemId) == 0 then
 					Spdlog.warn("[loadLuaMapAction] - Wrong item id found")
-					Spdlog.warn(string.format("Action id: %d, item id: %d",
-						index, value.itemId))
+					Spdlog.warn(string.format("Action id: %d, item id: %d", index, value.itemId))
+					break
 				end
-				if tile:getItemCountById(value.itemId) == 1 then
+
+				if value.itemId ~= false and tile:getItemCountById(value.itemId) > 0 then
 					item = tile:getItemById(value.itemId)
 				end
+				
 				-- If he found the item, add the action id.
 				if item and value.itemId ~= false then
 					item:setAttribute(ITEM_ATTRIBUTE_ACTIONID, index)
@@ -28,13 +30,6 @@ function loadLuaMapAction(tablename)
 				end
 				if value.itemId == false and tile:getGround() then
 					tile:getGround():setAttribute(ITEM_ATTRIBUTE_ACTIONID, index)
-				end
-				if value.isDailyReward then
-					if item:isContainer() then
-						if item:getSize() > 0 then
-							item:getItem():setAttribute(ITEM_ATTRIBUTE_ACTIONID, index)
-						end
-					end
 				end
 			end
 		end
@@ -49,13 +44,17 @@ function loadLuaMapUnique(tablename)
 		-- Checks if the position is valid
 		if tile then
 			-- Checks that you have no items created
-			if tile:getItemCountById(value.itemId) == 0 then
+			if not value.itemId == false and tile:getItemCountById(value.itemId) == 0 then
 				Spdlog.warn("[loadLuaMapUnique] - Wrong item id found")
 				Spdlog.warn("Unique id: ".. index ..", item id: ".. value.itemId .."")
+				break
 			end
-			if tile:getItemCountById(value.itemId) == 1 then
-				item = tile:getItemById(value.itemId)
+			if tile:getItemCountById(value.itemId) < 1 or value.itemId == false then
+				Spdlog.warn("[loadLuaMapUnique] - Wrong item id found")
+				Spdlog.warn("Unique id: ".. index ..", item id: wrong")
+				break
 			end
+			item = tile:getItemById(value.itemId)
 			-- If he found the item, add the unique id
 			if item then
 				item:setAttribute(ITEM_ATTRIBUTE_UNIQUEID, index)
@@ -75,6 +74,7 @@ function loadLuaMapSign(tablename)
 			if tile:getItemCountById(value.itemId) == 0 then
 				Spdlog.warn("[loadLuaMapSign] - Wrong item id found")
 				Spdlog.warn("Sign id: ".. index ..", item id: ".. value.itemId .."")
+				break
 			end
 			if tile:getItemCountById(value.itemId) == 1 then
 				item = tile:getItemById(value.itemId)
@@ -120,12 +120,15 @@ function loadLuaMapBookDocument(tablename)
 						totals[2] = totals[2] + 1
 					else
 						Spdlog.warn("[loadLuaMapBookDocument] - Item not found! Index: ".. index ..", itemId: ".. value.itemId.."")
+						break
 					end
 				else
 					Spdlog.warn("[loadLuaMapBookDocument] - Container not found! Index: ".. index ..", containerId: ".. value.containerId.."")
+					break
 				end
 			else
 				Spdlog.warn("[loadLuaMapBookDocument] - Tile not found! Index: ".. index ..", position: x: ".. value.position.x.." y: ".. value.position.y .." z: ".. value.position.z .."")
+				break
 			end
 		end
 	end
@@ -146,26 +149,7 @@ function loadLuaNpcs(tablename)
 			end
 		end
 	end
-	Spdlog.info("Loaded ".. (#NpcTable) .." npcs and spawned ".. Game.getMonsterCount() .." monsters")
-	Spdlog.info("Loaded ".. #Game.getTowns() .. " towns with ".. #Game.getHouses() .." houses in total")
-end
-
--- Function for load the map and spawm custom (config.lua line 92)
--- Set mapCustomEnabled to false for disable the custom map
-function loadCustomMap()
-	local mapName = configManager.getString(configKeys.MAP_CUSTOM_NAME)
-	if configManager.getBoolean(configKeys.MAP_CUSTOM_ENABLED) then
-		Spdlog.info("Loading custom map")
-		Game.loadMap(configManager.getString(configKeys.MAP_CUSTOM_FILE))
-		Spdlog.info("Loaded " .. mapName .. " map")
-		-- It's load the spawn
-		-- 10 * 1000 = 10 seconds delay for load the spawn after loading the map
-		addEvent(
-		function()
-			Game.loadSpawnFile(configManager.getString(configKeys.MAP_CUSTOM_SPAWN))
-			Spdlog.info("Loaded " .. mapName .. " spawn")
-		end, 10 * 1000)
-	end
+	Spdlog.info("Loaded ".. (#NpcTable) .." npcs and spawned with tables.")
 end
 
 -- Functions that cannot be used in reload command, so they have been moved here

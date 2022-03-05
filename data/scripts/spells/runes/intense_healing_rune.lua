@@ -27,8 +27,8 @@ end
 
 rune:group("healing")
 rune:id(4)
-rune:name("Intense Healing Rune")
-rune:runeId(2265)
+rune:name("intense healing rune")
+rune:runeId(3152)
 rune:allowFarUse(true)
 rune:charges(1)
 rune:level(15)

@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 5400
 monster.maxHealth = 5400
 monster.race = "blood"
-monster.corpse = 30794
+monster.corpse = 27559
 monster.speed = 240
 monster.manaCost = 0
 
@@ -89,16 +89,16 @@ monster.loot = {
 	{name = "Cyan Crystal Fragment", chance = 5720},
 	{name = "Slime Heart", chance = 13770, maxCount = 4},
 	{name = "Cave Devourer Legs", chance = 17160},
-	{name = "Stealth Ring", chance = 2540},
+	{id = 3049, chance = 2540}, -- Stealth ring
 	{name = "Suspicious Device", chance = 420}
 }
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400},
-	{name ="stalagmite", interval = 2000, chance = 15, minDamage = -190, maxDamage = -300, range = 7, length = 6, spread = 3, shootEffect = CONST_ANI_POISON, target = false},
+	{name ="stalagmite rune", interval = 2000, chance = 15, minDamage = -190, maxDamage = -300, range = 7, length = 6, spread = 3, shootEffect = CONST_ANI_POISON, target = false},
 	{name ="combat", interval = 2000, chance = 15, type = COMBAT_DEATHDAMAGE, minDamage = -70, maxDamage = -160, range = 3, length = 6, spread = 3, effect = CONST_ME_MORTAREA, target = false},
 	{name ="combat", interval = 2000, chance = 15, type = COMBAT_FIREDAMAGE, minDamage = -90, maxDamage = -160, range = 3, length = 6, spread = 3, effect = CONST_ME_HITBYFIRE, target = false},
-	{name ="stone shower", interval = 2000, chance = 10, minDamage = -230, maxDamage = -450, range = 7, target = false}
+	{name ="stone shower rune", interval = 2000, chance = 10, minDamage = -230, maxDamage = -450, range = 7, target = false}
 }
 
 monster.defenses = {

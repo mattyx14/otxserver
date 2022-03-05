@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1700
 monster.maxHealth = 1700
 monster.race = "blood"
-monster.corpse = 15211
+monster.corpse = 13774
 monster.speed = 230
 monster.manaCost = 0
 
@@ -82,10 +82,10 @@ monster.loot = {
 	{name = "deepling filet", chance = 20000},
 	{name = "key to the Drowned Library", chance = 20000},
 	{name = "eye of a deepling", chance = 9380},
-	{id = 2667, chance = 9090, maxCount = 2},
+	{id = 3578, chance = 9090, maxCount = 2},
 	{name = "small sapphire", chance = 8440, maxCount = 3},
 	{name = "deepling staff", chance = 3130},
-	{name = "life ring", chance = 3200},
+	{id = 3052, chance = 3200}, -- Life ring
 	{name = "fish fin", chance = 1800},
 	{name = "necklace of the deep", chance = 1250},
 	{name = "ornate crossbow", chance = 35}

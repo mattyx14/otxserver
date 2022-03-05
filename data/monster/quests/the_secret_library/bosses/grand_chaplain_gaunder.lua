@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "blood"
-monster.corpse = 32433
+monster.corpse = 28733
 monster.speed = 210
 monster.manaCost = 0
 
@@ -60,14 +60,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "concentrated demonic blood", chance = 50000, maxCount = 2},
+	{name = "flask of demonic blood", chance = 50000, maxCount = 2},
 	{name = "ham", chance = 50000, maxCount = 2},
 	{name = "onyx arrow", chance = 35000, maxCount = 3},
 	{name = "small diamond", chance = 30000, maxCount = 3},
 	{name = "small emerald", chance = 30000, maxCount = 3},
 	{name = "small enchanted amethyst", chance = 20000, maxCount = 3},
 	{name = "damaged armor plates", chance = 2350, maxCount = 3},
-	{id = 7632, chance = 12000, maxCount = 1}, -- giant shimmering pearl
+	{id = 281, chance = 12000, maxCount = 1}, -- giant shimmering pearl
 	{name = "knight armor", chance = 7000},
 	{name = "patch of fine cloth", chance = 1800},
 	{name = "spiked squelcher", chance = 3200},

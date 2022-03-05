@@ -34,7 +34,7 @@ monster.Bestiary = {
 monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "blood"
-monster.corpse = 2844
+monster.corpse = 4025
 monster.speed = 172
 monster.manaCost = 0
 
@@ -97,7 +97,7 @@ monster.loot = {
 	{name = "steel helmet", chance = 3000},
 	{name = "steel shield", chance = 15000},
 	{name = "dragon shield", chance = 320},
-	{name = "burst arrow", chance = 8060, maxCount = 10},
+	{id = 3449, chance = 8060, maxCount = 10}, -- Burst arrow
 	{name = "plate legs", chance = 2000},
 	{name = "dragon ham", chance = 65500, maxCount = 3},
 	{name = "green dragon leather", chance = 1005},

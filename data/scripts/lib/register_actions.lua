@@ -1,25 +1,25 @@
 local holeId = {
-    294, 369, 370, 383, 392, 408, 409, 410, 427, 428, 430, 462, 469, 470, 482, 484, 485, 489, 924, 3135, 3136, 7933, 7938, 8170, 8286, 8285, 8284, 8281, 8280, 8279, 8277, 8276, 8380, 8567, 8585, 8596, 8595, 8249, 8250, 8251, 8252, 8253, 8254, 8255, 8256, 8592, 8972, 9606, 9625, 13190, 14461, 19519, 21536, 26020
+	294, 369, 370, 385, 394, 411, 412, 413, 432, 433, 435, 8709, 594, 595, 615, 609, 610, 615, 1156, 482, 483, 868, 874, 4824, 7768, 433, 432, 413, 7767, 411, 370, 369, 7737, 7755, 7768, 7767, 7515, 7516, 7517, 7518, 7519, 7520, 7521, 7522, 7762, 8144, 8690, 8709, 12203, 12961, 17239, 19220, 23364
 }
 
 local Itemsgrinder = {
-    [7759] = {item_id = 34642, effect = CONST_ME_BLUE_FIREWORKS}, -- Sapphire dust
-    [18416] = {item_id = 23876, effect = CONST_ME_GREENSMOKE} -- Pinch of crystal dust
-}
+	[675] = {item_id = 30004, effect = CONST_ME_BLUE_FIREWORKS}, -- Sapphire dust
+	[16122] = {item_id = 21507, effect = CONST_ME_GREENSMOKE} -- Pinch of crystal dust
+	}
 
 local holes = {
-    468, 481, 483, 7932, 23712
+	593, 606, 608, 867, 21341
 }
 
 local JUNGLE_GRASS = {
-    2782, 3985, 19433
+	3696, 3702, 17153
 }
 local WILD_GROWTH = {
-    1499, 11099, 2101, 1775, 1447, 1446, 20670
+	2130, 2130, 2982, 2524, 2030, 2029, 10182
 }
 
 local fruits = {
-    2673, 2674, 2675, 2676, 2677, 2678, 2679, 2680, 2681, 2682, 2684, 2685, 5097, 8839, 8840, 8841
+	3584, 3585, 3586, 3587, 3588, 3589, 3590, 3591, 3592, 3593, 3595, 3596, 5096, 8011, 8012, 8013
 }
 
 local lava = {
@@ -28,215 +28,215 @@ local lava = {
 }
 
 local function revertItem(position, itemId, transformId)
-    local item = Tile(position):getItemById(itemId)
-    if item then
-        item:transform(transformId)
-    end
+	local item = Tile(position):getItemById(itemId)
+	if item then
+		item:transform(transformId)
+	end
 end
 
 local function removeRemains(toPosition)
-    local item = Tile(toPosition):getItemById(2248)
-    if item then
-        item:remove()
-    end
+	local item = Tile(toPosition):getItemById(3133)
+	if item then
+		item:remove()
+	end
 end
 
 local function revertCask(position)
-    local caskItem = Tile(position):getItemById(2249)
-    if caskItem then
-        caskItem:transform(5539)
-        position:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-    end
+	local caskItem = Tile(position):getItemById(3134)
+	if caskItem then
+		caskItem:transform(4848)
+		position:sendMagicEffect(CONST_ME_MAGIC_GREEN)
+	end
 end
 
 local cutItems = {
-    [3794] = 3959,
-    [3795] = 3959,
-    [3796] = 3958,
-    [3797] = 3958,
-    [3798] = 3958,
-    [3799] = 3958,
-    [1614] = 2251,
-    [1615] = 2251,
-    [1616] = 2251,
-    [1619] = 2251,
-    [1650] = 2253,
-    [1651] = 2253,
-    [1652] = 2253,
-    [1653] = 2253,
-    [1658] = 2252,
-    [1659] = 2252,
-    [1660] = 2252,
-    [1661] = 2252,
-    [1666] = 2252,
-    [1667] = 2252,
-    [1668] = 2252,
-    [1669] = 2252,
-    [1670] = 2252,
-    [1671] = 2252,
-    [1672] = 2252,
-    [1673] = 2252,
-    [1674] = 2253,
-    [1676] = 2252,
-    [1677] = 2253,
-    [1714] = 2251,
-    [1715] = 2251,
-    [1716] = 2251,
-    [1724] = 2252,
-    [1725] = 2252,
-    [1726] = 2252,
-    [1727] = 2252,
-    [1728] = 2254,
-    [1729] = 2254,
-    [1730] = 2254,
-    [1731] = 2254,
-    [1732] = 2254,
-    [1733] = 2254,
-    [1735] = 2254,
-    [1775] = 2250,
-    [2034] = 2252,
-    [4996] = 2252,
-    [2116] = 2254,
-    [2116] = 2254,
-    [2117] = 2254,
-    [2118] = 2254,
-    [2119] = 2254,
-    [6123] = 2254,
-    [2080] = 2254,
-    [2081] = 2254,
-    [2082] = 2254,
-    [2083] = 2254,
-    [2084] = 2254,
-    [2085] = 2254,
-    [2093] = 2250,
-    [2094] = 2250,
-    [2095] = 2250,
-    [2098] = 2250,
-    [2099] = 2250,
-    [2101] = 2250,
-    [2106] = 2250,
-    [2105] = 2250,
-    [2562] = 2257,
-    [2581] = 2258,
-    [2582] = 2258,
-    [2582] = 2258,
-    [2583] = 2258,
-    [3805] = 6267,
-    [3806] = 6267,
-    [3807] = 2252,
-    [3808] = 2252,
-    [3809] = 2252,
-    [3810] = 2252,
-    [3811] = 2255,
-    [3812] = 6267,
-    [3813] = 2252,
-    [3814] = 2252,
-    [3815] = 2252,
-    [3816] = 2252,
-    [3817] = 2252,
-    [3818] = 2252,
-    [3819] = 2252,
-    [3820] = 2252,
-    [3821] = 2255,
-    [3832] = 2255,
-    [3833] = 2255,
-    [3834] = 2255,
-    [3835] = 2255,
-    [6356] = 2257,
-    [6357] = 2257,
-    [6358] = 2257,
-    [6359] = 2257,
-    [6360] = 2257,
-    [6361] = 2257,
-    [6363] = 2257,
-    [6368] = 2250,
-    [6369] = 2250,
-    [6370] = 2250,
-    [6371] = 2250,
-    [1738] = 2250,
-    [1739] = 2251,
-    [1740] = 2250,
-    [1741] = 2255,
-    [1747] = 2250,
-    [1748] = 2250,
-    [1749] = 1750,
-    [1750] = 2254,
-    [1751] = 2254,
-    [1752] = 2254,
-    [1753] = 2254,
-    [1770] = 2251,
-    [1774] = 2250,
-    [6085] = 2254,
-    [7481] = 2251,
-    [7482] = 2251,
-    [7483] = 2251,
-    [7484] = 2250,
-    [7706] = 2251,
-    [7707] = 2251,
-    [1738] = 2250,
-    [1739] = 2251,
-    [6109] = 2254,
-    [6110] = 2254,
-    [6111] = 2254,
-    [6112] = 2254,
-    [7538] = 7544,
-    [7539] = 7545,
-    [7585] = 7586,
-    [29087] = 0,
-    [29088] = 0
+	[2291] = 3146,
+	[2292] = 3146,
+	[2293] = 3145,
+	[2294] = 3145,
+	[2295] = 3145,
+	[2296] = 3145,
+	[2314] = 3136,
+	[2315] = 3136,
+	[2316] = 3136,
+	[2319] = 3136,
+	[2358] = 3138,
+	[2359] = 3138,
+	[2360] = 3138,
+	[2361] = 3138,
+	[2366] = 3137,
+	[2367] = 3137,
+	[2368] = 3137,
+	[2369] = 3137,
+	[2374] = 3137,
+	[2375] = 3137,
+	[2376] = 3137,
+	[2377] = 3137,
+	[2378] = 3137,
+	[2379] = 3137,
+	[2380] = 3137,
+	[2381] = 3137,
+	[2382] = 3138,
+	[2384] = 3137,
+	[2385] = 3138,
+	[2431] = 3136,
+	[2432] = 3136,
+	[2433] = 3136,
+	[2441] = 3137,
+	[2442] = 3137,
+	[2443] = 3137,
+	[2444] = 3137,
+	[2445] = 3139,
+	[2446] = 3139,
+	[2447] = 3139,
+	[2448] = 3139,
+	[2449] = 3139,
+	[2450] = 3139,
+	[2452] = 3139,
+	[2524] = 3135,
+	[2904] = 3137,
+	[4995] = 3137,
+	[2997] = 3139,
+	[2997] = 3139,
+	[2998] = 3139,
+	[2999] = 3139,
+	[3000] = 3139,
+	[6123] = 3139,
+	[2959] = 3139,
+	[2960] = 3139,
+	[2961] = 3139,
+	[2962] = 3139,
+	[2963] = 3139,
+	[2964] = 3139,
+	[2974] = 3135,
+	[2975] = 3135,
+	[2976] = 3135,
+	[2979] = 3135,
+	[2980] = 3135,
+	[2982] = 3135,
+	[2987] = 3135,
+	[2986] = 3135,
+	[3465] = 3142,
+	[3484] = 3143,
+	[3485] = 3143,
+	[3485] = 3143,
+	[3486] = 3143,
+	[2346] = 6266,
+	[2347] = 6266,
+	[2348] = 3137,
+	[2349] = 3137,
+	[2350] = 3137,
+	[2351] = 3137,
+	[2352] = 3140,
+	[2353] = 6266,
+	[2418] = 3137,
+	[2419] = 3137,
+	[2420] = 3137,
+	[2421] = 3137,
+	[2422] = 3137,
+	[2423] = 3137,
+	[2424] = 3137,
+	[2425] = 3137,
+	[2426] = 3140,
+	[2465] = 3140,
+	[2466] = 3140,
+	[2467] = 3140,
+	[2468] = 3140,
+	[6355] = 3142,
+	[6356] = 3142,
+	[6357] = 3142,
+	[6358] = 3142,
+	[6359] = 3142,
+	[6360] = 3142,
+	[6362] = 3142,
+	[6367] = 3135,
+	[6368] = 3135,
+	[6369] = 3135,
+	[6370] = 3135,
+	[2469] = 3135,
+	[2471] = 3136,
+	[2472] = 3135,
+	[2473] = 3140,
+	[2480] = 3135,
+	[2481] = 3135,
+	[2482] = 2483,
+	[2483] = 3139,
+	[2484] = 3139,
+	[2485] = 3139,
+	[2486] = 3139,
+	[2519] = 3136,
+	[2523] = 3135,
+	[6085] = 3139,
+	[116] = 3136,
+	[117] = 3136,
+	[118] = 3136,
+	[119] = 3135,
+	[404] = 3136,
+	[405] = 3136,
+	[2469] = 3135,
+	[2471] = 3136,
+	[6109] = 3139,
+	[6110] = 3139,
+	[6111] = 3139,
+	[6112] = 3139,
+	[182] = 188,
+	[183] = 189,
+	[233] = 234,
+	[25798] = 0,
+	[25800] = 0
 }
 
 function onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
-    if not target or target == nil or type(target) ~= "userdata" or not target:isItem() then
-        return false
-    end
+	if not target or target == nil or type(target) ~= "userdata" or not target:isItem() then
+		return false
+	end
 
-    if target:hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) or target:hasAttribute(ITEM_ATTRIBUTE_ACTIONID) then
-        return false
-    end
+	if target:hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) or target:hasAttribute(ITEM_ATTRIBUTE_ACTIONID) then
+		return false
+	end
 
-    if toPosition.x == CONTAINER_POSITION then
-        player:sendCancelMessage(Game.getReturnMessage(RETURNVALUE_NOTPOSSIBLE))
-        return true
-    end
+	if toPosition.x == CONTAINER_POSITION then
+		player:sendCancelMessage(Game.getReturnMessage(RETURNVALUE_NOTPOSSIBLE))
+		return true
+	end
 
-    local destroyId = cutItems[target.itemid] or ItemType(target.itemid):getDestroyId()
-    if destroyId == 0 then
-        if target.itemid ~= 29087 and target.itemid ~= 29088 then
-            return false
-        end
-    end
+	local destroyId = cutItems[target.itemid] or ItemType(target.itemid):getDestroyId()
+	if destroyId == 0 then
+		if target.itemid ~= 25798 and target.itemid ~= 25800 then
+			return false
+		end
+	end
 
-    local watt = ItemType(item.itemid):getAttack()
-    if math.random(1, 80) <= (watt and watt > 10 and watt or 10) then
-        -- Move items outside the container
-        if target:isContainer() then
-            for i = target:getSize() - 1, 0, -1 do
-                local containerItem = target:getItem(i)
-                if containerItem then
-                    containerItem:moveTo(toPosition)
-                end
-            end
-        end
+	local watt = ItemType(item.itemid):getAttack()
+	if math.random(1, 80) <= (watt and watt > 10 and watt or 10) then
+		-- Move items outside the container
+		if target:isContainer() then
+			for i = target:getSize() - 1, 0, -1 do
+				local containerItem = target:getItem(i)
+				if containerItem then
+					containerItem:moveTo(toPosition)
+				end
+			end
+		end
 
-        -- Being better than cipsoft
-        if target:getFluidType() ~= 0 then
-            local fluid = Game.createItem(2016, target:getFluidType(), toPosition)
-            if fluid ~= nil then
-                fluid:decay()
-            end
-        end
+		-- Being better than cipsoft
+		if target:getFluidType() ~= 0 then
+			local fluid = Game.createItem(2886, target:getFluidType(), toPosition)
+			if fluid ~= nil then
+				fluid:decay()
+			end
+		end
 
-        target:remove(1)
+		target:remove(1)
 
-        local itemDestroy = Game.createItem(destroyId, 1, toPosition)
-        if itemDestroy ~= nil then
-            itemDestroy:decay()
-        end
-    end
+		local itemDestroy = Game.createItem(destroyId, 1, toPosition)
+		if itemDestroy ~= nil then
+			itemDestroy:decay()
+		end
+	end
 
-    toPosition:sendMagicEffect(CONST_ME_POFF)
-    return true
+	toPosition:sendMagicEffect(CONST_ME_POFF)
+	return true
 end
 
 function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
@@ -290,169 +290,161 @@ function onUseRope(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
-    if table.contains(holes, target.itemid) then
-        target:transform(target.itemid + 1)
-        target:decay()
-    elseif table.contains({231, 9059}, target.itemid) then
-        local rand = math.random(100)
-        if target.actionid == 100 and rand <= 20 then
-            target:transform(489)
-            target:decay()
-        elseif rand == 1 then
-            Game.createItem(2159, 1, toPosition)
-        elseif rand > 95 then
-            Game.createMonster("Scarab", toPosition)
-        end
-        toPosition:sendMagicEffect(CONST_ME_POFF)
-    elseif target.itemid == 22674 then
-        if not player:removeItem(5091, 1) then
-            return false
-        end
+	if table.contains(holes, target.itemid) then
+		target:transform(target.itemid + 1)
+		target:decay()
+	elseif table.contains({231, 231}, target.itemid) then
+		local rand = math.random(100)
+		if target.actionid == 100 and rand <= 20 then
+			target:transform(615)
+			target:decay()
+		elseif rand == 1 then
+			Game.createItem(3042, 1, toPosition)
+		elseif rand > 95 then
+			Game.createMonster("Scarab", toPosition)
+		end
+		toPosition:sendMagicEffect(CONST_ME_POFF)
+	elseif target.itemid == 5730 then
+		if not player:removeItem(5090, 1) then
+			return false
+		end
 
-        target:transform(5731)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_POFF)
-    else
-        return false
-    end
-    return true
+		target:transform(5731)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_POFF)
+	else
+		return false
+	end
+	return true
 end
 
 function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
-    if table.contains({354, 355}, target.itemid) and target.actionid == 101 then
-        target:transform(392)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_POFF)
-    elseif target.itemid == 11227 then
-        -- shiny stone refining
-        local chance = math.random(1, 100)
-        if chance == 1 then
-            player:addItem(2160, 1) -- 1% chance of getting crystal coin
-        elseif chance <= 6 then
-            player:addItem(2148, 1) -- 5% chance of getting gold coin
-        elseif chance <= 51 then
-            player:addItem(2152, 1) -- 45% chance of getting platinum coin
-        else
-            player:addItem(2145, 1) -- 49% chance of getting small diamond
-        end
-        target:getPosition():sendMagicEffect(CONST_ME_BLOCKHIT)
-        target:remove(1)
-    elseif target.itemid == 11227 then
-        target:remove(1)
-        toPosition:sendMagicEffect(CONST_ME_POFF)
-        player:addItem(2152, 10)
-    elseif target.itemid == 7200 then
-        target:transform(7236)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_HITAREA)
-    elseif target.itemid == 468 then
-        target:transform(469)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_HITAREA)
-    elseif target.itemid == 6299 and target.actionid > 0 then
-        target:transform(482)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_HITAREA)
-    elseif target.itemid == 23712 then
-        target:transform(23713)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_HITAREA)
-    elseif target.itemid == 481 then
-        target:transform(482)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_HITAREA)
-    elseif target.itemid == 483 then
-        target:transform(484)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_HITAREA)
-    elseif target.itemid == 7932 then
-        target:transform(7933)
-        target:decay()
-        toPosition:sendMagicEffect(CONST_ME_HITAREA)
-    else
-        return false
-    end
-    if (target ~= nil) and target:isItem() and (target:getId() == 22469) then
-        --Lower Roshamuul
-        if math.random(100) > 50 then
-            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Crushing the stone produces some fine gravel.")
-            target:transform(22467)
-            target:decay()
-        else
-            Game.createMonster("Frazzlemaw", toPosition)
-            player:sendTextMessage(
-            MESSAGE_EVENT_ADVANCE,
-            "Crushing the stone yields nothing but slightly finer, yet still unusable rubber."
-            )
-            target:transform(22468)
-            target:decay()
-        end
-        return true
-    end
-    return true
+	if table.contains({354, 355}, target.itemid) and target.actionid == 101 then
+		target:transform(394)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_POFF)
+	elseif target.itemid == 10310 then
+		-- shiny stone refining
+		local chance = math.random(1, 100)
+		if chance == 1 then
+			player:addItem(3043, 1) -- 1% chance of getting crystal coin
+		elseif chance <= 6 then
+			player:addItem(3031, 1) -- 5% chance of getting gold coin
+		elseif chance <= 51 then
+			player:addItem(3035, 1) -- 45% chance of getting platinum coin
+		else
+			player:addItem(3028, 1) -- 49% chance of getting small diamond
+		end
+		target:getPosition():sendMagicEffect(CONST_ME_BLOCKHIT)
+		target:remove(1)
+	elseif target.itemid == 10310 then
+		target:remove(1)
+		toPosition:sendMagicEffect(CONST_ME_POFF)
+		player:addItem(3035, 10)
+	elseif target.itemid == 7200 then
+		target:transform(7236)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+	elseif target.itemid == 593 then
+		target:transform(594)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+	elseif target.itemid == 6298 and target.actionid > 0 then
+		target:transform(615)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+	elseif target.itemid == 21341 then
+		target:transform(21342)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+	elseif target.itemid == 606 then
+		target:transform(615)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+	elseif target.itemid == 608 then
+		target:transform(609)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+	elseif target.itemid == 867 then
+		target:transform(868)
+		target:decay()
+		toPosition:sendMagicEffect(CONST_ME_HITAREA)
+	else
+		return false
+	end
+
+	return true
 end
 
 function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
-    if table.contains(JUNGLE_GRASS, target.itemid) then
-        target:transform(target.itemid == 19433 and 19431 or target.itemid - 1)
-        target:decay()
-        return true
-    end
+	if table.contains(JUNGLE_GRASS, target.itemid) then
+		target:transform(target.itemid == 17153 and 17151 or target.itemid - 1)
+		target:decay()
+		return true
+	end
 
-    if table.contains(WILD_GROWTH, target.itemid) then
-        toPosition:sendMagicEffect(CONST_ME_POFF)
-        target:remove()
-        return true
-    end
+	if table.contains(WILD_GROWTH, target.itemid) then
+		toPosition:sendMagicEffect(CONST_ME_POFF)
+		target:remove()
+		return true
+	end
 
-    return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
+	return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseCrowbar(player, item, fromPosition, target, toPosition, isHotkey)
-    if not table.contains({2416, 10515}, item.itemid) then
-        return false
-    end
-    return true
+	if not table.contains({3304, 9598}, item.itemid) then
+		return false
+	end
+	return true
 end
 
 function onUseSpoon(player, item, fromPosition, target, toPosition, isHotkey)
-    return true
+	return true
 end
 
 function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
-    if not table.contains({2550, 10513}, item.itemid) then
-        return false
-    end
+	if not table.contains({3453, 9596}, item.itemid) then
+		return false
+	end
 
-    if target.itemid == 5465 then
-        target:transform(5464)
-        target:decay()
-        Game.createItem(5467, 1, toPosition)
-    elseif target.itemid == 2739 then
-        target:transform(2737)
-        target:decay()
-        Game.createItem(2694, 1, toPosition)
-    else
-        return false
-    end
-    return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
+	if target.itemid == 5464 then
+		target:transform(5463)
+		target:decay()
+		Game.createItem(5466, 1, toPosition)
+	elseif target.itemid == 3653 then
+		target:transform(3651)
+		target:decay()
+		Game.createItem(3605, 1, toPosition)
+	else
+		return false
+	end
+	return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHotkey)
-    if not table.contains({2566, 10511, 10515}, item.itemid) then
-        return false
-    end
-    return true
+	if not table.contains({3469, 9594, 9598}, item.itemid) then
+		return false
+	end
+
+	if table.contains(fruits, target.itemid) and player:removeItem(6277, 1) then
+		target:remove(1)
+		player:addItem(6278, 1)
+		player:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
+	else
+		return false
+	end
+	return true
 end
 
 function onGrindItem(player, item, fromPosition, target, toPosition)
-	if not(target.itemid == 23942) then
+	if not(target.itemid == 21573) then
 		return false
 	end
 	for index, value in pairs(Itemsgrinder) do
-		if item.itemid == index then 
+		if item.itemid == index then
 			local topParent = item:getTopParent()
-			if topParent.isItem and (not topParent:isItem() or topParent.itemid ~= 460) then
+			if topParent.isItem and (not topParent:isItem() or topParent.itemid ~= 470) then
 				local parent = item:getParent()
 				if not parent:isTile() and (parent:addItem(value.item_id, 1) or topParent:addItem(value.item_id, 1)) then
 					item:remove(1)

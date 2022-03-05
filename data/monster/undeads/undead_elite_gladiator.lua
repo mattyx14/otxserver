@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 8000
 monster.maxHealth = 8000
 monster.race = "undead"
-monster.corpse = 9823
+monster.corpse = 8909
 monster.speed = 300
 monster.manaCost = 0
 
@@ -78,7 +78,7 @@ monster.loot = {
 	{name = "Ultimate Health Potion", chance = 500, maxCount = 2},
 	{name = "Throwing Star", chance = 500, maxCount = 18},
 	{name = "Knight Axe", chance = 250},
-	{id = 2419, chance = 500},
+	{id = 3307, chance = 500},
 	{name = "protection amulet", chance = 250},
 	{name = "hunting spear", chance = 250},
 	{name = "broken gladiator shield", chance = 250},
@@ -88,7 +88,7 @@ monster.loot = {
 	{name = "plate legs", chance = 250},
 	{name = "two handed sword", chance = 250},
 	{name = "Great Health Potion", chance = 250, maxCount = 2},
-	{name = "stealth ring", chance = 230},
+	{id = 3049, chance = 230}, -- Stealth ring
 	{name = "crusader helmet", chance = 150},
 	{name = "Relic Sword", chance = 150}
 }

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "You see a spyrat"
 monster.experience = 3750
 monster.outfit = {
-	lookTypeEx = 35213
+	lookTypeEx = 30378
 }
 
 monster.raceId = 2037

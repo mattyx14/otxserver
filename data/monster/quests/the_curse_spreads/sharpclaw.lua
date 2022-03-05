@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 3300
 monster.maxHealth = 3300
 monster.race = "blood"
-monster.corpse = 24723
+monster.corpse = 22067
 monster.speed = 250
 monster.manaCost = 0
 
@@ -81,7 +81,7 @@ monster.loot = {
 	{name = "Beetroot", chance = 13600000, maxCount = 9},
 	{name = "Great Mana Potion", chance = 13600000, maxCount = 9},
 	{name = "Platinum Amulet", chance = 13600000},
-	{name = "Ring of Healing", chance = 13600000},
+	{id = 3098, chance = 13600000}, -- Ring of healing
 	{name = "Troll Green", chance = 13600000, maxCount = 9},
 	{name = "Ultimate Mana Potion", chance = 13600000, maxCount = 9},
 	{name = "Werebadger Claws", chance = 13600000, maxCount = 9},

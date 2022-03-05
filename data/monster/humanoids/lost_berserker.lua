@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 5900
 monster.maxHealth = 5900
 monster.race = "blood"
-monster.corpse = 17416
+monster.corpse = 16071
 monster.speed = 300
 monster.manaCost = 0
 
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "platinum coin", chance = 100000, maxCount = 9},
-	{name = "dwarven ring", chance = 2280},
+	{id = 3097, chance = 2280}, -- Dwarven ring
 	{name = "knight axe", chance = 2070},
 	{name = "fire axe", chance = 380},
 	{name = "royal helmet", chance = 150},
@@ -99,7 +99,7 @@ monster.loot = {
 	{name = "terra boots", chance = 640},
 	{name = "small topaz", chance = 7970, maxCount = 2},
 	{name = "clay lump", chance = 930},
-	{id = 13757, chance = 2050},
+	{id = 12600, chance = 2050},
 	{name = "violet crystal shard", chance = 3500},
 	{name = "brown crystal splinter", chance = 7540, maxCount = 2},
 	{name = "blue crystal splinter", chance = 4610},

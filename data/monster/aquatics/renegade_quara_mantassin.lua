@@ -80,14 +80,14 @@ monster.loot = {
 	{name = "mind stone", chance = 10370},
 	{name = "shrimp", chance = 3950, maxCount = 3},
 	{name = "small sapphire", chance = 3540, maxCount = 3},
-	{name = "stealth ring", chance = 3290},
+	{id = 3049, chance = 3290}, -- Stealth ring
 	{name = "ice rapier", chance = 2060},
 	{name = "blue crystal shard", chance = 1890},
 	{name = "strange helmet", chance = 1320},
 	{name = "two handed sword", chance = 820},
 	{name = "fish fin", chance = 740},
 	{name = "blue robe", chance = 660},
-	{name = "energy ring", chance = 580}
+	{id = 3051, chance = 580} -- Energy ring
 }
 
 monster.attacks = {

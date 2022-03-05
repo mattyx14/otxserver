@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "blood"
-monster.corpse = 34711
+monster.corpse = 30073
 monster.speed = 400
 monster.manaCost = 0
 
@@ -80,29 +80,29 @@ monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 14},
 	{name = "great spirit potion", chance = 100000, maxCount = 3},
 	{name = "essence of a bad dream", chance = 15000},
-	{name = "energy ring", chance = 12050},
+	{id = 3051, chance = 12050}, -- Energy ring
 	{name = "silver amulet", chance = 15000},
-	{name = "sword ring", chance = 11050},
+	{id = 3091, chance = 11050}, -- Sword ring
 	{name = "spider fangs", chance = 11800},
 	{name = "mind stone", chance = 17800},
 	{name = "wand of cosmic energy", chance = 17800},
 	{name = "magma amulet", chance = 8900},
 	{name = "elven amulet", chance = 8100, maxCount = 2},
-	{id = 26200, chance = 10590},
+	{id = 23544, chance = 10590},
 	{name = "sacred tree amulet", chance = 7500},
 	{name = "spider silk", chance = 6500},
-	{name = "life ring", chance = 5560},
+	{id = 3052, chance = 5560}, -- Life ring
 	{name = "orb", chance = 7800},
 	{name = "underworld rod", chance = 7120},
-	{id = 26185, chance = 1000},
-	{name = "ring of healing", chance = 9120},
+	{id = 23529, chance = 1000},
+	{id = 3098, chance = 9120}, -- Ring of healing
 	{name = "strange talisman", chance = 8110},
-	{name = "axe ring", chance = 7220},
-	{name = "power ring", chance = 6080},
-	{id = 6300, chance = 7502},
+	{id = 3092, chance = 7220}, -- Axe ring
+	{id = 3050, chance = 6080}, -- Power ring
+	{id = 6299, chance = 7502},
 	{name = "garlic necklace", chance = 7550},
 	{name = "platinum amulet", chance = 7650},
-	{id = 26199, chance = 10590},
+	{id = 23543, chance = 10590}, -- Collar of green plasma
 	{name = "Strange Symbol", chance = 2640},
 	{name = "stone skin amulet", chance = 2600},
 	{name = "necklace of the deep", chance = 1800}

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Electric Sparks"
 monster.experience = 320
 monster.outfit = {
-	lookTypeEx = 460
+	lookTypeEx = 470
 }
 
 monster.health = 2000

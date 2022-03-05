@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 3800
 monster.maxHealth = 3800
 monster.race = "venom"
-monster.corpse = 15354
+monster.corpse = 13937
 monster.speed = 230
 monster.manaCost = 0
 
@@ -79,10 +79,10 @@ monster.loot = {
 	{name = "gold coin", chance = 49000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 97},
 	{name = "platinum coin", chance = 66000, maxCount = 3},
-	{name = "ring of healing", chance = 3270},
+	{id = 3098, chance = 3270}, -- Ring of healing
 	{name = "steel boots", chance = 130},
 	{name = "great mana potion", chance = 8950, maxCount = 4},
-	{id = 7632, chance = 2600},
+	{id = 281, chance = 2600},
 	{name = "ultimate health potion", chance = 4000, maxCount = 3},
 	{name = "gold ingot", chance = 5160},
 	{name = "kollos shell", chance = 15390},

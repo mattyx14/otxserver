@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 9500
 monster.maxHealth = 9500
 monster.race = "undead"
-monster.corpse = 6306
+monster.corpse = 6305
 monster.speed = 300
 monster.manaCost = 0
 
@@ -68,13 +68,13 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 90},
-	{name = "sword ring", chance = 10000},
+	{id = 3091, chance = 10000}, -- Sword ring
 	{name = "broadsword", chance = 4000},
 	{name = "magic plate armor", chance = 2000},
 	{name = "spectral stone", chance = 800},
 	{name = "skull helmet", chance = 50000},
 	{name = "soul orb", chance = 10000},
-	{id = 6300, chance = 4000},
+	{id = 6299, chance = 4000},
 	{name = "demonic essence", chance = 1538},
 	{id = 6570, chance = 5538, maxCount = 3},
 	{id = 6571, chance = 1538},

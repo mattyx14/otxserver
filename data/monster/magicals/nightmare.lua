@@ -30,7 +30,7 @@ monster.Bestiary = {
 monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "blood"
-monster.corpse = 6340
+monster.corpse = 6339
 monster.speed = 464
 monster.manaCost = 0
 
@@ -94,10 +94,10 @@ monster.loot = {
 	{name = "ham", chance = 29000, maxCount = 2},
 	{name = "mysterious voodoo skull", chance = 123},
 	{name = "soul orb", chance = 20000},
-	{id = 6300, chance = 1298},
+	{id = 6299, chance = 1298},
 	{name = "demonic essence", chance = 10000},
 	{name = "skeleton decoration", chance = 337},
-	{name = "concentrated demonic blood", chance = 19666, maxCount = 2},
+	{name = "flask of demonic blood", chance = 19666, maxCount = 2},
 	{name = "essence of a bad dream", chance = 15240},
 	{name = "scythe leg", chance = 9090}
 }

@@ -1,13 +1,13 @@
 local serverstartup = GlobalEvent("serverstartup")
 function serverstartup.onStartup()
 	Spdlog.info("Loading map attributes")
-	-- Npc table
-	loadLuaNpcs(NpcTable)
-
+	Spdlog.info("Loaded ".. Game.getNpcCount() .." npcs and spawned with map editor and ".. Game.getMonsterCount() .." monsters")
+	Spdlog.info("Loaded ".. #Game.getTowns() .. " towns with ".. #Game.getHouses() .." houses in total")
 	-- Sign table
 	loadLuaMapSign(SignTable)
 	Spdlog.info("Loaded " .. (#SignTable) .. " signs in the map")
-
+	-- Npc table
+	loadLuaNpcs(NpcTable)
 	-- Book/Document table
 	loadLuaMapBookDocument(BookDocumentTable)
 
@@ -29,7 +29,7 @@ function serverstartup.onStartup()
 	loadLuaMapAction(ItemAction)
 	-- loadLuaMapUnique(ItemUnique)
 	-- Item daily reward table
-	loadLuaMapAction(DailyRewardAction)
+	-- This is temporary disabled > loadLuaMapAction(DailyRewardAction)
 	-- Item unmoveable table
 	loadLuaMapAction(ItemUnmoveableAction)
 	-- Lever table
@@ -115,6 +115,23 @@ function serverstartup.onStartup()
 		result.free(resultId)
 	end
 
+	do -- Event Schedule rates
+		local lootRate = Game.getEventSLoot()
+		if lootRate ~= 100 then
+			SCHEDULE_LOOT_RATE = lootRate
+		end
+	
+		local expRate = Game.getEventSExp()
+		if expRate ~= 100 then
+			SCHEDULE_EXP_RATE = expRate
+		end
+	
+		local skillRate = Game.getEventSSkill()
+		if skillRate ~= 100 then
+			SCHEDULE_SKILL_RATE = skillRate
+		end
+	end
+
 	-- Client XP Display Mode
 	-- 0 = ignore exp rate /stage
 	-- 1 = include exp rate / stage
@@ -122,8 +139,5 @@ function serverstartup.onStartup()
 
 	-- Hireling System
 	HirelingsInit()
-
-	-- Load otservbr-custom map (data/world/custom/otservbr-custom.otbm)
-	loadCustomMap()
 end
 serverstartup:register()

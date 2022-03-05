@@ -27,7 +27,7 @@ local start = os.time()
 local linecount = 0
 debug.sethook(function(event, line)
 	linecount = linecount + 1
-	if os.mtime() - start >= 1 then
+	if systemTime() - start >= 1 then
 		if linecount >= 30000 then
 			Spdlog.warn(string.format("[debug.sethook] - Possible infinite loop in file [%s] near line [%d]",
 				debug.getinfo(2).source, line))
@@ -89,8 +89,8 @@ function getMoneyWeight(money)
 	gold = gold - crystal * 10000
 	local platinum = math.floor(gold / 100)
 	gold = gold - platinum * 100
-	return (ItemType(2160):getWeight() * crystal) + (ItemType(2152):getWeight() * platinum) +
-	(ItemType(2148):getWeight() * gold)
+	return (ItemType(3043):getWeight() * crystal) + (ItemType(3035):getWeight() * platinum) +
+	(ItemType(3031):getWeight() * gold)
 end
 
 function getRealDate()
@@ -251,44 +251,6 @@ function playerExists(name)
 		return true
 	end
 	return false
-end
-
-function checkWallArito(item, toPosition)
-	if (not item:isItem()) then
-		return false
-	end
-	local wallTile = Tile(Position(33206, 32536, 6))
-	if not wallTile or wallTile:getItemCountById(8202) > 0 then
-		return false
-	end
-	local checkEqual = {
-		[2016] = {Position(33207, 32537, 6), {5858, -1}, Position(33205, 32537, 6)},
-		[2419] = {Position(33205, 32537, 6), {2016, 1}, Position(33207, 32537, 6), 5858}
-	}
-	local it = checkEqual[item:getId()]
-	if (it and it[1] == toPosition and Tile(it[3]):getItemCountById(it[2][1], it[2][2]) > 0) then
-		wallTile:getItemById(877):transform(8202)
-
-		if (it[4]) then
-			item:transform(it[4])
-		end
-
-		addEvent(
-		function()
-			if (Tile(Position(33206, 32536, 6)):getItemCountById(8210) > 0) then
-				Tile(Position(33206, 32536, 6)):getItemById(8210):transform(877)
-			end
-			if (Tile(Position(33205, 32537, 6)):getItemCountById(5858) > 0) then
-				Tile(Position(33205, 32537, 6)):getItemById(5858):remove()
-			end
-		end,
-		5 * 60 * 1000
-		)
-	else
-		if (it and it[4] and it[1] == toPosition) then
-			item:transform(it[4])
-		end
-	end
 end
 
 function placeSpawnRandom(fromPositon, toPosition, monsterName, ammount, hasCall, storage, value, removestorage,

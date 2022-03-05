@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 7500
 monster.maxHealth = 7500
 monster.race = "blood"
-monster.corpse = 6312
+monster.corpse = 6311
 monster.speed = 260
 monster.manaCost = 0
 
@@ -84,7 +84,7 @@ monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 7},
 	{name = "violet gem", chance = 700},
 	{name = "yellow gem", chance = 5940},
-	{name = "energy ring", chance = 3150},
+	{id = 3051, chance = 3150}, -- Energy ring
 	{name = "platinum amulet", chance = 1005},
 	{name = "mind stone", chance = 9090},
 	{name = "wand of inferno", chance = 5590},
@@ -96,9 +96,9 @@ monster.loot = {
 	{name = "crown armor", chance = 1400},
 	{name = "mysterious voodoo skull", chance = 247},
 	{name = "soul orb", chance = 31111},
-	{id = 6300, chance = 1750},
+	{id = 6299, chance = 1750},
 	{name = "demonic essence", chance = 12000},
-	{name = "concentrated demonic blood", chance = 30000, maxCount = 4},
+	{name = "flask of demonic blood", chance = 30000, maxCount = 4},
 	{name = "assassin star", chance = 7692, maxCount = 5},
 	{name = "abyss hammer", chance = 495},
 	{name = "great mana potion", chance = 19990, maxCount = 2},

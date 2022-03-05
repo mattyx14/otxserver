@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 125000
 monster.maxHealth = monster.health
 monster.race = "venom"
-monster.corpse = 36443
+monster.corpse = 31608
 monster.speed = 425
 
 monster.changeTarget = {
@@ -54,18 +54,18 @@ monster.loot = {
 	{name = "gold token", minCount = 0, maxCount = 3, chance = 18000},
 	{name = "silver token", minCount = 0, maxCount = 3, chance = 25000},
 	{name = "green gem", chance = 19000},
-	{name = "red gem", chance = 18500},
+	{id= 3039, chance = 18500},
 	{name = "yellow gem", chance = 18500},
 	{name = "giant sapphire", chance = 16800},
-	{name = "collar of green plasma", chance = 15200},
+	{id = 23543, chance = 15200}, -- Collar of green plasma
 	{name = "magma coat", chance = 15200},
 	{name = "gold ingot", minCount = 0, maxCount = 1, chance = 18000},
 	{name = "red tome", chance = 18200},
-	{id = 26185, chance = 12000},-- ring of blue plasma
-	{id = 26189, chance = 12000},-- ring of red plasma
+	{id = 23529, chance = 12000},-- ring of blue plasma
+	{id = 23533, chance = 12000},-- ring of red plasma
 	{name = "young lich worm", chance = 5500},
 	{name = "mortal mace", chance = 1300},
-	{name = "golden hyena pendant", chance = 1100},
+	{name = "golden hyaena pendant", chance = 1100},
 	{name = "bow of cataclysm", chance = 600},
 	{name = "galea mortis", chance = 550},
 	{name = "shadow cowl", chance = 530},

@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 260
 monster.maxHealth = 260
 monster.race = "venom"
-monster.corpse = 9801
+monster.corpse = 8887
 monster.speed = 150
 monster.manaCost = 0
 
@@ -82,7 +82,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 68810, maxCount = 88},
-	{name = "sword ring", chance = 570},
+	{id = 3091, chance = 570}, -- Sword ring
 	{name = "iron ore", chance = 400},
 	{name = "nail", chance = 1460},
 	{name = "heavily rusted armor", chance = 790},

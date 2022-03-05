@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 2100
 monster.maxHealth = 2100
 monster.race = "fire"
-monster.corpse = 13958
+monster.corpse = 12823
 monster.speed = 240
 monster.manaCost = 0
 
@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 78},
 	{name = "platinum coin", chance = 33333, maxCount = 2},
-	{name = "energy ring", chance = 1652},
+	{id = 3051, chance = 1652}, -- Energy ring
 	{name = "wand of inferno", chance = 800},
 	{name = "steel boots", chance = 160},
 	{name = "brown mushroom", chance = 5346},

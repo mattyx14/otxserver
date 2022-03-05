@@ -19,8 +19,8 @@ end
 
 rune:group("attack")
 rune:id(8)
-rune:name("Heavy Magic Missile")
-rune:runeId(2311)
+rune:name("heavy magic missile rune")
+rune:runeId(3198)
 rune:allowFarUse(true)
 rune:charges(10)
 rune:level(25)

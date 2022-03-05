@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 22
 monster.maxHealth = 22
 monster.race = "blood"
-monster.corpse = 34797
+monster.corpse = 30159
 monster.speed = 250
 monster.manaCost = 0
 
@@ -73,7 +73,7 @@ monster.loot = {
 	{name = "supreme health potion", chance = 53240, maxCount = 6},
 	{name = "ultimate spirit potion", chance = 47480, maxCount = 20},
 	{name = "huge chunk of crude iron", chance = 40290},
-	{name = "red gem", chance = 32370},
+	{id= 3039, chance = 32370},
 	{name = "yellow gem", chance = 28780},
 	{name = "royal star", chance = 25900, maxCount = 100},
 	{name = "berserk potion", chance = 24460, maxCount = 10},
@@ -86,28 +86,28 @@ monster.loot = {
 	{name = "ice shield", chance = 13670},
 	{name = "chaos mace", chance = 13670},
 	{name = "gold ingot", chance = 12950},
-	{id = 7633, chance = 10790},
-	{id = 26200, chance = 10070},
-	{id = 26198, chance = 9350},-- collar of blue plasma
-	{id = 26187, chance = 8630},
+	{id = 282, chance = 10790},
+	{id = 23544, chance = 10070},
+	{id = 23542, chance = 9350},-- collar of blue plasma
+	{id = 23531, chance = 8630},
 	{name = "ring of the sky", chance = 8630},
-	{id = 26199, chance = 7910},
+	{id = 23543, chance = 7910}, -- Collar of green plasma
 	{name = "beast's nightmare-cushion", chance = 6470},
 	{name = "violet gem", chance = 6470},
 	{name = "magic sulphur", chance = 6470},
 	{name = "purple tendril lantern", chance = 5760},
-	{id = 26185, chance = 5040},
-	{id = 26189, chance = 5040},
+	{id = 23529, chance = 5040},
+	{id = 23533, chance = 5040},
 	{name = "soul stone", chance = 5040},
 	{name = "dragon figurine", chance = 5040},
 	{name = "giant sapphire", chance = 4320},
 	{name = "giant emerald", chance = 4320},
 	{name = "turquoise tendril lantern", chance = 2880},
 	{name = "dark whispers", chance = 2880},
-	{name = "arcane staff", chance = 2880},
+	{id = 3341, chance = 2880}, -- Arcane staff
 	{name = "giant ruby", chance = 2880},
 	{name = "abyss hammer", chance = 2160},
-	{id = 34981, chance = 2160},
+	{id = 30343, chance = 2160},
 	{name = "unicorn figurine", chance = 1000}
 }
 

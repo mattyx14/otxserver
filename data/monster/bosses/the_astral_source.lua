@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "the astral source"
 monster.experience = 3000
 monster.outfit = {
-	lookTypeEx = 26896
+	lookTypeEx = 24228
 }
 
 monster.health = 150000

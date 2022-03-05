@@ -15,6 +15,138 @@ HomeBanners = {
 }
 
 GameStore.Categories = {
+  {
+ --Premium Time
+   icons = { "Category_PremiumTime.png" },
+   name = "Premium Time",
+   rookgaard = true,
+   state = GameStore.States.STATE_NONE,
+   offers = {
+        {
+          icons = { "Premium_Time_30.png" },
+          name = "30 Days of Premium Time",
+          price = 250,
+          id = 3030,
+          validUntil = 30,
+          description = "<i>Enhance your gaming experience by gaining additional abilities and advantages:</i>\n\n&#8226; access to Premium areas\n&#8226; use Tibia's transport system (ships, carpet)\n&#8226; more spells\n&#8226; rent houses\n&#8226; found guilds\n&#8226; offline training\n&#8226; larger depots\n&#8226; and many more\n\n{usablebyallicon} valid for all characters on this account\n{activated}",
+          type = GameStore.OfferTypes.OFFER_TYPE_PREMIUM,
+        }
+      },
+ },
+-- DarkKonia Products   
+ {
+   icons = { "Category_Extras.png" },
+   name = "Server Extras",
+   rookgaard = true,
+	 subclasses = {"Weapons and Equipment"},
+	 subclasses = {"Kits and Others"},
+ }, 
+-- Products  
+  {   
+   icons = { "Category_ExerciseWeapons.png" },
+   name = "Weapons and Equipment",
+   parent = "Server Extras",
+   rookgaard = true,
+   state = GameStore.States.STATE_NONE,
+   offers = {
+        {
+          icons = { "Icy_Clerical_Mace.png" },
+          name = "Icy Clerical Mace",
+          price = 100,
+          itemtype = 25940,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Atk:8 physical + 40 ice, Def:15 +3\n\n&#8226; Imbuements Slots: 2\n\n\n\n{usablebyallicon} only usable by Knights level 250+",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+        {
+          icons = { "Icy_Barbarian_Axe.png" },
+          name = "Icy Barbarian Axe",
+          price = 100,
+          itemtype = 25935,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Atk:10 physical + 37 ice, Def:25 +3\n\n&#8226; Imbuements Slots: 2\n\n\n\n{usablebyallicon} only usable by Knights level 250+",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+        {
+          icons = { "Icy_Spike_Sword.png" },
+          name = "Icy Spike Sword",
+          price = 100,
+          itemtype = 25930,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Atk:9 physical + 38 ice, Def:20 +3\n\n&#8226; Imbuements Slots: 2\n\n\n\n{usablebyallicon} only usable by Knights level 250+",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+        {
+          icons = { "Rainbow_Shield.png" },
+          name = "Rainbow Shield",
+          price = 100,
+          itemtype = 8077,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Def:36, shielding +5\n\n&#8226; Speed +15\n\n&#8226; Fast regeneration\n\n\n\n{usablebyallicon} only usable by Knights and Paladins level 250+",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+        {
+          icons = { "Icicle_Bow.png" },
+          name = "Icicle Bow",
+          price = 100,
+          itemtype = 19362,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Range: 6, Atk +6, Hit% +7\n\n&#8226; Imbuements Slots: 3\n\n\n\n{usablebyallicon} only usable by Paladins level 250+",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+        {
+          icons = { "Swan_Feather_Cloak.png" },
+          name = "Swan Feather Cloak",
+          price = 100,
+          itemtype = 25779,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Arm:12, protection energy +12%, earth +12%\n\n&#8226; Speed +10\n\n&#8226; Imbuements Slots: 1\n\n\n\n{usablebyallicon} only usable by Druids and Sorcerers level 250+",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+	},
+ },
+-- Products  
+  {   
+   icons = { "Category_ExerciseWeapons.png" },
+   name = "Kits and Others",
+   parent = "Server Extras",
+   rookgaard = true,
+   state = GameStore.States.STATE_NONE,
+   offers = {
+        {
+          name = "Crystal Coins",
+          price = 85,
+          itemtype = 3043,
+          count = 100, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Valuable Crystal Coins x100",
+          type = GameStore.OfferTypes.OFFER_TYPE_STACKABLE,
+        },
+        {
+          name = "ImbuidKit Vampirims",
+          price = 65,
+          itemtype = 6570,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Container Vampirims ImbuidKit Powerful",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+        {
+          name = "ImbuidKit Strike",
+          price = 65,
+          itemtype = 6571,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Container Strike ImbuidKit Powerful",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+        {
+          name = "ImbuidKit Void",
+          price = 65,
+          itemtype = 8853,
+          count = 1, 
+          description = "<i>DarkKonia Products</i>\n\nDescriptions:\n\n&#8226; Container Void ImbuidKit Powerful",
+          type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+        },
+	},
+ },
  {
    icons = { "Category_Consumables.png" },
    name = "Consumables",
@@ -52,7 +184,7 @@ GameStore.Categories = {
         {
           icons = { "Death_Redemption.png" },
           name = "Death Redemption",
-          price = 260,
+          price = 65,
           blessid = 10,
           count = 1,
           description = "<i>Reduces the penalty of your character's most recent death.</i>\n\n{character}\n{info} can only be used for the most recent death and only within 24 hours after this death",
@@ -77,7 +209,7 @@ GameStore.Categories = {
         {
           icons = { "Savanna_Ostrich.png" },
           name = "Savanna Ostrich",
-          price = 500,
+          price = 250,
           id = 168,
           description = "{character}\n{speedboost}\n\n<i>These birds have a strong maternal instinct since their fledglings are completely dependent on their parents for protection. Do not expect them to abandon their brood only because they are carrying you around. In fact, if you were to separate them from their chick, the Savanna Ostrich, Coral Rhea and Eventide Nandu would turn into vicious beings, so don't even try it!</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_MOUNT,
@@ -85,7 +217,7 @@ GameStore.Categories = {
         {			
           icons = { "Coral_Rhea.png" },
           name = "Coral Rhea",
-          price = 500,
+          price = 250,
           id = 169,
           description = "{character}\n{speedboost}\n\n<i>These birds have a strong maternal instinct since their fledglings are completely dependent on their parents for protection. Do not expect them to abandon their brood only because they are carrying you around. In fact, if you were to separate them from their chick, the Savanna Ostrich, Coral Rhea and Eventide Nandu would turn into vicious beings, so don't even try it!</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_MOUNT,
@@ -93,7 +225,7 @@ GameStore.Categories = {
         {			
           icons = { "Eventide_Nandu.png" },
           name = "Eventide Nandu",
-          price = 500,
+          price = 250,
           id = 170,
           description = "{character}\n{speedboost}\n\n<i>These birds have a strong maternal instinct since their fledglings are completely dependent on their parents for protection. Do not expect them to abandon their brood only because they are carrying you around. In fact, if you were to separate them from their chick, the Savanna Ostrich, Coral Rhea and Eventide Nandu would turn into vicious beings, so don't even try it!</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_MOUNT,
@@ -101,7 +233,7 @@ GameStore.Categories = {
         {
           icons = { "Void_Watcher.png" },
           name = "Void Watcher",
-          price = 870,
+          price = 250,
           id = 179,
           description = "{character}\n{speedboost}\n\n<i>If you are looking for a vigilant and faithful companion, look no further! Glide through every realm and stare into the darkest abyss on the back of a Void Watcher. They already know everything about you anyway for they have been watching you from the shadows!</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_MOUNT,
@@ -110,7 +242,7 @@ GameStore.Categories = {
         {
           icons = { "Rune_Watcher.png" },
           name = "Rune Watcher",
-          price = 870,
+          price = 250,
           id = 180,
           description = "{character}\n{speedboost}\n\n<i>If you are looking for a vigilant and faithful companion, look no further! Glide through every realm and stare into the darkest abyss on the back of a Rune Watcher. They already know everything about you anyway for they have been watching you from the shadows!</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_MOUNT,
@@ -119,7 +251,7 @@ GameStore.Categories = {
         {
           icons = { "Rift_Watcher.png" },
           name = "Rift Watcher",
-          price = 870,
+          price = 250,
           id = 181,
           description = "{character}\n{speedboost}\n\n<i>If you are looking for a vigilant and faithful companion, look no further! Glide through every realm and stare into the darkest abyss on the back of a Rift Watcher. They already know everything about you anyway for they have been watching you from the shadows!</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_MOUNT,
@@ -138,7 +270,7 @@ GameStore.Categories = {
         {
           icons = { "Outfit_Retro_Citizen_Male.png", "Outfit_Retro_Citizen_Female.png" },
           name = "Retro Citizen",
-          price = 870,
+          price = 250,
           sexId = {female = 975,male = 974},
           description = "{character}\n{info} colours can be changed using the Outfit dialog\n\n<i>Do you still remember your first stroll through the streets of Thais? For old times' sake, walk the paths of Nostalgia as a Retro Citizen!</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT,
@@ -146,7 +278,7 @@ GameStore.Categories = {
         {
           icons = { "Outfit_Retro_Hunter_Male.png", "Outfit_Retro_Hunter_Female.png" },
           name = "Retro Hunter",
-          price = 870,
+          price = 250,
           sexId = {female = 973,male = 972},
           description = "{character}\n{info} colours can be changed using the Outfit dialog\n\n<i>Whenever you pick up your bow and spears, you walk down memory lane and think of your early days? Treat yourself with the fashionable Retro Hunter outfit and hunt some good old monsters from your childhood.</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT,
@@ -154,7 +286,7 @@ GameStore.Categories = {
         {
           icons = { "Outfit_Retro_Knight_Male.png", "Outfit_Retro_Knight_Female.png" },
           name = "Retro Knight",
-          price = 870,
+          price = 250,
           sexId = {female = 971,male = 970},
           description = "{character}\n{info} colours can be changed using the Outfit dialog\n\n<i>Who needs a fancy looking sword with bling-bling and ornaments? Back in the days, we survived without such unnecessary accessories! Time to show those younkers what a Retro Knight is made of.</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT,
@@ -162,7 +294,7 @@ GameStore.Categories = {
         {
           icons = { "Outfit_Retro_Mage_Male.png", "Outfit_Retro_Mage_Female.png" },
           name = "Retro Wizzard",
-          price = 870,
+          price = 250,
           sexId = {female = 969, male = 968},
           description = "{character}\n{info} colours can be changed using the Outfit dialog\n\n<i>Dress up as a Retro Mage and you will always cut a fine figure on the battleground while eliminating your enemies with your magical powers the old-fashioned way.</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT,
@@ -170,7 +302,7 @@ GameStore.Categories = {
         {
           icons = { "Outfit_Retro_Nobleman_Male.png", "Outfit_Retro_Nobleman_Female.png" },
           name = "Retro Noblewoman",
-          price = 870,
+          price = 250,
           sexId = { female = 967, male = 966},
           description = "{character}\n{info} colours can be changed using the Outfit dialog\n\n<i>King Tibianus has invited you to a summer ball and you have nothing to wear for this special event? Do not worry, the Retro Noble(wo)man outfit makes you a real eye catcher on every festive occasion.</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT,
@@ -178,7 +310,7 @@ GameStore.Categories = {
         {
           icons = { "Outfit_Retro_Summoner_Male.png", "Outfit_Retro_Summoner_Female.png" },
           name = "Retro Summoner",
-          price = 870,
+          price = 250,
           sexId = {female = 965, male = 964},
           description = "{character}\n{info} colours can be changed using the Outfit dialog\n\n<i>While the Retro Mage usually throws runes and mighty spells directly at the enemies, the Retro Summoner outfit might be the better choice for Tibians that prefer to send mighty summons to the battlefield to keep their enemies at distance.</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT,
@@ -186,7 +318,7 @@ GameStore.Categories = {
         {
           icons = { "Outfit_Retro_Warrior_Male.png", "Outfit_Retro_Warrior_Female.png" },
           name = "Retro Warrior",
-          price = 870,
+          price = 250,
           sexId = {female = 963, male = 962},
           description = "{character}\n{info} colours can be changed using the Outfit dialog\n\n<i>You are fearless and strong as a behemoth but have problems finding the right outfit for your adventures? The Retro Warrior outfit is a must-have for all fashion-conscious old-school Tibians out there.</i>",
           type = GameStore.OfferTypes.OFFER_TYPE_OUTFIT,
@@ -203,7 +335,7 @@ GameStore.Categories = {
         {
           icons = { "XP_Boost.png" },
           name = "XP Boost",
-          price = 30,
+          price = 15,
           id = 65010,
           description = "<i>Purchase a boost that increases the experience points your character gains from hunting by 50%!</i>\n\n{character}\n{info} lasts for 1 hour hunting time\n{info} paused if stamina falls under 14 hours\n{info} can be purchased up to 5 times between 2 server saves\n{info} price increases with every purchase\n{info} cannot be purchased if an XP boost is already active",
           type = GameStore.OfferTypes.OFFER_TYPE_EXPBOOST,			
@@ -230,7 +362,7 @@ GameStore.Categories = {
         {
           icons = { "Name_Change.png" },
           name = "Character Name Change",
-          price = 250,
+          price = 50,
           id = 65002,
           description = "<i>Tired of your current character name? Purchase a new one!</i>\n\n{character}\n{info} relog required after purchase to finalise the name change",
           type = GameStore.OfferTypes.OFFER_TYPE_NAMECHANGE,
@@ -238,7 +370,7 @@ GameStore.Categories = {
         {
           icons = { "Sex_Change.png" },
           name = "Character Sex Change",
-          price = 120,
+          price = 50,
           id = 65003,
           description = "<i>Turns your female character into a male one - or vice versa.</i>\n\n{character}\n{activated}\n{info} you will keep all outfits you have purchased or earned in quest",
           type = GameStore.OfferTypes.OFFER_TYPE_SEXCHANGE,
@@ -256,8 +388,8 @@ GameStore.Categories = {
         {
           icons = { "Gold_Pouch.png" },
           name = "Gold Pouch",
-          price = 900,
-          itemtype = 26377,
+          price = 50,
+          itemtype = 23721,
           count = 1,
           description = "<i>Carries as many gold, platinum or crystal coins as your capacity allows, however, no other items.</i>\n\n{character}\n{storeinbox}\n{once}\n{useicon} use it to open it\n{info} always placed on the first position of your Store inbox",
           type = GameStore.OfferTypes.OFFER_TYPE_POUNCH,
@@ -265,7 +397,7 @@ GameStore.Categories = {
         {                
           icons = { "Charm_Expansion_Offer.png" },
           name = "Charm Expansion",
-          price = 450,
+          price = 100,
           id = 65005,
           description = "<i>Assign as many of your unlocked Charms as you like and get a 25% discount whenever you are removing a Charm from a creature!</i>\n\n{character}\n{once}",
           type = GameStore.OfferTypes.OFFER_TYPE_CHARMS,
@@ -273,7 +405,7 @@ GameStore.Categories = {
         {
           icons = { "Permanent_Prey_Slot.png" },
           name = "Permanent Prey Slot",
-          price = 900,
+          price = 100,
           id = 65008,
           description = "<i>Get an additional prey slot to activate additional prey!</i>\n\n{character}\n{info} maximum amount that can be owned by character: 3\n{info} added directly to Prey dialog",
           type = GameStore.OfferTypes.OFFER_TYPE_PREYSLOT,
@@ -281,7 +413,7 @@ GameStore.Categories = {
         {
           icons = { "Prey_Bonus_Reroll.png" },
           name = "Prey Wildcard",
-          price = 50,
+          price = 30,
           id = 1,
           count = 5,
           description = "<i>Use Prey Wildcards to reroll the bonus of an active prey, to lock your active prey or to select a prey of your choice.</i>\n\n{character}\n{info} added directly to Prey dialog\n{info} maximum amount that can be owned by character: 50",
@@ -290,7 +422,7 @@ GameStore.Categories = {
         {
           icons = { "Prey_Bonus_Reroll.png" },
           name = "Prey Wildcard",
-          price = 200,
+          price = 60,
           count = 20,
           description = "<i>Use Prey Wildcards to reroll the bonus of an active prey, to lock your active prey or to select a prey of your choice.</i>\n\n{character}\n{info} added directly to Prey dialog\n{info} maximum amount that can be owned by character: 50",
           type = GameStore.OfferTypes.OFFER_TYPE_PREYBONUS,

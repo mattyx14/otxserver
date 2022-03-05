@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 7200
 monster.maxHealth = 7200
 monster.race = "blood"
-monster.corpse = 33373
+monster.corpse = 28629
 monster.speed = 310
 monster.manaCost = 0
 
@@ -89,7 +89,7 @@ monster.loot = {
 	{name = "Eye of a Deepling", chance = 6070},
 	{name = "Warrior's Shield", chance = 3630},
 	{name = "Warrior's Axe", chance = 3470},
-	{name = "Life Ring", chance = 3000},
+	{id = 3052, chance = 3000}, -- Life ring
 	{name = "Fish Fin", chance = 920},
 	{name = "Necklace of the Deep", chance = 440}
 }

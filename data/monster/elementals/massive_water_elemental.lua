@@ -30,7 +30,7 @@ monster.Bestiary = {
 monster.health = 1250
 monster.maxHealth = 1250
 monster.race = "undead"
-monster.corpse = 10499
+monster.corpse = 9582
 monster.speed = 430
 monster.manaCost = 0
 
@@ -81,9 +81,9 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "small emerald", chance = 1000, maxCount = 2},
 	{name = "platinum coin", chance = 20000, maxCount = 2},
-	{name = "energy ring", chance = 910},
-	{name = "life ring", chance = 1000},
-	{id = 2667, chance = 40000, maxCount = 2},
+	{id = 3051, chance = 910}, -- Energy ring
+	{id = 3052, chance = 1000}, -- Life ring
+	{id = 3578, chance = 40000, maxCount = 2},
 	{name = "rainbow trout", chance = 1340},
 	{name = "green perch", chance = 1590},
 	{name = "great mana potion", chance = 10400},

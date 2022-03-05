@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a sword of vegeance"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 26895
+	lookTypeEx = 24227
 }
 
 monster.health = 2000

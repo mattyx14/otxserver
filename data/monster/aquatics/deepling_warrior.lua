@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "blood"
-monster.corpse = 15175
+monster.corpse = 13712
 monster.speed = 290
 monster.manaCost = 0
 
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "great health potion", chance = 10030},
 	{name = "vortex bolt", chance = 3431, maxCount = 5},
 	{name = "small emerald", chance = 3104},
-	{name = "life ring", chance = 3001},
+	{id = 3052, chance = 3001}, -- Life ring
 	{name = "heavy trident", chance = 999},
 	{name = "fish fin", chance = 870},
 	{name = "warrior's shield", chance = 610},

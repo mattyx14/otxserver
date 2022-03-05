@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 3650
 monster.maxHealth = 3650
 monster.race = "blood"
-monster.corpse = 20427
+monster.corpse = 18146
 monster.speed = 230
 monster.manaCost = 0
 
@@ -88,7 +88,7 @@ monster.loot = {
 	{name = "piggy bank", chance = 220},
 	{name = "gold coin", chance = 56500, maxCount = 100},
 	{name = "gold coin", chance = 40000, maxCount = 47},
-	{name = "energy ring", chance = 1800},
+	{id = 3051, chance = 1800}, -- Energy ring
 	{name = "skull staff", chance = 6500},
 	{name = "magic sulphur", chance = 600},
 	{name = "red piece of cloth", chance = 1420},

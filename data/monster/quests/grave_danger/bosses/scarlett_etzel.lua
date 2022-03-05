@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
-monster.corpse = 36288
+monster.corpse = 31453
 monster.speed = 175
 monster.manaCost = 0
 
@@ -68,11 +68,11 @@ monster.loot = {
 	{name = "Green Gem", chance = 85000},
 	{name = "Supreme Health Potion", chance = 53700, maxCount = 14},
 	{name = "Ultimate Mana Potion", chance = 48150, maxCount = 20},
-	{name = "Red Gem", chance = 42500},
+	{id= 3039, chance = 42500},
 	{name = "Ultimate Spirit Potion", chance = 34000, maxCount = 6},
 	{name = "Yellow Gem", chance = 29600, maxCount = 2},
 	{name = "Royal Star", chance = 26600, maxCount = 100},
-	{id = 7632, chance = 24000},
+	{id = 281, chance = 24000},
 	{name = "Berserk Potion", chance = 20300, maxCount = 10},
 	{name = "Blue Gem", chance = 18500, maxCount = 2},
 	{name = "Bullseye Potion", chance = 18500, maxCount = 10},
@@ -96,12 +96,12 @@ monster.loot = {
 	{name = "Cobra Rod", chance = 650},
 	{name = "Cobra Sword", chance = 650},
 	{name = "Cobra Wand", chance = 650},
-	{name = "The Cobra Amulet", chance = 350}
+	{name = "Cobra Amulet", chance = 350}
 }
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -600},
-	{name ="sudden death", interval = 2000, chance = 16, minDamage = -400, maxDamage = -600, target = true},
+	{name ="sudden death rune", interval = 2000, chance = 16, minDamage = -400, maxDamage = -600, target = true},
 	{name ="combat", interval = 2000, chance = 13, type = COMBAT_HOLYDAMAGE, minDamage = -450, maxDamage = -640, length = 7, spread = 3, effect = CONST_ME_HOLYAREA, target = false},
 	{name ="combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -480, maxDamage = -630, radius = 5, effect = CONST_ME_EXPLOSIONHIT, target = false}
 }

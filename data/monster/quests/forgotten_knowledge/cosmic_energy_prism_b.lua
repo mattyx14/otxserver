@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "cosmic energy prism B"
 monster.experience = 840
 monster.outfit = {
-	lookTypeEx = 1548
+	lookTypeEx = 2187
 }
 
 monster.health = 1000

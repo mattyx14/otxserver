@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 8500
 monster.maxHealth = 8500
 monster.race = "fire"
-monster.corpse = 25432
+monster.corpse = 22776
 monster.speed = 270
 monster.manaCost = 0
 
@@ -95,15 +95,15 @@ monster.loot = {
 	{name = "talon", chance = 5400},
 	{name = "yellow gem", chance = 5090},
 	{name = "wand of voodoo", chance = 4940},
-	{name = "red gem", chance = 4730},
+	{id= 3039, chance = 4730},
 	{name = "ice rapier", chance = 4730},
 	{name = "fire axe", chance = 3520},
 	{name = "might ring", chance = 2250},
 	{name = "giant sword", chance = 1880},
-	{name = "stealth ring", chance = 1790},
-	{name = "energy ring", chance = 1790},
+	{id = 3049, chance = 1790}, -- Stealth ring
+	{id = 3051, chance = 1790}, -- Energy ring
 	{name = "rift lance", chance = 1360},
-	{name = "ring of healing", chance = 1320},
+	{id = 3098, chance = 1320}, -- Ring of healing
 	{name = "platinum amulet", chance = 940},
 	{name = "devil helmet", chance = 520},
 	{name = "rift crossbow", chance = 370},

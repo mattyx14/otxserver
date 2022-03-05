@@ -9,11 +9,12 @@ function citizen.onStepIn(creature, item, position, fromPosition)
 
 		local town = Town(item.actionid - 30020)
 		player:setTown(town)
+		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are the newest resident of " .. town:getName(town) .. ".")
 	end
 	return true
 end
 
 citizen:type("stepin")
-citizen:id(1387, 1397)
+citizen:id(775, 1949, 1959)
 citizen:register()

@@ -1,37 +1,37 @@
 exerciseWeaponsTable = {
 	-- MELE
-	[32124] = { skill = SKILL_SWORD },
-	[32384] = { skill = SKILL_SWORD },
-	[40114] = { skill = SKILL_SWORD },
-	[40120] = { skill = SKILL_SWORD },
-	[32385] = { skill = SKILL_AXE },
-	[32125] = { skill = SKILL_AXE },
-	[40115] = { skill = SKILL_AXE },
-	[40121] = { skill = SKILL_AXE },
-	[32386] = { skill = SKILL_CLUB },
-	[32126] = { skill = SKILL_CLUB },
-	[40116] = { skill = SKILL_CLUB },
-	[40122] = { skill = SKILL_CLUB },
+	[28540] = { skill = SKILL_SWORD },
+	[28552] = { skill = SKILL_SWORD },
+	[35279] = { skill = SKILL_SWORD },
+	[35285] = { skill = SKILL_SWORD },
+	[28553] = { skill = SKILL_AXE },
+	[28541] = { skill = SKILL_AXE },
+	[35280] = { skill = SKILL_AXE },
+	[35286] = { skill = SKILL_AXE },
+	[28554] = { skill = SKILL_CLUB },
+	[28542] = { skill = SKILL_CLUB },
+	[35281] = { skill = SKILL_CLUB },
+	[35287] = { skill = SKILL_CLUB },
 	-- ROD
-	[32128] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
-	[32388] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
-	[40118] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
-	[40124] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
+	[28544] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
+	[28556] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
+	[35283] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
+	[35289] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_SMALLICE, allowFarUse = true },
 	-- RANGE
-	[32127] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
-	[32387] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
-	[40117] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
-	[40123] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
+	[28543] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
+	[28555] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
+	[35282] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
+	[35288] = { skill = SKILL_DISTANCE, effect = CONST_ANI_SIMPLEARROW, allowFarUse = true },
 	-- WAND
-	[32129] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true },
-	[32389] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true },
-	[40119] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true },
-	[40125] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true }
+	[28545] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true },
+	[28557] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true },
+	[35284] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true },
+	[35290] = { skill = SKILL_MAGLEVEL, effect = CONST_ANI_FIRE, allowFarUse = true }
 }
 
-freeDummies = {32142, 32149}
+freeDummies = {28558, 28565}
 maxAllowedOnADummy = configManager.getNumber(configKeys.MAX_ALLOWED_ON_A_DUMMY)
-houseDummies = {32143, 32144, 32145, 32146, 32147, 32148}
+houseDummies = {28559, 28560, 28561, 28562, 28563, 28564}
 
 local magicLevelRate = configManager.getNumber(configKeys.RATE_MAGIC)
 local skillLevelRate = configManager.getNumber(configKeys.RATE_SKILL)

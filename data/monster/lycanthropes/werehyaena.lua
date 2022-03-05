@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 2700
 monster.maxHealth = monster.health
 monster.race = "blood"
-monster.corpse = 38656
+monster.corpse = 33821
 monster.speed = 120
 monster.manaCost = 0
 
@@ -83,7 +83,7 @@ monster.loot = {
     {name = "red crystal fragment", chance = 9540},
     {name = "small enchanted amethyst", chance = 5760, maxCount = 5},
     {name = "life preserver", chance = 5670},
-    {name = "red gem", chance = 5590},
+    {id= 3039, chance = 5590},
     {name = "yellow gem", chance = 5420},
     {name = "combat knife", chance = 4700},
     {name = "green crystal fragment", chance = 4580},

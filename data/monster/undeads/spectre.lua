@@ -30,7 +30,7 @@ monster.Bestiary = {
 monster.health = 1350
 monster.maxHealth = 1350
 monster.race = "undead"
-monster.corpse = 6348
+monster.corpse = 6347
 monster.speed = 280
 monster.manaCost = 0
 
@@ -78,20 +78,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2071, chance = 9620},
+	{id = 2949, chance = 9620},
 	{name = "silver brooch", chance = 850},
 	{name = "silver brooch", chance = 110},
-	{id = 2136, chance = 110},
+	{id = 3019, chance = 110},
 	{name = "gold coin", chance = 33000, maxCount = 100},
 	{name = "gold coin", chance = 33000, maxCount = 100},
 	{name = "gold coin", chance = 33000, maxCount = 97},
 	{name = "platinum coin", chance = 3850, maxCount = 7},
-	{name = "stealth ring", chance = 190},
+	{id = 3049, chance = 190}, -- Stealth ring
 	{name = "wand of cosmic energy", chance = 9800},
 	{name = "blank rune", chance = 30310, maxCount = 2},
 	{name = "white piece of cloth", chance = 3800},
 	{name = "soul orb", chance = 6005},
-	{id = 6300, chance = 280},
+	{id = 6299, chance = 280},
 	{name = "demonic essence", chance = 6270},
 	{name = "relic sword", chance = 700},
 	{name = "great mana potion", chance = 920},

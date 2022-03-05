@@ -4,13 +4,13 @@ local monster = {}
 monster.description = "a bad dream"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 22444
+	lookTypeEx = 20110
 }
 
 monster.health = 7200
 monster.maxHealth = 7200
 monster.race = "blood"
-monster.corpse = 22497
+monster.corpse = 20163
 monster.speed = 0
 monster.manaCost = 0
 

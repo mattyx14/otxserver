@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 8200
 monster.maxHealth = 8200
 monster.race = "blood"
-monster.corpse = 38812
+monster.corpse = 33977
 monster.speed = 260
 
 monster.faction = FACTION_LIONUSURPERS

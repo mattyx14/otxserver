@@ -31,7 +31,7 @@ monster.Bestiary = {
 monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "blood"
-monster.corpse = 13331
+monster.corpse = 12344
 monster.speed = 480
 monster.manaCost = 0
 
@@ -84,7 +84,7 @@ monster.loot = {
 	{name = "strong mana potion", chance = 8885},
 	{name = "strong health potion", chance = 3880},
 	{name = "giant crab pincer", chance = 5000, maxCount = 2},
-	{name = "ring of healing", chance = 3000},
+	{id = 3098, chance = 3000}, -- Ring of healing
 	{name = "great mana potion", chance = 1220},
 }
 

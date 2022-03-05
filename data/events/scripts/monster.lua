@@ -27,7 +27,7 @@ function Monster:onDropLoot(corpse)
 				local itemBoosted = corpse:createLootItem(monsterLoot[i], boolCharm)
 			end
 			if not item then
-				Spdlog.warn("[Monster:onDropLoot] - Could not add loot item to corpse.")
+				Spdlog.warn(string.format("[Monster:onDropLoot] - Could not add loot item to monster: %s, from corpse id: %d.", self:getName(), corpse:getId()))
 			end
 		end
 
@@ -60,14 +60,6 @@ end
 function Monster:onSpawn(position)
 	if self:getType():isRewardBoss() then
 		self:setReward(true)
-	end
-
-	if self:getName():lower() == "cobra scout" or 
-		self:getName():lower() == "cobra vizier" or 
-		self:getName():lower() == "cobra assassin" then
-		if getGlobalStorageValue(GlobalStorage.CobraBastionFlask) >= os.time() then
-			self:setHealth(self:getMaxHealth() * 0.75)
-		end
 	end
 
 	if not self:getType():canSpawn(position) then

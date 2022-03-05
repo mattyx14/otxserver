@@ -93,8 +93,8 @@ monster.loot = {
 	{name = "small diamond", chance = 2900, maxCount = 2},
 	{name = "small amethyst", chance = 6680, maxCount = 2},
 	{name = "red piece of cloth", chance = 630},
-	{name = "ring of healing", chance = 6730},
-	{name = "red gem", chance = 390},
+	{id = 3098, chance = 6730}, -- Ring of healing
+	{id= 3039, chance = 390},
 	{name = "meat", chance = 8040},
 	{name = "ham", chance = 60140},
 	{name = "minotaur leather", chance = 14230},

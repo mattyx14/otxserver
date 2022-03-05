@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 700
 monster.maxHealth = 700
 monster.race = "blood"
-monster.corpse = 20391
+monster.corpse = 18110
 monster.speed = 200
 monster.manaCost = 0
 
@@ -88,11 +88,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 1962, chance = 910},
+	{id = 2828, chance = 910},
 	{name = "piggy bank", chance = 130},
 	{name = "small sapphire", chance = 550},
 	{name = "gold coin", chance = 64550, maxCount = 70},
-	{name = "energy ring", chance = 450},
+	{id = 3051, chance = 450}, -- Energy ring
 	{name = "platinum amulet", chance = 200},
 	{name = "wand of inferno", chance = 180},
 	{name = "protection amulet", chance = 790},

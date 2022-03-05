@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 3200
 monster.maxHealth = 3200
 monster.race = "blood"
-monster.corpse = 15176
+monster.corpse = 13713
 monster.speed = 330
 monster.manaCost = 0
 
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "deeptags", chance = 20600},
 	{name = "deepling ridge", chance = 19500},
 	{name = "small emerald", chance = 6890, maxCount = 2},
-	{name = "life ring", chance = 5360},
+	{id = 3052, chance = 5360}, -- Life ring
 	{name = "heavy trident", chance = 3680},
 	{name = "fish fin", chance = 2300},
 	{name = "warrior's shield", chance = 1534},

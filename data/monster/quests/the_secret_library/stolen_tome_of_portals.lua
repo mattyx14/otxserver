@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "stolen tome of portals"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 26653
+	lookTypeEx = 23985
 }
 
 monster.health = 10000

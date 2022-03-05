@@ -30,7 +30,7 @@ monster.Bestiary = {
 monster.health = 1950
 monster.maxHealth = 1950
 monster.race = "fire"
-monster.corpse = 6364
+monster.corpse = 6363
 monster.speed = 210
 monster.manaCost = 0
 
@@ -83,18 +83,18 @@ monster.loot = {
 	{name = "gold coin", chance = 40000, maxCount = 97},
 	{name = "gold coin", chance = 3390, maxCount = 7},
 	{name = "small amethyst", chance = 2250, maxCount = 3},
-	{name = "stealth ring", chance = 2702},
+	{id = 3049, chance = 2702}, -- Stealth ring
 	{name = "necrotic rod", chance = 830},
 	{name = "blank rune", chance = 16666, maxCount = 2},
 	{name = "double axe", chance = 1994},
-	{id = 2419, chance = 5660},
+	{id = 3307, chance = 5660},
 	{name = "guardian shield", chance = 8130},
 	{name = "pitchfork", chance = 50000},
 	{name = "cleaver", chance = 8830},
 	{name = "soul orb", chance = 7230},
-	{id = 6300, chance = 120},
+	{id = 6299, chance = 120},
 	{name = "demonic essence", chance = 8000},
-	{name = "concentrated demonic blood", chance = 25000, maxCount = 2},
+	{name = "flask of demonic blood", chance = 25000, maxCount = 2},
 	{name = "magma coat", chance = 250},
 	{name = "magma monocle", chance = 430}
 }

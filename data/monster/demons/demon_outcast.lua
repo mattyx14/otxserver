@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 6900
 monster.maxHealth = 6900
 monster.race = "blood"
-monster.corpse = 22549
+monster.corpse = 20215
 monster.speed = 296
 monster.manaCost = 0
 
@@ -94,9 +94,9 @@ monster.loot = {
 	{name = "small emerald", chance = 10000, maxCount = 5},
 	{name = "platinum coin", chance = 100000, maxCount = 6},
 	{name = "might ring", chance = 910},
-	{name = "stealth ring", chance = 1300},
+	{id = 3049, chance = 1300}, -- Stealth ring
 	{name = "platinum amulet", chance = 1000},
-	{name = "ring of healing", chance = 3000},
+	{id = 3098, chance = 3000}, -- Ring of healing
 	{name = "giant sword", chance = 2000},
 	{name = "ice rapier", chance = 660},
 	{name = "devil helmet", chance = 910},

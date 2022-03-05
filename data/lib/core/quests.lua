@@ -2,12 +2,12 @@ if not Quests then
 	Quests = {
 		[1] = {
 			name = "Forgotten Knowledge",
-			startStorageId = Storage.ForgottenKnowledge.Tomes,
+			startStorageId = DarkKonia.ForgottenKnowledge.Tomes,
 			startStorageValue = 1,
 			missions = {
 				[1] = {
 					name = "The temple of glory",
-					storageId = Storage.ForgottenKnowledge.Tomes,
+					storageId = DarkKonia.ForgottenKnowledge.Tomes,
 					missionId = 10360,
 					startValue = 0,
 					endValue = 1,
@@ -17,7 +17,7 @@ if not Quests then
 				},
 				[2] = {
 					name = "Circle of the Black Sphinx",
-					storageId = Storage.ForgottenKnowledge.LadyTenebrisKilled,
+					storageId = DarkKonia.ForgottenKnowledge.LadyTenebrisKilled,
 					missionId = 10361,
 					startValue = 0,
 					endValue = 1522018605,
@@ -27,7 +27,7 @@ if not Quests then
 				},
 				[3] = {
 					name = "Bane of the deep",
-					storageId = Storage.MisidiaQuest.JaulKilled,
+					storageId = DarkKonia.MisidiaQuest.JaulKilled,
 					missionId = 10362,
 					startValue = 0,
 					endValue = 1522018605,

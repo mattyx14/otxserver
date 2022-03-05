@@ -1,10 +1,10 @@
-local mType = Game.createMonsterType("Piñata Dragon")
+local mType = Game.createMonsterType("Pinata Dragon")
 local monster = {}
 
 monster.description = "a Pinata Dragon"
 monster.experience = 50
 monster.outfit = {
-	lookTypeEx = 27730
+	lookTypeEx = 25062
 }
 
 monster.health = 10000

@@ -12,8 +12,8 @@ end
 
 rune:group("attack")
 rune:id(26)
-rune:name("Poison Field")
-rune:runeId(2285)
+rune:name("poison field rune")
+rune:runeId(3172)
 rune:allowFarUse(true)
 rune:setPzLocked(true)
 rune:charges(3)

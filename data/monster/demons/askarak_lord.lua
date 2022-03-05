@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 2100
 monster.maxHealth = 2100
 monster.race = "venom"
-monster.corpse = 13956
+monster.corpse = 12821
 monster.speed = 240
 monster.manaCost = 0
 
@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 90},
 	{name = "small emerald", chance = 5882, maxCount = 5},
 	{name = "platinum coin", chance = 35333, maxCount = 2},
-	{name = "energy ring", chance = 606},
+	{id = 3051, chance = 606}, -- Energy ring
 	{name = "brown mushroom", chance = 5263, maxCount = 5},
 	{name = "magic sulphur", chance = 620},
 	{name = "assassin star", chance = 70, maxCount = 5},

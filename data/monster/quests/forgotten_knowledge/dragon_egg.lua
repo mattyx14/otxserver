@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a dragon egg"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 27745
+	lookTypeEx = 25077
 }
 
 monster.health = 5000

@@ -22,8 +22,8 @@ end
 
 rune:group("attack")
 rune:id(116)
-rune:name("Light Stone Shower")
-rune:runeId(23722)
+rune:name("light stone shower rune")
+rune:runeId(21351)
 rune:allowFarUse(true)
 rune:charges(4)
 rune:level(1)

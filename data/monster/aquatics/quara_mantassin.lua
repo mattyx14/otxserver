@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "halberd", chance = 4970},
 	{name = "small sapphire", chance = 1130},
 	{name = "cape", chance = 1090},
-	{name = "stealth ring", chance = 1050},
+	{id = 3049, chance = 1050}, -- Stealth ring
 	{name = "two handed sword", chance = 990},
 	{name = "fish fin", chance = 610},
 	{name = "strange helmet", chance = 100},

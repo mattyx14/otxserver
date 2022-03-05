@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1050
 monster.maxHealth = 1050
 monster.race = "blood"
-monster.corpse = 9879
+monster.corpse = 8965
 monster.speed = 480
 monster.manaCost = 390
 
@@ -78,15 +78,15 @@ monster.loot = {
 	{name = "small sapphire", chance = 1900, maxCount = 2},
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 48000, maxCount = 74},
-	{name = "stealth ring", chance = 1000},
+	{id = 3049, chance = 1000}, -- Stealth ring
 	{name = "life crystal", chance = 300},
 	{name = "battle axe", chance = 8000},
 	{name = "morning star", chance = 40000},
 	{name = "battle hammer", chance = 5000},
 	{name = "strong health potion", chance = 5000},
 	{name = "strong mana potion", chance = 4000},
-	{id = 9808, chance = 7940},
-	{id = 9809, chance = 7940},
+	{id = 8894, chance = 7940},
+	{id = 8895, chance = 7940},
 	{name = "sea serpent scale", chance = 5000}
 }
 

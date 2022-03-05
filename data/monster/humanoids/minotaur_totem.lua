@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a minotaur totem"
 monster.experience = 500
 monster.outfit = {
-	lookTypeEx = 3802
+	lookTypeEx = 2299
 }
 
 monster.health = 6000

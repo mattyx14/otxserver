@@ -30,7 +30,7 @@ monster.Bestiary = {
 monster.health = 450
 monster.maxHealth = 450
 monster.race = "undead"
-monster.corpse = 9867
+monster.corpse = 8953
 monster.speed = 230
 monster.manaCost = 0
 
@@ -81,14 +81,14 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 91920, maxCount = 95},
-	{id = 4860, chance = 29190},
+	{id = 4849, chance = 29190},
 	{name = "red mushroom", chance = 7700},
 	{name = "health potion", chance = 5130},
 	{name = "white mushroom", chance = 5030, maxCount = 2},
 	{name = "haunted piece of wood", chance = 4950},
 	{name = "orange mushroom", chance = 1800},
 	{name = "strong health potion", chance = 1040},
-	{name = "dwarven ring", chance = 660},
+	{id = 3097, chance = 660}, -- Dwarven ring
 	{name = "small emerald", chance = 620},
 	{name = "bullseye potion", chance = 100}
 }

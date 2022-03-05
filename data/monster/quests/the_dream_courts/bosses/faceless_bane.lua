@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 35000
 monster.maxHealth = 35000
 monster.race = "blood"
-monster.corpse = 34651
+monster.corpse = 30013
 monster.speed = 250
 monster.manaCost = 0
 
@@ -69,7 +69,7 @@ monster.loot = {
 	{name = "Ice Rapier", chance = 42000},
 	{name = "Hailstorm Rod", chance = 42000},
 	{name = "Violet Crystal Shard", chance = 22000},
-	{name = "Red Gem", chance = 22000},
+	{id= 3039, chance = 22000},
 	{name = "Red Crystal Fragment", chance = 18000},
 	{name = "Small Sapphire", minCount = 1, maxCount = 3, chance = 25000},
 	{name = "Knife", chance = 19000},
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "Ectoplasmic Shield", chance = 600},
 	{name = "Book Backpack", chance = 550},
 	{name = "Spirit Guide", chance = 530},
-	{id = 34983, chance = 500}, --- Enchanted Pendulet
+	{id = 30345, chance = 500}, --- Enchanted Pendulet
 }
 
 monster.attacks = {

@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 9400
 monster.maxHealth = 9400
 monster.race = "undead"
-monster.corpse = 17420
+monster.corpse = 16075
 monster.speed = 246
 monster.manaCost = 0
 
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "gold coin", chance = 100000, maxCount = 95},
 	{name = "platinum coin", chance = 100000, maxCount = 10},
-	{name = "red gem", chance = 6110},
+	{id= 3039, chance = 6110},
 	{name = "blue gem", chance = 830},
 	{name = "giant sword", chance = 620},
 	{name = "hammer of wrath", chance = 70},

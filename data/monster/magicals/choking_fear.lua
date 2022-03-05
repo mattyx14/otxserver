@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 5800
 monster.maxHealth = 5800
 monster.race = "undead"
-monster.corpse = 22493
+monster.corpse = 20159
 monster.speed = 380
 monster.manaCost = 0
 
@@ -82,9 +82,9 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "platinum coin", chance = 100000, maxCount = 8},
-	{name = "energy ring", chance = 3000},
-	{name = "life ring", chance = 4200},
-	{name = "ring of healing", chance = 3000},
+	{id = 3051, chance = 3000}, -- Energy ring
+	{id = 3052, chance = 4200}, -- Life ring
+	{id = 3098, chance = 3000}, -- Ring of healing
 	{name = "guardian shield", chance = 1540},
 	{name = "beastslayer axe", chance = 3290},
 	{name = "brown piece of cloth", chance = 6000},

@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "venom"
-monster.corpse = 12527
+monster.corpse = 11571
 monster.speed = 240
 monster.manaCost = 0
 
@@ -77,7 +77,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "small emerald", chance = 2702, maxCount = 4},
-	{name = "stealth ring", chance = 892},
+	{id = 3049, chance = 892}, -- Stealth ring
 	{name = "platinum amulet", chance = 110},
 	{name = "magic sulphur", chance = 1639},
 	{name = "strong health potion", chance = 9003},

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a rift fragment"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 1491
+	lookTypeEx = 2122
 }
 
 monster.health = 7200

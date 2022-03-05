@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 50000
 monster.maxHealth = 50000
 monster.race = "blood"
-monster.corpse = 30872
+monster.corpse = 27637
 monster.speed = 270
 monster.manaCost = 0
 
@@ -80,13 +80,13 @@ monster.loot = {
 	{name = "Ultimate Health Potion", chance = 10000, maxCount = 5},
 	{name = "Amber Staff", chance = 10000},
 	{name = "Blue Gem", chance = 10000},
-	{id = 30861, chance = 10000},
+	{id = 27626, chance = 10000},
 	{name = "Crystal Coin", chance = 10000},
 	{name = "Crystalline Armor", chance = 5000},
 	{name = "Dragon Necklace", chance = 10000},
 	{name = "Fire Axe", chance = 10000},
 	{name = "Fire Sword", chance = 10000},
-	{id = 7632, chance = 10000},
+	{id = 281, chance = 10000},
 	{name = "Giant Sword", chance = 10000},
 	{name = "Guardian Axe", chance = 10000},
 	{name = "Gold Token", chance = 10000},
@@ -94,7 +94,7 @@ monster.loot = {
 	{name = "Harpoon of a Giant Snail", chance = 10000},
 	{name = "Huge Spiky Snail Shell", chance = 10000},
 	{name = "Luminous Orb", chance = 10000},
-	{name = "Red Gem", chance = 10000},
+	{id= 3039, chance = 10000},
 	{name = "Silver Token", chance = 1000},
 	{name = "Stone Skin Amulet", chance = 1000},
 	{name = "Twiceslicer", chance = 1000},

@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 820
 monster.maxHealth = 820
 monster.race = "blood"
-monster.corpse = 21262
+monster.corpse = 18945
 monster.speed = 198
 monster.manaCost = 0
 
@@ -88,7 +88,7 @@ monster.loot = {
 	{name = "spellbook of mind control", chance = 180},
 	{name = "underworld rod", chance = 470},
 	{name = "book of necromantic rituals", chance = 13550},
-	{name = "red gem", chance = 880},
+	{id= 3039, chance = 880},
 	{name = "lancet", chance = 14410},
 	{name = "horoscope", chance = 9270},
 	{name = "blood tincture in a vial", chance = 14460},

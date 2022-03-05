@@ -30,7 +30,7 @@ monster.Bestiary = {
 monster.health = 1450
 monster.maxHealth = 1450
 monster.race = "blood"
-monster.corpse = 11280
+monster.corpse = 10363
 monster.speed = 256
 monster.manaCost = 0
 
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "small amethyst", chance = 4900, maxCount = 3},
 	{name = "platinum coin", chance = 4090, maxCount = 2},
 	{name = "yellow gem", chance = 1000},
-	{name = "life ring", chance = 770},
+	{id = 3052, chance = 770}, -- Life ring
 	{name = "terra rod", chance = 1001},
 	{name = "wand of inferno", chance = 1480},
 	{name = "lizard leather", chance = 980},

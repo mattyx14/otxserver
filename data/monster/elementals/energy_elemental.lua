@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 500
 monster.maxHealth = 500
 monster.race = "venom"
-monster.corpse = 8966
+monster.corpse = 8138
 monster.speed = 230
 monster.manaCost = 0
 
@@ -76,11 +76,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2124, chance = 2000},
+	{id = 3007, chance = 2000},
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 70},
 	{name = "small amethyst", chance = 5000, maxCount = 2},
-	{name = "energy ring", chance = 892},
+	{id = 3051, chance = 892}, -- Energy ring
 	{name = "silver amulet", chance = 1020},
 	{name = "wand of cosmic energy", chance = 636},
 	{name = "throwing star", chance = 9900, maxCount = 5},
@@ -89,7 +89,7 @@ monster.loot = {
 	{name = "crystal sword", chance = 5882},
 	{name = "strong mana potion", chance = 7692},
 	{name = "mana potion", chance = 11711},
-	{id = 7838, chance = 10000, maxCount = 10}
+	{id = 761, chance = 10000, maxCount = 10}
 }
 
 monster.attacks = {

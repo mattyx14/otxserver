@@ -20,8 +20,8 @@ end
 
 rune:group("attack")
 rune:id(116)
-rune:name("Stone Shower")
-rune:runeId(2288)
+rune:name("stone shower rune")
+rune:runeId(3175)
 rune:allowFarUse(true)
 rune:charges(4)
 rune:level(28)

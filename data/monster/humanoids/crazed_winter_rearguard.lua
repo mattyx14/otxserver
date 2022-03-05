@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 5200
 monster.maxHealth = 5200
 monster.race = "blood"
-monster.corpse = 34764
+monster.corpse = 30126
 monster.speed = 400
 monster.manaCost = 0
 
@@ -78,11 +78,11 @@ monster.voices = {
 monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 5},
 	{name = "red crystal fragment", chance = 1000000},
-	{name = "red gem", chance = 1000000},
+	{id= 3039, chance = 1000000},
 	{name = "ice rapier", chance = 15000},
 	{name = "ultimate health potion", chance = 21550},
 	{name = "great spirit potion", chance = 23550},
-	{id = 34696, chance = 14750, maxCount = 2},
+	{id = 30058, chance = 14750, maxCount = 2},
 	{name = "life crystal", chance = 17550},
 	{name = "dream essence egg", chance = 6350},
 	{name = "elven astral observer", chance = 14600},

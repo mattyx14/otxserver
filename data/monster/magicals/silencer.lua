@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 5400
 monster.maxHealth = 5400
 monster.race = "blood"
-monster.corpse = 22489
+monster.corpse = 20155
 monster.speed = 470
 monster.manaCost = 0
 
@@ -82,7 +82,7 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "platinum coin", chance = 100000, maxCount = 8},
-	{name = "stealth ring", chance = 1200},
+	{id = 3049, chance = 1200}, -- Stealth ring
 	{name = "boots of haste", chance = 360},
 	{name = "dark shield", chance = 2000},
 	{name = "assassin star", chance = 7600, maxCount = 10},

@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 10500
 monster.maxHealth = 10500
 monster.race = "undead"
-monster.corpse = 33349
+monster.corpse = 28605
 monster.speed = 460
 monster.manaCost = 0
 
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "Flash Arrow", chance = 10000, maxCount = 6},
 	{name = "Throwing Star", chance = 10000, maxCount = 10},
 	{name = "Crystal Sword", chance = 10000},
-	{name = "Energy Ring", chance = 10000},
+	{id = 3051, chance = 10000}, -- Energy ring
 	{name = "Guardian Shield", chance = 10000},
 	{name = "Mana Potion", chance = 10000, maxCount = 10},
 	{name = "Ultimate Mana Potion", chance = 10000, maxCount = 8},

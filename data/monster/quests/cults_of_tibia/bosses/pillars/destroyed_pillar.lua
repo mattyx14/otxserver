@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a destroyed pillar"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 8639
+	lookTypeEx = 7811
 }
 
 monster.health = 20000

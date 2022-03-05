@@ -77,17 +77,17 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 28000, maxCount = 35},
-	{name = "sword ring", chance = 3920},
+	{id = 3091, chance = 3920}, -- Sword ring
 	{name = "longsword", chance = 2800},
 	{name = "throwing knife", chance = 9950, maxCount = 4},
 	{name = "broadsword", chance = 610},
-	{id = 2419, chance = 1860},
+	{id = 3307, chance = 1860},
 	{name = "plate armor", chance = 1650},
 	{name = "warrior helmet", chance = 180},
 	{name = "brass legs", chance = 3100},
 	{name = "plate shield", chance = 1650},
 	{name = "plate legs", chance = 440},
-	{id = 2667, chance = 29400},
+	{id = 3578, chance = 29400},
 	{name = "brown mushroom", chance = 9650},
 	{name = "royal spear", chance = 2400},
 	{name = "health potion", chance = 550},

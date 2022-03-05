@@ -21,7 +21,7 @@ function movement.onStepIn(creature, item, position, fromPosition)
 
 	local tile = Tile(setting.targetPos)
 	if tile then
-	local getItemTile = tile:getItemById(setting.targetItem)
+		local getItemTile = tile:getItemById(setting.targetItem)
 		if getItemTile then
 			getItemTile:remove()
 		end
@@ -52,7 +52,7 @@ function movement.onStepOut(creature, item, position, fromPosition)
 
 	local tile = Tile(setting.targetPos)
 	if tile then
-	local getItemTile = tile:getItemById(setting.targetItem)
+		local getItemTile = tile:getItemById(setting.targetItem)
 		if not getItemTile then
 			Game.createItem(setting.targetItem, 1, setting.targetPos)
 		end

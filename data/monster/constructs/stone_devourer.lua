@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 4200
 monster.maxHealth = 4200
 monster.race = "undead"
-monster.corpse = 18375
+monster.corpse = 15865
 monster.speed = 300
 monster.manaCost = 0
 
@@ -80,7 +80,7 @@ monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "platinum coin", chance = 92000, maxCount = 7},
 	{name = "stone skin amulet", chance = 2270},
-	{name = "dwarven ring", chance = 2840},
+	{id = 3097, chance = 2840}, -- Dwarven ring
 	{name = "giant sword", chance = 570},
 	{name = "crystal mace", chance = 850},
 	{name = "war axe", chance = 920},
@@ -92,7 +92,7 @@ monster.loot = {
 	{name = "great mana potion", chance = 15610, maxCount = 2},
 	{name = "mana potion", chance = 15050, maxCount = 2},
 	{name = "ultimate health potion", chance = 14410},
-	{id = 8748, chance = 11360},
+	{id = 7920, chance = 11360},
 	{name = "ancient stone", chance = 12850},
 	{name = "crystalline arrow", chance = 9940, maxCount = 10},
 	{name = "green crystal splinter", chance = 6960},

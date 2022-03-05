@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 20000
 monster.maxHealth = 20000
 monster.race = "venom"
-monster.corpse = 34660
+monster.corpse = 30022
 monster.speed = 170
 monster.manaCost = 0
 
@@ -75,25 +75,25 @@ monster.loot = {
 	{name = "Royal Star", chance = 15770, maxCount = 100},
 	{name = "Green Gem", chance = 12800, maxCount = 2},
 	{name = "Yellow Gem", chance = 12000, maxCount = 2},
-	{name = "Red Gem", chance = 12700, maxCount = 2},
+	{id= 3039, chance = 12700, maxCount = 2},
 	{name = "Bullseye Potion", chance = 25000, maxCount = 10},
 	{name = "Pomegranate", chance = 8000},
 	{name = "Crystal Coin", chance = 7700, maxCount = 2},
 	{name = "Skull Staff", chance = 7650},
 	{name = "Chaos Mace", chance = 2200},
 	{name = "Gold Ingot", chance = 2800},
-	{id = 26199, chance = 2500},
-	{id = 7632, chance = 2600},
+	{id = 23543, chance = 2500}, -- Collar of green plasma
+	{id = 281, chance = 2600},
 	{name = "Blue Gem", chance = 2500},
 	{name = "Violet Gem", chance = 2300, maxCount = 2},
 	{name = "Living Armor", chance = 1100},
 	{name = "Magic Sulphur", chance = 1000},
 	{name = "Mastermind Potion", chance = 800, maxCount = 10},
-	{id = 26185, chance = 800},
+	{id = 23529, chance = 800},
 	{name = "Ring of the Sky", chance = 800},
 	{name = "Living Vine Bow", chance = 750},
 	{name = "Abyss Hammer", chance = 700},
-	{id = 26187, chance = 600},
+	{id = 23531, chance = 600},
 	{name = "Plagueroot Offshoot", chance = 500},
 	{name = "Turquoise Tendril Lantern", chance = 400}
 }

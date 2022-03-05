@@ -1,10 +1,10 @@
 --[[
 	Look README.md for see the reserved action/unique numbers
 	From range 5000 to 6000 is reserved for keys chest
-	From range 6001 to 14000 is reserved for script reward
+	From range 6001 to 472 is reserved for script reward
 	Path: data\scripts\actions\system\quest_reward_common.lua
 
-	From range 14001 to 15000 is reserved for others scripts (varied rewards)
+	From range 473 to 15000 is reserved for others scripts (varied rewards)
 
 	There is no need to tamper with the chests scripts, just register a new table and configure correctly
 	So the quest will work in-game

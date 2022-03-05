@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 65000
 monster.maxHealth = 65000
 monster.race = "venom"
-monster.corpse = 23359
+monster.corpse = 20988
 monster.speed = 200
 monster.manaCost = 0
 
@@ -81,7 +81,7 @@ monster.loot = {
 	{name = "glooth axe", chance = 8000},
 	{name = "glooth blade", chance = 7000},
 	{name = "glooth cape", chance = 6000},
-	{name = "red gem", chance = 2600},
+	{id= 3039, chance = 2600},
 	{name = "yellow gem", chance = 2500},
 	{name = "lisa's doll", chance = 300}
 }

@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 800000
 monster.maxHealth = 800000
 monster.race = "venom"
-monster.corpse = 26217
+monster.corpse = 23561
 monster.speed = 450
 monster.manaCost = 0
 
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "mastermind potion", chance = 66666, maxCount = 10},
 	{name = "ultimate mana potion", chance = 66666, maxCount = 6},
 	{name = "giant emerald", chance = 66666},
-	{name = "red gem", chance = 66666},
+	{id= 3039, chance = 66666},
 	{name = "small ruby", chance = 33333, maxCount = 12},
 	{name = "bullseye potion", chance = 33333, maxCount = 10},
 	{name = "gold token", chance = 33333, maxCount = 8},
@@ -90,7 +90,7 @@ monster.loot = {
 	{name = "blue crystal shard", chance = 33333, maxCount = 3},
 	{name = "giant sapphire", chance = 33333},
 	{name = "green gem", chance = 33333},
-	{id = 26198, chance = 33333},-- collar of blue plasma
+	{id = 23542, chance = 33333},-- collar of blue plasma
 	{name = "huge chunk of crude iron", chance = 33333},
 	{name = "magic sulphur", chance = 33333},
 	{name = "ring of the sky", chance = 33333},
@@ -98,8 +98,8 @@ monster.loot = {
 	{name = "small diamond", chance = 15000, maxCount = 12},
 	{name = "small emerald", chance = 15000, maxCount = 12},
 	{name = "rift shield", chance = 5000},
-	{id = 7632, chance = 5000},
-	{name = "arcane staff", chance = 5000},
+	{id = 281, chance = 5000},
+	{id = 3341, chance = 5000}, -- Arcane staff
 	{name = "skullcracker armor", chance = 5000},
 	{name = "chaos mace", chance = 5000},
 	{name = "cat's paw", chance = 5000},

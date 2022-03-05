@@ -8,5 +8,5 @@ function teleportDrawWell.onUse(player, item, fromPosition, target, toPosition, 
 	return true
 end
 
-teleportDrawWell:id(430, 1369)
+teleportDrawWell:id(1931)
 teleportDrawWell:register()

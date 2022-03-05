@@ -4,56 +4,40 @@ local config = {
 }
 
 local spheres = {
-	[7759] = {VOCATION.BASE_ID.PALADIN},
-	[7760] = {VOCATION.BASE_ID.SORCERER},
-	[7761] = {VOCATION.BASE_ID.DRUID},
-	[7762] = {VOCATION.BASE_ID.KNIGHT}
+	[675] = {VOCATION.BASE_ID.PALADIN},
+	[676] = {VOCATION.BASE_ID.SORCERER},
+	[677] = {VOCATION.BASE_ID.DRUID},
+	[678] = {VOCATION.BASE_ID.KNIGHT}
 }
 
-local enchantableGems = {2147, 2146, 2149, 2150}
-local enchantableItems = {2383, 7383, 7384, 7406, 7402, 2429, 2430, 7389, 7380, 2454, 2423, 2445, 7415, 7392, 2391, 2544, 8905}
+local enchantableGems = {3030, 3029, 3032, 3033}
+local enchantableItems = {3447}
 
 local enchantingAltars = {
-	{7504, 7505, 7506, 7507},
-	{7508, 7509, 7510, 7511},
-	{7516, 7517, 7518, 7519},
-	{7512, 7513, 7514, 7515}
+	{146, 147, 148, 149},
+	{150, 151, 152, 153},
+	{158, 159, 160, 161},
+	{154, 155, 156, 157}
 }
 
-local enchantedGems = {7760, 7759, 7761, 7762}
+local enchantedGems = {676, 675, 677, 678}
 local enchantedItems = {
-	[2383] = {7744, 7763, 7854, 7869},
-	[7383] = {7745, 7764, 7855, 7870},
-	[7384] = {7746, 7765, 7856, 7871},
-	[7406] = {7747, 7766, 7857, 7872},
-	[7402] = {7748, 7767, 7858, 7873},
-	[2429] = {7749, 7768, 7859, 7874},
-	[2430] = {7750, 7769, 7860, 7875},
-	[7389] = {7751, 7770, 7861, 7876},
-	[7380] = {7752, 7771, 7862, 7877},
-	[2454] = {7753, 7772, 7863, 7878},
-	[2423] = {7754, 7773, 7864, 7879},
-	[2445] = {7755, 7774, 7865, 7880},
-	[7415] = {7756, 7775, 7866, 7881},
-	[7392] = {7757, 7776, 7867, 7882},
-	[2391] = {7758, 7777, 7868, 7883},
-	[2544] = {7840, 7839, 7850, 7838},
-	[8905] = {8906, 8907, 8909, 8908}
+	[3447] = {761, 762, 773, 764}
 }
 
 local enchanting = Action()
 
 function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if item.itemid == 2147 and target.itemid == 2342 then
-		target:transform(2343)
+	if item.itemid == 3030 and target.itemid == 3229 then
+		target:transform(3230)
 		target:decay()
 		item:remove(1)
 		toPosition:sendMagicEffect(CONST_ME_MAGIC_RED)
 		return true
 	end
 
-	if item.itemid == 7760 and isInArray({9934, 10022}, target.itemid) then
-		target:transform(9933)
+	if item.itemid == 676 and isInArray({3123, 9020}, target.itemid) then
+		target:transform(9019)
 		item:remove(1)
 		toPosition:sendMagicEffect(CONST_ME_MAGIC_RED)
 		return true
@@ -90,7 +74,7 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 		return true
 	end
 
-	if item.itemid == 7761 and isInArray({9949, 9954}, target.itemid) then
+	if item.itemid == 677 and isInArray({9035, 9040}, target.itemid) then
 		target:transform(target.itemid - 1)
 		target:decay()
 		item:remove(1)
@@ -110,7 +94,7 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 		end
 
 		local subtype = target.type
-		if not isInArray({2544, 8905}, target.itemid) then
+		if not isInArray({3447, 8077}, target.itemid) then
 			subtype = 1000
 		end
 
@@ -122,5 +106,5 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 	return false
 end
 
-enchanting:id(7759, 7760, 7761, 7762)
+enchanting:id(675, 676, 677, 678)
 enchanting:register()

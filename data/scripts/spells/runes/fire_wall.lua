@@ -13,8 +13,8 @@ end
 
 rune:group("attack")
 rune:id(28)
-rune:name("Fire Wall")
-rune:runeId(2303)
+rune:name("fire wall rune")
+rune:runeId(3190)
 rune:allowFarUse(true)
 rune:setPzLocked(true)
 rune:charges(4)

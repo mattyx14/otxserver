@@ -4,13 +4,13 @@ local monster = {}
 monster.description = "a tentuglys head"
 monster.experience = 40000
 monster.outfit = {
-	lookTypeEx = 39940
+	lookTypeEx = 35105
 }
 
 monster.health = 0 --?
 monster.maxHealth = 0 --?
 monster.race = "blood"
-monster.corpse = 40435
+monster.corpse = 35600
 monster.speed = 0
 monster.manaCost = 0
 

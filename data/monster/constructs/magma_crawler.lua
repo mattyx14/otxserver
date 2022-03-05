@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 4800
 monster.maxHealth = 4800
 monster.race = "fire"
-monster.corpse = 17336
+monster.corpse = 15991
 monster.speed = 460
 monster.manaCost = 0
 
@@ -80,7 +80,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 99},
 	{name = "platinum coin", chance = 100000, maxCount = 5},
 	{name = "yellow gem", chance = 1030},
-	{name = "energy ring", chance = 1650},
+	{id = 3051, chance = 1650}, -- Energy ring
 	{name = "fire sword", chance = 1680},
 	{name = "black shield", chance = 1550},
 	{name = "iron ore", chance = 4280},
@@ -93,7 +93,7 @@ monster.loot = {
 	{name = "magma boots", chance = 1820},
 	{name = "wand of draconia", chance = 4280},
 	{name = "fiery heart", chance = 7810},
-	{id = 13757, chance = 1675},
+	{id = 12600, chance = 1675},
 	{name = "crystalline arrow", chance = 5950, maxCount = 10},
 	{name = "wand of everblazing", chance = 690},
 	{name = "blue crystal shard", chance = 3930, maxCount = 2},
@@ -109,7 +109,7 @@ monster.attacks = {
 	{name ="combat", interval = 2000, chance = 10, type = COMBAT_DEATHDAMAGE, minDamage = -300, maxDamage = -1100, length = 8, spread = 3, effect = CONST_ME_MORTAREA, target = false},
 	{name ="magma crawler wave", interval = 2000, chance = 15, minDamage = -290, maxDamage = -800, target = false},
 	{name ="magma crawler soulfire", interval = 2000, chance = 20, target = false},
-	{name ="soulfire", interval = 2000, chance = 10, target = false},
+	{name ="soulfire rune", interval = 2000, chance = 10, target = false},
 	{name ="combat", interval = 2000, chance = 15, type = COMBAT_FIREDAMAGE, minDamage = -140, maxDamage = -180, radius = 3, effect = CONST_ME_HITBYFIRE, target = false},
 	{name ="speed", interval = 2000, chance = 10, speedChange = -800, radius = 2, effect = CONST_ME_MAGIC_RED, target = false, duration = 20000}
 }

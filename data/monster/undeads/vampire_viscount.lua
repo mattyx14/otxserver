@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1200
 monster.maxHealth = 1200
 monster.race = "blood"
-monster.corpse = 21278
+monster.corpse = 18961
 monster.speed = 220
 monster.manaCost = 0
 
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "black pearl", chance = 2500},
 	{name = "small ruby", chance = 3040, maxCount = 2},
 	{name = "gold coin", chance = 83000, maxCount = 50},
-	{name = "red gem", chance = 540},
+	{id= 3039, chance = 540},
 	{name = "ice rapier", chance = 810},
 	{name = "vampire shield", chance = 200},
 	{name = "red piece of cloth", chance = 70},

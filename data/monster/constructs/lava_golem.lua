@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 9000
 monster.maxHealth = 9000
 monster.race = "fire"
-monster.corpse = 17333
+monster.corpse = 15988
 monster.speed = 420
 monster.manaCost = 0
 
@@ -78,7 +78,7 @@ monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 199},
 	{name = "platinum coin", chance = 100000, maxCount = 11},
 	{name = "yellow gem", chance = 6480},
-	{name = "red gem", chance = 1180},
+	{id= 3039, chance = 1180},
 	{name = "wand of inferno", chance = 2950},
 	{name = "fire sword", chance = 1710},
 	{name = "fire axe", chance = 1560},

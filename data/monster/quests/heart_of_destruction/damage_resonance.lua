@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Damage Resonance"
 monster.experience = 560
 monster.outfit = {
-	lookTypeEx = 25417
+	lookTypeEx = 22761
 }
 
 monster.health = 11000

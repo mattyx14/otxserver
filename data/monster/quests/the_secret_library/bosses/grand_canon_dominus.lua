@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "blood"
-monster.corpse = 32437
+monster.corpse = 28737
 monster.speed = 210
 monster.manaCost = 0
 
@@ -67,7 +67,7 @@ monster.loot = {
 	{name = "golden armor", chance = 1700},
 	{name = "mastermind shield", chance = 1100},
 	{name = "patch of fine cloth", chance = 1000},
-	{name = "red gem", chance = 1800},
+	{id= 3039, chance = 1800},
 	{name = "violet gem", chance = 1850},
 	{name = "falcon bow", chance = 180},
 	{name = "falcon wand", chance = 180},

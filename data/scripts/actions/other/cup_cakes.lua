@@ -1,18 +1,18 @@
 local data = {
-[31719] = {
-	Type = "mana",
-	ExhaustStor = Storage.BlueberryCupcake,
-	timestamp = 10
+	[28484] = {
+		Type = "mana",
+		ExhaustStor = Storage.BlueberryCupcake,
+		timestamp = 10
 	},
-[31720] = {
-	Type = "health",
-	ExhaustStor = Storage.StrawberryCupcake,
-	timestamp = 10
+	[28485] = {
+		Type = "health",
+		ExhaustStor = Storage.StrawberryCupcake,
+		timestamp = 10
 	},
-[31721] = {
-	Type = "skill",
-	ExhaustStor = Storage.LemonCupcake,
-	timestamp = 10
+	[28486] = {
+		Type = "skill",
+		ExhaustStor = Storage.LemonCupcake,
+		timestamp = 10
 	}
 }
 
@@ -47,5 +47,5 @@ local foundItem = data[item.itemid]
 	return true
 end
 
-cupCakes:id(31719, 31720, 31721)
+cupCakes:id(28484, 28485, 28486)
 cupCakes:register()

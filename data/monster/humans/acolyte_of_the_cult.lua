@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 390
 monster.maxHealth = 390
 monster.race = "blood"
-monster.corpse = 20319
+monster.corpse = 18038
 monster.speed = 200
 monster.manaCost = 0
 
@@ -86,10 +86,10 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 1962, chance = 730},
+	{id = 2828, chance = 730},
 	{name = "gold coin", chance = 66940, maxCount = 40},
 	{name = "small emerald", chance = 550},
-	{name = "life ring", chance = 560},
+	{id = 3052, chance = 560}, -- Life ring
 	{name = "terra rod", chance = 250},
 	{name = "dragon necklace", chance = 1050},
 	{name = "morning star", chance = 4990},

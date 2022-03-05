@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 38000
 monster.maxHealth = 38000
 monster.race = "fire"
-monster.corpse = 13973
+monster.corpse = 12838
 monster.speed = 220
 monster.manaCost = 0
 
@@ -65,12 +65,12 @@ monster.voices = {
 monster.loot = {
 	{name = "Platinum Coin", chance = 100000, maxCount = 8},
 	{name = "Flaming Arrow", chance = 60000, maxCount = 15},
-	{name = "Red Gem", chance = 45000, maxCount = 15},
+	{id= 3039, chance = 45000, maxCount = 15},
 	{name = "Sea Horse Figurine", chance = 6700},
-	{id = 36392, chance = 520},
-	{id = 36204, chance = 16500},
+	{id = 31557, chance = 520},
+	{id = 31369, chance = 16500},
 	{name = "Winged Boots", chance = 110},
-	{id = 35238, chance = 250},
+	{id = 30403, chance = 250},
 	{name = "Magma Coat", chance = 48000},
 	{name = "Stone Skin Amulet", chance = 54000}
 }

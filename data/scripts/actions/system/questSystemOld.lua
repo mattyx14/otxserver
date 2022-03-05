@@ -1,7 +1,7 @@
-local questSystem3 = Action()
+local questSystemOld = Action()
 
-function questSystem3.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if item.uid <= 1250 or item.uid >= 40809 then
+function questSystemOld.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if item.uid <= 100 or item.uid >= 41560 then
 		return false
 	end
 
@@ -26,5 +26,5 @@ function questSystem3.onUse(player, item, fromPosition, target, toPosition, isHo
 	return true
 end
 
-questSystem3:id(1740, 1747, 1748, 1749)
-questSystem3:register()
+questSystemOld:id(2472, 2478, 2480, 2481, 2482, 7160, 7161)
+questSystemOld:register()

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a time waster"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 26397
+	lookTypeEx = 23729
 }
 
 monster.health = 1000

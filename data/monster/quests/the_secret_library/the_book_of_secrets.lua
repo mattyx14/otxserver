@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "the book of secrets"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 25411
+	lookTypeEx = 22755
 }
 
 monster.health = 10000

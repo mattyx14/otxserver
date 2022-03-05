@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "undead"
-monster.corpse = 8937
+monster.corpse = 8109
 monster.speed = 280
 monster.manaCost = 0
 
@@ -80,8 +80,8 @@ monster.loot = {
 	{name = "vampire shield", chance = 22000},
 	{name = "strong health potion", chance = 18000},
 	{name = "platinum coin", chance = 12000, maxCount = 5},
-	{name = "ring of healing", chance = 12000},
-	{id = 2229, chance = 12000},
+	{id = 3098, chance = 12000}, -- Ring of healing
+	{id = 3114, chance = 12000},
 	{name = "spellbook of lost souls", chance = 2000}
 }
 

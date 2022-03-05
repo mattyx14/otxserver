@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "blood"
-monster.corpse = 30756
+monster.corpse = 27521
 monster.speed = 280
 monster.manaCost = 0
 
@@ -98,9 +98,9 @@ monster.loot = {
 	{name = "Troll Green", chance = 500, maxCount = 2},
 	{name = "Assassin Star", chance = 300, maxCount = 5},
 	{name = "Platinum Amulet", chance = 130},
-	{name = "Ring of Healing", chance = 200},
+	{id = 3098, chance = 200}, -- Ring of healing
 	{name = "Werewolf Amulet", chance = 50},
-	{id = 30941, chance = 30}
+	{id = 27706, chance = 30}
 }
 
 monster.attacks = {

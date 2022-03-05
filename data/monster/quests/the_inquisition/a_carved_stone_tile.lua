@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a carved stone tile"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 3169
+	lookTypeEx = 516
 }
 
 monster.health = 100

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a containment crystal"
 monster.experience = 0
 monster.outfit = {
-	lookTypeEx = 8633
+	lookTypeEx = 7805
 }
 
 monster.health = 20000

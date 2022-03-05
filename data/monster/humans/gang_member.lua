@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 295
 monster.maxHealth = 295
 monster.race = "blood"
-monster.corpse = 20403
+monster.corpse = 18122
 monster.speed = 190
 monster.manaCost = 420
 
@@ -79,7 +79,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 50110, maxCount = 30},
-	{name = "club ring", chance = 740},
+	{id = 3093, chance = 740}, -- Club ring
 	{name = "studded legs", chance = 5220},
 	{name = "leather legs", chance = 15330}
 }

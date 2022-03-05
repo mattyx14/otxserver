@@ -33,8 +33,12 @@ local familiarStorage = Storage.PetSummon
 local familiarLogin = CreatureEvent("FamiliarLogin")
 
 function familiarLogin.onLogin(player)
-	if not player then return false end
+	if not player then
+		return false
+	end
+
 	local vocation = familiar[player:getVocation():getBaseId()]
+
 	local familiarName
 	local petTimeLeft = player:getStorageValue(familiarStorage) - player:getLastLogout()
 
@@ -85,7 +89,7 @@ local advanceFamiliar = CreatureEvent("AdvanceFamiliar")
 
 function advanceFamiliar.onAdvance(player, skill, oldLevel, newLevel)
 	local vocation = familiar[player:getVocation():getBaseId()]
-	if newLevel >= 200 and isPremium(player) then
+	if vocation and newLevel >= 200 and isPremium(player) then
 		if player:getFamiliarLooktype() == 0 then
 				player:setFamiliarLooktype(vocation.id)
 		end
@@ -100,14 +104,13 @@ advanceFamiliar:register()
 
 local familiarDeath = CreatureEvent("FamiliarDeath")
 
-function familiarDeath.onDeath(creature, corpse, lasthitkiller, mostdamagekiller, lasthitunjustified,
-																								mostdamageunjustified)
+function familiarDeath.onDeath(creature, corpse, lasthitkiller, mostdamagekiller, lasthitunjustified, mostdamageunjustified)
 	local player = creature:getMaster()
 	if not player then
 		return false
 	end
-	local vocation = familiar[player:getVocation():getBaseId()]
 
+	local vocation = familiar[player:getVocation():getBaseId()]
 	if table.contains(vocation, creature:getName()) then
 		player:setStorageValue(familiarStorage, os.time())
 		for sendMessage = 1, #timer do

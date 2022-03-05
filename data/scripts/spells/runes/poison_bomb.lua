@@ -13,8 +13,8 @@ end
 
 rune:group("attack")
 rune:id(91)
-rune:name("Poison Bomb")
-rune:runeId(2286)
+rune:name("poison bomb rune")
+rune:runeId(3173)
 rune:allowFarUse(true)
 rune:setPzLocked(true)
 rune:charges(2)

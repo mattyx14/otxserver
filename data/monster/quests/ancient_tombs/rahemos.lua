@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "violet gem", chance = 500},
 	{name = "orb", chance = 500},
 	{name = "crystal wand", chance = 500},
-	{name = "ring of healing", chance = 7000},
+	{id = 3098, chance = 7000}, -- Ring of healing
 	{name = "ancient rune", chance = 100000},
 	{name = "twin axe", chance = 200},
 	{name = "magician hat", chance = 300},
