@@ -597,13 +597,21 @@ local function useStamina(player)
 	player:setStamina(staminaMinutes)
 end
 
-local function useStaminaXp(player)
+local function useStaminaXpBoost(player)
+	if not player then
+		return false
+	end
+
 	local staminaMinutes = player:getExpBoostStamina() / 60
 	if staminaMinutes == 0 then
 		return
 	end
 
 	local playerId = player:getId()
+	if not playerId then
+		return false
+	end
+
 	local currentTime = os.time()
 	local timePassed = currentTime - nextUseXpStamina[playerId]
 	if timePassed <= 0 then
@@ -659,7 +667,7 @@ function Player:onGainExperience(source, exp, rawExp)
 	end
 
 	-- Store Bonus
-	useStaminaXp(self) -- Use store boost stamina
+	useStaminaXpBoost(self) -- Use store boost stamina
 
 	local Boost = self:getExpBoostStamina()
 	local stillHasBoost = Boost > 0
