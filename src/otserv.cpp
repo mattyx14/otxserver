@@ -31,6 +31,7 @@
 #include "database/databasetasks.h"
 #include "game/game.h"
 #include "game/scheduling/scheduler.h"
+#include "game/scheduling/events_scheduler.hpp"
 #include "io/iomarket.h"
 #include "lua/creature/events.h"
 #include "lua/modules/modules.h"
@@ -51,6 +52,7 @@ Dispatcher g_dispatcher;
 Scheduler g_scheduler;
 
 Game g_game;
+EventsScheduler g_eventsScheduler;
 extern Events* g_events;
 extern Imbuements* g_imbuements;
 extern LuaEnvironment g_luaEnvironment;
@@ -161,6 +163,10 @@ void loadModules() {
 	// Lua Env
 	modulesLoadHelper((g_luaEnvironment.loadFile("data/global.lua") == 0),
 		"data/global.lua");
+	if (g_configManager().getBoolean(RATE_USE_STAGES)) {
+		modulesLoadHelper((g_luaEnvironment.loadFile("data/stages.lua") == 0),
+			"data/stages.lua");
+	}
 	modulesLoadHelper((g_luaEnvironment.loadFile("data/stages.lua") == 0),
 		"data/stages.lua");
 	modulesLoadHelper((g_luaEnvironment.loadFile("data/startup/startup.lua") == 0),
@@ -172,7 +178,7 @@ void loadModules() {
 		"data/scripts/libs");
 	modulesLoadHelper(g_vocations.loadFromXml(),
 		"data/XML/vocations.xml");
-	modulesLoadHelper(g_game.loadScheduleEventFromXml(),
+	modulesLoadHelper(g_eventsScheduler.loadScheduleEventFromXml(),
 		"data/XML/events.xml");
 	modulesLoadHelper(Outfits::getInstance().loadFromXml(),
 		"data/XML/outfits.xml");

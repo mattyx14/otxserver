@@ -1494,7 +1494,9 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 			bed->wakeUp(this);
 		}
 
-		SPDLOG_INFO("{} has logged in", name);
+		if (isLogin) {
+			SPDLOG_INFO("{} has logged in", name);
+		}
 
 		if (guild) {
 			guild->addMember(this);
@@ -1614,13 +1616,15 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout)
 
 		clearPartyInvitations();
 
-		if (party) {
+		if (party && isLogout) {
 			party->leaveParty(this);
 		}
 
 		g_chat->removeUserFromAllChannels(*this);
 
-		SPDLOG_INFO("{} has logged out", getName());
+		if (isLogout) {
+			SPDLOG_INFO("{} has logged out", getName());
+		}
 
 		if (guild) {
 			guild->removeMember(this);
@@ -2092,7 +2096,7 @@ void Player::addManaSpent(uint64_t amount)
 	}
 }
 
-void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = false*/)
+void Player::addExperience(Creature* target, uint64_t exp, bool sendText/* = false*/)
 {
 	uint64_t currLevelExp = Player::getExpForLevel(level);
 	uint64_t nextLevelExp = Player::getExpForLevel(level + 1);
@@ -2104,7 +2108,7 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 		return;
 	}
 
-	g_events->eventPlayerOnGainExperience(this, source, exp, rawExp);
+	g_events->eventPlayerOnGainExperience(this, target, exp, rawExp);
 	if (exp == 0) {
 		return;
 	}
@@ -2490,7 +2494,7 @@ void Player::death(Creature* lastHitCreature)
 			if (charmRuneBless != 0) {
 				MonsterType* mType = g_monsters.getMonsterType(lastHitCreature->getName());
 				if (mType && mType->info.raceid == charmRuneBless) {
-                 deathLossPercent = (deathLossPercent * 90) / 100;
+					deathLossPercent = (deathLossPercent * 90) / 100;
 				}
 			}
 		}
@@ -2573,6 +2577,15 @@ void Player::death(Creature* lastHitCreature)
 			}
 		}
 
+		std::ostringstream deathType;
+		deathType << "You died during ";
+		if (pvpDeath) {
+			deathType << "PvP.";
+		} else {
+			deathType << "PvE.";
+		}
+		sendTextMessage(MESSAGE_EVENT_ADVANCE, deathType.str());
+
 		//Make player lose bless
 		uint8_t maxBlessing = 8;
 		if (pvpDeath && hasBlessing(1)) {
@@ -2633,6 +2646,91 @@ void Player::death(Creature* lastHitCreature)
 		onIdleStatus();
 		sendStats();
 	}
+	despawn();
+}
+
+bool Player::spawn()
+{
+	setDead(false);
+
+	const Position& pos = getLoginPosition();
+
+	if (!g_game.map.placeCreature(pos, this, false, true)) {
+		return false;
+	}
+
+	SpectatorHashSet spectators;
+	g_game.map.getSpectators(spectators, position, false, true);
+	for (Creature* spectator : spectators) {
+		if (!spectator) {
+			continue;
+		}
+
+		if (Player* tmpPlayer = spectator->getPlayer()) {
+			tmpPlayer->sendCreatureAppear(this, pos, true);
+		}
+
+		spectator->onCreatureAppear(this, false);
+	}
+
+	getParent()->postAddNotification(this, nullptr, 0);
+	g_game.addCreatureCheck(this);
+
+	addList();
+	return true;
+}
+
+void Player::despawn()
+{
+	if (isDead()) {
+		return;
+	}
+
+	listWalkDir.clear();
+	stopEventWalk();
+	onWalkAborted();
+
+	// remove check
+	Game::removeCreatureCheck(this);
+
+	// remove from map
+	Tile* tile = getTile();
+	if (!tile) {
+		return;
+	}
+
+	std::vector<int32_t> oldStackPosVector;
+
+	SpectatorHashSet spectators;
+	g_game.map.getSpectators(spectators, tile->getPosition(), true);
+	size_t i = 0;
+	for (Creature* spectator : spectators) {
+		if (!spectator) {
+			continue;
+		}
+
+		if (const Player* player = spectator->getPlayer()) {
+			oldStackPosVector.push_back(player->canSeeCreature(this) ? tile->getStackposOfCreature(player, this) : -1);
+		}
+		if (Player* player = spectator->getPlayer()) {
+			player->sendRemoveTileThing(tile->getPosition(), oldStackPosVector[i++]);
+		}
+
+		spectator->onRemoveCreature(this, false);
+	}
+
+	tile->removeCreature(this);
+
+	getParent()->postRemoveNotification(this, nullptr, 0);
+
+	g_game.removePlayer(this);
+
+	// show player as pending
+	for (const auto& [key, player] : g_game.getPlayers()) {
+		player->notifyStatusChange(this, VIPSTATUS_PENDING, false);
+	}
+
+	setDead(true);
 }
 
 bool Player::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified)
@@ -3462,6 +3560,10 @@ void Player::stashContainer(StashContainerList itemDict)
 	}
 
 	retString << "Stowed " << totalStowed << " object" << (totalStowed > 1 ? "s." : ".");
+	if (moved) {
+		retString << " Moved " << movedItems << " object" << (movedItems > 1 ? "s." : ".");
+		movedItems = 0;
+	}
 	sendTextMessage(MESSAGE_STATUS, retString.str());
 }
 
@@ -4263,13 +4365,13 @@ bool Player::onKilledCreature(Creature* target, bool lastHit/* = true*/)
 	return unjustified;
 }
 
-void Player::gainExperience(uint64_t gainExp, Creature* source)
+void Player::gainExperience(uint64_t gainExp, Creature* target)
 {
 	if (hasFlag(PlayerFlag_NotGainExperience) || gainExp == 0 || staminaMinutes == 0) {
 		return;
 	}
 
-	addExperience(source, gainExp, true);
+	addExperience(target, gainExp, true);
 }
 
 void Player::onGainExperience(uint64_t gainExp, Creature* target)
@@ -4288,9 +4390,9 @@ void Player::onGainExperience(uint64_t gainExp, Creature* target)
 	gainExperience(gainExp, target);
 }
 
-void Player::onGainSharedExperience(uint64_t gainExp, Creature* source)
+void Player::onGainSharedExperience(uint64_t gainExp, Creature* target)
 {
-	gainExperience(gainExp, source);
+	gainExperience(gainExp, target);
 }
 
 bool Player::isImmune(CombatType_t type) const
@@ -5593,6 +5695,15 @@ void Player::stowItem(Item* item, uint32_t count, bool allItems) {
 		}
 	} else if (item->getContainer()) {
 		itemDict = item->getContainer()->getStowableItems();
+		for (Item* containerItem : item->getContainer()->getItems()) {
+			uint32_t depotChest = g_configManager().getNumber(DEPOTCHEST);
+			bool validDepot = depotChest > 0 && depotChest < 19;
+			if (g_configManager().getBoolean(STASH_MOVING) && containerItem && !containerItem->isStackable() && validDepot) {
+				g_game.internalMoveItem(containerItem->getParent(), getDepotChest(depotChest, true), INDEX_WHEREEVER, containerItem, containerItem->getItemCount(), nullptr);
+				movedItems++;
+				moved = true;
+			}
+		}
 	} else {
 		itemDict.push_back(std::pair<Item*, uint32_t>(item, count));
 	}
@@ -5660,4 +5771,3 @@ error_t Player::GetAccountInterface(account::Account* account) {
 	account = account_;
 	return account::ERROR_NO;
 }
-

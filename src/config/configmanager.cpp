@@ -158,6 +158,7 @@ bool ConfigManager::load()
 	boolean[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBoolean(L, "classicEquipmentSlots", false);
 	boolean[CLASSIC_ATTACK_SPEED] = getGlobalBoolean(L, "classicAttackSpeed", false);
 	boolean[SCRIPTS_CONSOLE_LOGS] = getGlobalBoolean(L, "showScriptsLogInConsole", true);
+	boolean[STASH_MOVING] = getGlobalBoolean(L, "stashMoving", false);
 	boolean[ALLOW_BLOCK_SPAWN] = getGlobalBoolean(L, "allowBlockSpawn", true);
 	boolean[REMOVE_WEAPON_AMMO] = getGlobalBoolean(L, "removeWeaponAmmunition", true);
 	boolean[REMOVE_WEAPON_CHARGES] = getGlobalBoolean(L, "removeWeaponCharges", true);
@@ -185,6 +186,7 @@ bool ConfigManager::load()
 
 	boolean[ONLY_PREMIUM_ACCOUNT] = getGlobalBoolean(L, "onlyPremiumAccount", false);
 	boolean[TOGLE_IMBUEMENT_SHRINE_STORAGE] = getGlobalBoolean(L, "togleImbuementShrineStorage", true);
+	boolean[RATE_USE_STAGES] = getGlobalBoolean(L, "rateUseStages", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -202,10 +204,10 @@ bool ConfigManager::load()
 	integer[PZ_LOCKED] = getGlobalNumber(L, "pzLocked", 60000);
 	integer[DEFAULT_DESPAWNRANGE] = getGlobalNumber(L, "deSpawnRange", 2);
 	integer[DEFAULT_DESPAWNRADIUS] = getGlobalNumber(L, "deSpawnRadius", 50);
-	integer[RATE_EXPERIENCE] = getGlobalNumber(L, "rateExp", 5);
-	integer[RATE_SKILL] = getGlobalNumber(L, "rateSkill", 3);
-	integer[RATE_LOOT] = getGlobalNumber(L, "rateLoot", 2);
-	integer[RATE_MAGIC] = getGlobalNumber(L, "rateMagic", 3);
+	integer[RATE_EXP] = getGlobalNumber(L, "rateExp", 1);
+	integer[RATE_SKILL] = getGlobalNumber(L, "rateSkill", 1);
+	integer[RATE_LOOT] = getGlobalNumber(L, "rateLoot", 1);
+	integer[RATE_MAGIC] = getGlobalNumber(L, "rateMagic", 1);
 	integer[RATE_SPAWN] = getGlobalNumber(L, "rateSpawn", 1);
 	integer[HOUSE_PRICE] = getGlobalNumber(L, "housePriceEachSQM", 1000);
 	integer[ACTIONS_DELAY_INTERVAL] = getGlobalNumber(L, "timeBetweenActions", 200);
@@ -246,6 +248,7 @@ bool ConfigManager::load()
 	integer[SAVE_INTERVAL_TIME] = getGlobalNumber(L, "saveIntervalTime", 1);
 	integer[MAX_ALLOWED_ON_A_DUMMY] = getGlobalNumber(L, "maxAllowedOnADummy", 1);
 	integer[FREE_QUEST_STAGE] = getGlobalNumber(L, "freeQuestStage", 1);
+	integer[DEPOTCHEST] = getGlobalNumber(L, "depotChest", 4);
 
 	floating[RATE_HEALTH_REGEN] = getGlobalFloat(L, "rateHealthRegen", 1.0);
 	floating[RATE_HEALTH_REGEN_SPEED] = getGlobalFloat(L, "rateHealthRegenSpeed", 1.0);

@@ -109,7 +109,7 @@ class Events {
 		bool eventPlayerOnTurn(Player* player, Direction direction);
 		bool eventPlayerOnTradeRequest(Player* player, Player* target, Item* item);
 		bool eventPlayerOnTradeAccept(Player* player, Player* target, Item* item, Item* targetItem);
-		void eventPlayerOnGainExperience(Player* player, Creature* source, uint64_t& exp, uint64_t rawExp);
+		void eventPlayerOnGainExperience(Player* player, Creature* target, uint64_t& exp, uint64_t rawExp);
 		void eventPlayerOnLoseExperience(Player* player, uint64_t& exp);
 		void eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_t& tries);
 		bool eventPlayerOnRemoveCount(Player* player, Item * item);

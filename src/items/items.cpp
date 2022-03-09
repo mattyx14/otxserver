@@ -310,6 +310,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file)
 
 		iType.blockSolid = hasBitSet(FLAG_BLOCK_SOLID, flags);
 		iType.blockProjectile = hasBitSet(FLAG_BLOCK_PROJECTILE, flags);
+		iType.ignoreBlocking = hasBitSet(ITEM_PARSE_IGNOREBLOCKING, flags);
 		iType.blockPathFind = hasBitSet(FLAG_BLOCK_PATHFIND, flags);
 		iType.hasHeight = hasBitSet(FLAG_HAS_HEIGHT, flags);
 		iType.useable = hasBitSet(FLAG_USEABLE, flags);
