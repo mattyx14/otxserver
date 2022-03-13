@@ -49,7 +49,6 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"blockprojectile", ITEM_PARSE_BLOCKPROJECTILE},
 	{"allowpickupable", ITEM_PARSE_PICKUPABLE},
 	{"pickupable", ITEM_PARSE_PICKUPABLE},
-	{"ignoreblocking", ITEM_PARSE_IGNOREBLOCKING},
 	{"floorchange", ITEM_PARSE_FLOORCHANGE},
 	{"corpsetype", ITEM_PARSE_CORPSETYPE},
 	{"containersize", ITEM_PARSE_CONTAINERSIZE},
@@ -92,10 +91,10 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"skillfist", ITEM_PARSE_SKILLFIST},
 	{"criticalhitchance", ITEM_PARSE_CRITICALHITCHANCE},
 	{"criticalhitdamage", ITEM_PARSE_CRITICALHITDAMAGE},
-	{"skilllifechance", ITEM_PARSE_LIFELEECHCHANCE},
-	{"skilllifeamount", ITEM_PARSE_LIFELEECHAMOUNT},
-	{"skillmanachance", ITEM_PARSE_MANALEECHCHANCE},
-	{"skillmanaamount", ITEM_PARSE_MANALEECHAMOUNT},
+	{"lifeleechchance", ITEM_PARSE_LIFELEECHCHANCE},
+	{"lifeleechamount", ITEM_PARSE_LIFELEECHAMOUNT},
+	{"manaleechchance", ITEM_PARSE_MANALEECHCHANCE},
+	{"manaleechamount", ITEM_PARSE_MANALEECHAMOUNT},
 	{"maxhitpoints", ITEM_PARSE_MAXHITPOINTS},
 	{"maxhitpointspercent", ITEM_PARSE_MAXHITPOINTSPERCENT},
 	{"maxmanapoints", ITEM_PARSE_MAXMANAPOINTS},
@@ -268,7 +267,6 @@ class ItemParse : public Items
 	static void parsePodium(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType);
 	static void parseBlockProjectTile(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType);
 	static void parsePickupable(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType);
-	static void parseIgnoreBlocking(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType);
 	static void parseFloorChange(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType);
 	static void parseCorpseType(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType);
 	static void parseContainerSize(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType);

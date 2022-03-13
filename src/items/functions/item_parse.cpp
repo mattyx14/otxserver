@@ -40,7 +40,6 @@ void ItemParse::initParse(const std::string& tmpStrValue, pugi::xml_node attribu
 	ItemParse::parsePodium(tmpStrValue, valueAttribute, itemType);
 	ItemParse::parseBlockProjectTile(tmpStrValue, valueAttribute, itemType);
 	ItemParse::parsePickupable(tmpStrValue, valueAttribute, itemType);
-	ItemParse::parseIgnoreBlocking(tmpStrValue, valueAttribute, itemType);
 	ItemParse::parseFloorChange(tmpStrValue, valueAttribute, itemType);
 	ItemParse::parseCorpseType(tmpStrValue, valueAttribute, itemType);
 	ItemParse::parseContainerSize(tmpStrValue, valueAttribute, itemType);
@@ -205,15 +204,8 @@ void ItemParse::parseBlockProjectTile(const std::string& tmpStrValue, pugi::xml_
 
 void ItemParse::parsePickupable(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType) {
 	std::string stringValue = tmpStrValue;
-	if (stringValue == "pickupable") {
+	if (stringValue == "allowpickupable" || stringValue == "pickupable") {
 		itemType.pickupable = valueAttribute.as_bool();
-	}
-}
-
-void ItemParse::parseIgnoreBlocking(const std::string& tmpStrValue, pugi::xml_attribute valueAttribute, ItemType& itemType) {
-	std::string stringValue = tmpStrValue;
-	if (stringValue == "ignoreblocking") {
-		itemType.ignoreBlocking = valueAttribute.as_bool();
 	}
 }
 
