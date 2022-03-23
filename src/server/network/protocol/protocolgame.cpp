@@ -959,7 +959,8 @@ void ProtocolGame::GetFloorDescription(NetworkMessage &msg, int32_t x, int32_t y
 
 void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool &known, uint32_t &removedKnown)
 {
-    if (known = !knownCreatureSet.insert(id).second) {
+     known = !knownCreatureSet.insert(id).second;
+    if (known) {
         return;
     }
 
@@ -979,7 +980,7 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool &known, uint32_t &remo
             continue;
         }
 
-        Player* checkPlayer = creature->getPlayer();
+        const Player* checkPlayer = creature->getPlayer();
 
         if (!checkPlayer) {
             removedKnown = *it;
