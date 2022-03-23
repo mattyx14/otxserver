@@ -77,6 +77,24 @@ int GameFunctions::luaGameCreateNpcType(lua_State* L) {
 	return 1;
 }
 
+int GameFunctions::luaGamegetEventSLoot(lua_State* L) {
+	// Game.getEventSLoot()
+	lua_pushnumber(L, g_game.getLootSchedule());
+	return 1;
+}
+
+int GameFunctions::luaGamegetEventSSkill(lua_State* L) {
+	// Game.getEventSSkill()
+	lua_pushnumber(L, g_game.getSkillSchedule());
+	return 1;
+}
+
+int GameFunctions::luaGamegetEventSExp(lua_State* L) {
+	// Game.getEventSExp()
+	lua_pushnumber(L, g_game.getExpSchedule());
+	return 1;
+}
+
 int GameFunctions::luaGameGetSpectators(lua_State* L) {
 	// Game.getSpectators(position[, multifloor = false[, onlyPlayer = false[, minRangeX = 0[, maxRangeX = 0[, minRangeY = 0[, maxRangeY = 0]]]]]])
 	const Position& position = getPosition(L, 1);
@@ -535,17 +553,7 @@ int GameFunctions::luaGameCreateBestiaryCharm(lua_State* L) {
 	}
 	IOBestiary g_bestiary;
 
-	charmRune_t ID = getNumber<charmRune_t>(L, 1);
-	Charm* charm = g_bestiary.getBestiaryCharm(ID, true);
-	if (charm && charm->id == ID) {
-		pushUserdata<Charm>(L, charm);
-		setMetatable(L, -1, "Charm");
-	} else if (charm && isNumber(L, 1)) {
-		charm->id = ID;
-		g_game.addCharmRune(charm);
-		charm = g_bestiary.getBestiaryCharm(getNumber<charmRune_t>(L, 1));
-		charm->id = ID;
-		charm->binary = 1 << ID;
+	if (Charm* charm = g_bestiary.getBestiaryCharm(static_cast<charmRune_t>(getNumber<int8_t>(L, 1, 0)), true)) {
 		pushUserdata<Charm>(L, charm);
 		setMetatable(L, -1, "Charm");
 	} else {
