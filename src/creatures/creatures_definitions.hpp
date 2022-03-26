@@ -436,10 +436,9 @@ enum BestiaryType_t : uint8_t {
 	BESTY_RACE_SLIME = 18,
 	BESTY_RACE_UNDEAD = 19,
 	BESTY_RACE_VERMIN = 20,
-	BESTY_RACE_DARKKONIA = 21,
 
 	BESTY_RACE_FIRST = BESTY_RACE_AMPHIBIC,
-	BESTY_RACE_LAST = BESTY_RACE_DARKKONIA,
+	BESTY_RACE_LAST = BESTY_RACE_VERMIN,
 };
 
 enum MonstersEvent_t : uint8_t {
@@ -822,7 +821,7 @@ struct ShopBlock {
 	ShopBlock() {
 		itemId = 0;
 		itemName = "";
-		itemSubType = -1;
+		itemSubType = 0;
 		itemBuyPrice = 0;
 		itemSellPrice = 0;
 		itemStorageKey = 0;

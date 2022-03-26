@@ -763,7 +763,6 @@ class LuaEnums final : LuaScriptInterface {
 			registerEnum(L, BESTY_RACE_SLIME)
 			registerEnum(L, BESTY_RACE_UNDEAD)
 			registerEnum(L, BESTY_RACE_VERMIN)
-			registerEnum(L, BESTY_RACE_DARKKONIA)
 			registerEnum(L, BESTY_RACE_LAST)
 
 			registerEnum(L, CHARM_OFFENSIVE)
