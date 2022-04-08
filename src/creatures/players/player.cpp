@@ -231,27 +231,31 @@ Item* Player::getWeapon(Slots_t slot, bool ignoreAmmo) const
 		return nullptr;
 	}
 
-  if (!ignoreAmmo && weaponType == WEAPON_DISTANCE) {
-    const ItemType& it = Item::items[item->getID()];
-    if (it.ammoType != AMMO_NONE) {
-      Item* quiver = inventory[CONST_SLOT_RIGHT];
-      if (!quiver || quiver->getWeaponType() != WEAPON_QUIVER)
-        return nullptr;
-      Container* container = quiver->getContainer();
-      if (!container)
-        return nullptr;
-      bool found = false;
-      for (Item* ammoItem : container->getItemList()) {
-        if (ammoItem->getAmmoType() == it.ammoType) {
-          item = ammoItem;
-          found = true;
-          break;
-        }
-      }
-      if (!found)
-        return nullptr;
-    }
-  }
+	if (!ignoreAmmo && weaponType == WEAPON_DISTANCE) {
+		const ItemType& it = Item::items[item->getID()];
+		if (it.ammoType != AMMO_NONE) {
+			Item* quiver = inventory[CONST_SLOT_RIGHT];
+			if (!quiver || quiver->getWeaponType() != WEAPON_QUIVER)
+				return nullptr;
+
+			Container* container = quiver->getContainer();
+			if (!container)
+				return nullptr;
+
+			bool found = false;
+			for (Item* ammoItem : container->getItemList()) {
+				if (level >= Item::items[ammoItem->getID()].minReqLevel) {
+					item = ammoItem;
+					found = true;
+					break;
+				}
+			}
+		}
+
+		if (!found)
+			return nullptr;
+	}
+
 	return item;
 }
 
@@ -508,7 +512,7 @@ void Player::updateInventoryImbuement(bool init /* = false */)
 			}
 
 			int32_t duration = std::max<int32_t>(0, imbuementInfo.duration - EVENT_IMBUEMENT_INTERVAL / 1000);
-			item->setImbuement(slotid, imbuementInfo.imbuement->getID(), duration);
+			item->decayImbuementTime(slotid, imbuementInfo.imbuement->getID(), duration);
 			if (duration == 0) {
 				removeItemImbuementStats(imbuementInfo.imbuement);
 				g_game.decreasePlayerActiveImbuements(getID());
@@ -1206,6 +1210,14 @@ void Player::onApplyImbuement(Imbuement *imbuement, Item *item, uint8_t slot, bo
 		return;
 	}
 
+	ImbuementInfo imbuementInfo;
+	if (item->getImbuementInfo(slot, &imbuementInfo))
+	{
+		SPDLOG_ERROR("[Player::onApplyImbuement] - An error occurred while player with name {} try to apply imbuement, item already contains imbuement", this->getName());
+		this->sendImbuementResult("An error ocurred, please reopen imbuement window.");
+		return;
+	}
+
 	const auto& items = imbuement->getItems();
 	for (auto& [key, value] : items)
 	{
@@ -1215,14 +1227,6 @@ void Player::onApplyImbuement(Imbuement *imbuement, Item *item, uint8_t slot, bo
 			this->sendImbuementResult("You don't have all necessary items.");
 			return;
 		}
-	}
-
-	ImbuementInfo imbuementInfo;
-	if (item->getImbuementInfo(slot, &imbuementInfo))
-	{
-		SPDLOG_ERROR("[Player::onApplyImbuement] - An error occurred while player with name {} try to apply imbuement, item already contains imbuement", this->getName());
-		this->sendImbuementResult("An error ocurred, please reopen imbuement window.");
-		return;
 	}
 
 	const BaseImbuement *baseImbuement = g_imbuements->getBaseByID(imbuement->getBaseID());
@@ -1275,11 +1279,13 @@ void Player::onApplyImbuement(Imbuement *imbuement, Item *item, uint8_t slot, bo
 		return;
 	}
 
+	item->addImbuement(slot, imbuement->getID(), baseImbuement->duration);
+
+	// Update imbuement stats item if the item is equipped
 	if (item->getParent() == this) {
 		addItemImbuementStats(imbuement);
 	}
 
-	item->setImbuement(slot, imbuement->getID(), baseImbuement->duration);
 	openImbuementWindow(item);
 }
 
@@ -1316,7 +1322,7 @@ void Player::onClearImbuement(Item* item, uint8_t slot)
 		removeItemImbuementStats(imbuementInfo.imbuement);
 	}
 
-	item->setImbuement(slot, imbuementInfo.imbuement->getID(), 0);
+	item->clearImbuement(slot, imbuementInfo.imbuement->getID());
 	this->openImbuementWindow(item);
 }
 
