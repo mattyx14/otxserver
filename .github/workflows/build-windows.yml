@@ -2,8 +2,10 @@
 name: Build - Windows
 
 on:
-  workflow_dispatch:
   pull_request:
+  push:
+    branches:
+      - otxserv6
 
 env:
   VCPKG_BUILD_TYPE: release
