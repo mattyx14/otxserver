@@ -69,6 +69,13 @@ Npc::Npc(NpcType* npcType) :
 Npc::~Npc() {
 }
 
+void Npc::reset()
+{
+	resetPlayerInteractions();
+	shopPlayerSet.clear();
+	g_npcs.reset();
+}
+
 void Npc::addList()
 {
 	g_game().addNpc(this);
