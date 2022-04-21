@@ -29,7 +29,6 @@
 #include "lua/creature/events.h"
 
 extern Monsters g_monsters;
-extern Game g_game;
 extern Events* g_events;
 const EventsScheduler g_eventsScheduler;
 
@@ -53,7 +52,7 @@ bool SpawnsMonster::loadFromXML(const std::string& filemonstername)
 	loaded = true;
 
 	uint32_t eventschedule = g_eventsScheduler.getSpawnMonsterSchedule();
-	std::string boostedNameGet = g_game.getBoostedMonsterName();
+	std::string boostedNameGet = g_game().getBoostedMonsterName();
 
 	for (auto spawnMonsterNode : doc.child("monsters").children()) {
 		Position centerPos(
@@ -176,7 +175,7 @@ SpawnMonster::~SpawnMonster()
 bool SpawnMonster::findPlayer(const Position& pos)
 {
 	SpectatorHashSet spectators;
-	g_game.map.getSpectators(spectators, pos, false, true);
+	g_game().map.getSpectators(spectators, pos, false, true);
 	for (Creature* spectator : spectators) {
 		if (!spectator->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) {
 			return true;
@@ -195,11 +194,11 @@ bool SpawnMonster::spawnMonster(uint32_t spawnMonsterId, MonsterType* monsterTyp
 	std::unique_ptr<Monster> monster_ptr(new Monster(monsterType));
 	if (startup) {
 		//No need to send out events to the surrounding since there is no one out there to listen!
-		if (!g_game.internalPlaceCreature(monster_ptr.get(), pos, true)) {
+		if (!g_game().internalPlaceCreature(monster_ptr.get(), pos, true)) {
 			return false;
 		}
 	} else {
-		if (!g_game.placeCreature(monster_ptr.get(), pos, false, true)) {
+		if (!g_game().placeCreature(monster_ptr.get(), pos, false, true)) {
 			return false;
 		}
 	}
@@ -273,7 +272,7 @@ void SpawnMonster::scheduleSpawn(uint32_t spawnMonsterId, spawnBlock_t& sb, uint
 	if (interval <= 0) {
 		spawnMonster(spawnMonsterId, sb.monsterType, sb.pos, sb.direction);
 	} else {
-		g_game.addMagicEffect(sb.pos, CONST_ME_TELEPORT);
+		g_game().addMagicEffect(sb.pos, CONST_ME_TELEPORT);
 		g_scheduler.addEvent(createSchedulerTask(1400, std::bind(&SpawnMonster::scheduleSpawn, this, spawnMonsterId, sb, interval - NONBLOCKABLE_SPAWN_MONSTER_INTERVAL)));
 	}
 }

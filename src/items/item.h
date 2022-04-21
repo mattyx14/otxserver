@@ -1109,7 +1109,7 @@ class Item : virtual public Thing
 
 		bool loadedFromMap = false;
 		bool isLootTrackeable = false;
-
+	
 	private:
 		void setImbuement(uint8_t slot, uint16_t imbuementId, int32_t duration);
 		//Don't add variables here, use the ItemAttribute class.

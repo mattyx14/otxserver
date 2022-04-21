@@ -296,6 +296,7 @@ class Creature : virtual public Thing
 		bool isSummon() const {
 			return master != nullptr;
 		}
+
 		/**
         * hasBeenSummoned doesn't guarantee master still exists
         */
@@ -450,7 +451,7 @@ class Creature : virtual public Thing
 			}
 			return false;
 		}
-
+		
 		void setDropLoot(bool newLootDrop) {
 			this->lootDrop = newLootDrop;
 		}
