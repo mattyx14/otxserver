@@ -42,10 +42,6 @@ maxPacketsPerSecond = 25
 maxItem = 2000
 maxContainer = 100
 
--- Version
-clientVersion = 1285
-clientVersionStr = "12.85"
-
 -- Depot Limit
 freeDepotLimit = 2000
 premiumDepotLimit = 10000
@@ -54,6 +50,34 @@ depotBoxes = 18
 -- GameStore
 gamestoreByModules = true
 
+-- Prey system
+-- NOTE: preyRerollPricePerLevel: Price multiplier in gold coin for rerolling prey list.
+-- NOTE: preySelectListPrice: Price to manually select creature on list and to lock prey slot.
+-- NOTE: preyBonusRerollPrice: Price to manually reroll bonus type and to enable automatic reroll.
+-- NOTE: preyBonusTime: Time in seconds that players will have of prey bonus.
+-- NOTE: preyFreeRerollTime: Time in seconds that players will have to wait to get a new free prey list.
+preySystemEnabled = true
+preyFreeThirdSlot = false
+preyRerollPricePerLevel = 200
+preySelectListPrice = 1
+preyBonusRerollPrice = 2
+preyBonusPercentMin = 5
+preyBonusPercentMax = 40
+preyBonusTime = 2 * 60 * 60
+preyFreeRerollTime = 20 * 60 * 60
+
+-- Task hunting system
+-- NOTE: taskHuntingLimitedTasksExhaust: Time to wait to select a new creature on the task hunting slot after claiming the reward.
+-- NOTE: taskHuntingRerollPricePerLevel: Price multiplier in gold coin for rerolling task hunting list.
+-- NOTE: taskHuntingFreeRerollTime: Time in seconds that players will have to wait to get a new free task hunting list.
+taskHuntingSystemEnabled = true
+taskHuntingFreeThirdSlot = false
+taskHuntingLimitedTasksExhaust = 20 * 60 * 60
+taskHuntingRerollPricePerLevel = 200
+taskHuntingSelectListPrice = 1
+taskHuntingBonusRerollPrice = 2
+taskHuntingFreeRerollTime = 20 * 60 * 60
+
 -- NOTE: Access only for Premium Account
 onlyPremiumAccount = false
 
@@ -61,6 +85,14 @@ onlyPremiumAccount = false
 weatherRain = false
 thunderEffect = false
 allConsoleLog = false
+-- stashMoving = true, stow an container inside your stash
+-- the non-stackable items will be moved to the selected depot chest(I - XVIII).
+stashMoving = true
+depotChest = 4
+autoLoot = false
+-- autoBank = true, the dropped coins from monsters will be automatically 
+-- deposited to your bank account.
+autoBank = false
 
 -- Stamina in Trainers
 staminaTrainer = true
@@ -75,17 +107,17 @@ staminaPzGain = 1
 maxAllowedOnADummy = 1
 
 -- Save interval per time
--- NOTE: togleSaveInterval: true = enable the save interval, false = disable the save interval
+-- NOTE: toggleSaveInterval: true = enable the save interval, false = disable the save interval
 -- NOTE: saveIntervalType: "minute", "second" or "hour"
--- NOTE: togleSaveIntervalCleanMap: true = enable the clean map, false = disable the clean map
+-- NOTE: toggleSaveIntervalCleanMap: true = enable the clean map, false = disable the clean map
 -- NOTE: saveIntervalTime: time based on what was set in "saveIntervalType"
-togleSaveInterval = true
+toggleSaveInterval = true
 saveIntervalType = "minute"
-togleSaveIntervalCleanMap = false
+toggleSaveIntervalCleanMap = true
 saveIntervalTime = 15
 
 -- Imbuement
-togleImbuementShrineStorage = true
+toggleImbuementShrineStorage = false
 
 -- Free quests
 -- Add quest access to player when logging in
@@ -161,17 +193,18 @@ emoteSpells = false
 classicEquipmentSlots = false
 allowWalkthrough = true
 coinPacketSize = 25
-coinImagesURL = "https://darkkonia.sytes.net/store/"
+coinImagesURL = "https://darkkonia.sytes.net/images/store/"
 classicAttackSpeed = false
 showScriptsLogInConsole = false
 
--- Server Save
--- NOTE: serverSaveNotifyDuration in minutes
-serverSaveNotifyMessage = true
-serverSaveNotifyDuration = 5
-serverSaveCleanMap = true
-serverSaveClose = true
-serverSaveShutdown = true
+-- Global server Save
+-- NOTE: globalServerSaveNotifyDuration in minutes
+globalServerSaveNotifyMessage = true
+globalServerSaveNotifyDuration = 5
+globalServerSaveCleanMap = true
+globalServerSaveClose = true
+globalServerSaveShutdown = true
+globalServerSaveTime = "23:55:00"
 
 -- Sort loot by chance, most rare items drop first
 -- it is good to be setted when you have a higher

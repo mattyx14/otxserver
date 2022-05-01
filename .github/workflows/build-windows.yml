@@ -2,6 +2,7 @@
 name: Build - Windows
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -18,10 +19,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019]
-        buildtype: [windows-release]
+        os: [windows-2019, windows-2022]
+        buildtype: [windows-release, windows-debug]
         include:
           - os: windows-2019
+            triplet: x64-windows
+            packages: >
+              boost-asio boost-iostreams boost-system boost-filesystem
+              boost-variant boost-lockfree cryptopp curl jsoncpp
+              luajit libmariadb pugixml spdlog libzippp
+          - os: windows-2022
             triplet: x64-windows
             packages: >
               boost-asio boost-iostreams boost-system boost-filesystem
@@ -53,6 +60,6 @@ jobs:
       - name: Create and Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: otxsr-${{ runner.os }}-${{ matrix.buildtype }}-${{ github.sha }}
+          name: otxsr-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
             ${{ github.workspace }}/build/${{ matrix.buildtype }}/bin/

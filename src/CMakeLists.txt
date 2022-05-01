@@ -117,6 +117,7 @@ find_package(LuaJIT REQUIRED)
 find_package(Threads REQUIRED)
 find_package(libzippp REQUIRED)
 find_package(cryptopp CONFIG REQUIRED)
+find_package(Protobuf REQUIRED)
 if (MSVC)
 find_package(Boost 1.53.0 COMPONENTS system filesystem iostreams date_time REQUIRED)
   set(CRYPTOPP_LIBRARIES "cryptopp-static")
@@ -183,6 +184,7 @@ target_sources(${PROJECT_NAME}
     io/iomapserialize.cpp
     io/iomarket.cpp
     io/ioprey.cpp
+    protobuf/appearances.pb.cc
     items/bed.cpp
     items/containers/container.cpp
     items/containers/depot/depotchest.cpp
@@ -286,6 +288,7 @@ if (MSVC)
 
 target_include_directories(${PROJECT_NAME}
   PRIVATE
+    ${Boost_LIBRARY_DIRS}
     ${CMAKE_SOURCE_DIR}/src
     ${MYSQL_INCLUDE_DIR}
     ${LUA_INCLUDE_DIR}
@@ -293,6 +296,7 @@ target_include_directories(${PROJECT_NAME}
     ${PUGIXML_INCLUDE_DIR}
     ${CRYPTOPP_INCLUDE_DIR}
     ${CURL_INCLUDE_DIRS}
+    ${Protobuf_INCLUDE_DIRS}
     ${SPDLOG_INCLUDE_DIR}
     $<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>)
 
@@ -300,12 +304,12 @@ target_link_libraries(${PROJECT_NAME}
   PRIVATE
     ${MYSQL_CLIENT_LIBS}
     ${LUA_LIBRARIES}
-    ${Boost_LIBRARY_DIRS}
     ${Boost_LIBRARIES}
     ${PUGIXML_LIBRARIES}
     ${CRYPTOPP_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARIES}
+    ${Protobuf_LIBRARIES}
     ${SPDLOG_LIBRARY}
     fmt::fmt
     jsoncpp_lib
@@ -318,6 +322,7 @@ else()
     PRIVATE
       ${CMAKE_SOURCE_DIR}/src
       ${LUA_INCLUDE_DIR}
+      ${Protobuf_INCLUDE_DIRS}
   )
 
   target_link_libraries(${PROJECT_NAME}
@@ -335,6 +340,7 @@ else()
       spdlog::spdlog
       Threads::Threads
       ${LUA_LIBRARIES}
+      ${Protobuf_LIBRARIES}
       libzippp::libzippp
   )
 
