@@ -27,10 +27,23 @@
 class EventsScheduler
 {
 	public:
-        // Event schedule xml load
+		EventsScheduler() = default;
+
+		// Singleton - ensures we don't accidentally copy it.
+		EventsScheduler(const EventsScheduler&) = delete;
+		EventsScheduler& operator=(const EventsScheduler&) = delete;
+
+		static EventsScheduler& getInstance() {
+			// Guaranteed to be destroyed
+			static EventsScheduler instance;
+			// Instantiated on first use
+			return instance;
+		}
+
+		// Event schedule xml load
 		bool loadScheduleEventFromXml() const;
-        
-        // Event schedule
+		
+		// Event schedule
 		uint16_t getExpSchedule() const {
 			return expSchedule;
 		}
@@ -58,14 +71,16 @@ class EventsScheduler
 		void setSkillSchedule(uint16_t skillrate) {
 			skillSchedule = (skillSchedule * skillrate)/100;
 		}
-        
-    private:
-        // Event schedule
+		
+	private:
+		// Event schedule
 		uint16_t expSchedule = 100;
 		uint32_t lootSchedule = 100;
 		uint16_t skillSchedule = 100;
 		uint32_t spawnMonsterSchedule = 100;
 
-    };
+};
+
+constexpr auto g_eventsScheduler = &EventsScheduler::getInstance;
 
 #endif  // SRC_GAME_SCHEDUNLING_EVENTS_SCHEDULER_HPP_

@@ -24,9 +24,6 @@
 #include "game/scheduling/events_scheduler.hpp"
 #include "lua/scripts/scripts.h"
 
-extern Scripts* g_scripts;
-extern EventsScheduler g_eventsScheduler;
-
 bool EventsScheduler::loadScheduleEventFromXml() const
 {
 	pugi::xml_document doc;
@@ -77,7 +74,7 @@ bool EventsScheduler::loadScheduleEventFromXml() const
 			}
 		}
 
-		if ((attr = schedNode.attribute("script")) && (!(g_scripts->loadEventSchedulerScripts(attr.as_string())))) {
+		if ((attr = schedNode.attribute("script")) && (!(g_scripts().loadEventSchedulerScripts(attr.as_string())))) {
 				SPDLOG_WARN("Can not load the file '{}' on '/events/scripts/scheduler/'",
 				attr.as_string());
 				return false;
@@ -86,25 +83,25 @@ bool EventsScheduler::loadScheduleEventFromXml() const
 		for (auto schedENode : schedNode.children()) {
 			if ((schedENode.attribute("exprate"))) {
 				uint16_t exprate = pugi::cast<uint16_t>(schedENode.attribute("exprate").value());
-				g_eventsScheduler.setExpSchedule(exprate);
+				g_eventsScheduler().setExpSchedule(exprate);
 				ss << " exp: " << exprate << "%";
 			}
 
 			if ((schedENode.attribute("lootrate"))) {
-				uint32_t lootrate = pugi::cast<uint32_t>(schedENode.attribute("lootrate").value());
-				g_eventsScheduler.setLootSchedule(lootrate);
+				uint16_t lootrate = pugi::cast<uint16_t>(schedENode.attribute("lootrate").value());
+				g_eventsScheduler().setLootSchedule(lootrate);
 				ss << ", loot: " << lootrate << "%";
 			}
 
 			if ((schedENode.attribute("spawnrate"))) {
 				uint32_t spawnrate = pugi::cast<uint32_t>(schedENode.attribute("spawnrate").value());
-				g_eventsScheduler.setSpawnMonsterSchedule(spawnrate);
+				g_eventsScheduler().setSpawnMonsterSchedule(spawnrate);
 				ss << ", spawn: "  << spawnrate << "%";
 			}
 
 			if ((schedENode.attribute("skillrate"))) {
 				uint16_t skillrate = pugi::cast<uint16_t>(schedENode.attribute("skillrate").value());
-				g_eventsScheduler.setSkillSchedule(skillrate);
+				g_eventsScheduler().setSkillSchedule(skillrate);
 				ss << ", skill: " << skillrate << "%";
 				break;
 			}
