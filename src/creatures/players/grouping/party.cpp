@@ -365,14 +365,14 @@ bool Party::setSharedExperience(Player* player, bool newSharedExpActive)
 	return true;
 }
 
-void Party::shareExperience(uint64_t experience, Creature* target/* = nullptr*/)
+void Party::shareExperience(uint64_t experience, Creature* source/* = nullptr*/)
 {
 	uint64_t shareExperience = experience;
 	g_events().eventPartyOnShareExperience(this, shareExperience);
 	for (Player* member : memberList) {
-		member->onGainSharedExperience(shareExperience, target);
+		member->onGainSharedExperience(shareExperience, source);
 	}
-	leader->onGainSharedExperience(shareExperience, target);
+	leader->onGainSharedExperience(shareExperience, source);
 }
 
 bool Party::canUseSharedExperience(const Player* player) const

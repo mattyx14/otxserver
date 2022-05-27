@@ -121,7 +121,7 @@ static int webhook_send_message_(const char *url, const char *payload, std::stri
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, payload);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, reinterpret_cast<void *>(&response_body));
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-	curl_easy_setopt(curl, CURLOPT_USERAGENT, "otx (https://github.com/mattyx14/otxserver)");
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, "canary (https://github.com/Hydractify/canary)");
 
 	CURLcode res = curl_easy_perform(curl);
 

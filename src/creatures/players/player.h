@@ -768,7 +768,7 @@ class Player final : public Creature, public Cylinder
 		void onTargetCreatureGainHealth(Creature* target, int32_t points) override;
 		bool onKilledCreature(Creature* target, bool lastHit = true) override;
 		void onGainExperience(uint64_t gainExp, Creature* target) override;
-		void onGainSharedExperience(uint64_t gainExp, Creature* target);
+		void onGainSharedExperience(uint64_t gainExp, Creature* source);
 		void onAttackedCreatureBlockHit(BlockType_t blockType) override;
 		void onBlockHit() override;
 		void onChangeZone(ZoneType_t zone) override;
@@ -1565,9 +1565,6 @@ class Player final : public Creature, public Cylinder
 		void forgetInstantSpell(const std::string& spellName);
 		bool hasLearnedInstantSpell(const std::string& spellName) const;
 
-		int64_t getLastPong() const {
-			return lastPong;
-		}
 		void updateRegeneration();
 
 		void setScheduledSaleUpdate(bool scheduled) {
@@ -2045,8 +2042,8 @@ class Player final : public Creature, public Cylinder
 
 		void checkLootContainers(const Item* item);
 
-		void gainExperience(uint64_t exp, Creature* target);
-		void addExperience(Creature* target, uint64_t exp, bool sendText = false);
+		void gainExperience(uint64_t exp, Creature* source);
+		void addExperience(Creature* source, uint64_t exp, bool sendText = false);
 		void removeExperience(uint64_t exp, bool sendText = false);
 
 		void updateInventoryWeight();
