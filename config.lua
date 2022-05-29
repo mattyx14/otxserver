@@ -127,8 +127,12 @@
 		allowIndependentCreaturePush = true
 
 		-- Battle
+		-- Note: classicAttackSpeed set to true makes players constantly attack at regular
+		-- intervals regardless of other actions such as item (potion) use. This setting
+		-- may cause high CPU usage with many players and potentially affect performance!
 		optionalWarAttackableAlly = true
 		fistBaseAttack = 7
+		classicAttackSpeed = false
 		criticalHitChance = 7
 		noDamageToGuildMates = false
 			-- if true then no damage, if false then damage
