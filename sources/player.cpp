@@ -3826,7 +3826,7 @@ void Player::doAttacking(uint32_t)
 
 	if(const Weapon* _weapon = g_weapons->getWeapon(weapon))
 	{
-		if(_weapon->interruptSwing() && !canDoAction())
+		if(!g_config.getBool(ConfigManager::CLASSIC_EQUIPMENT_SLOTS) && _weapon->interruptSwing() && !canDoAction())
 		{
 			SchedulerTask* task = createSchedulerTask(getNextActionTime(),
 				boost::bind(&Game::checkCreatureAttack, &g_game, getID()));
