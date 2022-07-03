@@ -519,11 +519,22 @@ void Chat::removeUserFromChannels(Player* player)
 	for(GuildChannelMap::iterator it = m_guildChannels.begin(); it != m_guildChannels.end(); ++it)
 		it->second->removeUser(player);
 
-	for(PrivateChannelMap::iterator it = m_privateChannels.begin(); it != m_privateChannels.end(); ++it)
-	{
+	// first loop - remove player from all private channels
+	PrivateChannelMap::iterator it = m_privateChannels.begin();
+	while(it != m_privateChannels.end()) {
 		it->second->removeUser(player);
-		if(it->second->getOwner() == player->getGUID())
-			deleteChannel(player, it->second->getId());
+		++it;
+	}
+
+	// second loop - delete channel of which player is owner - expecting that there should be one
+	it = m_privateChannels.begin();
+	while(it != m_privateChannels.end()) {
+		if(it->second->getOwner() == player->getGUID()) {
+			it->second->closeChannel();
+			// after closing channel stop loop
+			break;
+		}
+		++it;
 	}
 }
 
