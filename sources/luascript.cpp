@@ -1866,7 +1866,7 @@ void LuaInterface::registerFunctions()
 	//doCreateMonster(name, pos[, extend = false[, force = false]])
 	lua_register(m_luaState, "doCreateMonster", LuaInterface::luaDoCreateMonster);
 
-	//doCreateNpc(name, pos)
+	//doCreateNpc(name, pos[, extend = false[, force = false]])
 	lua_register(m_luaState, "doCreateNpc", LuaInterface::luaDoCreateNpc);
 
 	//doSummonMonster(cid, name)
@@ -5537,11 +5537,19 @@ int32_t LuaInterface::luaDoCreateMonster(lua_State* L)
 
 int32_t LuaInterface::luaDoCreateNpc(lua_State* L)
 {
-	//doCreateNpc(name, pos)
+	//doCreateNpc(name, pos[, extend = false[, force = false]])
+	bool force = false, extend = false;
+	int32_t params = lua_gettop(L);
+	if(params > 3)
+		force = popBoolean(L);
+
+	if(params > 2)
+		extend = popBoolean(L);
+
 	PositionEx pos;
 	popPosition(L, pos);
-	std::string name = popString(L);
 
+	std::string name = popString(L);
 	Npc* npc = Npc::createNpc(name.c_str());
 	if(!npc)
 	{
@@ -5550,7 +5558,7 @@ int32_t LuaInterface::luaDoCreateNpc(lua_State* L)
 		return 1;
 	}
 
-	if(!g_game.placeCreature(npc, pos))
+	if(!g_game.placeCreature(npc, pos, extend, force))
 	{
 		delete npc;
 		errorEx("Cannot create npc: " + name);
