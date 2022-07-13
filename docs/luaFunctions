@@ -269,7 +269,7 @@
 	doCreateMonster(name, pos[, extend = false[, force = false]])
 	doMonsterChangeTarget(cid)
 	doMonsterSetTarget(cid, target)
-	doCreateNpc(name, pos)
+	doCreateNpc(name, pos[, extend = false[, force = false]])
 	doSetMonsterOutfit(cid, name[, time = -1])
 	doPlayerBroadcastMessage(cid, message[, type])
 	doPlayerSetSex(cid, newSex)
