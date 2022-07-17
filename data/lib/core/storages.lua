@@ -49,7 +49,8 @@ GlobalStorage = {
 	XpDisplayMode = 65006,
 	OberonEventTime = 65009,
 	ScarlettEtzelEventTime = 65011,
-	CobraBastionFlask = 65012
+	CobraBastionFlask = 65012,
+	KeysUpdate = 40000, -- Reserved storage from 40000 - 40000
 }
 
 -- Values extraction function

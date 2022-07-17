@@ -26,16 +26,16 @@ cleanProtectionZones = false
 -- Connection Config
 -- NOTE: maxPlayers set to 0 means no limit
 -- NOTE: MaxPacketsPerSeconds if you change you will be subject to bugs by WPE, keep the default value of 25
-ip = "darkkonia.sytes.net"
+ip = "127.0.0.1"
 bindOnlyGlobalAddress = false
 loginProtocolPort = 7171
 gameProtocolPort = 7172
 statusProtocolPort = 7171
 maxPlayers = 200
-motd = "Welcome to The DarkKonia Server"
+motd = "Welcome to... OTX Server"
 onePlayerOnlinePerAccount = true
 allowClones = false
-serverName = "DarkKonia"
+serverName = "OTXSERVER"
 statusTimeout = 5 * 1000
 replaceKickOnLogin = false
 maxPacketsPerSecond = 25
@@ -160,8 +160,8 @@ pushWhenAttacking = false
 -- Map
 -- NOTE: set mapName WITHOUT .otbm at the end
 -- NOTE: unzip the map world.rar
-mapName = "darkkonia_ID"
-mapAuthor = "Mattyx14"
+mapName = "forgotten"
+mapAuthor = "OTLand"
 
 -- Party List limitations
 -- max distance in which players in party list are visible
@@ -198,7 +198,7 @@ emoteSpells = false
 classicEquipmentSlots = false
 allowWalkthrough = true
 coinPacketSize = 25
-coinImagesURL = "https://darkkonia.sytes.net/images/store/"
+coinImagesURL = "https://127.0.0.1/images/store/"
 classicAttackSpeed = false
 showScriptsLogInConsole = false
 -- configure maximum value of critical imbuement

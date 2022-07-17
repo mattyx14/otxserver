@@ -1,42 +1,6 @@
 if not Quests then
 	Quests = {
-		[1] = {
-			name = "Forgotten Knowledge",
-			startStorageId = DarkKonia.ForgottenKnowledge.Tomes,
-			startStorageValue = 1,
-			missions = {
-				[1] = {
-					name = "The temple of glory",
-					storageId = DarkKonia.ForgottenKnowledge.Tomes,
-					missionId = 10360,
-					startValue = 0,
-					endValue = 1,
-					states = {
-						[1] = "You have contributed with the collection of tomes."
-					}
-				},
-				[2] = {
-					name = "Circle of the Black Sphinx",
-					storageId = DarkKonia.ForgottenKnowledge.LadyTenebrisKilled,
-					missionId = 10361,
-					startValue = 0,
-					endValue = 1522018605,
-					states = {
-						[1] = "You defeated the rogue Lady Tenebris."
-					}
-				},
-				[3] = {
-					name = "Bane of the deep",
-					storageId = DarkKonia.MisidiaQuest.JaulKilled,
-					missionId = 10362,
-					startValue = 0,
-					endValue = 1522018605,
-					states = {
-						[1] = "You defeated the terrifying Jaul."
-					}
-				},
-			}
-		},
+		--
 	}
 end
 

@@ -384,9 +384,6 @@
 	<monster centerx="97" centery="130" centerz="7" radius="5">
 		<monster name="Rabbit" x="0" y="2" z="7" spawntime="180" />
 	</monster>
-	<monster centerx="377" centery="265" centerz="7" radius="15" />
-	<monster centerx="318" centery="269" centerz="7" radius="25" />
-	<monster centerx="354" centery="281" centerz="7" radius="10" />
 	<monster centerx="278" centery="336" centerz="7" radius="5">
 		<monster name="Orc" x="-1" y="-2" z="7" spawntime="60" />
 		<monster name="Orc Spearman" x="5" y="0" z="7" spawntime="60" />
