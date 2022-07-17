@@ -42,6 +42,11 @@ maxPacketsPerSecond = 25
 maxItem = 2000
 maxContainer = 100
 
+-- Packet Compression
+-- Minimize network bandwith and reduce ping
+-- Levels: 0 = disabled, 1 = best speed, 9 = best compression
+packetCompressionLevel = 6
+
 -- Depot Limit
 freeDepotLimit = 2000
 premiumDepotLimit = 10000
@@ -196,6 +201,10 @@ coinPacketSize = 25
 coinImagesURL = "https://darkkonia.sytes.net/images/store/"
 classicAttackSpeed = false
 showScriptsLogInConsole = false
+-- configure maximum value of critical imbuement
+criticalChance = 10
+inventoryGlowOnFiveBless = false
+adventurersBlessingLevel = 21
 
 -- Global server Save
 -- NOTE: globalServerSaveNotifyDuration in minutes
@@ -211,11 +220,12 @@ globalServerSaveTime = "23:55:00"
 -- rateLoot to avoid losing all rare items when
 -- the corpse size is less than the total of loots
 -- the monster can drop
-sortLootByChance = true
+sortLootByChance = false
 
 -- Rates
--- NOTE: rateExp, rateSkill and rateMagic is used as a fallback only
+-- NOTE: rateExp, rateSkill and rateMagic are only used when 'rateUseStages = false'
 -- To configure rates see file data/stages.lua
+rateUseStages = true
 rateExp = 1
 rateSkill = 50
 rateLoot = 3
@@ -267,4 +277,4 @@ location = "USA"
 -- Sends Discord webhook notifications on startup, raids and shutdown.
 -- The URL layout is https://discord.com/api/webhooks/:id/:token
 -- Leave empty if you wish to disable.
-discordWebhookURL = "https://discord.com/api/webhooks/890566773798219857/Ns_PUUTH4l_VRY5-ICfyj1eitR08suYYQUpDUXRnteFGPtpd_Bp0GTOu23bgRzd_MHeY"
+discordWebhookURL = ""
