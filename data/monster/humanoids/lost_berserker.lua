@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "platinum coin", chance = 100000, maxCount = 9},
-	{id = 3097, chance = 2280}, -- Dwarven ring
+	{id = 3097, chance = 2280}, -- dwarven ring
 	{name = "knight axe", chance = 2070},
 	{name = "fire axe", chance = 380},
 	{name = "royal helmet", chance = 150},
@@ -99,7 +99,7 @@ monster.loot = {
 	{name = "terra boots", chance = 640},
 	{name = "small topaz", chance = 7970, maxCount = 2},
 	{name = "clay lump", chance = 930},
-	{id = 12600, chance = 2050},
+	{id = 12600, chance = 2050}, -- coal
 	{name = "violet crystal shard", chance = 3500},
 	{name = "brown crystal splinter", chance = 7540, maxCount = 2},
 	{name = "blue crystal splinter", chance = 4610},
@@ -123,16 +123,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 40},
-	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 20},
+	{type = COMBAT_ENERGYDAMAGE, percent = 17},
+	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = 10},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 40},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 10}
+	{type = COMBAT_DEATHDAMAGE , percent = 15}
 }
 
 monster.immunities = {

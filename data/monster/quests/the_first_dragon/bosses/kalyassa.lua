@@ -5,9 +5,9 @@ monster.description = "kalyassa"
 monster.experience = 9000
 monster.outfit = {
 	lookType = 947,
-	lookHead = 37,
+	lookHead = 56,
 	lookBody = 113,
-	lookLegs = 38,
+	lookLegs = 19,
 	lookFeet = 95,
 	lookAddons = 3,
 	lookMount = 0
@@ -70,20 +70,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 24941, chance = 100000},
-	{id = 3583, chance = 75230, maxCount = 9},
-	{id = 3035, chance = 99080, maxCount = 9},
-	{id = 24937, chance = 80000, maxCount = 2},
-	{id = 239, chance = 8260},
-	{id = 238, chance = 9170},
-	{id = 3392, chance = 25000},
-	{id = 3386, chance = 25000},
-	{id = 24938, chance = 100000},
-	{id = 3450, chance = 17430},
-	{id = 7365, chance = 26610, maxCount = 10},
-	{id = 3280, chance = 25000},
-	{id = 3051, chance = 25000}, -- Energy ring
-	{id = 5948, chance = 25000}
+	{id = 24941, chance = 100000}, -- horn of kalyassa
+	{id = 3583, chance = 75230, maxCount = 9}, -- dragon ham
+	{id = 3035, chance = 99080, maxCount = 9}, -- platinum coin
+	{id = 24937, chance = 80000, maxCount = 2}, -- dragon blood
+	{id = 239, chance = 8260}, -- great health potion
+	{id = 238, chance = 9170}, -- great mana potion
+	{id = 3392, chance = 25000}, -- royal helmet
+	{id = 3386, chance = 25000}, -- dragon scale mail
+	{id = 24938, chance = 100000}, -- dragon tongue
+	{id = 3450, chance = 17430}, -- power bolt
+	{id = 7365, chance = 26610, maxCount = 10}, -- onyx arrow
+	{id = 3280, chance = 25000}, -- fire sword
+	{id = 3051, chance = 25000}, -- energy ring
+	{id = 5948, chance = 25000} -- red dragon leather
 }
 
 monster.attacks = {

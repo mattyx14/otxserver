@@ -81,7 +81,7 @@ monster.loot = {
 	{name = "glooth axe", chance = 8000},
 	{name = "glooth blade", chance = 7000},
 	{name = "glooth cape", chance = 6000},
-	{id= 3039, chance = 2600},
+	{id= 3039, chance = 2600}, -- red gem
 	{name = "yellow gem", chance = 2500},
 	{name = "lisa's doll", chance = 300}
 }

@@ -6,9 +6,9 @@ monster.experience = 11000
 monster.outfit = {
 	lookType = 1071,
 	lookHead = 57,
-	lookBody = 75,
-	lookLegs = 77,
-	lookFeet = 86,
+	lookBody = 96,
+	lookLegs = 96,
+	lookFeet = 105,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -67,7 +67,7 @@ monster.loot = {
 	{name = "golden armor", chance = 1700},
 	{name = "mastermind shield", chance = 1100},
 	{name = "patch of fine cloth", chance = 1000},
-	{id= 3039, chance = 1800},
+	{id= 3039, chance = 1800}, -- red gem
 	{name = "violet gem", chance = 1850},
 	{name = "falcon bow", chance = 180},
 	{name = "falcon wand", chance = 180},

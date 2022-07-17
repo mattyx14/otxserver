@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 50,
 	lookBody = 2,
 	lookLegs = 0,
-	lookFeet = 95,
+	lookFeet = 76,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -73,18 +73,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000},
-	{name = "Lamassu Horn", chance = 13400, maxCount = 5},
-	{name = "Red Crystal Fragment", chance = 10500},
-	{name = "Terra Amulet", chance = 10000},
-	{name = "Lamassu Hoof", chance = 7700},
-	{name = "Violet Crystal Shard", chance = 6800},
-	{name = "Blue Crystal Shard", chance = 6500},
-	{id= 3039, chance = 6200},
-	{name = "Terra Hood", chance = 5900},
-	{name = "Sacred Tree Amulet", chance = 2300},
-	{name = "Elven Amulet", chance = 2000},
-	{name = "Violet Gem", chance = 1700}
+	{name = "platinum coin", chance = 100000},
+	{name = "lamassu horn", chance = 13400, maxCount = 5},
+	{name = "red crystal fragment", chance = 10500},
+	{name = "terra amulet", chance = 10000},
+	{name = "lamassu hoof", chance = 7700},
+	{name = "violet crystal shard", chance = 6800},
+	{name = "blue crystal shard", chance = 6500},
+	{id= 3039, chance = 6200}, -- red gem
+	{name = "terra hood", chance = 5900},
+	{name = "sacred tree amulet", chance = 2300},
+	{name = "elven amulet", chance = 2000},
+	{name = "violet gem", chance = 1700}
 }
 
 monster.attacks = {
@@ -101,13 +101,13 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 80},
+	{type = COMBAT_EARTHDAMAGE, percent = 20},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 80},
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
 	{type = COMBAT_DEATHDAMAGE , percent = -30}
 }
 

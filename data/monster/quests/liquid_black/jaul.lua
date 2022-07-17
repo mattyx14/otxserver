@@ -37,7 +37,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = true,
 	illusionable = false,
 	canPushItems = true,
@@ -67,7 +67,7 @@ monster.voices = {
 monster.loot = {
 	{name = "deepling axe", chance = 1500},
 	{name = "depth calcei", chance = 1100},
-	{id = 13995, chance = 1400},-- depth galea
+	{id = 13995, chance = 1400}, -- depth galea
 	{name = "depth lorica", chance = 800},
 	{name = "ornate chestplate", chance = 650, unique = true},
 	{name = "ornate legs", chance = 740},

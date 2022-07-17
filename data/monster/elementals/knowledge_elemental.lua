@@ -73,21 +73,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 9},
-	{name = "Book Page", chance = 10000, maxCount = 6},
-	{name = "Small Amethyst", chance = 10000, maxCount = 8},
-	{name = "Glowing Rune", chance = 10000, maxCount = 3},
-	{name = "Quill", chance = 10000, maxCount = 3},
-	{name = "Silken Bookmark", chance = 10000, maxCount = 3},
-	{name = "Flash Arrow", chance = 10000, maxCount = 6},
-	{name = "Throwing Star", chance = 10000, maxCount = 10},
-	{name = "Crystal Sword", chance = 10000},
-	{id = 3051, chance = 10000}, -- Energy ring
-	{name = "Guardian Shield", chance = 10000},
-	{name = "Mana Potion", chance = 10000, maxCount = 10},
-	{name = "Ultimate Mana Potion", chance = 10000, maxCount = 8},
-	{name = "Ultimate Health Potion", chance = 10000, maxCount = 8},
-	{name = "Wand of Cosmic Energy", chance = 300}
+	{name = "platinum coin", chance = 100000, maxCount = 9},
+	{name = "book page", chance = 10000, maxCount = 6},
+	{name = "small amethyst", chance = 10000, maxCount = 8},
+	{name = "glowing rune", chance = 10000, maxCount = 3},
+	{name = "quill", chance = 10000, maxCount = 3},
+	{name = "silken bookmark", chance = 10000, maxCount = 3},
+	{name = "flash arrow", chance = 10000, maxCount = 6},
+	{name = "throwing star", chance = 10000, maxCount = 10},
+	{name = "crystal sword", chance = 10000},
+	{id = 3051, chance = 10000}, -- energy ring
+	{name = "guardian shield", chance = 10000},
+	{name = "mana potion", chance = 10000, maxCount = 10},
+	{name = "ultimate mana potion", chance = 10000, maxCount = 8},
+	{name = "ultimate health potion", chance = 10000, maxCount = 8},
+	{name = "wand of cosmic energy", chance = 300}
 }
 
 monster.attacks = {
@@ -106,14 +106,14 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 100},
-	{type = COMBAT_EARTHDAMAGE, percent = 10},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 10},
+	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 50},
-	{type = COMBAT_DEATHDAMAGE , percent = -10}
+	{type = COMBAT_DEATHDAMAGE , percent = -20}
 }
 
 monster.immunities = {

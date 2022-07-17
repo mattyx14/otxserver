@@ -72,24 +72,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Gold Coin", chance = 13600000, maxCount = 100},
-	{name = "Gold Coin", chance = 13600000, maxCount = 100},
-	{name = "Platinum Coin", chance = 13600000, maxCount = 10},
-	{name = "Brown Mushroom", chance = 13600000, maxCount = 9},
-	{name = "Onyx Chip", chance = 13600000, maxCount = 9},
-	{name = "Small Enchanted Amethyst", chance = 13600000, maxCount = 9},
-	{name = "Beetroot", chance = 13600000, maxCount = 9},
-	{name = "Great Mana Potion", chance = 13600000, maxCount = 9},
-	{name = "Platinum Amulet", chance = 13600000},
-	{id = 3098, chance = 13600000}, -- Ring of healing
-	{name = "Troll Green", chance = 13600000, maxCount = 9},
-	{name = "Ultimate Mana Potion", chance = 13600000, maxCount = 9},
-	{name = "Werebadger Claws", chance = 13600000, maxCount = 9},
-	{name = "Werebadger Skull", chance = 13600000, maxCount = 9},
-	{name = "Badger Boots", chance = 400},
-	{name = "Underworld Rod", chance = 400},
-	{name = "Wand of Voodoo", chance = 400},
-	{name = "Wolf Backpack", chance = 250}
+	{name = "gold coin", chance = 13600000, maxCount = 100},
+	{name = "gold coin", chance = 13600000, maxCount = 100},
+	{name = "platinum coin", chance = 13600000, maxCount = 10},
+	{name = "brown mushroom", chance = 13600000, maxCount = 9},
+	{name = "onyx chip", chance = 13600000, maxCount = 9},
+	{name = "small enchanted amethyst", chance = 13600000, maxCount = 9},
+	{name = "beetroot", chance = 13600000, maxCount = 9},
+	{name = "great mana potion", chance = 13600000, maxCount = 9},
+	{name = "platinum amulet", chance = 13600000},
+	{id = 3098, chance = 13600000}, -- ring of healing
+	{name = "troll green", chance = 13600000, maxCount = 9},
+	{name = "ultimate mana potion", chance = 13600000, maxCount = 9},
+	{name = "werebadger claws", chance = 13600000, maxCount = 9},
+	{name = "werebadger skull", chance = 13600000, maxCount = 9},
+	{name = "badger boots", chance = 400},
+	{name = "underworld rod", chance = 400},
+	{name = "wand of voodoo", chance = 400},
+	{name = "wolf backpack", chance = 250}
 }
 
 monster.attacks = {

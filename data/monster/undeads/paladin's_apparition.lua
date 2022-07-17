@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -88,7 +88,7 @@ monster.loot = {
 	{name = "glacier mask", chance = 31920},
 	{name = "wood cape", chance = 21920},
 	{name = "skull helmet", chance = 18920},
-	{id = 23529, chance = 29000} -- Ring of blue plasma
+	{id = 23529, chance = 29000} -- ring of blue plasma
 }
 
 monster.attacks = {

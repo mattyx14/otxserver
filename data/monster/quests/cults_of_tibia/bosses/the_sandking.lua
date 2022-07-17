@@ -66,7 +66,7 @@ monster.voices = {
 monster.loot = {
 	{name = "small amethyst", chance = 21000, maxCount = 10},
 	{name = "small emerald", chance = 19000, maxCount = 10},
-	{id= 3039, chance = 12000},
+	{id= 3039, chance = 12000}, -- red gem
 	{name = "platinum coin", chance = 68299, maxCount = 30},
 	{name = "gold coin", chance = 100000, maxCount = 200},
 	{name = "small diamond", chance = 21000, maxCount = 10},
@@ -81,25 +81,25 @@ monster.loot = {
 	{name = "blue gem", chance = 21892},
 	{name = "yellow gem", chance = 29460},
 	{name = "magic sulphur", chance = 18920},
-	{id = 7440, chance = 2000},
-	{id = 20062, chance = 2000, maxCount = 2},
-	{name = "Hailstorm Rod", chance = 3470},
-	{id = 3036, chance = 1000},
-	{id = 3098, chance = 20000}, -- Ring of healing
-	{id = 3030, chance = 7360, maxCount = 10},
-	{id = 281, chance = 28540},
-	{name = "Skull Staff", chance = 13790},
-	{name = "Grasshopper Legs", chance = 13790},
-	{name = "Huge Chunk of Crude Iron", chance = 10000, maxCount = 2},
-	{id = 7404, chance = 430},
+	{id = 7440, chance = 2000}, -- mastermind potion
+	{id = 20062, chance = 2000, maxCount = 2}, -- cluster of solace
+	{name = "hailstorm rod", chance = 3470},
+	{id = 3036, chance = 1000}, -- violet gem
+	{id = 3098, chance = 20000}, -- ring of healing
+	{id = 3030, chance = 7360, maxCount = 10}, -- small ruby
+	{id = 281, chance = 28540}, -- giant shimmering pearl (green)
+	{name = "skull staff", chance = 13790},
+	{name = "grasshopper legs", chance = 13790},
+	{name = "huge chunk of crude iron", chance = 10000, maxCount = 2},
+	{id = 7404, chance = 430}, -- assassin dagger
 	{name = "runed sword", chance = 6666},
 	{name = "djinn blade", chance = 200},
-	{id = 16121, chance = 10000, maxCount = 3},
-	{id = 16120, chance = 10000, maxCount = 3},
-	{id = 16119, chance = 10000, maxCount = 3},
-	{id = 7642, chance = 4800},
-	{id = 16161, chance = 7030},
-	{id = 3341, chance = 200}, -- Arcane staff
+	{id = 16121, chance = 10000, maxCount = 3}, -- green crystal shard
+	{id = 16120, chance = 10000, maxCount = 3}, -- violet crystal shard
+	{id = 16119, chance = 10000, maxCount = 3}, -- blue crystal shard
+	{id = 7642, chance = 4800}, -- great spirit potion
+	{id = 16161, chance = 7030}, -- crystalline axe
+	{id = 3341, chance = 200}, -- arcane staff
 	{name = "heart of the mountain", chance = 400}
 }
 

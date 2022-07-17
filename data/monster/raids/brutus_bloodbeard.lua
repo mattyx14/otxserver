@@ -63,13 +63,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 6099, chance = 100000},
-	{id = 3031, chance = 100000, maxCount = 200},
-	{id = 3114, chance = 75000, maxCount = 2},
-	{id = 3267, chance = 25000},
-	{id = 3370, chance = 25000},
-	{id = 3577, chance = 25000},
-	{id = 3357, chance = 25000}
+	{id = 6099, chance = 100000}, -- brutus bloodbeard's hat
+	{id = 3031, chance = 100000, maxCount = 200}, -- gold coin
+	{id = 3114, chance = 75000, maxCount = 2}, -- skull
+	{id = 3267, chance = 25000}, -- dagger
+	{id = 3370, chance = 25000}, -- knight armor
+	{id = 3577, chance = 25000}, -- meat
+	{id = 3357, chance = 25000} -- plate armor
 }
 
 monster.attacks = {

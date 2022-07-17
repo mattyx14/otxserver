@@ -5,9 +5,9 @@ monster.description = "a werelioness"
 monster.experience = 2500
 monster.outfit = {
 	lookType = 1301,
-	lookHead = 58,
+	lookHead = 0,
 	lookBody = 2,
-	lookLegs = 94,
+	lookLegs = 0,
 	lookFeet = 94,
 	lookAddons = 0,
 	lookMount = 0
@@ -69,27 +69,27 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 5},
-	{name = "Gold Coin", chance = 100000, maxCount = 60},
-	{name = "Small Enchanted Sapphire", chance = 5000, maxCount = 2},
-	{name = "Black Pearl", chance = 5000, maxCount = 2},
-	{name = "Ham", chance = 5000, maxCount = 2},
-	{name = "Meat", chance = 5000, maxCount = 2},
-	{name = "Soul Orb", chance = 5000, maxCount = 2},
-	{name = "White Pearl", chance = 1500, maxCount = 2},
-	{name = "Ankh", chance = 5000},
-	{name = "Crystal Sword", chance = 5000},
-	{name = "Serpent Sword", chance = 5000},
-	{name = "Rapier", chance = 5000},
-	{name = "Lion's Mane", chance = 5000},
-	{name = "Lightning Headband", chance = 1500},
-	{name = "Steel Helmet", chance = 1500},
-	{name = "Doublet", chance = 1500},
-	{name = "Ivory Carving", chance = 1500},
-	{name = "Magma Legs", chance = 500},
-	{name = "Crown Helmet", chance = 500},
-	{name = "White Silk Flower", chance = 200},
-	{name = "Lion Figurine", chance = 100}
+	{name = "platinum coin", chance = 100000, maxCount = 5},
+	{name = "gold coin", chance = 100000, maxCount = 60},
+	{name = "small enchanted sapphire", chance = 5000, maxCount = 2},
+	{name = "black pearl", chance = 5000, maxCount = 2},
+	{name = "ham", chance = 5000, maxCount = 2},
+	{name = "meat", chance = 5000, maxCount = 2},
+	{name = "soul orb", chance = 5000, maxCount = 2},
+	{name = "white pearl", chance = 1500, maxCount = 2},
+	{name = "ankh", chance = 5000},
+	{name = "crystal sword", chance = 5000},
+	{name = "serpent sword", chance = 5000},
+	{name = "rapier", chance = 5000},
+	{name = "lion's mane", chance = 5000},
+	{name = "lightning headband", chance = 1500},
+	{name = "steel helmet", chance = 1500},
+	{name = "doublet", chance = 1500},
+	{name = "ivory carving", chance = 1500},
+	{name = "magma legs", chance = 500},
+	{name = "crown helmet", chance = 500},
+	{name = "white silk flower", chance = 200},
+	{name = "lion figurine", chance = 100}
 }
 
 monster.attacks = {
@@ -113,7 +113,7 @@ monster.elements = {
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 25},
+	{type = COMBAT_ICEDAMAGE, percent = -25},
 	{type = COMBAT_HOLYDAMAGE , percent = -5},
 	{type = COMBAT_DEATHDAMAGE , percent = 50}
 }

@@ -86,7 +86,7 @@ monster.loot = {
 	{name = "meat", chance = 10160},
 	{name = "orc tooth", chance = 210},
 	{name = "orc leather", chance = 590},
-	{id = 23986, chance = 1000}
+	{id = 23986, chance = 1000} -- heavy old tome
 }
 
 monster.attacks = {
@@ -108,7 +108,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 10},
-	{type = COMBAT_DEATHDAMAGE , percent = -5}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

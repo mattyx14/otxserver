@@ -7,7 +7,7 @@ monster.outfit = {
 	lookType = 133,
 	lookHead = 95,
 	lookBody = 0,
-	lookLegs = 94,
+	lookLegs = 93,
 	lookFeet = 114,
 	lookAddons = 1,
 	lookMount = 0
@@ -74,12 +74,12 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 2000, maxCount = 95},
-	{id = 3035, chance = 30000, maxCount = 9},
-	{id = 9399, chance = 1000},
-	{id = 9372, chance = 1000},
-	{id = 9373, chance = 1000},
-	{id = 9383, chance = 1000}
+	{id = 3031, chance = 2000, maxCount = 95}, -- gold coin
+	{id = 3035, chance = 30000, maxCount = 9}, -- platinum coin
+	{id = 9399, chance = 1000}, -- mighty helm of green sparks
+	{id = 9372, chance = 1000}, -- meat shield
+	{id = 9373, chance = 1000}, -- glutton's mace
+	{id = 9383, chance = 1000} -- trousers of the ancients
 }
 
 monster.attacks = {

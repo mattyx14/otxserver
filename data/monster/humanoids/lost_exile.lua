@@ -29,7 +29,7 @@ monster.Bestiary = {
 monster.health = 1600
 monster.maxHealth = 1600
 monster.race = "blood"
-monster.corpse = 28819
+monster.corpse = 17684
 monster.speed = 170
 monster.manaCost = 0
 
@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "strong health potion", chance = 10950, maxCount = 2},
 	{name = "great mana potion", chance = 8330, maxCount = 2},
 	{name = "brown mushroom", chance = 16900, maxCount = 2},
-	{id = 12600, chance = 13100},
+	{id = 12600, chance = 13100}, -- coal
 	{name = "holy ash", chance = 13100},
 	{name = "small topaz", chance = 10240},
 	{name = "lost husher's staff", chance = 6900},
@@ -94,7 +94,7 @@ monster.loot = {
 	{name = "bonecarving knife", chance = 8100},
 	{name = "basalt figurine", chance = 8100},
 	{name = "bone fetish", chance = 8881},
-	{id = 3097, chance = 1043}, -- Dwarven ring
+	{id = 3097, chance = 1043}, -- dwarven ring
 	{name = "guardian shield", chance = 1430},
 	{name = "buckle", chance = 1900},
 	{name = "clay lump", chance = 710},
@@ -124,16 +124,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
-	{type = COMBAT_ENERGYDAMAGE, percent = 30},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_ENERGYDAMAGE, percent = 10},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = 30},
+	{type = COMBAT_FIREDAMAGE, percent = 25},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 30},
-	{type = COMBAT_HOLYDAMAGE , percent = -30},
-	{type = COMBAT_DEATHDAMAGE , percent = 30}
+	{type = COMBAT_ICEDAMAGE, percent = 15},
+	{type = COMBAT_HOLYDAMAGE , percent = -10},
+	{type = COMBAT_DEATHDAMAGE , percent = 20}
 }
 
 monster.immunities = {

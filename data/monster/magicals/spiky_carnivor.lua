@@ -6,8 +6,8 @@ monster.experience = 1650
 monster.outfit = {
 	lookType = 1139,
 	lookHead = 79,
-	lookBody = 119,
-	lookLegs = 57,
+	lookBody = 121,
+	lookLegs = 23,
 	lookFeet = 86,
 	lookAddons = 1,
 	lookMount = 0
@@ -76,24 +76,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 6},
-	{name = "Green Glass Plate", chance = 12000, maxCount = 17},
-	{name = "Blue Crystal Splinter", chance = 11500},
-	{name = "Brown Crystal Splinter", chance = 11000},
-	{name = "Dark Armor", chance = 10000},
-	{name = "Guardian Shield", chance = 9000},
-	{name = "Rainbow Quartz", chance = 8500},
-	{name = "Blue Robe", chance = 8000},
-	{name = "Glacier Amulet", chance = 7500},
-	{name = "Lightning Pendant", chance = 2200},
-	{name = "Prismatic Quartz", chance = 6500},
-	{name = "Talon", chance = 6000},
-	{name = "Terra Amulet", chance = 5500},
-	{name = "Warrior Helmet", chance = 4000},
-	{name = "Shockwave Amulet", chance = 2550},
-	{name = "Terra Mantle", chance = 4050},
-	{name = "Buckle", chance = 250},
-	{name = "Doublet", chance = 250}
+	{name = "platinum coin", chance = 100000, maxCount = 6},
+	{name = "green glass plate", chance = 12000, maxCount = 17},
+	{name = "blue crystal splinter", chance = 11500},
+	{name = "brown crystal splinter", chance = 11000},
+	{name = "dark armor", chance = 10000},
+	{name = "guardian shield", chance = 9000},
+	{name = "rainbow quartz", chance = 8500},
+	{name = "blue robe", chance = 8000},
+	{name = "glacier amulet", chance = 7500},
+	{name = "lightning pendant", chance = 2200},
+	{name = "prismatic quartz", chance = 6500},
+	{name = "talon", chance = 6000},
+	{name = "terra amulet", chance = 5500},
+	{name = "warrior helmet", chance = 4000},
+	{name = "shockwave amulet", chance = 2550},
+	{name = "terra mantle", chance = 4050},
+	{name = "buckle", chance = 250},
+	{name = "doublet", chance = 250}
 }
 
 monster.attacks = {
@@ -112,10 +112,10 @@ monster.reflects = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 40},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = 20},
+	{type = COMBAT_FIREDAMAGE, percent = -30},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

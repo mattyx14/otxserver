@@ -52,7 +52,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -78,35 +78,35 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 90000, maxCount = 130},
-	{id = 3035, chance = 20000, maxCount = 9},
-	{id = 6558, chance = 4000, maxCount = 3},
-	{id = 9058, chance = 1300, maxCount = 2},
-	{id = 238, chance = 9600, maxCount = 2},
-	{id = 7642, chance = 2300, maxCount = 2},
-	{id = 3033, chance = 2000, maxCount = 5},
-	{id = 3028, chance = 900, maxCount = 5},
-	{id = 3032, chance = 900, maxCount = 5},
-	{id = 3030, chance = 2000, maxCount = 5},
-	{id = 9057, chance = 900, maxCount = 5},
-	{id = 7643, chance = 5300, maxCount = 2},
-	{id = 3019, chance = 1000},
-	{id = 6499, chance = 1600},
-	{id = 281, chance = 800},
-	{id = 3038, chance = 800},
-	{id = 818, chance = 500},
-	{id = 821, chance = 1200},
-	{id = 3414, chance = 350},
-	{id = 22729, chance = 800},
-	{id = 3039, chance = 500},
-	{id = 22866, chance = 280},
-	{id = 22867, chance = 180},
-	{id = 5741, chance = 450},
-	{id = 22727, chance = 200},
-	{id = 7413, chance = 900},
-	{id = 3360, chance = 750},
-	{id = 8074, chance = 900},
-	{id = 3340, chance = 400}
+	{id = 3031, chance = 90000, maxCount = 130}, -- gold coin
+	{id = 3035, chance = 20000, maxCount = 9}, -- platinum coin
+	{id = 6558, chance = 4000, maxCount = 3}, -- flask of demonic blood
+	{id = 9058, chance = 1300, maxCount = 2}, -- gold ingot
+	{id = 238, chance = 9600, maxCount = 2}, -- great mana potion
+	{id = 7642, chance = 2300, maxCount = 2}, -- great spirit potion
+	{id = 3033, chance = 2000, maxCount = 5}, -- small amethyst
+	{id = 3028, chance = 900, maxCount = 5}, -- small diamond
+	{id = 3032, chance = 900, maxCount = 5}, -- small emerald
+	{id = 3030, chance = 2000, maxCount = 5}, -- small ruby
+	{id = 9057, chance = 900, maxCount = 5}, -- small topaz
+	{id = 7643, chance = 5300, maxCount = 2}, -- ultimate health potion
+	{id = 3019, chance = 1000}, -- demonbone amulet
+	{id = 6499, chance = 1600}, -- demonic essence
+	{id = 281, chance = 800}, -- giant shimmering pearl (green)
+	{id = 3038, chance = 800}, -- green gem
+	{id = 818, chance = 500}, -- magma boots
+	{id = 821, chance = 1200}, -- magma legs
+	{id = 3414, chance = 350}, -- mastermind shield
+	{id = 22729, chance = 800}, -- pair of hellflayer horns
+	{id = 3039, chance = 500}, -- red gem
+	{id = 22866, chance = 280}, -- rift bow
+	{id = 22867, chance = 180}, -- rift crossbow
+	{id = 5741, chance = 450}, -- skull helmet
+	{id = 22727, chance = 200}, -- rift lance
+	{id = 7413, chance = 900}, -- titan axe
+	{id = 3360, chance = 750}, -- golden armor
+	{id = 8074, chance = 900}, -- spellbook of mind control
+	{id = 3340, chance = 400} -- heavy mace
 }
 
 monster.attacks = {
@@ -129,15 +129,15 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_ENERGYDAMAGE, percent = -5},
+	{type = COMBAT_EARTHDAMAGE, percent = 20},
+	{type = COMBAT_FIREDAMAGE, percent = 70},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 100},
-	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 100}
+	{type = COMBAT_ICEDAMAGE, percent = 5},
+	{type = COMBAT_HOLYDAMAGE , percent = -5},
+	{type = COMBAT_DEATHDAMAGE , percent = 25}
 }
 
 monster.immunities = {

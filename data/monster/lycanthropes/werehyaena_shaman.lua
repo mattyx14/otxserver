@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "brown crystal splinter", chance = 5030},
 	{name = "wand of starstorm", chance = 4920},
 	{name = "small enchanted emerald", chance = 4630},
-	{id = 3091, chance = 4490}, -- Sword ring
+	{id = 3091, chance = 4490}, -- sword ring
 	{name = "wand of voodoo", chance = 3990},
 	{name = "protection amulet", chance = 2660},
 	{name = "werehyaena talisman", chance = 650},
@@ -108,13 +108,13 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 60},
-	{type = COMBAT_FIREDAMAGE, percent = 75},
+	{type = COMBAT_EARTHDAMAGE, percent = 40},
+	{type = COMBAT_FIREDAMAGE, percent = 25},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -20},
-	{type = COMBAT_HOLYDAMAGE , percent = 95},
+	{type = COMBAT_HOLYDAMAGE , percent = 5},
 	{type = COMBAT_DEATHDAMAGE , percent = -5}
 }
 

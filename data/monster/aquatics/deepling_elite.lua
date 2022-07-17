@@ -50,7 +50,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
 	canPushItems = true,
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "deeptags", chance = 20600},
 	{name = "deepling ridge", chance = 19500},
 	{name = "small emerald", chance = 6890, maxCount = 2},
-	{id = 3052, chance = 5360}, -- Life ring
+	{id = 3052, chance = 5360}, -- life ring
 	{name = "heavy trident", chance = 3680},
 	{name = "fish fin", chance = 2300},
 	{name = "warrior's shield", chance = 1534},

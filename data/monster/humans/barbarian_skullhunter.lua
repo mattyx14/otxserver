@@ -7,7 +7,7 @@ monster.outfit = {
 	lookType = 254,
 	lookHead = 0,
 	lookBody = 77,
-	lookLegs = 77,
+	lookLegs = 96,
 	lookFeet = 114,
 	lookAddons = 0,
 	lookMount = 0
@@ -46,7 +46,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -79,10 +79,10 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2920, chance = 6680},
+	{id = 2920, chance = 6680}, -- torch
 	{name = "gold coin", chance = 8240, maxCount = 30},
-	{id = 3052, chance = 300}, -- Life ring
-	{id = 3114, chance = 3000},
+	{id = 3052, chance = 300}, -- life ring
+	{id = 3114, chance = 3000}, -- skull
 	{name = "knife", chance = 1067},
 	{name = "brass helmet", chance = 2200},
 	{name = "viking helmet", chance = 860},
@@ -104,7 +104,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 20},
 	{type = COMBAT_EARTHDAMAGE, percent = -10},
 	{type = COMBAT_FIREDAMAGE, percent = 0},

@@ -68,17 +68,17 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 11681, chance = 1990},
-	{id = 11679, chance = 20},
-	{id = 3031, chance = 88060, maxCount = 200},
-	{id = 11680, chance = 15060},
-	{id = 238, chance = 7960},
-	{id = 7643, chance = 9400},
-	{id = 3035, chance = 49610, maxCount = 6},
-	{id = 3073, chance = 910},
-	{id = 3069, chance = 980},
-	{id = 6299, chance = 330},
-	{id = 5884, chance = 140}
+	{id = 11681, chance = 1990}, -- ectoplasmic sushi
+	{id = 11679, chance = 20}, -- souleater trophy
+	{id = 3031, chance = 88060, maxCount = 200}, -- gold coin
+	{id = 11680, chance = 15060}, -- lizard essence
+	{id = 238, chance = 7960}, -- great mana potion
+	{id = 7643, chance = 9400}, -- ultimate health potion
+	{id = 3035, chance = 49610, maxCount = 6}, -- platinum coin
+	{id = 3073, chance = 910}, -- wand of cosmic energy
+	{id = 3069, chance = 980}, -- necrotic rod
+	{id = 6299, chance = 330}, -- death ring
+	{id = 5884, chance = 140} -- spirit container
 }
 
 monster.attacks = {

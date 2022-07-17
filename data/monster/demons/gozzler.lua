@@ -49,7 +49,7 @@ monster.flags = {
 	summonable = true,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = true,
@@ -84,7 +84,7 @@ monster.loot = {
 	{name = "brown flask", chance = 8750},
 	{name = "small sapphire", chance = 360},
 	{name = "gold coin", chance = 52500, maxCount = 70},
-	{id = 3097, chance = 190}, -- Dwarven ring
+	{id = 3097, chance = 190}, -- dwarven ring
 	{name = "battle axe", chance = 3100},
 	{name = "sabre", chance = 8250},
 	{name = "morning star", chance = 5000},

@@ -9,6 +9,8 @@ Storage = {
 	Factions = 30024,
 	blockMovementStorage = 30025,
 	FamiliarSummon = 30026,
+	TrainerRoom = 30027,
+	NpcSpawn = 30028,
 	ExerciseDummyExhaust = 30029,
 	StrawberryCupcake = 30032,
 	StoreExaust = 30051,
@@ -16,6 +18,7 @@ Storage = {
 	BlueberryCupcake = 30053,
 	FamiliarSummonEvent10 = 30054,
 	FamiliarSummonEvent60 = 30055,
+	FreeQuests = 30057,
 	PremiumAccount = 30058,
 
 	--[[
@@ -39,80 +42,6 @@ Storage = {
 		-- Reserved storage from 52130 - 52159
 		Stone = 52130,
 	},
-	TheOrderOfTheLion = {
-		-- Reserved storage 52360-52395 (TheRookieGuard)
-		-- Reserved storage 52396-52410 (TheOrderOfTheLion)
-		Drume = {
-			Commander = 52396, -- Global
-			TotalLionCommanders = 52397, -- Global
-			TotalUsurperCommanders = 52398, -- Global
-			Timer = 52399
-		},
-	},
-
-	-- OTX Reserved
-	-- Star 30100
-	NpcSpawn = 30100,
-	DefaultStartQuest = 30101,
-	AnnihilatorDone = 30102,
-	ForgottenKnowledge = {
-		Tomes = 30111,
-	},
-	DemonOak = {
-		Done = 30112,
-		Progress = 30113,
-		Squares = 30114,
-
-		AxeBlowsBird = 30115,
-		AxeBlowsLeft = 30116,
-		AxeBlowsRight = 30117,
-		AxeBlowsFace = 30118
-	},
-	FirstQuest = {
-		FirstWeapon = 30140,
-		FirstWeaponClub = 30266,
-		FirstWeaponSword = 30267,
-		FirstWeaponAxe = 30268
-	},
-	OutfitQuest = {
-		DefaultStart = 30223,
-		Ref = 30224,
-		-- Citizen Addons Quest
-		Citizen = {
-			-- Mission storages for temporary questlog entries
-			MissionHat = 30225,
-			AddonHat = 30226,
-			MissionBackpack = 30227,
-			AddonBackpack = 30228,
-			AddonBackpackTimer = 30229
-		},
-		-- Hunter Addons Quest
-		HunterHatAddon = 30230,
-		Hunter = {
-			AddonGlove = 30231,
-			AddonHat = 30232
-		},
-		-- Knight Addons Quest
-		Knight = {
-			AddonSword = 30233,
-			MissionHelmet = 30234,
-			AddonHelmet = 30235,
-			AddonHelmetTimer = 30236,
-			RamsaysHelmetDoor = 30237
-		},
-		-- Warrior-outfit Quest
-		WarriorShoulderAddon = 30238,
-		WarriorSwordAddon = 30239,
-		WarriorShoulderTimer = 30240,
-		-- Mage/Summoner-outfit Quest
-		MageSummoner = {
-			AddonWand = 30241,
-			AddonBelt = 30242,
-			MissionHatCloak = 30243,
-			AddonHatCloak = 30244,
-			AddonWandTimer = 30245
-		}
-	},
 }
 
 GlobalStorage = {
@@ -134,7 +63,6 @@ local function extractValues(tab, ret)
 	end
 end
 
-local benchmark = os.clock()
 local extraction = {}
 extractValues(Storage, extraction) -- Call function
 table.sort(extraction) -- Sort the table
@@ -147,7 +75,6 @@ if #extraction > 1 then
 		if extraction[i] == extraction[i+1] then
 			Spdlog.warn(string.format("Duplicate storage value found: %d",
 				extraction[i]))
-			Spdlog.warn(string.format("Processed in %.4f(s)", os.clock() - benchmark))
 		end
 	end
 end

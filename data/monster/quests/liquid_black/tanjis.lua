@@ -37,7 +37,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = true,
 	illusionable = false,
 	canPushItems = true,
@@ -64,9 +64,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Depth Ocrea", chance = 1200},
-	{name = "Ornate Mace", chance = 1100, unique = true},
-	{name = "Ornate Shield", chance = 1100}
+	{name = "depth ocrea", chance = 1200},
+	{name = "ornate mace", chance = 1100, unique = true},
+	{name = "ornate shield", chance = 1100}
 }
 
 monster.attacks = {

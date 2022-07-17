@@ -78,8 +78,8 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 14000, maxCount = 50},
 	{name = "gold coin", chance = 16000, maxCount = 40},
-	{id = 3114, chance = 20000},
-	{id = 3115, chance = 47750},
+	{id = 3114, chance = 20000}, -- skull
+	{id = 3115, chance = 47750}, -- bone
 	{name = "bone club", chance = 4950},
 	{name = "plate armor", chance = 8000},
 	{name = "bone shield", chance = 2000},
@@ -116,7 +116,7 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 100},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = -20},
+	{type = COMBAT_HOLYDAMAGE , percent = -25},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

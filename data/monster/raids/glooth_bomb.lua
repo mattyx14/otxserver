@@ -63,20 +63,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 21170, chance = 5000},
-	{id = 21906, chance = 10000},
-	{id = 3031, chance = 100000, maxCount = 50},
-	{id = 239, chance = 100000, maxCount = 13},
-	{id = 238, chance = 100000, maxCount = 13},
-	{id = 7642, chance = 100000, maxCount = 13},
-	{id = 21200, chance = 83300, maxCount = 2},
-	{id = 3035, chance = 100000, maxCount = 30},
-	{id = 5911, chance = 16670},
-	{id = 3098, chance = 16670}, -- Ring of healing
-	{id = 3028, chance = 16670, maxCount = 5},
-	{id = 3030, chance = 50000},
-	{id = 9057, chance = 16670, maxCount = 3},
-	{id = 3037, chance = 33330}
+	{id = 21170, chance = 5000}, -- gearwheel chain
+	{id = 21906, chance = 10000}, -- glooth glider gear wheel
+	{id = 3031, chance = 100000, maxCount = 50}, -- gold coin
+	{id = 239, chance = 100000, maxCount = 13}, -- great health potion
+	{id = 238, chance = 100000, maxCount = 13}, -- great mana potion
+	{id = 7642, chance = 100000, maxCount = 13}, -- great spirit potion
+	{id = 21200, chance = 83300, maxCount = 2}, -- moohtant horn
+	{id = 3035, chance = 100000, maxCount = 30}, -- platinum coin
+	{id = 5911, chance = 16670}, -- red piece of cloth
+	{id = 3098, chance = 16670}, -- ring of healing
+	{id = 3028, chance = 16670, maxCount = 5}, -- small diamond
+	{id = 3030, chance = 50000}, -- small ruby
+	{id = 9057, chance = 16670, maxCount = 3}, -- small topaz
+	{id = 3037, chance = 33330} -- yellow gem
 }
 
 monster.attacks = {

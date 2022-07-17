@@ -66,7 +66,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 6537, chance = 100000}
+	{id = 6537, chance = 100000} -- mr. punish's handcuffs
 }
 
 monster.attacks = {

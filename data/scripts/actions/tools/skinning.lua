@@ -7,7 +7,7 @@ local config = {
 		[6017] = {value = 22344, newItem = 12172, after = 4302}, -- after being killed
 
 		-- Minotaurs
-		[4272] = {value = 22344, newItem = 5878, after = 4012}, -- minotaur
+		[4011] = {value = 22344, newItem = 5878, after = 4012}, -- minotaur
 		[5969] = {value = 22344, newItem = 5878, after = 4012},	-- minotaur, after being killed
 		[4052] = {value = 22344, newItem = 5878, after = 4053}, -- minotaur archer
 		[5982] = {value = 22344, newItem = 5878, after = 4053}, -- minotaur archer, after being killed
@@ -45,11 +45,12 @@ local config = {
 		[10355] = {value = 22344, newItem = 5876, after = 10353}, -- lizard high guard, after being killed
 		[10364] = {value = 22344, newItem = 5876, after = 10365}, -- lizard zaogun
 		[10367] = {value = 22344, newItem = 5876, after = 10365}, -- lizard zaogun, after being killed
+		[10356] = {value = 22344, newItem = 5876, after = 10357}, -- lizard legionnaire
+		[10359] = {value = 22344, newItem = 5876, after = 10357}, -- lizard legionnaire, after being killed
 
 		-- Dragons
-		[4286] = {value = 22344, newItem = 5877, after = 4287},
-		[4025] = {value = 22344, newItem = 5877, after = 4287},
-		[5973] = {value = 22344, newItem = 5877, after = 4287}, -- after being killed
+		[4025] = {value = 22344, newItem = 5877, after = 4026},	-- Dragon
+		[5973] = {value = 22344, newItem = 5877, after = 4026}, -- Dragon, after being killed
 
 		-- Dragon Lords
 		[4062] = {value = 22344, newItem = 5948, after = 4063},

@@ -78,12 +78,12 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 135},
-	{id = 3091, chance = 7770}, -- Sword ring
+	{id = 3091, chance = 7770}, -- sword ring
 	{name = "plate shield", chance = 16350},
 	{name = "plate armor", chance = 5900},
 	{name = "brass legs", chance = 2950},
 	{name = "plate legs", chance = 4830},
-	{id = 3578, chance = 29760},
+	{id = 3578, chance = 29760}, -- fish
 	{name = "great health potion", chance = 10190},
 	{name = "orc tooth", chance = 1340},
 	{name = "warrior helmet", chance = 10190},

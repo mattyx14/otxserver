@@ -66,29 +66,29 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3147, chance = 34550, maxCount = 3},
-	{id = 6499, chance = 6990},
-	{id = 10316, chance = 33070},
-	{id = 3031, chance = 99940, maxCount = 198},
-	{id = 3035, chance = 99940, maxCount = 3},
-	{id = 238, chance = 14200, maxCount = 2},
-	{id = 239, chance = 8810, maxCount = 2},
-	{id = 5944, chance = 15000},
-	{id = 3027, chance = 11930, maxCount = 3},
-	{id = 3026, chance = 10800, maxCount = 3},
-	{id = 8895, chance = 6200},
-	{id = 8896, chance = 3350},
-	{id = 5806, chance = 4940}, -- Silver goblet
-	{id = 3016, chance = 1590},
-	{id = 3081, chance = 2560},
-	{id = 3039, chance = 2050},
-	{id = 3428, chance = 740},
-	{id = 5741, chance = 170},
-	{id = 3324, chance = 850},
-	{id = 7413, chance = 1020},
-	{id = 7407, chance = 740},
-	{id = 6299, chance = 2160},
-	{id = 6525, chance = 1250}
+	{id = 3147, chance = 34550, maxCount = 3}, -- blank rune
+	{id = 6499, chance = 6990}, -- demonic essence
+	{id = 10316, chance = 33070}, -- unholy bone
+	{id = 3031, chance = 99940, maxCount = 198}, -- gold coin
+	{id = 3035, chance = 99940, maxCount = 3}, -- platinum coin
+	{id = 238, chance = 14200, maxCount = 2}, -- great mana potion
+	{id = 239, chance = 8810, maxCount = 2}, -- great health potion
+	{id = 5944, chance = 15000}, -- soul orb
+	{id = 3027, chance = 11930, maxCount = 3}, -- black pearl
+	{id = 3026, chance = 10800, maxCount = 3}, -- white pearl
+	{id = 8895, chance = 6200}, -- rusted armor
+	{id = 8896, chance = 3350}, -- slightly rusted armor
+	{id = 5806, chance = 4940}, -- silver goblet
+	{id = 3016, chance = 1590}, -- ruby necklace
+	{id = 3081, chance = 2560}, -- stone skin amulet
+	{id = 3039, chance = 2050}, -- red gem
+	{id = 3428, chance = 740}, -- tower shield
+	{id = 5741, chance = 170}, -- skull helmet
+	{id = 3324, chance = 850}, -- skull staff
+	{id = 7413, chance = 1020}, -- titan axe
+	{id = 7407, chance = 740}, -- haunted blade
+	{id = 6299, chance = 2160}, -- death ring
+	{id = 6525, chance = 1250} -- skeleton decoration
 }
 
 monster.attacks = {

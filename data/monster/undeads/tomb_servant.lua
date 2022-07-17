@@ -80,7 +80,7 @@ monster.loot = {
 	{name = "gold coin", chance = 82350, maxCount = 108},
 	{name = "scarab coin", chance = 8210},
 	{name = "rotten meat", chance = 2000},
-	{id = 3115, chance = 49000},
+	{id = 3115, chance = 49000}, -- bone
 	{name = "longsword", chance = 6560},
 	{name = "bone shield", chance = 5300},
 	{name = "worm", chance = 25325, maxCount = 12},
@@ -107,7 +107,7 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = -25},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

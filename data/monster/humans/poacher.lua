@@ -5,10 +5,10 @@ monster.description = "a poacher"
 monster.experience = 70
 monster.outfit = {
 	lookType = 129,
-	lookHead = 115,
-	lookBody = 119,
-	lookLegs = 119,
-	lookFeet = 115,
+	lookHead = 60,
+	lookBody = 118,
+	lookLegs = 118,
+	lookFeet = 116,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -44,7 +44,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -77,12 +77,12 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2920, chance = 4180},
+	{id = 2920, chance = 4180}, -- torch
 	{name = "bow", chance = 14930},
 	{name = "leather helmet", chance = 30600},
 	{name = "arrow", chance = 49500, maxCount = 17},
 	{name = "poison arrow", chance = 2930, maxCount = 3},
-	{id = 3481, chance = 710},
+	{id = 3481, chance = 710}, -- closed trap
 	{name = "leather legs", chance = 26740},
 	{name = "roll", chance = 11110, maxCount = 2}
 }

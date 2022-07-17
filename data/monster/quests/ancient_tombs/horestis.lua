@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Horestis"
 monster.experience = 3500
 monster.outfit = {
-	lookType = 88,
+	lookType = 91,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -71,19 +71,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 12509, chance = 100000},
-	{id = 3031, chance = 95000, maxCount = 243},
-	{id = 3035, chance = 36000, maxCount = 5},
-	{id = 12483, chance = 17000},
-	{id = 3042, chance = 14000, maxCount = 5},
-	{id = 12482, chance = 12000},
-	{id = 3017, chance = 12000},
-	{id = 238, chance = 10000, maxCount = 3},
-	{id = 239, chance = 5000, maxCount = 4},
-	{id = 3334, chance = 5000},
-	{id = 10290, chance = 2500},
-	{id = 8897, chance = 2500},
-	{id = 3335, chance = 2500}
+	{id = 12509, chance = 100000}, -- scorpion sceptre
+	{id = 3031, chance = 95000, maxCount = 243}, -- gold coin
+	{id = 3035, chance = 36000, maxCount = 5}, -- platinum coin
+	{id = 12483, chance = 17000}, -- pharaoh banner
+	{id = 3042, chance = 14000, maxCount = 5}, -- scarab coin
+	{id = 12482, chance = 12000}, -- hieroglyph banner
+	{id = 3017, chance = 12000}, -- silver brooch
+	{id = 238, chance = 10000, maxCount = 3}, -- great mana potion
+	{id = 239, chance = 5000, maxCount = 4}, -- great health potion
+	{id = 3334, chance = 5000}, -- pharaoh sword
+	{id = 10290, chance = 2500}, -- mini mummy
+	{id = 8897, chance = 2500}, -- heavily rusted legs
+	{id = 3335, chance = 2500} -- twin axe
 }
 
 monster.attacks = {

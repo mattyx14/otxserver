@@ -5,9 +5,9 @@ monster.description = "Smuggler Baron Silvertoe"
 monster.experience = 170
 monster.outfit = {
 	lookType = 134,
-	lookHead = 38,
+	lookHead = 57,
 	lookBody = 0,
-	lookLegs = 94,
+	lookLegs = 77,
 	lookFeet = 95,
 	lookAddons = 0,
 	lookMount = 0
@@ -75,8 +75,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 80000, maxCount = 30},
-	{id = 3294, chance = 10000}
+	{id = 3031, chance = 80000, maxCount = 30}, -- gold coin
+	{id = 3294, chance = 10000} -- short sword
 }
 
 monster.attacks = {

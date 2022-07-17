@@ -50,7 +50,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
 	canPushItems = true,
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "great health potion", chance = 10030},
 	{name = "vortex bolt", chance = 3431, maxCount = 5},
 	{name = "small emerald", chance = 3104},
-	{id = 3052, chance = 3001}, -- Life ring
+	{id = 3052, chance = 3001}, -- life ring
 	{name = "heavy trident", chance = 999},
 	{name = "fish fin", chance = 870},
 	{name = "warrior's shield", chance = 610},

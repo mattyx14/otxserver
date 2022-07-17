@@ -73,13 +73,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 20000, maxCount = 177},
-	{id = 3035, chance = 25000, maxCount = 13},
-	{id = 6499, chance = 45000},
-	{id = 3027, chance = 5000, maxCount = 3},
-	{id = 3029, chance = 5000, maxCount = 3},
-	{id = 5944, chance = 35000},
-	{id = 6535, chance = 100000}
+	{id = 3031, chance = 20000, maxCount = 177}, -- gold coin
+	{id = 3035, chance = 25000, maxCount = 13}, -- platinum coin
+	{id = 6499, chance = 45000}, -- demonic essence
+	{id = 3027, chance = 5000, maxCount = 3}, -- black pearl
+	{id = 3029, chance = 5000, maxCount = 3}, -- small sapphire
+	{id = 5944, chance = 35000}, -- soul orb
+	{id = 6535, chance = 100000} -- plasmother's remains
 }
 
 monster.attacks = {

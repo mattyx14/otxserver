@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 7},
 	{name = "platinum coin", chance = 14780},
 	{name = "wand of inferno", chance = 1000},
-	{id = 3091, chance = 2920}, -- Sword ring
+	{id = 3091, chance = 2920}, -- sword ring
 	{name = "fire sword", chance = 260},
 	{name = "banana", chance = 10420, maxCount = 10},
 	{name = "strong health potion", chance = 7100},
@@ -91,7 +91,7 @@ monster.loot = {
 	{name = "magma amulet", chance = 970},
 	{name = "magma coat", chance = 140},
 	{name = "fiery heart", chance = 9380},
-	{id = 12600, chance = 940},
+	{id = 12600, chance = 940}, -- coal
 	{name = "brown crystal splinter", chance = 4850},
 	{name = "red crystal fragment", chance = 2280},
 	{name = "magma clump", chance = 12440},

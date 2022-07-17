@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 77,
 	lookBody = 59,
 	lookLegs = 20,
-	lookFeet = 116,
+	lookFeet = 76,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -74,12 +74,12 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3003, chance = 100000, maxCount = 3},
-	{id = 7386, chance = 38000},
-	{id = 5913, chance = 30000},
-	{id = 3031, chance = 30000, maxCount = 39},
-	{id = 7458, chance = 15000},
-	{id = 7290, chance = 8000}
+	{id = 3003, chance = 100000, maxCount = 3}, -- rope
+	{id = 7386, chance = 38000}, -- mercenary sword
+	{id = 5913, chance = 30000}, -- brown piece of cloth
+	{id = 3031, chance = 30000, maxCount = 39}, -- gold coin
+	{id = 7458, chance = 15000}, -- fur cap
+	{id = 7290, chance = 8000} -- shard
 }
 
 monster.attacks = {

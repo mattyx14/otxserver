@@ -6,10 +6,10 @@ monster.experience = 7020
 monster.outfit = {
 	lookType = 1268,
 	lookHead = 0,
-	lookBody = 112,
+	lookBody = 74,
 	lookLegs = 0,
-	lookFeet = 0,
-	lookAddons = 1,
+	lookFeet = 83,
+	lookAddons = 0,
 	lookMount = 0
 }
 
@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -79,7 +79,7 @@ monster.loot = {
 	{name = "emerald bangle", chance = 5980},
 	{name = "gemmed figurine", chance = 3800},
 	{name = "ensouled essence", chance = 2720},
-	{id = 23529, chance = 1220},
+	{id = 23529, chance = 1220}, -- ring of blue plasma
 	{name = "silver hand mirror", chance = 1090},
 	{name = "ornate crossbow", chance = 1090},
 	{name = "crystal crossbow", chance = 270}

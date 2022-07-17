@@ -105,7 +105,7 @@ monster.loot = {
 	{name = "cluster of solace", chance = 1800},
 	{name = "sight of surrender's eye", chance = 100000},
 	{name = "broken visor", chance = 100000},
-	{id = 20208, chance = 460}
+	{id = 20208, chance = 460} -- string of mending
 }
 
 monster.attacks = {
@@ -122,16 +122,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 40},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
 	{type = COMBAT_ENERGYDAMAGE, percent = 10},
-	{type = COMBAT_EARTHDAMAGE, percent = 10},
+	{type = COMBAT_EARTHDAMAGE, percent = 20},
 	{type = COMBAT_FIREDAMAGE, percent = 35},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 30},
+	{type = COMBAT_ICEDAMAGE, percent = 40},
 	{type = COMBAT_HOLYDAMAGE , percent = -5},
-	{type = COMBAT_DEATHDAMAGE , percent = 10}
+	{type = COMBAT_DEATHDAMAGE , percent = 20}
 }
 
 monster.immunities = {

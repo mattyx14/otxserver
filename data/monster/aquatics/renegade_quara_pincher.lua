@@ -46,13 +46,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -83,10 +83,10 @@ monster.loot = {
 	{name = "small ruby", chance = 9010, maxCount = 2},
 	{name = "small diamond", chance = 7060, maxCount = 2},
 	{name = "mind stone", chance = 6140},
-	{id= 3039, chance = 5120},
+	{id= 3039, chance = 5120}, -- red gem
 	{name = "shrimp", chance = 4810, maxCount = 5},
 	{name = "vortex bolt", chance = 3790, maxCount = 5},
-	{id = 281, chance = 1430},--giant shimmering pearl(brown)
+	{id = 281, chance = 1430}, -- giant shimmering pearl (green)
 	{name = "warrior helmet", chance = 1430},
 	{name = "fish fin", chance = 920},
 	{name = "crown armor", chance = 611},

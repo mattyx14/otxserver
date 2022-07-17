@@ -63,23 +63,23 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 20062, chance = 30000, maxCount = 2},
-	{id = 20198, chance = 30000},
-	{id = 20264, chance = 30000, maxCount = 2, unique = true},
-	{id = 3031, chance = 10000, maxCount = 100},
-	{id = 3035, chance = 10000, maxCount = 25},
-	{id = 3280, chance = 10000},
-	{id = 5880, chance = 10000},
-	{id = 5895, chance = 10000},
-	{id = 5911, chance = 10000},
-	{id = 5925, chance = 10000},
-	{id = 7404, chance = 10000},
-	{id = 7407, chance = 10000},
-	{id = 7418, chance = 10000},
-	{id = 16120, chance = 10000, maxCount = 3},
-	{id = 16121, chance = 10000, maxCount = 3},
-	{id = 16122, chance = 10000, maxCount = 5},
-	{id = 16124, chance = 10000, maxCount = 5}
+	{id = 20062, chance = 30000, maxCount = 2}, -- cluster of solace
+	{id = 20198, chance = 30000}, -- frazzle tongue
+	{id = 20264, chance = 30000, maxCount = 2, unique = true}, -- unrealized dream
+	{id = 3031, chance = 10000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 10000, maxCount = 25}, -- platinum coin
+	{id = 3280, chance = 10000}, -- fire sword
+	{id = 5880, chance = 10000}, -- iron ore
+	{id = 5895, chance = 10000}, -- fish fin
+	{id = 5911, chance = 10000}, -- red piece of cloth
+	{id = 5925, chance = 10000}, -- hardened bone
+	{id = 7404, chance = 10000}, -- assassin dagger
+	{id = 7407, chance = 10000}, -- haunted blade
+	{id = 7418, chance = 10000}, -- nightmare blade
+	{id = 16120, chance = 10000, maxCount = 3}, -- violet crystal shard
+	{id = 16121, chance = 10000, maxCount = 3}, -- green crystal shard
+	{id = 16122, chance = 10000, maxCount = 5}, -- green crystal splinter
+	{id = 16124, chance = 10000, maxCount = 5} -- blue crystal splinter
 }
 
 monster.attacks = {

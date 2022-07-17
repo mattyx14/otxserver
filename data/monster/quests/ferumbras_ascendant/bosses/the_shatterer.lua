@@ -6,9 +6,9 @@ monster.experience = 58000
 monster.outfit = {
 	lookType = 842,
 	lookHead = 77,
-	lookBody = 113,
+	lookBody = 132,
 	lookLegs = 21,
-	lookFeet = 94,
+	lookFeet = 20,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -64,12 +64,12 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 238, chance = 23000, maxCount = 10},
-	{id = 7642, chance = 46100, maxCount = 10},
-	{id = 7643, chance = 46100, maxCount = 10},
-	{id = 3030, chance = 12000, maxCount = 12},
-	{id = 3035, chance = 8000, maxCount = 10},
-	{id = 3031, chance = 30000, maxCount = 200}
+	{id = 238, chance = 23000, maxCount = 10}, -- great mana potion
+	{id = 7642, chance = 46100, maxCount = 10}, -- great spirit potion
+	{id = 7643, chance = 46100, maxCount = 10}, -- ultimate health potion
+	{id = 3030, chance = 12000, maxCount = 12}, -- small ruby
+	{id = 3035, chance = 8000, maxCount = 10}, -- platinum coin
+	{id = 3031, chance = 30000, maxCount = 200} -- gold coin
 }
 
 monster.attacks = {

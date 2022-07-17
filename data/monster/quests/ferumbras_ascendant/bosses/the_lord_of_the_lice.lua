@@ -63,15 +63,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 170},
-	{id = 9668, chance = 100000},
-	{id = 3035, chance = 94830, maxCount = 10},
-	{id = 7643, chance = 94830, maxCount = 10},
-	{id = 238, chance = 94830, maxCount = 10},
-	{id = 239, chance = 94830, maxCount = 10},
-	{id = 3098, chance = 100000}, -- Ring of healing
-	{id = 3326, chance = 25860},
-	{id = 811, chance = 86200}
+	{id = 3031, chance = 100000, maxCount = 170}, -- gold coin
+	{id = 9668, chance = 100000}, -- mutated rat tail
+	{id = 3035, chance = 94830, maxCount = 10}, -- platinum coin
+	{id = 7643, chance = 94830, maxCount = 10}, -- ultimate health potion
+	{id = 238, chance = 94830, maxCount = 10}, -- great mana potion
+	{id = 239, chance = 94830, maxCount = 10}, -- great health potion
+	{id = 3098, chance = 100000}, -- ring of healing
+	{id = 3326, chance = 25860}, -- epee
+	{id = 811, chance = 86200} -- terra mantle
 }
 
 monster.attacks = {

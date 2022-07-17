@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "The Percht Queen"
 monster.experience = 500
 monster.outfit = {
-	lookTypeEx = 30341
+	lookTypeEx = 30340 -- (frozen) // lookTypeEx = 30341 (thawed)
 }
 
 monster.health = 2300
@@ -65,38 +65,38 @@ monster.loot = {
 	{name = "ultimate mana potion", chance = 61000, maxCount = 20},
 	{name = "bullseye potion", chance = 25500, maxCount = 10},
 	{name = "chaos mace", chance = 25000},
-	{id = 30279, chance = 24500},
+	{id = 30279, chance = 24500}, -- frozen claw
 	{name = "berserk potion", chance = 23000, maxCount = 10},
-	{id= 3039, chance = 22500},
+	{id= 3039, chance = 22500}, -- red gem
 	{name = "soul stone", chance = 224000},
-	{id = 30275, chance = 25000},
+	{id = 30275, chance = 25000}, -- crown of the percht queen
 	{name = "flames of the percht queen", chance = 18000},
 	{name = "small ladybug", chance = 24980},
 	{name = "gold ingot", chance = 22480},
 	{name = "crystal coin", chance = 24890, maxCount = 2},
-	{id = 281, chance = 21580},
+	{id = 281, chance = 21580}, -- giant shimmering pearl (green)
 	{name = "skull staff", chance = 19850},
 	{name = "magic sulphur", chance = 25480},
 	{name = "percht queen's frozen heart", chance = 26800},
 	{name = "percht skull", chance = 25842},
-	{id = 30277, chance = 25840},
+	{id = 30277, chance = 25840}, -- icicle
 	{name = "silver token", chance = 5480, maxCount = 5},
 	{name = "percht handkerchief", chance = 5808},
 	{name = "ring of the sky", chance = 5100},
-	{id = 23529, chance = 8486},
-	{id = 30321, chance = 4848},
+	{id = 23529, chance = 8486}, -- ring of blue plasma
+	{id = 30321, chance = 4848}, -- fly agaric
 	{name = "percht broom", chance = 6485},
 	{name = "ice hatchet", chance = 5485},
-	{id = 23533, chance = 4858},
-	{id = 23531, chance = 3485},
+	{id = 23533, chance = 4858}, -- ring of red plasma
+	{id = 23531, chance = 3485}, -- ring of green plasma
 	{name = "yellow gem", chance = 5485},
 	{name = "violet gem", chance = 6485},
-	{id = 23544, chance = 7848},
-	{id = 23543, chance = 5485}, -- Collar of green plasma
+	{id = 23544, chance = 7848}, -- collar of red plasma
+	{id = 23543, chance = 5485}, -- collar of green plasma
 	{name = "green gem", chance = 5485},
 	{name = "blue gem", chance = 5845},
 	{name = "frozen chain", chance = 5485},
-	{id = 23542, chance = 5158},-- collar of blue plasma
+	{id = 23542, chance = 5158}, -- collar of blue plasma
 	{name = "horseshoe", chance = 1250},
 	{name = "golden horseshoe", chance = 2510},
 	{name = "abyss hammer", chance = 1480},

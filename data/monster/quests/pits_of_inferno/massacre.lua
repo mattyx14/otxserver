@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -66,22 +66,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3116, chance = 5880},
-	{id = 6499, chance = 100000},
-	{id = 239, chance = 5880},
-	{id = 238, chance = 5880},
-	{id = 3031, chance = 94120, maxCount = 157},
-	{id = 3422, chance = 500},
-	{id = 3577, chance = 88240, maxCount = 9},
-	{id = 5021, chance = 82350, maxCount = 7},
-	{id = 3106, chance = 64710},
-	{id = 3035, chance = 58820, maxCount = 6},
-	{id = 6540, chance = 100000},
-	{id = 5944, chance = 100000},
-	{id = 3340, chance = 1000},
-	{id = 7403, chance = 900},
-	{id = 3360, chance = 3500},
-	{id = 6104, chance = 1200}
+	{id = 3116, chance = 5880}, -- big bone
+	{id = 6499, chance = 100000}, -- demonic essence
+	{id = 239, chance = 5880}, -- great health potion
+	{id = 238, chance = 5880}, -- great mana potion
+	{id = 3031, chance = 94120, maxCount = 157}, -- gold coin
+	{id = 3422, chance = 500}, -- great shield
+	{id = 3577, chance = 88240, maxCount = 9}, -- meat
+	{id = 5021, chance = 82350, maxCount = 7}, -- orichalcum pearl
+	{id = 3106, chance = 64710}, -- old twig
+	{id = 3035, chance = 58820, maxCount = 6}, -- platinum coin
+	{id = 6540, chance = 100000}, -- piece of massacre's shell
+	{id = 5944, chance = 100000}, -- soul orb
+	{id = 3340, chance = 1000}, -- heavy mace
+	{id = 7403, chance = 900}, -- berserker
+	{id = 3360, chance = 3500}, -- golden armor
+	{id = 6104, chance = 1200} -- jewel case
 }
 
 monster.attacks = {

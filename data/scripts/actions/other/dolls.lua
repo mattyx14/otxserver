@@ -1,6 +1,5 @@
 local dolls = {
-	-- Reserverd to Mount Doll
-	--[5080] = {"Hug me."},
+	[5080] = {"Hug me."},
 	[5668] = {
 		"It's not winning that matters, but winning in style.",
 		"Today's your lucky day. Probably.",
@@ -13,7 +12,7 @@ local dolls = {
 		"Never say 'oops'. Always say 'Ah, interesting!'",
 		"Five steps east, fourteen steps south, two steps north and seventeen steps west!"
 	},
-	[5791] = {
+	[6566] = {
 		"Fchhhhhh!",
 		"Zchhhhhh!",
 		"Grooaaaaar*cough*",
@@ -29,8 +28,7 @@ local dolls = {
 		"Merry Christmas!",
 		"Can you stop squeezing me now... I'm starting to feel a little sick."
 	},
-	-- Reserverd to Stamina Refill
-	-- [8146] = {"ARE YOU PREPARED TO FACE YOUR DESTINY?"},
+	[8146] = {"ARE YOU PREPARED TO FACE YOUR DESTINY?"},
 	[8149] = {
 		"Weirdo, you're a weirdo! Actually all of you are!",
 		"Pie for breakfast, pie for lunch and pie for dinner!",
@@ -49,8 +47,6 @@ local dolls = {
 		"So cold..",
 		"Run, mammoth!"
 	},
-	-- Reserved to Addon Doll
-	--[[
 	[21435] = {
 		"I can hear their whisperings... Revenge!",
 		"You shall feel pain and terror, |PLAYERNAME|",
@@ -59,7 +55,6 @@ local dolls = {
 		"I can say 469 and more...",
 		"My dark magic lies on tibialatina.wikia.com"
 	},
-	]]
 	[21962] = {"Hail Tibia Brasileiros! (União&Força)"}
 }
 

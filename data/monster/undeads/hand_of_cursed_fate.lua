@@ -52,7 +52,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 20,
@@ -84,7 +84,7 @@ monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 7},
 	{name = "violet gem", chance = 700},
 	{name = "yellow gem", chance = 5940},
-	{id = 3051, chance = 3150}, -- Energy ring
+	{id = 3051, chance = 3150}, -- energy ring
 	{name = "platinum amulet", chance = 1005},
 	{name = "mind stone", chance = 9090},
 	{name = "wand of inferno", chance = 5590},
@@ -96,7 +96,7 @@ monster.loot = {
 	{name = "crown armor", chance = 1400},
 	{name = "mysterious voodoo skull", chance = 247},
 	{name = "soul orb", chance = 31111},
-	{id = 6299, chance = 1750},
+	{id = 6299, chance = 1750}, -- death ring
 	{name = "demonic essence", chance = 12000},
 	{name = "flask of demonic blood", chance = 30000, maxCount = 4},
 	{name = "assassin star", chance = 7692, maxCount = 5},

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a deathling scout"
 monster.experience = 6300
 monster.outfit = {
-	lookType = 413,
+	lookType = 1073,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -76,22 +76,22 @@ monster.voices = {
 
 monster.loot = {
 	{name = "crystalline arrow", chance = 25260, maxCount = 25},
-	{name = "Vortex Bolt", chance = 21340, maxCount = 25},
-	{name = "Small Emerald", chance = 20910, maxCount = 12},
-	{name = "Deepling Warts", chance = 20280},
-	{name = "Deeptags", chance = 15100},
-	{name = "Deepling Filet", chance = 14630},
-	{name = "Small Enchanted Sapphire", chance = 13000, maxCount = 8},
-	{name = "Deepling Ridge", chance = 11240},
-	{name = "Great Mana Potion", chance = 10000},
-	{name = "Great Health Potion", chance = 10000},
-	{name = "Heavy Trident", chance = 6620},
-	{name = "Eye of a Deepling", chance = 6070},
-	{name = "Warrior's Shield", chance = 3630},
-	{name = "Warrior's Axe", chance = 3470},
-	{id = 3052, chance = 3000}, -- Life ring
-	{name = "Fish Fin", chance = 920},
-	{name = "Necklace of the Deep", chance = 440}
+	{name = "vortex bolt", chance = 21340, maxCount = 25},
+	{name = "small emerald", chance = 20910, maxCount = 12},
+	{name = "deepling warts", chance = 20280},
+	{name = "deeptags", chance = 15100},
+	{name = "deepling filet", chance = 14630},
+	{name = "small enchanted sapphire", chance = 13000, maxCount = 8},
+	{name = "deepling ridge", chance = 11240},
+	{name = "great mana potion", chance = 10000},
+	{name = "great health potion", chance = 10000},
+	{name = "heavy trident", chance = 6620},
+	{name = "eye of a deepling", chance = 6070},
+	{name = "warrior's shield", chance = 3630},
+	{name = "warrior's axe", chance = 3470},
+	{id = 3052, chance = 3000}, -- life ring
+	{name = "fish fin", chance = 920},
+	{name = "necklace of the deep", chance = 440}
 }
 
 monster.attacks = {

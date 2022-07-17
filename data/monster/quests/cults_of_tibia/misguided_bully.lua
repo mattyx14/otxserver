@@ -6,7 +6,7 @@ monster.experience = 1200
 monster.outfit = {
 	lookType = 159,
 	lookHead = 58,
-	lookBody = 22,
+	lookBody = 21,
 	lookLegs = 41,
 	lookFeet = 76,
 	lookAddons = 0,
@@ -46,10 +46,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -79,10 +79,10 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 153},
-	{id = 25296, chance = 5610},
-	{id = 9058, chance = 4930},
-	{id = 3041, chance = 4630}
+	{id = 3031, chance = 100000, maxCount = 153}, -- gold coin
+	{id = 25296, chance = 5610}, -- rubbish amulet
+	{id = 9058, chance = 4930}, -- gold ingot
+	{id = 3041, chance = 4630} -- blue gem
 }
 
 monster.attacks = {

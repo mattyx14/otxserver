@@ -5,9 +5,9 @@ monster.description = "a cult enforcer"
 monster.experience = 1000
 monster.outfit = {
 	lookType = 134,
-	lookHead = 114,
+	lookHead = 95,
 	lookBody = 19,
-	lookLegs = 76,
+	lookLegs = 57,
 	lookFeet = 76,
 	lookAddons = 1,
 	lookMount = 0
@@ -46,14 +46,14 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
-	pushable = true,
+	convinceable = false,
+	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
-	canPushItems = false,
+	illusionable = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -77,23 +77,23 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3446, chance = 90450, maxCount = 10},
-	{id = 3031, chance = 75410, maxCount = 30},
-	{id = 3592, chance = 15400},
-	{id = 239, chance = 12340, maxCount = 2},
-	{id = 3577, chance = 5000},
-	{id = 3349, chance = 830},
-	{id = 3563, chance = 760},
-	{id = 3048, chance = 700, maxCount = 2},
-	{id = 3003, chance = 1000},
-	{id = 3572, chance = 1000},
-	{id = 2815, chance = 830},
-	{id = 3028, chance = 830},
-	{id = 3279, chance = 130},
-	{id = 3269, chance = 830},
-	{id = 3415, chance = 330},
-	{id = 3371, chance = 230},
-	{id = 3369, chance = 200}
+	{id = 3446, chance = 90450, maxCount = 10}, -- bolt
+	{id = 3031, chance = 75410, maxCount = 30}, -- gold coin
+	{id = 3592, chance = 15400}, -- grapes
+	{id = 239, chance = 12340, maxCount = 2}, -- great health potion
+	{id = 3577, chance = 5000}, -- meat
+	{id = 3349, chance = 830}, -- crossbow
+	{id = 3563, chance = 760}, -- green tunic
+	{id = 3048, chance = 700, maxCount = 2}, -- might ring
+	{id = 3003, chance = 1000}, -- rope
+	{id = 3572, chance = 1000}, -- scarf
+	{id = 2815, chance = 830}, -- scroll
+	{id = 3028, chance = 830}, -- small diamond
+	{id = 3279, chance = 130}, -- war hammer
+	{id = 3269, chance = 830}, -- halberd
+	{id = 3415, chance = 330}, -- guardian shield
+	{id = 3371, chance = 230}, -- knight legs
+	{id = 3369, chance = 200} -- warrior helmet
 }
 
 monster.attacks = {

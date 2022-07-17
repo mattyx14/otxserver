@@ -5,10 +5,10 @@ monster.description = "Drume"
 monster.experience = 25000
 monster.outfit = {
 	lookType = 1317,
-	lookHead = 0,
-	lookBody = 78,
+	lookHead = 38,
+	lookBody = 76,
 	lookLegs = 57,
-	lookFeet = 57,
+	lookFeet = 114,
 	lookAddons = 2,
 	lookMount = 0
 }
@@ -76,7 +76,7 @@ monster.loot = {
 	{name = "supreme health potion", chance = 57831, maxCount = 20},
 	{name = "ultimate mana potion", chance = 55723, maxCount = 20},
 	{name = "yellow gem", chance = 35843, maxCount = 2},
-	{id= 3039, chance = 35542, maxCount = 2},
+	{id= 3039, chance = 35542, maxCount = 2}, -- red gem
 	{name = "ultimate spirit potion", chance = 31627, maxCount = 6},
 	{name = "royal star", chance = 31325, maxCount = 100},
 	{name = "bullseye potion", chance = 22590, maxCount = 10},
@@ -84,7 +84,7 @@ monster.loot = {
 	{name = "blue gem", chance = 21687, maxCount = 2},
 	{name = "mastermind potion", chance = 17771, maxCount = 10},
 	{name = "green gem", chance = 17470, maxCount = 2},
-	{id = 281, chance = 15060},
+	{id = 281, chance = 15060}, -- giant shimmering pearl (green)
 	{name = "gold ingot", chance = 13253},
 	{name = "terra rod", chance = 11145},
 	{name = "crystal coin", chance = 10241},
@@ -100,17 +100,17 @@ monster.loot = {
 	{name = "giant sapphire", chance = 4217},
 	{name = "giant ruby", chance = 3012},
 	{name = "underworld rod", chance = 2410},
-	{name = "Lion Spangenhelm", chance = 90},
-	{name = "Lion Plate", chance = 90},
-	{name = "Lion Shield", chance = 90},
-	{name = "Lion Longsword", chance = 90},
-	{name = "Lion Hammer", chance = 90},
-	{name = "Lion Axe", chance = 90},
-	{name = "Lion Longbow", chance = 90},
-	{name = "Lion Spellbook", chance = 90},
-	{name = "Lion Wand", chance = 90},
-	{name = "Lion Amulet", chance = 90},
-	{name = "Lion Rod", chance = 90}
+	{name = "lion spangenhelm", chance = 90},
+	{name = "lion plate", chance = 90},
+	{name = "lion shield", chance = 90},
+	{name = "lion longsword", chance = 90},
+	{name = "lion hammer", chance = 90},
+	{name = "lion axe", chance = 90},
+	{name = "lion longbow", chance = 90},
+	{name = "lion spellbook", chance = 90},
+	{name = "lion wand", chance = 90},
+	{name = "lion amulet", chance = 90},
+	{name = "lion rod", chance = 90}
 }
 
 monster.attacks = {

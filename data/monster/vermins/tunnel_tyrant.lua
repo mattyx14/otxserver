@@ -77,18 +77,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Small Enchanted Sapphire", chance = 11910},
-	{name = "Small Enchanted Ruby", chance = 9040},
-	{name = "Violet Gem", chance = 7750},
-	{name = "Lump of Dirt", chance = 10190},
-	{name = "Tunnel Tyrant Head", chance = 24100},
-	{name = "Tunnel Tyrant Shell", chance = 12480},
-	{name = "Green Gem", chance = 2300},
-	{name = "Blue Gem", chance = 3010},
-	{name = "Crystal Mace", chance = 1580},
-	{name = "Energy Vein", chance = 3010},
-	{name = "Crystalline Armor", chance = 860},
-	{name = "Suspicious Device", chance = 1290}
+	{name = "small enchanted sapphire", chance = 11910},
+	{name = "small enchanted ruby", chance = 9040},
+	{name = "violet gem", chance = 7750},
+	{name = "lump of dirt", chance = 10190},
+	{name = "tunnel tyrant head", chance = 24100},
+	{name = "tunnel tyrant shell", chance = 12480},
+	{name = "green gem", chance = 2300},
+	{name = "blue gem", chance = 3010},
+	{name = "crystal mace", chance = 1580},
+	{name = "energy vein", chance = 3010},
+	{name = "crystalline armor", chance = 860},
+	{name = "suspicious device", chance = 1290}
 }
 
 monster.attacks = {
@@ -106,7 +106,7 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 30},
+	{type = COMBAT_ENERGYDAMAGE, percent = 20},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},

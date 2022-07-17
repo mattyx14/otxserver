@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "gold coin", chance = 100000, maxCount = 95},
 	{name = "platinum coin", chance = 100000, maxCount = 10},
-	{id= 3039, chance = 6110},
+	{id= 3039, chance = 6110}, -- red gem
 	{name = "blue gem", chance = 830},
 	{name = "giant sword", chance = 620},
 	{name = "hammer of wrath", chance = 70},
@@ -128,16 +128,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 1},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 100},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = 1},
+	{type = COMBAT_FIREDAMAGE, percent = 20},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 20},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 40}
+	{type = COMBAT_DEATHDAMAGE , percent = 35}
 }
 
 monster.immunities = {

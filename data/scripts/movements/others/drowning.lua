@@ -6,12 +6,15 @@ condition:setParameter(CONDITION_PARAM_TICKINTERVAL, 2000)
 local drowning = MoveEvent()
 drowning:type("stepin")
 
-function drowning.onStepIn(creature, item, position, fromPosition)
-	if creature:isPlayer() then
-		if math.random(1, 10) == 1 then
+function drowning.onStepIn(player, item, position, fromPosition)
+	if player:isPlayer() then
+		local headItem = player:getSlotItem(CONST_SLOT_HEAD)
+		if headItem and isInArray({5460, 11585, 13995}, headItem.itemid) then
+			return true
+		elseif math.random(1, 10) == 1 then
 			position:sendMagicEffect(CONST_ME_BUBBLES)
 		end
-		creature:addCondition(condition)
+		player:addCondition(condition)
 	end
 	return true
 end
@@ -23,7 +26,7 @@ drowning = MoveEvent()
 drowning:type("stepout")
 
 function drowning.onStepOut(creature, item, position, fromPosition)
-	if not creature:isPlayer() then
+	if creature:isPlayer() then
 		creature:removeCondition(CONDITION_DROWN)
 	end
 	return true

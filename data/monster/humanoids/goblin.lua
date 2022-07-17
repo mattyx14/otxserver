@@ -81,7 +81,7 @@ monster.voices = {
 monster.loot = {
 	{name = "small stone", chance = 15290, maxCount = 3},
 	{name = "gold coin", chance = 50320, maxCount = 9},
-	{id = 3115, chance = 1130},
+	{id = 3115, chance = 1130}, -- bone
 	{name = "mouldy cheese", chance = 1000},
 	{name = "dagger", chance = 1800},
 	{name = "short sword", chance = 8870},
@@ -89,7 +89,7 @@ monster.loot = {
 	{name = "leather helmet", chance = 1940},
 	{name = "leather armor", chance = 2510},
 	{name = "small axe", chance = 9700},
-	{id = 3578, chance = 12750},
+	{id = 3578, chance = 12750}, -- fish
 	{name = "goblin ear", chance = 910}
 }
 
@@ -106,13 +106,13 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 20},
-	{type = COMBAT_EARTHDAMAGE, percent = -12},
+	{type = COMBAT_EARTHDAMAGE, percent = -10},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 1},
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
 	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 

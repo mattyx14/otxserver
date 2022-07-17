@@ -28,7 +28,7 @@ monster.Bestiary = {
 
 monster.health = 13000
 monster.maxHealth = 13000
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28578
 monster.speed = 420
 monster.manaCost = 0
@@ -73,21 +73,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Small Sapphire", chance = 8700, maxCount = 5},
-	{name = "Platinum Coin", chance = 87000, maxCount = 50},
-	{id = 28570, chance = 500, maxCount = 10},
-	{id = 3051, chance = 8700}, -- Energy ring
-	{id = 7441, chance = 4000},
-	{name = "Shard", chance = 250, maxCount = 3},
-	{name = "Glacier Mask", chance = 250},
-	{name = "Hailstorm Rod", chance = 250},
-	{name = "Life Crystal", chance = 8700},
-	{name = "Great Mana Potion", chance = 900, maxCount = 6},
-	{name = "Golden Mug", chance = 500},
-	{name = "Glowing Rune", chance = 500, maxCount = 10},
-	{id = 3051, chance = 8700}, -- Energy ring
-	{name = "Quill", chance = 250},
-	{name = "Small Diamond", chance = 500, maxCount = 5}
+	{name = "small sapphire", chance = 8700, maxCount = 5},
+	{name = "platinum coin", chance = 87000, maxCount = 50},
+	{id = 28570, chance = 500, maxCount = 10}, -- glowing rune
+	{id = 3051, chance = 8700}, -- energy ring
+	{id = 7441, chance = 4000}, -- ice cube
+	{name = "shard", chance = 250, maxCount = 3},
+	{name = "glacier mask", chance = 250},
+	{name = "hailstorm rod", chance = 250},
+	{name = "life crystal", chance = 8700},
+	{name = "great mana potion", chance = 900, maxCount = 6},
+	{name = "golden mug", chance = 500},
+	{name = "glowing rune", chance = 500, maxCount = 10},
+	{id = 3051, chance = 8700}, -- energy ring
+	{name = "quill", chance = 250},
+	{name = "small diamond", chance = 500, maxCount = 5}
 }
 
 monster.attacks = {

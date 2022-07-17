@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 2,
 	lookBody = 2,
 	lookLegs = 77,
-	lookFeet = 1,
+	lookFeet = 19,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -79,13 +79,13 @@ monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 3},
 	{name = "knife", chance = 10500},
 	{name = "cobra crest", chance = 7750},
-	{id = 3307, chance = 7750},
+	{id = 3307, chance = 7750}, -- scimitar
 	{name = "protection amulet", chance = 7500},
 	{name = "heavy machete", chance = 6500},
 	{name = "bone sword", chance = 5000},
 	{name = "machete", chance = 2250},
 	{name = "carlin sword", chance = 2250},
-	{id = 23533, chance = 1690}
+	{id = 23533, chance = 1690} -- ring of red plasma
 }
 
 monster.attacks = {

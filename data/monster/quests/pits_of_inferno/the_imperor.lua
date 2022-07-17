@@ -65,21 +65,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 6499, chance = 100000},
-	{id = 3031, chance = 100000, maxCount = 150},
-	{id = 6534, chance = 100000},
-	{id = 3451, chance = 53850},
-	{id = 3320, chance = 11000},
-	{id = 3035, chance = 46150, maxCount = 3},
-	{id = 5944, chance = 100000},
-	{id = 3382, chance = 30770},
-	{id = 3364, chance = 7690},
-	{id = 3019, chance = 15380},
-	{id = 3442, chance = 7690},
-	{id = 3415, chance = 15400},
-	{id = 826, chance = 15380},
-	{id = 3033, chance = 30770, maxCount = 4},
-	{id = 3030, chance = 7690, maxCount = 4}
+	{id = 6499, chance = 100000}, -- demonic essence
+	{id = 3031, chance = 100000, maxCount = 150}, -- gold coin
+	{id = 6534, chance = 100000}, -- imperor's trident
+	{id = 3451, chance = 53850}, -- pitchfork
+	{id = 3320, chance = 11000}, -- fire axe
+	{id = 3035, chance = 46150, maxCount = 3}, -- platinum coin
+	{id = 5944, chance = 100000}, -- soul orb
+	{id = 3382, chance = 30770}, -- crown legs
+	{id = 3364, chance = 7690}, -- golden legs
+	{id = 3019, chance = 15380}, -- demonbone amulet
+	{id = 3442, chance = 7690}, -- tempest shield
+	{id = 3415, chance = 15400}, -- guardian shield
+	{id = 826, chance = 15380}, -- magma coat
+	{id = 3033, chance = 30770, maxCount = 4}, -- small amethyst
+	{id = 3030, chance = 7690, maxCount = 4} -- small ruby
 }
 
 monster.attacks = {

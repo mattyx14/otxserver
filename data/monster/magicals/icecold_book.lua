@@ -28,7 +28,7 @@ monster.Bestiary = {
 
 monster.health = 21000
 monster.maxHealth = 21000
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28774
 monster.speed = 440
 monster.manaCost = 0
@@ -73,27 +73,27 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 8},
-	{name = "Book Page", chance = 100000, maxCount = 3},
-	{name = "Small Diamond", chance = 100000, maxCount = 8},
-	{name = "Small Sapphire", chance = 100000, maxCount = 8},
-	{name = "Quill", chance = 100000, maxCount = 8},
-	{name = "Ultimate Health Potion", chance = 100000, maxCount = 8},
-	{name = "Ultimate Mana Potion", chance = 100000, maxCount = 8},
-	{name = "Diamond Sceptre", chance = 100000},
-	{name = "Frosty Heart", chance = 100000, maxCount = 8},
-	{name = "Glacier Mask", chance = 350},
-	{name = "Ice Rapier", chance = 250},
-	{name = "Silken Bookmark", chance = 100000, maxCount = 8},
-	{name = "Crystal Mace", chance = 250},
-	{name = "Glacier Kilt", chance = 250},
-	{name = "Glacier Robe", chance = 250},
-	{name = "Glacier Shoes", chance = 350},
-	{name = "Strange Helmet", chance = 1000},
-	{name = "Sapphire Hammer", chance = 300},
-	{id = 7441, chance = 100000},
-	{name = "Glacial Rod", chance = 150},
-	{name = "Crystalline Armor", chance = 250}
+	{name = "platinum coin", chance = 100000, maxCount = 8},
+	{name = "book page", chance = 100000, maxCount = 3},
+	{name = "small diamond", chance = 100000, maxCount = 8},
+	{name = "small sapphire", chance = 100000, maxCount = 8},
+	{name = "quill", chance = 100000, maxCount = 8},
+	{name = "ultimate health potion", chance = 100000, maxCount = 8},
+	{name = "ultimate mana potion", chance = 100000, maxCount = 8},
+	{name = "diamond sceptre", chance = 100000},
+	{name = "frosty heart", chance = 100000, maxCount = 8},
+	{name = "glacier mask", chance = 350},
+	{name = "ice rapier", chance = 250},
+	{name = "silken bookmark", chance = 100000, maxCount = 8},
+	{name = "crystal mace", chance = 250},
+	{name = "glacier kilt", chance = 250},
+	{name = "glacier robe", chance = 250},
+	{name = "glacier shoes", chance = 350},
+	{name = "strange helmet", chance = 1000},
+	{name = "sapphire hammer", chance = 300},
+	{id = 7441, chance = 100000}, -- ice cube
+	{name = "glacial rod", chance = 150},
+	{name = "crystalline armor", chance = 250}
 }
 
 monster.attacks = {

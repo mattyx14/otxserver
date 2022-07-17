@@ -6,9 +6,9 @@ monster.experience = 50000
 monster.outfit = {
 	lookType = 875,
 	lookHead = 79,
-	lookBody = 79,
-	lookLegs = 60,
-	lookFeet = 79,
+	lookBody = 3,
+	lookLegs = 4,
+	lookFeet = 2,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "mastermind potion", chance = 66666, maxCount = 10},
 	{name = "ultimate mana potion", chance = 66666, maxCount = 6},
 	{name = "giant emerald", chance = 66666},
-	{id= 3039, chance = 66666},
+	{id= 3039, chance = 66666}, -- red gem
 	{name = "small ruby", chance = 33333, maxCount = 12},
 	{name = "bullseye potion", chance = 33333, maxCount = 10},
 	{name = "gold token", chance = 33333, maxCount = 8},
@@ -90,7 +90,7 @@ monster.loot = {
 	{name = "blue crystal shard", chance = 33333, maxCount = 3},
 	{name = "giant sapphire", chance = 33333},
 	{name = "green gem", chance = 33333},
-	{id = 23542, chance = 33333},-- collar of blue plasma
+	{id = 23542, chance = 33333}, -- collar of blue plasma
 	{name = "huge chunk of crude iron", chance = 33333},
 	{name = "magic sulphur", chance = 33333},
 	{name = "ring of the sky", chance = 33333},
@@ -98,8 +98,8 @@ monster.loot = {
 	{name = "small diamond", chance = 15000, maxCount = 12},
 	{name = "small emerald", chance = 15000, maxCount = 12},
 	{name = "rift shield", chance = 5000},
-	{id = 281, chance = 5000},
-	{id = 3341, chance = 5000}, -- Arcane staff
+	{id = 281, chance = 5000}, -- giant shimmering pearl (green)
+	{id = 3341, chance = 5000}, -- arcane staff
 	{name = "skullcracker armor", chance = 5000},
 	{name = "chaos mace", chance = 5000},
 	{name = "cat's paw", chance = 5000},

@@ -37,7 +37,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -73,7 +73,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 65000, maxCount = 82},
-	{id = 3059, chance = 4650},
+	{id = 3059, chance = 4650}, -- spellbook
 	{name = "two handed sword", chance = 3840},
 	{name = "morning star", chance = 6950},
 	{name = "longsword", chance = 8980},

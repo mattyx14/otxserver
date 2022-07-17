@@ -36,7 +36,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -60,15 +60,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 21},
-	{id = 3595, chance = 35000, maxCount = 4},
-	{id = 17824, chance = 12000},
-	{id = 11472, chance = 10000},
-	{id = 3559, chance = 9000},
-	{id = 268, chance = 3500},
-	{id = 2920, chance = 3500},
-	{id = 3355, chance = 1800},
-	{id = 11473, chance = 1800}
+	{id = 3031, chance = 100000, maxCount = 21}, -- gold coin
+	{id = 3595, chance = 35000, maxCount = 4}, -- carrot
+	{id = 17824, chance = 12000}, -- swampling club
+	{id = 11472, chance = 10000}, -- minotaur horn
+	{id = 3559, chance = 9000}, -- leather legs
+	{id = 268, chance = 3500}, -- mana potion
+	{id = 2920, chance = 3500}, -- torch
+	{id = 3355, chance = 1800}, -- leather helmet
+	{id = 11473, chance = 1800} -- purple robe
 }
 
 monster.attacks = {

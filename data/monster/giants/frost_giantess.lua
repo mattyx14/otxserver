@@ -82,13 +82,13 @@ monster.voices = {
 monster.loot = {
 	{name = "small stone", chance = 10360, maxCount = 3},
 	{name = "gold coin", chance = 80000, maxCount = 40},
-	{id = 3093, chance = 70}, -- Club ring
+	{id = 3093, chance = 70}, -- club ring
 	{name = "short sword", chance = 7960},
 	{name = "dark helmet", chance = 170},
 	{name = "battle shield", chance = 1490},
 	{name = "ham", chance = 20990, maxCount = 2},
 	{name = "shard", chance = 100},
-	{id = 7441, chance = 2008},
+	{id = 7441, chance = 2008}, -- ice cube
 	{name = "norse shield", chance = 320},
 	{name = "mana potion", chance = 950},
 	{name = "frost giant pelt", chance = 4800}

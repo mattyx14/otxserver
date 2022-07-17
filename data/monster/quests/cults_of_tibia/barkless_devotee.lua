@@ -46,10 +46,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -79,10 +79,10 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 48000, maxCount = 199},
-	{id = 25743, chance = 1540},
-	{id = 25742, chance = 4050},
-	{id = 25744, chance = 970}
+	{id = 3031, chance = 48000, maxCount = 199}, -- gold coin
+	{id = 25743, chance = 1540}, -- bed of nails
+	{id = 25742, chance = 4050}, -- fig leaf
+	{id = 25744, chance = 970} -- torn shirt
 }
 
 monster.attacks = {

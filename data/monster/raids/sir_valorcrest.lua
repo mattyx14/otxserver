@@ -72,15 +72,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 7427, chance = 250},
-	{id = 8192, chance = 100000},
-	{id = 236, chance = 1500},
-	{id = 3091, chance = 1400}, -- Sword ring
-	{id = 3114, chance = 15000},
-	{id = 8192, chance = 100000},
-	{id = 3035, chance = 50000, maxCount = 5},
-	{id = 3031, chance = 100000, maxCount = 93},
-	{id = 3434, chance = 6300}
+	{id = 7427, chance = 250}, -- chaos mace
+	{id = 8192, chance = 100000}, -- vampire lord token
+	{id = 236, chance = 1500}, -- strong health potion
+	{id = 3091, chance = 1400}, -- sword ring
+	{id = 3114, chance = 15000}, -- skull
+	{id = 8192, chance = 100000}, -- vampire lord token
+	{id = 3035, chance = 50000, maxCount = 5}, -- platinum coin
+	{id = 3031, chance = 100000, maxCount = 93}, -- gold coin
+	{id = 3434, chance = 6300} -- vampire shield
 }
 
 monster.attacks = {

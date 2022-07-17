@@ -45,7 +45,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "small diamond", chance = 510},
 	{name = "gold coin", chance = 57000, maxCount = 55},
 	{name = "rotten meat", chance = 1850},
-	{id = 3115, chance = 5000},
+	{id = 3115, chance = 5000}, -- bone
 	{name = "throwing star", chance = 910, maxCount = 3},
 	{name = "bone sword", chance = 1000},
 	{name = "iron helmet", chance = 2130},

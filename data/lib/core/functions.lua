@@ -20,7 +20,8 @@ function getFormattedWorldTime()
 end
 
 function getLootRandom()
-	return math.random(0, MAX_LOOTCHANCE) * 100 / (configManager.getNumber(configKeys.RATE_LOOT) * SCHEDULE_LOOT_RATE)
+	local multi = (configManager.getNumber(configKeys.RATE_LOOT) * SCHEDULE_LOOT_RATE)
+	return math.random(0, MAX_LOOTCHANCE) * 100 / math.max(1, multi)
 end
 
 local start = os.time()
@@ -38,11 +39,12 @@ debug.sethook(function(event, line)
 	end
 end, "l")
 
--- OTServBr-Global functions
 function getRateFromTable(t, level, default)
-	for _, rate in ipairs(t) do
-		if level >= rate.minlevel and (not rate.maxlevel or level <= rate.maxlevel) then
-			return rate.multiplier
+	if (t ~= nil) then
+		for _, rate in ipairs(t) do
+			if level >= rate.minlevel and (not rate.maxlevel or level <= rate.maxlevel) then
+				return rate.multiplier
+			end
 		end
 	end
 	return default
@@ -156,18 +158,6 @@ end
 
 function setPlayerMarriageStatus(id, val)
 	db.query("UPDATE `players` SET `marriage_status` = " .. val .. " WHERE `id` = " .. id)
-end
-
--- The following 2 functions can be used for delayed shouted text
-function say(param)
-	selfSay(text)
-	doCreatureSay(param.cid, param.text, 1)
-end
-
-function delayedSay(text, delay)
-	local delaySay = delay or 0
-	local cid = getNpcCid()
-	addEvent(say, delaySay, {cid = cid, text = text})
 end
 
 function clearBossRoom(playerId, bossId, centerPosition, rangeX, rangeY, exitPosition)

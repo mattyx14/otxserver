@@ -12,7 +12,7 @@ function buyPrem.onSay(player, words, param)
 	end
 
 	if player:getPremiumDays() <= config.maxDays then
-		if player:removeMoneyNpc(config.price) then
+		if player:removeMoneyBank(config.price) then
 			player:addPremiumDays(config.days)
 			player:sendTextMessage(MESSAGE_INFO_DESCR, "You have bought " .. config.days .." days of premium account.")
 		else

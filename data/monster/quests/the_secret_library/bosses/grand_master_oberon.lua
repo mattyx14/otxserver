@@ -7,10 +7,10 @@ monster.description = "Grand Master Oberon"
 monster.experience = 20000
 monster.outfit = {
 	lookType = 1072,
-	lookHead = 57,
-	lookBody = 75,
-	lookLegs = 38,
-	lookFeet = 86,
+	lookHead = 21,
+	lookBody = 96,
+	lookLegs = 21,
+	lookFeet = 105,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -62,7 +62,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3115, chance = 30000, maxCount = 1}, 
+	{id = 3115, chance = 30000, maxCount = 1}, -- bone
 	{name = "brass shield", chance = 30000, maxCount = 1},
 	{name = "spatial warp almanac", chance = 25000, maxCount = 1},
 	{name = "viking helmet", chance = 23000, maxCount = 1},

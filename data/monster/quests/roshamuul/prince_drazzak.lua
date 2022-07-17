@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 77,
 	lookBody = 78,
 	lookLegs = 94,
-	lookFeet = 54,
+	lookFeet = 55,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -75,26 +75,26 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 20063, chance = 100000},
-	{id = 20062, chance = 100000, maxCount = 2},
-	{id = 20264, chance = 93750, maxCount = 3},
-	{id = 6499, chance = 100000, maxCount = 2},
-	{id = 5954, chance = 50000},
-	{id = 3035, chance = 100000, maxCount = 50},
-	{id = 7643, chance = 100000, maxCount = 100},
-	{id = 7642, chance = 100000, maxCount = 100},
-	{id = 238, chance = 100000, maxCount = 100},
-	{id = 20279, chance = 25000},
-	{id = 20274, chance = 2500},
-	{id = 20277, chance = 25000},
-	{id = 20278, chance = 25000},
-	{id = 5741, chance = 2500},
-	{id = 7417, chance = 2500, unique = true},
-	{id = 20276, chance = 7000, unique = true},
-	{id = 7418, chance = 1000},
-	{id = 820, chance = 1000},
-	{id = 281, chance = 5000},
-	{id = 282, chance = 5000}
+	{id = 20063, chance = 100000}, -- dream matter
+	{id = 20062, chance = 100000, maxCount = 2}, -- cluster of solace
+	{id = 20264, chance = 93750, maxCount = 3}, -- unrealized dream
+	{id = 6499, chance = 100000, maxCount = 2}, -- demonic essence
+	{id = 5954, chance = 50000}, -- demon horn
+	{id = 3035, chance = 100000, maxCount = 50}, -- platinum coin
+	{id = 7643, chance = 100000, maxCount = 100}, -- ultimate health potion
+	{id = 7642, chance = 100000, maxCount = 100}, -- great spirit potion
+	{id = 238, chance = 100000, maxCount = 100}, -- great mana potion
+	{id = 20279, chance = 25000}, -- eye pod
+	{id = 20274, chance = 2500}, -- nightmare horn
+	{id = 20277, chance = 25000}, -- psychedelic tapestry
+	{id = 20278, chance = 25000}, -- demonic tapestry
+	{id = 5741, chance = 2500}, -- skull helmet
+	{id = 7417, chance = 2500, unique = true}, -- runed sword
+	{id = 20276, chance = 7000, unique = true}, -- dream warden mask
+	{id = 7418, chance = 1000}, -- nightmare blade
+	{id = 820, chance = 1000}, -- lightning boots
+	{id = 281, chance = 5000}, -- giant shimmering pearl (green)
+	{id = 282, chance = 5000} -- giant shimmering pearl (brown)
 }
 
 monster.attacks = {

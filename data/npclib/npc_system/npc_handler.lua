@@ -66,8 +66,8 @@ if NpcHandler == nil then
 	NpcHandler = {
 		keywordHandler = nil,
 		talkStart = nil,
-		talkDelayTime = 1, -- Seconds to delay outgoing messages.
-		talkDelay = nil,
+		talkDelay = 1000, -- Delay from each messages
+		talkDelayTimeForOutgoingMessages = 1, -- Seconds to delay outgoing messages
 		callbackFunctions = nil,
 		modules = nil,
 		eventSay = nil,
@@ -79,10 +79,6 @@ if NpcHandler == nil then
 			[MESSAGE_GREET] = "Greetings, |PLAYERNAME|.",
 			[MESSAGE_FAREWELL] = "Good bye, |PLAYERNAME|.",
 			[MESSAGE_BUY] = "Do you want to buy |ITEMCOUNT| |ITEMNAME| for |TOTALCOST| gold coins?",
-			--[EMPTY] = "EMPTY",
-			--[EMPTY] = "EMPTY",
-			--[EMPTY] = "EMPTY",
-			--[EMPTY] = "EMPTY",
 			[MESSAGE_MISSINGMONEY] = "You don't have enough money.",
 			[MESSAGE_NEEDMONEY] = "You don't have enough money.",
 			[MESSAGE_MISSINGITEM] = "You don't have so many.",
@@ -109,7 +105,6 @@ if NpcHandler == nil then
 		obj.eventDelayedSay = {}
 		obj.topic = {}
 		obj.talkStart = {}
-		obj.talkDelay = {}
 		obj.keywordHandler = keywordHandler
 		obj.messages = {}
 
@@ -315,9 +310,12 @@ if NpcHandler == nil then
 	end
 
 	-- Changes the default response message with the specified id to newMessage
-	function NpcHandler:setMessage(id, newMessage)
+	function NpcHandler:setMessage(id, newMessage, delay)
 		if self.messages ~= nil then
 			self.messages[id] = newMessage
+			if delay ~= nil and delay > 1 then
+				self.talkDelay = delay
+			end
 		end
 	end
 
@@ -352,7 +350,7 @@ if NpcHandler == nil then
 				local parseInfo = { [TAG_PLAYERNAME] = playerName }
 				self:resetNpc(player)
 				msg = self:parseMessage(msg, parseInfo)
-				self:say(msg, npc, player, true)
+				self:say(msg, npc, player)
 				self:removeInteraction(npc, player)
 			end
 		end
@@ -371,7 +369,7 @@ if NpcHandler == nil then
 				local playerName = player:getName() or -1
 				local parseInfo = { [TAG_PLAYERNAME] = playerName }
 				msg = self:parseMessage(msg, parseInfo)
-				self:say(msg, npc, player, true)
+				self:say(msg, npc, player)
 			end
 		end
 		self:setInteraction(npc, player)
@@ -579,17 +577,22 @@ if NpcHandler == nil then
 
 		self.eventDelayedSay[playerId] = {}
 		local ret = {}
-		for aux = 1, #msgs do
-			self.eventDelayedSay[playerId][aux] = {}
-			npc:sayWithDelay(npcUniqueId, msgs[aux], TALKTYPE_PRIVATE_NP, ((aux-1) * (delay or 4000)),
-                             self.eventDelayedSay[playerId][aux], playerUniqueId)
-			ret[#ret + 1] = self.eventDelayedSay[playerId][aux]
+		for messagesTable, messageString in pairs(msgs) do
+			self.eventDelayedSay[playerId][messagesTable] = {}
+			if delay ~= nil and delay > 1 then
+				self.talkDelay = delay
+			end
+			-- The "self.talkDelayTimeForOutgoingMessages * 1000" = Interval for sending subsequent messages from the first
+			npc:sayWithDelay(npcUniqueId, msgs[messagesTable], TALKTYPE_PRIVATE_NP, ((messagesTable-1) * self.talkDelay + self.talkDelayTimeForOutgoingMessages * 1000),
+                             self.eventDelayedSay[playerId][messagesTable], playerUniqueId)
+			ret[#ret + 1] = self.eventDelayedSay[playerId][messagesTable]
 		end
 		return(ret)
 	end
 
 	-- Makes the npc represented by this instance of NpcHandler say something.
-	--	This implements the currently set type of talkdelay.
+	-- This implements the currently set type of talkdelay.
+	-- The "delay" variable sets the delay for the interval between messages
 	function NpcHandler:say(message, npc, player, delay, textType)
 		local playerId = player:getId()
 		if type(message) == "table" then
@@ -601,43 +604,14 @@ if NpcHandler == nil then
 		end
 
 		stopEvent(self.eventSay[playerId])
-		self.eventSay[playerId] = addEvent(
-		function(npcId, messageDelayed, focusId)
-			if not Npc(npc) then
-				return Spdlog.error("[NpcHandler:say] - Npc parameter is missing or wrong")
-			end
-
-			npcId = npc:getId()
-			if npcId == nil then
-				Spdlog.error("[NpcHandler:say] - Npc not found or is nil")
-				return
-			end
-
-			focusId = player:getId()
-			if focusId == nil then
-				Spdlog.error("[NpcHandler:say] - Player id not found or is nil")
-				return
-			end
-
-			local focusPlayer = Player(focusId)
-			if focusPlayer then
-				local parseInfo = {
-					[TAG_PLAYERNAME] = focusPlayer:getName(),
-					[TAG_TIME] = getFormattedWorldTime(),
-					[TAG_BLESSCOST] = Blessings.getBlessingsCost(focusPlayer:getLevel()),
-					[TAG_PVPBLESSCOST] = Blessings.getPvpBlessingCost(focusPlayer:getLevel())
-				}
-				npc:say(self:parseMessage(messageDelayed, parseInfo),
-                        textType or TALKTYPE_PRIVATE_NP, false, focusPlayer, npc:getPosition())
-			end
-		end, self.talkDelayTime * 1000, npcId, message, focusId)
+		self.eventSay[playerId] = addEvent(SayEvent, self.talkDelayTimeForOutgoingMessages * 1000, npc:getId(), player:getId(), message, self)
 	end
 
 	-- sendMessages(msg, messagesTable, npc, player, useDelay(true or false), delay)
 	-- If not have useDelay = true and delay, then send npc:talk(), this function not have delay of one message to other
 	function NpcHandler:sendMessages(message, messageTable, npc, player, useDelay, delay)
 		for index, value in pairs(messageTable) do
-			if MsgContains(message, index) then
+			if MsgFind(message, index) then
 				if useDelay and useDelay == true then
 					self:say(value, npc, player, delay or 1000)
 				else

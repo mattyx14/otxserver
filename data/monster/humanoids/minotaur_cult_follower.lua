@@ -94,24 +94,24 @@ monster.loot = {
 	{name = "ham", chance = 59410},
 	{name = "bronze amulet", chance = 15140},
 	{name = "mino shield", chance = 12670},
-	{id = 3098, chance = 3190}, -- Ring of healing
+	{id = 3098, chance = 3190}, -- ring of healing
 	{name = "mino lance", chance = 1810},
 	{name = "warrior helmet", chance = 570},
-	{id= 3039, chance = 170},
+	{id= 3039, chance = 170}, -- red gem
 	{name = "meat", chance = 8020},
 	{name = "minotaur leather", chance = 11530},
 	{name = "minotaur horn", chance = 14550, maxCount = 2}
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -150},
-	{name ="combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -180, maxDamage = -250, range = 7, effect = CONST_ME_EXPLOSIONAREA, target = true}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -240},
+	{name ="combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -110, maxDamage = -210, radius = 3, effect = CONST_ME_GROUNDSHAKER, target = false}
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 25,
-	{name ="combat", interval = 1000, chance = 20, type = COMBAT_HEALING, minDamage = 200, maxDamage = 450, effect = CONST_ME_MAGIC_BLUE, target = false}
+	{name ="combat", interval = 1000, chance = 20, type = COMBAT_HEALING, minDamage = 100, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, target = false}
 }
 
 monster.elements = {

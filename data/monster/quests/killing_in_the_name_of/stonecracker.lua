@@ -64,15 +64,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 76225, maxCount = 100},
-	{id = 5893, chance = 64800},
-	{id = 3577, chance = 36200},
-	{id = 5930, chance = 50500},
-	{id = 7368, chance = 11225, maxCount = 2},
-	{id = 3383, chance = 7650},
-	{id = 3304, chance = 14800},
-	{id = 3033, chance = 7650, maxCount = 2},
-	{id = 3275, chance = 7650}
+	{id = 3031, chance = 76225, maxCount = 100}, -- gold coin
+	{id = 5893, chance = 64800}, -- perfect behemoth fang
+	{id = 3577, chance = 36200}, -- meat
+	{id = 5930, chance = 50500}, -- behemoth claw
+	{id = 7368, chance = 11225, maxCount = 2}, -- assassin star
+	{id = 3383, chance = 7650}, -- dark armor
+	{id = 3304, chance = 14800}, -- crowbar
+	{id = 3033, chance = 7650, maxCount = 2}, -- small amethyst
+	{id = 3275, chance = 7650} -- double axe
 }
 
 monster.attacks = {

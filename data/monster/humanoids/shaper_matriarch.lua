@@ -50,10 +50,10 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 4,
@@ -77,26 +77,26 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 24390, chance = 6000},
-	{id = 3027, chance = 2500},
-	{id = 24383, chance = 18000, maxCount = 2},
-	{id = 24385, chance = 15000},
-	{id = 3728, chance = 6800},
-	{id = 24392, chance = 4300},
-	{id = 3031, chance = 50320, maxCount = 150},
-	{id = 3035, chance = 80000, maxCount = 2},
-	{id = 24962, chance = 2800},
-	{id = 24386, chance = 20000},
-	{id = 3098, chance = 1300}, -- Ring of healing
-	{id = 8908, chance = 4500},
-	{id = 3114, chance = 10000},
-	{id = 3030, chance = 4000},
-	{id = 3081, chance = 1500},
-	{id = 237, chance = 15000},
-	{id = 24387, chance = 15000},
-	{id = 3072, chance = 2000},
-	{id = 8094, chance = 800},
-	{id = 2901, chance = 2000}
+	{id = 24390, chance = 6000}, -- ancient coin
+	{id = 3027, chance = 2500}, -- black pearl
+	{id = 24383, chance = 18000, maxCount = 2}, -- cave turnip
+	{id = 24385, chance = 15000}, -- cracked alabaster vase
+	{id = 3728, chance = 6800}, -- dark mushroom
+	{id = 24392, chance = 4300}, -- gemmed figurine
+	{id = 3031, chance = 50320, maxCount = 150}, -- gold coin
+	{id = 3035, chance = 80000, maxCount = 2}, -- platinum coin
+	{id = 24962, chance = 2800}, -- prismatic quartz
+	{id = 24386, chance = 20000}, -- rhino horn carving
+	{id = 3098, chance = 1300}, -- ring of healing
+	{id = 8908, chance = 4500}, -- slightly rusted helmet
+	{id = 3114, chance = 10000}, -- skull
+	{id = 3030, chance = 4000}, -- small ruby
+	{id = 3081, chance = 1500}, -- stone skin amulet
+	{id = 237, chance = 15000}, -- strong mana potion
+	{id = 24387, chance = 15000}, -- tarnished rhino figurine
+	{id = 3072, chance = 2000}, -- wand of decay
+	{id = 8094, chance = 800}, -- wand of voodoo
+	{id = 2901, chance = 2000} -- waterskin
 }
 
 monster.attacks = {
@@ -113,16 +113,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 0},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -5},
+	{type = COMBAT_ENERGYDAMAGE, percent = -5},
 	{type = COMBAT_EARTHDAMAGE, percent = 40},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = -20},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_ICEDAMAGE, percent = 20},
+	{type = COMBAT_HOLYDAMAGE , percent = 30},
+	{type = COMBAT_DEATHDAMAGE , percent = 15}
 }
 
 monster.immunities = {

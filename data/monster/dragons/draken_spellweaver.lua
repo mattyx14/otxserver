@@ -86,11 +86,11 @@ monster.loot = {
 	{name = "meat", chance = 30400},
 	{name = "great mana potion", chance = 4970},
 	{name = "focus cape", chance = 1450},
-	{name = "Zaoan shoes", chance = 1980},
+	{name = "zaoan shoes", chance = 1980},
 	{name = "weaver's wandtip", chance = 19790},
 	{name = "draken trophy", chance = 10},
 	{name = "spellweaver's robe", chance = 620},
-	{name = "Zaoan robe", chance = 770},
+	{name = "zaoan robe", chance = 770},
 	{name = "luminous orb", chance = 1980},
 	{name = "draken sulphur", chance = 3930},
 	{name = "harness", chance = 30},
@@ -125,7 +125,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -10},
 	{type = COMBAT_HOLYDAMAGE , percent = -5},
-	{type = COMBAT_DEATHDAMAGE , percent = 75}
+	{type = COMBAT_DEATHDAMAGE , percent = 80}
 }
 
 monster.immunities = {

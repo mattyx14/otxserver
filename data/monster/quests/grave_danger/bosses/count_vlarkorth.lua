@@ -5,10 +5,10 @@ monster.description = "Count Vlarkorth"
 monster.experience = 41300
 monster.outfit = {
 	lookType = 1221,
-	lookHead = 10,
-	lookBody = 19,
-	lookLegs = 19,
-	lookFeet = 19,
+	lookHead = 19,
+	lookBody = 0,
+	lookLegs = 83,
+	lookFeet = 20,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -76,16 +76,16 @@ monster.loot = {
 	{name = "mastermind potion", minCount = 0, maxCount = 10, chance = 12000},
 	{name = "silver token", minCount = 0, maxCount = 2, chance = 8000},
 	{name = "blue gem", chance = 9000},
-	{id = 23542, chance = 5200},-- collar of blue plasma
-	{id = 23544, chance = 5200},-- collar of red plasma
+	{id = 23542, chance = 5200}, -- collar of blue plasma
+	{id = 23544, chance = 5200}, -- collar of red plasma
 	{name = "blue gem", chance = 8500},
 	{name = "gold ingot", minCount = 0, maxCount = 1, chance = 10000},
 	{name = "green gem", chance = 8200},
 	{name = "magic sulphur", chance = 6500},
-	{id= 3039, chance = 8000},
-	{id = 23529, chance = 5000},-- ring of blue plasma
-	{id = 23533, chance = 5000},-- ring of red plasma
-	{id = 23531, chance = 5000},-- ring of green plasma
+	{id= 3039, chance = 8000}, -- red gem
+	{id = 23529, chance = 5000}, -- ring of blue plasma
+	{id = 23533, chance = 5000}, -- ring of red plasma
+	{id = 23531, chance = 5000}, -- ring of green plasma
 	{name = "skull staff", chance = 7000},
 	{name = "yellow gem", chance = 8500},
 	{name = "young lich worm", chance = 5500},

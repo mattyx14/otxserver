@@ -60,7 +60,7 @@ monster.flags = {
 	runHealth = 0,
 	healthHidden = false,
 	isBlockable = false,
-	canWalkOnEnergy = true,
+	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true
 }
@@ -85,14 +85,14 @@ monster.loot = {
 	{name = "gold coin", chance = 40000, maxCount = 99},
 	{name = "platinum coin", chance = 55000, maxCount = 8},
 	{name = "golden legs", chance = 30},
-	{id = 3461, chance = 5250},
+	{id = 3461, chance = 5250}, -- saw
 	{name = "steel boots", chance = 5050},
 	{name = "ham", chance = 60000, maxCount = 2},
 	{name = "orichalcum pearl", chance = 2760, maxCount = 2},
 	{name = "cat's paw", chance = 2222},
 	{name = "jewelled backpack", chance = 1192},
 	{name = "soul orb", chance = 23000},
-	{id = 6299, chance = 2008},
+	{id = 6299, chance = 2008}, -- death ring
 	{name = "demonic essence", chance = 8520},
 	{name = "flask of demonic blood", chance = 33333, maxCount = 3},
 	{name = "assassin star", chance = 2222, maxCount = 5},

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Splasher"
 monster.experience = 500
 monster.outfit = {
-	lookType = 72,
+	lookType = 47,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 1700
 monster.maxHealth = 1700
 monster.race = "blood"
-monster.corpse = 6064
+monster.corpse = 6066
 monster.speed = 520
 monster.manaCost = 0
 

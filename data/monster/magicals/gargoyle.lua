@@ -80,9 +80,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3012, chance = 1480},
+	{id = 3012, chance = 1480}, -- wolf tooth chain
 	{name = "gold coin", chance = 88000, maxCount = 30},
-	{id = 3093, chance = 260}, -- Club ring
+	{id = 3093, chance = 260}, -- club ring
 	{name = "morning star", chance = 2150},
 	{name = "steel helmet", chance = 850},
 	{name = "dark armor", chance = 300},
@@ -105,7 +105,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 40},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 20},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = -10},
@@ -114,7 +114,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 1}
+	{type = COMBAT_DEATHDAMAGE , percent = 40}
 }
 
 monster.immunities = {

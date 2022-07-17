@@ -65,29 +65,29 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 6299, chance = 100000},
-	{id = 7430, chance = 100000},
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 2903, chance = 100000},
-	{id = 3035, chance = 100000, maxCount = 10},
-	{id = 10316, chance = 100000, maxCount = 3},
-	{id = 9058, chance = 78000},
-	{id = 6499, chance = 56000},
-	{id = 3370, chance = 47270},
-	{id = 3385, chance = 40000},
-	{id = 7642, chance = 37000, maxCount = 3},
-	{id = 5925, chance = 37000, maxCount = 5},
-	{id = 10451, chance = 37000},
-	{id = 239, chance = 35000, maxCount = 4},
-	{id = 8896, chance = 35000},
-	{id = 3032, chance = 33000, maxCount = 5},
-	{id = 3029, chance = 33000, maxCount = 5},
-	{id = 238, chance = 25000, maxCount = 3},
-	{id = 3360, chance = 13500},
-	{id = 12304, chance = 6780},
-	{id = 5741, chance = 5000},
-	{id = 8057, chance = 3390},
-	{id = 3392, chance = 1690}
+	{id = 6299, chance = 100000}, -- death ring
+	{id = 7430, chance = 100000}, -- dragonbone staff
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 2903, chance = 100000}, -- golden mug
+	{id = 3035, chance = 100000, maxCount = 10}, -- platinum coin
+	{id = 10316, chance = 100000, maxCount = 3}, -- unholy bone
+	{id = 9058, chance = 78000}, -- gold ingot
+	{id = 6499, chance = 56000}, -- demonic essence
+	{id = 3370, chance = 47270}, -- knight armor
+	{id = 3385, chance = 40000}, -- crown helmet
+	{id = 7642, chance = 37000, maxCount = 3}, -- great spirit potion
+	{id = 5925, chance = 37000, maxCount = 5}, -- hardened bone
+	{id = 10451, chance = 37000}, -- jade hat
+	{id = 239, chance = 35000, maxCount = 4}, -- great health potion
+	{id = 8896, chance = 35000}, -- slightly rusted armor
+	{id = 3032, chance = 33000, maxCount = 5}, -- small emerald
+	{id = 3029, chance = 33000, maxCount = 5}, -- small sapphire
+	{id = 238, chance = 25000, maxCount = 3}, -- great mana potion
+	{id = 3360, chance = 13500}, -- golden armor
+	{id = 12304, chance = 6780}, -- maxilla maximus
+	{id = 5741, chance = 5000}, -- skull helmet
+	{id = 8057, chance = 3390}, -- divine plate
+	{id = 3392, chance = 1690} -- royal helmet
 }
 
 monster.attacks = {

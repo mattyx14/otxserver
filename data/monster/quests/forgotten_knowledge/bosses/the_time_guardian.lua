@@ -64,42 +64,42 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3035, chance = 100000, maxCount = 25},
-	{id = 3033, chance = 100000, maxCount = 10},
-	{id = 3028, chance = 100000, maxCount = 10},
-	{id = 3032, chance = 100000, maxCount = 10},
-	{id = 3030, chance = 100000, maxCount = 10},
-	{id = 9057, chance = 100000, maxCount = 10},
-	{id = 238, chance = 100000, maxCount = 5},
-	{id = 7642, chance = 100000, maxCount = 10},
-	{id = 7643, chance = 100000, maxCount = 10},
-	{id = 16119, chance = 100000, maxCount = 3},
-	{id = 16121, chance = 100000, maxCount = 3},
-	{id = 16120, chance = 100000, maxCount = 3},
-	{id = 7439, chance = 100000},
-	{id = 3041, chance = 100000},
-	{id = 3038, chance = 100000},
-	{id = 12306, chance = 2000},
-	{id = 11454, chance = 2000},
-	{id = 5904, chance = 2000},
-	{id = 821, chance = 1000},
-	{id = 7440, chance = 2000},
-	{id = 3098, chance = 2000}, -- Ring of healing
-	{id = 3036, chance = 2000},
-	{id = 3037, chance = 2000},
-	{id = 10323, chance = 1000},
-	{id = 3324, chance = 1000},
-	{id = 3081, chance = 1000},
-	{id = 10323, chance = 1000},
-	{id = 24956, chance = 500, unique = true},
-	{id = 8076, chance = 1000},
-	{id = 5809, chance = 100, unique = true},
-	{id = 3439, chance = 100},
-	{id = 7417, chance = 100},
-	{id = 22721, chance = 100000},
-	{id = 22516, chance = 100000}
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 100000, maxCount = 25}, -- platinum coin
+	{id = 3033, chance = 100000, maxCount = 10}, -- small amethyst
+	{id = 3028, chance = 100000, maxCount = 10}, -- small diamond
+	{id = 3032, chance = 100000, maxCount = 10}, -- small emerald
+	{id = 3030, chance = 100000, maxCount = 10}, -- small ruby
+	{id = 9057, chance = 100000, maxCount = 10}, -- small topaz
+	{id = 238, chance = 100000, maxCount = 5}, -- great mana potion
+	{id = 7642, chance = 100000, maxCount = 10}, -- great spirit potion
+	{id = 7643, chance = 100000, maxCount = 10}, -- ultimate health potion
+	{id = 16119, chance = 100000, maxCount = 3}, -- blue crystal shard
+	{id = 16121, chance = 100000, maxCount = 3}, -- green crystal shard
+	{id = 16120, chance = 100000, maxCount = 3}, -- violet crystal shard
+	{id = 7439, chance = 100000}, -- berserk potion
+	{id = 3041, chance = 100000}, -- blue gem
+	{id = 3038, chance = 100000}, -- green gem
+	{id = 12306, chance = 2000}, -- leather whip
+	{id = 11454, chance = 2000}, -- luminous orb
+	{id = 5904, chance = 2000}, -- magic sulphur
+	{id = 821, chance = 1000}, -- magma legs
+	{id = 7440, chance = 2000}, -- mastermind potion
+	{id = 3098, chance = 2000}, -- ring of healing
+	{id = 3036, chance = 2000}, -- violet gem
+	{id = 3037, chance = 2000}, -- yellow gem
+	{id = 10323, chance = 1000}, -- guardian boots
+	{id = 3324, chance = 1000}, -- skull staff
+	{id = 3081, chance = 1000}, -- stone skin amulet
+	{id = 10323, chance = 1000}, -- guardian boots
+	{id = 24956, chance = 500, unique = true}, -- part of a rune
+	{id = 8076, chance = 1000}, -- spellscroll of prophecies
+	{id = 5809, chance = 100, unique = true}, -- soul stone
+	{id = 3439, chance = 100}, -- phoenix shield
+	{id = 7417, chance = 100}, -- runed sword
+	{id = 22721, chance = 100000}, -- gold token
+	{id = 22516, chance = 100000} -- silver token
 }
 
 monster.attacks = {

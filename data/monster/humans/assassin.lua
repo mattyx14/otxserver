@@ -5,7 +5,7 @@ monster.description = "an assassin"
 monster.experience = 105
 monster.outfit = {
 	lookType = 152,
-	lookHead = 114,
+	lookHead = 95,
 	lookBody = 95,
 	lookLegs = 95,
 	lookFeet = 95,
@@ -45,7 +45,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -78,7 +78,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2920, chance = 29980, maxCount = 2},
+	{id = 2920, chance = 29980, maxCount = 2}, -- torch
 	{name = "small diamond", chance = 220},
 	{name = "gold coin", chance = 83210, maxCount = 50},
 	{name = "gold coin", chance = 7250, maxCount = 14},
@@ -107,7 +107,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 0},

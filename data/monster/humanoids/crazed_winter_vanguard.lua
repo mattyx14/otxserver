@@ -4,11 +4,11 @@ local monster = {}
 monster.description = "a Crazed Winter Vanguard"
 monster.experience = 5400
 monster.outfit = {
-	lookType = 1136,
-	lookHead = 0,
-	lookBody = 123,
-	lookLegs = 28,
-	lookFeet = 20,
+	lookType = 1137,
+	lookHead = 8,
+	lookBody = 67,
+	lookLegs = 8,
+	lookFeet = 1,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -78,8 +78,8 @@ monster.voices = {
 monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 13},
 	{name = "red crystal fragment", chance = 1000000},
-	{id= 3039, chance = 1000000},
-	{id = 30058, chance = 15000, maxCount = 2},
+	{id= 3039, chance = 1000000}, -- red gem
+	{id = 30058, chance = 15000, maxCount = 2}, -- ice flower
 	{name = "small enchanted ruby", chance = 1155},
 	{name = "miraculum", chance = 13550},
 	{name = "ultimate health potion", chance = 14750, maxCount = 2},
@@ -109,16 +109,16 @@ monster.reflects = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
-	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = -20},
+	{type = COMBAT_EARTHDAMAGE, percent = -15},
+	{type = COMBAT_FIREDAMAGE, percent = -30},
 	{type = COMBAT_LIFEDRAIN, percent = 100},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 100},
-	{type = COMBAT_ICEDAMAGE, percent = 100},
-	{type = COMBAT_HOLYDAMAGE , percent = 50},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_ICEDAMAGE, percent = 50},
+	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_DEATHDAMAGE , percent = 15}
 }
 
 monster.immunities = {

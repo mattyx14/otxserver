@@ -73,22 +73,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 3},
-	{name = "Envenomed Arrow", chance = 55360, maxCount = 8},
-	{name = "Earth Arrow", chance = 16800, maxCount = 29},
-	{name = "Terra Rod", chance = 11000},
-	{name = "Goanna Meat", chance = 12140},
-	{name = "Goanna Claw", chance = 4290},
-	{name = "Lizard Heart", chance = 1400},
-	{name = "Red Goanna Scale", chance = 10000},
-	{name = "Fur Armor", chance = 3200},
-	{name = "Serpent Sword", chance = 3600},
-	{name = "Terra Amulet", chance = 4650},
-	{name = "Terra Hood", chance = 7100},
-	{name = "Wood Cape", chance = 1800},
-	{name = "Scared Frog", chance = 2100},
-	{name = "Sacred Tree Amulet", chance = 2500},
-	{name = "Small Tortoise", chance = 1800}
+	{name = "platinum coin", chance = 100000, maxCount = 3},
+	{name = "envenomed arrow", chance = 55360, maxCount = 8},
+	{name = "earth arrow", chance = 16800, maxCount = 29},
+	{name = "terra rod", chance = 11000},
+	{name = "goanna meat", chance = 12140},
+	{name = "goanna claw", chance = 4290},
+	{name = "lizard heart", chance = 1400},
+	{name = "red goanna scale", chance = 10000},
+	{name = "fur armor", chance = 3200},
+	{name = "serpent sword", chance = 3600},
+	{name = "terra amulet", chance = 4650},
+	{name = "terra hood", chance = 7100},
+	{name = "wood cape", chance = 1800},
+	{name = "scared frog", chance = 2100},
+	{name = "sacred tree amulet", chance = 2500},
+	{name = "small tortoise", chance = 1800}
 }
 
 monster.attacks = {
@@ -107,7 +107,7 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = -10},
-	{type = COMBAT_EARTHDAMAGE, percent = 75},
+	{type = COMBAT_EARTHDAMAGE, percent = 25},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},

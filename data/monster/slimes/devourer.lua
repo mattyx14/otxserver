@@ -80,26 +80,26 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 165},
-	{id = 3035, chance = 9100, maxCount = 2},
-	{id = 21182, chance = 1670},
-	{id = 3034, chance = 940},
-	{id = 3029, chance = 1170, maxCount = 3},
-	{id = 3033, chance = 1030, maxCount = 3},
-	{id = 9057, chance = 1030, maxCount = 3},
-	{id = 3032, chance = 1170, maxCount = 3},
-	{id = 3030, chance = 1190, maxCount = 3},
-	{id = 3028, chance = 1050, maxCount = 3},
-	{id = 3037, chance = 1090},
-	{id = 3038, chance = 100},
-	{id = 21164, chance = 210},
-	{id = 21183, chance = 130},
-	{id = 21179, chance = 350},
-	{id = 21178, chance = 510},
-	{id = 21180, chance = 390},
-	{id = 21158, chance = 370},
-	{id = 8084, chance = 250},
-	{id = 3065, chance = 260}
+	{id = 3031, chance = 100000, maxCount = 165}, -- gold coin
+	{id = 3035, chance = 9100, maxCount = 2}, -- platinum coin
+	{id = 21182, chance = 1670}, -- glob of glooth
+	{id = 3034, chance = 940}, -- talon
+	{id = 3029, chance = 1170, maxCount = 3}, -- small sapphire
+	{id = 3033, chance = 1030, maxCount = 3}, -- small amethyst
+	{id = 9057, chance = 1030, maxCount = 3}, -- small topaz
+	{id = 3032, chance = 1170, maxCount = 3}, -- small emerald
+	{id = 3030, chance = 1190, maxCount = 3}, -- small ruby
+	{id = 3028, chance = 1050, maxCount = 3}, -- small diamond
+	{id = 3037, chance = 1090}, -- yellow gem
+	{id = 3038, chance = 100}, -- green gem
+	{id = 21164, chance = 210}, -- glooth cape
+	{id = 21183, chance = 130}, -- glooth amulet
+	{id = 21179, chance = 350}, -- glooth blade
+	{id = 21178, chance = 510}, -- glooth club
+	{id = 21180, chance = 390}, -- glooth axe
+	{id = 21158, chance = 370}, -- glooth spear
+	{id = 8084, chance = 250}, -- springsprout rod
+	{id = 3065, chance = 260} -- terra rod
 }
 
 monster.attacks = {

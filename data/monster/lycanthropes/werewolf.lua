@@ -82,8 +82,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 98000, maxCount = 230},
-	{id = 3053, chance = 800},
+	{id = 3031, chance = 98000, maxCount = 230}, -- gold coin
+	{id = 3053, chance = 800}, -- time ring
 	{name = "platinum amulet", chance = 870},
 	{name = "stone skin amulet", chance = 1000},
 	{name = "halberd", chance = 3000},
@@ -98,8 +98,8 @@ monster.loot = {
 	{name = "berserk potion", chance = 1200},
 	{name = "strong health potion", chance = 5000},
 	{name = "ultimate health potion", chance = 2400},
-	{id = 8895, chance = 210},
-	{id = 22052, chance = 15000},
+	{id = 8895, chance = 210}, -- rusted armor
+	{id = 22052, chance = 15000}, -- werewolf fangs
 	{name = "werewolf fur", chance = 10650}
 }
 
@@ -120,16 +120,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
-	{type = COMBAT_ENERGYDAMAGE, percent = 5},
-	{type = COMBAT_EARTHDAMAGE, percent = 65},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = 15},
+	{type = COMBAT_EARTHDAMAGE, percent = 75},
 	{type = COMBAT_FIREDAMAGE, percent = -5},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -5},
 	{type = COMBAT_HOLYDAMAGE , percent = -5},
-	{type = COMBAT_DEATHDAMAGE , percent = 50}
+	{type = COMBAT_DEATHDAMAGE , percent = 55}
 }
 
 monster.immunities = {

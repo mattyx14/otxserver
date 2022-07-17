@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -78,7 +78,7 @@ monster.loot = {
 	{name = "epee", chance = 560},
 	{name = "health potion", chance = 5090},
 	{name = "compound eye", chance = 15380},
-	{id = 14225, chance = 14990}
+	{id = 14225, chance = 14990} -- dung ball
 }
 
 monster.attacks = {
@@ -98,7 +98,7 @@ monster.elements = {
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = -5},
+	{type = COMBAT_ICEDAMAGE, percent = -10},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }

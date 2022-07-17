@@ -5,7 +5,7 @@ monster.description = "a sphinx"
 monster.experience = 7500
 monster.outfit = {
 	lookType = 1188,
-	lookHead = 50,
+	lookHead = 0,
 	lookBody = 39,
 	lookLegs = 0,
 	lookFeet = 3,
@@ -73,17 +73,17 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 3},
-	{name = "Sphinx Feather", chance = 9300},
-	{name = "Magma Amulet", chance = 7000},
-	{id = 31438, chance = 5500},
-	{name = "Magma Boots", chance = 3600},
-	{name = "Lightning Pendant", chance = 3500},
-	{name = "Lightning Headband", chance = 3100},
-	{name = "Wand of Starstorm", chance = 2900},
-	{name = "Wand of Defiance", chance = 1800},
-	{name = "Magma Monocle", chance = 1400},
-	{name = "Magma Legs", chance = 1300}
+	{name = "platinum coin", chance = 100000, maxCount = 3},
+	{name = "sphinx feather", chance = 9300},
+	{name = "magma amulet", chance = 7000},
+	{id = 31438, chance = 5500}, -- sphinx tiara
+	{name = "magma boots", chance = 3600},
+	{name = "lightning pendant", chance = 3500},
+	{name = "lightning headband", chance = 3100},
+	{name = "wand of starstorm", chance = 2900},
+	{name = "wand of defiance", chance = 1800},
+	{name = "magma monocle", chance = 1400},
+	{name = "magma legs", chance = 1300}
 }
 
 monster.attacks = {
@@ -102,12 +102,12 @@ monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = 90},
+	{type = COMBAT_FIREDAMAGE, percent = 10},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -15},
-	{type = COMBAT_HOLYDAMAGE , percent = 85},
+	{type = COMBAT_HOLYDAMAGE , percent = 15},
 	{type = COMBAT_DEATHDAMAGE , percent = -20}
 }
 

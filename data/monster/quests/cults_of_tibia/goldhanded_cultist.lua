@@ -5,9 +5,9 @@ monster.description = "a goldhanded cultist"
 monster.experience = 2000
 monster.outfit = {
 	lookType = 132,
-	lookHead = 95,
+	lookHead = 114,
 	lookBody = 79,
-	lookLegs = 41,
+	lookLegs = 62,
 	lookFeet = 94,
 	lookAddons = 2,
 	lookMount = 0
@@ -81,13 +81,13 @@ monster.voices = {
 monster.loot = {
 	{name = "golden backpack", chance = 4290},
 	{name = "tiger eye", chance = 11430},
-	{id = 3031, chance = 41430, maxCount = 235},
+	{id = 3031, chance = 41430, maxCount = 235}, -- gold coin
 	{name = "golden brush", chance = 20000},
 	{name = "green gem", chance = 5710},
 	{name = "gold ingot", chance = 2860},
 	{name = "opal", chance = 11430},
 	{name = "yellow gem", chance = 5710},
-	{id = 2863, chance = 1430}
+	{id = 2863, chance = 1430} -- golden bag
 }
 
 monster.attacks = {

@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "black pearl", chance = 1800},
 	{name = "gold coin", chance = 90230, maxCount = 60},
 	{name = "bronze amulet", chance = 220},
-	{id = 3114, chance = 1000},
+	{id = 3114, chance = 1000}, -- skull
 	{name = "spike sword", chance = 1000},
 	{name = "ice rapier", chance = 420},
 	{name = "katana", chance = 1560},
@@ -112,7 +112,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 35},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 25},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = -10},

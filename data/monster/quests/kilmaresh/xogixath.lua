@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 3,
 	lookBody = 16,
 	lookLegs = 75,
-	lookFeet = 19,
+	lookFeet = 79,
 	lookAddons = 2,
 	lookMount = 0
 }
@@ -63,16 +63,16 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 9},
-	{id= 3039, chance = 65000, maxCount = 2},
-	{name = "Green Crystal Shard", chance = 16000},
-	{name = "Sea Horse Figurine", chance = 2400},
-	{name = "Winged Boots", chance = 120},
-	{name = "Small Sapphire", chance = 48000, maxCount = 3},
-	{name = "Stone Skin Amulet", chance = 54000},
-	{id = 31369, chance = 6500},
-	{name = "Fire Axe", chance = 34000},
-	{id = 31557, chance = 520}
+	{name = "platinum coin", chance = 100000, maxCount = 9},
+	{id= 3039, chance = 65000, maxCount = 2}, -- red gem
+	{name = "green crystal shard", chance = 16000},
+	{name = "sea horse figurine", chance = 2400},
+	{name = "winged boots", chance = 120},
+	{name = "small sapphire", chance = 48000, maxCount = 3},
+	{name = "stone skin amulet", chance = 54000},
+	{id = 31369, chance = 6500}, -- gryphon mask
+	{name = "fire axe", chance = 34000},
+	{id = 31557, chance = 520} -- blister ring
 }
 
 monster.attacks = {

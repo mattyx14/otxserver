@@ -5,7 +5,7 @@ monster.description = "a spectre"
 monster.experience = 2100
 monster.outfit = {
 	lookType = 235,
-	lookHead = 20,
+	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
 	lookFeet = 0,
@@ -50,7 +50,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -78,20 +78,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2949, chance = 9620},
+	{id = 2949, chance = 9620}, -- lyre
 	{name = "silver brooch", chance = 850},
 	{name = "silver brooch", chance = 110},
-	{id = 3019, chance = 110},
+	{id = 3019, chance = 110}, -- demonbone amulet
 	{name = "gold coin", chance = 33000, maxCount = 100},
 	{name = "gold coin", chance = 33000, maxCount = 100},
 	{name = "gold coin", chance = 33000, maxCount = 97},
 	{name = "platinum coin", chance = 3850, maxCount = 7},
-	{id = 3049, chance = 190}, -- Stealth ring
+	{id = 3049, chance = 190}, -- stealth ring
 	{name = "wand of cosmic energy", chance = 9800},
 	{name = "blank rune", chance = 30310, maxCount = 2},
 	{name = "white piece of cloth", chance = 3800},
 	{name = "soul orb", chance = 6005},
-	{id = 6299, chance = 280},
+	{id = 6299, chance = 280}, -- death ring
 	{name = "demonic essence", chance = 6270},
 	{name = "relic sword", chance = 700},
 	{name = "great mana potion", chance = 920},

@@ -86,30 +86,30 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 37500, maxCount = 90},
-	{id = 3031, chance = 375000, maxCount = 80},
-	{id = 953, chance = 5260, maxCount = 5},
-	{id = 3265, chance = 5500},
-	{id = 3410, chance = 9000},
-	{id = 3282, chance = 7000},
-	{id = 3413, chance = 6500},
-	{id = 7643, chance = 10080},
-	{id = 238, chance = 8860},
-	{id = 5880, chance = 1920},
-	{id = 7439, chance = 900},
-	{id = 3326, chance = 6400},
-	{id = 8895, chance = 260},
-	{id = 3093, chance = 810}, -- Club ring
-	{id = 3097, chance = 1210}, -- Dwarven ring
-	{id = 9067, chance = 130},
-	{id = 9065, chance = 1080},
-	{id = 820, chance = 90},
-	{id = 3554, chance = 620},
-	{id = 7403, chance = 50},
-	{id = 7422, chance = 120},
-	{id = 7428, chance = 770},
-	{id = 3061, chance = 1000},
-	{id = 12305, chance = 100}
+	{id = 3031, chance = 37500, maxCount = 90}, -- gold coin
+	{id = 3031, chance = 375000, maxCount = 80}, -- gold coin
+	{id = 953, chance = 5260, maxCount = 5}, -- nail
+	{id = 3265, chance = 5500}, -- two handed sword
+	{id = 3410, chance = 9000}, -- plate shield
+	{id = 3282, chance = 7000}, -- morning star
+	{id = 3413, chance = 6500}, -- battle shield
+	{id = 7643, chance = 10080}, -- ultimate health potion
+	{id = 238, chance = 8860}, -- great mana potion
+	{id = 5880, chance = 1920}, -- iron ore
+	{id = 7439, chance = 900}, -- berserk potion
+	{id = 3326, chance = 6400}, -- epee
+	{id = 8895, chance = 260}, -- rusted armor
+	{id = 3093, chance = 810}, -- club ring
+	{id = 3097, chance = 1210}, -- dwarven ring
+	{id = 9067, chance = 130}, -- crystal of power
+	{id = 9065, chance = 1080}, -- crystal pedestal
+	{id = 820, chance = 90}, -- lightning boots
+	{id = 3554, chance = 620}, -- steel boots
+	{id = 7403, chance = 50}, -- berserker
+	{id = 7422, chance = 120}, -- jade hammer
+	{id = 7428, chance = 770}, -- bonebreaker
+	{id = 3061, chance = 1000}, -- life crystal
+	{id = 12305, chance = 100} -- tin key
 }
 
 monster.attacks = {
@@ -128,7 +128,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 25},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 5},
 	{type = COMBAT_EARTHDAMAGE, percent = 50},
 	{type = COMBAT_FIREDAMAGE, percent = 15},
@@ -137,7 +137,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 30},
 	{type = COMBAT_HOLYDAMAGE , percent = 50},
-	{type = COMBAT_DEATHDAMAGE , percent = 25}
+	{type = COMBAT_DEATHDAMAGE , percent = 20}
 }
 
 monster.immunities = {

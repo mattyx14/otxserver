@@ -50,7 +50,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -75,7 +75,7 @@ monster.voices = {
 monster.loot = {
 	{name = "great mana potion", chance = 44810},
 	{name = "wand of inferno", chance = 12500},
-	{id = 35588, chance = 19420},
+	{id = 35588, chance = 19420}, -- grappling hook
 	{name = "pirate coin", chance = 17810, maxCount = 10},
 	{name = "pirat's tail", chance = 2120},
 	{name = "springsprout rod", chance = 9550},

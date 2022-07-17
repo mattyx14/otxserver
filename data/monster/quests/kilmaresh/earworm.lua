@@ -60,17 +60,17 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 82000, maxCount = 2},
-	{name = "Envenomed Arrow", chance = 68000, maxCount = 47},
-	{name = "Earth Arrow", chance = 65000, maxCount = 21},
-	{name = "Worm", chance = 61500, maxCount = 3},
-	{name = "Lump of Dirt", chance = 42000},
-	{name = "Green Memory Shard", chance = 35000},
-	{name = "Blue Memory Shard", chance = 35000},
-	{name = "Violet Memory Shard", chance = 32000},
-	{name = "Terra Amulet", chance = 26000},
-	{name = "Terra hood", chance = 16500},
-	{name = "Sacred Tree Amulet", chance = 12300}
+	{name = "platinum coin", chance = 82000, maxCount = 2},
+	{name = "envenomed arrow", chance = 68000, maxCount = 47},
+	{name = "earth arrow", chance = 65000, maxCount = 21},
+	{name = "worm", chance = 61500, maxCount = 3},
+	{name = "lump of dirt", chance = 42000},
+	{name = "green memory shard", chance = 35000},
+	{name = "blue memory shard", chance = 35000},
+	{name = "violet memory shard", chance = 32000},
+	{name = "terra amulet", chance = 26000},
+	{name = "terra hood", chance = 16500},
+	{name = "sacred tree amulet", chance = 12300}
 }
 
 monster.attacks = {

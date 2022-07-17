@@ -5,9 +5,9 @@ monster.description = "Morik The Gladiator"
 monster.experience = 160
 monster.outfit = {
 	lookType = 131,
-	lookHead = 57,
-	lookBody = 57,
-	lookLegs = 95,
+	lookHead = 38,
+	lookBody = 19,
+	lookLegs = 19,
 	lookFeet = 95,
 	lookAddons = 1,
 	lookMount = 0
@@ -74,7 +74,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 8820, chance = 100000}
+	{id = 8820, chance = 100000} -- morik's helmet
 }
 
 monster.attacks = {

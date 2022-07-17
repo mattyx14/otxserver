@@ -2,13 +2,6 @@ local deathListEnabled = true
 
 local playerDeath = CreatureEvent("PlayerDeath")
 function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDamageUnjustified)
-	local playerId = player:getId()
-	if nextUseStaminaTime[playerId] ~= nil then
-		nextUseStaminaTime[playerId] = nil
-	end
-
-	player:sendTextMessage(MESSAGE_BEYOND_LAST, 'You are dead.')
-
 	if not deathListEnabled then
 		return
 	end
@@ -50,6 +43,18 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 	local playerGuid = player:getGuid()
 	db.query('INSERT INTO `player_deaths` (`player_id`, `time`, `level`, `killed_by`, `is_player`, `mostdamage_by`, `mostdamage_is_player`, `unjustified`, `mostdamage_unjustified`) VALUES (' .. playerGuid .. ', ' .. os.time() .. ', ' .. player:getLevel() .. ', ' .. db.escapeString(killerName) .. ', ' .. byPlayer .. ', ' .. db.escapeString(mostDamageName) .. ', ' .. byPlayerMostDamage .. ', ' .. (unjustified and 1 or 0) .. ', ' .. (mostDamageUnjustified and 1 or 0) .. ')')
 	local resultId = db.storeQuery('SELECT `player_id` FROM `player_deaths` WHERE `player_id` = ' .. playerGuid)
+	-- Start Webhook Player Death
+	local playerName = player:getName()
+	local playerLevel = player:getLevel()
+	local killerLink = string.gsub(killerName, "%s+", "+")
+	local playerLink = string.gsub(playerName, "%s+", "+")
+	local serverURL = getConfigInfo("url")
+	if killer:isPlayer() then
+		Webhook.send(playerName.." just got killed!", "**["..playerName.."]("..serverURL.."/?characters/"..playerLink..")** got killed at level " ..playerLevel.. " by **["..killerName.."]("..serverURL.."/?characters/"..killerLink..")**", WEBHOOK_COLOR_OFFLINE, announcementChannels["player-kills"])
+	else
+		Webhook.send(playerName.." has just died!", "**["..playerName.."]("..serverURL.."/?characters/"..playerLink..")** died at level " ..playerLevel.. " by " ..killerName, WEBHOOK_COLOR_WARNING, announcementChannels["player-kills"])
+	end
+	-- End Webhook Player Death
 
 	local deathRecords = 0
 	local tmpResultId = resultId
@@ -68,7 +73,7 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 		if targetGuild ~= 0 then
 			local killerGuild = killer:getGuild()
 			killerGuild = killerGuild and killerGuild:getId() or 0
-			if killerGuild ~= 0 and targetGuild ~= killerGuild and isInWar(playerId, killer.uid) then
+			if killerGuild ~= 0 and targetGuild ~= killerGuild and isInWar(player:getId(), killer.uid) then
 				local warId = false
 				resultId = db.storeQuery('SELECT `id` FROM `guild_wars` WHERE `status` = 1 AND \z
 					((`guild1` = ' .. killerGuild .. ' AND `guild2` = ' .. targetGuild .. ') OR \z

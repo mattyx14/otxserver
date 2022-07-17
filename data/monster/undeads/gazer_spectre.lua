@@ -6,9 +6,9 @@ monster.experience = 4200
 monster.outfit = {
 	lookType = 1122,
 	lookHead = 94,
-	lookBody = 20,
+	lookBody = 21,
 	lookLegs = 77,
-	lookFeet = 20,
+	lookFeet = 78,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -79,22 +79,22 @@ monster.voices = {
 
 monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 5},
-	{name = "Brown Crystal Splinter", chance = 900},
-	{name = "Red Crystal Fragment", chance = 8500},
-	{name = "Small Enchanted Ruby", chance = 7500},
-	{name = "Small Diamond", chance = 6000},
-	{name = "Small Sapphire", chance = 5000},
-	{id= 3039, chance = 4000},
-	{name = "Yellow Gem", chance = 3000},
-	{id = 29299, chance = 1100},
-	{name = "Wand of Draconia", chance = 3500},
-	{name = "Wand of Inferno", chance = 1100},
-	{id = 30084, chance = 700},
-	{name = "Magma Coat", chance = 900},
-	{name = "Prismatic Quartz", chance = 1500},
-	{name = "Small Enchanted Emerald", chance = 800},
-	{name = "Onyx Chip", chance = 770},
-	{name = "Hexagonal Ruby", chance = 500}
+	{name = "brown crystal splinter", chance = 900},
+	{name = "red crystal fragment", chance = 8500},
+	{name = "small enchanted ruby", chance = 7500},
+	{name = "small diamond", chance = 6000},
+	{name = "small sapphire", chance = 5000},
+	{id= 3039, chance = 4000}, -- red gem
+	{name = "yellow gem", chance = 3000},
+	{id = 29299, chance = 1100}, -- golden idol of tukh
+	{name = "wand of draconia", chance = 3500},
+	{name = "wand of inferno", chance = 1100},
+	{id = 30084, chance = 700}, -- red ectoplasm
+	{name = "magma coat", chance = 900},
+	{name = "prismatic quartz", chance = 1500},
+	{name = "small enchanted emerald", chance = 800},
+	{name = "onyx chip", chance = 770},
+	{name = "hexagonal ruby", chance = 500}
 }
 
 monster.attacks = {
@@ -124,7 +124,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -30},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 20}
+	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
 monster.immunities = {

@@ -6,9 +6,9 @@ monster.experience = 2400
 monster.outfit = {
 	lookType = 1346,
 	lookHead = 0,
-	lookBody = 114,
-	lookLegs = 114,
-	lookFeet = 94,
+	lookBody = 95,
+	lookLegs = 95,
+	lookFeet = 113,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -52,7 +52,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 70,
@@ -60,8 +60,8 @@ monster.flags = {
 	runHealth = 50,
 	healthHidden = false,
 	isBlockable = true,
-	canWalkOnEnergy = false,
-	canWalkOnFire = false,
+	canWalkOnEnergy = true,
+	canWalkOnFire = true,
 	canWalkOnPoison = false
 }
 
@@ -71,21 +71,21 @@ monster.light = {
 }
 
 monster.loot = {
-	{name = "Pirate Coin", chance = 10000, maxCount =10},
-	{name = "Cyan Crystal Fragment", chance = 10000},
-	{name = "Small Diamond", chance = 10000},
-	{name = "Red Crystal Fragment", chance = 10000},
-	{name = "Mouldy Powder", chance = 9000},
-	{name = "Pirat's Tail", chance = 7000},
-	{id= 3039, chance = 6000},
-	{name = "Fire Sword", chance = 5000},
-	{name = "Small Emerald", chance = 5000},
-	{name = "Onyx Chip", chance = 4000},
-	{name = "Shark Fins", chance = 4000},
-	{name = "Yellow Gem", chance = 3000},
-	{name = "Ice Rapier", chance = 3000},
-	{name = "Green Crystal Shard", chance = 2000},
-	{name = "Small Treasure Chest", chance = 2000}
+	{name = "pirate coin", chance = 10000, maxCount =10},
+	{name = "cyan crystal fragment", chance = 10000},
+	{name = "small diamond", chance = 10000},
+	{name = "red crystal fragment", chance = 10000},
+	{name = "mouldy powder", chance = 9000},
+	{name = "pirat's tail", chance = 7000},
+	{id= 3039, chance = 6000}, -- red gem
+	{name = "fire sword", chance = 5000},
+	{name = "small emerald", chance = 5000},
+	{name = "onyx chip", chance = 4000},
+	{name = "shark fins", chance = 4000},
+	{name = "yellow gem", chance = 3000},
+	{name = "ice rapier", chance = 3000},
+	{name = "green crystal shard", chance = 2000},
+	{name = "small treasure chest", chance = 2000}
 }
 
 monster.attacks = {
@@ -101,16 +101,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -110},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 30},
-	{type = COMBAT_EARTHDAMAGE, percent = -130},
+	{type = COMBAT_EARTHDAMAGE, percent = -30},
 	{type = COMBAT_FIREDAMAGE, percent = 30},
 	{type = COMBAT_LIFEDRAIN, percent = 30},
 	{type = COMBAT_MANADRAIN, percent = 30},
 	{type = COMBAT_DROWNDAMAGE, percent = 30},
-	{type = COMBAT_ICEDAMAGE, percent = 20},
-	{type = COMBAT_HOLYDAMAGE , percent = 30},
-	{type = COMBAT_DEATHDAMAGE , percent = 30}
+	{type = COMBAT_ICEDAMAGE, percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
 monster.immunities = {

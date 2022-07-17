@@ -46,14 +46,14 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
-	pushable = true,
+	convinceable = false,
+	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -80,14 +80,14 @@ monster.loot = {
 	{name = "mind stone", chance = 10370},
 	{name = "shrimp", chance = 3950, maxCount = 3},
 	{name = "small sapphire", chance = 3540, maxCount = 3},
-	{id = 3049, chance = 3290}, -- Stealth ring
+	{id = 3049, chance = 3290}, -- stealth ring
 	{name = "ice rapier", chance = 2060},
 	{name = "blue crystal shard", chance = 1890},
 	{name = "strange helmet", chance = 1320},
 	{name = "two handed sword", chance = 820},
 	{name = "fish fin", chance = 740},
 	{name = "blue robe", chance = 660},
-	{id = 3051, chance = 580} -- Energy ring
+	{id = 3051, chance = 580} -- energy ring
 }
 
 monster.attacks = {

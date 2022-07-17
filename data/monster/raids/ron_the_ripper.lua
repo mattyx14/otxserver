@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 95,
 	lookBody = 94,
 	lookLegs = 117,
-	lookFeet = 97,
+	lookFeet = 59,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -64,16 +64,16 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 6101, chance = 100000},
-	{id = 3031, chance = 100000, maxCount = 128},
-	{id = 3114, chance = 81000, maxCount = 2},
-	{id = 3357, chance = 63000},
-	{id = 3267, chance = 45000},
-	{id = 239, chance = 18000},
-	{id = 3370, chance = 18000},
-	{id = 3577, chance = 18000},
-	{id = 5926, chance = 18000},
-	{id = 3028, chance = 9000}
+	{id = 6101, chance = 100000}, -- ron the ripper's sabre
+	{id = 3031, chance = 100000, maxCount = 128}, -- gold coin
+	{id = 3114, chance = 81000, maxCount = 2}, -- skull
+	{id = 3357, chance = 63000}, -- plate armor
+	{id = 3267, chance = 45000}, -- dagger
+	{id = 239, chance = 18000}, -- great health potion
+	{id = 3370, chance = 18000}, -- knight armor
+	{id = 3577, chance = 18000}, -- meat
+	{id = 5926, chance = 18000}, -- pirate backpack
+	{id = 3028, chance = 9000} -- small diamond
 }
 
 monster.attacks = {

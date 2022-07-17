@@ -30,13 +30,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = true,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -60,15 +60,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 9689, chance = 920},
-	{id = 3031, chance = 100000, maxCount = 8},
-	{id = 3268, chance = 3590},
-	{id = 3361, chance = 4060},
-	{id = 3577, chance = 27980},
-	{id = 3272, chance = 3470},
-	{id = 3003, chance = 7870},
-	{id = 3277, chance = 6800},
-	{id = 3336, chance = 3510}
+	{id = 9689, chance = 920}, -- bunch of troll hair
+	{id = 3031, chance = 100000, maxCount = 8}, -- gold coin
+	{id = 3268, chance = 3590}, -- hand axe
+	{id = 3361, chance = 4060}, -- leather armor
+	{id = 3577, chance = 27980}, -- meat
+	{id = 3272, chance = 3470}, -- rapier
+	{id = 3003, chance = 7870}, -- rope
+	{id = 3277, chance = 6800}, -- spear
+	{id = 3336, chance = 3510} -- studded club
 }
 
 monster.attacks = {

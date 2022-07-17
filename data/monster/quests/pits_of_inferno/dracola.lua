@@ -66,20 +66,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 5944, chance = 100000},
-	{id = 5741, chance = 9000},
-	{id = 7420, chance = 3000},
-	{id = 3061, chance = 12000},
-	{id = 5925, chance = 5000, maxCount = 3},
-	{id = 238, chance = 9000, maxCount = 4},
-	{id = 239, chance = 9000, maxCount = 4},
-	{id = 6299, chance = 14000},
-	{id = 3383, chance = 29000},
-	{id = 3031, chance = 29000, maxCount = 100},
-	{id = 3031, chance = 29000, maxCount = 100},
-	{id = 3035, chance = 20000, maxCount = 8},
-	{id = 6499, chance = 6000, maxCount = 4},
-	{id = 6546, chance = 100000}
+	{id = 5944, chance = 100000}, -- soul orb
+	{id = 5741, chance = 9000}, -- skull helmet
+	{id = 7420, chance = 3000}, -- reaper's axe
+	{id = 3061, chance = 12000}, -- life crystal
+	{id = 5925, chance = 5000, maxCount = 3}, -- hardened bone
+	{id = 238, chance = 9000, maxCount = 4}, -- great mana potion
+	{id = 239, chance = 9000, maxCount = 4}, -- great health potion
+	{id = 6299, chance = 14000}, -- death ring
+	{id = 3383, chance = 29000}, -- dark armor
+	{id = 3031, chance = 29000, maxCount = 100}, -- gold coin
+	{id = 3031, chance = 29000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 20000, maxCount = 8}, -- platinum coin
+	{id = 6499, chance = 6000, maxCount = 4}, -- demonic essence
+	{id = 6546, chance = 100000} -- dracola's eye
 }
 
 monster.attacks = {

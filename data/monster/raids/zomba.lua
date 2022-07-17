@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Zomba"
 monster.experience = 300
 monster.outfit = {
-	lookType = 41,
+	lookType = 570,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
-monster.corpse = 5986
+monster.corpse = 19103
 monster.speed = 180
 monster.manaCost = 0
 
@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -64,10 +64,10 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 25},
-	{id = 9691, chance = 100000, maxCount = 2},
-	{id = 3035, chance = 25000},
-	{id = 3052, chance = 12500} -- Life ring
+	{id = 3031, chance = 100000, maxCount = 25}, -- gold coin
+	{id = 9691, chance = 100000, maxCount = 2}, -- lion's mane
+	{id = 3035, chance = 25000}, -- platinum coin
+	{id = 3052, chance = 12500} -- life ring
 }
 
 monster.attacks = {

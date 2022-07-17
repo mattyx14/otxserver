@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 79,
 	lookBody = 113,
 	lookLegs = 78,
-	lookFeet = 0,
+	lookFeet = 112,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -28,7 +28,7 @@ monster.Bestiary = {
 
 monster.health = 18000
 monster.maxHealth = 18000
-monster.race = "fire"
+monster.race = "ink"
 monster.corpse = 28754
 monster.speed = 440
 monster.manaCost = 0
@@ -73,21 +73,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 89960, maxCount = 28},
-	{name = "Book Page", chance = 3000, maxCount = 7},
-	{name = "Demonic Essence", chance = 3000, maxCount = 5},
+	{name = "platinum coin", chance = 89960, maxCount = 28},
+	{name = "book page", chance = 3000, maxCount = 7},
+	{name = "demonic essence", chance = 3000, maxCount = 5},
 	{name = "flask of demonic blood", chance = 3000, maxCount = 3},
-	{name = "Small Amethyst", chance = 2000, maxCount = 4},
-	{id = 3307, chance = 3000},
-	{name = "Silken Bookmark", chance = 2000, maxCount = 2},
-	{name = "Magma Coat", chance = 2000},
-	{name = "Guardian Shield", chance = 1500},
-	{name = "Soul Orb", chance = 3000, maxCount = 4},
-	{name = "Necrotic Rod", chance = 3000},
-	{name = "Magma Monocle", chance = 1500},
-	{id = 6299, chance = 1200},
-	{id = 3049, chance = 1800}, -- Stealth ring
-	{name = "Shadow Sceptre", chance = 8990}
+	{name = "small amethyst", chance = 2000, maxCount = 4},
+	{id = 3307, chance = 3000}, -- scimitar
+	{name = "silken bookmark", chance = 2000, maxCount = 2},
+	{name = "magma coat", chance = 2000},
+	{name = "guardian shield", chance = 1500},
+	{name = "soul orb", chance = 3000, maxCount = 4},
+	{name = "necrotic rod", chance = 3000},
+	{name = "magma monocle", chance = 1500},
+	{id = 6299, chance = 1200}, -- death ring
+	{id = 3049, chance = 1800}, -- stealth ring
+	{name = "shadow sceptre", chance = 8990}
 }
 
 monster.attacks = {

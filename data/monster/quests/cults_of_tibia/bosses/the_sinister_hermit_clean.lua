@@ -5,10 +5,10 @@ monster.description = "The Sinister Hermit"
 monster.experience = 0
 monster.outfit = {
 	lookType = 153,
-	lookHead = 1,
-	lookBody = 30,
-	lookLegs = 30,
-	lookFeet = 11,
+	lookHead = 0,
+	lookBody = 85,
+	lookLegs = 79,
+	lookFeet = 9,
 	lookAddons = 3,
 	lookMount = 0
 }

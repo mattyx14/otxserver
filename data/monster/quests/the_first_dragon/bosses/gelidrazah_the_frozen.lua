@@ -5,10 +5,10 @@ monster.description = "gelidrazah the frozen"
 monster.experience = 9000
 monster.outfit = {
 	lookType = 947,
-	lookHead = 57,
+	lookHead = 19,
 	lookBody = 11,
-	lookLegs = 38,
-	lookFeet = 38,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -63,22 +63,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 97000, maxCount = 56},
-	{id = 3035, chance = 97000, maxCount = 2},
-	{id = 24938, chance = 100000},
-	{id = 7290, chance = 25000},
-	{id = 815, chance = 25000},
-	{id = 829, chance = 25000},
-	{id = 7441, chance = 25000},
-	{id = 3583, chance = 25000, maxCount = 5},
-	{id = 3029, chance = 25000},
-	{id = 2903, chance = 25000},
-	{id = 24937, chance = 80000, maxCount = 2},
-	{id = 19362, chance = 500},
-	{id = 19363, chance = 500},
-	{id = 7409, chance = 1500},
-	{id = 16118, chance = 1500},
-	{id = 24939, chance = 100000}
+	{id = 3031, chance = 97000, maxCount = 56}, -- gold coin
+	{id = 3035, chance = 97000, maxCount = 2}, -- platinum coin
+	{id = 24938, chance = 100000}, -- dragon tongue
+	{id = 7290, chance = 25000}, -- shard
+	{id = 815, chance = 25000}, -- glacier amulet
+	{id = 829, chance = 25000}, -- glacier mask
+	{id = 7441, chance = 25000}, -- ice cube
+	{id = 3583, chance = 25000, maxCount = 5}, -- dragon ham
+	{id = 3029, chance = 25000}, -- small sapphire
+	{id = 2903, chance = 25000}, -- golden mug
+	{id = 24937, chance = 80000, maxCount = 2}, -- dragon blood
+	{id = 19362, chance = 500}, -- icicle bow
+	{id = 19363, chance = 500}, -- runic ice shield
+	{id = 7409, chance = 1500}, -- northern star
+	{id = 16118, chance = 1500}, -- glacial rod
+	{id = 24939, chance = 100000} -- scale of gelidrazah
 }
 
 monster.attacks = {

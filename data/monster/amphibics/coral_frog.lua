@@ -6,8 +6,8 @@ monster.experience = 20
 monster.outfit = {
 	lookType = 226,
 	lookHead = 114,
-	lookBody = 98,
-	lookLegs = 97,
+	lookBody = 79,
+	lookLegs = 78,
 	lookFeet = 114,
 	lookAddons = 0,
 	lookMount = 0
@@ -43,11 +43,11 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
-	pushable = true,
+	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
 	canPushItems = false,

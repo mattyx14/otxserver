@@ -7,14 +7,14 @@ local condition = Condition(CONDITION_ATTRIBUTES)
 condition:setParameter(CONDITION_PARAM_SUBID, 2)
 condition:setParameter(CONDITION_PARAM_BUFF_SPELL, 1)
 condition:setParameter(CONDITION_PARAM_TICKS, 2 * 60 * 1000)
-condition:setParameter(CONDITION_PARAM_SKILL_SHIELD, 2)
+condition:setParameter(CONDITION_PARAM_SKILL_SHIELD, 3)
 
 local baseMana = 90
 
 local spell = Spell("instant")
 
-function spell.onCastSpell(creature, variant)
-	local position = creature:getPosition()
+function spell.onCastSpell(creature, var)
+local position = creature:getPosition()
 
 	local party = creature:getParty()
 	if not party then

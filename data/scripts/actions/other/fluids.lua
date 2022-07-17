@@ -10,16 +10,24 @@ poison:setParameter(CONDITION_PARAM_TICKINTERVAL, 4000)
 poison:setParameter(CONDITION_PARAM_FORCEUPDATE, true)
 
 local fluidMessage = {
-	[3] = 'Aah...',
-	[4] = 'Urgh!',
-	[5] = 'Mmmh.',
-	[7] = 'Aaaah...',
-	[10] = 'Aaaah...',
-	[11] = 'Urgh!',
-	[13] = 'Urgh!',
-	[15] = 'Aah...',
-	[19] = 'Urgh!',
-	[43] = 'Aaaah...'
+	[1] = "Gulp.", -- water
+	[2] = "Aah...", -- wine
+	[3] = "Aah...", -- beer
+	[4] = "Gulp.", -- mud
+	[5] = "Gulp.", -- blood
+	[6] = "Urgh!", -- slime
+	[7] = "Gulp.", -- oil
+	[8] = "Urgh!", -- urine
+	[9] = "Gulp.", -- milk
+	[10] = "Aaaah...", -- manafluid
+	[11] = "Aaaah...", -- lifefluid
+	[12] = "Mmmh.", -- lemonade
+	[13] = "Aah...", -- rum
+	[14] = "Mmmh.", -- fruit juice
+	[15] = "Mmmh.", -- coconut milk
+	[16] = "Aah...", -- mead
+	[17] = "Gulp.", -- tea
+	[18] = "Urgh!" -- ink
 }
 
 local function graveStoneTeleport(cid, fromPosition, toPosition)
@@ -68,15 +76,15 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			player:sendTextMessage(MESSAGE_FAILURE, 'It is empty.')
 
 		elseif target.uid == player.uid then
-			if isInArray({3, 15, 43}, item.type) then
+			if isInArray({2, 3, 16}, item.type) then
 				player:addCondition(drunk)
 
-			elseif item.type == 4 then
+			elseif item.type == 6 then
 				player:addCondition(poison)
-			elseif item.type == 7 then
+			elseif item.type == 10 then
 				player:addMana(math.random(50, 150))
 				fromPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
-			elseif item.type == 10 then
+			elseif item.type == 11 then
 				player:addHealth(60)
 				fromPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
 			end
@@ -95,7 +103,7 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			player:sendTextMessage(MESSAGE_FAILURE, 'It is empty.')
 
 		else
-			if item.type == 2 and target.actionid == 2023 then
+			if item.type == 5 and target.actionid == 2023 then
 				toPosition.y = toPosition.y + 1
 				local creatures, destination = Tile(toPosition):getCreatures(), Position(32791, 32332, 10)
 				if #creatures == 0 then

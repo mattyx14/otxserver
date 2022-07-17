@@ -73,24 +73,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 3},
-	{name = "Envenomed Arrow", chance = 68000, maxCount = 35},
-	{name = "Terra Rod", chance = 10900},
-	{name = "Goanna Meat", chance = 9800},
-	{name = "Snakebite Rod", chance = 9000},
-	{name = "Blue Goanna Scale", chance = 7900},
-	{name = "Goanna Claw", chance = 4300},
-	{name = "Serpent Sword", chance = 4000},
-	{name = "Leaf Star", chance = 3800, maxCount = 3},
-	{name = "Silver Amulet", chance = 3800},
-	{name = "Springsprout Rod", chance = 2700},
-	{name = "Scared Frog", chance = 2100},
-	{name = "Terra Amulet", chance = 1100},
-	{name = "Lizard Heart", chance = 800},
-	{name = "Sacred Tree Amulet", chance = 800},
-	{name = "Small Tortoise", chance = 550},
-	{name = "Fur Armor", chance = 270},
-	{name = "Terra Hood", chance = 250}
+	{name = "platinum coin", chance = 100000, maxCount = 3},
+	{name = "envenomed arrow", chance = 68000, maxCount = 35},
+	{name = "terra rod", chance = 10900},
+	{name = "goanna meat", chance = 9800},
+	{name = "snakebite rod", chance = 9000},
+	{name = "blue goanna scale", chance = 7900},
+	{name = "goanna claw", chance = 4300},
+	{name = "serpent sword", chance = 4000},
+	{name = "leaf star", chance = 3800, maxCount = 3},
+	{name = "silver amulet", chance = 3800},
+	{name = "springsprout rod", chance = 2700},
+	{name = "scared frog", chance = 2100},
+	{name = "terra amulet", chance = 1100},
+	{name = "lizard heart", chance = 800},
+	{name = "sacred tree amulet", chance = 800},
+	{name = "small tortoise", chance = 550},
+	{name = "fur armor", chance = 270},
+	{name = "terra hood", chance = 250}
 }
 
 monster.attacks = {
@@ -107,7 +107,7 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = -20},
-	{type = COMBAT_EARTHDAMAGE, percent = 80},
+	{type = COMBAT_EARTHDAMAGE, percent = 25},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},

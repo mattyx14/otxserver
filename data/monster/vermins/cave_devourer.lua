@@ -78,19 +78,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Cave Devourer Eyes", chance = 24580},
-	{name = "Cave Devourer Maw", chance = 27540},
-	{name = "Small Enchanted Sapphire", chance = 8050},
-	{name = "Small Enchanted Ruby", chance = 6780},
-	{name = "Crystalline Arrow", chance = 23520, maxCount = 40},
-	{name = "Blue Crystal Shard", chance = 10590},
-	{name = "Violet Crystal Shard", chance = 7630},
-	{name = "Green Crystal Shard", chance = 8900},
-	{name = "Cyan Crystal Fragment", chance = 5720},
-	{name = "Slime Heart", chance = 13770, maxCount = 4},
-	{name = "Cave Devourer Legs", chance = 17160},
-	{id = 3049, chance = 2540}, -- Stealth ring
-	{name = "Suspicious Device", chance = 420}
+	{name = "cave devourer eyes", chance = 24580},
+	{name = "cave devourer maw", chance = 27540},
+	{name = "small enchanted sapphire", chance = 8050},
+	{name = "small enchanted ruby", chance = 6780},
+	{name = "crystalline arrow", chance = 23520, maxCount = 40},
+	{name = "blue crystal shard", chance = 10590},
+	{name = "violet crystal shard", chance = 7630},
+	{name = "green crystal shard", chance = 8900},
+	{name = "cyan crystal fragment", chance = 5720},
+	{name = "slime heart", chance = 13770, maxCount = 4},
+	{name = "cave devourer legs", chance = 17160},
+	{id = 3049, chance = 2540}, -- stealth ring
+	{name = "suspicious device", chance = 420}
 }
 
 monster.attacks = {
@@ -108,13 +108,13 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 30},
+	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = 0},
+	{type = COMBAT_FIREDAMAGE, percent = -20},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = -30},
+	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }

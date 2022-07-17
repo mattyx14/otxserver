@@ -5,10 +5,10 @@ monster.description = "a broken shaper"
 monster.experience = 1600
 monster.outfit = {
 	lookType = 932,
-	lookHead = 132,
-	lookBody = 95,
+	lookHead = 94,
+	lookBody = 76,
 	lookLegs = 0,
-	lookFeet = 121,
+	lookFeet = 82,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -46,10 +46,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -78,28 +78,28 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100320, maxCount = 165},
-	{id = 3035, chance = 70320, maxCount = 2},
-	{id = 24383, chance = 20000, maxCount = 2},
-	{id = 24384, chance = 17000},
-	{id = 24385, chance = 20000},
-	{id = 24386, chance = 13000},
-	{id = 24390, chance = 4000},
-	{id = 3147, chance = 15000},
-	{id = 3577, chance = 50320, maxCount = 2},
-	{id = 5021, chance = 5000, maxCount = 2},
-	{id = 5912, chance = 1000, maxCount = 2},
-	{id = 5913, chance = 5000, maxCount = 2},
-	{id = 5914, chance = 2000, maxCount = 2},
-	{id = 3079, chance = 230},
-	{id = 239, chance = 7000},
-	{id = 3284, chance = 1000},
-	{id = 3046, chance = 1000},
-	{id = 22193, chance = 4200},
-	{id = 3098, chance = 2000}, -- Ring of healing
-	{id = 3030, chance = 3000},
-	{id = 3029, chance = 5000},
-	{id = 3725, chance = 6500, maxCount = 5}
+	{id = 3031, chance = 100320, maxCount = 165}, -- gold coin
+	{id = 3035, chance = 70320, maxCount = 2}, -- platinum coin
+	{id = 24383, chance = 20000, maxCount = 2}, -- cave turnip
+	{id = 24384, chance = 17000}, -- ancient belt buckle
+	{id = 24385, chance = 20000}, -- cracked alabaster vase
+	{id = 24386, chance = 13000}, -- rhino horn carving
+	{id = 24390, chance = 4000}, -- ancient coin
+	{id = 3147, chance = 15000}, -- blank rune
+	{id = 3577, chance = 50320, maxCount = 2}, -- meat
+	{id = 5021, chance = 5000, maxCount = 2}, -- orichalcum pearl
+	{id = 5912, chance = 1000, maxCount = 2}, -- blue piece of cloth
+	{id = 5913, chance = 5000, maxCount = 2}, -- brown piece of cloth
+	{id = 5914, chance = 2000, maxCount = 2}, -- yellow piece of cloth
+	{id = 3079, chance = 230}, -- boots of haste
+	{id = 239, chance = 7000}, -- great health potion
+	{id = 3284, chance = 1000}, -- ice rapier
+	{id = 3046, chance = 1000}, -- magic light wand
+	{id = 22193, chance = 4200}, -- onyx chip
+	{id = 3098, chance = 2000}, -- ring of healing
+	{id = 3030, chance = 3000}, -- small ruby
+	{id = 3029, chance = 5000}, -- small sapphire
+	{id = 3725, chance = 6500, maxCount = 5} -- brown mushroom
 }
 
 monster.attacks = {
@@ -116,15 +116,15 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = -20},
-	{type = COMBAT_EARTHDAMAGE, percent = 20},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
+	{type = COMBAT_ENERGYDAMAGE, percent = -15},
+	{type = COMBAT_EARTHDAMAGE, percent = 30},
 	{type = COMBAT_FIREDAMAGE, percent = -15},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_ICEDAMAGE, percent = 20},
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 

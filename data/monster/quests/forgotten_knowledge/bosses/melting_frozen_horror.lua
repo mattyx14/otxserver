@@ -64,28 +64,28 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3031, chance = 100000, maxCount = 11},
-	{id = 9661, chance = 14111},
-	{id = 7441, chance = 5100},
-	{id = 3284, chance = 320},
-	{id = 7449, chance = 580},
-	{id = 3028, chance = 730},
-	{id = 16120, chance = 9660, maxCount = 5},
-	{id = 3041, chance = 5000},
-	{id = 7643, chance = 19500, maxCount = 3},
-	{id = 16121, chance = 9660, maxCount = 5},
-	{id = 7459, chance = 9660},
-	{id = 23518, chance = 9660},
-	{id = 3333, chance = 9660},
-	{id = 16160, chance = 9660},
-	{id = 16175, chance = 200},
-	{id = 14247, chance = 200},
-	{id = 8059, chance = 500},
-	{id = 24958, chance = 500, unique = true},
-	{id = 19363, chance = 200},
-	{id = 22721, chance = 100000},
-	{id = 22516, chance = 100000}
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3031, chance = 100000, maxCount = 11}, -- gold coin
+	{id = 9661, chance = 14111}, -- frosty heart
+	{id = 7441, chance = 5100}, -- ice cube
+	{id = 3284, chance = 320}, -- ice rapier
+	{id = 7449, chance = 580}, -- crystal sword
+	{id = 3028, chance = 730}, -- small diamond
+	{id = 16120, chance = 9660, maxCount = 5}, -- violet crystal shard
+	{id = 3041, chance = 5000}, -- blue gem
+	{id = 7643, chance = 19500, maxCount = 3}, -- ultimate health potion
+	{id = 16121, chance = 9660, maxCount = 5}, -- green crystal shard
+	{id = 7459, chance = 9660}, -- pair of earmuffs
+	{id = 23518, chance = 9660}, -- spark sphere
+	{id = 3333, chance = 9660}, -- crystal mace
+	{id = 16160, chance = 9660}, -- crystalline sword
+	{id = 16175, chance = 200}, -- shiny blade
+	{id = 14247, chance = 200}, -- ornate crossbow
+	{id = 8059, chance = 500}, -- frozen plate
+	{id = 24958, chance = 500, unique = true}, -- part of a rune
+	{id = 19363, chance = 200}, -- runic ice shield
+	{id = 22721, chance = 100000}, -- gold token
+	{id = 22516, chance = 100000} -- silver token
 }
 
 monster.attacks = {

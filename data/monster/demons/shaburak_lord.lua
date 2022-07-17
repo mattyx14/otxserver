@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 50000, maxCount = 78},
 	{name = "platinum coin", chance = 33333, maxCount = 2},
-	{id = 3051, chance = 1652}, -- Energy ring
+	{id = 3051, chance = 1652}, -- energy ring
 	{name = "wand of inferno", chance = 800},
 	{name = "steel boots", chance = 160},
 	{name = "brown mushroom", chance = 5346},
@@ -112,15 +112,15 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 50},
-	{type = COMBAT_EARTHDAMAGE, percent = -30},
+	{type = COMBAT_ENERGYDAMAGE, percent = 65},
+	{type = COMBAT_EARTHDAMAGE, percent = -20},
 	{type = COMBAT_FIREDAMAGE, percent = 100},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 50},
+	{type = COMBAT_ICEDAMAGE, percent = 65},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_DEATHDAMAGE , percent = -5}
 }
 
 monster.immunities = {

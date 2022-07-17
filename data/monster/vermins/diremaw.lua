@@ -78,21 +78,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Ham", chance = 40080, maxCount = 4},
-	{name = "Diremaw Brainpan", chance = 24120},
-	{name = "Poisonous Slime", chance = 11930, maxCount = 5},
-	{name = "Blue Crystal Shard", chance = 9660},
-	{name = "Violet Crystal Shard", chance = 8180},
-	{name = "Green Crystal Shard", chance = 8030},
-	{name = "Onyx Chip", chance = 8560, maxCount = 4},
-	{name = "Diremaw Legs", chance = 9650, maxCount = 2},
-	{name = "Small Enchanted Emerald", chance = 2940, maxCount = 2},
-	{name = "Small Emerald", chance = 5080, maxCount = 2},
-	{name = "Gold Ingot", chance = 2970},
-	{id = 281, chance = 3100},
-	{name = "Suspicious Device", chance = 600},
-	{name = "Mycological Bow", chance = 1200},
-	{name = "Mushroom Backpack", chance = 1500}
+	{name = "ham", chance = 40080, maxCount = 4},
+	{name = "diremaw brainpan", chance = 24120},
+	{name = "poisonous slime", chance = 11930, maxCount = 5},
+	{name = "blue crystal shard", chance = 9660},
+	{name = "violet crystal shard", chance = 8180},
+	{name = "green crystal shard", chance = 8030},
+	{name = "onyx chip", chance = 8560, maxCount = 4},
+	{name = "diremaw legs", chance = 9650, maxCount = 2},
+	{name = "small enchanted emerald", chance = 2940, maxCount = 2},
+	{name = "small emerald", chance = 5080, maxCount = 2},
+	{name = "gold ingot", chance = 2970},
+	{id = 281, chance = 3100}, -- giant shimmering pearl (green)
+	{name = "suspicious device", chance = 600},
+	{name = "mycological bow", chance = 1200},
+	{name = "mushroom backpack", chance = 1500}
 }
 
 monster.attacks = {

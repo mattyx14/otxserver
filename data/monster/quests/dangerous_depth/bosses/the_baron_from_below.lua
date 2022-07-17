@@ -64,7 +64,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 10000, maxCount = 58},
+	{name = "platinum coin", chance = 10000, maxCount = 58},
 	{name = "crystal coin", chance = 10000, maxCount = 2},
 	{name = "gold ingot", chance = 10000, maxCount = 2},
 	{name = "great mana potion", chance = 10000, maxCount = 10},
@@ -78,32 +78,32 @@ monster.loot = {
 	{name = "violet crystal shard", chance = 10000, maxCount = 3},
 	{name = "badger boots", chance = 10000},
 	{name = "blue gem", chance = 10000},
-	{name = "Calopteryx Cape", chance = 10000},
-	{id = 27622, chance = 10000},
-	{name = "Crystal Mace", chance = 10000},
-	{name = "Fire Sword", chance = 10000},
-	{name = "Green Gem", chance = 10000},
-	{name = "Huge Chunk of Crude Iron", chance = 10000, maxCount = 2},
-	{name = "Huge Shell", chance = 10000},
-	{name = "Longing Eyes", chance = 10000},
-	{name = "Luminous Orb", chance = 10000},
-	{name = "Magic Sulphur", chance = 10000, maxCount = 2},
-	{name = "Magma Coat", chance = 10000},
-	{id= 3039, chance = 10000},
-	{id = 8906, chance = 10000},
-	{id = 8900, chance = 10000},
-	{name = "Slimy Leg", chance = 10000},
-	{name = "Stone Skin Amulet", chance = 10000},
-	{name = "Violet Gem", chance = 10000},
-	{name = "Wand of Inferno", chance = 10000},
-	{name = "Yellow Gem", chance = 10000},
-	{name = "Gold Token", chance = 1000},
-	{name = "Silver Token", chance = 1000},
-	{name = "Mallet Head", chance = 1000},
-	{name = "Gnome Shield", chance = 1000},
-	{name = "Gnome Sword", chance = 1000},
+	{name = "calopteryx cape", chance = 10000},
+	{id = 27622, chance = 10000}, -- chitinous mouth
+	{name = "crystal mace", chance = 10000},
+	{name = "fire sword", chance = 10000},
+	{name = "green gem", chance = 10000},
+	{name = "huge chunk of crude iron", chance = 10000, maxCount = 2},
+	{name = "huge shell", chance = 10000},
+	{name = "longing eyes", chance = 10000},
+	{name = "luminous orb", chance = 10000},
+	{name = "magic sulphur", chance = 10000, maxCount = 2},
+	{name = "magma coat", chance = 10000},
+	{id= 3039, chance = 10000}, -- red gem
+	{id = 8906, chance = 10000}, -- heavily rusted helmet
+	{id = 8900, chance = 10000}, -- heavily rusted shield
+	{name = "slimy leg", chance = 10000},
+	{name = "stone skin amulet", chance = 10000},
+	{name = "violet gem", chance = 10000},
+	{name = "wand of inferno", chance = 10000},
+	{name = "yellow gem", chance = 10000},
+	{name = "gold token", chance = 1000},
+	{name = "silver token", chance = 1000},
+	{name = "mallet head", chance = 1000},
+	{name = "gnome shield", chance = 1000},
+	{name = "gnome sword", chance = 1000},
 	{name = "plan for a makeshift armour", chance = 500},
-	{name = "Gnome Armor", chance = 500}
+	{name = "gnome armor", chance = 500}
 }
 
 monster.attacks = {

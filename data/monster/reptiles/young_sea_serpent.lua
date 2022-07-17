@@ -43,10 +43,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -78,15 +78,15 @@ monster.loot = {
 	{name = "small sapphire", chance = 1900, maxCount = 2},
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 48000, maxCount = 74},
-	{id = 3049, chance = 1000}, -- Stealth ring
+	{id = 3049, chance = 1000}, -- stealth ring
 	{name = "life crystal", chance = 300},
 	{name = "battle axe", chance = 8000},
 	{name = "morning star", chance = 40000},
 	{name = "battle hammer", chance = 5000},
 	{name = "strong health potion", chance = 5000},
 	{name = "strong mana potion", chance = 4000},
-	{id = 8894, chance = 7940},
-	{id = 8895, chance = 7940},
+	{id = 8894, chance = 7940}, -- heavily rusted armor
+	{id = 8895, chance = 7940}, -- rusted armor
 	{name = "sea serpent scale", chance = 5000}
 }
 
@@ -105,9 +105,9 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -15},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -20},
 	{type = COMBAT_ENERGYDAMAGE, percent = -10},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = 30},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},

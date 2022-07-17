@@ -72,16 +72,16 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3583, chance = 20000, maxCount = 2},
-	{id = 2903, chance = 1818},
-	{id = 2842, chance = 3333},
-	{id = 3386, chance = 333},
-	{id = 3450, chance = 2222, maxCount = 10},
-	{id = 3732, chance = 6666},
-	{id = 3280, chance = 1428},
-	{id = 3029, chance = 2222, maxCount = 2},
-	{id = 5948, chance = 5000},
-	{id = 5919, chance = 100000}
+	{id = 3583, chance = 20000, maxCount = 2}, -- dragon ham
+	{id = 2903, chance = 1818}, -- golden mug
+	{id = 2842, chance = 3333}, -- book
+	{id = 3386, chance = 333}, -- dragon scale mail
+	{id = 3450, chance = 2222, maxCount = 10}, -- power bolt
+	{id = 3732, chance = 6666}, -- green mushroom
+	{id = 3280, chance = 1428}, -- fire sword
+	{id = 3029, chance = 2222, maxCount = 2}, -- small sapphire
+	{id = 5948, chance = 5000}, -- red dragon leather
+	{id = 5919, chance = 100000} -- dragon claw
 }
 
 monster.attacks = {

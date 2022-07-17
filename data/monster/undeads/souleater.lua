@@ -84,7 +84,7 @@ monster.loot = {
 	{name = "necrotic rod", chance = 980},
 	{name = "wand of cosmic energy", chance = 910},
 	{name = "spirit container", chance = 140},
-	{id = 6299, chance = 300},
+	{id = 6299, chance = 300}, -- death ring
 	{name = "great mana potion", chance = 8000},
 	{name = "ultimate health potion", chance = 9400},
 	{name = "souleater trophy", chance = 20},
@@ -108,7 +108,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 70},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 60},
 	{type = COMBAT_ENERGYDAMAGE, percent = -10},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = -10},

@@ -5,10 +5,10 @@ monster.description = "an acolyte of the cult"
 monster.experience = 300
 monster.outfit = {
 	lookType = 194,
-	lookHead = 114,
-	lookBody = 121,
-	lookLegs = 121,
-	lookFeet = 57,
+	lookHead = 95,
+	lookBody = 100,
+	lookLegs = 100,
+	lookFeet = 19,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -86,15 +86,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2828, chance = 730},
+	{id = 2828, chance = 730}, -- book
 	{name = "gold coin", chance = 66940, maxCount = 40},
 	{name = "small emerald", chance = 550},
-	{id = 3052, chance = 560}, -- Life ring
+	{id = 3052, chance = 560}, -- life ring
 	{name = "terra rod", chance = 250},
 	{name = "dragon necklace", chance = 1050},
 	{name = "morning star", chance = 4990},
 	{name = "pirate voodoo doll", chance = 1060},
-	{id = 6088, chance = 480},
+	{id = 6088, chance = 480}, -- music sheet
 	{name = "cultish robe", chance = 8070},
 	{name = "cultish symbol", chance = 40},
 	{name = "rope belt", chance = 10420},

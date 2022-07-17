@@ -5,10 +5,10 @@ monster.description = "Ghulosh"
 monster.experience = 100000
 monster.outfit = {
 	lookType = 1062,
-	lookHead = 79,
-	lookBody = 94,
+	lookHead = 78,
+	lookBody = 113,
 	lookLegs = 94,
-	lookFeet = 94,
+	lookFeet = 18,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -70,7 +70,7 @@ monster.loot = {
 	{name = "bullseye potion", chance = 90000},
 	{name = "demon horn", chance = 90000},
 	{name = "magic sulphur", chance = 90000},
-	{id= 3039, chance = 90000},
+	{id= 3039, chance = 90000}, -- red gem
 	{name = "stone skin amulet", chance = 90000},
 	{name = "yellow gem", chance = 90000},
 	{name = "wand of voodoo", chance = 90000},
@@ -86,9 +86,9 @@ monster.loot = {
 	{name = "butcher's axe", chance = 1000},
 	{name = "dreaded cleaver", chance = 1000},
 	{name = "mercenary sword", chance = 1000},
-	{id = 28341, chance = 1000},
-	{id = 8900, chance = 1000},
-	{id = 8906, chance = 1000},
+	{id = 28341, chance = 1000}, -- tessellated wall
+	{id = 8900, chance = 1000}, -- heavily rusted shield
+	{id = 8906, chance = 1000}, -- heavily rusted helmet
 	{name = "epaulette", chance = 500},
 	{name = "giant emerald", chance = 500},
 	{name = "unliving demonbone", chance = 500}

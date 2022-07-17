@@ -54,7 +54,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -79,20 +79,17 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "small diamond", chance = 1000},
-	{name = "small sapphire", chance = 1000},
-	{name = "gold coin", chance = 50000, maxCount = 100},
-	{name = "small emerald", chance = 1000, maxCount = 2},
-	{name = "platinum coin", chance = 10000},
-	{id = 3051, chance = 950}, -- Energy ring
-	{id = 3052, chance = 930}, -- Life ring
-	{id = 3578, chance = 20000},
+	{name = "small diamond", chance = 2500},
+	{name = "gold coin", chance = 100000, maxCount = 100},
+	{name = "small emerald", chance = 2500, maxCount = 2},
+	{name = "platinum coin", chance = 25000},
+	{id = 3051, chance = 950}, -- energy ring
+	{id = 3052, chance = 930}, -- life ring
+	{id = 3578, chance = 20000}, -- fish
 	{name = "rainbow trout", chance = 940},
 	{name = "green perch", chance = 1050},
 	{name = "strong health potion", chance = 10000},
-	{name = "strong mana potion", chance = 10000},
-	{id = 281, chance = 800},
-	{id = 282, chance = 800}
+	{name = "strong mana potion", chance = 10000}
 }
 
 monster.attacks = {
@@ -105,13 +102,13 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 20,
-	armor = 20,
+	armor = 37,
 	{name ="combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 50, maxDamage = 80, effect = CONST_ME_MAGIC_BLUE, target = false},
 	{name ="speed", interval = 2000, chance = 15, speedChange = 300, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000}
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 35},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
 	{type = COMBAT_ENERGYDAMAGE, percent = -25},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = 100},

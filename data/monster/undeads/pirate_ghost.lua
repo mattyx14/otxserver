@@ -50,7 +50,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = true,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -79,9 +79,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2817, chance = 910},
+	{id = 2817, chance = 910}, -- blank parchment
 	{name = "gold coin", chance = 48000, maxCount = 67},
-	{id = 3049, chance = 650}, -- Stealth ring
+	{id = 3049, chance = 650}, -- stealth ring
 	{name = "spike sword", chance = 130},
 	{name = "red robe", chance = 130},
 	{name = "tattered piece of robe", chance = 4300}

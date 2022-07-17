@@ -5,10 +5,10 @@ monster.description = "a stalker"
 monster.experience = 90
 monster.outfit = {
 	lookType = 128,
-	lookHead = 78,
+	lookHead = 97,
 	lookBody = 116,
 	lookLegs = 95,
-	lookFeet = 114,
+	lookFeet = 95,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "katana", chance = 530},
 	{name = "obsidian lance", chance = 1210},
 	{name = "brass legs", chance = 3500},
-	{name = "brass legs", chance = 5510},
+	{name = "brass shield", chance = 5510},
 	{name = "miraculum", chance = 1550}
 }
 
@@ -93,12 +93,12 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 15,
-	armor = 15,
+	armor = 14,
 	{name ="invisible", interval = 2000, chance = 40, effect = CONST_ME_MAGIC_BLUE}
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -20},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
@@ -106,8 +106,8 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = -5},
-	{type = COMBAT_DEATHDAMAGE , percent = 5}
+	{type = COMBAT_HOLYDAMAGE , percent = -10},
+	{type = COMBAT_DEATHDAMAGE , percent = 10}
 }
 
 monster.immunities = {

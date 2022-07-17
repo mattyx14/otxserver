@@ -5,10 +5,10 @@ monster.description = "a brain squid"
 monster.experience = 17672
 monster.outfit = {
 	lookType = 1059,
-	lookHead = 97,
-	lookBody = 18,
-	lookLegs = 61,
-	lookFeet = 85,
+	lookHead = 17,
+	lookBody = 41,
+	lookLegs = 77,
+	lookFeet = 57,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -73,33 +73,33 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Violet Crystal Shard", chance = 900, maxCount = 4},
-	{name = "Platinum Coin", chance = 100000, maxCount = 12},
-	{name = "Glowing Rune", chance = 900, maxCount = 4},
-	{name = "Instable Proto Matter", chance = 1200, maxCount = 4},
-	{name = "Energy Ball", chance = 1200, maxCount = 4},
-	{name = "Energy Bar", chance = 1200, maxCount = 4},
-	{name = "Energy Drink", chance = 1200, maxCount = 4},
-	{name = "Odd Organ", chance = 1200, maxCount = 4},
-	{name = "Frozen Lightning", chance = 1200, maxCount = 4},
-	{id = 28568, chance = 1200, maxCount = 3},
-	{name = "Small Ruby", chance = 1200, maxCount = 4},
-	{name = "Violet Gem", chance = 1200, maxCount = 4},
-	{name = "Blue Crystal Splinter", chance = 1200, maxCount = 4},
-	{name = "Cyan Crystal Fragment", chance = 1200, maxCount = 4},
-	{name = "Ultimate Mana Potion", chance = 1200, maxCount = 4},
-	{name = "Piece of Dead Brain", chance = 1200, maxCount = 4},
-	{name = "Wand of Defiance", chance = 800},
-	{name = "Lightning Headband", chance = 950},
-	{name = "Lightning Pendant", chance = 850},
-	{name = "Might Ring", chance = 1300},
-	{name = "Slime Heart", chance = 1200, maxCount = 4},
-	{id = 23544, chance = 560},
-	{id = 23542, chance = 560},-- collar of blue plasma
-	{id = 23543, chance = 560}, -- Collar of green plasma
-	{id = 23533, chance = 560},
-	{id = 23529, chance = 560},
-	{id = 23531, chance = 560}
+	{name = "violet crystal shard", chance = 900, maxCount = 4},
+	{name = "platinum coin", chance = 100000, maxCount = 12},
+	{name = "glowing rune", chance = 900, maxCount = 4},
+	{name = "instable proto matter", chance = 1200, maxCount = 4},
+	{name = "energy ball", chance = 1200, maxCount = 4},
+	{name = "energy bar", chance = 1200, maxCount = 4},
+	{name = "energy drink", chance = 1200, maxCount = 4},
+	{name = "odd organ", chance = 1200, maxCount = 4},
+	{name = "frozen lightning", chance = 1200, maxCount = 4},
+	{id = 28568, chance = 1200, maxCount = 3}, -- inkwell
+	{name = "small ruby", chance = 1200, maxCount = 4},
+	{name = "violet gem", chance = 1200, maxCount = 4},
+	{name = "blue crystal splinter", chance = 1200, maxCount = 4},
+	{name = "cyan crystal fragment", chance = 1200, maxCount = 4},
+	{name = "ultimate mana potion", chance = 1200, maxCount = 4},
+	{name = "piece of dead brain", chance = 1200, maxCount = 4},
+	{name = "wand of defiance", chance = 800},
+	{name = "lightning headband", chance = 950},
+	{name = "lightning pendant", chance = 850},
+	{name = "might ring", chance = 1300},
+	{name = "slime heart", chance = 1200, maxCount = 4},
+	{id = 23544, chance = 560}, -- collar of red plasma
+	{id = 23542, chance = 560}, -- collar of blue plasma
+	{id = 23543, chance = 560}, -- collar of green plasma
+	{id = 23533, chance = 560}, -- ring of red plasma
+	{id = 23529, chance = 560}, -- ring of blue plasma
+	{id = 23531, chance = 560} -- ring of green plasma
 }
 
 monster.attacks = {
@@ -115,15 +115,15 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 90},
-	{type = COMBAT_EARTHDAMAGE, percent = 30},
-	{type = COMBAT_FIREDAMAGE, percent = 50},
+	{type = COMBAT_ENERGYDAMAGE, percent = 100},
+	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 50},
-	{type = COMBAT_HOLYDAMAGE , percent = 70},
-	{type = COMBAT_DEATHDAMAGE , percent = 50}
+	{type = COMBAT_ICEDAMAGE, percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = 100},
+	{type = COMBAT_DEATHDAMAGE , percent = -15}
 }
 
 monster.immunities = {

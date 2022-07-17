@@ -7,8 +7,8 @@ monster.outfit = {
 	lookType = 541,
 	lookHead = 95,
 	lookBody = 113,
-	lookLegs = 21,
-	lookFeet = 21,
+	lookLegs = 3,
+	lookFeet = 3,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -76,24 +76,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 3},
-	{name = "Fafnar Symbol", chance = 6600},
-	{id = 31433, chance = 5600},
-	{id = 31435, chance = 5600},
-	{id = 31436, chance = 5600},
-	{name = "Dragon Necklace", chance = 4700},
-	{name = "Lightning Pendant", chance = 4100},
-	{name = "Magma Amulet", chance = 3700},
-	{name = "Strange Talisman", chance = 3000},
-	{name = "Magma Boots", chance = 2700},
-	{id = 31331, chance = 2400},
-	{name = "Elven Amulet", chance = 2100},
-	{name = "Lightning Legs", chance = 2000},
-	{name = "Lightning Headband", chance = 1700},
-	{name = "Lightning Boots", chance = 1400},
-	{name = "Spellweaver's Robe", chance = 850},
-	{id = 31369, chance = 570},
-	{name = "Sea Horse Figurine", chance = 140}
+	{name = "platinum coin", chance = 100000, maxCount = 3},
+	{name = "fafnar symbol", chance = 6600},
+	{id = 31433, chance = 5600}, -- secret instruction
+	{id = 31435, chance = 5600}, -- secret instruction
+	{id = 31436, chance = 5600}, -- secret instruction
+	{name = "dragon necklace", chance = 4700},
+	{name = "lightning pendant", chance = 4100},
+	{name = "magma amulet", chance = 3700},
+	{name = "strange talisman", chance = 3000},
+	{name = "magma boots", chance = 2700},
+	{id = 31331, chance = 2400}, -- empty honey glass
+	{name = "elven amulet", chance = 2100},
+	{name = "lightning legs", chance = 2000},
+	{name = "lightning headband", chance = 1700},
+	{name = "lightning boots", chance = 1400},
+	{name = "spellweaver's robe", chance = 850},
+	{id = 31369, chance = 570}, -- gryphon mask
+	{name = "sea horse figurine", chance = 140}
 }
 
 monster.attacks = {

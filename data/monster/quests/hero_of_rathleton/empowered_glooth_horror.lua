@@ -67,7 +67,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 21905, chance = 10000}
+	{id = 21905, chance = 10000} -- glooth glider hinge
 }
 
 monster.attacks = {

@@ -53,7 +53,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 80,
@@ -96,7 +96,7 @@ monster.loot = {
 	{name = "bonelord eye", chance = 2990},
 	{name = "clerical mace", chance = 1970},
 	{name = "haunted blade", chance = 1440},
-	{id = 3059, chance = 930},
+	{id = 3059, chance = 930}, -- spellbook
 	{name = "spiked squelcher", chance = 180},
 	{name = "bonelord shield", chance = 100},
 	{name = "bonelord helmet", chance = 100}

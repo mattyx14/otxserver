@@ -80,13 +80,13 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 67500, maxCount = 25},
 	{name = "bronze amulet", chance = 110},
-	{id = 3264, chance = 5000},
+	{id = 3264, chance = 5000}, -- sword
 	{name = "axe", chance = 4000},
 	{name = "mace", chance = 12840},
 	{name = "brass helmet", chance = 7700},
 	{name = "chain armor", chance = 10000},
 	{name = "plate shield", chance = 20020},
-	{id = 3457, chance = 310},
+	{id = 3457, chance = 310}, -- shovel
 	{name = "meat", chance = 5000},
 	{name = "minotaur leather", chance = 990},
 	{name = "minotaur horn", chance = 2090, maxCount = 2}
@@ -103,7 +103,7 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = -15},
+	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 20},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
@@ -111,7 +111,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -10},
 	{type = COMBAT_HOLYDAMAGE , percent = 10},
-	{type = COMBAT_DEATHDAMAGE , percent = -5}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

@@ -1,14 +1,14 @@
 local mType = Game.createMonsterType("Zushuka")
 local monster = {}
 
-monster.description = "zushuka"
+monster.description = "zushuka" -- (immortal) // (mortal): lookType = 149, lookHead = 86, lookBody = 10, lookLegs = 11, lookFeet = 4, lookAddons = 0, lookMount = 0
 monster.experience = 9000
 monster.outfit = {
 	lookType = 149,
-	lookHead = 86,
-	lookBody = 12,
-	lookLegs = 31,
-	lookFeet = 60,
+	lookHead = 0,
+	lookBody = 10,
+	lookLegs = 0,
+	lookFeet = 4,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -69,38 +69,38 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 92000, maxCount = 200},
-	{id = 19083, chance = 92000},
-	{id = 7290, chance = 57000},
-	{id = 7449, chance = 42000},
-	{id = 7642, chance = 42000, maxCount = 5},
-	{id = 3284, chance = 42000},
-	{id = 3052, chance = 42000}, -- Life ring
-	{id = 7443, chance = 35000},
-	{id = 819, chance = 35000},
-	{id = 7440, chance = 35000},
-	{id = 3035, chance = 35000},
-	{id = 5909, chance = 35000, maxCount = 2},
-	{id = 7439, chance = 28000},
-	{id = 3041, chance = 28000},
-	{id = 3574, chance = 28000},
-	{id = 815, chance = 21000},
-	{id = 238, chance = 21000, maxCount = 5},
-	{id = 5912, chance = 14000},
-	{id = 3333, chance = 14000},
-	{id = 3085, chance = 14000},
-	{id = 823, chance = 14000},
-	{id = 824, chance = 14000},
-	{id = 9058, chance = 14000},
-	{id = 239, chance = 14000, maxCount = 5},
-	{id = 7459, chance = 14000},
-	{id = 3324, chance = 14000},
-	{id = 3079, chance = 7000},
-	{id = 829, chance = 7000},
-	{id = 5911, chance = 7000},
-	{id = 19365, chance = 7000},
-	{id = 19366, chance = 3000},
-	{id = 7410, chance = 3000}
+	{id = 3031, chance = 92000, maxCount = 200}, -- gold coin
+	{id = 19083, chance = 92000}, -- silver raid token
+	{id = 7290, chance = 57000}, -- shard
+	{id = 7449, chance = 42000}, -- crystal sword
+	{id = 7642, chance = 42000, maxCount = 5}, -- great spirit potion
+	{id = 3284, chance = 42000}, -- ice rapier
+	{id = 3052, chance = 42000}, -- life ring
+	{id = 7443, chance = 35000}, -- bullseye potion
+	{id = 819, chance = 35000}, -- glacier shoes
+	{id = 7440, chance = 35000}, -- mastermind potion
+	{id = 3035, chance = 35000}, -- platinum coin
+	{id = 5909, chance = 35000, maxCount = 2}, -- white piece of cloth
+	{id = 7439, chance = 28000}, -- berserk potion
+	{id = 3041, chance = 28000}, -- blue gem
+	{id = 3574, chance = 28000}, -- mystic turban
+	{id = 815, chance = 21000}, -- glacier amulet
+	{id = 238, chance = 21000, maxCount = 5}, -- great mana potion
+	{id = 5912, chance = 14000}, -- blue piece of cloth
+	{id = 3333, chance = 14000}, -- crystal mace
+	{id = 3085, chance = 14000}, -- dragon necklace
+	{id = 823, chance = 14000}, -- glacier kilt
+	{id = 824, chance = 14000}, -- glacier robe
+	{id = 9058, chance = 14000}, -- gold ingot
+	{id = 239, chance = 14000, maxCount = 5}, -- great health potion
+	{id = 7459, chance = 14000}, -- pair of earmuffs
+	{id = 3324, chance = 14000}, -- skull staff
+	{id = 3079, chance = 7000}, -- boots of haste
+	{id = 829, chance = 7000}, -- glacier mask
+	{id = 5911, chance = 7000}, -- red piece of cloth
+	{id = 19365, chance = 7000}, -- trapped lightning
+	{id = 19366, chance = 3000}, -- icy culottes
+	{id = 7410, chance = 3000} -- queen's sceptre
 }
 
 monster.attacks = {

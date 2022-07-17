@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "small emerald", chance = 10290, maxCount = 2},
 	{name = "small amethyst", chance = 10680, maxCount = 2},
 	{name = "platinum coin", chance = 100000, maxCount = 6},
-	{id = 3092, chance = 1550}, -- Axe ring
+	{id = 3092, chance = 1550}, -- axe ring
 	{name = "war hammer", chance = 5050},
 	{name = "warrior helmet", chance = 580},
 	{name = "guardian shield", chance = 2300},
@@ -98,7 +98,7 @@ monster.loot = {
 	{name = "great mana potion", chance = 6660, maxCount = 2},
 	{name = "great health potion", chance = 7960},
 	{name = "shiny stone", chance = 4660},
-	{id = 12600, chance = 780},
+	{id = 12600, chance = 780}, -- coal
 	{name = "green crystal shard", chance = 1750},
 	{name = "green crystal splinter", chance = 3110},
 	{name = "brown crystal splinter", chance = 5630, maxCount = 2},
@@ -122,16 +122,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 10},
-	{type = COMBAT_EARTHDAMAGE, percent = 20},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -3},
+	{type = COMBAT_ENERGYDAMAGE, percent = 5},
+	{type = COMBAT_EARTHDAMAGE, percent = 30},
 	{type = COMBAT_FIREDAMAGE, percent = 100},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 1},
+	{type = COMBAT_ICEDAMAGE, percent = 10},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 1}
+	{type = COMBAT_DEATHDAMAGE , percent = 15}
 }
 
 monster.immunities = {

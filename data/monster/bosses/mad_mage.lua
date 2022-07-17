@@ -73,24 +73,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 340},
-	{id = 3035, chance = 48000, maxCount = 5},
-	{id = 237, chance = 21000, maxCount = 5},
-	{id = 236, chance = 17000, maxCount = 5},
-	{id = 3062, chance = 9000},
-	{id = 3049, chance = 6000}, -- Stealth ring
-	{id = 7368, chance = 4000, maxCount = 4},
-	{id = 3728, chance = 4000, maxCount = 3},
-	{id = 5911, chance = 5000},
-	{id = 3033, chance = 4000, maxCount = 3},
-	{id = 12599, chance = 1680, unique = true},
-	{id = 7443, chance = 1100},
-	{id = 9027, chance = 740},
-	{id = 3079, chance = 2370},
-	{id = 11454, chance = 370},
-	{id = 2995, chance = 1370},
-	{id = 3006, chance = 1370},
-	{id = 8073, chance = 2370}
+	{id = 3031, chance = 100000, maxCount = 340}, -- gold coin
+	{id = 3035, chance = 48000, maxCount = 5}, -- platinum coin
+	{id = 237, chance = 21000, maxCount = 5}, -- strong mana potion
+	{id = 236, chance = 17000, maxCount = 5}, -- strong health potion
+	{id = 3062, chance = 9000}, -- mind stone
+	{id = 3049, chance = 6000}, -- stealth ring
+	{id = 7368, chance = 4000, maxCount = 4}, -- assassin star
+	{id = 3728, chance = 4000, maxCount = 3}, -- dark mushroom
+	{id = 5911, chance = 5000}, -- red piece of cloth
+	{id = 3033, chance = 4000, maxCount = 3}, -- small amethyst
+	{id = 12599, chance = 1680, unique = true}, -- mage's cap
+	{id = 7443, chance = 1100}, -- bullseye potion
+	{id = 9027, chance = 740}, -- crystal of focus
+	{id = 3079, chance = 2370}, -- boots of haste
+	{id = 11454, chance = 370}, -- luminous orb
+	{id = 2995, chance = 1370}, -- piggy bank
+	{id = 3006, chance = 1370}, -- ring of the sky
+	{id = 8073, chance = 2370} -- spellbook of warding
 }
 
 monster.attacks = {

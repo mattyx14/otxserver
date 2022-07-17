@@ -5,10 +5,10 @@ monster.description = "a Soul-Broken Harbinger"
 monster.experience = 5800
 monster.outfit = {
 	lookType = 1137,
-	lookHead = 124,
-	lookBody = 31,
-	lookLegs = 17,
-	lookFeet = 81,
+	lookHead = 85,
+	lookBody = 10,
+	lookLegs = 16,
+	lookFeet = 83,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -76,20 +76,20 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 12},
-	{id = 30058, chance = 15750, maxCount = 3},
-	{name = "Dream Essence Egg", chance = 13700},
-	{name = "Elvish Talisman", chance = 4790},
-	{name = "Knight Legs", chance = 4450},
-	{name = "Glacier Kilt", chance = 4110},
-	{name = "Glacier Shoes", chance = 3770},
-	{name = "Ice Rapier", chance = 3770},
-	{name = "Spellbook of Mind Control", chance = 2400},
-	{name = "Crown Shield", chance = 1710},
-	{name = "Wood Cape", chance = 1710},
-	{id = 23529, chance = 1370},
-	{name = "Tower Shield", chance = 680},
-	{id = 23543, chance = 680} -- Collar of green plasma
+	{name = "platinum coin", chance = 100000, maxCount = 12},
+	{id = 30058, chance = 15750, maxCount = 3}, -- ice flower
+	{name = "dream essence egg", chance = 13700},
+	{name = "elvish talisman", chance = 4790},
+	{name = "knight legs", chance = 4450},
+	{name = "glacier kilt", chance = 4110},
+	{name = "glacier shoes", chance = 3770},
+	{name = "ice rapier", chance = 3770},
+	{name = "spellbook of mind control", chance = 2400},
+	{name = "crown shield", chance = 1710},
+	{name = "wood cape", chance = 1710},
+	{id = 23529, chance = 1370}, -- ring of blue plasma
+	{name = "tower shield", chance = 680},
+	{id = 23543, chance = 680} -- collar of green plasma
 }
 
 monster.attacks = {

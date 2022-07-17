@@ -53,7 +53,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 70,
@@ -81,13 +81,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2842, chance = 8500},
+	{id = 2842, chance = 8500}, -- book
 	{name = "golden mug", chance = 3000},
 	{name = "small sapphire", chance = 5200},
 	{name = "gold coin", chance = 33000, maxCount = 100},
 	{name = "gold coin", chance = 33000, maxCount = 100},
 	{name = "gold coin", chance = 33000, maxCount = 42},
-	{id = 3051, chance = 5000}, -- Energy ring
+	{id = 3051, chance = 5000}, -- energy ring
 	{name = "life crystal", chance = 520},
 	{name = "ice rapier", chance = 350},
 	{name = "strange helmet", chance = 450},
@@ -99,7 +99,7 @@ monster.loot = {
 	{name = "green mushroom", chance = 12000},
 	{name = "shard", chance = 550},
 	{name = "dragon slayer", chance = 120},
-	{id = 7441, chance = 4000}
+	{id = 7441, chance = 4000} -- ice cube
 }
 
 monster.attacks = {
@@ -121,7 +121,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = 100},

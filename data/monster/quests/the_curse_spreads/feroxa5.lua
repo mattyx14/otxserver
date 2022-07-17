@@ -6,10 +6,10 @@ monster.description = "Feroxa"
 monster.experience = 0
 monster.outfit = {
 	lookType = 731,
-	lookHead = 57,
-	lookBody = 76,
-	lookLegs = 77,
-	lookFeet = 57,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -64,24 +64,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 16119, chance = 10000, maxCount = 5},
-	{id = 16120, chance = 10000, maxCount = 5},
-	{id = 16124, chance = 10000, maxCount = 5},
-	{id = 3041, chance = 2500},
-	{id = 3039, chance = 2500},
-	{id = 3079, chance = 1500},
-	{id = 3035, chance = 100000, maxCount = 50},
-	{id = 7643, chance = 10000, maxCount = 5},
-	{id = 238, chance = 10000, maxCount = 5},
-	{id = 239, chance = 10000, maxCount = 5},
-	{id = 22062, chance = 10000, unique = true},
-	{id = 22060, chance = 1500},
-	{id = 22084, chance = 1500},
-	{id = 7436, chance = 1500},
-	{id = 7419, chance = 1500},
-	{id = 22085, chance = 1500},
-	{id = 22086, chance = 1500},
-	{id = 22104, chance = 12000}
+	{id = 16119, chance = 10000, maxCount = 5}, -- blue crystal shard
+	{id = 16120, chance = 10000, maxCount = 5}, -- violet crystal shard
+	{id = 16124, chance = 10000, maxCount = 5}, -- blue crystal splinter
+	{id = 3041, chance = 2500}, -- blue gem
+	{id = 3039, chance = 2500}, -- red gem
+	{id = 3079, chance = 1500}, -- boots of haste
+	{id = 3035, chance = 100000, maxCount = 50}, -- platinum coin
+	{id = 7643, chance = 10000, maxCount = 5}, -- ultimate health potion
+	{id = 238, chance = 10000, maxCount = 5}, -- great mana potion
+	{id = 239, chance = 10000, maxCount = 5}, -- great health potion
+	{id = 22062, chance = 10000, unique = true}, -- werewolf helmet
+	{id = 22060, chance = 1500}, -- werewolf amulet
+	{id = 22084, chance = 1500}, -- wolf backpack
+	{id = 7436, chance = 1500}, -- angelic axe
+	{id = 7419, chance = 1500}, -- dreaded cleaver
+	{id = 22085, chance = 1500}, -- fur armor
+	{id = 22086, chance = 1500}, -- badger boots
+	{id = 22104, chance = 12000} -- trophy of feroxa
 }
 
 monster.attacks = {

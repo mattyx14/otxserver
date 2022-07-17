@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 70,
@@ -63,7 +63,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 6539, chance = 35000}
+	{id = 6539, chance = 35000} -- handmaiden's protector
 }
 
 monster.attacks = {

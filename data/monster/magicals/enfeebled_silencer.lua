@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -80,18 +80,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3035, chance = 100000, maxCount = 8},
-	{id = 3049, chance = 1200}, -- Stealth ring
-	{id = 3079, chance = 360},
-	{id = 7368, chance = 7600, maxCount = 10},
-	{id = 7387, chance = 960},
-	{id = 7407, chance = 2000},
-	{id = 7451, chance = 640},
-	{id = 7454, chance = 2400},
-	{id = 812, chance = 960},
-	{id = 813, chance = 480},
-	{id = 20200, chance = 17000},
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 100000, maxCount = 8}, -- platinum coin
+	{id = 3049, chance = 1200}, -- stealth ring
+	{id = 3079, chance = 360}, -- boots of haste
+	{id = 7368, chance = 7600, maxCount = 10}, -- assassin star
+	{id = 7387, chance = 960}, -- diamond sceptre
+	{id = 7407, chance = 2000}, -- haunted blade
+	{id = 7451, chance = 640}, -- shadow sceptre
+	{id = 7454, chance = 2400}, -- glorious axe
+	{id = 812, chance = 960}, -- terra legs
+	{id = 813, chance = 480}, -- terra boots
+	{id = 20200, chance = 17000}, -- silencer claws
 	{name = "fairy wings", chance = 30100}
 }
 
@@ -111,14 +111,14 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
 	{type = COMBAT_ENERGYDAMAGE, percent = 15},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_EARTHDAMAGE, percent = 60},
 	{type = COMBAT_FIREDAMAGE, percent = 30},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 10},
+	{type = COMBAT_ICEDAMAGE, percent = 15},
 	{type = COMBAT_HOLYDAMAGE , percent = -25},
-	{type = COMBAT_DEATHDAMAGE , percent = 70}
+	{type = COMBAT_DEATHDAMAGE , percent = 65}
 }
 
 monster.immunities = {

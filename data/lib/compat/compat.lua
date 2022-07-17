@@ -396,7 +396,7 @@ function doPlayerAddExp(cid, exp, useMult, ...)
 	end
 
 	if useMult then
-		exp = exp * getRateFromTable(experienceStages, player:getLevel(), configManager.getNumber(configKeys.RATE_EXP))
+		exp = exp * getRateFromTable(experienceStages, player:getLevel(), configManager.getNumber(configKeys.RATE_EXPERIENCE))
 	end
 	return player:addExperience(exp, ...)
 end
@@ -531,7 +531,7 @@ function doConvinceCreature(cid, target)
 		return false
 	end
 
-	creature:addSummon(targetCreature)
+	creature:setSummon(targetCreature)
 	return true
 end
 
@@ -879,35 +879,6 @@ function getThingfromPos(pos)
 		thing = tile:getThing(stackpos)
 	end
 	return pushThing(thing)
-end
-
-function doRelocate(fromPos, toPos)
-	if fromPos == toPos then
-		return false
-	end
-
-	local fromTile = Tile(fromPos)
-	if fromTile == nil then
-		return false
-	end
-
-	if Tile(toPos) == nil then
-		return false
-	end
-
-	for i = fromTile:getThingCount() - 1, 0, -1 do
-		local thing = fromTile:getThing(i)
-		if thing then
-			if thing:isItem() then
-				if ItemType(thing:getId()):isMovable() then
-					thing:moveTo(toPos)
-				end
-			elseif thing:isCreature() then
-				thing:teleportTo(toPos)
-			end
-		end
-	end
-	return true
 end
 
 function getThing(uid)

@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 0,
 	lookBody = 77,
 	lookLegs = 92,
-	lookFeet = 115,
+	lookFeet = 97,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -74,15 +74,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 32000, maxCount = 80},
-	{id = 3299, chance = 9600},
-	{id = 3324, chance = 8330},
-	{id = 7368, chance = 5500, maxCount = 4},
-	{id = 3567, chance = 3390},
-	{id = 3029, chance = 3190},
-	{id = 825, chance = 3040},
-	{id = 3006, chance = 2420},
-	{id = 3360, chance = 2240}
+	{id = 3031, chance = 32000, maxCount = 80}, -- gold coin
+	{id = 3299, chance = 9600}, -- poison dagger
+	{id = 3324, chance = 8330}, -- skull staff
+	{id = 7368, chance = 5500, maxCount = 4}, -- assassin star
+	{id = 3567, chance = 3390}, -- blue robe
+	{id = 3029, chance = 3190}, -- small sapphire
+	{id = 825, chance = 3040}, -- lightning robe
+	{id = 3006, chance = 2420}, -- ring of the sky
+	{id = 3360, chance = 2240} -- golden armor
 }
 
 monster.attacks = {

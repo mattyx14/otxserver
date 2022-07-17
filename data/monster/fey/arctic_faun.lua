@@ -95,7 +95,7 @@ monster.loot = {
 	{name = "wood cape", chance = 820},
 	{name = "leaf legs", chance = 340},
 	{name = "wooden spellbook", chance = 210},
-	{id = 5792, chance = 140}
+	{id = 5792, chance = 140} -- die
 }
 
 monster.attacks = {

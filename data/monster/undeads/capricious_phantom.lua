@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 4,
@@ -90,11 +90,11 @@ monster.loot = {
 	{name = "ornate crossbow", chance = 20020},
 	{name = "glacial rod", chance = 21920},
 	{name = "fur armor", chance = 18920},
-	{id = 34138, chance = 14560}, -- Capricious heart
-	{id = 34145, chance = 11560}, -- Capricious robe
-	{id = 23529, chance = 28920}, -- Ring of blue plasma
-	{id = 23542, chance = 24920}, -- Collar of blue plasma
-	{id = 34109, chance = 50} -- Bag you desire
+	{id = 34138, chance = 14560}, -- capricious heart
+	{id = 34145, chance = 11560}, -- capricious robe
+	{id = 23529, chance = 28920}, -- ring of blue plasma
+	{id = 23542, chance = 24920}, -- collar of blue plasma
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {

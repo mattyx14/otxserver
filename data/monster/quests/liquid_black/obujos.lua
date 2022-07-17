@@ -16,7 +16,7 @@ monster.outfit = {
 monster.health = 33000
 monster.maxHealth = 33000
 monster.race = "blood"
-monster.corpse = 13797
+monster.corpse = 13800
 monster.speed = 560
 monster.manaCost = 0
 
@@ -37,7 +37,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = true,
 	illusionable = false,
 	canPushItems = true,
@@ -65,9 +65,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Deepling Axe", chance = 1300},
-	{name = "Depth Scutum", chance = 1185},
-	{name = "Ornate Legs", chance = 700, unique = true}
+	{name = "deepling axe", chance = 1300},
+	{name = "depth scutum", chance = 1185},
+	{name = "ornate legs", chance = 700, unique = true}
 }
 
 monster.attacks = {

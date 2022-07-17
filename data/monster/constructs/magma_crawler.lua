@@ -50,7 +50,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -80,7 +80,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 99},
 	{name = "platinum coin", chance = 100000, maxCount = 5},
 	{name = "yellow gem", chance = 1030},
-	{id = 3051, chance = 1650}, -- Energy ring
+	{id = 3051, chance = 1650}, -- energy ring
 	{name = "fire sword", chance = 1680},
 	{name = "black shield", chance = 1550},
 	{name = "iron ore", chance = 4280},
@@ -93,7 +93,7 @@ monster.loot = {
 	{name = "magma boots", chance = 1820},
 	{name = "wand of draconia", chance = 4280},
 	{name = "fiery heart", chance = 7810},
-	{id = 12600, chance = 1675},
+	{id = 12600, chance = 1675}, -- coal
 	{name = "crystalline arrow", chance = 5950, maxCount = 10},
 	{name = "wand of everblazing", chance = 690},
 	{name = "blue crystal shard", chance = 3930, maxCount = 2},
@@ -130,7 +130,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 10},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 5}
+	{type = COMBAT_DEATHDAMAGE , percent = 25}
 }
 
 monster.immunities = {

@@ -7,7 +7,7 @@ monster.outfit = {
 	lookType = 129,
 	lookHead = 95,
 	lookBody = 116,
-	lookLegs = 121,
+	lookLegs = 120,
 	lookFeet = 115,
 	lookAddons = 0,
 	lookMount = 0
@@ -45,7 +45,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -79,7 +79,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2920, chance = 3300},
+	{id = 2920, chance = 3300}, -- torch
 	{name = "small ruby", chance = 150},
 	{name = "dragon necklace", chance = 3000},
 	{name = "bow", chance = 5770},
@@ -87,14 +87,14 @@ monster.loot = {
 	{name = "brass armor", chance = 5070},
 	{name = "arrow", chance = 82000, maxCount = 22},
 	{name = "poison arrow", chance = 4500, maxCount = 4},
-	{id = 3449, chance = 5360, maxCount = 3}, -- Burst arrow
+	{id = 3449, chance = 5360, maxCount = 3}, -- burst arrow
 	{name = "orange", chance = 20300, maxCount = 2},
 	{name = "roll", chance = 11370, maxCount = 2},
 	{name = "sniper gloves", chance = 610},
 	{name = "slingshot", chance = 120},
-	{id = 7394, chance = 190},
-	{id = 7397, chance = 520},
-	{id = 7400, chance = 70},
+	{id = 7394, chance = 190}, -- wolf trophy
+	{id = 7397, chance = 520}, -- deer trophy
+	{id = 7400, chance = 70}, -- lion trophy
 	{name = "hunter's quiver", chance = 10240}
 }
 
@@ -109,7 +109,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -5},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 0},

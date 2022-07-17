@@ -71,7 +71,7 @@ monster.loot = {
 	{name = "gold coin", chance = 23000, maxCount = 56},
 	{name = "spear", chance = 30800, maxCount = 3},
 	{name = "brown bread", chance = 21600, maxCount = 2},
-	{id = 3003, chance = 16020},--rope
+	{id = 3003, chance = 16020}, -- rope
 	{name = "brass legs", chance = 12200},
 	{name = "halberd", chance = 11850},
 	{name = "plate armor", chance = 10370},

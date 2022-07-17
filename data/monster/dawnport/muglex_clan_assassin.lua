@@ -30,7 +30,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = true,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -54,18 +54,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3115, chance = 10760},
-	{id = 3337, chance = 4890},
-	{id = 3267, chance = 18090},
-	{id = 3578, chance = 11000, maxCount = 2},
-	{id = 3031, chance = 100000, maxCount = 18},
-	{id = 3361, chance = 6460},
-	{id = 3355, chance = 8070},
-	{id = 3120, chance = 6850},
-	{id = 3294, chance = 9780},
-	{id = 3462, chance = 9540},
-	{id = 1781, chance = 11980, maxCount = 3},
-	{id = 3378, chance = 1710}
+	{id = 3115, chance = 10760}, -- bone
+	{id = 3337, chance = 4890}, -- bone club
+	{id = 3267, chance = 18090}, -- dagger
+	{id = 3578, chance = 11000, maxCount = 2}, -- fish
+	{id = 3031, chance = 100000, maxCount = 18}, -- gold coin
+	{id = 3361, chance = 6460}, -- leather armor
+	{id = 3355, chance = 8070}, -- leather helmet
+	{id = 3120, chance = 6850}, -- mouldy cheese
+	{id = 3294, chance = 9780}, -- short sword
+	{id = 3462, chance = 9540}, -- small axe
+	{id = 1781, chance = 11980, maxCount = 3}, -- small stone
+	{id = 3378, chance = 1710} -- studded armor
 }
 
 monster.attacks = {

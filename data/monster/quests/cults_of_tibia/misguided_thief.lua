@@ -6,9 +6,9 @@ monster.experience = 1200
 monster.outfit = {
 	lookType = 684,
 	lookHead = 58,
-	lookBody = 58,
-	lookLegs = 41,
-	lookFeet = 76,
+	lookBody = 40,
+	lookLegs = 60,
+	lookFeet = 116,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -46,10 +46,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -79,15 +79,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 80},
-	{id = 237, chance = 9660},
-	{id = 3039, chance = 5680},
-	{id = 3582, chance = 58520},
-	{id = 236, chance = 5680},
-	{id = 3577, chance = 47160},
-	{id = 3037, chance = 6250},
-	{id = 25296, chance = 6250},
-	{id = 16124, chance = 570}
+	{id = 3031, chance = 100000, maxCount = 80}, -- gold coin
+	{id = 237, chance = 9660}, -- strong mana potion
+	{id = 3039, chance = 5680}, -- red gem
+	{id = 3582, chance = 58520}, -- ham
+	{id = 236, chance = 5680}, -- strong health potion
+	{id = 3577, chance = 47160}, -- meat
+	{id = 3037, chance = 6250}, -- yellow gem
+	{id = 25296, chance = 6250}, -- rubbish amulet
+	{id = 16124, chance = 570} -- blue crystal splinter
 }
 
 monster.attacks = {

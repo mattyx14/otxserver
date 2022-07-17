@@ -46,6 +46,14 @@ function Item.setText(self, text)
 	end
 end
 
+function Item.setName(self, name)
+	if name ~= '' then
+		self:setAttribute(ITEM_ATTRIBUTE_NAME, name)
+	else
+		self:removeAttribute(ITEM_ATTRIBUTE_NAME)
+	end
+end
+
 function Item.setUniqueId(self, uniqueId)
 	if type(uniqueId) ~= 'number' or uniqueId < 0 or uniqueId > 65535 then
 		return false

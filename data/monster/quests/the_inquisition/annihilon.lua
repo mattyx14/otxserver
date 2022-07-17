@@ -5,10 +5,10 @@ monster.description = "Annihilon"
 monster.experience = 15000
 monster.outfit = {
 	lookType = 12,
-	lookHead = 19,
-	lookBody = 104,
-	lookLegs = 96,
-	lookFeet = 96,
+	lookHead = 3,
+	lookBody = 9,
+	lookLegs = 77,
+	lookFeet = 77,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -72,7 +72,7 @@ monster.loot = {
 	{name = "violet gem", chance = 16666},
 	{name = "yellow gem", chance = 20000},
 	{name = "green gem", chance = 12500},
-	{id= 3039, chance = 20000},
+	{id= 3039, chance = 20000}, -- red gem
 	{name = "blue gem", chance = 20000},
 	{name = "halberd", chance = 20000},
 	{name = "guardian halberd", chance = 20000},
@@ -95,15 +95,15 @@ monster.loot = {
 	{name = "mastermind potion", chance = 14285},
 	{name = "great mana potion", chance = 11111},
 	{name = "great health potion", chance = 14285},
-	{id = 281, chance = 33333, maxCount = 2},
+	{id = 281, chance = 33333, maxCount = 2}, -- giant shimmering pearl (green)
 	{name = "flaming arrow", chance = 20000, maxCount = 46},
 	{name = "great spirit potion", chance = 14285},
 	{name = "ultimate health potion", chance = 14285},
 	{name = "lavos armor", chance = 1851},
 	{name = "paladin armor", chance = 10000},
 	{name = "obsidian truncheon", chance = 1234},
-	{id = 8894, chance = 1234},
-	{id = 8896, chance = 50000},
+	{id = 8894, chance = 1234}, -- heavily rusted armor
+	{id = 8896, chance = 50000}, -- slightly rusted armor
 	{name = "gold ingot", chance = 20000}
 }
 

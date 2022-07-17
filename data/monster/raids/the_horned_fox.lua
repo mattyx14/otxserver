@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "the Horned Fox"
 monster.experience = 300
 monster.outfit = {
-	lookType = 29,
+	lookType = 202,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -75,19 +75,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 5804, chance = 100000},
-	{id = 3031, chance = 96000, maxCount = 99},
-	{id = 5878, chance = 96000},
-	{id = 11472, chance = 92590, maxCount = 2},
-	{id = 11482, chance = 85000},
-	{id = 7363, chance = 48000, maxCount = 14},
-	{id = 3359, chance = 25000},
-	{id = 3577, chance = 18000, maxCount = 2},
-	{id = 3413, chance = 14000},
-	{id = 3396, chance = 5000},
-	{id = 3483, chance = 7410},
-	{id = 236, chance = 7410},
-	{id = 3275, chance = 3700}
+	{id = 5804, chance = 100000}, -- nose ring
+	{id = 3031, chance = 96000, maxCount = 99}, -- gold coin
+	{id = 5878, chance = 96000}, -- minotaur leather
+	{id = 11472, chance = 92590, maxCount = 2}, -- minotaur horn
+	{id = 11482, chance = 85000}, -- piece of warrior armor
+	{id = 7363, chance = 48000, maxCount = 14}, -- piercing bolt
+	{id = 3359, chance = 25000}, -- brass armor
+	{id = 3577, chance = 18000, maxCount = 2}, -- meat
+	{id = 3413, chance = 14000}, -- battle shield
+	{id = 3396, chance = 5000}, -- dwarven helmet
+	{id = 3483, chance = 7410}, -- fishing rod
+	{id = 236, chance = 7410}, -- strong health potion
+	{id = 3275, chance = 3700} -- double axe
 }
 
 monster.attacks = {

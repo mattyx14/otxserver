@@ -2012,7 +2012,7 @@ local items = {
 		slot = "feet"
 	},
 	{
-		-- pendulet
+		-- enchanted pendulet
 		itemid = 30345,
 		type = "equip",
 		slot = "necklace",
@@ -2023,7 +2023,7 @@ local items = {
 		}
 	},
 	{
-		-- pendulet
+		-- enchanted pendulet
 		itemid = 30345,
 		type = "deequip",
 		slot = "necklace",
@@ -2048,7 +2048,7 @@ local items = {
 		level = 180
 	},
 	{
-		-- sleep shawl
+		-- enchanted sleep shawl
 		itemid = 30343,
 		type = "equip",
 		slot = "necklace",
@@ -2059,7 +2059,7 @@ local items = {
 		}
 	},
 	{
-		-- sleep shawl
+		-- enchanted sleep shawl
 		itemid = 30343,
 		type = "deequip",
 		slot = "necklace",
@@ -2131,6 +2131,42 @@ local items = {
 		itemid = 29430,
 		type = "deequip",
 		slot = "shield",
+		level = 180
+	},
+	{
+		-- pendulet
+		itemid = 29429,
+		type = "equip",
+		slot = "necklace",
+		level = 180,
+		vocation = {
+			{"Paladin", true},
+			{"Royal Paladin"}
+		}
+	},
+	{
+		-- pendulet
+		itemid = 29429,
+		type = "deequip",
+		slot = "necklace",
+		level = 180
+	},
+	{
+		-- sleep shawl
+		itemid = 29428,
+		type = "equip",
+		slot = "necklace",
+		level = 180,
+		vocation = {
+			{"Paladin", true},
+			{"Royal Paladin"}
+		}
+	},
+	{
+		-- sleep shawl
+		itemid = 29428,
+		type = "deequip",
+		slot = "necklace",
 		level = 180
 	},
 	{
@@ -4133,23 +4169,13 @@ local items = {
 		-- icy clerical mace replica
 		itemid = 25940,
 		type = "equip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Knight", true},
-			{"Elite Knight"}
-		}
+		slot = "hand"
 	},
 	{
 		-- icy clerical mace replica
 		itemid = 25940,
 		type = "deequip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Knight", true},
-			{"Elite Knight"}
-		}
+		slot = "hand"
 	},
 	{
 		-- icy war axe replica
@@ -4203,23 +4229,13 @@ local items = {
 		-- icy barbarian axe replica
 		itemid = 25935,
 		type = "equip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Knight", true},
-			{"Elite Knight"}
-		}
+		slot = "hand"
 	},
 	{
 		-- icy barbarian axe replica
 		itemid = 25935,
 		type = "deequip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Knight", true},
-			{"Elite Knight"}
-		}
+		slot = "hand"
 	},
 	{
 		-- icy dragon slayer replica
@@ -4273,23 +4289,13 @@ local items = {
 		-- icy spike sword replica
 		itemid = 25930,
 		type = "equip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Knight", true},
-			{"Elite Knight"}
-		}
+		slot = "hand"
 	},
 	{
 		-- icy spike sword replica
 		itemid = 25930,
 		type = "deequip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Knight", true},
-			{"Elite Knight"}
-		}
+		slot = "hand"
 	},
 	{
 		-- fiery war hammer replica
@@ -4488,26 +4494,14 @@ local items = {
 		itemid = 25779,
 		type = "equip",
 		slot = "armor",
-		level = 250,
-		vocation = {
-			{"Sorcerer", true},
-			{"Druid", true, true},
-			{"Master Sorcerer"},
-			{"Elder Druid"}
-		}
+		level = 60
 	},
 	{
 		-- swan feather cloak
 		itemid = 25779,
 		type = "deequip",
 		slot = "armor",
-		level = 250,
-		vocation = {
-			{"Sorcerer", true},
-			{"Druid", true, true},
-			{"Master Sorcerer"},
-			{"Elder Druid"}
-		}
+		level = 60
 	},
 	{
 		-- wand of darkness
@@ -6380,6 +6374,18 @@ local items = {
 		level = 100
 	},
 	{
+		-- enchanted werewolf amulet
+		itemid = 22061,
+		type = "equip",
+		slot = "necklace"
+	},
+	{
+		-- enchanted werewolf amulet
+		itemid = 22061,
+		type = "deequip",
+		slot = "necklace"
+	},
+	{
 		-- werewolf amulet
 		itemid = 22060,
 		type = "equip",
@@ -7381,23 +7387,13 @@ local items = {
 		-- icicle bow
 		itemid = 19362,
 		type = "equip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Paladin", true},
-			{"Royal Paladin"}
-		}
+		slot = "hand"
 	},
 	{
 		-- icicle bow
 		itemid = 19362,
 		type = "deequip",
-		slot = "hand",
-		level = 250,
-		vocation = {
-			{"Paladin", true},
-			{"Royal Paladin"}
-		}
+		slot = "hand"
 	},
 	{
 		-- horn
@@ -10407,12 +10403,10 @@ local items = {
 		itemid = 8077,
 		type = "equip",
 		slot = "shield",
-		level = 250,
+		level = 100,
 		vocation = {
 			{"Knight", true},
-			{"Paladin", true, true},
-			{"Elite Knight"},
-			{"Royal Paladin"}
+			{"Elite Knight"}
 		}
 	},
 	{
@@ -10420,13 +10414,7 @@ local items = {
 		itemid = 8077,
 		type = "deequip",
 		slot = "shield",
-		level = 250,
-		vocation = {
-			{"Knight", true},
-			{"Paladin", true, true},
-			{"Elite Knight"},
-			{"Royal Paladin"}
-		}
+		level = 100
 	},
 	{
 		-- spellscroll of prophecies
@@ -16640,7 +16628,13 @@ local items = {
 		-- energy ring
 		itemid = 3088,
 		type = "equip",
-		slot = "ring"
+		slot = "ring",
+		vocation = {
+			{"Knight", true},
+			{"Paladin", true, true},
+			{"Elite Knight"},
+			{"Royal Paladin"}
+		}
 	},
 	{
 		-- energy ring
@@ -17042,7 +17036,13 @@ local items = {
 		-- energy ring
 		itemid = 3051,
 		type = "equip",
-		slot = "ring"
+		slot = "ring",
+		vocation = {
+			{"Knight", true},
+			{"Paladin", true, true},
+			{"Elite Knight"},
+			{"Royal Paladin"}
+		}
 	},
 	{
 		-- energy ring

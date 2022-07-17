@@ -45,13 +45,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 80,
@@ -82,14 +82,14 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 82000, maxCount = 40},
-	{id = 3093, chance = 130}, -- Club ring
+	{id = 3093, chance = 130}, -- club ring
 	{name = "halberd", chance = 560},
 	{name = "short sword", chance = 8140},
 	{name = "dark helmet", chance = 180},
 	{name = "battle shield", chance = 1350},
 	{name = "meat", chance = 4970, maxCount = 2},
 	{name = "shard", chance = 60},
-	{id = 7441, chance = 2180},
+	{id = 7441, chance = 2180}, -- ice cube
 	{name = "norse shield", chance = 250},
 	{name = "health potion", chance = 819},
 	{name = "frost giant pelt", chance = 5000}

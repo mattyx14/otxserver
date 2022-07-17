@@ -5,7 +5,8 @@ function saw.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	target:transform(9114)
+	target:transform(target.itemid, target.type - 1)
+	player:addItem(9114, 1)
 	toPosition:sendMagicEffect(CONST_ME_POFF) --Not sure if there's any magic effect when you use saw?
 	return true
 end

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "a terrorsleep"
 monster.experience = 6900
 monster.outfit = {
-	lookType = 593,
+	lookType = 587,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -95,7 +95,7 @@ monster.loot = {
 	{name = "blue crystal shard", chance = 6000},
 	{name = "blue crystal splinter", chance = 13000},
 	{name = "cyan crystal fragment", chance = 17000},
-	{id = 20029, chance = 1130},
+	{id = 20029, chance = 1130}, -- broken dream
 	{name = "trapped bad dream monster", chance = 13000},
 	{name = "bowl of terror sweat", chance = 18000}
 }
@@ -119,16 +119,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
-	{type = COMBAT_ENERGYDAMAGE, percent = 5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 15},
+	{type = COMBAT_ENERGYDAMAGE, percent = 10},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = 5},
+	{type = COMBAT_FIREDAMAGE, percent = 35},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 5},
+	{type = COMBAT_ICEDAMAGE, percent = 20},
 	{type = COMBAT_HOLYDAMAGE , percent = -10},
-	{type = COMBAT_DEATHDAMAGE , percent = 5}
+	{type = COMBAT_DEATHDAMAGE , percent = 55}
 }
 
 monster.immunities = {

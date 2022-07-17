@@ -8,16 +8,9 @@ function loginEvents.onLogin(player)
 		"BossParticipation",
 		"DropLoot",
 		"PlayerDeath",
-		"PreyLootBonusKill",
 		"RookgaardAdvance",
 		"FamiliarLogin",
 		"AdvanceFamiliar",
-
-		-- DarkKonia
-		"AdvanceReward",
-		"KillBoss",
-		"vampireKillBosses",
-		"BossesForgotten",
 	}
 
 	for i = 1, #events do

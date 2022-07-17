@@ -46,7 +46,7 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = false,
+	convinceable = true,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -80,13 +80,13 @@ monster.loot = {
 	{name = "gold coin", chance = 77810, maxCount = 20},
 	{name = "mace", chance = 5300},
 	{name = "bone shield", chance = 720},
-	{id = 3456, chance = 1100},
-	{id = 3578, chance = 25060, maxCount = 2},
+	{id = 3456, chance = 1100}, -- pick
+	{id = 3578, chance = 25060, maxCount = 2}, -- fish
 	{name = "northern pike", chance = 70},
 	{name = "rainbow trout", chance = 140},
 	{name = "green perch", chance = 70},
 	{name = "mammoth whopper", chance = 160},
-	{id = 7441, chance = 450},
+	{id = 7441, chance = 450}, -- ice cube
 	{name = "fireproof horn", chance = 390}
 }
 

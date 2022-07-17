@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 86},
 	{name = "small emerald", chance = 12500, maxCount = 5},
 	{name = "platinum coin", chance = 35333, maxCount = 4},
-	{id = 3049, chance = 4545}, -- Stealth ring
+	{id = 3049, chance = 4545}, -- stealth ring
 	{name = "giant sword", chance = 320},
 	{name = "brown mushroom", chance = 6666, maxCount = 5},
 	{name = "magic sulphur", chance = 740},
@@ -112,15 +112,15 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 50},
+	{type = COMBAT_ENERGYDAMAGE, percent = 70},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_FIREDAMAGE, percent = -15},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 50},
+	{type = COMBAT_ICEDAMAGE, percent = 70},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_DEATHDAMAGE , percent = -5}
 }
 
 monster.immunities = {

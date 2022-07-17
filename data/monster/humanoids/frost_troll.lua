@@ -79,9 +79,9 @@ monster.loot = {
 	{name = "twigs", chance = 8300},
 	{name = "rapier", chance = 15500},
 	{name = "spear", chance = 21500},
-	{id = 3412, chance = 15850},
+	{id = 3412, chance = 15850}, -- wooden shield
 	{name = "coat", chance = 1200},
-	{id = 3578, chance = 18000},
+	{id = 3578, chance = 18000}, -- fish
 	{name = "frosty ear of a troll", chance = 2000}
 }
 
@@ -96,15 +96,15 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = -10},
+	{type = COMBAT_ENERGYDAMAGE, percent = -15},
 	{type = COMBAT_EARTHDAMAGE, percent = -10},
-	{type = COMBAT_FIREDAMAGE, percent = 50},
+	{type = COMBAT_FIREDAMAGE, percent = 40},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 10},
-	{type = COMBAT_DEATHDAMAGE , percent = -15}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

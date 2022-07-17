@@ -77,5 +77,5 @@ function magicGoldConverter.onUse(player, item, fromPosition, target, toPosition
 	return true
 end
 
-magicGoldConverter:id(32109, 33299)
+magicGoldConverter:id(28525, 28526)
 magicGoldConverter:register()

@@ -46,6 +46,10 @@ function serverstartup.onStartup()
 	-- loadLuaMapUnique(TileUnique)
 	-- Tile pick table
 	loadLuaMapAction(TilePickAction)
+	-- Create new item on map
+	-- CreateMapItem(CreateItemOnMap)
+	-- Update old quest storage keys
+	updateKeysStorage(QuestKeysUpdate)
 
 	Spdlog.info("Loaded all actions and uniques in the map")
 
@@ -116,26 +120,35 @@ function serverstartup.onStartup()
 	end
 
 	do -- Event Schedule rates
-		local lootRate = Game.getEventSLoot()
+		local lootRate = EventsScheduler.getEventSLoot()
 		if lootRate ~= 100 then
 			SCHEDULE_LOOT_RATE = lootRate
 		end
-	
-		local expRate = Game.getEventSExp()
+
+		local expRate = EventsScheduler.getEventSExp()
 		if expRate ~= 100 then
 			SCHEDULE_EXP_RATE = expRate
 		end
-	
-		local skillRate = Game.getEventSSkill()
+
+		local skillRate = EventsScheduler.getEventSSkill()
 		if skillRate ~= 100 then
 			SCHEDULE_SKILL_RATE = skillRate
 		end
+
+		local spawnRate = EventsScheduler.getSpawnMonsterSchedule()
+		if spawnRate ~= 100 then
+			SCHEDULE_SPAWN_RATE = spawnRate
+		end
+
+		if expRate ~= 100 or lootRate ~= 100 or spawnRate ~= 100 or skillRate ~= 100 then
+		Spdlog.info("Events: " .. "Exp: " .. expRate .. "%, " .. "loot: " .. lootRate .. "%, " .. "Spawn: " .. spawnRate .. "%, " .. "Skill: ".. skillRate .."%")
+		end
 	end
 
-	-- Client XP Display Mode
+    -- Client XP Display Mode
 	-- 0 = ignore exp rate /stage
 	-- 1 = include exp rate / stage
-	Game.setStorageValue(GlobalStorage.XpDisplayMode, 0)
+	Game.setStorageValue(GlobalStorage.XpDisplayMode, 1)
 
 	-- Hireling System
 	HirelingsInit()

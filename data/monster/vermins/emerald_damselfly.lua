@@ -47,7 +47,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
 	illusionable = false,
 	canPushItems = true,
@@ -74,7 +74,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3003, chance = 4300},
+	{id = 3003, chance = 4300}, -- rope
 	{name = "gold coin", chance = 90000, maxCount = 18},
 	{name = "arrow", chance = 7570, maxCount = 5},
 	{name = "health potion", chance = 3580},

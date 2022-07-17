@@ -33,10 +33,10 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = false,
-	convinceable = true,
+	convinceable = false,
 	pushable = true,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -63,7 +63,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "meat", chance = 2120, maxCount = 2},
-	{id = 3606, chance = 950},
+	{id = 3606, chance = 950}, -- egg
 	{name = "worm", chance = 10000, maxCount = 3},
 	{name = "chicken feather", chance = 20000}
 }

@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Vashresamun"
 monster.experience = 2950
 monster.outfit = {
-	lookType = 90,
+	lookType = 85,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -74,9 +74,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2950, chance = 7000},
-	{id = 2953, chance = 1500},
-	{id = 3007, chance = 1500},
+	{id = 2950, chance = 7000}, -- lute
+	{id = 2953, chance = 1500}, -- panpipes
+	{id = 3007, chance = 1500}, -- crystal ring
 	{name = "ancient tiara", chance = 300},
 	{name = "white pearl", chance = 7000},
 	{name = "gold coin", chance = 50000, maxCount = 90},

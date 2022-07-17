@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -84,13 +84,13 @@ monster.loot = {
 	{name = "meat", chance = 30300},
 	{name = "great health potion", chance = 4850, maxCount = 3},
 	{name = "ultimate health potion", chance = 4020},
-	{name = "Zaoan armor", chance = 790},
-	{name = "Zaoan shoes", chance = 1900},
-	{name = "Zaoan legs", chance = 960},
+	{name = "zaoan armor", chance = 790},
+	{name = "zaoan shoes", chance = 1900},
+	{name = "zaoan legs", chance = 960},
 	{name = "drakinata", chance = 860},
 	{name = "bone shoulderplate", chance = 12010},
 	{name = "warmaster's wristguards", chance = 7000},
-	{name = "Zaoan halberd", chance = 7925}
+	{name = "zaoan halberd", chance = 7925}
 }
 
 monster.attacks = {
@@ -105,7 +105,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 5},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = 100},

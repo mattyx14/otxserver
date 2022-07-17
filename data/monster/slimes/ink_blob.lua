@@ -28,7 +28,7 @@ monster.Bestiary = {
 
 monster.health = 9500
 monster.maxHealth = 9500
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28601
 monster.speed = 380
 monster.manaCost = 0
@@ -73,24 +73,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 120000, maxCount = 4},
-	{name = "Envenomed Arrow", chance = 1200, maxCount = 14},
-	{id = 28568, chance = 1200, maxCount = 4},
-	{name = "Poisonous Slime", chance = 1200, maxCount = 4},
-	{name = "Small Diamond", chance = 1200, maxCount = 4},
-	{name = "Small Topaz", chance = 1200, maxCount = 4},
-	{id = 282, chance = 900, maxCount = 4},
-	{name = "Blue Gem", chance = 950, maxCount = 4},
-	{name = "Terra Boots", chance = 850, maxCount = 4},
-	{name = "Terra Hood", chance = 980, maxCount = 4},
-	{name = "Protection Amulet", chance = 1200, maxCount = 4},
-	{name = "Sacred Tree Amulet", chance = 1200, maxCount = 4},
-	{name = "Springsprout Rod", chance = 790, maxCount = 4},
-	{name = "Stone Skin Amulet", chance = 1200, maxCount = 4},
-	{name = "Terra Legs", chance = 650, maxCount = 4},
-	{name = "Terra Mantle", chance = 550, maxCount = 4},
-	{name = "Clay Lump", chance = 1200, maxCount = 4},
-	{name = "Terra Amulet", chance = 1200, maxCount = 4}
+	{name = "platinum coin", chance = 120000, maxCount = 4},
+	{name = "envenomed arrow", chance = 1200, maxCount = 14},
+	{id = 28568, chance = 1200, maxCount = 4}, -- inkwell
+	{name = "poisonous slime", chance = 1200, maxCount = 4},
+	{name = "small diamond", chance = 1200, maxCount = 4},
+	{name = "small topaz", chance = 1200, maxCount = 4},
+	{id = 282, chance = 900, maxCount = 4}, -- giant shimmering pearl (brown)
+	{name = "blue gem", chance = 950, maxCount = 4},
+	{name = "terra boots", chance = 850, maxCount = 4},
+	{name = "terra hood", chance = 980, maxCount = 4},
+	{name = "protection amulet", chance = 1200, maxCount = 4},
+	{name = "sacred tree amulet", chance = 1200, maxCount = 4},
+	{name = "springsprout rod", chance = 790, maxCount = 4},
+	{name = "stone skin amulet", chance = 1200, maxCount = 4},
+	{name = "terra legs", chance = 650, maxCount = 4},
+	{name = "terra mantle", chance = 550, maxCount = 4},
+	{name = "clay lump", chance = 1200, maxCount = 4},
+	{name = "terra amulet", chance = 1200, maxCount = 4}
 }
 
 monster.attacks = {
@@ -108,16 +108,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
-	{type = COMBAT_ENERGYDAMAGE, percent = -10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = -8},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 10},
-	{type = COMBAT_HOLYDAMAGE , percent = -10},
-	{type = COMBAT_DEATHDAMAGE , percent = 100}
+	{type = COMBAT_ICEDAMAGE, percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
 monster.immunities = {

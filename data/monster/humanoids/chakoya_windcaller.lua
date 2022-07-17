@@ -43,7 +43,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -80,7 +80,7 @@ monster.loot = {
 	{name = "gold coin", chance = 71170, maxCount = 27},
 	{name = "brass helmet", chance = 4390},
 	{name = "bone shield", chance = 960},
-	{id = 3578, chance = 30790, maxCount = 3},
+	{id = 3578, chance = 30790, maxCount = 3}, -- fish
 	{name = "northern pike", chance = 40},
 	{name = "rainbow trout", chance = 40},
 	{name = "green perch", chance = 110},
@@ -111,7 +111,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 100},
 	{type = COMBAT_HOLYDAMAGE , percent = 20},
-	{type = COMBAT_DEATHDAMAGE , percent = -10}
+	{type = COMBAT_DEATHDAMAGE , percent = -8}
 }
 
 monster.immunities = {

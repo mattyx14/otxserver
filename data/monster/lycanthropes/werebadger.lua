@@ -53,7 +53,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 80,
@@ -78,23 +78,23 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 97000, maxCount = 242},
-	{id = 3035, chance = 18200, maxCount = 5},
-	{id = 8017, chance = 2000},
-	{id = 3725, chance = 2000},
-	{id = 268, chance = 2210},
-	{id = 237, chance = 1200},
-	{id = 3741, chance = 1900},
-	{id = 22051, chance = 950},
-	{id = 22055, chance = 780},
-	{id = 22086, chance = 200},
-	{id = 3055, chance = 160},
-	{id = 3098, chance = 430}, -- Ring of healing
-	{id = 8082, chance = 220},
-	{id = 8094, chance = 200},
-	{id = 22083, chance = 150},
-	{id = 22060, chance = 200},
-	{id = 22101, chance = 100}
+	{id = 3031, chance = 97000, maxCount = 242}, -- gold coin
+	{id = 3035, chance = 18200, maxCount = 5}, -- platinum coin
+	{id = 8017, chance = 2000}, -- beetroot
+	{id = 3725, chance = 2000}, -- brown mushroom
+	{id = 268, chance = 2210}, -- mana potion
+	{id = 237, chance = 1200}, -- strong mana potion
+	{id = 3741, chance = 1900}, -- troll green
+	{id = 22051, chance = 950}, -- werebadger claws
+	{id = 22055, chance = 780}, -- werebadger skull
+	{id = 22086, chance = 200}, -- badger boots
+	{id = 3055, chance = 160}, -- platinum amulet
+	{id = 3098, chance = 430}, -- ring of healing
+	{id = 8082, chance = 220}, -- underworld rod
+	{id = 8094, chance = 200}, -- wand of voodoo
+	{id = 22083, chance = 150}, -- moonlight crystals
+	{id = 22060, chance = 200}, -- werewolf amulet
+	{id = 22101, chance = 100} -- werebadger trophy
 }
 
 monster.attacks = {
@@ -112,16 +112,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = -10},
-	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_ENERGYDAMAGE, percent = 10},
+	{type = COMBAT_EARTHDAMAGE, percent = 50},
+	{type = COMBAT_FIREDAMAGE, percent = -5},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 20},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_ICEDAMAGE, percent = -5},
+	{type = COMBAT_HOLYDAMAGE , percent = -5},
+	{type = COMBAT_DEATHDAMAGE , percent = 40}
 }
 
 monster.immunities = {

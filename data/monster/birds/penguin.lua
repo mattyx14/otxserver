@@ -47,7 +47,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = true,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
 	illusionable = true,
 	canPushItems = false,
@@ -73,7 +73,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3578, chance = 7830, maxCount = 2},
+	{id = 3578, chance = 7830, maxCount = 2}, -- fish
 	{name = "rainbow trout", chance = 70},
 	{name = "green perch", chance = 130}
 }

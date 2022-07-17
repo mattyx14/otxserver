@@ -6,10 +6,10 @@ monster.experience = 100000
 monster.outfit = {
 	lookType = 1062,
 	lookHead = 85,
-	lookBody = 27,
-	lookLegs = 0,
-	lookFeet = 0,
-	lookAddons = 3,
+	lookBody = 7,
+	lookLegs = 3,
+	lookFeet = 15,
+	lookAddons = 2,
 	lookMount = 0
 }
 
@@ -71,7 +71,7 @@ monster.loot = {
 	{name = "small emerald", chance = 70000, maxCount = 12},
 	{name = "demon horn", chance = 70000},
 	{name = "lightning boots", chance = 70000},
-	{id= 3039, chance = 70000},
+	{id= 3039, chance = 70000}, -- red gem
 	{name = "violet gem", chance = 70000},
 	{name = "stone skin amulet", chance = 70000},
 	{name = "wand of starstorm", chance = 70000},

@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -82,13 +82,13 @@ monster.loot = {
 	{name = "crystal coin", chance = 70540},
 	{name = "platinum coin", chance = 90540, maxCount = 32},
 	{name = "ultimate health potion", chance = 32220, maxCount = 7},
-	{id = 33936, chance = 35560}, -- Hand
+	{id = 33936, chance = 35560}, -- hand
 	{name = "skull staff", chance = 65560},
 	{name = "epee", chance = 75560},
 	{name = "crystal mace", chance = 25560},
 	{name = "noble axe", chance = 8560},
 	{name = "spellbook of mind control", chance = 9000},
-	{id = 33937, chance = 7500}, -- Head
+	{id = 33937, chance = 7500}, -- head
 	{name = "fire axe", chance = 13500},
 	{name = "royal helmet", chance = 15500},
 	{name = "mastermind shield", chance = 9500},
@@ -98,9 +98,9 @@ monster.loot = {
 	{name = "crystalline sword", chance = 5500},
 	{name = "alloy legs", chance = 4500},
 	{name = "metal bat", chance = 3500},
-	{id = 23531, chance = 8920}, -- Ring of green plasma
-	{id = 34025, chance = 1550}, -- Diabolic skull
-	{id = 34109, chance = 50} -- Bag you desire
+	{id = 23531, chance = 8920}, -- ring of green plasma
+	{id = 34025, chance = 1550}, -- diabolic skull
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {

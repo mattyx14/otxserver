@@ -63,38 +63,38 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 5},
-	{name = "Mysterious Remains", chance = 100000},
-	{name = "Piggy Bank", chance = 100000},
-	{name = "Brain in a Jar", chance = 100000},
-	{name = "Maxxenius Head", chance = 100000},
-	{name = "Silver Token", chance = 100000, maxCount = 3},
-	{name = "Energy Bar", chance = 100000},
-	{name = "Crystal Coin", chance = 13790},
-	{name = "Gold Ingot", chance = 17240},
-	{name = "Bullseye Potion", chance = 24114, maxCount = 10},
-	{name = "Mastermind Potion", chance = 17240, maxCount = 10},
-	{name = "Royal Star", chance = 100000, maxCount = 100},
-	{name = "Supreme Health Potion", chance = 41380, maxCount = 20},
-	{name = "Ultimate Spirit Potion", chance = 48280, maxCount = 60},
-	{name = "Ultimate Mana Potion", chance = 68970, maxCount = 14},
-	{name = "Giant Ruby", chance = 3450},
-	{name = "Ornate Locket", chance = 3450},
-	{name = "Gold Token", chance = 68970, maxCount = 2},
-	{id = 281, chance = 28540},
-	{name = "Pomegranate", chance = 24140},
-	{name = "Chaos Mace", chance = 6900},
-	{id = 23528, chance = 17240},
-	{id = 23543, chance = 13790}, -- Collar of green plasma
-	{name = "Green Gem", chance = 31030},
-	{name = "Yellow Gem", chance = 31030},
-	{name = "Violet Gem", chance = 6900},
-	{name = "Blue Gem", chance = 10340},
-	{name = "Huge Chunk of Crude Iron", chance = 17240},
-	{id = 23529, chance = 3450},
-	{name = "Skull Staff", chance = 13790},
-	{name = "Energized Limb", chance = 3450},
-	{name = "Purple Tendril Lantern", chance = 1500}
+	{name = "platinum coin", chance = 100000, maxCount = 5},
+	{name = "mysterious remains", chance = 100000},
+	{name = "piggy bank", chance = 100000},
+	{name = "brain in a jar", chance = 100000},
+	{name = "maxxenius head", chance = 100000},
+	{name = "silver token", chance = 100000, maxCount = 3},
+	{name = "energy bar", chance = 100000},
+	{name = "crystal coin", chance = 13790},
+	{name = "gold ingot", chance = 17240},
+	{name = "bullseye potion", chance = 24114, maxCount = 10},
+	{name = "mastermind potion", chance = 17240, maxCount = 10},
+	{name = "royal star", chance = 100000, maxCount = 100},
+	{name = "supreme health potion", chance = 41380, maxCount = 20},
+	{name = "ultimate spirit potion", chance = 48280, maxCount = 60},
+	{name = "ultimate mana potion", chance = 68970, maxCount = 14},
+	{name = "giant ruby", chance = 3450},
+	{name = "ornate locket", chance = 3450},
+	{name = "gold token", chance = 68970, maxCount = 2},
+	{id = 281, chance = 28540}, -- giant shimmering pearl (green)
+	{name = "pomegranate", chance = 24140},
+	{name = "chaos mace", chance = 6900},
+	{id = 23528, chance = 17240}, -- collar of red plasma
+	{id = 23543, chance = 13790}, -- collar of green plasma
+	{name = "green gem", chance = 31030},
+	{name = "yellow gem", chance = 31030},
+	{name = "violet gem", chance = 6900},
+	{name = "blue gem", chance = 10340},
+	{name = "huge chunk of crude iron", chance = 17240},
+	{id = 23529, chance = 3450}, -- ring of blue plasma
+	{name = "skull staff", chance = 13790},
+	{name = "energized limb", chance = 3450},
+	{name = "purple tendril lantern", chance = 1500}
 }
 
 monster.attacks = {

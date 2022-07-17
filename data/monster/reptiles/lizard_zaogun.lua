@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -88,9 +88,9 @@ monster.loot = {
 	{name = "strong health potion", chance = 1900},
 	{name = "great health potion", chance = 7000, maxCount = 3},
 	{name = "red lantern", chance = 2170},
-	{name = "Zaoan armor", chance = 530},
-	{name = "Zaoan shoes", chance = 1000},
-	{name = "Zaoan legs", chance = 1001},
+	{name = "zaoan armor", chance = 530},
+	{name = "zaoan shoes", chance = 1000},
+	{name = "zaoan legs", chance = 1001},
 	{name = "zaogun flag", chance = 8280},
 	{name = "zaogun shoulderplates", chance = 14980}
 }

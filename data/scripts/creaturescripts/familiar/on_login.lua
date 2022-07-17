@@ -39,11 +39,23 @@ function familiarOnLogin.onLogin(player)
 			familiarMonster:changeSpeed(deltaSpeed)
 
 			player:setStorageValue(Storage.FamiliarSummon, os.time() + familiarTimeLeft)
-			addEvent(removeFamiliar, familiarTimeLeft*1000, familiarMonster:getId(), player:getId())
+			addEvent(RemoveFamiliar, familiarTimeLeft*1000, familiarMonster:getId(), player:getId())
 
 			for sendMessage = 1, #FAMILIAR_TIMER do
-				if player:getStorageValue(FAMILIAR_TIMER[sendMessage].storage) == -1 and familiarTimeLeft >= FAMILIAR_TIMER[sendMessage].countdown then
-					player:setStorageValue(FAMILIAR_TIMER[sendMessage].storage, addEvent(sendMessageFunction, (familiarTimeLeft-FAMILIAR_TIMER[sendMessage].countdown)*1000, player:getId(), FAMILIAR_TIMER[sendMessage].message))
+				if player:getStorageValue(FAMILIAR_TIMER[sendMessage].storage) == -1
+				and familiarTimeLeft >= FAMILIAR_TIMER[sendMessage].countdown then
+					player:setStorageValue(
+						-- Storage key param
+						FAMILIAR_TIMER[sendMessage].storage,
+						-- Storage value param start
+						addEvent(
+							SendMessageFunction,
+							(familiarTimeLeft-FAMILIAR_TIMER[sendMessage].countdown) * 1000,
+							player:getId(),
+							FAMILIAR_TIMER[sendMessage].message
+						)
+						-- Storage value param end
+					)
 				end
 			end
 		end

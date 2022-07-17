@@ -85,14 +85,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2659, chance = 2560},
+	{id = 2659, chance = 2560}, -- blue tapestry
 	{name = "small oil lamp", chance = 110},
 	{name = "small sapphire", chance = 6200},
 	{name = "gold coin", chance = 60000, maxCount = 70},
 	{name = "gold coin", chance = 60000, maxCount = 30},
 	{name = "blue gem", chance = 110},
 	{name = "hailstorm rod", chance = 770},
-	{id = 2948, chance = 5000},
+	{id = 2948, chance = 5000}, -- wooden flute
 	{name = "heavy machete", chance = 4530},
 	{name = "mystic turban", chance = 290},
 	{name = "blueberry", chance = 65000, maxCount = 29},
@@ -125,14 +125,14 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 60},
-	{type = COMBAT_EARTHDAMAGE, percent = 1},
+	{type = COMBAT_EARTHDAMAGE, percent = 10},
 	{type = COMBAT_FIREDAMAGE, percent = 90},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = -1},
-	{type = COMBAT_HOLYDAMAGE , percent = 1},
-	{type = COMBAT_DEATHDAMAGE , percent = -1}
+	{type = COMBAT_ICEDAMAGE, percent = -5},
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
+	{type = COMBAT_DEATHDAMAGE , percent = -8}
 }
 
 monster.immunities = {

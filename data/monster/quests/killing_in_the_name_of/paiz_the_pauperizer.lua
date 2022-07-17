@@ -65,31 +65,31 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 11660, chance = 100000},
-	{id = 11661, chance = 100000},
-	{id = 11658, chance = 100000},
-	{id = 11659, chance = 100000},
-	{id = 3031, chance = 100000, maxCount = 99},
-	{id = 5881, chance = 100000},
-	{id = 3577, chance = 100000, maxCount = 5},
-	{id = 3035, chance = 100000, maxCount = 10},
-	{id = 5904, chance = 43000},
-	{id = 239, chance = 36960, maxCount = 3},
-	{id = 3037, chance = 36960},
-	{id = 7642, chance = 32610, maxCount = 3},
-	{id = 238, chance = 30430, maxCount = 3},
-	{id = 3039, chance = 23910},
-	{id = 10389, chance = 23910},
-	{id = 3038, chance = 21740},
-	{id = 10390, chance = 19570},
-	{id = 10384, chance = 15220},
-	{id = 3386, chance = 13040},
-	{id = 8052, chance = 10870},
-	{id = 11657, chance = 10870},
-	{id = 3041, chance = 8700},
-	{id = 11651, chance = 8700},
-	{id = 3032, chance = 8700, maxCount = 8},
-	{id = 12307, chance = 4350}
+	{id = 11660, chance = 100000}, -- broken draken mail
+	{id = 11661, chance = 100000}, -- broken slicer
+	{id = 11658, chance = 100000}, -- draken sulphur
+	{id = 11659, chance = 100000}, -- draken wristbands
+	{id = 3031, chance = 100000, maxCount = 99}, -- gold coin
+	{id = 5881, chance = 100000}, -- lizard scale
+	{id = 3577, chance = 100000, maxCount = 5}, -- meat
+	{id = 3035, chance = 100000, maxCount = 10}, -- platinum coin
+	{id = 5904, chance = 43000}, -- magic sulphur
+	{id = 239, chance = 36960, maxCount = 3}, -- great health potion
+	{id = 3037, chance = 36960}, -- yellow gem
+	{id = 7642, chance = 32610, maxCount = 3}, -- great spirit potion
+	{id = 238, chance = 30430, maxCount = 3}, -- great mana potion
+	{id = 3039, chance = 23910}, -- red gem
+	{id = 10389, chance = 23910}, -- sai
+	{id = 3038, chance = 21740}, -- green gem
+	{id = 10390, chance = 19570}, -- zaoan sword
+	{id = 10384, chance = 15220}, -- zaoan armor
+	{id = 3386, chance = 13040}, -- dragon scale mail
+	{id = 8052, chance = 10870}, -- swamplair armor
+	{id = 11657, chance = 10870}, -- twiceslicer
+	{id = 3041, chance = 8700}, -- blue gem
+	{id = 11651, chance = 8700}, -- elite draken mail
+	{id = 3032, chance = 8700, maxCount = 8}, -- small emerald
+	{id = 12307, chance = 4350} -- harness
 }
 
 monster.attacks = {

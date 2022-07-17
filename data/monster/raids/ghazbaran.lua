@@ -6,8 +6,8 @@ monster.experience = 15000
 monster.outfit = {
 	lookType = 12,
 	lookHead = 0,
-	lookBody = 123,
-	lookLegs = 97,
+	lookBody = 85,
+	lookLegs = 78,
 	lookFeet = 94,
 	lookAddons = 0,
 	lookMount = 0
@@ -76,7 +76,7 @@ monster.voices = {
 monster.loot = {
 	{name = "blue tome", chance = 20000},
 	{name = "teddy bear", chance = 12500},
-	{id = 3007, chance = 8333},
+	{id = 3007, chance = 8333}, -- crystal ring
 	{name = "white pearl", chance = 25000, maxCount = 15},
 	{name = "black pearl", chance = 11111, maxCount = 14},
 	{name = "small diamond", chance = 25000, maxCount = 5},
@@ -88,19 +88,19 @@ monster.loot = {
 	{name = "green gem", chance = 20000},
 	{name = "blue gem", chance = 14285},
 	{name = "might ring", chance = 12500},
-	{id = 3049, chance = 12500}, -- Stealth ring
+	{id = 3049, chance = 12500}, -- stealth ring
 	{name = "strange symbol", chance = 11111},
 	{name = "life crystal", chance = 12500},
 	{name = "mind stone", chance = 20000},
 	{name = "gold ring", chance = 20000},
-	{id = 3098, chance = 20000}, -- Ring of healing
+	{id = 3098, chance = 20000}, -- ring of healing
 	{name = "twin axe", chance = 11111},
 	{name = "golden armor", chance = 8333},
 	{name = "magic plate armor", chance = 8333},
 	{name = "demon shield", chance = 12500},
 	{name = "golden boots", chance = 8333},
 	{name = "demon horn", chance = 33333, maxCount = 2},
-	{id = 6299, chance = 25000},
+	{id = 6299, chance = 25000}, -- death ring
 	{name = "demonic essence", chance = 100000},
 	{name = "ruthless axe", chance = 14285},
 	{name = "assassin star", chance = 12500, maxCount = 44},

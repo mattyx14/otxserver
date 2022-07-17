@@ -45,7 +45,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -79,7 +79,7 @@ monster.loot = {
 	{name = "meat", chance = 9460, maxCount = 2},
 	{name = "worm", chance = 2100, maxCount = 2},
 	{name = "carrion worm fang", chance = 10000},
-	{id = 12600, chance = 210}
+	{id = 12600, chance = 210} -- coal
 }
 
 monster.attacks = {

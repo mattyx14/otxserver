@@ -9,7 +9,7 @@ monster.outfit = {
 	lookBody = 0,
 	lookLegs = 0,
 	lookFeet = 86,
-	lookAddons = 0,
+	lookAddons = 3,
 	lookMount = 0
 }
 
@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 80,
@@ -73,9 +73,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 97000, maxCount = 242},
-	{id = 3031, chance = 97000, maxCount = 102},
-	{id = 3567, chance = 2000}
+	{id = 3031, chance = 97000, maxCount = 242}, -- gold coin
+	{id = 3031, chance = 97000, maxCount = 102}, -- gold coin
+	{id = 3567, chance = 2000} -- blue robe
 }
 
 monster.attacks = {

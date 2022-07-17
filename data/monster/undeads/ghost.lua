@@ -45,13 +45,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -78,8 +78,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2828, chance = 1310},
-	{id = 3049, chance = 180}, -- Stealth ring
+	{id = 2828, chance = 1310}, -- book
+	{id = 3049, chance = 180}, -- stealth ring
 	{name = "morning star", chance = 10610},
 	{name = "combat knife", chance = 7002},
 	{name = "ancient shield", chance = 860},

@@ -5,10 +5,10 @@ monster.description = "a dark magician"
 monster.experience = 185
 monster.outfit = {
 	lookType = 133,
-	lookHead = 116,
+	lookHead = 58,
 	lookBody = 95,
-	lookLegs = 50,
-	lookFeet = 132,
+	lookLegs = 51,
+	lookFeet = 131,
 	lookAddons = 2,
 	lookMount = 0
 }

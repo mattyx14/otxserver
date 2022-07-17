@@ -5,11 +5,11 @@ monster.description = "a nomad"
 monster.experience = 60
 monster.outfit = {
 	lookType = 146,
-	lookHead = 114,
-	lookBody = 20,
-	lookLegs = 22,
-	lookFeet = 2,
-	lookAddons = 2,
+	lookHead = 97,
+	lookBody = 39,
+	lookLegs = 40,
+	lookFeet = 3,
+	lookAddons = 3,
 	lookMount = 0
 }
 
@@ -48,7 +48,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = true,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
 	illusionable = false,
 	canPushItems = true,

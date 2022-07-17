@@ -43,13 +43,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
-	pushable = true,
+	convinceable = false,
+	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -79,10 +79,10 @@ monster.loot = {
 	{name = "gold coin", chance = 78000, maxCount = 50},
 	{name = "scale armor", chance = 3000},
 	{name = "steel shield", chance = 2800},
-	{id = 5090, chance = 1000},
+	{id = 5090, chance = 1000}, -- treasure map
 	{name = "rum flask", chance = 90},
 	{name = "light shovel", chance = 2000},
-	{id = 5792, chance = 110},
+	{id = 5792, chance = 110}, -- die
 	{name = "pirate knee breeches", chance = 980},
 	{name = "pirate bag", chance = 1000},
 	{name = "hook", chance = 550},
@@ -105,7 +105,7 @@ monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 10},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_FIREDAMAGE, percent = -5},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

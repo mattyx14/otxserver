@@ -43,13 +43,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = false,
+	summonable = true,
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -77,8 +77,8 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 73000, maxCount = 10},
-	{id = 3115, chance = 42000},
-	{id = 3264, chance = 3850},
+	{id = 3115, chance = 42000}, -- bone
+	{id = 3264, chance = 3850}, -- sword
 	{name = "mace", chance = 26900},
 	{name = "white mushroom", chance = 15400, maxCount = 3},
 	{name = "brown mushroom", chance = 3850}
@@ -103,7 +103,7 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = -5},
+	{type = COMBAT_HOLYDAMAGE , percent = -25},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

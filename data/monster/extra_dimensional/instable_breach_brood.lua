@@ -77,19 +77,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3035, chance = 20000, maxCount = 2},
-	{id = 23521, chance = 10200},
-	{id = 23506, chance = 10100},
-	{id = 23545, chance = 4900},
-	{id = 7642, chance = 4800},
-	{id = 238, chance = 4400},
-	{id = 23535, chance = 4200},
-	{id = 239, chance = 4200},
-	{id = 16121, chance = 3400},
-	{id = 16125, chance = 3300},
-	{id = 16124, chance = 2600},
-	{id = 16119, chance = 2100}
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 20000, maxCount = 2}, -- platinum coin
+	{id = 23521, chance = 10200}, -- crystal bone
+	{id = 23506, chance = 10100}, -- plasma pearls
+	{id = 23545, chance = 4900}, -- energy drink
+	{id = 7642, chance = 4800}, -- great spirit potion
+	{id = 238, chance = 4400}, -- great mana potion
+	{id = 23535, chance = 4200}, -- energy bar
+	{id = 239, chance = 4200}, -- great health potion
+	{id = 16121, chance = 3400}, -- green crystal shard
+	{id = 16125, chance = 3300}, -- cyan crystal fragment
+	{id = 16124, chance = 2600}, -- blue crystal splinter
+	{id = 16119, chance = 2100} -- blue crystal shard
 }
 
 monster.attacks = {
@@ -106,8 +106,8 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 100},
-	{type = COMBAT_EARTHDAMAGE, percent = -20},
+	{type = COMBAT_ENERGYDAMAGE, percent = 75},
+	{type = COMBAT_EARTHDAMAGE, percent = -15},
 	{type = COMBAT_FIREDAMAGE, percent = 40},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},

@@ -5,10 +5,10 @@ monster.description = "an adept of the cult"
 monster.experience = 400
 monster.outfit = {
 	lookType = 194,
-	lookHead = 114,
+	lookHead = 95,
 	lookBody = 94,
 	lookLegs = 94,
-	lookFeet = 57,
+	lookFeet = 19,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -86,16 +86,16 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2828, chance = 940},
+	{id = 2828, chance = 940}, -- book
 	{name = "small ruby", chance = 320},
 	{name = "gold coin", chance = 65520, maxCount = 60},
-	{id = 3053, chance = 420},
+	{id = 3053, chance = 420}, -- time ring
 	{name = "silver amulet", chance = 1020},
 	{name = "hailstorm rod", chance = 220},
 	{name = "clerical mace", chance = 1260},
 	{name = "red robe", chance = 80},
 	{name = "pirate voodoo doll", chance = 1730},
-	{id = 6089, chance = 700},
+	{id = 6089, chance = 700}, -- music sheet
 	{name = "lunar staff", chance = 120},
 	{name = "amber staff", chance = 680},
 	{name = "cultish robe", chance = 10080},

@@ -44,7 +44,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -76,8 +76,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2920, chance = 980},
-	{id = 3012, chance = 10210},
+	{id = 2920, chance = 980}, -- torch
+	{id = 3012, chance = 10210}, -- wolf tooth chain
 	{name = "gold coin", chance = 46000, maxCount = 81},
 	{name = "obsidian lance", chance = 1100},
 	{name = "orcish axe", chance = 6880},
@@ -109,7 +109,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 10},
-	{type = COMBAT_DEATHDAMAGE , percent = -5}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

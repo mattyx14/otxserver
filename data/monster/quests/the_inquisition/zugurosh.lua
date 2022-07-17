@@ -5,9 +5,9 @@ monster.description = "Zugurosh"
 monster.experience = 10000
 monster.outfit = {
 	lookType = 12,
-	lookHead = 2,
-	lookBody = 35,
-	lookLegs = 57,
+	lookHead = 3,
+	lookBody = 18,
+	lookLegs = 19,
 	lookFeet = 91,
 	lookAddons = 0,
 	lookMount = 0
@@ -68,31 +68,31 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 6499, chance = 100000},
-	{id = 3031, chance = 100000, maxCount = 194},
-	{id = 8899, chance = 54000},
-	{id = 8896, chance = 45000},
-	{id = 238, chance = 27000},
-	{id = 7642, chance = 26000},
-	{id = 239, chance = 23000},
-	{id = 7643, chance = 22000},
-	{id = 9058, chance = 21000},
-	{id = 3035, chance = 21000, maxCount = 30},
-	{id = 6104, chance = 21000},
-	{id = 5944, chance = 21000, maxCount = 10},
-	{id = 3034, chance = 18000, maxCount = 30},
-	{id = 5911, chance = 17000, maxCount = 10},
-	{id = 3017, chance = 17000},
-	{id = 5912, chance = 15000, maxCount = 10},
-	{id = 5909, chance = 15000, maxCount = 10},
-	{id = 5910, chance = 14000, maxCount = 10},
-	{id = 5914, chance = 14000, maxCount = 10},
-	{id = 5913, chance = 12000, maxCount = 10},
-	{id = 5954, chance = 9700, maxCount = 2},
-	{id = 3079, chance = 8700},
-	{id = 3057, chance = 6000},
-	{id = 3554, chance = 4500},
-	{id = 3555, chance = 1500}
+	{id = 6499, chance = 100000}, -- demonic essence
+	{id = 3031, chance = 100000, maxCount = 194}, -- gold coin
+	{id = 8899, chance = 54000}, -- slightly rusted legs
+	{id = 8896, chance = 45000}, -- slightly rusted armor
+	{id = 238, chance = 27000}, -- great mana potion
+	{id = 7642, chance = 26000}, -- great spirit potion
+	{id = 239, chance = 23000}, -- great health potion
+	{id = 7643, chance = 22000}, -- ultimate health potion
+	{id = 9058, chance = 21000}, -- gold ingot
+	{id = 3035, chance = 21000, maxCount = 30}, -- platinum coin
+	{id = 6104, chance = 21000}, -- jewel case
+	{id = 5944, chance = 21000, maxCount = 10}, -- soul orb
+	{id = 3034, chance = 18000, maxCount = 30}, -- talon
+	{id = 5911, chance = 17000, maxCount = 10}, -- red piece of cloth
+	{id = 3017, chance = 17000}, -- silver brooch
+	{id = 5912, chance = 15000, maxCount = 10}, -- blue piece of cloth
+	{id = 5909, chance = 15000, maxCount = 10}, -- white piece of cloth
+	{id = 5910, chance = 14000, maxCount = 10}, -- green piece of cloth
+	{id = 5914, chance = 14000, maxCount = 10}, -- yellow piece of cloth
+	{id = 5913, chance = 12000, maxCount = 10}, -- brown piece of cloth
+	{id = 5954, chance = 9700, maxCount = 2}, -- demon horn
+	{id = 3079, chance = 8700}, -- boots of haste
+	{id = 3057, chance = 6000}, -- amulet of loss
+	{id = 3554, chance = 4500}, -- steel boots
+	{id = 3555, chance = 1500} -- golden boots
 }
 
 monster.attacks = {

@@ -50,7 +50,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
 	canPushItems = true,
@@ -78,7 +78,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 75000, maxCount = 25},
-	{id = 3578, chance = 12020, maxCount = 3},--fish
+	{id = 3578, chance = 12020, maxCount = 3}, -- fish
 	{name = "deepling scales", chance = 6950},
 	{name = "heavy trident", chance = 510},
 	{name = "fish fin", chance = 350},

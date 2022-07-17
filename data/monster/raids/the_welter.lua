@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = true,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -71,25 +71,25 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 19083, chance = 200},
-	{id = 19356, chance = 200},
-	{id = 3369, chance = 2000},
-	{id = 19357, chance = 500},
-	{id = 3079, chance = 1000},
-	{id = 3436, chance = 2000},
-	{id = 3284, chance = 2000},
-	{id = 3029, chance = 20000, maxCount = 2},
-	{id = 3370, chance = 3000},
-	{id = 236, chance = 20000, maxCount = 2},
-	{id = 9302, chance = 1000},
-	{id = 3081, chance = 20000},
-	{id = 9058, chance = 800},
-	{id = 3392, chance = 500},
-	{id = 281, chance = 600},
-	{id = 4839, chance = 2000},
-	{id = 237, chance = 20000, maxCount = 2},
-	{id = 3035, chance = 20000, maxCount = 10},
-	{id = 3031, chance = 20000, maxCount = 100}
+	{id = 19083, chance = 200}, -- silver raid token
+	{id = 19356, chance = 200}, -- triple bolt crossbow
+	{id = 3369, chance = 2000}, -- warrior helmet
+	{id = 19357, chance = 500}, -- shrunken head necklace
+	{id = 3079, chance = 1000}, -- boots of haste
+	{id = 3436, chance = 2000}, -- medusa shield
+	{id = 3284, chance = 2000}, -- ice rapier
+	{id = 3029, chance = 20000, maxCount = 2}, -- small sapphire
+	{id = 3370, chance = 3000}, -- knight armor
+	{id = 236, chance = 20000, maxCount = 2}, -- strong health potion
+	{id = 9302, chance = 1000}, -- sacred tree amulet
+	{id = 3081, chance = 20000}, -- stone skin amulet
+	{id = 9058, chance = 800}, -- gold ingot
+	{id = 3392, chance = 500}, -- royal helmet
+	{id = 281, chance = 600}, -- giant shimmering pearl (green)
+	{id = 4839, chance = 2000}, -- hydra egg
+	{id = 237, chance = 20000, maxCount = 2}, -- strong mana potion
+	{id = 3035, chance = 20000, maxCount = 10}, -- platinum coin
+	{id = 3031, chance = 20000, maxCount = 100} -- gold coin
 }
 
 monster.attacks = {

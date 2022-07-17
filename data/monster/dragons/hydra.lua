@@ -91,7 +91,7 @@ monster.loot = {
 	{name = "life crystal", chance = 570},
 	{name = "boots of haste", chance = 130},
 	{name = "stone skin amulet", chance = 900},
-	{id = 3098, chance = 1190}, -- Ring of healing
+	{id = 3098, chance = 1190}, -- ring of healing
 	{name = "warrior helmet", chance = 890},
 	{name = "knight armor", chance = 1000},
 	{name = "royal helmet", chance = 210},

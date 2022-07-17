@@ -71,21 +71,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 10320, chance = 100000},
-	{id = 3031, chance = 100000, maxCount = 99},
-	{id = 11475, chance = 100000},
-	{id = 5809, chance = 100000},
-	{id = 3311, chance = 52000},
-	{id = 3324, chance = 47000},
-	{id = 3337, chance = 38000},
-	{id = 3114, chance = 19000},
-	{id = 3732, chance = 14000},
-	{id = 3070, chance = 14000},
-	{id = 3116, chance = 9500},
-	{id = 3441, chance = 9500},
-	{id = 3079, chance = 4700},
-	{id = 3574, chance = 4700},
-	{id = 237, chance = 4700}
+	{id = 10320, chance = 100000}, -- book of necromantic rituals
+	{id = 3031, chance = 100000, maxCount = 99}, -- gold coin
+	{id = 11475, chance = 100000}, -- necromantic robe
+	{id = 5809, chance = 100000}, -- soul stone
+	{id = 3311, chance = 52000}, -- clerical mace
+	{id = 3324, chance = 47000}, -- skull staff
+	{id = 3337, chance = 38000}, -- bone club
+	{id = 3114, chance = 19000}, -- skull
+	{id = 3732, chance = 14000}, -- green mushroom
+	{id = 3070, chance = 14000}, -- moonlight rod
+	{id = 3116, chance = 9500}, -- big bone
+	{id = 3441, chance = 9500}, -- bone shield
+	{id = 3079, chance = 4700}, -- boots of haste
+	{id = 3574, chance = 4700}, -- mystic turban
+	{id = 237, chance = 4700} -- strong mana potion
 }
 
 monster.attacks = {

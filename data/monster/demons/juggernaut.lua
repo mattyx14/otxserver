@@ -53,7 +53,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 60,
@@ -80,7 +80,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3019, chance = 550},
+	{id = 3019, chance = 550}, -- demonbone amulet
 	{name = "small ruby", chance = 20000, maxCount = 4},
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "gold coin", chance = 100000, maxCount = 100},
@@ -90,7 +90,7 @@ monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 15},
 	{name = "violet gem", chance = 830},
 	{name = "green gem", chance = 869},
-	{id= 3039, chance = 13850},
+	{id= 3039, chance = 13850}, -- red gem
 	{name = "dragon hammer", chance = 9000},
 	{name = "heavy mace", chance = 400},
 	{name = "war axe", chance = 400},
@@ -98,7 +98,7 @@ monster.loot = {
 	{name = "golden legs", chance = 500},
 	{name = "knight armor", chance = 4990},
 	{name = "mastermind shield", chance = 800},
-	{id = 3481, chance = 280},
+	{id = 3481, chance = 280}, -- closed trap
 	{name = "ham", chance = 60000, maxCount = 8},
 	{name = "soul orb", chance = 33333},
 	{name = "demonic essence", chance = 45333},
@@ -126,7 +126,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 40},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
 	{type = COMBAT_ENERGYDAMAGE, percent = -10},
 	{type = COMBAT_EARTHDAMAGE, percent = 20},
 	{type = COMBAT_FIREDAMAGE, percent = 30},

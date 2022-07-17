@@ -43,10 +43,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -78,10 +78,10 @@ monster.loot = {
 	{name = "gold coin", chance = 94000, maxCount = 30},
 	{name = "mantassin tail", chance = 7780},
 	{name = "chain armor", chance = 5061},
-	{id = 3114, chance = 990},--skull
+	{id = 3114, chance = 990}, -- skull
 	{name = "small sapphire", chance = 990},
 	{name = "two handed sword", chance = 810},
-	{id = 3049, chance = 710}, -- Stealth ring
+	{id = 3049, chance = 710}, -- stealth ring
 	{name = "fish fin", chance = 360}
 }
 

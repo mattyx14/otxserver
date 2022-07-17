@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 80,
@@ -63,15 +63,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 33000, maxCount = 100},
-	{id = 3031, chance = 32000, maxCount = 100},
-	{id = 3031, chance = 32000, maxCount = 36},
-	{id = 10409, chance = 5800},
-	{id = 3035, chance = 2920, maxCount = 5},
-	{id = 10410, chance = 3800},
-	{id = 9058, chance = 3800},
-	{id = 10408, chance = 3800},
-	{id = 10386, chance = 3800}
+	{id = 3031, chance = 33000, maxCount = 100}, -- gold coin
+	{id = 3031, chance = 32000, maxCount = 100}, -- gold coin
+	{id = 3031, chance = 32000, maxCount = 36}, -- gold coin
+	{id = 10409, chance = 5800}, -- corrupted flag
+	{id = 3035, chance = 2920, maxCount = 5}, -- platinum coin
+	{id = 10410, chance = 3800}, -- cursed shoulder spikes
+	{id = 9058, chance = 3800}, -- gold ingot
+	{id = 10408, chance = 3800}, -- spiked iron ball
+	{id = 10386, chance = 3800} -- zaoan shoes
 }
 
 monster.attacks = {

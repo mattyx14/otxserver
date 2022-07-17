@@ -6,8 +6,8 @@ monster.experience = 150
 monster.outfit = {
 	lookType = 532,
 	lookHead = 0,
-	lookBody = 97,
-	lookLegs = 116,
+	lookBody = 78,
+	lookLegs = 59,
 	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
@@ -47,10 +47,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = false,
+	summonable = true,
 	attackable = true,
 	hostile = true,
-	convinceable = false,
+	convinceable = true,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = true,
@@ -80,7 +80,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 35},
-	{id = 3607, chance = 10000},
+	{id = 3607, chance = 10000}, -- cheese
 	{name = "bola", chance = 7692},
 	{name = "spike shield", chance = 492},
 	{name = "ratana", chance = 909},
@@ -105,14 +105,14 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 25},
-	{type = COMBAT_EARTHDAMAGE, percent = 20},
+	{type = COMBAT_EARTHDAMAGE, percent = 25},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = -20},
-	{type = COMBAT_DEATHDAMAGE , percent = 20}
+	{type = COMBAT_HOLYDAMAGE , percent = -5},
+	{type = COMBAT_DEATHDAMAGE , percent = 15}
 }
 
 monster.immunities = {

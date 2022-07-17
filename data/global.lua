@@ -26,6 +26,7 @@ weatherConfig = {
 SCHEDULE_LOOT_RATE = 100
 SCHEDULE_EXP_RATE = 100
 SCHEDULE_SKILL_RATE = 100
+SCHEDULE_SPAWN_RATE = 100
 
 -- MARRY
 PROPOSED_STATUS = 1
@@ -51,9 +52,6 @@ healingImpact = {}
 -- Damage
 -- Global table to insert data
 damageImpact = {}
-
--- New prey => preyTimeLeft
-nextPreyTime = {}
 
 startupGlobalStorages = {
 	-- 
@@ -93,10 +91,6 @@ if nextUseStaminaTime == nil then
 	nextUseStaminaTime = {}
 end
 
-if nextUseStaminaPrey == nil then
-	nextUseStaminaPrey = {}
-end
-
 if nextUseXpStamina == nil then
 	nextUseXpStamina = {}
 end
@@ -105,13 +99,21 @@ if lastItemImbuing == nil then
 	lastItemImbuing = {}
 end
 
-if nextDelayPreyReroll == nil then
-	nextDelayPreyReroll = {}
-end
-
 -- Delay potion
 if not playerDelayPotion then
 	playerDelayPotion = {}
+end
+
+-- for use of: data\scripts\globalevents\customs\save_interval.lua
+SAVE_INTERVAL_TYPE = configManager.getString(configKeys.SAVE_INTERVAL_TYPE)
+SAVE_INTERVAL_CONFIG_TIME = configManager.getNumber(configKeys.SAVE_INTERVAL_TIME)
+SAVE_INTERVAL_TIME = 0
+if SAVE_INTERVAL_TYPE == "second" then
+	SAVE_INTERVAL_TIME = 1000
+elseif SAVE_INTERVAL_TYPE == "minute" then
+	SAVE_INTERVAL_TIME = 60 * 1000
+elseif SAVE_INTERVAL_TYPE == "hour" then
+	SAVE_INTERVAL_TIME = 60 * 60 * 1000
 end
 
 -- Increase Stamina when Attacking Trainer

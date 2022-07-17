@@ -33,10 +33,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -64,8 +64,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 236, chance = 15000},
-	{id = 3039, chance = 6000}
+	{id = 236, chance = 15000}, -- strong health potion
+	{id = 3039, chance = 6000} -- red gem
 }
 
 monster.attacks = {

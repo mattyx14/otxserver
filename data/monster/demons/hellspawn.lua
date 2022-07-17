@@ -60,7 +60,7 @@ monster.flags = {
 	runHealth = 0,
 	healthHidden = false,
 	isBlockable = false,
-	canWalkOnEnergy = true,
+	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true
 }
@@ -95,10 +95,10 @@ monster.loot = {
 	{name = "spiked squelcher", chance = 970},
 	{name = "great health potion", chance = 40333},
 	{name = "ultimate health potion", chance = 9090},
-	{id = 8895, chance = 3125},
-	{id = 8896, chance = 3125},
-	{id = 9034, chance = 140},
-	{name = "black skull", chance = 151},
+	{id = 8895, chance = 3125}, -- rusted armor
+	{id = 8896, chance = 3125}, -- slightly rusted armor
+	{id = 9034, chance = 140}, -- dracoyle statue
+	{id = 9056, chance = 151}, -- black skull
 	{name = "small topaz", chance = 5882, maxCount = 3},
 	{name = "hellspawn tail", chance = 20000}
 }

@@ -70,14 +70,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 16206, chance = 100000},
-	{id = 16163, chance = 8333},
-	{id = 16161, chance = 7333},
-	{id = 16175, chance = 5333},
-	{id = 16160, chance = 6666},
-	{id = 16164, chance = 6263},
-	{id = 16155, chance = 2754},
-	{id = 16162, chance = 2754}
+	{id = 16206, chance = 100000}, -- abyssador's lash
+	{id = 16163, chance = 8333}, -- crystal crossbow
+	{id = 16161, chance = 7333}, -- crystalline axe
+	{id = 16175, chance = 5333}, -- shiny blade
+	{id = 16160, chance = 6666}, -- crystalline sword
+	{id = 16164, chance = 6263}, -- mycological bow
+	{id = 16155, chance = 2754}, -- decorative ribbon
+	{id = 16162, chance = 2754} -- mycological mace
 }
 
 monster.attacks = {

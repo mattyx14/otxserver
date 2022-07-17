@@ -7,7 +7,7 @@ monster.outfit = {
 	lookType = 1217,
 	lookHead = 1,
 	lookBody = 1,
-	lookLegs = 101,
+	lookLegs = 102,
 	lookFeet = 78,
 	lookAddons = 2,
 	lookMount = 0
@@ -87,10 +87,10 @@ monster.loot = {
 	{name = "violet gem", chance = 1300},
 	{name = "yellow gem", chance = 3060},
 	{name = "green gem", chance = 1210},
-	{id= 3039, chance = 4800},
+	{id= 3039, chance = 4800}, -- red gem
 	{name = "sacred tree amulet", chance = 5100},
 	{name = "green crystal shard", chance = 2130},
-	{id = 23533, chance = 740}-- ring of red plasma
+	{id = 23533, chance = 740} -- ring of red plasma
 }
 
 monster.attacks = {

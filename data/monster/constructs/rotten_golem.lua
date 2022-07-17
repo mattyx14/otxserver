@@ -53,15 +53,15 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	runHealth = 0,
 	healthHidden = false,
 	isBlockable = false,
-	canWalkOnEnergy = false,
-	canWalkOnFire = false,
+	canWalkOnEnergy = true,
+	canWalkOnFire = true,
 	canWalkOnPoison = true
 }
 
@@ -78,8 +78,8 @@ monster.voices = {
 monster.loot = {
 	{name = "crystal coin", chance = 70540},
 	{name = "great spirit potion", chance = 32220, maxCount = 7},
-	{id = 281, chance = 54560}, -- Giant shimmering pearl
-	{id = 282, chance = 54560}, -- Giant shimmering pearl
+	{id = 281, chance = 54560}, -- giant shimmering pearl (green)
+	{id = 282, chance = 54560}, -- giant shimmering pearl (brown)
 	{name = "terra amulet", chance = 35500},
 	{name = "giant sword", chance = 13500},
 	{name = "war axe", chance = 9500},
@@ -92,7 +92,7 @@ monster.loot = {
 	{name = "wood cape", chance = 2500},
 	{name = "rubber cap", chance = 1500},
 	{name = "stone skin amulet", chance = 2000},
-	{id = 34109, chance = 50} -- Bag you desire
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {

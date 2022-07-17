@@ -66,7 +66,7 @@ monster.voices = {
 monster.loot = {
 	{name = "magic sulphur", chance = 8920, maxCount = 10},
 	{name = "gold ingot", chance = 21200, maxCount = 10},
-	{id = 282, chance = 26900},
+	{id = 282, chance = 26900}, -- giant shimmering pearl (brown)
 	{name = "berserker", chance = 8920},
 	{name = "abyss hammer", chance = 7620},
 	{name = "skull helmet", chance = 9700},
@@ -89,10 +89,10 @@ monster.loot = {
 	{name = "ultimate health potion", chance = 27652, maxCount = 10},
 	{name = "great mana potion", chance = 33721, maxCount = 10},
 	{name = "great spirit potion", chance = 25690, maxCount = 5},
-	{id = 23542, chance = 12798},-- collar of blue plasma
+	{id = 23542, chance = 12798}, -- collar of blue plasma
 	{name = "piece of royal steel", chance = 15890},
 	{name = "shadow sceptre", chance = 7890},
-	{id = 23533, chance = 14542},
+	{id = 23533, chance = 14542}, -- ring of red plasma
 	{name = "terra hood", chance = 16892}
 }
 

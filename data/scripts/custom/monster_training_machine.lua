@@ -11,7 +11,6 @@ monster.maxHealth = monster.health
 monster.race = "energy"
 monster.corpse = 0
 monster.speed = 0
-monster.maxSummons = 0
 
 monster.changeTarget = {
 	interval = 1*1000,

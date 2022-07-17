@@ -79,15 +79,15 @@ monster.loot = {
 	{name = "small amethyst", chance = 7250, maxCount = 5},
 	{name = "small ruby", chance = 7430, maxCount = 5},
 	{name = "small topaz", chance = 7470, maxCount = 5},
-	{id= 3039, chance = 2220},
+	{id= 3039, chance = 2220}, -- red gem
 	{name = "demonic essence", chance = 14630},
 	{name = "talon", chance = 3430},
 	{name = "might ring", chance = 1890},
-	{id = 3049, chance = 2170}, -- Stealth ring
+	{id = 3049, chance = 2170}, -- stealth ring
 	{name = "platinum amulet", chance = 680},
 	{name = "orb", chance = 2854},
 	{name = "gold ring", chance = 1050},
-	{id = 3098, chance = 1990}, -- Ring of healing
+	{id = 3098, chance = 1990}, -- ring of healing
 	{name = "giant sword", chance = 1980},
 	{name = "ice rapier", chance = 1550},
 	{name = "golden sickle", chance = 1440},
@@ -101,7 +101,7 @@ monster.loot = {
 	{name = "demon horn", chance = 14920},
 	{name = "assassin star", chance = 12550, maxCount = 10},
 	{name = "demonrage sword", chance = 70},
-	{id = 7393, chance = 90},
+	{id = 7393, chance = 90}, -- demon trophy
 	{name = "great mana potion", chance = 22220, maxCount = 3},
 	{name = "ultimate health potion", chance = 19540, maxCount = 3},
 	{name = "great spirit potion", chance = 18510, maxCount = 3}

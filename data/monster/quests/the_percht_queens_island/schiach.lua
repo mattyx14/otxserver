@@ -5,11 +5,11 @@ monster.description = "an schiach"
 monster.experience = 580
 monster.outfit = {
 	lookType = 1162,
-	lookHead = 19,
+	lookHead = 0,
 	lookBody = 10,
-	lookLegs = 19,
+	lookLegs = 38,
 	lookFeet = 57,
-	lookAddons = 0,
+	lookAddons = 2,
 	lookMount = 0
 }
 

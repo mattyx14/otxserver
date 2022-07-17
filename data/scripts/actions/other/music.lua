@@ -7,7 +7,6 @@ local MusicEffect = {
 	[2954] = CONST_ME_SOUND_GREEN, 	--Simple Fanfare
 	[2955] = CONST_ME_SOUND_GREEN, 	--Fanfare
 	[2956] = CONST_ME_SOUND_GREEN, 	--Royal Fanfare
-	[3252] = CONST_ME_SOUND_GREEN, 	--Post Horn
 	[2958] = CONST_ME_SOUND_RED, 	--War Horn
 	[2959] = CONST_ME_SOUND_BLUE, 	--Piano
 	[2960] = CONST_ME_SOUND_BLUE, 	--Piano
@@ -25,7 +24,6 @@ local MusicEffect = {
 	[3259] = CONST_ME_SOUND_BLUE, 	--Horn of Sundering
 	[3260] = CONST_ME_SOUND_GREEN, 	--Lyre
 	[3261] = CONST_ME_SOUND_BLUE, 	--Panpipes
-	[2948] = CONST_ME_SOUND_GREEN, 	--Wooden Flute
 	--
 	[2951] = CONST_ME_SOUND_BLUE, 	--Bongo Drum
 	[2965] = CONST_ME_SOUND_GREEN, 	--Didgeridoo
@@ -35,7 +33,6 @@ local MusicEffect = {
 }
 
 local music = Action()
-
 function music.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	player:addAchievementProgress('Rockstar', 10000)
 	item:getPosition():sendMagicEffect(MusicEffect[item.itemid])

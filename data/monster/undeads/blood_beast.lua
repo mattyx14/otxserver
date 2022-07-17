@@ -78,18 +78,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 21178, chance = 2010},
-	{id = 9640, chance = 3080},
-	{id = 21146, chance = 2720},
-	{id = 3031, chance = 100000, maxCount = 139},
-	{id = 21194, chance = 1040},
-	{id = 236, chance = 7710},
-	{id = 7366, chance = 1290, maxCount = 5},
-	{id = 21183, chance = 250},
-	{id = 21179, chance = 210},
-	{id = 21178, chance = 210},
-	{id = 21180, chance = 250},
-	{id = 21158, chance = 280}
+	{id = 21178, chance = 2010}, -- glooth club
+	{id = 9640, chance = 3080}, -- poisonous slime
+	{id = 21146, chance = 2720}, -- glooth steak
+	{id = 3031, chance = 100000, maxCount = 139}, -- gold coin
+	{id = 21194, chance = 1040}, -- slime heart
+	{id = 236, chance = 7710}, -- strong health potion
+	{id = 7366, chance = 1290, maxCount = 5}, -- viper star
+	{id = 21183, chance = 250}, -- glooth amulet
+	{id = 21179, chance = 210}, -- glooth blade
+	{id = 21178, chance = 210}, -- glooth club
+	{id = 21180, chance = 250}, -- glooth axe
+	{id = 21158, chance = 280} -- glooth spear
 }
 
 monster.attacks = {
@@ -110,7 +110,7 @@ monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 10},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = -5},
+	{type = COMBAT_FIREDAMAGE, percent = -10},
 	{type = COMBAT_LIFEDRAIN, percent = 100},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

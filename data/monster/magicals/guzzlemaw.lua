@@ -82,16 +82,16 @@ monster.loot = {
 	{name = "banana skin", chance = 10700},
 	{name = "piece of iron", chance = 10500},
 	{name = "fishbone", chance = 9500},
-	{id = 3114, chance = 10400},
-	{id = 3115, chance = 9200},
-	{id = 3116, chance = 4500},
+	{id = 3114, chance = 10400}, -- skull
+	{id = 3115, chance = 9200}, -- bone
+	{id = 3116, chance = 4500}, -- big bone
 	{name = "two handed sword", chance = 2700},
-	{id = 3578, chance = 7000, maxCount = 3},
+	{id = 3578, chance = 7000, maxCount = 3}, -- fish
 	{name = "ham", chance = 10000},
 	{name = "iron ore", chance = 3000},
 	{name = "fish fin", chance = 5000},
 	{name = "hardened bone", chance = 5700},
-	{id = 5951, chance = 9400},
+	{id = 5951, chance = 9400}, -- fish tail
 	{name = "assassin dagger", chance = 1000},
 	{name = "haunted blade", chance = 2000},
 	{name = "nightmare blade", chance = 380},
@@ -101,7 +101,7 @@ monster.loot = {
 	{name = "violet crystal shard", chance = 3000},
 	{name = "brown crystal splinter", chance = 12000, maxCount = 2},
 	{name = "red crystal fragment", chance = 7600},
-	{id = 16279, chance = 12000},
+	{id = 16279, chance = 12000}, -- crystal rubbish
 	{name = "cluster of solace", chance = 920},
 	{name = "frazzle tongue", chance = 15000},
 	{name = "frazzle skin", chance = 14000}
@@ -124,16 +124,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
-	{type = COMBAT_ENERGYDAMAGE, percent = 5},
-	{type = COMBAT_EARTHDAMAGE, percent = 15},
-	{type = COMBAT_FIREDAMAGE, percent = 5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_ENERGYDAMAGE, percent = 15},
+	{type = COMBAT_EARTHDAMAGE, percent = 20},
+	{type = COMBAT_FIREDAMAGE, percent = 10},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 5},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 5}
+	{type = COMBAT_HOLYDAMAGE , percent = -5},
+	{type = COMBAT_DEATHDAMAGE , percent = 10}
 }
 
 monster.immunities = {

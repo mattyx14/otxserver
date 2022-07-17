@@ -3,7 +3,10 @@ local weapons = {
 		-- gilded eldritch rod
 		itemId = 36675,
 		type = WEAPON_WAND,
+		wandType = "ice",
 		level = 250,
+		mana = 22,
+		damage = {85, 105},
 		unproperly = true,
 		vocation = {
 			{"Druid", true},
@@ -14,7 +17,10 @@ local weapons = {
 		-- eldritch rod
 		itemId = 36674,
 		type = WEAPON_WAND,
+		wandType = "ice",
 		level = 250,
+		mana = 22,
+		damage = {85, 105},
 		unproperly = true,
 		vocation = {
 			{"Druid", true},
@@ -25,7 +31,10 @@ local weapons = {
 		-- gilded eldritch wand
 		itemId = 36669,
 		type = WEAPON_WAND,
+		wandType = "fire",
 		level = 250,
+		mana = 22,
+		damage = {85, 105},
 		unproperly = true,
 		vocation = {
 			{"Sorcerer", true},
@@ -36,7 +45,10 @@ local weapons = {
 		-- eldritch wand
 		itemId = 36668,
 		type = WEAPON_WAND,
+		wandType = "fire",
 		level = 250,
+		mana = 22,
+		damage = {85, 105},
 		unproperly = true,
 		vocation = {
 			{"Sorcerer", true},

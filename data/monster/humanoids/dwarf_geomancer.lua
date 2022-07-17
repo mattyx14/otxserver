@@ -79,9 +79,9 @@ monster.voices = {
 monster.loot = {
 	{name = "small sapphire", chance = 710},
 	{name = "gold coin", chance = 50000, maxCount = 35},
-	{id = 3046, chance = 14000},
-	{id = 3059, chance = 360},
-	{id = 3097, chance = 530}, -- Dwarven ring
+	{id = 3046, chance = 14000}, -- magic light wand
+	{id = 3059, chance = 360}, -- spellbook
+	{id = 3097, chance = 530}, -- dwarven ring
 	{name = "blank rune", chance = 33000},
 	{name = "clerical mace", chance = 1120},
 	{name = "pear", chance = 25000},
@@ -113,7 +113,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -5},
 	{type = COMBAT_HOLYDAMAGE , percent = 10},
-	{type = COMBAT_DEATHDAMAGE , percent = -1}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

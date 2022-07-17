@@ -248,7 +248,7 @@ function flaskPotion.onUse(player, item, fromPosition, target, toPosition, isHot
 
 	if potion.health or potion.mana or potion.combat then
 		if potion.health then
-			doTargetCombatHealth(0, target, COMBAT_HEALING, potion.health[1], potion.health[2], CONST_ME_MAGIC_BLUE)
+			doTargetCombatHealth(player, target, COMBAT_HEALING, potion.health[1], potion.health[2], CONST_ME_MAGIC_BLUE)
 		end
 
 		if potion.mana then

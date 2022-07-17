@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "brass helmet", chance = 9400},
 	{name = "simple dress", chance = 560},
 	{name = "mana potion", chance = 740},
-	{id = 8894, chance = 5680},
+	{id = 8894, chance = 5680}, -- heavily rusted armor
 	{name = "half-eaten brain", chance = 10000}
 }
 

@@ -5,10 +5,10 @@ monster.description = "an baleful bunny"
 monster.experience = 450
 monster.outfit = {
 	lookType = 1157,
-	lookHead = 95,
-	lookBody = 42,
-	lookLegs = 19,
-	lookFeet = 57,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
 }

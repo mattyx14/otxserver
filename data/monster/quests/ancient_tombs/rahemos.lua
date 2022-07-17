@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Rahemos"
 monster.experience = 3100
 monster.outfit = {
-	lookType = 87,
+	lookType = 88,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "violet gem", chance = 500},
 	{name = "orb", chance = 500},
 	{name = "crystal wand", chance = 500},
-	{id = 3098, chance = 7000}, -- Ring of healing
+	{id = 3098, chance = 7000}, -- ring of healing
 	{name = "ancient rune", chance = 100000},
 	{name = "twin axe", chance = 200},
 	{name = "magician hat", chance = 300},

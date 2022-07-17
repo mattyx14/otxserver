@@ -83,7 +83,7 @@ monster.loot = {
     {name = "red crystal fragment", chance = 9540},
     {name = "small enchanted amethyst", chance = 5760, maxCount = 5},
     {name = "life preserver", chance = 5670},
-    {id= 3039, chance = 5590},
+    {id= 3039, chance = 5590}, -- red gem
     {name = "yellow gem", chance = 5420},
     {name = "combat knife", chance = 4700},
     {name = "green crystal fragment", chance = 4580},
@@ -108,14 +108,14 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 60},
-	{type = COMBAT_FIREDAMAGE, percent = 75},
+	{type = COMBAT_EARTHDAMAGE, percent = 40},
+	{type = COMBAT_FIREDAMAGE, percent = 50},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -20},
-	{type = COMBAT_HOLYDAMAGE , percent = 95},
-	{type = COMBAT_DEATHDAMAGE , percent = -5}
+	{type = COMBAT_HOLYDAMAGE , percent = -25},
+	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
 monster.immunities = {

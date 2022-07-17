@@ -73,15 +73,15 @@ monster.loot = {
 	{name = "mana potion", chance = 15200, maxCount = 3},
 	{name = "dark armor", chance = 14000},
 	{name = "health potion", chance = 12000, maxCount = 3},
-	{id = 3578, chance = 10300, maxCount = 1},-- fish
+	{id = 3578, chance = 10300, maxCount = 1}, -- fish
 	{name = "meat", chance = 10300},
 	{name = "plate legs", chance = 8100},
-	{id = 3049, chance = 6960}, -- Stealth ring
+	{id = 3049, chance = 6960}, -- stealth ring
 	{name = "magma amulet", chance = 5700},
 	{name = "giant sword", chance = 3160},
 	{name = "crusader helmet", chance = 1900},
 	{name = "butcher's axe", chance = 1270},
-	{id = 7395, chance = 1270}-- orc trophy
+	{id = 7395, chance = 1270} -- orc trophy
 }
 
 monster.attacks = {

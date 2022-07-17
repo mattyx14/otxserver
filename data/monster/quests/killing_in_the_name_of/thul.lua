@@ -72,14 +72,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 5895, chance = 100000},
-	{id = 3035, chance = 88000, maxCount = 10},
-	{id = 901, chance = 67000},
-	{id = 238, chance = 46000},
-	{id = 3033, chance = 38000, maxCount = 4},
-	{id = 7383, chance = 35000},
-	{id = 3391, chance = 16000},
-	{id = 3381, chance = 10000}
+	{id = 5895, chance = 100000}, -- fish fin
+	{id = 3035, chance = 88000, maxCount = 10}, -- platinum coin
+	{id = 901, chance = 67000}, -- marlin
+	{id = 238, chance = 46000}, -- great mana potion
+	{id = 3033, chance = 38000, maxCount = 4}, -- small amethyst
+	{id = 7383, chance = 35000}, -- relic sword
+	{id = 3391, chance = 16000}, -- crusader helmet
+	{id = 3381, chance = 10000} -- crown armor
 }
 
 monster.attacks = {

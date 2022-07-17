@@ -68,13 +68,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 16175, chance = 8430},
-	{id = 16162, chance = 6570},
-	{id = 16160, chance = 10480},
-	{id = 16136, chance = 100000},
-	{id = 16163, chance = 12380},
-	{id = 16161, chance = 7430},
-	{id = 16164, chance = 11430}
+	{id = 16175, chance = 8430}, -- shiny blade
+	{id = 16162, chance = 6570}, -- mycological mace
+	{id = 16160, chance = 10480}, -- crystalline sword
+	{id = 16136, chance = 100000}, -- deathstrike's snippet
+	{id = 16163, chance = 12380}, -- crystal crossbow
+	{id = 16161, chance = 7430}, -- crystalline axe
+	{id = 16164, chance = 11430} -- mycological bow
 }
 
 monster.attacks = {

@@ -48,7 +48,7 @@ function spawnsByTime.onPeriodChange(period, light)
 	for index, value in pairs(spawns) do
 		if value.spawn == period then
 			-- Adding
-			local spawn = Game.createNpc(value.id, value.position)
+			local spawn = Game.createNpc(value.name, value.position)
 			if spawn then
 				if configManager.getBoolean(configKeys.ALL_CONSOLE_LOG) then
 					Spdlog.info("NPC " .. value.name .. " added")

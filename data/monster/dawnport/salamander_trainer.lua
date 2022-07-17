@@ -60,11 +60,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 9689, chance = 1050},
-	{id = 3031, chance = 65300, maxCount = 12},
-	{id = 3577, chance = 15200},
-	{id = 3003, chance = 7960},
-	{id = 3277, chance = 12970, maxCount = 3}
+	{id = 9689, chance = 1050}, -- bunch of troll hair
+	{id = 3031, chance = 65300, maxCount = 12}, -- gold coin
+	{id = 3577, chance = 15200}, -- meat
+	{id = 3003, chance = 7960}, -- rope
+	{id = 3277, chance = 12970, maxCount = 3} -- spear
 }
 
 monster.attacks = {
@@ -79,7 +79,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 50},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 0},

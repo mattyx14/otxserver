@@ -48,7 +48,7 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = true,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
 	illusionable = true,
 	canPushItems = true,
@@ -78,13 +78,13 @@ monster.voices = {
 
 monster.loot = {
 	{name = "dagger", chance = 80000},
-	{id = 3114, chance = 80000, maxCount = 2},
+	{id = 3114, chance = 80000, maxCount = 2}, -- skull
 	{name = "gold coin", chance = 40000, maxCount = 20},
 	{name = "brown bread", chance = 30000},
 	{name = "sabre", chance = 23000},
 	{name = "girlish hair decoration", chance = 10000},
 	{name = "protective charm", chance = 5200},
-	{id = 2920, chance = 1000},
+	{id = 2920, chance = 1000}, -- torch
 	{name = "crystal necklace", chance = 260},
 	{name = "small ruby", chance = 130}
 }

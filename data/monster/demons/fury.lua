@@ -7,9 +7,9 @@ monster.outfit = {
 	lookType = 149,
 	lookHead = 94,
 	lookBody = 77,
-	lookLegs = 96,
-	lookFeet = 0,
-	lookAddons = 3,
+	lookLegs = 78,
+	lookFeet = 79,
+	lookAddons = 1,
 	lookMount = 0
 }
 
@@ -50,7 +50,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 70,
@@ -78,7 +78,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3007, chance = 410},
+	{id = 3007, chance = 410}, -- crystal ring
 	{name = "gold coin", chance = 30000, maxCount = 100},
 	{name = "gold coin", chance = 30000, maxCount = 100},
 	{name = "gold coin", chance = 38000, maxCount = 69},
@@ -90,7 +90,7 @@ monster.loot = {
 	{name = "red piece of cloth", chance = 4000},
 	{name = "soul orb", chance = 21500},
 	{name = "soul orb", chance = 50},
-	{id = 6300, chance = 60},
+	{id = 6300, chance = 60}, -- death ring
 	{name = "demonic essence", chance = 22500},
 	{name = "flask of demonic blood", chance = 35000, maxCount = 3},
 	{name = "assassin dagger", chance = 660},

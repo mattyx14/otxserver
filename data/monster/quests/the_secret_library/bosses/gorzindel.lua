@@ -6,8 +6,8 @@ monster.experience = 100000
 monster.outfit = {
 	lookType = 1062,
 	lookHead = 94,
-	lookBody = 100,
-	lookLegs = 0,
+	lookBody = 81,
+	lookLegs = 10,
 	lookFeet = 0,
 	lookAddons = 1,
 	lookMount = 0
@@ -73,9 +73,9 @@ monster.loot = {
 	{name = "onyx chip", chance = 90000, maxCount = 12},
 	{name = "great spirit potion", chance = 90000, maxCount = 8},
 	{name = "supreme health potion", chance = 90000, maxCount = 12},
-	{name = "Ultimate health potion", chance = 90000, maxCount = 18},
-	{name = "Ultimate mana potion", chance = 90000, maxCount = 8},
-	{name = "Ultimate spirit potion", chance = 90000, maxCount = 12},
+	{name = "ultimate health potion", chance = 90000, maxCount = 18},
+	{name = "ultimate mana potion", chance = 90000, maxCount = 8},
+	{name = "ultimate spirit potion", chance = 90000, maxCount = 12},
 	{name = "berserk potion", chance = 90000, maxCount = 2},
 	{name = "bullseye potion", chance = 90000, maxCount = 2},
 	{name = "mastermind potion", chance = 90000, maxCount = 2},
@@ -84,16 +84,16 @@ monster.loot = {
 	{name = "curious matter", chance = 30000},
 	{name = "demon horn", chance = 30000},
 	{name = "dreaded cleaver", chance = 30000},
-	{id = 281, chance = 30000},
+	{id = 281, chance = 30000}, -- giant shimmering pearl (green)
 	{name = "gold token", chance = 1000, maxCount = 6},
 	{name = "green gem", chance = 1000},
 	{name = "knowledgeable book", chance = 1000},
 	{name = "ominous book", chance = 1000},
 	{name = "magic sulphur", chance = 1000, maxCount = 2},
 	{name = "muck rod", chance = 1000},
-	{id= 3039, chance = 1000},
-	{id = 8906, chance = 1000},
-	{id = 8900, chance = 1000},
+	{id= 3039, chance = 1000}, -- red gem
+	{id = 8906, chance = 1000}, -- heavily rusted helmet
+	{id = 8900, chance = 1000}, -- heavily rusted shield
 	{name = "silver Token", chance = 1000, maxCount = 6},
 	{name = "sinister book", chance = 1000},
 	{name = "spellbook of warding", chance = 1000},

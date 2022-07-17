@@ -46,10 +46,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -80,23 +80,23 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3035, chance = 100000, maxCount = 7},
-	{id = 3110, chance = 10400},
-	{id = 3114, chance = 12680},
-	{id = 3115, chance = 10000},
-	{id = 3116, chance = 5500},
-	{id = 3578, chance = 6750, maxCount = 3},
-	{id = 3582, chance = 6000, maxCount = 2},
-	{id = 5880, chance = 700},
-	{id = 5895, chance = 900},
-	{id = 7418, chance = 700},
-	{id = 238, chance = 15000, maxCount = 3},
-	{id = 239, chance = 15000, maxCount = 2},
-	{id = 10389, chance = 1460},
-	{id = 20062, chance = 450},
-	{id = 20198, chance = 18760},
-	{id = 20199, chance = 16000},
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 100000, maxCount = 7}, -- platinum coin
+	{id = 3110, chance = 10400}, -- piece of iron
+	{id = 3114, chance = 12680}, -- skull
+	{id = 3115, chance = 10000}, -- bone
+	{id = 3116, chance = 5500}, -- big bone
+	{id = 3578, chance = 6750, maxCount = 3}, -- fish
+	{id = 3582, chance = 6000, maxCount = 2}, -- ham
+	{id = 5880, chance = 700}, -- iron ore
+	{id = 5895, chance = 900}, -- fish fin
+	{id = 7418, chance = 700}, -- nightmare blade
+	{id = 238, chance = 15000, maxCount = 3}, -- great mana potion
+	{id = 239, chance = 15000, maxCount = 2}, -- great health potion
+	{id = 10389, chance = 1460}, -- sai
+	{id = 20062, chance = 450}, -- cluster of solace
+	{id = 20198, chance = 18760}, -- frazzle tongue
+	{id = 20199, chance = 16000}, -- frazzle skin
 	{name = "fairy wings", chance = 30100}
 }
 
@@ -117,16 +117,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
-	{type = COMBAT_ENERGYDAMAGE, percent = 10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_ENERGYDAMAGE, percent = 15},
 	{type = COMBAT_EARTHDAMAGE, percent = 20},
 	{type = COMBAT_FIREDAMAGE, percent = 10},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 5},
-	{type = COMBAT_HOLYDAMAGE , percent = -10},
-	{type = COMBAT_DEATHDAMAGE , percent = 15}
+	{type = COMBAT_HOLYDAMAGE , percent = -5},
+	{type = COMBAT_DEATHDAMAGE , percent = 10}
 }
 
 monster.immunities = {

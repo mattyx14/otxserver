@@ -77,17 +77,17 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 28000, maxCount = 35},
-	{id = 3091, chance = 3920}, -- Sword ring
+	{id = 3091, chance = 3920}, -- sword ring
 	{name = "longsword", chance = 2800},
 	{name = "throwing knife", chance = 9950, maxCount = 4},
 	{name = "broadsword", chance = 610},
-	{id = 3307, chance = 1860},
+	{id = 3307, chance = 1860}, -- scimitar
 	{name = "plate armor", chance = 1650},
 	{name = "warrior helmet", chance = 180},
 	{name = "brass legs", chance = 3100},
 	{name = "plate shield", chance = 1650},
 	{name = "plate legs", chance = 440},
-	{id = 3578, chance = 29400},
+	{id = 3578, chance = 29400}, -- fish
 	{name = "brown mushroom", chance = 9650},
 	{name = "royal spear", chance = 2400},
 	{name = "health potion", chance = 550},
@@ -116,7 +116,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 20},
-	{type = COMBAT_DEATHDAMAGE , percent = -5}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

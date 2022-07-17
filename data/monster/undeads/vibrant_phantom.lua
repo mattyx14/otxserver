@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 4,
@@ -80,7 +80,7 @@ monster.voices = {
 monster.loot = {
 	{name = "crystal coin", chance = 70540},
 	{name = "ultimate health potion", chance = 32220, maxCount = 7},
-	{id = 281, chance = 54560}, -- Giant shimmering pearl
+	{id = 281, chance = 54560}, -- giant shimmering pearl (green)
 	{name = "violet gem", chance = 74560},
 	{name = "terra rod", chance = 21920},
 	{name = "hailstorm rod", chance = 21920},
@@ -91,10 +91,10 @@ monster.loot = {
 	{name = "springsprout rod", chance = 18920},
 	{name = "blue crystal shard", chance = 11920},
 	{name = "violet crystal shard", chance = 11920},
-	{id = 23529, chance = 28920}, -- Ring of blue plasma
-	{id = 34143, chance = 3500}, -- Vibrant hearth
-	{id = 34144, chance = 4500}, -- Vibrant robe
-	{id = 34109, chance = 50} -- Bag you desire
+	{id = 23529, chance = 28920}, -- ring of blue plasma
+	{id = 34143, chance = 3500}, -- vibrant heart
+	{id = 34144, chance = 4500}, -- vibrant robe
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {

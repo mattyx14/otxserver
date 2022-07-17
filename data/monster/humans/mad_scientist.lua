@@ -5,10 +5,10 @@ monster.description = "a mad scientist"
 monster.experience = 205
 monster.outfit = {
 	lookType = 133,
-	lookHead = 97,
+	lookHead = 39,
 	lookBody = 0,
-	lookLegs = 38,
-	lookFeet = 97,
+	lookLegs = 19,
+	lookFeet = 20,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -79,7 +79,7 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 30000, maxCount = 65},
 	{name = "gold coin", chance = 30000, maxCount = 50},
-	{id = 3046, chance = 2000},
+	{id = 3046, chance = 2000}, -- magic light wand
 	{name = "life crystal", chance = 2000},
 	{name = "cookie", chance = 1200, maxCount = 5},
 	{name = "white mushroom", chance = 8000, maxCount = 3},

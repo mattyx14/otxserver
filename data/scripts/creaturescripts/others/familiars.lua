@@ -10,7 +10,7 @@ local timer = {
 	[2] = {storage=Storage.PetSummonEvent60, countdown=60, message = "one minute"}
 }
 
-local function sendMessageFunction(pid, message)
+local function SendMessageFunction(pid, message)
 	if Player(pid) then
 		Player(pid):sendTextMessage(MESSAGE_LOOT, "Your summon will disappear in less than " .. message)
 	end
@@ -75,7 +75,7 @@ function familiarLogin.onLogin(player)
 
 			for sendMessage = 1, #timer do
 				if player:getStorageValue(timer[sendMessage].storage) == -1 and petTimeLeft >= timer[sendMessage].countdown then
-					player:setStorageValue(timer[sendMessage].storage, addEvent(sendMessageFunction, (petTimeLeft-timer[sendMessage].countdown)*1000, player:getId(), timer[sendMessage].message))
+					player:setStorageValue(timer[sendMessage].storage, addEvent(SendMessageFunction, (petTimeLeft-timer[sendMessage].countdown)*1000, player:getId(), timer[sendMessage].message))
 				end
 			end
 		end

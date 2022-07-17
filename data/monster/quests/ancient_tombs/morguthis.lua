@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Morguthis"
 monster.experience = 3000
 monster.outfit = {
-	lookType = 90,
+	lookType = 84,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -75,7 +75,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3019, chance = 500},
+	{id = 3019, chance = 500}, -- demonbone amulet
 	{name = "black pearl", chance = 7000},
 	{name = "gold coin", chance = 50000, maxCount = 80},
 	{name = "gold coin", chance = 50000, maxCount = 73},

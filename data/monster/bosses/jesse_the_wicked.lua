@@ -5,10 +5,10 @@ monster.description = "Jesse The Wicked"
 monster.experience = 180
 monster.outfit = {
 	lookType = 134,
-	lookHead = 76,
-	lookBody = 76,
-	lookLegs = 76,
-	lookFeet = 115,
+	lookHead = 95,
+	lookBody = 95,
+	lookLegs = 95,
+	lookFeet = 113,
 	lookAddons = 3,
 	lookMount = 0
 }

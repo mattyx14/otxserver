@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -80,16 +80,16 @@ monster.loot = {
 	{name = "crystal coin", chance = 70540},
 	{name = "platinum coin", chance = 81920, maxCount = 33},
 	{name = "great mana potion", chance = 71920, maxCount = 5},
-	{id = 281, chance = 54560}, -- Giant shimmering pearl
-	{id = 282, chance = 54560}, -- Giant shimmering pearl
+	{id = 281, chance = 54560}, -- giant shimmering pearl (green)
+	{id = 282, chance = 54560}, -- giant shimmering pearl (brown)
 	{name = "blue gem", chance = 64560},
-	{id = 23533, chance = 29000}, -- Ring of red plasma
+	{id = 23533, chance = 29000}, -- ring of red plasma
 	{name = "wand of voodoo", chance = 31920},
 	{name = "wand of defiance", chance = 25920},
 	{name = "wand of everblazing", chance = 20920},
 	{name = "alloy legs", chance = 17920},
-	{id = 23529, chance = 29000}, -- Ring of blue plasma
-	{id = 23531, chance = 29000}, -- Ring of green plasma
+	{id = 23529, chance = 29000}, -- ring of blue plasma
+	{id = 23531, chance = 29000}, -- ring of green plasma
 	{name = "wand of starstorm", chance = 11920}
 }
 

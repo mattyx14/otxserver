@@ -5,10 +5,10 @@ monster.description = "Malofur Mangrinder"
 monster.experience = 55000
 monster.outfit = {
 	lookType = 1120,
-	lookHead = 19,
-	lookBody = 22,
-	lookLegs = 76,
-	lookFeet = 22,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -67,29 +67,29 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Ultimate Spirit Potion", chance = 50000, maxCount = 6},
-	{name = "Crystal Coin", chance = 50000},
-	{name = "Ultimate Mana Potion", chance = 50000, maxCount = 14},
-	{name = "Supreme Health Potion", chance = 50000, maxCount = 6},
-	{name = "Gold Token", chance = 50000, maxCount = 2},
-	{name = "Silver Token", chance = 100000, maxCount = 2},
-	{id = 281, chance = 100000},
-	{name = "Green Gem", chance = 100000},
-	{id= 3039, chance = 50000},
-	{name = "Blue Gem", chance = 100000},
-	{id = 23529, chance = 50000},
-	{name = "Platinum Coin", chance = 50000, maxCount = 5},
-	{name = "Bullseye Potion", chance = 50000, maxCount = 10},
-	{name = "Piggy Bank", chance = 100000},
-	{name = "Mysterious Remains", chance = 100000},
-	{name = "Energy Bar", chance = 100000},
-	{id = 23543, chance = 50000}, -- Collar of green plasma
-	{name = "Ring of the Sky", chance = 100000},
-	{name = "Crunor Idol", chance = 100000},
-	{name = "Resizer", chance = 100000},
-	{name = "Shoulder Plate", chance = 100000},
-	{name = "Malofur's Lunchbox", chance = 100000},
-	{name = "Pomegranate", chance = 50000}
+	{name = "ultimate spirit potion", chance = 50000, maxCount = 6},
+	{name = "crystal coin", chance = 50000},
+	{name = "ultimate mana potion", chance = 50000, maxCount = 14},
+	{name = "supreme health potion", chance = 50000, maxCount = 6},
+	{name = "gold token", chance = 50000, maxCount = 2},
+	{name = "silver token", chance = 100000, maxCount = 2},
+	{id = 281, chance = 100000}, -- giant shimmering pearl (green)
+	{name = "green gem", chance = 100000},
+	{id= 3039, chance = 50000}, -- red gem
+	{name = "blue gem", chance = 100000},
+	{id = 23529, chance = 50000}, -- ring of blue plasma
+	{name = "platinum coin", chance = 50000, maxCount = 5},
+	{name = "bullseye potion", chance = 50000, maxCount = 10},
+	{name = "piggy bank", chance = 100000},
+	{name = "mysterious remains", chance = 100000},
+	{name = "energy bar", chance = 100000},
+	{id = 23543, chance = 50000}, -- collar of green plasma
+	{name = "ring of the sky", chance = 100000},
+	{name = "crunor idol", chance = 100000},
+	{name = "resizer", chance = 100000},
+	{name = "shoulder plate", chance = 100000},
+	{name = "malofur's lunchbox", chance = 100000},
+	{name = "pomegranate", chance = 50000}
 }
 
 monster.attacks = {

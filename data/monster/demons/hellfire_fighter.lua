@@ -50,7 +50,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -75,7 +75,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "emerald bangle", chance = 2200},
-	{id = 3019, chance = 190},
+	{id = 3019, chance = 190}, -- demonbone amulet
 	{name = "small diamond", chance = 1400},
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 40000, maxCount = 100},
@@ -91,7 +91,7 @@ monster.loot = {
 	{name = "magma coat", chance = 470},
 	{name = "fiery heart", chance = 9570},
 	{name = "piece of hellfire armor", chance = 5060},
-	{id = 12600, chance = 670}
+	{id = 12600, chance = 670} -- coal
 }
 
 monster.attacks = {
@@ -109,7 +109,7 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 50},
-	{type = COMBAT_ENERGYDAMAGE, percent = 25},
+	{type = COMBAT_ENERGYDAMAGE, percent = 20},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 100},
 	{type = COMBAT_LIFEDRAIN, percent = 0},

@@ -56,18 +56,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 5},
-	{name = "Great Spirit Potion", chance = 5000, maxCount = 2},
-	{name = "Lion's Mane", chance = 5000},
-	{name = "Green Crystal Shard", chance = 5000, maxCount = 2},
-	{name = "Cyan Crystal Fragment", chance = 1500},
-	{name = "Green Crystal Fragment", chance = 1500},
-	{name = "Terra Boots", chance = 5000},
-	{name = "Axe", chance = 5000},
-	{name = "Leather Boots", chance = 5000},
-	{name = "Twin Hooks", chance = 5000},
-	{name = "War Hammer", chance = 1500},
-	{name = "Combat Knife", chance = 1500}
+	{name = "platinum coin", chance = 100000, maxCount = 5},
+	{name = "great spirit potion", chance = 5000, maxCount = 2},
+	{name = "lion's mane", chance = 5000},
+	{name = "green crystal shard", chance = 5000, maxCount = 2},
+	{name = "cyan crystal fragment", chance = 1500},
+	{name = "green crystal fragment", chance = 1500},
+	{name = "terra boots", chance = 5000},
+	{name = "axe", chance = 5000},
+	{name = "leather boots", chance = 5000},
+	{name = "twin hooks", chance = 5000},
+	{name = "war hammer", chance = 1500},
+	{name = "combat knife", chance = 1500}
 }
 
 monster.attacks = {
@@ -91,7 +91,7 @@ monster.elements = {
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = -25},
+	{type = COMBAT_ICEDAMAGE, percent = -20},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
 	{type = COMBAT_DEATHDAMAGE , percent = 40}
 }

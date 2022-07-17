@@ -80,7 +80,7 @@ monster.voices = {
 monster.loot = {
 	{name = "platinum coin", chance = 50930, maxCount = 4},
 	{name = "rare earth", chance = 39750, maxCount = 2},
-	{id = 12600, chance = 27980, maxCount = 5},
+	{id = 12600, chance = 27980, maxCount = 5}, -- coal
 	{name = "glob of acid slime", chance = 23680},
 	{name = "stonerefiner's skull", chance = 20110},
 	{name = "poisonous slime", chance = 20040, maxCount = 3},
@@ -99,15 +99,15 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -20},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = 1},
+	{type = COMBAT_EARTHDAMAGE, percent = 20},
+	{type = COMBAT_FIREDAMAGE, percent = -10},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 90},
+	{type = COMBAT_ICEDAMAGE, percent = -20},
+	{type = COMBAT_HOLYDAMAGE , percent = 0},
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 

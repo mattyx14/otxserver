@@ -50,7 +50,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "small amethyst", chance = 4900, maxCount = 3},
 	{name = "platinum coin", chance = 4090, maxCount = 2},
 	{name = "yellow gem", chance = 1000},
-	{id = 3052, chance = 770}, -- Life ring
+	{id = 3052, chance = 770}, -- life ring
 	{name = "terra rod", chance = 1001},
 	{name = "wand of inferno", chance = 1480},
 	{name = "lizard leather", chance = 980},
@@ -96,8 +96,8 @@ monster.loot = {
 	{name = "great mana potion", chance = 7940},
 	{name = "focus cape", chance = 660},
 	{name = "bunch of ripe rice", chance = 960},
-	{name = "Zaoan shoes", chance = 450},
-	{name = "Zaoan robe", chance = 300},
+	{name = "zaoan shoes", chance = 450},
+	{name = "zaoan robe", chance = 300},
 	{name = "dragon priest's wandtip", chance = 9910}
 }
 
@@ -119,7 +119,7 @@ monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = 45},
+	{type = COMBAT_FIREDAMAGE, percent = 85},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

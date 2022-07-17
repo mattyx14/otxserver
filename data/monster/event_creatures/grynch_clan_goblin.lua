@@ -54,7 +54,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 0,
@@ -103,27 +103,27 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2639, chance = 4000},
-	{id = 2950, chance = 5000},
-	{id = 2983, chance = 500},
+	{id = 2639, chance = 4000}, -- picture
+	{id = 2950, chance = 5000}, -- lute
+	{id = 2983, chance = 500}, -- flower bowl
 	{name = "snowball", chance = 7000, maxCount = 5},
 	{name = "piggy bank", chance = 1000},
 	{name = "gold coin", chance = 22500, maxCount = 22},
 	{name = "scarab coin", chance = 500, maxCount = 2},
-	{id = 3047, chance = 4000},
+	{id = 3047, chance = 4000}, -- magic light wand
 	{name = "blank rune", chance = 5000},
-	{id = 3211, chance = 1500},
-	{id = 3463, chance = 1000},
+	{id = 3211, chance = 1500}, -- witchesbroom
+	{id = 3463, chance = 1000}, -- mirror
 	{name = "scarf", chance = 4000},
 	{name = "red apple", chance = 700, maxCount = 3},
 	{name = "orange", chance = 7000, maxCount = 3},
 	{name = "cherry", chance = 7000, maxCount = 4},
 	{name = "cookie", chance = 7000, maxCount = 5},
 	{name = "candy cane", chance = 5000, maxCount = 3},
-	{id = 3606, chance = 5000, maxCount = 2},
+	{id = 3606, chance = 5000, maxCount = 2}, -- egg
 	{name = "explorer brooch", chance = 4000},
 	{name = "orichalcum pearl", chance = 500, maxCount = 2},
-	{id = 5792, chance = 1000},
+	{id = 5792, chance = 1000}, -- die
 	{name = "chicken feather", chance = 4000, maxCount = 5},
 	{name = "bat wing", chance = 4000, maxCount = 3},
 	{name = "honeycomb", chance = 4000},

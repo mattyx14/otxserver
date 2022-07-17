@@ -4,11 +4,11 @@ local monster = {}
 monster.description = "a Crazed Summer Vanguard"
 monster.experience = 5000
 monster.outfit = {
-	lookType = 1136,
-	lookHead = 20,
-	lookBody = 94,
-	lookLegs = 20,
-	lookFeet = 81,
+	lookType = 1137,
+	lookHead = 114,
+	lookBody = 93,
+	lookLegs = 3,
+	lookFeet = 83,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -84,7 +84,7 @@ monster.loot = {
 	{name = "belted cape", chance = 11550},
 	{name = "two handed sword", chance = 13550},
 	{name = "seeds", chance = 14750},
-	{id = 3307, chance = 17550},
+	{id = 3307, chance = 17550}, -- scimitar
 	{name = "knife", chance = 15650},
 	{name = "dragon necklace", chance = 14550},
 	{name = "magma amulet", chance = 1655},
@@ -113,15 +113,15 @@ monster.reflects = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = 100},
+	{type = COMBAT_FIREDAMAGE, percent = 50},
 	{type = COMBAT_LIFEDRAIN, percent = 100},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 100},
-	{type = COMBAT_ICEDAMAGE, percent = -10},
-	{type = COMBAT_HOLYDAMAGE , percent = 50},
+	{type = COMBAT_ICEDAMAGE, percent = -30},
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 

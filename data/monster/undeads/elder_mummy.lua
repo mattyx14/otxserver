@@ -5,10 +5,10 @@ monster.description = "an elder mummy"
 monster.experience = 560
 monster.outfit = {
 	lookType = 65,
-	lookHead = 20,
-	lookBody = 30,
-	lookLegs = 40,
-	lookFeet = 50,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -51,7 +51,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -75,18 +75,18 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3007, chance = 1650},
+	{id = 3007, chance = 1650}, -- crystal ring
 	{name = "silver brooch", chance = 4000},
 	{name = "black pearl", chance = 1340},
 	{name = "gold coin", chance = 87000, maxCount = 160},
 	{name = "scarab coin", chance = 10000, maxCount = 3},
 	{name = "strange talisman", chance = 4500},
-	{id = 3046, chance = 6000},
+	{id = 3046, chance = 6000}, -- magic light wand
 	{name = "poison dagger", chance = 380},
 	{name = "worm", chance = 20000, maxCount = 3},
 	{name = "gauze bandage", chance = 10000},
 	{name = "flask of embalming fluid", chance = 12600},
-	{id = 12483, chance = 2400}
+	{id = 12483, chance = 2400} -- pharaoh banner
 }
 
 monster.attacks = {
@@ -109,7 +109,7 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 20},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = -25},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

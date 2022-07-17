@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 114,
-	lookFeet = 97,
+	lookFeet = 78,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -46,13 +46,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,

@@ -5,10 +5,10 @@ monster.description = "a Sir Baeloc"
 monster.experience = 48300
 monster.outfit = {
 	lookType = 1222,
-	lookHead = 19,
-	lookBody = 0,
-	lookLegs = 0,
-	lookFeet = 0,
+	lookHead = 57,
+	lookBody = 81,
+	lookLegs = 3,
+	lookFeet = 93,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -75,20 +75,20 @@ monster.loot = {
 	{name = "mastermind potion", minCount = 0, maxCount = 10, chance = 12000},
 	{name = "berserk potion", minCount = 0, maxCount = 10, chance = 12000},
 	{name = "piece of draconian steel", minCount = 0, maxCount = 4, chance = 9000},
-	{id= 3039, minCount = 0, maxCount = 1, chance = 12000},
+	{id= 3039, minCount = 0, maxCount = 1, chance = 12000}, -- red gem
 	{name = "silver token", minCount = 0, maxCount = 2, chance = 9500},
-	{id = 23542, chance = 5200},-- collar of blue plasma
-	{id = 23544, chance = 5200},-- collar of red plasma
+	{id = 23542, chance = 5200}, -- collar of blue plasma
+	{id = 23544, chance = 5200}, -- collar of red plasma
 	{name = "knight legs", chance = 11000},
 	{name = "gold ingot", minCount = 0, maxCount = 1, chance = 10000},
 	{name = "violet gem", minCount = 0, maxCount = 1, chance = 10000},
 	{name = "yellow gem", minCount = 0, maxCount = 1, chance = 10000},
-	{id = 23529, chance = 5000},-- ring of blue plasma
-	{id = 23533, chance = 5000},-- ring of red plasma
+	{id = 23529, chance = 5000}, -- ring of blue plasma
+	{id = 23533, chance = 5000}, -- ring of red plasma
 	{name = "skull staff", chance = 9000},
 	{name = "young lich worm", chance = 5800},
 	{name = "embrace of nature", chance = 1400},
-	{id = 31592, chance = 1800},
+	{id = 31592, chance = 1800}, -- signet ring
 	{name = "terra helmet", chance = 750},
 	{name = "final judgement", chance = 450},
 }

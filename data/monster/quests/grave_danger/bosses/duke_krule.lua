@@ -5,10 +5,10 @@ monster.description = "a Duke Krule"
 monster.experience = 46300
 monster.outfit = {
 	lookType = 1221,
-	lookHead = 19,
-	lookBody = 0,
-	lookLegs = 0,
-	lookFeet = 0,
+	lookHead = 8,
+	lookBody = 8,
+	lookLegs = 19,
+	lookFeet = 79,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -74,7 +74,7 @@ monster.loot = {
 	{name = "blue gem", chance = 11000},
 	{name = "crusader helmet", chance = 6400},
 	{name = "gold ingot", minCount = 0, maxCount = 1, chance = 10000},
-	{id= 3039, chance = 11000},
+	{id= 3039, chance = 11000}, -- red gem
 	{name = "terra hood", chance = 7800},
 	{name = "yellow gem", chance = 9500},
 	{name = "young lich worm", chance = 5800},

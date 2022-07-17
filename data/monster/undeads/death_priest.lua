@@ -5,10 +5,10 @@ monster.description = "a death priest"
 monster.experience = 750
 monster.outfit = {
 	lookType = 99,
-	lookHead = 95,
-	lookBody = 116,
-	lookLegs = 119,
-	lookFeet = 115,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -78,12 +78,12 @@ monster.loot = {
 	{name = "white pearl", chance = 3000},
 	{name = "gold coin", chance = 70000, maxCount = 144},
 	{name = "scarab coin", chance = 10000, maxCount = 3},
-	{id = 3059, chance = 6800},
-	{id = 3098, chance = 1000}, -- Ring of healing
+	{id = 3059, chance = 6800}, -- spellbook
+	{id = 3098, chance = 1000}, -- ring of healing
 	{name = "orichalcum pearl", chance = 6000, maxCount = 4},
 	{name = "health potion", chance = 15000},
 	{name = "mana potion", chance = 15000},
-	{id = 12482, chance = 27000}
+	{id = 12482, chance = 27000} -- hieroglyph banner
 }
 
 monster.attacks = {
@@ -99,14 +99,14 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 75},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = 80},
+	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = -20},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

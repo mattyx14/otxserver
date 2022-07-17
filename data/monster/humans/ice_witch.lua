@@ -6,9 +6,9 @@ monster.experience = 580
 monster.outfit = {
 	lookType = 149,
 	lookHead = 0,
-	lookBody = 47,
-	lookLegs = 105,
-	lookFeet = 105,
+	lookBody = 9,
+	lookLegs = 86,
+	lookFeet = 86,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "green mushroom", chance = 1310},
 	{name = "shard", chance = 530},
 	{name = "diamond sceptre", chance = 330},
-	{id = 7441, chance = 10000},
+	{id = 7441, chance = 10000}, -- ice cube
 	{name = "crystal sword", chance = 400},
 	{name = "pair of earmuffs", chance = 90},
 	{name = "strong mana potion", chance = 820},

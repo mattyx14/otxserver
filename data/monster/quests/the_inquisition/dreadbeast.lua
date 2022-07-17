@@ -30,7 +30,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -61,10 +61,10 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 11690, maxCount = 88},
-	{id = 3115, chance = 8230},
+	{id = 3115, chance = 8230}, -- bone
 	{name = "plate armor", chance = 2810},
-	{id = 3114, chance = 2810},
-	{id = 3116, chance = 1950},
+	{id = 3114, chance = 2810}, -- skull
+	{id = 3116, chance = 1950}, -- big bone
 	{name = "bone club", chance = 1520},
 	{name = "bone shield", chance = 1520},
 	{name = "health potion", chance = 870},

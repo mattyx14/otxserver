@@ -5,7 +5,7 @@ monster.description = "a black sphinx acolyte"
 monster.experience = 7200
 monster.outfit = {
 	lookType = 1200,
-	lookHead = 114,
+	lookHead = 95,
 	lookBody = 95,
 	lookLegs = 94,
 	lookFeet = 95,
@@ -83,15 +83,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 5},
-	{name = "Blue Crystal Shard", chance = 5000},
-	{name = "Snakebite Rod", chance = 4700},
-	{name = "Underworld Rod", chance = 3400},
-	{name = "Violet Gem", chance = 2600},
-	{name = "Opal", chance = 2200, maxCount = 2},
-	{name = "Wand of Voodoo", chance = 2200},
-	{id = 31331, chance = 3400},
-	{name = "Small Enchanted Emerald", chance = 1500, maxCount = 3}
+	{name = "platinum coin", chance = 100000, maxCount = 5},
+	{name = "blue crystal shard", chance = 5000},
+	{name = "snakebite rod", chance = 4700},
+	{name = "underworld rod", chance = 3400},
+	{name = "violet gem", chance = 2600},
+	{name = "opal", chance = 2200, maxCount = 2},
+	{name = "wand of voodoo", chance = 2200},
+	{id = 31331, chance = 3400}, -- empty honey glass
+	{name = "small enchanted emerald", chance = 1500, maxCount = 3}
 }
 
 monster.attacks = {

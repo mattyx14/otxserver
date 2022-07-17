@@ -4,12 +4,12 @@ local monster = {}
 monster.description = "The Fear Feaster"
 monster.experience = 13090
 monster.outfit = {
-	lookType = 1061,
-	lookHead = 79,
-	lookBody = 83,
-	lookLegs = 113,
+	lookType = 1276,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
 	lookFeet = 0,
-	lookAddons = 1,
+	lookAddons = 0,
 	lookMount = 0
 }
 

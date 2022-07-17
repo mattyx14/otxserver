@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 70,
@@ -63,21 +63,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3035, chance = 100000, maxCount = 18},
-	{id = 3027, chance = 96880, maxCount = 5},
-	{id = 6558, chance = 100000},
-	{id = 6499, chance = 62500},
-	{id = 9058, chance = 100000, maxCount = 5},
-	{id = 3318, chance = 10810},
-	{id = 6553, chance = 6250},
-	{id = 9637, chance = 100000},
-	{id = 3038, chance = 50000},
-	{id = 3280, chance = 46880},
-	{id = 4871, chance = 65630},
-	{id = 817, chance = 96880},
-	{id = 238, chance = 96880, maxCount = 3},
-	{id = 7453, chance = 3130},
-	{id = 3360, chance = 31250}
+	{id = 3035, chance = 100000, maxCount = 18}, -- platinum coin
+	{id = 3027, chance = 96880, maxCount = 5}, -- black pearl
+	{id = 6558, chance = 100000}, -- flask of demonic blood
+	{id = 6499, chance = 62500}, -- demonic essence
+	{id = 9058, chance = 100000, maxCount = 5}, -- gold ingot
+	{id = 3318, chance = 10810}, -- knight axe
+	{id = 6553, chance = 6250}, -- ruthless axe
+	{id = 9637, chance = 100000}, -- hellhound slobber
+	{id = 3038, chance = 50000}, -- green gem
+	{id = 3280, chance = 46880}, -- fire sword
+	{id = 4871, chance = 65630}, -- explorer brooch
+	{id = 817, chance = 96880}, -- magma amulet
+	{id = 238, chance = 96880, maxCount = 3}, -- great mana potion
+	{id = 7453, chance = 3130}, -- executioner
+	{id = 3360, chance = 31250} -- golden armor
 }
 
 monster.attacks = {

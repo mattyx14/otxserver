@@ -5,7 +5,7 @@ monster.description = "a Thanatursus"
 monster.experience = 6300
 monster.outfit = {
 	lookType = 1134,
-	lookHead = 19,
+	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
 	lookFeet = 0,
@@ -78,26 +78,26 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 17},
-	{name = "Meat", chance = 90000, maxCount = 3},
-	{name = "Great Spirit Potion", chance = 50000, maxCount = 3},
-	{name = "Ultimate Health Potion", chance = 50000},
-	{name = "Essence of a Bad Dream", chance = 17000},
-	{name = "Knight Axe", chance = 14000},
-	{name = "Mino Shield", chance = 12000},
-	{name = "Terra Boots", chance = 7000},
-	{name = "Terra Hood", chance = 6400},
-	{name = "Beastslayer Axe", chance = 500},
-	{name = "Black Shield", chance = 3500},
-	{name = "Bloody Pincers", chance = 4200},
-	{name = "Dark Shield", chance = 1500},
-	{name = "Obsidian Lance", chance = 1500},
-	{name = "Sickle", chance = 1100},
-	{name = "Titan Axe", chance = 1100},
-	{name = "Wand of Cosmic Energy", chance = 400},
-	{name = "Wand of Defiance", chance = 400},
-	{name = "Warrior's Axe", chance = 400},
-	{name = "Warrior's Shield", chance = 400}
+	{name = "platinum coin", chance = 100000, maxCount = 17},
+	{name = "meat", chance = 90000, maxCount = 3},
+	{name = "great spirit potion", chance = 50000, maxCount = 3},
+	{name = "ultimate health potion", chance = 50000},
+	{name = "essence of a bad dream", chance = 17000},
+	{name = "knight axe", chance = 14000},
+	{name = "mino shield", chance = 12000},
+	{name = "terra boots", chance = 7000},
+	{name = "terra hood", chance = 6400},
+	{name = "beastslayer axe", chance = 500},
+	{name = "black shield", chance = 3500},
+	{name = "bloody pincers", chance = 4200},
+	{name = "dark shield", chance = 1500},
+	{name = "obsidian lance", chance = 1500},
+	{name = "sickle", chance = 1100},
+	{name = "titan axe", chance = 1100},
+	{name = "wand of cosmic energy", chance = 400},
+	{name = "wand of defiance", chance = 400},
+	{name = "warrior's axe", chance = 400},
+	{name = "warrior's shield", chance = 400}
 }
 
 monster.attacks = {
@@ -114,16 +114,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -30},
-	{type = COMBAT_ENERGYDAMAGE, percent = -50},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 30},
+	{type = COMBAT_ENERGYDAMAGE, percent = 50},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 100},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = -20},
-	{type = COMBAT_DEATHDAMAGE , percent = 20}
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
+	{type = COMBAT_DEATHDAMAGE , percent = -20}
 }
 
 monster.immunities = {

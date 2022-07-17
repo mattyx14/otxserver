@@ -77,22 +77,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3035, chance = 100000, maxCount = 4},
-	{id = 239, chance = 14200},
-	{id = 7642, chance = 14000},
-	{id = 238, chance = 12700},
-	{id = 23545, chance = 11200},
-	{id = 23535, chance = 10900},
-	{id = 23501, chance = 9900},
-	{id = 23524, chance = 8300},
-	{id = 23506, chance = 8000},
-	{id = 16126, chance = 3400},
-	{id = 16120, chance = 3400},
-	{id = 16124, chance = 2700, maxCount = 2},
-	{id = 16119, chance = 1900},
-	{id = 3039, chance = 1500},
-	{id = 8092, chance = 1100}
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 100000, maxCount = 4}, -- platinum coin
+	{id = 239, chance = 14200}, -- great health potion
+	{id = 7642, chance = 14000}, -- great spirit potion
+	{id = 238, chance = 12700}, -- great mana potion
+	{id = 23545, chance = 11200}, -- energy drink
+	{id = 23535, chance = 10900}, -- energy bar
+	{id = 23501, chance = 9900}, -- condensed energy
+	{id = 23524, chance = 8300}, -- small energy ball
+	{id = 23506, chance = 8000}, -- plasma pearls
+	{id = 16126, chance = 3400}, -- red crystal fragment
+	{id = 16120, chance = 3400}, -- violet crystal shard
+	{id = 16124, chance = 2700, maxCount = 2}, -- blue crystal splinter
+	{id = 16119, chance = 1900}, -- blue crystal shard
+	{id = 3039, chance = 1500}, -- red gem
+	{id = 8092, chance = 1100} -- wand of starstorm
 }
 
 monster.attacks = {
@@ -111,10 +111,10 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 15},
-	{type = COMBAT_ENERGYDAMAGE, percent = 100},
-	{type = COMBAT_EARTHDAMAGE, percent = -20},
-	{type = COMBAT_FIREDAMAGE, percent = 50},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = 70},
+	{type = COMBAT_EARTHDAMAGE, percent = -10},
+	{type = COMBAT_FIREDAMAGE, percent = 15},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

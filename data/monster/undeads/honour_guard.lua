@@ -47,9 +47,9 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = false,
+	pushable = true,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -80,7 +80,7 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 15},
 	{name = "scarab coin", chance = 2600},
 	{name = "mace", chance = 3760},
-	{id = 3307, chance = 1640},
+	{id = 3307, chance = 1640}, -- scimitar
 	{name = "brown mushroom", chance = 6120, maxCount = 2},
 	{name = "pelvis bone", chance = 8700}
 }
@@ -104,7 +104,7 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 5},
+	{type = COMBAT_HOLYDAMAGE , percent = -10},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

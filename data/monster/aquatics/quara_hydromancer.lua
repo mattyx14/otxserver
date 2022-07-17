@@ -88,7 +88,7 @@ monster.loot = {
 	{name = "black pearl", chance = 3150},
 	{name = "great mana potion", chance = 2880},
 	{name = "fish fin", chance = 1410},
-	{id = 3098, chance = 1218}, -- Ring of healing
+	{id = 3098, chance = 1218}, -- ring of healing
 	{name = "wand of cosmic energy", chance = 980},
 	{name = "knight armor", chance = 230}
 }

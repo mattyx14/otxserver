@@ -70,19 +70,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3035, chance = 100000, maxCount = 25},
-	{id = 9057, chance = 100000, maxCount = 10},
-	{id = 238, chance = 100000, maxCount = 5},
-	{id = 7642, chance = 100000, maxCount = 10},
-	{id = 16121, chance = 100000, maxCount = 3},
-	{id = 16120, chance = 100000, maxCount = 3},
-	{id = 11454, chance = 2000},
-	{id = 7440, chance = 2000},
-	{id = 3098, chance = 2000}, -- Ring of healing
-	{id = 3324, chance = 1000},
-	{id = 22721, chance = 100000}
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 100000, maxCount = 25}, -- platinum coin
+	{id = 9057, chance = 100000, maxCount = 10}, -- small topaz
+	{id = 238, chance = 100000, maxCount = 5}, -- great mana potion
+	{id = 7642, chance = 100000, maxCount = 10}, -- great spirit potion
+	{id = 16121, chance = 100000, maxCount = 3}, -- green crystal shard
+	{id = 16120, chance = 100000, maxCount = 3}, -- violet crystal shard
+	{id = 11454, chance = 2000}, -- luminous orb
+	{id = 7440, chance = 2000}, -- mastermind potion
+	{id = 3098, chance = 2000}, -- ring of healing
+	{id = 3324, chance = 1000}, -- skull staff
+	{id = 22721, chance = 100000} -- gold token
 }
 
 monster.attacks = {

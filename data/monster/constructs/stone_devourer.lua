@@ -80,7 +80,7 @@ monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "platinum coin", chance = 92000, maxCount = 7},
 	{name = "stone skin amulet", chance = 2270},
-	{id = 3097, chance = 2840}, -- Dwarven ring
+	{id = 3097, chance = 2840}, -- dwarven ring
 	{name = "giant sword", chance = 570},
 	{name = "crystal mace", chance = 850},
 	{name = "war axe", chance = 920},
@@ -92,7 +92,7 @@ monster.loot = {
 	{name = "great mana potion", chance = 15610, maxCount = 2},
 	{name = "mana potion", chance = 15050, maxCount = 2},
 	{name = "ultimate health potion", chance = 14410},
-	{id = 7920, chance = 11360},
+	{id = 12600, chance = 11360}, -- coal
 	{name = "ancient stone", chance = 12850},
 	{name = "crystalline arrow", chance = 9940, maxCount = 10},
 	{name = "green crystal splinter", chance = 6960},
@@ -114,7 +114,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 1},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 30},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = 100},
@@ -123,7 +123,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 30},
 	{type = COMBAT_HOLYDAMAGE , percent = 30},
-	{type = COMBAT_DEATHDAMAGE , percent = 1}
+	{type = COMBAT_DEATHDAMAGE , percent = 30}
 }
 
 monster.immunities = {

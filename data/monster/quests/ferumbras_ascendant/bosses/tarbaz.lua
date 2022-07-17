@@ -64,37 +64,37 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 22516, chance = 1000000},
-	{id = 6558, chance = 10000},
-	{id = 6558, chance = 10000},
-	{id = 6558, chance = 10000},
-	{id = 6558, chance = 10000},
-	{id = 6558, chance = 10000},
-	{id = 3037, chance = 1000},
-	{id = 3031, chance = 98000, maxCount = 184},
-	{id = 238, chance = 23000, maxCount = 10},
-	{id = 281, chance = 14000, maxCount = 5},
-	{id = 282, chance = 14000, maxCount = 5},
-	{id = 7642, chance = 46100, maxCount = 10},
-	{id = 7643, chance = 23000, maxCount = 10},
-	{id = 9057, chance = 10000, maxCount = 8},
-	{id = 3029, chance = 12000, maxCount = 9},
-	{id = 3026, chance = 12000, maxCount = 8},
-	{id = 3038, chance = 1000},
-	{id = 815, chance = 4000},
-	{id = 823, chance = 1000},
-	{id = 824, chance = 1000},
-	{id = 3033, chance = 10000, maxCount = 5},
-	{id = 3035, chance = 8000, maxCount = 58},
-	{id = 16119, chance = 10000, maxCount = 5},
-	{id = 16120, chance = 10000, maxCount = 5},
-	{id = 16121, chance = 10000, maxCount = 5},
-	{id = 3036, chance = 1000},
-	{id = 22867, chance = 800},
-	{id = 22727, chance = 800},
-	{id = 3038, chance = 1000},
-	{id = 8082, chance = 4000},
-	{id = 22757, chance = 500, unique = true}
+	{id = 22516, chance = 1000000}, -- silver token
+	{id = 6558, chance = 10000}, -- flask of demonic blood
+	{id = 6558, chance = 10000}, -- flask of demonic blood
+	{id = 6558, chance = 10000}, -- flask of demonic blood
+	{id = 6558, chance = 10000}, -- flask of demonic blood
+	{id = 6558, chance = 10000}, -- flask of demonic blood
+	{id = 3037, chance = 1000}, -- yellow gem
+	{id = 3031, chance = 98000, maxCount = 184}, -- gold coin
+	{id = 238, chance = 23000, maxCount = 10}, -- great mana potion
+	{id = 281, chance = 14000, maxCount = 5}, -- giant shimmering pearl (green)
+	{id = 282, chance = 14000, maxCount = 5}, -- giant shimmering pearl (brown)
+	{id = 7642, chance = 46100, maxCount = 10}, -- great spirit potion
+	{id = 7643, chance = 23000, maxCount = 10}, -- ultimate health potion
+	{id = 9057, chance = 10000, maxCount = 8}, -- small topaz
+	{id = 3029, chance = 12000, maxCount = 9}, -- small sapphire
+	{id = 3026, chance = 12000, maxCount = 8}, -- white pearl
+	{id = 3038, chance = 1000}, -- green gem
+	{id = 815, chance = 4000}, -- glacier amulet
+	{id = 823, chance = 1000}, -- glacier kilt
+	{id = 824, chance = 1000}, -- glacier robe
+	{id = 3033, chance = 10000, maxCount = 5}, -- small amethyst
+	{id = 3035, chance = 8000, maxCount = 58}, -- platinum coin
+	{id = 16119, chance = 10000, maxCount = 5}, -- blue crystal shard
+	{id = 16120, chance = 10000, maxCount = 5}, -- violet crystal shard
+	{id = 16121, chance = 10000, maxCount = 5}, -- green crystal shard
+	{id = 3036, chance = 1000}, -- violet gem
+	{id = 22867, chance = 800}, -- rift crossbow
+	{id = 22727, chance = 800}, -- rift lance
+	{id = 3038, chance = 1000}, -- green gem
+	{id = 8082, chance = 4000}, -- underworld rod
+	{id = 22757, chance = 500, unique = true} -- shroud of despair
 }
 
 monster.attacks = {

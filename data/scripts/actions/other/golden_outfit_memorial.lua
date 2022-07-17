@@ -1,25 +1,57 @@
-local storage = Storage.OutfitQuest.GoldenOutfit
+local goldenOutfitCache
+local lastUpdated = 0
+
+local function updateGoldenOutfitCache()
+	if os.time() < lastUpdated + (5 * 60) then  -- Memorial cache update interval (5 minutes)
+		return
+	end
+
+	goldenOutfitCache = {[1] = {}, [2] = {}, [3] = {}}
+
+	local resultId = db.storeQuery("SELECT `name`, `value` FROM `player_storage` INNER JOIN `players` as `p` ON `p`.`id` = `player_id` WHERE `key` = " .. Storage.OutfitQuest.GoldenOutfit .. " AND `value` >= 1;")
+	if not resultId then
+		result.free(resultId)
+		lastUpdated = os.time()
+		return
+	end
+
+	repeat
+		table.insert(goldenOutfitCache[result.getNumber(resultId, "value")], result.getString(resultId, "name"))
+	until not result.next(resultId)
+	result.free(resultId)
+
+	lastUpdated = os.time()
+end
 
 local goldenOutfitMemorial = Action()
 
 function goldenOutfitMemorial.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-    local resultId = db.storeQuery("SELECT `player_id` FROM `player_storage` WHERE `key` = " .. storage .. " AND `value` >= 3;")
-    if resultId ~= false then
-        local message = "The following characters have spent a fortune on a Golden Outfit:\n\nFull Outfit for 1,000,000,000 gold:\n\n"
-        repeat
-            local resultId2 = db.storeQuery("SELECT `name` FROM `players` WHERE `id` = " .. result.getDataInt(resultId, "player_id") .. ";")
-            if resultId2 ~= false then
-                local playerName = result.getString(resultId2, "name")
-                message = ""..message.."- ".. playerName .."\n"
-                result.free(resultId2)
-            end
-        until not result.next(resultId)
-        result.free(resultId)
-        player:showTextDialog(item.itemid, message)
-    else
-        player:showTextDialog(item.itemid, "The Golden Outfit has not been acquired by anyone yet.")
-    end
-    return true
+	updateGoldenOutfitCache()
+	local response = NetworkMessage()
+	response:addByte(0xB0)
+
+	response:addU32(500000000) -- Armor price
+	response:addU32(750000000) -- Armor + helmet price
+	response:addU32(1000000000) -- Armor + helmet + boots price
+
+	for i = 1, 3 do
+		response:addU16(#goldenOutfitCache[i])
+		for j = 1, #goldenOutfitCache[i] do
+			response:addString(goldenOutfitCache[i][j])
+		end
+	end
+
+	for i = 1, 3 do
+		response:addU16(0) -- price in silver tokens
+		response:addU16(0) -- price in golden tokens
+	end
+
+	for i = 1, 3 do
+		response:addU16(0) -- list of spenders
+	end
+
+	response:sendToPlayer(player)
+	return true
 end
 
 goldenOutfitMemorial:id(31518, 31519, 31520, 31521, 31522, 31523)

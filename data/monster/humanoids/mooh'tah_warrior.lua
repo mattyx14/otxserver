@@ -76,25 +76,25 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 120},
-	{id = 3035, chance = 39860, maxCount = 3},
-	{id = 21202, chance = 15030},
-	{id = 237, chance = 7110},
-	{id = 236, chance = 6390},
-	{id = 5878, chance = 5530},
-	{id = 3030, chance = 5470},
-	{id = 3032, chance = 5280},
-	{id = 3033, chance = 5200},
-	{id = 9057, chance = 4760},
-	{id = 11472, chance = 4710, maxCount = 2},
-	{id = 21177, chance = 1380},
-	{id = 3091, chance = 1110}, -- Sword ring
-	{id = 21166, chance = 1090},
-	{id = 3415, chance = 1020},
-	{id = 3371, chance = 710},
-	{id = 5911, chance = 650},
-	{id = 3370, chance = 490},
-	{id = 7401, chance = 150}
+	{id = 3031, chance = 100000, maxCount = 120}, -- gold coin
+	{id = 3035, chance = 39860, maxCount = 3}, -- platinum coin
+	{id = 21202, chance = 15030}, -- mooh'tah shell
+	{id = 237, chance = 7110}, -- strong mana potion
+	{id = 236, chance = 6390}, -- strong health potion
+	{id = 5878, chance = 5530}, -- minotaur leather
+	{id = 3030, chance = 5470}, -- small ruby
+	{id = 3032, chance = 5280}, -- small emerald
+	{id = 3033, chance = 5200}, -- small amethyst
+	{id = 9057, chance = 4760}, -- small topaz
+	{id = 11472, chance = 4710, maxCount = 2}, -- minotaur horn
+	{id = 21177, chance = 1380}, -- cowtana
+	{id = 3091, chance = 1110}, -- sword ring
+	{id = 21166, chance = 1090}, -- mooh'tah plate
+	{id = 3415, chance = 1020}, -- guardian shield
+	{id = 3371, chance = 710}, -- knight legs
+	{id = 5911, chance = 650}, -- red piece of cloth
+	{id = 3370, chance = 490}, -- knight armor
+	{id = 7401, chance = 150} -- minotaur trophy
 }
 
 monster.attacks = {
@@ -113,16 +113,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 1},
-	{type = COMBAT_ENERGYDAMAGE, percent = 3},
-	{type = COMBAT_EARTHDAMAGE, percent = 1},
-	{type = COMBAT_FIREDAMAGE, percent = 1},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_ENERGYDAMAGE, percent = 5},
+	{type = COMBAT_EARTHDAMAGE, percent = 10},
+	{type = COMBAT_FIREDAMAGE, percent = 15},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 10},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 1}
+	{type = COMBAT_DEATHDAMAGE , percent = 15}
 }
 
 monster.immunities = {

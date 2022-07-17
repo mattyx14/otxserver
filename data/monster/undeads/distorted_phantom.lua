@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 4,
@@ -88,12 +88,12 @@ monster.loot = {
 	{name = "springsprout rod", chance = 28920},
 	{name = "gold ingot", chance = 54560},
 	{name = "glacial rod", chance = 44560},
-	{id = 23529, chance = 28920}, -- Ring of blue plasma
-	{id = 23531, chance = 28920}, -- Ring of green plasma
-	{id = 23533, chance = 28920}, -- Ring of red plasma
-	{id = 34142, chance = 18920}, -- Distorted hearth
-	{id = 34149, chance = 11920}, -- Distorted robe
-	{id = 34109, chance = 50} -- Bag you desire
+	{id = 23529, chance = 28920}, -- ring of blue plasma
+	{id = 23531, chance = 28920}, -- ring of green plasma
+	{id = 23533, chance = 28920}, -- ring of red plasma
+	{id = 34142, chance = 18920}, -- distorted heart
+	{id = 34149, chance = 11920}, -- distorted robe
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {
@@ -110,7 +110,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 50},
 	{type = COMBAT_FIREDAMAGE, percent = 0},

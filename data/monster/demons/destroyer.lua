@@ -91,13 +91,13 @@ monster.loot = {
 	{name = "crowbar", chance = 14285},
 	{name = "plate armor", chance = 4347},
 	{name = "dark armor", chance = 10000},
-	{id = 3449, chance = 12500, maxCount = 12}, -- Burst arrow
-	{id = 3456, chance = 6250},
+	{id = 3449, chance = 12500, maxCount = 12}, -- burst arrow
+	{id = 3456, chance = 6250}, -- pick
 	{name = "steel boots", chance = 992},
 	{name = "meat", chance = 50000, maxCount = 6},
 	{name = "skull helmet", chance = 108},
 	{name = "soul orb", chance = 6666},
-	{id = 6299, chance = 144},
+	{id = 6299, chance = 144}, -- death ring
 	{name = "demonic essence", chance = 20000},
 	{name = "dreaded cleaver", chance = 833},
 	{name = "chaos mace", chance = 869},
@@ -117,7 +117,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 25},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 20},
 	{type = COMBAT_ENERGYDAMAGE, percent = 100},
 	{type = COMBAT_EARTHDAMAGE, percent = 20},
 	{type = COMBAT_FIREDAMAGE, percent = 30},

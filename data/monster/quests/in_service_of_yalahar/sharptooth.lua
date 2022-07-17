@@ -67,7 +67,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3111, chance = 50000}
+	{id = 3111, chance = 50000} -- fishbone
 }
 
 monster.attacks = {

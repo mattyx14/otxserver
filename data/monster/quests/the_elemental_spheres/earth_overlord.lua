@@ -70,7 +70,7 @@ monster.loot = {
 	{name = "mother soil", chance = 100000},
 	{name = "lump of earth", chance = 33333},
 	{name = "shiny stone", chance = 8333},
-	{id = 12600, chance = 552}
+	{id = 12600, chance = 552} -- coal
 }
 
 monster.attacks = {

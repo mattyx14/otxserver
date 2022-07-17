@@ -82,7 +82,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 68810, maxCount = 88},
-	{id = 3091, chance = 570}, -- Sword ring
+	{id = 3091, chance = 570}, -- sword ring
 	{name = "iron ore", chance = 400},
 	{name = "nail", chance = 1460},
 	{name = "heavily rusted armor", chance = 790},
@@ -101,10 +101,10 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 25},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
 	{type = COMBAT_ENERGYDAMAGE, percent = -5},
 	{type = COMBAT_EARTHDAMAGE, percent = 50},
-	{type = COMBAT_FIREDAMAGE, percent = -10},
+	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

@@ -83,16 +83,16 @@ monster.loot = {
 	{name = "gold coin", chance = 40000, maxCount = 97},
 	{name = "gold coin", chance = 3390, maxCount = 7},
 	{name = "small amethyst", chance = 2250, maxCount = 3},
-	{id = 3049, chance = 2702}, -- Stealth ring
+	{id = 3049, chance = 2702}, -- stealth ring
 	{name = "necrotic rod", chance = 830},
 	{name = "blank rune", chance = 16666, maxCount = 2},
 	{name = "double axe", chance = 1994},
-	{id = 3307, chance = 5660},
+	{id = 3307, chance = 5660}, -- scimitar
 	{name = "guardian shield", chance = 8130},
 	{name = "pitchfork", chance = 50000},
 	{name = "cleaver", chance = 8830},
 	{name = "soul orb", chance = 7230},
-	{id = 6299, chance = 120},
+	{id = 6299, chance = 120}, -- death ring
 	{name = "demonic essence", chance = 8000},
 	{name = "flask of demonic blood", chance = 25000, maxCount = 2},
 	{name = "magma coat", chance = 250},
@@ -123,7 +123,7 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -10},
-	{type = COMBAT_HOLYDAMAGE , percent = -10},
+	{type = COMBAT_HOLYDAMAGE , percent = -5},
 	{type = COMBAT_DEATHDAMAGE , percent = 10}
 }
 

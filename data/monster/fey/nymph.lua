@@ -46,13 +46,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -80,19 +80,23 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3659, chance = 400},
-	{id = 3079, chance = 150},
-	{id = 25695, chance = 12000},
-	{id = 3010, chance = 1800},
-	{id = 9013, chance = 500},
-	{id = 25691, chance = 15000, maxCount = 2},
-	{id = 3031, chance = 65000, maxCount = 110},
-	{id = 238, chance = 3000},
-	{id = 8045, chance = 650},
-	{id = 9302, chance = 1000},
-	{id = 678, chance = 2000, maxCount = 2},
-	{id = 9057, chance = 2500, maxCount = 2},
-	{id = 237, chance = 1000}
+	{id = 3659, chance = 400}, -- blue rose
+	{id = 3079, chance = 150}, -- boots of haste
+	{id = 25695, chance = 12000}, -- dandelion seeds
+	{id = 3010, chance = 1800}, -- emerald bangle
+	{id = 9013, chance = 500}, -- flower wreath
+	{id = 25691, chance = 15000, maxCount = 2}, -- wild flowers
+	{id = 3031, chance = 65000, maxCount = 110}, -- gold coin
+	{id = 238, chance = 3000}, -- great mana potion
+	{id = 8045, chance = 650}, -- hibiscus dress
+	{id = 9302, chance = 1000}, -- sacred tree amulet
+	{id = 678, chance = 2000, maxCount = 2}, -- small enchanted amethyst
+	{id = 9057, chance = 2500, maxCount = 2}, -- small topaz
+	{id = 25696, chance = 12000}, -- colourful snail shell
+	{id = 25700, chance = 720}, -- dream blossom staff
+	{id = 25698, chance = 840}, -- butterfly ring
+	{id = 25692, chance = 15000, maxCount = 2}, -- fresh fruit
+	{id = 237, chance = 1000} -- strong mana potion
 }
 
 monster.attacks = {

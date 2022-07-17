@@ -81,7 +81,7 @@ monster.loot = {
 	{name = "small enchanted sapphire", chance = 13600000, maxCount = 2},
 	{name = "bear paw", chance = 13600000, maxCount = 2},
 	{name = "furry club", chance = 13600000},
-	{id = 281, chance = 5000},
+	{id = 281, chance = 5000}, -- giant shimmering pearl (green)
 	{name = "great health potion", chance = 13600000, maxCount = 5},
 	{name = "honeycomb", chance = 13600000, maxCount = 2},
 	{name = "spiked squelcher", chance = 13600000},
@@ -92,7 +92,7 @@ monster.loot = {
 	{name = "fur armor", chance = 550},
 	{name = "relic sword", chance = 550},
 	{name = "silver token", chance = 150},
-	{id = 22103, chance = 150},
+	{id = 22103, chance = 150}, -- werebear trophy
 	{name = "wolf backpack", chance = 100}
 }
 

@@ -4,11 +4,11 @@ local monster = {}
 monster.description = "a Faceless Bane"
 monster.experience = 30000
 monster.outfit = {
-	lookType = 1122,
+	lookType = 1119,
 	lookHead = 0,
-	lookBody = 4,
+	lookBody = 2,
 	lookLegs = 95,
-	lookFeet = 4,
+	lookFeet = 97,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -64,30 +64,30 @@ monster.voices = {
 
 monster.loot = {
 	{name = "platinum coin", minCount = 1, maxCount = 10, chance = 100000},
-	{name = "Combat Knife", chance = 50000},
-	{name = "Crowbar", chance = 45000},
-	{name = "Ice Rapier", chance = 42000},
-	{name = "Hailstorm Rod", chance = 42000},
-	{name = "Violet Crystal Shard", chance = 22000},
-	{id= 3039, chance = 22000},
-	{name = "Red Crystal Fragment", chance = 18000},
-	{name = "Small Sapphire", minCount = 1, maxCount = 3, chance = 25000},
-	{name = "Knife", chance = 19000},
-	{name = "Snakebite Rod", chance = 18500},
-	{name = "Necrotic Rod", chance = 18500},
-	{name = "Life Crystal", chance = 16800},
-	{name = "Violet Gem", chance = 15200},
-	{name = "Underworld Rod", chance = 15200},
-	{name = "Spear", minCount = 0, maxCount = 3, chance = 18000},
-	{name = "Dagger", chance = 18200},
-	{name = "Moonlight Rod", chance = 12000},
-	{name = "Terra Rod", chance = 12000},
-	{name = "Cyan Crystal Fragment", chance = 5500},
-	{name = "Green Crystal Shard", chance = 1300},
-	{name = "Ectoplasmic Shield", chance = 600},
-	{name = "Book Backpack", chance = 550},
-	{name = "Spirit Guide", chance = 530},
-	{id = 30345, chance = 500}, --- Enchanted Pendulet
+	{name = "combat knife", chance = 50000},
+	{name = "crowbar", chance = 45000},
+	{name = "ice rapier", chance = 42000},
+	{name = "hailstorm rod", chance = 42000},
+	{name = "violet crystal shard", chance = 22000},
+	{id= 3039, chance = 22000}, -- red gem
+	{name = "red crystal fragment", chance = 18000},
+	{name = "small sapphire", minCount = 1, maxCount = 3, chance = 25000},
+	{name = "knife", chance = 19000},
+	{name = "snakebite rod", chance = 18500},
+	{name = "necrotic rod", chance = 18500},
+	{name = "life crystal", chance = 16800},
+	{name = "violet gem", chance = 15200},
+	{name = "underworld rod", chance = 15200},
+	{name = "spear", minCount = 0, maxCount = 3, chance = 18000},
+	{name = "dagger", chance = 18200},
+	{name = "moonlight rod", chance = 12000},
+	{name = "terra rod", chance = 12000},
+	{name = "cyan crystal fragment", chance = 5500},
+	{name = "green crystal shard", chance = 1300},
+	{name = "ectoplasmic shield", chance = 600},
+	{name = "book backpack", chance = 550},
+	{name = "spirit guide", chance = 530},
+	{id = 30344, chance = 500}, -- enchanted pendulet
 }
 
 monster.attacks = {

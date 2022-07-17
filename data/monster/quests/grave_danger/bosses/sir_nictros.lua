@@ -5,11 +5,11 @@ monster.description = "a Sir Nictros"
 monster.experience = 6300
 monster.outfit = {
 	lookType = 1222,
-	lookHead = 19,
-	lookBody = 0,
+	lookHead = 101,
+	lookBody = 79,
 	lookLegs = 0,
 	lookFeet = 0,
-	lookAddons = 3,
+	lookAddons = 2,
 	lookMount = 0
 }
 

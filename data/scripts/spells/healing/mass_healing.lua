@@ -6,12 +6,12 @@ function onTargetCreature(creature, target)
 	local bosses = {"leiden", "ravennous hunger", "dorokoll the mystic", "eshtaba the conjurer", "eliz the unyielding", "mezlon the defiler", "malkhar deathbringer", "containment crystal"}
 	local master = target:getMaster()
 	if target:isMonster() and not master or master and master:isMonster() then
-		if (not isInArray(bosses, target:getName():lower())) then
+		if (not table.contains(bosses, target:getName():lower())) then
 			return true
 		end
 	end
 
-	doTargetCombatHealth(0, target, COMBAT_HEALING, min, max, CONST_ME_NONE)
+	doTargetCombatHealth(player, target, COMBAT_HEALING, min, max, CONST_ME_NONE)
 	return true
 end
 

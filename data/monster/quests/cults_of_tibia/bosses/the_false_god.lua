@@ -64,7 +64,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 282, chance = 26900},
+	{id = 282, chance = 26900}, -- giant shimmering pearl (brown)
 	{name = "magic sulphur", chance = 18920},
 	{name = "mino shield", chance = 17620},
 	{name = "silver token", chance = 1732},

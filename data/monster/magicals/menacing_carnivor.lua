@@ -4,10 +4,10 @@ local monster = {}
 monster.description = "a Menacing Carnivor"
 monster.experience = 2112
 monster.outfit = {
-	lookType = 1139,
+	lookType = 1138,
 	lookHead = 86,
-	lookBody = 70,
-	lookLegs = 81,
+	lookBody = 51,
+	lookLegs = 83,
 	lookFeet = 91,
 	lookAddons = 3,
 	lookMount = 0
@@ -77,27 +77,27 @@ monster.voices = {
 
 monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 6},
-	{name = "Morning Star", chance = 100000},
-	{name = "Terra Rod", chance = 15550},
-	{name = "Small Ruby", chance = 15000},
-	{name = "Crystal Sword", chance = 25000},
-	{name = "Ultimate Mana Potion", chance = 50000},
-	{name = "Wand of Dragonbreath", chance = 15000},
-	{name = "Machete", chance = 30000},
-	{name = "Iron Helmet", chance = 20000},
-	{name = "Serpent Sword", chance = 18000},
-	{name = "Heavy Machete", chance = 17000},
-	{name = "Terra Legs", chance = 6000},
-	{name = "Knight Legs", chance = 4500},
-	{name = "Wand of Starstorm", chance = 8000},
-	{name = "Wand of Voodoo", chance = 7100},
-	{name = "Violet Glass Plate", chance = 6200},
-	{name = "Small Enchanted Ruby", chance = 1400},
-	{name = "Green Crystal Fragment", chance = 1600},
-	{name = "Onyx Chip", chance = 9800},
-	{name = "Opal", chance = 2000},
-	{name = "Tiger Eye", chance = 3000},
-	{name = "Wand of Decay", chance = 8700}
+	{name = "morning star", chance = 100000},
+	{name = "terra rod", chance = 15550},
+	{name = "small ruby", chance = 15000},
+	{name = "crystal sword", chance = 25000},
+	{name = "ultimate mana potion", chance = 50000},
+	{name = "wand of dragonbreath", chance = 15000},
+	{name = "machete", chance = 30000},
+	{name = "iron helmet", chance = 20000},
+	{name = "serpent sword", chance = 18000},
+	{name = "heavy machete", chance = 17000},
+	{name = "terra legs", chance = 6000},
+	{name = "knight legs", chance = 4500},
+	{name = "wand of starstorm", chance = 8000},
+	{name = "wand of voodoo", chance = 7100},
+	{name = "violet glass plate", chance = 6200},
+	{name = "small enchanted ruby", chance = 1400},
+	{name = "green crystal fragment", chance = 1600},
+	{name = "onyx chip", chance = 9800},
+	{name = "opal", chance = 2000},
+	{name = "tiger eye", chance = 3000},
+	{name = "wand of decay", chance = 8700}
 }
 
 monster.attacks = {

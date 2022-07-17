@@ -83,14 +83,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2828, chance = 890},
-	{id = 2948, chance = 1410},
+	{id = 2828, chance = 890}, -- book
+	{id = 2948, chance = 1410}, -- wooden flute
 	{name = "piggy bank", chance = 90},
 	{name = "crystal necklace", chance = 640},
 	{name = "talon", chance = 750},
 	{name = "hailstorm rod", chance = 1100},
-	{id = 3076, chance = 1250},
-	{id = 2948, chance = 1400},
+	{id = 3076, chance = 1250}, -- crystal ball
+	{id = 2948, chance = 1400}, -- wooden flute
 	{name = "clerical mace", chance = 1500},
 	{name = "black shield", chance = 210},
 	{name = "red apple", chance = 7500, maxCount = 2},
@@ -119,7 +119,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 70},
 	{type = COMBAT_FIREDAMAGE, percent = 40},
@@ -128,7 +128,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = -10},
-	{type = COMBAT_DEATHDAMAGE , percent = 5}
+	{type = COMBAT_DEATHDAMAGE , percent = 10}
 }
 
 monster.immunities = {

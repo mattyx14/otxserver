@@ -2,9 +2,9 @@ local foods = {
 	[3606] = {6, 'Gulp.'}, -- egg
 	[3250] = {5, 'Crunch.'}, -- carrot
 	[3577] = {15, 'Munch.'}, -- meat
-	[21145] = {15, 'Burp.'}, -- Bottle of Glooth Wine
-	[21144] = {15, 'Slurp.'}, -- Bowl of Glooth Soup
-	[21143] = {10, 'Munch.'}, -- Bowl of Glooth Soup
+	[21145] = {15, 'Burp.'}, -- bottle of glooth wine
+	[21144] = {15, 'Slurp.'}, -- bowl of glooth soup
+	[21143] = {10, 'Munch.'}, -- bowl of glooth soup
 	[3578] = {12, 'Munch.'}, -- fish
 	[3579] = {10, 'Mmmm.'}, -- salmon
 	[23535] = {30, 'Mmmm.'}, -- energy bar
@@ -45,8 +45,9 @@ local foods = {
 	[3731] = {36, 'Munch.'}, -- fire mushroom
 	[3732] = {5, 'Munch.'}, -- green mushroom
 	[5096] = {4, 'Yum.'}, -- mango
-	[20310] = {4, 'Mmmm.'}, -- Christmas Cookie Tray
-	[6125] = {8, 'Gulp.'}, -- tortoise egg
+	[20310] = {4, 'Mmmm.'}, -- christmas cookie tray
+	[5678] = {8, 'Gulp.'}, -- tortoise egg
+	[6125] = {8, 'Gulp.'}, -- tortoise egg from nargor
 	[6277] = {10, 'Mmmm.'}, -- cake
 	[6278] = {15, 'Mmmm.'}, -- decorated cake
 	[6392] = {12, 'Mmmm.'}, -- valentine's cake
@@ -114,30 +115,31 @@ local foods = {
 	[30198] = {40, 'Mmmmm!'}, -- meringue cake
 	[30202] = {15, 'Slurp.'}, -- winterberry liquor
 	[31560] = {40, 'Slurp.'}, -- goanna meat
-	[32069] = {15, 'Slurp.'} -- candy floss
+	[32069] = {15, 'Slurp.'}, -- candy floss
+	[37530] = {10, 'Slurp.'}, -- bottle of champagne
+	[37531] = {5, 'Mmmm.'}, -- candy floss
+	[37532] = {15, 'Mmmm.'}, -- ice cream cone
+	[37533] = {60, 'Mmmm.'} -- birthday layer cake
 }
 
 local food = Action()
 
 function food.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local food = foods[item.itemid]
-	if not food then
+	local itemFood = foods[item.itemid]
+	if not itemFood then
 		return false
 	end
 
-	--player:removeCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
-
 	local condition = player:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
-	if condition and math.floor(condition:getTicks() / 1000 + (food[1] * 12)) >= 1200 then
-		player:sendTextMessage(MESSAGE_FAILURE, 'You are full.')
+	if condition and math.floor(condition:getTicks() / 1000 + (itemFood[1] * 12)) >= 1200 then
+		player:sendTextMessage(MESSAGE_FAILURE, "You are full.")
 		return true
 	end
 
-	player:feed(food[1] * 12)
-	player:say(food[2], TALKTYPE_MONSTER_SAY)
+	player:feed(itemFood[1] * 12)
+	player:say(itemFood[2], TALKTYPE_MONSTER_SAY)
 	item:remove(1)
 	player:updateSupplyTracker(item)
-
 	return true
 end
 

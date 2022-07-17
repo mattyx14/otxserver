@@ -57,7 +57,7 @@ trap:register()
 
 trap = MoveEvent()
 
-function trap.onRemoveItem(item, tile, position)
+function trap.onRemoveItem(item, position)
     local itemPosition = item:getPosition()
     if itemPosition:getDistance(position) > 0 then
         item:transform(item.itemid - 1)

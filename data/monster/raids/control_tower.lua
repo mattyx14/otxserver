@@ -27,10 +27,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
@@ -57,9 +57,9 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3035, chance = 100000, maxCount = 5},
-	{id = 238, chance = 14285},
-	{id = 239, chance = 14285}
+	{id = 3035, chance = 100000, maxCount = 5}, -- platinum coin
+	{id = 238, chance = 14285}, -- great mana potion
+	{id = 239, chance = 14285} -- great health potion
 }
 
 monster.defenses = {

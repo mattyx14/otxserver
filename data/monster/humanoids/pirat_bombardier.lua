@@ -5,10 +5,10 @@ monster.description = "a pirat bombardier"
 monster.experience = 1700
 monster.outfit = {
 	lookType = 1346,
-	lookHead = 0,
-	lookBody = 124,
-	lookLegs = 124,
-	lookFeet = 124,
+	lookHead = 57,
+	lookBody = 125,
+	lookLegs = 86,
+	lookFeet = 67,
 	lookAddons = 2,
 	lookMount = 0
 }
@@ -52,7 +52,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 70,
@@ -60,8 +60,8 @@ monster.flags = {
 	runHealth = 50,
 	healthHidden = false,
 	isBlockable = true,
-	canWalkOnEnergy = false,
-	canWalkOnFire = false,
+	canWalkOnEnergy = true,
+	canWalkOnFire = true,
 	canWalkOnPoison = false
 }
 
@@ -71,15 +71,15 @@ monster.light = {
 }
 
 monster.loot = {
-	{name = "Great Mana Potion", chance = 30000, maxCount =2},
-	{name = "Pirate Coin", chance = 7000, maxCount =10},
-	{name = "Terra Boots", chance = 6000},
-	{name = "Pirat's Tail", chance = 4000},
-	{name = "Magma Boots", chance = 3000},
-	{name = "Mouldy Powder", chance = 4000},
-	{id = 23529, chance = 2000},
-	{name = "Lightning Boots", chance = 1000},
-	{name = "Wood Cape", chance = 1000}
+	{name = "great mana potion", chance = 30000, maxCount =2},
+	{name = "pirate coin", chance = 7000, maxCount =10},
+	{name = "terra boots", chance = 6000},
+	{name = "pirat's tail", chance = 4000},
+	{name = "magma boots", chance = 3000},
+	{name = "mouldy powder", chance = 4000},
+	{id = 23529, chance = 2000}, -- ring of blue plasma
+	{name = "lightning boots", chance = 1000},
+	{name = "wood cape", chance = 1000}
 }
 
 monster.attacks = {
@@ -95,9 +95,9 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -110},
-	{type = COMBAT_ENERGYDAMAGE, percent = 90},
-	{type = COMBAT_EARTHDAMAGE, percent = -120},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
+	{type = COMBAT_ENERGYDAMAGE, percent = 10},
+	{type = COMBAT_EARTHDAMAGE, percent = -20},
 	{type = COMBAT_FIREDAMAGE, percent = 0},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},

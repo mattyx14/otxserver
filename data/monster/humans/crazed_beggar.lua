@@ -5,9 +5,9 @@ monster.description = "a crazed beggar"
 monster.experience = 35
 monster.outfit = {
 	lookType = 153,
-	lookHead = 59,
-	lookBody = 38,
-	lookLegs = 38,
+	lookHead = 40,
+	lookBody = 19,
+	lookLegs = 21,
 	lookFeet = 97,
 	lookAddons = 3,
 	lookMount = 0
@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = true,
 	pushable = true,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 80,
@@ -81,20 +81,20 @@ monster.voices = {
 
 monster.loot = {
 	{name = "small blue pillow", chance = 420},
-	{id = 2950, chance = 360},
+	{id = 2950, chance = 360}, -- lute
 	{name = "gold coin", chance = 99000, maxCount = 9},
-	{id = 3097, chance = 120}, -- Dwarven ring
-	{id = 3122, chance = 55000},
+	{id = 3097, chance = 120}, -- dwarven ring
+	{id = 3122, chance = 55000}, -- dirty cape
 	{name = "wooden hammer", chance = 6500},
 	{name = "wooden spoon", chance = 9750},
-	{id = 3473, chance = 5650},
+	{id = 3473, chance = 5650}, -- rolling pin
 	{name = "meat", chance = 9500},
 	{name = "roll", chance = 22500},
 	{name = "red rose", chance = 4700},
 	{name = "sling herb", chance = 420},
 	{name = "rum flask", chance = 420},
-	{id = 6091, chance = 300},
-	{id = 8894, chance = 80}
+	{id = 6091, chance = 300}, -- very noble-looking watch
+	{id = 8894, chance = 80} -- heavily rusted armor
 }
 
 monster.attacks = {

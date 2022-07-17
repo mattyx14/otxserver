@@ -6,8 +6,8 @@ monster.experience = 1452
 monster.outfit = {
 	lookType = 1133,
 	lookHead = 0,
-	lookBody = 39,
-	lookLegs = 86,
+	lookBody = 59,
+	lookLegs = 67,
 	lookFeet = 85,
 	lookAddons = 0,
 	lookMount = 0
@@ -77,20 +77,20 @@ monster.voices = {
 
 monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 5},
-	{name = "Blue Glass Plate", chance = 100000, maxCount = 3},
-	{id = 3264, chance = 15000},
-	{name = "Axe", chance = 14000},
-	{name = "Ice Rapier", chance = 12000},
-	{name = "Glorious Axe", chance = 6100},
-	{name = "Blue Robe", chance = 4600},
-	{name = "Two Handed Sword", chance = 13000},
-	{name = "Fur Armor", chance = 5400},
-	{id = 281, chance = 3200},
-	{name = "Green Crystal Shard", chance = 3100},
-	{name = "Violet Gem", chance = 4000},
-	{name = "Green Gem", chance = 4800},
-	{name = "Blue Gem", chance = 4000},
-	{name = "Focus Cape", chance = 3000}
+	{name = "blue glass plate", chance = 100000, maxCount = 3},
+	{id = 3264, chance = 15000}, -- sword
+	{name = "axe", chance = 14000},
+	{name = "ice rapier", chance = 12000},
+	{name = "glorious axe", chance = 6100},
+	{name = "blue robe", chance = 4600},
+	{name = "two handed sword", chance = 13000},
+	{name = "fur armor", chance = 5400},
+	{id = 281, chance = 3200}, -- giant shimmering pearl (green)
+	{name = "green crystal shard", chance = 3100},
+	{name = "violet gem", chance = 4000},
+	{name = "green gem", chance = 4800},
+	{name = "blue gem", chance = 4000},
+	{name = "focus cape", chance = 3000}
 }
 
 monster.attacks = {
@@ -105,10 +105,10 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 20},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = 20},
+	{type = COMBAT_FIREDAMAGE, percent = -40},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

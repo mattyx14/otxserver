@@ -5,10 +5,10 @@ monster.description = "The Souldespoiler"
 monster.experience = 0
 monster.outfit = {
 	lookType = 875,
-	lookHead = 11,
-	lookBody = 0,
-	lookLegs = 94,
-	lookFeet = 95,
+	lookHead = 0,
+	lookBody = 3,
+	lookLegs = 77,
+	lookFeet = 81,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -74,7 +74,7 @@ monster.voices = {
 monster.loot = {
 	{name = "curious matter", chance = 8920, maxCount = 10},
 	{name = "spark sphere", chance = 21200, maxCount = 10},
-	{id = 282, chance = 26900},
+	{id = 282, chance = 26900}, -- giant shimmering pearl (brown)
 	{name = "wand of defiance", chance = 8920},
 	{name = "rift lance", chance = 13200},
 	{name = "rift crossbow", chance = 7620},

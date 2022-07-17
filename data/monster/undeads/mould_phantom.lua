@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 4,
@@ -88,11 +88,11 @@ monster.loot = {
 	{name = "wand of voodoo", chance = 21920},
 	{name = "ornate crossbow", chance = 41920},
 	{name = "wand of defiance", chance = 21920, maxCount = 3},
-	{id = 23529, chance = 28920},
-	{id = 23542, chance = 28920},
-	{id = 34141, chance = 12920},
+	{id = 23529, chance = 28920}, -- ring of blue plasma
+	{id = 23542, chance = 28920}, -- collar of blue plasma
+	{id = 34141, chance = 12920}, -- mould heart
 	{name = "crystal crossbow", chance = 1920},
-	{id = 34109, chance = 50}
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {

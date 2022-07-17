@@ -79,7 +79,7 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 40000, maxCount = 30},
 	{name = "small amethyst", chance = 140},
-	{id = 3092, chance = 190}, -- Axe ring
+	{id = 3092, chance = 190}, -- axe ring
 	{name = "double axe", chance = 600},
 	{name = "battle hammer", chance = 4000},
 	{name = "steel helmet", chance = 1600},
@@ -89,7 +89,7 @@ monster.loot = {
 	{name = "white mushroom", chance = 55000, maxCount = 2},
 	{name = "iron ore", chance = 510},
 	{name = "health potion", chance = 380},
-	{id = 12600, chance = 280}
+	{id = 12600, chance = 280} -- coal
 }
 
 monster.attacks = {
@@ -102,7 +102,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 20},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 20},
 	{type = COMBAT_FIREDAMAGE, percent = -5},

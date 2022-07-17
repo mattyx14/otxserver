@@ -7,7 +7,7 @@ monster.outfit = {
 	lookType = 139,
 	lookHead = 113,
 	lookBody = 38,
-	lookLegs = 95,
+	lookLegs = 76,
 	lookFeet = 96,
 	lookAddons = 0,
 	lookMount = 0
@@ -89,7 +89,7 @@ monster.loot = {
 	{name = "protective charm", chance = 3200},
 	{name = "protection amulet", chance = 1100},
 	{name = "plate armor", chance = 830},
-	{id = 3114, chance = 760},
+	{id = 3114, chance = 760}, -- skull
 	{name = "health potion", chance = 500},
 	{name = "double axe", chance = 430},
 	{name = "small diamond", chance = 130}

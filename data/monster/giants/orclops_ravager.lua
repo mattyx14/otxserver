@@ -5,10 +5,10 @@ monster.description = "an orclops ravager"
 monster.experience = 1100
 monster.outfit = {
 	lookType = 935,
-	lookHead = 0,
-	lookBody = 0,
-	lookLegs = 0,
-	lookFeet = 0,
+	lookHead = 94,
+	lookBody = 1,
+	lookLegs = 80,
+	lookFeet = 94,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -46,13 +46,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
-	pushable = true,
+	convinceable = false,
+	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -78,26 +78,26 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 50320, maxCount = 120},
-	{id = 3035, chance = 50320},
-	{id = 236, chance = 50320},
-	{id = 3078, chance = 50320},
-	{id = 3316, chance = 20000},
-	{id = 3724, chance = 50320, maxCount = 3},
-	{id = 23811, chance = 6000},
-	{id = 24380, chance = 4900},
-	{id = 24381, chance = 1800},
-	{id = 24382, chance = 12750},
-	{id = 3027, chance = 2510, maxCount = 2},
-	{id = 3030, chance = 1940, maxCount = 2},
-	{id = 7452, chance = 1000},
-	{id = 8015, chance = 8870},
-	{id = 9057, chance = 9700},
-	{id = 16123, chance = 15290, maxCount = 3},
-	{id = 17828, chance = 910},
-	{id = 2966, chance = 910},
-	{id = 7439, chance = 910},
-	{id = 7419, chance = 300}
+	{id = 3031, chance = 50320, maxCount = 120}, -- gold coin
+	{id = 3035, chance = 50320}, -- platinum coin
+	{id = 236, chance = 50320}, -- strong health potion
+	{id = 3078, chance = 50320}, -- mysterious fetish
+	{id = 3316, chance = 20000}, -- orcish axe
+	{id = 3724, chance = 50320, maxCount = 3}, -- red mushroom
+	{id = 23811, chance = 6000}, -- reinvigorating seeds
+	{id = 24380, chance = 4900}, -- bone toothpick
+	{id = 24381, chance = 1800}, -- beetle carapace
+	{id = 24382, chance = 12750}, -- bug meat
+	{id = 3027, chance = 2510, maxCount = 2}, -- black pearl
+	{id = 3030, chance = 1940, maxCount = 2}, -- small ruby
+	{id = 7452, chance = 1000}, -- spiked squelcher
+	{id = 8015, chance = 8870}, -- onion
+	{id = 9057, chance = 9700}, -- small topaz
+	{id = 16123, chance = 15290, maxCount = 3}, -- brown crystal splinter
+	{id = 17828, chance = 910}, -- pair of iron fists
+	{id = 2966, chance = 910}, -- war drum
+	{id = 7439, chance = 910}, -- berserk potion
+	{id = 7419, chance = 300} -- dreaded cleaver
 }
 
 monster.attacks = {

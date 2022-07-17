@@ -4,11 +4,11 @@ local monster = {}
 monster.description = "a usurper knight"
 monster.experience = 6900
 monster.outfit = {
-	lookType = 1317,
-	lookHead = 57,
-	lookBody = 38,
+	lookType = 1316,
+	lookHead = 76,
+	lookBody = 57,
 	lookLegs = 76,
-	lookFeet = 76,
+	lookFeet = 95,
 	lookAddons = 1,
 	lookMount = 0
 }

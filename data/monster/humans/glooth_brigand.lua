@@ -7,7 +7,7 @@ monster.outfit = {
 	lookType = 137,
 	lookHead = 114,
 	lookBody = 114,
-	lookLegs = 109,
+	lookLegs = 110,
 	lookFeet = 114,
 	lookAddons = 0,
 	lookMount = 0
@@ -46,10 +46,10 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = true,
 	rewardBoss = false,
 	illusionable = false,
@@ -76,30 +76,30 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 100},
-	{id = 3035, chance = 100000, maxCount = 3},
-	{id = 21203, chance = 9090},
-	{id = 21816, chance = 7692},
-	{id = 238, chance = 5882},
-	{id = 21143, chance = 4000},
-	{id = 21814, chance = 3030},
-	{id = 7642, chance = 2500},
-	{id = 21146, chance = 2000},
-	{id = 7643, chance = 2000},
-	{id = 21178, chance = 1515},
-	{id = 21183, chance = 1515},
-	{id = 7386, chance = 1000},
-	{id = 811, chance = 1000},
-	{id = 281, chance = 1000},
-	{id = 814, chance = 1000},
-	{id = 7412, chance = 1000},
-	{id = 3038, chance = 1000},
-	{id = 813, chance = 502},
-	{id = 7419, chance = 502},
-	{id = 21167, chance = 502},
-	{id = 21158, chance = 502},
-	{id = 21165, chance = 502},
-	{id = 830, chance = 502}
+	{id = 3031, chance = 100000, maxCount = 100}, -- gold coin
+	{id = 3035, chance = 100000, maxCount = 3}, -- platinum coin
+	{id = 21203, chance = 9090}, -- glooth bag
+	{id = 21816, chance = 7692}, -- tainted glooth capsule
+	{id = 238, chance = 5882}, -- great mana potion
+	{id = 21143, chance = 4000}, -- glooth sandwich
+	{id = 21814, chance = 3030}, -- glooth capsule
+	{id = 7642, chance = 2500}, -- great spirit potion
+	{id = 21146, chance = 2000}, -- glooth steak
+	{id = 7643, chance = 2000}, -- ultimate health potion
+	{id = 21178, chance = 1515}, -- glooth club
+	{id = 21183, chance = 1515}, -- glooth amulet
+	{id = 7386, chance = 1000}, -- mercenary sword
+	{id = 811, chance = 1000}, -- terra mantle
+	{id = 281, chance = 1000}, -- giant shimmering pearl (green)
+	{id = 814, chance = 1000}, -- terra amulet
+	{id = 7412, chance = 1000}, -- butcher's axe
+	{id = 3038, chance = 1000}, -- green gem
+	{id = 813, chance = 502}, -- terra boots
+	{id = 7419, chance = 502}, -- dreaded cleaver
+	{id = 21167, chance = 502}, -- heat core
+	{id = 21158, chance = 502}, -- glooth spear
+	{id = 21165, chance = 502}, -- rubber cap
+	{id = 830, chance = 502} -- terra hood
 }
 
 monster.attacks = {
@@ -123,7 +123,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 10},
 	{type = COMBAT_HOLYDAMAGE , percent = -5},
-	{type = COMBAT_DEATHDAMAGE , percent = 20}
+	{type = COMBAT_DEATHDAMAGE , percent = 15}
 }
 
 monster.immunities = {

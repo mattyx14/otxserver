@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -75,27 +75,27 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 92000, maxCount = 130},
-	{id = 22194, chance = 1200, maxCount = 3},
-	{id = 22185, chance = 6200, maxCount = 2},
-	{id = 3030, chance = 2200, maxCount = 2},
-	{id = 3027, chance = 1200, maxCount = 2},
-	{id = 17831, chance = 3200},
-	{id = 11452, chance = 1200},
-	{id = 3598, chance = 2200, maxCount = 7},
-	{id = 3069, chance = 800},
-	{id = 22188, chance = 3200},
-	{id = 22189, chance = 2200},
-	{id = 22184, chance = 1200},
-	{id = 3114, chance = 1200},
-	{id = 22191, chance = 1200},
-	{id = 237, chance = 1000, maxCount = 3},
-	{id = 3072, chance = 600},
-	{id = 2901, chance = 500},
-	{id = 22183, chance = 300},
-	{id = 22192, chance = 300},
-	{id = 3002, chance = 100},
-	{id = 2965, chance = 100, maxCount = 2}
+	{id = 3031, chance = 92000, maxCount = 130}, -- gold coin
+	{id = 22194, chance = 1200, maxCount = 3}, -- opal
+	{id = 22185, chance = 6200, maxCount = 2}, -- prickly pear
+	{id = 3030, chance = 2200, maxCount = 2}, -- small ruby
+	{id = 3027, chance = 1200, maxCount = 2}, -- black pearl
+	{id = 17831, chance = 3200}, -- bone fetish
+	{id = 11452, chance = 1200}, -- broken shamanic staff
+	{id = 3598, chance = 2200, maxCount = 7}, -- cookie
+	{id = 3069, chance = 800}, -- necrotic rod
+	{id = 22188, chance = 3200}, -- ogre ear stud
+	{id = 22189, chance = 2200}, -- ogre nose ring
+	{id = 22184, chance = 1200}, -- shamanic talisman
+	{id = 3114, chance = 1200}, -- skull
+	{id = 22191, chance = 1200}, -- skull fetish
+	{id = 237, chance = 1000, maxCount = 3}, -- strong mana potion
+	{id = 3072, chance = 600}, -- wand of decay
+	{id = 2901, chance = 500}, -- waterskin
+	{id = 22183, chance = 300}, -- ogre scepta
+	{id = 22192, chance = 300}, -- shamanic mask
+	{id = 3002, chance = 100}, -- voodoo doll
+	{id = 2965, chance = 100, maxCount = 2} -- didgeridoo
 }
 
 monster.attacks = {

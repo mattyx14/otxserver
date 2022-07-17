@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "black pearl", chance = 2500},
 	{name = "small ruby", chance = 3040, maxCount = 2},
 	{name = "gold coin", chance = 83000, maxCount = 50},
-	{id= 3039, chance = 540},
+	{id= 3039, chance = 540}, -- red gem
 	{name = "ice rapier", chance = 810},
 	{name = "vampire shield", chance = 200},
 	{name = "red piece of cloth", chance = 70},
@@ -109,15 +109,15 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = -5},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 5},
-	{type = COMBAT_HOLYDAMAGE , percent = -5},
+	{type = COMBAT_ICEDAMAGE, percent = 10},
+	{type = COMBAT_HOLYDAMAGE , percent = -25},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

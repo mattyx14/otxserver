@@ -78,22 +78,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Deepworm Jaws", chance = 24010},
-	{id = 3052, chance = 7320}, -- Life ring
-	{name = "Meat", chance = 19660, maxCount = 4},
-	{name = "Ham", chance = 19660, maxCount = 4},
-	{name = "Wood Mushroom", chance = 22280},
-	{name = "Dark Mushroom", chance = 14960},
-	{name = "Green Mushroom", chance = 18520},
-	{name = "Green Crystal Shard", chance = 5360},
-	{id = 27593, chance = 13210, maxCount = 2},
-	{name = "Deepworm Spikes", chance = 9880},
-	{name = "Small Enchanted Amethyst", chance = 3430, maxCount = 2},
-	{name = "Terra Amulet", chance = 5060},
-	{name = "Springsprout Rod", chance = 1120},
-	{name = "Sacred Tree Amulet", chance = 2390},
-	{id = 281, chance = 860},
-	{name = "Suspicious Device", chance = 530}
+	{name = "deepworm jaws", chance = 24010},
+	{id = 3052, chance = 7320}, -- life ring
+	{name = "meat", chance = 19660, maxCount = 4},
+	{name = "ham", chance = 19660, maxCount = 4},
+	{name = "wood mushroom", chance = 22280},
+	{name = "dark mushroom", chance = 14960},
+	{name = "green mushroom", chance = 18520},
+	{name = "green crystal shard", chance = 5360},
+	{id = 27593, chance = 13210, maxCount = 2}, -- deepworm spike roots
+	{name = "deepworm spikes", chance = 9880},
+	{name = "small enchanted amethyst", chance = 3430, maxCount = 2},
+	{name = "terra amulet", chance = 5060},
+	{name = "springsprout rod", chance = 1120},
+	{name = "sacred tree amulet", chance = 2390},
+	{id = 281, chance = 860}, -- giant shimmering pearl (green)
+	{name = "suspicious device", chance = 530}
 }
 
 monster.attacks = {
@@ -110,8 +110,8 @@ monster.defenses = {
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 30},
-	{type = COMBAT_FIREDAMAGE, percent = 0},
+	{type = COMBAT_EARTHDAMAGE, percent = 20},
+	{type = COMBAT_FIREDAMAGE, percent = -20},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},

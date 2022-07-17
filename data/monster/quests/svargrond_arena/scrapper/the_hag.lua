@@ -5,10 +5,10 @@ monster.description = "The Hag"
 monster.experience = 510
 monster.outfit = {
 	lookType = 264,
-	lookHead = 78,
-	lookBody = 97,
-	lookLegs = 95,
-	lookFeet = 95,
+	lookHead = 19,
+	lookBody = 20,
+	lookLegs = 59,
+	lookFeet = 2,
 	lookAddons = 0,
 	lookMount = 0
 }

@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 77,
 	lookBody = 0,
 	lookLegs = 76,
-	lookFeet = 132,
+	lookFeet = 115,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -74,12 +74,12 @@ monster.loot = {
 	{name = "meat", chance = 18750, maxCount = 3},
 	{name = "gold coin", chance = 50000, maxCount = 60},
 	{name = "gold coin", chance = 50000, maxCount = 61},
-	{id = 3114, chance = 81250, maxCount = 2},
+	{id = 3114, chance = 81250, maxCount = 2}, -- skull
 	{name = "pirate backpack", chance = 6250},
 	{name = "plate armor", chance = 56250},
 	{name = "knight armor", chance = 12500},
 	{name = "very old piece of paper", chance = 25000},
-	{id = 6100, chance = 100000}
+	{id = 6100, chance = 100000} -- lethal lissy's shirt
 }
 
 monster.attacks = {

@@ -47,9 +47,9 @@ monster.flags = {
 	attackable = true,
 	hostile = true,
 	convinceable = false,
-	pushable = true,
+	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -76,11 +76,11 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "gold coin", chance = 41000, maxCount = 38},
-	{id = 3578, chance = 25430, maxCount = 4},
+	{id = 3578, chance = 25430, maxCount = 4}, -- fish
 	{name = "deepling scales", chance = 9620},
 	{name = "eye of a deepling", chance = 1200},
 	{name = "small sapphire", chance = 1090},
-	{id = 281, chance = 390},--giant shimmering pearl (brown)
+	{id = 281, chance = 390}, -- giant shimmering pearl (green)
 	{name = "fish fin", chance = 161}
 }
 

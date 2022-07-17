@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "gold coin", chance = 83740, maxCount = 55},
 	{name = "small amethyst", chance = 520},
 	{name = "yellow gem", chance = 150},
-	{id = 3052, chance = 340}, -- Life ring
+	{id = 3052, chance = 340}, -- life ring
 	{name = "life crystal", chance = 1430},
 	{name = "terra rod", chance = 920},
 	{name = "snakebite rod", chance = 230},
@@ -111,7 +111,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -20},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
 	{type = COMBAT_ENERGYDAMAGE, percent = 20},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
 	{type = COMBAT_FIREDAMAGE, percent = -10},

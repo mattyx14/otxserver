@@ -52,7 +52,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 70,
@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "platinum coin", chance = 52000, maxCount = 5},
 	{name = "life crystal", chance = 2500},
 	{name = "hardened bone", chance = 14180},
-	{id = 6299, chance = 1150},
+	{id = 6299, chance = 1150}, -- death ring
 	{name = "demonic essence", chance = 12460},
 	{name = "assassin star", chance = 26650, maxCount = 5},
 	{name = "dragon slayer", chance = 860},
@@ -115,15 +115,15 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 5},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = 100},
+	{type = COMBAT_FIREDAMAGE, percent = 20},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 100},
 	{type = COMBAT_ICEDAMAGE, percent = 50},
-	{type = COMBAT_HOLYDAMAGE , percent = -25},
+	{type = COMBAT_HOLYDAMAGE , percent = -40},
 	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 

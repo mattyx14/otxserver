@@ -81,7 +81,7 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 40000, maxCount = 90},
 	{name = "gold coin", chance = 49000, maxCount = 50},
-	{id = 3578, chance = 18930, maxCount = 3},--fish
+	{id = 3578, chance = 18930, maxCount = 3}, -- fish
 	{name = "quara eye", chance = 12720},
 	{name = "shrimp", chance = 9980, maxCount = 4},
 	{name = "small emerald", chance = 6000, maxCount = 2},
@@ -89,7 +89,7 @@ monster.loot = {
 	{name = "black pearl", chance = 2650},
 	{name = "fish fin", chance = 2090},
 	{name = "obsidian lance", chance = 1530},
-	{id = 3098, chance = 940}, -- Ring of healing
+	{id = 3098, chance = 940}, -- ring of healing
 	{name = "wand of cosmic energy", chance = 910},
 	{name = "knight armor", chance = 520}
 }

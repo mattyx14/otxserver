@@ -82,9 +82,9 @@ monster.voices = {
 monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 100},
 	{name = "platinum coin", chance = 100000, maxCount = 8},
-	{id = 3051, chance = 3000}, -- Energy ring
-	{id = 3052, chance = 4200}, -- Life ring
-	{id = 3098, chance = 3000}, -- Ring of healing
+	{id = 3051, chance = 3000}, -- energy ring
+	{id = 3052, chance = 4200}, -- life ring
+	{id = 3098, chance = 3000}, -- ring of healing
 	{name = "guardian shield", chance = 1540},
 	{name = "beastslayer axe", chance = 3290},
 	{name = "brown piece of cloth", chance = 6000},
@@ -131,7 +131,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 10},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 50}
+	{type = COMBAT_DEATHDAMAGE , percent = 55}
 }
 
 monster.immunities = {

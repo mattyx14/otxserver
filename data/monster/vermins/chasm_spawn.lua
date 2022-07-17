@@ -79,19 +79,19 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 10000, maxCount = 78},
-	{name = "Wood Mushroom", chance = 27200, maxCount = 5},
-	{name = "Chasm Spawn Head", chance = 33390},
-	{name = "Chasm Spawn Abdomen", chance = 24710},
-	{name = "Chasm Spawn Tail", chance = 64890},
-	{name = "Small Enchanted Emerald", chance = 11040, maxCount = 3},
-	{name = "Small Enchanted Amethyst", chance = 8170, maxCount = 3},
-	{name = "Brown Mushroom", chance = 19680, maxCount = 5},
-	{name = "Orange Mushroom", chance = 15140},
-	{name = "Blue Crystal Shard", chance = 7850},
-	{name = "Green Crystal Shard", chance = 7850},
-	{name = "Violet Crystal Shard", chance = 4690},
-	{name = "Mushroom Backpack", chance = 610},
-	{name = "Suspicious Device", chance = 520}
+	{name = "wood mushroom", chance = 27200, maxCount = 5},
+	{name = "chasm spawn head", chance = 33390},
+	{name = "chasm spawn abdomen", chance = 24710},
+	{name = "chasm spawn tail", chance = 64890},
+	{name = "small enchanted emerald", chance = 11040, maxCount = 3},
+	{name = "small enchanted amethyst", chance = 8170, maxCount = 3},
+	{name = "brown mushroom", chance = 19680, maxCount = 5},
+	{name = "orange mushroom", chance = 15140},
+	{name = "blue crystal shard", chance = 7850},
+	{name = "green crystal shard", chance = 7850},
+	{name = "violet crystal shard", chance = 4690},
+	{name = "mushroom backpack", chance = 610},
+	{name = "suspicious device", chance = 520}
 }
 
 monster.attacks = {

@@ -44,7 +44,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -86,7 +86,7 @@ monster.loot = {
 	{name = "plate shield", chance = 9300},
 	{name = "arrow", chance = 7060, maxCount = 3},
 	{name = "leather boots", chance = 11410},
-	{id = 5921, chance = 940},
+	{id = 5921, chance = 940}, -- heaven blossom
 	{name = "plum", chance = 20000, maxCount = 2},
 	{name = "elvish talisman", chance = 2100}
 }
@@ -111,7 +111,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 20},
-	{type = COMBAT_DEATHDAMAGE , percent = -1}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "ice rapier", chance = 400},
 	{name = "strange helmet", chance = 444},
 	{name = "shard", chance = 266},
-	{id = 7441, chance = 5000},
+	{id = 7441, chance = 5000}, -- ice cube
 	{name = "crystal sword", chance = 177},
 	{name = "strong health potion", chance = 444},
 	{name = "glacier mask", chance = 111},
@@ -105,7 +105,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 25},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 20},
 	{type = COMBAT_ENERGYDAMAGE, percent = -20},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 100},

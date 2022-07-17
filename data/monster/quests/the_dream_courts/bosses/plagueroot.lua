@@ -64,38 +64,38 @@ monster.voices = {
 
 monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 5},
-	{name = "Piggy Bank", chance = 100000},
-	{name = "Mysterious Remains", chance = 100000},
-	{name = "Energy Bar", chance = 100000},
-	{name = "Silver Token", chance = 100000, maxCount = 3},
-	{name = "Gold Token", chance = 22000, maxCount = 2},
-	{name = "Supreme Health Potion", chance = 23550},
-	{name = "Ultimate Mana Potion", chance = 25550},
-	{name = "Huge Chunk of Crude Iron", chance = 27550},
-	{name = "Royal Star", chance = 15770, maxCount = 100},
-	{name = "Green Gem", chance = 12800, maxCount = 2},
-	{name = "Yellow Gem", chance = 12000, maxCount = 2},
-	{id= 3039, chance = 12700, maxCount = 2},
-	{name = "Bullseye Potion", chance = 25000, maxCount = 10},
-	{name = "Pomegranate", chance = 8000},
-	{name = "Crystal Coin", chance = 7700, maxCount = 2},
-	{name = "Skull Staff", chance = 7650},
-	{name = "Chaos Mace", chance = 2200},
-	{name = "Gold Ingot", chance = 2800},
-	{id = 23543, chance = 2500}, -- Collar of green plasma
-	{id = 281, chance = 2600},
-	{name = "Blue Gem", chance = 2500},
-	{name = "Violet Gem", chance = 2300, maxCount = 2},
-	{name = "Living Armor", chance = 1100},
-	{name = "Magic Sulphur", chance = 1000},
-	{name = "Mastermind Potion", chance = 800, maxCount = 10},
-	{id = 23529, chance = 800},
-	{name = "Ring of the Sky", chance = 800},
-	{name = "Living Vine Bow", chance = 750},
-	{name = "Abyss Hammer", chance = 700},
-	{id = 23531, chance = 600},
-	{name = "Plagueroot Offshoot", chance = 500},
-	{name = "Turquoise Tendril Lantern", chance = 400}
+	{name = "piggy bank", chance = 100000},
+	{name = "mysterious remains", chance = 100000},
+	{name = "energy bar", chance = 100000},
+	{name = "silver token", chance = 100000, maxCount = 3},
+	{name = "gold token", chance = 22000, maxCount = 2},
+	{name = "supreme health potion", chance = 23550},
+	{name = "ultimate mana potion", chance = 25550},
+	{name = "huge chunk of crude iron", chance = 27550},
+	{name = "royal star", chance = 15770, maxCount = 100},
+	{name = "green gem", chance = 12800, maxCount = 2},
+	{name = "yellow gem", chance = 12000, maxCount = 2},
+	{id= 3039, chance = 12700, maxCount = 2}, -- red gem
+	{name = "bullseye potion", chance = 25000, maxCount = 10},
+	{name = "pomegranate", chance = 8000},
+	{name = "crystal coin", chance = 7700, maxCount = 2},
+	{name = "skull staff", chance = 7650},
+	{name = "chaos mace", chance = 2200},
+	{name = "gold ingot", chance = 2800},
+	{id = 23543, chance = 2500}, -- collar of green plasma
+	{id = 281, chance = 2600}, -- giant shimmering pearl (green)
+	{name = "blue gem", chance = 2500},
+	{name = "violet gem", chance = 2300, maxCount = 2},
+	{name = "living armor", chance = 1100},
+	{name = "magic sulphur", chance = 1000},
+	{name = "mastermind potion", chance = 800, maxCount = 10},
+	{id = 23529, chance = 800}, -- ring of blue plasma
+	{name = "ring of the sky", chance = 800},
+	{name = "living vine bow", chance = 750},
+	{name = "abyss hammer", chance = 700},
+	{id = 23531, chance = 600}, -- ring of green plasma
+	{name = "plagueroot offshoot", chance = 500},
+	{name = "turquoise tendril lantern", chance = 400}
 }
 
 monster.attacks = {

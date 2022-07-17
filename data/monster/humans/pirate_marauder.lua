@@ -43,13 +43,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -76,14 +76,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2920, chance = 9880},
+	{id = 2920, chance = 9880}, -- torch
 	{name = "gold coin", chance = 77670, maxCount = 40},
 	{name = "spear", chance = 5140, maxCount = 2},
 	{name = "chain armor", chance = 3000},
 	{name = "plate shield", chance = 5000},
-	{id = 5090, chance = 910},
+	{id = 5090, chance = 910}, -- treasure map
 	{name = "rum flask", chance = 110},
-	{id = 5792, chance = 90},
+	{id = 5792, chance = 90}, -- die
 	{name = "bandana", chance = 880},
 	{name = "pirate bag", chance = 430},
 	{name = "empty goldfish bowl", chance = 80},
@@ -105,7 +105,7 @@ monster.defenses = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = -5},
+	{type = COMBAT_ENERGYDAMAGE, percent = -3},
 	{type = COMBAT_EARTHDAMAGE, percent = 10},
 	{type = COMBAT_FIREDAMAGE, percent = -10},
 	{type = COMBAT_LIFEDRAIN, percent = 0},

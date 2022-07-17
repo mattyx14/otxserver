@@ -5,11 +5,11 @@ monster.description = "the blazing rose"
 monster.experience = 0
 monster.outfit = {
 	lookType = 1068,
-	lookHead = 95,
-	lookBody = 94,
-	lookLegs = 57,
+	lookHead = 114,
+	lookBody = 113,
+	lookLegs = 76,
 	lookFeet = 79,
-	lookAddons = 2,
+	lookAddons = 3,
 	lookMount = 0
 }
 

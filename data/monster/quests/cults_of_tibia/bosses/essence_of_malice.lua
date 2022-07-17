@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = true,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 95,
@@ -77,7 +77,7 @@ monster.loot = {
 	{name = "small amethyst", chance = 12259, maxCount = 10},
 	{name = "odd organ", chance = 100000},
 	{name = "energy bar", chance = 16872, maxCount = 3},
-	{id = 23530, chance = 8762},
+	{id = 23530, chance = 8762}, -- ring of blue plasma
 	{name = "ultimate health potion", chance = 27652, maxCount = 10},
 	{name = "blade of corruption", chance = 3775}
 }

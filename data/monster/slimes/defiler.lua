@@ -52,7 +52,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 80,
@@ -88,10 +88,10 @@ monster.loot = {
 	{name = "platinum coin", chance = 95000, maxCount = 6},
 	{name = "yellow gem", chance = 1219},
 	{name = "green gem", chance = 613},
-	{id= 3039, chance = 1538},
+	{id= 3039, chance = 1538}, -- red gem
 	{name = "blue gem", chance = 300},
 	{name = "soul orb", chance = 20000},
-	{id = 6299, chance = 3030},
+	{id = 6299, chance = 3030}, -- death ring
 	{name = "demonic essence", chance = 20320},
 	{name = "glob of acid slime", chance = 14210},
 	{name = "glob of tar", chance = 12000}

@@ -76,10 +76,10 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2920, chance = 6000},
+	{id = 2920, chance = 6000}, -- torch
 	{name = "gold coin", chance = 75000, maxCount = 13},
 	{name = "bronze amulet", chance = 110},
-	{id = 3114, chance = 1000, maxCount = 2},
+	{id = 3114, chance = 1000, maxCount = 2}, -- skull
 	{name = "poison dagger", chance = 1500},
 	{name = "leather armor", chance = 10000},
 	{name = "poison arrow", chance = 5000, maxCount = 3},
@@ -103,13 +103,13 @@ monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = -15},
+	{type = COMBAT_FIREDAMAGE, percent = -13},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -13},
-	{type = COMBAT_HOLYDAMAGE , percent = 20},
-	{type = COMBAT_DEATHDAMAGE , percent = -10}
+	{type = COMBAT_HOLYDAMAGE , percent = 15},
+	{type = COMBAT_DEATHDAMAGE , percent = -8}
 }
 
 monster.immunities = {

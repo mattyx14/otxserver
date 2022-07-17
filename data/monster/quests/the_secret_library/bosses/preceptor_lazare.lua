@@ -65,7 +65,7 @@ monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 3},
 	{name = "great mana potion", chance = 100000, maxCount = 3},
 	{name = "demonic essence", chance = 100000, maxCount = 5},
-	{id= 3039, chance = 700, maxCount = 3},
+	{id= 3039, chance = 700, maxCount = 3}, -- red gem
 	{name = "assassin star", chance = 100000, maxCount = 5},
 	{name = "flask of demonic blood", chance = 100000, maxCount = 3},
 	{name = "ham", chance = 100000, maxCount = 2},

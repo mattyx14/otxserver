@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -73,15 +73,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2914, chance = 6666},
+	{id = 2914, chance = 6666}, -- lamp
 	{name = "gold coin", chance = 100000, maxCount = 12},
 	{name = "battle axe", chance = 5000},
 	{name = "halberd", chance = 10000},
 	{name = "axe", chance = 10000},
 	{name = "war hammer", chance = 5000},
 	{name = "ham", chance = 50000},
-	{id = 6570, chance = 5538},
-	{id = 6571, chance = 1538}
+	{id = 6570, chance = 5538}, -- surprise bag
+	{id = 6571, chance = 1538} -- surprise bag
 }
 
 monster.attacks = {

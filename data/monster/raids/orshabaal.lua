@@ -88,7 +88,7 @@ monster.loot = {
 	{name = "platinum coin", chance = 100000, maxCount = 69},
 	{name = "green gem", chance = 6666},
 	{name = "blue gem", chance = 20000},
-	{id = 3046, chance = 6666},
+	{id = 3046, chance = 6666}, -- magic light wand
 	{name = "might ring", chance = 6666},
 	{name = "silver amulet", chance = 20000},
 	{name = "platinum amulet", chance = 12500},
@@ -98,7 +98,7 @@ monster.loot = {
 	{name = "mind stone", chance = 20000},
 	{name = "boots of haste", chance = 12500},
 	{name = "protection amulet", chance = 20000},
-	{id = 3098, chance = 33333}, -- Ring of healing
+	{id = 3098, chance = 33333}, -- ring of healing
 	{name = "two handed sword", chance = 12500},
 	{name = "giant sword", chance = 25000},
 	{name = "silver dagger", chance = 6666},
@@ -113,7 +113,7 @@ monster.loot = {
 	{name = "Orshabaal's brain", chance = 6666},
 	{name = "thunder hammer", chance = 6666},
 	{name = "demon horn", chance = 50000},
-	{id = 6299, chance = 50000},
+	{id = 6299, chance = 50000}, -- death ring
 	{name = "demonic essence", chance = 100000},
 	{name = "assassin star", chance = 12500, maxCount = 42},
 	{name = "great mana potion", chance = 33333},

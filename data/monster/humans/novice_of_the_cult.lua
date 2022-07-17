@@ -6,8 +6,8 @@ monster.experience = 100
 monster.outfit = {
 	lookType = 133,
 	lookHead = 114,
-	lookBody = 95,
-	lookLegs = 114,
+	lookBody = 114,
+	lookLegs = 76,
 	lookFeet = 114,
 	lookAddons = 0,
 	lookMount = 0
@@ -87,15 +87,15 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2828, chance = 700},
+	{id = 2828, chance = 700}, -- book
 	{name = "small diamond", chance = 210},
 	{name = "gold coin", chance = 43380, maxCount = 40},
 	{name = "wand of vortex", chance = 450},
 	{name = "garlic necklace", chance = 420},
-	{id = 3097, chance = 500}, -- Dwarven ring
+	{id = 3097, chance = 500}, -- dwarven ring
 	{name = "scarf", chance = 2900},
 	{name = "pirate voodoo doll", chance = 520},
-	{id = 6087, chance = 970},
+	{id = 6087, chance = 970}, -- music sheet
 	{name = "cultish robe", chance = 1030},
 	{name = "rope belt", chance = 5910}
 }

@@ -5,10 +5,10 @@ monster.description = "a wild warrior"
 monster.experience = 60
 monster.outfit = {
 	lookType = 131,
-	lookHead = 57,
-	lookBody = 57,
-	lookLegs = 57,
-	lookFeet = 57,
+	lookHead = 38,
+	lookBody = 38,
+	lookLegs = 38,
+	lookFeet = 38,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -76,7 +76,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2991, chance = 520},
+	{id = 2991, chance = 520}, -- doll
 	{name = "gold coin", chance = 49070, maxCount = 30},
 	{name = "axe", chance = 30710},
 	{name = "mace", chance = 9800},
@@ -85,7 +85,7 @@ monster.loot = {
 	{name = "brass armor", chance = 2540},
 	{name = "steel shield", chance = 910},
 	{name = "brass shield", chance = 17000},
-	{id = 3606, chance = 9730, maxCount = 2}
+	{id = 3606, chance = 9730, maxCount = 2} -- egg
 }
 
 monster.attacks = {

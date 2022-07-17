@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 4,
@@ -92,9 +92,9 @@ monster.loot = {
 	{name = "wand of starstorm", chance = 36920},
 	{name = "wand of voodoo", chance = 24920},
 	{name = "warrior's axe", chance = 17920},
-	{id = 34139, chance = 11560}, -- Infernal hearth
-	{id = 34146, chance = 7560}, -- Infernal robe
-	{id = 34109, chance = 50} -- Bag you desire
+	{id = 34139, chance = 11560}, -- infernal heart
+	{id = 34146, chance = 7560}, -- infernal robe
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {

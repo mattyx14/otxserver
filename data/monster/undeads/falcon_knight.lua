@@ -6,9 +6,9 @@ monster.experience = 5985
 monster.outfit = {
 	lookType = 1071,
 	lookHead = 57,
-	lookBody = 75,
+	lookBody = 96,
 	lookLegs = 38,
-	lookFeet = 86,
+	lookFeet = 105,
 	lookAddons = 1,
 	lookMount = 0
 }
@@ -74,32 +74,32 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3582, chance = 70080, maxCount = 8},
-	{name = "Soul Orb", chance = 35000},
-	{name = "Great Mana Potion", chance = 33000, maxCount = 3},
-	{name = "Great Health Potion", chance = 33000, maxCount = 3},
+	{id = 3582, chance = 70080, maxCount = 8}, -- ham
+	{name = "soul orb", chance = 35000},
+	{name = "great mana potion", chance = 33000, maxCount = 3},
+	{name = "great health potion", chance = 33000, maxCount = 3},
 	{name = "flask of demonic blood", chance = 30000, maxCount = 4},
-	{name = "Small Amethyst", chance = 24950, maxCount = 3},
-	{name = "Assassin Star", chance = 24670, maxCount = 10},
-	{name = "Small Diamond", chance = 15700, maxCount = 3},
-	{name = "Small Ruby", chance = 15333, maxCount = 3},
-	{name = "Small Emerald", chance = 15110, maxCount = 3},
-	{name = "Onyx Arrow", chance = 14480, maxCount = 15},
-	{name = "Small Topaz", chance = 4580, maxCount = 3},
-	{name = "Titan Axe", chance = 3000},
-	{id = 282, chance = 3000},
-	{name = "Spiked Squelcher", chance = 2200},
-	{name = "Knight Armor", chance = 1980},
-	{name = "Falcon Crest", chance = 1250},
-	{name = "War Axe", chance = 1230},
-	{name = "Violet Gem", chance = 1060},
-	{name = "Damaged Armor Plates", chance = 990},
-	{name = "Green Gem", chance = 880},
-	{name = "Golden Armor", chance = 840},
-	{name = "Mastermind Shield", chance = 620},
-	{name = "Heavy Mace", chance = 460},
-	{id = 3481, chance = 370},
-	{id = 3019, chance = 100}
+	{name = "small amethyst", chance = 24950, maxCount = 3},
+	{name = "assassin star", chance = 24670, maxCount = 10},
+	{name = "small diamond", chance = 15700, maxCount = 3},
+	{name = "small ruby", chance = 15333, maxCount = 3},
+	{name = "small emerald", chance = 15110, maxCount = 3},
+	{name = "onyx arrow", chance = 14480, maxCount = 15},
+	{name = "small topaz", chance = 4580, maxCount = 3},
+	{name = "titan axe", chance = 3000},
+	{id = 282, chance = 3000}, -- giant shimmering pearl (brown)
+	{name = "spiked squelcher", chance = 2200},
+	{name = "knight armor", chance = 1980},
+	{name = "falcon crest", chance = 1250},
+	{name = "war axe", chance = 1230},
+	{name = "violet gem", chance = 1060},
+	{name = "damaged armor plates", chance = 990},
+	{name = "green gem", chance = 880},
+	{name = "golden armor", chance = 840},
+	{name = "mastermind shield", chance = 620},
+	{name = "heavy mace", chance = 460},
+	{id = 3481, chance = 370}, -- closed trap
+	{id = 3019, chance = 100} -- demonbone amulet
 }
 
 monster.attacks = {
@@ -122,8 +122,8 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = -5},
-	{type = COMBAT_DEATHDAMAGE , percent = 55}
+	{type = COMBAT_HOLYDAMAGE , percent = -10},
+	{type = COMBAT_DEATHDAMAGE , percent = 50}
 }
 
 monster.immunities = {

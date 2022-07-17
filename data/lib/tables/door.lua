@@ -1,7 +1,7 @@
 -- Be careful, do not add quest door inside the level door table, this will lock the doors.
 
 -- ID of the keys. (2969 is from the thieves guild quest)
-keysID = {2967, 2968, 2970, 2971, 2972, 2973, 21392}
+keysID = {2967, 2968, 2969, 2970, 2971, 2972, 2973, 21392}
 
 -- The lockedDoor is the doors with the description "It is locked". Use this (with no action) to keep a door permanently isoled.
 -- The closedDoor is the doors that are unlocked, when using them open normally.
@@ -113,6 +113,7 @@ CustomDoorTable = {
 	{ closedDoor = 9563, openDoor = 9564 },
 	{ closedDoor = 11705, openDoor = 11708 },
 	{ closedDoor = 11714, openDoor = 11716 },
+	{ closedDoor = 12035, openDoor = 12036 },
 	{ closedDoor = 12249, openDoor = 12250 },
 	{ closedDoor = 15687, openDoor = 15688 },
 	{ closedDoor = 17563, openDoor = 17564 },
@@ -199,7 +200,6 @@ QuestDoorTable = {
 	{ closedDoor = 11148, openDoor = 11149 },
 	{ closedDoor = 11239, openDoor = 11240 },
 	{ closedDoor = 11248, openDoor = 11249 },
-	{ closedDoor = 12035, openDoor = 12036 },
 	{ closedDoor = 17567, openDoor = 17568 },
 	{ closedDoor = 17576, openDoor = 17577 },
 	{ closedDoor = 17707, openDoor = 17708 },

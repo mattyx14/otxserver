@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
-	<event name="DarkKonia Online" startdate="06/02/2022" enddate="13/02/2022" script="example.lua" >
+	<event name="DarkKonia Online" startdate="06/11/2022" enddate="13/11/2022" script="example.lua" >
 		<ingame exprate="250" lootrate="200" spawnrate="100" skillrate="200" />
 		<description description="DarkKonia Online description double exp and a half, double loot !chance!, regular spawn and double skill" />
 		<colors colordark="#235c00" colorlight="#2d7400" />

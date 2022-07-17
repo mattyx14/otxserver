@@ -46,13 +46,13 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
-	pushable = true,
+	convinceable = false,
+	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -80,25 +80,25 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 50320, maxCount = 185},
-	{id = 3724, chance = 50320, maxCount = 3},
-	{id = 236, chance = 50320},
-	{id = 3078, chance = 20000},
-	{id = 3316, chance = 50320},
-	{id = 24380, chance = 20000},
-	{id = 24381, chance = 4900},
-	{id = 24382, chance = 1800, maxCount = 2},
-	{id = 3027, chance = 12750, maxCount = 2},
-	{id = 3030, chance = 2510, maxCount = 3},
-	{id = 7452, chance = 1940},
-	{id = 8015, chance = 1000, maxCount = 2},
-	{id = 9057, chance = 8870, maxCount = 3},
-	{id = 16123, chance = 9700},
-	{id = 17828, chance = 15290, maxCount = 3},
-	{id = 2966, chance = 910},
-	{id = 7439, chance = 910},
-	{id = 10457, chance = 910},
-	{id = 23811, chance = 300}
+	{id = 3031, chance = 50320, maxCount = 185}, -- gold coin
+	{id = 3724, chance = 50320, maxCount = 3}, -- red mushroom
+	{id = 236, chance = 50320}, -- strong health potion
+	{id = 3078, chance = 20000}, -- mysterious fetish
+	{id = 3316, chance = 50320}, -- orcish axe
+	{id = 24380, chance = 20000}, -- bone toothpick
+	{id = 24381, chance = 4900}, -- beetle carapace
+	{id = 24382, chance = 1800, maxCount = 2}, -- bug meat
+	{id = 3027, chance = 12750, maxCount = 2}, -- black pearl
+	{id = 3030, chance = 2510, maxCount = 3}, -- small ruby
+	{id = 7452, chance = 1940}, -- spiked squelcher
+	{id = 8015, chance = 1000, maxCount = 2}, -- onion
+	{id = 9057, chance = 8870, maxCount = 3}, -- small topaz
+	{id = 16123, chance = 9700}, -- brown crystal splinter
+	{id = 17828, chance = 15290, maxCount = 3}, -- pair of iron fists
+	{id = 2966, chance = 910}, -- war drum
+	{id = 7439, chance = 910}, -- berserk potion
+	{id = 10457, chance = 910}, -- beetle necklace
+	{id = 23811, chance = 300} -- reinvigorating seeds
 }
 
 monster.attacks = {

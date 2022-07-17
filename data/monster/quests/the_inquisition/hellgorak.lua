@@ -6,9 +6,9 @@ monster.experience = 10000
 monster.outfit = {
 	lookType = 12,
 	lookHead = 19,
-	lookBody = 96,
-	lookLegs = 21,
-	lookFeet = 81,
+	lookBody = 77,
+	lookLegs = 3,
+	lookFeet = 80,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -69,50 +69,50 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 200},
-	{id = 8899, chance = 49920},
-	{id = 7643, chance = 41750, maxCount = 2},
-	{id = 8073, chance = 31010},
-	{id = 8896, chance = 30560},
-	{id = 3344, chance = 29950},
-	{id = 3035, chance = 21790, maxCount = 30},
-	{id = 7642, chance = 21180},
-	{id = 239, chance = 20570},
-	{id = 3381, chance = 19670},
-	{id = 238, chance = 16190},
-	{id = 3027, chance = 14070, maxCount = 25},
-	{id = 3026, chance = 13920, maxCount = 25},
-	{id = 7456, chance = 12860},
-	{id = 3028, chance = 12860, maxCount = 25},
-	{id = 3030, chance = 13010, maxCount = 5},
-	{id = 3008, chance = 12710},
-	{id = 3033, chance = 12410, maxCount = 25},
-	{id = 3016, chance = 11800},
-	{id = 3029, chance = 11650, maxCount = 25},
-	{id = 821, chance = 11350},
-	{id = 9057, chance = 11200, maxCount = 25},
-	{id = 3032, chance = 10740, maxCount = 25},
-	{id = 3554, chance = 10740},
-	{id = 8043, chance = 10590},
-	{id = 3382, chance = 10140},
-	{id = 8042, chance = 10140},
-	{id = 3013, chance = 9680},
-	{id = 3371, chance = 9530},
-	{id = 5954, chance = 9230, maxCount = 2},
-	{id = 8074, chance = 8770},
-	{id = 8075, chance = 8620},
-	{id = 3567, chance = 8170},
-	{id = 3360, chance = 2870},
-	{id = 7412, chance = 2720},
-	{id = 7388, chance = 1970},
-	{id = 8076, chance = 1360},
-	{id = 7453, chance = 610},
-	{id = 8098, chance = 450},
-	{id = 3364, chance = 450},
-	{id = 8051, chance = 450},
-	{id = 8090, chance = 300},
-	{id = 3019, chance = 150},
-	{id = 3303, chance = 100}
+	{id = 3031, chance = 100000, maxCount = 200}, -- gold coin
+	{id = 8899, chance = 49920}, -- slightly rusted legs
+	{id = 7643, chance = 41750, maxCount = 2}, -- ultimate health potion
+	{id = 8073, chance = 31010}, -- spellbook of warding
+	{id = 8896, chance = 30560}, -- slightly rusted armor
+	{id = 3344, chance = 29950}, -- beastslayer axe
+	{id = 3035, chance = 21790, maxCount = 30}, -- platinum coin
+	{id = 7642, chance = 21180}, -- great spirit potion
+	{id = 239, chance = 20570}, -- great health potion
+	{id = 3381, chance = 19670}, -- crown armor
+	{id = 238, chance = 16190}, -- great mana potion
+	{id = 3027, chance = 14070, maxCount = 25}, -- black pearl
+	{id = 3026, chance = 13920, maxCount = 25}, -- white pearl
+	{id = 7456, chance = 12860}, -- noble axe
+	{id = 3028, chance = 12860, maxCount = 25}, -- small diamond
+	{id = 3030, chance = 13010, maxCount = 5}, -- small ruby
+	{id = 3008, chance = 12710}, -- crystal necklace
+	{id = 3033, chance = 12410, maxCount = 25}, -- small amethyst
+	{id = 3016, chance = 11800}, -- ruby necklace
+	{id = 3029, chance = 11650, maxCount = 25}, -- small sapphire
+	{id = 821, chance = 11350}, -- magma legs
+	{id = 9057, chance = 11200, maxCount = 25}, -- small topaz
+	{id = 3032, chance = 10740, maxCount = 25}, -- small emerald
+	{id = 3554, chance = 10740}, -- steel boots
+	{id = 8043, chance = 10590}, -- focus cape
+	{id = 3382, chance = 10140}, -- crown legs
+	{id = 8042, chance = 10140}, -- spirit cloak
+	{id = 3013, chance = 9680}, -- golden amulet
+	{id = 3371, chance = 9530}, -- knight legs
+	{id = 5954, chance = 9230, maxCount = 2}, -- demon horn
+	{id = 8074, chance = 8770}, -- spellbook of mind control
+	{id = 8075, chance = 8620}, -- spellbook of lost souls
+	{id = 3567, chance = 8170}, -- blue robe
+	{id = 3360, chance = 2870}, -- golden armor
+	{id = 7412, chance = 2720}, -- butcher's axe
+	{id = 7388, chance = 1970}, -- vile axe
+	{id = 8076, chance = 1360}, -- spellscroll of prophecies
+	{id = 7453, chance = 610}, -- executioner
+	{id = 8098, chance = 450}, -- demonwing axe
+	{id = 3364, chance = 450}, -- golden legs
+	{id = 8051, chance = 450}, -- voltage armor
+	{id = 8090, chance = 300}, -- spellbook of dark mysteries
+	{id = 3019, chance = 150}, -- demonbone amulet
+	{id = 3303, chance = 100} -- great axe
 }
 
 monster.attacks = {

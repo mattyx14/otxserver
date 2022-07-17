@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = true,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -84,11 +84,11 @@ monster.loot = {
 	{name = "longsword", chance = 6000},
 	{name = "bow", chance = 4000},
 	{name = "grapes", chance = 20000},
-	{id = 5921, chance = 930},
+	{id = 5921, chance = 930}, -- heaven blossom
 	{name = "elvish bow", chance = 100},
 	{name = "flaming arrow", chance = 30000, maxCount = 12},
 	{name = "elvish talisman", chance = 5000},
-	{id = 12600, chance = 15280},
+	{id = 12600, chance = 15280}, -- coal
 	{name = "flintstone", chance = 340}
 }
 
@@ -104,16 +104,16 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 20},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_EARTHDAMAGE, percent = 5},
 	{type = COMBAT_FIREDAMAGE, percent = 100},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = -20},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = -20}
+	{type = COMBAT_ICEDAMAGE, percent = -10},
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
+	{type = COMBAT_DEATHDAMAGE , percent = -5}
 }
 
 monster.immunities = {

@@ -77,10 +77,10 @@ monster.loot = {
 	{name = "jewelled backpack", chance = 100000},
 	{name = "strong mana potion", chance = 5000},
 	{name = "brown mushroom", chance = 5000, maxCount = 3},
-	{id = 6087, chance = 3000},--first verse
-	{id = 6088, chance = 3000},--second verse
-	{id = 6089, chance = 3000},--third verse
-	{id = 6090, chance = 3000}--fourth verse
+	{id = 6087, chance = 3000}, -- music sheet (first verse)
+	{id = 6088, chance = 3000}, -- music sheet (second verse)
+	{id = 6089, chance = 3000}, -- music sheet (third verse)
+	{id = 6090, chance = 3000} -- music sheet (fourth verse)
 }
 
 monster.attacks = {

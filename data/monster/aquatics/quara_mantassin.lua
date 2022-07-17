@@ -43,7 +43,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -82,7 +82,7 @@ monster.loot = {
 	{name = "halberd", chance = 4970},
 	{name = "small sapphire", chance = 1130},
 	{name = "cape", chance = 1090},
-	{id = 3049, chance = 1050}, -- Stealth ring
+	{id = 3049, chance = 1050}, -- stealth ring
 	{name = "two handed sword", chance = 990},
 	{name = "fish fin", chance = 610},
 	{name = "strange helmet", chance = 100},

@@ -70,19 +70,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 11479, chance = 25000},
-	{id = 3031, chance = 18500, maxCount = 45},
-	{id = 3287, chance = 14500, maxCount = 18},
-	{id = 3578, chance = 11300, maxCount = 2},
-	{id = 3316, chance = 5700},
-	{id = 3347, chance = 5700},
-	{id = 3357, chance = 5610},
-	{id = 3557, chance = 4680},
-	{id = 3307, chance = 4050},
-	{id = 3084, chance = 2690},
-	{id = 3265, chance = 2200},
-	{id = 3384, chance = 1900},
-	{id = 818, chance = 750}
+	{id = 11479, chance = 25000}, -- orc leather
+	{id = 3031, chance = 18500, maxCount = 45}, -- gold coin
+	{id = 3287, chance = 14500, maxCount = 18}, -- throwing star
+	{id = 3578, chance = 11300, maxCount = 2}, -- fish
+	{id = 3316, chance = 5700}, -- orcish axe
+	{id = 3347, chance = 5700}, -- hunting spear
+	{id = 3357, chance = 5610}, -- plate armor
+	{id = 3557, chance = 4680}, -- plate legs
+	{id = 3307, chance = 4050}, -- scimitar
+	{id = 3084, chance = 2690}, -- protection amulet
+	{id = 3265, chance = 2200}, -- two handed sword
+	{id = 3384, chance = 1900}, -- dark helmet
+	{id = 818, chance = 750} -- magma boots
 }
 
 monster.attacks = {

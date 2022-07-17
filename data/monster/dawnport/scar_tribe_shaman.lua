@@ -36,7 +36,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = false,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -67,14 +67,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 11452, chance = 3700},
-	{id = 3597, chance = 11110, maxCount = 2},
-	{id = 3031, chance = 100000, maxCount = 17},
-	{id = 10196, chance = 11110},
-	{id = 11478, chance = 3700},
-	{id = 3277, chance = 55560},
-	{id = 3378, chance = 3700},
-	{id = 3362, chance = 11110}
+	{id = 11452, chance = 3700}, -- broken shamanic staff
+	{id = 3597, chance = 11110, maxCount = 2}, -- corncob
+	{id = 3031, chance = 100000, maxCount = 17}, -- gold coin
+	{id = 10196, chance = 11110}, -- orc tooth
+	{id = 11478, chance = 3700}, -- shamanic hood
+	{id = 3277, chance = 55560}, -- spear
+	{id = 3378, chance = 3700}, -- studded armor
+	{id = 3362, chance = 11110} -- studded legs
 }
 
 monster.attacks = {

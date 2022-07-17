@@ -75,11 +75,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 59640, maxCount = 160},
-	{id = 11472, chance = 8330, maxCount = 2},
-	{id = 11482, chance = 5040},
-	{id = 5878, chance = 1000},
-	{id = 7401, chance = 90}
+	{id = 3031, chance = 59640, maxCount = 160}, -- gold coin
+	{id = 11472, chance = 8330, maxCount = 2}, -- minotaur horn
+	{id = 11482, chance = 5040}, -- piece of warrior armor
+	{id = 5878, chance = 1000}, -- minotaur leather
+	{id = 7401, chance = 90} -- minotaur trophy
 }
 
 monster.attacks = {
@@ -99,9 +99,9 @@ monster.elements = {
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_ICEDAMAGE, percent = -10},
+	{type = COMBAT_HOLYDAMAGE , percent = 10},
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

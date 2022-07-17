@@ -45,7 +45,7 @@ monster.strategiesTarget = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
 	convinceable = true,
@@ -87,7 +87,7 @@ monster.loot = {
 	{name = "poison arrow", chance = 15400, maxCount = 4},
 	{name = "sandals", chance = 1180},
 	{name = "grapes", chance = 17750},
-	{id = 5921, chance = 1130},
+	{id = 5921, chance = 1130}, -- heaven blossom
 	{name = "elvish bow", chance = 140},
 	{name = "elvish talisman", chance = 5200},
 	{name = "elven scouting glass", chance = 9750}
@@ -113,7 +113,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 20},
-	{type = COMBAT_DEATHDAMAGE , percent = -1}
+	{type = COMBAT_DEATHDAMAGE , percent = -10}
 }
 
 monster.immunities = {

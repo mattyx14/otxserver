@@ -6,9 +6,9 @@ monster.experience = 10000
 monster.outfit = {
 	lookType = 12,
 	lookHead = 0,
-	lookBody = 95,
-	lookLegs = 19,
-	lookFeet = 112,
+	lookBody = 57,
+	lookLegs = 0,
+	lookFeet = 80,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -75,7 +75,7 @@ monster.loot = {
 	{name = "spike sword", chance = 9090},
 	{name = "fire sword", chance = 14285},
 	{name = "giant sword", chance = 7692},
-	{id = 3307, chance = 11111},
+	{id = 3307, chance = 11111}, -- scimitar
 	{name = "warrior helmet", chance = 20000},
 	{name = "strange helmet", chance = 8333},
 	{name = "crown helmet", chance = 6250},
@@ -90,9 +90,9 @@ monster.loot = {
 	{name = "huge chunk of crude iron", chance = 14285},
 	{name = "hardened bone", chance = 25000, maxCount = 20},
 	{name = "demon horn", chance = 8333, maxCount = 2},
-	{id = 6103, chance = 2063},
+	{id = 6103, chance = 2063}, -- unholy book
 	{name = "demonic essence", chance = 100000},
-	{id = 7385, chance = 10000},
+	{id = 7385, chance = 10000}, -- crimson sword
 	{name = "thaian sword", chance = 25000},
 	{name = "dragon slayer", chance = 8333},
 	{name = "runed sword", chance = 6666},
@@ -100,7 +100,7 @@ monster.loot = {
 	{name = "great health potion", chance = 20000},
 	{name = "great spirit potion", chance = 20000},
 	{name = "ultimate health potion", chance = 20000},
-	{id = 8894, chance = 20000},
+	{id = 8894, chance = 20000}, -- heavily rusted armor
 	{name = "gold ingot", chance = 16666}
 }
 

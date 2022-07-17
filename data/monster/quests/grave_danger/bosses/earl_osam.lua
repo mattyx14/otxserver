@@ -5,10 +5,10 @@ monster.description = "Earl Osam"
 monster.experience = 44200
 monster.outfit = {
 	lookType = 1223,
-	lookHead = 95,
-	lookBody = 38,
-	lookLegs = 60,
-	lookFeet = 76,
+	lookHead = 113,
+	lookBody = 0,
+	lookLegs = 79,
+	lookFeet = 95,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -76,12 +76,12 @@ monster.loot = {
 	{name = "mastermind potion", minCount = 0, maxCount = 10, chance = 12000},
 	{name = "berserk potion", minCount = 0, maxCount = 10, chance = 12000},
 	{name = "piece of draconian steel", minCount = 0, maxCount = 3, chance = 9000},
-	{id= 3039, minCount = 0, maxCount = 2, chance = 12000},
+	{id= 3039, minCount = 0, maxCount = 2, chance = 12000}, -- red gem
 	{name = "silver token", minCount = 0, maxCount = 2, chance = 9500},
-	{id = 23542, chance = 5200},-- collar of blue plasma
-	{id = 23544, chance = 5200},-- collar of red plasma
-	{id = 23529, chance = 5000},-- ring of blue plasma
-	{id = 23533, chance = 5000},-- ring of red plasma
+	{id = 23542, chance = 5200}, -- collar of blue plasma
+	{id = 23544, chance = 5200}, -- collar of red plasma
+	{id = 23529, chance = 5000}, -- ring of blue plasma
+	{id = 23533, chance = 5000}, -- ring of red plasma
 	{name = "warrior helmet", chance = 11000},
 	{name = "guardian axe", chance = 6400},
 	{name = "gold ingot", minCount = 0, maxCount = 1, chance = 10000},

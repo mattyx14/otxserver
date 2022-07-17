@@ -53,7 +53,7 @@ monster.flags = {
 	pushable = false,
 	rewardBoss = false,
 	illusionable = false,
-	canPushItems = false,
+	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
@@ -81,8 +81,8 @@ monster.loot = {
 	{name = "crystal coin", chance = 70540},
 	{name = "platinum coin", chance = 90540, maxCount = 32},
 	{name = "ultimate health potion", chance = 72220, maxCount = 7},
-	{id = 281, chance = 54560}, -- Giant shimmering pearl
-	{id = 282, chance = 54560}, -- Giant shimmering pearl
+	{id = 281, chance = 54560}, -- giant shimmering pearl (green)
+	{id = 282, chance = 54560}, -- giant shimmering pearl (brown)
 	{name = "gold ingot", chance = 34920},
 	{name = "glacier kilt", chance = 12920},
 	{name = "northwind rod", chance = 11920},
@@ -91,11 +91,11 @@ monster.loot = {
 	{name = "green crystal fragment", chance = 22920},
 	{name = "onyx chip", chance = 20000},
 	{name = "rainbow quartz", chance = 13660, maxCount = 2},
-	{id = 33929, chance = 14560}, -- Rod
-	{id = 34014, chance = 14560}, -- Jaws
+	{id = 33929, chance = 14560}, -- rod
+	{id = 34014, chance = 14560}, -- jaws
 	{name = "skullcracker armor", chance = 1680},
 	{name = "goblet of gloom", chance = 880},
-	{id = 34109, chance = 50} -- Bag you desire
+	{id = 34109, chance = 50} -- bag you desire
 }
 
 monster.attacks = {

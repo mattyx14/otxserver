@@ -77,13 +77,13 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2829, chance = 2350},
+	{id = 2829, chance = 2350}, -- book
 	{name = "small oil lamp", chance = 690},
 	{name = "small sapphire", chance = 2560, maxCount = 4},
 	{name = "gold coin", chance = 60000, maxCount = 70},
 	{name = "gold coin", chance = 70000, maxCount = 45},
 	{name = "mystic turban", chance = 70},
-	{id = 3595, chance = 23480},
+	{id = 3595, chance = 23480}, -- carrot
 	{name = "blue rose", chance = 440},
 	{name = "blue piece of cloth", chance = 1920},
 	{name = "royal spear", chance = 4500, maxCount = 2},
@@ -115,8 +115,8 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -10},
-	{type = COMBAT_HOLYDAMAGE , percent = 1},
-	{type = COMBAT_DEATHDAMAGE , percent = -12}
+	{type = COMBAT_HOLYDAMAGE , percent = 20},
+	{type = COMBAT_DEATHDAMAGE , percent = -13}
 }
 
 monster.immunities = {

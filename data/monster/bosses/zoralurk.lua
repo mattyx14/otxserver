@@ -81,7 +81,7 @@ monster.loot = {
 	{name = "bright sword", chance = 20000},
 	{name = "warlord sword", chance = 6000},
 	{name = "patched boots", chance = 7000},
-	{id = 3123, chance = 16000}
+	{id = 3123, chance = 16000} -- worn leather boots
 }
 
 monster.attacks = {

@@ -5,10 +5,10 @@ monster.description = "a faun"
 monster.experience = 800
 monster.outfit = {
 	lookType = 980,
-	lookHead = 81,
-	lookBody = 115,
-	lookLegs = 114,
-	lookFeet = 81,
+	lookHead = 61,
+	lookBody = 96,
+	lookLegs = 95,
+	lookFeet = 62,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -51,13 +51,13 @@ monster.respawnType = {
 }
 
 monster.flags = {
-	summonable = true,
+	summonable = false,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -101,7 +101,7 @@ monster.loot = {
 	{name = "rainbow quartz", chance = 1086, maxCount = 4},
 	{name = "small stone", chance = 492, maxCount = 3},
 	{name = "wood cape", chance = 492},
-	{id = 5792, chance = 80},
+	{id = 5792, chance = 80}, -- die
 	{name = "mandrake", chance = 50}
 }
 

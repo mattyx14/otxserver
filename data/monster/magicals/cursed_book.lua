@@ -6,8 +6,8 @@ monster.experience = 13345
 monster.outfit = {
 	lookType = 1061,
 	lookHead = 79,
-	lookBody = 83,
-	lookLegs = 113,
+	lookBody = 81,
+	lookLegs = 93,
 	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
@@ -28,7 +28,7 @@ monster.Bestiary = {
 
 monster.health = 20000
 monster.maxHealth = 20000
-monster.race = "undead"
+monster.race = "ink"
 monster.corpse = 28590
 monster.speed = 440
 monster.manaCost = 0
@@ -73,23 +73,23 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 28569, chance = 10000, maxCount = 3},
-	{name = "Platinum Coin", chance = 10000, maxCount = 10},
-	{id = 28566, chance = 10000, maxCount = 3},
-	{name = "Small Diamond", chance = 10000, maxCount = 7},
-	{name = "Small Stone", chance = 10000, maxCount = 7},
-	{name = "Small Topaz", chance = 10000, maxCount = 7},
-	{name = "Protection Amulet", chance = 10000},
-	{name = "Terra Boots", chance = 350},
-	{name = "Terra Hood", chance = 600},
-	{name = "Diamond Sceptre", chance = 600},
-	{name = "Terra Mantle", chance = 250},
-	{name = "Terra Legs", chance = 250},
-	{name = "Terra Amulet", chance = 500},
-	{name = "Stone Skin Amulet", chance = 350},
-	{name = "Springsprout Rod", chance = 350},
-	{name = "Sacred Tree Amulet", chance = 350},
-	{name = "Swamplair Armor", chance = 250}
+	{id = 28569, chance = 10000, maxCount = 3}, -- book page
+	{name = "platinum coin", chance = 10000, maxCount = 10},
+	{id = 28566, chance = 10000, maxCount = 3}, -- silken bookmark
+	{name = "small diamond", chance = 10000, maxCount = 7},
+	{name = "small stone", chance = 10000, maxCount = 7},
+	{name = "small topaz", chance = 10000, maxCount = 7},
+	{name = "protection amulet", chance = 10000},
+	{name = "terra boots", chance = 350},
+	{name = "terra hood", chance = 600},
+	{name = "diamond sceptre", chance = 600},
+	{name = "terra mantle", chance = 250},
+	{name = "terra legs", chance = 250},
+	{name = "terra amulet", chance = 500},
+	{name = "stone skin amulet", chance = 350},
+	{name = "springsprout rod", chance = 350},
+	{name = "sacred tree amulet", chance = 350},
+	{name = "swamplair armor", chance = 250}
 }
 
 monster.attacks = {

@@ -36,7 +36,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 90,
@@ -60,11 +60,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3147, chance = 21050},
-	{id = 3031, chance = 100000, maxCount = 10},
-	{id = 11513, chance = 22810},
-	{id = 2920, chance = 1750},
-	{id = 2920, chance = 1750}
+	{id = 3147, chance = 21050}, -- blank rune
+	{id = 3031, chance = 100000, maxCount = 10}, -- gold coin
+	{id = 11513, chance = 22810}, -- small pitchfork
+	{id = 2920, chance = 1750}, -- torch
+	{id = 2920, chance = 1750} -- torch
 }
 
 monster.attacks = {

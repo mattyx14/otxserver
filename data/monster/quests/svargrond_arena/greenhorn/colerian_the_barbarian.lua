@@ -5,10 +5,10 @@ monster.description = "Colerian the Barbarian"
 monster.experience = 90
 monster.outfit = {
 	lookType = 253,
-	lookHead = 76,
-	lookBody = 115,
-	lookLegs = 115,
-	lookFeet = 43,
+	lookHead = 77,
+	lookBody = 61,
+	lookLegs = 40,
+	lookFeet = 114,
 	lookAddons = 0,
 	lookMount = 0
 }

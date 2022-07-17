@@ -8,7 +8,7 @@ monster.outfit = {
 	lookHead = 58,
 	lookBody = 2,
 	lookLegs = 94,
-	lookFeet = 0,
+	lookFeet = 10,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -69,28 +69,28 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000, maxCount = 5},
-	{name = "Great Spirit Potion", chance = 100000, maxCount = 2},
-	{name = "Small Enchanted Ruby", chance = 5000, maxCount = 2},
-	{name = "Meat", chance = 5000, maxCount = 2},
-	{name = "Crystal Sword", chance = 5000},
-	{name = "Lion's Mane", chance = 5000},
-	{name = "Silver Brooch", chance = 1500},
-	{name = "Small Diamond", chance = 1500, maxCount = 2},
-	{name = "War Hammer", chance = 1500},
-	{name = "Doublet", chance = 1500},
-	{name = "Dark Shield", chance = 1500},
-	{name = "Titan Axe", chance = 1500},
-	{name = "Spiked Squelcher", chance = 1500},
-	{name = "Glorious Axe", chance = 1500},
-	{name = "Spirit Cloak", chance = 1500},
-	{name = "Onyx Chip", chance = 1500},
-	{name = "Coral Brooch", chance = 1500},
-	{name = "Ivory Carving", chance = 1500},
-	{name = "Rainbow Quartz", chance = 1500},
-	{name = "Noble Axe", chance = 500},
-	{name = "White Silk Flower", chance = 500},
-	{name = "Lion Figurine", chance = 100}
+	{name = "platinum coin", chance = 100000, maxCount = 5},
+	{name = "great spirit potion", chance = 100000, maxCount = 2},
+	{name = "small enchanted ruby", chance = 5000, maxCount = 2},
+	{name = "meat", chance = 5000, maxCount = 2},
+	{name = "crystal sword", chance = 5000},
+	{name = "lion's mane", chance = 5000},
+	{name = "silver brooch", chance = 1500},
+	{name = "small diamond", chance = 1500, maxCount = 2},
+	{name = "war hammer", chance = 1500},
+	{name = "doublet", chance = 1500},
+	{name = "dark shield", chance = 1500},
+	{name = "titan axe", chance = 1500},
+	{name = "spiked squelcher", chance = 1500},
+	{name = "glorious axe", chance = 1500},
+	{name = "spirit cloak", chance = 1500},
+	{name = "onyx chip", chance = 1500},
+	{name = "coral brooch", chance = 1500},
+	{name = "ivory carving", chance = 1500},
+	{name = "rainbow quartz", chance = 1500},
+	{name = "noble axe", chance = 500},
+	{name = "white silk flower", chance = 500},
+	{name = "lion figurine", chance = 100}
 }
 
 monster.attacks = {

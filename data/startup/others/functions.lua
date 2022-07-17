@@ -1,3 +1,20 @@
+-- This function load the table "CreateItemOnMap"from script "create_item.lua"
+-- Basically it works to create items on the map without the need to edit the map
+function CreateMapItem(tablename)
+	for index, value in pairs(tablename) do
+		for i = 1, #value.itemPos do
+			local tile = Tile(value.itemPos[i])
+			-- Checks if the position is valid
+			if tile then
+				if tile:getItemCountById(index) == 0 then
+					Game.createItem(index, 1, value.itemPos[i])
+				end
+			end
+		end
+	end
+	Spdlog.info("Created all items in the map")
+end
+
 -- These functions load the action/unique tables on the map
 function loadLuaMapAction(tablename)
 	-- It load actions
@@ -152,40 +169,23 @@ function loadLuaNpcs(tablename)
 	Spdlog.info("Loaded ".. (#NpcTable) .." npcs and spawned with tables.")
 end
 
--- Functions that cannot be used in reload command, so they have been moved here
--- Prey slots consumption
-function preyTimeLeft(player, slot)
-	local timeLeft = player:getPreyTimeLeft(slot) / 60
-	local monster = player:getPreyCurrentMonster(slot)
-	if (timeLeft >= 1) then
-		local playerId = player:getId()
-		local currentTime = os.time()
-		local timePassed = currentTime - nextPreyTime[playerId][slot]
-
-		-- Setting new timeleft
-		if timePassed >= 59 then
-			timeLeft = timeLeft - 1
-			nextPreyTime[playerId][slot] = currentTime + 60
-		end
-
-		-- Sending new timeLeft
-		player:setPreyTimeLeft(slot, timeLeft * 60)
-	else
-		-- Performing automatic Bonus/LockPrey actions
-		if player:getPreyTick(slot) == 1 then
-			player:setAutomaticBonus(slot)
-			player:sendPreyData(slot)
-			return true
-		elseif player:getPreyTick(slot) == 2 then
-			player:setAutomaticBonus(slot)
-			player:sendPreyData(slot)
-			return true
-		end
-
-		-- Expiring prey as there's no timeLeft
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("Your %s's prey has expired.", monster:lower()))
-		player:setPreyCurrentMonster(slot, "")
+function updateKeysStorage(tablename)
+	-- It updates old storage keys from quests for all players
+	local newUpdate = tablename[0].latest
+	local oldUpdate = getGlobalStorage(GlobalStorage.KeysUpdate)
+	if newUpdate <= oldUpdate then
+		return true
 	end
 
-	return player:sendPreyData(slot)
+	Spdlog.info("Updating quest keys storages...")
+	if oldUpdate < 1 then
+		oldUpdate = 1
+	end
+	for u = oldUpdate, newUpdate do
+		for i = 1, #tablename[u] do
+			db.query("UPDATE `player_storage` SET `key` = '" .. tablename[u][i].new .. "' WHERE `key` = '" .. tablename[u][i].old .. "';")
+		end
+	end
+	setGlobalStorage(GlobalStorage.KeysUpdate, newUpdate)
+	Spdlog.info("Storage Keys Updated")
 end

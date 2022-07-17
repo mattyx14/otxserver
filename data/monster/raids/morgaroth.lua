@@ -5,9 +5,9 @@ monster.description = "Morgaroth"
 monster.experience = 15000
 monster.outfit = {
 	lookType = 12,
-	lookHead = 0,
+	lookHead = 2,
 	lookBody = 94,
-	lookLegs = 79,
+	lookLegs = 78,
 	lookFeet = 79,
 	lookAddons = 0,
 	lookMount = 0
@@ -86,8 +86,8 @@ monster.loot = {
 	{name = "ultimate health potion", chance = 27000},
 	{name = "talon", chance = 22000, maxCount = 7},
 	{name = "demon horn", chance = 22000, maxCount = 2},
-	{id = 6299, chance = 22000},
-	{id = 3098, chance = 22000}, -- Ring of healing
+	{id = 6299, chance = 22000}, -- death ring
+	{id = 3098, chance = 22000}, -- ring of healing
 	{name = "chain bolter", chance = 22000},
 	{name = "dark lord's cape", chance = 22000},
 	{name = "ironworker", chance = 25000},
@@ -96,7 +96,7 @@ monster.loot = {
 	{name = "magic plate armor", chance = 18000},
 	{name = "might ring", chance = 18000},
 	{name = "mind stone", chance = 18000},
-	{id = 3049, chance = 18000}, -- Stealth ring
+	{id = 3049, chance = 18000}, -- stealth ring
 	{name = "fireborn giant armor", chance = 18000},
 	{name = "royal crossbow", chance = 18000},
 	{name = "teddy bear", chance = 18000},
@@ -111,17 +111,17 @@ monster.loot = {
 	{name = "blue gem", chance = 9000},
 	{name = "gold ring", chance = 9000},
 	{name = "demon shield", chance = 9000},
-	{id = 3051, chance = 9000}, -- Energy ring
+	{id = 3051, chance = 9000}, -- energy ring
 	{name = "giant sword", chance = 9000},
 	{name = "golden legs", chance = 9000},
 	{name = "life crystal", chance = 9000},
-	{id = 3046, chance = 9000},
+	{id = 3046, chance = 9000}, -- magic light wand
 	{name = "orb", chance = 9000},
 	{name = "strange symbol", chance = 9000},
 	{name = "steel boots", chance = 9000},
 	{name = "thunder hammer", chance = 9000},
 	{name = "small diamond", chance = 4500, maxCount = 5},
-	{id = 3007, chance = 4500},
+	{id = 3007, chance = 4500}, -- crystal ring
 	{name = "fire axe", chance = 4500},
 	{name = "great health potion", chance = 4500},
 	{name = "mastermind shield", chance = 4500},

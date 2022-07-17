@@ -5,10 +5,10 @@ monster.description = "Hairman The Huge"
 monster.experience = 335
 monster.outfit = {
 	lookType = 116,
-	lookHead = 20,
-	lookBody = 30,
-	lookLegs = 40,
-	lookFeet = 50,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -64,7 +64,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "gold coin", chance = 100000, maxCount = 60},
-	{id = 3093, chance = 25000}, -- Club ring
+	{id = 3093, chance = 25000}, -- club ring
 	{name = "banana", chance = 25000, maxCount = 1}
 }
 

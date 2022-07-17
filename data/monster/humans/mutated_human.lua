@@ -84,13 +84,13 @@ monster.loot = {
 	{name = "strange talisman", chance = 4980},
 	{name = "silver amulet", chance = 70},
 	{name = "fishbone", chance = 10050},
-	{id = 3264, chance = 5030},
+	{id = 3264, chance = 5030}, -- sword
 	{name = "scale armor", chance = 8080},
-	{id = 3607, chance = 8000},
+	{id = 3607, chance = 8000}, -- cheese
 	{name = "fern", chance = 420},
 	{name = "worm", chance = 7110, maxCount = 2},
 	{name = "peanut", chance = 580},
-	{id = 8894, chance = 190},
+	{id = 8894, chance = 190}, -- heavily rusted armor
 	{name = "mutated flesh", chance = 19940}
 }
 

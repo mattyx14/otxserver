@@ -5,10 +5,10 @@ monster.description = "urmahlullu the weakened"
 monster.experience = 85000
 monster.outfit = {
 	lookType = 1197,
-	lookHead = 57,
-	lookBody = 75,
-	lookLegs = 38,
-	lookFeet = 86,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -70,7 +70,7 @@ monster.voices = {
 monster.loot = {
 	{name = "platinum coin", chance = 96000, maxCount = 6},
 	{name = "ultimate mana potion", chance = 51000, maxCount = 20},
-	{id= 3039, chance = 39000, maxCount = 2},
+	{id= 3039, chance = 39000, maxCount = 2}, -- red gem
 	{name = "berserk potion", chance = 15000, maxCount = 10},
 	{name = "flash arrow", chance = 30000, maxCount = 100},
 	{name = "crystal coin", chance = 12000, maxCount = 3},
@@ -91,21 +91,21 @@ monster.loot = {
 	{name = "yellow gem", chance = 46000},
 	{name = "green gem", chance = 21000},
 	{name = "magma coat", chance = 6000},
-	{id = 281, chance = 12000},
+	{id = 281, chance = 12000}, -- giant shimmering pearl (green)
 	{name = "violet gem", chance = 6000},
 	{name = "magma monocle", chance = 3000},
-	{id = 31557, chance = 3000},
+	{id = 31557, chance = 3000}, -- blister ring
 	{name = "blue gem", chance = 12000},
 	{name = "magma amulet", chance = 12000},
 	{name = "gold ingot", chance = 9000},
 	{name = "giant emerald", chance = 6000},
-	{id = 31263, chance = 100000},
+	{id = 31263, chance = 100000}, -- ring of secret thoughts
 	{name = "giant sapphire", chance = 6000},
 	{name = "winged backpack", chance = 250},
 	{name = "rainbow necklace", chance = 160},
-	{id = 30403, chance = 160},
-	{name = "Sun Medal", chance = 160},
-	{name = "Sunray Emblem", chance = 160}
+	{id = 30403, chance = 160}, -- enchanted theurgic amulet
+	{name = "sun medal", chance = 160},
+	{name = "sunray emblem", chance = 160}
 }
 
 monster.attacks = {

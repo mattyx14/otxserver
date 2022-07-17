@@ -50,7 +50,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
@@ -83,7 +83,7 @@ monster.loot = {
 	{name = "magma amulet", chance = 1300},
 	{name = "magma boots", chance = 560},
 	{name = "magma legs", chance = 210},
-	{id = 8895, chance = 1330}
+	{id = 8895, chance = 1330} -- rusted armor
 }
 
 monster.attacks = {
@@ -101,7 +101,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 40},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 50},
 	{type = COMBAT_ENERGYDAMAGE, percent = 30},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 100},

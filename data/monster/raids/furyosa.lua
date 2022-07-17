@@ -6,9 +6,9 @@ monster.experience = 11500
 monster.outfit = {
 	lookType = 149,
 	lookHead = 94,
-	lookBody = 77,
-	lookLegs = 96,
-	lookFeet = 0,
+	lookBody = 79,
+	lookLegs = 77,
+	lookFeet = 3,
 	lookAddons = 3,
 	lookMount = 0
 }
@@ -76,19 +76,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 100000, maxCount = 200},
-	{id = 8016, chance = 100000, maxCount = 5},
-	{id = 19083, chance = 45000},
-	{id = 3035, chance = 85000, maxCount = 25},
-	{id = 6558, chance = 35000, maxCount = 3},
-	{id = 6499, chance = 22500},
-	{id = 5911, chance = 4000},
-	{id = 5944, chance = 21500},
-	{id = 5944, chance = 50},
-	{id = 3007, chance = 410},
-	{id = 6300, chance = 60},
-	{id = 3439, chance = 100},
-	{id = 19391, chance = 100}
+	{id = 3031, chance = 100000, maxCount = 200}, -- gold coin
+	{id = 8016, chance = 100000, maxCount = 5}, -- jalapeno pepper
+	{id = 19083, chance = 45000}, -- silver raid token
+	{id = 3035, chance = 85000, maxCount = 25}, -- platinum coin
+	{id = 6558, chance = 35000, maxCount = 3}, -- flask of demonic blood
+	{id = 6499, chance = 22500}, -- demonic essence
+	{id = 5911, chance = 4000}, -- red piece of cloth
+	{id = 5944, chance = 21500}, -- soul orb
+	{id = 5944, chance = 50}, -- soul orb
+	{id = 3007, chance = 410}, -- crystal ring
+	{id = 6300, chance = 60}, -- death ring
+	{id = 3439, chance = 100}, -- phoenix shield
+	{id = 19391, chance = 100} -- furious frock
 }
 
 monster.attacks = {

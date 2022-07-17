@@ -39,7 +39,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = false,
 	staticAttackChance = 80,
@@ -63,12 +63,12 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 100000},
-	{name = "Cyan Crystal Fragment", chance = 55000},
-	{name = "Poison Gland", chance = 54500},
-	{name = "Great Mana Potion", chance = 80000},
-	{name = "Plate Armor", chance = 64000},
-	{name = "Green Gem", chance = 35000}
+	{name = "platinum coin", chance = 100000},
+	{name = "cyan crystal fragment", chance = 55000},
+	{name = "poison gland", chance = 54500},
+	{name = "great mana potion", chance = 80000},
+	{name = "plate armor", chance = 64000},
+	{name = "green gem", chance = 35000}
 }
 
 monster.attacks = {

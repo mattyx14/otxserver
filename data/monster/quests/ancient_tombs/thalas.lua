@@ -4,7 +4,7 @@ local monster = {}
 monster.description = "Thalas"
 monster.experience = 2950
 monster.outfit = {
-	lookType = 90,
+	lookType = 89,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -74,8 +74,8 @@ monster.loot = {
 	{name = "gold coin", chance = 50000, maxCount = 80},
 	{name = "small emerald", chance = 7000, maxCount = 3},
 	{name = "green gem", chance = 500},
-	{id = 3049, chance = 1500}, -- Stealth ring
-	{id = 3053, chance = 7000},
+	{id = 3049, chance = 1500}, -- stealth ring
+	{id = 3053, chance = 7000}, -- time ring
 	{name = "cobrafang dagger", chance = 100000},
 	{name = "serpent sword", chance = 500},
 	{name = "poison dagger", chance = 7000},

@@ -7,8 +7,8 @@ monster.outfit = {
 	lookType = 1059,
 	lookHead = 9,
 	lookBody = 21,
-	lookLegs = 41,
-	lookFeet = 85,
+	lookLegs = 3,
+	lookFeet = 57,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -73,21 +73,21 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "Platinum Coin", chance = 11000, maxCount = 57},
-	{name = "Glowing Rune", chance = 800, maxCount = 4},
-	{name = "Small Sapphire", chance = 900, maxCount = 4},
-	{name = "Frosty Heart", chance = 11000, maxCount = 4},
-	{id = 7441, chance = 20000},
-	{id = 28568, chance = 20000},
-	{name = "Ultimate Health Potion", chance = 10003, maxCount = 4},
-	{name = "Ultimate Mana Potion", chance = 10003, maxCount = 4},
-	{name = "Ice Rapier", chance = 500},
-	{name = "Glacier Mask", chance = 400},
-	{name = "Piece of Dead Brain", chance = 10001, maxCount = 4},
-	{name = "Crystal Sword", chance = 300},
-	{name = "Glacier Robe", chance = 150},
-	{name = "Glacier Kilt", chance = 150},
-	{name = "Slime Heart", chance = 10002, maxCount = 4}
+	{name = "platinum coin", chance = 11000, maxCount = 57},
+	{name = "glowing rune", chance = 800, maxCount = 4},
+	{name = "small sapphire", chance = 900, maxCount = 4},
+	{name = "frosty heart", chance = 11000, maxCount = 4},
+	{id = 7441, chance = 20000}, -- ice cube
+	{id = 28568, chance = 20000}, -- inkwell
+	{name = "ultimate health potion", chance = 10003, maxCount = 4},
+	{name = "ultimate mana potion", chance = 10003, maxCount = 4},
+	{name = "ice rapier", chance = 500},
+	{name = "glacier mask", chance = 400},
+	{name = "piece of dead brain", chance = 10001, maxCount = 4},
+	{name = "crystal sword", chance = 300},
+	{name = "glacier robe", chance = 150},
+	{name = "glacier kilt", chance = 150},
+	{name = "slime heart", chance = 10002, maxCount = 4}
 }
 
 monster.attacks = {

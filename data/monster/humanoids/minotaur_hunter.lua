@@ -79,27 +79,27 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3147, chance = 13600, maxCount = 2},
-	{id = 3031, chance = 99500, maxCount = 199},
-	{id = 3347, chance = 14880, maxCount = 5},
-	{id = 3035, chance = 33890, maxCount = 3},
-	{id = 7378, chance = 11410, maxCount = 5},
-	{id = 236, chance = 10350, maxCount = 2},
-	{id = 237, chance = 10620, maxCount = 2},
-	{id = 5944, chance = 7430},
-	{id = 5878, chance = 5030},
-	{id = 11472, chance = 4720, maxCount = 2},
-	{id = 3030, chance = 2640, maxCount = 3},
-	{id = 3033, chance = 2580, maxCount = 3},
-	{id = 3049, chance = 2220}, -- Stealth ring
-	{id = 5912, chance = 1670},
-	{id = 5910, chance = 1420},
-	{id = 5911, chance = 1360},
-	{id = 21175, chance = 640},
-	{id = 3037, chance = 470},
-	{id = 3039, chance = 400},
-	{id = 7401, chance = 190},
-	{id = 21166, chance = 170}
+	{id = 3147, chance = 13600, maxCount = 2}, -- blank rune
+	{id = 3031, chance = 99500, maxCount = 199}, -- gold coin
+	{id = 3347, chance = 14880, maxCount = 5}, -- hunting spear
+	{id = 3035, chance = 33890, maxCount = 3}, -- platinum coin
+	{id = 7378, chance = 11410, maxCount = 5}, -- royal spear
+	{id = 236, chance = 10350, maxCount = 2}, -- strong health potion
+	{id = 237, chance = 10620, maxCount = 2}, -- strong mana potion
+	{id = 5944, chance = 7430}, -- soul orb
+	{id = 5878, chance = 5030}, -- minotaur leather
+	{id = 11472, chance = 4720, maxCount = 2}, -- minotaur horn
+	{id = 3030, chance = 2640, maxCount = 3}, -- small ruby
+	{id = 3033, chance = 2580, maxCount = 3}, -- small amethyst
+	{id = 3049, chance = 2220}, -- stealth ring
+	{id = 5912, chance = 1670}, -- blue piece of cloth
+	{id = 5910, chance = 1420}, -- green piece of cloth
+	{id = 5911, chance = 1360}, -- red piece of cloth
+	{id = 21175, chance = 640}, -- mino shield
+	{id = 3037, chance = 470}, -- yellow gem
+	{id = 3039, chance = 400}, -- red gem
+	{id = 7401, chance = 190}, -- minotaur trophy
+	{id = 21166, chance = 170} -- mooh'tah plate
 }
 
 monster.attacks = {

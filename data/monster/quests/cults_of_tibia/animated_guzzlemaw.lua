@@ -71,12 +71,12 @@ monster.loot = {
 	{name = "banana skin", chance = 10700},
 	{name = "piece of iron", chance = 10500},
 	{name = "fishbone", chance = 9500},
-	{id = 3114, chance = 10400},
-	{id = 3115, chance = 9200},
-	{id = 3116, chance = 4500},
+	{id = 3114, chance = 10400}, -- skull
+	{id = 3115, chance = 9200}, -- bone
+	{id = 3116, chance = 4500}, -- big bone
 	{name = "remains of a fish", chance = 10110},
 	{name = "two handed sword", chance = 2700},
-	{id = 3578, chance = 7000, maxCount = 3},
+	{id = 3578, chance = 7000, maxCount = 3}, -- fish
 	{name = "ham", chance = 10000},
 	{name = "iron ore", chance = 3000},
 	{name = "fish fin", chance = 5000},
@@ -90,7 +90,7 @@ monster.loot = {
 	{name = "violet crystal shard", chance = 3000},
 	{name = "brown crystal splinter", chance = 12000, maxCount = 2},
 	{name = "red crystal fragment", chance = 7600},
-	{id = 16279, chance = 12000},
+	{id = 16279, chance = 12000}, -- crystal rubbish
 	{name = "cluster of solace", chance = 920},
 	{name = "frazzle tongue", chance = 15000},
 	{name = "frazzle skin", chance = 14000}

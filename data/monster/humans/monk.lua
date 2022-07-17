@@ -49,7 +49,7 @@ monster.flags = {
 	summonable = true,
 	attackable = true,
 	hostile = true,
-	convinceable = true,
+	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
 	illusionable = true,
@@ -79,14 +79,14 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 2815, chance = 2000},
+	{id = 2815, chance = 2000}, -- scroll
 	{name = "brown flask", chance = 820},
-	{id = 2914, chance = 880},
+	{id = 2914, chance = 880}, -- lamp
 	{name = "gold coin", chance = 15000, maxCount = 18},
-	{id = 3050, chance = 100}, -- Power ring
+	{id = 3050, chance = 100}, -- power ring
 	{name = "life crystal", chance = 1002},
 	{name = "ankh", chance = 2240},
-	{id = 3289, chance = 440},
+	{id = 3289, chance = 440}, -- staff
 	{name = "sandals", chance = 710},
 	{name = "bread", chance = 20000},
 	{name = "book of prayers", chance = 4930},
@@ -106,7 +106,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = -10},
+	{type = COMBAT_PHYSICALDAMAGE, percent = -5},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = 0},

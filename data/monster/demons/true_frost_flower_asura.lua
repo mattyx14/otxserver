@@ -5,10 +5,10 @@ monster.description = "a true frost flower asura"
 monster.experience = 7069
 monster.outfit = {
 	lookType = 1068,
-	lookHead = 105,
+	lookHead = 9,
 	lookBody = 0,
-	lookLegs = 105,
-	lookFeet = 8,
+	lookLegs = 86,
+	lookFeet = 9,
 	lookAddons = 0,
 	lookMount = 0
 }
@@ -49,7 +49,7 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = true,
+	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 80,
@@ -73,30 +73,30 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3031, chance = 97000, maxCount = 242},
-	{id = 3035, chance = 18200, maxCount = 6},
-	{id = 6558, chance = 2000},
-	{id = 238, chance = 2000},
-	{id = 3033, chance = 210, maxCount = 3},
-	{id = 3028, chance = 300, maxCount = 3},
-	{id = 3032, chance = 300, maxCount = 3},
-	{id = 3030, chance = 350, maxCount = 3},
-	{id = 9057, chance = 280, maxCount = 3},
-	{id = 3041, chance = 400},
-	{id = 6299, chance = 460},
-	{id = 6499, chance = 430},
-	{id = 8043, chance = 520},
-	{id = 21974, chance = 800},
-	{id = 826, chance = 400},
-	{id = 3078, chance = 400},
-	{id = 3574, chance = 400},
-	{id = 21981, chance = 400},
-	{id = 21975, chance = 600},
-	{id = 5911, chance = 300},
-	{id = 3016, chance = 400},
-	{id = 3017, chance = 900},
-	{id = 5944, chance = 400},
-	{id = 8074, chance = 400}
+	{id = 3031, chance = 97000, maxCount = 242}, -- gold coin
+	{id = 3035, chance = 18200, maxCount = 6}, -- platinum coin
+	{id = 6558, chance = 2000}, -- flask of demonic blood
+	{id = 238, chance = 2000}, -- great mana potion
+	{id = 3033, chance = 210, maxCount = 3}, -- small amethyst
+	{id = 3028, chance = 300, maxCount = 3}, -- small diamond
+	{id = 3032, chance = 300, maxCount = 3}, -- small emerald
+	{id = 3030, chance = 350, maxCount = 3}, -- small ruby
+	{id = 9057, chance = 280, maxCount = 3}, -- small topaz
+	{id = 3041, chance = 400}, -- blue gem
+	{id = 6299, chance = 460}, -- death ring
+	{id = 6499, chance = 430}, -- demonic essence
+	{id = 8043, chance = 520}, -- focus cape
+	{id = 21974, chance = 800}, -- golden lotus brooch
+	{id = 826, chance = 400}, -- magma coat
+	{id = 3078, chance = 400}, -- mysterious fetish
+	{id = 3574, chance = 400}, -- mystic turban
+	{id = 21981, chance = 400}, -- oriental shoes
+	{id = 21975, chance = 600}, -- peacock feather fan
+	{id = 5911, chance = 300}, -- red piece of cloth
+	{id = 3016, chance = 400}, -- ruby necklace
+	{id = 3017, chance = 900}, -- silver brooch
+	{id = 5944, chance = 400}, -- soul orb
+	{id = 8074, chance = 400} -- spellbook of mind control
 }
 
 monster.attacks = {

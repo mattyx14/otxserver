@@ -77,24 +77,24 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 21144, chance = 3190},
-	{id = 21197, chance = 2020},
-	{id = 3732, chance = 3180},
-	{id = 21183, chance = 320},
-	{id = 3031, chance = 100000, maxCount = 170},
-	{id = 236, chance = 6690, maxCount = 2},
-	{id = 237, chance = 6690, maxCount = 2},
-	{id = 7643, chance = 960},
-	{id = 3035, chance = 57320, maxCount = 3},
-	{id = 9057, chance = 1240, maxCount = 3},
-	{id = 3032, chance = 1600, maxCount = 3},
-	{id = 3030, chance = 1150, maxCount = 3},
-	{id = 21164, chance = 140},
-	{id = 21172, chance = 700},
-	{id = 21179, chance = 120},
-	{id = 21178, chance = 370},
-	{id = 21180, chance = 240},
-	{id = 21158, chance = 370}
+	{id = 21144, chance = 3190}, -- bowl of glooth soup
+	{id = 21197, chance = 2020}, -- slimy leaf tentacle
+	{id = 3732, chance = 3180}, -- green mushroom
+	{id = 21183, chance = 320}, -- glooth amulet
+	{id = 3031, chance = 100000, maxCount = 170}, -- gold coin
+	{id = 236, chance = 6690, maxCount = 2}, -- strong health potion
+	{id = 237, chance = 6690, maxCount = 2}, -- strong mana potion
+	{id = 7643, chance = 960}, -- ultimate health potion
+	{id = 3035, chance = 57320, maxCount = 3}, -- platinum coin
+	{id = 9057, chance = 1240, maxCount = 3}, -- small topaz
+	{id = 3032, chance = 1600, maxCount = 3}, -- small emerald
+	{id = 3030, chance = 1150, maxCount = 3}, -- small ruby
+	{id = 21164, chance = 140}, -- glooth cape
+	{id = 21172, chance = 700}, -- glooth whip
+	{id = 21179, chance = 120}, -- glooth blade
+	{id = 21178, chance = 370}, -- glooth club
+	{id = 21180, chance = 240}, -- glooth axe
+	{id = 21158, chance = 370} -- glooth spear
 }
 
 monster.attacks = {
@@ -121,7 +121,7 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 5}
+	{type = COMBAT_DEATHDAMAGE , percent = 35}
 }
 
 monster.immunities = {
