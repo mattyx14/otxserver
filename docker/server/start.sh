@@ -1,10 +1,10 @@
 #!/bin/bash
 
-DB_HOST="${SERVER_DB_HOST:-127.0.0.1}"
-DB_USER="${SERVER_DB_USER:-otxserv}"
-DB_PASSWORD="${SERVER_DB_PASSWORD:-otxserv}"
-DB_DATABASE="${SERVER_DB_DATABASE:-otxserv}"
-OT_SERVER_IP="${SERVER_IP:-127.0.0.1}"
+DB_HOST="${SERVER_DB_HOST:-mysql}"
+DB_USER="${SERVER_DB_USER:-otserver}"
+DB_PASSWORD="${SERVER_DB_PASSWORD:-otserver}"
+DB_DATABASE="${SERVER_DB_DATABASE:-otserver}"
+OT_SERVER_IP="${SERVER_IP:-10.2.0.227}"
 OT_SERVER_LOGIN_PORT="${SERVER_LOGIN_PORT:-7171}"
 OT_SERVER_GAME_PORT="${SERVER_GAME_PORT:-7172}"
 OT_SERVER_STATUS_PORT="${SERVER_STATUS_PORT:-7171}"
@@ -30,7 +30,7 @@ echo ""
 echo "===== Create Database and Import schema ====="
 echo ""
 
-mysql -u $DB_USER -p$DB_PASSWORD -h $DB_HOST -e "CREATE DATABASE $DB_DATABASE;"
+mysql -u $DB_USER -p$DB_PASSWORD -h $DB_HOST -e "CREATE DATABASE IF NOT EXISTS $DB_DATABASE;"
 mysql -u $DB_USER -p$DB_PASSWORD -h $DB_HOST -e "SHOW DATABASES;"
 mysql -u $DB_USER -p$DB_PASSWORD -h $DB_HOST -D $DB_DATABASE < schema.sql
 
@@ -62,5 +62,4 @@ echo "===== Start Server ====="
 echo ""
 
 ulimit -c unlimited
-canary
-
+otxsr

@@ -22,11 +22,12 @@ COPY . /srv/
 WORKDIR /srv
 
 RUN export VCPKG_ROOT=/opt/vcpkg/ && cmake --preset linux-release && cmake --build --preset linux-release
+RUN ls /srv/build/linux-release/bin/otxsr
 
 # Stage 3: load data and execute
 FROM ubuntu:22.04
 
-COPY --from=build /srv/build/linux-release/bin/otxsrary /bin/otxsr
+COPY --from=build /srv/build/linux-release/bin/otxsr /bin/otxsr
 COPY LICENSE *.sql key.pem /otxsr/
 COPY data /otxsr/data
 COPY config.lua.dist /otxsr/config.lua
@@ -38,6 +39,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
-COPY docker/server/start.sh start.sh
+COPY docker/server/start.sh /otxsr/start.sh
 
 ENTRYPOINT ["/otxsr/start.sh"]

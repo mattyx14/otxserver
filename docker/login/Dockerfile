@@ -1,3 +1,11 @@
-FROM lucasggrossi/otbr_login:go-login1.0
+FROM python:latest
 
-ENTRYPOINT ["/login-server/loginserver-linux-x64"]
+WORKDIR /app
+
+COPY login/requirements.txt /app
+
+RUN pip install -r requirements.txt
+
+COPY login/login.py /app
+
+CMD ["python", "login.py"]
