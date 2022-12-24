@@ -22,7 +22,6 @@ COPY . /srv/
 WORKDIR /srv
 
 RUN export VCPKG_ROOT=/opt/vcpkg/ && cmake --preset linux-release && cmake --build --preset linux-release
-RUN ls /srv/build/linux-release/bin/otxsr
 
 # Stage 3: load data and execute
 FROM ubuntu:22.04
