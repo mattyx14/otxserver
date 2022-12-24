@@ -72,7 +72,7 @@ services:
       - RATE_LIMITER_RATE=2
       - SERVER_NAME=OTXSERVER
       - SERVER_LOCATION=USA
-      - SERVER_IP=10.2.0.227
+      - SERVER_IP=127.0.0.1
       - SERVER_PORT=7172
 #      - VOCATIONS -- map your custom vocations here, if needed, comma separated
 
