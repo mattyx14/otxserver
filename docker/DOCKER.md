@@ -3,8 +3,8 @@
 ## - Requirements
 - Docker 19 and docker-compose 1.17
 - Execute the script root directory /docker/data/download-myaac.sh
-- To use global ip change SERVER_IP in the login section of docker-compose, in
-data/start.sh, and server/start.sh to use your global ip
+- To use global ip change SERVER_IP in the server-ip block near the top of the
+docker compose file
 - Client pointing to http://<ip>:8080/login.php
 
 ### Default Values (docker-compose.yml)

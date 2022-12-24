@@ -1,5 +1,9 @@
 version: "3.3"
 
+# Global vars anchors
+x-server-ip: &server-ip
+  SERVER_IP: 127.0.0.1
+
 services:
   server:
     build:
@@ -15,7 +19,8 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      - SERVER_DB_HOST=mysql
+      <<: *server-ip
+      SERVER_DB_HOST: mysql
 
   mysql:
     build:
@@ -40,8 +45,9 @@ services:
       dockerfile: docker/data/Dockerfile
     restart: unless-stopped
     environment:
-      - WEB_DOCUMENT_ROOT=/tmp/web/
-      - WEB_DOCUMENT_INDEX=index.php
+      <<: *server-ip
+      WEB_DOCUMENT_ROOT: /tmp/web/
+      WEB_DOCUMENT_INDEX: index.php
     ports:
       - 80:80
     volumes:
@@ -60,21 +66,21 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      - MYSQL_DBNAME=otserver
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_PASS=otserver
-      - MYSQL_USER=otserver
-      - ENV_LOG_LEVEL=verbose
-      - LOGIN_HTTP_PORT=80
-      - LOGIN_GRPC_PORT=9090
-      - RATE_LIMITER_BURST=5
-      - RATE_LIMITER_RATE=2
-      - SERVER_NAME=OTXSERVER
-      - SERVER_LOCATION=USA
-      - SERVER_IP=127.0.0.1
-      - SERVER_PORT=7172
-#      - VOCATIONS -- map your custom vocations here, if needed, comma separated
+      <<: *server-ip
+      MYSQL_DBNAME: otserver
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_PASS: otserver
+      MYSQL_USER: otserver
+      ENV_LOG_LEVEL: verbose
+      LOGIN_HTTP_PORT: 80
+      LOGIN_GRPC_PORT: 9090
+      RATE_LIMITER_BURST: 5
+      RATE_LIMITER_RATE: 2
+      SERVER_NAME: OTXSERVER
+      SERVER_LOCATION: USA
+      SERVER_PORT: 7172
+#      VOCATIONS: voc1,voc2 -- map your custom vocations here
 
 volumes:
   otserver_data:
