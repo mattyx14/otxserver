@@ -26,19 +26,22 @@ echo ""
 echo "================================"
 echo ""
 
-mv /tmp/otserver/config.lua.dist /tmp/otserver/config.lua
+FILE=/tmp/otserver/config.lua
+if [ ! -f "$FILE" ]; then
+    mv /tmp/otserver/config.lua.dist $FILE
+fi
 
-sed -i '/mysqlHost = .*$/c\mysqlHost = "'$DB_HOST'"' /tmp/otserver/config.lua
-sed -i '/mysqlUser = .*$/c\mysqlUser = "'$DB_USER'"' /tmp/otserver/config.lua
-sed -i '/mysqlPass = .*$/c\mysqlPass = "'$DB_PASSWORD'"' /tmp/otserver/config.lua
-sed -i '/mysqlDatabase = .*$/c\mysqlDatabase = "'$DB_DATABASE'"' /tmp/otserver/config.lua
-sed -i '/ip = .*$/c\ip = "'$OT_SERVER_IP'"' /tmp/otserver/config.lua
-sed -i '/loginProtocolPort = .*$/c\loginProtocolPort = '$OT_SERVER_LOGIN_PORT'' /tmp/otserver/config.lua
-sed -i '/gameProtocolPort = .*$/c\gameProtocolPort = '$OT_SERVER_GAME_PORT'' /tmp/otserver/config.lua
-sed -i '/statusProtocolPort = .*$/c\statusProtocolPort = '$OT_SERVER_STATUS_PORT'' /tmp/otserver/config.lua
+sed -i '/mysqlHost = .*$/c\mysqlHost = "'$DB_HOST'"' $FILE
+sed -i '/mysqlUser = .*$/c\mysqlUser = "'$DB_USER'"' $FILE
+sed -i '/mysqlPass = .*$/c\mysqlPass = "'$DB_PASSWORD'"' $FILE
+sed -i '/mysqlDatabase = .*$/c\mysqlDatabase = "'$DB_DATABASE'"' $FILE
+sed -i '/ip = .*$/c\ip = "'$OT_SERVER_IP'"' $FILE
+sed -i '/loginProtocolPort = .*$/c\loginProtocolPort = '$OT_SERVER_LOGIN_PORT'' $FILE
+sed -i '/gameProtocolPort = .*$/c\gameProtocolPort = '$OT_SERVER_GAME_PORT'' $FILE
+sed -i '/statusProtocolPort = .*$/c\statusProtocolPort = '$OT_SERVER_STATUS_PORT'' $FILE
 
 echo ""
 echo "===== Server Configuration ====="
 echo ""
 
-cat /tmp/otserver/config.lua
+cat $FILE
