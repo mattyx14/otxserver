@@ -23,7 +23,6 @@
 #include "lua/scripts/luascript.h"
 #include "lua/functions/events/action_functions.hpp"
 #include "lua/functions/events/creature_event_functions.hpp"
-#include "lua/functions/events/events_scheduler_functions.hpp"
 #include "lua/functions/events/global_event_functions.hpp"
 #include "lua/functions/events/move_event_functions.hpp"
 #include "lua/functions/events/talk_action_functions.hpp"
@@ -33,7 +32,6 @@ class EventFunctions final : LuaScriptInterface {
 		static void init(lua_State* L) {
 			ActionFunctions::init(L);
 			CreatureEventFunctions::init(L);
-			EventsSchedulerFunctions::init(L);
 			GlobalEventFunctions::init(L);
 			MoveEventFunctions::init(L);
 			TalkActionFunctions::init(L);

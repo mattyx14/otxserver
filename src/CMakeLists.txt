@@ -9,7 +9,6 @@ set(GNUCXX_MINIMUM_VERSION 8)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(Boost_NO_WARN_NEW_VERSIONS ON)
 
 # Global gives error when building spdlog
 # Avoid changes by cmake/make on the source tree
@@ -118,11 +117,12 @@ find_package(spdlog REQUIRED)
 find_package(LuaJIT REQUIRED)
 find_package(Threads REQUIRED)
 find_package(libzippp REQUIRED)
+find_package(cryptopp CONFIG REQUIRED)
 find_package(Protobuf REQUIRED)
-find_package(GMP REQUIRED)
 
 if (MSVC)
   find_package(Boost 1.53.0 COMPONENTS system filesystem iostreams date_time REQUIRED)
+  set(CRYPTOPP_LIBRARIES "cryptopp-static")
   find_package(CURL REQUIRED)
   find_package(jsoncpp REQUIRED)
   find_package(MySQL REQUIRED)
@@ -176,7 +176,6 @@ target_sources(${PROJECT_NAME}
     game/movement/position.cpp
     game/movement/teleport.cpp
     game/scheduling/scheduler.cpp
-    game/scheduling/events_scheduler.cpp
     game/scheduling/tasks.cpp
     io/fileloader.cpp
     io/iobestiary.cpp
@@ -243,7 +242,6 @@ target_sources(${PROJECT_NAME}
     lua/functions/creatures/player/vocation_functions.cpp
     lua/functions/events/action_functions.cpp
     lua/functions/events/creature_event_functions.cpp
-    lua/functions/events/events_scheduler_functions.cpp
     lua/functions/events/global_event_functions.cpp
     lua/functions/events/move_event_functions.cpp
     lua/functions/events/talk_action_functions.cpp
@@ -271,6 +269,7 @@ target_sources(${PROJECT_NAME}
     otpch.cpp
     otserv.cpp
     security/rsa.cpp
+    security/xtea.cpp
     server/network/connection/connection.cpp
     server/network/message/networkmessage.cpp
     server/network/message/outputmessage.cpp
@@ -305,27 +304,27 @@ if (MSVC)
       ${Boost_LIBRARY_DIRS}
       ${CMAKE_SOURCE_DIR}/src
       ${MYSQL_INCLUDE_DIR}
-      ${LUAJIT_INCLUDE_DIRS}
+      ${LUA_INCLUDE_DIR}
       ${Boost_INCLUDE_DIRS}
       ${PUGIXML_INCLUDE_DIR}
+      ${CRYPTOPP_INCLUDE_DIR}
       ${CURL_INCLUDE_DIRS}
       ${Protobuf_INCLUDE_DIRS}
       ${SPDLOG_INCLUDE_DIR}
-      ${GMP_INCLUDE_DIR}
       $<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>
   )
 
   target_link_libraries(${PROJECT_NAME}
     PRIVATE
       ${MYSQL_CLIENT_LIBS}
-      ${LUAJIT_LIBRARIES}
+      ${LUA_LIBRARIES}
       ${Boost_LIBRARIES}
       ${PUGIXML_LIBRARIES}
+      ${CRYPTOPP_LIBRARIES}
       ${CMAKE_THREAD_LIBS_INIT}
       ${CURL_LIBRARIES}
       ${Protobuf_LIBRARIES}
       ${SPDLOG_LIBRARY}
-      ${GMP_LIBRARIES}
       fmt::fmt
       jsoncpp_lib
       libzippp::libzippp
@@ -336,27 +335,26 @@ else()
   target_include_directories(${PROJECT_NAME}
     PRIVATE
       ${CMAKE_SOURCE_DIR}/src
-      ${LUAJIT_INCLUDE_DIRS}
+      ${LUA_INCLUDE_DIR}
       ${Protobuf_INCLUDE_DIRS}
-      ${GMP_INCLUDE_DIRS}
   )
 
   target_link_libraries(${PROJECT_NAME}
     PRIVATE
-      ${LUAJIT_LIBRARIES}
-      ${Protobuf_LIBRARIES}
-      ${GMP_LIBRARIES}
       Boost::boost
       Boost::date_time
       Boost::filesystem
       Boost::iostreams
       Boost::system
+      cryptopp-static
       CURL::libcurl
       jsoncpp_static
       unofficial::libmariadb unofficial::mariadbclient
       pugixml::pugixml
       spdlog::spdlog
       Threads::Threads
+      ${LUA_LIBRARIES}
+      ${Protobuf_LIBRARIES}
       libzippp::libzippp
   )
 

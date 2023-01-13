@@ -33,17 +33,25 @@
 // Game
 int GameFunctions::luaGameCreateMonsterType(lua_State* L) {
 	// Game.createMonsterType(name)
-	if (isString(L, 1)) {
-		std::string name = getString(L, 1);
-		auto monsterType = new MonsterType(name);
-		g_monsters().addMonsterType(name, monsterType);
-		if (!monsterType) {
-			reportErrorFunc("MonsterType is nullptr");
-			pushBoolean(L, false);
-			delete monsterType;
-			return 1;
-		}
+	if (getScriptEnv()->getScriptInterface() != &g_scripts().getScriptInterface()) {
+		reportErrorFunc("MonsterTypes can only be registered in the Scripts interface.");
+		lua_pushnil(L);
+		return 1;
+	}
 
+	MonsterType* monsterType = g_monsters().getMonsterType(getString(L, 1));
+	if (monsterType) {
+		monsterType->info.lootItems.clear();
+		monsterType->info.attackSpells.clear();
+		monsterType->info.defenseSpells.clear();
+		pushUserdata<MonsterType>(L, monsterType);
+		setMetatable(L, -1, "MonsterType");
+	} else if (isString(L, 1)) {
+		monsterType = new MonsterType();
+		std::string name = getString(L, 1);
+		g_monsters().addMonsterType(name, monsterType);
+		monsterType = g_monsters().getMonsterType(getString(L, 1));
+		monsterType->name = name;
 		monsterType->nameDescription = "a " + name;
 		pushUserdata<MonsterType>(L, monsterType);
 		setMetatable(L, -1, "MonsterType");
@@ -63,6 +71,24 @@ int GameFunctions::luaGameCreateNpcType(lua_State* L) {
 
 	NpcTypeFunctions::luaNpcTypeCreate(L);
 
+	return 1;
+}
+
+int GameFunctions::luaGamegetEventSLoot(lua_State* L) {
+	// Game.getEventSLoot()
+	lua_pushnumber(L, g_game().getLootSchedule());
+	return 1;
+}
+
+int GameFunctions::luaGamegetEventSSkill(lua_State* L) {
+	// Game.getEventSSkill()
+	lua_pushnumber(L, g_game().getSkillSchedule());
+	return 1;
+}
+
+int GameFunctions::luaGamegetEventSExp(lua_State* L) {
+	// Game.getEventSExp()
+	lua_pushnumber(L, g_game().getExpSchedule());
 	return 1;
 }
 
@@ -187,7 +213,7 @@ int GameFunctions::luaGameGetMonsterTypes(lua_State* L) {
 	lua_createtable(L, type.size(), 0);
 
 	for (auto& mType : type) {
-		pushUserdata<MonsterType>(L, mType.second);
+		pushUserdata<MonsterType>(L, &mType.second);
 		setMetatable(L, -1, "MonsterType");
 		lua_setfield(L, -2, mType.first.c_str());
 	}
@@ -403,7 +429,9 @@ int GameFunctions::luaGameCreateMonster(lua_State* L) {
 	if (lua_gettop(L) >= 5) {
 		Creature* master = getCreature(L, 5);
 		if (master) {
-			monster->setMaster(master, true);
+			monster->setMaster(master);
+			monster->setDropLoot(false);
+			monster->setSkillLoss(false);
 			isSummon = true;
 		}
 	}
@@ -587,6 +615,13 @@ int GameFunctions::luaGameReload(lua_State* L) {
 		pushBoolean(L, g_game().reload(reloadType));
 	}
 	lua_gc(g_luaEnvironment.getLuaState(), LUA_GCCOLLECT, 0);
+	return 1;
+}
+
+int GameFunctions::luaGameItemidHasMoveevent(lua_State* L) {
+	// Game.itemidHasMoveevent(itemid)
+	uint32_t itemid = getNumber<uint32_t>(L, 1);
+	pushBoolean(L, g_game().itemidHasMoveevent(itemid));
 	return 1;
 }
 

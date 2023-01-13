@@ -3,7 +3,7 @@
 
 ## What is OTX Server 6 Series
 We are trying to create the perfect custom OpenTibia server.
-<br>It is a fork of the from: [OTServBR-Global](https://github.com/opentibiabr/canary) project.
+<br>It is a fork of the from: [OTServBR-Global](https://github.com/opentibiabr/OTServBR-Global) project.
 
 ## How Compile:
 We currently provide build instructions for the following systems:
@@ -12,10 +12,10 @@ We currently provide build instructions for the following systems:
 ## OpenTibia Comunity:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
 * [OTLand](https://otland.net/) - [English]
-* [OTServ Brasil](https://forums.otserv.com.br/) - [PortuguÃªs/English]
-* [Tibia Face](http://tibiaface.com/) - [EspaÃ±ol]
-* [Black Tibia](http://blacktibia.foroactivo.com/) - [EspaÃ±ol]
-* [Tibiaking](http://www.tibiaking.com/forum/) - [PortuguÃªs]
+* [OTServ Brasil](https://forums.otserv.com.br/) - [Português/English]
+* [Tibia Face](http://tibiaface.com/) - [Español]
+* [Black Tibia](http://blacktibia.foroactivo.com/) - [Español]
+* [Tibiaking](http://www.tibiaking.com/forum/) - [Português]
 
 ## Special Thanks OTServBR-Global
 - our partners OTServBR-Global.

@@ -1,7 +1,6 @@
 /**
- * Canary - A free and open-source MMORPG server emulator
- * Copyright (C) 2021 OpenTibiaBR <opentibiabr@outlook.com>
- * Copyright (C) 2019-2021 Saiyans King
+ * The Forgotten Server - a free and open-source MMORPG server emulator
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,40 +20,33 @@
 #ifndef SRC_SECURITY_RSA_H_
 #define SRC_SECURITY_RSA_H_
 
-#include <gmp.h>
+#include <cryptopp/rsa.h>
 
 #include <string>
 
-class RSA
+class RSA2
 {
 	public:
-		RSA();
-		~RSA();
+		RSA2() = default;
 
-		// Singleton - ensures we don't accidentally copy it
-		RSA(RSA const&) = delete;
-		void operator=(RSA const&) = delete;
+		// non-copyable
+		RSA2(const RSA2&) = delete;
+		RSA2& operator=(const RSA2&) = delete;
 
-		static RSA& getInstance() {
+		static RSA2& getInstance() {
 			// Guaranteed to be destroyed
-			static RSA instance;
+			static RSA2 instance;
 			// Instantiated on first use
 			return instance;
 		}
 
-		void setKey(const char* pString, const char* qString, int base = 10);
-		void decrypt(char* msg) const;
-
-		std::string base64Decrypt(const std::string& input) const;
-		uint16_t decodeLength(char*& pos) const;
-		void readHexString(char*& pos, uint16_t length, std::string& output) const;
-		bool loadPEM(const std::string& filename);
+		void loadPEM(const std::string& filename);
+		void decrypt(uint8_t* msg) const;
 
 	private:
-		mpz_t n;
-		mpz_t d;
+		CryptoPP::RSA::PrivateKey pk;
 };
 
-constexpr auto g_RSA = &RSA::getInstance;
+constexpr auto g_RSA = &RSA2::getInstance;
 
 #endif  // SRC_SECURITY_RSA_H_

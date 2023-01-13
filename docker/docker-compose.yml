@@ -16,8 +16,6 @@ services:
       - login
     links:
       - mysql
-    environment:
-      - SERVER_DB_HOST=mysql
 
   mysql:
     build:

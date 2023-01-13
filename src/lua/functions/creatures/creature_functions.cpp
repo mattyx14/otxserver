@@ -189,21 +189,10 @@ int CreatureFunctions::luaCreatureGetId(lua_State* L) {
 }
 
 int CreatureFunctions::luaCreatureGetName(lua_State* L) {
-	// creature:getTypeName()
-	const Creature* creature = getUserdata<const Creature>(L, 1);
-	if (creature) {
-		pushString(L, creature->getName());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int CreatureFunctions::luaCreatureGetTypeName(lua_State* L) {
 	// creature:getName()
 	const Creature* creature = getUserdata<const Creature>(L, 1);
 	if (creature) {
-		pushString(L, creature->getTypeName());
+		pushString(L, creature->getName());
 	} else {
 		lua_pushnil(L);
 	}
@@ -289,20 +278,6 @@ int CreatureFunctions::luaCreatureGetMaster(lua_State* L) {
 	return 1;
 }
 
-int CreatureFunctions::luaCreatureReload(lua_State* L)
-{
-	// creature:reload()
-	Creature* creature = getUserdata<Creature>(L, 1);
-	if (!creature) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	g_game().reloadCreature(creature);
-	pushBoolean(L, true);
-	return 1;
-}
-
 int CreatureFunctions::luaCreatureSetMaster(lua_State* L) {
 	// creature:setMaster(master)
 	Creature* creature = getUserdata<Creature>(L, 1);
@@ -311,9 +286,8 @@ int CreatureFunctions::luaCreatureSetMaster(lua_State* L) {
 		return 1;
 	}
 
-	pushBoolean(L, creature->setMaster(getCreature(L, 2), true));
-	// Reloading creature icon/knownCreature
-	CreatureFunctions::luaCreatureReload(L);
+	pushBoolean(L, creature->setMaster(getCreature(L, 2)));
+	g_game().updateCreatureType(creature);
 	return 1;
 }
 
@@ -755,15 +729,13 @@ int CreatureFunctions::luaCreatureTeleportTo(lua_State* L) {
 
 	const Position& position = getPosition(L, 2);
 	Creature* creature = getUserdata<Creature>(L, 1);
-	if (creature == nullptr) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_CREATURE_NOT_FOUND));
-		pushBoolean(L, false);
+	if (!creature) {
+		lua_pushnil(L);
 		return 1;
 	}
 
 	const Position oldPosition = creature->getPosition();
 	if (g_game().internalTeleport(creature, position, pushMovement) != RETURNVALUE_NOERROR) {
-		reportErrorFunc("Could not teleport creature.");
 		pushBoolean(L, false);
 		return 1;
 	}

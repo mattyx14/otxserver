@@ -1029,8 +1029,8 @@ bool Events::eventPlayerOnTradeAccept(Player* player, Player* target, Item* item
 	return scriptInterface.callFunction(4);
 }
 
-void Events::eventPlayerOnGainExperience(Player* player, Creature* target, uint64_t& exp, uint64_t rawExp) {
-	// Player:onGainExperience(target, exp, rawExp)
+void Events::eventPlayerOnGainExperience(Player* player, Creature* source, uint64_t& exp, uint64_t rawExp) {
+	// Player:onGainExperience(source, exp, rawExp)
 	// rawExp gives the original exp which is not multiplied
 	if (info.playerOnGainExperience == -1) {
 		return;
@@ -1038,9 +1038,9 @@ void Events::eventPlayerOnGainExperience(Player* player, Creature* target, uint6
 
 	if (!scriptInterface.reserveScriptEnv()) {
 		SPDLOG_ERROR("[Events::eventPlayerOnGainExperience - "
-                     "Player {} target {}] "
+                     "Player {} source {}] "
                      "Call stack overflow. Too many lua script calls being nested.",
-                     player->getName(), target->getName());
+                     player->getName(), source->getName());
 		return;
 	}
 
@@ -1053,9 +1053,9 @@ void Events::eventPlayerOnGainExperience(Player* player, Creature* target, uint6
 	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
-	if (target) {
-		LuaScriptInterface::pushUserdata<Creature>(L, target);
-		LuaScriptInterface::setCreatureMetatable(L, -1, target);
+	if (source) {
+		LuaScriptInterface::pushUserdata<Creature>(L, source);
+		LuaScriptInterface::setCreatureMetatable(L, -1, source);
 	} else {
 		lua_pushnil(L);
 	}

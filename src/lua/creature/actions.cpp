@@ -27,6 +27,7 @@
 #include "creatures/combat/spells.h"
 #include "items/containers/rewards/rewardchest.h"
 
+
 Actions::Actions() :
 	scriptInterface("Action Interface") {
 	scriptInterface.initState();

@@ -1,8 +1,0 @@
-{
-  "name": "opentibiabr-otxserver",
-  "version": "6.2.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mattyx14/otxserver.git"
-  }
-}

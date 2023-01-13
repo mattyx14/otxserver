@@ -17,33 +17,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef SRC_OTPCH_H_
-#define SRC_OTPCH_H_
+#ifndef SRC_SECURITY_XTEA_H_
+#define SRC_SECURITY_XTEA_H_
 
-// Definitions should be global.
-#include "utils/definitions.h"
+namespace xtea {
 
-#include <algorithm>
-#include <chrono>
-#include <cstdint>
-#include <forward_list>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <map>
-#include <memory>
-#include <mutex>
-#include <sstream>
-#include <string>
-#include <thread>
-#include <unordered_map>
-#include <vector>
+using key = std::array<uint32_t, 4>;
 
-#include <boost/asio.hpp>
+void encrypt(uint8_t* data, size_t length, const key& k);
+void decrypt(uint8_t* data, size_t length, const key& k);
 
-#include <pugixml.hpp>
+} // namespace xtea
 
-#include "spdlog/spdlog.h"
-
-#endif  // SRC_OTPCH_H_
+#endif  // SRC_SECURITY_XTEA_H_

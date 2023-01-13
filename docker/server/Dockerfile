@@ -1,11 +1,14 @@
 # Stage 1: Download all dependencies
-FROM ubuntu:22.04 AS dependencies
+FROM ubuntu:20.04 AS dependencies
 
-RUN apt-get update && apt-get install -y --no-install-recommends cmake git \
-	unzip build-essential ca-certificates curl zip unzip tar \
-	pkg-config ninja-build autoconf automake libtool \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends cmake
+
+RUN apt-get update && apt-get install -y --no-install-recommends git
+
+RUN apt-get install -y --no-install-recommends \
+	build-essential ca-certificates curl zip unzip tar pkg-config
+
+RUN apt-get install -y --no-install-recommends libluajit-5.1-dev unzip
 
 WORKDIR /opt
 RUN git clone https://github.com/microsoft/vcpkg --depth=1
@@ -18,25 +21,25 @@ RUN /opt/vcpkg/vcpkg --feature-flags=binarycaching,manifests,versions install
 # Stage 2: create build
 FROM dependencies AS build
 
-COPY . /srv/
-WORKDIR /srv
+COPY cmake /srv/cmake
+COPY CMakeLists.txt vcpkg.json /srv/
+COPY src /srv/src
 
-RUN export VCPKG_ROOT=/opt/vcpkg/ && cmake --preset linux-release && cmake --build --preset linux-release
+WORKDIR /srv/build
+
+RUN cmake -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake .. && make -j`nproc`
 
 # Stage 3: load data and execute
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
-COPY --from=build /srv/build/linux-release/bin/otxsrary /bin/otxsr
+COPY --from=build /srv/build/bin/otxsr /bin/otxsr
 COPY LICENSE *.sql key.pem /otxsr/
 COPY data /otxsr/data
 COPY config.lua.dist /otxsr/config.lua
 
 WORKDIR /otxsr
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-	mariadb-client \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends libluajit-5.1-dev mariadb-client
 
 COPY docker/server/start.sh start.sh
 

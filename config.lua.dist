@@ -32,20 +32,15 @@ loginProtocolPort = 7171
 gameProtocolPort = 7172
 statusProtocolPort = 7171
 maxPlayers = 200
-motd = "Welcome to... OTX Server"
+motd = "Welcome to The DarkKonia Server"
 onePlayerOnlinePerAccount = true
 allowClones = false
-serverName = "OTXSERVER"
+serverName = "DarkKonia"
 statusTimeout = 5 * 1000
 replaceKickOnLogin = false
-maxPacketsPerSecond = 25
+maxPacketsPerSecond = 40
 maxItem = 2000
 maxContainer = 100
-
--- Packet Compression
--- Minimize network bandwith and reduce ping
--- Levels: 0 = disabled, 1 = best speed, 9 = best compression
-packetCompressionLevel = 6
 
 -- Depot Limit
 freeDepotLimit = 2000
@@ -93,7 +88,7 @@ allConsoleLog = false
 -- stashMoving = true, stow an container inside your stash
 -- the non-stackable items will be moved to the selected depot chest(I - XVIII).
 stashMoving = true
-depotChest = 4
+depotChest = 1
 autoLoot = false
 -- autoBank = true, the dropped coins from monsters will be automatically 
 -- deposited to your bank account.
@@ -118,7 +113,7 @@ maxAllowedOnADummy = 1
 -- NOTE: saveIntervalTime: time based on what was set in "saveIntervalType"
 toggleSaveInterval = true
 saveIntervalType = "minute"
-toggleSaveIntervalCleanMap = true
+toggleSaveIntervalCleanMap = false
 saveIntervalTime = 15
 
 -- Imbuement
@@ -160,8 +155,8 @@ pushWhenAttacking = false
 -- Map
 -- NOTE: set mapName WITHOUT .otbm at the end
 -- NOTE: unzip the map world.rar
-mapName = "forgotten"
-mapAuthor = "OTLand"
+mapName = "darkkonia_ID"
+mapAuthor = "Mattyx14"
 
 -- Party List limitations
 -- max distance in which players in party list are visible
@@ -182,11 +177,11 @@ maxMarketOffersAtATimePerPlayer = 100
 
 -- MySQL
 mysqlHost = "127.0.0.1"
-mysqlUser = ""
-mysqlPass = ""
-mysqlDatabase = ""
+mysqlUser = "root"
+mysqlPass = "Master123"
+mysqlDatabase = "servidorback"
 mysqlPort = 3306
-mysqlSock = ""
+mysqlSock = "/var/run/mysqld/mysqld.sock"
 passwordType = "sha1"
 
 -- Misc.
@@ -201,10 +196,6 @@ coinPacketSize = 25
 coinImagesURL = "https://127.0.0.1/images/store/"
 classicAttackSpeed = false
 showScriptsLogInConsole = false
--- configure maximum value of critical imbuement
-criticalChance = 10
-inventoryGlowOnFiveBless = false
-adventurersBlessingLevel = 21
 
 -- Global server Save
 -- NOTE: globalServerSaveNotifyDuration in minutes
@@ -220,15 +211,14 @@ globalServerSaveTime = "23:55:00"
 -- rateLoot to avoid losing all rare items when
 -- the corpse size is less than the total of loots
 -- the monster can drop
-sortLootByChance = false
+sortLootByChance = true
 
 -- Rates
--- NOTE: rateExp, rateSkill and rateMagic are only used when 'rateUseStages = false'
+-- NOTE: rateExp, rateSkill and rateMagic is used as a fallback only
 -- To configure rates see file data/stages.lua
-rateUseStages = true
 rateExp = 1
 rateSkill = 50
-rateLoot = 3
+rateLoot = 3.5
 rateMagic = 25
 rateSpawn = 1
 

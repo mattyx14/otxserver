@@ -786,7 +786,7 @@ void ItemParse::parseWalk(const std::string& tmpStrValue, pugi::xml_attribute va
 	std::string stringValue = tmpStrValue;
 	if (stringValue == "walkstack") {
 		itemType.walkStack = valueAttribute.as_bool();
-	} else if (stringValue == "blocking") {
+	} else if (stringValue == "block_solid") {
 		itemType.blockSolid = valueAttribute.as_bool();
 	}
 }
