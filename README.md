@@ -3,7 +3,7 @@
 
 ## What is OTX Server 6 Series
 We are trying to create the perfect custom OpenTibia server.
-<br>It is a fork of the from: [OTServBR-Global](https://github.com/opentibiabr/OTServBR-Global) project.
+<br>It is a fork of the from: [OTServBR-Global](https://github.com/opentibiabr/OTServBR-Global) project. 
 
 ## How Compile:
 We currently provide build instructions for the following systems:
