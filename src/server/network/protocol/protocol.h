@@ -1,33 +1,23 @@
 /**
- * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
+ * Canary - A free and open-source MMORPG server emulator
+ * Copyright (©) 2019-2022 OpenTibiaBR <opentibiabr@outlook.com>
+ * Repository: https://github.com/opentibiabr/canary
+ * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
+ * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
+ * Website: https://docs.opentibiabr.org/
+*/
 
 #ifndef SRC_SERVER_NETWORK_PROTOCOL_PROTOCOL_H_
 #define SRC_SERVER_NETWORK_PROTOCOL_PROTOCOL_H_
 
 #include "server/network/connection/connection.h"
-#include "security/xtea.h"
+#include "config/configmanager.h"
 
 class Protocol : public std::enable_shared_from_this<Protocol>
 {
 	public:
-		explicit Protocol(Connection_ptr initConnection) : connection(initConnection) {}
-		virtual ~Protocol() = default;
+		explicit Protocol(Connection_ptr initConnection) : connectionPtr(initConnection) {}
+		virtual ~Protocol();
 
 		// non-copyable
 		Protocol(const Protocol&) = delete;
@@ -36,16 +26,17 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		virtual void parsePacket(NetworkMessage&) {}
 
 		virtual void onSendMessage(const OutputMessage_ptr& msg);
-		void onRecvMessage(NetworkMessage& msg);
+		bool onRecvMessage(NetworkMessage& msg);
+		bool sendRecvMessageCallback(NetworkMessage& msg);
 		virtual void onRecvFirstMessage(NetworkMessage& msg) = 0;
 		virtual void onConnect() {}
 
 		bool isConnectionExpired() const {
-			return connection.expired();
+			return connectionPtr.expired();
 		}
 
 		Connection_ptr getConnection() const {
-			return connection.lock();
+			return connectionPtr.lock();
 		}
 
 		uint32_t getIP() const;
@@ -58,32 +49,29 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		}
 
 		void send(OutputMessage_ptr msg) const {
-			if (auto conn = getConnection()) {
-				conn->send(msg);
+			if (auto connection = getConnection();
+			connection != nullptr) {
+				connection->send(msg);
 			}
 		}
 
 	protected:
 		void disconnect() const {
-			if (auto conn = getConnection()) {
-				conn->close();
+			if (auto connection = getConnection();
+			connection != nullptr) {
+				connection->close();
 			}
 		}
 		void enableXTEAEncryption() {
 			encryptionEnabled = true;
 		}
-		void setXTEAKey(xtea::key key) {
-			this->key = std::move(key);
+		void setXTEAKey(const uint32_t* newKey) {
+			memcpy(this->key.data(), newKey, sizeof(*newKey) * 4);
 		}
-		void disableChecksum() {
-			checksumEnabled = false;
+		void setChecksumMethod(ChecksumMethods_t method) {
+			checksumMethod = method;
 		}
-		void enableCompact() {
-			compactCrypt = true;
-		}
-		bool isCompact() {
-			return compactCrypt;
-		}
+		void enableCompression();
 
 		static bool RSA_decrypt(NetworkMessage& msg);
 
@@ -96,18 +84,22 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 	private:
 		void XTEA_encrypt(OutputMessage& msg) const;
 		bool XTEA_decrypt(NetworkMessage& msg) const;
+		bool compression(OutputMessage& msg) const;
 
-		friend class Connection;
 
 		OutputMessage_ptr outputBuffer;
+		std::unique_ptr<z_stream> defStream;
 
-		const ConnectionWeak_ptr connection;
-		xtea::key key;
-		uint32_t sequenceNumber = 0;
+		const ConnectionWeak_ptr connectionPtr;
+		std::array<uint32_t, 4> key = {};
+		uint32_t serverSequenceNumber = 0;
+		uint32_t clientSequenceNumber = 0;
+		std::underlying_type_t<ChecksumMethods_t> checksumMethod = CHECKSUM_METHOD_NONE;
 		bool encryptionEnabled = false;
-		bool checksumEnabled = true;
-		bool compactCrypt = false;
 		bool rawMessages = false;
+		bool compreesionEnabled = false;
+
+		friend class Connection;
 };
 
 #endif  // SRC_SERVER_NETWORK_PROTOCOL_PROTOCOL_H_

@@ -1,21 +1,11 @@
 /**
- * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
+ * Canary - A free and open-source MMORPG server emulator
+ * Copyright (©) 2019-2022 OpenTibiaBR <opentibiabr@outlook.com>
+ * Repository: https://github.com/opentibiabr/canary
+ * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
+ * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
+ * Website: https://docs.opentibiabr.org/
+*/
 
 #ifndef SRC_CREATURES_MONSTERS_MONSTERS_H_
 #define SRC_CREATURES_MONSTERS_MONSTERS_H_
@@ -86,6 +76,7 @@ class MonsterType
 
 		LightInfo light = {};
 		uint16_t lookcorpse = 0;
+		uint16_t baseSpeed = 110;
 
 		uint64_t experience = 0;
 
@@ -97,7 +88,6 @@ class MonsterType
 		uint32_t changeTargetSpeed = 0;
 		uint32_t conditionImmunities = 0;
 		uint32_t damageImmunities = 0;
-		uint32_t baseSpeed = 200;
 
 		// Bestiary
 		uint8_t bestiaryOccurrence = 0;
@@ -131,7 +121,7 @@ class MonsterType
 		bool targetPreferMaster = false;
 
 		Faction_t faction = FACTION_DEFAULT;
-		std::unordered_set<Faction_t> enemyFactions;
+		phmap::flat_hash_set<Faction_t> enemyFactions;
 
 		bool canPushItems = false;
 		bool canPushCreatures = false;
@@ -148,12 +138,14 @@ class MonsterType
 		bool canWalkOnEnergy = true;
 		bool canWalkOnFire = true;
 		bool canWalkOnPoison = true;
+		bool isForgeCreature = true;
 
 		MonstersEvent_t eventType = MONSTERS_EVENT_NONE;
 	};
 
 	public:
 		MonsterType() = default;
+		explicit MonsterType(const std::string &initName) : name(initName), typeName(initName), nameDescription(initName) {};
 
 		// non-copyable
 		MonsterType(const MonsterType&) = delete;
@@ -162,9 +154,18 @@ class MonsterType
 		bool loadCallback(LuaScriptInterface* scriptInterface);
 
 		std::string name;
+		std::string typeName;
 		std::string nameDescription;
 
 		MonsterInfo info;
+
+		uint16_t getBaseSpeed() const {
+			return info.baseSpeed;
+		}
+
+		void setBaseSpeed(const uint16_t initBaseSpeed) {
+			info.baseSpeed = initBaseSpeed;
+		}
 
 		void loadLoot(MonsterType* monsterType, LootBlock lootblock);
 
@@ -232,33 +233,19 @@ class Monsters
 			return instance;
 		}
 
-		bool loadFromXml(bool reloading = false);
-		bool isLoaded() const {
-			return loaded;
-		}
-		bool reload();
-
 		MonsterType* getMonsterType(const std::string& name);
 		MonsterType* getMonsterTypeByRaceId(uint16_t thisrace);
 		void addMonsterType(const std::string& name, MonsterType* mType);
 		bool deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std::string& description = "");
 
 		std::unique_ptr<LuaScriptInterface> scriptInterface;
-		std::map<std::string, MonsterType> monsters;
+		std::map<std::string, MonsterType*> monsters;
 
 	private:
 		ConditionDamage* getDamageCondition(ConditionType_t conditionType,
 											int32_t maxDamage, int32_t minDamage, int32_t startDamage, uint32_t tickInterval);
-		bool deserializeSpell(const pugi::xml_node& node, spellBlock_t& sb, const std::string& description = "");
 
 		MonsterType* loadMonster(const std::string& file, const std::string& monsterName, bool reloading = false);
-
-		void loadLootContainer(const pugi::xml_node& node, LootBlock&);
-		bool loadLootItem(const pugi::xml_node& node, LootBlock&);
-
-		std::map<std::string, std::string> unloadedMonsters;
-
-		bool loaded = false;
 };
 
 constexpr auto g_monsters = &Monsters::getInstance;

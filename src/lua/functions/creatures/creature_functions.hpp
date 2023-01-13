@@ -1,26 +1,14 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (C) 2021 OpenTibiaBR <opentibiabr@outlook.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
+ * Copyright (©) 2019-2022 OpenTibiaBR <opentibiabr@outlook.com>
+ * Repository: https://github.com/opentibiabr/canary
+ * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
+ * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
+ * Website: https://docs.opentibiabr.org/
+*/
 
 #ifndef SRC_LUA_FUNCTIONS_CREATURES_CREATURE_FUNCTIONS_HPP_
 #define SRC_LUA_FUNCTIONS_CREATURES_CREATURE_FUNCTIONS_HPP_
-
-#include <set>
 
 #include "lua/functions/creatures/combat/combat_functions.hpp"
 #include "lua/functions/creatures/monster/monster_functions.hpp"
@@ -46,10 +34,12 @@ class CreatureFunctions final : LuaScriptInterface {
 			registerMethod(L, "Creature", "getParent", CreatureFunctions::luaCreatureGetParent);
 			registerMethod(L, "Creature", "getId", CreatureFunctions::luaCreatureGetId);
 			registerMethod(L, "Creature", "getName", CreatureFunctions::luaCreatureGetName);
+			registerMethod(L, "Creature", "getTypeName", CreatureFunctions::luaCreatureGetTypeName);
 			registerMethod(L, "Creature", "getTarget", CreatureFunctions::luaCreatureGetTarget);
 			registerMethod(L, "Creature", "setTarget", CreatureFunctions::luaCreatureSetTarget);
 			registerMethod(L, "Creature", "getFollowCreature", CreatureFunctions::luaCreatureGetFollowCreature);
 			registerMethod(L, "Creature", "setFollowCreature", CreatureFunctions::luaCreatureSetFollowCreature);
+			registerMethod(L, "Creature", "reload", CreatureFunctions::luaCreatureReload);
 			registerMethod(L, "Creature", "getMaster", CreatureFunctions::luaCreatureGetMaster);
 			registerMethod(L, "Creature", "setMaster", CreatureFunctions::luaCreatureSetMaster);
 			registerMethod(L, "Creature", "getLight", CreatureFunctions::luaCreatureGetLight);
@@ -116,12 +106,15 @@ class CreatureFunctions final : LuaScriptInterface {
 
 		static int luaCreatureGetId(lua_State* L);
 		static int luaCreatureGetName(lua_State* L);
+		static int luaCreatureGetTypeName(lua_State* L);
 
 		static int luaCreatureGetTarget(lua_State* L);
 		static int luaCreatureSetTarget(lua_State* L);
 
 		static int luaCreatureGetFollowCreature(lua_State* L);
 		static int luaCreatureSetFollowCreature(lua_State* L);
+
+		static int luaCreatureReload(lua_State* L);
 
 		static int luaCreatureGetMaster(lua_State* L);
 		static int luaCreatureSetMaster(lua_State* L);

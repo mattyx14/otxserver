@@ -1,31 +1,21 @@
 /**
- * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
+ * Canary - A free and open-source MMORPG server emulator
+ * Copyright (©) 2019-2022 OpenTibiaBR <opentibiabr@outlook.com>
+ * Repository: https://github.com/opentibiabr/canary
+ * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
+ * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
+ * Website: https://docs.opentibiabr.org/
+*/
 
-#include "otpch.h"
+#include "pch.hpp"
 
 #include "creatures/monsters/spawns/spawn_monster.h"
 #include "game/game.h"
 #include "creatures/monsters/monster.h"
 #include "game/scheduling/scheduler.h"
-
-#include "utils/pugicast.h"
+#include "game/scheduling/events_scheduler.hpp"
 #include "lua/creature/events.h"
+#include "utils/pugicast.h"
 
 static constexpr int32_t MONSTER_MINSPAWN_INTERVAL = 1000; // 1 second
 static constexpr int32_t MONSTER_MAXSPAWN_INTERVAL = 86400000; // 1 day
@@ -39,14 +29,14 @@ bool SpawnsMonster::loadFromXML(const std::string& filemonstername)
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filemonstername.c_str());
 	if (!result) {
-		printXMLError("SpawnsMonster::loadFromXml", filemonstername, result);
+		printXMLError(__FUNCTION__, filemonstername, result);
 		return false;
 	}
 
 	this->filemonstername = filemonstername;
 	loaded = true;
 
-	uint32_t eventschedule = g_game().getSpawnMonsterSchedule();
+	uint32_t eventschedule = g_eventsScheduler().getSpawnMonsterSchedule();
 	std::string boostedNameGet = g_game().getBoostedMonsterName();
 
 	for (auto spawnMonsterNode : doc.child("monsters").children()) {
@@ -88,26 +78,26 @@ bool SpawnsMonster::loadFromXML(const std::string& filemonstername)
 					dir = DIRECTION_NORTH;
 				}
 
+				auto xOffset = pugi::cast<int16_t>(childMonsterNode.attribute("x").value());
+				auto yOffset = pugi::cast<int16_t>(childMonsterNode.attribute("y").value());
 				Position pos(
-					centerPos.x + pugi::cast<uint16_t>(childMonsterNode.attribute("x").value()),
-					centerPos.y + pugi::cast<uint16_t>(childMonsterNode.attribute("y").value()),
+					static_cast<uint16_t>(centerPos.x + xOffset),
+					static_cast<uint16_t>(centerPos.y + yOffset),
 					centerPos.z
 				);
 
-				int32_t boostedrate;
+				int32_t boostedrate = 1;
 				
 				if (nameAttribute.value() == boostedNameGet) {
 					boostedrate = 2;
-				} else {
-					boostedrate = 1;
 				}
 
-				uint32_t interval = pugi::cast<uint32_t>(childMonsterNode.attribute("spawntime").value()) * 100000 / (g_configManager().getNumber(RATE_SPAWN) * boostedrate * eventschedule);
+				uint32_t interval = pugi::cast<uint32_t>(childMonsterNode.attribute("spawntime").value()) * 1000 * 100 / std::max((uint32_t)1, (g_configManager().getNumber(RATE_SPAWN) * boostedrate * eventschedule));
 				if (interval >= MONSTER_MINSPAWN_INTERVAL && interval <= MONSTER_MAXSPAWN_INTERVAL) {
 					spawnMonster.addMonster(nameAttribute.as_string(), pos, dir, static_cast<uint32_t>(interval));
 				} else {
 					if (interval <= MONSTER_MINSPAWN_INTERVAL) {
-						SPDLOG_WARN("[SpawnsMonster::loadFromXml] - {} {} spawntime can not be less than {} seconds", nameAttribute.as_string(), pos.toString(), MONSTER_MINSPAWN_INTERVAL / 1000);
+						SPDLOG_WARN("[SpawnsMonster::loadFromXml] - {} {} spawntime cannot be less than {} seconds, set to {} by default.", nameAttribute.as_string(), pos.toString(), MONSTER_MINSPAWN_INTERVAL / 1000, MONSTER_MINSPAWN_INTERVAL / 1000); spawnMonster.addMonster(nameAttribute.as_string(), pos, dir, MONSTER_MINSPAWN_INTERVAL);
 					} else {
 						SPDLOG_WARN("[SpawnsMonster::loadFromXml] - {} {} spawntime can not be more than {} seconds", nameAttribute.as_string(), pos.toString(), MONSTER_MAXSPAWN_INTERVAL / 1000);
 					}
@@ -174,7 +164,7 @@ bool SpawnMonster::findPlayer(const Position& pos)
 	SpectatorHashSet spectators;
 	g_game().map.getSpectators(spectators, pos, false, true);
 	for (Creature* spectator : spectators) {
-		if (!spectator->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters)) {
+		if (!spectator->getPlayer()->hasFlag(PlayerFlags_t::IgnoredByMonsters)) {
 			return true;
 		}
 	}

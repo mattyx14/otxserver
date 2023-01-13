@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.22 FATAL_ERROR)
 
 # CMAKE
 # apt install build-essential git
@@ -7,7 +7,8 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 # VCPKG
 # cmake -DCMAKE_TOOLCHAIN_FILE=/opt/workspace/vcpkg/scripts/buildsystems/vcpkg.cmake ..
-# ./vcpkg install boost-asio boost-lockfree boost-variant boost-filesystem boost-iostreams boost-system libmariadb pugixml spdlog
+# Needed libs is in file vcpkg.json
+# Windows required libs: .\vcpkg install --triplet x64-windows asio pugixml spdlog curl jsoncpp protobuf parallel-hashmap magic-enum mio luajit libmariadb mpir
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       CACHE STRING "")
@@ -21,9 +22,9 @@ set(VCPKG_FEATURE_FLAGS "versions")
 set(VCPKG_BUILD_TYPE "release")
 
 # *****************************************************************************
-# Project otxsr
+# Project OTX
 # *****************************************************************************
-project(otxsr)
+project(otx)
 
 
 # *****************************************************************************
@@ -42,8 +43,10 @@ include(LoggingHelper)
 # *****************************************************************************
 # Options
 # *****************************************************************************
-option(OPTIONS_ENABLE_CCACHE "Enable ccache" ON)
+option(OPTIONS_ENABLE_CCACHE "Enable ccache" OFF)
+option(OPTIONS_ENABLE_SCCACHE "Use sccache to speed up compilation process" OFF)
 option(OPTIONS_ENABLE_IPO "Check and Enable interprocedural optimization (IPO/LTO)" ON)
+
 
 
 # *****************************************************************************
@@ -59,6 +62,19 @@ if(OPTIONS_ENABLE_CCACHE)
         else()
         log_option_disabled("ccache")
     endif()
+endif()
+
+
+# === SCCACHE ===
+if(OPTIONS_ENABLE_SCCACHE)
+  find_program(SCCACHE_PATH sccache)
+  if(SCCACHE_PATH)
+    log_option_enabled("sccache")
+    set(CMAKE_C_COMPILER_LAUNCHER ${SCCACHE_PATH})
+    set(CMAKE_CXX_COMPILER_LAUNCHER ${SCCACHE_PATH})
+  else()
+    log_option_disabled("sccache")
+  endif()
 endif()
 
 

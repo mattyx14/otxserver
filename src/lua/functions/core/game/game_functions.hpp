@@ -1,29 +1,17 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (C) 2021 OpenTibiaBR <opentibiabr@outlook.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
+ * Copyright (©) 2019-2022 OpenTibiaBR <opentibiabr@outlook.com>
+ * Repository: https://github.com/opentibiabr/canary
+ * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
+ * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
+ * Website: https://docs.opentibiabr.org/
+*/
 
 #ifndef SRC_LUA_FUNCTIONS_CORE_GAME_GAME_FUNCTIONS_HPP_
 #define SRC_LUA_FUNCTIONS_CORE_GAME_GAME_FUNCTIONS_HPP_
 
-#include <set>
-
-#include "lua/scripts/lua_environment.hpp"
 #include "lua/scripts/luascript.h"
+
 class GameFunctions final : LuaScriptInterface {
 	public:
 			static void init(lua_State* L) {
@@ -31,10 +19,6 @@ class GameFunctions final : LuaScriptInterface {
 
 				registerMethod(L, "Game", "createNpcType", GameFunctions::luaGameCreateNpcType);
 				registerMethod(L, "Game", "createMonsterType", GameFunctions::luaGameCreateMonsterType);
-
-				registerMethod(L, "Game", "getEventSLoot", GameFunctions::luaGamegetEventSLoot);
-				registerMethod(L, "Game", "getEventSSkill", GameFunctions::luaGamegetEventSSkill);
-				registerMethod(L, "Game", "getEventSExp", GameFunctions::luaGamegetEventSExp);
 
 				registerMethod(L, "Game", "getSpectators", GameFunctions::luaGameGetSpectators);
 
@@ -78,19 +62,21 @@ class GameFunctions final : LuaScriptInterface {
 
 				registerMethod(L, "Game", "reload", GameFunctions::luaGameReload);
 
-				registerMethod(L, "Game", "itemidHasMoveevent", GameFunctions::luaGameItemidHasMoveevent);
 				registerMethod(L, "Game", "hasDistanceEffect", GameFunctions::luaGameHasDistanceEffect);
 				registerMethod(L, "Game", "hasEffect", GameFunctions::luaGameHasEffect);
 				registerMethod(L, "Game", "getOfflinePlayer", GameFunctions::luaGameGetOfflinePlayer);
+
+				registerMethod(L, "Game", "addInfluencedMonster", GameFunctions::luaGameAddInfluencedMonster);
+				registerMethod(L, "Game", "removeInfluencedMonster", GameFunctions::luaGameRemoveInfluencedMonster);
+				registerMethod(L, "Game", "getInfluencedMonsters", GameFunctions::luaGameGetInfluencedMonsters);
+				registerMethod(L, "Game", "makeFiendishMonster", GameFunctions::luaGameMakeFiendishMonster);
+				registerMethod(L, "Game", "removeFiendishMonster", GameFunctions::luaGameRemoveFiendishMonster);
+				registerMethod(L, "Game", "getFiendishMonsters", GameFunctions::luaGameGetFiendishMonsters);
 			}
 
 	private:
 			static int luaGameCreateMonsterType(lua_State* L);
 			static int luaGameCreateNpcType(lua_State* L);
-
-			static int luaGamegetEventSLoot(lua_State* L);
-			static int luaGamegetEventSSkill(lua_State* L);
-			static int luaGamegetEventSExp(lua_State* L);
 
 			static int luaGameGetSpectators(lua_State* L);
 
@@ -135,9 +121,15 @@ class GameFunctions final : LuaScriptInterface {
 			static int luaGameReload(lua_State* L);
 
 			static int luaGameGetOfflinePlayer(lua_State* L);
-			static int luaGameItemidHasMoveevent(lua_State* L);
 			static int luaGameHasEffect(lua_State* L);
 			static int luaGameHasDistanceEffect(lua_State* L);
+
+			static int luaGameAddInfluencedMonster(lua_State *L);
+			static int luaGameRemoveInfluencedMonster(lua_State *L);
+			static int luaGameGetInfluencedMonsters(lua_State *L);
+			static int luaGameMakeFiendishMonster(lua_State *L);
+			static int luaGameRemoveFiendishMonster(lua_State *L);
+			static int luaGameGetFiendishMonsters(lua_State *L);
 };
 
 #endif  // SRC_LUA_FUNCTIONS_CORE_GAME_GAME_FUNCTIONS_HPP_

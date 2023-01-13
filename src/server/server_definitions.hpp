@@ -1,21 +1,11 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (C) 2021 OpenTibiaBR <opentibiabr@outlook.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
+ * Copyright (©) 2019-2022 OpenTibiaBR <opentibiabr@outlook.com>
+ * Repository: https://github.com/opentibiabr/canary
+ * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
+ * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
+ * Website: https://docs.opentibiabr.org/
+*/
 
 #ifndef SRC_SERVER_SERVER_DEFINITIONS_HPP_
 #define SRC_SERVER_SERVER_DEFINITIONS_HPP_
@@ -29,12 +19,11 @@ enum {XTEA_MULTIPLE = 8};
 enum {MAX_BODY_LENGTH = NETWORKMESSAGE_MAXSIZE - HEADER_LENGTH - CHECKSUM_LENGTH - XTEA_MULTIPLE};
 enum {MAX_PROTOCOL_BODY_LENGTH = MAX_BODY_LENGTH - 10};
 
-enum ConnectionState_t : int8_t {
-	CONNECTION_STATE_DISCONNECTED,
-	CONNECTION_STATE_CONNECTING_STAGE1,
-	CONNECTION_STATE_CONNECTING_STAGE2,
-	CONNECTION_STATE_GAME,
-	CONNECTION_STATE_PENDING
+enum ConnectionState_t : uint8_t {
+	CONNECTION_STATE_OPEN,
+	CONNECTION_STATE_IDENTIFYING,
+	CONNECTION_STATE_READINGS,
+	CONNECTION_STATE_CLOSED
 };
 // Connection and networkmessage.
 
@@ -50,6 +39,12 @@ enum RequestedInfo_t : uint16_t {
 	REQUEST_SERVER_SOFTWARE_INFO = 1 << 7,
 };
 
+enum ChecksumMethods_t : uint8_t {
+	CHECKSUM_METHOD_NONE,
+	CHECKSUM_METHOD_ADLER32,
+	CHECKSUM_METHOD_SEQUENCE
+};
+
 enum SessionEndInformations : uint8_t {
 	// Guessing unknown types are ban/protocol error or something.
 	// But since there aren't any difference from logout should we care?
@@ -63,7 +58,10 @@ enum Resource_t : uint8_t{
 	RESOURCE_BANK = 0x00,
 	RESOURCE_INVENTORY = 0x01,
 	RESOURCE_PREY_CARDS = 0x0A,
-	RESOURCE_TASK_HUNTING = 0x32
+	RESOURCE_TASK_HUNTING = 0x32,
+	RESOURCE_FORGE_DUST = 0x46,
+	RESOURCE_FORGE_SLIVER = 0x47,
+	RESOURCE_FORGE_CORES = 0x48
 };
 
 enum InspectObjectTypes : uint8_t {

@@ -15,9 +15,12 @@
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": {
           "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-           "type": "FILEPATH"
+          "type": "FILEPATH"
         },
-        "CMAKE_BUILD_TYPE": "Release"
+        "BUILD_STATIC_LIBRARY": "ON",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "OPTIONS_ENABLE_SCCACHE": "ON"
       },
       "architecture": {
         "value": "x64",
@@ -43,14 +46,30 @@
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": {
           "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-           "type": "FILEPATH"
+          "type": "FILEPATH"
         },
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "OPTIONS_ENABLE_CCACHE": "ON"
       },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Linux"
+      }
+    },
+    {
+      "name": "windows-release-asan",
+      "inherits": "windows-release",
+      "displayName": "Windows - Release + ASAN",
+      "description": "Release Mode with ASAN",
+      "cacheVariables": {
+        "ASAN_ENABLED": "ON",
+        "BUILD_STATIC_LIBRARY": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
       }
     },
     {
@@ -61,7 +80,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "DEBUG_LOG": "ON",
-        "ASAN_ENABLED": "ON"
+        "ASAN_ENABLED": "ON",
+        "BUILD_STATIC_LIBRARY": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
       },
       "architecture": {
         "value": "x64",
@@ -92,6 +113,10 @@
     {
       "name": "windows-release",
       "configurePreset": "windows-release"
+    },
+    {
+      "name": "windows-release-asan",
+      "configurePreset": "windows-release-asan"
     },
     {
       "name": "windows-debug",
