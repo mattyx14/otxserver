@@ -644,55 +644,6 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 			toPosition:sendMagicEffect(CONST_ME_POFF)
 			addEvent(revertItem, 60 * 1000, toPosition, 7186, 7185)
 		end
-		local chakoyas = {"chakoya toolshaper", "chakoya tribewarden", "chakoya windcaller"}
-		if toPosition == Position(32399, 31051, 7) then
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32397, 31048, 7))
-			Position(32397, 31048, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32399, 31048, 7))
-			Position(32399, 31048, 7):sendMagicEffect(CONST_ME_TELEPORT)
-		elseif toPosition == Position(32394, 31062, 7) then
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32388, 31059, 7))
-			Position(32388, 31059, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32390, 31062, 7))
-			Position(32390, 31062, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32389, 31062, 7))
-			Position(32389, 31062, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32387, 31064, 7))
-			Position(32387, 31064, 7):sendMagicEffect(CONST_ME_TELEPORT)
-		elseif toPosition == Position(32393, 31072, 7) then
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32391, 31071, 7))
-			Position(32391, 31071, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32390, 31069, 7))
-			Position(32390, 31069, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32389, 31069, 7))
-			Position(32389, 31069, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32388, 31074, 7))
-			Position(32388, 31074, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32386, 31073, 7))
-			Position(32386, 31073, 7):sendMagicEffect(CONST_ME_TELEPORT)
-			Game.createMonster(chakoyas[math.random(#chakoyas)], Position(32387, 31072, 7))
-			Position(32387, 31072, 7):sendMagicEffect(CONST_ME_TELEPORT)
-		end
-	elseif target.itemid == 1791 then
-		-- The Pits of Inferno Quest
-		if toPosition == Position(32808, 32334, 11) then
-			for i = 1, #lava do
-				Game.createItem(5815, 1, lava[i])
-			end
-			target:transform(3141)
-			toPosition:sendMagicEffect(CONST_ME_SMOKE)
-		elseif target.actionid == 50058 then
-			-- naginata quest
-			local stoneStorage = Game.getStorageValue(GlobalStorage.NaginataStone)
-			if stoneStorage ~= 5 then
-				Game.setStorageValue(GlobalStorage.NaginataStone, math.max(0, stoneStorage) + 1)
-			elseif stoneStorage == 5 then
-				target:remove(1)
-				Game.setStorageValue(GlobalStorage.NaginataStone)
-			end
-			toPosition:sendMagicEffect(CONST_ME_POFF)
-			doTargetCombatHealth(0, player, COMBAT_PHYSICALDAMAGE, -31, -39, CONST_ME_NONE)
-		end
 	elseif target.itemid == 355 and target.actionid == 101 then
 		-- The Banshee Quest
 		target:transform(394)
