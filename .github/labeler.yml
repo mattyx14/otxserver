@@ -6,10 +6,10 @@
   - any: ['data/**/*']
 
 "Area: Datapack Global":
-  - any: ['data-otxserver-data/**/*', '!data-otxserver-data/world/*']
+  - any: ['data-otxserver/**/*', '!data-otxserver/world/*']
 
 "Area: Map Global":
-  - any: ['data-otxserver-data/world/*']
+  - any: ['data-otxserver/world/*']
 
 "Area: Docker":
   - any: ['docker/**/*']
