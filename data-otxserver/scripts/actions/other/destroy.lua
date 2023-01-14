@@ -20,20 +20,6 @@ end
 local destroy = Action()
 
 function destroy.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	-- Tibia tales quest, Aritos task
-	if (item:getId() == scimitarItemId) then
-		if (toPosition == Position(scimitarPos.x, scimitarPos.y, scimitarPos.z)) then
-			local scimitarPlaced = Tile(scimitarPos):getItemById(placedSimitarItemId)
-			if not scimitarPlaced then
-				if player:getStorageValue(Storage.TibiaTales.AritosTask) >= 0 then
-					item:remove()
-					Game.createItem(placedSimitarItemId, 1, scimitarPos)
-					addEvent(removeEntrance, 1 * 60 * 1000)
-					return true
-				end
-			end
-		end
-	end
 	return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 end
 

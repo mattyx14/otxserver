@@ -32,49 +32,6 @@ local shrine = {
 	}
 }
 
-local lionsRock = {
-	[25006] = {
-		itemId = 21442,
-		itemPos = {x = 33069, y = 32298, z = 9},
-		storage = Storage.LionsRock.Questline,
-		value = 9,
-		item = 3030,
-		fieldId = 2123,
-		message = "You place the ruby on the small socket. A red flame begins to burn.",
-		effect = CONST_ME_MAGIC_RED
-	},
-	[25007] = {
-		itemId = 21442,
-		itemPos = {x = 33069, y = 32302, z = 9},
-		storage = Storage.LionsRock.Questline,
-		value = 9,
-		item = 3029,
-		fieldId = 21463,
-		message = "You place the sapphire on the small socket. A blue flame begins to burn.",
-		effect = CONST_ME_MAGIC_BLUE
-	},
-	[25008] = {
-		itemId = 21440,
-		itemPos = {x = 33077, y = 32302, z = 9},
-		storage = Storage.LionsRock.Questline,
-		value = 9,
-		item = 3033,
-		fieldId = 7465,
-		message = "You place the amethyst on the small socket. A violet flame begins to burn.",
-		effect = CONST_ME_PURPLESMOKE
-	},
-	[25009] = {
-		itemId = 21437,
-		itemPos = {x = 33077, y = 32298, z = 9},
-		storage = Storage.LionsRock.Questline,
-		value = 9,
-		item = 9057,
-		fieldId = 21465,
-		message = "You place the topaz on the small socket. A yellow flame begins to burn.",
-		effect = CONST_ME_BLOCKHIT
-	}
-}
-
 local gems = Action()
 function gems.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if player:getItemCount(3030) >= 1 and target.itemid == 3229 then

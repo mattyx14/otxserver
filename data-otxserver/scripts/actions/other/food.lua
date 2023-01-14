@@ -124,7 +124,6 @@ local foods = {
 }
 
 local food = Action()
-local BloodBrothers = Storage.Quest.U8_4.BloodBrothers
 function food.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local itemFood = foods[item.itemid]
 	local effect = itemFood[3]
@@ -135,9 +134,6 @@ function food.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if condition and math.floor(condition:getTicks() / 1000 + (itemFood[1] * 12)) >= 1200 then
 		player:sendTextMessage(MESSAGE_FAILURE, "You are full.")
 		return true
-	end
-	if item.itemid == 8194 and player:getStorageValue(BloodBrothers.GarlicBread) == 0 then
-		player:setStorageValue(BloodBrothers.GarlicBread, 1)
 	end
 	player:feed(itemFood[1] * 12)
 	player:say(itemFood[2], TALKTYPE_MONSTER_SAY)

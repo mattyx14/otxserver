@@ -52,10 +52,6 @@ function serverstartup.onStartup()
 	Spdlog.info("Loaded all actions in the map")
 	Spdlog.info("Loaded all uniques in the map")
 
-	for i = 1, #startupGlobalStorages do
-		Game.setStorageValue(startupGlobalStorages[i], 0)
-	end
-
 	local time = os.time()
 	db.asyncQuery('TRUNCATE TABLE `players_online`')
 
@@ -94,12 +90,6 @@ function serverstartup.onStartup()
 			db.asyncQuery('DELETE FROM `account_bans` WHERE `account_id` = ' .. accountId)
 		until not Result.next(banResultId)
 		Result.free(banResultId)
-	end
-
-	-- Ferumbras Ascendant quest
-	for i = 1, #GlobalStorage.FerumbrasAscendant.Habitats do
-		local storage = GlobalStorage.FerumbrasAscendant.Habitats[i]
-		Game.setStorageValue(storage, 0)
 	end
 
 	-- Check house auctions

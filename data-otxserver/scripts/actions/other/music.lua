@@ -34,7 +34,6 @@ local MusicEffect = {
 
 local music = Action()
 function music.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-
 	if item.itemid == 2949 then
 		if isInRange(player:getPosition(), Position(32695, 31717, 2), Position(32699, 31719, 2)) then
 			local lyreProgress = player:getStorageValue(Storage.Diapason.Lyre)
@@ -44,21 +43,6 @@ function music.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 				player:setStorageValue(Storage.Diapason.Lyre, math.max(0, lyreProgress) + 1)
 				player:setStorageValue(Storage.Diapason.Edala, 1)
 				player:setStorageValue(Storage.Diapason.LyreTimer, os.time() + 86400)
-			end
-		end
-	elseif item.itemid == 2953 then
-		if isInRange(player:getPosition(), Position(33540, 32245, 7), Position(33542, 32247, 7)) then
-			local ThreatenedDreams = Storage.Quest.U11_40.ThreatenedDreams
-			local UnlikelyCouple = player:getStorageValue(ThreatenedDreams.Mission03.UnlikelyCouple)
-			local PanpipesTimer = player:getStorageValue(ThreatenedDreams.Mission03.PanpipesTimer)
-			if UnlikelyCouple >= 2 and PanpipesTimer < os.time() then
-				if UnlikelyCouple == 2 then
-					player:setStorageValue(ThreatenedDreams.Mission03.UnlikelyCouple, 3)
-				end
-				player:setStorageValue(ThreatenedDreams.Mission03.PanpipesTimer, os.time() + 20 * 3600)
-				player:setStorageValue(ThreatenedDreams.Mission03[1], 2)
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Mysteriously some colourful music notes fall of the panpipes. - Hurry, they will fade away quickly.")
-				player:addItem(25782, 1)
 			end
 		end
 	end
