@@ -1,7 +1,7 @@
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-	project(otxserver-debug)
+	project(otxsr-debug)
 else()
-	project(otxserver)
+	project(otxsr)
 endif()
 
 # *****************************************************************************
