@@ -46,7 +46,7 @@ jobs:
       - name: Restore artifacts and install vcpkg
         uses: lukka/run-vcpkg@main
         with:
-          vcpkgGitURL: "https://github.com/mattyx14/vcpkg.git"
+          vcpkgGitURL: "https://github.com/opentibiabr/vcpkg.git"
           vcpkgGitCommitId: 8974d642d47efd578e0da3223b4101c5d59aebcf
 
       - name: Get latest CMake and ninja
@@ -61,6 +61,6 @@ jobs:
       - name: Create and Upload Artifact
         uses: actions/upload-artifact@main
         with:
-          name: otxsr-${{ matrix.buildtype }}-${{ github.sha }}
+          name: canary-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
             ${{ github.workspace }}/build/${{ matrix.buildtype }}/bin/
