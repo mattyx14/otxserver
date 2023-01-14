@@ -385,7 +385,8 @@ end
 function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHotkey)
 	if not table.contains({3469, 9594, 9598}, item.itemid) then
 		return false
-	endif table.contains(fruits, target.itemid) and player:removeItem(6277, 1) then
+	end
+	if table.contains(fruits, target.itemid) and player:removeItem(6277, 1) then
 		target:remove(1)
 		player:addItem(6278, 1)
 		player:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)

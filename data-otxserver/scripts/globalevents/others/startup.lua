@@ -47,10 +47,9 @@ function serverstartup.onStartup()
 	-- Create new item on map
 	CreateMapItem(CreateItemOnMap)
 	-- Update old quest storage keys
-	updateKeysStorage(QuestKeysUpdate)
+	--updateKeysStorage(QuestKeysUpdate)
 
-	Spdlog.info("Loaded all actions in the map")
-	Spdlog.info("Loaded all uniques in the map")
+	Spdlog.info("Loaded all actions and uniques in the map")
 
 	local time = os.time()
 	db.asyncQuery('TRUNCATE TABLE `players_online`')

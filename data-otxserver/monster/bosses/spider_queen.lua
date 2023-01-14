@@ -65,10 +65,6 @@ monster.voices = {
 monster.loot = {
 }
 
-monster.attacks = {
-	{name = "spider queen wrap", interval = 5000, chance = 100, target = true, range = 1}
-}
-
 monster.defenses = {
 	defense = 5,
 	armor = 10,

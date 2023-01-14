@@ -11,7 +11,7 @@
 #define SRC_CORE_HPP_
 
 static constexpr auto STATUS_SERVER_NAME = "The OTX Server";
-static constexpr auto STATUS_SERVER_VERSION = "6.3.0";
+static constexpr auto STATUS_SERVER_VERSION = "6.2";
 static constexpr auto STATUS_SERVER_DEVELOPERS = "OpenTibiaBR Organization and data organizer: Mattyx14";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;

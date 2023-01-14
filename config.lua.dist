@@ -3,7 +3,7 @@
 -- If you want to use the global datapack folder, put "data-otservbr-global"
 -- If "useAnyDatapackFolder" is set to true then you can choose any datapack folder for your server
 useAnyDatapackFolder = true
-dataPackDirectory = "data-otxserver-data"
+dataPackDirectory = "data-otxserver"
 -- Don't change this unless you know what you're doing
 coreDirectory = "data"
 
@@ -41,8 +41,8 @@ loginProtocolPort = 7171
 gameProtocolPort = 7172
 statusProtocolPort = 7171
 maxPlayers = 200
-serverName = "DarkKonia"
-motd = "Welcome to The DarkKonia Server"
+serverName = "SERVER"
+motd = "Welcome to The OTX Server"
 onePlayerOnlinePerAccount = true
 allowClones = false
 statusTimeout = 5 * 1000
@@ -193,9 +193,9 @@ pushWhenAttacking = false
 -- NOTE: If toggleDownloadMap if false, then the mapDownloadUrl will not be used
 -- NOTE: If a map with the name already exists in the world folder, the map will not be downloaded even if the toggleDownloadMap is true
 toggleDownloadMap = false
-mapName = "darkkonia_ID"
+mapName = "forgotten"
 mapDownloadUrl = ""
-mapAuthor = "Mattyx14"
+mapAuthor = "OTLand"
 
 -- Party List limitations
 -- max distance in which players in party list are visible
