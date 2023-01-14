@@ -20,9 +20,9 @@ then
 else
 	echo "Compilation successful!"
 	cd ..
-	if [ -f "otx" ]; then
+	if [ -f "otxserver" ]; then
 		echo "Saving old build"
-		mv ./otx ./otx.old
+		mv ./otxserver ./otxserver.old
 	fi
-	cp ./build/linux-release/bin/otx ./otx
+	cp ./build/linux-release/bin/otxserver ./otxserver
 fi
