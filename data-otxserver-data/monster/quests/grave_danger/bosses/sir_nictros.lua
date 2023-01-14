@@ -17,7 +17,7 @@ monster.health = 50000
 monster.maxHealth = 50000
 monster.race = "venom"
 monster.corpse = 31599
-monster.speed = 125
+monster.speed = 250
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -50,7 +50,7 @@ monster.flags = {
 }
 
 monster.events = {
-	-- "Sir_Baeloc_Sir_NictrosCharge"
+	"Sir_Baeloc_Sir_NictrosCharge"
 }
 
 monster.light = {

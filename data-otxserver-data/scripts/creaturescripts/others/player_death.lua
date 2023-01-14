@@ -2,10 +2,6 @@ local deathListEnabled = true
 
 local playerDeath = CreatureEvent("PlayerDeath")
 function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDamageUnjustified)
-	if player:getStorageValue(Storage.SvargrondArena.PitDoor) > 0 then
-		player:setStorageValue(Storage.SvargrondArena.PitDoor, 0)
-	end
-
 	if not deathListEnabled then
 		return
 	end
@@ -53,7 +49,7 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 	local killerLink = string.gsub(killerName, "%s+", "+")
 	local playerLink = string.gsub(playerName, "%s+", "+")
 	local serverURL = getConfigInfo("url")
-	if killer and killer:isPlayer() then
+	if killer:isPlayer() then
 		Webhook.send(playerName.." just got killed!", "**["..playerName.."]("..serverURL.."/?characters/"..playerLink..")** got killed at level " ..playerLevel.. " by **["..killerName.."]("..serverURL.."/?characters/"..killerLink..")**", WEBHOOK_COLOR_OFFLINE, announcementChannels["player-kills"])
 	else
 		Webhook.send(playerName.." has just died!", "**["..playerName.."]("..serverURL.."/?characters/"..playerLink..")** died at level " ..playerLevel.. " by " ..killerName, WEBHOOK_COLOR_WARNING, announcementChannels["player-kills"])
@@ -63,12 +59,12 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 	local deathRecords = 0
 	local tmpResultId = resultId
 	while tmpResultId ~= false do
-		tmpResultId = Result.next(resultId)
+		tmpResultId = result.next(resultId)
 		deathRecords = deathRecords + 1
 	end
 
 	if resultId ~= false then
-		Result.free(resultId)
+		result.free(resultId)
 	end
 
 	if byPlayer == 1 then
@@ -83,8 +79,8 @@ function playerDeath.onDeath(player, corpse, killer, mostDamageKiller, unjustifi
 					((`guild1` = ' .. killerGuild .. ' AND `guild2` = ' .. targetGuild .. ') OR \z
 					(`guild1` = ' .. targetGuild .. ' AND `guild2` = ' .. killerGuild .. '))')
 				if resultId ~= false then
-					warId = Result.getNumber(resultId, 'id')
-					Result.free(resultId)
+					warId = result.getNumber(resultId, 'id')
+					result.free(resultId)
 				end
 
 				if warId ~= false then

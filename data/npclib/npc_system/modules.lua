@@ -162,6 +162,8 @@ if Modules == nil then
 		}
 		if player:hasBlessing(parameters.bless) then
 			npcHandler:say("You already possess this blessing.", npc, player)
+		elseif parameters.bless == 3 and player:getStorageValue(Storage.KawillBlessing) ~= 1 then
+			npcHandler:say("You need the blessing of the great geomancer first.", npc, player)
 		elseif parameters.bless == 1 and #player:getBlessings() == 0 and not player:getItemById(3057, true) then
 			npcHandler:say("You don't have any of the other blessings nor an amulet of loss, \z
                            so it wouldn't make sense to bestow this protection on you now. \z
@@ -169,6 +171,13 @@ if Modules == nil then
 		elseif not player:removeMoneyBank(type(parameters.cost) == "string"
 		and npcHandler:parseMessage(parameters.cost, parseInfo) or parameters.cost) then
 			npcHandler:say("Oh. You do not have enough money.", npc, player)
+		else
+			npcHandler:say(parameters.text or "You have been blessed by one of the seven gods!", npc, player)
+			if parameters.bless == 3 then
+				player:setStorageValue(Storage.KawillBlessing, 0)
+			end
+			player:addBlessing(parameters.bless, 1)
+			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 		end
 
 		npcHandler:resetNpc(player)
@@ -227,6 +236,15 @@ if Modules == nil then
 			player:setStorageValue(NpcExhaust, 3 + os.time())
 			player:teleportTo(destination)
 			playerPosition:sendMagicEffect(CONST_ME_TELEPORT)
+
+			-- What a foolish Quest - Mission 3
+			if Storage.WhatAFoolish.PieBoxTimer ~= nil then
+				if player:getStorageValue(Storage.WhatAFoolish.PieBoxTimer) > os.time() then
+					if destination ~= Position(32660, 31957, 15) then -- kazordoon steamboat
+						player:setStorageValue(Storage.WhatAFoolish.PieBoxTimer, 1)
+					end
+				end
+			end
 		end
 
 		npcHandler:resetNpc(player)
@@ -250,9 +268,13 @@ if Modules == nil then
 		return obj
 	end
 
-	-- Inits the module and associates handler to it.
-	function FocusModule:init(handler)
+	-- Inits the module and associates handler to it
+	-- Variables "greetCallback, farewellCallback and tradeCallback" are boolean value, true by default
+	function FocusModule:init(handler, greetCallback, farewellCallback, tradeCallback)
 		self.npcHandler = handler
+		if greetCallback == false then
+			return false
+		end
 		for i, word in pairs(FOCUS_GREETWORDS) do
 			local obj = {}
 			obj[#obj + 1] = word
@@ -260,6 +282,9 @@ if Modules == nil then
 			handler.keywordHandler:addKeyword(obj, FocusModule.onGreet, {module = self})
 		end
 
+		if farewellCallback == false then
+			return false
+		end
 		for i, word in pairs(FOCUS_FAREWELLWORDS) do
 			local obj = {}
 			obj[#obj + 1] = word
@@ -267,6 +292,9 @@ if Modules == nil then
 			handler.keywordHandler:addKeyword(obj, FocusModule.onFarewell, {module = self})
 		end
 
+		if tradeCallback == false then
+			return false
+		end
 		for i, word in pairs(FOCUS_TRADE_MESSAGE) do
 			local obj = {}
 			obj[#obj + 1] = word

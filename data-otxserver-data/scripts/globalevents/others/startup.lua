@@ -1,56 +1,57 @@
 local serverstartup = GlobalEvent("serverstartup")
 function serverstartup.onStartup()
 	Spdlog.info("Loading map attributes")
-	Spdlog.info("Loaded ".. Game.getNpcCount() .." npcs and spawned ".. Game.getMonsterCount() .." monsters")
+	Spdlog.info("Loaded ".. Game.getNpcCount() .." npcs and spawned with map editor and ".. Game.getMonsterCount() .." monsters")
 	Spdlog.info("Loaded ".. #Game.getTowns() .. " towns with ".. #Game.getHouses() .." houses in total")
 	-- Sign table
 	loadLuaMapSign(SignTable)
 	Spdlog.info("Loaded " .. (#SignTable) .. " signs in the map")
+	-- Npc table
+	loadLuaNpcs(NpcTable)
 	-- Book/Document table
 	loadLuaMapBookDocument(BookDocumentTable)
 
 	-- Action and unique tables
 	-- Chest table
 	loadLuaMapAction(ChestAction)
-	loadLuaMapUnique(ChestUnique)
+	-- loadLuaMapUnique(ChestUnique)
 	-- Corpse table
 	loadLuaMapAction(CorpseAction)
-	loadLuaMapUnique(CorpseUnique)
+	-- loadLuaMapUnique(CorpseUnique)
 	-- Doors key table
 	loadLuaMapAction(KeyDoorAction)
 	-- Doors level table
 	loadLuaMapAction(LevelDoorAction)
 	-- Doors quest table
 	loadLuaMapAction(QuestDoorAction)
-	loadLuaMapUnique(QuestDoorUnique)
+	-- loadLuaMapUnique(QuestDoorUnique)
 	-- Item table
 	loadLuaMapAction(ItemAction)
-	loadLuaMapUnique(ItemUnique)
+	-- loadLuaMapUnique(ItemUnique)
 	-- Item daily reward table
 	-- This is temporary disabled > loadLuaMapAction(DailyRewardAction)
 	-- Item unmoveable table
 	loadLuaMapAction(ItemUnmoveableAction)
 	-- Lever table
 	loadLuaMapAction(LeverAction)
-	loadLuaMapUnique(LeverUnique)
+	-- loadLuaMapUnique(LeverUnique)
 	-- Teleport (magic forcefields) table
 	loadLuaMapAction(TeleportAction)
-	loadLuaMapUnique(TeleportUnique)
+	-- loadLuaMapUnique(TeleportUnique)
 	-- Teleport item table
 	loadLuaMapAction(TeleportItemAction)
-	loadLuaMapUnique(TeleportItemUnique)
+	-- loadLuaMapUnique(TeleportItemUnique)
 	-- Tile table
 	loadLuaMapAction(TileAction)
-	loadLuaMapUnique(TileUnique)
+	-- loadLuaMapUnique(TileUnique)
 	-- Tile pick table
 	loadLuaMapAction(TilePickAction)
 	-- Create new item on map
-	CreateMapItem(CreateItemOnMap)
+	-- CreateMapItem(CreateItemOnMap)
 	-- Update old quest storage keys
 	updateKeysStorage(QuestKeysUpdate)
 
-	Spdlog.info("Loaded all actions in the map")
-	Spdlog.info("Loaded all uniques in the map")
+	Spdlog.info("Loaded all actions and uniques in the map")
 
 	for i = 1, #startupGlobalStorages do
 		Game.setStorageValue(startupGlobalStorages[i], 0)
@@ -85,21 +86,15 @@ function serverstartup.onStartup()
 	local banResultId = db.storeQuery('SELECT * FROM `account_bans` WHERE `expires_at` != 0 AND `expires_at` <= ' .. time)
 	if banResultId ~= false then
 		repeat
-			local accountId = Result.getNumber(banResultId, 'account_id')
+			local accountId = result.getNumber(banResultId, 'account_id')
 			db.asyncQuery('INSERT INTO `account_ban_history` (`account_id`, `reason`, `banned_at`, \z
 			`expired_at`, `banned_by`) VALUES (' .. accountId .. ', \z
-			' .. db.escapeString(Result.getString(banResultId, 'reason')) .. ', \z
-			' .. Result.getNumber(banResultId, 'banned_at') .. ', ' .. Result.getNumber(banResultId, 'expires_at') .. ', \z
-			' .. Result.getNumber(banResultId, 'banned_by') .. ')')
+			' .. db.escapeString(result.getString(banResultId, 'reason')) .. ', \z
+			' .. result.getNumber(banResultId, 'banned_at') .. ', ' .. result.getNumber(banResultId, 'expires_at') .. ', \z
+			' .. result.getNumber(banResultId, 'banned_by') .. ')')
 			db.asyncQuery('DELETE FROM `account_bans` WHERE `account_id` = ' .. accountId)
-		until not Result.next(banResultId)
-		Result.free(banResultId)
-	end
-
-	-- Ferumbras Ascendant quest
-	for i = 1, #GlobalStorage.FerumbrasAscendant.Habitats do
-		local storage = GlobalStorage.FerumbrasAscendant.Habitats[i]
-		Game.setStorageValue(storage, 0)
+		until not result.next(banResultId)
+		result.free(banResultId)
 	end
 
 	-- Check house auctions
@@ -108,11 +103,11 @@ function serverstartup.onStartup()
 	`bid_end` != 0 AND `bid_end` < ' .. time)
 	if resultId ~= false then
 		repeat
-			local house = House(Result.getNumber(resultId, 'id'))
+			local house = House(result.getNumber(resultId, 'id'))
 			if house then
-				local highestBidder = Result.getNumber(resultId, 'highest_bidder')
-				local balance = Result.getNumber(resultId, 'balance')
-				local lastBid = Result.getNumber(resultId, 'last_bid')
+				local highestBidder = result.getNumber(resultId, 'highest_bidder')
+				local balance = result.getNumber(resultId, 'balance')
+				local lastBid = result.getNumber(resultId, 'last_bid')
 				if balance >= lastBid then
 					db.query('UPDATE `players` SET `balance` = ' .. (balance - lastBid) .. ' WHERE `id` = ' .. highestBidder)
 					house:setOwnerGuid(highestBidder)
@@ -120,8 +115,8 @@ function serverstartup.onStartup()
 				db.asyncQuery('UPDATE `houses` SET `last_bid` = 0, `bid_end` = 0, `highest_bidder` = 0, \z
 				`bid` = 0 WHERE `id` = ' .. house:getId())
 			end
-		until not Result.next(resultId)
-		Result.free(resultId)
+		until not result.next(resultId)
+		result.free(resultId)
 	end
 
 	do -- Event Schedule rates

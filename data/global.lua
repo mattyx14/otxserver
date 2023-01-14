@@ -1,9 +1,32 @@
 math.randomseed(os.time())
-dofile('data/lib/lib.lua')
 
-NOT_MOVEABLE_ACTION = 8000
+dofile(DATA_DIRECTORY .. "/lib/lib.lua")
+local startupFile=io.open(DATA_DIRECTORY.. "/startup/startup.lua", "r")
+if startupFile ~= nil then
+	io.close(startupFile)
+	dofile(DATA_DIRECTORY.. "/startup/startup.lua")
+end
+
+function IsRunningGlobalDatapack()
+	if DATA_DIRECTORY == "data-otservbr-global" then
+		return true
+	else
+		return false
+	end
+end
+
+NOT_MOVEABLE_ACTION = 100
 PARTY_PROTECTION = 1 -- Set to 0 to disable.
 ADVANCED_SECURE_MODE = 1 -- Set to 0 to disable.
+
+NORTH = DIRECTION_NORTH
+EAST = DIRECTION_EAST
+SOUTH = DIRECTION_SOUTH
+WEST = DIRECTION_WEST
+SOUTHWEST = DIRECTION_SOUTHWEST
+SOUTHEAST = DIRECTION_SOUTHEAST
+NORTHWEST = DIRECTION_NORTHWEST
+NORTHEAST = DIRECTION_NORTHEAST
 
 STORAGEVALUE_PROMOTION = 30018
 
@@ -46,16 +69,42 @@ specialRopeSpots = { 12935 }
 -- Impact Analyser
 -- Every 2 seconds
 updateInterval = 2
+if not GlobalBosses then
+	GlobalBosses = {}
+end
 -- Healing
 -- Global table to insert data
-healingImpact = {}
+if healingImpact == nil then
+	healingImpact = {}
+end
 -- Damage
 -- Global table to insert data
-damageImpact = {}
+if damageImpact == nil then
+	damageImpact = {}
+end
 
-startupGlobalStorages = {
-	-- 
-}
+-- Exercise Training
+if onExerciseTraining == nil then
+	onExerciseTraining = {}
+end
+
+-- Stamina
+if nextUseStaminaTime == nil then
+	nextUseStaminaTime = {}
+end
+
+if nextUseXpStamina == nil then
+	nextUseXpStamina = {}
+end
+
+if lastItemImbuing == nil then
+	lastItemImbuing = {}
+end
+
+-- Delay potion
+if not playerDelayPotion then
+	playerDelayPotion = {}
+end
 
 table.contains = function(array, value)
 	for _, targetColumn in pairs(array) do
@@ -86,24 +135,6 @@ string.trim = function(str)
 	return str:match'^()%s*$' and '' or str:match'^%s*(.*%S)'
 end
 
--- Stamina
-if nextUseStaminaTime == nil then
-	nextUseStaminaTime = {}
-end
-
-if nextUseXpStamina == nil then
-	nextUseXpStamina = {}
-end
-
-if lastItemImbuing == nil then
-	lastItemImbuing = {}
-end
-
--- Delay potion
-if not playerDelayPotion then
-	playerDelayPotion = {}
-end
-
 -- for use of: data\scripts\globalevents\customs\save_interval.lua
 SAVE_INTERVAL_TYPE = configManager.getString(configKeys.SAVE_INTERVAL_TYPE)
 SAVE_INTERVAL_CONFIG_TIME = configManager.getNumber(configKeys.SAVE_INTERVAL_TIME)
@@ -123,6 +154,13 @@ staminaBonus = {
 	bonus = configManager.getNumber(configKeys.STAMINA_TRAINER_GAIN), -- gain stamina trainers
 	eventsTrainer = {}, -- stamina in trainers
 	eventsPz = {} -- stamina in Pz
+}
+
+FAMILIARSNAME = {
+	"sorcerer familiar",
+	"knight familiar",
+	"druid familiar",
+	"paladin familiar"
 }
 
 function addStamina(playerId, ...)
@@ -183,6 +221,3 @@ function addStamina(playerId, ...)
 	end
 	return false
 end
-
--- Exercise Training
-onExerciseTraining = {}

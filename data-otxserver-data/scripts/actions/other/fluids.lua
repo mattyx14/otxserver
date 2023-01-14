@@ -42,47 +42,6 @@ local function graveStoneTeleport(cid, fromPosition, toPosition)
 	toPosition:sendMagicEffect(CONST_ME_MORTAREA)
 end
 
--- Special poison condition used on dawnport residents
--- Doesnt allow poison yourself when health is <= 10 or your health go low than 10 due poison
-function dawnportPoisonCondition(player)
-	local health = player:getHealth();
-	local minHealth = 10
-	-- Default poison values (not possible read condition parameters)
-	local startValue = 5
-	local minPoisonDamage = 50
-	local maxPoisonDamage = 120
-
-	-- Special poison
-	if health > minHealth and health < (minHealth + maxPoisonDamage) then
-		local maxValue = health - minHealth
-		local minValue = minPoisonDamage
-		local value = startValue
-		local minRoundsDamage = (startValue * (startValue + 1) / 2)
-
-		if maxValue < minPoisonDamage then
-			minValue = maxValue
-		end
-
-		if maxValue < minRoundsDamage then
-			value = math.floor( math.sqrt(maxValue) )
-		end
-
-		local poisonMod = Condition(CONDITION_POISON)
-		poisonMod:setParameter(CONDITION_PARAM_DELAYED, true)
-		poisonMod:setParameter(CONDITION_PARAM_MINVALUE, -minValue)
-		poisonMod:setParameter(CONDITION_PARAM_MAXVALUE, -maxValue)
-		poisonMod:setParameter(CONDITION_PARAM_STARTVALUE, -value)
-		poisonMod:setParameter(CONDITION_PARAM_TICKINTERVAL, 4000)
-		poisonMod:setParameter(CONDITION_PARAM_FORCEUPDATE, true)
-
-		player:addCondition(poisonMod)
-	-- Common poison
-	elseif health >= (minHealth + maxPoisonDamage) then
-		player:addCondition(poison)
-	end
-	-- Otherwise no poison
-end
-
 local fluid = Action()
 
 function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -93,8 +52,8 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			item:transform(item.itemid, 0)
 			return true
 		elseif target.type ~= 0 and item.type == 0 then
-			item:transform(item.itemid, target.type)
 			target:transform(target.itemid, 0)
+			item:transform(item.itemid, target.type)
 			return true
 		end
 	end
@@ -121,12 +80,7 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 				player:addCondition(drunk)
 
 			elseif item.type == 6 then
-				local town = player:getTown()
-				if town and town:getId() == TOWNS_LIST.DAWNPORT then
-					dawnportPoisonCondition(player)
-				else
-					player:addCondition(poison)
-				end
+				player:addCondition(poison)
 			elseif item.type == 10 then
 				player:addMana(math.random(50, 150))
 				fromPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
@@ -136,15 +90,6 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			end
 
 			player:say(fluidMessage[item.type] or 'Gulp.', TALKTYPE_MONSTER_SAY)
-			item:transform(item.itemid, 0)
-		else
-			local pool = Game.createItem(2886, item.type, toPosition)
-			if pool then
-				pool:decay()
-				if item.type == 1 then
-					checkWallArito(pool, toPosition)
-				end
-			end
 			item:transform(item.itemid, 0)
 		end
 
@@ -171,19 +116,6 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 							graveStoneTeleport(creature.uid, toPosition, destination)
 						end
 					end
-				end
-
-			else
-				if toPosition.x == CONTAINER_POSITION then
-					toPosition = player:getPosition()
-				end
-
-				local pool = Game.createItem(2886, item.type, toPosition)
-				if pool then
-					pool:decay()
-    				if item.type == 1 then
-    					checkWallArito(pool, toPosition)
-    				end
 				end
 			end
 			item:transform(item.itemid, 0)

@@ -17,7 +17,7 @@ monster.raceId = 224
 monster.Bestiary = {
 	class = "Human",
 	race = BESTY_RACE_HUMAN,
-	toKill = 500,
+	toKill = 50,
 	FirstUnlock = 25,
 	SecondUnlock = 250,
 	CharmsPoints = 15,
@@ -30,7 +30,7 @@ monster.health = 175
 monster.maxHealth = 175
 monster.race = "blood"
 monster.corpse = 18046
-monster.speed = 112
+monster.speed = 224
 monster.manaCost = 450
 
 monster.changeTarget = {

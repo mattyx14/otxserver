@@ -39,7 +39,7 @@ monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "venom"
 monster.corpse = 5977
-monster.speed = 120
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -91,7 +91,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "gold coin", chance = 99990, maxCount = 195},
+	{name = "gold coin", chance = 99990, maxCount = 100},
+	{name = "gold coin", chance = 99990, maxCount = 95},
 	{id = 3053, chance = 710}, -- time ring
 	{name = "platinum amulet", chance = 280},
 	{name = "two handed sword", chance = 5100},

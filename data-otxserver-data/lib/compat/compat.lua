@@ -16,9 +16,6 @@ MESSAGE_EVENT_DEFAULT = MESSAGE_STATUS
 MESSAGE_EVENT_ORANGE = TALKTYPE_MONSTER_SAY
 MESSAGE_STATUS_CONSOLE_ORANGE = TALKTYPE_MONSTER_YELL
 
-if type(result) then
-	result = Result
-end
 result.getDataInt = result.getNumber
 result.getDataLong = result.getNumber
 result.getDataString = result.getString
@@ -45,6 +42,15 @@ COMBAT_POISONDAMAGE = COMBAT_EARTHDAMAGE
 CONDITION_EXHAUST = CONDITION_EXHAUST_WEAPON
 TALKTYPE_ORANGE_1 = TALKTYPE_MONSTER_SAY
 TALKTYPE_ORANGE_2 = TALKTYPE_MONSTER_YELL
+
+NORTH = DIRECTION_NORTH
+EAST = DIRECTION_EAST
+SOUTH = DIRECTION_SOUTH
+WEST = DIRECTION_WEST
+SOUTHWEST = DIRECTION_SOUTHWEST
+SOUTHEAST = DIRECTION_SOUTHEAST
+NORTHWEST = DIRECTION_NORTHWEST
+NORTHEAST = DIRECTION_NORTHEAST
 
 function pushThing(thing)
 	local t = {uid = 0, itemid = 0, type = 0, actionid = 0}
@@ -717,6 +723,14 @@ function getTileHouseInfo(pos)
 	return h and h:getId() or false
 end
 
+function getTilePzInfo(position)
+	local t = Tile(position)
+	if t == nil then
+		return false
+	end
+	return t:hasFlag(TILESTATE_PROTECTIONZONE)
+end
+
 function getTileInfo(position)
 	local t = Tile(position)
 	if t == nil then
@@ -1034,3 +1048,6 @@ function doSetCreatureLight(cid, lightLevel, lightColor, time)
 	creature:addCondition(condition)
 	return true
 end
+
+-- this is a fix for lua52 or higher which has the function renamed to table.unpack, while luajit still uses unpack
+if unpack == nil then unpack = table.unpack end

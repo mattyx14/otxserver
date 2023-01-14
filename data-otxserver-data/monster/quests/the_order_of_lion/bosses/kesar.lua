@@ -22,6 +22,9 @@ monster.speed = 0
 monster.faction = FACTION_LION
 monster.enemyFactions = {FACTION_LIONUSURPERS}
 
+monster.summons = {
+}
+
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10

@@ -142,10 +142,6 @@ function setBestiary.onSay(player, words, param)
 		return false
 	end
 	local amount = tonumber(split[3])
-	if not amount then
-		player:sendCancelMessage("Wrong kill amount")
-		return false
-	end
 
 	player:sendCancelMessage("Set bestiary kill of monster '".. monsterName .. "' from player '" .. target:getName() .. "' to '" .. amount .. "'.")
 	target:sendCancelMessage("Updated kills of monster '".. monsterName .. "'!")

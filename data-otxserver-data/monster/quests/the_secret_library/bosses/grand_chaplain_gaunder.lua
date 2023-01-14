@@ -17,12 +17,8 @@ monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "blood"
 monster.corpse = 28733
-monster.speed = 105
+monster.speed = 210
 monster.manaCost = 0
-
-monster.events = {
-	"GrandChaplainGaunderDeath"
-}
 
 monster.changeTarget = {
 	interval = 3000,

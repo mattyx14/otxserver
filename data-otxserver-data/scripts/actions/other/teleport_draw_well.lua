@@ -1,12 +1,10 @@
 local teleportDrawWell = Action()
 
 function teleportDrawWell.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if item:getActionId() ~= 1000 then
-		return false
+	if item:getActionId() ~= 100 then
+		fromPosition.z = fromPosition.z + 1
+		player:teleportTo(fromPosition, false)
 	end
-
-	fromPosition.z = fromPosition.z + 1
-	player:teleportTo(fromPosition)
 	return true
 end
 

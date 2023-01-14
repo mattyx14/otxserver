@@ -31,7 +31,7 @@ monster.health = 185
 monster.maxHealth = 185
 monster.race = "blood"
 monster.corpse = 6072
-monster.speed = 65
+monster.speed = 130
 monster.manaCost = 445
 
 monster.changeTarget = {
@@ -79,7 +79,7 @@ monster.loot = {
 	{name = "plate shield", chance = 2850},
 	{id = 3578, chance = 4600}, -- fish
 	{name = "tortoise egg", chance = 770, maxCount = 2},
-	{id = 5899, chance = 1300}, -- turtle shell
+	{name = "turtle shell", chance = 1300},
 	{name = "tortoise shield", chance = 200}
 }
 

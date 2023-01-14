@@ -20,21 +20,20 @@ Blessings.Credits = {
 }
 
 Blessings.Config = {
-	AdventurerBlessingLevel = 30, -- Free full bless until level -- remember
-	HasToF = true, -- Enables/disables twist of fate
+	AdventurerBlessingLevel = 0, -- Free full bless until level
+	HasToF = false, -- Enables/disables twist of fate
 	InquisitonBlessPriceMultiplier = 1.1, -- Bless price multiplied by henricus
 	SkulledDeathLoseStoreItem = true, -- Destroy all items on store when dying with red/blackskull
 	InventoryGlowOnFiveBless = true, -- Glow in yellow inventory items when the player has 5 or more bless,
 	Debug = false -- Prin debug messages in console if enabled
 }
 
-dofile('data/modules/scripts/blessings/assets.lua')
+dofile(CORE_DIRECTORY.. "/modules/scripts/blessings/assets.lua")
 
 --[=====[
 --
 -- Table structure `blessings_history`
 --
-
 CREATE TABLE IF NOT EXISTS `blessings_history` (
   `id` int(11) NOT NULL,
   `player_id` int(11) NOT NULL,
@@ -43,7 +42,6 @@ CREATE TABLE IF NOT EXISTS `blessings_history` (
   `timestamp` int(11) NOT NULL,
   CONSTRAINT `blessings_history_pk` PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --]=====]
 
 Blessings.DebugPrint = function(content, pre, pos)
@@ -248,7 +246,7 @@ Blessings.getInquisitionPrice = function(player)
 	-- Find how many missing bless we have and give out the price
 	inquifilter = function(b) return b.inquisition end
 	donthavefilter = function(p, b) return not p:hasBlessing(b) end
-	local missing = #player:getBlessings(filter, donthavefilter)
+	local missing = #player:getBlessings(inquifilter, donthavefilter)
 	local totalBlessPrice = Blessings.getBlessingsCost(player:getLevel()) * missing * Blessings.Config.InquisitonBlessPriceMultiplier
 	return missing, totalBlessPrice
 end
@@ -275,9 +273,22 @@ Blessings.DropLoot = function(player, corpse, chance, skulled)
 	end
 	if skulled and Blessings.Config.SkulledDeathLoseStoreItem then
 		local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
-		local inboxsize = inbox:getSize() - 1
-		for i = 0, inboxsize do
-			inbox:getItem(i):destroy()
+		local toBeDeleted = {}
+		if inbox and inbox:getSize() > 0 then
+			for i = 0, inbox:getSize() do
+				local item = inbox:getItem(i)
+				if item then
+					toBeDeleted[#toBeDeleted + 1] = item.uid
+				end
+			end
+			if #toBeDeleted > 0 then
+				for i, v in pairs(toBeDeleted) do
+					local item = Item(v)
+					if item then
+						item:remove()
+					end
+				end
+			end
 		end
 	end
 end
@@ -337,7 +348,7 @@ end
 Blessings.PlayerDeath = function(player, corpse, killer)
 	local hasToF = Blessings.Config.HasToF and player:hasBlessing(1) or false
 	local hasAol = (player:getSlotItem(CONST_SLOT_NECKLACE) and player:getSlotItem(CONST_SLOT_NECKLACE):getId() == ITEM_AMULETOFLOSS)
-	local haveSkull = isInArray({SKULL_RED, SKULL_BLACK}, player:getSkull())
+	local haveSkull = table.contains({SKULL_RED, SKULL_BLACK}, player:getSkull())
 	local curBless = player:getBlessings()
 
 	if haveSkull then  -- lose all bless + drop all items

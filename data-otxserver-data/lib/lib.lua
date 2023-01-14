@@ -1,15 +1,17 @@
 -- Core API functions implemented in Lua
--- Load storages first
-dofile(DATA_DIRECTORY.. '/lib/core/load.lua')
+dofile('data/lib/core/core.lua')
 
 -- Compatibility library for our old Lua API
-dofile(DATA_DIRECTORY.. '/lib/compat/compat.lua')
+dofile('data/lib/compat/compat.lua')
+
+-- Debugging helper function for Lua developers
+dofile('data/lib/debugging/dump.lua')
 
 -- Tables library
-dofile(DATA_DIRECTORY.. '/lib/tables/load.lua')
+dofile('data/lib/tables/table.lua')
 
 -- Others library
-dofile(DATA_DIRECTORY.. '/lib/others/load.lua')
+dofile('data/lib/others/others.lua')
 
 -- Quests library
-dofile(DATA_DIRECTORY.. '/lib/quests/quest.lua')
+dofile('data/lib/quests/quest.lua')

@@ -190,9 +190,6 @@ registerMonsterType.flags = function(mtype, mask)
 		if mask.flags.isBlockable ~= nil then
 			mtype:isBlockable(mask.flags.isBlockable)
 		end
-		if mask.flags.isForgeCreature ~= nil then
-			mtype:isForgeCreature(mask.flags.isForgeCreature)
-		end
 	end
 end
 registerMonsterType.light = function(mtype, mask)
@@ -278,7 +275,7 @@ registerMonsterType.events = function(mtype, mask)
 	end
 end
 
-function SortLootByChance(loot)
+function sortLootByChance(loot)
 	if not configManager.getBoolean(configKeys.SORT_LOOT_BY_CHANCE) then
 		return
 	end
@@ -294,7 +291,7 @@ end
 
 registerMonsterType.loot = function(mtype, mask)
 	if type(mask.loot) == "table" then
-		SortLootByChance(mask.loot)
+		sortLootByChance(mask.loot)
 		local lootError = false
 		for _, loot in pairs(mask.loot) do
 			local parent = Loot()
@@ -356,7 +353,7 @@ registerMonsterType.loot = function(mtype, mask)
 				parent:setUnique(loot.unique)
 			end
 			if loot.child then
-				SortLootByChance(loot.child)
+				sortLootByChance(loot.child)
 				for _, children in pairs(loot.child) do
 					local child = Loot()
 					if children.name then

@@ -30,7 +30,7 @@ monster.health = 1300
 monster.maxHealth = 1300
 monster.race = "venom"
 monster.corpse = 11571
-monster.speed = 120
+monster.speed = 240
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -74,7 +74,8 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "gold coin", chance = 100000, maxCount = 200},
+	{name = "gold coin", chance = 50000, maxCount = 100},
+	{name = "gold coin", chance = 50000, maxCount = 100},
 	{name = "small emerald", chance = 2702, maxCount = 4},
 	{id = 3049, chance = 892}, -- stealth ring
 	{name = "platinum amulet", chance = 110},
@@ -98,7 +99,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 25,
-	armor = 38
+	armor = 25
 }
 
 monster.elements = {
