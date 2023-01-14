@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-2022]
-        buildtype: [windows-release, windows-release-asan, windows-debug]
+        buildtype: [windows-release]
         include:
           - os: windows-2022
             triplet: x64-windows
@@ -28,10 +28,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@main
+        uses: actions/checkout@otxserv6
 
       - name: CCache
-        uses: hendrikmuhs/ccache-action@main
+        uses: hendrikmuhs/ccache-action@otxserv6
         with:
           max-size: "1G"
           variant: "sccache"
@@ -44,22 +44,22 @@ jobs:
         run: rm -r -fo C:/mysql*
 
       - name: Restore artifacts and install vcpkg
-        uses: lukka/run-vcpkg@main
+        uses: lukka/run-vcpkg@otxserv6
         with:
           vcpkgGitURL: "https://github.com/otxserver/vcpkg.git"
           vcpkgGitCommitId: 8974d642d47efd578e0da3223b4101c5d59aebcf
 
       - name: Get latest CMake and ninja
-        uses: lukka/get-cmake@main
+        uses: lukka/get-cmake@otxserv6
 
       - name: Run CMake
-        uses: lukka/run-cmake@main
+        uses: lukka/run-cmake@otxserv6
         with:
           configurePreset: ${{ matrix.buildtype }}
           buildPreset: ${{ matrix.buildtype }}
 
       - name: Create and Upload Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@otxserv6
         with:
           name: otx-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
