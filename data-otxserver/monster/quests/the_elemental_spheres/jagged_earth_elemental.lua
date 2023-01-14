@@ -17,7 +17,7 @@ monster.health = 1500
 monster.maxHealth = 1500
 monster.race = "undead"
 monster.corpse = 8105
-monster.speed = 280
+monster.speed = 140
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -68,7 +68,7 @@ monster.loot = {
 	{name = "gold coin", chance = 27000, maxCount = 90},
 	{name = "gold coin", chance = 1500, maxCount = 10},
 	{name = "small emerald", chance = 3750, maxCount = 2},
-	{name = "twigs", chance = 18000},
+	{id = 3130, chance = 18000}, -- twigs
 	{name = "iron ore", chance = 800, maxCount = 2},
 	{name = "seeds", chance = 1600},
 	{name = "natural soil", chance = 9000}

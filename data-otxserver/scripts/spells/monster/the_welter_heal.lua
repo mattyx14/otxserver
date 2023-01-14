@@ -14,7 +14,7 @@ function spell.onCastSpell(creature, var)
 			creature:addHealth(25000)
 			creature:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 			return true
-		elseif spectator:isMonster() and spectator:getName() == "Spawn Of The Welter" then
+		elseif spectator:isMonster() and spectator:getName() == "Spawn of the Welter" then
 			spectator:getPosition():sendMagicEffect(CONST_ME_DRAWBLOOD)
 			spectator:remove()
 			creature:say("<the welter devours his spawn and heals himself>", TALKTYPE_ORANGE_1)

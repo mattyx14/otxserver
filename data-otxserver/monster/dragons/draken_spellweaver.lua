@@ -30,7 +30,7 @@ monster.health = 5000
 monster.maxHealth = 5000
 monster.race = "blood"
 monster.corpse = 10399
-monster.speed = 336
+monster.speed = 168
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -78,8 +78,7 @@ monster.voices = {
 monster.loot = {
 	{name = "ring of the sky", chance = 370},
 	{name = "small ruby", chance = 6910, maxCount = 5},
-	{name = "gold coin", chance = 41000, maxCount = 100},
-	{name = "gold coin", chance = 58000, maxCount = 100},
+	{name = "gold coin", chance = 100000, maxCount = 200},
 	{name = "platinum coin", chance = 25510, maxCount = 5},
 	{name = "green gem", chance = 970},
 	{name = "wand of inferno", chance = 1660},

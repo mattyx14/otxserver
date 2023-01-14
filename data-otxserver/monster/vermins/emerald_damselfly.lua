@@ -30,7 +30,7 @@ monster.health = 90
 monster.maxHealth = 90
 monster.race = "venom"
 monster.corpse = 17426
-monster.speed = 200
+monster.speed = 100
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -79,8 +79,8 @@ monster.loot = {
 	{name = "arrow", chance = 7570, maxCount = 5},
 	{name = "health potion", chance = 3580},
 	{name = "mana potion", chance = 3550},
-	{name = "damselfly wing", chance = 11830},
-	{name = "damselfly eye", chance = 9970}
+	{id = 17458, chance = 11830}, -- damselfly wing
+	{id = 17463, chance = 9970} -- damselfly eye
 }
 
 monster.attacks = {

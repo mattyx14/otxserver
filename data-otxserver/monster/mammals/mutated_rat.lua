@@ -32,7 +32,7 @@ monster.health = 550
 monster.maxHealth = 550
 monster.race = "blood"
 monster.corpse = 8957
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -77,8 +77,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "gold coin", chance = 38000, maxCount = 65},
-	{name = "gold coin", chance = 40000, maxCount = 65},
+	{name = "gold coin", chance = 78500, maxCount = 130},
 	{id = 3049, chance = 540}, -- stealth ring
 	{id = 3114, chance = 20240}, -- skull
 	{name = "mouldy cheese", chance = 950},
@@ -105,7 +104,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 15,
-	armor = 15,
+	armor = 32,
 	{name ="combat", interval = 2000, chance = 5, type = COMBAT_HEALING, minDamage = 80, maxDamage = 95, effect = CONST_ME_MAGIC_BLUE, target = false}
 }
 

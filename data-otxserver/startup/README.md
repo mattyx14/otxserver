@@ -16,7 +16,7 @@ Reward keys = 5000/6000
 TeleportItem (action) = 15001/20000 (this is teleport items, not magic forcefield)
 TeleportItem (unique) = 15001/20000 (this is teleport items, not magic forcefield)
 
-Corpse (action )= 20000/25000
+Corpse (action)= 20000/25000
 Corpse (unique) = 20000/22000
 
 DoorStorage (action) = It is not defined, because it uses storages as action

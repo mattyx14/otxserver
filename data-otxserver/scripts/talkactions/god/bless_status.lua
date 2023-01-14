@@ -1,4 +1,4 @@
-dofile('data/modules/scripts/blessings/blessings.lua')
+dofile(CORE_DIRECTORY .. "/modules/scripts/blessings/blessings.lua")
 
 local blessStatus = TalkAction("/bless")
 

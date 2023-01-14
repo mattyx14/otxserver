@@ -31,7 +31,7 @@ monster.health = 3000
 monster.maxHealth = 3000
 monster.race = "venom"
 monster.corpse = 6061
-monster.speed = 234
+monster.speed = 117
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -81,9 +81,7 @@ monster.voices = {
 monster.loot = {
 	{name = "golden mug", chance = 2870},
 	{name = "small sapphire", chance = 12000},
-	{name = "gold coin", chance = 32300, maxCount = 100},
-	{name = "gold coin", chance = 32300, maxCount = 100},
-	{name = "gold coin", chance = 32300, maxCount = 39},
+	{name = "gold coin", chance = 97250, maxCount = 239},
 	{id = 3051, chance = 590}, -- energy ring
 	{id = 3052, chance = 6250}, -- life ring
 	{name = "life crystal", chance = 800},
@@ -91,6 +89,7 @@ monster.loot = {
 	{name = "warrior helmet", chance = 560},
 	{name = "strange helmet", chance = 670},
 	{name = "crown armor", chance = 510},
+	{id = 4831, chance = 550}, -- old parchment
 	{name = "royal helmet", chance = 140},
 	{name = "tower shield", chance = 920},
 	{name = "power bolt", chance = 6200},

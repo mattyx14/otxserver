@@ -17,8 +17,12 @@ monster.health = 10000
 monster.maxHealth = 10000
 monster.race = "undead"
 monster.corpse = 19117
-monster.speed = 350
+monster.speed = 175
 monster.manaCost = 0
+
+monster.events = {
+	"DazedLeafGolemDeath"
+}
 
 monster.changeTarget = {
 	interval = 0,

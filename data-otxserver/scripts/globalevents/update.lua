@@ -1,4 +1,4 @@
-local fileToUpdate = "data/update.lua"
+local fileToUpdate = CORE_DIRECTORY .. "/update.lua"
 dofile(fileToUpdate)
 
 local update = GlobalEvent("Update")
@@ -17,7 +17,7 @@ function update.onStartup()
 				io.output(updateFile)
 				io.write(afterUpdate)
 				io.close(updateFile)
-				Spdlog.warn("All players sent to temple. Check if 'data/update.lua' contains 'updated = false'.")
+				Spdlog.warn("All players sent to temple. Check if ".. fileToUpdate.. "'/update.lua' contains 'updated = false'.")
 			end
 		end
 	end

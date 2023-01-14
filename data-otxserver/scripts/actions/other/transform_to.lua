@@ -217,6 +217,41 @@ local transformItems = {
 	[37806] = 37807, [37807] = 37806, -- zaoan wall lamp
 	[37808] = 37809, [37809] = 37808, -- zaoan wall lamps
 	[37811] = 37813, [37812] = 37814, -- sculpture of a fox
+	[38522] = 38524, [38524] = 38522, -- naga lamp
+	[38523] = 38525, [38525] = 38523, -- naga lamp
+	[38526] = 38528, [38528] = 38526, -- basin with a glowing flower
+	[38529] = 38530, [38530] = 38529, -- wall lamp
+	[38531] = 38532, [38532] = 38531, -- wall lamp
+	[38533] = 38534, [38534] = 38533, -- wall lamp
+	[38535] = 38536, [38536] = 38535, -- wall lamp
+	[38623] = 38624, [38624] = 38623, -- wall lamp
+	[38625] = 38626, [38626] = 38625, -- wall lamp
+	[38677] = 38680, [38704] = 38705, -- beaver of wisdom
+	[38827] = 38828, [38828] = 38827, -- wall lamp
+	[39423] = 39425, [39425] = 39423, -- knightly table
+	[39424] = 39426, [39426] = 39424, -- knightly table
+	[39427] = 39428, [39428] = 39427, -- knightly chess table
+	[39443] = 39444, [39444] = 39445, -- knightly fire bowl
+	[39445] = 39443, -- knightly fire bowl
+	[39446] = 39447, [39447] = 39446, -- knightly wall lamp
+	[39496] = 39497, [39497] = 39496, -- knightly sword lamp
+	[39498] = 39499, [39499] = 39498, -- knightly candelabra
+	[39500] = 39501, [39501] = 39500, -- knightly candle holder
+	[39508] = 39509, [39668] = 39510, -- knightly guard
+	[39694] = 39696, -- lucky dragon
+	[39697] = 39698, [39698] = 39697, -- rainbow torch
+	[39699] = 39700, [39700] = 39699, -- rainbow torch
+	[39701] = 39702, [39702] = 39701, -- rainbow torch
+	[39757] = 39758, -- yeti doll
+	[39759] = 39760, [39761] = 39762, -- the gods' twilight doll
+	[39772] = 39773, [39773] = 39774, -- flower table
+	[39774] = 39772, -- flower table
+	[39793] = 39794, [39794] = 39793, -- turquoise flower lamp
+	[39795] = 39796, [39796] = 39795, -- purple flower lamp
+	[39801] = 39802, [39802] = 39801, -- wall leaves
+	[39803] = 39804, [39804] = 39803, -- tendrils
+	[39805] = 39806, [39807] = 39808, -- water nymph
+	[39810] = 39809, -- water nymph
 }
 
 local transformTo = Action()

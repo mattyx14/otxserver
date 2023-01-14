@@ -17,8 +17,12 @@ monster.health = 15000
 monster.maxHealth = 15000
 monster.race = "blood"
 monster.corpse = 28643
-monster.speed = 210
+monster.speed = 105
 monster.manaCost = 0
+
+monster.events = {
+	"PreceptorLazareDeath"
+}
 
 monster.changeTarget = {
 	interval = 2000,

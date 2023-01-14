@@ -78,6 +78,7 @@ local carpetItems = {
 	[37769] = 37770, [37770] = 37769, -- zaoan bamboo tiles IV
 	[37771] = 37772, [37772] = 37771, -- zaoan bamboo tiles V
 	[37773] = 37774, [37774] = 37773, -- zaoan bamboo tiles VI
+	[39797] = 39798, [39798] = 39797, -- flowery grass
 }
 
 local carpets = Action()

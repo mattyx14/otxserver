@@ -35,7 +35,7 @@ monster.health = 2350
 monster.maxHealth = 2350
 monster.race = "blood"
 monster.corpse = 6048
-monster.speed = 250
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -84,9 +84,7 @@ monster.voices = {
 
 monster.loot = {
 	{name = "small sapphire", chance = 5000},
-	{name = "gold coin", chance = 34000, maxCount = 100},
-	{name = "gold coin", chance = 34000, maxCount = 100},
-	{name = "gold coin", chance = 20000, maxCount = 46},
+	{name = "gold coin", chance = 87500, maxCount = 246},
 	{name = "platinum coin", chance = 48000, maxCount = 3},
 	{name = "life crystal", chance = 570},
 	{name = "boots of haste", chance = 130},
@@ -113,7 +111,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 35,
-	armor = 35,
+	armor = 27,
 	{name ="combat", interval = 2000, chance = 25, type = COMBAT_HEALING, minDamage = 260, maxDamage = 407, effect = CONST_ME_MAGIC_BLUE, target = false}
 }
 

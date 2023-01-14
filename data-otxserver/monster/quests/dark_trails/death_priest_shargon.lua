@@ -17,7 +17,7 @@ monster.health = 65000
 monster.maxHealth = 65000
 monster.race = "blood"
 monster.corpse = 21123
-monster.speed = 340
+monster.speed = 170
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -53,7 +53,7 @@ monster.flags = {
 }
 
 monster.events = {
-	"DeathPriestShargonDeath"
+	"ShargonKill"
 }
 
 monster.light = {

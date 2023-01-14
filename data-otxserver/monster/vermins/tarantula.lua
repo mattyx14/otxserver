@@ -34,7 +34,7 @@ monster.health = 225
 monster.maxHealth = 225
 monster.race = "venom"
 monster.corpse = 6060
-monster.speed = 214
+monster.speed = 107
 monster.manaCost = 485
 
 monster.changeTarget = {
@@ -94,7 +94,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 10,
-	armor = 10,
+	armor = 20,
 	{name ="speed", interval = 2000, chance = 15, speedChange = 220, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000}
 }
 

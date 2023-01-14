@@ -1,4 +1,4 @@
-dofile("data/monster/quests/the_secret_library/bosses/grand_master_oberon_functions.lua")
+dofile(DATA_DIRECTORY .. "/monster/quests/the_secret_library/bosses/grand_master_oberon_functions.lua")
 
 local mType = Game.createMonsterType("Grand Master Oberon")
 local monster = {}
@@ -19,7 +19,7 @@ monster.health = 30000
 monster.maxHealth = 30000
 monster.race = "blood"
 monster.corpse = 28625
-monster.speed = 230
+monster.speed = 115
 monster.manaCost = 0
 
 monster.changeTarget = {

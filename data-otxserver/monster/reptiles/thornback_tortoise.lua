@@ -30,7 +30,7 @@ monster.health = 300
 monster.maxHealth = 300
 monster.race = "blood"
 monster.corpse = 6073
-monster.speed = 200
+monster.speed = 75
 monster.manaCost = 490
 
 monster.changeTarget = {
@@ -81,7 +81,7 @@ monster.loot = {
 	{name = "white mushroom", chance = 1200},
 	{name = "brown mushroom", chance = 700},
 	{name = "tortoise egg", chance = 790, maxCount = 3},
-	{name = "turtle shell", chance = 800},
+	{id = 5899, chance = 800}, -- turtle shell
 	{name = "health potion", chance = 1600},
 	{name = "thorn", chance = 15980}
 }

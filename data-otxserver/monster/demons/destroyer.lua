@@ -30,7 +30,7 @@ monster.health = 3700
 monster.maxHealth = 3700
 monster.race = "undead"
 monster.corpse = 6319
-monster.speed = 300
+monster.speed = 150
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -79,30 +79,27 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "crystal necklace", chance = 578},
-	{name = "gold coin", chance = 60000, maxCount = 100},
-	{name = "gold coin", chance = 40000, maxCount = 100},
-	{name = "gold coin", chance = 40000, maxCount = 100},
-	{name = "gold coin", chance = 60000, maxCount = 41},
-	{name = "small amethyst", chance = 7692, maxCount = 2},
-	{name = "platinum coin", chance = 4166, maxCount = 3},
-	{name = "mind stone", chance = 564},
-	{name = "giant sword", chance = 1694},
-	{name = "crowbar", chance = 14285},
-	{name = "plate armor", chance = 4347},
-	{name = "dark armor", chance = 10000},
-	{id = 3449, chance = 12500, maxCount = 12}, -- burst arrow
-	{id = 3456, chance = 6250}, -- pick
-	{name = "steel boots", chance = 992},
-	{name = "meat", chance = 50000, maxCount = 6},
-	{name = "skull helmet", chance = 108},
-	{name = "soul orb", chance = 6666},
-	{id = 6299, chance = 144}, -- death ring
-	{name = "demonic essence", chance = 20000},
-	{name = "dreaded cleaver", chance = 833},
-	{name = "chaos mace", chance = 869},
-	{name = "great health potion", chance = 1136},
-	{name = "metal spike", chance = 7142}
+	{name = "crystal necklace", chance = 500},
+	{name = "gold coin", chance = 92500, maxCount = 341},
+	{name = "small amethyst", chance = 5850, maxCount = 2},
+	{name = "platinum coin", chance = 2250, maxCount = 3},
+	{name = "mind stone", chance = 70},
+	{name = "giant sword", chance = 1250},
+	{name = "crowbar", chance = 10500},
+	{name = "plate armor", chance = 3400},
+	{name = "dark armor", chance = 6250},
+	{id = 3449, chance = 8350, maxCount = 12}, -- burst arrow
+	{id = 3456, chance = 4850}, -- pick
+	{name = "steel boots", chance = 300},
+	{name = "meat", chance = 40000, maxCount = 6},
+	{name = "skull helmet", chance = 10},
+	{name = "soul orb", chance = 5350},
+	{id = 6299, chance = 250}, -- death ring
+	{name = "demonic essence", chance = 13850},
+	{name = "dreaded cleaver", chance = 400},
+	{name = "chaos mace", chance = 800},
+	{name = "great health potion", chance = 1000},
+	{name = "metal spike", chance = 4850}
 }
 
 monster.attacks = {
@@ -112,7 +109,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 30,
-	armor = 30,
+	armor = 35,
 	{name ="speed", interval = 2000, chance = 15, speedChange = 420, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000}
 }
 

@@ -20,7 +20,7 @@ local function delayedCastSpell(cid, var)
 	end
 end
 
-local maxsummons = 1
+local maxsummons = 7
 
 local spell = Spell("instant")
 

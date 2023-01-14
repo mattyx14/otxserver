@@ -31,7 +31,7 @@ monster.health = 7800
 monster.maxHealth = 7800
 monster.race = "undead"
 monster.corpse = 10445
-monster.speed = 320
+monster.speed = 160
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -79,18 +79,19 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "gold coin", chance = 33725, maxCount = 100},
-	{name = "gold coin", chance = 33725, maxCount = 100},
-	{name = "gold coin", chance = 33725, maxCount = 66},
+	{name = "gold coin", chance = 99500, maxCount = 266},
 	{name = "platinum coin", chance = 29840, maxCount = 2},
+	{name = "small emerald", chance = 40000, maxCount = 5},
 	{name = "soul orb", chance = 12170},
+	{name = "dark armor", chance = 35000},
+	{name = "plate legs", chance = 50000},
 	{name = "demonic essence", chance = 8920},
 	{name = "great mana potion", chance = 30560, maxCount = 2},
 	{name = "terra legs", chance = 3130},
 	{name = "terra boots", chance = 9510},
 	{name = "great spirit potion", chance = 29460, maxCount = 2},
 	{name = "ultimate health potion", chance = 24700},
-	{id = 8896, chance = 180}, -- slightly rusted armor
+	{id = 8896, chance = 10000}, -- slightly rusted armor
 	{name = "shiny stone", chance = 860},
 	{name = "guardian boots", chance = 200},
 	{name = "zaoan armor", chance = 870},
@@ -120,7 +121,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 35,
-	armor = 35
+	armor = 30
 }
 
 monster.elements = {

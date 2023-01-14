@@ -1,3 +1,0 @@
-NpcTable = {
-	--[] = {name = "", position = Position()},
-}

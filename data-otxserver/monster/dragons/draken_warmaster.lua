@@ -30,7 +30,7 @@ monster.health = 4150
 monster.maxHealth = 4150
 monster.race = "blood"
 monster.corpse = 10190
-monster.speed = 324
+monster.speed = 162
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -77,8 +77,7 @@ monster.voices = {
 monster.loot = {
 	{name = "ring of the sky", chance = 180},
 	{name = "small ruby", chance = 1525, maxCount = 5},
-	{name = "gold coin", chance = 47000, maxCount = 100},
-	{name = "gold coin", chance = 50000, maxCount = 100},
+	{name = "gold coin", chance = 97500, maxCount = 200},
 	{name = "platinum coin", chance = 50625, maxCount = 5},
 	{name = "tower shield", chance = 2035},
 	{name = "meat", chance = 30300},
@@ -100,7 +99,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 40,
-	armor = 40,
+	armor = 55,
 	{name ="combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 510, maxDamage = 600, effect = CONST_ME_MAGIC_BLUE, target = false}
 }
 

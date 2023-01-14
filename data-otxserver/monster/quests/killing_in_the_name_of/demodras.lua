@@ -17,7 +17,7 @@ monster.health = 4500
 monster.maxHealth = 4500
 monster.race = "blood"
 monster.corpse = 5984
-monster.speed = 230
+monster.speed = 197
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -72,16 +72,22 @@ monster.voices = {
 }
 
 monster.loot = {
-	{id = 3583, chance = 20000, maxCount = 2}, -- dragon ham
-	{id = 2903, chance = 1818}, -- golden mug
-	{id = 2842, chance = 3333}, -- book
-	{id = 3386, chance = 333}, -- dragon scale mail
-	{id = 3450, chance = 2222, maxCount = 10}, -- power bolt
-	{id = 3732, chance = 6666}, -- green mushroom
-	{id = 3280, chance = 1428}, -- fire sword
-	{id = 3029, chance = 2222, maxCount = 2}, -- small sapphire
-	{id = 5948, chance = 5000}, -- red dragon leather
-	{id = 5919, chance = 100000} -- dragon claw
+	{id = 3035, chance = 99150, maxCount = 10}, -- platinum coin
+	{id = 5919, chance = 100000}, -- dragon claw
+	{id = 3732, chance = 25650, maxCount = 7}, -- green mushroom
+	{id = 3029, chance = 12000}, -- small sapphire
+	{id = 238, chance = 9500}, -- great mana potion
+	{id = 7365, chance = 4250, maxCount = 5}, -- onyx arrow
+	{id = 3061, chance = 850}, -- life crystal
+	{id = 3450, chance = 19650, maxCount = 10}, -- power bolt
+	{id = 3051, chance = 10250}, -- energy ring
+	{id = 239, chance = 9500}, -- great health potion
+	{id = 3386, chance = 1700}, -- dragon scale mail
+	{id = 3583, chance = 75200, maxCount = 10}, -- dragon ham
+	{id = 5948, chance = 13700}, -- red dragon leather
+	{id = 2842, chance = 10250}, -- book (gemmed)
+	{id = 2903, chance = 6000}, -- golden mug
+	{id = 3280, chance = 1700} -- fire sword
 }
 
 monster.attacks = {
@@ -93,7 +99,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 25,
-	armor = 35,
+	armor = 45,
 	{name ="combat", interval = 1000, chance = 25, type = COMBAT_HEALING, minDamage = 400, maxDamage = 700, effect = CONST_ME_MAGIC_BLUE, target = false}
 }
 

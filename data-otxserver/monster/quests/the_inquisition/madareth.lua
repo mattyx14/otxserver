@@ -78,7 +78,7 @@ monster.loot = {
 	{id = 238, chance = 21000}, -- great mana potion
 	{id = 6299, chance = 19000}, -- death ring
 	{id = 3067, chance = 19000}, -- hailstorm rod
-	{id = 3258, chance = 19000}, -- lute
+	{id = 2950, chance = 19000}, -- lute
 	{id = 3035, chance = 19000, maxCount = 26}, -- platinum coin
 	{id = 3265, chance = 19000}, -- two handed sword
 	{id = 7404, chance = 16000}, -- assassin dagger

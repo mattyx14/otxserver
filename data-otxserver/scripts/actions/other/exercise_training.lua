@@ -22,9 +22,15 @@ function exerciseTraining.onUse(player, item, fromPosition, target, toPosition, 
 			return true
 		end
 
+		local playerHouse = player:getTile():getHouse()
 		local targetPos = target:getPosition()
+		local targetHouse = Tile(targetPos):getHouse()
 
 		if table.contains(HouseDummies, targetId) then
+			if playerHouse ~= targetHouse then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You must be inside the house to use this dummy.")
+				return true
+			end
 			local playersOnDummy = 0
 			for _, playerTraining in pairs(onExerciseTraining) do
 				if playerTraining.dummyPos == targetPos then

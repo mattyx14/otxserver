@@ -3,17 +3,17 @@ local monster = {}
 
 monster.description = "a Dwarf Henchman"
 monster.experience = 15
-monster.outfit = { -- tofix
-	lookType = 69,
-	lookHead = 0,
-	lookBody = 0,
-	lookLegs = 0,
-	lookFeet = 0,
+monster.outfit = {
+	lookType = 160,
+	lookHead = 115,
+	lookBody = 77,
+	lookLegs = 93,
+	lookFeet = 114,
 	lookAddons = 0,
 	lookMount = 0
 }
 
-monster.raceId = 69 -- tofix
+monster.raceId = 379
 monster.Bestiary = {
 	class = "Humanoid",
 	race = BESTY_RACE_HUMANOID,
@@ -23,14 +23,14 @@ monster.Bestiary = {
 	CharmsPoints = 25,
 	Stars = 3,
 	Occurrence = 0,
-	Locations = "" --tofix
+	Locations = "Kazordoon Underground"
 	}
 
 monster.health = 350
 monster.maxHealth = 350
 monster.race = "blood"
-monster.corpse = 6007 -- tofix
-monster.speed = 210
+monster.corpse = 6007
+monster.speed = 105
 monster.manaCost = 0
 
 monster.changeTarget = {

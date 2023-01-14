@@ -17,7 +17,7 @@ monster.health = 350000
 monster.maxHealth = 350000
 monster.race = "undead"
 monster.corpse = 20228
-monster.speed = 500
+monster.speed = 250
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -62,10 +62,6 @@ monster.light = {
 }
 
 monster.summon = {
-	maxSummons = 3,
-	summons = {
-		{name = "Minion of Gaz'haragoth", chance = 33, interval = 4000, count = 3}
-	}
 }
 
 monster.voices = {
@@ -148,7 +144,8 @@ monster.attacks = {
 	{name ="combat", interval = 2500, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -200, maxDamage = -480, range = 7, radius = 5, effect = CONST_ME_MAGIC_GREEN, target = false},
 	{name ="gaz'haragoth iceball", interval = 2000, chance = 24, minDamage = -1000, maxDamage = -1000, target = false},
 	{name ="gaz'haragoth death", interval = 4000, chance = 6, target = false},
-	{name ="gaz'haragoth paralyze", interval = 2000, chance = 12, target = false}
+	{name ="gaz'haragoth paralyze", interval = 2000, chance = 12, target = false},
+	{name ="gaz'haragoth summon", interval = 1000, chance = 100, target = false}
 }
 
 monster.defenses = {

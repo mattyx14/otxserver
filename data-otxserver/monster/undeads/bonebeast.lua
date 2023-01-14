@@ -31,7 +31,7 @@ monster.health = 515
 monster.maxHealth = 515
 monster.race = "undead"
 monster.corpse = 6030
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -76,8 +76,7 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "gold coin", chance = 14000, maxCount = 50},
-	{name = "gold coin", chance = 16000, maxCount = 40},
+	{name = "gold coin", chance = 50000, maxCount = 90},
 	{id = 3114, chance = 20000}, -- skull
 	{id = 3115, chance = 47750}, -- bone
 	{name = "bone club", chance = 4950},
@@ -103,7 +102,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 30,
-	armor = 30,
+	armor = 40,
 	{name ="combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 50, maxDamage = 60, effect = CONST_ME_HITBYPOISON, target = false}
 }
 

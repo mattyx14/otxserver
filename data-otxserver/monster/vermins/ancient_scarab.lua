@@ -32,7 +32,7 @@ monster.health = 1000
 monster.maxHealth = 1000
 monster.race = "venom"
 monster.corpse = 6021
-monster.speed = 218
+monster.speed = 109
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -85,19 +85,19 @@ monster.voices = {
 
 monster.loot = {
 	{name = "scarab amulet", chance = 3410},
-	{id = 3025, chance = 2570}, -- ancient amulet
-	{name = "gold coin", chance = 50000, maxCount = 90},
-	{name = "gold coin", chance = 50000, maxCount = 97},
-	{name = "small emerald", chance = 4810, maxCount = 3},
-	{name = "small amethyst", chance = 5000, maxCount = 4},
-	{name = "scarab coin", chance = 7692, maxCount = 2},
+	{id = 3025, chance = 2500}, -- ancient amulet
+	{name = "gold coin", chance = 100000, maxCount = 187},
+	{name = "small emerald", chance = 6000, maxCount = 3},
+	{name = "small amethyst", chance = 6000, maxCount = 4},
+	{name = "scarab coin", chance = 8000, maxCount = 2},
 	{id = 3046, chance = 11480}, -- magic light wand
-	{name = "daramian waraxe", chance = 420},
-	{name = "plate armor", chance = 10300},
+	{name = "daramian waraxe", chance = 300},
+	{name = "plate armor", chance = 5000},
 	{name = "scarab shield", chance = 480},
-	{name = "strong health potion", chance = 660},
+	{name = "strong health potion", chance = 1500},
+	{name = "springsprout rod", chance = 1000},
 	{name = "terra hood", chance = 490},
-	{name = "scarab pincers", chance = 3571}
+	{name = "scarab pincers", chance = 7000}
 }
 
 monster.attacks = {
@@ -110,7 +110,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 30,
-	armor = 30,
+	armor = 36,
 	{name ="speed", interval = 2000, chance = 15, speedChange = 380, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000}
 }
 

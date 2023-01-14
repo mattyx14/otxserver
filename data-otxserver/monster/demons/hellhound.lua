@@ -31,7 +31,7 @@ monster.health = 7500
 monster.maxHealth = 7500
 monster.race = "blood"
 monster.corpse = 6331
-monster.speed = 360
+monster.speed = 180
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -83,8 +83,7 @@ monster.loot = {
 	{id = 3116, chance = 900}, -- big bone
 	{id = 3027, chance = 9200, maxCount = 4}, -- black pearl
 	{id = 16131, chance = 12500}, -- blazing bone
-	{id = 6558, chance = 20000}, -- flask of demonic blood
-	{id = 6558, chance = 20000}, -- flask of demonic blood
+	{id = 6558, chance = 20000, maxCount = 2}, -- flask of demonic blood
 	{id = 6499, chance = 20000}, -- demonic essence
 	{id = 4871, chance = 400}, -- explorer brooch
 	{id = 9636, chance = 10000}, -- fiery heart
@@ -94,8 +93,7 @@ monster.loot = {
 	{id = 238, chance = 30000, maxCount = 3}, -- great mana potion
 	{id = 7642, chance = 20000}, -- great spirit potion
 	{id = 3038, chance = 1000}, -- green gem
-	{id = 5910, chance = 5000}, -- red piece of cloth
-	{id = 3582, chance = 30000, maxCount = 6}, -- ham
+	{id = 3582, chance = 30000, maxCount = 14}, -- ham
 	{id = 5925, chance = 10000}, -- hardened bone
 	{id = 9637, chance = 20000}, -- hellhound slobber
 	{id = 3318, chance = 7500}, -- knight axe
@@ -107,7 +105,6 @@ monster.loot = {
 	{id = 7421, chance = 1000}, -- onyx flail
 	{id = 3035, chance = 100000, maxCount = 7}, -- platinum coin
 	{id = 3039, chance = 4500}, -- red gem
-	{id = 5911, chance = 3000}, -- red piece of cloth
 	{id = 6553, chance = 1000}, -- ruthless axe
 	{id = 3032, chance = 10000, maxCount = 3}, -- small emerald
 	{id = 3030, chance = 10000, maxCount = 3}, -- small ruby
@@ -116,6 +113,8 @@ monster.loot = {
 	{id = 7643, chance = 16000}, -- ultimate health potion
 	{id = 3071, chance = 7000}, -- wand of inferno
 	{id = 3037, chance = 4500}, -- yellow gem
+	{id = 5911, chance = 3000}, -- red piece of cloth
+	{id = 5910, chance = 5000}, -- green piece of cloth
 	{id = 5914, chance = 6000} -- yellow piece of cloth
 }
 
@@ -131,7 +130,7 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 40,
-	armor = 40,
+	armor = 60,
 	{name ="speed", interval = 2000, chance = 15, speedChange = 320, effect = CONST_ME_MAGIC_RED, target = false, duration = 5000},
 	{name ="combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 220, maxDamage = 425, effect = CONST_ME_MAGIC_BLUE, target = false}
 }

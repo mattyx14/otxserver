@@ -12,7 +12,7 @@ local rewards = {
     { id = 34092, name = "Soulshanks" },
     { id = 34093, name = "Soulstrider" },
     { id = 34094, name = "Soulshell" },
-    { id = 34095, name = "Soulmantel" },
+    { id = 34095, name = "Soulmantle" },
     { id = 34096, name = "Soulshroud" },
     { id = 34097, name = "Pair of Soulwalkers" },
     { id = 34098, name = "Pair of Soulstalkers" },
