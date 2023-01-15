@@ -12,42 +12,42 @@ function serverstartup.onStartup()
 	-- Action and unique tables
 	-- Chest table
 	loadLuaMapAction(ChestAction)
-	loadLuaMapUnique(ChestUnique)
+	--//loadLuaMapUnique(ChestUnique)
 	-- Corpse table
 	loadLuaMapAction(CorpseAction)
-	loadLuaMapUnique(CorpseUnique)
+	--//loadLuaMapUnique(CorpseUnique)
 	-- Doors key table
 	loadLuaMapAction(KeyDoorAction)
 	-- Doors level table
 	loadLuaMapAction(LevelDoorAction)
 	-- Doors quest table
 	loadLuaMapAction(QuestDoorAction)
-	loadLuaMapUnique(QuestDoorUnique)
+	--//loadLuaMapUnique(QuestDoorUnique)
 	-- Item table
 	loadLuaMapAction(ItemAction)
-	loadLuaMapUnique(ItemUnique)
+	--//loadLuaMapUnique(ItemUnique)
 	-- Item daily reward table
 	-- This is temporary disabled > loadLuaMapAction(DailyRewardAction)
 	-- Item unmoveable table
 	loadLuaMapAction(ItemUnmoveableAction)
 	-- Lever table
 	loadLuaMapAction(LeverAction)
-	loadLuaMapUnique(LeverUnique)
+	--//loadLuaMapUnique(LeverUnique)
 	-- Teleport (magic forcefields) table
 	loadLuaMapAction(TeleportAction)
-	loadLuaMapUnique(TeleportUnique)
+	--//loadLuaMapUnique(TeleportUnique)
 	-- Teleport item table
 	loadLuaMapAction(TeleportItemAction)
-	loadLuaMapUnique(TeleportItemUnique)
+	--//loadLuaMapUnique(TeleportItemUnique)
 	-- Tile table
 	loadLuaMapAction(TileAction)
-	loadLuaMapUnique(TileUnique)
+	--//loadLuaMapUnique(TileUnique)
 	-- Tile pick table
 	loadLuaMapAction(TilePickAction)
 	-- Create new item on map
 	CreateMapItem(CreateItemOnMap)
 	-- Update old quest storage keys
-	--updateKeysStorage(QuestKeysUpdate)
+	--//updateKeysStorage(QuestKeysUpdate)
 
 	Spdlog.info("Loaded all actions and uniques in the map")
 
