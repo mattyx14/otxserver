@@ -1,12 +1,16 @@
 local specialQuests = {
-	-- 
+	[2001] = DarkKonia.Missions.DjinnMission.Done,
+	[2002] = DarkKonia.AnniQuest.AnnihiMission.Done,
 }
 
 local questsExperience = {
-	-- 
+	[2423] = 5000, -- Experience Quest "Clerial Mace + 5k_Exp" / Sohan Town
+	[2429] = 5000, -- Experience Quest "Barbarian Axe + 5k_Exp" / Fynn Castle
+	[7385] = 5000, -- Experience Quest "Crimson Sword + 5k_Exp" / Misidia Settlement
 }
 
 local questSystem = Action()
+
 function questSystem.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local storage = specialQuests[item.actionid]
 	if not storage then

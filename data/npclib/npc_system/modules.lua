@@ -162,8 +162,6 @@ if Modules == nil then
 		}
 		if player:hasBlessing(parameters.bless) then
 			npcHandler:say("You already possess this blessing.", npc, player)
-		elseif parameters.bless == 3 and player:getStorageValue(Storage.KawillBlessing) ~= 1 then
-			npcHandler:say("You need the blessing of the great geomancer first.", npc, player)
 		elseif parameters.bless == 1 and #player:getBlessings() == 0 and not player:getItemById(3057, true) then
 			npcHandler:say("You don't have any of the other blessings nor an amulet of loss, \z
                            so it wouldn't make sense to bestow this protection on you now. \z
@@ -171,13 +169,6 @@ if Modules == nil then
 		elseif not player:removeMoneyBank(type(parameters.cost) == "string"
 		and npcHandler:parseMessage(parameters.cost, parseInfo) or parameters.cost) then
 			npcHandler:say("Oh. You do not have enough money.", npc, player)
-		else
-			npcHandler:say(parameters.text or "You have been blessed by one of the seven gods!", npc, player)
-			if parameters.bless == 3 then
-				player:setStorageValue(Storage.KawillBlessing, 0)
-			end
-			player:addBlessing(parameters.bless, 1)
-			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 		end
 
 		npcHandler:resetNpc(player)
