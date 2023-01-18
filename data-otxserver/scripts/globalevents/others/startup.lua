@@ -6,6 +6,8 @@ function serverstartup.onStartup()
 	-- Sign table
 	loadLuaMapSign(SignTable)
 	Spdlog.info("Loaded " .. (#SignTable) .. " signs in the map")
+	-- Npc table
+	loadLuaNpcs(NpcTable)
 	-- Book/Document table
 	loadLuaMapBookDocument(BookDocumentTable)
 

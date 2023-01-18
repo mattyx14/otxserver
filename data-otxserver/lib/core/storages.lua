@@ -147,6 +147,14 @@ Storage = {
 		Edala = 52122,
 		EdalaTimer = 52123
 	},
+	GraveDanger = {
+		-- Reserved storage from 52310 - 52339
+		Questline = 52310,
+		CobraBastion = {
+			Questline = 52311,
+			ScarlettTimer = 52312
+		}
+	},
 	KillingInTheNameOf = {
 		-- Reserved storage from 51610 - 51629
 		LugriNecromancers = 51610,
@@ -176,7 +184,7 @@ Storage = {
 	},
 	AdventurersGuild = {
 		-- Reserved storage from 52130 - 52159
-		Stone = 52130
+		Stone = 52130,
 	},
 	TheOrderOfTheLion = {
 		-- Reserved storage 52360-52395 (TheRookieGuard)
