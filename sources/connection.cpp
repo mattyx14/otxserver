@@ -106,7 +106,7 @@ void Connection::close(bool force)
 	connectionState = CONNECTION_STATE_CLOSED;
 
 	if (protocol) {
-		Dispatcher::getInstance().addTask(
+		g_dispatcher.addTask(
 			createTask(std::bind(&Protocol::release, protocol)));
 	}
 
@@ -140,7 +140,7 @@ Connection::~Connection()
 void Connection::accept(Protocol_ptr protocol)
 {
 	this->protocol = protocol;
-	Dispatcher::getInstance().addTask(createTask(std::bind(&Protocol::onConnect, protocol)));
+	g_dispatcher.addTask(createTask(std::bind(&Protocol::onConnect, protocol)));
 
 	accept();
 }

@@ -36,7 +36,7 @@ class OutputMessageAllocator
 void OutputMessagePool::scheduleSendAll()
 {
 	auto functor = std::bind(&OutputMessagePool::sendAll, this);
-	Scheduler::getInstance().addEvent(createSchedulerTask(OUTPUTMESSAGE_AUTOSEND_DELAY.count(), functor));
+	g_scheduler.addEvent(createSchedulerTask(OUTPUTMESSAGE_AUTOSEND_DELAY.count(), functor));
 }
 
 void OutputMessagePool::sendAll()

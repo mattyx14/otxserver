@@ -89,6 +89,9 @@ inline void boost::throw_exception(std::exception const & e)
 }
 #endif
 
+Dispatcher g_dispatcher;
+Scheduler g_scheduler;
+Stats g_stats;
 RSA g_RSA;
 ConfigManager g_config;
 Game g_game;
@@ -263,7 +266,7 @@ void signalHandler(int32_t sig)
 	switch(sig)
 	{
 		case SIGHUP:
-			Dispatcher::getInstance().addTask(createTask(
+			g_dispatcher.addTask(createTask(
 				boost::bind(&Game::saveGameState, &g_game, (uint8_t)SAVE_PLAYERS | (uint8_t)SAVE_MAP | (uint8_t)SAVE_STATE)));
 			break;
 
@@ -276,7 +279,7 @@ void signalHandler(int32_t sig)
 			break;
 
 		case SIGUSR1:
-			Dispatcher::getInstance().addTask(createTask(
+			g_dispatcher.addTask(createTask(
 				boost::bind(&Game::setGameState, &g_game, GAMESTATE_CLOSED)));
 			break;
 
@@ -285,21 +288,22 @@ void signalHandler(int32_t sig)
 			break;
 
 		case SIGCONT:
-			Dispatcher::getInstance().addTask(createTask(
+			g_dispatcher.addTask(createTask(
 				boost::bind(&Game::reloadInfo, &g_game, RELOAD_ALL, 0, false)));
 			break;
 
 		case SIGQUIT:
-			Dispatcher::getInstance().addTask(createTask(
+			g_dispatcher.addTask(createTask(
 				boost::bind(&Game::setGameState, &g_game, GAMESTATE_SHUTDOWN)));
 			break;
 
 		case SIGTERM:
-			Dispatcher::getInstance().addTask(createTask(
+			g_dispatcher.addTask(createTask(
 				boost::bind(&Game::shutdown, &g_game)));
 
-			Dispatcher::getInstance().stop();
-			Scheduler::getInstance().stop();
+			g_dispatcher.stop();
+			g_scheduler.stop();
+			g_stats.stop();
 			break;
 
 		default:
@@ -368,8 +372,12 @@ int main(int argc, char* argv[])
 	signal(SIGTERM, signalHandler); //shutdown
 #endif
 
+	g_dispatcher.start();
+	g_scheduler.start();
+	g_stats.start();
+
 	OutputHandler::getInstance();
-	Dispatcher::getInstance().addTask(createTask(boost::bind(otserv, args, &servicer)));
+	g_dispatcher.addTask(createTask(boost::bind(otserv, args, &servicer)));
 	g_loaderSignal.wait(g_loaderUniqueLock);
 
 	boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
@@ -377,15 +385,18 @@ int main(int argc, char* argv[])
 	{
 		std::clog << ">> " << g_config.getString(ConfigManager::SERVER_NAME) << " server Online!" << std::endl << std::endl;
 		servicer.run();
+	} else {
+		std::clog << ">> " << g_config.getString(ConfigManager::SERVER_NAME)
+				  << " server Offline! No services available..." << std::endl << std::endl;
+		g_dispatcher.shutdown();
+		g_scheduler.shutdown();
+		g_stats.shutdown();
 	}
-	else
-		std::clog << ">> " << g_config.getString(ConfigManager::SERVER_NAME) << " server Offline! No services available..." << std::endl << std::endl;
 
-	Dispatcher::getInstance().exit();
-	Scheduler::getInstance().exit();
+	g_scheduler.join();
+	g_dispatcher.join();
+	g_stats.join();
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
-	exit(0);
 	return 0;
 }
 

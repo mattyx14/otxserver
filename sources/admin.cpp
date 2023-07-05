@@ -332,7 +332,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 						flags |= SAVE_PLAYERS_SHALLOW;
 
 					addLogLine(LOGTYPE_EVENT, "saving server");
-					Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::saveGameState, &g_game, flags)));
+					g_dispatcher.addTask(createTask(boost::bind(&Game::saveGameState, &g_game, flags)));
 
 					output->put<char>(AP_MSG_COMMAND_OK);
 					break;
@@ -341,7 +341,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 				case CMD_CLOSE_SERVER:
 				{
 					addLogLine(LOGTYPE_EVENT, "closing server");
-					Dispatcher::getInstance().addTask(createTask(boost::bind(
+					g_dispatcher.addTask(createTask(boost::bind(
 						&Game::setGameState, &g_game, GAMESTATE_CLOSED)));
 
 					output->put<char>(AP_MSG_COMMAND_OK);
@@ -360,7 +360,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 				case CMD_SHUTDOWN_SERVER:
 				{
 					addLogLine(LOGTYPE_EVENT, "shutting down server");
-					Dispatcher::getInstance().addTask(createTask(boost::bind(
+					g_dispatcher.addTask(createTask(boost::bind(
 						&Game::setGameState, &g_game, GAMESTATE_SHUTDOWN)));
 
 					output->put<char>(AP_MSG_COMMAND_OK);
@@ -369,7 +369,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 
 				case CMD_PAY_HOUSES:
 				{
-					Dispatcher::getInstance().addTask(createTask(boost::bind(
+					g_dispatcher.addTask(createTask(boost::bind(
 						&ProtocolAdmin::adminCommandPayHouses, this)));
 					break;
 				}
@@ -377,7 +377,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 				case CMD_RELOAD_SCRIPTS:
 				{
 					const int8_t reload = msg.get<char>();
-					Dispatcher::getInstance().addTask(createTask(boost::bind(
+					g_dispatcher.addTask(createTask(boost::bind(
 						&ProtocolAdmin::adminCommandReload, this, reload)));
 					break;
 				}
@@ -385,7 +385,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 				case CMD_KICK:
 				{
 					const std::string param = msg.getString();
-					Dispatcher::getInstance().addTask(createTask(boost::bind(
+					g_dispatcher.addTask(createTask(boost::bind(
 						&ProtocolAdmin::adminCommandKickPlayer, this, param)));
 					break;
 				}
@@ -393,7 +393,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 				case CMD_SEND_MAIL:
 				{
 					const std::string xmlData = msg.getString();
-					Dispatcher::getInstance().addTask(createTask(boost::bind(
+					g_dispatcher.addTask(createTask(boost::bind(
 						&ProtocolAdmin::adminCommandSendMail, this, xmlData)));
 					break;
 				}
@@ -402,7 +402,7 @@ void ProtocolAdmin::parsePacket(NetworkMessage& msg)
 				{
 					const std::string param = msg.getString();
 					addLogLine(LOGTYPE_EVENT, "broadcasting: " + param);
-					Dispatcher::getInstance().addTask(createTask(boost::bind(
+					g_dispatcher.addTask(createTask(boost::bind(
 						&Game::broadcastMessage, &g_game, param, MSG_STATUS_WARNING)));
 
 					output->put<char>(AP_MSG_COMMAND_OK);
@@ -493,7 +493,7 @@ void ProtocolAdmin::adminCommandKickPlayer(const std::string& param)
 	Player* player = NULL;
 	if(g_game.getPlayerByNameWildcard(param, player) == RET_NOERROR)
 	{
-		Scheduler::getInstance().addEvent(createSchedulerTask(SCHEDULER_MINTICKS, boost::bind(&Game::kickPlayer, &g_game, player->getID(), false)));
+		g_scheduler.addEvent(createSchedulerTask(SCHEDULER_MINTICKS, boost::bind(&Game::kickPlayer, &g_game, player->getID(), false)));
 		addLogLine(LOGTYPE_EVENT, "kicking player " + player->getName());
 		output->put<char>(AP_MSG_COMMAND_OK);
 	}

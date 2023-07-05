@@ -352,7 +352,7 @@ void Creature::addEventWalk(bool firstStep/* = false*/)
 	if(ticks == 1)
 		g_game.checkCreatureWalk(getID());
 
-	eventWalk = Scheduler::getInstance().addEvent(createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, ticks),
+	eventWalk = g_scheduler.addEvent(createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, ticks),
 		boost::bind(&Game::checkCreatureWalk, &g_game, id)));
 }
 
@@ -361,7 +361,7 @@ void Creature::stopEventWalk()
 	if(!eventWalk)
 		return;
 
-	Scheduler::getInstance().stopEvent(eventWalk);
+	g_scheduler.stopEvent(eventWalk);
 	eventWalk = 0;
 }
 
@@ -673,7 +673,7 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 		if(hasFollowPath)
 		{
 			isUpdatingPath = true;
-			Dispatcher::getInstance().addTask(createTask(
+			g_dispatcher.addTask(createTask(
 				boost::bind(&Game::updateCreatureWalk, &g_game, getID())));
 		}
 
@@ -686,7 +686,7 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 		if(newPos.z == oldPos.z && canSee(attackedCreature->getPosition()))
 		{
 			if(hasExtraSwing()) //our target is moving lets see if we can get in hit
-				Dispatcher::getInstance().addTask(createTask(
+				g_dispatcher.addTask(createTask(
 					boost::bind(&Game::checkCreatureAttack, &g_game, getID())));
 
 			if(newTile->getZone() != oldTile->getZone())

@@ -40,7 +40,7 @@ DATABASE = databasemysql.cpp
 # For OT_ADMIN, add admin.cpp admin.h
 EXTRASOURCES = 
 
-CXXSOURCES = 	actions.cpp				allocator.cpp			baseevents.cpp			beds.cpp \
+CXXSOURCES = 	        stats.cpp actions.cpp				allocator.cpp			baseevents.cpp			beds.cpp \
 						chat.cpp  				combat.cpp  			condition.cpp 				configmanager.cpp \
 						connection.cpp		container.cpp			creature.cpp  				creatureevent.cpp\
 						cylinder.cpp  			database.cpp 			databasemanager.cpp 	$(DATABASE) \

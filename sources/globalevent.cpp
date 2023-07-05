@@ -92,9 +92,9 @@ bool GlobalEvents::registerEvent(Event* event, xmlNodePtr, bool override)
 void GlobalEvents::startup()
 {
 	execute(GLOBALEVENT_STARTUP);
-	Scheduler::getInstance().addEvent(createSchedulerTask(TIMER_INTERVAL,
+	g_scheduler.addEvent(createSchedulerTask(TIMER_INTERVAL,
 		boost::bind(&GlobalEvents::timer, this)));
-	Scheduler::getInstance().addEvent(createSchedulerTask(SCHEDULER_MINTICKS,
+	g_scheduler.addEvent(createSchedulerTask(SCHEDULER_MINTICKS,
 		boost::bind(&GlobalEvents::think, this)));
 }
 
@@ -113,7 +113,7 @@ void GlobalEvents::timer()
 				<< it->second->getName() << std::endl;
 	}
 
-	Scheduler::getInstance().addEvent(createSchedulerTask(TIMER_INTERVAL,
+	g_scheduler.addEvent(createSchedulerTask(TIMER_INTERVAL,
 		boost::bind(&GlobalEvents::timer, this)));
 }
 
@@ -131,7 +131,7 @@ void GlobalEvents::think()
 				<< it->second->getName() << std::endl;
 	}
 
-	Scheduler::getInstance().addEvent(createSchedulerTask(SCHEDULER_MINTICKS,
+	g_scheduler.addEvent(createSchedulerTask(SCHEDULER_MINTICKS,
 		boost::bind(&GlobalEvents::think, this)));
 }
 

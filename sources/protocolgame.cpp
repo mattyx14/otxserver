@@ -51,15 +51,6 @@ extern Actions actions;
 extern CreatureEvents* g_creatureEvents;
 extern Chat g_chat;
 
-template<class FunctionType>
-void ProtocolGame::addGameTaskInternal(uint32_t delay, const FunctionType& func)
-{
-	if(delay > 0)
-		Dispatcher::getInstance().addTask(createTask(delay, func));
-	else
-		Dispatcher::getInstance().addTask(createTask(func));
-}
-
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 uint32_t ProtocolGame::protocolGameCount = 0;
 
@@ -320,7 +311,7 @@ void ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			foundPlayer->client->disconnect();
 			foundPlayer->isConnecting = true;
 			foundPlayer->setClientVersion(version);
-			eventConnect = Scheduler::getInstance().addEvent(createSchedulerTask(
+			eventConnect = g_scheduler.addEvent(createSchedulerTask(
 				1000, boost::bind(&ProtocolGame::connect, getThis(), foundPlayer->getID(), operatingSystem, version)));
 		} else {
 			connect(foundPlayer->getID(), operatingSystem, version);
@@ -583,10 +574,10 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	if (name != "10")
-		Dispatcher::getInstance().addTask(createTask(boost::bind(
+		g_dispatcher.addTask(createTask(boost::bind(
 			&ProtocolGame::login, this, character, id, password, operatingSystem, version, gamemaster)));
 	else
-		Dispatcher::getInstance().addTask(createTask(boost::bind(
+		g_dispatcher.addTask(createTask(boost::bind(
 			&ProtocolGame::spectate, this, character, password)));
 }
 
@@ -905,19 +896,19 @@ bool ProtocolGame::canSee(uint16_t x, uint16_t y, uint16_t z) const
 void ProtocolGame::parseLogout(NetworkMessage&)
 {
 	if(m_spectator)
-		Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::disconnect, this)));
+		g_dispatcher.addTask(createTask(boost::bind(&ProtocolGame::disconnect, this)));
 	else
-		Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::logout, this, true, false)));
+		g_dispatcher.addTask(createTask(boost::bind(&ProtocolGame::logout, this, true, false)));
 }
 
 void ProtocolGame::parseCancelWalk(NetworkMessage&)
 {
-	Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::sendCancelWalk, this)));
+	g_dispatcher.addTask(createTask(boost::bind(&ProtocolGame::sendCancelWalk, this)));
 }
 
 void ProtocolGame::parseCancelTarget(NetworkMessage&)
 {
-	Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::sendCancelTarget, this)));
+	g_dispatcher.addTask(createTask(boost::bind(&ProtocolGame::sendCancelTarget, this)));
 }
 
 void ProtocolGame::parseCreatePrivateChannel(NetworkMessage&)
@@ -940,7 +931,7 @@ void ProtocolGame::parseChannelExclude(NetworkMessage& msg)
 void ProtocolGame::parseGetChannels(NetworkMessage&)
 {
 	if(m_spectator)
-		Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::chat, this, 0)));
+		g_dispatcher.addTask(createTask(boost::bind(&ProtocolGame::chat, this, 0)));
 	else
 		addGameTask(&Game::playerRequestChannels, player->getID());
 }
@@ -949,7 +940,7 @@ void ProtocolGame::parseOpenChannel(NetworkMessage& msg)
 {
 	uint16_t channelId = msg.get<uint16_t>();
 	if(m_spectator)
-		Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::chat, this, channelId)));
+		g_dispatcher.addTask(createTask(boost::bind(&ProtocolGame::chat, this, channelId)));
 	else
 		addGameTask(&Game::playerOpenChannel, player->getID(), channelId);
 }
@@ -1216,7 +1207,7 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 
 	if(m_spectator)
 	{
-		Dispatcher::getInstance().addTask(createTask(boost::bind(&Spectators::handle, player->client, this, msg.getString(), channelId)));
+		g_dispatcher.addTask(createTask(boost::bind(&Spectators::handle, player->client, this, msg.getString(), channelId)));
 		return;
 	}
 

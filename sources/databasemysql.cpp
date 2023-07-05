@@ -36,7 +36,7 @@ extern ConfigManager g_config;
 DatabaseMySQL::~DatabaseMySQL()
 {
 	if(m_timeoutTask != 0)
-		Scheduler::getInstance().stopEvent(m_timeoutTask);
+		g_scheduler.stopEvent(m_timeoutTask);
 
 	mysql_close(m_handle);
 	delete m_handle;
@@ -80,7 +80,7 @@ bool DatabaseMySQL::connect()
 
 	timeout = g_config.getNumber(ConfigManager::SQL_KEEPALIVE) * 1000;
 	if(timeout)
-		m_timeoutTask = Scheduler::getInstance().addEvent(createSchedulerTask(timeout,
+		m_timeoutTask = g_scheduler.addEvent(createSchedulerTask(timeout,
 			boost::bind(&DatabaseMySQL::keepAlive, this)));
 
 	return true;
@@ -93,7 +93,7 @@ void DatabaseMySQL::keepAlive()
 		return;
 
 	if(!mysql_ping(m_handle))
-		Scheduler::getInstance().addEvent(createSchedulerTask(timeout,
+		g_scheduler.addEvent(createSchedulerTask(timeout,
 			boost::bind(&DatabaseMySQL::keepAlive, this)));
 	else
 		m_connected = false;
@@ -133,6 +133,7 @@ bool DatabaseMySQL::query(std::string query)
 		return false;
 
 	m_lock.lock();
+	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
 	if(mysql_real_query(m_handle, query.c_str(), query.length()))
 	{
 		int32_t error = mysql_errno(m_handle);
@@ -149,6 +150,9 @@ bool DatabaseMySQL::query(std::string query)
 	if(tmp)
 		mysql_free_result(tmp);
 
+	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+	g_stats.addSqlStats(new Stat(ns, query.substr(0, 100), query.substr(0, 256)));
+
 	return true;
 }
 
@@ -159,6 +163,7 @@ DBResult* DatabaseMySQL::storeQuery(std::string query)
 
 	int32_t error = 0;
 	m_lock.lock();
+	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
 	if(mysql_real_query(m_handle, query.c_str(), query.length()))
 	{
 		error = mysql_errno(m_handle);
@@ -172,6 +177,8 @@ DBResult* DatabaseMySQL::storeQuery(std::string query)
 
 	if(MYSQL_RES* _result = mysql_store_result(m_handle))
 	{
+		uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+		g_stats.addSqlStats(new Stat(ns, query.substr(0, 100), query.substr(0, 256)));
 		m_lock.unlock();
 		DBResult* result = (DBResult*)new MySQLResult(_result);
 		return verifyResult(result);
