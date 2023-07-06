@@ -17,79 +17,84 @@
 
 #ifndef __TASKS__
 #define __TASKS__
-#include "otsystem.h"
+#include <condition_variable>
+#include "thread_holder_base.h"
+#include "enums.h"
+#include "stats.h"
 
-#include <boost/function.hpp>
-#define DISPATCHER_TASK_EXPIRATION 2000
+const int DISPATCHER_TASK_EXPIRATION = 2000;
+const auto SYSTEM_TIME_ZERO = std::chrono::system_clock::time_point(std::chrono::milliseconds(0));
 
 class Task
 {
-	public:
-		Task(const boost::function<void (void)>& f): m_expiration(
-			boost::date_time::not_a_date_time), m_f(f) {}
-		Task(uint32_t ms, const boost::function<void (void)>& f): m_expiration(
-			boost::get_system_time() + boost::posix_time::milliseconds(ms)), m_f(f) {}
+public:
+	// DO NOT allocate this class on the stack
+	explicit Task(std::function<void(void)>&& f, const std::string& _description, const std::string& _extraDescription) :
+			description(_description), extraDescription(_extraDescription), func(std::move(f)) {}
+	Task(uint32_t ms, std::function<void(void)>&& f, const std::string& _description, const std::string& _extraDescription) :
+			description(_description), extraDescription(_extraDescription), expiration(std::chrono::system_clock::now() + std::chrono::milliseconds(ms)), func(std::move(f)) {}
 
-		virtual ~Task() {}
-		void operator()() {m_f();}
+	virtual ~Task() = default;
+	void operator()() {
+		func();
+	}
 
-		void unsetExpiration() {m_expiration = boost::date_time::not_a_date_time;}
-		bool hasExpired() const
-		{
-			if(m_expiration == boost::date_time::not_a_date_time)
-				return false;
+	void setDontExpire() {
+		expiration = SYSTEM_TIME_ZERO;
+	}
 
-			return m_expiration < boost::get_system_time();
+	bool hasExpired() const {
+		if (expiration == SYSTEM_TIME_ZERO) {
+			return false;
 		}
+		return expiration < std::chrono::system_clock::now();
+	}
 
-	protected:
-		boost::system_time m_expiration;
-		boost::function<void (void)> m_f;
+	const std::string description;
+	const std::string extraDescription;
+	uint64_t executionTime = 0;
+
+protected:
+	std::chrono::system_clock::time_point expiration = SYSTEM_TIME_ZERO;
+
+private:
+	// Expiration has another meaning for scheduler tasks,
+	// then it is the time the task should be added to the
+	// dispatcher
+	std::function<void(void)> func;
 };
 
-inline Task* createTask(boost::function<void (void)> f)
-{
-	return new Task(f);
-}
-inline Task* createTask(uint32_t expiration, boost::function<void (void)> f)
-{
-	return new Task(expiration, f);
-}
+Task* createNewTask(std::function<void(void)> f, const std::string& description, const std::string& extraDescription);
+Task* createNewTask(uint32_t expiration, std::function<void(void)> f, const std::string& description, const std::string& extraDescription);
 
-class Dispatcher
-{
-	public:
-		virtual ~Dispatcher() {}
-		static Dispatcher& getInstance()
-		{
-			static Dispatcher dispatcher;
-			return dispatcher;
-		}
+class Dispatcher : public ThreadHolder<Dispatcher> {
+public:
+	Dispatcher() : ThreadHolder() {
+		static int id = 0;
+		dispatcherId = id;
+		id += 1;
+	}
 
-		void addTask(Task* task, bool front = false);
+	void addTask(Task* task, bool push_front = false);
 
-		void stop();
-		void shutdown();
-		void exit() {m_thread.join();}
+	void shutdown();
 
-		void dispatcherThread();
+	uint64_t getDispatcherCycle() const {
+		return dispatcherCycle;
+	}
 
-	protected:
-		void flush();
+	void threadMain();
 
-		Dispatcher();
-		enum DispatcherState
-		{
-			STATE_RUNNING,
-			STATE_CLOSING,
-			STATE_TERMINATED
-		};
+private:
+	std::thread thread;
+	std::mutex taskLock;
+	std::condition_variable taskSignal;
 
-		boost::thread m_thread;
-		boost::mutex m_taskLock;
-		boost::condition_variable m_taskSignal;
-
-		std::list<Task*> m_taskList;
-		static DispatcherState m_threadState;
+	std::list<Task*> taskList;
+	uint64_t dispatcherCycle = 0;
+	int dispatcherId = 0;
 };
+
+extern Dispatcher g_dispatcher;
+
 #endif

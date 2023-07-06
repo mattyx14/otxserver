@@ -137,7 +137,7 @@ void ServicePort::onAccept(Connection_ptr connection, const boost::system::error
 		if (!pendingStart) {
 			close();
 			pendingStart = true;
-			Scheduler::getInstance().addEvent(createSchedulerTask(15000,
+			g_scheduler.addEvent(createSchedulerTask(15000,
 			                     std::bind(&ServicePort::openAcceptor, std::weak_ptr<ServicePort>(shared_from_this()), serverPort)));
 		}
 	}
@@ -193,7 +193,7 @@ void ServicePort::open(uint16_t port)
 		std::cout << "[ServicePort::open] Error: " << e.what() << std::endl;
 
 		pendingStart = true;
-		Scheduler::getInstance().addEvent(createSchedulerTask(15000,
+		g_scheduler.addEvent(createSchedulerTask(15000,
 		                     std::bind(&ServicePort::openAcceptor, std::weak_ptr<ServicePort>(shared_from_this()), port)));
 	}
 }

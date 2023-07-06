@@ -702,7 +702,7 @@ LuaInterface::LuaInterface(std::string interfaceName)
 LuaInterface::~LuaInterface()
 {
 	for(LuaTimerEvents::iterator it = m_timerEvents.begin(); it != m_timerEvents.end(); ++it)
-		Scheduler::getInstance().stopEvent(it->second.eventId);
+		g_scheduler.stopEvent(it->second.eventId);
 
 	closeState();
 }
@@ -1011,6 +1011,13 @@ int32_t LuaInterface::handleFunction(lua_State* L)
 
 bool LuaInterface::callFunction(uint32_t params)
 {
+	int32_t scriptId, callback;
+	bool timer;
+	std::string event;
+	LuaInterface* interface;
+	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
+	getEnv()->getInfo(scriptId, event, interface, callback, timer);
+
 	int32_t size = lua_gettop(m_luaState), handler = lua_gettop(m_luaState) - params;
 	lua_pushcfunction(m_luaState, handleFunction);
 
@@ -1024,6 +1031,14 @@ bool LuaInterface::callFunction(uint32_t params)
 	lua_remove(m_luaState, handler);
 	if((lua_gettop(m_luaState) + (int32_t)params + 1) != size)
 		LuaInterface::error(NULL, "Stack size changed!");
+
+	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+	auto it = m_cacheFiles.find(scriptId);
+	if (it != m_cacheFiles.end()) {
+		g_stats.addLuaStats(new Stat(ns, it->second, ""));
+	} else {
+		g_stats.addLuaStats(new Stat(ns, "Unknown", ""));
+	}
 
 	return result;
 }
@@ -9149,7 +9164,7 @@ int32_t LuaInterface::luaAddEvent(lua_State* L)
 		params.push_back(luaL_ref(L, LUA_REGISTRYINDEX));
 
 	LuaTimerEvent event;
-	event.eventId = Scheduler::getInstance().addEvent(createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, popNumber(L)),
+	event.eventId = g_scheduler.addEvent(createSchedulerTask(std::max((int64_t)SCHEDULER_MINTICKS, popNumber(L)),
 		boost::bind(&LuaInterface::executeTimer, interface, ++interface->m_lastTimer)));
 
 	event.parameters = params;
@@ -9179,7 +9194,7 @@ int32_t LuaInterface::luaStopEvent(lua_State* L)
 	LuaTimerEvents::iterator it = interface->m_timerEvents.find(eventId);
 	if(it != interface->m_timerEvents.end())
 	{
-		Scheduler::getInstance().stopEvent(it->second.eventId);
+		g_scheduler.stopEvent(it->second.eventId);
 		for(std::list<int32_t>::iterator lt = it->second.parameters.begin(); lt != it->second.parameters.end(); ++lt)
 			luaL_unref(interface->m_luaState, LUA_REGISTRYINDEX, *lt);
 
@@ -10295,7 +10310,7 @@ int32_t LuaInterface::luaDoSetGameState(lua_State* L)
 	uint32_t id = popNumber(L);
 	if(id >= GAMESTATE_FIRST && id <= GAMESTATE_LAST)
 	{
-		Dispatcher::getInstance().addTask(createTask(
+		g_dispatcher.addTask(createTask(
 			boost::bind(&Game::setGameState, &g_game, (GameState_t)id)));
 		lua_pushboolean(L, true);
 	}
@@ -10363,7 +10378,7 @@ int32_t LuaInterface::luaDoReloadInfo(lua_State* L)
 	{
 		// we're passing it to scheduler since talkactions reload will
 		// re-init our lua state and crash due to unfinished call
-		Scheduler::getInstance().addEvent(createSchedulerTask(SCHEDULER_MINTICKS,
+		g_scheduler.addEvent(createSchedulerTask(SCHEDULER_MINTICKS,
 			boost::bind(&Game::reloadInfo, &g_game, (ReloadInfo_t)id, cid, false)));
 		lua_pushboolean(L, true);
 	}

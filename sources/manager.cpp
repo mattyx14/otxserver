@@ -203,31 +203,31 @@ void ProtocolManager::parsePacket(NetworkMessage& msg)
 			break;
 
 		case MP_MSG_PING:
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolManager::pong, this)));
+			g_dispatcher.addTask(createTask(boost::bind(&ProtocolManager::pong, this)));
 			break;
 
 		case MP_MSG_LUA:
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolManager::execute, this, msg.getString())));
+			g_dispatcher.addTask(createTask(boost::bind(&ProtocolManager::execute, this, msg.getString())));
 			break;
 
 		case MP_MSG_USER_INFO:
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolManager::user, this, msg.get<uint32_t>())));
+			g_dispatcher.addTask(createTask(boost::bind(&ProtocolManager::user, this, msg.get<uint32_t>())));
 			break;
 
 		case MP_MSG_CHAT_REQUEST:
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolManager::channels, this)));
+			g_dispatcher.addTask(createTask(boost::bind(&ProtocolManager::channels, this)));
 			break;
 
 		case MP_MSG_CHAT_OPEN:
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolManager::channel, this, msg.get<uint16_t>(), true)));
+			g_dispatcher.addTask(createTask(boost::bind(&ProtocolManager::channel, this, msg.get<uint16_t>(), true)));
 			break;
 
 		case MP_MSG_CHAT_CLOSE:
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolManager::channel, this, msg.get<uint16_t>(), false)));
+			g_dispatcher.addTask(createTask(boost::bind(&ProtocolManager::channel, this, msg.get<uint16_t>(), false)));
 			break;
 
 		case MP_MSG_CHAT_TALK:
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolManager::chat, this, msg.getString(), msg.get<uint16_t>(), (MessageClasses)msg.get<char>(), msg.getString())));
+			g_dispatcher.addTask(createTask(boost::bind(&ProtocolManager::chat, this, msg.getString(), msg.get<uint16_t>(), (MessageClasses)msg.get<char>(), msg.getString())));
 			break;
 
 		default:

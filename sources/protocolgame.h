@@ -25,6 +25,7 @@
 
 #include "protocol.h"
 #include "creature.h"
+#include "dispatcher.h"
 
 class NetworkMessage;
 class Player;
@@ -36,6 +37,8 @@ class Connection;
 class Quest;
 class Depot;
 class Spectators;
+
+extern Game g_game;
 
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
 
@@ -89,6 +92,16 @@ class ProtocolGame : public Protocol
 	private:
 		ProtocolGame_ptr getThis() {
 			return std::static_pointer_cast<ProtocolGame>(shared_from_this());
+		}
+
+		template <typename Callable, typename... Args>
+		void addNewGameTask(Callable function, const std::string& function_str, const std::string& extra_info, Args&&... args) {
+			g_dispatcher.addTask(createNewTask(std::bind(function, &g_game, std::forward<Args>(args)...), function_str, extra_info));
+		}
+
+		template <typename Callable, typename... Args>
+		void addNewGameTaskTimed(uint32_t delay, Callable function, const std::string& function_str, const std::string& extra_info, Args&&... args) {
+			g_dispatcher.addTask(createNewTask(delay, std::bind(function, &g_game, std::forward<Args>(args)...), function_str, extra_info));
 		}
 
 		void disconnectClient(uint8_t error, const char* message);
@@ -356,11 +369,6 @@ class ProtocolGame : public Protocol
 
 		void parseExtendedOpcode(NetworkMessage& msg);
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);
-
-		#define addGameTask(f, ...) addGameTaskInternal(0, boost::bind(f, &g_game, __VA_ARGS__))
-		#define addGameTaskTimed(delay, f, ...) addGameTaskInternal(delay, boost::bind(f, &g_game, __VA_ARGS__))
-		template<class FunctionType>
-		void addGameTaskInternal(uint32_t delay, const FunctionType&);
 
 		friend class Player;
 		friend class Spectators;

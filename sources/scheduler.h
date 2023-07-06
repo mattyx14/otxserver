@@ -17,81 +17,66 @@
 
 #ifndef __SCHEDULER__
 #define __SCHEDULER__
-#include "otsystem.h"
 
 #include "dispatcher.h"
-#define SCHEDULER_MINTICKS 50
+#include <unordered_set>
+#include <queue>
+
+#include "thread_holder_base.h"
+
+static constexpr int32_t SCHEDULER_MINTICKS = 50;
 
 class SchedulerTask : public Task
 {
-	public:
-		virtual ~SchedulerTask() {}
+public:
+	void setEventId(uint32_t id) {
+		eventId = id;
+	}
+	uint32_t getEventId() const {
+		return eventId;
+	}
 
-		void setEventId(uint32_t eventId) {m_eventId = eventId;}
-		uint32_t getEventId() const {return m_eventId;}
+	std::chrono::system_clock::time_point getCycle() const {
+		return expiration;
+	}
 
-		boost::system_time getCycle() const {return m_expiration;}
-		bool operator<(const SchedulerTask& other) const {return getCycle() > other.getCycle();}
+private:
+	SchedulerTask(uint32_t delay, std::function<void(void)>&& f, const std::string& description, const std::string& extraDescription) :
+			Task(delay, std::move(f), description, extraDescription) {}
 
-	protected:
-		uint32_t m_eventId;
+	uint32_t eventId = 0;
 
-		SchedulerTask(uint32_t delay, const boost::function<void (void)>& f):
-			Task(delay, f), m_eventId(0) {}
-		friend SchedulerTask* createSchedulerTask(uint32_t, const boost::function<void (void)>&);
+	friend SchedulerTask* createNewSchedulerTask(uint32_t delay, std::function<void(void)>, const std::string& description, const std::string& extraDescription);
 };
 
-inline SchedulerTask* createSchedulerTask(uint32_t delay, const boost::function<void (void)>& f)
-{
-	if(delay < SCHEDULER_MINTICKS)
-		delay = SCHEDULER_MINTICKS;
+SchedulerTask* createNewSchedulerTask(uint32_t delay, std::function<void(void)> f, const std::string& description, const std::string& extraDescription);
 
-	return new SchedulerTask(delay, f);
-}
-
-class lessTask : public std::binary_function<SchedulerTask*&, SchedulerTask*&, bool>
-{
-	public:
-		bool operator()(SchedulerTask*& t1, SchedulerTask*& t2) {return (*t1) < (*t2);}
+struct TaskComparator {
+	bool operator()(const SchedulerTask* lhs, const SchedulerTask* rhs) const {
+		return lhs->getCycle() > rhs->getCycle();
+	}
 };
 
-typedef std::set<uint32_t> EventIds;
-class Scheduler
+class Scheduler : public ThreadHolder<Scheduler>
 {
-	public:
-		virtual ~Scheduler() {}
-		static Scheduler& getInstance()
-		{
-			static Scheduler scheduler;
-			return scheduler;
-		}
+public:
+	uint32_t addEvent(SchedulerTask* task);
+	bool stopEvent(uint32_t eventId);
 
-		uint32_t addEvent(SchedulerTask* task);
-		bool stopEvent(uint32_t eventId);
+	void shutdown();
 
-		void stop();
-		void shutdown();
-		void exit() {m_thread.join();}
+	void threadMain();
 
-		void schedulerThread();
+private:
+	std::thread thread;
+	std::mutex eventLock;
+	std::condition_variable eventSignal;
 
-	protected:
-		Scheduler();
-		enum SchedulerState
-		{
-			STATE_RUNNING,
-			STATE_CLOSING,
-			STATE_TERMINATED
-		};
-
-		uint32_t m_lastEvent;
-		EventIds m_eventIds;
-
-		boost::thread m_thread;
-		boost::mutex m_eventLock;
-		boost::condition_variable m_eventSignal;
-
-		std::priority_queue<SchedulerTask*, std::vector<SchedulerTask*>, lessTask > m_eventList;
-		static SchedulerState m_threadState;
+	uint32_t lastEventId{ 0 };
+	std::priority_queue<SchedulerTask*, std::deque<SchedulerTask*>, TaskComparator> eventList;
+	std::unordered_set<uint32_t> eventIds;
 };
+
+extern Scheduler g_scheduler;
+
 #endif
