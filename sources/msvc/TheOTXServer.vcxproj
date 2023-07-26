@@ -54,7 +54,7 @@
     <ClInclude Include="..\itemattributes.h" />
     <ClInclude Include="..\itemloader.h" />
     <ClInclude Include="..\items.h" />
-	<ClInclude Include="..\lockfree.h" />
+    <ClInclude Include="..\lockfree.h" />
     <ClInclude Include="..\luascript.h" />
     <ClInclude Include="..\mailbox.h" />
     <ClInclude Include="..\manager.h" />
@@ -86,12 +86,14 @@
     <ClInclude Include="..\spawn.h" />
     <ClInclude Include="..\spectators.h" />
     <ClInclude Include="..\spells.h" />
+    <ClInclude Include="..\stats.h" />
     <ClInclude Include="..\status.h" />
     <ClInclude Include="..\talkaction.h" />
     <ClInclude Include="..\teleport.h" />
     <ClInclude Include="..\templates.h" />
     <ClInclude Include="..\textlogger.h" />
     <ClInclude Include="..\thing.h" />
+    <ClInclude Include="..\thread_holder_base.h" />
     <ClInclude Include="..\tile.h" />
     <ClInclude Include="..\tools.h" />
     <ClInclude Include="..\town.h" />
@@ -178,6 +180,7 @@
     <ClCompile Include="..\spawn.cpp" />
     <ClCompile Include="..\spectators.cpp" />
     <ClCompile Include="..\spells.cpp" />
+    <ClCompile Include="..\stats.cpp" />
     <ClCompile Include="..\status.cpp" />
     <ClCompile Include="..\talkaction.cpp" />
     <ClCompile Include="..\teleport.cpp" />
