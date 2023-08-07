@@ -537,7 +537,7 @@ class Creature : public AutoId, virtual public Thing
 		CountMap damageMap;
 		CountMap healMap;
 
-		CreatureEventList eventsList;
+		std::unordered_map<CreatureEventType_t, CreatureEventList> eventsList;
 		uint32_t blockCount, blockTicks, lastHitCreature;
 		CombatType_t lastDamageSource;
 

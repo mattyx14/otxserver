@@ -1697,26 +1697,41 @@ void Creature::resetLight()
 
 bool Creature::registerCreatureEvent(const std::string& name)
 {
-	CreatureEvent* event = g_creatureEvents->getEventByName(name);
-	if(!event || !event->isLoaded()) //check for existance
+	CreatureEvent* newEvent = g_creatureEvents->getEventByName(name);
+	if(!newEvent || !newEvent->isLoaded()) //check for existance
 		return false;
 
+	/*
 	for(CreatureEventList::iterator it = eventsList.begin(); it != eventsList.end(); ++it)
 	{
 		if((*it) == event) //do not allow registration of same event more than once
 			return false;
 	}
+	*/
 
-	eventsList.push_back(event);
+	for(const auto& creatureEventType : eventsList) {
+
+		for(const auto& creatureEvent : creatureEventType.second) {
+
+			if(creatureEvent == newEvent) {
+				return false;
+			}
+		}
+	}
+
+	eventsList[newEvent->getEventType()].push_back(newEvent);
 	return true;
 }
 
 bool Creature::unregisterCreatureEvent(const std::string& name)
 {
+
+	
 	CreatureEvent* event = g_creatureEvents->getEventByName(name);
 	if(!event || !event->isLoaded()) //check for existance
 		return false;
 
+	/*
 	for(CreatureEventList::iterator it = eventsList.begin(); it != eventsList.end(); ++it)
 	{
 		if((*it) != event)
@@ -1725,21 +1740,40 @@ bool Creature::unregisterCreatureEvent(const std::string& name)
 		eventsList.erase(it);
 		return true; // we shouldn't have a duplicate
 	}
+	*/
+
+	for(auto &creatureEventType : eventsList) {
+		for(CreatureEventList::iterator it = creatureEventType.second.begin(); it != creatureEventType.second.end(); ++it) {
+
+			if((*it) != event)
+				continue;
+
+			creatureEventType.second.erase(it);
+
+			return true; // we shouldn't have a duplicate
+		}
+	}
 
 	return false;
 }
 
 void Creature::unregisterCreatureEvent(CreatureEventType_t type)
 {
+
+	/*
 	for(CreatureEventList::iterator it = eventsList.begin(); it != eventsList.end(); ++it)
 	{
 		if((*it)->getEventType() == type)
 			it = eventsList.erase(it);
 	}
+	*/
+
+	eventsList.erase(type);
 }
 
 CreatureEventList Creature::getCreatureEvents(CreatureEventType_t type)
 {
+	/*
 	CreatureEventList list;
 	for(CreatureEventList::iterator it = eventsList.begin(); it != eventsList.end(); ++it)
 	{
@@ -1748,6 +1782,8 @@ CreatureEventList Creature::getCreatureEvents(CreatureEventType_t type)
 	}
 
 	return list;
+	*/
+	return eventsList[type];
 }
 
 FrozenPathingConditionCall::FrozenPathingConditionCall(const Position& _targetPos)
