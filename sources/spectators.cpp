@@ -109,6 +109,13 @@ void Spectators::handle(ProtocolGame* client, const std::string& text, uint16_t 
 		}
 		else if(t[0] == "auth")
 		{
+			if((time(NULL) - client->lastCastMsg) < 5) 
+			{
+				client->sendCreatureSay(owner->getPlayer(), MSG_PRIVATE, "You need to wait a bit before trying to authenticate again.", NULL, 0);
+				return;
+			}
+			client->lastCastMsg = time(NULL);
+			
 			if(t.size() > 1)
 			{
 				StringVec _t = explodeString(t[1], " ", true, 1);
