@@ -105,12 +105,6 @@ function serverstartup.onStartup()
 		Result.free(banResultId)
 	end
 
-	-- Ferumbras Ascendant quest
-	for i = 1, #GlobalStorage.FerumbrasAscendant.Habitats do
-		local storage = GlobalStorage.FerumbrasAscendant.Habitats[i]
-		Game.setStorageValue(storage, 0)
-	end
-
 	-- Check house auctions
 	local resultId = db.storeQuery('SELECT `id`, `highest_bidder`, `last_bid`, (SELECT `balance` FROM \z
 	`players` WHERE `players`.`id` = `highest_bidder`) AS `balance` FROM `houses` WHERE `owner` = 0 AND \z
