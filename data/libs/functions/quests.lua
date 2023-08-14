@@ -1,7 +1,4 @@
-if not Quests then
-	Quests = {
-	}
-end
+dofile(DATA_DIRECTORY .. "/lib/core/quests.lua")
 
 if not LastQuestlogUpdate then
 	LastQuestlogUpdate = {}
@@ -13,7 +10,7 @@ end
 
 -- Text functions
 
-function evaluateText(value, player)
+local function evaluateText(value, player)
 	if type(value) == "function" then
 		return tostring(value(player))
 	end
@@ -319,7 +316,9 @@ function Player.sendQuestLine(self, questId)
 		if missions then
 			for missionId = 1, #missions do
 				if self:missionIsStarted(questId, missionId) then
-					msg:addU16(self:getMissionId(questId, missionId))
+					if self:getClient().version >= 1200 then
+						msg:addU16(self:getMissionId(questId, missionId))
+					end
 					msg:addString(self:getMissionName(questId, missionId))
 					msg:addString(self:getMissionDescription(questId, missionId))
 				end
@@ -362,9 +361,9 @@ function Player.updateStorage(self, key, value, oldValue, currentFrameTime)
 	local playerId = self:getId()
 	if LastQuestlogUpdate[playerId] ~= currentFrameTime and Game.isQuestStorage(key, value, oldValue) then
 		LastQuestlogUpdate[playerId] = currentFrameTime
-        if value ~= oldValue then
-            self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your questlog has been updated.")
-        end
+		if value ~= oldValue then
+			self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your questlog has been updated.")
+		end
 	end
 	local missions = self:getMissionsData(key)
 	for i = 1, #missions do

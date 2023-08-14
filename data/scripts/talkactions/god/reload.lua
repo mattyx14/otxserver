@@ -1,10 +1,12 @@
-local function notAccountTypeGod(player)
-	if not player:getGroup():getAccess() or player:getAccountType() < ACCOUNT_TYPE_GOD then
-		return true
-	end
-end
+-- NOTE: Using this script might cause unwanted changes.
+-- This script forces a reload in the entire server, this means
+-- that everything that is stored in memory might stop to work
+-- properly and/or completely.
+--
+-- This script should be used in test environments only.
 
-function Player.reloadTalkaction(self, param)
+
+function Player.reloadTalkaction(self, words, param)
 	local reloadTypes = {
 		["all"] = RELOAD_TYPE_ALL,
 
@@ -35,6 +37,7 @@ function Player.reloadTalkaction(self, param)
 		["raids"] = RELOAD_TYPE_RAIDS,
 
 		["scripts"] = RELOAD_TYPE_SCRIPTS,
+		["script"] = RELOAD_TYPE_SCRIPTS,
 
 		["rate"] = RELOAD_TYPE_CORE,
 		["rates"] = RELOAD_TYPE_CORE,
@@ -47,40 +50,47 @@ function Player.reloadTalkaction(self, param)
 
 		["imbuements"] = RELOAD_TYPE_IMBUEMENTS,
 
-		["talkaction"] = RELOAD_TYPE_TALKACTION,
-		["talkactions"] = RELOAD_TYPE_TALKACTION,
-		["talk"] = RELOAD_TYPE_TALKACTION,
-
 		["group"] = RELOAD_TYPE_GROUPS,
 		["groups"] = RELOAD_TYPE_GROUPS
 	}
 
-	if notAccountTypeGod(self) then
-		return true
-	end
-
 	if not configManager.getBoolean(configKeys.ALLOW_RELOAD) then
-		self:sendCancelMessage("Reload command is disabled.")
+		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Reload command is disabled.")
 		return true
 	end
 
 	if param == "" then
-		self:sendCancelMessage("Command param required.")
-		return false
+		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Command param required.")
+		return true
 	end
 
-	logCommand(self, words, param)
+	-- create log
+	logCommand(self, "/reload", param)
 
 	local reloadType = reloadTypes[param:lower()]
 	if reloadType then
+		-- Force save server before reload
+		saveServer()
+		SaveHirelings()
+		Spdlog.info("Saved Hirelings")
+		self:sendTextMessage(MESSAGE_ADMINISTRADOR, "Server is saved.. Now will reload configs!")
+
 		Game.reload(reloadType)
 		self:sendTextMessage(MESSAGE_LOOK, string.format("Reloaded %s.", param:lower()))
 		Spdlog.info("Reloaded " .. param:lower() .. "")
-		return true
 	elseif not reloadType then
-		self:sendCancelMessage("Reload type not found.")
-		Spdlog.warn("[reload.onSay] - Reload type '".. param.. "' not found")
-		return false
+		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Reload type not found.")
+		Spdlog.warn("[reload.onSay] - Reload type '" .. param .. "' not found")
 	end
-	return false
+	return true
 end
+
+local reload = TalkAction("/reload")
+
+function reload.onSay(player, words, param)
+	return player:reloadTalkaction(words, param)
+end
+
+reload:separator(" ")
+reload:groupType("god")
+reload:register()

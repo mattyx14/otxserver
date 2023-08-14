@@ -1,27 +1,3 @@
-function Creature:onChangeOutfit(outfit)
-	if self:isPlayer() then
-		local familiarLookType = self:getFamiliarLooktype()
-		if familiarLookType ~= 0 then
-			for _, summon in pairs(self:getSummons()) do
-				if summon:getType():familiar() then
-						if summon:getOutfit().lookType ~= familiarLookType then
-							summon:setOutfit({lookType = familiarLookType})
-						end
-					break
-				end
-			end
-		end
-	end
-	return true
-end
-
-function Creature:onHear(speaker, words, type)
-end
-
-function Creature:onAreaCombat(tile, isAggressive)
-	return true
-end
-
 local function removeCombatProtection(cid)
 	local player = Player(cid)
 	if not player then
@@ -37,14 +13,14 @@ local function removeCombatProtection(cid)
 		time = 30
 	end
 
-	player:setStorageValue(Storage.combatProtectionStorage, 2)
+	player:setStorageValue(Global.Storage.CombatProtectionStorage, 2)
 	addEvent(function(cid)
 		local player = Player(cid)
 		if not player then
 			return
 		end
 
-		player:setStorageValue(Storage.combatProtectionStorage, 0)
+		player:setStorageValue(Global.Storage.CombatProtectionStorage, 0)
 		player:remove()
 	end, time * 1000, cid)
 end
@@ -64,13 +40,13 @@ function Creature:onTargetCombat(target)
 
 	if target:isPlayer() then
 		if self:isMonster() then
-			local protectionStorage = target:getStorageValue(Storage.combatProtectionStorage)
+			local protectionStorage = target:getStorageValue(Global.Storage.CombatProtectionStorage)
 
 			if target:getIp() == 0 then -- If player is disconnected, monster shall ignore to attack the player
 				if target:isPzLocked() then return true end
 				if protectionStorage <= 0 then
 					addEvent(removeCombatProtection, 30 * 1000, target.uid)
-					target:setStorageValue(Storage.combatProtectionStorage, 1)
+					target:setStorageValue(Global.Storage.CombatProtectionStorage, 1)
 				elseif protectionStorage == 1 then
 					self:searchTarget()
 					return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER
@@ -90,7 +66,7 @@ function Creature:onTargetCombat(target)
 		return RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE
 	end
 
-	if PARTY_PROTECTION ~= 0 then
+	if not IsRetroPVP() or PARTY_PROTECTION ~= 0 then
 		if self:isPlayer() and target:isPlayer() then
 			local party = self:getParty()
 			if party then
@@ -102,7 +78,7 @@ function Creature:onTargetCombat(target)
 		end
 	end
 
-	if ADVANCED_SECURE_MODE ~= 0 then
+	if not IsRetroPVP() or ADVANCED_SECURE_MODE ~= 0 then
 		if self:isPlayer() and target:isPlayer() then
 			if self:hasSecureMode() then
 				return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER
@@ -111,6 +87,23 @@ function Creature:onTargetCombat(target)
 	end
 
 	self:addEventStamina(target)
+	return true
+end
+
+function Creature:onChangeOutfit(outfit)
+	if self:isPlayer() then
+		local familiarLookType = self:getFamiliarLooktype()
+		if familiarLookType ~= 0 then
+			for _, summon in pairs(self:getSummons()) do
+				if summon:getType():familiar() then
+						if summon:getOutfit().lookType ~= familiarLookType then
+							summon:setOutfit({lookType = familiarLookType})
+						end
+					break
+				end
+			end
+		end
+	end
 	return true
 end
 

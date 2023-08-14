@@ -15,9 +15,12 @@ function IsRunningGlobalDatapack()
 	end
 end
 
-NOT_MOVEABLE_ACTION = 100
-PARTY_PROTECTION = 1 -- Set to 0 to disable.
-ADVANCED_SECURE_MODE = 1 -- Set to 0 to disable.
+function IsRetroPVP()
+	return configManager.getBoolean(configKeys.TOGGLE_SERVER_IS_RETRO)
+end
+-- NOTE: 0 is disabled.
+PARTY_PROTECTION = (IsRetroPVP() and 0) or 1
+ADVANCED_SECURE_MODE = (IsRetroPVP() and 0) or 1
 
 NORTH = DIRECTION_NORTH
 EAST = DIRECTION_EAST
@@ -28,13 +31,27 @@ SOUTHEAST = DIRECTION_SOUTHEAST
 NORTHWEST = DIRECTION_NORTHWEST
 NORTHEAST = DIRECTION_NORTHEAST
 
+DIRECTIONS_TABLE = {
+	DIRECTION_NORTH,
+	DIRECTION_EAST,
+	DIRECTION_SOUTH,
+	DIRECTION_WEST,
+	DIRECTION_SOUTHWEST,
+	DIRECTION_SOUTHEAST,
+	DIRECTION_NORTHWEST,
+	DIRECTION_NORTHEAST
+}
+
 STORAGEVALUE_PROMOTION = 30018
 
 SERVER_NAME = configManager.getString(configKeys.SERVER_NAME)
+SERVER_MOTD = configManager.getString(configKeys.SERVER_MOTD)
+
+AUTH_TYPE = configManager.getString(configKeys.AUTH_TYPE)
 
 -- Bestiary charm
-GLOBAL_CHARM_GUT = 0
-GLOBAL_CHARM_SCAVENGE = 0
+GLOBAL_CHARM_GUT = 120 -- 20% more chance to get creature products from looting
+GLOBAL_CHARM_SCAVENGE = 125 -- 25% more chance to get creature products from skinning
 
 --WEATHER
 weatherConfig = {
@@ -55,7 +72,7 @@ SCHEDULE_SPAWN_RATE = 100
 PROPOSED_STATUS = 1
 MARRIED_STATUS = 2
 PROPACCEPT_STATUS = 3
-LOOK_MARRIAGE_DESCR = TRUE
+LOOK_MARRIAGE_DESCR = true
 ITEM_WEDDING_RING = 3004
 ITEM_ENGRAVED_WEDDING_RING = 9585
 
@@ -97,6 +114,10 @@ if nextUseXpStamina == nil then
 	nextUseXpStamina = {}
 end
 
+if nextUseConcoctionTime == nil then
+	nextUseConcoctionTime = {}
+end
+
 if lastItemImbuing == nil then
 	lastItemImbuing = {}
 end
@@ -113,26 +134,6 @@ table.contains = function(array, value)
 		end
 	end
 	return false
-end
-
-string.split = function(str, sep)
-	local res = {}
-	for v in str:gmatch("([^" .. sep .. "]+)") do
-		res[#res + 1] = v
-	end
-	return res
-end
-
-string.splitTrimmed = function(str, sep)
-	local res = {}
-	for v in str:gmatch("([^" .. sep .. "]+)") do
-		res[#res + 1] = v:trim()
-	end
-	return res
-end
-
-string.trim = function(str)
-	return str:match'^()%s*$' and '' or str:match'^%s*(.*%S)'
 end
 
 -- for use of: data\scripts\globalevents\customs\save_interval.lua

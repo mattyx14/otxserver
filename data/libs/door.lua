@@ -130,8 +130,6 @@ CustomDoorTable = {
 	{ closedDoor = 24541, openDoor = 24542 },
 	{ closedDoor = 24543, openDoor = 24544 },
 	{ closedDoor = 24903, openDoor = 28520 },
-	{ closedDoor = 28658, openDoor = 28885 },
-	{ closedDoor = 28659, openDoor = 28886 },
 	--[[ do not have the open door id, if activate this, have a conflict of id (is only a locked door?)
 	{ closedDoor = 30049, openDoor = 30035 },
 	{ closedDoor = 30050, openDoor = 30036 },
@@ -160,6 +158,8 @@ CustomDoorTable = {
 	{ closedDoor = 33635, openDoor = 33637 },
 	{ closedDoor = 34221, openDoor = 34222 },
 	{ closedDoor = 34223, openDoor = 34224 },
+	{ closedDoor = 15890, openDoor = 15891 },
+	{ closedDoor = 15892, openDoor = 15893 },
 }
 
 -- These are the doors for missions, they need access from some mission (storage) to be able to enter. Put the storage value in the action id of the door and it will open only to the player who has the storage value.
@@ -212,12 +212,15 @@ QuestDoorTable = {
 	{ closedDoor = 20459, openDoor = 20460 },
 	{ closedDoor = 22506, openDoor = 22507 },
 	{ closedDoor = 22508, openDoor = 22509 },
+	{ closedDoor = 28658, openDoor = 28885 },
+	{ closedDoor = 28659, openDoor = 28886 },
 	{ closedDoor = 30041, openDoor = 30042 },
 	{ closedDoor = 30043, openDoor = 30044 },
 	{ closedDoor = 30045, openDoor = 30046 },
 	{ closedDoor = 30047, openDoor = 30048 },
 	{ closedDoor = 31568, openDoor = 31569 },
 	{ closedDoor = 31570, openDoor = 31571 },
+	{ closedDoor = 36547, openDoor = 36548 },
 	{ closedDoor = 39351, openDoor = 39353 },
 	{ closedDoor = 39352, openDoor = 39354 },
 }
@@ -267,8 +270,6 @@ LevelDoorTable = {
 	{ closedDoor = 11237, openDoor = 11238 },
 	{ closedDoor = 11246, openDoor = 11247 },
 	{ closedDoor = 12033, openDoor = 12034 },
-	{ closedDoor = 15890, openDoor = 15891 },
-	{ closedDoor = 15892, openDoor = 15893 },
 	{ closedDoor = 17565, openDoor = 17566 },
 	{ closedDoor = 17574, openDoor = 17575 },
 	{ closedDoor = 17705, openDoor = 17706 },
