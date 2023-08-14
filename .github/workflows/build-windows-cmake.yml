@@ -1,19 +1,18 @@
 ---
-name: Build - Windows
-
+name: Build - Windows - CMake
 on:
   workflow_dispatch:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches:
       - main
-
 env:
   CMAKE_BUILD_PARALLEL_LEVEL: 2
   MAKEFLAGS: '-j 2'
-
 jobs:
   job:
+    if: ${{ github.event_name == 'push' || !github.event.pull_request.draft }}
     name: ${{ matrix.os }}-${{ matrix.buildtype }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -22,10 +21,9 @@ jobs:
         buildtype: [windows-release]
         include:
           - os: windows-2022
-            triplet: x64-windows
+            triplet: x64-windows-static
             packages: >
               sccache
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@main
@@ -44,10 +42,18 @@ jobs:
         run: rm -r -fo C:/mysql*
 
       - name: Restore artifacts and install vcpkg
+        id: vcpkg-step
+        run: |
+          $json=Get-Content vcpkg.json -Raw | ConvertFrom-Json
+          $vcpkgCommitId=$json.'builtin-baseline'
+          Write-Host "vcpkg commit ID: $vcpkgCommitId"
+          echo "VCPKG_GIT_COMMIT_ID=$vcpkgCommitId" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Get vcpkg commit id from vcpkg.json
         uses: lukka/run-vcpkg@main
         with:
-          vcpkgGitURL: "https://github.com/opentibiabr/vcpkg.git"
-          vcpkgGitCommitId: 8974d642d47efd578e0da3223b4101c5d59aebcf
+          vcpkgGitURL: "https://github.com/microsoft/vcpkg.git"
+          vcpkgGitCommitId: ${{ env.VCPKG_GIT_COMMIT_ID }}
 
       - name: Get latest CMake and ninja
         uses: lukka/get-cmake@main
@@ -61,6 +67,6 @@ jobs:
       - name: Create and Upload Artifact
         uses: actions/upload-artifact@main
         with:
-          name: canary-${{ matrix.buildtype }}-${{ github.sha }}
+          name: otxserver-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
             ${{ github.workspace }}/build/${{ matrix.buildtype }}/bin/

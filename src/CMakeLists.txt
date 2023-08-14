@@ -1,7 +1,7 @@
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-	project(canary-debug)
+	project(otxserver-debug)
 else()
-	project(canary)
+	project(otxserver)
 endif()
 
 # *****************************************************************************

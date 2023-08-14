@@ -7,18 +7,20 @@ CREATE TABLE IF NOT EXISTS `server_config` (
     CONSTRAINT `server_config_pk` PRIMARY KEY (`config`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `server_config` (`config`, `value`) VALUES ('db_version', '24'), ('motd_hash', ''), ('motd_num', '0'), ('players_record', '0');
+INSERT INTO `server_config` (`config`, `value`) VALUES ('db_version', '25'), ('motd_hash', ''), ('motd_num', '0'), ('players_record', '0');
 
 -- Table structure `accounts`
 CREATE TABLE IF NOT EXISTS `accounts` (
     `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` varchar(32) NOT NULL,
-    `password` char(40) NOT NULL,
+    `password` TEXT NOT NULL,
     `email` varchar(255) NOT NULL DEFAULT '',
     `premdays` int(11) NOT NULL DEFAULT '0',
+    `premdays_purchased` int(11) NOT NULL DEFAULT '0',
     `lastday` int(10) UNSIGNED NOT NULL DEFAULT '0',
     `type` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
     `coins` int(12) UNSIGNED NOT NULL DEFAULT '0',
+    `coins_transferable` int(12) UNSIGNED NOT NULL DEFAULT '0',
     `tournament_coins` int(12) UNSIGNED NOT NULL DEFAULT '0',
     `creation` int(11) UNSIGNED NOT NULL DEFAULT '0',
     `recruiter` INT(6) DEFAULT 0,
@@ -142,6 +144,8 @@ CREATE TABLE IF NOT EXISTS `players` (
     `istutorial` tinyint(1) NOT NULL DEFAULT '0',
     `forge_dusts` bigint(21) NOT NULL DEFAULT '0',
     `forge_dust_level` bigint(21) NOT NULL DEFAULT '100',
+    `randomize_mount` tinyint(1) NOT NULL DEFAULT '0',
+    `boss_points` int NOT NULL DEFAULT '0',
     INDEX `account_id` (`account_id`),
     INDEX `vocation` (`vocation`),
     CONSTRAINT `players_pk` PRIMARY KEY (`id`),
@@ -209,6 +213,22 @@ CREATE TABLE IF NOT EXISTS `account_viplist` (
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Table structure `boosted_boss`
+CREATE TABLE IF NOT EXISTS `boosted_boss` (
+    `boostname` TEXT,
+    `date` varchar(250) NOT NULL DEFAULT '',
+    `raceid` varchar(250) NOT NULL DEFAULT '',
+    `looktypeEx` int(11) NOT NULL DEFAULT "0",
+    `looktype` int(11) NOT NULL DEFAULT "136",
+    `lookfeet` int(11) NOT NULL DEFAULT "0",
+    `looklegs` int(11) NOT NULL DEFAULT "0",
+    `lookhead` int(11) NOT NULL DEFAULT "0",
+    `lookbody` int(11) NOT NULL DEFAULT "0",
+    `lookaddons` int(11) NOT NULL DEFAULT "0",
+    `lookmount` int(11) DEFAULT "0",
+    PRIMARY KEY (`date`)
+) AS SELECT 0 AS date, "default" AS boostname, 0 AS raceid;
+
 -- Table structure `boosted_creature`
 CREATE TABLE IF NOT EXISTS `boosted_creature` (
     `boostname` TEXT,
@@ -255,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `forge_history` (
     `gained` bigint UNSIGNED NOT NULL DEFAULT '0',
     CONSTRAINT `forge_history_pk` PRIMARY KEY (`id`),
     FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE
-) ENGINE='InnoDB' DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Table structure `global_storage`
 CREATE TABLE IF NOT EXISTS `global_storage` (
@@ -592,6 +612,17 @@ CREATE TABLE IF NOT EXISTS `player_items` (
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Table structure `player_wheeldata`
+CREATE TABLE IF NOT EXISTS `player_wheeldata` (
+	`player_id` int(11) NOT NULL,
+	`slot` blob NOT NULL,
+	INDEX `player_id` (`player_id`),
+	CONSTRAINT `player_wheeldata_players_fk`
+		FOREIGN KEY (`player_id`) REFERENCES `players` (`id`)
+		ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 -- Table structure `player_kills`
 CREATE TABLE IF NOT EXISTS `player_kills` (
     `player_id` int(11) NOT NULL,
@@ -651,6 +682,14 @@ CREATE TABLE IF NOT EXISTS `player_taskhunt` (
     `disabled_time` bigint(20) NOT NULL,
     `free_reroll` bigint(20) NOT NULL,
     `monster_list` BLOB NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Table structure `player_bosstiary`
+CREATE TABLE IF NOT EXISTS `player_bosstiary` (
+    `player_id` int NOT NULL,
+    `bossIdSlotOne` int NOT NULL DEFAULT 0,
+    `bossIdSlotTwo` int NOT NULL DEFAULT 0,
+    `removeTimes` int NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Table structure `player_rewards`
@@ -733,6 +772,15 @@ CREATE TABLE IF NOT EXISTS `towns` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+-- Table structure `account_sessions`
+CREATE TABLE IF NOT EXISTS `account_sessions` (
+  `id` VARCHAR(191) NOT NULL,
+  `account_id` INTEGER UNSIGNED NOT NULL,
+  `expires` BIGINT UNSIGNED NOT NULL,
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Create Account god/god
 INSERT INTO `accounts`

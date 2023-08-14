@@ -1,8 +1,11 @@
 {
-  "name": "canary",
+  "name": "otxserver",
   "version-string": "1.0.0",
   "dependencies": [
+    "argon2",
     "asio",
+    "bext-di",
+    "eventpp",
     "pugixml",
     "spdlog",
     "curl",
@@ -10,11 +13,10 @@
     "protobuf",
     "parallel-hashmap",
     "magic-enum",
+    "zlib",
     "mio",
-    {
-      "name": "luajit",
-      "platform": "!arm"
-    },
+    "luajit",
+    "abseil",
     {
       "name": "libmariadb",
       "features": [ "mariadbclient" ]
@@ -27,5 +29,6 @@
       "name": "mpir",
       "platform": "windows"
     }
-  ]
+  ],
+  "builtin-baseline": "c9fa965c2a1b1334469b4539063f3ce95383653c"
 }
