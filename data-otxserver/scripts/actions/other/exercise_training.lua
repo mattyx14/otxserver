@@ -1,10 +1,19 @@
 local exerciseTraining = Action()
 
+local maxAllowedOnADummy = configManager.getNumber(configKeys.MAX_ALLOWED_ON_A_DUMMY)
+local dummies = Game.getDummies()
+local function isDummy(id)
+	return dummies[id] and dummies[id] > 0
+end
+
 function exerciseTraining.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not target then
+		return
+	end
 	local playerId = player:getId()
 	local targetId = target:getId()
 
-	if target:isItem() and (table.contains(HouseDummies, targetId) or table.contains(FreeDummies, targetId)) then
+	if target:isItem() and isDummy(targetId) then
 		if onExerciseTraining[playerId] then
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This exercise dummy can only be used after a 30 second cooldown.")
 			LeaveTraining(playerId)
@@ -26,7 +35,7 @@ function exerciseTraining.onUse(player, item, fromPosition, target, toPosition, 
 		local targetPos = target:getPosition()
 		local targetHouse = Tile(targetPos):getHouse()
 
-		if table.contains(HouseDummies, targetId) then
+		if targetHouse and isDummy(targetId) then
 			if playerHouse ~= targetHouse then
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You must be inside the house to use this dummy.")
 				return true
@@ -37,14 +46,14 @@ function exerciseTraining.onUse(player, item, fromPosition, target, toPosition, 
 					playersOnDummy = playersOnDummy + 1
 				end
 
-				if playersOnDummy == MaxAllowedOnADummy then
+				if playersOnDummy == maxAllowedOnADummy then
 					player:sendTextMessage(MESSAGE_FAILURE, "That exercise dummy is busy.")
 					return true
 				end
 			end
 		end
 
-		if player:getStorageValue(Storage.isTraining) > os.time() then
+		if player:getStorageValue(Storage.IsTraining) > os.time() then
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This exercise dummy can only be used after a 30 second cooldown.")
 			return true
 		end
@@ -54,7 +63,7 @@ function exerciseTraining.onUse(player, item, fromPosition, target, toPosition, 
 			onExerciseTraining[playerId].event = addEvent(ExerciseEvent, 0, playerId, targetPos, item.itemid, targetId)
 			onExerciseTraining[playerId].dummyPos = targetPos
 			player:setTraining(true)
-			player:setStorageValue(Storage.isTraining, os.time() + 30)
+			player:setStorageValue(Storage.IsTraining, os.time() + 30)
 		end
 		return true
 	end

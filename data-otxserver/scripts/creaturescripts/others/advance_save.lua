@@ -24,10 +24,7 @@ function advanceSave.onAdvance(player, skill, oldLevel, newLevel)
 		player:save()
 	end
 
-	if Game.getStorageValue(GlobalStorage.XpDisplayMode) > 0 then
-		local baseRate = player:getFinalBaseRateExperience()
-		player:setBaseXpGain(baseRate * 100)
-	end
+	player:getFinalLowLevelBonus()
 
 	return true
 end

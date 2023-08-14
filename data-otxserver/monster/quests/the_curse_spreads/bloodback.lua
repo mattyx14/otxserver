@@ -1,7 +1,7 @@
 local mType = Game.createMonsterType("Bloodback")
 local monster = {}
 
-monster.description = "a Bloodback"
+monster.description = "Bloodback"
 monster.experience = 4000
 monster.outfit = {
 	lookType = 1039,
@@ -23,6 +23,11 @@ monster.manaCost = 0
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10
+}
+
+monster.bosstiary = {
+	bossRaceId = 1560,
+	bossRace = RARITY_ARCHFOE
 }
 
 monster.strategiesTarget = {

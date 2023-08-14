@@ -44,6 +44,23 @@ local enchantedItems = {
 local enchanting = Action()
 
 function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+
+	if table.contains({33268, 33269}, toPosition.x)
+	and toPosition.y == 31830 and toPosition.z == 10
+	and player:getStorageValue(Storage.ElementalSphere.QuestLine) > 0 then
+		if not table.contains(spheres[item.itemid], player:getVocation():getBaseId()) then
+			return false
+		elseif table.contains({842, 843}, target.itemid) then
+			player:say('Turn off the machine first.', TALKTYPE_MONSTER_SAY)
+			return true
+		else
+			player:setStorageValue(Storage.ElementalSphere.MachineGemCount, math.max(1, player:getStorageValue(Storage.ElementalSphere.MachineGemCount) + 1))
+			toPosition:sendMagicEffect(CONST_ME_PURPLEENERGY)
+			item:transform(item.itemid, item.type - 1)
+			return true
+		end
+	end
+
 	if item.itemid == 3030 and target.itemid == 3229 then
 		target:transform(3230)
 		target:decay()
@@ -52,14 +69,14 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 		return true
 	end
 
-	if item.itemid == 676 and isInArray({3123, 9020}, target.itemid) then
+	if item.itemid == 676 and table.contains({3123, 9020}, target.itemid) then
 		target:transform(9019)
 		item:remove(1)
 		toPosition:sendMagicEffect(CONST_ME_MAGIC_RED)
 		return true
 	end
 
-	if isInArray(enchantableGems, item.itemid) then
+	if table.contains(enchantableGems, item.itemid) then
 		local subtype = item.type
 		if subtype == 0 then
 			subtype = 1
@@ -78,7 +95,7 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 		end
 
 		local targetId = table.find(enchantableGems, item.itemid)
-		if not targetId or not isInArray(enchantingAltars[targetId], target.itemid) then
+		if not targetId or not table.contains(enchantingAltars[targetId], target.itemid) then
 			return false
 		end
 
@@ -90,7 +107,7 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 		return true
 	end
 
-	if item.itemid == 677 and isInArray({9035, 9040}, target.itemid) then
+	if item.itemid == 677 and table.contains({9035, 9040}, target.itemid) then
 		target:transform(target.itemid - 1)
 		target:decay()
 		item:remove(1)
@@ -98,8 +115,8 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 		return true
 	end
 
-	if isInArray(enchantedGems, item.itemid) then
-		if not isInArray(enchantableItems, target.itemid) then
+	if table.contains(enchantedGems, item.itemid) then
+		if not table.contains(enchantableItems, target.itemid) then
 			fromPosition:sendMagicEffect(CONST_ME_POFF)
 			return false
 		end
@@ -110,7 +127,7 @@ function enchanting.onUse(player, item, fromPosition, target, toPosition, isHotk
 		end
 
 		local subtype = target.type
-		if not isInArray({3447, 8077}, target.itemid) then
+		if not table.contains({3447, 8077}, target.itemid) then
 			subtype = 1000
 		end
 

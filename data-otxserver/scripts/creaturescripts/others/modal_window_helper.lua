@@ -1,33 +1,35 @@
-local modalWindowHelper = CreatureEvent("ModalWindowHelper")
-function modalWindowHelper.onModalWindow(player, modalWindowId, buttonId, choiceId)
-	local modalWindow
-	for _, window in ipairs(modalWindows.windows) do
-		if window.id == modalWindowId then
-			modalWindow = window
-			break
-		end
+local creatureEvent = CreatureEvent("modalWindowHelper")
+
+function creatureEvent.onModalWindow(player, modalWindowId, buttonId, choiceId)
+	local playerId = player:getId()
+	local modalWindows = ModalWindows[playerId]
+	if not modalWindows then
+		return true
 	end
 
+	local modalWindow = modalWindows[modalWindowId]
 	if not modalWindow then
 		return true
 	end
 
-	local playerId = player:getId()
-	if not modalWindow.players[playerId] then
-		return true
+	local button = modalWindow.buttons[buttonId] or {}
+	local choice = modalWindow.choices[choiceId] or {}
+	if button.callback then
+		button.callback(player, button, choice)
+	elseif choice.callback then
+		choice.callback(player, button, choice)
+	elseif modalWindow.defaultCallback then
+		modalWindow.defaultCallback(player, button, choice)
 	end
-	modalWindow.players[playerId] = nil
 
-	local choice = modalWindow.choices[choiceId]
-	for _, button in ipairs(modalWindow.buttons) do
-		if button.id == buttonId then
-			local callback = button.callback or modalWindow.defaultCallback
-			if callback then
-				callback(button, choice)
-				break
-			end
+	modalWindow.using = modalWindow.using - 1
+	if modalWindow.using == 0 then
+		modalWindows[modalWindowId] = nil
+		if not next(modalWindows) then
+			ModalWindows[playerId] = nil
 		end
 	end
 	return true
 end
-modalWindowHelper:register()
+
+creatureEvent:register()

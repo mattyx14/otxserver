@@ -59,7 +59,7 @@ function spell.onCastSpell(creature, var)
 		return false
 	end
 
-	creature:addMana(-(mana - baseMana), FALSE)
+	creature:addMana(-(mana - baseMana), false)
 	creature:addManaSpent((mana - baseMana))
 
 	for _, targetPlayer in ipairs(affectedList) do
@@ -73,6 +73,7 @@ spell:name("Train Party")
 spell:words("utito mas sio")
 spell:group("support")
 spell:vocation("knight;true", "elite knight;true")
+spell:castSound(SOUND_EFFECT_TYPE_SPELL_TRAIN_PARTY)
 spell:id(126)
 spell:cooldown(2 * 1000)
 spell:groupCooldown(2 * 1000)

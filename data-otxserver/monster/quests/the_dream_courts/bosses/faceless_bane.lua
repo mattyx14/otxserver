@@ -1,7 +1,7 @@
 local mType = Game.createMonsterType("Faceless Bane")
 local monster = {}
 
-monster.description = "a Faceless Bane"
+monster.description = "Faceless Bane"
 monster.experience = 30000
 monster.outfit = {
 	lookType = 1119,
@@ -23,6 +23,12 @@ monster.manaCost = 0
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10
+}
+
+monster.bosstiary = {
+	bossRaceId = 1727,
+	bossRace = RARITY_ARCHFOE,
+	storageCooldown = Storage.Quest.U12_00.TheDreamCourts.FacelessBaneTime
 }
 
 monster.strategiesTarget = {
@@ -105,7 +111,7 @@ monster.defenses = {
 }
 
 monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 100},
+	{type = COMBAT_PHYSICALDAMAGE, percent = 50},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 0},
 	{type = COMBAT_FIREDAMAGE, percent = -20},

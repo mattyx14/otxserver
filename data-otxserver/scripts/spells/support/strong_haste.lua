@@ -18,9 +18,9 @@ function spell.onCastSpell(creature, var)
 			if summon_t and summon_t:familiar() then
 				local deltaSpeed = math.max(creature:getBaseSpeed() - summon:getBaseSpeed(), 0)
 				local FamiliarSpeed = ((summon:getBaseSpeed() + deltaSpeed) * 0.7) - 56
-				local FamiliarHaste = createConditionObject(CONDITION_HASTE)
-				setConditionParam(FamiliarHaste, CONDITION_PARAM_TICKS, 22000)
-				setConditionParam(FamiliarHaste, CONDITION_PARAM_SPEED, FamiliarSpeed)
+				local FamiliarHaste = Condition(CONDITION_HASTE)
+				FamiliarHaste:setParameter(CONDITION_PARAM_TICKS, 22000)
+				FamiliarHaste:setParameter(CONDITION_PARAM_SPEED, FamiliarSpeed)
 				summon:addCondition(FamiliarHaste)
 			end
 		end
@@ -32,6 +32,7 @@ spell:name("Strong Haste")
 spell:words("utani gran hur")
 spell:group("support")
 spell:vocation("druid;true", "elder druid;true", "sorcerer;true", "master sorcerer;true")
+spell:castSound(SOUND_EFFECT_TYPE_SPELL_STRONG_HASTE)
 spell:id(39)
 spell:cooldown(2 * 1000)
 spell:groupCooldown(2 * 1000)

@@ -58,7 +58,7 @@ function spell.onCastSpell(creature, var, isHotkey)
 		return false
 	end
 
-	creature:addMana(-(mana - baseMana), FALSE)
+	creature:addMana(-(mana - baseMana), false)
 	creature:addManaSpent((mana - baseMana))
 
 	for _, targetPlayer in ipairs(affectedList) do
@@ -72,6 +72,7 @@ spell:name("Enchant Party")
 spell:words("utori mas sio")
 spell:group("support")
 spell:vocation("sorcerer;true", "master sorcerer;true")
+spell:castSound(SOUND_EFFECT_TYPE_SPELL_ENCHANT_PARTY)
 spell:id(129)
 spell:cooldown(2 * 1000)
 spell:groupCooldown(2 * 1000)

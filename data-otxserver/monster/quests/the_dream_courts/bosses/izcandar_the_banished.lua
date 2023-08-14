@@ -13,8 +13,8 @@ monster.outfit = {
 	lookMount = 0
 }
 
-monster.health = 7600
-monster.maxHealth = 7600
+monster.health = 200000
+monster.maxHealth = 200000
 monster.race = "blood"
 monster.corpse = 6068
 monster.speed = 125
@@ -23,6 +23,11 @@ monster.manaCost = 0
 monster.changeTarget = {
 	interval = 4000,
 	chance = 10
+}
+
+monster.bosstiary = {
+	bossRaceId = 1699,
+	bossRace = RARITY_NEMESIS
 }
 
 monster.strategiesTarget = {
@@ -76,7 +81,13 @@ monster.loot = {
 	{name = "piggy bank", chance = 12800},
 	{name = "platinum coin", chance = 12000, maxCount = 10},
 	{name = "supreme health potion", chance = 12000, maxCount = 10},
-	{name = "ultimate mana potion", chance = 12000, maxCount = 20}
+	{name = "ultimate mana potion", chance = 12000, maxCount = 20},
+	{name = "ice shield", chance = 600},
+	{name = "soul stone", chance = 300},
+	{name = "summerblade", chance = 500},
+	{name = "turquoise tendril lantern", chance = 300},
+	{name = "purple tendril lantern", chance = 300},
+	{name = "winterblade", chance = 500}
 }
 
 monster.attacks = {

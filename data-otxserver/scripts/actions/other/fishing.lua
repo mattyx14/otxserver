@@ -30,7 +30,7 @@ end
 local fishing = Action()
 
 function fishing.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if not isInArray(waterIds, target.itemid) then
+	if not table.contains(waterIds, target.itemid) then
 		return false
 	end
 
@@ -81,7 +81,23 @@ function fishing.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	end
 
-	player:addSkillTries(SKILL_FISHING, 1, true)
+	if useWorms and targetId == 21414 and player:removeItem("worm", 1) then
+		if player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey) == 2 then
+			if math.random(100) >= 97 then
+				player:addItem(21402, 1)
+				player:setStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey, 3)
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "With a giant splash, you heave an enormous fish out of the water.")
+				return true
+			end
+		elseif math.random(100) <= math.min(math.max(10 + (player:getEffectiveSkillLevel(SKILL_FISHING) - 10) * 0.597, 10), 50) then
+			player:addItem(3578, 1)
+		end
+	end
+
+	if player:getItemCount(3492) > 0 then
+		player:addSkillTries(SKILL_FISHING, 1, true)
+	end
+	
 	if math.random(100) <= math.min(math.max(10 + (player:getEffectiveSkillLevel(SKILL_FISHING) - 10) * 0.597, 10), 50) then
 		if useWorms and not player:removeItem("worm", 1) then
 			return true

@@ -1,14 +1,14 @@
 local storage = Storage.GraveDanger.CobraBastion.Questline
 local rooms = {
-	--[1] = {fromPos = Position(33390, 32642, 6), toPos = Position(33394, 32646, 6)},
-	--[2] = {fromPos = Position(33390, 32646, 6), toPos = Position(33394, 32650, 6)},
-	--[3] = {fromPos = Position(33390, 32650, 6), toPos = Position(33394, 32654, 6)},
-	--[4] = {fromPos = Position(33394, 32642, 6), toPos = Position(33398, 32646, 6)},
-	--[5] = {fromPos = Position(33394, 32646, 6), toPos = Position(33398, 32650, 6)},
-	--[6] = {fromPos = Position(33394, 32650, 6), toPos = Position(33398, 32654, 6)},
-	--[7] = {fromPos = Position(33398, 32642, 6), toPos = Position(33402, 32646, 6)},
-	--[8] = {fromPos = Position(33398, 32646, 6), toPos = Position(33402, 32650, 6)},
-	--[9] = {fromPos = Position(33398, 32650, 6), toPos = Position(33402, 32654, 6)}
+	[1] = {fromPos = Position(33390, 32642, 6), toPos = Position(33394, 32646, 6)},
+	[2] = {fromPos = Position(33390, 32646, 6), toPos = Position(33394, 32650, 6)},
+	[3] = {fromPos = Position(33390, 32650, 6), toPos = Position(33394, 32654, 6)},
+	[4] = {fromPos = Position(33394, 32642, 6), toPos = Position(33398, 32646, 6)},
+	[5] = {fromPos = Position(33394, 32646, 6), toPos = Position(33398, 32650, 6)},
+	[6] = {fromPos = Position(33394, 32650, 6), toPos = Position(33398, 32654, 6)},
+	[7] = {fromPos = Position(33398, 32642, 6), toPos = Position(33402, 32646, 6)},
+	[8] = {fromPos = Position(33398, 32646, 6), toPos = Position(33402, 32650, 6)},
+	[9] = {fromPos = Position(33398, 32650, 6), toPos = Position(33402, 32654, 6)}
 }
 
 local function isMirrorsCorrect(fromPosition, toPosition)
