@@ -46,7 +46,7 @@ loginProtocolPort = 7171
 gameProtocolPort = 7172
 statusProtocolPort = 7171
 maxPlayers = 0
-serverName = "OTX-Server"
+serverName = "OTXServer"
 serverMotd = "Welcome to The OTX Server"
 onePlayerOnlinePerAccount = true
 statusTimeout = 5 * 1000
@@ -186,8 +186,8 @@ onlyPremiumAccount = false
 weatherRain = false
 thunderEffect = false
 allConsoleLog = false
-stashMoving = true
-depotChest = 1
+stashMoving = false
+depotChest = 4
 autoLoot = false
 autoBank = false
 toggleGoldPouchAllowAnything = false
@@ -342,10 +342,10 @@ maxSpeedOnFist = 500
 -- NOTE: globalServerSaveNotifyDuration in minutes
 globalServerSaveNotifyMessage = true
 globalServerSaveNotifyDuration = 5
-globalServerSaveCleanMap = true
-globalServerSaveClose = true
+globalServerSaveCleanMap = false
+globalServerSaveClose = false
 globalServerSaveShutdown = true
-globalServerSaveTime = "23:55:00"
+globalServerSaveTime = "06:00:00"
 
 -- Sort loot by chance, most rare items drop first
 -- it is good to be setted when you have a higher
@@ -411,10 +411,10 @@ defaultPriority = "high"
 startupDatabaseOptimization = true
 
 -- Status server information
-ownerName = ""
-ownerEmail = ""
-url = ""
-location = ""
+ownerName = "Mattyx14"
+ownerEmail = "darkylive@live.com.mx"
+url = "https://github.com/mattyx14/otxserver/"
+location = "USA"
 
 -- Sends Discord webhook notifications on startup, raids and shutdown.
 -- The URL layout is https://discord.com/api/webhooks/:id/:token
