@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #include "pch.hpp"
 
@@ -184,7 +184,15 @@ int MonsterSpellFunctions::luaMonsterSpellSetConditionType(lua_State* L) {
 	// monsterSpell:setConditionType(type)
 	MonsterSpell* spell = getUserdata<MonsterSpell>(L, 1);
 	if (spell) {
-		spell->conditionType = getNumber<ConditionType_t>(L, 2);
+		auto conditionType = getNumber<uint8_t>(L, 2);
+		if (conditionType == -1) {
+			spdlog::error("[{}] trying to register condition type none for monster: {}", __FUNCTION__, spell->name);
+			reportErrorFunc(fmt::format("trying to register condition type none for monster: {}", spell->name));
+			pushBoolean(L, false);
+			return 1;
+		}
+
+		spell->conditionType = static_cast<ConditionType_t>(conditionType);
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -286,6 +294,30 @@ int MonsterSpellFunctions::luaMonsterSpellSetOutfitItem(lua_State* L) {
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int MonsterSpellFunctions::luaMonsterSpellCastSound(lua_State* L) {
+	// get: monsterSpell:castSound() set: monsterSpell:castSound(sound)
+	MonsterSpell* spell = getUserdata<MonsterSpell>(L, 1);
+	if (lua_gettop(L) == 1) {
+		lua_pushnumber(L, static_cast<lua_Number>(spell->soundCastEffect));
+	} else {
+		spell->soundCastEffect = getNumber<SoundEffect_t>(L, 2);
+		pushBoolean(L, true);
+	}
+	return 1;
+}
+
+int MonsterSpellFunctions::luaMonsterSpellImpactSound(lua_State* L) {
+	// get: monsterSpell:impactSound() set: monsterSpell:impactSound(sound)
+	MonsterSpell* spell = getUserdata<MonsterSpell>(L, 1);
+	if (lua_gettop(L) == 1) {
+		lua_pushnumber(L, static_cast<lua_Number>(spell->soundImpactEffect));
+	} else {
+		spell->soundImpactEffect = getNumber<SoundEffect_t>(L, 2);
+		pushBoolean(L, true);
 	}
 	return 1;
 }

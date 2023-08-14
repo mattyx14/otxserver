@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #ifndef SRC_ITEMS_ITEMS_H_
 #define SRC_ITEMS_ITEMS_H_
@@ -17,14 +17,14 @@
 
 struct Abilities {
 	public:
-		uint32_t conditionImmunities = 0;
-		uint32_t conditionSuppressions = 0;
+		std::array<ConditionType_t, ConditionType_t::CONDITION_COUNT> conditionImmunities = {};
+		std::array<ConditionType_t, ConditionType_t::CONDITION_COUNT> conditionSuppressions = {};
 
-		//stats modifiers
+		// stats modifiers
 		int32_t stats[STAT_LAST + 1] = { 0 };
 		int32_t statsPercent[STAT_LAST + 1] = { 0 };
 
-		//extra skill modifiers
+		// extra skill modifiers
 		int32_t skills[SKILL_LAST + 1] = { 0 };
 
 		int32_t speed = 0;
@@ -32,15 +32,31 @@ struct Abilities {
 		// field damage abilities modifiers
 		int16_t fieldAbsorbPercent[COMBAT_COUNT] = { 0 };
 
-		//damage abilities modifiers
+		// damage abilities modifiers
 		int16_t absorbPercent[COMBAT_COUNT] = { 0 };
 
-		//relfect abilities modifires
+		// relfect abilities modifires
 		int16_t reflectPercent[COMBAT_COUNT] = { 0 };
 
-		//elemental damage
+		// elemental damage
 		uint16_t elementDamage = 0;
 		CombatType_t elementType = COMBAT_NONE;
+
+		// 12.72 modifiers
+		// Specialized magic level modifiers
+		int32_t reflectFlat[COMBAT_COUNT] = { 0 };
+		int32_t specializedMagicLevel[COMBAT_COUNT] = { 0 };
+
+		// magic shield capacity
+		int32_t magicShieldCapacityPercent = 0;
+		int32_t magicShieldCapacityFlat = 0;
+
+		// cleave
+		int32_t cleavePercent = 0;
+
+		// perfect shot
+		int32_t perfectShotDamage = 0;
+		uint8_t perfectShotRange = 0;
 
 		bool manaShield = false;
 		bool invisible = false;
@@ -87,17 +103,16 @@ struct Abilities {
 
 class ConditionDamage;
 
-class ItemType
-{
+class ItemType {
 	public:
 		ItemType() = default;
 
-		//non-copyable
-		ItemType(const ItemType& other) = delete;
-		ItemType& operator=(const ItemType& other) = delete;
+		// non-copyable
+		ItemType(const ItemType &other) = delete;
+		ItemType &operator=(const ItemType &other) = delete;
 
-		ItemType(ItemType&& other) = default;
-		ItemType& operator=(ItemType&& other) = default;
+		ItemType(ItemType &&other) = default;
+		ItemType &operator=(ItemType &&other) = default;
 
 		bool isGroundTile() const {
 			return group == ITEM_GROUP_GROUND;
@@ -110,6 +125,9 @@ class ItemType
 		}
 		bool isFluidContainer() const {
 			return group == ITEM_GROUP_FLUID;
+		}
+		bool isSpellBook() const {
+			return spellbook;
 		}
 
 		bool isDoor() const {
@@ -154,22 +172,32 @@ class ItemType
 		bool isQuiver() const {
 			return (type == ITEM_TYPE_QUIVER);
 		}
+		bool isLadder() const {
+			return (type == ITEM_TYPE_LADDER);
+		}
+		bool isDummy() const {
+			return (type == ITEM_TYPE_DUMMY);
+		}
 		bool hasSubType() const {
 			return (isFluidContainer() || isSplash() || stackable || charges != 0);
 		}
 		bool isWeapon() const {
 			return weaponType != WEAPON_NONE && weaponType != WEAPON_SHIELD && weaponType != WEAPON_AMMO;
 		}
-		bool isArmor() const
-		{
+		bool isArmor() const {
 			return slotPosition & SLOTP_ARMOR;
 		}
-		bool isHelmet() const
-		{
+		bool isHelmet() const {
 			return slotPosition & SLOTP_HEAD;
 		}
+		bool isRanged() const {
+			return weaponType == WEAPON_DISTANCE && weaponType != WEAPON_NONE;
+		}
+		bool isMissile() const {
+			return weaponType == WEAPON_MISSILE && weaponType != WEAPON_NONE;
+		}
 
-		Abilities& getAbilities() {
+		Abilities &getAbilities() {
 			if (!abilities) {
 				abilities.reset(new Abilities());
 			}
@@ -233,7 +261,9 @@ class ItemType
 
 		CombatType_t combatType = COMBAT_NONE;
 
-		uint16_t transformToOnUse[2] = {0, 0};
+		ItemAnimation_t animationType = ANIMATION_NONE;
+
+		uint16_t transformToOnUse[2] = { 0, 0 };
 		uint16_t transformToFree = 0;
 		uint16_t destroyTo = 0;
 		uint16_t maxTextLen = 0;
@@ -244,16 +274,19 @@ class ItemType
 		uint16_t slotPosition = SLOTP_HAND;
 		uint16_t speed = 0;
 		uint16_t wareId = 0;
+		uint16_t bedPartOf = 0;
+		uint16_t m_transformOnUse = 0;
 
 		MagicEffectClasses magicEffect = CONST_ME_NONE;
 		Direction bedPartnerDir = DIRECTION_NONE;
+		BedItemPart_t bedPart = BED_NONE_PART;
 		WeaponType_t weaponType = WEAPON_NONE;
 		Ammo_t ammoType = AMMO_NONE;
 		ShootType_t shootType = CONST_ANI_NONE;
 		RaceType_t corpseType = RACE_NONE;
 		Fluids_t fluidSource = FLUID_NONE;
 		TileFlags_t floorChange = TILESTATE_NONE;
-		std::map<ImbuementTypes_t, uint16_t> imbuementTypes;
+		phmap::btree_map<ImbuementTypes_t, uint16_t> imbuementTypes;
 
 		uint8_t upgradeClassification = 0;
 		uint8_t alwaysOnTopOrder = 0;
@@ -261,6 +294,8 @@ class ItemType
 		uint8_t lightColor = 0;
 		uint8_t shootRange = 1;
 		uint8_t imbuementSlot = 0;
+		uint8_t stackSize = 100;
+
 		int8_t hitChance = 0;
 
 		// 12.90
@@ -299,10 +334,10 @@ class ItemType
 		bool isPodium = false;
 		bool isCorpse = false;
 		bool loaded = false;
+		bool spellbook = false;
 };
 
-class Items
-{
+class Items {
 	public:
 		using NameMap = std::unordered_multimap<std::string, uint16_t>;
 		using InventoryVector = std::vector<uint16_t>;
@@ -310,38 +345,38 @@ class Items
 		Items();
 
 		// non-copyable
-		Items(const Items&) = delete;
-		Items& operator=(const Items&) = delete;
+		Items(const Items &) = delete;
+		Items &operator=(const Items &) = delete;
 
 		bool reload();
 		void clear();
 
 		void loadFromProtobuf();
 
-		const ItemType& operator[](size_t id) const {
+		const ItemType &operator[](size_t id) const {
 			return getItemType(id);
 		}
-		const ItemType& getItemType(size_t id) const;
-		ItemType& getItemType(size_t id);
+		const ItemType &getItemType(size_t id) const;
+		ItemType &getItemType(size_t id);
 
 		/**
 		 * @brief Check if the itemid "hasId" is stored on "items", if not, return false
-		 * 
+		 *
 		 * @param hasId check item id
-		 * @return true if the item exist 
+		 * @return true if the item exist
 		 * @return false if the item not exist
 		 */
 		bool hasItemType(size_t hasId) const;
 
-		uint16_t getItemIdByName(const std::string& name);
+		uint16_t getItemIdByName(const std::string &name);
 
-		ItemTypes_t getLootType(const std::string& strValue);
+		ItemTypes_t getLootType(const std::string &strValue);
 
 		bool loadFromXml();
-		void parseItemNode(const pugi::xml_node& itemNode, uint16_t id);
+		void parseItemNode(const pugi::xml_node &itemNode, uint16_t id);
 
 		void buildInventoryList();
-		const InventoryVector& getInventory() const {
+		const InventoryVector &getInventory() const {
 			return inventory;
 		}
 
@@ -351,10 +386,25 @@ class Items
 
 		NameMap nameToItems;
 
-	private:
+		void addLadderId(uint16_t newId) {
+			ladders.push_back(newId);
+		}
+		void addDummyId(uint16_t newId, uint16_t rate) {
+			dummys[newId] = rate;
+		}
 
+		const std::vector<uint16_t> &getLadders() const {
+			return ladders;
+		}
+		const std::unordered_map<uint16_t, uint16_t> &getDummys() const {
+			return dummys;
+		}
+
+	private:
 		std::vector<ItemType> items;
+		std::vector<uint16_t> ladders;
+		std::unordered_map<uint16_t, uint16_t> dummys;
 		InventoryVector inventory;
 };
 
-#endif  // SRC_ITEMS_ITEMS_H_
+#endif // SRC_ITEMS_ITEMS_H_

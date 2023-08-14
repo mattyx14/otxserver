@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #ifndef SRC_CREATURES_PLAYERS_VOCATIONS_VOCATION_H_
 #define SRC_CREATURES_PLAYERS_VOCATIONS_VOCATION_H_
@@ -13,18 +13,20 @@
 #include "declarations.hpp"
 #include "items/item.h"
 
-class Vocation
-{
+class Vocation {
 	public:
-		explicit Vocation(uint16_t initId) : id(initId) {}
+		explicit Vocation(uint16_t initId) :
+			id(initId) { }
 
-		const std::string& getVocName() const {
+		const std::string &getVocName() const {
 			return name;
 		}
-		const std::string& getVocDescription() const {
+		const std::string &getVocDescription() const {
 			return description;
 		}
+		absl::uint128 getTotalSkillTries(uint8_t skill, uint16_t level);
 		uint64_t getReqSkillTries(uint8_t skill, uint16_t level);
+		absl::uint128 getTotalMana(uint32_t magLevel);
 		uint64_t getReqMana(uint32_t magLevel);
 
 		uint16_t getId() const {
@@ -101,16 +103,22 @@ class Vocation
 		float defenseMultiplier = 1.0f;
 		float armorMultiplier = 1.0f;
 
+		float mitigationFactor = 1.0f;
+		float mitigationPrimaryShield = 1.0f;
+		float mitigationSecondaryShield = 1.0f;
+
 	private:
 		friend class Vocations;
 
-		std::map<uint32_t, uint64_t> cacheMana;
-		std::map<uint32_t, uint32_t> cacheSkill[SKILL_LAST + 1];
+		phmap::btree_map<uint32_t, uint64_t> cacheMana;
+		phmap::btree_map<uint32_t, absl::uint128> cacheManaTotal;
+		phmap::btree_map<uint32_t, uint32_t> cacheSkill[SKILL_LAST + 1];
+		phmap::btree_map<uint32_t, absl::uint128> cacheSkillTotal[SKILL_LAST + 1];
 
 		std::string name = "none";
 		std::string description;
 
-		float skillMultipliers[SKILL_LAST + 1] = {1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.1f};
+		float skillMultipliers[SKILL_LAST + 1] = { 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.1f };
 		float manaMultiplier = 4.0f;
 
 		uint32_t gainHealthTicks = 6;
@@ -137,15 +145,14 @@ class Vocation
 		static uint32_t skillBase[SKILL_LAST + 1];
 };
 
-class Vocations
-{
+class Vocations {
 	public:
 		Vocations() = default;
 
-		Vocations(Vocations const&) = delete;
-		void operator=(Vocations const&) = delete;
+		Vocations(const Vocations &) = delete;
+		void operator=(const Vocations &) = delete;
 
-		static Vocations& getInstance() {
+		static Vocations &getInstance() {
 			// Guaranteed to be destroyed
 			static Vocations instance;
 			// Instantiated on first use
@@ -155,14 +162,16 @@ class Vocations
 		bool loadFromXml();
 
 		Vocation* getVocation(uint16_t id);
-    	const std::map<uint16_t, Vocation>& getVocations() const {return vocationsMap;}
-		uint16_t getVocationId(const std::string& name) const;
+		const phmap::btree_map<uint16_t, Vocation> &getVocations() const {
+			return vocationsMap;
+		}
+		uint16_t getVocationId(const std::string &name) const;
 		uint16_t getPromotedVocation(uint16_t vocationId) const;
 
 	private:
-		std::map<uint16_t, Vocation> vocationsMap;
+		phmap::btree_map<uint16_t, Vocation> vocationsMap;
 };
 
 constexpr auto g_vocations = &Vocations::getInstance;
 
-#endif  // SRC_CREATURES_PLAYERS_VOCATIONS_VOCATION_H_
+#endif // SRC_CREATURES_PLAYERS_VOCATIONS_VOCATION_H_

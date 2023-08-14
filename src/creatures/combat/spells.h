@@ -4,14 +4,15 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #ifndef SRC_CREATURES_COMBAT_SPELLS_H_
 #define SRC_CREATURES_COMBAT_SPELLS_H_
 
 #include "lua/scripts/luascript.h"
 #include "creatures/players/player.h"
+#include "creatures/players/wheel/wheel_definitions.hpp"
 #include "lua/creature/actions.h"
 #include "lua/creature/talkaction.h"
 #include "lua/scripts/scripts.h"
@@ -20,49 +21,48 @@ class InstantSpell;
 class RuneSpell;
 class Spell;
 
-using VocSpellMap = std::map<uint16_t, bool>;
+using VocSpellMap = phmap::btree_map<uint16_t, bool>;
 using InstantSpell_ptr = std::unique_ptr<InstantSpell>;
 using RuneSpell_ptr = std::unique_ptr<RuneSpell>;
 
-class Spells final : public Scripts
-{
+class Spells final : public Scripts {
 	public:
 		Spells();
 		~Spells();
 
 		// non-copyable
-		Spells(const Spells&) = delete;
-		Spells& operator=(const Spells&) = delete;
+		Spells(const Spells &) = delete;
+		Spells &operator=(const Spells &) = delete;
 
-		static Spells& getInstance() {
+		static Spells &getInstance() {
 			// Guaranteed to be destroyed
 			static Spells instance;
 			// Instantiated on first use
 			return instance;
 		}
 
-		Spell* getSpellByName(const std::string& name);
-		RuneSpell* getRuneSpell(uint32_t id);
-		RuneSpell* getRuneSpellByName(const std::string& name);
+		Spell* getSpellByName(const std::string &name);
+		RuneSpell* getRuneSpell(uint16_t id);
+		RuneSpell* getRuneSpellByName(const std::string &name);
 
-		InstantSpell* getInstantSpell(const std::string& words);
-		InstantSpell* getInstantSpellByName(const std::string& name);
+		InstantSpell* getInstantSpell(const std::string &words);
+		InstantSpell* getInstantSpellByName(const std::string &name);
 
-		InstantSpell* getInstantSpellById(uint32_t spellId);
+		InstantSpell* getInstantSpellById(uint16_t spellId);
 
-		TalkActionResult_t playerSaySpell(Player* player, std::string& words);
+		TalkActionResult_t playerSaySpell(Player* player, std::string &words);
 
 		static Position getCasterPosition(Creature* creature, Direction dir);
 
 		std::list<uint16_t> getSpellsByVocation(uint16_t vocationId);
 
-		const std::map<std::string, InstantSpell>& getInstantSpells() const {
+		const std::map<std::string, InstantSpell> &getInstantSpells() const {
 			return instants;
 		};
 
-		bool hasInstantSpell(const std::string& word) const;
+		bool hasInstantSpell(const std::string &word) const;
 
-		void setInstantSpell(const std::string &word, InstantSpell& instant) {
+		void setInstantSpell(const std::string &word, InstantSpell &instant) {
 			instants.try_emplace(word, instant);
 		}
 
@@ -79,35 +79,34 @@ class Spells final : public Scripts
 
 constexpr auto g_spells = &Spells::getInstance;
 
-using RuneSpellFunction = std::function<bool(const RuneSpell* spell, Player* player, const Position& posTo)>;
+using RuneSpellFunction = std::function<bool(const RuneSpell* spell, Player* player, const Position &posTo)>;
 
-class BaseSpell
-{
+class BaseSpell {
 	public:
 		constexpr BaseSpell() = default;
 		virtual ~BaseSpell() = default;
 
 		virtual bool castSpell(Creature* creature) = 0;
 		virtual bool castSpell(Creature* creature, Creature* target) = 0;
+
+		SoundEffect_t soundImpactEffect = SoundEffect_t::SILENCE;
+		SoundEffect_t soundCastEffect = SoundEffect_t::SPELL_OR_RUNE;
 };
 
-class CombatSpell final : public Script, public BaseSpell
-{
+class CombatSpell final : public Script, public BaseSpell {
 	public:
 		// Constructor
-		CombatSpell(Combat* newCombat, bool newNeedTarget, bool needDirection);
-		// Destructor
-		~CombatSpell() override;
+		CombatSpell(Combat* newCombat, bool newNeedTarget, bool newNeedDirection);
 
 		// The copy constructor and the assignment operator have been deleted to prevent accidental copying.
-		CombatSpell(const CombatSpell&) = delete;
-		CombatSpell& operator=(const CombatSpell&) = delete;
+		CombatSpell(const CombatSpell &) = delete;
+		CombatSpell &operator=(const CombatSpell &) = delete;
 
 		bool castSpell(Creature* creature) override;
 		bool castSpell(Creature* creature, Creature* target) override;
 
 		// Scripting spell
-		bool executeCastSpell(Creature* creature, const LuaVariant& var) const;
+		bool executeCastSpell(Creature* creature, const LuaVariant &var) const;
 
 		bool loadScriptCombat();
 		Combat* getCombat() {
@@ -125,27 +124,29 @@ class CombatSpell final : public Script, public BaseSpell
 		bool needTarget;
 };
 
-class Spell : public BaseSpell
-{
+class Spell : public BaseSpell {
 	public:
 		Spell() = default;
 
-		const std::string& getName() const {
+		const std::string &getName() const {
 			return name;
 		}
 		void setName(std::string n) {
 			name = n;
 		}
-		uint8_t getId() const {
+		uint16_t getId() const {
 			return spellId;
 		}
-		void setId(uint8_t id) {
+		void setId(uint16_t id) {
 			spellId = id;
 		}
 
 		void postCastSpell(Player* player, bool finishedCast = true, bool payCost = true) const;
 		static void postCastSpell(Player* player, uint32_t manaCost, uint32_t soulCost);
 		virtual bool isInstant() const = 0;
+		bool isLearnable() const {
+			return learnable;
+		}
 
 		uint32_t getManaCost(const Player* player) const;
 		uint32_t getSoulCost() const {
@@ -191,7 +192,7 @@ class Spell : public BaseSpell
 			enabled = e;
 		}
 
-		const VocSpellMap& getVocMap() const {
+		const VocSpellMap &getVocMap() const {
 			return vocSpellMap;
 		}
 		void addVocMap(uint16_t n, bool b) {
@@ -282,23 +283,71 @@ class Spell : public BaseSpell
 		bool getAllowOnSelf() const {
 			return allowOnSelf;
 		}
-		void setAllowOnSelf(bool s) { 
+		void setAllowOnSelf(bool s) {
 			allowOnSelf = s;
 		}
 		bool getLockedPZ() const {
 			return pzLocked;
 		}
-		void setLockedPZ(bool b){
+		void setLockedPZ(bool b) {
 			pzLocked = b;
 		}
 
+		/**
+		 * @brief Get whether the wheel of destiny is upgraded.
+		 *
+		 * @return True if the wheel of destiny is upgraded, false otherwise.
+		 */
+		bool getWheelOfDestinyUpgraded() const;
+
+		/**
+		 * @brief Get the boost value for the wheel of destiny.
+		 *
+		 * @param boost The boost type.
+		 * @param grade The grade of the wheel of destiny.
+		 * @return The boost value for the specified boost and grade.
+		 */
+		int32_t getWheelOfDestinyBoost(WheelSpellBoost_t boost, WheelSpellGrade_t grade) const;
+
+		/**
+		 * @brief Set whether the wheel of destiny is upgraded.
+		 *
+		 * @param value The value indicating whether the wheel of destiny is upgraded.
+		 */
+		void setWheelOfDestinyUpgraded(bool value);
+
+		/**
+		 * @brief Set the boost value for the wheel of destiny.
+		 *
+		 * @param boost The boost type.
+		 * @param grade The grade of the wheel of destiny.
+		 * @param value The boost value to be set.
+		 */
+		void setWheelOfDestinyBoost(WheelSpellBoost_t boost, WheelSpellGrade_t grade, int32_t value);
+
 		SpellType_t spellType = SPELL_UNDEFINED;
+
+		const std::string &getWords() const {
+			return m_words;
+		}
+
+		void setWords(const std::string_view &newWord) {
+			m_words = newWord.data();
+		}
+
+		const std::string &getSeparator() const {
+			return m_separator;
+		}
+
+		void setSeparator(const std::string_view &newSeparator) {
+			m_separator = newSeparator.data();
+		}
 
 	protected:
 		void applyCooldownConditions(Player* player) const;
 		bool playerSpellCheck(Player* player) const;
-		bool playerInstantSpellCheck(Player* player, const Position& toPos);
-		bool playerRuneSpellCheck(Player* player, const Position& toPos);
+		bool playerInstantSpellCheck(Player* player, const Position &toPos);
+		bool playerRuneSpellCheck(Player* player, const Position &toPos);
 
 		VocSpellMap vocSpellMap;
 
@@ -312,15 +361,18 @@ class Spell : public BaseSpell
 		uint32_t magLevel = 0;
 		int32_t range = -1;
 
-		uint8_t spellId = 0;
+		uint16_t spellId = 0;
 
 		bool selfTarget = false;
 		bool needTarget = false;
 		bool allowOnSelf = true;
 		bool pzLocked = false;
 
-	private:
+		bool whellOfDestinyUpgraded = false;
+		std::array<int32_t, static_cast<uint8_t>(WheelSpellBoost_t::TOTAL_COUNT)> wheelOfDestinyRegularBoost = { 0 };
+		std::array<int32_t, static_cast<uint8_t>(WheelSpellBoost_t::TOTAL_COUNT)> wheelOfDestinyUpgradedBoost = { 0 };
 
+	private:
 		uint32_t mana = 0;
 		uint32_t manaPercent = 0;
 		uint32_t soul = 0;
@@ -333,23 +385,22 @@ class Spell : public BaseSpell
 		bool enabled = true;
 		bool premium = false;
 
-
-	private:
 		std::string name;
+		std::string m_words;
+		std::string m_separator;
 };
 
-class InstantSpell final : public TalkAction, public Spell
-{
+class InstantSpell final : public Script, public Spell {
 	public:
-		using TalkAction::TalkAction;
+		using Script::Script;
 
-		virtual bool playerCastInstant(Player* player, std::string& param);
+		virtual bool playerCastInstant(Player* player, std::string &param);
 
 		bool castSpell(Creature* creature) override;
 		bool castSpell(Creature* creature, Creature* target) override;
 
 		// Scripting spell
-		bool executeCastSpell(Creature* creature, const LuaVariant& var) const;
+		bool executeCastSpell(Creature* creature, const LuaVariant &var) const;
 
 		bool isInstant() const override {
 			return true;
@@ -399,26 +450,25 @@ class InstantSpell final : public TalkAction, public Spell
 		bool casterTargetOrDirection = false;
 };
 
-class RuneSpell final : public Action, public Spell
-{
+class RuneSpell final : public Action, public Spell {
 	public:
 		using Action::Action;
 
-		ReturnValue canExecuteAction(const Player* player, const Position& toPos) override;
+		ReturnValue canExecuteAction(const Player* player, const Position &toPos) override;
 		bool hasOwnErrorHandler() override {
 			return true;
 		}
-		Thing* getTarget(Player*, Creature* targetCreature, const Position&, uint8_t) const override {
+		Thing* getTarget(Player*, Creature* targetCreature, const Position &, uint8_t) const override {
 			return targetCreature;
 		}
 
-		bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey) override;
+		bool executeUse(Player* player, Item* item, const Position &fromPosition, Thing* target, const Position &toPosition, bool isHotkey) override;
 
 		bool castSpell(Creature* creature) override;
 		bool castSpell(Creature* creature, Creature* target) override;
 
 		// Scripting spell
-		bool executeCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey) const;
+		bool executeCastSpell(Creature* creature, const LuaVariant &var, bool isHotkey) const;
 
 		bool isInstant() const override {
 			return false;
@@ -444,11 +494,11 @@ class RuneSpell final : public Action, public Spell
 			return "onCastSpell";
 		}
 
-		bool internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
+		bool internalCastSpell(Creature* creature, const LuaVariant &var, bool isHotkey);
 
 		uint16_t runeId = 0;
 		uint32_t charges = 0;
 		bool hasCharges = false;
 };
 
-#endif  // SRC_CREATURES_COMBAT_SPELLS_H_
+#endif // SRC_CREATURES_COMBAT_SPELLS_H_

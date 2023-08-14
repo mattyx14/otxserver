@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #include "pch.hpp"
 
@@ -14,11 +14,12 @@
 #include "lua/functions/creatures/combat/condition_functions.hpp"
 
 int ConditionFunctions::luaConditionCreate(lua_State* L) {
-	// Condition(conditionType[, conditionId = CONDITIONID_COMBAT])
+	// Condition(conditionType[, conditionId = CONDITIONID_COMBAT[, subid = 0]])
 	ConditionType_t conditionType = getNumber<ConditionType_t>(L, 2);
 	ConditionId_t conditionId = getNumber<ConditionId_t>(L, 3, CONDITIONID_COMBAT);
+	uint32_t subId = getNumber<uint32_t>(L, 4, 0);
 
-	Condition* condition = Condition::createCondition(conditionId, conditionType, 0, 0);
+	Condition* condition = Condition::createCondition(conditionId, conditionType, 0, 0, false, subId);
 	if (condition) {
 		pushUserdata<Condition>(L, condition);
 		setMetatable(L, -1, "Condition");

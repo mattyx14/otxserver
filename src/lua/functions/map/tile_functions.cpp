@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #include "pch.hpp"
 
@@ -247,7 +247,7 @@ int TileFunctions::luaTileGetItemByType(lua_State* L) {
 	}
 
 	if (Item* item = tile->getGround()) {
-		const ItemType& it = Item::items[item->getID()];
+		const ItemType &it = Item::items[item->getID()];
 		if (it.type == itemType) {
 			pushUserdata<Item>(L, item);
 			setItemMetatable(L, -1, item);
@@ -257,7 +257,7 @@ int TileFunctions::luaTileGetItemByType(lua_State* L) {
 
 	if (const TileItemVector* items = tile->getItemList()) {
 		for (Item* item : *items) {
-			const ItemType& it = Item::items[item->getID()];
+			const ItemType &it = Item::items[item->getID()];
 			if (it.type == itemType) {
 				pushUserdata<Item>(L, item);
 				setItemMetatable(L, -1, item);
@@ -591,7 +591,7 @@ int TileFunctions::luaTileAddItem(lua_State* L) {
 
 	uint32_t subType = getNumber<uint32_t>(L, 3, 1);
 
-	Item* item = Item::CreateItem(itemId, std::min<uint32_t>(subType, 100));
+	Item* item = Item::CreateItem(itemId, std::min<uint32_t>(subType, Item::items[itemId].stackSize));
 	if (!item) {
 		lua_pushnil(L);
 		return 1;
@@ -650,6 +650,18 @@ int TileFunctions::luaTileGetHouse(lua_State* L) {
 	if (HouseTile* houseTile = dynamic_cast<HouseTile*>(tile)) {
 		pushUserdata<House>(L, houseTile->getHouse());
 		setMetatable(L, -1, "House");
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int TileFunctions::luaTileIsHazard(lua_State* L) {
+	// tile:isHazard()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if (tile) {
+		TileFlags_t flag = getNumber<TileFlags_t>(L, 2);
+		pushBoolean(L, tile->isHazard());
 	} else {
 		lua_pushnil(L);
 	}

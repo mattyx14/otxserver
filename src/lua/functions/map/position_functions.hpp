@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #ifndef SRC_LUA_FUNCTIONS_MAP_POSITION_FUNCTIONS_HPP_
 #define SRC_LUA_FUNCTIONS_MAP_POSITION_FUNCTIONS_HPP_
@@ -25,7 +25,13 @@ class PositionFunctions final : LuaScriptInterface {
 			registerMethod(L, "Position", "isSightClear", PositionFunctions::luaPositionIsSightClear);
 
 			registerMethod(L, "Position", "sendMagicEffect", PositionFunctions::luaPositionSendMagicEffect);
+			registerMethod(L, "Position", "removeMagicEffect", PositionFunctions::luaPositionRemoveMagicEffect);
 			registerMethod(L, "Position", "sendDistanceEffect", PositionFunctions::luaPositionSendDistanceEffect);
+
+			registerMethod(L, "Position", "sendSingleSoundEffect", PositionFunctions::luaPositionSendSingleSoundEffect);
+			registerMethod(L, "Position", "sendDoubleSoundEffect", PositionFunctions::luaPositionSendDoubleSoundEffect);
+
+			registerMethod(L, "Position", "toString", PositionFunctions::luaPositionToString);
 		}
 
 	private:
@@ -39,7 +45,13 @@ class PositionFunctions final : LuaScriptInterface {
 		static int luaPositionIsSightClear(lua_State* L);
 
 		static int luaPositionSendMagicEffect(lua_State* L);
+		static int luaPositionRemoveMagicEffect(lua_State* L);
 		static int luaPositionSendDistanceEffect(lua_State* L);
+
+		static int luaPositionSendSingleSoundEffect(lua_State* L);
+		static int luaPositionSendDoubleSoundEffect(lua_State* L);
+
+		static int luaPositionToString(lua_State* L);
 };
 
 #endif

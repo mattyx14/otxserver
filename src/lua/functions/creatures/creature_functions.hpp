@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #ifndef SRC_LUA_FUNCTIONS_CREATURES_CREATURE_FUNCTIONS_HPP_
 #define SRC_LUA_FUNCTIONS_CREATURES_CREATURE_FUNCTIONS_HPP_
@@ -45,6 +45,7 @@ class CreatureFunctions final : LuaScriptInterface {
 			registerMethod(L, "Creature", "getLight", CreatureFunctions::luaCreatureGetLight);
 			registerMethod(L, "Creature", "setLight", CreatureFunctions::luaCreatureSetLight);
 			registerMethod(L, "Creature", "getSpeed", CreatureFunctions::luaCreatureGetSpeed);
+			registerMethod(L, "Creature", "setSpeed", CreatureFunctions::luaCreatureSetSpeed);
 			registerMethod(L, "Creature", "getBaseSpeed", CreatureFunctions::luaCreatureGetBaseSpeed);
 			registerMethod(L, "Creature", "changeSpeed", CreatureFunctions::luaCreatureChangeSpeed);
 			registerMethod(L, "Creature", "setDropLoot", CreatureFunctions::luaCreatureSetDropLoot);
@@ -123,6 +124,7 @@ class CreatureFunctions final : LuaScriptInterface {
 		static int luaCreatureSetLight(lua_State* L);
 
 		static int luaCreatureGetSpeed(lua_State* L);
+		static int luaCreatureSetSpeed(lua_State* L); // send speed
 		static int luaCreatureGetBaseSpeed(lua_State* L);
 		static int luaCreatureChangeSpeed(lua_State* L);
 
@@ -172,4 +174,4 @@ class CreatureFunctions final : LuaScriptInterface {
 		static int luaCreatureGetZone(lua_State* L);
 };
 
-#endif  // SRC_LUA_FUNCTIONS_CREATURES_CREATURE_FUNCTIONS_HPP_
+#endif // SRC_LUA_FUNCTIONS_CREATURES_CREATURE_FUNCTIONS_HPP_

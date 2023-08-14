@@ -50,6 +50,7 @@ option(OPTIONS_ENABLE_OPENMP "Enable Open Multi-Processing support." ON)
 option(DEBUG_LOG "Enable Debug Log" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
 option(BUILD_STATIC_LIBRARY "Build using static libraries" OFF)
+option(SPEED_UP_BUILD_UNITY "Compile using build unity for speed up build" ON)
 
 
 # *****************************************************************************
@@ -130,22 +131,34 @@ endif(DEBUG_LOG)
 # === PRECOMPILED HEADER ===
 target_precompile_headers(${PROJECT_NAME} PRIVATE pch.hpp)
 
+# === UNITY BUILD (compile time reducer) ===
+if(SPEED_UP_BUILD_UNITY)
+	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+	log_option_enabled("Build unity for speed up compilation")
+endif()
+
 # *****************************************************************************
 # Packages / Libs
 # *****************************************************************************
-find_package(asio CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
 find_package(GMP REQUIRED)
-find_package(jsoncpp CONFIG REQUIRED)
 find_package(LuaJIT REQUIRED)
 find_package(MySQL REQUIRED)
-find_package(magic_enum CONFIG REQUIRED)
 find_package(Protobuf REQUIRED)
+find_package(Threads REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(absl CONFIG REQUIRED)
+find_package(asio CONFIG REQUIRED)
+find_package(eventpp CONFIG REQUIRED)
+find_package(jsoncpp CONFIG REQUIRED)
+find_package(magic_enum CONFIG REQUIRED)
+find_package(mio REQUIRED)
 find_package(pugixml CONFIG REQUIRED)
 find_package(spdlog REQUIRED)
+find_package(unofficial-argon2 CONFIG REQUIRED)
 find_package(unofficial-libmariadb CONFIG REQUIRED)
-find_package(mio REQUIRED)
-find_package(Threads REQUIRED)
+
+find_path(BOOST_DI_INCLUDE_DIRS "boost/di.hpp")
 
 include(GNUInstallDirs)
 
@@ -176,7 +189,9 @@ PRIVATE
 	creatures/players/imbuements/imbuements.cpp
 	creatures/players/management/ban.cpp
 	creatures/players/management/waitlist.cpp
+	creatures/players/storages/storages.cpp
 	creatures/players/player.cpp
+	creatures/players/wheel/player_wheel.cpp
 	creatures/players/vocations/vocation.cpp
 	database/database.cpp
 	database/databasemanager.cpp
@@ -189,7 +204,9 @@ PRIVATE
 	game/scheduling/events_scheduler.cpp
 	game/scheduling/tasks.cpp
 	io/fileloader.cpp
+	io/io_wheel.cpp
 	io/iobestiary.cpp
+	io/io_bosstiary.cpp
 	io/ioguild.cpp
 	io/iologindata.cpp
 	io/functions/iologindata_load_player.cpp
@@ -211,12 +228,17 @@ PRIVATE
 	items/decay/decay.cpp
 	items/item.cpp
 	items/items.cpp
-	items/functions/item_parse.cpp
+	items/functions/item/attribute.cpp
+	items/functions/item/custom_attribute.cpp
+	items/functions/item/item_parse.cpp
 	items/thing.cpp
 	items/tile.cpp
 	items/trashholder.cpp
 	items/weapons/weapons.cpp
+	lib/logging/LogWithSpdLog.cpp
 	lua/callbacks/creaturecallback.cpp
+	lua/callbacks/event_callback.cpp
+	lua/callbacks/events_callbacks.cpp
 	lua/creature/actions.cpp
 	lua/creature/creatureevent.cpp
 	lua/creature/events.cpp
@@ -256,6 +278,7 @@ PRIVATE
 	lua/functions/creatures/player/vocation_functions.cpp
 	lua/functions/events/action_functions.cpp
 	lua/functions/events/creature_event_functions.cpp
+	lua/functions/events/event_callback_functions.cpp
 	lua/functions/events/events_scheduler_functions.cpp
 	lua/functions/events/global_event_functions.cpp
 	lua/functions/events/move_event_functions.cpp
@@ -282,6 +305,8 @@ PRIVATE
 	map/house/housetile.cpp
 	map/map.cpp
 	otserv.cpp
+	pch.cpp
+	security/argon.cpp
 	security/rsa.cpp
 	server/network/connection/connection.cpp
 	server/network/message/networkmessage.cpp
@@ -313,7 +338,6 @@ if (MSVC)
 	if(BUILD_STATIC_LIBRARY)
 		log_option_enabled("STATIC_LIBRARY")
 		set(CMAKE_FIND_LIBRARY_SUFFIXES ".lib")
-		find_package(unofficial-libmariadb CONFIG REQUIRED)
 		set_property(TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 		target_link_libraries(${PROJECT_NAME}	PRIVATE jsoncpp_static)
 	else()
@@ -325,10 +349,11 @@ if (MSVC)
 
 	target_include_directories(${PROJECT_NAME}
 		PRIVATE
+			${BOOST_DI_INCLUDE_DIRS}
 			${CMAKE_SOURCE_DIR}/src
+			${GMP_INCLUDE_DIR}
 			${LUAJIT_INCLUDE_DIRS}
 			${PARALLEL_HASHMAP_INCLUDE_DIRS}
-			${GMP_INCLUDE_DIR}
 	)
 
 	target_link_libraries(${PROJECT_NAME}
@@ -337,14 +362,18 @@ if (MSVC)
 			${GMP_LIBRARIES}
 			${LUAJIT_LIBRARIES}
 			${MYSQL_CLIENT_LIBS}
-			asio::asio
 			CURL::libcurl
+			ZLIB::ZLIB
+			absl::any absl::log absl::base absl::bits
+			asio::asio
+			eventpp::eventpp
 			fmt::fmt
 			magic_enum::magic_enum
 			mio::mio
 			protobuf::libprotobuf
 			pugixml::pugixml
 			spdlog::spdlog
+			unofficial::argon2::libargon2
 			unofficial::libmariadb
 			unofficial::mariadbclient
 	)
@@ -353,18 +382,22 @@ else()
 
 	target_include_directories(${PROJECT_NAME}
 		PRIVATE
+			${BOOST_DI_INCLUDE_DIRS}
 			${CMAKE_SOURCE_DIR}/src
+			${GMP_INCLUDE_DIRS}
 			${LUAJIT_INCLUDE_DIRS}
 			${PARALLEL_HASHMAP_INCLUDE_DIRS}
-			${GMP_INCLUDE_DIRS}
 	)
 
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
 			${LUAJIT_LIBRARIES}
 			${GMP_LIBRARIES}
-			asio::asio
 			CURL::libcurl
+			ZLIB::ZLIB
+			absl::any absl::log absl::base absl::bits
+			asio::asio
+			eventpp::eventpp
 			fmt::fmt
 			jsoncpp_static
 			magic_enum::magic_enum
@@ -372,6 +405,7 @@ else()
 			protobuf::libprotobuf
 			pugixml::pugixml
 			spdlog::spdlog
+			unofficial::argon2::libargon2
 			unofficial::libmariadb
 			unofficial::mariadbclient
 

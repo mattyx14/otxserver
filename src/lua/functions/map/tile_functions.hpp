@@ -4,8 +4,8 @@
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
- * Website: https://docs.opentibiabr.org/
-*/
+ * Website: https://docs.opentibiabr.com/
+ */
 
 #ifndef SRC_LUA_FUNCTIONS_MAP_TILE_FUNCTIONS_HPP_
 #define SRC_LUA_FUNCTIONS_MAP_TILE_FUNCTIONS_HPP_
@@ -56,6 +56,8 @@ class TileFunctions final : LuaScriptInterface {
 			registerMethod(L, "Tile", "addItemEx", TileFunctions::luaTileAddItemEx);
 
 			registerMethod(L, "Tile", "getHouse", TileFunctions::luaTileGetHouse);
+
+			registerMethod(L, "Tile", "isHazard", TileFunctions::luaTileIsHazard);
 		}
 
 	private:
@@ -99,6 +101,8 @@ class TileFunctions final : LuaScriptInterface {
 		static int luaTileAddItemEx(lua_State* L);
 
 		static int luaTileGetHouse(lua_State* L);
+
+		static int luaTileIsHazard(lua_State* L);
 };
 
-#endif  // SRC_LUA_FUNCTIONS_MAP_TILE_FUNCTIONS_HPP_
+#endif // SRC_LUA_FUNCTIONS_MAP_TILE_FUNCTIONS_HPP_
