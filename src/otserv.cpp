@@ -276,7 +276,8 @@ void mainLoader(int, char*[], ServiceManager* services) {
 
 	SPDLOG_INFO("A server developed by: {}", STATUS_SERVER_DEVELOPERS);
 	SPDLOG_INFO("Visit our website for updates, support, and resources: "
-				"https://docs.opentibiabr.org/ and https://github.com/mattyx14/otxserver/");
+				"https://docs.opentibiabr.com/home/welcome/ and "
+				"https://github.com/mattyx14/otxserver/\n");
 
 	std::string configName = "config.lua";
 	// Check if config or config.dist exist
