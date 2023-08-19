@@ -34,6 +34,7 @@
 #include <ranges>
 #include <regex>
 #include <set>
+#include <thread>
 #include <vector>
 #include <variant>
 
@@ -86,6 +87,8 @@
 	#include <lua.hpp>
 #endif
 
+#include "lua/global/shared_object.hpp"
+
 // Magic Enum
 #include <magic_enum.hpp>
 
@@ -108,9 +111,6 @@
 // PugiXML
 #include <pugixml.hpp>
 
-// SPDLog
-#include <spdlog/spdlog.h>
-
 // Zlib
 #include <zlib.h>
 
@@ -130,8 +130,6 @@
 
 #include <string>
 #include <iostream>
-
-bool isDevMode();
 
 /**
  * Static custom libraries that can be pre-compiled like DI and messaging

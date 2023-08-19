@@ -54,10 +54,7 @@ class Game {
 		Game &operator=(const Game &) = delete;
 
 		static Game &getInstance() {
-			// Guaranteed to be destroyed
-			static Game instance;
-			// Instantiated on first use
-			return instance;
+			return inject<Game>();
 		}
 
 		void resetMonsters() const;
@@ -103,8 +100,8 @@ class Game {
 			teamFinderMap.erase(leaderGuid);
 		}
 
-		Cylinder* internalGetCylinder(Player* player, const Position &pos) const;
-		Thing* internalGetThing(Player* player, const Position &pos, int32_t index, uint32_t itemId, StackPosType_t type) const;
+		Cylinder* internalGetCylinder(Player* player, const Position &pos);
+		Thing* internalGetThing(Player* player, const Position &pos, int32_t index, uint32_t itemId, StackPosType_t type);
 		static void internalGetPosition(Item* item, Position &pos, uint8_t &stackpos);
 
 		static std::string getTradeErrorDescription(ReturnValue ret, Item* item);
@@ -115,13 +112,13 @@ class Game {
 
 		Npc* getNpcByID(uint32_t id);
 
-		Player* getPlayerByID(uint32_t id);
-
 		Creature* getCreatureByName(const std::string &s);
 
 		Npc* getNpcByName(const std::string &s);
 
-		Player* getPlayerByName(const std::string &s);
+		Player* getPlayerByID(uint32_t id, bool allowOffline = false);
+
+		Player* getPlayerByName(const std::string &s, bool allowOffline = false);
 
 		Player* getPlayerByGUID(const uint32_t &guid);
 
@@ -379,15 +376,15 @@ class Game {
 
 		void setBoostedName(std::string name) {
 			boostedCreature = name;
-			SPDLOG_INFO("Boosted creature: {}", name);
+			g_logger().info("Boosted creature: {}", name);
 		}
 
 		std::string getBoostedMonsterName() const {
 			return boostedCreature;
 		}
 
-		bool canThrowObjectTo(const Position &fromPos, const Position &toPos, bool checkLineOfSight = true, int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY) const;
-		bool isSightClear(const Position &fromPos, const Position &toPos, bool sameFloor) const;
+		bool canThrowObjectTo(const Position &fromPos, const Position &toPos, bool checkLineOfSight = true, int32_t rangex = MAP_MAX_CLIENT_VIEW_PORT_X, int32_t rangey = MAP_MAX_CLIENT_VIEW_PORT_Y);
+		bool isSightClear(const Position &fromPos, const Position &toPos, bool sameFloor);
 
 		void changeSpeed(Creature* creature, int32_t varSpeedDelta);
 		void setCreatureSpeed(Creature* creature, int32_t speed); // setCreatureSpeed
@@ -497,7 +494,8 @@ class Game {
 		void addMonster(Monster* npc);
 		void removeMonster(Monster* npc);
 
-		Guild* getGuild(uint32_t id) const;
+		Guild* getGuild(uint32_t id, bool allowOffline = false) const;
+		Guild* getGuildByName(const std::string &name, bool allowOffline = false) const;
 		void addGuild(Guild* guild);
 		void removeGuild(uint32_t guildId);
 		void decreaseBrowseFieldRef(const Position &pos);
@@ -662,6 +660,7 @@ class Game {
 		bool playerYell(Player* player, const std::string &text);
 		bool playerSpeakTo(Player* player, SpeakClasses type, const std::string &receiver, const std::string &text);
 		void playerSpeakToNpc(Player* player, const std::string &text);
+		std::shared_ptr<Task> createPlayerTask(uint32_t delay, std::function<void(void)> f);
 
 		/**
 		 * Player wants to loot a corpse
@@ -870,6 +869,6 @@ class Game {
 		std::unique_ptr<IOWheel> m_IOWheel;
 };
 
-constexpr auto g_game = &Game::getInstance;
+constexpr auto g_game = Game::getInstance;
 
 #endif // SRC_GAME_GAME_H_

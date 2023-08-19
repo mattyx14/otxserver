@@ -317,15 +317,6 @@ function iterateArea(func, from, to)
 	end
 end
 
-function playerExists(name)
-	local resultId = db.storeQuery("SELECT `name` FROM `players` WHERE `name` = " .. db.escapeString(name))
-	if resultId then
-		Result.free(resultId)
-		return true
-	end
-	return false
-end
-
 function placeSpawnRandom(fromPositon, toPosition, monsterName, ammount, hasCall, storage, value, removestorage,
 			sharedHP, event, message)
 	for _x = fromPositon.x, toPosition.x do
@@ -893,4 +884,10 @@ function HasValidTalkActionParams(player, param, usage)
 	end
 
 	return true
+end
+
+function FormatNumber(number)
+  local _, _, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
+  int = int:reverse():gsub("(%d%d%d)", "%1,")
+  return minus .. int:reverse():gsub("^,", "") .. fraction
 end

@@ -22,7 +22,7 @@ set(VCPKG_FEATURE_FLAGS "versions")
 set(VCPKG_BUILD_TYPE "release")
 
 # *****************************************************************************
-# Project OTX Server
+# Project canary
 # *****************************************************************************
 project(otxserver)
 

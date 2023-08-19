@@ -160,6 +160,13 @@ find_package(unofficial-libmariadb CONFIG REQUIRED)
 
 find_path(BOOST_DI_INCLUDE_DIRS "boost/di.hpp")
 
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	target_link_libraries(${PROJECT_NAME} PRIVATE ${ZLIB_LIBRARY_DEBUG})
+else()
+	target_link_libraries(${PROJECT_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
+endif()
+
+
 include(GNUInstallDirs)
 
 # *****************************************************************************
@@ -198,11 +205,12 @@ PRIVATE
 	database/databasetasks.cpp
 	game/functions/game_reload.cpp
 	game/game.cpp
+	game/bank/bank.cpp
 	game/movement/position.cpp
 	game/movement/teleport.cpp
 	game/scheduling/scheduler.cpp
 	game/scheduling/events_scheduler.cpp
-	game/scheduling/tasks.cpp
+	game/scheduling/dispatcher.cpp
 	io/fileloader.cpp
 	io/io_wheel.cpp
 	io/iobestiary.cpp
@@ -235,7 +243,8 @@ PRIVATE
 	items/tile.cpp
 	items/trashholder.cpp
 	items/weapons/weapons.cpp
-	lib/logging/LogWithSpdLog.cpp
+	lib/logging/log_with_spd_log.cpp
+	lib/thread/thread_pool.cpp
 	lua/callbacks/creaturecallback.cpp
 	lua/callbacks/event_callback.cpp
 	lua/callbacks/events_callbacks.cpp
@@ -248,6 +257,7 @@ PRIVATE
 	lua/functions/lua_functions_loader.cpp
 	lua/functions/core/game/config_functions.cpp
 	lua/functions/core/game/game_functions.cpp
+	lua/functions/core/game/bank_functions.cpp
 	lua/functions/core/game/global_functions.cpp
 	lua/functions/core/game/lua_enums.cpp
 	lua/functions/core/game/modal_window_functions.cpp
@@ -303,9 +313,12 @@ PRIVATE
 	lua/scripts/scripts.cpp
 	map/house/house.cpp
 	map/house/housetile.cpp
+	map/utils/astarnodes.cpp
+	map/utils/qtreenode.cpp
 	map/map.cpp
+	map/mapcache.cpp
+	canary_server.cpp
 	otserv.cpp
-	pch.cpp
 	security/argon.cpp
 	security/rsa.cpp
 	server/network/connection/connection.cpp

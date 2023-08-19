@@ -792,6 +792,11 @@ Storage = {
 				AccessDoor = 47601,
 				MegasylvanYseldaTimer = 47602,
 			},
+			CitizenOfIssaviOutfits = {},
+			RoyalBounaceanAdvisorOutfits = {},
+			TooHotToHandle = {
+				BrainstealerTimer = 47611,
+			}
 		},
 		U12_90 = { -- update 12.90 - Reserved Storages 47851 - 47900
 			PrimalOrdeal = {
@@ -807,6 +812,9 @@ Storage = {
 					ThePrimalMenaceKilled = 47855,
 				},
 			},
+			WithinTheTides = {
+				TimiraTimer = 47858,
+			}
 		},
 	},
 
