@@ -1723,16 +1723,10 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout) {
 
 		closeShopWindow();
 
-		bool saved = false;
 		for (uint32_t tries = 0; tries < 3; ++tries) {
 			if (IOLoginData::savePlayer(this)) {
-				saved = true;
 				break;
 			}
-		}
-
-		if (!saved) {
-			g_logger().warn("Error while saving player: {}", getName());
 		}
 	}
 
@@ -2572,7 +2566,7 @@ void Player::death(Creature* lastHitCreature) {
 		// Charm bless bestiary
 		if (lastHitCreature && lastHitCreature->getMonster()) {
 			if (charmRuneBless != 0) {
-				const MonsterType* mType = g_monsters().getMonsterType(lastHitCreature->getName());
+				const auto &mType = g_monsters().getMonsterType(lastHitCreature->getName());
 				if (mType && mType->info.raceid == charmRuneBless) {
 					deathLossPercent = (deathLossPercent * 90) / 100;
 				}
@@ -4692,7 +4686,7 @@ bool Player::canWear(uint16_t lookType, uint8_t addons) const {
 		return true;
 	}
 
-	const Outfit* outfit = Outfits::getInstance().getOutfitByLookType(sex, lookType);
+	const auto &outfit = Outfits::getInstance().getOutfitByLookType(sex, lookType);
 	if (!outfit) {
 		return false;
 	}
@@ -4779,18 +4773,18 @@ bool Player::removeOutfitAddon(uint16_t lookType, uint8_t addons) {
 	return false;
 }
 
-bool Player::getOutfitAddons(const Outfit &outfit, uint8_t &addons) const {
+bool Player::getOutfitAddons(const std::shared_ptr<Outfit> &outfit, uint8_t &addons) const {
 	if (group->access) {
 		addons = 3;
 		return true;
 	}
 
-	if (outfit.premium && !isPremium()) {
+	if (outfit->premium && !isPremium()) {
 		return false;
 	}
 
 	for (const OutfitEntry &outfitEntry : outfits) {
-		if (outfitEntry.lookType != outfit.lookType) {
+		if (outfitEntry.lookType != outfit->lookType) {
 			continue;
 		}
 
@@ -4798,7 +4792,7 @@ bool Player::getOutfitAddons(const Outfit &outfit, uint8_t &addons) const {
 		return true;
 	}
 
-	if (!outfit.unlocked) {
+	if (!outfit->unlocked) {
 		return false;
 	}
 
@@ -5085,7 +5079,7 @@ bool Player::isInWar(const Player* player) const {
 		return false;
 	}
 
-	const Guild* playerGuild = player->getGuild();
+	const auto &playerGuild = player->getGuild();
 	if (!playerGuild) {
 		return false;
 	}
@@ -5466,7 +5460,7 @@ GuildEmblems_t Player::getGuildEmblem(const Player* player) const {
 		return GUILDEMBLEM_NONE;
 	}
 
-	const Guild* playerGuild = player->getGuild();
+	const auto &playerGuild = player->getGuild();
 	if (!playerGuild) {
 		return GUILDEMBLEM_NONE;
 	}
@@ -5536,8 +5530,8 @@ void Player::setCurrentMount(uint8_t mount) {
 
 bool Player::hasAnyMount() const {
 	for (const auto &mounts = g_game().mounts.getMounts();
-		 const Mount &mount : mounts) {
-		if (hasMount(&mount)) {
+		 const auto &mount : mounts) {
+		if (hasMount(mount)) {
 			return true;
 		}
 	}
@@ -5548,9 +5542,9 @@ uint8_t Player::getRandomMountId() const {
 	std::vector<uint8_t> playerMounts;
 
 	for (const auto &mounts = g_game().mounts.getMounts();
-		 const Mount &mount : mounts) {
-		if (hasMount(&mount)) {
-			playerMounts.push_back(mount.id);
+		 const auto &mount : mounts) {
+		if (hasMount(mount)) {
+			playerMounts.push_back(mount->id);
 		}
 	}
 
@@ -5575,7 +5569,7 @@ bool Player::toggleMount(bool mount) {
 			return false;
 		}
 
-		const Outfit* playerOutfit = Outfits::getInstance().getOutfitByLookType(getSex(), defaultOutfit.lookType);
+		const auto &playerOutfit = Outfits::getInstance().getOutfitByLookType(getSex(), defaultOutfit.lookType);
 		if (!playerOutfit) {
 			return false;
 		}
@@ -5590,7 +5584,7 @@ bool Player::toggleMount(bool mount) {
 			currentMountId = getRandomMountId();
 		}
 
-		const Mount* currentMount = g_game().mounts.getMountByID(currentMountId);
+		const auto &currentMount = g_game().mounts.getMountByID(currentMountId);
 		if (!currentMount) {
 			return false;
 		}
@@ -5677,7 +5671,7 @@ bool Player::untameMount(uint8_t mountId) {
 	return true;
 }
 
-bool Player::hasMount(const Mount* mount) const {
+bool Player::hasMount(const std::shared_ptr<Mount> &mount) const {
 	if (isAccessPlayer()) {
 		return true;
 	}
@@ -5697,7 +5691,7 @@ bool Player::hasMount(const Mount* mount) const {
 }
 
 void Player::dismount() {
-	const Mount* mount = g_game().mounts.getMountByID(getCurrentMount());
+	const auto &mount = g_game().mounts.getMountByID(getCurrentMount());
 	if (mount && mount->speed > 0) {
 		g_game().changeSpeed(this, -mount->speed);
 	}
@@ -6004,30 +5998,28 @@ std::forward_list<Condition*> Player::getMuteConditions() const {
 	return muteConditions;
 }
 
-void Player::setGuild(Guild* newGuild) {
-	if (newGuild == this->guild) {
+void Player::setGuild(const std::shared_ptr<Guild> &newGuild) {
+	if (newGuild == guild) {
 		return;
 	}
 
-	Guild* oldGuild = this->guild;
+	if (guild) {
+		guild->removeMember(this);
+		guild = nullptr;
+	}
 
-	this->guildNick.clear();
-	this->guild = nullptr;
-	this->guildRank = nullptr;
+	guildNick.clear();
+	guildRank = nullptr;
 
 	if (newGuild) {
-		GuildRank_ptr rank = newGuild->getRankByLevel(1);
+		const auto &rank = newGuild->getRankByLevel(1);
 		if (!rank) {
 			return;
 		}
 
-		this->guild = newGuild;
-		this->guildRank = rank;
+		guild = newGuild;
+		guildRank = rank;
 		newGuild->addMember(this);
-	}
-
-	if (oldGuild) {
-		oldGuild->removeMember(this);
 	}
 }
 
@@ -6302,7 +6294,7 @@ void Player::openPlayerContainers() {
 void Player::initializePrey() {
 	if (preys.empty()) {
 		for (uint8_t slotId = PreySlot_First; slotId <= PreySlot_Last; slotId++) {
-			auto slot = new PreySlot(static_cast<PreySlot_t>(slotId));
+			auto slot = std::make_unique<PreySlot>(static_cast<PreySlot_t>(slotId));
 			if (!g_configManager().getBoolean(PREY_ENABLED)) {
 				slot->state = PreyDataState_Inactive;
 			} else if (slot->id == PreySlot_Three && !g_configManager().getBoolean(PREY_FREE_THIRD_SLOT)) {
@@ -6314,8 +6306,8 @@ void Player::initializePrey() {
 				slot->reloadMonsterGrid(getPreyBlackList(), getLevel());
 			}
 
-			if (!setPreySlotClass(slot)) {
-				delete slot;
+			if (!setPreySlotClass(std::move(slot))) {
+				slot.reset();
 			}
 		}
 	}
@@ -6336,7 +6328,7 @@ void Player::removePreySlotById(PreySlot_t slotid) {
 void Player::initializeTaskHunting() {
 	if (taskHunting.empty()) {
 		for (uint8_t slotId = PreySlot_First; slotId <= PreySlot_Last; slotId++) {
-			auto slot = new TaskHuntingSlot(static_cast<PreySlot_t>(slotId));
+			auto slot = std::make_unique<TaskHuntingSlot>(static_cast<PreySlot_t>(slotId));
 			if (!g_configManager().getBoolean(TASK_HUNTING_ENABLED)) {
 				slot->state = PreyTaskDataState_Inactive;
 			} else if (slot->id == PreySlot_Three && !g_configManager().getBoolean(TASK_HUNTING_FREE_THIRD_SLOT)) {
@@ -6348,8 +6340,8 @@ void Player::initializeTaskHunting() {
 				slot->reloadMonsterGrid(getTaskHuntingBlackList(), getLevel());
 			}
 
-			if (!setTaskHuntingSlotClass(slot)) {
-				delete slot;
+			if (!setTaskHuntingSlotClass(std::move(slot))) {
+				slot.reset();
 			}
 		}
 	}
@@ -6391,7 +6383,7 @@ std::string Player::getBlessingsName() const {
 	return os.str();
 }
 
-bool Player::isCreatureUnlockedOnTaskHunting(const MonsterType* mtype) const {
+bool Player::isCreatureUnlockedOnTaskHunting(const std::shared_ptr<MonsterType> &mtype) const {
 	if (!mtype) {
 		return false;
 	}

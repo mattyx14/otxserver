@@ -167,11 +167,13 @@ class DBResult {
 class DBInsert {
 	public:
 		explicit DBInsert(std::string query);
+		void upsert(const std::vector<std::string> &columns);
 		bool addRow(const std::string_view row);
 		bool addRow(std::ostringstream &row);
 		bool execute();
 
 	private:
+		std::vector<std::string> upsertColumns;
 		std::string query;
 		std::string values;
 		size_t length;
@@ -197,10 +199,6 @@ class DBTransaction {
 			try {
 				transaction.begin();
 				bool result = toBeExecuted();
-				if (!result) {
-					transaction.rollback();
-					return false;
-				}
 				transaction.commit();
 				return result;
 			} catch (const std::exception &exception) {
@@ -274,6 +272,19 @@ class DBTransaction {
 		}
 
 		TransactionStates_t state = STATE_NO_START;
+};
+
+class DatabaseException : public std::exception {
+	public:
+		explicit DatabaseException(const std::string &message) :
+			message(message) { }
+
+		virtual const char* what() const throw() {
+			return message.c_str();
+		}
+
+	private:
+		std::string message;
 };
 
 #endif // SRC_DATABASE_DATABASE_H_

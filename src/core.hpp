@@ -10,7 +10,7 @@
 #ifndef SRC_CORE_HPP_
 #define SRC_CORE_HPP_
 
-static constexpr auto STATUS_SERVER_NAME = "The OTX Server";
+static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "6.2";
 static constexpr auto STATUS_SERVER_DEVELOPERS = "OpenTibiaBR Organization and data formater: Mattyx14";
 
