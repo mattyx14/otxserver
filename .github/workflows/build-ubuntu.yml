@@ -90,6 +90,12 @@ jobs:
       - name: Create and Upload Artifact
         uses: actions/upload-artifact@main
         with:
-          name: otxserver-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
+          name: canary-${{ matrix.os }}-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
             ${{ github.workspace }}/build/${{ matrix.buildtype }}/bin/
+
+      - name: Unit tests
+        run: |
+          cd ${{ github.workspace }}/build/${{ matrix.buildtype }}/tests
+          chmod +x canary_ut
+          ./canary_ut
