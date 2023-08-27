@@ -9,13 +9,13 @@
 
 #include "pch.hpp"
 
-#include "io/iologindata.h"
+#include "io/iologindata.hpp"
 #include "io/functions/iologindata_load_player.hpp"
 #include "io/functions/iologindata_save_player.hpp"
-#include "game/game.h"
-#include "creatures/monsters/monster.h"
+#include "game/game.hpp"
+#include "creatures/monsters/monster.hpp"
 #include "creatures/players/wheel/player_wheel.hpp"
-#include "io/ioprey.h"
+#include "io/ioprey.hpp"
 #include "security/argon.hpp"
 
 bool IOLoginData::authenticateAccountPassword(const std::string &accountIdentifier, const std::string &password, account::Account* account) {
@@ -415,19 +415,24 @@ void IOLoginData::removeVIPEntry(uint32_t accountId, uint32_t guid) {
 	Database::getInstance().executeQuery(query.str());
 }
 
-void IOLoginData::addPremiumDays(uint32_t accountId, int32_t addDays) {
+void IOLoginData::addPremiumDays(Player* player, uint32_t addDays) {
 	std::ostringstream query;
+	time_t lastDay = player->getPremiumLastDay();
 	query << "UPDATE `accounts` SET"
 		  << "`premdays` = `premdays` + " << addDays
 		  << ", `premdays_purchased` = `premdays_purchased` + " << addDays
-		  << ", `lastday` = " << getTimeNow()
-		  << " WHERE `id` = " << accountId;
+		  << ", `lastday` = " << (((lastDay == 0 || lastDay < getTimeNow()) ? getTimeNow() : lastDay) + (addDays * 86400))
+		  << " WHERE `id` = " << player->getAccount();
 
 	Database::getInstance().executeQuery(query.str());
 }
 
-void IOLoginData::removePremiumDays(uint32_t accountId, int32_t removeDays) {
+void IOLoginData::removePremiumDays(Player* player, uint32_t removeDays) {
 	std::ostringstream query;
-	query << "UPDATE `accounts` SET `premdays` = `premdays` - " << removeDays << " WHERE `id` = " << accountId;
+	uint32_t days = removeDays > player->premiumDays ? player->premiumDays : removeDays;
+	query << "UPDATE `accounts` SET"
+		  << "`premdays` = `premdays` - " << days
+		  << ", `lastday` = " << (player->getPremiumLastDay() - (days * 86400))
+		  << " WHERE `id` = " << player->getAccount();
 	Database::getInstance().executeQuery(query.str());
 }

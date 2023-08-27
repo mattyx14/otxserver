@@ -9,10 +9,10 @@
 
 #include "pch.hpp"
 
-#include "creatures/combat/combat.h"
-#include "creatures/combat/spells.h"
-#include "creatures/monsters/monster.h"
-#include "game/game.h"
+#include "creatures/combat/combat.hpp"
+#include "creatures/combat/spells.hpp"
+#include "creatures/monsters/monster.hpp"
+#include "game/game.hpp"
 #include "lua/scripts/lua_environment.hpp"
 #include "creatures/players/wheel/player_wheel.hpp"
 
@@ -30,7 +30,7 @@ TalkActionResult_t Spells::playerSaySpell(Player* player, std::string &words) {
 	// strip trailing spaces
 	trimString(str_words);
 
-	const std::shared_ptr<InstantSpell> &instantSpell = getInstantSpell(str_words);
+	const std::shared_ptr<InstantSpell> instantSpell = getInstantSpell(str_words);
 	if (!instantSpell) {
 		return TALKACTION_CONTINUE;
 	}
@@ -90,7 +90,7 @@ bool Spells::hasInstantSpell(const std::string &word) const {
 	return false;
 }
 
-bool Spells::registerInstantLuaEvent(const std::shared_ptr<InstantSpell> &instant) {
+bool Spells::registerInstantLuaEvent(const std::shared_ptr<InstantSpell> instant) {
 	if (instant) {
 		// If the spell not have the "spell:words()" return a error message
 		const std::string &instantName = instant->getName();
@@ -114,7 +114,7 @@ bool Spells::registerInstantLuaEvent(const std::shared_ptr<InstantSpell> &instan
 	return false;
 }
 
-bool Spells::registerRuneLuaEvent(const std::shared_ptr<RuneSpell> &rune) {
+bool Spells::registerRuneLuaEvent(const std::shared_ptr<RuneSpell> rune) {
 	if (rune) {
 		uint16_t id = rune->getRuneItemId();
 		auto result = runes.emplace(rune->getRuneItemId(), rune);
@@ -135,7 +135,7 @@ bool Spells::registerRuneLuaEvent(const std::shared_ptr<RuneSpell> &rune) {
 std::list<uint16_t> Spells::getSpellsByVocation(uint16_t vocationId) {
 	std::list<uint16_t> spellsList;
 	VocSpellMap vocSpells;
-	phmap::btree_map<uint16_t, bool>::const_iterator vocSpellsIt;
+	std::map<uint16_t, bool>::const_iterator vocSpellsIt;
 
 	for (const auto &it : instants) {
 		vocSpells = it.second->getVocMap();
@@ -236,7 +236,7 @@ Position Spells::getCasterPosition(Creature* creature, Direction dir) {
 	return getNextPosition(dir, creature->getPosition());
 }
 
-CombatSpell::CombatSpell(const std::shared_ptr<Combat> &newCombat, bool newNeedTarget, bool newNeedDirection) :
+CombatSpell::CombatSpell(const std::shared_ptr<Combat> newCombat, bool newNeedTarget, bool newNeedDirection) :
 	Script(&g_spells().getScriptInterface()),
 	combat(newCombat),
 	needDirection(newNeedDirection),
@@ -377,7 +377,7 @@ bool Spell::playerSpellCheck(Player* player) const {
 		return false;
 	}
 
-	if (aggressive && !player->hasFlag(PlayerFlags_t::IgnoreProtectionZone) && player->getZone() == ZONE_PROTECTION) {
+	if (aggressive && !player->hasFlag(PlayerFlags_t::IgnoreProtectionZone) && player->getZoneType() == ZONE_PROTECTION) {
 		player->sendCancelMessage(RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE);
 		return false;
 	}

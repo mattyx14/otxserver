@@ -163,11 +163,11 @@ function Player:removeMoneyBank(amount)
 			-- Removes player bank money
 			Bank.debit(self, remains)
 
-			self:sendTextMessage(MESSAGE_TRADE, ("Paid %d from inventory and %d gold from bank account. Your account balance is now %d gold."):format(moneyCount, amount - moneyCount, self:getBankBalance()))
+			self:sendTextMessage(MESSAGE_TRADE, ("Paid %s from inventory and %s gold from bank account. Your account balance is now %s gold."):format(FormatNumber(moneyCount), FormatNumber(amount - moneyCount), FormatNumber(self:getBankBalance())))
 			return true
 		else
 			self:setBankBalance(bankCount - amount)
-			self:sendTextMessage(MESSAGE_TRADE, ("Paid %d gold from bank account. Your account balance is now %d gold."):format(amount, self:getBankBalance()))
+			self:sendTextMessage(MESSAGE_TRADE, ("Paid %s gold from bank account. Your account balance is now %s gold."):format(FormatNumber(amount), FormatNumber(self:getBankBalance())))
 			return true
 		end
 	end
@@ -387,16 +387,25 @@ function Player.getFinalLowLevelBonus(self)
 end
 
 function Player.updateHazard(self)
-	local area = self:getPosition():getHazardArea()
-	if not area then
+	local zones = self:getZones()
+	if not zones or #zones == 0 then
 		self:setHazardSystemPoints(0)
 		return true
 	end
 
-	if self:getParty() then
-		self:getParty():refreshHazard()
-	else
-		area:refresh(self)
+	for _, zone in pairs(zones) do
+		local hazard = Hazard.getByName(zone:getName())
+		if not hazard then
+			self:setHazardSystemPoints(0)
+			return true
+		end
+
+		if self:getParty() then
+			self:getParty():refreshHazard()
+		else
+			self:setHazardSystemPoints(hazard:getPlayerCurrentLevel(self))
+		end
+		return true
 	end
 	return true
 end
@@ -448,7 +457,19 @@ function Player:calculateLootFactor(monster)
 	}
 end
 
-function Player.setFiendish(self)
+function Player:setExhaustion(key, seconds)
+	return self:setStorageValue(key, os.time() + seconds)
+end
+
+function Player:getExhaustion(key)
+	return math.max(self:getStorageValue(key) - os.time(), 0)
+end
+
+function Player:hasExhaustion(key)
+	return self:getExhaustion(key) > 0 and true or false
+end
+
+function Player:setFiendish()
 	local position = self:getPosition()
 	position:getNextPosition(self:getDirection())
 

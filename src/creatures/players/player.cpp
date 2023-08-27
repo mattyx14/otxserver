@@ -9,26 +9,26 @@
 
 #include "pch.hpp"
 
-#include "creatures/combat/combat.h"
-#include "creatures/interactions/chat.h"
-#include "creatures/monsters/monster.h"
-#include "creatures/monsters/monsters.h"
-#include "creatures/players/player.h"
+#include "creatures/combat/combat.hpp"
+#include "creatures/interactions/chat.hpp"
+#include "creatures/monsters/monster.hpp"
+#include "creatures/monsters/monsters.hpp"
+#include "creatures/players/player.hpp"
 #include "creatures/players/wheel/player_wheel.hpp"
 #include "creatures/players/storages/storages.hpp"
-#include "game/game.h"
+#include "game/game.hpp"
 #include "game/scheduling/dispatcher.hpp"
-#include "game/scheduling/scheduler.h"
+#include "game/scheduling/scheduler.hpp"
 #include "game/scheduling/task.hpp"
-#include "grouping/familiars.h"
-#include "lua/creature/creatureevent.h"
-#include "lua/creature/events.h"
+#include "grouping/familiars.hpp"
+#include "lua/creature/creatureevent.hpp"
+#include "lua/creature/events.hpp"
 #include "lua/callbacks/event_callback.hpp"
 #include "lua/callbacks/events_callbacks.hpp"
-#include "lua/creature/movement.h"
-#include "io/iologindata.h"
-#include "items/bed.h"
-#include "items/weapons/weapons.h"
+#include "lua/creature/movement.hpp"
+#include "io/iologindata.hpp"
+#include "items/bed.hpp"
+#include "items/weapons/weapons.hpp"
 #include "core.hpp"
 
 MuteCountMap Player::muteCountMap;
@@ -510,6 +510,57 @@ uint32_t Player::getClientIcons() const {
 		}
 	}
 	return icon_bitset.to_ulong();
+}
+
+void Player::addMonsterToCyclopediaTrackerList(const std::shared_ptr<MonsterType> mtype, bool isBoss, bool reloadClient /* = false */) {
+	if (client) {
+		uint16_t raceId = mtype ? mtype->info.raceid : 0;
+		// Bostiary tracker logic
+		if (isBoss) {
+			m_bosstiaryMonsterTracker.insert(mtype);
+			if (reloadClient && raceId != 0) {
+				client->parseSendBosstiary();
+			}
+			client->refreshCyclopediaMonsterTracker(m_bosstiaryMonsterTracker, true);
+			return;
+		}
+
+		// Bestiary tracker logic
+		m_bestiaryMonsterTracker.insert(mtype);
+		if (reloadClient && raceId != 0) {
+			client->sendBestiaryEntryChanged(raceId);
+		}
+		client->refreshCyclopediaMonsterTracker(m_bestiaryMonsterTracker, false);
+	}
+}
+
+void Player::removeMonsterFromCyclopediaTrackerList(std::shared_ptr<MonsterType> mtype, bool isBoss, bool reloadClient /* = false */) {
+	if (client) {
+		uint16_t raceId = mtype ? mtype->info.raceid : 0;
+		// Bostiary tracker logic
+		if (isBoss) {
+			m_bosstiaryMonsterTracker.erase(mtype);
+			if (reloadClient && raceId != 0) {
+				client->parseSendBosstiary();
+			}
+			client->refreshCyclopediaMonsterTracker(m_bosstiaryMonsterTracker, true);
+			return;
+		}
+
+		// Bestiary tracker logic
+		m_bestiaryMonsterTracker.erase(mtype);
+		if (reloadClient && raceId != 0) {
+			client->sendBestiaryEntryChanged(raceId);
+		}
+		client->refreshCyclopediaMonsterTracker(m_bestiaryMonsterTracker, false);
+	}
+}
+
+bool Player::isBossOnBosstiaryTracker(const std::shared_ptr<MonsterType> monsterType) const {
+	if (!monsterType) {
+		return false;
+	}
+	return m_bosstiaryMonsterTracker.contains(monsterType);
 }
 
 void Player::updateInventoryWeight() {
@@ -1604,7 +1655,7 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin) {
 		}
 
 		// Reload bestiary tracker
-		refreshBestiaryTracker(getBestiaryTrackerList());
+		refreshBestiaryMonsterTracker();
 
 		g_game().checkPlayersRecord();
 		IOLoginData::updateOnlineStatus(guid, true);
@@ -1662,12 +1713,6 @@ void Player::onChangeZone(ZoneType_t zone) {
 	g_events().eventPlayerOnChangeZone(this, zone);
 
 	g_callbacks().executeCallback(EventCallback_t::playerOnChangeZone, &EventCallback::playerOnChangeZone, this, zone);
-}
-
-void Player::onChangeHazard(bool isHazard) {
-	g_events().eventPlayerOnChangeHazard(this, isHazard);
-	g_callbacks().executeCallback(EventCallback_t::playerOnChangeHazard, &EventCallback::playerOnChangeHazard, this, isHazard);
-	sendIcons();
 }
 
 void Player::onAttackedCreatureChangeZone(ZoneType_t zone) {
@@ -1746,7 +1791,7 @@ bool Player::openShopWindow(Npc* npc) {
 	npc->addShopPlayer(this);
 
 	sendShop(npc);
-	phmap::btree_map<uint16_t, uint16_t> inventoryMap;
+	std::map<uint16_t, uint16_t> inventoryMap;
 	sendSaleItemList(getAllSaleItemIdAndCount(inventoryMap));
 	return true;
 }
@@ -2566,7 +2611,7 @@ void Player::death(Creature* lastHitCreature) {
 		// Charm bless bestiary
 		if (lastHitCreature && lastHitCreature->getMonster()) {
 			if (charmRuneBless != 0) {
-				const auto &mType = g_monsters().getMonsterType(lastHitCreature->getName());
+				const auto mType = g_monsters().getMonsterType(lastHitCreature->getName());
 				if (mType && mType->info.raceid == charmRuneBless) {
 					deathLossPercent = (deathLossPercent * 90) / 100;
 				}
@@ -2826,7 +2871,7 @@ void Player::despawn() {
 }
 
 bool Player::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified) {
-	if (getZone() != ZONE_PVP || !Player::lastHitIsPlayer(lastHitCreature)) {
+	if (getZoneType() != ZONE_PVP || !Player::lastHitIsPlayer(lastHitCreature)) {
 		return Creature::dropCorpse(lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
 	}
 
@@ -3065,10 +3110,11 @@ ReturnValue Player::queryAdd(int32_t index, const Thing &thing, uint32_t count, 
 					const Item* leftItem = inventory[CONST_SLOT_LEFT];
 					if (leftItem) {
 						if ((leftItem->getSlotPosition() | slotPosition) & SLOTP_TWO_HAND) {
-							if (item->isQuiver() && leftItem->getWeaponType() == WEAPON_DISTANCE)
+							if (item->isQuiver() && leftItem->getWeaponType() == WEAPON_DISTANCE) {
 								ret = RETURNVALUE_NOERROR;
-							else
+							} else {
 								ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
+							}
 						} else {
 							ret = RETURNVALUE_NOERROR;
 						}
@@ -3427,8 +3473,9 @@ Cylinder* Player::queryDestination(int32_t &index, const Thing &thing, Item** de
 }
 
 void Player::addThing(int32_t index, Thing* thing) {
-	if (!thing)
+	if (!thing) {
 		return /*RETURNVALUE_NOTPOSSIBLE*/;
+	}
 
 	if (index < CONST_SLOT_FIRST || index > CONST_SLOT_LAST) {
 		return /*RETURNVALUE_NOTPOSSIBLE*/;
@@ -3899,14 +3946,14 @@ std::vector<Item*> Player::getEquippedItems() const {
 	return valid_items;
 }
 
-phmap::btree_map<uint32_t, uint32_t> &Player::getAllItemTypeCount(phmap::btree_map<uint32_t, uint32_t> &countMap) const {
+std::map<uint32_t, uint32_t> &Player::getAllItemTypeCount(std::map<uint32_t, uint32_t> &countMap) const {
 	for (const auto item : getAllInventoryItems()) {
 		countMap[static_cast<uint32_t>(item->getID())] += Item::countByType(item, -1);
 	}
 	return countMap;
 }
 
-phmap::btree_map<uint16_t, uint16_t> &Player::getAllSaleItemIdAndCount(phmap::btree_map<uint16_t, uint16_t> &countMap) const {
+std::map<uint16_t, uint16_t> &Player::getAllSaleItemIdAndCount(std::map<uint16_t, uint16_t> &countMap) const {
 	for (const auto item : getAllInventoryItems(false, true)) {
 		if (!item->hasImbuements()) {
 			countMap[item->getID()] += item->getItemCount();
@@ -3916,7 +3963,7 @@ phmap::btree_map<uint16_t, uint16_t> &Player::getAllSaleItemIdAndCount(phmap::bt
 	return countMap;
 }
 
-void Player::getAllItemTypeCountAndSubtype(phmap::btree_map<uint32_t, uint32_t> &countMap) const {
+void Player::getAllItemTypeCountAndSubtype(std::map<uint32_t, uint32_t> &countMap) const {
 	for (const auto item : getAllInventoryItems()) {
 		uint16_t itemId = item->getID();
 		if (Item::items[itemId].isFluidContainer()) {
@@ -4078,8 +4125,9 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 // i will keep this function so it can be reviewed
 bool Player::updateSaleShopList(const Item* item) {
 	uint16_t itemId = item->getID();
-	if (!itemId || !item)
+	if (!itemId || !item) {
 		return true;
+	}
 
 	g_dispatcher().addTask(std::bind(&Game::updatePlayerSaleItems, &g_game(), getID()));
 	scheduledSaleUpdate = true;
@@ -4103,8 +4151,9 @@ void Player::internalAddThing(Thing* thing) {
 }
 
 void Player::internalAddThing(uint32_t index, Thing* thing) {
-	if (!thing)
+	if (!thing) {
 		return;
+	}
 
 	Item* item = thing->getItem();
 	if (!item) {
@@ -4422,7 +4471,7 @@ void Player::onCombatRemoveCondition(Condition* condition) {
 void Player::onAttackedCreature(Creature* target) {
 	Creature::onAttackedCreature(target);
 
-	if (target->getZone() == ZONE_PVP) {
+	if (target->getZoneType() == ZONE_PVP) {
 		return;
 	}
 
@@ -4533,7 +4582,7 @@ bool Player::onKilledCreature(Creature* target, bool lastHit /* = true*/) {
 	Creature::onKilledCreature(target, lastHit);
 
 	if (Player* targetPlayer = target->getPlayer()) {
-		if (targetPlayer && targetPlayer->getZone() == ZONE_PVP) {
+		if (targetPlayer && targetPlayer->getZoneType() == ZONE_PVP) {
 			targetPlayer->setDropLoot(false);
 			targetPlayer->setSkillLoss(false);
 		} else if (!hasFlag(PlayerFlags_t::NotGainInFight) && !isPartner(targetPlayer)) {
@@ -4773,7 +4822,7 @@ bool Player::removeOutfitAddon(uint16_t lookType, uint8_t addons) {
 	return false;
 }
 
-bool Player::getOutfitAddons(const std::shared_ptr<Outfit> &outfit, uint8_t &addons) const {
+bool Player::getOutfitAddons(const std::shared_ptr<Outfit> outfit, uint8_t &addons) const {
 	if (group->access) {
 		addons = 3;
 		return true;
@@ -5079,7 +5128,7 @@ bool Player::isInWar(const Player* player) const {
 		return false;
 	}
 
-	const auto &playerGuild = player->getGuild();
+	const auto playerGuild = player->getGuild();
 	if (!playerGuild) {
 		return false;
 	}
@@ -5187,10 +5236,10 @@ bool Player::isPremium() const {
 		return true;
 	}
 
-	return premiumDays > 0;
+	return premiumDays > 0 || premiumLastDay > getTimeNow();
 }
 
-void Player::setPremiumDays(int32_t v) {
+void Player::setPremiumDays(uint32_t v) {
 	premiumDays = v;
 	sendBasicData();
 }
@@ -5460,7 +5509,7 @@ GuildEmblems_t Player::getGuildEmblem(const Player* player) const {
 		return GUILDEMBLEM_NONE;
 	}
 
-	const auto &playerGuild = player->getGuild();
+	const auto playerGuild = player->getGuild();
 	if (!playerGuild) {
 		return GUILDEMBLEM_NONE;
 	}
@@ -5529,8 +5578,8 @@ void Player::setCurrentMount(uint8_t mount) {
 }
 
 bool Player::hasAnyMount() const {
-	for (const auto &mounts = g_game().mounts.getMounts();
-		 const auto &mount : mounts) {
+	const auto mounts = g_game().mounts.getMounts();
+	for (const auto mount : mounts) {
 		if (hasMount(mount)) {
 			return true;
 		}
@@ -5540,9 +5589,8 @@ bool Player::hasAnyMount() const {
 
 uint8_t Player::getRandomMountId() const {
 	std::vector<uint8_t> playerMounts;
-
-	for (const auto &mounts = g_game().mounts.getMounts();
-		 const auto &mount : mounts) {
+	const auto mounts = g_game().mounts.getMounts();
+	for (const auto mount : mounts) {
 		if (hasMount(mount)) {
 			playerMounts.push_back(mount->id);
 		}
@@ -5584,7 +5632,7 @@ bool Player::toggleMount(bool mount) {
 			currentMountId = getRandomMountId();
 		}
 
-		const auto &currentMount = g_game().mounts.getMountByID(currentMountId);
+		const auto currentMount = g_game().mounts.getMountByID(currentMountId);
 		if (!currentMount) {
 			return false;
 		}
@@ -5671,7 +5719,7 @@ bool Player::untameMount(uint8_t mountId) {
 	return true;
 }
 
-bool Player::hasMount(const std::shared_ptr<Mount> &mount) const {
+bool Player::hasMount(const std::shared_ptr<Mount> mount) const {
 	if (isAccessPlayer()) {
 		return true;
 	}
@@ -5691,7 +5739,7 @@ bool Player::hasMount(const std::shared_ptr<Mount> &mount) const {
 }
 
 void Player::dismount() {
-	const auto &mount = g_game().mounts.getMountByID(getCurrentMount());
+	const auto mount = g_game().mounts.getMountByID(getCurrentMount());
 	if (mount && mount->speed > 0) {
 		g_game().changeSpeed(this, -mount->speed);
 	}
@@ -5869,7 +5917,7 @@ uint16_t Player::getHelpers() const {
 	if (guild && party) {
 		phmap::flat_hash_set<Player*> helperSet;
 
-		const auto &guildMembers = guild->getMembersOnline();
+		const auto guildMembers = guild->getMembersOnline();
 		helperSet.insert(guildMembers.begin(), guildMembers.end());
 
 		const auto &partyMembers = party->getMembers();
@@ -5998,7 +6046,7 @@ std::forward_list<Condition*> Player::getMuteConditions() const {
 	return muteConditions;
 }
 
-void Player::setGuild(const std::shared_ptr<Guild> &newGuild) {
+void Player::setGuild(const std::shared_ptr<Guild> newGuild) {
 	if (newGuild == guild) {
 		return;
 	}
@@ -6012,7 +6060,7 @@ void Player::setGuild(const std::shared_ptr<Guild> &newGuild) {
 	guildRank = nullptr;
 
 	if (newGuild) {
-		const auto &rank = newGuild->getRankByLevel(1);
+		const auto rank = newGuild->getRankByLevel(1);
 		if (!rank) {
 			return;
 		}
@@ -6062,7 +6110,7 @@ uint64_t Player::getItemCustomPrice(uint16_t itemId, bool buyPrice /* = false*/)
 		return it->second;
 	}
 
-	phmap::btree_map<uint16_t, uint64_t> itemMap { { itemId, 1 } };
+	std::map<uint16_t, uint64_t> itemMap { { itemId, 1 } };
 	return g_game().getItemMarketPrice(itemMap, buyPrice);
 }
 
@@ -6383,7 +6431,7 @@ std::string Player::getBlessingsName() const {
 	return os.str();
 }
 
-bool Player::isCreatureUnlockedOnTaskHunting(const std::shared_ptr<MonsterType> &mtype) const {
+bool Player::isCreatureUnlockedOnTaskHunting(const std::shared_ptr<MonsterType> mtype) const {
 	if (!mtype) {
 		return false;
 	}
@@ -6399,7 +6447,7 @@ void Player::triggerMomentum() {
 
 	double_t chance = item->getMomentumChance();
 	double_t randomChance = uniform_random(0, 10000) / 100;
-	if (getZone() != ZONE_PROTECTION && hasCondition(CONDITION_INFIGHT) && ((OTSYS_TIME() / 1000) % 2) == 0 && chance > 0 && randomChance < chance) {
+	if (getZoneType() != ZONE_PROTECTION && hasCondition(CONDITION_INFIGHT) && ((OTSYS_TIME() / 1000) % 2) == 0 && chance > 0 && randomChance < chance) {
 		bool triggered = false;
 		auto it = conditions.begin();
 		while (it != conditions.end()) {
@@ -6462,7 +6510,7 @@ void Player::requestDepotItems() {
 
 			uint8_t itemTier = Item::items[(*it)->getID()].upgradeClassification > 0 ? (*it)->getTier() + 1 : 0;
 			if (itemMap_it == itemMap.end()) {
-				phmap::btree_map<uint8_t, uint32_t> itemTierMap;
+				std::map<uint8_t, uint32_t> itemTierMap;
 				itemTierMap[itemTier] = Item::countByType((*it), -1);
 				itemMap[(*it)->getID()] = itemTierMap;
 				count++;
@@ -6484,7 +6532,7 @@ void Player::requestDepotItems() {
 		}
 
 		if (itemMap_it == itemMap.end()) {
-			phmap::btree_map<uint8_t, uint32_t> itemTierMap;
+			std::map<uint8_t, uint32_t> itemTierMap;
 			itemTierMap[0] = itemCount;
 			itemMap[itemId] = itemTierMap;
 			count++;
@@ -6646,13 +6694,13 @@ Item* Player::getItemFromDepotSearch(uint16_t itemId, const Position &pos) {
 	return nullptr;
 }
 
-std::pair<std::vector<Item*>, phmap::btree_map<uint16_t, phmap::btree_map<uint8_t, uint32_t>>> Player::requestLockerItems(DepotLocker* depotLocker, bool sendToClient /*= false*/, uint8_t tier /*= 0*/) const {
+std::pair<std::vector<Item*>, std::map<uint16_t, std::map<uint8_t, uint32_t>>> Player::requestLockerItems(DepotLocker* depotLocker, bool sendToClient /*= false*/, uint8_t tier /*= 0*/) const {
 	if (depotLocker == nullptr) {
 		g_logger().error("{} - Depot locker is nullptr", __FUNCTION__);
 		return {};
 	}
 
-	phmap::btree_map<uint16_t, phmap::btree_map<uint8_t, uint32_t>> lockerItems;
+	std::map<uint16_t, std::map<uint8_t, uint32_t>> lockerItems;
 	std::vector<Item*> itemVector;
 	std::vector<Container*> containers { depotLocker };
 
@@ -7496,27 +7544,15 @@ bool Player::canAutoWalk(const Position &toPosition, const std::function<void()>
  ******************************************************************************/
 
 void Player::setHazardSystemPoints(int32_t count) {
-	addStorageValue(STORAGEVALUE_HAZARDCOUNT, std::max<int32_t>(0, std::min<int32_t>(0xFFFF, count)), true);
-	reloadHazardSystemPointsCounter = true;
-	const auto tile = getTile();
-	if (!tile) {
+	if (!g_configManager().getBoolean(TOGGLE_HAZARDSYSTEM)) {
 		return;
 	}
-
-	SpectatorHashSet spectators;
-	g_game().map.getSpectators(spectators, tile->getPosition(), true);
-	for (Creature* spectator : spectators) {
-		if (!spectator || spectator == this) {
-			continue;
-		}
-
-		Player* player = spectator->getPlayer();
-		if (client && player && !client->oldProtocol) {
-			player->sendCreatureIcon(this);
-		}
-	}
-	if (client && !client->oldProtocol) {
-		client->reloadHazardSystemIcon();
+	addStorageValue(STORAGEVALUE_HAZARDCOUNT, std::max<int32_t>(0, std::min<int32_t>(0xFFFF, count)), true);
+	reloadHazardSystemPointsCounter = true;
+	if (count > 0) {
+		setIcon(CreatureIcon(CreatureIconQuests_t::Hazard, count));
+	} else {
+		clearIcon();
 	}
 }
 
@@ -7618,34 +7654,6 @@ void Player::parseAttackDealtHazardSystem(CombatDamage &damage, const Monster* m
 			damage.primary.value = 0;
 			damage.secondary.value = 0;
 			return;
-		}
-	}
-}
-
-void Player::reloadHazardSystemIcon() {
-	if (reloadHazardSystemPointsCounter) {
-		reloadHazardSystemPointsCounter = false;
-		if (getHazardSystemPoints() > 0) {
-			const auto tile = getTile();
-			if (!tile) {
-				return;
-			}
-
-			SpectatorHashSet spectators;
-			g_game().map.getSpectators(spectators, tile->getPosition(), true);
-			for (Creature* spectator : spectators) {
-				if (!spectator || spectator == this) {
-					continue;
-				}
-
-				Player* player = spectator->getPlayer();
-				if (client && player && !client->oldProtocol) {
-					player->sendCreatureIcon(this);
-				}
-			}
-		}
-		if (client && !client->oldProtocol) {
-			client->reloadHazardSystemIcon();
 		}
 	}
 }

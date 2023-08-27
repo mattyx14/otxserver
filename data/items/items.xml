@@ -37654,6 +37654,7 @@
 		<attribute key="showduration" value="1"/>
 		<attribute key="maxhitchance" value="100"/>
 		<attribute key="duration" value="3600"/>
+		<attribute key="attack" value="78"/>
 		<attribute key="weight" value="90"/>
 	</item>
 	<item id="25759" article="a" name="royal star">
@@ -47253,7 +47254,7 @@
 		<attribute key="bedpartof" value="32492"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32501"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32501"/>
 		<attribute key="rotateTo" value="32483"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>
@@ -47263,7 +47264,7 @@
 		<attribute key="bedpartof" value="32493"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32502"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32502"/>
 		<attribute key="rotateTo" value="32484"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>
@@ -47273,7 +47274,7 @@
 		<attribute key="bedpartof" value="32494"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32503"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32503"/>
 		<attribute key="rotateTo" value="32485"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>
@@ -47283,7 +47284,7 @@
 		<attribute key="bedpartof" value="32495"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32504"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32504"/>
 		<attribute key="rotateTo" value="32486"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>
@@ -47293,7 +47294,7 @@
 		<attribute key="bedpartof" value="32496"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32505"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32505"/>
 		<attribute key="rotateTo" value="32487"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>
@@ -47303,7 +47304,7 @@
 		<attribute key="bedpartof" value="32497"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32506"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32506"/>
 		<attribute key="rotateTo" value="32488"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>
@@ -47313,7 +47314,7 @@
 		<attribute key="bedpartof" value="32498"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32507"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32507"/>
 		<attribute key="rotateTo" value="32489"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>
@@ -47323,7 +47324,7 @@
 		<attribute key="bedpartof" value="32499"/>
 		<attribute key="partnerdirection" value="west"/>
 		<attribute key="maletransformto" value="32508"/>
-		<attribute key="femaletransformto" value="32527"/>
+		<attribute key="femaletransformto" value="32508"/>
 		<attribute key="rotateTo" value="32490"/>
 		<attribute key="wrapableTo" value="23398"/>
 	</item>

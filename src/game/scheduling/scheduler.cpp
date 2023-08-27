@@ -9,9 +9,10 @@
 
 #include "pch.hpp"
 
+#include "lib/di/container.hpp"
 #include "lib/thread/thread_pool.hpp"
 #include "game/scheduling/dispatcher.hpp"
-#include "game/scheduling/scheduler.h"
+#include "game/scheduling/scheduler.hpp"
 #include "game/scheduling/task.hpp"
 
 Scheduler::Scheduler(ThreadPool &threadPool) :
@@ -25,7 +26,7 @@ uint64_t Scheduler::addEvent(uint32_t delay, std::function<void(void)> f) {
 	return addEvent(std::make_shared<Task>(std::move(f), delay));
 }
 
-uint64_t Scheduler::addEvent(const std::shared_ptr<Task> &task) {
+uint64_t Scheduler::addEvent(const std::shared_ptr<Task> task) {
 	if (task->getEventId() == 0) {
 		task->setEventId(++lastEventId);
 	}

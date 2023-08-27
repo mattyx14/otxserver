@@ -10,8 +10,8 @@
 #include "pch.hpp"
 
 #include "core.hpp"
-#include "items/item.h"
-#include "utils/tools.h"
+#include "items/item.hpp"
+#include "utils/tools.hpp"
 
 void printXMLError(const std::string &where, const std::string &fileName, const pugi::xml_parse_result &result) {
 	g_logger().error("[{}] Failed to load {}: {}", where, fileName, result.description());
@@ -444,6 +444,13 @@ std::string formatTime(time_t time) {
 	return {};
 }
 
+std::string formatEnumName(std::string_view name) {
+	std::string result { name.begin(), name.end() };
+	std::replace(result.begin(), result.end(), '_', ' ');
+	std::transform(result.begin(), result.end(), result.begin(), [](unsigned char c) { return std::tolower(c); });
+	return result;
+}
+
 std::time_t getTimeNow() {
 	return std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 }
@@ -542,25 +549,31 @@ Direction getDirectionTo(const Position &from, const Position &to, bool exactDia
 		/*
 		 * Only consider diagonal if dx and dy are equal (exact diagonal).
 		 */
-		if (absDx > absDy)
+		if (absDx > absDy) {
 			return dx < 0 ? DIRECTION_EAST : DIRECTION_WEST;
-		if (absDx < absDy)
+		}
+		if (absDx < absDy) {
 			return dy > 0 ? DIRECTION_NORTH : DIRECTION_SOUTH;
+		}
 	}
 
 	if (dx < 0) {
-		if (dy < 0)
+		if (dy < 0) {
 			return DIRECTION_SOUTHEAST;
-		if (dy > 0)
+		}
+		if (dy > 0) {
 			return DIRECTION_NORTHEAST;
+		}
 		return DIRECTION_EAST;
 	}
 
 	if (dx > 0) {
-		if (dy < 0)
+		if (dy < 0) {
 			return DIRECTION_SOUTHWEST;
-		if (dy > 0)
+		}
+		if (dy > 0) {
 			return DIRECTION_NORTHWEST;
+		}
 		return DIRECTION_WEST;
 	}
 
@@ -690,6 +703,8 @@ MagicEffectNames magicEffectNames = {
 	{ "fatal", CONST_ME_FATAL },
 	{ "dodge", CONST_ME_DODGE },
 	{ "hourglass", CONST_ME_HOURGLASS },
+	{ "dazzling", CONST_ME_DAZZLING },
+	{ "sparkling", CONST_ME_SPARKLING },
 	{ "ferumbras1", CONST_ME_FERUMBRAS_1 },
 	{ "gazharagoth", CONST_ME_GAZHARAGOTH },
 	{ "madmage", CONST_ME_MAD_MAGE },
@@ -768,6 +783,8 @@ CombatTypeNames combatTypeNames = {
 	{ COMBAT_LIFEDRAIN, "lifedrain" },
 	{ COMBAT_MANADRAIN, "manadrain" },
 	{ COMBAT_PHYSICALDAMAGE, "physical" },
+	{ COMBAT_AGONYDAMAGE, "agony" },
+	{ COMBAT_NEUTRALDAMAGE, "neutral" },
 };
 
 AmmoTypeNames ammoTypeNames = {
@@ -862,22 +879,6 @@ ShootType_t getShootType(const std::string &strValue) {
 		return shootType->second;
 	}
 	return CONST_ANI_NONE;
-}
-
-std::string getCombatName(CombatType_t combatType) {
-	auto combatName = combatTypeNames.find(combatType);
-	if (combatName != combatTypeNames.end()) {
-		return combatName->second;
-	}
-	return "unknown";
-}
-
-CombatType_t getCombatType(const std::string &combatname) {
-	auto it = std::find_if(combatTypeNames.begin(), combatTypeNames.end(), [combatname](const std::pair<CombatType_t, std::string> &pair) {
-		return pair.second == combatname;
-	});
-
-	return it != combatTypeNames.end() ? it->first : COMBAT_NONE;
 }
 
 Ammo_t getAmmoType(const std::string &strValue) {
@@ -1057,73 +1058,43 @@ std::string getWeaponName(WeaponType_t weaponType) {
 	}
 }
 
+std::string getCombatName(CombatType_t combatType) {
+	auto combatName = combatTypeNames.find(combatType);
+	if (combatName != combatTypeNames.end()) {
+		return combatName->second;
+	}
+	return "unknown";
+}
+
+CombatType_t getCombatTypeByName(const std::string &combatname) {
+	auto it = std::find_if(combatTypeNames.begin(), combatTypeNames.end(), [combatname](const std::pair<CombatType_t, std::string> &pair) {
+		return pair.second == combatname;
+	});
+
+	return it != combatTypeNames.end() ? it->first : COMBAT_NONE;
+}
+
 size_t combatTypeToIndex(CombatType_t combatType) {
-	switch (combatType) {
-		case COMBAT_PHYSICALDAMAGE:
-			return 0;
-		case COMBAT_ENERGYDAMAGE:
-			return 1;
-		case COMBAT_EARTHDAMAGE:
-			return 2;
-		case COMBAT_FIREDAMAGE:
-			return 3;
-		case COMBAT_UNDEFINEDDAMAGE:
-			return 4;
-		case COMBAT_LIFEDRAIN:
-			return 5;
-		case COMBAT_MANADRAIN:
-			return 6;
-		case COMBAT_HEALING:
-			return 7;
-		case COMBAT_DROWNDAMAGE:
-			return 8;
-		case COMBAT_ICEDAMAGE:
-			return 9;
-		case COMBAT_HOLYDAMAGE:
-			return 10;
-		case COMBAT_DEATHDAMAGE:
-			return 11;
-		case COMBAT_NEUTRALDAMAGE:
-			return 12;
-		default:
-			g_logger().error("Combat type {} is out of range", fmt::underlying(combatType));
-			// Uncomment for catch the function call with debug
-			// throw std::out_of_range("Combat is out of range");
+	auto enum_index_opt = magic_enum::enum_index(combatType);
+	if (enum_index_opt.has_value() && enum_index_opt.value() < COMBAT_COUNT) {
+		return enum_index_opt.value();
+	} else {
+		g_logger().error("[{}] Combat type {} is out of range", __FUNCTION__, fmt::underlying(combatType));
+		// Uncomment for catch the function call with debug
+		// throw std::out_of_range("Combat is out of range");
 	}
 
-	return {};
+	return COMBAT_NONE;
 }
 
 std::string combatTypeToName(CombatType_t combatType) {
-	switch (combatType) {
-		case COMBAT_PHYSICALDAMAGE:
-			return "physical";
-		case COMBAT_ENERGYDAMAGE:
-			return "energy";
-		case COMBAT_EARTHDAMAGE:
-			return "earth";
-		case COMBAT_FIREDAMAGE:
-			return "fire";
-		case COMBAT_UNDEFINEDDAMAGE:
-			return "undefined";
-		case COMBAT_LIFEDRAIN:
-			return "life drain";
-		case COMBAT_MANADRAIN:
-			return "mana drain";
-		case COMBAT_HEALING:
-			return "healing";
-		case COMBAT_DROWNDAMAGE:
-			return "drown";
-		case COMBAT_ICEDAMAGE:
-			return "ice";
-		case COMBAT_HOLYDAMAGE:
-			return "holy";
-		case COMBAT_DEATHDAMAGE:
-			return "death";
-		default:
-			g_logger().error("Combat type {} is out of range", fmt::underlying(combatType));
-			// Uncomment for catch the function call with debug
-			// throw std::out_of_range("Combat is out of range");
+	std::string_view name = magic_enum::enum_name(combatType);
+	if (!name.empty() && combatType < COMBAT_COUNT) {
+		return formatEnumName(name);
+	} else {
+		g_logger().error("[{}] Combat type {} is out of range", __FUNCTION__, fmt::underlying(combatType));
+		// Uncomment for catch the function call with debug
+		// throw std::out_of_range("Index is out of range");
 	}
 
 	return {};
@@ -1547,9 +1518,9 @@ NameEval_t validateName(const std::string &name) {
 	}
 
 	for (std::string str : toks) {
-		if (str.length() < 2)
+		if (str.length() < 2) {
 			return INVALID_TOKEN_LENGTH;
-		else if (std::find(prohibitedWords.begin(), prohibitedWords.end(), str) != prohibitedWords.end()) { // searching for prohibited words
+		} else if (std::find(prohibitedWords.begin(), prohibitedWords.end(), str) != prohibitedWords.end()) { // searching for prohibited words
 			return INVALID_FORBIDDEN;
 		}
 	}
@@ -1624,29 +1595,37 @@ std::string getObjectCategoryName(ObjectCategory_t category) {
 
 uint8_t forgeBonus(int32_t number) {
 	// None
-	if (number < 7400)
+	if (number < 7400) {
 		return 0;
+	}
 	// Dust not consumed
-	else if (number >= 7400 && number < 9000)
+	else if (number >= 7400 && number < 9000) {
 		return 1;
+	}
 	// Cores not consumed
-	else if (number >= 9000 && number < 9500)
+	else if (number >= 9000 && number < 9500) {
 		return 2;
+	}
 	// Gold not consumed
-	else if (number >= 9500 && number < 9525)
+	else if (number >= 9500 && number < 9525) {
 		return 3;
+	}
 	// Second item retained with decreased tier
-	else if (number >= 9525 && number < 9550)
+	else if (number >= 9525 && number < 9550) {
 		return 4;
+	}
 	// Second item retained with unchanged tier
-	else if (number >= 9550 && number < 9950)
+	else if (number >= 9550 && number < 9950) {
 		return 5;
+	}
 	// Second item retained with increased tier
-	else if (number >= 9950 && number < 9975)
+	else if (number >= 9950 && number < 9975) {
 		return 6;
+	}
 	// Gain two tiers
-	else if (number >= 9975)
+	else if (number >= 9975) {
 		return 7;
+	}
 
 	return 0;
 }
@@ -1672,4 +1651,48 @@ std::vector<std::string> split(const std::string &str) {
 		tokens.push_back(trimedToken);
 	}
 	return tokens;
+}
+
+std::string getFormattedTimeRemaining(uint32_t time) {
+	time_t timeRemaining = time - getTimeNow();
+
+	int days = static_cast<int>(std::floor(timeRemaining / 86400));
+
+	std::stringstream output;
+	if (days > 1) {
+		output << days << " days";
+		return output.str();
+	}
+
+	int hours = static_cast<int>(std::floor((timeRemaining % 86400) / 3600));
+	int minutes = static_cast<int>(std::floor((timeRemaining % 3600) / 60));
+	int seconds = static_cast<int>(timeRemaining % 60);
+
+	if (hours == 0 && minutes == 0 && seconds > 0) {
+		output << " less than 1 minute";
+	} else {
+		if (hours > 0) {
+			output << hours << " hour" << (hours != 1 ? "s" : "");
+		}
+		if (minutes > 0) {
+			output << (hours > 0 ? " and " : "") << minutes << " minute" << (minutes != 1 ? "s" : "");
+		}
+	}
+
+	return output.str();
+}
+
+/**
+ * @brief Formats a number to a string with commas
+ * @param number The number to format
+ * @return The formatted number
+ */
+std::string formatNumber(uint64_t number) {
+	std::string formattedNumber = std::to_string(number);
+	int pos = formattedNumber.length() - 3;
+	while (pos > 0) {
+		formattedNumber.insert(pos, ",");
+		pos -= 3;
+	}
+	return formattedNumber;
 }

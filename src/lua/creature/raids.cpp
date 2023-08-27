@@ -9,12 +9,12 @@
 
 #include "pch.hpp"
 
-#include "lua/creature/raids.h"
-#include "utils/pugicast.h"
-#include "game/game.h"
-#include "game/scheduling/scheduler.h"
-#include "creatures/monsters/monster.h"
-#include "server/network/webhook/webhook.h"
+#include "lua/creature/raids.hpp"
+#include "utils/pugicast.hpp"
+#include "game/game.hpp"
+#include "game/scheduling/scheduler.hpp"
+#include "creatures/monsters/monster.hpp"
+#include "server/network/webhook/webhook.hpp"
 
 Raids::Raids() {
 	scriptInterface.initState();
@@ -115,7 +115,10 @@ void Raids::checkRaids() {
 		for (auto it = raidList.begin(), end = raidList.end(); it != end; ++it) {
 			const auto &raid = *it;
 			if (now >= (getLastRaidEnd() + raid->getMargin())) {
-				if (((MAX_RAND_RANGE * CHECK_RAIDS_INTERVAL) / raid->getInterval()) >= static_cast<uint32_t>(uniform_random(0, MAX_RAND_RANGE))) {
+				auto roll = static_cast<uint32_t>(uniform_random(0, MAX_RAND_RANGE));
+				auto required = static_cast<uint32_t>(MAX_RAND_RANGE * raid->getInterval()) / CHECK_RAIDS_INTERVAL;
+				auto shouldStart = required >= roll;
+				if (shouldStart) {
 					setRunning(raid);
 					raid->startRaid();
 
@@ -198,7 +201,7 @@ bool Raid::loadFromXml(const std::string &filename) {
 	}
 
 	// sort by delay time
-	std::sort(raidEvents.begin(), raidEvents.end(), [](const std::shared_ptr<RaidEvent> &lhs, const std::shared_ptr<RaidEvent> &rhs) {
+	std::sort(raidEvents.begin(), raidEvents.end(), [](const std::shared_ptr<RaidEvent> lhs, const std::shared_ptr<RaidEvent> rhs) {
 		return lhs->getDelay() < rhs->getDelay();
 	});
 
@@ -211,10 +214,13 @@ void Raid::startRaid() {
 	if (raidEvent) {
 		state = RAIDSTATE_EXECUTING;
 		nextEventEvent = g_scheduler().addEvent(raidEvent->getDelay(), std::bind(&Raid::executeRaidEvent, this, raidEvent));
+	} else {
+		g_logger().warn("[raids] Raid {} has no events", name);
+		resetRaid();
 	}
 }
 
-void Raid::executeRaidEvent(const std::shared_ptr<RaidEvent> &raidEvent) {
+void Raid::executeRaidEvent(const std::shared_ptr<RaidEvent> raidEvent) {
 	if (raidEvent->executeEvent()) {
 		nextEvent++;
 		const auto &newRaidEvent = getNextRaidEvent();

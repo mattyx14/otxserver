@@ -10,21 +10,17 @@
 #include "pch.hpp"
 
 #include "lua/functions/events/global_event_functions.hpp"
-#include "game/game.h"
-#include "lua/global/globalevent.h"
-#include "lua/scripts/scripts.h"
-#include "utils/tools.h"
+#include "game/game.hpp"
+#include "lua/global/globalevent.hpp"
+#include "lua/scripts/scripts.hpp"
+#include "utils/tools.hpp"
 
 int GlobalEventFunctions::luaCreateGlobalEvent(lua_State* L) {
-	const auto &global = std::make_shared<GlobalEvent>(getScriptEnv()->getScriptInterface());
-	if (global) {
-		global->setName(getString(L, 2));
-		global->setEventType(GLOBALEVENT_NONE);
-		pushUserdata<GlobalEvent>(L, global);
-		setMetatable(L, -1, "GlobalEvent");
-	} else {
-		lua_pushnil(L);
-	}
+	const auto global = std::make_shared<GlobalEvent>(getScriptEnv()->getScriptInterface());
+	global->setName(getString(L, 2));
+	global->setEventType(GLOBALEVENT_NONE);
+	pushUserdata<GlobalEvent>(L, global);
+	setMetatable(L, -1, "GlobalEvent");
 	return 1;
 }
 

@@ -9,10 +9,10 @@
 
 #include "pch.hpp"
 
-#include "creatures/combat/combat.h"
-#include "game/game.h"
-#include "lua/creature/events.h"
-#include "items/weapons/weapons.h"
+#include "creatures/combat/combat.hpp"
+#include "game/game.hpp"
+#include "lua/creature/events.hpp"
+#include "items/weapons/weapons.hpp"
 
 Weapons::Weapons() = default;
 Weapons::~Weapons() = default;
@@ -390,15 +390,17 @@ bool WeaponMelee::useWeapon(Player* player, Item* item, Creature* target) const 
 				firstCleaveTargetPos.y++;
 				secondCleaveTargetPos.y--;
 			} else {
-				if (targetPos.x > playerPos.x)
+				if (targetPos.x > playerPos.x) {
 					firstCleaveTargetPos.x--;
-				else
+				} else {
 					firstCleaveTargetPos.x++;
+				}
 
-				if (targetPos.y > playerPos.y)
+				if (targetPos.y > playerPos.y) {
 					secondCleaveTargetPos.y--;
-				else
+				} else {
 					secondCleaveTargetPos.y++;
+				}
 			}
 			Tile* firstTile = g_game().map.getTile(firstCleaveTargetPos.x, firstCleaveTargetPos.y, firstCleaveTargetPos.z);
 			Tile* secondTile = g_game().map.getTile(secondCleaveTargetPos.x, secondCleaveTargetPos.y, secondCleaveTargetPos.z);
@@ -406,16 +408,18 @@ bool WeaponMelee::useWeapon(Player* player, Item* item, Creature* target) const 
 			if (firstTile) {
 				if (CreatureVector* tileCreatures = firstTile->getCreatures()) {
 					for (Creature* tileCreature : *tileCreatures) {
-						if (tileCreature->getMonster() || (tileCreature->getPlayer() && !player->hasSecureMode()))
+						if (tileCreature->getMonster() || (tileCreature->getPlayer() && !player->hasSecureMode())) {
 							internalUseWeapon(player, item, tileCreature, damageModifier, cleavePercent);
+						}
 					}
 				}
 			}
 			if (secondTile) {
 				if (CreatureVector* tileCreatures = secondTile->getCreatures()) {
 					for (Creature* tileCreature : *tileCreatures) {
-						if (tileCreature->getMonster() || (tileCreature->getPlayer() && !player->hasSecureMode()))
+						if (tileCreature->getMonster() || (tileCreature->getPlayer() && !player->hasSecureMode())) {
 							internalUseWeapon(player, item, tileCreature, damageModifier, cleavePercent);
+						}
 					}
 				}
 			}

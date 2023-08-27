@@ -13,9 +13,9 @@
 
 #include "lua/callbacks/event_callback.hpp"
 #include "lua/callbacks/events_callbacks.hpp"
-#include "utils/tools.h"
-#include "items/item.h"
-#include "creatures/players/player.h"
+#include "utils/tools.hpp"
+#include "items/item.hpp"
+#include "creatures/players/player.hpp"
 
 /**
  * @class EventCallbackFunctions
@@ -34,12 +34,7 @@ void EventCallbackFunctions::init(lua_State* luaState) {
 }
 
 int EventCallbackFunctions::luaEventCallbackCreate(lua_State* luaState) {
-	const auto &eventCallback = std::make_shared<EventCallback>(getScriptEnv()->getScriptInterface());
-	if (!eventCallback) {
-		reportErrorFunc("EventCallback is nil");
-		return 0;
-	}
-
+	const auto eventCallback = std::make_shared<EventCallback>(getScriptEnv()->getScriptInterface());
 	pushUserdata<EventCallback>(luaState, eventCallback);
 	setMetatable(luaState, -1, "EventCallback");
 	return 1;

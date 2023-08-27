@@ -9,11 +9,11 @@
 
 #include "pch.hpp"
 
-#include "game/game.h"
-#include "lua/creature/events.h"
+#include "game/game.hpp"
+#include "lua/creature/events.hpp"
 #include "lua/callbacks/event_callback.hpp"
 #include "lua/callbacks/events_callbacks.hpp"
-#include "lua/creature/movement.h"
+#include "lua/creature/movement.hpp"
 
 void MoveEvents::clear() {
 	uniqueIdMap.clear();
@@ -22,7 +22,7 @@ void MoveEvents::clear() {
 	positionsMap.clear();
 }
 
-bool MoveEvents::registerLuaItemEvent(const std::shared_ptr<MoveEvent> &moveEvent) {
+bool MoveEvents::registerLuaItemEvent(const std::shared_ptr<MoveEvent> moveEvent) {
 	auto itemIdVector = moveEvent->getItemIdsVector();
 	if (itemIdVector.empty()) {
 		return false;
@@ -48,7 +48,7 @@ bool MoveEvents::registerLuaItemEvent(const std::shared_ptr<MoveEvent> &moveEven
 	return !itemIdVector.empty();
 }
 
-bool MoveEvents::registerLuaActionEvent(const std::shared_ptr<MoveEvent> &moveEvent) {
+bool MoveEvents::registerLuaActionEvent(const std::shared_ptr<MoveEvent> moveEvent) {
 	auto actionIdVector = moveEvent->getActionIdsVector();
 	if (actionIdVector.empty()) {
 		return false;
@@ -67,7 +67,7 @@ bool MoveEvents::registerLuaActionEvent(const std::shared_ptr<MoveEvent> &moveEv
 	return !actionIdVector.empty();
 }
 
-bool MoveEvents::registerLuaUniqueEvent(const std::shared_ptr<MoveEvent> &moveEvent) {
+bool MoveEvents::registerLuaUniqueEvent(const std::shared_ptr<MoveEvent> moveEvent) {
 	auto uniqueIdVector = moveEvent->getUniqueIdsVector();
 	if (uniqueIdVector.empty()) {
 		return false;
@@ -86,7 +86,7 @@ bool MoveEvents::registerLuaUniqueEvent(const std::shared_ptr<MoveEvent> &moveEv
 	return !uniqueIdVector.empty();
 }
 
-bool MoveEvents::registerLuaPositionEvent(const std::shared_ptr<MoveEvent> &moveEvent) {
+bool MoveEvents::registerLuaPositionEvent(const std::shared_ptr<MoveEvent> moveEvent) {
 	auto positionVector = moveEvent->getPositionsVector();
 	if (positionVector.empty()) {
 		return false;
@@ -105,7 +105,7 @@ bool MoveEvents::registerLuaPositionEvent(const std::shared_ptr<MoveEvent> &move
 	return !positionVector.empty();
 }
 
-bool MoveEvents::registerLuaEvent(const std::shared_ptr<MoveEvent> &moveEvent) {
+bool MoveEvents::registerLuaEvent(const std::shared_ptr<MoveEvent> moveEvent) {
 	// Check if event is correct
 	if (registerLuaItemEvent(moveEvent)
 		|| registerLuaUniqueEvent(moveEvent)
@@ -122,7 +122,7 @@ bool MoveEvents::registerLuaEvent(const std::shared_ptr<MoveEvent> &moveEvent) {
 	}
 }
 
-bool MoveEvents::registerEvent(const std::shared_ptr<MoveEvent> &moveEvent, int32_t id, phmap::btree_map<int32_t, MoveEventList> &moveListMap) const {
+bool MoveEvents::registerEvent(const std::shared_ptr<MoveEvent> moveEvent, int32_t id, std::map<int32_t, MoveEventList> &moveListMap) const {
 	auto it = moveListMap.find(id);
 	if (it == moveListMap.end()) {
 		MoveEventList moveEventList;
@@ -186,7 +186,7 @@ std::shared_ptr<MoveEvent> MoveEvents::getEvent(Item &item, MoveEvent_t eventTyp
 	}
 
 	if (item.hasAttribute(ItemAttribute_t::ACTIONID)) {
-		phmap::btree_map<int32_t, MoveEventList>::iterator it = actionIdMap.find(item.getAttribute<uint16_t>(ItemAttribute_t::ACTIONID));
+		std::map<int32_t, MoveEventList>::iterator it = actionIdMap.find(item.getAttribute<uint16_t>(ItemAttribute_t::ACTIONID));
 		if (it != actionIdMap.end()) {
 			std::list<std::shared_ptr<MoveEvent>> moveEventList = it->second.moveEvent[eventType];
 			for (const auto &moveEvent : moveEventList) {
@@ -210,7 +210,7 @@ std::shared_ptr<MoveEvent> MoveEvents::getEvent(Item &item, MoveEvent_t eventTyp
 }
 
 std::shared_ptr<MoveEvent> MoveEvents::getEvent(Item &item, MoveEvent_t eventType) {
-	phmap::btree_map<int32_t, MoveEventList>::iterator it;
+	std::map<int32_t, MoveEventList>::iterator it;
 	if (item.hasAttribute(ItemAttribute_t::UNIQUEID)) {
 		it = uniqueIdMap.find(item.getAttribute<uint16_t>(ItemAttribute_t::UNIQUEID));
 		if (it != uniqueIdMap.end()) {
@@ -241,7 +241,7 @@ std::shared_ptr<MoveEvent> MoveEvents::getEvent(Item &item, MoveEvent_t eventTyp
 	return nullptr;
 }
 
-bool MoveEvents::registerEvent(const std::shared_ptr<MoveEvent> &moveEvent, const Position &position, phmap::btree_map<Position, MoveEventList> &moveListMap) const {
+bool MoveEvents::registerEvent(const std::shared_ptr<MoveEvent> moveEvent, const Position &position, std::map<Position, MoveEventList> &moveListMap) const {
 	auto it = moveListMap.find(position);
 	if (it == moveListMap.end()) {
 		MoveEventList moveEventList;
@@ -467,7 +467,7 @@ uint32_t MoveEvent::RemoveItemField(Item*, Item*, const Position &) {
 	return 1;
 }
 
-uint32_t MoveEvent::EquipItem(const std::shared_ptr<MoveEvent> &moveEvent, Player* player, Item* item, Slots_t slot, bool isCheck) {
+uint32_t MoveEvent::EquipItem(const std::shared_ptr<MoveEvent> moveEvent, Player* player, Item* item, Slots_t slot, bool isCheck) {
 	if (player == nullptr) {
 		g_logger().error("[MoveEvent::EquipItem] - Player is nullptr");
 		return 0;
@@ -491,7 +491,7 @@ uint32_t MoveEvent::EquipItem(const std::shared_ptr<MoveEvent> &moveEvent, Playe
 			return 0;
 		}
 
-		const phmap::btree_map<uint16_t, bool> &vocEquipMap = moveEvent->getVocEquipMap();
+		const std::map<uint16_t, bool> &vocEquipMap = moveEvent->getVocEquipMap();
 		if (!vocEquipMap.empty() && !vocEquipMap.contains(player->getVocationId())) {
 			return 0;
 		}
@@ -581,7 +581,7 @@ uint32_t MoveEvent::EquipItem(const std::shared_ptr<MoveEvent> &moveEvent, Playe
 	return 1;
 }
 
-uint32_t MoveEvent::DeEquipItem(const std::shared_ptr<MoveEvent> &MoveEvent, Player* player, Item* item, Slots_t slot, bool) {
+uint32_t MoveEvent::DeEquipItem(const std::shared_ptr<MoveEvent> MoveEvent, Player* player, Item* item, Slots_t slot, bool) {
 	if (player == nullptr) {
 		g_logger().error("[MoveEvent::EquipItem] - Player is nullptr");
 		return 0;
