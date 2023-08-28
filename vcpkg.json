@@ -1,6 +1,6 @@
 {
   "name": "otxserver",
-  "version-string": "1.0.0",
+  "version-string": "6.2.0",
   "dependencies": [
     "argon2",
     "asio",
