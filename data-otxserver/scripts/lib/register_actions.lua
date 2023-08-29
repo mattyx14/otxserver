@@ -3,9 +3,9 @@ local holeId = {
 }
 
 local Itemsgrinder = {
-	[675] = {item_id = 30004, effect = CONST_ME_BLUE_FIREWORKS}, -- Sapphire dust
-	[16122] = {item_id = 21507, effect = CONST_ME_GREENSMOKE} -- Pinch of crystal dust
-	}
+	[675] = { item_id = 30004, effect = CONST_ME_BLUE_FIREWORKS }, -- Sapphire dust
+	[16122] = { item_id = 21507, effect = CONST_ME_GREENSMOKE } -- Pinch of crystal dust
+}
 
 local holes = {
 	593, 606, 608, 867, 21341
@@ -338,7 +338,7 @@ function onUseSpoon(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
-	if not table.contains({3453, 9596}, item.itemid) then
+	if not table.contains({ 3453, 9596 }, item.itemid) then
 		return false
 	end
 
@@ -360,7 +360,7 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 end
 
 function onGrindItem(player, item, fromPosition, target, toPosition)
-	if not(target.itemid == 21573) then
+	if not (target.itemid == 21573) then
 		return false
 	end
 	for index, value in pairs(Itemsgrinder) do

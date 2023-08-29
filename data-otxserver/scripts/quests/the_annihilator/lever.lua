@@ -4,20 +4,20 @@ local setting = {
 	-- Can it be done daily? true = yes, false = no
 	daily = true,
 	-- Do not change from here down
-	centerDemonRoomPosition = {x = 33221, y = 31659, z = 13},
+	centerDemonRoomPosition = { x = 189, y = 652, z = 15 },
 	demonsPositions = {
-		{x = 33219, y = 31657, z = 13},
-		{x = 33221, y = 31657, z = 13},
-		{x = 33223, y = 31659, z = 13},
-		{x = 33224, y = 31659, z = 13},
-		{x = 33220, y = 31661, z = 13},
-		{x = 33222, y = 31661, z = 13}
+		{ x = 187, y = 650, z = 15 },
+		{ x = 187, y = 652, z = 15 },
+		{ x = 191, y = 651, z = 15 },
+		{ x = 191, y = 653, z = 15 },
+		{ x = 189, y = 655, z = 15 },
+		{ x = 189, y = 654, z = 15 }
 	},
 	playersPositions = {
-		{fromPos = {x = 33225, y = 31671, z = 13}, toPos = {x = 33222, y = 31659, z = 13}},
-		{fromPos = {x = 33224, y = 31671, z = 13}, toPos = {x = 33221, y = 31659, z = 13}},
-		{fromPos = {x = 33223, y = 31671, z = 13}, toPos = {x = 33220, y = 31659, z = 13}},
-		{fromPos = {x = 33222, y = 31671, z = 13}, toPos = {x = 33219, y = 31659, z = 13}},
+		{ fromPos = { x = 247, y = 659, z = 13 }, toPos = { x = 189, y = 650, z = 15 } },
+		{ fromPos = { x = 247, y = 660, z = 13 }, toPos = { x = 189, y = 651, z = 15 } },
+		{ fromPos = { x = 247, y = 661, z = 13 }, toPos = { x = 189, y = 652, z = 15 } },
+		{ fromPos = { x = 247, y = 662, z = 13 }, toPos = { x = 189, y = 653, z = 15 } },
 	}
 }
 
@@ -33,7 +33,7 @@ function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 				return true
 			end
 			if creature and creature:getLevel() < setting.requiredLevel then
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "All the players need to be level ".. setting.requiredLevel .." or higher.")
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "All the players need to be level " .. setting.requiredLevel .. " or higher.")
 				return true
 			end
 		end
