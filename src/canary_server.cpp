@@ -179,7 +179,7 @@ void CanaryServer::logInfos() {
 	logger.debug("DIRTY - NOT OFFICIAL RELEASE");
 	#endif
 #else
-	logger.info("{} - Version {}", "The ", STATUS_SERVER_NAME, STATUS_SERVER_VERSION);
+	logger.info("The {} - Version {}", STATUS_SERVER_NAME, STATUS_SERVER_VERSION);
 #endif
 
 	logger.debug("Compiled with {}, on {} {}, for platform {}\n", getCompiler(), __DATE__, __TIME__, getPlatform());
@@ -189,8 +189,8 @@ void CanaryServer::logInfos() {
 #endif
 
 	logger.info("A server developed by: {}", STATUS_SERVER_DEVELOPERS);
-	logger.info("Visit our website for updates, support, and resources: "
-				"https://docs.opentibiabr.com/home/welcome/ and "
+	logger.info("Visit our website for updates, support, and resources:\n"
+				"https://docs.opentibiabr.com/home/welcome/ \n"
 				"https://github.com/mattyx14/otxserver/\n");
 }
 
