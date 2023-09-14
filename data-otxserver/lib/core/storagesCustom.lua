@@ -23,8 +23,7 @@ table.sort(extraction) -- Sort the table
 if #extraction > 1 then
 	for i = 1, #extraction - 1 do
 		if extraction[i] == extraction[i + 1] then
-			logger.warn("Duplicate Storage Custom value found: {}",
-				extraction[i])
+			logger.warn("Duplicate storage value found: {}", extraction[i])
 		end
 	end
 end

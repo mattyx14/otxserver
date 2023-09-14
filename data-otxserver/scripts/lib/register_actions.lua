@@ -1,25 +1,104 @@
 local holeId = {
-	294, 369, 370, 385, 394, 411, 412, 413, 432, 433, 435, 8709, 594, 595, 615, 609, 610, 615, 1156, 482, 483, 868, 874, 4824, 7768, 433, 432, 413, 7767, 411, 370, 369, 7737, 7755, 7768, 7767, 7515, 7516, 7517, 7518, 7519, 7520, 7521, 7522, 7762, 8144, 8690, 8709, 12203, 12961, 17239, 19220, 23364
+	294,
+	369,
+	370,
+	385,
+	394,
+	411,
+	412,
+	413,
+	432,
+	433,
+	435,
+	8709,
+	594,
+	595,
+	615,
+	609,
+	610,
+	615,
+	1156,
+	482,
+	483,
+	868,
+	874,
+	4824,
+	7768,
+	433,
+	432,
+	413,
+	7767,
+	411,
+	370,
+	369,
+	7737,
+	7755,
+	7768,
+	7767,
+	7515,
+	7516,
+	7517,
+	7518,
+	7519,
+	7520,
+	7521,
+	7522,
+	7762,
+	8144,
+	8690,
+	8709,
+	12203,
+	12961,
+	17239,
+	19220,
+	23364,
 }
 
 local Itemsgrinder = {
 	[675] = { item_id = 30004, effect = CONST_ME_BLUE_FIREWORKS }, -- Sapphire dust
-	[16122] = { item_id = 21507, effect = CONST_ME_GREENSMOKE } -- Pinch of crystal dust
+	[16122] = { item_id = 21507, effect = CONST_ME_GREENSMOKE }, -- Pinch of crystal dust
 }
 
 local holes = {
-	593, 606, 608, 867, 21341
+	593,
+	606,
+	608,
+	867,
+	21341,
 }
 
 local JUNGLE_GRASS = {
-	3696, 3702, 17153
+	3696,
+	3702,
+	17153,
 }
 local WILD_GROWTH = {
-	2130, 2130, 2982, 2524, 2030, 2029, 10182
+	2130,
+	2130,
+	2982,
+	2524,
+	2030,
+	2029,
+	10182,
 }
 
 local fruits = {
-	3584, 3585, 3586, 3587, 3588, 3589, 3590, 3591, 3592, 3593, 3595, 3596, 5096, 8011, 8012, 8013
+	3584,
+	3585,
+	3586,
+	3587,
+	3588,
+	3589,
+	3590,
+	3591,
+	3592,
+	3593,
+	3595,
+	3596,
+	5096,
+	8011,
+	8012,
+	8013,
 }
 
 local lava = {
@@ -178,7 +257,7 @@ local cutItems = {
 	[183] = 189,
 	[233] = 234,
 	[25798] = 0,
-	[25800] = 0
+	[25800] = 0,
 }
 
 function onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
@@ -326,6 +405,10 @@ function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
 		toPosition:sendMagicEffect(CONST_ME_POFF)
 		target:remove()
 		return true
+	elseif target.itemid == 30623 then -- reed
+		target:transform(30624)
+		target:decay()
+		Game.createItem(30975, 1, toPosition)
 	end
 
 	return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
@@ -342,14 +425,18 @@ function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
-	if target.itemid == 5464 then
+	if target.itemid == 5464 then -- burning sugar cane
 		target:transform(5463)
 		target:decay()
 		Game.createItem(5466, 1, toPosition)
-	elseif target.itemid == 3653 then
+	elseif target.itemid == 3653 then -- wheat
 		target:transform(3651)
 		target:decay()
 		Game.createItem(3605, 1, toPosition)
+	elseif target.itemid == 30623 then -- reed
+		target:transform(30624)
+		target:decay()
+		Game.createItem(30975, 1, toPosition)
 	else
 		return false
 	end

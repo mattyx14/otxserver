@@ -8,8 +8,7 @@ function onTargetCreature(creature, target)
 	local max = 600
 
 	local master = target:getMaster()
-	if target:isPlayer() and not master
-			or master and master:isPlayer() then
+	if target:isPlayer() and not master or master and master:isPlayer() then
 		return true
 	end
 
@@ -25,7 +24,7 @@ function spell.onCastSpell(creature, var)
 	return combat:execute(creature, var)
 end
 
-spell:name("icecle heal")
+spell:name("icicle heal")
 spell:words("###436")
 spell:isAggressive(true)
 spell:blockWalls(true)

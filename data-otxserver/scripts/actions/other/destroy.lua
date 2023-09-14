@@ -20,6 +20,7 @@ end
 local destroy = Action()
 
 function destroy.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	return onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 for id = 3264, 3292 do

@@ -27,7 +27,7 @@ function citizen.onStepIn(creature, item, position, fromPosition)
 	player:setTown(town)
 	player:teleportTo(town:getTemplePosition())
 	player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You are now a citizen of ' .. town:getName() .. '.')
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are now a citizen of " .. town:getName() .. ".")
 	return true
 end
 

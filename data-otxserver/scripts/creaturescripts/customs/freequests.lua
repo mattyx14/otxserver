@@ -4,6 +4,8 @@ local questTable = {
 	-- 
 }
 
+-- from Position: (33201, 31762, 1)
+-- to Position: (33356, 31309, 4)
 local function playerFreeQuestStart(playerId, index)
 	local player = Player(playerId)
 	if not player then
@@ -13,7 +15,7 @@ local function playerFreeQuestStart(playerId, index)
 	for i = 1, 5 do
 		index = index + 1
 		if not questTable[index] then
-			player:sendTextMessage(MESSAGE_INFO_DESCR, "Player FreeQuest is complete.")
+			player:sendTextMessage(MESSAGE_INFO_DESCR, "Adding free quests completed.")
 			player:setStorageValue(Storage.FreeQuests, stage)
 			return
 		end
@@ -29,13 +31,15 @@ end
 local freeQuests = CreatureEvent("FreeQuests")
 
 function freeQuests.onLogin(player)
-	if not configManager.getBoolean(configKeys.TOGGLE_FREE_QUEST) or
-			player:getStorageValue(Storage.FreeQuests) == stage then
+	if not configManager.getBoolean(configKeys.TOGGLE_FREE_QUEST) or player:getStorageValue(Storage.FreeQuests) == stage then
 		return true
 	end
 
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "Player FreeQuest in progress..")
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "Adding free acccess quests to your character.")
 	addEvent(playerFreeQuestStart, 500, player:getId(), 0)
+	player:addOutfit(251, 0)
+	player:addOutfit(252, 0)
+
 	return true
 end
 

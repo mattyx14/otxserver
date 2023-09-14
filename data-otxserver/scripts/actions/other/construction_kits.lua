@@ -56,7 +56,7 @@ local constructionKits = {
 	[14756] = 14755,
 	[17974] = 18015,
 	[17975] = 18017,
-	[17977] = 18019
+	[17977] = 18019,
 }
 
 local constructionKit = Action()
