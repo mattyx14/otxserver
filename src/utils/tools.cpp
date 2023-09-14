@@ -303,7 +303,7 @@ std::string toPascalCase(const std::string &str) {
 				result += std::toupper(ch);
 				capitalizeNext = false;
 			} else {
-				result += std::tolower(ch);
+				result += ch; // Keep the character as is.
 			}
 		}
 	}
@@ -340,6 +340,22 @@ std::string toKebabCase(const std::string &str) {
 		}
 	}
 
+	return result;
+}
+
+std::string toStartCaseWithSpace(const std::string &str) {
+	std::string result;
+	for (size_t i = 0; i < str.length(); ++i) {
+		char ch = str[i];
+		if (i == 0 || std::isupper(ch)) {
+			if (i > 0) {
+				result += ' ';
+			}
+			result += std::toupper(ch);
+		} else {
+			result += std::tolower(ch);
+		}
+	}
 	return result;
 }
 
@@ -1258,6 +1274,9 @@ const char* getReturnMessage(ReturnValue value) {
 		case RETURNVALUE_DEPOTISFULL:
 			return "You cannot put more items in this depot.";
 
+		case RETURNVALUE_CONTAINERISFULL:
+			return "You cannot put more items in this container.";
+
 		case RETURNVALUE_CANNOTUSETHISOBJECT:
 			return "You cannot use this object.";
 
@@ -1639,6 +1658,81 @@ std::string formatPrice(std::string price, bool space /* = false*/) {
 	}
 
 	return price;
+}
+
+std::string getPlayerSubjectPronoun(PlayerPronoun_t pronoun, PlayerSex_t sex, const std::string &name) {
+	switch (pronoun) {
+		case PLAYERPRONOUN_THEY:
+			return "they";
+		case PLAYERPRONOUN_SHE:
+			return "she";
+		case PLAYERPRONOUN_HE:
+			return "he";
+		case PLAYERPRONOUN_ZE:
+			return "ze";
+		case PLAYERPRONOUN_NAME:
+			return name;
+		default:
+			return sex == PLAYERSEX_FEMALE ? "she" : "he";
+	}
+}
+
+std::string getPlayerObjectPronoun(PlayerPronoun_t pronoun, PlayerSex_t sex, const std::string &name) {
+	switch (pronoun) {
+		case PLAYERPRONOUN_THEY:
+			return "them";
+		case PLAYERPRONOUN_SHE:
+			return "her";
+		case PLAYERPRONOUN_HE:
+			return "him";
+		case PLAYERPRONOUN_ZE:
+			return "zir";
+		case PLAYERPRONOUN_NAME:
+			return name;
+		default:
+			return sex == PLAYERSEX_FEMALE ? "her" : "him";
+	}
+}
+
+std::string getPlayerPossessivePronoun(PlayerPronoun_t pronoun, PlayerSex_t sex, const std::string &name) {
+	switch (pronoun) {
+		case PLAYERPRONOUN_THEY:
+			return "their";
+		case PLAYERPRONOUN_SHE:
+			return "her";
+		case PLAYERPRONOUN_HE:
+			return "his";
+		case PLAYERPRONOUN_ZE:
+			return "zir";
+		case PLAYERPRONOUN_NAME:
+			return name + "'s";
+		default:
+			return sex == PLAYERSEX_FEMALE ? "her" : "his";
+	}
+}
+
+std::string getPlayerReflexivePronoun(PlayerPronoun_t pronoun, PlayerSex_t sex, const std::string &name) {
+	switch (pronoun) {
+		case PLAYERPRONOUN_THEY:
+			return "themself";
+		case PLAYERPRONOUN_SHE:
+			return "herself";
+		case PLAYERPRONOUN_HE:
+			return "himself";
+		case PLAYERPRONOUN_ZE:
+			return "zirself";
+		case PLAYERPRONOUN_NAME:
+			return name;
+		default:
+			return sex == PLAYERSEX_FEMALE ? "herself" : "himself";
+	}
+}
+
+std::string getVerbForPronoun(PlayerPronoun_t pronoun, bool pastTense) {
+	if (pronoun == PLAYERPRONOUN_THEY) {
+		return pastTense ? "were" : "are";
+	}
+	return pastTense ? "was" : "is";
 }
 
 std::vector<std::string> split(const std::string &str) {

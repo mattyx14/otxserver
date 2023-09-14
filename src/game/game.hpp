@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "creatures/players/account/account.hpp"
+#include "account/account.hpp"
 #include "creatures/combat/combat.hpp"
 #include "items/containers/container.hpp"
 #include "creatures/players/grouping/groups.hpp"
@@ -23,7 +23,7 @@
 #include "creatures/players/grouping/team_finder.hpp"
 #include "utils/wildcardtree.hpp"
 #include "items/items_classification.hpp"
-#include "protobuf/appearances.pb.hpp"
+#include "protobuf/appearances.pb.h"
 
 class ServiceManager;
 class Creature;
@@ -177,7 +177,7 @@ public:
 	ReturnValue internalMoveCreature(Creature &creature, Tile &toTile, uint32_t flags = 0);
 
 	ReturnValue checkMoveItemToCylinder(Player* player, Cylinder* fromCylinder, Cylinder* toCylinder, Item* item, Position toPos);
-	ReturnValue internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index, Item* item, uint32_t count, Item** internalMoveItem, uint32_t flags = 0, Creature* actor = nullptr, Item* tradeItem = nullptr);
+	ReturnValue internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index, Item* item, uint32_t count, Item** movedItem, uint32_t flags = 0, Creature* actor = nullptr, Item* tradeItem = nullptr, bool checkTile = true);
 
 	ReturnValue internalAddItem(Cylinder* toCylinder, Item* item, int32_t index = INDEX_WHEREEVER, uint32_t flags = 0, bool test = false);
 	ReturnValue internalAddItem(Cylinder* toCylinder, Item* item, int32_t index, uint32_t flags, bool test, uint32_t &remainderCount);
@@ -295,7 +295,7 @@ public:
 	void playerWrapableItem(uint32_t playerId, const Position &pos, uint8_t stackPos, const uint16_t itemId);
 	void playerWriteItem(uint32_t playerId, uint32_t windowTextId, const std::string &text);
 	void playerBrowseField(uint32_t playerId, const Position &pos);
-	void playerSeekInContainer(uint32_t playerId, uint8_t containerId, uint16_t index);
+	void playerSeekInContainer(uint32_t playerId, uint8_t containerId, uint16_t index, uint8_t containerCategory);
 	void playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string &text);
 	void playerRequestTrade(uint32_t playerId, const Position &pos, uint8_t stackPos, uint32_t tradePlayerId, uint16_t itemId);
 	void playerAcceptTrade(uint32_t playerId);
@@ -650,7 +650,7 @@ private:
 	bool playerYell(Player* player, const std::string &text);
 	bool playerSpeakTo(Player* player, SpeakClasses type, const std::string &receiver, const std::string &text);
 	void playerSpeakToNpc(Player* player, const std::string &text);
-	std::shared_ptr<Task> createPlayerTask(uint32_t delay, std::function<void(void)> f);
+	std::shared_ptr<Task> createPlayerTask(uint32_t delay, std::function<void(void)> f, std::string context) const;
 
 	/**
 	 * Player wants to loot a corpse

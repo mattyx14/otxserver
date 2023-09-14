@@ -676,7 +676,7 @@ bool Monster::selectTarget(Creature* creature) {
 
 	if (isHostile() || isSummon()) {
 		if (setAttackedCreature(creature)) {
-			g_dispatcher().addTask(std::bind(&Game::checkCreatureAttack, &g_game(), getID()));
+			g_dispatcher().addTask(std::bind(&Game::checkCreatureAttack, &g_game(), getID()), "Game::checkCreatureAttack");
 		}
 	}
 	return setFollowCreature(creature);
@@ -850,9 +850,9 @@ void Monster::doAttacking(uint32_t interval) {
 
 				float multiplier;
 				if (maxCombatValue > 0) { // Defense
-					multiplier = mType->getDefenseMultiplier();
+					multiplier = getDefenseMultiplier();
 				} else { // Attack
-					multiplier = mType->getAttackMultiplier();
+					multiplier = getAttackMultiplier();
 				}
 
 				minCombatValue = spellBlock.minCombatValue * multiplier;
@@ -1924,9 +1924,9 @@ bool Monster::getCombatValues(int32_t &min, int32_t &max) {
 
 	float multiplier;
 	if (maxCombatValue > 0) { // Defense
-		multiplier = mType->getDefenseMultiplier();
+		multiplier = getDefenseMultiplier();
 	} else { // Attack
-		multiplier = mType->getAttackMultiplier();
+		multiplier = getAttackMultiplier();
 	}
 
 	min = minCombatValue * multiplier;
@@ -2122,12 +2122,12 @@ void Monster::configureForgeSystem() {
 
 	if (monsterForgeClassification == ForgeClassifications_t::FORGE_FIENDISH_MONSTER) {
 		setForgeStack(15);
-		setIcon(CreatureIcon(CreatureIconModifications_t::Fiendish, 0 /* don't show stacks on fiends */));
+		setIcon("forge", CreatureIcon(CreatureIconModifications_t::Fiendish, 0 /* don't show stacks on fiends */));
 		g_game().updateCreatureIcon(this);
 	} else if (monsterForgeClassification == ForgeClassifications_t::FORGE_INFLUENCED_MONSTER) {
 		auto stack = static_cast<uint16_t>(normal_random(1, 5));
 		setForgeStack(stack);
-		setIcon(CreatureIcon(CreatureIconModifications_t::Influenced, stack));
+		setIcon("forge", CreatureIcon(CreatureIconModifications_t::Influenced, stack));
 		g_game().updateCreatureIcon(this);
 	}
 
@@ -2153,7 +2153,7 @@ void Monster::clearFiendishStatus() {
 	health = mType->info.health * mType->getHealthMultiplier();
 	healthMax = mType->info.healthMax * mType->getHealthMultiplier();
 
-	clearIcon();
+	removeIcon("forge");
 	g_game().updateCreatureIcon(this);
 	g_game().sendUpdateCreature(this);
 }

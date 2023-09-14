@@ -156,19 +156,23 @@ public:
 	bool challengeCreature(Creature* creature, int targetChangeCooldown) override;
 
 	bool changeTargetDistance(int32_t distance, uint32_t duration = 12000);
+	bool isChallenged() const {
+		return challengeFocusDuration > 0;
+	}
 
-	CreatureIcon getIcon() const override {
-		if (creatureIcon.isSet()) {
-			return creatureIcon;
+	std::vector<CreatureIcon> getIcons() const override {
+		const auto creatureIcons = Creature::getIcons();
+		if (!creatureIcons.empty()) {
+			return creatureIcons;
 		}
 		if (challengeMeleeDuration > 0 && mType->info.targetDistance > targetDistance) {
-			return CreatureIcon(CreatureIconModifications_t::TurnedMelee);
+			return { CreatureIcon(CreatureIconModifications_t::TurnedMelee) };
 		} else if (varBuffs[BUFF_DAMAGERECEIVED] > 100) {
-			return CreatureIcon(CreatureIconModifications_t::HigherDamageReceived);
+			return { CreatureIcon(CreatureIconModifications_t::HigherDamageReceived) };
 		} else if (varBuffs[BUFF_DAMAGEDEALT] < 100) {
-			return CreatureIcon(CreatureIconModifications_t::LowerDamageDealt);
+			return { CreatureIcon(CreatureIconModifications_t::LowerDamageDealt) };
 		}
-		return CreatureIcon();
+		return {};
 	}
 
 	void setNormalCreatureLight() override;
@@ -410,4 +414,14 @@ private:
 	void doRandomStep(Direction &nextDirection, bool &result);
 
 	void onConditionStatusChange(const ConditionType_t &type);
+
+	float getAttackMultiplier() const {
+		float multiplier = mType->getAttackMultiplier();
+		return multiplier * std::pow(1.03f, getForgeStack());
+	}
+
+	float getDefenseMultiplier() const {
+		float multiplier = mType->getAttackMultiplier();
+		return multiplier * std::pow(1.01f, getForgeStack());
+	}
 };
