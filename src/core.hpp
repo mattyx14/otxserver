@@ -11,7 +11,7 @@
 
 static constexpr auto STATUS_SERVER_NAME = "OTX Server";
 static constexpr auto STATUS_SERVER_VERSION = "6.2";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "OpenTibiaBR Organization and data editor: Mattyx14";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "Canary Base - OpenTibiaBR Organization and data editor: Mattyx14";
 
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;
 static constexpr auto AUTHENTICATOR_PERIOD = 30U;
