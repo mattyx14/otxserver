@@ -106,6 +106,10 @@ function Player.allowMovement(self, allow)
 	return self:setStorageValue(Global.Storage.BlockMovementStorage, allow and -1 or 1)
 end
 
+function Player.hasAllowMovement(self)
+	return self:getStorageValue(Global.Storage.BlockMovementStorage) ~= 1
+end
+
 function Player.addFamePoint(self)
 	local points = self:getStorageValue(SPIKE_FAME_POINTS)
 	local current = math.max(0, points)
@@ -169,17 +173,12 @@ function Player:removeMoneyBank(amount)
 
 			self:sendTextMessage(MESSAGE_TRADE, ("Paid %s from inventory and %s gold from bank account. Your account balance is now %s gold."):format(FormatNumber(moneyCount), FormatNumber(amount - moneyCount), FormatNumber(self:getBankBalance())))
 			return true
-		else
-			self:setBankBalance(bankCount - amount)
-			self:sendTextMessage(MESSAGE_TRADE, ("Paid %s gold from bank account. Your account balance is now %s gold."):format(FormatNumber(amount), FormatNumber(self:getBankBalance())))
-			return true
 		end
+		self:setBankBalance(bankCount - amount)
+		self:sendTextMessage(MESSAGE_TRADE, ("Paid %s gold from bank account. Your account balance is now %s gold."):format(FormatNumber(amount), FormatNumber(self:getBankBalance())))
+		return true
 	end
 	return false
-end
-
-function Player.hasAllowMovement(self)
-	return self:getStorageValue(Global.Storage.BlockMovementStorage) ~= 1
 end
 
 function Player.hasRookgaardShield(self)
