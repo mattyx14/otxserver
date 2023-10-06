@@ -47,7 +47,9 @@ function serverstartup.onStartup()
 	-- Create new item on map
 	CreateMapItem(CreateItemOnMap)
 	-- Update old quest storage keys
+--[[
 	updateKeysStorage(QuestKeysUpdate)
+]]
 
 	logger.debug("Loaded all actions in the map")
 	logger.debug("Loaded all uniques in the map")
