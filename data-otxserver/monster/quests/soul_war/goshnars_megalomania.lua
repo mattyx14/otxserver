@@ -18,6 +18,7 @@ monster.maxHealth = 500000
 monster.race = "undead"
 monster.corpse = 33889
 monster.speed = 165
+monster.manaCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
@@ -27,7 +28,6 @@ monster.changeTarget = {
 monster.bosstiary = {
 	bossRaceId = 1969,
 	bossRace = RARITY_NEMESIS,
-	storageCooldown = Storage.Quest.U12_40.SoulWar.GoshnarMegalomaniaTimer,
 }
 
 monster.strategiesTarget = {
