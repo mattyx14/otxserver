@@ -520,7 +520,7 @@ end
 
 function Player:onGainSkillTries(skill, tries)
 	-- Dawnport skills limit
-	if IsRunningGlobalDatapack() and isSkillGrowthLimited(self, skill) then
+	if isSkillGrowthLimited(self, skill) then
 		return 0
 	end
 	if not APPLY_SKILL_MULTIPLIER then

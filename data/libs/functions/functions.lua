@@ -110,21 +110,6 @@ debug.sethook(function(event, line)
 	end
 end, "l")
 
--- OTServBr-Global functions
-function getJackLastMissionState(player)
-	if not IsRunningGlobalDatapack() then
-		return true
-	end
-
-	if player:getStorageValue(Storage.TibiaTales.JackFutureQuest.LastMissionState) == 1 then
-		return "You told Jack the truth about his personality. You also explained that you and Spectulus \z
-		made a mistake by assuming him as the real Jack."
-	else
-		return "You lied to the confused Jack about his true personality. You and Spectulus made him \z
-		believe that he is in fact a completely different person. Now he will never be able to find out the truth."
-	end
-end
-
 function getRateFromTable(t, level, default)
 	if t ~= nil then
 		for _, rate in ipairs(t) do

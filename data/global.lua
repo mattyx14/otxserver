@@ -7,14 +7,6 @@ if startupFile ~= nil then
 	dofile(DATA_DIRECTORY .. "/startup/startup.lua")
 end
 
-function IsRunningGlobalDatapack()
-	if DATA_DIRECTORY == "data-otxserver" then
-		return true
-	else
-		return false
-	end
-end
-
 function IsRetroPVP()
 	return configManager.getBoolean(configKeys.TOGGLE_SERVER_IS_RETRO)
 end

@@ -93,7 +93,6 @@ function Player.addManaSpent(...)
 	return ret
 end
 
--- Functions From OTServBR-Global
 function Player.allowMovement(self, allow)
 	return self:setStorageValue(Global.Storage.BlockMovementStorage, allow and -1 or 1)
 end
@@ -610,5 +609,5 @@ end
 
 function Player:canFightBoss(bossNameOrId)
 	local cooldown = self:getBossCooldown(bossNameOrId)
-	return cooldown > os.time() and false or true
+	return cooldown <= os.time()
 end
