@@ -18,7 +18,7 @@
 
 std::string ProtocolStatus::SERVER_NAME = "OTX Server";
 std::string ProtocolStatus::SERVER_VERSION = "6.2";
-std::string ProtocolStatus::SERVER_DEVELOPERS = "Canary Base - OpenTibiaBR Organization and data editor: Mattyx14";
+std::string ProtocolStatus::SERVER_DEVELOPERS = "Canary Base (3.1.1) - OpenTibiaBR Organization and data editor: Mattyx14";
 
 std::map<uint32_t, int64_t> ProtocolStatus::ipConnectMap;
 const uint64_t ProtocolStatus::start = OTSYS_TIME();
