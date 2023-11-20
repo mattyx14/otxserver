@@ -47,9 +47,7 @@ function serverstartup.onStartup()
 	-- Create new item on map
 	CreateMapItem(CreateItemOnMap)
 	-- Update old quest storage keys
---[[
 	updateKeysStorage(QuestKeysUpdate)
-]]
 
 	logger.debug("Loaded all actions in the map")
 	logger.debug("Loaded all uniques in the map")
@@ -105,6 +103,12 @@ function serverstartup.onStartup()
 			db.asyncQuery("DELETE FROM `account_bans` WHERE `account_id` = " .. accountId)
 		until not Result.next(banResultId)
 		Result.free(banResultId)
+	end
+
+	-- Ferumbras Ascendant quest
+	for i = 1, #GlobalStorage.FerumbrasAscendant.Habitats do
+		local storage = GlobalStorage.FerumbrasAscendant.Habitats[i]
+		Game.setStorageValue(storage, 0)
 	end
 
 	-- Check house auctions
