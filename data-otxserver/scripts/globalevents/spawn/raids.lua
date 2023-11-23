@@ -1,4 +1,5 @@
 local raids = {
+--[[
 	--Terça-Feira
 	["Tuesday"] = {
 		["16:00"] = { raidName = "Midnight Panther" },
@@ -34,6 +35,7 @@ local raids = {
 	["31/10"] = {
 		["16:00"] = { raidName = "Halloween Hare" },
 	},
+]]
 }
 
 local spawnRaids = GlobalEvent("spawn raids")
