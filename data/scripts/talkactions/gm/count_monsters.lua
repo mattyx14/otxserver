@@ -1,4 +1,4 @@
-local xml_monster_dir = DATA_DIRECTORY .. "/world/forgotten-monster.xml"
+local xml_monster_dir = DATA_DIRECTORY .. "/world/".. SERVER_NAME .."-monster.xml"
 local new_file_name = "monster_count.txt"
 
 local count_monsters = TalkAction("/countmonsters")

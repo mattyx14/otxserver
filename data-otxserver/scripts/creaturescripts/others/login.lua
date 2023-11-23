@@ -111,13 +111,13 @@ function playerLogin.onLogin(player)
 	player:initializeLoyaltySystem()
 
 	-- Stamina
-	nextUseStaminaTime[playerId] = 1
+	_G.NextUseStaminaTime[playerId] = 1
 
 	-- EXP Stamina
-	nextUseXpStamina[playerId] = 1
+	_G.NextUseXpStamina[playerId] = 1
 
 	-- Concoction Duration
-	nextUseConcoctionTime[playerId] = 1
+	_G.NextUseConcoctionTime[playerId] = 1
 
 	-- Rewards
 	local rewards = #player:getRewardList()
@@ -156,10 +156,10 @@ function playerLogin.onLogin(player)
 
 	player:getFinalLowLevelBonus()
 
-	if onExerciseTraining[player:getId()] then
+	if _G.OnExerciseTraining[player:getId()] then
 		-- onLogin & onLogout
-		stopEvent(onExerciseTraining[player:getId()].event)
-		onExerciseTraining[player:getId()] = nil
+		stopEvent(_G.OnExerciseTraining[player:getId()].event)
+		_G.OnExerciseTraining[player:getId()] = nil
 		player:setTraining(false)
 	end
 	return true
