@@ -43,16 +43,16 @@ function adventurersStone.onUse(player, item, fromPosition, target, toPosition, 
 
 	if config.enableTemples then
 		for _, temple in ipairs(config.Temples) do
-			if isInRange(playerPos, temple.fromPos, temple.toPos) then
+			if playerPos:isInRange(temple.fromPos, temple.toPos) then
 				allowed, townId = true, temple.townId
 				break
 			end
 		end
 	end
 
-	if config.enableDepots then
+	if config.enableDepots and not allowed then
 		for _, depot in ipairs(config.Depots) do
-			if isInRange(playerPos, depot.fromPos, depot.toPos) then
+			if playerPos:isInRange(depot.fromPos, depot.toPos) then
 				allowed, townId = true, depot.townId
 				break
 			end

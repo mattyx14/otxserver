@@ -251,7 +251,7 @@ function clearBossRoom(playerId, centerPosition, onlyPlayers, rangeX, rangeY, ex
 	local spectators, spectator = Game.getSpectators(centerPosition, false, onlyPlayers, rangeX, rangeX, rangeY, rangeY)
 	for i = 1, #spectators do
 		spectator = spectators[i]
-		if spectator:isPlayer() and spectator.uid == playerId then
+		if spectator:isPlayer() and ((playerId ~= nil and spectator.uid == playerId) or playerId == nil) then
 			spectator:teleportTo(exitPosition)
 			exitPosition:sendMagicEffect(CONST_ME_TELEPORT)
 		end
@@ -714,10 +714,6 @@ if not bosssPlayers then
 			return c
 		end,
 	}
-end
-
-function isInRange(pos, fromPos, toPos)
-	return pos.x >= fromPos.x and pos.y >= fromPos.y and pos.z >= fromPos.z and pos.x <= toPos.x and pos.y <= toPos.y and pos.z <= toPos.z
 end
 
 function isNumber(str)
