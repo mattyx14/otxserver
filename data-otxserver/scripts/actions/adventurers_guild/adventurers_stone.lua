@@ -1,6 +1,6 @@
 local config = {
 	enableTemples = true,
-	enableDepots = false,
+	enableDepots = true,
 
 	Temples = {
 		{ fromPos = Position(157, 385, 6), toPos = Position(166, 390, 6), townId = TOWNS_LIST.RHYVES },

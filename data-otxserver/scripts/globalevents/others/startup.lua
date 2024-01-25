@@ -54,11 +54,9 @@ function serverstartup.onStartup()
 	logger.debug("Loaded all actions in the map")
 	logger.debug("Loaded all uniques in the map")
 
---[[
 	for i = 1, #startupGlobalStorages do
 		Game.setStorageValue(startupGlobalStorages[i], 0)
 	end
-]]
 
 	local time = os.time()
 	db.asyncQuery("TRUNCATE TABLE `players_online`")
