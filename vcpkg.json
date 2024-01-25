@@ -1,6 +1,6 @@
 {
-  "name": "otxserver",
-  "version-string": "6.2.0",
+  "name": "canary",
+  "version-string": "1.0.0",
   "dependencies": [
     "abseil",
     "argon2",
