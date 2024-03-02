@@ -231,6 +231,7 @@ if Modules == nil then
 				player:kv():set("npc-exhaustion", os.time() + 3) -- 3 seconds
 				player:teleportTo(destination)
 				playerPosition:sendMagicEffect(CONST_ME_TELEPORT)
+				player:addAchievementProgress("Ship's Kobold", 1250)
 			end
 		end
 
