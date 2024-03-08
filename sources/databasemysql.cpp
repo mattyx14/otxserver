@@ -44,46 +44,47 @@ DatabaseMySQL::~DatabaseMySQL()
 
 bool DatabaseMySQL::connect()
 {
-	boost::recursive_mutex::scoped_lock lockClass(m_lock);
-	m_connected = false;
-	if(!mysql_init(m_handle))
-	{
-		std::clog << std::endl << "Failed to initialize MySQL connection handler." << std::endl;
-		return false;
-	}
+    boost::recursive_mutex::scoped_lock lockClass(m_lock);
+    m_connected = false;
 
-	int32_t timeout = g_config.getNumber(ConfigManager::MYSQL_READ_TIMEOUT);
-	if(timeout)
-		mysql_options(m_handle, MYSQL_OPT_READ_TIMEOUT, (const char*)&timeout);
+    if (!mysql_init(m_handle))
+    {
+        std::clog << std::endl << "Failed to initialize MySQL connection handler." << std::endl;
+        return false;
+    }
 
-	timeout = g_config.getNumber(ConfigManager::MYSQL_WRITE_TIMEOUT);
-	if(timeout)
-		mysql_options(m_handle, MYSQL_OPT_WRITE_TIMEOUT, (const char*)&timeout);
+    int32_t timeout = g_config.getNumber(ConfigManager::MYSQL_READ_TIMEOUT);
+    if (timeout)
+        mysql_options(m_handle, MYSQL_OPT_READ_TIMEOUT, (const char*)&timeout);
 
-	bool reconnect = true;
-	mysql_options(m_handle, MYSQL_OPT_RECONNECT, &reconnect);
-	if(!mysql_real_connect(m_handle,
-			g_config.getString(ConfigManager::SQL_HOST).c_str(),
-			g_config.getString(ConfigManager::SQL_USER).c_str(),
-			g_config.getString(ConfigManager::SQL_PASS).c_str(),
-			g_config.getString(ConfigManager::SQL_DB).c_str(),
-			g_config.getNumber(ConfigManager::SQL_PORT),
+    timeout = g_config.getNumber(ConfigManager::MYSQL_WRITE_TIMEOUT);
+    if (timeout)
+        mysql_options(m_handle, MYSQL_OPT_WRITE_TIMEOUT, (const char*)&timeout);
+
+    if (!mysql_real_connect(m_handle,
+		g_config.getString(ConfigManager::SQL_HOST).c_str(),
+		g_config.getString(ConfigManager::SQL_USER).c_str(),
+		g_config.getString(ConfigManager::SQL_PASS).c_str(),
+		g_config.getString(ConfigManager::SQL_DB).c_str(),
+		g_config.getNumber(ConfigManager::SQL_PORT),
 		NULL, 0))
 	{
-		std::clog << std::endl << "Failed connecting to database - MYSQL ERROR: " << mysql_error(m_handle) << " (" << mysql_errno(m_handle) << ")" << std::endl;
+		std::clog << std::endl << "\033[31m[MySQL]: Failed connecting to database - MYSQL ERROR: \033[0m" << std::endl;
+		std::clog << "\033[36m>> " << mysql_error(m_handle) << " (" << mysql_errno(m_handle) << ")\033[0m" << std::endl;
+		std::clog << "\033[38;5;208m[config.lua] Check 'sqlPass' or 'sqlUser'.\033[0m" << std::endl;
 		return false;
 	}
+	else
+	{
+		m_connected = true;
+	}
+	
+    timeout = g_config.getNumber(ConfigManager::SQL_KEEPALIVE) * 1000;
+    if (timeout)
+        m_timeoutTask = Scheduler::getInstance().addEvent(createSchedulerTask(timeout,
+            boost::bind(&DatabaseMySQL::keepAlive, this)));
 
-	m_connected = true;
-	if(mysql_get_client_version() <= 50019)
-		mysql_options(m_handle, MYSQL_OPT_RECONNECT, &reconnect);
-
-	timeout = g_config.getNumber(ConfigManager::SQL_KEEPALIVE) * 1000;
-	if(timeout)
-		m_timeoutTask = g_scheduler.addEvent(createSchedulerTask(timeout,
-			boost::bind(&DatabaseMySQL::keepAlive, this)));
-
-	return true;
+    return true;
 }
 
 void DatabaseMySQL::keepAlive()
