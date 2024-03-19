@@ -1,5 +1,6 @@
 ## Builds
-[![Build on Ubuntu](https://github.com/mattyx14/otxserver/workflows/Build%20on%20Ubuntu/badge.svg?branch=otxserv6)](https://github.com/mattyx14/otxserver/actions?query=workflow%3A%22Build+on+Ubuntu%22)
+[![Build - Ubuntu](https://github.com/mattyx14/otxserver/actions/workflows/build-ubuntu.yml/badge.svg)](https://github.com/mattyx14/otxserver/actions/workflows/build-ubuntu.yml)
+[![Build - Windows](https://github.com/mattyx14/otxserver/actions/workflows/build-windows-cmake.yml/badge.svg)](https://github.com/mattyx14/otxserver/actions/workflows/build-windows-cmake.yml)
 
 ## What is OTX Server 6 Series
 We are trying to create the perfect custom OpenTibia server.
@@ -7,25 +8,30 @@ We are trying to create the perfect custom OpenTibia server.
 
 ## How Compile:
 We currently provide build instructions for the following systems:
-* [Windows Tutorial for OTX 6](https://forums.otserv.com.br/index.php?/forums/topic/169235-windowsvc2019-compilando-sources-otservbr-global/)
+* [Windows Tutorial for OTX 6](https://github.com/mattyx14/otxserver/wiki/Compiling-on-Windows-(OTX-6-))
+
+## Old Server Series:
+Server created with TFS 0.3.7-(AKA 0.4) with endless improvements that make it ideal for old school servers based on 8.6, clearly it should be used completely with its data defined there.
+* [OTX Server 2](https://github.com/mattyx14/otxserver/tree/otxserv2)
 
 ## OpenTibia Comunity:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
+* [OTServ Brasil](https://docs.opentibiabr.com/) - [Português/English]
+* [Tibiaking](https://tibiaking.com/) - [Português]
 * [OTLand](https://otland.net/) - [English]
-* [OTServ Brasil](https://forums.otserv.com.br/) - [Português/English]
-* [Tibia Face](http://tibiaface.com/) - [Español]
-* [Black Tibia](http://blacktibia.foroactivo.com/) - [Español]
-* [Tibiaking](http://www.tibiaking.com/forum/) - [Português]
+* [Tibia Face](https://tibiaface.foroactivo.com/) - [Español]
+* [Black Tibia](https://tibiaface.foroactivo.com/) - [Español]
 
 ## Special Thanks OTServBR-Global
 - our partners OTServBR-Global.
 - our crew (majesty, gpedro, eduardo dantas)
 - our testers (raphaellb, petardako, szulcek and olimpotibia)
-- [our contributors](https://github.com/opentibiabr/OTServBR-Global/graphs/contributors)
+- [our contributors](https://github.com/opentibiabr/canary/graphs/contributors)
 - [fear lucien](https://github.com/FearLucien)
 - [cjaker](https://github.com/Eternal-Scripts)
 - [slavidodo](https://github.com/slavidodo)
 - [mignari and our awesome tools](https://github.com/ottools)
+- [saiyansking/optimized_forgottenserver and contributors](https://github.com/SaiyansKing/optimized_forgottenserver)
 - [mattyx14/otxserver](https://github.com/mattyx14/otxserver) and contributors.
 - [otland/forgottenserver](https://github.com/otland/forgottenserver) and contributors.
 - if we forget someone, we apologize by forgot you. but you know, **forgot**tenserver.

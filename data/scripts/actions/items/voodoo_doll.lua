@@ -1,7 +1,7 @@
 local voodooDoll = Action()
 
 function voodooDoll.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if target.itemid ~= 1 or target.type ~= THING_TYPE_PLAYER then
+	if target.itemid ~= 1 or not target:isPlayer() then
 		return false
 	end
 
@@ -13,6 +13,7 @@ function voodooDoll.onUse(player, item, fromPosition, target, toPosition, isHotk
 	else
 		text = "You concentrate on your victim, hit the needle in the doll.......but nothing happens."
 	end
+
 	player:say(text, TALKTYPE_MONSTER_SAY, false, player)
 	return true
 end

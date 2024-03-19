@@ -1,16 +1,15 @@
 local increasing = { [419] = 420, [431] = 430, [452] = 453, [563] = 564, [549] = 562, [10145] = 10146 }
 local decreasing = { [420] = 419, [430] = 431, [453] = 452, [564] = 563, [562] = 549, [10146] = 10145 }
 
--- onStepIn
-local tiles = MoveEvent()
+local tile = MoveEvent()
 
-function tiles.onStepIn(creature, item, position, fromPosition)
-	if not increasing[item.itemid] then
+function tile.onStepIn(creature, item, position, fromPosition)
+	local player = creature:getPlayer()
+	if not player or player:isInGhostMode() then
 		return true
 	end
 
-	local player = creature:getPlayer()
-	if not player or player:isInGhostMode() then
+	if not increasing[item.itemid] then
 		return true
 	end
 
@@ -20,25 +19,28 @@ function tiles.onStepIn(creature, item, position, fromPosition)
 		if player:getLevel() < item.actionid - 1000 then
 			player:teleportTo(fromPosition, false)
 			position:sendMagicEffect(CONST_ME_MAGIC_BLUE)
-			player:sendTextMessage(MESSAGE_FAILURE, "The tile seems to be protected against unwanted intruders.")
+			player:sendTextMessage(MESSAGE_LOOK, "The tile seems to be protected against unwanted intruders.")
 		end
 		return true
 	end
 
-	if position:getTile():hasFlag(TILESTATE_PROTECTIONZONE) then
+	if Tile(position):hasFlag(TILESTATE_PROTECTIONZONE) then
 		for _, direction in ipairs(DIRECTIONS_TABLE) do
 			local playerPosition = player:getPosition()
 			playerPosition:getNextPosition(direction)
-			local depotItem = playerPosition:getTile():getItemByType(ITEM_TYPE_DEPOT)
 
-			if depotItem ~= nil then
+			local depotItem = playerPosition:getTile():getItemByType(ITEM_TYPE_DEPOT)
+			if depotItem then
 				local depotItems = 0
+
 				for id = 1, configManager.getNumber(configKeys.DEPOT_BOXES) do
 					depotItems = depotItems + player:getDepotChest(id, true):getItemHoldingCount()
 				end
 
-				player:sendTextMessage(MESSAGE_FAILURE, "Your depot contains " .. depotItems .. " item" .. (depotItems > 1 and "s." or ".") .. "\
-				Your supply stash contains " .. player:getStashCount() .. " item" .. (player:getStashCount() > 1 and "s." or "."))
+				local depotMessage = "Your depot contains " .. depotItems .. " item" .. (depotItems ~= 1 and "s." or ".")
+				local stashMessage = "Your supply stash contains " .. player:getStashCount() .. " item" .. (player:getStashCount() ~= 1 and "s." or ".")
+
+				player:sendTextMessage(MESSAGE_FAILURE, depotMessage .. "\n" .. stashMessage)
 				player:setSpecialContainersAvailable(true, true, true)
 				return true
 			end
@@ -51,25 +53,25 @@ function tiles.onStepIn(creature, item, position, fromPosition)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The tile seems to be protected against unwanted intruders.")
 		return true
 	end
+	return true
 end
-
-tiles:type("stepin")
 
 for index, value in pairs(increasing) do
-	tiles:id(index)
+	tile:id(index)
 end
 
-tiles:register()
+tile:type("stepin")
+tile:register()
 
-tiles = MoveEvent()
+tile = MoveEvent()
 
-function tiles.onStepOut(creature, item, position, fromPosition)
-	if not decreasing[item.itemid] then
-		return false
-	end
-
+function tile.onStepOut(creature, item, position, fromPosition)
 	local player = creature:getPlayer()
 	if not player or player:isInGhostMode() then
+		return true
+	end
+
+	if not decreasing[item.itemid] then
 		return true
 	end
 
@@ -78,10 +80,9 @@ function tiles.onStepOut(creature, item, position, fromPosition)
 	return true
 end
 
-tiles:type("stepout")
-
 for index, value in pairs(decreasing) do
-	tiles:id(index)
+	tile:id(index)
 end
 
-tiles:register()
+tile:type("stepout")
+tile:register()
