@@ -1181,7 +1181,7 @@ bool Npc::canSee(const Position& pos) const
 	if(pos.z != tmp.z)
 		return false;
 
-	return Creature::canSee(tmp, pos, Map::maxClientViewportX, Map::maxClientViewportY);
+	return Creature::canSee(tmp, pos, 3, 3);
 }
 
 void Npc::onCreatureAppear(const Creature* creature)

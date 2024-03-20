@@ -81,7 +81,7 @@ bool DatabaseMySQL::connect()
 	
     timeout = g_config.getNumber(ConfigManager::SQL_KEEPALIVE) * 1000;
     if (timeout)
-        m_timeoutTask = Scheduler::getInstance().addEvent(createSchedulerTask(timeout,
+        m_timeoutTask = g_scheduler.addEvent(createSchedulerTask(timeout,
             boost::bind(&DatabaseMySQL::keepAlive, this)));
 
     return true;

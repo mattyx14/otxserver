@@ -116,6 +116,34 @@ bool ConfigManager::load()
 		m_confString[ENCRYPTION_TYPE] = getGlobalString("encryptionType", "sha1");
 	}
 
+	m_confString[AUTOLOOT_BLOCKIDS] = getGlobalString("AutoLoot_BlockIDs", "");
+	m_confString[AUTOLOOT_MONEYIDS] = getGlobalString("AutoLoot_MoneyIDs", "2148;2152;2160;9971");
+	m_confNumber[AUTOLOOT_MAXITEM] = getGlobalNumber("AutoLoot_MaxItem", 5);
+	m_confNumber[AUTOLOOT_MAXPREMIUM] = getGlobalNumber("AutoLoot_MaxItemPremium", 5);
+	m_confNumber[AUTOLOOT_MAXFREE] = getGlobalNumber("AutoLoot_MaxItemFree", 3);
+	m_confBool[AUTOLOOT_ENABLE_SYSTEM] = getGlobalBool("Autoloot_enabled", false);
+	m_confBool[CAST_EXP_ENABLED] = getGlobalBool("expInCast", false);
+	m_confNumber[CAST_EXP_PERCENT] = getGlobalNumber("expPercentIncast", 5.0);
+	m_confBool[LIFE_IN_PERCENTUAL] = getGlobalBool("lifeAndManaInPercentual", false);
+	m_confBool[MAXIP_USECONECT] = getGlobalBool("UseMaxIpConnect", false);
+	m_confBool[RESET_SYSTEM_ENABLE] = getGlobalBool("resetSystemEnable", false);
+	m_confNumber[NEWSPRITE_TO_MW] = getGlobalNumber("newSpriteIdMW", 0);
+	m_confNumber[MWSPRITE_TO_REPLACE] = getGlobalNumber("mwSpriteId", 10180);
+	m_confBool[MW_REPLACE_ENABLE] = getGlobalBool("useMwReplaceSystem", false);
+	m_confBool[CRITICALANDDODGE] = getGlobalBool("enableCriticalAndDodgeSource", false);
+	m_confBool[ADD_FRAG_SAMEIP] = getGlobalBool("addFragToSameIp", false);
+	m_confBool[USE_MAX_ABSORBALL] = getGlobalBool("useMaxAbsorbAll", false);
+	m_confDouble[MAX_ABSORB_PERCENT] = getGlobalDouble("maxAbsorbPercent", 80.0);
+	m_confString[FORBIDDEN_NAMES] = getGlobalString("forbiddenNames", "gm;adm;cm;support;god;tutor");
+	m_confBool[DELETE_PLAYER_MONSTER_NAME] = getGlobalBool("deletePlayersWithMonsterName", false);
+	m_confBool[POTION_CAN_EXHAUST_ITEM] = getGlobalBool("exhaustItemAtUsePotion", false);
+	m_confBool[USEDAMAGE_IN_K] = getGlobalBool("modifyDamageInK", false);
+	m_confBool[USEEXP_IN_K] = getGlobalBool("modifyExperienceInK", false);
+	m_confBool[DISPLAY_BROADCAST] = getGlobalBool("displayBroadcastLog", true);
+	m_confNumber[EXHAUST_POTION] = getGlobalNumber("exhaustPotionMiliSeconds", 1500);
+	// exhaust to spectator say
+	m_confNumber[EXHAUST_SPECTATOR_SAY] = getGlobalNumber("exhaust_spectatorSay", 3);
+
 	m_confString[MAP_AUTHOR] = getGlobalString("mapAuthor", "Unknown");
 	m_confNumber[LOGIN_TRIES] = getGlobalNumber("loginTries", 3);
 	m_confNumber[RETRY_TIMEOUT] = getGlobalNumber("retryTimeout", 30000);
@@ -297,6 +325,7 @@ bool ConfigManager::load()
 	m_confNumber[LOOT_MESSAGE_TYPE] = getGlobalNumber("monsterLootMessageType", 19);
 	m_confNumber[NAME_REPORT_TYPE] = getGlobalNumber("violationNameReportActionType", 2);
 	m_confNumber[HOUSE_CLEAN_OLD] = getGlobalNumber("houseCleanOld", 0);
+	m_confNumber[MAX_IP_CONNECTIONS] = getGlobalNumber("MaxIpConnections", 4);
 	m_confBool[VIPLIST_PER_PLAYER] = getGlobalBool("separateVipListPerCharacter", false);
 	m_confDouble[RATE_MONSTER_HEALTH] = getGlobalDouble("rateMonsterHealth", 1);
 	m_confDouble[RATE_MONSTER_MANA] = getGlobalDouble("rateMonsterMana", 1);
@@ -337,13 +366,15 @@ bool ConfigManager::load()
 	m_confNumber[ROOK_LEVELTO] = getGlobalNumber("rookLevelToGetRooked", 5);
 	m_confNumber[ROOK_TOLEVEL] = getGlobalNumber("rookLevelToLeaveRook", 8);
 	m_confBool[HOUSE_SKIP_INIT_RENT] = getGlobalBool("houseSkipInitialRent", true);
-	m_confBool[HOUSE_PROTECTION] = getGlobalBool("houseProtection", true);
+	m_confBool[HOUSE_PROTECTION] = getGlobalBool("houseProtection", false);
+	m_confBool[HOUSE_OWNED_BY_ACCOUNT] = getGlobalBool("houseOwnedByAccount", true);
 	m_confBool[FAIRFIGHT_REDUCTION] = getGlobalBool("useFairfightReduction", true);
 	m_confNumber[MYSQL_RECONNECTION_ATTEMPTS] = getGlobalNumber("mysqlReconnectionAttempts", 3);
 	m_confBool[ALLOW_BLOCK_SPAWN] = getGlobalBool("allowBlockSpawn", true);
 	m_confNumber[FOLLOW_EXHAUST] = getGlobalNumber("playerFollowExhaust", 2000);
 	m_confBool[MULTIPLE_NAME] = getGlobalBool("multipleNames", false);
 	m_confNumber[MAX_PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
+	m_confString[ADVERTISING_BLOCK] = getGlobalString("advertisingBlock", "");
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
 	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);
@@ -354,14 +385,20 @@ bool ConfigManager::load()
 	m_confNumber[HIGHSCORES_TOP] = getGlobalNumber("highscoreDisplayPlayers", 10);
 	m_confNumber[HIGHSCORES_UPDATETIME] = getGlobalNumber("updateHighscoresAfterMinutes", 60);
 	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
-	m_confBool[CLASSIC_ATTACK_SPEED] = getGlobalBool("classicAttackSpeed", false);
 	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
+	m_confBool[PARTY_VOCATION_MULT] = getGlobalBool("enablePartyVocationBonus", false);
+	m_confDouble[TWO_VOCATION_PARTY] = getGlobalDouble("twoVocationExpMultiplier", 1.4);
+	m_confDouble[THREE_VOCATION_PARTY] = getGlobalDouble("threeVocationExpMultiplier", 1.6);
+	m_confDouble[FOUR_VOCATION_PARTY] = getGlobalDouble("fourVocationExpMultiplier", 2.0);
 	m_confBool[NO_ATTACKHEALING_SIMULTANEUS] = getGlobalBool("noAttackHealingSimultaneus", false);
 	m_confBool[OPTIONAL_PROTECTION] = getGlobalBool("optionalProtection", true);
 	m_confBool[MONSTER_ATTACK_MONSTER] = getGlobalBool("monsterAttacksOnlyDamagePlayers", true);
 	m_confBool[ALLOW_CORPSE_BLOCK] = getGlobalBool("allowCorpseBlock", false);
 	m_confBool[ALLOW_INDEPENDENT_PUSH] = getGlobalBool("allowIndependentCreaturePush", true);
+	m_confBool[DIAGONAL_PUSH] = getGlobalBool("diagonalPush", true);
 	m_confBool[PZLOCK_ON_ATTACK_SKULLED_PLAYERS] = getGlobalBool("pzlockOnAttackSkulledPlayers", false);
+	m_confBool[PUSH_IN_PZ] = getGlobalBool("pushInProtectZone", true);
+
 	m_loaded = true;
 	return true;
 }

@@ -46,19 +46,10 @@ class SHA1
 		SHA1();
 		virtual ~SHA1();
 
-		/*
-		 * Re-initialize the class
-		 */
 		void Reset();
 
-		/*
-		 * Returns the message digest
-		 */
 		bool Result(unsigned *message_digest_array);
 
-		/*
-		 * Provide input to SHA1
-		 */
 		void Input(const unsigned char *message_array, unsigned length);
 		void Input(const char *message_array, unsigned length);
 		void Input(unsigned char message_element);
@@ -69,19 +60,9 @@ class SHA1
 		SHA1& operator<<(const unsigned char message_element);
 
 	private:
-		/*
-		 * Process the next 512 bits of the message
-		 */
 		void ProcessMessageBlock();
-
-		/*
-		 * Pads the current message block to 512 bits
-		 */
 		void PadMessage();
 
-		/*
-		 * Performs a circular left shift operation
-		 */
 		inline unsigned CircularShift(int bits, unsigned word);
 
 		unsigned H[5]; // Message digest buffers
@@ -94,6 +75,5 @@ class SHA1
 
 		bool Computed; // Is the digest computed?
 		bool Corrupted; // Is the message digest corruped?
-
 };
 #endif

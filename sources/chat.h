@@ -69,8 +69,8 @@ class ChatChannel
 		bool removeUser(Player* player, bool exclude = false);
 		bool hasUser(Player* player) const {return player && m_users.find(player->getID()) != m_users.end();}
 
-		bool talk(Player* player, MessageClasses type, const std::string& text, uint32_t statementId);
-		bool talk(std::string nick, MessageClasses type, const std::string& text);
+		bool talk(Player* player, MessageClasses type, const std::string& text, uint32_t statementId, bool fakeChat = false);
+		bool talk(std::string nick, MessageClasses type, const std::string& text, bool fakeChat = false, uint32_t ip = 0);
 
 	protected:
 		uint16_t m_id, m_flags;
@@ -118,7 +118,7 @@ typedef std::map<uint32_t, std::string> StatementMap;
 class Chat
 {
 	public:
-		Chat(): statement(0), dummyPrivate(NULL), partyName("Party") {}
+		Chat(): statement(0), dummyPrivate(NULL), partyName("Party"), lootName("Loot") {}
 		virtual ~Chat();
 
 		bool reload();
@@ -134,7 +134,7 @@ class Chat
 		void removeUserFromChannels(Player* player);
 
 		bool talk(Player* player, MessageClasses type, const std::string& text,
-			uint16_t channelId, uint32_t statementId, bool anonymous = false);
+			uint16_t channelId, uint32_t statementId, bool anonymous = false, bool fakeChat = false);
 
 		ChatChannel* getChannel(Player* player, uint16_t channelId);
 		ChatChannel* getChannelById(uint16_t channelId);
@@ -158,6 +158,9 @@ class Chat
 		typedef std::map<uint16_t, ChatChannel*> NormalChannelMap;
 		NormalChannelMap m_normalChannels;
 
+		typedef std::map<uint32_t, ChatChannel*> LootChannelMap;
+		LootChannelMap m_lootChannels;
+
 		typedef std::map<uint16_t, PrivateChatChannel*> PrivateChannelMap;
 		PrivateChannelMap m_privateChannels;
 
@@ -168,6 +171,6 @@ class Chat
 		GuildChannelMap m_guildChannels;
 
 		ChatChannel* dummyPrivate;
-		std::string partyName;
+		std::string partyName, lootName;
 };
 #endif

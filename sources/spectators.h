@@ -41,13 +41,21 @@ class Spectators
 			id = 0;
 			broadcast = false;
 			auth = false;
+			broadcast_time = OTSYS_TIME();
 		}
 		virtual ~Spectators() {}
 
 		void clear(bool full)
 		{
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
+			{
+				if (!it->first->twatchername.empty())
+				{
+					it->first->parseTelescopeBack(true);
+					continue;
+				}
 				it->first->disconnect();
+			}
 
 			spectators.clear();
 			mutes.clear();
@@ -59,10 +67,12 @@ class Spectators
 			bans.clear();
 			password = "";
 			broadcast = auth = false;
+			broadcast_time = 0;
 		}
 
 		bool check(const std::string& _password);
 		void handle(ProtocolGame* client, const std::string& text, uint16_t channelId);
+		void sendLook(ProtocolGame* client, const Position& pos, uint16_t spriteId, int16_t stackpos);
 		void chat(uint16_t channelId);
 
 		StringVec list()
@@ -108,8 +118,10 @@ class Spectators
 		bool isAuth() const {return auth;}
 		void setAuth(bool value) {auth = value;}
 
-		void addSpectator(ProtocolGame* client);
-		void removeSpectator(ProtocolGame* client);
+		void addSpectator(ProtocolGame* client, std::string name = "", bool spy = false);
+		void removeSpectator(ProtocolGame* client, bool spy = false);
+
+		int64_t getBroadcastTime() const { return OTSYS_TIME() - broadcast_time; }
 
 		// inherited
 		uint32_t getIP() const
@@ -145,6 +157,7 @@ class Spectators
 		uint32_t id;
 		std::string password;
 		bool broadcast, auth;
+		int64_t broadcast_time;
 
 		// inherited
 		bool canSee(const Position& pos) const
@@ -155,7 +168,7 @@ class Spectators
 			return owner->canSee(pos);
 		}
 
-		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel);
+		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel, bool fakeChat = false, uint32_t ip = 0);
 		void sendClosePrivate(uint16_t channelId);
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
 		void sendChannelsDialog(const ChannelsList& channels)
@@ -171,6 +184,8 @@ class Spectators
 				return;
 
 			owner->sendChannel(channelId, channelName);
+			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
+				it->first->sendChannel(channelId, channelName);
 		}
 		void sendOpenPrivateChannel(const std::string& receiver)
 		{
@@ -178,6 +193,8 @@ class Spectators
 				return;
 
 			owner->sendOpenPrivateChannel(receiver);
+			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
+				it->first->sendOpenPrivateChannel(receiver);
 		}
 		void sendIcons(int32_t icons)
 		{
@@ -195,6 +212,7 @@ class Spectators
 
 			owner->sendFYIBox(message);
 		}
+
 #ifdef __EXTENDED_DISTANCE_SHOOT__
 		void sendDistanceShoot(const Position& from, const Position& to, uint16_t type)
 		{
@@ -238,7 +256,7 @@ class Spectators
 			it->first->sendMagicEffect(pos, type);
 	}
 #endif
-		
+
 		void sendAnimatedText(const Position& pos, uint8_t color, const std::string& text)
 		{
 			if(!owner)
@@ -284,19 +302,8 @@ class Spectators
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
 				it->first->sendCreatureTurn(creature, stackpos);
 		}
-		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos, uint32_t statementId)
-		{
-			if(!owner)
-				return;
-
-			owner->sendCreatureSay(creature, type, text, pos, statementId);
-			if(type == MSG_PRIVATE || type == MSG_GAMEMASTER_PRIVATE || type == MSG_NPC_TO) // care for privacy!
-				return;
-
-			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
-				it->first->sendCreatureSay(creature, type, text, pos, statementId);
-		}
-		void sendCreatureChannelSay(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId); // extended
+		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos, uint32_t statementId, bool fakeChat = false); // extended
+		void sendCreatureChannelSay(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId, bool fakeChat = false); // extended
 
 		void sendCancel(const std::string& message)
 		{
@@ -324,6 +331,15 @@ class Spectators
 			owner->sendChangeSpeed(creature, speed);
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
 				it->first->sendChangeSpeed(creature, speed);
+		}
+		void sendProgressbar(const Creature* creature, uint32_t duration, bool ltr = true)
+		{
+			if(!owner)
+				return;
+
+			owner->sendProgressbar(creature, duration, ltr);
+			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
+				it->first->sendProgressbar(creature, duration, ltr);
 		}
 		void sendCancelTarget()
 		{
@@ -725,6 +741,11 @@ class Spectators
 			owner->sendRemoveInventoryItem(slot);
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
 				it->first->sendRemoveInventoryItem(slot);
+		}
+		void sendCastList()
+		{
+			if (owner)
+				owner->sendCastList();
 		}
 };
 #endif

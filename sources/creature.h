@@ -328,9 +328,9 @@ class Creature : public AutoId, virtual public Thing
 		virtual bool isAccountManager() const {return false;}
 
 		virtual void changeHealth(int32_t healthChange);
-		void changeMaxHealth(uint32_t healthChange) {healthMax = healthChange;}
+		void changeMaxHealth(int32_t healthChange);
 		virtual void changeMana(int32_t manaChange);
-		void changeMaxMana(uint32_t manaChange) {manaMax = manaChange;}
+		void changeMaxMana(int32_t manaChange);
 
 		virtual bool getStorage(const std::string& key, std::string& value) const;
 		virtual bool setStorage(const std::string& key, const std::string& value);
@@ -372,6 +372,7 @@ class Creature : public AutoId, virtual public Thing
 		virtual void onTargetGain(Creature* target, int32_t points);
 		virtual void onTargetKilled(Creature* target);
 		virtual bool onKilledCreature(Creature* target, DeathEntry& entry);
+		std::string TransformExpToString(double& gainExp);	//make by feetads
 		virtual void onGainExperience(double& gainExp, Creature* target, bool multiplied);
 		virtual void onGainSharedExperience(double& gainExp, Creature* target, bool multiplied);
 		virtual void onTargetBlockHit(Creature*, BlockType_t) {}

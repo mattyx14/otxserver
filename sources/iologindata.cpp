@@ -33,6 +33,13 @@
 #include "configmanager.h"
 #include "game.h"
 
+#ifdef _WIN32
+#include <stdint.h>
+#define LOOTLIST_TYPE uint64_t
+#else
+#define LOOTLIST_TYPE unsigned long
+#endif
+
 extern ConfigManager g_config;
 extern Game g_game;
 
@@ -426,8 +433,11 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 	<< "`posz`, `cap`, `lastlogin`, `lastlogout`, `lastip`, `conditions`, `skull`, `skulltime`, `guildnick`, "
 	<< "`rank_id`, `town_id`, `balance`, `stamina`, `direction`, `loss_experience`, `loss_mana`, `loss_skills`, "
 	<< "`loss_containers`, `loss_items`, `marriage`, `promotion`, `description`, `offlinetraining_time`, `offlinetraining_skill`, "
-	<< "`save` FROM `players` WHERE "
-	<< "`name` " << db->getStringComparer() << db->escapeString(name) << " AND `deleted` = 0 LIMIT 1";
+	<< "`save`";
+	if(g_config.getBool(ConfigManager::RESET_SYSTEM_ENABLE))
+		query <<  ", `reset`";
+	query << " FROM `players` WHERE "
+		<< "`name` " << db->getStringComparer() << db->escapeString(name) << " AND `deleted` = 0 LIMIT 1";
 
 	DBResult* result;
 	if(!(result = db->storeQuery(query.str())))
@@ -471,6 +481,9 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 		player->setDirection((Direction)result->getDataInt("direction"));
 
 	player->level = std::max((uint32_t)1, (uint32_t)result->getDataInt("level"));
+	if(g_config.getBool(ConfigManager::RESET_SYSTEM_ENABLE))
+		player->reset = std::max((uint32_t)0, (uint32_t)result->getDataInt("reset"));	//reset system
+
 	uint64_t currExpCount = Player::getExpForLevel(player->level), nextExpCount = Player::getExpForLevel(
 		player->level + 1), experience = (uint64_t)result->getDataLong("experience");
 	if(experience < currExpCount || experience > nextExpCount)
@@ -768,6 +781,38 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 		result->free();
 	}
 
+	// load autoloot
+	if(g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+	{
+		query.str("");
+		query << "SELECT `autoloot_list` FROM `player_autoloot` WHERE `player_id` = " << player->getGUID();
+		if ((result = db->storeQuery(query.str())))
+		{
+			LOOTLIST_TYPE lootListSize;
+			const char* autoLootList = result->getDataStream("autoloot_list", lootListSize);
+			PropStream propStream;
+			propStream.init(autoLootList, lootListSize);
+
+			uint16_t value;
+			uint16_t item = propStream.getType<uint16_t>(value);
+			while (item)
+			{
+				player->addAutoLoot(value);
+				item = propStream.getType<uint16_t>(value);
+			}
+		}
+
+		player->updateStatusAutoLoot(true);
+
+		std::string msg = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+		StringVec strVector = explodeString(msg, ";");
+		for (const std::string& str : strVector)
+		{
+			uint16_t id = atoi(str.c_str());
+			player->addAutoLoot(id);
+		}
+	}
+
 	//load vip
 	query.str("");
 	if(!g_config.getBool(ConfigManager::VIPLIST_PER_PLAYER))
@@ -848,6 +893,42 @@ void IOLoginData::loadItems(ItemMap& itemMap, DBResult* result)
 	while(result->next());
 }
 
+bool IOLoginData::setName(Player* player, std::string newName)
+{
+	Database* db = Database::getInstance();
+	std::ostringstream query;
+
+	DBTransaction trans(db);
+	if(!trans.begin())
+		return false;
+
+	query.str("");
+	query << "UPDATE `players` SET `name` = " << db->escapeString(newName) << " WHERE `name` = " << db->escapeString(player->getName());
+
+	if(!db->query(query.str()))
+		return false;
+
+	return trans.commit();
+}
+
+bool IOLoginData::deletePlayer(Player* player)
+{
+	Database* db = Database::getInstance();
+	std::ostringstream query;
+
+	DBTransaction trans(db);
+	if(!trans.begin())
+		return false;
+
+	query.str("");
+	query << "DELETE FROM `players` WHERE `name` = " << db->escapeString(player->getName());
+
+	if(!db->query(query.str()))
+		return false;
+
+	return trans.commit();
+}
+
 bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shallow/* = false*/)
 {
 	if(preSave && player->health <= 0)
@@ -914,6 +995,10 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 	query << "`sex` = " << player->sex << ", ";
 	query << "`balance` = " << player->balance << ", ";
 	query << "`stamina` = " << player->getStamina() << ", ";
+
+	// Reset system
+	if(g_config.getBool(ConfigManager::RESET_SYSTEM_ENABLE))
+		query << "`reset` = " << player->reset << ", ";
 
 	Skulls_t skull = SKULL_RED;
 	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
@@ -1120,6 +1205,32 @@ bool IOLoginData::savePlayer(Player* player, bool preSave/* = true*/, bool shall
 
 	if(!db->query(query.str()))
 		return false;
+
+	// save autoloot
+	if(g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+	{
+		query.str("");
+		query << "DELETE FROM `player_autoloot` WHERE `player_id` = " << player->getGUID();
+		if (!db->query(query.str()))
+			return false;
+
+		std::list<uint16_t> autoLootList = player->getAutoLoot();
+		PropWriteStream PWS_AutoLoot;
+		for (const uint16_t &loot : autoLootList)
+			PWS_AutoLoot.addShort(loot);
+
+		uint32_t PWS_Size = 0;
+		const char* autoLoot = PWS_AutoLoot.getStream(PWS_Size);
+
+		query.str("");
+		stmt.setQuery("INSERT INTO `player_autoloot` (`player_id`, `autoloot_list`) VALUES ");
+		query << player->getGUID() << ',' << db->escapeBlob(autoLoot, PWS_Size);
+		if (!stmt.addRow(query))
+			return false;
+
+		if (!stmt.execute())
+			return false;
+	}
 
 	if(!g_config.getBool(ConfigManager::VIPLIST_PER_PLAYER))
 		stmt.setQuery("INSERT INTO `account_viplist` (`account_id`, `world_id`, `player_id`) VALUES ");

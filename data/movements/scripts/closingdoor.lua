@@ -1,32 +1,31 @@
-function onStepOut(cid, item, position, lastPosition)
-	if(getTileInfo(position).creatures > 0) then
-		return true
+local function doRemoveObject(pos)
+	local object = getThingfromPos(pos)
+	if(object.uid > 0 and (not isItemDoor(object.itemid)) and (not isCreature(object.uid)) and not isCorpse(object.uid)) then
+		doRemoveItem(object.uid)
+		doRemoveObject(pos, true)
+		return LUA_NO_ERROR
+	elseif(object.uid > 0) then
+		pos.stackpos = pos.stackpos + 1
+		return doRemoveObject(pos)
 	end
+end
 
-	local newPosition = {x = position.x + 1, y = position.y, z = position.z}
-	local query = doTileQueryAdd(cid, newPosition, 6)
-	if query ~= RETURNVALUE_NOERROR or query == RETURNVALUE_NOTENOUGHROOM then
-		newPosition.x = newPosition.x - 1
+function onStepOut(cid, item, position, fromPosition)
+	local uid = item.uid
+	local newPosition = {x = position.x, y = position.y, z = position.z}
+	if(isInArray(verticalOpenDoors, item.itemid)) then
+		newPosition.x = newPosition.x + 1
+	else
 		newPosition.y = newPosition.y + 1
-		query = doTileQueryAdd(cid, newPosition, 6) -- repeat until found
 	end
-	if query == RETURNVALUE_NOERROR or ((not query == RETURNVALUE_NOTENOUGHROOM) and (not query == RETURNVALUE_NOTPOSSIBLE)) then
-		doRelocate(position, newPosition)
-	end
+	doTransformItem(uid, item.itemid - 1)
+	doRelocate(position, newPosition, true, true)
+	local tmpPos = {x = position.x, y = position.y, z = position.z, stackpos = -1}
+	local tileCount = getTileThingByPos(tmpPos)
 
-	position.stackpos = -1
-	local i, tileItem, tileCount = 1, {uid = 1}, getTileThingByPos(position)
-	while(tileItem.uid ~= 0 and i < tileCount) do
-		position.stackpos = i
-		tileItem = getTileThingByPos(position)
-		if(tileItem.uid ~= 0 and tileItem.uid ~= item.uid and not isMovable(tileItem.uid) and not isCorpse(tileItem.uid)) then
-			doRemoveItem(tileItem.uid)
-		else
-			i = i + 1
-		end
+	if tileCount > 0 then
+		position.stackpos = 1
+		doRemoveObject(position)
 	end
-
-	local itemInfo = getItemInfo(item.itemid)
-	doTransformItem(item.uid, itemInfo.transformUseTo)
 	return true
 end

@@ -32,7 +32,6 @@
 		</attack>
 	</attacks>
 	<defenses armor="30" defense="31">
-		<defense name="ultimate healing" interval="1200" chance="35" min="600" max="800"/>
 	</defenses>
 	<elements>
 		<element earthPercent="100"/>

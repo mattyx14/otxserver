@@ -331,6 +331,8 @@ class LuaInterface
 	protected:
 		virtual bool closeState();
 
+		static int32_t luaIsHouseProtected(lua_State* L);
+		static int32_t luaSetHouseProtection(lua_State* L);
 		static std::string getError(ErrorCode_t code);
 		static bool getArea(lua_State* L, std::list<uint32_t>& list, uint32_t& rows);
 
@@ -340,6 +342,7 @@ class LuaInterface
 		static int32_t luaDoRemoveItem(lua_State* L);
 		static int32_t luaDoPlayerFeed(lua_State* L);
 		static int32_t luaDoPlayerSendCancel(lua_State* L);
+		static int32_t luaDoPlayerSendCastList(lua_State* L);	//spy
 		static int32_t luaDoSendDefaultCancel(lua_State* L);
 		static int32_t luaGetSearchString(lua_State* L);
 		static int32_t luaGetClosestFreeTile(lua_State* L);
@@ -388,6 +391,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSendChannelMessage(lua_State* L);
 		static int32_t luaDoCreatureChannelSay(lua_State* L);
 		static int32_t luaDoPlayerOpenChannel(lua_State* L);
+		static int32_t luaDoPlayerOpenPrivateChannel(lua_State* L);
 		static int32_t luaDoPlayerSendChannels(lua_State* L);
 		static int32_t luaDoPlayerAddMoney(lua_State* L);
 		static int32_t luaDoPlayerRemoveMoney(lua_State* L);
@@ -502,9 +506,12 @@ class LuaInterface
 		static int32_t luaGetCreatureHealth(lua_State* L);
 		static int32_t luaGetCreatureMaxHealth(lua_State* L);
 		static int32_t luaGetCreatureSpeed(lua_State* L);
+		static int32_t luaSetCreatureSpeed(lua_State* L);
+		static int32_t luaSendProgressbar(lua_State* L);
 		static int32_t luaGetCreatureBaseSpeed(lua_State* L);
 		static int32_t luaGetCreatureTarget(lua_State* L);
 		static int32_t luaGetCreatureLookDirection(lua_State* L);
+		static int32_t luaExistMonsterByName(lua_State* L);	
 		static int32_t luaGetPlayerSkillLevel(lua_State* L);
 		static int32_t luaGetPlayerSkillTries(lua_State* L);
 		static int32_t luaDoPlayerSetOfflineTrainingSkill(lua_State* L);
@@ -581,6 +588,7 @@ class LuaInterface
 		static int32_t luaGetStorage(lua_State* L);
 		static int32_t luaDoSetStorage(lua_State* L);
 		static int32_t luaDoPlayerAddOutfit(lua_State* L);
+		static int32_t luaGetOutfitIdByLooktype(lua_State* L);
 		static int32_t luaDoPlayerRemoveOutfit(lua_State* L);
 		static int32_t luaDoPlayerAddOutfitId(lua_State* L);
 		static int32_t luaDoPlayerRemoveOutfitId(lua_State* L);
@@ -659,6 +667,14 @@ class LuaInterface
 		static int32_t luaGetPlayerPremiumDays(lua_State* L);
 		static int32_t luaDoPlayerAddPremiumDays(lua_State* L);
 		static int32_t luaGetCreatureNoMove(lua_State* L);
+		static int32_t luaUpdatePlayerStats(lua_State* L);
+
+		// reset system
+		static int32_t luaGetPlayerResets(lua_State* L);
+		static int32_t luaSetPlayerResets(lua_State* L);
+		static int32_t luaGetPlayerDamageMultiplier(lua_State* L);
+		static int32_t luaSetPlayerDamageMultiplier(lua_State* L);
+
 		static int32_t luaDoCreatureSetNoMove(lua_State* L);
 		static int32_t luaGetTownId(lua_State* L);
 		static int32_t luaGetTownName(lua_State* L);
@@ -679,6 +695,9 @@ class LuaInterface
 		static int32_t luaDoUpdateHouseAuctions(lua_State* L);
 		static int32_t luaGetItemIdByName(lua_State* L);
 		static int32_t luaGetItemInfo(lua_State* L);
+		static int32_t luaisItemDoor(lua_State* L);
+		static int32_t luaDoItemSetDuration(lua_State* L);
+		static int32_t luaGetItemDurationTime(lua_State* L);
 		static int32_t luaGetItemWeight(lua_State* L);
 		static int32_t luaGetItemParent(lua_State* L);
 		static int32_t luaGetItemAttribute(lua_State* L);

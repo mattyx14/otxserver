@@ -91,6 +91,8 @@ class Outfits
 
 		uint32_t getOutfitId(uint32_t lookType);
 
+		const Outfit* getOutfitByLookType(uint16_t sex, uint16_t lookType);
+
 		int16_t getOutfitAbsorb(uint32_t lookType, uint16_t sex, CombatType_t combat);
 		int16_t getOutfitReflect(uint32_t lookType, uint16_t sex, CombatType_t combat);
 

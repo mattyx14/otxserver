@@ -25,6 +25,9 @@
 #include "monster.h"
 #include "player.h"
 
+#include "configmanager.h"
+
+extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
 
 CreatureEvents::CreatureEvents():
@@ -124,7 +127,7 @@ bool CreatureEvents::playerLogout(Player* player, bool forceLogout)
 			&& !(*it)->executeLogout(player, forceLogout) && result)
 			result = false;
 	}
-	
+
 	if(forceLogout) 
 		result = true;
 
@@ -230,6 +233,8 @@ CreatureEventType_t CreatureEvents::getType(const std::string& type)
 		_type = CREATURE_EVENT_EXTENDED_OPCODE;
 	else if(type == "moveitem")
 		_type = CREATURE_EVENT_MOVEITEM;
+	else if(type == "nocountfrag")
+		_type = CREATURE_EVENT_NOCOUNTFRAG;
 
 	return _type;
 }
@@ -351,6 +356,8 @@ std::string CreatureEvent::getScriptEventName() const
 			return "onExtendedOpcode";
 		case CREATURE_EVENT_MOVEITEM:
 			return "onMoveItem";
+		case CREATURE_EVENT_NOCOUNTFRAG:
+			return "noCountFragArea";
 		case CREATURE_EVENT_NONE:
 		default:
 			break;
@@ -424,6 +431,8 @@ std::string CreatureEvent::getScriptEventParams() const
 			return "cid, opcode, buffer";
 		case CREATURE_EVENT_MOVEITEM:
 			return "moveItem, frompos, topos, cid";
+		case CREATURE_EVENT_NOCOUNTFRAG:
+			return "cid, target, frompos, topos";
 		case CREATURE_EVENT_NONE:
 		default:
 			break;
@@ -2222,6 +2231,61 @@ uint32_t CreatureEvent::executeMoveItem(Creature* actor, Item* item, const Posit
 	else
 	{
 		std::clog << "[Error - CreatureEvent::executeMoveItem] Call stack overflow." << std::endl;
+		return 0;
+	}
+}
+
+uint32_t CreatureEvent::executeNoCountFragArea(Creature* creature, Creature* target)
+{
+	//noCountFragArea(cid, target)
+	if(m_interface->reserveEnv())
+	{
+		ScriptEnviroment* env = m_interface->getEnv();
+		if(m_scripted == EVENT_SCRIPT_BUFFER)
+		{
+			env->setRealPos(creature->getPosition());
+			std::ostringstream scriptstream;
+			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
+			scriptstream << "local target = " << env->addThing(target) << std::endl;
+
+			if(m_scriptData)
+				scriptstream << *m_scriptData;
+
+			bool result = true;
+			if(m_interface->loadBuffer(scriptstream.str()))
+			{
+				lua_State* L = m_interface->getState();
+				result = m_interface->getGlobalBool(L, "_result", true);
+			}
+
+			m_interface->releaseEnv();
+			return result;
+		}
+		else
+		{
+			#ifdef __DEBUG_LUASCRIPTS__
+			std::ostringstream desc;
+			desc << creature->getName();
+			env->setEvent(desc.str());
+			#endif
+
+			env->setScriptId(m_scriptId, m_interface);
+			env->setRealPos(creature->getPosition());
+
+			lua_State* L = m_interface->getState();
+			m_interface->pushFunction(m_scriptId);
+
+			lua_pushnumber(L, env->addThing(creature));
+			lua_pushnumber(L, env->addThing(target));
+
+			bool result = m_interface->callFunction(2);
+			m_interface->releaseEnv();
+			return result;
+		}
+	}
+	else
+	{
+		std::clog << "[Error - CreatureEvent::noCountFragArea] Call stack overflow." << std::endl;
 		return 0;
 	}
 }

@@ -1,127 +1,144 @@
-local config = {
-	maxLevel = getConfigInfo('maximumDoorLevel')
-}
+local function checkStackpos(item, position)
+	position.stackpos = STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE
+	local thing = getThingfromPos(position)
+	position.stackpos = STACKPOS_TOP_FIELD
+	local field = getThingfromPos(position)
+	if(item.uid ~= thing.uid and thing.itemid >= 100 or field.itemid ~= 0) then
+		return false
+	end
+
+	return true
+end
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
-	if(fromPosition.x ~= CONTAINER_POSITION and isPlayerPzLocked(cid) and getTileInfo(fromPosition).protection) then
-		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+	local newDoors = {
+		{closed=10269, open=10270},
+		{closed=10272, open=10273},
+		{closed=10274, open=10275},
+		{closed=10276, open=10277},
+		{closed=10278, open=10279},
+		{closed=10280, open=10281},
+		{closed=10282, open=10283},
+		{closed=10284, open=10285},
+		{closed=10469, open=10470},
+		{closed=10471, open=10472},
+		{closed=10473, open=10474},
+		{closed=10475, open=10476},
+		{closed=10478, open=10479},
+		{closed=10480, open=10481},
+		{closed=10482, open=10483},
+		{closed=10484, open=10485},
+		{closed=10488, open=10490},
+		{closed=10489, open=10491},
+		{closed=12973, open=12977},
+		{closed=12974, open=12977},
+		{closed=12975, open=12978},
+		{closed=12976, open=12978},
+		{closed=1634, open=1635},
+		{closed=1636, open=1637},
+		{closed=1638, open=1639},
+		{closed=1640, open=1641},
+	}
+
+	for ia = 1,#newDoors do
+		if (item.itemid == newDoors[ia].closed) then
+			doTransformItem(item.uid, newDoors[ia].open)
+		elseif (item.itemid == newDoors[ia].open) then
+			doTransformItem(item.uid, newDoors[ia].closed)
+		end
+	end
+
+	if(getItemLevelDoor(item.itemid) > 0) then
+		if(item.actionid > 0 and getPlayerLevel(cid) >= (item.actionid - getItemLevelDoor(item.itemid))) then
+			doTransformItem(item.uid, item.itemid + 1)
+			doTeleportThing(cid, toPosition, true)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Only the worthy may pass.")
+		end
+
 		return true
 	end
 
-	local locked = DOORS[item.itemid]
-	if(locked) then
-		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is locked.")
+	if(isInArray(specialDoors, item.itemid) == true) then
+		if(item.actionid ~= 0 and getPlayerStorageValue(cid, item.actionid) ~= -1) then
+			doTransformItem(item.uid, item.itemid + 1)
+			doTeleportThing(cid, toPosition, true)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "The door seems to be sealed against unwanted intruders.")
+		end
+		
 		return true
 	end
 
-	local door = getItemInfo(item.itemid)
-	if(door.levelDoor > 0) then
-		if(item.aid == 189) then
-			if(not isPremium(cid)) then
-				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
-				return true
+	if(isInArray(keys, item.itemid) == true) then
+		if(itemEx.actionid > 0) then
+			if(item.actionid == itemEx.actionid) then
+				if doors[itemEx.itemid] ~= nil then
+					doTransformItem(itemEx.uid, doors[itemEx.itemid])
+					return true
+				end
 			end
 
-			doTeleportThing(cid, toPosition)
-			return false
+			doPlayerSendCancel(cid, "The key does not match.")
+			return true
 		end
-
-		local gender = item.aid - 186
-		if(isInArray({PLAYERSEX_FEMALE,  PLAYERSEX_MALE}, gender)) then
-			if(gender ~= getPlayerSex(cid)) then
-				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
-				return true
-			end
-
-			doTeleportThing(cid, toPosition)
-			return false
-		end
-
-		local skull = item.aid - 180
-		if(skull >= SKULL_NONE and skull <= SKULL_BLACK) then
-			if(skull ~= getCreatureSkullType(cid)) then
-				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
-				return true
-			end
-
-			doTeleportThing(cid, toPosition)
-			return false
-		end
-
-		local group = item.aid - 150
-		if(group >= 0 and group < 30) then
-			if(group > getPlayerGroupId(cid)) then
-				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
-				return true
-			end
-
-			doTeleportThing(cid, toPosition)
-			return false
-		end
-
-		local vocation = item.aid - 100
-		if(vocation >= 0 and vocation < 50) then
-			local vocationEx = getVocationInfo(getPlayerVocation(cid))
-			if(vocationEx.id ~= vocation and vocationEx.fromVocation ~= vocation) then
-				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
-				return true
-			end
-
-			doTeleportThing(cid, toPosition)
-			return false
-		end
-
-		if(item.aid == 190 or (item.aid >= 1000 and (item.aid - door.levelDoor) <= config.maxLevel and getPlayerLevel(cid) >= (item.aid - door.levelDoor))) then
-			doTeleportThing(cid, toPosition)
-			return false
-		end
-
-		doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
-		return true
+		return false
 	end
 
-	if(door.specialDoor) then
-		if(item.aid == 100 or (item.aid ~= 0 and getCreatureStorage(cid, item.aid) ~= EMPTY_STORAGE)) then
-			doTeleportThing(cid, toPosition)
-			return false
-		end
-
-		doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
-		return true
-	end
-
-	if(getTileInfo(toPosition).creatures > 0) then -- check only if there are any creatures
-		local position = {x = toPosition.x, y = toPosition.y, z = toPosition.z, stackpos = STACKPOS_TOP_CREATURE}
-		position.x = position.x + 1
-
-		local query = doTileQueryAdd(cid, position, 20)
-		if(query == RETURNVALUE_NOTPOSSIBLE) then
-			position.x = position.x - 1
-			position.y = position.y + 1
-			query = doTileQueryAdd(cid, position, 20)
-		end
-
-		if(query ~= RETURNVALUE_NOERROR) then
-			doPlayerSendDefaultCancel(cid, query)
+	if(isInArray(horizontalOpenDoors, item.itemid) == true and checkStackpos(item, fromPosition) == true) then
+		local newPosition = toPosition
+		newPosition.y = newPosition.y + 1
+		local doorPosition = fromPosition
+		doorPosition.stackpos = STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE
+		local doorCreature = getThingfromPos(doorPosition)
+		if(doorCreature.itemid ~= 0) then
+			if(getTilePzInfo(doorPosition) == true and getTilePzInfo(newPosition) == false and doorCreature.uid ~= cid) then
+				doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+			else
+				doTeleportThing(doorCreature.uid, newPosition, true)
+				if(isInArray(closingDoors, item.itemid) ~= true) then
+					doTransformItem(item.uid, item.itemid - 1)
+				end
+			end
 			return true
 		end
 
-		toPosition.stackpos = STACKPOS_TOP_CREATURE
-		while(true) do
-			local thing = getThingFromPosition(toPosition)
-			if(thing.uid == 0) then
-				break
+		doTransformItem(item.uid, item.itemid - 1)
+		return true
+	end
+
+	if(isInArray(verticalOpenDoors, item.itemid) == true and checkStackpos(item, fromPosition) == true) then
+		local newPosition = toPosition
+		newPosition.x = newPosition.x + 1
+		local doorPosition = fromPosition
+		doorPosition.stackpos = STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE
+		local doorCreature = getThingfromPos(doorPosition)
+		if(doorCreature.itemid ~= 0) then
+			if(getTilePzInfo(doorPosition) == true and getTilePzInfo(newPosition) == false and doorCreature.uid ~= cid) then
+				doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+			else
+				doTeleportThing(doorCreature.uid, newPosition, true)
+				if(isInArray(closingDoors, item.itemid) ~= true) then
+					doTransformItem(item.uid, item.itemid - 1)
+				end
 			end
 
-			doTeleportThing(thing.uid, position)
-			return false
+			return true
 		end
+
+		doTransformItem(item.uid, item.itemid - 1)
+		return true
 	end
 
-	local field = getTileItemByType(toPosition, ITEM_TYPE_MAGICFIELD)
-	if(field.uid ~= 0) then
-		doRemoveItem(field.uid)
+	if(doors[item.itemid] ~= nil and checkStackpos(item, fromPosition) == true) then
+		if(item.actionid == 0) then
+			doTransformItem(item.uid, doors[item.itemid])
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is locked.")
+		end
+
+		return true
 	end
 
-	return door.closingDoor
+	return false
 end

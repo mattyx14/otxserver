@@ -12,8 +12,6 @@
   <itemlist listid="helmet">
     <item keywords="crown" id="2128" sellprice="100000" buyprice="1000"/>
     <item keywords="steel;helmet" id="2457" sellprice="165" buyprice="1000"/>
-    <item keywords="demon;helmet" id="2493" sellprice="1000" buyprice="200"/>
-    <item keywords="horned;helmet" id="2496" sellprice="10" buyprice="300"/>
     <item keywords="mystic;turban" id="2663" sellprice="200" buyprice="5000"/>
   </itemlist>
 
@@ -31,17 +29,6 @@
     <item keywords="yellow;tapestry" id="1863" sellprice="40" buyprice="10"/>
     <item keywords="orange;tapestry" id="1866" sellprice="40" buyprice="10"/>
     <item keywords="red;tapestry" id="1869" sellprice="40" buyprice="10"/>
-  </itemlist>
-
-  <!--vial list-->
-  <itemlist listid="vials">
-    <!--If no name tag is used the default name from items.xml is used.-->
-    <!--With fluid containers it would be "vial", so we override that description here-->
-    <item keywords="vial;water" id="2006" subtype="1" sellprice="100" name="a vial of water" pname="vials of water"/>
-    <item keywords="vial;blood" id="2006" subtype="2" sellprice="100" name="a vial of blood" pname="vials of blood"/>
-    <item keywords="vial;beer" id="2006" subtype="3" sellprice="100" name="a vial of beer" pname="vials of beer"/>
-    <item keywords="vial;slime" id="2006" subtype="4" sellprice="100" name="a vial of slime" pname="vials of slime"/>
-    <item keywords="vial;lemonade" id="2006" subtype="5" sellprice="100" name="a vial of lemonade" pname="vials of lemonade"/>
   </itemlist>
 
   <!--backpack list-->

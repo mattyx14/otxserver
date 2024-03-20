@@ -26,6 +26,8 @@
 #include "house.h"
 #include "town.h"
 
+#include <boost/regex.hpp>
+
 #include "teleport.h"
 #include "status.h"
 #include "textlogger.h"
@@ -336,6 +338,10 @@ bool TalkAction::loadFunction(const std::string& functionName)
 		m_function = banishmentInfo;
 	else if(m_functionName == "diagnostics")
 		m_function = diagnostics;
+	else if(m_functionName == "autoloot")
+		m_function = autoLoot;
+	else if(m_functionName == "houseprotect")
+		m_function = houseProtect;
 	else if(m_functionName == "ghost")
 		m_function = ghost;
 	else if(m_functionName == "software")
@@ -555,9 +561,11 @@ bool TalkAction::houseBuy(Creature* creature, const std::string&, const std::str
 	if(g_config.getBool(ConfigManager::BANK_SYSTEM))
 		ret += "bank or ";
 
-	ret += "depot of this town for rent.";
+	ret += "depot of this town for rent.\n\nUse command !protecthouse to remove or add a protection for this house. It is enabled by default!\nAll characters in your account have access to your house.";
 	player->sendTextMessage(MSG_INFO_DESCR, ret);
 
+	// Protect House
+	//house->setProtected(false);
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
 	return false;
 }
@@ -683,6 +691,8 @@ bool TalkAction::houseSell(Creature* creature, const std::string&, const std::st
 	if(!g_game.internalStartTrade(player, tradePartner, transferItem))
 		transferItem->onTradeEvent(ON_TRADE_CANCEL, player, NULL);
 
+	// Protect House
+	//house->setProtected(false);
 	g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_WRAPS_BLUE);
 	return false;
 }
@@ -1203,7 +1213,7 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 	s << "World:" << std::endl
 		<< "--------------------" << std::endl
 		<< "Player: " << g_game.getPlayersOnline() << " (" << Player::playerCount << ")" << std::endl
-		<< "Unique Players: " << g_game.getUniquePlayersOnline() << " (" << Player::playerCount << ")" << std::endl
+		//<< "Unique Players: " << g_game.getUniquePlayersOnline() << " (" << Player::playerCount << ")" << std::endl
 		<< "Npc: " << g_game.getNpcsOnline() << " (" << Npc::npcCount << ")" << std::endl
 		<< "Monster: " << g_game.getMonstersOnline() << " (" << Monster::monsterCount << ")" << std::endl << std::endl;
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
@@ -1236,6 +1246,308 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Command not available, please rebuild your software with -D__ENABLE_SERVER_DIAG__");
 #endif
 	return true;
+}
+
+bool TalkAction::isInputValid(const std::string& input)
+{
+	boost::regex validInputRegex("^[a-zA-Z0-9,! ]*$");
+	return boost::regex_match(input, validInputRegex);
+}
+
+bool TalkAction::autoLoot(Creature* creature, const std::string&, const std::string& param)
+{
+	Player* player = creature->getPlayer();
+	if(!player)
+		return false;
+
+	std::stringstream info;
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+	{
+		info << "Autoloot are disabled.";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
+		return true;
+	}
+
+	StringVec params = explodeString(param, ",");
+	if(params[0] == "on" || params[0] == "off")
+	{
+		player->updateStatusAutoLoot((params[0] == "on" ? true : false));
+		info << "Autoloot-> Status: " << (player->statusAutoLoot()) << ".";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
+		return true;
+	}
+
+	if(params[0] == "clear" || params[0] == "clean")
+	{
+		player->clearAutoLoot();
+		info << "Autoloot-> All items removed.";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
+		return true;
+	}
+
+	if(params[0] == "list")
+	{
+		std::list<uint16_t> list = player->getAutoLoot();
+		std::list<uint16_t>::iterator it = list.begin();
+		std::string msg = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+		StringVec strVector = explodeString(msg, ";");
+		for(StringVec::iterator itt = strVector.begin(); itt != strVector.end(); ++itt)
+			++it;
+
+		uint16_t i = 1;
+		for(; it != list.end(); ++it)
+		{
+			info << i << ": " << Item::items[(*it)].name << std::endl;
+			++i;
+		}
+
+		player->sendFYIBox((info.str() == "" ? "Nothing added." : info.str()));
+
+		// Fix get list autoloot
+		list = player->getAutoLoot();
+		return true;
+	}
+
+	if(params.size() <= 1)
+	{
+		std::list<uint16_t> list = player->getAutoLoot();
+		uint16_t lootsize = list.size();
+		std::string msg = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+		StringVec strVector = explodeString(msg, ";");
+		for(StringVec::iterator itt = strVector.begin(); itt != strVector.end(); ++itt)
+			--lootsize;
+
+		// max autoloot used config.lua
+		uint16_t max_allowed = player->isPremium() ? g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM) : g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE);
+		std::stringstream rest;
+		std::stringstream trace("-------------------------------");
+		rest << trace.str() << "\nSlots used: " << lootsize << "/" << max_allowed << "\n" << trace.str() << "\n\n";
+		rest << "Free account slots: " << g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE) << "\nPremium account Slots: " << g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM);
+		info << "_____Perfect AutoLoot System_____\nAutoLoot Status: " << player->statusAutoLoot() << "\nAutoMoney Mode: " << player->statusAutoMoneyCollect() << "\n\nCommands:\n!autoloot on/off\n!autoloot money, bank/bag\n!autoloot add, item name, item name, item name...\n!autoloot remove, item name, item name, item name...\n!autoloot list\n!autoloot clear\n\n" << rest.str();
+		player->sendFYIBox(info.str());
+		return true;
+	}
+
+	if (params[0] == "money")
+	{
+		std::stringstream ss;
+		for (StringVec::iterator it = params.begin(); it != params.end(); ++it)
+		{
+			if ((*it) == "money")
+				continue;
+
+			std::string param2 = *it;
+			if (!isInputValid(param2))
+			{
+				std::string message = "Tried to bug autoloot, come to me with /goto and /ghost";
+				for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+				{
+					if(it->second->getGroupId() > 3)
+						g_game.playerSay(player->getID(), MSG_PRIVATE, MSG_PRIVATE, it->second->getName(), message, false);
+				}
+
+				ss << "AutoLoot-> Added: None. Errors: " << param2 << ".";
+				player->sendTextMessage(MSG_STATUS_CONSOLE_RED, ss.str());
+				return true;
+			}
+
+			while (!param2.empty() && std::isspace(param2[0]))
+				param2.erase(0, 1);
+
+			if (param2 == "bank" || param2 == "bag")
+			{
+				bool isBank = (param2 == "bank");
+				player->updateMoneyCollect(isBank);
+				std::stringstream info;
+				info << "AutoMoney-> Collect Mode: " << player->statusAutoMoneyCollect() << ".";
+				player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
+				return true;
+			}
+		}
+	}
+
+	if (params[0] == "add")
+	{
+		std::stringstream add, err, limited;
+		uint8_t addCount = 0, errCount = 0;
+		bool limitedd = false;
+		std::stringstream ss;
+
+		for (StringVec::iterator it = params.begin(); it != params.end(); ++it)
+		{
+			if (*it == "add")
+				continue;
+
+			std::string name = *it;
+			if (!isInputValid(name))
+			{
+				std::string message = "Tried to bug autoloot, come to me with /goto and /ghost";
+				for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+				{
+					if(it->second->getGroupId() > 3)
+						g_game.playerSay(player->getID(), MSG_PRIVATE, MSG_PRIVATE, it->second->getName(), message, false);
+				}
+
+				ss << "AutoLoot-> Added: None. Errors: " << name << ".";
+				player->sendTextMessage(MSG_STATUS_CONSOLE_RED, ss.str());
+				return true;
+			}
+
+			while (!name.empty() && std::isspace(name[0]))
+				name.erase(0, 1);
+
+			int32_t itemId = Item::items.getItemIdByName(name);
+			if (itemId > 0 && !player->checkAutoLoot(itemId) && !player->limitAutoLoot())
+			{
+				std::string str = addCount > 0 ? ", " : "";
+				++addCount;
+				add << str << name;
+				player->addAutoLoot(itemId);
+			}
+			else
+			{
+				if (!itemId || itemId == -1)
+				{
+					std::string str = errCount > 0 ? ", " : "";
+					++errCount;
+					err << str << name;
+				}
+
+				if (player->limitAutoLoot() && !limitedd)
+				{
+					limited << "[AUTOLOOT]: You reached the maximum items in autoloot" << ((!player->isPremium()) ? ", buy Premium to unlock more slots" : "") << ".";
+					limitedd = true;
+				}
+			}
+		}
+
+		ss << "AutoLoot-> Added: " << ((add.str() == "") ? "None" : add.str()) << ". Erros: " << ((err.str() == "") ? "None" : err.str()) << ".";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, ss.str());
+		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, limited.str());
+		return true;
+	}
+
+
+
+	if (params[0] == "remove")
+	{
+		std::stringstream remove, err;
+		uint8_t removeCount = 0, errCount = 0;
+		std::stringstream ss;
+
+		for (StringVec::iterator it = params.begin(); it != params.end(); ++it)
+		{
+			if (*it == "remove")
+				continue;
+
+			std::string name = *it;
+			if (!isInputValid(name))
+			{
+				std::string message = "Tried to bug autoloot, come to me with /goto and /ghost";
+				for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
+				{
+					if(it->second->getGroupId() > 3)
+						g_game.playerSay(player->getID(), MSG_PRIVATE, MSG_PRIVATE, it->second->getName(), message, false);
+				}
+				ss << "AutoLoot-> Added: None.  Erros: " << name << ".";
+				player->sendTextMessage(MSG_STATUS_CONSOLE_RED, ss.str());
+				return true;
+			}
+			
+			while (!name.empty() && std::isspace(name[0]))
+				name.erase(0, 1);
+
+			int32_t itemId = Item::items.getItemIdByName(name);
+			if (itemId > 0 && player->checkAutoLoot(itemId))
+			{
+				std::string str = removeCount > 0 ? ", " : "";
+				++removeCount;
+				remove << str << name;
+				player->removeAutoLoot(itemId);
+			}
+			else
+			{
+				if (!itemId || itemId == -1)
+				{
+					std::string str = errCount > 0 ? ", " : "";
+					++errCount;
+					err << str << name;
+				}
+			}
+		}
+
+		ss << "AutoLoot-> Removed: " << ((remove.str() == "") ? "None" : remove.str()) << ". Erros: " << ((err.str() == "") ? "None" : err.str()) << ".";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_ORANGE, ss.str());
+		return true;
+	}
+
+	return true;
+}
+
+bool TalkAction::houseProtect(Creature* creature, const std::string&, const std::string& param)
+{
+	Player* player = creature->getPlayer();
+	if(!player)
+		return false;
+
+	if(!g_config.getBool(ConfigManager::HOUSE_PROTECTION))
+	{
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "House protect are disabled by Admin!");
+		return false;
+	}
+
+	Tile* tile = g_game.getMap()->getTile(player->getPosition());
+	if(!tile)
+		return false;
+
+	HouseTile* houseTile = tile->getHouseTile();
+	if(!houseTile)
+	{
+		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[House Protect]: Error! you are not inside a house!");
+		return false;
+	}
+
+	House* house = houseTile->getHouse();
+	if(!house)
+		return false;
+
+	uint32_t owner = house->getOwner();
+	if(!owner || (owner && player->getGUID() != owner && player->getGroupId() < 4))
+	{
+		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[House Protect]: Error! you are not owner this house!");
+		return false;
+	}
+
+	std::string msg = asLowerCaseString(param);
+	if(msg == "on" && !house->isProtected())
+	{
+		house->setProtected(true);
+		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[House Protect]: Now your house is protected");
+		return true;
+	}
+	else if (msg == "off" && house->isProtected())
+	{
+		house->setProtected(false);
+		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[House Protect]: Now your house is unprotected");
+		return true;
+	}
+	else if(msg.empty())
+	{
+		if(!house->isProtected())
+		{
+			house->setProtected(true);
+			player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[House Protect]: Now your house is protected");
+			return true;
+		}
+		else
+		{
+			house->setProtected(false);
+			player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[House Protect]: Now your house is unprotected");
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool TalkAction::ghost(Creature* creature, const std::string&, const std::string&)

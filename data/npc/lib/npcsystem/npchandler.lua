@@ -3,8 +3,6 @@
 -- Modified by The OTX Server Team.
 
 if(NpcHandler == nil) then
-	local storage = 35418 -- For exhaustion in Seconds
-
 	-- Constant talkdelay behaviors.
 	TALKDELAY_NONE = 0 -- No talkdelay. Npc will reply immedeatly.
 	TALKDELAY_ONTHINK = 1 -- Talkdelay handled through the onThink callback function. (Default)

@@ -833,3 +833,19 @@ int16_t Outfits::getOutfitReflect(uint32_t lookType, uint16_t sex, CombatType_t 
 
 	return 0;
 }
+
+const Outfit* Outfits::getOutfitByLookType(uint16_t sex, uint16_t lookType)
+{
+	OutfitMap map = outfitsMap[sex];
+	if (!map.size())
+		return 0;
+
+	for (OutfitMap::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		if (it->second.lookType != lookType)
+			continue;
+
+		return &(it->second);
+	}
+	return nullptr;
+}

@@ -16,4 +16,25 @@
 	<event type="login" name="obs_login" event="script" value="obsidianknife.lua"/>
 	<event type="extendedopcode" name="ExtendedOpcode" event="script" value="extendedopcode.lua"/>
 	<event type="tradeaccept" name="PlayerTrade" event="script" value="playerTrade.lua"/>
+
+	<!-- Customs -->
+	<event type="throw" name="decayOnDepotThrow" event="script" value="decayOnDepotItem.lua"/>
+	<event type="tradeaccept" name="decayOnDepotTrade" event="script" value="decayOnDepotItem.lua"/>
+
+	<!-- death channel -->
+	<event type="death" name="deathchannel" event="script" value="deathChannel.lua"/>
+
+	<!-- no count frag in area -->
+	<event type="nocountfrag" name="fragarea" event="script" value="noCountFragInArea.lua"/>
+
+	<!-- monster boost login -->
+	<event type="login" name="MBlogin" script="monsterBoost.lua"/>
+	<event type="kill" name="MBKill" event="script" value="monsterBoost.lua"/>
+
+	<!-- RESET SYSTEM -->
+	<event type="login" name="RSLogin" script="reset_system/reset_system.lua"/>
+	<event type="advance" name="RSAdvance" script="reset_system/reset_system.lua"/>
+
+	<!-- custom protect house -->
+	<event type="moveitem" name="houseProtectTrash" event="script" value="houseProtectTrash.lua"/>
 </creaturescripts>

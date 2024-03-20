@@ -1,10 +1,13 @@
 -- The OTX Server Config
 
 	-- Owner Data
-	ownerName = ""
-	ownerEmail = ""
+	ownerName = "Mattyx14"
+	ownerEmail = "darkylive@live.com.mx"
 	url = ""
+	site = ""
+	host = "https://github.com/mattyx14/otxserver/tree/otxserv2"
 	location = ""
+	advertisingBlock = "ba1ak;ip;b4iak;b4i4k;abertura;h0st;crle;c0nta;br;otserv;20.;21;sv;ddns;inaugur;.com;online;war;baiak;192;m4caco;m4c4co;m4c4c0;pr3to;pr3t0;191;sv;balan;macaco;preto;b@i@k;net;servegame;org;pl;biz;tk;mapa;iiak;web;www;35;34;21"
 
 	-- Messages
 	motd = "Welcome to the OTX Server!"
@@ -12,8 +15,57 @@
 	loginMessage = "Welcome to The OTX Server!"
 	displayGamemastersWithOnlineCommand = false
 
+	-- Misc
+	-- mw replace system !mw old/new
+	useMwReplaceSystem = false
+	mwSpriteId = 10181
+	newSpriteIdMW = 3642
+	-- use max connection in same IP
+	UseMaxIpConnect = true
+	MaxIpConnections = 10
+	-- use autoloot system
+	Autoloot_enabled = false
+	AutoLoot_BlockIDs = "" 
+	AutoLoot_MoneyIDs = "2148;2152;2160;9971" 
+	AutoLoot_MaxItem = 5
+	AutoLoot_MaxItemPremium = 10
+	AutoLoot_MaxItemFree = 5
+	-- add if enable cast without password 
+	expInCast = true
+	expPercentIncast = 5
+	-- use life/mana in percentual 100/100
+	lifeAndManaInPercentual = false
+	-- add frag if player kill mc / same ip
+	addFragToSameIp = false
+	-- use reset system
+	resetSystemEnable = false
+	-- use max absorbAll (prevents absorb +100% / SSA + might ring)
+	useMaxAbsorbAll = true
+	maxAbsorbPercent = 80.0
+	-- delete player with monster/forbidden name?
+	deletePlayersWithMonsterName = true
+	forbiddenNames = "gm;adm;cm;support;god;tutor;god ; god; adm;adm ; gm;gm ; cm;cm ;"
+	-- display messages death channel on death
+	displayDeathChannelMessages = true
+	-- modify damage to K 219000 -> 219.0K
+	modifyDamageInK = false
+	-- modify exp to K/mi 2.000.000 exp -> 2.0 mi
+	modifyExperienceInK= false
+	-- display broadcast in distro
+	displayBroadcastLog = true
+	-- enable dodge and critical in source (by storage)
+	enableCriticalAndDodgeSource = true
+	-- player can push other player in PZ
+	pushInProtectZone = false
+	-- set time to exhaust potion 1500 = 1.5s
+	exhaustPotionMiliSeconds = 1500
+	-- when using potion, it will exhaust other use item, MW / SD etc..., don't let use pot + rune
+	exhaustItemAtUsePotion = true
+	-- exhaust for the spectator speak again in seconds
+	exhaust_spectatorSay = 5
+
 	-- MySql
-	sqlType = "sqlite"
+	sqlType = "mysql"
 	sqlHost = "127.0.0.1"
 	sqlPort = 3306
 	sqlUser = "root"
@@ -21,8 +73,8 @@
 	sqlDatabase = ""
 	sqlFile = "schemas/otxserver.s3db"
 	sqlKeepAlive = 0
-	mysqlReadTimeout = 10
-	mysqlWriteTimeout = 10
+	mysqlReadTimeout = 15000
+	mysqlWriteTimeout = 15000
 	mysqlReconnectionAttempts = 5
 	encryptionType = "sha1" --// encryptionType can be (plain, sha1).
 
@@ -35,8 +87,8 @@
 	gamePort = "7172"
 	statusPort = 7171
 	loginOnlyWithLoginServer = false
-
-	-- Account manager
+	blockedVps = "google;amazon;amazon.com;oracle;azure;vultr;google.com"
+	permitedVps = 0
 	accountManager = true
 	namelockManager = true
 	newPlayerChooseVoc = true
@@ -50,6 +102,7 @@
 	generateAccountSalt = true
 
 	-- Limits on frags / Time
+	useFragHandler = true
 	fragsLimit = 24 * 60 * 60
 	fragsSecondLimit = 7 * 24 * 60 * 60
 	fragsThirdLimit = 30 * 24 * 60 * 60
@@ -104,12 +157,13 @@
 	showManaChangeForMonsters = true
 	fieldOwnershipDuration = 5 * 1000
 	stopAttackingAtExit = true
-	loginProtectionPeriod = 10 * 1000
+	loginProtectionPeriod = 5000
+	diagonalPush = true
 	deathLostPercent = 10
-	stairhopDelay = 2 * 1000
-	pushCreatureDelay = 2 * 1000
+	stairhopDelay = 0.3 * 1000
+	pushCreatureDelay = 1 * 280
 	deathContainerId = 1987
-	gainExperienceColor = 215
+	gainExperienceColor = 210
 	addManaSpentInPvPZone = true
 	recoverManaAfterDeathInPvPZone = true
 	squareColor = 0
@@ -117,88 +171,67 @@
 	maxViolationCommentSize = 60
 	violationNameReportActionType = 2
 
-	-- OTX Server Extras Features
-		-- Corpse Block
+	--optional PVP
+	optionalProtection = false
+
+	-- Corpse Block
 		-- If set to true, players won't be able to immediately throw fields on top of corpses after killing the monster
-		allowCorpseBlock = false
+	allowCorpseBlock = false
 
-		-- Push creatures
-		-- If set to false, players won't be able to push creatures while other actions are exhausted(for example potions)
-		allowIndependentCreaturePush = true
+	rsaPrime1 = "14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113"
+	rsaPrime2 = "7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101"
+	rsaPublic = "65537"
+	rsaModulus = "109120132967399429278860960508995541528237502902798129123468757937266291492576446330739696001110603907230888610072655818825358503429057592827629436413108566029093628212635953836686562675849720620786279431090218017681061521755056710823876476444260558147179707119674283982419152118103759076030616683978566631413"
+	rsaPrivate = "46730330223584118622160180015036832148732986808519344675210555262940258739805766860224610646919605860206328024326703361630109888417839241959507572247284807035235569619173792292786907845791904955103601652822519121908367187885509270025388641700821735345222087940578381210879116823013776808975766851829020659073"
 
-		-- Battle
-		-- Note: classicAttackSpeed set to true makes players constantly attack at regular
-		-- intervals regardless of other actions such as item (potion) use. This setting
-		-- may cause high CPU usage with many players and potentially affect performance!
+
 		optionalWarAttackableAlly = true
 		fistBaseAttack = 7
-		classicAttackSpeed = false
 		criticalHitChance = 7
 		noDamageToGuildMates = false
-			-- if true then no damage, if false then damage
-		noDamageToPartyMembers = false
-			-- if true then no damage, if false then damage
+		noDamageToPartyMembers = true
 
-		-- Rook System
 		rookLevelTo = 5
 		rookLevelToLeaveRook = 8
 		rookTownId = 1
 		useRookSystem = true
-		
-		-- Monsters Attack Config
-		-- set monsterAttacksOnlyDamagePlayers to false if you want monster's attacks to damage other nearby monsters
-		monsterAttacksOnlyDamagePlayers = true
 
-		-- Paralyze delay
 		paralyzeDelay = 1500
 
-		-- GUI
-		premiumDaysToAddByGui = 10
+		premiumDaysToAddByGui = 0
 
-		-- Depot and Miscellaneous
-		-- set playerFollowExhaust to 2000 if someone causes lags and kicks by following unreachable creatures too often
 		useCapacity = true
-		defaultDepotSize = 500
-		defaultDepotSizePremium = 1000
-		enableProtectionQuestForGM = true
+		defaultDepotSize = 400
+		defaultDepotSizePremium = 400
+		enableProtectionQuestForGM = false
 		cleanItemsInMap = false
-		playerFollowExhaust = 2000
+		playerFollowExhaust = 500
 
-		-- 8.7x + config
-		monsterSpawnWalkback = true
+		monsterSpawnWalkback = false
 		allowBlockSpawn = true
+		
 		classicEquipmentSlots = true
 
-		-- Summons and monsters
 		NoShareExpSummonMonster = false
 
-		-- Others
-		enableLootBagDisplay = false
+		enableLootBagDisplay = true
 		highscoreDisplayPlayers = 10
 		updateHighscoresAfterMinutes = 60
 		attackImmediatelyAfterLoggingIn = false
 		exhaustionNPC = true
 		exhaustionInSecondsNPC = 0.5
-		delayLastPushStep = true
-		optionalProtection = false
 
-		-- Advanced Version
-		-- Note: If you use another protocol than the one we set as you will have functional failures.
-		-- Supported (860) = 8.60
-		manualVersionConfig = false
-		versionMin = 860
-		versionMax = 860
+		manualVersionConfig = true
+		versionMin = 854
+		versionMax = 861
 		versionMsg = "Only clients with protocol 8.60 allowed!"
-
-		-- ConfigSpells
-		-- Note: set noAttackHealingSimultaneus to true if you want the attack and healing spells to have the same exhausted
-		noAttackHealingSimultaneus = false
 
 	-- Connection config
 	loginTries = 20
 	retryTimeout = 5 * 1000
 	loginTimeout = 60 * 1000
 	maxPlayers = 200
+	useFilaOnStartup = true
 	displayOnOrOffAtCharlist = false
 	onePlayerOnlinePerAccount = true
 	allowClones = 0
@@ -207,7 +240,8 @@
 	forceSlowConnectionsToDisconnect = false
 	premiumPlayerSkipWaitList = true
 	packetsPerSecond = 50
-	loginProtectionTime = 10
+	loginProtectionTime = 5
+	tibiaClassicSlots = true
 
 	-- Death List and Blessings
 	-- Function retroPVP true change it:
@@ -216,26 +250,15 @@
 	-- fairFightTimeRange = 30
 	deathListEnabled = true
 	deathListRequiredTime = 1 * 60 * 1000
+	deathAssistCount = 20
 	maxDeathRecords = 5
 	multipleNames = false
-		-- Retro PVP
-		retroPVP = false
-		deathAssistCount = 20
-		-- Blessings
-		blessings = true
-		blessingOnlyPremium = true
-		blessingReductionBase = 30
-		blessingReductionDecrement = 5
-		eachBlessReduction = 8
-			useFairfightReduction = true
-			fairFightTimeRange = 60
-			pvpBlessingThreshold = 40
 
 	-- Guilds
 	-- NOTE: externalGuildWarsManagement supports Automatic Account Creator(webpage or whatever you want)
 	externalGuildWarsManagement = false
-	ingameGuildManagement = true
-	levelToFormGuild = 20
+	ingameGuildManagement = false
+	levelToFormGuild = 4000
 	premiumDaysToFormGuild = 0
 	guildNameMinLength = 4
 	guildNameMaxLength = 20
@@ -258,12 +281,12 @@
 	-- Item usage
 	timeBetweenActions = 200
 	timeBetweenExActions = 1000
-	timeBetweenCustomActions = 500
+	timeBetweenCustomActions = 0
 	checkCorpseOwner = true
 	hotkeyAimbotEnabled = true
 	maximumDoorLevel = 999
 	tradeLimit = 100
-	canOnlyRopePlayers = false
+	canOnlyRopePlayers = true
 
 	-- Map
 	-- NOTE: storeTrash costs more memory, but will perform alot faster cleaning.
@@ -274,19 +297,12 @@
 	storeTrash = true
 	cleanProtectedZones = true
 	mapName = "forgotten.otbm"
-		-- For Windows(compiled with MSVC) and Linux use:
-		-- OTX Server use default GroundCache
-		-- GroundCache mode save memory: __GROUND_CACHE__
-			-- forgotten map on normal mode use memory: 361,512 KB
-			-- forgotten map with groundCache mode use memory: 334,124 KB
 
 	-- Mailbox
 	mailMaxAttempts = 5
 	mailBlockPeriod = 30 * 60 * 1000
 	mailAttemptsFadeTime = 5 * 60 * 1000
 	mailboxDisabledTowns = ""
-		-- Example disable rook depot (temple) "4"
-		-- mailboxDisabledTowns = "4"
 
 	-- Startup
 	-- For Linux use "-1" is default
@@ -294,11 +310,12 @@
 	daemonize = false
 	defaultPriority = "higher"
 	niceLevel = 5
-	coresUsed = "-1" -- ("0, 1, 2, 3") -- For QuadCore ONLY Windows
+	serviceThreads = 1
+	coresUsed = "-1"
 	startupDatabaseOptimization = true
 	removePremiumOnInit = true
 	confirmOutdatedVersion = false
-	skipItemsVersionCheck = false
+	skipItemsVersionCheck = true
 
 	-- Muted buffer
 	maxMessageBuffer = 4
@@ -336,34 +353,43 @@
 	idleKickTime = 15 * 60 * 1000
 	expireReportsAfterReads = 1
 	playerQueryDeepness = -1
-	protectionTileLimit = 0
-	houseTileLimit = 0
-	tileLimit = 0
+	protectionTileLimit = 10
+	houseTileLimit = 10
+	tileLimit = 10
 
 	-- Premium-related
 	freePremium = false
 	premiumForPromotion = true
 	updatePremiumStateAtStartup = true
 
+	blessings = true
+	blessingOnlyPremium = false
+	blessingReductionBase = 30
+	blessingReductionDecrement = 5
+	eachBlessReduction = 8
+	useFairfightReduction = true
+	pvpBlessingThreshold = 20
+	fairFightTimeRange = 60
+
 	-- Rates
-	experienceStages = false
-	rateExperience = 5.0
+	experienceStages = true
+	rateExperience = 999
 	rateExperienceFromPlayers = 0
 	levelToOfflineTraining = 8
-	rateSkill = 1.0
-	rateSkillOffline = 0.5
-	rateMagic = 1.0
-	rateMagicOffline = 0.5
-	rateLoot = 2.0
+	rateSkill = 30
+	rateSkillOffline = 10
+	rateMagic = 15
+	rateMagicOffline = 5
+	rateLoot = 4
+	rateSpawn = 1
 	rateSpawnMin = 1
-	rateSpawnMax = 1
+	rateSpawnMax = 2
 	formulaLevel = 5.0
 	formulaMagic = 1.0
-		-- Monster rates
-		rateMonsterHealth = 1.0
-		rateMonsterMana = 1.0
-		rateMonsterAttack = 1.0
-		rateMonsterDefense = 1.0
+	rateMonsterHealth = 1.0
+	rateMonsterMana = 1.0
+	rateMonsterAttack = 0.8
+	rateMonsterDefense = 1.5
 
 	-- Experience from players
 	minLevelThresholdForKilledPlayer = 0.9
@@ -397,6 +423,12 @@
 	extraPartyExperienceLimit = 20
 	extraPartyExperiencePercent = 5
 	experienceShareActivity = 2 * 60 * 1000
+
+	-- Party Multiplier Experience
+	enablePartyVocationBonus = true
+	twoVocationExpMultiplier = 1.4
+	threeVocationExpMultiplier = 1.6
+	fourVocationExpMultiplier = 2.0
 
 	-- Global save
 	globalSaveEnabled = false
@@ -448,5 +480,5 @@
 	adminEncryptionData = ""
 
 	-- Don't edit use at your own risk
-	saveGlobalStorage = false
+	saveGlobalStorage = true
 	bufferMutedOnSpellFailure = false

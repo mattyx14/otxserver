@@ -26,8 +26,6 @@
 		<attack name="speed" interval="3000" chance="20" length="8" spread="0" duration="30000" speedchange="-600">
 			<attribute key="areaEffect" value="smallplants"/>
 		</attack> 
-		<attack name="terra strike" interval="2000" chance="12" min="-0" max="-0"/> 
-		<attack name="stone shower" interval="1000" chance="14" min="-0" max="-90"/> 
 	</attacks>
 	<defenses armor="50" defense="55"/>
 	<elements>

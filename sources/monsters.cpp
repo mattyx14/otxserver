@@ -39,8 +39,11 @@ extern ConfigManager g_config;
 
 void MonsterType::reset()
 {
-	canPushItems = canPushCreatures = isSummonable = isIllusionable = isConvinceable = isLureable = isWalkable = hideName = hideHealth = eliminable = isPassive = false;
+	canPushItems = canPushCreatures = isSummonable = isIllusionable = isConvinceable = isLureable = isWalkable = hideName = hideHealth = eliminable = isPassive = ignoreSpawnBoost = false;
 	pushable = isAttackable = isHostile = true;
+
+	// If the monsters can't get to you, they will run over the fields, even if they take damage.
+	canWalkOnEnergy = canWalkOnFire = canWalkOnPoison = true;
 
 	outfit.lookHead = outfit.lookBody = outfit.lookLegs = outfit.lookFeet = outfit.lookType = outfit.lookTypeEx = outfit.lookAddons = 0;
 	runAwayHealth = healthMin = manaCost = lightLevel = lightColor = yellSpeedTicks = yellChance = changeTargetSpeed = changeTargetChance = 0;
@@ -125,7 +128,7 @@ ItemList MonsterType::createLoot(const LootBlock& lootBlock)
 	return items;
 }
 
-bool MonsterType::createChildLoot(Container* parent, const LootBlock& lootBlock)
+bool MonsterType::createChildLootOld(Container* parent, const LootBlock& lootBlock)
 {
 	LootItems::const_iterator it = lootBlock.childLoot.begin();
 	if(it == lootBlock.childLoot.end())
@@ -143,7 +146,7 @@ bool MonsterType::createChildLoot(Container* parent, const LootBlock& lootBlock)
 			Item* tmpItem = *iit;
 			if(Container* container = tmpItem->getContainer())
 			{
-				if(createChildLoot(container, *it))
+				if(createChildLootOld(container, *it))
 					parent->__internalAddThing(tmpItem);
 				else
 					delete container;
@@ -156,12 +159,64 @@ bool MonsterType::createChildLoot(Container* parent, const LootBlock& lootBlock)
 	return !parent->empty();
 }
 
+bool MonsterType::createChildLoot(Container* parent, const LootBlock& lootBlock, uint32_t& money, std::stringstream& str, Player* player)
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+	{
+		createChildLootOld(parent, lootBlock);
+		return true;
+	}
+
+	LootItems::const_iterator it = lootBlock.childLoot.begin();
+	if(it == lootBlock.childLoot.end())
+		return true;
+
+	ItemList items;
+	for(; it != lootBlock.childLoot.end() && !parent->full(); ++it)
+	{
+		items = createLoot(*it);
+		if(items.empty())
+			continue;
+
+		for(ItemList::iterator iit = items.begin(); iit != items.end(); ++iit)
+		{
+			Item* tmpItem = *iit;
+			if(Container* container = tmpItem->getContainer())
+			{
+				if(createChildLoot(container, *it, money, str, player))
+					parent->__internalAddThing(tmpItem);
+				else
+					delete container;
+			}
+			else
+			{
+				bool LootCatch = false;
+				if(player && (player->statusAutoLoot() == "On"))
+					LootCatch = player->checkAutoLoot(tmpItem->getID());
+
+				if(LootCatch)
+				{
+					if(player->isMoneyAutoLoot(tmpItem, money))
+						continue;
+
+					g_game.internalPlayerAddItem(NULL, player, tmpItem);
+					str << " " << tmpItem->getNameDescription() << ",";
+					continue;
+				}
+					parent->__internalAddThing(tmpItem);
+			}
+		}
+	}
+
+	return !parent->empty();
+}
+
 uint16_t Monsters::getLootRandom()
 {
 	return (uint16_t)std::ceil((double)random_range(0, MAX_LOOTCHANCE) / g_config.getDouble(ConfigManager::RATE_LOOT));
 }
 
-void MonsterType::dropLoot(Container* corpse)
+void MonsterType::dropLootOld(Container* corpse)
 {
 	ItemList items;
 	for(LootItems::const_iterator it = lootItems.begin(); it != lootItems.end() && !corpse->full(); ++it)
@@ -175,7 +230,7 @@ void MonsterType::dropLoot(Container* corpse)
 			Item* tmpItem = *iit;
 			if(Container* container = tmpItem->getContainer())
 			{
-				if(createChildLoot(container, *it))
+				if(createChildLootOld(container, *it))
 					corpse->__internalAddThing(tmpItem);
 				else
 					delete container;
@@ -201,12 +256,115 @@ void MonsterType::dropLoot(Container* corpse)
 	if(message < LOOTMSG_PLAYER)
 		return;
 
-	std::ostringstream ss;
+	std::stringstream ss;
 	ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription() << ".";
 	if(owner->getParty() && message > LOOTMSG_PLAYER)
 		owner->getParty()->broadcastMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
 	else if(message == LOOTMSG_PLAYER || message == LOOTMSG_BOTH)
-		owner->sendTextMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
+	{
+		if (!owner->getLoot())
+			owner->sendTextMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
+		else
+			owner->sendChannelMessage("", ss.str(), MSG_CHANNEL_MANAGEMENT, CHANNEL_LOOT);
+	}
+}
+
+void MonsterType::dropLoot(Container* corpse)
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+	{
+		dropLootOld(corpse);
+		return;
+	}
+
+	uint32_t money = 0;
+	ItemList items;
+	std::stringstream str;
+	for(LootItems::const_iterator it = lootItems.begin(); it != lootItems.end() && !corpse->full(); ++it)
+	{
+		items = createLoot(*it);
+		if(items.empty())
+			continue;
+
+		for(ItemList::iterator iit = items.begin(); iit != items.end(); ++iit)
+		{
+			Item* tmpItem = *iit;
+			if(Container* container = tmpItem->getContainer())
+			{
+				Player* tmpPlayer = g_game.getPlayerByGuid(corpse->getCorpseOwner());
+				if(createChildLoot(container, (*it), money, str, tmpPlayer))
+					corpse->__internalAddThing(tmpItem);
+				else
+					delete container;
+			}
+			else
+			{
+				bool LootCatch = false;
+				Player* tmpPlayer = g_game.getPlayerByGuid(corpse->getCorpseOwner());
+				if(tmpPlayer)
+				{
+					if(tmpPlayer->statusAutoLoot() == "On")
+					{
+						LootCatch = tmpPlayer->checkAutoLoot(tmpItem->getID());
+						if(LootCatch)
+						{
+							if(tmpPlayer->isMoneyAutoLoot(tmpItem, money))
+								continue;
+
+							g_game.internalPlayerAddItem(NULL, tmpPlayer, tmpItem, false);
+							str << " " << tmpItem->getNameDescription() << ",";
+							continue;
+						}
+					}
+				}
+				corpse->__internalAddThing(tmpItem);
+			}
+		}
+	}
+
+	corpse->__startDecaying();
+	uint32_t ownerId = corpse->getCorpseOwner();
+	if(!ownerId)
+		return;
+
+	Player* owner = g_game.getPlayerByGuid(ownerId);
+	if(!owner)
+		return;
+
+	if(money != 0)
+	{
+		if(owner->statusAutoMoneyCollect() == "Bank")
+			owner->balance += money;
+		else
+			g_game.addMoney(owner, money);
+
+		str << " " << money << "x gold coins.";
+	}
+	else
+		str << " nothing gold coins.";
+
+	LootMessage_t message = lootMessage;
+	if(message == LOOTMSG_IGNORE)
+		message = (LootMessage_t)g_config.getNumber(ConfigManager::LOOT_MESSAGE);
+
+	if(message < LOOTMSG_PLAYER)
+		return;
+
+	std::stringstream ss;
+	ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription() << ".";
+
+	if(owner->statusAutoLoot()  == "On")
+		ss << "\nAutoLoot Colleted:" << str.str();
+
+	if(owner->getParty() && message > LOOTMSG_PLAYER)
+		owner->getParty()->broadcastMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
+	else if(message == LOOTMSG_PLAYER || message == LOOTMSG_BOTH)
+	{
+		if (!owner->getLoot())
+			owner->sendTextMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
+		else
+			owner->sendChannelMessage("", ss.str(), MSG_CHANNEL_MANAGEMENT, CHANNEL_LOOT);
+	}
 }
 
 bool Monsters::loadFromXml(bool reloading /*= false*/)
@@ -1104,6 +1262,19 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 
 					if(readXMLString(tmpNode, "eliminable", strValue))
 						mType->eliminable = booleanString(strValue);
+
+					if(readXMLString(tmpNode, "ignorespawnboost", strValue))
+						mType->ignoreSpawnBoost = booleanString(strValue);
+
+					// Can non-immune monsters walk on fields if there is no available path? 
+					if(readXMLString(tmpNode, "canwalkonenergy", strValue))
+						mType->canWalkOnEnergy = booleanString(strValue);
+
+					if(readXMLString(tmpNode, "canwalkonfire", strValue))
+						mType->canWalkOnFire = booleanString(strValue);
+
+					if(readXMLString(tmpNode, "canwalkonpoison", strValue))
+						mType->canWalkOnPoison = booleanString(strValue);
 				}
 			}
 

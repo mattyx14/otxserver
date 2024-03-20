@@ -15,6 +15,16 @@
 
 # Build results
 
+#future disponible compatible site
+www/
+
+sources/objects/
+**/theotxserver
+theotxserver
+sources/theotxserver
+
+config-ot.lua
+
 [Dd]ebug/
 [Rr]elease/
 x64/

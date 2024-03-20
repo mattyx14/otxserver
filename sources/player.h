@@ -252,6 +252,13 @@ class Player : public Creature, public Cylinder
 		void setClientVersion(uint32_t version) {clientVersion = version;}
 
 		bool hasClient() const {return (client->getOwner() != NULL);}
+		ProtocolGame_ptr getClient() const {
+			if (client) {
+				return client->getOwner();
+			}
+			return NULL;
+		}
+
 		bool isVirtual() const {return (getID() == 0);}
 		uint32_t getIP() const;
 		bool canOpenCorpse(uint32_t ownerId);
@@ -299,6 +306,12 @@ class Player : public Creature, public Cylinder
 
 		uint32_t getExtraAttackSpeed() const {return extraAttackSpeed;}
 		void setPlayerExtraAttackSpeed(uint32_t speed);
+
+		// Reset system
+		uint32_t getReset() const {return reset;}
+		void setReset(uint32_t value) {reset = value;}
+		float getDamageMultiplier() const {return damageMultiplier;}
+		void setDamageMultiplier(float multiplier) {damageMultiplier = multiplier;}
 
 		bool isPremium() const;
 		int32_t getPremiumDays() const {return premiumDays;}
@@ -387,6 +400,9 @@ class Player : public Creature, public Cylinder
 
 		bool hasSentChat() const {return sentChat;}
 		void setSentChat(bool sending) {sentChat = sending;}
+
+		bool getLoot() const {return showLoot;}
+		void setGetLoot(bool b) {showLoot = b;}
 
 		virtual RaceType_t getRace() const {return RACE_BLOOD;}
 
@@ -557,8 +573,8 @@ class Player : public Creature, public Cylinder
 		void sendUpdateTile(const Tile* tile, const Position& pos)
 			{if(client) client->sendUpdateTile(tile, pos);}
 
-		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel)
-			{if(client) client->sendChannelMessage(author, text, type, channel);}
+		void sendChannelMessage(std::string author, std::string text, MessageClasses type, uint16_t channel, bool fakeChat = false, uint32_t ip = 0)
+			{if(client) client->sendChannelMessage(author, text, type, channel, fakeChat, ip);}
 		void sendCreatureAppear(const Creature* creature)
 			{if(client) client->sendAddCreature(creature, creature->getPosition(), creature->getTile()->getClientIndexOfThing(this, creature));}
 		void sendCreatureAppear(const Creature* creature, ProtocolGame* target)
@@ -571,10 +587,10 @@ class Player : public Creature, public Cylinder
 
 		void sendCreatureTurn(const Creature* creature)
 			{if(client) client->sendCreatureTurn(creature, creature->getTile()->getClientIndexOfThing(this, creature));}
-		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos = NULL, uint32_t statementId = 0)
-			{if(client) client->sendCreatureSay(creature, type, text, pos, statementId);}
-		void sendCreatureChannelSay(Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId = 0) const
-			{if(client) client->sendCreatureChannelSay(creature, type, text, channelId, statementId);}
+		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos = NULL, uint32_t statementId = 0, bool fakeChat = false)
+			{if(client) client->sendCreatureSay(creature, type, text, pos, statementId, fakeChat);}
+		void sendCreatureChannelSay(Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId = 0, bool fakeChat = false) const
+			{if(client) client->sendCreatureChannelSay(creature, type, text, channelId, statementId, fakeChat);}
 		void sendCreatureSquare(const Creature* creature, uint8_t color)
 			{if(client) client->sendCreatureSquare(creature, color);}
 		void sendCreatureChangeOutfit(const Creature* creature, const Outfit_t& outfit)
@@ -739,6 +755,15 @@ class Player : public Creature, public Cylinder
 		void sendRuleViolationCancel(const std::string& name)
 			{if(client) client->sendRuleViolationCancel(name);}
 
+		void sendCastList() {
+			if (client) client->sendCastList();
+		}
+
+		// sendProgressbar OTCv8 features
+		void sendProgressbar(const Creature* creature, uint32_t duration, bool ltr) {
+			{if (client) client->sendProgressbar(creature, duration, ltr);}
+		}
+
 		void sendCritical() const;
 		void sendPlayerIcons(Player* player);
 		void sendStats();
@@ -772,6 +797,29 @@ class Player : public Creature, public Cylinder
 		void learnInstantSpell(const std::string& name);
 		void unlearnInstantSpell(const std::string& name);
 		bool hasLearnedInstantSpell(const std::string& name) const;
+
+		//Autoloot
+		std::list<uint16_t> getAutoLoot() {
+			return AutoLoot;
+		}
+		void clearAutoLoot();
+		void addAutoLoot(uint16_t id);
+		void removeAutoLoot(uint16_t id);
+		bool limitAutoLoot();
+		bool checkAutoLoot(uint16_t id);
+		bool isMoneyAutoLoot(Item* item, uint32_t& count);
+		std::string statusAutoLoot() {
+			return (autoLootStatus ? "On" : "Off");
+		}
+		void updateStatusAutoLoot(bool status){
+			autoLootStatus = status;
+		}
+		std::string statusAutoMoneyCollect() {
+			return (autoMoneyCollect ? "Bank" : "Bag");
+		}
+		void updateMoneyCollect(bool status) {
+			autoMoneyCollect = status;
+		}
 
 		VIPSet VIPList;
 		ContainerVector containerVec;
@@ -861,6 +909,10 @@ class Player : public Creature, public Cylinder
 		bool hasCapacity(const Item* item, uint32_t count) const;
 
 	private:
+		bool autoLootStatus;
+		bool autoMoneyCollect;
+		std::list<uint16_t> AutoLoot;
+
 		bool talkState[13];
 		bool inventoryAbilities[SLOT_LAST];
 		bool pzLocked;
@@ -871,6 +923,7 @@ class Player : public Creature, public Cylinder
 		bool addAttackSkillPoint;
 		bool pvpBlessing;
 		bool sentChat;
+		bool showLoot;
 		static uint32_t playerAutoID;
 
 		OperatingSystem_t operatingSystem;
@@ -912,6 +965,7 @@ class Player : public Creature, public Cylinder
 		uint32_t accountId;
 		uint32_t lastIP;
 		uint32_t level;
+		uint32_t reset;
 		uint32_t levelPercent;
 		uint32_t magLevel;
 		uint32_t magLevelPercent;
@@ -949,6 +1003,8 @@ class Player : public Creature, public Cylinder
 		double inventoryWeight;
 		double capacity;
 		char managerChar[100];
+
+		float damageMultiplier;
 
 		std::string managerString, managerString2;
 		std::string account, password;

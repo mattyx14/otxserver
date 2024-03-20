@@ -72,6 +72,9 @@ class IOLoginData
 
 		const Group* getPlayerGroupByAccount(uint32_t accountId);
 
+		bool deletePlayer(Player* player);
+		bool setName(Player* player, std::string newName);
+
 		bool loadPlayer(Player* player, const std::string& name, bool preLoad = false);
 		bool savePlayer(Player* player, bool preSave = true, bool shallow = false);
 		bool savePlayerItems(Player* player);

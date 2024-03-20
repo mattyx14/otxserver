@@ -1,12 +1,16 @@
 local config = {
-	healPlayerOnLevel = true
+	healPlayerOnLevel = true,
+	saveOnAdvance = true,
+	fastSave = true,
 }
 
 function onAdvance(cid, skill, oldLevel, newLevel)
-	doPlayerSave(cid, true)
-
 	if(skill == SKILL__EXPERIENCE) then
 		return true
+	end
+
+	if config.saveOnAdvance then
+		doPlayerSave(cid, config.fastSave)
 	end
 
 	if(skill == SKILL__LEVEL and config.healPlayerOnLevel) then
