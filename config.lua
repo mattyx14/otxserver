@@ -73,8 +73,8 @@
 	sqlDatabase = ""
 	sqlFile = "schemas/otxserver.s3db"
 	sqlKeepAlive = 0
-	mysqlReadTimeout = 15000
-	mysqlWriteTimeout = 15000
+	mysqlReadTimeout = 10
+	mysqlWriteTimeout = 10
 	mysqlReconnectionAttempts = 5
 	encryptionType = "sha1" --// encryptionType can be (plain, sha1).
 
@@ -157,13 +157,13 @@
 	showManaChangeForMonsters = true
 	fieldOwnershipDuration = 5 * 1000
 	stopAttackingAtExit = true
-	loginProtectionPeriod = 5000
+	loginProtectionPeriod = 5 * 1000
 	diagonalPush = true
 	deathLostPercent = 10
 	stairhopDelay = 0.3 * 1000
 	pushCreatureDelay = 1 * 280
 	deathContainerId = 1987
-	gainExperienceColor = 210
+	gainExperienceColor = 215
 	addManaSpentInPvPZone = true
 	recoverManaAfterDeathInPvPZone = true
 	squareColor = 0
@@ -175,56 +175,62 @@
 	optionalProtection = false
 
 	-- Corpse Block
-		-- If set to true, players won't be able to immediately throw fields on top of corpses after killing the monster
+	-- If set to true, players won't be able to immediately throw fields on top of corpses after killing the monster
 	allowCorpseBlock = false
 
-	rsaPrime1 = "14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113"
-	rsaPrime2 = "7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101"
-	rsaPublic = "65537"
-	rsaModulus = "109120132967399429278860960508995541528237502902798129123468757937266291492576446330739696001110603907230888610072655818825358503429057592827629436413108566029093628212635953836686562675849720620786279431090218017681061521755056710823876476444260558147179707119674283982419152118103759076030616683978566631413"
-	rsaPrivate = "46730330223584118622160180015036832148732986808519344675210555262940258739805766860224610646919605860206328024326703361630109888417839241959507572247284807035235569619173792292786907845791904955103601652822519121908367187885509270025388641700821735345222087940578381210879116823013776808975766851829020659073"
+	-- Battle
+	-- Note: classicAttackSpeed set to true makes players constantly attack at regular
+	-- intervals regardless of other actions such as item (potion) use. This setting
+	-- may cause high CPU usage with many players and potentially affect performance!
+	optionalWarAttackableAlly = true
+	fistBaseAttack = 7
 
+	criticalHitChance = 7
+	noDamageToGuildMates = false
+	noDamageToPartyMembers = true
 
-		optionalWarAttackableAlly = true
-		fistBaseAttack = 7
-		criticalHitChance = 7
-		noDamageToGuildMates = false
-		noDamageToPartyMembers = true
+	-- Rook System
+	rookLevelTo = 5
+	rookLevelToLeaveRook = 8
+	rookTownId = 1
+	useRookSystem = true
 
-		rookLevelTo = 5
-		rookLevelToLeaveRook = 8
-		rookTownId = 1
-		useRookSystem = true
+	-- Paralyze delay
+	paralyzeDelay = 1500
 
-		paralyzeDelay = 1500
+	-- Depot and Miscellaneous
+	-- set playerFollowExhaust to 2000 if someone causes lags and kicks by following unreachable creatures too often
+	useCapacity = true
+	defaultDepotSize = 400
+	defaultDepotSizePremium = 400
+	enableProtectionQuestForGM = false
+	cleanItemsInMap = false
+	playerFollowExhaust = 500
 
-		premiumDaysToAddByGui = 0
+	-- 8.7x + config
+	monsterSpawnWalkback = false
+	allowBlockSpawn = true
 
-		useCapacity = true
-		defaultDepotSize = 400
-		defaultDepotSizePremium = 400
-		enableProtectionQuestForGM = false
-		cleanItemsInMap = false
-		playerFollowExhaust = 500
+	classicEquipmentSlots = true
 
-		monsterSpawnWalkback = false
-		allowBlockSpawn = true
-		
-		classicEquipmentSlots = true
+	-- Summons and monsters
+	NoShareExpSummonMonster = false
 
-		NoShareExpSummonMonster = false
+	-- Others
+	enableLootBagDisplay = true
+	highscoreDisplayPlayers = 10
+	updateHighscoresAfterMinutes = 60
+	attackImmediatelyAfterLoggingIn = false
+	exhaustionNPC = true
+	exhaustionInSecondsNPC = 0.5
 
-		enableLootBagDisplay = true
-		highscoreDisplayPlayers = 10
-		updateHighscoresAfterMinutes = 60
-		attackImmediatelyAfterLoggingIn = false
-		exhaustionNPC = true
-		exhaustionInSecondsNPC = 0.5
-
-		manualVersionConfig = true
-		versionMin = 854
-		versionMax = 861
-		versionMsg = "Only clients with protocol 8.60 allowed!"
+	-- Advanced Version
+	-- Note: If you use another protocol than the one we set as you will have functional failures.
+	-- Supported (860) = 8.60
+	manualVersionConfig = true
+	versionMin = 860
+	versionMax = 860
+	versionMsg = "Only clients with protocol 8.60 allowed!"
 
 	-- Connection config
 	loginTries = 20
@@ -257,8 +263,8 @@
 	-- Guilds
 	-- NOTE: externalGuildWarsManagement supports Automatic Account Creator(webpage or whatever you want)
 	externalGuildWarsManagement = false
-	ingameGuildManagement = false
-	levelToFormGuild = 4000
+	ingameGuildManagement = true
+	levelToFormGuild = 20
 	premiumDaysToFormGuild = 0
 	guildNameMinLength = 4
 	guildNameMaxLength = 20
@@ -303,6 +309,8 @@
 	mailBlockPeriod = 30 * 60 * 1000
 	mailAttemptsFadeTime = 5 * 60 * 1000
 	mailboxDisabledTowns = ""
+		-- Example disable rook depot (temple) "4"
+		-- mailboxDisabledTowns = "4"
 
 	-- Startup
 	-- For Linux use "-1" is default
@@ -315,7 +323,7 @@
 	startupDatabaseOptimization = true
 	removePremiumOnInit = true
 	confirmOutdatedVersion = false
-	skipItemsVersionCheck = true
+	skipItemsVersionCheck = false
 
 	-- Muted buffer
 	maxMessageBuffer = 4
@@ -362,6 +370,7 @@
 	premiumForPromotion = true
 	updatePremiumStateAtStartup = true
 
+	-- Blessing
 	blessings = true
 	blessingOnlyPremium = false
 	blessingReductionBase = 30
