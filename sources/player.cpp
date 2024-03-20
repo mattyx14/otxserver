@@ -350,9 +350,35 @@ ItemVector Player::getWeapons() const
 			{
 				if(item->getAmmoType() != AMMO_NONE)
 				{
+					Item* weaponItem = item;
 					Item* ammoItem = getInventoryItem(SLOT_AMMO);
-					if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType() && ammoItem->getWeaponType() != WEAPON_DIST)
-						item = ammoItem;
+					if(ammoItem)
+					{
+						if(ammoItem->getAmmoType() == item->getAmmoType())
+							item = ammoItem;
+						else if(ammoItem->isContainer())
+						{
+							item = NULL;
+							if(Container* container = ammoItem->getContainer())
+							{
+								for(int32_t i = 0; i < (int32_t)container->size(); ++i)
+								{
+									Item* subitem = container->getItem(i);
+									if(!subitem){ break; }
+
+									if(weaponItem->getAmmoType() == subitem->getAmmoType() && container->getName() == "Quiver")
+									{
+										item = subitem;
+										break;
+									}
+									else
+										item = NULL;
+								}
+							}
+						}
+						else
+							break;
+					}
 					else
 						break;
 				}

@@ -2642,7 +2642,7 @@ bool Game::playerBroadcastMessage(Player* player, MessageClasses type, const std
 bool Game::playerCreatePrivateChannel(const uint32_t& playerId)
 {
 	Player* player = getPlayerByID(playerId);
-	if(!player || player->isRemoved() || !player->isPremium())
+	if(!player || player->isRemoved())
 		return false;
 
 	ChatChannel* channel = g_chat.createChannel(player, 0xFFFF);
@@ -3703,7 +3703,7 @@ bool Game::playerLookInTrade(const uint32_t& playerId, const bool& lookAtCounter
 	Player* tradePartner = player->tradePartner;
 	if(!tradePartner)
 		return false;
-	
+
 	if (player->hasCondition(CONDITION_EXHAUST, EXHAUST_PLAYERLOOKTRADE))
 	{
 		player->sendTextMessage(MSG_STATUS_SMALL, "You have to wait a bit before doing this again.");

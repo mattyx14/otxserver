@@ -50,8 +50,9 @@
 	- Added critical and dodge
 	- Added new formulas exp
 	- Added not counting frags in case of killing someone from the same IP
-	- Added discount Money
-	- Added emoteSpells and effects can be enabled by player.
+	- Added discount money
+	- Added emoteSpells and effects can be enabled by player
+	- Added quiver support
 	- Customs features:
 		Change magic wall sprite
 		Change min level to use send private channel to lv 20

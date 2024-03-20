@@ -44,24 +44,24 @@ DatabaseMySQL::~DatabaseMySQL()
 
 bool DatabaseMySQL::connect()
 {
-    boost::recursive_mutex::scoped_lock lockClass(m_lock);
-    m_connected = false;
+	boost::recursive_mutex::scoped_lock lockClass(m_lock);
+	m_connected = false;
 
-    if (!mysql_init(m_handle))
-    {
-        std::clog << std::endl << "Failed to initialize MySQL connection handler." << std::endl;
-        return false;
-    }
+	if (!mysql_init(m_handle))
+	{
+		std::clog << std::endl << "Failed to initialize MySQL connection handler." << std::endl;
+		return false;
+	}
 
-    int32_t timeout = g_config.getNumber(ConfigManager::MYSQL_READ_TIMEOUT);
-    if (timeout)
-        mysql_options(m_handle, MYSQL_OPT_READ_TIMEOUT, (const char*)&timeout);
+	int32_t timeout = g_config.getNumber(ConfigManager::MYSQL_READ_TIMEOUT);
+	if (timeout)
+		mysql_options(m_handle, MYSQL_OPT_READ_TIMEOUT, (const char*)&timeout);
 
-    timeout = g_config.getNumber(ConfigManager::MYSQL_WRITE_TIMEOUT);
-    if (timeout)
-        mysql_options(m_handle, MYSQL_OPT_WRITE_TIMEOUT, (const char*)&timeout);
+	timeout = g_config.getNumber(ConfigManager::MYSQL_WRITE_TIMEOUT);
+	if (timeout)
+		mysql_options(m_handle, MYSQL_OPT_WRITE_TIMEOUT, (const char*)&timeout);
 
-    if (!mysql_real_connect(m_handle,
+	if (!mysql_real_connect(m_handle,
 		g_config.getString(ConfigManager::SQL_HOST).c_str(),
 		g_config.getString(ConfigManager::SQL_USER).c_str(),
 		g_config.getString(ConfigManager::SQL_PASS).c_str(),
@@ -78,13 +78,13 @@ bool DatabaseMySQL::connect()
 	{
 		m_connected = true;
 	}
-	
-    timeout = g_config.getNumber(ConfigManager::SQL_KEEPALIVE) * 1000;
-    if (timeout)
-        m_timeoutTask = g_scheduler.addEvent(createSchedulerTask(timeout,
-            boost::bind(&DatabaseMySQL::keepAlive, this)));
 
-    return true;
+	timeout = g_config.getNumber(ConfigManager::SQL_KEEPALIVE) * 1000;
+	if (timeout)
+		m_timeoutTask = g_scheduler.addEvent(createSchedulerTask(timeout,
+			boost::bind(&DatabaseMySQL::keepAlive, this)));
+
+	return true;
 }
 
 void DatabaseMySQL::keepAlive()
