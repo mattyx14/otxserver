@@ -86,6 +86,7 @@
 		getItemDurationTime(uid)
 		... data/lib/050-function.lua
 			low line #563
+			https://github.com/mattyx14/otxserver/blob/otxserv2/data/lib/050-function.lua#L563-L1609
 
 	Note:
 		The main improvement in this edition is to extend support to many functions that required maintenance.
