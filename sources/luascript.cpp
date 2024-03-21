@@ -5121,6 +5121,31 @@ int32_t LuaInterface::luaGetTopCreature(lua_State* L)
 	return 1;
 }
 
+int32_t LuaInterface::luaGetBottomCreature(lua_State* L)
+{
+	//getBottomCreature(pos)
+	PositionEx pos;
+	popPosition(L, pos);
+
+	ScriptEnviroment* env = getEnv();
+	Tile* tile = g_game.getTile(pos);
+	if(!tile)
+	{
+		pushThing(L, NULL, 0);
+		return 1;
+	}
+
+	Thing* thing = tile->getBottomCreature();
+	if(!thing || !thing->getCreature())
+	{
+		pushThing(L, NULL, 0);
+		return 1;
+	}
+
+	pushThing(L, thing, env->addThing(thing));
+	return 1;
+}
+
 int32_t LuaInterface::luaDoCreateItem(lua_State* L)
 {
 	//doCreateItem(itemid[, type/count = 1], pos)
