@@ -74,79 +74,79 @@ function doMessageCheck(message, keyword, exact)
 	return a == b or (a:find(b) and not a:find('(%w+)' .. b))
 end
 
-function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
-	local amount = amount or 1
-	local subType = subType or 0
-	local ignoreCap =  false
-	local inBackpacks = inBackpacks or false
-	local backpack = backpack or 1988
-	local item = 0
+function doNpcSellItem(cid, itemid, amount, subType, ignore, inBackpacks, backpack)
+	local amount, subType, ignore, inBackpacks, backpack  = amount or 1, subType or 0, ignore or false, inBackpacks or false, backpack or 1988
 
-	if isItemStackable(itemid) then
-		if inBackpacks then
-			stuff = doCreateItemEx(backpack, 1)
-			item = doAddContainerItem(stuff, itemid, math.min(100, amount))
-		else
-			stuff = doCreateItemEx(itemid, math.min(100, amount))
-		end
-		local ret = doPlayerAddItemEx(cid, stuff, ignoreCap)
+	local exhaustionInSeconds = 0
 
-		if ret == RETURNVALUE_NOERROR then
-			return amount,0, {stuff}
-		elseif ret == RETURNVALUE_NOTENOUGHROOM then
-			return 0,0, {}
-		elseif ret == RETURNVALUE_NOTENOUGHCAPACITY then
-			return 0,0, {}
+	exhaustion.set(cid, storage, exhaustionInSeconds)
+
+	local ignore = false
+	local item, a = nil, 0
+	if(inBackpacks) then
+		local custom, stackable = 1, isItemStackable(itemid)
+		if(stackable) then
+			custom = math.max(1, subType)
+			subType = amount
+			amount = math.max(1, math.floor(amount / 100))
 		end
-	end
-	
-	local a = 0
-	if inBackpacks then
-	
-		local itemTable = {}
+
 		local container, b = doCreateItemEx(backpack, 1), 1
-		table.insert(itemTable, container)
-		for i = 1, amount do
-		
-			local item = doAddContainerItem(container, itemid, subType)
+		for i = 1, amount * custom do
+			item = doAddContainerItem(container, itemid, subType)
 			if(itemid == ITEM_PARCEL) then
 				doAddContainerItem(item, ITEM_LABEL)
 			end
-			
+
 			if(isInArray({(getContainerCapById(backpack) * b), amount}, i)) then
-				if doPlayerAddItemEx(cid, container, ignoreCap) ~= RETURNVALUE_NOERROR then
+				if(doPlayerAddItemEx(cid, container, ignore) ~= RETURNVALUE_NOERROR) then
 					b = b - 1
-					return a, b, itemTable
+					break
 				end
 
 				a = i
-				if amount > i then
-				
+				if(amount > i) then
 					container = doCreateItemEx(backpack, 1)
-					table.insert(itemTable, container)
 					b = b + 1
-					
 				end
 			end
 		end
-		return a, b, itemTable
+
+		if(not stackable) then
+			return a, b
+		end
+
+		return (a * subType / custom), b
 	end
-	
-	local itemTable = {}
-	
+
+	if(isItemStackable(itemid)) then
+		a = amount * math.max(1, subType)
+		repeat
+			local tmp = math.min(100, a)
+			item = doCreateItemEx(itemid, tmp)
+			if(doPlayerAddItemEx(cid, item, ignore) ~= RETURNVALUE_NOERROR) then
+				return 0, 0
+			end
+
+			a = a - tmp
+		until a == 0
+		return amount, 0
+	end
+
 	for i = 1, amount do
 		item = doCreateItemEx(itemid, subType)
 		if(itemid == ITEM_PARCEL) then
 			doAddContainerItem(item, ITEM_LABEL)
 		end
-		if(doPlayerAddItemEx(cid, item, ignoreCap) ~= RETURNVALUE_NOERROR) then
-			return a, 0, itemTable
+
+		if(doPlayerAddItemEx(cid, item, ignore) ~= RETURNVALUE_NOERROR) then
+			break
 		end
-		table.insert(itemTable, item)
+
 		a = i
 	end
 
-	return a, 0, itemTable
+	return a, 0
 end
 
 function doRemoveItemIdFromPosition(id, n, position)
@@ -170,6 +170,54 @@ end
 function selfGetPosition()
 	local t = getThingPosition(getNpcId())
 	return t.x, t.y, t.z
+end
+
+-- VoiceModule
+VoiceModule = {
+	voices = nil,
+	voiceCount = 0,
+	lastVoice = 0,
+	timeout = nil,
+	chance = nil,
+	npcHandler = nil
+}
+
+-- Creates a new instance of VoiceModule
+function VoiceModule:new(voices, timeout, chance)
+	local obj = {}
+	setmetatable(obj, self)
+	self.__index = self
+
+	obj.voices = voices
+	for i = 1, #obj.voices do
+		local voice = obj.voices[i]
+		if voice.yell then
+			voice.yell = nil
+			voice.talktype = TALKTYPE_YELL
+		else
+			voice.talktype = TALKTYPE_SAY
+		end
+	end
+
+	obj.voiceCount = #voices
+	obj.timeout = timeout or 10
+	obj.chance = chance or 25
+	return obj
+end
+
+function VoiceModule:init(handler)
+	return true
+end
+
+function VoiceModule:callbackOnThink()
+	if self.lastVoice < os.time() then
+		self.lastVoice = os.time() + self.timeout
+		if math.random(100) < self.chance  then
+			local voice = self.voices[math.random(self.voiceCount)]
+			npc:say(voice.text, voice.talktype)
+		end
+	end
+	return true
 end
 
 msgcontains = doMessageCheck

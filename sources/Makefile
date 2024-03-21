@@ -14,13 +14,13 @@ OBJDIR = objects
 CXXOBJECTS = $(CXXSOURCES:%.cpp=$(OBJDIR)/%.o)
 
 #-- FLAGS used in the source --#
-FLAGS = -D_REENTRANT -DBOOST_DISABLE_ASSERTS -DNDEBUG -D__USE_MYSQL__ -D__ROOT_PERMISSION__
+FLAGS = -D_REENTRANT -DBOOST_DISABLE_ASSERTS -DNDEBUG -D__USE_MYSQL__ -D__ROOT_PERMISSION__ -D__SSE2__
 
 
 CXXFLAGS =	-pipe								-march=native				-mtune=native \
 					$(INCLUDE) 					$(FLAGS)					-Wall \
-					-Wno-maybe-uninitialized 	-Ofast 						-std=c++11 \
-					-pthread 						-fno-strict-aliasing
+					-Wno-maybe-uninitialized 	-Ofast 						-ggdb3 \
+					-std=c++11					-pthread 					-fno-strict-aliasing
 
 
 #-- You may need to change the path of 'libtcmalloc_minimal' to the correct one for your distribution --#
@@ -29,7 +29,7 @@ LDFLAGS =		/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4 \
 					-llua5.1				-lxml2						-lboost_thread \
 					-lboost_system 	-lboost_filesystem		-lgmp \
 					-lmysqlclient		-lboost_regex				-lcrypto \
-					-lsqlite3				-g
+					-lsqlite3
 
 # SQLITE: databasesqlite.cpp	MYSQL: databasemysql.cpp
 # MYSQLPP: databasemysqlpp.cpp		PGSQL: databasepgsql.cpp
@@ -40,7 +40,7 @@ DATABASE = databasemysql.cpp
 # For OT_ADMIN, add admin.cpp admin.h
 EXTRASOURCES = 
 
-CXXSOURCES = 	        stats.cpp actions.cpp				allocator.cpp			baseevents.cpp			beds.cpp \
+CXXSOURCES = 			actions.cpp				allocator.cpp			baseevents.cpp			beds.cpp \
 						chat.cpp  				combat.cpp  			condition.cpp 				configmanager.cpp \
 						connection.cpp		container.cpp			creature.cpp  				creatureevent.cpp\
 						cylinder.cpp  			database.cpp 			databasemanager.cpp 	$(DATABASE) \
@@ -56,7 +56,7 @@ CXXSOURCES = 	        stats.cpp actions.cpp				allocator.cpp			baseevents.cpp			
 						protocolhttp.cpp  	protocollogin.cpp		protocolold.cpp  			quests.cpp \
 						raids.cpp  				rsa.cpp  				scheduler.cpp  			scriptmanager.cpp \
 						server.cpp  			spawn.cpp 				spectators.cpp			spells.cpp \
-						status.cpp 				talkaction.cpp			teleport.cpp 				textlogger.cpp \
+						stats.cpp 				status.cpp 				talkaction.cpp			teleport.cpp 				textlogger.cpp \
 						thing.cpp 				tile.cpp 					tools.cpp 					trashholder.cpp \
 						waitlist.cpp 			weapons.cpp 			vocation.cpp
 

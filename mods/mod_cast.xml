@@ -5,44 +5,65 @@
 			if(getCreatureNoMove(cid)) then
 				return false
 			end
-
+			
 			if(not hasPlayerClient(cid)) then
 				db.executeQuery("UPDATE `players` SET `broadcasting` = 0, `viewers` = 0 WHERE `id` = " .. getPlayerGUID(cid) .. " LIMIT 1")
+			else
+				db.executeQuery("UPDATE `players` SET `broadcasting` = 0, `viewers` = 0 WHERE `id` = " .. getPlayerGUID(cid) .. " LIMIT 1")
 			end
-
-			doCreatureSetStorage(cid, "save")
+			local data = getPlayerSpectators(cid)
+			data.broadcast = false
+			data.password = ""
+			doPlayerSetSpectators(cid, data)
 			return true
 		end
 	]]></event>
-	<globalevent name="viewers" interval="10000" event="script"><![CDATA[
+	<globalevent name="viewers" interval="60000" event="script"><![CDATA[
 		function onThink(interval)
 			local players = getPlayersOnline()
 			for _, pid in ipairs(players) do
 				local data = getPlayerSpectators(pid)
 				if(data.broadcast) then
-					db.executeQuery("UPDATE `players` set `viewers` = " .. table.maxn(data.names) .. " where `id` = " .. getPlayerGUID(pid) .. ";")
+					db.executeQuery("UPDATE `players` SET `viewers` = " .. table.maxn(data.names) .. " WHERE `id` = " .. getPlayerGUID(pid) .. ";")
 				end
 			end
 
 			return true
 		end
 	]]></globalevent>
-	<talkaction words="/live;!live" event="script"><![CDATA[
+	<talkaction words="/cast;!cast" event="script"><![CDATA[
 		function onSay(cid, words, param, channelId)
 			local t, data = string.explode(param, " ", 1), getPlayerSpectators(cid)
 			if(isInArray({'off', 'no', 'disable'}, t[1])) then
-				data.mutes = {}
-				data.broadcast = false
-				doPlayerSetSpectators(cid, data)
-
-				db.executeQuery("UPDATE `players` SET `broadcasting` = 0, `viewers` = 0 WHERE `id` = " .. getPlayerGUID(cid))
-				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have disabled your live stream.")
+				if tonumber(getPlayerStorageValue(cid, 45510)) > os.time() then return true end
+				if data.broadcast then
+					data.mutes = {}
+					data.broadcast = false
+					doPlayerSetSpectators(cid, data)
+					db.executeQuery("UPDATE `players` SET `broadcasting` = 0, `viewers` = 0 WHERE `id` = " .. getPlayerGUID(cid))
+					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have disabled your cast stream.")
+					setPlayerStorageValue(cid, 45510, os.time()+5)		-- storage de exhaust
+				else
+					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your cast stream already disabled.")
+					return true
+				end
 			elseif(isInArray({'on', 'yes', 'enable'}, t[1])) then
-				data.broadcast = true
-				doPlayerSetSpectators(cid, data)
-
-				db.executeQuery("UPDATE `players` SET `broadcasting` = 1 WHERE `id` = " .. getPlayerGUID(cid))
-				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have enabled your live stream.")
+				if tonumber(getPlayerStorageValue(cid, 45510)) > os.time() then return true end
+				if not data.broadcast then
+					data.broadcast = true
+					doPlayerSetSpectators(cid, data)
+					doPlayerOpenPrivateChannel(cid)
+					db.executeQuery("UPDATE `players` SET `broadcasting` = 1 WHERE `id` = " .. getPlayerGUID(cid))
+					if data.password == "" then -- Check cast Password
+						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have enabled your cast stream and are getting +"..getConfigValue('expPercentIncast').."% monsters experience.")
+					else
+						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have enabled your cast stream. Remove the password to gain +"..getConfigValue('expPercentIncast').."% monsters experience.")
+					end
+					setPlayerStorageValue(cid, 45510, os.time()+5)
+				else
+					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your cast stream already enabled.")
+					return true
+				end
 			elseif(isInArray({'show', 'count', 'see'}, t[1])) then
 				if(data.broadcast) then
 					local count = table.maxn(data.names)
@@ -224,23 +245,31 @@
 					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your chat is currently " .. (data.auth and "protected" or "unprotected") .. " from guests.")
 				end
 			elseif(isInArray({'password', 'guard'}, t[1])) then
+				if getPlayerStorageValue(cid, 45510) > os.time() then return true end
+				setPlayerStorageValue(cid, 45510, os.time()+5)
 				if(t[2]) then
 					if(isInArray({'off', 'no', 'disable'}, t[2])) then
 						if(data.password:len() ~= 0) then
-							db.executeQuery("UPDATE `players` SET `broadcasting` = `broadcasting` - 2 WHERE `id` = " .. getPlayerGUID(cid))
+							db.executeQuery("UPDATE `players` SET `broadcasting` = 1 WHERE `id` = " .. getPlayerGUID(cid))
 						end
-
 						data.password = ""
 						doPlayerSetSpectators(cid, data)
-						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have removed password for your stream.")
+						if data.broadcast then -- Check Cast On and password
+							doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have removed password for your cast stream and getting +"..getConfigValue('expPercentIncast').."% monsters experience.")
+						else
+							doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have removed password for your cast stream.")
+						end
 					else
 						if(data.password:len() ~= 0) then
-							db.executeQuery("UPDATE `players` SET `broadcasting` = `broadcasting` + 2 WHERE `id` = " .. getPlayerGUID(cid))
+							db.executeQuery("UPDATE `players` SET `broadcasting` = 2 WHERE `id` = " .. getPlayerGUID(cid))
 						end
-
 						data.password = string.trim(t[2])
 						doPlayerSetSpectators(cid, data)
-						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have set new password for your stream.")
+						if data.broadcast then
+							doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have set new password for your stream. Remove the password to gain +"..getConfigValue('expPercentIncast').."% monsters experience.")
+						else
+							doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have set new password for your stream.")
+						end
 					end
 				elseif(data.password ~= "") then
 					doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your stream is currently protected with password: " .. data.password .. ".")
@@ -250,7 +279,7 @@
 			elseif(isInArray({'status', 'info'}, t[1])) then
 				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your stream is currently " .. (data.broadcast and "enabled" or "disabled") .. ".")
 			else
-				doPlayerPopupFYI(cid, "Available commands:\n\n/live on - enables the stream\n/live off - disables the stream\n/live password {password} - sets a password on the stream\n/live password off - disables the password protection\n/live auth on - enables requirement of authentication on chat\n/live auth off - disables requirement of authentication on chat\n/live kick {name} - kick a spectator from your stream\n/live ban {name} - locks spectator IP from joining your stream\n/live unban {name} - removes banishment lock\n/live bans - shows banished spectators list\n/live mute {name} - mutes selected spectator from chat\n/live unmute {name} - removes mute\n/live mutes - shows muted spectators list\n/live show - displays the amount and nicknames of current spectators\n/live status - displays stream status")
+				doPlayerPopupFYI(cid, "Available commands:\n\n/cast on - enables the stream\n/cast off - disables the stream\n/cast password {password} - sets a password on the stream\n/cast password off - disables the password protection\n/cast auth on - enables requirement of authentication on chat\n/cast auth off - disables requirement of authentication on chat\n/cast kick {name} - kick a spectator from your stream\n/cast ban {name} - locks spectator IP from joining your stream\n/cast unban {name} - removes banishment lock\n/cast bans - shows banished spectators list\n/cast mute {name} - mutes selected spectator from chat\n/cast unmute {name} - removes mute\n/cast mutes - shows muted spectators list\n/cast show - displays the amount and nicknames of current spectators\n/cast status - displays stream status")
 			end
 
 			return true

@@ -82,7 +82,7 @@ class Spawn
 		Position getPosition() const {return centerPos;}
 		uint32_t getInterval() const {return interval;}
 
-		void startEvent();
+		void startEvent(MonsterType* mType);
 		void stopEvent();
 
 		void startup();
@@ -97,7 +97,7 @@ class Spawn
 		void checkSpawn();
 		bool spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& pos, Direction dir, bool startup = false);
 
-		bool findPlayer(const Position& pos);
+		bool findPlayer(const Position& pos, bool blocked);
 
 		//map of creatures in the spawn
 		typedef std::map<uint32_t, spawnBlock_t> SpawnMap;

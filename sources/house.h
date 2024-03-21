@@ -172,6 +172,7 @@ class House
 		void setOwner(uint32_t guid);
 		bool setOwnerEx(uint32_t guid, bool transfer);
 		uint32_t getOwner() const {return owner;}
+		uint32_t getOwnerAccountId() const {return ownerAccountId;}
 
 		void setPaidUntil(time_t paid) {paidUntil = paid;}
 		time_t getPaidUntil() const {return paidUntil;}
@@ -181,6 +182,9 @@ class House
 
 		void setPrice(uint32_t _price) {price = _price;}
 		uint32_t getPrice() const {return price;}
+
+		void setProtected(bool result) { isprotected = result;};
+		bool isProtected() const { return isprotected;};
 
 		void setLastWarning(time_t _lastWarning) {lastWarning = _lastWarning;}
 		time_t getLastWarning() const {return lastWarning;}
@@ -242,9 +246,9 @@ class House
 		void removePlayer(Player* player, bool ignoreRights);
 		void removePlayers(bool ignoreInvites);
 
-		bool guild, pendingTransfer;
+		bool guild, pendingTransfer, isprotected;
 		time_t paidUntil, lastWarning;
-		uint32_t id, owner, rentWarnings, rent, price, townId, size, syncFlags;
+		uint32_t id, owner, ownerAccountId, rentWarnings, rent, price, townId, size, syncFlags;
 		std::string name;
 		Position entry;
 

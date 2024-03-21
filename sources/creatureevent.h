@@ -58,7 +58,8 @@ enum CreatureEventType_t
 	CREATURE_EVENT_DEATH,
 	CREATURE_EVENT_PREPAREDEATH,
 	CREATURE_EVENT_EXTENDED_OPCODE, // otclient additional network opcodes
-	CREATURE_EVENT_MOVEITEM
+	CREATURE_EVENT_MOVEITEM,
+	CREATURE_EVENT_NOCOUNTFRAG
 };
 
 enum StatsChange_t
@@ -153,6 +154,7 @@ class CreatureEvent : public Event
 		uint32_t executePrepareDeath(Creature* creature, DeathList deathList);
 		uint32_t executeExtendedOpcode(Creature* creature, uint8_t opcode, const std::string& buffer);
 		uint32_t executeMoveItem(Creature* actor, Item* item, const Position& frompos, const Position& pos);
+		uint32_t executeNoCountFragArea(Creature* creature, Creature* target);		//by feetads
 		//
 
 	protected:

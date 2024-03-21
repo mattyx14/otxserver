@@ -114,12 +114,14 @@ bool Creature::canSee(const Position& myPos, const Position& pos, uint32_t viewR
 		//view is from 7 -> 0
 		if(pos.z > 7)
 			return false;
+		else if(std::abs(myPos.z - pos.z) > 1)
+			return false;
 	}
 	else if(myPos.z >= 8)
 	{
 		//we are underground (8 -> 15)
 		//view is +/- 2 from the floor we stand on
-		if(std::abs(myPos.z - pos.z) > 2)
+		if(std::abs(myPos.z - pos.z) > 1)
 			return false;
 	}
 
@@ -670,11 +672,16 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 
 	if(creature == followCreature || (creature == this && followCreature))
 	{
-		if(hasFollowPath)
+		if (hasFollowPath)
 		{
-			isUpdatingPath = true;
-			g_dispatcher.addTask(createTask(
-				boost::bind(&Game::updateCreatureWalk, &g_game, getID())));
+			if (getWalkDelay() <= 0)
+			{
+				isUpdatingPath = false;
+				g_dispatcher.addTask(createTask(
+					boost::bind(&Game::updateCreatureWalk, &g_game, getID())));
+			}
+			else
+				isUpdatingPath = true;
 		}
 
 		if(newPos.z != oldPos.z || !canSee(followCreature->getPosition()))
@@ -908,17 +915,35 @@ void Creature::changeMana(int32_t manaChange)
 		mana = std::max((int32_t)0, mana + manaChange);
 }
 
+// Reset System
+void Creature::changeMaxMana(int32_t manaChange)
+{
+	manaMax = manaChange;
+	if(mana > manaMax)
+		mana = manaMax;
+}
+
+void Creature::changeMaxHealth(int32_t healthChange)
+{
+	healthMax = healthChange;
+	if(health > healthMax)
+	{
+		health = healthMax;
+		g_game.addCreatureHealth(this);
+	}
+}
+
 bool Creature::getStorage(const std::string& key, std::string& value) const
 {
-	StorageMap::const_iterator it = storageMap.find(key);
-	if(it != storageMap.end())
+	auto it = storageMap.find(key);
+	if(it == storageMap.end())
 	{
-		value = it->second;
-		return true;
+		value = "-1";
+		return false;
 	}
 
-	value = "-1";
-	return false;
+	value = it->second;
+	return true;
 }
 
 bool Creature::setStorage(const std::string& key, const std::string& value)
@@ -1340,6 +1365,31 @@ bool Creature::onKilledCreature(Creature* target, DeathEntry& entry)
 	return ret;
 }
 
+std::string Creature::TransformExpToString(double& gainExp)
+{
+	// Set precision for all cases
+	std::stringstream sss;
+	const long long TRILLION = 1000000000000LL;
+	const long long BILLION = 1000000000LL;
+	const long long MILLION = 1000000LL;
+	const long long THOUSAND = 1000LL;
+
+	sss << "+" << std::fixed << std::setprecision(2);
+
+	if ((uint64_t)gainExp >= TRILLION)
+		sss << (double)(gainExp / TRILLION) << " Tri Exp";
+	else if ((uint64_t)gainExp >= BILLION)
+		sss << (double)(gainExp / BILLION) << " Bi Exp";
+	else if ((uint64_t)gainExp >= MILLION)
+		sss << (double)(gainExp / MILLION) << " Mi Exp";
+	else if ((uint64_t)gainExp >= THOUSAND)
+		sss << (double)(gainExp / THOUSAND) << "K Exp";
+	else
+		sss << (double)(gainExp) << " Exp";
+
+	return sss.str();
+}
+
 void Creature::onGainExperience(double& gainExp, Creature* target, bool multiplied)
 {
 	if(gainExp <= 0)
@@ -1372,8 +1422,22 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 			textList.insert(spectator);
 	}
 
-	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);
-	g_game.addStatsMessage(textList, MSG_EXPERIENCE_OTHERS, ss.str(), targetPos, details);
+	std::string sss;
+	if (g_config.getBool(ConfigManager::USEEXP_IN_K))
+		sss = TransformExpToString((double&)gainExp);
+
+	MessageDetails* details = NULL;
+	if(!g_config.getBool(ConfigManager::USEEXP_IN_K))
+	{
+		details = new MessageDetails((uint32_t)gainExp, (Color_t)color);
+		g_game.addStatsMessage(textList, MSG_EXPERIENCE_OTHERS, ss.str(), targetPos, details);
+	}
+	else
+	{
+		uint16_t colorExp = g_config.getNumber(ConfigManager::EXPERIENCE_COLOR);
+		g_game.addAnimatedText(targetPos, (Color_t)colorExp, sss);
+	}
+
 	if(Player* player = getPlayer())
 	{
 		ss.str("");
@@ -1381,7 +1445,8 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 		player->sendStatsMessage(MSG_EXPERIENCE, ss.str(), targetPos, details);
 	}
 
-	delete details;
+	if(details)
+		delete details;
 }
 
 void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool multiplied)
@@ -1416,8 +1481,22 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 			textList.insert(spectator);
 	}
 
-	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);
-	g_game.addStatsMessage(textList, MSG_EXPERIENCE_OTHERS, ss.str(), targetPos, details);
+	std::string sss;
+	if (g_config.getBool(ConfigManager::USEEXP_IN_K))
+		sss = TransformExpToString((double&)gainExp);
+
+	MessageDetails* details = NULL;
+	if(!g_config.getBool(ConfigManager::USEEXP_IN_K))
+	{
+		details = new MessageDetails((uint32_t)gainExp, (Color_t)color);
+		g_game.addStatsMessage(textList, MSG_EXPERIENCE_OTHERS, ss.str(), targetPos, details);
+	}
+	else
+	{
+		uint16_t colorExp = g_config.getNumber(ConfigManager::EXPERIENCE_COLOR);
+		g_game.addAnimatedText(targetPos, (Color_t)colorExp, sss);
+	}
+
 	if(Player* player = getPlayer())
 	{
 		ss.str("");
@@ -1425,7 +1504,8 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 		player->sendStatsMessage(MSG_EXPERIENCE, ss.str(), targetPos, details);
 	}
 
-	delete details;
+	if(details)
+		delete details;
 }
 
 void Creature::addSummon(Creature* creature)

@@ -39,6 +39,7 @@
 #include "textlogger.h"
 #include "outputmessage.h"
 
+#include "spectators.h"
 extern ConfigManager g_config;
 extern Game g_game;
 extern Chat g_chat;
@@ -60,8 +61,14 @@ Player::Player(const std::string& _name, ProtocolGame_ptr p):
 	if(client->getOwner())
 		p->setPlayer(this);
 
-	pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = outfitAttributes = sentChat = false;
+	// reset system
+	damageMultiplier = 1.0f;
+	reset = 0;
+
+	pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = outfitAttributes = sentChat = showLoot = false;
 	saving = true;
+	autoLootStatus = true;
+	autoMoneyCollect = true;
 
 	lastAttackBlockType = BLOCK_NONE;
 	chaseMode = CHASEMODE_STANDSTILL;
@@ -343,9 +350,35 @@ ItemVector Player::getWeapons() const
 			{
 				if(item->getAmmoType() != AMMO_NONE)
 				{
+					Item* weaponItem = item;
 					Item* ammoItem = getInventoryItem(SLOT_AMMO);
-					if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType() && ammoItem->getWeaponType() != WEAPON_DIST)
-						item = ammoItem;
+					if(ammoItem)
+					{
+						if(ammoItem->getAmmoType() == item->getAmmoType())
+							item = ammoItem;
+						else if(ammoItem->isContainer())
+						{
+							item = NULL;
+							if(Container* container = ammoItem->getContainer())
+							{
+								for(int32_t i = 0; i < (int32_t)container->size(); ++i)
+								{
+									Item* subitem = container->getItem(i);
+									if(!subitem){ break; }
+
+									if(weaponItem->getAmmoType() == subitem->getAmmoType() && container->getName() == "Quiver")
+									{
+										item = subitem;
+										break;
+									}
+									else
+										item = NULL;
+								}
+							}
+						}
+						else
+							break;
+					}
 					else
 						break;
 				}
@@ -1080,6 +1113,10 @@ void Player::sendCancelMessage(ReturnValue message) const
 			sendCancel("You are not invited.");
 			break;
 
+		case RET_HOUSEPROTECTED:
+			sendCancel("This house is protected, you cannot move or put or remove items!");
+			break;
+
 		case RET_CREATUREDOESNOTEXIST:
 			sendCancel("Creature does not exist.");
 			break;
@@ -1416,6 +1453,16 @@ void Player::onCreatureAppear(const Creature* creature)
 	if(creature != this)
 		return;
 
+	// use "protect mode" in players
+	Condition* condition = NULL;
+	if(this->getGroupId() < 3)
+	{
+		// ghost mode by protect login time
+		int32_t cooldown = g_config.getNumber(ConfigManager::LOGIN_PROTECTION) - 100;
+		if(this->getPlayer() && (condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_GAMEMASTER, cooldown, 0, false, GAMEMASTER_INVISIBLE)))
+			this->addCondition(condition);
+	}
+
 	Item* item = NULL;
 	for(int32_t slot = SLOT_FIRST; slot < SLOT_LAST; ++slot)
 	{
@@ -1558,19 +1605,13 @@ void Player::onCreatureAppear(const Creature* creature)
 	}
 
 	g_game.checkPlayersRecord(this);
-	if(!isGhost())
+
+	// update online status for players with ghost protection
+	IOLoginData::getInstance()->updateOnlineStatus(guid, true);
+	for(AutoList<Player>::iterator it = autoList.begin(); it != autoList.end(); ++it)
 	{
-		IOLoginData::getInstance()->updateOnlineStatus(guid, true);
-		for(AutoList<Player>::iterator it = autoList.begin(); it != autoList.end(); ++it)
+		if(it->second->canSeeCreature(this))
 			it->second->notifyLogIn(this);
-	}
-	else
-	{
-		for(AutoList<Player>::iterator it = autoList.begin(); it != autoList.end(); ++it)
-		{
-			if(it->second->canSeeCreature(this))
-				it->second->notifyLogIn(this);
-		}
 	}
 
 	if(g_config.getBool(ConfigManager::DISPLAY_LOGGING))
@@ -1593,17 +1634,30 @@ void Player::onFollowCreatureDisappear(bool isLogout)
 
 void Player::onChangeZone(ZoneType_t zone)
 {
-	if(!hasFlag(PlayerFlag_IgnoreProtectionZone))
+	if(zone == ZONE_PROTECTION && !hasFlag(PlayerFlag_IgnoreProtectionZone))
 	{
-		if(zone == ZONE_PROTECTION)
+		// Fix party system not used in PZ
+		if(isPartner(this))
 		{
-			if(attackedCreature)
-			{
-				setAttackedCreature(NULL);
-				onTargetDisappear(false);
-			}
+			party->updateExperienceMult();
+			party->canUseSharedExperience(this);
+		}
 
-			removeCondition(CONDITION_INFIGHT);
+		if(attackedCreature)
+		{
+			setAttackedCreature(NULL);
+			onTargetDisappear(false);
+		}
+
+		removeCondition(CONDITION_INFIGHT);
+	}
+	else
+	{
+		// Fix party system, reactivates out the PZ
+		if(isPartner(this))
+		{
+			party->updateExperienceMult();
+			party->canUseSharedExperience(this);
 		}
 	}
 
@@ -2407,7 +2461,14 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 	if(reflect && vocation->getReflect(combatType))
 		reflected += (int32_t)std::ceil((double)(damage * vocation->getReflect(combatType)) / 100.);
 
-	damage -= blocked;
+	if(g_config.getBool(ConfigManager::USE_MAX_ABSORBALL))
+	{
+		double maxAbsorb = (g_config.getDouble(ConfigManager::MAX_ABSORB_PERCENT) / 100.0);
+		damage -= (blocked > (damage*maxAbsorb) ? (damage*maxAbsorb) : blocked); 	//set max absorb = 80%
+	}
+	else
+		damage -= blocked;
+
 	if(damage <= 0)
 	{
 		damage = 0;
@@ -2436,6 +2497,8 @@ uint32_t Player::getIP() const
 
 bool Player::onDeath()
 {
+	int32_t reduceSkillLoss = 0;
+	Item* reduceItem = NULL;
 	Item *preventLoss = NULL, *preventDrop = NULL;
 	if(getZone() == ZONE_HARDCORE)
 	{
@@ -2466,6 +2529,14 @@ bool Player::onDeath()
 				preventLoss = item;
 				if(preventLoss != preventDrop && it.abilities->preventDrop)
 					preventDrop = item;
+			}
+
+			reduceItem = getEquippedItem((slots_t)i);
+			if(reduceItem)
+			{
+				int32_t tempReduceSkillLoss = reduceItem->getReduceSkillLoss();
+				if(tempReduceSkillLoss != 0)
+					reduceSkillLoss += tempReduceSkillLoss;
 			}
 		}
 	}
@@ -2521,6 +2592,9 @@ bool Player::onDeath()
 			reduction -= (double)level / opponents;
 
 		uint64_t lossExperience = (uint64_t)std::floor(reduction * getLostExperience()), currExperience = experience;
+		if(reduceSkillLoss > 0)
+			lossExperience = (lossExperience - (lossExperience * reduceSkillLoss / 100));
+
 		removeExperience(lossExperience, false);
 		double percent = 1. - ((double)(currExperience - lossExperience) / std::max((uint64_t)1, currExperience));
 
@@ -2539,6 +2613,9 @@ bool Player::onDeath()
 		}
 
 		manaSpent -= lostMana;
+		if(reduceSkillLoss > 0)
+			manaSpent = (manaSpent - (manaSpent * reduceSkillLoss / 100));
+
 		uint64_t nextReqMana = vocation->getReqMana(magLevel + 1);
 		if(nextReqMana > vocation->getReqMana(magLevel))
 			magLevelPercent = Player::getPercentLevel(manaSpent, nextReqMana);
@@ -2555,6 +2632,9 @@ bool Player::onDeath()
 
 			sumSkillTries += skills[i][SKILL_TRIES];
 			lostSkillTries = (uint64_t)std::ceil((percent * lossPercent[LOSS_SKILLS] / 100.) * sumSkillTries);
+			if(reduceSkillLoss > 0)
+				lostSkillTries = (lostSkillTries - (lostSkillTries * reduceSkillLoss / 100));
+
 			while(lostSkillTries > skills[i][SKILL_TRIES] && skills[i][SKILL_LEVEL] > 10)
 			{
 				lostSkillTries -= skills[i][SKILL_TRIES];
@@ -3826,7 +3906,7 @@ void Player::doAttacking(uint32_t)
 
 	if(const Weapon* _weapon = g_weapons->getWeapon(weapon))
 	{
-		if(!g_config.getBool(ConfigManager::CLASSIC_ATTACK_SPEED) && _weapon->interruptSwing() && !canDoAction())
+		if(_weapon->interruptSwing() && !canDoAction())
 		{
 			SchedulerTask* task = createSchedulerTask(getNextActionTime(),
 				boost::bind(&Game::checkCreatureAttack, &g_game, getID()));
@@ -4301,6 +4381,21 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		entry.setWar(enemy);
 	}
 
+	if (targetPlayer)
+	{
+		CreatureEventList killEvents = getCreatureEvents(CREATURE_EVENT_NOCOUNTFRAG);
+		for (const auto &event : killEvents)
+		{
+			if (!event->executeNoCountFragArea(this, target))
+				return true;
+		}
+		if(!g_config.getBool(ConfigManager::ADD_FRAG_SAMEIP))
+		{
+			if(this->getIP() == targetPlayer->getIP())
+				return true;
+		}
+	}
+
 	if(!entry.isJustify() || !hasCondition(CONDITION_INFIGHT))
 		return true;
 
@@ -4317,6 +4412,17 @@ bool Player::gainExperience(double& gainExp, Creature* target)
 {
 	if(!rateExperience(gainExp, target))
 		return false;
+
+	if(g_config.getBool(ConfigManager::CAST_EXP_ENABLED))
+	{
+		if(client->isBroadcasting() && client->getPassword().empty())
+		{
+			uint32_t extraExpCast = g_config.getNumber(ConfigManager::CAST_EXP_PERCENT);
+			gainExp *= 1 + ((extraExpCast && extraExpCast > 0) ? (extraExpCast/100.0) : 0);	
+		}
+	}
+	if(g_config.getBool(ConfigManager::RESET_SYSTEM_ENABLE) && getReset() > 0)
+		gainExp *= 1 + ((getReset()/100) * 2);	//extra 2% exp each reset
 
 	//soul regeneration
 	if(gainExp >= level)
@@ -4860,7 +4966,7 @@ void Player::manageAccount(const std::string &text)
 				trimString(managerString);
 				if(managerString.length() < 3)
 					msg << "The name is too short, please select a longer one.";
-				else if(managerString.length() > 30)
+				else if(managerString.length() > 20)
 					msg << "The name is too long, please select a shorter one.";
 				else if(!isValidName(managerString))
 					msg << "Your name seems to contain invalid symbols, please choose another one.";
@@ -5044,7 +5150,7 @@ void Player::manageAccount(const std::string &text)
 				trimString(managerString);
 				if(managerString.length() < 3)
 					msg << "That name is too short, please select a longer one.";
-				else if(managerString.length() > 30)
+				else if(managerString.length() > 20)
 					msg << "That name is too long, please select a shorter one.";
 				else if(!isValidName(managerString))
 					msg << "Your name seems to contain invalid symbols, please choose another one.";
@@ -5665,6 +5771,127 @@ void Player::sendCritical() const
 {
 	if(g_config.getBool(ConfigManager::DISPLAY_CRITICAL_HIT))
 		g_game.addAnimatedText(getPosition(), COLOR_DARKRED, "CRITICAL!");
+}
+
+void Player::addAutoLoot(uint16_t id)
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return;
+
+	if(checkAutoLoot(id))
+		return;
+
+	AutoLoot.push_back(id);
+}
+
+void Player::removeAutoLoot(uint16_t id)
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return;
+
+	if(!checkAutoLoot(id))
+		return;
+
+	for(std::list<uint16_t>::iterator it = AutoLoot.begin(); it != AutoLoot.end(); ++it)
+	{
+		if((*it) == id)
+		{
+			AutoLoot.erase(it); 
+			break;
+		}
+	}
+}
+
+bool Player::limitAutoLoot()
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return false;
+
+	std::list<uint16_t> list = getAutoLoot();
+	uint16_t max_items = g_config.getNumber(ConfigManager::AUTOLOOT_MAXITEM);
+	uint16_t lootsize = list.size();
+	std::string msg = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+	StringVec strVector = explodeString(msg, ";");
+	for(StringVec::iterator itt = strVector.begin(); itt != strVector.end(); ++itt)
+		--lootsize;
+
+	uint16_t max_allowed = isPremium() ? g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM) : g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE);
+	if (max_allowed > 0)
+		return lootsize >= max_allowed;
+	else
+		return lootsize >= max_items;
+
+	return false;
+}
+
+bool Player::checkAutoLoot(uint16_t id)
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return true;
+
+	if(Item::items[id].isContainer())
+		return true;
+
+	std::string msg = g_config.getString(ConfigManager::AUTOLOOT_BLOCKIDS);
+	StringVec strVector = explodeString(msg, ";");
+	for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
+	{
+		if(atoi((*it).c_str()) == id)
+			return true;
+	}
+
+	for(std::list<uint16_t>::iterator it = AutoLoot.begin(); it != AutoLoot.end(); ++it)
+	{
+		if((*it) == id)
+			return true;
+	}
+	return false;
+}
+
+void Player::clearAutoLoot()
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return;
+
+	std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+	StringVec strVector = explodeString(moneyIds, ";");
+	strVector.reserve(255);
+	for (std::list<uint16_t>::iterator it = AutoLoot.begin(); it != AutoLoot.end();)
+	{
+		// if it is money, the ID jumps to the next
+		if (std::find(strVector.begin(), strVector.end(), std::to_string(*it)) != strVector.end())
+		{
+			++it;
+			continue;
+		}
+
+		// if not, delete the item (erase everything except gold)
+		it = AutoLoot.erase(it);
+	}
+}
+
+bool Player::isMoneyAutoLoot(Item* item, uint32_t& count)
+{
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return false;
+
+	bool isMoney = false;
+	std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+	StringVec strVector = explodeString(moneyIds, ";");
+	for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
+	{
+		if(item->getID() == atoi((*it).c_str()))
+		{
+			isMoney = true;
+			break;
+		}
+	}
+
+	if(!isMoney)
+		return false;
+
+	count += item->getWorth();
+	return true;
 }
 
 bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)

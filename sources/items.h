@@ -158,7 +158,7 @@ class ItemType
 			id, clientId, maxItems, slotPosition, wieldPosition, speed, maxTextLength, writeOnceItemId, wareId,
 			premiumDays;
 
-		int32_t attack, criticalHitChance, extraAttack, defense, extraDefense, armor, breakChance, hitChance, maxHitChance,
+		int32_t attack, reduceSkillLoss, criticalHitChance, extraAttack, defense, extraDefense, armor, breakChance, hitChance, maxHitChance,
 			runeLevel, runeMagLevel, lightLevel, lightColor, decayTo, rotateTo, alwaysOnTopOrder;
 
 		int32_t extraAttackChance, extraDefenseChance, attackSpeedChance;

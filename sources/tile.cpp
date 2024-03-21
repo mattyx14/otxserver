@@ -607,13 +607,17 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 			if(monster->isImmune(combatType))
 				return RET_NOERROR;
 
-			//1) Monster is "strong" enough to handle the damage
-			//2) Monster is already afflicated by this type of condition
-			if(!hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags))
+			//2) Monster are able to walk over field type
+			//3) Being attacked while random stepping ignore field damages
+			if (hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags))
+			{
+				if (!(monster->canWalkOnFieldType(combatType) || monster->isIgnoringFieldDamage()))
+					return RET_NOTPOSSIBLE;
+			}
+			else
 				return RET_NOTPOSSIBLE;
 
-			return !monster->hasCondition(Combat::DamageToConditionType(combatType), -1, false) &&
-				(!monster->canPushItems() || !monster->hasRecentBattle()) ? RET_NOTPOSSIBLE : RET_NOERROR;
+			return RET_NOERROR;
 		}
 
 		if(const Player* player = creature->getPlayer())

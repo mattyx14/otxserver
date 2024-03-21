@@ -297,9 +297,20 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 		}
 	}
 
+	// can't attack at login
+	if(const Player* attackerP = attacker->getPlayer())
+	{
+		if(attackerP->checkLoginDelay())
+			return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
+	}
+
 	bool checkZones = false;
 	if(const Player* targetPlayer = target->getPlayer())
 	{
+		// can't attack players in login delay
+		if(targetPlayer->checkLoginDelay())
+			return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
+
 		if(!targetPlayer->isAttackable())
 			return RET_YOUMAYNOTATTACKTHISPLAYER;
 

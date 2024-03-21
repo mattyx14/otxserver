@@ -1207,10 +1207,10 @@ if(Modules == nil) then
 			return false
 		end
 
-		local backpack = 1988
-		local totalCost = amount * shopItem.buy
+		local subType, count = shopItem.subType or 0, amount
+		local backpack, backpackPrice, totalCost = 1988, 20, amount * shopItem.buy
 		if(inBackpacks) then
-			totalCost = totalCost + 20 or totalCost + (math.max(1, math.floor(amount / getContainerCapById(backpack))) * 20)
+			totalCost = totalCost + (math.max(1, math.floor(count / getContainerCapById(backpack))) * backpackPrice)
 		end
 
 		local parseInfo = {
@@ -1225,15 +1225,12 @@ if(Modules == nil) then
 			return false
 		end
 
-		local subType = shopItem.subType or 1
-		local a, b, item = doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
-		
+		local a, b = doNpcSellItem(cid, itemid, count, subType, ignoreCap, inBackpacks, backpack)
 		if(a < amount) then
 			local msgId = MESSAGE_NEEDMORESPACE
 			if(a == 0) then
 				msgId = MESSAGE_NEEDSPACE
 			end
-			
 
 			local msg = self.npcHandler:getMessage(msgId)
 			parseInfo[TAG_ITEMCOUNT] = a
@@ -1244,58 +1241,26 @@ if(Modules == nil) then
 			else
 				self.npcHandler.talkStart = os.time()
 			end
+
 			if(a > 0) then
-			
-				local prev_money = getPlayerMoney(cid)
-				local removeMoney = doPlayerRemoveMoney(cid, (a * shopItem.buy) + (b * 20), false)
-				
-				if removeMoney == true then
-					parseInfo[TAG_TOTALCOST] = a * shopItem.buy
-					local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
-					doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
-				else
-					for i = 1, #item do
-						doRemoveItem(item[i])
-					end
-					
-					local currentMoney = getPlayerMoney(cid)
-					if currentMoney ~= prev_money and  currentMoney < prev_money then -- Let's make sure the player did not pay for an item he did not receive.
-						doPlayerAddMoney(cid, math.abs(prev_money - currentMoney))
-					end
-					
-					doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You don't have enough space to receive the change when buying "..amount.. "x ".. getItemNameById(itemid).."!")
-				end
+				doPlayerRemoveMoney(cid, ((a * shopItem.buy) + (b * backpackPrice)))
 				return true
 			end
 
 			return false
-		else
-		
-			local prev_money = getPlayerMoney(cid)
-			
-			if doPlayerRemoveMoney(cid, totalCost, false) == true then
-				local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
-			else
-			
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You don't have enough space to receive the change when buying "..amount.. "x ".. getItemNameById(itemid).."!")
-				for i = 1, #item do
-					doRemoveItem(item[i])
-				end
-				
-				local currentMoney = getPlayerMoney(cid)
-				if currentMoney ~= prev_money and  currentMoney < prev_money then -- Let's make sure the player did not pay for an item he did not receive.
-					doPlayerAddMoney(cid, math.abs(prev_money - currentMoney))
-				end
-				
-			end
-			if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
-				self.npcHandler.talkStart[cid] = os.time()
-			else
-				self.npcHandler.talkStart = os.time()
-			end
-			return true
 		end
+
+		local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
+
+		doPlayerRemoveMoney(cid, totalCost)
+		if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
+			self.npcHandler.talkStart[cid] = os.time()
+		else
+			self.npcHandler.talkStart = os.time()
+		end
+
+		return true
 	end
 
 	-- Callback onSell() function. If you wish, you can change certain Npc to use your onSell().

@@ -613,38 +613,41 @@
 
 	<!-- Check Player Spells -->
 	<talkaction words="!spells;/spells" event="script"><![CDATA[
-		function onSay(cid, words, param)
-			local t = {}
-			for i = 0, getPlayerInstantSpellCount(cid) - 1 do
-				local spell = getPlayerInstantSpellInfo(cid, i)
-				if(spell.level ~= 0) then
-					if(spell.manapercent > 0) then
-						spell.mana = spell.manapercent .. "%"
-					end
-
-					table.insert(t, spell)
-				end
-			end
-
-			table.sort(t, function(a, b) return a.level < b.level end)
-			local text, prevLevel = "", -1
-			for i, spell in ipairs(t) do
-				local line = ""
-				if(prevLevel ~= spell.level) then
-					if(i ~= 1) then
-						line = "\n"
-					end
-
-					line = line .. "Spells for Level " .. spell.level .. "\n"
-					prevLevel = spell.level
-				end
-
-				text = text .. line .. "  " .. spell.words .. " - " .. spell.name .. " : " .. spell.mana .. "\n"
-			end
-
-			doShowTextDialog(cid, 2175, text)
-			return true
+		local useEmoteSpells = getConfigValue('emoteSpells')
+		if useEmoteSpells ~= true then
+			return doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "EmoteSpells system are Disabled by Admin!")
 		end
+		if getPlayerStorageValue(cid, 666) > os.time() then return true end
+		setPlayerStorageValue(cid, 666, os.time()+2)
+		local msg = string.lower(param)
+		if msg ~= "" then
+			if msg == "on" then
+				setPlayerStorageValue(cid, 35001, tonumber(1))
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Emote Spells ON: Message Spells Yellow Actived!")
+			elseif msg == "off" then
+				setPlayerStorageValue(cid, 35001, tonumber(0))
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Emote Spells OFF: Message Spells Orange Actived!")
+			elseif msg == "none" then
+				setPlayerStorageValue(cid, 35001, tonumber(2))
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Emote Spells NONE: Message Spells Disabled!")
+			end
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "[EmoteSpells]: EmoteSpells Changes.")
+		elseif msg == "" then
+			local sto = tonumber(getPlayerStorageValue(cid, 35001))
+			if sto == -1 then sto = 0 end
+			if sto == 0 then
+				setPlayerStorageValue(cid, 35001, tonumber(1))
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Emote Spells ON: Message Spells Yellow Actived!")
+			elseif sto == 1 then
+				setPlayerStorageValue(cid, 35001, tonumber(2))
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Emote Spells NONE: Message Spells Disabled!")
+			elseif sto == 2 then
+				setPlayerStorageValue(cid, 35001, tonumber(0))
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Emote Spells OFF: Message Spells Orange Actived!")
+			end
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "[EmoteSpells]: EmoteSpells Changes.")
+		end	
+		return true
 	]]></talkaction>
 
 	<!-- Check Members Guild inGame -->

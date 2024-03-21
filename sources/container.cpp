@@ -273,6 +273,9 @@ ReturnValue Container::__queryAdd(int32_t index, const Thing* thing, uint32_t co
 	if(item == this)
 		return RET_THISISIMPOSSIBLE;
 
+	if (getName() == "Quiver" && item->getAmmoType() == AMMO_NONE)
+		return RET_NOTENOUGHROOM;
+
 	if(const Container* container = item->getContainer())
 	{
 		for(const Cylinder* cylinder = getParent(); cylinder; cylinder = cylinder->getParent())

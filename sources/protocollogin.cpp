@@ -33,7 +33,6 @@
 #include "configmanager.h"
 #include "game.h"
 
-
 extern ConfigManager g_config;
 extern Game g_game;
 
@@ -220,8 +219,18 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	char motd[1300];
-	sprintf(motd, "%d\n%s", g_game.getMotdId(), g_config.getString(ConfigManager::MOTD).c_str());
-	output->addString(motd);
+	if (account.name == "10" && account.name != "0")
+	{
+		srand(time(NULL));
+		int random_number = std::rand();
+		sprintf(motd, "%d\nWelcome to cast system!\n\n Do you know you can use CTRL + ARROWS\n to switch casts?\n\nVocê sabia que pode usar CTRL + SETAS\n para alternar casts?", random_number);
+		output->addString(motd);
+	}
+	else
+	{
+		sprintf(motd, "%d\n%s", g_game.getMotdId(), g_config.getString(ConfigManager::MOTD).c_str());
+		output->addString(motd);
+	}
 
 	//Add char list
 	output->addByte(0x64);
@@ -233,6 +242,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			if (!it->second->isRemoved() && it->second->client->isBroadcasting())
 				players.push_back(it->second);
 		}
+
 		if (!players.size())
 			disconnectClient(0x0A, "There are no livestreams online right now.");
 		else
@@ -241,10 +251,32 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 			output->addByte(players.size());
 			for (PlayerVector::iterator it = players.begin(); it != players.end(); ++it)
 			{
+				char tVoc[3];
+				if ((*it)->getVocationId() == 1 || (*it)->getVocationId() == 5)
+					sprintf(tVoc, "MS");
+				else if ((*it)->getVocationId() == 2 || (*it)->getVocationId() == 6)
+					sprintf(tVoc, "ED");
+				else if ((*it)->getVocationId() == 3 || (*it)->getVocationId() == 7)
+					sprintf(tVoc, "RP");
+				else if ((*it)->getVocationId() == 4 || (*it)->getVocationId() == 8)
+					sprintf(tVoc, "EK");
+				else
+					sprintf(tVoc, "*");
+
+				std::string viewersStr;
+				// change search DB by size();
+				viewersStr = std::to_string((*it)->client->list().size());
+
 				std::ostringstream s;
+				s << "L.";
 				s << (*it)->getLevel();
+				s << " "; 
+				s << tVoc;
+				s << " | ";
+				s << viewersStr;
+				s << "/50";
 				if (!(*it)->client->check(password))
-					s << "*";
+					s << " *";
 
 				output->addString((*it)->getName());
 				output->addString(s.str());

@@ -114,6 +114,7 @@ enum AttrTypes_t
 	ATTR_SCRIPTPROTECTED = 42,
 	ATTR_DUALWIELD = 43,
 	ATTR_CRITICALHITCHANCE = 44,
+	ATTR_REDUCE_SKILL_LOSS = 45,
 	ATTR_ATTRIBUTE_MAP = 128
 };
 
@@ -256,6 +257,7 @@ class Item : virtual public Thing, public ItemAttributes
 		bool isDualWield() const;
 
 		int32_t getAttack() const;
+		int32_t getReduceSkillLoss() const;
 		int32_t getCriticalHitChance() const;
 		int32_t getExtraAttack() const;
 		int32_t getDefense() const;
@@ -416,6 +418,16 @@ inline int32_t Item::getAttack() const
 		return v;
 
 	return items[id].attack;
+}
+
+inline int32_t Item::getReduceSkillLoss() const
+{
+	bool ok;
+	int32_t v = getIntegerAttribute("reduceskillloss", ok);
+	if(ok)
+		return v;
+
+	return items[id].reduceSkillLoss;
 }
 
 inline int32_t Item::getExtraAttack() const

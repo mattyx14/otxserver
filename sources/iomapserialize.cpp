@@ -116,6 +116,13 @@ bool IOMapSerialize::loadHouses()
 		house->setLastWarning(result->getDataInt("lastwarning"));
 
 		house->setPaidUntil(result->getDataInt("paid"));
+
+		// Protect House
+		if(result->getDataInt("isprotected") == 1)
+			house->setProtected(true);
+		else
+			house->setProtected(false);
+
 		if(result->getDataInt("clear") == 1)
 			house->setPendingTransfer(true);
 
@@ -229,7 +236,7 @@ bool IOMapSerialize::saveHouse(Database* db, House* house)
 {
 	std::ostringstream query;
 	query << "UPDATE `houses` SET `owner` = " << house->getOwner() << ", `paid` = "
-		<< house->getPaidUntil() << ", `warnings` = " << house->getRentWarnings() << ", `lastwarning` = "
+		<< house->getPaidUntil() << ", `isprotected` = " << house->isProtected() << ", `warnings` = " << house->getRentWarnings() << ", `lastwarning` = "
 		<< house->getLastWarning() << ", `clear` = 0 WHERE `id` = " << house->getId() << " AND `world_id` = "
 		<< g_config.getNumber(ConfigManager::WORLD_ID) << db->getUpdateLimiter();
 	if(!db->query(query.str()))

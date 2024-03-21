@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <talkactions>
-	<!-- Community Managers -->
+	<!-- GOD -->
+	<talkaction log="yes" group="4" access="5" words="/additemip" event="script" value="additemip.lua"/>
+	<talkaction log="yes" group="4" access="3" words="/spy" event="script" value="spy.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/addskill;/upgrade" event="script" value="skill.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/attr;/edition" event="function" value="thingProporties"/>
 	<talkaction log="yes" group="4" access="3" words="/serverdiag" event="function" value="diagnostics"/>
@@ -33,13 +35,20 @@
 	<talkaction log="yes" group="4" access="3" words="/info" event="script" value="playerinfo.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/cliport;/squelch" event="script" value="gamemaster.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/ghost;/invisible" event="function" value="ghost"/>
-	<talkaction log="yes" group="4" access="3" words="/mute;/unmute" event="script" value="mute.lua"/>
+	<talkaction log="yes" group="4" access="3" words="!helpmute;/helpmute;!mute;/mute;/desmute;!unmute;/unmute;!desmute" event="script" value="mute.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/light" event="script" value="gamemaster.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/notations" event="script" value="notations.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/goto;!goto" event="script" value="teleportto.lua"/>
 	<talkaction log="yes" group="4" access="3" words="/baninfo" event="function" value="banishmentInfo"/>
 
 	<!-- Players -->
+	<talkaction words="/autoloot;!autoloot" event="function" value="autoloot"/>
+	<talkaction words="/houseprotect;!houseprotect" event="function" value="houseprotect"/>
+	<talkaction words="!reset;!resetar;/reset;/resetar" script="reset_system.lua"/>
+	<talkaction words="/resetcheck;!resetcheck;/resetinfo;!resetinfo"  event="script" value="resetcheck.lua"/>
+	<talkaction words="/mw;!mw"  event="script" value="mwchange.lua"/>
+	<talkaction words="/hpmp;!hpmp"  event="script" value="lifeinpercent.lua"/>
+	<talkaction words="/tradeoff;!tradeoff" event="script" value="tradeoff.lua"/>
 	<talkaction access="0-4" words="!frags;/frags" event="script" value="frags.lua"/>
 	<talkaction access="0-4" words="!online;/online" event="script" value="online.lua"/>
 	<talkaction access="0-4" words="!uptime;/uptime" event="script" value="uptime.lua"/>

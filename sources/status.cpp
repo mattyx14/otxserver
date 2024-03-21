@@ -127,8 +127,44 @@ void ProtocolStatus::sendStatusString()
 	xmlAddChild(root, p);
 
 	p = xmlNewNode(NULL,(const xmlChar*)"players");
-	sprintf(buffer, "%d", g_game.getPlayersWithMcLimit());
+
+	// This get function in game.cpp with limit = 4 to otservlist. Xinn can check here https://github.com/FeTads/otxserver/blob/a9bef7ac0fe7584a924a7426aae0f44ec372fe12/sources/game.cpp#L7081
+	//sprintf(buffer, "%d", g_game.getPlayersWithMcLimit());
+	std::map<uint32_t, uint32_t> mcLimit4;
+	std::vector<uint32_t> uniqueIp;
+	uint32_t count = 0;
+	uint32_t uniqueOnline = 0;
+	for (const auto& player : Player::autoList)
+	{
+		if (!player.second->isRemoved() && player.second->getIdleTime() < 900000 && player.second->getIP() != 0)
+		{
+			uint32_t ip = player.second->getIP();
+			auto it = mcLimit4.find(ip);
+			if (it == mcLimit4.end())
+			{
+				mcLimit4[ip] = 1;
+				count++;
+			}
+			// only 4 mc per IP
+			else if (it->second < 4)
+			{
+				it->second++;
+				count++;
+			}
+			// unique IP
+			if (std::find(uniqueIp.begin(), uniqueIp.end(), ip) == uniqueIp.end())
+			{
+				uniqueIp.push_back(ip);
+				++uniqueOnline;
+			}
+		}
+	}
+
+	sprintf(buffer, "%d", count);
 	xmlSetProp(p, (const xmlChar*)"online", (const xmlChar*)buffer);
+
+	sprintf(buffer, "%d", uniqueOnline);
+	xmlSetProp(p, (const xmlChar*)"unique", (const xmlChar*)buffer);
 
 	sprintf(buffer, "%d", (int32_t)g_config.getNumber(ConfigManager::MAX_PLAYERS));
 	xmlSetProp(p, (const xmlChar*)"max", (const xmlChar*)buffer);
@@ -136,8 +172,8 @@ void ProtocolStatus::sendStatusString()
 	sprintf(buffer, "%d", g_game.getPlayersRecord());
 	xmlSetProp(p, (const xmlChar*)"peak", (const xmlChar*)buffer);
 
-	sprintf(buffer, "%d", g_game.getUniquePlayersOnline());
-	xmlSetProp(p, (const xmlChar*)"unique_players", (const xmlChar*)buffer);
+	// this get function in game.cpp with limit = 1 by IP (Unique Players) to otservlist. Xinn can check here https://github.com/FeTads/otxserver/blob/a9bef7ac0fe7584a924a7426aae0f44ec372fe12/sources/game.cpp#L7108
+	//sprintf(buffer, "%d", g_game.getUniquePlayersOnline());
 
 	xmlAddChild(root, p);
 

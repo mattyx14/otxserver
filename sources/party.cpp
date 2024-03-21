@@ -29,6 +29,7 @@ extern ConfigManager g_config;
 Party::Party(Player* _leader)
 {
 	sharedExpActive = sharedExpEnabled = false;
+	currentExpMultiplier = 1;
 	if(_leader)
 	{
 		leader = _leader;
@@ -107,6 +108,9 @@ bool Party::leave(Player* player)
 	updateIcons(player);
 	clearPlayerPoints(player);
 
+	if (g_config.getBool(ConfigManager::PARTY_VOCATION_MULT))
+		updateExperienceMult();
+
 	char buffer[105];
 	sprintf(buffer, "%s has left the party.", player->getName().c_str());
 
@@ -115,6 +119,52 @@ bool Party::leave(Player* player)
 		disband();
 
 	return true;
+}
+
+void Party::updateExperienceMult()
+{
+	if (!sharedExpActive)
+	{
+		currentExpMultiplier = 1;
+		return;
+	}
+
+	int16_t sorc = 0;
+	int16_t druid = 0;
+	int16_t paladin = 0;
+	int16_t knight = 0;
+
+	if ((leader)->getVocationId() == 1 || (leader)->getVocationId() == 5) // sorc
+		sorc = 1;
+	else if ((leader)->getVocationId() == 2 || (leader)->getVocationId() == 6) // druid
+		druid = 1;
+	else if ((leader)->getVocationId() == 3 || (leader)->getVocationId() == 7) // paladin
+		paladin = 1;
+	else if ((leader)->getVocationId() == 4 || (leader)->getVocationId() == 8) // knight
+		knight = 1;
+
+
+	for (PlayerVector::iterator it = memberList.begin(); it != memberList.end(); ++it)
+	{
+		if ((*it)->getVocationId() == 1 || (*it)->getVocationId() == 5) // sorc
+			sorc = 1;
+		else if ((*it)->getVocationId() == 2 || (*it)->getVocationId() == 6) // druid
+			druid = 1;
+		else if ((*it)->getVocationId() == 3 || (*it)->getVocationId() == 7) // paladin
+			paladin = 1;
+		else if ((*it)->getVocationId() == 4 || (*it)->getVocationId() == 8) // knight
+			knight = 1;
+	}
+
+	int16_t addition = knight + druid + sorc + paladin;
+	if (addition == 1)
+		currentExpMultiplier = 1;
+	else if (addition == 2)
+		currentExpMultiplier = g_config.getDouble(ConfigManager::TWO_VOCATION_PARTY);
+	else if (addition == 3)
+		currentExpMultiplier = g_config.getDouble(ConfigManager::THREE_VOCATION_PARTY);
+	else if (addition == 4)
+		currentExpMultiplier = g_config.getDouble(ConfigManager::FOUR_VOCATION_PARTY);
 }
 
 bool Party::passLeadership(Player* player)
@@ -160,11 +210,15 @@ bool Party::join(Player* player)
 	sprintf(buffer, "%s has joined the party.", player->getName().c_str());
 	broadcastMessage(MSG_PARTY, buffer);
 
-	sprintf(buffer, "You have joined %s'%s party. Open the party channel to communicate with your companions.", leader->getName().c_str(), (leader->getName()[leader->getName().length() - 1] == 's' ? "" : "s"));
+	sprintf(buffer, "You have joined %s'%s party.\n", leader->getName().c_str(), (leader->getName()[leader->getName().length() - 1] == 's' ? "" : "s"));
 	player->sendTextMessage(MSG_PARTY, buffer);
 
 	updateSharedExperience();
 	updateIcons(player);
+
+	if (g_config.getBool(ConfigManager::PARTY_VOCATION_MULT))
+		updateExperienceMult();
+
 	return true;
 }
 
@@ -210,7 +264,7 @@ bool Party::invitePlayer(Player* player)
 	player->addPartyInvitation(this);
 
 	char buffer[150];
-	sprintf(buffer, "%s has been invited.%s", player->getName().c_str(), (!memberList.size() ? " Open the party channel to communicate with your members." : ""));
+	sprintf(buffer, "%s has been invited.%s", player->getName().c_str(), (!memberList.size() ? "\n(!party)" : ""));
 	leader->sendTextMessage(MSG_PARTY, buffer);
 
 	sprintf(buffer, "%s has invited you to %s party.", leader->getName().c_str(), (leader->getSex(false) ? "his" : "her"));
@@ -286,6 +340,10 @@ void Party::updateSharedExperience()
 	if(result == sharedExpEnabled)
 		return;
 
+	if (g_config.getBool(ConfigManager::PARTY_VOCATION_MULT))
+		updateExperienceMult();
+
+	updateExperienceMult();
 	sharedExpEnabled = result;
 	updateAllIcons();
 }
@@ -305,10 +363,10 @@ bool Party::setSharedExperience(Player* player, bool _sharedExpActive)
 		if(sharedExpEnabled)
 			leader->sendTextMessage(MSG_PARTY_MANAGEMENT, "Shared Experience is now active.");
 		else
-			leader->sendTextMessage(MSG_PARTY_MANAGEMENT, "Shared Experience has been activated, but some members of your party are inactive.");
+			leader->sendTextMessage(MSG_PARTY_MANAGEMENT, "Shared Experience has been activated.\n*Bonus Party*: Actived!");
 	}
 	else
-		leader->sendTextMessage(MSG_PARTY_MANAGEMENT, "Shared Experience has been deactivated.");
+		leader->sendTextMessage(MSG_PARTY_MANAGEMENT, "Shared Experience has been deactivated.\n*Bonus Party*: Disabled!");
 
 	updateAllIcons();
 	return true;
@@ -317,17 +375,25 @@ bool Party::setSharedExperience(Player* player, bool _sharedExpActive)
 void Party::shareExperience(double experience, Creature* target, bool multiplied)
 {
 	double shareExperience = experience;
-	if(experience >= (double)g_config.getNumber(ConfigManager::EXTRA_PARTY_LIMIT))
-		shareExperience += (experience * ((double)g_config.getNumber(ConfigManager::EXTRA_PARTY_PERCENT) / 100));
+	if(memberList.size() + 1 < 4 )
+		shareExperience /= memberList.size() + 1;
+	else if(memberList.size() + 1 >= 4 )
+	{
+		// fix downgrade with 5+ players in party shared
+		shareExperience = (shareExperience / ((memberList.size() + 1) * 0.5));
+	}
 
-	shareExperience /= memberList.size() + 1;
-	double tmpExperience = shareExperience; //we need this, as onGainSharedExperience increases the value
+	// we need this, as onGainSharedExperience increases the value
+	double tmpExperience = shareExperience * currentExpMultiplier;
 
 	leader->onGainSharedExperience(tmpExperience, target, multiplied);
 	for(PlayerVector::iterator it = memberList.begin(); it != memberList.end(); ++it)
 	{
-		tmpExperience = shareExperience;
-		(*it)->onGainSharedExperience(tmpExperience, target, multiplied);
+		if((*it)->getZone() != ZONE_PROTECTION)
+		{
+			tmpExperience = shareExperience * currentExpMultiplier;
+			(*it)->onGainSharedExperience(tmpExperience, target, multiplied);
+		}
 	}
 }
 
@@ -345,6 +411,10 @@ bool Party::canUseSharedExperience(const Player* player, uint32_t highestLevel/*
 				highestLevel = (*it)->getLevel();
 		}
 	}
+
+	// Fix pz zone don't use shared
+	if(player->getZone() == ZONE_PROTECTION)
+		return false;
 
 	if(player->getLevel() < (uint32_t)std::ceil((double)highestLevel * g_config.getDouble(
 		ConfigManager::PARTY_DIFFERENCE)) || !Position::areInRange(Position(

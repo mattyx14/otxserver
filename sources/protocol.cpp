@@ -65,35 +65,30 @@ OutputMessage_ptr Protocol::getOutputBuffer(int32_t size)
 void Protocol::XTEA_encrypt(OutputMessage& msg) const
 {
 	const uint32_t delta = 0x61C88647;
+	const uint32_t k[] = { key[0], key[1], key[2], key[3] };
 
-	// The message must be a multiple of 8
+	// Ensure message is a multiple of 8
 	size_t paddingBytes = msg.getLength() % 8;
-	if (paddingBytes != 0) {
+	if(paddingBytes != 0)
 		msg.addPaddingBytes(8 - paddingBytes);
-	}
 
 	uint8_t* buffer = msg.getOutputBuffer();
-	const size_t messageLength = msg.getLength();
-	size_t readPos = 0;
-	const uint32_t k[] = {key[0], key[1], key[2], key[3]};
-	while (readPos < messageLength) {
-		uint32_t v0;
-		memcpy(&v0, buffer + readPos, 4);
-		uint32_t v1;
-		memcpy(&v1, buffer + readPos + 4, 4);
+	const uint8_t* bufferEnd = buffer + msg.getLength();
+
+	while(buffer < bufferEnd)
+	{
+		uint32_t* v0 = reinterpret_cast<uint32_t*>(buffer);
+		uint32_t* v1 = reinterpret_cast<uint32_t*>(buffer + 4);
 
 		uint32_t sum = 0;
-
-		for (int32_t i = 32; --i >= 0;) {
-			v0 += ((v1 << 4 ^ v1 >> 5) + v1) ^ (sum + k[sum & 3]);
+		for(int32_t i = 0; i < 32; ++i)
+		{
+			*v0 += (((*v1 << 4) ^ (*v1 >> 5)) + *v1) ^ (sum + k[sum & 3]);
 			sum -= delta;
-			v1 += ((v0 << 4 ^ v0 >> 5) + v0) ^ (sum + k[(sum >> 11) & 3]);
+			*v1 += (((*v0 << 4) ^ (*v0 >> 5)) + *v0) ^ (sum + k[(sum >> 11) & 3]);
 		}
 
-		memcpy(buffer + readPos, &v0, 4);
-		readPos += 4;
-		memcpy(buffer + readPos, &v1, 4);
-		readPos += 4;
+		buffer += 8;
 	}
 }
 

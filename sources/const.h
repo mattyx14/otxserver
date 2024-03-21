@@ -425,7 +425,7 @@ enum FluidTypes_t
 	FLUID_SWAMP = FLUID_GREEN + 24,
 
 	FLUID_TEA = FLUID_BROWN + 32,
-	FLUID_MEAD = FLUID_BROWN + 40
+	FLUID_MEAD = FLUID_BROWN + 48
 };
 
 const uint8_t reverseFluidMap[] =

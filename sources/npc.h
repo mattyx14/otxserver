@@ -365,9 +365,8 @@ class Npc : public Creature
 		static uint32_t npcAutoID;
 		void setID() override
 		{
-			if(id == 0) {
+			if(id == 0)
 				id = npcAutoID++;
-			}
 		}
 
 		static Npc* createNpc(NpcType* nType);

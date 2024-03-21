@@ -349,9 +349,8 @@ class Game
 		uint32_t getMonstersOnline() {return (uint32_t)Monster::autoList.size();}
 		uint32_t getNpcsOnline() {return (uint32_t)Npc::autoList.size();}
 		uint32_t getCreaturesOnline() {return (uint32_t)autoList.size();}
-		uint32_t getPlayersWithMcLimit();
 
-		uint32_t getUniquePlayersOnline();
+		bool existMonsterByName(const std::string& name);
 
 		uint32_t getPlayersRecord() const {return playersRecord;}
 		void getWorldLightInfo(LightInfo& lightInfo);
@@ -477,7 +476,7 @@ class Game
 		  * \param pos Appear as sent from different position
 		  */
 		bool internalCreatureSay(Creature* creature, MessageClasses type, const std::string& text,
-			bool ghostMode, SpectatorVec* spectators = NULL, Position* pos = NULL, uint32_t statementId = 0);
+			bool ghostMode, SpectatorVec* spectators = NULL, Position* pos = NULL, uint32_t statementId = 0, bool isSpell = false, bool fakeChat = false);
 
 		bool internalStartTrade(Player* player, Player* partner, Item* tradeItem);
 		bool internalCloseTrade(Player* player);
@@ -547,8 +546,11 @@ class Game
 		bool playerRequestRemoveVip(const uint32_t& playerId, const uint32_t& guid);
 		bool playerTurn(const uint32_t& playerId, const Direction& dir);
 		bool playerRequestOutfit(const uint32_t& playerId);
+
+		std::string removeNonAlphabetic(const std::string& s);
+
 		bool playerSay(const uint32_t& playerId, const uint16_t& channelId, const MessageClasses& type,
-			const std::string& receiver, const std::string& text);
+			const std::string& receiver, const std::string& text, bool notify = true);
 		bool playerChangeOutfit(const uint32_t& playerId, const Outfit_t& outfit);
 		bool playerInviteToParty(const uint32_t& playerId, const uint32_t& invitedId);
 		bool playerJoinParty(const uint32_t& playerId, const uint32_t& leaderId);
@@ -680,15 +682,22 @@ class Game
 		int32_t getLightHour() const {return lightHour;}
 		void startDecay(Item* item);
 
+		void loadNamesFromXml();
+		uint32_t spawnDivider(MonsterType* mType = nullptr);
+
 #ifdef __GROUND_CACHE__
 		std::map<Item*, int32_t> grounds;
 #endif
 
+	void setCreatureSpeed(Creature* creature, int32_t speed);
+	//progressbar to otcv8
+	void startProgressbar(Creature* creature, uint32_t duration, bool ltr = true);
+
 	protected:
-		bool playerWhisper(Player* player, const std::string& text, const uint32_t& statementId);
-		bool playerYell(Player* player, const std::string& text, const uint32_t& statementId);
-		bool playerSpeakTo(Player* player, MessageClasses type, const std::string& receiver, const std::string& text, const uint32_t& statementId);
-		bool playerSpeakToChannel(Player* player, MessageClasses type, const std::string& text, const uint16_t& channelId, const uint32_t& statementId);
+		bool playerWhisper(Player* player, const std::string& text, const uint32_t& statementId, bool fakeChat = false);
+		bool playerYell(Player* player, const std::string& text, const uint32_t& statementId, bool fakeChat = false);
+		bool playerSpeakTo(Player* player, MessageClasses type, const std::string& receiver, const std::string& text, const uint32_t& statementId, bool notify = true, bool fakeChat = false);
+		bool playerSpeakToChannel(Player* player, MessageClasses type, const std::string& text, const uint16_t& channelId, const uint32_t& statementId, bool fakeChat = false);
 		bool playerSpeakToNpc(Player* player, const std::string& text);
 		bool playerReportRuleViolation(Player* player, const std::string& text);
 		bool playerContinueReport(Player* player, const std::string& text);
@@ -704,6 +713,8 @@ class Game
 		std::map<Item*, uint32_t> tradeItems;
 		AutoList<Creature> autoList;
 		RuleViolationsMap ruleViolations;
+
+		std::map<std::string, bool> monsterNamesMap_;
 
 		size_t checkCreatureLastIndex;
 		std::vector<Creature*> checkCreatureVectors[EVENT_CREATURECOUNT];

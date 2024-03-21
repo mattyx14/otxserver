@@ -7,7 +7,7 @@
 			and OTX Server 2.1.0 :: Version "Simple"
 
 	Codenamed
-		SNAPSHOT
+		Opportunity
 
 	Website
 		https://github.com/mattyx14/otxserver/tree/otxserv2/
@@ -19,22 +19,11 @@
 		OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 			Matt Gomez
 			Matheus Matias
+			Felipe Forte
 
 		Special Thanks(s)
 			The Forgotten - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/otland/forgottenserver/graphs/contributors/
-
-			The OTClient - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/edubart/otclient/graphs/contributors/
-
-			FORGOTTENSERVER-ORTS - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				Old: https://github.com/PrinterLUA/FORGOTTENSERVER-ORTS/graphs/contributors/
-				New: https://github.com/orts/server/graphs/contributors/
-
-			OpenTibia - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
-				https://github.com/opentibia/server/graphs/contributors/
-				Shivoc, Tliff, Haktivex, Fandoras, SimOne, mips_act, Primer, wrzasq, jakexblaster,
-				Remere, Kornholijo, Elf, edubart and Dalkon.
+				https://github.com/otland/tfs-old-svn/graphs/contributors
 
 			Old OTX Server 2 - C++ Programmer(s), Committer(s) and Data Directory Manager(s)
 				https://github.com/mattyx14/otxserver/graphs/contributors/
@@ -42,7 +31,68 @@
 				Leandro Brewster.
 
 	DEVELOPMENT STATUS
-		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.15 :: Version "SNAPSHOT"
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.16 :: Version "Opportunity"
+]
+
+[ OTX Server 2.16 :: Version "Opportunity"
+	- Added autoloot system
+	- Added experience in cast
+	- Added reduce skill loss
+	- Added life and mana in percentual
+	- Added monsterBoost system
+	- Added spawnDivider system
+	- Added fake chat
+	- Added cast spy system
+	- Added rename and delete player with illegal words
+	- Added cast arrows move
+	- Added loot channel
+	- Added reset system
+	- Added critical and dodge
+	- Added new formulas exp
+	- Added not counting frags in case of killing someone from the same IP
+	- Added discount money
+	- Added emoteSpells and effects can be enabled by player
+	- Added quiver support
+	- Customs features:
+		Change magic wall sprite
+		Change min level to use send private channel to lv 20
+	- Fix usage items(potions/tools)
+	- Fix configManager issues
+	- Fix house protect
+	- Fix max absorb percent
+	- Fix monsters can walk on the magic field
+		flags canWalkOnEnergy, canWalkOnFire, canWalkOnPoison
+	- Improvements chats usege
+	- Improvements login protect
+	- Improvements max connections
+	- Improvements party system
+	- Improvements player movements (pushDelay), look outfits
+	- Improvements protocol encrypt
+	- Improvements on login window
+
+	New LuaFunctions and events:
+		noCountFragArea(cid, target)
+		existMonsterByName(name)
+		doPlayerSendCastList(cid)
+		doPlayerOpenPrivateChannel(cid)
+		getOutfitIdByLooktype(looktype)
+		doCreateNpc(name, pos)
+		setHouseProtection(houseid, protected)
+		isHouseProtected(houseid)
+		setCreatureSpeed(cid)
+		sendPlayerProgressBar(cid, duration, leftToRight)	
+		doUpdatePlayerStats(cid)
+		isItemDoor(itemid)
+		doItemSetDuration(uid, duration)
+		getItemDurationTime(uid)
+		... data/lib/050-function.lua
+			low line #563
+			https://github.com/mattyx14/otxserver/blob/otxserv2/data/lib/050-function.lua#L563-L1609
+
+	Note:
+		The main improvement in this edition is to extend support to many functions that required maintenance.
+		Full use of DATA is recommended for better performance.
+		Using the robustness of version "SNAPSHOT"
 ]
 
 [ OTX Server 2.15 :: Version "SNAPSHOT"

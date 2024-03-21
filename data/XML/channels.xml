@@ -17,6 +17,7 @@
 	<channel id="6" name="Rook Trade" level="2" muted="120" conditionId="3" conditionMessage="You may only place one offer in two minutes.">
 		<vocation id="0"/>
 	</channel>
+	<channel id="15" active="no" logged="yes" name="Death Channel"/>
 	<channel id="7" name="RL-Chat"/>
 	<channel id="8" name="Party"/>
 	<channel id="9" name="Help" logged="yes"/>

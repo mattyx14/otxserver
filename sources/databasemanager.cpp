@@ -42,7 +42,7 @@ bool DatabaseManager::optimizeTables()
 			{
 				std::clog << "> Optimizing table: " << result->getDataString("TABLE_NAME") << "... ";
 				query << "OPTIMIZE TABLE `" << result->getDataString("TABLE_NAME") << "`;";
-				if(db->query(query.str()))
+				if (db->query(query.str()))
 					std::clog << "[success]" << std::endl;
 				else
 					std::clog << "[failure]" << std::endl;
@@ -1526,6 +1526,20 @@ uint32_t DatabaseManager::updateDatabase()
 			return 43;
 		}
 
+		case 43:
+		{
+			std::clog << "> Updating database to version 44... (FeTads Features)" << std::endl;
+			db->query("CREATE TABLE player_autoloot (id int NOT NULL AUTO_INCREMENT, player_id int NOT NULL, autoloot_list blob, PRIMARY KEY (id));");
+			db->query("CREATE TABLE `monster_boost` ( `id` int(11) NOT NULL AUTO_INCREMENT, `monster` varchar(255) NOT NULL DEFAULT '0', `loot` int(11) NOT NULL DEFAULT 0, `exp` int(11) NOT NULL DEFAULT 0, `date` timestamp NOT NULL DEFAULT current_timestamp(), PRIMARY KEY (id));");
+			db->query("CREATE TABLE IF NOT EXISTS `trade_off_offers` (`id` int(11) NOT NULL auto_increment, `player_id` int(11) NOT NULL, `type` int(1) NOT NULL DEFAULT '0', `item_id` int(11), `item_count` int(11) NOT NULL DEFAULT '1', `item_charges` int(11) NULL, `item_duration` int(11) NULL, `item_name` varchar(255), `item_trade` tinyint(1) NOT NULL DEFAULT '0', `cost` bigint(20) UNSIGNED NOT NULL, `cost_count` int(11) NOT NULL DEFAULT '1', `date` bigint(20), PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+			db->query("CREATE TABLE IF NOT EXISTS `trade_off_container_items` ( `offer_id` int(11) NOT NULL, `item_id` int(11), `item_charges` int(11) NULL, `item_duration` int(11) NULL, `count` int(11) DEFAULT '1') ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+			db->query("ALTER TABLE players ADD COLUMN reset INT(11) NOT NULL DEFAULT 0;");
+			db->query("ALTER TABLE `houses` ADD `isprotected` TINYINT(1) UNSIGNED NOT NULL DEFAULT TRUE;");
+			db->query("ALTER TABLE `trade_off_container_items` ADD KEY `offer_id` (`offer_id`);");
+			db->query("ALTER TABLE `trade_off_container_items` ADD CONSTRAINT `offer_id_fk` FOREIGN KEY (`offer_id`) REFERENCES `trade_off_offers`(`id`) ON DELETE CASCADE;");
+			registerDatabaseConfig("db_version", 44);
+			return 44;
+		}
 		default:
 			break;
 	}
@@ -1636,6 +1650,7 @@ void DatabaseManager::checkEncryption()
 					std::clog << "> Encryption set to SHA1." << std::endl;
 					break;
 				}
+
 				default:
 				{
 					std::clog << "> WARNING: You cannot switch from hashed passwords to plain text, change back the passwordType in config.lua to the passwordType you were previously using." << std::endl;

@@ -432,6 +432,16 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		case ATTR_REDUCE_SKILL_LOSS:
+		{
+			int32_t reduceSkillLoss;
+			if(!propStream.getLong((uint32_t&)reduceSkillLoss))
+				return ATTR_READ_ERROR;
+
+			setAttribute("recudeskillloss", reduceSkillLoss);
+			break;
+		}
+
 		case ATTR_EXTRAATTACK:
 		{
 			int32_t attack;
@@ -842,6 +852,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		subType = item->getSubType();
 
 	bool dot = true;
+	int32_t reduceSkillLoss = 0;
 	if(it.isRune())
 	{
 		if(!it.runeSpellName.empty())
@@ -951,6 +962,20 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 				s << ", ";
 
 			s << "AS: " << (item ? item->getAttackSpeed() : it.attackSpeed);
+		}
+
+		reduceSkillLoss = (item ? item->getReduceSkillLoss() : it.reduceSkillLoss);
+		if(reduceSkillLoss != 0)
+		{
+			if (begin)
+			{
+				begin = false;
+				s << " (";
+			}
+			else
+				s << ", ";
+
+			s << "SkillLoss: -" << reduceSkillLoss << "%";
 		}
 
 		if(it.hasAbilities())
@@ -1235,6 +1260,33 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 			begin = false;
 		}
 
+		if(it.isContainer())
+		{
+			if(begin)
+			{
+				begin = false;
+				s << " (";
+			}
+			else
+				s << ", ";
+
+			s << "Vol:" << (int32_t)it.maxItems << "";
+		}
+
+		reduceSkillLoss = (item ? item->getReduceSkillLoss() : it.reduceSkillLoss);
+		if(reduceSkillLoss != 0)
+		{
+			if (begin)
+			{
+				begin = false;
+				s << " (";
+			}
+			else
+				s << ", ";
+
+			s << "SkillLoss: -" << reduceSkillLoss << "%";
+		}
+
 		if(it.criticalHitChance || (item && item->getCriticalHitChance()))
 		{
 			if(begin)
@@ -1464,7 +1516,15 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		}
 	}
 	else if(it.isContainer())
-		s << " (Vol:" << (int32_t)it.maxItems << ")";
+	{
+		s << " (Vol:" << (int32_t)it.maxItems;
+
+		reduceSkillLoss = (item ? item->getReduceSkillLoss() : it.reduceSkillLoss);
+		if(reduceSkillLoss != 0)
+			s << ", SkillLoss: -" << reduceSkillLoss << "%";
+
+		s << ")";
+	}
 	else if(it.isKey())
 		s << " (Key:" << (item ? (int32_t)item->getActionId() : 0) << ")";
 	else if(it.isFluidContainer())
@@ -1517,6 +1577,24 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 	else if(it.levelDoor && item && item->getActionId() >= (int32_t)it.levelDoor && item->getActionId()
 		<= ((int32_t)it.levelDoor + g_config.getNumber(ConfigManager::MAXIMUM_DOOR_LEVEL)))
 		s << " for level " << item->getActionId() - it.levelDoor;
+
+	bool begin = true;
+	if(reduceSkillLoss == 0)
+	{
+		reduceSkillLoss = (item ? item->getReduceSkillLoss() : it.reduceSkillLoss);
+		if(reduceSkillLoss != 0)
+		{
+			if(begin)
+			{
+				begin = false;
+				s << " (";
+			}
+			else
+				s << ", ";
+
+			s << "SkillLoss: -" << reduceSkillLoss << "%";
+		}
+	}
 
 	if(it.showCharges)
 		s << " that has " << subType << " charge" << (subType != 1 ? "s" : "") << " left";
@@ -1588,7 +1666,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		s << ".";
 	}
 
-	if(lookDistance <= 1 && it.pickupable)
+	if(lookDistance <= 3 && it.pickupable)
 	{
 		std::string tmp;
 		if(!item)
@@ -1602,7 +1680,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 
 	if(item && !item->getSpecialDescription().empty())
 		s << std::endl << item->getSpecialDescription();
-	else if(!it.description.empty() && lookDistance <= 1)
+	else if(!it.description.empty() && lookDistance <= 3)
 		s << std::endl << it.description;
 
 	std::string str = s.str();

@@ -145,6 +145,7 @@ bool Spawns::parseSpawnNode(xmlNodePtr p, bool checkDuplicate)
 			}
 
 			interval *= 1000;
+			interval /= 2;
 			Position placePos = centerPos;
 			if(readXMLInteger(tmpNode, "x", intValue))
 				placePos.x += intValue;
@@ -229,10 +230,10 @@ bool Spawns::isInZone(const Position& centerPos, int32_t radius, const Position&
 		(pos.y >= centerPos.y - radius) && (pos.y <= centerPos.y + radius));
 }
 
-void Spawn::startEvent()
+void Spawn::startEvent(MonsterType* mType)
 {
 	if(!checkSpawnEvent)
-		checkSpawnEvent = g_scheduler.addEvent(createSchedulerTask(getInterval(), boost::bind(&Spawn::checkSpawn, this)));
+		checkSpawnEvent = g_scheduler.addEvent(createSchedulerTask(getInterval() / g_game.spawnDivider(mType), boost::bind(&Spawn::checkSpawn, this)));
 }
 
 Spawn::Spawn(const Position& _pos, int32_t _radius)
@@ -261,13 +262,20 @@ Spawn::~Spawn()
 	spawnMap.clear();
 }
 
-bool Spawn::findPlayer(const Position& pos)
+bool Spawn::findPlayer(const Position& pos, bool blocked)
 {
 	SpectatorVec list;
 	g_game.getSpectators(list, pos, false, true);
-	for (Creature* spectator : list) {
-		if (!spectator->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters))
+	for (Creature* spectator : list)
+	{
+		if (blocked && !spectator->getPlayer()->hasFlag(PlayerFlag_IgnoredByMonsters))
 			return true;
+		else if (!blocked && (spectator->getPlayer()->getSkull() == SKULL_WHITE))
+		{
+			// If allowBlockSpawn is false, monsters can be summoned on screen,
+			// this part is preventing infinite PK situations.
+			return true;
+		}
 	}
 	return false;
 }
@@ -336,16 +344,20 @@ void Spawn::checkSpawn()
 	}
 
 	uint32_t spawnCount = 0;
+	uint32_t interval = 1;
+
 	for(SpawnMap::iterator it = spawnMap.begin(); it != spawnMap.end(); ++it)
 	{
 		spawnBlock_t& sb = it->second;
+		interval = g_game.spawnDivider(sb.mType);
 		if(spawnedMap.count(it->first))
 			continue;
 
-		if(OTSYS_TIME() < sb.lastSpawn + sb.interval)
+		if(OTSYS_TIME() < sb.lastSpawn + (sb.interval / interval))
 			continue;
 
-		if(g_config.getBool(ConfigManager::ALLOW_BLOCK_SPAWN) && findPlayer(sb.pos))
+		bool block = g_config.getBool(ConfigManager::ALLOW_BLOCK_SPAWN);
+		if(findPlayer(sb.pos, block))
 		{
 			sb.lastSpawn = OTSYS_TIME();
 			continue;
@@ -359,7 +371,7 @@ void Spawn::checkSpawn()
 	}
 
 	if(spawnedMap.size() < spawnMap.size())
-		checkSpawnEvent = g_scheduler.addEvent(createSchedulerTask(getInterval(), boost::bind(&Spawn::checkSpawn, this)));
+		checkSpawnEvent = g_scheduler.addEvent(createSchedulerTask(getInterval() / interval, boost::bind(&Spawn::checkSpawn, this)));
 #ifdef __DEBUG_SPAWN__
 	else
 		std::clog << "[Notice] Spawn::checkSpawn stopped " << this << std::endl;

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
+	<!-- Telescope -->
+	<action actionid="13842" event="script" value="telescope.lua"/>
+
 	<!-- Default script, responsible for destroyItem -->
 	<action default="yes" event="script" value="default.lua"/>
 

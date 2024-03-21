@@ -34,11 +34,11 @@ extern Game g_game;
 
 House::House(uint32_t houseId)
 {
-	guild = pendingTransfer = false;
+	guild = pendingTransfer = isprotected = false;
 	name = "OTX headquarter (Flat 1, Area 42)";
 	entry = Position();
 	id = houseId;
-	rent = price = townId = paidUntil = owner = rentWarnings = lastWarning = 0;
+	rent = price = townId = paidUntil = owner = ownerAccountId = rentWarnings = lastWarning = 0;
 	syncFlags = HOUSE_SYNC_NAME | HOUSE_SYNC_TOWN | HOUSE_SYNC_SIZE | HOUSE_SYNC_PRICE | HOUSE_SYNC_RENT | HOUSE_SYNC_GUILD;
 }
 
@@ -119,7 +119,7 @@ bool House::setOwnerEx(uint32_t guid, bool transfer)
 
 	if(owner)
 	{
-		rentWarnings = paidUntil = 0;
+		ownerAccountId = rentWarnings = paidUntil = 0;
 		if(transfer)
 			clean();
 
@@ -174,6 +174,8 @@ void House::updateDoorDescription(std::string _name/* = ""*/, Door* door/* = NUL
 		else if(_name.empty())
 			IOLoginData::getInstance()->getNameByGuid(owner, _name);
 
+		// Protect House
+		ownerAccountId = IOLoginData::getInstance()->getAccountIdByName(_name);
 		sprintf(houseDescription, "It belongs to %s '%s'. %s owns this %s.", tmp.c_str(), name.c_str(), _name.c_str(), tmp.c_str());
 	}
 	else
@@ -322,6 +324,10 @@ AccessHouseLevel_t House::getHouseAccessLevel(const Player* player)
 {
 	if(!player)
 		return HOUSE_NO_INVITED;
+
+	// Protect House
+	if(g_config.getBool(ConfigManager::HOUSE_OWNED_BY_ACCOUNT) && player->getAccount() == ownerAccountId)
+		return HOUSE_OWNER;
 
 	if(player->hasFlag(PlayerFlag_CanEditHouses))
 		return HOUSE_OWNER;

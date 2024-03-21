@@ -1,6 +1,5 @@
 function onTradeAccept(cid, target, item, targetItem)
-	doPlayerSaveEx(target)
-	doPlayerSaveEx(cid)
-
+	doPlayerSave(target)
+	doPlayerSave(cid)
 	return true
 end

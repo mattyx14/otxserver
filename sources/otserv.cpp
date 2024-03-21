@@ -105,6 +105,12 @@ boost::condition_variable g_loaderSignal;
 boost::unique_lock<boost::mutex> g_loaderUniqueLock(g_loaderLock);
 std::list<std::pair<uint32_t, uint32_t> > serverIps;
 
+#ifndef _WIN32
+__attribute__ ((used)) void saveServer() {
+	g_game.setGameState(GAMESTATE_SHUTDOWN);
+}
+#endif
+
 bool argumentsHandler(StringVec args)
 {
 	StringVec tmp;
@@ -408,16 +414,6 @@ void otserv(StringVec, ServiceManager* services)
 #endif
 
 	g_game.setGameState(GAMESTATE_STARTUP);
-#if !defined(WINDOWS) && !defined(__ROOT_PERMISSION__)
-	if(!getuid() || !geteuid())
-	{
-		std::clog << "> WARNING: " "The " << SOFTWARE_NAME << " has been executed as super user! It is "
-			<< "recommended to run as a normal user." << std::endl << "Continue? (y/N)" << std::endl;
-		char buffer = OTSYS_getch();
-		if(buffer != 121 && buffer != 89)
-			startupErrorMessage("Aborted.");
-	}
-#endif
 
 	std::string luajit = "no";
 	std::string groundCache = "no";
@@ -616,10 +612,7 @@ void otserv(StringVec, ServiceManager* services)
 	else
 	{
 		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_PLAIN);
-		std::clog << ">>> Using plaintext encryption" << std::endl << std::endl
-			<< ">>> WARNING: This method is completely unsafe!" << std::endl
-			<< ">>> Please set encryptionType = \"sha1\" (or any other available method) in config.lua" << std::endl;
-		boost::this_thread::sleep(boost::posix_time::seconds(15));
+		std::clog << ">>> Using plaintext encryption ... (done)." << std::endl << std::endl;
 	}
 
 	std::clog << ">> Loading RSA key" << std::endl;

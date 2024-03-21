@@ -65,7 +65,7 @@ ItemType::ItemType()
 	ammoAction = AMMOACTION_NONE;
 	shootType = (ShootEffect_t)0;
 	magicEffect = MAGIC_EFFECT_NONE;
-	attack = extraAttack = 0;
+	attack = extraAttack = reduceSkillLoss = 0;
 	defense = extraDefense = 0;
 	attackSpeed = 0;
 	criticalHitChance = 0;
@@ -745,6 +745,11 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 				it.attackRndMin = intValue;
 			if(readXMLInteger(itemAttributesNode, "random_max", intValue))
 				it.attackRndMax = intValue;
+		}
+		else if(tmpStrValue == "reduceskillloss")
+		{
+			if(readXMLInteger(itemAttributesNode, "value", intValue))
+				it.reduceSkillLoss = intValue;
 		}
 		else if(tmpStrValue == "extraattack" || tmpStrValue == "extraatk")
 		{

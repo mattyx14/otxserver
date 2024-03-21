@@ -58,12 +58,18 @@ function onLogin(cid)
 		registerCreatureEvent(cid, "SkullCheck")
 	end
 
+	registerCreatureEvent(cid, "decayOnDepotThrow")
+	registerCreatureEvent(cid, "decayOnDepotTrade")
+	registerCreatureEvent(cid, "fragarea")
+	registerCreatureEvent(cid, "houseProtectTrash")
 	registerCreatureEvent(cid, "GuildEvents")
 	registerCreatureEvent(cid, "AdvanceSave")
 	registerCreatureEvent(cid, "recordIp")
 	registerCreatureEvent(cid, "partyAndGuildProtection")
 	registerCreatureEvent(cid, "PlayerTrade")
+	registerCreatureEvent(cid, "deathchannel")
 
-	doCreatureSetStorage(cid, "save", (os.time() + 120))
+	doPlayerOpenChannel(cid, 15)  --channel_death
+	doPlayerOpenChannel(cid, 0x10)  --loot channel
 	return true
 end
