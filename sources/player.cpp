@@ -1455,11 +1455,11 @@ void Player::onCreatureAppear(const Creature* creature)
 
 	// use "protect mode" in players
 	Condition* condition = NULL;
-	if(this->getGroupId() < 3)
+	if(!hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))		//if no has gamemaster privilegies to set ghost timer
 	{
 		// ghost mode by protect login time
 		int32_t cooldown = g_config.getNumber(ConfigManager::LOGIN_PROTECTION) - 100;
-		if(this->getPlayer() && (condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_GAMEMASTER, cooldown, 0, false, GAMEMASTER_INVISIBLE)))
+		if((condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_GAMEMASTER, cooldown, 0, false, GAMEMASTER_INVISIBLE)))
 			this->addCondition(condition);
 	}
 

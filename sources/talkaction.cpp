@@ -1342,7 +1342,7 @@ bool TalkAction::autoLoot(Creature* creature, const std::string&, const std::str
 				std::string message = "Tried to bug autoloot, come to me with /goto and /ghost";
 				for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
 				{
-					if(it->second->getGroupId() > 3)
+					if(it->second->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
 						g_game.playerSay(player->getID(), MSG_PRIVATE, MSG_PRIVATE, it->second->getName(), message, false);
 				}
 
@@ -1384,7 +1384,7 @@ bool TalkAction::autoLoot(Creature* creature, const std::string&, const std::str
 				std::string message = "Tried to bug autoloot, come to me with /goto and /ghost";
 				for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
 				{
-					if(it->second->getGroupId() > 3)
+					if(it->second->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
 						g_game.playerSay(player->getID(), MSG_PRIVATE, MSG_PRIVATE, it->second->getName(), message, false);
 				}
 
@@ -1446,7 +1446,7 @@ bool TalkAction::autoLoot(Creature* creature, const std::string&, const std::str
 				std::string message = "Tried to bug autoloot, come to me with /goto and /ghost";
 				for (AutoList<Player>::iterator it = Player::autoList.begin(); it != Player::autoList.end(); ++it)
 				{
-					if(it->second->getGroupId() > 3)
+					if(it->second->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
 						g_game.playerSay(player->getID(), MSG_PRIVATE, MSG_PRIVATE, it->second->getName(), message, false);
 				}
 				ss << "AutoLoot-> Added: None.  Erros: " << name << ".";
@@ -1512,7 +1512,7 @@ bool TalkAction::houseProtect(Creature* creature, const std::string&, const std:
 		return false;
 
 	uint32_t owner = house->getOwner();
-	if(!owner || (owner && player->getGUID() != owner && player->getGroupId() < 4))
+	if(!owner || (owner && player->getGUID() != owner && !player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)))
 	{
 		player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[House Protect]: Error! you are not owner this house!");
 		return false;

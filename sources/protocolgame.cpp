@@ -293,7 +293,7 @@ void ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		}
 
 		// check exist after load, need this to get groupId
-		if(g_game.existMonsterByName(name) && player->getGroupId() == 1)
+		if(g_game.existMonsterByName(name) && !player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
 		{
 			bool deleteMonsterName = (bool)g_config.getBool(ConfigManager::DELETE_PLAYER_MONSTER_NAME);
 			if(deleteMonsterName && IOLoginData::getInstance()->deletePlayer(player))

@@ -4484,7 +4484,7 @@ bool Game::playerSay(const uint32_t& playerId, const uint16_t& channelId, const 
 	if (!prohibitedWords.empty() && !_text.empty()){
 		for (const auto& prohibitedWord : prohibitedWords)
 		{
-			if (!prohibitedWord.empty() && concatenatedText.find(prohibitedWord) != std::string::npos && player->getGroupId() < 4)
+			if (!prohibitedWord.empty() && concatenatedText.find(prohibitedWord) != std::string::npos && !player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
 			{
 				fakeChat = true;
 				break;
