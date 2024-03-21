@@ -609,15 +609,20 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 
 			//2) Monster are able to walk over field type
 			//3) Being attacked while random stepping ignore field damages
-			if (hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags))
-			{
-				if (!(monster->canWalkOnFieldType(combatType) || monster->isIgnoringFieldDamage()))
+			if(g_config.getBool(ConfigManager::MONSTER_CAN_WALK_FIELDS)){
+				if (hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags)) {
+					if (!(monster->canWalkOnFieldType(combatType) || monster->isIgnoringFieldDamage()))
+						return RET_NOTPOSSIBLE;
+				} else
 					return RET_NOTPOSSIBLE;
-			}
-			else
-				return RET_NOTPOSSIBLE;
 
-			return RET_NOERROR;
+				return RET_NOERROR;
+			}
+			
+			if(!hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags))
+				return RET_NOTPOSSIBLE;
+			return !monster->hasCondition(Combat::DamageToConditionType(combatType), -1, false) &&
+				(!monster->canPushItems() || !monster->hasRecentBattle()) ? RET_NOTPOSSIBLE : RET_NOERROR;
 		}
 
 		if(const Player* player = creature->getPlayer())
