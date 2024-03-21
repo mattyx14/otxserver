@@ -1750,6 +1750,9 @@ void LuaInterface::registerFunctions()
 
 	//getTopCreature(pos)
 	lua_register(m_luaState, "getTopCreature", LuaInterface::luaGetTopCreature);
+	
+	//getBottomCreature(pos)
+	lua_register(m_luaState, "getBottomCreature", LuaInterface::luaGetBottomCreature);
 
 	//doRemoveItem(uid[, count = -1])
 	lua_register(m_luaState, "doRemoveItem", LuaInterface::luaDoRemoveItem);
