@@ -1454,12 +1454,13 @@ void Player::onCreatureAppear(const Creature* creature)
 		return;
 
 	// use "protect mode" in players
+	// if no has gamemaster privilegies to set ghost timer
 	Condition* condition = NULL;
-	if(this->getGroupId() < 3)
+	if(!hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges))
 	{
 		// ghost mode by protect login time
 		int32_t cooldown = g_config.getNumber(ConfigManager::LOGIN_PROTECTION) - 100;
-		if(this->getPlayer() && (condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_GAMEMASTER, cooldown, 0, false, GAMEMASTER_INVISIBLE)))
+		if((condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_GAMEMASTER, cooldown, 0, false, GAMEMASTER_INVISIBLE)))
 			this->addCondition(condition);
 	}
 
@@ -4421,8 +4422,10 @@ bool Player::gainExperience(double& gainExp, Creature* target)
 			gainExp *= 1 + ((extraExpCast && extraExpCast > 0) ? (extraExpCast/100.0) : 0);	
 		}
 	}
+
+	// extra 2% exp each reset
 	if(g_config.getBool(ConfigManager::RESET_SYSTEM_ENABLE) && getReset() > 0)
-		gainExp *= 1 + ((getReset()/100) * 2);	//extra 2% exp each reset
+		gainExp *= 1 + ((getReset()/100.0) * 2);
 
 	//soul regeneration
 	if(gainExp >= level)

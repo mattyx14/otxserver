@@ -66,9 +66,15 @@ all: $(BIN)
 clean:
 	$(RM) $(CXXOBJECTS) $(BIN)
 
+YELLOW = \033[1;33m
+GREEN = \033[0;32m
+NC = \033[0m
+
 $(BIN): $(CXXOBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $(CXXOBJECTS) $(LDFLAGS)
+	@printf "${GREEN}\n\n-----------[Successful compilation]-----------${NC}\n\n"
 
 $(OBJDIR)/%.o: %.cpp
-	@echo [CC] $@
-	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	@printf "\033[K${GREEN}[CC]${NC} $@ ${YELLOW}[compiling...]${NC}\r"
+	@$(CXX) -c $(CXXFLAGS) -o $@ $< && \
+		{ printf "\033[K${GREEN}[CC]${NC} $@ ${GREEN}[OK]${NC}\n" || true; }

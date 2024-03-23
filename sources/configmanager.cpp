@@ -143,6 +143,7 @@ bool ConfigManager::load()
 	m_confNumber[EXHAUST_POTION] = getGlobalNumber("exhaustPotionMiliSeconds", 1500);
 	// exhaust to spectator say
 	m_confNumber[EXHAUST_SPECTATOR_SAY] = getGlobalNumber("exhaust_spectatorSay", 3);
+	m_confBool[MONSTER_CAN_WALK_FIELDS] = getGlobalBool("monstersCanWalkInFields", true);
 
 	m_confString[MAP_AUTHOR] = getGlobalString("mapAuthor", "Unknown");
 	m_confNumber[LOGIN_TRIES] = getGlobalNumber("loginTries", 3);

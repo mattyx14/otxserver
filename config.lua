@@ -63,6 +63,8 @@
 	exhaustItemAtUsePotion = true
 	-- exhaust for the spectator speak again in seconds
 	exhaust_spectatorSay = 5
+	-- monster can walk in field if no have way to attack player
+	monstersCanWalkInFields = true
 
 	-- MySql
 	sqlType = "mysql"
