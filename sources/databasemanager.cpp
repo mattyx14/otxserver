@@ -1324,14 +1324,7 @@ uint32_t DatabaseManager::updateDatabase()
 
 		case 32:
 		{
-			std::clog << "> Updating database to version 33... (Modern Depot System ths no work on 9.60-)" << std::endl;
-			registerDatabaseConfig("db_version", 33);
-			return 33;
-		}
-
-		case 33:
-		{
-			std::clog << "> Updating database to version 34... (Market System this no work on 9.4+)" << std::endl;
+			std::clog << "> Updating database to version 33... (Market System this no work on 9.4+)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_MYSQL:
@@ -1354,13 +1347,13 @@ uint32_t DatabaseManager::updateDatabase()
 				default: break;
 			}
 
-			registerDatabaseConfig("db_version", 34);
-			return 34;
+			registerDatabaseConfig("db_version", 33);
+			return 33;
 		}
 
-		case 34:
+		case 33:
 		{
-			std::clog << "> Updating database to version 35... (warSystem SQLite)" << std::endl;
+			std::clog << "> Updating database to version 34... (warSystem SQLite)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_SQLITE:
@@ -1406,20 +1399,13 @@ uint32_t DatabaseManager::updateDatabase()
 					break;
 			}
 
-			registerDatabaseConfig("db_version", 35);
-			return 35;
+			registerDatabaseConfig("db_version", 34);
+			return 34;
 		}
 
-		case 35:
+		case 34:
 		{
-			std::clog << "> Updating database to version 36... (modernDepotSystem)" << std::endl;
-			registerDatabaseConfig("db_version", 36);
-			return 36;
-		}
-
-		case 36:
-		{
-			std::clog << "> Updating database to version 37... (loginHistoryIPSystem)" << std::endl;
+			std::clog << "> Updating database to version 35... (loginHistoryIPSystem)" << std::endl;
 			switch(db->getDatabaseEngine())
 			{
 				case DATABASE_ENGINE_MYSQL:
@@ -1447,98 +1433,32 @@ uint32_t DatabaseManager::updateDatabase()
 					break;
 			}
 
-			registerDatabaseConfig("db_version", 37);
-			return 37;
+			registerDatabaseConfig("db_version", 35);
+			return 35;
 		}
 
-		case 37:
+		case 35:
 		{
-			std::clog << "> Updating database to version 38... (offLineTrainingSystem)" << std::endl;
+			std::clog << "> Updating database to version 36... (offLineTrainingSystem)" << std::endl;
 
 			db->query("ALTER TABLE `players` ADD `offlinetraining_time` SMALLINT UNSIGNED NOT NULL DEFAULT 43200;");
 			db->query("ALTER TABLE `players` ADD `offlinetraining_skill` INT NOT NULL DEFAULT -1;");
-			registerDatabaseConfig("db_version", 38);
-			return 38;
+			registerDatabaseConfig("db_version", 36);
+			return 36;
 		}
 
-		case 38:
+		case 36:
 		{
-			std::clog << "> Updating database to version 39... (FIX)" << std::endl;
-			registerDatabaseConfig("db_version", 39);
-			return 39;
-		}
-
-		case 39:
-		{
-			std::clog << "> Updating database to version 40... (FIX)" << std::endl;
-			registerDatabaseConfig("db_version", 40);
-			return 40;
-		}
-
-		case 40:
-		{
-			std::clog << "> Updating database to version 41... (FIX)" << std::endl;
-			registerDatabaseConfig("db_version", 41);
-			return 41;
-		}
-
-		case 41:
-		{
-			std::clog << "> Updating database to version 42... (FIX)" << std::endl;
-			registerDatabaseConfig("db_version", 42);
-			return 42;
-		}
-
-		case 42:
-		{
-			std::clog << "> Updating database to version 43... (Cast & AntiDupe System)" << std::endl;
-			switch(db->getDatabaseEngine())
-			{
-				case DATABASE_ENGINE_MYSQL:
-				{
-					db->query("ALTER TABLE player_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE player_depotitems ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE tile_items ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE tile_store ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE house_data ADD serial VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE `players` ADD `broadcasting` tinyint(4) DEFAULT '0'");
-					db->query("ALTER TABLE `players` ADD `viewers` INT(1) DEFAULT '0'");
-					break;
-				}
-
-				case DATABASE_ENGINE_SQLITE:
-				{
-					db->query("ALTER TABLE `player_items` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE `player_depotitems` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE `tile_items` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE `tile_store` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE `house_data` ADD `serial` VARCHAR(255) NOT NULL DEFAULT '';");
-					db->query("ALTER TABLE `players` ADD `broadcasting` BOOLEAN(4) NOT NULL DEFAULT 0;");
-					db->query("ALTER TABLE `players` ADD `viewers` INTEGER(1) NOT NULL DEFAULT 0;");
-					break;
-				}
-
-				default:
-					break;
-			}
-
-			registerDatabaseConfig("db_version", 43);
-			return 43;
-		}
-
-		case 43:
-		{
-			std::clog << "> Updating database to version 44... (FeTads Features)" << std::endl;
+			std::clog << "> Updating database to version 37... (FeTads Features)" << std::endl;
 			db->query("CREATE TABLE player_autoloot (id int NOT NULL AUTO_INCREMENT, player_id int NOT NULL, autoloot_list blob, PRIMARY KEY (id));");
-			db->query("CREATE TABLE `monster_boost` ( `id` int(11) NOT NULL AUTO_INCREMENT, `monster` varchar(255) NOT NULL DEFAULT '0', `loot` int(11) NOT NULL DEFAULT 0, `exp` int(11) NOT NULL DEFAULT 0, `date` timestamp NOT NULL DEFAULT current_timestamp(), PRIMARY KEY (id));");
 			db->query("CREATE TABLE IF NOT EXISTS `trade_off_offers` (`id` int(11) NOT NULL auto_increment, `player_id` int(11) NOT NULL, `type` int(1) NOT NULL DEFAULT '0', `item_id` int(11), `item_count` int(11) NOT NULL DEFAULT '1', `item_charges` int(11) NULL, `item_duration` int(11) NULL, `item_name` varchar(255), `item_trade` tinyint(1) NOT NULL DEFAULT '0', `cost` bigint(20) UNSIGNED NOT NULL, `cost_count` int(11) NOT NULL DEFAULT '1', `date` bigint(20), PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 			db->query("CREATE TABLE IF NOT EXISTS `trade_off_container_items` ( `offer_id` int(11) NOT NULL, `item_id` int(11), `item_charges` int(11) NULL, `item_duration` int(11) NULL, `count` int(11) DEFAULT '1') ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 			db->query("ALTER TABLE players ADD COLUMN reset INT(11) NOT NULL DEFAULT 0;");
 			db->query("ALTER TABLE `houses` ADD `isprotected` TINYINT(1) UNSIGNED NOT NULL DEFAULT TRUE;");
 			db->query("ALTER TABLE `trade_off_container_items` ADD KEY `offer_id` (`offer_id`);");
 			db->query("ALTER TABLE `trade_off_container_items` ADD CONSTRAINT `offer_id_fk` FOREIGN KEY (`offer_id`) REFERENCES `trade_off_offers`(`id`) ON DELETE CASCADE;");
-			registerDatabaseConfig("db_version", 44);
-			return 44;
+			registerDatabaseConfig("db_version", 37);
+			return 37;
 		}
 		default:
 			break;

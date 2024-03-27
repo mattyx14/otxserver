@@ -195,22 +195,19 @@ bool argumentsHandler(StringVec args)
 			" at " << __DATE__ << " " << __TIME__ << ".\n"
 
 			"\n"
-			"\t\tFEATURES ON THIS BUILD:\n"
-				
-				"\t\tLua Version: " << LUA_RELEASE << "\n" <<
-				"\t\tXML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
-				"\t\tBOOST Version: " << BOOST_LIB_VERSION << "\n" <<
-				"\t\tLuaJIT: " << luajit << "\n" <<
-				"\t\tGroundCache: " << groundCache << "\n" <<
-				"\t\tServerDiag: " << serverDiag << "\n" <<
-				"\t\tLoginServer: " << loginServer << "\n" <<
-				"\t\tUseMySQL: " << useMySQL << "\n" <<
-				"\t\tUseSQLite: " << useSQLite << "\n" <<
-				"\t\tUsePostgreSQL: " << usePostgreSQL << "\n\n" <<
-				
+			"FEATURES ON THIS BUILD:\n"
+				"Lua Version: " << LUA_RELEASE << "\n" <<
+				"XML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
+				"BOOST Version: " << BOOST_LIB_VERSION << "\n" <<
+				"LuaJIT: " << luajit << "\n" <<
+				"ServerDiag: " << serverDiag << "\n" <<
+				"LoginServer: " << loginServer << "\n" <<
+				"UseMySQL: " << useMySQL << "\n" <<
+				"UseSQLite: " << useSQLite << "\n" <<
+				"UsePostgreSQL: " << usePostgreSQL << "\n\n" <<
 
 			"A server developed by: " SOFTWARE_DEVELOPERS ".\n"
-			"Visit for updates, support, and resources: " GIT_REPO "\n";
+			"Visit for updates, support, and resources: " GIT_REPO "\n\n";
 			return false;
 		}
 
@@ -467,22 +464,19 @@ void otserv(StringVec, ServiceManager* services)
 		#endif
 			" at " << __DATE__ << " " << __TIME__ << std::endl << std::endl <<
 
-			"\t\tFEATURES ON THIS BUILD: "<< std::endl << std::endl <<
-				
-				"\t\tLua Version: " << LUA_RELEASE << "\n" <<
-				"\t\tXML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
-				"\t\tBOOST Version: " << BOOST_LIB_VERSION << "\n" <<
-				"\t\tLuaJIT: " << luajit << "\n" <<
-				"\t\tGroundCache: " << groundCache << "\n" <<
-				"\t\tServerDiag: " << serverDiag << "\n" <<
-				"\t\tLoginServer: " << loginServer << "\n" <<
-				"\t\tUseMySQL: " << useMySQL << "\n" <<
-				"\t\tUseSQLite: " << useSQLite << "\n" <<
-				"\t\tUsePostgreSQL: " << usePostgreSQL << "\n\n" <<
-				
+			"FEATURES ON THIS BUILD: "<< std::endl <<
+				"Lua Version: " << LUA_RELEASE << "\n" <<
+				"XML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
+				"BOOST Version: " << BOOST_LIB_VERSION << "\n" <<
+				"LuaJIT: " << luajit << "\n" <<
+				"ServerDiag: " << serverDiag << "\n" <<
+				"LoginServer: " << loginServer << "\n" <<
+				"UseMySQL: " << useMySQL << "\n" <<
+				"UseSQLite: " << useSQLite << "\n" <<
+				"UsePostgreSQL: " << usePostgreSQL << "\n\n" <<
 
 			"A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl<<
-			"Visit for updates, support, and resources: " GIT_REPO << std::endl;
+			"Visit for updates, support, and resources: " GIT_REPO << std::endl << std::endl;;
 	std::ostringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
