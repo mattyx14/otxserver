@@ -93,6 +93,9 @@
 		The main improvement in this edition is to extend support to many functions that required maintenance.
 		Full use of DATA is recommended for better performance.
 		Using the robustness of version "SNAPSHOT"
+
+		It is strongly recommended to use MySQL only since the SQLite code and the update will not be present
+		in this edition as it will be removed.
 ]
 
 [ OTX Server 2.15 :: Version "SNAPSHOT"
