@@ -78,7 +78,7 @@ function onSay(cid, words, param, channel)
 			local duration
 			local durationClear
 
-			-- checkar se o item bloqueado está dentro de uma BP que o player está tentando colocar no tradeoff
+			-- check if the blocked item is within a BP that the player is trying to place in the tradeoff
 			if isContainer(item.uid) then
 				local getBlockedsInContainer = {}
 				for i=1, #config.blokedItems do

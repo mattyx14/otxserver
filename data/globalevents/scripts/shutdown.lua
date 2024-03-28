@@ -9,15 +9,15 @@ function prepareShutdown(minutes)
 	end
 
 	if(minutes == 1) then
-		doBroadcastMessage("O Server Save acontecerá em " .. minutes .. " minutos, por favor desloguem!")
+		doBroadcastMessage("Server Save will take place in " .. minutes .. " minutes, please disconnect!")
 		for _, pid in pairs (getPlayersOnline()) do
 			doPlayerSave(pid, true)
 		end
 	elseif(minutes <= 3) then
 		--doSaveServer()
-		doBroadcastMessage("[Salvando]: O Server Save acontecerá em " .. minutes .. " minutos, por favor desloguem!")
+		doBroadcastMessage("[Saving]: Server Save will take place in " .. minutes .. " minutes, please disconnect!")
 	else
-		doBroadcastMessage("O Server Save acontecerá em " .. minutes .. " minutos.")
+		doBroadcastMessage("Server Save will take place in " .. minutes .. " minutes.")
 	end
 
 	shutdownEvent = addEvent(prepareShutdown, 60000, minutes - 1)

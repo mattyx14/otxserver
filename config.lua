@@ -91,6 +91,8 @@
 	loginOnlyWithLoginServer = false
 	blockedVps = "google;amazon;amazon.com;oracle;azure;vultr;google.com"
 	permitedVps = 0
+
+	-- Account manager
 	accountManager = true
 	namelockManager = true
 	newPlayerChooseVoc = true
@@ -162,8 +164,8 @@
 	loginProtectionPeriod = 5 * 1000
 	diagonalPush = true
 	deathLostPercent = 10
-	stairhopDelay = 0.3 * 1000
-	pushCreatureDelay = 1 * 280
+	stairhopDelay = 1 * 1000
+	pushCreatureDelay = 1 * 1000
 	deathContainerId = 1987
 	gainExperienceColor = 215
 	addManaSpentInPvPZone = true
@@ -172,24 +174,18 @@
 	broadcastBanishments = false
 	maxViolationCommentSize = 60
 	violationNameReportActionType = 2
+	optionalWarAttackableAlly = true
+	fistBaseAttack = 7
+	criticalHitChance = 7
+	noDamageToGuildMates = false
+	noDamageToPartyMembers = true
 
-	--optional PVP
+	-- Optional PVP
 	optionalProtection = false
 
 	-- Corpse Block
 	-- If set to true, players won't be able to immediately throw fields on top of corpses after killing the monster
 	allowCorpseBlock = false
-
-	-- Battle
-	-- Note: classicAttackSpeed set to true makes players constantly attack at regular
-	-- intervals regardless of other actions such as item (potion) use. This setting
-	-- may cause high CPU usage with many players and potentially affect performance!
-	optionalWarAttackableAlly = true
-	fistBaseAttack = 7
-
-	criticalHitChance = 7
-	noDamageToGuildMates = false
-	noDamageToPartyMembers = true
 
 	-- Rook System
 	rookLevelTo = 5
@@ -200,7 +196,7 @@
 	-- Paralyze delay
 	paralyzeDelay = 1500
 
-	-- Depot and Miscellaneous
+	-- Depot
 	-- set playerFollowExhaust to 2000 if someone causes lags and kicks by following unreachable creatures too often
 	useCapacity = true
 	defaultDepotSize = 400
@@ -209,10 +205,9 @@
 	cleanItemsInMap = false
 	playerFollowExhaust = 500
 
-	-- 8.7x + config
+	-- 8.7x extras
 	monsterSpawnWalkback = false
 	allowBlockSpawn = true
-
 	classicEquipmentSlots = true
 
 	-- Summons and monsters
@@ -289,7 +284,7 @@
 	-- Item usage
 	timeBetweenActions = 200
 	timeBetweenExActions = 1000
-	timeBetweenCustomActions = 0
+	timeBetweenCustomActions = 500
 	checkCorpseOwner = true
 	hotkeyAimbotEnabled = true
 	maximumDoorLevel = 999
@@ -383,15 +378,15 @@
 	fairFightTimeRange = 60
 
 	-- Rates
-	experienceStages = true
-	rateExperience = 999
+	experienceStages = false
+	rateExperience = 5
 	rateExperienceFromPlayers = 0
 	levelToOfflineTraining = 8
-	rateSkill = 30
-	rateSkillOffline = 10
-	rateMagic = 15
-	rateMagicOffline = 5
-	rateLoot = 4
+	rateSkill = 1.0
+	rateSkillOffline = 0.5
+	rateMagic = 1.0
+	rateMagicOffline = 0.5
+	rateLoot = 2.0
 	rateSpawn = 1
 	rateSpawnMin = 1
 	rateSpawnMax = 2
