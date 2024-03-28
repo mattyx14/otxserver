@@ -887,7 +887,7 @@ function convertTimeNumber(a)
 	end
 end
 
-function mathtime(table) -- by dwarfer
+function mathtime(table)
 local unit = {"sec", "min", "hour", "day"}
 	for i, v in pairs(unit) do
 		if v == table[2] then
@@ -1243,7 +1243,7 @@ function warnPlayersWithStorage(storage, value, class, message)
 	end
 end
 
-function getPlayerStorageZero(cid, storage) -- By Killua
+function getPlayerStorageZero(cid, storage)
 	local sto = getPlayerStorageValue(cid, storage)
 	return sto > 0 and sto or 0
 end
@@ -1258,12 +1258,12 @@ function getPlayerIdByName(name)
 	return 0
 end
 
-function getStorageZero(storage) -- By Killua
+function getStorageZero(storage)
 	local sto = getGlobalStorageValue(storage)
 	return sto > 0 and sto or 0
 end
 
-function countTable(table) -- By Killua
+function countTable(table)
 	local y = 0
 	if type(table) == "table" then
 		for _ in pairs(table) do
@@ -1275,7 +1275,7 @@ function countTable(table) -- By Killua
 	return false
 end
 
-function getPlayersInArea(frompos, topos) -- By Killua
+function getPlayersInArea(frompos, topos)
 	local players_ = {}
 	local count = 1
 	for _, pid in pairs(getPlayersOnline()) do
@@ -1305,7 +1305,7 @@ function getMonstersInArea(pos1,pos2)
 	end
 end
 
-function getContainerItemsInfo(containerUid) -- By Killua
+function getContainerItemsInfo(containerUid)
 	local table = {}
 	if containerUid and containerUid > 0 then
 		local a = 0   
@@ -1320,7 +1320,7 @@ function getContainerItemsInfo(containerUid) -- By Killua
 	return false
 end
 
-function getTableEqualValues(table) -- By Killua
+function getTableEqualValues(table)
 	local ck = {}
 	local eq = {}
 	if type(table) == "table" then
@@ -1339,7 +1339,7 @@ function getTableEqualValues(table) -- By Killua
 	return false
 end
 
-function killuaGetItemLevel(uid) -- By Killua
+function killuaGetItemLevel(uid)
 	local name = getItemName(uid)
 	local pos = 0
 	for i = 1, #name do
@@ -1353,7 +1353,7 @@ function killuaGetItemLevel(uid) -- By Killua
 end
 
 k_table_storage_lib = {
-	filtrateString = function(str) -- By Killua
+	filtrateString = function(str)
 		local tb, x, old, last = {}, 0, 0, 0
 		local first, second, final = 0, 0, 0
 		if type(str) ~= "string" then
@@ -1376,7 +1376,7 @@ k_table_storage_lib = {
 		return tb
 	end,
 
-	translateIntoString = function(tb) -- By Killua
+	translateIntoString = function(tb)
 		local str = ""
 		if type(tb) ~= "table" then
 			return str
@@ -1389,23 +1389,23 @@ k_table_storage_lib = {
 	end
 }
 
-function setPlayerTableStorage(cid, key, value) -- By Killua
+function setPlayerTableStorage(cid, key, value)
 	return doPlayerSetStorageValue(cid, key, k_table_storage_lib.translateIntoString(value))
 end
 
-function getPlayerTableStorage(cid, key) -- By Killua
+function getPlayerTableStorage(cid, key)
 	return k_table_storage_lib.filtrateString(getPlayerStorageValue(cid, key))
 end
 
-function setGlobalTableStorage(key, value) -- By Killua
+function setGlobalTableStorage(key, value)
 	return setGlobalStorageValue(key, k_table_storage_lib.translateIntoString(value))
 end
 
-function getGlobalTableStorage(key) -- By Killua
+function getGlobalTableStorage(key)
 	return k_table_storage_lib.filtrateString(getGlobalStorageValue(key))
 end
 
-function printTableKillua(table, includeIndices,prnt) -- By Killua
+function printTableKillua(table, includeIndices,prnt)
 	if includeIndices == nil then
 		includeIndices = true
 	end
@@ -1437,7 +1437,7 @@ function printTableKillua(table, includeIndices,prnt) -- By Killua
 	return str
 end
 
-function checkString(str) -- By Killua
+function checkString(str)
 	local check = true
 	for i = 1, #str do
 		local letra = string.byte(str:sub(i,i))
@@ -1568,7 +1568,7 @@ function ResetSystem:updateHealthAndMana(pid)
 			if (newMaxHealth > oldMaxHealth) then
 				doCreatureAddHealth(pid, newMaxHealth - oldMaxHealth)
 			elseif (newMaxHealth < oldMaxHealth) then
-				doCreatureAddHealth(pid, 1) -- evita barra bugada
+				doCreatureAddHealth(pid, 1) -- avoids buggy bar
 			end
 
 			if (newMaxMana > oldMaxMana) then
@@ -1592,17 +1592,17 @@ function ResetSystem:execute(pid)
 	self:updateHealthAndMana(pid)
 	local bonus = self:getInfo(pid)
 	if (bonus) then
-		local message = "Você efetuou seu " .. self:getCount(pid) .. "° reset."
+		local message = "You made your " .. self:getCount(pid) .. "° reset."
 		if (bonus.damage_percent) then
-			message = message .. "\n+" .. bonus.damage_percent .. "% de dano"
+			message = message .. "\n+" .. bonus.damage_percent .. "% of damage"
 		end
 
 		if (bonus.hpmp_percent) then
-			message = message .. "\n+" .. bonus.hpmp_percent .. "% de vida e mana"
+			message = message .. "\n+" .. bonus.hpmp_percent .. "% of life and mana"
 		end
 
 		if (bonus.exp_percent) then
-			message = message .. "\n+" .. bonus.exp_percent .. "% de EXP"
+			message = message .. "\n+" .. bonus.exp_percent .. "% of EXP"
 		end
 		doPlayerSendTextMessage(pid, MESSAGE_EVENT_ADVANCE, message)
 	end
