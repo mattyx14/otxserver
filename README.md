@@ -20,7 +20,6 @@ With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more .
 * [Tibiaking](https://tibiaking.com/) - [Português]
 * [OTLand](https://otland.net/) - [English]
 * [Tibia Face](https://tibiaface.foroactivo.com/) - [Español]
-* [Black Tibia](https://tibiaface.foroactivo.com/) - [Español]
 
 ## Special Thanks OTServBR-Global
 - our partners OTServBR-Global.
@@ -32,11 +31,10 @@ With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more .
 - [slavidodo](https://github.com/slavidodo)
 - [mignari and our awesome tools](https://github.com/ottools)
 - [saiyansking/optimized_forgottenserver and contributors](https://github.com/SaiyansKing/optimized_forgottenserver)
-- [mattyx14/otxserver](https://github.com/mattyx14/otxserver) and contributors.
 - [otland/forgottenserver](https://github.com/otland/forgottenserver) and contributors.
 - if we forget someone, we apologize by forgot you. but you know, **forgot**tenserver.
 
-## Contacts:
+## Contacts OTX Server 2:
 - <b>Matty(English & Spanish):</b><br>
 Facebook: https://www.facebook.com/Mattyx14/<br>
 E-mail: darkylive@live.com.mx<br>
