@@ -3199,7 +3199,13 @@ void Game::playerEquipItem(uint32_t playerId, uint16_t itemId, bool hasTier /* =
 		} else {
 			const int32_t &slotPosition = equipItem->getSlotPosition();
 			// Checks if a two-handed item is being equipped in the left slot when the right slot is already occupied and move to backpack
-			if (slotPosition & SLOTP_LEFT && rightItem && (slotPosition & SLOTP_TWO_HAND)) {
+			if (
+				(slotPosition & SLOTP_LEFT)
+				&& (slotPosition & SLOTP_TWO_HAND)
+				&& rightItem
+				&& !(it.weaponType == WEAPON_DISTANCE)
+				&& !rightItem->isQuiver()
+			) {
 				ret = internalCollectManagedItems(player, rightItem, getObjectCategory(rightItem), false);
 			}
 
@@ -3744,6 +3750,19 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position &fromPos, uin
 			return;
 		}
 	}
+
+	const std::shared_ptr<Monster> monster = creature->getMonster();
+	if (monster && monster->isFamiliar() && creature->getMaster()->getPlayer() == player && (it.isRune() || it.type == ITEM_TYPE_POTION)) {
+		player->setNextPotionAction(OTSYS_TIME() + g_configManager().getNumber(EX_ACTIONS_DELAY_INTERVAL, __FUNCTION__));
+
+		if (it.isMultiUse()) {
+			player->sendUseItemCooldown(g_configManager().getNumber(EX_ACTIONS_DELAY_INTERVAL, __FUNCTION__));
+		}
+
+		player->sendCancelMessage(RETURNVALUE_CANNOTUSETHISOBJECT);
+		return;
+	}
+
 	Position toPos = creature->getPosition();
 	Position walkToPos = fromPos;
 	ReturnValue ret = g_actions().canUse(player, fromPos);

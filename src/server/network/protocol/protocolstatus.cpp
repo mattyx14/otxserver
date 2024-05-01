@@ -19,7 +19,7 @@
 #include "server/network/message/outputmessage.hpp"
 
 std::string ProtocolStatus::SERVER_NAME = "OTX Server";
-std::string ProtocolStatus::SERVER_VERSION = "6.2";
+std::string ProtocolStatus::SERVER_VERSION = "6";
 std::string ProtocolStatus::SERVER_DEVELOPERS = "OpenTibiaBR Organization. Based on: Canary (3.1.2). And data edited by: Mattyx14";
 
 std::map<uint32_t, int64_t> ProtocolStatus::ipConnectMap;
