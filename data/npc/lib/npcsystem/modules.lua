@@ -1294,7 +1294,15 @@ if(Modules == nil) then
 			subType = -1
 		end
 
-		if(doPlayerRemoveItem(cid, itemid, amount, subType, ignoreEquipped)) then
+		local alwaysIgnoreEquipped = getConfigValue('alwaysIgnoreEquippedWhenSelling') --always ignore equipped item when selling to npc
+		local sold = false
+		for a=1, amount do
+			if (doPlayerRemoveItem(cid, itemid, 1, subType, (alwaysIgnoreEquipped or ignoreEquipped))) then
+				amount = a
+				sold = true
+			end
+		end
+		if(sold) then
 			local msg = self.npcHandler:getMessage(MESSAGE_SOLD)
 			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
 

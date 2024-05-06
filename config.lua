@@ -65,6 +65,8 @@
 	exhaust_spectatorSay = 5
 	-- monster can walk in field if no have way to attack player
 	monstersCanWalkInFields = true
+	--always ignore equipped item when selling to npc
+	alwaysIgnoreEquippedWhenSelling = true
 
 	-- MySql
 	sqlType = "mysql"

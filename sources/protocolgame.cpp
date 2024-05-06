@@ -1546,7 +1546,8 @@ void ProtocolGame::parsePlayerSale(NetworkMessage &msg)
 	uint16_t id = msg.get<uint16_t>();
 	uint8_t count = msg.get<char>();
 	uint8_t amount = msg.get<char>();
-	bool ignoreEquipped = (msg.get<char>() != (char)0);
+	bool alwaysIgnore = g_config.getBool(ConfigManager::ALWAYS_IGNORE_EQUIPPED_SELLING);
+	bool ignoreEquipped = alwaysIgnore ? alwaysIgnore : (msg.get<char>() != (char)0);
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerSellItem, player->getID(), id, count, amount, ignoreEquipped);
 }
 
