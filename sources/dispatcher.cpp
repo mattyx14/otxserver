@@ -76,28 +76,27 @@ void Dispatcher::threadMain()
 
 void Dispatcher::addTask(Task* task, bool push_front /*= false*/)
 {
-	bool do_signal = false;
+    bool do_signal = false;
+    std::unique_lock<std::mutex> lock(taskLock); //bloquea o mutex com unique_lock
 
-	taskLock.lock();
+    if (getState() == THREAD_STATE_RUNNING) {
+        do_signal = taskList.empty();
 
-	if (getState() == THREAD_STATE_RUNNING) {
-		do_signal = taskList.empty();
+        if (push_front) {
+            taskList.push_front(task);
+        } else {
+            taskList.push_back(task);
+        }
+    } else {
+        delete task;
+    }
 
-		if (push_front) {
-			taskList.push_front(task);
-		} else {
-			taskList.push_back(task);
-		}
-	} else {
-		delete task;
-	}
+    lock.unlock();
 
-	taskLock.unlock();
-
-	// send a signal if the list was empty
-	if (do_signal) {
-		taskSignal.notify_one();
-	}
+    // Envie um sinal se a lista estiver vazia
+    if (do_signal) {
+        taskSignal.notify_one();
+    }
 }
 
 void Dispatcher::shutdown()
