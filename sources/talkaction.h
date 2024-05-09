@@ -93,6 +93,7 @@ class TalkAction : public Event
 		bool isSensitive() const {return m_sensitive;}
 
 		static bool isInputValid(const std::string& input);
+		static std::string trim(const std::string& str);
 
 		bool hasGroups() const {return !m_groups.empty();}
 		bool hasGroup(int32_t value) const {return std::find(m_groups.begin(), m_groups.end(), value) != m_groups.end();}
