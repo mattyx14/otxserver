@@ -5809,7 +5809,7 @@ bool Player::limitAutoLoot()
 
     uint16_t max_items = g_config.getNumber(ConfigManager::AUTOLOOT_MAXITEM);
     uint16_t max_allowed = isPremium() ? g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM) : g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE);
-    std::list<uint16_t>& lootList = getAutoLoot();
+    std::list<uint16_t> lootList = getAutoLoot();
     uint16_t lootsize = lootList.size();
 
     std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
@@ -5835,7 +5835,9 @@ bool Player::checkAutoLoot(uint16_t id)
     std::unordered_set<int> blockIdSet;
 
     for (const auto& str : blockStrVector) {
-        blockIdSet.insert(std::stoi(str));
+        if (!blockIds.empty() && !str.empty()) {
+            blockIdSet.insert(std::stoi(str));
+        }
     }
     if (blockIdSet.find(id) != blockIdSet.end())
         return false;
