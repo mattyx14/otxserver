@@ -1254,135 +1254,154 @@ bool TalkAction::isInputValid(const std::string& input)
 	return boost::regex_match(input, validInputRegex);
 }
 
-std::string TalkAction::trim(const std::string& str) {
-    size_t first = str.find_first_not_of(' ');
-    if (std::string::npos == first)
-        return str;
-    size_t last = str.find_last_not_of(' ');
-    return str.substr(first, (last - first + 1));
+std::string TalkAction::trim(const std::string& str)
+{
+	size_t first = str.find_first_not_of(' ');
+	if(std::string::npos == first)
+		return str;
+
+	size_t last = str.find_last_not_of(' ');
+	return str.substr(first, (last - first + 1));
 }
 
 bool TalkAction::autoLoot(Creature* creature, const std::string&, const std::string& param) {
-    Player* player = creature->getPlayer();
-    if (!player)
-        return false;
+	Player* player = creature->getPlayer();
+	if(!player)
+		return false;
 
-    std::stringstream info;
-    bool autoLootEnabled = g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM);
-    if (!autoLootEnabled) {
-        info << "Autoloot is disabled.";
-        player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
-        return true;
-    }
+	std::stringstream info;
+	bool autoLootEnabled = g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM);
+	if(!autoLootEnabled)
+	{
+		info << "Autoloot is disabled.";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
+		return true;
+	}
 
-    StringVec params = explodeString(param, ",");
-    std::string& command = params[0];
+	StringVec params = explodeString(param, ",");
+	std::string& command = params[0];
 
-    if (command == "on" || command == "off") {
-        bool enable = (command == "on");
-        player->updateStatusAutoLoot(enable);
-        info << "Autoloot Status: " << (enable ? "Enabled" : "Disabled") << ".";
-        player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
-        return true;
-    }
+	if(command == "on" || command == "off")
+	{
+		bool enable = (command == "on");
+		player->updateStatusAutoLoot(enable);
+		info << "Autoloot Status: " << (enable ? "Enabled" : "Disabled") << ".";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
+		return true;
+	}
 
-    if (command == "clear" || command == "clean") {
-        player->clearAutoLoot();
-        info << "All items removed from Autoloot.";
-        player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
-        return true;
-    }
+	if (command == "clear" || command == "clean")
+	{
+		player->clearAutoLoot();
+		info << "All items removed from Autoloot.";
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
+		return true;
+	}
 
-    if (command == "list" || command == "lista") {
+	if(command == "list" || command == "lista")
+	{
 		std::list<uint16_t> list = player->getAutoLoot();
 		std::string msg = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
 		StringVec strVector = explodeString(msg, ";");
 		std::unordered_set<uint16_t> moneyIds;
 
-		for (const auto& str : strVector) {
+		for (const auto& str : strVector)
+		{
 			uint16_t moneyId = std::stoi(str);
 			moneyIds.insert(moneyId);
 		}
 
 		uint16_t i = 1;
-		for (auto it = list.begin(); it != list.end(); ++it) {
-			if (moneyIds.find(*it) == moneyIds.end()) {
+		for (auto it = list.begin(); it != list.end(); ++it)
+		{
+			if(moneyIds.find(*it) == moneyIds.end())
 				info << i++ << ": " << ucwords(Item::items[*it].name) << std::endl;
-			}
 		}
-		player->sendFYIBox((info.str() == "" ? "Nada Adicionado." : info.str()));
+
+		player->sendFYIBox((info.str() == "" ? "Nothing Added." : info.str()));
 		list = player->getAutoLoot();
 		return true;
 	}
 
 
-    if (command == "money" && params.size() >= 2) {
+	if(command == "money" && params.size() >= 2)
+	{
 		std::string mode = params[1];
-		if (mode == "bank" || mode == "bag") {
+		if(mode == "bank" || mode == "bag")
+		{
 			bool isBank = (mode == "bank");
 			player->updateMoneyCollect(isBank);
 			info << "AutoMoney Collect Mode: " << (isBank ? "Bank" : "Bag") << ".";
 			player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, info.str());
 			return true;
 		}
-    }
+	}
 
-    if (command == "add" || command == "remove") {
-        bool adding = (command == "add");
-        std::stringstream actionMsg, errorMsg;
-        uint8_t successCount = 0, errorCount = 0;
+	if(command == "add" || command == "remove")
+	{
+		bool adding = (command == "add");
+		std::stringstream actionMsg, errorMsg;
+		uint8_t successCount = 0, errorCount = 0;
 
-        for (size_t i = 1; i < params.size(); ++i) {
-            std::string itemName = trim(params[i]);
-            int32_t itemId = Item::items.getItemIdByName(itemName);
-            if (itemId > 0) {
-                if (adding && !player->checkAutoLoot(itemId) && !player->limitAutoLoot()) {
-                    player->addAutoLoot(itemId);
-                    actionMsg << (successCount > 0 ? ", " : "") << itemName;
-                    ++successCount;
-                } else if (!adding && player->checkAutoLoot(itemId)) {
-                    player->removeAutoLoot(itemId);
-                    actionMsg << (successCount > 0 ? ", " : "") << itemName;
-                    ++successCount;
-                }
-            } else {
-                errorMsg << (errorCount > 0 ? ", " : "") << itemName;
-                ++errorCount;
-            }
-        }
+		for(size_t i = 1; i < params.size(); ++i)
+		{
+			std::string itemName = trim(params[i]);
+			int32_t itemId = Item::items.getItemIdByName(itemName);
+			if (itemId > 0)
+			{
+				if(adding && !player->checkAutoLoot(itemId) && !player->limitAutoLoot())
+				{
+					player->addAutoLoot(itemId);
+					actionMsg << (successCount > 0 ? ", " : "") << itemName;
+					++successCount;
+				} else if(!adding && player->checkAutoLoot(itemId))
+				{
+					player->removeAutoLoot(itemId);
+					actionMsg << (successCount > 0 ? ", " : "") << itemName;
+					++successCount;
+				}
+			}
+			else
+			{
+				errorMsg << (errorCount > 0 ? ", " : "") << itemName;
+				++errorCount;
+			}
+		}
 
-        std::string actionStr = (adding ? "Added" : "Removed");
-        info << "Autoloot-> " << actionStr << ": " << (successCount > 0 ? actionMsg.str() : "None") 
-             << ". Errors: " << (errorCount > 0 ? errorMsg.str() : "None") << ".";
-        player->sendTextMessage(adding ? MSG_STATUS_CONSOLE_RED : MSG_STATUS_CONSOLE_ORANGE, info.str());
-        if (player->limitAutoLoot() && !player->isPremium()) {
-            player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[AUTOLOOT]: You reached the maximum items in autoloot, buy Premium to unlock more slots.");
-        }
-        return true;
-    }
+		std::string actionStr = (adding ? "Added" : "Removed");
+		info << "Autoloot-> " << actionStr << ": " << (successCount > 0 ? actionMsg.str() : "None") 
+			<< ". Errors: " << (errorCount > 0 ? errorMsg.str() : "None") << ".";
+		player->sendTextMessage(adding ? MSG_STATUS_CONSOLE_RED : MSG_STATUS_CONSOLE_ORANGE, info.str());
 
-    // Display help or information about autoloot
+		if(player->limitAutoLoot() && !player->isPremium())
+			player->sendTextMessage(MSG_STATUS_CONSOLE_RED, "[AUTOLOOT]: You reached the maximum items in autoloot, buy Premium to unlock more slots.");
+
+		return true;
+	}
+
+	// Display help or information about autoloot
 	std::list<uint16_t> list = player->getAutoLoot();
 	uint16_t lootsize = list.size();
 	uint16_t max_allowed = player->isPremium() ? g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM) : g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE);
-    info << "_____Perfect AutoLoot System_____\n\n"
-         << "AutoLoot Status: " << player->statusAutoLoot() << "\n"
-         << "AutoMoney Mode: " << player->statusAutoMoneyCollect() << "\n\n"
-         << "Commands:\n"
-         << "!autoloot on/off\n"
-         << "!autoloot money, bank/bag\n"
-         << "!autoloot add, item name, item name, ...\n"
-         << "!autoloot remove, item name, item name, ...\n"
-         << "!autoloot list\n"
-         << "!autoloot clear\n"
-		 << "\n------------------------------"
-		 << "\nSlots usados: " << lootsize << "/" << max_allowed
-		 << "\n-----------------------------\n\n"
-		 << "Free Account slots: " << g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE) << "\nPremium Account Slots: " << g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM);
-    player->sendFYIBox(info.str());
-    return true;
-}
 
+	info << "_____Perfect AutoLoot System_____\n\n"
+		<< "AutoLoot Status: " << player->statusAutoLoot() << "\n"
+		<< "AutoMoney Mode: " << player->statusAutoMoneyCollect() << "\n\n"
+		<< "Commands:\n"
+		<< "!autoloot on/off\n"
+		<< "!autoloot money, bank/bag\n"
+		<< "!autoloot add, item name, item name, ...\n"
+		<< "!autoloot remove, item name, item name, ...\n"
+		<< "!autoloot list\n"
+		<< "!autoloot clear\n"
+		<< "\n------------------------------"
+		<< "\nSlots used: " << lootsize << "/" << max_allowed
+		<< "\n-----------------------------\n\n"
+		<< "Free Account slots: " << g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE) << "\nPremium Account Slots: " << g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM);
+
+	player->sendFYIBox(info.str());
+	return true;
+}
 
 bool TalkAction::houseProtect(Creature* creature, const std::string&, const std::string& param)
 {

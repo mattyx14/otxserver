@@ -38,18 +38,21 @@ void Dispatcher::threadMain()
 	std::unique_lock<std::mutex> taskLockUnique(taskLock, std::defer_lock);
 	std::chrono::high_resolution_clock::time_point time_point;
 
-	while (getState() != THREAD_STATE_TERMINATED) {
+	while (getState() != THREAD_STATE_TERMINATED)
+	{
 		// check if there are tasks waiting
 		taskLockUnique.lock();
 
-		if (taskList.empty()) {
+		if(taskList.empty())
+		{
 			//if the list is empty wait for signal
 			time_point = std::chrono::high_resolution_clock::now();
 			taskSignal.wait(taskLockUnique);
 			g_stats.dispatcherWaitTime(dispatcherId) += std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
 		}
 
-		if (!taskList.empty()) {
+		if(!taskList.empty())
+		{
 			time_point = std::chrono::high_resolution_clock::now();
 
 			// take the first task
@@ -57,8 +60,10 @@ void Dispatcher::threadMain()
 			taskList.pop_front();
 			taskLockUnique.unlock();
 
-			if (!task->hasExpired()) {
+			if(!task->hasExpired())
+			{
 				++dispatcherCycle;
+
 				// execute it
 				(*task)();
 
@@ -68,35 +73,34 @@ void Dispatcher::threadMain()
 			task->executionTime = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
 			g_stats.addDispatcherTask(dispatcherId, task);
 
-		} else {
-			taskLockUnique.unlock();
 		}
+		else
+			taskLockUnique.unlock();
 	}
 }
 
 void Dispatcher::addTask(Task* task, bool push_front /*= false*/)
 {
-    bool do_signal = false;
-    std::unique_lock<std::mutex> lock(taskLock); //bloquea o mutex com unique_lock
+	bool do_signal = false;
+	std::unique_lock<std::mutex> lock(taskLock); // lock mutex with unique_lock
 
-    if (getState() == THREAD_STATE_RUNNING) {
-        do_signal = taskList.empty();
+	if(getState() == THREAD_STATE_RUNNING)
+	{
+		do_signal = taskList.empty();
 
-        if (push_front) {
-            taskList.push_front(task);
-        } else {
-            taskList.push_back(task);
-        }
-    } else {
-        delete task;
-    }
+		if (push_front)
+			taskList.push_front(task);
+		else
+			taskList.push_back(task);
+	}
+	else
+		delete task;
 
-    lock.unlock();
+	lock.unlock();
 
-    // Envie um sinal se a lista estiver vazia
-    if (do_signal) {
-        taskSignal.notify_one();
-    }
+	// Send a signal if the list is empty
+	if(do_signal)
+		taskSignal.notify_one();
 }
 
 void Dispatcher::shutdown()

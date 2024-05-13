@@ -5778,98 +5778,99 @@ void Player::sendCritical() const
 
 void Player::addAutoLoot(uint16_t id)
 {
-    if (!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
-        return;
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return;
 
-    if (checkAutoLoot(id))
-        return;
+	if(checkAutoLoot(id))
+		return;
 
-    AutoLoot.emplace_back(id);
+	AutoLoot.emplace_back(id);
 }
-
 
 void Player::removeAutoLoot(uint16_t id)
 {
-    if (!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
-        return;
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return;
 
-    if (!checkAutoLoot(id))
-        return;
+	if(!checkAutoLoot(id))
+		return;
 
-    auto it = std::find(AutoLoot.begin(), AutoLoot.end(), id);
-    if (it != AutoLoot.end()) {
-        AutoLoot.erase(it);
-    }
+	auto it = std::find(AutoLoot.begin(), AutoLoot.end(), id);
+	if(it != AutoLoot.end())
+		AutoLoot.erase(it);
 }
 
 bool Player::limitAutoLoot()
 {
-    if (!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
-        return false;
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return false;
 
-    uint16_t max_items = g_config.getNumber(ConfigManager::AUTOLOOT_MAXITEM);
-    uint16_t max_allowed = isPremium() ? g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM) : g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE);
-    std::list<uint16_t> lootList = getAutoLoot();
-    uint16_t lootsize = lootList.size();
+	uint16_t max_items = g_config.getNumber(ConfigManager::AUTOLOOT_MAXITEM);
+	uint16_t max_allowed = isPremium() ? g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM) : g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE);
+	std::list<uint16_t> lootList = getAutoLoot();
+	uint16_t lootsize = lootList.size();
 
-    std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
-    StringVec strVector = explodeString(moneyIds, ";");
-    lootsize -= strVector.size();
+	std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+	StringVec strVector = explodeString(moneyIds, ";");
+	lootsize -= strVector.size();
 
-    if (max_allowed > 0)
-        return lootsize >= max_allowed;
-    else
-        return lootsize >= max_items;
+	if(max_allowed > 0)
+		return lootsize >= max_allowed;
+	else
+		return lootsize >= max_items;
 }
 
 bool Player::checkAutoLoot(uint16_t id)
 {
-    if (!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
-        return false;
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return false;
 
-    if (Item::items[id].isContainer())
-        return false;
+	if(Item::items[id].isContainer())
+		return false;
 
-    std::string blockIds = g_config.getString(ConfigManager::AUTOLOOT_BLOCKIDS);
-    StringVec blockStrVector = explodeString(blockIds, ";");
-    std::unordered_set<int> blockIdSet;
+	std::string blockIds = g_config.getString(ConfigManager::AUTOLOOT_BLOCKIDS);
+	StringVec blockStrVector = explodeString(blockIds, ";");
+	std::unordered_set<int> blockIdSet;
 
-    for (const auto& str : blockStrVector) {
-        if (!blockIds.empty() && !str.empty()) {
-            blockIdSet.insert(std::stoi(str));
-        }
-    }
-    if (blockIdSet.find(id) != blockIdSet.end())
-        return false;
+	for(const auto& str : blockStrVector)
+	{
+		if(!blockIds.empty() && !str.empty())
+			blockIdSet.insert(std::stoi(str));
+	}
 
-    for (const auto& lootId : AutoLoot) {
-        if (lootId == id)
-            return true;
-    }
+	if(blockIdSet.find(id) != blockIdSet.end())
+		return false;
 
-    return false;
+	for(const auto& lootId : AutoLoot)
+	{
+		if(lootId == id)
+			return true;
+	}
+
+	return false;
 }
 
 void Player::clearAutoLoot()
 {
-    if (!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
-        return;
+	if(!g_config.getBool(ConfigManager::AUTOLOOT_ENABLE_SYSTEM))
+		return;
 
-    std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
-    StringVec strVector = explodeString(moneyIds, ";");
-    std::unordered_set<int> moneyIdSet;
+	std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
+	StringVec strVector = explodeString(moneyIds, ";");
+	std::unordered_set<int> moneyIdSet;
 
-    for (const auto& str : strVector) {
-        moneyIdSet.insert(std::stoi(str));
-    }
+	for(const auto& str : strVector)
+		moneyIdSet.insert(std::stoi(str));
 
-    for (auto it = AutoLoot.begin(); it != AutoLoot.end();) {
-        if (moneyIdSet.find(*it) != moneyIdSet.end()) {
-            ++it;
-            continue;
-        }
-        it = AutoLoot.erase(it);
-    }
+	for(auto it = AutoLoot.begin(); it != AutoLoot.end();)
+	{
+		if(moneyIdSet.find(*it) != moneyIdSet.end())
+		{
+			++it;
+			continue;
+		}
+		it = AutoLoot.erase(it);
+	}
 }
 
 bool Player::isMoneyAutoLoot(Item* item, uint32_t& count)
@@ -5880,15 +5881,13 @@ bool Player::isMoneyAutoLoot(Item* item, uint32_t& count)
 	bool isMoney = false;
 	std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
 	std::unordered_set<int> moneyIdSet;
-	
+
 	StringVec strVector = explodeString(moneyIds, ";");
-	for (const auto& str : strVector) {
-	    moneyIdSet.insert(std::stoi(str));
-	}
-	
-	if (moneyIdSet.find(item->getID()) != moneyIdSet.end()) {
-	    isMoney = true;
-	}
+	for(const auto& str : strVector)
+		moneyIdSet.insert(std::stoi(str));
+
+	if(moneyIdSet.find(item->getID()) != moneyIdSet.end())
+		isMoney = true;
 
 	if(!isMoney)
 		return false;
