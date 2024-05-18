@@ -34,7 +34,9 @@
 #include "creatures/npcs/npc.hpp"
 #include "game/bank/bank.hpp"
 #include "enums/object_category.hpp"
+#include "enums/player_cyclopedia.hpp"
 #include "creatures/players/cyclopedia/player_badge.hpp"
+#include "creatures/players/cyclopedia/player_title.hpp"
 
 class House;
 class NetworkMessage;
@@ -51,12 +53,14 @@ class Spell;
 class PlayerWheel;
 class PlayerAchievement;
 class PlayerBadge;
+class PlayerTitle;
 class Spectators;
 class Account;
 
 struct ModalWindow;
 struct Achievement;
 struct Badge;
+struct Title;
 
 struct ForgeHistory {
 	ForgeAction_t actionType = ForgeAction_t::FUSION;
@@ -513,10 +517,10 @@ public:
 
 	void genReservedStorageRange();
 
-	void setGroup(Group* newGroup) {
+	void setGroup(std::shared_ptr<Group> newGroup) {
 		group = newGroup;
 	}
-	Group* getGroup() const {
+	std::shared_ptr<Group> getGroup() const {
 		return group;
 	}
 
@@ -1037,7 +1041,7 @@ public:
 	bool canFamiliar(uint16_t lookType) const;
 	void addFamiliar(uint16_t lookType);
 	bool removeFamiliar(uint16_t lookType);
-	bool getFamiliar(const Familiar &familiar) const;
+	bool getFamiliar(const std::shared_ptr<Familiar> &familiar) const;
 	void setFamiliarLooktype(uint16_t familiarLooktype) {
 		this->defaultOutfit.lookFamiliarsType = familiarLooktype;
 	}
@@ -2597,6 +2601,12 @@ public:
 	// This get all blessings
 	phmap::flat_hash_map<Blessings_t, std::string> getBlessingNames() const;
 
+	// Gets the equipped items with augment by type
+	std::vector<std::shared_ptr<Item>> getEquippedAugmentItemsByType(Augment_t augmentType) const;
+
+	// Gets the equipped items with augment
+	std::vector<std::shared_ptr<Item>> getEquippedAugmentItems() const;
+
 	/**
 	 * @brief Get the equipped items of the player->
 	 * @details This function returns a vector containing the items currently equipped by the player
@@ -2615,6 +2625,10 @@ public:
 	// Player badge interface
 	std::unique_ptr<PlayerBadge> &badge();
 	const std::unique_ptr<PlayerBadge> &badge() const;
+
+	// Player title interface
+	std::unique_ptr<PlayerTitle> &title();
+	const std::unique_ptr<PlayerTitle> &title() const;
 
 	void sendLootMessage(const std::string &message) const;
 
@@ -2786,7 +2800,7 @@ private:
 	std::shared_ptr<BedItem> bedItem = nullptr;
 	std::shared_ptr<Guild> guild = nullptr;
 	GuildRank_ptr guildRank;
-	Group* group = nullptr;
+	std::shared_ptr<Group> group = nullptr;
 	std::shared_ptr<Inbox> inbox;
 	std::shared_ptr<Item> imbuingItem = nullptr;
 	std::shared_ptr<Item> tradeItem = nullptr;
@@ -3011,10 +3025,12 @@ private:
 	friend class IOLoginDataSave;
 	friend class PlayerAchievement;
 	friend class PlayerBadge;
+	friend class PlayerTitle;
 
 	std::unique_ptr<PlayerWheel> m_wheelPlayer;
 	std::unique_ptr<PlayerAchievement> m_playerAchievement;
 	std::unique_ptr<PlayerBadge> m_playerBadge;
+	std::unique_ptr<PlayerTitle> m_playerTitle;
 
 	std::mutex quickLootMutex;
 
