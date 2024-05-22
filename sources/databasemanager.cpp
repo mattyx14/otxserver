@@ -1450,7 +1450,7 @@ uint32_t DatabaseManager::updateDatabase()
 		case 36:
 		{
 			std::clog << "> Updating database to version 37... (FeTads Features)" << std::endl;
-			db->query("CREATE TABLE player_autoloot (id int NOT NULL AUTO_INCREMENT, player_id int NOT NULL, autoloot_list blob, PRIMARY KEY (id));");
+			db->query("CREATE TABLE IF NOT EXISTS `player_autoloot` (id int NOT NULL AUTO_INCREMENT, player_id int NOT NULL, autoloot_list blob, PRIMARY KEY (id));");
 			db->query("CREATE TABLE IF NOT EXISTS `trade_off_offers` (`id` int(11) NOT NULL auto_increment, `player_id` int(11) NOT NULL, `type` int(1) NOT NULL DEFAULT '0', `item_id` int(11), `item_count` int(11) NOT NULL DEFAULT '1', `item_charges` int(11) NULL, `item_duration` int(11) NULL, `item_name` varchar(255), `item_trade` tinyint(1) NOT NULL DEFAULT '0', `cost` bigint(20) UNSIGNED NOT NULL, `cost_count` int(11) NOT NULL DEFAULT '1', `date` bigint(20), PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 			db->query("CREATE TABLE IF NOT EXISTS `trade_off_container_items` ( `offer_id` int(11) NOT NULL, `item_id` int(11), `item_charges` int(11) NULL, `item_duration` int(11) NULL, `count` int(11) DEFAULT '1') ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 			db->query("ALTER TABLE players ADD COLUMN reset INT(11) NOT NULL DEFAULT 0;");
