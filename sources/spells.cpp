@@ -897,8 +897,7 @@ bool Spell::checkInstantSpell(Player* player, Creature* creature)
 		}
 		else
 		{
-			if(!isAggressive)
-				return true;
+			return true;
 		}
 
 		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
@@ -1116,8 +1115,7 @@ bool Spell::checkRuneSpell(Player* player, const Position& toPos)
 		}
 		else
 		{
-			if(!isAggressive)
-				return true;
+			return true;
 		}
 
 		player->sendCancelMessage(RET_YOUMAYNOTCASTAREAONBLACKSKULL);
