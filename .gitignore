@@ -24,6 +24,7 @@ theotxserver
 sources/theotxserver
 
 config-ot.lua
+config.lua
 
 [Dd]ebug/
 [Rr]elease/
