@@ -905,7 +905,7 @@ end
 
 function Player:canGetReward(rewardId, questName)
 	if self:questKV(questName):get("completed") then
-		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The box is empty.")
+		self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "It is empty.")
 		return false
 	end
 

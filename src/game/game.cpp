@@ -1543,10 +1543,6 @@ ReturnValue Game::internalMoveCreature(const std::shared_ptr<Creature> &creature
 		return ret;
 	}
 
-	if (creature->hasCondition(CONDITION_ROOTED)) {
-		return RETURNVALUE_NOTPOSSIBLE;
-	}
-
 	if (creature->hasCondition(CONDITION_FEARED)) {
 		std::shared_ptr<MagicField> field = toTile->getFieldItem();
 		if (field && !field->isBlocking() && field->getDamage() != 0) {
@@ -2362,7 +2358,7 @@ std::tuple<ReturnValue, uint32_t, uint32_t> Game::addItemBatch(const std::shared
 				if (item->getContainer()) {
 					containersCreated++;
 				}
-				totalAdded++;
+				totalAdded += item->getItemCount();
 			}
 
 			ret = returnError;
@@ -4266,7 +4262,7 @@ void Game::playerSetShowOffSocket(uint32_t playerId, Outfit_t &outfit, const Pos
 	}
 
 	const auto mount = mounts.getMountByClientID(outfit.lookMount);
-	if (!mount || !player->hasMount(mount)) {
+	if (!mount || !player->hasMount(mount) || player->isWearingSupportOutfit()) {
 		outfit.lookMount = 0;
 	}
 
@@ -5961,6 +5957,11 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, uint8_t isMoun
 	std::shared_ptr<Player> player = getPlayerByID(playerId);
 	if (!player) {
 		return;
+	}
+
+	if (player->isWearingSupportOutfit()) {
+		outfit.lookMount = 0;
+		isMountRandomized = 0;
 	}
 
 	player->setRandomMount(isMountRandomized);

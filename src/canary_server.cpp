@@ -212,9 +212,9 @@ void CanaryServer::logInfos() {
 #endif
 
 	logger.info("A server developed by: {}", ProtocolStatus::SERVER_DEVELOPERS);
-	logger.info("Visit our website for updates, support, and resources:\n"
-				"https://docs.opentibiabr.com/home/welcome/ \n"
-				"https://github.com/mattyx14/otxserver/\n");
+	logger.info("Visit our website for updates, support, and resources: \n"
+	            "https://docs.opentibiabr.com/home/welcome/ \n"
+	            "https://github.com/mattyx14/otxserver/\n");
 }
 
 /**

@@ -21,6 +21,16 @@
 		storage = xxxxx
 	},
 
+		Example using KV:
+		[xxxx] = {
+			useKV = true,
+			itemId = xxxx,
+			itemPos = {x = xxxxx, y = xxxxx, z = x},
+			container = xxxx, (it's for use reward in a container, only put the id of the container here)
+			reward = {{xxxx, x}},
+			questName = "testkv",
+		}
+
 	Note:
 	The "for use of the map" variables are only used to create the action or unique on the map during startup
 	If the reward is an key, do not need to use "keyAction", only set the storage as same action id

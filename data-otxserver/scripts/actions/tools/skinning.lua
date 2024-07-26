@@ -147,22 +147,6 @@ function skinning.onUse(player, item, fromPosition, target, toPosition, isHotkey
 		end
 	end
 
-	if target:getId() == 12816 then
-		if player:getStorageValue(Storage.Quest.U8_2.TheMutatedPumpkin.Skinned) > os.time() then
-			player:sendCancelMessage("You already used your knife on the corpse.")
-			return true
-		end
-
-		player:setStorageValue(Storage.Quest.U8_2.TheMutatedPumpkin.Skinned, os.time() + 4 * 60 * 60)
-		player:say("Happy Halloween!", TALKTYPE_MONSTER_SAY)
-		player:getPosition():sendMagicEffect(CONST_ME_GIFT_WRAPS)
-		player:addAchievement("Mutated Presents")
-		local reward = math.random(1, #skin)
-		player:addItem(skin[reward].newItem, skin[reward].amount or 1)
-		effect = CONST_ME_HITAREA
-		return true
-	end
-
 	if not skin then
 		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return true

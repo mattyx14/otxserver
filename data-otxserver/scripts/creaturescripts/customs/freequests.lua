@@ -4,8 +4,6 @@ local questTable = {
 	-- 
 }
 
--- from Position: (33201, 31762, 1)
--- to Position: (33356, 31309, 4)
 local function playerFreeQuestStart(playerId, index)
 	local player = Player(playerId)
 	if not player then
