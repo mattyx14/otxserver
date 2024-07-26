@@ -3,18 +3,11 @@ local specialQuests = {
 }
 
 local questsExperience = {
-	[3101] = 1, -- dummy values
+	-- 
 }
 
 local questLog = {
 	-- 
-}
-
-local tutorialIds = {
-	[50080] = 5,
-	[50082] = 6,
-	[50084] = 10,
-	[50086] = 11,
 }
 
 local function copyContainerItem(originalContainer, newContainer)
@@ -154,19 +147,6 @@ function questSystem.onUse(player, item, fromPosition, target, toPosition, isHot
 
 	if questLog[storage] then
 		player:setStorageValue(questLog[storage], 1)
-	end
-
-	if tutorialIds[storage] then
-		player:sendTutorial(tutorialIds[storage])
-		if item.uid == 50080 then
-			player:setStorageValue(Storage.RookgaardTutorialIsland.SantiagoNpcGreetStorage, 3)
-		end
-	end
-
-	if table.contains(hotaQuest, item.uid) then
-		if player:getStorageValue(Storage.TheAncientTombs.DefaultStart) ~= 1 then
-			player:setStorageValue(Storage.TheAncientTombs.DefaultStart, 1)
-		end
 	end
 
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found " .. result .. ".")
