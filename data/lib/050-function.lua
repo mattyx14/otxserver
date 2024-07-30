@@ -1506,7 +1506,7 @@ end
 		local hpmp_percent = i * 15
 		ResetSystem.resets[i] = {needed_level = level, exp_percent = exp_percent, damage_percent = damage_percent, hpmp_percent = hpmp_percent}
 	end
-]]--
+]]
 
 ResetSystem = {
 	back_to_level = 8, -- level that will return
@@ -1582,7 +1582,7 @@ end
 
 function ResetSystem:execute(pid)
 	local playerLevel = getPlayerLevel(pid)
-	if (playerLevel > self.back_to_level and use_back_level) then
+	if (playerLevel > self.back_to_level and self.use_back_level) then
 		doPlayerAddExperience(pid, getExperienceForLevel(self.back_to_level) - getPlayerExperience(pid))
 		playerLevel = self.back_to_level
 	end
