@@ -31,7 +31,15 @@
 				Leandro Brewster.
 
 	DEVELOPMENT STATUS
-		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.16 :: Version "Opportunity"
+		COMPLETED - ONLY CRITICAL FIXES : OTX Server 2.16.1 :: Version "Opportunity"
+]
+
+[ OTX Server 2.16.1 :: Version "Opportunity"
+	- Fix aggressive area spells not working with black skull system
+	- Fix bug of not delivering money when selling ignoring
+	- Fix change fleeing behavior
+	- Fix the boost::lock error when shutting down without releasing task
+	- Update autoloot methods & functions
 ]
 
 [ OTX Server 2.16 :: Version "Opportunity"

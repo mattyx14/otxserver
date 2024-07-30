@@ -27,7 +27,7 @@
 
 #define SOFTWARE_NAME "OTX Server"
 #define SOFTWARE_VERSION "2"
-#define MINOR_VERSION "16"
+#define MINOR_VERSION "16.1"
 #define SOFTWARE_CODENAME "Opportunity"
 #define SOFTWARE_DEVELOPERS "Matt Gomez, Matheus Matias, FeTads and The Forgotten Server Developers"
 #define GIT_REPO "https://github.com/mattyx14/otxserver/tree/otxserv2/"
