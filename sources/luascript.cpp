@@ -2027,6 +2027,9 @@ void LuaInterface::registerFunctions()
 
 	//getCreatureByName(name)
 	lua_register(m_luaState, "getCreatureByName", LuaInterface::luaGetCreatureByName);
+	
+	//getPlayerByName(name)
+	lua_register(m_luaState, "getPlayerByName", LuaInterface::luaGetPlayerByName);
 
 	//getPlayerByGUID(guid)
 	lua_register(m_luaState, "getPlayerByGUID", LuaInterface::luaGetPlayerByGUID);
@@ -8242,6 +8245,19 @@ int32_t LuaInterface::luaGetCreatureByName(lua_State* L)
 	ScriptEnviroment* env = getEnv();
 	if(Creature* creature = g_game.getCreatureByName(popString(L)))
 		lua_pushnumber(L, env->addThing(creature));
+	else
+		lua_pushnil(L);
+
+	return 1;
+}
+
+//to fix high cpu usage when not found a creature with name
+int32_t LuaInterface::luaGetPlayerByName(lua_State* L)
+{
+	//getPlayerByName(name)
+	ScriptEnviroment* env = getEnv();
+	if(Player* player = g_game.getPlayerByName(popString(L)))
+		lua_pushnumber(L, env->addThing(player));
 	else
 		lua_pushnil(L);
 

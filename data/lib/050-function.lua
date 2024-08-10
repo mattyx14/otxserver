@@ -195,11 +195,6 @@ function getPlayersOnlineEx()
 	return players
 end
 
-function getPlayerByName(name)
-	local cid = getCreatureByName(name)
-	return isPlayer(cid) and cid or nil
-end
-
 function isPlayer(cid)
 	return isCreature(cid) and cid >= AUTOID_PLAYERS and cid < AUTOID_MONSTERS
 end

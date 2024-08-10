@@ -429,6 +429,7 @@ class LuaInterface
 		static int32_t luaDoPlayerSendOutfitWindow(lua_State* L);
 		static int32_t luaDoCreatureExecuteTalkAction(lua_State* L);
 		static int32_t luaGetCreatureByName(lua_State* L);
+		static int32_t luaGetPlayerByName(lua_State* L);
 		static int32_t luaGetPlayerByGUID(lua_State* L);
 		static int32_t luaGetPlayerByNameWildcard(lua_State* L);
 		static int32_t luaGetPlayerGUIDByName(lua_State* L);
