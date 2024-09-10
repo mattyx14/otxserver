@@ -695,7 +695,17 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	enableXTEAEncryption();
 	setXTEAKey(key);
 	if(operatingSystem >= CLIENTOS_OTCLIENT_LINUX)
-		sendExtendedOpcode(0x00, std::string());
+    {
+		auto output = OutputMessagePool::getOutputMessage();
+        if (output)
+        {
+            TRACK_MESSAGE(output);
+            output->addByte(0x32);
+            output->addByte(0x00);
+            output->addString(std::string());
+			send(output);
+        }
+    }
 
 	bool gamemaster = (msg.get<char>() != (char)0);
 	std::string name = msg.getString(), character = msg.getString(), password = msg.getString();

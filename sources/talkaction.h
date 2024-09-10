@@ -48,8 +48,6 @@ class TalkActions : public BaseEvents
 		inline TalkActionsMap::const_iterator getFirstTalk() const {return talksMap.begin();}
 		inline TalkActionsMap::const_iterator getLastTalk() const {return talksMap.end();}
 
-		static bool isInputValid(const std::string& input);
-
 	protected:
 		TalkAction* defaultTalkAction;
 		TalkActionsMap talksMap;
@@ -91,9 +89,6 @@ class TalkAction : public Event
 		bool isLogged() const {return m_logged;}
 		bool isHidden() const {return m_hidden;}
 		bool isSensitive() const {return m_sensitive;}
-
-		static bool isInputValid(const std::string& input);
-		static std::string trim(const std::string& str);
 
 		bool hasGroups() const {return !m_groups.empty();}
 		bool hasGroup(int32_t value) const {return std::find(m_groups.begin(), m_groups.end(), value) != m_groups.end();}
