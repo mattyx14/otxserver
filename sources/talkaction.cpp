@@ -1335,11 +1335,11 @@ bool TalkAction::autoLoot(Creature* creature, const std::string&, const std::str
 			{
 				if(adding && !player->checkAutoLoot(itemId))
 				{
-					if(!player->limitAutoLoot())
+					if(!player->limitAutoLoot()){
 						player->addAutoLoot(itemId);
 						actionMsg << (successCount > 0 ? ", " : "") << itemName;
 						++successCount;
-					else{
+					}else{
 						errorMsg << (errorCount > 0 ? ", " : "") << itemName;
 						++errorCount;
 					}
