@@ -1374,6 +1374,7 @@ bool TalkAction::autoLoot(Creature* creature, const std::string&, const std::str
 	std::string moneyIds = g_config.getString(ConfigManager::AUTOLOOT_MONEYIDS);
 	StringVec strVector = explodeString(moneyIds, ";");
 	lootsize -= strVector.size();	// don't count money ids of lootsize
+	uint16_t max_allowed = player->isPremium() ? g_config.getNumber(ConfigManager::AUTOLOOT_MAXPREMIUM) : g_config.getNumber(ConfigManager::AUTOLOOT_MAXFREE);
 	
 	info << "_____Perfect AutoLoot System_____\n\n"
 		<< "AutoLoot Status: " << player->statusAutoLoot() << "\n"
