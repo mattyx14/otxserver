@@ -2458,119 +2458,91 @@ bool Game::addMoney(Cylinder* cylinder, int64_t money, uint32_t flags /*= 0*/, b
 	return true;
 }
 
-Item* Game::transformItem(Item* item,const uint16_t& newId, const int32_t& newCount/* = -1*/)
+Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount/* = -1*/)
 {
-	if(item->getID() == newId && (newCount == -1 || (newCount == item->getSubType() && newCount)))
-		return item;
+    if(item->getID() == newId && (newCount == -1 || (newCount == item->getSubType() && newCount)))
+        return item;
 
-	Cylinder* cylinder = item->getParent();
-	if(!cylinder)
-		return NULL;
+    Cylinder* cylinder = item->getParent();
+    if(!cylinder)
+        return NULL;
 
-	int32_t itemIndex = cylinder->__getIndexOfThing(item);
-	if(itemIndex == -1)
-	{
-#ifdef __DEBUG__
-		std::clog << "Error: transformItem, itemIndex == -1" << std::endl;
-#endif
-		return item;
-	}
+    int32_t itemIndex = cylinder->__getIndexOfThing(item);
+    if(itemIndex == -1)
+        return item;
 
-	if(!item->canTransform())
-		return item;
+    if(!item->canTransform())
+        return item;
 
-	const ItemType &curType = Item::items[item->getID()], &newType = Item::items[newId];
-	if(curType.alwaysOnTop != newType.alwaysOnTop)
-	{
-		// This only occurs when you transform items on tiles from a downItem to a topItem (or vice versa)
-		// Remove the old, and add the new
-		ReturnValue ret = internalRemoveItem(NULL, item);
-		if(ret != RET_NOERROR)
-			return item;
+    const ItemType &curType = Item::items[item->getID()], &newType = Item::items[newId];
 
-		Item* newItem = NULL;
-		if(newCount == -1)
-			newItem = Item::CreateItem(newId);
-		else
-			newItem = Item::CreateItem(newId, newCount);
+    if ((item->isContainer() && !newType->isContainer()) || (curType.alwaysOnTop != newType.alwaysOnTop))    // se o item for container e o novo não, ai remove o velho e cria um novo
+    {
+        ReturnValue ret = internalRemoveItem(NULL, item);
+        if(ret != RET_NOERROR)
+            return item;
 
-		if(!newItem)
-			return NULL;
+        Item* newItem = (newCount == -1) ? Item::CreateItem(newId) : Item::CreateItem(newId, newCount);
+        if(!newItem)
+            return NULL;
 
-		newItem->copyAttributes(item);
-		if(internalAddItem(NULL, cylinder, newItem, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
-		{
-			delete newItem;
-			return NULL;
-		}
+        newItem->copyAttributes(item);
+        if(internalAddItem(NULL, cylinder, newItem, INDEX_WHEREEVER, FLAG_NOLIMIT) != RET_NOERROR)
+        {
+            delete newItem;
+            return NULL;
+        }
 
-		newItem->makeUnique(item);
-		return newItem;
-	}
+        newItem->makeUnique(item);
+        return newItem;
+    }
 
-	if(curType.type == newType.type)
-	{
-		//Both items has the same type so we can safely change id/subtype
-		if(!newCount && (item->isStackable() || item->hasCharges()))
-		{
-			if(!item->isStackable() && (!item->getDefaultDuration() || item->getDuration() <= 0))
-			{
-				int16_t tmp = newId;
-				if(curType.id == newId)
-					tmp = curType.decayTo;
+    if(curType.type == newType.type)
+    {
+        if(!newCount && (item->isStackable() || item->hasCharges()))
+        {
+            if(!item->isStackable() && (!item->getDefaultDuration() || item->getDuration() <= 0))
+            {
+                int16_t tmp = (curType.id == newId) ? curType.decayTo : newId;
+                if(tmp != -1)
+                    return transformItem(item, tmp);
+            }
 
-				if(tmp != -1)
-					return transformItem(item, tmp);
-			}
+            internalRemoveItem(NULL, item);
+            return NULL;
+        }
 
-			internalRemoveItem(NULL, item);
-			return NULL;
-		}
+        cylinder->postRemoveNotification(NULL, item, cylinder, itemIndex, false);
+        uint16_t tmp = (curType.id != newId) ? newId : item->getID();
+        if(newType.group != curType.group)
+            item->setDefaultSubtype();
 
-		cylinder->postRemoveNotification(NULL, item, cylinder, itemIndex, false);
-		uint16_t tmp = item->getID();
-		if(curType.id != newId)
-		{
-			tmp = newId;
-			if(newType.group != curType.group)
-				item->setDefaultSubtype();
+        if(curType.hasSubType() && !newType.hasSubType())
+        {
+            item->resetFluidType();
+            item->resetCharges();
+        }
 
-			if(curType.hasSubType() && !newType.hasSubType())
-			{
-				item->resetFluidType();
-				item->resetCharges();
-			}
-		}
+        int32_t count = (newCount != -1 && newType.hasSubType()) ? newCount : item->getSubType();
+        cylinder->__updateThing(item, tmp, count);
+        cylinder->postAddNotification(NULL, item, cylinder, itemIndex);
+        return item;
+    }
 
-		int32_t count = item->getSubType();
-		if(newCount != -1 && newType.hasSubType())
-			count = newCount;
+    Item* newItem = (newCount == -1) ? Item::CreateItem(newId) : Item::CreateItem(newId, newCount);
+    if(!newItem)
+        return NULL;
 
-		cylinder->__updateThing(item, tmp, count);
-		cylinder->postAddNotification(NULL, item, cylinder, itemIndex);
-		return item;
-	}
+    newItem->copyAttributes(item);
+    newItem->makeUnique(item);
+    cylinder->__replaceThing(itemIndex, newItem);
 
-	//Replacing the the old item with the new while maintaining the old position
-	Item* newItem = NULL;
-	if(newCount == -1)
-		newItem = Item::CreateItem(newId);
-	else
-		newItem = Item::CreateItem(newId, newCount);
+    cylinder->postAddNotification(NULL, newItem, cylinder, itemIndex);
+    item->setParent(NULL);
+    cylinder->postRemoveNotification(NULL, item, cylinder, itemIndex, true);
 
-	if(!newItem)
-		return NULL;
-
-	newItem->copyAttributes(item);
-	newItem->makeUnique(item);
-	cylinder->__replaceThing(itemIndex, newItem);
-
-	cylinder->postAddNotification(NULL, newItem, cylinder, itemIndex);
-	item->setParent(NULL);
-	cylinder->postRemoveNotification(NULL, item, cylinder, itemIndex, true);
-
-	freeThing(item);
-	return newItem;
+    freeThing(item);
+    return newItem;
 }
 
 ReturnValue Game::internalTeleport(Thing* thing, const Position& newPos, const bool& forceTeleport, const uint32_t& flags/* = 0*/, bool fullTeleport/* = true*/)
