@@ -7,19 +7,16 @@
  * Website: https://docs.opentibiabr.com/
  */
 
-#include "pch.hpp"
-
 #include "lua/functions/core/game/lua_enums.hpp"
 
-#include "creatures/players/wheel/wheel_gems.hpp"
 #include "creatures/players/wheel/wheel_definitions.hpp"
-#include "io/io_bosstiary.hpp"
-#include "config/configmanager.hpp"
-#include "creatures/creature.hpp"
-#include "declarations.hpp"
-#include "game/functions/game_reload.hpp"
-#include "enums/account_type.hpp"
 #include "enums/account_group_type.hpp"
+#include "enums/account_type.hpp"
+#include "enums/item_attribute.hpp"
+#include "game/functions/game_reload.hpp"
+#include "io/io_bosstiary.hpp"
+
+constexpr const char* soundNamespace = "SOUND_EFFECT_TYPE_";
 
 #define registerMagicEnum(luaState, enumClassType)               \
 	{                                                            \
@@ -109,6 +106,9 @@ void LuaEnums::init(lua_State* L) {
 	initWebhookEnums(L);
 	initBosstiaryEnums(L);
 	initSoundEnums(L);
+	spelltSoundEnums(L);
+	monsterSoundEnums(L);
+	effectsSoundEnums(L);
 	initWheelEnums(L);
 	initAttributeConditionSubIdEnums(L);
 	initConcoctionsEnum(L);
@@ -228,6 +228,7 @@ void LuaEnums::initOthersEnums(lua_State* L) {
 	registerEnum(L, SCREENSHOT_TYPE_PLAYERATTACKING);
 	registerEnum(L, SCREENSHOT_TYPE_TREASUREFOUND);
 	registerEnum(L, SCREENSHOT_TYPE_SKILLUP);
+	registerEnum(L, SCREENSHOT_TYPE_GIFTOFLIFE);
 }
 
 void LuaEnums::initAccountEnums(lua_State* L) {
@@ -330,37 +331,9 @@ void LuaEnums::initFactionEnums(lua_State* L) {
 }
 
 void LuaEnums::initConditionEnums(lua_State* L) {
-	registerEnum(L, CONDITION_NONE);
-	registerEnum(L, CONDITION_POISON);
-	registerEnum(L, CONDITION_FIRE);
-	registerEnum(L, CONDITION_ENERGY);
-	registerEnum(L, CONDITION_BLEEDING);
-	registerEnum(L, CONDITION_HASTE);
-	registerEnum(L, CONDITION_PARALYZE);
-	registerEnum(L, CONDITION_OUTFIT);
-	registerEnum(L, CONDITION_INVISIBLE);
-	registerEnum(L, CONDITION_LIGHT);
-	registerEnum(L, CONDITION_MANASHIELD);
-	registerEnum(L, CONDITION_INFIGHT);
-	registerEnum(L, CONDITION_DRUNK);
-	registerEnum(L, CONDITION_EXHAUST);
-	registerEnum(L, CONDITION_REGENERATION);
-	registerEnum(L, CONDITION_SOUL);
-	registerEnum(L, CONDITION_DROWN);
-	registerEnum(L, CONDITION_MUTED);
-	registerEnum(L, CONDITION_CHANNELMUTEDTICKS);
-	registerEnum(L, CONDITION_YELLTICKS);
-	registerEnum(L, CONDITION_ATTRIBUTES);
-	registerEnum(L, CONDITION_FREEZING);
-	registerEnum(L, CONDITION_DAZZLED);
-	registerEnum(L, CONDITION_CURSED);
-	registerEnum(L, CONDITION_EXHAUST_COMBAT);
-	registerEnum(L, CONDITION_EXHAUST_HEAL);
-	registerEnum(L, CONDITION_PACIFIED);
-	registerEnum(L, CONDITION_SPELLCOOLDOWN);
-	registerEnum(L, CONDITION_SPELLGROUPCOOLDOWN);
-	registerEnum(L, CONDITION_ROOTED);
-	registerEnum(L, CONDITION_FEARED);
+	for (const auto value : magic_enum::enum_values<ConditionType_t>()) {
+		registerMagicEnum(L, value);
+	}
 }
 
 void LuaEnums::initConditionIdEnums(lua_State* L) {
@@ -864,7 +837,7 @@ void LuaEnums::initItemTypeEnums(lua_State* L) {
 }
 
 void LuaEnums::initFluidEnums(lua_State* L) {
-	for (auto value : magic_enum::enum_values<Fluids_t>()) {
+	for (const auto value : magic_enum::enum_values<Fluids_t>()) {
 		registerMagicEnum(L, value);
 	}
 }
@@ -936,7 +909,7 @@ void LuaEnums::initItemIdEnums(lua_State* L) {
 }
 
 void LuaEnums::initPlayerFlagEnums(lua_State* L) {
-	for (auto value : magic_enum::enum_values<PlayerFlags_t>()) {
+	for (const auto value : magic_enum::enum_values<PlayerFlags_t>()) {
 		registerMagicEnum(L, value);
 	}
 }
@@ -1226,18 +1199,16 @@ void LuaEnums::initReturnValueEnums(lua_State* L) {
 
 // Reload
 void LuaEnums::initReloadTypeEnums(lua_State* L) {
-	for (auto value : magic_enum::enum_values<Reload_t>()) {
+	for (const auto value : magic_enum::enum_values<Reload_t>()) {
 		registerMagicEnum(L, value);
 	}
 }
 
 void LuaEnums::initCreaturesEventEnums(lua_State* L) {
 	// Monsters
-	registerEnum(L, MONSTERS_EVENT_THINK);
-	registerEnum(L, MONSTERS_EVENT_APPEAR);
-	registerEnum(L, MONSTERS_EVENT_DISAPPEAR);
-	registerEnum(L, MONSTERS_EVENT_MOVE);
-	registerEnum(L, MONSTERS_EVENT_SAY);
+	for (auto value : magic_enum::enum_values<MonstersEvent_t>()) {
+		registerMagicEnum(L, value);
+	}
 
 	// Npcs
 	registerEnum(L, NPCS_EVENT_THINK);
@@ -1252,7 +1223,7 @@ void LuaEnums::initCreaturesEventEnums(lua_State* L) {
 }
 
 void LuaEnums::initForgeEnums(lua_State* L) {
-	for (auto value : magic_enum::enum_values<ForgeClassifications_t>()) {
+	for (const auto value : magic_enum::enum_values<ForgeClassifications_t>()) {
 		registerMagicEnum(L, value);
 	}
 }
@@ -1266,14 +1237,13 @@ void LuaEnums::initWebhookEnums(lua_State* L) {
 }
 
 void LuaEnums::initBosstiaryEnums(lua_State* L) {
-	for (auto value : magic_enum::enum_values<BosstiaryRarity_t>()) {
+	for (const auto value : magic_enum::enum_values<BosstiaryRarity_t>()) {
 		registerMagicEnum(L, value);
 	}
 }
 
 // "SOUND_EFFECT_TYPE_" is the sound lua namespace
 void LuaEnums::initSoundEnums(lua_State* L) {
-	std::string soundNamespace = "SOUND_EFFECT_TYPE_";
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::SILENCE);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::HUMAN_CLOSE_ATK_FIST);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_CLOSE_ATK_FIST);
@@ -1303,6 +1273,9 @@ void LuaEnums::initSoundEnums(lua_State* L) {
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_MELEE_ATK_MAGIC);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_MELEE_ATK_ETHEREAL);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_MELEE_ATK_CONSTRUCT);
+}
+
+void LuaEnums::spelltSoundEnums(lua_State* L) {
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::SPELL_LIGHT_HEALING);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::SPELL_INTENSE_HEALING);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::SPELL_ULTIMATE_HEALING);
@@ -1454,6 +1427,9 @@ void LuaEnums::initSoundEnums(lua_State* L) {
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::SPELL_EXPOSE_WEAKNESS);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::SPELL_SAP_STRENGTH);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::SPELL_CANCEL_MAGIC_SHIELD);
+}
+
+void LuaEnums::monsterSoundEnums(lua_State* L) {
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_SPELL_SINGLE_TARGET_FIRE);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_SPELL_SINGLE_TARGET_ENERGY);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_SPELL_SINGLE_TARGET_EARTH);
@@ -1518,6 +1494,9 @@ void LuaEnums::initSoundEnums(lua_State* L) {
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_SPELL_HIGHRISK_TELEPORT);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_SPELL_MINION);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::MONSTER_SPELL_AGONY);
+}
+
+void LuaEnums::effectsSoundEnums(lua_State* L) {
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::AMPHIBIC_BARK);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::AQUATIC_BEAST_BARK);
 	registerEnumNamespace(L, soundNamespace, SoundEffect_t::AQUATIC_CRITTER_BARK);
@@ -1790,31 +1769,31 @@ void LuaEnums::initSoundEnums(lua_State* L) {
 
 void LuaEnums::initWheelEnums(lua_State* L) {
 	std::string wheelNamespace = "WHEEL_INSTANT_";
-	for (auto value : magic_enum::enum_values<WheelInstant_t>()) {
+	for (const auto value : magic_enum::enum_values<WheelInstant_t>()) {
 		registerMagicEnumNamespace(L, wheelNamespace, value);
 	}
 
 	wheelNamespace = "WHEEL_STAGE_";
-	for (auto value : magic_enum::enum_values<WheelStage_t>()) {
+	for (const auto value : magic_enum::enum_values<WheelStage_t>()) {
 		registerMagicEnumNamespace(L, wheelNamespace, value);
 	}
 	wheelNamespace = "WHEEL_GRADE_";
-	for (auto value : magic_enum::enum_values<WheelSpellGrade_t>()) {
+	for (const auto value : magic_enum::enum_values<WheelSpellGrade_t>()) {
 		registerMagicEnumNamespace(L, wheelNamespace, value);
 	}
 
 	wheelNamespace = "WHEEL_AVATAR_SKILL_";
-	for (auto value : magic_enum::enum_values<WheelAvatarSkill_t>()) {
+	for (const auto value : magic_enum::enum_values<WheelAvatarSkill_t>()) {
 		registerMagicEnumNamespace(L, wheelNamespace, value);
 	}
 
 	wheelNamespace = "WHEEL_STAT_";
-	for (auto value : magic_enum::enum_values<WheelStat_t>()) {
+	for (const auto value : magic_enum::enum_values<WheelStat_t>()) {
 		registerMagicEnumNamespace(L, wheelNamespace, value);
 	}
 
 	wheelNamespace = "WHEEL_BOOST_";
-	for (auto value : magic_enum::enum_values<WheelSpellBoost_t>()) {
+	for (const auto value : magic_enum::enum_values<WheelSpellBoost_t>()) {
 		registerMagicEnumNamespace(L, wheelNamespace, value);
 	}
 }

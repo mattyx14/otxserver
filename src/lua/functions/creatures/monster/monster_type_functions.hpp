@@ -13,6 +13,12 @@
 
 class MonsterTypeFunctions final : LuaScriptInterface {
 public:
+	explicit MonsterTypeFunctions(lua_State* L) :
+		LuaScriptInterface("MonsterTypeFunctions") {
+		init(L);
+	}
+	~MonsterTypeFunctions() override = default;
+
 	static void init(lua_State* L) {
 		registerSharedClass(L, "MonsterType", "", MonsterTypeFunctions::luaMonsterTypeCreate);
 		registerMetaMethod(L, "MonsterType", "__eq", MonsterTypeFunctions::luaUserdataCompare);
@@ -20,6 +26,8 @@ public:
 		registerMethod(L, "MonsterType", "isAttackable", MonsterTypeFunctions::luaMonsterTypeIsAttackable);
 		registerMethod(L, "MonsterType", "isConvinceable", MonsterTypeFunctions::luaMonsterTypeIsConvinceable);
 		registerMethod(L, "MonsterType", "isSummonable", MonsterTypeFunctions::luaMonsterTypeIsSummonable);
+		registerMethod(L, "MonsterType", "isPreyable", MonsterTypeFunctions::luaMonsterTypeIsPreyable);
+		registerMethod(L, "MonsterType", "isPreyExclusive", MonsterTypeFunctions::luaMonsterTypeIsPreyExclusive);
 		registerMethod(L, "MonsterType", "isIllusionable", MonsterTypeFunctions::luaMonsterTypeIsIllusionable);
 		registerMethod(L, "MonsterType", "isHostile", MonsterTypeFunctions::luaMonsterTypeIsHostile);
 		registerMethod(L, "MonsterType", "isPushable", MonsterTypeFunctions::luaMonsterTypeIsPushable);
@@ -96,6 +104,8 @@ public:
 		registerMethod(L, "MonsterType", "onDisappear", MonsterTypeFunctions::luaMonsterTypeEventOnCallback);
 		registerMethod(L, "MonsterType", "onMove", MonsterTypeFunctions::luaMonsterTypeEventOnCallback);
 		registerMethod(L, "MonsterType", "onSay", MonsterTypeFunctions::luaMonsterTypeEventOnCallback);
+		registerMethod(L, "MonsterType", "onPlayerAttack", MonsterTypeFunctions::luaMonsterTypeEventOnCallback);
+		registerMethod(L, "MonsterType", "onSpawn", MonsterTypeFunctions::luaMonsterTypeEventOnCallback);
 
 		registerMethod(L, "MonsterType", "getSummonList", MonsterTypeFunctions::luaMonsterTypeGetSummonList);
 		registerMethod(L, "MonsterType", "addSummon", MonsterTypeFunctions::luaMonsterTypeAddSummon);
@@ -151,6 +161,8 @@ private:
 	static int luaMonsterTypeIsAttackable(lua_State* L);
 	static int luaMonsterTypeIsConvinceable(lua_State* L);
 	static int luaMonsterTypeIsSummonable(lua_State* L);
+	static int luaMonsterTypeIsPreyable(lua_State* L);
+	static int luaMonsterTypeIsPreyExclusive(lua_State* L);
 	static int luaMonsterTypeIsIllusionable(lua_State* L);
 	static int luaMonsterTypeIsHostile(lua_State* L);
 	static int luaMonsterTypeIsPushable(lua_State* L);

@@ -16,8 +16,16 @@
 #include "lua/functions/creatures/player/party_functions.hpp"
 #include "lua/functions/creatures/player/vocation_functions.hpp"
 
+enum class PlayerIcon : uint8_t;
+enum class IconBakragore : uint8_t;
+
 class PlayerFunctions final : LuaScriptInterface {
-private:
+	explicit PlayerFunctions(lua_State* L) :
+		LuaScriptInterface("PlayerFunctions") {
+		init(L);
+	}
+	~PlayerFunctions() override = default;
+
 	static void init(lua_State* L) {
 		registerSharedClass(L, "Player", "Creature", PlayerFunctions::luaPlayerCreate);
 		registerMetaMethod(L, "Player", "__eq", PlayerFunctions::luaUserdataCompare);
@@ -376,6 +384,9 @@ private:
 		registerMethod(L, "Player", "createTransactionSummary", PlayerFunctions::luaPlayerCreateTransactionSummary);
 
 		registerMethod(L, "Player", "takeScreenshot", PlayerFunctions::luaPlayerTakeScreenshot);
+		registerMethod(L, "Player", "sendIconBakragore", PlayerFunctions::luaPlayerSendIconBakragore);
+		registerMethod(L, "Player", "removeIconBakragore", PlayerFunctions::luaPlayerRemoveIconBakragore);
+		registerMethod(L, "Player", "sendCreatureAppear", PlayerFunctions::luaPlayerSendCreatureAppear);
 
 		GroupFunctions::init(L);
 		GuildFunctions::init(L);
@@ -740,6 +751,10 @@ private:
 	static int luaPlayerCreateTransactionSummary(lua_State* L);
 
 	static int luaPlayerTakeScreenshot(lua_State* L);
+	static int luaPlayerSendIconBakragore(lua_State* L);
+	static int luaPlayerRemoveIconBakragore(lua_State* L);
+
+	static int luaPlayerSendCreatureAppear(lua_State* L);
 
 	friend class CreatureFunctions;
 };

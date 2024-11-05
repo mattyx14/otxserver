@@ -1,3 +1,5 @@
+# The OTX Server - Based on: Canary Server
+
 ## Builds
 [![Build - Ubuntu](https://github.com/mattyx14/otxserver/actions/workflows/build-ubuntu.yml/badge.svg)](https://github.com/mattyx14/otxserver/actions/workflows/build-ubuntu.yml)
 [![Build - Windows](https://github.com/mattyx14/otxserver/actions/workflows/build-windows-cmake.yml/badge.svg)](https://github.com/mattyx14/otxserver/actions/workflows/build-windows-cmake.yml)
@@ -21,19 +23,6 @@ With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more .
 * [OTLand](https://otland.net/) - [English]
 * [Tibia Face](https://tibiaface.foroactivo.com/) - [Español]
 
-## Special Thanks OTServBR-Global
-- our partners OTServBR-Global.
-- our crew (majesty, gpedro, eduardo dantas)
-- our testers (raphaellb, petardako, szulcek and olimpotibia)
-- [our contributors](https://github.com/opentibiabr/canary/graphs/contributors)
-- [fear lucien](https://github.com/FearLucien)
-- [cjaker](https://github.com/Eternal-Scripts)
-- [slavidodo](https://github.com/slavidodo)
-- [mignari and our awesome tools](https://github.com/ottools)
-- [saiyansking/optimized_forgottenserver and contributors](https://github.com/SaiyansKing/optimized_forgottenserver)
-- [otland/forgottenserver](https://github.com/otland/forgottenserver) and contributors.
-- if we forget someone, we apologize by forgot you. but you know, **forgot**tenserver.
-
 ## Contacts OTX Server 2:
 - <b>Matty(English & Spanish):</b><br>
 Facebook: https://www.facebook.com/Mattyx14/<br>
@@ -41,3 +30,25 @@ E-mail: darkylive@live.com.mx<br>
 Whatsapp: +523211136700<br><br>
 - <b>Reason(English & Portuguese):</b><br>
 Discord: Reason#2913
+
+## Special Thanks
+
+- Our contributors ([Canary](https://github.com/opentibiabr/canary/graphs/contributors) | [OTServBR-Global](https://github.com/opentibiabr/otservbr-global/graphs/contributors)).
+
+## Sponsors
+
+See our [donate page](https://docs.opentibiabr.com/home/donate).
+
+## Project supported by JetBrains
+
+We extend our heartfelt gratitude to Jetbrains for generously granting us licenses to collaborate on this and various
+other open-source initiatives.
+
+<a href="https://jb.gg/OpenSourceSupport/?from=https://github.com/opentibiabr/canary/">
+  <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains" width="150" />
+</a>
+
+## Partners
+
+[![Supported by OTServ Brasil](https://raw.githubusercontent.com/otbr/otserv-brasil/main/otbr.png)](https://forums.otserv.com.br)
+
