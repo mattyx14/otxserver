@@ -467,9 +467,9 @@ SoulWarQuest = {
 			{ conor = { x = 33899, y = 31064, z = 9 }, teleportPosition = { x = 33904, y = 31082, z = 8 } },
 		},
 		mapsPath = {
-			empty = "data-otservbr-global/world/quest/soul_war/ebb_and_flow/ebb-flow-empty.otbm",
-			inundate = "data-otservbr-global/world/quest/soul_war/ebb_and_flow/ebb-flow-inundate.otbm",
-			ebbFlow = "data-otservbr-global/world/quest/soul_war/ebb_and_flow/ebb-flow.otbm",
+			empty = "data-otxserver/world/quest/soul_war/ebb_and_flow/ebb-flow-empty.otbm",
+			inundate = "data-otxserver/world/quest/soul_war/ebb_and_flow/ebb-flow-inundate.otbm",
+			ebbFlow = "data-otxserver/world/quest/soul_war/ebb_and_flow/ebb-flow.otbm",
 		},
 
 		-- In Minutes

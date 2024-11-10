@@ -20,7 +20,7 @@ local function loadMapActionsAndUniques()
 	loadLuaMapUnique(TileUnique)
 	loadLuaMapAction(TilePickAction)
 	CreateMapItem(CreateItemOnMap)
-	updateKeysStorage(QuestKeysUpdate)
+	--updateKeysStorage(QuestKeysUpdate)
 end
 
 local function loadMapAttributes()
