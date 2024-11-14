@@ -41,10 +41,6 @@ function questSystem.onUse(player, item, fromPosition, target, toPosition, isHot
 		end
 	end
 
-	if storage == 23644 or storage == 24632 or storage == 14338 then
-		player:setStorageValue(Storage.SvargrondArena.PitDoor, -1)
-	end
-
 	if player:getStorageValue(storage) > 0 and player:getGroup():getId() < GROUP_TYPE_GAMEMASTER then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The " .. ItemType(item.itemid):getName() .. " is empty.")
 		return true
