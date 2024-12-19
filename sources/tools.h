@@ -106,7 +106,7 @@ std::string transformToSHA1(std::string plainText, bool upperCase);
 void _encrypt(std::string& str, bool upperCase);
 bool encryptTest(std::string plain, std::string& hash);
 
-StringVec explodeString(const std::string& string, const std::string& separator, bool trim = true, uint16_t limit = 0);
+StringVec explodeString(const std::string& string, const std::string& separators, bool trim = true, uint16_t limit = 0);
 IntegerVec vectorAtoi(StringVec stringVector);
 std::string parseParams(tokenizer::iterator &it, tokenizer::iterator end); // TODO: replace by StringVec...
 

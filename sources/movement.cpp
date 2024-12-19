@@ -183,186 +183,206 @@ Event* MoveEvents::getEvent(const std::string& nodeName)
 bool MoveEvents::registerEvent(Event* event, xmlNodePtr p, bool override)
 {
 	MoveEvent* moveEvent = dynamic_cast<MoveEvent*>(event);
-	if(!moveEvent)
+	if (!moveEvent)
 		return false;
 
-	std::string strValue, endStrValue;
+	std::string titleItem;
 	MoveEvent_t eventType = moveEvent->getEventType();
-	if((eventType == MOVE_EVENT_ADD_ITEM || eventType == MOVE_EVENT_REMOVE_ITEM) &&
-		readXMLString(p, "tileitem", strValue) && booleanString(strValue))
+	if ((eventType == MOVE_EVENT_ADD_ITEM || eventType == MOVE_EVENT_REMOVE_ITEM) &&
+		readXMLString(p, "tileitem", titleItem) && booleanString(titleItem))
 	{
-		switch(eventType)
+		switch (eventType)
 		{
-			case MOVE_EVENT_ADD_ITEM:
-				moveEvent->setEventType(MOVE_EVENT_ADD_TILEITEM);
-				break;
-			case MOVE_EVENT_REMOVE_ITEM:
-				moveEvent->setEventType(MOVE_EVENT_REMOVE_TILEITEM);
-				break;
-			default:
-				break;
+		case MOVE_EVENT_ADD_ITEM:
+			moveEvent->setEventType(MOVE_EVENT_ADD_TILEITEM);
+			break;
+		case MOVE_EVENT_REMOVE_ITEM:
+			moveEvent->setEventType(MOVE_EVENT_REMOVE_TILEITEM);
+			break;
+		default:
+			break;
 		}
 	}
-
-	StringVec strVector;
-	IntegerVec intVector, endIntVector;
 
 	bool success = true;
-	if(readXMLString(p, "itemid", strValue))
+
+	std::string itemIdStr;
+	if (readXMLString(p, "itemid", itemIdStr))
 	{
-		strVector = explodeString(strValue, ";");
-		for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
+		IntegerVec itemIds;
+		parseIntegerVec(itemIdStr, itemIds);
+
+		if (!itemIds.empty())
 		{
-			intVector = vectorAtoi(explodeString((*it), "-"));
-			if(!intVector[0])
-				continue;
-
-			bool equip = moveEvent->getEventType() == MOVE_EVENT_EQUIP;
-			addEvent(moveEvent, intVector[0], m_itemIdMap, override);
-			if(equip)
-			{
-				ItemType& it = Item::items.getItemType(intVector[0]);
-				it.wieldInfo = moveEvent->getWieldInfo();
-				it.minReqLevel = moveEvent->getReqLevel();
-				it.minReqMagicLevel = moveEvent->getReqMagLv();
-				it.vocationString = moveEvent->getVocationString();
-			}
-
-			if(intVector.size() > 1)
-			{
-				while(intVector[0] < intVector[1])
-				{
-					addEvent(new MoveEvent(moveEvent), ++intVector[0], m_itemIdMap, override);
-					if(equip)
-					{
-						ItemType& tit = Item::items.getItemType(intVector[0]);
-						tit.wieldInfo = moveEvent->getWieldInfo();
-						tit.minReqLevel = moveEvent->getReqLevel();
-						tit.minReqMagicLevel = moveEvent->getReqMagLv();
-						tit.vocationString = moveEvent->getVocationString();
-					}
-				}
-			}
-		}
-	}
-
-	if(readXMLString(p, "fromid", strValue) && readXMLString(p, "toid", endStrValue))
-	{
-		intVector = vectorAtoi(explodeString(strValue, ";"));
-		endIntVector = vectorAtoi(explodeString(endStrValue, ";"));
-		if(intVector[0] && endIntVector[0] && intVector.size() == endIntVector.size())
-		{
-			for(size_t i = 0, size = intVector.size(); i < size; ++i)
+			for (IntegerVec::iterator itemId = itemIds.begin(); itemId != itemIds.end(); ++itemId)
 			{
 				bool equip = moveEvent->getEventType() == MOVE_EVENT_EQUIP;
-				addEvent(moveEvent, intVector[i], m_itemIdMap, override);
-				if(equip)
+
+				addEvent(new MoveEvent(moveEvent), *itemId, m_itemIdMap, override);
+
+				if (equip)
 				{
-					ItemType& it = Item::items.getItemType(intVector[i]);
+					ItemType& it = Item::items.getItemType(*itemId);
 					it.wieldInfo = moveEvent->getWieldInfo();
 					it.minReqLevel = moveEvent->getReqLevel();
 					it.minReqMagicLevel = moveEvent->getReqMagLv();
 					it.vocationString = moveEvent->getVocationString();
 				}
+			}
+		}
+		else
+		{
+			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (itemid: \"" << itemIdStr << "\")" << std::endl;
+			success = false;
+		}
+	}
 
-				while(intVector[i] < endIntVector[i])
+	std::string fromIdsStr, toIdsStr;
+	if (readXMLString(p, "fromid", fromIdsStr) && readXMLString(p, "toid", toIdsStr))
+	{
+		IntegerVec fromIds;
+		IntegerVec toIds;
+
+		if (parseIntegerVec(fromIdsStr, fromIds) && parseIntegerVec(toIdsStr, toIds) && fromIds.size() == toIds.size())
+		{
+			for (size_t i = 0; i < fromIds.size(); ++i)
+			{
+				int32_t fromId = fromIds[i];
+				int32_t toId = toIds[i];
+				bool equip = moveEvent->getEventType() == MOVE_EVENT_EQUIP;
+
+				for (int32_t id = fromId; id <= toId; ++id)
 				{
-					addEvent(new MoveEvent(moveEvent), ++intVector[i], m_itemIdMap, override);
-					if(equip)
+					addEvent(new MoveEvent(moveEvent), id, m_itemIdMap, override);
+
+					if (equip)
 					{
-						ItemType& tit = Item::items.getItemType(intVector[i]);
-						tit.wieldInfo = moveEvent->getWieldInfo();
-						tit.minReqLevel = moveEvent->getReqLevel();
-						tit.minReqMagicLevel = moveEvent->getReqMagLv();
-						tit.vocationString = moveEvent->getVocationString();
+						ItemType& it = Item::items.getItemType(id);
+						it.wieldInfo = moveEvent->getWieldInfo();
+						it.minReqLevel = moveEvent->getReqLevel();
+						it.minReqMagicLevel = moveEvent->getReqMagLv();
+						it.vocationString = moveEvent->getVocationString();
 					}
 				}
 			}
 		}
 		else
-			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (from item: \"" << strValue << "\", to item: \"" << endStrValue << "\")" << std::endl;
-	}
-
-	if(readXMLString(p, "uniqueid", strValue))
-	{
-		strVector = explodeString(strValue, ";");
-		for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
 		{
-			intVector = vectorAtoi(explodeString((*it), "-"));
-			if(!intVector[0])
-				continue;
-
-			addEvent(moveEvent, intVector[0], m_uniqueIdMap, override);
-			if(intVector.size() > 1)
-			{
-				while(intVector[0] < intVector[1])
-					addEvent(new MoveEvent(moveEvent), ++intVector[0], m_uniqueIdMap, override);
-			}
+			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (fromid: \"" << fromIdsStr << "\", toid: \"" << toIdsStr << "\")" << std::endl;
+			success = false;
 		}
 	}
 
-	if(readXMLString(p, "fromuid", strValue) && readXMLString(p, "touid", endStrValue))
+	std::string uniqueIdStr;
+	if (readXMLString(p, "uniqueid", uniqueIdStr))
 	{
-		intVector = vectorAtoi(explodeString(strValue, ";"));
-		endIntVector = vectorAtoi(explodeString(endStrValue, ";"));
-		if(intVector[0] && endIntVector[0] && intVector.size() == endIntVector.size())
+		IntegerVec uniqueIds;
+		if (parseIntegerVec(uniqueIdStr, uniqueIds))
 		{
-			for(size_t i = 0, size = intVector.size(); i < size; ++i)
+			for (IntegerVec::iterator uniqueId = uniqueIds.begin(); uniqueId != uniqueIds.end(); ++uniqueId)
 			{
-				addEvent(moveEvent, intVector[i], m_uniqueIdMap, override);
-				while(intVector[i] < endIntVector[i])
-					addEvent(new MoveEvent(moveEvent), ++intVector[i], m_uniqueIdMap, override);
+				addEvent(new MoveEvent(moveEvent), *uniqueId, m_uniqueIdMap, override);
 			}
 		}
 		else
-			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (from unique: \"" << strValue << "\", to unique: \"" << endStrValue << "\")" << std::endl;
-	}
-
-	if(readXMLString(p, "actionid", strValue) || readXMLString(p, "aid", strValue))
-	{
-		strVector = explodeString(strValue, ";");
-		for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
 		{
-			intVector = vectorAtoi(explodeString((*it), "-"));
-			if(!intVector[0])
-				continue;
-
-			addEvent(moveEvent, intVector[0], m_actionIdMap, override);
-			if(intVector.size() > 1)
-			{
-				while(intVector[0] < intVector[1])
-					addEvent(new MoveEvent(moveEvent), ++intVector[0], m_actionIdMap, override);
-			}
+			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (uniqueid: \"" << uniqueIdStr << "\")" << std::endl;
+			success = false;
 		}
 	}
 
-	if(readXMLString(p, "fromaid", strValue) && readXMLString(p, "toaid", endStrValue))
+	std::string fromUidStr, toUidStr;
+	if (readXMLString(p, "fromuid", fromUidStr) && readXMLString(p, "touid", toUidStr))
 	{
-		intVector = vectorAtoi(explodeString(strValue, ";"));
-		endIntVector = vectorAtoi(explodeString(endStrValue, ";"));
-		if(intVector[0] && endIntVector[0] && intVector.size() == endIntVector.size())
+		IntegerVec fromUids;
+		IntegerVec toUids;
+
+		if (parseIntegerVec(fromUidStr, fromUids) && parseIntegerVec(toUidStr, toUids) && fromUids.size() == toUids.size())
 		{
-			for(size_t i = 0, size = intVector.size(); i < size; ++i)
+			for (size_t i = 0; i < fromUids.size(); ++i)
 			{
-				addEvent(moveEvent, intVector[i], m_actionIdMap, override);
-				while(intVector[i] < endIntVector[i])
-					addEvent(new MoveEvent(moveEvent), ++intVector[i], m_actionIdMap, override);
+				int32_t fromUid = fromUids[i];
+				int32_t toUid = toUids[i];
+
+				for (int32_t uid = fromUid; uid <= toUid; ++uid)
+				{
+					addEvent(new MoveEvent(moveEvent), uid, m_uniqueIdMap, override);
+				}
 			}
 		}
 		else
-			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (from action: \"" << strValue << "\", to action: \"" << endStrValue << "\")" << std::endl;
+		{
+			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (fromuid: \"" << fromUidStr << "\", touid: \"" << toUidStr << "\")" << std::endl;
+			success = false;
+		}
 	}
 
-	if(readXMLString(p, "pos", strValue) || readXMLString(p, "position", strValue))
+	std::string aidStr;
+	if (readXMLString(p, "actionid", aidStr) || readXMLString(p, "aid", aidStr))
 	{
-		strVector = explodeString(strValue, ";");
-		for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
+		IntegerVec aids;
+
+		if (parseIntegerVec(aidStr, aids))
 		{
-			intVector = vectorAtoi(explodeString((*it), ","));
-			if(intVector.size() > 2)
-				addEvent(moveEvent, Position(intVector[0], intVector[1], intVector[2]), m_positionMap, override);
-			else
-				success = false;
+			for (IntegerVec::iterator aid = aids.begin(); aid != aids.end(); ++aid)
+			{
+				addEvent(new MoveEvent(moveEvent), *aid, m_actionIdMap, override);
+			}
+		}
+		else
+		{
+			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (actionid (or aid): \"" << aidStr << "\")" << std::endl;
+			success = false;
+		}
+	}
+
+	std::string fromAidStr, toAidStr;
+	if (readXMLString(p, "fromaid", fromAidStr) && readXMLString(p, "toaid", toAidStr))
+	{
+		IntegerVec fromAids;
+		IntegerVec toAids;
+
+		if (parseIntegerVec(fromAidStr, fromAids) && parseIntegerVec(toAidStr, toAids) && fromAids.size() == toAids.size())
+		{
+			for (size_t i = 0; i < fromAids.size(); ++i)
+			{
+				int32_t fromAid = fromAids[i];
+				int32_t toAid = toAids[i];
+
+				for (int32_t aid = fromAid; aid <= toAid; ++aid)
+				{
+					addEvent(new MoveEvent(moveEvent), aid, m_actionIdMap, override);
+				}
+			}
+		}
+		else
+		{
+			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (fromaid: \"" << fromAidStr << "\", toaid: \"" << toAidStr << "\")" << std::endl;
+			success = false;
+		}
+	}
+
+	std::string posStr;
+	if (readXMLString(p, "pos", posStr) || readXMLString(p, "position", posStr))
+	{
+		StringVec positions = explodeString(posStr, ";");
+
+		if (!positions.empty())
+		{
+			for (StringVec::iterator position = positions.begin(); position != positions.end(); ++position)
+			{
+				IntegerVec coordinates;
+
+				if (parseIntegerVec(*position, coordinates) && coordinates.size() > 2)
+					addEvent(moveEvent, Position(coordinates[0], coordinates[1], coordinates[2]), m_positionMap, override);
+				else
+					success = false;
+			}
+		}
+		else
+		{
+			std::clog << "[Warning - MoveEvents::registerEvent] Malformed entry (pos (or position): \"" << posStr << "\")" << std::endl;
+			success = false;
 		}
 	}
 
