@@ -7103,10 +7103,13 @@ void Game::loadPlayersRecord()
 bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool completeReload/* = false*/)
 {
 	bool done = false;
+	std::string type = "";
 	switch(reload)
 	{
 		case RELOAD_ACTIONS:
 		{
+			type = "actions";
+
 			if(g_actions->reload())
 				done = true;
 			else
@@ -7117,6 +7120,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_CHAT:
 		{
+			type = "chat";
+
 			if(g_chat.reload())
 				done = true;
 			else
@@ -7127,6 +7132,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_CONFIG:
 		{
+			type = "config";
+
 			if(g_config.reload())
 				done = true;
 			else
@@ -7137,6 +7144,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_CREATUREEVENTS:
 		{
+			type = "creatureevents";
+
 			if(g_creatureEvents->reload())
 				done = true;
 			else
@@ -7145,20 +7154,25 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 			break;
 		}
 
-#ifdef __LOGIN_SERVER__
 		case RELOAD_GAMESERVERS:
 		{
+#ifdef __LOGIN_SE0RVER__
+			type = "gameservers";
+
 			if(GameServers::getInstance()->reload())
 				done = true;
 			else
 				std::clog << "[Error - Game::reloadInfo] Failed to reload game servers." << std::endl;
+#else
+			std::clog << "[Notice - Game::reloadInfo] Reload game servers only works with login servers enabled." << std::endl;
 
-			break;
-		}
+			return true;
 #endif
-
+		}
 		case RELOAD_GLOBALEVENTS:
 		{
+			type = "globalevents";
+
 			if(g_globalEvents->reload())
 				done = true;
 			else
@@ -7169,6 +7183,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_HIGHSCORES:
 		{
+			type = "highscores";
+
 			if(reloadHighscores())
 				done = true;
 			else
@@ -7179,18 +7195,22 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_GROUPS:
 		{
-			break;
+			std::clog << "[Notice - Game::reloadInfo] Reload group does not work. Please restart the server." << std::endl;
+
+			return true;
 		}
 
 		case RELOAD_ITEMS:
 		{
-			std::clog << "[Notice - Game::reloadInfo] Reload type does not work." << std::endl;
-			done = true;
-			break;
+			std::clog << "[Notice - Game::reloadInfo] Reload items does not work. Please restart the server." << std::endl;
+
+			return true;
 		}
 
 		case RELOAD_MODS:
 		{
+			type = "mods";
+
 			if(ScriptManager::getInstance()->reloadMods())
 				done = true;
 			else
@@ -7201,6 +7221,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_MONSTERS:
 		{
+			type = "monsters";
+
 			// reload monster and reload names from XML
 			if(g_monsters.reload())
 			{
@@ -7215,6 +7237,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_MOVEEVENTS:
 		{
+			type = "moveevents";
+
 			if(g_moveEvents->reload())
 				done = true;
 			else
@@ -7225,6 +7249,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_NPCS:
 		{
+			type = "npcs";
+
 			g_npcs.reload();
 			done = true;
 			break;
@@ -7232,13 +7258,15 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_OUTFITS:
 		{
-			std::clog << "[Notice - Game::reloadInfo] Reload type does not work." << std::endl;
-			done = true;
-			break;
+			std::clog << "[Notice - Game::reloadInfo] Reload outfits does not work. Please restart the server." << std::endl;
+			
+			return true;
 		}
 
 		case RELOAD_QUESTS:
 		{
+			type = "quests";
+
 			if(Quests::getInstance()->reload())
 				done = true;
 			else
@@ -7249,6 +7277,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_RAIDS:
 		{
+			type = "raids";
+
 			if(!Raids::getInstance()->reload())
 				std::clog << "[Error - Game::reloadInfo] Failed to reload raids." << std::endl;
 			else if(!Raids::getInstance()->startup())
@@ -7261,6 +7291,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_SPELLS:
 		{
+			type = "spells";
+
 			if(!g_spells->reload())
 				std::clog << "[Error - Game::reloadInfo] Failed to reload spells." << std::endl;
 			else if(!g_monsters.reload())
@@ -7273,6 +7305,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_STAGES:
 		{
+			type = "stages";
+
 			if(loadExperienceStages())
 				done = true;
 			else
@@ -7283,6 +7317,8 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_TALKACTIONS:
 		{
+			type = "talkactions";
+
 			if(g_talkActions->reload())
 				done = true;
 			else
@@ -7293,39 +7329,42 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 		case RELOAD_VOCATIONS:
 		{
-			break;
+			std::clog << "[Notice - Game::reloadInfo] Reload vocations does not work. Please restart the server." << std::endl;
+
+			return true;
 		}
 
 		case RELOAD_WEAPONS:
 		{
-			std::clog << "[Notice - Game::reloadInfo] Reload type does not work." << std::endl;
-			done = true;
-			break;
+			std::clog << "[Notice - Game::reloadInfo] Reload weapons does not work. Please restart the server." << std::endl;
+
+			return true;
 		}
 
 		case RELOAD_ALL:
 		{
+			type = "all";
+
 			done = true;
 			for(int32_t i = RELOAD_FIRST; i <= RELOAD_LAST; ++i)
 			{
-				if(!reloadInfo((ReloadInfo_t)i, 0, true) && done)
+				if(!reloadInfo((ReloadInfo_t)i, playerId, true))
 					done = false;
 			}
-
-			if(!ScriptManager::getInstance()->reloadMods() && done)
-				done = false;
 
 			break;
 		}
 
 		default:
 		{
+			type = "unknown";
+
 			std::clog << "[Warning - Game::reloadInfo] Reload type not found." << std::endl;
 			break;
 		}
 	}
 
-	if(reload != RELOAD_CONFIG && reload != RELOAD_MODS && !completeReload && !ScriptManager::getInstance()->reloadMods())
+	if(reload != RELOAD_ALL && reload != RELOAD_CONFIG && reload != RELOAD_MODS && !completeReload && !ScriptManager::getInstance()->reloadMods())
 		std::clog << "[Error - Game::reloadInfo] Failed to reload mods." << std::endl;
 
 	if(!playerId)
@@ -7337,14 +7376,14 @@ bool Game::reloadInfo(ReloadInfo_t reload, uint32_t playerId/* = 0*/, bool compl
 
 	if(done)
 	{
-		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Reloaded successfully.");
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Reloaded successfully: " + type);
 		return true;
 	}
 
-	if(reload == RELOAD_ALL)
+	if (reload == RELOAD_ALL)
 		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Failed to reload some parts.");
 	else
-		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Failed to reload.");
+		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Failed to reload: " + type);
 
 	return false;
 }

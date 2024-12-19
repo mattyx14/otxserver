@@ -366,27 +366,39 @@ bool latin1ToUtf8(char* inText, std::string& outText)
 	return true;
 }
 
-StringVec explodeString(const std::string& string, const std::string& separator, bool trim/* = true*/, uint16_t limit/* = 0*/)
+StringVec explodeString(const std::string& string, const std::string& separators, bool trim/* = true*/, uint16_t limit/* = 0*/)
 {
 	StringVec returnVector;
 	size_t start = 0, end = 0;
 
 	uint16_t i = 1;
-	while((end = string.find(separator, start)) != std::string::npos)
+	while ((end = string.find_first_of(separators, start)) != std::string::npos)
 	{
 		std::string t = string.substr(start, end - start);
-		if(trim)
+		if (trim)
+		{
 			trimString(t);
+		}
 
 		returnVector.push_back(t);
-		start = end + separator.size();
+		start = end + 1;
 
 		++i;
-		if(limit > 0 && i > limit)
+
+		if (limit > 0 && i > limit)
+		{
 			break;
+		}
 	}
 
-	returnVector.push_back(string.substr(start));
+	std::string t = string.substr(start);
+	if (trim)
+	{
+		trimString(t);
+	}
+
+	returnVector.push_back(t);
+
 	return returnVector;
 }
 
@@ -395,9 +407,17 @@ IntegerVec vectorAtoi(StringVec stringVector)
 	IntegerVec returnVector;
 	for(StringVec::iterator it = stringVector.begin(); it != stringVector.end(); ++it)
 	{
-		int32_t number = atoi((*it).c_str());
-		if(number || (*it) == "0")
-			returnVector.push_back(number);
+		try
+		{
+			int32_t number = std::stoi(*it);
+
+			if(number || (*it) == "0")
+				returnVector.push_back(number);
+			}
+		catch (const std::exception& e)
+		{
+			std::cerr << "Invalid argument for range integers: " << e.what() << " on integer: " << *it << std::endl;
+		}
 	}
 
 	return returnVector;
@@ -1715,7 +1735,7 @@ bool parseVocationNode(xmlNodePtr vocationNode, VocationMap& vocationMap, String
 
 bool parseIntegerVec(std::string str, IntegerVec& intVector)
 {
-	StringVec strVector = explodeString(str, ";");
+	StringVec strVector = explodeString(str, ",;");
 	IntegerVec tmpIntVector;
 	for(StringVec::iterator it = strVector.begin(); it != strVector.end(); ++it)
 	{

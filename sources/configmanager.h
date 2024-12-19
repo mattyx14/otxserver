@@ -27,8 +27,6 @@ class ConfigManager
 
 		enum string_config_t
 		{
-			AUTOLOOT_BLOCKIDS,
-			AUTOLOOT_MONEYIDS,
 			DUMMY_STR = 0,
 			CONFIG_FILE,
 			MAP_NAME,
@@ -69,6 +67,8 @@ class ConfigManager
 			GAME_PORT,
 			ADVERTISING_BLOCK,
 			VERSION_MSG,
+			AUTOLOOT_BLOCKIDS,
+			AUTOLOOT_MONEYIDS,
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
 
@@ -214,7 +214,7 @@ class ConfigManager
 
 		enum double_config_t
 		{
-			RATE_EXPERIENCE,
+			RATE_EXPERIENCE = 0,
 			RATE_SKILL,
 			RATE_SKILL_OFFLINE,
 			RATE_MAGIC,
