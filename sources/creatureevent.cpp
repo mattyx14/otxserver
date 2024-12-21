@@ -81,14 +81,15 @@ bool CreatureEvents::registerEvent(Event* event, xmlNodePtr, bool override)
 		if(oldEvent->getEventType() == creatureEvent->getEventType())
 		{
 			if(!oldEvent->isLoaded() || override)
-				oldEvent->copyEvent(creatureEvent);
+				oldEvent->copyEvent(new CreatureEvent(creatureEvent));
 
 			return override;
 		}
 	}
 
 	//if not, register it normally
-	m_creatureEvents.push_back(creatureEvent);
+	m_creatureEvents.push_back(new CreatureEvent(creatureEvent));
+
 	return true;
 }
 
@@ -249,6 +250,7 @@ Event(_interface)
 CreatureEvent::CreatureEvent(const CreatureEvent* copy):
 Event(copy)
 {
+	m_eventName = copy->m_eventName;
 	m_type = copy->m_type;
 	m_loaded = copy->m_loaded;
 	m_scriptId = copy->m_scriptId;
