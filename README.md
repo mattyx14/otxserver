@@ -12,24 +12,30 @@ We are trying to create the perfect custom OpenTibia server.
 We currently provide build instructions for the following systems:
 * [Windows Tutorial for OTX 6](https://github.com/mattyx14/otxserver/wiki/Compiling-on-Windows-(OTX-6-))
 
+## OpenTibia Comunity:
+With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
+* [OTServ Brasil](https://docs.opentibiabr.com/) - [PortuguÃªs/English]
+* [Tibiaking](https://tibiaking.com/) - [PortuguÃªs]
+* [OTLand](https://otland.net/) - [English]
+* [Tibia Face](https://tibiaface.foroactivo.com/) - [EspaÃ±ol]
+
 ## Old Server Series:
 Server created with TFS 0.3.7-(AKA 0.4) with endless improvements that make it ideal for old school servers based on 8.6, clearly it should be used completely with its data defined there.
 * [OTX Server 2](https://github.com/mattyx14/otxserver/tree/otxserv2)
-
-## OpenTibia Comunity:
-With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
-* [OTServ Brasil](https://docs.opentibiabr.com/) - [Português/English]
-* [Tibiaking](https://tibiaking.com/) - [Português]
-* [OTLand](https://otland.net/) - [English]
-* [Tibia Face](https://tibiaface.foroactivo.com/) - [Español]
 
 ## Contacts OTX Server 2:
 - <b>Matty(English & Spanish):</b><br>
 Facebook: https://www.facebook.com/Mattyx14/<br>
 E-mail: darkylive@live.com.mx<br>
-Whatsapp: +523211136700<br><br>
+Whatsapp: +5213173832937<br>
+
 - <b>Reason(English & Portuguese):</b><br>
 Discord: Reason#2913
+
+- <b>FeeTads(Portuguese):</b><br>
+E-mail: felps18.082@gmail.com<br>
+Whatsapp: +55 41 9 84036942<br>
+Discord: FeeTads#0246
 
 ## Special Thanks
 
