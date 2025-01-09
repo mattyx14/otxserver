@@ -18,8 +18,15 @@ local function playerFreeQuestStart(playerId, index)
 			return
 		end
 
-		if player:getStorageValue(questTable[index].storage) ~= questTable[index].storageValue then
-			player:setStorageValue(questTable[index].storage, questTable[index].storageValue)
+		local questData = questTable[index]
+		local currentStorageValue = player:getStorageValue(questData.storage)
+
+		if not questData.storage then
+			logger.warn("[Freequest System]: error storage for '" .. questData.storageName .. "' is nil for the index")
+		elseif currentStorageValue ~= questData.storageValue then
+			player:setStorageValue(questData.storage, questData.storageValue)
+		elseif currentStorageValue == -1 then
+			logger.warn("[Freequest System]: warning Storage '" .. questData.storageName .. "' currently nil for player ID " .. playerId)
 		end
 	end
 
