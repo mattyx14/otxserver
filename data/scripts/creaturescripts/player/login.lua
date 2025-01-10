@@ -119,11 +119,6 @@ function playerLoginGlobal.onLogin(player)
 		end
 	end
 
-	-- Set Ghost Mode
-	if player:getGroup():getId() >= GROUP_TYPE_GAMEMASTER then
-		player:setGhostMode(true)
-	end
-
 	-- Resets
 	if _G.OnExerciseTraining[player:getId()] then
 		stopEvent(_G.OnExerciseTraining[player:getId()].event)
