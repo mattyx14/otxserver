@@ -1,10 +1,10 @@
-local mType = Game.createMonsterType("Mushroom")
+local mType = Game.createMonsterType("Regenerating Mass")
 local monster = {}
 
-monster.description = "a Mushroom"
+monster.description = "a regenerating mass"
 monster.experience = 0
 monster.outfit = {
-	lookType = 1773,
+	lookType = 238,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -13,16 +13,17 @@ monster.outfit = {
 	lookMount = 0,
 }
 
-monster.health = 10000
-monster.maxHealth = 10000
-monster.race = "undead"
+monster.health = 100000
+monster.maxHealth = 100000
+monster.race = "venom"
 monster.corpse = 0
-monster.speed = 0
+monster.speed = 160
 monster.manaCost = 0
+monster.maxSummons = 0
 
 monster.changeTarget = {
-	interval = 2500,
-	chance = 40,
+	interval = 4000,
+	chance = 10,
 }
 
 monster.strategiesTarget = {
@@ -39,17 +40,18 @@ monster.flags = {
 	convinceable = false,
 	pushable = false,
 	rewardBoss = false,
-	illusionable = false,
+	illusionable = true,
 	canPushItems = true,
 	canPushCreatures = true,
-	staticAttackChance = 98,
+	staticAttackChance = 80,
 	targetDistance = 1,
-	runHealth = 0,
+	runHealth = 85,
 	healthHidden = false,
 	isBlockable = false,
-	canWalkOnEnergy = true,
-	canWalkOnFire = true,
+	canWalkOnEnergy = false,
+	canWalkOnFire = false,
 	canWalkOnPoison = true,
+	pet = false,
 }
 
 monster.light = {
@@ -57,38 +59,34 @@ monster.light = {
 	color = 0,
 }
 
-monster.voices = {}
-
-monster.loot = {}
-
 monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400 },
-	{ name = "combat", interval = 3000, chance = 100, type = COMBAT_LIFEDRAIN, minDamage = -2500, maxDamage = -3000, radius = 3, effect = CONST_ME_POISONAREA, target = false }, -- life drain bomb
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -440 },
 }
 
 monster.defenses = {
-	defense = 65,
-	armor = 0,
+	defense = 20,
+	armor = 20,
+	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 880, maxDamage = 1050, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 
 monster.elements = {
 	{ type = COMBAT_PHYSICALDAMAGE, percent = 0 },
-	{ type = COMBAT_ENERGYDAMAGE, percent = 0 },
-	{ type = COMBAT_EARTHDAMAGE, percent = 0 },
-	{ type = COMBAT_FIREDAMAGE, percent = 0 },
+	{ type = COMBAT_ENERGYDAMAGE, percent = 10 },
+	{ type = COMBAT_EARTHDAMAGE, percent = 100 },
+	{ type = COMBAT_FIREDAMAGE, percent = -25 },
 	{ type = COMBAT_LIFEDRAIN, percent = 0 },
 	{ type = COMBAT_MANADRAIN, percent = 0 },
 	{ type = COMBAT_DROWNDAMAGE, percent = 0 },
-	{ type = COMBAT_ICEDAMAGE, percent = 0 },
+	{ type = COMBAT_ICEDAMAGE, percent = 20 },
 	{ type = COMBAT_HOLYDAMAGE, percent = 0 },
 	{ type = COMBAT_DEATHDAMAGE, percent = 0 },
 }
 
 monster.immunities = {
 	{ type = "paralyze", condition = true },
-	{ type = "outfit", condition = true },
+	{ type = "outfit", condition = false },
 	{ type = "invisible", condition = true },
-	{ type = "bleed", condition = true },
+	{ type = "bleed", condition = false },
 }
 
 mType:register(monster)

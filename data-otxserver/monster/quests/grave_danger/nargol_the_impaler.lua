@@ -1,27 +1,28 @@
-local mType = Game.createMonsterType("Shard of Magnor")
+local mType = Game.createMonsterType("Nargol The Impaler")
 local monster = {}
 
-monster.description = "a shard of Magnor"
+monster.description = "a nargol the impaler"
 monster.experience = 0
 monster.outfit = {
-	lookType = 1221,
-	lookHead = 19,
-	lookBody = 76,
-	lookLegs = 114,
-	lookFeet = 76,
+	lookType = 1222,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 94,
+	lookFeet = 0,
 	lookAddons = 3,
 	lookMount = 0,
 }
 
-monster.health = 20000
-monster.maxHealth = 20000
+monster.health = 250000
+monster.maxHealth = 250000
 monster.race = "venom"
 monster.corpse = 0
-monster.speed = 125
+monster.speed = 250
 monster.manaCost = 0
+monster.maxSummons = 0
 
 monster.events = {
-	"shard_death",
+	"nargol_death",
 }
 
 monster.changeTarget = {
@@ -39,7 +40,7 @@ monster.flags = {
 	hostile = true,
 	convinceable = false,
 	pushable = false,
-	rewardBoss = false,
+	rewardBoss = true,
 	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
@@ -51,6 +52,7 @@ monster.flags = {
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true,
+	pet = false,
 }
 
 monster.light = {
@@ -66,24 +68,22 @@ monster.voices = {
 monster.loot = {}
 
 monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = -200, maxDamage = -600 },
-	{ name = "combat", interval = 2000, chance = 50, type = COMBAT_MANADRAIN, minDamage = -400, maxDamage = -1000, length = 7, spread = 0, effect = CONST_ME_STONES, target = false },
-	{ name = "combat", interval = 2000, chance = 70, type = COMBAT_PHYSICALDAMAGE, minDamage = -400, maxDamage = -1000, length = 7, spread = 0, effect = CONST_ME_POISONAREA, target = false },
-	{ name = "combat", interval = 2000, chance = 0, type = COMBAT_ENERGYDAMAGE, minDamage = -400, maxDamage = -650, radius = 3, effect = CONST_ME_GREEN_ENERGY_SPARK, target = true },
+	{ name = "melee", interval = 2000, chance = 100, minDamage = -800, maxDamage = -1200 },
+	{ name = "combat", interval = 6000, chance = 56, type = COMBAT_EARTHDAMAGE, minDamage = -1000, maxDamage = -1200, length = 7, spread = 5, effect = CONST_ME_POISONAREA, target = false },
+	{ name = "combat", interval = 5000, chance = 70, type = COMBAT_LIFEDRAIN, minDamage = -700, maxDamage = -900, length = 7, effect = CONST_ME_MORTAREA, target = false },
 }
 
 monster.defenses = {
 	defense = 25,
 	armor = 78,
-	--	mitigation = ???,
-	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_HEALING, minDamage = 150, maxDamage = 350, effect = CONST_ME_MAGIC_BLUE, target = false },
+	{ name = "combat", interval = 2000, chance = 55, type = COMBAT_HEALING, minDamage = 350, maxDamage = 950, effect = CONST_ME_MAGIC_BLUE, target = false },
 }
 
 monster.elements = {
 	{ type = COMBAT_PHYSICALDAMAGE, percent = 0 },
 	{ type = COMBAT_ENERGYDAMAGE, percent = 0 },
 	{ type = COMBAT_EARTHDAMAGE, percent = 100 },
-	{ type = COMBAT_FIREDAMAGE, percent = 0 },
+	{ type = COMBAT_FIREDAMAGE, percent = -20 },
 	{ type = COMBAT_LIFEDRAIN, percent = 0 },
 	{ type = COMBAT_MANADRAIN, percent = 0 },
 	{ type = COMBAT_DROWNDAMAGE, percent = 0 },
@@ -98,5 +98,23 @@ monster.immunities = {
 	{ type = "invisible", condition = true },
 	{ type = "bleed", condition = false },
 }
+
+monster.heals = {
+	{ type = COMBAT_EARTHDAMAGE, percent = 100 },
+}
+
+mType.onThink = function(monster, interval) end
+
+mType.onAppear = function(monster, creature)
+	if monster:getType():isRewardBoss() then
+		monster:setReward(true)
+	end
+end
+
+mType.onDisappear = function(monster, creature) end
+
+mType.onMove = function(monster, creature, fromPosition, toPosition) end
+
+mType.onSay = function(monster, creature, type, message) end
 
 mType:register(monster)

@@ -520,8 +520,9 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 		end
 	end
 
-	-- The Secret Library Quest
 	local tPos = toPosition
+
+	-- The Secret Library Quest
 	for _, j in pairs(secret_library.crystals) do
 		if tPos == j.position then
 			if player:getStorageValue(j.storage) < os.time() then
@@ -1014,8 +1015,9 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 		return false
 	end
 
-	-- The Secret Library Quest
 	local tPos = toPosition
+
+	-- The Secret Library Quest
 	for _, j in pairs(secret_library.crystals) do
 		if tPos == j.position then
 			if player:getStorageValue(j.storage) < os.time() then
