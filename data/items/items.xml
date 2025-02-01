@@ -15061,10 +15061,10 @@
 	<item id="7919" article="an" name="armillary sphere"/>
 	<item id="7920-7923" article="a" name="chalk board"/>
 	<item id="7924" name="stone stairs">
-		<attribute key="floorchange" value="southalt"/>
+		<attribute key="floorchange" value="southex"/>
 	</item>
 	<item id="7925" name="stone stairs">
-		<attribute key="floorchange" value="eastalt"/>
+		<attribute key="floorchange" value="eastex"/>
 	</item>
 	<item id="7926" article="a" name="dead troll">
 		<attribute key="containerSize" value="7"/>
@@ -15920,7 +15920,7 @@
 		<attribute key="floorchange" value="west"/>
 	</item>
 	<item id="8716" name="stone stairs">
-		<attribute key="floorchange" value="southalt"/>
+		<attribute key="floorchange" value="southex"/>
 	</item>
 	<item id="8717" name="lock pick">
 		<attribute key="weight" value="85"/>
