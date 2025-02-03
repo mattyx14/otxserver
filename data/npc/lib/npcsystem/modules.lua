@@ -1046,7 +1046,7 @@ if(Modules == nil) then
 			local item = {
 				id = itemid,
 				buy = cost,
-				sell = -1,
+				sell = 0,
 				subType = tonumber(subType) or (v.charges > 0 and v.charges or 0),
 				name = realName or v.name
 			}
@@ -1132,7 +1132,7 @@ if(Modules == nil) then
 		if(SHOPMODULE_MODE ~= SHOPMODULE_MODE_TALK) then
 			local item = {
 				id = itemid,
-				buy = -1,
+				buy = 0,
 				sell = cost,
 				subType = ((v.charges > 0 and v.stackable) and v.charges or 0),
 				name = realName or v.name
@@ -1197,7 +1197,7 @@ if(Modules == nil) then
 			return false
 		end
 
-		if(shopItem.buy == -1) then
+		if(shopItem.buy == 0) then
 			print('[Warning - ' .. getCreatureName(getNpcId()) .. '] NpcSystem:', 'ShopModule.onBuy - Attempt to purchase an item which only sellable')
 			return false
 		end
@@ -1278,7 +1278,7 @@ if(Modules == nil) then
 			return false
 		end
 
-		if(shopItem.sell == -1) then
+		if(shopItem.sell == 0) then
 			print('[Warning - ' .. getCreatureName(getNpcId()) .. '] NpcSystem:', 'ShopModule.onSell - Attempt to sell an item which is only buyable')
 			return false
 		end
