@@ -42,11 +42,21 @@ local function addBonusLoot(cid, position, name)
 	end
 end
 
-function onKill(cid, target, lastHit)
+function onKill(cid, target, mostDamage)
 	if not isMonster(target) then 
 		return true
 	end
 
+	-- mostDamage is creatureId who gives more damage to creature killed
+	-- can use 'isPlayer(mostDamage)' or some function to this creature
+	-- getPlayerLevel(mostDamage)
+	-- if (cid == mostDamage)...
+	
+	-- only gives exp to most damager
+	--[[if(cid ~= mostDamage) then
+		return true
+	end]]--
+	
 	local bonusMonster = getStorage(BOOST_SYSTEM_MONSTER_NAME_STORAGE)
 	local targetName = string.lower(getCreatureName(target))
 	if targetName ~= bonusMonster then

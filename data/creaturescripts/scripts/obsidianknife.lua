@@ -4,7 +4,7 @@ function onLogin(cid)
 	return true
 end
 
-function onKill(cid, target)
+function onKill(cid, target, mostDamage)
 	if isMonster(target) and isPlayer(getCreatureMaster(target)) then
 		registerCreatureEvent(target, ObMonsterCheck)
 	end

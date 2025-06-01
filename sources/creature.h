@@ -307,6 +307,7 @@ class Creature : public AutoId, virtual public Thing
 		virtual int32_t getDefense() const {return 0;}
 		virtual float getAttackFactor() const {return 1.0f;}
 		virtual float getDefenseFactor() const {return 1.0f;}
+		uint64_t getMostDamageDealer() const;							   
 
 		bool addCondition(Condition* condition);
 		bool addCombatCondition(Condition* condition);
@@ -459,6 +460,7 @@ class Creature : public AutoId, virtual public Thing
 		int32_t getWalkCache(const Position& pos) const;
 
 		const Position& getLastPosition() {return lastPosition;}
+		const Position& getLastPosition() const {return lastPosition;}														
 		void setLastPosition(Position newLastPos) {lastPosition = newLastPos;}
 		static bool canSee(const Position& myPos, const Position& pos, uint32_t viewRangeX, uint32_t viewRangeY);
 

@@ -8,18 +8,20 @@ local msg = {
 	[7] = "was left without a finger",
 }
 
-function onDeath(cid, corpse, deathList)
+function onDeath(cid, corpse, deathList, mostDamage)
 	if(not isPlayer(cid)) then
 		return true
 	end
 
 	if getConfigValue('displayDeathChannelMessages') ~= true then return true end
+	
+	local nameDamager = isPlayer(mostDamage) and getCreatureName(mostDamage) or ''
 
-	local str = "the player "..getPlayerName(cid).." ["..getPlayerLevel(cid).."] " ..(getConfigValue('resetSystemEnable') and ("["..getPlayerResets(cid).."] ") or " ")  ..msg[math.random(1, #msg)].." after dying to: "
+	local str = "the player "..getPlayerName(cid).." ["..getPlayerLevel(cid).."] " ..(getConfigValue('resetSystemEnable') and ("["..getPlayerResets(cid).."] ") or " ")  ..msg[math.random(1, #msg)].." after dying to: " .. (nameDamager ~= '' and (nameDamager .. "(damage)") or "")
 	local attacker = ''
 	local monster = false
 	for _, target in ipairs(deathList) do
-		if isCreature(target) and isPlayer(target) then	
+		if isCreature(target) and isPlayer(target) and getCreatureName(target) ~=  nameDamager then	
 			attacker = attacker..getCreatureName(target).." ["..getPlayerLevel(target).."] "..(getConfigValue('resetSystemEnable') and ("["..getPlayerResets(cid).."] ") or " ")..(_ < #deathList and ", " or ".")
 		elseif isCreature(target) and isMonster(target) then
 			attacker = attacker..getCreatureName(target)..(_ < #deathList and ", " or ".")

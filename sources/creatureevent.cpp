@@ -424,11 +424,11 @@ std::string CreatureEvent::getScriptEventParams() const
 		case CREATURE_EVENT_CAST:
 			return "cid, target";
 		case CREATURE_EVENT_KILL:
-			return "cid, target, damage, flags, war";
+			return "cid, target, mostDamage, damage, flags, war";
 		case CREATURE_EVENT_DEATH:
-			return "cid, corpse, deathList";
+			return "cid, corpse, deathList, mostDamage";
 		case CREATURE_EVENT_PREPAREDEATH:
-			return "cid, deathList";
+			return "cid, deathList, mostDamage";
 		case CREATURE_EVENT_EXTENDED_OPCODE:
 			return "cid, opcode, buffer";
 		case CREATURE_EVENT_MOVEITEM:
@@ -1410,7 +1410,7 @@ uint32_t CreatureEvent::executeCast(Creature* creature, Creature* target/* = NUL
 
 uint32_t CreatureEvent::executeKill(Creature* creature, Creature* target, const DeathEntry& entry)
 {
-	//onKill(cid, target, damage, flags)
+	//onKill(cid, target, mostDamage, damage, flags)
 	if(m_interface->reserveEnv())
 	{
 		uint32_t flags = 0;
@@ -1422,6 +1422,7 @@ uint32_t CreatureEvent::executeKill(Creature* creature, Creature* target, const 
 
 		if(entry.isUnjustified())
 			flags |= 4;
+		uint64_t mostDamage = target->getMostDamageDealer();											  
 
 		ScriptEnviroment* env = m_interface->getEnv();
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
@@ -1431,6 +1432,7 @@ uint32_t CreatureEvent::executeKill(Creature* creature, Creature* target, const 
 			scriptstream << "local cid = " << env->addThing(creature) << std::endl;
 
 			scriptstream << "local target = " << env->addThing(target) << std::endl;
+			scriptstream << "local mostDamage = " << mostDamage << std::endl;														
 			scriptstream << "local damage = " << entry.getDamage() << std::endl;
 			scriptstream << "local flags = " << flags << std::endl;
 			scriptstream << "local war = " << entry.getWar().war << std::endl;
@@ -1464,12 +1466,13 @@ uint32_t CreatureEvent::executeKill(Creature* creature, Creature* target, const 
 
 			lua_pushnumber(L, env->addThing(creature));
 			lua_pushnumber(L, env->addThing(target));
+			lua_pushnumber(L, mostDamage);					 
 
 			lua_pushnumber(L, entry.getDamage());
 			lua_pushnumber(L, flags);
 			lua_pushnumber(L, entry.getWar().war);
 
-			bool result = m_interface->callFunction(5);
+			bool result = m_interface->callFunction(6);
 			m_interface->releaseEnv();
 			return result;
 		}
@@ -1483,9 +1486,10 @@ uint32_t CreatureEvent::executeKill(Creature* creature, Creature* target, const 
 
 uint32_t CreatureEvent::executeDeath(Creature* creature, Item* corpse, DeathList deathList)
 {
-	//onDeath(cid, corpse, deathList)
+	//onDeath(cid, corpse, deathList, mostDamage)
 	if(m_interface->reserveEnv())
 	{
+		uint64_t mostDamage = creature->getMostDamageDealer();												
 		ScriptEnviroment* env = m_interface->getEnv();
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
@@ -1505,6 +1509,7 @@ uint32_t CreatureEvent::executeDeath(Creature* creature, Item* corpse, DeathList
 
 				scriptstream << ")" << std::endl;
 			}
+			scriptstream << "local mostDamage = " << mostDamage << std::endl;														
 
 			if(m_scriptData)
 				scriptstream << *m_scriptData;
@@ -1548,8 +1553,9 @@ uint32_t CreatureEvent::executeDeath(Creature* creature, Item* corpse, DeathList
 
 				lua_settable(L, -3);
 			}
+			lua_pushnumber(L, mostDamage);					 
 
-			bool result = m_interface->callFunction(3);
+			bool result = m_interface->callFunction(4);
 			m_interface->releaseEnv();
 			return result;
 		}
@@ -1563,9 +1569,10 @@ uint32_t CreatureEvent::executeDeath(Creature* creature, Item* corpse, DeathList
 
 uint32_t CreatureEvent::executePrepareDeath(Creature* creature, DeathList deathList)
 {
-	//onPrepareDeath(cid, deathList)
+	//onPrepareDeath(cid, deathList, mostDamage)
 	if(m_interface->reserveEnv())
 	{
+		uint64_t mostDamage = creature->getMostDamageDealer();												
 		ScriptEnviroment* env = m_interface->getEnv();
 		if(m_scripted == EVENT_SCRIPT_BUFFER)
 		{
@@ -1584,6 +1591,7 @@ uint32_t CreatureEvent::executePrepareDeath(Creature* creature, DeathList deathL
 
 				scriptstream << ")" << std::endl;
 			}
+			scriptstream << "local mostDamage = " << mostDamage << std::endl;														
 
 			if(m_scriptData)
 				scriptstream << *m_scriptData;
@@ -1626,8 +1634,9 @@ uint32_t CreatureEvent::executePrepareDeath(Creature* creature, DeathList deathL
 
 				lua_settable(L, -3);
 			}
+			lua_pushnumber(L, mostDamage);					 
 
-			bool result = m_interface->callFunction(2);
+			bool result = m_interface->callFunction(3);
 			m_interface->releaseEnv();
 
 			return result;

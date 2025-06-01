@@ -1164,6 +1164,18 @@ double Creature::getDamageRatio(Creature* attacker) const
 	return (totalDamage ? attackerDamage / totalDamage : 0);
 }
 
+uint64_t Creature::getMostDamageDealer() const {
+	uint64_t topAttacker = 0;
+	double highestDamage = 0.0f;
+
+	for (const auto& entry : damageMap) {
+		if (entry.second.total > highestDamage) {
+			highestDamage = entry.second.total;
+			topAttacker = entry.first;
+		}
+	}
+	return topAttacker; // return creature id
+}			
 double Creature::getGainedExperience(Creature* attacker) const
 {
 	return getDamageRatio(attacker) * (double)getLostExperience();
