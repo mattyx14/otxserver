@@ -19,6 +19,11 @@
 #define FS_PROTOCOL_H_D71405071ACF4137A4B1203899DE80E1
 
 #include "connection.h"
+#include <fstream>
+
+static constexpr uint8_t DELAY_ID = 0x65;
+static constexpr uint8_t PACKET_ID = 0x66;
+static constexpr uint8_t PLAYER_MSG_ID = 0x68;
 
 class Protocol : public std::enable_shared_from_this<Protocol>
 {
@@ -32,7 +37,7 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 
 		virtual void parsePacket(NetworkMessage&) {}
 
-		virtual void onSendMessage(const OutputMessage_ptr& msg) const;
+		virtual void onSendMessage(const OutputMessage_ptr& msg);
 		void onRecvMessage(NetworkMessage& msg);
 		virtual void onRecvFirstMessage(NetworkMessage& msg) = 0;
 		virtual void onConnect() {}
@@ -86,6 +91,17 @@ class Protocol : public std::enable_shared_from_this<Protocol>
 		}
 
 		virtual void release() {}
+
+		void startCam(const uint32_t guid);
+		void handleMessage(const uint8_t* buffer, const uint16_t msgSize);
+		void addPlayerMessage(NetworkMessage msg);
+		std::ofstream cam;
+		int8_t camActive;
+		uint8_t flushCounter;
+		std::string camPath;
+		uint32_t timeLast;
+		uint32_t timeNow;
+
 		friend class Connection;
 
 		OutputMessage_ptr outputBuffer;

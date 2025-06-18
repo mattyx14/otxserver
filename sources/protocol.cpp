@@ -23,8 +23,10 @@
 
 extern RSA g_RSA;
 
-void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
+void Protocol::onSendMessage(const OutputMessage_ptr& msg)
 {
+	handleMessage(msg->getOutputBuffer(), msg->getLength());
+
 	if (!rawMessages) {
 		msg->writeMessageLength();
 
@@ -41,6 +43,7 @@ void Protocol::onRecvMessage(NetworkMessage& msg)
 		return;
 	}
 
+	addPlayerMessage(msg);
 	parsePacket(msg);
 }
 
@@ -150,4 +153,59 @@ uint32_t Protocol::getIP() const
 	}
 
 	return 0;
+}
+
+void Protocol::startCam(const uint32_t guid)
+{
+	camPath = "movies//" + std::to_string(guid) + "_" + std::to_string(OTSYS_TIME());
+
+	if (cam) {
+		cam.close();
+	}
+
+	cam.open(camPath, std::fstream::out | std::fstream::binary | std::fstream::trunc);
+
+	if (!cam.good()) {
+		return;
+	}
+
+	camActive = 3;
+	timeLast = OTSYS_TIME();
+}
+
+void Protocol::handleMessage(const uint8_t* buffer, const uint16_t msgSize)
+{
+	if (isConnectionExpired() || camActive != 3 || !cam.good()) {
+		return;
+	}
+
+	timeNow = OTSYS_TIME();
+	uint32_t delay = timeNow - timeLast;
+	timeLast = timeNow;
+	cam << DELAY_ID << (uint8_t) (delay) << (uint8_t) (delay >> 8) << PACKET_ID << (uint8_t) (msgSize) << (uint8_t) (msgSize >> 8);
+	cam.write(reinterpret_cast<const char*>(buffer), msgSize);
+	flushCounter++;
+
+	if (flushCounter >= 10) {
+		cam.flush();
+		flushCounter = 0;
+	}
+}
+
+void Protocol::addPlayerMessage(NetworkMessage msg)
+{
+	if (isConnectionExpired() || camActive != 3 || !cam.good()) {
+		return;
+	}
+
+	uint16_t msgSize = msg.getLength();
+	cam << PLAYER_MSG_ID << (uint8_t) (msgSize) << (uint8_t) (msgSize >> 8);
+	const uint8_t* buffer = msg.getBuffer();
+	cam.write(reinterpret_cast<const char*>(buffer + 4), msgSize);
+	flushCounter++;
+
+	if (flushCounter >= 10) {
+		cam.flush();
+		flushCounter = 0;
+	}
 }

@@ -400,6 +400,7 @@ bool ConfigManager::load()
 	m_confBool[DIAGONAL_PUSH] = getGlobalBool("diagonalPush", true);
 	m_confBool[PZLOCK_ON_ATTACK_SKULLED_PLAYERS] = getGlobalBool("pzlockOnAttackSkulledPlayers", false);
 	m_confBool[PUSH_IN_PZ] = getGlobalBool("pushInProtectZone", true);
+	m_confBool[CAM_SYSTEM] = getGlobalBool("camSystem", true);
 
 	m_loaded = true;
 	return true;

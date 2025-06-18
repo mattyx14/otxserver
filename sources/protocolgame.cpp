@@ -481,6 +481,10 @@ void ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 		player->lastLogin = std::max(time(NULL), player->lastLogin + 1);
 
 		acceptPackets = true;
+
+		if (g_config.getBool(ConfigManager::CAM_SYSTEM)) {
+			Protocol::startCam(player->getGUID());
+		}
 	} else {
 		if(eventConnect != 0 || !g_config.getBool(ConfigManager::REPLACE_KICK_ON_LOGIN))
 		{
@@ -494,11 +498,22 @@ void ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 			foundPlayer->client->disconnect();
 			foundPlayer->isConnecting = true;
 			foundPlayer->setClientVersion(version);
+
+			if (g_config.getBool(ConfigManager::CAM_SYSTEM)) {
+				Protocol::startCam(foundPlayer->getGUID());
+			}
+
 			eventConnect = g_scheduler.addEvent(createSchedulerTask(
 				1000, boost::bind(&ProtocolGame::connect, getThis(), foundPlayer->getID(), operatingSystem, version, true)));
 		}
 		else
+		{
+			if (g_config.getBool(ConfigManager::CAM_SYSTEM)) {
+				Protocol::startCam(foundPlayer->getGUID());
+			}
+
 			connect(foundPlayer->getID(), operatingSystem, version, true);
+		}
 	}
 	OutputMessagePool::getInstance().addProtocolToAutosend(shared_from_this());
 }
