@@ -4369,7 +4369,17 @@ bool Game::playerRequestOutfit(const uint32_t& playerId)
 	return true;
 }
 
-bool Game::playerChangeOutfit(const uint32_t& playerId, const Outfit_t& outfit)
+void Game::playerToggleMount(uint32_t playerId, bool mount)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player || player->isRemoved()) {
+		return;
+	}
+
+	player->toggleMount(!player->isMounted());
+}
+
+bool Game::playerChangeOutfit(const uint32_t& playerId, Outfit_t& outfit)
 {
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
@@ -4386,6 +4396,26 @@ bool Game::playerChangeOutfit(const uint32_t& playerId, const Outfit_t& outfit)
 
 	if(!player->changeOutfit(outfit, true))
 		return false;
+
+	if (outfit.lookMount != 0) {
+		Mount* mount = Mounts::getInstance()->getMountByClientID(outfit.lookMount);
+
+		if (!mount || !player->hasMount(mount)) {
+			outfit.lookMount = 0;
+		}
+
+		if (player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) && !g_config.getBool(ConfigManager::ALLOW_PZ_MOUNTS)) {
+			outfit.lookMount = 0;
+		}
+
+		player->setCurrentMountStorage(mount->id);
+
+		if (!player->isMounted()) {
+			outfit.lookMount = 0;
+		}
+	} else if (player->isMounted()) {
+		player->dismount();
+	}
 
 	player->setIdleTime(0);
 	if(!player->hasCondition(CONDITION_OUTFIT, -1))

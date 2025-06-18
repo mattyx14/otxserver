@@ -683,6 +683,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	OperatingSystem_t operatingSystem = (OperatingSystem_t)msg.get<uint16_t>();
+	isDll = operatingSystem == CLIENTOS_DLL;
 	uint16_t version = msg.get<uint16_t>();
 
 	if(!RSA_decrypt(msg))
@@ -936,6 +937,7 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 					&& (g_config.getBool(ConfigManager::ALLOW_CHANGECOLORS) || g_config.getBool(ConfigManager::ALLOW_CHANGEOUTFIT)))
 					parseSetOutfit(msg);
 				break;
+			case 0xD4: parseToggleMount(msg); break;
 			case 0xDC: parseAddVip(msg); break;
 			case 0xDD: parseRemoveVip(msg); break;
 			case 0xE6: parseBugReport(msg); break;
@@ -1346,7 +1348,17 @@ void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 	else
 		msg.skipBytes(1);
 
+	if (isDll) {
+		newOutfit.lookMount = msg.get<uint16_t>();
+	}
+
 	addGameTask(&Game::playerChangeOutfit, player->getID(), newOutfit);
+}
+
+void ProtocolGame::parseToggleMount(NetworkMessage& msg)
+{
+	bool mount = msg.get<char>() != 0;
+	addGameTask(&Game::playerToggleMount, player->getID(), mount);
 }
 
 void ProtocolGame::parseUseItem(NetworkMessage& msg)
@@ -2824,6 +2836,23 @@ void ProtocolGame::sendOutfitWindow()
 			msg->addByte(player->getDefaultOutfit().lookAddons);
 		}
 
+		if (isDll) {
+			std::vector<Mount> allMounts = Mounts::getInstance()->getMounts();
+			std::vector<Mount> mounts;
+			for (std::vector<Mount>::iterator it = allMounts.begin(); it != allMounts.end(); ++it) {
+				const Mount mount = *it;
+				if (player->hasMount(&mount)) {
+					mounts.push_back(mount);
+				}
+			}
+
+			msg->addByte(mounts.size());
+			for (std::vector<Mount>::iterator mount = mounts.begin(); mount != mounts.end(); ++mount) {
+				msg->add<uint16_t>(mount->clientId);
+				msg->addString(mount->name);
+			}
+		}
+
 		player->hasRequestedOutfit(true);
 	}
 }
@@ -3264,6 +3293,10 @@ void ProtocolGame::AddCreatureOutfit(OutputMessage_ptr msg, const Creature* crea
 	}
 	else
 		msg->add<uint32_t>(0x00);
+
+	if (isDll) {
+		msg->add<uint16_t>(outfit.lookMount);
+	}
 }
 
 void ProtocolGame::AddWorldLight(OutputMessage_ptr msg, const LightInfo& lightInfo)

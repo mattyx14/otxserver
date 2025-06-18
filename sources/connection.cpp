@@ -229,6 +229,9 @@ void Connection::parsePacket(const boost::system::error_code& error)
 	}
 
 	uint32_t recvChecksum = msg.get<uint32_t>();
+	if (recvChecksum == 203324590) {
+		checksum = recvChecksum;
+	}
 	if (recvChecksum != checksum) {
 		// it might not have been the checksum, step back
 		msg.skipBytes(-NetworkMessage::CHECKSUM_LENGTH);

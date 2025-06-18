@@ -38,7 +38,7 @@ DATABASE = databasemysql.cpp
 
 # For LOGIN_SERVER, add gameservers.cpp gameservers.h
 # For OT_ADMIN, add admin.cpp admin.h
-EXTRASOURCES = 
+EXTRASOURCES = mounts.cpp
 
 CXXSOURCES = 			actions.cpp				allocator.cpp			baseevents.cpp			beds.cpp \
 						chat.cpp  				combat.cpp  			condition.cpp 				configmanager.cpp \

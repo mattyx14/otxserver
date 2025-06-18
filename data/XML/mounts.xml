@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mounts>
+	<mount id="1" clientid="368" name="Widow Queen" speed="20" premium="no" />
+	<mount id="2" clientid="369" name="Racing Bird" speed="20" premium="no" />
+	<mount id="3" clientid="370" name="War Bear" speed="20" premium="yes" />
+	<mount id="4" clientid="371" name="Black Sheep" speed="20" premium="no" />
+	<mount id="5" clientid="372" name="Midnight Panther" speed="20" premium="no" />
+	<mount id="6" clientid="373" name="Draptor" speed="20" premium="yes" />
+	<mount id="7" clientid="374" name="Titanica" speed="20" premium="yes" />
+	<mount id="8" clientid="375" name="Tin Lizzard" speed="20" premium="yes" />
+	<mount id="9" clientid="376" name="Blazebringer" speed="20" premium="yes" />
+	<mount id="10" clientid="377" name="Rapid Boar" speed="20" premium="yes" />
+	<mount id="11" clientid="378" name="Stampor" speed="20" premium="yes" />
+	<mount id="12" clientid="379" name="Undead Cavebear" speed="20" premium="yes" />
+</mounts>

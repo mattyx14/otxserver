@@ -31,7 +31,7 @@ function onLogin(cid)
 			str = "Your last visit was on " .. os.date("%a %b %d %X %Y", lastLogin) .. "."
 		else
 			str = str .. " Please choose your outfit."
-			doPlayerSendOutfitWindow(cid)
+			addEvent(doPlayerSendOutfitWindow, 900, cid)
 		end
 
 		doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, str)

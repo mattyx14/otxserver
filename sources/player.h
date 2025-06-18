@@ -27,6 +27,7 @@
 #include "depot.h"
 
 #include "outfit.h"
+#include "mounts.h"
 #include "vocation.h"
 #include "group.h"
 
@@ -688,6 +689,14 @@ class Player : public Creature, public Cylinder
 
 		void sendHouseWindow(House* house, uint32_t listId) const;
 		void sendOutfitWindow() const {if(client) client->sendOutfitWindow();}
+		uint16_t getCurrentMountStorage() const;
+		void setCurrentMountStorage(uint16_t mountId);
+		bool isMounted() const {
+			return defaultOutfit.lookMount != 0;
+		}
+		bool toggleMount(bool mount);
+		bool hasMount(const Mount* mount) const;
+		void dismount();
 		void sendQuests() const {if(client) client->sendQuests();}
 		void sendQuestInfo(Quest* quest) const {if(client) client->sendQuestInfo(quest);}
 		void sendCreatureSkull(const Creature* creature) const
@@ -924,6 +933,7 @@ class Player : public Creature, public Cylinder
 		bool pvpBlessing;
 		bool sentChat;
 		bool showLoot;
+		bool wasMounted;
 		static uint32_t playerAutoID;
 
 		OperatingSystem_t operatingSystem;
@@ -993,6 +1003,7 @@ class Player : public Creature, public Cylinder
 		int64_t lastPing;
 		int64_t nextAction;
 		int64_t nextExAction;
+		int64_t lastToggleMount;
 		uint64_t stamina;
 		uint64_t experience;
 		uint64_t manaSpent;

@@ -70,7 +70,7 @@ class ProtocolGame : public Protocol
 #endif
 			player = NULL;
 			eventConnect = m_packetCount = m_packetTime = naviexhaust = 0;
-			m_debugAssertSent = acceptPackets = m_spectator = false;
+			m_debugAssertSent = acceptPackets = m_spectator = isDll = false;
 		}
 		virtual ~ProtocolGame()
 		{
@@ -146,6 +146,7 @@ class ProtocolGame : public Protocol
 
 		void parseRequestOutfit(NetworkMessage& msg);
 		void parseSetOutfit(NetworkMessage& msg);
+		void parseToggleMount(NetworkMessage& msg);
 		void parseSay(NetworkMessage& msg);
 		void parseLookAt(NetworkMessage& msg);
 		void parseLookInBattleList(NetworkMessage& msg);
@@ -392,7 +393,7 @@ class ProtocolGame : public Protocol
 
 		uint32_t eventConnect, m_maxSizeCount, m_packetCount, m_packetTime;
 		int64_t naviexhaust;
-		bool m_debugAssertSent, acceptPackets, m_spectator;
+		bool m_debugAssertSent, acceptPackets, m_spectator, isDll;
 		std::string twatchername;
 		bool castlistopen = false;
 		bool spy = false;

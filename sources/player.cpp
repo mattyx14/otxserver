@@ -1667,6 +1667,19 @@ void Player::onChangeZone(ZoneType_t zone)
 		}
 	}
 
+	if (zone == ZONE_PROTECTION) {
+		if (isMounted() && !g_config.getBool(ConfigManager::ALLOW_PZ_MOUNTS)) {
+			dismount();
+			g_game.internalCreatureChangeOutfit(this, defaultOutfit);
+			wasMounted = true;
+		}
+	} else {
+		if (wasMounted && !g_config.getBool(ConfigManager::ALLOW_PZ_MOUNTS)) {
+			toggleMount(true);
+			wasMounted = false;
+		}
+	}
+
 	g_game.updateCreatureWalkthrough(this);
 	sendIcons();
 }
@@ -4044,6 +4057,10 @@ void Player::onAddCondition(ConditionType_t type, bool hadCondition)
 	if(type == CONDITION_GAMEMASTER)
 		return;
 
+	if (type == CONDITION_OUTFIT && isMounted()) {
+		dismount();
+	}
+
 	if(getLastPosition().x) // don't send if player have just logged in (its already done in protocolgame), or condition have no icons
 		sendIcons();
 }
@@ -6024,4 +6041,106 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 void Player::setPlayerExtraAttackSpeed(uint32_t speed)
 {
 	extraAttackSpeed = speed;
+}
+
+uint16_t Player::getCurrentMountStorage() const
+{
+	std::string strValue;
+
+	if (getStorage("90500", strValue)) {
+		return atoi(strValue.c_str());
+	}
+
+	return 0;
+}
+
+void Player::setCurrentMountStorage(uint16_t mountId)
+{
+	std::stringstream strValue;
+	strValue << mountId;
+	setStorage("90500", strValue.str());
+}
+
+bool Player::toggleMount(bool mount)
+{
+	if ((OTSYS_TIME() - lastToggleMount) < 3000 && !wasMounted) {
+		sendCancelMessage(RET_YOUAREEXHAUSTED);
+		return false;
+	}
+
+	if (mount) {
+		if (isMounted()) {
+			return false;
+		}
+
+		if (getTile()->hasFlag(TILESTATE_PROTECTIONZONE) && !g_config.getBool(ConfigManager::ALLOW_PZ_MOUNTS)) {
+			sendCancelMessage(RET_ACTIONNOTPERMITTEDINPROTECTIONZONE);
+			return false;
+		}
+
+		uint8_t currentMountId = getCurrentMountStorage();
+		if (currentMountId == 0) {
+			sendOutfitWindow();
+			return false;
+		}
+
+		Mount* currentMount = Mounts::getInstance()->getMountByID(currentMountId);
+		if (!currentMount) {
+			return false;
+		}
+
+		if (!hasMount(currentMount)) {
+			setCurrentMountStorage(0);
+			sendOutfitWindow();
+			return false;
+		}
+
+		if (currentMount->premium && !isPremium()) {
+			sendCancelMessage(RET_YOUNEEDPREMIUMACCOUNT);
+			return false;
+		}
+
+		if (hasCondition(CONDITION_OUTFIT)) {
+			sendCancelMessage(RET_NOTPOSSIBLE);
+			return false;
+		}
+
+		defaultOutfit.lookMount = currentMount->clientId;
+	} else {
+		if (!isMounted()) {
+			return false;
+		}
+
+		dismount();
+	}
+
+	g_game.internalCreatureChangeOutfit(this, defaultOutfit);
+	lastToggleMount = OTSYS_TIME();
+	return true;
+}
+
+bool Player::hasMount(const Mount* mount) const
+{
+	if (hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)) {
+		return true;
+	}
+
+	if (mount->premium && !isPremium()) {
+		return false;
+	}
+
+	std::string strValue;
+	std::stringstream storage;
+	storage << (90500 + mount->id);
+
+	if (!getStorage(storage.str(), strValue)) {
+		return false;
+	}
+
+	return atoi(strValue.c_str()) > 0;
+}
+
+void Player::dismount()
+{
+	defaultOutfit.lookMount = 0;
 }

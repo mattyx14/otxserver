@@ -367,6 +367,7 @@ class ConfigManager
 			CAST_EXP_ENABLED,
 			RESET_SYSTEM_ENABLE,
 			PUSH_IN_PZ,
+			ALLOW_PZ_MOUNTS,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

@@ -549,7 +549,8 @@ class Game
 
 		bool playerSay(const uint32_t& playerId, const uint16_t& channelId, const MessageClasses& type,
 			const std::string& receiver, const std::string& text, bool notify = true);
-		bool playerChangeOutfit(const uint32_t& playerId, const Outfit_t& outfit);
+		void playerToggleMount(uint32_t playerId, bool mount);
+		bool playerChangeOutfit(const uint32_t& playerId, Outfit_t& outfit);
 		bool playerInviteToParty(const uint32_t& playerId, const uint32_t& invitedId);
 		bool playerJoinParty(const uint32_t& playerId, const uint32_t& leaderId);
 		bool playerRevokePartyInvitation(const uint32_t& playerId, const uint32_t& invitedId);
