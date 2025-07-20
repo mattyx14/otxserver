@@ -14,10 +14,10 @@ We currently provide build instructions for the following systems:
 
 ## OpenTibia Comunity:
 With downloads, support, tutorials, Lua scripts, C++ codes, PHP codes and more ...
-* [OTServ Brasil](https://docs.opentibiabr.com/) - [PortuguÃªs/English]
-* [Tibiaking](https://tibiaking.com/) - [PortuguÃªs]
+* [OTServ Brasil](https://docs.opentibiabr.com/) - [Português/English]
+* [Tibiaking](https://tibiaking.com/) - [Português]
 * [OTLand](https://otland.net/) - [English]
-* [Tibia Face](https://tibiaface.foroactivo.com/) - [EspaÃ±ol]
+* [Tibia Face](https://tibiaface.foroactivo.com/) - [Español]
 
 ## Old Server Series:
 Server created with TFS 0.3.7-(AKA 0.4) with endless improvements that make it ideal for old school servers based on 8.6, clearly it should be used completely with its data defined there.
