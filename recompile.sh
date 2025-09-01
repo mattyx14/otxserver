@@ -96,7 +96,7 @@ move_executable() {
 		info "Saving old build"
 		mv ./"$executable_name" ./"$executable_name".old
 	fi
-	info "Moving the generated executable to the otx-server folder directory..."
+	info "Moving the generated executable to the otxserver folder directory..."
 	cp ./build/linux-release/bin/"$executable_name" ./"$executable_name"
 	info "Build completed successfully!"
 }

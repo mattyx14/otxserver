@@ -33,32 +33,6 @@
       }
     },
     {
-      "name": "windows-release-asan",
-      "inherits": "windows-release",
-      "displayName": "Windows - Release + ASAN",
-      "description": "Release Mode with ASAN",
-      "cacheVariables": {
-        "ASAN_ENABLED": "ON",
-        "DEBUG_LOG": "ON",
-        "BUILD_STATIC_LIBRARY": "OFF",
-        "VCPKG_TARGET_TRIPLET": "x64-windows"
-      }
-    },
-    {
-      "name": "windows-debug",
-      "inherits": "windows-release",
-      "displayName": "Windows - Debug",
-      "description": "Build Debug Mode",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "DEBUG_LOG": "ON",
-        "ASAN_ENABLED": "OFF",
-        "BUILD_STATIC_LIBRARY": "OFF",
-        "SPEED_UP_BUILD_UNITY": "OFF",
-        "VCPKG_TARGET_TRIPLET": "x64-windows"
-      }
-    },
-    {
       "name": "linux-release",
       "inherits": "base",
       "displayName": "Linux - Release",
@@ -76,39 +50,6 @@
         "rhs": "Linux"
       }
     },
-    {
-      "name": "linux-debug",
-      "inherits": "linux-release",
-      "displayName": "Linux - Debug Build",
-      "description": "Build Debug Mode",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "DEBUG_LOG": "ON",
-        "SPEED_UP_BUILD_UNITY": "OFF"
-      }
-    },
-    {
-      "name": "linux-debug-asan",
-      "inherits": "linux-release",
-      "displayName": "Linux - Debug Build",
-      "description": "Build Debug Mode With ASAN Enable",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "DEBUG_LOG": "ON",
-        "ASAN_ENABLED": "ON",
-        "SPEED_UP_BUILD_UNITY": "OFF"
-      }
-    },
-    {
-      "name": "linux-test",
-      "inherits": "linux-release",
-      "displayName": "Linux - Test Build",
-      "description": "Build Tests",
-      "cacheVariables": {
-        "BUILD_TESTS": "ON"
-      }
-    }
   ],
   "buildPresets": [
     {
@@ -116,24 +57,8 @@
       "configurePreset": "linux-release"
     },
     {
-      "name": "linux-debug",
-      "configurePreset": "linux-debug"
-    },
-    {
-      "name": "linux-test",
-      "configurePreset": "linux-test"
-    },
-    {
       "name": "windows-release",
       "configurePreset": "windows-release"
-    },
-    {
-      "name": "windows-release-asan",
-      "configurePreset": "windows-release-asan"
-    },
-    {
-      "name": "windows-Xdebug",
-      "configurePreset": "windows-debug"
     }
   ]
 }

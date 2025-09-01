@@ -35,8 +35,6 @@ vcproj/
 !vcproj/canary.sln
 !vcproj/canary.vcxproj
 !vcproj/settings.props
-!vcproj/otxserver.sln
-!vcproj/otxserver.vcxproj
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -406,3 +404,4 @@ database_backup
 
 # CLION
 cmake-build-*
+compile_commands.json
