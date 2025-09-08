@@ -20,7 +20,7 @@ if(MSVC)
     # Add executable icon for Windows
     target_sources(
         ${PROJECT_NAME}
-        PRIVATE ../cmake/canary.rc
+        PRIVATE ../cmake/otxserver.rc
     )
 endif()
 
