@@ -1,10 +1,10 @@
-local mType = Game.createMonsterType("Rift Invader")
+local mType = Game.createMonsterType("Overcharged Demon")
 local monster = {}
 
-monster.description = "a rift invader"
-monster.experience = 100
+monster.description = "an overcharged demon"
+monster.experience = 0
 monster.outfit = {
-	lookType = 290,
+	lookType = 35,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -13,9 +13,9 @@ monster.outfit = {
 	lookMount = 0,
 }
 
-monster.health = 6250
-monster.maxHealth = 6250
-monster.race = "venom"
+monster.health = 21500
+monster.maxHealth = 21500
+monster.race = "fire"
 monster.corpse = 0
 monster.speed = 128
 monster.manaCost = 0
@@ -52,10 +52,6 @@ monster.flags = {
 	canWalkOnPoison = true,
 }
 
-monster.events = {
-	"RiftInvaderDeath",
-}
-
 monster.light = {
 	level = 0,
 	color = 0,
@@ -70,15 +66,18 @@ monster.loot = {}
 
 monster.attacks = {
 	{ name = "melee", interval = 2000, chance = 100, skill = 70, attack = 130 },
-	{ name = "combat", interval = 2000, chance = 33, type = COMBAT_ENERGYDAMAGE, minDamage = -450, maxDamage = -550, range = 7, radius = 5, effect = CONST_ME_ENERGYAREA, target = false },
-	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_ENERGYDAMAGE, minDamage = -210, maxDamage = -300, range = 1, radius = 2, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT, target = true },
-	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_DEATHDAMAGE, minDamage = -200, maxDamage = -300, range = 7, radius = 3, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_MORTAREA, target = true },
-	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_MANADRAIN, minDamage = -180, maxDamage = -280, target = true },
+	{ name = "combat", interval = 2000, chance = 13, type = COMBAT_MANADRAIN, minDamage = -60, maxDamage = -120, range = 7, shootEffect = CONST_ANI_SUDDENDEATH, effect = CONST_ME_SMALLCLOUDS, target = false },
+	{ name = "combat", interval = 2000, chance = 33, type = COMBAT_FIREDAMAGE, minDamage = -150, maxDamage = -250, range = 7, radius = 7, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_FIREAREA, target = true },
+	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_DROWNDAMAGE, minDamage = -350, maxDamage = -450, radius = 7, effect = CONST_ME_LOSEENERGY, target = false },
+	{ name = "combat", interval = 2000, chance = 7, type = COMBAT_ENERGYDAMAGE, minDamage = -210, maxDamage = -300, range = 1, radius = 1, shootEffect = CONST_ANI_ENERGY, effect = CONST_ME_ENERGYHIT, target = true },
+	{ name = "firefield", interval = 2000, chance = 14, range = 7, radius = 1, shootEffect = CONST_ANI_FIRE, target = true },
+	{ name = "demon paralyze", interval = 2000, chance = 10, range = 7, target = false },
+	{ name = "combat", interval = 2000, chance = 10, type = COMBAT_LIFEDRAIN, minDamage = -300, maxDamage = -480, length = 8, spread = 0, effect = CONST_ME_PURPLEENERGY, target = false },
 }
 
 monster.defenses = {
 	defense = 65,
-	armor = 35,
+	armor = 40,
 	--	mitigation = ???,
 	{ name = "combat", interval = 2000, chance = 14, type = COMBAT_HEALING, minDamage = 150, maxDamage = 250, effect = CONST_ME_MAGIC_BLUE, target = false },
 	{ name = "speed", interval = 2000, chance = 10, speedChange = 388, effect = CONST_ME_MAGIC_RED, target = false, duration = 4000 },
@@ -92,9 +91,9 @@ monster.elements = {
 	{ type = COMBAT_LIFEDRAIN, percent = 0 },
 	{ type = COMBAT_MANADRAIN, percent = 0 },
 	{ type = COMBAT_DROWNDAMAGE, percent = 0 },
-	{ type = COMBAT_ICEDAMAGE, percent = 10 },
-	{ type = COMBAT_HOLYDAMAGE, percent = -15 },
-	{ type = COMBAT_DEATHDAMAGE, percent = 0 },
+	{ type = COMBAT_ICEDAMAGE, percent = -12 },
+	{ type = COMBAT_HOLYDAMAGE, percent = -12 },
+	{ type = COMBAT_DEATHDAMAGE, percent = 100 },
 }
 
 monster.immunities = {
