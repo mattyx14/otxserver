@@ -38,7 +38,7 @@ target_include_directories(
     PUBLIC ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-message("Diretório de construção atual: ${CMAKE_CURRENT_BINARY_DIR}")
+message("Current Construction Directory: ${CMAKE_CURRENT_BINARY_DIR}")
 
 if(MSVC
    AND BUILD_STATIC_LIBRARY
