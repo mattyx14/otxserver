@@ -2,6 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
+    <TFSSDKDir>$(ProjectDir)sources\otx-windows-sdk</TFSSDKDir>
     <LIBICONV_DIR>$(TFSSDKDir)\libiconv</LIBICONV_DIR>
     <LIBXML2_DIR>$(TFSSDKDir)\libxml2</LIBXML2_DIR>
     <LUA_DIR>$(TFSSDKDir)\lua</LUA_DIR>
@@ -30,53 +31,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <BuildMacro Include="LUA_DIR">
-      <Value>$(LUA_DIR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="LIBXML2_DIR">
-      <Value>$(LIBXML2_DIR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="LIBICONV_DIR">
-      <Value>$(LIBICONV_DIR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="GMP_DIR">
-      <Value>$(GMP_DIR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="SQLITE_DIR">
-      <Value>$(SQLITE_DIR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="MYSQLC_DIR">
-      <Value>$(MYSQLC_DIR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="OPENSSL_DIR">
-      <Value>$(OPENSSL_DIR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="PREPROCESSOR_DEFS">
-      <Value>$(PREPROCESSOR_DEFS)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="TFS_INCLUDES">
-      <Value>$(TFS_INCLUDES)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="TFS_LIBS">
-      <Value>$(TFS_LIBS)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="TFS_LIBS64">
-      <Value>$(TFS_LIBS64)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="TFS_LIBDEPS">
-      <Value>$(TFS_LIBDEPS)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
+    <BuildMacro Include="TFSSDKDir"><Value>$(TFSSDKDir)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="LUA_DIR"><Value>$(LUA_DIR)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="LIBXML2_DIR"><Value>$(LIBXML2_DIR)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="LIBICONV_DIR"><Value>$(LIBICONV_DIR)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="GMP_DIR"><Value>$(GMP_DIR)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="SQLITE_DIR"><Value>$(SQLITE_DIR)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="MYSQLC_DIR"><Value>$(MYSQLC_DIR)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="OPENSSL_DIR"><Value>$(OPENSSL_DIR)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="PREPROCESSOR_DEFS"><Value>$(PREPROCESSOR_DEFS)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="TFS_INCLUDES"><Value>$(TFS_INCLUDES)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="TFS_LIBS"><Value>$(TFS_LIBS)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="TFS_LIBS64"><Value>$(TFS_LIBS64)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
+    <BuildMacro Include="TFS_LIBDEPS"><Value>$(TFS_LIBDEPS)</Value><EnvironmentVariable>true</EnvironmentVariable></BuildMacro>
   </ItemGroup>
 </Project>
