@@ -23,11 +23,18 @@
 #include <fstream>
 #include <iomanip>
 
-#ifndef WINDOWS
-#include <unistd.h>
-#include <termios.h>
+// Use the standard compiler predefined macro to detect Windows.
+// Do NOT rely on a custom WINDOWS macro which may be undefined in MSVC.
+#if !defined(_WIN32)
+	// POSIX-specific headers
+	#include <unistd.h>
+	#include <termios.h>
+	#include <sys/socket.h>
 #else
-#include <conio.h>
+	// Windows-specific headers (winsock2 must be included before windows.h)
+	#include <winsock2.h>
+	#include <ws2tcpip.h>
+	#include <conio.h>
 #endif
 
 #include <boost/config.hpp>
@@ -105,7 +112,7 @@ boost::condition_variable g_loaderSignal;
 boost::unique_lock<boost::mutex> g_loaderUniqueLock(g_loaderLock);
 std::list<std::pair<uint32_t, uint32_t> > serverIps;
 
-#ifndef _WIN32
+#if !defined(_WIN32)
 __attribute__ ((used)) void saveServer() {
 	g_game.setGameState(GAMESTATE_SHUTDOWN);
 }
@@ -129,7 +136,7 @@ bool argumentsHandler(StringVec args)
 			"\t--admin-port=$1\tPort for admin server to listen on.\n"
 			"\t--manager-port=$1\tPort for manager server to listen on.\n"
 			"\t--status-port=$1\tPort for status server to listen on.\n";
-#ifndef WINDOWS
+#if !defined(_WIN32)
 			std::clog << "\t--runfile=$1\t\tSpecifies run file. Will contain the pid\n"
 			"\t\t\t\tof the server process as long as run status.\n";
 #endif
@@ -196,14 +203,14 @@ bool argumentsHandler(StringVec args)
 
 			"\n"
 			"FEATURES ON THIS BUILD:\n"
-				"Lua Version: " << LUA_RELEASE << "\n" <<
-				"XML Version: " << LIBXML_DOTTED_VERSION << "\n" <<
-				"BOOST Version: " << BOOST_LIB_VERSION << "\n" <<
-				"LuaJIT: " << luajit << "\n" <<
-				"ServerDiag: " << serverDiag << "\n" <<
-				"LoginServer: " << loginServer << "\n" <<
-				"UseMySQL: " << useMySQL << "\n" <<
-				"UseSQLite: " << useSQLite << "\n" <<
+				"Lua Version: " << LUA_RELEASE << "\n" << 
+				"XML Version: " << LIBXML_DOTTED_VERSION << "\n" << 
+				"BOOST Version: " << BOOST_LIB_VERSION << "\n" << 
+				"LuaJIT: " << luajit << "\n" << 
+				"ServerDiag: " << serverDiag << "\n" << 
+				"LoginServer: " << loginServer << "\n" << 
+				"UseMySQL: " << useMySQL << "\n" << 
+				"UseSQLite: " << useSQLite << "\n" << 
 				"UsePostgreSQL: " << usePostgreSQL << "\n\n" <<
 
 			"A server developed by: " SOFTWARE_DEVELOPERS ".\n"
@@ -230,13 +237,13 @@ bool argumentsHandler(StringVec args)
 			g_config.setNumber(ConfigManager::MANAGER_PORT, atoi(tmp[1].c_str()));
 		else if(tmp[0] == "--status-port")
 			g_config.setNumber(ConfigManager::STATUS_PORT, atoi(tmp[1].c_str()));
-#ifndef WINDOWS
+#if !defined(_WIN32)
 		else if(tmp[0] == "--runfile" || tmp[0] == "--run-file" || tmp[0] == "--pidfile" || tmp[0] == "--pid-file")
 			g_config.setString(ConfigManager::RUNFILE, tmp[1]);
 #endif
 		else if(tmp[0] == "--log")
 			g_config.setString(ConfigManager::OUTPUT_LOG, tmp[1]);
-#ifndef WINDOWS
+#if !defined(_WIN32)
 		else if(tmp[0] == "--daemon" || tmp[0] == "-d")
 			g_config.setBool(ConfigManager::DAEMONIZE, true);
 #endif
@@ -249,7 +256,7 @@ bool argumentsHandler(StringVec args)
 	return true;
 }
 
-#ifndef WINDOWS
+#if !defined(_WIN32)
 int32_t OTSYS_getch()
 {
 	struct termios oldt;
@@ -355,7 +362,7 @@ int main(int argc, char* argv[])
 	ServiceManager servicer;
 	g_config.startup();
 
-#ifndef WINDOWS
+#if !defined(_WIN32)
 	// ignore sigpipe...
 	struct sigaction sigh;
 	sigh.sa_handler = SIG_IGN;
@@ -406,8 +413,17 @@ int main(int argc, char* argv[])
 void otserv(StringVec, ServiceManager* services)
 {
 	std::srand((uint32_t)OTSYS_TIME());
-#if defined(WINDOWS)
+#if defined(_WIN32)
 	SetConsoleTitle(SOFTWARE_NAME);
+#endif
+
+	// Initialize Winsock on Windows because this module uses gethostbyname/gethostname/etc.
+#if defined(_WIN32)
+	WSADATA wsaData;
+	if(WSAStartup(MAKEWORD(2,2), &wsaData) != 0) {
+		startupErrorMessage("WSAStartup() failed. Network functions unavailable.");
+		return;
+	}
 #endif
 
 	g_game.setGameState(GAMESTATE_STARTUP);
@@ -475,7 +491,7 @@ void otserv(StringVec, ServiceManager* services)
 				"UseSQLite: " << useSQLite << "\n" <<
 				"UsePostgreSQL: " << usePostgreSQL << "\n\n" <<
 
-			"A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl<<
+			"A server developed by: " SOFTWARE_DEVELOPERS "." << std::endl <<
 			"Visit for updates, support, and resources: " GIT_REPO << std::endl << std::endl;;
 	std::ostringstream ss;
 #ifdef __DEBUG__
@@ -523,7 +539,7 @@ void otserv(StringVec, ServiceManager* services)
 	if(!g_config.load())
 		startupErrorMessage("Unable to load " + g_config.getString(ConfigManager::CONFIG_FILE) + "!");
 
-#ifndef WINDOWS
+#if !defined(_WIN32)
 	if(g_config.getBool(ConfigManager::DAEMONIZE))
 	{
 		std::clog << "> Daemonization... ";
@@ -535,8 +551,8 @@ void otserv(StringVec, ServiceManager* services)
 		else
 			std::clog << "failed, continuing." << std::endl;
 	}
-
 #endif
+
 	// silently append trailing slash
 	std::string path = g_config.getString(ConfigManager::DATA_DIRECTORY);
 	g_config.setString(ConfigManager::DATA_DIRECTORY, path.erase(path.find_last_not_of("/") + 1) + "/");
@@ -550,7 +566,7 @@ void otserv(StringVec, ServiceManager* services)
 	IntegerVec cores = vectorAtoi(explodeString(g_config.getString(ConfigManager::CORES_USED), ","));
 	if(cores[0] != -1)
 	{
-#ifdef WINDOWS
+#if defined(_WIN32)
 		int32_t mask = 0;
 		for(IntegerVec::iterator it = cores.begin(); it != cores.end(); ++it)
 			mask += 1 << (*it);
@@ -927,4 +943,9 @@ void otserv(StringVec, ServiceManager* services)
 	g_game.start(services);
 	g_game.setGameState(g_config.getBool(ConfigManager::START_CLOSED) ? GAMESTATE_CLOSED : GAMESTATE_NORMAL);
 	g_loaderSignal.notify_all();
+
+#if defined(_WIN32)
+	// Cleanup Winsock on shutdown of this function (server runs until process exit)
+	WSACleanup();
+#endif
 }
