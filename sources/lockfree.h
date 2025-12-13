@@ -24,37 +24,58 @@
 
 #include <boost/lockfree/stack.hpp>
 
-template <typename T, size_t CAPACITY>
-class LockfreePoolingAllocator : public std::allocator<T>
+/*
+ * we use this to avoid instantiating multiple free lists for objects of the
+ * same size and it can be replaced by a variable template in C++14
+ *
+ * template <size_t TSize, size_t Capacity>
+ * boost::lockfree::stack<void*, boost::lockfree::capacity<Capacity> lockfreeFreeList;
+ */
+template <size_t TSize, size_t Capacity>
+struct LockfreeFreeList
 {
-	public:
-		template <typename U>
-		explicit LockfreePoolingAllocator(const U&) {}
-		typedef T value_type;
+	using FreeList = boost::lockfree::stack<void*, boost::lockfree::capacity<Capacity>>;
+	static FreeList& get()
+	{
+		static FreeList freeList;
+		return freeList;
+	}
+};
 
-		T* allocate(size_t) const {
-			T* p; // NOTE: p doesn't have to be initialized
-			if (!getFreeList().pop(p)) {
-				//Acquire memory without calling the constructor of T
-				p = static_cast<T*>(operator new (sizeof(T)));
-			}
-			return p;
-		}
+template <typename T, size_t Capacity>
+class LockfreePoolingAllocator
+{
+public:
+	template <class U>
+	struct rebind
+	{
+		using other = LockfreePoolingAllocator<U, Capacity>;
+	};
 
-		void deallocate(T* p, size_t) const {
-			if (!getFreeList().bounded_push(p)) {
-				//Release memory without calling the destructor of T
-				//(it has already been called at this point)
-				operator delete(p);
-			}
-		}
+	LockfreePoolingAllocator() = default;
 
-	private:
-		typedef boost::lockfree::stack<T*, boost::lockfree::capacity<CAPACITY>> FreeList;
-		static FreeList& getFreeList() {
-			static FreeList freeList;
-			return freeList;
+	template <typename U>
+	explicit constexpr LockfreePoolingAllocator(const LockfreePoolingAllocator<U, Capacity>&) {}
+	using value_type = T;
+
+	T* allocate(size_t) const {
+		auto& inst = LockfreeFreeList<sizeof(T), Capacity>::get();
+		void* p; // NOTE: p doesn't have to be initialized
+		if (!inst.pop(p)) {
+			//Acquire memory without calling the constructor of T
+			p = operator new (sizeof(T));
 		}
+		return static_cast<T*>(p);
+	}
+
+	void deallocate(T* p, size_t) const {
+		auto& inst = LockfreeFreeList<sizeof(T), Capacity>::get();
+		if (!inst.bounded_push(p)) {
+			//Release memory without calling the destructor of T
+			//(it has already been called at this point)
+			operator delete(p);
+		}
+	}
 };
 
 #endif

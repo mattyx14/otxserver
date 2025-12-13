@@ -73,10 +73,10 @@ class AStarNodes
 		int_fast32_t closedNodes;
 };
 
-template<class T> class lessPointer: public std::binary_function<T*, T*, bool>
+template<class T> class lessPointer
 {
 	public:
-		bool operator()(T*& t1, T*& t2) {return *t1 < *t2;}
+		bool operator()(T*& t1, T*& t2) const {return *t1 < *t2;}
 };
 
 #define FLOOR_BITS 3
