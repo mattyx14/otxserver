@@ -27,6 +27,60 @@
 #include <fstream>
 
 template<typename T>
+
+// Standard-compliant allocator backed by PoolManager (MSVC/GCC/Clang friendly)
+template <typename T, std::size_t Capacity>
+class LockfreePoolingAllocator
+{
+public:
+	using value_type = T;
+	using size_type = std::size_t;
+	using difference_type = std::ptrdiff_t;
+
+	using pointer = T*;
+	using const_pointer = const T*;
+
+	template <class U>
+	struct rebind {
+		using other = LockfreePoolingAllocator<U, Capacity>;
+	};
+
+	LockfreePoolingAllocator() noexcept = default;
+
+	template <class U>
+	LockfreePoolingAllocator(const LockfreePoolingAllocator<U, Capacity>&) noexcept {}
+
+	[[nodiscard]] pointer allocate(size_type n)
+	{
+		void* p = PoolManager::getInstance()->allocate(n * sizeof(T));
+		if (!p) {
+			throw std::bad_alloc();
+		}
+		return static_cast<pointer>(p);
+	}
+
+	void deallocate(pointer p, size_type) noexcept
+	{
+		PoolManager::getInstance()->deallocate(static_cast<void*>(p));
+	}
+
+	using is_always_equal = std::true_type;
+};
+
+template <typename T, std::size_t Capacity, typename U>
+inline bool operator==(const LockfreePoolingAllocator<T, Capacity>&,
+	const LockfreePoolingAllocator<U, Capacity>&) noexcept
+{
+	return true;
+}
+
+template <typename T, std::size_t Capacity, typename U>
+inline bool operator!=(const LockfreePoolingAllocator<T, Capacity>&,
+	const LockfreePoolingAllocator<U, Capacity>&) noexcept
+{
+	return false;
+}
+
 class dummyallocator
 {
 	public:

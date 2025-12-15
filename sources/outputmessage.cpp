@@ -19,17 +19,14 @@
 
 #include "outputmessage.h"
 #include "protocol.h"
-#include "lockfree.h"
 #include "scheduler.h"
+
+#ifdef __OTSERV_ALLOCATOR__
+#include "allocator.h"
+#endif
 
 const uint16_t OUTPUTMESSAGE_FREE_LIST_CAPACITY = 24768;
 const std::chrono::milliseconds OUTPUTMESSAGE_AUTOSEND_DELAY {3};
-
-void OutputMessagePool::scheduleSendAll()
-{
-	auto functor = std::bind(&OutputMessagePool::sendAll, this);
-	g_scheduler.addEvent(createSchedulerTask(OUTPUTMESSAGE_AUTOSEND_DELAY.count(), functor));
-}
 
 void OutputMessagePool::sendAll()
 {
@@ -67,7 +64,24 @@ void OutputMessagePool::removeProtocolFromAutosend(const Protocol_ptr& protocol)
 
 OutputMessage_ptr OutputMessagePool::getOutputMessage()
 {
-	// LockfreePoolingAllocator<void,...> will leave (void* allocate) ill-formed because
-	// of sizeof(T), so this guaranatees that only one list will be initialized
-	return std::allocate_shared<OutputMessage>(LockfreePoolingAllocator<void, OUTPUTMESSAGE_FREE_LIST_CAPACITY>());
+#ifdef __OTSERV_ALLOCATOR__
+	// Allocate OutputMessage from PoolManager; keep shared_ptr control block default.
+	void* mem = PoolManager::getInstance()->allocate(sizeof(OutputMessage));
+	if (!mem) {
+		throw std::bad_alloc();
+	}
+
+	OutputMessage* obj = new (mem) OutputMessage();
+
+	return OutputMessage_ptr(obj, [](OutputMessage* p) {
+		if (!p) {
+			return;
+		}
+		p->~OutputMessage();
+		PoolManager::getInstance()->deallocate(static_cast<void*>(p));
+	});
+#else
+	// Fallback when custom allocator is disabled.
+	return std::make_shared<OutputMessage>();
+#endif
 }

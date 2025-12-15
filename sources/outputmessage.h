@@ -46,7 +46,6 @@ class OutputMessage : public NetworkMessage
 			if (addChecksum) {
 				add_header(adlerChecksum(buffer + outputBufferStart, length));
 			}
-
 			writeMessageLength();
 		}
 
@@ -96,12 +95,10 @@ class OutputMessagePool
 
 		void addProtocolToAutosend(Protocol_ptr protocol);
 		void removeProtocolFromAutosend(const Protocol_ptr& protocol);
+
 	private:
 		OutputMessagePool() = default;
-		//NOTE: A vector is used here because this container is mostly read
-		//and relatively rarely modified (only when a client connects/disconnects)
 		std::vector<Protocol_ptr> bufferedProtocols;
 };
-
 
 #endif
