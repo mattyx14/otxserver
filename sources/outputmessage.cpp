@@ -85,3 +85,13 @@ OutputMessage_ptr OutputMessagePool::getOutputMessage()
 	return std::make_shared<OutputMessage>();
 #endif
 }
+
+void OutputMessagePool::scheduleSendAll()
+{
+	g_scheduler.addEvent(
+		createSchedulerTask(
+			static_cast<uint32_t>(OUTPUTMESSAGE_AUTOSEND_DELAY.count()),
+			std::bind(&OutputMessagePool::sendAll, this)
+		)
+	);
+}
