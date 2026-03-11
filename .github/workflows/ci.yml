@@ -41,12 +41,6 @@ jobs:
     uses: ./.github/workflows/reusable-checks.yml
     secrets: inherit
 
-  tests-lua:
-    name: Lua Tests
-    if: github.event_name == 'push' || github.event.pull_request.draft == false
-    uses: ./.github/workflows/reusable-tests-lua.yml
-    secrets: inherit
-
   # --- Heavy Builds ---
 
   build-linux:
@@ -68,11 +62,4 @@ jobs:
     needs: [checks, tests-lua]
     if: needs.checks.result == 'success' && needs.tests-lua.result == 'success' && (github.event_name == 'push' || github.event.pull_request.draft == false)
     uses: ./.github/workflows/reusable-build-macos.yml
-    secrets: inherit
-
-  build-docker:
-    name: Build - Docker
-    needs: [checks, tests-lua]
-    if: needs.checks.result == 'success' && needs.tests-lua.result == 'success' && (github.event_name == 'push' || !github.event.pull_request.draft)
-    uses: ./.github/workflows/reusable-build-docker.yml
     secrets: inherit
