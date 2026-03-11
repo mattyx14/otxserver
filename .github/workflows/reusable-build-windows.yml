@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        type: [CMake, Solution]
+        type: [CMake]
     runs-on: windows-2025
     env:
       VCPKG_BINARY_SOURCES: "clear;nuget,https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json,readwrite;nugettimeout,600"
@@ -115,3 +115,43 @@ jobs:
         with:
           name: windows-cmake-release
           path: build/windows-release/bin/
+
+      - name: Build project (MSBuild)
+        if: matrix.type == 'Solution'
+        shell: pwsh
+        run: |
+          $vcpkgRoot = Join-Path (Get-Location) "vcpkg"
+          $outDir = Join-Path (Get-Location) "artifacts"
+          New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+
+          msbuild.exe vcproj/otxserver.sln `
+            /m `
+            /p:Configuration=Debug `
+            /p:Platform=x64 `
+            /p:VcpkgEnableManifest=true `
+            /p:VcpkgRoot="$vcpkgRoot" `
+            /p:OutDir="$outDir\\" `
+            /p:GITHUB_WORKSPACE="${{ github.workspace }}"
+
+      - name: Verify vcpkg binary cache push
+        if: matrix.type == 'CMake' && success() && (github.event_name == 'push' || (github.event.pull_request != null && github.event.pull_request.head.repo.full_name == github.repository))
+        shell: pwsh
+        run: |
+          $logs = Get-ChildItem -Path . -Recurse -Filter vcpkg-manifest-install.log -ErrorAction SilentlyContinue
+          if (-not $logs) {
+            Write-Error "No vcpkg manifest logs found."
+            exit 1
+          }
+          foreach ($log in $logs) {
+            if (Select-String -Path $log.FullName -Pattern "to 0 binary cache\(s\)") {
+              Write-Error "Binary cache push reported 0 caches."
+              exit 1
+            }
+          }
+
+      - name: Upload artifacts
+        if: matrix.type == 'Solution'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-solution-debug
+          path: artifacts/

@@ -37,13 +37,13 @@ setup_canary() {
 		cd build
 	else
 		mkdir -p build && cd build
-		info "OTX-Server has already been configured, skipping this step..."
+		info "otxserver has already been configured, skipping this step..."
 	fi
 }
 
 # Function to build Canary
 build_canary() {
-	info "Configuring OTX-Server..."
+	info "Configuring otxserver..."
 	if [[ $ARCHITECTUREVALUE == 1 ]]; then
 		export VCPKG_FORCE_SYSTEM_BINARIES=1
 	fi
