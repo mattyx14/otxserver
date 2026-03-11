@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -40,10 +40,11 @@ public:
 	static void loadPlayerVip(const std::shared_ptr<Player> &player, DBResult_ptr result);
 	static void loadPlayerPreyClass(const std::shared_ptr<Player> &player, DBResult_ptr result);
 	static void loadPlayerTaskHuntingClass(const std::shared_ptr<Player> &player, DBResult_ptr result);
-	static void loadPlayerForgeHistory(const std::shared_ptr<Player> &player, DBResult_ptr result);
+	static void loadPlayerForgeHistory(const std::shared_ptr<Player> &player);
 	static void loadPlayerBosstiary(const std::shared_ptr<Player> &player, DBResult_ptr result);
 	static void loadPlayerInitializeSystem(const std::shared_ptr<Player> &player);
 	static void loadPlayerUpdateSystem(const std::shared_ptr<Player> &player);
+	static void loadPlayerExivaRestrictions(const std::shared_ptr<Player> &player);
 
 private:
 	using ItemsMap = std::map<uint32_t, std::pair<std::shared_ptr<Item>, uint32_t>>;

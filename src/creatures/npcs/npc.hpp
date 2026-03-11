@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -32,8 +32,6 @@ public:
 	// Singleton - ensures we don't accidentally copy it
 	Npc(const Npc &) = delete;
 	void operator=(const std::shared_ptr<Npc> &) = delete;
-
-	static Npc &getInstance();
 
 	std::shared_ptr<Npc> getNpc() override;
 	std::shared_ptr<const Npc> getNpc() const override;
@@ -149,5 +147,3 @@ private:
 	void handlePlayerMove(const std::shared_ptr<Player> &player, const Position &newPos);
 	void loadPlayerSpectators();
 };
-
-constexpr auto g_npc = Npc::getInstance;

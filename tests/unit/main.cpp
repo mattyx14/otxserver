@@ -1,13 +1,21 @@
-#include <boost/ut.hpp>
+/**
+ * Canary - A free and open-source MMORPG server emulator
+ * Copyright (©) 2019-2023 OpenTibiaBR <opentibiabr@outlook.com>
+ * Repository: https://github.com/opentibiabr/canary
+ * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
+ * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
+ * Website: https://docs.opentibiabr.com/
+ */
+
 #include "config/configmanager.hpp"
 #include "database/database.hpp"
 #include "lib/di/container.hpp"
 #include "lib/logging/in_memory_logger.hpp"
 
-using namespace boost::ut;
+int main(int argc, char** argv) {
+	::testing::InitGoogleTest(&argc, argv);
 
-int main() {
-	di::extension::injector<> injector {};
+	static di::extension::injector<> injector {};
 	InMemoryLogger::install(injector);
 	DI::setTestContainer(&injector);
 
@@ -15,5 +23,5 @@ int main() {
 	(void)g_configManager();
 	(void)g_database();
 
-	return cfg<>.run();
+	return RUN_ALL_TESTS();
 }

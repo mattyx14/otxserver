@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -47,6 +47,8 @@ public:
 	bool add(uint32_t vipGuid, const std::string &vipName, VipStatus_t status);
 	bool addInternal(uint32_t vipGuid);
 	bool edit(uint32_t vipGuid, const std::string &description, uint32_t icon, bool notify, const std::vector<uint8_t> &groupsId) const;
+
+	bool exists(uint32_t vipGuid) const;
 
 	// VIP Group
 	std::shared_ptr<VIPGroup> getGroupByID(uint8_t groupId) const;

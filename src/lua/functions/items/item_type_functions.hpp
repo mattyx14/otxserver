@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -76,6 +76,7 @@ private:
 	static int luaItemTypeGetShowDuration(lua_State* L);
 	static int luaItemTypeGetWrapableTo(lua_State* L);
 	static int luaItemTypeGetVocationString(lua_State* L);
+	static int luaItemTypeGetElementalBond(lua_State* L);
 
 	static int luaItemTypeHasSubType(lua_State* L);
 };

@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -20,7 +20,7 @@ public:
 
 	bool loadByID(const uint32_t &id, std::unique_ptr<AccountInfo> &acc) override;
 	bool loadByEmailOrName(bool oldProtocol, const std::string &emailOrName, std::unique_ptr<AccountInfo> &acc) override;
-	bool loadBySession(const std::string &esseionKey, std::unique_ptr<AccountInfo> &acc) override;
+	bool loadBySession(const std::string &sessionKey, std::unique_ptr<AccountInfo> &acc) override;
 	bool save(const std::unique_ptr<AccountInfo> &accInfo) override;
 
 	bool getCharacterByAccountIdAndName(const uint32_t &id, const std::string &name) override;

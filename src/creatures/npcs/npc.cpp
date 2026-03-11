@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -52,10 +52,6 @@ Npc::Npc(const std::shared_ptr<NpcType> &npcType) :
 			g_logger().warn("Unknown event name: {}", scriptName);
 		}
 	}
-}
-
-Npc &Npc::getInstance() {
-	return inject<Npc>();
 }
 
 std::shared_ptr<Npc> Npc::getNpc() {

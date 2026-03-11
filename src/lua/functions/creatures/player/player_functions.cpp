@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -353,6 +353,8 @@ void PlayerFunctions::init(lua_State* L) {
 
 	Lua::registerMethod(L, "Player", "sendSingleSoundEffect", PlayerFunctions::luaPlayerSendSingleSoundEffect);
 	Lua::registerMethod(L, "Player", "sendDoubleSoundEffect", PlayerFunctions::luaPlayerSendDoubleSoundEffect);
+	Lua::registerMethod(L, "Player", "sendAmbientSoundEffect", PlayerFunctions::luaPlayerSendAmbientSoundEffect);
+	Lua::registerMethod(L, "Player", "sendMusicSoundEffect", PlayerFunctions::luaPlayerSendMusicSoundEffect);
 
 	Lua::registerMethod(L, "Player", "getName", PlayerFunctions::luaPlayerGetName);
 	Lua::registerMethod(L, "Player", "changeName", PlayerFunctions::luaPlayerChangeName);
@@ -406,6 +408,14 @@ void PlayerFunctions::init(lua_State* L) {
 	Lua::registerMethod(L, "Player", "addAnimusMastery", PlayerFunctions::luaPlayerAddAnimusMastery);
 	Lua::registerMethod(L, "Player", "removeAnimusMastery", PlayerFunctions::luaPlayerRemoveAnimusMastery);
 	Lua::registerMethod(L, "Player", "hasAnimusMastery", PlayerFunctions::luaPlayerHasAnimusMastery);
+
+	Lua::registerMethod(L, "Player", "setSerene", PlayerFunctions::luaPlayerSetSerene);
+	Lua::registerMethod(L, "Player", "getVirtue", PlayerFunctions::luaPlayerGetVirtue);
+	Lua::registerMethod(L, "Player", "setVirtue", PlayerFunctions::luaPlayerSetVirtue);
+	Lua::registerMethod(L, "Player", "fillHarmony", PlayerFunctions::luaPlayerFillHarmony);
+	Lua::registerMethod(L, "Player", "getHarmony", PlayerFunctions::luaPlayerGetHarmony);
+	Lua::registerMethod(L, "Player", "getHarmonyDamage", PlayerFunctions::luaPlayerGetHarmonyDamage);
+	Lua::registerMethod(L, "Player", "calculateFlatDamageHealing", PlayerFunctions::luaCalculateFlatDamageHealing);
 
 	// OTCR Features
 	Lua::registerMethod(L, "Player", "getMapShader", PlayerFunctions::luaPlayerGetMapShader);
@@ -4184,6 +4194,38 @@ int PlayerFunctions::luaPlayerSendDoubleSoundEffect(lua_State* L) {
 	return 1;
 }
 
+int PlayerFunctions::luaPlayerSendAmbientSoundEffect(lua_State* L) {
+	// player:sendAmbientSoundEffect(id)
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		Lua::pushBoolean(L, false);
+		return 0;
+	}
+
+	const SoundAmbientEffect_t id = Lua::getNumber<SoundAmbientEffect_t>(L, 2);
+
+	player->sendAmbientSoundEffect(id);
+	Lua::pushBoolean(L, true);
+	return 1;
+}
+
+int PlayerFunctions::luaPlayerSendMusicSoundEffect(lua_State* L) {
+	// player:sendMusicSoundEffect(id)
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		Lua::pushBoolean(L, false);
+		return 0;
+	}
+
+	const SoundMusicEffect_t id = Lua::getNumber<SoundMusicEffect_t>(L, 2);
+
+	player->sendMusicSoundEffect(id);
+	Lua::pushBoolean(L, true);
+	return 1;
+}
+
 int PlayerFunctions::luaPlayerGetName(lua_State* L) {
 	// player:getName()
 	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
@@ -4580,13 +4622,19 @@ int PlayerFunctions::luaPlayerUpdateConcoction(lua_State* L) {
 }
 
 int PlayerFunctions::luaPlayerClearSpellCooldowns(lua_State* L) {
-	// player:clearSpellCooldowns()
+	// player:clearSpellCooldowns(spenders = false, builder = false)
 	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
 	if (!player) {
 		lua_pushnil(L);
 		return 1;
 	}
-	player->clearCooldowns();
+
+	bool spenders = Lua::getBoolean(L, 2, false);
+	bool builders = Lua::getBoolean(L, 3, false);
+
+	int32_t ticks = Lua::getNumber<int32_t>(L, 4, 0);
+
+	player->clearCooldowns(spenders, builders, ticks);
 	Lua::pushBoolean(L, true);
 	return 1;
 }
@@ -4982,6 +5030,35 @@ int PlayerFunctions::luaPlayerSetMapShader(lua_State* L) {
 	return 1;
 }
 
+int PlayerFunctions::luaPlayerSetSerene(lua_State* L) {
+	// player:setSerene(bool, ticks)
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		return 1;
+	}
+
+	bool set = Lua::getBoolean(L, 2, false);
+	int32_t ticks = Lua::getNumber<int32_t>(L, 3, -1);
+	player->setSerene(set, ticks);
+	Lua::pushBoolean(L, true);
+	return 1;
+}
+
+int PlayerFunctions::luaPlayerSetVirtue(lua_State* L) {
+	// player:setVirtue(virtue)
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		return 1;
+	}
+
+	const auto virtue = Lua::getNumber<Virtue_t>(L, 2, Virtue_t::None);
+	player->setVirtue(virtue);
+	Lua::pushBoolean(L, true);
+	return 1;
+}
+
 int PlayerFunctions::luaPlayerAddCustomOutfit(lua_State* L) {
 	// player:addCustomOutfit(type, id or name)
 	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
@@ -5036,5 +5113,72 @@ int PlayerFunctions::luaPlayerResetOldCharms(lua_State* L) {
 
 	player->resetOldCharms();
 	Lua::pushBoolean(L, true);
+	return 1;
+}
+
+int PlayerFunctions::luaPlayerFillHarmony(lua_State* L) {
+	// player:fillHarmony()
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		return 1;
+	}
+
+	player->fillHarmony();
+	Lua::pushBoolean(L, true);
+	return 1;
+}
+
+int PlayerFunctions::luaPlayerGetHarmony(lua_State* L) {
+	// player:getHarmony()
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		return 1;
+	}
+
+	lua_pushnumber(L, player->getHarmony());
+	return 1;
+}
+
+int PlayerFunctions::luaPlayerGetHarmonyDamage(lua_State* L) {
+	// player:getHarmonyDamage(baseMin, baseMax)
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		return 1;
+	}
+
+	const auto baseMin = Lua::getNumber<uint16_t>(L, 2);
+	const auto baseMax = Lua::getNumber<uint16_t>(L, 3);
+
+	const auto [min, max] = player->getHarmonyDamage(baseMin, baseMax);
+
+	lua_pushnumber(L, min);
+	lua_pushnumber(L, max);
+
+	return 2;
+}
+
+int PlayerFunctions::luaCalculateFlatDamageHealing(lua_State* L) {
+	// player:calculateFlatDamageHealing()
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		return 1;
+	}
+
+	lua_pushnumber(L, player->calculateFlatDamageHealing());
+	return 1;
+}
+
+int PlayerFunctions::luaPlayerGetVirtue(lua_State* L) {
+	const auto &player = Lua::getUserdataShared<Player>(L, 1, "Player");
+	if (!player) {
+		Lua::reportErrorFunc(Lua::getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		return 1;
+	}
+
+	lua_pushnumber(L, static_cast<lua_Number>(player->getVirtue()));
 	return 1;
 }

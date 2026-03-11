@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -286,12 +286,14 @@ public:
 	int32_t defense = 0;
 	int32_t extraDefense = 0;
 	int32_t armor = 0;
+	int32_t mantra = 0;
 	int32_t rotateTo = 0;
 	int32_t runeMagLevel = 0;
 	int32_t runeLevel = 0;
 	int32_t wrapableTo = 0;
 
 	CombatType_t combatType = COMBAT_NONE;
+	CombatType_t elementalBond = COMBAT_NONE;
 
 	ItemAnimation_t animationType = ANIMATION_NONE;
 
@@ -371,6 +373,9 @@ public:
 	bool spellbook = false;
 	bool isWrapKit = false;
 	bool m_canBeUsedByGuests = false;
+
+	// Monk
+	bool isDualWielding = false;
 	bool m_isMagicShieldPotion = false;
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "otxserver",
-  "version-string": "6.2.0",
+  "version-string": "6.3.0",
   "dependencies": [
     "abseil",
     "argon2",
@@ -9,6 +9,7 @@
     "bext-ut",
     "curl",
     "eventpp",
+    "gtest",
     "libmariadb",
     "luajit",
     "magic-enum",
@@ -20,19 +21,23 @@
     "zlib",
     "bshoshany-thread-pool",
     "atomic-queue",
-    {
-      "name": "opentelemetry-cpp",
-      "default-features": true,
-      "features": ["otlp-http", "prometheus"]
-    },
-    {
-      "name": "gmp",
-      "platform": "linux | osx"
-    },
-    {
-      "name": "mpir",
-      "platform": "windows"
-    }
+    "nlohmann-json",
+    "openssl"
   ],
-  "builtin-baseline": "d6995a0cf3cafda5e9e52749fad075dd62bfd90c"
+  "features": {
+    "metrics": {
+      "description": "Enable OpenTelemetry metrics exporters",
+      "dependencies": [
+        {
+          "name": "opentelemetry-cpp",
+          "default-features": true,
+          "features": [
+            "otlp-http",
+            "prometheus"
+          ]
+        }
+      ]
+    }
+  },
+  "builtin-baseline": "66c0373dc7fca549e5803087b9487edfe3aca0a1"
 }

@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -18,7 +18,7 @@
 
 std::string ProtocolStatus::SERVER_NAME = "OTX Server";
 std::string ProtocolStatus::SERVER_VERSION = "6";
-std::string ProtocolStatus::SERVER_DEVELOPERS = "OpenTibiaBR Organization. Based on: Canary (3.5). And data edited by: Mattyx14";
+std::string ProtocolStatus::SERVER_DEVELOPERS = "OpenTibiaBR Organization. Based on: Canary (3.4.2). And data edited by: Mattyx14";
 
 std::map<uint32_t, int64_t> ProtocolStatus::ipConnectMap;
 const uint64_t ProtocolStatus::start = OTSYS_TIME(true);

@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -185,10 +185,11 @@ bool IOLoginData::loadPlayer(const std::shared_ptr<Player> &player, const DBResu
 }
 
 void IOLoginData::loadOnlyDataForOnlinePlayer(const std::shared_ptr<Player> &player, const DBResult_ptr &result) {
-	IOLoginDataLoad::loadPlayerForgeHistory(player, result);
+	IOLoginDataLoad::loadPlayerForgeHistory(player);
 	IOLoginDataLoad::loadPlayerBosstiary(player, result);
 	IOLoginDataLoad::loadPlayerInitializeSystem(player);
 	IOLoginDataLoad::loadPlayerUpdateSystem(player);
+	IOLoginDataLoad::loadPlayerExivaRestrictions(player);
 }
 
 bool IOLoginData::savePlayer(const std::shared_ptr<Player> &player) {
@@ -270,8 +271,8 @@ void IOLoginData::saveOnlyDataForOnlinePlayer(const std::shared_ptr<Player> &pla
 		return;
 	}
 
-	if (!IOLoginDataSave::savePlayerForgeHistory(player)) {
-		throw DatabaseException("[IOLoginDataSave::savePlayerForgeHistory] - Failed to save player forge history: " + player->getName());
+	if (!player->forgeHistory().save()) {
+		throw DatabaseException("[IOLoginData::saveOnlyDataForOnlinePlayer] - Failed to save player forge history: " + player->getName());
 	}
 
 	if (!IOLoginDataSave::savePlayerBosstiary(player)) {

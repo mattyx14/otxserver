@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -122,6 +122,10 @@ bool PlayerVIP::edit(uint32_t vipGuid, const std::string &description, uint32_t 
 	}
 
 	return true;
+}
+
+bool PlayerVIP::exists(uint32_t vipGuid) const {
+	return vipGuids.contains(vipGuid);
 }
 
 std::shared_ptr<VIPGroup> PlayerVIP::getGroupByID(uint8_t groupId) const {

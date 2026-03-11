@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -163,7 +163,10 @@ void NetworkMessage::addString(const std::string &value, const std::source_locat
 	auto len = static_cast<uint16_t>(stringLen);
 	add<uint16_t>(len);
 	// Using to copy the string into the buffer
-	std::ranges::copy(value, buffer.begin() + info.position);
+	if (std::memcpy(buffer.data() + info.position, value.data(), stringLen) == nullptr) {
+		g_logger().error("[{}] memcpy failed while adding string", __FUNCTION__);
+		return;
+	}
 	info.position += stringLen;
 	info.length += stringLen;
 }
@@ -213,7 +216,10 @@ void NetworkMessage::addBytes(const char* bytes, size_t size) {
 		return;
 	}
 
-	std::ranges::copy(std::span(bytes, size), buffer.begin() + info.position);
+	if (std::memcpy(buffer.data() + info.position, bytes, size) == nullptr) {
+		g_logger().error("[NetworkMessage::addBytes] - memcpy failed while adding bytes");
+		return;
+	}
 	info.position += size;
 	info.length += size;
 }
@@ -294,14 +300,56 @@ void NetworkMessage::append(const NetworkMessage &other) {
 		return;
 	}
 
-	std::ranges::copy(
-		std::span<const unsigned char>(other.getBuffer() + otherStartPos, otherLength),
-		buffer.data() + info.position
-	);
+	if (std::memcpy(buffer.data() + info.position, other.getBuffer() + otherStartPos, otherLength) == nullptr) {
+		g_logger().error("[{}] memcpy failed while appending message", __FUNCTION__);
+		return;
+	}
 
 	// Update the buffer information
 	info.length += otherLength;
 	info.position += otherLength;
 	// Debugging output after appending
 	g_logger().debug("After append: New Length = {}, New Position = {}", info.length, info.position);
+}
+
+bool NetworkMessage::writeCount(uint32_t count) {
+	size_t requiredBytes = 0;
+	if (count < 0x40) {
+		// 6 bits (single byte)
+		requiredBytes = 1;
+	} else if (count < 0x4000) {
+		// 14 bits (two bytes)
+		requiredBytes = 2;
+	} else if (count < 0x40000000) {
+		// 30 bits (four bytes)
+		requiredBytes = 4;
+	} else {
+		g_logger().error("[writeCount] count={} is too large to encode.", count);
+		return false;
+	}
+
+	if (!canAdd(requiredBytes)) {
+		g_logger().error("[writeCount] not enough buffer space for {} bytes (count={}).", requiredBytes, count);
+		return false;
+	}
+
+	if (count < 0x40) {
+		addByte(count);
+	} else if (count < 0x4000) {
+		uint8_t firstByte = (count >> 8) | 0x40;
+		uint8_t secondByte = count & 0xFF;
+		addByte(firstByte);
+		addByte(secondByte);
+	} else {
+		uint8_t b1 = (count >> 24) | 0x80;
+		uint8_t b2 = (count >> 16) & 0xFF;
+		uint8_t b3 = (count >> 8) & 0xFF;
+		uint8_t b4 = count & 0xFF;
+		addByte(b1);
+		addByte(b2);
+		addByte(b3);
+		addByte(b4);
+	}
+
+	return true;
 }

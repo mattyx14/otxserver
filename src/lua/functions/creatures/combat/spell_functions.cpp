@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -61,6 +61,7 @@ void SpellFunctions::init(lua_State* L) {
 	Lua::registerMethod(L, "Spell", "allowFarUse", SpellFunctions::luaSpellAllowFarUse);
 	Lua::registerMethod(L, "Spell", "blockWalls", SpellFunctions::luaSpellBlockWalls);
 	Lua::registerMethod(L, "Spell", "checkFloor", SpellFunctions::luaSpellCheckFloor);
+	Lua::registerMethod(L, "Spell", "monkSpellType", SpellFunctions::luaSpellMonkSpellType);
 }
 
 int SpellFunctions::luaSpellCreate(lua_State* L) {
@@ -942,6 +943,22 @@ int SpellFunctions::luaSpellCheckFloor(lua_State* L) {
 			Lua::pushBoolean(L, spell->getCheckFloor());
 		} else {
 			spell->setCheckFloor(Lua::getBoolean(L, 2));
+			Lua::pushBoolean(L, true);
+		}
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int SpellFunctions::luaSpellMonkSpellType(lua_State* L) {
+	// spell:monkSpellType(type)
+	const auto &spell = Lua::getUserdataShared<Spell>(L, 1, "Spell");
+	if (spell) {
+		if (lua_gettop(L) == 1) {
+			Lua::pushNumber(L, static_cast<uint8_t>(spell->getMonkSpellType()));
+		} else {
+			spell->setMonkSpellType(static_cast<MonkSpell_t>(Lua::getNumber<uint8_t>(L, 2)));
 			Lua::pushBoolean(L, true);
 		}
 	} else {

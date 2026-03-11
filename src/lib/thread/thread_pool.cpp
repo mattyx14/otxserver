@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -50,6 +50,10 @@ void ThreadPool::shutdown() {
 	stopped = true;
 
 	logger.info("Shutting down thread pool...");
+
+	// Trigger graceful shutdown
+	g_game().setGameState(GAME_STATE_SHUTDOWN);
+
 	pool.reset();
 
 	std::signal(SIGINT, SIG_DFL);

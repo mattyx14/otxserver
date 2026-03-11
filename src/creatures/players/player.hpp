@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -16,12 +16,14 @@
 #include "items/cylinder.hpp"
 #include "game/movement/position.hpp"
 #include "creatures/creatures_definitions.hpp"
+#include "creatures/players/stash_definitions.hpp"
 
 // Player components are decoupled to reduce complexity. Keeping includes here aids in clarity and maintainability, but avoid including player.hpp in headers to prevent circular dependencies.
 #include "creatures/players/animus_mastery/animus_mastery.hpp"
 #include "creatures/players/components/player_achievement.hpp"
 #include "creatures/players/components/player_badge.hpp"
 #include "creatures/players/components/player_cyclopedia.hpp"
+#include "creatures/players/components/player_forge_history.hpp"
 #include "creatures/players/components/player_storage.hpp"
 #include "creatures/players/components/player_title.hpp"
 #include "creatures/players/components/wheel/player_wheel.hpp"
@@ -72,6 +74,7 @@ struct Outfit_t;
 struct TextMessage;
 struct HighscoreCharacter;
 
+enum class MonkData_t : uint8_t;
 enum class PlayerIcon : uint8_t;
 enum class IconBakragore : uint8_t;
 enum class HouseAuctionType : uint8_t;
@@ -97,31 +100,6 @@ struct CharmInfo {
 	uint8_t tier = 0;
 };
 
-struct ForgeHistory {
-	ForgeAction_t actionType = ForgeAction_t::FUSION;
-	uint8_t tier = 0;
-	uint8_t bonus = 0;
-
-	time_t createdAt;
-
-	uint16_t historyId = 0;
-
-	uint64_t cost = 0;
-	uint64_t dustCost = 0;
-	uint64_t coresCost = 0;
-	uint64_t gained = 0;
-
-	bool success = false;
-	bool tierLoss = false;
-	bool successCore = false;
-	bool tierCore = false;
-	bool convergence = false;
-
-	std::string description;
-	std::string firstItemName;
-	std::string secondItemName;
-};
-
 struct OpenContainer {
 	std::shared_ptr<Container> container;
 	uint16_t index;
@@ -130,6 +108,7 @@ struct OpenContainer {
 using MuteCountMap = std::map<uint32_t, uint32_t>;
 
 static constexpr uint16_t PLAYER_MAX_SPEED = std::numeric_limits<uint16_t>::max();
+static constexpr uint16_t PLAYER_MAX_STAFF_SPEED = 1500;
 static constexpr uint16_t PLAYER_MIN_SPEED = 10;
 static constexpr uint8_t PLAYER_SOUND_HEALTH_CHANGE = 10;
 
@@ -177,6 +156,77 @@ public:
 		return static_self_cast<Player>();
 	}
 
+	struct ExivaRestrictions {
+		bool allowAll = false;
+		bool allowOwnGuild = true;
+		bool allowOwnParty = true;
+		bool allowVipList = true;
+		bool allowPlayerWhitelist = true;
+		bool allowGuildWhitelist = true;
+
+		std::vector<uint32_t> playerWhitelist;
+		std::vector<uint32_t> guildWhitelist;
+	};
+
+	ExivaRestrictions &getExivaRestrictions();
+	const ExivaRestrictions &getExivaRestrictions() const;
+
+	/**
+	 * @brief Gets the current virtue of the player.
+	 * @return The virtue as Virtue_t.
+	 */
+	Virtue_t getVirtue() const;
+
+	/**
+	 * @brief Sets the player's virtue.
+	 * @param virtue The virtue to set.
+	 */
+	void setVirtue(Virtue_t virtue);
+
+	/**
+	 * @brief Sets the player's serene state.
+	 * @param b Whether the player is serene.
+	 * @param ticks Duration of the effect in ticks (default -1 for indefinite).
+	 */
+	void setSerene(bool b, int32_t ticks = -1);
+
+	/**
+	 * @brief Empties the player's Harmony bar.
+	 */
+	void emptyHarmony();
+
+	/**
+	 * @brief Fills the player's Harmony bar completely.
+	 */
+	void fillHarmony();
+
+	/**
+	 * @brief Increases Harmony charges.
+	 * @param charges Number of charges to add (default is 1).
+	 */
+	void buildHarmony(uint8_t charges = 1);
+
+	/**
+	 * @brief Spends all Harmony charges.
+	 */
+	void spendHarmony();
+
+	/**
+	 * @brief Gets the current number of Harmony charges.
+	 * @return Number of Harmony charges.
+	 */
+	uint8_t getHarmony();
+
+	void setHarmony(uint8_t newHarmony);
+
+	/**
+	 * @brief Calculates bonus damage range based on Harmony state.
+	 * @param min Minimum base damage.
+	 * @param max Maximum base damage.
+	 * @return Pair containing final min and max damage.
+	 */
+	std::pair<uint64_t, uint64_t> getHarmonyDamage(double min, double max);
+
 	static std::shared_ptr<Task> createPlayerTask(uint32_t delay, std::function<void(void)> f, const std::string &context);
 
 	void setID() override;
@@ -188,8 +238,8 @@ public:
 		return online;
 	}
 
-	static uint32_t getFirstID();
-	static uint32_t getLastID();
+	[[nodiscard]] static uint32_t getFirstID();
+	[[nodiscard]] static uint32_t getLastID();
 
 	static MuteCountMap muteCountMap;
 
@@ -357,6 +407,15 @@ public:
 	void clearPartyInvitations();
 
 	void sendUnjustifiedPoints() const;
+	void sendOpenPvpSituations();
+	void refreshSkullTicksFromLastKill();
+	void updateLastKillTimeCache(time_t killTime);
+	struct SkullTimeInfo {
+		int64_t remainingSeconds { 0 };
+		uint8_t remainingDays { 0 };
+	};
+
+	SkullTimeInfo computeSkullTimeFromLastKill() const;
 
 	GuildEmblems_t getGuildEmblem(const std::shared_ptr<Player> &player) const;
 
@@ -565,9 +624,9 @@ public:
 	int32_t getMaxHealth() const override;
 	uint32_t getMaxMana() const override;
 
-	std::shared_ptr<Item> getInventoryItem(Slots_t slot) const;
+	[[nodiscard]] std::shared_ptr<Item> getInventoryItem(Slots_t slot) const;
 
-	bool isItemAbilityEnabled(Slots_t slot) const;
+	[[nodiscard]] bool isItemAbilityEnabled(Slots_t slot) const;
 	void setItemAbility(Slots_t slot, bool enabled);
 
 	void setVarSkill(skills_t skill, int32_t modifier);
@@ -632,6 +691,13 @@ public:
 	bool closeShopWindow();
 	bool updateSaleShopList(const std::shared_ptr<Item> &item);
 	void updateSaleShopList();
+	/**
+	 * @brief Refreshes the player's current state.
+	 *
+	 * Updates various player-related status indicators including inventory weight,
+	 * light emitted by items, inventory display, and stats.
+	 * If the player is a shop owner, it also refreshes the sale shop list.
+	 */
 	void updateState();
 	bool hasShopItemForSale(uint16_t itemId, uint8_t subType) const;
 
@@ -653,6 +719,14 @@ public:
 	// stash functions
 	ReturnValue addItemFromStash(uint16_t itemId, uint32_t itemCount);
 	void stowItem(const std::shared_ptr<Item> &item, uint32_t count, bool allItems);
+	struct AddItemBatchOptions {
+		uint8_t subType = 0;
+		uint32_t flags = 0;
+		uint8_t tier = 0;
+		bool dropOnMap = false;
+		bool inBackpacks = false;
+		uint16_t backpackId = ITEM_BACKPACK;
+	};
 
 	ReturnValue addItemBatchToPaginedContainer(
 		const std::shared_ptr<Container> &container,
@@ -661,6 +735,12 @@ public:
 		uint32_t &actuallyAdded,
 		uint32_t flags = 0,
 		uint8_t tier = 0
+	);
+	ReturnValue addItemBatch(
+		uint16_t itemId,
+		uint32_t totalCount,
+		uint32_t &actuallyAdded,
+		const AddItemBatchOptions &options
 	);
 	std::vector<std::shared_ptr<Container>> getAllContainers(bool onlyFromMainBackpack = true) const;
 	std::shared_ptr<Container> getBackpack() const;
@@ -708,6 +788,15 @@ public:
 	WeaponType_t getWeaponType() const;
 	int32_t getWeaponSkill(const std::shared_ptr<Item> &item) const;
 	void getShieldAndWeapon(std::shared_ptr<Item> &shield, std::shared_ptr<Item> &weapon) const;
+	/**
+	 * @brief Calculates a level-based flat damage or healing value.
+	 *
+	 * This function returns a value that increases progressively with the player's level,
+	 * using tiered thresholds and diminishing scaling factors.
+	 * It is used to determine the base value of damage or healing spells that scale with level.
+	 *
+	 * @return A uint16_t representing the computed base damage/heal value for the player's current level.
+	 */
 	uint16_t calculateFlatDamageHealing() const;
 	uint16_t attackTotal(uint16_t flatBonus, uint16_t equipment, uint16_t skill) const;
 	uint16_t attackRawTotal(uint16_t flatBonus, uint16_t equipment, uint16_t skill) const;
@@ -728,6 +817,19 @@ public:
 	float getAttackFactor() const override;
 	float getDefenseFactor(bool sendToClient) const override;
 	float getMitigation() const override;
+
+	/**
+	 * @brief Calculates the total mantra value from equipped items.
+	 *
+	 * Iterates over a predefined set of armor and accessory slots, summing up
+	 * the mantra value provided by each equipped item. This value is used for
+	 * determining monk-related mechanics like buffs and shared bonuses.
+	 *
+	 * @return Total mantra value from all valid equipment slots.
+	 */
+	int32_t getMantra() const;
+	int32_t getPartyMantra() const;
+	void updatePartyMantra() const;
 
 	void addInFightTicks(bool pzlock = false);
 
@@ -789,6 +891,8 @@ public:
 
 	size_t getMaxDepotItems() const;
 
+	bool canExiva(const std::string &spellParam) const;
+
 	// tile
 	// send methods
 	// tile
@@ -830,6 +934,13 @@ public:
 	void sendRemoveContainerItem(const std::shared_ptr<Container> &container, uint16_t slot);
 	void sendContainer(uint8_t cid, const std::shared_ptr<Container> &container, bool hasParent, uint16_t firstIndex) const;
 
+	void sendExivaRestrictions();
+
+	// Monk Update
+	void sendMonkData(MonkData_t type, uint8_t value);
+	void updateAimAtTargetSpells(uint16_t spellId, uint8_t state);
+	std::unordered_set<uint16_t> getAimAtTargetSpells() const;
+
 	// inventory
 	void sendDepotItems(const ItemsTierCountList &itemMap, uint16_t count) const;
 	void sendCloseDepotSearch() const;
@@ -846,6 +957,10 @@ public:
 	void sendSingleSoundEffect(const Position &pos, SoundEffect_t id, SourceEffect_t source) const;
 
 	void sendDoubleSoundEffect(const Position &pos, SoundEffect_t mainSoundId, SourceEffect_t mainSource, SoundEffect_t secondarySoundId, SourceEffect_t secondarySource) const;
+
+	void sendAmbientSoundEffect(const SoundAmbientEffect_t id) const;
+
+	void sendMusicSoundEffect(const SoundMusicEffect_t id) const;
 
 	SoundEffect_t getAttackSoundEffect() const;
 	SoundEffect_t getHitSoundEffect() const;
@@ -1078,7 +1193,7 @@ public:
 
 	bool updateKillTracker(const std::shared_ptr<Container> &corpse, const std::string &playerName, const Outfit_t &creatureOutfit) const;
 
-	void updatePartyTrackerAnalyzer() const;
+	void updatePartyTrackerAnalyzer(bool force = false) const;
 
 	void sendLootStats(const std::shared_ptr<Item> &item, uint8_t count);
 	void updateSupplyTracker(const std::shared_ptr<Item> &item);
@@ -1115,7 +1230,7 @@ public:
 	uint16_t parseRacebyCharm(charmRune_t charmId, bool set = false, uint16_t newRaceid = 0);
 
 	uint64_t getItemCustomPrice(uint16_t itemId, bool buyPrice = false) const;
-	uint16_t getFreeBackpackSlots() const;
+	uint32_t getFreeBackpackSlots() const;
 
 	bool canAutoWalk(const Position &toPosition, const std::function<void()> &function, uint32_t delay = 500);
 
@@ -1238,10 +1353,6 @@ public:
 	void removeForgeDustLevel(uint64_t amount);
 	uint64_t getForgeDustLevel() const;
 
-	std::vector<ForgeHistory> &getForgeHistory();
-
-	void setForgeHistory(const ForgeHistory &history);
-
 	void registerForgeHistoryDescription(ForgeHistory history);
 
 	void setBossPoints(uint32_t amount);
@@ -1334,6 +1445,10 @@ public:
 	PlayerCyclopedia &cyclopedia();
 	const PlayerCyclopedia &cyclopedia() const;
 
+	// Player forge history interface
+	PlayerForgeHistory &forgeHistory();
+	const PlayerForgeHistory &forgeHistory() const;
+
 	// Player vip interface
 	PlayerVIP &vip();
 	const PlayerVIP &vip() const;
@@ -1362,7 +1477,7 @@ public:
 	uint16_t getPlayerVocationEnum() const;
 
 	void sendPlayerTyping(const std::shared_ptr<Creature> &creature, uint8_t typing) const;
-	bool isFirstOnStack() const;
+	[[nodiscard]] bool isFirstOnStack() const;
 	void resetOldCharms();
 
 	const auto &getOutfits() const {
@@ -1372,6 +1487,15 @@ public:
 	const auto &getFamiliars() const {
 		return familiars;
 	}
+
+	using ManagedContainerMap = std::map<ObjectCategory_t, std::pair<std::shared_ptr<Container>, std::shared_ptr<Container>>>;
+	[[nodiscard]] const ManagedContainerMap &getManagedContainers() const {
+		return m_managedContainers;
+	}
+
+	void clearCooldowns(bool spenders = false, bool builders = false, int32_t ticks = 0);
+
+	void sendSpellCooldowns();
 
 private:
 	friend class PlayerLock;
@@ -1384,6 +1508,7 @@ private:
 
 	void checkTradeState(const std::shared_ptr<Item> &item);
 	bool hasCapacity(const std::shared_ptr<Item> &item, uint32_t count) const;
+	bool processStashItem(const std::shared_ptr<Item> &item, uint16_t itemCount, uint16_t &refreshDepotSearchOnItem);
 
 	void checkLootContainers(const std::shared_ptr<Container> &item);
 
@@ -1392,11 +1517,7 @@ private:
 	void removeExperience(uint64_t exp, bool sendText = false);
 
 	void updateInventoryWeight();
-	/**
-	 * @brief Starts checking the imbuements in the item so that the time decay is performed
-	 * Registers the player in an unordered_map in game.h so that the function can be initialized by the task
-	 */
-	void updateInventoryImbuement();
+	void updateSerenityState();
 
 	void setNextWalkActionTask(const std::shared_ptr<Task> &task);
 	void setNextWalkTask(const std::shared_ptr<Task> &task);
@@ -1446,6 +1567,18 @@ private:
 	void addBestiaryKill(const std::shared_ptr<MonsterType> &mType);
 	void addBosstiaryKill(const std::shared_ptr<MonsterType> &mType);
 
+	double_t getHarmonyBonus();
+
+	/**
+	 * @brief Heals the player or a nearby party member using Harmony charges.
+	 *
+	 * This function attempts to find the party member with the lowest health within the player's screen range
+	 * and applies a Harmony heal to them. If no valid party member is found, the healing is applied to the player themselves.
+	 *
+	 * @param charges The number of Harmony charges to apply. Defaults to 1.
+	 */
+	void healFromHarmony(uint8_t charges = 1);
+
 	phmap::flat_hash_set<uint32_t> attackedSet {};
 
 	std::map<uint8_t, OpenContainer> openContainers;
@@ -1456,8 +1589,7 @@ private:
 
 	std::map<uint64_t, std::shared_ptr<Reward>> rewardMap;
 
-	std::map<ObjectCategory_t, std::pair<std::shared_ptr<Container>, std::shared_ptr<Container>>> m_managedContainers;
-	std::vector<ForgeHistory> forgeHistoryVector;
+	ManagedContainerMap m_managedContainers;
 
 	std::vector<uint16_t> quickLootListItemIds;
 
@@ -1477,6 +1609,10 @@ private:
 
 	std::unordered_set<std::shared_ptr<MonsterType>> m_bestiaryMonsterTracker;
 	std::unordered_set<std::shared_ptr<MonsterType>> m_bosstiaryMonsterTracker;
+
+	uint8_t harmony = 0;
+	Virtue_t virtue = Virtue_t::None;
+	std::unordered_set<uint16_t> aimAtTargetSpellIds;
 
 	std::string name;
 	std::string guildNick;
@@ -1507,6 +1643,8 @@ private:
 	uint64_t forgeDustLevel = 0;
 	int64_t lastFailedFollow = 0;
 	int64_t skullTicks = 0;
+	mutable int64_t m_lastKillTimeCache = 0;
+	mutable bool m_lastKillTimeCached = false;
 	int64_t lastWalkthroughAttempt = 0;
 	int64_t lastToggleMount = 0;
 	int64_t lastUIInteraction = 0;
@@ -1626,6 +1764,8 @@ private:
 	QuickLootFilter_t quickLootFilter {};
 	PlayerPronoun_t pronoun = PLAYERPRONOUN_THEY;
 
+	ExivaRestrictions exivaRestrictions;
+
 	bool chaseMode = false;
 	bool secureMode = true;
 	bool inMarket = false;
@@ -1645,6 +1785,9 @@ private:
 	bool moved = false;
 	bool m_isDead = false;
 	bool imbuementTrackerWindowOpen = false;
+	mutable int64_t m_lastImbuementTrackerUpdate = 0;
+	mutable bool m_hasPendingImbuementTrackerUpdate = false;
+	mutable uint64_t m_pendingImbuementTrackerEventId = 0;
 	bool shouldForceLogout = true;
 	bool connProtected = false;
 
@@ -1667,7 +1810,8 @@ private:
 
 	void updateItemsLight(bool internal = false);
 	uint16_t getStepSpeed() const override {
-		return std::max<uint16_t>(PLAYER_MIN_SPEED, std::min<uint16_t>(PLAYER_MAX_SPEED, getSpeed()));
+		const uint16_t maxStepSpeed = hasFlag(PlayerFlags_t::SetMaxSpeed) ? PLAYER_MAX_STAFF_SPEED : PLAYER_MAX_SPEED;
+		return std::max<uint16_t>(PLAYER_MIN_SPEED, std::min<uint16_t>(maxStepSpeed, getSpeed()));
 	}
 	void updateBaseSpeed();
 
@@ -1681,7 +1825,7 @@ private:
 		return skillLoss ? static_cast<uint64_t>(experience * getLostPercent()) : 0;
 	}
 
-	bool isSuppress(ConditionType_t conditionType, bool attackerPlayer) const override;
+	[[nodiscard]] bool isSuppress(ConditionType_t conditionType, bool attackerPlayer) const override;
 
 	uint16_t getLookCorpse() const override;
 	void getPathSearchParams(const std::shared_ptr<Creature> &creature, FindPathParams &fpp) override;
@@ -1690,7 +1834,6 @@ private:
 	bool isDead() const override;
 
 	void triggerMomentum();
-	void clearCooldowns();
 	void triggerTranscendence();
 
 	friend class Game;
@@ -1714,6 +1857,7 @@ private:
 	friend class PlayerVIP;
 	friend class PlayerAttachedEffects;
 	friend class PlayerStorage;
+	friend class PlayerForgeHistory;
 
 	PlayerWheel m_wheelPlayer;
 	PlayerAchievement m_playerAchievement;
@@ -1724,6 +1868,7 @@ private:
 	AnimusMastery m_animusMastery;
 	PlayerAttachedEffects m_playerAttachedEffects;
 	PlayerStorage m_storage;
+	PlayerForgeHistory m_forgeHistoryPlayer;
 
 	std::mutex quickLootMutex;
 

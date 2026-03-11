@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -13,15 +13,18 @@
 #include "creatures/creature.hpp"
 #include "creatures/players/player.hpp"
 #include "creatures/players/vocations/vocation.hpp"
+#include "creatures/players/components/wheel/player_wheel.hpp"
 #include "game/game.hpp"
 #include "game/movement/position.hpp"
-#include "lua/callbacks/event_callback.hpp"
 #include "lua/callbacks/events_callbacks.hpp"
 #include "lua/creature/events.hpp"
 
 std::shared_ptr<Party> Party::create(const std::shared_ptr<Player> &leader) {
 	auto party = std::make_shared<Party>();
 	party->m_leader = leader;
+	if (leader->getPlayerVocationEnum() == VOCATION_MONK_CIP && leader->wheel().getInstant(WheelInstant_t::GUIDING_PRESENCE)) {
+		party->m_mantraHolder = leader;
+	}
 	leader->setParty(party);
 	if (g_configManager().getBoolean(PARTY_AUTO_SHARE_EXPERIENCE)) {
 		party->setSharedExperience(leader, true);
@@ -35,6 +38,10 @@ std::shared_ptr<Party> Party::getParty() {
 
 std::shared_ptr<Player> Party::getLeader() const {
 	return m_leader.lock();
+}
+
+std::shared_ptr<Player> Party::getMantraHolder() const {
+	return m_mantraHolder.lock();
 }
 
 std::vector<std::shared_ptr<Player>> Party::getPlayers() const {
@@ -86,7 +93,7 @@ void Party::disband() {
 		return;
 	}
 
-	if (!g_callbacks().checkCallback(EventCallback_t::partyOnDisband, &EventCallback::partyOnDisband, getParty())) {
+	if (!g_callbacks().checkCallback(EventCallback_t::partyOnDisband, getParty())) {
 		return;
 	}
 
@@ -94,8 +101,11 @@ void Party::disband() {
 	if (!currentLeader) {
 		return;
 	}
-	m_leader.reset();
 
+	m_leader.reset();
+	m_mantraHolder.reset();
+
+	currentLeader->resetBuff(BUFF_MANTRA);
 	currentLeader->setParty(nullptr);
 	currentLeader->sendClosePrivate(CHANNEL_PARTY);
 	g_game().updatePlayerShield(currentLeader);
@@ -111,6 +121,7 @@ void Party::disband() {
 
 	const auto &members = getMembers();
 	for (const auto &member : members) {
+		member->resetBuff(BUFF_MANTRA);
 		member->setParty(nullptr);
 		member->sendClosePrivate(CHANNEL_PARTY);
 		member->sendTextMessage(MESSAGE_PARTY_MANAGEMENT, "Your party has been disbanded.");
@@ -150,7 +161,7 @@ bool Party::leaveParty(const std::shared_ptr<Player> &player, bool forceRemove /
 		return false;
 	}
 
-	if (!g_callbacks().checkCallback(EventCallback_t::partyOnLeave, &EventCallback::partyOnLeave, getParty(), player)) {
+	if (!g_callbacks().checkCallback(EventCallback_t::partyOnLeave, getParty(), player)) {
 		return false;
 	}
 
@@ -162,12 +173,12 @@ bool Party::leaveParty(const std::shared_ptr<Player> &player, bool forceRemove /
 			} else {
 				auto newLeader = memberList.front();
 				while (!newLeader) {
-					memberList.erase(memberList.begin());
-					if (memberList.empty()) {
+					const auto eraseIt = memberList.erase(memberList.begin());
+					if (eraseIt == memberList.end()) {
 						missingLeader = true;
 						break;
 					}
-					newLeader = memberList.front();
+					newLeader = *eraseIt;
 				}
 				if (newLeader) {
 					passPartyLeadership(newLeader);
@@ -179,9 +190,9 @@ bool Party::leaveParty(const std::shared_ptr<Player> &player, bool forceRemove /
 	}
 
 	// since we already passed the leadership, we remove the player from the list
-	auto it = std::ranges::find(memberList, player);
-	if (it != memberList.end()) {
-		memberList.erase(it);
+	const bool removedMember = std::erase(memberList, player) > 0;
+	if (!removedMember && leader != player) {
+		return false;
 	}
 
 	player->setParty(nullptr);
@@ -206,6 +217,13 @@ bool Party::leaveParty(const std::shared_ptr<Player> &player, bool forceRemove /
 	ss << player->getName() << " has left the party.";
 	broadcastPartyMessage(MESSAGE_PARTY_MANAGEMENT, ss.str());
 
+	const auto &mantraHolder = m_mantraHolder.lock();
+	player->resetBuff(BUFF_MANTRA);
+	player->sendSkills();
+	if (mantraHolder == player) {
+		updateMantraHolder();
+	}
+
 	if (missingLeader || empty()) {
 		disband();
 	}
@@ -225,9 +243,8 @@ bool Party::passPartyLeadership(const std::shared_ptr<Player> &player) {
 	}
 
 	// Remove it before to broadcast the message correctly
-	auto it = std::ranges::find(memberList, player);
-	if (it != memberList.end()) {
-		memberList.erase(it);
+	if (std::erase(memberList, player) == 0) {
+		return false;
 	}
 
 	std::ostringstream ss;
@@ -236,6 +253,11 @@ bool Party::passPartyLeadership(const std::shared_ptr<Player> &player) {
 
 	const auto &oldLeader = leader;
 	m_leader = player;
+
+	if (oldLeader == m_mantraHolder.lock()) {
+		m_mantraHolder.reset();
+		updateMantraHolder();
+	}
 
 	memberList.insert(memberList.begin(), oldLeader);
 
@@ -259,6 +281,51 @@ bool Party::passPartyLeadership(const std::shared_ptr<Player> &player) {
 	return true;
 }
 
+void Party::applyGuidingPresence(const std::vector<std::shared_ptr<Player>> &members) {
+	const auto &mantraHolder = m_mantraHolder.lock();
+	const int32_t sharedMantra = mantraHolder ? mantraHolder->getMantra() / 2 : 0;
+	for (const auto &member : members) {
+		if (mantraHolder == member) {
+			continue;
+		}
+
+		const int32_t previous = member->getBuff(BUFF_MANTRA);
+
+		member->resetBuff(BUFF_MANTRA);
+
+		if (sharedMantra > 0) {
+			member->setBuff(BUFF_MANTRA, 100 + sharedMantra);
+		}
+
+		const int32_t current = member->getBuff(BUFF_MANTRA);
+		if (current != previous) {
+			member->sendSkills();
+		}
+	}
+}
+
+void Party::updateMantraHolder() {
+	auto players = getPlayers();
+	m_mantraHolder.reset();
+
+	for (const auto &member : players) {
+		if (!member) {
+			continue;
+		}
+		bool playerHasGuidincePresence = member->getPlayerVocationEnum() == VOCATION_MONK_CIP && member->wheel().getInstant(WheelInstant_t::GUIDING_PRESENCE);
+		if (!playerHasGuidincePresence) {
+			continue;
+		}
+
+		const auto currentHolder = m_mantraHolder.lock();
+		if (!currentHolder || member->getMantra() > currentHolder->getMantra()) {
+			m_mantraHolder = member;
+		}
+	}
+
+	applyGuidingPresence(players);
+}
+
 bool Party::joinParty(const std::shared_ptr<Player> &player) {
 	const auto &leader = getLeader();
 	if (!leader) {
@@ -269,16 +336,13 @@ bool Party::joinParty(const std::shared_ptr<Player> &player) {
 		return false;
 	}
 
-	if (!g_callbacks().checkCallback(EventCallback_t::partyOnJoin, &EventCallback::partyOnJoin, getParty(), player)) {
+	if (!g_callbacks().checkCallback(EventCallback_t::partyOnJoin, getParty(), player)) {
 		return false;
 	}
 
-	auto it = std::ranges::find(inviteList, player);
-	if (it == inviteList.end()) {
+	if (std::erase(inviteList, player) == 0) {
 		return false;
 	}
-
-	inviteList.erase(it);
 
 	std::ostringstream ss;
 	ss << player->getName() << " has joined the party.";
@@ -301,6 +365,8 @@ bool Party::joinParty(const std::shared_ptr<Player> &player) {
 
 	memberList.emplace_back(player);
 
+	updateMantraHolder();
+
 	g_game().updatePlayerHelpers(player);
 
 	updatePlayerStatus(player);
@@ -322,12 +388,9 @@ bool Party::removeInvite(const std::shared_ptr<Player> &player, bool removeFromP
 		return false;
 	}
 
-	auto it = std::ranges::find(inviteList, player);
-	if (it == inviteList.end()) {
+	if (std::erase(inviteList, player) == 0) {
 		return false;
 	}
-
-	inviteList.erase(it);
 
 	leader->sendCreatureShield(player);
 	player->sendCreatureShield(leader);
@@ -521,7 +584,7 @@ void Party::shareExperience(uint64_t experience, const std::shared_ptr<Creature>
 
 	uint64_t shareExperience = experience;
 	g_events().eventPartyOnShareExperience(getParty(), shareExperience);
-	g_callbacks().executeCallback(EventCallback_t::partyOnShareExperience, &EventCallback::partyOnShareExperience, getParty(), std::ref(shareExperience));
+	g_callbacks().executeCallback(EventCallback_t::partyOnShareExperience, getParty(), std::ref(shareExperience));
 
 	for (const auto &member : getMembers()) {
 		const auto memberStaminaBoost = static_cast<float>(member->getStaminaXpBoost()) / 100;
@@ -820,17 +883,22 @@ void Party::addPlayerLoot(const std::shared_ptr<Player> &player, const std::shar
 	}
 
 	uint32_t count = std::max<uint32_t>(1, item->getItemCount());
-	if (auto it = playerAnalyzer->lootMap.find(item->getID()); it != playerAnalyzer->lootMap.end()) {
-		it->second += count;
-	} else {
-		playerAnalyzer->lootMap.insert({ item->getID(), count });
+	const AnalyzerItemKey key(item->getID(), item->getTier());
+	const auto [lootIt, lootInserted] = playerAnalyzer->lootMap.emplace(key, count);
+	if (!lootInserted) {
+		lootIt->second += count;
 	}
 
 	if (priceType == LEADER_PRICE) {
 		playerAnalyzer->lootPrice += leader->getItemCustomPrice(item->getID()) * count;
 	} else {
-		const std::map<uint16_t, uint64_t> itemMap { { item->getID(), count } };
-		playerAnalyzer->lootPrice += g_game().getItemMarketPrice(itemMap, false);
+		uint64_t averagePrice = g_game().getItemMarketAveragePrice(item->getID(), item->getTier());
+		if (averagePrice > 0) {
+			playerAnalyzer->lootPrice += averagePrice * count;
+		} else {
+			const std::map<uint16_t, uint64_t> itemMap { { item->getID(), count } };
+			playerAnalyzer->lootPrice += g_game().getItemMarketPrice(itemMap, false);
+		}
 	}
 	updateTrackerAnalyzer();
 }
@@ -847,17 +915,22 @@ void Party::addPlayerSupply(const std::shared_ptr<Player> &player, const std::sh
 		membersData.emplace_back(playerAnalyzer);
 	}
 
-	if (auto it = playerAnalyzer->supplyMap.find(item->getID()); it != playerAnalyzer->supplyMap.end()) {
-		it->second += 1;
-	} else {
-		playerAnalyzer->supplyMap.insert({ item->getID(), 1 });
+	const AnalyzerItemKey key(item->getID(), item->getTier());
+	const auto [supplyIt, supplyInserted] = playerAnalyzer->supplyMap.emplace(key, 1);
+	if (!supplyInserted) {
+		supplyIt->second += 1;
 	}
 
 	if (priceType == LEADER_PRICE) {
 		playerAnalyzer->supplyPrice += leader->getItemCustomPrice(item->getID(), true);
 	} else {
-		const std::map<uint16_t, uint64_t> itemMap { { item->getID(), 1 } };
-		playerAnalyzer->supplyPrice += g_game().getItemMarketPrice(itemMap, true);
+		uint64_t averagePrice = g_game().getItemMarketAveragePrice(item->getID(), item->getTier());
+		if (averagePrice > 0) {
+			playerAnalyzer->supplyPrice += averagePrice;
+		} else {
+			const std::map<uint16_t, uint64_t> itemMap { { item->getID(), 1 } };
+			playerAnalyzer->supplyPrice += g_game().getItemMarketPrice(itemMap, true);
+		}
 	}
 	updateTrackerAnalyzer();
 }
@@ -907,21 +980,36 @@ void Party::reloadPrices() const {
 		return;
 	}
 
+	const auto sumMarketPrice = [](const std::map<AnalyzerItemKey, uint64_t> &itemMap, bool buyPrice) {
+		uint64_t total = 0;
+		for (const auto &[key, amount] : itemMap) {
+			auto averagePrice = g_game().getItemMarketAveragePrice(key.itemId, key.tier);
+			if (averagePrice > 0) {
+				total += averagePrice * amount;
+				continue;
+			}
+
+			const std::map<uint16_t, uint64_t> singleItemMap { { key.itemId, amount } };
+			total += g_game().getItemMarketPrice(singleItemMap, buyPrice);
+		}
+		return total;
+	};
+
+	const auto sumLeaderPrice = [&leader](const std::map<AnalyzerItemKey, uint64_t> &itemMap, bool supplyPrice) {
+		uint64_t total = 0;
+		for (const auto &[key, amount] : itemMap) {
+			total += leader->getItemCustomPrice(key.itemId, supplyPrice) * amount;
+		}
+		return total;
+	};
+
 	for (const auto &analyzer : membersData) {
 		if (priceType == MARKET_PRICE) {
-			analyzer->lootPrice = g_game().getItemMarketPrice(analyzer->lootMap, false);
-			analyzer->supplyPrice = g_game().getItemMarketPrice(analyzer->supplyMap, true);
-			continue;
-		}
-
-		analyzer->lootPrice = 0;
-		for (const auto &[itemId, price] : analyzer->lootMap) {
-			analyzer->lootPrice += leader->getItemCustomPrice(itemId) * price;
-		}
-
-		analyzer->supplyPrice = 0;
-		for (const auto &[itemId, price] : analyzer->supplyMap) {
-			analyzer->supplyPrice += leader->getItemCustomPrice(itemId, true) * price;
+			analyzer->lootPrice = sumMarketPrice(analyzer->lootMap, false);
+			analyzer->supplyPrice = sumMarketPrice(analyzer->supplyMap, true);
+		} else {
+			analyzer->lootPrice = sumLeaderPrice(analyzer->lootMap, false);
+			analyzer->supplyPrice = sumLeaderPrice(analyzer->supplyMap, true);
 		}
 	}
 }

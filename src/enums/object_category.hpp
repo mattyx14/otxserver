@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -36,6 +36,7 @@ enum ObjectCategory_t : uint8_t {
 	OBJECTCATEGORY_TIBIACOINS = 23, // not used in quickloot
 	OBJECTCATEGORY_CREATUREPRODUCTS = 24,
 	OBJECTCATEGORY_QUIVERS = 25,
+	OBJECTCATEGORY_FISTWEAPONS = 27,
 	OBJECTCATEGORY_GOLD = 30,
 	OBJECTCATEGORY_DEFAULT = 31, // unassigned loot
 

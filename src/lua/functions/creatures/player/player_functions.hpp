@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -303,6 +303,7 @@ class PlayerFunctions {
 	static int luaPlayerGetWheelSpellAdditionalArea(lua_State* L);
 	static int luaPlayerGetWheelSpellAdditionalTarget(lua_State* L);
 	static int luaPlayerGetWheelSpellAdditionalDuration(lua_State* L);
+	static int luaPlayerGetWheelSpellAdditionalDamage(lua_State* L);
 	static int luaPlayerWheelUnlockScroll(lua_State* L);
 
 	static int luaPlayerOpenForge(lua_State* L);
@@ -337,6 +338,8 @@ class PlayerFunctions {
 
 	static int luaPlayerSendSingleSoundEffect(lua_State* L);
 	static int luaPlayerSendDoubleSoundEffect(lua_State* L);
+	static int luaPlayerSendAmbientSoundEffect(lua_State* L);
+	static int luaPlayerSendMusicSoundEffect(lua_State* L);
 
 	static int luaPlayerGetName(lua_State* L);
 	static int luaPlayerChangeName(lua_State* L);
@@ -396,6 +399,14 @@ class PlayerFunctions {
 	static int luaPlayerSetMapShader(lua_State* L);
 	static int luaPlayerAddCustomOutfit(lua_State* L);
 	static int luaPlayerRemoveCustomOutfit(lua_State* L);
+
+	static int luaPlayerSetSerene(lua_State* L);
+	static int luaPlayerSetVirtue(lua_State* L);
+	static int luaPlayerGetVirtue(lua_State* L);
+	static int luaPlayerFillHarmony(lua_State* L);
+	static int luaPlayerGetHarmony(lua_State* L);
+	static int luaPlayerGetHarmonyDamage(lua_State* L);
+	static int luaCalculateFlatDamageHealing(lua_State* L);
 
 	friend class CreatureFunctions;
 };

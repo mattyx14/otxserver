@@ -1,5 +1,5 @@
 target_sources(
-    ${PROJECT_NAME}_lib
+    ${CORE_TARGET_NAME}
     PRIVATE appearance/mounts/mounts.cpp
             appearance/outfit/outfit.cpp
             appearance/attached_effects/attached_effects.cpp
@@ -28,6 +28,7 @@ target_sources(
             players/components/player_attached_effects.cpp
             players/components/player_badge.cpp
             players/components/player_cyclopedia.cpp
+            players/components/player_forge_history.cpp
             players/components/player_storage.cpp
             players/components/player_title.cpp
             players/components/wheel/player_wheel.cpp

@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -252,6 +252,10 @@ public:
 
 	void setBuff(buffs_t buff, int32_t modifier) {
 		varBuffs[buff] += modifier;
+	}
+
+	void resetBuff(buffs_t buff) {
+		varBuffs[buff] = 100;
 	}
 
 	virtual std::vector<CreatureIcon> getIcons() const {
@@ -777,7 +781,7 @@ protected:
 
 	uint32_t manaShield = 0;
 	uint32_t maxManaShield = 0;
-	int32_t varBuffs[BUFF_LAST + 1] = { 100, 100, 100 };
+	std::array<int32_t, BUFF_LAST + 1> varBuffs = { 100, 100, 100, 100, 100, 100, 100 };
 
 	std::array<int32_t, COMBAT_COUNT> reflectPercent = { 0 };
 	std::array<int32_t, COMBAT_COUNT> reflectFlat = { 0 };

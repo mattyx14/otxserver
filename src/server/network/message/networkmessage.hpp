@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -16,7 +16,6 @@ class Item;
 class Creature;
 class Player;
 struct Position;
-class RSA;
 
 class NetworkMessage {
 public:
@@ -51,8 +50,10 @@ public:
 		// Create a temporary byte array to store the value read from the buffer.
 		std::array<unsigned char, sizeof(T)> tempBuffer;
 		// Copy data from the buffer to the temporary array
-		std::span<const unsigned char> sourceSpan(buffer.data() + info.position, sizeof(T));
-		std::ranges::copy(sourceSpan, tempBuffer.begin());
+		if (std::memcpy(tempBuffer.data(), buffer.data() + info.position, sizeof(T)) == nullptr) {
+			g_logger().error("[{}] memcpy failed while reading message buffer", __FUNCTION__);
+			return T();
+		}
 		// Update the read position in the buffer
 		info.position += sizeof(T);
 		// Convert the byte array to type T using std::bit_cast and return the result
@@ -67,6 +68,32 @@ public:
 
 	// simply write functions for outgoing message
 	void addByte(uint8_t value, std::source_location location = std::source_location::current());
+
+	/**
+	 * @brief Encodes an item count using Tibia’s variable-length integer format (≥ client 15.00).
+	 *
+	 * This method serializes stackable item quantities using a compact format expected by the client
+	 * in inventory displays, tooltips, and action messages (e.g., “Using one of X ...”).
+	 *
+	 * The encoding uses 1, 2, or 4 bytes depending on the magnitude of `count`:
+	 *
+	 * | Count Range               | Bytes | Format Description                                                                 |
+	 * |---------------------------|--------|-------------------------------------------------------------------------------------|
+	 * | **0 to 63**               | 1 byte | `0b00vvvvvv` — Direct 6-bit value.                                                  |
+	 * | **64 to 16,383**          | 2 bytes| `0b01ssssss 0bvvvvvvvv` — First byte holds upper 6 bits with prefix `01`.           |
+	 * | **16,384 to 1,073,741,823** | 4 bytes| `0b1sssssss b2 b3 b4` — First byte prefixed with `1`, followed by full 30-bit value. |
+	 * | **> 1,073,741,823**       | 4 bytes| Encoded as `0x00 0x00 0x00 0x00` (fallback); indicates unsupported value.           |
+	 *
+	 * Notes:
+	 * - This function returns `false` if the value is too large to encode properly.
+	 * - It does not split values >16,383 into multiple encoded blocks; that logic must be handled externally.
+	 *
+	 * @param count The item quantity to encode.
+	 * @return true if the value was encoded successfully; false if a fallback was written.
+	 *
+	 * @post The encoded bytes are appended to the internal buffer.
+	 */
+	bool writeCount(uint32_t count);
 
 	template <typename T>
 	void add(T value, std::source_location location = std::source_location::current()) {
@@ -87,17 +114,18 @@ public:
 		auto byteArray = std::bit_cast<std::array<unsigned char, sizeof(T)>>(value);
 
 		// Create a span from the byte array
-		std::span<const unsigned char> byteSpan(byteArray);
-
-		// Check if the size of byteSpan can fit into the buffer
-		if (byteSpan.size() > (buffer.size() - info.position)) {
-			g_logger().error("Buffer overflow during span copy. Source span size: {}, buffer available space: {}", byteSpan.size(), buffer.size() - info.position);
+		// Check if the size of byteArray can fit into the buffer
+		if (byteArray.size() > (buffer.size() - info.position)) {
+			g_logger().error("Buffer overflow during span copy. Source span size: {}, buffer available space: {}", byteArray.size(), buffer.size() - info.position);
 			return;
 		}
 
 		g_logger().trace("[{}] called at line '{}:{}' in '{}'", __FUNCTION__, location.line(), location.column(), location.function_name());
 
-		std::ranges::copy(byteSpan, buffer.begin() + info.position);
+		if (std::memcpy(buffer.data() + info.position, byteArray.data(), byteArray.size()) == nullptr) {
+			g_logger().error("[{}] memcpy failed while writing message buffer", __FUNCTION__);
+			return;
+		}
 
 		info.position += sizeof(T);
 		info.length += sizeof(T);

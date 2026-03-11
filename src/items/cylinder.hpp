@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -170,6 +170,10 @@ public:
 	virtual void internalAddThing(uint32_t index, const std::shared_ptr<Thing> &thing);
 
 	virtual void startDecaying();
+
+	virtual bool isBrowsefield() const {
+		return false;
+	}
 };
 
 class VirtualCylinder final : public Cylinder {

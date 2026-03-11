@@ -1,6 +1,6 @@
 /**
  * Canary - A free and open-source MMORPG server emulator
- * Copyright (©) 2019-2024 OpenTibiaBR <opentibiabr@outlook.com>
+ * Copyright (©) 2019–present OpenTibiaBR <opentibiabr@outlook.com>
  * Repository: https://github.com/opentibiabr/canary
  * License: https://github.com/opentibiabr/canary/blob/main/LICENSE
  * Contributors: https://github.com/opentibiabr/canary/graphs/contributors
@@ -204,8 +204,17 @@ private:
 
 class Item : virtual public Thing, public ItemProperties, public SharedObject {
 public:
-	// Create a new item batch, it can use custom charges/count and wrappable
-	static std::shared_ptr<Item> createItemBatch(uint16_t itemId, uint32_t count, bool wrappable = false);
+	/**
+	 * @brief Creates a new item with the specified ID and count, optionally wrappable.
+	 *
+	 * This is a convenience wrapper around CreateItem that returns a shared_ptr<Item>.
+	 *
+	 * @param itemId The ID of the item to create.
+	 * @param count The number of items to create (used for stackables or charges).
+	 * @param wrappable If true, the item will be marked as wrappable.
+	 * @return std::shared_ptr<Item> The created item instance.
+	 */
+	static std::shared_ptr<Item> createItemBatch(uint16_t itemId, uint32_t count, uint8_t subType = 0, bool wrappable = false);
 	// Factory member to create item of right type based on type
 	static std::shared_ptr<Item> CreateItem(uint16_t type, uint16_t count = 0, Position* itemPosition = nullptr, bool createWrappableItem = false, bool customCharges = false);
 	static std::shared_ptr<Container> CreateItemAsContainer(uint16_t type, uint16_t size);
@@ -451,6 +460,22 @@ public:
 		return items[id].hitChance;
 	}
 
+	/**
+	 * @brief Retrieves the mantra value of the item.
+	 *
+	 * This function checks if the item has a custom MANTRA attribute.
+	 * If it does, the custom value is returned. Otherwise, the default
+	 * mantra value from the item type definition is returned.
+	 *
+	 * @return The mantra value as an integer.
+	 */
+	int32_t getMantra() const {
+		if (hasAttribute(ItemAttribute_t::MANTRA)) {
+			return getAttribute<int32_t>(ItemAttribute_t::MANTRA);
+		}
+		return items[id].mantra;
+	}
+
 	uint32_t getWorth() const;
 	uint32_t getForgeSlivers() const;
 	uint32_t getForgeCores() const;
@@ -627,6 +652,19 @@ public:
 
 	virtual void startDecaying();
 	virtual void stopDecaying();
+
+	/**
+	 * @brief Send "AddItem" update to the specified player or to all nearby players if none specified.
+	 *
+	 * This function sends updates about the item's state to a client. If a specific player is provided,
+	 * the update is directed to that player and possibly their party members depending on the game logic.
+	 * If no player is specified, the update is broadcast to all nearby players who are capable of viewing
+	 * the item update, such as spectators around the item's location.
+	 *
+	 * @param player Optional shared pointer to a Player object. If provided, the update is directed to this player
+	 * and their associated viewers or party members. If nullptr, the update goes to all nearby spectators.
+	 */
+	void sendUpdateToClient(const std::shared_ptr<Player> &player = nullptr);
 
 	std::shared_ptr<Item> transform(uint16_t itemId, uint16_t itemCount = -1);
 
