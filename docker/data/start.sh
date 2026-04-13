@@ -38,7 +38,7 @@ echo ""
 echo "===== OTBR Global Data Pack ====="
 echo ""
 
-if [ "$OT_SERVER_DATA" = "data-otservbr-global" ] && [ ! -f data-otservbr-global/world/otservbr.otbm ]; then
+if [ "$OT_SERVER_DATA" = "data-otxserver" ] && [ ! -f data-otxserver/world/forgotten.otbm ]; then
 	echo "YES"
 
 	echo "Downloading OTBR Map..."

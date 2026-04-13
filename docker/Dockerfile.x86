@@ -94,7 +94,6 @@ COPY --from=build /srv/build/linux-release/bin/otxserver /bin/otxserver
 COPY LICENSE *.sql key.pem /otxserver/
 COPY data /otxserver/data
 COPY data-otxserver /otxserver/data-otxserver
-COPY data-otservbr-global /otxserver/data-otservbr-global
 COPY config.lua.dist /otxserver/config.lua
 
 WORKDIR /otxserver

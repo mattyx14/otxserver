@@ -1,6 +1,6 @@
 -- Core settings
 -- Note: If you want to use datapack folder canary (custom), put only "data-canary"
--- If you want to use the global datapack folder, put "data-otservbr-global"
+-- If you want to use the global datapack folder, put "data-otxserver"
 -- If "useAnyDatapackFolder" is set to true then you can choose any datapack folder for your server
 useAnyDatapackFolder = true
 dataPackDirectory = "data-otxserver"
@@ -589,8 +589,8 @@ discordWebhookDelayMs = 1000
 -- 		examples: The default config 'familiarTime' is 30, this value is divided by 2 (15 minutes familiar and 15 minutes to cooldown)
 -- 		If you use 'vipFamiliarTimeCooldownReduction = 10' the vip players will have only, in this case, 5 minutes of cooldown.
 -- 		If you use 'vipFamiliarTimeCooldownReduction' greater than half of 'familiarTime', it will get the highest possible value, in this case 15
--- NOTE: GainCoin function, please configure script: data-otservbr-global/scripts/globalevents/vip/online_coins.lua
--- NOTE: GainToken function, please configure script: data-otservbr-global/scripts/globalevents/vip/online_tokens.lua
+-- NOTE: GainCoin function, please configure script: data-otxserver/scripts/globalevents/vip/online_coins.lua
+-- NOTE: GainToken function, please configure script: data-otxserver/scripts/globalevents/vip/online_tokens.lua
 vipSystemEnabled = false
 vipBonusExp = 0
 vipBonusLoot = 0

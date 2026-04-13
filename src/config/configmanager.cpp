@@ -359,7 +359,7 @@ bool ConfigManager::load() {
 	loadIntConfig(L, ANIMUS_MASTERY_MONSTERS_TO_INCREASE_XP_MULTIPLIER, "animusMasteryMonstersToIncreaseXpMultiplier", 10);
 
 	loadStringConfig(L, CORE_DIRECTORY, "coreDirectory", "data");
-	loadStringConfig(L, DATA_DIRECTORY, "dataPackDirectory", "data-otservbr-global");
+	loadStringConfig(L, DATA_DIRECTORY, "dataPackDirectory", "data-otxserver");
 	loadStringConfig(L, DEFAULT_PRIORITY, "defaultPriority", "high");
 	loadStringConfig(L, DISCORD_WEBHOOK_URL, "discordWebhookURL", "");
 	loadStringConfig(L, FORGE_FIENDISH_INTERVAL_TIME, "forgeFiendishIntervalTime", "1");
