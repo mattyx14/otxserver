@@ -2,6 +2,10 @@ local exhaustionTime = 10
 
 local exerciseWeaponsTable = {
 	-- MELE
+	[50292] = { skill = SKILL_FIST },
+	[50293] = { skill = SKILL_FIST },
+	[50294] = { skill = SKILL_FIST },
+	[50295] = { skill = SKILL_FIST },
 	[28540] = { skill = SKILL_SWORD },
 	[28552] = { skill = SKILL_SWORD },
 	[35279] = { skill = SKILL_SWORD },
@@ -125,8 +129,15 @@ local function exerciseTrainingEvent(playerId, tilePosition, weaponId, dummyId)
 		return false
 	end
 
+	local eventSpeedMultiplier = 1
+	local scopedFastExercise = KV.scoped("eventscheduler"):get("fast-exercise")
+	if scopedFastExercise then
+		eventSpeedMultiplier = 0.5
+		logger.debug("Fast exercise is enabled.")
+	end
+
 	local vocation = player:getVocation()
-	_G.OnExerciseTraining[playerId].event = addEvent(exerciseTrainingEvent, vocation:getBaseAttackSpeed() / configManager.getFloat(configKeys.RATE_EXERCISE_TRAINING_SPEED), playerId, tilePosition, weaponId, dummyId)
+	_G.OnExerciseTraining[playerId].event = addEvent(exerciseTrainingEvent, (vocation:getBaseAttackSpeed() / configManager.getFloat(configKeys.RATE_EXERCISE_TRAINING_SPEED)) * eventSpeedMultiplier, playerId, tilePosition, weaponId, dummyId)
 	return true
 end
 

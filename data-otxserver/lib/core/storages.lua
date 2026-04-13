@@ -162,6 +162,12 @@ Storage = {
 		MessageStair = 52277,
 		Lever = 52278,
 		Mainland = 52279,
+		MonkHealthPotion = 52280,
+		MonkManaPotion = 52281,
+		MonkLightestMissile = 52282,
+		MonkLightStoneShower = 52283,
+		MonkMeat = 52284,
+		Monk = 52285,
 	},
 	TheMummysCurse = {
 		-- Reserved storage from 52350 - 52359
@@ -2871,6 +2877,19 @@ Storage = {
 		U13_20 = { -- update 13.20 - Reserved Storages 47952 - 47970
 			RottenBlood = {
 				AccessDoor = 47952,
+			},
+		},
+		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
+			TheWayOfTheMonk = {
+				QuestLine = 49101,
+				ShrinesCount = 49102,
+				DawnportFirstShrine = 49103,
+				DawnportSecondShrine = 49104,
+				DawnportThirdShrine = 49105,
+				DawnportFourthShrine = 49106,
+				Missions = {
+					TreeFoldPath = 49107,
+				},
 			},
 		},
 	},

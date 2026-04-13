@@ -42,7 +42,11 @@ if [ "$OT_SERVER_DATA" = "data-otservbr-global" ] && [ ! -f data-otservbr-global
 	echo "YES"
 
 	echo "Downloading OTBR Map..."
-	wget --no-check-certificate "$OT_SERVER_MAP" -O data-otservbr-global/world/otservbr.otbm
+# -L = follow redirects, needed for GitHub URLs
+# -k = ignore failed TLS trust issues
+# -f = fail fast with no output on HTTP errors
+# -o = write output to file
+	curl -Lk "$OT_SERVER_MAP" -o data-otservbr-global/world/otservbr.otbm
 
 	echo "Done"
 
@@ -90,7 +94,7 @@ echo ""
 if [[ $(mysql -u "$OT_DB_USER" -p"$OT_DB_PASSWORD" -h "$OT_DB_HOST" -e 'SHOW TABLES LIKE "server_config"' -D "$OT_DB_DATABASE") ]]; then
 	echo "Table server_config exists so we don't need to import"
 else
-	echo "Import otxserver-Server Schema"
+	echo "Import OTX-Server Schema"
 	mysql -u "$OT_DB_USER" -p"$OT_DB_PASSWORD" -h "$OT_DB_HOST" --port="$OT_DB_PORT" -D "$OT_DB_DATABASE" <schema.sql
 
 	echo ""

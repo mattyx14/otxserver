@@ -6,7 +6,7 @@ services:
     env_file:
       - '.env'
     networks:
-      - otxserver-net
+      - canary-net
     ports:
       - '$MYSQL_PORT:3306'
     volumes:
@@ -29,12 +29,12 @@ services:
     env_file:
       - '.env'
     networks:
-      - otxserver-net
+      - canary-net
     ports:
       - '$gameProtocolPort:$gameProtocolPort'
       - '$statusProtocolPort:$statusProtocolPort'
     volumes:
-      - '../:/srv/otxserver'
+      - '../:/srv/canary'
     depends_on:
       database:
         condition: service_healthy
@@ -48,7 +48,7 @@ services:
     env_file:
       - '.env'
     networks:
-      - otxserver-net
+      - canary-net
     depends_on:
       database:
         condition: service_healthy
@@ -57,5 +57,5 @@ volumes:
   db-volume:
 
 networks:
-  otxserver-net:
+  canary-net:
     driver: bridge

@@ -67,6 +67,7 @@ monster.loot = {
 	{ name = "berserk potion", chance = 22449, maxCount = 5 },
 	{ name = "mastermind potion", chance = 18367, maxCount = 5 },
 	{ name = "naga basin", chance = 12245 },
+	{ name = "transcendence potion", chance = 18367, maxCount = 5 },
 	{ name = "piece of timira's sensors", chance = 10204 },
 	{ name = "giant amethyst", chance = 6122 },
 	{ name = "giant ruby", chance = 4082 },
@@ -75,6 +76,7 @@ monster.loot = {
 	{ name = "giant sapphire", chance = 2041 },
 	{ name = "giant topaz", chance = 2041 },
 	{ name = "dawnfire sherwani", chance = 200 },
+	{ name = "dawnfire pantaloons", chance = 200 },
 	{ name = "frostflower boots", chance = 200 },
 	{ name = "feverbloom boots", chance = 200 },
 	{ id = 39233, chance = 200 }, -- enchanted turtle amulet
@@ -87,6 +89,7 @@ monster.loot = {
 	{ name = "naga wand", chance = 200 },
 	{ name = "naga rod", chance = 200 },
 	{ name = "naga crossbow", chance = 200 },
+	{ name = "naga tanko", chance = 200 },
 }
 
 monster.attacks = {

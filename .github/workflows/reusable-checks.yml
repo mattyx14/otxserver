@@ -63,6 +63,7 @@ jobs:
             src
             tests
             data
+            data-otxserver
             CMakeLists.txt
             **/*.cmake
         env:

@@ -1,5 +1,5 @@
 {
-  "name": "otx-server-canary",
+  "name": "otx-server",
   "version": "7.0.0",
   "repository": {
     "type": "git",

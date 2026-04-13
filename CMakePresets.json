@@ -41,6 +41,46 @@
       }
     },
     {
+      "name": "windows-release-enabled-tests",
+      "inherits": "windows-release",
+      "displayName": "Windows - Release (Enabled Tests)",
+      "description": "Release build with CANARY_BUILD_TESTS enabled",
+      "cacheVariables": {
+        "CANARY_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "windows-release-asan",
+      "inherits": "windows-release",
+      "displayName": "Windows - Release + ASAN",
+      "description": "Release Mode with ASAN",
+      "cacheVariables": {
+        "ASAN_ENABLED": "ON",
+        "DEBUG_LOG": "ON",
+        "BUILD_STATIC_LIBRARY": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-windows",
+        "VCPKG_HOST_TRIPLET": "x64-windows",
+        "CANARY_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "windows-debug",
+      "inherits": "windows-release",
+      "displayName": "Windows - Debug",
+      "description": "Build Debug Mode",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DEBUG_LOG": "ON",
+        "ASAN_ENABLED": "OFF",
+        "BUILD_STATIC_LIBRARY": "OFF",
+        "SPEED_UP_BUILD_UNITY": "OFF",
+        "VCPKG_TARGET_TRIPLET": "x64-windows",
+        "VCPKG_HOST_TRIPLET": "x64-windows",
+        "VCPKG_BUILD_TYPE": "debug",
+        "CANARY_BUILD_TESTS": "ON"
+      }
+    },
+    {
       "name": "linux-release",
       "inherits": "base",
       "displayName": "Linux - Release",
@@ -58,6 +98,45 @@
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-release-enabled-tests",
+      "inherits": "linux-release",
+      "displayName": "Linux - Release (Enabled Tests)",
+      "description": "Release build with CANARY_BUILD_TESTS enabled",
+      "cacheVariables": {
+        "CANARY_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "linux-debug",
+      "inherits": "linux-release",
+      "displayName": "Linux - Debug",
+      "description": "Build Debug Mode",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "DEBUG_LOG": "ON",
+        "SPEED_UP_BUILD_UNITY": "OFF",
+        "VCPKG_HOST_TRIPLET": "x64-linux",
+        "VCPKG_BUILD_TYPE": "debug",
+        "CANARY_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "linux-debug-asan",
+      "inherits": "linux-release",
+      "displayName": "Linux - Debug w/ Address Sanitizer",
+      "description": "Build Debug Mode With ASAN Enable",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DEBUG_LOG": "ON",
+        "ASAN_ENABLED": "ON",
+        "SPEED_UP_BUILD_UNITY": "OFF",
+        "VCPKG_HOST_TRIPLET": "x64-linux",
+        "VCPKG_BUILD_TYPE": "debug",
+        "CANARY_BUILD_TESTS": "ON"
       }
     },
     {
@@ -80,6 +159,52 @@
         "rhs": "Darwin"
       }
     },
+    {
+      "name": "macos-debug",
+      "inherits": "macos-release",
+      "displayName": "macOS - Debug",
+      "description": "macOS Debug Build with Apple Clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "DEBUG_LOG": "ON",
+        "BUILD_STATIC_LIBRARY": "OFF",
+        "SPEED_UP_BUILD_UNITY": "OFF",
+        "VCPKG_HOST_TRIPLET": "arm64-osx",
+        "VCPKG_BUILD_TYPE": "debug",
+        "CANARY_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "windows-release-metrics",
+      "inherits": "windows-release",
+      "displayName": "Windows - Release + Metrics",
+      "description": "Windows Release Build with metrics enabled",
+      "cacheVariables": {
+        "FEATURE_METRICS": "ON",
+        "VCPKG_MANIFEST_FEATURES": "metrics"
+      }
+    },
+    {
+      "name": "linux-release-metrics",
+      "inherits": "linux-release",
+      "displayName": "Linux - Release + Metrics",
+      "description": "Linux Release Build with metrics enabled",
+      "cacheVariables": {
+        "FEATURE_METRICS": "ON",
+        "VCPKG_MANIFEST_FEATURES": "metrics"
+      }
+    },
+    {
+      "name": "macos-release-metrics",
+      "inherits": "macos-release",
+      "displayName": "macOS - Release + Metrics",
+      "description": "macOS Release Build with metrics enabled",
+      "cacheVariables": {
+        "FEATURE_METRICS": "ON",
+        "VCPKG_MANIFEST_FEATURES": "metrics"
+      }
+    }
   ],
   "buildPresets": [
     {
@@ -87,12 +212,100 @@
       "configurePreset": "linux-release"
     },
     {
+      "name": "linux-release-enabled-tests",
+      "configurePreset": "linux-release-enabled-tests"
+    },
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-debug"
+    },
+    {
       "name": "windows-release",
       "configurePreset": "windows-release"
+    },
+    {
+      "name": "windows-release-enabled-tests",
+      "configurePreset": "windows-release-enabled-tests"
+    },
+    {
+      "name": "windows-release-asan",
+      "configurePreset": "windows-release-asan"
+    },
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-debug"
     },
     {
       "name": "macos-release",
       "configurePreset": "macos-release"
     },
+    {
+      "name": "macos-debug",
+      "configurePreset": "macos-debug"
+    },
+    {
+      "name": "windows-release-metrics",
+      "configurePreset": "windows-release-metrics"
+    },
+    {
+      "name": "linux-release-metrics",
+      "configurePreset": "linux-release-metrics"
+    },
+    {
+      "name": "macos-release-metrics",
+      "configurePreset": "macos-release-metrics"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "windows-release-asan",
+      "configurePreset": "windows-release-asan",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      }
+    },
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      }
+    },
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      }
+    },
+    {
+      "name": "linux-debug-asan",
+      "configurePreset": "linux-debug-asan",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      }
+    },
+    {
+      "name": "macos-debug",
+      "configurePreset": "macos-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error"
+      }
+    }
   ]
 }
