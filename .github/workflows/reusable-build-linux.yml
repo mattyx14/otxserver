@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        buildtype: [linux-release]
+        buildtype: [linux-release, linux-debug]
     runs-on: ubuntu-24.04
     env:
       CC: gcc-13
