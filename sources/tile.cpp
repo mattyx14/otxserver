@@ -1463,13 +1463,33 @@ int32_t Tile::getClientIndexOfThing(const Player* player, const Thing* thing) co
 
 	if(const CreatureVector* creatures = getCreatures())
 	{
+		int32_t visible = 0;
+		for(CreatureVector::const_iterator it = creatures->begin(); it != creatures->end(); ++it)
+		{
+			if(player->canSeeCreature(*it))
+				++visible;
+		}
+
+		int32_t downItemSlot = (items && items->getDownItemCount() > 0) ? 1 : 0;
+		int32_t slotsForCreatures = std::max<int32_t>(0, 9 - n - downItemSlot);
+		int32_t skip = std::max<int32_t>(0, visible - slotsForCreatures);
+
 		for(CreatureVector::const_reverse_iterator cit = creatures->rbegin(); cit != creatures->rend(); ++cit)
 		{
 			if((*cit) == thing)
+			{
+				if(skip > 0 && player->canSeeCreature(*cit))
+					return -1;
 				return ++n;
+			}
 
 			if(player->canSeeCreature(*cit))
-				++n;
+			{
+				if(skip > 0)
+					--skip;
+				else
+					++n;
+			}
 		}
 	}
 

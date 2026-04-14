@@ -977,10 +977,26 @@ void ProtocolGame::GetTileDescription(const Tile* tile, OutputMessage_ptr msg)
 
 	if(creatures)
 	{
+		int32_t visible = 0;
+		for(CreatureVector::const_iterator itc = creatures->begin(); itc != creatures->end(); ++itc)
+		{
+			if(player->canSeeCreature(*itc))
+				++visible;
+		}
+		int32_t downItemSlot = (items && items->getDownItemCount() > 0) ? 1 : 0;
+		int32_t remaining = std::max<int32_t>(0, 10 - count - downItemSlot);
+		int32_t skip = std::max<int32_t>(0, visible - remaining);
+
 		for(CreatureVector::const_reverse_iterator cit = creatures->rbegin(); (cit != creatures->rend() && count < 10); ++cit)
 		{
 			if(!player->canSeeCreature(*cit))
 				continue;
+
+			if(skip > 0)
+			{
+				--skip;
+				continue;
+			}
 
 			bool known;
 			uint32_t removedKnown;
@@ -2443,6 +2459,9 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	if(creature != player)
 	{
 		if (stackpos >= 10) {
+			const Tile* tile = g_game.getTile(pos);
+			if(tile)
+				sendUpdateTile(tile, pos);
 			return;
 		}
 
@@ -2516,7 +2535,21 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 
 void ProtocolGame::sendRemoveCreature(const Creature*, const Position& pos, uint32_t stackpos)
 {
-	if(stackpos >= 10 || !canSee(pos))
+	if(!canSee(pos))
+		return;
+
+	const Tile* tile = g_game.getTile(pos);
+	if(tile)
+	{
+		const CreatureVector* creatures = tile->getCreatures();
+		if(creatures && creatures->size() >= 9)
+		{
+			sendUpdateTile(tile, pos);
+			return;
+		}
+	}
+
+	if(stackpos >= 10)
 		return;
 
 	OutputMessage_ptr msg = getOutputBuffer();
@@ -2532,7 +2565,10 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 {
 	if(creature == player)
 	{
-		if(teleport || oldStackpos >= 10)
+		const Tile* _newTile = g_game.getTile(newPos);
+		const bool newTileOverflow = (_newTile && _newTile->getCreatures() && _newTile->getCreatures()->size() >= 10);
+
+		if(teleport || oldStackpos >= 10 || newTileOverflow)
 		{
 			OutputMessage_ptr msg = getOutputBuffer();
 			if(!msg)
@@ -2620,7 +2656,10 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 		if(!player->canSeeCreature(creature))
 			return;
 
-		if(!teleport && (oldPos.z != 7 || newPos.z < 8) && oldStackpos < 10)
+		const Tile* _newTile = g_game.getTile(newPos);
+		const bool newTileOverflow = (_newTile && _newTile->getCreatures() && _newTile->getCreatures()->size() >= 10);
+
+		if(!teleport && (oldPos.z != 7 || newPos.z < 8) && oldStackpos < 10 && newStackpos < 10 && !newTileOverflow)
 		{
 			OutputMessage_ptr msg = getOutputBuffer();
 			if(!msg)
@@ -2634,18 +2673,29 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 		}
 		else
 		{
-			if (oldStackpos < 10 || newStackpos < 10) {
+			if (oldStackpos < 10)
+			{
 				OutputMessage_ptr msg = getOutputBuffer();
 				if(!msg)
 					return;
 
 				TRACK_MESSAGE(msg);
-				if (oldStackpos < 10)
 				RemoveTileItem(msg, oldPos, oldStackpos);
+			}
 
-				if (newStackpos < 10) {
-					AddTileCreature(msg, newPos, newStackpos, creature);
-				}
+			if (newTileOverflow || newStackpos >= 10)
+			{
+				if (_newTile)
+					sendUpdateTile(_newTile, newPos);
+			}
+			else if (newStackpos < 10)
+			{
+				OutputMessage_ptr msg = getOutputBuffer();
+				if(!msg)
+					return;
+
+				TRACK_MESSAGE(msg);
+				AddTileCreature(msg, newPos, newStackpos, creature);
 			}
 		}
 	}
@@ -2661,14 +2711,34 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 		TRACK_MESSAGE(msg);
 		RemoveTileItem(msg, oldPos, oldStackpos);
 	}
-	else if(newStackpos < 10 && canSee(newPos) && player->canSeeCreature(creature))
+	else if(canSee(newPos) && player->canSeeCreature(creature))
 	{
-		OutputMessage_ptr msg = getOutputBuffer();
-		if(!msg)
-			return;
+		if(newStackpos < 10)
+		{
+			OutputMessage_ptr msg = getOutputBuffer();
+			if(!msg)
+				return;
 
-		TRACK_MESSAGE(msg);
-		AddTileCreature(msg, newPos, newStackpos, creature);
+			TRACK_MESSAGE(msg);
+			AddTileCreature(msg, newPos, newStackpos, creature);
+		}
+		else
+		{
+			const Tile* newTile = g_game.getTile(newPos);
+			if(newTile)
+				sendUpdateTile(newTile, newPos);
+		}
+	}
+
+	if(canSee(oldPos))
+	{
+		const Tile* oldTile = g_game.getTile(oldPos);
+		if(oldTile)
+		{
+			const CreatureVector* cv = oldTile->getCreatures();
+			if(cv && cv->size() >= 9)
+				sendUpdateTile(oldTile, oldPos);
+		}
 	}
 }
 
