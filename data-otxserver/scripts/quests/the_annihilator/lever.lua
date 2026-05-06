@@ -11,14 +11,14 @@ local setting = {
 		{ x = 191, y = 651, z = 15 },
 		{ x = 191, y = 653, z = 15 },
 		{ x = 189, y = 655, z = 15 },
-		{ x = 189, y = 654, z = 15 }
+		{ x = 189, y = 654, z = 15 },
 	},
 	playersPositions = {
 		{ fromPos = { x = 247, y = 659, z = 13 }, toPos = { x = 189, y = 650, z = 15 } },
 		{ fromPos = { x = 247, y = 660, z = 13 }, toPos = { x = 189, y = 651, z = 15 } },
 		{ fromPos = { x = 247, y = 661, z = 13 }, toPos = { x = 189, y = 652, z = 15 } },
 		{ fromPos = { x = 247, y = 662, z = 13 }, toPos = { x = 189, y = 653, z = 15 } },
-	}
+	},
 }
 
 local lever = Action()

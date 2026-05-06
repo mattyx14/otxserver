@@ -2,7 +2,7 @@ local demonPositions = {
 	{ x = 254, y = 676, z = 14 },
 	{ x = 262, y = 676, z = 14 },
 	{ x = 255, y = 682, z = 14 },
-	{ x = 263, y = 681, z = 14 }
+	{ x = 263, y = 681, z = 14 },
 }
 
 local function recreateParchment(position)

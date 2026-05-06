@@ -19,11 +19,11 @@ function questSystemOld.onUse(player, item, fromPosition, target, toPosition, is
 	local playerCap = player:getFreeCapacity()
 	if player:getStorageValue(item.uid) == -1 then
 		if playerCap >= itemWeight then
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You have found a ' .. itemType:getName() .. '.')
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found a " .. itemType:getName() .. ".")
 			player:addItem(item.uid, 1)
 			player:setStorageValue(item.uid, 1)
 		else
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'You have found a ' .. itemType:getName() .. ' weighing ' .. itemWeight .. ' oz it\'s too heavy.')
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found a " .. itemType:getName() .. " weighing " .. itemWeight .. " oz it's too heavy.")
 		end
 	else
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "It is empty.")

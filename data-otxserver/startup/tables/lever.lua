@@ -1,7 +1,7 @@
 LeverAction = {
-	-- 
+	--
 }
 
 LeverUnique = {
-	-- 
+	--
 }

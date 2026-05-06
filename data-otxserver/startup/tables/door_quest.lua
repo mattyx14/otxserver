@@ -1,7 +1,7 @@
 QuestDoorAction = {
-	-- 
+	--
 }
 
 QuestDoorUnique = {
-	-- 
+	--
 }

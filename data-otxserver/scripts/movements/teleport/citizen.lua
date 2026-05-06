@@ -3,7 +3,7 @@ local config = {
 	[9056] = TOWNS_LIST.RHYVES,
 	[9060] = TOWNS_LIST.VARAK,
 	[9057] = TOWNS_LIST.JORVIK,
-	[9058] = TOWNS_LIST.SAUND
+	[9058] = TOWNS_LIST.SAUND,
 }
 
 local citizen = MoveEvent()

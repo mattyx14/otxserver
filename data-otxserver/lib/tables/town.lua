@@ -7,5 +7,5 @@ TOWNS_LIST = {
 	RHYVES = 2,
 	VARAK = 3,
 	JORVIK = 4,
-	SAUND = 5
+	SAUND = 5,
 }

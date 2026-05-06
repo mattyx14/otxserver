@@ -1,7 +1,7 @@
 local stage = configManager.getNumber(configKeys.FREE_QUEST_STAGE)
 
 local questTable = {
-	-- 
+	--
 }
 
 local function playerFreeQuestStart(playerId, index)
