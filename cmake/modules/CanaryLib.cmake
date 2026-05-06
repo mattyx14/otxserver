@@ -31,7 +31,7 @@ if(OPTIONS_ENABLE_OPENMP)
     find_package(OpenMP)
 endif()
 
-# Iterate over all core targets (otxserver and/or otxserver executable)
+# Iterate over all core targets (canary_core and/or canary executable)
 foreach(
     core_target IN
     LISTS CANARY_CORE_TARGETS
@@ -109,7 +109,7 @@ foreach(
                fmt::fmt
                magic_enum::magic_enum
                mio::mio
-               protobuf::libprotobuf
+               protobuf::libprotobuf-lite
                pugixml::pugixml
                spdlog::spdlog
                unofficial::argon2::libargon2

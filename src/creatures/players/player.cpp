@@ -4061,7 +4061,7 @@ void Player::despawn() {
 	size_t i = 0;
 	for (const auto &spectator : spectators) {
 		if (const auto &player = spectator->getPlayer()) {
-			oldStackPosVector.emplace_back(player->canSeeCreature(static_self_cast<Player>()) ? tile->getStackposOfCreature(player, getPlayer()) : -1);
+			oldStackPosVector.emplace_back(player->canSeeCreature(static_self_cast<Player>()) ? tile->getClientIndexOfCreature(player, getPlayer()) : -1);
 		}
 		if (const auto &player = spectator->getPlayer()) {
 			player->sendRemoveTileThing(tile->getPosition(), oldStackPosVector[i++]);
@@ -6165,6 +6165,7 @@ void Player::onPlacedCreature() {
 			}
 		}
 		g_logger().info("[{}] Active EventScheduler: {}", getName(), eventsList);
+		sendTextMessage(MESSAGE_BOOSTED_CREATURE, fmt::format("Active EventScheduler: {}", eventsList));
 	}
 }
 
@@ -6928,7 +6929,7 @@ uint32_t Player::getAttackSpeed() const {
 
 double Player::getLostPercent() const {
 	int32_t blessingCount = 0;
-	const uint8_t maxBlessing = (operatingSystem == CLIENTOS_NEW_WINDOWS || operatingSystem == CLIENTOS_NEW_MAC) ? 8 : 6;
+	const uint8_t maxBlessing = 8;
 	for (int i = 2; i <= maxBlessing; i++) {
 		if (hasBlessing(i)) {
 			blessingCount++;
@@ -7539,6 +7540,11 @@ bool Player::toggleMount(bool mount) {
 	}
 
 	if (mount) {
+		if (!g_game().outfitSupportsMount(defaultOutfit.lookType)) {
+			sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+			return false;
+		}
+
 		if (isMounted()) {
 			return false;
 		}
@@ -8376,15 +8382,18 @@ void Player::sendCreatureAppear(const std::shared_ptr<Creature> &creature, const
 	}
 
 	auto tile = creature->getTile();
-	if (!tile) {
+	if (!tile || !client) {
 		return;
 	}
 
-	if (client) {
-		client->sendAddCreature(creature, pos, tile->getStackposOfCreature(static_self_cast<Player>(), creature), isLogin);
+	int32_t stackpos = tile->getClientIndexOfCreature(static_self_cast<Player>(), creature);
+	if (stackpos < 0 || stackpos >= 10) {
+		sendUpdateTile(tile, pos);
+		return;
 	}
-}
 
+	client->sendAddCreature(creature, pos, stackpos, isLogin);
+}
 void Player::sendCreatureMove(const std::shared_ptr<Creature> &creature, const Position &newPos, int32_t newStackPos, const Position &oldPos, int32_t oldStackPos, bool teleport) const {
 	if (client) {
 		client->sendMoveCreature(creature, newPos, newStackPos, oldPos, oldStackPos, teleport);
@@ -8402,10 +8411,14 @@ void Player::sendCreatureTurn(const std::shared_ptr<Creature> &creature) {
 	}
 
 	if (client && canSeeCreature(creature)) {
-		int32_t stackpos = tile->getStackposOfCreature(static_self_cast<Player>(), creature);
-		if (stackpos != -1) {
-			client->sendCreatureTurn(creature, stackpos);
+		int32_t stackpos = tile->getClientIndexOfCreature(static_self_cast<Player>(), creature);
+
+		if (stackpos < 0 || stackpos >= 10) {
+			sendUpdateTile(tile, creature->getPosition());
+			return;
 		}
+
+		client->sendCreatureTurn(creature, stackpos);
 	}
 }
 
@@ -8458,12 +8471,16 @@ void Player::sendCreatureChangeVisible(const std::shared_ptr<Creature> &creature
 		if (!tile) {
 			return;
 		}
-		int32_t stackpos = tile->getStackposOfCreature(static_self_cast<Player>(), creature);
+		int32_t stackpos = tile->getClientIndexOfCreature(static_self_cast<Player>(), creature);
 		if (stackpos == -1) {
 			return;
 		}
 
 		if (visible) {
+			if (stackpos >= 10) {
+				sendUpdateTile(tile, creature->getPosition());
+				return;
+			}
 			client->sendAddCreature(creature, creature->getPosition(), stackpos, false);
 		} else {
 			client->sendRemoveTileThing(creature->getPosition(), stackpos);
