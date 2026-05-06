@@ -188,3 +188,23 @@ local hints = {
                 If you are the leader, right-click on yourself and select 'Enable Shared Experience'.",
 	[28] = "There is nothing more I can tell you. If you are still in need of some {hints}, I can repeat them for you.",
 }
+
+function StdModule.rookgaardHints(npc, player, message, keywords, parameters, node)
+	local npcHandler = parameters.npcHandler
+	if npcHandler == nil then
+		error("StdModule.say called without any npcHandler instance.")
+	end
+
+	if not npcHandler:checkInteraction(npc, player) or not IsRunningGlobalDatapack() then
+		return false
+	end
+
+	local hintId = player:getStorageValue(Storage.RookgaardHints)
+	npcHandler:say(hints[hintId], npc, player)
+	if hintId >= #hints then
+		player:setStorageValue(Storage.RookgaardHints, -1)
+	else
+		player:setStorageValue(Storage.RookgaardHints, hintId + 1)
+	end
+	return true
+end

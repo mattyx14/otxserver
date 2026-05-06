@@ -1,4 +1,4 @@
-require("data-otxserver.lib.core.quests")
+require("data-otservbr-global.lib.core.quests")
 
 if not LastQuestlogUpdate then
 	LastQuestlogUpdate = {}
