@@ -59,7 +59,7 @@ class ConnectionManager
 
 		bool acceptConnection(uint32_t clientip);
 
-		Connection_ptr createConnection(boost::asio::io_service& io_service, ConstServicePort_ptr servicePort);
+		Connection_ptr createConnection(boost::asio::io_context& io_service, ConstServicePort_ptr servicePort);
 		void releaseConnection(const Connection_ptr& connection);
 		void closeAll();
 
@@ -90,7 +90,7 @@ class Connection : public std::enable_shared_from_this<Connection>
 
 		enum { FORCE_CLOSE = true };
 
-		Connection(boost::asio::io_service& io_service,
+		Connection(boost::asio::io_context& io_service,
 		           ConstServicePort_ptr service_port) :
 			readTimer(io_service),
 			writeTimer(io_service),

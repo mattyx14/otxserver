@@ -60,7 +60,7 @@ class Service final : public ServiceBase
 class ServicePort : public std::enable_shared_from_this<ServicePort>
 {
 	public:
-		explicit ServicePort(boost::asio::io_service& io_service);
+		explicit ServicePort(boost::asio::io_context& io_service);
 		~ServicePort();
 
 		// non-copyable
@@ -82,7 +82,7 @@ class ServicePort : public std::enable_shared_from_this<ServicePort>
 	protected:
 		void accept();
 
-		boost::asio::io_service& io_service;
+		boost::asio::io_context& io_service;
 		std::unique_ptr<boost::asio::ip::tcp::acceptor> acceptor;
 		std::vector<Service_ptr> services;
 
@@ -117,7 +117,7 @@ class ServiceManager
 
 		std::unordered_map<uint16_t, ServicePort_ptr> acceptors;
 
-		boost::asio::io_service io_service;
+		boost::asio::io_context io_service;
 		boost::asio::deadline_timer death_timer;
 		bool running;
 };

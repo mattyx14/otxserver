@@ -61,7 +61,7 @@ bool ConnectionManager::acceptConnection(uint32_t clientip)
 	return true;
 }
 
-Connection_ptr ConnectionManager::createConnection(boost::asio::io_service& io_service, ConstServicePort_ptr servicePort)
+Connection_ptr ConnectionManager::createConnection(boost::asio::io_context& io_service, ConstServicePort_ptr servicePort)
 {
 	std::lock_guard<std::mutex> lockClass(connectionManagerLock);
 
@@ -311,7 +311,7 @@ uint32_t Connection::getIP()
 		return 0;
 	}
 
-	return htonl(endpoint.address().to_v4().to_ulong());
+	return htonl(endpoint.address().to_v4().to_uint());
 }
 
 void Connection::onWriteOperation(const boost::system::error_code& error)
