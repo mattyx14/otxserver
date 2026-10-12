@@ -45,7 +45,7 @@ CXXSOURCES = 			actions.cpp				allocator.cpp			baseevents.cpp			beds.cpp \
 						connection.cpp		container.cpp			creature.cpp  				creatureevent.cpp\
 						cylinder.cpp  			database.cpp 			databasemanager.cpp 	$(DATABASE) \
 						depot.cpp 				dispatcher.cpp 		exception.cpp  			fileloader.cpp  \
-						game.cpp  				xtea.cpp 	$(EXTRASOURCES) 	globalevent.cpp  			group.cpp \
+						game.cpp  				xtea.cpp 	crashsave.cpp 	$(EXTRASOURCES) 	globalevent.cpp  			group.cpp \
 						house.cpp  			housetile.cpp  		ioban.cpp					ioguild.cpp	sha1.cpp \
 						iologindata.cpp  		iomap.cpp 				iomapserialize.cpp 		item.cpp \
 						itemattributes.cpp 	items.cpp  				luascript.cpp				mailbox.cpp \
