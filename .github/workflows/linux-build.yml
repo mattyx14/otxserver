@@ -1,0 +1,48 @@
+# Builds the server on Ubuntu 20.04, 22.04 and 24.04 on every push or pull request that changes the code.
+name: Linux build
+
+on:
+  push:
+    paths:
+      - "sources/**"
+      - ".github/ci/build-linux.sh"
+      - ".github/workflows/linux-build.yml"
+  pull_request:
+    paths:
+      - "sources/**"
+      - ".github/ci/build-linux.sh"
+      - ".github/workflows/linux-build.yml"
+  workflow_dispatch:
+
+# a newer push to the same branch cancels the build still running for the older one
+concurrency:
+  group: linux-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Ubuntu ${{ matrix.ubuntu }}
+    runs-on: ubuntu-latest
+    container: ubuntu:${{ matrix.ubuntu }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false # one version failing doesn't stop the others
+      matrix:
+        ubuntu: ["20.04", "22.04", "24.04"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # only the code: the maps and the rest of data/ aren't needed to build
+          sparse-checkout: |
+            sources
+            .github
+
+      - name: Compiler cache
+        uses: actions/cache@v4
+        with:
+          path: .ccache
+          key: ccache-${{ matrix.ubuntu }}-${{ github.sha }}
+          restore-keys: ccache-${{ matrix.ubuntu }}-
+
+      - name: Build
+        run: bash .github/ci/build-linux.sh
