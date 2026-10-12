@@ -40,6 +40,7 @@
     <ClInclude Include="..\exception.h" />
     <ClInclude Include="..\fileloader.h" />
     <ClInclude Include="..\game.h" />
+    <ClInclude Include="..\xtea.h" />
     <ClInclude Include="..\gameservers.h" />
     <ClInclude Include="..\globalevent.h" />
     <ClInclude Include="..\group.h" />
@@ -132,6 +133,9 @@
     <ClCompile Include="..\exception.cpp" />
     <ClCompile Include="..\fileloader.cpp" />
     <ClCompile Include="..\game.cpp" />
+    <ClCompile Include="..\xtea.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\gameservers.cpp" />
     <ClCompile Include="..\globalevent.cpp" />
     <ClCompile Include="..\group.cpp" />

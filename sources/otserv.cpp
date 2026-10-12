@@ -16,6 +16,7 @@
 ////////////////////////////////////////////////////////////////////////
 
 #include "otpch.h"
+#include "xtea.h"
 #include "otsystem.h"
 #include <signal.h>
 
@@ -848,6 +849,8 @@ void otserv(StringVec, ServiceManager* services)
 	std::clog << ">> Loading map and spawns..." << std::endl;
 	if(!g_game.loadMap(g_config.getString(ConfigManager::MAP_NAME)))
 		startupErrorMessage();
+
+	std::clog << ">> Packet encryption: XTEA (" << getXteaImplementationName() << ")" << std::endl;
 
 	std::clog << ">> Checking world type... ";
 	std::string worldType = asLowerCaseString(g_config.getString(ConfigManager::WORLD_TYPE));

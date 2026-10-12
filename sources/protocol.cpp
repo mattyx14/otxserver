@@ -18,6 +18,7 @@
 #include "otpch.h"
 
 #include "protocol.h"
+#include "xtea.h"
 #include "outputmessage.h"
 #include "rsa.h"
 
@@ -64,7 +65,6 @@ OutputMessage_ptr Protocol::getOutputBuffer(int32_t size)
 
 void Protocol::XTEA_encrypt(OutputMessage& msg) const
 {
-	const uint32_t delta = 0x61C88647;
 	const uint32_t k[] = { key[0], key[1], key[2], key[3] };
 
 	// Ensure message is a multiple of 8
@@ -72,24 +72,8 @@ void Protocol::XTEA_encrypt(OutputMessage& msg) const
 	if(paddingBytes != 0)
 		msg.addPaddingBytes(8 - paddingBytes);
 
-	uint8_t* buffer = msg.getOutputBuffer();
-	const uint8_t* bufferEnd = buffer + msg.getLength();
-
-	while(buffer < bufferEnd)
-	{
-		uint32_t* v0 = reinterpret_cast<uint32_t*>(buffer);
-		uint32_t* v1 = reinterpret_cast<uint32_t*>(buffer + 4);
-
-		uint32_t sum = 0;
-		for(int32_t i = 0; i < 32; ++i)
-		{
-			*v0 += (((*v1 << 4) ^ (*v1 >> 5)) + *v1) ^ (sum + k[sum & 3]);
-			sum -= delta;
-			*v1 += (((*v0 << 4) ^ (*v0 >> 5)) + *v0) ^ (sum + k[(sum >> 11) & 3]);
-		}
-
-		buffer += 8;
-	}
+	// SSE2/AVX2 when the CPU has it; same bytes as the plain loop (xteaEncryptPlain)
+	xteaEncrypt(msg.getOutputBuffer(), msg.getLength(), k);
 }
 
 bool Protocol::XTEA_decrypt(NetworkMessage& msg) const
