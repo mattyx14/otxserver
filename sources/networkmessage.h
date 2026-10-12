@@ -109,6 +109,8 @@ class NetworkMessage
 		void addPaddingBytes(size_t n);
 
 		void addString(const std::string& value);
+		// addString drops strings over 8192 bytes; this one only needs room in the message
+		bool addLongString(const std::string& value);
 
 		void addDouble(double value, uint8_t precision = 2);
 

@@ -70,6 +70,20 @@ void NetworkMessage::addDouble(double value, uint8_t precision/* = 2*/)
 	add<uint32_t>((value * std::pow(static_cast<float>(10), precision)) + std::numeric_limits<int32_t>::max());
 }
 
+bool NetworkMessage::addLongString(const std::string& value)
+{
+	size_t stringLen = value.length();
+	if (stringLen > 0xFFFF || !canAdd(stringLen + 2)) {
+		return false;
+	}
+
+	add<uint16_t>(stringLen);
+	memcpy(buffer + position, value.c_str(), stringLen);
+	position += stringLen;
+	length += stringLen;
+	return true;
+}
+
 void NetworkMessage::addBytes(const char* bytes, size_t size)
 {
 	if (!canAdd(size) || size > 8192) {

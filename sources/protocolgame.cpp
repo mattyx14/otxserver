@@ -3587,10 +3587,19 @@ void ProtocolGame::sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
 	if(player && !player->isUsingOtclient())
 		return;
 
-	OutputMessage_ptr msg = getOutputBuffer();
+	// payloads (e.g. JSON) can pass 8 KB; one that doesn't fit in a message is dropped whole,
+	// since a header without its string would break the client's parsing
+	if(buffer.size() + 4 > NetworkMessage::MAX_PROTOCOL_BODY_LENGTH)
+	{
+		std::clog << "[Warning - ProtocolGame::sendExtendedOpcode] Opcode " << (int32_t)opcode << ": "
+			<< buffer.size() << " bytes, too big for one message." << std::endl;
+		return;
+	}
+
+	OutputMessage_ptr msg = getOutputBuffer(buffer.size() + 4);
 	msg->addByte(0x32);
 	msg->addByte(opcode);
-	msg->addString(buffer);
+	msg->addLongString(buffer);
 }
 
 // Telescope/spy
